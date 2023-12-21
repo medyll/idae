@@ -1,5 +1,5 @@
 import { Operators } from "./operators.js";
-import { type Operator, type OperatorType, type Where } from "./types.js";
+import { type Operator, type Where } from "./types.js";
 
 export class Collection<T = any> {
   private store: string;
