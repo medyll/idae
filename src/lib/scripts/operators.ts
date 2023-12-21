@@ -83,15 +83,15 @@ export class Operators {
     return value !== data[fieldName];
   }
 
-  static containsComparison<T>(fieldName: keyof T, value: any, data: T) {
-    return data[fieldName].includes(value);
+  static containsComparison<T>(fieldName: keyof T, value: any, data: T) { 
+    return `${data[fieldName]}`.includes(value);
   }
 
   static startsWithComparison<T>(fieldName: keyof T, value: any, data: T) {
-    return data[fieldName].startsWith(value);
+    return `${data[fieldName]}`.startsWith(value);
   }
 
   static endsWithComparison<T>(fieldName: keyof T, value: any, data: T) {
-    return data[fieldName].endsWith(value);
+    return `${data[fieldName]}`.endsWith(value);
   }
 }

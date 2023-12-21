@@ -62,4 +62,4 @@ export class DataBase extends Idbq {
   }
 }
 
-export const dbase2 = new DataBase();
+export const dbase = new DataBase();
