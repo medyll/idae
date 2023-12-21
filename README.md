@@ -1,58 +1,79 @@
-# create-svelte
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+# idbq: an IndexedDB wrapper
 
-## Creating a project
+This project is a library for interacting with IndexedDB in the browser. It provides a simple interface for creating, reading, updating, and deleting data in an IndexedDB database.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+You can install this library using npm:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install idbq
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## Classes
 
-## Building
+### DataBase
 
-To build your library:
+The `DataBase` class extends `Idbq` and defines three collections: `chat`, `messages`, and `stream`. The syntax for defining collections is as follows:
+
+- `&`: Indicates that the field is an index. Indexed fields can be used for faster searching.
+- `++`: Indicates that the field is an auto-incrementing primary key.
+
+```typescript
+export class DataBase extends Idbq {
+  chat!: Collection<Collection1>;
+  messages!: Collection<Collection2>;
+
+  constructor() {
+    super("myDatabase");
+
+    this.version(2).stores({
+      chat: "&chatId, created_at, dateLastMessage",
+      messages: "++id, chatId, created_at",
+      stream: "++id, messageId, created_at, done",
+    });
+  }
+}
+```
+
+### Operators
+
+The `Operators` class provides a set of comparison operators for filtering data:
+
+- `eq`: Equality comparison
+- `gt`: Greater than comparison
+- `gte`: Greater than or equal to comparison
+- `lt`: Less than comparison
+- `lte`: Less than or equal to comparison
+- `ne`: Not equal comparison
+- `in`: Inclusion in a list comparison
+- `nin`: Exclusion from a list comparison
+- `contains`: Checks if a value is contained in a field
+- `startsWith`: Checks if a field starts with a value
+- `endsWith`: Checks if a field ends with a value
+
+## Usage
+
+To use this library, create a new instance of `DataBase`:
+
+```typescript
+export const dbase2 = new DataBase();
+```
+
+You can then use `dbase2` to interact with your IndexedDB database.
+
+## Testing
+
+The tests for this library are located in the `/tests` directory. To run the tests, use the following command:
 
 ```bash
-npm run package
+npm run test
 ```
 
-To create a production version of your showcase app:
+This will run all the tests and display the results in your terminal.
 
-```bash
-npm run build
-```
+## License
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+This project is licensed under the MIT License. See the LICENSE file for more details.
