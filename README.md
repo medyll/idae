@@ -1,4 +1,4 @@
-# idbq: an IndexedDB wrapper
+# idbql: a queryable IndexedDB wrapper
 
 This project is a library for interacting with IndexedDB in the browser. It provides a simple interface for creating, reading, updating, and deleting data in an IndexedDB database.
 
@@ -7,7 +7,7 @@ This project is a library for interacting with IndexedDB in the browser. It prov
 You can install this library using npm:
 
 ```bash
-npm install idbq
+npm install idbql
 ```
 
 ## Classes
@@ -28,7 +28,7 @@ export class DataBase extends Idbq {
   constructor() {
     super("myDatabase");
 
-    this.version(2).stores({
+    this.version(1).stores({
       chat: "&chatId, created_at, dateLastMessage",
       messages: "++id, chatId, created_at",
       stream: "++id, messageId, created_at, done",
