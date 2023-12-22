@@ -64,14 +64,14 @@ export class Collection<T = any> {
   }
 
   async where(qy: Where<T>, options?: OptionsType) {
-    await this.getData()
+    return this.getData()
       .then((data: T[]) => {
         let resultSet: any[] = [...data];
 
-        Object.keys(qy).map((fieldName) => {
+        for (const fieldName in qy) {
           const query = qy[fieldName];
 
-          Object.keys(query).map((key) => {
+          for (const key in query) {
             // if operator
             if (Operators.operators.includes(key as Operator)) {
               const operator = key as Operator;
@@ -83,14 +83,13 @@ export class Collection<T = any> {
                 value,
                 resultSet
               );
-              console.log({ resultSet });
             }
-          });
-        });
-        
-        if(options){
-          resultSet = Options.applyOptions(options, resultSet); 
-        } 
+          }
+        }
+
+        if (options) {
+          resultSet = Options.applyOptions(options, resultSet);
+        }
 
         return resultSet;
       })

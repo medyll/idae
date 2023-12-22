@@ -7,7 +7,7 @@
  onMount(async () => {
        // base2.chat.where({title: 'name'}) 
 
-       dbase.chat.add({chatId:5,title:'name'});
+       dbase.chat.add({chatId:2,title:'name'});
 
        dbase.chat.put({chatId:5,context:[121,253]});
 
