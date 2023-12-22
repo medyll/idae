@@ -1,4 +1,5 @@
 import { Operators } from "./operators.js";
+import { Options, type OptionsType } from "./options.js";
 import { type Operator, type Where } from "./types.js";
 
 export class Collection<T = any> {
@@ -62,8 +63,7 @@ export class Collection<T = any> {
     });
   }
 
- 
-  async where(qy: Where<T>) {
+  async where(qy: Where<T>, options?: OptionsType) {
     await this.getData()
       .then((data: T[]) => {
         let resultSet: any[] = [...data];
@@ -87,6 +87,10 @@ export class Collection<T = any> {
             }
           });
         });
+        
+        if(options){
+          resultSet = Options.applyOptions(options, resultSet); 
+        } 
 
         return resultSet;
       })
