@@ -7,22 +7,24 @@
 
 		HtmluDom.attach({
 			selectors: [{ element: '[data-widget]', mutations: { attributes: '[lang]' } }],
-			mutationCb: (mutations, observer) => {
+			selectorCallback: (mutations, observer) => {
 				return {
 					attributes: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log(mutation);
 					},
 					childList: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log(mutation);
 					},
 					characterData: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log(mutation);
 					}
 				};
 			},
-			mutationObserverParams: {
-				attributes: true
-				// attributeFilter: ['lang']
+			observerParameters: {
+				attributeFilter: [],
+				attributes: true,
+				attributeOldValue: true,
+				characterData: true,
+				characterDataOldValue: true,
+				childList: false,
+				subtree: true
 			}
 		});
 

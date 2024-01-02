@@ -27,8 +27,8 @@ type MutationHandlerCallback = (
 
 type AttachedElement = {
 	selectors: Selector | Selector[];
-	mutationCb: MutationHandlerCallback;
-	mutationObserverParams: MutationObserverInit;
+	selectorCallback: MutationHandlerCallback;
+	observerParameters: MutationObserverInit;
 };
 
 type AttachOptionsType = AttachedElement | AttachedElement[];
@@ -151,7 +151,7 @@ export class HtmluDomLib {
 	 */
 	public attach(opts: AttachOptionsType | AttachOptionsType[]) {
 		const optionsArray = HtmluDomUtils.forceArrayType<AttachOptionsType>(opts);
-		if (typeof window == 'undefined' || !optionsArray) return;
+		if (typeof window == 'undefined' || !optionsArray) return true;
 
 		for (const option of optionsArray as AttachedElement[]) {
 			const selectorsArray = HtmluDomUtils.forceArrayType<Selector>(option.selectors);
@@ -162,8 +162,8 @@ export class HtmluDomLib {
 				for (const element of elements) {
 					const targetNode = new ObservedElement(
 						element,
-						option.mutationObserverParams,
-						option.mutationCb
+						option.observerParameters,
+						option.selectorCallback
 					);
 
 					const core = new HtmluEvent(targetNode);
@@ -173,6 +173,7 @@ export class HtmluDomLib {
 				}
 			}
 		}
+		return true;
 	}
 
 	private getSelectorElements({ element }: Selector): Node[] {
