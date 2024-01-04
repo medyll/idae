@@ -1,4 +1,4 @@
-import { HtmluDom } from '../../dist/MutationObserverInterface.js';
+import { HtmluDom } from '../../dist/HtmluDom.js';
 import { test, expect } from '@playwright/test';
 
 test('HtmluDom is defined', async ({ page }) => {
@@ -7,7 +7,7 @@ test('HtmluDom is defined', async ({ page }) => {
 	// Définissez le contenu HTML de la page
 	await page.setContent(`
      window.testLib = HtmluDom.attach({
-			selectors: [{ element: '[data-widget]', mutations: { attributes: '[lang]' } }],
+			selectors: [{ element: '#widget', mutations: { attributes: '[lang]' } }],
 			selectorCallback: (mutations, observer) => {
 				return {
 					attributes: (mutation: MutationRecord, observer: MutationObserver) => {
