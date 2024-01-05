@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import '$lib/HtmluDom.js';
-	import "$lib/htmluModules.js"
+	import '$lib/htmluModules.js';
 	import { HtmluDom } from '$lib/HtmluDom.js';
+	import { elementObserve } from '$lib/htmluCssObserver.js';
 	let timer: NodeJS.Timeout;
 	let timerData = 0;
 	let timerDelay = 5000;
@@ -24,6 +25,13 @@
 	}
 
 	onMount(() => {
+		elementObserve('[data-auto-track]').each((element) => {
+			console.log(element);
+		});
+
+		/* selector('[data-auto-track]').summary((element) => {
+			console.log(element);
+		}); */
 
 		/* HtmluDom.attach({
 			selectors: [{ element: '[data-widget]', mutations: { attributes: '[lang]' } }],
@@ -51,17 +59,17 @@
 			}
 		}); */
 		// monitor some attributes changes
-		HtmluDom.track('#body', ['data-widget'], {
-			onAttributesChange: (element,mutation,observer) => {
+		/* HtmluDom.track('#body', ['data-widget'], {
+			onAttributesChange: (element, mutation, observer) => {
 				console.log(mutation);
 			},
-			onChildListChange: (element,mutation,observer) => {
+			onChildListChange: (element, mutation, observer) => {
 				console.log(mutation);
 			},
-			onCharacterDataChange: (element,mutation,observer) => {
+			onCharacterDataChange: (element, mutation, observer) => {
 				console.log(mutation);
 			}
-		});
+		}); */
 		/* // monitor all attributes changes on #widget
 		htmlu.track('#widget', {
 			onAttributesChange: (element,mutation,observer) => {
@@ -104,14 +112,15 @@
 	{timerData}
 </div>
 
-<div data-htmlu-path="" data-htmlu-module-id="myModuleAuusi" >
+<div data-htmlu-path="" data-htmlu-module-id="myModuleAuusi">
 	<div data-htmlu-click=""></div>
 </div>
 {#if showWidget}
-<div data-htmlu-module-id="myModule" >
-module !! 
-</div>
-	<div data-auto-track="true">
+	<div data-htmlu-module-id="myModule">module !!</div>
+	<div data-auto-track="true">module !!</div>
+	<div data-auto-track="true">module !!</div>
+	<div data-auto-track="true" data-htmlu-module >module !!</div>
+	<!-- <div data-auto-track="true">
 		<script data-attr="htmludom" lang="ts">
 			//console.log(this);
 			window.der = function () {
@@ -130,9 +139,7 @@ module !!
 			window.der.bind(this)();
 			fr.bind(this)();
 			getRequest.bind(this)();
-
-			
 		</script>
 		auto-track
-	</div>
+	</div> -->
 {/if}

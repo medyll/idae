@@ -8,32 +8,9 @@ const configModules: HtmluModule = {
 // monitor specific attributes changes related to gui.engine events
 class htmluModuleLoader {
 	selectors: any;
-	constructor() {
-		this.selectors = Object.keys(configModules).map((module) => ({
-			element: module,
-			mutations: configModules[module],
+	constructor() {}
 
-			toAttach: {
-				selector: module,
-				selectorCallback: (mutations, observer) => {
-					return {
-						attributes: (mutation: MutationRecord, observer: MutationObserver) => {
-							// this.onAttributesChange(mutation, observer);
-						}
-					};
-				}
-			}
-		}));
-
-		/* HtmluDom.attach(this.selectors);
-		// send event to gui.engine
-		console.log(this.selectors); */
-	}
-
-	// getModules() {}
-	/* public addAutoTrack(node: Node) {
-		node.setAttribute('data-auto-track', 'true');
-	} */
+	loadModuleLib() {}
 }
 
 /**
