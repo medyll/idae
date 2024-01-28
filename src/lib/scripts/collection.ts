@@ -1,6 +1,6 @@
-import { Operators } from "./operators.js";
-import { Options, type OptionsType } from "./options.js";
-import { type Operator, type Where } from "./types.js";
+import { ResultSet, type OptionsType } from "./resultSet/resultset.js";
+import { type Where } from "./types.js";
+import { Query } from "./query/query.js";
 
 export class Collection<T = any> {
   private store: string;
@@ -11,6 +11,10 @@ export class Collection<T = any> {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
+  }
+
+  public observe() {
+    return this;
   }
 
   /** get the collection */
@@ -63,32 +67,21 @@ export class Collection<T = any> {
     });
   }
 
+  /**
+   * Retrieves the data from the collection based on the provided query.
+   * @param qy - The query object specifying the conditions for filtering the data.
+   * @param options - The options object specifying additional operations to be applied on the result set.
+   * @returns A promise that resolves to the filtered result set.
+   * @throws If an error occurs while retrieving the data.
+   */
   async where(qy: Where<T>, options?: OptionsType) {
     return this.getData()
       .then((data: T[]) => {
-        let resultSet: any[] = [...data];
-
-        for (const fieldName in qy) {
-          const query = qy[fieldName];
-
-          for (const key in query) {
-            // if operator
-            if (Operators.operators.includes(key as Operator)) {
-              const operator = key as Operator;
-              const value = query[key as Operator];
-
-              resultSet = Operators.filters(
-                fieldName,
-                operator,
-                value,
-                resultSet
-              );
-            }
-          }
-        }
+        const query = new Query<T>(data);
+        let resultSet = query.where(qy);
 
         if (options) {
-          resultSet = Options.applyOptions(options, resultSet);
+          resultSet = ResultSet.applyOptions(options, resultSet);
         }
 
         return resultSet;
@@ -155,5 +148,9 @@ export class Collection<T = any> {
     });
   }
 
-  private delete(key: string): Promise<T> {}
+  private delete(where: Where<T>): Promise<T> {
+    this.where(where).then((data) => {
+      console.log(data);
+    });
+  }
 }

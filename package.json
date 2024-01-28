@@ -40,6 +40,7 @@
 		"commitizen": "^4.3.0",
 		"eslint": "^8.28.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"fake-indexeddb": "^5.0.2",
 		"husky": "^8.0.0",
 		"publint": "^0.1.9",
 		"standard-version": "^9.5.0",

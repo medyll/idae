@@ -1,4 +1,4 @@
-import { Idbq,  } from "../lib/scripts/idbq.js";
+import { Idbq } from "../lib/scripts/idbq/idbq.js";
 import type { Collection } from "../lib/scripts/collection.js";
 
 export type Collection1 = {
@@ -31,7 +31,7 @@ export type Collection2 = {
 );
 
 export type Collection3 = {
-  id:number; 
+  id: number;
   model: string;
   create_at: string;
   response: string;
@@ -63,3 +63,5 @@ export class DataBase extends Idbq {
 }
 
 export const dbase = new DataBase();
+
+console.log(dbase.toString);

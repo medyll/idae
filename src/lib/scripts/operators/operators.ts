@@ -1,4 +1,4 @@
-import { type OperatorType } from "./types.js";
+import { type OperatorType } from "../types.js";
 
 export class Operators {
   static operators: (keyof OperatorType)[] = [
@@ -83,7 +83,7 @@ export class Operators {
     return value !== data[fieldName];
   }
 
-  static containsComparison<T>(fieldName: keyof T, value: any, data: T) { 
+  static containsComparison<T>(fieldName: keyof T, value: any, data: T) {
     return `${data[fieldName]}`.includes(value);
   }
 

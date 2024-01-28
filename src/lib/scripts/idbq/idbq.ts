@@ -1,4 +1,4 @@
-import { Collection } from "./collection.js";
+import { Collection } from "../collection.js";
 import { Schema } from "./schema.js";
 
 /**
@@ -11,7 +11,6 @@ export class Idbq<T = any> {
   private dbVersion!: number;
   private idbDatabase?: IDBDatabase;
   private schema: Record<string, any> = {};
-
   /**
    * Creates an instance of Idbq.
    * @param {string} databaseName - The name of the database.
@@ -30,22 +29,32 @@ export class Idbq<T = any> {
     this.dbVersion = version;
     return {
       stores: async (args: Record<string, string>) => {
-        if (typeof window !== "undefined") {
-          // store the schema
-          this.schema = args;
-          // create or open the database
-          this.openDatabase(version);
+        return new Promise<void>((resolve, reject) => {
+          if (global.indexedDB || typeof window !== "undefined") {
+            // store the schema
+            this.schema = args;
+            // create or open the database
+            this.openDatabase(version)
+              .then(() => {
+                if (this.dbConnection != undefined) {
+                  this.dbConnection.onupgradeneeded = async (event: Event) => {
+                    const m = new Schema();
+                    this.idbDatabase = this.dbConnection?.result;
 
-          if (this.dbConnection != undefined) {
-            this.dbConnection.onupgradeneeded = (event: Event) => {
-              const m = new Schema();
-              this.idbDatabase = this.dbConnection?.result;
-              m.createSchema(this.dbConnection.result, args);
-            };
-            // create tables
-            this.createCollections(args);
+                    if (this.idbDatabase) {
+                      m.createSchema(this.idbDatabase, args);
+                    }
+                  };
+                  // create tables
+                  this.createCollections(args);
+                }
+                resolve();
+              })
+              .catch(reject);
+          } else {
+            reject(new Error("IndexedDB is not supported."));
           }
-        }
+        });
       },
     };
   }
@@ -57,7 +66,11 @@ export class Idbq<T = any> {
    */
   private createCollections(args: any) {
     Object.keys(this.schema).map(async (storeName) => {
-      this[storeName] = new Collection(this.databaseName,storeName,this.dbVersion);
+      this[storeName] = new Collection(
+        this.databaseName,
+        storeName,
+        this.dbVersion
+      );
     });
   }
 
@@ -69,7 +82,7 @@ export class Idbq<T = any> {
   private async openDatabase(version: number) {
     return new Promise((resolve, reject) => {
       // open the database
-      this.dbConnection = window.indexedDB.open(
+      this.dbConnection = global.indexedDB.open(
         this.databaseName,
         version ?? this.dbVersion
       );
@@ -78,7 +91,7 @@ export class Idbq<T = any> {
 
       this.dbConnection.onsuccess = (event: Event) => {
         this.idbDatabase = this.dbConnection?.result;
-        resolve(true)
+        resolve(true);
       };
     });
   }
@@ -87,7 +100,7 @@ export class Idbq<T = any> {
    * Closes the database connection.
    * @private
    */
-  private closeDatabase(): void {
+  public closeDatabase(): void {
     if (this.idbDatabase) {
       this.idbDatabase.close();
       this.idbDatabase = undefined;
