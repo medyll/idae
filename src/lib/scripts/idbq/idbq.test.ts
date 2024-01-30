@@ -1,11 +1,7 @@
 import { Idbq } from "./idbq.js";
-import { Collection } from "../collection.js";
+import { Collection } from "../collection/collection.js";
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
-import { indexedDB, IDBKeyRange } from "fake-indexeddb";
-
-// Set the global indexedDB to the fake one
-global.indexedDB = indexedDB;
-global.IDBKeyRange = IDBKeyRange;
+import "fake-indexeddb/auto";
 
 describe("Idbq", () => {
   let idbq: Idbq;
@@ -42,11 +38,15 @@ describe("Idbq", () => {
     expect(idbq.users).toBeInstanceOf(Collection);
     expect(idbq.products).toBeInstanceOf(Collection);
   });
-
   it("should open the database connection", async () => {
-    version = version++;
-    await idbq.version(version).stores({});
-    expect(idbq.idbDatabase).toBeDefined();
+    //version = version++;
+    const schema = {
+      users: "++id",
+      products: "++id",
+    };
+    await idbq.version(version).stores(schema);
+
+    expect(idbq.dbConnection).toBeDefined();
   });
 
   it("should close the database connection", () => {

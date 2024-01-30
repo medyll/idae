@@ -1,5 +1,5 @@
 import { Idbq } from "../lib/scripts/idbq/idbq.js";
-import type { Collection } from "../lib/scripts/collection.js";
+import type { Collection } from "../lib/scripts/collection/collection.js";
 
 export type Collection1 = {
   id: number;
@@ -52,16 +52,13 @@ export class DataBase extends Idbq {
   messages!: Collection<Collection2>;
 
   constructor() {
-    super("myDatabase");
+    super("oneDatabase");
 
-    this.version(2).stores({
+    this.version(1).stores({
       chat: "&chatId, created_at, dateLastMessage",
       messages: "++id, chatId, created_at",
-      stream: "++id, messageId, created_at, done",
     });
   }
 }
 
 export const dbase = new DataBase();
-
-console.log(dbase.toString);

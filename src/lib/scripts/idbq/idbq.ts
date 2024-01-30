@@ -1,4 +1,4 @@
-import { Collection } from "../collection.js";
+import { Collection } from "../collection/collection.js";
 import { Schema } from "./schema.js";
 
 /**
@@ -6,11 +6,11 @@ import { Schema } from "./schema.js";
  * @template T - The type of data stored in the IndexedDB.
  */
 export class Idbq<T = any> {
-  private dbConnection?: IDBOpenDBRequest;
+  public dbConnection?: IDBOpenDBRequest;
   private databaseName: string;
   private dbVersion!: number;
-  private idbDatabase?: IDBDatabase;
-  private schema: Record<string, any> = {};
+  public idbDatabase?: IDBDatabase;
+  public schema: Record<string, any> = {};
   /**
    * Creates an instance of Idbq.
    * @param {string} databaseName - The name of the database.
@@ -29,32 +29,33 @@ export class Idbq<T = any> {
     this.dbVersion = version;
     return {
       stores: async (args: Record<string, string>) => {
-        return new Promise<void>((resolve, reject) => {
-          if (global.indexedDB || typeof window !== "undefined") {
+        if (typeof indexedDB !== "undefined") {
+          return new Promise((resolve, reject) => {
             // store the schema
             this.schema = args;
             // create or open the database
-            this.openDatabase(version)
-              .then(() => {
-                if (this.dbConnection != undefined) {
-                  this.dbConnection.onupgradeneeded = async (event: Event) => {
-                    const m = new Schema();
-                    this.idbDatabase = this.dbConnection?.result;
+            this.openDatabase(version);
 
-                    if (this.idbDatabase) {
-                      m.createSchema(this.idbDatabase, args);
-                    }
-                  };
-                  // create tables
-                  this.createCollections(args);
+            if (this.dbConnection != undefined) {
+              // create tables
+              this.createCollections(args);
+              this.dbConnection.onupgradeneeded = async (event: Event) => {
+                if (this.dbConnection) {
+                  const m = new Schema();
+                  this.idbDatabase = this.dbConnection?.result;
+
+                  m.createSchema(this.dbConnection.result, args);
+                } else {
+                  reject(true);
                 }
-                resolve();
-              })
-              .catch(reject);
-          } else {
-            reject(new Error("IndexedDB is not supported."));
-          }
-        });
+              };
+              resolve(true);
+            } else {
+              reject(true);
+            }
+          });
+        } else {
+        }
       },
     };
   }
@@ -82,7 +83,7 @@ export class Idbq<T = any> {
   private async openDatabase(version: number) {
     return new Promise((resolve, reject) => {
       // open the database
-      this.dbConnection = global.indexedDB.open(
+      this.dbConnection = indexedDB.open(
         this.databaseName,
         version ?? this.dbVersion
       );

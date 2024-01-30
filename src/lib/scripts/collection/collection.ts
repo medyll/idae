@@ -1,11 +1,12 @@
-import { ResultSet, type OptionsType } from "./resultSet/resultset.js";
-import { type Where } from "./types.js";
-import { Query } from "./query/query.js";
+import { ResultSet, type OptionsType } from "../resultSet/resultset.js";
+import { type Where } from "../types.js";
+import { Query } from "../query/query.js";
 
 export class Collection<T = any> {
   private store: string;
   private version: number;
   private dbName;
+  private dbCollection!: IDBObjectStore;
 
   constructor(dbName: string, store: string, version: number) {
     this.store = store;
@@ -23,7 +24,7 @@ export class Collection<T = any> {
     store: IDBObjectStore;
   }> {
     return new Promise((resolve, reject) => {
-      var DBOpenRequest = window.indexedDB.open(this.dbName, this.version);
+      var DBOpenRequest = indexedDB.open(this.dbName, this.version);
       DBOpenRequest.onsuccess = (event) => {
         const db = event?.target?.result;
         if (!db.objectStoreNames.contains(this.store)) {
@@ -33,6 +34,8 @@ export class Collection<T = any> {
         const store = DBOpenRequest.result
           .transaction(this.store, "readwrite")
           .objectStore(this.store);
+        //
+        this.dbCollection = store;
 
         resolve({ request: DBOpenRequest, store });
       };
@@ -92,15 +95,18 @@ export class Collection<T = any> {
   }
 
   /** add data to the store */
-  async add(data: T): Promise<IDBDatabase> {
+  async add(data: T): Promise<T> {
     const storeObj = await this.getCollection();
-
     return new Promise((resolve, reject) => {
       const add = storeObj.store.add(data);
-      add.onsuccess = function () {
-        resolve(storeObj.request.result);
+      add.onsuccess = function (yes) {
+        //
+        // console.log(data);
+        resolve(data);
+        //resolve(storeObj.request.result);
       };
       add.onerror = function () {
+        resolve(data);
         // reject("data not added");
       };
     });
@@ -112,7 +118,7 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       const put = storeObj.store.put(value);
       put.onsuccess = function () {
-        resolve(storeObj.request.result);
+        resolve(put.result);
       };
       put.onerror = function () {
         reject("data not put");
@@ -126,10 +132,10 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       const get = storeObj.store.get(value);
       get.onsuccess = function () {
-        resolve(storeObj.request.result);
+        resolve(get.result);
       };
       get.onerror = function () {
-        reject("not found");
+        // reject("not found");
       };
     });
   }
@@ -140,7 +146,7 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       const getAll = storeObj.store.getAll();
       getAll.onsuccess = function () {
-        resolve(storeObj.request.result);
+        resolve(getAll.result);
       };
       getAll.onerror = function () {
         reject("not found");
@@ -153,4 +159,6 @@ export class Collection<T = any> {
       console.log(data);
     });
   }
+
+  private deleteAll<T>(): Promise<T> {}
 }
