@@ -6,7 +6,10 @@ export class Collection<T = any> {
   private store: string;
   private version: number;
   private dbName;
-  private dbCollection!: IDBObjectStore;
+
+  private dBOpenRequest!: IDBOpenDBRequest;
+
+  public dbCollection?: IDBObjectStore;
 
   constructor(dbName: string, store: string, version: number) {
     this.store = store;
@@ -19,53 +22,50 @@ export class Collection<T = any> {
   }
 
   /** get the collection */
-  private async getCollection(): Promise<{
-    request: IDBRequest;
-    store: IDBObjectStore;
-  }> {
+  private async getCollection(): Promise<IDBObjectStore> {
     return new Promise((resolve, reject) => {
-      var DBOpenRequest = indexedDB.open(this.dbName, this.version);
-      DBOpenRequest.onsuccess = (event) => {
-        const db = event?.target?.result;
+      this.dBOpenRequest = indexedDB.open(this.dbName, this.version);
+      this.dBOpenRequest.onsuccess = (event) => {
+        const db = this.dBOpenRequest.result;
         if (!db.objectStoreNames.contains(this.store)) {
           reject("collection not found");
           return false;
         }
-        const store = DBOpenRequest.result
+        this.dbCollection = this.dBOpenRequest.result
           .transaction(this.store, "readwrite")
           .objectStore(this.store);
-        //
-        this.dbCollection = store;
 
-        resolve({ request: DBOpenRequest, store });
+        console.log(this.dBOpenRequest);
+        resolve(this.dbCollection);
+        //resolve({ request: DBOpenRequest, store });
       };
-      DBOpenRequest.onerror = () => reject(DBOpenRequest.error);
+      this.dBOpenRequest.onerror = () => reject(this.dBOpenRequest.error);
     });
   }
 
   /* get all data from the store */
   private async getData() {
-    const storeObj = await this.getCollection();
+    const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
-      const getAll = storeObj.store.getAll();
+      const getAll = storeObj.getAll();
       getAll.onsuccess = function (event: Event) {
-        resolve(event?.target?.result);
+        resolve(getAll.result);
       };
       getAll.onerror = function () {
-        reject(storeObj.request.error);
+        reject(getAll.error);
       };
     });
   }
 
   async set(value: T): Promise<T> {
-    const storeObj = await this.getCollection();
+    const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
-      const getAll = storeObj.store.put(value);
+      const getAll = storeObj.put(value);
       getAll.onsuccess = function () {
-        resolve(storeObj.request.result);
+        resolve(getAll.result);
       };
       getAll.onerror = function () {
-        reject(storeObj.request.error ?? "error");
+        reject(getAll.error ?? "error");
       };
     });
   }
@@ -95,18 +95,16 @@ export class Collection<T = any> {
   }
 
   /** add data to the store */
-  async add(data: T): Promise<T> {
-    const storeObj = await this.getCollection();
+  async add(data: T): Promise<IDBDatabase> {
+    const storeObj = this.dbCollection ?? (await this.getCollection());
+
     return new Promise((resolve, reject) => {
-      const add = storeObj.store.add(data);
-      add.onsuccess = function (yes) {
-        //
-        // console.log(data);
-        resolve(data);
-        //resolve(storeObj.request.result);
+      const add = storeObj.add(data);
+      add.onsuccess = () => {
+        // publish event
+        resolve(add?.result);
       };
       add.onerror = function () {
-        resolve(data);
         // reject("data not added");
       };
     });
@@ -114,9 +112,9 @@ export class Collection<T = any> {
 
   // put data to indexedDB
   async put(value: Partial<T>) {
-    const storeObj = await this.getCollection();
+    const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
-      const put = storeObj.store.put(value);
+      const put = storeObj.put(value);
       put.onsuccess = function () {
         resolve(put.result);
       };
@@ -128,23 +126,23 @@ export class Collection<T = any> {
 
   // get data from indexedDB
   async get(value: any): Promise<T> {
-    const storeObj = await this.getCollection();
+    const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
-      const get = storeObj.store.get(value);
+      const get = storeObj.get(value);
       get.onsuccess = function () {
         resolve(get.result);
       };
       get.onerror = function () {
-        // reject("not found");
+        reject("not found");
       };
     });
   }
 
   // get all data from indexedDB
   async getAll(): Promise<T[]> {
-    const storeObj = await this.getCollection();
+    const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
-      const getAll = storeObj.store.getAll();
+      const getAll = storeObj.getAll();
       getAll.onsuccess = function () {
         resolve(getAll.result);
       };
@@ -159,6 +157,4 @@ export class Collection<T = any> {
       console.log(data);
     });
   }
-
-  private deleteAll<T>(): Promise<T> {}
 }

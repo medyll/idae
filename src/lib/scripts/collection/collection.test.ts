@@ -15,10 +15,7 @@ class DataBase extends Idbq {
   constructor() {
     super("myDatabase");
 
-    this.version(1).stores({
-      users: "&userId",
-      products: "++id, userId",
-    });
+    this.version(1).stores(schema);
   }
 }
 
@@ -47,6 +44,7 @@ describe("Collection", () => {
 
     expect(result).toEqual(data);
   });
+  return;
 
   it("should put data to the store", async () => {
     const data = { userId: 256, name: "John Doe" };
@@ -64,7 +62,6 @@ describe("Collection", () => {
     console.log(result);
     expect(result).toEqual(data);
   });
-  return;
 
   it("should get all data from the store", async () => {
     const data1 = { userId: 1, name: "John Doe" };

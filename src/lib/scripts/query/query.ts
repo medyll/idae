@@ -1,4 +1,5 @@
 import { Operators } from "../operators/operators.js";
+import { ResultSet } from "../resultSet/resultset.js";
 import type { Operator, Where } from "../types.js";
 
 export class Query<T> {
@@ -22,6 +23,6 @@ export class Query<T> {
       }
     }
 
-    return this.data;
+    return new ResultSet(this.data);
   }
 }

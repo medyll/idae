@@ -8,24 +8,23 @@ export type OptionsType<T = any> = {
 
 export class ResultSet<T = Record<string, any>> {
   private data: T[];
+
   constructor(data: T[]) {
     this.data = data;
   }
 
-  static applyOptions<T>(options: OptionsType, data: T[]) {
-    const resultSet = new ResultSet(data);
-
+  public setOptions<T>(options: OptionsType) {
     if (options?.sort) {
-      resultSet.sortBy(options.sort);
+      this.sortBy(options.sort);
     }
     if (options?.page) {
       const [size, page] = options.page;
-      resultSet.getPage(size, page);
+      this.getPage(size, page);
     }
     if (options?.groupBy) {
-      resultSet.groupBy(options.groupBy);
+      this.groupBy(options.groupBy);
     }
-    return resultSet.data;
+    return this;
   }
 
   // can receive a dot path
@@ -48,15 +47,25 @@ export class ResultSet<T = Record<string, any>> {
       return result;
     });
 
-    return this.data;
+    // @ts-ignore
+    delete this?.sortBy;
+
+    return this;
   }
 
-  // should get the specified page of data
+  /**
+   * Retrieves a specific page of data from the result set.
+   * @param size The number of items per page.
+   * @param page The page number to retrieve.
+   * @returns The data for the specified page.
+   */
   getPage(size: number, page: number) {
     const start = (page - 1) * size;
     const end = start + size;
     this.data = this.data.slice(start, end);
-    return this.data;
+    // @ts-ignore
+    delete this?.getPage;
+    return this;
   }
 
   // can receive a dot path
@@ -76,5 +85,20 @@ export class ResultSet<T = Record<string, any>> {
       acc[key].push(curr);
       return acc;
     }, {});
+  }
+
+  [Symbol.iterator]() {
+    let index = 0;
+    let data = this.data;
+
+    return {
+      next: () => {
+        if (index < data.length) {
+          return { value: data[index++], done: false };
+        } else {
+          return { done: true };
+        }
+      },
+    };
   }
 }
