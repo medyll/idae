@@ -11,7 +11,7 @@ export class Collection<T = any> {
 
   public dbCollection?: IDBObjectStore;
 
-  constructor(dbName: string, store: string, version: number) {
+  constructor(store: string, dbName: string, version: number) {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
@@ -35,9 +35,7 @@ export class Collection<T = any> {
           .transaction(this.store, "readwrite")
           .objectStore(this.store);
 
-        console.log(this.dBOpenRequest);
         resolve(this.dbCollection);
-        //resolve({ request: DBOpenRequest, store });
       };
       this.dBOpenRequest.onerror = () => reject(this.dBOpenRequest.error);
     });

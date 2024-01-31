@@ -30,14 +30,14 @@ describe("Collection", () => {
   afterEach(() => {});
 
   it("should create an instance of Collection", () => {
-    collectionUsers = new Collection("myDatabase", "users", 1);
-    collectionProducts = new Collection("myDatabase", "products", 1);
+    collectionUsers = new Collection("users", "myDatabase", 1);
+    collectionProducts = new Collection("products", "myDatabase", 1);
     expect(collectionUsers).toBeInstanceOf(Collection);
     expect(collectionProducts).toBeInstanceOf(Collection);
   });
 
   it("should add data to the store ?", async () => {
-    collectionUsers = new Collection("myDatabase", "users", 1);
+    collectionUsers = new Collection("users", "myDatabase", 1);
     const data = { userId: 5, name: "John Doe" };
     await collectionUsers.add(data);
     const result = await collectionUsers.get(5);

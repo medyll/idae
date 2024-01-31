@@ -68,8 +68,8 @@ export class Idbq<T = any> {
   private createCollections(args: any) {
     Object.keys(this.schema).map(async (storeName) => {
       this[storeName] = new Collection(
-        this.databaseName,
         storeName,
+        this.databaseName,
         this.dbVersion
       );
     });
