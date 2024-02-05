@@ -1,6 +1,7 @@
 import { ResultSet, type OptionsType } from "../resultSet/resultset.js";
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
+import { eventStore } from "../observable/eventStore.js";
 
 export class Collection<T = any> {
   private store: string;
@@ -26,12 +27,12 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       this.dBOpenRequest = indexedDB.open(this.dbName, this.version);
       this.dBOpenRequest.onsuccess = (event) => {
-        const db = this.dBOpenRequest.result;
+        const db = event?.target?.result;
         if (!db.objectStoreNames.contains(this.store)) {
           reject("collection not found");
           return false;
         }
-        this.dbCollection = this.dBOpenRequest.result
+        this.dbCollection = db
           .transaction(this.store, "readwrite")
           .objectStore(this.store);
 
@@ -55,12 +56,13 @@ export class Collection<T = any> {
     });
   }
 
-  async set(value: T): Promise<T> {
+  async set(value: T): Promise<ResultSet<T>> {
     const storeObj = this.dbCollection ?? (await this.getCollection());
     return new Promise((resolve, reject) => {
       const getAll = storeObj.put(value);
-      getAll.onsuccess = function () {
-        resolve(getAll.result);
+      getAll.onsuccess = async () => {
+        const data = await this.get(getAll.result);
+        resolve(new ResultSet(data));
       };
       getAll.onerror = function () {
         reject(getAll.error ?? "error");
@@ -76,13 +78,20 @@ export class Collection<T = any> {
    * @throws If an error occurs while retrieving the data.
    */
   async where(qy: Where<T>, options?: OptionsType) {
+    // event observe replay resultset
+    /* window.addEventListener("collection", (event) => {
+      console.log(event);
+    }); */
+
+    eventStore.registerEvent(qy, "collection", (event) => {})
+
     return this.getData()
       .then((data: T[]) => {
         const query = new Query<T>(data);
         let resultSet = query.where(qy);
 
         if (options) {
-          resultSet = ResultSet.applyOptions(options, resultSet);
+          resultSet.setOptions(options);
         }
 
         return resultSet;
@@ -94,13 +103,14 @@ export class Collection<T = any> {
 
   /** add data to the store */
   async add(data: T): Promise<IDBDatabase> {
+    // fire event to collection onsuccess
     const storeObj = this.dbCollection ?? (await this.getCollection());
 
     return new Promise((resolve, reject) => {
       const add = storeObj.add(data);
-      add.onsuccess = () => {
+      add.onsuccess = (event) => {
         // publish event
-        resolve(add?.result);
+        resolve(event.target?.result);
       };
       add.onerror = function () {
         // reject("data not added");

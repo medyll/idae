@@ -1,14 +1,19 @@
-class ObservableStore<T> {
+export class ObservableStore<T> {
   private value: T;
   private subscribers: Set<(value: T) => void>;
 
   constructor(initialValue: T) {
     this.value = initialValue;
     this.subscribers = new Set();
+
+    console.log("ObservableStore", this);
   }
 
   // Method to subscribe to changes
-  subscribe(run: (value: T) => void, invalidate: () => void = () => {}): () => void {
+  subscribe(
+    run: (value: T) => void,
+    invalidate: () => void = () => {}
+  ): () => void {
     this.subscribers.add(run);
     run(this.value);
 
