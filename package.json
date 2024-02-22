@@ -1,6 +1,7 @@
 {
-	"name": "htmludom",
+	"name": "@medyll/htmludom",
 	"version": "0.0.1",
+	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
 		"dev:test": "vite dev --port 3000",
