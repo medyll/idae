@@ -1,58 +1,76 @@
-# create-svelte
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+# @medyll/htmludom
 
-## Creating a project
+The HTMLdom lib contains methods to track attributes changes on HTML elements.
+Mutations Observer and CSS Observer selector method, are utilities for arise, changes and events for specified CSS selectors in the DOM.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+You can install the @medyll/htmludom package using npm, yarn, or pnpm:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm i @medyll/htmludom
+yarn add @medyll/htmludom
+pnpm add @medyll/htmludom
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## Usage
 
-## Building
+- ### Mutations Observers
 
-To build your library:
+```typescript 
+import { HtmluDom, HtmlDomCore } from '@medyll/htmludom'; 
 
-```bash
-npm run package
+// using a HtmluDom instance
+HtmluDom.track(['.any_class'], {
+	onAttributesChange: (element, mutation, observer) => {
+		console.log(mutation);
+	},
+	onChildListChange: (mutation) => {
+		console.log(mutation);
+	},
+	onCharacterDataChange: (mutation) => {
+		console.log(mutation);
+	}
+});
+
+// using HtmlDomCore single instance
+HtmlDomCore.attach({
+	selectors: [{ element: '#element', mutations: { attributes: '[data-role]' } }],
+	selectorCallback: (mutations, observer) => {
+		return {
+			attributes: (mutation: MutationRecord, observer: MutationObserver) => {},
+			childList: (mutation: MutationRecord, observer: MutationObserver) => {},
+			characterData: (mutation: MutationRecord, observer: MutationObserver) => {}
+		};
+	}
+}); 
 ```
 
-To create a production version of your showcase app:
+- ### CSS Observer
 
-```bash
-npm run build
+The selector function allows you to track elements from their animation events for a specified CSS selector.
+
+```typescript
+import { cssDom, type QuerySelector } from '@medyll/htmludom';
+
+const qy: QuerySelector = '.your-css-selector'; 
+
+const eachTracking = cssDom(qy).each((element) => {
+	// Callback function when the animation is completed
+});
+
+const summaryTracking = cssDom(qy).summary((summary) => {
+	// Callback function for summary tracking
+});
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+## Contributing  
+* Fork the repository  
+Create your feature branch  
+Commit your changes  
+Push to the branch  
+Create a new Pull Request  
+License  
+This project is licensed under the MIT License - see the LICENSE file for details.

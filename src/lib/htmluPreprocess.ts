@@ -4,6 +4,7 @@ type HtmluSveltePreprocessOptionsType = {
 	scriptTag?: string;
 };
 
+/** vite preprocessor */
 function htmluSvelteDomPreprocess(
 	options: HtmluSveltePreprocessOptionsType = {} as HtmluSveltePreprocessOptionsType
 ): PreprocessorGroup {

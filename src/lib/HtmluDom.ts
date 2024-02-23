@@ -83,21 +83,29 @@ class HtmluDomLib {
 		return true;
 	}
 
+	/**
+	 * Track mutations on the specified selector and trigger callbacks based on the mutation types.
+	 * @param selector - The selector to track mutations on.
+	 * @param attributeFilterOrMutationType - Either an array of attribute filters or an object specifying mutation types and their respective callback functions.
+	 * @param mutationsTypes - Optional object specifying mutation types and their respective callback functions.
+	 * @returns The current instance of the class for chaining.
+	 */
 	public async track(
 		selector: string | string[] | Node | NodeList,
 		attributeFilterOrMutationType: string[] | OnMutationType,
 		mutationsTypes?: OnMutationType
 	) {
-		// await HtmluCore.addSelector(selector);
-
+		// Reverse the order of the parameters
 		let [selectorParam, attributeFilter, paramOnMutationType] = [
 			selector,
 			attributeFilterOrMutationType,
 			mutationsTypes
 		].reverse();
 
+		// Set selectorParam to attributeFilter if it is null or undefined
 		selectorParam = selectorParam ?? attributeFilter;
 
+		// Determine attributeFilter and paramOnMutationType based on the type of attributeFilterOrMutationType
 		if (Array.isArray(attributeFilterOrMutationType)) {
 			attributeFilter = attributeFilterOrMutationType;
 			paramOnMutationType = mutationsTypes as OnMutationType;
@@ -106,8 +114,10 @@ class HtmluDomLib {
 			paramOnMutationType = attributeFilterOrMutationType;
 		}
 
+		// Create an empty selectorCallback object
 		const selectorCallback: MutationHandlerCallbackReturn = {} as MutationHandlerCallbackReturn;
 
+		// Set the attributes, childList, and characterData properties of selectorCallback based on the callback functions in paramOnMutationType
 		if (paramOnMutationType.onAttributesChange)
 			selectorCallback.attributes = paramOnMutationType.onAttributesChange;
 		if (paramOnMutationType.onChildListChange)
@@ -115,6 +125,7 @@ class HtmluDomLib {
 		if (paramOnMutationType.onCharacterDataChange)
 			selectorCallback.characterData = paramOnMutationType.onCharacterDataChange;
 
+		// Attach the observer with the specified selector, mutation types, and callback functions
 		this.attach({
 			selectors: [{ element: selector, mutations: { attributes: attributeFilter } }],
 			selectorCallback: (mutations, observer) => selectorCallback,
@@ -128,6 +139,7 @@ class HtmluDomLib {
 			}
 		});
 
+		// Return the current instance of the class for chaining
 		return this;
 	}
 
@@ -151,7 +163,14 @@ class HtmluDomLib {
 
 export class htmlu {
 	constructor() {}
-
+	/**
+	 * A function to track mutations on the specified selector and handle the mutations using the provided callback.
+	 *
+	 * @param {string | string[] | Node | NodeList} selector - The selector to track mutations on.
+	 * @param {string[] | OnMutationType} attributeFilterOrMutationType - The attribute filter or type of mutation to track.
+	 * @param {OnMutationType} [mutationsTypes] - Additional mutation types to track.
+	 * @return {htmlu} An instance of the htmlu class for chaining method calls.
+	 */
 	static async track(
 		selector: string | string[] | Node | NodeList,
 		attributeFilterOrMutationType: string[] | OnMutationType,
@@ -184,7 +203,7 @@ export class htmlu {
 		if (paramOnMutationType.onCharacterDataChange)
 			selectorCallback.characterData = paramOnMutationType.onCharacterDataChange;
 
-		HtmluDom.attach({
+		HtmluDomCore.attach({
 			selectors: [{ element: selector, mutations: { attributes: attributeFilter } }],
 			selectorCallback: (mutations, observer) => selectorCallback,
 			observerParameters: {
@@ -202,7 +221,7 @@ export class htmlu {
 	}
 }
 
-export const HtmluDom = HtmluDomLib.getInstance();
+export const HtmluDomCore = HtmluDomLib.getInstance();
 
 class MutationsHandler {
 	observedElement: ObservedElement;

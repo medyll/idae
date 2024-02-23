@@ -1,4 +1,4 @@
-import { HtmluDom, type moduleName, type querySelector } from './HtmluDom.js';
+import { HtmluDomCore, type moduleName, type querySelector } from './HtmluDom.js';
 
 type HtmluModule = Record<moduleName, [querySelector, querySelector]>;
 
@@ -51,7 +51,7 @@ class HtmluModules {
 
 		// const moduleLoader = new htmluModuleLoader();
 
-		HtmluDom.attach({
+		HtmluDomCore.attach({
 			selectors: [
 				{
 					element: '#body'

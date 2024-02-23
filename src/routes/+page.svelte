@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import '$lib/HtmluDom.js';
 	import '$lib/htmluModules.js';
-	import { HtmluDom } from '$lib/HtmluDom.js';
-	import { elementObserve } from '$lib/htmluCssObserver.js';
+	import { HtmluDomCore } from '$lib/HtmluDom.js';
+	import { cssDom } from  '$lib/index.js';
 	let timer: NodeJS.Timeout;
 	let timerData = 0;
 	let timerDelay = 5000;
@@ -25,7 +25,7 @@
 	}
 
 	onMount(() => {
-		elementObserve('[data-auto-track]').each((element) => {
+		cssDom('[data-auto-track]').each((element) => {
 			console.log(element);
 		});
 

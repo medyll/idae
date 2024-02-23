@@ -19,6 +19,11 @@ class HtmluCssObserver {
 		debounceDelay: 10
 	};
 
+	/**
+	 * Constructor for creating a new instance of the class.
+	 *
+	 * @param {QuerySelector} selector - the query selector for the instance
+	 */
 	constructor(selector: QuerySelector) {
 		this.selector = selector;
 	}
@@ -76,10 +81,15 @@ class HtmluCssObserver {
 
 		return this.track(observerCallback);
 	}
-
 	/**
-	 * Sets the options for the HtmluCssSelector class.
-	 * @param options - The options to be set.
+	 * Set options for the HtmluCssObserver instance.
+	 *
+	 * @param {Options} options - the options to be set
+	 *   - options.strictlyNew: boolean - indicates if it's strictly new
+	 *   - options.eventDelay: number - the delay for events
+	 *   - options.marquee: string - the marquee value
+	 *   - options.legacyCssPrefix: 'Webkit' | 'Moz' | 'O' | 'ms' | '' - the legacy CSS prefix
+	 *   - options.debounceDelay: number - the delay for debouncing
 	 */
 	static setOptions(options: Options) {
 		HtmluCssObserver.prototype.options = { ...HtmluCssObserver.prototype.options, ...options };
