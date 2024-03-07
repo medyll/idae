@@ -11,6 +11,8 @@ type QuerySelector = string;
 
 class HtmluCssObserver {
 	private selector: QuerySelector;
+	private selectorId: string;
+
 	options: Options = {
 		strictlyNew: true,
 		eventDelay: 5,
@@ -26,20 +28,28 @@ class HtmluCssObserver {
 	 */
 	constructor(selector: QuerySelector) {
 		this.selector = selector;
+		this.selectorId = this.cleanSpecialChars(selector);
 	}
 
+	private cleanSpecialChars(str: string): string {
+		return str.replace(/[^a-zA-Z0-9 _-]/g, '');
+	}
 	/**
 	 * Tracks the animation events for the specified selector and invokes the callback function when the animation is completed.
 	 * @param callback The callback function to be invoked when the animation is completed.
 	 * @returns An object with methods to control the animation tracking.
 	 */
-	track(callback: CallBackType) {
+	track(callback: CallBackType, opts: { strictlyNew: false }) {
 		const animationName = crypto.randomUUID();
 		const styleFragment = this.createStyleFragment(this.selector, animationName);
 
+		if (!opts.strictlyNew)
+			document.querySelectorAll(this.selector).forEach((element) => {
+				this.callCallback(element, callback);
+			});
 		const eventHandler = (event: AnimationEvent | any) => {
-			if (event.animationName === animationName && !this.hasTag(event.target)) {
-				callback(event.target);
+			if (event.animationName === animationName) {
+				this.callCallback(event.target, callback);
 			}
 		};
 
@@ -59,6 +69,12 @@ class HtmluCssObserver {
 				this.removeEvent(eventHandler);
 			}
 		};
+	}
+
+	callCallback(element: Element, callback: CallBackType) {
+		if (this.hasTag(element)) return;
+		this.doTag(element);
+		callback(element);
 	}
 
 	getSummary(callback: CallBackSummaryType) {
@@ -120,7 +136,7 @@ class HtmluCssObserver {
 	}
 
 	private doTag(element: Element) {
-		element.setAttribute(`data-${this.options.marquee}`, this.options.marquee);
+		element.setAttribute(`data-${this.options.marquee}`, this.selectorId);
 	}
 
 	private hasTag(element: Element) {
@@ -172,6 +188,7 @@ class HtmluCssObserver {
 								}`;
 		sheet.replaceSync(styleContent);
 		document.adoptedStyleSheets.push(sheet);
+
 		return sheet;
 	}
 }
@@ -182,9 +199,9 @@ class HtmluCssObserver {
  * @param opts - Optional options for the selector.
  * @returns {each,summary}
  */
-export function elementObserve(selector: QuerySelector, opts?: any) {
+export function elementObserve(selector: QuerySelector, opts?: { strictlyNew: boolean }) {
 	const domCss = new HtmluCssObserver(selector);
-	domCss.tagAll(document.body);
+
 	return {
 		/**
 		 * Tracks the animation events for the specified selector and invokes the callback function when the animation is completed.
@@ -192,7 +209,7 @@ export function elementObserve(selector: QuerySelector, opts?: any) {
 		 * @returns An object with methods to control the animation tracking.
 		 */
 		each: function (callback: CallBackType) {
-			return domCss.track(callback);
+			return domCss.track(callback, opts);
 		},
 		summary: function (callback: CallBackSummaryType) {
 			return domCss.getSummary(callback);
