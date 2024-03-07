@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/htmludom",
-	"version": "0.9.8",
+	"version": "0.10.0",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
@@ -51,6 +51,7 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"publint": "^0.1.9",
+		"standard-version": "^9.5.0",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
