@@ -55,7 +55,7 @@ class HtmluCssObserver {
 			},
 			destroy: () => {
 				clearTimeout(animationLoader);
-				document.head.removeChild(styleFragment);
+				styleFragment.replace('');
 				this.removeEvent(eventHandler);
 			}
 		};
@@ -74,7 +74,7 @@ class HtmluCssObserver {
 			this.doTag(element);
 
 			let myParent = this.findParentWithAttribute(element);
-			if (!insertions.has(myParent)) insertions.add(myParent);
+			if (myParent && !insertions.has(myParent)) insertions.add(myParent);
 
 			debouncedCallback();
 		};
@@ -161,7 +161,7 @@ class HtmluCssObserver {
 	 * @returns The created style element.
 	 */
 	private createStyleFragment(selector: string, animationName: string) {
-		const style = document.createElement('style');
+		const sheet = new CSSStyleSheet();
 		const styleContent = `@${this.options.legacyCssPrefix}keyframes ${animationName} {
 									from { outline: 1px solid transparent; }
 									to { outline: 0px solid transparent; }
@@ -170,10 +170,9 @@ class HtmluCssObserver {
 									animation-duration: 0.0001s!important;
 									${this.options.legacyCssPrefix}animation-name: ${animationName}!important;
 								}`;
-		style.id = animationName;
-		style.appendChild(document.createTextNode(styleContent));
-		document.head.appendChild(style);
-		return style;
+		sheet.replaceSync(styleContent);
+		document.adoptedStyleSheets.push(sheet);
+		return sheet;
 	}
 }
 
