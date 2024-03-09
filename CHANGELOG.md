@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/medyll/idbql/compare/v0.2.1...v2.0.0) (2024-03-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* final version 1
+
+### Features
+
+* final version 1 ([48513ee](https://github.com/medyll/idbql/commit/48513eea823cfc8ea6b4e49bda5abd7827dd5099))
+
 ### 0.2.1 (2023-12-22)
 
 
