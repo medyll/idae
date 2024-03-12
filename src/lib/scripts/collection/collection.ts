@@ -1,7 +1,7 @@
 import { ResultSet, type OptionsType } from "../resultSet/resultset.js";
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { eventStore } from "../observable/eventStore.js";
+import { svelteState } from "../observable/svelteState.svelte.js";
 
 export class Collection<T = any> {
   private store: string;
@@ -16,6 +16,7 @@ export class Collection<T = any> {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
+    svelteState.addCollection(this.store);
   }
 
   public observe() {
@@ -35,6 +36,8 @@ export class Collection<T = any> {
         this.dbCollection = db
           .transaction(this.store, "readwrite")
           .objectStore(this.store);
+
+        console.log(this.dbCollection?.keyPath);
 
         resolve(this.dbCollection);
       };
@@ -58,6 +61,7 @@ export class Collection<T = any> {
 
   async set(value: T): Promise<ResultSet<T>> {
     const storeObj = this.dbCollection ?? (await this.getCollection());
+    const keyPath = storeObj?.keyPath;
     return new Promise((resolve, reject) => {
       const getAll = storeObj.put(value);
       getAll.onsuccess = async () => {
@@ -78,17 +82,10 @@ export class Collection<T = any> {
    * @throws If an error occurs while retrieving the data.
    */
   async where(qy: Where<T>, options?: OptionsType) {
-    // event observe replay resultset
-    /* window.addEventListener("collection", (event) => {
-      console.log(event);
-    }); */
-
-    eventStore.registerEvent(qy, "collection", (event) => {})
-
     return this.getData()
       .then((data: T[]) => {
         const query = new Query<T>(data);
-        let resultSet = query.where(qy);
+        let resultSet = query.where(qy, this.store);
 
         if (options) {
           resultSet.setOptions(options);
@@ -109,6 +106,8 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       const add = storeObj.add(data);
       add.onsuccess = (event) => {
+        // write to state
+        svelteState.dataState[this.store].push(event.target?.result);
         // publish event
         resolve(event.target?.result);
       };
@@ -124,6 +123,8 @@ export class Collection<T = any> {
     return new Promise((resolve, reject) => {
       const put = storeObj.put(value);
       put.onsuccess = function () {
+        // write to state
+        svelteState.dataState[this.store] = value;
         resolve(put.result);
       };
       put.onerror = function () {

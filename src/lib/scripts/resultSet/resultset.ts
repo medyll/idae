@@ -12,6 +12,8 @@ export type OptionsType<T = any> = {
   page?: [size: number, page: number];
   /** Specifies the property to group the result set by. */
   groupBy?: DotPath<T>;
+  /** Specifies the limit of the result set. */
+  limit?: number;
 };
 
 /**

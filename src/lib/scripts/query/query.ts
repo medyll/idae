@@ -1,3 +1,4 @@
+import { svelteState } from "../observable/svelteState.svelte.js";
 import { Operators } from "../operators/operators.js";
 import { ResultSet } from "../resultSet/resultset.js";
 import type { Operator, Where } from "../types.js";
@@ -8,7 +9,7 @@ export class Query<T> {
     this.data = data;
   }
 
-  where(qy: Where<T>) {
+  where(qy: Where<T>, collection?: string) {
     for (const fieldName in qy) {
       const query = qy[fieldName];
 
@@ -22,7 +23,15 @@ export class Query<T> {
         }
       }
     }
-
+    try {
+      // put data in svelte state
+      if (collection) {
+        svelteState.dataState[collection] = this.data;
+        return new ResultSet(svelteState.dataState[collection]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
     return new ResultSet(this.data);
   }
 }

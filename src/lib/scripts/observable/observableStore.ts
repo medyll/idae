@@ -5,8 +5,6 @@ export class ObservableStore<T> {
   constructor(initialValue: T) {
     this.value = initialValue;
     this.subscribers = new Set();
-
-    console.log("ObservableStore", this);
   }
 
   // Method to subscribe to changes
