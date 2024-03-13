@@ -2,30 +2,30 @@ import { Idbq } from "../lib/scripts/idbq/idbq.js";
 import type { Collection } from "../lib/scripts/collection/collection.js";
 
 export type Collection1 = {
-  id: number;
-  chatId: string;
-  title: string;
-  models: string[];
-  created_at: Date;
-  dateLastMessage: Date;
-  context: number[];
+  id?: number;
+  chatId?: string;
+  title?: string;
+  models?: string[];
+  created_at?: Date;
+  dateLastMessage?: Date;
+  context?: number[];
 };
 
 export type Collection2 = {
-  id: string;
+  id?: string;
   chatId: string;
-  messageId: string;
-  content: string;
+  messageId?: string;
+  content?: string;
   images?: string[];
-  status: "done" | "sent" | "streaming" | "error";
-  context: number[];
-  model: string;
+  status?: "done" | "sent" | "streaming" | "error";
+  context?: number[];
+  model?: string;
 } & (
   | {
-      role: "user";
+      role?: "user";
     }
   | {
-      role: "assistant";
+      role?: "assistant";
       model?: string;
     }
 );

@@ -82,9 +82,4 @@ describe("Collection", () => {
     const result = await collectionUsers.where({ age: 30 });
     expect(result).toEqual([data1]);
   });
-
-  it("should observe the collection", () => {
-    const result = collectionUsers.observe();
-    expect(result).toBe(collectionUsers);
-  });
 });

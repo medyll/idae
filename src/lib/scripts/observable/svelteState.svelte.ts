@@ -1,9 +1,26 @@
 import { Query } from "../query/query.js";
 
+const obj: Record<string, any> = {};
+Object.defineProperty(obj, "addCollection", {
+  value: (collection: string) => {},
+  enumerable: false,
+});
+Object.defineProperty(obj, "addEvent", {
+  value: (
+    event: "add" | "put" | "delete" | "set" | string,
+    more: {
+      collection?: string;
+      data?: any;
+      keyPath?: any;
+    }
+  ) => {},
+});
+let objState = $state<Record<string, any>>(obj);
 let dataState = $state<Record<string, any>>({});
+let idbState = $derived(dataState);
 
 class svelteMainState {
-  dataState = $state<Record<string, any>>({});
+  dataState = dataState;
 
   constructor() {}
 
@@ -11,33 +28,38 @@ class svelteMainState {
     if (!this.dataState[collection]) this.dataState[collection] = [];
   }
   deleteCollection() {}
+  addEvent(
+    event: "add" | "put" | "delete" | "set" | string,
+    more: {
+      collection?: string;
+      data?: any;
+      keyPath?: any;
+    }
+  ) {
+    switch (event) {
+      case "set":
+        if (more?.collection && more?.data)
+          this.dataState[more.collection] = more.data;
+        /* if (more?.collection && more?.data && more?.keyPath)
+          this.dataState[more.collection].findIndex(
+            (d) => d[more.keyPath] === more.data[more.keyPath]
+          ); */
+        break;
+      case "delete":
+        break;
+      case "put":
+      case "update":
+        if (more?.collection && more?.data)
+          this.dataState[more.collection] = more.data;
+        break;
+      case "add":
+        /* console.log(this.dataState);
+        console.log(more); */
+        if (more?.collection && more?.data)
+          this.dataState[more.collection].push(more.data);
+        break;
+    }
+  }
 }
 
 export const svelteState = new svelteMainState();
-
-class svelteCollectionsState {
-  collection = "tre";
-  derived = $derived(this.collection ? {} : dataState?.[this.collection] ?? []);
-
-  constructor(collection: string) {
-    if (!svelteState.dataState?.[collection])
-      svelteState.dataState[collection] = {};
-    this.collection = collection;
-  }
-
-  where(qy: any, options: any) {
-    const query = new Query<any>(this.derived);
-    let resultSet = query.where(qy);
-
-    if (options) {
-      resultSet.setOptions(options);
-    }
-
-    return resultSet;
-  }
-}
-
-function collectionState(collection: string) {
-  let derived = $derived(collection ? {} : dataState?.[collection] ?? []);
-  return derived;
-}

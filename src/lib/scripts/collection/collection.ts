@@ -9,18 +9,18 @@ export class Collection<T = any> {
   private dbName;
 
   private dBOpenRequest!: IDBOpenDBRequest;
+  private dBTransaction!: IDBTransaction;
 
   public dbCollection?: IDBObjectStore;
+
+  private command!: string;
+  private keyPath!: string;
 
   constructor(store: string, dbName: string, version: number) {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
     svelteState.addCollection(this.store);
-  }
-
-  public observe() {
-    return this;
   }
 
   /** get the collection */
@@ -33,44 +33,23 @@ export class Collection<T = any> {
           reject("collection not found");
           return false;
         }
-        this.dbCollection = db
-          .transaction(this.store, "readwrite")
-          .objectStore(this.store);
+        this.dBTransaction = db.transaction(this.store, "readwrite");
 
-        console.log(this.dbCollection?.keyPath);
+        this.dbCollection = this.dBTransaction.objectStore(this.store);
+
+        const command = this.command;
+        this.dBTransaction.oncomplete = function (event) {
+          console.log(
+            "command",
+            command,
+            event.type,
+            event?.target?.objectStoreNames
+          );
+        };
 
         resolve(this.dbCollection);
       };
       this.dBOpenRequest.onerror = () => reject(this.dBOpenRequest.error);
-    });
-  }
-
-  /* get all data from the store */
-  private async getData() {
-    const storeObj = this.dbCollection ?? (await this.getCollection());
-    return new Promise((resolve, reject) => {
-      const getAll = storeObj.getAll();
-      getAll.onsuccess = function (event: Event) {
-        resolve(getAll.result);
-      };
-      getAll.onerror = function () {
-        reject(getAll.error);
-      };
-    });
-  }
-
-  async set(value: T): Promise<ResultSet<T>> {
-    const storeObj = this.dbCollection ?? (await this.getCollection());
-    const keyPath = storeObj?.keyPath;
-    return new Promise((resolve, reject) => {
-      const getAll = storeObj.put(value);
-      getAll.onsuccess = async () => {
-        const data = await this.get(getAll.result);
-        resolve(new ResultSet(data));
-      };
-      getAll.onerror = function () {
-        reject(getAll.error ?? "error");
-      };
     });
   }
 
@@ -82,7 +61,7 @@ export class Collection<T = any> {
    * @throws If an error occurs while retrieving the data.
    */
   async where(qy: Where<T>, options?: OptionsType) {
-    return this.getData()
+    return this.getAll()
       .then((data: T[]) => {
         const query = new Query<T>(data);
         let resultSet = query.where(qy, this.store);
@@ -98,33 +77,59 @@ export class Collection<T = any> {
       });
   }
 
-  /** add data to the store */
-  async add(data: T): Promise<IDBDatabase> {
-    // fire event to collection onsuccess
-    const storeObj = this.dbCollection ?? (await this.getCollection());
+  async update(keyPathValue: string | number, data: Partial<T>) {
+    this.command = "update";
+    const storeObj = await this.getCollection();
+    const keyPath = storeObj?.keyPath;
+    this.put({ [keyPath as keyof T]: keyPathValue, ...data });
+  }
+  async updateWhere(where: Where<T>, data: Partial<T>) {
+    this.command = "updateWhere";
+    return this.where(where).then(
+      (rs: ResultSet<Record<string, any>> | ResultSet<T>) => {
+        return new Promise(async (resolve, reject) => {
+          const storeObj = await this.getCollection();
+          const keyPath = this.dbCollection?.keyPath;
+          const id: string | undefined =
+            typeof keyPath === "string" ? keyPath : keyPath?.[0];
 
-    return new Promise((resolve, reject) => {
-      const add = storeObj.add(data);
-      add.onsuccess = (event) => {
-        // write to state
-        svelteState.dataState[this.store].push(event.target?.result);
-        // publish event
-        resolve(event.target?.result);
-      };
-      add.onerror = function () {
-        // reject("data not added");
-      };
-    });
+          [...rs].forEach((dta: T) => {
+            if (id && dta[id]) {
+              const newData = {
+                [keyPath as keyof T]: dta[id],
+                ...dta,
+                ...data,
+              };
+              const put = storeObj.put(newData);
+
+              put.onsuccess = () => {
+                svelteState.addEvent("update", {
+                  collection: this.store,
+                  data: newData,
+                });
+                resolve(true);
+              };
+            }
+          });
+        });
+      }
+    );
   }
 
-  // put data to indexedDB
+  // put data to indexedDB, replace collection content
   async put(value: Partial<T>) {
-    const storeObj = this.dbCollection ?? (await this.getCollection());
+    this.command = "put";
+    const storeObj = await this.getCollection();
     return new Promise((resolve, reject) => {
       const put = storeObj.put(value);
-      put.onsuccess = function () {
+      put.onsuccess = async (event) => {
+        //
+        const dt = await this.getAll();
         // write to state
-        svelteState.dataState[this.store] = value;
+        svelteState.addEvent("put", {
+          collection: this.store,
+          data: dt,
+        });
         resolve(put.result);
       };
       put.onerror = function () {
@@ -133,9 +138,35 @@ export class Collection<T = any> {
     });
   }
 
+  /** add data to the store */
+  async add(data: T): Promise<IDBDatabase> {
+    this.command = "add";
+    // fire event to collection onsuccess
+    const storeObj = await this.getCollection();
+
+    return new Promise(async (resolve, reject) => {
+      const add = storeObj.add(data);
+      add.onsuccess = async (event) => {
+        console.log(data);
+        const updatedData = await this.get(event.target?.result);
+        // write to state
+        svelteState.addEvent("add", {
+          collection: this.store,
+          data: updatedData,
+        });
+        resolve(updatedData);
+      };
+      add.onerror = function (e) {
+        console.log(e);
+        resolve(false);
+      };
+    });
+  }
+
   // get data from indexedDB
   async get(value: any): Promise<T> {
-    const storeObj = this.dbCollection ?? (await this.getCollection());
+    // this.command = "get";
+    const storeObj = await this.getCollection();
     return new Promise((resolve, reject) => {
       const get = storeObj.get(value);
       get.onsuccess = function () {
@@ -149,7 +180,8 @@ export class Collection<T = any> {
 
   // get all data from indexedDB
   async getAll(): Promise<T[]> {
-    const storeObj = this.dbCollection ?? (await this.getCollection());
+    // this.command = "getAll";
+    const storeObj = await this.getCollection();
     return new Promise((resolve, reject) => {
       const getAll = storeObj.getAll();
       getAll.onsuccess = function () {
@@ -161,9 +193,48 @@ export class Collection<T = any> {
     });
   }
 
-  private delete(where: Where<T>): Promise<T> {
-    this.where(where).then((data) => {
-      console.log(data);
+  async delete(keyPathValue: string | number): Promise<boolean> {
+    this.command = "delete";
+    const storeObj = this.dbCollection ?? (await this.getCollection());
+    return new Promise((resolve, reject) => {
+      let objectStoreRequest = storeObj.delete(keyPathValue);
+      objectStoreRequest.onsuccess = () => {
+        // write to state
+        svelteState.addEvent("delete", {
+          collection: this.store,
+          data: keyPathValue,
+        });
+        resolve(true);
+      };
+      objectStoreRequest.onerror = function () {
+        resolve(false);
+      };
     });
+  }
+
+  async deleteWhere(where: Where<T>): Promise<boolean> {
+    this.command = "deleteWhere";
+    return this.where(where).then(
+      (data: ResultSet<Record<string, any>> | ResultSet<T>) => {
+        return new Promise(async (resolve, reject) => {
+          const storeObj = this.dbCollection ?? (await this.getCollection());
+          const keyPath = this.dbCollection?.keyPath;
+          const id: string | undefined =
+            typeof keyPath === "string" ? keyPath : keyPath?.[0];
+          [...data].forEach((data: T) => {
+            if (id && data[id]) {
+              let objectStoreRequest = storeObj.delete(data[id]);
+              objectStoreRequest.onsuccess = () => {
+                svelteState.addEvent("deleteWhere", {
+                  collection: this.store,
+                  data: [],
+                });
+                resolve(true);
+              };
+            }
+          });
+        });
+      }
+    );
   }
 }

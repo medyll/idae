@@ -22,7 +22,6 @@ export type OptionsType<T = any> = {
  */
 export class ResultSet<T = Record<string, any>> {
   private data: T[];
-  private state!: ObservableStore<T[]>;
 
   constructor(data: T[]) {
     this.data = data;
@@ -48,10 +47,6 @@ export class ResultSet<T = Record<string, any>> {
       this.groupBy(options.groupBy);
     }
     return this;
-  }
-
-  observe() {
-    return this.state;
   }
 
   /**
