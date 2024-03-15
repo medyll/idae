@@ -1,31 +1,16 @@
-const obj: Record<string, any> = {};
-Object.defineProperty(obj, "addCollection", {
-  value: (collection: string) => {},
-  enumerable: false,
-});
-Object.defineProperty(obj, "addEvent", {
-  value: (
-    event: "add" | "put" | "delete" | "set" | string,
-    more: {
-      collection?: string;
-      data?: any;
-      keyPath?: any;
-    }
-  ) => {},
-});
-
-let dataState = $state<Record<string, any>>({});
-
-class svelteMainState {
-  dataState = dataState;
+class idbqlStateCore {
+  #dataState = $state<Record<string, any>>({});
 
   constructor() {}
 
+  get dataState() {
+    return this.#dataState;
+  }
   addCollection(collection: string) {
     if (!this.dataState[collection]) this.dataState[collection] = [];
+    return this.dataState[collection];
   }
-  deleteCollection() {}
-  addEvent(
+  registerEvent(
     event: "add" | "put" | "delete" | "set" | string,
     more: {
       collection?: string;
@@ -50,8 +35,6 @@ class svelteMainState {
           this.dataState[more.collection] = more.data;
         break;
       case "add":
-        /* console.log(this.dataState);
-        console.log(more); */
         if (more?.collection && more?.data)
           this.dataState[more.collection].push(more.data);
         break;
@@ -59,4 +42,4 @@ class svelteMainState {
   }
 }
 
-export const svelteState = new svelteMainState();
+export const idbqlState = new idbqlStateCore();

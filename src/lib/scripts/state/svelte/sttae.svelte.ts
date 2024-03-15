@@ -1,27 +1,20 @@
-import { Collection } from "../collection/collection.js";
-import { Query } from "../query/query.js";
+import { Operators } from "$lib/scripts/operators/operators.js";
+import { Collection } from "../../collection/collection.js";
+import { Query } from "../../query/query.js";
 import {
   type ResultsetOptions,
   type ResultSet,
   getResultset,
-} from "../resultSet/resultset.js";
-import type { OperatorType, Where } from "../types.js";
-import { svelteState } from "./svelteState.svelte.js";
-
-export function idbState<T>(col: string) {
-  return new CollectionState<T>(col, "oneDatabase", "id").properties();
-}
-
-/* idbState("chat")
-  .where({ chatId: { $eq: 1 } })
-  .setOptions({ sort: { id: "asc" } }); */
+} from "../../resultSet/resultset.js";
+import type { Where } from "../../types.js";
+import { idbqlState } from "./idbqlState.svelte.js";
 
 export class CollectionState<T = any> {
   store: string;
   dbName: string;
   #keyPath!: string;
   #collectionClass!: Collection<T>;
-  #svelteState = svelteState;
+  #svelteState = idbqlState;
 
   constructor(store: string, dbName: string, keyPath: string) {
     this.store = store;
@@ -51,7 +44,7 @@ export class CollectionState<T = any> {
   }
 
   properties() {
-    return Object.defineProperties(svelteState.dataState[this.store], {
+    return Object.defineProperties(idbqlState.dataState[this.store], {
       where: {
         value: (qy: Where<T>, options?: ResultsetOptions): ResultSet<T> => {
           return this.where(qy, options);
@@ -60,7 +53,7 @@ export class CollectionState<T = any> {
       },
     });
   }
-  async where(qy: Where<T>, options?: ResultsetOptions): ResultSet<T> {
+  where(qy: Where<T>, options?: ResultsetOptions): ResultSet<T> {
     if (this.#getCollectionClass()) {
       // await this.#collectionClass?.where(qy, options);
     }
@@ -78,9 +71,9 @@ export class CollectionState<T = any> {
     return this.where({ [this.#keyPath]: { eq: value } });
   }
   getAll() {
-    console.log(svelteState.dataState[this.store]);
+    console.log(idbqlState.dataState[this.store]);
     let st = this.#svelteState?.dataState?.[this.store];
-    return getResultset(svelteState.dataState[this.store]);
+    return getResultset(idbqlState.dataState[this.store]);
     return this.where({ [this.#keyPath]: { eq: 5 } });
   }
   update(keyPathValue: string | number, data: Partial<T>) {
@@ -120,4 +113,32 @@ export class CollectionState<T = any> {
     } else {
     }
   }
+}
+
+export interface ResultSetWithWhere<T = any> extends ResultSet<T> {
+  where: (y: Where<T>, options?: ResultsetOptions) => ResultSet<T>;
+}
+
+export function getWhere<T = any>(
+  collection: keyof typeof idbqlState
+): ResultSetWithWhere<T> {
+  let data = idbqlState.addCollection(collection);
+  return Object.defineProperties(data, {
+    where: {
+      value: function (y: Where<T>, options?: ResultsetOptions) {
+        let resultSet = Operators.parse(this, y);
+
+        return getResultset(resultSet);
+      },
+      enumerable: false,
+      configurable: true,
+    },
+    add: {
+      value: function (data: any) {
+        //this.#collectionClass.add(data);
+      },
+      enumerable: false,
+      configurable: true,
+    },
+  }) as ResultSetWithWhere<T>;
 }

@@ -1,7 +1,11 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { svelteState } from "../observable/svelteState.svelte.js";
+import { idbqlState } from "../state/svelte/idbqlState.svelte.js";
 import type { ResultsetOptions, ResultSet } from "../resultSet/resultset.js";
+import {
+  getWhere,
+  type ResultSetWithWhere,
+} from "../state/svelte/sttae.svelte.js";
 
 export class Collection<T = any> {
   private store: string;
@@ -20,7 +24,12 @@ export class Collection<T = any> {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
-    svelteState.addCollection(this.store);
+
+    // play this.getAll and populate state
+    this.getAll().then((data) => {
+      console.log("data", data);
+      // this.#state.set
+    });
   }
 
   /** get the collection */
@@ -109,7 +118,7 @@ export class Collection<T = any> {
               const put = storeObj.put(newData);
 
               put.onsuccess = () => {
-                svelteState.addEvent("update", {
+                idbqlState.registerEvent("update", {
                   collection: this.store,
                   data: newData,
                 });
@@ -132,7 +141,7 @@ export class Collection<T = any> {
         //
         const dt = await this.getAll();
         // write to state
-        svelteState.addEvent("put", {
+        idbqlState.registerEvent("put", {
           collection: this.store,
           data: dt,
         });
@@ -155,7 +164,7 @@ export class Collection<T = any> {
       add.onsuccess = async (event) => {
         const updatedData = await this.get(event.target?.result);
         // write to state
-        svelteState.addEvent("add", {
+        idbqlState.registerEvent("add", {
           collection: this.store,
           data: updatedData,
         });
@@ -205,7 +214,7 @@ export class Collection<T = any> {
       let objectStoreRequest = storeObj.delete(keyPathValue);
       objectStoreRequest.onsuccess = () => {
         // write to state
-        svelteState.addEvent("delete", {
+        idbqlState.registerEvent("delete", {
           collection: this.store,
           data: keyPathValue,
         });
@@ -230,7 +239,7 @@ export class Collection<T = any> {
             if (id && data[id]) {
               let objectStoreRequest = storeObj.delete(data[id]);
               objectStoreRequest.onsuccess = () => {
-                svelteState.addEvent("deleteWhere", {
+                idbqlState.registerEvent("deleteWhere", {
                   collection: this.store,
                   data: [],
                 });

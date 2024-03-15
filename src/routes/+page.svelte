@@ -1,7 +1,7 @@
 
 <svelte:options runes    />
 <script lang="ts"> 
-  import { idbState, svelteState } from '$lib/index.js';
+  import {  idbqlState } from '$lib/index.js';
 	import { dbase, type Collection2 } from './example.js';
 	import { onMount } from 'svelte'; 
 
@@ -10,11 +10,13 @@
       let  b= [];
       let a ;
 
-      let y = $derived(svelteState.dataState['messages']) // idbState<Collection2>('messages').getAll()//.where({content: {'eq':'bfgdg'}})
+     
+
+  let y ;
 
  onMount(async () => {
-
-      dbase.messages.put({chatId:'254152145',content:'put'});
+      y =  dbase.messages;// .where({chatId:{eq:'35'}});//.where({chatId:'3'});
+      //dbase.messages.put({chatId:'254152145',content:'put'});
          /* dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'32',content:'bfgdg'});
@@ -74,7 +76,7 @@
 
 </script> 
 
-{#each svelteState?.dataState?.['messages'] ?? [] as aa}
+{#each y ?? [] as aa}
 {aa.content} ..
 {/each}
     

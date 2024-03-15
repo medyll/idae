@@ -1,4 +1,4 @@
-import { svelteState } from "../observable/svelteState.svelte.js";
+import { idbqlState } from "../state/svelte/idbqlState.svelte.js";
 import { Operators } from "../operators/operators.js";
 import { getResultset } from "../resultSet/resultset.js";
 
@@ -30,15 +30,13 @@ export class Query<T> {
               this.data
             );
           } else {
-            //this.data = this.data.filter((dt) => dt[key] == qy[key]);
           }
         }
       } else {
         this.data = this.data.filter((dt) => dt[fieldName] == query);
       }
     }
-    try {
-      // put data in svelte state
+    /* try {
       if (collection) {
         console.log(this.data);
         svelteState.dataState[collection] = this.data;
@@ -46,7 +44,7 @@ export class Query<T> {
       }
     } catch (e) {
       console.log(e);
-    }
+    } */
     return getResultset(this.data);
   }
 }
