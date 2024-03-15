@@ -45,7 +45,7 @@
 		"husky": "^8.0.0",
 		"publint": "^0.1.9",
 		"standard-version": "^9.5.0",
-		"svelte": "^5.0.0-next.73",
+		"svelte": "^5.0.0-next.79",
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",

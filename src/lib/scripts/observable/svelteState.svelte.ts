@@ -1,5 +1,3 @@
-import { Query } from "../query/query.js";
-
 const obj: Record<string, any> = {};
 Object.defineProperty(obj, "addCollection", {
   value: (collection: string) => {},
@@ -15,9 +13,8 @@ Object.defineProperty(obj, "addEvent", {
     }
   ) => {},
 });
-let objState = $state<Record<string, any>>(obj);
+
 let dataState = $state<Record<string, any>>({});
-let idbState = $derived(dataState);
 
 class svelteMainState {
   dataState = dataState;

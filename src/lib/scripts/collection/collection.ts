@@ -1,11 +1,11 @@
-import { ResultSet, type OptionsType } from "../resultSet/resultset.js";
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
 import { svelteState } from "../observable/svelteState.svelte.js";
+import type { ResultsetOptions, ResultSet } from "../resultSet/resultset.js";
 
 export class Collection<T = any> {
   private store: string;
-  private version: number;
+  private version?: number;
   private dbName;
 
   private dBOpenRequest!: IDBOpenDBRequest;
@@ -16,7 +16,7 @@ export class Collection<T = any> {
   private command!: string;
   private keyPath!: string;
 
-  constructor(store: string, dbName: string, version: number) {
+  constructor(store: string, dbName: string, version?: number) {
     this.store = store;
     this.version = version;
     this.dbName = dbName;
@@ -26,7 +26,10 @@ export class Collection<T = any> {
   /** get the collection */
   private async getCollection(): Promise<IDBObjectStore> {
     return new Promise((resolve, reject) => {
-      this.dBOpenRequest = indexedDB.open(this.dbName, this.version);
+      this.dBOpenRequest = indexedDB.open(
+        this.dbName,
+        this.version ?? undefined
+      );
       this.dBOpenRequest.onsuccess = (event) => {
         const db = event?.target?.result;
         if (!db.objectStoreNames.contains(this.store)) {
@@ -38,14 +41,7 @@ export class Collection<T = any> {
         this.dbCollection = this.dBTransaction.objectStore(this.store);
 
         const command = this.command;
-        this.dBTransaction.oncomplete = function (event) {
-          console.log(
-            "command",
-            command,
-            event.type,
-            event?.target?.objectStoreNames
-          );
-        };
+        this.dBTransaction.oncomplete = function (event) {};
 
         resolve(this.dbCollection);
       };
@@ -60,8 +56,18 @@ export class Collection<T = any> {
    * @returns A promise that resolves to the filtered result set.
    * @throws If an error occurs while retrieving the data.
    */
-  async where(qy: Where<T>, options?: OptionsType) {
-    return this.getAll()
+  async where(qy: Where<T>, options?: ResultsetOptions) {
+    const data = await this.getAll();
+    const query = new Query<T>(data);
+    let resultSet = query.where(qy, this.store);
+
+    if (options) {
+      resultSet.setOptions(options);
+    }
+
+    return resultSet;
+
+    return await this.getAll()
       .then((data: T[]) => {
         const query = new Query<T>(data);
         let resultSet = query.where(qy, this.store);
@@ -147,7 +153,6 @@ export class Collection<T = any> {
     return new Promise(async (resolve, reject) => {
       const add = storeObj.add(data);
       add.onsuccess = async (event) => {
-        console.log(data);
         const updatedData = await this.get(event.target?.result);
         // write to state
         svelteState.addEvent("add", {

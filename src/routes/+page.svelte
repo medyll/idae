@@ -1,27 +1,21 @@
 
-<svelte:options runes accessors />
-<script lang="ts">
-    import { ObservableStore } from '$lib/scripts/observable/observableStore.js';
-    import { svelteState } from '$lib/scripts/observable/svelteState.svelte.js';
-	import { dbase } from './example.js';
+<svelte:options runes    />
+<script lang="ts"> 
+  import { idbState, svelteState } from '$lib/index.js';
+	import { dbase, type Collection2 } from './example.js';
 	import { onMount } from 'svelte'; 
 
-    function fireCustomEvent() {
-                const customEvent = new CustomEvent('collection', { detail: {
-                    collection: 'chat',
-                    operation: 'add',
-                    data: {
-                        chatId: 1,
-                        title: 'name'
-                    }
-                } });
-                window.dispatchEvent(customEvent);
-    }
  
+
+      let  b= [];
+      let a ;
+
+      let y = $derived(svelteState.dataState['messages']) // idbState<Collection2>('messages').getAll()//.where({content: {'eq':'bfgdg'}})
+
  onMount(async () => {
 
-       /* dbase.messages.put({chatId:'27',content:'put'});
-        dbase.messages.add({chatId:'35',content:'bfgdg'});
+      dbase.messages.put({chatId:'254152145',content:'put'});
+         /* dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'32',content:'bfgdg'});
         dbase.messages.add({chatId:'35',content:'bfgdg'});
@@ -32,9 +26,8 @@
        await dbase.chat.add({chatId:'19',title:'scored'});
        await dbase.chat.add({chatId:'35',title:'bfgdg'});
  */
-//  await dbase.chat.add({chatId:'19',title:'scored'});
+    //  await dbase.chat.add({chatId:'19',title:'scored'});
          //dbase.chat.update('35',{title:'my really new title !!'});
-         dbase.chat.updateWhere({title:'scored'},{title:'nein'});
 
 
        /*  dbase.messages.delete(4);
@@ -52,14 +45,38 @@
         /* console.log({ww});  
         console.log(ww.groupBy('chatId'));    */
 
-        /* setInterval(() => {
-            fireCustomEvent();
-        }, 20000); */
+        setInterval(() => {
+           // dbase.messages.add({chatId:'3225',content:'bfgdg'});
+           // dbase.chat.update('35',{title:'my really new title !!'});
+            // dbase.chat.where({title: 'name'})
+        }, 5000);
+    
         
     });
 
-    
-    // $inspect(svelteState.dataState)
+    $effect(() => { 
+        gt()
+        console.log(y)
+    })
 
+
+
+
+     async function gt() {
+        /* await dbase.chat.add({chatId:'2',title:'name'});
+        await dbase.chat.add({chatId:'19',title:'scored'});
+        await dbase.chat.add({chatId:'35',title:'bfgdg'}); */
+        // a = await dbase.chat.where({title: {'eq':'nein'}}) 
+        // b = await dbase.messages.where({content: {'eq':'bfgdg'}}) 
+     }
+  
+     $inspect(y) 
 
 </script> 
+
+{#each svelteState?.dataState?.['messages'] ?? [] as aa}
+{aa.content} ..
+{/each}
+    
+    
+ 

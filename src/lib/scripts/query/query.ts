@@ -1,12 +1,13 @@
 import { svelteState } from "../observable/svelteState.svelte.js";
 import { Operators } from "../operators/operators.js";
-import { ResultSet } from "../resultSet/resultset.js";
+import { getResultset } from "../resultSet/resultset.js";
+
 import type { Operator, Where } from "../types.js";
 
 export class Query<T> {
   data: T[];
   constructor(data: T[]) {
-    this.data = data;
+    this.data = getResultset(data);
   }
 
   where(qy: Where<T>, collection?: string) {
@@ -39,12 +40,13 @@ export class Query<T> {
     try {
       // put data in svelte state
       if (collection) {
+        console.log(this.data);
         svelteState.dataState[collection] = this.data;
-        return new ResultSet(svelteState.dataState[collection]);
+        return getResultset(svelteState.dataState[collection]);
       }
     } catch (e) {
       console.log(e);
     }
-    return new ResultSet(this.data);
+    return getResultset(this.data);
   }
 }

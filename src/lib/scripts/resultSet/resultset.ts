@@ -1,134 +1,118 @@
-import { ObservableStore } from "../observable/observableStore.js";
 import { dotPath, type DotPath } from "../path/pathResolver.js";
 
 /**
  * Represents the options for a result set.
  * @template T - The type of the result set.
  */
-export type OptionsType<T = any> = {
+export type ResultsetOptions<T = any> = {
   /** Can receive a dot path for sorting. */
   sort?: Record<DotPath<T>, "asc" | "desc">;
-  /** Specifies the page size and page number. */
-  page?: [size: number, page: number];
   /** Specifies the property to group the result set by. */
   groupBy?: DotPath<T>;
-  /** Specifies the limit of the result set. */
-  limit?: number;
+  /** Specifies the page size of the result set. */
+  pageSize?: number;
 };
 
 /**
  * Represents a chainable and iterable result set of data.
  * @template T The type of data in the result set.
  */
-export class ResultSet<T = Record<string, any>> {
-  private data: T[];
 
-  constructor(data: T[]) {
-    this.data = data;
-    this.state = new ObservableStore(this.data);
-  }
+export type ResultSet<T> = T[] & {
+  setOptions: (options: ResultsetOptions) => ResultSet<T>;
+  sortBy: (args: Record<string, "asc" | "desc">) => ResultSet<T>;
+  groupBy: (
+    fieldName: string | string[],
+    transform?: (value: any) => void
+  ) => Record<string, T[]>;
+  getPage: (page: number, size: number) => ResultSet<T>;
+  toObject: (dotPath: DotPath<T>) => T[];
+};
 
-  /**
-   * Sets the options in one pass for the result set.
-   *
-   * @template T - The type of the result set.
-   * @param {OptionsType} options - The options to set.
-   * @returns {this} - The updated result set.
-   */
-  public setOptions<T>(options: OptionsType) {
-    if (options?.sort) {
-      this.sortBy(options.sort);
-    }
-    if (options?.page) {
-      const [size, page] = options.page;
-      this.getPage(size, page);
-    }
-    if (options?.groupBy) {
-      this.groupBy(options.groupBy);
-    }
-    return this;
-  }
+/**
+ * Generates a ResultSet based on the provided data array and defines additional properties like setOptions, sortBy, groupBy, and getPage for customization and manipulation.
+ *
+ * @param {T[]} data - The array of data to generate the ResultSet from.
+ * @return {ResultSet<T>} The generated ResultSet with additional properties for customization.
+ */
+export function getResultset<T = (typeof arguments)[0]>(
+  data: T[]
+): ResultSet<T> {
+  let pagination: [page: number, size: number];
 
-  /**
-   * Sorts the data in the result set based on the provided sorting criteria.
-   *
-   * @param args - An object containing the sorting criteria. The keys represent the properties to sort by, and the values represent the sort order ("asc" for ascending, "desc" for descending). Can receive a dot path
-   * @returns The sorted result set.
-   */
-  sortBy(args: Record<string, "asc" | "desc">) {
-    const keys = Object.keys(args);
-    const values = Object.values(args);
-
-    this.data.sort((a, b) => {
-      let i = 0;
-      let result = 0;
-
-      while (i < keys.length && result === 0) {
-        let value = keys[i];
-        result =
-          values[i] === "asc"
-            ? dotPath<T>(a, value) - dotPath<T>(b, value)
-            : dotPath<T>(b, value) - dotPath<T>(a, value);
-        i++;
-      }
-      return result;
-    });
-
-    // @ts-ignore
-    delete this?.sortBy;
-
-    return this;
-  }
-
-  /**
-   * Retrieves a specific page of data from the result set.
-   * @param size The number of items per page.
-   * @param page The page number to retrieve.
-   * @returns a new result set containing the specified page of data.
-   */
-  getPage(size: number, page: number) {
-    const start = (page - 1) * size;
-    const end = start + size;
-    this.data = this.data.slice(start, end);
-    // @ts-ignore
-    delete this?.getPage;
-    return this;
-  }
-
-  /**
-   * Groups the result set by the specified field name(s).
-   * @param fieldName The field name(s) to group by.
-   * @param transform An optional transformation function to apply to each grouped value.
-   * @returns An object representing the grouped result set.
-   */
-  groupBy(fieldName: string | string[], transform?: (value: any) => void) {
-    const finalFieldName =
-      typeof fieldName === "string" ? [fieldName] : fieldName;
-    return this.data.reduce((acc, curr) => {
-      let key = "";
-      for (let i = 0; i < finalFieldName.length; i++) {
-        key += dotPath<typeof curr>(curr, finalFieldName[i]);
-      }
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(curr);
-      return acc;
-    }, {});
-  }
-
-  [Symbol.iterator]() {
-    let index = 0;
-    let data = this.data;
-
-    return {
-      next: () => {
-        if (index < data.length) {
-          return { value: data[index++], done: false };
-        } else {
-          return { done: true };
+  return Object.defineProperties(data, {
+    setOptions: {
+      value: function (options: ResultsetOptions = {}) {
+        if (options.sort) {
+          this.sortBy(options.sort);
         }
+        if (options.groupBy) {
+          this.groupBy(options.groupBy);
+        }
+        return this;
       },
-    };
-  }
+      enumerable: false,
+      configurable: true,
+    },
+    sortBy: {
+      value: function (args: Record<string, "asc" | "desc">) {
+        const keys = Object.keys(args);
+        const values = Object.values(args);
+
+        this.sort((a, b) => {
+          let i = 0;
+          let result = 0;
+
+          while (i < keys.length && result === 0) {
+            let value = keys[i];
+            result =
+              values[i] === "asc"
+                ? Number(dotPath<T>(a, value)) - Number(dotPath<T>(b, value))
+                : Number(dotPath<T>(b, value)) - Number(dotPath<T>(a, value));
+            i++;
+          }
+          return result;
+        });
+        // delete this?.sortBy;
+
+        return this;
+      },
+      enumerable: false,
+      configurable: true,
+    },
+    groupBy: {
+      value: function (
+        fieldName: string | string[],
+        transform?: (value: any) => void
+      ) {
+        const finalFieldName =
+          typeof fieldName === "string" ? [fieldName] : fieldName;
+        return this.reduce(
+          (acc: { [x: string]: any[] }, curr: Record<string, any>) => {
+            let key = "";
+            for (let i = 0; i < finalFieldName.length; i++) {
+              key += dotPath<typeof curr>(curr, finalFieldName[i]);
+            }
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(curr);
+            return acc;
+          },
+          {}
+        );
+      },
+      enumerable: false,
+      configurable: true,
+    },
+    getPage: {
+      value: function (page: number, size: number) {
+        const dta = this.slice((size - 1) * page, (size - 1) * page + page);
+        delete this?.getPage;
+        return dta;
+      },
+      enumerable: false,
+      configurable: true,
+    },
+  }) as ResultSet<T>;
 }

@@ -4,11 +4,7 @@ This class `ResultSet` is used to manipulate and iterate over a set of data. The
 
 ### Methods
 
-#### constructor(data: T[])
-
-- Action: Initializes the `ResultSet` with an array of data and an `ObservableStore` with the same data.
-- Arguments: An array of data of type `T`.
-- Return: An instance of `ResultSet`.
+ 
 
 #### setOptions<T>(options: OptionsType)
 
@@ -19,11 +15,6 @@ This class `ResultSet` is used to manipulate and iterate over a set of data. The
   - `groupBy`: A string or an array of strings, representing the field names to group by.
 - Return: The updated result set.
 
-#### observe()
-
-- Action: Returns the `ObservableStore` for the result set.
-- Arguments: None.
-- Return: The `ObservableStore` for the result set.
 
 #### sortBy(args: Record<string, "asc" | "desc">)
 
