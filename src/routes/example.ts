@@ -1,7 +1,7 @@
 import { Idbq } from "../lib/scripts/idbq/idbq.js";
 import type { Collection } from "../lib/scripts/collection/collection.js";
 
-export type Collection1 = {
+export type Chat = {
   id?: number;
   chatId?: string;
   title?: string;
@@ -11,7 +11,7 @@ export type Collection1 = {
   context?: number[];
 };
 
-export type Collection2 = {
+export type ChatMessage = {
   id?: string;
   chatId: string;
   messageId?: string;
@@ -30,29 +30,19 @@ export type Collection2 = {
     }
 );
 
-export type Collection3 = {
-  id: number;
-  model: string;
-  create_at: string;
-  response: string;
-  done: boolean;
-  context: number[];
-  created_at: string;
-  eval_count: number;
-  eval_duration: number;
-  load_duration: number;
-  prompt_eval_count: number;
-  prompt_eval_duration: number;
-  total_duration: number;
+type IdbqModel = {
+  [key: string]: {
+    keyPath: string;
+    model: any;
+  };
 };
-
 //
 export class DataBase extends Idbq {
-  chat!: Collection<Collection1>;
-  messages!: Collection<Collection2>;
+  chat!: Collection<Chat>;
+  messages!: Collection<ChatMessage>;
 
-  constructor() {
-    super("oneDatabase");
+  constructor(dbName: string, idbqModel?: IdbqModel) {
+    super(dbName);
 
     this.version(1).stores({
       chat: "&chatId, created_at, dateLastMessage",
@@ -61,4 +51,15 @@ export class DataBase extends Idbq {
   }
 }
 
-export const dbase = new DataBase();
+let idbqModel = {
+  chat: {
+    keyPath: "&chatId, created_at, dateLastMessage",
+    model: {} as Chat,
+  },
+  messages: {
+    keyPath: "++id, chatId, created_at",
+    model: {} as ChatMessage,
+  },
+};
+
+export const dbase = new DataBase("oneDatabase", idbqModel);

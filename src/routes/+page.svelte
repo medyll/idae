@@ -1,27 +1,33 @@
 
 <svelte:options runes    />
-<script lang="ts"> 
-  import {  idbqlState } from '$lib/index.js';
-	import { dbase, type Collection2 } from './example.js';
+<script lang="ts">  
+  import {  createState, dataState, idbqlState } from '$lib/scripts/state/svelte/idbqlState.svelte.js';
+	import { dbase, type ChatMessage } from './example.js';
 	import { onMount } from 'svelte'; 
 
  
 
-      let  b= [];
-      let a ;
+  let  b= [];
+  let a ;
 
-     
+  let state = createState({},dbase);
+  let users = state.addCollection('chat');
+  let messages = state.addCollection('messages');
 
-  let y ;
+  
+  let results = messages.where({chatId:{eq:'35'}}) 
+  let y = users.add({wouala:'red'})
 
  onMount(async () => {
-      y =  dbase.messages;// .where({chatId:{eq:'35'}});//.where({chatId:'3'});
+       dbase.messages.add({chatId:'24',content:'bfgdg'});
+      // y.add({content:'bfgdg'});
+      // y =  dbase.messages.state ;// ({chatId:{eq:'35'}});//.where({chatId:'3'});
       //dbase.messages.put({chatId:'254152145',content:'put'});
-         /* dbase.messages.add({chatId:'35',content:'bfgdg'});
+        /* dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'35',content:'bfgdg'});
         dbase.messages.add({chatId:'32',content:'bfgdg'});
-        dbase.messages.add({chatId:'35',content:'bfgdg'});
-        dbase.messages.add({chatId:'35',content:'bfgdg'}); */ 
+        dbase.messages.add({chatId:'35',content:'bfgdg'}); */
+        /*  dbase.messages.add({chatId:'35',content:'bfgdg'}); */ 
 
 
        /* await dbase.chat.add({chatId:'2',title:'name'});
@@ -48,7 +54,7 @@
         console.log(ww.groupBy('chatId'));    */
 
         setInterval(() => {
-           // dbase.messages.add({chatId:'3225',content:'bfgdg'});
+           // users.add({wouala:'red'})
            // dbase.chat.update('35',{title:'my really new title !!'});
             // dbase.chat.where({title: 'name'})
         }, 5000);
@@ -57,8 +63,7 @@
     });
 
     $effect(() => { 
-        gt()
-        console.log(y)
+       
     })
 
 
@@ -72,8 +77,13 @@
         // b = await dbase.messages.where({content: {'eq':'bfgdg'}}) 
      }
   
-     $inspect(y) 
-
+/*      $inspect(y) 
+     $inspect(idbqlState.dataState.messages?.where)  */
+/* $inspect(state)
+$inspect(users) */
+/* $inspect(state.state) */
+$inspect(results.rs)
+/* $inspect(dataState) */
 </script> 
 
 {#each y ?? [] as aa}

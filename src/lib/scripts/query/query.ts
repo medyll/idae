@@ -10,7 +10,7 @@ export class Query<T> {
     this.data = getResultset(data);
   }
 
-  where(qy: Where<T>, collection?: string) {
+  where(qy: Where<T>) {
     for (const fieldName in qy) {
       const query = qy[fieldName];
       if (
@@ -36,15 +36,32 @@ export class Query<T> {
         this.data = this.data.filter((dt) => dt[fieldName] == query);
       }
     }
-    /* try {
-      if (collection) {
-        console.log(this.data);
-        svelteState.dataState[collection] = this.data;
-        return getResultset(svelteState.dataState[collection]);
-      }
-    } catch (e) {
-      console.log(e);
-    } */
+
     return getResultset(this.data);
+  }
+
+  static whereData<T>(qy: Where<T>, data: T[]) {
+    for (const fieldName in qy) {
+      const query = qy[fieldName];
+      if (
+        typeof query === "object" &&
+        Operators.operators.includes(Object.keys(query)[0] as Operator)
+      ) {
+        for (const key in query) {
+          // if operator
+          if (Operators.operators.includes(key as Operator)) {
+            const operator = key as Operator;
+            const value = query[key as Operator];
+
+            data = Operators.filters(fieldName, operator, value, data);
+          } else {
+          }
+        }
+      } else {
+        data = data.filter((dt) => dt[fieldName] == query);
+      }
+    }
+
+    return getResultset(data);
   }
 }

@@ -1,5 +1,4 @@
 import { Collection } from "../collection/collection.js";
-import { getWhere } from "../state/svelte/sttae.svelte.js";
 import { Schema } from "./schema.js";
 
 /**
@@ -68,10 +67,11 @@ export class Idbq<T = any> {
    */
   private createCollections(args: any) {
     Object.keys(this.schema).map(async (storeName) => {
-      const col = new Collection(storeName, this.databaseName, this.dbVersion);
-      this[storeName] = Object.defineProperty(col, "state", {
-        value: getWhere,
-      });
+      this[storeName] = new Collection(
+        storeName,
+        this.databaseName,
+        this.dbVersion
+      );
     });
   }
 

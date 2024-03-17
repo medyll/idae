@@ -8,7 +8,7 @@ import {
 } from "../state/svelte/sttae.svelte.js";
 
 export class Collection<T = any> {
-  private store: string;
+  #store: string;
   private version?: number;
   private dbName;
 
@@ -21,15 +21,13 @@ export class Collection<T = any> {
   private keyPath!: string;
 
   constructor(store: string, dbName: string, version?: number) {
-    this.store = store;
+    this.#store = store;
     this.version = version;
     this.dbName = dbName;
+  }
 
-    // play this.getAll and populate state
-    this.getAll().then((data) => {
-      console.log("data", data);
-      // this.#state.set
-    });
+  get store() {
+    return this.#store;
   }
 
   /** get the collection */
@@ -41,13 +39,13 @@ export class Collection<T = any> {
       );
       this.dBOpenRequest.onsuccess = (event) => {
         const db = event?.target?.result;
-        if (!db.objectStoreNames.contains(this.store)) {
+        if (!db.objectStoreNames.contains(this.#store)) {
           reject("collection not found");
           return false;
         }
-        this.dBTransaction = db.transaction(this.store, "readwrite");
+        this.dBTransaction = db.transaction(this.#store, "readwrite");
 
-        this.dbCollection = this.dBTransaction.objectStore(this.store);
+        this.dbCollection = this.dBTransaction.objectStore(this.#store);
 
         const command = this.command;
         this.dBTransaction.oncomplete = function (event) {};
@@ -68,7 +66,7 @@ export class Collection<T = any> {
   async where(qy: Where<T>, options?: ResultsetOptions) {
     const data = await this.getAll();
     const query = new Query<T>(data);
-    let resultSet = query.where(qy, this.store);
+    let resultSet = query.where(qy, this.#store);
 
     if (options) {
       resultSet.setOptions(options);
@@ -79,7 +77,7 @@ export class Collection<T = any> {
     return await this.getAll()
       .then((data: T[]) => {
         const query = new Query<T>(data);
-        let resultSet = query.where(qy, this.store);
+        let resultSet = query.where(qy, this.#store);
 
         if (options) {
           resultSet.setOptions(options);
@@ -119,7 +117,7 @@ export class Collection<T = any> {
 
               put.onsuccess = () => {
                 idbqlState.registerEvent("update", {
-                  collection: this.store,
+                  collection: this.#store,
                   data: newData,
                 });
                 resolve(true);
@@ -142,7 +140,7 @@ export class Collection<T = any> {
         const dt = await this.getAll();
         // write to state
         idbqlState.registerEvent("put", {
-          collection: this.store,
+          collection: this.#store,
           data: dt,
         });
         resolve(put.result);
@@ -165,7 +163,7 @@ export class Collection<T = any> {
         const updatedData = await this.get(event.target?.result);
         // write to state
         idbqlState.registerEvent("add", {
-          collection: this.store,
+          collection: this.#store,
           data: updatedData,
         });
         resolve(updatedData);
@@ -215,7 +213,7 @@ export class Collection<T = any> {
       objectStoreRequest.onsuccess = () => {
         // write to state
         idbqlState.registerEvent("delete", {
-          collection: this.store,
+          collection: this.#store,
           data: keyPathValue,
         });
         resolve(true);
@@ -240,7 +238,7 @@ export class Collection<T = any> {
               let objectStoreRequest = storeObj.delete(data[id]);
               objectStoreRequest.onsuccess = () => {
                 idbqlState.registerEvent("deleteWhere", {
-                  collection: this.store,
+                  collection: this.#store,
                   data: [],
                 });
                 resolve(true);

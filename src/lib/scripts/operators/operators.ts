@@ -69,7 +69,7 @@ export class Operators {
   }
 
   static #equalityComparison<T>(fieldName: keyof T, value: any, data: T) {
-    const valueStr = value.toString();
+    /* const valueStr = value.toString();
     const startsWith = valueStr.startsWith("*");
     const endsWith = valueStr.endsWith("*");
 
@@ -79,7 +79,7 @@ export class Operators {
       return data[fieldName]?.toString().startsWith(valueStr.slice(1));
     } else if (endsWith) {
       return data[fieldName]?.toString().endsWith(valueStr.slice(0, -1));
-    }
+    } */
     return data[fieldName] === value;
   }
 
