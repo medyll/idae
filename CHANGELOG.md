@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/medyll/idbql/compare/v3.1.3...v3.1.4) (2024-03-18)
+
+
+### Bug Fixes
+
+* peerDeps format ([29ecaff](https://github.com/medyll/idbql/commit/29ecaff8d0fcd9e6d9a60180289238745ed4e3e4))
+
 ### [3.1.3](https://github.com/medyll/idbql/compare/v3.1.2...v3.1.3) (2024-03-18)
 
 ### [3.1.2](https://github.com/medyll/idbql/compare/v3.1.1...v3.1.2) (2024-03-18)
