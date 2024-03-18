@@ -14,8 +14,7 @@
   let all = messages.getAll();
 
  onMount(async () => {
-
-      console.log(dbase);
+ 
        /* dbase.messages.add({chatId:'24',content:'bfgdg'});
        dbase.messages.update(2,{chatId:'32'}); */
       // y.add({content:'bfgdg'});

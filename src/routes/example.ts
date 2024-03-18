@@ -35,5 +35,3 @@ const idbqModel = {
 const idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
 
 export const dbase = idbq("oneDatabase");
-
-console.log(dbase.chat);

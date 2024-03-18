@@ -7,5 +7,4 @@ export * from '$lib/scripts/path/pathResolver.js';
 export * from '$lib/scripts/query/query.js';
 export * from '$lib/scripts/resultSet/Resultset.js';
 export * from '$lib/scripts/state/svelte/idbstate.svelte.js';
-export * from '$lib/scripts/state/svelte/state.svelte.js';
 export * from '$lib/scripts/types.js';
