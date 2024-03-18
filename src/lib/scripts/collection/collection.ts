@@ -1,6 +1,6 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { idbqlState } from "../state/svelte/idbstate.svelte.js";
+import { idbqlState } from "../state/idbstate.svelte.js";
 import type { ResultsetOptions, ResultSet } from "../resultSet/Resultset.js";
 
 export class Collection<T = any> {

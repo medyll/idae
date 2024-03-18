@@ -68,12 +68,12 @@ class idbqlStateCore {
 
 export const idbqlState = new idbqlStateCore();
 
-export function stateIdbql(model = {}, idbBase?: IdbqlCore) {
+export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
   let state = dataState;
 
   /**
-   * Adds a collection to the state.
-   *
+   * Adds a collection to the svelte 5 state.
+   *Synchronize with indexedDB if it exists.
    * @template T - The type of data in the collection.
    * @param {string} collection - The name of the collection.
    * @param {string} [keyPath="id"] - The key path for the collection.
@@ -222,4 +222,4 @@ export function stateIdbql(model = {}, idbBase?: IdbqlCore) {
     },
     onCollection: onCollection,
   };
-}
+};
