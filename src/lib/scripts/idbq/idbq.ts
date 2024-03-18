@@ -1,6 +1,23 @@
 import { Collection } from "../collection/collection.js";
-import type { IdbqModel } from "./idbbase.js";
 import { Schema } from "./schema.js";
+
+export type IdbqModel = {
+  [key: string]: {
+    keyPath: string | any | Record<string, any> | undefined;
+    model: any;
+  };
+};
+
+type ExtractModelTypes<
+  T = Record<string, { keyPath: string | any; model: any }>
+> = {
+  [P in keyof T]: T[P]["model"];
+};
+type ReadonlyDynMethod<T> = {
+  readonly [K in keyof T]: Collection<T[K]>;
+};
+
+type MyReadonlyCollections<T> = ReadonlyDynMethod<ExtractModelTypes<T>>;
 
 /**
  * Represents the IndexedDB wrapper for managing database operations.
@@ -104,24 +121,6 @@ export class IdbqlCore<T = any> {
     if (this.idbDatabase) this.idbDatabase.close();
   }
 }
-
-export type IdbqModel = {
-  [key: string]: {
-    keyPath: string | any | Record<string, any> | undefined;
-    model: any;
-  };
-};
-
-type ExtractModelTypes<
-  T = Record<string, { keyPath: string | any; model: any }>
-> = {
-  [P in keyof T]: T[P]["model"];
-};
-type ReadonlyDynMethod<T> = {
-  readonly [K in keyof T]: Collection<T[K]>;
-};
-
-type MyReadonlyCollections<T> = ReadonlyDynMethod<ExtractModelTypes<T>>;
 
 export const idbqBase = <T>(
   model: IdbqModel,

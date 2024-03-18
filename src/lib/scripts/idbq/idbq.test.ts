@@ -39,14 +39,14 @@ describe("Idbq", () => {
   it("should create object stores based on the provided schema", async () => {
     version = version++;
     const schema = {
-      users: "++id",
-      products: "++id",
+      chat: "&chatId, created_at, dateLastMessage",
+      messages: "++id, chatId, created_at",
     };
     await idbq.version(version).stores(schema);
 
     expect(idbq.schema).toEqual(schema);
-    expect(idbq.users).toBeInstanceOf(Collection);
-    expect(idbq.products).toBeInstanceOf(Collection);
+    expect(idbq.chat).toBeInstanceOf(Collection);
+    expect(idbq.messages).toBeInstanceOf(Collection);
   });
 
   it("should close the database connection", () => {
