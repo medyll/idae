@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/medyll/idbql/compare/v3.1.0...v3.1.1) (2024-03-18)
+
+
+### Bug Fixes
+
+* incorrect path mapping for runes files ([91b65f9](https://github.com/medyll/idbql/commit/91b65f9a2f6b9d310e2ff62e6752e9828abd7758))
+
 ## [3.1.0](https://github.com/medyll/idbql/compare/v3.0.1...v3.1.0) (2024-03-18)
 
 
