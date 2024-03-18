@@ -16,7 +16,7 @@ export class Collection<T = any> {
   private command!: string;
   private keyPath!: string;
 
-  constructor(store: string, dbName: string, version?: number) {
+  constructor(store: string, dbName: string, version: number) {
     this.#store = store;
     this.version = version;
     this.dbName = dbName;
@@ -35,6 +35,7 @@ export class Collection<T = any> {
       );
       this.dBOpenRequest.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest)?.result;
+        console.log(db.objectStoreNames);
         if (!db.objectStoreNames.contains(this.#store)) {
           reject("collection not found");
           return false;

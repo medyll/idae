@@ -1,4 +1,5 @@
 import { idbqBase } from "$lib/scripts/idbq/idbq.js";
+import { stateIdbql } from "$lib/scripts/state/idbstate.svelte.js";
 
 export type Chat = {
   id?: number;
@@ -32,6 +33,11 @@ const idbqModel = {
   },
 } as const;
 
-const idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
-
+const idbq = idbqBase<typeof idbqModel>(idbqModel, 3);
 export const dbase = idbq("oneDatabase");
+
+let dbstate = stateIdbql({}, dbase);
+
+let messages = dbstate.onCollection<ChatMessage>("messages");
+let results = messages.where({ chatId: { eq: "35" } });
+let all = messages.getAll();

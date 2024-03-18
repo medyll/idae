@@ -20,10 +20,7 @@ describe("Idbq", () => {
     idbq = new IdbqlCore("testDatabase", idbqModel, version);
   });
 
-  afterEach(() => {
-    // Close the database connection after each test
-    idbq.closeDatabase();
-  });
+  afterEach(() => {});
 
   it("should create an instance of Idbq", () => {
     expect(idbq).toBeInstanceOf(IdbqlCore);
@@ -49,10 +46,5 @@ describe("Idbq", () => {
     expect(idbq.chat).toBeInstanceOf(Collection);
     //@ts-ignore
     expect(idbq.messages).toBeInstanceOf(Collection);
-  });
-
-  it("should close the database connection", () => {
-    idbq.closeDatabase();
-    expect(idbq.idbDatabase).toBeUndefined();
   });
 });

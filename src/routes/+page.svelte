@@ -1,7 +1,7 @@
 
 <svelte:options runes    />
 <script lang="ts">   
-  import { stateIdbql } from '$lib/scripts/state/svelte/idbstate.svelte.js';
+  import { stateIdbql } from '$lib/scripts/state/idbstate.svelte';
 	import { dbase, type ChatMessage } from './example.js';
 	import { onMount } from 'svelte'; 
  

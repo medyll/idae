@@ -24,7 +24,6 @@ type MyReadonlyCollections<T> = ReadonlyDynMethod<ExtractModelTypes<T>>;
  * @template T - The type of data stored in the IndexedDB.
  */
 export class IdbqlCore<T = any> {
-  public dbConnection?: IDBOpenDBRequest;
   private databaseName: string;
   dbVersion!: number;
   public idbDatabase?: IDBDatabase;
@@ -33,7 +32,7 @@ export class IdbqlCore<T = any> {
    * Creates an instance of Idbq.
    * @param {string} databaseName - The name of the database.
    */
-  constructor(databaseName: string, idbqModel: IdbqModel, version: number = 1) {
+  constructor(databaseName: string, idbqModel: IdbqModel, version: number) {
     this.databaseName = databaseName;
     this.idbDatabase = undefined;
 
@@ -67,22 +66,19 @@ export class IdbqlCore<T = any> {
           return new Promise((resolve, reject) => {
             this.schema = args;
 
-            const dbConnection = indexedDB.open(
-              this.databaseName,
-              this.dbVersion
-            );
+            const dbConnection = indexedDB.open(this.databaseName, version);
             if (dbConnection != undefined) {
-              this.createCollections(args);
+              this.createCollections(args, version);
 
-              dbConnection.onsuccess = () => {
-                this.idbDatabase = this.dbConnection?.result;
+              dbConnection.onsuccess = (event: Event) => {
+                const db = (event.target as IDBOpenDBRequest).result;
+                this.idbDatabase = db;
               };
               dbConnection.onupgradeneeded = async (event: Event) => {
-                if (this.dbConnection) {
+                const db = (event.target as IDBOpenDBRequest).result;
+                if (db) {
                   const m = new Schema();
-                  this.idbDatabase = this.dbConnection?.result;
-
-                  m.createSchema(this.dbConnection.result, args);
+                  m.createSchema(db, args);
                 } else {
                   reject(true);
                 }
@@ -98,27 +94,19 @@ export class IdbqlCore<T = any> {
     };
   }
 
-  private createCollections(args: any) {
+  private createCollections(args: any, version: number) {
     Object.keys(this.schema).map(async (storeName) => {
       Object.defineProperty(this, storeName, {
         value: new Collection(
           storeName,
           this.databaseName,
-          this.dbVersion
+          version
         ) as unknown as Collection<T>,
         writable: true,
         enumerable: true,
         configurable: true,
       });
     });
-  }
-
-  /**
-   * Closes the database connection.
-   * @private
-   */
-  public closeDatabase(): void {
-    if (this.idbDatabase) this.idbDatabase.close();
   }
 }
 
