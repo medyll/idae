@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/medyll/idbql/compare/v2.0.0...v3.0.0) (2024-03-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* new idbql launcher with typings
+
+### Features
+
+* added some documentation ([c56a283](https://github.com/medyll/idbql/commit/c56a283ea146fafaea1339af853c7fe8fd0af39d))
+* finished state implementation for resultset ([7489756](https://github.com/medyll/idbql/commit/74897566aa487fbcacd728418661057ce480d426))
+* new idbql launcher with typings ([4a3536b](https://github.com/medyll/idbql/commit/4a3536bbcff50c4e5d13fb2d2ebd3b59e5eb1b76))
+* svelte state for idb implementation ([185a575](https://github.com/medyll/idbql/commit/185a5758a3e830d862d295f950c67cd7af6bd988))
+
 ## [2.0.0](https://github.com/medyll/idbql/compare/v0.2.1...v2.0.0) (2024-03-09)
 
 
