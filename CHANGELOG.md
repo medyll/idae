@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/medyll/idbql/compare/v3.0.1...v3.1.0) (2024-03-18)
+
+
+### Features
+
+* update version ([f27c498](https://github.com/medyll/idbql/commit/f27c4989d206064082cd0b2c13c4a48bcd83cdd3))
+
+
+### Bug Fixes
+
+* generator ([ca4c430](https://github.com/medyll/idbql/commit/ca4c430adbdbea2d4556a0e0f65a23eda63b73af))
+* missing state export ([b7b74b2](https://github.com/medyll/idbql/commit/b7b74b2624cdd29e94180fd5509026afe8966f25))
+
 ### [3.0.1](https://github.com/medyll/idbql/compare/v3.0.0...v3.0.1) (2024-03-18)
 
 
