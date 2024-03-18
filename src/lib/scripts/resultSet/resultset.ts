@@ -38,9 +38,7 @@ export type ResultSet<T> = T[] & {
 export function getResultset<T = (typeof arguments)[0]>(
   data: T[]
 ): ResultSet<T> {
-  let pagination: [page: number, size: number];
-
-  return Object.defineProperties(data, {
+  return Object.defineProperties(data ?? [], {
     setOptions: {
       value: function (options: ResultsetOptions = {}) {
         if (options.sort) {

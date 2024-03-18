@@ -1,6 +1,6 @@
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
 import "fake-indexeddb/auto";
-import { Idbq } from "../idbq/idbq.js";
+import { IdbqlCore } from "../idbq/idbq.js";
 import { Collection } from "./collection.js";
 
 const schema = {
@@ -8,7 +8,7 @@ const schema = {
   products: "++id, userId, created_at",
 };
 
-class DataBase extends Idbq {
+class DataBase extends IdbqlCore {
   users!: Collection<any>;
   products!: Collection<any>;
 

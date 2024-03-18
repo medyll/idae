@@ -1,4 +1,4 @@
-import { idbqlState } from "../state/svelte/idbqlState.svelte.js";
+import { idbqlState } from "../state/svelte/idbstate.svelte.js";
 import { Operators } from "../operators/operators.js";
 import { getResultset } from "../resultSet/resultset.js";
 

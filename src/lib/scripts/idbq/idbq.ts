@@ -1,23 +1,40 @@
 import { Collection } from "../collection/collection.js";
+import type { IdbqModel } from "./idbbase.js";
 import { Schema } from "./schema.js";
 
 /**
  * Represents the IndexedDB wrapper for managing database operations.
  * @template T - The type of data stored in the IndexedDB.
  */
-export class Idbq<T = any> {
+export class IdbqlCore<T = any> {
   public dbConnection?: IDBOpenDBRequest;
   private databaseName: string;
-  private dbVersion!: number;
+  dbVersion!: number;
   public idbDatabase?: IDBDatabase;
   public schema: Record<string, any> = {};
   /**
    * Creates an instance of Idbq.
    * @param {string} databaseName - The name of the database.
    */
-  constructor(databaseName: string) {
+  constructor(databaseName: string, idbqModel: IdbqModel, version: number = 1) {
     this.databaseName = databaseName;
     this.idbDatabase = undefined;
+
+    const stores: { [key: string]: string } = {};
+
+    Object.keys(idbqModel).forEach((modelName) => {
+      const modelInfo = idbqModel[modelName];
+      stores[modelName] = modelInfo.keyPath;
+
+      Object.defineProperty(this, modelName, {
+        value: undefined as unknown as Collection<typeof modelInfo.model>,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    });
+
+    this.version(version).stores(stores);
   }
 
   /**
@@ -31,15 +48,19 @@ export class Idbq<T = any> {
       stores: async (args: Record<string, string>) => {
         if (typeof indexedDB !== "undefined") {
           return new Promise((resolve, reject) => {
-            // store the schema
             this.schema = args;
-            // create or open the database
-            this.openDatabase(version);
 
-            if (this.dbConnection != undefined) {
-              // create tables
+            const dbConnection = indexedDB.open(
+              this.databaseName,
+              this.dbVersion
+            );
+            if (dbConnection != undefined) {
               this.createCollections(args);
-              this.dbConnection.onupgradeneeded = async (event: Event) => {
+
+              dbConnection.onsuccess = () => {
+                this.idbDatabase = this.dbConnection?.result;
+              };
+              dbConnection.onupgradeneeded = async (event: Event) => {
                 if (this.dbConnection) {
                   const m = new Schema();
                   this.idbDatabase = this.dbConnection?.result;
@@ -60,40 +81,18 @@ export class Idbq<T = any> {
     };
   }
 
-  /**
-   * Creates the object stores based on the provided schema.
-   * @param {Record<string, string>} args - The schema defining the object stores.
-   * @private
-   */
   private createCollections(args: any) {
     Object.keys(this.schema).map(async (storeName) => {
-      this[storeName] = new Collection(
-        storeName,
-        this.databaseName,
-        this.dbVersion
-      );
-    });
-  }
-
-  /**
-   * Opens the database connection.
-   * @param {number} version - The version number of the database.
-   * @private
-   */
-  private async openDatabase(version: number) {
-    return new Promise((resolve, reject) => {
-      // open the database
-      this.dbConnection = indexedDB.open(
-        this.databaseName,
-        version ?? this.dbVersion
-      );
-
-      this.dbConnection.onerror = (event) => {};
-
-      this.dbConnection.onsuccess = (event: Event) => {
-        this.idbDatabase = this.dbConnection?.result;
-        resolve(true);
-      };
+      Object.defineProperty(this, storeName, {
+        value: new Collection(
+          storeName,
+          this.databaseName,
+          this.dbVersion
+        ) as unknown as Collection<T>,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
     });
   }
 
@@ -102,9 +101,34 @@ export class Idbq<T = any> {
    * @private
    */
   public closeDatabase(): void {
-    if (this.idbDatabase) {
-      this.idbDatabase.close();
-      this.idbDatabase = undefined;
-    }
+    if (this.idbDatabase) this.idbDatabase.close();
   }
 }
+
+export type IdbqModel = {
+  [key: string]: {
+    keyPath: string | any | Record<string, any> | undefined;
+    model: any;
+  };
+};
+
+type ExtractModelTypes<
+  T = Record<string, { keyPath: string | any; model: any }>
+> = {
+  [P in keyof T]: T[P]["model"];
+};
+type ReadonlyDynMethod<T> = {
+  readonly [K in keyof T]: Collection<T[K]>;
+};
+
+type MyReadonlyCollections<T> = ReadonlyDynMethod<ExtractModelTypes<T>>;
+
+export const idbqBase = <T>(
+  model: IdbqModel,
+  version: number
+): ((name: string) => MyReadonlyCollections<T>) => {
+  return (name: string) => {
+    const idb_ = new IdbqlCore(name, model, version);
+    return idb_ as MyReadonlyCollections<T> & typeof idb_;
+  };
+};

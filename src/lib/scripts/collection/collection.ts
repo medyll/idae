@@ -1,11 +1,7 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { idbqlState } from "../state/svelte/idbqlState.svelte.js";
-import type { ResultsetOptions, ResultSet } from "../resultSet/resultset.js";
-import {
-  getWhere,
-  type ResultSetWithWhere,
-} from "../state/svelte/sttae.svelte.js";
+import { idbqlState } from "../state/svelte/idbstate.svelte.js";
+import type { ResultsetOptions, ResultSet } from "../resultSet/Resultset.js";
 
 export class Collection<T = any> {
   #store: string;
@@ -26,7 +22,7 @@ export class Collection<T = any> {
     this.dbName = dbName;
   }
 
-  get store() {
+  get name() {
     return this.#store;
   }
 
@@ -91,13 +87,11 @@ export class Collection<T = any> {
   }
 
   async update(keyPathValue: string | number, data: Partial<T>) {
-    this.command = "update";
     const storeObj = await this.getCollection();
     const keyPath = storeObj?.keyPath;
     this.put({ [keyPath as keyof T]: keyPathValue, ...data });
   }
   async updateWhere(where: Where<T>, data: Partial<T>) {
-    this.command = "updateWhere";
     return this.where(where).then(
       (rs: ResultSet<Record<string, any>> | ResultSet<T>) => {
         return new Promise(async (resolve, reject) => {
@@ -131,14 +125,11 @@ export class Collection<T = any> {
 
   // put data to indexedDB, replace collection content
   async put(value: Partial<T>) {
-    this.command = "put";
-    const storeObj = await this.getCollection();
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
       const put = storeObj.put(value);
-      put.onsuccess = async (event) => {
-        //
+      put.onsuccess = async () => {
         const dt = await this.getAll();
-        // write to state
         idbqlState.registerEvent("put", {
           collection: this.#store,
           data: dt,
@@ -153,11 +144,8 @@ export class Collection<T = any> {
 
   /** add data to the store */
   async add(data: T): Promise<IDBDatabase> {
-    this.command = "add";
-    // fire event to collection onsuccess
-    const storeObj = await this.getCollection();
-
     return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
       const add = storeObj.add(data);
       add.onsuccess = async (event) => {
         const updatedData = await this.get(event.target?.result);
@@ -175,22 +163,15 @@ export class Collection<T = any> {
     });
   }
 
-  // get data from indexedDB
-  async get(value: any): Promise<T> {
-    // this.command = "get";
-    const storeObj = await this.getCollection();
-    return new Promise((resolve, reject) => {
+  get(value: any): Promise<T> {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
       const get = storeObj.get(value);
-      get.onsuccess = function () {
-        resolve(get.result);
-      };
-      get.onerror = function () {
-        reject("not found");
-      };
+      get.onsuccess = () => resolve(get.result);
+      get.onerror = () => reject("not found");
     });
   }
 
-  // get all data from indexedDB
   async getAll(): Promise<T[]> {
     // this.command = "getAll";
     const storeObj = await this.getCollection();
@@ -207,14 +188,18 @@ export class Collection<T = any> {
 
   async delete(keyPathValue: string | number): Promise<boolean> {
     this.command = "delete";
-    const storeObj = this.dbCollection ?? (await this.getCollection());
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
       let objectStoreRequest = storeObj.delete(keyPathValue);
+      const keyPath = storeObj.keyPath;
+      const id: string | undefined =
+        typeof keyPath === "string" ? keyPath : keyPath?.[0];
       objectStoreRequest.onsuccess = () => {
         // write to state
         idbqlState.registerEvent("delete", {
           collection: this.#store,
           data: keyPathValue,
+          keyPath: id,
         });
         resolve(true);
       };

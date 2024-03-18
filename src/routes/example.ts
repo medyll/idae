@@ -1,5 +1,4 @@
-import { Idbq } from "../lib/scripts/idbq/idbq.js";
-import type { Collection } from "../lib/scripts/collection/collection.js";
+import { idbqBase } from "$lib/scripts/idbq/idbq.js";
 
 export type Chat = {
   id?: number;
@@ -11,6 +10,11 @@ export type Chat = {
   context?: number[];
 };
 
+export type Trash = {
+  id?: number;
+  chatId?: string;
+};
+
 export type ChatMessage = {
   id?: string;
   chatId: string;
@@ -20,46 +24,25 @@ export type ChatMessage = {
   status?: "done" | "sent" | "streaming" | "error";
   context?: number[];
   model?: string;
-} & (
-  | {
-      role?: "user";
-    }
-  | {
-      role?: "assistant";
-      model?: string;
-    }
-);
-
-type IdbqModel = {
-  [key: string]: {
-    keyPath: string;
-    model: any;
-  };
 };
-//
-export class DataBase extends Idbq {
-  chat!: Collection<Chat>;
-  messages!: Collection<ChatMessage>;
 
-  constructor(dbName: string, idbqModel?: IdbqModel) {
-    super(dbName);
-
-    this.version(1).stores({
-      chat: "&chatId, created_at, dateLastMessage",
-      messages: "++id, chatId, created_at",
-    });
-  }
-}
-
-let idbqModel = {
+const idbqModel = {
   chat: {
-    keyPath: "&chatId, created_at, dateLastMessage",
+    keyPath: "&chatId, created_at, dateLastMessage" as Chat,
     model: {} as Chat,
   },
   messages: {
     keyPath: "++id, chatId, created_at",
     model: {} as ChatMessage,
   },
-};
+  trash: {
+    keyPath: "++id, chatId, created_at",
+    model: {} as Trash,
+  },
+} as const;
 
-export const dbase = new DataBase("oneDatabase", idbqModel);
+const idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
+
+export const dbase = idbq("oneDatabase");
+
+console.log(dbase.chat);

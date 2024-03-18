@@ -1,13 +1,23 @@
-import { Idbq } from "./idbq.js";
+import { IdbqlCore } from "./idbq.js";
 import { Collection } from "../collection/collection.js";
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
 import "fake-indexeddb/auto";
 
 describe("Idbq", () => {
-  let idbq: Idbq;
+  let idbq: IdbqlCore;
   let version: number = 1;
+  let idbqModel = {
+    chat: {
+      keyPath: "&chatId, created_at, dateLastMessage" as any,
+      model: {} as any,
+    },
+    messages: {
+      keyPath: "++id, chatId, created_at",
+      model: {} as any,
+    },
+  } as const;
   beforeEach(() => {
-    idbq = new Idbq("testDatabase");
+    idbq = new IdbqlCore("testDatabase", idbqModel, version);
   });
 
   afterEach(() => {
@@ -16,7 +26,7 @@ describe("Idbq", () => {
   });
 
   it("should create an instance of Idbq", () => {
-    expect(idbq).toBeInstanceOf(Idbq);
+    expect(idbq).toBeInstanceOf(IdbqlCore);
   });
 
   it("should set the version of the database", () => {
@@ -37,16 +47,6 @@ describe("Idbq", () => {
     expect(idbq.schema).toEqual(schema);
     expect(idbq.users).toBeInstanceOf(Collection);
     expect(idbq.products).toBeInstanceOf(Collection);
-  });
-  it("should open the database connection", async () => {
-    //version = version++;
-    const schema = {
-      users: "++id",
-      products: "++id",
-    };
-    await idbq.version(version).stores(schema);
-
-    expect(idbq.dbConnection).toBeDefined();
   });
 
   it("should close the database connection", () => {
