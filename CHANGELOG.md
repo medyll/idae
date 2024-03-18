@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/medyll/idbql/compare/v3.0.0...v3.0.1) (2024-03-18)
+
+
+### Bug Fixes
+
+* npm registry name and scope, svelte version ([8fb42a1](https://github.com/medyll/idbql/commit/8fb42a1e861909476fcb3730cd66bdb0bdcd3945))
+
 ## [3.0.0](https://github.com/medyll/idbql/compare/v2.0.0...v3.0.0) (2024-03-18)
 
 
