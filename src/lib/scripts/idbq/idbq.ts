@@ -11,7 +11,7 @@ export type IdbqModel = {
 type ExtractModelTypes<
   T = Record<string, { keyPath: string | any; model: any }>
 > = {
-  [P in keyof T]: T[P]["model"];
+  [P in keyof T]: T[P] extends { model: infer M } ? M : never;
 };
 type ReadonlyDynMethod<T> = {
   readonly [K in keyof T]: Collection<T[K]>;

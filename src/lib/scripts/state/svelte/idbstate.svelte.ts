@@ -57,7 +57,7 @@ class idbqlStateCore {
           this.#dataState[more.collection] = more.data;
         break;
       case "add":
-        if (this.#dataState[more.collection]) {
+        if (more.collection && this.#dataState[more.collection]) {
           if (more?.collection && more?.data)
             this.#dataState[more.collection].push(more.data);
         }
@@ -68,7 +68,7 @@ class idbqlStateCore {
 
 export const idbqlState = new idbqlStateCore();
 
-export function createState(model = {}, idbBase?: IdbqlCore) {
+export function stateIdbql(model = {}, idbBase?: IdbqlCore) {
   let state = dataState;
 
   /**
@@ -79,7 +79,7 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
    * @param {string} [keyPath="id"] - The key path for the collection.
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
-  function addCollection<T>(collection: string, keyPath: string = "id") {
+  function onCollection<T>(collection: string, keyPath: string = "id") {
     const collectionState = {
       get rs() {
         return state[collection];
@@ -92,7 +92,7 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
       return idbBase && Boolean(idbBase?.[collection]);
     }
     function feed() {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         idbBase[collection].getAll().then((data) => {
           state[collection] = data;
         });
@@ -117,26 +117,26 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
     }
 
     async function update(keyPathValue: string | number, data: Partial<T>) {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         await idbBase[collection].update(keyPathValue, data);
       }
     }
     async function updateWhere(where: Where<T>, data: Partial<T>) {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         await idbBase[collection].updateWhere(where, data);
       }
     }
 
     // put data to indexedDB, replace collection content
     async function put(value: Partial<T>) {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         await idbBase[collection].put(value);
       }
     }
 
     /** add data to the store */
     async function add(data: T) {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         await idbBase[collection].add(data);
       }
     }
@@ -171,14 +171,14 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
     async function del(
       keyPathValue: string | number
     ): Promise<boolean | undefined> {
-      if (testIdbql(collection)) {
+      if (idbBase && testIdbql(collection)) {
         return await idbBase[collection].delete(keyPathValue);
       }
     }
 
     async function deleteWhere(where: Where<T>): Promise<boolean | undefined> {
-      if (testIdbql(collection)) {
-        return await idbBase[collection].deleteWhere(keyPathValue);
+      if (idbBase && testIdbql(collection)) {
+        return await idbBase[collection].deleteWhere(where);
       }
     }
 
@@ -199,7 +199,7 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
       get: function (obj, prop, args) {
         if (prop === "getAll") {
           return function (...args) {
-            return _getAll(...args).rs;
+            return _getAll().rs;
           };
         }
         /* if (prop === "where") {
@@ -220,6 +220,6 @@ export function createState(model = {}, idbBase?: IdbqlCore) {
     get state() {
       return state;
     },
-    addCollection,
+    onCollection: onCollection,
   };
 }

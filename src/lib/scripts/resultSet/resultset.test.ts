@@ -16,6 +16,7 @@ describe("getResultset", () => {
   it("should set options and apply sorting", () => {
     const resultSet = getResultset(data);
     const options = { sort: { age: "asc" } };
+    //@ts-ignore
     const result = resultSet.setOptions(options);
     expect(result).toBe(resultSet);
     expect(resultSet).toEqual([
@@ -29,6 +30,7 @@ describe("getResultset", () => {
   it("should set options and apply sorting", () => {
     const resultSet = getResultset(data);
     const options = { sort: { age: "desc" } };
+    //@ts-ignore
     const result = resultSet.setOptions(options);
     expect(result).toBe(resultSet);
     expect(resultSet).toEqual([

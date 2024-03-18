@@ -1,6 +1,5 @@
-import { idbqlState } from "../state/svelte/idbstate.svelte.js";
 import { Operators } from "../operators/operators.js";
-import { getResultset } from "../resultSet/resultset.js";
+import { getResultset } from "../resultSet/Resultset.js";
 
 import type { Operator, Where } from "../types.js";
 
@@ -24,7 +23,7 @@ export class Query<T> {
             const value = query[key as Operator];
 
             this.data = Operators.filters(
-              fieldName,
+              fieldName as keyof T,
               operator,
               value,
               this.data
@@ -53,7 +52,12 @@ export class Query<T> {
             const operator = key as Operator;
             const value = query[key as Operator];
 
-            data = Operators.filters(fieldName, operator, value, data);
+            data = Operators.filters(
+              fieldName as keyof T,
+              operator,
+              value,
+              data
+            );
           } else {
           }
         }

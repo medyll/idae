@@ -50,8 +50,10 @@ export class Schema {
       const store = this.createStore(db, storeName, keyPath, increment);
 
       // create the indexes
-      for (const field of fields) {
-        await this.createIndexes(store, field, field);
+      if (store) {
+        for (const field of fields) {
+          await this.createIndexes(store, field, field);
+        }
       }
       return { storeName, keyPath };
     });

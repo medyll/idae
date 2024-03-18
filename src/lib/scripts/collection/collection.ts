@@ -34,7 +34,7 @@ export class Collection<T = any> {
         this.version ?? undefined
       );
       this.dBOpenRequest.onsuccess = (event) => {
-        const db = event?.target?.result;
+        const db = (event.target as IDBOpenDBRequest)?.result;
         if (!db.objectStoreNames.contains(this.#store)) {
           reject("collection not found");
           return false;
@@ -62,28 +62,13 @@ export class Collection<T = any> {
   async where(qy: Where<T>, options?: ResultsetOptions) {
     const data = await this.getAll();
     const query = new Query<T>(data);
-    let resultSet = query.where(qy, this.#store);
+    let resultSet = query.where(qy);
 
     if (options) {
       resultSet.setOptions(options);
     }
 
     return resultSet;
-
-    return await this.getAll()
-      .then((data: T[]) => {
-        const query = new Query<T>(data);
-        let resultSet = query.where(qy, this.#store);
-
-        if (options) {
-          resultSet.setOptions(options);
-        }
-
-        return resultSet;
-      })
-      .catch((err) => {
-        throw err;
-      });
   }
 
   async update(keyPathValue: string | number, data: Partial<T>) {
@@ -100,7 +85,7 @@ export class Collection<T = any> {
           const id: string | undefined =
             typeof keyPath === "string" ? keyPath : keyPath?.[0];
 
-          [...rs].forEach((dta: T) => {
+          [...rs].forEach((dta: T | Record<string, any>) => {
             if (id && dta[id]) {
               const newData = {
                 [keyPath as keyof T]: dta[id],
@@ -143,12 +128,12 @@ export class Collection<T = any> {
   }
 
   /** add data to the store */
-  async add(data: T): Promise<IDBDatabase> {
+  async add(data: T): Promise<T | boolean> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       const add = storeObj.add(data);
       add.onsuccess = async (event) => {
-        const updatedData = await this.get(event.target?.result);
+        const updatedData = await this.get((event.target as IDBRequest).result);
         // write to state
         idbqlState.registerEvent("add", {
           collection: this.#store,
@@ -173,9 +158,8 @@ export class Collection<T = any> {
   }
 
   async getAll(): Promise<T[]> {
-    // this.command = "getAll";
-    const storeObj = await this.getCollection();
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
       const getAll = storeObj.getAll();
       getAll.onsuccess = function () {
         resolve(getAll.result);
@@ -187,7 +171,6 @@ export class Collection<T = any> {
   }
 
   async delete(keyPathValue: string | number): Promise<boolean> {
-    this.command = "delete";
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       let objectStoreRequest = storeObj.delete(keyPathValue);
@@ -218,7 +201,7 @@ export class Collection<T = any> {
           const keyPath = this.dbCollection?.keyPath;
           const id: string | undefined =
             typeof keyPath === "string" ? keyPath : keyPath?.[0];
-          [...data].forEach((data: T) => {
+          [...data].forEach((data: T | Record<string, any>) => {
             if (id && data[id]) {
               let objectStoreRequest = storeObj.delete(data[id]);
               objectStoreRequest.onsuccess = () => {

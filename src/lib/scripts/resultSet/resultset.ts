@@ -20,9 +20,12 @@ export type ResultsetOptions<T = any> = {
 
 export type ResultSet<T> = T[] & {
   setOptions: (options: ResultsetOptions) => ResultSet<T>;
+  /** Accepts a dot path */
   sortBy: (args: Record<string, "asc" | "desc">) => ResultSet<T>;
+  /** Accepts a dot path as fieldName */
   groupBy: (
     fieldName: string | string[],
+    /** Transformer function to generate the grouped key */
     transform?: (value: any) => void
   ) => Record<string, T[]>;
   getPage: (page: number, size: number) => ResultSet<T>;

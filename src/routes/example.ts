@@ -10,11 +10,6 @@ export type Chat = {
   context?: number[];
 };
 
-export type Trash = {
-  id?: number;
-  chatId?: string;
-};
-
 export type ChatMessage = {
   id?: string;
   chatId: string;
@@ -34,10 +29,6 @@ const idbqModel = {
   messages: {
     keyPath: "++id, chatId, created_at",
     model: {} as ChatMessage,
-  },
-  trash: {
-    keyPath: "++id, chatId, created_at",
-    model: {} as Trash,
   },
 } as const;
 

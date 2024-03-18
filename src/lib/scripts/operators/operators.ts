@@ -33,7 +33,7 @@ export class Operators {
   };
 
   static parse<T>(data: T[], qy: Where<T>) {
-    let dta: T[];
+    let dta: T[] = [];
     for (const fieldName in qy) {
       const query = qy[fieldName];
       if (
@@ -46,7 +46,7 @@ export class Operators {
             const operator = key as Operator;
             const value = query[key as Operator];
 
-            dta = this.filters(fieldName, operator, value, data);
+            dta = this.filters(fieldName as keyof T, operator, value, data);
           } else {
           }
         }

@@ -1,22 +1,15 @@
 
 <svelte:options runes    />
 <script lang="ts">   
-  import { createState } from '$lib/scripts/state/svelte/idbstate.svelte.js';
+  import { stateIdbql } from '$lib/scripts/state/svelte/idbstate.svelte.js';
 	import { dbase, type ChatMessage } from './example.js';
 	import { onMount } from 'svelte'; 
-
  
-  const dd = {
-    chat: "" ,
-    messages: "",
-  }
  
-  let  b= [];
-  let a ;
 
-  let dbstate = createState({},dbase);
+  let dbstate = stateIdbql({},dbase);
 
-  let messages = dbstate.addCollection<ChatMessage>('messages');  
+  let messages = dbstate.onCollection<ChatMessage>('messages');  
   let results = messages.where({chatId:{eq:'35'}}); 
   let all = messages.getAll();
 
@@ -76,9 +69,6 @@
         // a = await dbase.chat.where({title: {'eq':'nein'}}) 
         // b = await dbase.messages.where({content: {'eq':'bfgdg'}}) 
      }
-  
-/*      $inspect(y) 
-     $inspect(idbqlState.dataState.messages?.where)  */
 /* $inspect(state)
 $inspect(users) */
 /* $inspect(state.state) */
@@ -91,7 +81,7 @@ $inspect(all)
 <hr />
 {messages.get(2)[0]?.chatId}
 <hr />
-{messages.getOne(2)?.chatId}
+{messages.getOne(2)?.chatId} 
 <hr />
 {#each results.rs.sortBy({id:'desc'}) ?? [] as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />

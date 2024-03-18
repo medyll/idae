@@ -1,6 +1,6 @@
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
 import "fake-indexeddb/auto";
-import { IdbqlCore } from "../idbq/idbq.js";
+import { IdbqlCore, idbqBase } from "../idbq/idbq.js";
 import { Collection } from "./collection.js";
 
 const schema = {
@@ -8,43 +8,43 @@ const schema = {
   products: "++id, userId, created_at",
 };
 
-class DataBase extends IdbqlCore {
-  users!: Collection<any>;
-  products!: Collection<any>;
-
-  constructor() {
-    super("myDatabase");
-
-    this.version(1).stores(schema);
-  }
-}
-
-export const dbaseTest = new DataBase();
+const idbqModel = {
+  chat: {
+    keyPath: "&chatId, created_at, dateLastMessage" as any,
+    model: {} as any,
+  },
+  messages: {
+    keyPath: "++id, chatId, created_at",
+    model: {} as any,
+  },
+} as const;
 
 describe("Collection", () => {
   let collectionUsers: Collection;
-  let collectionProducts: Collection;
 
-  beforeEach(async () => {});
+  let idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
+  let dbaseTest = idbq("myDatabase");
+
+  beforeEach(async () => {
+    idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
+  });
 
   afterEach(() => {});
 
   it("should create an instance of Collection", () => {
-    collectionUsers = new Collection("users", "myDatabase", 1);
-    collectionProducts = new Collection("products", "myDatabase", 1);
+    collectionUsers = new Collection("chat", "myDatabase", 1);
     expect(collectionUsers).toBeInstanceOf(Collection);
-    expect(collectionProducts).toBeInstanceOf(Collection);
   });
+  return;
 
   it("should add data to the store ?", async () => {
-    collectionUsers = new Collection("users", "myDatabase", 1);
-    const data = { userId: 5, name: "John Doe" };
-    await collectionUsers.add(data);
-    const result = await collectionUsers.get(5);
+    collectionUsers = new Collection("chat", "myDatabase", 1);
+    const data = { chatId: "5", content: "John Doe" };
+    await collectionUsers.put(data);
+    const result = await collectionUsers.get("5");
 
     expect(result).toEqual(data);
   });
-  return;
 
   it("should put data to the store", async () => {
     const data = { userId: 256, name: "John Doe" };

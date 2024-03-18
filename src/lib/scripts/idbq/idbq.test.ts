@@ -45,7 +45,9 @@ describe("Idbq", () => {
     await idbq.version(version).stores(schema);
 
     expect(idbq.schema).toEqual(schema);
+    //@ts-ignore
     expect(idbq.chat).toBeInstanceOf(Collection);
+    //@ts-ignore
     expect(idbq.messages).toBeInstanceOf(Collection);
   });
 
