@@ -28,11 +28,11 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": ">=5.0.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^18.4.3",
-		"@commitlint/config-conventional": "^18.4.3",
+		"@commitlint/cli": "^19.2.0",
+		"@commitlint/config-conventional": "^19.1.0",
 		"@sveltejs/adapter-auto": "^3.1.1",
 		"@sveltejs/kit": "^2.5.4",
 		"@sveltejs/package": "^2.3.0",
@@ -40,15 +40,15 @@
 		"@typescript-eslint/eslint-plugin": "^7.2.0",
 		"@typescript-eslint/parser": "^7.2.0",
 		"commitizen": "^4.3.0",
-		"eslint": "^8.28.0",
+		"eslint": "^8.57.0",
 		"eslint-plugin-svelte": "^2.35.1",
 		"fake-indexeddb": "^5.0.2",
-		"husky": "^8.0.0",
-		"publint": "^0.1.9",
+		"husky": "^9.0.11",
+		"publint": "^0.2.7",
 		"standard-version": "^9.5.0",
 		"svelte": "^5.0.0-next.80",
-		"svelte-check": "^3.6.0",
-		"tslib": "^2.4.1",
+		"svelte-check": "^3.6.7",
+		"tslib": "^2.6.2",
 		"typedoc": "^0.25.12",
 		"typescript": "^5.4.2",
 		"vite": "^5.1.6",
