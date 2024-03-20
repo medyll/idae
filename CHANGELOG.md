@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.2](https://github.com/medyll/idbql/compare/v3.2.1...v3.2.2) (2024-03-20)
+
+
+### Bug Fixes
+
+* reactivity for get and getOne ops ([088a50e](https://github.com/medyll/idbql/commit/088a50e82e78a4d04213249ccf24ea98aba7de74))
+
 ### [3.2.1](https://github.com/medyll/idbql/compare/v3.2.0...v3.2.1) (2024-03-20)
 
 
