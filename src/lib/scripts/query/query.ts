@@ -6,7 +6,8 @@ import type { Operator, Where } from "../types.js";
 export class Query<T> {
   data: T[];
   constructor(data: T[]) {
-    this.data = getResultset(data);
+    this.data = data;
+    getResultset(this.data ?? []);
   }
 
   where(qy: Where<T>) {
@@ -36,7 +37,7 @@ export class Query<T> {
       }
     }
 
-    return getResultset(this.data);
+    return this.data;
   }
 
   static whereData<T>(qy: Where<T>, data: T[]) {
@@ -65,7 +66,7 @@ export class Query<T> {
         data = data.filter((dt) => dt[fieldName] == query);
       }
     }
-
-    return getResultset(data);
+    getResultset(data);
+    return data;
   }
 }

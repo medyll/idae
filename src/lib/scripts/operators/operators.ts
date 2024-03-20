@@ -33,29 +33,27 @@ export class Operators {
   };
 
   static parse<T>(data: T[], qy: Where<T>) {
-    let dta: T[] = [];
-    for (const fieldName in qy) {
-      const query = qy[fieldName];
-      if (
-        typeof query === "object" &&
-        Operators.operators.includes(Object.keys(query)[0] as Operator)
-      ) {
-        for (const key in query) {
-          // if operator
-          if (Operators.operators.includes(key as Operator)) {
-            const operator = key as Operator;
-            const value = query[key as Operator];
+    return data.filter((dt) => {
+      for (const fieldName in qy) {
+        const query = qy[fieldName];
+        if (
+          typeof query === "object" &&
+          Operators.operators.includes(Object.keys(query)[0] as Operator)
+        ) {
+          for (const key in query) {
+            // if operator
+            if (Operators.operators.includes(key as Operator)) {
+              const operator = key as Operator;
+              const value = query[key as Operator];
 
-            dta = this.filters(fieldName as keyof T, operator, value, data);
-          } else {
+              return this.#operatorsFunctions[operator](fieldName, value, dt);
+            }
           }
+        } else {
+          return dt[fieldName] == query;
         }
-      } else {
-        dta = data.filter((dt) => dt[fieldName] == query);
       }
-    }
-
-    return dta;
+    });
   }
   static filters<F = Record<string, any>>(
     fieldName: keyof F,
@@ -68,19 +66,28 @@ export class Operators {
     );
   }
 
-  static #equalityComparison<T>(fieldName: keyof T, value: any, data: T) {
-    /* const valueStr = value.toString();
+  static #equalityComparison<T>(
+    fieldName: keyof T,
+    value: any,
+    data: T
+  ): boolean {
+    const valueStr = value.toString();
     const startsWith = valueStr.startsWith("*");
     const endsWith = valueStr.endsWith("*");
 
     if (startsWith && endsWith) {
-      return data[fieldName]?.toString().includes(valueStr.slice(1, -1));
+      return Boolean(
+        data[fieldName]?.toString().includes(valueStr.slice(1, -1))
+      );
     } else if (startsWith) {
-      return data[fieldName]?.toString().startsWith(valueStr.slice(1));
+      return Boolean(data[fieldName]?.toString().startsWith(valueStr.slice(1)));
     } else if (endsWith) {
-      return data[fieldName]?.toString().endsWith(valueStr.slice(0, -1));
-    } */
-    return data[fieldName] === value;
+      return Boolean(
+        data[fieldName]?.toString().endsWith(valueStr.slice(0, -1))
+      );
+    } else {
+      return data[fieldName] === value;
+    }
   }
 
   static #greaterThanComparison<T>(fieldName: keyof T, value: any, data: T) {

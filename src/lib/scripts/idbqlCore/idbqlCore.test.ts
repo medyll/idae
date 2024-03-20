@@ -1,10 +1,10 @@
-import { IdbqlCore } from "./idbq.js";
+import { IdbqlIndexedCore } from "./idbqlCore.js";
 import { Collection } from "../collection/collection.js";
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
 import "fake-indexeddb/auto";
 
 describe("Idbq", () => {
-  let idbq: IdbqlCore;
+  let idbq: IdbqlIndexedCore;
   let version: number = 1;
   let idbqModel = {
     chat: {
@@ -17,20 +17,13 @@ describe("Idbq", () => {
     },
   } as const;
   beforeEach(() => {
-    idbq = new IdbqlCore("testDatabase", idbqModel, version);
+    idbq = new IdbqlIndexedCore("testDatabase", idbqModel, version);
   });
 
   afterEach(() => {});
 
   it("should create an instance of Idbq", () => {
-    expect(idbq).toBeInstanceOf(IdbqlCore);
-  });
-
-  it("should set the version of the database", () => {
-    version = version++;
-    const result = idbq.version(version);
-    expect(result).toHaveProperty("stores");
-    expect(idbq.dbVersion).toBe(version);
+    expect(idbq).toBeInstanceOf(IdbqlIndexedCore);
   });
 
   it("should create object stores based on the provided schema", async () => {
@@ -39,7 +32,7 @@ describe("Idbq", () => {
       chat: "&chatId, created_at, dateLastMessage",
       messages: "++id, chatId, created_at",
     };
-    await idbq.version(version).stores(schema);
+    await idbq.stores(schema);
 
     expect(idbq.schema).toEqual(schema);
     //@ts-ignore

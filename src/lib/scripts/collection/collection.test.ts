@@ -1,10 +1,10 @@
 import { describe, beforeEach, afterEach, it, expect } from "vitest";
 import "fake-indexeddb/auto";
-import { IdbqlCore, idbqBase } from "../idbq/idbq.js";
+import { IdbqlIndexedCore, createIdbqDb } from "../idbqlCore/idbqlCore.js";
 import { Collection } from "./collection.js";
 
 const schema = {
-  users: "&userId, created_at, dateLastMessage",
+  users: "&userId, created_at, dateLastMessage" as any,
   products: "++id, userId, created_at",
 };
 
@@ -20,31 +20,24 @@ const idbqModel = {
 } as const;
 
 describe("Collection", () => {
-  let collectionUsers: Collection;
+  let collectionUsers: typeof Collection;
 
-  let idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
-  let dbaseTest = idbq("myDatabase");
+  let idbq = createIdbqDb<typeof idbqModel>(idbqModel, 1);
 
   beforeEach(async () => {
-    idbq = idbqBase<typeof idbqModel>(idbqModel, 1);
+    idbq = createIdbqDb<typeof idbqModel>(idbqModel, 1);
   });
 
   afterEach(() => {});
 
   it("should create an instance of Collection", () => {
-    collectionUsers = new Collection("chat", "myDatabase", 1);
+    collectionUsers = new Collection("chat", "chatId", {
+      dbName: "myDatabase",
+      version: 1,
+    });
     expect(collectionUsers).toBeInstanceOf(Collection);
   });
   return;
-
-  it("should add data to the store ?", async () => {
-    collectionUsers = new Collection("chat", "myDatabase", 1);
-    const data = { chatId: "5", content: "John Doe" };
-    await collectionUsers.put(data);
-    const result = await collectionUsers.get("5");
-
-    expect(result).toEqual(data);
-  });
 
   it("should put data to the store", async () => {
     const data = { userId: 256, name: "John Doe" };

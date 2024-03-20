@@ -1,5 +1,4 @@
-import { Collection } from "$lib/scripts/collection/collection.js";
-import type { IdbqlCore } from "$lib/scripts/idbq/idbq.js";
+import type { IdbqlIndexedCore } from "$lib/scripts/idbqlCore/idbqlCore.js";
 import { Operators } from "$lib/scripts/operators/operators.js";
 import {
   getResultset,
@@ -9,7 +8,7 @@ import type { Where } from "$lib/scripts/types.js";
 
 let dataState = $state<Record<string, any>>({});
 
-class idbqlStateCore {
+class idbqlStateEvent {
   #dataState = dataState;
 
   constructor() {}
@@ -17,21 +16,13 @@ class idbqlStateCore {
   get dataState() {
     return this.#dataState;
   }
-  addCollection(collection: string) {
-    if (!this.#dataState[collection]) this.#dataState[collection] = [];
-    return this.#dataState[collection];
-  }
-  feedStateFromCollection(collection: Collection) {
-    collection.getAll().then((data) => {
-      this.#dataState[collection.name] = data;
-    });
-  }
+
   registerEvent(
     event: "add" | "put" | "delete" | "set" | string,
     more: {
-      collection?: string;
-      data?: any;
-      keyPath?: any;
+      collection: string;
+      data: any;
+      keyPath: any;
     }
   ) {
     switch (event) {
@@ -40,21 +31,30 @@ class idbqlStateCore {
           this.#dataState[more.collection] = more.data;
         break;
       case "delete":
-        if (more?.collection && more?.data && more?.keyPath)
+        if (more?.collection && more?.data && more?.keyPath) {
+          let keyPathValue = more?.data[more.keyPath];
           while (true) {
             const index = this.#dataState[more.collection].findIndex(
-              (item) => item[more.keyPath] === more.data
+              (item) => item[more.keyPath] === keyPathValue
             );
             if (index === -1) {
               break;
             }
             this.#dataState[more.collection].splice(index, 1);
           }
+        }
         break;
-      case "put":
-      case "update":
-        if (more?.collection && more?.data)
-          this.#dataState[more.collection] = more.data;
+      case "put": // always got id
+        if (more?.collection && more?.data && more?.keyPath) {
+          let keyPathValue = more.data[more.keyPath];
+
+          const index = this.#dataState[more.collection].findIndex(
+            (item) => item[more.keyPath] === keyPathValue
+          );
+
+          this.#dataState[more.collection][index] = more.data;
+        }
+
         break;
       case "add":
         if (more.collection && this.#dataState[more.collection]) {
@@ -66,11 +66,21 @@ class idbqlStateCore {
   }
 }
 
-export const idbqlState = new idbqlStateCore();
+export const idbqlEvent = new idbqlStateEvent();
 
-export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
+/**
+ * Main entry point.
+ * Creates a state object with indexedDB synchronization.
+ * @param {IdbqlIndexedCore} [idbBase] - The IdbqlCore instance.
+ * @returns {object} - The state object.
+ */
+export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
   let state = dataState;
+  let collections: Record<string, any> = {};
 
+  if (idbBase?.schema) {
+    addCollections(idbBase.schema);
+  }
   /**
    * Adds a collection to the svelte 5 state.
    *Synchronize with indexedDB if it exists.
@@ -79,7 +89,7 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
    * @param {string} [keyPath="id"] - The key path for the collection.
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
-  function onCollection<T>(collection: string, keyPath: string = "id") {
+  function addCollection<T>(collection: string, keyPath: string = "id") {
     const collectionState = {
       get rs() {
         return state[collection];
@@ -98,13 +108,6 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
         });
       }
     }
-    function _where(qy: Where<T>, options?: ResultsetOptions) {
-      return {
-        get rs() {
-          return getResultset(Operators.parse(collectionState.rs, qy));
-        },
-      };
-    }
 
     /**
      * Filters the resultset based on the provided query.
@@ -113,7 +116,13 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
      * @returns The filtered resultset.
      */
     function where(qy: Where<T>, options?: ResultsetOptions) {
-      return _where(qy, options);
+      return {
+        get rs() {
+          let c = Operators.parse(collectionState.rs, qy); //$derived(Operators.parse(collectionState.rs, qy));
+
+          return getResultset<T>(c);
+        },
+      };
     }
 
     async function update(keyPathValue: string | number, data: Partial<T>) {
@@ -164,8 +173,14 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
         },
       };
     }
+
     function getAll(): T[] {
-      return _getAll().rs;
+      const a = {
+        get rs() {
+          return getResultset<T>(collectionState.rs);
+        },
+      };
+      return a as unknown as T[];
     }
 
     async function del(
@@ -199,14 +214,14 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
       get: function (obj, prop, args) {
         if (prop === "getAll") {
           return function (...args) {
-            return _getAll().rs;
+            return getAll().rs;
           };
         }
-        /* if (prop === "where") {
+        if (prop === "where") {
           return function (...args) {
-            return _where(...args).rs;
+            return where(...args).rs;
           };
-        } */
+        }
         return obj?.[prop];
       },
     };
@@ -216,10 +231,23 @@ export const stateIdbql = (model = {}, idbBase?: IdbqlCore) => {
     return proxy;
   }
 
+  function addCollections(args: Record<string, string>) {
+    Object.keys(args).map((collection) => {
+      collections[collection] = addCollection(collection, args[collection]);
+    });
+  }
+
   return {
     get state() {
-      return state;
+      return collections;
     },
-    onCollection: onCollection,
+    onCollection: addCollection,
+    addCollection: addCollection,
   };
 };
+
+/**
+ * @deprecated
+ * use idbqState
+ */
+export const stateIdbql = idbqlState;

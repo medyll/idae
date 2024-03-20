@@ -1,5 +1,5 @@
-import { idbqBase } from "$lib/scripts/idbq/idbq.js";
-import { stateIdbql } from "$lib/scripts/state/idbstate.svelte.js";
+import { createIdbqDb } from "$lib/scripts/idbqlCore/idbqlCore.js";
+import { idbqlState, stateIdbql } from "$lib/scripts/state/idbstate.svelte.js";
 
 export type Chat = {
   id?: number;
@@ -23,21 +23,26 @@ export type ChatMessage = {
 };
 
 const idbqModel = {
-  chat: {
-    keyPath: "&chatId, created_at, dateLastMessage" as Chat,
-    model: {} as Chat,
-  },
   messages: {
     keyPath: "++id, chatId, created_at",
     model: {} as ChatMessage,
   },
+  chat: {
+    keyPath: "&chatId, created_at, dateLastMessage" as Chat,
+    model: {} as Chat,
+  },
 } as const;
 
-const idbq = idbqBase<typeof idbqModel>(idbqModel, 3);
-export const dbase = idbq("oneDatabase");
+const idbqStore = createIdbqDb<typeof idbqModel>(idbqModel, 3);
+export const dbase = idbqStore.create("oneDatabase");
 
-let dbstate = stateIdbql({}, dbase);
+console.log("results", dbase.db);
+console.log("results", dbase.model.chat);
+console.log("results", dbase.idbqlState.chat);
 
-let messages = dbstate.onCollection<ChatMessage>("messages");
+// create the state from the idbq database
+let dbstate = idbqlState(dbase.db);
+
+let messages = dbstate.addCollection<ChatMessage>("messages");
 let results = messages.where({ chatId: { eq: "35" } });
 let all = messages.getAll();

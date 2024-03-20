@@ -38,10 +38,9 @@ export type ResultSet<T> = T[] & {
  * @param {T[]} data - The array of data to generate the ResultSet from.
  * @return {ResultSet<T>} The generated ResultSet with additional properties for customization.
  */
-export function getResultset<T = (typeof arguments)[0]>(
-  data: T[]
-): ResultSet<T> {
-  return Object.defineProperties(data ?? [], {
+export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
+  // : ResultSet<T>
+  Object.defineProperties(data, {
     setOptions: {
       value: function (options: ResultsetOptions = {}) {
         if (options.sort) {
@@ -116,4 +115,6 @@ export function getResultset<T = (typeof arguments)[0]>(
       configurable: true,
     },
   }) as ResultSet<T>;
+
+  return data as ResultSet<T>;
 }

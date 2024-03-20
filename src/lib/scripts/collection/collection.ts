@@ -1,10 +1,10 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { idbqlState } from "../state/idbstate.svelte.js";
+import { idbqlEvent } from "../state/idbstate.svelte.js";
 import type { ResultsetOptions, ResultSet } from "../resultSet/Resultset.js";
 
-export class Collection<T = any> {
-  #store: string;
+export class CollectionCore<T = any> {
+  protected _store: string;
   private version?: number;
   private dbName;
 
@@ -13,17 +13,21 @@ export class Collection<T = any> {
 
   public dbCollection?: IDBObjectStore;
 
-  private command!: string;
-  private keyPath!: string;
+  private keyPath: string;
 
-  constructor(store: string, dbName: string, version: number) {
-    this.#store = store;
-    this.version = version;
-    this.dbName = dbName;
+  constructor(
+    store: string,
+    keyPath: string,
+    args: { dbName: string; version?: number }
+  ) {
+    this._store = store;
+    this.version = args.version;
+    this.dbName = args.dbName;
+    this.keyPath = keyPath.split(",")[0].replace(/[\s+]/g, "").replace(/&/, "");
   }
 
   get name() {
-    return this.#store;
+    return this._store;
   }
 
   /** get the collection */
@@ -35,16 +39,15 @@ export class Collection<T = any> {
       );
       this.dBOpenRequest.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest)?.result;
-        console.log(db.objectStoreNames);
-        if (!db.objectStoreNames.contains(this.#store)) {
+
+        if (!db.objectStoreNames.contains(this._store)) {
           reject("collection not found");
           return false;
         }
-        this.dBTransaction = db.transaction(this.#store, "readwrite");
+        this.dBTransaction = db.transaction(this._store, "readwrite");
 
-        this.dbCollection = this.dBTransaction.objectStore(this.#store);
+        this.dbCollection = this.dBTransaction.objectStore(this._store);
 
-        const command = this.command;
         this.dBTransaction.oncomplete = function (event) {};
 
         resolve(this.dbCollection);
@@ -73,54 +76,42 @@ export class Collection<T = any> {
   }
 
   async update(keyPathValue: string | number, data: Partial<T>) {
-    const storeObj = await this.getCollection();
-    const keyPath = storeObj?.keyPath;
-    this.put({ [keyPath as keyof T]: keyPathValue, ...data });
+    return this.put({ [this.keyPath as keyof T]: keyPathValue, ...data });
   }
   async updateWhere(where: Where<T>, data: Partial<T>) {
-    return this.where(where).then(
-      (rs: ResultSet<Record<string, any>> | ResultSet<T>) => {
-        return new Promise(async (resolve, reject) => {
-          const storeObj = await this.getCollection();
-          const keyPath = this.dbCollection?.keyPath;
-          const id: string | undefined =
-            typeof keyPath === "string" ? keyPath : keyPath?.[0];
-
-          [...rs].forEach((dta: T | Record<string, any>) => {
-            if (id && dta[id]) {
+    return this.where(where).then((rs: any[]) => {
+      return new Promise(async (resolve, reject) => {
+        Promise.all(
+          [...rs].map((dta: T | Record<string, any>) => {
+            if (this.keyPath && dta[this.keyPath]) {
               const newData = {
-                [keyPath as keyof T]: dta[id],
+                [this.keyPath as keyof T]: dta[this.keyPath],
                 ...dta,
                 ...data,
               };
-              const put = storeObj.put(newData);
-
-              put.onsuccess = () => {
-                idbqlState.registerEvent("update", {
-                  collection: this.#store,
-                  data: newData,
-                });
-                resolve(true);
-              };
+              return this.put(newData);
             }
+          })
+        )
+          .then(() => {
+            resolve(true);
+          })
+          .catch((e) => {
+            reject(e);
           });
-        });
-      }
-    );
+      });
+    });
   }
 
-  // put data to indexedDB, replace collection content
+  // put data to indexedDB, replace collection content if present
   async put(value: Partial<T>) {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
+
       const put = storeObj.put(value);
-      put.onsuccess = async () => {
-        const dt = await this.getAll();
-        idbqlState.registerEvent("put", {
-          collection: this.#store,
-          data: dt,
-        });
-        resolve(put.result);
+      put.onsuccess = async (event) => {
+        const updatedData = await this.get((event.target as IDBRequest).result);
+        resolve(updatedData);
       };
       put.onerror = function () {
         reject("data not put");
@@ -128,18 +119,14 @@ export class Collection<T = any> {
     });
   }
 
-  /** add data to the store */
+  /** ok add data to the store */
   async add(data: T): Promise<T | boolean> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       const add = storeObj.add(data);
       add.onsuccess = async (event) => {
         const updatedData = await this.get((event.target as IDBRequest).result);
-        // write to state
-        idbqlState.registerEvent("add", {
-          collection: this.#store,
-          data: updatedData,
-        });
+
         resolve(updatedData);
       };
       add.onerror = function (e) {
@@ -175,47 +162,78 @@ export class Collection<T = any> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       let objectStoreRequest = storeObj.delete(keyPathValue);
-      const keyPath = storeObj.keyPath;
-      const id: string | undefined =
-        typeof keyPath === "string" ? keyPath : keyPath?.[0];
+
       objectStoreRequest.onsuccess = () => {
-        // write to state
-        idbqlState.registerEvent("delete", {
-          collection: this.#store,
+        idbqlEvent.registerEvent("delete", {
+          collection: this._store,
           data: keyPathValue,
-          keyPath: id,
+          keyPath: this.keyPath,
         });
         resolve(true);
       };
       objectStoreRequest.onerror = function () {
-        resolve(false);
+        reject(false);
       };
     });
   }
 
   async deleteWhere(where: Where<T>): Promise<boolean> {
-    this.command = "deleteWhere";
-    return this.where(where).then(
-      (data: ResultSet<Record<string, any>> | ResultSet<T>) => {
-        return new Promise(async (resolve, reject) => {
-          const storeObj = this.dbCollection ?? (await this.getCollection());
-          const keyPath = this.dbCollection?.keyPath;
-          const id: string | undefined =
-            typeof keyPath === "string" ? keyPath : keyPath?.[0];
-          [...data].forEach((data: T | Record<string, any>) => {
-            if (id && data[id]) {
-              let objectStoreRequest = storeObj.delete(data[id]);
-              objectStoreRequest.onsuccess = () => {
-                idbqlState.registerEvent("deleteWhere", {
-                  collection: this.#store,
-                  data: [],
-                });
-                resolve(true);
-              };
+    return this.where(where).then((data: any[]) => {
+      return new Promise(async (resolve, reject) => {
+        Promise.all(
+          [...data].map((data: T | Record<string, any>) => {
+            if (this.keyPath && data[this.keyPath]) {
+              return this.delete(data[this.keyPath]);
             }
+          })
+        )
+          .then(() => {
+            resolve(true);
+          })
+          .catch((e) => {
+            reject(e);
           });
-        });
-      }
-    );
+      });
+    });
   }
+}
+export const Collection = createIDBStoreProxy(CollectionCore);
+
+function createIDBStoreProxy(store) {
+  return new Proxy(store, {
+    construct(target, args) {
+      const instance = new target(...args);
+      return new Proxy(instance, {
+        get(target, prop, receiver) {
+          const origMethod = target[prop];
+          if (
+            typeof origMethod === "function" &&
+            ["add", "put", "delete"].includes(String(prop))
+          ) {
+            return function (...args) {
+              return new Promise(async (resolve, reject) => {
+                (origMethod as Function)
+                  .apply(instance, args)
+                  .then((res) => {
+                    idbqlEvent.registerEvent(String(prop), {
+                      collection: instance._store,
+                      data: res,
+                      keyPath: instance.keyPath,
+                    });
+                    resolve(res);
+                  })
+                  .catch((e) => {
+                    reject(e);
+                  });
+              }).finally(() => {
+                console.log(`Opération ${String(prop)} terminée.`);
+              });
+              // return origMethod.apply(this, args);
+            };
+          }
+          return Reflect.get(target, prop, receiver);
+        },
+      });
+    },
+  });
 }
