@@ -17,6 +17,7 @@ type ModelTypes<T = Record<string, { keyPath: string | any; model: any }>> = {
   [P in keyof T]: T[P] extends { model: infer M } ? M : never;
 };
 type Method<T> = {
+  // @ts-ignore
   readonly [K in keyof T]: Collection<T[K]>;
 };
 
@@ -54,6 +55,7 @@ export class IdbqlIndexedCore<T = any> {
       stores[modelName] = modelInfo.keyPath;
 
       Object.defineProperty(this, modelName, {
+        // @ts-ignore
         value: undefined as unknown as Collection<typeof modelInfo.model>,
         writable: true,
         enumerable: true,
@@ -109,12 +111,14 @@ export class IdbqlIndexedCore<T = any> {
     }
   }
 
+  // @ts-ignore
   private createCollections(args: any, version: number) {
     Object.keys(this.#schema).map(async (storeName) => {
       Object.defineProperty(this, storeName, {
+        // @ts-ignore
         value: new Collection(storeName, this.#schema[storeName], {
           dbName: this.databaseName,
-          version,
+          version, // @ts-ignore
         }) as unknown as Collection<T>,
         writable: true,
         enumerable: true,

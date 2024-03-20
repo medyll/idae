@@ -39,34 +39,4 @@ export class Query<T> {
 
     return this.data;
   }
-
-  static whereData<T>(qy: Where<T>, data: T[]) {
-    for (const fieldName in qy) {
-      const query = qy[fieldName];
-      if (
-        typeof query === "object" &&
-        Operators.operators.includes(Object.keys(query)[0] as Operator)
-      ) {
-        for (const key in query) {
-          // if operator
-          if (Operators.operators.includes(key as Operator)) {
-            const operator = key as Operator;
-            const value = query[key as Operator];
-
-            data = Operators.filters(
-              fieldName as keyof T,
-              operator,
-              value,
-              data
-            );
-          } else {
-          }
-        }
-      } else {
-        data = data.filter((dt) => dt[fieldName] == query);
-      }
-    }
-    getResultset(data);
-    return data;
-  }
 }

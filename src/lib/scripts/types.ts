@@ -14,8 +14,7 @@ export type OperatorType = {
   endsWith?: string;
 };
 
-export type WhereData<T> = Partial<Record<keyof T, any>>;
 export type WhereKeys<T> = Partial<
   Record<keyof OperatorType, Record<keyof T, any>>
 >;
-export type Where<T> = Partial<WhereData<T> & WhereKeys<T>>;
+export type Where<T> = Partial<Record<keyof T, any> & WhereKeys<T>>;

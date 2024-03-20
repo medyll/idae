@@ -112,15 +112,17 @@ export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
     /**
      * Filters the resultset based on the provided query.
      * @param qy - The query to filter the resultset.
-     * @param options ResultsetOptions - Optional resultset options.
-     * @returns The filtered resultset.
+     * @param options {ResultsetOptions} - Optional resultset options.
+     * @returns  {Resultset} The filtered resultset.
      */
     function where(qy: Where<T>, options?: ResultsetOptions) {
       return {
         get rs() {
           let c = Operators.parse(collectionState.rs, qy); //$derived(Operators.parse(collectionState.rs, qy));
-
-          return getResultset<T>(c);
+          // , options?: ResultsetOptions
+          const r = getResultset<T>(c);
+          if (options) r.setOptions(options);
+          return r;
         },
       };
     }
@@ -174,13 +176,13 @@ export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
       };
     }
 
-    function getAll(): T[] {
+    function getAll(): { rs: T[] } {
       const a = {
         get rs() {
           return getResultset<T>(collectionState.rs);
         },
       };
-      return a as unknown as T[];
+      return a;
     }
 
     async function del(
@@ -214,11 +216,12 @@ export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
       get: function (obj, prop, args) {
         if (prop === "getAll") {
           return function (...args) {
-            return getAll().rs;
+            return getAll().rs as T[];
           };
         }
         if (prop === "where") {
           return function (...args) {
+            // @ts-ignore
             return where(...args).rs;
           };
         }

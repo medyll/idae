@@ -31,6 +31,7 @@ describe("Collection", () => {
   afterEach(() => {});
 
   it("should create an instance of Collection", () => {
+    // @ts-ignore
     collectionUsers = new Collection("chat", "chatId", {
       dbName: "myDatabase",
       version: 1,

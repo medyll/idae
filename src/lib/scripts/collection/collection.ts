@@ -1,7 +1,11 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
 import { idbqlEvent } from "../state/idbstate.svelte.js";
-import type { ResultsetOptions, ResultSet } from "../resultSet/Resultset.js";
+import {
+  type ResultsetOptions,
+  type ResultSet,
+  getResultset,
+} from "../resultSet/Resultset.js";
 
 export class CollectionCore<T = any> {
   protected _store: string;
@@ -9,9 +13,6 @@ export class CollectionCore<T = any> {
   private dbName;
 
   private dBOpenRequest!: IDBOpenDBRequest;
-  private dBTransaction!: IDBTransaction;
-
-  public dbCollection?: IDBObjectStore;
 
   private keyPath: string;
 
@@ -44,13 +45,13 @@ export class CollectionCore<T = any> {
           reject("collection not found");
           return false;
         }
-        this.dBTransaction = db.transaction(this._store, "readwrite");
+        const dBTransaction = db.transaction(this._store, "readwrite");
 
-        this.dbCollection = this.dBTransaction.objectStore(this._store);
+        const dbCollection = dBTransaction.objectStore(this._store);
 
-        this.dBTransaction.oncomplete = function (event) {};
+        dBTransaction.oncomplete = function (event) {};
 
-        resolve(this.dbCollection);
+        resolve(dbCollection);
       };
       this.dBOpenRequest.onerror = () => reject(this.dBOpenRequest.error);
     });
@@ -64,25 +65,48 @@ export class CollectionCore<T = any> {
    * @throws If an error occurs while retrieving the data.
    */
   async where(qy: Where<T>, options?: ResultsetOptions) {
-    const data = await this.getAll();
-    const query = new Query<T>(data);
-    let resultSet = query.where(qy);
+    return new Promise(async (resolve, reject) => {
+      const data = await this.getAll();
+      const query = new Query<T>(data);
+      let resultSet = getResultset(query.where(qy));
 
-    if (options) {
-      resultSet.setOptions(options);
-    }
+      if (options) {
+        resultSet.setOptions(options);
+      }
 
-    return resultSet;
+      resolve(resultSet);
+    });
   }
 
+  get(value: any): Promise<T> {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
+      const get = storeObj.get(value);
+      get.onsuccess = () => resolve(get.result);
+      get.onerror = () => reject("not found");
+    });
+  }
+
+  getAll(): Promise<T[]> {
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
+      const getAll = storeObj.getAll();
+      getAll.onsuccess = function () {
+        resolve(getAll.result);
+      };
+      getAll.onerror = function () {
+        reject("not found");
+      };
+    });
+  }
   async update(keyPathValue: string | number, data: Partial<T>) {
     return this.put({ [this.keyPath as keyof T]: keyPathValue, ...data });
   }
   async updateWhere(where: Where<T>, data: Partial<T>) {
-    return this.where(where).then((rs: any[]) => {
+    return this.where(where).then((rs) => {
       return new Promise(async (resolve, reject) => {
         Promise.all(
-          [...rs].map((dta: T | Record<string, any>) => {
+          (rs as T[]).map((dta: T) => {
             if (this.keyPath && dta[this.keyPath]) {
               const newData = {
                 [this.keyPath as keyof T]: dta[this.keyPath],
@@ -136,28 +160,6 @@ export class CollectionCore<T = any> {
     });
   }
 
-  get(value: any): Promise<T> {
-    return new Promise(async (resolve, reject) => {
-      const storeObj = await this.getCollection();
-      const get = storeObj.get(value);
-      get.onsuccess = () => resolve(get.result);
-      get.onerror = () => reject("not found");
-    });
-  }
-
-  async getAll(): Promise<T[]> {
-    return new Promise(async (resolve, reject) => {
-      const storeObj = await this.getCollection();
-      const getAll = storeObj.getAll();
-      getAll.onsuccess = function () {
-        resolve(getAll.result);
-      };
-      getAll.onerror = function () {
-        reject("not found");
-      };
-    });
-  }
-
   async delete(keyPathValue: string | number): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
@@ -178,10 +180,10 @@ export class CollectionCore<T = any> {
   }
 
   async deleteWhere(where: Where<T>): Promise<boolean> {
-    return this.where(where).then((data: any[]) => {
+    return this.where(where).then((data) => {
       return new Promise(async (resolve, reject) => {
         Promise.all(
-          [...data].map((data: T | Record<string, any>) => {
+          (data as T[]).map((data: T | Record<string, any>) => {
             if (this.keyPath && data[this.keyPath]) {
               return this.delete(data[this.keyPath]);
             }
@@ -197,7 +199,7 @@ export class CollectionCore<T = any> {
     });
   }
 }
-export const Collection = createIDBStoreProxy(CollectionCore);
+export const Collection: CollectionCore = createIDBStoreProxy(CollectionCore);
 
 function createIDBStoreProxy(store) {
   return new Proxy(store, {
@@ -225,9 +227,7 @@ function createIDBStoreProxy(store) {
                   .catch((e) => {
                     reject(e);
                   });
-              }).finally(() => {
-                console.log(`Opération ${String(prop)} terminée.`);
-              });
+              }).finally(() => {});
               // return origMethod.apply(this, args);
             };
           }
