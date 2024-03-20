@@ -1,6 +1,10 @@
 import { createIdbqDb } from "$lib/scripts/idbqlCore/idbqlCore.js";
-import { idbqlState, stateIdbql } from "$lib/scripts/state/idbstate.svelte.js";
+import {
+  createIdbqlState,
+  stateIdbql,
+} from "$lib/scripts/state/idbstate.svelte.js";
 
+/** define the data typings to activate autocomplete feature */
 export type Chat = {
   id?: number;
   chatId?: string;
@@ -22,26 +26,34 @@ export type ChatMessage = {
   model?: string;
 };
 
+/**
+ * Define a model for the IndexedDB database and forward the types to the IndexedDB wrapper.
+ */
 const idbqModel = {
   messages: {
     keyPath: "++id, chatId, created_at",
-    model: {} as ChatMessage,
+    model: {} as ChatMessage, // this will provide autocompletion
   },
   chat: {
-    keyPath: "&chatId, created_at, dateLastMessage" as Chat,
+    keyPath: "&chatId, created_at, dateLastMessage",
     model: {} as Chat,
   },
 } as const;
 
 const idbqStore = createIdbqDb<typeof idbqModel>(idbqModel, 3);
+
 export const dbase = idbqStore.create("oneDatabase");
+// or
+export const { idbql, idbqlState, idbDatabase } =
+  idbqStore.create("oneDatabase");
 
-console.log("results", dbase.db);
-console.log("results", dbase.model.chat);
-console.log("results", dbase.idbqlState.chat);
+idbqlState.chat;
+console.log("results", dbase.idbDatabase); // the IDBDatabase instance
+console.log("results", dbase.idbql.chat); // indexed db collection, non reactive, can be used a non reactive way
+console.log("results", dbase.idbqlState.chat); // state object, queryable, reactive
 
-// create the state from the idbq database
-let dbstate = idbqlState(dbase.db);
+// You can create the state from the idbq database
+let dbstate = createIdbqlState(dbase.idbDatabase);
 
 let messages = dbstate.addCollection<ChatMessage>("messages");
 let results = messages.where({ chatId: { eq: "35" } });

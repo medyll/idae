@@ -1,16 +1,12 @@
-import { Collection } from "../collection/collection.js";
-import { idbqlState } from "../state/idbstate.svelte.js";
+import { Collection, CollectionCore } from "../collection/collection.js";
+import { createIdbqlState } from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
 export type IdbqModel = {
   [key: string]: {
-    keyPath: string | any | Record<string, any> | undefined;
+    keyPath: string | undefined;
     model: any;
   };
-};
-
-type SchemaTypes<T = Record<string, { keyPath: string | any; model: any }>> = {
-  [P in keyof T]: T[P] extends { model: infer M } ? M : never;
 };
 
 type ModelTypes<T = Record<string, { keyPath: string | any; model: any }>> = {
@@ -18,14 +14,10 @@ type ModelTypes<T = Record<string, { keyPath: string | any; model: any }>> = {
 };
 type Method<T> = {
   // @ts-ignore
-  readonly [K in keyof T]: Collection<T[K]>;
+  readonly [K in keyof T]: CollectionCore<T[K]>;
 };
 
 type ReadonlyCollections<T> = Method<ModelTypes<T>>;
-
-interface op {
-  fr: string;
-}
 
 /**
  * Represents the IndexedDB wrapper for managing database operations.
@@ -129,7 +121,7 @@ export class IdbqlIndexedCore<T = any> {
 }
 
 /**
- * Creates an IndexedDB store for the given model and version.
+ * Creates an IndexedDB database store schema for the given model and version.
  *
  * @param model - The IdbqModel representing the structure of the store.
  * @param version - The version number of the store.
@@ -140,15 +132,22 @@ export class IdbqlIndexedCore<T = any> {
  */
 export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
   return {
+    /**
+     * Creates an IndexedDB database store based on the pre-declared model, with a given name.
+     * @param name - The name of the store.
+     * @returns An object containing the database, model, and idbqlState.
+     */
     create: (name: string) => {
       const idb_ = new IdbqlIndexedCore(name, model, version);
       return {
-        db: idb_ as typeof idb_,
-        model: idb_ as Method<ModelTypes<T>>,
-        idbqlState: idbqlState(idb_) as Method<ModelTypes<T>>,
+        idbDatabase: idb_ as typeof idb_,
+        idbql: idb_ as ReadonlyCollections<T>,
+        idbqlState: createIdbqlState(idb_) as ReadonlyCollections<T>,
       };
     },
   };
 };
 
 export const idbqBase = createIdbqDb;
+
+// Query

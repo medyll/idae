@@ -74,7 +74,7 @@ export const idbqlEvent = new idbqlStateEvent();
  * @param {IdbqlIndexedCore} [idbBase] - The IdbqlCore instance.
  * @returns {object} - The state object.
  */
-export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
+export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
   let state = dataState;
   let collections: Record<string, any> = {};
 
@@ -82,8 +82,7 @@ export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
     addCollections(idbBase.schema);
   }
   /**
-   * Adds a collection to the svelte 5 state.
-   *Synchronize with indexedDB if it exists.
+   * Adds a collection to the svelte 5 state and synchronize with indexedDB if it exists.
    * @template T - The type of data in the collection.
    * @param {string} collection - The name of the collection.
    * @param {string} [keyPath="id"] - The key path for the collection.
@@ -253,4 +252,4 @@ export const idbqlState = (idbBase?: IdbqlIndexedCore) => {
  * @deprecated
  * use idbqState
  */
-export const stateIdbql = idbqlState;
+export const stateIdbql = createIdbqlState;

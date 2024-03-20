@@ -7,7 +7,7 @@
  
  
 
-  let dbstate = stateIdbql(dbase.db);
+  let dbstate = stateIdbql(dbase.idbDatabase);
 
   let messages = dbstate.addCollection<ChatMessage>('messages');  
   let results = $derived(messages.where({chatId:{eq:'35'}})); 
