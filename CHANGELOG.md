@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/medyll/idbql/compare/v3.1.4...v3.2.0) (2024-03-20)
+
+
+### Features
+
+* new Proxy for collection class ([5061972](https://github.com/medyll/idbql/commit/50619726224c6a818f536b3a67529577c19cde1b))
+
+
+### Bug Fixes
+
+* autocompletion ([ac4e4c2](https://github.com/medyll/idbql/commit/ac4e4c2e5cf2eae3e557e14f2cab74196c38b320))
+* bad version ([c771ad9](https://github.com/medyll/idbql/commit/c771ad9c79dd40612af460ac55462950bc91d3e5))
+
 ### [3.1.4](https://github.com/medyll/idbql/compare/v3.1.3...v3.1.4) (2024-03-18)
 
 
