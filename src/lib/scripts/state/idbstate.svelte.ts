@@ -117,8 +117,7 @@ export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
     function where(qy: Where<T>, options?: ResultsetOptions) {
       return {
         get rs() {
-          let c = Operators.parse(collectionState.rs, qy); //$derived(Operators.parse(collectionState.rs, qy));
-          // , options?: ResultsetOptions
+          let c = Operators.parse(collectionState.rs, qy);
           const r = getResultset<T>(c);
           if (options) r.setOptions(options);
           return r;
@@ -151,37 +150,24 @@ export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
       }
     }
 
-    function _get(value: any, pathKey: string = "id") {
+    function get(value: any, pathKey: string = "id"): T[] {
       return {
         get rs() {
           return collectionState.rs.filter((d) => d[pathKey] === value);
         },
-      };
-    }
-
-    function get(value: any, pathKey: string = "id"): T[] {
-      return _get(value, pathKey).rs;
+      } as unknown as T[];
     }
 
     function getOne(value: any, pathKey: string = "id"): T {
-      return _get(value, pathKey).rs[0];
-    }
-
-    function _getAll() {
-      return {
-        get rs() {
-          return collectionState.rs.filter((d) => d);
-        },
-      };
+      return get(value, pathKey)?.[0];
     }
 
     function getAll(): { rs: T[] } {
-      const a = {
+      return {
         get rs() {
           return getResultset<T>(collectionState.rs);
         },
       };
-      return a;
     }
 
     async function del(
@@ -222,6 +208,18 @@ export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
           return function (...args) {
             // @ts-ignore
             return where(...args).rs;
+          };
+        }
+        if (prop === "get") {
+          return function (...args) {
+            // @ts-ignore
+            return get(...args).rs;
+          };
+        }
+        if (prop === "getOne") {
+          return function (...args) {
+            // @ts-ignore
+            return get(...args).rs?.[0];
           };
         }
         return obj?.[prop];

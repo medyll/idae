@@ -82,16 +82,17 @@ $inspect(all)
 $inspect(grp) */
 </script> 
 
-<!-- {messages.getAll()}
+<!-- {messages.getAll()} -->
 <hr />
 {messages.get(2)[0]?.chatId}
 <hr />
-{messages.getOne(2)?.chatId}  -->
-<hr />
+{messages.getOne(3)?.chatId}
+<hr /> 
 all <br />
 {#each (all ?? []) as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />
 {/each}<hr />
+getAll<br />
 {#each (messages.getAll() ?? []) as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />
 {/each}<hr />
