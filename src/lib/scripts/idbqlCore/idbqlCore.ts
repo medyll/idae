@@ -142,7 +142,7 @@ export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
       return {
         idbDatabase: idb_ as typeof idb_,
         idbql: idb_ as ReadonlyCollections<T>,
-        idbqlState: createIdbqlState(idb_) as ReadonlyCollections<T>,
+        idbqlState: createIdbqlState(idb_).state as ReadonlyCollections<T>,
       };
     },
   };

@@ -47,10 +47,12 @@ export const dbase = idbqStore.create("oneDatabase");
 export const { idbql, idbqlState, idbDatabase } =
   idbqStore.create("oneDatabase");
 
-idbqlState.chat;
+console.log("results", { idbql, idbqlState, idbDatabase }); // the IDBDatabase instance
 console.log("results", dbase.idbDatabase); // the IDBDatabase instance
 console.log("results", dbase.idbql.chat); // indexed db collection, non reactive, can be used a non reactive way
-console.log("results", dbase.idbqlState.chat); // state object, queryable, reactive
+setTimeout(() => {
+  console.log("results", dbase.idbqlState); // state object, queryable, reactive
+}, 2000);
 
 // You can create the state from the idbq database
 let dbstate = createIdbqlState(dbase.idbDatabase);
