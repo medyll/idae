@@ -44,7 +44,7 @@ export class IdbqlIndexedCore<T = any> {
 
     Object.keys(idbqModel).forEach((modelName) => {
       const modelInfo = idbqModel[modelName];
-      stores[modelName] = modelInfo.keyPath;
+      stores[modelName] = modelInfo.keyPath || "";
 
       Object.defineProperty(this, modelName, {
         // @ts-ignore
