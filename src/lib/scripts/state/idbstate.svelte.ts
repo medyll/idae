@@ -5,68 +5,7 @@ import {
   type ResultsetOptions,
 } from "$lib/scripts/resultSet/Resultset.js";
 import type { Where } from "$lib/scripts/types.js";
-
-let dataState = $state<Record<string, any>>({});
-
-class idbqlStateEvent {
-  #dataState = dataState;
-
-  constructor() {}
-
-  get dataState() {
-    return this.#dataState;
-  }
-
-  registerEvent(
-    event: "add" | "put" | "delete" | "set" | string,
-    more: {
-      collection: string;
-      data: any;
-      keyPath: any;
-    }
-  ) {
-    switch (event) {
-      case "set":
-        if (more?.collection && more?.data)
-          this.#dataState[more.collection] = more.data;
-        break;
-      case "delete":
-        if (more?.collection && more?.data && more?.keyPath) {
-          let keyPathValue = more?.data[more.keyPath];
-          while (true) {
-            const index = this.#dataState[more.collection].findIndex(
-              (item) => item[more.keyPath] === keyPathValue
-            );
-            if (index === -1) {
-              break;
-            }
-            this.#dataState[more.collection].splice(index, 1);
-          }
-        }
-        break;
-      case "put": // always got id
-        if (more?.collection && more?.data && more?.keyPath) {
-          let keyPathValue = more.data[more.keyPath];
-
-          const index = this.#dataState[more.collection].findIndex(
-            (item) => item[more.keyPath] === keyPathValue
-          );
-
-          this.#dataState[more.collection][index] = more.data;
-        }
-
-        break;
-      case "add":
-        if (more.collection && this.#dataState[more.collection]) {
-          if (more?.collection && more?.data)
-            this.#dataState[more.collection].push(more.data);
-        }
-        break;
-    }
-  }
-}
-
-export const idbqlEvent = new idbqlStateEvent();
+import { idbqlEvent } from "./idbqlEvent.svelte.js";
 
 /**
  * Main entry point.
@@ -75,7 +14,7 @@ export const idbqlEvent = new idbqlStateEvent();
  * @returns {object} - The state object.
  */
 export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
-  let state = dataState;
+  let state = idbqlEvent.dataState;
   let collections: Record<string, any> = {};
 
   if (idbBase?.schema) {
