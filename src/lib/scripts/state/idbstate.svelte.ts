@@ -29,13 +29,21 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
   function addCollection<T>(collectionName: string, keyPath: string = "id") {
+    console.log("add collect", collectionName);
+    /* const col = new CollectionDyn<T>(collectionName, keyPath, state, idbBase);
+    console.log(
+      "col------------------------------------------------------------------------",
+      col
+    ); */
+    //return col;
+    if (!state?.[collectionName]) state[collectionName] = [];
+
     const collectionState = {
       get rs() {
         return state[collectionName];
       },
     };
 
-    if (!state?.[collectionName]) state[collectionName] = [];
     feed();
     function testIdbql(collection: string) {
       return idbBase && Boolean(idbBase?.[collection]);
@@ -132,6 +140,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
       get: function (obj, prop, args) {
         if (prop === "where") {
           console.log("get", prop);
+          // after the where, trigger a set ?
         }
         return obj?.[prop];
       },
@@ -139,7 +148,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
 
     let proxy = new Proxy(ret, handler);
 
-    return proxy;
+    return ret;
   }
 
   function addCollections(args: Record<string, string>) {
@@ -162,3 +171,109 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
  * use idbqState
  */
 export const stateIdbql = createIdbqlState;
+
+/**
+ * Adds a collection to the svelte 5 state and synchronize with indexedDB if it exists.
+ * @template T - The type of data in the collection.
+ * @param {string} collectionName - The name of the collection.
+ * @param {string} [keyPath="id"] - The key path for the collection.
+ * @returns {Proxy} - A proxy object with methods to interact with the collection.
+ */
+class CollectionDyn<T> implements CollectionCore {
+  private collectionName: string;
+  private keyPath: string;
+  private state: any;
+  private idbBase: IdbqlIndexedCore;
+
+  constructor(
+    collectionName: string,
+    keyPath: string = "id",
+    state: any,
+    idbBase: IdbqlIndexedCore
+  ) {
+    this.collectionName = collectionName;
+    this.keyPath = keyPath;
+    this.state = state;
+    this.idbBase = idbBase;
+
+    if (!this.state?.[this.collectionName])
+      this.state[this.collectionName] = [];
+    this.feed();
+
+    return this;
+  }
+
+  get collectionState() {
+    return this.state[this.collectionName];
+  }
+
+  private testIdbql(collection: string) {
+    return this.idbBase && Boolean(this.idbBase?.[collection]);
+  }
+
+  private feed() {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      this.idbBase[this.collectionName].getAll().then((data) => {
+        this.state[this.collectionName] = data;
+      });
+    }
+  }
+
+  where(qy: Where<T>, options?: ResultsetOptions) {
+    let c = Operators.parse(this.collectionState.rs, qy);
+    const r = getResultset<T>(c);
+    if (options) r.setOptions(options);
+    return r;
+  }
+
+  get(value: any, pathKey: string = "id"): T[] {
+    return this.collectionState.filter((d) => d[pathKey] === value) as T[];
+  }
+
+  getOne(value: any, pathKey: string = "id"): T {
+    return this.collectionState.filter((d) => d[pathKey] === value)[0] as T;
+  }
+
+  getAll(): T[] {
+    return getResultset<T>(this.collectionState);
+  }
+
+  async update(keyPathValue: string | number, data: Partial<T>) {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      await (this.idbBase[this.collectionName] as CollectionCore).update(
+        keyPathValue,
+        data
+      );
+    }
+  }
+
+  async updateWhere(where: Where<T>, data: Partial<T>) {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      await this.idbBase[this.collectionName].updateWhere(where, data);
+    }
+  }
+
+  async put(value: Partial<T>) {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      await this.idbBase[this.collectionName].put(value);
+    }
+  }
+
+  async add(data: T) {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      await this.idbBase[this.collectionName].add(data);
+    }
+  }
+
+  async del(keyPathValue: string | number): Promise<boolean | undefined> {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      return this.idbBase[this.collectionName].delete(keyPathValue);
+    }
+  }
+
+  async deleteWhere(where: Where<T>): Promise<boolean> {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      return this.idbBase[this.collectionName].deleteWhere(where);
+    }
+  }
+}

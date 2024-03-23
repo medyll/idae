@@ -1,16 +1,16 @@
 
 <svelte:options runes    />
-<script lang="ts">    
-  import { createIdbqlState } from '$lib/scripts/state/idbstate.svelte';
-	import { dbase, type ChatMessage, idbqlState } from './example.js';
+<script lang="ts">     
+	import {  idbqlState } from './example.js';
 	import { onMount } from 'svelte'; 
  
  
 
   let messages = idbqlState.messages;
-  let results = $derived(messages.where({chatId:{eq:'35'}}));
-  let all = $derived(messages.getAll());
-  let grp = $derived(messages.getAll().groupBy('chatId'));
+  console.log(messages?.where)
+  let results = $derived(messages?.where({chatId:{eq:'35'}}));
+  /* let all = $derived(messages.getAll());
+  let grp = $derived(messages.getAll().groupBy('chatId')); */
 
 
   // const state = createState(results);

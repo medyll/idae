@@ -42,21 +42,21 @@ const idbqModel = {
 
 const idbqStore = createIdbqDb<typeof idbqModel>(idbqModel, 3);
 
-export const dbase = idbqStore.create("oneDatabase");
+// export const dbase = idbqStore.create("oneDatabase");
 // or
 export const { idbql, idbqlState, idbDatabase } =
   idbqStore.create("oneDatabase");
 
-console.log("results", { idbql, idbqlState, idbDatabase }); // the IDBDatabase instance
+/* console.log("results", { idbql, idbqlState, idbDatabase }); // the IDBDatabase instance
 console.log("results", dbase.idbDatabase); // the IDBDatabase instance
 console.log("results", dbase.idbql.chat); // indexed db collection, non reactive, can be used a non reactive way
 setTimeout(() => {
   console.log("results", dbase.idbqlState); // state object, queryable, reactive
 }, 2000);
 
-// You can create the state from the idbq database
 let dbstate = createIdbqlState(dbase.idbDatabase);
 
 let messages = dbstate.addCollection<ChatMessage>("messages");
 let results = messages.where({ chatId: { eq: "35" } });
 let all = messages.getAll();
+ */
