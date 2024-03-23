@@ -1,11 +1,12 @@
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
-import { idbqlEvent } from "../state/idbstate.svelte.js";
+
 import {
   type ResultsetOptions,
   type ResultSet,
   getResultset,
 } from "../resultSet/Resultset.js";
+import { idbqlEvent } from "../state/idbqlEvent.svelte.js";
 
 export class CollectionCore<T = any> {
   protected _store: string;
@@ -100,7 +101,12 @@ export class CollectionCore<T = any> {
     });
   }
   async update(keyPathValue: string | number, data: Partial<T>) {
-    return this.put({ [this.keyPath as keyof T]: keyPathValue, ...data });
+    const dta = await this.get(keyPathValue);
+    return this.put({
+      [this.keyPath as keyof T]: keyPathValue,
+      ...dta,
+      ...data,
+    });
   }
   async updateWhere(where: Where<T>, data: Partial<T>) {
     return this.where(where).then((rs) => {
@@ -155,7 +161,7 @@ export class CollectionCore<T = any> {
       };
       add.onerror = function (e) {
         console.log(e);
-        resolve(false);
+        reject(e);
       };
     });
   }
@@ -210,14 +216,23 @@ function createIDBStoreProxy(store) {
           const origMethod = target[prop];
           if (
             typeof origMethod === "function" &&
-            ["add", "put", "delete"].includes(String(prop))
+            (
+              [
+                "update",
+                "updateWhere",
+                "put",
+                "add",
+                "delete",
+                "deleteWhere",
+              ] as string[]
+            ).includes(String(prop))
           ) {
             return function (...args) {
               return new Promise(async (resolve, reject) => {
                 (origMethod as Function)
                   .apply(instance, args)
                   .then((res) => {
-                    idbqlEvent.registerEvent(String(prop), {
+                    idbqlEvent.registerEvent(prop as any, {
                       collection: instance._store,
                       data: res,
                       keyPath: instance.keyPath,

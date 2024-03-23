@@ -5,6 +5,7 @@ import {
   type ResultsetOptions,
 } from "$lib/scripts/resultSet/Resultset.js";
 import type { Where } from "$lib/scripts/types.js";
+import type { CollectionCore } from "../collection/collection.js";
 import { idbqlEvent } from "./idbqlEvent.svelte.js";
 
 /**
@@ -13,36 +14,36 @@ import { idbqlEvent } from "./idbqlEvent.svelte.js";
  * @param {IdbqlIndexedCore} [idbBase] - The IdbqlCore instance.
  * @returns {object} - The state object.
  */
-export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
+export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
   let state = idbqlEvent.dataState;
   let collections: Record<string, any> = {};
 
-  if (idbBase?.schema) {
+  if (idbBase.schema) {
     addCollections(idbBase.schema);
   }
   /**
    * Adds a collection to the svelte 5 state and synchronize with indexedDB if it exists.
    * @template T - The type of data in the collection.
-   * @param {string} collection - The name of the collection.
+   * @param {string} collectionName - The name of the collection.
    * @param {string} [keyPath="id"] - The key path for the collection.
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
-  function addCollection<T>(collection: string, keyPath: string = "id") {
+  function addCollection<T>(collectionName: string, keyPath: string = "id") {
     const collectionState = {
       get rs() {
-        return state[collection];
+        return state[collectionName];
       },
     };
 
-    if (!state?.[collection]) state[collection] = [];
+    if (!state?.[collectionName]) state[collectionName] = [];
     feed();
     function testIdbql(collection: string) {
       return idbBase && Boolean(idbBase?.[collection]);
     }
     function feed() {
-      if (idbBase && testIdbql(collection)) {
-        idbBase[collection].getAll().then((data) => {
-          state[collection] = data;
+      if (idbBase && testIdbql(collectionName)) {
+        idbBase[collectionName].getAll().then((data) => {
+          state[collectionName] = data;
         });
       }
     }
@@ -54,112 +55,83 @@ export const createIdbqlState = (idbBase?: IdbqlIndexedCore) => {
      * @returns  {Resultset} The filtered resultset.
      */
     function where(qy: Where<T>, options?: ResultsetOptions) {
-      return {
-        get rs() {
-          let c = Operators.parse(collectionState.rs, qy);
-          const r = getResultset<T>(c);
-          if (options) r.setOptions(options);
-          return r;
-        },
-      };
+      let c = Operators.parse(collectionState.rs, qy);
+      const r = getResultset<T>(c);
+      if (options) r.setOptions(options);
+      return r;
     }
 
     async function update(keyPathValue: string | number, data: Partial<T>) {
-      if (idbBase && testIdbql(collection)) {
-        await idbBase[collection].update(keyPathValue, data);
+      if (idbBase && testIdbql(collectionName)) {
+        await (idbBase[collectionName] as CollectionCore).update(
+          keyPathValue,
+          data
+        );
       }
     }
     async function updateWhere(where: Where<T>, data: Partial<T>) {
-      if (idbBase && testIdbql(collection)) {
-        await idbBase[collection].updateWhere(where, data);
+      if (idbBase && testIdbql(collectionName)) {
+        await idbBase[collectionName].updateWhere(where, data);
       }
     }
 
     // put data to indexedDB, replace collection content
     async function put(value: Partial<T>) {
-      if (idbBase && testIdbql(collection)) {
-        await idbBase[collection].put(value);
+      if (idbBase && testIdbql(collectionName)) {
+        await idbBase[collectionName].put(value);
       }
     }
 
     /** add data to the store */
     async function add(data: T) {
-      if (idbBase && testIdbql(collection)) {
-        await idbBase[collection].add(data);
+      if (idbBase && testIdbql(collectionName)) {
+        await idbBase[collectionName].add(data);
       }
     }
 
     function get(value: any, pathKey: string = "id"): T[] {
-      return {
-        get rs() {
-          return collectionState.rs.filter((d) => d[pathKey] === value);
-        },
-      } as unknown as T[];
+      return collectionState.rs.filter((d) => d[pathKey] === value) as T[];
     }
 
     function getOne(value: any, pathKey: string = "id"): T {
-      return get(value, pathKey)?.[0];
+      return collectionState.rs.filter((d) => d[pathKey] === value)[0] as T;
     }
 
-    function getAll(): { rs: T[] } {
-      return {
-        get rs() {
-          return getResultset<T>(collectionState.rs);
-        },
-      };
+    function getAll(): T[] {
+      return getResultset<T>(collectionState.rs);
     }
 
     async function del(
       keyPathValue: string | number
     ): Promise<boolean | undefined> {
-      if (idbBase && testIdbql(collection)) {
-        return await idbBase[collection].delete(keyPathValue);
+      if (idbBase && testIdbql(collectionName)) {
+        return await idbBase[collectionName].delete(keyPathValue);
       }
     }
 
     async function deleteWhere(where: Where<T>): Promise<boolean | undefined> {
-      if (idbBase && testIdbql(collection)) {
-        return await idbBase[collection].deleteWhere(where);
+      if (idbBase && testIdbql(collectionName)) {
+        return await idbBase[collectionName].deleteWhere(where);
       }
     }
 
     let ret = {
       where,
+      get,
+      getOne,
+      getAll,
       update,
       updateWhere,
       put,
       add,
-      get,
-      getOne,
-      getAll,
       delete: del,
       deleteWhere,
     };
 
     let handler = {
       get: function (obj, prop, args) {
-        if (prop === "getAll") {
-          return function (...args) {
-            return getAll().rs as T[];
-          };
-        }
         if (prop === "where") {
-          return function (...args) {
-            // @ts-ignore
-            return where(...args).rs;
-          };
-        }
-        if (prop === "get") {
-          return function (...args) {
-            // @ts-ignore
-            return get(...args).rs;
-          };
-        }
-        if (prop === "getOne") {
-          return function (...args) {
-            // @ts-ignore
-            return get(...args).rs?.[0];
-          };
+          console.log("get", prop);
         }
         return obj?.[prop];
       },

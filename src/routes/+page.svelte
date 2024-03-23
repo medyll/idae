@@ -1,16 +1,14 @@
 
 <svelte:options runes    />
 <script lang="ts">    
-  import { stateIdbql } from '$lib/scripts/state/idbstate.svelte';
-	import { dbase, type ChatMessage } from './example.js';
+  import { createIdbqlState } from '$lib/scripts/state/idbstate.svelte';
+	import { dbase, type ChatMessage, idbqlState } from './example.js';
 	import { onMount } from 'svelte'; 
  
  
 
-  let dbstate = stateIdbql(dbase.idbDatabase);
-
-  let messages = dbstate.addCollection<ChatMessage>('messages');  
-  let results = $derived(messages.where({chatId:{eq:'35'}})); 
+  let messages = idbqlState.messages;
+  let results = $derived(messages.where({chatId:{eq:'35'}}));
   let all = $derived(messages.getAll());
   let grp = $derived(messages.getAll().groupBy('chatId'));
 
@@ -19,8 +17,8 @@
  onMount(() => {
        messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'});
        //messages.delete(1)
-       /* dbase.messages.add({chatId:'24',content:'bfgdg'});
-       dbase.messages.update(2,{chatId:'32'}); */
+       messages.add({chatId:'24',content:'bfgdg'});
+       /* dbase.messages.update(2,{chatId:'32'}); */
       // y.add({content:'bfgdg'});
       // y =  dbase.messages.state ;// ({chatId:{eq:'35'}});//.where({chatId:'3'});
       //dbase.messages.put({chatId:'254152145',content:'put'});
@@ -54,16 +52,17 @@
         /* console.log({ww});  
         console.log(ww.groupBy('chatId'));    */
 
-        let ti = setInterval(() => {
-           // users.add({wouala:'red'})
-           // dbase.chat.update('35',{title:'my really new title !!'});
-            // dbase.chat.where({title: 'name'})Math.r
-            messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'});
-            //messages.add( {chatId:'123456456sss'+Math.random()+'..........'});
-            //dbase.messages.delete(66);
+        let ti = setInterval(() => { 
+            messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'}); 
         }, 5000);
+        let tis = setInterval(() => { 
+            messages.update(7,{content: Math.random()}); 
+        }, 2000);
     
-        return () => clearInterval(ti);
+        return () => {
+          clearInterval(ti);
+          clearInterval(tis);
+        }
     });
 
      async function gt() {
@@ -83,10 +82,10 @@ $inspect(grp) */
 </script> 
 
 <!-- {messages.getAll()} -->
-<hr />
-{messages.get(2)[0]?.chatId}
-<hr />
+<!-- <hr />
 {messages.getOne(3)?.chatId}
+<hr />
+{messages.get(2)[0]?.content}
 <hr /> 
 all <br />
 {#each (all ?? []) as aa}
@@ -95,7 +94,7 @@ all <br />
 getAll<br />
 {#each (messages.getAll() ?? []) as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />
-{/each}<hr />
+{/each}<hr /> -->
 query<br />
 {#each (results ?? []) as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />
@@ -105,10 +104,10 @@ query<br />
 {aa.id} {aa.chatId} {aa.content}  <br />
 {/each}
 <hr />
-{#each results?.sortBy({id:'asc'}) ?? [] as aa}
+<!-- {#each results?.sortBy({id:'asc'}) ?? [] as aa}
 {aa.id} {aa.chatId} {aa.content}  <br />
 {/each}
-<hr /> 
+<hr />  -->
     
      
  
