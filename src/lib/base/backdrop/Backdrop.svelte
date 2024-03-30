@@ -95,26 +95,5 @@
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.backdrop {
-		z-index: 10000;
-		height: 100%;
-		width: 100%;
-		top: 0;
-		left: 0;
-		.backdropContent {
-			z-index: 10001;
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			background-color: var(--backdrop-background-color, var(--sld-color-foreground-alpha-high));
-			backdrop-filter: blur(5px);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			.backdropContentInner {
-			}
-		}
-	}
+	@import './backdrop.scss';
 </style>

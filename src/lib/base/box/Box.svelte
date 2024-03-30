@@ -103,5 +103,5 @@
 {/if}
 
 <style global lang="scss">
-	@import 'Box';
+	@import './box.scss';
 </style>

@@ -3,8 +3,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import type { CommonProps } from '$lib/types/index.js';
 
-	type Props = {
+	type Props = CommonProps & {
 		/** icon name 	*/
 		icon?: string;
 		/**
@@ -28,10 +29,10 @@
 		size,
 		iconSize,
 		class: className = '',
-		element,
+		element = $bindable<HTMLDivElement>(),
 		children,
 		avatarBadge
-	} = $props<Props>();
+	} = $props() as Props;
 
 	const sizes = {
 		tiny: '2rem',
@@ -58,5 +59,5 @@
 </div>
 
 <style lang="scss">
-	@import 'Avatar';
+	@import './avatar.scss';
 </style>
