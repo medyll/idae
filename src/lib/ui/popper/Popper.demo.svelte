@@ -6,7 +6,7 @@
 	import ComponentExample from '$components/Example.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
 	let parametersSlot: any = {

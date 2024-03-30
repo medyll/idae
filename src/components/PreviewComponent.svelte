@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
 	import Paper from '$lib/base/paper/Paper.svelte';
-	import { dataOp } from '$lib/engine/utils.js';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 	import { componentCite } from '$lib/componentCite.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 

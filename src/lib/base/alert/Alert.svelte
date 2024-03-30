@@ -5,7 +5,6 @@
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/base/button/Button.svelte';
-	/** @restProps {button} */
 
 	type LevelType = 'success' | 'info' | 'error' | 'warning' | 'alert' | 'discrete';
 
@@ -14,11 +13,6 @@
 		toggle,
 		close
 	};
-
-	/** component actions
-	 * @type {Record<'open'|'toggle' | 'close', Function>}
-	 */
-	export const actions: Record<'open' | 'toggle' | 'close', Function> = alertActions;
 
 	type Props = {
 		class?: String;
@@ -33,33 +27,34 @@
 		/** show or hide the alert */
 		isOpen?: boolean;
 		/**  */
-		element: HTMLDivElement;
+		element: HTMLDialogElement;
 		children?: Snippet;
 		topButtonSlot?: Snippet;
 		messageSlot?: Snippet;
 		buttonZoneSlot?: Snippet;
 		buttonCloseSlot?: Snippet;
+		actions: Record<'open' | 'toggle' | 'close', Function>;
 	};
 
 	let {
 		class: className,
-		level = 'info',
 		message,
 		draggable = false,
-		isOpen,
 		children,
 		topButtonSlot,
 		messageSlot,
 		buttonZoneSlot,
 		buttonCloseSlot,
-		element
-	} = $props<Props>();
+		level = $bindable<LevelType>('info'),
+		isOpen = $bindable<boolean>(false),
+		element = $bindable<HTMLDialogElement>(),
+		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
+	} = $props() as Props;
 
 	const handleClick = (event: Event) => {
-		if (event?.target?.getAttribute('data-close')) {
+		if ((event?.target as Element)?.getAttribute('data-close')) {
 			event.stopPropagation();
 			actions.close();
-			new CustomEvent('alert:closed');
 		}
 	};
 
@@ -85,56 +80,56 @@
 	}
 </script>
 
-<!-- on:click={handleClick} -->
 {#if isOpen}
-	<div {draggable} bind:this={element} transition:fade|global class="alert shad-4 {className}">
-		<div class="pad-1 ftdr border-b-2 border-color-scheme-{level}">
-			<div class="flex-h flex-align-middle">
-				<div class="pad-1">
-					<div class="dot bg-themed-scheme-{level}" />
-				</div>
-				<div class="pad-1 flex-main flex-h flex-align-middle">
-					<div class="flex-main">
-						{#if children}
-							{@render children()}
-						{:else}
-							{message}
-						{/if}
-					</div>
-					{#if topButtonSlot}
-						{@render topButtonSlot()}
+	<dialog
+		open={isOpen}
+		{draggable}
+		bind:this={element}
+		transition:fade|global
+		class="alert {className}"
+	>
+		<article class="dialog-content border-color-scheme-{level}">
+			<header class="header-bar">
+				<div class="dot bg-themed-scheme-{level}" />
+				<div class="title">
+					{#if children}
+						{@render children()}
+					{:else}
+						{message}
 					{/if}
-					<div data-close>
-						{#if buttonCloseSlot}
-							{@render buttonCloseSlot()}
-						{:else}
-							<Button
-								size="auto"
-								icon="window-close"
-								naked
-								onclick={() => {
-									isOpen = !isOpen;
-								}}
-							/>
-						{/if}
-					</div>
 				</div>
-			</div>
+				{#if topButtonSlot}
+					{@render topButtonSlot()}
+				{/if}
+				<div data-close>
+					{#if buttonCloseSlot}
+						{@render buttonCloseSlot()}
+					{:else}
+						<Button
+							ratio="1/1"
+							icon="window-close"
+							naked
+							onclick={() => {
+								isOpen = !isOpen;
+							}}
+							aria-label="Close"
+						/>
+					{/if}
+				</div>
+			</header>
 			{#if messageSlot}
 				<Divider />
-				<div class="pad-1">
-					{@render messageSlot()}
-				</div>
+				{@render messageSlot()}
 			{/if}
-		</div>
-		{#if buttonZoneSlot}
-			<div class="pad-tb-1 pad-ii-2 flex-h flex-align-right" role="button">
-				{@render buttonZoneSlot()}
-			</div>
-		{/if}
-	</div>
+			{#if buttonZoneSlot}
+				<footer class="dialog-footer">
+					{@render buttonZoneSlot()}
+				</footer>
+			{/if}
+		</article>
+	</dialog>
 {/if}
 
 <style lang="scss">
-	@import 'Alert';
+	@import './alert.scss';
 </style>

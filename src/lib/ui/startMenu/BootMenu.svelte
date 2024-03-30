@@ -1,14 +1,14 @@
-<svelte:options immutable={true} />
+<svelte:options accessors immutable={true} />
 
 <script lang="ts">
 	import { fade, slide } from 'svelte/transition';
 
-	import { sx4u } from '$lib/uses/sx4u/sx4u';
-	import { clickAway } from '$lib/uses/clickAway/clickAway';
+	import { sx4u } from '$lib/utils/uses/sx4u/sx4u.js';
+	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
 	import Panel from '$lib/ui/panel/Panel.svelte';
 	import PanelSlide from '$lib/ui/panel/PanelSlide.svelte';
 
-	import { toggleStartMenu, startMenuStore } from '../../engine/wactions.utils';
+	import { toggleStartMenu, startMenuStore } from '$lib/utils/engine/wactions.utils.js';
 	import { openWindow } from '$lib/ui/window/actions.js';
 	import { afterUpdate, onMount, setContext, getContext } from 'svelte';
 
@@ -35,7 +35,7 @@
 
 {#if $startMenuStore}
 	<div
-		class="startMenu"
+		class="boot-menu"
 		on:panel:button:clicked={toggleSlidePanels}
 		transition:fade|global={{ duration: 50 }}
 		use:sx4u={{ position: 'absolute', radius: 8, w: 96, h: 64 }}
@@ -44,7 +44,7 @@
 		<div use:sx4u={{ p: 2, py: 2 }} style="margin-bottom:2rem">
 			<input style="width: 100%;" type="search" placeholder="Recherche" />
 		</div>
-		<div style="position:relative" class="startMenuContent">
+		<div style="position:relative" class="boot-menuContent">
 			<PanelSlide open={true} bind:this={slideLeft}>
 				<Panel title="Pinned Items">
 					<div class="gridIcon">
@@ -97,66 +97,5 @@
 {/if}
 
 <style lang="scss">
-	// @import "../../styles/slotui-vars.scss";
-	@import '../../styles/presets.scss';
-	.startMenu {
-		background-color: rgba(90, 67, 52, 0.9);
-		backdrop-filter: blur(10px);
-		color: white;
-		display: flex;
-		flex-direction: column;
-		max-height: 600px;
-		height: 80%;
-		left: 50%;
-		transform: translate(-50%, 0);
-		box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
-		overflow: hidden;
-		z-index: 3000;
-		position: absolute;
-		margin-top: 1rem;
-
-		.startMenuContent {
-			flex: 1;
-			overflow-y: auto;
-			overflow-x: hidden;
-		}
-	}
-
-	.buttonPole {
-		border-radius: var(--sld-radius-small);
-		border: 1px solid rgba(208, 191, 151, 0.3);
-		padding: 0.5rem;
-	}
-
-	.gridIcon {
-		width: 100%;
-		display: grid;
-		grid-gap: 10px;
-		grid-template-columns: repeat(auto-fill, minmax(30%, auto));
-	}
-
-	.gridIconBis {
-		width: 100%;
-		display: grid;
-		grid-gap: 10px;
-		grid-template-columns: repeat(auto-fill, minmax(15%, auto));
-	}
-
-	.gridIconMid {
-		width: 100%;
-		display: grid;
-		grid-gap: 10px;
-		grid-template-columns: repeat(auto-fill, minmax(49%, auto));
-	}
-
-	.gridOne {
-		width: 100%;
-		display: grid;
-		grid-gap: 10px;
-		grid-template-columns: repeat(auto-fill, minmax(100%, auto));
-	}
-
-	.bottomBar {
-		box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
-	}
+	@import './boot-menu.scss';
 </style>

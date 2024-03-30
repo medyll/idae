@@ -65,7 +65,7 @@ export { default as PanelSlide } from '$lib/ui/panel/PanelSlide.svelte';
 export { default as Popper } from '$lib/ui/popper/Popper.svelte';
 export { default as ServiceBox } from '$lib/ui/serviceBox/ServiceBox.svelte';
 export { default as Starter } from '$lib/ui/starter/Starter.svelte';
-export { default as StartMenu } from '$lib/ui/startMenu/StartMenu.svelte';
+export { default as BootMenu } from '$lib/ui/startMenu/BootMenu.svelte';
 export { default as Taskbar } from '$lib/ui/taskbar/Taskbar.svelte';
 export { default as TaskBarContent } from '$lib/ui/taskbar/TaskBarContent.svelte';
 export { default as ThemeSwitcher } from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';

@@ -1,0 +1,39 @@
+@import "../../styles/presets.scss";
+.frame {
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--css-frame-bg-color, var(--sld-color-paper));
+    backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
+    overflow: hidden;
+
+    .frame-container {
+        display: flex;
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+        .navLeft {
+            z-index: 1;
+            border-right: 1px solid var(--sld-color-primary);
+            height: 100%;
+            position: relative;
+        }
+
+        .frame-main {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+
+            .frame-content {
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+            }
+        }
+    }
+}

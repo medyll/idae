@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import { onMount, type SvelteComponent } from 'svelte';
-	import { stickTo, type StickToPositionType } from '$lib/uses/stickTo/stickTo.js';
-	import { clickAway } from '$lib/uses/clickAway/clickAway.js';
+	import { stickTo, type StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
+	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
 	import { popperList } from '$lib/ui/popper/actions.js';
 
 	/** popper HTMLDivElement */
@@ -132,28 +132,5 @@
 {/if}
 
 <style global lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.popper {
-		border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
-		overflow: hidden;
-		position: fixed;
-		box-shadow: var(--box-shad-4);
-		background-color: var(--sld-color-background-alpha-mid);
-		backdrop-filter: blur(30px);
-		display: inline-block;
-		top: 0;
-		z-index: 30000;
-		&::popover-open {
-			border: 1px color red;
-			margin: none !important;
-			padding: none !important;
-		}
-	}
-
-	.popper:popover-open {
-		border: 1px color red;
-		margin: none !important;
-		padding: none !important;
-	}
+	@import './popper.scss';
 </style>

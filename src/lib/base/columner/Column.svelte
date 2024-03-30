@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, tick } from 'svelte';
 	import type { ColumnerStoreType } from './types.js';
-	import { resizer } from '$lib/uses/resizer/resizer.js';
+	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 
 	let columner = getContext<ColumnerStoreType>('columner');
 

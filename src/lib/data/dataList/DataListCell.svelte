@@ -4,7 +4,7 @@
 	import type { DataCellType, DataListStoreType, RowType } from './types.js';
 	import { getContext, onMount, tick } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { resizer } from '$lib/uses/resizer/resizer.js';
+	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import type { Data } from '$lib/types/index.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Chipper from '$lib/base/chipper/Chipper.svelte';

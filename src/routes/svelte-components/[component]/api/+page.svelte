@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	// import { componentApiReadMe } from '$sitedata/api/indexApiFull.js';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 
 	export let data: any = {};
 

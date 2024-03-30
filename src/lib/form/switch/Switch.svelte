@@ -1,23 +1,45 @@
-<svelte:options accessors />
+<svelte:options accessors runes />
 
 <script lang="ts">
 	//
 	import type { Data } from '$lib/index.js';
 
-	export let name: string | undefined = undefined;
-	export let checked: boolean = false;
-	export let disabled: boolean = false;
+	type SwitchProps = {
+		/** className off the root component */
+		class?: string;
 
-	let className = '';
-	export { className as class };
-	export let element: HTMLElement | null = null;
-	export let style: string = '';
+		/** css style off the root component */
+		style?: string;
 
-	export let metaData: Data = {};
-	export let onChange: (val: boolean, metaData: Data) => void = (
-		val: boolean,
-		metaData: Data
-	) => {};
+		/** element root HTMLDivElement props */
+		element?: HTMLElement | null;
+
+		/** name of the switch */
+		name?: string;
+
+		/** whether the switch is checked */
+		checked: boolean;
+
+		/** whether the switch is disabled */
+		disabled: boolean;
+
+		/** metadata associated with the switch */
+		metaData: Data;
+
+		/** function to be called when the switch is toggled */
+		onChange: (val: boolean, metaData: Data) => void;
+	};
+
+	let {
+		class: className = '',
+		style = '',
+		element = $bindable<HTMLElement | null>(null),
+		name = $bindable<string>(undefined),
+		checked = $bindable<boolean>(false),
+		disabled = $bindable<boolean>(false),
+		metaData = {},
+		onChange = (val: boolean, metaData: Data) => {}
+	} = $props() as SwitchProps;
 
 	let hiddenRef: HTMLInputElement;
 </script>
@@ -27,7 +49,7 @@
 	<slot name="label" />
 	<div class="switchGutter">
 		<input
-			on:change={(event) => {
+			onchange={(event) => {
 				if (hiddenRef) hiddenRef.value = event.currentTarget.checked;
 				onChange(event.currentTarget.checked, metaData);
 			}}

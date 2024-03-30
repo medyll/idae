@@ -9,7 +9,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
 	const data = [...Array(89)].map((r, i) => {

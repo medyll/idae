@@ -52,8 +52,8 @@
 
 {#key status}
 	{#if status || isLoading || isError || isEmpty}
-		<div bind:this={element} transition:fade|global class="loaderRoot {className}" {style}>
-			<div class="loaderBox">
+		<div bind:this={element} transition:fade|global class="loader {className}" {style}>
+			<div class="loader-box">
 				{#if status === 'loading' || isLoading}
 					<slot name="loaderLoading">
 						<Icon
@@ -82,7 +82,7 @@
 
 				{#if Boolean(finalMessage)}
 					<slot name="loaderMessage">
-						<div class="message">{finalMessage}</div>
+						<div class="loader-message">{finalMessage}</div>
 					</slot>
 				{/if}
 			</div>
@@ -91,44 +91,5 @@
 {/key}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.loaderRoot {
-		position: absolute;
-		top: 0;
-		background-color: var(--sld-color-background-alpha-mid);
-		height: 100%;
-		min-width: 128px;
-		max-width: 100%;
-		display: inline-flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		left: 50%;
-		transform: translate(-50%, 0);
-
-		.loaderBox {
-			box-shadow: var(--box-shad-1);
-			border-radius: var(--sld-radius-tiny);
-			border: 1px solid var(--sld-color-foreground-alpha-high);
-			padding: 1rem 0;
-			min-width: 128px;
-			width: 100%;
-			margin: 1rem;
-			text-align: center;
-			background-color: var(--sld-color-background-alpha-mid);
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-
-			.message {
-				border-radius: var(--sld-radius-small);
-				border-bottom: 1px solid;
-				border-color: var(--sld-color-primary);
-				padding: var(--box-density-1) var(--box-density-2);
-				display: inline-block;
-				box-shadow: var(--box-shad-1);
-			}
-		}
-	}
+	@import './loader.scss';
 </style>

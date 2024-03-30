@@ -2,9 +2,9 @@
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
 	import Paper from '$lib/base/paper/Paper.svelte';
-	import { dataOp } from '$lib/engine/utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Divider from '$lib/base/divider/Divider.svelte';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 
 	function spliceArray(arrayIn: any[], size: number) {
 		let out = [];

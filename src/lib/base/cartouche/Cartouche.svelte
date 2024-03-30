@@ -131,5 +131,5 @@
 </div>
 
 <style lang="scss">
-	@import 'Cartouche';
+	@import 'cartouche.scss';
 </style>

@@ -35,7 +35,6 @@
 			titleBarIcon: Snippet;
 			boxBottomZone: Snippet;
 		};
-		events: Record<string, any>;
 	};
 
 	let {
@@ -56,9 +55,8 @@
 		},
 		restProps = {},
 		children,
-		slots = { titleBarTitle: undefined, titleBarIcon: undefined, boxBottomZone: undefined },
-		events = {}
-	} = $props<Props>();
+		slots = { titleBarTitle: undefined, titleBarIcon: undefined, boxBottomZone: undefined }
+	} = $props() as Props;
 
 	function open() {
 		isOpen = true;
@@ -81,7 +79,7 @@
 			{:else}
 				{title ?? ''}
 			{/if}
-			{#if slots.titleBarIcon}
+			{#if slots?.titleBarIcon}
 				{slots.titleBarIcon()}
 			{:else if icon}
 				<Icon {icon} {iconFamily} />

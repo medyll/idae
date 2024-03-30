@@ -40,11 +40,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.rating {
-		display: flex;
-		flex-direction: var(--direction);
-		gap: 0.25rem;
-	}
+	@import './rating.scss';
 </style>

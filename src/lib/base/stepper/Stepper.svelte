@@ -46,22 +46,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.stepper {
-		display: flex;
-		&.vertical {
-			flex-direction: column;
-		}
-		.step {
-			padding: 0.5rem;
-			background-color: red;
-			border-radius: var(--sld-radius-med);
-			margin-top: 10px;
-
-			&.active {
-				color: blue;
-			}
-		}
-	}
+	@import './stepper.scss';
 </style>

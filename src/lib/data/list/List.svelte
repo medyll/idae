@@ -6,7 +6,7 @@
 	import type { ElementProps } from '$lib/types/index.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import ListTitle from './ListTitle.svelte';
-	import { dataOp, propsProxy } from '$lib/engine/utils.js';
+	import { dataOp, propsProxy } from '$lib/utils/engine/utils.js';
 	import type { SorterFieldType } from '$lib/data/sorter/types.js';
 
 	type Data = Record<string, any>;
@@ -253,5 +253,5 @@
 </ul>
 
 <style lang="scss">
-	@import 'List';
+	@import 'list.scss';
 </style>

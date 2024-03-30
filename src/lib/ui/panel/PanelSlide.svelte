@@ -1,7 +1,7 @@
 <svelte:options accessors={true} />
 
 <script lang="ts">
-	import { transitions } from '$lib/effects/transitions.js';
+	import { transitions } from '$lib/utils/effects/transitions.js';
 	import { onMount, setContext, getContext } from 'svelte';
 	import type { PanelContextType } from './types.js';
 	const { slideInNoName, slideOutNoName } = transitions;

@@ -1,3 +1,3 @@
-import type { StickToPositionType } from "$lib/uses/stickTo/stickTo.js";
+import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 
-export type PopperPositionType = StickToPositionType
+export type PopperPositionType = StickToPositionType;

@@ -47,14 +47,14 @@
 		style,
 		flow = 'fixed',
 		autoClose = false,
-		isOpen = false,
+		isOpen = $bindable(),
 		isLoading = false,
 		actions = actionsnope,
 		element,
 		elementContent,
 		elementContentInner,
 		classes = {}
-	} = $props<Props>();
+	} = $props() as Props;
 
 	$effect(() => {
 		element?.addEventListener('click', testAutoClose);

@@ -7,7 +7,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';

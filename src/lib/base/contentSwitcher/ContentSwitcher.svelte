@@ -74,7 +74,7 @@
 <div bind:this={element} style="display:none">
 	<div
 		bind:this={thisRef}
-		class="flex-h flex-align-middle contentSwitcher"
+		class="flex-h flex-align-middle content-switcher"
 		style="width:100%;flex:1;position: relative"
 	>
 		<div on:click={handleClick}>
@@ -87,21 +87,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.contentSwitcher {
-		min-width: auto;
-		max-width: 100%;
-		gap: 0.5rem;
-		max-width: 100%;
-		overflow: var(--sld-contentswitcher-overflow, hidden);
-		position: relative;
-
-		.content {
-			position: relative;
-			overflow: var(--sld-contentswitcher-overflow, hidden);
-			min-width: auto;
-			flex: 1 1 auto;
-		}
-	}
+	@import './content-switcher.scss';
 </style>

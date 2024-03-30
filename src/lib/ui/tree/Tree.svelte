@@ -4,7 +4,7 @@
 	import { trans2Tree } from './tree.utils.js';
 	import type { Data, TreeItemType } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import { dataOp } from '$lib/engine/utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 
 	let className = '';
 	export { className as class };
@@ -100,14 +100,14 @@
 				}}
 				title={pat.path}
 				style="--tree-level:{level * 1.5}rem"
-				class="gap-tiny cell"
+				class="gap-tiny tree-cell"
 			>
-				<div class="cellArrow">
+				<div class="tree-cellArrow">
 					{#if pat?.children?.length}
 						<Icon icon="chevron-{visibleChildChild[pat.path] ? 'down' : 'right'}" />
 					{/if}
 				</div>
-				<div class="cellTitleGutter">
+				<div class="tree-cellTitleGutter">
 					{#if showCheckBox}
 						<div>
 							<input
@@ -144,28 +144,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.cell {
-		border: 1px solid transparent;
-		padding: 0.5rem;
-		padding-left: var(--tree-level);
-		border-radius: var(--sld-radius-tiny);
-		display: flex;
-		align-items: center;
-		width: 100%;
-		cursor: pointer;
-		.cellArrow {
-			width: 16px;
-			text-align: center;
-		}
-		.cellTitleGutter {
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-
-		@include data-hover;
-		@include data-selected;
-	}
+	@import './tree.scss';
 </style>

@@ -1,0 +1,15 @@
+.toggle-bar {
+  padding: var(--sld-commandbar-padding, var(--box-density-1));
+  display: flex;
+  border-bottom: 1px solid var(--sld-topbar-border-bottom-color, var(--sld-color-border));
+  width: 100%;
+  max-width: 100%;
+  min-width: auto;
+  position: relative;
+  gap: var(--sld-commandbar-gap, 0.25rem);
+}
+.toggle-bar .toggle-bar-content {
+  position: relative;
+  min-width: auto;
+  overflow: hidden;
+}

@@ -86,5 +86,5 @@
 </Popper>
 
 <style lang="scss">
-	@import 'Select';
+	@import 'select.scss';
 </style>

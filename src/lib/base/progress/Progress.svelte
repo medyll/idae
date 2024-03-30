@@ -28,7 +28,7 @@
 		percentBase = 100,
 		value = 0,
 		direction = 'horizontal'
-	} = $props<ProgressProps>();
+	} = $props() as ProgressProps;
 
 	const title = `${value} / ${percentBase}`;
 
@@ -37,24 +37,10 @@
 	const precWidth = $derived((value / percentBase) * 100);
 </script>
 
-<div bind:this={element} class="progressRoot {className} w-large" {style} {title}>
-	<div class="progressRail" style="{attr}:{precWidth}%;{attrTickness}:0.5rem"></div>
+<div bind:this={element} class="progress {className} w-large" {style} {title}>
+	<div class="progress-gouge" style="{attr}:{precWidth}%;{attrTickness}:0.5rem"></div>
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.progressRoot {
-		border: 1px solid var(--sld-color-secondary-alpha-mid);
-		border-radius: var(--sld-radius-tiny);
-		padding: 1px;
-		.progressRail {
-			background: var(--sld-color-primary);
-			border-radius: var(--sld-radius-tiny);
-			border: 1px solid var(--sld-color-primary-alpha);
-			transition-delay: 250ms;
-			transition: all 0.25s;
-			max-width: 100%;
-		}
-	}
+	@import './progress.scss';
 </style>

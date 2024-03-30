@@ -1,4 +1,11 @@
 ul.listRoot {
+  --sld-list-padding: 0;
+  --sld-list-item-padding: 0;
+  --sld-list-item-radius: var(--sld-radius-small);
+  --sld-list-item-selected-background: var(--sld-selected-background-color);
+}
+
+ul.listRoot {
   display: flex;
   flex-direction: column;
   align-items: end;
@@ -31,22 +38,22 @@ li.listItem[data-density=none] {
 li.listItemTitle.density-tight, li.listItemTitle[data-density=tight],
 li.listItem.density-tight,
 li.listItem[data-density=tight] {
-  padding: 0.5rem 0;
+  padding: 0.5rem auto;
 }
 li.listItemTitle.density-small, li.listItemTitle[data-density=small],
 li.listItem.density-small,
 li.listItem[data-density=small] {
-  padding: 0.75rem 0;
+  padding: 0.75rem auto;
 }
 li.listItemTitle.density-default, li.listItemTitle[data-density=default],
 li.listItem.density-default,
 li.listItem[data-density=default] {
-  padding: 1rem 0;
+  padding: 1rem auto;
 }
 li.listItemTitle.density-kind, li.listItemTitle[data-density=kind],
 li.listItem.density-kind,
 li.listItem[data-density=kind] {
-  padding: 1.5rem 0;
+  padding: 1.5rem auto;
 }
 li.listItemTitle.density-unset, li.listItemTitle[data-density=unset],
 li.listItem.density-unset,
@@ -119,16 +126,16 @@ li.listItem.density-none, li.listItem[data-density=none] {
   padding: 0;
 }
 li.listItem.density-tight, li.listItem[data-density=tight] {
-  padding: 0.5rem 0;
+  padding: 0.5rem auto;
 }
 li.listItem.density-small, li.listItem[data-density=small] {
-  padding: 0.75rem 0;
+  padding: 0.75rem auto;
 }
 li.listItem.density-default, li.listItem[data-density=default] {
-  padding: 1rem 0;
+  padding: 1rem auto;
 }
 li.listItem.density-kind, li.listItem[data-density=kind] {
-  padding: 1.5rem 0;
+  padding: 1.5rem auto;
 }
 li.listItem.density-unset, li.listItem[data-density=unset] {
   padding: auto;

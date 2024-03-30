@@ -3,8 +3,8 @@
 	import List from '$lib/data/list/List.svelte';
 	import ListItem from '$lib/data/list/ListItem.svelte';
 	import ListTitle from '$lib/data/list/ListTitle.svelte';
-	import { dataOp } from '$lib/engine/utils.js';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 
 	export let selected: string | undefined;
 

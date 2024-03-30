@@ -14,9 +14,15 @@
 		multiple: Record<string, any> | undefined;
 	};
 
-	let { title, parameters, componentArgs, component, multiple = {} } = $props<Props>();
+	let {
+		title,
+		parameters = $bindable({}),
+		componentArgs = $bindable({}),
+		component = $bindable(undefined),
+		multiple = {}
+	} = $props() as Props;
 
-	let activeParams = { ...componentArgs };
+	let activeParams = $state({ ...componentArgs });
 </script>
 
 {#if title}
@@ -29,7 +35,7 @@
 			<Icon icon="cib:svelte" />
 		</div>
 		<div class="pad-2">
-			{#if Object.entries(multiple).length > 0}sssssssssssssssssssssss
+			{#if Object.entries(multiple).length > 0}
 				<div class="flex-h flex-align-middle flex-wrap gap-medium">
 					{#each Object.keys(multiple) as tiple}
 						{#each Object.keys(multiple[tiple]) as params}
@@ -74,8 +80,8 @@
 											<Switch
 												name={crypto.randomUUID()}
 												checked={activeParams[parameter]}
-												on:change={(args) => {
-													activeParams[parameter] = args.currentTarget.checked;
+												onChange={(val, metadata) => {
+													activeParams[parameter] = val;
 												}}
 											/>
 										</div>
@@ -86,7 +92,7 @@
 												class="w-small-min"
 												naked
 												showChip={activeParams[parameter] === value}
-												on:click={() => {
+												onclick={() => {
 													activeParams[parameter] = value;
 												}}
 											>

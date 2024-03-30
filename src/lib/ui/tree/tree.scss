@@ -1,0 +1,23 @@
+@import "../../styles/presets.scss";
+.tree-cell {
+    border: 1px solid transparent;
+    padding: 0.5rem;
+    padding-left: var(--tree-level);
+    border-radius: var(--sld-radius-tiny);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    .tree-cellArrow {
+        width: 16px;
+        text-align: center;
+    }
+    .tree-cellTitleGutter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    @include data-hover;
+    @include data-selected;
+}

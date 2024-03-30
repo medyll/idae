@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { email, Hint, HintGroup, required, useForm } from 'svelte-use-form';
 	import { fade } from 'svelte/transition';
 
-	import { userStore } from './store.js';
 	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
 	import Button from '$lib/base/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -31,11 +29,6 @@
 
 	const validData: any = {};
 
-	if (fields?.email) validData.email = { initial: fields?.email, validators: [required, email] };
-	if (fields?.password) validData.password = { initial: fields?.password, validators: [required] };
-
-	const form = useForm(validData);
-
 	export let onSubmit = function (args) {
 		return new Promise((resolve, reject) => {
 			return setTimeout(() => {
@@ -45,25 +38,7 @@
 	};
 
 	function validate() {
-		try {
-			submitting = true;
-			return onSubmit($form.values)
-				.then(() => {
-					$userStore.logged = true;
-					showLogin = false;
-					submitting = false;
-				})
-				.catch((e) => {
-					console.log(e);
-					grantedError = true;
-					submitting = false;
-				});
-		} catch (e) {
-			console.log(e);
-			grantedError = true;
-			submitting = false;
-		}
-		return false;
+		return true;
 	}
 </script>
 
@@ -74,7 +49,6 @@
 			class="pos-abs top-0 h-full w-full {className}"
 			method="post"
 			on:submit|preventDefault={validate}
-			use:form
 		>
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
 				<div class="form flex-v flex-align-middle-center">
@@ -93,17 +67,10 @@
 						<div class="pad-2">
 							<input class="input" name="email" type="text" />
 						</div>
-						<HintGroup for="email" class="color-scheme-error">
-							<Hint on="required">This is a mandatory field</Hint>
-							<Hint hideWhenRequired on="email">Email is not valid</Hint>
-						</HintGroup>
 						<div class="pad-2">
 							<input name="password" type="password" />
 						</div>
-						<Hint for="password" let:value on="required" class="color-scheme-error">
-							The password is required
-						</Hint>
-						<Button type="submit" primary="login" loading={submitting} disabled={!$form.valid}>
+						<Button type="submit" primary="login" loading={submitting}>
 							{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
 								></i>{/if}
 							Login

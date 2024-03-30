@@ -7,7 +7,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 	let cc = 0;
 	let listItems = [];

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import List from '$lib/base/list/List.svelte';
 	import type { LisItemProps } from '$lib/base/list/types.js';
-	import type { PropsProxyProps } from '$lib/engine/utils.js';
-	import { propsProxy } from '$lib/engine/utils.js';
+	import type { PropsProxyProps } from '$lib/utils/engine/utils.js';
+	import { propsProxy } from '$lib/utils/engine/utils.js';
 	import appscheme from '../../../demoData/appscheme.json';
 	import Header from './Header.svelte';
 	import MenuBar from '$lib/ui/toggleBar/ToggleBar.svelte';

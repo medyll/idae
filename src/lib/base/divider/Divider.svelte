@@ -3,7 +3,7 @@
 <script lang="ts">
 	/** extends button */
 	import type { ElementProps } from '$lib/types/index.js';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 
 	type DividerProps = {
 		/** className off the root component */
@@ -104,5 +104,5 @@
 />
 
 <style lang="scss">
-	@import 'Divider';
+	@import 'divider.scss';
 </style>

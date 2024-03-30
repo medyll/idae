@@ -1,14 +1,17 @@
 @mixin input-sizes-presets {
+    &.height-tiny,
     &[data-height="tiny"] {
-        height: calc(1rem - var(--sld-border-bottom-size, 2px));
-        padding: 0;
+        height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
     }
+    &.height-small,
     &[data-height="small"] {
         height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
     }
+    &.height-medium,
     &[data-height="default"] {
         height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
     }
+    &.height-large,
     &[data-height="large"] {
         height: calc(4rem - var(--sld-border-bottom-size, 2px));
     }
@@ -19,24 +22,36 @@
 }
 
 @mixin ui-width-presets {
+    &.wt,
     &[data-width="tiny"] {
+        /** size tiny */
         width: 2rem;
     }
+    &.ws,
     &[data-width="small"] {
+        /** size small */
         width: 6rem;
     }
+    &.wm,
     &[data-width="medium"] {
+        /** size medium */
         width: 8rem;
     }
+    &.wd,
     &[data-width="default"] {
+        /** size default */
         width: 12rem;
     }
+    &.wl,
     &[data-width="large"] {
         width: 16rem;
     }
+    &.wf,
     &[data-width="full"] {
         width: 100%;
     }
+    &.wa,
+    &.width-auto,
     &[data-width="auto"] {
         width: auto;
     }
@@ -49,19 +64,19 @@
     }
     &.density-tight,
     &[data-density="tight"] {
-        padding: 0.5rem 0;
+        padding: 0.5rem auto;
     }
     &.density-small,
     &[data-density="small"] {
-        padding: 0.75rem 0;
+        padding: 0.75rem auto;
     }
     &.density-default,
     &[data-density="default"] {
-        padding: 1rem 0;
+        padding: 1rem auto;
     }
     &.density-kind,
     &[data-density="kind"] {
-        padding: 1.5rem 0;
+        padding: 1.5rem auto;
     }
     &.density-unset,
     &[data-density="unset"] {

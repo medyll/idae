@@ -153,23 +153,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-
-	.slider {
-		background-color: var(--sld-color-background);
-
-		.gouge {
-			position: relative;
-			padding: 0.5rem;
-			.sliderPin {
-				width: 8px;
-				height: 8px;
-				background-color: var(--color-primary);
-				position: relative;
-				border: 1px solid var(--sld-color-primary);
-				display: inline-block;
-			}
-		}
-	}
+	@import './slider.scss';
 </style>

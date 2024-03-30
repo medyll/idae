@@ -39,5 +39,5 @@
 {/if}
 
 <style lang="scss">
-	@import 'Badge';
+	@import 'badge.scss';
 </style>

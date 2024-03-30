@@ -23,7 +23,7 @@
 		component = undefined,
 		children,
 		slots
-	} = $props<DemoPageProps>();
+	} = $props() as DemoPageProps;
 
 	let codeT = subTitle ? subTitle : `component ${component} demo ${title?.toLowerCase()}`;
 </script>
@@ -46,7 +46,7 @@
 				{#if slots?.code}
 					{@render slots.code()}
 				{:else}
-					<DemoerCode {code} />
+					<!-- <DemoerCode {code} /> -->
 				{/if}
 			</div>
 		{/if}

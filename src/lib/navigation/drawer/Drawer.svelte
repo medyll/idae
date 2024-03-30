@@ -167,5 +167,5 @@
 </div>
 
 <style global lang="scss">
-	@import 'Drawer';
+	@import 'drawer';
 </style>

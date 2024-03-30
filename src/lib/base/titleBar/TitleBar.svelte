@@ -20,13 +20,13 @@
 		};
 	};
 
-	let { onClose, hasMenu = false, icon = undefined, slots } = $props<TitleBarProps>();
+	let { onClose, hasMenu = false, icon = undefined, slots = {} } = $props<TitleBarProps>();
 </script>
 
-<div class="titleBar flex-h marg-b-1 pad-1">
+<div class="title-bar flex-h marg-b-1 pad-1">
 	<div class="title flex-main flex-h flex-align-middle">
 		<div class="pad-ii-1 text-center">
-			{#if slots.titleBarIcon}
+			{#if slots?.titleBarIcon}
 				{@render slots.titleBarIcon()}
 			{:else}
 				<Icon fontSize="small" {icon} />
@@ -51,11 +51,5 @@
 </div>
 
 <style global lang="scss">
-	.titleBar {
-		.title {
-			min-height: 34px;
-		}
-
-		border-bottom: 1px solid var(--sld-color-border);
-	}
+	@import './title-bar.scss';
 </style>

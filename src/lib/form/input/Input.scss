@@ -1,5 +1,17 @@
-// @import "../../styles/slotui-vars.scss";
 @import "../../styles/presets.scss";
+:root {
+    input {
+        --sld-input-background: var(--sld-color-background-alpha-high);
+        --sld-input-border-width: 1px;
+        --sld-input-border-color: var(--sld-color-foreground-alpha-mid);
+        --sld-input-border-bottom-width: 2px;
+        --sld-input-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+        --sld-input-radius: var(--sld-radius-small);
+        --sld-input-padding: 0 0.5rem;
+        --sld-input-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+    }
+}
+
 input {
     border: var(--sld-input-border-width) solid var(--sld-input-border-color);
     border-bottom: var(--sld-input-border-bottom-width) solid var(--sld-input-border-bottom-color);

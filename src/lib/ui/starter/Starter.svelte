@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { fade, slide } from 'svelte/transition';
 
-	import { sx4u } from '$lib/uses/sx4u/sx4u';
-	import { clickAway } from '$lib/uses/clickAway/clickAway';
+	import { sx4u } from '$lib/utils/uses/sx4u/sx4u';
+	import { clickAway } from '$lib/utils/uses/clickAway/clickAway';
 	import Paneler from '$lib/ui/panel/Paneler.svelte';
 	import Panel from '$lib/ui/panel/Panel.svelte';
 	import PanelGrid from '$lib/ui/panel/PanelGrid.svelte';
@@ -63,7 +63,7 @@
 </Popper>
 
 <style lang="scss">
-	.startMenu {
+	.boot-menu {
 		// background-color: rgba(90, 67, 52, 0.9);
 		// color: white;
 		backdrop-filter: blur(10px);
@@ -75,26 +75,25 @@
 		overflow: hidden;
 		z-index: 3000;
 
-		.startMenuContent {
+		.boot-menuContent {
 			flex: 1;
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
-	}
+		.buttonPole {
+			border-radius: var(--sld-radius-small);
+			border: 1px solid rgba(208, 191, 151, 0.3);
+			padding: 0.5rem;
+		}
 
-	.buttonPole {
-		border-radius: var(--sld-radius-small);
-		border: 1px solid rgba(208, 191, 151, 0.3);
-		padding: 0.5rem;
-	}
+		.slotUiGrid {
+			display: grid;
+			grid-gap: 0.2rem;
+			grid-template-columns: repeat(auto-fit, minmax(var(--sld-column-size), 1fr));
+		}
 
-	.slotUiGrid {
-		display: grid;
-		grid-gap: 0.2rem;
-		grid-template-columns: repeat(auto-fit, minmax(var(--sld-column-size), 1fr));
-	}
-
-	.bottomBar {
-		box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
+		.bottomBar {
+			box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
+		}
 	}
 </style>

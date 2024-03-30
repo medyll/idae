@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import type { ElementProps } from '$lib/types/index.js';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 
 	type IconProps = {
 		/** className off the root component */
@@ -43,7 +43,7 @@
 	let {
 		class: className,
 		style,
-		element = null,
+		element = $bindable<HTMLDivElement>(),
 		icon = 'question',
 		iconFamily = 'mdi',
 		fontSize = 'small',

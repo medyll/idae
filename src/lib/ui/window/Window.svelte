@@ -6,9 +6,9 @@
 	import Button from '$lib/base/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
-	import { draggebler } from '$lib/uses/draggabler.js';
-	import { makeOnTop } from '$lib/uses/makeOnTop.js';
-	import { positioner } from '$lib/uses/positioner.js';
+	import { draggebler } from '$lib/utils/uses/draggabler.js';
+	import { makeOnTop } from '$lib/utils/uses/makeOnTop.js';
+	import { positioner } from '$lib/utils/uses/positioner.js';
 
 	export let outer = true;
 
@@ -184,48 +184,6 @@
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
 	@import '../../styles/presets.scss';
-	.window {
-		display: block;
-		border-radius: var(--sld-radius-small);
-		background-color: var(--sld-color-background);
-		color: var(--sld-color-foreground);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		min-width: 250px;
-		top: 0;
-		left: 0;
-		overflow: hidden;
-		z-index: 70000;
-		max-height: 100%;
-
-		&.active {
-			border: 1px solid var(--sld-color-primary);
-		}
-
-		.bar {
-			display: flex;
-			align-items: center;
-			text-align: center;
-			background-color: var(--sld-color-paper);
-			color: var(--sld-color-foreground);
-			padding: 0.5rem 0;
-
-			.handle {
-				flex: 1;
-				cursor: pointer;
-			}
-		}
-
-		.buttonZone {
-			padding: 0.5rem;
-			display: flex;
-			justify-content: end;
-			gap: var(--gap-small, 0.5rem);
-		}
-	}
-
-	.ctrlZone {
-		display: flex;
-	}
+	@import './window.scss';
 </style>

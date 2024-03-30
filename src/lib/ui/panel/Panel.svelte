@@ -39,7 +39,7 @@
 </script>
 
 <div class="panel" bind:this={ref}>
-	<div class="panelBar pos-sticky top-0 gap-small">
+	<div class="panel-bar pos-sticky top-0 gap-small">
 		<div style="flex:1">{title}</div>
 		{#if hasPrev}
 			{#if $$slots.panelButtonPrevious}
@@ -85,27 +85,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.panel {
-		position: relative;
-		margin-bottom: 2rem;
-
-		.panelBar {
-			margin-bottom: 2rem;
-			display: flex;
-			min-width: auto;
-			align-items: center;
-			padding-right: 0.5rem;
-
-			button {
-				padding: 0 0.5rem;
-				border: 1px solid rgba(255, 255, 255, 0.05);
-				background-color: rgba(255, 255, 255, 0.1);
-			}
-		}
-
-		.panelContent {
-		}
-	}
+	@import './panel.scss';
 </style>

@@ -1,17 +1,9 @@
-[data-theme=dark] {
-  --sld-color-border: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme=light] {
-  --sld-color-border: rgba(0, 0, 0, 0.1);
-}
-
 .dataList {
   height: 100%;
   position: relative;
 }
 
-.dataListHead {
+.datalist-head {
   margin: 0.5rem 0;
   align-items: stretch;
   height: 32px;
@@ -22,7 +14,7 @@
   box-shadow: var(--box-shad-1);
   border: 1px solid var(--sld-color-border);
 }
-.dataListHead .dataListCell {
+.datalist-head .dataListCell {
   display: flex;
   align-items: stretch;
   overflow: hidden;
@@ -33,22 +25,22 @@
   -ms-user-select: none;
   user-select: none;
 }
-.dataListHead .dataListCell:last-of-type {
+.datalist-head .dataListCell:last-of-type {
   border-right: 1px solid transparent;
 }
-.dataListHead .dataListCell[data-sortable=true] {
+.datalist-head .dataListCell[data-sortable=true] {
   cursor: pointer;
 }
-.dataListHead .dataListCell[data-sortable=true]:hover {
+.datalist-head .dataListCell[data-sortable=true]:hover {
   background-color: var(--sld-color-primary-alpha);
 }
-.dataListHead .dataListCell .cellHeader {
+.datalist-head .dataListCell .cellHeader {
   display: flex;
   align-items: center;
   min-width: 0;
   width: 100%;
 }
-.dataListHead .dataListCell .cellHeader .cellHeaderContent {
+.datalist-head .dataListCell .cellHeader .cellHeaderContent {
   flex: 1;
   overflow: hidden;
   padding: 0 8px;

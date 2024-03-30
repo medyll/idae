@@ -22,20 +22,18 @@
 		code = '',
 		subTitle = undefined,
 		component = undefined,
-		slots
-	} = $props<DemoerCodeProps>();
+		slots = {}
+	} = $props() as DemoerCodeProps;
 
-	Prism.plugins.NormalizeWhitespace.setDefaults({
+	/* Prism.plugins.NormalizeWhitespace.setDefaults({
 		'remove-trailing': true,
 		'remove-indent': true,
 		'left-trim': false,
 		'right-trim': false,
-		'break-lines': 80,
-		// indent: 1,
+		'break-lines': 80, 
 		'remove-initial-line-feed': true,
-		'tabs-to-spaces': 2
-		// "spaces-to-tabs": 20,
-	});
+		'tabs-to-spaces': 2 
+	}); */
 
 	const highlighted = Prism.highlight(code, Prism.languages.svelte, 'svelte');
 </script>
@@ -55,11 +53,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.code {
-		white-space: pre-wrap;
-	}
-</style>

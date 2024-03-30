@@ -33,22 +33,18 @@
 		color = '',
 		content = '',
 		showChip = true
-	} = $props<ChipperProps>();
+	} = $props() as ChipperProps;
 
 	const cssColor = $derived(color ?? (bgTheme ? `var(--sld-color-${bgTheme})` : ''));
 </script>
 
-<div
-	bind:this={element}
-	style="{style};position:relative;"
-	class="chipperRoot gap-tiny {className} "
->
+<div bind:this={element} style="{style};position:relative;" class="chipper gap-tiny {className} ">
 	<slot>
 		{#if content}
-			<div class="chipperContent">{@html content ?? ''}</div>
+			<div class="chipper-content">{@html content ?? ''}</div>
 		{/if}
 	</slot>
-	<chip class="chipperChip" data-position={position} style:--css-button-chip-color={cssColor}>
+	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
 		{#if showChip}
 			<slot name="chipperChip">
 				<div class="defaultChip" />
@@ -58,63 +54,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-
-	.chipperRoot {
-		position: relative;
-
-		.chipperContent {
-			padding: 0.5rem;
-		}
-
-		.chipperChip {
-			display: block;
-			position: absolute;
-			z-index: 2;
-			border-radius: var(--sld-radius-large);
-			transition: all 0.25s;
-			max-height: 100%;
-			background-color: var(--css-button-chip-color, var(--sld-color-primary));
-
-			&[data-position='left'] {
-				top: 2px;
-				left: 2px;
-				height: 100%;
-				width: 3px;
-			}
-
-			&[data-position='right'] {
-				top: 2px;
-				right: 2px;
-				height: 130px;
-				width: 3px;
-			}
-
-			&[data-position='top'] {
-				height: 4px;
-				top: 2px;
-				left: 50%;
-				transform: translate(-50%, 0);
-				width: 50%;
-			}
-
-			&[data-position='bottom'] {
-				height: 4px;
-				bottom: 2px;
-				left: 50%;
-				transform: translate(-50%, 0);
-				width: 50%;
-			}
-
-			.defaultChip,
-			[slot='chipperChip'] {
-				display: block;
-				height: 100%;
-				width: 100%;
-				min-height: 3px;
-				background-color: var(--css-button-chip-color, var(--sld-color-primary));
-			}
-		}
-	}
+	@import './chipper.scss';
 </style>

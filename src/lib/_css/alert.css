@@ -7,6 +7,9 @@
   background-color: var(--sld-color-background);
   overflow: hidden;
 }
+.alert .title-bar {
+  padding: var(--sld-);
+}
 .alert .dot {
   display: inline-block;
   padding: 0.25rem;

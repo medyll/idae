@@ -1,18 +1,20 @@
+<svelte:options runes />
+
 <script lang="ts">
 	import PreviewComponent from './../components/PreviewComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { UiContextType } from '../contexts/ui.context.js';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { dataOp } from '$lib/engine/utils.js';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	import { componentCite } from '$lib/componentCite.js';
 	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
 	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
 	import type { LayoutData } from './$types.js';
-
+	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	let uiContext = getContext<Writable<UiContextType>>('uiContext');
 	let BackdropRef;
 	let backdropVisible: boolean = false;
@@ -22,12 +24,9 @@
 	$uiContext.drawerFlow = 'fixed';
 	$uiContext.drawerOpen = false;
 
-	export let data: LayoutData;
+	let data: LayoutData;
 
-	/* const groupedData = dataOp.groupBy(
-    Object.values(slotuiCatalog).sort((a, b) => (a.name > b.name ? 1 : -1)),
-    "group"
-  ); */
+	const groupedData = groupCatalog(slotuiCatalog);
 
 	function groupCatalog(catalog: any) {
 		return dataOp.groupBy(
@@ -41,8 +40,6 @@
 	function searchPreview(component: string) {
 		return dataOp.searchList(slotUiComponentPreviewList, component, 'code')?.[0] ?? undefined;
 	}
-
-	// $: console.log(data.streamed);
 </script>
 
 <svelte:head>
@@ -78,49 +75,44 @@
 			</div>
 		</div>
 	</div>
-	{#await data?.streamed?.slotuiCatalog}
-		Loading
-	{:then value}
-		{@const groupedData = groupCatalog(value)}
-		{#each Object.keys(groupedData) as group}
-			<div class="block">
-				<h4 class="pad-4 text-bold">
-					slotted {group ?? ''}
-				</h4>
-				<div class="flex-h flex-wrap flex-align-middle gap-large">
-					{#each groupedData[group] as catalog}
-						<div class="w-large shad-3 radius-small">
-							<div class="pad">
-								<div class="pad border-b flex-h flex-align-middle">
-									<h5 class="flex-main" title={componentCite?.[catalog?.code]?.cite}>
-										{catalog?.code ?? ''}
-									</h5>
-									{#if Boolean(searchPreview(catalog.code))}
-										<div>
-											<Icon
-												on:click={() => {
-													backdropVisible = true;
-													backdropComponentCode = catalog.code;
-												}}
-												class="prevLink"
-												icon="link"
-											/>
-										</div>
-									{/if}
-								</div>
+
+	{#each Object.keys(groupedData) as group}
+		<div class="block">
+			<h4 class="pad-4 text-bold">
+				slotted {group ?? ''}
+			</h4>
+			<div class="flex-h flex-wrap flex-align-middle gap-large">
+				{#each groupedData[group] as catalog}
+					<div class="w-large shad-3 radius-small">
+						<div class="pad">
+							<div class="pad border-b flex-h flex-align-middle">
+								<h5 class="flex-main" title={componentCite?.[catalog?.code]?.cite}>
+									{catalog?.code ?? ''}
+								</h5>
+								{#if Boolean(searchPreview(catalog.code))}
+									<div>
+										<Icon
+											on:click={() => {
+												backdropVisible = true;
+												backdropComponentCode = catalog.code;
+											}}
+											class="prevLink"
+											icon="link"
+										/>
+									</div>
+								{/if}
 							</div>
-							<Menu style="width:100%;">
-								<MenuItem
-									><a href={sitePaths.component(catalog)}>{catalog.name} examples</a></MenuItem
-								>
-								<MenuItem><a href={sitePaths.api(catalog)}>{catalog.name} api</a></MenuItem>
-							</Menu>
 						</div>
-					{/each}
-				</div>
+						<Menu style="width:100%;">
+							<MenuItem><a href={sitePaths.component(catalog)}>{catalog.name} examples</a></MenuItem
+							>
+							<MenuItem><a href={sitePaths.api(catalog)}>{catalog.name} api</a></MenuItem>
+						</Menu>
+					</div>
+				{/each}
 			</div>
-		{/each}
-	{/await}
+		</div>
+	{/each}
 	<div class="block">
 		<h5 class="pad-4 text-bold">The why</h5>
 		<p>

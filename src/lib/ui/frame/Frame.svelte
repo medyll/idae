@@ -32,7 +32,7 @@
 </script>
 
 <div bind:this={element} class="pos-rel flex-v h-full overflow-hidden frame {className}" {style}>
-	<div class="frameContainer">
+	<div class="frame-container">
 		<div bind:this={elementNav} class="navLeft pos-rel flex-v h-full">
 			{#if frameDrawerRef?.isOpen}
 				<slot name="navLeftHeaderFrameSlot" />
@@ -51,9 +51,9 @@
 				<slot name="drawerContent" />
 			</Drawer>
 		</div>
-		<div class="frameMainZone">
+		<div class="frame-main">
 			<slot name="frameTop" />
-			<div class=" frameContent">
+			<div class=" frame-content">
 				<slot name="content" />
 			</div>
 			<slot name="frameBottom" />
@@ -62,44 +62,5 @@
 </div>
 
 <style global lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.frame {
-		z-index: 1;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		position: relative;
-		background-color: var(--css-frame-bg-color, var(--sld-color-paper));
-		backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
-		overflow: hidden;
-
-		.frameContainer {
-			display: flex;
-			position: relative;
-			flex: 1;
-			overflow: hidden;
-			.navLeft {
-				z-index: 1;
-				border-right: 1px solid var(--sld-color-primary);
-				height: 100%;
-				position: relative;
-			}
-
-			.frameMainZone {
-				flex: 1;
-				height: 100%;
-				overflow: hidden;
-				display: flex;
-				flex-direction: column;
-
-				.frameContent {
-					flex: 1;
-					overflow: hidden;
-					position: relative;
-				}
-			}
-		}
-	}
+	@import './frame.scss';
 </style>

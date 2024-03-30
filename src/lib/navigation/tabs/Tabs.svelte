@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { elem } from '$lib/engine/elem.js';
+	import { elem } from '$lib/utils/engine/elem.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { Items, TabsItemsProps } from './types.js';
 
@@ -124,5 +124,5 @@
 </div>
 
 <style lang="scss">
-	@import 'Tabs';
+	@import 'tabs';
 </style>

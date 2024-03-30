@@ -11,7 +11,7 @@
 	import Button from './Button.svelte';
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	import { uiPresets } from '$lib/engine/presets.js';
+	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
 	type ParameterType = {

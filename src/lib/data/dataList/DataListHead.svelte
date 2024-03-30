@@ -52,7 +52,7 @@
 	bind:this={element}
 	on:datalist:sort:clicked={doSort}
 	class:pos-sticky={stickyHeader}
-	class="dataListHead"
+	class="datalist-head"
 	style="{style};{cssVars}"
 >
 	<slot>
@@ -67,7 +67,7 @@
 </div>
 
 <style lang="scss">
-	.dataListHead {
+	.datalist-head {
 		display: flex;
 		/* grid-template-columns: var(--template-columns) auto; grid-auto-columns: min-content;
 		grid-auto-columns: min-content; */

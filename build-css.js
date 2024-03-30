@@ -4,7 +4,7 @@ import path from 'path';
 import * as sass from 'sass'
 // Chemin du répertoire source et du répertoire cible
 const sourceDir = './src/lib';
-const targetDir = './src/lib/css';
+const targetDir = './src/lib/_css';
 const combinedCSSFile = path.join(targetDir, 'slotui-combined.css');
 
 // Assurez-vous que le répertoire cible existe

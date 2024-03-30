@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import { sitePaths } from '$lib/engine/site.utils.js';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 	import { componentCite } from '$lib/componentCite.js';
 	export let component: string = '';
 	export let cite: string = componentCite?.[component] ?? '';

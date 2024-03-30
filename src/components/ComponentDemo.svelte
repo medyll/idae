@@ -21,7 +21,7 @@
 	// { name: string; code: string; group: string } = {};
 	import * as jsonList from '$slotuiDefs/index.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import { dataOp } from '$lib/engine/utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 
 	export let component: string = '{}';
 	const componentName = (slotuiCatalog as any)?.[component].name;

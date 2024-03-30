@@ -7,7 +7,7 @@
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import { autofocus } from '$lib/uses/autofocus/autofocus.js';
+	import { autofocus } from '$lib/utils/uses/autofocus/autofocus.js';
 	import type { Snippet } from 'svelte';
 
 	type Props = CommonProps & {
@@ -265,5 +265,5 @@
 </div>
 
 <style lang="scss">
-	@import './Button.scss';
+	@import './button.scss';
 </style>

@@ -39,5 +39,5 @@
 </nav>
 
 <style lang="scss">
-	@import 'BreadCrumb';
+	@import 'breadcrumb.scss';
 </style>

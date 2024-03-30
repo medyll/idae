@@ -3,6 +3,11 @@
     --sld-radius-small: 4px;
     --sld-radius-med: 8px;
     --sld-radius-large: 16px;
+
+    --sld-pad-tiny: 0.25rem;
+    --sld-pad-small: 0.5rem;
+    --sld-pad-med: 1rem;
+    --sld-pad-large: 1.5rem;
 }
 :root {
     --sld-color-primary: #98b148;
@@ -33,7 +38,7 @@
     --sld-color-foreground-darken-mid: color-mix(in srgb, var(--sld-color-foreground), #999 40%);
     --sld-color-foreground-darken-high: color-mix(in srgb, var(--sld-color-foreground), #999 80%);
 
-    --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 70%);
+    --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
 
     --sld-theme-gap-tiny: 1.5rem;
 
@@ -89,6 +94,33 @@ ul.listRoot {
     --sld-list-item-selected-background: var(--sld-selected-background-color);
 }
 
-.cartoucheControl {
-    --sld-control-height: 69px;
+.bg-themed-scheme-discrete {
+    color: black;
+    text-shadow: 0 0 0.125rem #b3b3b3;
+    background-color: #ccc;
+}
+.bg-themed-scheme-success {
+    color: white;
+    text-shadow: 0 0 0.125rem #004d00;
+    background-color: green;
+}
+.bg-themed-scheme-info {
+    color: black;
+    text-shadow: 0 0 0.125rem #ffd324;
+    background-color: #ffdd57;
+}
+.bg-themed-scheme-warning {
+    color: black;
+    text-shadow: 0 0 0.125rem #b49104;
+    background-color: #e6b905;
+}
+.bg-themed-scheme-alert {
+    color: black;
+    text-shadow: 0 0 0.125rem #cc5c00;
+    background-color: #ff7300;
+}
+.bg-themed-scheme-error {
+    color: white;
+    text-shadow: 0 0 0.125rem #cc0000;
+    background-color: red;
 }

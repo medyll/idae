@@ -23,27 +23,5 @@
 </div>
 
 <style lang="scss" global>
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-
-	.toolbar {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		background-color: attr(--color);
-		padding: var(--sld-toolbar-padding, var(--box-density-1, 0.5rem));
-		gap: 0.5rem;
-		divider {
-			border: 1px solid red;
-			height: 1rem;
-		}
-	}
-
-	.toolbar.vertical {
-		flex-direction: column;
-		divider {
-			border: 1px solid green;
-			width: 1rem;
-		}
-	}
+	@import './toolbar.css';
 </style>

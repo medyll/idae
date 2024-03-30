@@ -78,7 +78,3 @@ ul.listRoot {
   --sld-list-item-radius: var(--sld-radius-small);
   --sld-list-item-selected-background: var(--sld-selected-background-color);
 }
-
-.cartoucheControl {
-  --sld-control-height: 69px;
-}

@@ -1,3 +1,7 @@
+:root .cartoucheControl {
+  --sld-control-height: 69px;
+}
+
 .cartouche {
   border-radius: var(--sld-radius-small);
   overflow: hidden;

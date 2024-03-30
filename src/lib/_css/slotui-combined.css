@@ -1,4 +1,4 @@
-/** Alert.scss -----*/ 
+/** alert.scss -----*/ 
 .alert {
   position: relative;
   min-width: 350px;
@@ -7,6 +7,9 @@
   border: 1px solid var(--sld-color-border);
   background-color: var(--sld-color-background);
   overflow: hidden;
+}
+.alert .title-bar {
+  padding: var(--sld-);
 }
 .alert .dot {
   display: inline-block;
@@ -33,7 +36,7 @@
   place-items: center;
   overflow: hidden;
 }
-/** Badge.scss -----*/ 
+/** badge.scss -----*/ 
 .badge {
   position: absolute;
   border-radius: 50%;
@@ -62,11 +65,27 @@
   padding: 0.5rem;
   justify-content: end;
 }
-/** BreadCrumb.scss -----*/ 
+/** breadcrumb.scss -----*/ 
 .breadCrumb ul {
   display: flex;
 }
-/** Button.scss -----*/ 
+/** button.scss -----*/ 
+button {
+  --sld-button-font-size: 11px;
+  --sld-button-radius: var(--sld-radius-small);
+  --sld-button-border-color: transparent;
+  --sld-button-border-width: 1px;
+  --sld-button-text-align: center;
+  --sld-button-padding: 0;
+  --sld-button-background: var(--sld-color-primary);
+  --sld-button-hover-border-color: var(--sld-color-primary);
+  --sld-button-active-border-color: var(--sld-color-primary);
+  --sld-button-focus-border-color: var(--sld-color-primary);
+  --sld-button-hover-shadow: var(--box-shad-3);
+  --sld-button-active-shadow: var(--box-shad-4);
+  --sld-button-focus-shadow: var(--box-shad-4);
+}
+
 .actionButton {
   height: 100%;
   width: var(--w-tiny);
@@ -95,32 +114,47 @@ input[type=submit] {
   position: relative;
   overflow: hidden;
 }
-.button[data-height=tiny],
+.button.height-tiny, .button[data-height=tiny],
+button.height-tiny,
 button[data-height=tiny],
+button[contained=true].height-tiny,
 button[contained=true][data-height=tiny],
+input[type=button].height-tiny,
 input[type=button][data-height=tiny],
+input[type=submit].height-tiny,
 input[type=submit][data-height=tiny] {
-  height: calc(1rem - var(--sld-border-bottom-size, 2px));
-  padding: 0;
+  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=small],
+.button.height-small, .button[data-height=small],
+button.height-small,
 button[data-height=small],
+button[contained=true].height-small,
 button[contained=true][data-height=small],
+input[type=button].height-small,
 input[type=button][data-height=small],
+input[type=submit].height-small,
 input[type=submit][data-height=small] {
   height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=default],
+.button.height-medium, .button[data-height=default],
+button.height-medium,
 button[data-height=default],
+button[contained=true].height-medium,
 button[contained=true][data-height=default],
+input[type=button].height-medium,
 input[type=button][data-height=default],
+input[type=submit].height-medium,
 input[type=submit][data-height=default] {
   height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=large],
+.button.height-large, .button[data-height=large],
+button.height-large,
 button[data-height=large],
+button[contained=true].height-large,
 button[contained=true][data-height=large],
+input[type=button].height-large,
 input[type=button][data-height=large],
+input[type=submit].height-large,
 input[type=submit][data-height=large] {
   height: calc(4rem - var(--sld-border-bottom-size, 2px));
 }
@@ -131,81 +165,132 @@ input[type=button][borderless=true],
 input[type=submit][borderless=true] {
   border: 0px solid none;
 }
-.button[data-width=tiny],
+.button.wt, .button[data-width=tiny],
+button.wt,
 button[data-width=tiny],
+button[contained=true].wt,
 button[contained=true][data-width=tiny],
+input[type=button].wt,
 input[type=button][data-width=tiny],
+input[type=submit].wt,
 input[type=submit][data-width=tiny] {
+  /** size tiny */
   width: 2rem;
 }
-.button[data-width=small],
+.button.ws, .button[data-width=small],
+button.ws,
 button[data-width=small],
+button[contained=true].ws,
 button[contained=true][data-width=small],
+input[type=button].ws,
 input[type=button][data-width=small],
+input[type=submit].ws,
 input[type=submit][data-width=small] {
+  /** size small */
   width: 6rem;
 }
-.button[data-width=medium],
+.button.wm, .button[data-width=medium],
+button.wm,
 button[data-width=medium],
+button[contained=true].wm,
 button[contained=true][data-width=medium],
+input[type=button].wm,
 input[type=button][data-width=medium],
+input[type=submit].wm,
 input[type=submit][data-width=medium] {
+  /** size medium */
   width: 8rem;
 }
-.button[data-width=default],
+.button.wd, .button[data-width=default],
+button.wd,
 button[data-width=default],
+button[contained=true].wd,
 button[contained=true][data-width=default],
+input[type=button].wd,
 input[type=button][data-width=default],
+input[type=submit].wd,
 input[type=submit][data-width=default] {
+  /** size default */
   width: 12rem;
 }
-.button[data-width=large],
+.button.wl, .button[data-width=large],
+button.wl,
 button[data-width=large],
+button[contained=true].wl,
 button[contained=true][data-width=large],
+input[type=button].wl,
 input[type=button][data-width=large],
+input[type=submit].wl,
 input[type=submit][data-width=large] {
   width: 16rem;
 }
-.button[data-width=full],
+.button.wf, .button[data-width=full],
+button.wf,
 button[data-width=full],
+button[contained=true].wf,
 button[contained=true][data-width=full],
+input[type=button].wf,
 input[type=button][data-width=full],
+input[type=submit].wf,
 input[type=submit][data-width=full] {
   width: 100%;
 }
-.button[data-width=auto],
+.button.wa, .button.width-auto, .button[data-width=auto],
+button.wa,
+button.width-auto,
 button[data-width=auto],
+button[contained=true].wa,
+button[contained=true].width-auto,
 button[contained=true][data-width=auto],
+input[type=button].wa,
+input[type=button].width-auto,
 input[type=button][data-width=auto],
+input[type=submit].wa,
+input[type=submit].width-auto,
 input[type=submit][data-width=auto] {
   width: auto;
 }
-.button[data-height=tiny],
+.button.height-tiny, .button[data-height=tiny],
+button.height-tiny,
 button[data-height=tiny],
+button[contained=true].height-tiny,
 button[contained=true][data-height=tiny],
+input[type=button].height-tiny,
 input[type=button][data-height=tiny],
+input[type=submit].height-tiny,
 input[type=submit][data-height=tiny] {
-  height: calc(1rem - var(--sld-border-bottom-size, 2px));
-  padding: 0;
+  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=small],
+.button.height-small, .button[data-height=small],
+button.height-small,
 button[data-height=small],
+button[contained=true].height-small,
 button[contained=true][data-height=small],
+input[type=button].height-small,
 input[type=button][data-height=small],
+input[type=submit].height-small,
 input[type=submit][data-height=small] {
   height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=default],
+.button.height-medium, .button[data-height=default],
+button.height-medium,
 button[data-height=default],
+button[contained=true].height-medium,
 button[contained=true][data-height=default],
+input[type=button].height-medium,
 input[type=button][data-height=default],
+input[type=submit].height-medium,
 input[type=submit][data-height=default] {
   height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=large],
+.button.height-large, .button[data-height=large],
+button.height-large,
 button[data-height=large],
+button[contained=true].height-large,
 button[contained=true][data-height=large],
+input[type=button].height-large,
 input[type=button][data-height=large],
+input[type=submit].height-large,
 input[type=submit][data-height=large] {
   height: calc(4rem - var(--sld-border-bottom-size, 2px));
 }
@@ -502,7 +587,11 @@ input[type=submit] .chip {
 .action:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
-/** Cartouche.scss -----*/ 
+/** cartouche.scss -----*/ 
+:root .cartoucheControl {
+  --sld-control-height: 69px;
+}
+
 .cartouche {
   border-radius: var(--sld-radius-small);
   overflow: hidden;
@@ -555,7 +644,72 @@ input[type=submit] .chip {
 .cartouche .content[aria-expanded=true] {
   border-top: 1px solid var(--sld-color-foreground-alpha-high);
 }
-/** Divider.scss -----*/ 
+/** chipper.scss -----*/ 
+.chipper {
+  position: relative;
+}
+.chipper .chipper-content {
+  padding: 0.5rem;
+}
+.chipper .chipper-chip {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  border-radius: var(--sld-radius-large);
+  transition: all 0.25s;
+  max-height: 100%;
+  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+}
+.chipper .chipper-chip[data-position=left] {
+  top: 2px;
+  left: 2px;
+  height: 100%;
+  width: 3px;
+}
+.chipper .chipper-chip[data-position=right] {
+  top: 2px;
+  right: 2px;
+  height: 130px;
+  width: 3px;
+}
+.chipper .chipper-chip[data-position=top] {
+  height: 4px;
+  top: 2px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+}
+.chipper .chipper-chip[data-position=bottom] {
+  height: 4px;
+  bottom: 2px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+}
+.chipper .chipper-chip .defaultChip,
+.chipper .chipper-chip [slot=chipperChip] {
+  display: block;
+  height: 100%;
+  width: 100%;
+  min-height: 3px;
+  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+}
+/** content-switcher.scss -----*/ 
+.content-switcher {
+  min-width: auto;
+  max-width: 100%;
+  gap: 0.5rem;
+  max-width: 100%;
+  overflow: var(--sld-contentswitcher-overflow, hidden);
+  position: relative;
+}
+.content-switcher .content {
+  position: relative;
+  overflow: var(--sld-contentswitcher-overflow, hidden);
+  min-width: auto;
+  flex: 1 1 auto;
+}
+/** divider.scss -----*/ 
 hr {
   border: none;
   border-top: 1px solid var(--sld-color-border, var(--sld-color-foreground-alpha-high, #333));
@@ -566,21 +720,66 @@ hr.vertical {
   width: 1px;
   border-right: 1px solid var(--sld-color-border, var(--sld-color-foreground-alpha-mid, #333));
 }
-/** DataList.scss -----*/ 
-[data-theme=dark] {
-  --sld-color-border: rgba(255, 255, 255, 0.1);
+/** progress.scss -----*/ 
+.progress {
+  border: 1px solid var(--sld-color-secondary-alpha-mid);
+  border-radius: var(--sld-radius-tiny);
+  padding: 1px;
 }
-
-[data-theme=light] {
-  --sld-color-border: rgba(0, 0, 0, 0.1);
+.progress .progress-gouge {
+  background: var(--sld-color-primary);
+  border-radius: var(--sld-radius-tiny);
+  border: 1px solid var(--sld-color-primary-alpha);
+  transition-delay: 250ms;
+  transition: all 0.25s;
+  max-width: 100%;
 }
-
+/** slider.scss -----*/ 
+.slider {
+  background-color: var(--sld-color-background);
+}
+.slider .gouge {
+  position: relative;
+  padding: 0.5rem;
+}
+.slider .gouge .sliderPin {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-primary);
+  position: relative;
+  border: 1px solid var(--sld-color-primary);
+  display: inline-block;
+}
+/** stepper.scss -----*/ 
+.stepper {
+  display: flex;
+}
+.stepper.vertical {
+  flex-direction: column;
+}
+.stepper .step {
+  padding: 0.5rem;
+  background-color: red;
+  border-radius: var(--sld-radius-med);
+  margin-top: 10px;
+}
+.stepper .step.active {
+  color: blue;
+}
+/** title-bar.scss -----*/ 
+.title-bar {
+  border-bottom: 1px solid var(--sld-color-border);
+}
+.title-bar .title {
+  min-height: 34px;
+}
+/** datalist.scss -----*/ 
 .dataList {
   height: 100%;
   position: relative;
 }
 
-.dataListHead {
+.datalist-head {
   margin: 0.5rem 0;
   align-items: stretch;
   height: 32px;
@@ -591,7 +790,7 @@ hr.vertical {
   box-shadow: var(--box-shad-1);
   border: 1px solid var(--sld-color-border);
 }
-.dataListHead .dataListCell {
+.datalist-head .dataListCell {
   display: flex;
   align-items: stretch;
   overflow: hidden;
@@ -602,22 +801,22 @@ hr.vertical {
   -ms-user-select: none;
   user-select: none;
 }
-.dataListHead .dataListCell:last-of-type {
+.datalist-head .dataListCell:last-of-type {
   border-right: 1px solid transparent;
 }
-.dataListHead .dataListCell[data-sortable=true] {
+.datalist-head .dataListCell[data-sortable=true] {
   cursor: pointer;
 }
-.dataListHead .dataListCell[data-sortable=true]:hover {
+.datalist-head .dataListCell[data-sortable=true]:hover {
   background-color: var(--sld-color-primary-alpha);
 }
-.dataListHead .dataListCell .cellHeader {
+.datalist-head .dataListCell .cellHeader {
   display: flex;
   align-items: center;
   min-width: 0;
   width: 100%;
 }
-.dataListHead .dataListCell .cellHeader .cellHeaderContent {
+.datalist-head .dataListCell .cellHeader .cellHeaderContent {
   flex: 1;
   overflow: hidden;
   padding: 0 8px;
@@ -656,7 +855,14 @@ hr.vertical {
   		-webkit-line-clamp: 1;
   		-webkit-box-orient: vertical; */
 }
-/** List.scss -----*/ 
+/** list.scss -----*/ 
+ul.listRoot {
+  --sld-list-padding: 0;
+  --sld-list-item-padding: 0;
+  --sld-list-item-radius: var(--sld-radius-small);
+  --sld-list-item-selected-background: var(--sld-selected-background-color);
+}
+
 ul.listRoot {
   display: flex;
   flex-direction: column;
@@ -690,22 +896,22 @@ li.listItem[data-density=none] {
 li.listItemTitle.density-tight, li.listItemTitle[data-density=tight],
 li.listItem.density-tight,
 li.listItem[data-density=tight] {
-  padding: 0.5rem 0;
+  padding: 0.5rem auto;
 }
 li.listItemTitle.density-small, li.listItemTitle[data-density=small],
 li.listItem.density-small,
 li.listItem[data-density=small] {
-  padding: 0.75rem 0;
+  padding: 0.75rem auto;
 }
 li.listItemTitle.density-default, li.listItemTitle[data-density=default],
 li.listItem.density-default,
 li.listItem[data-density=default] {
-  padding: 1rem 0;
+  padding: 1rem auto;
 }
 li.listItemTitle.density-kind, li.listItemTitle[data-density=kind],
 li.listItem.density-kind,
 li.listItem[data-density=kind] {
-  padding: 1.5rem 0;
+  padding: 1.5rem auto;
 }
 li.listItemTitle.density-unset, li.listItemTitle[data-density=unset],
 li.listItem.density-unset,
@@ -778,16 +984,16 @@ li.listItem.density-none, li.listItem[data-density=none] {
   padding: 0;
 }
 li.listItem.density-tight, li.listItem[data-density=tight] {
-  padding: 0.5rem 0;
+  padding: 0.5rem auto;
 }
 li.listItem.density-small, li.listItem[data-density=small] {
-  padding: 0.75rem 0;
+  padding: 0.75rem auto;
 }
 li.listItem.density-default, li.listItem[data-density=default] {
-  padding: 1rem 0;
+  padding: 1rem auto;
 }
 li.listItem.density-kind, li.listItem[data-density=kind] {
-  padding: 1.5rem 0;
+  padding: 1.5rem auto;
 }
 li.listItem.density-unset, li.listItem[data-density=unset] {
   padding: auto;
@@ -806,7 +1012,55 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-/** Input.scss -----*/ 
+/** loader.scss -----*/ 
+.loader {
+  position: absolute;
+  top: 0;
+  background-color: var(--sld-color-background-alpha-mid);
+  height: 100%;
+  min-width: 128px;
+  max-width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.loader .loader-box {
+  box-shadow: var(--box-shad-1);
+  border-radius: var(--sld-radius-tiny);
+  border: 1px solid var(--sld-color-foreground-alpha-high);
+  padding: 1rem 0;
+  min-width: 128px;
+  width: 100%;
+  margin: 1rem;
+  text-align: center;
+  background-color: var(--sld-color-background-alpha-mid);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loader .loader-box .loader-message {
+  border-radius: var(--sld-radius-small);
+  border-bottom: 1px solid;
+  border-color: var(--sld-color-primary);
+  padding: var(--box-density-1) var(--box-density-2);
+  display: inline-block;
+  box-shadow: var(--box-shad-1);
+}
+/** input.scss -----*/ 
+:root input {
+  --sld-input-background: var(--sld-color-background-alpha-high);
+  --sld-input-border-width: 1px;
+  --sld-input-border-color: var(--sld-color-foreground-alpha-mid);
+  --sld-input-border-bottom-width: 2px;
+  --sld-input-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+  --sld-input-radius: var(--sld-radius-small);
+  --sld-input-padding: 0 0.5rem;
+  --sld-input-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+}
+
 input {
   border: var(--sld-input-border-width) solid var(--sld-input-border-color);
   border-bottom: var(--sld-input-border-bottom-width) solid var(--sld-input-border-bottom-color);
@@ -819,41 +1073,44 @@ input {
 input [error] {
   border-bottom: red;
 }
-input[data-height=tiny] {
-  height: calc(1rem - var(--sld-border-bottom-size, 2px));
-  padding: 0;
+input.height-tiny, input[data-height=tiny] {
+  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
 }
-input[data-height=small] {
+input.height-small, input[data-height=small] {
   height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
 }
-input[data-height=default] {
+input.height-medium, input[data-height=default] {
   height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
 }
-input[data-height=large] {
+input.height-large, input[data-height=large] {
   height: calc(4rem - var(--sld-border-bottom-size, 2px));
 }
 input[borderless=true] {
   border: 0px solid none;
 }
-input[data-width=tiny] {
+input.wt, input[data-width=tiny] {
+  /** size tiny */
   width: 2rem;
 }
-input[data-width=small] {
+input.ws, input[data-width=small] {
+  /** size small */
   width: 6rem;
 }
-input[data-width=medium] {
+input.wm, input[data-width=medium] {
+  /** size medium */
   width: 8rem;
 }
-input[data-width=default] {
+input.wd, input[data-width=default] {
+  /** size default */
   width: 12rem;
 }
-input[data-width=large] {
+input.wl, input[data-width=large] {
   width: 16rem;
 }
-input[data-width=full] {
+input.wf, input[data-width=full] {
   width: 100%;
 }
-input[data-width=auto] {
+input.wa, input.width-auto, input[data-width=auto] {
   width: auto;
 }
 input:hover {
@@ -888,8 +1145,14 @@ input:hover {
   padding: 0.25rem;
   border-radius: var(--sld-input-radius, var(--sld-radius-small));
 }
-/** Select.scss -----*/ 
-.selectRoot {
+/** rating.scss -----*/ 
+.rating {
+  display: flex;
+  flex-direction: var(--direction);
+  gap: 0.25rem;
+}
+/** select.scss -----*/ 
+.select {
   background-color: var(--sld-color-background);
   height: 160px;
   width: 160px;
@@ -960,7 +1223,7 @@ label {
   border: radius() shadow() top(radius());
   gutters: gap() padding();
 }
-/** Drawer.scss -----*/ 
+/** drawer.scss -----*/ 
 .drawer {
   color: var(--css-drawer-color, inherit);
   background-color: var(--sld-drawer-bg-color, var(--sld-color-paper-alpha-low));
@@ -989,7 +1252,7 @@ label {
   flex: 1;
   position: relative;
 }
-/** Tabs.scss -----*/ 
+/** tabs.scss -----*/ 
 .tabsRoot {
   position: relative;
   display: flex;
@@ -1131,9 +1394,41 @@ ul.listRoot {
   --sld-list-item-radius: var(--sld-radius-small);
   --sld-list-item-selected-background: var(--sld-selected-background-color);
 }
-
-.cartoucheControl {
-  --sld-control-height: 69px;
+/** frame.scss -----*/ 
+.frame {
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--css-frame-bg-color, var(--sld-color-paper));
+  backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
+  overflow: hidden;
+}
+.frame .frame-container {
+  display: flex;
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+.frame .frame-container .navLeft {
+  z-index: 1;
+  border-right: 1px solid var(--sld-color-primary);
+  height: 100%;
+  position: relative;
+}
+.frame .frame-container .frame-main {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.frame .frame-container .frame-main .frame-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
 }
 /** menu.scss -----*/ 
 .menu {
@@ -1193,5 +1488,185 @@ ul.listRoot {
 .menuItem.density-kind {
   padding: 1rem 0;
 }
+/** panel.scss -----*/ 
+.panel {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.panel .panel-bar {
+  margin-bottom: 2rem;
+  display: flex;
+  min-width: auto;
+  align-items: center;
+  padding-right: 0.5rem;
+}
+.panel .panel-bar button {
+  padding: 0 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+/** popper.scss -----*/ 
+.popper {
+  border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
+  overflow: hidden;
+  position: fixed;
+  box-shadow: var(--box-shad-4);
+  background-color: var(--sld-color-background-alpha-mid);
+  backdrop-filter: blur(30px);
+  display: inline-block;
+  top: 0;
+  z-index: 30000;
+}
+.popper::popover-open {
+  border: 1px color red;
+  margin: none !important;
+  padding: none !important;
+}
+/** boot-menu.scss -----*/ 
+.boot-menu {
+  background-color: rgba(90, 67, 52, 0.9);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  height: 80%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
+  overflow: hidden;
+  z-index: 3000;
+  position: absolute;
+  margin-top: 1rem;
+}
+.boot-menu .boot-menuContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.boot-menu .buttonPole {
+  border-radius: var(--sld-radius-small);
+  border: 1px solid rgba(208, 191, 151, 0.3);
+  padding: 0.5rem;
+}
+.boot-menu .gridIcon {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(30%, auto));
+}
+.boot-menu .gridIconBis {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(15%, auto));
+}
+.boot-menu .gridIconMid {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(49%, auto));
+}
+.boot-menu .gridOne {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(100%, auto));
+}
+.boot-menu .bottomBar {
+  box-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.5);
+}
+/** taskbar.scss -----*/ 
+.taskbar {
+  grid-gap: var(--box-density-1, 8px);
+  background-size: auto;
+  background-color: var(--css-taskbar-bg-color, rgba(255, 255, 255, 0.5));
+  backdrop-filter: var(--css-taskbar-backdrop-blur, blur(20px));
+  min-height: var(--css-taskbar-height, 48px);
+  border-bottom: 1px solid var(--sld-color-foreground-alpha-high, rgba(255, 255, 255, 0.2));
+  box-shadow: var(--css-taskbar-shadow, var(--box-shad-3));
+  box-sizing: border-box;
+}
+/** toggle-bar.scss -----*/ 
+.toggle-bar {
+  padding: var(--sld-commandbar-padding, var(--box-density-1));
+  display: flex;
+  border-bottom: 1px solid var(--sld-topbar-border-bottom-color, var(--sld-color-border));
+  width: 100%;
+  max-width: 100%;
+  min-width: auto;
+  position: relative;
+  gap: var(--sld-commandbar-gap, 0.25rem);
+}
+.toggle-bar .toggle-bar-content {
+  position: relative;
+  min-width: auto;
+  overflow: hidden;
+}
 /** tree.scss -----*/ 
-
+.tree-cell {
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  padding-left: var(--tree-level);
+  border-radius: var(--sld-radius-tiny);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+.tree-cell .tree-cellArrow {
+  width: 16px;
+  text-align: center;
+}
+.tree-cell .tree-cellTitleGutter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tree-cell:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-color-primary-alpha-low);
+}
+.tree-cell.selected, .tree-cell[data-selected=true] {
+  border-color: var(--sld-selected-border-color);
+  background-color: var(--sld-selected-background-color);
+  box-shadow: var(--sld-selected-shadow);
+}
+/** window.scss -----*/ 
+.window {
+  display: block;
+  border-radius: var(--sld-radius-small);
+  background-color: var(--sld-color-background);
+  color: var(--sld-color-foreground);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 250px;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 70000;
+  max-height: 100%;
+}
+.window.active {
+  border: 1px solid var(--sld-color-primary);
+}
+.window .bar {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-color: var(--sld-color-paper);
+  color: var(--sld-color-foreground);
+  padding: 0.5rem 0;
+}
+.window .bar .handle {
+  flex: 1;
+  cursor: pointer;
+}
+.window .buttonZone {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: var(--gap-small, 0.5rem);
+}
+.window .ctrlZone {
+  display: flex;
+}

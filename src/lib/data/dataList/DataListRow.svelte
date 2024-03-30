@@ -7,7 +7,7 @@
 	import DataListCell from './DataListCell.svelte';
 	import type { DataCellType, DataListStoreType } from './types.js';
 	import type { RowType } from './types.js';
-	import { dataOp } from '$lib/engine/utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 	import { getContext, setContext } from 'svelte';
 	let className = '';
 	export { className as class };

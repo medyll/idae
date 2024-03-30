@@ -5,7 +5,7 @@
 	import { writable, type Writable } from 'svelte/store';
 	import DataListRow from './DataListRow.svelte';
 	import type { DataCellType, DataListStoreType, groupByOptions } from './types.js';
-	import { dataOp } from '$lib/engine/utils.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 	import DataListHead from './DataListHead.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/base/button/Button.svelte';
@@ -312,7 +312,7 @@
 {/if}
 
 <style global lang="scss">
-	@import './DataList.scss';
+	@import './datalist.scss';
 
 	.groupHead {
 		cursor: pointer;

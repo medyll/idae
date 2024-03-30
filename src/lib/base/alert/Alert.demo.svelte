@@ -1,11 +1,11 @@
 <script lang="ts">
 	import ComponentExample from '$components/Example.svelte';
 	import Button from '$lib/base/button/Button.svelte';
-	import Alert from './Alert.svelte';
+	import Alert from './alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 
-	let parameters: any = {
+	let parameters: Record<string, any> = {
 		isOpen: {
 			type: 'boolean',
 			values: [true, false]
@@ -13,13 +13,17 @@
 		level: {
 			type: 'string',
 			values: ['info', 'warning', 'alert', 'error', 'succes', 'discrete']
+		},
+		message: {
+			type: 'string',
+			values: ['info', 'warning', 'alert', 'error', 'succes', 'discrete']
 		}
 	};
 
-	let componentArgs = {
+	let componentArgs = $state({
 		level: 'info',
 		isOpen: true
-	};
+	});
 
 	let componentArgs2 = {
 		...componentArgs,

@@ -1,6 +1,22 @@
 @import "../../styles/presets.scss";
 // @import "../../styles/slotui-vars.scss";
 
+button {
+    --sld-button-font-size: 11px;
+    --sld-button-radius: var(--sld-radius-small);
+    --sld-button-border-color: transparent;
+    --sld-button-border-width: 1px;
+    --sld-button-text-align: center;
+    --sld-button-padding: 0;
+    --sld-button-background: var(--sld-color-primary);
+    --sld-button-hover-border-color: var(--sld-color-primary);
+    --sld-button-active-border-color: var(--sld-color-primary);
+    --sld-button-focus-border-color: var(--sld-color-primary);
+    --sld-button-hover-shadow: var(--box-shad-3);
+    --sld-button-active-shadow: var(--box-shad-4);
+    --sld-button-focus-shadow: var(--box-shad-4);
+}
+
 .actionButton {
     height: 100%;
     width: var(--w-tiny);

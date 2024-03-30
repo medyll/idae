@@ -1,3 +1,19 @@
+button {
+  --sld-button-font-size: 11px;
+  --sld-button-radius: var(--sld-radius-small);
+  --sld-button-border-color: transparent;
+  --sld-button-border-width: 1px;
+  --sld-button-text-align: center;
+  --sld-button-padding: 0;
+  --sld-button-background: var(--sld-color-primary);
+  --sld-button-hover-border-color: var(--sld-color-primary);
+  --sld-button-active-border-color: var(--sld-color-primary);
+  --sld-button-focus-border-color: var(--sld-color-primary);
+  --sld-button-hover-shadow: var(--box-shad-3);
+  --sld-button-active-shadow: var(--box-shad-4);
+  --sld-button-focus-shadow: var(--box-shad-4);
+}
+
 .actionButton {
   height: 100%;
   width: var(--w-tiny);
@@ -26,32 +42,47 @@ input[type=submit] {
   position: relative;
   overflow: hidden;
 }
-.button[data-height=tiny],
+.button.height-tiny, .button[data-height=tiny],
+button.height-tiny,
 button[data-height=tiny],
+button[contained=true].height-tiny,
 button[contained=true][data-height=tiny],
+input[type=button].height-tiny,
 input[type=button][data-height=tiny],
+input[type=submit].height-tiny,
 input[type=submit][data-height=tiny] {
-  height: calc(1rem - var(--sld-border-bottom-size, 2px));
-  padding: 0;
+  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=small],
+.button.height-small, .button[data-height=small],
+button.height-small,
 button[data-height=small],
+button[contained=true].height-small,
 button[contained=true][data-height=small],
+input[type=button].height-small,
 input[type=button][data-height=small],
+input[type=submit].height-small,
 input[type=submit][data-height=small] {
   height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=default],
+.button.height-medium, .button[data-height=default],
+button.height-medium,
 button[data-height=default],
+button[contained=true].height-medium,
 button[contained=true][data-height=default],
+input[type=button].height-medium,
 input[type=button][data-height=default],
+input[type=submit].height-medium,
 input[type=submit][data-height=default] {
   height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=large],
+.button.height-large, .button[data-height=large],
+button.height-large,
 button[data-height=large],
+button[contained=true].height-large,
 button[contained=true][data-height=large],
+input[type=button].height-large,
 input[type=button][data-height=large],
+input[type=submit].height-large,
 input[type=submit][data-height=large] {
   height: calc(4rem - var(--sld-border-bottom-size, 2px));
 }
@@ -62,81 +93,132 @@ input[type=button][borderless=true],
 input[type=submit][borderless=true] {
   border: 0px solid none;
 }
-.button[data-width=tiny],
+.button.wt, .button[data-width=tiny],
+button.wt,
 button[data-width=tiny],
+button[contained=true].wt,
 button[contained=true][data-width=tiny],
+input[type=button].wt,
 input[type=button][data-width=tiny],
+input[type=submit].wt,
 input[type=submit][data-width=tiny] {
+  /** size tiny */
   width: 2rem;
 }
-.button[data-width=small],
+.button.ws, .button[data-width=small],
+button.ws,
 button[data-width=small],
+button[contained=true].ws,
 button[contained=true][data-width=small],
+input[type=button].ws,
 input[type=button][data-width=small],
+input[type=submit].ws,
 input[type=submit][data-width=small] {
+  /** size small */
   width: 6rem;
 }
-.button[data-width=medium],
+.button.wm, .button[data-width=medium],
+button.wm,
 button[data-width=medium],
+button[contained=true].wm,
 button[contained=true][data-width=medium],
+input[type=button].wm,
 input[type=button][data-width=medium],
+input[type=submit].wm,
 input[type=submit][data-width=medium] {
+  /** size medium */
   width: 8rem;
 }
-.button[data-width=default],
+.button.wd, .button[data-width=default],
+button.wd,
 button[data-width=default],
+button[contained=true].wd,
 button[contained=true][data-width=default],
+input[type=button].wd,
 input[type=button][data-width=default],
+input[type=submit].wd,
 input[type=submit][data-width=default] {
+  /** size default */
   width: 12rem;
 }
-.button[data-width=large],
+.button.wl, .button[data-width=large],
+button.wl,
 button[data-width=large],
+button[contained=true].wl,
 button[contained=true][data-width=large],
+input[type=button].wl,
 input[type=button][data-width=large],
+input[type=submit].wl,
 input[type=submit][data-width=large] {
   width: 16rem;
 }
-.button[data-width=full],
+.button.wf, .button[data-width=full],
+button.wf,
 button[data-width=full],
+button[contained=true].wf,
 button[contained=true][data-width=full],
+input[type=button].wf,
 input[type=button][data-width=full],
+input[type=submit].wf,
 input[type=submit][data-width=full] {
   width: 100%;
 }
-.button[data-width=auto],
+.button.wa, .button.width-auto, .button[data-width=auto],
+button.wa,
+button.width-auto,
 button[data-width=auto],
+button[contained=true].wa,
+button[contained=true].width-auto,
 button[contained=true][data-width=auto],
+input[type=button].wa,
+input[type=button].width-auto,
 input[type=button][data-width=auto],
+input[type=submit].wa,
+input[type=submit].width-auto,
 input[type=submit][data-width=auto] {
   width: auto;
 }
-.button[data-height=tiny],
+.button.height-tiny, .button[data-height=tiny],
+button.height-tiny,
 button[data-height=tiny],
+button[contained=true].height-tiny,
 button[contained=true][data-height=tiny],
+input[type=button].height-tiny,
 input[type=button][data-height=tiny],
+input[type=submit].height-tiny,
 input[type=submit][data-height=tiny] {
-  height: calc(1rem - var(--sld-border-bottom-size, 2px));
-  padding: 0;
+  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=small],
+.button.height-small, .button[data-height=small],
+button.height-small,
 button[data-height=small],
+button[contained=true].height-small,
 button[contained=true][data-height=small],
+input[type=button].height-small,
 input[type=button][data-height=small],
+input[type=submit].height-small,
 input[type=submit][data-height=small] {
   height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=default],
+.button.height-medium, .button[data-height=default],
+button.height-medium,
 button[data-height=default],
+button[contained=true].height-medium,
 button[contained=true][data-height=default],
+input[type=button].height-medium,
 input[type=button][data-height=default],
+input[type=submit].height-medium,
 input[type=submit][data-height=default] {
   height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
 }
-.button[data-height=large],
+.button.height-large, .button[data-height=large],
+button.height-large,
 button[data-height=large],
+button[contained=true].height-large,
 button[contained=true][data-height=large],
+input[type=button].height-large,
 input[type=button][data-height=large],
+input[type=submit].height-large,
 input[type=submit][data-height=large] {
   height: calc(4rem - var(--sld-border-bottom-size, 2px));
 }

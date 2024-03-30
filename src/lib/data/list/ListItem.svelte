@@ -103,5 +103,5 @@
 {/if}
 
 <style lang="scss" global>
-	@import 'List';
+	@import 'list.scss';
 </style>

@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
 	/* import Prism from 'prismjs'; */
 	// fabric default vars
@@ -19,12 +21,12 @@
 	import { onMount } from 'svelte';
 	import AutoComplete from '$lib/form/autocomplete/AutoComplete.svelte';
 	import { goto } from '$app/navigation';
-	import { sitePaths } from '$lib/engine/site.utils.js';
-	import type { LayoutData } from '$app/navigation';
+	import { sitePaths } from '$lib/utils/engine/site.utils.js';
+	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	// from +layout.server
-	export let data: LayoutData = {};
+	let data: any = {};
 	// from +layout.ts
-	export let params = {};
+	let params = {};
 
 	let store = writable<UiContextType>({
 		drawerFlow: 'fixed',
@@ -45,7 +47,7 @@
 		DrawerRef.actions.toggle();
 	}
 
-	onMount(() => {
+	function scrollSpy() {
 		contentSlide.addEventListener('scroll', function (event) {
 			if (contentSlide?.scrollTop > 32 && !scrolled) {
 				scrolled = true;
@@ -55,6 +57,10 @@
 				navElement.classList.remove('shad-3');
 			}
 		});
+	}
+
+	$effect(() => {
+		scrollSpy();
 	});
 </script>
 
@@ -113,16 +119,12 @@
 			<h3><a href="/">svelte-slotted</a></h3>
 			<div class="flex-main" />
 			<a target="_blank" href="https://github.com/medyll/slot-ui">Github</a>
-			{#await data?.data?.streamed?.slotuiCatalog}
-				...
-			{:then value}
-				<AutoComplete
-					dataFieldName="code"
-					placeholder="Search component"
-					onPick={(args) => goto(sitePaths.component(args))}
-					data={Object.values(data?.slotuiCatalog ?? {})}
-				/>
-			{/await}
+			<AutoComplete
+				dataFieldName="code"
+				placeholder="Search component"
+				onPick={(args) => goto(sitePaths.component(args))}
+				data={Object.values(slotuiCatalog ?? {})}
+			/>
 			<ThemeSwitcher icon="mdi:paint-outline" title="toggle theme" />
 		</nav>
 		<div id="innerSlide" class="flex-1 overflow-auto zI-0" bind:this={innerSlide}>
@@ -131,7 +133,8 @@
 	</div>
 </div>
 
-<style global>
+<style global type="scss">
+	@import '../lib/styles/slotui-vars.scss';
 	#contentSlide {
 		overflow: hidden;
 		flex: 1;
