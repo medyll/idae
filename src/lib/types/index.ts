@@ -26,5 +26,6 @@ export type iconProps = IconProps;
 export type CommonProps = {
 	class?: string;
 	style?: string;
-	children?: Snippet;
+	children?: Snippet<[any]>;
+	slots?: Record<string, Snippet<[any]> | undefined>;
 };

@@ -1,7 +1,6 @@
-// @import "../../styles/slotui-vars.scss";
 @import "../../styles/presets.scss";
 
-.menu {
+ul.menu {
   margin: 0;
   min-width: 150px;
   padding: 0.25rem;
@@ -13,35 +12,17 @@
     border: 0.5px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--sld-radius-small);
   }
-
-  &.density-tight {
-    .menuItem {
-      padding: 0.25rem 0;
-    }
-  }
-
-  &.density-default {
-    .menuItem {
-      padding: 0.5rem 0;
-    }
-  }
-
-  &.density-kind {
-    .menuItem {
-      padding: 1rem 0;
-    }
-  }
 }
 
-.menuItem {
+li.menuItem {
+  @include data-hover;
+  @include data-selected;
+  @include ui-dense-presets;
   border-radius: var(--sld-radius-small);
   overflow: hidden;
   display: flex;
   align-items: center;
   border: 1px solid transparent;
-
-  @include data-hover;
-  @include data-selected;
 
   .menuItemIcon {
     width: 16px;
@@ -59,22 +40,20 @@
   }
 
   .menuItemActions {
-    // padding: inherit;
     display: block;
   }
 
-  &.density-tight {
-    //padding: 0.25rem 0;
-    //margin: 0.125rem 0;
-  }
-
-  &.density-default {
-    //padding: 0.5rem 0;
-    // margin: 0.25rem 0;
-  }
-
-  &.density-kind {
-    padding: 1rem 0;
-    // margin: 0.5rem 0;
+  &.selected,
+  &[aria-selected="true"] {
+    .menuItemChip {
+      position: absolute;
+      min-height: 16px;
+      height: 50%;
+      width: 3px;
+      background-color: var(--sld-color-primary);
+      border-radius: var(--sld-radius-med);
+      left: 0;
+      border: 1px solid var(--sld-color-primary-alpha-mid);
+    }
   }
 }

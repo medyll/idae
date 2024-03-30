@@ -72,8 +72,7 @@
 						}}
 						disabled={!value?.length}
 						naked
-						icon="close-circle-outline"
-						iconFamily="mdi"
+						icon="mdi:close-circle-outline"
 					/>
 				{/if}
 			</div>

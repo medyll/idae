@@ -16,8 +16,6 @@
 		type?: 'button' | 'submit' | 'reset';
 		/** icon as a parameter */
 		icon: string | undefined;
-		/** icon as a parameter*/
-		iconFamily?: string | undefined;
 		/** icon color as a parameter*/
 		iconColor?: string;
 		/** endIcon as a parameter */
@@ -94,7 +92,6 @@
 		style,
 		type: buttonType = 'button',
 		icon,
-		iconFamily = 'mdi',
 		iconColor = '#666',
 		endIcon,
 		endIconColor = '#666',
@@ -198,7 +195,7 @@
 					{#if slots.buttonStart}
 						{@render slots.buttonStart()}
 					{:else if icon}
-						<Icon fontSize="small" {icon} color={iconColor} {iconFamily} />
+						<Icon fontSize="small" {icon} color={iconColor} />
 					{/if}
 				</div>
 			{/if}

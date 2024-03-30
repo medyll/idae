@@ -51,8 +51,7 @@
 				if (sortByField) doSort(sortByField, toggleOrder);
 			}}
 			primary={sortByTitleField ?? sortByField}
-			icon={icons.default[sortState.indexOf(sortByOrder)]}
-			iconFamily="mdi"
+			icon={'mdi' + icons.default[sortState.indexOf(sortByOrder)]}
 			naked
 			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
 			size="auto"
@@ -64,16 +63,14 @@
 			on:click={() => {
 				if (sortByField) doSort(sortByField, 'desc');
 			}}
-			icon="sort-bool-descending"
-			iconFamily="mdi"
+			icon="mdi:sort-bool-descending"
 		/>
 	{/if}
 	<!-- // button name + asc/desc -->
 	<!-- // button menu with all data minus objects  + asc/desc -->
 	<slot
 		primary={sortByTitleField ?? sortByField}
-		icon={icons.default[sortState.indexOf(sortByOrder)]}
-		iconFamily="mdi"
+		icon={'mdi:' + icons.default[sortState.indexOf(sortByOrder)]}
 		naked
 		selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
 		size="auto"

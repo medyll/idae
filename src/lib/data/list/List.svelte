@@ -203,7 +203,7 @@
 
 <ul
 	bind:this={element}
-	class="listRoot density-{density} {className}"
+	class="listRoot dense-{density} {className}"
 	on:listclicked={onListItemClick_Deprecated}
 	on:list:dblclicked={onListItemClick_Deprecated}
 	on:listitem:click={onListItemClick}
@@ -217,11 +217,9 @@
 	aria-label="Menu"
 >
 	{#if showTitleZone}
-		<slot name="listTitle"
-			><slot name="title">
-				<ListTitle primary={primary ?? title} {secondary} {icon} />
-			</slot></slot
-		>
+		<slot name="listTitle">
+			<ListTitle primary={primary ?? title} {secondary} {icon} />
+		</slot>
 	{/if}
 	{#if listItems}
 		{#each listItems as item}

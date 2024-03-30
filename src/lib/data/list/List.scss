@@ -14,11 +14,11 @@ ul.listRoot {
   align-items: end;
   padding: var(--sld-list-padding);
   gap: 2px;
-}
 
-ul.listRoot:focus {
-  outline: 0;
-  outline-offset: -4px;
+  &:focus {
+    outline: 0;
+    outline-offset: -4px;
+  }
 }
 
 li.listItemTitle,

@@ -20,7 +20,6 @@
 		title: string | undefined;
 		/** alternative to iconSlot, icon to be used with the internat iconify component */
 		icon: string | undefined;
-		iconFamily: string | undefined;
 		/** alternative to contentSlot,  content to be shown in the main area */
 		content: string | undefined;
 		/** alternative to slot.bottomZone, content to be shown in the bottom button zone */
@@ -45,7 +44,6 @@
 		hasMenu = false,
 		title = undefined,
 		icon = undefined,
-		iconFamily = undefined,
 		content = undefined,
 		bottomZone = undefined,
 		actions = {
@@ -82,7 +80,7 @@
 			{#if slots?.titleBarIcon}
 				{slots.titleBarIcon()}
 			{:else if icon}
-				<Icon {icon} {iconFamily} />
+				<Icon {icon} />
 			{/if}
 		</TitleBar>
 		<div class="boxContent flex-main">

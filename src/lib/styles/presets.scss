@@ -99,3 +99,16 @@
         box-shadow: var(--sld-selected-shadow);
     }
 }
+
+@mixin ui-dense-presets {
+    min-height: 24px;
+    &.dense-small {
+        min-height: 16px;
+    }
+    &.dense-default {
+        min-height: 24px;
+    }
+    &.dense-medium {
+        min-height: 32px;
+    }
+}

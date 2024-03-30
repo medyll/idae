@@ -15,20 +15,14 @@
 		/** element root HTMLDivElement props */
 		element?: HTMLDivElement | null | any;
 
-		/**
-		 * icon name
-		 * @type {string}
-		 */
+		/** icon name for iconify  */
 		icon: string;
-
-		/** icon family */
-		iconFamily?: string;
 
 		/**
 		 * icon size
 		 * @type {'small' | 'medium' | 'large' | 'xlarge'}
 		 */
-		fontSize?: ElementProps['sizeType'];
+		fontSize?: 'small' | 'medium' | 'large' | 'xlarge';
 
 		/** rotate icon */
 		rotate?: boolean;
@@ -45,17 +39,16 @@
 		style,
 		element = $bindable<HTMLDivElement>(),
 		icon = 'question',
-		iconFamily = 'mdi',
 		fontSize = 'small',
 		rotate = false,
 		color,
 		rotation = 0,
 		...restProps
-	} = $props() as IconProps;
+	}: IconProps = $props();
 
-	const sizes: Record<ElementProps['sizeType'], number> = uiPresets.iconSize;
+	const sizes: Record<ElementProps['sizeType'], string> = uiPresets.iconSize;
 
-	const iconName = $derived(icon.includes(':') ? icon : `${iconFamily}:${icon}`);
+	const iconName = $derived(icon.includes(':') ? icon : `mdi:${icon}`);
 </script>
 
 {#key rotation}

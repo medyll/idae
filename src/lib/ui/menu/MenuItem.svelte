@@ -1,13 +1,14 @@
-<svelte:options accessors={true} />
+<svelte:options accessors runes />
 
-<script lang="ts">
-	import { getContext, onMount } from 'svelte';
+<script lang="ts" generics="T= Data">
+	import { getContext } from 'svelte';
 
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { IMenuItemProps, IMenuProps } from './types.js';
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
+	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
 	import type { Writable } from 'svelte/store';
+	import Slot from '$lib/utils/slot/Slot.svelte';
 
 	let mounted: boolean = $state(false);
 	const menuStateContext = getContext<Writable<IMenuProps>>('menuStateContext');
@@ -26,7 +27,7 @@
 		action?: string;
 
 		/** icon displayed in the menu item */
-		icon?: IMenuItemProps['icon'];
+		icon?: string;
 
 		/** color of the icon */
 		iconColor?: string;
@@ -41,13 +42,16 @@
 		dividerBefore?: IMenuItemProps['divider'];
 
 		/** data associated with the menu item */
-		data?: Record<string, any>;
+		data?: T;
 
 		/** whether the menu item is selected */
 		selected?: boolean;
 
+		/** @deprecated
+		 * function to be called when the menu item is clicked */
+		onMenuItemClick?: (data: T) => void;
 		/** function to be called when the menu item is clicked */
-		onMenuItemClick?: Function;
+		onclick?: (data: T) => void;
 
 		/** position in the list */
 		itemIndex?: number;
@@ -55,7 +59,7 @@
 		component?: any;
 
 		/** whether the menu item is outer */
-		outer: boolean;
+		outer?: boolean;
 	};
 
 	let {
@@ -68,16 +72,21 @@
 		iconSize = 'small',
 		divider = false,
 		dividerBefore = false,
-		data = { empty: 'menu item data' },
-		selected = undefined,
+		data = $bindable<T>({} as T),
+		selected = $bindable(undefined),
 		onMenuItemClick = () => {},
+		onclick = (args) => {},
 		itemIndex = undefined,
 		component = null,
 		outer = true,
-		children = undefined
-	} = $props() as MenuItemProps;
+		children = undefined,
+		slots = {
+			itemIcon: undefined,
+			menuItemEnd: undefined
+		}
+	}: MenuItemProps = $props();
 
-	if (icon || $$slots.iconSlot) {
+	if (icon || slots.itemIcon) {
 		$menuStateContext.hasIcon = true;
 	}
 
@@ -89,15 +98,17 @@
 		if (mounted) {
 			$menuStateContext.menuItemsInstances?.push(component);
 		}
+		element?.addEventListener('click', handleClick);
 	});
 
-	const handleClick = () => () => {
+	const handleClick = () => {
 		const event = new CustomEvent('menu:item:clicked', { detail: data, bubbles: true });
 		if (element) element.dispatchEvent(event);
 		// set selectedIndex if we have index
 		// set selected style
 		setSelected();
 		onMenuItemClick(data);
+		onclick(data);
 	};
 
 	const setSelected = () => {
@@ -107,88 +118,44 @@
 
 {#if dividerBefore}
 	<li>
-		<slot name="divider"><Divider density="tight" expansion="centered" /></slot>
+		<Divider density="tight" expansion="centered" />
 	</li>
 {/if}
 <li
 	class="menuItem {className}"
-	data-selected={($menuStateContext.selectedIndex
+	aria-selected={($menuStateContext.selectedIndex
 		? $menuStateContext.selectedIndex === itemIndex
 		: undefined) ?? undefined}
-	role="menuitem"
+	role="listitem"
 	bind:this={element}
-	on:click={handleClick}
 >
+	<span class="menuItemChip" />
 	{#if $menuStateContext?.hasIcon}
 		<div class="menuItemIcon">
-			<slot name="menuItemStart">
-				<slot name="iconSlot">
-					<Icon {icon} color={iconColor} fontSize={iconSize} />
-				</slot>
-			</slot>
+			<Slot slotted={slots.itemIcon}>
+				<Icon {icon} color={iconColor} fontSize={iconSize} />
+			</Slot>
 		</div>
 	{/if}
 	<div class="menuItemText">
-		{@render children?.()}
+		<Slot slotted={children} slotArgs={data}>
+			{text}
+		</Slot>
 	</div>
-	{#if $$slots.actionSlot || action}
+	{#if slots.menuItemEnd || action}
 		<div class="menuItemActions">
-			<slot name="menuItemEnd"><slot name="actionSlot">{action}</slot></slot>
+			<Slot slotted={slots.menuItemEnd}>
+				{action}
+			</Slot>
 		</div>
 	{/if}
 </li>
 {#if divider}
 	<li>
-		<slot name="menuItemDivider"><Divider density="tight" expansion="padded" /></slot>
+		<Divider density="tight" expansion="padded" />
 	</li>
 {/if}
 
-<!-- {#if outer}
-	<svelte:self bind:this={component} outer={false} />
-{:else}
-	{#if dividerBefore}
-		<li>
-			<slot name="divider"><Divider density="tight" expansion="centered" /></slot>
-		</li>
-	{/if}
-	<li
-		class="menuItem {className}"
-		data-selected={($menuStateContext.selectedIndex
-			? $menuStateContext.selectedIndex === itemIndex
-			: undefined) ?? undefined}
-		role="menuitem"
-		bind:this={element}
-		on:click={handleClick}
-	>
-		{#if $menuStateContext?.hasIcon}
-			<div class="menuItemIcon">
-				<slot name="menuItemStart">
-					<slot name="iconSlot">
-						<Icon {icon} color={iconColor} fontSize={iconSize} />
-					</slot>
-				</slot>
-			</div>
-		{/if}
-		<div class="menuItemText">
-			chil
-			{@render children?.()}
-			<slot>
-				<slot name="menuItemText">{text ?? ''}</slot>
-			</slot>
-		</div>
-		{#if $$slots.actionSlot || action}
-			<div class="menuItemActions">
-				<slot name="menuItemEnd"><slot name="actionSlot">{action}</slot></slot>
-			</div>
-		{/if}
-	</li>
-	{#if divider}
-		<li>
-			<slot name="menuItemDivider"><Divider density="tight" expansion="padded" /></slot>
-		</li>
-	{/if}
-{/if} -->
-
 <style global lang="scss">
-	@import 'menu';
+	@import './menu.scss';
 </style>

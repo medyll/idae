@@ -1,12 +1,12 @@
 <svelte:options accessors runes />
 
-<script lang="ts" generics="T">
+<script lang="ts" generics="T= Data">
 	import TextField from '$lib/form/textfield/TextField.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	import { onMount, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps, Data } from '$lib/types/index.js';
 	import Slot from '$lib/utils/slot/Slot.svelte';
@@ -15,23 +15,25 @@
 		/** className off the root component */
 		class?: string;
 		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
+		element: HTMLDivElement;
 		/** initial data to look in */
-		data: any[];
+		data: T[];
+		/** show all data when search is empty */
+		showAllOnEmpty?: boolean;
 		/** default field to be used for searches, can be * */
 		searchField: string | '*';
-		/** defaults fields to be shown
-		 *  @type {string | string[] | undefined}
+		/**
+		 * defaults fields to be shown
 		 */
-		dataFieldName?: string | string[] | undefined;
+		dataFieldName: keyof T | (keyof T)[];
 		/** search mode : exact or partial match*/
 		mode: 'exact' | 'partial';
 		/** external bind use, to read filtered data */
-		filteredData: any[];
+		filteredData: T[];
 		/** selectedIndex : index of the selected item in data */
 		selectedIndex: number;
 		/** selectedIndex : index of the selected item in data */
-		onPick?: ((args: any) => void) | undefined;
+		onPick?: ((args: T) => void) | undefined;
 		slots?: {
 			autoCompleteEmpty?: Snippet | undefined;
 			autoCompleteNoResults?: Snippet | undefined;
@@ -40,14 +42,15 @@
 
 	let {
 		class: className = '',
-		element = $bindable(null),
+		element = $bindable(),
 		data = $bindable([]),
 		searchField = '*',
-		dataFieldName = undefined,
+		dataFieldName,
 		mode = 'partial',
 		filteredData = $bindable(data),
 		selectedIndex = -1,
-		onPick = undefined,
+		onPick = (args) => {},
+		showAllOnEmpty = true,
 		children,
 		slots = { autoCompleteEmpty: undefined, autoCompleteNoResults: undefined },
 		...rest
@@ -55,18 +58,24 @@
 
 	let searchString: string | undefined = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);
-	let popperHTML: HTMLElement | null = $state(null);
-	let popperOpen: boolean = $state(false);
+	let popperHTML: HTMLElement | undefined = $state(undefined);
+	let popperOpen: boolean = $state(true);
 
-	let menuRef: HTMLElement;
+	let menuRef: Menu<T>;
+
+	let childs = children;
 
 	$effect(() => {
-		filteredData = !searchString ? [] : doFind(data, searchString, searchField);
+		filteredData = !searchString
+			? showAllOnEmpty
+				? data
+				: []
+			: doFind(data, searchString, searchField);
 	});
 
 	const doFind = <T = Record<string, any>,>(list: T[], kw: string, field: string) => {
 		let results: any[];
-		// if kw empty
+
 		if (!kw) {
 			results = data;
 		} else {
@@ -79,7 +88,7 @@
 	function preNavigate(e: KeyboardEvent, data: Record<string, any>) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
-			onSelect(filteredData, selectedIndex);
+			onSelect(filteredData[selectedIndex], selectedIndex);
 			return;
 		}
 		if (data.length === 0) return;
@@ -96,10 +105,14 @@
 		return actualIndex + dir;
 	}
 
-	function onSelect(filteredData: Data, index: number) {
-		const selectedDta = filteredData?.[index];
-		searchString = filteredData[dataFieldName];
+	function onSelect(filteredData: T, index: number) {
+		searchString = getFieldName(filteredData, dataFieldName as keyof T) as string;
 		if (onPick) onPick(filteredData);
+	}
+
+	function getFieldName(data: T, fieldName: keyof T | (keyof T)[]): string {
+		let field = Array.isArray(fieldName) ? fieldName : [fieldName];
+		return field.map((field) => data[field]).join(' ');
 	}
 </script>
 
@@ -116,7 +129,7 @@
 		onfocus={() => {
 			setTimeout(() => (popperOpen = true), 125);
 		}}
-		onkeydown={(e:Event) => preNavigate(e, filteredData)}
+		onkeydown={(e:KeyboardEvent) => preNavigate(e, filteredData)}
 		{...rest}
 	/>
 
@@ -126,26 +139,23 @@
 		data={filteredData}
 		bind:element={menuHTML}
 		bind:selectedIndex
-		on:mouseover={() => {
-			element.focus();
-		}}
 		on:menu:click={(args) => {
 			alert(args);
 		}}
-		let:itemIndex
-		let:item
 	>
-		<Slot slotted={children} slotArgs={item}>
-			<MenuItem
-				text={item?.[dataFieldName]}
-				data={item}
-				onMenuItemClick={(data) => {
-					onSelect(data, itemIndex);
-					popperOpen = false;
-					menuRef.actions.navigate(itemIndex);
-				}}
-			/>
-		</Slot>
+		{#snippet children(prop)}
+			<Slot slotted={childs} slotArgs={prop.item}>
+				<MenuItem
+					text={getFieldName(prop.item, dataFieldName)}
+					data={prop.item}
+					onclick={(data) => {
+						onSelect(data, prop.itemIndex);
+						popperOpen = false;
+						menuRef.actions.navigate(prop.itemIndex);
+					}}
+				/>
+			</Slot>
+		{/snippet}
 	</Menu>
 	{#if !filteredData.length && !searchString}
 		<Slot slotted={slots.autoCompleteEmpty}>
