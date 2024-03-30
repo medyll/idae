@@ -1,11 +1,9 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	type ChipperProps = {
-		/** className off the root component */
-		class?: string;
-		/** css style off the root component */
-		style?: string;
+	import type { CommonProps } from '$lib/types/index.js';
+
+	type ChipperProps = CommonProps & {
 		/** element root HTMLDivElement props */
 		element?: HTMLDivElement | null;
 		/** position of the chipper
@@ -27,23 +25,24 @@
 	let {
 		class: className = '',
 		style = '',
-		element = null,
+		element = $bindable<HTMLDivElement | null>(null),
 		position = 'bottom',
 		bgTheme = 'primary',
 		color = '',
 		content = '',
-		showChip = true
-	} = $props() as ChipperProps;
+		showChip = true,
+		children
+	}: ChipperProps = $props();
 
-	const cssColor = $derived(color ?? (bgTheme ? `var(--sld-color-${bgTheme})` : ''));
+	let cssColor = $derived(color ?? (bgTheme ? `var(--sld-color-${bgTheme})` : ''));
 </script>
 
 <div bind:this={element} style="{style};position:relative;" class="chipper gap-tiny {className} ">
-	<slot>
-		{#if content}
-			<div class="chipper-content">{@html content ?? ''}</div>
-		{/if}
-	</slot>
+	{#if children}
+		{@render children()}
+	{:else if content}
+		<div class="chipper-content">{@html content ?? ''}</div>
+	{/if}
 	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
 		{#if showChip}
 			<slot name="chipperChip">

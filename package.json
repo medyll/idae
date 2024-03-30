@@ -45,8 +45,8 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.0",
-		"@iconify/svelte": ">=1.0.0"
+		"@iconify/svelte": ">=1.0.0",
+		"svelte": "^5.0.0-next.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.2.1",
@@ -101,8 +101,9 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@iconify/svelte": "^4.0.0-beta.4",
+		"@iconify/svelte": ">=3.1.6",
 		"d3": "^7.9.0",
+		"npm-check-updates": "^16.14.18",
 		"postcss-load-config": "^5.0.3",
 		"sanitize-html": "^2.13.0",
 		"svelte-spa-router": "^4.0.1"

@@ -38,8 +38,8 @@
 		icon: string;
 
 		/** color of the icon displayed on the confirm button
-	@type string
-	 */
+		 * @type string
+		 */
 		iconColor: string;
 
 		/** action initiated on confirmation */
@@ -68,7 +68,7 @@
 		iconCancel = 'chevron-left',
 		children,
 		slots
-	} = $props<ConfirmProps>();
+	}: ConfirmProps = $props();
 
 	function handleClickInitial(event: any) {
 		event.preventDefault();

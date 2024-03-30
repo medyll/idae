@@ -72,22 +72,5 @@
 {/key}
 
 <style global lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-
-	.icon {
-		transition: all 0.25s;
-	}
-
-	.rotate {
-		animation: spinner-frames 3s infinite linear;
-	}
-	@keyframes spinner-frames {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
+	@import './icon.scss';
 </style>
