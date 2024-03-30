@@ -57,21 +57,16 @@
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="AutoComplete" title="Using slots">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<AutoComplete
-					let:menuItemData
-					class="marg-b"
-					placeholder="Search in list"
-					style="width:200px"
-					{data}
-				>
-					<MenuItem>{menuItemData.name} {menuItemData.lastname}</MenuItem>
+				<AutoComplete class="marg-b" placeholder="Search in list" style="width:200px" {data}>
+					{#snippet children(menuItemData)}
+						<MenuItem data={menuItemData}>{menuItemData.name} {menuItemData.lastname}</MenuItem>
+					{/snippet}
 				</AutoComplete>
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="AutoComplete" title="Using props">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
 				<AutoComplete
-					let:menuItemData
 					{data}
 					onPick={() => {}}
 					class="marg-b"
