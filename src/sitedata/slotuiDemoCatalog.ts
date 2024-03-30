@@ -18,7 +18,7 @@ import List from '$lib/data/list/List.demo.svelte';
 import Loader from '$lib/data/loader/Loader.demo.svelte';
 import Sorter from '$lib/data/sorter/Sorter.demo.svelte';
 import AutoComplete from '$lib/form/autocomplete/AutoComplete.demo.svelte';
-import Input from '$lib/form/input/Input.demo.svelte';
+import Input from '$lib/form/textfield/TextField.demo.svelte';
 import Rating from '$lib/form/rating/Rating.demo.svelte';
 import Select from '$lib/form/select/Select.demo.svelte';
 import Switch from '$lib/form/switch/Switch.demo.svelte';

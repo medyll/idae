@@ -106,5 +106,5 @@
 {/if}
 
 <style lang="scss">
-	@import './input.scss';
+	@import './textfield.scss';
 </style>

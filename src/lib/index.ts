@@ -93,7 +93,7 @@ export { default as Sorter } from '$lib/data/sorter/Sorter.svelte';
 export { default as Sorterer } from '$lib/data/sorter/Sorterer.svelte';
 export * from '$lib/data/sorter/types.js';
 export { default as AutoComplete } from '$lib/form/autocomplete/AutoComplete.svelte';
-export { default as Input } from '$lib/form/input/Input.svelte';
+export { default as Input } from '$lib/form/textfield/TextField.svelte';
 export { default as Rating } from '$lib/form/rating/Rating.svelte';
 export { default as Select } from '$lib/form/select/Select.svelte';
 export { default as Switch } from '$lib/form/switch/Switch.svelte';
