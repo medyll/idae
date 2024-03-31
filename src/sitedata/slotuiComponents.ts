@@ -77,4 +77,4 @@ export { default as Tree } from '$lib/ui/tree/Tree.svelte';
 export { default as Window } from '$lib/ui/window/Window.svelte';
 export { default as ContextRooter } from '$lib/utils/contextRooter/ContextRooter.svelte';
 export { default as Looper } from '$lib/utils/looper/Looper.svelte';
-export { default as Slot } from '$lib/utils/slot/Slot.svelte';
+export { default as Slot } from '$lib/utils/slot/Slotted.svelte';

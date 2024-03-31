@@ -154,7 +154,7 @@ export * from '$lib/utils/engine/site.utils.js';
 export * from '$lib/utils/engine/utils.js';
 export * from '$lib/utils/engine/wactions.utils.js';
 export { default as Looper } from '$lib/utils/looper/Looper.svelte';
-export { default as Slot } from '$lib/utils/slot/Slot.svelte';
+export { default as Slot } from '$lib/utils/slot/Slotted.svelte';
 export * from '$lib/utils/uses/autofocus/autofocus.js';
 export * from '$lib/utils/uses/clickAway/clickAway.js';
 export * from '$lib/utils/uses/draggabler.js';

@@ -8,7 +8,7 @@
 	import type { IMenuItemProps, IMenuProps } from './types.js';
 	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
 	import type { Writable } from 'svelte/store';
-	import Slot from '$lib/utils/slot/Slot.svelte';
+	import Slot from '$lib/utils/slot/Slotted.svelte';
 
 	let mounted: boolean = $state(false);
 	const menuStateContext = getContext<Writable<IMenuProps>>('menuStateContext');

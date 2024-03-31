@@ -7,7 +7,7 @@
 	import { createMenuStore } from './store.js';
 	import MenuContextAgent from './MenuContextAgent.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
-	import Slot from '$lib/utils/slot/Slot.svelte';
+	import Slot from '$lib/utils/slot/Slotted.svelte';
 	import type { Data } from '$lib/index.js';
 
 	type MenuProps = CommonProps & {

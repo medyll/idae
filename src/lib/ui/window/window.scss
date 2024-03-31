@@ -1,4 +1,5 @@
-.window {
+@import "../../styles/presets.scss";
+dialog.window {
     display: block;
     border-radius: var(--sld-radius-small);
     background-color: var(--sld-color-background);
@@ -10,18 +11,18 @@
     overflow: hidden;
     z-index: 70000;
     max-height: 100%;
-
+    padding: 0;
     &.active {
         border: 1px solid var(--sld-color-primary);
     }
 
-    .bar {
+    header.bar {
         display: flex;
         align-items: center;
         text-align: center;
         background-color: var(--sld-color-paper);
         color: var(--sld-color-foreground);
-        padding: 0.5rem 0;
+        padding: 0.25rem 0;
 
         .handle {
             flex: 1;
@@ -29,7 +30,7 @@
         }
     }
 
-    .buttonZone {
+    footer.buttonZone {
         padding: 0.5rem;
         display: flex;
         justify-content: end;

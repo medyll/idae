@@ -9,7 +9,7 @@
 	import { type Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps, Data } from '$lib/types/index.js';
-	import Slot from '$lib/utils/slot/Slot.svelte';
+	import Slot from '$lib/utils/slot/Slotted.svelte';
 
 	type AutoCompleteProps = CommonProps & {
 		/** className off the root component */
