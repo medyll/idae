@@ -16,38 +16,32 @@ enum Position {
 export type StickToPositionType = keyof typeof Position;
 
 type StickToProps = {
-	parentNode: HTMLElement | undefined;
+	parentNode: HTMLElement;
 	position?: StickToPositionType;
 	disabled?: boolean;
 	stickToHookWidth?: boolean;
 };
-
+/** @type {import('svelte/action').Action<HTMLElement, StickToProps>}  */
 export function stickTo(node: HTMLElement, props: StickToProps) {
 	const { parentNode, position, stickToHookWidth } = props;
-
+	let nodeObserver: ResizeObserver;
+	let parentObserver: ResizeObserver;
 	if (node && parentNode) {
 		document.body.appendChild(node);
 		setPosition(node, position, parentNode);
-	} else {
-		return false;
+
+		scrollObserver();
+
+		nodeObserver = new ResizeObserver(() => {
+			setPosition(node, position, parentNode);
+		});
+		nodeObserver.observe(node);
+
+		parentObserver = new ResizeObserver(() => {
+			setPosition(node, position, parentNode);
+		});
+		parentObserver.observe(parentNode);
 	}
-
-	scrollObserver();
-
-	/* window.addEventListener('scroll', () => {
-		console.log('scroll', node, position, parentNode);
-		setPosition(node, position, parentNode);
-	}); */
-
-	const nodeObserver = new ResizeObserver(() => {
-		setPosition(node, position, parentNode);
-	});
-	nodeObserver.observe(node);
-
-	const parentObserver = new ResizeObserver(() => {
-		setPosition(node, position, parentNode);
-	});
-	parentObserver.observe(parentNode);
 
 	function scrollObserver() {
 		const scrollableContainers = getScrollParent(node);
@@ -135,9 +129,10 @@ export function stickTo(node: HTMLElement, props: StickToProps) {
 	}
 
 	return {
+		update() {},
 		destroy() {
-			nodeObserver.disconnect();
-			parentObserver.disconnect();
+			if (nodeObserver) nodeObserver.disconnect();
+			if (parentObserver) parentObserver.disconnect();
 			window.removeEventListener('scroll', () => {
 				setPosition(node, position, parentNode);
 			});

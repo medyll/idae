@@ -16,10 +16,8 @@ export type UsePopperProps = {
 export function popper(node: HTMLElement, props?: UsePopperProps) {
 	if (!props) return false;
 	if (Boolean(props?.disabled)) return false;
-	// node is parentNode !!!!
-	const { parentNode = undefined, position = 'R', code = crypto.randomUUID() } = props;
 
-	// document.addEventListener('click', (event) => event.stopPropagation())
+	const { parentNode = undefined, position = 'R', code = crypto.randomUUID() } = props;
 
 	const doPopperEvent = function (event: any) {
 		event.stopPropagation();

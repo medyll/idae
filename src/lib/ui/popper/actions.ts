@@ -1,6 +1,6 @@
 import type { PopperPositionType } from '$lib/ui/popper/types.js';
 import Popper from '$lib/ui/popper/Popper.svelte';
-import type { SvelteComponent } from 'svelte';
+import { mount, type SvelteComponent } from 'svelte';
 
 export let popperList: Record<string, Popper> = {};
 
@@ -14,24 +14,17 @@ const openPopper = (
 	} = {}
 ) => {
 	if (popperList[popperId]) {
-		s;
-		if (popperList[popperId].toggle) {
-			popperList[popperId].toggle();
-		} else {
-			createPopper();
-		}
+		popperList[popperId].toggle();
 	} else {
 		createPopper();
 	}
 
 	function createPopper() {
-		popperList[popperId] = new Popper({
+		popperList[popperId] = mount(Popper, {
 			target: document.body,
 			intro: true,
-			props: {
-				code: popperId,
-				...args
-			}
+			// @ts-ignore
+			props: { code: popperId, ...args }
 		});
 
 		popperList[popperId].$$.on_destroy.push(() => {

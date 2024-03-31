@@ -1,36 +1,13 @@
 <svelte:options accessors={true} />
 
 <script lang="ts">
-	import { onMount, type SvelteComponent } from 'svelte';
+	import { onMount, type Snippet, type ComponentType, unmount } from 'svelte';
 	import { stickTo, type StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
-	import { popperList } from '$lib/ui/popper/actions.js';
+	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
-	/** popper HTMLDivElement */
-	export let element: Element | undefined = undefined;
-	let className = '';
-	export { className as class };
-	let zIndex;
-
-	export let code: string | undefined = undefined;
-	export let parentNode: HTMLElement | undefined = undefined;
-	export let stickToHookWidth: boolean = false;
-	export let component: SvelteComponent | undefined = undefined;
-	export let componentProps: {} | undefined = {};
-	export let position: StickToPositionType | undefined = 'BC';
-	export let content: any | undefined = undefined;
-	export let style: string | '' = '';
-
-	let holderSlotRef: HTMLElement;
-
-	/** The popper will be closed on clickAway*/
-	export let autoClose: boolean = false;
-	/** binding : The popper will be opened or is opened */
-	export let isOpen: boolean = false;
-
-	export const toggle = function () {
-		popperList[code].$destroy();
-	};
+	export const toggle = function () {};
 	export const hide = function () {
 		console.log('hide');
 	};
@@ -38,34 +15,91 @@
 		console.log('show');
 	};
 
-	const actions = {
-		toggle: () => {
-			console.log('toggle');
-		},
-		show: () => {
-			console.log('show');
-		},
-		hide: () => {
-			console.log('hide');
-		},
-		destroy: () => {
-			console.log('destroy');
-			popperList[code]?.$destroy();
-		}
+	type PopperProps = CommonProps & {
+		/** unique code for the popper */
+		code: string | undefined;
+
+		/** parent node of the popper */
+		parentNode: HTMLElement | undefined;
+
+		/** whether the popper should stick to hook width */
+		stickToHookWidth: boolean;
+
+		/** component to be displayed in the popper */
+		component: ComponentType | undefined;
+
+		/** props for the component */
+		componentProps: {} | undefined;
+
+		/** position of the popper */
+		position: StickToPositionType | undefined;
+
+		/** content of the popper */
+		content: any | undefined;
+
+		/** The popper will be closed on clickAway */
+		autoClose: boolean;
+
+		/** binding : The popper will be opened or is opened */
+		isOpen: boolean;
+		popperHolder: Snippet;
+		/** actions for the popper */
+		actions: {
+			toggle: () => void;
+			show: () => void;
+			hide: () => void;
+		};
 	};
+
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		code = crypto.randomUUID(),
+		parentNode = undefined,
+		stickToHookWidth = false,
+		component = undefined,
+		componentProps = {},
+		position = 'BC',
+		content = undefined,
+		autoClose = false,
+		isOpen = $bindable(false),
+		actions = {
+			toggle: () => {
+				console.log('toggle');
+			},
+			show: () => {
+				console.log('show');
+			},
+			hide: () => {
+				console.log('hide');
+			}
+		},
+		children,
+		popperHolder,
+		...rest
+	}: PopperProps = $props();
 
 	export const clickedAway = function () {
 		const event = new CustomEvent('clickAway', { bubbles: true });
 		parentNode?.dispatchEvent(event);
-		popperList[code]?.$destroy();
 		if (autoClose) isOpen = false;
 	};
 
-	let mounted: boolean = false;
+	export const useStickTo = (node: HTMLElement) => {
+		if (position && parentNode) {
+			stickTo(node, { parentNode, position, stickToHookWidth });
+		}
+	};
+
+	let holderSlotRef: HTMLElement = $state<HTMLElement>() as HTMLElement;
+	let zIndex = $state(0);
+	let mounted: boolean = $state(false);
+
 	onMount(() => {
 		// who is the parent for stickTo ??
 		if (parentNode) {
-		} else if ($$slots.holderSlot || $$slots.popperHolder) {
+		} else if ($$slots.popperHolder) {
 			// if holderSlot, then make it the stickTo parentNode
 			parentNode = holderSlotRef ?? document.body;
 		} else {
@@ -74,12 +108,6 @@
 		}
 		mounted = true;
 	});
-
-	export const useStickTo = (node) => {
-		if (position) {
-			stickTo(node, { parentNode, position: position, stickToHookWidth });
-		}
-	};
 
 	const makeOnTop = () => {
 		let max = Math.max(
@@ -92,42 +120,43 @@
 		return max + 1;
 	};
 
-	let siblings: HTMLCollection | any[] = [];
-
-	$: siblings = Array.prototype.slice.call(element?.parentElement?.children ?? []) ?? [];
-
-	$: zIndex = siblings?.reduce((prev, val) => {
-		// @ts-ignore
-		return val?.style?.zIndex >= prev ? val?.style?.zIndex + 1 : prev;
-	}, 0);
+	$effect(() => {
+		let siblings = Array.prototype.slice.call(element?.parentElement?.children ?? []) ?? [];
+		zIndex = siblings?.reduce((prev, val) => {
+			return val?.style?.zIndex >= prev ? val?.style?.zIndex + 1 : prev;
+		}, 0);
+	});
 </script>
 
-{#if $$slots.popperHolder || $$slots.holderSlot}
+{#if popperHolder || $$slots.popperHolder}
 	<div bind:this={holderSlotRef} style="position:relative;display:inline-block">
-		<slot name="popperHolder"><slot name="holderSlot" /></slot>
+		<Slotted slotted={popperHolder}><slot name="popperHolder" /></Slotted>
 	</div>
 {/if}
 {#if parentNode && ((isOpen && autoClose) || !autoClose)}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<!-- @ts-ignore -->
 	<div
 		bind:this={element}
 		class="popper {className}"
-		on:popper:close={actions.destroy}
 		on:click
-		use:clickAway={{ action: clickedAway }}
 		use:stickTo={{ parentNode, position, stickToHookWidth }}
+		use:clickAway={{ action: clickedAway }}
 		{style}
 		style:zIndex={makeOnTop()}
+		{...rest}
 	>
-		<slot>
+		<Slotted slotted={children}>
 			{#if mounted}
 				{#if component}
-					<!-- <svelte:component this={component} {...componentProps} /> -->
+					<svelte:component this={component} {...componentProps} />
 				{/if}
 				{#if content}
 					{content}
 				{/if}
 			{/if}
-		</slot>
+		</Slotted>
 	</div>
 {/if}
 
