@@ -1,15 +1,32 @@
-<svelte:options accessors />
+<svelte:options accessors runes />
 
 <script lang="ts">
-	/* common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-	export let style: string | null = null;
-	/* end slotUi exports*/
+	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 
-	export let color = '#fff';
-	export let vertical = false;
+	type ToolBarProps = CommonProps & {
+		/** color of the toolbar */
+		color: string;
+		/** whether the toolbar is vertical */
+		vertical: boolean;
+		/**    */
+		element: HTMLDivElement;
+		slots: {
+			separator: Snippet | undefined;
+		};
+	};
+
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		color = '#fff',
+		vertical = $bindable<boolean>(false),
+		slots = { separator: undefined },
+		children,
+		...rest
+	}: ToolBarProps = $props();
 </script>
 
 <div
@@ -17,11 +34,12 @@
 	class:vertical
 	class="toolbar {className}"
 	style="{style};--color: {color}"
+	{...rest}
 >
-	<slot />
-	<slot name="separator" />
+	<Slotted slotted={children} />
+	<Slotted slotted={slots.separator} />
 </div>
 
-<style lang="scss" global>
-	@import './toolbar.css';
+<style lang="scss">
+	@import './toolbar.scss';
 </style>
