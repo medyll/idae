@@ -1,7 +1,7 @@
 <svelte:options accessors immutable={true} />
 
 <script lang="ts">
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	import { sx4u } from '$lib/utils/uses/sx4u/sx4u.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
@@ -21,7 +21,7 @@
 	let slideLeft: any;
 	let slideRight: any;
 
-	function toggleSlidePanels(event) {
+	function toggleSlidePanels() {
 		slideLeft.actions.toggle();
 		slideRight.actions.toggle();
 
@@ -49,6 +49,8 @@
 				<Panel title="Pinned Items">
 					<div class="gridIcon">
 						{#each [...Array(9)] as key, val}
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y-no-static-element-interactions -->
 							<div
 								on:click={() => {
 									openWindow('try ' + val, {

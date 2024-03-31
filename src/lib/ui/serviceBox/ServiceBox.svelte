@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { clickAway } from '../../uses/clickAway/clickAway';
-	import IconButton from '../../base/button/IconButton.svelte';
-	import ButtonMenu from '../../base/button/ButtonAction.svelte';
-	import Debug from '../../base/debug/Debug.svelte';
+	import IconButton from '$lib/base/button/IconButton.svelte';
+	import ButtonMenu from '$lib/base/button/ButtonAction.svelte';
+	import Debug from '$lib/base/debug/Debug.svelte';
 
 	const onclose = function () {
 		console.log('close ??');
 	};
 </script>
 
-<div class="h-full flex-v serviceBox">
+<div class="service-box">
 	<div class="flex-main pad-8 gridIconBis">
 		{#each [...Array(6)] as key, val}
 			<!--for popper-->
@@ -32,8 +31,10 @@
 		grid-template-columns: repeat(auto-fill, minmax(30%, auto));
 	}
 
-	.serviceBox {
+	.service-box {
 		width: 360px;
 		height: 360px;
+		display: flex;
+		flex-direction: column;
 	}
 </style>

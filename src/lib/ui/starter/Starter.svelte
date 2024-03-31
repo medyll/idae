@@ -1,24 +1,20 @@
 <script lang="ts">
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
-	import { sx4u } from '$lib/utils/uses/sx4u/sx4u';
-	import { clickAway } from '$lib/utils/uses/clickAway/clickAway';
 	import Paneler from '$lib/ui/panel/Paneler.svelte';
 	import Panel from '$lib/ui/panel/Panel.svelte';
 	import PanelGrid from '$lib/ui/panel/PanelGrid.svelte';
 	import PanelSlide from '$lib/ui/panel/PanelSlide.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
-	import { toggleStarter, starterStore } from './actions.js';
+	import { starterStore } from './actions.js';
 
 	import IconButton from '$lib/base/button/IconButton.svelte';
-	import { writable } from 'svelte/store';
-	import Debug from '$lib/base/debug/Debug.svelte';
 	import Input from '$lib/form/textfield/TextField.svelte';
 </script>
 
 <div />
 <Popper autoClose position={'BC'} isOpen={$starterStore}>
-	<div class="startMenu" transition:fade|global={{ duration: 50 }}>
+	<div class="boot-menu" transition:fade|global={{ duration: 50 }}>
 		<div style="margin-bottom:2rem" class="pad-2">
 			<Input style="width: 100%;" size="full" type="search" placeholder="Recherche" value="" />
 		</div>
