@@ -1,46 +1,77 @@
 <svelte:options accessors={true} />
 
-<script lang="ts">
+<script lang="ts" generics="T = Data">
 	import { trans2Tree } from './tree.utils.js';
 	import type { Data, TreeItemType } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
+	import type { CommonProps } from '$lib/types/index.js';
 
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
+	type TreeProps = CommonProps & {
+		/** data to be displayed in the tree */
+		data: T[];
 
-	export let data: Data[] = [];
-	export let paths: Record<string, any>[] = [];
-	export let pathField: string = 'path';
+		/** paths to be displayed in the tree */
+		paths: Record<string, any>[];
 
-	let finalPaths: TreeItemType[];
+		/** field to be used for paths */
+		pathField: string;
 
-	// private use
-	export let pathes: TreeItemType[] = trans2Tree(paths, pathField);
-	// private use
-	export let level: number = 0;
-	// private use
-	export let selectedDataKeys: string[] = [];
-	/** exported data */
-	export let selectedData: Data[] = [];
-	/** exported selected paths */
-	export let selectedPathes: string[] = [];
-	/** the split we use to build hierarchy */
-	export let splitter: string = '/';
-	/** show checkbox to select */
-	export let showCheckBox: boolean = false;
+		/** private use */
+		pathes: TreeItemType[];
 
-	let visibleChildChild: Record<string, boolean> = {};
-	export let selectedCategory: string = '';
+		/** private use */
+		level: number;
 
-	$: finalPaths = trans2Tree(paths, pathField);
+		/** private use */
+		selectedDataKeys: string[];
 
-	$: selectedData = selectedDataKeys.map((dataKey) => {
-		return dataOp.filterListFirst(paths, dataKey, pathField);
+		/** exported data */
+		selectedData: T[];
+
+		/** exported selected paths */
+		selectedPathes: string[];
+
+		/** the split we use to build hierarchy */
+		splitter: string;
+
+		/** show checkbox to select */
+		showCheckBox: boolean;
+
+		/** selected category */
+		selectedCategory: string;
+
+		element: HTMLElement;
+	};
+
+	let {
+		class: className = '',
+		pathField = 'path',
+		level = 0,
+		splitter = '/',
+		element = $bindable(),
+		data = $bindable([]),
+		paths = $bindable([]),
+		showCheckBox = $bindable(false),
+		selectedCategory = $bindable(''),
+		selectedDataKeys = $bindable([]),
+		selectedData = $bindable([]),
+		selectedPathes = $bindable([]),
+		pathes = trans2Tree(paths, pathField),
+		children,
+		slots = {}
+	}: TreeProps = $props();
+
+	let visibleChildChild: Record<string, boolean> = $state({});
+	let finalPaths: TreeItemType[] = $state([]);
+
+	$effect(() => {
+		finalPaths = trans2Tree(paths, pathField);
+		selectedData = selectedDataKeys.map((dataKey) => {
+			return dataOp.filterListFirst(paths, dataKey, pathField);
+		});
+		selectedPathes = selectedDataKeys;
 	});
-
-	$: selectedPathes = selectedDataKeys;
 
 	function handleCheck(dataObj: TreeItemType, act: boolean) {
 		if (act) {
@@ -91,10 +122,12 @@
 <div bind:this={element} class="treeRoot {className}">
 	{#each pathes as pat, k}
 		<div data-category={pat.path} class=" ">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
 				data-category-title={pat.path}
 				data-selected={selectedCategory === pat.path}
-				on:click={(event) => {
+				onclick={(event) => {
 					selectedCategory = pat.path;
 					toggle(pat.path);
 				}}
@@ -109,17 +142,15 @@
 				</div>
 				<div class="tree-cellTitleGutter">
 					{#if showCheckBox}
-						<div>
-							<input
-								on:click={(event) => {
-									event.stopPropagation();
-									handleCheck(pat, event?.currentTarget?.checked);
-								}}
-								type="checkbox"
-								style="display:block;border:1px solid red;"
-								checked={Boolean(selectedDataKeys.includes(pat.path))}
-							/>
-						</div>
+						<input
+							onclick={(event) => {
+								event.stopPropagation();
+								handleCheck(pat, event?.currentTarget?.checked);
+							}}
+							type="checkbox"
+							style="display:block;border:1px solid red;"
+							checked={Boolean(selectedDataKeys.includes(pat.path))}
+						/>
 					{/if}
 					<slot item={pat}><div>{pat.name}</div></slot>
 				</div>
