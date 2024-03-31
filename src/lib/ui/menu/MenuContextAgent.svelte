@@ -1,7 +1,9 @@
-<svelte:options accessors={true} />
+<svelte:options accessors runes />
 
-<script lang="ts"> 
-  import { getContext } from "svelte";
+<script lang="ts">
+	import { getContext } from 'svelte';
+	import type { IMenuProps } from './types.js';
 
-  export const menuAgent = getContext("menuStateContext");
+	let { menuAgent = $bindable(getContext('menuStateContext')) }: { menuAgent?: IMenuProps } =
+		$props();
 </script>

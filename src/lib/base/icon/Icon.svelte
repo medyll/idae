@@ -22,7 +22,7 @@
 		 * icon size
 		 * @type {'small' | 'medium' | 'large' | 'xlarge'}
 		 */
-		fontSize?: 'small' | 'medium' | 'large' | 'xlarge';
+		fontSize?: 'small' | 'medium' | 'large' | 'xlarge' | string;
 
 		/** rotate icon */
 		rotate?: boolean;
@@ -48,7 +48,7 @@
 
 	const sizes: Record<ElementProps['sizeType'], string> = uiPresets.iconSize;
 
-	const iconName = $derived(icon.includes(':') ? icon : `mdi:${icon}`);
+	let iconName = $derived(icon.includes(':') ? icon : `mdi:${icon}`);
 </script>
 
 {#key rotation}

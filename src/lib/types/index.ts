@@ -8,7 +8,7 @@ export type TIcon = string;
 } */
 
 export interface ElementProps {
-	sizeType: 'tiny' | 'small' | 'medium' | 'default' | 'large' | 'big' | 'full' | 'auto';
+	sizeType: 'tiny' | 'small' | 'medium' | 'default' | 'large' | 'big' | 'full' | 'auto' | string;
 	inputHeight: 'tiny' | 'small' | 'old' | 'large' | 'none';
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
 	expansion: 'full' | 'padded' | 'centered';

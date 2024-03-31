@@ -7,16 +7,12 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { IMenuItemProps, IMenuProps } from './types.js';
 	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
-	import type { Writable } from 'svelte/store';
-	import Slot from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	let mounted: boolean = $state(false);
-	const menuStateContext = getContext<Writable<IMenuProps>>('menuStateContext');
+	const menuStateContext = getContext<IMenuProps>('menuStateContext');
 
 	type MenuItemProps = CommonProps & {
-		/** className off the root component */
-		class?: string;
-
 		/** element root HTMLDivElement props */
 		element?: HTMLElement | null;
 
@@ -57,14 +53,11 @@
 		itemIndex?: number;
 		/** component to be rendered in the menu item */
 		component?: any;
-
-		/** whether the menu item is outer */
-		outer?: boolean;
 	};
 
 	let {
 		class: className = '',
-		element = null,
+		element = $bindable(),
 		text = undefined,
 		action = undefined,
 		icon = undefined,
@@ -78,25 +71,24 @@
 		onclick = (args) => {},
 		itemIndex = undefined,
 		component = null,
-		outer = true,
 		children = undefined,
 		slots = {
 			itemIcon: undefined,
 			menuItemEnd: undefined
 		}
-	}: MenuItemProps = $props();
+	}: MenuItemProps = $props() as MenuItemProps;
 
 	if (icon || slots.itemIcon) {
-		$menuStateContext.hasIcon = true;
+		menuStateContext.hasIcon = true;
 	}
 
 	if (selected) {
-		$menuStateContext.selectedIndex = itemIndex;
+		menuStateContext.selectedIndex = itemIndex;
 	}
 
 	$effect(() => {
 		if (mounted) {
-			$menuStateContext.menuItemsInstances?.push(component);
+			menuStateContext.menuItemsInstances?.push(component);
 		}
 		element?.addEventListener('click', handleClick);
 	});
@@ -112,7 +104,7 @@
 	};
 
 	const setSelected = () => {
-		$menuStateContext.selectedIndex = itemIndex;
+		menuStateContext.selectedIndex = itemIndex;
 	};
 </script>
 
@@ -123,30 +115,30 @@
 {/if}
 <li
 	class="menuItem {className}"
-	aria-selected={($menuStateContext.selectedIndex
-		? $menuStateContext.selectedIndex === itemIndex
+	aria-selected={(menuStateContext.selectedIndex
+		? menuStateContext.selectedIndex === itemIndex
 		: undefined) ?? undefined}
 	role="listitem"
 	bind:this={element}
 >
 	<span class="menuItemChip" />
-	{#if $menuStateContext?.hasIcon}
+	{#if menuStateContext?.hasIcon}
 		<div class="menuItemIcon">
-			<Slot slotted={slots.itemIcon}>
+			<Slotted slotted={slots.itemIcon}>
 				<Icon {icon} color={iconColor} fontSize={iconSize} />
-			</Slot>
+			</Slotted>
 		</div>
 	{/if}
 	<div class="menuItemText">
-		<Slot slotted={children} slotArgs={data}>
+		<Slotted slotted={children} slotArgs={data}>
 			{text}
-		</Slot>
+		</Slotted>
 	</div>
 	{#if slots.menuItemEnd || action}
 		<div class="menuItemActions">
-			<Slot slotted={slots.menuItemEnd}>
+			<Slotted slotted={slots.menuItemEnd}>
 				{action}
-			</Slot>
+			</Slotted>
 		</div>
 	{/if}
 </li>

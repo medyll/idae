@@ -4,11 +4,10 @@
 	import { setContext, type Snippet } from 'svelte';
 	import type { IMenuItemProps } from './types.js';
 	import MenuItem from './MenuItem.svelte';
-	import { createMenuStore } from './store.js';
 	import MenuContextAgent from './MenuContextAgent.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
-	import Slot from '$lib/utils/slot/Slotted.svelte';
 	import type { Data } from '$lib/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	type MenuProps = CommonProps & {
 		element: HTMLElement | null;
@@ -27,12 +26,16 @@
 		bordered?: boolean;
 
 		selectedIndex?: number;
+		/**  actions to be performed on the menu */
+		actions: {
+			navigate: (idx: number) => void;
+		};
 		children: Snippet<[{ item: Data; itemIndex: number }]>;
 	};
 
 	let {
 		class: className = '',
-		element = $bindable(null),
+		element = $bindable(),
 		menuList = $bindable(undefined),
 		menuItemsList = $bindable(undefined),
 		data = $bindable(undefined),
@@ -40,32 +43,30 @@
 		style = undefined,
 		bordered = false,
 		selectedIndex = $bindable(-1),
+		actions = $bindable({
+			navigate: (idx: number) => {
+				selectedIndex = idx;
+				if (menuAgent) $menuAgent.selectedIndex = idx;
+				const target = element.querySelector('[data-selected=true]');
+				if (target) {
+					const tD = target.getBoundingClientRect();
+					const sD = element.getBoundingClientRect();
+					if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
+						target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}
+				}
+			}
+		}),
 		children,
 		slots = {}
 	}: MenuProps = $props();
 
-	let menuContextRef;
+	let menuContextRef: MenuContextAgent = {} as MenuContextAgent;
 	let menuAgent = menuContextRef?.menuAgent;
 
-	/* $effect(() => {
-		menuAgent = menuContextRef?.menuAgent;
-	}); */
-
-	export const actions = {
-		navigate: (idx: number) => {
-			// set selectedIndex
-			selectedIndex = idx;
-			if (menuAgent) $menuAgent.selectedIndex = idx;
-			const target = element.querySelector('[data-selected=true]');
-			if (target) {
-				const tD = target.getBoundingClientRect();
-				const sD = element.getBoundingClientRect();
-				if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
-					target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-				}
-			}
-		}
-	};
+	$effect(() => {
+		element.addEventListener<any>('menu:item:clicked', onMenuClick);
+	});
 
 	const defaultStoreValues = {
 		menuList,
@@ -77,7 +78,7 @@
 		actions
 	};
 
-	const menuStore = createMenuStore(defaultStoreValues);
+	let menuStore = $state(defaultStoreValues);
 	setContext('menuStateContext', menuStore);
 
 	function onMenuClick(e: CustomEvent<any>) {
@@ -96,28 +97,21 @@
 	class="density-{density} menu {className}"
 	{style}
 	class:bordered
-	on:menu:item:clicked={onMenuClick}
 >
 	{#if menuItemsList || menuList}
 		{#each menuItemsList ?? menuList ?? [] as menuItem, itemIndex}
-			<Slot slotted={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
+			<Slotted slotted={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
 				<MenuItem {...menuItem} {itemIndex} />
-			</Slot>
-			<!-- <slot item={menuItem} {itemIndex} {menuItem}>
-				<MenuItem {...menuItem} {itemIndex} />
-			</slot> -->
+			</Slotted>
 		{/each}
 	{:else if data}
 		{#each data as dta, itemIndex}
-			<Slot slotted={children} slotArgs={{ item: dta, itemIndex, menuItem: dta }}>
+			<Slotted slotted={children} slotArgs={{ item: dta, itemIndex, menuItem: dta }}>
 				<MenuItem data={dta} {itemIndex} />
-			</Slot>
-			<!-- <slot item={dta} {itemIndex} menuItem={dta}>
-				<MenuItem data={dta} {itemIndex} />
-			</slot> -->
+			</Slotted>
 		{/each}
 	{:else}
-		<slot />
+		<Slotted slotted={children} />
 	{/if}
 </ul>
 
