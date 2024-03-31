@@ -28,4 +28,5 @@ export type CommonProps = {
 	style?: string;
 	children?: Snippet<[any]>;
 	slots?: Record<string, Snippet<[any]> | undefined>;
+	element?: HTMLElement;
 };

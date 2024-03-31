@@ -20,26 +20,26 @@
 		icon: string;
 
 		/** icon for the back action */
-		iconback: string;
+		iconback?: string;
 
 		/** parent element of the switcher */
 		parent?: HTMLElement | undefined;
-		slots: {
-			contentSwitcherIcon: Snippet;
-			switcherSlot: Snippet;
-			contentSwitcherReveal: Snippet;
+		slots?: {
+			contentSwitcherIcon?: Snippet;
+			switcherSlot?: Snippet;
+			contentSwitcherReveal?: Snippet;
 		};
 	};
 
 	let {
 		class: className = '',
-		element = null,
-		style = null,
+		element = undefined,
+		style = '',
 		icon = 'toggle',
 		iconback = 'chevron-left',
 		parent = undefined,
-		slots
-	} = $props<ContentSwitcherProps>();
+		slots = {}
+	}: ContentSwitcherProps = $props();
 
 	let visibleSate: boolean = false;
 	let thisRef: any;
@@ -47,8 +47,8 @@
 
 	function handleClick(event: MouseEvent) {
 		visibleSate = !visibleSate;
-		if (!element) return false;
-		const children: HTMLCollection = realParent.children;
+		if (!element || !realParent) return false;
+		const children: HTMLCollection = realParent?.children;
 
 		// iterate over all child nodes
 		Array.from(children).forEach((li: any) => {
@@ -64,6 +64,8 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class={className} {style} on:click={handleClick}>
 	{#if slots?.contentSwitcherIcon}
 		{@render slots.contentSwitcherIcon()}
