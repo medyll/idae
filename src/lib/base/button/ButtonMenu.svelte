@@ -6,14 +6,14 @@
 	import Menu from '../../ui/menu/Menu.svelte';
 	import type { SvelteComponent } from 'svelte';
 	import type { PopperPositionType } from '$lib/ui/popper/types.js';
-	import type { IMenuItemProps, IMenuProps } from '$lib/ui/menu/types.js';
+	import type { IMenuItemProps, MenuProps } from '$lib/ui/menu/types.js';
 	import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 
 	type Props = {
 		icon: string;
 		menuData: IMenuItemProps[];
 		actionComponent: SvelteComponent | any;
-		menuProps: IMenuProps;
+		menuProps: MenuProps;
 		/*  menuPosition
 		 * @type {"TC" | "TL" | "TR" | "BC" | "BL" | "BR"}
 		 */

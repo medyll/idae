@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { IMenuProps } from './types.js';
+	import type { MenuProps } from './types.js';
 
-	let { menuAgent = $bindable(getContext('menuStateContext')) }: { menuAgent?: IMenuProps } =
+	let { menuAgent = $bindable(getContext('menuStateContext')) }: { menuAgent?: MenuProps } =
 		$props();
 </script>

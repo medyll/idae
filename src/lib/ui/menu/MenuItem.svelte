@@ -5,12 +5,11 @@
 
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { IMenuItemProps, IMenuProps } from './types.js';
+	import type { IMenuItemProps, MenuProps } from './types.js';
 	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
-	let mounted: boolean = $state(false);
-	const menuStateContext = getContext<IMenuProps>('menuStateContext');
+	const menuStateContext = getContext<MenuProps>('menuStateContext');
 
 	type MenuItemProps = CommonProps & {
 		/** element root HTMLDivElement props */
@@ -77,10 +76,11 @@
 		...rest
 	}: MenuItemProps = $props();
 
-	if (icon || slots.itemIcon) {
-		menuStateContext.hasIcon = true;
-	}
-
+	$effect(() => {
+		if (icon || slots.itemIcon) {
+			menuStateContext.hasIcon = true;
+		}
+	});
 	$effect(() => {
 		if (selected) {
 			menuStateContext.selectedIndex = itemIndex;
