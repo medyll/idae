@@ -85,7 +85,7 @@
 		return results;
 	};
 
-	function preNavigate(e: KeyboardEvent, data: Record<string, any>) {
+	async function preNavigate(e: KeyboardEvent, data: Record<string, any>) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
 			onSelect(filteredData[selectedIndex], selectedIndex);
@@ -94,7 +94,8 @@
 		if (data.length === 0) return;
 		if ([38, 40].includes(e.keyCode)) e.preventDefault();
 
-		navigateList(e.keyCode, selectedIndex).then((res) => menuRef.actions.navigate(res));
+		const res = await navigateList(e.keyCode, selectedIndex);
+		menuRef.actions.navigate(res);
 	}
 
 	async function navigateList(keyCode: KeyboardEvent['keyCode'], actualIndex: number) {
@@ -131,6 +132,9 @@
 		}}
 		onkeydown={(e:KeyboardEvent) => preNavigate(e, filteredData)}
 		{...rest}
+		aria-haspopup="menu"
+		aria-controls="menu"
+		tabindex="0"
 	/>
 
 	<Menu
@@ -142,6 +146,10 @@
 		on:menu:click={(args) => {
 			alert(args);
 		}}
+		id="menu"
+		role="menu"
+		tabindex="-1"
+		aria-expanded={popperOpen}
 	>
 		{#snippet children(prop)}
 			<Slot slotted={childs} slotArgs={prop.item}>

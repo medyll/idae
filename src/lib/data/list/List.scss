@@ -93,8 +93,6 @@ li.listItem {
 
   &.selected,
   &[data-selected="true"] {
-    border: none;
-    background-color: var(--sld-color-background-darken-mid);
     .listItemChip {
       position: absolute;
       min-height: 16px;
