@@ -51,8 +51,7 @@
 
 		/** position in the list */
 		itemIndex?: number;
-		/** component to be rendered in the menu item */
-		component?: any;
+		rest?: any;
 	};
 
 	let {
@@ -70,27 +69,29 @@
 		onMenuItemClick = () => {},
 		onclick = (args) => {},
 		itemIndex = undefined,
-		component = null,
 		children = undefined,
 		slots = {
 			itemIcon: undefined,
 			menuItemEnd: undefined
-		}
-	}: MenuItemProps = $props() as MenuItemProps;
+		},
+		...rest
+	}: MenuItemProps = $props();
 
 	if (icon || slots.itemIcon) {
 		menuStateContext.hasIcon = true;
 	}
 
-	if (selected) {
-		menuStateContext.selectedIndex = itemIndex;
-	}
-
 	$effect(() => {
-		if (mounted) {
-			menuStateContext.menuItemsInstances?.push(component);
+		if (selected) {
+			menuStateContext.selectedIndex = itemIndex;
 		}
 		element?.addEventListener('click', handleClick);
+	});
+
+	$effect(() => {
+		if (itemIndex === undefined && element?.parentElement) {
+			itemIndex = [...element?.parentElement?.querySelectorAll('.menuItem')].indexOf(element);
+		}
 	});
 
 	const handleClick = () => {
@@ -109,17 +110,16 @@
 </script>
 
 {#if dividerBefore}
-	<li>
+	<li role="separator">
 		<Divider density="tight" expansion="centered" />
 	</li>
 {/if}
 <li
 	class="menuItem {className}"
-	aria-selected={(menuStateContext.selectedIndex
-		? menuStateContext.selectedIndex === itemIndex
-		: undefined) ?? undefined}
-	role="listitem"
+	data-selected={menuStateContext.selectedIndex === itemIndex}
+	role="presentation"
 	bind:this={element}
+	{...rest}
 >
 	<span class="menuItemChip" />
 	{#if menuStateContext?.hasIcon}
@@ -129,7 +129,7 @@
 			</Slotted>
 		</div>
 	{/if}
-	<div class="menuItemText">
+	<div role="menuitem" class="menuItemText">
 		<Slotted slotted={children} slotArgs={data}>
 			{text}
 		</Slotted>
@@ -143,7 +143,7 @@
 	{/if}
 </li>
 {#if divider}
-	<li>
+	<li role="separator">
 		<Divider density="tight" expansion="padded" />
 	</li>
 {/if}

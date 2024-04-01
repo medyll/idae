@@ -31,6 +31,7 @@
 			navigate: (idx: number) => void;
 		};
 		children: Snippet<[{ item: Data; itemIndex: number }]>;
+		rest: any;
 	};
 
 	let {
@@ -43,30 +44,28 @@
 		style = undefined,
 		bordered = false,
 		selectedIndex = $bindable(-1),
-		actions = $bindable({
+		actions = {
 			navigate: (idx: number) => {
-				selectedIndex = idx;
-				if (menuAgent) $menuAgent.selectedIndex = idx;
-				const target = element.querySelector('[data-selected=true]');
-				if (target) {
-					const tD = target.getBoundingClientRect();
-					const sD = element.getBoundingClientRect();
-					if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
-						target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				if (idx > -1) {
+					selectedIndex = idx;
+					if (menuAgent) $menuAgent.selectedIndex = idx;
+					const target = element.querySelector('[data-selected=true]');
+					if (target) {
+						const tD = target.getBoundingClientRect();
+						const sD = element.getBoundingClientRect();
+						if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
+							target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						}
 					}
 				}
 			}
-		}),
+		},
 		children,
-		slots = {}
+		...rest
 	}: MenuProps = $props();
 
 	let menuContextRef: MenuContextAgent = {} as MenuContextAgent;
 	let menuAgent = menuContextRef?.menuAgent;
-
-	$effect(() => {
-		element.addEventListener<any>('menu:item:clicked', onMenuClick);
-	});
 
 	const defaultStoreValues = {
 		menuList,
@@ -81,6 +80,10 @@
 	let menuStore = $state(defaultStoreValues);
 	setContext('menuStateContext', menuStore);
 
+	$effect(() => {
+		element.addEventListener<any>('menu:item:clicked', onMenuClick);
+		menuStore.selectedIndex = selectedIndex;
+	});
 	function onMenuClick(e: CustomEvent<any>) {
 		/** @deprecated */
 		let event = new CustomEvent('menu:clicked', { detail: e.detail, bubbles: true });
@@ -94,9 +97,11 @@
 <ul
 	bind:this={element}
 	role="menu"
-	class="density-{density} menu {className}"
+	class="density-{density} dense-{density} menu {className}"
 	{style}
 	class:bordered
+	{...rest}
+	tabindex="-1"
 >
 	{#if menuItemsList || menuList}
 		{#each menuItemsList ?? menuList ?? [] as menuItem, itemIndex}

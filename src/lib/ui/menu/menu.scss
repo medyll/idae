@@ -42,18 +42,4 @@ li.menuItem {
   .menuItemActions {
     display: block;
   }
-
-  &.selected,
-  &[aria-selected="true"] {
-    .menuItemChip {
-      position: absolute;
-      min-height: 16px;
-      height: 50%;
-      width: 3px;
-      background-color: var(--sld-color-primary);
-      border-radius: var(--sld-radius-med);
-      left: 0;
-      border: 1px solid var(--sld-color-primary-alpha-mid);
-    }
-  }
 }

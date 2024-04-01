@@ -79,6 +79,8 @@
 		class="flex-h flex-align-middle content-switcher"
 		style="width:100%;flex:1;position: relative"
 	>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div on:click={handleClick}>
 			<Button ratio="1/1" icon={iconback} iconFontSize="small" />
 		</div>
