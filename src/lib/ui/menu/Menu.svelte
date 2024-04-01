@@ -11,20 +11,17 @@
 
 	type MenuProps = CommonProps & {
 		element: HTMLElement | null;
-		/** @deprecated */
-		menuList?: IMenuItemProps[];
 
 		menuItemsList?: IMenuItemProps[];
 
 		data?: T[];
-
+		/** @deprecated use dense*/
 		density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
+		dense?: 'small' | 'default' | 'medium' | 'kind';
 
 		style?: string;
-
 		/** menu can have no border */
 		bordered?: boolean;
-
 		selectedIndex?: number;
 		/**  actions to be performed on the menu */
 		actions: {
@@ -37,10 +34,10 @@
 	let {
 		class: className = '',
 		element = $bindable(),
-		menuList = $bindable(undefined),
 		menuItemsList = $bindable(undefined),
 		data = $bindable(undefined),
 		density = 'tight',
+		dense = 'default',
 		style = undefined,
 		bordered = false,
 		selectedIndex = $bindable(-1),
@@ -68,7 +65,6 @@
 	let menuAgent = menuContextRef?.menuAgent;
 
 	const defaultStoreValues = {
-		menuList,
 		menuItemsList,
 		menuItemsInstances: [],
 		density,
@@ -103,8 +99,8 @@
 	{...rest}
 	tabindex="-1"
 >
-	{#if menuItemsList || menuList}
-		{#each menuItemsList ?? menuList ?? [] as menuItem, itemIndex}
+	{#if menuItemsList}
+		{#each menuItemsList ?? [] as menuItem, itemIndex}
 			<Slotted slotted={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
 				<MenuItem {...menuItem} {itemIndex} />
 			</Slotted>
@@ -121,5 +117,5 @@
 </ul>
 
 <style lang="scss">
-	@import 'menu';
+	@import './menu.scss';
 </style>
