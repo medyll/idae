@@ -2,7 +2,7 @@
 // @import "../../styles/slotui-vars.scss";
 
 button {
-    --sld-button-font-size: 11px;
+    --sld-button-font-size: inherit;
     --sld-button-radius: var(--sld-radius-small);
     --sld-button-border-color: transparent;
     --sld-button-border-width: 1px;
@@ -10,7 +10,7 @@ button {
     --sld-button-padding: 0;
     --sld-button-background: var(--sld-color-primary);
     --sld-button-hover-border-color: var(--sld-color-primary);
-    --sld-button-active-border-color: var(--sld-color-primary);
+    --sld-button-active-border-color: var(--sld-color-secondary);
     --sld-button-focus-border-color: var(--sld-color-primary);
     --sld-button-hover-shadow: var(--box-shad-3);
     --sld-button-active-shadow: var(--box-shad-4);
@@ -29,51 +29,44 @@ button {
 
 .button,
 button,
-button[contained="true"],
 input[type="button"],
 input[type="submit"] {
     @include input-sizes-presets;
     @include ui-width-presets;
+    @include ui-dense-presets;
     @include input-sizes-presets;
 
     text-align: var(--sld-button-text-align);
     font-size: var(--sld-button-font-size);
     border-radius: var(--sld-button-radius);
-    border: 0.5px solid var(--sld-button-border-color);
-    background: var(--sld-button-background);
+
     color: var(--sld-color-foreground);
     padding: var(--sld-button-padding);
-    outline: var(--sld-button-border-width) solid var(--sld-button-border-color);
 
     display: inline-flex;
     align-items: center;
     transition: all 0.1s;
     position: relative;
     overflow: hidden;
+    cursor: default;
+    border: 1px solid transparent;
+    transition: 0.4 ease all;
 
-    &[disabled] {
+    &[disabled],
+    &.disabled {
         color: var(--color-gray-800);
         border-color: none;
         opacity: 0.4;
     }
 
-    &:hover {
-        outline: var(--sld-button-border-width) solid var(--sld-button-hover-border-color);
-        box-shadow: var(--sld-button-hover-shadow);
-    }
-
     &:active {
-        outline: 0.5px solid var(--sld-button-active-border-color, var(--sld-color-primary)) !important;
+        //outline: 0.5px solid var(--sld-button-active-border-color, var(--sld-color-primary)) !important;
         box-shadow: var(--sld-button-active-shadow);
     }
 
     &:focus {
-        outline: 0.5px solid var(--sld-button-active-border-color, var(--sld-color-primary)) !important;
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-
-    &[nowrap] {
-        color: " ";
+        //outline: 0.5px solid var(--sld-button-active-border-color, var(--sld-color-primary)) !important;
+        // box-shadow: var(--sld-button-focus-shadow);
     }
 
     &[selected="true"] {
@@ -83,34 +76,50 @@ input[type="submit"] {
         font-weight: bold;
     }
 
-    &[bordered="true"] {
+    &[bordered="true"],
+    &.bordered {
         color: var(--sld-color-foreground);
-        border: 0.5px solid var(--sld-color-primary-alpha-low);
+        border: var(--sld-button-border-width) solid var(--sld-button-border-color);
         box-shadow: var(--box-shad-1);
-
+        background-color: var(--sld-color-background);
         &:hover {
-            border: 0.5px solid var(--sld-color-primary);
+            border: 1px solid var(--sld-color-primary);
+            box-shadow: var(--sld-button-hover-shadow);
+        }
+
+        &:focus,
+        &:active {
+            border: 1px solid var(--sld-button-active-border-color) !important;
+            box-shadow: var(--sld-button-active-shadow);
         }
     }
 
-    &[contained="true"] {
-        color: var(--sld-color-foreground);
-        background-color: var(--sld-color-paper-alpha-low);
+    &[contained="true"],
+    &.contained {
+        border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+        color: white;
+        background-color: var(--sld-button-background);
+        background-clip: padding-box;
+        box-shadow: var(--box-shad-1);
         &:hover {
-            background-color: var(--sld-color-primary) !important;
-            color: white;
+            background-color: var(--sld-color-secondary);
+            color: var(--sld-color-primary);
         }
 
-        &:focus {
-            outline: 0;
-            background-color: var(--sld-color-background-alpha-mid);
+        &:focus,
+        &:active {
+            background-color: var(--sld-color-tertiary);
+            color: var(--sld-color-secondary);
+            box-shadow: var(--sld-button-active-shadow);
         }
     }
 
-    &[link="true"] {
+    &[link="true"],
+    &.link {
         color: var(--sld-color-primary);
         text-decoration: underline;
         text-underline-offset: 0.35rem;
+        background-color: transparent;
         cursor: pointer;
 
         &:hover {
@@ -118,13 +127,16 @@ input[type="submit"] {
         }
     }
 
-    &[naked="true"] {
+    &[naked="true"],
+    &.naked {
         color: inherit;
         background-color: transparent !important;
-        border: 0.5px solid transparent;
+        border: 1px solid transparent;
         cursor: pointer;
 
-        &:hover,
+        &:hover {
+            box-shadow: var(--sld-button-focus-shadow);
+        }
         &:active,
         &:focus {
             background-color: transparent !important;
@@ -134,65 +146,53 @@ input[type="submit"] {
     }
 
     &.loading {
-        & .loadingButtonZone {
+        .loadingButtonZone {
             z-index: 010;
             position: absolute;
             top: 0;
-            bottom: 0;
-            right: 0;
             left: 0;
-            max-height: 100%;
+            height: 100%;
+            width: 100%;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-around;
             background-color: var(--css-background-color, var(--sld-color-paper));
             color: var(--css-background-color, var(--sld-color-secondary));
-            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter-backdrop-filter: blur(3px);
         }
     }
-
-    .innerButton {
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        z-index: 1;
+    .buttonStart {
+        padding: 0 0.5rem;
         display: flex;
-        min-width: auto;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+    }
+
+    .central {
+        flex: 1;
+        min-width: 0;
+        padding: 0 0.5rem;
+        text-align: var(--sld-button-text-align);
+        display: block;
+    }
+
+    .action {
+        position: absolute;
+        display: flex;
         align-items: center;
         justify-content: center;
+        height: 100%;
+        width: var(--w-tiny);
+        padding: 0 0.5rem;
+        cursor: pointer;
 
-        .buttonStart {
-            padding: 0 var(--box-density-preset-tiny, 0.25rem);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .central {
-            flex: 1;
-            min-width: 0;
-            padding: 0 0.5rem;
-            text-align: var(--sld-button-text-align);
-            &[nowrap] {
-            }
-        }
-
-        .action {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            // background-color: rgba(255, 255, 255, 0.1);
-            width: var(--w-tiny);
-            padding: 0 0.5rem;
-            cursor: pointer;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.5);
-            }
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.5);
         }
     }
+
     .chip {
         position: absolute;
         z-index: 2;
@@ -203,5 +203,19 @@ input[type="submit"] {
         background-color: var(--css-button-chip-color, var(--sld-color-primary));
         border-radius: var(--sld-radius-large);
         bottom: 2px;
+    }
+
+    .loadingButtonZone {
+        z-index: 010;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
     }
 }
