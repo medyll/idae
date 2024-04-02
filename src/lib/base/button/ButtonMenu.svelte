@@ -1,82 +1,40 @@
-<svelte:options accessors={true} />
+<svelte:options accessors runes />
 
 <script lang="ts">
-	import { openPopper } from '../../ui/popper/actions.js';
-	import IconButton from './IconButton.svelte';
-	import Menu from '../../ui/menu/Menu.svelte';
-	import type { SvelteComponent } from 'svelte';
-	import type { PopperPositionType } from '$lib/ui/popper/types.js';
-	import type { IMenuItemProps, MenuProps } from '$lib/ui/menu/types.js';
-	import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
+	import Menu from '$lib/ui/menu/Menu.svelte';
+	import type { Snippet } from 'svelte';
+	import type { PopperProps } from '$lib/ui/popper/types.js';
+	import type { MenuProps } from '$lib/ui/menu/types.js';
+	import Popper from '$lib/ui/popper/Popper.svelte';
+	import Button from './Button.svelte';
+	import type { ButtonProps } from './types.js';
 
-	type Props = {
-		icon: string;
-		menuData: IMenuItemProps[];
-		actionComponent: SvelteComponent | any;
+	type ButtonMenuProps = ButtonProps & {
 		menuProps: MenuProps;
-		/*  menuPosition
-		 * @type {"TC" | "TL" | "TR" | "BC" | "BL" | "BR"}
-		 */
-		menuPosition: PopperPositionType;
+		popperProps: PopperProps;
 		class: string;
-		element: HTMLElement;
+		element: HTMLButtonElement;
+		menuItem?: Snippet;
+		rest: ButtonProps;
 	};
 
 	let {
-		icon = 'list',
-		menuData = [],
-		actionComponent = Menu,
 		element,
-		menuProps = {
-			menuList: menuData,
-			menuItemsList: menuData,
-			onMenuItemClick: () => {
-				console.log('...');
-			}
-		},
-		menuPosition = 'BC',
-		class: className
-	} = $props<Props>();
-
-	let componentProps = menuProps
-		? menuProps
-		: {
-				menuList: menuData,
-				menuItemsList: menuData,
-				onMenuItemClick: () => {}
-			};
-
-	const onActionClick = (event: MouseEvent) => {
-		event.stopPropagation();
-		openPopper('settingActions', {
-			parentNode: event.currentTarget as HTMLElement,
-			component: actionComponent,
-			componentProps: componentProps ?? {},
-			position: menuPosition
-		});
-	};
-
-	let openPoppOpt: UsePopperProps;
-
-	openPoppOpt = {
-		parentNode: element,
-		component: actionComponent,
-		componentProps: componentProps ?? {},
-		position: 'BC',
-		disabled: false
-	};
+		menuProps = {},
+		popperProps = {},
+		class: className,
+		menuItem = undefined,
+		...rest
+	}: ButtonMenuProps = $props();
 </script>
 
-<IconButton
-	class={'ButtonMenu ' + className}
-	bind:element
-	icon="faEllipsisH"
-	iconFontSize="small"
-	on:click={onActionClick}
->
+<Button class={'ButtonMenu ' + className} {...rest} bind:element>
 	<slot />
-</IconButton>
+</Button>
+<Popper parentNode={element} {...popperProps}>
+	<Menu {...menuProps}><slot name="menuItem">{@render menuItem?.()}</slot></Menu>
+</Popper>
 
 <style lang="scss">
-	@import 'ButtonMenu';
+	@import './ButtonMenu.scss';
 </style>
