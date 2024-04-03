@@ -14,6 +14,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import ButtonAction from './ButtonAction.svelte';
+	import ButtonMenu from './ButtonMenu.svelte';
 
 	type ParameterType = {
 		sizes: ElementProps['sizeType'][];
@@ -164,6 +165,10 @@ const usePopper: UsePopperProps = {
 	>test et essai
 	<div slot="popperContent" class="pad-4">content</div>
 </ButtonAction>
+<ButtonMenu
+	>menu
+	<div slot="menuItem">content</div>
+</ButtonMenu>
 <ComponentExample
 	component="Button"
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"

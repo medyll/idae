@@ -30,6 +30,10 @@
     --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 50%);
     --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 90%);
 
+    --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), #000 10%);
+    --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), #000 20%);
+    --sld-color-tertiary-darken-high: color-mix(in srgb, var(--sld-color-tertiary), #000 30%);
+
     --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), #999 10%);
     --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), #999 40%);
     --sld-color-background-darken-high: color-mix(in srgb, var(--sld-color-background), #999 80%);
@@ -57,22 +61,6 @@
     --sld-color-paper: #3a3b3b;
 
     --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 60%);
-}
-
-button {
-    --sld-button-font-size: 11px;
-    --sld-button-radius: var(--sld-radius-small);
-    --sld-button-border-color: transparent;
-    --sld-button-border-width: 1px;
-    --sld-button-text-align: center;
-    --sld-button-padding: 0;
-    --sld-button-background: var(--sld-color-primary);
-    --sld-button-hover-border-color: var(--sld-color-primary);
-    --sld-button-active-border-color: var(--sld-color-primary);
-    --sld-button-focus-border-color: var(--sld-color-primary);
-    --sld-button-hover-shadow: var(--box-shad-3);
-    --sld-button-active-shadow: var(--box-shad-4);
-    --sld-button-focus-shadow: var(--box-shad-4);
 }
 
 input {

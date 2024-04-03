@@ -1,0 +1,112 @@
+@import "../../styles/presets.scss";
+
+:root {
+    .checkbox {
+        --sld-checkbox-background: var(--sld-color-background-alpha-high);
+        --sld-checkbox-background-hover: var(--sld-color-primary);
+        --sld-checkbox-background-checked: var(--sld-color-primary);
+        --sld-checkbox-border-width: 2px;
+        --sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
+        --sld-checkbox-border-bottom-width: 2px;
+        --sld-checkbox-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+        --sld-checkbox-radius: var(--sld-radius-small);
+        --sld-checkbox-padding: 0 0.5rem;
+        --sld-checkbox-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+    }
+}
+
+.checkbox {
+    @include data-hover;
+    @include ui-dense-presets;
+    appearance: none;
+    outline: none;
+    border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
+    border-radius: var(--sld-checkbox-radius);
+    background-clip: padding-box;
+    background-color: var(--sld-checkbox-background);
+    width: 1.7rem;
+    height: 1.7rem;
+    aspect-ratio: 1/1;
+    padding: 0;
+    margin: 0;
+
+    &:focus-visible {
+        box-shadow: var(--sld-checkbox-shadow);
+    }
+
+    &:hover {
+        background-color: var(--sld-color-primary-darken-mid);
+    }
+
+    &:active {
+        + .svg {
+            color: var(--sld-color-secondary);
+        }
+    }
+
+    &:disabled {
+        border-color: #ccc;
+        background-color: #ededed;
+        pointer-events: none;
+    }
+
+    &:checked,
+    &:indeterminate {
+        background-color: var(--sld-checkbox-background-checked);
+
+        &:hover {
+            background-color: var(--sld-checkbox-background-hover);
+        }
+
+        &:active,
+        &:focus {
+            background-color: var(--sld-checkbox-background-checked);
+        }
+
+        &:disabled,
+        &[disabled] {
+            border-color: #ccc;
+            background-color: #ededed;
+            pointer-events: none;
+            + .svg {
+                color: #ededed;
+            }
+        }
+    }
+}
+
+.checkbox-root {
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+    min-block-size: 32px;
+    gap: 0.5rem;
+
+    &.disabled > span {
+        color: #ededed;
+    }
+
+    .checkbox-container {
+        display: inline-flex;
+        justify-content: center;
+        position: relative;
+        .svg {
+            position: absolute;
+            color: white;
+            height: 100%;
+            width: 100%;
+            padding: 3px;
+            path {
+                transform-origin: center;
+                &-check {
+                    transform: scale(1.1);
+                    fill: white;
+                }
+                &-indeterminate {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}

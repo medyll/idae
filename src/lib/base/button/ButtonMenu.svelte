@@ -10,8 +10,8 @@
 	import type { ButtonProps } from './types.js';
 
 	type ButtonMenuProps = ButtonProps & {
-		menuProps: MenuProps;
-		popperProps: PopperProps;
+		menuProps?: MenuProps;
+		popperProps?: PopperProps;
 		menuItem?: Snippet;
 	};
 
