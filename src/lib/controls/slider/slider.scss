@@ -2,17 +2,36 @@
 
 .slider {
     background-color: var(--sld-color-background);
-
-    .gouge {
-        position: relative;
-        padding: 0.5rem;
-        .sliderPin {
-            width: 8px;
-            height: 8px;
-            background-color: var(--color-primary);
-            position: relative;
-            border: 1px solid var(--sld-color-primary);
-            display: inline-block;
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    @include ui-dense-presets;
+    .slider-gouge {
+        height: 4px;
+        width: 100%;
+        border-radius: 10px;
+        background-color: var(--sld-color-secondary);
+    }
+    .slider-gouge-selected {
+        height: 4px;
+        border-radius: 10px;
+        background-color: var(--sld-color-primary);
+    }
+    .slider-thumb {
+        top: 0;
+        aspect-ratio: 1/1;
+        height: 90%;
+        transform: translateY(50%);
+        background-color: var(--sld-color-primary);
+        position: absolute;
+        border: 3px solid var(--sld-color-primary-darken-high);
+        border-radius: 50%;
+        display: inline-block;
+        background-clip: padding-box;
+        &:hover {
+            box-shadow: var(--box-shad-3);
+            outline: 4px solid var(--sld-color-primary-alpha-high);
         }
     }
 }

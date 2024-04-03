@@ -1,15 +1,42 @@
 .slider {
   background-color: var(--sld-color-background);
-}
-.slider .gouge {
   position: relative;
-  padding: 0.5rem;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 1.5rem;
 }
-.slider .gouge .sliderPin {
-  width: 8px;
-  height: 8px;
-  background-color: var(--color-primary);
-  position: relative;
-  border: 1px solid var(--sld-color-primary);
+.slider.dense-small {
+  min-height: 1rem;
+}
+.slider.dense-default {
+  min-height: 1.5rem;
+}
+.slider.dense-medium {
+  min-height: 2rem;
+}
+.slider.dense-kind {
+  min-height: 3rem;
+}
+.slider .slider-gouge {
+  height: 4px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--sld-color-secondary);
+}
+.slider .slider-gouge-selected {
+  height: 4px;
+  border-radius: 10px;
+  background-color: var(--sld-color-primary);
+}
+.slider .slider-thumb {
+  top: 0;
+  aspect-ratio: 1/1;
+  height: 100%;
+  transform: translateY(50%);
+  background-color: var(--sld-color-primary);
+  position: absolute;
+  border: 4px solid var(--sld-color-primary-alpha-high);
+  border-radius: 50%;
   display: inline-block;
 }

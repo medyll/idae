@@ -18,21 +18,38 @@
     --sld-color-background: #ffffff;
     --sld-color-paper: #f1f1f1;
 
-    --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 50%);
-    --sld-color-secondary-alpha-mid: color-mix(in srgb, var(--sld-color-secondary), transparent 50%);
-    --sld-color-tertiary-alpha-mid: color-mix(in srgb, var(--sld-color-tertiary), transparent 50%);
-
-    --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 10%);
-    --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 50%);
-    --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 90%);
-
-    --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 10%);
-    --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 50%);
-    --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 90%);
-
+    --sld-color-disabled: #ccc;
+    --sld-color-disabled-border: #cccccc;
+}
+:root {
+    /* primary alpha */
+    --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 30%);
+    --sld-color-primary-alpha-mid: color-mix(in srgb, var(--sld-color-primary), transparent 40%);
+    --sld-color-primary-alpha-high: color-mix(in srgb, var(--sld-color-primary), transparent 80%);
+    /* secondary alpha */
+    --sld-color-secondary-alpha-low: color-mix(in srgb, var(--sld-color-secondary), transparent 30%);
+    --sld-color-secondary-alpha-mid: color-mix(in srgb, var(--sld-color-secondary), transparent 40%);
+    --sld-color-secondary-alpha-high: color-mix(in srgb, var(--sld-color-secondary), transparent 66%);
+    /* tertiary alpha */
+    --sld-color-tertiary-alpha-low: color-mix(in srgb, var(--sld-color-tertiary), transparent 30%);
+    --sld-color-tertiary-alpha-mid: color-mix(in srgb, var(--sld-color-tertiary), transparent 40%);
+    --sld-color-tertiary-alpha-high: color-mix(in srgb, var(--sld-color-tertiary), transparent 66%);
+    /* primary darken */
     --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), #000 10%);
+    --sld-color-primary-darken-mid: color-mix(in srgb, var(--sld-color-primary), #000 20%);
+    --sld-color-primary-darken-high: color-mix(in srgb, var(--sld-color-primary), #000 30%);
+    /* secondary darken */
+    --sld-color-secondary-darken-low: color-mix(in srgb, var(--sld-color-secondary), #000 10%);
     --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), #000 20%);
-    --sld-color-tertiary-darken-high: color-mix(in srgb, var(--sld-color-tertiary), #000 30%);
+    --sld-color-secondary-darken-high: color-mix(in srgb, var(--sld-color-secondary), #000 30%);
+
+    --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 80%);
+    --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 50%);
+    --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 10%);
+
+    --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
+    --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 50%);
+    --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 10%);
 
     --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), #999 10%);
     --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), #999 40%);
@@ -61,25 +78,6 @@
     --sld-color-paper: #3a3b3b;
 
     --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 60%);
-}
-
-input {
-    --sld-input-background: var(--sld-color-background-alpha-high);
-    --sld-input-border-width: 1px;
-    --sld-input-border-color: var(--sld-color-foreground-alpha-mid);
-    --sld-input-border-bottom-width: 2px;
-    --sld-input-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
-    --sld-input-radius: var(--sld-radius-small);
-    --sld-input-padding: 0 0.5rem;
-    --sld-input-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
-}
-
-ul.listRoot {
-    --sld-list-padding: 0;
-
-    --sld-list-item-padding: 0;
-    --sld-list-item-radius: var(--sld-radius-small);
-    --sld-list-item-selected-background: var(--sld-selected-background-color);
 }
 
 .bg-themed-scheme-discrete {

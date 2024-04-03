@@ -1,4 +1,4 @@
-.window {
+dialog.window {
   display: block;
   border-radius: var(--sld-radius-small);
   background-color: var(--sld-color-background);
@@ -10,28 +10,29 @@
   overflow: hidden;
   z-index: 70000;
   max-height: 100%;
+  padding: 0;
 }
-.window.active {
+dialog.window.active {
   border: 1px solid var(--sld-color-primary);
 }
-.window .bar {
+dialog.window header.bar {
   display: flex;
   align-items: center;
   text-align: center;
   background-color: var(--sld-color-paper);
   color: var(--sld-color-foreground);
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
-.window .bar .handle {
+dialog.window header.bar .handle {
   flex: 1;
   cursor: pointer;
 }
-.window .buttonZone {
+dialog.window footer.buttonZone {
   padding: 0.5rem;
   display: flex;
   justify-content: end;
   gap: var(--gap-small, 0.5rem);
 }
-.window .ctrlZone {
+dialog.window .ctrlZone {
   display: flex;
 }

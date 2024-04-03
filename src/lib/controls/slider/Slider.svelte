@@ -8,10 +8,8 @@
 		element?: HTMLDivElement | null;
 		/** Obtains a bound DOM reference to the slider's input element. */
 		elementInput?: HTMLInputElement | null;
-		/** Obtains a bound DOM reference to the slider's outer container element. */
-		elementContainer?: HTMLDivElement;
 		/** Obtains a bound DOM reference to the slider's outer rail element. */
-		elementRail?: HTMLDivElement;
+		elementRail: HTMLDivElement;
 		/** Obtains a bound DOM reference to the slider's track (fill) element. */
 		elementGutter?: HTMLDivElement;
 		/** Slider's value. */
@@ -37,14 +35,11 @@
 		style = '',
 		element,
 		elementInput,
-		elementContainer,
 		elementRail,
-		elementGutter,
-		value = 0,
+		value = $bindable(0),
 		min = 0,
 		max = 100,
 		step = 1,
-		tooltip = true,
 		orientation = 'horizontal',
 		reverse = false,
 		disabled = false
@@ -75,13 +70,18 @@
 	};
 
 	const key = {
-		start(event) {
+		start(event: Event) {
 			if (event.cancelable) event.preventDefault();
 			holding = true;
 		},
 		mouseDown(event: MouseEvent) {
 			if (event.cancelable) event.preventDefault();
 			holding = true;
+		},
+		click(event: MouseEvent) {
+			if (event.cancelable) event.preventDefault();
+			getSliderVal(event);
+			holding = false;
 		},
 		keyDown(event: KeyboardEvent) {
 			const { key } = event;
@@ -98,12 +98,13 @@
 		}
 	};
 
-	// $: dispatch('change', value);
-	const percentage = $derived(getPercentage(value));
+	let percentage = $derived(getPercentage(value));
 	$effect(() => {
 		if (value <= min) value = min;
 		else if (value >= max) value = max;
+	});
 
+	$effect(() => {
 		if (dragging) {
 			getSliderVal(event);
 			dragging = false;
@@ -115,7 +116,8 @@
 	}
 
 	function getSliderVal(event: Event) {
-		const { clientX, clientY } = event.touches ? event.touches[0] : event;
+		// @ts-ignore
+		const { clientX, clientY } = (event.touches ? event.touches?.[0] : event) as TouchEvent;
 		const { left, top, width, height } = elementRail?.getBoundingClientRect();
 		const offset = orientation === 'horizontal' ? clientX - left : top + height - clientY;
 		const size = orientation === 'horizontal' ? width : height;
@@ -126,28 +128,34 @@
 </script>
 
 <svelte:window
-	on:mousemove={move.handle}
-	on:mouseup={move.cancel}
-	on:touchmove={move.handle}
-	on:touchend={move.cancel}
-	on:touchcancel={move.cancel}
+	onmousemove={move.handle}
+	onmouseup={move.cancel}
+	ontouchmove={move.handle}
+	ontouchend={move.cancel}
+	ontouchcancel={move.cancel}
 />
-
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="slider pad-1 border w-large"
+	class="slider w-large"
 	onmousedown={key.mouseDown}
 	ontouchstart={key.start}
 	onkeydown={key.keyDown}
+	onclick={key.click}
+	bind:this={element}
 >
-	<div class="gouge pad-1">
-		<div
-			class="sliderPin"
-			aria-valuemin={min}
-			aria-valuemax={max}
-			aria-valuenow={value}
-			role="slider"
-		/>
+	<div class="slider-gouge" bind:this={elementRail}>
+		<div class="slider-gouge-selected" style="width: {percentage}%;"></div>
 	</div>
+
+	<div
+		class="slider-thumb"
+		aria-valuemin={min}
+		aria-valuemax={max}
+		aria-valuenow={value}
+		role="slider"
+		style="left: {percentage}%;transform: translateX(-50%);"
+	/>
 
 	<input hidden type="range" bind:this={elementInput} {disabled} {value} {min} {max} {step} />
 </div>
