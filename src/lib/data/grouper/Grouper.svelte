@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
-	import ButtonMenu from '$lib/base/button/ButtonMenu.svelte';
+	import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
 	import type { IMenuItemProps } from '$lib/ui/menu/types.ts';
 
 	import type { GroupedDataType, Data } from './types.js';

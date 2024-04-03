@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import IconButton from '$lib/base/button/IconButton.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 
 	type TitleBarProps = {

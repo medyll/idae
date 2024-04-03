@@ -1,16 +1,19 @@
 <script lang="ts">
-  import {wStore} from '$lib/ui/window/store.js';
-  import IconButton from '$lib/base/button/IconButton.svelte';
+	import { wStore } from '$lib/ui/window/store.js';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 
-
-
-  function toggleWindow(frameId: string) {
-    $wStore.activeFrame = frameId;
-  }
-
-
+	function toggleWindow(frameId: string) {
+		$wStore.activeFrame = frameId;
+	}
 </script>
+
 {#each Object.keys($wStore.instances ?? {}) as key}
-    <IconButton on:click="{()=>{toggleWindow(key)}}" style="color:white;font-size: large" icon="home"/>
+	<IconButton
+		on:click={() => {
+			toggleWindow(key);
+		}}
+		style="color:white;font-size: large"
+		icon="home"
+	/>
 {/each}
-<slot></slot>
+<slot />

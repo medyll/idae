@@ -1,6 +1,6 @@
 <script lang="ts">
-	import IconButton from '$lib/base/button/IconButton.svelte';
-	import ButtonMenu from '$lib/base/button/ButtonAction.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import ButtonMenu from '$lib/controls/button/ButtonAction.svelte';
 	import Debug from '$lib/base/debug/Debug.svelte';
 
 	const onclose = function () {

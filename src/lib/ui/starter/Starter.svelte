@@ -8,7 +8,7 @@
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import { starterStore } from './actions.js';
 
-	import IconButton from '$lib/base/button/IconButton.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Input from '$lib/controls/textfield/TextField.svelte';
 </script>
 

@@ -12,7 +12,7 @@
 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import LeftMenu from '../components/LeftMenu.svelte';
 	import { setContext, getContext } from 'svelte';
 	import { writable } from 'svelte/store';

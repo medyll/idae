@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
-	import IconButton from '$lib/base/button/IconButton.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';

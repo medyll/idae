@@ -7,12 +7,10 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
 	import Debug from '$lib/base/debug/Debug.svelte';
-	import Icon from '../icon/Icon.svelte';
+	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
 

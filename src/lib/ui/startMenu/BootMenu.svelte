@@ -12,7 +12,7 @@
 	import { openWindow } from '$lib/ui/window/actions.js';
 	import { afterUpdate, onMount, setContext, getContext } from 'svelte';
 
-	import IconButton from '$lib/base/button/IconButton.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import { writable } from 'svelte/store';
 	import Debug from '$lib/base/debug/Debug.svelte';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
-	import IconButton from '$lib/base/button/IconButton.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import ToggleBar from './ToggleBar.svelte';
 
