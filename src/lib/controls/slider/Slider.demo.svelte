@@ -52,11 +52,10 @@
 <ComponentExample component="Slider">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Slider" title="Using slots">
-			<Demoer {parametersSlot} {componentArgsSlot} let:activeParams>
+			<Demoer {...componentArgsSlot} let:activeParams>
 				<div class="pad-2">
-					<Slider {...activeParams} name={'switcher'} class="flex-h flex-align-middle w-small">
-						<span slot="dliderlabel" />
-					</Slider>
+					<Slider {...activeParams} name={'slider'} class="flex-h flex-align-middle w-small"
+					></Slider>
 				</div>
 			</Demoer>
 		</DemoPage>

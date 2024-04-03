@@ -1,7 +1,7 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 
 	type SliderProps = CommonProps & {
 		/** element root HTMLDivElement props */
@@ -9,7 +9,7 @@
 		/** Obtains a bound DOM reference to the slider's input element. */
 		elementInput?: HTMLInputElement | null;
 		/** Obtains a bound DOM reference to the slider's outer rail element. */
-		elementRail: HTMLDivElement;
+		elementRail?: HTMLDivElement;
 		/** Obtains a bound DOM reference to the slider's track (fill) element. */
 		elementGutter?: HTMLDivElement;
 		/** Slider's value. */
@@ -28,11 +28,15 @@
 		reverse: boolean;
 		/** Controls Slider  status. */
 		disabled: boolean;
+		/** Dense mode. */
+		dense?: ElementProps['dense'];
+		style: string;
 	};
 
 	let {
 		class: className = '',
 		style = '',
+		dense = 'default',
 		element,
 		elementInput,
 		elementRail,
@@ -136,12 +140,15 @@
 />
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
-	class="slider w-large"
+	class="slider {className} dense-{dense}"
 	onmousedown={key.mouseDown}
 	ontouchstart={key.start}
 	onkeydown={key.keyDown}
 	onclick={key.click}
+	tabindex="0"
+	{style}
 	bind:this={element}
 >
 	<div class="slider-gouge" bind:this={elementRail}>
@@ -155,7 +162,7 @@
 		aria-valuenow={value}
 		role="slider"
 		style="left: {percentage}%;transform: translateX(-50%);"
-	/>
+	></div>
 
 	<input hidden type="range" bind:this={elementInput} {disabled} {value} {min} {max} {step} />
 </div>

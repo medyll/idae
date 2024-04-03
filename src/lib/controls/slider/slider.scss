@@ -6,15 +6,17 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
+    width: 168px;
     @include ui-dense-presets;
+    --height: calc(var(--preset-density) / 6);
     .slider-gouge {
-        height: 4px;
+        height: var(--height);
         width: 100%;
         border-radius: 10px;
         background-color: var(--sld-color-secondary);
     }
     .slider-gouge-selected {
-        height: 4px;
+        height: var(--height);
         border-radius: 10px;
         background-color: var(--sld-color-primary);
     }
