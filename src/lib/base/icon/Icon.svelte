@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import type { ElementProps } from '$lib/types/index.js';
+	import type { ElementProps, IconObj } from '$lib/types/index.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 
 	type IconProps = {
@@ -17,6 +17,8 @@
 
 		/** icon name for iconify  */
 		icon: string;
+
+		ico?: IconObj;
 
 		/**
 		 * icon size
@@ -43,24 +45,28 @@
 		rotate = false,
 		color,
 		rotation = 0,
-		...restProps
+		ico
 	}: IconProps = $props();
 
 	const sizes: Record<ElementProps['sizeType'], string> = uiPresets.iconSize;
 
-	let iconName = $derived(icon.includes(':') ? icon : `mdi:${icon}`);
+	let finalI = ico?.icon || icon;
+	let finRot = ico?.rotate || rotate;
+	let finRotation = $derived(ico?.rotation || rotation);
+	let finCol = ico?.color || color;
+	let finSize = ico?.size || fontSize;
+	let iconName = $derived(finalI.includes(':') ? finalI : `mdi:${finalI}`);
 </script>
 
 {#key rotation}
 	<Icon
 		bind:this={element}
-		class="icon {className} {rotate}"
-		style="display:block;font-size:{sizes[
-			fontSize
-		]};color:{color};{style};transform:({rotation}deg)"
+		class="icon {className} {finRot}"
+		style="display:inline-block;font-size:{sizes[
+			finSize
+		]};color:{finCol};{style};transform: rotate({finRotation}deg)"
 		on:click
 		icon={iconName}
-		{...restProps}
 	/>
 {/key}
 

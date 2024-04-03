@@ -1,15 +1,13 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import { popper, type UsePopperProps } from '$lib/ui/popper/usePopper.js';
-	import type { CommonProps, ElementProps, IconObj } from '$lib/types/index.js';
+	import { popper } from '$lib/ui/popper/usePopper.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { Snippet } from 'svelte';
 	import type { ButtonProps } from './types.js';
 
 	let {
 		class: className,
-		element,
+		element = $bindable(),
 		style,
 		type: buttonType = 'button',
 		icon,

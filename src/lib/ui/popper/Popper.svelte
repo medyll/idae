@@ -1,11 +1,11 @@
-<svelte:options accessors={true} />
+<svelte:options accessors={true} runes />
 
 <script lang="ts">
-	import { onMount, type Snippet, type ComponentType, unmount } from 'svelte';
-	import { stickTo, type StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
+	import { onMount } from 'svelte';
+	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
-	import type { CommonProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import type { PopperProps } from './types.js';
 
 	export const toggle = function () {};
 	export const hide = function () {
@@ -13,42 +13,6 @@
 	};
 	export const show = function () {
 		console.log('show');
-	};
-
-	type PopperProps = CommonProps & {
-		/** unique code for the popper */
-		code: string | undefined;
-
-		/** parent node of the popper */
-		parentNode: HTMLElement | undefined;
-
-		/** whether the popper should stick to hook width */
-		stickToHookWidth: boolean;
-
-		/** component to be displayed in the popper */
-		component: ComponentType | undefined;
-
-		/** props for the component */
-		componentProps: {} | undefined;
-
-		/** position of the popper */
-		position: StickToPositionType | undefined;
-
-		/** content of the popper */
-		content: any | undefined;
-
-		/** The popper will be closed on clickAway */
-		autoClose: boolean;
-
-		/** binding : The popper will be opened or is opened */
-		isOpen: boolean;
-		popperHolder: Snippet;
-		/** actions for the popper */
-		actions: {
-			toggle: () => void;
-			show: () => void;
-			hide: () => void;
-		};
 	};
 
 	let {
@@ -62,7 +26,7 @@
 		componentProps = {},
 		position = 'BC',
 		content = undefined,
-		autoClose = false,
+		autoClose = $bindable(true),
 		isOpen = $bindable(false),
 		actions = {
 			toggle: () => {

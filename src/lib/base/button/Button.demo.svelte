@@ -13,15 +13,11 @@
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
+	import ButtonAction from './ButtonAction.svelte';
 
 	type ParameterType = {
 		sizes: ElementProps['sizeType'][];
 		height: ElementProps['inputHeight'][];
-	};
-
-	let paraold: ParameterType = {
-		sizes: ['tiny', 'small', 'medium', 'large'],
-		height: ['tiny', 'small', 'default', 'large']
 	};
 
 	const menuData: IMenuItemProps[] = [
@@ -35,7 +31,7 @@
 
 	const popPos: PopperPositionType[] = ['T', 'TL', 'TR', 'B', 'BL', 'BR'];
 
-	const variants: string[] = ['link', 'contained', 'bordered'];
+	const variants: string[] = ['link', 'contained', 'bordered', 'naked'];
 
 	const usePopper: UsePopperProps = {
 		component: Debug,
@@ -87,17 +83,17 @@
 	let styleDefaultArgs = defaultsArgs(styleParameters);
 
 	let parameters: any = {
+		variant: {
+			type: 'string',
+			values: variants
+		},
 		size: {
 			type: 'size-preset',
 			values: Object.keys(uiPresets.width)
 		},
-		height: {
-			type: 'size-preset',
-			values: Object.keys(uiPresets.width)
-		},
-		density: {
+		dense: {
 			type: 'density-preset',
-			values: Object.keys(uiPresets.density)
+			values: Object.keys(uiPresets.dense)
 		},
 		loading: {
 			type: 'boolean',
@@ -125,10 +121,6 @@
 		primary: {
 			type: 'string',
 			values: ['primary 1', 'primary 2']
-		},
-		secondary: {
-			type: 'string',
-			values: ['secondary 1', 'secondary 2']
 		},
 		...parameters
 	};
@@ -168,6 +160,10 @@ const usePopper: UsePopperProps = {
 />`;
 </script>
 
+<ButtonAction
+	>test et essai
+	<div slot="popperContent" class="pad-4">content</div>
+</ButtonAction>
 <ComponentExample
 	component="Button"
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"
@@ -184,14 +180,14 @@ const usePopper: UsePopperProps = {
 		</DemoPage>
 		<DemoPage subTitle="Styling props" component="Button">
 			<Demoer parameters={styleParameters} {multiple} {componentArgs} let:activeParams>
-				<Button {...activeParams}
+				<!-- <Button {...activeParams}
 					>Using slots
 					<Icon icon="user" slot="buttonStart" />
 					<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
-				</Button>
+				</Button> -->
 			</Demoer>
 		</DemoPage>
-		<DemoPage subTitle="Menu buttons" component="Button">
+		<!-- <DemoPage subTitle="Menu buttons" component="Button">
 			<Demoer parameters={parametersMenu} {componentArgs} let:activeParams>
 				<Button>
 					default action
@@ -205,7 +201,7 @@ const usePopper: UsePopperProps = {
 					</span>
 				</Button>
 			</Demoer>
-		</DemoPage>
+		</DemoPage> -->
 		<DemoPage title="Using props" code={code2} component="Button">
 			<Demoer parameters={parametersProps} {componentArgs} let:activeParams>
 				<Button {...activeParams}>Using props</Button>
@@ -213,11 +209,11 @@ const usePopper: UsePopperProps = {
 		</DemoPage>
 		<DemoPage subTitle="Menu buttons" code={code3} component="Button">
 			<Demoer parameters={parametersMenu} {componentArgs} let:activeParams>
-				<Button
+				<!-- <Button
 					size="medium"
 					usePopper={{ ...usePopper, position: activeParams?.position }}
 					primary="Menu {activeParams?.position ?? ''}"
-				/>
+				/> -->
 			</Demoer>
 		</DemoPage>
 	</div>

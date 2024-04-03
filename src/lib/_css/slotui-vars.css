@@ -1,7 +1,7 @@
 :root {
   --sld-radius-tiny: 2px;
-  --sld-radius-small: 4px;
-  --sld-radius-med: 8px;
+  --sld-radius-small: 5px;
+  --sld-radius-med: 6px;
   --sld-radius-large: 16px;
 }
 

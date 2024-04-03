@@ -112,14 +112,17 @@
 }
 
 @mixin ui-dense-presets {
-    min-height: 24px;
+    min-height: 1.5rem;
     &.dense-small {
-        min-height: 16px;
+        min-height: 1rem;
     }
     &.dense-default {
-        min-height: 24px;
+        min-height: 1.5rem;
     }
     &.dense-medium {
-        min-height: 32px;
+        min-height: 2rem;
+    }
+    &.dense-kind {
+        min-height: 3rem;
     }
 }

@@ -49,7 +49,7 @@
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
 		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
-	} = $props() as Props;
+	}: Props = $props();
 
 	const handleClick = (event: Event) => {
 		if ((event?.target as Element)?.getAttribute('data-close')) {

@@ -12,28 +12,37 @@
 	type ButtonMenuProps = ButtonProps & {
 		menuProps: MenuProps;
 		popperProps: PopperProps;
-		class: string;
-		element: HTMLButtonElement;
 		menuItem?: Snippet;
-		rest: ButtonProps;
 	};
 
 	let {
 		element,
 		menuProps = {},
 		popperProps = {},
-		class: className,
 		menuItem = undefined,
+		disabled = false,
 		...rest
 	}: ButtonMenuProps = $props();
+
+	let isOpen = $state(popperProps?.isOpen);
+	let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevron-up-12-down');
 </script>
 
-<Button class={'ButtonMenu ' + className} {...rest} bind:element>
+<Button
+	onclick={() => {
+		isOpen = true;
+	}}
+	{...rest}
+	bind:element
+	iconEnd={{ icon: chevron, rotation: isOpen ? 180 : 0 }}
+>
 	<slot />
 </Button>
-<Popper parentNode={element} {...popperProps}>
-	<Menu {...menuProps}><slot name="menuItem">{@render menuItem?.()}</slot></Menu>
-</Popper>
+{#if isOpen && !disabled}
+	<Popper bind:isOpen parentNode={element} {...popperProps}>
+		<Menu {...menuProps}><slot name="menuItem">{@render menuItem?.()}</slot></Menu>
+	</Popper>
+{/if}
 
 <style lang="scss">
 	@import './ButtonMenu.scss';

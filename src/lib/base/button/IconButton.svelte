@@ -16,8 +16,6 @@
 	export let rotation: number = 0;
 </script>
 
-<!-- <Button   {ratio}  {iconFontSize}   {icon} {...$$restProps} {style} class={className} /> -->
-
 <button
 	data-iconButton
 	bind:this={element}

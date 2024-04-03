@@ -1,35 +1,12 @@
 <svelte:options accessors runes />
 
 <script lang="ts" generics="T= Data">
-	import { setContext, type Snippet } from 'svelte';
-	import type { IMenuItemProps } from './types.js';
+	import { setContext } from 'svelte';
+	import type { MenuProps } from './types.js';
 	import MenuItem from './MenuItem.svelte';
 	import MenuContextAgent from './MenuContextAgent.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
 	import type { Data } from '$lib/index.js';
 	import Slotted from '$lib/utils/slot/Slotted.svelte';
-
-	type MenuProps = CommonProps & {
-		element: HTMLElement | null;
-
-		menuItemsList?: IMenuItemProps[];
-
-		data?: T[];
-		/** @deprecated use dense*/
-		density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-		dense?: 'small' | 'default' | 'medium' | 'kind';
-
-		style?: string;
-		/** menu can have no border */
-		bordered?: boolean;
-		selectedIndex?: number;
-		/**  actions to be performed on the menu */
-		actions: {
-			navigate: (idx: number) => void;
-		};
-		children: Snippet<[{ item: Data; itemIndex: number }]>;
-		rest: any;
-	};
 
 	let {
 		class: className = '',

@@ -1,0 +1,8 @@
+.button-action {
+  display: inline-flex;
+  position: relative;
+
+  .chevron {
+    flex-shrink: 1;
+  }
+}

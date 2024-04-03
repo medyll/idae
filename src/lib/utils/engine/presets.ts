@@ -13,6 +13,12 @@ export enum Position {
 }
 
 export const uiPresets = {
+	dense: {
+		small: '0.25rem',
+		default: '0.5rem',
+		medium: '1rem',
+		kind: '3rem'
+	},
 	density: {
 		none: '0',
 		tight: '0.25rem',

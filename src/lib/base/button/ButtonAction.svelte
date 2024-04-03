@@ -1,44 +1,58 @@
-<script lang="ts">
-	/** @restProps { button} */
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
-	import { openPopper } from '$lib/ui/popper/actions.js';
+<svelte:options accessors runes />
 
-	type Props = CommonProps & {
-		icon?: string;
-		element?: HTMLButtonElement;
-		actionComponent?: any;
-		actionComponentProps?: any;
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	import type { PopperProps } from '$lib/ui/popper/types.js';
+	import type { MenuProps } from '$lib/ui/menu/types.js';
+	import Popper from '$lib/ui/popper/Popper.svelte';
+	import Button from './Button.svelte';
+	import type { ButtonProps } from './types.js';
+	import Icon from '../icon/Icon.svelte';
+
+	type ButtonActionProps = ButtonProps & {
+		menuProps: MenuProps;
+		popperProps: PopperProps;
+		popperContent?: Snippet;
 	};
 
 	let {
-		icon: iconProp,
 		element,
 		class: className = '',
-		actionComponent,
-		actionComponentProps,
-		...restProps
-	} = $props<Props>();
-
-	const onActionClick = (event: PointerEvent) => {
-		event.stopPropagation();
-		openPopper('settingActions', {
-			parentNode: element,
-			component: actionComponent,
-			componentProps: actionComponentProps ?? {}
-		});
-	};
+		menuProps = {},
+		popperProps = {},
+		popperContent = undefined,
+		disabled = false,
+		variant = 'bordered',
+		dense = 'kind',
+		children,
+		...rest
+	}: ButtonActionProps = $props();
+	let holder: HTMLDivElement;
+	let isOpen = $state(popperProps?.isOpen);
+	let chevron = 'fluent:chevron-down-20-regular';
 </script>
 
-<button on:click bind:this={element}>
-	<Icon fontSize="small" icon="faList" />
-	{#if actionComponent}
-		<span role="button" class="action" on:click={onActionClick}>
-			<Icon icon="chevron-right" fontSize="tiny" />
-		</span>
-	{/if}
-</button>
+<div bind:this={holder} class="button button-action selected {variant} dense-{dense} {className}">
+	<Button {...rest} {dense} bind:element variant="naked">
+		<slot />
+	</Button>
+	<Button
+		{disabled}
+		onclick={() => {
+			isOpen = true;
+		}}
+		{dense}
+		variant="naked"
+		class="chevron"><Icon icon={chevron} rotation={isOpen ? 180 : 0} /></Button
+	>
+</div>
+{#if isOpen && !disabled}
+	<Popper bind:isOpen parentNode={holder} stickToHookWidth={true} {...popperProps}>
+		<slot name="popperContent">{@render popperContent?.()}</slot>
+	</Popper>
+{/if}
 
 <style lang="scss">
-	@import 'ButtonAction';
+	@import './button.scss';
+	@import './button-action.scss';
 </style>

@@ -1,7 +1,8 @@
 @import "../../styles/presets.scss";
 // @import "../../styles/slotui-vars.scss";
 
-button {
+button,
+.button {
     --sld-button-font-size: inherit;
     --sld-button-radius: var(--sld-radius-small);
     --sld-button-border-color: transparent;
@@ -64,12 +65,8 @@ input[type="submit"] {
         box-shadow: var(--sld-button-active-shadow);
     }
 
-    &:focus {
-        //outline: 0.5px solid var(--sld-button-active-border-color, var(--sld-color-primary)) !important;
-        // box-shadow: var(--sld-button-focus-shadow);
-    }
-
-    &[selected="true"] {
+    &[selected="true"],
+    .selected {
         box-shadow: var(--box-shad-3);
         border: 0.5px solid var(--sld-color-paper-alpha-low);
         background-color: transparent;
@@ -131,7 +128,7 @@ input[type="submit"] {
     &.naked {
         color: inherit;
         background-color: transparent !important;
-        border: 1px solid transparent;
+        border: 0.5px solid transparent;
         cursor: pointer;
 
         &:hover {
