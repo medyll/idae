@@ -10,8 +10,8 @@
 	import Icon from '../icon/Icon.svelte';
 
 	type ButtonActionProps = ButtonProps & {
-		menuProps: MenuProps;
-		popperProps: PopperProps;
+		menuProps?: MenuProps;
+		popperProps?: PopperProps;
 		popperContent?: Snippet;
 	};
 
