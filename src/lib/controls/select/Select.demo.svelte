@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Select from './Select.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentExample from '$components/Example.svelte';

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { wStore } from '$lib/ui/window/store.js';
 	import { type Snippet, type SvelteComponent } from 'svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 	import { draggebler } from '$lib/utils/uses/draggabler.js';

@@ -4,7 +4,7 @@
 	import type { Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 
 	type LevelType = 'success' | 'info' | 'error' | 'warning' | 'alert' | 'discrete';
 

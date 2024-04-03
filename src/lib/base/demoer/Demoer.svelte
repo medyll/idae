@@ -1,9 +1,9 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import Switch from '$lib/form/switch/Switch.svelte';
+	import Switch from '$lib/controls/switch/Switch.svelte';
 	import type { DemoerParameters } from './types.js';
 
 	type Props = {

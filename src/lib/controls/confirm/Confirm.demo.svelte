@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '$lib/base/button/Button.svelte';
-	import Confirm from '$lib/base/confirm/Confirm.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
+	import Confirm from '$lib/controls/confirm/Confirm.svelte';
 
 	/* demo */
 	import ComponentExample from '$components/Example.svelte';

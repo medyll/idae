@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import IconButton from '$lib/base/button/IconButton.svelte';
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import ToggleBar from './ToggleBar.svelte';
@@ -11,7 +11,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import Input from '../../form/textfield/TextField.svelte';
+	import Input from '../../controls/textfield/TextField.svelte';
 	import Finder from '$lib/data/finder/Finder.svelte';
 	/* demo */
 

@@ -35,11 +35,11 @@
 	let {
 		class: className = '',
 		style = '',
-		element = null,
-		elementInput = null,
-		elementContainer = null,
+		element,
+		elementInput,
+		elementContainer,
 		elementRail,
-		elementGutter = null,
+		elementGutter,
 		value = 0,
 		min = 0,
 		max = 100,
@@ -48,7 +48,7 @@
 		orientation = 'horizontal',
 		reverse = false,
 		disabled = false
-	} = $props<SliderProps>();
+	}: SliderProps = $props();
 
 	let dragging = $state(false);
 	let holding = $state(false);

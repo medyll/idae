@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { onMount, getContext } from 'svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import type { PanelContextType } from './types.js';
 
 	export let title = 'not set';

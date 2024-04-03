@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import ToolBar from './ToolBar.svelte';
 

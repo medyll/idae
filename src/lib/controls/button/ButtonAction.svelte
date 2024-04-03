@@ -7,7 +7,7 @@
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Button from './Button.svelte';
 	import type { ButtonProps } from './types.js';
-	import Icon from '../icon/Icon.svelte';
+	import Icon from '$lib/base/icon/Icon.svelte';
 
 	type ButtonActionProps = ButtonProps & {
 		menuProps?: MenuProps;

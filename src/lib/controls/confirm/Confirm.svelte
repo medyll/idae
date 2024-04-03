@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import { onDestroy, type Snippet } from 'svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 

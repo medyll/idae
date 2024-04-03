@@ -19,7 +19,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { UiContextType } from '../contexts/ui.context.js';
 	import { onMount } from 'svelte';
-	import AutoComplete from '$lib/form/autocomplete/AutoComplete.svelte';
+	import AutoComplete from '$lib/controls/autocomplete/AutoComplete.svelte';
 	import { goto } from '$app/navigation';
 	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';

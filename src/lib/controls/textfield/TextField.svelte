@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { popper, type UsePopperProps } from '$lib/ui/popper/usePopper.js';
 	import type { ElementProps } from '$lib/types/index.js';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 
 	let inputType = 'text';

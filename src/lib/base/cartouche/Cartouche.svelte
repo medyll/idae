@@ -4,7 +4,7 @@
 	import { slide } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { SvelteComponent } from 'svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import type { IconProps } from '@iconify/svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 

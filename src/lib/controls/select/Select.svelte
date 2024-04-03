@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ElementProps } from '$lib/types/index.js';
-	import Input from '$lib/form/textfield/TextField.svelte';
+	import Input from '$lib/controls/textfield/TextField.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Menu from '$lib/ui/menu/Menu.svelte';

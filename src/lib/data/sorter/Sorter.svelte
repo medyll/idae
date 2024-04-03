@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import type { Data } from '$lib/types/index.js';
 	import type { SortItem } from './types.js';

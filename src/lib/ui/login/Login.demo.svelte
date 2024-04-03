@@ -10,7 +10,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import Button from '../../base/button/Button.svelte';
+	import Button from '../../controls/button/Button.svelte';
 	/* demo */
 
 	let submitting: boolean = false;

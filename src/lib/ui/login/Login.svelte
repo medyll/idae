@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 
 	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 
 	/*  common slotUi exports*/

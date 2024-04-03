@@ -9,7 +9,7 @@
 	import { starterStore } from './actions.js';
 
 	import IconButton from '$lib/base/button/IconButton.svelte';
-	import Input from '$lib/form/textfield/TextField.svelte';
+	import Input from '$lib/controls/textfield/TextField.svelte';
 </script>
 
 <div />

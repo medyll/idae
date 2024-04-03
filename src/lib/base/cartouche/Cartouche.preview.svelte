@@ -2,7 +2,7 @@
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Divider from '$lib/base/divider/Divider.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	import ComponentExample from '$components/Example.svelte';
 </script>
 

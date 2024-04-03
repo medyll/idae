@@ -4,7 +4,7 @@
 	import Tabs from './Tabs.svelte';
 	import type { TabsItemsProps } from './types.js';
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 	/* demo */
 	import ComponentExample from '$components/Example.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';

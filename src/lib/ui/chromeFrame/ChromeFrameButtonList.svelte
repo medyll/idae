@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { chromeFrameStore } from './chromeFrame.store.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 
 	/** common slotUi exports*/
 	let className = '';

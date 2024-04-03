@@ -8,7 +8,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
-	import Input from '$lib/form/textfield/TextField.svelte';
+	import Input from '$lib/controls/textfield/TextField.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
 
 	type ParameterType = {

@@ -5,7 +5,7 @@
 	import type { TabsItemsProps } from './types.js';
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
 	import Divider from '$lib/base/divider/Divider.svelte';
-	import Button from '$lib/base/button/Button.svelte';
+	import Button from '$lib/controls/button/Button.svelte';
 
 	const items: TabsItemsProps = [
 		{ label: 'Tab 1', code: 'theTitle1', withContent: 'ff', secondary: 'some' },
