@@ -28,6 +28,7 @@ button,
 button,
 input[type=button],
 input[type=submit] {
+  --preset-density: 1.5rem;
   min-height: 1.5rem;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
@@ -160,24 +161,28 @@ button.dense-small,
 input[type=button].dense-small,
 input[type=submit].dense-small {
   min-height: 1rem;
+  --preset-density: 1rem;
 }
 .button.dense-default,
 button.dense-default,
 input[type=button].dense-default,
 input[type=submit].dense-default {
   min-height: 1.5rem;
+  --preset-density: 1.5rem;
 }
 .button.dense-medium,
 button.dense-medium,
 input[type=button].dense-medium,
 input[type=submit].dense-medium {
   min-height: 2rem;
+  --preset-density: 2rem;
 }
 .button.dense-kind,
 button.dense-kind,
 input[type=button].dense-kind,
 input[type=submit].dense-kind {
   min-height: 3rem;
+  --preset-density: 3rem;
 }
 .button.height-tiny, .button[data-height=tiny],
 button.height-tiny,
@@ -370,7 +375,8 @@ input[type=button][naked=true]:hover,
 input[type=button].naked:hover,
 input[type=submit][naked=true]:hover,
 input[type=submit].naked:hover {
-  box-shadow: var(--sld-button-focus-shadow);
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
 }
 .button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
 button[naked=true]:active,
@@ -415,7 +421,8 @@ input[type=submit] .buttonStart {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: var(--start-position);
+  align-self: center;
 }
 .button .central,
 button .central,

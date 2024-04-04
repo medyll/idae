@@ -2,17 +2,15 @@
 @import "../../styles/presets.scss";
 
 :root {
-  .cartoucheControl {
-    --sld-control-height: 69px;
-  }
 }
 
 .cartouche {
   border-radius: var(--sld-radius-small);
+  background-clip: padding-box;
   overflow: hidden;
 
   &[data-bordered="true"] {
-    border: 1px solid var(--sld-color-foreground-alpha-high);
+    border: 1px solid var(--sld-color-foreground-alpha-mid);
   }
 
   &.stacked {
@@ -29,15 +27,18 @@
 
   .control {
     display: flex;
+    align-items: center;
     gap: 8px;
     background-color: var(--sld-color-background);
-    align-items: center;
-    padding: 1rem 0.25rem;
+    @include ui-dense-presets;
+    padding: auto 0.25rem;
     &:hover {
       background-color: var(--sld-color-background-darken-low);
     }
 
     .controlIcon {
+      display: flex;
+      align-items: center;
       padding: 0 0.5rem;
     }
 

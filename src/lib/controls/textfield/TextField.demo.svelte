@@ -11,11 +11,6 @@
 	import Input from '$lib/controls/textfield/TextField.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
 
-	type ParameterType = {
-		sizes: ElementProps['sizeType'][];
-		inputHeight: ElementProps['inputHeight'][];
-	};
-
 	let parametersSlot: any = {
 		size: {
 			type: 'size-preset',

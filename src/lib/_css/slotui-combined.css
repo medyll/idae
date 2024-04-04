@@ -148,16 +148,13 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   display: flex;
 }
 /** cartouche.scss -----*/ 
-:root .cartoucheControl {
-  --sld-control-height: 69px;
-}
-
 .cartouche {
   border-radius: var(--sld-radius-small);
+  background-clip: padding-box;
   overflow: hidden;
 }
 .cartouche[data-bordered=true] {
-  border: 1px solid var(--sld-color-foreground-alpha-high);
+  border: 1px solid var(--sld-color-foreground-alpha-mid);
 }
 .cartouche.stacked {
   border-radius: 0;
@@ -172,15 +169,35 @@ dialog.alert article.dialog-content footer.dialog-footer button {
 }
 .cartouche .control {
   display: flex;
+  align-items: center;
   gap: 8px;
   background-color: var(--sld-color-background);
-  align-items: center;
-  padding: 1rem 0.25rem;
+  --preset-density: 1.5rem;
+  min-height: 1.5rem;
+  padding: auto 0.25rem;
+}
+.cartouche .control.dense-small {
+  min-height: 1rem;
+  --preset-density: 1rem;
+}
+.cartouche .control.dense-default {
+  min-height: 1.5rem;
+  --preset-density: 1.5rem;
+}
+.cartouche .control.dense-medium {
+  min-height: 2rem;
+  --preset-density: 2rem;
+}
+.cartouche .control.dense-kind {
+  min-height: 3rem;
+  --preset-density: 3rem;
 }
 .cartouche .control:hover {
   background-color: var(--sld-color-background-darken-low);
 }
 .cartouche .control .controlIcon {
+  display: flex;
+  align-items: center;
   padding: 0 0.5rem;
 }
 .cartouche .control .controlLabel {
@@ -343,6 +360,7 @@ button,
 button,
 input[type=button],
 input[type=submit] {
+  --preset-density: 1.5rem;
   min-height: 1.5rem;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
@@ -475,24 +493,28 @@ button.dense-small,
 input[type=button].dense-small,
 input[type=submit].dense-small {
   min-height: 1rem;
+  --preset-density: 1rem;
 }
 .button.dense-default,
 button.dense-default,
 input[type=button].dense-default,
 input[type=submit].dense-default {
   min-height: 1.5rem;
+  --preset-density: 1.5rem;
 }
 .button.dense-medium,
 button.dense-medium,
 input[type=button].dense-medium,
 input[type=submit].dense-medium {
   min-height: 2rem;
+  --preset-density: 2rem;
 }
 .button.dense-kind,
 button.dense-kind,
 input[type=button].dense-kind,
 input[type=submit].dense-kind {
   min-height: 3rem;
+  --preset-density: 3rem;
 }
 .button.height-tiny, .button[data-height=tiny],
 button.height-tiny,
@@ -685,7 +707,8 @@ input[type=button][naked=true]:hover,
 input[type=button].naked:hover,
 input[type=submit][naked=true]:hover,
 input[type=submit].naked:hover {
-  box-shadow: var(--sld-button-focus-shadow);
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
 }
 .button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
 button[naked=true]:active,
@@ -730,7 +753,8 @@ input[type=submit] .buttonStart {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: var(--start-position);
+  align-self: center;
 }
 .button .central,
 button .central,
@@ -838,6 +862,7 @@ input[type=submit] .loadingButtonZone {
 }
 
 .checkbox {
+  --preset-density: 1.5rem;
   min-height: 1.5rem;
   appearance: none;
   outline: none;
@@ -853,19 +878,23 @@ input[type=submit] .loadingButtonZone {
 }
 .checkbox:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 .checkbox.dense-small {
   min-height: 1rem;
+  --preset-density: 1rem;
 }
 .checkbox.dense-default {
   min-height: 1.5rem;
+  --preset-density: 1.5rem;
 }
 .checkbox.dense-medium {
   min-height: 2rem;
+  --preset-density: 2rem;
 }
 .checkbox.dense-kind {
   min-height: 3rem;
+  --preset-density: 3rem;
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);
@@ -966,41 +995,53 @@ input[type=submit] .loadingButtonZone {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
+  width: 168px;
+  --preset-density: 1.5rem;
   min-height: 1.5rem;
+  --height: calc(var(--preset-density) / 6);
 }
 .slider.dense-small {
   min-height: 1rem;
+  --preset-density: 1rem;
 }
 .slider.dense-default {
   min-height: 1.5rem;
+  --preset-density: 1.5rem;
 }
 .slider.dense-medium {
   min-height: 2rem;
+  --preset-density: 2rem;
 }
 .slider.dense-kind {
   min-height: 3rem;
+  --preset-density: 3rem;
 }
 .slider .slider-gouge {
-  height: 4px;
+  height: var(--height);
   width: 100%;
   border-radius: 10px;
   background-color: var(--sld-color-secondary);
 }
 .slider .slider-gouge-selected {
-  height: 4px;
+  height: var(--height);
   border-radius: 10px;
   background-color: var(--sld-color-primary);
 }
 .slider .slider-thumb {
   top: 0;
   aspect-ratio: 1/1;
-  height: 100%;
+  height: 90%;
   transform: translateY(50%);
   background-color: var(--sld-color-primary);
   position: absolute;
-  border: 4px solid var(--sld-color-primary-alpha-high);
+  border: 3px solid var(--sld-color-primary-darken-high);
   border-radius: 50%;
   display: inline-block;
+  background-clip: padding-box;
+}
+.slider .slider-thumb:hover {
+  box-shadow: var(--box-shad-3);
+  outline: 4px solid var(--sld-color-primary-alpha-high);
 }
 /** stepper.scss -----*/ 
 .stepper {
@@ -1149,7 +1190,7 @@ input.wa, input.width-auto, input[data-width=auto] {
 }
 input:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 
 .inputStart {
@@ -1378,7 +1419,7 @@ li.listItemTitle {
 
 li.listItem:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 li.listItem.selected, li.listItem[data-selected=true] {
   border-color: none;
@@ -1555,7 +1596,7 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
 /** slotui-vars.scss -----*/ 
 :root {
   --sld-radius-tiny: 2px;
-  --sld-radius-small: 4px;
+  --sld-radius-small: 5px;
   --sld-radius-med: 8px;
   --sld-radius-large: 16px;
   --sld-pad-tiny: 0.25rem;
@@ -1571,25 +1612,157 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
   --sld-color-paper: #f1f1f1;
-  /* primary alpha */
-  --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 80%);
-  --sld-color-primary-alpha-mid: color-mix(in srgb, var(--sld-color-primary), transparent 50%);
-  --sld-color-primary-alpha-high: color-mix(in srgb, var(--sld-color-primary), transparent 10%);
-  --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 10%);
-  --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 50%);
-  --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 90%);
-  --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 10%);
-  --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 50%);
-  --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 90%);
-  --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), #000 10%);
-  --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), #000 20%);
-  --sld-color-tertiary-darken-high: color-mix(in srgb, var(--sld-color-tertiary), #000 30%);
-  --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), #999 10%);
-  --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), #999 40%);
-  --sld-color-background-darken-high: color-mix(in srgb, var(--sld-color-background), #999 80%);
-  --sld-color-foreground-darken-low: color-mix(in srgb, var(--sld-color-foreground), #999 10%);
-  --sld-color-foreground-darken-mid: color-mix(in srgb, var(--sld-color-foreground), #999 40%);
-  --sld-color-foreground-darken-high: color-mix(in srgb, var(--sld-color-foreground), #999 80%);
+  --sld-color-disabled: #ccc;
+  --sld-color-disabled-border: #cccccc;
+  --sld-background-disabled: #ededed;
+}
+
+:root {
+  --sld-color-discrete: #ccc;
+  --sld-color-success: #075c07;
+  --sld-color-info: #ffd324;
+  --sld-color-warning: #b49104;
+  --sld-color-alert: #cc5c00;
+  --sld-color-error: #cc0000;
+}
+
+:root {
+  /* alpha  foreground */
+  --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 30%);
+  --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 40%);
+  --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
+  /* alpha  background */
+  --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 30%);
+  --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 40%);
+  --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 80%);
+  /* alpha  primary */
+  --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 30%);
+  --sld-color-primary-alpha-mid: color-mix(in srgb, var(--sld-color-primary), transparent 40%);
+  --sld-color-primary-alpha-high: color-mix(in srgb, var(--sld-color-primary), transparent 80%);
+  /* alpha  secondary */
+  --sld-color-secondary-alpha-low: color-mix(in srgb, var(--sld-color-secondary), transparent 30%);
+  --sld-color-secondary-alpha-mid: color-mix(in srgb, var(--sld-color-secondary), transparent 40%);
+  --sld-color-secondary-alpha-high: color-mix(in srgb, var(--sld-color-secondary), transparent 80%);
+  /* alpha  tertiary */
+  --sld-color-tertiary-alpha-low: color-mix(in srgb, var(--sld-color-tertiary), transparent 30%);
+  --sld-color-tertiary-alpha-mid: color-mix(in srgb, var(--sld-color-tertiary), transparent 40%);
+  --sld-color-tertiary-alpha-high: color-mix(in srgb, var(--sld-color-tertiary), transparent 80%);
+  /* darken  foreground */
+  --sld-color-foreground-darken-low: color-mix(in srgb, var(--sld-color-foreground), black 10%);
+  --sld-color-foreground-darken-mid: color-mix(in srgb, var(--sld-color-foreground), black 30%);
+  --sld-color-foreground-darken-high: color-mix(in srgb, var(--sld-color-foreground), black 60%);
+  /* darken  background */
+  --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), black 10%);
+  --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), black 30%);
+  --sld-color-background-darken-high: color-mix(in srgb, var(--sld-color-background), black 60%);
+  /* darken  primary */
+  --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), black 10%);
+  --sld-color-primary-darken-mid: color-mix(in srgb, var(--sld-color-primary), black 30%);
+  --sld-color-primary-darken-high: color-mix(in srgb, var(--sld-color-primary), black 60%);
+  /* darken  secondary */
+  --sld-color-secondary-darken-low: color-mix(in srgb, var(--sld-color-secondary), black 10%);
+  --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), black 30%);
+  --sld-color-secondary-darken-high: color-mix(in srgb, var(--sld-color-secondary), black 60%);
+  /* darken  tertiary */
+  --sld-color-tertiary-darken-low: color-mix(in srgb, var(--sld-color-tertiary), black 10%);
+  --sld-color-tertiary-darken-mid: color-mix(in srgb, var(--sld-color-tertiary), black 30%);
+  --sld-color-tertiary-darken-high: color-mix(in srgb, var(--sld-color-tertiary), black 60%);
+  /* lighten  foreground */
+  --sld-color-foreground-lighten-low: color-mix(in srgb, var(--sld-color-foreground), white 10%);
+  --sld-color-foreground-lighten-mid: color-mix(in srgb, var(--sld-color-foreground), white 30%);
+  --sld-color-foreground-lighten-high: color-mix(in srgb, var(--sld-color-foreground), white 60%);
+  /* lighten  background */
+  --sld-color-background-lighten-low: color-mix(in srgb, var(--sld-color-background), white 10%);
+  --sld-color-background-lighten-mid: color-mix(in srgb, var(--sld-color-background), white 30%);
+  --sld-color-background-lighten-high: color-mix(in srgb, var(--sld-color-background), white 60%);
+  /* lighten  primary */
+  --sld-color-primary-lighten-low: color-mix(in srgb, var(--sld-color-primary), white 10%);
+  --sld-color-primary-lighten-mid: color-mix(in srgb, var(--sld-color-primary), white 30%);
+  --sld-color-primary-lighten-high: color-mix(in srgb, var(--sld-color-primary), white 60%);
+  /* lighten  secondary */
+  --sld-color-secondary-lighten-low: color-mix(in srgb, var(--sld-color-secondary), white 10%);
+  --sld-color-secondary-lighten-mid: color-mix(in srgb, var(--sld-color-secondary), white 30%);
+  --sld-color-secondary-lighten-high: color-mix(in srgb, var(--sld-color-secondary), white 60%);
+  /* lighten  tertiary */
+  --sld-color-tertiary-lighten-low: color-mix(in srgb, var(--sld-color-tertiary), white 10%);
+  --sld-color-tertiary-lighten-mid: color-mix(in srgb, var(--sld-color-tertiary), white 30%);
+  --sld-color-tertiary-lighten-high: color-mix(in srgb, var(--sld-color-tertiary), white 60%);
+  /* alpha  discrete */
+  --sld-color-discrete-alpha-low: color-mix(in srgb, var(--sld-color-discrete), transparent 30%);
+  --sld-color-discrete-alpha-mid: color-mix(in srgb, var(--sld-color-discrete), transparent 40%);
+  --sld-color-discrete-alpha-high: color-mix(in srgb, var(--sld-color-discrete), transparent 80%);
+  /* alpha  success */
+  --sld-color-success-alpha-low: color-mix(in srgb, var(--sld-color-success), transparent 30%);
+  --sld-color-success-alpha-mid: color-mix(in srgb, var(--sld-color-success), transparent 40%);
+  --sld-color-success-alpha-high: color-mix(in srgb, var(--sld-color-success), transparent 80%);
+  /* alpha  info */
+  --sld-color-info-alpha-low: color-mix(in srgb, var(--sld-color-info), transparent 30%);
+  --sld-color-info-alpha-mid: color-mix(in srgb, var(--sld-color-info), transparent 40%);
+  --sld-color-info-alpha-high: color-mix(in srgb, var(--sld-color-info), transparent 80%);
+  /* alpha  warning */
+  --sld-color-warning-alpha-low: color-mix(in srgb, var(--sld-color-warning), transparent 30%);
+  --sld-color-warning-alpha-mid: color-mix(in srgb, var(--sld-color-warning), transparent 40%);
+  --sld-color-warning-alpha-high: color-mix(in srgb, var(--sld-color-warning), transparent 80%);
+  /* alpha  alert */
+  --sld-color-alert-alpha-low: color-mix(in srgb, var(--sld-color-alert), transparent 30%);
+  --sld-color-alert-alpha-mid: color-mix(in srgb, var(--sld-color-alert), transparent 40%);
+  --sld-color-alert-alpha-high: color-mix(in srgb, var(--sld-color-alert), transparent 80%);
+  /* alpha  error */
+  --sld-color-error-alpha-low: color-mix(in srgb, var(--sld-color-error), transparent 30%);
+  --sld-color-error-alpha-mid: color-mix(in srgb, var(--sld-color-error), transparent 40%);
+  --sld-color-error-alpha-high: color-mix(in srgb, var(--sld-color-error), transparent 80%);
+  /* darken  discrete */
+  --sld-color-discrete-darken-low: color-mix(in srgb, var(--sld-color-discrete), black 10%);
+  --sld-color-discrete-darken-mid: color-mix(in srgb, var(--sld-color-discrete), black 30%);
+  --sld-color-discrete-darken-high: color-mix(in srgb, var(--sld-color-discrete), black 60%);
+  /* darken  success */
+  --sld-color-success-darken-low: color-mix(in srgb, var(--sld-color-success), black 10%);
+  --sld-color-success-darken-mid: color-mix(in srgb, var(--sld-color-success), black 30%);
+  --sld-color-success-darken-high: color-mix(in srgb, var(--sld-color-success), black 60%);
+  /* darken  info */
+  --sld-color-info-darken-low: color-mix(in srgb, var(--sld-color-info), black 10%);
+  --sld-color-info-darken-mid: color-mix(in srgb, var(--sld-color-info), black 30%);
+  --sld-color-info-darken-high: color-mix(in srgb, var(--sld-color-info), black 60%);
+  /* darken  warning */
+  --sld-color-warning-darken-low: color-mix(in srgb, var(--sld-color-warning), black 10%);
+  --sld-color-warning-darken-mid: color-mix(in srgb, var(--sld-color-warning), black 30%);
+  --sld-color-warning-darken-high: color-mix(in srgb, var(--sld-color-warning), black 60%);
+  /* darken  alert */
+  --sld-color-alert-darken-low: color-mix(in srgb, var(--sld-color-alert), black 10%);
+  --sld-color-alert-darken-mid: color-mix(in srgb, var(--sld-color-alert), black 30%);
+  --sld-color-alert-darken-high: color-mix(in srgb, var(--sld-color-alert), black 60%);
+  /* darken  error */
+  --sld-color-error-darken-low: color-mix(in srgb, var(--sld-color-error), black 10%);
+  --sld-color-error-darken-mid: color-mix(in srgb, var(--sld-color-error), black 30%);
+  --sld-color-error-darken-high: color-mix(in srgb, var(--sld-color-error), black 60%);
+  /* lighten  discrete */
+  --sld-color-discrete-lighten-low: color-mix(in srgb, var(--sld-color-discrete), white 10%);
+  --sld-color-discrete-lighten-mid: color-mix(in srgb, var(--sld-color-discrete), white 30%);
+  --sld-color-discrete-lighten-high: color-mix(in srgb, var(--sld-color-discrete), white 60%);
+  /* lighten  success */
+  --sld-color-success-lighten-low: color-mix(in srgb, var(--sld-color-success), white 10%);
+  --sld-color-success-lighten-mid: color-mix(in srgb, var(--sld-color-success), white 30%);
+  --sld-color-success-lighten-high: color-mix(in srgb, var(--sld-color-success), white 60%);
+  /* lighten  info */
+  --sld-color-info-lighten-low: color-mix(in srgb, var(--sld-color-info), white 10%);
+  --sld-color-info-lighten-mid: color-mix(in srgb, var(--sld-color-info), white 30%);
+  --sld-color-info-lighten-high: color-mix(in srgb, var(--sld-color-info), white 60%);
+  /* lighten  warning */
+  --sld-color-warning-lighten-low: color-mix(in srgb, var(--sld-color-warning), white 10%);
+  --sld-color-warning-lighten-mid: color-mix(in srgb, var(--sld-color-warning), white 30%);
+  --sld-color-warning-lighten-high: color-mix(in srgb, var(--sld-color-warning), white 60%);
+  /* lighten  alert */
+  --sld-color-alert-lighten-low: color-mix(in srgb, var(--sld-color-alert), white 10%);
+  --sld-color-alert-lighten-mid: color-mix(in srgb, var(--sld-color-alert), white 30%);
+  --sld-color-alert-lighten-high: color-mix(in srgb, var(--sld-color-alert), white 60%);
+  /* lighten  error */
+  --sld-color-error-lighten-low: color-mix(in srgb, var(--sld-color-error), white 10%);
+  --sld-color-error-lighten-mid: color-mix(in srgb, var(--sld-color-error), white 30%);
+  --sld-color-error-lighten-high: color-mix(in srgb, var(--sld-color-error), white 60%);
+}
+
+/* presets */
+:root {
   --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
   --sld-theme-gap-tiny: 1.5rem;
   --sld-hover-background-color: var(--sld-color-secondary-alpha-mid);
@@ -1694,6 +1867,7 @@ ul.menu.bordered {
 }
 
 li.menuItem {
+  --preset-density: 1.5rem;
   min-height: 1.5rem;
   border-radius: var(--sld-radius-small);
   overflow: hidden;
@@ -1703,7 +1877,7 @@ li.menuItem {
 }
 li.menuItem:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 li.menuItem.selected, li.menuItem[data-selected=true] {
   border-color: none;
@@ -1724,15 +1898,19 @@ li.menuItem[data-selected=true] .menuItemChip {
 }
 li.menuItem.dense-small {
   min-height: 1rem;
+  --preset-density: 1rem;
 }
 li.menuItem.dense-default {
   min-height: 1.5rem;
+  --preset-density: 1.5rem;
 }
 li.menuItem.dense-medium {
   min-height: 2rem;
+  --preset-density: 2rem;
 }
 li.menuItem.dense-kind {
   min-height: 3rem;
+  --preset-density: 3rem;
 }
 li.menuItem .menuItemIcon {
   width: 16px;
@@ -1908,7 +2086,7 @@ li.menuItem .menuItemActions {
 }
 .tree-cell:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 .tree-cell.selected, .tree-cell[data-selected=true] {
   border-color: none;

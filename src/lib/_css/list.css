@@ -114,7 +114,7 @@ li.listItemTitle {
 
 li.listItem:hover {
   border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-color-primary-alpha-low);
+  background-color: var(--sld-background-disabled);
 }
 li.listItem.selected, li.listItem[data-selected=true] {
   border-color: none;

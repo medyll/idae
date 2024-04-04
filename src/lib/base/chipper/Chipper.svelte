@@ -10,10 +10,10 @@
 		@type {'top' | 'bottom' | 'left' | 'right'}
 		*/
 		position: 'top' | 'bottom' | 'left' | 'right';
-		/** theme color of the chip
+		/** status of the chip
 		@type {'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'light' | 'medium' | 'dark'}
 		*/
-		bgTheme?: string;
+		status?: string;
 		/** css color code for the chip */
 		color?: string;
 		/** text or html is slot is not used */
@@ -25,16 +25,16 @@
 	let {
 		class: className = '',
 		style = '',
-		element = $bindable<HTMLDivElement | null>(null),
+		element = $bindable<HTMLDivElement>(),
 		position = 'bottom',
-		bgTheme = 'primary',
+		status = 'primary',
 		color = '',
 		content = '',
 		showChip = true,
 		children
 	}: ChipperProps = $props();
 
-	let cssColor = $derived(color ?? (bgTheme ? `var(--sld-color-${bgTheme})` : ''));
+	let cssColor = $derived(color ?? (status ? `var(--sld-color-${status})` : ''));
 </script>
 
 <div bind:this={element} style="{style};position:relative;" class="chipper gap-tiny {className} ">

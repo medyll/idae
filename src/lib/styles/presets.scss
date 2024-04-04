@@ -87,7 +87,7 @@
 @mixin data-hover {
     &:hover {
         border-color: var(--sld-hover-border-color);
-        background-color: var(--sld-color-primary-alpha-low);
+        background-color: var(--sld-background-disabled);
     }
 }
 

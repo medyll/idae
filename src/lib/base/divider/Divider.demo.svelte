@@ -1,24 +1,5 @@
 <script lang="ts">
-	import type { ElementProps } from '$lib/types/index.js';
 	import Divider from './Divider.svelte';
-	type OptType = {
-		density: ElementProps['density'][];
-		expansion: ElementProps['expansion'][];
-		direction: ['vertical', 'horizontal'];
-		shadow: [false, true];
-	};
-	let attrs = {};
-
-	// density
-	// shadow
-	// extension
-	// direction
-	const options: OptType & Record<string, any> = {
-		density: ['none', 'tight', 'default', 'medium', 'kind'],
-		expansion: ['full', 'padded', 'centered'],
-		direction: ['vertical', 'horizontal'],
-		shadow: [false, true]
-	};
 
 	/* demo */
 	import ComponentExample from '$components/Example.svelte';

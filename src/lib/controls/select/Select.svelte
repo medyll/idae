@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ElementProps } from '$lib/types/index.js';
+	import type { Data, ElementProps } from '$lib/types/index.js';
 	import Input from '$lib/controls/textfield/TextField.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
@@ -15,11 +15,11 @@
 	export let name: string;
 	export let disabled: boolean = false;
 
-	export let data: ElementProps['data'] | undefined = undefined;
+	export let data: Data | undefined = undefined;
 	export let dataFieldId: string | undefined = undefined;
 	export let dataFieldName: string | undefined = undefined;
 	export let options: {
-		data?: ElementProps['data'];
+		data?: Data;
 		text: string;
 		icon?: any;
 	}[] = [];

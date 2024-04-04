@@ -1,23 +1,42 @@
 import type { IconProps } from '@iconify/svelte';
 import type { Snippet } from 'svelte';
 
-export type TIcon = string;
+export type AppIcon = string;
 
-/* export namespace Drawer {
-  export let title: string;
-} */
+enum sizeType {
+	tiny = 'tiny',
+	small = 'small',
+	medium = 'medium',
+	default = 'default',
+	large = 'large',
+	big = 'big',
+	full = 'full',
+	auto = 'auto'
+}
+
+enum dense {
+	default = 'default',
+	small = 'small',
+	medium = 'medium',
+	kind = 'kind'
+}
+
+enum iconSize {
+	auto = 'auto',
+	tiny = 'tiny',
+	small = 'small',
+	medium = 'medium',
+	large = 'large',
+	full = 'full'
+}
 
 export interface ElementProps {
-	sizeType: 'tiny' | 'small' | 'medium' | 'default' | 'large' | 'big' | 'full' | 'auto' | string;
-	inputHeight: 'tiny' | 'small' | 'old' | 'large' | 'none';
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense: 'default' | 'small' | 'medium' | 'kind';
-	expansion: 'full' | 'padded' | 'centered';
+	dense: keyof typeof dense;
 	alignment: 'center' | 'left' | 'right';
 	flow: 'relative' | 'absolute' | 'fixed';
-	data: Record<string, any>;
-	action: (event: any, data: ElementProps['data']) => void;
-	icon: string;
+	action: (event: any, data: Data) => void;
+	icon: AppIcon;
 }
 
 export type Data = Record<string, any>;
@@ -35,7 +54,6 @@ export type IconObj = IconProps & {
 	rotate?: boolean;
 	color?: string;
 	rotation?: number;
-	size?: 'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full' | string;
-	/** className off the root component */
+	size?: keyof typeof iconSize;
 	class?: string;
 };

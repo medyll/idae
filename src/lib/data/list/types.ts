@@ -7,8 +7,3 @@ export type LisItemProps = {
 };
 
 export type LisItemPropsKey = keyof LisItemProps;
-
-export interface ElementProps {
-	density: 'none' | 'tight' | 'default' | 'kind';
-	expansion: 'full' | 'padded' | 'centered';
-}

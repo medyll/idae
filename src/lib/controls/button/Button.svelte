@@ -57,7 +57,11 @@
 >
 	<!-- style:background="var(--sld-color-{bgTheme})" -->
 	{#if buttonStart || icon}
-		<div bind:this={startRef} class="buttonStart">
+		<div
+			bind:this={startRef}
+			class="buttonStart"
+			style="--start-position:{children ?? primary ? 'absolute' : 'relative'}"
+		>
 			{#if buttonStart}
 				{@render buttonStart()}
 			{:else if icon || ico}

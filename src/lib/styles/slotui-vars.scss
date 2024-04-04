@@ -1,83 +1,100 @@
+$vendor: "sld";
 :root {
-    --sld-radius-tiny: 2px;
-    --sld-radius-small: 4px;
-    --sld-radius-med: 8px;
-    --sld-radius-large: 16px;
+    --#{$vendor}-radius-tiny: 2px;
+    --#{$vendor}-radius-small: 5px;
+    --#{$vendor}-radius-med: 8px;
+    --#{$vendor}-radius-large: 16px;
 
-    --sld-pad-tiny: 0.25rem;
-    --sld-pad-small: 0.5rem;
-    --sld-pad-med: 1rem;
-    --sld-pad-large: 1.5rem;
+    --#{$vendor}-pad-tiny: 0.25rem;
+    --#{$vendor}-pad-small: 0.5rem;
+    --#{$vendor}-pad-med: 1rem;
+    --#{$vendor}-pad-large: 1.5rem;
 }
 :root {
-    --sld-color-primary: #98b148;
-    --sld-color-secondary: #55492b;
-    --sld-color-tertiary: #9999cc;
+    --#{$vendor}-color-primary: #98b148;
+    --#{$vendor}-color-secondary: #55492b;
+    --#{$vendor}-color-tertiary: #9999cc;
 
-    --sld-color-foreground: #333333;
-    --sld-color-background: #ffffff;
-    --sld-color-paper: #f1f1f1;
+    --#{$vendor}-color-foreground: #333333;
+    --#{$vendor}-color-background: #ffffff;
+    --#{$vendor}-color-paper: #f1f1f1;
 
-    --sld-color-disabled: #ccc;
-    --sld-color-disabled-border: #cccccc;
+    --#{$vendor}-color-disabled: #ccc;
+    --#{$vendor}-color-disabled-border: #cccccc;
+
+    --#{$vendor}-background-disabled: #ededed;
+}
+
+:root {
+    --#{$vendor}-color-discrete: #ccc;
+    --#{$vendor}-color-success: #075c07;
+    --#{$vendor}-color-info: #ffd324;
+    --#{$vendor}-color-warning: #b49104;
+    --#{$vendor}-color-alert: #cc5c00;
+    --#{$vendor}-color-error: #cc0000;
 }
 :root {
-    /* primary alpha */
-    --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 30%);
-    --sld-color-primary-alpha-mid: color-mix(in srgb, var(--sld-color-primary), transparent 40%);
-    --sld-color-primary-alpha-high: color-mix(in srgb, var(--sld-color-primary), transparent 80%);
-    /* secondary alpha */
-    --sld-color-secondary-alpha-low: color-mix(in srgb, var(--sld-color-secondary), transparent 30%);
-    --sld-color-secondary-alpha-mid: color-mix(in srgb, var(--sld-color-secondary), transparent 40%);
-    --sld-color-secondary-alpha-high: color-mix(in srgb, var(--sld-color-secondary), transparent 66%);
-    /* tertiary alpha */
-    --sld-color-tertiary-alpha-low: color-mix(in srgb, var(--sld-color-tertiary), transparent 30%);
-    --sld-color-tertiary-alpha-mid: color-mix(in srgb, var(--sld-color-tertiary), transparent 40%);
-    --sld-color-tertiary-alpha-high: color-mix(in srgb, var(--sld-color-tertiary), transparent 66%);
-    /* primary darken */
-    --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), #000 10%);
-    --sld-color-primary-darken-mid: color-mix(in srgb, var(--sld-color-primary), #000 20%);
-    --sld-color-primary-darken-high: color-mix(in srgb, var(--sld-color-primary), #000 30%);
-    /* secondary darken */
-    --sld-color-secondary-darken-low: color-mix(in srgb, var(--sld-color-secondary), #000 10%);
-    --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), #000 20%);
-    --sld-color-secondary-darken-high: color-mix(in srgb, var(--sld-color-secondary), #000 30%);
+    $tints: foreground, "background", primary, secondary, tertiary;
+    @each $tint in $tints {
+        /* alpha  #{$tint} */
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 40%);
+        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
+    }
+    @each $tint in $tints {
+        /* darken  #{$tint} */
+        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
+        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
+        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+    }
+    @each $tint in $tints {
+        /* lighten  #{$tint} */
+        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
+        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
+        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+    }
 
-    --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 80%);
-    --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 50%);
-    --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 10%);
+    $tints: discrete, success, info, warning, alert, error;
+    @each $tint in $tints {
+        /* alpha  #{$tint} */
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 40%);
+        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
+    }
+    @each $tint in $tints {
+        /* darken  #{$tint} */
+        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
+        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
+        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+    }
+    @each $tint in $tints {
+        /* lighten  #{$tint} */
+        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
+        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
+        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+    }
+}
+/* presets */
+:root {
+    --#{$vendor}-color-border: color-mix(in srgb, var(--#{$vendor}-color-foreground), transparent 80%);
 
-    --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
-    --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 50%);
-    --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 10%);
+    --#{$vendor}-theme-gap-tiny: 1.5rem;
 
-    --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), #999 10%);
-    --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), #999 40%);
-    --sld-color-background-darken-high: color-mix(in srgb, var(--sld-color-background), #999 80%);
+    --#{$vendor}-hover-background-color: var(--#{$vendor}-color-secondary-alpha-mid);
+    --#{$vendor}-hover-border-color: var(--#{$vendor}-color-foreground-alpha-high);
+    --#{$vendor}-hover-shadow: var(--box-shad-3);
 
-    --sld-color-foreground-darken-low: color-mix(in srgb, var(--sld-color-foreground), #999 10%);
-    --sld-color-foreground-darken-mid: color-mix(in srgb, var(--sld-color-foreground), #999 40%);
-    --sld-color-foreground-darken-high: color-mix(in srgb, var(--sld-color-foreground), #999 80%);
-
-    --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
-
-    --sld-theme-gap-tiny: 1.5rem;
-
-    --sld-hover-background-color: var(--sld-color-secondary-alpha-mid);
-    --sld-hover-border-color: var(--sld-color-foreground-alpha-high);
-    --sld-hover-shadow: var(--box-shad-3);
-
-    --sld-selected-background-color: var(--sld-color-primary-alpha-mid);
-    --sld-selected-border-color: var(--sld-color-primary);
-    --sld-selected-shadow: var(--box-shad-4);
+    --#{$vendor}-selected-background-color: var(--#{$vendor}-color-primary-alpha-mid);
+    --#{$vendor}-selected-border-color: var(--#{$vendor}-color-primary);
+    --#{$vendor}-selected-shadow: var(--box-shad-4);
 }
 :root.dark,
 :root[data-theme="dark"] {
-    --sld-color-foreground: #ffffff;
-    --sld-color-background: #27323a;
-    --sld-color-paper: #3a3b3b;
+    --#{$vendor}-color-foreground: #ffffff;
+    --#{$vendor}-color-background: #27323a;
+    --#{$vendor}-color-paper: #3a3b3b;
 
-    --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 60%);
+    --#{$vendor}-color-border: color-mix(in srgb, var(--#{$vendor}-color-foreground), transparent 60%);
 }
 
 .bg-themed-scheme-discrete {

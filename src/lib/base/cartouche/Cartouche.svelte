@@ -6,7 +6,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { IconProps } from '@iconify/svelte';
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 
 	type CartoucheClasses = {
 		control: string;
@@ -45,13 +45,15 @@
 		 * @type {Record<'open'|'toggle' | 'close', Function>}
 		 */
 		actions: Record<'open' | 'toggle' | 'close', Function>;
+
+		dense: ElementProps['dense'];
 	};
 
 	let {
 		class: className = '',
 		classes = {} as CartoucheClasses,
 		style = undefined,
-		element = null,
+		element,
 		primary = '',
 		secondary = undefined,
 		icon = undefined,
@@ -62,13 +64,14 @@
 		keepCartoucheContent = true,
 		showTitleDivider = false,
 		bordered = true,
-		isOpen = false,
+		isOpen = $bindable(false),
+		dense,
 		actions = {
 			open,
 			toggle,
 			close
 		}
-	} = $props<CartoucheProps>();
+	}: CartoucheProps = $props();
 
 	function open() {
 		isOpen = true;
@@ -83,6 +86,8 @@
 	const chevronIcon = !isOpen ? 'chevron-down' : 'chevron-up';
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class:stacked
 	bind:this={element}
@@ -90,7 +95,7 @@
 	data-bordered={bordered ?? false}
 	{style}
 >
-	<div class="control {classes.control}" on:click={actions.toggle}>
+	<div class="control {classes.control} dense-{dense}" on:click={actions.toggle}>
 		{#if icon || iconProps || $$slots.cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
 				<slot name="cartoucheIcon">
@@ -117,7 +122,7 @@
 			</div>
 		{/if}
 		<div class="chevron">
-			<Button naked icon={chevronIcon} />
+			<Button variant="naked" icon={chevronIcon} />
 		</div>
 	</div>
 	{#if isOpen || keepCartoucheContent}
