@@ -5,15 +5,16 @@ ul.menu {
   min-width: 150px;
   padding: 0.25rem;
   cursor: pointer;
-  display: inline-block;
+  display: block;
   color: var(--sld-color-foreground);
 
-  &.bordered {
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--sld-radius-small);
+  li.menuTitle {
+    position: sticky;
+    margin-top: 0px !important;
+    top: 0px;
+    z-index: 1;
   }
 }
-
 li.menuItem {
   @include data-hover;
   @include data-selected;
@@ -24,7 +25,7 @@ li.menuItem {
   align-items: center;
   border: 1px solid transparent;
 
-  .menuItemIcon {
+  .menuListItemIcon {
     width: 16px;
     max-width: 16px;
     text-align: center;
@@ -34,7 +35,7 @@ li.menuItem {
     justify-content: center;
   }
 
-  .menuItemText {
+  .menuListItemText {
     flex: 1;
     padding-left: 0.25rem;
   }
