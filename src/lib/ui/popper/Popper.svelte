@@ -94,7 +94,7 @@
 
 {#if popperHolder || $$slots.popperHolder}
 	<div bind:this={holderSlotRef} style="position:relative;display:inline-block">
-		<Slotted slotted={popperHolder}><slot name="popperHolder" /></Slotted>
+		<Slotted child={popperHolder}><slot name="popperHolder" /></Slotted>
 	</div>
 {/if}
 {#if parentNode && ((isOpen && autoClose) || !autoClose)}
@@ -111,7 +111,7 @@
 		style:zIndex={makeOnTop()}
 		{...rest}
 	>
-		<Slotted slotted={children}>
+		<Slotted child={children}>
 			{#if mounted}
 				{#if component}
 					<svelte:component this={component} {...componentProps} />

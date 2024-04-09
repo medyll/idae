@@ -2,16 +2,16 @@
 	import type { Snippet } from 'svelte';
 
 	type Props = {
-		slotted?: Snippet<[any]>;
+		child?: Snippet<[any]>;
 		slotArgs?: any;
 		children?: Snippet;
 	};
 
-	let { slotted, children, slotArgs = {} }: Props = $props();
+	let { child, children, slotArgs = {} }: Props = $props();
 </script>
 
-{#if slotted}
-	{@render slotted(slotArgs)}
+{#if child}
+	{@render child(slotArgs)}
 {:else if children}
 	{@render children()}
 {/if}

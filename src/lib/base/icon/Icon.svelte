@@ -16,8 +16,8 @@
 		element?: HTMLDivElement | null | any;
 
 		/** icon name for iconify  */
-		icon: string;
-
+		icon?: string;
+		/** icon object for iconify, replace and invalidate props.icon  */
 		ico?: IconObj;
 
 		/**

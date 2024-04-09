@@ -118,7 +118,7 @@ li.listItem:hover {
 }
 li.listItem.selected, li.listItem[data-selected=true] {
   border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 li.listItem.selected .listItemChip,

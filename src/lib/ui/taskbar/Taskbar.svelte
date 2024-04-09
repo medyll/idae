@@ -20,11 +20,11 @@
 </script>
 
 <div class="taskbar flex-h flex-align-middle {className}" {...restProps}>
-	<Slotted slotted={slots.taskBarLeft} />
+	<Slotted child={slots.taskBarLeft} />
 	<div class="flex-main">
-		<Slotted slotted={children} />
+		<Slotted child={children} />
 	</div>
-	<Slotted slotted={slots.taskBarRight} />
+	<Slotted child={slots.taskBarRight} />
 </div>
 
 <style lang="scss">

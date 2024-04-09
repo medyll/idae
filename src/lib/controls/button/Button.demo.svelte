@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IMenuItemProps } from '$lib/ui/menu/types.js';
+	import type { MenuItemProps } from '$lib/ui/menu/types.js';
 	import type { PopperPositionType } from '$lib/ui/popper/types.js';
 	import { type UsePopperProps } from '$lib/ui/popper/usePopper.js';
 	import ComponentExample from '$components/Example.svelte';
@@ -19,7 +19,7 @@
 		height: ElementProps['inputHeight'][];
 	};
 
-	const menuData: IMenuItemProps[] = [
+	const menuData: MenuItemProps[] = [
 		{ text: 'text 1' },
 		{ text: 'text 2' },
 		{ text: 'text 3' },

@@ -163,7 +163,7 @@
     {
       "name": "__default__",
       "default": true,
-      "fallback": "<slot name=\"menuItemText\">{text ?? ''}</slot>",
+      "fallback": "<slot name=\"menuListItemText\">{text ?? ''}</slot>",
       "slot_props": "{}"
     },
     {
@@ -203,7 +203,7 @@
       "slot_props": "{}"
     },
     {
-      "name": "menuItemText",
+      "name": "menuListItemText",
       "default": false,
       "fallback": "{text ?? ''}",
       "slot_props": "{}"

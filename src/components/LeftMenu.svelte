@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import List from '$lib/data/list/List.svelte';
-	import ListItem from '$lib/data/list/ListItem.svelte';
-	import ListTitle from '$lib/data/list/ListTitle.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import { sitePaths } from '$lib/utils/engine/site.utils.js';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
+	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 
 	export let selected: string | undefined;
 
@@ -14,27 +14,26 @@
 	);
 </script>
 
-<List density="tight" selectorField="code" height="100%">
+<MenuList showLastOnSelected={true} style="height:100%;overflow:auto;padding:0.5rem;">
 	{#each Object.keys(groupedData) as group}
-		<ListTitle density="default" class="text-bold">
+		<MenuListTitle class="text-bold bold border-b">
 			Slot-ui {group ?? ''}
-		</ListTitle>
+		</MenuListTitle>
 		{#each groupedData[group] as catalog}
 			{#if Boolean(catalog?.code === catalog?.code)}
-				<ListItem
+				<MenuListItem
+					iconLast={{ icon: 'chevron-right' }}
 					selected={catalog?.code === selected}
 					data={catalog}
-					density="tight"
-					class="pad-l-4"
 				>
-					<a slot="primary" href=".{sitePaths.component(catalog)}">
+					<a href=".{sitePaths.component(catalog)}">
 						{catalog?.name ?? ''}
 					</a>
-				</ListItem>
+				</MenuListItem>
 			{/if}
 		{/each}
 	{/each}
-</List>
+</MenuList>
 
 <style lang="scss">
 	a {

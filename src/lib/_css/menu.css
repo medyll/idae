@@ -3,12 +3,14 @@ ul.menu {
   min-width: 150px;
   padding: 0.25rem;
   cursor: pointer;
-  display: inline-block;
+  display: block;
   color: var(--sld-color-foreground);
 }
-ul.menu.bordered {
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--sld-radius-small);
+ul.menu li.menuTitle {
+  position: sticky;
+  margin-top: 0px !important;
+  top: 0px;
+  z-index: 1;
 }
 
 li.menuItem {
@@ -26,7 +28,7 @@ li.menuItem:hover {
 }
 li.menuItem.selected, li.menuItem[data-selected=true] {
   border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 li.menuItem.selected .listItemChip,
@@ -57,7 +59,7 @@ li.menuItem.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
-li.menuItem .menuItemIcon {
+li.menuItem .menuListItemIcon {
   width: 16px;
   max-width: 16px;
   text-align: center;
@@ -66,7 +68,7 @@ li.menuItem .menuItemIcon {
   display: flex;
   justify-content: center;
 }
-li.menuItem .menuItemText {
+li.menuItem .menuListItemText {
   flex: 1;
   padding-left: 0.25rem;
 }

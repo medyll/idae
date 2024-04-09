@@ -38,14 +38,14 @@
 <div bind:this={element} class="toggle-bar {className}" {style} {...rest}>
 	{#if slots.toggleBarIcon || icon}
 		<div class="pad">
-			<Slotted slotted={slots.toggleBarIcon}>
+			<Slotted child={slots.toggleBarIcon}>
 				<Icon {icon} />
 			</Slotted>
 		</div>
 	{/if}
 	<div class="title flex-main text-500" style="order:{posTitle};min-width:auto;flex:1;">
 		{#if slots.toggleBarTitle || Boolean(title)}
-			<Slotted slotted={slots.toggleBarTitle}>
+			<Slotted child={slots.toggleBarTitle}>
 				<div
 					style="font-size:18px;min-width:auto;overflow:hidden;height:100%;"
 					class="flex flex-align-middle overflow-hidden text-ellipsis"
@@ -56,14 +56,14 @@
 		{/if}
 	</div>
 	<div class="toggle-bar-content" style="order:2;">
-		<Slotted slotted={slots.toggleBarButtons} />
+		<Slotted child={slots.toggleBarButtons} />
 	</div>
 	<div style="order:{posCloser}">
 		<ContentSwitcher parent={element} icon={contentSwitcherIcon}>
 			<!-- <slot slot="contentSwitcherIcon" name="contentSwitcherIcon" />
 			<slot slot="contentSwitcherReveal" name="contentSwitcherReveal" /> -->
-			<Slotted slotted={slots.contentSwitcherIcon} />
-			<Slotted slotted={slots.contentSwitcherReveal} />
+			<Slotted child={slots.contentSwitcherIcon} />
+			<Slotted child={slots.contentSwitcherReveal} />
 		</ContentSwitcher>
 	</div>
 </div>

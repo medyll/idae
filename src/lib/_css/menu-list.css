@@ -1,0 +1,113 @@
+ul.menuList {
+  --sld-list-padding: 0.25rem;
+  --sld-list-item-padding: 0;
+  --sld-list-item-radius: var(--sld-radius-small);
+  --sld-list-item-selected-background: var(--sld-selected-background-color);
+}
+
+:global(ul.menuList) {
+  margin: 0;
+  min-width: 150px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding: var(--sld-list-padding);
+}
+:global(ul.menuList) li.menuListTitle {
+  position: sticky;
+  margin-top: 0px !important;
+  top: 0px;
+  z-index: 1;
+}
+:global(ul.menuList) :global(li.menuListItem) {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+:global(ul.menuList) :global(li.menuListItem) :global([data-selected="true"]) :global(.menuItemActions) {
+  display: none;
+}
+
+li.menuListItem {
+  --preset-density: 1.5rem;
+  min-height: 1.5rem;
+  overflow: hidden;
+  padding-left: 0.25rem;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: var(--sld-list-item-radius);
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  border: 1px solid transparent;
+  align-self: flex-start;
+}
+li.menuListItem:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+li.menuListItem.selected, li.menuListItem[data-selected=true] {
+  border-color: none;
+  background-color: #ededed;
+  box-shadow: var(--sld-selected-shadow);
+}
+li.menuListItem.selected .listItemChip,
+li.menuListItem.selected .menuItemChip, li.menuListItem[data-selected=true] .listItemChip,
+li.menuListItem[data-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+li.menuListItem.dense-small {
+  min-height: 1rem;
+  --preset-density: 1rem;
+}
+li.menuListItem.dense-default {
+  min-height: 1.5rem;
+  --preset-density: 1.5rem;
+}
+li.menuListItem.dense-medium {
+  min-height: 2rem;
+  --preset-density: 2rem;
+}
+li.menuListItem.dense-kind {
+  min-height: 3rem;
+  --preset-density: 3rem;
+}
+li.menuListItem[data-selected=true].showLastOnSelected {
+  visibility: visible;
+}
+li.menuListItem[data-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 1px;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+li.menuListItem .menuListItemIcon {
+  width: 16px;
+  max-width: 16px;
+  text-align: center;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+li.menuListItem .menuListItemText {
+  flex: 1;
+  padding-left: 0.25rem;
+}
+li.menuListItem .menuItemActions {
+  display: flex;
+  justify-content: center;
+}

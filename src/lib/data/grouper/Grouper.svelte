@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
-	import type { IMenuItemProps } from '$lib/ui/menu/types.ts';
+	import type { MenuItemProps } from '$lib/ui/menu/types.ts';
 
 	import type { GroupedDataType, Data } from './types.js';
 
@@ -84,7 +84,7 @@
 
 	let innerInnerGB: GroupedDataType = [];
 
-	let menuData: IMenuItemProps[] = [];
+	let menuData: MenuItemProps[] = [];
 	let menuProps = {};
 
 	let collectedKeys: any[] = [];

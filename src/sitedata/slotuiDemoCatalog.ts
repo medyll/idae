@@ -27,7 +27,7 @@ import  Drawer from '$lib/navigation/drawer/Drawer.demo.svelte';
 import  Tabs from '$lib/navigation/tabs/Tabs.demo.svelte';
 import  Frame from '$lib/ui/frame/Frame.demo.svelte';
 import  Login from '$lib/ui/login/Login.demo.svelte';
-import  Menu from '$lib/ui/menu/Menu.demo.svelte';
+import  MenuList from '$lib/ui/menuList/MenuList.demo.svelte';
 import  Panel from '$lib/ui/panel/Panel.demo.svelte';
 import  Popper from '$lib/ui/popper/Popper.demo.svelte';
 import  Toast from '$lib/ui/toast/Toast.demo.svelte';
@@ -65,7 +65,7 @@ drawer:{component:Drawer,name:"Drawer",code:"drawer",group:"navigation",root:"dr
 tabs:{component:Tabs,name:"Tabs",code:"tabs",group:"navigation",root:"tabs"},
 frame:{component:Frame,name:"Frame",code:"frame",group:"ui",root:"frame"},
 login:{component:Login,name:"Login",code:"login",group:"ui",root:"login"},
-menu:{component:Menu,name:"Menu",code:"menu",group:"ui",root:"menu"},
+menulist:{component:MenuList,name:"MenuList",code:"menulist",group:"ui",root:"menuList"},
 panel:{component:Panel,name:"Panel",code:"panel",group:"ui",root:"panel"},
 popper:{component:Popper,name:"Popper",code:"popper",group:"ui",root:"popper"},
 toast:{component:Toast,name:"Toast",code:"toast",group:"ui",root:"toast"},

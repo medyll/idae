@@ -122,7 +122,7 @@
 			<AutoComplete
 				dataFieldName="code"
 				placeholder="Search component"
-				onPick={(args) => goto(sitePaths.component(args))}
+				onPick={(args) => goto('.' + sitePaths.component(args))}
 				data={Object.values(slotuiCatalog ?? {})}
 			/>
 			<ThemeSwitcher icon="mdi:paint-outline" title="toggle theme" />

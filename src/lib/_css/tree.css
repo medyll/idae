@@ -23,7 +23,7 @@
 }
 .tree-cell.selected, .tree-cell[data-selected=true] {
   border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 .tree-cell.selected .listItemChip,

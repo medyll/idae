@@ -63,7 +63,7 @@
 	</Input>
 	<Menu
 		style="width:100%;"
-		on:menu:click={(event) => {
+		onclick={(event) => {
 			const args = event.detail;
 			hiddenRef.value = args?.[dataFieldId] ?? args?.['id'] ?? args?.[dataFieldName] ?? args;
 			element.value = args?.[dataFieldName] ?? args?.[dataFieldId] ?? args?.['id'] ?? args;

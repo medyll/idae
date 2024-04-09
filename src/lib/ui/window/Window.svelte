@@ -172,7 +172,7 @@
 				<header class="bar">
 					{#if icon || slots.icon}
 						<div class="pad-ii-2">
-							<Slotted slotted={slots.icon}>
+							<Slotted child={slots.icon}>
 								<Icon fontSize="small" {icon} />
 							</Slotted>
 						</div>
@@ -193,7 +193,7 @@
 				</header>
 			{/if}
 			<div>
-				<Slotted slotted={children}>
+				<Slotted child={children}>
 					{#key component}
 						{#if component}
 							<svelte:component this={component} {...componentProps} bind:formRef />
@@ -205,7 +205,7 @@
 				</Slotted>
 			</div>
 			{#if !hideCloseButton || !hideAcceptButton}
-				<Slotted slotted={slots.buttonZone}>
+				<Slotted child={slots.buttonZone}>
 					<footer class="buttonZone">
 						{#if !hideCloseButton}
 							<Button naked icon={iconClose} onclick={actions.close}>Close</Button>

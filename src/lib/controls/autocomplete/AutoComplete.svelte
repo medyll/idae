@@ -1,44 +1,17 @@
 <svelte:options accessors runes />
 
 <script lang="ts" generics="T= Data">
+	import type { AutoCompleteProps } from './types.js';
+
 	import TextField from '$lib/controls/textfield/TextField.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Popper from '$lib/ui/popper/Popper.svelte';
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import { type Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps, Data } from '$lib/types/index.js';
 	import Slot from '$lib/utils/slot/Slotted.svelte';
-
-	type AutoCompleteProps = CommonProps & {
-		/** className off the root component */
-		class?: string;
-		/** element root HTMLDivElement props */
-		element: HTMLDivElement;
-		/** initial data to look in */
-		data: T[];
-		/** show all data when search is empty */
-		showAllOnEmpty?: boolean;
-		/** default field to be used for searches, can be * */
-		searchField: string | '*';
-		/**
-		 * defaults fields to be shown
-		 */
-		dataFieldName: keyof T | (keyof T)[];
-		/** search mode : exact or partial match*/
-		mode: 'exact' | 'partial';
-		/** external bind use, to read filtered data */
-		filteredData: T[];
-		/** selectedIndex : index of the selected item in data */
-		selectedIndex: number;
-		/** selectedIndex : index of the selected item in data */
-		onPick?: ((args: T) => void) | undefined;
-		slots?: {
-			autoCompleteEmpty?: Snippet | undefined;
-			autoCompleteNoResults?: Snippet | undefined;
-		};
-	};
 
 	let {
 		class: className = '',
@@ -52,16 +25,17 @@
 		onPick = (args) => {},
 		showAllOnEmpty = true,
 		children,
-		slots = { autoCompleteEmpty: undefined, autoCompleteNoResults: undefined },
+		autoCompleteEmpty,
+		autoCompleteNoResults,
 		...rest
-	}: AutoCompleteProps = $props();
+	}: AutoCompleteProps<T> = $props();
 
 	let searchString: string | undefined = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);
 	let popperHTML: HTMLElement | undefined = $state(undefined);
 	let popperOpen: boolean = $state(true);
 
-	let menuRef: Menu<T>;
+	let menuRef: MenuList<T>;
 
 	let childs = children;
 
@@ -113,7 +87,8 @@
 
 	function getFieldName(data: T, fieldName: keyof T | (keyof T)[]): string {
 		let field = Array.isArray(fieldName) ? fieldName : [fieldName];
-		return field.map((field) => data[field]).join(' ');
+
+		return data ? field.map((field) => data[field]).join(' ') : '';
 	}
 </script>
 
@@ -137,43 +112,40 @@
 		tabindex="0"
 	/>
 
-	<Menu
+	<MenuList
 		bind:this={menuRef}
 		style="max-height:350px;overflow:auto;width:100%;"
 		data={filteredData}
 		bind:element={menuHTML}
 		bind:selectedIndex
-		on:menu:click={(args) => {
-			alert(args);
-		}}
 		id="menu"
 		role="menu"
 		tabindex="-1"
 		aria-expanded={popperOpen}
 	>
 		{#snippet children(prop)}
-			<Slot slotted={childs} slotArgs={prop.item}>
-				<MenuItem
+			<Slot child={childs} slotArgs={prop.item}>
+				<MenuListItem
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
-					onclick={(data) => {
-						onSelect(data, prop.itemIndex);
+					onclick={(event) => {
+						onSelect(event.detail, prop.itemIndex);
 						popperOpen = false;
 						menuRef.actions.navigate(prop.itemIndex);
 					}}
 				/>
 			</Slot>
 		{/snippet}
-	</Menu>
+	</MenuList>
 	{#if !filteredData.length && !searchString}
-		<Slot slotted={slots.autoCompleteEmpty}>
+		<Slot child={autoCompleteEmpty}>
 			<div class="pad-2 flex-h flex-align-middle gap-small">
 				<Icon fontSize="large" icon="fa-regular:keyboard" />
 				perform search
 			</div>
 		</Slot>
 	{:else if !filteredData.length}
-		<Slot slotted={slots.autoCompleteNoResults}>
+		<Slot child={autoCompleteNoResults}>
 			<div class="pad-2 flex-h flex-align-middle gap-small">
 				<Icon class="dsp-inline" fontSize="large" icon="material-symbols:no-sim-outline" />
 				no results

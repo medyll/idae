@@ -36,8 +36,8 @@
 	style="{style};--color: {color}"
 	{...rest}
 >
-	<Slotted slotted={children} />
-	<Slotted slotted={slots.separator} />
+	<Slotted child={children} />
+	<Slotted child={slots.separator} />
 </div>
 
 <style lang="scss">
