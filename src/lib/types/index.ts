@@ -3,17 +3,6 @@ import type { Snippet } from 'svelte';
 
 export type AppIcon = string;
 
-enum sizeType {
-	tiny = 'tiny',
-	small = 'small',
-	medium = 'medium',
-	default = 'default',
-	large = 'large',
-	big = 'big',
-	full = 'full',
-	auto = 'auto'
-}
-
 enum dense {
 	default = 'default',
 	small = 'small',
