@@ -1,11 +1,16 @@
-<script lang="ts">
-	let className: string = '';
-	export { className as class };
-	export let data: any[] = [];
-	export let naked = true;
-	export let title: string = '';
+<script lang="ts" generics="T= Data">
+	import type { Data } from '$lib/types/index.js';
 
-	function cast(dataIn: any[]) {
+	type LoopProps = {
+		class?: string;
+		data?: T | T[];
+		naked?: boolean;
+		title?: string;
+	};
+
+	let { class: className = '', data = [], naked = true, title = '' }: LoopProps = $props();
+
+	function cast(dataIn: T | T[]) {
 		if (typeof data == 'object' && !Array.isArray(data)) {
 			return Object.keys(dataIn);
 		}
