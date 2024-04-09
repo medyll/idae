@@ -1,0 +1,87 @@
+@import "../../styles/presets.scss";
+
+ul.menuList {
+  --sld-list-padding: 0.25rem;
+  --sld-list-item-padding: 0;
+  --sld-list-item-radius: var(--sld-radius-small);
+  --sld-list-item-selected-background: var(--sld-selected-background-color);
+}
+
+:global(ul.menuList) {
+  margin: 0;
+  min-width: 150px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding: var(--sld-list-padding);
+
+  li,
+  a {
+    &.menuListTitle {
+      position: sticky;
+      margin-top: 0px !important;
+      top: 0px;
+      z-index: 1;
+    }
+  }
+}
+:global(ul.menuList.showLastOnSelected) {
+  :global(li.menuListItem[data-selected="true"] .menuItemActions) {
+    visibility: visible;
+  }
+  :global(li.menuListItem .menuItemActions) {
+    visibility: hidden;
+  }
+}
+li.menuListItem {
+  @include data-hover;
+  @include data-selected;
+  @include ui-dense-presets;
+
+  overflow: hidden;
+  padding-left: calc(var(--preset-density) / 4);
+  border: 1px solid transparent;
+
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: var(--sld-list-item-radius);
+  align-self: flex-start;
+
+  &[data-selected="true"] {
+    .menuItemChip {
+      position: absolute;
+      min-height: 16px;
+      height: 45%;
+      width: 3px;
+      background-color: var(--sld-color-primary);
+      border-radius: var(--sld-radius-med);
+      left: 0px;
+      border: 1px solid var(--sld-color-primary-alpha-mid);
+    }
+  }
+  .menuListItemIcon {
+    width: 16px;
+    max-width: 16px;
+    text-align: center;
+    overflow: hidden;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .menuListItemText {
+    flex: 1;
+  }
+
+  .menuItemActions {
+    display: flex;
+    justify-content: center;
+  }
+}
