@@ -14,7 +14,7 @@
     transform: translate(-50%, 0);
 
     .loader-box {
-        box-shadow: var(--box-shad-1);
+        box-shadow: var(--sld-elevation-1);
         border-radius: var(--sld-radius-tiny);
         border: 1px solid var(--sld-color-foreground-alpha-high);
         padding: 1rem 0;
@@ -33,7 +33,7 @@
             border-color: var(--sld-color-primary);
             padding: var(--box-density-1) var(--box-density-2);
             display: inline-block;
-            box-shadow: var(--box-shad-1);
+            box-shadow: var(--sld-elevation-1);
         }
     }
 }

@@ -19,10 +19,9 @@ export type MenuListProps<T = Data> = CommonProps & {
 	data?: T[];
 	/** @deprecated use dense*/
 	density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense?: 'small' | 'default' | 'medium' | 'kind';
+	dense?: ElementProps['dense'];
 	/** index to select the item */
 	selectedIndex?: number;
-
 	/** menu can have no border */
 	bordered?: boolean;
 	/**  field used to  select the item */
@@ -35,7 +34,8 @@ export type MenuListProps<T = Data> = CommonProps & {
 	role?: 'directory' | 'group' | 'listbox' | 'menu' | 'menubar' | 'tablist' | 'toolbar' | 'tree';
 	/**  actions to be performed on the menu */
 	actions?: {
-		navigate: (idx: number) => void;
+		navigate: (e: KeyboardEvent) => void;
+		gotoIndex: (idx: number) => void;
 	};
 	/** @deprecated use menuItemsList */
 	menuList?: MenuListItemProps[];
@@ -72,6 +72,8 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	dividerBefore?: MenuListItemProps['divider'];
 	/** data associated with the menu item */
 	data?: T;
+	/** makes the menu item selectable */
+	selectable?: boolean;
 	/** whether the menu item is selected */
 	selected?: boolean;
 	/** @deprecated

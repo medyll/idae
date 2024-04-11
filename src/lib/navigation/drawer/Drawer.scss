@@ -5,29 +5,47 @@
   background-color: var(--sld-drawer-bg-color, var(--sld-color-paper-alpha-low));
   backdrop-filter: var(--sld-drawer-backdrop-blur, blur(0px));
   z-index: 3000;
-  box-shadow: var(--box-shad-3);
-  border-left: 1px solid var(--sld-drawer-border-color, var(--sld-color-primary-alpha));
+  box-shadow: var(--sld-elevation-3);
+  border-left: 1px solid var(--sld-color-primary-alpha-mid);
   overflow: visible;
   display: flex;
   flex-direction: column;
   transition: all 0.1s;
-  .opener {
-    //background-color: var(--sld-drawer-bg-color, var(--sld-color-paper-alpha-low));
+
+  &-icon {
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &-opener {
     position: absolute;
     z-index: 8600;
   }
-  .header {
-    // border-bottom: 1px solid var(--sld-color-foreground-alpha-high);
+  header,
+  &-header {
+    @include ui-dense-presets;
 
+    // padding: auto 0.5rem;
     min-height: 48px;
     display: flex;
-    align-items: center;
+    width: 100%;
 
-    .title {
-      font-size: large;
+    &-bar {
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      &-title {
+        //padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: large;
+      }
     }
   }
-  .content {
+  &-content {
     flex: 1;
     position: relative;
   }

@@ -1,47 +1,41 @@
 <svelte:options accessors />
 
 <script lang="ts">
-	import { popper, type UsePopperProps } from '$lib/ui/popper/usePopper.js';
-	import type { ElementProps } from '$lib/types/index.js';
+	import { popper } from '$lib/ui/popper/usePopper.js';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import type { TextFieldProps } from './types.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	let inputType = 'text';
 	export { inputType as type };
 
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-
-	export let style = '';
-
-	/** icon as a parameter*/
-	export let icon: string | undefined = undefined;
-	/** icon as a parameter*/
-	export let iconColor: string = '#666';
-	/** icon as a parameter*/
-	export let endIcon: string | undefined = undefined;
-	/** icon color as a parameter*/
-	export let endIconColor: string = '#666';
-	/** paramters for usePopper */
-	export let usePopper: UsePopperProps | undefined = undefined;
-	/** with of the input using  presets */
-	export let size: ElementProps['sizeType'] | 'full' = 'auto';
-	/** height of the input, using preset values */
-	export let height: string = 'default';
-	/** has no border */
-	export let borderless: boolean = false;
-	/** has no border */
-	export let transparent: boolean = false;
-
-	export let value: any | undefined = undefined;
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		icon = undefined,
+		iconColor = '#666',
+		endIcon = undefined,
+		endIconColor = '#666',
+		usePopper = undefined,
+		size = 'auto',
+		height = 'default',
+		borderless = false,
+		transparent = false,
+		value = $bindable(),
+		children,
+		inputFirst: inputStart,
+		inputLast: inputEnd,
+		...rest
+	}: TextFieldProps = $props();
 
 	let niceIconStyle = '';
 
-	niceIconStyle += icon || $$slots.inputStart ? 'padding-left:2.2rem;' : '';
-	niceIconStyle += endIcon || $$slots.inputEnd ? 'padding-right:2.2rem;' : '';
+	niceIconStyle += icon || inputStart ? 'padding-left:2.2rem;' : '';
+	niceIconStyle += endIcon || inputEnd ? 'padding-right:2.2rem;' : '';
 
-	$: if (usePopper) {
+	if (usePopper) {
 		usePopper.disabled = false;
 		usePopper.parentNode = element;
 	} else {
@@ -49,21 +43,25 @@
 	}
 </script>
 
-{#if icon || endIcon || inputType === 'search' || $$slots.inputStart || $$slots.inputEnd}
-	<div style="position:relative;display:block">
-		{#if icon || $$slots.inputStart}
+{#if icon || endIcon || inputType === 'search' || inputStart || inputEnd || $$slots.inputStart || $$slots.inputEnd}
+	<div style="position:relative;display:contents">
+		{#if icon || inputStart}
 			<div class="inputStart">
-				<slot name="inputStart">
-					<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
-				</slot>
+				<Slotted child={inputEnd}>
+					<slot name="inputStart">
+						<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
+					</slot>
+				</Slotted>
 			</div>
 		{/if}
-		{#if $$slots.inputEnd || endIcon || inputType === 'search'}
+		{#if inputEnd || $$slots.inputEnd || endIcon || inputType === 'search'}
 			<div class="inputEnd">
-				{#if $$slots.inputEnd || endIcon}
-					<slot name="inputEnd">
-						<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
-					</slot>
+				{#if inputEnd || $$slots.inputEnd || endIcon}
+					<Slotted child={inputEnd}>
+						<slot name="inputEnd">
+							<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
+						</slot>
+					</Slotted>
 				{/if}
 				{#if inputType === 'search'}
 					<Button
@@ -71,7 +69,7 @@
 							value = null;
 						}}
 						disabled={!value?.length}
-						naked
+						variant="naked"
 						icon="mdi:close-circle-outline"
 					/>
 				{/if}
@@ -87,7 +85,7 @@
 			data-width={size}
 			{borderless}
 			style={niceIconStyle + ';' + style}
-			{...$$restProps}
+			{...rest}
 		/>
 	</div>
 {:else}
@@ -100,7 +98,7 @@
 		data-height={height}
 		{borderless}
 		{style}
-		{...$$restProps}
+		{...rest}
 	/>
 {/if}
 

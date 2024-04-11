@@ -13,9 +13,9 @@ button,
     --sld-button-hover-border-color: var(--sld-color-primary);
     --sld-button-active-border-color: var(--sld-color-secondary);
     --sld-button-focus-border-color: var(--sld-color-primary);
-    --sld-button-hover-shadow: var(--box-shad-3);
-    --sld-button-active-shadow: var(--box-shad-4);
-    --sld-button-focus-shadow: var(--box-shad-4);
+    --sld-button-hover-shadow: var(--sld-elevation-3);
+    --sld-button-active-shadow: var(--sld-elevation-4);
+    --sld-button-focus-shadow: var(--sld-elevation-4);
 }
 
 .actionButton {
@@ -67,7 +67,7 @@ input[type="submit"] {
 
     &[selected="true"],
     .selected {
-        box-shadow: var(--box-shad-3);
+        box-shadow: var(--sld-elevation-3);
         border: 0.5px solid var(--sld-color-paper-alpha-low);
         background-color: transparent;
         font-weight: bold;
@@ -77,7 +77,7 @@ input[type="submit"] {
     &.bordered {
         color: var(--sld-color-foreground);
         border: var(--sld-button-border-width) solid var(--sld-button-border-color);
-        box-shadow: var(--box-shad-1);
+        box-shadow: var(--sld-elevation-1);
         background-color: var(--sld-color-background);
         &:hover {
             border: 1px solid var(--sld-color-primary);
@@ -97,7 +97,7 @@ input[type="submit"] {
         color: white;
         background-color: var(--sld-button-background);
         background-clip: padding-box;
-        box-shadow: var(--box-shad-1);
+        box-shadow: var(--sld-elevation-1);
         &:hover {
             background-color: var(--sld-color-secondary);
             color: var(--sld-color-primary);

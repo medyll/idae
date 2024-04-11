@@ -11,18 +11,47 @@ $vendor: "sld";
     --#{$vendor}-pad-large: 1.5rem;
 }
 :root {
-    --#{$vendor}-color-primary: #98b148;
-    --#{$vendor}-color-secondary: #55492b;
-    --#{$vendor}-color-tertiary: #9999cc;
+    --white: #fff;
+    --black: #333;
+}
 
+:root.dark,
+:root[data-theme="dark"] {
+    --white: #333;
+    --black: #ccc;
+}
+:root {
     --#{$vendor}-color-foreground: #333333;
     --#{$vendor}-color-background: #ffffff;
     --#{$vendor}-color-paper: #f1f1f1;
+
+    --#{$vendor}-color-primary: #98b148;
+    --#{$vendor}-color-secondary: #55492b;
+    --#{$vendor}-color-tertiary: #9999cc;
 
     --#{$vendor}-color-disabled: #ccc;
     --#{$vendor}-color-disabled-border: #cccccc;
 
     --#{$vendor}-background-disabled: #ededed;
+}
+
+:root.dark,
+:root[data-theme="dark"] {
+    --#{$vendor}-color-foreground: #ffffff;
+    --#{$vendor}-color-background: #27323a;
+    --#{$vendor}-color-paper: #3a3b3b;
+}
+
+:root {
+    --#{$vendor}-elevation-1: 0 0 1.724137931px 0 rgba(0, 0, 0, 0.15),
+        0 0.1526717557px 0.4651162791px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-2: 0 0 3.4482758621px 0 rgba(0, 0, 0, 0.15),
+        0 0.3053435115px 0.9302325581px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-3: 0 0 5.1724137931px 0 rgba(0, 0, 0, 0.15), 0 0 1.3953488372px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-4: 0 0 6.8965517241px 0 rgba(0, 0, 0, 0.15),
+        0 0.6106870229px 1.8604651163px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-5: 0 0 8.6206896552px 0 rgba(0, 0, 0, 0.15),
+        0 0.7633587786px 2.3255813953px 0 rgba(0, 0, 0, 0.1);
 }
 
 :root {
@@ -82,19 +111,11 @@ $vendor: "sld";
 
     --#{$vendor}-hover-background-color: var(--#{$vendor}-color-secondary-alpha-mid);
     --#{$vendor}-hover-border-color: var(--#{$vendor}-color-foreground-alpha-high);
-    --#{$vendor}-hover-shadow: var(--box-shad-3);
+    --#{$vendor}-hover-shadow: var(--#{$vendor}-elevation-3);
 
     --#{$vendor}-selected-background-color: var(--#{$vendor}-color-primary-alpha-mid);
     --#{$vendor}-selected-border-color: var(--#{$vendor}-color-primary);
-    --#{$vendor}-selected-shadow: var(--box-shad-4);
-}
-:root.dark,
-:root[data-theme="dark"] {
-    --#{$vendor}-color-foreground: #ffffff;
-    --#{$vendor}-color-background: #27323a;
-    --#{$vendor}-color-paper: #3a3b3b;
-
-    --#{$vendor}-color-border: color-mix(in srgb, var(--#{$vendor}-color-foreground), transparent 60%);
+    --#{$vendor}-selected-shadow: var(--#{$vendor}-elevation-3);
 }
 
 .bg-themed-scheme-discrete {

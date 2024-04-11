@@ -2,69 +2,41 @@
 
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import type { ElementProps, IconObj } from '$lib/types/index.js';
+	import type { ElementProps } from '$lib/types/index.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-
-	type IconProps = {
-		/** className off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null | any;
-
-		/** icon name for iconify  */
-		icon?: string;
-		/** icon object for iconify, replace and invalidate props.icon  */
-		ico?: IconObj;
-
-		/**
-		 * icon size
-		 * @type {'small' | 'medium' | 'large' | 'xlarge'}
-		 */
-		fontSize?: 'small' | 'medium' | 'large' | 'xlarge' | string;
-
-		/** rotate icon */
-		rotate?: boolean;
-
-		/** icon color */
-		color?: string;
-
-		/** icon rotation */
-		rotation?: number;
-	};
+	import type { IconAppProps } from './types.js';
 
 	let {
+		icon = 'question',
 		class: className,
 		style,
 		element = $bindable<HTMLDivElement>(),
-		icon = 'question',
 		fontSize = 'small',
 		rotate = false,
 		color,
 		rotation = 0,
 		ico
-	}: IconProps = $props();
+	}: IconAppProps = $props();
 
-	const sizes: Record<ElementProps['sizeType'], string> = uiPresets.iconSize;
+	const sizes: Record<ElementProps['iconSize'], string> = uiPresets.iconSize;
 
-	let finalI = ico?.icon || icon;
-	let finRot = ico?.rotate || rotate;
-	let finRotation = $derived(ico?.rotation || rotation);
-	let finCol = ico?.color || color;
+	let finalI = ico?.icon || (typeof icon === 'object' ? icon.icon : icon);
+	let finRot = ico?.rotate || (typeof icon === 'object' ? icon.rotate : rotate);
+	let finRotation = $derived(
+		ico?.rotation || (typeof icon === 'object' ? icon.rotation : rotation)
+	);
+	let finCol = ico?.color || (typeof icon === 'object' ? icon.color : color);
 	let finSize = ico?.size || fontSize;
 	let iconName = $derived(finalI.includes(':') ? finalI : `mdi:${finalI}`);
+
+	style = `display:inline-block;font-size:${sizes[finSize]};color:${finCol};${style}`;
 </script>
 
 {#key rotation}
 	<Icon
 		bind:this={element}
 		class="icon {className} {finRot}"
-		style="display:inline-block;font-size:{sizes[
-			finSize
-		]};color:{finCol};{style};transform: rotate({finRotation}deg)"
+		style="{style};transform: rotate({finRotation}deg)"
 		on:click
 		icon={iconName}
 	/>

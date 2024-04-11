@@ -46,7 +46,7 @@ label {
         input:checked + .switchHandle {
             left: calc(100% - 16px);
             border-color: var(--sld-color-secondary-alpha-mid);
-            box-shadow: var(--box-shad-3);
+            box-shadow: var(--sld-elevation-3);
             background-color: var(--sld-color-background);
         }
 
@@ -61,7 +61,7 @@ label {
             transition: all 0.1s;
             background-color: var(--sld-color-primary);
             border: 1px solid var(--sld-color-secondary-alpha-low);
-            box-shadow: var(--box-shad-1);
+            box-shadow: var(--sld-elevation-1);
         }
 
         .test {

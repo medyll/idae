@@ -32,7 +32,7 @@
         display: inline-block;
         background-clip: padding-box;
         &:hover {
-            box-shadow: var(--box-shad-3);
+            box-shadow: var(--sld-elevation-3);
             outline: 4px solid var(--sld-color-primary-alpha-high);
         }
     }

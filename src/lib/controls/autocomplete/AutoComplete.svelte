@@ -8,7 +8,6 @@
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
-	import { type Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps, Data } from '$lib/types/index.js';
 	import Slot from '$lib/utils/slot/Slotted.svelte';
@@ -21,7 +20,7 @@
 		dataFieldName,
 		mode = 'partial',
 		filteredData = $bindable(data),
-		selectedIndex = -1,
+		selectedIndex = $bindable(-1),
 		onPick = (args) => {},
 		showAllOnEmpty = true,
 		children,
@@ -39,6 +38,11 @@
 
 	let childs = children;
 
+	$effect(() => {
+		element.addEventListener('keypress', ((e: KeyboardEvent) => {
+			preNavigate(e);
+		}) as EventListener);
+	});
 	$effect(() => {
 		filteredData = !searchString
 			? showAllOnEmpty
@@ -59,25 +63,12 @@
 		return results;
 	};
 
-	async function preNavigate(e: KeyboardEvent, data: Record<string, any>) {
+	async function preNavigate(e: KeyboardEvent) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
 			onSelect(filteredData[selectedIndex], selectedIndex);
 			return;
 		}
-		if (data.length === 0) return;
-		if ([38, 40].includes(e.keyCode)) e.preventDefault();
-
-		const res = await navigateList(e.keyCode, selectedIndex);
-		menuRef.actions.navigate(res);
-	}
-
-	async function navigateList(keyCode: KeyboardEvent['keyCode'], actualIndex: number) {
-		if (![38, 40].includes(keyCode)) return;
-
-		const dir = keyCode === 38 ? -1 : +1;
-
-		return actualIndex + dir;
 	}
 
 	function onSelect(filteredData: T, index: number) {
@@ -105,7 +96,7 @@
 		onfocus={() => {
 			setTimeout(() => (popperOpen = true), 125);
 		}}
-		onkeydown={(e:KeyboardEvent) => preNavigate(e, filteredData)}
+		onkeydown={(e:KeyboardEvent) => menuRef.actions.navigate(e, filteredData)}
 		{...rest}
 		aria-haspopup="menu"
 		aria-controls="menu"
@@ -131,7 +122,7 @@
 					onclick={(event) => {
 						onSelect(event.detail, prop.itemIndex);
 						popperOpen = false;
-						menuRef.actions.navigate(prop.itemIndex);
+						menuRef.actions.gotoIndex(prop.itemIndex);
 					}}
 				/>
 			</Slot>

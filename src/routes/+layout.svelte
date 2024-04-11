@@ -9,11 +9,11 @@
 	// import cssfabric themer
 	import '../styles/cssfabric-theme.scss';
 	import '../styles/main.css';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import LeftMenu from '../components/LeftMenu.svelte';
 	import { setContext, getContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import type { Writable } from 'svelte/store';
@@ -23,6 +23,9 @@
 	import { goto } from '$app/navigation';
 	import { sitePaths } from '$lib/utils/engine/site.utils.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
+	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -42,6 +45,11 @@
 	let navElement: HTMLElement;
 
 	let scrolled: boolean = false;
+
+	const groupedData = dataOp.groupBy(
+		Object.values(slotuiCatalog).sort((a, b) => (a.name > b.name ? 1 : -1)),
+		'group'
+	);
 
 	function onDrawerClick() {
 		DrawerRef.actions.toggle();
@@ -78,7 +86,7 @@
 		var process = process || { env: { DEBUG: undefined }, version: [] };
 
 		if (document.body) {
-			document.body.setAttribute('data-theme', 'light');
+			document.body.setAttribute('data-theme', 'dark');
 			if (localStorage && localStorage.getItem('themeMode')) {
 				document.body.setAttribute('data-theme', localStorage.getItem('themeMode'));
 			}
@@ -106,9 +114,26 @@
 		flow={$uiContext.drawerFlow}
 		isOpen={$uiContext.drawerOpen}
 		primary="Menu"
+		icon="home"
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
-		<LeftMenu selected={data?.params?.component} />
+		<MenuList showLastOnSelected={true} style="height:100%;overflow:auto;">
+			{#each Object.keys(groupedData) as group}
+				<MenuListTitle class="text-bold bold border-b">
+					- Slotted {group ?? ''}
+				</MenuListTitle>
+				{#each groupedData[group] as catalog}
+					<MenuListItem
+						iconLast={{ icon: 'chevron-right' }}
+						selected={catalog?.code === data?.params?.component}
+						data={catalog}
+						href=".{sitePaths.component(catalog)}"
+					>
+						{catalog?.name ?? ''}
+					</MenuListItem>
+				{/each}
+			{/each}
+		</MenuList>
 	</Drawer>
 	<div id="contentSlide" class="flex-v" bind:this={contentSlide}>
 		<nav

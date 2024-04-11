@@ -115,18 +115,26 @@
 @mixin ui-dense-presets {
     --preset-density: 2rem;
     min-height: 2rem;
+    &[tall="small"],
+    &[dense-small],
     &.dense-small {
         min-height: 1.5rem;
         --preset-density: 1.5rem;
     }
+    &[tall="default"],
+    &[dense-default],
     &.dense-default {
         min-height: 2rem;
         --preset-density: 2rem;
     }
+    &[tall="medium"],
+    &[dense-medium],
     &.dense-medium {
         min-height: 2.5rem;
         --preset-density: 2.5rem;
     }
+    &[tall="kind"],
+    &[dense-kind],
     &.dense-kind {
         min-height: 3rem;
         --preset-density: 3rem;

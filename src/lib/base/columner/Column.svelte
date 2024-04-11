@@ -79,6 +79,6 @@
 		}
 
 		border-right: 1px solid var(--sld-column-bordercolor, var(--sld-color-foreground-alpha-high));
-		box-shadow: var(--box-shad-1);
+		box-shadow: var(--sld-elevation-1);
 	}
 </style>
