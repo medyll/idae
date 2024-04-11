@@ -24,6 +24,7 @@
 		divider = false,
 		dividerBefore = false,
 		href,
+		selectable = true,
 		data = $bindable<T>({} as T),
 		selected = $bindable(false),
 		onMenuItemClick = () => {},
@@ -52,18 +53,10 @@
 
 	$effect(() => {
 		if (itemIndex === undefined && element?.parentElement) {
-			itemIndex = [...element?.parentElement?.querySelectorAll('.menuListItem')].indexOf(element);
+			itemIndex = [
+				...element?.parentElement?.querySelectorAll('.menuListItem:not(.menu-list-title')
+			].indexOf(element);
 		}
-	});
-
-	$effect(() => {
-		/* if (menuStateContext?.selectorField && Object.keys(data ?? {}).length) {
-			selected = menuStateContext.selector(menuStateContext.selectorField, data);
-		} */
-		/* selector: (field: keyof T, data: T) => {
-			if (!data?.[field] || !selectedData?.[field]) return false;
-			return selectedData[field] === data[field];
-		}; */
 	});
 
 	const handleClick = (event: Event) => {
@@ -71,7 +64,7 @@
 		if (element) element.dispatchEvent(cevent);
 		// set selectedIndex if we have index
 		// set selected style
-		setSelected();
+		if (selectable) setSelected();
 		onMenuItemClick(data);
 		if (menuStateContext?.onclick) {
 			menuStateContext?.onclick(event, data);
@@ -92,15 +85,17 @@
 	</li>
 {/if}
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<li
+<svelte:element
+	this={href ? 'a' : 'li'}
 	class="menuListItem {className} dense-{dense}"
-	data-selected={menuStateContext.selectedIndex === itemIndex}
-	role="presentation"
+	data-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
+	aria-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	bind:this={element}
-	tabindex="0"
+	tabindex="-1"
 	{...rest}
+	{role}
+	{href}
 >
-	<span class="menuItemChip" />
 	{#if menuStateContext?.hasIcon}
 		<div class="menuListItemIcon">
 			<Slotted child={menuItemFirst}>
@@ -108,20 +103,20 @@
 			</Slotted>
 		</div>
 	{/if}
-	<div role="menuitem" class="menuListItemText">
+	<div class="menu-list-item-text">
 		<Slotted child={children} slotArgs={data}>
 			{text}
 		</Slotted>
 	</div>
 	{#if menuItemLast || action || iconLast}
-		<div class="menuItemActions">
+		<div class="menu-list-item-action">
 			<Slotted child={menuItemLast}>
 				<Icon ico={iconLast} />
 				{action}
 			</Slotted>
 		</div>
 	{/if}
-</li>
+</svelte:element>
 {#if divider}
 	<li role="separator">
 		<Divider density="tight" expansion="padded" />

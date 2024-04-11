@@ -19,27 +19,36 @@ ul.menuList {
 
   li,
   a {
-    &.menuListTitle {
-      position: sticky;
+    &.menu-list-title {
+      font-weight: bold;
+      /* position: sticky;
       margin-top: 0px !important;
       top: 0px;
-      z-index: 1;
+      z-index: 1; */
     }
   }
 }
 :global(ul.menuList.showLastOnSelected) {
-  :global(li.menuListItem[data-selected="true"] .menuItemActions) {
+  :global(li.menuListItem[data-selected="true"] .menu-list-item-action) {
     visibility: visible;
   }
-  :global(li.menuListItem .menuItemActions) {
+  :global(a.menuListItem[data-selected="true"] .menu-list-item-action) {
+    visibility: visible;
+  }
+  :global(li.menuListItem .menu-list-item-action) {
+    visibility: hidden;
+  }
+  :global(a.menuListItem .menu-list-item-action) {
     visibility: hidden;
   }
 }
+a.menuListItem,
 li.menuListItem {
   @include data-hover;
   @include data-selected;
   @include ui-dense-presets;
 
+  text-decoration: none;
   overflow: hidden;
   padding-left: calc(var(--preset-density) / 4);
   border: 1px solid transparent;
@@ -48,24 +57,44 @@ li.menuListItem {
   align-items: center;
   position: relative;
   width: 100%;
-  height: 36px;
-  min-height: 36px;
+
   border: 1px solid transparent;
   border-radius: var(--sld-list-item-radius);
   align-self: flex-start;
 
-  &[data-selected="true"] {
-    .menuItemChip {
-      position: absolute;
-      min-height: 16px;
-      height: 45%;
-      width: 3px;
-      background-color: var(--sld-color-primary);
-      border-radius: var(--sld-radius-med);
-      left: 0px;
-      border: 1px solid var(--sld-color-primary-alpha-mid);
+  &::before {
+    position: absolute;
+    min-height: 16px;
+    height: 45%;
+    width: 2px;
+    overflow: hidden;
+    max-width: 3px;
+    background-color: transparent;
+    border-radius: var(--sld-radius-med);
+    left: 0px;
+    border: 1px solid transparent;
+    content: " ";
+  }
+
+  &[data-selected="true"],
+  &[aria-selected="true"] {
+    &:not(.menu-list-title) {
+      &::before {
+        position: absolute;
+        min-height: 16px;
+        height: 45%;
+        width: 2px;
+        overflow: hidden;
+        max-width: 3px;
+        background-color: var(--sld-color-primary);
+        border-radius: var(--sld-radius-med);
+        left: 0px;
+        border: 1px solid var(--sld-color-primary-alpha-mid);
+        content: " ";
+      }
     }
   }
+
   .menuListItemIcon {
     width: 16px;
     max-width: 16px;
@@ -76,11 +105,11 @@ li.menuListItem {
     justify-content: center;
   }
 
-  .menuListItemText {
+  .menu-list-item-text {
     flex: 1;
   }
 
-  .menuItemActions {
+  .menu-list-item-action {
     display: flex;
     justify-content: center;
   }

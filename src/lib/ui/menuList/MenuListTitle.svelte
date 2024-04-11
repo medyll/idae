@@ -5,7 +5,7 @@
 	let { class: className, ...rest }: MenuListItemProps = $props();
 </script>
 
-<MenuListItem {...rest} class="menuListTitle {className}" />
+<MenuListItem {...rest} selectable={false} class="menu-list-title {className}" />
 
 <style lang="scss">
 	@import './menu-list.scss';

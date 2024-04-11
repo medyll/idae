@@ -19,7 +19,10 @@ export type MenuProps<T = Data> = CommonProps & {
 	data?: T[];
 	/** @deprecated use dense*/
 	density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense?: 'small' | 'default' | 'medium' | 'kind';
+	/** @deprecated use tall*/
+	dense?: ElementProps['dense'];
+	/** preset value for the box-size of the component */
+	tall?: ElementProps['dense'];
 	/** index to select the item */
 	selectedIndex?: number;
 

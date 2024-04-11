@@ -1,6 +1,8 @@
 <svelte:options accessors runes />
 
 <script lang="ts" generics="T= Data">
+	import { navigation } from '$lib/utils/uses/navigation.js';
+
 	import { setContext } from 'svelte';
 	import type { MenuListProps } from './types.js';
 	import MenuItem from './MenuListItem.svelte';
@@ -9,7 +11,6 @@
 
 	let {
 		class: className = '',
-		density = 'tight',
 		dense = 'medium',
 		style = undefined,
 		bordered = false,
@@ -23,17 +24,17 @@
 		onclick = undefined,
 		showLastOnSelected = true,
 		actions = {
-			navigate: (idx: number) => {
+			navigate(e: KeyboardEvent) {
+				element?.dispatchEvent(new CustomEvent('menu:navigate', { detail: e }));
+			},
+			gotoIndex: (idx: number) => {
 				if (element && idx > -1) {
+					element.dispatchEvent(new CustomEvent('menu:gotoIndex', { detail: { index: idx } }));
 					selectedIndex = idx;
 					if (menuStore) menuStore.selectedIndex = idx;
-					const target = element.querySelector('[data-selected=true]');
+					const target = element.querySelector('[aria-selected=true]');
 					if (target) {
-						const tD = target.getBoundingClientRect();
-						const sD = element.getBoundingClientRect();
-						if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
-							target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-						}
+						scrollToElement(target as HTMLElement);
 					}
 				}
 			}
@@ -45,7 +46,6 @@
 	let defaultStoreValues = {
 		menuItemsList,
 		menuItemsInstances: [],
-		density,
 		dense,
 		data,
 		onclick,
@@ -58,8 +58,19 @@
 	setContext('menuStateContext', menuStore);
 
 	$effect(() => {
-		element?.addEventListener<any>('menu:item:clicked', onMenuClick);
 		menuStore.selectedIndex = selectedIndex;
+	});
+	$effect(() => {
+		element.addEventListener<any>('menu:item:clicked', onMenuClick);
+
+		element.addEventListener('click', () => {
+			element.focus();
+		});
+		element.addEventListener('menu:onnavigate', ((
+			event: CustomEvent<{ selectedIndex: number }>
+		) => {
+			if (event?.detail?.selectedIndex) selectedIndex = event.detail.selectedIndex;
+		}) as EventListener);
 	});
 
 	function onMenuClick(e: CustomEvent<any>) {
@@ -67,16 +78,27 @@
 		let event = new CustomEvent('menu:click', { detail: e.detail, bubbles: true });
 		element?.dispatchEvent(event);
 	}
+
+	function scrollToElement(target: HTMLElement) {
+		if (target) {
+			const tD = target.getBoundingClientRect();
+			const sD = element.getBoundingClientRect();
+			if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
+				target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			}
+		}
+	}
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <ul
 	bind:this={element}
-	class="dense-{density} menuList {className}"
+	class="dense-{dense} menuList {className}"
 	class:showLastOnSelected
 	tabindex="0"
 	{style}
 	{role}
+	use:navigation={{ className: 'menuListItem', selectedIndex: -1 }}
 	{...rest}
 >
 	{#if menuItemsList}
