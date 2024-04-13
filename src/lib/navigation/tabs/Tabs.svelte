@@ -1,30 +1,33 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
+<script lang="ts" generics="T=Data">
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
+
 	import { elem } from '$lib/utils/engine/elem.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { Items, TabsItemsProps } from './types.js';
+	import type { TabItem, TabsItemsProps, TabsProps } from './types.js';
+	import type { CommonProps, Data } from '$lib/types/index.js';
 
-	/*  common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let style: string = '';
-	export let element: HTMLDivElement;
-	/*  end slotUi exports*/
-
-	export let items: TabsItemsProps = [];
-	export let activeTabCode: string = '';
-
-	/** orientation */
-	export let orientation: 'horizontal' | 'vertical' = 'vertical';
-
-	export let onTabClick = (item: Items) => {};
-
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		activeTabCode = $bindable(),
+		items = [],
+		orientation = 'vertical',
+		onTabClick = (item: TabItem) => {},
+		children,
+		tabTitleMain: tabsTitleMain,
+		tabLabel: tabLabelSlot,
+		tabTitle: tabsTitle,
+		tabButton: tabsButtons,
+		tabInner: tabsInner,
+		...rest
+	}: TabsProps = $props();
 	let navElementRef: HTMLElement;
 	let tabsElementRef: HTMLElement;
 	let activeCellElementRef: HTMLElement;
 	let boundingClientRect: DOMRect;
 
-	const handleClick = (item: Items) => {
+	const handleClick = (item: TabItem) => {
 		onTabClick(item);
 		const event = new CustomEvent('on:tabs:click', { detail: item, bubbles: true });
 		element?.dispatchEvent(event);
@@ -47,77 +50,108 @@
 		}
 	};
 
-	$: if (activeTabCode && element) {
-		setChipPos(activeTabCode);
-	}
-
-	onMount(() => {
+	$effect(() => {
 		setChipPos(activeTabCode);
 	});
+
+	$effect(() => {
+		if (activeTabCode && element) {
+			setChipPos(activeTabCode);
+		}
+	});
+
+	function toggler(node: HTMLElement) {
+		elem(element)
+			.findAll('[aria-selected]')
+			.forEach((node) => {
+				node.removeAttribute('aria-selected');
+			});
+		node.setAttribute('aria-selected', 'true');
+		if (node.dataset.code) togglerCode(node.dataset.code);
+	}
+
+	function togglerCode(code: string) {
+		activeTabCode = code;
+	}
 </script>
 
-<div bind:this={element} class="tabsRoot flex-v {className}" data-orientation={orientation} {style}>
-	<div bind:this={tabsElementRef} class="tabsNav flex-align-middle pos-rel">
+<div bind:this={element} class="tab {className}" aria-orientation={orientation} {style}>
+	<div bind:this={tabsElementRef} class="tab-nav">
 		<div>
-			<slot name="tabsTitleMain" />
+			<Slotted child={tabsTitleMain}>
+				<slot name="tabsTitleMain" />
+			</Slotted>
 		</div>
-		<nav bind:this={navElementRef} class="tabsRail">
+		<nav bind:this={navElementRef} class="tab-nav-rail">
 			{#each items as item}
-				<div
+				<button
 					data-code={item?.code}
-					on:click={() => {
-						activeTabCode = item?.code;
+					onclick={(ji) => {
+						if (ji.target) toggler(ji.target as HTMLElement);
 						handleClick(item);
 					}}
 					class={activeTabCode === item?.code ? 'active' : ''}
 				>
-					<slot {item} name="tabLabelSlot">{item?.label}</slot>
-				</div>
+					<Slotted child={tabLabelSlot} slotArgs={{ item }}>
+						<slot {item} name="tabLabelSlot">{item?.label}</slot>
+					</Slotted>
+				</button>
 			{/each}
 		</nav>
 		<div>
-			<slot name="tabsTitle" />
+			<Slotted child={tabsButtons}>
+				<slot name="tabsTitle" />
+			</Slotted>
 		</div>
 		<div>
-			<slot name="tabsButtons" />
+			<Slotted child={tabsButtons}>
+				<slot name="tabsButtons" />
+			</Slotted>
 		</div>
 	</div>
-	<div class="tabsActiveCellContainer">
-		<div bind:this={activeCellElementRef} class="tabSlot" />
+	<div class="tab-floating-cell">
+		<div bind:this={activeCellElementRef} class="tab-floating-cell-slot" />
 	</div>
-	<div class="tabsContent flex-main pos-rel">
+	<div class="tab-content flex-main pos-rel">
 		{#each items as item}
 			{@const display = activeTabCode === item?.code ? 'flex' : 'none'}
 			{#if item && activeTabCode === item?.code}
-				<slot {item} {activeTabCode}>
-					<div
-						data-code={item.code}
-						data-activeTabCode={activeTabCode}
-						style="display:{display};height:100%;position:relative;flex-direction:column"
-					>
-						{#if Boolean(item?.secondary)}
-							<div class=" flex-h pad-tb-2 gap-small">
-								<div class="border-r pad-1 shad-3 radius-tiny">
-									<Icon style="display:block" inline={false} icon="clarity:help-info-solid" />
+				<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
+					<slot {item} {activeTabCode}>
+						<div
+							data-code={item.code}
+							data-activeTabCode={activeTabCode}
+							style="display:{display};height:100%;position:relative;flex-direction:column"
+						>
+							{#if Boolean(item?.secondary)}
+								<div class=" flex-h pad-tb-2 gap-small">
+									<div class="border-r pad-1 shad-3 radius-tiny">
+										<Icon style="display:block" inline={false} icon="clarity:help-info-solid" />
+									</div>
+									<div class="flex-main pad-t-1">{@html item?.secondary}</div>
 								</div>
-								<div class="flex-main pad-t-1">{@html item?.secondary}</div>
-							</div>
-						{/if}
-						<slot name="tabsInner" {item} {activeTabCode}>
-							<div data-code={item.code} style="flex:1;overflow:hidden;position:relative;">
-								{#if activeTabCode === item.code}
-									{#if Boolean(item?.withComponent)}
-										<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />
-									{:else if Boolean(item?.withContent)}
-										{item.withContent}
-									{:else if Boolean(item?.withUid)}
-										{item.withUid}
-									{/if}
-								{/if}
-							</div>
-						</slot>
-					</div>
-				</slot>
+							{/if}
+							<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
+								<slot name="tabsInner" {item} {activeTabCode}>
+									<div data-code={item.code} style="flex:1;overflow:hidden;position:relative;">
+										{#if activeTabCode === item.code}
+											{#if Boolean(item?.withComponent)}
+												<svelte:component
+													this={item.withComponent}
+													{...item.componentProps ?? {}}
+												/>
+											{:else if Boolean(item?.withContent)}
+												{item.withContent}
+											{:else if Boolean(item?.withUid)}
+												{item.withUid}
+											{/if}
+										{/if}
+									</div>
+								</slot>
+							</Slotted>
+						</div>
+					</slot>
+				</Slotted>
 			{/if}
 		{/each}
 	</div>

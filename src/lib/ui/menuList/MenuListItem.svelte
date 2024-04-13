@@ -25,7 +25,7 @@
 		dividerBefore = false,
 		href,
 		selectable = true,
-		data = $bindable<T>({} as T),
+		data = $bindable({}),
 		selected = $bindable(false),
 		onMenuItemClick = () => {},
 		onclick = (event, args) => {},
@@ -67,9 +67,9 @@
 		if (selectable) setSelected();
 		onMenuItemClick(data);
 		if (menuStateContext?.onclick) {
-			menuStateContext?.onclick(event, data);
+			menuStateContext?.onclick(cevent, data);
 		} else {
-			onclick(event, data);
+			onclick(cevent, data);
 		}
 	};
 

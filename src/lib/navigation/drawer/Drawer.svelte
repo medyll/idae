@@ -39,7 +39,6 @@
 		drawerTop,
 		drawerFooter,
 		children,
-		slots = {},
 		...rest
 	}: DrawerProps = $props();
 
@@ -99,6 +98,7 @@
 	style={finalStyle}
 	aria-expanded={isOpen}
 	aria-orientation="vertical"
+	{...rest}
 >
 	{#if showOpenerIcon}
 		<div class="drawer-opener" style={openerIconStyle[stickTo]}>

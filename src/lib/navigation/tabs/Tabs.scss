@@ -1,65 +1,67 @@
 @import "../../styles/presets.scss";
 
-.tabsRoot {
+.tab {
   position: relative;
   display: flex;
-  &[data-orientation="horizontal"] {
+  &[aria-orientation="horizontal"] {
     ul {
       flex-direction: column;
     }
   }
-  &[data-orientation="vertical"] {
+  &[aria-orientation="vertical"] {
     flex-direction: column;
   }
-}
 
-.tabsNav {
-  padding: 0.25rem 0;
-  border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  &[data-orientation="horizontal"] {
-    flex-direction: column;
-  }
-  .tabsRail {
+  &-nav {
+    padding: 0.25rem 0;
+    gap: 1rem;
+    border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
+    position: relative;
     display: flex;
-    flex: 1;
-    flex-wrap: wrap;
-    padding-left: 0;
-    margin-bottom: 0;
-    > div {
-      padding: var(--box-density-preset-small);
-      min-width: 48px;
-      cursor: pointer;
-
-      &.active {
-        font-weight: bold;
+    align-items: center;
+    width: 100%;
+    &[aria-orientation="horizontal"] {
+      flex-direction: column;
+    }
+    &-rail {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      padding-left: 0;
+      margin-bottom: 0;
+      > button {
+        padding: var(--box-density-preset-small);
+        min-width: 48px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        &.active,
+        &[aria-selected="true"] {
+          font-weight: bold;
+        }
       }
     }
   }
-
-  .tabsContent {
+  &-content {
     background-color: var(--sld-color-background);
     position: relative;
     width: 100%;
   }
 
-  .tabsActiveCellContainer {
+  &-floating-cell {
     top: auto;
     position: relative;
     min-height: 4px;
-    transition: all 0.25s;
+    height: 4px;
+    transition: all 0.15;
+    &-slot {
+      border-radius: var(--sld-radius-small);
+      min-height: 4px;
+      background-color: var(--sld-color-primary);
+      width: 100%;
+      position: absolute;
+      transition: all 0.25s ease-in;
+      z-index: 200;
+    }
   }
-}
-
-.tabSlot {
-  border-radius: var(--sld-radius-small);
-  min-height: 4px;
-  background-color: var(--sld-color-primary);
-  width: 100%;
-  position: absolute;
-  transition: all 0.25s;
-  z-index: 200;
 }

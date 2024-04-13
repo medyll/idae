@@ -81,8 +81,7 @@ class FileProcessor {
 				exportString += `export * from '$lib${path}';\n`;
 			} else {
 				exportString += `export { default as ${moduleName} } from '$lib${path}';\n`;
-			}
-			console.log('exported', moduleName);
+			} 
 		});
 		fsx.writeFileSync('./src/lib/index.ts', exportString);
 	}
@@ -110,11 +109,18 @@ async function slotUiCatalogB() {
 		.map((file) => {
 			if (excludePatterns.some((pattern) => file.includes(pattern))) return;
 			const group = file.split('/')[3];
-			const comp = file.split('\\').slice(-1).toString()?.replace(/\./g, '');
 			const compName = file.split('/').slice(-1)[0].split('.')[0];
 			const dir = file.split('/').slice(-2, -1);
 			const code = compName.toLowerCase();
+			const fileName = path.basename(file);
+			const component = path.basename(file, '.svelte')
+			const fullDir = path.dirname(file)
+			console.log(path.join(fullDir,component,fileName + '.demo.svelte'))
+			if(fs.existsSync(path.join(fullDir,component+'.demo.svelte'))){
+				console.log('---------------------')
 			return `${code}:{name:"${compName}",code:"${code}",group:"${group}",root:"${dir}"},`;
+			}
+			//if(fs.existsSync(`./src/sitedata/${code}.ts`)) return;
 		})
 		.filter((f) => f)
 		.join('\n');
@@ -146,7 +152,7 @@ async function slotUiDemoCatalog() {
 		.filter((f) => f)
 		.join('\n');
 
-	console.log(await generateDemoIndex());
+	await generateDemoIndex()
 	// write file
 	fs.writeFileSync(
 		path.join(__dirname, 'src/sitedata/slotuiDemoCatalog.ts'),

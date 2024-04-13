@@ -1,41 +1,58 @@
 <script lang="ts" generics="T= Data">
-	import type { Data } from '$lib/types/index.js';
+	import type { Snippet } from 'svelte';
+	import { dataOp, type ResolverPathType } from '../engine/utils.js';
+	import type { CommonProps, Data } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
-	type LoopProps = {
+	type LoopProps = CommonProps & {
 		class?: string;
-		data?: T | T[];
+		data?: T[];
 		naked?: boolean;
 		title?: string;
+		groupBy?: ResolverPathType<T>;
+		tag?: string;
+		children?: Snippet<[{ item: T; idx: number }]>;
+		loopTitle?: Snippet;
+		loopGroupTitle?: Snippet;
 	};
 
-	let { class: className = '', data = [], naked = true, title = '' }: LoopProps = $props();
+	let {
+		class: className = '',
+		data = [],
+		title,
+		groupBy,
+		tag,
+		loopGroupTitle = undefined,
+		children,
+		...rest
+	}: LoopProps = $props();
 
-	function cast(dataIn: T | T[]) {
-		if (typeof data == 'object' && !Array.isArray(data)) {
-			return Object.keys(dataIn);
-		}
-
-		return data;
-	}
-	function castValue(dataIn: any) {
-		if (typeof data == 'object' && !Array.isArray(data)) {
-			return data[dataIn];
-		}
-
-		return dataIn;
-	}
+	let groupedData: Record<string, T[]> | undefined = $derived.by(() => {
+		if (!groupBy) return undefined;
+		return dataOp.groupBy(data, groupBy);
+	});
 </script>
 
-{#if naked}
-	<slot name="title">{title}</slot>
-	{#each cast(data) ?? [] as item, idx}
-		<slot item={castValue(item)} {idx} />
+{#snippet loop(data)}
+	{#each data ?? [] as item, idx}
+		<slot {item} {idx}>
+			<Slotted child={children} slotArgs={{ item, idx }}></Slotted></slot
+		>
 	{/each}
-{:else}
-	<slot name="title">{title}</slot>
-	<div class={className}>
-		{#each cast(data) ?? [] as item, idx}
-			<slot item={castValue(item)} {idx} />
+{/snippet}
+<slot name="loopTitle">{title}</slot>
+
+<div class={className} style="display:contents" {...rest}>
+	{#if groupBy && groupedData}
+		{#each Object.entries(groupedData) as [key, value], idx}
+			<Slotted child={loopGroupTitle} slotArgs={{ key, value, idx }}>
+				<slot name="loopGroupTitle" item={value?.[0]}>
+					{dataOp.resolveDotPath(value?.[0], groupBy)}
+				</slot>
+			</Slotted>
+			{@render loop(value)}
 		{/each}
-	</div>
-{/if}
+	{:else}
+		{@render loop(data)}
+	{/if}
+</div>

@@ -4,14 +4,14 @@
 	type Props = {
 		child?: Snippet<[any]>;
 		slotArgs?: any;
-		children?: Snippet;
+		children?: Snippet<[any]>;
 	};
 
-	let { child, children, slotArgs = {} }: Props = $props();
+	let { child = undefined, children, slotArgs = {} }: Props = $props();
 </script>
 
-{#if child}
+{#if child !== undefined}
 	{@render child(slotArgs)}
 {:else if children}
-	{@render children()}
+	{@render children(slotArgs)}
 {/if}

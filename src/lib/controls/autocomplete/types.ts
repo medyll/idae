@@ -5,25 +5,25 @@ export type AutoCompleteProps<T> = CommonProps & {
 	/** className off the root component */
 	class?: string;
 	/** element root HTMLDivElement props */
-	element: HTMLDivElement;
+	element?: HTMLDivElement;
 	/** initial data to look in */
 	data: T[];
 	/** show all data when search is empty */
 	showAllOnEmpty?: boolean;
 	/** default field to be used for searches, can be * */
-	searchField: string | '*';
+	searchField?: string | '*';
 	/**
 	 * defaults fields to be shown
 	 */
-	dataFieldName: keyof T | (keyof T)[];
+	dataFieldName?: keyof T | (keyof T)[];
 	/** search mode : exact or partial match*/
-	mode: 'exact' | 'partial';
+	mode?: 'exact' | 'partial';
 	/** external bind use, to read filtered data */
-	filteredData: T[];
+	filteredData?: T[];
 	/** selectedIndex : index of the selected item in data */
-	selectedIndex: number;
+	selectedIndex?: number;
 	/** selectedIndex : index of the selected item in data */
-	onPick?: ((args: T) => void) | undefined;
+	onchange?: ((args: T) => void) | undefined;
 	autoCompleteEmpty?: Snippet | undefined;
 	autoCompleteNoResults?: Snippet | undefined;
 };

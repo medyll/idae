@@ -62,7 +62,7 @@
 						<span slot="tabsButtons"><Button bordered>button</Button></span>
 						<div class="h-full" slot="tabsInner">
 							<div class="pad-4 h-full overflow-auto">
-								selected : {activeTabCode}
+								<!-- selected : {activeTabCode} -->
 							</div>
 						</div>
 					</Tabs>

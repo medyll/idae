@@ -4,16 +4,16 @@ import type { Snippet } from 'svelte';
 type DrawerTitleType = string | undefined;
 export type DrawerProps = CommonProps & {
 	/** title of the drawer */
-	primary: DrawerTitleType | undefined;
+	primary?: DrawerTitleType;
 
 	/** sub-title of the drawer */
-	secondary: DrawerTitleType | undefined;
+	secondary?: DrawerTitleType | undefined;
 
 	/** icon of the drawer */
-	icon: string | undefined;
+	icon?: string | undefined;
 
 	/** Should the drawer be open */
-	isOpen: boolean;
+	isOpen?: boolean;
 
 	/** Should the closer icon be hidden */
 	hideCloseIcon: boolean;
@@ -22,20 +22,20 @@ export type DrawerProps = CommonProps & {
 	 * flow
 	 * @type "fixed" | "relative" | "absolute"
 	 */
-	flow: 'fixed' | 'relative' | 'absolute';
+	flow?: 'fixed' | 'relative' | 'absolute';
 
 	/**  stickTo
 	 * @type {'right' | 'left' | 'top' | 'bottom'}
 	 */
-	stickTo: 'right' | 'left' | 'top' | 'bottom';
+	stickTo?: 'right' | 'left' | 'top' | 'bottom';
 
-	showOpenerIcon: boolean;
+	showOpenerIcon?: boolean;
 
 	/** default width of the drawer in vertical mode */
-	defaultWidth: string;
+	defaultWidth?: string;
 
 	/** minimum width of the drawer in vertical mode and closed state */
-	defaultVisibleArea: string;
+	defaultVisibleArea?: string;
 
 	dense?: ElementProps['dense'];
 	tall?: ElementProps['dense'];
@@ -49,7 +49,7 @@ export type DrawerProps = CommonProps & {
 	drawerTop?: Snippet;
 	drawerFooter?: Snippet;
 	/** actions for the drawer */
-	actions: {
+	actions?: {
 		toggle: (visibleSate?: boolean) => void;
 	};
 };

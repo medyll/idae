@@ -21,25 +21,25 @@
 		mode = 'partial',
 		filteredData = $bindable(data),
 		selectedIndex = $bindable(-1),
-		onPick = (args) => {},
+		onchange = (args) => {},
 		showAllOnEmpty = true,
 		children,
 		autoCompleteEmpty,
 		autoCompleteNoResults,
 		...rest
-	}: AutoCompleteProps<T> = $props();
+	}: AutoCompleteProps<T> & Partial<HTMLInputElement> = $props();
 
 	let searchString: string | undefined = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);
 	let popperHTML: HTMLElement | undefined = $state(undefined);
-	let popperOpen: boolean = $state(true);
+	let popperOpen: boolean = $state(false);
 
 	let menuRef: MenuList<T>;
 
 	let childs = children;
 
 	$effect(() => {
-		element.addEventListener('keypress', ((e: KeyboardEvent) => {
+		element?.addEventListener('keypress', ((e: KeyboardEvent) => {
 			preNavigate(e);
 		}) as EventListener);
 	});
@@ -73,7 +73,7 @@
 
 	function onSelect(filteredData: T, index: number) {
 		searchString = getFieldName(filteredData, dataFieldName as keyof T) as string;
-		if (onPick) onPick(filteredData);
+		if (onchange) onchange(filteredData);
 	}
 
 	function getFieldName(data: T, fieldName: keyof T | (keyof T)[]): string {
@@ -120,6 +120,7 @@
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
 					onclick={(event) => {
+						console.log(event);
 						onSelect(event.detail, prop.itemIndex);
 						popperOpen = false;
 						menuRef.actions.gotoIndex(prop.itemIndex);

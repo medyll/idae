@@ -73,6 +73,7 @@ input[type="submit"] {
         font-weight: bold;
     }
 
+    &[variant="bordered"],
     &[bordered="true"],
     &.bordered {
         color: var(--sld-color-foreground);
@@ -91,6 +92,7 @@ input[type="submit"] {
         }
     }
 
+    &[variant="contained"],
     &[contained="true"],
     &.contained {
         border: var(--sld-button-border-width) solid var(--sld-button-border-color);
@@ -111,6 +113,7 @@ input[type="submit"] {
         }
     }
 
+    &[variant="link"],
     &[link="true"],
     &.link {
         color: var(--sld-color-primary);
@@ -124,8 +127,27 @@ input[type="submit"] {
         }
     }
 
+    &[variant="naked"],
     &[naked="true"],
     &.naked {
+        color: inherit;
+        background-color: transparent !important;
+        border: 0.5px solid transparent;
+        cursor: pointer;
+        @include data-hover;
+        &:hover {
+            //box-shadow: var(--sld-button-focus-shadow);
+        }
+        &:active,
+        &:focus {
+            background-color: transparent !important;
+            border: 0.5px solid transparent;
+            color: inherit;
+        }
+    }
+
+    &[flat="true"],
+    &.flat {
         color: inherit;
         background-color: transparent !important;
         border: 0.5px solid transparent;

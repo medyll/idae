@@ -115,8 +115,6 @@
 
 	let hidedGroups: Data = {};
 
-	$inspect(data);
-
 	let sortedData: any[] = $derived(data?.filter((x) => x));
 
 	let groups = $derived(
