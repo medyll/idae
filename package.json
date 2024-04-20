@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "eslint": "^9.1.0",
+    "lerna": "^6.4.1",
+    "node": "^18.20.2",
+    "typescript": "^5.4.5"
+  }
+}
