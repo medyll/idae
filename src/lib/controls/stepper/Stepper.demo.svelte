@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Stepper from './Stepper.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -36,7 +36,7 @@
     successIcon="clarity:success-standard-line" />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Stepper"
 	cite="If a step was a leap it would soar over the next step.<br /> Clara Boxee 2010"
-></ComponentExample>
+></ComponentDemo>

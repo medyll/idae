@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import Looper from './Looper.svelte';
 
@@ -27,7 +27,7 @@
 	<div>redss</div>
 </Looper>
 
-<ComponentExample
+<ComponentDemo
 	component="Looper"
 	cite="A loop is a loop from start to the final reach. Ernest Hamilton, 1954"
-></ComponentExample>
+></ComponentDemo>

@@ -6,7 +6,7 @@
 
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -99,7 +99,7 @@
 </Button>`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Window"
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
@@ -151,4 +151,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -35,8 +35,8 @@ export type Data = Record<string, any>;
 export type CommonProps = {
 	element?: HTMLElement;
 	class?: string;
-	style?: string;
-	children?: Snippet<[any]>;
+	style?: CSSStyleDeclaration;
+	children?: Snippet | Snippet<[any]>;
 	slots?: Record<string, Snippet<[any]> | undefined>;
 };
 

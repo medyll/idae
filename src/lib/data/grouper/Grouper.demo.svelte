@@ -4,7 +4,7 @@
 
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
@@ -90,7 +90,7 @@
 </div>`;
 </script>
 
-<ComponentExample component="Grouper">
+<ComponentDemo component="Grouper">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeAll} component="Popper" title="Using slots">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
@@ -149,5 +149,5 @@
         </div>
       </div>
     </div> -->
-	</div></ComponentExample
+	</div></ComponentDemo
 >

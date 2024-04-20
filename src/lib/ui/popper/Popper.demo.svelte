@@ -3,7 +3,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
@@ -56,10 +56,7 @@
 	let isOpen = false;
 </script>
 
-<ComponentExample
-	component="Popper"
-	cite="This Popper is the base of all the flyout stuff: it pops"
->
+<ComponentDemo component="Popper" cite="This Popper is the base of all the flyout stuff: it pops">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Popper" title="Using slots">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
@@ -79,4 +76,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>SlotUi {title}</title>
+	<title>Slotted {title}</title>
 	<meta name="description" />
 </svelte:head>
 

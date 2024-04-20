@@ -2,7 +2,7 @@
 	import Divider from './Divider.svelte';
 
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '../demoer/demoer.utils.js';
@@ -38,7 +38,7 @@
 	<Divider />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Divider"
 	cite="What is separating before from after is not a time nor a place : it's only a component <br /> B. Franklin,
 1854"
@@ -54,4 +54,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

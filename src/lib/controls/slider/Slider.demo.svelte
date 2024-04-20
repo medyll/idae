@@ -2,7 +2,7 @@
 	import Slider from './Slider.svelte';
 
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
@@ -48,7 +48,7 @@
 	let isOpen = false;
 </script>
 
-<ComponentExample component="Slider">
+<ComponentDemo component="Slider">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Slider" title="Using slots">
 			<Demoer {...componentArgsSlot} let:activeParams>
@@ -59,4 +59,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

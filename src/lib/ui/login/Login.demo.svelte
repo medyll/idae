@@ -4,7 +4,7 @@
 
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
@@ -43,9 +43,9 @@
 		</div>
 		<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
 	</form>
-	<ComponentExample component="Login">
+	<ComponentDemo component="Login">
 		<div class="flex-v gap-large">
 			<DemoerCode title="myContext" code={codeSlot} />
 		</div>
-	</ComponentExample>
+	</ComponentDemo>
 </Login>

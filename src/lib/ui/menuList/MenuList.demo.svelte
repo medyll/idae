@@ -2,7 +2,7 @@
 	import Menu from './MenuList.svelte';
 	import MenuItem from './MenuListItem.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
@@ -49,7 +49,7 @@
     successIcon="clarity:success-standard-line" />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Menu"
 	cite="A menu is not a list, it's just like a list but more and less"
 >
@@ -90,10 +90,10 @@
 				</div>
 			</Demoer>
 		</DemoPage>
-	</div></ComponentExample
+	</div></ComponentDemo
 >
 <br />
 <br />
 <br />
 <br />
-<ComponentExample component="MenuItem" cite="A MenuItem gets one place to stay" />
+<ComponentDemo component="MenuItem" cite="A MenuItem gets one place to stay" />

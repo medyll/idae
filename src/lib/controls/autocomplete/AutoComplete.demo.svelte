@@ -2,7 +2,7 @@
 	import AutoComplete from './AutoComplete.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
@@ -53,7 +53,7 @@
   dataFieldName="name" />`;
 </script>
 
-<ComponentExample component="AutoComplete">
+<ComponentDemo component="AutoComplete">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="AutoComplete" title="Using slots">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
@@ -77,4 +77,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

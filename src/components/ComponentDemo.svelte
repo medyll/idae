@@ -1,78 +1,25 @@
 <script lang="ts">
-	type Props = {
-		name: string;
-		kind: string;
-		description: string;
-		type: string;
-		value: string;
-		isFunction: Boolean;
-		isFunctionDeclaration: Boolean;
-		isRequired: Boolean;
-		constant: Boolean;
-		reactive: Boolean;
-	};
-	type Slots = {
-		name: string;
-		default: false;
-		fallback: string;
-		slot_props: Record<string, any>;
-	};
-
-	// { name: string; code: string; group: string } = {};
-	import * as jsonList from '$slotuiDefs/index.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import { dataOp } from '$lib/utils/engine/utils.js';
+	import { componentCite } from '$lib/componentCite.js';
+	export let component: string = '';
+	export let cite: string = componentCite?.[component] ?? '';
 
-	export let component: string = '{}';
-	const componentName = (slotuiCatalog as any)?.[component].name;
-	const comp = componentName + 'Api';
+	$: citation = componentCite?.[component.toLowerCase()]?.cite ?? '';
+	$: author = componentCite?.[component.toLowerCase()]?.author ?? '';
 
-	const props: Props[] = jsonList?.[comp]?.props ?? [];
-	const slots: Slots[] = jsonList?.[comp]?.slots ?? [];
-	const events: Slots[] = jsonList?.[comp]?.events ?? [];
-
-	let propsReq = dataOp.filterList(props ?? [], true, 'isRequired') ?? [];
-	let propsOpt = dataOp.filterList(props ?? [], false, 'isRequired');
+	const compDet = Object.values(slotuiCatalog).find((x) => x.name === component);
 </script>
 
-<!-- <pre>{JSON.stringify(props, null, ' ')}</pre> -->
-<h4>{`<${componentName} />`}</h4>
-<br />
-<br />
-<h5>Props</h5>
-<div class="flex-v" style="gap:0.5rem;">
-	{#each propsOpt as prop}
-		<div class="flex" style="gap:0.5rem">
-			<div class="w-16">
-				<h6 class="">{prop.name}</h6>
-			</div>
-			<div></div>
-			<div class="flex-v" style="gap:0.5rem;">
-				{#if prop.description}<div class=" ">{prop.description ?? ''}</div>{/if}
-				<div class="  d">
-					<span>type: {prop.type}</span>
-				</div>
-				<div class=" ">
-					<span>default value: {prop.value}</span>
-				</div>
-			</div>
+<div class="flex-v gap-large w-full">
+	<div class="flex-h gap-small flex-align-middle">
+		<h4>{`<${component} />`}</h4>
+		<span>{compDet?.group}/{compDet?.code}.svelte</span>
+	</div>
+	<cite><p>"{@html citation}"<br />{@html author}</p></cite>
+	{#if $$slots.default}
+		<div class="flex-v gap-medium">
+			<h5>Component {component} demo :</h5>
+			<div class="marg-l-4"><slot /></div>
 		</div>
-	{/each}
-	<br />
-	<h5>Slots</h5>
-	{#each slots as slot}
-		<div class="flex" style="gap:0.5rem">
-			<h6>{slot.name}</h6>
-			<span>{@html slot.default}</span>
-			<span>{@html slot.slot_props}</span>
-			<span>{@html slot.fallback}</span>
-		</div>
-	{/each}
-	<br />
-	<h5>events</h5>
-	{#each events as event}
-		<div class="flex" style="gap:0.5rem">
-			<h6>{event.name}</h6>
-		</div>
-	{/each}
+	{/if}
 </div>

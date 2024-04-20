@@ -152,7 +152,6 @@ input[type="submit"] {
         background-color: transparent !important;
         border: 0.5px solid transparent;
         cursor: pointer;
-        @include data-hover;
         &:hover {
             //box-shadow: var(--sld-button-focus-shadow);
         }
@@ -181,7 +180,8 @@ input[type="submit"] {
             -webkit-backdrop-filter-backdrop-filter: blur(3px);
         }
     }
-    .buttonStart {
+
+    .button-start {
         padding: 0 0.5rem;
         display: flex;
         justify-content: center;
@@ -190,15 +190,15 @@ input[type="submit"] {
         align-self: center;
     }
 
-    .central {
+    .button-central {
         flex: 1;
         min-width: 0;
-        padding: 0 0.5rem;
+        padding: 0 var(--content-padding, 0.5rem);
         text-align: var(--sld-button-text-align);
         display: block;
     }
 
-    .action {
+    .button-action {
         position: absolute;
         display: flex;
         align-items: center;

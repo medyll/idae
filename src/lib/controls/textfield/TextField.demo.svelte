@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -52,7 +52,7 @@
 	<Input icon={icon} endIcon={icon} />`;
 </script>
 
-<ComponentExample component="Input">
+<ComponentDemo component="Input">
 	<div class="flex-v gap-large">
 		<DemoPage title="Using slots" component="Input" code={codeSlot}>
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
@@ -83,4 +83,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

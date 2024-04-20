@@ -3,7 +3,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -51,7 +51,7 @@
 
 <Switch name={'switcher'}></Switch>
 
-<!-- <ComponentExample component="Switch">
+<!-- <ComponentDemo component="Switch">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Switch" title="Using slots">
 			<Demoer {parametersSlot} {componentArgsSlot} let:activeParams>
@@ -61,4 +61,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample> -->
+</ComponentDemo> -->

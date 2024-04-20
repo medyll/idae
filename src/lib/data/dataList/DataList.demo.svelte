@@ -5,7 +5,7 @@
 	import DataListRow from '$lib/data/dataList/DataListRow.svelte';
 	import DataListCell from '$lib/data/dataList/DataListCell.svelte';
 	import DataListHead from '$lib/data/dataList/DataListHead.svelte';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import type { DataCellType } from './types.js';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 
@@ -81,7 +81,7 @@
 	};
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="DataList"
 	cite="Those who call they tables are the same who name stones as chairs. Reality is above : datalist
 is a datalist table <br /> B. Franklin, 1854"
@@ -162,7 +162,7 @@ is a datalist table <br /> B. Franklin, 1854"
 			</DataList>
 		</div>
 	</div>
-</ComponentExample>
+</ComponentDemo>
 
 <style lang="scss">
 	.what {

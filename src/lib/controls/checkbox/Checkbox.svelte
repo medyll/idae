@@ -19,7 +19,7 @@
 			disabled?: boolean;
 
 			/** Provides a bound DOM reference to the checkbox's <input /> element. */
-			inputElement?: HTMLInputElement | null;
+			inputElement?: HTMLInputElement;
 
 			/** Provides a bound DOM reference to the checkbox's outer container element. */
 			labelElement?: HTMLLabelElement | null;
@@ -31,8 +31,8 @@
 		title,
 		indeterminate = $bindable(false),
 		class: className = '',
-		inputElement = null,
-		labelElement = null,
+		inputElement = $bindable(),
+		labelElement,
 		checked = $bindable(false),
 		value = $bindable(undefined),
 		disabled = $bindable(false),
@@ -45,9 +45,9 @@
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>
 	<div class="checkbox-container dense-{dense}">
 		<input
+			bind:this={inputElement}
 			bind:checked
 			bind:indeterminate
-			bind:this={inputElement}
 			{value}
 			{disabled}
 			{...rest}

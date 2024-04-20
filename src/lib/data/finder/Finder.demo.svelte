@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Jsoner from '../jsoner/Jsoner.svelte';
 	import Finder from './Finder.svelte';
 
@@ -13,7 +13,7 @@
 	$inspect(filteredData);
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Finder"
 	cite="This constant need about knowing what i was looking for, this need, i gave it a name.<br /> H.
 Maifield, 1996"
@@ -39,4 +39,4 @@ Maifield, 1996"
 			<div class="w-large flex-main"><Jsoner data={filteredData} /></div>
 		</div>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Backdrop from './Backdrop.svelte';
@@ -39,7 +39,7 @@
 	};
 </script>
 
-<ComponentExample component="Backdrop">
+<ComponentDemo component="Backdrop">
 	<div class="flex-v gap-medium">
 		<DemoPage title="Using slots" code={codeSlot} component="Backdrop">
 			<Demoer {parameters} {componentArgs} let:activeParams>
@@ -61,4 +61,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

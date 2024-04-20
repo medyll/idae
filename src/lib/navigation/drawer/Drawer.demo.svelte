@@ -2,7 +2,7 @@
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -79,7 +79,7 @@
 </Drawer>`;
 </script>
 
-<ComponentExample component="Drawer">
+<ComponentDemo component="Drawer">
 	<div class="flex-v gap-medium w-full">
 		<DemoPage title="Using slots" component="Drawer" code={codeSlot}>
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
@@ -99,7 +99,7 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>
 
 <!-- <div style="width:80%;height:500px;position:relative;" class="border">
 	<Drawer bind:this={drawerRef} isOpen={true} icon="edit" flow="fixed" {...attrs}>

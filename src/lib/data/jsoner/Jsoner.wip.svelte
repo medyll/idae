@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Jsoner from './Jsoner.svelte';
 
 	const data = {
@@ -21,6 +21,4 @@
 	};
 </script>
 
-<ComponentExample component="Jsoner" cite="">
-	<Jsoner {data} />
-</ComponentExample>
+<Jsoner {data} />

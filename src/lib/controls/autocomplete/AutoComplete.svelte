@@ -9,8 +9,8 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps, Data } from '$lib/types/index.js';
-	import Slot from '$lib/utils/slot/Slotted.svelte';
+	import type { Data } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	let {
 		class: className = '',
@@ -115,7 +115,7 @@
 		aria-expanded={popperOpen}
 	>
 		{#snippet children(prop)}
-			<Slot child={childs} slotArgs={prop.item}>
+			<Slotted child={childs} slotArgs={prop.item}>
 				<MenuListItem
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
@@ -126,22 +126,22 @@
 						menuRef.actions.gotoIndex(prop.itemIndex);
 					}}
 				/>
-			</Slot>
+			</Slotted>
 		{/snippet}
 	</MenuList>
 	{#if !filteredData.length && !searchString}
-		<Slot child={autoCompleteEmpty}>
+		<Slotted child={autoCompleteEmpty}>
 			<div class="pad-2 flex-h flex-align-middle gap-small">
 				<Icon fontSize="large" icon="fa-regular:keyboard" />
 				perform search
 			</div>
-		</Slot>
+		</Slotted>
 	{:else if !filteredData.length}
-		<Slot child={autoCompleteNoResults}>
+		<Slotted child={autoCompleteNoResults}>
 			<div class="pad-2 flex-h flex-align-middle gap-small">
 				<Icon class="dsp-inline" fontSize="large" icon="material-symbols:no-sim-outline" />
 				no results
 			</div>
-		</Slot>
+		</Slotted>
 	{/if}
 </Popper>

@@ -23,7 +23,7 @@ export type ButtonProps = CommonProps & {
 	/** show chip */
 	showChip?: boolean;
 	/** button style */
-	variant?: 'link' | 'contained' | 'bordered' | 'naked';
+	variant?: 'link' | 'contained' | 'bordered' | 'naked' | 'flat';
 
 	size?: ElementProps['sizeType'] | 'full';
 	/** add ellipsis on overflowed text */

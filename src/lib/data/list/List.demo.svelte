@@ -3,7 +3,7 @@
 	import ListItem from './ListItem.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
@@ -113,7 +113,7 @@
 	style="width:190px" />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="List"
 	cite="List differs from menu essentially by the way you call it <br /> B. Franklin, 1854"
 >
@@ -178,4 +178,4 @@
 			</Demoer>
 		</DemoPage>		 -->
 	</div>
-</ComponentExample>
+</ComponentDemo>

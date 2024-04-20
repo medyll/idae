@@ -2,7 +2,7 @@
 	import Tree from './Tree.svelte';
 
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -57,7 +57,7 @@
     paths={pathsData} />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	cite="We were looking for leaves and we found trees<br /> B. Esein, 1354"
 	component="Tree"
 >
@@ -79,4 +79,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -6,7 +6,7 @@
 
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -80,7 +80,7 @@
 	let codeProps = ` `;
 </script>
 
-<ComponentExample component="ToggleBar">
+<ComponentDemo component="ToggleBar">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="ToggleBar" title="Using slots">
 			<Demoer
@@ -106,4 +106,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

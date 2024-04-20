@@ -6,7 +6,7 @@
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -41,7 +41,7 @@
 </Tabs>`;
 </script>
 
-<ComponentExample cite="" component="Tabs">
+<ComponentDemo cite="" component="Tabs">
 	<div class="flex-v gap-large w-full">
 		<DemoPage code={codeSlot} component="Tabs" title="Using slots">
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
@@ -72,4 +72,4 @@
 	</div>
 	<!--<Tabs activeTabCode="tab1" {items}/>
     <Divider density="kind" expansion="centered"/>-->
-</ComponentExample>
+</ComponentDemo>

@@ -1,3 +1,4 @@
+import type { IconAppProps } from '$lib/base/icon/types.js';
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
@@ -6,7 +7,7 @@ import type { HTMLInputAttributes } from 'svelte/elements';
 export type TextFieldProps = CommonProps &
 	Partial<HTMLInputElement> & {
 		/** icon as a parameter */
-		icon: string | undefined;
+		icon: IconAppProps;
 
 		/** icon color as a parameter */
 		iconColor: string;

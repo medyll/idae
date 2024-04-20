@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Alert from './alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
@@ -40,7 +40,7 @@
 <Alert />	`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Alert"
 	cite="Then they were informed, then they were messaged, then they were alerted. Br Jhons, 1752"
 >
@@ -74,4 +74,4 @@
 			</div>
 		</Demoer>
 	</DemoPage>
-</ComponentExample>
+</ComponentDemo>

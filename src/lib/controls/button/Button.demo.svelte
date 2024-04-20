@@ -2,7 +2,7 @@
 	import type { MenuItemProps } from '$lib/ui/menu/types.js';
 	import type { PopperPositionType } from '$lib/ui/popper/types.js';
 	import { type UsePopperProps } from '$lib/ui/popper/usePopper.js';
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
@@ -167,7 +167,7 @@ const usePopper: UsePopperProps = {
 	>menu
 	<div slot="menuItem">content</div>
 </ButtonMenu>
-<ComponentExample
+<ComponentDemo
 	component="Button"
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"
 >
@@ -220,4 +220,4 @@ const usePopper: UsePopperProps = {
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

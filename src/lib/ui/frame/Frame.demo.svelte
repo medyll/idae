@@ -1,11 +1,11 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Menu from '../menu/Menu.svelte';
 	import MenuItem from '../menu/MenuItem.svelte';
 	import Frame from './Frame.svelte';
 </script>
 
-<ComponentExample component="Frame">
+<ComponentDemo component="Frame">
 	<div class="flex-h gap-medium border overflow-hidden">
 		<Frame style="height:350px;width:80%">
 			<div class="pad" slot="drawerTop">
@@ -38,4 +38,4 @@
 			<div class="pad" slot="frameBottom">bottom zone</div>
 		</Frame>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Chipper from './Chipper.svelte';
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	/* demo */
@@ -64,7 +64,7 @@
 	color="red" />`;
 </script>
 
-<ComponentExample component="Chipper">
+<ComponentDemo component="Chipper">
 	<DemoPage title="Using slots" component="Chipper" code={codeSlot}>
 		<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
 			<Chipper {...activeParams}>
@@ -78,4 +78,4 @@
 			<Chipper {...activeParams} />
 		</Demoer>
 	</DemoPage>
-</ComponentExample>
+</ComponentDemo>

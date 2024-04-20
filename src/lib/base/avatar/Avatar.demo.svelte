@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -42,7 +42,7 @@
 	<Avatar icon={icon} />`;
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Avatar"
 	cite="If it's not you, then it's the other you, <br /> Emma Avatar you, 1652"
 >
@@ -58,4 +58,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentExample>
+</ComponentDemo>

@@ -1,60 +1,16 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/controls/button/Button.svelte';
-	import { onDestroy, type Snippet } from 'svelte';
-	import type { CommonProps } from '$lib/types/index.js';
+	import { onDestroy } from 'svelte';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import type { ConfirmProps } from './types.js';
+	import Content from '$lib/utils/content/Content.svelte';
 
-	let step: string = 'initial';
-
-	type ConfirmProps = CommonProps & {
-		/** class off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element initial HTMLDivElement props */
-		initialRef?: HTMLElement | null;
-
-		/** element confirm HTMLDivElement props */
-		contentRef?: HTMLElement | null;
-
-		/** text displayed on initial button */
-		tooltipInitial?: string | null;
-
-		/** text displayed on initial button */
-		primaryInitial: string;
-
-		/** icon displayed on the initial button */
-		iconInitial: string;
-
-		/** color of the icon displayed on the initial button */
-		iconColorInitial: string;
-
-		/** text displayed on confirm button */
-		primary: string;
-
-		/** icon displayed on the confirm button */
-		icon: string;
-
-		/** color of the icon displayed on the confirm button
-		 * @type string
-		 */
-		iconColor: string;
-
-		/** action initiated on confirmation */
-		action: () => void;
-
-		/** icon to display for back action */
-		iconCancel: string;
-		slots: {
-			initial: Snippet;
-		};
-	};
+	let step: string = $state('initial');
 
 	let {
 		class: className = '',
-		style = '',
+		style,
 		initialRef = null,
 		contentRef = null,
 		tooltipInitial = null,
@@ -67,7 +23,8 @@
 		action = () => {},
 		iconCancel = 'chevron-left',
 		children,
-		slots
+		initial,
+		...rest
 	}: ConfirmProps = $props();
 
 	function handleClickInitial(event: any) {
@@ -93,45 +50,54 @@
 	});
 </script>
 
-{#if step === 'initial'}
-	<span
-		class={className}
-		{style}
-		in:fade|global
-		on:click={handleClickInitial}
-		bind:this={initialRef}
-		title={tooltipInitial}
-		role="button"
-	>
-		<slot name="initial"
-			><Button
-				naked
-				iconColor={iconColorInitial}
-				icon={iconInitial}
-				primary={primaryInitial}
-				title:tooltipInitial
-			/></slot
+<Content>somecontent</Content>
+<div {style} {...rest} class="confirm {className}">
+	{#if step === 'initial'}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<div
+			class={'confirm-initial ' + className}
+			in:fade|global
+			onclick={handleClickInitial}
+			bind:this={initialRef}
+			title={tooltipInitial}
 		>
-	</span>
-{/if}
-{#if step === 'confirm'}
-	<span class={className + ' contentSlot'} {style} in:fade|global bind:this={contentRef}>
-		<span on:click={handleClickCancel}>
-			<Button naked icon={iconCancel} title="cancel" />
-		</span>
-		{#if children}
-			{@render children()}
-		{:else}
-			<Button on:click={handleAction} {iconColor} {icon} size="auto" {primary} focus />
-		{/if}
-	</span>
-{/if}
+			<Slotted child={initial}
+				><slot name="initial"
+					><Button
+						variant="naked"
+						iconColor={iconColorInitial}
+						icon={iconInitial}
+						primary={primaryInitial}
+						title:tooltipInitial
+					/></slot
+				></Slotted
+			>
+		</div>
+	{/if}
+	{#if step === 'confirm'}
+		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
+			<span>
+				<Button onclick={handleClickCancel} variant="naked" icon={iconCancel} title="cancel" />
+			</span>
+			<Slotted child={children}>
+				<Button onclick={handleAction} {icon} size="auto" {primary} focus />
+			</Slotted>
+		</div>
+	{/if}
+</div>
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
 	@import '../../styles/presets.scss';
-	.contentSlot {
+	.confirm {
+		display: contents;
 		display: flex;
 		align-items: center;
+		&-initial {
+		}
+		&-validate {
+			display: flex;
+			align-items: center;
+		}
 	}
 </style>

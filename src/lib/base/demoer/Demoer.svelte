@@ -90,7 +90,7 @@
 											{@const finalValue = value === undefined ? 'unset' : value}
 											<Button
 												class="w-small-min"
-												naked
+												variant="flat"
 												showChip={activeParams[parameter] === value}
 												onclick={() => {
 													activeParams[parameter] = value;

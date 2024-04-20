@@ -2,7 +2,7 @@
 	import Progress from './Progress.svelte';
 
 	/* demo */
-	import ComponentExample from '$components/Example.svelte';
+	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -26,7 +26,7 @@
 	let componentArgs = defaultsArgs(parameters);
 </script>
 
-<ComponentExample
+<ComponentDemo
 	component="Progress"
 	cite="You'll never know that you've got a score, unless comes the day when you see the other's ones.<br/> S. Roch, 1824"
 >
@@ -42,4 +42,4 @@
 			</Demoer>
 		</DemoPage> -->
 	</div>
-</ComponentExample>
+</ComponentDemo>
