@@ -1,0 +1,71 @@
+0 silly argv {
+0 silly argv   _: [ 'version' ],
+0 silly argv   private: false,
+0 silly argv   lernaVersion: '8.1.2',
+0 silly argv   '$0': 'c:\\users\\mydde\\appdata\\roaming\\npm\\node_modules\\lerna\\dist\\cli.js'
+0 silly argv }
+1 notice cli v8.1.2
+2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
+3 verbose rootPath D:\boulot\one-idae\one-idae
+4 info current version 0.0.0
+5 silly isAnythingCommitted
+6 verbose isAnythingCommitted 1
+7 silly getCurrentBranch
+8 verbose currentBranch main
+9 silly remoteBranchExists
+10 silly isBehindUpstream
+11 silly isBehindUpstream main is behind origin/main by 0 commit(s) and ahead by 0
+12 silly hasTags
+13 verbose hasTags true
+14 silly git-describe.sync "819a1ee" => {"refCount":"21","sha":"819a1ee","isDirty":false}
+15 info Assuming all packages changed
+16 verbose updated @medyll/htmludom
+17 verbose git-describe undefined => "819a1ee"
+18 silly git-describe parsed => {"refCount":"21","sha":"819a1ee","isDirty":false}
+19 info execute Skipping releases
+20 silly lifecycle No script for "preversion" in "root", continuing
+21 silly lifecycle No script for "preversion" in "@medyll/htmludom", continuing
+22 silly lifecycle No script for "version" in "@medyll/htmludom", continuing
+23 silly lifecycle No script for "version" in "root", continuing
+24 verbose version Updating root package-lock.json
+25 error Error: Command failed with exit code 1: npm install --package-lock-only --ignore-scripts
+25 error npm ERR! code ERESOLVE
+25 error npm ERR! ERESOLVE unable to resolve dependency tree
+25 error npm ERR!
+25 error npm ERR! While resolving: @medyll/htmludom@0.0.1
+25 error npm ERR! Found: eslint@9.1.0
+25 error npm ERR! node_modules/eslint
+25 error npm ERR!   dev eslint@"^9.0.0" from @medyll/htmludom@0.0.1
+25 error npm ERR!   packages/htmludom
+25 error npm ERR!     @medyll/htmludom@0.0.1
+25 error npm ERR!     node_modules/@medyll/htmludom
+25 error npm ERR!       workspace packages\htmludom from the root project
+25 error npm ERR!
+25 error npm ERR! Could not resolve dependency:
+25 error npm ERR! peer eslint@"^8.56.0" from @typescript-eslint/parser@7.7.0
+25 error npm ERR! node_modules/@typescript-eslint/parser
+25 error npm ERR!   dev @typescript-eslint/parser@"^7.6.0" from @medyll/htmludom@0.0.1
+25 error npm ERR!   packages/htmludom
+25 error npm ERR!     @medyll/htmludom@0.0.1
+25 error npm ERR!     node_modules/@medyll/htmludom
+25 error npm ERR!       workspace packages\htmludom from the root project
+25 error npm ERR!   peer @typescript-eslint/parser@"^7.0.0" from @typescript-eslint/eslint-plugin@7.7.0
+25 error npm ERR!   node_modules/@typescript-eslint/eslint-plugin
+25 error npm ERR!     dev @typescript-eslint/eslint-plugin@"^7.6.0" from @medyll/htmludom@0.0.1
+25 error npm ERR!     packages/htmludom
+25 error npm ERR!       @medyll/htmludom@0.0.1
+25 error npm ERR!       node_modules/@medyll/htmludom
+25 error npm ERR!
+25 error npm ERR! Fix the upstream dependency conflict, or retry
+25 error npm ERR! this command with --force, or --legacy-peer-deps
+25 error npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+25 error npm ERR!
+25 error npm ERR! See C:\Users\Mydde\AppData\Local\npm-cache\eresolve-report.txt for a full report.
+25 error
+25 error npm ERR! A complete log of this run can be found in:
+25 error npm ERR!     C:\Users\Mydde\AppData\Local\npm-cache\_logs\2024-04-20T16_54_48_755Z-debug-0.log
+25 error     at makeError (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\node_modules\execa\lib\error.js:59:11)
+25 error     at handlePromise (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\node_modules\execa\index.js:114:26)
+25 error     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+25 error     at async VersionCommand.updatePackageVersions (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\dist\index.js:8469:13)
+25 error     at async Promise.all (index 0)
