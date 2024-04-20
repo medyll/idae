@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/htmludom",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
