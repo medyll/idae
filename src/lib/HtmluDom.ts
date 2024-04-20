@@ -24,12 +24,6 @@ type AttachedElement = {
 
 type AttachOptionsType = AttachedElement | AttachedElement[];
 
-class HtmluDomUtils {
-	static forceArrayType<T>(value: T | T[]): T[] {
-		return Array.isArray(value) ? value : [value];
-	}
-}
-
 export type querySelector = string;
 export type moduleName = string;
 
@@ -58,14 +52,16 @@ class HtmluDomLib {
 	 * @param opts - The options for attaching the library.
 	 */
 	public attach(opts: AttachOptionsType | AttachOptionsType[]) {
-		const optionsArray = HtmluDomUtils.forceArrayType<AttachOptionsType>(opts);
+		const optionsArray = Array.isArray(opts) ? opts : [opts];
 		if (typeof window == 'undefined' || !optionsArray) return;
 
 		for (const option of optionsArray as AttachedElement[]) {
-			const selectorsArray = HtmluDomUtils.forceArrayType<Selector>(option.selectors);
+			const selectorsArray = Array.isArray(option.selectors)
+				? option.selectors
+				: [option.selectors];
 
 			for (const elementSelector of selectorsArray) {
-				const elements = this.getSelectorElements(elementSelector); // document.querySelectorAll(elementSelector.element);
+				const elements = this.getSelectorElements(elementSelector);
 
 				for (const element of elements) {
 					const targetNode = new ObservedElement(
@@ -74,9 +70,7 @@ class HtmluDomLib {
 						option.selectorCallback
 					);
 
-					const core = new HtmluObserver(targetNode);
-
-					core.observe();
+					this.observe(targetNode);
 				}
 			}
 		}
@@ -143,6 +137,34 @@ class HtmluDomLib {
 		return this;
 	}
 
+	private observe(observedElement: ObservedElement) {
+		/** create observer */
+		const observer = new MutationObserver(callback.bind(this));
+		/**
+		 * Starts observing the observed element for mutations.
+		 */
+		try {
+			observer.observe(observedElement.element, observedElement.mutationConfig);
+			return observer;
+		} catch (error) {
+			console.error('Error in observe method', error);
+		}
+
+		function callback(mutations: MutationRecord[]) {
+			for (const mutation of mutations) {
+				if (
+					mutation.type &&
+					observedElement.mutationConfig[mutation.type] &&
+					typeof observedElement?.mutationCallback == 'function'
+				) {
+					observedElement
+						.mutationCallback(observedElement.element, mutations, observer)
+						[mutation.type](observedElement.element, mutation);
+				}
+			}
+		}
+	}
+
 	private getSelectorElements({ element }: Selector): Node[] {
 		let elementList: Node[] = [];
 		if (element instanceof Node) {
@@ -161,92 +183,7 @@ class HtmluDomLib {
 	static detach(args: any /* to define */) {}
 }
 
-export class htmlu {
-	constructor() {}
-	/**
-	 * A function to track mutations on the specified selector and handle the mutations using the provided callback.
-	 *
-	 * @param {string | string[] | Node | NodeList} selector - The selector to track mutations on.
-	 * @param {string[] | OnMutationType} attributeFilterOrMutationType - The attribute filter or type of mutation to track.
-	 * @param {OnMutationType} [mutationsTypes] - Additional mutation types to track.
-	 * @return {htmlu} An instance of the htmlu class for chaining method calls.
-	 */
-	static async track(
-		selector: string | string[] | Node | NodeList,
-		attributeFilterOrMutationType: string[] | OnMutationType,
-		mutationsTypes?: OnMutationType
-	) {
-		// await HtmluCore.addSelector(selector);
-
-		let [selectorParam, attributeFilter, paramOnMutationType] = [
-			selector,
-			attributeFilterOrMutationType,
-			mutationsTypes
-		].reverse();
-
-		selectorParam = selectorParam ?? attributeFilter;
-
-		if (Array.isArray(attributeFilterOrMutationType)) {
-			attributeFilter = attributeFilterOrMutationType;
-			paramOnMutationType = mutationsTypes as OnMutationType;
-		} else {
-			attributeFilter = undefined;
-			paramOnMutationType = attributeFilterOrMutationType;
-		}
-
-		const selectorCallback: MutationHandlerCallbackReturn = {} as MutationHandlerCallbackReturn;
-
-		if (paramOnMutationType.onAttributesChange)
-			selectorCallback.attributes = paramOnMutationType.onAttributesChange;
-		if (paramOnMutationType.onChildListChange)
-			selectorCallback.childList = paramOnMutationType.onChildListChange;
-		if (paramOnMutationType.onCharacterDataChange)
-			selectorCallback.characterData = paramOnMutationType.onCharacterDataChange;
-
-		HtmluDomCore.attach({
-			selectors: [{ element: selector, mutations: { attributes: attributeFilter } }],
-			selectorCallback: (mutations, observer) => selectorCallback,
-			observerParameters: {
-				attributeFilter: attributeFilter ?? undefined,
-				attributes:
-					Boolean(attributeFilter) ?? Boolean(paramOnMutationType.onAttributesChange) ?? undefined,
-				childList: Boolean(paramOnMutationType.onChildListChange),
-				subtree: Boolean(attributeFilter) && Boolean(paramOnMutationType.onChildListChange),
-				characterData: Boolean(paramOnMutationType.onCharacterDataChange)
-			}
-		});
-
-		// get methods off elementFunction
-		return new htmlu();
-	}
-}
-
-export const HtmluDomCore = HtmluDomLib.getInstance();
-
-class MutationsHandler {
-	observedElement: ObservedElement;
-
-	constructor(observedNode: ObservedElement) {
-		this.observedElement = observedNode;
-	}
-
-	handleMutation(mutations: MutationRecord[], observer: MutationObserver) {
-		for (const mutation of mutations) {
-			if (
-				mutation.type &&
-				this.observedElement.mutationConfig[mutation.type] &&
-				typeof this.observedElement?.mutationCallback == 'function'
-			) {
-				this.observedElement
-					.mutationCallback(this.observedElement.element, mutations, observer)
-					[mutation.type](this.observedElement.element, mutation, observer);
-				// console.log(mutation.type, this.observedNode.mutationCallback(mutations, observer));
-			}
-		}
-
-		// this.observedElement.mutationCallback();
-	}
-}
+export const Htmlu = HtmluDomLib.getInstance();
 
 const defaultMutationConfig: MutationObserverInit = {
 	attributeFilter: undefined,
@@ -279,35 +216,6 @@ class ObservedElement {
 	}
 }
 
-/**
- * Represents an event handler for observing and manipulating HTML elements.
- */
-class HtmluObserver {
-	private observedElement!: ObservedElement;
-	private observer!: MutationObserver;
-
-	constructor(observedNode: ObservedElement) {
-		this.observedElement = observedNode;
-		/** create callback */
-		const callBackHandler = new MutationsHandler(this.observedElement);
-		/** create observer */
-		this.observer = new MutationObserver(callBackHandler.handleMutation.bind(callBackHandler));
-		return this;
-	}
-
-	/**
-	 * Starts observing the observed element for mutations.
-	 */
-	observe() {
-		try {
-			this.observer.observe(this.observedElement.element, this.observedElement.mutationConfig);
-			return this.observer;
-		} catch (error) {
-			console.error('Error in observe method', error);
-		}
-	}
-}
-
 type OnMutationType = {
 	onChange?: (element: Node, mutation: MutationRecord, observer: MutationObserver) => void;
 	onAttributesChange?: (
@@ -321,12 +229,6 @@ type OnMutationType = {
 		mutation: MutationRecord,
 		observer: MutationObserver
 	) => void;
-};
-
-type ChainTestParamsType = {
-	selector: string | string[] | Node | NodeList;
-	attributeFilterOrMutationType: string[] | OnMutationType;
-	mutationsTypes?: OnMutationType;
 };
 
 // examples of how to use

@@ -1,19 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import '$lib/HtmluDom.js';
 	import '$lib/htmluModules.js';
-	import { HtmluDomCore } from '$lib/HtmluDom.js';
-	import { cssDom } from  '$lib/index.js';
+	import { cssDom, HtmluDom } from  '$lib/index.js';
 	let timer: NodeJS.Timeout;
 	let timerData = 0;
 	let timerDelay = 5000;
 
 	let showWidget = false;
 
-	$: if (timerDelay) {
-		clearTimeout(timer);
-		playIt(timerDelay);
-	}
+
 
 	function playIt(delay: number) {
 		timer = setTimeout(() => {
@@ -25,9 +20,21 @@
 	}
 
 	onMount(() => {
-		cssDom('[data-auto-track]').each((element) => {
+		cssDom('[data-cssDom]').each((element) => {
 			console.log(element);
 		});
+
+		/* HtmluDom.track('#body', ['data-widget'], {
+			onAttributesChange: (element, mutation, observer) => {
+				console.log(mutation);
+			},
+			onChildListChange: (mutation) => {
+				console.log(mutation);
+			},
+			onCharacterDataChange: (mutation) => {
+				console.log(mutation);
+			}
+		}); */
 
 		/* selector('[data-auto-track]').summary((element) => {
 			console.log(element);
@@ -111,7 +118,7 @@
 	<p>Page content</p>
 	{timerData}
 </div>
-
+<div data-cssDom="true">data-cssDom !!</div>
 <div data-htmlu-path="" data-htmlu-module-id="myModuleAuusi">
 	<div data-htmlu-click=""></div>
 </div>

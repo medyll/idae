@@ -1,6 +1,6 @@
-type CallBackType = (node: Element) => void;
-type CallBackSummaryType = (node: Node[]) => void;
-type Options = {
+export type CssObserverCallBack = (node: Element) => void;
+export type CssObserverCallBackSummary = (node: Node[]) => void;
+export type CssObserverOptions = {
 	strictlyNew: boolean;
 	eventDelay: number;
 	marquee: string;
@@ -9,13 +9,13 @@ type Options = {
 };
 type QuerySelector = string;
 
-class HtmluCssObserver {
+export class CssObserver {
 	private selector: QuerySelector;
 	private selectorId: string;
 
-	options: Options = {
+	options: CssObserverOptions = {
 		strictlyNew: true,
-		eventDelay: 5,
+		eventDelay: 1,
 		legacyCssPrefix: '',
 		marquee: 'hcs',
 		debounceDelay: 10
@@ -39,11 +39,14 @@ class HtmluCssObserver {
 	 * @param callback The callback function to be invoked when the animation is completed.
 	 * @returns An object with methods to control the animation tracking.
 	 */
-	track(callback: CallBackType, opts: { strictlyNew: false }) {
+	track(
+		callback: CssObserverCallBack,
+		opts: { onlyNew: boolean } | undefined = { onlyNew: false }
+	) {
 		const animationName = crypto.randomUUID();
 		const styleFragment = this.createStyleFragment(this.selector, animationName);
 
-		if (!opts.strictlyNew)
+		if (!opts.onlyNew)
 			document.querySelectorAll(this.selector).forEach((element) => {
 				this.callCallback(element, callback);
 			});
@@ -71,13 +74,13 @@ class HtmluCssObserver {
 		};
 	}
 
-	callCallback(element: Element, callback: CallBackType) {
+	callCallback(element: Element, callback: CssObserverCallBack) {
 		if (this.hasTag(element)) return;
 		this.doTag(element);
 		callback(element);
 	}
 
-	getSummary(callback: CallBackSummaryType) {
+	getSummary(callback: CssObserverCallBackSummary) {
 		let insertions = new Set<Element>();
 
 		const debouncedCallback = this.debounce(() => {
@@ -100,15 +103,15 @@ class HtmluCssObserver {
 	/**
 	 * Set options for the HtmluCssObserver instance.
 	 *
-	 * @param {Options} options - the options to be set
+	 * @param {CssObserverOptions} options - the options to be set
 	 *   - options.strictlyNew: boolean - indicates if it's strictly new
 	 *   - options.eventDelay: number - the delay for events
 	 *   - options.marquee: string - the marquee value
 	 *   - options.legacyCssPrefix: 'Webkit' | 'Moz' | 'O' | 'ms' | '' - the legacy CSS prefix
 	 *   - options.debounceDelay: number - the delay for debouncing
 	 */
-	static setOptions(options: Options) {
-		HtmluCssObserver.prototype.options = { ...HtmluCssObserver.prototype.options, ...options };
+	static setOptions(options: CssObserverOptions) {
+		CssObserver.prototype.options = { ...CssObserver.prototype.options, ...options };
 	}
 
 	/**
@@ -117,7 +120,7 @@ class HtmluCssObserver {
 	 * @param delay The delay in milliseconds.
 	 * @returns A debounced version of the function.
 	 */
-	private debounce(func: CallBackSummaryType, delay: number) {
+	private debounce(func: CssObserverCallBackSummary, delay: number) {
 		let timeoutId: NodeJS.Timeout;
 		return (...args: any[]) => {
 			clearTimeout(timeoutId);
@@ -199,8 +202,8 @@ class HtmluCssObserver {
  * @param opts - Optional options for the selector.
  * @returns {each,summary}
  */
-export function elementObserve(selector: QuerySelector, opts?: { strictlyNew: boolean }) {
-	const domCss = new HtmluCssObserver(selector);
+export function cssObserve(selector: QuerySelector, opts?: { onlyNew: boolean }) {
+	const domCss = new CssObserver(selector);
 
 	return {
 		/**
@@ -208,10 +211,10 @@ export function elementObserve(selector: QuerySelector, opts?: { strictlyNew: bo
 		 * @param callback The callback function to be invoked when the animation is completed.
 		 * @returns An object with methods to control the animation tracking.
 		 */
-		each: function (callback: CallBackType) {
+		each: function (callback: CssObserverCallBack) {
 			return domCss.track(callback, opts);
 		},
-		summary: function (callback: CallBackSummaryType) {
+		summary: function (callback: CssObserverCallBackSummary) {
 			return domCss.getSummary(callback);
 		}
 	};

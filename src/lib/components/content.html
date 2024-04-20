@@ -1,14 +1,44 @@
 <script lang="ts">
 	const id = 'aaa';
-	const red = new EventObserver();
+	const red = new ResizeObserver((entries) => {
+		for (let entry of entries) {
+			console.log('Element:', entry.target);
+			console.log('Width:', entry.contentRect.width);
+			console.log('Height:', entry.contentRect.height);
+			console.log('Box:', entry.contentRect);
+			console.log('Padding:', entry.contentRect.padding);
+		}
+	});
+	red.observe(element);
+
+	let data;
+	data.onchange = () => console.log(element);
 </script>
-<content {id}>
-	<loop>
-		<div>inner content</div>
-	</loop>
+<content id="{id}">
+	<bind from="company.name"></bind>
+	<nav>
+		<loop
+			data-url="api/users"
+			collection="users"
+			filter="where:user.name=*jean*"
+			sort="name"
+			groupBy="field"
+			toggle=""
+		>
+			<h2 slot="title">title once</h2>
+			<div mdl="component/li-item" collection="users" data="" data-id="">inner content</div>
+			<be-item component>inner content</be-item>
+		</loop>
+	</nav>
 	<if>
-		<elseif> cond 1 </elseif>
+		<elseif>
+			<div>cond 1</div>
+		</elseif>
 		<else> cond 2 </else>
 	</if>
-	<style></style>
+	<slot> </slot>
 </content>
+<style>
+	#id {
+	}
+</style>
