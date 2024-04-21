@@ -10,14 +10,8 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
-
-	type ParameterType = {
-		sizes: ElementProps['sizeType'][];
-		height: ElementProps['inputHeight'][];
-	};
 
 	const menuData: MenuItemProps[] = [
 		{ text: 'text 1' },
@@ -27,8 +21,6 @@
 		{ text: 'text 3' },
 		{ text: 'text 3', icon: 'i' }
 	];
-
-	const popPos: PopperPositionType[] = ['T', 'TL', 'TR', 'B', 'BL', 'BR'];
 
 	const variants: string[] = ['link', 'contained', 'bordered', 'naked'];
 
@@ -61,10 +53,6 @@
 			type: 'color-preset',
 			values: [undefined, 'primary', 'secondary', 'tertiary']
 		},
-		naked: {
-			type: 'boolean',
-			values: [true, false]
-		},
 		contained: {
 			type: 'boolean',
 			values: [true, false]
@@ -79,8 +67,6 @@
 		}
 	};
 
-	let styleDefaultArgs = defaultsArgs(styleParameters);
-
 	let parameters: any = {
 		variant: {
 			type: 'string',
@@ -92,7 +78,7 @@
 		},
 		dense: {
 			type: 'density-preset',
-			values: Object.keys(uiPresets.dense)
+			values: uiPresets.dense
 		},
 		loading: {
 			type: 'boolean',

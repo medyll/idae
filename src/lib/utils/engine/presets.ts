@@ -1,3 +1,5 @@
+import { buttonVariant, densePreset } from '$lib/types/index.js';
+
 export enum Position {
 	TC = 'TC', // Top Center
 	TL = 'TL', // Top Left
@@ -13,12 +15,8 @@ export enum Position {
 }
 
 export const uiPresets = {
-	dense: {
-		small: '0.25rem',
-		default: '0.5rem',
-		medium: '1rem',
-		kind: '3rem'
-	},
+	buttonVariant: Object.keys(buttonVariant),
+	dense: Object.keys(densePreset),
 	density: {
 		none: '0',
 		tight: '0.25rem',

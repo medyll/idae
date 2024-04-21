@@ -5,7 +5,6 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slot/Slotted.svelte';
-	import Content from '$lib/utils/content/Content.svelte';
 
 	let {
 		class: className,

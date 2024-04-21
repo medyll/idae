@@ -3,13 +3,20 @@ import type { Snippet } from 'svelte';
 
 export type AppIcon = string;
 
-enum dense {
+export enum densePreset {
 	default = 'default',
 	small = 'small',
 	medium = 'medium',
 	kind = 'kind'
 }
 
+export enum buttonVariant {
+	link = 'link',
+	contained = 'contained',
+	bordered = 'bordered',
+	naked = 'naked',
+	flat = 'flat'
+}
 enum iconSize {
 	auto = 'auto',
 	tiny = 'tiny',
@@ -21,8 +28,8 @@ enum iconSize {
 
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense: keyof typeof dense;
-	tall: keyof typeof dense;
+	dense: keyof typeof densePreset;
+	tall: keyof typeof densePreset;
 	iconSize: keyof typeof iconSize;
 	alignment: 'center' | 'left' | 'right';
 	flow: 'relative' | 'absolute' | 'fixed';

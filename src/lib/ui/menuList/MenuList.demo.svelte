@@ -12,7 +12,7 @@
 	let parametersSlot: any = {
 		dense: {
 			type: 'dense-preset',
-			values: Object.keys(uiPresets.dense)
+			values: uiPresets.dense
 		},
 		bordered: {
 			type: 'boolean',
