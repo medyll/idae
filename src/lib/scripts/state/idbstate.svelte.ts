@@ -29,13 +29,14 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
   function addCollection<T>(collectionName: string, keyPath: string = "id") {
-    console.log("add collect", collectionName);
-    /* const col = new CollectionDyn<T>(collectionName, keyPath, state, idbBase);
-    console.log(
-      "col------------------------------------------------------------------------",
-      col
-    ); */
-    //return col;
+    /*     const col = new CollectionDyn<T>(
+      collectionName,
+      keyPath,
+      idbqlEvent.dataState,
+      idbBase
+    );
+
+    return col; */
     if (!state?.[collectionName]) state[collectionName] = [];
 
     const collectionState = {
@@ -179,7 +180,7 @@ export const stateIdbql = createIdbqlState;
  * @param {string} [keyPath="id"] - The key path for the collection.
  * @returns {Proxy} - A proxy object with methods to interact with the collection.
  */
-class CollectionDyn<T> implements CollectionCore {
+class CollectionDyn<T> {
   private collectionName: string;
   private keyPath: string;
   private state: any;
@@ -191,16 +192,14 @@ class CollectionDyn<T> implements CollectionCore {
     state: any,
     idbBase: IdbqlIndexedCore
   ) {
+    this.state = state;
     this.collectionName = collectionName;
     this.keyPath = keyPath;
-    this.state = state;
     this.idbBase = idbBase;
 
     if (!this.state?.[this.collectionName])
       this.state[this.collectionName] = [];
     this.feed();
-
-    return this;
   }
 
   get collectionState() {
@@ -231,7 +230,7 @@ class CollectionDyn<T> implements CollectionCore {
   }
 
   getOne(value: any, pathKey: string = "id"): T {
-    return this.collectionState.filter((d) => d[pathKey] === value)[0] as T;
+    return this.collectionState.filter((d) => d[pathKey] === value)?.[0] as T;
   }
 
   getAll(): T[] {
@@ -271,7 +270,7 @@ class CollectionDyn<T> implements CollectionCore {
     }
   }
 
-  async deleteWhere(where: Where<T>): Promise<boolean> {
+  async deleteWhere(where: Where<T>): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return this.idbBase[this.collectionName].deleteWhere(where);
     }
