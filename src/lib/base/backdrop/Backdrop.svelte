@@ -15,7 +15,7 @@
 		}
 	};
 
-	type Props = CommonProps & {
+	type BackdropProps = CommonProps & {
 		/** backdrop class */
 		class?: string;
 		/** backdrop style */
@@ -54,7 +54,7 @@
 		elementContent,
 		elementContentInner,
 		classes = {}
-	} = $props() as Props;
+	}: BackdropProps = $props();
 
 	$effect(() => {
 		element?.addEventListener('click', testAutoClose);
@@ -78,15 +78,15 @@
 		role="dialog"
 		tabindex="-1"
 	>
-		<div bind:this={elementContent} class="backdropContent pos-abs h-full w-full">
+		<div bind:this={elementContent} class="backdrop-content">
 			{#if isLoading}
-				<div class="flex-h flex-align-middle-center">
+				<div class="backdrop-content-loader">
 					<slot name="backdropLoading">
 						<Icon icon="mdi:loading" fontSize="large" rotate />
 					</slot>
 				</div>
 			{:else}
-				<div class="backdropContentInner" bind:this={elementContentInner}>
+				<div class="backdrop-content-inner" bind:this={elementContentInner}>
 					<slot />
 				</div>
 			{/if}
