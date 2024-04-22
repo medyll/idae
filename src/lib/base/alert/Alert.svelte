@@ -5,8 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-
-	type LevelType = 'success' | 'info' | 'error' | 'warning' | 'alert' | 'discrete';
+	import type { ElementProps } from '$lib/types/index.js';
 
 	const alertActions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
@@ -14,12 +13,10 @@
 		close
 	};
 
-	type Props = {
+	type AlertProps = {
 		class?: String;
-		/** type of levels 
-		@type {'success' | 'info' | 'error' | 'warning' | 'alert' | 'discrete'}
-		*/
-		level?: LevelType;
+		/** alert level */
+		level?: ElementProps['levels'];
 		/** message to be shown */
 		message?: string;
 		/** make the alert draggable */
@@ -28,12 +25,12 @@
 		isOpen?: boolean;
 		/**  */
 		element: HTMLDialogElement;
+		actions: Record<'open' | 'toggle' | 'close', Function>;
 		children?: Snippet;
 		topButtonSlot?: Snippet;
 		messageSlot?: Snippet;
 		buttonZoneSlot?: Snippet;
 		buttonCloseSlot?: Snippet;
-		actions: Record<'open' | 'toggle' | 'close', Function>;
 	};
 
 	let {
@@ -45,11 +42,11 @@
 		messageSlot,
 		buttonZoneSlot,
 		buttonCloseSlot,
-		level = $bindable<LevelType>('info'),
+		level = $bindable<ElementProps['levels']>('info'),
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
 		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
-	}: Props = $props();
+	}: AlertProps = $props();
 
 	const handleClick = (event: Event) => {
 		if ((event?.target as Element)?.getAttribute('data-close')) {
@@ -108,7 +105,7 @@
 						<Button
 							ratio="1/1"
 							icon="window-close"
-							naked
+							variant="naked"
 							onclick={() => {
 								isOpen = !isOpen;
 							}}

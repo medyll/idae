@@ -131,7 +131,7 @@
 			bind:this={navElement}
 			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-medium"
 		>
-			<Button on:click={onDrawerClick} ratio="1/1" icon="mdi:menu" bgTheme="primary" />
+			<Button onclick={onDrawerClick} ratio="1/1" icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>
 			<div class="flex-main" />
 			<a target="_blank" href="https://github.com/medyll/slot-ui">Github</a>

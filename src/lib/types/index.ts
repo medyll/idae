@@ -3,6 +3,15 @@ import type { Snippet } from 'svelte';
 
 export type AppIcon = string;
 
+export enum status {
+	success = 'success',
+	warning = 'warning',
+	alert = 'alert',
+	error = 'error',
+	info = 'info',
+	discrete = 'discrete'
+}
+
 export enum densePreset {
 	default = 'default',
 	small = 'small',
@@ -56,6 +65,7 @@ export interface ElementProps {
 	width: keyof typeof width;
 	tall: keyof typeof tallPreset;
 	iconSize: keyof typeof iconSize;
+	levels: keyof typeof status;
 	buttonVariant: keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
 	flow: keyof typeof flow;

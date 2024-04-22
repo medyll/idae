@@ -1,4 +1,12 @@
-import { buttonVariant, densePreset, flow, iconSize, tallPreset, width } from '$lib/types/index.js';
+import {
+	buttonVariant,
+	densePreset,
+	flow,
+	iconSize,
+	tallPreset,
+	width,
+	status
+} from '$lib/types/index.js';
 
 export enum Position {
 	TC = 'TC', // Top Center
@@ -18,6 +26,7 @@ export const uiPresets = {
 	buttonVariant: Object.keys(buttonVariant),
 	dense: Object.keys(densePreset),
 	tall: Object.keys(tallPreset),
+	status: Object.keys(status),
 	density: {
 		none: '0',
 		tight: '0.25rem',

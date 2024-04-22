@@ -5,7 +5,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 
-	type Props = CommonProps & {
+	type AvatarProps = CommonProps & {
 		/** icon name 	*/
 		icon?: string;
 		/**
@@ -18,7 +18,7 @@
 		 * @type {'tiny' | 'small' | 'medium' | 'large' | 'full'}
 		 */
 		iconSize?: 'tiny' | 'small' | 'medium' | 'default' | 'large' | 'big';
-		element?: HTMLDivElement;
+		element: HTMLDivElement;
 		class?: string;
 		children?: Snippet;
 		avatarBadge?: Snippet;
@@ -32,7 +32,7 @@
 		element = $bindable<HTMLDivElement>(),
 		children,
 		avatarBadge
-	} = $props() as Props;
+	} = $props() as AvatarProps;
 
 	const sizes = {
 		tiny: '2rem',
@@ -43,7 +43,7 @@
 	};
 </script>
 
-<div
+<figure
 	bind:this={element}
 	class="avatar {className}"
 	style="width:{sizes[size]};height:{sizes[size]}"
@@ -56,7 +56,7 @@
 	{:else}
 		<Icon {icon} fontSize={iconSize} />
 	{/if}
-</div>
+</figure>
 
 <style lang="scss">
 	@import './avatar.scss';
