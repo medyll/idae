@@ -1,6 +1,20 @@
+@import "../../styles/presets.scss";
+
 .title-bar {
-    .title {
+    @include flex(row, center);
+    &-content {
+        @include flex(row, center);
+        gap: var(--sld-gap-med);
         min-height: 34px;
+        flex: 1;
+
+        &-icon {
+            padding: var(--sld-pad-med);
+        }
+
+        &-title {
+            flex: 1;
+        }
     }
 
     border-bottom: 1px solid var(--sld-color-border);

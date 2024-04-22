@@ -11,9 +11,11 @@ dialog.window {
   z-index: 70000;
   max-height: 100%;
   padding: 0;
+  box-shadow: var(--sld-elevation-1);
 }
 dialog.window.active {
   border: 1px solid var(--sld-color-primary);
+  box-shadow: var(--sld-elevation-3);
 }
 dialog.window header.bar {
   display: flex;
@@ -21,7 +23,10 @@ dialog.window header.bar {
   text-align: center;
   background-color: var(--sld-color-paper);
   color: var(--sld-color-foreground);
-  padding: 0.25rem 0;
+  padding: var(--sld-pad-tiny) 0;
+}
+dialog.window header.bar-icon {
+  padding: unset var(--sld-pad-med);
 }
 dialog.window header.bar .handle {
   flex: 1;

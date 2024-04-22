@@ -83,7 +83,13 @@
 	}
 </script>
 
-<Popper bind:isOpen={popperOpen} bind:element={popperHTML} position="BC" autoClose class="w-large">
+<Popper
+	bind:isOpen={popperOpen}
+	bind:element={popperHTML}
+	position="BC"
+	autoClose
+	class="auto-complete"
+>
 	<TextField
 		bind:value={searchString}
 		bind:element
@@ -120,7 +126,6 @@
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
 					onclick={(event) => {
-						console.log(event);
 						onSelect(event.detail, prop.itemIndex);
 						popperOpen = false;
 						menuRef.actions.gotoIndex(prop.itemIndex);
@@ -131,14 +136,14 @@
 	</MenuList>
 	{#if !filteredData.length && !searchString}
 		<Slotted child={autoCompleteEmpty}>
-			<div class="pad-2 flex-h flex-align-middle gap-small">
+			<div class="auto-complete-boot">
 				<Icon fontSize="large" icon="fa-regular:keyboard" />
 				perform search
 			</div>
 		</Slotted>
 	{:else if !filteredData.length}
 		<Slotted child={autoCompleteNoResults}>
-			<div class="pad-2 flex-h flex-align-middle gap-small">
+			<div class="auto-complete-no-results">
 				<Icon class="dsp-inline" fontSize="large" icon="material-symbols:no-sim-outline" />
 				no results
 			</div>

@@ -1,4 +1,4 @@
-import { buttonVariant, densePreset } from '$lib/types/index.js';
+import { buttonVariant, densePreset, flow, iconSize, tallPreset, width } from '$lib/types/index.js';
 
 export enum Position {
 	TC = 'TC', // Top Center
@@ -17,6 +17,7 @@ export enum Position {
 export const uiPresets = {
 	buttonVariant: Object.keys(buttonVariant),
 	dense: Object.keys(densePreset),
+	tall: Object.keys(tallPreset),
 	density: {
 		none: '0',
 		tight: '0.25rem',
@@ -25,24 +26,8 @@ export const uiPresets = {
 		kind: '1.5rem',
 		unset: '1.5rem'
 	},
-	width: {
-		tiny: '2rem',
-		small: '6rem',
-		medium: '8rem',
-		default: '12rem',
-		large: '16rem',
-		auto: 'auto'
-	},
-	iconSize: {
-		tiny: '8px',
-		small: '16px',
-		medium: '24px',
-		default: '32px',
-		large: '48px',
-		big: '64px',
-		full: '100%',
-		auto: 'auto'
-	},
-	position: Object.values(Position),
-	flow: ['relative', 'absolute', 'fixed']
+	width: Object.keys(width),
+	iconSize: Object.keys(iconSize),
+	position: Object.keys(Position),
+	flow: Object.keys(flow)
 };

@@ -5,7 +5,7 @@ dialog.alert {
   border-radius: var(--sld-radius-small);
   border: 1px solid var(--sld-color-border);
   background-color: var(--sld-color-background);
-  box-shadow: var(--box-shad-4);
+  box-shadow: var(--sld-elevation-4);
   overflow: hidden;
   padding: 0;
 }

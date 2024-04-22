@@ -37,7 +37,7 @@
 	function open() {
 		isOpen = true;
 	}
-	function toggle() {
+	function toggle(event: Event) {
 		isOpen = !isOpen;
 	}
 	function close() {
@@ -56,7 +56,7 @@
 	data-bordered={bordered ?? false}
 	{style}
 >
-	<div class="control {classes.control} dense-{dense}" on:click={actions.toggle}>
+	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
 		{#if icon || iconProps || $$slots.cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
 				<slot name="cartoucheIcon">

@@ -1,33 +1,25 @@
 <script lang="ts">
 	import ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slot/Slotted.svelte';
-
-	type ToggleBarProps = CommonProps & {
-		/** title of the toggle bar */
-		title: string | undefined;
-
-		/** icon of the toggle bar */
-		icon: string | undefined;
-
-		/** orientation of the toggle bar */
-		orientation: 'right' | 'left';
-
-		/** icon of the content switcher */
-		contentSwitcherIcon: string;
-	};
+	import type { ToggleBarProps } from './types.js';
 
 	let {
 		class: className = '',
-		style = '',
+		style,
 		title,
 		icon,
-		contentSwitcherIcon = 'search',
+		contentSwitcherProps = {
+			icon: 'search'
+		},
 		orientation = $bindable('right'),
 		element = $bindable(),
+		toggleBarIcon,
+		toggleBarTitle,
+		toggleBarButtons,
+		contentSwitcherReveal,
+		contentSwitcherIcon,
 		children,
-		slots = {},
 		...rest
 	}: ToggleBarProps = $props();
 
@@ -36,34 +28,31 @@
 </script>
 
 <div bind:this={element} class="toggle-bar {className}" {style} {...rest}>
-	{#if slots.toggleBarIcon || icon}
-		<div class="pad">
-			<Slotted child={slots.toggleBarIcon}>
+	{#if toggleBarIcon || icon}
+		<div class="toggle-bar-icon">
+			<Slotted child={toggleBarIcon}>
 				<Icon {icon} />
 			</Slotted>
 		</div>
 	{/if}
-	<div class="title flex-main text-500" style="order:{posTitle};min-width:auto;flex:1;">
-		{#if slots.toggleBarTitle || Boolean(title)}
-			<Slotted child={slots.toggleBarTitle}>
-				<div
-					style="font-size:18px;min-width:auto;overflow:hidden;height:100%;"
-					class="flex flex-align-middle overflow-hidden text-ellipsis"
-				>
+	<div class="toggle-bar-title" style="order:{posTitle};">
+		{#if toggleBarTitle || Boolean(title)}
+			<Slotted child={toggleBarTitle}>
+				<div class="toggle-bar-title-content">
 					<h5 class="text-ellipsis">{title}</h5>
 				</div>
 			</Slotted>
 		{/if}
 	</div>
 	<div class="toggle-bar-content" style="order:2;">
-		<Slotted child={slots.toggleBarButtons} />
+		<Slotted child={toggleBarButtons} />
 	</div>
 	<div style="order:{posCloser}">
-		<ContentSwitcher parent={element} icon={contentSwitcherIcon}>
+		<ContentSwitcher parent={element} {...contentSwitcherProps}>
 			<!-- <slot slot="contentSwitcherIcon" name="contentSwitcherIcon" />
 			<slot slot="contentSwitcherReveal" name="contentSwitcherReveal" /> -->
-			<Slotted child={slots.contentSwitcherIcon} />
-			<Slotted child={slots.contentSwitcherReveal} />
+			<Slotted child={contentSwitcherIcon} />
+			<Slotted child={contentSwitcherReveal} />
 		</ContentSwitcher>
 	</div>
 </div>

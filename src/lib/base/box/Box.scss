@@ -1,20 +1,24 @@
 @import "../../styles/presets.scss";
 
-.boxRoot {
+.box {
   min-height: 160px;
   min-width: 320px;
   background-color: var(--sld-color-background);
   border-bottom: 1px solid var(--sld-color-primary);
   border-radius: var(--sld-radius-small);
-  display: inline-block;
-  .boxContent {
+  box-shadow: var(--sld-elevation-3);
+  display: flex;
+  flex-direction: column;
+
+  &-content {
+    flex: 1;
   }
 
-  .boxButtonZone {
+  &-button-zone {
     display: flex;
-    gap: --theme-gap-tiny;
+    gap: var(--sld-gap-tiny);
+    padding: var(--sld-pad-small);
     text-align: right;
-    padding: 0.5rem;
     justify-content: end;
   }
 }

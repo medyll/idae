@@ -51,6 +51,9 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <li
 	bind:this={element}
 	on:click={handleClick()}
@@ -62,7 +65,7 @@
 >
 	<span class="listItemChip" />
 	{#if $$slots.icon || icon}
-		<div class="listItemIcon pad-ii">
+		<div class="listItemIcon">
 			<slot name="listItemIcon">
 				<slot name="icon">
 					{#if icon}<Icon {icon} />{/if}

@@ -1,7 +1,7 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import type { ElementProps } from '$lib/types/index.js';
+	import type { CommonProps } from '$lib/types/index.js';
 
 	type PaperProps = {
 		/** className off the root component */
@@ -12,27 +12,12 @@
 
 		/** element root HTMLDivElement props */
 		element?: HTMLDivElement | null;
+	} & CommonProps;
 
-		/** margins applied to paper */
-		density: ElementProps['density'];
-	};
-
-	let {
-		class: className = '',
-		style = '',
-		element = null,
-		density = 'default'
-	} = $props<PaperProps>();
-
-	let densityClass = {
-		none: '',
-		tight: 'pad-1 marg-1',
-		default: 'pad-2 marg-2',
-		kind: 'pad-3 marg-3'
-	};
+	let { class: className = '', style, element = $bindable(), ...rest }: PaperProps = $props();
 </script>
 
-<div class="paper shad-8 {densityClass[density]} {className}" {style}>
+<div bind:this={element} class="paper {className}" {style} {...rest}>
 	<slot />
 </div>
 
@@ -43,5 +28,6 @@
 		color: var(--sld-color-foreground);
 		background-color: var(--sld-color-paper);
 		border-radius: var(--sld-radius-small);
+		box-shadow: var(--sld-elevation-4);
 	}
 </style>

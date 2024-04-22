@@ -2,35 +2,35 @@
 .frame {
     z-index: 1;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    @include flex("column");
     overflow: hidden;
     position: relative;
     background-color: var(--css-frame-bg-color, var(--sld-color-paper));
+    --moz-backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
     backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
     overflow: hidden;
 
-    .frame-container {
-        display: flex;
+    &-container {
+        @include flex("row");
+        @include flex-main();
         position: relative;
-        flex: 1;
         overflow: hidden;
         .navLeft {
+            @include flex("column");
+            @include flex-main();
             z-index: 1;
             border-right: 1px solid var(--sld-color-primary);
-            height: 100%;
             position: relative;
         }
 
-        .frame-main {
+        &-main {
             flex: 1;
             height: 100%;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            @include flex("column");
 
-            .frame-content {
-                flex: 1;
+            &-content {
+                @include flex-main();
                 overflow: hidden;
                 position: relative;
             }

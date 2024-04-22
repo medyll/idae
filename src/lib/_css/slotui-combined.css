@@ -6,7 +6,7 @@ dialog.alert {
   border-radius: var(--sld-radius-small);
   border: 1px solid var(--sld-color-border);
   background-color: var(--sld-color-background);
-  box-shadow: var(--box-shad-4);
+  box-shadow: var(--sld-elevation-4);
   overflow: hidden;
   padding: 0;
 }
@@ -103,16 +103,26 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   top: 0;
   left: 0;
 }
-.backdrop .backdropContent {
+.backdrop-content {
   z-index: 10001;
   position: absolute;
   height: 100%;
   width: 100%;
   background-color: var(--backdrop-background-color, var(--sld-color-foreground-alpha-high));
   backdrop-filter: blur(5px);
+  --moz-backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.backdrop-content-loader {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.backdrop-content-inner {
+  display: inherit;
 }
 /** badge.scss -----*/ 
 .badge {
@@ -128,19 +138,24 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   transform: scale(0, 0);
 }
 /** box.scss -----*/ 
-.boxRoot {
+.box {
   min-height: 160px;
   min-width: 320px;
   background-color: var(--sld-color-background);
   border-bottom: 1px solid var(--sld-color-primary);
   border-radius: var(--sld-radius-small);
-  display: inline-block;
-}
-.boxRoot .boxButtonZone {
+  box-shadow: var(--sld-elevation-3);
   display: flex;
-  gap: --theme-gap-tiny;
+  flex-direction: column;
+}
+.box-content {
+  flex: 1;
+}
+.box-button-zone {
+  display: flex;
+  gap: var(--sld-gap-tiny);
+  padding: var(--sld-pad-small);
   text-align: right;
-  padding: 0.5rem;
   justify-content: end;
 }
 /** breadcrumb.scss -----*/ 
@@ -172,23 +187,23 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   align-items: center;
   gap: 8px;
   background-color: var(--sld-color-background);
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   padding: auto 0.25rem;
 }
-.cartouche .control.dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-.cartouche .control.dense-default {
+.cartouche .control[tall=small], .cartouche .control[dense-small], .cartouche .control.dense-small {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.cartouche .control.dense-medium {
+.cartouche .control[tall=default], .cartouche .control[dense-default], .cartouche .control.dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.cartouche .control.dense-kind {
+.cartouche .control[tall=medium], .cartouche .control[dense-medium], .cartouche .control.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.cartouche .control[tall=kind], .cartouche .control[dense-kind], .cartouche .control.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
@@ -275,10 +290,13 @@ dialog.alert article.dialog-content footer.dialog-footer button {
 .content-switcher {
   min-width: auto;
   max-width: 100%;
+  width: 100%;
   gap: 0.5rem;
-  max-width: 100%;
   overflow: var(--sld-contentswitcher-overflow, hidden);
   position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 .content-switcher .content {
   position: relative;
@@ -342,9 +360,9 @@ button,
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
   --sld-button-focus-border-color: var(--sld-color-primary);
-  --sld-button-hover-shadow: var(--box-shad-3);
-  --sld-button-active-shadow: var(--box-shad-4);
-  --sld-button-focus-shadow: var(--box-shad-4);
+  --sld-button-hover-shadow: var(--sld-elevation-3);
+  --sld-button-active-shadow: var(--sld-elevation-4);
+  --sld-button-focus-shadow: var(--sld-elevation-4);
 }
 
 .actionButton {
@@ -360,8 +378,8 @@ button,
 button,
 input[type=button],
 input[type=submit] {
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
@@ -488,30 +506,54 @@ input[type=submit].width-auto,
 input[type=submit][data-width=auto] {
   width: auto;
 }
-.button.dense-small,
+.button[tall=small], .button[dense-small], .button.dense-small,
+button[tall=small],
+button[dense-small],
 button.dense-small,
+input[type=button][tall=small],
+input[type=button][dense-small],
 input[type=button].dense-small,
+input[type=submit][tall=small],
+input[type=submit][dense-small],
 input[type=submit].dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-.button.dense-default,
-button.dense-default,
-input[type=button].dense-default,
-input[type=submit].dense-default {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.button.dense-medium,
-button.dense-medium,
-input[type=button].dense-medium,
-input[type=submit].dense-medium {
+.button[tall=default], .button[dense-default], .button.dense-default,
+button[tall=default],
+button[dense-default],
+button.dense-default,
+input[type=button][tall=default],
+input[type=button][dense-default],
+input[type=button].dense-default,
+input[type=submit][tall=default],
+input[type=submit][dense-default],
+input[type=submit].dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.button.dense-kind,
+.button[tall=medium], .button[dense-medium], .button.dense-medium,
+button[tall=medium],
+button[dense-medium],
+button.dense-medium,
+input[type=button][tall=medium],
+input[type=button][dense-medium],
+input[type=button].dense-medium,
+input[type=submit][tall=medium],
+input[type=submit][dense-medium],
+input[type=submit].dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.button[tall=kind], .button[dense-kind], .button.dense-kind,
+button[tall=kind],
+button[dense-kind],
 button.dense-kind,
+input[type=button][tall=kind],
+input[type=button][dense-kind],
 input[type=button].dense-kind,
+input[type=submit][tall=kind],
+input[type=submit][dense-kind],
 input[type=submit].dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
@@ -583,42 +625,54 @@ input[type=button][selected=true],
 input[type=button] .selected,
 input[type=submit][selected=true],
 input[type=submit] .selected {
-  box-shadow: var(--box-shad-3);
+  box-shadow: var(--sld-elevation-3);
   border: 0.5px solid var(--sld-color-paper-alpha-low);
   background-color: transparent;
   font-weight: bold;
 }
-.button[bordered=true], .button.bordered,
+.button[variant=bordered], .button[bordered=true], .button.bordered,
+button[variant=bordered],
 button[bordered=true],
 button.bordered,
+input[type=button][variant=bordered],
 input[type=button][bordered=true],
 input[type=button].bordered,
+input[type=submit][variant=bordered],
 input[type=submit][bordered=true],
 input[type=submit].bordered {
   color: var(--sld-color-foreground);
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
   background-color: var(--sld-color-background);
 }
-.button[bordered=true]:hover, .button.bordered:hover,
+.button[variant=bordered]:hover, .button[bordered=true]:hover, .button.bordered:hover,
+button[variant=bordered]:hover,
 button[bordered=true]:hover,
 button.bordered:hover,
+input[type=button][variant=bordered]:hover,
 input[type=button][bordered=true]:hover,
 input[type=button].bordered:hover,
+input[type=submit][variant=bordered]:hover,
 input[type=submit][bordered=true]:hover,
 input[type=submit].bordered:hover {
   border: 1px solid var(--sld-color-primary);
   box-shadow: var(--sld-button-hover-shadow);
 }
-.button[bordered=true]:focus, .button[bordered=true]:active, .button.bordered:focus, .button.bordered:active,
+.button[variant=bordered]:focus, .button[variant=bordered]:active, .button[bordered=true]:focus, .button[bordered=true]:active, .button.bordered:focus, .button.bordered:active,
+button[variant=bordered]:focus,
+button[variant=bordered]:active,
 button[bordered=true]:focus,
 button[bordered=true]:active,
 button.bordered:focus,
 button.bordered:active,
+input[type=button][variant=bordered]:focus,
+input[type=button][variant=bordered]:active,
 input[type=button][bordered=true]:focus,
 input[type=button][bordered=true]:active,
 input[type=button].bordered:focus,
 input[type=button].bordered:active,
+input[type=submit][variant=bordered]:focus,
+input[type=submit][variant=bordered]:active,
 input[type=submit][bordered=true]:focus,
 input[type=submit][bordered=true]:active,
 input[type=submit].bordered:focus,
@@ -626,38 +680,50 @@ input[type=submit].bordered:active {
   border: 1px solid var(--sld-button-active-border-color) !important;
   box-shadow: var(--sld-button-active-shadow);
 }
-.button[contained=true], .button.contained,
+.button[variant=contained], .button[contained=true], .button.contained,
+button[variant=contained],
 button[contained=true],
 button.contained,
+input[type=button][variant=contained],
 input[type=button][contained=true],
 input[type=button].contained,
+input[type=submit][variant=contained],
 input[type=submit][contained=true],
 input[type=submit].contained {
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   color: white;
   background-color: var(--sld-button-background);
   background-clip: padding-box;
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
 }
-.button[contained=true]:hover, .button.contained:hover,
+.button[variant=contained]:hover, .button[contained=true]:hover, .button.contained:hover,
+button[variant=contained]:hover,
 button[contained=true]:hover,
 button.contained:hover,
+input[type=button][variant=contained]:hover,
 input[type=button][contained=true]:hover,
 input[type=button].contained:hover,
+input[type=submit][variant=contained]:hover,
 input[type=submit][contained=true]:hover,
 input[type=submit].contained:hover {
   background-color: var(--sld-color-secondary);
   color: var(--sld-color-primary);
 }
-.button[contained=true]:focus, .button[contained=true]:active, .button.contained:focus, .button.contained:active,
+.button[variant=contained]:focus, .button[variant=contained]:active, .button[contained=true]:focus, .button[contained=true]:active, .button.contained:focus, .button.contained:active,
+button[variant=contained]:focus,
+button[variant=contained]:active,
 button[contained=true]:focus,
 button[contained=true]:active,
 button.contained:focus,
 button.contained:active,
+input[type=button][variant=contained]:focus,
+input[type=button][variant=contained]:active,
 input[type=button][contained=true]:focus,
 input[type=button][contained=true]:active,
 input[type=button].contained:focus,
 input[type=button].contained:active,
+input[type=submit][variant=contained]:focus,
+input[type=submit][variant=contained]:active,
 input[type=submit][contained=true]:focus,
 input[type=submit][contained=true]:active,
 input[type=submit].contained:focus,
@@ -666,11 +732,14 @@ input[type=submit].contained:active {
   color: var(--sld-color-secondary);
   box-shadow: var(--sld-button-active-shadow);
 }
-.button[link=true], .button.link,
+.button[variant=link], .button[link=true], .button.link,
+button[variant=link],
 button[link=true],
 button.link,
+input[type=button][variant=link],
 input[type=button][link=true],
 input[type=button].link,
+input[type=submit][variant=link],
 input[type=submit][link=true],
 input[type=submit].link {
   color: var(--sld-color-primary);
@@ -679,20 +748,26 @@ input[type=submit].link {
   background-color: transparent;
   cursor: pointer;
 }
-.button[link=true]:hover, .button.link:hover,
+.button[variant=link]:hover, .button[link=true]:hover, .button.link:hover,
+button[variant=link]:hover,
 button[link=true]:hover,
 button.link:hover,
+input[type=button][variant=link]:hover,
 input[type=button][link=true]:hover,
 input[type=button].link:hover,
+input[type=submit][variant=link]:hover,
 input[type=submit][link=true]:hover,
 input[type=submit].link:hover {
   text-decoration: underline;
 }
-.button[naked=true], .button.naked,
+.button[variant=naked], .button[naked=true], .button.naked,
+button[variant=naked],
 button[naked=true],
 button.naked,
+input[type=button][variant=naked],
 input[type=button][naked=true],
 input[type=button].naked,
+input[type=submit][variant=naked],
 input[type=submit][naked=true],
 input[type=submit].naked {
   color: inherit;
@@ -700,29 +775,67 @@ input[type=submit].naked {
   border: 0.5px solid transparent;
   cursor: pointer;
 }
-.button[naked=true]:hover, .button.naked:hover,
+.button[variant=naked]:hover, .button[naked=true]:hover, .button.naked:hover,
+button[variant=naked]:hover,
 button[naked=true]:hover,
 button.naked:hover,
+input[type=button][variant=naked]:hover,
 input[type=button][naked=true]:hover,
 input[type=button].naked:hover,
+input[type=submit][variant=naked]:hover,
 input[type=submit][naked=true]:hover,
 input[type=submit].naked:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
+.button[variant=naked]:active, .button[variant=naked]:focus, .button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
+button[variant=naked]:active,
+button[variant=naked]:focus,
 button[naked=true]:active,
 button[naked=true]:focus,
 button.naked:active,
 button.naked:focus,
+input[type=button][variant=naked]:active,
+input[type=button][variant=naked]:focus,
 input[type=button][naked=true]:active,
 input[type=button][naked=true]:focus,
 input[type=button].naked:active,
 input[type=button].naked:focus,
+input[type=submit][variant=naked]:active,
+input[type=submit][variant=naked]:focus,
 input[type=submit][naked=true]:active,
 input[type=submit][naked=true]:focus,
 input[type=submit].naked:active,
 input[type=submit].naked:focus {
+  background-color: transparent !important;
+  border: 0.5px solid transparent;
+  color: inherit;
+}
+.button[flat=true], .button.flat,
+button[flat=true],
+button.flat,
+input[type=button][flat=true],
+input[type=button].flat,
+input[type=submit][flat=true],
+input[type=submit].flat {
+  color: inherit;
+  background-color: transparent !important;
+  border: 0.5px solid transparent;
+  cursor: pointer;
+}
+.button[flat=true]:active, .button[flat=true]:focus, .button.flat:active, .button.flat:focus,
+button[flat=true]:active,
+button[flat=true]:focus,
+button.flat:active,
+button.flat:focus,
+input[type=button][flat=true]:active,
+input[type=button][flat=true]:focus,
+input[type=button].flat:active,
+input[type=button].flat:focus,
+input[type=submit][flat=true]:active,
+input[type=submit][flat=true]:focus,
+input[type=submit].flat:active,
+input[type=submit].flat:focus {
   background-color: transparent !important;
   border: 0.5px solid transparent;
   color: inherit;
@@ -745,10 +858,10 @@ input[type=submit].loading .loadingButtonZone {
   color: var(--css-background-color, var(--sld-color-secondary));
   -webkit-backdrop-filter-backdrop-filter: blur(3px);
 }
-.button .buttonStart,
-button .buttonStart,
-input[type=button] .buttonStart,
-input[type=submit] .buttonStart {
+.button .button-start,
+button .button-start,
+input[type=button] .button-start,
+input[type=submit] .button-start {
   padding: 0 0.5rem;
   display: flex;
   justify-content: center;
@@ -756,20 +869,20 @@ input[type=submit] .buttonStart {
   position: var(--start-position);
   align-self: center;
 }
-.button .central,
-button .central,
-input[type=button] .central,
-input[type=submit] .central {
+.button .button-central,
+button .button-central,
+input[type=button] .button-central,
+input[type=submit] .button-central {
   flex: 1;
   min-width: 0;
-  padding: 0 0.5rem;
+  padding: 0 var(--content-padding, 0.5rem);
   text-align: var(--sld-button-text-align);
   display: block;
 }
-.button .action,
-button .action,
-input[type=button] .action,
-input[type=submit] .action {
+.button .button-action,
+button .button-action,
+input[type=button] .button-action,
+input[type=submit] .button-action {
   position: absolute;
   display: flex;
   align-items: center;
@@ -779,10 +892,10 @@ input[type=submit] .action {
   padding: 0 0.5rem;
   cursor: pointer;
 }
-.button .action:hover,
-button .action:hover,
-input[type=button] .action:hover,
-input[type=submit] .action:hover {
+.button .button-action:hover,
+button .button-action:hover,
+input[type=button] .button-action:hover,
+input[type=submit] .button-action:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
 .button .chip,
@@ -862,8 +975,8 @@ input[type=submit] .loadingButtonZone {
 }
 
 .checkbox {
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   appearance: none;
   outline: none;
   border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
@@ -880,19 +993,19 @@ input[type=submit] .loadingButtonZone {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.checkbox.dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-.checkbox.dense-default {
+.checkbox[tall=small], .checkbox[dense-small], .checkbox.dense-small {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.checkbox.dense-medium {
+.checkbox[tall=default], .checkbox[dense-default], .checkbox.dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.checkbox.dense-kind {
+.checkbox[tall=medium], .checkbox[dense-medium], .checkbox.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.checkbox[tall=kind], .checkbox[dense-kind], .checkbox.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
@@ -996,23 +1109,23 @@ input[type=submit] .loadingButtonZone {
   flex-direction: row;
   align-items: center;
   width: 168px;
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   --height: calc(var(--preset-density) / 6);
 }
-.slider.dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-.slider.dense-default {
+.slider[tall=small], .slider[dense-small], .slider.dense-small {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.slider.dense-medium {
+.slider[tall=default], .slider[dense-default], .slider.dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.slider.dense-kind {
+.slider[tall=medium], .slider[dense-medium], .slider.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.slider[tall=kind], .slider[dense-kind], .slider.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
@@ -1040,7 +1153,7 @@ input[type=submit] .loadingButtonZone {
   background-clip: padding-box;
 }
 .slider .slider-thumb:hover {
-  box-shadow: var(--box-shad-3);
+  box-shadow: var(--sld-elevation-3);
   outline: 4px solid var(--sld-color-primary-alpha-high);
 }
 /** stepper.scss -----*/ 
@@ -1102,7 +1215,7 @@ label {
 .switch .switchGutter input:checked + .switchHandle {
   left: calc(100% - 16px);
   border-color: var(--sld-color-secondary-alpha-mid);
-  box-shadow: var(--box-shad-3);
+  box-shadow: var(--sld-elevation-3);
   background-color: var(--sld-color-background);
 }
 .switch .switchGutter input + .switchHandle {
@@ -1116,7 +1229,7 @@ label {
   transition: all 0.1s;
   background-color: var(--sld-color-primary);
   border: 1px solid var(--sld-color-secondary-alpha-low);
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
 }
 .switch .switchGutter .test {
   ratios: 2 3 aspect(7);
@@ -1234,7 +1347,7 @@ input:hover {
   background-color: var(--sld-color-paper-alpha-low);
   backdrop-filter: blur(20px);
   border-radius: var(--sld-radius-tiny);
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
   border: 1px solid var(--sld-color-border);
 }
 .datalist-head .dataListCell {
@@ -1421,13 +1534,14 @@ li.listItem:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-li.listItem.selected, li.listItem[data-selected=true] {
+li.listItem.selected, li.listItem[aria-selected=true], li.listItem[data-selected=true] {
   border-color: none;
   background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 li.listItem.selected .listItemChip,
-li.listItem.selected .menuItemChip, li.listItem[data-selected=true] .listItemChip,
+li.listItem.selected .menuItemChip, li.listItem[aria-selected=true] .listItemChip,
+li.listItem[aria-selected=true] .menuItemChip, li.listItem[data-selected=true] .listItemChip,
 li.listItem[data-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
@@ -1482,7 +1596,7 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   transform: translate(-50%, 0);
 }
 .loader .loader-box {
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
   border-radius: var(--sld-radius-tiny);
   border: 1px solid var(--sld-color-foreground-alpha-high);
   padding: 1rem 0;
@@ -1501,7 +1615,7 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   border-color: var(--sld-color-primary);
   padding: var(--box-density-1) var(--box-density-2);
   display: inline-block;
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
 }
 /** drawer.scss -----*/ 
 .drawer {
@@ -1509,86 +1623,131 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   background-color: var(--sld-drawer-bg-color, var(--sld-color-paper-alpha-low));
   backdrop-filter: var(--sld-drawer-backdrop-blur, blur(0px));
   z-index: 3000;
-  box-shadow: var(--box-shad-3);
-  border-left: 1px solid var(--sld-drawer-border-color, var(--sld-color-primary-alpha));
+  box-shadow: var(--sld-elevation-3);
+  border-left: 1px solid var(--sld-color-primary-alpha-mid);
   overflow: visible;
   display: flex;
   flex-direction: column;
   transition: all 0.1s;
 }
-.drawer .opener {
-  position: absolute;
-  z-index: 8600;
-}
-.drawer .header {
-  min-height: 48px;
+.drawer-icon {
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
 }
-.drawer .header .title {
+.drawer-opener {
+  position: absolute;
+  z-index: 8600;
+}
+.drawer header, .drawer-header {
+  --preset-density: 2rem;
+  min-height: 2rem;
+  min-height: 48px;
+  display: flex;
+  width: 100%;
+}
+.drawer header[tall=small], .drawer header[dense-small], .drawer header.dense-small, .drawer-header[tall=small], .drawer-header[dense-small], .drawer-header.dense-small {
+  min-height: 1.5rem;
+  --preset-density: 1.5rem;
+}
+.drawer header[tall=default], .drawer header[dense-default], .drawer header.dense-default, .drawer-header[tall=default], .drawer-header[dense-default], .drawer-header.dense-default {
+  min-height: 2rem;
+  --preset-density: 2rem;
+}
+.drawer header[tall=medium], .drawer header[dense-medium], .drawer header.dense-medium, .drawer-header[tall=medium], .drawer-header[dense-medium], .drawer-header.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.drawer header[tall=kind], .drawer header[dense-kind], .drawer header.dense-kind, .drawer-header[tall=kind], .drawer-header[dense-kind], .drawer-header.dense-kind {
+  min-height: 3rem;
+  --preset-density: 3rem;
+}
+.drawer header-bar, .drawer-header-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.drawer header-bar-title, .drawer-header-bar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   font-size: large;
 }
-.drawer .content {
+.drawer-content {
   flex: 1;
   position: relative;
 }
 /** tabs.scss -----*/ 
-.tabsRoot {
+.tab {
   position: relative;
   display: flex;
 }
-.tabsRoot[data-orientation=horizontal] ul {
+.tab[aria-orientation=horizontal] ul {
   flex-direction: column;
 }
-.tabsRoot[data-orientation=vertical] {
+.tab[aria-orientation=vertical] {
   flex-direction: column;
 }
-
-.tabsNav {
+.tab-nav {
   padding: 0.25rem 0;
+  gap: var(--sld-gap-med);
   border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
-.tabsNav[data-orientation=horizontal] {
+.tab-nav[aria-orientation=horizontal] {
   flex-direction: column;
 }
-.tabsNav .tabsRail {
+.tab-nav-rail {
   display: flex;
   flex: 1;
   flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
 }
-.tabsNav .tabsRail > div {
+.tab-nav-rail > button {
   padding: var(--box-density-preset-small);
   min-width: 48px;
   cursor: pointer;
+  background: none;
+  border: none;
 }
-.tabsNav .tabsRail > div.active {
+.tab-nav-rail > button.active, .tab-nav-rail > button[aria-selected=true] {
   font-weight: bold;
 }
-.tabsNav .tabsContent {
+.tab-content {
+  flex: 1;
   background-color: var(--sld-color-background);
   position: relative;
   width: 100%;
 }
-.tabsNav .tabsActiveCellContainer {
+.tab-content-secondary {
+  display: flex;
+  padding: var(--box-density-preset-small) unset;
+  gap: var(--sld-gap-small);
+}
+.tab-content-secondary-icon {
+  border-right: 1px solid var(--sld-color-border);
+  border-radius: var(--sld-radius-tiny);
+  box-shadow: var(--sld-elevation-3);
+  padding: var(--sld-padding-small);
+}
+.tab-floating-cell {
   top: auto;
   position: relative;
   min-height: 4px;
-  transition: all 0.25s;
+  height: 4px;
+  transition: all 0.15;
 }
-
-.tabSlot {
+.tab-floating-cell-slot {
   border-radius: var(--sld-radius-small);
   min-height: 4px;
   background-color: var(--sld-color-primary);
   width: 100%;
   position: absolute;
-  transition: all 0.25s;
+  transition: all 0.25s ease-in;
   z-index: 200;
 }
 /** presets.scss -----*/ 
@@ -1596,25 +1755,59 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
 /** slotui-vars.scss -----*/ 
 :root {
   --sld-radius-tiny: 2px;
-  --sld-radius-small: 5px;
+  --sld-radius-small: 4px;
   --sld-radius-med: 8px;
   --sld-radius-large: 16px;
   --sld-pad-tiny: 0.25rem;
   --sld-pad-small: 0.5rem;
   --sld-pad-med: 1rem;
   --sld-pad-large: 1.5rem;
+  --sld-gap-tiny: 0.25rem;
+  --sld-gap-small: 0.5rem;
+  --sld-gap-med: 1rem;
+  --sld-gap-large: 1.5rem;
 }
 
 :root {
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
+  --white: #fff;
+  --black: #333;
+}
+
+:root.dark,
+:root[data-theme=dark] {
+  --white: #333;
+  --black: #ccc;
+}
+
+:root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
   --sld-color-paper: #f1f1f1;
+  --sld-color-primary: #98b148;
+  --sld-color-secondary: #55492b;
+  --sld-color-tertiary: #9999cc;
   --sld-color-disabled: #ccc;
   --sld-color-disabled-border: #cccccc;
   --sld-background-disabled: #ededed;
+}
+
+:root.dark,
+:root[data-theme=dark] {
+  --sld-color-foreground: #ffffff;
+  --sld-color-background: #27323a;
+  --sld-color-paper: #3a3b3b;
+}
+
+:root {
+  --sld-elevation-1: 0 0 1.724137931px 0 rgba(0, 0, 0, 0.15),
+      0 0.1526717557px 0.4651162791px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-2: 0 0 3.4482758621px 0 rgba(0, 0, 0, 0.15),
+      0 0.3053435115px 0.9302325581px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-3: 0 0 5.1724137931px 0 rgba(0, 0, 0, 0.15), 0 0 1.3953488372px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-4: 0 0 6.8965517241px 0 rgba(0, 0, 0, 0.15),
+      0 0.6106870229px 1.8604651163px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-5: 0 0 8.6206896552px 0 rgba(0, 0, 0, 0.15),
+      0 0.7633587786px 2.3255813953px 0 rgba(0, 0, 0, 0.1);
 }
 
 :root {
@@ -1767,18 +1960,10 @@ li.listItem.selected .listItemChip, li.listItem[data-selected=true] .listItemChi
   --sld-theme-gap-tiny: 1.5rem;
   --sld-hover-background-color: var(--sld-color-secondary-alpha-mid);
   --sld-hover-border-color: var(--sld-color-foreground-alpha-high);
-  --sld-hover-shadow: var(--box-shad-3);
+  --sld-hover-shadow: var(--sld-elevation-3);
   --sld-selected-background-color: var(--sld-color-primary-alpha-mid);
   --sld-selected-border-color: var(--sld-color-primary);
-  --sld-selected-shadow: var(--box-shad-4);
-}
-
-:root.dark,
-:root[data-theme=dark] {
-  --sld-color-foreground: #ffffff;
-  --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
-  --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 60%);
+  --sld-selected-shadow: var(--sld-elevation-3);
 }
 
 .bg-themed-scheme-discrete {
@@ -1869,8 +2054,8 @@ ul.menu li.menuTitle {
 }
 
 li.menuItem {
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   border-radius: var(--sld-radius-small);
   overflow: hidden;
   display: flex;
@@ -1881,13 +2066,14 @@ li.menuItem:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-li.menuItem.selected, li.menuItem[data-selected=true] {
+li.menuItem.selected, li.menuItem[aria-selected=true], li.menuItem[data-selected=true] {
   border-color: none;
   background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 li.menuItem.selected .listItemChip,
-li.menuItem.selected .menuItemChip, li.menuItem[data-selected=true] .listItemChip,
+li.menuItem.selected .menuItemChip, li.menuItem[aria-selected=true] .listItemChip,
+li.menuItem[aria-selected=true] .menuItemChip, li.menuItem[data-selected=true] .listItemChip,
 li.menuItem[data-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
@@ -1898,19 +2084,19 @@ li.menuItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-li.menuItem.dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-li.menuItem.dense-default {
+li.menuItem[tall=small], li.menuItem[dense-small], li.menuItem.dense-small {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-li.menuItem.dense-medium {
+li.menuItem[tall=default], li.menuItem[dense-default], li.menuItem.dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-li.menuItem.dense-kind {
+li.menuItem[tall=medium], li.menuItem[dense-medium], li.menuItem.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+li.menuItem[tall=kind], li.menuItem[dense-kind], li.menuItem.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
@@ -1923,11 +2109,11 @@ li.menuItem .menuListItemIcon {
   display: flex;
   justify-content: center;
 }
-li.menuItem .menuListItemText {
+li.menuItem .menu-list-item-text {
   flex: 1;
   padding-left: 0.25rem;
 }
-li.menuItem .menuItemActions {
+li.menuItem .menu-list-item-action {
   display: block;
 }
 /** menu-list.scss -----*/ 
@@ -1947,47 +2133,66 @@ ul.menuList {
   align-items: end;
   padding: var(--sld-list-padding);
 }
-:global(ul.menuList) li.menuListTitle {
-  position: sticky;
+:global(ul.menuList) li.menu-list-title,
+:global(ul.menuList) a.menu-list-title {
+  font-weight: bold;
+  /* position: sticky;
   margin-top: 0px !important;
   top: 0px;
-  z-index: 1;
-}
-:global(ul.menuList) :global(li.menuListItem) {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-:global(ul.menuList) :global(li.menuListItem) :global([data-selected="true"]) :global(.menuItemActions) {
-  display: none;
+  z-index: 1; */
 }
 
+:global(ul.menuList.showLastOnSelected) :global(li.menuListItem[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menuListItem[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(li.menuListItem .menu-list-item-action) {
+  visibility: hidden;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menuListItem .menu-list-item-action) {
+  visibility: hidden;
+}
+
+a.menuListItem,
 li.menuListItem {
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
+  text-decoration: none;
   overflow: hidden;
-  padding-left: 0.25rem;
+  padding-left: calc(var(--preset-density) / 4);
   border: 1px solid transparent;
   display: flex;
   align-items: center;
   position: relative;
-  border-radius: var(--sld-list-item-radius);
   width: 100%;
-  height: 36px;
-  min-height: 36px;
   border: 1px solid transparent;
+  border-radius: var(--sld-list-item-radius);
   align-self: flex-start;
 }
+a.menuListItem:hover,
 li.menuListItem:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-li.menuListItem.selected, li.menuListItem[data-selected=true] {
+a.menuListItem.selected, a.menuListItem[aria-selected=true], a.menuListItem[data-selected=true],
+li.menuListItem.selected,
+li.menuListItem[aria-selected=true],
+li.menuListItem[data-selected=true] {
   border-color: none;
   background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
+a.menuListItem.selected .listItemChip,
+a.menuListItem.selected .menuItemChip, a.menuListItem[aria-selected=true] .listItemChip,
+a.menuListItem[aria-selected=true] .menuItemChip, a.menuListItem[data-selected=true] .listItemChip,
+a.menuListItem[data-selected=true] .menuItemChip,
 li.menuListItem.selected .listItemChip,
-li.menuListItem.selected .menuItemChip, li.menuListItem[data-selected=true] .listItemChip,
+li.menuListItem.selected .menuItemChip,
+li.menuListItem[aria-selected=true] .listItemChip,
+li.menuListItem[aria-selected=true] .menuItemChip,
+li.menuListItem[data-selected=true] .listItemChip,
 li.menuListItem[data-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
@@ -1998,35 +2203,64 @@ li.menuListItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
+a.menuListItem[tall=small], a.menuListItem[dense-small], a.menuListItem.dense-small,
+li.menuListItem[tall=small],
+li.menuListItem[dense-small],
 li.menuListItem.dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-li.menuListItem.dense-default {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-li.menuListItem.dense-medium {
+a.menuListItem[tall=default], a.menuListItem[dense-default], a.menuListItem.dense-default,
+li.menuListItem[tall=default],
+li.menuListItem[dense-default],
+li.menuListItem.dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
+a.menuListItem[tall=medium], a.menuListItem[dense-medium], a.menuListItem.dense-medium,
+li.menuListItem[tall=medium],
+li.menuListItem[dense-medium],
+li.menuListItem.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+a.menuListItem[tall=kind], a.menuListItem[dense-kind], a.menuListItem.dense-kind,
+li.menuListItem[tall=kind],
+li.menuListItem[dense-kind],
 li.menuListItem.dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }
-li.menuListItem[data-selected=true].showLastOnSelected {
-  visibility: visible;
-}
-li.menuListItem[data-selected=true] .menuItemChip {
+a.menuListItem::before,
+li.menuListItem::before {
   position: absolute;
   min-height: 16px;
-  height: 50%;
-  width: 3px;
+  height: 45%;
+  width: 2px;
+  overflow: hidden;
+  max-width: 3px;
+  background-color: transparent;
+  border-radius: var(--sld-radius-med);
+  left: 0px;
+  border: 1px solid transparent;
+  content: " ";
+}
+a.menuListItem[data-selected=true]:not(.menu-list-title)::before, a.menuListItem[aria-selected=true]:not(.menu-list-title)::before,
+li.menuListItem[data-selected=true]:not(.menu-list-title)::before,
+li.menuListItem[aria-selected=true]:not(.menu-list-title)::before {
+  position: absolute;
+  min-height: 16px;
+  height: 45%;
+  width: 2px;
+  overflow: hidden;
+  max-width: 3px;
   background-color: var(--sld-color-primary);
   border-radius: var(--sld-radius-med);
-  left: 1px;
+  left: 0px;
   border: 1px solid var(--sld-color-primary-alpha-mid);
+  content: " ";
 }
+a.menuListItem .menuListItemIcon,
 li.menuListItem .menuListItemIcon {
   width: 16px;
   max-width: 16px;
@@ -2036,11 +2270,12 @@ li.menuListItem .menuListItemIcon {
   display: flex;
   justify-content: center;
 }
-li.menuListItem .menuListItemText {
+a.menuListItem .menu-list-item-text,
+li.menuListItem .menu-list-item-text {
   flex: 1;
-  padding-left: 0.25rem;
 }
-li.menuListItem .menuItemActions {
+a.menuListItem .menu-list-item-action,
+li.menuListItem .menu-list-item-action {
   display: flex;
   justify-content: center;
 }
@@ -2066,7 +2301,7 @@ li.menuListItem .menuItemActions {
   border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
   overflow: hidden;
   position: fixed;
-  box-shadow: var(--box-shad-4);
+  box-shadow: var(--sld-elevation-4);
   background-color: var(--sld-color-background-alpha-mid);
   backdrop-filter: blur(30px);
   display: inline-block;
@@ -2140,7 +2375,7 @@ li.menuListItem .menuItemActions {
   backdrop-filter: var(--css-taskbar-backdrop-blur, blur(20px));
   min-height: var(--css-taskbar-height, 48px);
   border-bottom: 1px solid var(--sld-color-foreground-alpha-high, rgba(255, 255, 255, 0.2));
-  box-shadow: var(--css-taskbar-shadow, var(--box-shad-3));
+  box-shadow: var(--css-taskbar-shadow, var(--sld-elevation-3));
   box-sizing: border-box;
 }
 /** toggle-bar.scss -----*/ 
@@ -2204,13 +2439,14 @@ li.menuListItem .menuItemActions {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.tree-cell.selected, .tree-cell[data-selected=true] {
+.tree-cell.selected, .tree-cell[aria-selected=true], .tree-cell[data-selected=true] {
   border-color: none;
   background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
 .tree-cell.selected .listItemChip,
-.tree-cell.selected .menuItemChip, .tree-cell[data-selected=true] .listItemChip,
+.tree-cell.selected .menuItemChip, .tree-cell[aria-selected=true] .listItemChip,
+.tree-cell[aria-selected=true] .menuItemChip, .tree-cell[data-selected=true] .listItemChip,
 .tree-cell[data-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
@@ -2235,9 +2471,11 @@ dialog.window {
   z-index: 70000;
   max-height: 100%;
   padding: 0;
+  box-shadow: var(--sld-elevation-1);
 }
 dialog.window.active {
   border: 1px solid var(--sld-color-primary);
+  box-shadow: var(--sld-elevation-3);
 }
 dialog.window header.bar {
   display: flex;
@@ -2245,7 +2483,10 @@ dialog.window header.bar {
   text-align: center;
   background-color: var(--sld-color-paper);
   color: var(--sld-color-foreground);
-  padding: 0.25rem 0;
+  padding: var(--sld-pad-tiny) 0;
+}
+dialog.window header.bar-icon {
+  padding: unset var(--sld-pad-med);
 }
 dialog.window header.bar .handle {
   flex: 1;

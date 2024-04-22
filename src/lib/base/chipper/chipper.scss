@@ -2,6 +2,7 @@
 
 .chipper {
     position: relative;
+    gap: var(--sld-gap-tiny);
 
     .chipper-content {
         padding: 0.5rem;

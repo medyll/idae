@@ -2,7 +2,7 @@
   border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
   overflow: hidden;
   position: fixed;
-  box-shadow: var(--box-shad-4);
+  box-shadow: var(--sld-elevation-4);
   background-color: var(--sld-color-background-alpha-mid);
   backdrop-filter: blur(30px);
   display: inline-block;

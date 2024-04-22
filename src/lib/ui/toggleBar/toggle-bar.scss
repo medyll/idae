@@ -9,7 +9,25 @@
     position: relative;
     gap: var(--sld-commandbar-gap, 0.25rem);
 
-    .toggle-bar-content {
+    &-icon {
+        padding: var(--sld-pad-med);
+    }
+    &-title {
+        flex: 1;
+        font-weight: 500;
+        min-width: auto;
+        &-content {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 18px;
+            min-width: auto;
+            height: 100%;
+        }
+    }
+
+    &-content {
         position: relative;
         min-width: auto;
         overflow: hidden;

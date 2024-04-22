@@ -11,7 +11,7 @@
   background-color: var(--sld-color-paper-alpha-low);
   backdrop-filter: blur(20px);
   border-radius: var(--sld-radius-tiny);
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
   border: 1px solid var(--sld-color-border);
 }
 .datalist-head .dataListCell {

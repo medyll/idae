@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	type ChipperProps = CommonProps & {
 		/** element root HTMLDivElement props */
@@ -24,7 +25,7 @@
 
 	let {
 		class: className = '',
-		style = '',
+		style,
 		element = $bindable<HTMLDivElement>(),
 		position = 'bottom',
 		status = 'primary',
@@ -37,12 +38,13 @@
 	let cssColor = $derived(color ?? (status ? `var(--sld-color-${status})` : ''));
 </script>
 
-<div bind:this={element} style="{style};position:relative;" class="chipper gap-tiny {className} ">
-	{#if children}
-		{@render children()}
-	{:else if content}
-		<div class="chipper-content">{@html content ?? ''}</div>
-	{/if}
+<div bind:this={element} style="{style};position:relative;" class="chipper {className} ">
+	<Slotted child={children}>
+		{#if content}
+			<div class="chipper-content">{@html content ?? ''}</div>
+		{/if}
+	</Slotted>
+
 	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
 		{#if showChip}
 			<slot name="chipperChip">

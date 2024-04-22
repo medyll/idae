@@ -8,8 +8,8 @@
   box-shadow: var(--sld-elevation-3);
   border-left: 1px solid var(--sld-color-primary-alpha-mid);
   overflow: visible;
-  display: flex;
-  flex-direction: column;
+  @include flex(column);
+  height: 100%;
   transition: all 0.1s;
 
   &-icon {
@@ -48,5 +48,6 @@
   &-content {
     flex: 1;
     position: relative;
+    overflow: hidden;
   }
 }

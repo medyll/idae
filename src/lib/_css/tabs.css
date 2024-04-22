@@ -1,58 +1,72 @@
-.tabsRoot {
+.tab {
   position: relative;
   display: flex;
 }
-.tabsRoot[data-orientation=horizontal] ul {
+.tab[aria-orientation=horizontal] ul {
   flex-direction: column;
 }
-.tabsRoot[data-orientation=vertical] {
+.tab[aria-orientation=vertical] {
   flex-direction: column;
 }
-
-.tabsNav {
+.tab-nav {
   padding: 0.25rem 0;
+  gap: var(--sld-gap-med);
   border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
-.tabsNav[data-orientation=horizontal] {
+.tab-nav[aria-orientation=horizontal] {
   flex-direction: column;
 }
-.tabsNav .tabsRail {
+.tab-nav-rail {
   display: flex;
   flex: 1;
   flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
 }
-.tabsNav .tabsRail > div {
+.tab-nav-rail > button {
   padding: var(--box-density-preset-small);
   min-width: 48px;
   cursor: pointer;
+  background: none;
+  border: none;
 }
-.tabsNav .tabsRail > div.active {
+.tab-nav-rail > button.active, .tab-nav-rail > button[aria-selected=true] {
   font-weight: bold;
 }
-.tabsNav .tabsContent {
+.tab-content {
+  flex: 1;
   background-color: var(--sld-color-background);
   position: relative;
   width: 100%;
 }
-.tabsNav .tabsActiveCellContainer {
+.tab-content-secondary {
+  display: flex;
+  padding: var(--box-density-preset-small) unset;
+  gap: var(--sld-gap-small);
+}
+.tab-content-secondary-icon {
+  border-right: 1px solid var(--sld-color-border);
+  border-radius: var(--sld-radius-tiny);
+  box-shadow: var(--sld-elevation-3);
+  padding: var(--sld-padding-small);
+}
+.tab-floating-cell {
   top: auto;
   position: relative;
   min-height: 4px;
-  transition: all 0.25s;
+  height: 4px;
+  transition: all 0.15;
 }
-
-.tabSlot {
+.tab-floating-cell-slot {
   border-radius: var(--sld-radius-small);
   min-height: 4px;
   background-color: var(--sld-color-primary);
   width: 100%;
   position: absolute;
-  transition: all 0.25s;
+  transition: all 0.25s ease-in;
   z-index: 200;
 }

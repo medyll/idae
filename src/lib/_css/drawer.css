@@ -3,26 +3,57 @@
   background-color: var(--sld-drawer-bg-color, var(--sld-color-paper-alpha-low));
   backdrop-filter: var(--sld-drawer-backdrop-blur, blur(0px));
   z-index: 3000;
-  box-shadow: var(--box-shad-3);
-  border-left: 1px solid var(--sld-drawer-border-color, var(--sld-color-primary-alpha));
+  box-shadow: var(--sld-elevation-3);
+  border-left: 1px solid var(--sld-color-primary-alpha-mid);
   overflow: visible;
   display: flex;
   flex-direction: column;
   transition: all 0.1s;
 }
-.drawer .opener {
-  position: absolute;
-  z-index: 8600;
-}
-.drawer .header {
-  min-height: 48px;
+.drawer-icon {
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
 }
-.drawer .header .title {
+.drawer-opener {
+  position: absolute;
+  z-index: 8600;
+}
+.drawer header, .drawer-header {
+  --preset-density: 2rem;
+  min-height: 2rem;
+  min-height: 48px;
+  display: flex;
+  width: 100%;
+}
+.drawer header[tall=small], .drawer header[dense-small], .drawer header.dense-small, .drawer-header[tall=small], .drawer-header[dense-small], .drawer-header.dense-small {
+  min-height: 1.5rem;
+  --preset-density: 1.5rem;
+}
+.drawer header[tall=default], .drawer header[dense-default], .drawer header.dense-default, .drawer-header[tall=default], .drawer-header[dense-default], .drawer-header.dense-default {
+  min-height: 2rem;
+  --preset-density: 2rem;
+}
+.drawer header[tall=medium], .drawer header[dense-medium], .drawer header.dense-medium, .drawer-header[tall=medium], .drawer-header[dense-medium], .drawer-header.dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.drawer header[tall=kind], .drawer header[dense-kind], .drawer header.dense-kind, .drawer-header[tall=kind], .drawer-header[dense-kind], .drawer-header.dense-kind {
+  min-height: 3rem;
+  --preset-density: 3rem;
+}
+.drawer header-bar, .drawer-header-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.drawer header-bar-title, .drawer-header-bar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   font-size: large;
 }
-.drawer .content {
+.drawer-content {
   flex: 1;
   position: relative;
 }

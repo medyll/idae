@@ -1,15 +1,20 @@
-.boxRoot {
+.box {
   min-height: 160px;
   min-width: 320px;
   background-color: var(--sld-color-background);
   border-bottom: 1px solid var(--sld-color-primary);
   border-radius: var(--sld-radius-small);
-  display: inline-block;
-}
-.boxRoot .boxButtonZone {
+  box-shadow: var(--sld-elevation-3);
   display: flex;
-  gap: --theme-gap-tiny;
+  flex-direction: column;
+}
+.box-content {
+  flex: 1;
+}
+.box-button-zone {
+  display: flex;
+  gap: var(--sld-gap-tiny);
+  padding: var(--sld-pad-small);
   text-align: right;
-  padding: 0.5rem;
   justify-content: end;
 }

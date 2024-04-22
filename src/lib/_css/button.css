@@ -10,9 +10,9 @@ button,
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
   --sld-button-focus-border-color: var(--sld-color-primary);
-  --sld-button-hover-shadow: var(--box-shad-3);
-  --sld-button-active-shadow: var(--box-shad-4);
-  --sld-button-focus-shadow: var(--box-shad-4);
+  --sld-button-hover-shadow: var(--sld-elevation-3);
+  --sld-button-active-shadow: var(--sld-elevation-4);
+  --sld-button-focus-shadow: var(--sld-elevation-4);
 }
 
 .actionButton {
@@ -28,8 +28,8 @@ button,
 button,
 input[type=button],
 input[type=submit] {
-  --preset-density: 1.5rem;
-  min-height: 1.5rem;
+  --preset-density: 2rem;
+  min-height: 2rem;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
@@ -156,30 +156,54 @@ input[type=submit].width-auto,
 input[type=submit][data-width=auto] {
   width: auto;
 }
-.button.dense-small,
+.button[tall=small], .button[dense-small], .button.dense-small,
+button[tall=small],
+button[dense-small],
 button.dense-small,
+input[type=button][tall=small],
+input[type=button][dense-small],
 input[type=button].dense-small,
+input[type=submit][tall=small],
+input[type=submit][dense-small],
 input[type=submit].dense-small {
-  min-height: 1rem;
-  --preset-density: 1rem;
-}
-.button.dense-default,
-button.dense-default,
-input[type=button].dense-default,
-input[type=submit].dense-default {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.button.dense-medium,
-button.dense-medium,
-input[type=button].dense-medium,
-input[type=submit].dense-medium {
+.button[tall=default], .button[dense-default], .button.dense-default,
+button[tall=default],
+button[dense-default],
+button.dense-default,
+input[type=button][tall=default],
+input[type=button][dense-default],
+input[type=button].dense-default,
+input[type=submit][tall=default],
+input[type=submit][dense-default],
+input[type=submit].dense-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.button.dense-kind,
+.button[tall=medium], .button[dense-medium], .button.dense-medium,
+button[tall=medium],
+button[dense-medium],
+button.dense-medium,
+input[type=button][tall=medium],
+input[type=button][dense-medium],
+input[type=button].dense-medium,
+input[type=submit][tall=medium],
+input[type=submit][dense-medium],
+input[type=submit].dense-medium {
+  min-height: 2.5rem;
+  --preset-density: 2.5rem;
+}
+.button[tall=kind], .button[dense-kind], .button.dense-kind,
+button[tall=kind],
+button[dense-kind],
 button.dense-kind,
+input[type=button][tall=kind],
+input[type=button][dense-kind],
 input[type=button].dense-kind,
+input[type=submit][tall=kind],
+input[type=submit][dense-kind],
 input[type=submit].dense-kind {
   min-height: 3rem;
   --preset-density: 3rem;
@@ -251,42 +275,54 @@ input[type=button][selected=true],
 input[type=button] .selected,
 input[type=submit][selected=true],
 input[type=submit] .selected {
-  box-shadow: var(--box-shad-3);
+  box-shadow: var(--sld-elevation-3);
   border: 0.5px solid var(--sld-color-paper-alpha-low);
   background-color: transparent;
   font-weight: bold;
 }
-.button[bordered=true], .button.bordered,
+.button[variant=bordered], .button[bordered=true], .button.bordered,
+button[variant=bordered],
 button[bordered=true],
 button.bordered,
+input[type=button][variant=bordered],
 input[type=button][bordered=true],
 input[type=button].bordered,
+input[type=submit][variant=bordered],
 input[type=submit][bordered=true],
 input[type=submit].bordered {
   color: var(--sld-color-foreground);
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
   background-color: var(--sld-color-background);
 }
-.button[bordered=true]:hover, .button.bordered:hover,
+.button[variant=bordered]:hover, .button[bordered=true]:hover, .button.bordered:hover,
+button[variant=bordered]:hover,
 button[bordered=true]:hover,
 button.bordered:hover,
+input[type=button][variant=bordered]:hover,
 input[type=button][bordered=true]:hover,
 input[type=button].bordered:hover,
+input[type=submit][variant=bordered]:hover,
 input[type=submit][bordered=true]:hover,
 input[type=submit].bordered:hover {
   border: 1px solid var(--sld-color-primary);
   box-shadow: var(--sld-button-hover-shadow);
 }
-.button[bordered=true]:focus, .button[bordered=true]:active, .button.bordered:focus, .button.bordered:active,
+.button[variant=bordered]:focus, .button[variant=bordered]:active, .button[bordered=true]:focus, .button[bordered=true]:active, .button.bordered:focus, .button.bordered:active,
+button[variant=bordered]:focus,
+button[variant=bordered]:active,
 button[bordered=true]:focus,
 button[bordered=true]:active,
 button.bordered:focus,
 button.bordered:active,
+input[type=button][variant=bordered]:focus,
+input[type=button][variant=bordered]:active,
 input[type=button][bordered=true]:focus,
 input[type=button][bordered=true]:active,
 input[type=button].bordered:focus,
 input[type=button].bordered:active,
+input[type=submit][variant=bordered]:focus,
+input[type=submit][variant=bordered]:active,
 input[type=submit][bordered=true]:focus,
 input[type=submit][bordered=true]:active,
 input[type=submit].bordered:focus,
@@ -294,38 +330,50 @@ input[type=submit].bordered:active {
   border: 1px solid var(--sld-button-active-border-color) !important;
   box-shadow: var(--sld-button-active-shadow);
 }
-.button[contained=true], .button.contained,
+.button[variant=contained], .button[contained=true], .button.contained,
+button[variant=contained],
 button[contained=true],
 button.contained,
+input[type=button][variant=contained],
 input[type=button][contained=true],
 input[type=button].contained,
+input[type=submit][variant=contained],
 input[type=submit][contained=true],
 input[type=submit].contained {
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   color: white;
   background-color: var(--sld-button-background);
   background-clip: padding-box;
-  box-shadow: var(--box-shad-1);
+  box-shadow: var(--sld-elevation-1);
 }
-.button[contained=true]:hover, .button.contained:hover,
+.button[variant=contained]:hover, .button[contained=true]:hover, .button.contained:hover,
+button[variant=contained]:hover,
 button[contained=true]:hover,
 button.contained:hover,
+input[type=button][variant=contained]:hover,
 input[type=button][contained=true]:hover,
 input[type=button].contained:hover,
+input[type=submit][variant=contained]:hover,
 input[type=submit][contained=true]:hover,
 input[type=submit].contained:hover {
   background-color: var(--sld-color-secondary);
   color: var(--sld-color-primary);
 }
-.button[contained=true]:focus, .button[contained=true]:active, .button.contained:focus, .button.contained:active,
+.button[variant=contained]:focus, .button[variant=contained]:active, .button[contained=true]:focus, .button[contained=true]:active, .button.contained:focus, .button.contained:active,
+button[variant=contained]:focus,
+button[variant=contained]:active,
 button[contained=true]:focus,
 button[contained=true]:active,
 button.contained:focus,
 button.contained:active,
+input[type=button][variant=contained]:focus,
+input[type=button][variant=contained]:active,
 input[type=button][contained=true]:focus,
 input[type=button][contained=true]:active,
 input[type=button].contained:focus,
 input[type=button].contained:active,
+input[type=submit][variant=contained]:focus,
+input[type=submit][variant=contained]:active,
 input[type=submit][contained=true]:focus,
 input[type=submit][contained=true]:active,
 input[type=submit].contained:focus,
@@ -334,11 +382,14 @@ input[type=submit].contained:active {
   color: var(--sld-color-secondary);
   box-shadow: var(--sld-button-active-shadow);
 }
-.button[link=true], .button.link,
+.button[variant=link], .button[link=true], .button.link,
+button[variant=link],
 button[link=true],
 button.link,
+input[type=button][variant=link],
 input[type=button][link=true],
 input[type=button].link,
+input[type=submit][variant=link],
 input[type=submit][link=true],
 input[type=submit].link {
   color: var(--sld-color-primary);
@@ -347,20 +398,26 @@ input[type=submit].link {
   background-color: transparent;
   cursor: pointer;
 }
-.button[link=true]:hover, .button.link:hover,
+.button[variant=link]:hover, .button[link=true]:hover, .button.link:hover,
+button[variant=link]:hover,
 button[link=true]:hover,
 button.link:hover,
+input[type=button][variant=link]:hover,
 input[type=button][link=true]:hover,
 input[type=button].link:hover,
+input[type=submit][variant=link]:hover,
 input[type=submit][link=true]:hover,
 input[type=submit].link:hover {
   text-decoration: underline;
 }
-.button[naked=true], .button.naked,
+.button[variant=naked], .button[naked=true], .button.naked,
+button[variant=naked],
 button[naked=true],
 button.naked,
+input[type=button][variant=naked],
 input[type=button][naked=true],
 input[type=button].naked,
+input[type=submit][variant=naked],
 input[type=submit][naked=true],
 input[type=submit].naked {
   color: inherit;
@@ -368,29 +425,67 @@ input[type=submit].naked {
   border: 0.5px solid transparent;
   cursor: pointer;
 }
-.button[naked=true]:hover, .button.naked:hover,
+.button[variant=naked]:hover, .button[naked=true]:hover, .button.naked:hover,
+button[variant=naked]:hover,
 button[naked=true]:hover,
 button.naked:hover,
+input[type=button][variant=naked]:hover,
 input[type=button][naked=true]:hover,
 input[type=button].naked:hover,
+input[type=submit][variant=naked]:hover,
 input[type=submit][naked=true]:hover,
 input[type=submit].naked:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
+.button[variant=naked]:active, .button[variant=naked]:focus, .button[naked=true]:active, .button[naked=true]:focus, .button.naked:active, .button.naked:focus,
+button[variant=naked]:active,
+button[variant=naked]:focus,
 button[naked=true]:active,
 button[naked=true]:focus,
 button.naked:active,
 button.naked:focus,
+input[type=button][variant=naked]:active,
+input[type=button][variant=naked]:focus,
 input[type=button][naked=true]:active,
 input[type=button][naked=true]:focus,
 input[type=button].naked:active,
 input[type=button].naked:focus,
+input[type=submit][variant=naked]:active,
+input[type=submit][variant=naked]:focus,
 input[type=submit][naked=true]:active,
 input[type=submit][naked=true]:focus,
 input[type=submit].naked:active,
 input[type=submit].naked:focus {
+  background-color: transparent !important;
+  border: 0.5px solid transparent;
+  color: inherit;
+}
+.button[flat=true], .button.flat,
+button[flat=true],
+button.flat,
+input[type=button][flat=true],
+input[type=button].flat,
+input[type=submit][flat=true],
+input[type=submit].flat {
+  color: inherit;
+  background-color: transparent !important;
+  border: 0.5px solid transparent;
+  cursor: pointer;
+}
+.button[flat=true]:active, .button[flat=true]:focus, .button.flat:active, .button.flat:focus,
+button[flat=true]:active,
+button[flat=true]:focus,
+button.flat:active,
+button.flat:focus,
+input[type=button][flat=true]:active,
+input[type=button][flat=true]:focus,
+input[type=button].flat:active,
+input[type=button].flat:focus,
+input[type=submit][flat=true]:active,
+input[type=submit][flat=true]:focus,
+input[type=submit].flat:active,
+input[type=submit].flat:focus {
   background-color: transparent !important;
   border: 0.5px solid transparent;
   color: inherit;
@@ -413,10 +508,10 @@ input[type=submit].loading .loadingButtonZone {
   color: var(--css-background-color, var(--sld-color-secondary));
   -webkit-backdrop-filter-backdrop-filter: blur(3px);
 }
-.button .buttonStart,
-button .buttonStart,
-input[type=button] .buttonStart,
-input[type=submit] .buttonStart {
+.button .button-start,
+button .button-start,
+input[type=button] .button-start,
+input[type=submit] .button-start {
   padding: 0 0.5rem;
   display: flex;
   justify-content: center;
@@ -424,20 +519,20 @@ input[type=submit] .buttonStart {
   position: var(--start-position);
   align-self: center;
 }
-.button .central,
-button .central,
-input[type=button] .central,
-input[type=submit] .central {
+.button .button-central,
+button .button-central,
+input[type=button] .button-central,
+input[type=submit] .button-central {
   flex: 1;
   min-width: 0;
-  padding: 0 0.5rem;
+  padding: 0 var(--content-padding, 0.5rem);
   text-align: var(--sld-button-text-align);
   display: block;
 }
-.button .action,
-button .action,
-input[type=button] .action,
-input[type=submit] .action {
+.button .button-action,
+button .button-action,
+input[type=button] .button-action,
+input[type=submit] .button-action {
   position: absolute;
   display: flex;
   align-items: center;
@@ -447,10 +542,10 @@ input[type=submit] .action {
   padding: 0 0.5rem;
   cursor: pointer;
 }
-.button .action:hover,
-button .action:hover,
-input[type=button] .action:hover,
-input[type=submit] .action:hover {
+.button .button-action:hover,
+button .button-action:hover,
+input[type=button] .button-action:hover,
+input[type=submit] .button-action:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
 .button .chip,

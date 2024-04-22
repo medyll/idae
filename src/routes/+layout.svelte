@@ -9,7 +9,7 @@
 	// import cssfabric themer
 	import '../styles/cssfabric-theme.scss';
 	import '../styles/main.css';
-
+	import '$lib/_css/slotui-vars.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';

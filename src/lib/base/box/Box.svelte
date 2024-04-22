@@ -3,11 +3,12 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	let className = '';
 	export { className as class };
 
-	type Props = CommonProps & {
+	type BoxProps = CommonProps & {
 		element: HTMLDivElement;
 		style: string;
 		/** is the content visible */
@@ -28,12 +29,15 @@
 		 * @type {Record<'open'|'toggle' | 'close', Function>}
 		 */
 		actions: Record<'open' | 'toggle' | 'close', Function>;
-		restProps: HTMLDivElement['attributes'];
-		slots: {
+		boxBottomZone?: Snippet;
+		titleBarTitle?: Snippet;
+		titleBarIcon?: Snippet;
+		slots?: {
+			boxBottomZone: Snippet;
 			titleBarTitle: Snippet;
 			titleBarIcon: Snippet;
-			boxBottomZone: Snippet;
 		};
+		restProps: HTMLDivElement['attributes'];
 	};
 
 	let {
@@ -53,8 +57,10 @@
 		},
 		restProps = {},
 		children,
-		slots = { titleBarTitle: undefined, titleBarIcon: undefined, boxBottomZone: undefined }
-	} = $props() as Props;
+		titleBarTitle,
+		titleBarIcon,
+		boxBottomZone
+	} = $props() as BoxProps;
 
 	function open() {
 		isOpen = true;
@@ -70,32 +76,28 @@
 </script>
 
 {#if isOpen}
-	<div bind:this={element} class="boxRoot shad-3 flex-v {className}" {style} {...restProps}>
+	<div bind:this={element} class="box {className}" {style} {...restProps}>
 		<TitleBar {hasMenu} {...closer}>
-			{#if slots.titleBarTitle}
-				{slots.titleBarTitle()}
-			{:else}
-				{title ?? ''}
-			{/if}
-			{#if slots?.titleBarIcon}
-				{slots.titleBarIcon()}
-			{:else if icon}
-				<Icon {icon} />
-			{/if}
+			<Slotted child={titleBarTitle}>
+				<slot name="titleBarTitle">{title ?? ''}</slot>
+			</Slotted>
+			<Slotted child={titleBarIcon}>
+				<slot name="titleBarIcon">
+					{#if icon}
+						<Icon {icon} />
+					{/if}
+				</slot>
+			</Slotted>
 		</TitleBar>
-		<div class="boxContent flex-main">
-			{#if children}
-				{@render children()}
-			{:else if content}
-				{@html content ?? ''}
-			{/if}
+		<div class="box-content">
+			<Slotted child={children}>
+				<slot>{@html content ?? ''}</slot>
+			</Slotted>
 		</div>
-		<div class="boxButtonSlot">
-			{#if slots.boxBottomZone}
-				{@render slots.boxBottomZone()}
-			{:else}
-				{@html bottomZone ?? ''}
-			{/if}
+		<div class="box-button-zone">
+			<Slotted child={boxBottomZone}>
+				<slot name="boxBottomZone">{@html bottomZone ?? ''}</slot>
+			</Slotted>
 		</div>
 	</div>
 {/if}

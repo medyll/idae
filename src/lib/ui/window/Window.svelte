@@ -165,13 +165,13 @@
 			use:positioner={{ position: startPosition }}
 			use:draggebler={{ disabled: false }}
 			use:makeOnTop
-			class="window shad-3"
+			class="window {className} "
 			class:active={$wStore.activeFrame === frameId}
 		>
 			{#if showHandle}
 				<header class="bar">
 					{#if icon || slots.icon}
-						<div class="pad-ii-2">
+						<div class="bar-icon">
 							<Slotted child={slots.icon}>
 								<Icon fontSize="small" {icon} />
 							</Slotted>
@@ -208,10 +208,10 @@
 				<Slotted child={slots.buttonZone}>
 					<footer class="buttonZone">
 						{#if !hideCloseButton}
-							<Button naked icon={iconClose} onclick={actions.close}>Close</Button>
+							<Button variant="naked" icon={iconClose} onclick={actions.close}>Close</Button>
 						{/if}
 						{#if !hideCancelButton}
-							<Button naked icon="ant-design:ellipsis-outlined" onclick={handleCancel}
+							<Button variant="naked" icon="ant-design:ellipsis-outlined" onclick={handleCancel}
 								>Cancel
 							</Button>
 						{/if}

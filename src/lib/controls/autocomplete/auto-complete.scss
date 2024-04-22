@@ -1,0 +1,10 @@
+@import "../../styles/presets.scss";
+
+.auto-complete {
+    &-no-results,
+    &-boot {
+        padding: var(--sld-pad-medium);
+        gap: var(--sld-gap-small);
+        @include flex(row, center, center);
+    }
+}

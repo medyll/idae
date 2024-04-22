@@ -2,7 +2,16 @@
 
 <script lang="ts">
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
+	import type { DrawerProps } from '$lib/navigation/drawer/types.js';
 
+	const defaultDrawerProps: DrawerProps = {
+		isOpen: false,
+		hideCloseIcon: true,
+		showOpenerIcon: true,
+		stickTo: 'left',
+		flow: 'relative',
+		defaultWidth: '200px'
+	};
 	let className = '';
 	export { className as class };
 	export let element: HTMLDivElement | null = null;
@@ -15,6 +24,8 @@
 	export let showOpenerIcon: boolean = true;
 
 	export let drawerWidth: string = '200px';
+
+	export let drawerProps: DrawerProps = { ...defaultDrawerProps };
 
 	let menuOpen = true;
 
@@ -31,9 +42,9 @@
 	};
 </script>
 
-<div bind:this={element} class="pos-rel flex-v h-full overflow-hidden frame {className}" {style}>
+<div bind:this={element} class="frame {className}" {style}>
 	<div class="frame-container">
-		<div bind:this={elementNav} class="navLeft pos-rel flex-v h-full">
+		<div bind:this={elementNav} class="navLeft">
 			{#if frameDrawerRef?.isOpen}
 				<slot name="navLeftHeaderFrameSlot" />
 			{/if}
@@ -41,19 +52,19 @@
 				bind:this={frameDrawerRef}
 				{hideCloseIcon}
 				bind:isOpen={menuOpen}
-				flow="relative"
-				stickTo="left"
 				style="flex:1;position:relative;"
 				defaultWidth={drawerWidth}
 				{showOpenerIcon}
+				{...defaultDrawerProps}
+				{...drawerProps}
 			>
 				<slot name="drawerTop" slot="drawerTop" />
 				<slot name="drawerContent" />
 			</Drawer>
 		</div>
-		<div class="frame-main">
+		<div class="frame-container-main">
 			<slot name="frameTop" />
-			<div class=" frame-content">
+			<div class="frame-container-main-content">
 				<slot name="content" />
 			</div>
 			<slot name="frameBottom" />

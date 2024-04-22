@@ -3,8 +3,8 @@
 
 	import { elem } from '$lib/utils/engine/elem.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { TabItem, TabsItemsProps, TabsProps } from './types.js';
-	import type { CommonProps, Data } from '$lib/types/index.js';
+	import type { TabItem, TabsProps } from './types.js';
+	import type { Data } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -99,7 +99,7 @@
 			{/each}
 		</nav>
 		<div>
-			<Slotted child={tabsButtons}>
+			<Slotted child={tabsTitle}>
 				<slot name="tabsTitle" />
 			</Slotted>
 		</div>
@@ -112,7 +112,7 @@
 	<div class="tab-floating-cell">
 		<div bind:this={activeCellElementRef} class="tab-floating-cell-slot" />
 	</div>
-	<div class="tab-content flex-main pos-rel">
+	<div class="tab-content">
 		{#each items as item}
 			{@const display = activeTabCode === item?.code ? 'flex' : 'none'}
 			{#if item && activeTabCode === item?.code}
@@ -124,11 +124,11 @@
 							style="display:{display};height:100%;position:relative;flex-direction:column"
 						>
 							{#if Boolean(item?.secondary)}
-								<div class=" flex-h pad-tb-2 gap-small">
-									<div class="border-r pad-1 shad-3 radius-tiny">
+								<div class="tab-content-secondary">
+									<div class="tab-content-secondary-icon">
 										<Icon style="display:block" inline={false} icon="clarity:help-info-solid" />
 									</div>
-									<div class="flex-main pad-t-1">{@html item?.secondary}</div>
+									<div style="flex:1;">{@html item?.secondary}</div>
 								</div>
 							{/if}
 							<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>

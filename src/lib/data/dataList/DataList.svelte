@@ -12,6 +12,7 @@
 	import type { Data } from '$lib/types/index.js';
 	import ContextRooter from '$lib/utils/contextRooter/ContextRooter.svelte';
 	import sanitizeHtml from 'sanitize-html';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
 
 	export const sortingIcons = {
 		default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],
@@ -78,7 +79,6 @@
 		/** Loading state of the list */
 		isLoading: boolean;
 
-		slots: {};
 		dataListCell?: Snippet<[{ fieldType: string; fieldName: string; fieldValue: any }]>;
 		groupTitleSlot?: Snippet<[{ item: Data }]>;
 	};
@@ -108,10 +108,9 @@
 		virtualizer = false,
 		isLoading = false,
 		fieldValue,
-		slots,
 		dataListCell,
 		groupTitleSlot
-	} = $props<DataListProps>();
+	}: DataListProps = $props();
 
 	let hidedGroups: Data = {};
 
@@ -198,53 +197,72 @@
 	}
 </script>
 
+{#snippet listCell(item, inItem)}
+	<Slotted
+		child={dataListCell}
+		slotArgs={{
+			fieldName: $dataListContext.columns[inItem]?.field,
+			fieldType: $dataListContext.columns[inItem]?.fieldType,
+			fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
+			fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
+		}}
+	>
+		<slot
+			name="dataListCell"
+			{...{
+				fieldName: $dataListContext.columns[inItem]?.field,
+				fieldType: $dataListContext.columns[inItem]?.fieldType,
+				fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
+				fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
+			}}
+		/>
+	</Slotted>
+{/snippet}
+
 <ContextRooter bind:contextRoot={dataListContext} contextKey="dataListContext" />
 {#if groupByField}
 	{#if groupByOptions?.showMainHeader}
 		<DataListHead />
 	{/if}
-	<div bind:this={element} class="flex-v h-full">
+	<div bind:this={element} class="datalist-group-wrapper">
 		{#each Object.keys(groups) as red}
 			{@const groupProps = getGroupProps({ data: groups[red] })}
 			{@const item = groups[red]}
-			<div class="flex-v">
-				<div class="">
-					{#if slots.groupTitleSlot}
-						{@render slots.groupTitleSlot({ item })}
-					{:else}
+			<div class="datalist-group">
+				<header>
+					<Slotted child={groupTitleSlot} slotArgs={{ item }}>
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
-							class="flex-h flex-align-middle pad gap-medium groupHead"
+							class="datalist-group-head"
 							on:click={() => {
 								hidedGroups[red] = !hidedGroups[red];
 							}}
 						>
-							<div class="iconGroup">
-								<Icon class="iconGroup" icon="cil:object-group" />
+							<div class="datalist-group-head-icon">
+								<Icon class="datalist-group-head-icon" icon="cil:object-group" />
 							</div>
 							<div>{groupByField} : <span class="text-bold">{red}</span></div>
-							<div class="flex-main border-b divider" />
+							<div class="datalist-group-head-divider" />
 							<div>{groups[red]?.length}</div>
-							<div class="pad-l border-l iconGroup">
+							<div class="datalist-group-head-icon">
 								<Button
 									on:click={() => {
 										hidedGroups[red] = !hidedGroups[red];
 									}}
 									icon={hidedGroups[red] ? 'chevron-up' : 'chevron-down'}
-									naked
+									variant="naked"
 								/>
 							</div>
 						</div>
-					{/if}
-				</div>
-				<div class="flex-main pos-rel">
+					</Slotted>
+				</header>
+				<div class="datalist-group-body">
 					{#if !hidedGroups[red]}
 						<svelte:self {...groupProps}>
-							{#if slots.dataListCell}
-								{@render slots.dataListCell({ fieldType, fieldName, fieldValue })}
-							{/if}
-							{#if slots.groupTitleSlot}
-								{@render slots.groupTitleSlot({ item: {} })}
-							{/if}
+							<Slotted child={dataListCell} slotArgs={{ fieldType, fieldName, fieldValue }} />
+							<Slotted child={groupTitleSlot} slotArgs={{ item: {} }} />
 						</svelte:self>
 					{/if}
 				</div>
@@ -252,11 +270,13 @@
 		{/each}
 	</div>
 {:else}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div
 		on:datalist:sorted={doSort}
 		on:datalist:select={doSelect}
 		bind:this={element}
-		class="dataList pos-rel {className}"
+		class="datalist {className}"
 		{style}
 		tabindex="0"
 	>
@@ -274,31 +294,11 @@
 					>
 						{#if $dataListContext.hasColumnsProps}
 							{#each Object.keys($dataListContext.columns) as inItem}
-								<slot
-									name="dataListCell"
-									fieldName={$dataListContext.columns[inItem]?.field}
-									fieldType={$dataListContext.columns[inItem]?.fieldType}
-									fieldRawValue={sanitizeHtml(
-										checkGetter({ ...$dataListContext.columns }, inItem, item)
-									)}
-									fieldValue={sanitizeHtml(
-										checkGetter({ ...$dataListContext.columns }, inItem, item)
-									)}
-								/>
+								{@render listCell(item, inItem)}
 							{/each}
 						{:else}
 							{#each Object.keys(item) as inItem}
-								<slot
-									name="dataListCell"
-									fieldName="{$dataListContext.columns[inItem]?.field}}"
-									fieldType={$dataListContext.columns[inItem]?.fieldType}
-									fieldRawValue={sanitizeHtml(
-										checkGetter({ ...$dataListContext.columns }, inItem, item)
-									)}
-									fieldValue={sanitizeHtml(
-										checkGetter({ ...$dataListContext.columns }, inItem, item)
-									)}
-								/>
+								{@render listCell(item, inItem)}
 							{/each}
 						{/if}
 					</DataListRow>
@@ -311,23 +311,4 @@
 
 <style global lang="scss">
 	@import './datalist.scss';
-
-	.groupHead {
-		cursor: pointer;
-
-		.iconGroup {
-			color: #999;
-		}
-
-		&:hover {
-			.iconGroup {
-				color: var(--sld-color-primary);
-			}
-
-			.divider {
-				border-color: var(--sld-color-primary, red);
-				cursor: pointer;
-			}
-		}
-	}
 </style>

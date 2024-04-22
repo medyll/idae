@@ -80,7 +80,7 @@
 						{/if}
 					</slot>
 					{#if $$slots.slotRetrievePassword}
-						<div class="retrieve pad-2">
+						<div class="retrieve">
 							<slot name="slotRetrievePassword" />
 						</div>
 					{/if}
@@ -98,7 +98,9 @@
 	form {
 		z-index: 1000;
 	}
-
+	.retrieve {
+		padding: var(--sld-pad-med);
+	}
 	.form {
 		height: 33% !important;
 		width: 20%;

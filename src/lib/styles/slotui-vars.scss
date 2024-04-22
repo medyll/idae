@@ -9,6 +9,11 @@ $vendor: "sld";
     --#{$vendor}-pad-small: 0.5rem;
     --#{$vendor}-pad-med: 1rem;
     --#{$vendor}-pad-large: 1.5rem;
+
+    --#{$vendor}-gap-tiny: 0.25rem;
+    --#{$vendor}-gap-small: 0.5rem;
+    --#{$vendor}-gap-med: 1rem;
+    --#{$vendor}-gap-large: 1.5rem;
 }
 :root {
     --white: #fff;

@@ -15,9 +15,13 @@
 	export let activeCommonSortField = '';
 </script>
 
-<div bind:this={element} class="flex-h flex-align-middle gap-tiny {className}">
+<div bind:this={element} class="sorterer {className}">
 	<slot />
 	{#each fields as field}
 		<Sorter {...field} bind:sortedData bind:activeCommonSortField {data} />
 	{/each}
 </div>
+
+<style lang="scss">
+	@import './sorterer.scss';
+</style>

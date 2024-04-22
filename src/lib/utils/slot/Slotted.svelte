@@ -7,7 +7,7 @@
 		children?: Snippet<[any]>;
 	};
 
-	let { child = undefined, children, slotArgs = {} }: Props = $props();
+	let { child, children, slotArgs = {} }: Props = $props();
 </script>
 
 {#if child !== undefined}

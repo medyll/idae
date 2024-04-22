@@ -119,9 +119,9 @@
 	}
 </script>
 
-<div bind:this={element} class="treeRoot {className}">
+<div bind:this={element} class="tree {className}">
 	{#each pathes as pat, k}
-		<div data-category={pat.path} class=" ">
+		<div data-category={pat.path}>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
@@ -133,14 +133,14 @@
 				}}
 				title={pat.path}
 				style="--tree-level:{level * 1.5}rem"
-				class="gap-tiny tree-cell"
+				class="tree-cell"
 			>
-				<div class="tree-cellArrow">
+				<div class="tree-cell-arrow">
 					{#if pat?.children?.length}
 						<Icon icon="chevron-{visibleChildChild[pat.path] ? 'down' : 'right'}" />
 					{/if}
 				</div>
-				<div class="tree-cellTitleGutter">
+				<div class="tree-cell-title-gutter">
 					{#if showCheckBox}
 						<input
 							onclick={(event) => {

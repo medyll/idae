@@ -14,7 +14,7 @@
 
   &-nav {
     padding: 0.25rem 0;
-    gap: 1rem;
+    gap: var(--sld-gap-med);
     border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
     position: relative;
     display: flex;
@@ -43,9 +43,21 @@
     }
   }
   &-content {
+    flex: 1;
     background-color: var(--sld-color-background);
     position: relative;
     width: 100%;
+    &-secondary {
+      display: flex;
+      padding: var(--box-density-preset-small) unset;
+      gap: var(--sld-gap-small);
+      &-icon {
+        border-right: 1px solid var(--sld-color-border);
+        border-radius: var(--sld-radius-tiny);
+        box-shadow: var(--sld-elevation-3);
+        padding: var(--sld-padding-small);
+      }
+    }
   }
 
   &-floating-cell {

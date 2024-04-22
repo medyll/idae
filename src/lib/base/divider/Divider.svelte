@@ -49,7 +49,7 @@
 		expansion = 'full',
 		shadow = false,
 		color
-	} = $props<DividerProps>();
+	}: DividerProps = $props();
 
 	let extensionClass = {
 		horizontal: {

@@ -2,8 +2,10 @@
 
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
+	import type { IconObj } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 
 	type TitleBarProps = {
 		/** Function to be called when the close button is clicked */
@@ -13,39 +15,41 @@
 		hasMenu: boolean;
 
 		/** Icon to be displayed in the title bar */
-		icon?: string;
-		slots?: {
-			titleBarIcon?: Snippet;
-			titleBarTitle?: Snippet;
-		};
+		icon?: string | IconObj;
+		title?: string;
+		titleBarIcon?: Snippet;
+		titleBarTitle?: Snippet;
 	};
 
-	let { onClose, hasMenu = false, icon = undefined, slots = {} } = $props<TitleBarProps>();
+	let {
+		onClose,
+		hasMenu = false,
+		icon = undefined,
+		title,
+		titleBarIcon,
+		titleBarTitle
+	}: TitleBarProps = $props();
 </script>
 
-<div class="title-bar flex-h marg-b-1 pad-1">
-	<div class="title flex-main flex-h flex-align-middle">
-		<div class="pad-ii-1 text-center">
-			{#if slots?.titleBarIcon}
-				{@render slots.titleBarIcon()}
-			{:else}
-				<Icon fontSize="small" {icon} />
-			{/if}
+<div class="title-bar">
+	<div class="title-bar-content">
+		<div class="title-bar-content-icon">
+			<Slotted child={titleBarIcon}><Icon fontSize="small" {icon} /></Slotted>
 		</div>
-		<div class="flex-main pad-l-1">
-			{#if slots.titleBarTitle}
-				{@render slots.titleBarTitle()}
-			{/if}
+		<div class="title-bar-content-title">
+			<Slotted child={titleBarTitle}>
+				<slot name="titleBarTitle">{title}</slot>
+			</Slotted>
 		</div>
 	</div>
 	{#if hasMenu}
-		<div class="">
+		<div class="title-bar-menu">
 			<!--<ButtonAction/>-->
 		</div>
 	{/if}
 	{#if Boolean(onClose)}
 		<div class="">
-			<Button on:click={onClose} naked icon="window-close" size="auto" />
+			<Button onclick={onClose} variant="naked" icon="window-close" size="auto" />
 		</div>
 	{/if}
 </div>

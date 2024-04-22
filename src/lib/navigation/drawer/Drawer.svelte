@@ -14,7 +14,7 @@
 
 	let {
 		class: className = '',
-		style = '',
+		style,
 		primary = undefined,
 		secondary = undefined,
 		icon,
@@ -94,7 +94,7 @@
 
 <div
 	bind:this={element}
-	class="drawer flex-v h-full {className}"
+	class="drawer {className}"
 	style={finalStyle}
 	aria-expanded={isOpen}
 	aria-orientation="vertical"
@@ -151,7 +151,7 @@
 				{/if}
 			</header>
 		{/if}
-		<div class="drawer-content" style="position:relative;flex:1;overflow:hidden">
+		<div class="drawer-content">
 			<slot />
 		</div>
 		<footer>

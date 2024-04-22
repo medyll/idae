@@ -1,0 +1,7 @@
+@import "../../styles/presets.scss";
+
+.sorterer {
+    cursor: pointer;
+    @include flex(row, center);
+    gap: var(--sld-gap-tiny);
+}

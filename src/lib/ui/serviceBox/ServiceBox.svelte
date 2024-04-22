@@ -9,20 +9,19 @@
 </script>
 
 <div class="service-box">
-	<div class="flex-main pad-8 gridIconBis">
+	<div class="service-box-main gridIconBis">
 		{#each [...Array(6)] as key, val}
 			<!--for popper-->
 			<ButtonMenu actionComponent={Debug}>Setting {val}</ButtonMenu>
 		{/each}
 	</div>
-	<div class="pad-2 flex-h flex-align-right">
+	<div class="service-box-buttons">
 		<IconButton icon="faList"></IconButton>
 		<IconButton icon="faList"></IconButton>
 	</div>
 </div>
 
 <style lang="scss">
-	// @import "../../styles/slotui-vars.scss";
 	@import '../../styles/presets.scss';
 	.gridIconBis {
 		width: 100%;
@@ -36,5 +35,16 @@
 		height: 360px;
 		display: flex;
 		flex-direction: column;
+
+		&-main {
+			flex: 1;
+			padding: var(--sld-pad-large);
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
+			padding: var(--sld-pad-med);
+		}
 	}
 </style>

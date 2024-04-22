@@ -3,45 +3,24 @@
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, IconObj } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
-
-	type ContentSwitcherProps = CommonProps & {
-		/** className off the root component */
-		class?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-
-		/** css style off the root component */
-		style?: string | null;
-
-		/** icon for the switcher */
-		icon: string;
-
-		/** icon for the back action */
-		iconback?: string;
-
-		/** parent element of the switcher */
-		parent?: HTMLElement | undefined;
-		slots?: {
-			contentSwitcherIcon?: Snippet;
-			switcherSlot?: Snippet;
-			contentSwitcherReveal?: Snippet;
-		};
-	};
+	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import type { ContentSwitcherProps } from './types.js';
 
 	let {
 		class: className = '',
 		element = undefined,
-		style = '',
+		style,
 		icon = 'toggle',
 		iconback = 'chevron-left',
 		parent = undefined,
-		slots = {}
+		togglerIcon,
+		backIcon,
+		contentSwitcherReveal
 	}: ContentSwitcherProps = $props();
 
-	let visibleSate: boolean = false;
+	let visibleSate: boolean = $state(false);
 	let thisRef: any;
 	let realParent: HTMLElement | null = $derived(parent ?? element?.parentElement ?? null);
 
@@ -67,26 +46,20 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class={className} {style} on:click={handleClick}>
-	{#if slots?.contentSwitcherIcon}
-		{@render slots.contentSwitcherIcon()}
-	{:else}
+	<Slotted child={togglerIcon}>
 		<IconButton style="aspect-ratio:1/1" {icon} iconFontSize="small" />
-	{/if}
+	</Slotted>
 </div>
 <div bind:this={element} style="display:none">
-	<div
-		bind:this={thisRef}
-		class="flex-h flex-align-middle content-switcher"
-		style="width:100%;flex:1;position: relative"
-	>
+	<div bind:this={thisRef} class="content-switcher">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
-		<div on:click={handleClick}>
-			<Button ratio="1/1" icon={iconback} iconFontSize="small" />
+		<div onclick={handleClick}>
+			<Slotted child={backIcon}>
+				<Button ratio="1/1" icon={iconback} />
+			</Slotted>
 		</div>
-		{#if slots?.contentSwitcherReveal}
-			{@render slots.contentSwitcherReveal()}
-		{/if}
+		<Slotted child={contentSwitcherReveal} />
 	</div>
 </div>
 

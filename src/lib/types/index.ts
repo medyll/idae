@@ -10,6 +10,13 @@ export enum densePreset {
 	kind = 'kind'
 }
 
+export enum tallPreset {
+	default = 'default',
+	small = 'small',
+	medium = 'medium',
+	kind = 'kind'
+}
+
 export enum buttonVariant {
 	link = 'link',
 	contained = 'contained',
@@ -17,7 +24,8 @@ export enum buttonVariant {
 	naked = 'naked',
 	flat = 'flat'
 }
-enum iconSize {
+
+export enum iconSize {
 	auto = 'auto',
 	tiny = 'tiny',
 	small = 'small',
@@ -26,15 +34,33 @@ enum iconSize {
 	full = 'full'
 }
 
+export enum flow {
+	relative = 'relative',
+	absolute = 'absolute',
+	fixed = 'fixed'
+}
+
+export enum width {
+	auto = 'auto',
+	tiny = 'tiny',
+	small = 'small',
+	medium = 'medium',
+	large = 'large',
+	full = 'full',
+	default = 'default'
+}
+
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
 	dense: keyof typeof densePreset;
-	tall: keyof typeof densePreset;
+	width: keyof typeof width;
+	tall: keyof typeof tallPreset;
 	iconSize: keyof typeof iconSize;
+	buttonVariant: keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
-	flow: 'relative' | 'absolute' | 'fixed';
+	flow: keyof typeof flow;
 	action: (event: any, data?: Data) => void;
-	icon: AppIcon;
+	icon: string | IconObj;
 }
 
 export type Data = Record<string, any>;
@@ -42,7 +68,7 @@ export type Data = Record<string, any>;
 export type CommonProps = {
 	element?: HTMLElement;
 	class?: string;
-	style?: CSSStyleDeclaration;
+	style?: string;
 	children?: Snippet | Snippet<[any]>;
 	slots?: Record<string, Snippet<[any]> | undefined>;
 };

@@ -1,0 +1,24 @@
+@import "../../styles/presets.scss";
+.chrome-frame {
+    @include flex("column");
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    color: var(--sld-color-foreground);
+    background-color: var(--sld-color-background);
+    overflow: hidden;
+
+    &-bar {
+        @include flex("row", center);
+        gap: var(--sld-gap-med);
+        padding: var(--sld-pad-medium);
+        border-bottom: 1px solid var(--sld-color-border);
+    }
+
+    &-content {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
+}
