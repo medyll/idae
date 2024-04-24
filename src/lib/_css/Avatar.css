@@ -1,8 +1,0 @@
-.avatar {
-  position: relative;
-  border-radius: var(--css-avatar-radius, 20%);
-  border: 1px solid var(--css-avatar-border-color, var(--sld-color-border));
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}

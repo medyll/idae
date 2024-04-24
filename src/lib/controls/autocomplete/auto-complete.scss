@@ -5,6 +5,6 @@
     &-boot {
         padding: var(--sld-pad-medium);
         gap: var(--sld-gap-small);
-        @include flex(row, center, center);
+        @include flex(row, center);
     }
 }

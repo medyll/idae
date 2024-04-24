@@ -22,8 +22,8 @@ function walkDir(dir, callback) {
 }
 
 // Fonction pour convertir SCSS en CSS
-function convertScssToCss(filePath) {
-    const result = sass.renderSync({ file: filePath });
+function convertScssToCss(filePath,compressed = false) {
+    const result = sass.renderSync({ file: filePath, outputStyle: compressed ? 'compressed' : 'expanded' });
     return result.css.toString();
 }
 
@@ -34,11 +34,14 @@ const combinedCSSStream = fs.createWriteStream(combinedCSSFile);
 walkDir(sourceDir, function(filePath) {
     if (path.extname(filePath) === '.scss') {
         const cssContent = convertScssToCss(filePath);
+        const cssMinContent = convertScssToCss(filePath,true);
         const fileName = path.basename(filePath);
         const targetFilePath = path.join(targetDir, path.basename(filePath, '.scss') + '.css');
+        const targetMinFilePath = path.join(targetDir, path.basename(filePath, '.scss') + '.min.css');
         
         // Enregistrer chaque fichier CSS individuellement
         fs.writeFileSync(targetFilePath, cssContent);
+        fs.writeFileSync(targetMinFilePath, cssMinContent);
         
         // Ajouter le contenu au fichier CSS combiné
         combinedCSSStream.write('/** '+ fileName + ' -----*/ \n' +cssContent + '\n');
