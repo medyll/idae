@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/medyll/slot-ui/compare/v0.2.0-beta.3...v0.2.0) (2024-04-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* menuItem
+
+### Features
+
+* added density to slider as a css preset ([2c3f820](https://github.com/medyll/slot-ui/commit/2c3f8202000961ed1740ec409f1115b5030c185d))
+* created menu-list merging menu and list ([5590aff](https://github.com/medyll/slot-ui/commit/5590affaa1f4e985ff8f71fda3874e1504394166))
+* css export per component + global ([a739980](https://github.com/medyll/slot-ui/commit/a7399806427f7768368fc2e3e29752644fc3353f))
+* migrated looper ([9e547ef](https://github.com/medyll/slot-ui/commit/9e547ef51cab536a8e595f3328eb0f559c386402))
+* migrated scss properties for base components ([05a0aad](https://github.com/medyll/slot-ui/commit/05a0aadeceec84578dde6d0addd88d3609e893de))
+* migrated scss properties for controls  components ([77d91b0](https://github.com/medyll/slot-ui/commit/77d91b054a984903704079a7819d31d30f97ca56))
+* migrated scss properties for data  components ([2b69dfa](https://github.com/medyll/slot-ui/commit/2b69dfad3e165b9e039dfa1e0c4652feea5e7724))
+* migrated scss properties for navigation  components ([63e705d](https://github.com/medyll/slot-ui/commit/63e705d5ede112d0c20e9a5fbea77a258180b46c))
+* migrated scss properties for ui  components ([f6f92fd](https://github.com/medyll/slot-ui/commit/f6f92fd985bf59a72aea123fecec276e7be8901f))
+* migrated slider ([7c21732](https://github.com/medyll/slot-ui/commit/7c217320f3e0c774afc17d65fb8dc237f9003172))
+* migrated togglebar ([95271ed](https://github.com/medyll/slot-ui/commit/95271edca09cdb06cca09de444219c76aefca2b6))
+* migrated toolbar ([cd1bd24](https://github.com/medyll/slot-ui/commit/cd1bd243795a5f73205779e9fad9a92048db9435))
+* removed cssFabric utility classes ([0c6a718](https://github.com/medyll/slot-ui/commit/0c6a718a98d91f6c59bea21ad21cdf305e351446))
+* taskbar migration ([566325d](https://github.com/medyll/slot-ui/commit/566325dbece3f439ef12f279d02b0438f0cb6b1e))
+* updated popper to svelte 5 ([a1fda6c](https://github.com/medyll/slot-ui/commit/a1fda6cfb87c4b30303cb6a3986a54962d4bbbd3))
+* upgraded checkbox ([3bb7532](https://github.com/medyll/slot-ui/commit/3bb7532bc0ea7a4e6178201419caca10517dd2cf))
+
+
+### Bug Fixes
+
+* autocomplete snippets ([dec8737](https://github.com/medyll/slot-ui/commit/dec87376412ce4f2afb4e92f9b2f144460d95528))
+* Button menu now use the popper ([38b14f2](https://github.com/medyll/slot-ui/commit/38b14f2091fb637e77664778e73deb091ef496b0))
+* button simplified props, and removed dyn parts reserved to buttonAction ([17049d0](https://github.com/medyll/slot-ui/commit/17049d04dba6c4cc5b9d99f362b343958fa0e081))
+* context state for menu ([8b029b5](https://github.com/medyll/slot-ui/commit/8b029b5ebecd2cdc340989e0ebe6b69df36805fa))
+* drawer size ([27d4f75](https://github.com/medyll/slot-ui/commit/27d4f7512694083c631d29275da2339ea349336d))
+* examples update ([1427faf](https://github.com/medyll/slot-ui/commit/1427faf1e4213d757778febd484a1ae4a5fdac16))
+* itemindex ([853dd9f](https://github.com/medyll/slot-ui/commit/853dd9f627c699a88f18476520be54631a9cd471))
+* menu list ([5b2636e](https://github.com/medyll/slot-ui/commit/5b2636e6bc74d32cf5c24259937dac25a39fc5f7))
+* menuItem ([1c5e6e1](https://github.com/medyll/slot-ui/commit/1c5e6e1b2c777bc2fa9da5f51c746cacf41e7da3))
+* menuitem context ([eb2ad11](https://github.com/medyll/slot-ui/commit/eb2ad119493d76193b5601d08f5610897658286b))
+* removed cssFabric usage for backdrop ([d3a4387](https://github.com/medyll/slot-ui/commit/d3a43877fbaf89bf0808593f835c632c39b60b62))
+* tabs ([7b97ff7](https://github.com/medyll/slot-ui/commit/7b97ff74c1590949245818a51b8f517bbf9a91f3))
+* tree migration ([1f625fe](https://github.com/medyll/slot-ui/commit/1f625fe14c17617ff0f8701138281de17708a8dc))
+* ts optional vars ([5b18943](https://github.com/medyll/slot-ui/commit/5b1894301d5a6a955f204de2d34b8998a05fdf4b))
+* window ([465b6a1](https://github.com/medyll/slot-ui/commit/465b6a1cb6d150720ce1500e110d81eecefe55ca))
+
 ## [0.2.0-beta.3](https://github.com/medyll/slot-ui/compare/v0.2.0-beta.2...v0.2.0-beta.3) (2024-03-18)
 
 ## [0.2.0-beta.2](https://github.com/medyll/slot-ui/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2024-03-18)
