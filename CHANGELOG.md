@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0-beta.4](https://github.com/medyll/slot-ui/compare/v0.2.0...v0.2.0-beta.4) (2024-04-26)
+
 ## [0.2.0](https://github.com/medyll/slot-ui/compare/v0.2.0-beta.3...v0.2.0) (2024-04-26)
 
 
