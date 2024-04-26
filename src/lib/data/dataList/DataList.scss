@@ -1,5 +1,25 @@
 @import "../../styles/presets.scss";
 
+:root {
+	--datalist-pad: var(--sld-pad-med);
+	--datalist-gap: var(--sld-gap-med);
+	--datalist-icon-color: #999;
+	--datalist-icon-color-hover: var(--sld-color-primary);
+	--datalist-divider-border: transparent;
+	--datalist-divider-border-hover: var(--sld-color-primary, red);
+	--datalist-background-color: var(--sld-color-paper-alpha-low);
+	--datalist-radius: var(--sld-radius-tiny);
+	--datalist-box-shadow: var(--sld-elevation-1);
+	--datalist-border: var(--sld-color-border);
+	--datalist-cell-border: var(--sld-color-border);
+	--datalist-cell-border-hover: var(--sld-color-primary-alpha);
+	--datalist-row-border: var(--sld-color-border);
+	--datalist-row-background-color-hover: var(--sld-color-paper);
+	--datalist-cell-color: var(--sld-color-foreground);
+	--datalist-cell-background-color-selected: var(--sld-color-primary);
+	--datalist-cell-color-selected: white;
+}
+
 .datalist {
 	height: 100%;
 	position: relative;
@@ -13,27 +33,27 @@
 
 		&-head {
 			@include flex(row, center);
-			padding: var(--sld-pad-med);
-			gap: var(--sld-gap-med);
+			padding: var(--datalist-pad);
+			gap: var(--datalist-gap);
 			cursor: pointer;
 
 			&-icon {
-				color: #999;
+				color: var(--datalist-icon-color);
 			}
 
 			&-divider {
-				border-bottom: 1px solid transparent;
+				border-bottom: 1px solid var(--datalist-divider-border);
 			}
 
 			&:hover {
 				&-icon {
-					color: var(--sld-color-primary);
+					color: var(--datalist-icon-color-hover);
 				}
 
 				&-divider {
 					flex: 1;
 					border-bottom-width: 1px;
-					border-color: var(--sld-color-primary, red);
+					border-color: var(--datalist-divider-border-hover);
 					cursor: pointer;
 				}
 			}
@@ -45,27 +65,29 @@
 		}
 	}
 }
+
 .datalist-group-head {
-	//display: flex;
 	margin: 0.5rem 0;
 	align-items: stretch;
 	height: 32px;
 	z-index: 100;
-	background-color: var(--sld-color-paper-alpha-low);
+	background-color: var(--datalist-background-color);
 	backdrop-filter: blur(20px);
-	border-radius: var(--sld-radius-tiny);
-	box-shadow: var(--sld-elevation-1);
-	border: 1px solid var(--sld-color-border);
+	border-radius: var(--datalist-radius);
+	box-shadow: var(--datalist-box-shadow);
+	border: 1px solid var(--datalist-border);
+
 	.dataListCell {
 		display: flex;
 		align-items: stretch;
 		overflow: hidden;
-		border-right: 1px solid var(--sld-color-border);
+		border-right: 1px solid var(--datalist-cell-border);
 		position: relative;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+
 		&:last-of-type {
 			border-right: 1px solid transparent;
 		}
@@ -73,7 +95,7 @@
 		&[data-sortable="true"] {
 			cursor: pointer;
 			&:hover {
-				background-color: var(--sld-color-primary-alpha);
+				background-color: var(--datalist-cell-border-hover);
 			}
 		}
 
@@ -82,57 +104,54 @@
 			align-items: center;
 			min-width: 0;
 			width: 100%;
+
 			.cellHeaderContent {
 				flex: 1;
 				overflow: hidden;
 				padding: 0 8px;
 			}
+
 			.cellHeaderSorter {
-				//padding: 0 4px;
 			}
 		}
 	}
 }
 
 .dataListRow {
-	// display: flex;
-	border-bottom: 1px solid var(--sld-color-border);
-	// margin: 0 0.5rem;
-	/* border-radius: var(--sld-radius-small);
-			margin: 0.25rem 0; */
+	border-bottom: 1px solid var(--datalist-row-border);
+	--webkit-content-visibility: auto;
+	webkit-content-visibility: auto;
 
-	// content-visibility: auto;
 	&:last-of-type {
 		border-bottom: 1px solid transparent;
 	}
 
 	&:hover {
-		background-color: var(--sld-color-paper);
-		.dataListCell {
-		}
+		background-color: var(--datalist-row-background-color-hover);
 	}
+
 	&[data-selected="true"] {
-		background-color: var(--sld-color-primary);
+		background-color: var(--datalist-cell-background-color-selected);
+
 		.dataListCell {
-			color: white;
+			color: var(--datalist-cell-color-selected);
 		}
 	}
 
 	.dataListCell {
 		padding: 0.5rem 0.5rem;
-		color: var(--sld-color-foreground);
-		border-right: 1px solid var(--sld-color-border);
+		color: var(--datalist-cell-color);
+		border-right: 1px solid var(--datalist-cell-border);
+
 		&:last-of-type {
 			border-right: 1px solid transparent;
 		}
+
 		&[data-noWrap="true"] {
 			display: box;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
-			/* display: -webkit-box;
-					-webkit-line-clamp: 1;
-					-webkit-box-orient: vertical; */
 		}
 	}
 }

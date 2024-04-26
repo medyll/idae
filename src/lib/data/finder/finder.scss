@@ -1,0 +1,13 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --finder-gap: var(--sld-gap-tiny);
+}
+
+.finder {
+    &-container {
+        display: inline-flex;
+        gap: var(--finder-gap);
+        @include ui-width-presets;
+    }
+}

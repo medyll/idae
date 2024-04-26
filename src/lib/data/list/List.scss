@@ -1,7 +1,7 @@
 // @import "../../styles/slotui-vars.scss";
 @import "../../styles/presets.scss";
 
-ul.listRoot {
+:root {
   --sld-list-padding: 0;
   --sld-list-item-padding: 0;
   --sld-list-item-radius: var(--sld-radius-small);

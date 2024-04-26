@@ -98,7 +98,7 @@
 </script>
 
 <div
-	class="container {classRoot}"
+	class="finder-container {classRoot}"
 	data-width={sizeRoot}
 	bind:this={container}
 	on:clickAway={() => {
@@ -120,11 +120,11 @@
 	</div>
 	{#if showSortMenu}
 		<Button
-			on:click={(event) => {
+			onclick={(event) => {
 				event.preventDefault();
 				popperOpen = !popperOpen;
 			}}
-			naked
+			variant="naked"
 			size="tiny"
 			icon="chevron-{popperOpen ? 'up' : 'down'}"
 			iconSize="small"
@@ -137,7 +137,7 @@
 			<MenuItem
 				divider={true}
 				text="strict"
-				on:click={() => {
+				onclick={() => {
 					if (mode === 'exact') {
 						mode = 'partial';
 					} else {
@@ -152,7 +152,7 @@
 			</MenuItem>
 			<MenuItem
 				text="strict"
-				on:click={() => {
+				onclick={() => {
 					defaultField = '*';
 				}}
 			>
@@ -166,7 +166,7 @@
 			{#each dataKeys as kk}
 				<MenuItem
 					text="strict"
-					on:click={() => {
+					onclick={() => {
 						defaultField = kk;
 					}}
 				>
@@ -183,11 +183,5 @@
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
-	.container {
-		display: inline-flex;
-		gap: 0.25rem;
-		@include ui-width-presets;
-	}
+	@import './finder.scss';
 </style>
