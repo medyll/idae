@@ -1,5 +1,9 @@
+:root {
+  --rating-gap: var(--sld-gap-small);
+}
+
 .rating {
   display: flex;
   flex-direction: var(--direction);
-  gap: 0.25rem;
+  gap: var(--rating-gap);
 }

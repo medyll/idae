@@ -1,3 +1,7 @@
+:root {
+  --backdrop-background-color: var(--sld-color-foreground-alpha-high);
+}
+
 .backdrop {
   z-index: 10000;
   height: 100%;
@@ -10,7 +14,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: var(--backdrop-background-color, var(--sld-color-foreground-alpha-high));
+  background-color: var(--backdrop-background-color);
   backdrop-filter: blur(5px);
   --moz-backdrop-filter: blur(5px);
   display: flex;

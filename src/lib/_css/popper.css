@@ -1,16 +1,25 @@
+:root {
+  --popper-border-radius: var(--sld-radius-tiny);
+  --popper-box-shadow: var(--sld-elevation-4);
+  --popper-background-color: var(--sld-color-background-alpha-mid);
+  --popper-backdrop-filter: blur(30px);
+  --popper-z-index: 30000;
+  --popper-open-border: 1px color red;
+}
+
 .popper {
-  border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
+  border-radius: var(--popper-border-radius);
   overflow: hidden;
   position: fixed;
-  box-shadow: var(--sld-elevation-4);
-  background-color: var(--sld-color-background-alpha-mid);
-  backdrop-filter: blur(30px);
+  box-shadow: var(--popper-box-shadow);
+  background-color: var(--popper-background-color);
+  backdrop-filter: var(--popper-backdrop-filter);
   display: inline-block;
   top: 0;
-  z-index: 30000;
+  z-index: var(--popper-z-index);
 }
 .popper::popover-open {
-  border: 1px color red;
+  border: var(--popper-open-border);
   margin: none !important;
   padding: none !important;
 }

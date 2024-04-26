@@ -1,1 +1,1 @@
-.sorterer{cursor:pointer;display:flex;flex-direction:row;align-items:center;gap:var(--sld-gap-tiny)}
+:root{--sorterer-gap: var(--sld-gap-tiny)}.sorterer{cursor:pointer;display:flex;flex-direction:row;align-items:center;gap:var(--sorterer-gap)}

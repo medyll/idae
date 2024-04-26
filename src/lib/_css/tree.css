@@ -1,22 +1,31 @@
+:root {
+  --tree-cell-border: 1px solid transparent;
+  --tree-cell-padding: var(--sld-pad-tiny);
+  --tree-cell-border-radius: var(--sld-radius-small);
+  --tree-cell-gap: var(--sld-gap-tiny);
+  --tree-cell-arrow-width: 16px;
+  --tree-cell-title-gutter-gap: var(--sld-pad-tiny);
+}
+
 .tree-cell {
-  border: 1px solid transparent;
-  padding: 0.5rem;
+  border: var(--tree-cell-border);
+  padding: var(--tree-cell-padding);
   padding-left: var(--tree-level);
-  border-radius: var(--sld-radius-small);
-  gap: var(--sld-gap-tiny);
+  border-radius: var(--tree-cell-border-radius);
+  gap: var(--tree-cell-gap);
   display: flex;
   align-items: center;
   width: 100%;
   cursor: pointer;
 }
 .tree-cell-arrow {
-  width: 16px;
+  width: var(--tree-cell-arrow-width);
   text-align: center;
 }
 .tree-cell-title-gutter {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--tree-cell-title-gutter-gap);
 }
 .tree-cell:hover {
   border-color: var(--sld-hover-border-color);

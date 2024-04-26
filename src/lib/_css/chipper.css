@@ -1,6 +1,12 @@
+:root {
+  --chipper-gap: var(--sld-gap-tiny);
+  --chipper-radius: var(--sld-radius-large);
+  --chipper-chip-color: var(--css-button-chip-color, var(--sld-color-primary));
+}
+
 .chipper {
   position: relative;
-  gap: var(--sld-gap-tiny);
+  gap: var(--chipper-gap);
 }
 .chipper .chipper-content {
   padding: 0.5rem;
@@ -9,10 +15,10 @@
   display: block;
   position: absolute;
   z-index: 2;
-  border-radius: var(--sld-radius-large);
+  border-radius: var(--chipper-radius);
   transition: all 0.25s;
   max-height: 100%;
-  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+  background-color: var(--chipper-chip-color);
 }
 .chipper .chipper-chip[data-position=left] {
   top: 2px;
@@ -46,5 +52,5 @@
   height: 100%;
   width: 100%;
   min-height: 3px;
-  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+  background-color: var(--chipper-chip-color);
 }

@@ -1,21 +1,21 @@
-:root input {
-  --sld-input-background: var(--sld-color-background-alpha-high);
-  --sld-input-border-width: 1px;
-  --sld-input-border-color: var(--sld-color-foreground-alpha-mid);
-  --sld-input-border-bottom-width: 2px;
-  --sld-input-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
-  --sld-input-radius: var(--sld-radius-small);
-  --sld-input-padding: 0 0.5rem;
-  --sld-input-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+:root {
+  --textfield-background: var(--sld-color-background-alpha-high);
+  --textfield-border-width: 1px;
+  --textfield-border-color: var(--sld-color-foreground-alpha-mid);
+  --textfield-border-bottom-width: 2px;
+  --textfield-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+  --textfield-radius: var(--sld-radius-small);
+  --textfield-padding: 0 0.5rem;
+  --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
 }
 
 input {
-  border: var(--sld-input-border-width) solid var(--sld-input-border-color);
-  border-bottom: var(--sld-input-border-bottom-width) solid var(--sld-input-border-bottom-color);
-  border-radius: var(--sld-input-radius);
-  padding: var(--sld-input-padding);
-  box-shadow: var(--sld-input-shadow);
-  background-color: var(--sld-input-background);
+  border: var(--textfield-border-width) solid var(--textfield-border-color);
+  border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
+  border-radius: var(--textfield-radius);
+  padding: var(--textfield-padding);
+  box-shadow: var(--textfield-shadow);
+  background-color: var(--textfield-background);
   color: var(--sld-color-foreground);
 }
 input [error] {
@@ -77,7 +77,7 @@ input:hover {
   justify-content: center;
   padding: 0.5rem;
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: var(--sld-input-radius, var(--sld-radius-small));
+  border-radius: var(--textfield-radius, var(--sld-radius-small));
 }
 
 .inputEnd {
@@ -91,5 +91,5 @@ input:hover {
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
-  border-radius: var(--sld-input-radius, var(--sld-radius-small));
+  border-radius: var(--textfield-radius, var(--sld-radius-small));
 }

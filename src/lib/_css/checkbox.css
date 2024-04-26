@@ -1,4 +1,4 @@
-:root .checkbox {
+:root {
   --sld-checkbox-background: var(--sld-color-background-alpha-high);
   --sld-checkbox-background-hover: var(--sld-color-primary);
   --sld-checkbox-background-checked: var(--sld-color-primary);

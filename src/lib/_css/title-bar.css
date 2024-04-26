@@ -1,19 +1,25 @@
+:root {
+  --title-bar-gap: var(--sld-gap-med);
+  --title-bar-pad: var(--sld-pad-med);
+  --title-bar-color-border-bottom: var(--sld-color-border);
+}
+
 .title-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid var(--sld-color-border);
+  border-bottom: 1px solid var(--title-bar-color-border-bottom);
 }
 .title-bar-content {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--sld-gap-med);
+  gap: var(--title-bar-gap);
   min-height: 34px;
   flex: 1;
 }
 .title-bar-content-icon {
-  padding: var(--sld-pad-med);
+  padding: var(--title-bar-pad);
 }
 .title-bar-content-title {
   flex: 1;

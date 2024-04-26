@@ -1,20 +1,28 @@
+:root {
+  --toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
+  --toolbar-gap: var(--sld-pad-tiny);
+  --toolbar-divider-border: 1px solid red;
+  --toolbar-divider-height: 1rem;
+  --toolbar-vertical-divider-border: 1px solid green;
+  --toolbar-vertical-divider-width: 1rem;
+}
+
 .toolbar {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: attr(--color);
-  padding: var(--sld-toolbar-padding, var(--box-density-1, 0.5rem));
-  gap: 0.5rem;
+  padding: var(--toolbar-padding);
+  gap: var(--toolbar-gap);
 }
 .toolbar divider {
-  border: 1px solid red;
-  height: 1rem;
+  border: var(--toolbar-divider-border);
+  height: var(--toolbar-divider-height);
 }
 
 .toolbar.vertical {
   flex-direction: column;
 }
 .toolbar.vertical divider {
-  border: 1px solid green;
-  width: 1rem;
+  border: var(--toolbar-vertical-divider-border);
+  width: var(--toolbar-vertical-divider-width);
 }

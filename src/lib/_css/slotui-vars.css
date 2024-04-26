@@ -126,29 +126,29 @@ body[data-theme=dark],
   --sld-color-tertiary-lighten-mid: color-mix(in srgb, var(--sld-color-tertiary), white 30%);
   --sld-color-tertiary-lighten-high: color-mix(in srgb, var(--sld-color-tertiary), white 60%);
   /* alpha  discrete */
-  --sld-color-discrete-alpha-low: color-mix(in srgb, var(--sld-color-discrete), transparent 30%);
-  --sld-color-discrete-alpha-mid: color-mix(in srgb, var(--sld-color-discrete), transparent 40%);
-  --sld-color-discrete-alpha-high: color-mix(in srgb, var(--sld-color-discrete), transparent 80%);
+  --sld-color-discrete-alpha-low: color-mix(in srgb, var(--sld-color-discrete), transparent 10%);
+  --sld-color-discrete-alpha-mid: color-mix(in srgb, var(--sld-color-discrete), transparent 30%);
+  --sld-color-discrete-alpha-high: color-mix(in srgb, var(--sld-color-discrete), transparent 60%);
   /* alpha  success */
-  --sld-color-success-alpha-low: color-mix(in srgb, var(--sld-color-success), transparent 30%);
-  --sld-color-success-alpha-mid: color-mix(in srgb, var(--sld-color-success), transparent 40%);
-  --sld-color-success-alpha-high: color-mix(in srgb, var(--sld-color-success), transparent 80%);
+  --sld-color-success-alpha-low: color-mix(in srgb, var(--sld-color-success), transparent 10%);
+  --sld-color-success-alpha-mid: color-mix(in srgb, var(--sld-color-success), transparent 30%);
+  --sld-color-success-alpha-high: color-mix(in srgb, var(--sld-color-success), transparent 60%);
   /* alpha  info */
-  --sld-color-info-alpha-low: color-mix(in srgb, var(--sld-color-info), transparent 30%);
-  --sld-color-info-alpha-mid: color-mix(in srgb, var(--sld-color-info), transparent 40%);
-  --sld-color-info-alpha-high: color-mix(in srgb, var(--sld-color-info), transparent 80%);
+  --sld-color-info-alpha-low: color-mix(in srgb, var(--sld-color-info), transparent 10%);
+  --sld-color-info-alpha-mid: color-mix(in srgb, var(--sld-color-info), transparent 30%);
+  --sld-color-info-alpha-high: color-mix(in srgb, var(--sld-color-info), transparent 60%);
   /* alpha  warning */
-  --sld-color-warning-alpha-low: color-mix(in srgb, var(--sld-color-warning), transparent 30%);
-  --sld-color-warning-alpha-mid: color-mix(in srgb, var(--sld-color-warning), transparent 40%);
-  --sld-color-warning-alpha-high: color-mix(in srgb, var(--sld-color-warning), transparent 80%);
+  --sld-color-warning-alpha-low: color-mix(in srgb, var(--sld-color-warning), transparent 10%);
+  --sld-color-warning-alpha-mid: color-mix(in srgb, var(--sld-color-warning), transparent 30%);
+  --sld-color-warning-alpha-high: color-mix(in srgb, var(--sld-color-warning), transparent 60%);
   /* alpha  alert */
-  --sld-color-alert-alpha-low: color-mix(in srgb, var(--sld-color-alert), transparent 30%);
-  --sld-color-alert-alpha-mid: color-mix(in srgb, var(--sld-color-alert), transparent 40%);
-  --sld-color-alert-alpha-high: color-mix(in srgb, var(--sld-color-alert), transparent 80%);
+  --sld-color-alert-alpha-low: color-mix(in srgb, var(--sld-color-alert), transparent 10%);
+  --sld-color-alert-alpha-mid: color-mix(in srgb, var(--sld-color-alert), transparent 30%);
+  --sld-color-alert-alpha-high: color-mix(in srgb, var(--sld-color-alert), transparent 60%);
   /* alpha  error */
-  --sld-color-error-alpha-low: color-mix(in srgb, var(--sld-color-error), transparent 30%);
-  --sld-color-error-alpha-mid: color-mix(in srgb, var(--sld-color-error), transparent 40%);
-  --sld-color-error-alpha-high: color-mix(in srgb, var(--sld-color-error), transparent 80%);
+  --sld-color-error-alpha-low: color-mix(in srgb, var(--sld-color-error), transparent 10%);
+  --sld-color-error-alpha-mid: color-mix(in srgb, var(--sld-color-error), transparent 30%);
+  --sld-color-error-alpha-high: color-mix(in srgb, var(--sld-color-error), transparent 60%);
   /* darken  discrete */
   --sld-color-discrete-darken-low: color-mix(in srgb, var(--sld-color-discrete), black 10%);
   --sld-color-discrete-darken-mid: color-mix(in srgb, var(--sld-color-discrete), black 30%);
@@ -201,8 +201,7 @@ body[data-theme=dark],
 
 /* presets */
 :root {
-  --sld-color-border: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
-  --sld-theme-gap-tiny: 1.5rem;
+  --sld-color-border: var(--sld-color-foreground-alpha-low);
   --sld-hover-background-color: var(--sld-color-secondary-alpha-mid);
   --sld-hover-border-color: var(--sld-color-foreground-alpha-high);
   --sld-hover-shadow: var(--sld-elevation-3);

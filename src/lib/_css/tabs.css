@@ -1,3 +1,16 @@
+:root {
+  --tabs-nav-border-color: var(--sld-color-primary-alpha-high);
+  --tabs-content-background-color: var(--sld-color-background);
+  --tabs-content-secondary-padding: var(--box-density-preset-small);
+  --tabs-content-secondary-gap: var(--sld-gap-small);
+  --tabs-content-secondary-icon-border-right: var(--sld-color-border);
+  --tabs-content-secondary-icon-border-radius: var(--sld-radius-tiny);
+  --tabs-content-secondary-icon-box-shadow: var(--sld-elevation-3);
+  --tabs-content-secondary-icon-padding: var(--sld-padding-small);
+  --tabs-floating-cell-slot-border-radius: var(--sld-radius-small);
+  --tabs-floating-cell-slot-background-color: var(--sld-color-primary);
+}
+
 .tab {
   position: relative;
   display: flex;
@@ -11,7 +24,7 @@
 .tab-nav {
   padding: 0.25rem 0;
   gap: var(--sld-gap-med);
-  border-bottom: 1px solid var(--sld-tabs-nav-border-color, var(--sld-color-primary-alpha-high));
+  border-bottom: 1px solid var(--tabs-nav-border-color);
   position: relative;
   display: flex;
   align-items: center;
@@ -39,20 +52,20 @@
 }
 .tab-content {
   flex: 1;
-  background-color: var(--sld-color-background);
+  background-color: var(--tabs-content-background-color);
   position: relative;
   width: 100%;
 }
 .tab-content-secondary {
   display: flex;
-  padding: var(--box-density-preset-small) unset;
-  gap: var(--sld-gap-small);
+  padding: var(--tabs-content-secondary-padding) unset;
+  gap: var(--tabs-content-secondary-gap);
 }
 .tab-content-secondary-icon {
-  border-right: 1px solid var(--sld-color-border);
-  border-radius: var(--sld-radius-tiny);
-  box-shadow: var(--sld-elevation-3);
-  padding: var(--sld-padding-small);
+  border-right: 1px solid var(--tabs-content-secondary-icon-border-right);
+  border-radius: var(--tabs-content-secondary-icon-border-radius);
+  box-shadow: var(--tabs-content-secondary-icon-box-shadow);
+  padding: var(--tabs-content-secondary-icon-padding);
 }
 .tab-floating-cell {
   top: auto;
@@ -62,9 +75,9 @@
   transition: all 0.15;
 }
 .tab-floating-cell-slot {
-  border-radius: var(--sld-radius-small);
+  border-radius: var(--tabs-floating-cell-slot-border-radius);
   min-height: 4px;
-  background-color: var(--sld-color-primary);
+  background-color: var(--tabs-floating-cell-slot-background-color);
   width: 100%;
   position: absolute;
   transition: all 0.25s ease-in;

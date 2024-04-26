@@ -1,10 +1,19 @@
+:root {
+  --box-color-background: var(--sld-color-background);
+  --box-border-bottom: var(--sld-color-primary);
+  --box-radius: var(--sld-radius-small);
+  --box-elevation: var(--sld-elevation-3);
+  --box-gap: var(--sld-gap-tiny);
+  --box-pad: var(--sld-pad-small);
+}
+
 .box {
   min-height: 160px;
   min-width: 320px;
-  background-color: var(--sld-color-background);
-  border-bottom: 1px solid var(--sld-color-primary);
-  border-radius: var(--sld-radius-small);
-  box-shadow: var(--sld-elevation-3);
+  background-color: var(--box-color-background);
+  border-bottom: 1px solid var(--box-border-bottom);
+  border-radius: var(--box-radius);
+  box-shadow: var(--box-elevation);
   display: flex;
   flex-direction: column;
 }
@@ -13,8 +22,8 @@
 }
 .box-button-zone {
   display: flex;
-  gap: var(--sld-gap-tiny);
-  padding: var(--sld-pad-small);
+  gap: var(--box-gap);
+  padding: var(--box-pad);
   text-align: right;
   justify-content: end;
 }
