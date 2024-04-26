@@ -1,9 +1,13 @@
-// @import "../../styles/slotui-vars.scss";
 @import "../../styles/presets.scss";
+
+:root {
+  --badge-color-border: var(--sld-color-border);
+}
+
 .badge {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid red;
+  border: 1px solid var(--badge-color-border);
   display: grid;
   place-items: center;
   width: 16px;

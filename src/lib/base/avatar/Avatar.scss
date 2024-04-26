@@ -1,9 +1,16 @@
 // @import "../../styles/slotui-vars.scss";
+
 @import "../../styles/presets.scss";
+
+:root {
+  --avatar-radius: var(--css-radius-small);
+  --avatar-border-color: var(--sld-color-border);
+}
+
 .avatar {
   position: relative;
-  border-radius: var(--css-avatar-radius, 20%);
-  border: 1px solid var(--css-avatar-border-color, var(--sld-color-border));
+  border-radius: var(--avatar-radius);
+  border: 1px solid var(--avatar-border-color);
   display: grid;
   place-items: center;
   overflow: hidden;
