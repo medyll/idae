@@ -88,16 +88,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/presets.scss';
-	.confirm {
-		display: contents;
-		display: flex;
-		align-items: center;
-		&-initial {
-		}
-		&-validate {
-			display: flex;
-			align-items: center;
-		}
-	}
+	@import './confirm.scss';
 </style>

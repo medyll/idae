@@ -1,8 +1,7 @@
 @import "../../styles/presets.scss";
 // @import "../../styles/slotui-vars.scss";
 
-button,
-.button {
+:root {
     --sld-button-font-size: inherit;
     --sld-button-radius: var(--sld-radius-small);
     --sld-button-border-color: transparent;
