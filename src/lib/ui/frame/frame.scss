@@ -1,13 +1,20 @@
 @import "../../styles/presets.scss";
+
+:root {
+    --frame-background-color: var(--sld-color-paper);
+    --frame-backdrop-filter: blur(30px);
+    --frame-container-border-right: var(--sld-color-primary);
+}
+
 .frame {
     z-index: 1;
     height: 100%;
     @include flex("column");
     overflow: hidden;
     position: relative;
-    background-color: var(--css-frame-bg-color, var(--sld-color-paper));
-    --moz-backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
-    backdrop-filter: var(--css-frame-backdrop-blur, blur(30px));
+    background-color: var(--frame-background-color);
+    --moz-backdrop-filter: var(--frame-backdrop-filter);
+    backdrop-filter: var(--frame-backdrop-filter);
     overflow: hidden;
 
     &-container {
@@ -19,7 +26,7 @@
             @include flex("column");
             @include flex-main();
             z-index: 1;
-            border-right: 1px solid var(--sld-color-primary);
+            border-right: 1px solid var(--frame-container-border-right);
             position: relative;
         }
 

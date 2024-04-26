@@ -1,12 +1,21 @@
 @import "../../styles/presets.scss";
 
+:root {
+  --menu-min-width: 150px;
+  --menu-padding: 0.25rem;
+  --menu-color: var(--sld-color-foreground);
+  --menu-item-border-radius: var(--sld-radius-small);
+  --menu-item-icon-width: 16px;
+  --menu-item-text-padding-left: 0.25rem;
+}
+
 ul.menu {
   margin: 0;
-  min-width: 150px;
-  padding: 0.25rem;
+  min-width: var(--menu-min-width);
+  padding: var(--menu-padding);
   cursor: pointer;
   display: block;
-  color: var(--sld-color-foreground);
+  color: var(--menu-color);
 
   li.menuTitle {
     position: sticky;
@@ -15,19 +24,20 @@ ul.menu {
     z-index: 1;
   }
 }
+
 li.menuItem {
   @include data-hover;
   @include data-selected;
   @include ui-dense-presets;
-  border-radius: var(--sld-radius-small);
+  border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;
   align-items: center;
   border: 1px solid transparent;
 
   .menuListItemIcon {
-    width: 16px;
-    max-width: 16px;
+    width: var(--menu-item-icon-width);
+    max-width: var(--menu-item-icon-width);
     text-align: center;
     overflow: hidden;
     text-align: center;
@@ -37,7 +47,7 @@ li.menuItem {
 
   .menu-list-item-text {
     flex: 1;
-    padding-left: 0.25rem;
+    padding-left: var(--menu-item-text-padding-left);
   }
 
   .menu-list-item-action {

@@ -1,23 +1,33 @@
 @import "../../styles/presets.scss";
+
+:root {
+    --chrome-frame-color: var(--sld-color-foreground);
+    --chrome-frame-background-color: var(--sld-color-background);
+    --chrome-frame-bar-gap: var(--sld-gap-med);
+    --chrome-frame-bar-padding: var(--sld-pad-medium);
+    --chrome-frame-bar-border-bottom: var(--sld-color-border);
+    --chrome-frame-content-flex: 1;
+}
+
 .chrome-frame {
     @include flex("column");
     position: absolute;
     top: 0;
     height: 100%;
     width: 100%;
-    color: var(--sld-color-foreground);
-    background-color: var(--sld-color-background);
+    color: var(--chrome-frame-color);
+    background-color: var(--chrome-frame-background-color);
     overflow: hidden;
 
     &-bar {
         @include flex("row", center);
-        gap: var(--sld-gap-med);
-        padding: var(--sld-pad-medium);
-        border-bottom: 1px solid var(--sld-color-border);
+        gap: var(--chrome-frame-bar-gap);
+        padding: var(--chrome-frame-bar-padding);
+        border-bottom: 1px solid var(--chrome-frame-bar-border-bottom);
     }
 
     &-content {
-        flex: 1;
+        flex: var(--chrome-frame-content-flex);
         overflow: hidden;
         position: relative;
     }
