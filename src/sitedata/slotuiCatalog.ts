@@ -36,4 +36,5 @@ toolbar:{name:"ToolBar",code:"toolbar",group:"ui",root:"toolBar"},
 tree:{name:"Tree",code:"tree",group:"ui",root:"tree"},
 window:{name:"Window",code:"window",group:"ui",root:"window"},
 contextrooter:{name:"ContextRooter",code:"contextrooter",group:"utils",root:"contextRooter"},
+css:{name:"Css",code:"css",group:"utils",root:"css"},
 looper:{name:"Looper",code:"looper",group:"utils",root:"looper"},} as const

@@ -12,7 +12,7 @@
 	import type { Data } from '$lib/types/index.js';
 	import ContextRooter from '$lib/utils/contextRooter/ContextRooter.svelte';
 	import sanitizeHtml from 'sanitize-html';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	export const sortingIcons = {
 		default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],

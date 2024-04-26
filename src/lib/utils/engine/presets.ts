@@ -1,11 +1,11 @@
 import {
 	buttonVariant,
 	densePreset,
-	flow,
+	flowPreset,
 	iconSize,
 	tallPreset,
-	width,
-	status
+	widthPreset,
+	statusPreset
 } from '$lib/types/index.js';
 
 export enum Position {
@@ -26,7 +26,7 @@ export const uiPresets = {
 	buttonVariant: Object.keys(buttonVariant),
 	dense: Object.keys(densePreset),
 	tall: Object.keys(tallPreset),
-	status: Object.keys(status),
+	status: Object.keys(statusPreset),
 	density: {
 		none: '0',
 		tight: '0.25rem',
@@ -35,8 +35,8 @@ export const uiPresets = {
 		kind: '1.5rem',
 		unset: '1.5rem'
 	},
-	width: Object.keys(width),
+	width: Object.keys(widthPreset),
 	iconSize: Object.keys(iconSize),
 	position: Object.keys(Position),
-	flow: Object.keys(flow)
+	flow: Object.keys(flowPreset)
 };

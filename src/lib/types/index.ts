@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 
 export type AppIcon = string;
 
-export enum status {
+export enum statusPreset {
 	success = 'success',
 	warning = 'warning',
 	alert = 'alert',
@@ -43,13 +43,13 @@ export enum iconSize {
 	full = 'full'
 }
 
-export enum flow {
+export enum flowPreset {
 	relative = 'relative',
 	absolute = 'absolute',
 	fixed = 'fixed'
 }
 
-export enum width {
+export enum widthPreset {
 	auto = 'auto',
 	tiny = 'tiny',
 	small = 'small',
@@ -62,13 +62,13 @@ export enum width {
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
 	dense: keyof typeof densePreset;
-	width: keyof typeof width;
+	width: keyof typeof widthPreset;
 	tall: keyof typeof tallPreset;
 	iconSize: keyof typeof iconSize;
-	levels: keyof typeof status;
+	levels: keyof typeof statusPreset;
 	buttonVariant: keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
-	flow: keyof typeof flow;
+	flow: keyof typeof flowPreset;
 	action: (event: any, data?: Data) => void;
 	icon: string | IconObj;
 }
@@ -79,8 +79,7 @@ export type CommonProps = {
 	element?: HTMLElement;
 	class?: string;
 	style?: string;
-	children?: Snippet | Snippet<[any]>;
-	slots?: Record<string, Snippet<[any]> | undefined>;
+	children?: Snippet<[any]>;
 };
 
 export type IconObj = IconProps & {

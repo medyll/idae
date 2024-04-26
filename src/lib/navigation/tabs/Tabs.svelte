@@ -1,5 +1,5 @@
 <script lang="ts" generics="T=Data">
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	import { elem } from '$lib/utils/engine/elem.js';
 	import Icon from '$lib/base/icon/Icon.svelte';

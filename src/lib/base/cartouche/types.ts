@@ -1,6 +1,5 @@
-import type { CommonProps, ElementProps } from '$lib/types/index.js';
-import type { IconProps } from '@iconify/svelte';
-import type { SvelteComponent } from 'svelte';
+import type { CommonProps, ElementProps, IconObj } from '$lib/types/index.js';
+import type { Snippet, SvelteComponent } from 'svelte';
 export type CartoucheClasses = {
 	control: string;
 	controlIcon: string;
@@ -20,8 +19,7 @@ export type CartoucheProps = CommonProps & {
 	primary: string;
 	/** displayed sub title of the cartouche */
 	secondary?: string;
-	icon?: string;
-	iconProps: IconProps;
+	icon?: ElementProps['icon'];
 	/** can be set as a prop or as a className */
 	stacked: boolean;
 	component?: SvelteComponent;
@@ -33,11 +31,15 @@ export type CartoucheProps = CommonProps & {
 	/** show the default border style */
 	bordered: boolean;
 	isOpen: boolean;
-	/** component actions
-	 * @type {Record<'open'|'toggle' | 'close', Function>}
-	 */
-	actions: Record<'open' | 'toggle' | 'close', Function>;
+	/** component actions	 */
+	actions: Record<'open' | 'toggle' | 'close', (event: Event) => void>;
 	/** @deprecated */
 	dense: ElementProps['dense'];
 	tall: ElementProps['tall'];
+	//
+	children?: Snippet;
+	cartoucheIcon?: Snippet;
+	cartouchePrimary?: Snippet;
+	cartoucheSecondary?: Snippet;
+	cartoucheButtons?: Snippet;
 };

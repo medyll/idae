@@ -9,7 +9,7 @@
 	import { draggebler } from '$lib/utils/uses/draggabler.js';
 	import { makeOnTop } from '$lib/utils/uses/makeOnTop.js';
 	import { positioner } from '$lib/utils/uses/positioner.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type WindowProps = CommonProps & {
 		/** can be opened with a component */
@@ -64,7 +64,8 @@
 		hideAcceptButton: boolean;
 		hideCloseButton: boolean;
 		hideCancelButton: boolean;
-		slots: { icon?: Snippet; buttonZone?: Snippet };
+		windowIcon?: Snippet;
+		windowButtonZone?: Snippet;
 	};
 
 	let {
@@ -101,10 +102,8 @@
 		hideCloseButton = false,
 		hideCancelButton = true,
 		children,
-		slots = {
-			icon: undefined,
-			buttonZone: undefined
-		}
+		windowIcon,
+		windowButtonZone
 	}: WindowProps = $props();
 
 	// used to link to form present in svelte:component
@@ -118,13 +117,13 @@
 			if (removeFromDomOnClose && self) self.$destroy();
 		},
 		setActive: () => {
-			if ($wStore.activeFrame !== frameId) $wStore.activeFrame = frameId;
+			if ($wStore.activatedFrame !== frameId) $wStore.activatedFrame = frameId;
 		}
 	};
 
 	if (!$wStore?.instances?.[frameId]) {
 		$wStore.instances[frameId] = componentInstance;
-		if (active) $wStore.activeFrame = frameId;
+		if (active) $wStore.activatedFrame = frameId;
 	}
 
 	$effect(() => {
@@ -166,13 +165,13 @@
 			use:draggebler={{ disabled: false }}
 			use:makeOnTop
 			class="window {className} "
-			class:active={$wStore.activeFrame === frameId}
+			class:active={$wStore.activatedFrame === frameId}
 		>
 			{#if showHandle}
 				<header class="bar">
-					{#if icon || slots.icon}
+					{#if icon || windowIcon}
 						<div class="bar-icon">
-							<Slotted child={slots.icon}>
+							<Slotted child={windowIcon}>
 								<Icon fontSize="small" {icon} />
 							</Slotted>
 						</div>
@@ -181,10 +180,8 @@
 					<div class="ctrlZone">
 						<div>
 							<Button
-								naked
-								icon={iconClose}
-								iconFontSize="small"
-								iconColor="red"
+								variant="naked"
+								icon={{ icon: iconClose, size: 'small', color: 'red' }}
 								style="aspect-ratio:1/1"
 								on:click={actions.close}
 							/>
@@ -205,7 +202,7 @@
 				</Slotted>
 			</div>
 			{#if !hideCloseButton || !hideAcceptButton}
-				<Slotted child={slots.buttonZone}>
+				<Slotted child={windowButtonZone}>
 					<footer class="buttonZone">
 						{#if !hideCloseButton}
 							<Button variant="naked" icon={iconClose} onclick={actions.close}>Close</Button>

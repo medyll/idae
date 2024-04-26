@@ -184,12 +184,18 @@ const readFile = (fileName) => {
 };
 
 async function useSvelte2Tsx() {
-	const svelteFiles = glob.sync('./src/lib/**/Button.svelte', {
+	const svelteFiles = glob.sync('./src/lib/**/Textfield.svelte', {
 		//ignore: ['./src/lib/**/Alert.demo.svelte']
 	});
 	let content;
 	svelteFiles.forEach((fileName) => {
-		process(fileName);
+		//process(fileName);
+		let content = fs.readFileSync(fileName, 'utf-8');
+
+		let tr = svelte2tsx(content,{isTsFile:true});
+
+		console.log(Object.keys(tr));
+		console.log(tr.exportedNames)
 	});
 }
 
@@ -363,7 +369,7 @@ function main() {
 	fs.mkdirSync(config.slotuiDefs, { recursive: true });
 	fs.mkdirSync(config.tsxFiles, { recursive: true });
 
-	/* useSvelte2Tsx(); */
+	//useSvelte2Tsx();
 
 	new FileProcessor().makeIndexFile();
 	slotUiCatalogB();

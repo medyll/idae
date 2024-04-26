@@ -10,10 +10,9 @@
 </script>
 
 <Button
-	naked
-	contained
+	variant="naked"
 	{...$$restProps}
-	on:click={() => {
+	onclick={() => {
 		switchThemeMode();
 	}}><slot /></Button
 >

@@ -5,7 +5,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { CommonProps, IconObj } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ContentSwitcherProps } from './types.js';
 
 	let {

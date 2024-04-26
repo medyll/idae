@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ToggleBarProps } from './types.js';
 
 	let {

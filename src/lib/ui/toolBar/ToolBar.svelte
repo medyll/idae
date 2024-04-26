@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { Snippet } from 'svelte';
 
 	type ToolBarProps = CommonProps & {
@@ -12,6 +12,7 @@
 		vertical: boolean;
 		/**    */
 		element: HTMLDivElement;
+		toolbarSeparator?: Snippet;
 		slots: {
 			separator: Snippet | undefined;
 		};
@@ -23,7 +24,7 @@
 		style = '',
 		color = '#fff',
 		vertical = $bindable<boolean>(false),
-		slots = { separator: undefined },
+		toolbarSeparator,
 		children,
 		...rest
 	}: ToolBarProps = $props();
@@ -37,7 +38,7 @@
 	{...rest}
 >
 	<Slotted child={children} />
-	<Slotted child={slots.separator} />
+	<Slotted child={toolbarSeparator} />
 </div>
 
 <style lang="scss">

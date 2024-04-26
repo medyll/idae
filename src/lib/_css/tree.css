@@ -1,0 +1,42 @@
+.tree-cell {
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  padding-left: var(--tree-level);
+  border-radius: var(--sld-radius-small);
+  gap: var(--sld-gap-tiny);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+.tree-cell-arrow {
+  width: 16px;
+  text-align: center;
+}
+.tree-cell-title-gutter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tree-cell:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+.tree-cell.selected, .tree-cell[aria-selected=true], .tree-cell[data-selected=true] {
+  border-color: none;
+  background-color: #ededed;
+  box-shadow: var(--sld-selected-shadow);
+}
+.tree-cell.selected .listItemChip,
+.tree-cell.selected .menuItemChip, .tree-cell[aria-selected=true] .listItemChip,
+.tree-cell[aria-selected=true] .menuItemChip, .tree-cell[data-selected=true] .listItemChip,
+.tree-cell[data-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}

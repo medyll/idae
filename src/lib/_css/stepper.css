@@ -1,0 +1,15 @@
+.stepper {
+  display: flex;
+}
+.stepper.vertical {
+  flex-direction: column;
+}
+.stepper .step {
+  padding: 0.5rem;
+  background-color: red;
+  border-radius: var(--sld-radius-med);
+  margin-top: 10px;
+}
+.stepper .step.active {
+  color: blue;
+}

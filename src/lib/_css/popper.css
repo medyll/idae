@@ -1,0 +1,16 @@
+.popper {
+  border-radius: var(--css-popper-radius, var(--sld-radius-tiny));
+  overflow: hidden;
+  position: fixed;
+  box-shadow: var(--sld-elevation-4);
+  background-color: var(--sld-color-background-alpha-mid);
+  backdrop-filter: blur(30px);
+  display: inline-block;
+  top: 0;
+  z-index: 30000;
+}
+.popper::popover-open {
+  border: 1px color red;
+  margin: none !important;
+  padding: none !important;
+}

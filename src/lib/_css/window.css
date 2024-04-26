@@ -1,0 +1,43 @@
+dialog.window {
+  display: block;
+  border-radius: var(--sld-radius-small);
+  background-color: var(--sld-color-background);
+  color: var(--sld-color-foreground);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 250px;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 70000;
+  max-height: 100%;
+  padding: 0;
+  box-shadow: var(--sld-elevation-1);
+}
+dialog.window.active {
+  border: 1px solid var(--sld-color-primary);
+  box-shadow: var(--sld-elevation-3);
+}
+dialog.window header.bar {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-color: var(--sld-color-paper);
+  color: var(--sld-color-foreground);
+  padding: var(--sld-pad-tiny) 0;
+}
+dialog.window header.bar-icon {
+  padding: unset var(--sld-pad-med);
+}
+dialog.window header.bar .handle {
+  flex: 1;
+  cursor: pointer;
+}
+dialog.window footer.buttonZone {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: var(--gap-small, 0.5rem);
+}
+dialog.window .ctrlZone {
+  display: flex;
+}

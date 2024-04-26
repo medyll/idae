@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { PopperProps } from './types.js';
 
 	export const toggle = function () {};

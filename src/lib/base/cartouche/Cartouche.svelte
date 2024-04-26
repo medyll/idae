@@ -3,27 +3,29 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { SvelteComponent } from 'svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { IconProps } from '@iconify/svelte';
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 	import type { CartoucheClasses, CartoucheProps } from './types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let {
 		class: className = '',
 		classes = {} as CartoucheClasses,
 		style = undefined,
-		element,
-		primary = '',
-		secondary = undefined,
-		icon = undefined,
-		iconProps = {} as IconProps,
+		element = $bindable(),
+		primary,
+		secondary,
+		icon,
 		stacked = false,
 		component,
 		componentProps = {},
 		keepCartoucheContent = true,
 		showTitleDivider = false,
 		bordered = true,
+		children,
+		cartoucheIcon,
+		cartouchePrimary: cartouchePrimarySlot,
+		cartoucheSecondary: cartoucheSecondarySlot,
+		cartoucheButtons,
 		isOpen = $bindable(false),
 		dense,
 		tall,
@@ -57,29 +59,39 @@
 	{style}
 >
 	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
-		{#if icon || iconProps || $$slots.cartoucheIcon}
+		{#if icon || cartoucheIcon || $$slots.cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
-				<slot name="cartoucheIcon">
-					<Icon {icon} {...iconProps} />
-				</slot>
+				<Slotted child={cartoucheIcon}>
+					<slot name="cartoucheIcon">
+						<Icon {icon} />
+					</slot>
+				</Slotted>
 			</div>
 		{/if}
 		<div class="controlLabel {classes.controlLabel}">
-			{#if primary || $$slots.primarySlot}
-				<slot name="primarySlot">{primary}</slot>
-				<div><slot name="secondarySlot">{secondary ?? ''}</slot></div>
+			{#if primary || cartouchePrimarySlot || $$slots.primarySlot}
+				<Slotted child={cartouchePrimarySlot}>
+					<slot name="primarySlot">{primary}</slot>
+				</Slotted>
+				<div>
+					<Slotted child={cartoucheSecondarySlot}>
+						<slot name="secondarySlot">{secondary ?? ''}</slot>
+					</Slotted>
+				</div>
 			{/if}
 		</div>
 		<div class={showTitleDivider ? 'divider' : ''} style="flex:1" />
-		{#if $$slots.cartoucheButtons}
+		{#if cartoucheButtons || $$slots.cartoucheButtons}
 			<div
-				on:click={(event) => {
+				onclick={(event) => {
 					event.preventDefault();
 					event.stopPropagation();
 				}}
 				class="cartoucheAction"
 			>
-				<slot name="cartoucheButtons" />
+				<Slotted child={cartoucheButtons}>
+					<slot name="cartoucheButtons" /></Slotted
+				>
 			</div>
 		{/if}
 		<div class="chevron">
@@ -91,7 +103,9 @@
 			{#if component}
 				<svelte:component this={component} {...componentProps} />
 			{/if}
-			<slot />
+			<Slotted child={children}>
+				<slot />
+			</Slotted>
 		</div>
 	{/if}
 </div>

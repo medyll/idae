@@ -10,7 +10,7 @@
   overflow: hidden;
 
   &[data-bordered="true"] {
-    border: 1px solid var(--sld-color-foreground-alpha-mid);
+    border: 1px solid var(--sld-color-foreground-alpha-high);
   }
 
   &.stacked {

@@ -4,7 +4,7 @@
 	import { popper } from '$lib/ui/popper/usePopper.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let {
 		class: className,

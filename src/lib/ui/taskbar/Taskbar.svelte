@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { Snippet } from 'svelte';
 	import type { TaskbarProps } from './types.js';
 

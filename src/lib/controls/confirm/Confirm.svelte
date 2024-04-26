@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/controls/button/Button.svelte';
 	import { onDestroy } from 'svelte';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
 	import Content from '$lib/utils/content/Content.svelte';
 

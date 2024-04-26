@@ -4,7 +4,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { IconObj } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { Snippet } from 'svelte';
 
 	type TitleBarProps = {

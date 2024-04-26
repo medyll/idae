@@ -58,8 +58,7 @@
 		selectedData = $bindable([]),
 		selectedPathes = $bindable([]),
 		pathes = trans2Tree(paths, pathField),
-		children,
-		slots = {}
+		children
 	}: TreeProps = $props();
 
 	let visibleChildChild: Record<string, boolean> = $state({});

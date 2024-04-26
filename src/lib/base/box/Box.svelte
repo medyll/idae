@@ -3,7 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let className = '';
 	export { className as class };

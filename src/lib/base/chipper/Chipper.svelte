@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type ChipperProps = CommonProps & {
 		/** element root HTMLDivElement props */

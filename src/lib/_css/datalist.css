@@ -1,0 +1,119 @@
+.datalist {
+  height: 100%;
+  position: relative;
+}
+.datalist-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.datalist-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+.datalist-group-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--sld-pad-med);
+  gap: var(--sld-gap-med);
+  cursor: pointer;
+}
+.datalist-group-head-icon {
+  color: #999;
+}
+.datalist-group-head-divider {
+  border-bottom: 1px solid transparent;
+}
+.datalist-group-head:hover-icon {
+  color: var(--sld-color-primary);
+}
+.datalist-group-head:hover-divider {
+  flex: 1;
+  border-bottom-width: 1px;
+  border-color: var(--sld-color-primary, red);
+  cursor: pointer;
+}
+.datalist-group-body {
+  flex: 1;
+  position: relative;
+}
+
+.datalist-group-head {
+  margin: 0.5rem 0;
+  align-items: stretch;
+  height: 32px;
+  z-index: 100;
+  background-color: var(--sld-color-paper-alpha-low);
+  backdrop-filter: blur(20px);
+  border-radius: var(--sld-radius-tiny);
+  box-shadow: var(--sld-elevation-1);
+  border: 1px solid var(--sld-color-border);
+}
+.datalist-group-head .dataListCell {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-right: 1px solid var(--sld-color-border);
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.datalist-group-head .dataListCell:last-of-type {
+  border-right: 1px solid transparent;
+}
+.datalist-group-head .dataListCell[data-sortable=true] {
+  cursor: pointer;
+}
+.datalist-group-head .dataListCell[data-sortable=true]:hover {
+  background-color: var(--sld-color-primary-alpha);
+}
+.datalist-group-head .dataListCell .cellHeader {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+.datalist-group-head .dataListCell .cellHeader .cellHeaderContent {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 8px;
+}
+.dataListRow {
+  border-bottom: 1px solid var(--sld-color-border);
+  /* border-radius: var(--sld-radius-small);
+  		margin: 0.25rem 0; */
+}
+.dataListRow:last-of-type {
+  border-bottom: 1px solid transparent;
+}
+.dataListRow:hover {
+  background-color: var(--sld-color-paper);
+}
+.dataListRow[data-selected=true] {
+  background-color: var(--sld-color-primary);
+}
+.dataListRow[data-selected=true] .dataListCell {
+  color: white;
+}
+.dataListRow .dataListCell {
+  padding: 0.5rem 0.5rem;
+  color: var(--sld-color-foreground);
+  border-right: 1px solid var(--sld-color-border);
+}
+.dataListRow .dataListCell:last-of-type {
+  border-right: 1px solid transparent;
+}
+.dataListRow .dataListCell[data-noWrap=true] {
+  display: box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* display: -webkit-box;
+  		-webkit-line-clamp: 1;
+  		-webkit-box-orient: vertical; */
+}

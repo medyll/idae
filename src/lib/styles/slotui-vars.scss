@@ -21,7 +21,9 @@ $vendor: "sld";
 }
 
 :root.dark,
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+body[data-theme="dark"],
+:root[theme="dark"] {
     --white: #333;
     --black: #ccc;
 }
@@ -41,22 +43,20 @@ $vendor: "sld";
 }
 
 :root.dark,
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+body[data-theme="dark"],
+:root[theme="dark"] {
     --#{$vendor}-color-foreground: #ffffff;
     --#{$vendor}-color-background: #27323a;
     --#{$vendor}-color-paper: #3a3b3b;
 }
 
 :root {
-    --#{$vendor}-elevation-1: 0 0 1.724137931px 0 rgba(0, 0, 0, 0.15),
-        0 0.1526717557px 0.4651162791px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-2: 0 0 3.4482758621px 0 rgba(0, 0, 0, 0.15),
-        0 0.3053435115px 0.9302325581px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-3: 0 0 5.1724137931px 0 rgba(0, 0, 0, 0.15), 0 0 1.3953488372px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-4: 0 0 6.8965517241px 0 rgba(0, 0, 0, 0.15),
-        0 0.6106870229px 1.8604651163px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-5: 0 0 8.6206896552px 0 rgba(0, 0, 0, 0.15),
-        0 0.7633587786px 2.3255813953px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-1: 0 0 1.75px 0 rgba(0, 0, 0, 0.15), 0 0.15px 0.46px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-2: 0 0 3.44px 0 rgba(0, 0, 0, 0.15), 0 0.3px 0.93px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-3: 0 0 5.17px 0 rgba(0, 0, 0, 0.15), 0 0 1.39px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-4: 0 0 6.89px 0 rgba(0, 0, 0, 0.15), 0 0.61px 1.86px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-5: 0 0 8.62px 0 rgba(0, 0, 0, 0.15), 0 0.76px 2.32px 0 rgba(0, 0, 0, 0.1);
 }
 
 :root {
@@ -69,10 +69,11 @@ $vendor: "sld";
 }
 :root {
     $tints: foreground, "background", primary, secondary, tertiary;
+
     @each $tint in $tints {
         /* alpha  #{$tint} */
-        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
-        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 40%);
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
         --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
     }
     @each $tint in $tints {
@@ -91,9 +92,9 @@ $vendor: "sld";
     $tints: discrete, success, info, warning, alert, error;
     @each $tint in $tints {
         /* alpha  #{$tint} */
-        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
-        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 40%);
-        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
+        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
     }
     @each $tint in $tints {
         /* darken  #{$tint} */
@@ -110,9 +111,7 @@ $vendor: "sld";
 }
 /* presets */
 :root {
-    --#{$vendor}-color-border: color-mix(in srgb, var(--#{$vendor}-color-foreground), transparent 80%);
-
-    --#{$vendor}-theme-gap-tiny: 1.5rem;
+    --#{$vendor}-color-border: var(--#{$vendor}-color-foreground-alpha-low);
 
     --#{$vendor}-hover-background-color: var(--#{$vendor}-color-secondary-alpha-mid);
     --#{$vendor}-hover-border-color: var(--#{$vendor}-color-foreground-alpha-high);

@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { dataOp, type ResolverPathType } from '../engine/utils.js';
 	import type { CommonProps, Data } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type LoopProps = CommonProps & {
 		class?: string;
@@ -17,7 +17,7 @@
 	};
 
 	let {
-		class: className = '',
+		class: className,
 		data = [],
 		title,
 		groupBy,
@@ -42,7 +42,7 @@
 {/snippet}
 <slot name="loopTitle">{title}</slot>
 
-<div class={className} style="display:contents" {...rest}>
+<div class={className} style={className ? ' ' : ';display:contents;'} {...rest}>
 	{#if groupBy && groupedData}
 		{#each Object.entries(groupedData) as [key, value], idx}
 			<Slotted child={loopGroupTitle} slotArgs={{ key, value, idx }}>

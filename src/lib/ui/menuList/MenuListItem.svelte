@@ -7,7 +7,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { MenuListItemProps, MenuListProps } from './types.js';
 	import type { Data, IconObj } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slot/Slotted.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	const menuStateContext = getContext<MenuListProps>('menuStateContext');
 
