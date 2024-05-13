@@ -6,31 +6,12 @@
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
+	import type { AlertProps } from './types.js';
 
 	const alertActions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
 		toggle,
 		close
-	};
-
-	type AlertProps = {
-		class?: String;
-		/** alert level */
-		level?: ElementProps['levels'];
-		/** message to be shown */
-		message?: string;
-		/** make the alert draggable */
-		draggable?: boolean;
-		/** show or hide the alert */
-		isOpen?: boolean;
-		/**  */
-		element: HTMLDialogElement;
-		actions: Record<'open' | 'toggle' | 'close', Function>;
-		children?: Snippet;
-		topButtonSlot?: Snippet;
-		messageSlot?: Snippet;
-		buttonZoneSlot?: Snippet;
-		buttonCloseSlot?: Snippet;
 	};
 
 	let {

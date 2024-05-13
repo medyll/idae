@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import Alert from './alert.svelte';
+	import Alert from './Alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 
