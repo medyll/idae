@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	//
-	import type { Data } from '$lib/index.js';
+	import type { Data } from '$lib/types/index.js';
 
 	type SwitchProps = {
 		/** className off the root component */

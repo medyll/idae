@@ -30,7 +30,7 @@
 	}
 
 	function prevNextPanel(page: 'next' | 'prev') {
-		const event = new CustomEvent('panel:button:clicked', {
+		const event = new CustomEvent('panel-button-clicked', {
 			detail: { panelId, page, data },
 			bubbles: true
 		});

@@ -1,24 +1,17 @@
 <svelte:options accessors runes />
 
 <script lang="ts">
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import type { Snippet } from 'svelte';
-	import type { PopperProps } from '$lib/ui/popper/types.js';
-	import type { MenuProps } from '$lib/ui/menu/types.js';
 	import Popper from '$lib/ui/popper/Popper.svelte';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import Button from './Button.svelte';
-	import type { ButtonProps } from './types.js';
-
-	type ButtonMenuProps = ButtonProps & {
-		menuProps?: MenuProps;
-		popperProps?: PopperProps;
-		menuItem?: Snippet;
-	};
+	import type { ButtonMenuProps, ButtonProps } from './types.js';
+	import type { MenuListProps } from '$lib/ui/menuList/types.js';
+	import type { PopperProps } from '$lib/ui/popper/types.js';
 
 	let {
 		element,
-		menuProps = {},
-		popperProps = {},
+		menuProps = {} as MenuListProps,
+		popperProps = {} as PopperProps,
 		menuItem = undefined,
 		disabled = false,
 		...rest
@@ -40,7 +33,7 @@
 </Button>
 {#if isOpen && !disabled}
 	<Popper bind:isOpen parentNode={element} {...popperProps}>
-		<Menu {...menuProps}><slot name="menuItem">{@render menuItem?.()}</slot></Menu>
+		<MenuList {...menuProps}><slot name="menuItem">{@render menuItem?.()}</slot></MenuList>
 	</Popper>
 {/if}
 

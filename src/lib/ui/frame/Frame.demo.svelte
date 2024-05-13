@@ -1,7 +1,8 @@
 <script lang="ts">
 	import ComponentDemo from '$components/ComponentDemo.svelte';
-	import Menu from '../menu/Menu.svelte';
-	import MenuItem from '../menu/MenuItem.svelte';
+	import MenuList from '../menuList/MenuList.svelte';
+	import MenuListItem from '../menuList/MenuListItem.svelte';
+
 	import Frame from './Frame.svelte';
 </script>
 
@@ -13,21 +14,21 @@
 			</div>
 			<div slot="drawerContent">
 				<h5>A menu</h5>
-				<Menu style="width:100%">
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-				</Menu>
+				<MenuList style="width:100%">
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+				</MenuList>
 				<h5>A menu again</h5>
-				<Menu style="width:100%">
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-					<MenuItem>menu item</MenuItem>
-				</Menu>
+				<MenuList style="width:100%">
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+					<MenuListItem>menu item</MenuListItem>
+				</MenuList>
 			</div>
 			<div class="pad border-b" slot="frameTop">
 				<h4>Frame title</h4>

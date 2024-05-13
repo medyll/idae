@@ -1,14 +1,34 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, type TransitionConfig } from 'svelte/transition';
 
 	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { LoginProps } from './types.js';
 
-	/*  common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		showLogin = true,
+		transition = { type: fade, args: {} },
+		fields = { email: '', password: '' },
+		loading = false,
+		submitting = false,
+		onSubmit = function (args) {
+			return new Promise((resolve, reject) => {
+				return setTimeout(() => {
+					resolve(true);
+				}, 2000);
+			});
+		},
+		children,
+		loginAvatarRoot,
+		loginAvatar,
+		loginForm,
+		...rest
+	}: LoginProps = $props();
 
 	export const actions = {
 		toggle: (lo?: boolean) => {
@@ -19,23 +39,9 @@
 		}
 	};
 
-	export let showLogin: boolean = true;
-	export let transition = { type: fade, args: {} };
-	export let fields = { email: '', password: '' };
-
-	export let loading = false;
-	export let submitting = false;
 	let grantedError = false;
 
 	const validData: any = {};
-
-	export let onSubmit = function (args) {
-		return new Promise((resolve, reject) => {
-			return setTimeout(() => {
-				resolve(true);
-			}, 2000);
-		});
-	};
 
 	function validate() {
 		return true;
@@ -52,33 +58,37 @@
 		>
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
 				<div class="form flex-v flex-align-middle-center">
-					<slot name="loginAvatarRoot">
-						<div class="avatarHolder marg-b-2">
-							<div class="avatar flex-h flex-align-middle-center">
-								{#if submitting}
-									<Icon rotate fontSize="large" icon="loading" />
-								{:else}
-									<slot name="loginAvatar" />
-								{/if}
+					<Slotted child={loginAvatarRoot}>
+						<slot name="loginAvatarRoot">
+							<div class="avatarHolder marg-b-2">
+								<div class="avatar flex-h flex-align-middle-center">
+									{#if submitting}
+										<Icon rotate fontSize="large" icon="loading" />
+									{:else}
+										<slot name="loginAvatar" />
+									{/if}
+								</div>
 							</div>
-						</div>
-					</slot>
-					<slot name="loginForm">
-						<div class="pad-2">
-							<input class="input" name="email" type="text" />
-						</div>
-						<div class="pad-2">
-							<input name="password" type="password" />
-						</div>
-						<Button type="submit" primary="login" loading={submitting}>
-							{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
-								></i>{/if}
-							Login
-						</Button>
-						{#if grantedError}
-							<div class="pad-1 color-scheme-error">Please verify your input</div>
-						{/if}
-					</slot>
+						</slot>
+					</Slotted>
+					<Slotted child={loginForm}>
+						<slot name="loginForm">
+							<div class="pad-2">
+								<input class="input" name="email" type="text" />
+							</div>
+							<div class="pad-2">
+								<input name="password" type="password" />
+							</div>
+							<Button type="submit" primary="login" loading={submitting}>
+								{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
+									></i>{/if}
+								Login
+							</Button>
+							{#if grantedError}
+								<div class="pad-1 color-scheme-error">Please verify your input</div>
+							{/if}
+						</slot>
+					</Slotted>
 					{#if $$slots.slotRetrievePassword}
 						<div class="retrieve">
 							<slot name="slotRetrievePassword" />

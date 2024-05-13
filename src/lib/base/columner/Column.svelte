@@ -1,11 +1,21 @@
 <script lang="ts">
 	import { getContext, tick } from 'svelte';
-	import type { ColumnerStoreType } from './types.js';
+	import type { ColumnProps, ColumnerStoreType } from './types.js';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let columner = getContext<ColumnerStoreType>('columner');
 
-	export let columnId = crypto.randomUUID() as string;
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		columnId = crypto.randomUUID() as string,
+		bottomSlot,
+		drawerTop,
+		children,
+		...rest
+	}: ColumnProps = $props();
 
 	if (!$columner[columnId]) {
 		$columner[columnId] = {
@@ -15,11 +25,7 @@
 		};
 	}
 
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-
-	let width;
+	let width: string;
 
 	function resizeStart() {}
 
@@ -41,14 +47,14 @@
 	on:resizer:resize={resizeOn}
 	on:resizer:end={resizeEnd}
 	style:width
-	{...$$restProps}
+	{...rest}
 >
-	<slot name="drawerTop" />
+	<Slotted child={drawerTop}><slot name="drawerTop" /></Slotted>
 	<div class="content">
 		{width}
-		<slot />
+		<Slotted child={children}><slot /></Slotted>
 	</div>
-	<slot name="bottomSLot" />
+	<Slotted child={bottomSlot}><slot name="bottomSLot" /></Slotted>
 </div>
 
 <style lang="scss">

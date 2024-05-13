@@ -5,25 +5,18 @@
 	import type { Snippet } from 'svelte';
 	import DemoerCode from './DemoerCode.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
-
-	type DemoPageProps = CommonProps & {
-		title: string;
-		code: string;
-		subTitle?: string;
-		component?: string;
-		slots: {
-			code: Snippet;
-		};
-	};
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { DemoPageProps } from './types.js';
 
 	let {
 		title = '',
 		code = '',
-		subTitle = undefined,
-		component = undefined,
+		subTitle,
+		component,
 		children,
+		demoerCode,
 		slots
-	} = $props() as DemoPageProps;
+	}: DemoPageProps = $props();
 
 	let codeT = subTitle ? subTitle : `component ${component} demo ${title?.toLowerCase()}`;
 </script>
@@ -37,17 +30,15 @@
 			</h6>
 			<div class="pad-l-2 pos-rel">
 				{#if children}
-					{@render children()}
+					{@render children?.()}
 				{/if}
 			</div>
 		</div>
 		{#if code || slots?.code}
 			<div class="w-tiers">
-				{#if slots?.code}
-					{@render slots.code()}
-				{:else}
-					<!-- <DemoerCode {code} /> -->
-				{/if}
+				<Slotted child={slots?.code ?? demoerCode}>
+					<DemoerCode {code} />
+				</Slotted>
 			</div>
 		{/if}
 	</div>

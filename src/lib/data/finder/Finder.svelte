@@ -2,46 +2,12 @@
 
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
-	import Input from '$lib/controls/textfield/TextField.svelte';
+	import TextField from '$lib/controls/textfield/TextField.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Popper from '$lib/ui/popper/Popper.svelte';
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	import type { ElementProps } from '$lib/types/index.js';
-
-	type FinderProps = {
-		/** className off the root component */
-		class?: string;
-		classRoot?: string;
-		styleRoot?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-
-		/** initial data to look in */
-		data: any[];
-
-		/** default field to be used, can be * */
-		defaultField: string;
-
-		/** show the opener button for the choice of fields */
-		showSortMenu: boolean;
-
-		/** search mode : exact or partial match*/
-		mode: 'exact' | 'partial';
-
-		/** external bind use, to read filtered data */
-		// filteredData: any[];
-
-		/** with of the root element using  presets */
-		sizeRoot: ElementProps['sizeType'] | 'full';
-
-		/** with of the input using  presets */
-		size: ElementProps['sizeType'] | 'full';
-	};
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
+	import type { FinderProps } from './types.js';
 
 	let {
 		class: className = '',
@@ -56,8 +22,9 @@
 		filteredData = filit(),
 		sizeRoot = 'auto',
 		size = 'full',
+		tall = 'default',
 		...restProps
-	} = $props<FinderProps>();
+	}: FinderProps = $props();
 
 	let searchString: string | undefined = $state(undefined);
 	let container: HTMLDivElement;
@@ -105,9 +72,10 @@
 		popperOpen = false;
 	}}
 	style={styleRoot}
+	{tall}
 >
 	<div style:flex="1">
-		<Input
+		<TextField
 			bind:value={searchString}
 			bind:element
 			placeholder="find by {defaultField} {mode}"
@@ -133,8 +101,8 @@
 </div>
 {#if popperOpen}
 	<Popper code="ui" parentNode={container} position="BC" stickToHookWidth={true}>
-		<Menu style="max-height:350px;overflow:auto;width:100%;" density="default">
-			<MenuItem
+		<MenuList style="max-height:350px;overflow:auto;width:100%;" density="default">
+			<MenuListItem
 				divider={true}
 				text="strict"
 				onclick={() => {
@@ -149,8 +117,8 @@
 					<input type="checkbox" checked={mode === 'exact'} style="display:block;margin:0" />
 				</div>
 				strict
-			</MenuItem>
-			<MenuItem
+			</MenuListItem>
+			<MenuListItem
 				text="strict"
 				onclick={() => {
 					defaultField = '*';
@@ -162,9 +130,9 @@
 					{/if}
 				</div>
 				{'* All fields'}
-			</MenuItem>
+			</MenuListItem>
 			{#each dataKeys as kk}
-				<MenuItem
+				<MenuListItem
 					text="strict"
 					onclick={() => {
 						defaultField = kk;
@@ -176,9 +144,9 @@
 						{/if}
 					</div>
 					{kk}
-				</MenuItem>
+				</MenuListItem>
 			{/each}
-		</Menu>
+		</MenuList>
 	</Popper>
 {/if}
 

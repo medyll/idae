@@ -4,25 +4,7 @@
 	import type { Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
-
-	type AvatarProps = CommonProps & {
-		/** icon name 	*/
-		icon?: string;
-		/**
-		 * size of the avatar
-		 * @type {'tiny' | 'small' | 'medium' | 'large' | 'full'}
-		 */
-		size?: 'tiny' | 'small' | 'medium' | 'large' | 'full';
-		/**
-		 * size of the icon
-		 * @type {'tiny' | 'small' | 'medium' | 'large' | 'full'}
-		 */
-		iconSize?: 'tiny' | 'small' | 'medium' | 'default' | 'large' | 'big';
-		element: HTMLDivElement;
-		class?: string;
-		children?: Snippet;
-		avatarBadge?: Snippet;
-	};
+	import type { AvatarProps } from './types.js';
 
 	let {
 		icon = 'icon-park-outline:avatar',
@@ -32,7 +14,7 @@
 		element = $bindable<HTMLDivElement>(),
 		children,
 		avatarBadge
-	} = $props() as AvatarProps;
+	}: AvatarProps = $props();
 
 	const sizes = {
 		tiny: '2rem',

@@ -7,7 +7,7 @@
 		<div class="flex-h gap-small">
 			<div>- {color}</div>
 		</div>
-		<div class="flex-h gap-small">
+		<div class="flex-h gap-small" style="background-color:purple">
 			<div style="background-color:var(--sld-color-{color})"></div>
 			{#each ['alpha', 'darken', 'lighten'] as typ}
 				<div style="">

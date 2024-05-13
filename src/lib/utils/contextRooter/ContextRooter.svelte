@@ -1,9 +1,8 @@
-<svelte:options accessors/>
+<svelte:options accessors />
 
-<script lang="ts">
-  import {getContext} from 'svelte';
+<script lang="ts" generics="T">
+	import { getContext } from 'svelte';
+	let { contextKey } = $props();
 
-  export let contextKey: any = undefined;
-
-  export const contextRoot = getContext(contextKey);
+	export const contextRoot = getContext<T>(contextKey);
 </script>

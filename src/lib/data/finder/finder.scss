@@ -9,5 +9,6 @@
         display: inline-flex;
         gap: var(--finder-gap);
         @include ui-width-presets;
+        @include ui-dense-presets;
     }
 }

@@ -117,32 +117,40 @@
 				{#if Boolean(icon) || $$slots.iconSlot}
 					<div class="drawer-icon">
 						<Slotted child={drawerIcon}>
-							<slot name="iconSlot">
-								<Icon {icon} fontSize="medium" />
-							</slot></Slotted
+							<slot name="drawerIcon">
+								<slot name="iconSlot">
+									<Icon {icon} fontSize="medium" />
+								</slot></slot
+							></Slotted
 						>
 					</div>
 				{/if}
 				<div class="drawer-header-bar">
 					<div class="drawer-header-bar-title">
-						<Slotted child={drawerTitle}>
-							<Slotted child={drawerPrimary}>
-								{#if primary}
-									<div style="font-size:18px;">{primary}</div>
-								{/if}
+						<slot name="drawerTitle">
+							<Slotted child={drawerTitle}>
+								<Slotted child={drawerPrimary}>
+									<slot name="drawerPrimary">
+										{#if primary}
+											<div style="font-size:18px;">{primary}</div>
+										{/if}
+									</slot>
+								</Slotted>
+								<Slotted child={drawerSecondary}>
+									<slot name="drawerSecondary">
+										{#if secondary}
+											<div>{secondary}</div>
+										{/if}
+									</slot>
+								</Slotted>
 							</Slotted>
-							<Slotted child={drawerSecondary}>
-								{#if secondary}
-									<div>{secondary}</div>
-								{/if}
-							</Slotted>
-						</Slotted>
+						</slot>
 					</div>
 					<slot name="drawerTop" />
 				</div>
 				{#if !hideCloseIcon && !showOpenerIcon}
 					<Button
-						on:click={() => {
+						onclick={() => {
 							toggle();
 						}}
 						icon="window-close"
@@ -152,7 +160,7 @@
 			</header>
 		{/if}
 		<div class="drawer-content">
-			<slot />
+			<slot name="drawerContent"><slot /></slot>
 		</div>
 		<footer>
 			<Slotted child={drawerFooter}>

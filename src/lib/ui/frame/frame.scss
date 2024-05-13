@@ -22,7 +22,7 @@
         @include flex-main();
         position: relative;
         overflow: hidden;
-        .navLeft {
+        &-nav {
             @include flex("column");
             @include flex-main();
             z-index: 1;

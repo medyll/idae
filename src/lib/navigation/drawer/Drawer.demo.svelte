@@ -17,12 +17,6 @@
 		stickTo: 'right'
 	};
 
-	const options = {
-		stickTo: ['left', 'right', 'top', 'bottom'],
-		flow: ['fixed', 'relative', 'absolute'],
-		showOpenerIcon: [false, true]
-	};
-
 	const onButtonClick = function () {
 		drawerRef.toggle();
 	};

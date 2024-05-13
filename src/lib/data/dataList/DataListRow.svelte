@@ -1,20 +1,24 @@
 <svelte:options accessors={true} />
 
-<script lang="ts">
+<script lang="ts" generics="T=Data">
 	import sanitizeHtml from 'sanitize-html';
 	import type { Data } from '$lib/types/index.js';
 	import { writable, type Writable } from 'svelte/store';
 	import DataListCell from './DataListCell.svelte';
-	import type { DataCellType, DataListStoreType } from './types.js';
+	import type { DataCellType, DataListRowProps, DataListStoreType } from './types.js';
 	import type { RowType } from './types.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import { getContext, setContext } from 'svelte';
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | undefined = undefined;
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	export let data: any;
-	export let style: string = '';
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		data,
+		children,
+		...rest
+	}: DataListRowProps = $props();
 
 	const dataStore = writable<RowType>({ data });
 	setContext('dataListRow', dataStore);
@@ -43,27 +47,32 @@
 		return sanitizeHtml(ret);
 	}
 
-	$: cssVars = Object.values($dataListContext.columns ?? []).reduce(
-		(previous, current, currentIndex) => {
-			const witdh = current?.width ?? 'auto';
-			return `${previous} minmax(${witdh},${witdh})`;
-		},
-		'--template-columns:'
-	);
+	let cssVars = $derived(() => {
+		return Object.values($dataListContext.columns ?? []).reduce(
+			(previous, current, currentIndex) => {
+				const witdh = current?.width ?? 'auto';
+				return `${previous} minmax(${witdh},${witdh})`;
+			},
+			'--template-columns:'
+		);
+	});
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	bind:this={element}
 	on:datalist:sort:clicked
-	on:click={() => {
+	onclick={() => {
 		if (data) handleClick(data);
 		if (data) handleSelect(data);
 	}}
 	class="dataListRow {className}"
 	style="{style};{cssVars}"
+	{...rest}
 >
-	{#if $$slots.default}
-		<slot />
+	{#if children || $$slots.default}
+		<Slotted child={children}><slot /></Slotted>
 	{:else if $dataListContext.hasColumnsProps}
 		{#each Object.keys($dataListContext.columns) as inItem}
 			{@const field = $dataListContext.columns[inItem].field}
@@ -76,7 +85,7 @@
 	{:else}
 		{#each Object.keys(data) as inItem}
 			<DataListCell field={inItem}>
-				<slot />
+				<Slotted child={children}><slot /></Slotted>
 			</DataListCell>
 		{/each}
 	{/if}

@@ -6,22 +6,45 @@
 	import type { PanelContextType } from './types.js';
 	const { slideInNoName, slideOutNoName } = transitions;
 
-	/*  common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLInputElement | null = null;
-	export let style: string = '';
-	/*  end slotUi exports*/
+	import type { SvelteComponent } from 'svelte';
+	import type { Snippet } from 'svelte';
+	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 
-	export let open: boolean;
-	export let component = null;
-	export let flow: ElementProps['flow'] | undefined = 'absolute';
-	export let outer = true;
+	type PanelSlideProps = CommonProps & {
+		/** Whether the panel is open or not */
+		open: boolean;
 
-	export let panelSlideId = crypto.randomUUID() as string;
+		/** Component to be rendered in the panel */
+		component: SvelteComponent | undefined;
+
+		/** Flow of the panel */
+		flow?: ElementProps['flow'];
+
+		/** Whether the panel is outer or not */
+		outer: boolean;
+
+		/** Unique ID for the panel slide */
+		panelSlideId: string;
+
+		/** Children slot for the default content */
+		children?: Snippet;
+	};
+	let panelSlideRef: any;
+	let {
+		class: className = '',
+		element = $bindable<HTMLInputElement>(panelSlideRef),
+		style = '',
+		open,
+		component,
+		flow = 'absolute',
+		outer = true,
+		panelSlideId = crypto.randomUUID() as string,
+		children,
+		...rest
+	}: PanelSlideProps = $props();
+
 	let transitionTo: 'prev' | 'next';
 
-	let panelSlideRef: any;
 	/** panelSlideData comes from the source Panel.data and will be bound to the default slot */
 	let panelSlideData: any | undefined = undefined;
 
@@ -45,15 +68,22 @@
 	const panelerContext = getContext<PanelContextType>('Paneler');
 	if (outer) setContext<string>('PanelSlide', panelSlideId);
 
-	$: if (!$panelerContext.panelSlides[panelSlideId] && outer && panelerContext) {
-		$panelerContext.panelSlides[panelSlideId] = {};
-	}
+	$effect(() => {
+		if (!$panelerContext.panelSlides[panelSlideId] && outer && panelerContext) {
+			$panelerContext.panelSlides[panelSlideId] = {};
+		}
+	});
 
-	$: if (panelerContext && component && outer) {
-		$panelerContext.panelSlides[panelSlideId] = component;
-	}
+	$effect(() => {
+		if (panelerContext && component && outer) {
+			$panelerContext.panelSlides[panelSlideId] = component;
+		}
+	});
 
-	onMount(() => {
+	$effect(() => {
+		panelSlideRef?.addEventListener('panel-button-clicked', (event: CustomEvent) => {
+			toggleSlidePanels(event);
+		});
 		return () => {
 			delete $panelerContext.panelSlides?.[panelSlideId];
 		};
@@ -86,23 +116,25 @@
 		actions.close();
 		// new activePanelSlide
 		// will be bound to the default slot
-		const activePanelSlideId = registredPanelSlides[prevNext].panelSlideId;
-		$panelerContext.activePanelSlideData[activePanelSlideId] = data;
-		registredPanelSlides[prevNext].actions.open();
+		if (prevNext) {
+			const activePanelSlideId = registredPanelSlides[prevNext].panelSlideId;
+			$panelerContext.activePanelSlideData[activePanelSlideId] = data;
+			registredPanelSlides[prevNext].actions.open();
+		}
 	}
 </script>
 
 {#if outer}
-	<svelte:self bind:this={component} outer={false} />
+	<svelte:self bind:this={component} outer={false} {...rest} />
 {:else if open}
 	<div
 		bind:this={panelSlideRef}
-		on:panel:button:clicked={toggleSlidePanels}
 		out:slideOutNoName|global={{ duration: 125, delay: 20, direction: transitionTo }}
 		in:slideInNoName|global={{ duration: 150, delay: 150, direction: transitionTo }}
 		class="sidePanel {className}"
 		style:position={flow ?? ''}
 		{style}
+		{...rest}
 	>
 		<slot {panelSlideId} data={$panelerContext.activePanelSlideData[panelSlideId]} />
 	</div>

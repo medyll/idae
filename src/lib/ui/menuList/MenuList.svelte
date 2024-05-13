@@ -6,7 +6,7 @@
 	import { setContext } from 'svelte';
 	import type { MenuListProps } from './types.js';
 	import MenuItem from './MenuListItem.svelte';
-	import type { Data } from '$lib/index.js';
+	import type { Data } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let {

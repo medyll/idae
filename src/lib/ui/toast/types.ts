@@ -1,5 +1,28 @@
-import type { SvelteComponent } from 'svelte';
+import type { CommonProps } from '$lib/types/index.js';
+import type { Snippet, SvelteComponent } from 'svelte';
 
+export type ToastProps = CommonProps & {
+	/** Unique ID for the toast */
+	toastId: string;
+
+	/** Toast will safe close after delay */
+	autoClose: boolean;
+
+	/** Default delay in milliseconds before auto closing  */
+	autoCloseDelay: number;
+
+	/** Component to be rendered in the toast */
+	component: SvelteComponent | undefined;
+
+	/** Props for the component to be rendered in the toast */
+	componentProps: any | undefined;
+
+	/** ID of the toaster */
+	toasterId: string;
+	element: HTMLDivElement;
+	/** Children slot for the default content */
+	children?: Snippet;
+};
 export type ToastType = {
 	toastId?: any;
 	autoClose?: boolean;

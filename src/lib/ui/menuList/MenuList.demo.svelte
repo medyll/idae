@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Menu from './MenuList.svelte';
+	import MenuList from './MenuList.svelte';
 	import MenuItem from './MenuListItem.svelte';
 	/* demo */
 	import ComponentDemo from '$components/ComponentDemo.svelte';
@@ -58,33 +58,33 @@
 			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
 				<div class="flex-h flex-align-bottom gap-small">
 					<div class="pad-tiny">
-						<Menu {...activeParams}>
+						<MenuList {...activeParams}>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
-						</Menu>
+						</MenuList>
 						<h6 class="pad">A menu</h6>
 					</div>
 					<div class="pad">
-						<Menu {...activeParams}>
+						<MenuList {...activeParams}>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem icon="home" selected={true}>menu item</MenuItem>
 							<MenuItem icon="close">menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
-						</Menu>
+						</MenuList>
 						<h6 class="pad">A menu with icons</h6>
 					</div>
 					<div class="pad">
-						<Menu {...activeParams}>
+						<MenuList {...activeParams}>
 							<MenuItem divider={true}>menu item</MenuItem>
 							<MenuItem icon="home" selected={true}>menu item</MenuItem>
 							<MenuItem icon="close">menu item</MenuItem>
 							<MenuItem divider={true}>menu item</MenuItem>
 							<MenuItem>menu item</MenuItem>
-						</Menu>
+						</MenuList>
 						<h6 class="pad">A menu with some dividers</h6>
 					</div>
 				</div>

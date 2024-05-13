@@ -1,21 +1,21 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { RatingProps } from './types.js';
 
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-	export let style: string = '';
-	/**    maximum rate     */
-	export let ratingBase: number = 4;
-	/** current score */
-	export let scored: number = 0;
-
-	/** default icon to be used when not using slots */
-	export let defaultIcon: string | undefined = undefined;
-	/** scored icon to be used when not using slots */
-	export let scoredIcon: string | undefined = undefined;
-	/** can be vertical or horizontal */
-	export let direction: 'vertical' | 'horizontal' = 'horizontal';
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		ratingBase = 4,
+		scored = 0,
+		defaultIcon,
+		scoredIcon,
+		direction = 'horizontal',
+		ratingScoredIcon,
+		children,
+		...rest
+	}: RatingProps = $props();
 
 	const title = `${scored} / ${ratingBase}`;
 </script>
@@ -25,16 +25,21 @@
 	class="rating {className}"
 	style="--direction:{direction === 'horizontal' ? 'row' : 'column'};{style}"
 	{title}
+	{...rest}
 >
 	{#each [...Array(ratingBase)] as rate, idx}
 		{#if idx + 1 <= scored}
-			<slot name="ratingScoredIcon">
-				<Icon icon={scoredIcon} />
-			</slot>
+			<Slotted child={ratingScoredIcon}>
+				<slot name="ratingScoredIcon">
+					<Icon icon={scoredIcon} />
+				</slot>
+			</Slotted>
 		{:else}
-			<slot>
-				<Icon icon={defaultIcon} />
-			</slot>
+			<Slotted child={children}>
+				<slot>
+					<Icon icon={defaultIcon} />
+				</slot>
+			</Slotted>
 		{/if}
 	{/each}
 </div>

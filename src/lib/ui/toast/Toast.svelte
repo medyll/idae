@@ -1,19 +1,23 @@
 <script lang="ts">
-	import type { SvelteComponent } from 'svelte';
 	import Box from '$lib/base/box/Box.svelte';
 	import { toastStore } from './store.js';
 	import { onMount } from 'svelte';
 	import Toaster from './Toaster.svelte';
+	import type { ToastProps } from './types.js';
 
-	export let toastId: any = crypto.randomUUID() as string;
-	/** Toast will safe close after delay */
-	export let autoClose: boolean = false;
-	/** Default delay in milliseconds before auto closing  */
-	export let autoCloseDelay: number = 5000;
-	export let component: SvelteComponent | undefined = undefined;
-	export let componentProps: any | undefined = undefined;
-	export let toasterId: any = 'defaultToasterRoot';
-	export let element: HTMLDivElement;
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		toastId = crypto.randomUUID() as string,
+		autoClose = false,
+		autoCloseDelay = 5000,
+		component,
+		componentProps,
+		toasterId = 'defaultToasterRoot',
+		children,
+		...rest
+	}: ToastProps = $props();
 
 	let isOpen: boolean = true;
 	// ensure is in store, not to show twice
@@ -38,10 +42,12 @@
 			console.log(a);
 		}
 
-		document.body
+		document?.body
 			.querySelector('[data-toasterId="' + toasterId + '"]')
-			.appendChild(document.body.querySelector('[data-toastId="' + toastId + '"]'));
+			?.appendChild(document.body.querySelector('[data-toastId="' + toastId + '"]'));
+	});
 
+	$effect(() => {
 		if (autoClose) {
 			setTimeout(() => {
 				isOpen = false;
@@ -50,7 +56,7 @@
 	});
 </script>
 
-<Box bind:element style="width:auto;" data-toastId={toastId} {isOpen} {...$$restProps}>
+<Box bind:element style="width:auto;" data-toastId={toastId} {isOpen} {...rest}>
 	<slot />
 </Box>
 

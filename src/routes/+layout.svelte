@@ -25,6 +25,7 @@
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	import Looper from '$lib/utils/looper/Looper.svelte';
+	import { stator } from '$lib/utils/engine/stator.js';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -64,6 +65,21 @@
 	$effect(() => {
 		scrollSpy();
 	});
+
+	let red = stator([]);
+	red.onchange = (one, two) => {
+		console.log(one, two, red);
+	};
+	let timer: NodeJS.Timeout;
+	$effect(() => {
+		red.push(red.length);
+		timer = setInterval(() => {
+			red.push(red.length);
+		}, 10000);
+		return () => clearInterval(timer);
+	});
+
+	// console.log(red);
 </script>
 
 <svelte:head>

@@ -7,7 +7,7 @@ export type DrawerProps = CommonProps & {
 	primary?: DrawerTitleType;
 
 	/** sub-title of the drawer */
-	secondary?: DrawerTitleType | undefined;
+	secondary?: DrawerTitleType;
 
 	/** icon of the drawer */
 	icon?: string | undefined;
@@ -22,12 +22,10 @@ export type DrawerProps = CommonProps & {
 	 * flow
 	 * @type "fixed" | "relative" | "absolute"
 	 */
-	flow?: 'fixed' | 'relative' | 'absolute';
+	flow?: ElementProps['flow'];
 
-	/**  stickTo
-	 * @type {'right' | 'left' | 'top' | 'bottom'}
-	 */
-	stickTo?: 'right' | 'left' | 'top' | 'bottom';
+	/**  stickTo position */
+	stickTo?: ElementProps['position'];
 
 	showOpenerIcon?: boolean;
 

@@ -3,8 +3,12 @@
 <script lang="ts">
 	import { getChromeFrame } from './chromeFrame.utils.js';
 
-	export let frameId: string;
-	export let showCommands: boolean;
+	type ChromeFrameProps = {
+		frameId: string;
+		showCommands: boolean;
+	};
+
+	let { frameId, showCommands }: ChromeFrameProps = $props();
 
 	const frameStore = getChromeFrame(frameId);
 
@@ -26,8 +30,8 @@
 		<div class="chrome-frame-bar">
 			<div class="flex-main h3">{frameId}</div>
 			<div>{frameId}</div>
-			<button on:click={handleHide}>hide</button>
-			<button on:click={handleRemove}>close</button>
+			<button onclick={handleHide}>hide</button>
+			<button onclick={handleRemove}>close</button>
 		</div>
 	{/if}
 	<div class="chrome-frame-content">

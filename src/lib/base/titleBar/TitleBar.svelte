@@ -19,6 +19,7 @@
 		title?: string;
 		titleBarIcon?: Snippet;
 		titleBarTitle?: Snippet;
+		children?: Snippet;
 	};
 
 	let {
@@ -34,7 +35,8 @@
 <div class="title-bar">
 	<div class="title-bar-content">
 		<div class="title-bar-content-icon">
-			<Slotted child={titleBarIcon}><Icon fontSize="small" {icon} /></Slotted>
+			<slot name="titleBarIcon"><Icon fontSize="small" {icon} /></slot>
+			<Slotted child={titleBarIcon}></Slotted>
 		</div>
 		<div class="title-bar-content-title">
 			<Slotted child={titleBarTitle}>
@@ -48,9 +50,7 @@
 		</div>
 	{/if}
 	{#if Boolean(onClose)}
-		<div class="">
-			<Button onclick={onClose} variant="naked" icon="window-close" size="auto" />
-		</div>
+		<Button onclick={onClose} variant="naked" icon="window-close" size="auto" />
 	{/if}
 </div>
 

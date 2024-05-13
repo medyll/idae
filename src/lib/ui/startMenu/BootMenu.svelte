@@ -36,7 +36,7 @@
 {#if $startMenuStore}
 	<div
 		class="boot-menu"
-		on:panel:button:clicked={toggleSlidePanels}
+		on:panel-button-clicked={toggleSlidePanels}
 		transition:fade|global={{ duration: 50 }}
 		use:sx4u={{ position: 'absolute', radius: 8, w: 96, h: 64 }}
 		use:clickAway={{ action: toggleStartMenu }}

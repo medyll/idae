@@ -65,7 +65,7 @@
 	><div class="flex-v gap-medium">
 		<DemoPage {code} title="Using slots" component="Box">
 			<Demoer parameters={parametersSlot} {componentArgs} let:activeParams>
-				<Box {...activeParams} onClose="cdss" class="marg">
+				<Box {...activeParams} class="marg">
 					<span slot="titleBarTitle">Title of the box</span>
 					<Icon fontSize="small" icon="clock" slot="titlBarIcon" />
 					<div class="pad-2">Content of the box</div>

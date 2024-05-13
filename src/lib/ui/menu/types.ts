@@ -41,7 +41,6 @@ export type MenuProps<T = Data> = CommonProps & {
 	/** @deprecated */
 	menuList?: MenuItemProps[];
 	children?: Snippet<[{ item: Data; itemIndex: number }]>;
-	rest?: any;
 };
 
 export type MenuItemProps<T = any> = CommonProps & {

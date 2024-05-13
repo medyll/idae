@@ -1,27 +1,9 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-
-	type ChipperProps = CommonProps & {
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-		/** position of the chipper
-		@type {'top' | 'bottom' | 'left' | 'right'}
-		*/
-		position: 'top' | 'bottom' | 'left' | 'right';
-		/** status of the chip
-		@type {'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'light' | 'medium' | 'dark'}
-		*/
-		status?: string;
-		/** css color code for the chip */
-		color?: string;
-		/** text or html is slot is not used */
-		content?: string;
-		/** show or hide the chip */
-		showChip: boolean;
-	};
+	import type { ChipperProps } from './types.js';
 
 	let {
 		class: className = '',

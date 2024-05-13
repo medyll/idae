@@ -25,7 +25,7 @@
 </script>
 
 <div
-	on:panel:button:clicked={toggleSlidePanels}
+	on:panel-button-clicked={toggleSlidePanels}
 	transition:fade|global={{ duration: 50 }}
 	class={className}
 	{style}

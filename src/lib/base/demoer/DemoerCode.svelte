@@ -22,7 +22,7 @@
 		code = '',
 		subTitle = undefined,
 		component = undefined,
-		slots = {}
+		slots
 	} = $props() as DemoerCodeProps;
 
 	/* Prism.plugins.NormalizeWhitespace.setDefaults({
@@ -39,13 +39,13 @@
 </script>
 
 <div>
-	{#if code || slots.code}
+	{#if code || slots?.code}
 		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
 			<Icon icon="mdi:code" /> code
 		</h6>
 		{#if title}<div class="text-bold pad pad-l-4">- {title}</div>{/if}
 		<div class="marg-l-2 dsp-block-inline radius-small pad-ii-2">
-			{#if slots.code}
+			{#if slots?.code}
 				{@render slots.code()}
 			{:else}
 				<pre><code lang="language-svelte">{@html highlighted}</code></pre>

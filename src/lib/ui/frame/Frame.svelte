@@ -3,6 +3,8 @@
 <script lang="ts">
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import type { DrawerProps } from '$lib/navigation/drawer/types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { FrameProps } from './types.js';
 
 	const defaultDrawerProps: DrawerProps = {
 		isOpen: false,
@@ -12,22 +14,30 @@
 		flow: 'relative',
 		defaultWidth: '200px'
 	};
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
 
-	export let style: string = '';
-	export let elementNav: HTMLDivElement | null = null;
-	export let frameDrawerRef: typeof Drawer = null;
+	let {
+		class: className = '',
+		element = $bindable<HTMLDivElement>(),
+		frameDrawerRef,
+		elementNav,
+		style = '',
+		drawerWidth = '200px',
+		drawerProps = { ...defaultDrawerProps },
+		children,
+		frameNavHeader,
+		drawerTop,
+		drawerContent,
+		drawerFooter,
+		drawerTitle,
+		drawerIcon,
+		drawerPrimary,
+		drawerSecondary,
+		frameTop,
+		frameBottom,
+		...rest
+	}: FrameProps = $props();
 
-	export let hideCloseIcon: boolean = true;
-	export let showOpenerIcon: boolean = true;
-
-	export let drawerWidth: string = '200px';
-
-	export let drawerProps: DrawerProps = { ...defaultDrawerProps };
-
-	let menuOpen = true;
+	let menuOpen = $state(true);
 
 	export const actions = {
 		openNavLeft: () => {
@@ -42,32 +52,51 @@
 	};
 </script>
 
-<div bind:this={element} class="frame {className}" {style}>
+<div bind:this={element} class="frame {className}" {style} {...rest}>
 	<div class="frame-container">
-		<div bind:this={elementNav} class="navLeft">
+		<div bind:this={elementNav} class="frame-container-nav">
 			{#if frameDrawerRef?.isOpen}
-				<slot name="navLeftHeaderFrameSlot" />
+				<Slotted child={frameNavHeader}>
+					<slot name="frameNavHeader" />
+				</Slotted>
 			{/if}
 			<Drawer
 				bind:this={frameDrawerRef}
-				{hideCloseIcon}
 				bind:isOpen={menuOpen}
 				style="flex:1;position:relative;"
 				defaultWidth={drawerWidth}
-				{showOpenerIcon}
 				{...defaultDrawerProps}
 				{...drawerProps}
 			>
-				<slot name="drawerTop" slot="drawerTop" />
-				<slot name="drawerContent" />
+				<slot name="drawerIcon" slot="drawerIcon">
+					<Slotted child={drawerProps?.drawerIcon ?? drawerIcon} />
+				</slot>
+				<slot name="drawerFooter" slot="drawerFooter">
+					<Slotted child={drawerProps?.drawerFooter ?? drawerFooter} />
+				</slot>
+				<slot name="drawerTitle" slot="drawerTitle">
+					<Slotted child={drawerProps?.drawerTitle ?? drawerTitle} />
+				</slot>
+				<slot name="drawerPrimary" slot="drawerPrimary">
+					<Slotted child={drawerProps?.drawerPrimary ?? drawerPrimary} />
+				</slot>
+				<slot name="drawerSecondary" slot="drawerSecondary">
+					<Slotted child={drawerProps?.drawerSecondary ?? drawerSecondary} />
+				</slot>
+				<slot name="drawerTop" slot="drawerTop">
+					<Slotted child={drawerProps?.drawerTop ?? drawerTop} />
+				</slot>
+				<slot name="drawerContent">
+					<Slotted child={drawerContent} />
+				</slot>
 			</Drawer>
 		</div>
 		<div class="frame-container-main">
-			<slot name="frameTop" />
+			<Slotted child={frameTop}><slot name="frameTop" /></Slotted>
 			<div class="frame-container-main-content">
 				<slot name="content" />
 			</div>
-			<slot name="frameBottom" />
+			<Slotted child={frameBottom}><slot name="frameBottom" /></Slotted>
 		</div>
 	</div>
 </div>

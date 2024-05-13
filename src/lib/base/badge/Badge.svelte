@@ -1,20 +1,16 @@
 <svelte:options accessors={true} runes={true} />
 
 <script lang="ts">
-	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { BadgeProps } from './types.js';
 
-	type Props = CommonProps & {
-		value: number;
-		ceiling: number;
-		element: HTMLDivElement;
-		/**
-		 * position of the badge
-		 * @type {{ x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' }}
-		 */
-		position: { x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' };
-	};
-
-	let { value, ceiling, element, position = { x: 'right', y: 'top' }, children } = $props<Props>();
+	let {
+		value,
+		ceiling,
+		element,
+		position = { x: 'right', y: 'top' },
+		children
+	}: BadgeProps = $props();
 
 	const xM = {
 		left: 'left:0',
@@ -30,11 +26,7 @@
 
 {#if value > ceiling}
 	<div bind:this={element} class="badge" style="{xM[position.x]};{yM[position.y]}">
-		{#if children}
-			{@render children()}
-		{:else}
-			{value}
-		{/if}
+		<Slotted child={children}>{value}</Slotted>
 	</div>
 {/if}
 
