@@ -14,6 +14,11 @@ $vendor: "sld";
     --#{$vendor}-gap-small: 0.5rem;
     --#{$vendor}-gap-med: 1rem;
     --#{$vendor}-gap-large: 1.5rem;
+
+    --#{$vendor}-gutter-tiny: 0.25rem;
+    --#{$vendor}-gutter-small: 0.5rem;
+    --#{$vendor}-gutter-med: 1rem;
+    --#{$vendor}-gutter-large: 1.5rem;
 }
 :root {
     --white: #fff;

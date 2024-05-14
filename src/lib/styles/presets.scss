@@ -141,6 +141,20 @@
     }
 }
 
+@mixin ui-gutter-presets {
+    --preset-gutter: var(--sld-gutter-small);
+
+    @each $preset in (tiny, small, med, large) {
+        &[gutter="#{$preset}"],
+        &[gutter-#{$preset}],
+        &.gutter-#{$preset} {
+            padding: var(--sld-gutter-#{$preset});
+            gap: var(--sld-gutter-#{$preset});
+            --preset-gutter: var(--sld-gutter-#{$preset});
+        }
+    }
+}
+
 @mixin flex($direction: row, $align-items: flex-start) {
     display: flex;
     flex-direction: $direction;
