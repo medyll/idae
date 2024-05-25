@@ -14,7 +14,7 @@ type Button = {
 	/** icon as a parameter */
 	ico?: IconObj;
 	/** endIcon as a parameter */
-	iconEnd?: IconObj;
+	iconEnd?: ElementProps['icon'];
 	/** background color theme */
 	bgTheme?: string;
 	/** paramters for usePopper */

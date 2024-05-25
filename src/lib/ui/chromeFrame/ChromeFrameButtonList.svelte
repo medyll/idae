@@ -5,14 +5,10 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 
-	/** common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-	/** end slotUi exports*/
+	let { class: className = '', element, ...rest } = $props();
 </script>
 
-<div bind:this={element} class="flex-h gap-small {className}">
+<div bind:this={element} class="flex-h gap-small {className}" {...rest}>
 	{#each [...$chromeFrameStore.values()] as value, key}
 		<div class="buttonRail">
 			<slot chromeFrame={value}>
@@ -25,9 +21,9 @@
 						chromeFrameStore.remove(value.frameId);
 					}}
 					class={value.active ? 'active' : ''}
+					iconEnd="window-close"
 				>
 					{value.title ?? value.frameId}
-					<div slot="buttonEnd"><Icon class="theme-text-primary" icon="window-close" /></div>
 				</Button>
 			</slot>
 		</div>

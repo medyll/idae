@@ -1,33 +1,39 @@
 <svelte:options accessors />
 
 <script lang="ts">
-	import { onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { PanelContextType } from './types.js';
+	import type { PanelContextType, PanelProps } from './types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	export let title = 'not set';
-
-	/** panelId will be bound to the targeted panelSlide */
-	export let panelId = crypto.randomUUID() as string;
-	/** data will be bound to the targeted panelSlide */
-	export let data: any | undefined = undefined;
-	/** data will be bound to the targeted panelSlide */
-	export let showNavigation: boolean = true;
-	export const actions = {
-		load: (args: any) => {}
-	};
+	let {
+		title = 'not set',
+		panelId = crypto.randomUUID() as string,
+		data = undefined,
+		showNavigation = true,
+		panelButtonPrevious,
+		panelButtonNext,
+		actions = {
+			load: (args: any) => {}
+		}
+	}: PanelProps = $props();
 
 	let ref: HTMLDivElement | undefined = undefined;
 	let panelSlideId = getContext<string>('PanelSlide');
 	let panelerContext = getContext<PanelContextType>('Paneler');
 
-	let currentIdx, hasNext, hasPrev;
+	let currentIdx;
 
-	$: if ($panelerContext.panelSlides) {
-		currentIdx = Object.keys($panelerContext.panelSlides).indexOf(panelSlideId);
-		hasNext = Boolean(Object.keys($panelerContext.panelSlides)[currentIdx + 1]);
-		hasPrev = Boolean(Object.keys($panelerContext.panelSlides)[currentIdx - 1]);
-	}
+	let hasNext: boolean = $state(false);
+	let hasPrev: boolean = $state(false);
+
+	$effect(() => {
+		if ($panelerContext.panelSlides) {
+			currentIdx = Object.keys($panelerContext.panelSlides).indexOf(panelSlideId);
+			hasNext = Boolean(Object.keys($panelerContext.panelSlides)[currentIdx + 1]);
+			hasPrev = Boolean(Object.keys($panelerContext.panelSlides)[currentIdx - 1]);
+		}
+	});
 
 	function prevNextPanel(page: 'next' | 'prev') {
 		const event = new CustomEvent('panel-button-clicked', {
@@ -42,19 +48,21 @@
 	<div class="panel-bar pos-sticky top-0 gap-small">
 		<div style="flex:1">{title}</div>
 		{#if hasPrev}
-			{#if $$slots.panelButtonPrevious}
+			{#if panelButtonPrevious || $$slots.panelButtonPrevious}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					on:click={() => {
+					onclick={() => {
 						prevNextPanel('prev');
 					}}
 				>
-					<slot name="panelButtonPrevious" />
+					<Slotted child={panelButtonPrevious}><slot name="panelButtonPrevious" /></Slotted>
 				</div>
 			{:else}
 				<Button
 					icon="chevron-left"
-					naked
-					on:click={() => {
+					variant="naked"
+					onclick={() => {
 						prevNextPanel('prev');
 					}}
 				/>
@@ -62,17 +70,19 @@
 		{/if}
 		{#if hasNext}
 			{#if $$slots.panelButtonNext}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					on:click={() => {
+					onclick={() => {
 						prevNextPanel('next');
 					}}
 				>
-					<slot name="panelButtonNext" />
+					<Slotted child={panelButtonNext}><slot name="panelButtonNext" /></Slotted>
 				</div>
 			{:else}
 				<Button
-					endIcon="chevron-right"
-					on:click={() => {
+					iconEnd="chevron-right"
+					onclick={() => {
 						prevNextPanel('next');
 					}}>see all</Button
 				>

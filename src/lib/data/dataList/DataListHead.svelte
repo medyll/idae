@@ -1,16 +1,11 @@
 <script lang="ts">
-	import type { DataListStoreType } from './types.js';
+	import type { DataListHeadProps, DataListStoreType } from './types.js';
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { DataCellType } from './types.js';
 	import DataListCell from './DataListCell.svelte';
 
-	export let style: string | undefined = undefined;
-	export let element: HTMLDivElement | undefined = undefined;
-
-	export let stickyHeader: boolean | undefined = true;
-
-	export let onSort: Function = () => {};
+	let { style, element, stickyHeader = true, onSort = () => {} }: DataListHeadProps = $props();
 
 	const dataListContext = getContext<Writable<DataListStoreType>>('dataListContext');
 	// this head is a head
@@ -45,7 +40,7 @@
 		}
 	}
 
-	$: cssVars = setCssGrid($dataListContext.columns ?? []);
+	let cssVars = setCssGrid($dataListContext.columns ?? []);
 </script>
 
 <div

@@ -1,35 +1,32 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
-	import type { Data } from '$lib/types/index.js';
-	import type { SortItem } from './types.js';
-
-	/** Sorter mode */
-	export let sorterMode: 'button' | 'menu' | 'free' = 'button';
-	/** binding : final sorted data as raw object  */
-	export let sortedData: SortItem[] = [];
-	/** list of available sorts shown to user */
-	export let sortListItems: string[] | undefined = undefined;
-	/** data to sort */
-	export let data: Data[];
-	/** field from data to sort by*/
-	export let sortByField: string | undefined = undefined;
-	/** presented field from data to sort by*/
-	export let sortByTitleField: string | undefined = undefined;
-	/** order on which the sorted list is sorted */
-	export let sortByOrder: 'asc' | 'desc' | 'none' | string = 'none';
-	/** binding, used when multiple buttons*/
-	export let activeCommonSortField: string = '';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { SorterProps } from './types.js';
 
 	const sortState: string[] = ['none', 'asc', 'desc'];
 	const icons = {
 		default: ['dots-horizontal', 'sort-bool-ascending', 'sort-bool-descending']
 	};
 
-	$: sortedData = data;
-	$: if (Boolean(activeCommonSortField) && activeCommonSortField !== sortByField) {
-		sortByOrder = 'none';
-	}
+	let {
+		data = [],
+		sortedData = $bindable(data),
+		sortByField = undefined,
+		sortByTitleField = undefined,
+		sortByOrder = 'none',
+		activeCommonSortField = '',
+		sorterMode = 'button',
+		children,
+		sortListItems,
+		...rest
+	}: SorterProps = $props();
+
+	$effect(() => {
+		if (Boolean(activeCommonSortField) && activeCommonSortField !== sortByField) {
+			sortByOrder = 'none';
+		}
+	});
 
 	function doSort(field: string, order: 'asc' | 'desc' | 'none' | string) {
 		activeCommonSortField = field;
@@ -42,17 +39,17 @@
 	}
 </script>
 
-<div>
+<div {...rest}>
 	{#if sorterMode === 'button'}
 		<Button
-			on:click={() => {
+			onclick={() => {
 				const next = sortState.indexOf(sortByOrder) + 1;
 				let toggleOrder = sortState?.[next] ? sortState[next] : sortState[0];
 				if (sortByField) doSort(sortByField, toggleOrder);
 			}}
 			primary={sortByTitleField ?? sortByField}
 			icon={'mdi' + icons.default[sortState.indexOf(sortByOrder)]}
-			naked
+			variant="naked"
 			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
 			size="auto"
 			showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
@@ -60,7 +57,7 @@
 	{/if}
 	{#if sorterMode === 'menu'}
 		<Button
-			on:click={() => {
+			onclick={() => {
 				if (sortByField) doSort(sortByField, 'desc');
 			}}
 			icon="mdi:sort-bool-descending"
@@ -68,12 +65,24 @@
 	{/if}
 	<!-- // button name + asc/desc -->
 	<!-- // button menu with all data minus objects  + asc/desc -->
-	<slot
-		primary={sortByTitleField ?? sortByField}
-		icon={'mdi:' + icons.default[sortState.indexOf(sortByOrder)]}
-		naked
-		selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
-		size="auto"
-		showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
-	/>
+	<Slotted
+		child={children}
+		slotArgs={{
+			primary: sortByTitleField ?? sortByField,
+			icon: 'mdi:' + icons.default[sortState.indexOf(sortByOrder)],
+			naked: true,
+			selected: sortByOrder !== 'none' && activeCommonSortField === sortByField,
+			size: 'auto',
+			showChip: sortByOrder !== 'none' && activeCommonSortField === sortByField
+		}}
+	>
+		<slot
+			primary={sortByTitleField ?? sortByField}
+			icon={'mdi:' + icons.default[sortState.indexOf(sortByOrder)]}
+			naked
+			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
+			size="auto"
+			showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
+		/>
+	</Slotted>
 </div>

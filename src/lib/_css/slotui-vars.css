@@ -11,6 +11,10 @@
   --sld-gap-small: 0.5rem;
   --sld-gap-med: 1rem;
   --sld-gap-large: 1.5rem;
+  --sld-gutter-tiny: 0.25rem;
+  --sld-gutter-small: 0.5rem;
+  --sld-gutter-med: 1rem;
+  --sld-gutter-large: 1.5rem;
 }
 
 :root {

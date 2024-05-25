@@ -20,7 +20,6 @@ import  TextField from '$lib/controls/textfield/TextField.demo.svelte';
 import  DataList from '$lib/data/dataList/DataList.demo.svelte';
 import  Finder from '$lib/data/finder/Finder.demo.svelte';
 import  Grouper from '$lib/data/grouper/Grouper.demo.svelte';
-import  List from '$lib/data/list/List.demo.svelte';
 import  Loader from '$lib/data/loader/Loader.demo.svelte';
 import  Sorter from '$lib/data/sorter/Sorter.demo.svelte';
 import  Drawer from '$lib/navigation/drawer/Drawer.demo.svelte';
@@ -59,7 +58,6 @@ textfield:{component:TextField,name:"TextField",code:"textfield",group:"controls
 datalist:{component:DataList,name:"DataList",code:"datalist",group:"data",root:"dataList"},
 finder:{component:Finder,name:"Finder",code:"finder",group:"data",root:"finder"},
 grouper:{component:Grouper,name:"Grouper",code:"grouper",group:"data",root:"grouper"},
-list:{component:List,name:"List",code:"list",group:"data",root:"list"},
 loader:{component:Loader,name:"Loader",code:"loader",group:"data",root:"loader"},
 sorter:{component:Sorter,name:"Sorter",code:"sorter",group:"data",root:"sorter"},
 drawer:{component:Drawer,name:"Drawer",code:"drawer",group:"navigation",root:"drawer"},

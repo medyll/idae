@@ -14,22 +14,6 @@
 
 	// import wula from "src/theme/cssfabric.scss";
 
-	/* export let routes = {
-		'/:page/:subpage?': DynPage
-		// Exact path
-		// '/': Home,
-
-		// Using named parameters, with last being optional
-		// '/author/:first/:last?': Author,
-
-		// Wildcard parameter
-		// '/book/*': Book,
-
-		// Catch-all
-		// This is optional, but if present it must be the last
-		//'*': NotFound,
-	}; */
-
 	function signOut() {
 		push('/#login');
 	}

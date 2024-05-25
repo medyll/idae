@@ -1,37 +1,72 @@
 <script lang="ts">
-	import type { Data, ElementProps } from '$lib/types/index.js';
+	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
 	import Input from '$lib/controls/textfield/TextField.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	/*  common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLInputElement | null = null;
-	export let style: string = '';
-	/*  end slotUi exports*/
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 
-	export let name: string;
-	export let disabled: boolean = false;
+	type SelectProps = CommonProps & {
+		/** The position of the popper */
+		position?: ElementProps['popperPosition'];
 
-	export let data: Data | undefined = undefined;
-	export let dataFieldId: string | undefined = undefined;
-	export let dataFieldName: string | undefined = undefined;
-	export let options: {
-		data?: Data;
-		text: string;
-		icon?: any;
-	}[] = [];
-	export let position: ElementProps['position'] | undefined = undefined;
-	export let stickToHookWidth: boolean = false;
-	export let autoClose: boolean = false;
-	export let value: any | undefined = undefined;
+		/** Whether the popper should stick to the hook width */
+		stickToHookWidth: boolean;
+
+		/** Whether the popper should auto close */
+		autoClose?: boolean;
+
+		/** The value of the select */
+		value: any;
+
+		/** The name of the select */
+		name: string;
+
+		/** The style of the select */
+		style?: string;
+
+		/** The class name of the select */
+		className: string;
+
+		/** The data for the select */
+		data: any[] | undefined;
+		disabled?: boolean;
+		/** The options for the select */
+		options?:
+			| {
+					data?: Data;
+					text: string;
+					icon?: any;
+			  }[]
+			| undefined;
+
+		/** The data field id for the select */
+		dataFieldId: string;
+
+		/** The data field name for the select */
+		dataFieldName: string;
+		children?: Snippet<[{ optionsData: Data }]>;
+	};
+
+	let {
+		name,
+		element,
+		disabled = false,
+		data,
+		dataFieldId,
+		dataFieldName,
+		options = [],
+		position,
+		stickToHookWidth,
+		autoClose = false,
+		value = undefined,
+		children,
+		...rest
+	}: SelectProps = $props();
 
 	let hiddenRef;
-	let inputRef;
-	let innerRef;
-	let absolute = 'absolute';
 	let isVisible: boolean = false;
 
 	let timerClick: any;
@@ -71,15 +106,21 @@
 	>
 		{#if data}
 			{#each data as dta}
-				<slot optionsData={dta}>
-					<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem>
-				</slot>
+				<Slotted child={children} slotArgs={{ optionsData: dta }}>
+					<slot optionsData={dta}>
+						<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem>
+					</slot></Slotted
+				>
 			{/each}
 		{:else if options}
 			{#each options as option}
-				<slot optionsData={option}>
-					<MenuItem icon={option.user} selected={value === 2} data={option}>{option.text}</MenuItem>
-				</slot>
+				<Slotted child={children} slotArgs={{ optionsData: options }}>
+					<slot optionsData={option}>
+						<MenuItem icon={option.icon} selected={value === 2} data={option}
+							>{option.text}</MenuItem
+						>
+					</slot>
+				</Slotted>
 			{/each}
 		{/if}
 	</Menu>

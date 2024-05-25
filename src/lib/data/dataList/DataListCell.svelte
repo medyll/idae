@@ -1,8 +1,8 @@
 <svelte:options accessors={true} />
 
 <script lang="ts">
-	import type { DataCellType, DataListStoreType, RowType } from './types.js';
-	import { getContext, onMount, tick } from 'svelte';
+	import type { DataCellType, DataListCellProps, DataListStoreType, RowType } from './types.js';
+	import { getContext, onMount, tick, type Snippet } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import type { Data } from '$lib/types/index.js';
@@ -13,26 +13,28 @@
 	const inHeader = getContext<Writable<DataCellType[]>>('dataListHead');
 	const rowContext = getContext<Writable<RowType>>('dataListRow');
 
-	export let element: HTMLElement | undefined = undefined;
 	let className = '';
 	export { className as class };
 
-	export let style: string | undefined = undefined;
-	/** if data has been provided, then cell got a fieldName and coumnId is defined */
-	export let field: string | undefined = undefined;
-	/** typeof the field. Used when exists Datalist.$$props.dataTypes */
-	export let fieldType: string | undefined = undefined;
-	export let columnId: string | number | undefined = field ?? (crypto.randomUUID() as string);
-	/** set noWrap = true to have ellipsis on this cell content*/
-	export let noWrap: boolean = true;
-	/** title */
-	export let title: string | undefined = undefined;
+
+
+	let {
+		element = $bindable(),
+		field,
+		style,
+		fieldType,
+		columnId = field ?? (crypto.randomUUID() as string),
+		noWrap = true,
+		title,
+		children,
+		...rest
+	}: DataListCellProps = $props();
 
 	let colIndex: number;
 
 	let minWidth = '80px';
 
-	onMount(async () => {
+	$effect( () => {
 		// if inHeader take the width from
 		// - the columns and dataField :  set it to the element
 		// - the columns and element index :  set it to the element
@@ -167,7 +169,7 @@
 		style:width={$dataListContext.columns[field]?.width ?? minWidth}
 		style:minWidth={$dataListContext.columns[field]?.width ?? minWidth}
 		style:maxWidth={$dataListContext.columns[field]?.width ?? minWidth}
-		{...$$restProps}
+		{...rest}
 	>
 		<div on:click={() => onSort(field)} class="cellHeader">
 			<div class="cellHeaderContent">
@@ -182,7 +184,7 @@
 							? 'top'
 							: 'bottom'}
 					>
-						<Icon naked icon={sorticon} />
+						<Icon icon={sorticon} />
 					</Chipper>
 				</div>
 			{/if}

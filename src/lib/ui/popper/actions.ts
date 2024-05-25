@@ -2,7 +2,7 @@ import type { PopperPositionType } from '$lib/ui/popper/types.js';
 import Popper from '$lib/ui/popper/Popper.svelte';
 import { mount, type SvelteComponent } from 'svelte';
 
-export let popperList: Record<string, Popper> = {};
+export const popperList: Record<string, Popper> = {};
 
 const openPopper = (
 	popperId: string,

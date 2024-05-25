@@ -15,7 +15,6 @@ export interface AlertProps extends CommonProps {
 	draggable?: boolean;
 	/** show or hide the alert */
 	isOpen?: boolean;
-	/**  */
 	element?: HTMLDialogElement;
 	actions?: Record<'open' | 'toggle' | 'close', Function>;
 	children?: Snippet;

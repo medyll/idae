@@ -19,7 +19,7 @@
 		defaultField = '*',
 		showSortMenu = false,
 		mode = 'partial',
-		filteredData = filit(),
+		filteredData = $bindable(filit()),
 		sizeRoot = 'auto',
 		size = 'full',
 		tall = 'default',

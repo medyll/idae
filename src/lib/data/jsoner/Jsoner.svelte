@@ -1,12 +1,9 @@
-<script lang="ts">
-	/*  common slotUi exports*/
-	let className = '';
-	export { className as class };
-	export let element: HTMLDivElement | null = null;
-	/*  end slotUi exports*/
-	export let data: any = [];
+<svelte:options runes accessors />
 
-	export let mode: 'array' | 'object' | 'string' | 'number' | undefined = undefined;
+<script lang="ts">
+	import type { JsonerProps } from './types.js';
+
+	let { class: className = '', element, data = [], mode = 'array' }: JsonerProps = $props();
 
 	if (Array.isArray(data)) {
 		mode = 'array';

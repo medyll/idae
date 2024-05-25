@@ -1,5 +1,6 @@
 import type { AlertProps } from '$lib/base/alert/types.js';
 import type { ButtonProps } from '$lib/controls/button/types.js';
+import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 import type { IconProps } from '@iconify/svelte';
 import type { Snippet } from 'svelte';
 
@@ -80,6 +81,7 @@ export interface ElementProps {
 	alignment: 'center' | 'left' | 'right';
 	flow: keyof typeof flowPreset;
 	position: keyof typeof positionPreset;
+	popperPosition: StickToPositionType;
 	action: (event: any, data?: Data) => void;
 	icon: string | IconObj;
 }

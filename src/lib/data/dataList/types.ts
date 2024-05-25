@@ -1,8 +1,13 @@
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
-import type { T } from 'vitest/dist/reporters-xEmem8D4.js';
 
-export type DataListRowProps = CommonProps & {
+export type DataListHeadProps = {
+	style?: string;
+	element?: HTMLDivElement;
+	stickyHeader?: boolean;
+	onSort?: Function;
+};
+export type DataListRowProps<T> = CommonProps & {
 	/** data for the row */
 	data: T;
 
@@ -29,6 +34,17 @@ export interface DataCellType {
 	getter?: (data: Record<string, unknown>) => void;
 	htmlElement?: HTMLElement;
 }
+
+export type DataListCellProps = {
+	element?: HTMLElement;
+	field: string;
+	style?: string;
+	fieldType?: string;
+	columnId?: string | number | undefined;
+	noWrap?: boolean;
+	title?: string;
+	children?: Snippet<[]>;
+};
 
 export interface RowType {
 	data?: Data;

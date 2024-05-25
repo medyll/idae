@@ -35,7 +35,6 @@ Maifield, 1996"
 	<div class="flex-v gap-medium">
 		<h5>Results</h5>
 		<div class="flex-h gap-medium">
-			<!-- <div class="w-large flex-main"><Jsoner {data} /></div> -->
 			<div class="w-large flex-main"><Jsoner data={filteredData} /></div>
 		</div>
 	</div>

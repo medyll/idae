@@ -1,45 +1,59 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
-	import { transition } from 'd3';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	import { fade } from 'svelte/transition';
+	import type { PanelGridProps } from './types.js';
 
-	export let data: any | undefined;
-	export let columns: number = 3;
-
-	export let isExpanded: boolean = false;
+	let {
+		class: className = '',
+		element = $bindable(),
+		style = '',
+		data = [],
+		columns = 3,
+		isExpanded = $bindable(false),
+		children,
+		zoomSlot,
+		...rest
+	}: PanelGridProps = $props();
 </script>
 
 {#if data}
 	<div
 		class="slotUiGrid panelGrid"
 		style="--sld-column-size:{Math.floor(100 / columns)}%;gap:0.5rem"
+		{...rest}
 	>
 		{#each data as dta}
 			{#if !isExpanded}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					on:click={() => {
+					onclick={() => {
 						if ($$slots.zoomSlot) isExpanded = true;
 					}}
 					class="panelGridThumb"
 					in:fade|global
 				>
-					<slot data={dta} />
+					<Slotted child={children} slotArgs={{ data: dta }}><slot data={dta} /></Slotted>
 				</div>
 			{/if}
 		{/each}
 	</div>
 	{#if isExpanded}
 		<div class="panelGridPreview" in:fade|global>
-			<div
-				on:click={() => {
-					isExpanded = false;
-				}}
-			>
-				<Button naked icon="chevron-left" class="theme-text-primary" />
+			<div>
+				<Button
+					onclick={() => {
+						isExpanded = false;
+					}}
+					variant="naked"
+					icon="chevron-left"
+					class="theme-text-primary"
+				/>
 			</div>
 			<div class="zoomSlot">
-				<slot name="zoomSlot" />
+				<Slotted child={zoomSlot}><slot name="zoomSlot" /></Slotted>
 			</div>
 		</div>
 	{/if}
