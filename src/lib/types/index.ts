@@ -108,6 +108,7 @@ export type DemoStoryProps<T> = {
 	[K in keyof T]: {
 		type: T[K] | K | string;
 		values: T[K][] | any[];
+		default?: T[K];
 	};
 };
 

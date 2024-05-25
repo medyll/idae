@@ -4,21 +4,9 @@
 	import Alert from './Alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import { alertDemoValues } from './types.js';
 
-	let parameters: Record<string, any> = {
-		isOpen: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		level: {
-			type: 'string',
-			values: ['info', 'warning', 'alert', 'error', 'succes', 'discrete']
-		},
-		message: {
-			type: 'string',
-			values: ['info', 'warning', 'alert', 'error', 'succes', 'discrete']
-		}
-	};
+	let parameters: Record<string, any> = alertDemoValues;
 
 	let componentArgs = $state({
 		level: 'info',

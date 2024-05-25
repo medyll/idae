@@ -24,18 +24,21 @@ export interface AlertProps extends CommonProps {
 	buttonCloseSlot?: Snippet;
 }
 
-export const demoValues: DemoStoryProps<AlertProps> = {
+export const alertDemoValues: DemoStoryProps<AlertProps> = {
 	isOpen: {
 		type: 'boolean',
-		values: [true, false]
+		values: [true, false],
+		default: false
 	},
 	draggable: {
 		type: 'boolean',
-		values: [true, false]
+		values: [true, false],
+		default: false
 	},
 	level: {
 		type: 'levels',
-		values: Object.keys(statusPreset)
+		values: Object.keys(statusPreset),
+		default: statusPreset.info
 	},
 	message: {
 		type: 'string',

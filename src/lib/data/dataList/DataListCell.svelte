@@ -16,8 +16,6 @@
 	let className = '';
 	export { className as class };
 
-
-
 	let {
 		element = $bindable(),
 		field,
@@ -34,7 +32,7 @@
 
 	let minWidth = '80px';
 
-	$effect( () => {
+	$effect(() => {
 		// if inHeader take the width from
 		// - the columns and dataField :  set it to the element
 		// - the columns and element index :  set it to the element
@@ -45,17 +43,17 @@
 			if ($dataListContext.hasColumnsProps && field) {
 				// console.log('hasColumnsProps && field');
 				if (!$dataListContext.columns[field]) {
-					await tick();
+					tick();
 					// console.log(0);
 					createColumnsDef(element, field, colIndex);
 				}
 				if (!$dataListContext.columns[field]?.width) {
-					await tick();
+					tick();
 					// console.log(field, element.offsetWidth);
 					$dataListContext.columns[field].width = element.offsetWidth + 'px';
 				}
 			} else if ($dataListContext.hasColumnsProps) {
-				await tick();
+				tick();
 				// console.log(2);
 				// grab and declare field from data
 				field = getAutoFields($dataListContext.data)[colIndex];

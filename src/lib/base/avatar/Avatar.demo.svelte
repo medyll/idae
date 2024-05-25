@@ -4,6 +4,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Avatar from './Avatar.svelte';
+	import { AvatarDemoValues } from './types.js';
 
 	let parametersSlot: any = {
 		size: {
@@ -12,20 +13,7 @@
 		}
 	};
 
-	let parametersProps: any = {
-		icon: {
-			type: 'icon',
-			values: ['icon-park-outline:avatar', 'carbon:phone-ip']
-		},
-		size: {
-			type: 'string',
-			values: ['tiny', 'small', 'medium', 'large']
-		},
-		iconSize: {
-			type: 'size preset',
-			values: ['tiny', 'small', 'medium', 'default', 'large']
-		}
-	};
+	let parametersProps = AvatarDemoValues;
 
 	let componentArgs = {
 		icon: 'icon-park-outline:avatar',
