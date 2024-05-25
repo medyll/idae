@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0-beta.1](https://github.com/medyll/slot-ui/compare/v0.7.0-beta.0...v0.7.0-beta.1) (2024-05-25)
+
+
+### Features
+
+* added css gutter preset ([466a48d](https://github.com/medyll/slot-ui/commit/466a48deb891dc3d9c39416ef07db13143152347))
+* removed all svelte 4 exports, done ([4174e21](https://github.com/medyll/slot-ui/commit/4174e2105cbf5882ebe98f2ee25c13b9d771b30a))
+
 ## [0.7.0-beta.0](https://github.com/medyll/slot-ui/compare/v0.1.1-beta.0...v0.7.0-beta.0) (2024-04-26)
 
 
