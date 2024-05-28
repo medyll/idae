@@ -102,7 +102,7 @@
 		onfocus={() => {
 			setTimeout(() => (popperOpen = true), 125);
 		}}
-		onkeydown={(e:KeyboardEvent) => menuRef.actions.navigate(e, filteredData)}
+		onkeydown={(e) => menuRef.actions.navigate(e, filteredData)}
 		{...rest}
 		aria-haspopup="menu"
 		aria-controls="menu"

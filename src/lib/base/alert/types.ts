@@ -24,7 +24,7 @@ export interface AlertProps extends CommonProps {
 	buttonCloseSlot?: Snippet;
 }
 
-export const alertDemoValues: DemoStoryProps<AlertProps> = {
+export const alertDemoValues: DemoStoryProps<any> = {
 	isOpen: {
 		type: 'boolean',
 		values: [true, false],

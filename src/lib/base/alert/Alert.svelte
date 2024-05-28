@@ -7,7 +7,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { ElementProps } from '$lib/types/index.js';
 	import type { AlertProps } from './types.js';
-
+	type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 	const alertActions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
 		toggle,
@@ -27,7 +27,7 @@
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
 		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
-	}: AlertProps = $props();
+	}: Expand<AlertProps> = $props();
 
 	const handleClick = (event: Event) => {
 		if ((event?.target as Element)?.getAttribute('data-close')) {

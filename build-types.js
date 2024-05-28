@@ -3,8 +3,246 @@ import path from 'path';
 import glob from 'glob';
 import micromatch from 'micromatch';
 import ts from 'typescript';
-
+import { parse } from 'svelte/compiler';
+import { svelte as sveltePlugin } from '@sveltejs/vite-plugin-svelte';
 import config from './svelte.config.js';
+import { loadConfigFromFile } from 'vite';
+import { svelte2tsx, emitDts } from 'svelte2tsx';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+class blabla {
+	/**
+	 *
+	 * @param {{
+	 * input: string,
+	 * output: string,
+	 * tsconfig: string,
+	 * svelte_extension: string,
+	 * }} args
+	 */
+	constructor(args) {
+		if (args.output && args.input) {
+			args.output = path.resolve(args.output);
+			args.input = path.resolve(args.input);
+			this.set_options(args);
+		}
+	}
+
+	async set_options(args) {
+		const config = await loadConfigFromFile({ command: 'serve' }, './svelte.config.js');
+
+		const cwd = process.cwd();
+		const tmp = path.join(args.output, '__tmp');
+		this.options = {
+			cwd,
+			config,
+			tmp,
+			input: config.kit?.files?.lib ?? 'src/lib',
+			tsconfig: './tsconfig.json',
+			svelte_extension: '.svelte',
+			svelte_ignore: [],
+			alias: this.#get_aliases(),
+			...args
+		};
+
+		console.log(this.options);
+
+		this.emit_dts();
+	}
+
+	async emit_dts() {
+		await emitDts({
+			libRoot: path.resolve(this.options.input),
+			svelteShimsPath: require.resolve('svelte2tsx/svelte-shims-v4.d.ts'),
+			declarationDir: path.relative(this.options.cwd, this.options.tmp)
+		});
+
+		// list directory
+		for (const file of this.get_root_files(this.options.tmp)) {
+			console.log(path.join(this.options.tmp, file));
+			continue;
+			let content = fs.readFileSync(path.join(this.options.tmp, file), 'utf8');
+			content = content.replace(/from\s+('|")([^"';,]+?)\1/g, this.resolve_aliases);
+			content = content.replace(/import\s*\(\s*('|")([^"';,]+?)\1\s*\)/g, this.resolve_aliases);
+			// write(path.join(output, file), content);
+		}
+	}
+
+	get_root_files(src) {
+		const svelteFiles = glob.sync(path.resolve(src, `**/*${this.options.svelte_extension}`));
+		const filesToParse = svelteFiles.filter(
+			(file) => !micromatch.some(file, this.options.svelte_ignore)
+		);
+
+		path.relative(this.options.cwd, this.options.tmp);
+
+		return filesToParse;
+	}
+
+	/**
+	 * Resolves aliases in a given path or alias.
+	 *
+	 * @param {string} pathOrAlias - The path or alias to resolve.
+	 * @returns {string} - The resolved path.
+	 */
+	resolve_aliases(match, _, pathOrAlias) {
+		for (const [alias, value] of Object.entries(this.options.alias)) {
+			if (pathOrAlias.startsWith(alias)) {
+				return path.join(pathOrAlias.replace(alias, value));
+			}
+		}
+		return match;
+	}
+
+	/**
+	 * Gets the aliases for resolving paths.
+	 *
+	 * @returns {Object} - The aliases object.
+	 */
+	#get_aliases() {
+		const test = Array.from(
+			Object.entries(config.kit?.alias ?? {}).map(([key, value]) => {
+				return [key, path.resolve(value)];
+			}) ?? {}
+		);
+		return {
+			$lib: path.resolve(this.options?.config.kit?.files?.lib ?? 'src/lib'),
+			...Object.fromEntries(test)
+		};
+	}
+}
+
+const ssss = new blabla({
+	input: 'src/lib/',
+	output: 'typesAOO',
+	component_type_filename: 'types.ts',
+	svelte_ignore: ['**/*.{demo,preview,wip,js}.svelte']
+});
+
+// sveltePlugin
+function doer(does) {
+	return {
+		/**
+		 * @param {string} content - The content for the source file
+		 * @param {string | undefined} filePath - The path to the TypeScript file. Optional
+		 */
+		fromContent: (content, filePath = '') => {
+			return does(HelperTs.getSourceFile(filePath, content));
+		},
+		/**
+		 * @param {string} tsPath - The path to the TypeScript file.
+		 */
+		fromFilePath: (tsPath) => {
+			return does(HelperTs.getSourceFile(tsPath));
+		},
+		/**
+		 * @param {ts.SourceFile} sourceFile - The TypeScript source file.
+		 */
+		fromSourceFile: (sourceFile) => {
+			return does(sourceFile);
+		}
+	};
+}
+export class HelperTs {
+	/**
+	 * Gets the TypeScript source file from a given file path, or from content
+	 */
+	ast = parse(test.code, {
+		filename: fileName,
+		dev: true
+	});
+	/**
+	 *
+	 * @param {string} input can be a sourceFile   a path or some content
+	 * @param {string} declarationName can be an interface a type a class or an enum
+	 */
+	getTypedDeclarations(declarationName) {
+		const does = (sourceFile) => {
+			return this.#getTypeByName(sourceFile, declarationName);
+		};
+
+		if (!declaration) {
+			throw new Error(`Type or interface ${declarationName} not found in file ${source.fileName}`);
+		}
+
+		return doer(does.bind(this));
+	}
+
+	/**
+	 * Gets the TypeScript source file from a given file path, or from content
+	 * @returns {fromContent: (content: string) => void, fromFilePath: (tsPath: string) => void, fromSourceFile: (sourceFile: ts.SourceFile) => void}
+	 */
+	get getTypeImportPaths() {
+		/**
+		 *
+		 * @param {ts.SourceFile} sourceFile
+		 */
+		const does = (sourceFile, options = [ts.SyntaxKind.ImportDeclaration]) => {
+			// node.importClause.isTypeOnly
+			const imports = sourceFile.statements.filter(
+				/** @param {ts.Node} node */
+				(node) => options.includes(node.kind)
+			);
+		};
+		return doer(does.bind(this));
+	}
+
+	/**
+	 * Gets the TypeScript source file from a given file path, or from content
+	 *
+	 * @param {string} tsFilePath - The path to the TypeScript file. can be ''
+	 * @param {string} content - The content for the source file
+	 * @returns {ts.SourceFile} - The TypeScript source file.
+	 */
+	static getSourceFile(tsFilePath, content = '') {
+		const fileContent =
+			(fs.existsSync(tsFilePath) && fs.readFileSync(tsFilePath, 'utf8')) || undefined;
+		return ts.createSourceFile(
+			tsFilePath,
+			(fileContent ?? '') + (content ?? ''),
+			ts.ScriptTarget.Latest
+		);
+	}
+
+	/**
+	 * Crée et retourne un type checker.
+	 * @param {ts.SourceFile} sourceFile - Le fichier source.
+	 * @returns {ts.TypeChecker} Le type checker.
+	 */
+	#getTypeChecker(sourceFile) {
+		const program = ts.createProgram([sourceFile.fileName], {
+			allowJs: true,
+			skipLibCheck: true
+		});
+		return program.getTypeChecker();
+	}
+
+	/**
+	 * Trouve et retourne un type par son nom.
+	 * @param {ts.SourceFile} sourceFile - Le fichier source.
+	 * @param {string} typeName - Le nom du type ou de l'interface.
+	 * @param {ts.TypeChecker | undefined} typeChecker - Le type checker.
+	 * @returns {ts.Type | null} Le type trouvé ou null.
+	 */
+	#getTypeByName(sourceFile, typeName, typeChecker = undefined) {
+		typeChecker = typeChecker || this.#getTypeChecker(sourceFile);
+		let foundType = null;
+
+		const visitNode = (node) => {
+			if (node?.name?.text === typeName) {
+				const symbol = typeChecker.getSymbolAtLocation(node.name);
+				if (symbol) {
+					foundType = typeChecker.getDeclaredTypeOfSymbol(symbol);
+				}
+			}
+			ts.forEachChild(node, visitNode);
+		};
+
+		visitNode(sourceFile);
+
+		return foundType;
+	}
+}
 
 /**
  * Represents a class for building types for Svelte components.
@@ -52,7 +290,6 @@ export class BuildTypes {
 	 * Builds the types for Svelte components having a types.ts in the same directory.
 	 */
 	buildTypes() {
-		fs.StatsFs;
 		fs.ensureDirSync(path.dirname(this.options.dts_output_dir));
 		// ts.updateSourceFile
 		const filesToParse = this.#get_root_files();
@@ -188,7 +425,7 @@ export class BuildTypes {
 			// ts.updateSourceFile(sourceFile, Object.values(importCodeMapped).join('\n'))
 			const dtsCode = this.generateDtsCode(propsType, finalSourceFile);
 			console.log(`Generating d.ts code: ${moduleName}`);
-	 
+
 			return [dtsCode].join('\n');
 		}
 	}
@@ -356,7 +593,7 @@ export class BuildTypes {
 				resolvedTypes[moduleName] = moduleContent;
 			});
 		});
-		 
+
 		return resolvedTypes;
 	}
 
@@ -407,226 +644,11 @@ export class BuildTypes {
 		};
 	}
 }
-
-//
-
-/**
- * @class TypeExtractor
- * Une classe pour extraire les clés d'un type ou d'une interface depuis un fichier.
- */
-class TypeExtractor {
-	/**
-	 * @typedef {Object} BuildTypesOptions
-	 * @property {string} project_root - The root directory of the library.
-	 * @property {string} lib_parse - The library parse value.
-	 * @property {string} dts_output_dir - The directory for the dts files.
-	 * @property {string} component_type_filename - The file type name.
-	 * @property {boolean} svelte_ignore - The svelte ignore value.
-	 * @property {string} svelte_extension - The svelte extension.
-	 * @property {boolean} keep_comments - The keep comments value.
-	 */
-
-	/**
-	 * Represents a BuildTypes object.
-	 * @type {BuildTypesOptions} options - The options for the BuildTypes.
-	 */
-	options = {
-		project_root: 'src/',
-		lib_parse: 'src/lib/',
-		dts_output_dir: 'typesAOO', // target directory for generated d.ts files
-		component_type_filename: 'types.ts', // the name of the ts file to parse in the directory
-		svelte_ignore: ['**/*.{demo,preview,wip,js}.svelte'], // files to ignore
-		svelte_extension: '.svelte', // extension of svelte files
-		keep_comments: true // keep comments in the generated d.ts files
-	};
-
-	/**
-	 * Represents a BuildTypes object.
-	 * @constructor
-	 * @param {BuildTypesOptions} options - The options for the BuildTypes.
-	 */
-	constructor(args) {
-		this.options = { ...this.options, ...args };
-		this.aliases = this.#get_aliases();
-	}
-
-	/**
-	 * Builds the types for Svelte components having a types.ts in the same directory.
-	 */
-	buildTypes() {
-		fs.ensureDirSync(path.dirname(this.options.dts_output_dir));
-		const filesToParse = this.#get_root_files();
-		filesToParse.forEach((file) => {
-			const dir = path.dirname(file);
-			const tsFilePath = path.join(dir, this.options.component_type_filename);
-			const moduleName = `${path.basename(file, this.options.svelte_extension)}Props`;
-			if (fs.existsSync(tsFilePath)) {
-				const dtsCode = this.extractTypeKeys(tsFilePath, moduleName); 
-			}
-		});
-	}
-
-	/**
-	 * Extrait les clés d'un type ou d'une interface depuis un fichier.
-	 * @param {string} fileName - Le nom du fichier.
-	 * @param {string} typeName - Le nom du type ou de l'interface à extraire.
-	 * @returns {Array<Object>} Un tableau d'objets représentant les clés avec leur nom, type, et résolution.
-	 */
-	extractTypeKeys(fileName, typeName) {
-		const sourceFile = this._getSourceFile(fileName);
-		const typeChecker = this._getTypeChecker(sourceFile);
-
-		const type = this._getTypeByName(typeChecker, sourceFile, typeName);
-		if (!type) {
-			throw new Error(`Type or interface ${typeName} not found in file ${fileName}`);
-		}
-
-		return this._extractKeys(typeChecker, type);
-	}
-
-	/**
-	 * Lit et parse le fichier source TypeScript.
-	 * @param {string} fileName - Le nom du fichier.
-	 * @returns {ts.SourceFile} Le fichier source analysé.
-	 */
-	_getSourceFile(fileName) {
-		const fileContent = fs.readFileSync(fileName, 'utf8');
-		return ts.createSourceFile(fileName, fileContent, ts.ScriptTarget.Latest, true);
-	}
-
-	/**
-	 * Crée et retourne un type checker.
-	 * @param {ts.SourceFile} sourceFile - Le fichier source.
-	 * @returns {ts.TypeChecker} Le type checker.
-	 */
-	_getTypeChecker(sourceFile) {
-		const program = ts.createProgram([sourceFile.fileName], {
-			allowJs: true,
-			skipLibCheck: true
-		});
-		return program.getTypeChecker();
-	}
-
-	/**
-	 * Trouve et retourne un type par son nom.
-	 * @param {ts.TypeChecker} typeChecker - Le type checker.
-	 * @param {ts.SourceFile} sourceFile - Le fichier source.
-	 * @param {string} typeName - Le nom du type ou de l'interface.
-	 * @returns {ts.Type | null} Le type trouvé ou null.
-	 */
-	_getTypeByName(typeChecker, sourceFile, typeName) {
-		let foundType = null;
-
-		const visitNode = (node) => { 
-			if (node?.name?.text === typeName) {
-				const symbol = typeChecker.getSymbolAtLocation(node.name);
-				if (symbol) { 
-					foundType = typeChecker.getDeclaredTypeOfSymbol(symbol);
-				}
-			}
-			ts.forEachChild(node, visitNode);
-		};
-
-		visitNode(sourceFile);
-
-		return foundType;
-	}
-
-	/**
-	 * Extrait les clés du type/interface.
-	 * @param {ts.TypeChecker} typeChecker - Le type checker.
-	 * @param {ts.Type} type - Le type ou l'interface.
-	 * @returns {Array<Object>} Un tableau d'objets représentant les clés avec leur nom, type, et résolution.
-	 */
-	_extractKeys(typeChecker, type) {
-		const keys = [];
-
-		type.getProperties().forEach((symbol) => {
-			const keyName = symbol.getName();
-			const keyType = typeChecker.getTypeOfSymbolAtLocation(
-				symbol,
-				symbol.valueDeclaration || symbol.declarations[0]
-			);
-			const keyTypeString = typeChecker.typeToString(keyType);
-			const keyResolution = this._getTypeResolution(typeChecker, keyType);
-
-			keys.push({
-				name: keyName,
-				type: keyTypeString,
-				resolution: keyResolution
-			});
-		});
-
-		return keys;
-	}
-
-	/**
-	 * Résout le type.
-	 * @param {ts.TypeChecker} typeChecker - Le type checker.
-	 * @param {ts.Type} type - Le type à résoudre.
-	 * @returns {string} La résolution du type.
-	 */
-	_getTypeResolution(typeChecker, type) {
-		if (type.isClassOrInterface()) {
-			const symbol = type.getSymbol();
-			if (symbol) {
-				const declarations = symbol.getDeclarations();
-				if (declarations && declarations.length > 0) {
-					const declarationFile = declarations[0].getSourceFile().fileName;
-					return `imported from ${declarationFile}`;
-				}
-			}
-		}
-		return typeChecker.typeToString(type);
-	}
-
-	/**
-	 * Gets the aliases for resolving paths.
-	 *
-	 * @returns {Object} - The aliases object.
-	 */
-	#get_aliases() {
-		const test = Array.from(
-			Object.entries(config.kit?.alias ?? {}).map(([key, value]) => {
-				return [key, path.resolve(value)];
-			}) ?? {}
-		);
-		return {
-			$lib: path.resolve(config.kit?.files?.lib ?? 'src/lib'),
-			...Object.fromEntries(test)
-		};
-	}
-
-	/**
-	 * Gets the root files for the TypeScript program.
-	 *
-	 * @returns {string[]} - The root files for the TypeScript program.
-	 */
-	#get_root_files() {
-		const svelteFiles = glob.sync(
-			path.resolve(this.options.lib_parse, `**/*${this.options.svelte_extension}`)
-		);
-		const filesToParse = svelteFiles.filter(
-			(file) => !micromatch.some(file, this.options.svelte_ignore)
-		);
-
-		return filesToParse;
-	}
-}
-
-const typeExtractor = new TypeExtractor({
-	lib_parse: 'src/lib/base/avatar',
-	dts_output_dir: 'typesAOO',
-	component_type_filename: 'types.ts',
-	svelte_ignore: ['**/*.{demo,preview,wip,js}.svelte']
-});
-// typeExtractor.buildTypes();
-
 //
 const buildTypes = new BuildTypes({
-	lib_parse: 'src/lib/base/avatar',
+	lib_parse: 'src/lib/',
 	dts_output_dir: 'typesAOO',
 	component_type_filename: 'types.ts',
 	svelte_ignore: ['**/*.{demo,preview,wip,js}.svelte']
 });
-buildTypes.buildTypes();
+// buildTypes.buildTypes();

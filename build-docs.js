@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import process from 'process';
 import micromatch from 'micromatch';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -19,7 +20,7 @@ import fsx from 'fs-extra';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 import { VERSION } from 'svelte/compiler';
-
+import lib from 'sveld';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -187,26 +188,43 @@ const readFile = (fileName) => {
 	return fs.readFileSync(fileName, 'utf8');
 };
 
-async function useSvelte2Tsx() {
-	const svelteFiles = glob.sync('./src/lib/**/Textfield.svelte', {
+async function useSvelte2TsxNope() {
+	const svelteFiles = glob.sync('./src/lib/**/Alert.svelte', {
 		//ignore: ['./src/lib/**/Alert.demo.svelte']
 	});
+
+	/* emitDts({
+		declarationDir: 'declarationDir', 
+		svelteShimsPath: path.resolve('svelte2tsx/svelte-shims.d.ts')
+	}); */
+
 	let content;
 	svelteFiles.forEach((fileName) => {
-		//process(fileName);
-		let content = fs.readFileSync(fileName, 'utf-8');
-
-		let tr = svelte2tsx(content, { mode: 'dts', isTsFile: true, version: '5.0.0-next.95' });
-
-		// emitDts({ declarationDir: 'declarationDir',  svelteShimsPath: path.resolve('svelte2tsx/svelte-shims.d.ts') });
-		console.log('...', Object.keys(tr));
-		console.log(tr.code);
-		/* console.log(tr.exportedNames); */
-		process(fileName);
+		/* let content = fs.readFileSync(fileName, 'utf-8');
+	 
+		 let tr = svelte2tsx(content, { mode: 'dts', isTsFile: true, version: VERSION }); */
 	});
 }
 
-async function process(fileName) {
+async function useSvelte2Tsx(files = './src/lib/**/*.svelte') {
+	const svelteFiles = glob.sync(files, {
+		//ignore: ['./src/lib/**/Alert.demo.svelte']
+	});
+
+	emitDts({
+		libRoot: config.libRoot,
+		declarationDir: 'declarationDir', 
+		svelteShimsPath: path.resolve('svelte2tsx/svelte-shims-v4.d.ts')
+	});
+ 
+	/* svelteFiles.forEach((fileName) => {
+		let content = fs.readFileSync(fileName, 'utf-8');
+		let tr = svelte2tsx(content, { mode: 'dts', isTsFile: true, version: VERSION });
+		console.log(tr)
+	}); */
+}
+
+async function processit(fileName) {
 	const config = await loadConfigFromFile({ command: 'build' }, './vite.config.js');
 	const plugin = sveltePlugin(config.config.plugins.find((plugin) => plugin.name === 'svelte'))[0];
 	// fs.writeFileSync('./src/transform.js', plugin.toString());
@@ -242,10 +260,10 @@ async function process(fileName) {
 		contents = strip_lang_tags(preprocessed); */
 
 		//return;
-		const ast = svelte.parse(test.code, {
+		/* const ast = svelte.parse(test.code, {
 			filename: fileName,
 			dev: true
-		});
+		}); */
 
 		//console.log(Object.keys(ast));
 		// Compiler le fichier Svelte
@@ -290,20 +308,6 @@ async function process(fileName) {
 			moduleName: fileName
 		}); */
 		return;
-		/* const transp = ts.transpileModule(jsCode, {
-			compilerOptions: {
-				module: ts.ModuleKind.ESNext,
-				target: ts.ScriptTarget.ESNext
-			}
-		}); */
-
-		// console.log(raw);
-		/* const data = new ComponentParser({
-			verbose: false
-		}).parseSvelteComponent(transp.outputText, {
-			filePath: fileName,
-			moduleName: fileName
-		}); */
 	} catch (e) {
 		console.error('error converting file ', fileName);
 		throw e;
@@ -328,61 +332,25 @@ async function generateSvelteIndex() {
 	fs.writeFileSync(path.resolve(__dirname, `${config.sitedata}/slotuiComponents.ts`), indexContent);
 
 	//console.log(ComponentParser)
-
-	try {
-		sveld.sveld({
-			input: './src/lib/svelte-index.js',
-			verbose: false,
-			glob: true,
-			types: false,
-			typesOptions: {
-				outDir: `${config.slotuiDefs}`
-			},
-			json: true,
-			jsonOptions: {
-				outDir: `${config.slotuiDefs}`
-			},
-			markdown: false
-			/* markdownOptions: {
-				outDir: './src/sitedata',
-				write: true
-			} */
-		});
-
-		const jsonFiles = glob.sync(`${config.slotuiDefs}/*.json`);
-		const jsonDir = jsonFiles
-			.map((file) => {
-				return `export { default as ${dotToCamelCase(
-					path.basename(file, '.json')
-				)} } from './${path.basename(file, '.json')}.json';`;
-			})
-			.filter((f) => f)
-			.join('\n');
-
-		fs.writeFileSync(path.join(__dirname, `${config.slotuiDefs}/index.js`), jsonDir);
-		fs.unlinkSync(path.resolve(__dirname, 'src/lib/svelte-index.js'));
-	} catch (err) {
-		console.error(err);
-		// try running with svelte2tsx, descriptions will be missing
-	}
 }
 
 const config = {
 	sitedata: './src/sitedata',
 	tsxFiles: './src/sitedata/tsx',
-	slotuiDefs: './src/sitedata/slotuiDefs'
+	slotuiDefs: './src/sitedata/slotuiDefs',
+	libRoot: './src'
 };
 
 function main() {
 	fs.mkdirSync(config.slotuiDefs, { recursive: true });
 	fs.mkdirSync(config.tsxFiles, { recursive: true });
 
-	/* useSvelte2Tsx(); */
+	useSvelte2Tsx();
 
-	new FileProcessor().makeIndexFile();
+	/* new FileProcessor().makeIndexFile();
 	slotUiCatalogB();
-	slotUiDemoCatalog(); 
-	//generateSvelteIndex();
+	slotUiDemoCatalog(); */
+	// generateSvelteIndex();
 }
 
 main();
