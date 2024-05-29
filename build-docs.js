@@ -345,11 +345,11 @@ function main() {
 	fs.mkdirSync(config.slotuiDefs, { recursive: true });
 	fs.mkdirSync(config.tsxFiles, { recursive: true });
 
-	useSvelte2Tsx();
+	// useSvelte2Tsx();
 
-	/* new FileProcessor().makeIndexFile();
+	new FileProcessor().makeIndexFile();
 	slotUiCatalogB();
-	slotUiDemoCatalog(); */
+	slotUiDemoCatalog();
 	// generateSvelteIndex();
 }
 

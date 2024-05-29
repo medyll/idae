@@ -1,3 +1,5 @@
+<svelte:options runes accessors />
+
 <!--
  @component Content
 	@ Adds css properties for width, height, offsetHeight, and offsetWidth to the style of the element.
