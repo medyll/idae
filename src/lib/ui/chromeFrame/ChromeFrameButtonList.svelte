@@ -2,16 +2,16 @@
 
 <script lang="ts">
 	import { chromeFrameStore } from './chromeFrame.store.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	let { class: className = '', element, ...rest } = $props();
+	let { class: className = '', element, children, ...rest } = $props();
 </script>
 
 <div bind:this={element} class="flex-h gap-small {className}" {...rest}>
 	{#each [...$chromeFrameStore.values()] as value, key}
 		<div class="buttonRail">
-			<slot chromeFrame={value}>
+			<Slotted child={children} slotArgs={{ chromeFrame: value }}>
 				<Button
 					style="position:relative"
 					on:click={() => {
@@ -25,7 +25,9 @@
 				>
 					{value.title ?? value.frameId}
 				</Button>
-			</slot>
+			</Slotted>
+			<!-- <slot chromeFrame={value}>
+			</slot> -->
 		</div>
 	{/each}
 </div>

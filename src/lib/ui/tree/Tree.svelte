@@ -1,11 +1,14 @@
 <svelte:options accessors={true} />
 
 <script lang="ts" generics="T = Data">
+	import type { Snippet } from 'svelte';
+
 	import { trans2Tree } from './tree.utils.js';
 	import type { Data, TreeItemType } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type TreeProps = CommonProps & {
 		/** data to be displayed in the tree */
@@ -42,6 +45,7 @@
 		selectedCategory: string;
 
 		element: HTMLElement;
+		children?: Snippet<[{ item: TreeItemType; idx: number }]>;
 	};
 
 	let {
@@ -151,7 +155,10 @@
 							checked={Boolean(selectedDataKeys.includes(pat.path))}
 						/>
 					{/if}
-					<slot item={pat}><div>{pat.name}</div></slot>
+					<!-- <slot item={pat}><div>{pat.name}</div></slot> -->
+					<Slotted child={children} slotArgs={{ item: pat, idx: k }}>
+						<div>{pat.name}</div>
+					</Slotted>
 				</div>
 			</div>
 			<div

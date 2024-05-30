@@ -47,20 +47,22 @@
 	<div style="position:relative;display:contents">
 		{#if icon || inputStart}
 			<div class="inputStart">
-				<Slotted child={inputEnd}>
-					<slot name="inputStart">
+				<!-- <slot name="inputStart">
 						<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
-					</slot>
+					</slot> -->
+				<Slotted child={inputEnd}>
+					<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
 				</Slotted>
 			</div>
 		{/if}
 		{#if inputEnd || $$slots.inputEnd || endIcon || inputType === 'search'}
 			<div class="inputEnd">
 				{#if inputEnd || $$slots.inputEnd || endIcon}
-					<Slotted child={inputEnd}>
-						<slot name="inputEnd">
+					<!-- <slot name="inputEnd">
 							<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
-						</slot>
+						</slot> -->
+					<Slotted child={inputEnd}>
+						<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
 					</Slotted>
 				{/if}
 				{#if inputType === 'search'}

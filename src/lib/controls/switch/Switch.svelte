@@ -3,6 +3,8 @@
 <script lang="ts">
 	//
 	import type { Data } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 
 	type SwitchProps = {
 		/** className off the root component */
@@ -28,6 +30,9 @@
 
 		/** function to be called when the switch is toggled */
 		onChange: (val: boolean, metaData: Data) => void;
+
+		children?: Snippet;
+		switchLabel?: Snippet;
 	};
 
 	let {
@@ -38,15 +43,18 @@
 		checked = $bindable<boolean>(false),
 		disabled = $bindable<boolean>(false),
 		metaData = {},
-		onChange = (val: boolean, metaData: Data) => {}
-	} = $props() as SwitchProps;
+		onChange = (val: boolean, metaData: Data) => {},
+		children,
+		switchLabel
+	}: SwitchProps = $props();
 
 	let hiddenRef: HTMLInputElement;
 </script>
 
 <input bind:this={hiddenRef} {name} id={name} value={checked} type="hidden" />
 <label bind:this={element} for="_{name}" class="switch {className}" {style}>
-	<slot name="label" />
+	<Slotted child={switchLabel} />
+	<!-- <slot name="label" /> -->
 	<div class="switchGutter">
 		<input
 			onchange={(event) => {
@@ -58,14 +66,16 @@
 			{disabled}
 			type="checkbox"
 		/>
-		<div class="switchHandle"><slot /></div>
+		<div class="switchHandle">
+			<Slotted child={children} />
+			<!-- <slot /> -->
+		</div>
 	</div>
 </label>
 ..
 
 <style lang="scss">
 	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
 
 	@import './switch.scss';
 </style>

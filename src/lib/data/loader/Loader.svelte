@@ -60,44 +60,54 @@
 		<div bind:this={element} transition:fade|global class="loader {className}" {style} {...rest}>
 			<div class="loader-box">
 				{#if status === 'loading' || isLoading}
-					<Slotted child={loaderLoading}>
-						<slot name="loaderLoading">
+					<!-- <slot name="loaderLoading">
 							<Icon
 								style="color:var(--sld-color-primary)"
 								icon={loadingIcon}
 								fontSize="medium"
 								rotate
 							/>
-						</slot>
+						</slot> -->
+					<Slotted child={loaderLoading}>
+						<Icon
+							style="color:var(--sld-color-primary)"
+							icon={loadingIcon}
+							fontSize="medium"
+							rotate
+						/>
 					</Slotted>
 				{/if}
 				{#if status === 'error' || isError}
-					<Slotted child={loaderError}>
-						<slot name="loaderError">
+					<!-- <slot name="loaderError">
 							<Icon style="color:orange;" icon={errorIcon} fontSize="medium" />
-						</slot>
+						</slot> -->
+					<Slotted child={loaderError}>
+						<Icon style="color:orange;" icon={errorIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 				{#if showSuccess && status === 'success'}
-					<Slotted child={loaderSuccess}>
-						<slot name="loaderSuccess">
+					<!-- <slot name="loaderSuccess">
 							<Icon style="color:green;" icon={successIcon} fontSize="medium" />
-						</slot>
+						</slot> -->
+					<Slotted child={loaderSuccess}>
+						<Icon style="color:green;" icon={successIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 				{#if status === 'empty' || isEmpty}
-					<Slotted child={loaderEmpty}>
-						<slot name="loaderEmpty">
+					<!-- <slot name="loaderEmpty">
 							<Icon icon={emptyIcon} fontSize="medium" />
-						</slot>
+						</slot> -->
+					<Slotted child={loaderEmpty}>
+						<Icon icon={emptyIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 
 				{#if Boolean(finalMessage)}
-					<Slotted child={loaderMessage}>
-						<slot name="loaderMessage">
+					<!-- <slot name="loaderMessage">
 							<div class="loader-message">{finalMessage}</div>
-						</slot>
+						</slot> -->
+					<Slotted child={loaderMessage}>
+						<div class="loader-message">{finalMessage}</div>
 					</Slotted>
 				{/if}
 			</div>

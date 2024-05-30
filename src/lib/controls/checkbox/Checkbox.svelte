@@ -74,7 +74,8 @@
 	</div>
 	{#if $$slots.default || children || title}
 		<div>
-			<Slotted child={children}><slot>{title}</slot></Slotted>
+			<!-- <slot>{title}</slot> -->
+			<Slotted child={children}>{title}</Slotted>
 		</div>
 	{/if}
 </label>

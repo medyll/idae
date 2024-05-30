@@ -11,6 +11,7 @@
 		panelId = crypto.randomUUID() as string,
 		data = undefined,
 		showNavigation = true,
+		children,
 		panelButtonPrevious,
 		panelButtonNext,
 		actions = {
@@ -56,7 +57,8 @@
 						prevNextPanel('prev');
 					}}
 				>
-					<Slotted child={panelButtonPrevious}><slot name="panelButtonPrevious" /></Slotted>
+					<!-- <slot name="panelButtonPrevious" /> -->
+					<Slotted child={panelButtonPrevious}></Slotted>
 				</div>
 			{:else}
 				<Button
@@ -77,7 +79,8 @@
 						prevNextPanel('next');
 					}}
 				>
-					<Slotted child={panelButtonNext}><slot name="panelButtonNext" /></Slotted>
+					<!-- <slot name="panelButtonNext" /> -->
+					<Slotted child={panelButtonNext}></Slotted>
 				</div>
 			{:else}
 				<Button
@@ -90,7 +93,8 @@
 		{/if}
 	</div>
 	<div class="panelContent">
-		<slot {panelId} {actions} />
+		<Slotted child={children} />
+		<!-- <slot {panelId} {actions} /> -->
 	</div>
 </div>
 

@@ -14,5 +14,5 @@
 	{...$$restProps}
 	onclick={() => {
 		switchThemeMode();
-	}}><slot /></Button
->
+	}}
+/>

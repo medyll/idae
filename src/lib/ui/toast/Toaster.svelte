@@ -3,6 +3,8 @@ Wrapper for the toaster family
 called automatically
 -->
 <script lang="ts">
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+
 	let { toasterId = 'defaultToasterRoot', children, ...rest } = $props();
 </script>
 
@@ -12,5 +14,6 @@ called automatically
 	{...rest}
 	data-toasterId={toasterId}
 >
-	<slot />
+	<!-- <slot /> -->
+	<Slotted child={children} />
 </div>

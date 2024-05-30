@@ -8,7 +8,7 @@
 	export { className as class };
 
 	let {
-		element,
+		element = $bindable(),
 		style = '',
 		isOpen = $bindable(true),
 		showCloseControl = true,
@@ -45,25 +45,32 @@
 {#if isOpen}
 	<div bind:this={element} class="box {className}" {style} {...rest}>
 		<TitleBar {hasMenu} {...closer}>
+			<!-- <slot name="titleBarTitle">{title ?? ''}</slot> -->
 			<Slotted child={titleBarTitle}>
-				<slot name="titleBarTitle">{title ?? ''}</slot>
+				{title ?? ''}
 			</Slotted>
-			<Slotted child={titleBarIcon}>
-				<slot name="titleBarIcon">
+
+			<!-- <slot name="titleBarIcon">
 					{#if icon}
 						<Icon {icon} />
 					{/if}
-				</slot>
+				</slot> -->
+			<Slotted child={titleBarIcon}>
+				{#if icon}
+					<Icon {icon} />
+				{/if}
 			</Slotted>
 		</TitleBar>
 		<div class="box-content">
+			<!-- <slot>{@html content ?? ''}</slot> -->
 			<Slotted child={children}>
-				<slot>{@html content ?? ''}</slot>
+				{@html content ?? ''}
 			</Slotted>
 		</div>
 		<div class="box-button-zone">
+			<!-- <slot name="boxBottomZone">{@html bottomZone ?? ''}</slot> -->
 			<Slotted child={boxBottomZone}>
-				<slot name="boxBottomZone">{@html bottomZone ?? ''}</slot>
+				{@html bottomZone ?? ''}
 			</Slotted>
 		</div>
 	</div>

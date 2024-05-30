@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import Toaster from './Toaster.svelte';
 	import type { ToastProps } from './types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let {
 		class: className = '',
@@ -57,7 +58,8 @@
 </script>
 
 <Box bind:element style="width:auto;" data-toastId={toastId} {isOpen} {...rest}>
-	<slot />
+	<!-- <slot /> -->
+	<Slotted child={children} />
 </Box>
 
 <style lang="scss">

@@ -94,7 +94,8 @@
 
 {#if popperHolder || $$slots.popperHolder}
 	<div bind:this={holderSlotRef} style="position:relative;display:inline-block">
-		<Slotted child={popperHolder}><slot name="popperHolder" /></Slotted>
+		<!-- <slot name="popperHolder" /> -->
+		<Slotted child={popperHolder}></Slotted>
 	</div>
 {/if}
 {#if parentNode && ((isOpen && autoClose) || !autoClose)}

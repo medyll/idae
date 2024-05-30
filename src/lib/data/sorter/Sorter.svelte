@@ -65,6 +65,14 @@
 	{/if}
 	<!-- // button name + asc/desc -->
 	<!-- // button menu with all data minus objects  + asc/desc -->
+	<!-- <slot
+			primary={sortByTitleField ?? sortByField}
+			icon={'mdi:' + icons.default[sortState.indexOf(sortByOrder)]}
+			naked
+			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
+			size="auto"
+			showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
+		/> -->
 	<Slotted
 		child={children}
 		slotArgs={{
@@ -75,14 +83,5 @@
 			size: 'auto',
 			showChip: sortByOrder !== 'none' && activeCommonSortField === sortByField
 		}}
-	>
-		<slot
-			primary={sortByTitleField ?? sortByField}
-			icon={'mdi:' + icons.default[sortState.indexOf(sortByOrder)]}
-			naked
-			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
-			size="auto"
-			showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
-		/>
-	</Slotted>
+	></Slotted>
 </div>

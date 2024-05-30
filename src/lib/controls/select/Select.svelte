@@ -106,20 +106,22 @@
 	>
 		{#if data}
 			{#each data as dta}
-				<Slotted child={children} slotArgs={{ optionsData: dta }}>
-					<slot optionsData={dta}>
+				<!-- <slot optionsData={dta}>
 						<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem>
-					</slot></Slotted
+					</slot> -->
+				<Slotted child={children} slotArgs={{ optionsData: dta }}>
+					<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem></Slotted
 				>
 			{/each}
 		{:else if options}
 			{#each options as option}
-				<Slotted child={children} slotArgs={{ optionsData: options }}>
-					<slot optionsData={option}>
+				<!-- <slot optionsData={option}>
 						<MenuItem icon={option.icon} selected={value === 2} data={option}
 							>{option.text}</MenuItem
 						>
-					</slot>
+					</slot> -->
+				<Slotted child={children} slotArgs={{ optionsData: options }}>
+					<MenuItem icon={option.icon} selected={value === 2} data={option}>{option.text}</MenuItem>
 				</Slotted>
 			{/each}
 		{/if}

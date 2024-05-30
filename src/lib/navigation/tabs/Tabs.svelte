@@ -78,9 +78,8 @@
 <div bind:this={element} class="tab {className}" aria-orientation={orientation} {style}>
 	<div bind:this={tabsElementRef} class="tab-nav">
 		<div>
-			<Slotted child={tabsTitleMain}>
-				<slot name="tabsTitleMain" />
-			</Slotted>
+			<!-- <slot name="tabsTitleMain" /> -->
+			<Slotted child={tabsTitleMain}></Slotted>
 		</div>
 		<nav bind:this={navElementRef} class="tab-nav-rail">
 			{#each items as item}
@@ -92,21 +91,20 @@
 					}}
 					class={activeTabCode === item?.code ? 'active' : ''}
 				>
+					<!-- <slot {item} name="tabLabelSlot">{item?.label}</slot> -->
 					<Slotted child={tabLabelSlot} slotArgs={{ item }}>
-						<slot {item} name="tabLabelSlot">{item?.label}</slot>
+						{item?.label}
 					</Slotted>
 				</button>
 			{/each}
 		</nav>
 		<div>
-			<Slotted child={tabsTitle}>
-				<slot name="tabsTitle" />
-			</Slotted>
+			<!-- <slot name="tabsTitle" /> -->
+			<Slotted child={tabsTitle}></Slotted>
 		</div>
 		<div>
-			<Slotted child={tabsButtons}>
-				<slot name="tabsButtons" />
-			</Slotted>
+			<!-- <slot name="tabsButtons" /> -->
+			<Slotted child={tabsButtons}></Slotted>
 		</div>
 	</div>
 	<div class="tab-floating-cell">
@@ -117,40 +115,35 @@
 			{@const display = activeTabCode === item?.code ? 'flex' : 'none'}
 			{#if item && activeTabCode === item?.code}
 				<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
-					<slot {item} {activeTabCode}>
-						<div
-							data-code={item.code}
-							data-activeTabCode={activeTabCode}
-							style="display:{display};height:100%;position:relative;flex-direction:column"
-						>
-							{#if Boolean(item?.secondary)}
-								<div class="tab-content-secondary">
-									<div class="tab-content-secondary-icon">
-										<Icon style="display:block" inline={false} icon="clarity:help-info-solid" />
-									</div>
-									<div style="flex:1;">{@html item?.secondary}</div>
+					<div
+						data-code={item.code}
+						data-activeTabCode={activeTabCode}
+						style="display:{display};height:100%;position:relative;flex-direction:column"
+					>
+						{#if Boolean(item?.secondary)}
+							<div class="tab-content-secondary">
+								<div class="tab-content-secondary-icon">
+									<Icon style="display:block" inline={false} icon="clarity:help-info-solid" />
 								</div>
-							{/if}
-							<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
-								<slot name="tabsInner" {item} {activeTabCode}>
-									<div data-code={item.code} style="flex:1;overflow:hidden;position:relative;">
-										{#if activeTabCode === item.code}
-											{#if Boolean(item?.withComponent)}
-												<svelte:component
-													this={item.withComponent}
-													{...item.componentProps ?? {}}
-												/>
-											{:else if Boolean(item?.withContent)}
-												{item.withContent}
-											{:else if Boolean(item?.withUid)}
-												{item.withUid}
-											{/if}
-										{/if}
-									</div>
-								</slot>
-							</Slotted>
-						</div>
-					</slot>
+								<div style="flex:1;">{@html item?.secondary}</div>
+							</div>
+						{/if}
+						<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
+							<!-- <slot name="tabsInner" {item} {activeTabCode}>
+							</slot> -->
+							<div data-code={item.code} style="flex:1;overflow:hidden;position:relative;">
+								{#if activeTabCode === item.code}
+									{#if Boolean(item?.withComponent)}
+										<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />
+									{:else if Boolean(item?.withContent)}
+										{item.withContent}
+									{:else if Boolean(item?.withUid)}
+										{item.withUid}
+									{/if}
+								{/if}
+							</div>
+						</Slotted>
+					</div>
 				</Slotted>
 			{/if}
 		{/each}

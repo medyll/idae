@@ -32,6 +32,7 @@
 				isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
 			}
 		},
+		drawerContent,
 		drawerIcon,
 		drawerTitle,
 		drawerPrimary,
@@ -112,41 +113,47 @@
 		</div>
 	{/if}
 	{#if isOpen}
-		{#if $$slots.drawerTop || $$slots.iconSlot || drawerIcon || Boolean(primary) || Boolean(icon)}
+		{#if drawerTop || $$slots.drawerTop || drawerIcon || Boolean(primary) || Boolean(icon)}
 			<header class="drawer-header">
-				{#if Boolean(icon) || $$slots.iconSlot}
+				{#if Boolean(icon) || drawerIcon}
+					<!-- <slot name="drawerIcon">
+								</slot
+							> -->
 					<div class="drawer-icon">
 						<Slotted child={drawerIcon}>
-							<slot name="drawerIcon">
-								<slot name="iconSlot">
-									<Icon {icon} fontSize="medium" />
-								</slot></slot
-							></Slotted
-						>
+							<Icon {icon} fontSize="medium" />
+						</Slotted>
 					</div>
 				{/if}
 				<div class="drawer-header-bar">
 					<div class="drawer-header-bar-title">
-						<slot name="drawerTitle">
-							<Slotted child={drawerTitle}>
-								<Slotted child={drawerPrimary}>
-									<slot name="drawerPrimary">
-										{#if primary}
-											<div style="font-size:18px;">{primary}</div>
-										{/if}
-									</slot>
-								</Slotted>
-								<Slotted child={drawerSecondary}>
-									<slot name="drawerSecondary">
-										{#if secondary}
-											<div>{secondary}</div>
-										{/if}
-									</slot>
-								</Slotted>
+						<!-- <slot name="drawerTitle">
+						</slot> -->
+						<Slotted child={drawerTitle}>
+							<Slotted child={drawerPrimary}>
+								<!-- <slot name="drawerPrimary">
+									{#if primary}
+										<div style="font-size:18px;">{primary}</div>
+									{/if}
+								</slot> -->
+								{#if primary}
+									<div style="font-size:18px;">{primary}</div>
+								{/if}
 							</Slotted>
-						</slot>
+							<Slotted child={drawerSecondary}>
+								<!-- <slot name="drawerSecondary">
+									{#if secondary}
+										<div>{secondary}</div>
+									{/if}
+								</slot> -->
+								{#if secondary}
+									<div>{secondary}</div>
+								{/if}
+							</Slotted>
+						</Slotted>
 					</div>
-					<slot name="drawerTop" />
+					<Slotted child={drawerTop}></Slotted>
+					<!-- <slot name="drawerTop" /> -->
 				</div>
 				{#if !hideCloseIcon && !showOpenerIcon}
 					<Button
@@ -160,12 +167,14 @@
 			</header>
 		{/if}
 		<div class="drawer-content">
-			<slot name="drawerContent"><slot /></slot>
+			<Slotted child={drawerContent}>
+				<Slotted child={children}></Slotted>
+			</Slotted>
+			<!-- <slot name="drawerContent"></slot> -->
 		</div>
 		<footer>
-			<Slotted child={drawerFooter}>
-				<slot name="drawerFooter" />
-			</Slotted>
+			<!-- <slot name="drawerFooter" /> -->
+			<Slotted child={drawerFooter}></Slotted>
 		</footer>
 	{/if}
 </div>

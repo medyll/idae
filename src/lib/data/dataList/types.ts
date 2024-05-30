@@ -6,6 +6,7 @@ export type DataListHeadProps = {
 	element?: HTMLDivElement;
 	stickyHeader?: boolean;
 	onSort?: Function;
+	children?: Snippet;
 };
 export type DataListRowProps<T> = CommonProps & {
 	/** data for the row */
@@ -43,7 +44,7 @@ export type DataListCellProps = {
 	columnId?: string | number | undefined;
 	noWrap?: boolean;
 	title?: string;
-	children?: Snippet<[]>;
+	children?: Snippet<[{ fieldData: Data }]>;
 };
 
 export interface RowType {

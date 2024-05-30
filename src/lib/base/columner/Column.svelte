@@ -49,12 +49,15 @@
 	style:width
 	{...rest}
 >
-	<Slotted child={drawerTop}><slot name="drawerTop" /></Slotted>
+	<!-- <slot name="drawerTop" /> -->
+	<Slotted child={drawerTop}></Slotted>
 	<div class="content">
 		{width}
-		<Slotted child={children}><slot /></Slotted>
+		<!-- <slot /> -->
+		<Slotted child={children}></Slotted>
 	</div>
-	<Slotted child={bottomSlot}><slot name="bottomSLot" /></Slotted>
+	<!-- <slot name="bottomSLot" /> -->
+	<Slotted child={bottomSlot}></Slotted>
 </div>
 
 <style lang="scss">

@@ -30,12 +30,13 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					onclick={() => {
-						if ($$slots.zoomSlot) isExpanded = true;
+						if (zoomSlot) isExpanded = true;
 					}}
 					class="panelGridThumb"
 					in:fade|global
 				>
-					<Slotted child={children} slotArgs={{ data: dta }}><slot data={dta} /></Slotted>
+					<!-- <slot data={dta} /> -->
+					<Slotted child={children} slotArgs={{ data: dta }}></Slotted>
 				</div>
 			{/if}
 		{/each}
@@ -53,7 +54,8 @@
 				/>
 			</div>
 			<div class="zoomSlot">
-				<Slotted child={zoomSlot}><slot name="zoomSlot" /></Slotted>
+				<!-- <slot name="zoomSlot" /> -->
+				<Slotted child={zoomSlot}></Slotted>
 			</div>
 		</div>
 	{/if}

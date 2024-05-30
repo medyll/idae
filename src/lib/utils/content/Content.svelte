@@ -11,6 +11,7 @@
 -->
 <script lang="ts">
 	import { be } from '../engine/elem.js';
+	import Slotted from '../slotted/Slotted.svelte';
 	import type { BindableEvent, ContentProps } from './content-types.js';
 
 	let {
@@ -79,5 +80,6 @@
 	style={`${cssVar};${style}`}
 	{...rest}
 >
-	<slot>{@render children?.()}</slot>
+	<!-- <slot>{@render children?.()}</slot> -->
+	<Slotted child={children} />
 </svelte:element>

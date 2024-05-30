@@ -1,4 +1,5 @@
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
 
 export interface ChipperProps extends CommonProps {
 	/** position of the chipper  */
@@ -20,4 +21,5 @@ export interface ChipperProps extends CommonProps {
 	content?: string;
 	/** show or hide the chip */
 	showChip: boolean;
+	chipperChip?: Snippet;
 }

@@ -22,7 +22,8 @@
 		title,
 		groupBy,
 		tag,
-		loopGroupTitle = undefined,
+		loopTitle,
+		loopGroupTitle,
 		children,
 		...rest
 	}: LoopProps = $props();
@@ -35,20 +36,22 @@
 
 {#snippet loop(data)}
 	{#each data ?? [] as item, idx}
-		<slot {item} {idx}>
-			<Slotted child={children} slotArgs={{ item, idx }}></Slotted></slot
-		>
+		<Slotted child={children} slotArgs={{ item, idx }}></Slotted>
+		<!-- <slot {item} {idx}>
+			</slot > -->
 	{/each}
 {/snippet}
-<slot name="loopTitle">{title}</slot>
+<Slotted child={loopTitle}>{title}</Slotted>
+<!-- <slot name="loopTitle">{title}</slot> -->
 
 <div class={className} style={className ? ' ' : ';display:contents;'} {...rest}>
 	{#if groupBy && groupedData}
 		{#each Object.entries(groupedData) as [key, value], idx}
-			<Slotted child={loopGroupTitle} slotArgs={{ key, value, idx }}>
-				<slot name="loopGroupTitle" item={value?.[0]}>
+			<!-- <slot name="loopGroupTitle" item={value?.[0]}>
 					{dataOp.resolveDotPath(value?.[0], groupBy)}
-				</slot>
+				</slot> -->
+			<Slotted child={loopGroupTitle} slotArgs={{ key, value, idx }}>
+				{dataOp.resolveDotPath(value?.[0], groupBy)}
 			</Slotted>
 			{@render loop(value)}
 		{/each}

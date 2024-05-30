@@ -1,4 +1,6 @@
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+import type { S } from 'vitest/dist/reporters-yx5ZTtEV.js';
 
 export interface BackdropProps extends CommonProps {
 	/** backdrop class */
@@ -26,4 +28,6 @@ export interface BackdropProps extends CommonProps {
 		backdropContent?: string;
 		backdropContentInner?: string;
 	};
+	children?: Snippet;
+	backdropLoading?: Snippet;
 }

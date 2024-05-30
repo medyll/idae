@@ -56,9 +56,8 @@
 	<div class="frame-container">
 		<div bind:this={elementNav} class="frame-container-nav">
 			{#if frameDrawerRef?.isOpen}
-				<Slotted child={frameNavHeader}>
-					<slot name="frameNavHeader" />
-				</Slotted>
+				<!-- <slot name="frameNavHeader" /> -->
+				<Slotted child={frameNavHeader}></Slotted>
 			{/if}
 			<Drawer
 				bind:this={frameDrawerRef}
@@ -68,35 +67,36 @@
 				{...defaultDrawerProps}
 				{...drawerProps}
 			>
-				<slot name="drawerIcon" slot="drawerIcon">
-					<Slotted child={drawerProps?.drawerIcon ?? drawerIcon} />
-				</slot>
-				<slot name="drawerFooter" slot="drawerFooter">
-					<Slotted child={drawerProps?.drawerFooter ?? drawerFooter} />
-				</slot>
-				<slot name="drawerTitle" slot="drawerTitle">
-					<Slotted child={drawerProps?.drawerTitle ?? drawerTitle} />
-				</slot>
-				<slot name="drawerPrimary" slot="drawerPrimary">
-					<Slotted child={drawerProps?.drawerPrimary ?? drawerPrimary} />
-				</slot>
-				<slot name="drawerSecondary" slot="drawerSecondary">
-					<Slotted child={drawerProps?.drawerSecondary ?? drawerSecondary} />
-				</slot>
-				<slot name="drawerTop" slot="drawerTop">
-					<Slotted child={drawerProps?.drawerTop ?? drawerTop} />
-				</slot>
-				<slot name="drawerContent">
-					<Slotted child={drawerContent} />
-				</slot>
+				<!-- <slot name="drawerIcon" slot="drawerIcon">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerIcon ?? drawerIcon} />
+				<!-- <slot name="drawerFooter" slot="drawerFooter">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerFooter ?? drawerFooter} />
+				<!-- <slot name="drawerTitle" slot="drawerTitle">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerTitle ?? drawerTitle} />
+				<!-- <slot name="drawerPrimary" slot="drawerPrimary">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerPrimary ?? drawerPrimary} />
+				<!-- <slot name="drawerSecondary" slot="drawerSecondary">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerSecondary ?? drawerSecondary} />
+				<!-- <slot name="drawerTop" slot="drawerTop">
+				</slot> -->
+				<Slotted child={drawerProps?.drawerTop ?? drawerTop} />
+				<!-- <slot name="drawerContent">
+				</slot> -->
+				<Slotted child={drawerContent} />
 			</Drawer>
 		</div>
 		<div class="frame-container-main">
-			<Slotted child={frameTop}><slot name="frameTop" /></Slotted>
-			<div class="frame-container-main-content">
-				<slot name="content" />
-			</div>
-			<Slotted child={frameBottom}><slot name="frameBottom" /></Slotted>
+			<!-- <slot name="frameTop" /> -->
+			<Slotted child={frameTop}></Slotted>
+			<!--  <slot name="content" /> -->
+			<div class="frame-container-main-content"></div>
+			<!-- <slot name="frameBottom" /> -->
+			<Slotted child={frameBottom}></Slotted>
 		</div>
 	</div>
 </div>

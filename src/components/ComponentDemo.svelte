@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { componentCite } from '$lib/componentCite.js';
-	export let component: string = '';
-	export let cite: string = componentCite?.[component] ?? '';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	/* export let component: string = '';
+	export let cite: string = componentCite?.[component] ?? ''; */
 
-	$: citation = componentCite?.[component.toLowerCase()]?.cite ?? '';
-	$: author = componentCite?.[component.toLowerCase()]?.author ?? '';
+	let { component, cite = componentCite?.[component] ?? '', children } = $props();
+
+	let citation = componentCite?.[component.toLowerCase()]?.cite ?? '';
+	let author = componentCite?.[component.toLowerCase()]?.author ?? '';
 
 	const compDet = Object.values(slotuiCatalog).find((x) => x.name === component);
 </script>
@@ -19,7 +22,10 @@
 	{#if $$slots.default}
 		<div class="flex-v gap-medium">
 			<h5>Component {component} demo :</h5>
-			<div class="marg-l-4"><slot /></div>
+			<div class="marg-l-4">
+				<Slotted child={children} />
+				<!-- <slot /> -->
+			</div>
 		</div>
 	{/if}
 </div>

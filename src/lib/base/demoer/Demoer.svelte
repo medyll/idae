@@ -5,6 +5,8 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Switch from '$lib/controls/switch/Switch.svelte';
 	import type { DemoerParameters } from './types.js';
+	import type { Snippet } from 'svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type Props = {
 		title: string | undefined;
@@ -12,6 +14,7 @@
 		componentArgs: Record<string, any> | undefined;
 		component: any | undefined;
 		multiple: Record<string, any> | undefined;
+		children?: Snippet<[{ activeParams: Record<string, any> }]>;
 	};
 
 	let {
@@ -19,7 +22,8 @@
 		parameters = $bindable({}),
 		componentArgs = $bindable({}),
 		component = $bindable(undefined),
-		multiple = {}
+		multiple = {},
+		children
 	} = $props() as Props;
 
 	let activeParams = $state({ ...componentArgs });
@@ -40,10 +44,19 @@
 					{#each Object.keys(multiple) as tiple}
 						{#each Object.keys(multiple[tiple]) as params}
 							<div>
-								<slot
+								<!-- <slot
 									activeParams={{
 										...activeParams,
 										...multiple[tiple][params]
+									}}
+								/> -->
+								<Slotted
+									child={children}
+									slotArgs={{
+										activeParams: {
+											...activeParams,
+											...multiple[tiple][params]
+										}
 									}}
 								/>
 								<!-- <svelte:component this={component} {componentArgs} {...multiple[tiple][params]} /> -->
@@ -57,7 +70,8 @@
 			{:else if component}
 				<svelte:component this={component} {componentArgs} {activeParams} />
 			{:else}
-				<slot {activeParams} />
+				<Slotted child={children} slotArgs={{ activeParams }} />
+				<!-- <slot {activeParams} /> -->
 			{/if}
 		</div>
 	</div>

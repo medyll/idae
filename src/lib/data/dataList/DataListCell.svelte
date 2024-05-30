@@ -8,6 +8,7 @@
 	import type { Data } from '$lib/types/index.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Chipper from '$lib/base/chipper/Chipper.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	const dataListContext = getContext<Writable<DataListStoreType>>('dataListContext');
 	const inHeader = getContext<Writable<DataCellType[]>>('dataListHead');
@@ -171,7 +172,8 @@
 	>
 		<div on:click={() => onSort(field)} class="cellHeader">
 			<div class="cellHeaderContent">
-				<slot />
+				<!-- <slot /> -->
+				<Slotted child={children} />
 			</div>
 			{#if field && $dataListContext?.config?.isSortable}
 				<div class="cellHeaderSorter" title={sorticon}>
@@ -201,7 +203,13 @@
 		style:maxWidth={$dataListContext.columns[field]?.width ?? minWidth}
 		{title}
 	>
-		<slot fieldData={$rowContext?.data?.[field] ?? {}} />
+		<!-- <slot fieldData={$rowContext?.data?.[field] ?? {}} /> -->
+		<Slotted
+			child={children}
+			slotArgs={{
+				fieldData: $rowContext?.data?.[field] ?? {}
+			}}
+		/>
 	</div>
 {/if}
 

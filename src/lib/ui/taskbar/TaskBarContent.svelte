@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { wStore } from '$lib/ui/window/store.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
-
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	let { children, ...rest } = $props();
 	function toggleWindow(frameId: string) {
 		$wStore.activeFrame = frameId;
 	}
@@ -9,11 +10,11 @@
 
 {#each Object.keys($wStore.instances ?? {}) as key}
 	<IconButton
-		on:click={() => {
+		onclick={() => {
 			toggleWindow(key);
 		}}
 		style="color:white;font-size: large"
 		icon="home"
 	/>
 {/each}
-<slot />
+<Slotted child={children}></Slotted>

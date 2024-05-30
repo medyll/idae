@@ -35,12 +35,13 @@
 <div class="title-bar">
 	<div class="title-bar-content">
 		<div class="title-bar-content-icon">
-			<slot name="titleBarIcon"><Icon fontSize="small" {icon} /></slot>
-			<Slotted child={titleBarIcon}></Slotted>
+			<!-- <slot name="titleBarIcon"><Icon fontSize="small" {icon} /></slot> -->
+			<Slotted child={titleBarIcon}><Icon fontSize="small" {icon} /></Slotted>
 		</div>
 		<div class="title-bar-content-title">
+			<!-- <slot name="titleBarTitle">{title}</slot> -->
 			<Slotted child={titleBarTitle}>
-				<slot name="titleBarTitle">{title}</slot>
+				{title}
 			</Slotted>
 		</div>
 	</div>

@@ -4,8 +4,15 @@
 	import { writable, type Writable } from 'svelte/store';
 	import type { DataCellType } from './types.js';
 	import DataListCell from './DataListCell.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	let { style, element, stickyHeader = true, onSort = () => {} }: DataListHeadProps = $props();
+	let {
+		style,
+		element,
+		stickyHeader = true,
+		onSort = () => {},
+		children
+	}: DataListHeadProps = $props();
 
 	const dataListContext = getContext<Writable<DataListStoreType>>('dataListContext');
 	// this head is a head
@@ -50,7 +57,7 @@
 	class="datalist-head"
 	style="{style};{cssVars}"
 >
-	<slot>
+	<Slotted child={children}>
 		{#if $dataListContext.hasColumnsProps}
 			{#each Object.values($dataListContext.columns) as column}
 				<DataListCell noWrap={true} field={column.field}>
@@ -58,7 +65,9 @@
 				</DataListCell>
 			{/each}
 		{/if}
-	</slot>
+	</Slotted>
+	<!-- <slot>
+	</slot> -->
 </div>
 
 <style lang="scss">

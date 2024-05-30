@@ -3,6 +3,7 @@
 	import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
 	import type { Data } from '$lib/types/index.js';
 	import type { MenuItemProps } from '$lib/ui/menu/types.ts';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	import type { GroupedDataType, GrouperProps } from './types.js';
 
@@ -118,7 +119,8 @@
 				fieldTitle: groupByTitleField
 			})}
 		>
-			<slot item="red">group by {groupByField}</slot>
+			<!-- <slot item="red">group by {groupByField}</slot> -->
+			<Slotted child={children} slotArgs={{ item: 'red' }}>group by {groupByField}</Slotted>
 		</Button>
 	{/if}
 </div>

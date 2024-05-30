@@ -24,6 +24,7 @@
 			});
 		},
 		children,
+		slotRetrievePassword,
 		loginAvatarRoot,
 		loginAvatar,
 		loginForm,
@@ -59,39 +60,40 @@
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
 				<div class="form flex-v flex-align-middle-center">
 					<Slotted child={loginAvatarRoot}>
-						<slot name="loginAvatarRoot">
-							<div class="avatarHolder marg-b-2">
-								<div class="avatar flex-h flex-align-middle-center">
-									{#if submitting}
-										<Icon rotate fontSize="large" icon="loading" />
-									{:else}
-										<slot name="loginAvatar" />
-									{/if}
-								</div>
+						<!-- <slot name="loginAvatarRoot"></slot> -->
+						<div class="avatarHolder marg-b-2">
+							<div class="avatar flex-h flex-align-middle-center">
+								{#if submitting}
+									<Icon rotate fontSize="large" icon="loading" />
+								{:else}
+									<Slotted child={loginAvatar} />
+									<!-- <slot name="loginAvatar" /> -->
+								{/if}
 							</div>
-						</slot>
+						</div>
 					</Slotted>
 					<Slotted child={loginForm}>
-						<slot name="loginForm">
-							<div class="pad-2">
-								<input class="input" name="email" type="text" />
-							</div>
-							<div class="pad-2">
-								<input name="password" type="password" />
-							</div>
-							<Button type="submit" primary="login" loading={submitting}>
-								{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
-									></i>{/if}
-								Login
-							</Button>
-							{#if grantedError}
-								<div class="pad-1 color-scheme-error">Please verify your input</div>
-							{/if}
-						</slot>
+						<!-- <slot name="loginForm">
+						</slot> -->
+						<div class="pad-2">
+							<input class="input" name="email" type="text" />
+						</div>
+						<div class="pad-2">
+							<input name="password" type="password" />
+						</div>
+						<Button type="submit" primary="login" loading={submitting}>
+							{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
+								></i>{/if}
+							Login
+						</Button>
+						{#if grantedError}
+							<div class="pad-1 color-scheme-error">Please verify your input</div>
+						{/if}
 					</Slotted>
 					{#if $$slots.slotRetrievePassword}
 						<div class="retrieve">
-							<slot name="slotRetrievePassword" />
+							<!-- <slot name="slotRetrievePassword" /> -->
+							<Slotted child={slotRetrievePassword} />
 						</div>
 					{/if}
 				</div>

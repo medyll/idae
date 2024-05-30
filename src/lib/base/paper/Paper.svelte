@@ -2,6 +2,8 @@
 
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 
 	type PaperProps = {
 		/** className off the root component */
@@ -12,13 +14,22 @@
 
 		/** element root HTMLDivElement props */
 		element?: HTMLDivElement | null;
+
+		children?: Snippet;
 	} & CommonProps;
 
-	let { class: className = '', style, element = $bindable(), ...rest }: PaperProps = $props();
+	let {
+		class: className = '',
+		style,
+		element = $bindable(),
+		children,
+		...rest
+	}: PaperProps = $props();
 </script>
 
 <div bind:this={element} class="paper {className}" {style} {...rest}>
-	<slot />
+	<!-- <slot /> -->
+	<Slotted child={children} />
 </div>
 
 <style lang="scss">

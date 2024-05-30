@@ -8,6 +8,7 @@
 	import Button from './Button.svelte';
 	import type { ButtonProps } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type ButtonActionProps = ButtonProps & {
 		menuProps?: MenuProps;
@@ -34,7 +35,8 @@
 
 <div bind:this={holder} class="button button-action selected {variant} dense-{dense} {className}">
 	<Button {...rest} {dense} bind:element variant="naked">
-		<slot />
+		<!-- <slot /> -->
+		<Slotted child={children} />
 	</Button>
 	<Button
 		{disabled}
@@ -48,7 +50,8 @@
 </div>
 {#if isOpen && !disabled}
 	<Popper bind:isOpen parentNode={holder} stickToHookWidth={true} {...popperProps}>
-		<slot name="popperContent">{@render popperContent?.()}</slot>
+		<Slotted child={popperContent} />
+		<!-- <slot name="popperContent">{@render popperContent?.()}</slot> -->
 	</Popper>
 {/if}
 

@@ -38,7 +38,8 @@
 	class={className}
 	{style}
 >
-	<Slotted child={children}><slot></slot></Slotted>
+	<!-- <slot></slot> -->
+	<Slotted child={children}></Slotted>
 </div>
 
 <style lang="scss">

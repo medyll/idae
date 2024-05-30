@@ -9,6 +9,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import type { CommonProps, ElementProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type PanelSlideProps = CommonProps & {
 		/** Whether the panel is open or not */
@@ -136,7 +137,11 @@
 		{style}
 		{...rest}
 	>
-		<slot {panelSlideId} data={$panelerContext.activePanelSlideData[panelSlideId]} />
+		<Slotted
+			child={children}
+			slotArgs={{ panelSlideId, data: $panelerContext.activePanelSlideData[panelSlideId] }}
+		/>
+		<!-- <slot {panelSlideId} data={$panelerContext.activePanelSlideData[panelSlideId]} /> -->
 	</div>
 {/if}
 

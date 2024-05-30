@@ -79,6 +79,9 @@
 		/** Loading state of the list */
 		isLoading: boolean;
 
+		dataListHead?: Snippet;
+		dataListFooter?: Snippet;
+		dataListRow?: Snippet<[{ rawData: Data; item: Data }]>;
 		dataListCell?: Snippet<[{ fieldType: string; fieldName: string; fieldValue: any }]>;
 		groupTitleSlot?: Snippet<[{ item: Data }]>;
 	};
@@ -108,7 +111,10 @@
 		virtualizer = false,
 		isLoading = false,
 		fieldValue,
+		dataListRow,
+		dataListHead,
 		dataListCell,
+		dataListFooter,
 		groupTitleSlot
 	}: DataListProps = $props();
 
@@ -198,6 +204,15 @@
 </script>
 
 {#snippet listCell(item, inItem)}
+	<!-- <slot
+			name="dataListCell"
+			{...{
+				fieldName: $dataListContext.columns[inItem]?.field,
+				fieldType: $dataListContext.columns[inItem]?.fieldType,
+				fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
+				fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
+			}}
+		/> -->
 	<Slotted
 		child={dataListCell}
 		slotArgs={{
@@ -206,17 +221,7 @@
 			fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
 			fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
 		}}
-	>
-		<slot
-			name="dataListCell"
-			{...{
-				fieldName: $dataListContext.columns[inItem]?.field,
-				fieldType: $dataListContext.columns[inItem]?.fieldType,
-				fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
-				fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
-			}}
-		/>
-	</Slotted>
+	></Slotted>
 {/snippet}
 
 <ContextRooter bind:contextRoot={dataListContext} contextKey="dataListContext" />
@@ -282,12 +287,13 @@
 	>
 		{#if element}
 			{#if showHeader}
-				<slot name="head">
+				<Slotted child={dataListHead}><DataListHead /></Slotted>
+				<!-- <slot name="head">
 					<DataListHead />
-				</slot>
+				</slot> -->
 			{/if}
 			{#each sortedData as item}
-				<slot rawData={item} {item}>
+				<Slotted child={dataListRow} slotArgs={{ rawData: item, item }}>
 					<DataListRow
 						class={item[selectorField] === selectorFieldValue ? 'theme-bg-paper' : ''}
 						data={item}
@@ -302,10 +308,27 @@
 							{/each}
 						{/if}
 					</DataListRow>
-				</slot>
+				</Slotted>
+				<!-- <slot rawData={item} {item}>
+					<DataListRow
+						class={item[selectorField] === selectorFieldValue ? 'theme-bg-paper' : ''}
+						data={item}
+					>
+						{#if $dataListContext.hasColumnsProps}
+							{#each Object.keys($dataListContext.columns) as inItem}
+								{@render listCell(item, inItem)}
+							{/each}
+						{:else}
+							{#each Object.keys(item) as inItem}
+								{@render listCell(item, inItem)}
+							{/each}
+						{/if}
+					</DataListRow>
+				</slot> -->
 			{/each}
 		{/if}
-		<slot name="dataListFooter" />
+		<!-- <slot name="dataListFooter" /> -->
+		<Slotted child={dataListFooter} />
 	</div>
 {/if}
 

@@ -4,6 +4,8 @@
 	import { fade } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
+	import type { BackdropProps } from './types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	/** Backdrop controller */
 	const actionsnope = {
@@ -26,7 +28,9 @@
 		element,
 		elementContent,
 		elementContentInner,
-		classes = {}
+		classes = {},
+		children,
+		backdropLoading
 	}: BackdropProps = $props();
 
 	$effect(() => {
@@ -54,13 +58,17 @@
 		<div bind:this={elementContent} class="backdrop-content">
 			{#if isLoading}
 				<div class="backdrop-content-loader">
-					<slot name="backdropLoading">
+					<Slotted child={backdropLoading}
+						><Icon icon="mdi:loading" fontSize="large" rotate /></Slotted
+					>
+					<!-- <slot name="backdropLoading">
 						<Icon icon="mdi:loading" fontSize="large" rotate />
-					</slot>
+					</slot> -->
 				</div>
 			{:else}
 				<div class="backdrop-content-inner" bind:this={elementContentInner}>
-					<slot />
+					<!-- <slot /> -->
+					<Slotted child={children} />
 				</div>
 			{/if}
 		</div>

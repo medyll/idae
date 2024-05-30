@@ -44,4 +44,5 @@ export type PanelProps = {
 	actions: {
 		load: (args: any) => void;
 	};
+	children?: Snippet;
 };

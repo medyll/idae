@@ -11,8 +11,11 @@
 	import List from '$lib/data/list/List.svelte';
 	import ListItem from '$lib/data/list/ListItem.svelte';
 	import { page } from '$app/stores';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	// import wula from "src/theme/cssfabric.scss";
+
+	let { children, ...rest } = $props();
 
 	function signOut() {
 		push('/#login');
@@ -52,7 +55,8 @@ red
 			<Frame>
 				<div slot="drawerContent">nav left</div>
 				<div slot="content">
-					<slot />
+					<Slotted child={children} />
+					<!-- <slot /> -->
 				</div>
 			</Frame>
 			<!-- <ChromeFrameList

@@ -62,8 +62,7 @@
 			bind:this={initialRef}
 			title={tooltipInitial}
 		>
-			<Slotted child={initial}
-				><slot name="initial"
+			<!-- <slot name="initial"
 					><Button
 						variant="naked"
 						iconColor={iconColorInitial}
@@ -71,7 +70,15 @@
 						primary={primaryInitial}
 						title:tooltipInitial
 					/></slot
-				></Slotted
+				> -->
+			<Slotted child={initial}
+				><Button
+					variant="naked"
+					iconColor={iconColorInitial}
+					icon={iconInitial}
+					primary={primaryInitial}
+					title:tooltipInitial
+				/></Slotted
 			>
 		</div>
 	{/if}

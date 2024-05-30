@@ -32,4 +32,6 @@ export type LoginProps = CommonProps & {
 
 	/** Slot for the login form */
 	loginForm?: Snippet;
+
+	slotRetrievePassword?: Snippet;
 };

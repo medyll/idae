@@ -14,6 +14,7 @@
 		color = '',
 		content = '',
 		showChip = true,
+		chipperChip,
 		children
 	}: ChipperProps = $props();
 
@@ -29,9 +30,10 @@
 
 	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
 		{#if showChip}
-			<slot name="chipperChip">
+			<!-- <slot name="chipperChip">
 				<div class="defaultChip" />
-			</slot>
+			</slot> -->
+			<Slotted child={chipperChip} />
 		{/if}
 	</chip>
 </div>

@@ -40,6 +40,7 @@ export type DrawerProps = CommonProps & {
 
 	/** default height of the drawer in horizontal mode */
 	defaultHeight?: string;
+	drawerContent?: Snippet;
 	drawerIcon?: Snippet;
 	drawerTitle?: Snippet;
 	drawerPrimary?: Snippet;

@@ -61,21 +61,24 @@
 	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
 		{#if icon || cartoucheIcon || $$slots.cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
-				<Slotted child={cartoucheIcon}>
-					<slot name="cartoucheIcon">
+				<!-- <slot name="cartoucheIcon">
 						<Icon {icon} />
-					</slot>
+					</slot> -->
+				<Slotted child={cartoucheIcon}>
+					<Icon {icon} />
 				</Slotted>
 			</div>
 		{/if}
 		<div class="controlLabel {classes.controlLabel}">
 			{#if primary || cartouchePrimarySlot || $$slots.primarySlot}
+				<!-- <slot name="primarySlot">{primary}</slot> -->
 				<Slotted child={cartouchePrimarySlot}>
-					<slot name="primarySlot">{primary}</slot>
+					{primary}
 				</Slotted>
 				<div>
+					<!-- <slot name="secondarySlot">{secondary ?? ''}</slot> -->
 					<Slotted child={cartoucheSecondarySlot}>
-						<slot name="secondarySlot">{secondary ?? ''}</slot>
+						{secondary ?? ''}
 					</Slotted>
 				</div>
 			{/if}
@@ -89,9 +92,8 @@
 				}}
 				class="cartoucheAction"
 			>
-				<Slotted child={cartoucheButtons}>
-					<slot name="cartoucheButtons" /></Slotted
-				>
+				<!-- <slot name="cartoucheButtons" /> -->
+				<Slotted child={cartoucheButtons}></Slotted>
 			</div>
 		{/if}
 		<div class="chevron">
@@ -103,9 +105,8 @@
 			{#if component}
 				<svelte:component this={component} {...componentProps} />
 			{/if}
-			<Slotted child={children}>
-				<slot />
-			</Slotted>
+			<!-- <slot /> -->
+			<Slotted child={children} />
 		</div>
 	{/if}
 </div>

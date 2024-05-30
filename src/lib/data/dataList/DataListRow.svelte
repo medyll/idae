@@ -72,7 +72,8 @@
 	{...rest}
 >
 	{#if children || $$slots.default}
-		<Slotted child={children}><slot /></Slotted>
+		<!-- <slot /> -->
+		<Slotted child={children}></Slotted>
 	{:else if $dataListContext.hasColumnsProps}
 		{#each Object.keys($dataListContext.columns) as inItem}
 			{@const field = $dataListContext.columns[inItem].field}
@@ -85,7 +86,8 @@
 	{:else}
 		{#each Object.keys(data) as inItem}
 			<DataListCell field={inItem}>
-				<Slotted child={children}><slot /></Slotted>
+				<!-- <slot /> -->
+				<Slotted child={children}></Slotted>
 			</DataListCell>
 		{/each}
 	{/if}

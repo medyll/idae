@@ -49,8 +49,8 @@
 	</div>
 	<div style="order:{posCloser}">
 		<ContentSwitcher parent={element} {...contentSwitcherProps}>
-			<!-- <slot slot="contentSwitcherIcon" name="contentSwitcherIcon" />
-			<slot slot="contentSwitcherReveal" name="contentSwitcherReveal" /> -->
+			<!-- <slot slot="contentSwitcherIcon" name="contentSwitcherIcon" />-->
+			<!-- <slot slot="contentSwitcherReveal" name="contentSwitcherReveal" />  -->
 			<Slotted child={contentSwitcherIcon} />
 			<Slotted child={contentSwitcherReveal} />
 		</ContentSwitcher>
