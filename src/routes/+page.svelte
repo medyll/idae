@@ -92,7 +92,7 @@
 								{#if Boolean(searchPreview(catalog.code))}
 									<div>
 										<Icon
-											on:click={() => {
+											onclick={() => {
 												backdropVisible = true;
 												backdropComponentCode = catalog.code;
 											}}
@@ -143,7 +143,7 @@
 	bind:this={BackdropRef}
 	autoClose={true}
 	flow="fixed"
-	on:click={() => {}}
+	onclick={() => {}}
 >
 	<div class="flex-h flex-align-middle-center h-full">
 		<div class="radius-tiny">

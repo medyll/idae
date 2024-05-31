@@ -1,4 +1,4 @@
-<svelte:options accessors={true} runes={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
@@ -7,13 +7,14 @@
 	import type { DemoerParameters } from './types.js';
 	import type { Snippet } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { SvelteComponent } from 'svelte/compiler';
 
 	type Props = {
-		title: string | undefined;
+		title?: string;
 		parameters: Record<string, Record<string, DemoerParameters>>;
-		componentArgs: Record<string, any> | undefined;
-		component: any | undefined;
-		multiple: Record<string, any> | undefined;
+		componentArgs: Record<string, any>;
+		component?: SvelteComponent /** svelte component*/;
+		multiple?: Record<string, any>;
 		children?: Snippet<[{ activeParams: Record<string, any> }]>;
 	};
 
@@ -24,7 +25,7 @@
 		component = $bindable(undefined),
 		multiple = {},
 		children
-	} = $props() as Props;
+	}: Props = $props();
 
 	let activeParams = $state({ ...componentArgs });
 </script>
@@ -44,12 +45,6 @@
 					{#each Object.keys(multiple) as tiple}
 						{#each Object.keys(multiple[tiple]) as params}
 							<div>
-								<!-- <slot
-									activeParams={{
-										...activeParams,
-										...multiple[tiple][params]
-									}}
-								/> -->
 								<Slotted
 									child={children}
 									slotArgs={{

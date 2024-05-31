@@ -9,6 +9,7 @@
 	import Elementor from '$lib/base/elementor/Elementor.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Input from '$lib/controls/textfield/TextField.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let listItems: any[] = [];
 
@@ -52,18 +53,26 @@
             <span slot="action">{null_to_empty(listItem?.action)}</span>
         </ListItem> -->
 	</List>
-	<Header slot="frameTop" title={activeData?.[`nomAppscheme`]}>
-		{activeData?.[`nomAppscheme`]}
-	</Header>
-	<div class="flex-main overflow-auto pad-4" slot="content">
-		{#if activeData}
-			<Elementor let:itemObject bind:item={activeData}>
-				<div class="flex-h flex-align-middle">
-					<div class="pad-2 border-b" style="width:120px;overflow: hidden">{itemObject.key}</div>
-					<div class="pad-2">:</div>
-					<div class="pad-2">{JSON.stringify(itemObject.value)}</div>
-				</div>
-			</Elementor>
-		{/if}
-	</div>
+	{#snippet frameTop()}
+		<Header title={activeData?.[`nomAppscheme`]}>
+			{activeData?.[`nomAppscheme`]}
+		</Header>
+	{/snippet}
+	{#snippet frameContent()}
+		<div class="flex-main overflow-auto pad-4">
+			{#if activeData}
+				<Elementor bind:item={activeData}>
+					{#snippet children({ itemObject })}
+						<div class="flex-h flex-align-middle">
+							<div class="pad-2 border-b" style="width:120px;overflow: hidden">
+								{itemObject.key}
+							</div>
+							<div class="pad-2">:</div>
+							<div class="pad-2">{JSON.stringify(itemObject.value)}</div>
+						</div>
+					{/snippet}
+				</Elementor>
+			{/if}
+		</div>
+	{/snippet}
 </Frame>

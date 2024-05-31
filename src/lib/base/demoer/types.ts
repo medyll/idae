@@ -7,12 +7,12 @@ export type DemoerParameters = { type: DemoerArgsType; values?: any[] };
 
 export type DemoPageProps = CommonProps & {
 	title: string;
-	code: string;
 	subTitle?: string;
-	component?: string;
-	demoerCode: Snippet;
+	component: string;
+	code: string;
+	demoerCode?: Snippet;
 	children: Snippet;
-	slots: {
+	slots?: {
 		code: Snippet;
 	};
 };

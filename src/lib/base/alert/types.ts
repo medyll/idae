@@ -28,7 +28,7 @@ export const alertDemoValues: DemoStoryProps<any> = {
 	isOpen: {
 		type: 'boolean',
 		values: [true, false],
-		default: false
+		default: true
 	},
 	draggable: {
 		type: 'boolean',

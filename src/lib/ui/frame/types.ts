@@ -14,9 +14,14 @@ export type FrameProps = CommonProps & {
 	elementNav?: HTMLDivElement;
 	/** Children slot for the default content */
 	children?: Snippet;
-
+	frameContent?: Snippet;
 	/** Slot for the nav left header frame */
 	frameNavHeader?: Snippet;
+	/** Slot for the frame top */
+	frameTop?: Snippet;
+
+	/** Slot for the frame bottom */
+	frameBottom?: Snippet;
 
 	/** Slot for the drawer top */
 	drawerTop?: Snippet;
@@ -28,10 +33,4 @@ export type FrameProps = CommonProps & {
 	drawerPrimary?: Snippet;
 	drawerSecondary?: Snippet;
 	drawerFooter?: Snippet;
-
-	/** Slot for the frame top */
-	frameTop?: Snippet;
-
-	/** Slot for the frame bottom */
-	frameBottom?: Snippet;
 };

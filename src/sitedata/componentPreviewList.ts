@@ -6,8 +6,6 @@ import ConfirmPreviewSvelte from '$lib/controls/confirm/Confirm.preview.svelte';
 export { ConfirmPreviewSvelte };
 import DataListPreviewSvelte from '$lib/data/dataList/DataList.preview.svelte';
 export { DataListPreviewSvelte };
-import ListPreviewSvelte from '$lib/data/list/List.preview.svelte';
-export { ListPreviewSvelte };
 import LoaderPreviewSvelte from '$lib/data/loader/Loader.preview.svelte';
 export { LoaderPreviewSvelte };
 import TabsPreviewSvelte from '$lib/navigation/tabs/Tabs.preview.svelte';
@@ -37,12 +35,6 @@ export const slotUiComponentPreviewList = [
 		name: 'DataListPreviewSvelte',
 		code: 'datalistpreviewsvelte',
 		component: DataListPreviewSvelte,
-		group: 'data'
-	},
-	{
-		name: 'ListPreviewSvelte',
-		code: 'listpreviewsvelte',
-		component: ListPreviewSvelte,
 		group: 'data'
 	},
 	{

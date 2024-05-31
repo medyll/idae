@@ -67,7 +67,7 @@
 				{/if}
 				{#if inputType === 'search'}
 					<Button
-						on:click={() => {
+						onclick={() => {
 							value = null;
 						}}
 						disabled={!value?.length}

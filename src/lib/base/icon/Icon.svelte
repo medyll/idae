@@ -1,4 +1,4 @@
-<svelte:options accessors={true} runes={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import Icon from '@iconify/svelte';
@@ -37,7 +37,7 @@
 		bind:this={element}
 		class="icon {className} {finRot}"
 		style="{style};transform: rotate({finRotation}deg)"
-		on:click
+		onclick
 		icon={iconName}
 	/>
 {/key}

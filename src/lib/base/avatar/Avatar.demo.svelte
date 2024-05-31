@@ -6,12 +6,7 @@
 	import Avatar from './Avatar.svelte';
 	import { AvatarDemoValues } from './types.js';
 
-	let parametersSlot: any = {
-		size: {
-			type: 'string',
-			values: ['tiny', 'small', 'medium', 'large']
-		}
-	};
+	let parametersSlot: any = AvatarDemoValues;
 
 	let parametersProps = AvatarDemoValues;
 
@@ -36,13 +31,19 @@
 >
 	<div class="flex-v gap-large">
 		<DemoPage title="Using slots" component="Rating" code={code1}>
-			<Demoer parameters={parametersSlot} {componentArgs} let:activeParams>
-				<Avatar {...activeParams}><Icon icon={activeParams?.icon} /></Avatar>
+			<Demoer parameters={parametersSlot} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Avatar {...activeParams}>
+						<Icon icon={activeParams?.icon} />
+					</Avatar>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Without slots" code={code2} component="Rating">
-			<Demoer parameters={parametersProps} {componentArgs} let:activeParams>
-				<Avatar {...activeParams} icon={activeParams?.icon} />
+			<Demoer parameters={parametersProps} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Avatar {...activeParams} icon={activeParams?.icon} />
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

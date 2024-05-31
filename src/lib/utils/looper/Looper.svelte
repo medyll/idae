@@ -13,7 +13,7 @@
 		tag?: string;
 		children?: Snippet<[{ item: T; idx: number }]>;
 		loopTitle?: Snippet;
-		loopGroupTitle?: Snippet;
+		loopGroupTitle?: Snippet<[{ key: any; data: any; idx: number }]>;
 	};
 
 	let {
@@ -36,26 +36,19 @@
 
 {#snippet loop(data)}
 	{#each data ?? [] as item, idx}
-		<Slotted child={children} slotArgs={{ item, idx }}></Slotted>
-		<!-- <slot {item} {idx}>
-			</slot > -->
+		{@render children?.({ item, idx })}
 	{/each}
 {/snippet}
-<Slotted child={loopTitle}>{title}</Slotted>
-<!-- <slot name="loopTitle">{title}</slot> -->
-
 <div class={className} style={className ? ' ' : ';display:contents;'} {...rest}>
 	{#if groupBy && groupedData}
-		{#each Object.entries(groupedData) as [key, value], idx}
-			<!-- <slot name="loopGroupTitle" item={value?.[0]}>
-					{dataOp.resolveDotPath(value?.[0], groupBy)}
-				</slot> -->
-			<Slotted child={loopGroupTitle} slotArgs={{ key, value, idx }}>
-				{dataOp.resolveDotPath(value?.[0], groupBy)}
+		{#each Object.entries(groupedData) as [key, data], idx}
+			<Slotted child={loopGroupTitle} slotArgs={{ key, data, idx }}>
+				{dataOp.resolveDotPath(data?.[0], groupBy)}
 			</Slotted>
-			{@render loop(value)}
+			{@render loop(data)}
 		{/each}
 	{:else}
+		<Slotted child={loopTitle}>{title}</Slotted>
 		{@render loop(data)}
 	{/if}
 </div>

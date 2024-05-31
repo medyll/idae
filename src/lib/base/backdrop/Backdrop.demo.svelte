@@ -24,7 +24,7 @@
 	let codeSlot = `
 	<Backdrop
 		flow="relative"
-		on:click={()=>{}}>
+		onclick={()=>{}}>
 		<div class="flex-h flex-align-middle-center h-full">
 			<div class="pad-4 border radius-small theme-bg">
 				some content
@@ -46,7 +46,7 @@
 				<div style="width:350px;height:350px;position:realive;">
 					<Backdrop
 						bind:this={BackdropRef}
-						on:click={() => {
+						onclick={() => {
 							componentArgs.flow = 'relative';
 							BackdropRef.flow = 'relative';
 						}}

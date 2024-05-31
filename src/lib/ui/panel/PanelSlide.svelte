@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options />
 
 <script lang="ts">
 	import { transitions } from '$lib/utils/effects/transitions.js';

@@ -27,11 +27,11 @@
 		defaultWidth = '288px',
 		defaultVisibleArea = '0px',
 		defaultHeight = '288px',
-		actions = {
+		actions = $bindable({
 			toggle: (visibleSate?: boolean) => {
 				isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
 			}
-		},
+		}),
 		drawerContent,
 		drawerIcon,
 		drawerTitle,
@@ -93,6 +93,7 @@
 	});
 </script>
 
+ss
 <div
 	bind:this={element}
 	class="drawer {className}"
@@ -101,6 +102,7 @@
 	aria-orientation="vertical"
 	{...rest}
 >
+	ss
 	{#if showOpenerIcon}
 		<div class="drawer-opener" style={openerIconStyle[stickTo]}>
 			<IconButton
@@ -108,12 +110,12 @@
 				icon={'chevron-right'}
 				rotation={sens}
 				style="cursor:pointer;"
-				on:click={() => actions.toggle()}
+				onclick={() => actions.toggle()}
 			/>
 		</div>
 	{/if}
 	{#if isOpen}
-		{#if drawerTop || $$slots.drawerTop || drawerIcon || Boolean(primary) || Boolean(icon)}
+		{#if drawerTop || drawerIcon || Boolean(primary) || Boolean(icon)}
 			<header class="drawer-header">
 				{#if Boolean(icon) || drawerIcon}
 					<!-- <slot name="drawerIcon">

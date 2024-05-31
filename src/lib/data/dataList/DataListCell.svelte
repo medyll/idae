@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options />
 
 <script lang="ts">
 	import type { DataCellType, DataListCellProps, DataListStoreType, RowType } from './types.js';
@@ -134,7 +134,7 @@
 	let timerWidth: any;
 	let finalWidthStyle: string = '';
 
-	$: if (inHeader) {
+	$effect(() => {
 		sorticon =
 			$dataListContext.sortBy.activeSortByField === field
 				? $dataListContext?.config?.sortingIcons?.default[
@@ -143,13 +143,17 @@
 				: 'mdi:dots-horizontal';
 
 		showChip = $dataListContext.sortBy.activeSortByField === field;
-	}
+	});
 
 	/* $: if ($dataListContext.columns[field].width) {
     const w = $dataListContext.columns[field].width;
     finalWidthStyle = `min-width:${w};width:max-width:${w};`;
   } */
 </script>
+
+<!-- on:resizer:start={resizeStart}
+		on:resizer:resize={resizeOn}
+		on:resizer:end={resizeEnd} -->
 
 {#if inHeader}
 	<div
@@ -159,9 +163,6 @@
 		data-noWrap={noWrap}
 		class="dataListCell cellDimensions {className}"
 		use:useResizer
-		on:resizer:start={resizeStart}
-		on:resizer:resize={resizeOn}
-		on:resizer:end={resizeEnd}
 		style="{style ??
 			$dataListContext.columns[field]?.headerStyle ??
 			$dataListContext.columns[field]?.style};}"
@@ -170,7 +171,7 @@
 		style:maxWidth={$dataListContext.columns[field]?.width ?? minWidth}
 		{...rest}
 	>
-		<div on:click={() => onSort(field)} class="cellHeader">
+		<div onclick={() => onSort(field)} class="cellHeader">
 			<div class="cellHeaderContent">
 				<!-- <slot /> -->
 				<Slotted child={children} />
@@ -197,7 +198,7 @@
 		data-noWrap={noWrap}
 		class="dataListCell cellDimensions {className}"
 		{style}
-		{...$$restProps}
+		{...rest}
 		style:width={$dataListContext.columns[field]?.width ?? minWidth}
 		style:minWidth={$dataListContext.columns[field]?.width ?? minWidth}
 		style:maxWidth={$dataListContext.columns[field]?.width ?? minWidth}

@@ -150,7 +150,6 @@ export * from '$lib/controls/textfield/types.js';
 export * from '$lib/csss/csss.js';
 export { default as DataList } from '$lib/data/dataList/DataList.svelte';
 export { default as DataListCell } from '$lib/data/dataList/DataListCell.svelte';
-export { default as DataListeContext } from '$lib/data/dataList/DataListeContext.svelte';
 export { default as DataListHead } from '$lib/data/dataList/DataListHead.svelte';
 export { default as DataListRow } from '$lib/data/dataList/DataListRow.svelte';
 export * from '$lib/data/dataList/types.js';

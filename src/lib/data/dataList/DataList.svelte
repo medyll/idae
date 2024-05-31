@@ -1,4 +1,4 @@
-<svelte:options runes={true} accessors={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import { getContext, hasContext, setContext, type Snippet } from 'svelte';
@@ -201,18 +201,14 @@
 			: dataOp.resolveDotPath(data, field);
 		return sanitizeHtml(ret);
 	}
+
+	$effect(() => {
+		element?.addEventListener('datalist:sorted', doSort);
+		element?.addEventListener('datalist:select', doSelect);
+	});
 </script>
 
 {#snippet listCell(item, inItem)}
-	<!-- <slot
-			name="dataListCell"
-			{...{
-				fieldName: $dataListContext.columns[inItem]?.field,
-				fieldType: $dataListContext.columns[inItem]?.fieldType,
-				fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
-				fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
-			}}
-		/> -->
 	<Slotted
 		child={dataListCell}
 		slotArgs={{
@@ -221,7 +217,7 @@
 			fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
 			fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
 		}}
-	></Slotted>
+	/>
 {/snippet}
 
 <ContextRooter bind:contextRoot={dataListContext} contextKey="dataListContext" />
@@ -241,7 +237,7 @@
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
 							class="datalist-group-head"
-							on:click={() => {
+							onclick={() => {
 								hidedGroups[red] = !hidedGroups[red];
 							}}
 						>
@@ -253,7 +249,7 @@
 							<div>{groups[red]?.length}</div>
 							<div class="datalist-group-head-icon">
 								<Button
-									on:click={() => {
+									onclick={() => {
 										hidedGroups[red] = !hidedGroups[red];
 									}}
 									icon={hidedGroups[red] ? 'chevron-up' : 'chevron-down'}
@@ -277,14 +273,7 @@
 {:else}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div
-		on:datalist:sorted={doSort}
-		on:datalist:select={doSelect}
-		bind:this={element}
-		class="datalist {className}"
-		{style}
-		tabindex="0"
-	>
+	<div bind:this={element} class="datalist {className}" {style} tabindex="0">
 		{#if element}
 			{#if showHeader}
 				<Slotted child={dataListHead}><DataListHead /></Slotted>

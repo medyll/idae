@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options />
 
 <script lang="ts" generics="T = Data">
 	import type { Snippet } from 'svelte';

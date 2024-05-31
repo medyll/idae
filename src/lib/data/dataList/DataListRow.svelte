@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options runes />
 
 <script lang="ts" generics="T=Data">
 	import sanitizeHtml from 'sanitize-html';
@@ -18,7 +18,7 @@
 		data,
 		children,
 		...rest
-	}: DataListRowProps = $props();
+	}: DataListRowProps<T> = $props();
 
 	const dataStore = writable<RowType>({ data });
 	setContext('dataListRow', dataStore);
@@ -58,11 +58,11 @@
 	});
 </script>
 
+<!-- on:datalist:sort:clicked -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-no_static_element_interactions -->
 <div
 	bind:this={element}
-	on:datalist:sort:clicked
 	onclick={() => {
 		if (data) handleClick(data);
 		if (data) handleSelect(data);

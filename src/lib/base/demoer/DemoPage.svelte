@@ -1,4 +1,4 @@
-<svelte:options accessors={true} runes={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -14,8 +14,7 @@
 		subTitle,
 		component,
 		children,
-		demoerCode,
-		slots
+		demoerCode
 	}: DemoPageProps = $props();
 
 	let codeT = subTitle ? subTitle : `component ${component} demo ${title?.toLowerCase()}`;
@@ -34,9 +33,9 @@
 				{/if}
 			</div>
 		</div>
-		{#if code || slots?.code}
+		{#if code || demoerCode}
 			<div class="w-tiers">
-				<Slotted child={slots?.code ?? demoerCode}>
+				<Slotted child={demoerCode}>
 					<DemoerCode {code} />
 				</Slotted>
 			</div>

@@ -30,7 +30,7 @@
 <Popper bind:isOpen position="BC" autoClose class="w-large">
 	<Button
 		slot="popperHolder"
-		on:click={() => ()}
+		onclick={() => ()}
 		style="cursor:pointer">
 		Popper button
 	</Button>
@@ -64,7 +64,7 @@
 					<Popper bind:isOpen position="BC" {...activeParams} class="w-large marg-t-1">
 						<Button
 							slot="popperHolder"
-							on:click={() => (isOpen = !isOpen)}
+							onclick={() => (isOpen = !isOpen)}
 							style="cursor:pointer"
 							class="border text-center pointer {isOpen ? 'theme-bg-paper shad-3' : ''}"
 						>

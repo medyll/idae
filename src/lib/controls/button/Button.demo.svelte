@@ -118,14 +118,14 @@
 	};
 
 	let code = `
-<Button on:click={()=>{}} >
+<Button onclick={()=>{}} >
 	My button
 	<Icon slot="buttonStart" icon="..." />
 	<Icon slot="buttonEnd" icon="..." />
 </Button>`;
 
 	let code2 = `
-<Button on:click={()=>{}} >
+<Button onclick={()=>{}} >
 	My button
 </Button>`;
 

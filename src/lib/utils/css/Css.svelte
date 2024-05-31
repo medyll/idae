@@ -28,26 +28,34 @@
 {/snippet}
 foreground, "background"
 <div class="flex-h gap-small">
-	<Looper data={['foreground', 'background', 'paper']} let:item>
-		{@render cssBlock(item)}
+	<Looper data={['foreground', 'background', 'paper']}>
+		{#snippet children(item)}
+			{@render cssBlock(item)}
+		{/snippet}
 	</Looper>
 </div>
 primary, secondary, tertiary;
 <div class="flex-h gap-small">
-	<Looper data={['primary', 'secondary', 'tertiary']} let:item>
-		{@render cssBlock(item)}
+	<Looper data={['primary', 'secondary', 'tertiary']}>
+		{#snippet children(item)}
+			{@render cssBlock(item)}
+		{/snippet}
 	</Looper>
 </div>
 discrete, success, info, warning, alert, error
 <div class="flex-h gap-small">
-	<Looper data={['discrete', 'success', 'info', 'warning', 'alert', 'error']} let:item>
-		{@render cssBlock(item)}</Looper
-	>
+	<Looper data={['discrete', 'success', 'info', 'warning', 'alert', 'error']}>
+		{#snippet children(item)}
+			{@render cssBlock(item)}
+		{/snippet}
+	</Looper>
 </div>
 elevation 1/5
-<Looper naked={false} class="flex-v gap-small" data={[1, 2, 3, 4, 5]} let:item>
-	{@render cssElevation(item)}</Looper
->
+<Looper naked={false} class="flex-v gap-small" data={[1, 2, 3, 4, 5]}>
+	{#snippet children(item)}
+		{@render cssElevation(item)}
+	{/snippet}
+</Looper>
 
 <style>
 	div {

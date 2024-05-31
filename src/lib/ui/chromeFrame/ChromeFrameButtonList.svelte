@@ -14,10 +14,10 @@
 			<Slotted child={children} slotArgs={{ chromeFrame: value }}>
 				<Button
 					style="position:relative"
-					on:click={() => {
+					onclick={() => {
 						chromeFrameStore.toggle(value.frameId);
 					}}
-					on:dblclick={() => {
+					ondblclick={() => {
 						chromeFrameStore.remove(value.frameId);
 					}}
 					class={value.active ? 'active' : ''}

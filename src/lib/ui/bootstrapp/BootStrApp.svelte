@@ -46,9 +46,9 @@ red
 			</svelte:fragment>
 			<ChromeFrameButtonList let:chromeFrame />
 			<!-- <slot name="userProfileSlot">
-				<button slot="taskBarRight" on:click={signOut}>signOut</button>
+				<button slot="taskBarRight" onclick={signOut}>signOut</button>
 			</slot> -->
-			<button slot="taskBarRight" on:click={signOut}>signOut</button>
+			<button slot="taskBarRight" onclick={signOut}>signOut</button>
 		</Taskbar>
 		<div id="layout" class="pos-rel flex-main overflow-hidden">
 			<!-- <Router {routes} /> -->
@@ -102,20 +102,20 @@ red
 			<Button
 				size="auto"
 				primary="svelte-components"
-				on:click={handleClick('svelte-components')}
+				onclick={handleClick('svelte-components')}
 			/>
 			<IconButton
 					icon="barcode"
-					on:click={toggleStartMenu}
+					onclick={toggleStartMenu}
 					style="color:white;font-size: large"
 				/>
 			<Button
-				on:click={() => {
+				onclick={() => {
 					openCh('btn1');
 				}}>button frame 1</Button
 			>
 			<Button
-				on:click={() => {
+				onclick={() => {
 					openCh('btn2');
 				}}>button 2</Button
 			>

@@ -81,7 +81,7 @@
 
 	let codeProps = `
     <Button
-        on:click={() => {
+        onclick={() => {
             openWindow("html", {
             componentProps: { some: "props", someother: "deprops" },
             contentHTML:
@@ -92,7 +92,7 @@
     </Button>
     
     <Button
-        on:click={() => {
+        onclick={() => {
             openWindow("component", {
             component: Debug,
             componentProps: { some: "props", someother: "deprops" },

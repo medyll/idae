@@ -1,4 +1,4 @@
-<svelte:options accessors={true} runes={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import { popper } from '$lib/ui/popper/usePopper.js';
@@ -45,7 +45,7 @@
 	class:loading
 	bind:this={element}
 	use:popper={usePopper}
-	on:clickAway={() => {
+	onclickAway={() => {
 		popperOpen = false;
 	}}
 	type={buttonType}

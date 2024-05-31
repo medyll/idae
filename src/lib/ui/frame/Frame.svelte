@@ -33,6 +33,7 @@
 		drawerPrimary,
 		drawerSecondary,
 		frameTop,
+		frameContent,
 		frameBottom,
 		...rest
 	}: FrameProps = $props();
@@ -94,7 +95,9 @@
 			<!-- <slot name="frameTop" /> -->
 			<Slotted child={frameTop}></Slotted>
 			<!--  <slot name="content" /> -->
-			<div class="frame-container-main-content"></div>
+			<div class="frame-container-main-content">
+				<Slotted child={frameContent}></Slotted>
+			</div>
 			<!-- <slot name="frameBottom" /> -->
 			<Slotted child={frameBottom}></Slotted>
 		</div>

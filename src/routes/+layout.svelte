@@ -47,7 +47,8 @@
 	let scrolled: boolean = false;
 
 	function onDrawerClick() {
-		DrawerRef.actions.toggle();
+		console.log(DrawerRef);
+		DrawerRef?.actions?.toggle();
 	}
 
 	function scrollSpy() {
@@ -63,20 +64,21 @@
 	}
 
 	$effect(() => {
+		console.log(DrawerRef);
 		scrollSpy();
 	});
 
-	let red = stator([]);
+	/* let red = stator([]);
 	red.onchange = (one, two) => {
 		console.log(one, two, red);
 	};
-	let timer: NodeJS.Timeout;
+	let timer: NodeJS.Timeout; */
 	$effect(() => {
-		red.push(red.length);
+		/* red.push(red.length);
 		timer = setInterval(() => {
 			red.push(red.length);
 		}, 10000);
-		return () => clearInterval(timer);
+		return () => clearInterval(timer); */
 	});
 
 	// console.log(red);
@@ -128,17 +130,21 @@
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
 		<MenuList showLastOnSelected={true} style="height:100%;overflow:auto;">
-			<Looper data={Object.values(slotuiCatalog)} groupBy="group" let:item={catalog}>
-				<MenuListTitle slot="loopGroupTitle" class="text-bold bold border-b" let:item={title}>
-					- Slotted {title.group}
-				</MenuListTitle>
-				<MenuListItem
-					iconLast={{ icon: 'chevron-right' }}
-					selected={catalog?.code === data?.params?.component}
-					data={catalog}
-					href=".{sitePaths.component(catalog)}"
-					text={catalog?.name}
-				/>
+			<Looper data={Object.values(slotuiCatalog)} groupBy="group">
+				{#snippet children({ item })}
+					<MenuListItem
+						iconLast={{ icon: 'chevron-right' }}
+						selected={item?.code === data?.params?.component}
+						data={item}
+						href=".{sitePaths.component(item)}"
+						text={item?.name}
+					/>
+				{/snippet}
+				{#snippet loopGroupTitle({ key, data, idx })}
+					<MenuListTitle class="text-bold bold border-b">
+						- Slotted {key}
+					</MenuListTitle>
+				{/snippet}
 			</Looper>
 		</MenuList>
 	</Drawer>

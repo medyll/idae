@@ -50,9 +50,9 @@
 	let cssVars = setCssGrid($dataListContext.columns ?? []);
 </script>
 
+<!-- on:datalist:sort:clicked={doSort} -->
 <div
 	bind:this={element}
-	on:datalist:sort:clicked={doSort}
 	class:pos-sticky={stickyHeader}
 	class="datalist-head"
 	style="{style};{cssVars}"

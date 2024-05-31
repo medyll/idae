@@ -2,7 +2,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Divider from '$lib/base/divider/Divider.svelte';
 
-	export let title: string;
+	let { title, children } = $props();
 </script>
 
 <div class="pad-2 pad-tb-6 flex-main">

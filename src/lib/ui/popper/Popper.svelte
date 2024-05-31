@@ -1,4 +1,4 @@
-<svelte:options accessors={true} runes />
+<svelte:options runes />
 
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -63,7 +63,7 @@
 	onMount(() => {
 		// who is the parent for stickTo ??
 		if (parentNode) {
-		} else if ($$slots.popperHolder) {
+		} else if (popperHolder) {
 			// if holderSlot, then make it the stickTo parentNode
 			parentNode = holderSlotRef ?? document.body;
 		} else {
@@ -92,7 +92,7 @@
 	});
 </script>
 
-{#if popperHolder || $$slots.popperHolder}
+{#if popperHolder}
 	<div bind:this={holderSlotRef} style="position:relative;display:inline-block">
 		<!-- <slot name="popperHolder" /> -->
 		<Slotted child={popperHolder}></Slotted>
@@ -105,7 +105,6 @@
 	<div
 		bind:this={element}
 		class="popper {className}"
-		on:click
 		use:stickTo={{ parentNode, position, stickToHookWidth }}
 		use:clickAway={{ action: clickedAway }}
 		{style}

@@ -1,4 +1,4 @@
-<svelte:options runes={true} accessors={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import { slide } from 'svelte/transition';

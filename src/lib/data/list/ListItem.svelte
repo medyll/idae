@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options />
 
 <script lang="ts">
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';

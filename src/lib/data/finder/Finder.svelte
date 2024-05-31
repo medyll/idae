@@ -1,4 +1,4 @@
-<svelte:options runes={true} accessors={true} />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
@@ -68,7 +68,7 @@
 	class="finder-container {classRoot}"
 	data-width={sizeRoot}
 	bind:this={container}
-	on:clickAway={() => {
+	onclickAway={() => {
 		popperOpen = false;
 	}}
 	style={styleRoot}

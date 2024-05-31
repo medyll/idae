@@ -78,7 +78,7 @@
 
 	let codeProps = `
 <Button
-	on:click={() => {
+	onclick={() => {
 		openWindow("html", {
 		componentProps: { some: "props", someother: "deprops" },
 		contentHTML:
@@ -89,7 +89,7 @@
 </Button>
 
 <Button
-	on:click={() => {
+	onclick={() => {
 		openWindow("component", {
 		component: Debug,
 		componentProps: { some: "props", someother: "deprops" },
@@ -125,7 +125,7 @@
 				<div class="flex-h flex-align-middle pos-rel gap-medium">
 					<div>
 						<Button
-							on:click={() => {
+							onclick={() => {
 								openWindow('html', {
 									componentProps: { some: 'props', someother: 'deprops' },
 									contentHTML: '<div class="pad-4 align-center">some html content</div>'
@@ -137,7 +137,7 @@
 					</div>
 					<div>
 						<Button
-							on:click={() => {
+							onclick={() => {
 								openWindow('component', {
 									component: Debug,
 									componentProps: { some: 'props', someother: 'deprops' }

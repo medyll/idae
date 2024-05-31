@@ -43,7 +43,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class={className} {style} on:click={handleClick}>
+<div class={className} {style} onclick={handleClick}>
 	<Slotted child={togglerIcon}>
 		<IconButton style="aspect-ratio:1/1" {icon} iconFontSize="small" />
 	</Slotted>

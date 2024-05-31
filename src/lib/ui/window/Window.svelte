@@ -1,4 +1,4 @@
-<svelte:options accessors={true} />
+<svelte:options />
 
 <script lang="ts">
 	import { wStore } from '$lib/ui/window/store.js';
@@ -183,7 +183,7 @@
 								variant="naked"
 								icon={{ icon: iconClose, size: 'small', color: 'red' }}
 								style="aspect-ratio:1/1"
-								on:click={actions.close}
+								onclick={actions.close}
 							/>
 						</div>
 					</div>
