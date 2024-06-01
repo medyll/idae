@@ -69,7 +69,9 @@
 	};
 
 	let codeSlot = `<Window title="Slotted window" frameId="slotted" >
-  <Icon slot="windowIcon" icon="bx:window-alt" />
+	{#snippet windowIcon()}
+		<Icon icon="bx:window-alt" />
+	{/snippet}
   <div class="pad-4 align-center">
   some slotted content
   </div>
@@ -109,7 +111,9 @@
 				>{#snippet children({ activeParams })}
 					<div class="pad-2 h-large pos-rel">
 						<Window title="Slotted window" frameId="slotted" {...activeParams}>
-							<Icon slot="windowIcon" icon="bx:window-alt" />
+							{#snippet windowIcon()}
+								<Icon icon="bx:window-alt" />
+							{/snippet}
 							<div class="pad-4 align-center">some slotted content</div>
 						</Window>
 					</div>

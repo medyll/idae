@@ -20,7 +20,7 @@ export type ToastProps = CommonProps & {
 	/** ID of the toaster */
 	toasterId: string;
 	element: HTMLDivElement;
-	/** Children slot for the default content */
+	/** Children snippet for the default content */
 	children?: Snippet;
 };
 export type ToastType = {

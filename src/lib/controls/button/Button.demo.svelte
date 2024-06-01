@@ -12,6 +12,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
+	import { Menu, MenuItem } from '$lib/index.js';
 
 	const menuData: MenuItemProps[] = [
 		{ text: 'text 1' },
@@ -120,8 +121,12 @@
 	let code = `
 <Button onclick={()=>{}} >
 	My button
-	<Icon slot="buttonStart" icon="..." />
-	<Icon slot="buttonEnd" icon="..." />
+	{#snippet buttonStart()}
+		<Icon icon="user" />
+	{/snippet}
+	{#snippet buttonEnd()}
+		<Icon icon="user" />
+	{/snippet}
 </Button>`;
 
 	let code2 = `
@@ -147,11 +152,15 @@ const usePopper: UsePopperProps = {
 
 <ButtonAction
 	>test et essai
-	<div slot="popperContent" class="pad-4">content</div>
+	{#snippet popperContent()}
+		<div class="pad-4">content</div>
+	{/snippet}
 </ButtonAction>
 <ButtonMenu
 	>menu
-	<div slot="menuItem">content</div>
+	{#snippet menuItem()}
+		content
+	{/snippet}
 </ButtonMenu>
 <ComponentDemo
 	component="Button"
@@ -163,36 +172,47 @@ const usePopper: UsePopperProps = {
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}
 						>Using snippets
-						<Icon icon="user" slot="buttonStart" />
-						<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
+						{#snippet buttonStart()}
+							<Icon icon="user" />
+						{/snippet}
+
+						{#snippet buttonLoadingIcon()}
+							<Icon icon="loading" rotate />
+						{/snippet}
 					</Button>
 				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage subTitle="Styling props" component="Button">
 			<Demoer parameters={styleParameters} {multiple} {componentArgs}>
-				<!-- <Button {...activeParams}
-					>Using snippets
-					<Icon icon="user" slot="buttonStart" />
-					<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
-				</Button> -->
+				{#snippet children({ activeParams })}
+					<Button {...activeParams}
+						>Using snippets
+						{#snippet buttonStart()}
+							<Icon icon="user" />
+						{/snippet}
+						{#snippet buttonLoadingIcon()}
+							<Icon icon="loading" rotate />
+						{/snippet}
+					</Button>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
-		<!-- <DemoPage subTitle="Menu buttons" component="Button">
-			<Demoer parameters={parametersMenu} {componentArgs} >
+		<DemoPage subTitle="Menu buttons" component="Button">
+			<Demoer parameters={parametersMenu} {componentArgs}>
 				<Button>
 					default action
-					<span slot="buttonPopper">
+					{#snippet buttonPopper()}
 						<Menu style="max-height:350px;overflow:auto" density="default">
 							<MenuItem divider={true} text="strict">menu</MenuItem>
 							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
 							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
 							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
 						</Menu>
-					</span>
+					{/snippet}
 				</Button>
 			</Demoer>
-		</DemoPage> -->
+		</DemoPage>
 		<DemoPage title="Using props" code={code2} component="Button">
 			<Demoer parameters={parametersProps} {componentArgs}>
 				{#snippet children({ activeParams })}

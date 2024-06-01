@@ -92,13 +92,13 @@ is a datalist table <br /> B. Franklin, 1854"
 			<Demoer {parameters}>
 				{#snippet children({ activeParams })}
 					<DataList style="height:150px;width:350px;overflow:auto;" {...activeParams}>
-						<svelte:fragment slot="head">
+						{#snippet dataListHead()}
 							<DataListHead>
 								<DataListCell field="index">index</DataListCell>
 								<DataListCell field="name">name</DataListCell>
 								<DataListCell field="lastName">lastName</DataListCell>
 							</DataListHead>
-						</svelte:fragment>
+						{/snippet}
 					</DataList>
 				{/snippet}
 			</Demoer>
@@ -145,16 +145,15 @@ is a datalist table <br /> B. Franklin, 1854"
 		<!-- <h5>Automatique datalist slotted</h5>
 		<div style="height:350px;width:350px;" class="what   pos-rel overflow-hidden">
 			<DataList {data} on:datalist:click={() => {}}>
-				<svelte:fragment slot="head">
-					<DataListHead>
-						<DataListCell field="index">index</DataListCell>
-						<DataListCell field="name">name</DataListCell>
-						<DataListCell field="lastName" style="flex:1">lastName</DataListCell>
-					</DataListHead>
-				</svelte:fragment>
+				{#snippet dataListHead()}
+							<DataListHead>
+								<DataListCell field="index">index</DataListCell>
+								<DataListCell field="name">name</DataListCell> 
+								<DataListCell field="lastName">lastName</DataListCell>
+							</DataListHead>
 			</DataList>
 		</div> -->
-		<h5>Full slot datalist</h5>
+		<h5>Full snippet datalist</h5>
 		<div style="height:350px;" class="what pos-rel overflow-auto">
 			<DataList {data} style="height:100%;overflow:auto;">
 				{#snippet dataListHead()}

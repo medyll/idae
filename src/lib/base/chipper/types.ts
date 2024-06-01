@@ -17,7 +17,7 @@ export interface ChipperProps extends CommonProps {
 		| 'dark';
 	/** css color code for the chip */
 	color?: string;
-	/** text or html is slot is not used */
+	/** text or html is snippet is not used */
 	content?: string;
 	/** show or hide the chip */
 	showChip: boolean;

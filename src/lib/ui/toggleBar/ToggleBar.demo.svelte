@@ -1,17 +1,14 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
-	import Debug from '$lib/base/debug/Debug.svelte';
 	import ToggleBar from './ToggleBar.svelte';
 
 	/* demo */
-	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import Input from '../../controls/textfield/TextField.svelte';
 	import Finder from '$lib/data/finder/Finder.svelte';
 	/* demo */
 
@@ -67,13 +64,21 @@
 		]
 	};
 
-	let codeSlot = `<ToggleBar style="width:350px;" >
-  <Icon icon="carbon:progress-bar" slot="toggleBarIcon" />
-  <div slot="toggleBarButtons">
-    <Button>button</Button>
-  </div>
-  <IconButton icon="search" slot="contentSwitcherIcon" />
-  <Input size="full" value="a slotted input" />
+	let codeSlot = `
+<ToggleBar style="width:350px;" {...activeParams}>
+	{#snippet toggleBarIcon()}
+		<Icon icon="carbon:progress-bar" />
+	{/snippet}
+	{#snippet toggleBarButtons()}
+		<div><Button>button</Button></div>
+		<div><Button>button</Button></div>
+	{/snippet}
+	{#snippet contentSwitcherIcon()}
+		<Button ratio="1/1" icon="search" />
+	{/snippet}
+	{#snippet contentSwitcherReveal()}
+		<Finder styleRoot="width:100%;" size="full" showSortMenu={true} />
+	{/snippet}
 </ToggleBar>
 `;
 
@@ -87,15 +92,19 @@
 				>{#snippet children({ activeParams })}
 					<div class="pad pos-rel">
 						<ToggleBar style="width:350px;" {...activeParams}>
-							<Icon icon="carbon:progress-bar" slot="toggleBarIcon" />
-							<div slot="toggleBarButtons"><Button>button</Button></div>
-							<Button ratio="1/1" icon="search" slot="contentSwitcherIcon" />
-							<Finder
-								styleRoot="width:100%;"
-								size="full"
-								showSortMenu={true}
-								slot="contentSwitcherReveal"
-							/>
+							{#snippet toggleBarIcon()}
+								<Icon icon="carbon:progress-bar" />
+							{/snippet}
+							{#snippet toggleBarButtons()}
+								<div><Button>button</Button></div>
+								<div><Button>button</Button></div>
+							{/snippet}
+							{#snippet contentSwitcherIcon()}
+								<Button ratio="1/1" icon="search" />
+							{/snippet}
+							{#snippet contentSwitcherReveal()}
+								<Finder styleRoot="width:100%;" size="full" showSortMenu={true} />
+							{/snippet}
 						</ToggleBar>
 					</div>
 				{/snippet}

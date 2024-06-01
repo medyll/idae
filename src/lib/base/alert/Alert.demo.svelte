@@ -20,9 +20,11 @@
 	};
 
 	let code1 = `
-<Alert >
+<Alert {...activeParams}>
 	Simple alert with a button
-	<Button slot="topButtonSlot">button</Button>
+	{#snippet topButtonSlot()}
+		<Button>button</Button>
+	{/snippet}
 </Alert>`;
 	let code2 = `
 <Alert />	`;
@@ -50,8 +52,12 @@
 						}}
 					>
 						Alert with button close
-						<div slot="messageSlot">description here here</div>
-						<Button data-close slot="buttonZoneSlot">close</Button>
+						{#snippet messageSlot()}
+							description here here
+						{/snippet}
+						{#snippet buttonZoneSlot()}
+							<Button data-close>close</Button>
+						{/snippet}
 					</Alert>
 				</div>
 			{/snippet}

@@ -21,12 +21,19 @@
 	};
 
 	let codeSlot = `
-<Loader on:status:change={()=>{}} >
-    <Icon slot="loaderLoading" icon="mdi:loading" rotate/>
-    <Icon slot="loaderError" icon="mdi:alert-circle-outline"/>
-    <Icon slot="loaderEmpty" icon="mdi:database-search-outline"/>
-    <Icon slot="loaderSuccess" icon="clarity:success-standard-line"/>
-    <div slot="loaderMessage" class="border-b pad radius-tiny border-color-palette-green">status message</div>
+<Loader onstatuschange={() => {}}>
+	{#snippet loaderLoading()}
+		<Icon color="orange" fontSize="big" icon="mdi:loading" rotate />
+	{/snippet}
+	{#snippet loaderError()}
+		<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" />
+	{/snippet}
+	{#snippet loaderEmpty()}
+		<Icon color="gray" fontSize="big" icon="mdi:database-search-outline" />
+	{/snippet}
+	{#snippet loaderSuccess()}
+		<Icon color="green" fontSize="big" icon="clarity:success-standard-line" />
+	{/snippet}v
 </Loader>`;
 
 	let codeProps = `
@@ -55,20 +62,18 @@
 				{#snippet children({ activeParams })}
 					<div class="pos-rel h-large w-large">
 						<Loader {...activeParams} on:status:change={() => {}}>
-							<Icon color="orange" fontSize="big" icon="mdi:loading" rotate slot="loaderLoading" />
-							<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" slot="loaderError" />
-							<Icon
-								color="gray"
-								fontSize="big"
-								icon="mdi:database-search-outline"
-								slot="loaderEmpty"
-							/>
-							<Icon
-								color="green"
-								fontSize="big"
-								icon="clarity:success-standard-line"
-								slot="loaderSuccess"
-							/>
+							{#snippet loaderLoading()}
+								<Icon color="orange" fontSize="big" icon="mdi:loading" rotate />
+							{/snippet}
+							{#snippet loaderError()}
+								<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" />
+							{/snippet}
+							{#snippet loaderEmpty()}
+								<Icon color="gray" fontSize="big" icon="mdi:database-search-outline" />
+							{/snippet}
+							{#snippet loaderSuccess()}
+								<Icon color="green" fontSize="big" icon="clarity:success-standard-line" />
+							{/snippet}v
 						</Loader>
 					</div>
 				{/snippet}

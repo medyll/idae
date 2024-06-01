@@ -12,7 +12,7 @@ export type DataListRowProps<T> = CommonProps & {
 	/** data for the row */
 	data: T;
 
-	/** children slot for the default cell content */
+	/** children snippet for the default cell content */
 	children?: Snippet;
 };
 export interface DataCellType {

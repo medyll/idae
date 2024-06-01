@@ -5,10 +5,13 @@
 	import Demoer from '../../base/demoer/Demoer.svelte';
 	import DemoPage from '../../base/demoer/DemoPage.svelte';
 
-	const ww = `<Rating scored={2}>
-			<Icon icon="star" />
-			<Icon slot="ratingScoredIcon" icon="minus" />
-		</Rating>`;
+	const ww = `
+<Rating {...activeParams}>
+	<Icon icon={activeParams.defaultIcon} />
+	{#snippet ratingScoredIcon()}
+		<Icon icon={activeParams.scoredIcon} />
+	{/snippet} 
+</Rating>`;
 	const ww2 = `<Rating defaultIcon="minus" scoredIcon="plus" scored={3} />`;
 
 	let parameters: any = {
@@ -47,7 +50,9 @@
 				{#snippet children({ activeParams })}
 					<Rating {...activeParams}>
 						<Icon icon={activeParams.defaultIcon} />
-						<Icon slot="ratingScoredIcon" icon={activeParams.scoredIcon} />
+						{#snippet ratingScoredIcon()}
+							<Icon icon={activeParams.scoredIcon} />
+						{/snippet}
 					</Rating>
 				{/snippet}
 			</Demoer>

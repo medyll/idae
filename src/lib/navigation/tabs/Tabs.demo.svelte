@@ -35,9 +35,28 @@
 	};
 
 	let codeSlot = `
-<Tabs activeTabCode="tab3" onTabClick={()=>{}} {items}>
-    <span slot="tabsTitle">Some tabs title</span>
-    <span slot="tabsButtons" ><Button bordered >button</Button></span>
+<Tabs
+	activeTabCode="tab1" 
+	onTabClick={(e) => { 
+	}}
+	class="h-full"
+	style="height:100%;width:350px"
+	{items}>
+		{#snippet children({ activeTabCode })}
+			{#snippet tabTitle()}
+				Some tabs title
+			{/snippet}
+			{#snippet tabButtons()}
+				<Button bordered>button</Button>
+			{/snippet}
+			{#snippet tabsInner()}
+				<div class="h-full">
+					<div class="pad-4 h-full overflow-auto">
+						<!-- selected : {activeTabCode} -->
+					</div>
+				</div>
+			{/snippet}
+		{/snippet}
 </Tabs>`;
 </script>
 
@@ -58,13 +77,19 @@
 							style="height:100%;width:350px"
 							{items}
 							>{#snippet children({ activeTabCode })}
-								<span slot="tabsTitle">Some tabs title</span>
-								<span slot="tabsButtons"><Button bordered>button</Button></span>
-								<div class="h-full" slot="tabsInner">
-									<div class="pad-4 h-full overflow-auto">
-										<!-- selected : {activeTabCode} -->
+								{#snippet tabTitle()}
+									Some tabs title
+								{/snippet}
+								{#snippet tabButtons()}
+									<Button bordered>button</Button>
+								{/snippet}
+								{#snippet tabsInner()}
+									<div class="h-full">
+										<div class="pad-4 h-full overflow-auto">
+											<!-- selected : {activeTabCode} -->
+										</div>
 									</div>
-								</div>
+								{/snippet}
 							{/snippet}
 						</Tabs>
 					</div>
@@ -72,6 +97,4 @@
 			</Demoer>
 		</DemoPage>
 	</div>
-	<!--<Tabs activeTabCode="tab1" {items}/>
-    <Divider density="kind" expansion="centered"/>-->
 </ComponentDemo>

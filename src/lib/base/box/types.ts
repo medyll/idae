@@ -8,7 +8,7 @@ export interface BoxProps extends CommonProps {
 	isOpen: boolean;
 	/** show a working closer icon */
 	showCloseControl: boolean;
-	/** used to activate the slotui.TitleBar component */
+	/** used to activate the slotted.TitleBar component */
 	hasMenu: boolean;
 	/** text to be shown in the title bar */
 	title: string | undefined;
@@ -16,7 +16,7 @@ export interface BoxProps extends CommonProps {
 	icon: string | undefined;
 	/** alternative to contentSlot,  content to be shown in the main area */
 	content: string | undefined;
-	/** alternative to slot.bottomZone, content to be shown in the bottom button zone */
+	/** alternative to snippet.bottomZone, content to be shown in the bottom button zone */
 	bottomZone: string | undefined;
 	/** component actions
 	 * @type {Record<'open'|'toggle' | 'close', Function>}

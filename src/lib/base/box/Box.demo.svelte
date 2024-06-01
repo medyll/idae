@@ -47,16 +47,18 @@
 		bottomZone: 'bottomZone as text / html'
 	};
 	let code = `
-	<Box class="marg">
-		<span slot="titleSlot">Title of the box</span>
-		<Icon  slot="iconSlot" fontSize="small" icon="clock" />
-		<div class="pad-2">
-			Content of the box
-		</div>
-		<div  slot="bottomZone" class="flex-h gap-small pad border-t marg-ii-1">
-			bottom zoone
-		</div>
-	</Box>`;
+<Box>
+	{#snippet titleBarTitle()}
+		Title of the box
+	{/snippet}
+	{#snippet titleBarIcon()}
+		<Icon fontSize="small" icon="clock" />
+	{/snippet}
+	<div class="pad-2">Content of the box</div>
+	{#snippet boxBottomZone()}
+		<div class="flex-h gap-small pad border-t marg-ii-1">bottom zoone</div>
+	{/snippet}
+</Box>`;
 </script>
 
 <ComponentDemo
@@ -67,12 +69,16 @@
 			<Demoer parameters={parametersSlot} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Box {...activeParams} class="marg">
-						<span slot="titleBarTitle">Title of the box</span>
-						<Icon fontSize="small" icon="clock" slot="titlBarIcon" />
+						{#snippet titleBarTitle()}
+							<span>Title of the box</span>
+						{/snippet}
+						{#snippet titleBarIcon()}
+							<Icon fontSize="small" icon="clock" />
+						{/snippet}
 						<div class="pad-2">Content of the box</div>
-						<div class="flex-h gap-small pad border-t marg-ii-1" slot="boxBottomZone">
-							bottom zoone
-						</div>
+						{#snippet boxBottomZone()}
+							<div class="flex-h gap-small pad border-t marg-ii-1">bottom zoone</div>
+						{/snippet}
 					</Box>
 				{/snippet}
 			</Demoer>

@@ -62,15 +62,18 @@
 	};
 
 	let codeSlot = `
-<Drawer>
-	<div slot="drawerTop" class="pad-2" >								
-		Drawer's title				
-	</div>
+<Drawer >
+	{#snippet drawerIcon()}
+		<Icon icon="window" />
+	{/snippet}
+	{#snippet drawerTop()}
+		<div class="pad-2">Drawer's title</div>
+	{/snippet}
 	<div class="pad-2">Drawer's content</div>
-	<div slot="drawerBottom" class="pad-2" >								
-		Drawer's bottom zone				
-	</div>
-</Drawer>`;
+	{#snippet drawerBottom()}
+		<div class="pad-2">Drawer's bottom zone</div>
+	{/snippet}
+</Drawer>s`;
 </script>
 
 <ComponentDemo component="Drawer">
@@ -83,44 +86,20 @@
 							Side content Side content Side content Side content
 						</div>
 						<Drawer {...activeParams}>
-							<div slot="iconSlot" class="pad-2">
+							{#snippet drawerIcon()}
 								<Icon icon="window" />
-							</div>
-							<div slot="drawerTop" class="pad-2">Drawer's title</div>
+							{/snippet}
+							{#snippet drawerTop()}
+								<div class="pad-2">Drawer's title</div>
+							{/snippet}
 							<div class="pad-2">Drawer's content</div>
-							<div slot="drawerBottom" class="pad-2">Drawer's bottom zone</div>
-						</Drawer>
+							{#snippet drawerBottom()}
+								<div class="pad-2">Drawer's bottom zone</div>
+							{/snippet}
+						</Drawer>s
 					</div>
 				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>
 </ComponentDemo>
-
-<!-- <div style="width:80%;height:500px;position:relative;" class="border">
-	<Drawer bind:this={drawerRef} isOpen={true} icon="edit" flow="fixed" {...attrs}>
-		<div slot="drawerTop">
-			{#if withTopBar}
-				<TopBar title="Drawer with top bar ">
-					<svelte:fragment slot="menuBarSwitcher">
-						<div class="flex-main">
-							<Input value="" placeholder="Search in Bar" style="width:100%;" type="text" />
-						</div>
-					</svelte:fragment>
-				</TopBar>
-			{/if}
-		</div>
-		<div style="height:100%;overflow:hidden;">
-			<List height="100%" onItemClick={() => {}}>
-				{#each [...Array(20)] as key, val}
-					<ListItem>
-						<span slot="primary">Some idioms {val}</span>
-						<span slot="secondary">secondary {val}</span>
-						<span slot="action"><Button>fds de action</Button></span>
-					</ListItem>
-				{/each}
-			</List>
-		</div>
-		<div slot="drawerBottom">Bottom bar</div>
-	</Drawer>
-</div> -->

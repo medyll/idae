@@ -28,15 +28,15 @@
 
 	let codeSlot = `
 <Popper bind:isOpen position="BC" autoClose class="w-large">
-	<Button
-		slot="popperHolder"
-		onclick={() => ()}
-		style="cursor:pointer">
-		Popper button
-	</Button>
-	<div class="pad-4 text-center">
-		Popper content
-	</div>
+	{#snippet popperHolder()}
+		<Button
+			onclick={() => (isOpen = !isOpen)} 
+			class="border text-center pointer {isOpen ? 'theme-bg-paper shad-3' : ''}"
+			>
+			popper
+		</Button>
+	{/snippet}
+	<div class="pad-4">Popper content</div>
 </Popper>`;
 
 	let codeProps = `
@@ -59,23 +59,23 @@
 <ComponentDemo component="Popper" cite="This Popper is the base of all the flyout stuff: it pops">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Popper" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot}  parameters={parametersSlot}>
-			{#snippet child
-				<div class="pos-rel">
-					<Popper bind:isOpen position="BC" {...activeParams} class="w-large marg-t-1">
-						<Button
-							slot="popperHolder"
-							onclick={() => (isOpen = !isOpen)}
-							style="cursor:pointer"
-							class="border text-center pointer {isOpen ? 'theme-bg-paper shad-3' : ''}"
-						>
-							popper
-						</Button>
-						<div class="pad-4">Popper content</div>
-					</Popper>
-				</div>ren({ activeParams })}
-			
-			{/snippet}
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pos-rel">
+						<Popper bind:isOpen position="BC" {...activeParams} class="w-large marg-t-1">
+							{#snippet popperHolder()}
+								<Button
+									onclick={() => (isOpen = !isOpen)}
+									style="cursor:pointer"
+									class="border text-center pointer {isOpen ? 'theme-bg-paper shad-3' : ''}"
+								>
+									popper
+								</Button>
+							{/snippet}
+							<div class="pad-4">Popper content</div>
+						</Popper>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

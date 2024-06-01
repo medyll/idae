@@ -47,7 +47,9 @@
       <Panel data={{ some: "data" }} title="Some Items">
         <PanelGrid data={[...Array(9)]} let:data>
             <div class="pad border radius-tiny">Some</div>
-            <div slot="zoomSlot" class="pad-4 text-center">
+            {#snippet panelGridZoom()}
+				<div class="pad-4 text-center theme-bg-primary">Some large</div>
+			{/snippet}
             Some large
             </div>
         </PanelGrid>
@@ -117,9 +119,9 @@
 									<PanelGrid data={[...Array(9)]}>
 										{#snippet children({ data })}
 											<div class="pad border radius-tiny">Some</div>
-											<div slot="zoomSlot" class="pad-4 text-center theme-bg-primary">
-												Some large
-											</div>
+											{#snippet panelGridZoom()}
+												<div class="pad-4 text-center theme-bg-primary">Some large</div>
+											{/snippet}
 										{/snippet}
 									</PanelGrid>
 								</Panel>

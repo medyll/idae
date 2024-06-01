@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* demo */
-	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
+	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
@@ -8,8 +8,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
-	import Input from '$lib/controls/textfield/TextField.svelte';
-	import type { ElementProps } from '$lib/types/index.js';
+	import TextField from '$lib/controls/textfield/TextField.svelte';
 
 	let parametersSlot: any = {
 		size: {
@@ -44,10 +43,14 @@
 	};
 
 	let codeSlot = `
-	<Input >
-		<Icon slot="inputStart" icon="close" />
-		<Icon slot="inputEnd" icon="close" />
-	</Input>`;
+<Input >
+	{#snippet inputFirst()}
+		<Icon icon="close" />
+	{/snippet}
+	{#snippet inputLast()}
+		<Icon icon="close" />
+	{/snippet}
+</Input>`;
 	let codeSlotProps = `
 	<Input icon={icon} endIcon={icon} />`;
 </script>
@@ -59,17 +62,21 @@
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h flex-align-middle flex-wrap">
 						<div class="pad-1">
-							<Input {...activeParams}>
-								<Icon slot="inputStart" icon="close" />
-							</Input>
+							<TextField {...activeParams}>
+								{#snippet inputFirst()}
+									<Icon icon="close" />
+								{/snippet}
+							</TextField>
 						</div>
 						<div class="pad-1">
-							<Input {...activeParams} />
+							<TextField {...activeParams} />
 						</div>
 						<div class="pad-1">
-							<Input {...activeParams}>
-								<Icon slot="inputEnd" icon="close" />
-							</Input>
+							<TextField {...activeParams}>
+								{#snippet inputLast()}
+									<Icon icon="close" />
+								{/snippet}
+							</TextField>
 						</div>
 					</div>
 				{/snippet}
@@ -80,7 +87,7 @@
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h">
 						<div class="pad-1">
-							<Input {...activeParams} />
+							<TextField {...activeParams} />
 						</div>
 					</div>
 				{/snippet}

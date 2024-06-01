@@ -32,7 +32,7 @@ export type LoaderProps = CommonProps & {
 	isError?: boolean;
 	/** @deprecated */
 	isEmpty?: boolean;
-	/** Children slot for the default content */
+	/** Children snippet for the default content */
 	children?: Snippet;
 	loaderLoading?: Snippet;
 	loaderError?: Snippet;

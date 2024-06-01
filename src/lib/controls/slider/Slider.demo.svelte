@@ -28,7 +28,7 @@
 
 	let codeSlot = `
 <Slider  name={'switcher'} class="w-small" >
-  <span slot="label" />
+  <span   />
 </Slider>`;
 
 	let codeProps = `
@@ -54,8 +54,9 @@
 			<Demoer {...componentArgsSlot}>
 				{#snippet children({ activeParams })}
 					<div class="pad-2">
-						<Slider {...activeParams} name={'slider'} class="flex-h flex-align-middle w-small"
-						></Slider>
+						<Slider {...activeParams} name={'slider'} class="flex-h flex-align-middle w-small">
+							<span />
+						</Slider>
 					</div>
 				{/snippet}
 			</Demoer>

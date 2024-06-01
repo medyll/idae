@@ -19,11 +19,11 @@ export type PanelGridProps = CommonProps & {
 	/** Whether the grid is expanded or not */
 	isExpanded: boolean;
 
-	/** Children slot for the default content */
+	/** Children snippet for the default content */
 	children?: Snippet<[{ data: Data }]>;
 
 	/** Slot for the zoomed in view */
-	zoomSlot?: Snippet;
+	panelGridZoom?: Snippet;
 };
 
 export type PanelProps = {

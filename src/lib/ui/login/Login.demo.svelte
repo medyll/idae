@@ -28,21 +28,24 @@
 </script>
 
 <Login {showLogin} {submitting}>
-	<Icon slot="loginAvatar" icon="mdi:user" />
-	<form
-		slot="loginForm"
-		class="h-full w-full flex-v flex-align-middle-center"
-		method="post"
-		on:submit|preventDefault={validate}
-	>
-		<div class="pad-2">
-			<input name="email" type="text" value="..." />
-		</div>
-		<div class="pad-2">
-			<input name="password" type="password" />
-		</div>
-		<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
-	</form>
+	{#snippet loginAvatar()}
+		<Icon icon="mdi:user" />
+	{/snippet}
+	{#snippet loginForm()}
+		<form
+			class="h-full w-full flex-v flex-align-middle-center"
+			method="post"
+			on:submit|preventDefault={validate}
+		>
+			<div class="pad-2">
+				<input name="email" type="text" value="..." />
+			</div>
+			<div class="pad-2">
+				<input name="password" type="password" />
+			</div>
+			<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
+		</form>
+	{/snippet}
 	<ComponentDemo component="Login">
 		<div class="flex-v gap-large">
 			<DemoerCode title="myContext" code={codeSlot} />

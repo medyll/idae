@@ -53,9 +53,11 @@
 	};
 
 	let codeSlot = `
-<Chipper>
+<Chipper >
 	<div class="pad-2">some content</div>
-	<div slot="chipperChip"   class="theme-bg-primary radius-small w-full h-full"></div>
+	{#snippet chipperChip()}
+		<div class="theme-bg-primary radius-small w-full h-full"></div>
+	{/snippet}
 </Chipper>`;
 
 	let codeProps = `
@@ -70,7 +72,9 @@
 			{#snippet children({ activeParams })}
 				<Chipper {...activeParams}>
 					<div class="pad-2">some content</div>
-					<div slot="chipperChip" class="theme-bg-primary radius-small w-full h-full"></div>
+					{#snippet chipperChip()}
+						<div class="theme-bg-primary radius-small w-full h-full"></div>
+					{/snippet}
 				</Chipper>
 			{/snippet}
 		</Demoer>

@@ -48,12 +48,21 @@
 	};
 
 	let code1 = `
-	<Cartouche isOpen={true} class="marg-tb-1">
-		<Icon slot="cartoucheIcon" fontSize="small" icon="circle" />
-		<span slot="primarySlot">This is a cartouche</span> 
-		<Button size="medium" slot="cartoucheButtons">a button</Button>
-		<div class="pad-2 border-t">Some <br />Cartouche <br />content</div>
-	</Cartouche> `;
+<Cartouche {...activeParams} class="marg-tb-1">
+	{#snippet cartoucheButtons()}
+		<Button size="medium">a button</Button>
+	{/snippet}
+	{#snippet cartoucheIcon()}
+		<Icon fontSize="small" icon="circle" />
+	{/snippet}
+	{#snippet cartouchePrimary()}
+		This is a cartouche
+	{/snippet}
+	{#snippet cartoucheSecondary()}
+		Some subtitle
+	{/snippet}
+	<div class="pad-2 border-t">Some <br />Cartouche <br />content</div>
+</Cartouche>`;
 
 	let code2 = `
 	<Cartouche 
@@ -70,9 +79,18 @@
 			<Demoer title="A simple cartouche" parameters={parametersSlot} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1">
-						<Icon slot="cartoucheIcon" fontSize="small" icon="circle" />
-						<span slot="primarySlot">This is a cartouche</span>
-						<Button size="medium" slot="cartoucheButtons">a button</Button>
+						{#snippet cartoucheButtons()}
+							<Button size="medium">a button</Button>
+						{/snippet}
+						{#snippet cartoucheIcon()}
+							<Icon fontSize="small" icon="circle" />
+						{/snippet}
+						{#snippet cartouchePrimary()}
+							This is a cartouche
+						{/snippet}
+						{#snippet cartoucheSecondary()}
+							Some subtitle
+						{/snippet}
 						<div class="pad-2 border-t">Some <br />Cartouche <br />content</div>
 					</Cartouche>
 				{/snippet}
@@ -80,14 +98,18 @@
 			<Demoer title="Some stacked cartouches" parameters={parametersSlot} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} stacked={true}>
-						<span slot="primarySlot">This is a cartouche title</span>
+						{#snippet cartouchePrimary()}
+							This is a cartouche
+						{/snippet}
 						<div class="pad-4 border-t">Cartouche content</div>
 					</Cartouche>
 					<Cartouche stacked={true} primary="This is another cartouche">
 						<div class="pad-2 border-t">Cartouche content</div>
 					</Cartouche>
 					<Cartouche primary="And another one" stacked={true}>
-						<Icon fontSize="small" slot="cartoucheIcon" icon="user" />
+						{#snippet cartoucheIcon()}
+							<Icon fontSize="small" icon="user" />
+						{/snippet}
 					</Cartouche>
 				{/snippet}
 			</Demoer>
@@ -99,14 +121,16 @@
 						primary="Can contain some others cartouches"
 						class="marg-tb-1"
 					>
-						<Icon fontSize="small" slot="cartoucheIcon" icon="info-circle" />
+						{#snippet cartoucheIcon()}
+							<Icon fontSize="small" icon="info-circle" />
+						{/snippet}
 						<div class="marg-l-4">
-							<Cartouche {...activeParams} stacked={true} primary="Inner cartouche"
-								><div class="pad-2 border-t">Cartouche content</div></Cartouche
-							>
-							<Cartouche {...activeParams} stacked={true} primary="Inner cartouche"
-								><div class="pad-2 border-t">Cartouche content</div></Cartouche
-							>
+							<Cartouche {...activeParams} stacked={true} primary="Inner cartouche">
+								<div class="pad-2 border-t">Cartouche content</div>
+							</Cartouche>
+							<Cartouche {...activeParams} stacked={true} primary="Inner cartouche">
+								<div class="pad-2 border-t">Cartouche content</div>
+							</Cartouche>
 						</div>
 					</Cartouche>
 				{/snippet}

@@ -27,7 +27,7 @@
 		titleBarIcon,
 		boxBottomZone,
 		...rest
-	} = $props() as BoxProps;
+	}: BoxProps = $props();
 
 	function open() {
 		isOpen = true;

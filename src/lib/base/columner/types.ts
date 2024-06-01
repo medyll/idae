@@ -4,9 +4,9 @@ import type { Snippet } from 'svelte';
 export type ColumnProps = CommonProps & {
 	/** unique id of the column */
 	columnId: string;
-	/** slot for the top of the drawer */
+	/** snippet for the top of the drawer */
 	drawerTop?: Snippet;
-	/** slot for the bottom of the column */
+	/** snippet for the bottom of the column */
 	bottomSlot?: Snippet;
 };
 export type ColumnerStoreType = Record<string, ColumnType>;

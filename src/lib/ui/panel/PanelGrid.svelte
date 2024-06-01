@@ -13,7 +13,7 @@
 		columns = 3,
 		isExpanded = $bindable(false),
 		children,
-		zoomSlot,
+		panelGridZoom,
 		...rest
 	}: PanelGridProps = $props();
 </script>
@@ -30,7 +30,7 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					onclick={() => {
-						if (zoomSlot) isExpanded = true;
+						if (panelGridZoom) isExpanded = true;
 					}}
 					class="panelGridThumb"
 					in:fade|global
@@ -52,8 +52,8 @@
 					class="theme-text-primary"
 				/>
 			</div>
-			<div class="zoomSlot">
-				<Slotted child={zoomSlot}></Slotted>
+			<div class="panelGridZoom">
+				<Slotted child={panelGridZoom}></Slotted>
 			</div>
 		</div>
 	{/if}
@@ -64,7 +64,7 @@
 	@import '../../styles/presets.scss';
 	.panelGridPreview {
 		display: flex;
-		.zoomSlot {
+		.panelGridZoom {
 			flex: 1;
 		}
 	}

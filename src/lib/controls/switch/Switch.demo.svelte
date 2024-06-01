@@ -29,7 +29,7 @@
 
 	let codeSlot = `
 <Switch  name={'switcher'} class="w-small" >
-  <span slot="label" />
+ 
 </Switch>`;
 
 	let codeProps = `

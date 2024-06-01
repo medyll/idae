@@ -21,7 +21,7 @@ export type LoginProps = CommonProps & {
 	/** Function to call when the form is submitted */
 	onSubmit: (args: any) => Promise<any>;
 
-	/** Children slot for the default content */
+	/** Children snippet for the default content */
 	children?: Snippet;
 
 	/** Slot for the login avatar root */

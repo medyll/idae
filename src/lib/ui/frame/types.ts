@@ -12,7 +12,7 @@ export type FrameProps = CommonProps & {
 
 	frameDrawerRef?: typeof Drawer;
 	elementNav?: HTMLDivElement;
-	/** Children slot for the default content */
+	/** Children snippet for the default content */
 	children?: Snippet;
 	frameContent?: Snippet;
 	/** Slot for the nav left header frame */

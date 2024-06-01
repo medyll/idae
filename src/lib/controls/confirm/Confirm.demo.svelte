@@ -65,15 +65,10 @@
 
 	let codeSlot = `
 <Confirm>
-	<Button  
-	slot="initial" 
-	icon="fa-solid:question" 
-	size="large">
-		Would you please click once ?
-	</Button>
-	<Button focus type="submit" size="medium">
-		Confirm
-	</Button>
+	{#snippet confirmInitial()}
+		<Button icon="fa-solid:question" size="large">Would you please click once ?</Button>
+	{/snippet}
+	<Button type="submit" size="medium">confirm</Button>
 </Confirm>`;
 
 	let codeProps = `
@@ -92,9 +87,9 @@ V.Hugo 1850"
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
 					<Confirm {...activeParams}>
-						<Button slot="initial" icon="fa-solid:question" size="large"
-							>Would you please click once ?</Button
-						>
+						{#snippet confirmInitial()}
+							<Button icon="fa-solid:question" size="large">Would you please click once ?</Button>
+						{/snippet}
 						<Button type="submit" size="medium">confirm</Button>
 					</Confirm>
 				{/snippet}
