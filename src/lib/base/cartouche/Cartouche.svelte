@@ -50,7 +50,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class:stacked
 	bind:this={element}
@@ -58,6 +58,7 @@
 	data-bordered={bordered ?? false}
 	{style}
 >
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
 		{#if icon || cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
@@ -79,7 +80,7 @@
 			{/if}
 		</div>
 		<div class={showTitleDivider ? 'divider' : ''} style="flex:1" />
-		{#if cartoucheButtons  s}
+		{#if cartoucheButtons}
 			<div
 				onclick={(event) => {
 					event.preventDefault();

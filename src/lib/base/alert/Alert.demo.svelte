@@ -5,13 +5,11 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { alertDemoValues } from './types.js';
+	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
 	let parameters: Record<string, any> = alertDemoValues;
 
-	let componentArgs = $state({
-		level: 'info',
-		isOpen: true
-	});
+	let componentArgs = $state(defaultsArgs(parameters));
 
 	let componentArgs2 = {
 		...componentArgs,
@@ -64,7 +62,7 @@
 		</Demoer>
 	</DemoPage>
 	<DemoPage title="Using props" component="Alert" code={code2}>
-		<Demoer {parameters} {componentArgs2}>
+		<Demoer {parameters} componentArgs={componentArgs2}>
 			{#snippet children({ activeParams })}
 				<div class="flex-h flex-wrap gap-medium">
 					<Alert {...activeParams} />

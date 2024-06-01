@@ -47,7 +47,7 @@
 	let scrolled: boolean = false;
 
 	function onDrawerClick() {
-		console.log(DrawerRef);
+		console.log(DrawerRef.actions);
 		DrawerRef?.actions?.toggle();
 	}
 
@@ -119,7 +119,7 @@
 	</script>
 </svelte:head>
 
-<div class="flex-h h-full overflow-hidden" style="background-color:rgba(255,255,255,0.1)">
+<div class="flex-h h-full overflow-hidden" style="background-color:rgba(255,255,255,0.8)">
 	<Drawer
 		class="overflow-auto h-full"
 		bind:this={DrawerRef}
@@ -138,9 +138,9 @@
 						data={item}
 						href=".{sitePaths.component(item)}"
 						text={item?.name}
-					/>
+					/>ss
 				{/snippet}
-				{#snippet loopGroupTitle({ key, data, idx })}
+				{#snippet loopGroupTitle({ key, data, idx })}ss
 					<MenuListTitle class="text-bold bold border-b">
 						- Slotted {key}
 					</MenuListTitle>

@@ -3,6 +3,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import Avatar from './Avatar.svelte';
 	import { AvatarDemoValues } from './types.js';
 
@@ -10,11 +11,7 @@
 
 	let parametersProps = AvatarDemoValues;
 
-	let componentArgs = {
-		icon: 'icon-park-outline:avatar',
-		size: 'small',
-		iconSize: 'default'
-	};
+	let componentArgs = defaultsArgs(parametersSlot);
 
 	let code1 = `
 <Avatar>

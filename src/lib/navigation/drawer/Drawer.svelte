@@ -8,6 +8,11 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	/** @deprecated use actions.toggle */
+	export const actions = {
+		toggle: (visibleSate?: boolean) => {
+			isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
+		}
+	};
 	export function toggle(visibleSate?: boolean) {
 		isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
 	}
@@ -27,11 +32,6 @@
 		defaultWidth = '288px',
 		defaultVisibleArea = '0px',
 		defaultHeight = '288px',
-		actions = $bindable({
-			toggle: (visibleSate?: boolean) => {
-				isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
-			}
-		}),
 		drawerContent,
 		drawerIcon,
 		drawerTitle,
@@ -43,7 +43,7 @@
 		...rest
 	}: DrawerProps = $props();
 
-	let dspStyle: string = undefined;
+	let dspStyle: string;
 
 	const stickToStyle = {
 		right: 'right:0;top:0;height:100%;height:100%;',
@@ -93,7 +93,6 @@
 	});
 </script>
 
-ss
 <div
 	bind:this={element}
 	class="drawer {className}"

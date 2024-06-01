@@ -18,7 +18,7 @@
 	let uiContext = getContext<Writable<UiContextType>>('uiContext');
 	let BackdropRef;
 	let backdropVisible: boolean = $state(false);
-	let backdropComponentCode: $state(any);
+	let backdropComponentCode = $state();
 	let svelteLink = '';
 	//
 	$uiContext.drawerFlow = 'fixed';
