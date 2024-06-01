@@ -9,10 +9,10 @@ export type RatingProps = CommonProps & {
 	scored: number;
 
 	/** default icon to be used when not using slots */
-	defaultIcon: string | undefined;
+	defaultIcon: string;
 
 	/** scored icon to be used when not using slots */
-	scoredIcon: string | undefined;
+	scoredIcon: string;
 
 	/** can be vertical or horizontal */
 	direction: 'vertical' | 'horizontal';

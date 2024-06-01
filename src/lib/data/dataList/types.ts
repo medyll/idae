@@ -41,7 +41,7 @@ export type DataListCellProps = {
 	field: string;
 	style?: string;
 	fieldType?: string;
-	columnId?: string | number | undefined;
+	columnId?: string | number;
 	noWrap?: boolean;
 	title?: string;
 	children?: Snippet<[{ fieldData: Data }]>;

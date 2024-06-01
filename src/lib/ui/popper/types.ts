@@ -6,25 +6,25 @@ export type PopperPositionType = StickToPositionType;
 
 export type PopperProps = CommonProps & {
 	/** unique code for the popper */
-	code?: string | undefined;
+	code?: string;
 
 	/** parent node of the popper */
-	parentNode?: HTMLElement | undefined;
+	parentNode?: HTMLElement;
 
 	/** whether the popper should stick to hook width */
 	stickToHookWidth?: boolean;
 
 	/** component to be displayed in the popper */
-	component?: ComponentType | undefined;
+	component?: ComponentType;
 
 	/** props for the component */
-	componentProps?: {} | undefined;
+	componentProps?: {};
 
 	/** position of the popper */
-	position?: StickToPositionType | undefined;
+	position?: StickToPositionType;
 
 	/** content of the popper */
-	content?: any | undefined;
+	content?: any;
 
 	/** The popper will be closed on clickAway */
 	autoClose?: boolean;

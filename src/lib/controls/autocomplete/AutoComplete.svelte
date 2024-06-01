@@ -29,9 +29,9 @@
 		...rest
 	}: AutoCompleteProps<T> & Partial<HTMLInputElement> = $props();
 
-	let searchString: string | undefined = $state(undefined);
+	let searchString: string = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);
-	let popperHTML: HTMLElement | undefined = $state(undefined);
+	let popperHTML: HTMLElement = $state(undefined);
 	let popperOpen: boolean = $state(false);
 
 	let menuRef: MenuList<T>;

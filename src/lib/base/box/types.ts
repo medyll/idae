@@ -11,13 +11,13 @@ export interface BoxProps extends CommonProps {
 	/** used to activate the slotted.TitleBar component */
 	hasMenu: boolean;
 	/** text to be shown in the title bar */
-	title: string | undefined;
+	title: string;
 	/** alternative to iconSlot, icon to be used with the internat iconify component */
-	icon: string | undefined;
+	icon: string;
 	/** alternative to contentSlot,  content to be shown in the main area */
-	content: string | undefined;
+	content: string;
 	/** alternative to snippet.bottomZone, content to be shown in the bottom button zone */
-	bottomZone: string | undefined;
+	bottomZone: string;
 	/** component actions
 	 * @type {Record<'open'|'toggle' | 'close', Function>}
 	 */

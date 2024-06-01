@@ -23,7 +23,7 @@ export type AutoCompleteProps<T> = CommonProps & {
 	/** selectedIndex : index of the selected item in data */
 	selectedIndex?: number;
 	/** selectedIndex : index of the selected item in data */
-	onchange?: ((args: T) => void) | undefined;
-	autoCompleteEmpty?: Snippet | undefined;
-	autoCompleteNoResults?: Snippet | undefined;
+	onchange?: (args: T) => void;
+	autoCompleteEmpty?: Snippet;
+	autoCompleteNoResults?: Snippet;
 };

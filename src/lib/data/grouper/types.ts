@@ -28,16 +28,16 @@ export type GrouperProps<T = Data> = CommonProps & {
 	groupedTemplateData: GroupedDataType;
 
 	/** List of available groups shown to user */
-	groupListItems: string[] | undefined;
+	groupListItems: string[];
 
 	/** Data to group */
 	data: Data[];
 
 	/** Field from data to group by */
-	groupByField: string | undefined;
+	groupByField: string;
 
 	/** Presented field from data to group by */
-	groupByTitleField: string | undefined;
+	groupByTitleField: string;
 
 	/** Order on which the grouped list is sorted */
 	groupByOrder: 'asc' | 'desc';

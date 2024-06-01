@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 
 export type LoaderProps = CommonProps & {
 	/** Status of the loader */
-	status: 'loading' | 'success' | 'error' | 'empty' | undefined;
+	status: 'loading' | 'success' | 'error' | 'empty';
 
 	/** Whether to show success status or not */
 	showSuccess?: boolean;
@@ -21,7 +21,7 @@ export type LoaderProps = CommonProps & {
 	successIcon?: string;
 
 	/** Message to display */
-	message?: string | undefined;
+	message?: string;
 
 	/** Default messages for different statuses */
 	/** used if props.message   is omitted */

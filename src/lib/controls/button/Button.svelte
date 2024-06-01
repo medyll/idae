@@ -37,7 +37,7 @@
 	}: ButtonProps = $props();
 
 	let startRef: HTMLDivElement;
-	let clientWidth: number | undefined = $state();
+	let clientWidth: number = $state();
 </script>
 
 <button

@@ -16,7 +16,7 @@
 		open: boolean;
 
 		/** Component to be rendered in the panel */
-		component: SvelteComponent | undefined;
+		component?: SvelteComponent;
 
 		/** Flow of the panel */
 		flow?: ElementProps['flow'];
@@ -45,9 +45,6 @@
 	}: PanelSlideProps = $props();
 
 	let transitionTo: 'prev' | 'next';
-
-	/** panelSlideData comes from the source Panel.data and will be bound to the default children */
-	let panelSlideData: any | undefined = undefined;
 
 	export const actions = {
 		open: () => {

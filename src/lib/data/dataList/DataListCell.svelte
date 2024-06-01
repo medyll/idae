@@ -75,11 +75,7 @@
 		};
 	});
 
-	const createColumnsDef = async (
-		element: HTMLElement | undefined,
-		field: string,
-		index: number
-	) => {
+	const createColumnsDef = async (element: HTMLElement, field: string, index: number) => {
 		if (!element) return;
 		await tick();
 		$dataListContext.columns[field] = {

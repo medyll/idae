@@ -4,13 +4,13 @@ import type { Snippet } from 'svelte';
 
 export type ToggleBarProps = CommonProps & {
 	/** title of the toggle bar */
-	title: string | undefined;
+	title: string;
 
 	/** icon of the toggle bar */
-	icon: string | undefined;
+	icon?: string;
 
 	/** orientation of the toggle bar */
-	orientation: 'right' | 'left';
+	orientation?: 'right' | 'left';
 
 	contentSwitcherProps?: ContentSwitcherProps;
 

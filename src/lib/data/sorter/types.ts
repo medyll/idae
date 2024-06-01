@@ -29,10 +29,10 @@ export type SorterProps = {
 	sortedData: Data[];
 
 	/** The field to sort by */
-	sortByField: string | undefined;
+	sortByField: string;
 
 	/** The title of the field to sort by */
-	sortByTitleField: string | undefined;
+	sortByTitleField: string;
 	/** list of available sorts shown to user */
 	sortListItems?: string[];
 	/** The order to sort by */

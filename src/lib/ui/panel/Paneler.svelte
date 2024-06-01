@@ -9,7 +9,7 @@
 
 	type PanelerProps = CommonProps & {
 		/** Data to be displayed in the panel */
-		dd: string | undefined;
+		dd?: string;
 	};
 
 	let {

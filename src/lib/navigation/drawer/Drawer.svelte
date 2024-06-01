@@ -43,7 +43,7 @@
 		...rest
 	}: DrawerProps = $props();
 
-	let dspStyle: string | undefined = undefined;
+	let dspStyle: string = undefined;
 
 	const stickToStyle = {
 		right: 'right:0;top:0;height:100%;height:100%;',

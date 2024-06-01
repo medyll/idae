@@ -12,10 +12,10 @@ export type ToastProps = CommonProps & {
 	autoCloseDelay: number;
 
 	/** Component to be rendered in the toast */
-	component: SvelteComponent | undefined;
+	component?: SvelteComponent;
 
 	/** Props for the component to be rendered in the toast */
-	componentProps: any | undefined;
+	componentProps?: any;
 
 	/** ID of the toaster */
 	toasterId: string;

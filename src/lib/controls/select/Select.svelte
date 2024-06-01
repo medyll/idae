@@ -31,16 +31,14 @@
 		className: string;
 
 		/** The data for the select */
-		data: any[] | undefined;
+		data: any[];
 		disabled?: boolean;
 		/** The options for the select */
-		options?:
-			| {
-					data?: Data;
-					text: string;
-					icon?: any;
-			  }[]
-			| undefined;
+		options?: {
+			data?: Data;
+			text: string;
+			icon?: any;
+		}[];
 
 		/** The data field id for the select */
 		dataFieldId: string;

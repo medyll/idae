@@ -5,5 +5,5 @@ export type JsonerProps = CommonProps & {
 	data: Data[];
 
 	/** The mode of the data */
-	mode: 'array' | 'object' | 'string' | 'number' | undefined;
+	mode: 'array' | 'object' | 'string' | 'number';
 };

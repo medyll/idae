@@ -1,29 +1,28 @@
 <script lang="ts">
 	import ListItem from '$lib/data/list/ListItem.svelte';
-	import type { LisItemProps } from '$lib/data/list/types.js';
 	import type { PropsProxyProps } from '$lib/utils/engine/utils.js';
 	import { propsProxy } from '$lib/utils/engine/utils.js';
 	import appscheme from '../../../demoData/appscheme.json';
 	import Header from './Header.svelte';
 	import MenuBar from '$lib/ui/toggleBar/ToggleBar.svelte';
-	import Elementor from '$lib/base/elementor/Elementor.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Input from '$lib/controls/textfield/TextField.svelte';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import type { MenuListItemProps } from '$lib/ui/menuList/types.js';
+	import Icon from '$lib/base/icon/Icon.svelte';
 
 	let menuListItems: any[] = [];
 
 	let activeData: any;
 	let schemeName = 'Appscheme';
 
-	const openIn = (event: PointerEvent) => {
+	const openIn = (event: PointerEvent, itemIndex: number) => {
 		activeData = event;
 	};
 
 	const schemeData = appscheme.RECORDS;
-	const transformArgsBis: PropsProxyProps<LisItemProps, any> = [
-		['primary', `nom${schemeName}`],
-		['secondary', `code${schemeName}`],
+	const transformArgsBis: PropsProxyProps<MenuListItemProps, any> = [
+		['text', `nom${schemeName}`],
 		['icon', `icon${schemeName}`]
 	];
 	menuListItems = propsProxy(transformArgsBis, schemeData);
@@ -46,7 +45,7 @@ s
 		<MenuList
 			bind:menuListItems
 			density="default"
-			onItemClick={openIn}
+			onclick={openIn}
 			selectorField="idappscheme"
 			style="height:100%;"
 			title="Title List test"
@@ -71,8 +70,7 @@ s
 	{#snippet frameContent()}
 		<div class="flex-main overflow-auto pad-4">
 			{#if activeData}
-				<Elementor bind:item={activeData}>
-					{#snippet children({ itemObject })}
+				<!-- {#snippet children({ itemObject })}
 						<div class="flex-h flex-align-middle">
 							<div class="pad-2 border-b" style="width:120px;overflow: hidden">
 								{itemObject.key}
@@ -80,8 +78,7 @@ s
 							<div class="pad-2">:</div>
 							<div class="pad-2">{JSON.stringify(itemObject.value)}</div>
 						</div>
-					{/snippet}
-				</Elementor>
+					{/snippet} -->
 			{/if}
 		</div>
 	{/snippet}

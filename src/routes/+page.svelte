@@ -17,8 +17,8 @@
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	let uiContext = getContext<Writable<UiContextType>>('uiContext');
 	let BackdropRef;
-	let backdropVisible: boolean = false;
-	let backdropComponentCode: any;
+	let backdropVisible: boolean = $state(false);
+	let backdropComponentCode: $state(any);
 	let svelteLink = '';
 	//
 	$uiContext.drawerFlow = 'fixed';

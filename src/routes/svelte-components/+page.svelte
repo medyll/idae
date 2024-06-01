@@ -26,7 +26,7 @@
 		{#each spliceArray(Object.values(slotuiCatalog), 3) as spliced}
 			<div>
 				{#each spliced as component}
-					<Paper density="kind">
+					<Paper>
 						{component.name}
 						<Divider />
 						<!-- {#if Boolean(filterList(component.code))}

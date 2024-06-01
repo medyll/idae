@@ -1,7 +1,7 @@
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-type DrawerTitleType = string | undefined;
+type DrawerTitleType = string;
 export type DrawerProps = CommonProps & {
 	/** title of the drawer */
 	primary?: DrawerTitleType;
@@ -10,7 +10,7 @@ export type DrawerProps = CommonProps & {
 	secondary?: DrawerTitleType;
 
 	/** icon of the drawer */
-	icon?: string | undefined;
+	icon?: string;
 
 	/** Should the drawer be open */
 	isOpen?: boolean;

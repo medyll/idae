@@ -27,9 +27,9 @@
 	const componentName = (slotuiCatalog as any)?.[component].name;
 	const comp = componentName + 'Api';
 
-	const props: Props[] = jsonList?.[comp]?.props ?? [];
-	const slots: Slots[] = jsonList?.[comp]?.slots ?? [];
-	const events: Slots[] = jsonList?.[comp]?.events ?? [];
+	const props: Props[] = (jsonList as Record<string, any>)?.[comp]?.props ?? [];
+	const slots: Slots[] = (jsonList as Record<string, any>)?.[comp]?.slots ?? [];
+	const events: Slots[] = (jsonList as Record<string, any>)?.[comp]?.events ?? [];
 
 	let propsReq = dataOp.filterList(props ?? [], true, 'isRequired') ?? [];
 	let propsOpt = dataOp.filterList(props ?? [], false, 'isRequired');

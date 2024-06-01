@@ -26,7 +26,7 @@
 		...restProps
 	}: FinderProps = $props();
 
-	let searchString: string | undefined = $state(undefined);
+	let searchString: string = $state(undefined);
 	let container: HTMLDivElement;
 
 	/* export var filteredData = $derived(

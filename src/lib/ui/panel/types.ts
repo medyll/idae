@@ -26,7 +26,7 @@ export type PanelGridProps = CommonProps & {
 	panelGridZoom?: Snippet;
 };
 
-export type PanelProps = {
+export type PanelProps<T = Data> = {
 	/** Title of the panel */
 	title: string;
 
@@ -34,7 +34,7 @@ export type PanelProps = {
 	panelId: string;
 
 	/** Data to be displayed in the panel */
-	data: any | undefined;
+	data?: T[];
 
 	/** Whether to show navigation or not */
 	showNavigation: boolean;

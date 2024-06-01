@@ -14,7 +14,7 @@ export type ContentSwitcherProps = CommonProps & {
 	iconback?: string | IconObj;
 
 	/** parent element of the switcher */
-	parent?: HTMLElement | undefined;
+	parent?: HTMLElement;
 	togglerIcon?: Snippet;
 	backIcon?: Snippet;
 	contentSwitcherReveal?: Snippet;

@@ -13,9 +13,6 @@
 		/**    */
 		element: HTMLDivElement;
 		toolbarSeparator?: Snippet;
-		slots: {
-			separator: Snippet | undefined;
-		};
 	};
 
 	let {
