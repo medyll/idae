@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';

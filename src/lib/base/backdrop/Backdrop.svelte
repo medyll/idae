@@ -1,4 +1,4 @@
-<svelte:options runes={true} accessors />
+<svelte:options runes={true} />
 
 <script lang="ts">
 	import { fade } from 'svelte/transition';

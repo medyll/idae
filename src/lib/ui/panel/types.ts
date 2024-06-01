@@ -17,7 +17,7 @@ export type PanelGridProps = CommonProps & {
 	columns: number;
 
 	/** Whether the grid is expanded or not */
-	isExpanded: boolean;
+	isExpanded?: boolean;
 
 	/** Children snippet for the default content */
 	children?: Snippet<[{ data: Data }]>;
@@ -31,17 +31,17 @@ export type PanelProps<T = Data> = {
 	title: string;
 
 	/** ID of the panel */
-	panelId: string;
+	panelId?: string;
 
 	/** Data to be displayed in the panel */
 	data?: T[];
 
 	/** Whether to show navigation or not */
-	showNavigation: boolean;
-	panelButtonNext: Snippet;
-	panelButtonPrevious: Snippet;
+	showNavigation?: boolean;
+	panelButtonNext?: Snippet;
+	panelButtonPrevious?: Snippet;
 	/** Actions to be performed by the panel */
-	actions: {
+	actions?: {
 		load: (args: any) => void;
 	};
 	children?: Snippet;

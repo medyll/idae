@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let data: PageData;
+	export const data: PageData;
 </script>
 
 <svelte:head>

@@ -12,39 +12,39 @@
 
 	type TreeProps = CommonProps & {
 		/** data to be displayed in the tree */
-		data: T[];
+		data?: T[];
 
 		/** paths to be displayed in the tree */
 		paths: Record<string, any>[];
 
 		/** field to be used for paths */
-		pathField: string;
+		pathField?: string;
 
 		/** private use */
-		pathes: TreeItemType[];
+		pathes?: TreeItemType[];
 
 		/** private use */
-		level: number;
+		level?: number;
 
 		/** private use */
-		selectedDataKeys: string[];
+		selectedDataKeys?: string[];
 
 		/** exported data */
-		selectedData: T[];
+		selectedData?: T[];
 
 		/** exported selected paths */
-		selectedPathes: string[];
+		selectedPathes?: string[];
 
 		/** the split we use to build hierarchy */
-		splitter: string;
+		splitter?: string;
 
 		/** show checkbox to select */
-		showCheckBox: boolean;
+		showCheckBox?: boolean;
 
 		/** selected category */
-		selectedCategory: string;
+		selectedCategory?: string;
 
-		element: HTMLElement;
+		element?: HTMLElement;
 		children?: Snippet<[{ item: TreeItemType; idx: number }]>;
 	};
 

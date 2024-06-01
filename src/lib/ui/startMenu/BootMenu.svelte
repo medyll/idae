@@ -1,4 +1,4 @@
-<svelte:options accessors immutable={true} />
+<svelte:options immutable={true} />
 
 <script lang="ts">
 	import { fade } from 'svelte/transition';

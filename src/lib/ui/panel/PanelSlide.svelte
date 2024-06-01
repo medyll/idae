@@ -16,16 +16,16 @@
 		open: boolean;
 
 		/** Component to be rendered in the panel */
-		component?: SvelteComponent;
+		componentc: SvelteComponent;
 
 		/** Flow of the panel */
 		flow?: ElementProps['flow'];
 
 		/** Whether the panel is outer or not */
-		outer: boolean;
+		outer?: boolean;
 
 		/** Unique ID for the panel slide */
-		panelSlideId: string;
+		panelSlideId?: string;
 
 		/** Children   for the default content */
 		children?: Snippet;

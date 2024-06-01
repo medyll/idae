@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import { sitePaths } from '$lib/utils/engine/site.utils.js';

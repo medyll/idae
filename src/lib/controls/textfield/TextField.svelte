@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import { popper } from '$lib/ui/popper/usePopper.js';

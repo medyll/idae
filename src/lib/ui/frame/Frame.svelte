@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';

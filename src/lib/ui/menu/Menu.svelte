@@ -1,4 +1,4 @@
-<svelte:options accessors runes />
+<svelte:options runes />
 
 <script lang="ts" generics="T= Data">
 	import type { Data } from '$lib/types/index.js';

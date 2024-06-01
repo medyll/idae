@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import { chromeFrameStore } from './chromeFrame.store.js';

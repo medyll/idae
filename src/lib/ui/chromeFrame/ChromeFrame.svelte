@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import { getChromeFrame } from './chromeFrame.utils.js';

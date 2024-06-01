@@ -1,4 +1,4 @@
-<svelte:options accessors runes />
+<svelte:options runes />
 
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';

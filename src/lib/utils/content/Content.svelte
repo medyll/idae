@@ -1,4 +1,4 @@
-<svelte:options runes accessors />
+<svelte:options runes />
 
 <!--
  @component Content

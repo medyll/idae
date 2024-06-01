@@ -37,7 +37,7 @@
 		}
 	];
 
-	let selectedData = [];
+	let selectedData: any = [];
 
 	let parametersSlot: any = {
 		showCheckBox: {

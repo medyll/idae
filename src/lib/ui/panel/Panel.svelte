@@ -1,4 +1,4 @@
-<svelte:options accessors />
+<svelte:options />
 
 <script lang="ts">
 	import { getContext } from 'svelte';
@@ -13,7 +13,7 @@
 		showNavigation = true,
 		panelButtonPrevious,
 		panelButtonNext,
-		children
+		children,
 		actions = {
 			load: (args: any) => {}
 		}
