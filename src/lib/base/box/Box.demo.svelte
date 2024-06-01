@@ -63,21 +63,25 @@
 	component="Box"
 	cite="Boxes, essentially, contain other boxes. That's the meaning we'll found if open them<br /> B. Franklin,1854"
 	><div class="flex-v gap-medium">
-		<DemoPage {code} title="Using slots" component="Box">
-			<Demoer parameters={parametersSlot} {componentArgs} let:activeParams>
-				<Box {...activeParams} class="marg">
-					<span slot="titleBarTitle">Title of the box</span>
-					<Icon fontSize="small" icon="clock" slot="titlBarIcon" />
-					<div class="pad-2">Content of the box</div>
-					<div class="flex-h gap-small pad border-t marg-ii-1" slot="boxBottomZone">
-						bottom zoone
-					</div>
-				</Box>
+		<DemoPage {code} title="Using snippets" component="Box">
+			<Demoer parameters={parametersSlot} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Box {...activeParams} class="marg">
+						<span slot="titleBarTitle">Title of the box</span>
+						<Icon fontSize="small" icon="clock" slot="titlBarIcon" />
+						<div class="pad-2">Content of the box</div>
+						<div class="flex-h gap-small pad border-t marg-ii-1" slot="boxBottomZone">
+							bottom zoone
+						</div>
+					</Box>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Box">
-			<Demoer parameters={parametersProps} componentArgs={componentArgsProps} let:activeParams>
-				<Box {...activeParams} class="marg" />
+			<Demoer parameters={parametersProps} componentArgs={componentArgsProps}>
+				{#snippet children({ activeParams })}
+					<Box {...activeParams} class="marg" />
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

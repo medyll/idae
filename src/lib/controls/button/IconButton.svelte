@@ -22,7 +22,7 @@
 		/** Rotation of the icon */
 		rotation: number;
 
-		/** Children slot for the default content */
+		/** Children   for the default content */
 		children?: Snippet;
 	};
 

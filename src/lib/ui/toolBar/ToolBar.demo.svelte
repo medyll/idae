@@ -83,22 +83,19 @@
 	cite="Way more than putting tools in a bar : having them in a toolbar ! <br /> Quead Jones, 450"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="ToolBar" title="Using slots">
-			<Demoer
-				{multiple}
-				parameters={parametersSlot}
-				componentArgs={componentArgsSlot}
-				let:activeParams
-			>
-				<div class="pad-2 h-large pos-rel">
-					<ToolBar {...activeParams}>
-						<span>item 1</span>
-						<span>item 2</span>
-						<divider />
-						<span>item 3</span>
-						<span>item 4</span>
-					</ToolBar>
-				</div>
+		<DemoPage code={codeSlot} component="ToolBar" title="Using snippets">
+			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
+				>{#snippet children({ activeParams })}
+					<div class="pad-2 h-large pos-rel">
+						<ToolBar {...activeParams}>
+							<span>item 1</span>
+							<span>item 2</span>
+							<divider />
+							<span>item 3</span>
+							<span>item 4</span>
+						</ToolBar>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

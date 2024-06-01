@@ -80,6 +80,5 @@
 	style={`${cssVar};${style}`}
 	{...rest}
 >
-	<!-- <slot>{@render children?.()}</slot> -->
 	<Slotted child={children} />
 </svelte:element>

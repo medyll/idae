@@ -158,26 +158,28 @@ const usePopper: UsePopperProps = {
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"
 >
 	<div class="flex-v gap-medium">
-		<DemoPage title="Using slots" {code} component="Button">
-			<Demoer {parameters} {componentArgs} let:activeParams>
-				<Button {...activeParams}
-					>Using slots
-					<Icon icon="user" slot="buttonStart" />
-					<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
-				</Button>
+		<DemoPage title="Using snippets" {code} component="Button">
+			<Demoer {parameters} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Button {...activeParams}
+						>Using snippets
+						<Icon icon="user" slot="buttonStart" />
+						<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
+					</Button>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage subTitle="Styling props" component="Button">
-			<Demoer parameters={styleParameters} {multiple} {componentArgs} let:activeParams>
+			<Demoer parameters={styleParameters} {multiple} {componentArgs}>
 				<!-- <Button {...activeParams}
-					>Using slots
+					>Using snippets
 					<Icon icon="user" slot="buttonStart" />
 					<span slot="buttonLoadingIcon"><Icon icon="loading" rotate /></span>
 				</Button> -->
 			</Demoer>
 		</DemoPage>
 		<!-- <DemoPage subTitle="Menu buttons" component="Button">
-			<Demoer parameters={parametersMenu} {componentArgs} let:activeParams>
+			<Demoer parameters={parametersMenu} {componentArgs} >
 				<Button>
 					default action
 					<span slot="buttonPopper">
@@ -192,17 +194,21 @@ const usePopper: UsePopperProps = {
 			</Demoer>
 		</DemoPage> -->
 		<DemoPage title="Using props" code={code2} component="Button">
-			<Demoer parameters={parametersProps} {componentArgs} let:activeParams>
-				<Button {...activeParams}>Using props</Button>
+			<Demoer parameters={parametersProps} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Button {...activeParams}>Using props</Button>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage subTitle="Menu buttons" code={code3} component="Button">
-			<Demoer parameters={parametersMenu} {componentArgs} let:activeParams>
-				<!-- <Button
+			<Demoer parameters={parametersMenu} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<!-- <Button
 					size="medium"
 					usePopper={{ ...usePopper, position: activeParams?.position }}
 					primary="Menu {activeParams?.position ?? ''}"
 				/> -->
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

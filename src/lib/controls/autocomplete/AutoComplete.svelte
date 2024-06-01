@@ -90,24 +90,24 @@
 	autoClose
 	class="auto-complete"
 >
-	<TextField
-		bind:value={searchString}
-		bind:element
-		type="search"
-		inputType="search"
-		size="auto"
-		class={className}
-		slot="popperHolder"
-		onclick={() => (popperOpen = true)}
-		onfocus={() => {
-			setTimeout(() => (popperOpen = true), 125);
-		}}
-		onkeydown={(e) => menuRef.actions.navigate(e, filteredData)}
-		{...rest}
-		aria-haspopup="menu"
-		aria-controls="menu"
-		tabindex="0"
-	/>
+	{#snippet popperHolder()}
+		<TextField
+			bind:value={searchString}
+			bind:element
+			type="search"
+			inputType="search"
+			class={className}
+			onclick={() => (popperOpen = true)}
+			onfocus={() => {
+				setTimeout(() => (popperOpen = true), 125);
+			}}
+			onkeydown={(e) => menuRef.actions.navigate(e, filteredData)}
+			{...rest}
+			aria-haspopup="menu"
+			aria-controls="menu"
+			tabindex="0"
+		/>
+	{/snippet}
 
 	<MenuList
 		bind:this={menuRef}

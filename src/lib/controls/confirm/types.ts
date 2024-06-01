@@ -38,7 +38,7 @@ export type ConfirmProps = CommonProps & {
 
 	/** icon to display for back action */
 	iconCancel?: string;
-	initial?: Snippet;
+	confirmInitial?: Snippet;
 	slots: {
 		initial: Snippet;
 	};

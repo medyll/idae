@@ -232,8 +232,8 @@
 			<div class="datalist-group">
 				<header>
 					<Slotted child={groupTitleSlot} slotArgs={{ item }}>
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
 							class="datalist-group-head"
@@ -271,15 +271,12 @@
 		{/each}
 	</div>
 {:else}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div bind:this={element} class="datalist {className}" {style} tabindex="0">
 		{#if element}
 			{#if showHeader}
 				<Slotted child={dataListHead}><DataListHead /></Slotted>
-				<!-- <slot name="head">
-					<DataListHead />
-				</slot> -->
 			{/if}
 			{#each sortedData as item}
 				<Slotted child={dataListRow} slotArgs={{ rawData: item, item }}>
@@ -298,25 +295,9 @@
 						{/if}
 					</DataListRow>
 				</Slotted>
-				<!-- <slot rawData={item} {item}>
-					<DataListRow
-						class={item[selectorField] === selectorFieldValue ? 'theme-bg-paper' : ''}
-						data={item}
-					>
-						{#if $dataListContext.hasColumnsProps}
-							{#each Object.keys($dataListContext.columns) as inItem}
-								{@render listCell(item, inItem)}
-							{/each}
-						{:else}
-							{#each Object.keys(item) as inItem}
-								{@render listCell(item, inItem)}
-							{/each}
-						{/if}
-					</DataListRow>
-				</slot> -->
 			{/each}
 		{/if}
-		<!-- <slot name="dataListFooter" /> -->
+
 		<Slotted child={dataListFooter} />
 	</div>
 {/if}

@@ -14,6 +14,5 @@ called automatically
 	{...rest}
 	data-toasterId={toasterId}
 >
-	<!-- <slot /> -->
 	<Slotted child={children} />
 </div>

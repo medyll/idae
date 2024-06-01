@@ -54,7 +54,7 @@
 <input bind:this={hiddenRef} {name} id={name} value={checked} type="hidden" />
 <label bind:this={element} for="_{name}" class="switch {className}" {style}>
 	<Slotted child={switchLabel} />
-	<!-- <slot name="label" /> -->
+
 	<div class="switchGutter">
 		<input
 			onchange={(event) => {
@@ -68,7 +68,6 @@
 		/>
 		<div class="switchHandle">
 			<Slotted child={children} />
-			<!-- <slot /> -->
 		</div>
 	</div>
 </label>

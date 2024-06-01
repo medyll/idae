@@ -60,21 +60,17 @@
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
 				<div class="form flex-v flex-align-middle-center">
 					<Slotted child={loginAvatarRoot}>
-						<!-- <slot name="loginAvatarRoot"></slot> -->
 						<div class="avatarHolder marg-b-2">
 							<div class="avatar flex-h flex-align-middle-center">
 								{#if submitting}
 									<Icon rotate fontSize="large" icon="loading" />
 								{:else}
 									<Slotted child={loginAvatar} />
-									<!-- <slot name="loginAvatar" /> -->
 								{/if}
 							</div>
 						</div>
 					</Slotted>
 					<Slotted child={loginForm}>
-						<!-- <slot name="loginForm">
-						</slot> -->
 						<div class="pad-2">
 							<input class="input" name="email" type="text" />
 						</div>
@@ -90,9 +86,8 @@
 							<div class="pad-1 color-scheme-error">Please verify your input</div>
 						{/if}
 					</Slotted>
-					{#if $$slots.slotRetrievePassword}
+					{#if slotRetrievePassword}
 						<div class="retrieve">
-							<!-- <slot name="slotRetrievePassword" /> -->
 							<Slotted child={slotRetrievePassword} />
 						</div>
 					{/if}
@@ -101,7 +96,7 @@
 		</form>
 	</Backdrop>
 {:else}
-	<slot />
+	<Slotted child={children} />
 {/if}
 
 <style lang="scss">

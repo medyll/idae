@@ -41,7 +41,7 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class={className} {style} onclick={handleClick}>
 	<Slotted child={togglerIcon}>
@@ -50,7 +50,7 @@
 </div>
 <div bind:this={element} style="display:none">
 	<div bind:this={thisRef} class="content-switcher">
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div onclick={handleClick}>
 			<Slotted child={backIcon}>

@@ -11,11 +11,15 @@
 		<div class="pad">Cartouche content</div>
 	</Cartouche>
 	<Cartouche stacked={true} primary="This is another cartouche">
-		<Button size="medium" slot="cartoucheButtons">With button</Button>
+		{#snippet cartoucheButtons()}
+			<Button size="medium">With button</Button>
+		{/snippet}
 		<div class="pad">And some content</div>
 	</Cartouche>
 	<Cartouche primary="With an icon" stacked={true}>
-		<Icon fontSize="small" slot="cartoucheIcon" icon="user" />
+		{#snippet cartoucheIcon()}
+			<Icon fontSize="small" icon="user" />
+		{/snippet}
 		<div class="pad">And some content</div>
 	</Cartouche>
 </div>

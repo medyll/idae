@@ -11,9 +11,9 @@
 		panelId = crypto.randomUUID() as string,
 		data = undefined,
 		showNavigation = true,
-		children,
 		panelButtonPrevious,
 		panelButtonNext,
+		children
 		actions = {
 			load: (args: any) => {}
 		}
@@ -49,15 +49,14 @@
 	<div class="panel-bar pos-sticky top-0 gap-small">
 		<div style="flex:1">{title}</div>
 		{#if hasPrev}
-			{#if panelButtonPrevious || $$slots.panelButtonPrevious}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
+			{#if panelButtonPrevious}
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('prev');
 					}}
 				>
-					<!-- <slot name="panelButtonPrevious" /> -->
 					<Slotted child={panelButtonPrevious}></Slotted>
 				</div>
 			{:else}
@@ -71,15 +70,14 @@
 			{/if}
 		{/if}
 		{#if hasNext}
-			{#if $$slots.panelButtonNext}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
+			{#if panelButtonNext}
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('next');
 					}}
 				>
-					<!-- <slot name="panelButtonNext" /> -->
 					<Slotted child={panelButtonNext}></Slotted>
 				</div>
 			{:else}
@@ -93,8 +91,7 @@
 		{/if}
 	</div>
 	<div class="panelContent">
-		<Slotted child={children} />
-		<!-- <slot {panelId} {actions} /> -->
+		<Slotted child={children} slotArgs={{ panelId, actions }} />
 	</div>
 </div>
 

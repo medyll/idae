@@ -55,25 +55,29 @@
 
 <ComponentDemo component="AutoComplete">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="AutoComplete" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<AutoComplete class="marg-b" placeholder="Search in list" style="width:200px" {data}>
-					{#snippet children(menuItemData)}
-						<MenuItem data={menuItemData}>{menuItemData.name} {menuItemData.lastname}</MenuItem>
-					{/snippet}
-				</AutoComplete>
+		<DemoPage code={codeSlot} component="AutoComplete" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<AutoComplete class="marg-b" placeholder="Search in list" style="width:200px" {data}>
+						{#snippet children(menuItemData)}
+							<MenuItem data={menuItemData}>{menuItemData.name} {menuItemData.lastname}</MenuItem>
+						{/snippet}
+					</AutoComplete>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="AutoComplete" title="Using props">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<AutoComplete
-					{data}
-					onPick={() => {}}
-					class="marg-b"
-					placeholder="Search in list"
-					style="width:200px"
-					dataFieldName="name"
-				/>
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<AutoComplete
+						{data}
+						onPick={() => {}}
+						class="marg-b"
+						placeholder="Search in list"
+						style="width:200px"
+						dataFieldName="name"
+					/>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

@@ -66,7 +66,6 @@
 				<svelte:component this={component} {componentArgs} {activeParams} />
 			{:else}
 				<Slotted child={children} slotArgs={{ activeParams }} />
-				<!-- <slot {activeParams} /> -->
 			{/if}
 		</div>
 	</div>

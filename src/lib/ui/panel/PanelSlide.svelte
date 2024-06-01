@@ -27,7 +27,7 @@
 		/** Unique ID for the panel slide */
 		panelSlideId: string;
 
-		/** Children slot for the default content */
+		/** Children   for the default content */
 		children?: Snippet;
 	};
 	let panelSlideRef: any;
@@ -46,7 +46,7 @@
 
 	let transitionTo: 'prev' | 'next';
 
-	/** panelSlideData comes from the source Panel.data and will be bound to the default slot */
+	/** panelSlideData comes from the source Panel.data and will be bound to the default children */
 	let panelSlideData: any | undefined = undefined;
 
 	export const actions = {
@@ -116,7 +116,7 @@
 		// transitionTo
 		actions.close();
 		// new activePanelSlide
-		// will be bound to the default slot
+		// will be bound to the default child
 		if (prevNext) {
 			const activePanelSlideId = registredPanelSlides[prevNext].panelSlideId;
 			$panelerContext.activePanelSlideData[activePanelSlideId] = data;
@@ -141,7 +141,6 @@
 			child={children}
 			slotArgs={{ panelSlideId, data: $panelerContext.activePanelSlideData[panelSlideId] }}
 		/>
-		<!-- <slot {panelSlideId} data={$panelerContext.activePanelSlideData[panelSlideId]} /> -->
 	</div>
 {/if}
 

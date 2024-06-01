@@ -59,7 +59,7 @@
 </script>
 
 <!-- on:datalist:sort:clicked -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y-no_static_element_interactions -->
 <div
 	bind:this={element}
@@ -71,8 +71,7 @@
 	style="{style};{cssVars}"
 	{...rest}
 >
-	{#if children || $$slots.default}
-		<!-- <slot /> -->
+	{#if children}
 		<Slotted child={children}></Slotted>
 	{:else if $dataListContext.hasColumnsProps}
 		{#each Object.keys($dataListContext.columns) as inItem}
@@ -86,7 +85,6 @@
 	{:else}
 		{#each Object.keys(data) as inItem}
 			<DataListCell field={inItem}>
-				<!-- <slot /> -->
 				<Slotted child={children}></Slotted>
 			</DataListCell>
 		{/each}

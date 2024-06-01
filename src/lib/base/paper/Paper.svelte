@@ -28,7 +28,6 @@
 </script>
 
 <div bind:this={element} class="paper {className}" {style} {...rest}>
-	<!-- <slot /> -->
 	<Slotted child={children} />
 </div>
 

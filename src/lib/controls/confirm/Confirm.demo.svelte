@@ -88,19 +88,23 @@
 V.Hugo 1850"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using slots" component="Chipper" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<Confirm {...activeParams}>
-					<Button slot="initial" icon="fa-solid:question" size="large"
-						>Would you please click once ?</Button
-					>
-					<Button focus type="submit" size="medium">confirm</Button>
-				</Confirm>
+		<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<Confirm {...activeParams}>
+						<Button slot="initial" icon="fa-solid:question" size="large"
+							>Would you please click once ?</Button
+						>
+						<Button type="submit" size="medium">confirm</Button>
+					</Confirm>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Chipper" code={codeProps}>
-			<Demoer parameters={parametersProps} componentArgs={componentArgsProps} let:activeParams>
-				<Confirm {...activeParams} primary="confirm deletion" />
+			<Demoer parameters={parametersProps} componentArgs={componentArgsProps}>
+				{#snippet children({ activeParams })}
+					<Confirm {...activeParams} primary="confirm deletion" />
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

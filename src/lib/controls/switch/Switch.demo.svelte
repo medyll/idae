@@ -45,20 +45,18 @@
     errorIcon="mdi:alert-circle-outline"
     loadingIcon="mdi:loading"
     successIcon="clarity:success-standard-line" />`;
-
-	let isOpen = false;
 </script>
 
-<Switch name={'switcher'}></Switch>
-
-<!-- <ComponentDemo component="Switch">
+<ComponentDemo component="Switch">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Switch" title="Using slots">
-			<Demoer {parametersSlot} {componentArgsSlot} let:activeParams>
-				<div class="pad-2">
-					<Switch {...activeParams} name={'switcher'}></Switch>
-				</div>
+		<DemoPage code={codeSlot} component="Switch" title="Using snippets">
+			<Demoer {parametersSlot} {componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pad-2">
+						<Switch {...activeParams} name={'switcher'}></Switch>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>
-</ComponentDemo> -->
+</ComponentDemo>

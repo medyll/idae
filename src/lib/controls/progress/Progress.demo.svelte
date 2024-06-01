@@ -31,13 +31,15 @@
 	cite="You'll never know that you've got a score, unless comes the day when you see the other's ones.<br/> S. Roch, 1824"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using slots" component="Progress" code={ww}>
-			<Demoer {parameters} {componentArgs} let:activeParams>
-				<Progress {...activeParams} />
+		<DemoPage title="Using snippets" component="Progress" code={ww}>
+			<Demoer {parameters} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Progress {...activeParams} />
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<!-- <DemoPage title="Using props" component="rating" code={ww2}>
-			<Demoer {parameters} {componentArgs} let:activeParams>
+			<Demoer {parameters} {componentArgs} >
 				<Progress {...activeParams} />
 			</Demoer>
 		</DemoPage> -->

@@ -50,45 +50,49 @@
 	component="Loader"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Loading" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div class="pos-rel h-large w-large">
-					<Loader {...activeParams} on:status:change={() => {}}>
-						<Icon color="orange" fontSize="big" icon="mdi:loading" rotate slot="loaderLoading" />
-						<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" slot="loaderError" />
-						<Icon
-							color="gray"
-							fontSize="big"
-							icon="mdi:database-search-outline"
-							slot="loaderEmpty"
-						/>
-						<Icon
-							color="green"
-							fontSize="big"
-							icon="clarity:success-standard-line"
-							slot="loaderSuccess"
-						/>
-					</Loader>
-				</div>
+		<DemoPage code={codeSlot} component="Loading" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pos-rel h-large w-large">
+						<Loader {...activeParams} on:status:change={() => {}}>
+							<Icon color="orange" fontSize="big" icon="mdi:loading" rotate slot="loaderLoading" />
+							<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" slot="loaderError" />
+							<Icon
+								color="gray"
+								fontSize="big"
+								icon="mdi:database-search-outline"
+								slot="loaderEmpty"
+							/>
+							<Icon
+								color="green"
+								fontSize="big"
+								icon="clarity:success-standard-line"
+								slot="loaderSuccess"
+							/>
+						</Loader>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="Loading" title="Using props">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div class="pos-rel h-large w-large">
-					<Loader
-						{...activeParams}
-						emptyIcon="mdi:database-search-outline"
-						errorIcon="mdi:alert-circle-outline"
-						loadingIcon="mdi:loading"
-						messages={{
-							loading: 'Loading dataset',
-							error: 'An error occurred',
-							empty: 'Empty results',
-							success: 'Success !'
-						}}
-						successIcon="clarity:success-standard-line"
-					/>
-				</div>
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pos-rel h-large w-large">
+						<Loader
+							{...activeParams}
+							emptyIcon="mdi:database-search-outline"
+							errorIcon="mdi:alert-circle-outline"
+							loadingIcon="mdi:loading"
+							messages={{
+								loading: 'Loading dataset',
+								error: 'An error occurred',
+								empty: 'Empty results',
+								success: 'Success !'
+							}}
+							successIcon="clarity:success-standard-line"
+						/>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

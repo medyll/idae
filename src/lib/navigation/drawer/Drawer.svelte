@@ -118,9 +118,6 @@ ss
 		{#if drawerTop || drawerIcon || Boolean(primary) || Boolean(icon)}
 			<header class="drawer-header">
 				{#if Boolean(icon) || drawerIcon}
-					<!-- <slot name="drawerIcon">
-								</slot
-							> -->
 					<div class="drawer-icon">
 						<Slotted child={drawerIcon}>
 							<Icon {icon} fontSize="medium" />
@@ -129,25 +126,13 @@ ss
 				{/if}
 				<div class="drawer-header-bar">
 					<div class="drawer-header-bar-title">
-						<!-- <slot name="drawerTitle">
-						</slot> -->
 						<Slotted child={drawerTitle}>
 							<Slotted child={drawerPrimary}>
-								<!-- <slot name="drawerPrimary">
-									{#if primary}
-										<div style="font-size:18px;">{primary}</div>
-									{/if}
-								</slot> -->
 								{#if primary}
 									<div style="font-size:18px;">{primary}</div>
 								{/if}
 							</Slotted>
 							<Slotted child={drawerSecondary}>
-								<!-- <slot name="drawerSecondary">
-									{#if secondary}
-										<div>{secondary}</div>
-									{/if}
-								</slot> -->
 								{#if secondary}
 									<div>{secondary}</div>
 								{/if}
@@ -155,7 +140,6 @@ ss
 						</Slotted>
 					</div>
 					<Slotted child={drawerTop}></Slotted>
-					<!-- <slot name="drawerTop" /> -->
 				</div>
 				{#if !hideCloseIcon && !showOpenerIcon}
 					<Button
@@ -172,10 +156,8 @@ ss
 			<Slotted child={drawerContent}>
 				<Slotted child={children}></Slotted>
 			</Slotted>
-			<!-- <slot name="drawerContent"></slot> -->
 		</div>
 		<footer>
-			<!-- <slot name="drawerFooter" /> -->
 			<Slotted child={drawerFooter}></Slotted>
 		</footer>
 	{/if}

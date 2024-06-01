@@ -42,17 +42,21 @@
 	cite="First they tell you that it's just about stars.<br/>And then you'll be starred<br/> Amal. Creed, 1824"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using slots" component="Rating" code={ww}>
-			<Demoer {parameters} {componentArgs} let:activeParams>
-				<Rating {...activeParams}>
-					<Icon icon={activeParams.defaultIcon} />
-					<Icon slot="ratingScoredIcon" icon={activeParams.scoredIcon} />
-				</Rating>
+		<DemoPage title="Using snippets" component="Rating" code={ww}>
+			<Demoer {parameters} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Rating {...activeParams}>
+						<Icon icon={activeParams.defaultIcon} />
+						<Icon slot="ratingScoredIcon" icon={activeParams.scoredIcon} />
+					</Rating>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="rating" code={ww2}>
-			<Demoer {parameters} {componentArgs} let:activeParams>
-				<Rating {...activeParams} />
+			<Demoer {parameters} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<Rating {...activeParams} />
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

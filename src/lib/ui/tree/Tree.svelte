@@ -125,7 +125,7 @@
 <div bind:this={element} class="tree {className}">
 	{#each pathes as pat, k}
 		<div data-category={pat.path}>
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
 				data-category-title={pat.path}
@@ -155,7 +155,6 @@
 							checked={Boolean(selectedDataKeys.includes(pat.path))}
 						/>
 					{/if}
-					<!-- <slot item={pat}><div>{pat.name}</div></slot> -->
 					<Slotted child={children} slotArgs={{ item: pat, idx: k }}>
 						<div>{pat.name}</div>
 					</Slotted>

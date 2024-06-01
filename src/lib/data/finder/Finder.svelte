@@ -113,9 +113,11 @@
 					}
 				}}
 			>
-				<div slot="actionSlot" class="pad-r-1">
-					<input type="checkbox" checked={mode === 'exact'} style="display:block;margin:0" />
-				</div>
+				{#snippet menuItemLast()}
+					<div class="pad-r-1">
+						<input type="checkbox" checked={mode === 'exact'} style="display:block;margin:0" />
+					</div>
+				{/snippet}
 				strict
 			</MenuListItem>
 			<MenuListItem
@@ -123,12 +125,17 @@
 				onclick={() => {
 					defaultField = '*';
 				}}
-			>
-				<div slot="actionSlot" class="pad-r-1">
-					{#if defaultField === '*'}
-						<input type="checkbox" checked={defaultField === '*'} style="display:block;margin:0" />
-					{/if}
-				</div>
+				>{#snippet menuItemLast()}
+					<div class="pad-r-1">
+						{#if defaultField === '*'}
+							<input
+								type="checkbox"
+								checked={defaultField === '*'}
+								style="display:block;margin:0"
+							/>
+						{/if}
+					</div>
+				{/snippet}
 				{'* All fields'}
 			</MenuListItem>
 			{#each dataKeys as kk}
@@ -137,12 +144,17 @@
 					onclick={() => {
 						defaultField = kk;
 					}}
-				>
-					<div slot="actionSlot" class="pad-r-1">
-						{#if defaultField === kk}
-							<input type="checkbox" checked={defaultField === kk} style="display:block;margin:0" />
-						{/if}
-					</div>
+					>{#snippet menuItemLast()}
+						<div class="pad-r-1">
+							{#if defaultField === kk}
+								<input
+									type="checkbox"
+									checked={defaultField === kk}
+									style="display:block;margin:0"
+								/>
+							{/if}
+						</div>
+					{/snippet}
 					{kk}
 				</MenuListItem>
 			{/each}

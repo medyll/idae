@@ -89,47 +89,57 @@ is a datalist table <br /> B. Franklin, 1854"
 	<div class="flex-v gap-medium">
 		<h5>Automatique datalist, without columns definitions</h5>
 		<div class="what pos-rel pad">
-			<Demoer {parameters} let:activeParams>
-				<DataList style="height:150px;width:350px;overflow:auto;" {...activeParams}>
-					<svelte:fragment slot="head">
-						<DataListHead>
-							<DataListCell field="index">index</DataListCell>
-							<DataListCell field="name">name</DataListCell>
-							<DataListCell field="lastName">lastName</DataListCell>
-						</DataListHead>
-					</svelte:fragment>
-				</DataList>
+			<Demoer {parameters}>
+				{#snippet children({ activeParams })}
+					<DataList style="height:150px;width:350px;overflow:auto;" {...activeParams}>
+						<svelte:fragment slot="head">
+							<DataListHead>
+								<DataListCell field="index">index</DataListCell>
+								<DataListCell field="name">name</DataListCell>
+								<DataListCell field="lastName">lastName</DataListCell>
+							</DataListHead>
+						</svelte:fragment>
+					</DataList>
+				{/snippet}
 			</Demoer>
 		</div>
 		<h5>With columns definitions</h5>
 		<div class="what pos-rel pad">
-			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }} let:activeParams>
-				<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
-					<svelte:fragment slot="head">
-						<DataListHead>
-							<DataListCell field="index">index</DataListCell>
-							<DataListCell field="name">name</DataListCell>
-							<DataListCell field="group">group</DataListCell>
-							<DataListCell field="lastName">lastName</DataListCell>
-						</DataListHead>
-					</svelte:fragment>
-				</DataList>
+			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }}>
+				{#snippet children({ activeParams })}
+					<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
+						{#snippet dataListHead()}
+							<DataListHead>
+								<DataListCell field="index">index</DataListCell>
+								<DataListCell field="name">name</DataListCell>
+								<DataListCell field="group">group</DataListCell>
+								<DataListCell field="lastName">lastName</DataListCell>
+							</DataListHead>
+						{/snippet}
+					</DataList>
+				{/snippet}
 			</Demoer>
 		</div>
 		<h5>With a unique cell</h5>
 		<div class="what pos-rel pad">
-			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }} let:activeParams>
-				<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
-					<DataListHead slot="head">
-						<DataListCell field="index">index</DataListCell>
-						<DataListCell field="name">name</DataListCell>
-						<DataListCell field="group">group</DataListCell>
-						<DataListCell field="lastName">lastName</DataListCell>
-					</DataListHead>
-					<DataListCell field={fieldName} let:fieldName let:fieldValue slot="dataListCell">
-						{fieldValue}
-					</DataListCell>
-				</DataList>
+			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }}>
+				{#snippet children({ activeParams })}
+					<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
+						{#snippet dataListHead()}
+							<DataListHead>
+								<DataListCell field="index">index</DataListCell>
+								<DataListCell field="name">name</DataListCell>
+								<DataListCell field="group">group</DataListCell>
+								<DataListCell field="lastName">lastName</DataListCell>
+							</DataListHead>
+						{/snippet}
+						{#snippet dataListCell({ fieldValue, fieldName })}
+							<DataListCell field={fieldName}>
+								{fieldValue}
+							</DataListCell>
+						{/snippet}
+					</DataList>
+				{/snippet}
 			</Demoer>
 		</div>
 		<!-- <h5>Automatique datalist slotted</h5>
@@ -146,19 +156,23 @@ is a datalist table <br /> B. Franklin, 1854"
 		</div> -->
 		<h5>Full slot datalist</h5>
 		<div style="height:350px;" class="what pos-rel overflow-auto">
-			<DataList {data} style="height:100%;overflow:auto;" let:item>
-				<DataListHead slot="head">
-					<DataListCell field="index" style="width:50px;">index</DataListCell>
-					<DataListCell field="name" style="width:50px;">name</DataListCell>
-					<DataListCell noWrap={true} field="lastName" style="width:100px;overflow:hidden"
-						>lastName 50%</DataListCell
-					>
-				</DataListHead>
-				<DataListRow data={item}>
-					<DataListCell>{item.index}</DataListCell>
-					<DataListCell>{item.name}</DataListCell>
-					<DataListCell>121512</DataListCell>
-				</DataListRow>
+			<DataList {data} style="height:100%;overflow:auto;">
+				{#snippet dataListHead()}
+					<DataListHead>
+						<DataListCell field="index" style="width:50px;">index</DataListCell>
+						<DataListCell field="name" style="width:50px;">name</DataListCell>
+						<DataListCell noWrap={true} field="lastName" style="width:100px;overflow:hidden"
+							>lastName 50%</DataListCell
+						>
+					</DataListHead>
+				{/snippet}
+				{#snippet children({ item })}
+					<DataListRow data={item}>
+						<DataListCell>{item.index}</DataListCell>
+						<DataListCell>{item.name}</DataListCell>
+						<DataListCell>121512</DataListCell>
+					</DataListRow>
+				{/snippet}
 			</DataList>
 		</div>
 	</div>

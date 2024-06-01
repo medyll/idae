@@ -138,9 +138,9 @@
 	ontouchend={move.cancel}
 	ontouchcancel={move.cancel}
 />
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
 	class="slider {className} dense-{dense}"
 	onmousedown={key.mouseDown}

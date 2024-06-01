@@ -58,8 +58,9 @@
 
 <ComponentDemo component="Popper" cite="This Popper is the base of all the flyout stuff: it pops">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Popper" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
+		<DemoPage code={codeSlot} component="Popper" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot}  parameters={parametersSlot}>
+			{#snippet child
 				<div class="pos-rel">
 					<Popper bind:isOpen position="BC" {...activeParams} class="w-large marg-t-1">
 						<Button
@@ -72,7 +73,9 @@
 						</Button>
 						<div class="pad-4">Popper content</div>
 					</Popper>
-				</div>
+				</div>ren({ activeParams })}
+			
+			{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

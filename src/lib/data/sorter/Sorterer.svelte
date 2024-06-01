@@ -18,7 +18,6 @@
 </script>
 
 <div bind:this={element} class="sorterer {className}" {...rest}>
-	<!-- <slot /> -->
 	<Slotted child={children}></Slotted>
 	{#each fields as field}
 		<Sorter {...field} bind:sortedData bind:activeCommonSortField {data} />

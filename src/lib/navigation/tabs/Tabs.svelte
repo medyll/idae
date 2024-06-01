@@ -78,7 +78,6 @@
 <div bind:this={element} class="tab {className}" aria-orientation={orientation} {style}>
 	<div bind:this={tabsElementRef} class="tab-nav">
 		<div>
-			<!-- <slot name="tabsTitleMain" /> -->
 			<Slotted child={tabsTitleMain}></Slotted>
 		</div>
 		<nav bind:this={navElementRef} class="tab-nav-rail">
@@ -91,7 +90,6 @@
 					}}
 					class={activeTabCode === item?.code ? 'active' : ''}
 				>
-					<!-- <slot {item} name="tabLabelSlot">{item?.label}</slot> -->
 					<Slotted child={tabLabelSlot} slotArgs={{ item }}>
 						{item?.label}
 					</Slotted>
@@ -99,16 +97,14 @@
 			{/each}
 		</nav>
 		<div>
-			<!-- <slot name="tabsTitle" /> -->
 			<Slotted child={tabsTitle}></Slotted>
 		</div>
 		<div>
-			<!-- <slot name="tabsButtons" /> -->
 			<Slotted child={tabsButtons}></Slotted>
 		</div>
 	</div>
 	<div class="tab-floating-cell">
-		<div bind:this={activeCellElementRef} class="tab-floating-cell-slot" />
+		<div bind:this={activeCellElementRef} class="tab-floating-cell-snip" />
 	</div>
 	<div class="tab-content">
 		{#each items as item}
@@ -129,8 +125,6 @@
 							</div>
 						{/if}
 						<Slotted child={tabsInner} slotArgs={{ item, activeTabCode }}>
-							<!-- <slot name="tabsInner" {item} {activeTabCode}>
-							</slot> -->
 							<div data-code={item.code} style="flex:1;overflow:hidden;position:relative;">
 								{#if activeTabCode === item.code}
 									{#if Boolean(item?.withComponent)}

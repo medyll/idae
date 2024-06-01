@@ -19,7 +19,4 @@
 	];
 </script>
 
-<Tabs activeTabCode="theTitle3" {items}>
-	<!-- <span slot="tabsTitle">some tabs title</span>
-    <span slot="tabsButtons" ><Button bordered >button</Button></span> -->
-</Tabs>
+<Tabs activeTabCode="theTitle3" {items}>s</Tabs>

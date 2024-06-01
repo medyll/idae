@@ -75,21 +75,23 @@
 
 <ComponentDemo component="Drawer">
 	<div class="flex-v gap-medium w-full">
-		<DemoPage title="Using slots" component="Drawer" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div style="width:450px;height:500px;position:relative;" class="pad flex-h">
-					<div class="flex-main pad-4 text-right">
-						Side content Side content Side content Side content
-					</div>
-					<Drawer {...activeParams}>
-						<div slot="iconSlot" class="pad-2">
-							<Icon icon="window" />
+		<DemoPage title="Using snippets" component="Drawer" code={codeSlot}>
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div style="width:450px;height:500px;position:relative;" class="pad flex-h">
+						<div class="flex-main pad-4 text-right">
+							Side content Side content Side content Side content
 						</div>
-						<div slot="drawerTop" class="pad-2">Drawer's title</div>
-						<div class="pad-2">Drawer's content</div>
-						<div slot="drawerBottom" class="pad-2">Drawer's bottom zone</div>
-					</Drawer>
-				</div>
+						<Drawer {...activeParams}>
+							<div slot="iconSlot" class="pad-2">
+								<Icon icon="window" />
+							</div>
+							<div slot="drawerTop" class="pad-2">Drawer's title</div>
+							<div class="pad-2">Drawer's content</div>
+							<div slot="drawerBottom" class="pad-2">Drawer's bottom zone</div>
+						</Drawer>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

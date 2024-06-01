@@ -43,30 +43,32 @@
 
 <ComponentDemo cite="" component="Tabs">
 	<div class="flex-v gap-large w-full">
-		<DemoPage code={codeSlot} component="Tabs" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div style="height:450px;">
-					<Tabs
-						activeTabCode="tab1"
-						{...activeParams}
-						onTabClick={(e) => {
-							console.log(e);
-							componentArgsSlot.activeTabCode = e.code;
-						}}
-						class="h-full"
-						style="height:100%;width:350px"
-						{items}
-						let:activeTabCode
-					>
-						<span slot="tabsTitle">Some tabs title</span>
-						<span slot="tabsButtons"><Button bordered>button</Button></span>
-						<div class="h-full" slot="tabsInner">
-							<div class="pad-4 h-full overflow-auto">
-								<!-- selected : {activeTabCode} -->
-							</div>
-						</div>
-					</Tabs>
-				</div>
+		<DemoPage code={codeSlot} component="Tabs" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div style="height:450px;">
+						<Tabs
+							activeTabCode="tab1"
+							{...activeParams}
+							onTabClick={(e) => {
+								console.log(e);
+								componentArgsSlot.activeTabCode = e.code;
+							}}
+							class="h-full"
+							style="height:100%;width:350px"
+							{items}
+							>{#snippet children({ activeTabCode })}
+								<span slot="tabsTitle">Some tabs title</span>
+								<span slot="tabsButtons"><Button bordered>button</Button></span>
+								<div class="h-full" slot="tabsInner">
+									<div class="pad-4 h-full overflow-auto">
+										<!-- selected : {activeTabCode} -->
+									</div>
+								</div>
+							{/snippet}
+						</Tabs>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

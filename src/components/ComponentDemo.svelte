@@ -19,12 +19,11 @@
 		<span>{compDet?.group}/{compDet?.code}.svelte</span>
 	</div>
 	<cite><p>"{@html citation}"<br />{@html author}</p></cite>
-	{#if $$slots.default}
+	{#if children}
 		<div class="flex-v gap-medium">
 			<h5>Component {component} demo :</h5>
 			<div class="marg-l-4">
 				<Slotted child={children} />
-				<!-- <slot /> -->
 			</div>
 		</div>
 	{/if}

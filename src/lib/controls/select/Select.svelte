@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
-	import Input from '$lib/controls/textfield/TextField.svelte';
+	import TextField from '$lib/controls/textfield/TextField.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Menu from '$lib/ui/menu/Menu.svelte';
@@ -80,22 +80,26 @@
 
 <input {value} bind:this={hiddenRef} type="hidden" {name} />
 <Popper {position} {stickToHookWidth} {autoClose} flow="fixed" isOpen={isVisible}>
-	<Input
-		slot="popperHolder"
-		bind:this={element}
-		on:blur={show(false)}
-		on:focus={show(true)}
-		on:keydown={() => {
-			console.log('red');
-		}}
-		placeholder="Select"
-		readonly
-		value=""
-		{style}
-		class={className}
-	>
-		<Icon slot="inputEnd" icon="chevron-down" />
-	</Input>
+	{#snippet popperHolder()}
+		<TextField
+			bind:this={element}
+			on:blur={show(false)}
+			on:focus={show(true)}
+			on:keydown={() => {
+				console.log('red');
+			}}
+			placeholder="Select"
+			readonly
+			value=""
+			{style}
+			class={className}
+		>
+			{#snippet inputEnd()}
+				<Icon icon="chevron-down" />
+			{/snippet}
+		</TextField>
+	{/snippet}
+
 	<Menu
 		style="width:100%;"
 		onclick={(event) => {
@@ -106,20 +110,12 @@
 	>
 		{#if data}
 			{#each data as dta}
-				<!-- <slot optionsData={dta}>
-						<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem>
-					</slot> -->
 				<Slotted child={children} slotArgs={{ optionsData: dta }}>
 					<MenuItem selected={value === 2} data={dta}>{dta?.[dataFieldName]}</MenuItem></Slotted
 				>
 			{/each}
 		{:else if options}
 			{#each options as option}
-				<!-- <slot optionsData={option}>
-						<MenuItem icon={option.icon} selected={value === 2} data={option}
-							>{option.text}</MenuItem
-						>
-					</slot> -->
 				<Slotted child={children} slotArgs={{ optionsData: options }}>
 					<MenuItem icon={option.icon} selected={value === 2} data={option}>{option.text}</MenuItem>
 				</Slotted>

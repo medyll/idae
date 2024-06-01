@@ -5,7 +5,10 @@
 
 <div>
 	<Confirm primary="confirm deletion">
-		<Button slot="initial">delete</Button>
-		<Button focus type="submit" size="auto">confirm</Button>
+		{#snippet confirmInitial()}
+			<Button>delete</Button>
+		{/snippet}
+
+		<Button type="submit" size="auto">confirm</Button>
 	</Confirm>
 </div>

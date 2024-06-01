@@ -31,14 +31,12 @@
 	bind:element
 	iconEnd={{ icon: chevron, rotation: isOpen ? 180 : 0 }}
 >
-	<!-- <slot /> -->
 	<Slotted child={children} />
 </Button>
 {#if isOpen && !disabled}
 	<Popper bind:isOpen parentNode={element} {...popperProps}>
 		<MenuList {...menuProps}>
 			<Slotted child={menuItem} />
-			<!-- <slot name="menuItem"></slot> -->
 		</MenuList>
 	</Popper>
 {/if}

@@ -23,8 +23,10 @@
 	};
 </script>
 
-<Looper {data} let:item>
-	<div>redss</div>
+<Looper {data}>
+	{#snippet children({ item })}
+		<div>redss</div>
+	{/snippet}
 </Looper>
 
 <ComponentDemo

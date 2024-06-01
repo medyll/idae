@@ -1,6 +1,6 @@
 <script lang="ts">
-	import List from '$lib/base/list/List.svelte';
-	import type { LisItemProps } from '$lib/base/list/types.js';
+	import ListItem from '$lib/data/list/ListItem.svelte';
+	import type { LisItemProps } from '$lib/data/list/types.js';
 	import type { PropsProxyProps } from '$lib/utils/engine/utils.js';
 	import { propsProxy } from '$lib/utils/engine/utils.js';
 	import appscheme from '../../../demoData/appscheme.json';
@@ -9,9 +9,9 @@
 	import Elementor from '$lib/base/elementor/Elementor.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Input from '$lib/controls/textfield/TextField.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 
-	let listItems: any[] = [];
+	let menuListItems: any[] = [];
 
 	let activeData: any;
 	let schemeName = 'Appscheme';
@@ -26,7 +26,7 @@
 		['secondary', `code${schemeName}`],
 		['icon', `icon${schemeName}`]
 	];
-	listItems = propsProxy(transformArgsBis, schemeData);
+	menuListItems = propsProxy(transformArgsBis, schemeData);
 
 	let debugValues: any[] = [];
 	$: if (activeData) {
@@ -34,25 +34,35 @@
 	}
 </script>
 
+s
+
 <Frame>
-	<MenuBar orientation="left" slot="drawerTop" title="Navigation bar ">
-		<Input placeholder="Search in Bar" style="position:relative;width:100%;" type="text" />
-	</MenuBar>
-	<List
-		bind:listItems
-		density="default"
-		onItemClick={openIn}
-		selectorField="idappscheme"
-		slot="drawerContent"
-		style="height:100%;"
-		title="Title List test"
-	>
-		<!-- <ListItem  data="{listItem?.data}">
-            <span slot="icon"><Icon fontSize="tiny" icon={listItem?.icon}/></span>
-            <span slot="primary">{null_to_empty(listItem?.primary)}...</span>
-            <span slot="action">{null_to_empty(listItem?.action)}</span>
-        </ListItem> -->
-	</List>
+	{#snippet drawerTop()}
+		<MenuBar orientation="left" title="Navigation bar ">
+			<Input placeholder="Search in Bar" style="position:relative;width:100%;" type="text" />
+		</MenuBar>
+	{/snippet}
+	{#snippet drawerContent()}
+		<MenuList
+			bind:menuListItems
+			density="default"
+			onItemClick={openIn}
+			selectorField="idappscheme"
+			style="height:100%;"
+			title="Title List test"
+		>
+			<ListItem data={menuListItems?.data}>
+				{#snippet menuItemFirst()}
+					<Icon fontSize="tiny" icon={menuListItems?.icon} />
+				{/snippet}
+				{menuListItems?.primary}
+				{#snippet menuItemLast()}
+					{menuListItems?.action}
+				{/snippet}
+			</ListItem>
+		</MenuList>
+	{/snippet}
+
 	{#snippet frameTop()}
 		<Header title={activeData?.[`nomAppscheme`]}>
 			{activeData?.[`nomAppscheme`]}

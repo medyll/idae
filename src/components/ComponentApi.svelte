@@ -63,16 +63,6 @@
 		</tbody>
 	</table>
 	<br />
-	<h5>Slots</h5>
-	{#each slots as slot}
-		<div class="flex" style="gap:0.5rem">
-			<h6>{slot.name}</h6>
-			<span>{@html slot.default}</span>
-			<span>{@html slot.slot_props}</span>
-			<span>{@html slot.fallback}</span>
-		</div>
-	{/each}
-	<br />
 	<h5>events</h5>
 	{#each events as event}
 		<div class="flex" style="gap:0.5rem">

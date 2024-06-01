@@ -23,7 +23,7 @@
 		action = () => {},
 		iconCancel = 'chevron-left',
 		children,
-		initial,
+		confirmInitial,
 		...rest
 	}: ConfirmProps = $props();
 
@@ -53,8 +53,8 @@
 <Content>somecontent</Content>
 <div {style} {...rest} class="confirm {className}">
 	{#if step === 'initial'}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			class={'confirm-initial ' + className}
 			in:fade|global
@@ -62,16 +62,7 @@
 			bind:this={initialRef}
 			title={tooltipInitial}
 		>
-			<!-- <slot name="initial"
-					><Button
-						variant="naked"
-						iconColor={iconColorInitial}
-						icon={iconInitial}
-						primary={primaryInitial}
-						title:tooltipInitial
-					/></slot
-				> -->
-			<Slotted child={initial}
+			<Slotted child={confirmInitial}
 				><Button
 					variant="naked"
 					iconColor={iconColorInitial}

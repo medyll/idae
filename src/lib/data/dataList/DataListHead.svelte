@@ -66,8 +66,6 @@
 			{/each}
 		{/if}
 	</Slotted>
-	<!-- <slot>
-	</slot> -->
 </div>
 
 <style lang="scss">

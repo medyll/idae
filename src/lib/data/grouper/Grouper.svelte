@@ -119,7 +119,6 @@
 				fieldTitle: groupByTitleField
 			})}
 		>
-			<!-- <slot item="red">group by {groupByField}</slot> -->
 			<Slotted child={children} slotArgs={{ item: 'red' }}>group by {groupByField}</Slotted>
 		</Button>
 	{/if}

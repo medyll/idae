@@ -35,7 +35,6 @@
 
 <div bind:this={holder} class="button button-action selected {variant} dense-{dense} {className}">
 	<Button {...rest} {dense} bind:element variant="naked">
-		<!-- <slot /> -->
 		<Slotted child={children} />
 	</Button>
 	<Button
@@ -51,7 +50,6 @@
 {#if isOpen && !disabled}
 	<Popper bind:isOpen parentNode={holder} stickToHookWidth={true} {...popperProps}>
 		<Slotted child={popperContent} />
-		<!-- <slot name="popperContent">{@render popperContent?.()}</slot> -->
 	</Popper>
 {/if}
 

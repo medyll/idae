@@ -92,18 +92,20 @@
 
 <ComponentDemo component="Grouper">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeAll} component="Popper" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div class="flex-h flex-align-middle gap-tiny">
-					<Grouper bind:groupedData bind:activeGroupField={activeGroupFieldAll} {...activeParams}
-						>{activeGroupFieldAll}</Grouper
-					>
-				</div>
+		<DemoPage code={codeAll} component="Popper" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="flex-h flex-align-middle gap-tiny">
+						<Grouper bind:groupedData bind:activeGroupField={activeGroupFieldAll} {...activeParams}
+							>{activeGroupFieldAll}</Grouper
+						>
+					</div>
+					<div class="flex-h flex-wrap">
+						<DemoerCode code={codePref} title="Choose fields" />
+						<DemoerCode code={codeButtonMode} title="Button mode" />
+					</div>
+				{/snippet}
 			</Demoer>
-			<div class="flex-h flex-wrap">
-				<DemoerCode code={codePref} title="Choose fields" />
-				<DemoerCode code={codeButtonMode} title="Button mode" />
-			</div>
 		</DemoPage>
 		<div>
 			<pre>

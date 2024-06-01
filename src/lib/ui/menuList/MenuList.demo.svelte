@@ -54,40 +54,42 @@
 	cite="A menu is not a list, it's just like a list but more and less"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Popper" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div class="flex-h flex-align-bottom gap-small">
-					<div class="pad-tiny">
-						<MenuList {...activeParams}>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-						</MenuList>
-						<h6 class="pad">A menu</h6>
+		<DemoPage code={codeSlot} component="Popper" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="flex-h flex-align-bottom gap-small">
+						<div class="pad-tiny">
+							<MenuList {...activeParams}>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+							</MenuList>
+							<h6 class="pad">A menu</h6>
+						</div>
+						<div class="pad">
+							<MenuList {...activeParams}>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem icon="home" selected={true}>menu item</MenuItem>
+								<MenuItem icon="close">menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+							</MenuList>
+							<h6 class="pad">A menu with icons</h6>
+						</div>
+						<div class="pad">
+							<MenuList {...activeParams}>
+								<MenuItem divider={true}>menu item</MenuItem>
+								<MenuItem icon="home" selected={true}>menu item</MenuItem>
+								<MenuItem icon="close">menu item</MenuItem>
+								<MenuItem divider={true}>menu item</MenuItem>
+								<MenuItem>menu item</MenuItem>
+							</MenuList>
+							<h6 class="pad">A menu with some dividers</h6>
+						</div>
 					</div>
-					<div class="pad">
-						<MenuList {...activeParams}>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem icon="home" selected={true}>menu item</MenuItem>
-							<MenuItem icon="close">menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-						</MenuList>
-						<h6 class="pad">A menu with icons</h6>
-					</div>
-					<div class="pad">
-						<MenuList {...activeParams}>
-							<MenuItem divider={true}>menu item</MenuItem>
-							<MenuItem icon="home" selected={true}>menu item</MenuItem>
-							<MenuItem icon="close">menu item</MenuItem>
-							<MenuItem divider={true}>menu item</MenuItem>
-							<MenuItem>menu item</MenuItem>
-						</MenuList>
-						<h6 class="pad">A menu with some dividers</h6>
-					</div>
-				</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div></ComponentDemo

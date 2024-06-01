@@ -10,11 +10,13 @@
 
 <div style="height:350px;width:450px;" class="what pos-rel overflow-hidden pad-1">
 	<DataList {data}>
-		<DataListHead slot="head">
-			<DataListCell field="index">index</DataListCell>
-			<DataListCell field="name">name</DataListCell>
-			<DataListCell field="otherName" style="flex:1">otherName</DataListCell>
-		</DataListHead>
+		{#snippet dataListHead()}
+			<DataListHead>
+				<DataListCell field="index">index</DataListCell>
+				<DataListCell field="name">name</DataListCell>
+				<DataListCell field="otherName" style="flex:1">otherName</DataListCell>
+			</DataListHead>
+		{/snippet}
 	</DataList>
 </div>
 

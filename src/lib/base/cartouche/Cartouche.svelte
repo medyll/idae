@@ -49,7 +49,7 @@
 	const chevronIcon = !isOpen ? 'chevron-down' : 'chevron-up';
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class:stacked
@@ -59,24 +59,19 @@
 	{style}
 >
 	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
-		{#if icon || cartoucheIcon || $$slots.cartoucheIcon}
+		{#if icon || cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
-				<!-- <slot name="cartoucheIcon">
-						<Icon {icon} />
-					</slot> -->
 				<Slotted child={cartoucheIcon}>
 					<Icon {icon} />
 				</Slotted>
 			</div>
 		{/if}
 		<div class="controlLabel {classes.controlLabel}">
-			{#if primary || cartouchePrimarySlot || $$slots.primarySlot}
-				<!-- <slot name="primarySlot">{primary}</slot> -->
+			{#if primary || cartouchePrimarySlot}
 				<Slotted child={cartouchePrimarySlot}>
 					{primary}
 				</Slotted>
 				<div>
-					<!-- <slot name="secondarySlot">{secondary ?? ''}</slot> -->
 					<Slotted child={cartoucheSecondarySlot}>
 						{secondary ?? ''}
 					</Slotted>
@@ -84,7 +79,7 @@
 			{/if}
 		</div>
 		<div class={showTitleDivider ? 'divider' : ''} style="flex:1" />
-		{#if cartoucheButtons || $$slots.cartoucheButtons}
+		{#if cartoucheButtons  s}
 			<div
 				onclick={(event) => {
 					event.preventDefault();
@@ -92,7 +87,6 @@
 				}}
 				class="cartoucheAction"
 			>
-				<!-- <slot name="cartoucheButtons" /> -->
 				<Slotted child={cartoucheButtons}></Slotted>
 			</div>
 		{/if}
@@ -105,7 +99,7 @@
 			{#if component}
 				<svelte:component this={component} {...componentProps} />
 			{/if}
-			<!-- <slot /> -->
+
 			<Slotted child={children} />
 		</div>
 	{/if}

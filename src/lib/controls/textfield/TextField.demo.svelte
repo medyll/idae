@@ -54,32 +54,36 @@
 
 <ComponentDemo component="Input">
 	<div class="flex-v gap-large">
-		<DemoPage title="Using slots" component="Input" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div class="pad flex-h flex-align-middle flex-wrap">
-					<div class="pad-1">
-						<Input {...activeParams}>
-							<Icon slot="inputStart" icon="close" />
-						</Input>
+		<DemoPage title="Using snippets" component="Input" code={codeSlot}>
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pad flex-h flex-align-middle flex-wrap">
+						<div class="pad-1">
+							<Input {...activeParams}>
+								<Icon slot="inputStart" icon="close" />
+							</Input>
+						</div>
+						<div class="pad-1">
+							<Input {...activeParams} />
+						</div>
+						<div class="pad-1">
+							<Input {...activeParams}>
+								<Icon slot="inputEnd" icon="close" />
+							</Input>
+						</div>
 					</div>
-					<div class="pad-1">
-						<Input {...activeParams} />
-					</div>
-					<div class="pad-1">
-						<Input {...activeParams}>
-							<Icon slot="inputEnd" icon="close" />
-						</Input>
-					</div>
-				</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Input" code={codeSlotProps}>
-			<Demoer parameters={parametersProps} componentArgs={componentArgsProps} let:activeParams>
-				<div class="pad flex-h">
-					<div class="pad-1">
-						<Input {...activeParams} />
+			<Demoer parameters={parametersProps} componentArgs={componentArgsProps}>
+				{#snippet children({ activeParams })}
+					<div class="pad flex-h">
+						<div class="pad-1">
+							<Input {...activeParams} />
+						</div>
 					</div>
-				</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

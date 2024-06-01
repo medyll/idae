@@ -41,23 +41,25 @@
 
 <ComponentDemo component="Backdrop">
 	<div class="flex-v gap-medium">
-		<DemoPage title="Using slots" code={codeSlot} component="Backdrop">
-			<Demoer {parameters} {componentArgs} let:activeParams>
-				<div style="width:350px;height:350px;position:realive;">
-					<Backdrop
-						bind:this={BackdropRef}
-						onclick={() => {
-							componentArgs.flow = 'relative';
-							BackdropRef.flow = 'relative';
-						}}
-						{...componentArgs}
-						{...activeParams}
-					>
-						<div class="flex-h flex-align-middle-center h-full">
-							<div class="pad-4 border radius-small theme-bg">some content</div>
-						</div>
-					</Backdrop>
-				</div>
+		<DemoPage title="Using snippets" code={codeSlot} component="Backdrop">
+			<Demoer {parameters} {componentArgs}>
+				{#snippet children({ activeParams })}
+					<div style="width:350px;height:350px;position:realive;">
+						<Backdrop
+							bind:this={BackdropRef}
+							onclick={() => {
+								componentArgs.flow = 'relative';
+								BackdropRef.flow = 'relative';
+							}}
+							{...componentArgs}
+							{...activeParams}
+						>
+							<div class="flex-h flex-align-middle-center h-full">
+								<div class="pad-4 border radius-small theme-bg">some content</div>
+							</div>
+						</Backdrop>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

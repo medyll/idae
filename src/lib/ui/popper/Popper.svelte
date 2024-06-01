@@ -94,12 +94,11 @@
 
 {#if popperHolder}
 	<div bind:this={holderSlotRef} style="position:relative;display:inline-block">
-		<!-- <slot name="popperHolder" /> -->
 		<Slotted child={popperHolder}></Slotted>
 	</div>
 {/if}
 {#if parentNode && ((isOpen && autoClose) || !autoClose)}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<!-- @ts-ignore -->
 	<div

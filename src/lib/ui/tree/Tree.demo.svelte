@@ -62,20 +62,22 @@
 	component="Tree"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Loading" title="Using slots">
-			<Demoer componentArgs={componentArgsSlot} let:activeParams parameters={parametersSlot}>
-				<div class="pos-rel flex-h">
-					<div style="width:250px;" class="h-large overflow-auto">
-						<Tree bind:selectedData {data} pathField="path" paths={pathsData} {...activeParams} />
+		<DemoPage code={codeSlot} component="Loading" title="Using snippets">
+			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pos-rel flex-h">
+						<div style="width:250px;" class="h-large overflow-auto">
+							<Tree bind:selectedData {data} pathField="path" paths={pathsData} {...activeParams} />
+						</div>
+						<div style="width:250px;" class="h-large overflow-auto">
+							<pre>{JSON.stringify(
+									selectedData.filter((x) => x),
+									null,
+									' '
+								)}</pre>
+						</div>
 					</div>
-					<div style="width:250px;" class="h-large overflow-auto">
-						<pre>{JSON.stringify(
-								selectedData.filter((x) => x),
-								null,
-								' '
-							)}</pre>
-					</div>
-				</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

@@ -82,27 +82,23 @@
 
 <ComponentDemo component="ToggleBar">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="ToggleBar" title="Using slots">
-			<Demoer
-				{multiple}
-				parameters={parametersSlot}
-				componentArgs={componentArgsSlot}
-				let:activeParams
-			>
-				<div class="pad pos-rel">
-					<ToggleBar style="width:350px;" {...activeParams}>
-						<Icon icon="carbon:progress-bar" slot="toggleBarIcon" />
-						<div slot="toggleBarButtons"><Button>button</Button></div>
-						<Button ratio="1/1" icon="search" slot="contentSwitcherIcon" />
-						<Finder
-							styleRoot="width:100%;"
-							size="full"
-							showSortMenu={true}
-							slot="contentSwitcherReveal"
-						/>
-						<!-- <Input  size="full" value="a slotted input" /> -->
-					</ToggleBar>
-				</div>
+		<DemoPage code={codeSlot} component="ToggleBar" title="Using snippets">
+			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
+				>{#snippet children({ activeParams })}
+					<div class="pad pos-rel">
+						<ToggleBar style="width:350px;" {...activeParams}>
+							<Icon icon="carbon:progress-bar" slot="toggleBarIcon" />
+							<div slot="toggleBarButtons"><Button>button</Button></div>
+							<Button ratio="1/1" icon="search" slot="contentSwitcherIcon" />
+							<Finder
+								styleRoot="width:100%;"
+								size="full"
+								showSortMenu={true}
+								slot="contentSwitcherReveal"
+							/>
+						</ToggleBar>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

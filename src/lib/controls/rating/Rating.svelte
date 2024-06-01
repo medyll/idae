@@ -29,16 +29,10 @@
 >
 	{#each [...Array(ratingBase)] as rate, idx}
 		{#if idx + 1 <= scored}
-			<!-- <slot name="ratingScoredIcon">
-					<Icon icon={scoredIcon} />
-				</slot> -->
 			<Slotted child={ratingScoredIcon}>
 				<Icon icon={scoredIcon} />
 			</Slotted>
 		{:else}
-			<!-- <slot>
-					<Icon icon={defaultIcon} />
-				</slot> -->
 			<Slotted child={children}>
 				<Icon icon={defaultIcon} />
 			</Slotted>

@@ -72,9 +72,8 @@
 			{/if}
 		</svg>
 	</div>
-	{#if $$slots.default || children || title}
+	{#if children || title}
 		<div>
-			<!-- <slot>{title}</slot> -->
 			<Slotted child={children}>{title}</Slotted>
 		</div>
 	{/if}

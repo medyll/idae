@@ -173,7 +173,6 @@
 	>
 		<div onclick={() => onSort(field)} class="cellHeader">
 			<div class="cellHeaderContent">
-				<!-- <slot /> -->
 				<Slotted child={children} />
 			</div>
 			{#if field && $dataListContext?.config?.isSortable}
@@ -204,7 +203,6 @@
 		style:maxWidth={$dataListContext.columns[field]?.width ?? minWidth}
 		{title}
 	>
-		<!-- <slot fieldData={$rowContext?.data?.[field] ?? {}} /> -->
 		<Slotted
 			child={children}
 			slotArgs={{

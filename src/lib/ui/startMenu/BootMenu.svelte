@@ -49,7 +49,7 @@
 				<Panel title="Pinned Items">
 					<div class="gridIcon">
 						{#each [...Array(9)] as key, val}
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
 							<!-- svelte-ignore a11y-no-static-element-interactions -->
 							<div
 								onclick={() => {

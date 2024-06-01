@@ -104,50 +104,48 @@
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Select" title="Using slots">
-			<Demoer
-				{multiple}
-				parameters={parametersSlot}
-				componentArgs={componentArgsSlot}
-				let:activeParams
-			>
-				<div class="pad-2 h-large pos-rel">
-					<Window title="Slotted window" frameId="slotted" {...activeParams}>
-						<Icon slot="windowIcon" icon="bx:window-alt" />
-						<div class="pad-4 align-center">some slotted content</div>
-					</Window>
-				</div>
+		<DemoPage code={codeSlot} component="Select" title="Using snippets">
+			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
+				>{#snippet children({ activeParams })}
+					<div class="pad-2 h-large pos-rel">
+						<Window title="Slotted window" frameId="slotted" {...activeParams}>
+							<Icon slot="windowIcon" icon="bx:window-alt" />
+							<div class="pad-4 align-center">some slotted content</div>
+						</Window>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="Select" title="Using props">
-			<!-- <div slot="code">ffbgf</div> -->
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div class="flex-h flex-align-middle pos-rel gap-medium">
-					<div>
-						<Button
-							onclick={() => {
-								openWindow('html', {
-									componentProps: { some: 'props', someother: 'deprops' },
-									contentHTML: '<div class="pad-4 align-center">some html content</div>'
-								});
-							}}
-						>
-							Window with html content
-						</Button>
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class="flex-h flex-align-middle pos-rel gap-medium">
+						<div>
+							<Button
+								onclick={() => {
+									openWindow('html', {
+										componentProps: { some: 'props', someother: 'deprops' },
+										contentHTML: '<div class="pad-4 align-center">some html content</div>'
+									});
+								}}
+							>
+								Window with html content
+							</Button>
+						</div>
+						<div>
+							<Button
+								onclick={() => {
+									openWindow('component', {
+										component: Debug,
+										componentProps: { some: 'props', someother: 'deprops' }
+									});
+								}}
+							>
+								Window with component
+							</Button>
+						</div>
 					</div>
-					<div>
-						<Button
-							onclick={() => {
-								openWindow('component', {
-									component: Debug,
-									componentProps: { some: 'props', someother: 'deprops' }
-								});
-							}}
-						>
-							Window with component
-						</Button>
-					</div>
-				</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

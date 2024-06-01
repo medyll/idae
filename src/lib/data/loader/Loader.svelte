@@ -60,14 +60,6 @@
 		<div bind:this={element} transition:fade|global class="loader {className}" {style} {...rest}>
 			<div class="loader-box">
 				{#if status === 'loading' || isLoading}
-					<!-- <slot name="loaderLoading">
-							<Icon
-								style="color:var(--sld-color-primary)"
-								icon={loadingIcon}
-								fontSize="medium"
-								rotate
-							/>
-						</slot> -->
 					<Slotted child={loaderLoading}>
 						<Icon
 							style="color:var(--sld-color-primary)"
@@ -78,34 +70,22 @@
 					</Slotted>
 				{/if}
 				{#if status === 'error' || isError}
-					<!-- <slot name="loaderError">
-							<Icon style="color:orange;" icon={errorIcon} fontSize="medium" />
-						</slot> -->
 					<Slotted child={loaderError}>
 						<Icon style="color:orange;" icon={errorIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 				{#if showSuccess && status === 'success'}
-					<!-- <slot name="loaderSuccess">
-							<Icon style="color:green;" icon={successIcon} fontSize="medium" />
-						</slot> -->
 					<Slotted child={loaderSuccess}>
 						<Icon style="color:green;" icon={successIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 				{#if status === 'empty' || isEmpty}
-					<!-- <slot name="loaderEmpty">
-							<Icon icon={emptyIcon} fontSize="medium" />
-						</slot> -->
 					<Slotted child={loaderEmpty}>
 						<Icon icon={emptyIcon} fontSize="medium" />
 					</Slotted>
 				{/if}
 
 				{#if Boolean(finalMessage)}
-					<!-- <slot name="loaderMessage">
-							<div class="loader-message">{finalMessage}</div>
-						</slot> -->
 					<Slotted child={loaderMessage}>
 						<div class="loader-message">{finalMessage}</div>
 					</Slotted>

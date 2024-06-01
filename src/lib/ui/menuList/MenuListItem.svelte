@@ -84,7 +84,7 @@
 		<Divider density="tight" expansion="centered" />
 	</li>
 {/if}
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : 'li'}
 	class="menuListItem {className} dense-{dense}"

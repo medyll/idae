@@ -107,44 +107,47 @@
 	cite="If you can slide, then there are chances you are a panel<br /> C. Quin 2013"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Panel" title="Using slots">
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div class=" w-full pad pos-rel">
-					<Paneler style="width:450px;height:450px;overflow:hidden;">
-						<PanelSlide class="overflow-x-hidden overflow-y-auto" open={true}>
-							<Panel data={{ some: 'data' }} title="Some Items">
-								<PanelGrid data={[...Array(9)]} let:data>
-									<div class="pad border radius-tiny">Some</div>
-									<div slot="zoomSlot" class="pad-4 text-center theme-bg-primary">Some large</div>
-								</PanelGrid>
-							</Panel>
-							<Panel title="More Items">
-								<PanelGrid data={[...Array(12)]} columns={6}>
-									<div class="pad border radius-tiny">More</div>
-								</PanelGrid>
-							</Panel>
-							<Panel title="Other Items">
-								<PanelGrid data={[...Array(7)]} columns={2}>
-									<div class="pad border radius-tiny">Others</div>
-								</PanelGrid>
-							</Panel>
-						</PanelSlide>
-						<PanelSlide
-							class="overflow-x-hidden overflow-y-auto"
-							let:panelSlideId
-							open={false}
-							let:data
-						>
-							<Panel title="Zoom area">
-								<PanelGrid data={[...Array(130)]} columns={1}>
-									<div class="pad border radius-tiny">
-										list item for {panelSlideId}
-									</div>
-								</PanelGrid>
-							</Panel>
-						</PanelSlide>
-					</Paneler>
-				</div>
+		<DemoPage code={codeSlot} component="Panel" title="Using snippets">
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class=" w-full pad pos-rel">
+						<Paneler style="width:450px;height:450px;overflow:hidden;">
+							<PanelSlide class="overflow-x-hidden overflow-y-auto" open={true}>
+								<Panel data={{ some: 'data' }} title="Some Items">
+									<PanelGrid data={[...Array(9)]}>
+										{#snippet children({ data })}
+											<div class="pad border radius-tiny">Some</div>
+											<div slot="zoomSlot" class="pad-4 text-center theme-bg-primary">
+												Some large
+											</div>
+										{/snippet}
+									</PanelGrid>
+								</Panel>
+								<Panel title="More Items">
+									<PanelGrid data={[...Array(12)]} columns={6}>
+										<div class="pad border radius-tiny">More</div>
+									</PanelGrid>
+								</Panel>
+								<Panel title="Other Items">
+									<PanelGrid data={[...Array(7)]} columns={2}>
+										<div class="pad border radius-tiny">Others</div>
+									</PanelGrid>
+								</Panel>
+							</PanelSlide>
+							<PanelSlide class="overflow-x-hidden overflow-y-auto" open={false}
+								>{#snippet children({ data, panelSlideId })}
+									<Panel title="Zoom area">
+										<PanelGrid data={[...Array(130)]} columns={1}>
+											<div class="pad border radius-tiny">
+												list item for {panelSlideId}
+											</div>
+										</PanelGrid>
+									</Panel>
+								{/snippet}
+							</PanelSlide>
+						</Paneler>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

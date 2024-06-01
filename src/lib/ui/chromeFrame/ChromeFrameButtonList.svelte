@@ -26,8 +26,6 @@
 					{value.title ?? value.frameId}
 				</Button>
 			</Slotted>
-			<!-- <slot chromeFrame={value}>
-			</slot> -->
 		</div>
 	{/each}
 </div>

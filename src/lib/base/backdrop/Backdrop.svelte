@@ -61,13 +61,9 @@
 					<Slotted child={backdropLoading}
 						><Icon icon="mdi:loading" fontSize="large" rotate /></Slotted
 					>
-					<!-- <slot name="backdropLoading">
-						<Icon icon="mdi:loading" fontSize="large" rotate />
-					</slot> -->
 				</div>
 			{:else}
 				<div class="backdrop-content-inner" bind:this={elementContentInner}>
-					<!-- <slot /> -->
 					<Slotted child={children} />
 				</div>
 			{/if}

@@ -79,20 +79,22 @@
 
 <ComponentDemo component="Select">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Select" title="Using slots">
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div class="pad-2">
-					<Select
-						{...activeParams}
-						let:optionsData
-						value="2"
-						name={'select'}
-						dataFieldName={'name'}
-						class=" w-large border-4"
-					>
-						<MenuItem data={optionsData}>{optionsData?.name}</MenuItem>
-					</Select>
-				</div>
+		<DemoPage code={codeSlot} component="Select" title="Using snippets">
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pad-2">
+						<Select
+							{...activeParams}
+							value="2"
+							name={'select'}
+							dataFieldName={'name'}
+							class=" w-large border-4"
+							>{#snippet children({ optionsData })}
+								<MenuItem data={optionsData}>{optionsData?.name}</MenuItem>
+							{/snippet}
+						</Select>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

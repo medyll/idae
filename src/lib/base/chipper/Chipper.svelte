@@ -30,9 +30,6 @@
 
 	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
 		{#if showChip}
-			<!-- <slot name="chipperChip">
-				<div class="defaultChip" />
-			</slot> -->
 			<Slotted child={chipperChip} />
 		{/if}
 	</chip>

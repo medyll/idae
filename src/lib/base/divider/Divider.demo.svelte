@@ -44,13 +44,15 @@
 1854"
 >
 	<div class=" flex-v gap-small">
-		<DemoPage title="Using slots" component="Divider" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-				<div class="pad">
-					<div class="pad">What is before</div>
-					<Divider {...activeParams} />
-					<div class="pad">And what is after</div>
-				</div>
+		<DemoPage title="Using snippets" component="Divider" code={codeSlot}>
+			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+				{#snippet children({ activeParams })}
+					<div class="pad">
+						<div class="pad">What is before</div>
+						<Divider {...activeParams} />
+						<div class="pad">And what is after</div>
+					</div>
+				{/snippet}
 			</Demoer>
 		</DemoPage>
 	</div>

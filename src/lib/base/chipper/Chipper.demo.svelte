@@ -65,17 +65,21 @@
 </script>
 
 <ComponentDemo component="Chipper">
-	<DemoPage title="Using slots" component="Chipper" code={codeSlot}>
-		<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot} let:activeParams>
-			<Chipper {...activeParams}>
-				<div class="pad-2">some content</div>
-				<div slot="chipperChip" class="theme-bg-primary radius-small w-full h-full"></div>
-			</Chipper>
+	<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
+		<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+			{#snippet children({ activeParams })}
+				<Chipper {...activeParams}>
+					<div class="pad-2">some content</div>
+					<div slot="chipperChip" class="theme-bg-primary radius-small w-full h-full"></div>
+				</Chipper>
+			{/snippet}
 		</Demoer>
 	</DemoPage>
 	<DemoPage title="Without slots" component="Chipper" code={codeProps}>
-		<Demoer parameters={parametersSlot} componentArgs={componentArgsProps} let:activeParams>
-			<Chipper {...activeParams} />
+		<Demoer parameters={parametersSlot} componentArgs={componentArgsProps}>
+			{#snippet children({ activeParams })}
+				<Chipper {...activeParams} />
+			{/snippet}
 		</Demoer>
 	</DemoPage>
 </ComponentDemo>

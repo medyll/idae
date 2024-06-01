@@ -58,7 +58,6 @@
 </script>
 
 <Box bind:element style="width:auto;" data-toastId={toastId} {isOpen} {...rest}>
-	<!-- <slot /> -->
 	<Slotted child={children} />
 </Box>
 

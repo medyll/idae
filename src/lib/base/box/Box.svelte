@@ -45,16 +45,10 @@
 {#if isOpen}
 	<div bind:this={element} class="box {className}" {style} {...rest}>
 		<TitleBar {hasMenu} {...closer}>
-			<!-- <slot name="titleBarTitle">{title ?? ''}</slot> -->
 			<Slotted child={titleBarTitle}>
 				{title ?? ''}
 			</Slotted>
 
-			<!-- <slot name="titleBarIcon">
-					{#if icon}
-						<Icon {icon} />
-					{/if}
-				</slot> -->
 			<Slotted child={titleBarIcon}>
 				{#if icon}
 					<Icon {icon} />
@@ -62,13 +56,11 @@
 			</Slotted>
 		</TitleBar>
 		<div class="box-content">
-			<!-- <slot>{@html content ?? ''}</slot> -->
 			<Slotted child={children}>
 				{@html content ?? ''}
 			</Slotted>
 		</div>
 		<div class="box-button-zone">
-			<!-- <slot name="boxBottomZone">{@html bottomZone ?? ''}</slot> -->
 			<Slotted child={boxBottomZone}>
 				{@html bottomZone ?? ''}
 			</Slotted>

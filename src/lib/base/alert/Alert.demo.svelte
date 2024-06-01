@@ -32,34 +32,38 @@
 	component="Alert"
 	cite="Then they were informed, then they were messaged, then they were alerted. Br Jhons, 1752"
 >
-	<DemoPage title="Using slots" component="Alert" code={code1}>
-		<Demoer {parameters} {componentArgs} let:activeParams>
-			<div class="flex-h flex-wrap flex-align-middle gap-medium">
-				<Alert {...activeParams}>hi !</Alert>
-				<Alert {...activeParams}>
-					Simple alert with a button
-					{#snippet topButtonSlot()}
-						<Button>button</Button>
-					{/snippet}
-				</Alert>
-				<Alert
-					{...activeParams}
-					on:alert:closed={() => {
-						alert('closed');
-					}}
-				>
-					Alert with button close
-					<div slot="messageSlot">description here here</div>
-					<Button data-close slot="buttonZoneSlot">close</Button>
-				</Alert>
-			</div>
+	<DemoPage title="Using snippets" component="Alert" code={code1}>
+		<Demoer {parameters} {componentArgs}>
+			{#snippet children({ activeParams })}
+				<div class="flex-h flex-wrap flex-align-middle gap-medium">
+					<Alert {...activeParams}>hi !</Alert>
+					<Alert {...activeParams}>
+						Simple alert with a button
+						{#snippet topButtonSlot()}
+							<Button>button</Button>
+						{/snippet}
+					</Alert>
+					<Alert
+						{...activeParams}
+						on:alert:closed={() => {
+							alert('closed');
+						}}
+					>
+						Alert with button close
+						<div slot="messageSlot">description here here</div>
+						<Button data-close slot="buttonZoneSlot">close</Button>
+					</Alert>
+				</div>
+			{/snippet}
 		</Demoer>
 	</DemoPage>
 	<DemoPage title="Using props" component="Alert" code={code2}>
-		<Demoer {parameters} {componentArgs2} let:activeParams>
-			<div class="flex-h flex-wrap gap-medium">
-				<Alert {...activeParams} />
-			</div>
+		<Demoer {parameters} {componentArgs2}>
+			{#snippet children({ activeParams })}
+				<div class="flex-h flex-wrap gap-medium">
+					<Alert {...activeParams} />
+				</div>
+			{/snippet}
 		</Demoer>
 	</DemoPage>
 </ComponentDemo>

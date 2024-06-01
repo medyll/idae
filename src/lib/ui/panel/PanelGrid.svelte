@@ -26,7 +26,7 @@
 	>
 		{#each data as dta}
 			{#if !isExpanded}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					onclick={() => {
@@ -35,7 +35,6 @@
 					class="panelGridThumb"
 					in:fade|global
 				>
-					<!-- <slot data={dta} /> -->
 					<Slotted child={children} slotArgs={{ data: dta }}></Slotted>
 				</div>
 			{/if}
@@ -54,7 +53,6 @@
 				/>
 			</div>
 			<div class="zoomSlot">
-				<!-- <slot name="zoomSlot" /> -->
 				<Slotted child={zoomSlot}></Slotted>
 			</div>
 		</div>

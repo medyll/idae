@@ -8,12 +8,11 @@
 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import TopBar from '$lib/ui//toggleBar/ToggleBar.svelte';
-	import List from '$lib/data/list/List.svelte';
-	import ListItem from '$lib/data/list/ListItem.svelte';
+
 	import { page } from '$app/stores';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-
-	// import wula from "src/theme/cssfabric.scss";
+	import MenuListItem from '../menuList/MenuListItem.svelte';
+	import MenuList from '../menuList/MenuList.svelte';
 
 	let { children, ...rest } = $props();
 
@@ -38,26 +37,24 @@ red
 <Login showLogin={false}>
 	<div class="h-full overflow-hidden flex-v">
 		<Taskbar>
-			<svelte:fragment slot="taskBarLeft">
+			{#snippet taskBarLeft()}
 				<box class="pad-1">
 					<h5>slotui</h5>
 				</box>
 				<a href="/tooling" use:link>link </a>
-			</svelte:fragment>
-			<ChromeFrameButtonList let:chromeFrame />
-			<!-- <slot name="userProfileSlot">
-				<button slot="taskBarRight" onclick={signOut}>signOut</button>
-			</slot> -->
-			<button slot="taskBarRight" onclick={signOut}>signOut</button>
+			{/snippet}
+			<ChromeFrameButtonList />
+			{#snippet taskBarRight()}<button onclick={signOut}>signOut</button>{/snippet}
 		</Taskbar>
 		<div id="layout" class="pos-rel flex-main overflow-hidden">
 			<!-- <Router {routes} /> -->
 			<Frame>
-				<div slot="drawerContent">nav left</div>
-				<div slot="content">
+				{#snippet drawerContent()}
+					nav left
+				{/snippet}
+				{#snippet frameContent()}
 					<Slotted child={children} />
-					<!-- <slot /> -->
-				</div>
+				{/snippet}
 			</Frame>
 			<!-- <ChromeFrameList
 				chromeListConfig={{
@@ -72,57 +69,30 @@ red
 			/> -->
 		</div>
 		<Drawer isOpen={false}>
-			<svelte:fragment slot="drawerTop">
+			{#snippet drawerTop()}
 				<TopBar title="Drawer with menu bar ">
-					<svelte:fragment slot="menuBarSwitcher">
+					{#snippet menuBarSwitcher()}
 						<div class="pad-1">
 							<input placeholder="Search in Bar" style="width:100%;" type="text" />
 						</div>
-					</svelte:fragment>
+					{/snippet}
 				</TopBar>
-			</svelte:fragment>
+			{/snippet}
 			<div class="pad-2">
-				<List onItemClick={() => {}}>
+				<MenuList onItemClick={() => {}}>
 					{#each [...Array(10)] as key, val}
-						<ListItem>
-							<span slot="primary">Some idioms {val}</span>
-							<span slot="secondary">secondary {val}</span>
-							<span slot="action"><button>fds de action</button></span>
-						</ListItem>
+						<MenuListItem>
+							{#snippet menuItemFirst()}
+								<span>Some idioms {val}</span>
+								<span>secondary {val}</span>
+							{/snippet}
+							{#snippet menuItemLast()}
+								<span><button>fds de action</button></span>
+							{/snippet}
+						</MenuListItem>
 					{/each}
-				</List>
+				</MenuList>
 			</div>
 		</Drawer>
 	</div>
 </Login>
-
-<!-- <StartMenu /> -->
-<!-- <Taskbar>
-		<svelte:fragment slot="taskBarLeft">
-			<Button
-				size="auto"
-				primary="svelte-components"
-				onclick={handleClick('svelte-components')}
-			/>
-			<IconButton
-					icon="barcode"
-					onclick={toggleStartMenu}
-					style="color:white;font-size: large"
-				/>
-			<Button
-				onclick={() => {
-					openCh('btn1');
-				}}>button frame 1</Button
-			>
-			<Button
-				onclick={() => {
-					openCh('btn2');
-				}}>button 2</Button
-			>
-		</svelte:fragment>
-		<ChromeFrameButtonList let:chromeFrame />
-		<TaskBarContent />
-		<svelte:fragment slot="taskBarRight">
-			<ThemeSwitcher />
-		</svelte:fragment>
-	</Taskbar> -->

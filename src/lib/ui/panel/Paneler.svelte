@@ -38,7 +38,6 @@
 	class={className}
 	{style}
 >
-	<!-- <slot></slot> -->
 	<Slotted child={children}></Slotted>
 </div>
 
