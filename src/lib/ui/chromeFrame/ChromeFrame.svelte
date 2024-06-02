@@ -1,6 +1,7 @@
 <svelte:options />
 
 <script lang="ts">
+	import { onEvent } from '$lib/utils/uses/event.js';
 	import { getChromeFrame } from './chromeFrame.utils.js';
 
 	type ChromeFrameProps = {
@@ -21,8 +22,8 @@
 </script>
 
 <div
-	on:chromeframe:hide
-	on:chromeframe:close
+	use:onEvent={{ event: 'chromeframe:hide', action: handleHide }}
+	use:onEvent={{ event: 'chromeframe:close', action: handleRemove }}
 	class="chrome-frame"
 	style="z-index:{$frameStore?.zIndex};display:{$frameStore?.minimized ? 'none' : ''}"
 >

@@ -47,7 +47,7 @@
 				Some tabs title
 			{/snippet}
 			{#snippet tabButtons()}
-				<Button bordered>button</Button>
+				<Button variant="bordered">button</Button>
 			{/snippet}
 			{#snippet tabsInner()}
 				<div class="h-full">
@@ -67,7 +67,6 @@
 				{#snippet children({ activeParams })}
 					<div style="height:450px;">
 						<Tabs
-							activeTabCode="tab1"
 							{...activeParams}
 							onTabClick={(e) => {
 								console.log(e);
@@ -81,7 +80,7 @@
 									Some tabs title
 								{/snippet}
 								{#snippet tabButtons()}
-									<Button bordered>button</Button>
+									<Button variant="bordered">button</Button>
 								{/snippet}
 								{#snippet tabsInner()}
 									<div class="h-full">

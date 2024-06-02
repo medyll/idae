@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 
@@ -139,7 +137,7 @@
 	ontouchcancel={move.cancel}
 />
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
 	class="slider {className} dense-{dense}"

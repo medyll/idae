@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 
 export type TabItem = {
 	label: string;
-	code: string;
+	code?: string;
 	secondary?: string | number;
 	withUid?: string | number;
 	withContent?: any;
@@ -16,15 +16,15 @@ export type TabsItemsProps = TabItem[];
 export type TabsProps = CommonProps & {
 	/** active tab */
 	activeTabCode?: string;
-	element: HTMLElement;
+	element?: HTMLElement;
 	/** tabs to display */
-	items: TabsItemsProps;
+	items?: TabsItemsProps;
 
 	/** orientation of the tabs */
-	orientation: 'horizontal' | 'vertical';
+	orientation?: 'horizontal' | 'vertical';
 
 	/** event handler for tab click */
-	onTabClick: (item: TabItem) => void;
+	onTabClick?: (item: TabItem) => void;
 	tabTitleMain?: Snippet;
 	tabLabel?: Snippet<[{ item: any }]>;
 	tabTitle?: Snippet;

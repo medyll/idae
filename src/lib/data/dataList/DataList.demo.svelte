@@ -1,12 +1,10 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import DataList from '$lib/data/dataList/DataList.svelte';
 	import DataListRow from '$lib/data/dataList/DataListRow.svelte';
 	import DataListCell from '$lib/data/dataList/DataListCell.svelte';
 	import DataListHead from '$lib/data/dataList/DataListHead.svelte';
 	import ComponentDemo from '$components/ComponentDemo.svelte';
-	import type { DataCellType } from './types.js';
+	import type { DataCellType, DataListProps } from './types.js';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 
 	let data = [...Array(50)].map((caches, index: number) => {
@@ -24,7 +22,7 @@
 		};
 	});
 
-	let columns: Record<string, DataCellType> = {
+	let columns: Record<string, Partial<DataCellType>> = {
 		index: { field: 'index' },
 		name: { field: 'name', width: '90px' },
 		group: { field: 'group' },
@@ -36,24 +34,7 @@
 		}
 	};
 
-	let columnsAppscheme: Record<string, DataCellType> = {
-		iconAppscheme: { field: 'iconAppscheme', width: '80px' },
-		nomAppscheme: { field: 'nomAppscheme', width: '190px' },
-		nomAppscheme_base: { field: 'nomAppscheme_base' },
-		nomAppscheme_type: { field: 'nomAppscheme_type', style: 'flex:1' }
-	};
-
-	let columnsAppschemeFields: Record<string, DataCellType> = {
-		iconAppscheme_field: { field: 'iconAppscheme_field', width: '80px' },
-		nomAppscheme_field: { field: 'nomAppscheme_field', width: '190px' },
-		nomAppscheme_field_type: { field: 'nomAppscheme_field_type' },
-		nomAppscheme_field_group: {
-			field: 'nomAppscheme_field_group',
-			style: 'flex:1'
-		}
-	};
-
-	function getRandomInt(max) {
+	function getRandomInt(max: number) {
 		return Math.floor(Math.random() * max);
 	}
 
@@ -107,7 +88,10 @@ is a datalist table <br /> B. Franklin, 1854"
 		<div class="what pos-rel pad">
 			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }}>
 				{#snippet children({ activeParams })}
-					<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
+					<DataList
+						style="max-height:250px;overflow:auto;width:450px;"
+						{...activeParams as DataListProps}
+					>
 						{#snippet dataListHead()}
 							<DataListHead>
 								<DataListCell field="index">index</DataListCell>
@@ -124,7 +108,10 @@ is a datalist table <br /> B. Franklin, 1854"
 		<div class="what pos-rel pad">
 			<Demoer {parameters} componentArgs={{ ...componentArgs, columns }}>
 				{#snippet children({ activeParams })}
-					<DataList style="max-height:250px;overflow:auto;width:450px;" {...activeParams}>
+					<DataList
+						style="max-height:250px;overflow:auto;width:450px;"
+						{...activeParams as DataListProps}
+					>
 						{#snippet dataListHead()}
 							<DataListHead>
 								<DataListCell field="index">index</DataListCell>

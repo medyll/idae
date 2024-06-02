@@ -19,19 +19,19 @@ export type FinderProps<T = Data> = {
 	defaultField: string;
 
 	/** show the opener button for the choice of fields */
-	showSortMenu: boolean;
+	showSortMenu?: boolean;
 
 	/** search mode : exact or partial match*/
-	mode: 'exact' | 'partial';
+	mode?: 'exact' | 'partial';
 
 	/** external bind use, to read filtered data */
-	filteredData: T[];
+	filteredData?: T[];
 
 	/** with of the root element using  presets */
-	sizeRoot: ElementProps['width'] | 'full';
+	sizeRoot?: ElementProps['width'] | 'full';
 
 	/** with of the input using  presets */
-	size: ElementProps['width'] | 'full';
+	size?: ElementProps['width'] | 'full';
 	/** with of the input using  presets */
-	tall: ElementProps['tall'];
+	tall?: ElementProps['tall'];
 };

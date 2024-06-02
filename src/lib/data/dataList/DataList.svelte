@@ -1,10 +1,8 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import { getContext, hasContext, setContext, type Snippet } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import DataListRow from './DataListRow.svelte';
-	import type { DataCellType, DataListStoreType, groupByOptions } from './types.js';
+	import type { DataCellType, DataListProps, DataListStoreType, groupByOptions } from './types.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import DataListHead from './DataListHead.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -17,73 +15,6 @@
 	export const sortingIcons = {
 		default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],
 		numeric: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending']
-	};
-
-	type DataListProps = {
-		/** className off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-
-		/** show or hide the dataList header */
-		showHeader: boolean;
-
-		/** is the datalist sortable */
-		isSortable: boolean;
-
-		/** order on which the sorted list is sorted */
-		sortByOrder: 'asc' | 'desc' | 'none' | string;
-
-		/** group field on which data will be grouped, can use dot notation as dot path */
-		groupByField?: string | string[];
-
-		/** options used when props.groupByField is defined */
-		groupByOptions: groupByOptions;
-
-		/** field used for selection */
-		selectorField: string;
-
-		fieldValue: any;
-
-		/** field value used for selection */
-		selectorFieldValue?: any;
-
-		/** binding, used when multiple buttons */
-		activeCommonSortField: string;
-
-		/** set noWrap = true to have ellipsis on all cells content */
-		noWrap: boolean;
-
-		/** set noWrap = true to have ellipsis on all header cells content */
-		noWrapHeader: boolean;
-
-		/** represents your data types used to display values */
-		dataTypes?: Record<string, any>;
-
-		/** data to loop through */
-		data: any[];
-
-		/** used only if data is provided */
-		idField?: string;
-
-		/** columns declaration */
-		columns: Record<string, DataCellType>;
-
-		/** Virtualizer instance for the list */
-		virtualizer: boolean;
-
-		/** Loading state of the list */
-		isLoading: boolean;
-
-		dataListHead?: Snippet;
-		dataListFooter?: Snippet;
-		dataListRow?: Snippet<[{ rawData: Data; item: Data }]>;
-		dataListCell?: Snippet<[{ fieldType: string; fieldName: string; fieldValue: any }]>;
-		groupTitleSlot?: Snippet<[{ item: Data }]>;
 	};
 
 	let {
@@ -234,7 +165,7 @@
 					<Slotted child={groupTitleSlot} slotArgs={{ item }}>
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
 							class="datalist-group-head"
 							onclick={() => {

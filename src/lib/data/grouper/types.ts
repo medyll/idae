@@ -19,7 +19,7 @@ export type GroupedDataType<T = Data> = [GroupTitleType, T[]][];
 
 export type GrouperProps<T = Data> = CommonProps & {
 	/** Grouper mode */
-	grouperMode: 'button' | 'menu';
+	grouperMode?: 'button' | 'menu';
 
 	/** Final grouped data as raw object */
 	groupedData: Record<string, T[]>;

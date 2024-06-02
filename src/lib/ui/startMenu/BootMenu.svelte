@@ -15,6 +15,7 @@
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import { writable } from 'svelte/store';
 	import Debug from '$lib/base/debug/Debug.svelte';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	const menuStore = writable<any>(null);
 
@@ -36,10 +37,10 @@
 {#if $startMenuStore}
 	<div
 		class="boot-menu"
-		on:panel-button-clicked={toggleSlidePanels}
 		transition:fade|global={{ duration: 50 }}
 		use:sx4u={{ position: 'absolute', radius: 8, w: 96, h: 64 }}
 		use:clickAway={{ action: toggleStartMenu }}
+		use:onEvent={{ event: 'panel-button-clicked', action: toggleSlidePanels }}
 	>
 		<div use:sx4u={{ p: 2, py: 2 }} style="margin-bottom:2rem">
 			<input style="width: 100%;" type="search" placeholder="Recherche" />
@@ -50,7 +51,7 @@
 					<div class="gridIcon">
 						{#each [...Array(9)] as key, val}
 							<!-- svelte-ignore a11y_click_events_have_key_events -->
-							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
 							<div
 								onclick={() => {
 									openWindow('try ' + val, {

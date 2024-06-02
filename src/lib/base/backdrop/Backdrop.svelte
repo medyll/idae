@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -23,6 +21,7 @@
 		flow = 'fixed',
 		autoClose = false,
 		isOpen = $bindable(),
+		onclick,
 		isLoading = false,
 		actions = actionsnope,
 		element,

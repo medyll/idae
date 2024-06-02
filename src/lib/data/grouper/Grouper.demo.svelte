@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Grouper, { type GroupedDataType } from './Grouper.svelte';
-	import Paper from '$lib/base/paper/Paper.svelte';
+	import Grouper from './Grouper.svelte';
 
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
@@ -26,11 +25,8 @@
 		};
 	});
 
-	let groupedTemplateData: GroupedDataType;
 	let groupedData: Record<string, any>;
 	let activeGroupFieldAll: any;
-	let activeGroupFieldPredefined: any;
-	let activeGroupField: any;
 
 	let parametersSlot: any = {
 		grouperMode: {
@@ -59,14 +55,14 @@
 	{data}
 	/>`;
 
-	let codePref = `<Grouper
+	let codePref: string = `<Grouper
 	bind:groupedData
 	bind:activeGroupField={activeGroupFieldPredefined}
 	groupListItems={['directory', 'subdirectory']}
 	{data}
 	/>`;
 
-	let codeButtonMode = `<Grouper
+	let codeButtonMode: string = `<Grouper
 	bind:activeGroupField
 	bind:groupedData
 	groupByField="directory"

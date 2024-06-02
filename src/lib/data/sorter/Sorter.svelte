@@ -12,10 +12,10 @@
 	let {
 		data = [],
 		sortedData = $bindable(data),
-		sortByField = undefined,
-		sortByTitleField = undefined,
+		sortByField,
+		sortByTitleField,
 		sortByOrder = 'none',
-		activeCommonSortField = '',
+		activeCommonSortField = $bindable(''),
 		sorterMode = 'button',
 		children,
 		sortListItems,

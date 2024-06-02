@@ -5,31 +5,31 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type { ButtonProps } from './types.js';
 	type IconButtonProps = CommonProps & {
 		/** Icon to be displayed */
 		icon: ElementProps['icon'];
 		showShip?: boolean;
 		/** Font size of the icon */
-		iconFontSize: ElementProps['iconSize'];
-		readonly element: HTMLButtonElement | null;
+		iconFontSize?: ElementProps['iconSize'];
+		readonly element?: HTMLButtonElement | null;
 
 		/** Aspect ratio of the icon button */
-		ratio: string;
+		ratio?: string;
 
 		/** Whether to show the chip or not */
-		showChip: boolean;
+		showChip?: boolean;
 
 		/** Rotation of the icon */
-		rotation: number;
+		rotation?: number;
 
 		/** Children   for the default content */
 		children?: Snippet;
-	};
-
-	let elementRef: HTMLButtonElement;
+	} & Partial<ButtonProps>;
 
 	let {
-		element = $bindable<HTMLButtonElement>(elementRef),
+		element,
 		style = '',
 		icon,
 		iconFontSize = 'small',
@@ -40,6 +40,6 @@
 	}: IconButtonProps = $props();
 </script>
 
-<Button data-iconButton {...rest} bind:element={elementRef} style="{style};aspect-ratio:{ratio};">
+<Button data-iconButton {...rest} bind:element style="{style};aspect-ratio:{ratio};">
 	<Icon {rotation} {icon} fontSize={iconFontSize} />
 </Button>

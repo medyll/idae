@@ -1,10 +1,10 @@
 <script lang="ts">
-  import {email, Hint, HintGroup, required, useForm, validators} from 'svelte-use-form';
+	// import {email, Hint, HintGroup, required, useForm, validators} from 'svelte-use-form';
 
-  const form = useForm();
+	// const form = useForm();
 </script>
 
-<form use:form>
+<!-- <form use:form>
     <h1>Login</h1>
 
     <input type="email" name="email" use:validators={[required, email]}/>
@@ -17,8 +17,8 @@
     <Hint for="password" on="required">This is a mandatory field</Hint>
 
     <button disabled={!$form.valid}>Login</button>
-</form>
+</form> -->
 
 <pre>
-    {JSON.stringify($form, null, " ")}
+    <!-- {JSON.stringify($form, null, " ")} -->
 </pre>

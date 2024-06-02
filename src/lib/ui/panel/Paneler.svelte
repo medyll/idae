@@ -6,6 +6,7 @@
 	import type { PanelContextType } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { CommonProps } from '$lib/types/index.js';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	type PanelerProps = CommonProps & {
 		/** Data to be displayed in the panel */
@@ -33,7 +34,7 @@
 </script>
 
 <div
-	on:panel-button-clicked={toggleSlidePanels}
+	use:onEvent={{ event: 'panel-button-clicked', action: toggleSlidePanels }}
 	transition:fade|global={{ duration: 50 }}
 	class={className}
 	{style}

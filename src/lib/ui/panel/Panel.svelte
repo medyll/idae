@@ -1,10 +1,9 @@
-<svelte:options />
-
-<script lang="ts">
+<script lang="ts" generics="T= Data">
 	import { getContext } from 'svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { PanelContextType, PanelProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Data } from '$lib/types/index.js';
 
 	let {
 		title = 'not set',
@@ -51,7 +50,7 @@
 		{#if hasPrev}
 			{#if panelButtonPrevious}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('prev');
@@ -72,7 +71,7 @@
 		{#if hasNext}
 			{#if panelButtonNext}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('next');

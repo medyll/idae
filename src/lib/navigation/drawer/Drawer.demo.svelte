@@ -1,15 +1,14 @@
 <script lang="ts">
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 
-	/* demo */
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	/* demo */
+	import type { DrawerProps } from './types.js';
 
-	let drawerRef: Drawer;
+	let drawerRef: any;
 	let withTopBar: boolean = false;
 	let attrs = {
 		primary: 'A Drawer',
@@ -44,12 +43,12 @@
 		}
 	};
 
-	let componentArgsSlot = {
+	let componentArgsSlot: DrawerProps = {
 		isOpen: defaultsArgsFromProps('isOpen', parametersSlot),
 		stickTo: defaultsArgsFromProps('stickTo', parametersSlot),
 		flow: defaultsArgsFromProps('flow', parametersSlot),
 		showOpenerIcon: defaultsArgsFromProps('showOpenerIcon', parametersSlot)
-	};
+	} as DrawerProps;
 
 	let parametersProps: any = {
 		...parametersSlot
@@ -92,11 +91,11 @@
 							{#snippet drawerTop()}
 								<div class="pad-2">Drawer's title</div>
 							{/snippet}
-							<div class="pad-2">Drawer's content</div>
-							{#snippet drawerBottom()}
+							{#snippet drawerFooter()}
 								<div class="pad-2">Drawer's bottom zone</div>
 							{/snippet}
-						</Drawer>s
+							<div class="pad-2">Drawer's content</div>
+						</Drawer>
 					</div>
 				{/snippet}
 			</Demoer>

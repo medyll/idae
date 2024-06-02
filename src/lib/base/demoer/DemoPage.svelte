@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { Snippet } from 'svelte';

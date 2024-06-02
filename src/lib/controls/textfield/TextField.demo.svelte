@@ -9,6 +9,7 @@
 	/* demo */
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
+	import type { TextFieldProps } from './types.js';
 
 	let parametersSlot: any = {
 		size: {
@@ -17,7 +18,7 @@
 		}
 	};
 
-	let componentArgsSlot = {
+	let componentArgsSlot: TextFieldProps = {
 		value: 'value',
 		size: defaultsArgsFromProps('size', parametersSlot)
 	};

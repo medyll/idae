@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
@@ -42,7 +40,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={className} {style} onclick={handleClick}>
 	<Slotted child={togglerIcon}>
 		<IconButton style="aspect-ratio:1/1" {icon} iconFontSize="small" />
@@ -51,7 +49,7 @@
 <div bind:this={element} style="display:none">
 	<div bind:this={thisRef} class="content-switcher">
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div onclick={handleClick}>
 			<Slotted child={backIcon}>
 				<Button ratio="1/1" icon={iconback} />

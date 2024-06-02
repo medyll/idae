@@ -13,7 +13,7 @@
 	let {
 		class: className = '',
 		element = $bindable(),
-		style = '',
+		style,
 		icon,
 		iconColor = '#666',
 		endIcon,
@@ -25,15 +25,15 @@
 		transparent = false,
 		value = $bindable(),
 		children,
-		inputFirst: inputStart,
-		inputLast: inputEnd,
+		inputFirst,
+		inputLast,
 		...rest
 	}: TextFieldProps = $props();
 
 	let niceIconStyle = '';
 
-	niceIconStyle += icon || inputStart ? 'padding-left:2.2rem;' : '';
-	niceIconStyle += endIcon || inputEnd ? 'padding-right:2.2rem;' : '';
+	niceIconStyle += icon || inputFirst ? 'padding-left:2.2rem;' : '';
+	niceIconStyle += endIcon || inputLast ? 'padding-right:2.2rem;' : '';
 
 	if (usePopper) {
 		usePopper.disabled = false;
@@ -43,19 +43,19 @@
 	}
 </script>
 
-{#if icon || endIcon || inputType === 'search' || inputStart || inputEnd}
+{#if icon || endIcon || inputType === 'search' || inputFirst || inputLast}
 	<div style="position:relative;display:contents">
-		{#if icon || inputStart}
-			<div class="inputStart">
-				<Slotted child={inputEnd}>
+		{#if icon || inputFirst}
+			<div class="inputFirst">
+				<Slotted child={inputLast}>
 					<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
 				</Slotted>
 			</div>
 		{/if}
-		{#if inputEnd || endIcon || inputType === 'search'}
-			<div class="inputEnd">
-				{#if inputEnd || endIcon}
-					<Slotted child={inputEnd}>
+		{#if inputLast || endIcon || inputType === 'search'}
+			<div class="inputLast">
+				{#if inputLast || endIcon}
+					<Slotted child={inputLast}>
 						<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
 					</Slotted>
 				{/if}

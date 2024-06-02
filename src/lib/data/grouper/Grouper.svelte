@@ -12,7 +12,7 @@
 		element = $bindable(),
 		style = '',
 		grouperMode = 'menu',
-		groupedData = {},
+		groupedData = $bindable({}),
 		groupedTemplateData = [],
 		groupListItems,
 		data,
@@ -21,7 +21,7 @@
 		groupByOrder = 'asc',
 		showUnGrouped = false,
 		ungroupedTitle = 'ungrouped',
-		activeGroupField = '',
+		activeGroupField = $bindable(''),
 		children,
 		...rest
 	}: GrouperProps = $props();

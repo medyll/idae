@@ -1,6 +1,4 @@
-<svelte:options runes={true} />
-
-<script lang="ts">
+<script lang="ts" generics="T=Record<string, any>">
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Switch from '$lib/controls/switch/Switch.svelte';
@@ -12,16 +10,16 @@
 	type Props = {
 		title?: string;
 		parameters: Record<string, Record<string, DemoerParameters>>;
-		componentArgs: Record<string, any>;
+		componentArgs?: T;
 		component?: SvelteComponent /** svelte component*/;
 		multiple?: Record<string, any>;
-		children?: Snippet<[{ activeParams: Record<string, any> }]>;
+		children?: Snippet<[{ activeParams: T }]>;
 	};
 
 	let {
 		title,
 		parameters = $bindable({}),
-		componentArgs = $bindable({}),
+		componentArgs = $bindable<T>({} as T),
 		component = $bindable(undefined),
 		multiple = {},
 		children

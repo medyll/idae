@@ -2,7 +2,7 @@ import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
 type DrawerTitleType = string;
-export type DrawerProps = CommonProps & {
+export type DrawerProps<T = any> = CommonProps & {
 	/** title of the drawer */
 	primary?: DrawerTitleType;
 

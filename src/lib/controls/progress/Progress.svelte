@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	type ProgressProps = {
 		/** className off the root component */

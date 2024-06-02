@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import { popper } from '$lib/ui/popper/usePopper.js';
 	import Icon from '$lib/base/icon/Icon.svelte';

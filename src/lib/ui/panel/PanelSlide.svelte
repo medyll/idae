@@ -16,7 +16,7 @@
 		open: boolean;
 
 		/** Component to be rendered in the panel */
-		componentc: SvelteComponent;
+		component?: SvelteComponent;
 
 		/** Flow of the panel */
 		flow?: ElementProps['flow'];
@@ -28,7 +28,7 @@
 		panelSlideId?: string;
 
 		/** Children   for the default content */
-		children?: Snippet;
+		children?: Snippet<[any]>;
 	};
 	let panelSlideRef: any;
 	let {

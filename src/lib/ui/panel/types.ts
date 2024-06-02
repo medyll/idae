@@ -9,18 +9,18 @@ export type PanelContextType = Writable<{
 	panels: Record<string, any>;
 }>;
 
-export type PanelGridProps = CommonProps & {
+export type PanelGridProps<T = Data> = CommonProps & {
 	/** Data to be displayed in the grid */
-	data?: Data;
+	data?: T[];
 
 	/** Number of columns in the grid */
-	columns: number;
+	columns?: number;
 
 	/** Whether the grid is expanded or not */
 	isExpanded?: boolean;
 
 	/** Children snippet for the default content */
-	children?: Snippet<[{ data: Data }]>;
+	children?: Snippet<[{ data: T }]>;
 
 	/** Slot for the zoomed in view */
 	panelGridZoom?: Snippet;
@@ -34,7 +34,7 @@ export type PanelProps<T = Data> = {
 	panelId?: string;
 
 	/** Data to be displayed in the panel */
-	data?: T[];
+	data?: T;
 
 	/** Whether to show navigation or not */
 	showNavigation?: boolean;

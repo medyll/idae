@@ -16,7 +16,7 @@
 </script>
 
 {#if componentCode && component}
-	<Paper density="kind" class="flex-v gap-small  shad-3" style="min-width:350px;">
+	<Paper class="flex-v gap-small  shad-3" style="min-width:350px;">
 		<div class="flex-h flex-align-middle gap-small">
 			<h4 class="  text-bold">
 				{component?.code}

@@ -42,6 +42,6 @@ export const alertDemoValues: DemoStoryProps<any> = {
 	},
 	message: {
 		type: 'string',
-		values: ['Alert message']
+		values: ['Some messages']
 	}
 };

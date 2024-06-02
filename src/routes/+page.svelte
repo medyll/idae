@@ -15,10 +15,11 @@
 	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
 	import type { LayoutData } from './$types.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	let uiContext = getContext<Writable<UiContextType>>('uiContext');
 	let BackdropRef;
 	let backdropVisible: boolean = $state(false);
-	let backdropComponentCode = $state();
+	let backdropComponentCode: string = $state<string>('');
 	let svelteLink = '';
 	//
 	$uiContext.drawerFlow = 'fixed';
@@ -26,11 +27,11 @@
 
 	let data: LayoutData;
 
-	const groupedData = groupCatalog(slotuiCatalog);
+	const groupedData: Record<string, any> = groupCatalog(slotuiCatalog);
 
 	function groupCatalog(catalog: any) {
 		return dataOp.groupBy(
-			Object.values(catalog).sort((a, b) => (a.name > b.name ? 1 : -1)),
+			Object.values(catalog).sort((a: any, b: any) => (a.name > b.name ? 1 : -1)),
 			'group'
 		);
 	}
@@ -91,7 +92,7 @@
 								</h5>
 								{#if Boolean(searchPreview(catalog.code))}
 									<div>
-										<Icon
+										<IconButton
 											onclick={() => {
 												backdropVisible = true;
 												backdropComponentCode = catalog.code;

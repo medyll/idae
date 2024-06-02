@@ -16,7 +16,7 @@
 	let activeData: any;
 	let schemeName = 'Appscheme';
 
-	const openIn = (event: PointerEvent, itemIndex: number) => {
+	const openIn = (event: Event) => {
 		activeData = event;
 	};
 
@@ -44,13 +44,12 @@ s
 	{#snippet drawerContent()}
 		<MenuList
 			bind:menuListItems
-			density="default"
+			dense="default"
 			onclick={openIn}
 			selectorField="idappscheme"
 			style="height:100%;"
-			title="Title List test"
 		>
-			<ListItem data={menuListItems?.data}>
+			<!-- <ListItem data={menuListItems?.data}>
 				{#snippet menuItemFirst()}
 					<Icon fontSize="tiny" icon={menuListItems?.icon} />
 				{/snippet}
@@ -58,7 +57,7 @@ s
 				{#snippet menuItemLast()}
 					{menuListItems?.action}
 				{/snippet}
-			</ListItem>
+			</ListItem> -->
 		</MenuList>
 	{/snippet}
 

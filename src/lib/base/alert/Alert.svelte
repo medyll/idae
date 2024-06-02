@@ -1,7 +1,4 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/controls/button/Button.svelte';

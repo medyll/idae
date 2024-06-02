@@ -9,6 +9,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Chipper from '$lib/base/chipper/Chipper.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	const dataListContext = getContext<Writable<DataListStoreType>>('dataListContext');
 	const inHeader = getContext<Writable<DataCellType[]>>('dataListHead');
@@ -147,13 +148,12 @@
   } */
 </script>
 
-<!-- on:resizer:start={resizeStart}
-		on:resizer:resize={resizeOn}
-		on:resizer:end={resizeEnd} -->
-
 {#if inHeader}
 	<div
 		bind:this={element}
+		use:onEvent={{ event: 'resizer:start', action: resizeStart }}
+		use:onEvent={{ event: 'resizer:resize', action: resizeOn }}
+		use:onEvent={{ event: 'resizer:end', action: resizeEnd }}
 		data-sortable={true}
 		data-column-id={columnId}
 		data-noWrap={noWrap}

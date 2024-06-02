@@ -6,6 +6,7 @@
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import type { ConfirmProps } from './types.js';
 	/* demo */
 
 	let parametersSlot: any = {};
@@ -98,7 +99,7 @@ V.Hugo 1850"
 		<DemoPage title="Using props" component="Chipper" code={codeProps}>
 			<Demoer parameters={parametersProps} componentArgs={componentArgsProps}>
 				{#snippet children({ activeParams })}
-					<Confirm {...activeParams} primary="confirm deletion" />
+					<Confirm {...activeParams as unknown as ConfirmProps} primary="confirm deletion" />
 				{/snippet}
 			</Demoer>
 		</DemoPage>

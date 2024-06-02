@@ -90,7 +90,7 @@
 						<ToolBar {...activeParams}>
 							<span>item 1</span>
 							<span>item 2</span>
-							<divider />
+							<divider></divider>
 							<span>item 3</span>
 							<span>item 4</span>
 						</ToolBar>

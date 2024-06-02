@@ -23,11 +23,18 @@ Maifield, 1996"
 		<div class="flex-v gap-medium">
 			<h6>Default props</h6>
 			<div>
-				<Finder class="marg-b" style="width:200px" bind:filteredData {data} />
+				<Finder defaultField="id" class="marg-b" style="width:200px" bind:filteredData {data} />
 			</div>
 			<h6>Automatic fields menu</h6>
 			<div>
-				<Finder class="marg-b" showSortMenu={true} style="width:200px" bind:filteredData {data} />
+				<Finder
+					defaultField="id"
+					class="marg-b"
+					showSortMenu={true}
+					style="width:200px"
+					bind:filteredData
+					{data}
+				/>
 			</div>
 		</div>
 	</div>

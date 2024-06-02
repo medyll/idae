@@ -7,6 +7,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import type { LoaderProps } from './types.js';
 	/* demo */
 
 	let parametersSlot: any = {
@@ -18,7 +19,7 @@
 
 	let componentArgsSlot = {
 		status: defaultsArgsFromProps('status', parametersSlot)
-	};
+	} as LoaderProps;
 
 	let codeSlot = `
 <Loader onstatuschange={() => {}}>

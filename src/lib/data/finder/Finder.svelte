@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import TextField from '$lib/controls/textfield/TextField.svelte';

@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import type { ElementProps } from '$lib/types/index.js';
@@ -15,7 +13,8 @@
 		rotate = false,
 		color,
 		rotation = 0,
-		ico
+		ico,
+		...rest
 	}: IconAppProps = $props();
 
 	const sizes: Record<ElementProps['iconSize'], string> = uiPresets.iconSize;

@@ -19,7 +19,7 @@
 		/** content can be set from a html string */
 		contentHTML?: any;
 		/** reference to the component's DOM container */
-		element: HTMLElement;
+		element?: HTMLElement;
 		/** parent of the window */
 		parentNode?: HTMLElement;
 		/** icon used on the left side*/
@@ -38,32 +38,32 @@
 		/** private */
 		componentInstance?: any;
 		/** whether the window is outer */
-		outer: boolean;
+		outer?: boolean;
 		/** Id of the component's instance */
-		frameId: string;
+		frameId?: string;
 		/** the title appears on the handle bar */
-		title: string;
+		title?: string;
 		/** boolean to show the window */
-		open: boolean;
+		open?: boolean;
 		/** state of the window */
-		minimized: boolean;
-		maximized: boolean;
+		minimized?: boolean;
+		maximized?: boolean;
 		/** is on top of others*/
-		active: boolean;
+		active?: boolean;
 		/** the secondaryTitle appears below the title */
-		secondaryTitle: string;
+		secondaryTitle?: string;
 		/** the description appears somewhere */
-		description: string;
+		description?: string;
 		/** shows or hide the handle, if dismissed, then the whole window is draggable */
-		showHandle: boolean;
+		showHandle?: boolean;
 		/** actions triggered on click*/
-		onClose: (args?: any) => void;
-		onCancel: (args?: any) => void;
-		onValidate: (args?: any) => void;
+		onClose?: (args?: any) => void;
+		onCancel?: (args?: any) => void;
+		onValidate?: (args?: any) => void;
 		/** buttons visible in the bottom bar */
-		hideAcceptButton: boolean;
-		hideCloseButton: boolean;
-		hideCancelButton: boolean;
+		hideAcceptButton?: boolean;
+		hideCloseButton?: boolean;
+		hideCancelButton?: boolean;
 		windowIcon?: Snippet;
 		windowButtonZone?: Snippet;
 	};

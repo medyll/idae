@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';

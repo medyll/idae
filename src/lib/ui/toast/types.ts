@@ -3,13 +3,13 @@ import type { Snippet, SvelteComponent } from 'svelte';
 
 export type ToastProps = CommonProps & {
 	/** Unique ID for the toast */
-	toastId: string;
+	toastId?: string;
 
 	/** Toast will safe close after delay */
-	autoClose: boolean;
+	autoClose?: boolean;
 
 	/** Default delay in milliseconds before auto closing  */
-	autoCloseDelay: number;
+	autoCloseDelay?: number;
 
 	/** Component to be rendered in the toast */
 	component?: SvelteComponent;
@@ -18,8 +18,8 @@ export type ToastProps = CommonProps & {
 	componentProps?: any;
 
 	/** ID of the toaster */
-	toasterId: string;
-	element: HTMLDivElement;
+	toasterId?: string;
+	element?: HTMLDivElement;
 	/** Children snippet for the default content */
 	children?: Snippet;
 };

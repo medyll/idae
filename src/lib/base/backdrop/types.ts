@@ -28,6 +28,7 @@ export interface BackdropProps extends CommonProps {
 		backdropContent?: string;
 		backdropContentInner?: string;
 	};
+	onclick?: (event: MouseEvent) => void;
 	children?: Snippet;
 	backdropLoading?: Snippet;
 }

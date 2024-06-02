@@ -236,6 +236,7 @@ export { default as Slotted } from '$lib/utils/slotted/Slotted.svelte';
 export * from '$lib/utils/uses/autofocus/autofocus.js';
 export * from '$lib/utils/uses/clickAway/clickAway.js';
 export * from '$lib/utils/uses/draggabler.js';
+export * from '$lib/utils/uses/event.js';
 export * from '$lib/utils/uses/makeOnTop.js';
 export * from '$lib/utils/uses/navigation.js';
 export * from '$lib/utils/uses/positioner.js';

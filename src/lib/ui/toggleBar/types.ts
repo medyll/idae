@@ -4,7 +4,7 @@ import type { Snippet } from 'svelte';
 
 export type ToggleBarProps = CommonProps & {
 	/** title of the toggle bar */
-	title: string;
+	title?: string;
 
 	/** icon of the toggle bar */
 	icon?: string;

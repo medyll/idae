@@ -5,6 +5,7 @@
 	import type { DataCellType } from './types.js';
 	import DataListCell from './DataListCell.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	let {
 		style,
@@ -50,9 +51,9 @@
 	let cssVars = setCssGrid($dataListContext.columns ?? []);
 </script>
 
-<!-- on:datalist:sort:clicked={doSort} -->
 <div
 	bind:this={element}
+	use:onEvent={{ event: 'datalist:sort:clicked', action: doSort }}
 	class:pos-sticky={stickyHeader}
 	class="datalist-head"
 	style="{style};{cssVars}"

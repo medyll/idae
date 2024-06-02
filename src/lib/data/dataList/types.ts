@@ -1,6 +1,73 @@
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
+export type DataListProps = {
+	/** className off the root component */
+	class?: string;
+
+	/** css style off the root component */
+	style?: string;
+
+	/** element root HTMLDivElement props */
+	element?: HTMLDivElement | null;
+
+	/** show or hide the dataList header */
+	showHeader?: boolean;
+
+	/** is the datalist sortable */
+	isSortable?: boolean;
+
+	/** order on which the sorted list is sorted */
+	sortByOrder?: 'asc' | 'desc' | 'none' | string;
+
+	/** group field on which data will be grouped, can use dot notation as dot path */
+	groupByField?: string | string[];
+
+	/** options used when props.groupByField is defined */
+	groupByOptions?: groupByOptions;
+
+	/** field used for selection */
+	selectorField?: string;
+
+	fieldValue?: any;
+
+	/** field value used for selection */
+	selectorFieldValue?: any;
+
+	/** binding, used when multiple buttons */
+	activeCommonSortField?: string;
+
+	/** set noWrap = true to have ellipsis on all cells content */
+	noWrap?: boolean;
+
+	/** set noWrap = true to have ellipsis on all header cells content */
+	noWrapHeader?: boolean;
+
+	/** represents your data types used to display values */
+	dataTypes?: Record<string, any>;
+
+	/** data to loop through */
+	data?: any[];
+
+	/** used only if data is provided */
+	idField?: string;
+
+	/** columns declaration */
+	columns?: Record<string, DataCellType>;
+
+	/** Virtualizer instance for the list */
+	virtualizer?: boolean;
+
+	/** Loading state of the list */
+	isLoadingDrawerProps?: boolean;
+
+	dataListHead?: Snippet;
+	dataListFooter?: Snippet;
+	dataListRow?: Snippet<[{ rawData: Data; item: Data }]>;
+	dataListCell?: Snippet<[{ fieldType: string; fieldName: string; fieldValue: any }]>;
+	groupTitleSlot?: Snippet<[{ item: Data }]>;
+};
+
 export type DataListHeadProps = {
 	style?: string;
 	element?: HTMLDivElement;
@@ -17,9 +84,9 @@ export type DataListRowProps<T> = CommonProps & {
 };
 export interface DataCellType {
 	/** internal use */
-	index: number;
+	index?: number;
 	/** column identifier data.id ?? generated */
-	columnId: string | number;
+	columnId?: string | number;
 	width: string;
 	/** applied inline css style to header */
 	headerStyle?: string;
@@ -38,7 +105,7 @@ export interface DataCellType {
 
 export type DataListCellProps = {
 	element?: HTMLElement;
-	field: string;
+	field?: string;
 	style?: string;
 	fieldType?: string;
 	columnId?: string | number;

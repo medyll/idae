@@ -1,6 +1,4 @@
-<svelte:options />
-
-<script lang="ts">
+<script lang="ts" generics="T">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -41,7 +39,7 @@
 		drawerFooter,
 		children,
 		...rest
-	}: DrawerProps = $props();
+	}: DrawerProps<T> = $props();
 
 	let dspStyle: string;
 
@@ -101,7 +99,6 @@
 	aria-orientation="vertical"
 	{...rest}
 >
-	ss
 	{#if showOpenerIcon}
 		<div class="drawer-opener" style={openerIconStyle[stickTo]}>
 			<IconButton

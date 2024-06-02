@@ -25,7 +25,7 @@
 		}
 	};
 
-	let componentArgsSlot = defaultsArgs(parametersSlot);
+	let componentArgs = defaultsArgs(parametersSlot);
 
 	let codeSlot = `
 <Switch  name={'switcher'} class="w-small" >
@@ -50,7 +50,7 @@
 <ComponentDemo component="Switch">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Switch" title="Using snippets">
-			<Demoer {parametersSlot} {componentArgsSlot}>
+			<Demoer parameters={parametersSlot} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad-2">
 						<Switch {...activeParams} name={'switcher'}></Switch>

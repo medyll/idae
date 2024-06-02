@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { BadgeProps } from './types.js';

@@ -2,10 +2,19 @@
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { componentCite } from '$lib/componentCite.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Snippet } from 'svelte';
 	/* export let component: string = '';
 	export let cite: string = componentCite?.[component] ?? ''; */
 
-	let { component, cite = componentCite?.[component] ?? '', children } = $props();
+	let {
+		component,
+		cite = componentCite?.[component] ?? '',
+		children
+	}: {
+		component: string;
+		cite: string;
+		children: Snippet;
+	} = $props();
 
 	let citation = componentCite?.[component.toLowerCase()]?.cite ?? '';
 	let author = componentCite?.[component.toLowerCase()]?.author ?? '';

@@ -126,7 +126,7 @@
 	{#each pathes as pat, k}
 		<div data-category={pat.path}>
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div
 				data-category-title={pat.path}
 				data-selected={selectedCategory === pat.path}

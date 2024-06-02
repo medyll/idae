@@ -10,6 +10,7 @@
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import { getContext, setContext } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	let {
 		class: className = '',
@@ -58,11 +59,11 @@
 	});
 </script>
 
-<!-- on:datalist:sort:clicked -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y-no_static_element_interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={element}
+	use:onEvent={{ event: 'datalist:sort:clicked', action: () => {} }}
 	onclick={() => {
 		if (data) handleClick(data);
 		if (data) handleSelect(data);

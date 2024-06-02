@@ -21,7 +21,7 @@
 		menuListItems: menuItemsList = $bindable(undefined),
 		data = $bindable(undefined),
 		role = 'menu',
-		onclick = undefined,
+		onclick,
 		showLastOnSelected = true,
 		actions = {
 			navigate(e: KeyboardEvent) {

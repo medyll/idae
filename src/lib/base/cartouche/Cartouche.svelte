@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';

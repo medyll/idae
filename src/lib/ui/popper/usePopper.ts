@@ -32,7 +32,7 @@ export function popper(node: HTMLElement, props?: UsePopperProps) {
 		destroy() {
 			node.removeEventListener('click', doPopperEvent);
 		},
-		update(useDefault: any) {
+		update(args: any) {
 			// fire event to parentNode
 			const event = new CustomEvent('popper:closed', { bubbles: true });
 			if (parentNode) parentNode.dispatchEvent(event);

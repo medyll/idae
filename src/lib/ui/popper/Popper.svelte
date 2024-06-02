@@ -99,7 +99,7 @@
 {/if}
 {#if parentNode && ((isOpen && autoClose) || !autoClose)}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<!-- @ts-ignore -->
 	<div
 		bind:this={element}

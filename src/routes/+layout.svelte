@@ -138,9 +138,9 @@
 						data={item}
 						href=".{sitePaths.component(item)}"
 						text={item?.name}
-					/>ss
+					/>
 				{/snippet}
-				{#snippet loopGroupTitle({ key, data, idx })}ss
+				{#snippet loopGroupTitle({ key, data, idx })}
 					<MenuListTitle class="text-bold bold border-b">
 						- Slotted {key}
 					</MenuListTitle>

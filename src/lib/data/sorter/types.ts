@@ -26,22 +26,22 @@ export type SorterProps = {
 	/** The data to sort */
 	data: Data[];
 	/** binding : final sorted data as raw object  */
-	sortedData: Data[];
+	sortedData?: Data[];
 
 	/** The field to sort by */
 	sortByField: string;
 
 	/** The title of the field to sort by */
-	sortByTitleField: string;
+	sortByTitleField?: string;
 	/** list of available sorts shown to user */
 	sortListItems?: string[];
 	/** The order to sort by */
-	sortByOrder: 'asc' | 'desc' | 'none' | string;
+	sortByOrder?: 'asc' | 'desc' | 'none' | string;
 
 	/** The active field to sort by */
-	activeCommonSortField: string;
+	activeCommonSortField?: string;
 	/** Sorter mode */
-	sorterMode: 'button' | 'menu' | 'free';
+	sorterMode?: 'button' | 'menu' | 'free';
 
 	children?: Snippet<[ButtonProps]>;
 };
