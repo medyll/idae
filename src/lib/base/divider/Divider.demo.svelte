@@ -5,34 +5,13 @@
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgsFromProps } from '../demoer/demoer.utils.js';
+	import { defaultsArgs } from '../demoer/demoer.utils.js';
+	import { DividerDemoValues } from './types.js';
 	/* demo */
 
-	let parametersSlot: any = {
-		density: {
-			type: 'density-preset',
-			values: ['none', 'tight', 'default', 'medium', 'kind']
-		},
-		expansion: {
-			type: 'expansion-preset',
-			values: ['full', 'padded', 'centered']
-		},
-		direction: {
-			type: 'direction-preset',
-			values: ['horizontal', 'vertical']
-		},
-		shadow: {
-			type: 'boolean',
-			values: [false, true]
-		}
-	};
+	let parametersSlot = DividerDemoValues;
 
-	let componentArgsSlot = {
-		density: defaultsArgsFromProps('density', parametersSlot),
-		expansion: defaultsArgsFromProps('expansion', parametersSlot),
-		direction: defaultsArgsFromProps('direction', parametersSlot),
-		shadow: defaultsArgsFromProps('shadow', parametersSlot)
-	};
+	let componentArgsSlot = defaultsArgs(parametersSlot);
 
 	let codeSlot = `
 	<Divider />`;

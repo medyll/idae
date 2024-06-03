@@ -4,19 +4,17 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { BoxProps } from './types.js';
 
-	let className = '';
-	export { className as class };
-
 	let {
+		class: className = '',
 		element = $bindable(),
 		style = '',
 		isOpen = $bindable(true),
 		showCloseControl = true,
 		hasMenu = false,
-		title = undefined,
-		icon = undefined,
-		content = undefined,
-		bottomZone = undefined,
+		title,
+		icon,
+		content,
+		bottomZone,
 		actions = {
 			open,
 			toggle,

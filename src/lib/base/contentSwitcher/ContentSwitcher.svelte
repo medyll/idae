@@ -11,8 +11,8 @@
 		icon = 'toggle',
 		iconback = 'chevron-left',
 		parent = undefined,
-		togglerIcon,
-		backIcon,
+		contentSwitcherTogglerIcon: togglerIcon,
+		contentSwitcherBackIcon: backIcon,
 		contentSwitcherReveal
 	}: ContentSwitcherProps = $props();
 

@@ -1,4 +1,10 @@
-import type { CommonProps, ElementProps, IconObj } from '$lib/types/index.js';
+import {
+	tallPreset,
+	type CommonProps,
+	type DemoStoryProps,
+	type ElementProps,
+	type IconObj
+} from '$lib/types/index.js';
 import type { Snippet, SvelteComponent } from 'svelte';
 export type CartoucheClasses = {
 	control: string;
@@ -10,7 +16,7 @@ export type CartoucheProps = CommonProps & {
 	/** className off the root component */
 	class?: string;
 	/** classNames off the whole component */
-	classes: CartoucheClasses;
+	classes?: CartoucheClasses;
 	/** css style off the root component */
 	style?: string;
 	/** element root HTMLDivElement props */
@@ -21,25 +27,65 @@ export type CartoucheProps = CommonProps & {
 	secondary?: string;
 	icon?: ElementProps['icon'];
 	/** can be set as a prop or as a className */
-	stacked: boolean;
+	stacked?: boolean;
 	component?: SvelteComponent;
-	componentProps: Record<string, any>;
+	componentProps?: Record<string, any>;
 	/** State of content is preserved while visibility is toggled */
-	keepCartoucheContent: boolean;
+	keepCartoucheContent?: boolean;
 	/** show the title divider line */
-	showTitleDivider: boolean;
+	showTitleDivider?: boolean;
 	/** show the default border style */
-	bordered: boolean;
-	isOpen: boolean;
+	bordered?: boolean;
+	isOpen?: boolean;
 	/** component actions	 */
-	actions: Record<'open' | 'toggle' | 'close', (event: Event) => void>;
+	actions?: Record<'open' | 'toggle' | 'close', (event: Event) => void>;
 	/** @deprecated */
-	dense: ElementProps['dense'];
-	tall: ElementProps['tall'];
+	dense?: ElementProps['dense'];
+	tall?: ElementProps['tall'];
 	//
 	children?: Snippet;
 	cartoucheIcon?: Snippet;
 	cartouchePrimary?: Snippet;
 	cartoucheSecondary?: Snippet;
 	cartoucheButtons?: Snippet;
+};
+
+export const cartoucheDemoValues: DemoStoryProps<CartoucheProps> = {
+	primary: {
+		type: 'string',
+		values: ['A smart title on a smart cartouche', 'second title']
+	},
+	secondary: {
+		type: 'string',
+		values: ['A smart subtitle on a smart cartouche', 'second subtitle']
+	},
+	icon: {
+		type: 'icon',
+		values: ['mdi:window', 'mdi:user', undefined]
+	},
+	stacked: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	showTitleDivider: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	bordered: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	isOpen: {
+		type: 'boolean',
+		values: [true, false],
+		default: true
+	},
+	tall: {
+		type: 'tall',
+		values: Object.keys(tallPreset),
+		default: tallPreset.default
+	}
 };

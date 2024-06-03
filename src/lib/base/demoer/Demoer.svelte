@@ -2,28 +2,17 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Switch from '$lib/controls/switch/Switch.svelte';
-	import type { DemoerParameters } from './types.js';
-	import type { Snippet } from 'svelte';
+	import type { DemoerProps, DemoerStoryProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { SvelteComponent } from 'svelte/compiler';
-
-	type Props = {
-		title?: string;
-		parameters: Record<string, Record<string, DemoerParameters>>;
-		componentArgs?: T;
-		component?: SvelteComponent /** svelte component*/;
-		multiple?: Record<string, any>;
-		children?: Snippet<[{ activeParams: T }]>;
-	};
 
 	let {
 		title,
-		parameters = $bindable({}),
+		parameters = $bindable({} as DemoerStoryProps<T>),
 		componentArgs = $bindable<T>({} as T),
-		component = $bindable(undefined),
+		component = $bindable(),
 		multiple = {},
 		children
-	}: Props = $props();
+	}: DemoerProps<T> = $props();
 
 	let activeParams = $state({ ...componentArgs });
 </script>
@@ -52,7 +41,7 @@
 										}
 									}}
 								/>
-								<!-- <svelte:component this={component} {componentArgs} {...multiple[tiple][params]} /> -->
+								<svelte:component this={component} {componentArgs} {...multiple[tiple][params]} />
 
 								<div class="pad-2 text-center">{tiple} {params}</div>
 							</div>
@@ -67,7 +56,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="border-b" />
+	<div class="border-b"></div>
 	<div class="flex-h marg-t-2">
 		<div class="pad-2 border-r">
 			<Icon icon="clarity:command-line" />
@@ -104,7 +93,7 @@
 											>
 												{finalValue}
 											</Button>
-											<div class="border-r pad-tb-1" />
+											<div class="border-r pad-tb-1"></div>
 										{/each}
 									{/if}
 								</div>

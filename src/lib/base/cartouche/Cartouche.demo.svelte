@@ -5,50 +5,14 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import { cartoucheDemoValues } from './types.js';
+	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
-	let parametersSlot: any = {
-		isOpen: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		bordered: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		showTitleDivider: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
-
-	let parametersProps: any = {
-		icon: {
-			type: 'icon',
-			values: ['mdi:tree', undefined]
-		},
-		primary: {
-			type: 'string',
-			values: ['A title', 'Or a title']
-		},
-		secondary: {
-			type: 'string',
-			values: ['Some subtitle', 'And some other subtitle', undefined]
-		},
-		...{ ...parametersSlot }
-	};
-
-	let componentArgs = {
-		isOpen: true
-	};
-
-	let componentProps = {
-		icon: 'mdi:tree',
-		primary: 'A title',
-		secondary: 'Some subtitle'
-	};
+	let parameters = cartoucheDemoValues;
+	let componentArgs = defaultsArgs(parameters);
 
 	let code1 = `
-<Cartouche {...activeParams} class="marg-tb-1">
+<Cartouche  class="marg-tb-1">
 	{#snippet cartoucheButtons()}
 		<Button size="medium">a button</Button>
 	{/snippet}
@@ -69,14 +33,13 @@
 		class="marg-tb-1" />`;
 </script>
 
-33
 <ComponentDemo
 	component="Cartouche"
 	cite="'Open up', they said. So we stacked<br /> G. Brahms, 1964"
 >
 	<div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="Cartouche" code={code1}>
-			<Demoer title="A simple cartouche" parameters={parametersSlot} {componentArgs}
+			<Demoer title="A simple cartouche" {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1">
 						{#snippet cartoucheButtons()}
@@ -95,7 +58,7 @@
 					</Cartouche>
 				{/snippet}
 			</Demoer>
-			<Demoer title="Some stacked cartouches" parameters={parametersSlot} {componentArgs}>
+			<Demoer title="Some stacked cartouches" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} stacked={true}>
 						{#snippet cartouchePrimary()}
@@ -113,7 +76,7 @@
 					</Cartouche>
 				{/snippet}
 			</Demoer>
-			<Demoer title="Some nested cartouches" parameters={parametersSlot} {componentArgs}
+			<Demoer title="Some nested cartouches" {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<Cartouche
 						{...activeParams}
@@ -137,11 +100,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Cartouche" code={code2}>
-			<Demoer
-				title="A simple cartouche"
-				parameters={parametersProps}
-				componentArgs={componentProps}
-			>
+			<Demoer title="A simple cartouche" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1" />
 				{/snippet}

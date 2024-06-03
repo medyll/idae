@@ -39,7 +39,7 @@
 				<Sorter sortByField="directory" bind:sortedData bind:activeCommonSortField {data} />
 				<Sorter sortByField="nestedData.uuid" bind:sortedData bind:activeCommonSortField {data} />
 			</div>
-			<Divider shadow />
+			<Divider shadowed />
 			<List selectorField="id" data={[...sortedData]} />
 		</div>
 		<div class="flex-h gap-small">

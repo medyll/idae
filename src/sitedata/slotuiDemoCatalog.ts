@@ -5,7 +5,11 @@ import  Box from '$lib/base/box/Box.demo.svelte';
 import  Cartouche from '$lib/base/cartouche/Cartouche.demo.svelte';
 import  Chipper from '$lib/base/chipper/Chipper.demo.svelte';
 import  Columner from '$lib/base/columner/Columner.demo.svelte';
+import  ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.demo.svelte';
 import  Divider from '$lib/base/divider/Divider.demo.svelte';
+import  Icon from '$lib/base/icon/Icon.demo.svelte';
+import  Paper from '$lib/base/paper/Paper.demo.svelte';
+import  TitleBar from '$lib/base/titleBar/TitleBar.demo.svelte';
 import  AutoComplete from '$lib/controls/autocomplete/AutoComplete.demo.svelte';
 import  Button from '$lib/controls/button/Button.demo.svelte';
 import  Checkbox from '$lib/controls/checkbox/Checkbox.demo.svelte';
@@ -43,7 +47,11 @@ box:{component:Box,name:"Box",code:"box",group:"base",root:"box"},
 cartouche:{component:Cartouche,name:"Cartouche",code:"cartouche",group:"base",root:"cartouche"},
 chipper:{component:Chipper,name:"Chipper",code:"chipper",group:"base",root:"chipper"},
 columner:{component:Columner,name:"Columner",code:"columner",group:"base",root:"columner"},
+contentswitcher:{component:ContentSwitcher,name:"ContentSwitcher",code:"contentswitcher",group:"base",root:"contentSwitcher"},
 divider:{component:Divider,name:"Divider",code:"divider",group:"base",root:"divider"},
+icon:{component:Icon,name:"Icon",code:"icon",group:"base",root:"icon"},
+paper:{component:Paper,name:"Paper",code:"paper",group:"base",root:"paper"},
+titlebar:{component:TitleBar,name:"TitleBar",code:"titlebar",group:"base",root:"titleBar"},
 autocomplete:{component:AutoComplete,name:"AutoComplete",code:"autocomplete",group:"controls",root:"autocomplete"},
 button:{component:Button,name:"Button",code:"button",group:"controls",root:"button"},
 checkbox:{component:Checkbox,name:"Checkbox",code:"checkbox",group:"controls",root:"checkbox"},

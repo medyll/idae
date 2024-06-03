@@ -33,6 +33,7 @@ export { default as Switch } from '$lib/controls/switch/Switch.svelte';
 export { default as TextField } from '$lib/controls/textfield/TextField.svelte';
 export { default as DataList } from '$lib/data/dataList/DataList.svelte';
 export { default as DataListCell } from '$lib/data/dataList/DataListCell.svelte';
+export { default as DataListeContext } from '$lib/data/dataList/DataListeContext.svelte';
 export { default as DataListHead } from '$lib/data/dataList/DataListHead.svelte';
 export { default as DataListRow } from '$lib/data/dataList/DataListRow.svelte';
 export { default as Finder } from '$lib/data/finder/Finder.svelte';

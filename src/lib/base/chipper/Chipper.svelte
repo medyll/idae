@@ -8,7 +8,7 @@
 		style,
 		element = $bindable<HTMLDivElement>(),
 		position = 'bottom',
-		status = 'primary',
+		theme: status = 'primary',
 		color = '',
 		content = '',
 		showChip = true,

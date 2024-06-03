@@ -1,4 +1,5 @@
 import type { IconObj } from '$lib/types/index.js';
+import type { DemoerStoryProps } from '../demoer/types.js';
 
 export type IconAppProps = {
 	/** icon name for iconify  */
@@ -29,4 +30,27 @@ export type IconAppProps = {
 
 	/** icon rotation */
 	rotation?: number;
+};
+
+export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
+	icon: {
+		type: 'string',
+		values: ['mdi:window', 'mdi:user', undefined]
+	},
+	fontSize: {
+		type: 'string',
+		values: ['small', 'medium', 'large', 'xlarge']
+	},
+	color: {
+		type: 'string',
+		values: ['#ff0000', '#00ff00', '#0000ff']
+	},
+	rotation: {
+		type: 'number',
+		values: [0, 45, 90, 180, 270]
+	},
+	rotate: {
+		type: 'boolean',
+		values: [true, false]
+	}
 };

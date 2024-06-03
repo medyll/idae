@@ -2,29 +2,21 @@
 	import ComponentDemo from '$components/ComponentDemo.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import Backdrop from './Backdrop.svelte';
+	import { BackdropDemoValues } from './types.js';
 
-	let BackdropRef;
-
-	let parameters: any = {
-		isOpen: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		flow: {
-			type: 'flow-preset',
-			values: ['absolute', 'fixed', 'relative']
-		},
-		isLoading: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
+	let parameters: any = BackdropDemoValues;
+	let componentArgs = defaultsArgs({
+		isOpen: true,
+		isLoading: false,
+		flow: 'relative'
+	});
 
 	let codeSlot = `
 	<Backdrop
 		flow="relative"
-		onclick={()=>{}}>
+		onclick={()=>{}}> 
 		<div class="flex-h flex-align-middle-center h-full">
 			<div class="pad-4 border radius-small theme-bg">
 				some content
@@ -32,11 +24,7 @@
 		</div>
 	</Backdrop>`;
 
-	$: componentArgs = {
-		isOpen: true,
-		isLoading: false,
-		flow: 'relative'
-	};
+	let BackdropRef: Backdrop;
 </script>
 
 <ComponentDemo component="Backdrop">

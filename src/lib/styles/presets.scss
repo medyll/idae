@@ -84,6 +84,15 @@
     }
 }
 
+@mixin elevation() {
+    @each $level in 0 through 5 {
+        &.elevation-#{$level},
+        &[elevation-#{$level}] {
+            box-shadow: var(--sld-elevation-#{$level});
+        }
+    }
+}
+
 @mixin data-hover {
     &:hover {
         border-color: var(--sld-hover-border-color);

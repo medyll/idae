@@ -1,29 +1,13 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { IconObj } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Snippet } from 'svelte';
-
-	type TitleBarProps = {
-		/** Function to be called when the close button is clicked */
-		onClose: () => void;
-
-		/** Determines if the title bar has a menu */
-		hasMenu: boolean;
-
-		/** Icon to be displayed in the title bar */
-		icon?: string | IconObj;
-		title?: string;
-		titleBarIcon?: Snippet;
-		titleBarTitle?: Snippet;
-		children?: Snippet;
-	};
+	import type { TitleBarProps } from './types.js';
 
 	let {
 		onClose,
 		hasMenu = false,
-		icon = undefined,
+		icon,
 		title,
 		titleBarIcon,
 		titleBarTitle

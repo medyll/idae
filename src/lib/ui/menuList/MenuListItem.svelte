@@ -81,7 +81,7 @@
 
 {#if dividerBefore}
 	<li role="separator">
-		<Divider density="tight" expansion="centered" />
+		<Divider dense="tight" expansion="centered" />
 	</li>
 {/if}
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -119,7 +119,7 @@
 </svelte:element>
 {#if divider}
 	<li role="separator">
-		<Divider density="tight" expansion="padded" />
+		<Divider dense="tight" expansion="padded" />
 	</li>
 {/if}
 

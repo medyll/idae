@@ -74,7 +74,7 @@
   height: 4px;
   transition: all 0.15;
 }
-.tab-floating-cell-slot {
+.tab-floating-cell-snip {
   border-radius: var(--tabs-floating-cell-slot-border-radius);
   min-height: 4px;
   background-color: var(--tabs-floating-cell-slot-background-color);

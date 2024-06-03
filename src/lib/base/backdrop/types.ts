@@ -1,6 +1,6 @@
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
-import type { S } from 'vitest/dist/reporters-yx5ZTtEV.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 
 export interface BackdropProps extends CommonProps {
 	/** backdrop class */
@@ -32,3 +32,26 @@ export interface BackdropProps extends CommonProps {
 	children?: Snippet;
 	backdropLoading?: Snippet;
 }
+
+export const BackdropDemoValues: DemoerStoryProps<BackdropProps> = {
+	isOpen: {
+		type: 'boolean',
+		values: [true, false],
+		default: true
+	},
+	autoClose: {
+		type: 'boolean',
+		values: [true, false],
+		default: true
+	},
+	isLoading: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	flow: {
+		type: 'flow-preset',
+		values: ['relative', 'absolute', 'fixed'],
+		default: 'fixed'
+	}
+};

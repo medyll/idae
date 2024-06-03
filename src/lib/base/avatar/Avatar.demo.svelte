@@ -5,13 +5,11 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import Avatar from './Avatar.svelte';
-	import { AvatarDemoValues } from './types.js';
+	import { AvatarDemoValues, type AvatarProps } from './types.js';
 
-	let parametersSlot: any = AvatarDemoValues;
+	let parameters: any = AvatarDemoValues;
 
-	let parametersProps = AvatarDemoValues;
-
-	let componentArgs = defaultsArgs(parametersSlot);
+	let componentArgs: AvatarProps = defaultsArgs(parameters);
 
 	let code1 = `
 <Avatar>
@@ -28,7 +26,7 @@
 >
 	<div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="Rating" code={code1}>
-			<Demoer parameters={parametersSlot} {componentArgs}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Avatar {...activeParams}>
 						<Icon icon={activeParams?.icon} />
@@ -37,7 +35,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Without slots" code={code2} component="Rating">
-			<Demoer parameters={parametersProps} {componentArgs}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Avatar {...activeParams} icon={activeParams?.icon} />
 				{/snippet}

@@ -11,12 +11,6 @@
 
 	let componentArgs = $state(defaultsArgs(parameters));
 
-	let componentArgs2 = {
-		...componentArgs,
-		text: 'Some informational message',
-		message: 'Some informational message'
-	};
-
 	let code1 = `
 <Alert {...activeParams}>
 	Simple alert with a button
@@ -62,7 +56,7 @@
 		</Demoer>
 	</DemoPage>
 	<DemoPage title="Using props" component="Alert" code={code2}>
-		<Demoer {parameters} componentArgs={componentArgs2}>
+		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<div class="flex-h flex-wrap gap-medium">
 					<Alert {...activeParams} />

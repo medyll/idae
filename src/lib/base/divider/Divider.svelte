@@ -2,50 +2,15 @@
 	/** extends button */
 	import type { ElementProps } from '$lib/types/index.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-
-	type DividerProps = {
-		/** className off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-
-		/**
-		 * margins applied to divider
-		 * @type {'none' | 'tight' | 'default' | 'medium' | 'kind'}
-		 */
-		density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-
-		/**
-		 * default direction of the divider
-		 * @type {'vertical' | 'horizontal'}
-		 */
-		direction?: 'vertical' | 'horizontal';
-
-		/**
-		 * expansion of the divider
-		 * @type {'full' | 'padded' | 'centered'}
-		 */
-		expansion?: 'full' | 'padded' | 'centered';
-
-		/** give shadow to divider */
-		shadow?: boolean;
-
-		/** give color to divider */
-		color?: string | null;
-	};
-
+	import type { DividerProps } from './types.js';
 	let {
 		class: className = '',
-		style = '',
+		style,
 		element = null,
-		density = 'default',
+		dense: density = 'default',
 		direction = 'horizontal',
 		expansion = 'full',
-		shadow = false,
+		shadowed: shadow = false,
 		color
 	}: DividerProps = $props();
 
@@ -61,8 +26,7 @@
 			centered: 'marg-ii-6'
 		}
 	};
-
-	let addStyle: string = style ?? '';
+	let addStyle: string = (style as unknown as string) ?? ('' as unknown as string);
 
 	const shadowClass = $derived(shadow ? 'shad-3' : '');
 

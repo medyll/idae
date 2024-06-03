@@ -104,6 +104,7 @@ export type IconObj = IconProps & {
 	class?: string;
 };
 
+/** @deprecated use demoer/DemoerStoryProps */
 export type DemoStoryProps<T> = {
 	[K in keyof T]: {
 		type: T[K] | K | string;
