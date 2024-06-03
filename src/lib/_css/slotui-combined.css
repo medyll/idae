@@ -1076,6 +1076,7 @@ input[type=submit] .loadingButtonZone {
   --sld-checkbox-background: var(--sld-color-background-alpha-high);
   --sld-checkbox-background-hover: var(--sld-color-primary);
   --sld-checkbox-background-checked: var(--sld-color-primary);
+  --sld-checkbox-background-indeterminate: var(--sld-color-primary-alpha-mid);
   --sld-checkbox-border-width: 2px;
   --sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
   --sld-checkbox-border-bottom-width: 2px;
@@ -1088,6 +1089,7 @@ input[type=submit] .loadingButtonZone {
 .checkbox {
   --preset-density: 2rem;
   min-height: 2rem;
+  transition: all 0.2s ease;
   appearance: none;
   outline: none;
   border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
@@ -1135,7 +1137,7 @@ input[type=submit] .loadingButtonZone {
   pointer-events: none;
 }
 .checkbox:checked, .checkbox:indeterminate {
-  background-color: var(--sld-checkbox-background-checked);
+  background-color: var(--sld-checkbox-background-indeterminate);
 }
 .checkbox:checked:hover, .checkbox:indeterminate:hover {
   background-color: var(--sld-checkbox-background-hover);
@@ -1316,12 +1318,12 @@ input[type=submit] .loadingButtonZone {
 .stepper.vertical {
   flex-direction: column;
 }
-.stepper .step {
+.stepper-step {
   padding: var(--stepper-pad);
   border-radius: var(--stepper-radius);
   margin-top: 10px;
 }
-.stepper .step.active {
+.stepper-step.active {
   color: var(--stepper-active-color);
 }
 /** switch.scss -----*/ 

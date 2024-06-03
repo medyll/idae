@@ -1,7 +1,7 @@
-<script lang="ts">
-	import type { CommonProps } from '$lib/types/index.js';
-	import type { Snippet } from 'svelte';
-	import type { StepType, StepperOrientation } from './types.js';
+<script lang="ts" generics="T = Data">
+	import type { StepperProps } from './types.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { Data } from '$lib/types/index.js';
 
 	export const actions = {
 		setActiveStep: function (step: number) {
@@ -9,37 +9,23 @@
 		}
 	};
 
-	type StepperProps = CommonProps & {
-		/** Number of steps
-		 * @type {StepType[]}
-		 */
-		steps: StepType[];
-
-		/** orientation of the stepper
-		 * @type {'horizontal' | 'vertical'}
-		 */
-		stepperOrientation: StepperOrientation;
-
-		/** Actual active step */
-		activeStep: number;
-		children: Snippet<[{ step: StepType; index: number }]>;
-	};
-
 	let {
-		steps = [],
+		steps = $bindable([]),
 		stepperOrientation = 'horizontal',
-		activeStep = 0,
+		activeStep = $bindable(0),
 		children
-	} = $props<StepperProps>();
+	}: StepperProps<T> = $props();
+
+	let child = children;
+
+	$inspect(steps);
 </script>
 
-<div class="stepper" {stepperOrientation}>
+<div class="stepper {stepperOrientation}">
 	{#each steps as step, index}
-		{#if children}
-			{@render children({ step, index })}
-		{:else}
-			<div title={step.text} class="step" />
-		{/if}
+		<div title={step.title} class="stepper-step">
+			<Slotted child={children} slotArgs={{ step, index }}>de</Slotted>
+		</div>
 	{/each}
 </div>
 

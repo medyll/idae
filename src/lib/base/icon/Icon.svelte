@@ -31,7 +31,7 @@
 	style = `display:inline-block;font-size:${sizes[finSize]};color:${finCol};${style}`;
 </script>
 
-{#key rotation}
+{#key [icon, iconName]}
 	<Icon
 		bind:this={element}
 		class="icon {className} {finRot}"

@@ -58,7 +58,7 @@
 
 <ComponentDemo component="Input">
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Input" code={codeSlot}>
+		<DemoPage title="Using snippets" component="TextField" code={codeSlot}>
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h flex-align-middle flex-wrap">

@@ -11,7 +11,7 @@
     &.vertical {
         flex-direction: column;
     }
-    .step {
+    &-step {
         padding: var(--stepper-pad);
         border-radius: var(--stepper-radius);
         margin-top: 10px;

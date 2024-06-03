@@ -10,11 +10,11 @@
 .stepper.vertical {
   flex-direction: column;
 }
-.stepper .step {
+.stepper-step {
   padding: var(--stepper-pad);
   border-radius: var(--stepper-radius);
   margin-top: 10px;
 }
-.stepper .step.active {
+.stepper-step.active {
   color: var(--stepper-active-color);
 }

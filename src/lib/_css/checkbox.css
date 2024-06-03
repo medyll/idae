@@ -2,6 +2,7 @@
   --sld-checkbox-background: var(--sld-color-background-alpha-high);
   --sld-checkbox-background-hover: var(--sld-color-primary);
   --sld-checkbox-background-checked: var(--sld-color-primary);
+  --sld-checkbox-background-indeterminate: var(--sld-color-primary-alpha-mid);
   --sld-checkbox-border-width: 2px;
   --sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
   --sld-checkbox-border-bottom-width: 2px;
@@ -14,6 +15,7 @@
 .checkbox {
   --preset-density: 2rem;
   min-height: 2rem;
+  transition: all 0.2s ease;
   appearance: none;
   outline: none;
   border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
@@ -61,7 +63,7 @@
   pointer-events: none;
 }
 .checkbox:checked, .checkbox:indeterminate {
-  background-color: var(--sld-checkbox-background-checked);
+  background-color: var(--sld-checkbox-background-indeterminate);
 }
 .checkbox:checked:hover, .checkbox:indeterminate:hover {
   background-color: var(--sld-checkbox-background-hover);

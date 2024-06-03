@@ -74,23 +74,4 @@ export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
 	}
 };
 
-export const TextFieldDemoValues2: DemoerStoryProps<TextFieldProps> = {
-	value: {
-		type: 'string',
-		values: ['hello', 'world']
-	},
-	icon: {
-		type: 'string',
-		values: ['search', 'close']
-	},
-	endIcon: {
-		type: 'string',
-		values: ['search', 'close']
-	},
-	size: {
-		type: 'string',
-		values: ['small', 'medium', 'large']
-	}
-};
-
 export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);

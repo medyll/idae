@@ -62,7 +62,6 @@
 	}
 
 	$effect(() => {
-		console.log(DrawerRef);
 		scrollSpy();
 	});
 

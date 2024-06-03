@@ -4,8 +4,7 @@
 	import Rating from './Rating.svelte';
 	import Demoer from '../../base/demoer/Demoer.svelte';
 	import DemoPage from '../../base/demoer/DemoPage.svelte';
-	import { RatingDemoValues } from './types.js';
-	import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+	import { parameters, componentArgs } from './types.js';
 
 	const ww = `
 <Rating>
@@ -16,8 +15,6 @@
 </Rating>`;
 
 	const ww2 = `<Rating defaultIcon="minus" scoredIcon="plus" scored={3} />`;
-
-	let { parameters, componentArgs } = demoerArgs(RatingDemoValues);
 </script>
 
 <ComponentDemo

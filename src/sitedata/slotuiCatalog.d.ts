@@ -41,11 +41,35 @@ export declare const slotuiCatalog: {
         readonly group: "base";
         readonly root: "columner";
     };
+    readonly contentswitcher: {
+        readonly name: "ContentSwitcher";
+        readonly code: "contentswitcher";
+        readonly group: "base";
+        readonly root: "contentSwitcher";
+    };
     readonly divider: {
         readonly name: "Divider";
         readonly code: "divider";
         readonly group: "base";
         readonly root: "divider";
+    };
+    readonly icon: {
+        readonly name: "Icon";
+        readonly code: "icon";
+        readonly group: "base";
+        readonly root: "icon";
+    };
+    readonly paper: {
+        readonly name: "Paper";
+        readonly code: "paper";
+        readonly group: "base";
+        readonly root: "paper";
+    };
+    readonly titlebar: {
+        readonly name: "TitleBar";
+        readonly code: "titlebar";
+        readonly group: "base";
+        readonly root: "titleBar";
     };
     readonly autocomplete: {
         readonly name: "AutoComplete";
@@ -130,12 +154,6 @@ export declare const slotuiCatalog: {
         readonly code: "grouper";
         readonly group: "data";
         readonly root: "grouper";
-    };
-    readonly list: {
-        readonly name: "List";
-        readonly code: "list";
-        readonly group: "data";
-        readonly root: "list";
     };
     readonly loader: {
         readonly name: "Loader";
@@ -226,6 +244,12 @@ export declare const slotuiCatalog: {
         readonly code: "contextrooter";
         readonly group: "utils";
         readonly root: "contextRooter";
+    };
+    readonly css: {
+        readonly name: "Css";
+        readonly code: "css";
+        readonly group: "utils";
+        readonly root: "css";
     };
     readonly looper: {
         readonly name: "Looper";

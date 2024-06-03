@@ -1,3 +1,4 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { iconSize, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import { uiPresets } from '$lib/utils/engine/presets.js';
@@ -83,3 +84,5 @@ export const ConfirmDemoValues: DemoerStoryProps<ConfirmProps> = {
 		default: iconSize.medium
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(ConfirmDemoValues);

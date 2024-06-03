@@ -67,7 +67,7 @@
 					{#each Object.keys(parameters) as parameter}
 						<tr>
 							<td class="w-medium-min text-bold">{parameter}</td>
-							<td>{parameters?.[parameter]?.type}</td>
+							<td>{parameters?.[parameter]?.type} </td>
 							<td>
 								<div class="flex flex-align-middle gap-small w-mid-min">
 									{#if parameters?.[parameter]?.type === 'boolean'}
@@ -80,6 +80,22 @@
 												}}
 											/>
 										</div>
+										<!-- {:else if parameters?.[parameter]?.type === 'array'}
+										array
+										{#each parameters?.[parameter]?.values ?? [] as value}
+											{@const finalValue = value === undefined ? 'unset' : value}
+											<Button
+												class="w-small-min"
+												variant="flat"
+												showChip={activeParams[parameter] === value}
+												onclick={() => {
+													activeParams[parameter] = value;
+												}}
+											>
+												{finalValue}
+											</Button>
+											<div class="border-r pad-tb-1"></div>
+										{/each} -->
 									{:else}
 										{#each parameters?.[parameter]?.values ?? [] as value}
 											{@const finalValue = value === undefined ? 'unset' : value}

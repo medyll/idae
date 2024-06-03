@@ -5,12 +5,7 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	import { type ConfirmProps, ConfirmDemoValues } from './types.js';
-
-	let parameters = ConfirmDemoValues;
-
-	let componentArgsProps = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 <Confirm {...activeParams}>
@@ -33,7 +28,7 @@ V.Hugo 1850"
 >
 	<div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
-			<Demoer {parameters} componentArgs={componentArgsProps}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Confirm {...activeParams}>
 						{#snippet confirmInitial()}
@@ -45,9 +40,9 @@ V.Hugo 1850"
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Chipper" code={codeProps}>
-			<Demoer {parameters} componentArgs={componentArgsProps}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<Confirm {...activeParams as unknown as ConfirmProps} primary="confirm deletion" />
+					<Confirm {...activeParams} primary="confirm deletion" />
 				{/snippet}
 			</Demoer>
 		</DemoPage>

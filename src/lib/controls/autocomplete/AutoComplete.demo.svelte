@@ -5,8 +5,7 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	import { AutoCompleteDemoValues } from './types.js';
+	import { parameters, componentArgs } from './types.js';
 
 	let data = [
 		{ id: 1, name: 'Wanda', surname: 'Wand', lastname: 'Groot', age: 23 },
@@ -16,10 +15,6 @@
 		{ id: 5, name: 'Mary', surname: 'Ma', lastname: 'Jane', age: 63 },
 		{ id: 6, name: 'Bruce', surname: 'Banner', lastname: 'Wayne', age: 73 }
 	];
-
-	let parametersSlot = AutoCompleteDemoValues;
-
-	let componentArgsSlot = defaultsArgs(parametersSlot);
 
 	let codeSlot = `
 <AutoComplete 
@@ -52,7 +47,7 @@
 <ComponentDemo component="AutoComplete">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="AutoComplete" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<AutoComplete
 						{...activeParams}
@@ -75,11 +70,11 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="AutoComplete" title="Using props">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<AutoComplete
-						{data}
 						{...activeParams}
+						{data}
 						onchange={() => {}}
 						class="marg-b"
 						placeholder="Search in list"

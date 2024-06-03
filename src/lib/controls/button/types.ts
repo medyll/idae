@@ -1,3 +1,4 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import {
 	buttonVariant,
@@ -61,7 +62,7 @@ export type ButtonMenuProps = ButtonProps & {
 	menuItem?: Snippet;
 };
 
-export const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
+const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 	type: {
 		type: 'string',
 		values: ['button', 'submit', 'reset'],
@@ -107,3 +108,5 @@ export const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 		default: false
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(ButtonDemoValues);

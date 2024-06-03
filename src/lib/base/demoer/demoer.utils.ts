@@ -6,20 +6,17 @@ export function demoerArgs<T = Record<string, any>>(
 	parameters: DemoerStoryProps<T>;
 	componentArgs: T;
 } {
-	const out = {} as DemoerStoryProps<T>;
-	for (const prop of Object.keys(parametersProps)) {
-		out[prop as keyof T] =
-			parametersProps[prop as keyof T]?.default ?? parametersProps[prop as keyof T]?.values?.[0];
-	}
+	console.log('defaultsArgs', defaultsArgs<T>({ ...parametersProps }));
 
-	return { parameters: out, componentArgs: defaultsArgs<T>(parametersProps) };
+	return { parameters: parametersProps, componentArgs: defaultsArgs<T>({ ...parametersProps }) };
 }
 
 export function defaultsArgs<T = Record<string, any>>(parametersProps: DemoerStoryProps<T>): T {
 	const out: T = {} as T;
 	for (const prop of Object.keys(parametersProps)) {
 		out[prop as keyof T] =
-			parametersProps[prop as keyof T]?.default ?? parametersProps[prop as keyof T]?.values?.[0];
+			parametersProps[prop as keyof T]?.default ??
+			{ ...parametersProps }[prop as keyof T]?.values?.[0];
 	}
 
 	return out;

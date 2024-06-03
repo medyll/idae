@@ -1,43 +1,32 @@
 <script lang="ts">
 	import Stepper from './Stepper.svelte';
-	/* demo */
+
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	/* demo */
 	import { parameters, componentArgs } from './types.js';
 
-	let parametersSlot: any = {
-		status: {
-			type: 'string',
-			values: ['loading', 'success', 'error', 'empty', undefined]
-		}
-	};
-
-	let componentArgsSlot = {
-		status: defaultsArgsFromProps('status', parametersSlot)
-	};
-
-	let codeSlot = ` `;
-
-	let codeProps = `
-<Loader
-    status={"loading"}
-    messages={{
-        loading: 'Loading dataset',
-        error  : 'An error occurred',
-        empty  : 'Empty results',
-        success: 'Success !'
-      }}
-    emptyIcon="mdi:database-search-outline"
-    errorIcon="mdi:alert-circle-outline"
-    loadingIcon="mdi:loading"
-    successIcon="clarity:success-standard-line" />`;
+	let code = `
+	<Stepper>
+	
+	</Stepper>`;
 </script>
 
 <ComponentDemo
 	component="Stepper"
 	cite="If a step was a leap it would soar over the next step.<br /> Clara Boxee 2010"
-></ComponentDemo>
+>
+	<div class="flex-v gap-large">
+		<DemoPage title="Using snippets" component="Stepper" {code}>
+			<Demoer {parameters} {...componentArgs}>
+				{#snippet children({ activeParams })}
+					<Stepper {...activeParams}>
+						{#snippet children(step)}
+							{step.title}, step
+						{/snippet}
+					</Stepper>
+				{/snippet}
+			</Demoer>
+		</DemoPage>
+	</div>
+</ComponentDemo>

@@ -12,6 +12,7 @@ export { default as ContentSwitcher } from '$lib/base/contentSwitcher/ContentSwi
 export { default as Debug } from '$lib/base/debug/Debug.svelte';
 export { default as Demoer } from '$lib/base/demoer/Demoer.svelte';
 export { default as DemoerCode } from '$lib/base/demoer/DemoerCode.svelte';
+export { default as DemoerComponent } from '$lib/base/demoer/DemoerComponent.svelte';
 export { default as DemoPage } from '$lib/base/demoer/DemoPage.svelte';
 export { default as Divider } from '$lib/base/divider/Divider.svelte';
 export { default as Icon } from '$lib/base/icon/Icon.svelte';

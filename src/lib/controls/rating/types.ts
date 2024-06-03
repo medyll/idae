@@ -1,3 +1,4 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
@@ -44,3 +45,5 @@ export const RatingDemoValues: DemoerStoryProps<RatingProps> = {
 		values: ['vertical', 'horizontal']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(RatingDemoValues);

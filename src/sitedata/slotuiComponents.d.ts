@@ -12,6 +12,7 @@ export { default as ContentSwitcher } from '$lib/base/contentSwitcher/ContentSwi
 export { default as Debug } from '$lib/base/debug/Debug.svelte';
 export { default as Demoer } from '$lib/base/demoer/Demoer.svelte';
 export { default as DemoerCode } from '$lib/base/demoer/DemoerCode.svelte';
+export { default as DemoerComponent } from '$lib/base/demoer/DemoerComponent.svelte';
 export { default as DemoPage } from '$lib/base/demoer/DemoPage.svelte';
 export { default as Divider } from '$lib/base/divider/Divider.svelte';
 export { default as Icon } from '$lib/base/icon/Icon.svelte';
@@ -33,7 +34,6 @@ export { default as Switch } from '$lib/controls/switch/Switch.svelte';
 export { default as TextField } from '$lib/controls/textfield/TextField.svelte';
 export { default as DataList } from '$lib/data/dataList/DataList.svelte';
 export { default as DataListCell } from '$lib/data/dataList/DataListCell.svelte';
-export { default as DataListeContext } from '$lib/data/dataList/DataListeContext.svelte';
 export { default as DataListHead } from '$lib/data/dataList/DataListHead.svelte';
 export { default as DataListRow } from '$lib/data/dataList/DataListRow.svelte';
 export { default as Finder } from '$lib/data/finder/Finder.svelte';

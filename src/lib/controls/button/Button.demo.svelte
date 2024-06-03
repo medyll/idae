@@ -9,30 +9,11 @@
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
-	import { ButtonDemoValues } from './types.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
-	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 
-	const menuData: MenuItemProps[] = [
-		{ text: 'text 1' },
-		{ text: 'text 2' },
-		{ text: 'text 3' },
-		{ text: 'text 3' },
-		{ text: 'text 3' },
-		{ text: 'text 3', icon: 'i' }
-	];
-
-	const variants: string[] = ['link', 'contained', 'bordered', 'naked'];
-
-	const usePopper: UsePopperProps = {
-		component: Debug,
-		componentProps: {
-			title: 'title box',
-			content: 'content'
-		}
-	};
+	import { parameters, componentArgs } from './types.js';
 
 	let multiple = {
 		bgTheme: {
@@ -49,7 +30,7 @@
 			values: uiPresets.position
 		}
 	};
-
+	/** */
 	let styleParameters: any = {
 		color: {
 			type: 'color-preset',
@@ -69,30 +50,6 @@
 		}
 	};
 
-	let parameters: any = ButtonDemoValues;
-
-	let parametersProps: any = {
-		icon: {
-			type: 'icon',
-			values: ['icon-park-outline:avatar', 'carbon:phone-ip']
-		},
-		iconSize: {
-			type: 'size-preset',
-			values: Object.keys(uiPresets.width)
-		},
-		iconColor: {
-			type: 'color',
-			values: ['red', 'green', '#564547', 'orange']
-		},
-		primary: {
-			type: 'string',
-			values: ['primary 1', 'primary 2']
-		},
-		...parameters
-	};
-
-	let componentArgs = defaultsArgs(parameters);
-
 	let code = `
 <Button onclick={()=>{}} >
 	My button
@@ -104,25 +61,7 @@
 	{/snippet}
 </Button>`;
 
-	let code2 = `
-<Button onclick={()=>{}} >
-	My button
-</Button>`;
-
-	let code3 = `
-const usePopper: UsePopperProps = {
-  component: Debug,
-  componentProps: {
-    title: "title box",
-    content: "content",
-  },
-};
-
-<Button
-  size="medium"
-  usePopper={{ ...usePopper, position: activeParams?.position }}
-  primary="Menu {activeParams?.position ?? ''}"
-/>`;
+	$inspect({ parameters, componentArgs });
 </script>
 
 <ButtonAction
@@ -143,13 +82,13 @@ const usePopper: UsePopperProps = {
 >
 	<div class="flex-v gap-medium">
 		<DemoPage title="Using snippets" {code} component="Button">
-			<Demoer {parameters} {componentArgs}>
+			<Demoer {parameters} componentArgs={{ ...componentArgs }}>
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}
 						>Using snippets
-						{#snippet buttonStart()}
-							<Icon icon="user" />
-						{/snippet}
+						<!-- {#snippet buttonStart()}
+							<Icon icon="user" /> 
+						{/snippet} -->
 
 						{#snippet buttonLoadingIcon()}
 							<Icon icon="loading" rotate />
@@ -188,23 +127,23 @@ const usePopper: UsePopperProps = {
 				</Button>
 			</Demoer>
 		</DemoPage>
-		<DemoPage title="Using props" code={code2} component="Button">
+		<!-- <DemoPage title="Using props" code={code2} component="Button">
 			<Demoer parameters={parametersProps} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}>Using props</Button>
 				{/snippet}
 			</Demoer>
-		</DemoPage>
-		<DemoPage title="" subTitle="Menu buttons" code={code3} component="Button">
+		</DemoPage> -->
+		<!-- <DemoPage title="" subTitle="Menu buttons" code={code3} component="Button">
 			<Demoer parameters={parametersMenu} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<!-- <Button
+					<Button
 					size="medium"
 					usePopper={{ ...usePopper, position: activeParams?.position }}
 					primary="Menu {activeParams?.position ?? ''}"
-				/> -->
+				/>
 				{/snippet}
 			</Demoer>
-		</DemoPage>
+		</DemoPage> -->
 	</div>
 </ComponentDemo>

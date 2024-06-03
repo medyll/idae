@@ -1,3 +1,4 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
@@ -29,7 +30,7 @@ export type AutoCompleteProps<T = Record<string, any>> = CommonProps & {
 	autoCompleteNoResults?: Snippet;
 };
 
-export const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
+const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
 	data: {
 		type: 'array',
 		values: [
@@ -56,3 +57,5 @@ export const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
 		default: 'exact'
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(AutoCompleteDemoValues);
