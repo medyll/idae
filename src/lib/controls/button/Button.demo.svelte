@@ -1,18 +1,19 @@
 <script lang="ts">
 	import type { MenuItemProps } from '$lib/ui/menu/types.js';
-	import type { PopperPositionType } from '$lib/ui/popper/types.js';
+	import Menu from '$lib/ui/menu/Menu.svelte';
+	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	import { type UsePopperProps } from '$lib/ui/popper/usePopper.js';
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import type { ElementProps } from '$lib/types/index.js';
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
+	import { ButtonDemoValues } from './types.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
-	import { Menu, MenuItem } from '$lib/index.js';
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 
 	const menuData: MenuItemProps[] = [
 		{ text: 'text 1' },
@@ -68,28 +69,7 @@
 		}
 	};
 
-	let parameters: any = {
-		variant: {
-			type: 'string',
-			values: variants
-		},
-		size: {
-			type: 'size-preset',
-			values: Object.keys(uiPresets.width)
-		},
-		dense: {
-			type: 'density-preset',
-			values: uiPresets.dense
-		},
-		loading: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		showChip: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
+	let parameters: any = ButtonDemoValues;
 
 	let parametersProps: any = {
 		icon: {
@@ -111,12 +91,7 @@
 		...parameters
 	};
 
-	let componentArgs = {
-		icon: 'icon-park-outline:avatar',
-		size: 'default',
-		iconSize: 'default',
-		showChip: false
-	};
+	let componentArgs = defaultsArgs(parameters);
 
 	let code = `
 <Button onclick={()=>{}} >
@@ -183,7 +158,7 @@ const usePopper: UsePopperProps = {
 				{/snippet}
 			</Demoer>
 		</DemoPage>
-		<DemoPage subTitle="Styling props" component="Button">
+		<DemoPage title="" subTitle="Styling props" component="Button">
 			<Demoer parameters={styleParameters} {multiple} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}
@@ -198,7 +173,7 @@ const usePopper: UsePopperProps = {
 				{/snippet}
 			</Demoer>
 		</DemoPage>
-		<DemoPage subTitle="Menu buttons" component="Button">
+		<DemoPage title="" subTitle="Menu buttons" component="Button">
 			<Demoer parameters={parametersMenu} {componentArgs}>
 				<Button>
 					default action
@@ -220,7 +195,7 @@ const usePopper: UsePopperProps = {
 				{/snippet}
 			</Demoer>
 		</DemoPage>
-		<DemoPage subTitle="Menu buttons" code={code3} component="Button">
+		<DemoPage title="" subTitle="Menu buttons" code={code3} component="Button">
 			<Demoer parameters={parametersMenu} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<!-- <Button

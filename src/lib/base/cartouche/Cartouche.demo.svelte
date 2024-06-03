@@ -4,7 +4,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { cartoucheDemoValues } from './types.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 

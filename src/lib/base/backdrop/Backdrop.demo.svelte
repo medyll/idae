@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';

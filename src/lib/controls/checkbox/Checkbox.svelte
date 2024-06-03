@@ -1,31 +1,7 @@
 <script lang="ts">
 	import type { CommonProps, ElementProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-
-	type CheckboxProps = Partial<HTMLInputElement> &
-		CommonProps & {
-			/** The label title for the checkbox. */
-			title?: string;
-			/** Checked state of the checkbox. */
-			checked?: boolean;
-
-			/** Indeterminate state of the checkbox. */
-			indeterminate?: boolean;
-
-			/** Sets the `value` attribute of the input element for form usage. */
-			value?: any;
-
-			/** Determines if the checkbox is disabled for user interaction and styles it accordingly. */
-			disabled?: boolean;
-
-			/** Provides a bound DOM reference to the checkbox's <input /> element. */
-			inputElement?: HTMLInputElement;
-
-			/** Provides a bound DOM reference to the checkbox's outer container element. */
-			labelElement?: HTMLLabelElement | null;
-
-			dense: ElementProps['dense'];
-		};
+	import type { CheckboxProps } from './types.js';
 
 	let {
 		title,
@@ -44,6 +20,7 @@
 
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>
 	<div class="checkbox-container dense-{dense}">
+		<!-- @ts-ignore -->
 		<input
 			bind:this={inputElement}
 			bind:checked

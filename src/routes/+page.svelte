@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import PreviewComponent from './../components/PreviewComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';

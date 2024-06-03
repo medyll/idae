@@ -1,3 +1,5 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
@@ -36,3 +38,59 @@ export type TextFieldProps = CommonProps & {
 	inputLast?: Snippet;
 	inputFirst?: Snippet;
 };
+
+export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
+	icon: {
+		type: 'string',
+		values: ['search', 'close']
+	},
+	iconColor: {
+		type: 'string',
+		values: ['primary', 'secondary']
+	},
+	endIcon: {
+		type: 'string',
+		values: ['search', 'close']
+	},
+	endIconColor: {
+		type: 'string',
+		values: ['primary', 'secondary']
+	},
+	size: {
+		type: 'size',
+		values: ['small', 'medium', 'large']
+	},
+	height: {
+		type: 'string',
+		values: ['small', 'medium', 'large']
+	},
+	borderless: {
+		type: 'boolean',
+		values: [true, false]
+	},
+	transparent: {
+		type: 'boolean',
+		values: [true, false]
+	}
+};
+
+export const TextFieldDemoValues2: DemoerStoryProps<TextFieldProps> = {
+	value: {
+		type: 'string',
+		values: ['hello', 'world']
+	},
+	icon: {
+		type: 'string',
+		values: ['search', 'close']
+	},
+	endIcon: {
+		type: 'string',
+		values: ['search', 'close']
+	},
+	size: {
+		type: 'string',
+		values: ['small', 'medium', 'large']
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);

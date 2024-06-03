@@ -1,20 +1,8 @@
 <script lang="ts" generics="T= Data">
-	import type { Snippet } from 'svelte';
-	import { dataOp, type ResolverPathType } from '../engine/utils.js';
-	import type { CommonProps, Data } from '$lib/types/index.js';
+	import { dataOp } from '$lib/utils/engine/utils.js';
+	import type { Data } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-
-	type LoopProps = CommonProps & {
-		class?: string;
-		data?: T[];
-		naked?: boolean;
-		title?: string;
-		groupBy?: ResolverPathType<T>;
-		tag?: string;
-		children?: Snippet<[{ item: T; idx: number }]>;
-		loopTitle?: Snippet;
-		loopGroupTitle?: Snippet<[{ key: any; data: any; idx: number }]>;
-	};
+	import type { LoopProps } from './types.js';
 
 	let {
 		class: className,
@@ -26,7 +14,7 @@
 		loopGroupTitle,
 		children,
 		...rest
-	}: LoopProps = $props();
+	}: LoopProps<T> = $props();
 
 	let groupedData: Record<string, T[]> | undefined = $derived.by(() => {
 		if (!groupBy) return undefined;

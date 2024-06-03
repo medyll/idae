@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts" generics="T= Data">
 	import type { Data } from '$lib/types/index.js';
 	import MenuList from '../menuList/MenuList.svelte';

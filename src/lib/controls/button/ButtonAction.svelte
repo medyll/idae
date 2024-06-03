@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { PopperProps } from '$lib/ui/popper/types.js';

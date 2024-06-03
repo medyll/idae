@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts" generics="T= Data">
 	import type { MenuListItemProps } from '../menuList/types.js';
 	import type { Data } from '$lib/types/index.js';

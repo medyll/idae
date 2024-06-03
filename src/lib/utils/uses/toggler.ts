@@ -32,6 +32,7 @@ export function togglerTarget(node: HTMLElement, props: { uid: string }) {
 	}
 
 	return {
+		update(props: { uid: string }) {},
 		destroy() {
 			document.removeEventListener('toggler:clicked', onClick);
 		}

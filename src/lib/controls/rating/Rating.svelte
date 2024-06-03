@@ -5,13 +5,13 @@
 
 	let {
 		class: className = '',
+		style,
 		element = $bindable(),
-		style = '',
-		ratingBase = 4,
-		scored = 0,
-		defaultIcon,
-		scoredIcon,
-		direction = 'horizontal',
+		ratingBase = $bindable(4),
+		scored = $bindable(0),
+		defaultIcon = $bindable('star'),
+		scoredIcon = $bindable('star-fill'),
+		direction = $bindable('horizontal'),
 		ratingScoredIcon,
 		children,
 		...rest

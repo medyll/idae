@@ -1,45 +1,41 @@
 <script lang="ts">
 	import AutoComplete from './AutoComplete.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	/* demo */
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	/* demo */
+	import { AutoCompleteDemoValues } from './types.js';
 
 	let data = [
-		{ id: 1, name: 'Wanda', surname: 'Zima', lastname: 'Groot' },
-		{ id: 2, name: 'George', surname: 'Bob', lastname: 'Groot' },
-		{ id: 3, name: 'Malthus', surname: 'Eren', lastname: 'Groot' }
+		{ id: 1, name: 'Wanda', surname: 'Wand', lastname: 'Groot', age: 23 },
+		{ id: 2, name: 'John', surname: 'Jo', lastname: 'Doe', age: 33 },
+		{ id: 3, name: 'Jane', surname: 'Jay', lastname: 'Doe', age: 43 },
+		{ id: 4, name: 'Peter', surname: 'Piotr', lastname: 'Parker', age: 53 },
+		{ id: 5, name: 'Mary', surname: 'Ma', lastname: 'Jane', age: 63 },
+		{ id: 6, name: 'Bruce', surname: 'Banner', lastname: 'Wayne', age: 73 }
 	];
 
-	let findData: any;
+	let parametersSlot = AutoCompleteDemoValues;
 
-	let parametersSlot: any = {
-		dataFieldName: {
-			type: 'string',
-			values: ['name']
-		},
-		searchField: {
-			type: 'string',
-			values: ['*', 'name']
-		}
-	};
-	// Object.keys(uiPresets.density)
-	let componentArgsSlot = {
-		...defaultsArgs(parametersSlot),
-		density: 'default'
-	};
+	let componentArgsSlot = defaultsArgs(parametersSlot);
 
 	let codeSlot = `
-<AutoComplete
-  let:menuItemData
-  class="marg-b"
-  placeholder="Search in list"
-  dataFieldName="name"
-  {data}>
-  <MenuItem>{menuItemData.name}</MenuItem>
+<AutoComplete 
+	class="marg-b"
+	placeholder="Search in list"
+	style="width:200px"
+	{data}>
+	{#snippet children(menuItemData)}
+		<MenuItem data={menuItemData}>{menuItemData.name} {menuItemData.lastname}</MenuItem>
+	{/snippet}
+	{#snippet autoCompleteEmpty()}
+		<div class="pad">No results found</div>
+	{/snippet}
+	{#snippet autoCompleteNoResults()}
+		<div class="pad">No results found</div>
+	{/snippet}
 </AutoComplete>`;
 
 	let codeProps = `
@@ -58,9 +54,21 @@
 		<DemoPage code={codeSlot} component="AutoComplete" title="Using snippets">
 			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
 				{#snippet children({ activeParams })}
-					<AutoComplete class="marg-b" placeholder="Search in list" style="width:200px" {data}>
+					<AutoComplete
+						{...activeParams}
+						class="marg-b"
+						placeholder="Search in list"
+						style="width:200px"
+						{data}
+					>
 						{#snippet children(menuItemData)}
 							<MenuItem data={menuItemData}>{menuItemData.name} {menuItemData.lastname}</MenuItem>
+						{/snippet}
+						{#snippet autoCompleteEmpty()}
+							<div class="pad">No results found</div>
+						{/snippet}
+						{#snippet autoCompleteNoResults()}
+							<div class="pad">No results found</div>
 						{/snippet}
 					</AutoComplete>
 				{/snippet}
@@ -71,7 +79,8 @@
 				{#snippet children({ activeParams })}
 					<AutoComplete
 						{data}
-						onPick={() => {}}
+						{...activeParams}
+						onchange={() => {}}
 						class="marg-b"
 						placeholder="Search in list"
 						style="width:200px"

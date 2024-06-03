@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts" generics="T= Data">
 	import type { AutoCompleteProps } from './types.js';
 
@@ -19,7 +17,7 @@
 		searchField = '*',
 		dataFieldName,
 		mode = 'partial',
-		filteredData = $bindable(data),
+		filteredData = $bindable<T[]>(data),
 		selectedIndex = $bindable(-1),
 		onchange = (args) => {},
 		showAllOnEmpty = true,
@@ -27,11 +25,11 @@
 		autoCompleteEmpty,
 		autoCompleteNoResults,
 		...rest
-	}: AutoCompleteProps<T> & Partial<HTMLInputElement> = $props();
+	}: AutoCompleteProps<T> & Partial<Omit<HTMLInputElement, 'style'>> = $props();
 
-	let searchString: string = $state(undefined);
+	let searchString: string | undefined = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);
-	let popperHTML: HTMLElement = $state(undefined);
+	let popperHTML: HTMLElement | undefined = $state(undefined);
 	let popperOpen: boolean = $state(false);
 
 	let menuRef: MenuList<T>;
@@ -101,7 +99,7 @@
 			onfocus={() => {
 				setTimeout(() => (popperOpen = true), 125);
 			}}
-			onkeydown={(e) => menuRef.actions.navigate(e, filteredData)}
+			onkeydown={(e: Event) => menuRef.actions.navigate(e, filteredData)}
 			{...rest}
 			aria-haspopup="menu"
 			aria-controls="menu"
@@ -126,7 +124,7 @@
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
 					onclick={(event) => {
-						onSelect(event.detail, prop.itemIndex);
+						onSelect(event.detail as T, prop.itemIndex);
 						popperOpen = false;
 						menuRef.actions.gotoIndex(prop.itemIndex);
 					}}

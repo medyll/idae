@@ -1,23 +1,5 @@
 <script lang="ts">
-	type ProgressProps = {
-		/** className off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-
-		/** base value for the progress */
-		percentBase?: number;
-
-		/** current value of the progress */
-		value: number;
-
-		/** can be vertical or horizontal */
-		direction: 'vertical' | 'horizontal';
-	};
+	import type { ProgressProps } from './types.js';
 
 	let {
 		class: className = '',
@@ -25,8 +7,9 @@
 		element = null,
 		percentBase = 100,
 		value = 0,
-		direction = 'horizontal'
-	} = $props() as ProgressProps;
+		direction = 'horizontal',
+		...rest
+	}: ProgressProps = $props();
 
 	const title = `${value} / ${percentBase}`;
 

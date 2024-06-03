@@ -20,7 +20,9 @@
         border: 0px solid none;
     }
 }
-
+@mixin ui-transition {
+    transition: all 0.2s ease;
+}
 @mixin ui-width-presets {
     &.wt,
     &[data-width="tiny"] {

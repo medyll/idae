@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Column from './Column.svelte';
 	import Columner from './Columner.svelte';
 </script>

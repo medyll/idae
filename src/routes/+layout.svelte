@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	/* import Prism from 'prismjs'; */
 	// fabric default vars

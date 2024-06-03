@@ -1,35 +1,5 @@
 <script lang="ts">
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
-
-	type SliderProps = CommonProps & {
-		/** element root HTMLDivElement props */
-		element?: HTMLDivElement | null;
-		/** Obtains a bound DOM reference to the slider's input element. */
-		elementInput?: HTMLInputElement | null;
-		/** Obtains a bound DOM reference to the slider's outer rail element. */
-		elementRail?: HTMLDivElement;
-		/** Obtains a bound DOM reference to the slider's track (fill) element. */
-		elementGutter?: HTMLDivElement;
-		/** Slider's value. */
-		value: number;
-		/** Minimum value. */
-		min: number;
-		/** Maximum value . */
-		max: number;
-		/** Steps size. */
-		step: number;
-		/** Determines if the slider's value tooltip will be shown. */
-		tooltip: boolean;
-		/** Slider's orientation. */
-		orientation: 'vertical' | 'horizontal';
-		/** Reverse th slider order . */
-		reverse: boolean;
-		/** Controls Slider  status. */
-		disabled: boolean;
-		/** Dense mode. */
-		dense?: ElementProps['dense'];
-		style: string;
-	};
+	import type { SliderProps } from './types.js';
 
 	let {
 		class: className = '',
@@ -44,7 +14,8 @@
 		step = 1,
 		orientation = 'horizontal',
 		reverse = false,
-		disabled = false
+		disabled = false,
+		onchange
 	}: SliderProps = $props();
 
 	let dragging = $state(false);
@@ -63,7 +34,9 @@
 
 	const move = {
 		handle() {
-			if (holding) dragging = true;
+			if (holding) {
+				dragging = true;
+			}
 		},
 		cancel() {
 			holding = false;
@@ -120,6 +93,7 @@
 	function getSliderVal(event: Event) {
 		// @ts-ignore
 		const { clientX, clientY } = (event.touches ? event.touches?.[0] : event) as TouchEvent;
+		// @ts-ignore
 		const { left, top, width, height } = elementRail?.getBoundingClientRect();
 		const offset = orientation === 'horizontal' ? clientX - left : top + height - clientY;
 		const size = orientation === 'horizontal' ? width : height;
@@ -150,7 +124,7 @@
 	bind:this={element}
 >
 	<div class="slider-gouge" bind:this={elementRail}>
-		<div class="slider-gouge-selected" style="width: {percentage}%;"></div>
+		<div class="slider-gouge-selected" style="width:{percentage}%;"></div>
 	</div>
 
 	<div
@@ -162,7 +136,17 @@
 		style="left: {percentage}%;transform: translateX(-50%);"
 	></div>
 
-	<input hidden type="range" bind:this={elementInput} {disabled} {value} {min} {max} {step} />
+	<input
+		{onchange}
+		hidden
+		type="range"
+		bind:this={elementInput}
+		{disabled}
+		{value}
+		{min}
+		{max}
+		{step}
+	/>
 </div>
 
 <style lang="scss">

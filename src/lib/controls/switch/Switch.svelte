@@ -1,39 +1,8 @@
-<svelte:options runes />
-
-<script lang="ts">
+<script lang="ts" generics="T=Data">
 	//
 	import type { Data } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Snippet } from 'svelte';
-
-	type SwitchProps = {
-		/** className off the root component */
-		class?: string;
-
-		/** css style off the root component */
-		style?: string;
-
-		/** element root HTMLDivElement props */
-		element?: HTMLElement | null;
-
-		/** name of the switch */
-		name?: string;
-
-		/** whether the switch is checked */
-		checked: boolean;
-
-		/** whether the switch is disabled */
-		disabled: boolean;
-
-		/** metadata associated with the switch */
-		metaData: Data;
-
-		/** function to be called when the switch is toggled */
-		onChange: (val: boolean, metaData: Data) => void;
-
-		children?: Snippet;
-		switchLabel?: Snippet;
-	};
+	import type { SwitchProps } from './types.js';
 
 	let {
 		class: className = '',
@@ -42,11 +11,11 @@
 		name = $bindable<string>(undefined),
 		checked = $bindable<boolean>(false),
 		disabled = $bindable<boolean>(false),
-		metaData = {},
-		onChange = (val: boolean, metaData: Data) => {},
+		metaData,
+		onChange = (val: boolean, metaData: T) => {},
 		children,
 		switchLabel
-	}: SwitchProps = $props();
+	}: SwitchProps<T> = $props();
 
 	let hiddenRef: HTMLInputElement;
 </script>
@@ -58,8 +27,8 @@
 	<div class="switchGutter">
 		<input
 			onchange={(event) => {
-				if (hiddenRef) hiddenRef.value = event.currentTarget.checked;
-				onChange(event.currentTarget.checked, metaData);
+				if (hiddenRef) hiddenRef.value = `${event.currentTarget.checked}`;
+				onChange(event.currentTarget.checked, metaData as T);
 			}}
 			id="_{name}"
 			{checked}
@@ -75,6 +44,5 @@
 
 <style lang="scss">
 	@import '../../styles/slotui-vars.scss';
-
 	@import './switch.scss';
 </style>

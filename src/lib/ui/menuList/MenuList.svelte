@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts" generics="T= Data">
 	import { navigation } from '$lib/utils/uses/navigation.js';
 

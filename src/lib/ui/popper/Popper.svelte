@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';

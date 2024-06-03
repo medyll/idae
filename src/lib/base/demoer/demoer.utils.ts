@@ -1,14 +1,29 @@
+import type { DemoerStoryProps } from './types.js';
 
+export function demoerArgs<T = Record<string, any>>(
+	parametersProps: DemoerStoryProps<T>
+): {
+	parameters: DemoerStoryProps<T>;
+	componentArgs: T;
+} {
+	const out = {} as DemoerStoryProps<T>;
+	for (const prop of Object.keys(parametersProps)) {
+		out[prop as keyof T] =
+			parametersProps[prop as keyof T]?.default ?? parametersProps[prop as keyof T]?.values?.[0];
+	}
 
-
-export function defaultsArgs(parametersProps: Record<string,any>):any{
-    const out: Record<string,any> = {};
-    for(const prop of Object.keys(parametersProps)){ 
-        out[prop]=parametersProps[prop]?.values?.[0];
-    }
-    
-    return out
+	return { parameters: out, componentArgs: defaultsArgs<T>(parametersProps) };
 }
-export function defaultsArgsFromProps(prop:string,parametersProps: Record<string,any>):any{
-    return parametersProps[prop]?.values?.[0]
+
+export function defaultsArgs<T = Record<string, any>>(parametersProps: DemoerStoryProps<T>): T {
+	const out: T = {} as T;
+	for (const prop of Object.keys(parametersProps)) {
+		out[prop as keyof T] =
+			parametersProps[prop as keyof T]?.default ?? parametersProps[prop as keyof T]?.values?.[0];
+	}
+
+	return out;
+}
+export function defaultsArgsFromProps(prop: string, parametersProps: Record<string, any>): any {
+	return parametersProps[prop]?.values?.[0];
 }

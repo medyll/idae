@@ -1,43 +1,23 @@
 <script lang="ts">
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Rating from './Rating.svelte';
 	import Demoer from '../../base/demoer/Demoer.svelte';
 	import DemoPage from '../../base/demoer/DemoPage.svelte';
+	import { RatingDemoValues } from './types.js';
+	import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 
 	const ww = `
-<Rating {...activeParams}>
-	<Icon icon={activeParams.defaultIcon} />
+<Rating>
+	<Icon icon={defaultIcon} />
 	{#snippet ratingScoredIcon()}
-		<Icon icon={activeParams.scoredIcon} />
+		<Icon icon={scoredIcon} />
 	{/snippet} 
 </Rating>`;
+
 	const ww2 = `<Rating defaultIcon="minus" scoredIcon="plus" scored={3} />`;
 
-	let parameters: any = {
-		ratingBase: {
-			type: 'number',
-			values: [4, 5, 10]
-		},
-		scored: {
-			type: 'number',
-			values: [1, 3, 5, 10]
-		},
-		defaultIcon: {
-			type: 'icon',
-			values: ['ant-design:star-outlined', 'minus']
-		},
-		scoredIcon: {
-			type: 'icon',
-			values: ['ant-design:star-filled', 'minus']
-		}
-	};
-
-	let componentArgs = {
-		scored: 2,
-		defaultIcon: 'ant-design:star-outlined',
-		scoredIcon: 'ant-design:star-filled'
-	};
+	let { parameters, componentArgs } = demoerArgs(RatingDemoValues);
 </script>
 
 <ComponentDemo
@@ -46,7 +26,7 @@
 >
 	<div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="Rating" code={ww}>
-			<Demoer {parameters} {componentArgs}>
+			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
 					<Rating {...activeParams}>
 						<Icon icon={activeParams.defaultIcon} />
@@ -58,7 +38,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="rating" code={ww2}>
-			<Demoer {parameters} {componentArgs}>
+			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
 					<Rating {...activeParams} />
 				{/snippet}

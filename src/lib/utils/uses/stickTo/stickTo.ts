@@ -6,11 +6,11 @@ enum Position {
 	BC = 'BC', // Bottom Center
 	BL = 'BL', // Bottom Left
 	BR = 'BR', // Bottom Right
-	T = 'T', // Top
-	R = 'R', // Right
-	B = 'B', // Bottom
-	L = 'L', // Left
-	C = 'C' // Center
+	T = 'T', // align on Top
+	R = 'R', // align on Right
+	B = 'B', // align on Bottom
+	L = 'L', // align on Left
+	C = 'C' // align on Center
 }
 
 export type StickToPositionType = keyof typeof Position;

@@ -1,5 +1,4 @@
 import type { AlertProps } from '$lib/base/alert/types.js';
-import type { ButtonProps } from '$lib/controls/button/types.js';
 import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 import type { IconProps } from '@iconify/svelte';
 import type { Snippet } from 'svelte';
@@ -75,7 +74,6 @@ export interface ElementProps {
 	dense: keyof typeof densePreset;
 	width: keyof typeof widthPreset;
 	tall: keyof typeof tallPreset;
-	iconSize: keyof typeof iconSize;
 	levels: keyof typeof statusPreset;
 	buttonVariant: keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
@@ -83,6 +81,7 @@ export interface ElementProps {
 	position: keyof typeof positionPreset;
 	popperPosition: StickToPositionType;
 	action: (event: any, data?: Data) => void;
+	iconSize: keyof typeof iconSize;
 	icon: string | IconObj;
 }
 

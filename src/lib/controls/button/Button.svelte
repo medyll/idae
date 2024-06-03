@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { popper } from '$lib/ui/popper/usePopper.js';
+	import { popper, type UsePopperProps } from '$lib/ui/popper/usePopper.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -10,7 +10,6 @@
 		style,
 		type: buttonType = 'button',
 		icon,
-		ico,
 		variant = 'bordered',
 		iconEnd,
 		bgTheme,
@@ -35,7 +34,7 @@
 	}: ButtonProps = $props();
 
 	let startRef: HTMLDivElement;
-	let clientWidth: number = $state();
+	let clientWidth: number | undefined = $state();
 </script>
 
 <button
@@ -63,7 +62,7 @@
 			style="--start-position:{children ?? primary ? 'absolute' : 'relative'}"
 		>
 			<Slotted child={buttonStart}>
-				<Icon fontSize="small" {icon} {...ico} />
+				<Icon fontSize="small" {icon} />
 			</Slotted>
 		</div>
 	{/if}
@@ -78,7 +77,7 @@
 	{#if buttonEnd || iconEnd}
 		<div class="button-action">
 			<Slotted child={buttonEnd}>
-				<Icon {...iconEnd} />
+				<Icon icon={iconEnd} />
 			</Slotted>
 		</div>
 	{/if}

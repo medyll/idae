@@ -1,27 +1,15 @@
 <script lang="ts">
 	import Progress from './Progress.svelte';
 
-	/* demo */
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	/* demo */
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
+	import { ProgressDemoValues } from './types.js';
 
-	const ww = `<Progress value="50" />`;
-	const ww2 = `<Progress defaultIcon="minus" scoredIcon="plus" scored={3} />`;
+	const code = `<Progress value="50" />`;
 
-	let parameters: any = {
-		value: {
-			type: 'number',
-			values: [20, 3, 9]
-		},
-		percentBase: {
-			type: 'number',
-			values: [100, 5, 10]
-		}
-	};
+	let parameters = ProgressDemoValues;
 
 	let componentArgs = defaultsArgs(parameters);
 </script>
@@ -31,17 +19,12 @@
 	cite="You'll never know that you've got a score, unless comes the day when you see the other's ones.<br/> S. Roch, 1824"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Progress" code={ww}>
+		<DemoPage title="Using snippets" component="Progress" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Progress {...activeParams} />
 				{/snippet}
 			</Demoer>
 		</DemoPage>
-		<!-- <DemoPage title="Using props" component="rating" code={ww2}>
-			<Demoer {parameters} {componentArgs} >
-				<Progress {...activeParams} />
-			</Demoer>
-		</DemoPage> -->
 	</div>
 </ComponentDemo>

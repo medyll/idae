@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';

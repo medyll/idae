@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import type { JsonerProps } from './types.js';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { Demoer } from '$sitedata/slotuiComponents.js';
 	import Icon from '@iconify/svelte';
 	import DemoPage from '../demoer/DemoPage.svelte';

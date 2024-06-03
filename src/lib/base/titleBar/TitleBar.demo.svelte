@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { titleBarDemoValues } from './types.js';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import TitleBar from './TitleBar.svelte';

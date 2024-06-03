@@ -4,13 +4,12 @@
 	import { onDestroy } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
-	import Content from '$lib/utils/content/Content.svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
 	let step: string = $state('initial');
 
 	let {
 		class: className = '',
-		style,
 		initialRef = null,
 		contentRef = null,
 		tooltipInitial = null,
@@ -26,6 +25,8 @@
 		confirmInitial,
 		...rest
 	}: ConfirmProps = $props();
+
+	let rost = rest as HTMLAttributes<any>;
 
 	function handleClickInitial(event: any) {
 		event.preventDefault();
@@ -50,8 +51,9 @@
 	});
 </script>
 
-<Content>somecontent</Content>
-<div {style} {...rest} class="confirm {className}">
+<!-- #todo <Content>somecontent</Content> -->
+
+<div {...rost} class="confirm {className}">
 	{#if step === 'initial'}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -62,15 +64,13 @@
 			bind:this={initialRef}
 			title={tooltipInitial}
 		>
-			<Slotted child={confirmInitial}
-				><Button
+			<Slotted child={confirmInitial} slotArgs={{ step }}>
+				<Button
 					variant="naked"
-					iconColor={iconColorInitial}
-					icon={iconInitial}
+					icon={{ icon: iconInitial, color: iconColorInitial }}
 					primary={primaryInitial}
-					title:tooltipInitial
-				/></Slotted
-			>
+				/>
+			</Slotted>
 		</div>
 	{/if}
 	{#if step === 'confirm'}
@@ -78,8 +78,8 @@
 			<span>
 				<Button onclick={handleClickCancel} variant="naked" icon={iconCancel} title="cancel" />
 			</span>
-			<Slotted child={children}>
-				<Button onclick={handleAction} {icon} size="auto" {primary} focus />
+			<Slotted child={children} slotArgs={{ step }}>
+				<Button onclick={handleAction} {icon} size="auto" {primary} />
 			</Slotted>
 		</div>
 	{/if}

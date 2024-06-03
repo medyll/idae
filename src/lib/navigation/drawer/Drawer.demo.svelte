@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { DemoPage, Demoer } from '$lib/index.js';
 	import Icon from '@iconify/svelte';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';

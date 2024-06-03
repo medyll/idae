@@ -8,11 +8,11 @@
 
 	let {
 		component,
-		cite = componentCite?.[component] ?? '',
+		cite = componentCite?.[component.toLowerCase()] ?? '',
 		children
 	}: {
 		component: string;
-		cite: string;
+		cite?: string;
 		children: Snippet;
 	} = $props();
 
@@ -24,13 +24,13 @@
 
 <div class="flex-v gap-large w-full">
 	<div class="flex-h gap-small flex-align-middle">
-		<h4>{`<${component} />`}</h4>
+		<h5>{`<${component} />`}</h5>
 		<span>{compDet?.group}/{compDet?.code}.svelte</span>
 	</div>
 	<cite><p>"{@html citation}"<br />{@html author}</p></cite>
 	{#if children}
 		<div class="flex-v gap-medium">
-			<h5>Component {component} demo :</h5>
+			{component} svelte component
 			<div class="marg-l-4">
 				<Slotted child={children} />
 			</div>

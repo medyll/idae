@@ -6,7 +6,7 @@
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	/* demo */
-	import ComponentDemo from '$components/ComponentDemo.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';

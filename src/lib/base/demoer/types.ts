@@ -10,7 +10,14 @@ export type DemoerProps<T = Record<string, any>> = {
 	children?: Snippet<[{ activeParams: T }]>;
 };
 
-export type DemoerArgsType = 'boolean' | 'flow-preset' | 'string' | 'icon' | string;
+export type DemoerArgsType =
+	| 'boolean'
+	| 'flow-preset'
+	| 'string'
+	| 'icon'
+	| 'dense'
+	| 'tall'
+	| string;
 
 export type DemoerParameters = { type: DemoerArgsType; values?: any[]; default?: any };
 
@@ -18,7 +25,7 @@ export type DemoPageProps = CommonProps & {
 	title: string;
 	subTitle?: string;
 	component: string;
-	code: string;
+	code?: string;
 	demoerCode?: Snippet;
 	children: Snippet;
 	slots?: {

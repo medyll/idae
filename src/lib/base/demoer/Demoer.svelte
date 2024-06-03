@@ -8,8 +8,8 @@
 	let {
 		title,
 		parameters = $bindable({} as DemoerStoryProps<T>),
-		componentArgs = $bindable<T>({} as T),
 		component = $bindable(),
+		componentArgs = $bindable<T>({} as T),
 		multiple = {},
 		children
 	}: DemoerProps<T> = $props();
@@ -50,7 +50,7 @@
 					{/each}
 				</div>
 			{:else if component}
-				<svelte:component this={component} {componentArgs} {activeParams} />
+				<svelte:component this={component} {componentArgs} {...activeParams} />
 			{:else}
 				<Slotted child={children} slotArgs={{ activeParams }} />
 			{/if}

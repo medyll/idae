@@ -1,5 +1,3 @@
-<svelte:options runes />
-
 <script lang="ts">
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
