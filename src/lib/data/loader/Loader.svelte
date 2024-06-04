@@ -3,6 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { LoaderProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -31,7 +32,7 @@
 		loaderSuccess,
 		children,
 		...rest
-	}: LoaderProps = $props();
+	}: ExpandProps<LoaderProps> = $props();
 
 	const msgType = $derived(() =>
 		isLoading ? 'loading' : isError ? 'error' : isEmpty ? 'empty' : ''

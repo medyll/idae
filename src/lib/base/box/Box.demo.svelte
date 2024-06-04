@@ -7,9 +7,7 @@
 	import { BoxDemoValues } from './types.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
-	let parameters: any = BoxDemoValues;
-
-	let componentArgs = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let code = `
 <Box>

@@ -1,5 +1,6 @@
 import type { CommonProps, DemoStoryProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export interface BoxProps extends CommonProps {
 	element?: HTMLDivElement;
@@ -67,3 +68,5 @@ export const BoxDemoValues: DemoStoryProps<BoxProps> = {
 		values: ['bottomZone as text / html', 'second bottomZone']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(BoxDemoValues);

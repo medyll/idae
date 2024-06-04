@@ -2,9 +2,10 @@
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { ElementProps } from '$lib/types/index.js';
+	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
 	import type { AlertProps } from './types.js';
-	type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+
 	const alertActions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
 		toggle,
@@ -24,7 +25,7 @@
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
 		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
-	}: Expand<AlertProps> = $props();
+	}: ExpandProps<AlertProps> = $props();
 
 	const handleClick = (event: Event) => {
 		if ((event?.target as Element)?.getAttribute('data-close')) {
@@ -67,20 +68,12 @@
 			<header class="header-bar">
 				<div class="dot bg-themed-scheme-{level}" />
 				<div class="title">
-					{#if children}
-						{@render children()}
-					{:else}
-						{message}
-					{/if}
+					<Slotted child={children}>{message}</Slotted>
 				</div>
-				{#if topButtonSlot}
-					{@render topButtonSlot()}
-				{/if}
+				<Slotted child={topButtonSlot} />
 				<div data-close>
-					{#if buttonCloseSlot}
-						{@render buttonCloseSlot()}
-					{:else}
-						<Button
+					<Slotted child={buttonCloseSlot}
+						><Button
 							ratio="1/1"
 							icon="window-close"
 							variant="naked"
@@ -88,8 +81,8 @@
 								isOpen = !isOpen;
 							}}
 							aria-label="Close"
-						/>
-					{/if}
+						/></Slotted
+					>
 				</div>
 			</header>
 			{#if messageSlot}

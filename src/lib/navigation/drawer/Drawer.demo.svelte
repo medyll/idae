@@ -4,63 +4,11 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { DrawerProps } from './types.js';
 
-	let drawerRef: any;
-	let withTopBar: boolean = false;
-	let attrs = {
-		primary: 'A Drawer',
-		secondary: 'drawer seconday text',
-		stickTo: 'right'
-	};
+	import { parameters, componentArgs } from './types.js';
 
-	const onButtonClick = function () {
-		drawerRef.toggle();
-	};
-
-	function changeAttr(attr: any) {
-		attrs = { ...attrs, ...attr };
-	}
-
-	let parametersSlot: any = {
-		isOpen: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		stickTo: {
-			type: 'position-preset',
-			values: ['right', 'left', 'top', 'bottom']
-		},
-		flow: {
-			type: 'flow-preset',
-			values: ['relative', 'fixed', 'absolute']
-		},
-		showOpenerIcon: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
-
-	let componentArgsSlot: DrawerProps = {
-		isOpen: defaultsArgsFromProps('isOpen', parametersSlot),
-		stickTo: defaultsArgsFromProps('stickTo', parametersSlot),
-		flow: defaultsArgsFromProps('flow', parametersSlot),
-		showOpenerIcon: defaultsArgsFromProps('showOpenerIcon', parametersSlot)
-	} as DrawerProps;
-
-	let parametersProps: any = {
-		...parametersSlot
-	};
-
-	let componentArgsProps = {
-		primary: 'A Drawer',
-		secondary: 'drawer seconday text',
-		...componentArgsSlot
-	};
-
-	let codeSlot = `
+	let code = `
 <Drawer >
 	{#snippet drawerIcon()}
 		<Icon icon="window" />
@@ -77,8 +25,8 @@
 
 <ComponentDemo component="Drawer">
 	<div class="flex-v gap-medium w-full">
-		<DemoPage title="Using snippets" component="Drawer" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+		<DemoPage title="Using snippets" component="Drawer" {code}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div style="width:450px;height:500px;position:relative;" class="pad flex-h">
 						<div class="flex-main pad-4 text-right">

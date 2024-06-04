@@ -13,40 +13,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
-	let parametersSlot: any = {
-		open: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		flow: {
-			type: 'preset-flow',
-			values: uiPresets.flow
-		},
-		startPosition: {
-			type: 'string',
-			values: [undefined, 'center']
-		},
-		showHandle: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		closeOnValidate: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		hideAcceptButton: {
-			type: 'boolean',
-			values: [false, true]
-		},
-		hideCloseButton: {
-			type: 'boolean',
-			values: [false, true]
-		},
-		hideCancelButton: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
+	import { parameters, componentArgs } from './types.js';
 
 	let multiple = {
 		showHandle: {
@@ -55,20 +22,8 @@
 		}
 	};
 
-	$: componentArgsSlot = {
-		...defaultsArgs(parametersSlot),
-		onClose: () => {
-			componentArgsSlot.open = !componentArgsSlot.open;
-		},
-		data: [
-			{ id: 1, name: 'name' },
-			{ id: 2, name: 'name' },
-			{ id: 3, name: 'name' },
-			{ id: 4, name: 'name' }
-		]
-	};
-
-	let codeSlot = `<Window title="Slotted window" frameId="slotted" >
+	let code = `
+<Window title="Slotted window" frameId="slotted" >
 	{#snippet windowIcon()}
 		<Icon icon="bx:window-alt" />
 	{/snippet}
@@ -106,8 +61,8 @@
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Select" title="Using snippets">
-			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
+		<DemoPage {code} component="Select" title="Using snippets">
+			<Demoer {multiple} {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<div class="pad-2 h-large pos-rel">
 						<Window title="Slotted window" frameId="slotted" {...activeParams}>
@@ -121,7 +76,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="Select" title="Using props">
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-middle pos-rel gap-medium">
 						<div>

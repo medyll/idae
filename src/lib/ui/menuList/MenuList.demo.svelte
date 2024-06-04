@@ -9,21 +9,7 @@
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	/* demo */
 
-	let parametersSlot: any = {
-		dense: {
-			type: 'dense-preset',
-			values: uiPresets.dense
-		},
-		bordered: {
-			type: 'boolean',
-			values: [false, true]
-		}
-	};
-
-	let componentArgsSlot = {
-		...defaultsArgs(parametersSlot),
-		dense: 'default'
-	};
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 <Menu>
@@ -33,20 +19,6 @@
 	<MenuItem divider={true}>menu item</MenuItem>
 	<MenuItem>menu item</MenuItem>
 </Menu>`;
-
-	let codeProps = `
-<Loader
-    status={"loading"}
-    messages={{
-        loading: 'Loading dataset',
-        error  : 'An error occurred',
-        empty  : 'Empty results',
-        success: 'Success !'
-      }}
-    emptyIcon="mdi:database-search-outline"
-    errorIcon="mdi:alert-circle-outline"
-    loadingIcon="mdi:loading"
-    successIcon="clarity:success-standard-line" />`;
 </script>
 
 <ComponentDemo
@@ -55,7 +27,7 @@
 >
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Popper" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-bottom gap-small">
 						<div class="pad-tiny">

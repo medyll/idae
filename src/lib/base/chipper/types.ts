@@ -1,5 +1,6 @@
 import type { CommonProps, DemoStoryProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export interface ChipperProps extends CommonProps {
 	/** position of the chipper  */
@@ -57,3 +58,5 @@ export const chipperDemoValues: DemoStoryProps<ChipperProps> = {
 		values: ['Some content', 'Other content']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(chipperDemoValues);

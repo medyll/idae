@@ -1,16 +1,15 @@
-<svelte:options />
+<svelte:options runes />
 
 <script lang="ts">
 	import Tabs from './Tabs.svelte';
-	import type { TabsItemsProps } from './types.js';
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
+	import type { TabsItemsProps } from './types.js';
 	import Button from '$lib/controls/button/Button.svelte';
-	/* demo */
-	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
+	import DemoerComponent from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
-	/* demo */
+
+	import { parameters, componentArgs } from './types.js';
 
 	const items: TabsItemsProps = [
 		{ label: 'Tab 1', code: 'tab1', withContent: 'ff' },
@@ -23,18 +22,7 @@
 		}
 	];
 
-	let parametersSlot: any = {
-		activeTabCode: {
-			type: 'string',
-			values: ['tab1', 'tab2', 'tab3', undefined]
-		}
-	};
-
-	$: componentArgsSlot = {
-		activeTabCode: defaultsArgsFromProps('activeTabCode', parametersSlot)
-	};
-
-	let codeSlot = `
+	let code = `
 <Tabs
 	activeTabCode="tab1" 
 	onTabClick={(e) => { 
@@ -60,40 +48,36 @@
 </Tabs>`;
 </script>
 
-<ComponentDemo cite="" component="Tabs">
-	<div class="flex-v gap-large w-full">
-		<DemoPage code={codeSlot} component="Tabs" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
-				{#snippet children({ activeParams })}
-					<div style="height:450px;">
-						<Tabs
-							{...activeParams}
-							onTabClick={(e) => {
-								console.log(e);
-								componentArgsSlot.activeTabCode = e.code;
-							}}
-							class="h-full"
-							style="height:100%;width:350px"
-							{items}
-							>{#snippet children({ activeTabCode })}
-								{#snippet tabTitle()}
-									Some tabs title
-								{/snippet}
-								{#snippet tabButtons()}
-									<Button variant="bordered">button</Button>
-								{/snippet}
-								{#snippet tabsInner()}
-									<div class="h-full">
-										<div class="pad-4 h-full overflow-auto">
-											<!-- selected : {activeTabCode} -->
-										</div>
-									</div>
-								{/snippet}
-							{/snippet}
-						</Tabs>
-					</div>
-				{/snippet}
-			</Demoer>
-		</DemoPage>
-	</div>
-</ComponentDemo>
+<DemoerComponent component="Tabs">
+	<DemoPage {code} component="Tabs" title="Using snippets">
+		<Demoer {componentArgs} {parameters}>
+			{#snippet children({ activeParams })}
+				<div style="height:450px;">
+					<Tabs
+						{...activeParams}
+						onTabClick={(e) => {
+							console.log(e);
+							componentArgs.activeTabCode = e.code;
+						}}
+						class="h-full"
+						style="height:100%;width:350px"
+					>
+						{#snippet tabsTitle()}
+							Some tabs title
+						{/snippet}
+						{#snippet tabsButtonZone()}
+							<Button variant="bordered">button</Button>
+						{/snippet}
+						{#snippet tabsInner({ activeTabCode })}
+							<div class="h-full">
+								<div class="pad-4 h-full overflow-auto">
+									selected : {activeTabCode}
+								</div>
+							</div>
+						{/snippet}
+					</Tabs>
+				</div>
+			{/snippet}
+		</Demoer>
+	</DemoPage>
+</DemoerComponent>

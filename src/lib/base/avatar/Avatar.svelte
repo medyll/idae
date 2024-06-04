@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, ExpandProps } from '$lib/types/index.js';
 	import type { AvatarProps } from './types.js';
 
 	let {
@@ -12,7 +12,7 @@
 		element = $bindable<HTMLDivElement>(),
 		children,
 		avatarBadge
-	}: AvatarProps = $props();
+	}: ExpandProps<AvatarProps> = $props();
 
 	const sizes = {
 		tiny: '2rem',

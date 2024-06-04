@@ -8,8 +8,7 @@
 	import { cartoucheDemoValues } from './types.js';
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
-	let parameters = cartoucheDemoValues;
-	let componentArgs = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let code1 = `
 <Cartouche  class="marg-tb-1">

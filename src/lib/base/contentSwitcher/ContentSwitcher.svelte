@@ -3,6 +3,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ContentSwitcherProps } from './types.js';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -14,7 +15,7 @@
 		contentSwitcherTogglerIcon: togglerIcon,
 		contentSwitcherBackIcon: backIcon,
 		contentSwitcherReveal
-	}: ContentSwitcherProps = $props();
+	}: ExpandProps<ContentSwitcherProps> = $props();
 
 	let visibleSate: boolean = $state(false);
 	let thisRef: any;

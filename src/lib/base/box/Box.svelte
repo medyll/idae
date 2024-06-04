@@ -3,6 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { BoxProps } from './types.js';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -25,7 +26,7 @@
 		titleBarIcon,
 		boxBottomZone,
 		...rest
-	}: BoxProps = $props();
+	}: ExpandProps<BoxProps> = $props();
 
 	function open() {
 		isOpen = true;

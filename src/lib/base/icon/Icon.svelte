@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import type { ElementProps } from '$lib/types/index.js';
+	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import type { IconAppProps } from './types.js';
 
@@ -15,7 +15,7 @@
 		rotation = 0,
 		ico,
 		...rest
-	}: IconAppProps = $props();
+	}: ExpandProps<IconAppProps> = $props();
 
 	const sizes: Record<ElementProps['iconSize'], string> = uiPresets.iconSize;
 
@@ -36,7 +36,7 @@
 		bind:this={element}
 		class="icon {className} {finRot}"
 		style="{style};transform: rotate({finRotation}deg)"
-		onclick
+		{onclick}
 		icon={iconName}
 	/>
 {/key}

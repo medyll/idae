@@ -1,7 +1,9 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export type DataListProps = {
+export type DataListProps<T = Data> = {
 	/** className off the root component */
 	class?: string;
 
@@ -47,7 +49,7 @@ export type DataListProps = {
 	dataTypes?: Record<string, any>;
 
 	/** data to loop through */
-	data?: any[];
+	data?: T[];
 
 	/** used only if data is provided */
 	idField?: string;
@@ -66,6 +68,61 @@ export type DataListProps = {
 	dataListRow?: Snippet<[{ rawData: Data; item: Data }]>;
 	dataListCell?: Snippet<[{ fieldType: string; fieldName: string; fieldValue: any }]>;
 	groupTitleSlot?: Snippet<[{ item: Data }]>;
+};
+
+export const DataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
+	data: {
+		type: 'data',
+		values: [[{ name: 'name1' }, { name: 'name2' }]],
+		private: true
+	},
+	isSortable: {
+		type: 'boolean',
+		values: [true, false]
+	},
+	sortByOrder: {
+		type: 'string',
+		values: ['asc', 'desc', 'none'],
+		default: 'none'
+	},
+	groupByField: {
+		type: 'string',
+		values: [undefined, 'name']
+	},
+	groupByOptions: {
+		type: 'object',
+		values: [
+			{
+				showMainHeader: true,
+				showSubGroupsHeader: true,
+				showEmptyGroup: true,
+				subPaginationSize: 10
+			}
+		]
+	},
+	selectorField: {
+		type: 'string',
+		values: ['name']
+	},
+	selectorFieldValue: {
+		type: 'string',
+		values: ['name']
+	},
+	activeCommonSortField: {
+		type: 'string',
+		values: ['name']
+	},
+	noWrap: {
+		type: 'boolean'
+	},
+	noWrapHeader: {
+		type: 'boolean',
+		values: [true]
+	},
+	columns: {
+		type: 'object',
+		values: [{ name: 'name' }]
+	}
 };
 
 export type DataListHeadProps = {
@@ -103,7 +160,7 @@ export interface DataCellType {
 	htmlElement?: HTMLElement;
 }
 
-export type DataListCellProps = {
+export type DataListCellProps<T> = {
 	element?: HTMLElement;
 	field?: string;
 	style?: string;
@@ -111,7 +168,7 @@ export type DataListCellProps = {
 	columnId?: string | number;
 	noWrap?: boolean;
 	title?: string;
-	children?: Snippet<[{ fieldData: Data }]>;
+	children?: Snippet<[{ fieldData: T }]>;
 };
 
 export interface RowType {
@@ -148,3 +205,36 @@ export interface DataListStoreType {
 	hasColumnsProps?: boolean;
 	data: Data[];
 }
+
+/* 	let parameters: any = {
+		groupByField: {
+			type: 'string',
+			values: ['group', 'groupByObjectKey', 'groupByArrayObjectKey', undefined]
+		},
+		virtualizer: {
+			type: 'boolean',
+			values: [true, false]
+		},
+		isSortable: {
+			type: 'boolean',
+			values: [true, false]
+		}
+	}; */
+
+const dataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
+	data: {
+		type: 'data',
+		values: [[{ name: 'name1' }, { name: 'name2' }]],
+		private: true
+	},
+	isSortable: {
+		type: 'boolean',
+		values: [true, false]
+	},
+	groupByField: {
+		type: 'string',
+		values: [undefined, 'group', 'groupByObjectKey', 'groupByArrayObjectKey']
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(dataListDemoValues);

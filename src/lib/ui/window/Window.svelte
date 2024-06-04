@@ -10,63 +10,7 @@
 	import { makeOnTop } from '$lib/utils/uses/makeOnTop.js';
 	import { positioner } from '$lib/utils/uses/positioner.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-
-	type WindowProps = CommonProps & {
-		/** can be opened with a component */
-		component?: any;
-		/** used when props.component is used */
-		componentProps?: any;
-		/** content can be set from a html string */
-		contentHTML?: any;
-		/** reference to the component's DOM container */
-		element?: HTMLElement;
-		/** parent of the window */
-		parentNode?: HTMLElement;
-		/** icon used on the left side*/
-		icon?: string;
-		iconClose?: string;
-		iconValidate?: string;
-		flow?: ElementProps['flow'];
-		/** start position */
-		startPosition?: 'center' | 'cascade' | 'overlap';
-		/** close the window on accept */
-		closeOnValidate?: boolean;
-		/** destroy the component on close */
-		removeFromDomOnClose?: boolean;
-		/** used to destroy component when opened from function.openWindow */
-		self?: SvelteComponent;
-		/** private */
-		componentInstance?: any;
-		/** whether the window is outer */
-		outer?: boolean;
-		/** Id of the component's instance */
-		frameId?: string;
-		/** the title appears on the handle bar */
-		title?: string;
-		/** boolean to show the window */
-		open?: boolean;
-		/** state of the window */
-		minimized?: boolean;
-		maximized?: boolean;
-		/** is on top of others*/
-		active?: boolean;
-		/** the secondaryTitle appears below the title */
-		secondaryTitle?: string;
-		/** the description appears somewhere */
-		description?: string;
-		/** shows or hide the handle, if dismissed, then the whole window is draggable */
-		showHandle?: boolean;
-		/** actions triggered on click*/
-		onClose?: (args?: any) => void;
-		onCancel?: (args?: any) => void;
-		onValidate?: (args?: any) => void;
-		/** buttons visible in the bottom bar */
-		hideAcceptButton?: boolean;
-		hideCloseButton?: boolean;
-		hideCancelButton?: boolean;
-		windowIcon?: Snippet;
-		windowButtonZone?: Snippet;
-	};
+	import type { WindowProps } from './types.js';
 
 	let {
 		class: className = '',

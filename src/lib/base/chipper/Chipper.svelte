@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
+	import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ChipperProps } from './types.js';
 
@@ -14,7 +14,7 @@
 		showChip = true,
 		chipperChip,
 		children
-	}: ChipperProps = $props();
+	}: ExpandProps<ChipperProps> = $props();
 
 	let cssColor = $derived(color ?? (status ? `var(--sld-color-${status})` : ''));
 </script>

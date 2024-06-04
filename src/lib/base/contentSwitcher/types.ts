@@ -1,6 +1,7 @@
 import type { CommonProps, IconObj } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { DemoerStoryProps } from '../demoer/types.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export type ContentSwitcherProps = CommonProps & {
 	/** className off the root component */
@@ -31,3 +32,5 @@ export const contentSwitcherDemoValues: DemoerStoryProps<ContentSwitcherProps> =
 		values: ['mdi:window', 'mdi:user', undefined]
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(contentSwitcherDemoValues);

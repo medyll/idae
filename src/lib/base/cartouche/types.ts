@@ -6,6 +6,7 @@ import {
 	type IconObj
 } from '$lib/types/index.js';
 import type { Snippet, SvelteComponent } from 'svelte';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 export type CartoucheClasses = {
 	control: string;
 	controlIcon: string;
@@ -89,3 +90,5 @@ export const cartoucheDemoValues: DemoStoryProps<CartoucheProps> = {
 		default: tallPreset.default
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(cartoucheDemoValues);

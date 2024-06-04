@@ -6,9 +6,7 @@
 	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import Chipper from './Chipper.svelte';
 
-	let parameters = chipperDemoValues;
-
-	let componentArgs: ChipperProps = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 <Chipper >

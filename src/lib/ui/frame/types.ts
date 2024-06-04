@@ -1,4 +1,4 @@
-import type { Drawer } from '$lib/index.js';
+import { demoerArgs, type DemoerStoryProps, type Drawer } from '$lib/index.js';
 import type { DrawerProps } from '$lib/navigation/drawer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
@@ -34,3 +34,13 @@ export type FrameProps = CommonProps & {
 	drawerSecondary?: Snippet;
 	drawerFooter?: Snippet;
 };
+
+const frameDemoValues: DemoerStoryProps<FrameProps> = {
+	drawerWidth: {
+		type: 'string',
+		values: ['200px', '300px', '400px'],
+		default: '200px'
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(frameDemoValues);

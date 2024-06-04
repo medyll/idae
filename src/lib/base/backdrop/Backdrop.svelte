@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, ExpandProps } from '$lib/types/index.js';
 	import type { BackdropProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
@@ -30,7 +30,7 @@
 		classes = {},
 		children,
 		backdropLoading
-	}: BackdropProps = $props();
+	}: ExpandProps<BackdropProps> = $props();
 
 	$effect(() => {
 		element?.addEventListener('click', testAutoClose);

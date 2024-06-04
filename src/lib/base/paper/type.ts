@@ -1,6 +1,7 @@
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export type PaperProps = {
 	/** className off the root component */
@@ -24,3 +25,5 @@ export const paperDemoValues: DemoerStoryProps<PaperProps> = {
 		default: 0
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(paperDemoValues);

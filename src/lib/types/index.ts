@@ -121,3 +121,5 @@ type FilteredBySnippet<T> = {
 };
 
 type oo = FilteredBySnippet<AlertProps>;
+
+export type ExpandProps<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
+	import type { CommonProps, Data, ElementProps, ExpandProps } from '$lib/types/index.js';
 	import TextField from '$lib/controls/textfield/TextField.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Popper from '$lib/ui/popper/Popper.svelte';
@@ -62,7 +62,7 @@
 		value = undefined,
 		children,
 		...rest
-	}: SelectProps = $props();
+	}: ExpandProps<SelectProps> = $props();
 
 	let hiddenRef;
 	let isVisible: boolean = false;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { RatingProps } from './types.js';
 
@@ -15,7 +16,7 @@
 		ratingScoredIcon,
 		children,
 		...rest
-	}: RatingProps = $props();
+	}: ExpandProps<RatingProps> = $props();
 
 	const title = `${scored} / ${ratingBase}`;
 </script>

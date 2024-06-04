@@ -11,7 +11,9 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import Button from '../../controls/button/Button.svelte';
-	/* demo */
+	import DemoerComponent from '$lib/base/demoer/DemoerComponent.svelte';
+
+	import { parameters, componentArgs } from './types.js';
 
 	let submitting: boolean = false;
 	let showLogin: boolean = true;
@@ -27,28 +29,34 @@
 	let codeSlot = ``;
 </script>
 
-<Login {showLogin} {submitting}>
-	{#snippet loginAvatar()}
-		<Icon icon="mdi:user" />
-	{/snippet}
-	{#snippet loginForm()}
-		<form
-			class="h-full w-full flex-v flex-align-middle-center"
-			method="post"
-			on:submit|preventDefault={validate}
-		>
-			<div class="pad-2">
-				<input name="email" type="text" value="..." />
-			</div>
-			<div class="pad-2">
-				<input name="password" type="password" />
-			</div>
-			<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
-		</form>
-	{/snippet}
-	<ComponentDemo component="Login">
-		<div class="flex-v gap-large">
-			<DemoerCode title="myContext" code={codeSlot} />
-		</div>
-	</ComponentDemo>
-</Login>
+<ComponentDemo component="Login">
+	<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
+		<Demoer {parameters} {componentArgs}>
+			{#snippet children({ activeParams })}
+				<Login {showLogin} {submitting}>
+					{#snippet loginAvatar()}
+						<Icon icon="mdi:user" />
+					{/snippet}
+					{#snippet loginForm()}
+						<form
+							class="h-full w-full flex-v flex-align-middle-center"
+							method="post"
+							on:submit|preventDefault={validate}
+						>
+							<div class="pad-2">
+								<input name="email" type="text" value="..." />
+							</div>
+							<div class="pad-2">
+								<input name="password" type="password" />
+							</div>
+							<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
+						</form>
+					{/snippet}
+				</Login>
+			{/snippet}
+		</Demoer>
+	</DemoPage>
+	<div class="flex-v gap-large">
+		<DemoerCode title="myContext" code={codeSlot}></DemoerCode>
+	</div>
+</ComponentDemo>

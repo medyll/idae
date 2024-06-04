@@ -8,18 +8,9 @@ export enum statusPreset {
 	info = 'info',
 	discrete = 'discrete'
 }
-import type {
-	buttonVariant,
-	CommonProps,
-	Data,
-	densePreset,
-	ElementProps,
-	flowPreset,
-	IconObj,
-	positionPreset,
-	tallPreset
-} from '$lib/types/index.js';
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 export interface AvatarProps extends CommonProps {
 	/** icon name 	*/
 	icon?: string;
@@ -53,3 +44,5 @@ export const AvatarDemoValues: DemoStoryProps<AvatarProps> = {
 		default: iconSize.medium
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(AvatarDemoValues);

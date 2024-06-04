@@ -6,6 +6,7 @@
 	import type { MenuListProps } from '$lib/ui/menuList/types.js';
 	import type { PopperProps } from '$lib/ui/popper/types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		element,
@@ -15,7 +16,7 @@
 		disabled = false,
 		children,
 		...rest
-	}: ButtonMenuProps = $props();
+	}: ExpandProps<ButtonMenuProps> = $props();
 
 	let isOpen = $state(popperProps?.isOpen);
 	let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevron-up-12-down');

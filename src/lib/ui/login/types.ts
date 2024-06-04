@@ -1,3 +1,5 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { TransitionConfig } from 'svelte/transition';
@@ -35,3 +37,32 @@ export type LoginProps = CommonProps & {
 
 	slotRetrievePassword?: Snippet;
 };
+
+const loginDemoValues: DemoerStoryProps<LoginProps> = {
+	showLogin: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	fields: {
+		type: 'object',
+		default: { email: '', password: '' }
+	},
+	loading: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	submitting: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	onSubmit: {
+		type: 'function',
+		default: () => Promise.resolve(),
+		private: true
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(loginDemoValues);

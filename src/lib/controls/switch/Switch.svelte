@@ -1,6 +1,6 @@
 <script lang="ts" generics="T=Data">
 	//
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { SwitchProps } from './types.js';
 
@@ -15,7 +15,7 @@
 		onChange = (val: boolean, metaData: T) => {},
 		children,
 		switchLabel
-	}: SwitchProps<T> = $props();
+	}: ExpandProps<SwitchProps<T>> = $props();
 
 	let hiddenRef: HTMLInputElement;
 </script>

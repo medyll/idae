@@ -6,6 +6,7 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import type { FinderProps } from './types.js';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -22,9 +23,9 @@
 		size = 'full',
 		tall = 'default',
 		...restProps
-	}: FinderProps = $props();
+	}: ExpandProps<FinderProps> = $props();
 
-	let searchString: string = $state(undefined);
+	let searchString: string | undefined = $state(undefined);
 	let container: HTMLDivElement;
 
 	/* export var filteredData = $derived(

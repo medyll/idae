@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T=Data">
 	import { getContext, hasContext, setContext, type Snippet } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import DataListRow from './DataListRow.svelte';
@@ -7,7 +7,7 @@
 	import DataListHead from './DataListHead.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import ContextRooter from '$lib/utils/contextRooter/ContextRooter.svelte';
 	import sanitizeHtml from 'sanitize-html';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -47,7 +47,7 @@
 		dataListCell,
 		dataListFooter,
 		groupTitleSlot
-	}: DataListProps = $props();
+	}: ExpandProps<DataListProps<T>> = $props();
 
 	let hidedGroups: Data = {};
 

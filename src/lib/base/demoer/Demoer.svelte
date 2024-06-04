@@ -4,6 +4,7 @@
 	import Switch from '$lib/controls/switch/Switch.svelte';
 	import type { DemoerProps, DemoerStoryProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { densePreset, flowPreset } from '$lib/types/index.js';
 
 	let {
 		title,
@@ -14,12 +15,38 @@
 		children
 	}: DemoerProps<T> = $props();
 
-	let activeParams = $state({ ...componentArgs });
+	let activeParams: T = $state({ ...componentArgs });
 </script>
 
 {#if title}
 	<div class="pad">{title}</div>
 {/if}
+
+{#snippet main({ parameter, values })}
+	{#each parameters?.[parameter]?.values ?? values ?? [] as value}
+		{@const finalValue = value === undefined ? 'unset' : value}
+		<Button
+			class="w-small-min"
+			variant="flat"
+			showChip={activeParams[parameter] === value}
+			onclick={() => {
+				activeParams[parameter] = value;
+			}}
+		>
+			{finalValue}
+		</Button>
+		<div class="border-r pad-tb-1"></div>
+	{/each}
+{/snippet}
+{#snippet boolean({ parameter })}
+	<Switch
+		name={crypto.randomUUID()}
+		checked={activeParams[parameter]}
+		onChange={(val, metadata) => {
+			activeParams[parameter] = val;
+		}}
+	/>
+{/snippet}
 
 <div class="pad flex-v gap-small">
 	<div class="flex-h marg-b-2">
@@ -71,46 +98,14 @@
 							<td>
 								<div class="flex flex-align-middle gap-small w-mid-min">
 									{#if parameters?.[parameter]?.type === 'boolean'}
-										<div>
-											<Switch
-												name={crypto.randomUUID()}
-												checked={activeParams[parameter]}
-												onChange={(val, metadata) => {
-													activeParams[parameter] = val;
-												}}
-											/>
-										</div>
-										<!-- {:else if parameters?.[parameter]?.type === 'array'}
-										array
-										{#each parameters?.[parameter]?.values ?? [] as value}
-											{@const finalValue = value === undefined ? 'unset' : value}
-											<Button
-												class="w-small-min"
-												variant="flat"
-												showChip={activeParams[parameter] === value}
-												onclick={() => {
-													activeParams[parameter] = value;
-												}}
-											>
-												{finalValue}
-											</Button>
-											<div class="border-r pad-tb-1"></div>
-										{/each} -->
+										{@render boolean({ parameter, values: [false, true] })}
+									{:else if parameters?.[parameter]?.type === 'dense'}
+										{@render main({ parameter, values: Object.values(densePreset) })}
+									{:else if parameters?.[parameter]?.type === 'flow-preset'}
+										{@render main({ parameter, values: Object.values(flowPreset) })}
 									{:else}
-										{#each parameters?.[parameter]?.values ?? [] as value}
-											{@const finalValue = value === undefined ? 'unset' : value}
-											<Button
-												class="w-small-min"
-												variant="flat"
-												showChip={activeParams[parameter] === value}
-												onclick={() => {
-													activeParams[parameter] = value;
-												}}
-											>
-												{finalValue}
-											</Button>
-											<div class="border-r pad-tb-1"></div>
-										{/each}
+										<!-- array, default -->
+										{@render main({ parameter })}
 									{/if}
 								</div>
 							</td>

@@ -6,6 +6,7 @@
 	import DataListCell from './DataListCell.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import { onEvent } from '$lib/utils/uses/event.js';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		style,
@@ -13,7 +14,7 @@
 		stickyHeader = true,
 		onSort = () => {},
 		children
-	}: DataListHeadProps = $props();
+	}: ExpandProps<DataListHeadProps> = $props();
 
 	const dataListContext = getContext<Writable<DataListStoreType>>('dataListContext');
 	// this head is a head

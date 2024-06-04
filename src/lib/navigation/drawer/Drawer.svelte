@@ -4,6 +4,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { DrawerProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	/** @deprecated use actions.toggle */
 	export const actions = {
@@ -39,7 +40,7 @@
 		drawerFooter,
 		children,
 		...rest
-	}: DrawerProps<T> = $props();
+	}: ExpandProps<DrawerProps<T>> = $props();
 
 	let dspStyle: string;
 

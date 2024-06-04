@@ -1,7 +1,7 @@
 <script lang="ts" generics="T = Data">
 	import type { StepperProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 
 	export const actions = {
 		setActiveStep: function (step: number) {
@@ -14,7 +14,7 @@
 		stepperOrientation = 'horizontal',
 		activeStep = $bindable(0),
 		children
-	}: StepperProps<T> = $props();
+	}: ExpandProps<StepperProps<T>> = $props();
 
 	let child = children;
 

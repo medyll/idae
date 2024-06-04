@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { SorterProps } from './types.js';
@@ -20,7 +21,7 @@
 		children,
 		sortListItems,
 		...rest
-	}: SorterProps = $props();
+	}: ExpandProps<SorterProps> = $props();
 
 	$effect(() => {
 		if (Boolean(activeCommonSortField) && activeCommonSortField !== sortByField) {

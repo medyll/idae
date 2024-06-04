@@ -1,4 +1,5 @@
 import type { ElementProps } from '$lib/types/index.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '../demoer/types.js';
 
 export type DividerProps = {
@@ -57,3 +58,5 @@ export const DividerDemoValues: DemoerStoryProps<DividerProps> = {
 		values: ['#ff0000', '#00ff00', '#0000ff']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(DividerDemoValues);

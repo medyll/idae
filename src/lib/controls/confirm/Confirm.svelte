@@ -5,6 +5,7 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let step: string = $state('initial');
 
@@ -24,7 +25,7 @@
 		children,
 		confirmInitial,
 		...rest
-	}: ConfirmProps = $props();
+	}: ExpandProps<ConfirmProps> = $props();
 
 	let rost = rest as HTMLAttributes<any>;
 

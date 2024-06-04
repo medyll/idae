@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ExpandProps } from '$lib/types/index.js';
 	import type { SliderProps } from './types.js';
 
 	let {
@@ -16,7 +17,7 @@
 		reverse = false,
 		disabled = false,
 		onchange
-	}: SliderProps = $props();
+	}: ExpandProps<SliderProps> = $props();
 
 	let dragging = $state(false);
 	let holding = $state(false);

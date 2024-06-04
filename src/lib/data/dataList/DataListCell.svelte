@@ -1,11 +1,11 @@
 <svelte:options />
 
-<script lang="ts">
+<script lang="ts" generics="T=Data">
 	import type { DataCellType, DataListCellProps, DataListStoreType, RowType } from './types.js';
 	import { getContext, onMount, tick, type Snippet } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Chipper from '$lib/base/chipper/Chipper.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -28,7 +28,7 @@
 		title,
 		children,
 		...rest
-	}: DataListCellProps = $props();
+	}: ExpandProps<DataListCellProps<T>> = $props();
 
 	let colIndex: number;
 

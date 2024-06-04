@@ -1,11 +1,7 @@
-import {
-	statusPreset,
-	type CommonProps,
-	type DemoStoryProps,
-	type ElementProps
-} from '$lib/types/index.js';
+import { statusPreset, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
-
+import { demoerArgs } from '../demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '../demoer/types.js';
 export interface AlertProps extends CommonProps {
 	/** alert level */
 	level?: ElementProps['levels'];
@@ -24,7 +20,7 @@ export interface AlertProps extends CommonProps {
 	buttonCloseSlot?: Snippet;
 }
 
-export const alertDemoValues: DemoStoryProps<any> = {
+export const alertDemoValues: DemoerStoryProps<any> = {
 	isOpen: {
 		type: 'boolean',
 		values: [true, false],
@@ -45,3 +41,5 @@ export const alertDemoValues: DemoStoryProps<any> = {
 		values: ['Some messages']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(alertDemoValues);

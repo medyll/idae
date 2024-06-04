@@ -1,3 +1,5 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data, IconObj } from '$lib/types/index.js';
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
@@ -22,8 +24,6 @@ export type MenuListProps<T = Data> = CommonProps & {
 	dense?: ElementProps['dense'];
 	/** index to select the item */
 	selectedIndex?: number;
-	/** menu can have no border */
-	bordered?: boolean;
 	/**  field used to  select the item */
 	selectorField?: keyof T;
 	/**  selected data */
@@ -97,3 +97,29 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	children?: Snippet<[{ item: T; itemIndex: number; selected: number }]>;
 	rest?: any;
 };
+
+const menuListDemoValues: DemoerStoryProps<MenuListProps> = {
+	dense: {
+		type: 'dense'
+	}
+	/* menuListItems: {
+		type: 'menuListItems',
+		default: [
+			{
+				text: 'Home',
+				icon: 'home'
+			},
+			{
+				text: 'About',
+				icon: 'info'
+			},
+			{
+				text: 'Contact',
+				icon: 'phone'
+			}
+		],
+		private: true
+	} */
+};
+
+export const { parameters, componentArgs } = demoerArgs(menuListDemoValues);

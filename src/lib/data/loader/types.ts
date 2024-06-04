@@ -1,9 +1,11 @@
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
 export type LoaderProps = CommonProps & {
 	/** Status of the loader */
-	status: 'loading' | 'success' | 'error' | 'empty';
+	status: 'loading' | 'success' | 'error' | 'empty' | undefined;
 
 	/** Whether to show success status or not */
 	showSuccess?: boolean;
@@ -40,3 +42,58 @@ export type LoaderProps = CommonProps & {
 	loaderMessage?: Snippet;
 	loaderSuccess?: Snippet;
 };
+
+/* 	let parameters: any = {
+		status: {
+			type: 'string',
+			values: ['loading', 'success', 'error', 'empty', undefined]
+		}
+	};
+
+	let componentArgs = {
+		status: defaultsArgsFromProps('status', parameters)
+	} as LoaderProps; */
+
+const loaderDemoValues: DemoerStoryProps<LoaderProps> = {
+	status: {
+		type: 'string',
+		values: [undefined, 'idle', 'loading', 'success', 'error', 'empty'],
+		default: undefined
+	},
+	showSuccess: {
+		type: 'boolean',
+		default: false
+	},
+	loadingIcon: {
+		type: 'icon',
+		default: 'loading'
+	},
+	errorIcon: {
+		type: 'icon',
+		default: 'error'
+	},
+	emptyIcon: {
+		type: 'icon',
+		default: 'empty'
+	},
+	successIcon: {
+		type: 'icon',
+		default: 'success'
+	},
+	message: {
+		type: 'string',
+		default: 'Message'
+	},
+	messages: {
+		type: 'object',
+		default: {
+			loading: 'Loading...',
+			success: 'Success',
+			error: 'Error',
+			empty: 'Empty'
+		},
+		private: true
+	}
+};
+
+export const { parameters, componentArgs } = demoerArgs(loaderDemoValues);

@@ -1,7 +1,10 @@
 <script lang="ts">
+	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Jsoner from '../jsoner/Jsoner.svelte';
 	import Finder from './Finder.svelte';
+
+	import { parameters, componentArgs } from './types.js';
 
 	let data = [
 		{ id: 1, name: 'i', surname: 'am', lastname: 'groot' },
@@ -10,7 +13,6 @@
 	];
 
 	let filteredData: any = [];
-	$inspect(filteredData);
 </script>
 
 <ComponentDemo
@@ -19,6 +21,11 @@
 Maifield, 1996"
 >
 	<div class="flex-v gap-medium">
+		<Demoer {parameters}>
+			{#snippet children({ activeParams })}
+				<Finder {...activeParams} style="width:200px" bind:filteredData {data} />
+			{/snippet}
+		</Demoer>
 		<h5>Props</h5>
 		<div class="flex-v gap-medium">
 			<h6>Default props</h6>

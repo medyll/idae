@@ -4,12 +4,7 @@
 	import Alert from './Alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { alertDemoValues } from './types.js';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
-
-	let parameters: Record<string, any> = alertDemoValues;
-
-	let componentArgs = $state(defaultsArgs(parameters));
+	import { parameters, componentArgs } from './types.js';
 
 	let code1 = `
 <Alert {...activeParams}>

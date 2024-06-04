@@ -7,6 +7,7 @@
 	import type { ButtonProps } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	type ButtonActionProps = ButtonProps & {
 		menuProps?: MenuProps;
@@ -25,7 +26,7 @@
 		dense = 'kind',
 		children,
 		...rest
-	}: ButtonActionProps = $props();
+	}: ExpandProps<ButtonActionProps> = $props();
 	let holder: HTMLDivElement;
 	let isOpen = $state(popperProps?.isOpen);
 	let chevron = 'fluent:chevron-down-20-regular';

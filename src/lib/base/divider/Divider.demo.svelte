@@ -5,13 +5,9 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
-	import { DividerDemoValues } from './types.js';
 	/* demo */
 
-	let parametersSlot = DividerDemoValues;
-
-	let componentArgsSlot = defaultsArgs(parametersSlot);
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 	<Divider />`;
@@ -24,7 +20,7 @@
 >
 	<div class=" flex-v gap-small">
 		<DemoPage title="Using snippets" component="Divider" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad">
 						<div class="pad">What is before</div>

@@ -6,12 +6,7 @@
 	import Backdrop from './Backdrop.svelte';
 	import { BackdropDemoValues } from './types.js';
 
-	let parameters: any = BackdropDemoValues;
-	let componentArgs = defaultsArgs({
-		isOpen: true,
-		isLoading: false,
-		flow: 'relative'
-	});
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 	<Backdrop

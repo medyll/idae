@@ -1,4 +1,6 @@
-import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import { densePreset, tallPreset, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
 type DrawerTitleType = string;
@@ -16,7 +18,7 @@ export type DrawerProps<T = any> = CommonProps & {
 	isOpen?: boolean;
 
 	/** Should the closer icon be hidden */
-	hideCloseIcon: boolean;
+	hideCloseIcon?: boolean;
 
 	/**
 	 * flow
@@ -52,3 +54,44 @@ export type DrawerProps<T = any> = CommonProps & {
 		toggle: (visibleSate?: boolean) => void;
 	};
 };
+
+const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
+	primary: {
+		type: 'string',
+		values: ['Drawer']
+	},
+	secondary: {
+		type: 'string',
+		values: ['Drawer secondary']
+	},
+	isOpen: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	flow: {
+		type: 'flow-preset',
+		values: ['fixed', 'relative', 'absolute']
+	},
+	stickTo: {
+		type: 'string',
+		values: ['top', 'bottom', 'left', 'right']
+	},
+	showOpenerIcon: {
+		type: 'boolean',
+		values: [true, false],
+		default: false
+	},
+	dense: {
+		type: 'dense',
+		values: Object.values(densePreset),
+		default: densePreset.default
+	},
+	tall: {
+		type: 'dense',
+		values: Object.values(tallPreset),
+		default: tallPreset.default
+	}
+};
+
+export const { parameters, componentArgs } = demoerArgs(drawerDemoValues);

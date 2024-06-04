@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { PaperProps } from './type.js';
 
@@ -9,7 +10,7 @@
 		children,
 		elevation = 0,
 		...rest
-	}: PaperProps = $props();
+	}: ExpandProps<PaperProps> = $props();
 </script>
 
 <div bind:this={element} class="paper {className} elevation-{elevation}" {style} {...rest}>

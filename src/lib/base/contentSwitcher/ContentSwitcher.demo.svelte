@@ -7,8 +7,8 @@
 	import ContentSwitcher from './ContentSwitcher.svelte';
 	import { contentSwitcherDemoValues } from './types.js';
 
-	let parameters = contentSwitcherDemoValues;
-	let componentArgs = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
+
 	const code = `
 <ContentSwitcher {...activeParams} class="marg-tb-1">
     {#snippet contentSwitcherTogglerIcon()}

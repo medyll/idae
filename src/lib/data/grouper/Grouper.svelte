@@ -1,8 +1,9 @@
 <script lang="ts" generics="T=Data">
 	import Button from '$lib/controls/button/Button.svelte';
 	import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import type { MenuItemProps } from '$lib/ui/menu/types.ts';
+	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	import type { GroupedDataType, GrouperProps } from './types.js';
@@ -24,9 +25,13 @@
 		activeGroupField = $bindable(''),
 		children,
 		...rest
-	}: GrouperProps = $props();
+	}: ExpandProps<GrouperProps> = $props();
 
-	/** grouping function */
+	/** grouping function, should use dataOp */
+	/* dataOp.groupBy(data, groupByField, {
+		keepUngroupedData: showUnGrouped,
+		fieldTitle: groupByTitleField
+	}); */
 	export const groupBy = (
 		dataList: any[],
 		groupField: string,

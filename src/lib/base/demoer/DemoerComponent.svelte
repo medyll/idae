@@ -1,18 +1,31 @@
-<script lang="ts">
+<script lang="ts" generics="T=Data">
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { componentCite } from '$lib/componentCite.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { Snippet } from 'svelte';
-	/* export let component: string = '';
-	export let cite: string = componentCite?.[component] ?? ''; */
+	import DemoPage from './DemoPage.svelte';
+	import Demoer from './Demoer.svelte';
+	import type { Data } from '$lib/types/index.js';
 
 	let {
 		component,
 		cite = componentCite?.[component.toLowerCase()] ?? '',
+		code,
+		title = '',
+		componentArgs = {} as T,
+		parameters = {} as T,
 		children
 	}: {
 		component: string;
+		/** parameters values for the component */
+		parameters?: T;
+		/** component demo arguments for props */
+		componentArgs?: T;
 		cite?: string;
+		/** code sample */
+		code?: string;
+		title?: string;
+		/** use for several DemoPage */
 		children: Snippet;
 	} = $props();
 
@@ -32,7 +45,11 @@
 		<div class="flex-v gap-medium">
 			{component} svelte component
 			<div class="marg-l-4">
-				<Slotted child={children} />
+				<Slotted child={children}>
+					<DemoPage {code} {component} {title}>
+						<Demoer parameters componentArgs></Demoer>
+					</DemoPage>
+				</Slotted>
 			</div>
 		</div>
 	{/if}

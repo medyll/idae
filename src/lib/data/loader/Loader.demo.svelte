@@ -5,21 +5,11 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { LoaderProps } from './types.js';
 	/* demo */
 
-	let parametersSlot: any = {
-		status: {
-			type: 'string',
-			values: ['loading', 'success', 'error', 'empty', undefined]
-		}
-	};
-
-	let componentArgsSlot = {
-		status: defaultsArgsFromProps('status', parametersSlot)
-	} as LoaderProps;
+	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `
 <Loader onstatuschange={() => {}}>
@@ -59,7 +49,7 @@
 >
 	<div class="flex-v gap-large">
 		<DemoPage code={codeSlot} component="Loading" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel h-large w-large">
 						<Loader {...activeParams} on:status:change={() => {}}>
@@ -81,7 +71,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage code={codeProps} component="Loading" title="Using props">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel h-large w-large">
 						<Loader

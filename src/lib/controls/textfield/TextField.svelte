@@ -6,6 +6,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { TextFieldProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let inputType = 'text';
 	export { inputType as type };
@@ -28,7 +29,7 @@
 		inputFirst,
 		inputLast,
 		...rest
-	}: TextFieldProps = $props();
+	}: ExpandProps<TextFieldProps> = $props();
 
 	let niceIconStyle = '';
 

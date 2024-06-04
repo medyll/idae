@@ -3,6 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className,
@@ -31,7 +32,7 @@
 		buttonLoadingIcon,
 		children,
 		...restProps
-	}: ButtonProps = $props();
+	}: ExpandProps<ButtonProps> = $props();
 
 	let startRef: HTMLDivElement;
 	let clientWidth: number | undefined = $state();

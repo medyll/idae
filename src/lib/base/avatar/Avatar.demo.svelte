@@ -7,9 +7,7 @@
 	import Avatar from './Avatar.svelte';
 	import { AvatarDemoValues, type AvatarProps } from './types.js';
 
-	let parameters: any = AvatarDemoValues;
-
-	let componentArgs: AvatarProps = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let code1 = `
 <Avatar>

@@ -7,7 +7,7 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	let {
@@ -25,7 +25,7 @@
 		autoCompleteEmpty,
 		autoCompleteNoResults,
 		...rest
-	}: AutoCompleteProps<T> & Partial<Omit<HTMLInputElement, 'style'>> = $props();
+	}: ExpandProps<AutoCompleteProps<T>> & Partial<Omit<HTMLInputElement, 'style'>> = $props();
 
 	let searchString: string | undefined = $state(undefined);
 	let menuHTML: HTMLElement | null = $state(null);

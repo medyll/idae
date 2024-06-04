@@ -1,6 +1,7 @@
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export interface BackdropProps extends CommonProps {
 	/** backdrop class */
@@ -55,3 +56,5 @@ export const BackdropDemoValues: DemoerStoryProps<BackdropProps> = {
 		default: 'fixed'
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(BackdropDemoValues);

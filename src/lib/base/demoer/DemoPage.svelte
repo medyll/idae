@@ -23,12 +23,13 @@
 	<div class="pad-l-2 flex-h">
 		<div class="flex-main">
 			<h6 class="border-b pad flex-h flex-inline flex-align-middle gap-small">
-				<Icon icon="mdi:eye" />{codeT}
+				<Icon icon="mdi:eye" />
 			</h6>
 			<div class="pad-l-2 pos-rel">
-				{#if children}
+				<Slotted child={children}></Slotted>
+				<!-- {#if children}
 					{@render children?.()}
-				{/if}
+				{/if} -->
 			</div>
 		</div>
 		{#if code || demoerCode}

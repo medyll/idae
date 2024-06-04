@@ -1,4 +1,5 @@
 import type { IconObj } from '$lib/types/index.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '../demoer/types.js';
 
 export type IconAppProps = {
@@ -54,3 +55,5 @@ export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
 		values: [true, false]
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(iconAppDemoValues);

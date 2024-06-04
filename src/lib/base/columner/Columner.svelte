@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ExpandProps } from '$lib/types/index.js';
 	import type { ColumnerStoreType } from './types.js';
 	import { setContext, type Snippet } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -8,7 +9,7 @@
 	type Props = {
 		children: Snippet;
 	};
-	let { children, ...restProps } = $props<Props>();
+	let { children, ...restProps }: ExpandProps<Props> = $props();
 </script>
 
 <div class="columner" {...restProps}>

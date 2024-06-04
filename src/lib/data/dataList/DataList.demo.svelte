@@ -7,6 +7,8 @@
 	import type { DataCellType, DataListProps } from './types.js';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 
+	import { parameters, componentArgs } from './types.js';
+
 	let data = [...Array(50)].map((caches, index: number) => {
 		return {
 			id: index,
@@ -39,27 +41,6 @@
 	}
 
 	let isOpen = false;
-
-	let parameters: any = {
-		groupByField: {
-			type: 'string',
-			values: ['group', 'groupByObjectKey', 'groupByArrayObjectKey', undefined]
-		},
-		virtualizer: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		isSortable: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	};
-
-	let componentArgs = {
-		data,
-		virtualizer: false,
-		isSortable: true
-	};
 </script>
 
 <ComponentDemo

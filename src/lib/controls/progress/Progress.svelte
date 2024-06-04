@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ExpandProps } from '$lib/types/index.js';
 	import type { ProgressProps } from './types.js';
 
 	let {
@@ -9,7 +10,7 @@
 		value = 0,
 		direction = 'horizontal',
 		...rest
-	}: ProgressProps = $props();
+	}: ExpandProps<ProgressProps> = $props();
 
 	const title = `${value} / ${percentBase}`;
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { TitleBarProps } from './types.js';
 
@@ -11,7 +12,7 @@
 		title,
 		titleBarIcon,
 		titleBarTitle
-	}: TitleBarProps = $props();
+	}: ExpandProps<TitleBarProps> = $props();
 </script>
 
 <div class="title-bar">

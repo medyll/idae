@@ -1,6 +1,7 @@
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { DemoerStoryProps } from '../demoer/types.js';
+import { demoerArgs } from '../demoer/demoer.utils.js';
 
 export type TitleBarProps = {
 	title: string;
@@ -35,3 +36,5 @@ export const titleBarDemoValues: DemoerStoryProps<TitleBarProps> = {
 		values: ['Title', 'Title 2', 'Title 3']
 	}
 };
+
+export let { parameters, componentArgs } = demoerArgs(titleBarDemoValues);

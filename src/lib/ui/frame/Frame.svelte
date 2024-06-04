@@ -82,7 +82,6 @@
 			<div class="frame-container-main-content">
 				<Slotted child={frameContent}></Slotted>
 			</div>
-
 			<Slotted child={frameBottom}></Slotted>
 		</div>
 	</div>

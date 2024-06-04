@@ -133,10 +133,10 @@ const elem = (node: HTMLElement | HTMLElement[] | string) => {
 	let isWhat: string | HTMLElement | HTMLElement[] = typeof node === 'string' ? 'qy' : node;
 	isWhat = Array.isArray(node) ? 'array' : isWhat;
 	isWhat = node instanceof HTMLElement ? 'element' : isWhat;
-
-	const elements = Array.isArray(node)
+	console.log(node, isWhat);
+	/* const elements = Array.isArray(node)
 		? node
-		: Array.from(document.querySelectorAll(node as string));
+		: Array.from(document.querySelectorAll(node as string)); */
 
 	function findWhile(
 		element: HTMLElement | Element | any,
@@ -154,6 +154,7 @@ const elem = (node: HTMLElement | HTMLElement[] | string) => {
 
 	return {
 		find: (qy: string) => {
+			console.log(isWhat, qy);
 			switch (isWhat) {
 				case 'element':
 					return (node as HTMLElement).querySelector(qy);

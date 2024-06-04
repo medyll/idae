@@ -4,6 +4,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { CartoucheClasses, CartoucheProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className = '',
@@ -32,7 +33,7 @@
 			toggle,
 			close
 		}
-	}: CartoucheProps = $props();
+	}: ExpandProps<CartoucheProps> = $props();
 
 	function open() {
 		isOpen = true;

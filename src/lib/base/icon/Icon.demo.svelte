@@ -2,11 +2,8 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { DemoPage, Demoer } from '$lib/index.js';
 	import Icon from '@iconify/svelte';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
-	import { iconAppDemoValues } from './types.js';
 
-	let parameters = iconAppDemoValues;
-	let componentArgs = defaultsArgs(parameters);
+	import { parameters, componentArgs } from './types.js';
 
 	let code = `
 <Icon>

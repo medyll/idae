@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
+	import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { CheckboxProps } from './types.js';
 
@@ -15,7 +15,7 @@
 		dense,
 		children,
 		...rest
-	}: CheckboxProps = $props();
+	}: ExpandProps<CheckboxProps> = $props();
 </script>
 
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>

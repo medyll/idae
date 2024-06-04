@@ -1,24 +1,20 @@
 <script lang="ts">
 	import Grouper from './Grouper.svelte';
 
-	/* demo */
-	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
+	import { parameters, componentArgs } from './types.js';
 	const data = [...Array(89)].map((r, i) => {
 		return {
 			id: i,
 			name: 'one name',
 			surName: 'surname ' + i,
-			directory: ((prop: any) => 'dir-' + (i % 4) + prop)(i),
-			subdirectory: ((prop: any) => 'subdir-' + (i % 8) + prop)(i % 8),
-			directoryName: 'This directory number' + (i % 4),
+			group: ((prop: any) => 'dir-' + (i % 4) + prop)(i),
+			subgroup: ((prop: any) => 'subdir-' + (i % 8) + prop)(i % 8),
 			nestedData: {
 				uuid: crypto?.randomUUID() ?? i
 			}
@@ -27,27 +23,6 @@
 
 	let groupedData: Record<string, any>;
 	let activeGroupFieldAll: any;
-
-	let parametersSlot: any = {
-		grouperMode: {
-			type: 'string',
-			values: ['menu', 'button']
-		},
-		showUnGrouped: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		groupByField: {
-			type: 'string',
-			values: [undefined, 'subdirectory']
-		},
-		groupListItems: {
-			type: 'string',
-			values: [undefined, ['directory', 'subdirectory']]
-		}
-	};
-
-	let componentArgsSlot = { ...defaultsArgs(parametersSlot), data };
 
 	let codeAll = `<Grouper 
 	bind:groupedData
@@ -58,27 +33,27 @@
 	let codePref: string = `<Grouper
 	bind:groupedData
 	bind:activeGroupField={activeGroupFieldPredefined}
-	groupListItems={['directory', 'subdirectory']}
+	groupListItems={['group', 'subgroup']}
 	{data}
 	/>`;
 
 	let codeButtonMode: string = `<Grouper
 	bind:activeGroupField
 	bind:groupedData
-	groupByField="directory"
+	groupByField="group"
 	grouperMode="button"
 	{data}
 	>
-		group by directory
+		group by group
 </Grouper>
 <Grouper
 	bind:groupedData
 	bind:activeGroupField
-	groupByField="subdirectory"
+	groupByField="subgroup"
 	grouperMode="button"
 	{data}
 >
-	group by subdirectory
+	group by subgroup
 </Grouper>
 <div class="flex-main" />
 <div>
@@ -89,7 +64,7 @@
 <ComponentDemo component="Grouper">
 	<div class="flex-v gap-large">
 		<DemoPage code={codeAll} component="Popper" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-middle gap-tiny">
 						<Grouper bind:groupedData bind:activeGroupField={activeGroupFieldAll} {...activeParams}
@@ -129,7 +104,7 @@
               <Grouper
                 bind:groupedData
                 bind:activeGroupField={activeGroupFieldPredefined}
-                groupListItems={["directory", "subdirectory"]}
+                groupListItems={["group", "subgroup"]}
                 {data} />{activeGroupFieldPredefined}
             </div>
             <div />

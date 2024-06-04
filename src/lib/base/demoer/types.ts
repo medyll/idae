@@ -36,7 +36,8 @@ export type DemoPageProps = CommonProps & {
 export type DemoerStoryProps<T = Record<string, any>> = {
 	[K in keyof T]: {
 		type: T[K] | K | string;
-		values: T[K][] | any[];
+		values?: T[K][] | any[];
 		default?: T[K];
+		private?: boolean;
 	};
 };

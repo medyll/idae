@@ -1,4 +1,6 @@
-import type { Data, ElementProps } from '$lib/types/index.js';
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import { tallPreset, widthPreset, type Data, type ElementProps } from '$lib/types/index.js';
 
 export type FinderProps<T = Data> = {
 	/** className off the root component */
@@ -28,10 +30,32 @@ export type FinderProps<T = Data> = {
 	filteredData?: T[];
 
 	/** with of the root element using  presets */
-	sizeRoot?: ElementProps['width'] | 'full';
+	sizeRoot?: ElementProps['width'];
 
 	/** with of the input using  presets */
-	size?: ElementProps['width'] | 'full';
+	size?: ElementProps['width'];
 	/** with of the input using  presets */
 	tall?: ElementProps['tall'];
 };
+
+const FinderPropsDemoValues: DemoerStoryProps<FinderProps> = {
+	data: {
+		type: 'array',
+		values: [[{ name: 'name1' }, { name: 'name2' }]]
+	},
+	defaultField: {
+		type: 'string',
+		values: ['name'],
+		default: 'name'
+	},
+	size: {
+		type: 'string',
+		values: Object.values(widthPreset)
+	},
+	tall: {
+		type: 'tall',
+		values: Object.values(tallPreset)
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(FinderPropsDemoValues);
