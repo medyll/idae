@@ -19,8 +19,6 @@ export interface BackdropProps extends CommonProps {
 	isOpen?: boolean;
 	/** if in loading state, it will show a loading icon or $$slots.loadingSlot */
 	isLoading?: boolean;
-	/** backdrop actions */
-	actions?: Record<'open' | 'close', Function>;
 	element?: HTMLDivElement;
 	elementContent?: HTMLDivElement;
 	elementContentInner?: HTMLDivElement;

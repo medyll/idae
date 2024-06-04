@@ -6,7 +6,8 @@
 	import type { AlertProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	const alertActions: Record<'open' | 'toggle' | 'close', Function> = {
+	/** alert actions */
+	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
 		toggle,
 		close
@@ -16,15 +17,14 @@
 		class: className,
 		message,
 		draggable = false,
-		children,
-		topButtonSlot,
-		messageSlot,
-		buttonZoneSlot,
-		buttonCloseSlot,
 		level = $bindable<ElementProps['levels']>('info'),
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
-		actions = $bindable<Record<'open' | 'toggle' | 'close', Function>>(alertActions)
+		children,
+		alertTopButton: topButtonSlot,
+		alertMessage: messageSlot,
+		alertButtonZone: buttonZoneSlot,
+		alertButtonClose: buttonCloseSlot
 	}: ExpandProps<AlertProps> = $props();
 
 	const handleClick = (event: Event) => {

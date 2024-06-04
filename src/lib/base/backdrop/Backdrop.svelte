@@ -6,7 +6,7 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	/** Backdrop controller */
-	const actionsnope = {
+	export const actions = {
 		close: () => {
 			isOpen = false;
 		},
@@ -23,7 +23,6 @@
 		isOpen = $bindable(),
 		onclick,
 		isLoading = false,
-		actions = actionsnope,
 		element,
 		elementContent,
 		elementContentInner,

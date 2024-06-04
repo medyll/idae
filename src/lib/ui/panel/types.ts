@@ -40,9 +40,5 @@ export type PanelProps<T = Data> = {
 	showNavigation?: boolean;
 	panelButtonNext?: Snippet;
 	panelButtonPrevious?: Snippet;
-	/** Actions to be performed by the panel */
-	actions?: {
-		load: (args: any) => void;
-	};
 	children?: Snippet;
 };

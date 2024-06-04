@@ -4,14 +4,29 @@
 	import { setContext } from 'svelte';
 	import type { MenuListProps } from './types.js';
 	import MenuItem from './MenuListItem.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
+	export const actions = {
+		navigate(e: KeyboardEvent) {
+			element?.dispatchEvent(new CustomEvent('menu:navigate', { detail: e }));
+		},
+		gotoIndex: (idx: number) => {
+			if (element && idx > -1) {
+				element.dispatchEvent(new CustomEvent('menu:gotoIndex', { detail: { index: idx } }));
+				selectedIndex = idx;
+				if (menuStore) menuStore.selectedIndex = idx;
+				const target = element.querySelector('[aria-selected=true]');
+				if (target) {
+					scrollToElement(target as HTMLElement);
+				}
+			}
+		}
+	};
 	let {
 		class: className = '',
 		dense = 'medium',
 		style = undefined,
-		bordered = false,
 		selectorField,
 		selectedData = $bindable({}),
 		selectedIndex = $bindable(-1),
@@ -21,25 +36,9 @@
 		role = 'menu',
 		onclick,
 		showLastOnSelected = true,
-		actions = {
-			navigate(e: KeyboardEvent) {
-				element?.dispatchEvent(new CustomEvent('menu:navigate', { detail: e }));
-			},
-			gotoIndex: (idx: number) => {
-				if (element && idx > -1) {
-					element.dispatchEvent(new CustomEvent('menu:gotoIndex', { detail: { index: idx } }));
-					selectedIndex = idx;
-					if (menuStore) menuStore.selectedIndex = idx;
-					const target = element.querySelector('[aria-selected=true]');
-					if (target) {
-						scrollToElement(target as HTMLElement);
-					}
-				}
-			}
-		},
 		children,
 		...rest
-	}: MenuListProps = $props();
+	}: ExpandProps<MenuListProps> = $props();
 
 	let defaultStoreValues = {
 		menuItemsList,
@@ -59,16 +58,18 @@
 		menuStore.selectedIndex = selectedIndex;
 	});
 	$effect(() => {
-		element.addEventListener<any>('menu:item:clicked', onMenuClick);
+		if (element) {
+			element.addEventListener<any>('menu:item:clicked', onMenuClick);
 
-		element.addEventListener('click', () => {
-			element.focus();
-		});
-		element.addEventListener('menu:onnavigate', ((
-			event: CustomEvent<{ selectedIndex: number }>
-		) => {
-			if (event?.detail?.selectedIndex) selectedIndex = event.detail.selectedIndex;
-		}) as EventListener);
+			element.addEventListener('click', () => {
+				element?.focus();
+			});
+			element.addEventListener('menu:onnavigate', ((
+				event: CustomEvent<{ selectedIndex: number }>
+			) => {
+				if (event?.detail?.selectedIndex) selectedIndex = event.detail.selectedIndex;
+			}) as EventListener);
+		}
 	});
 
 	function onMenuClick(e: CustomEvent<any>) {
@@ -80,9 +81,11 @@
 	function scrollToElement(target: HTMLElement) {
 		if (target) {
 			const tD = target.getBoundingClientRect();
-			const sD = element.getBoundingClientRect();
-			if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
-				target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			const sD = element?.getBoundingClientRect();
+			if (sD) {
+				if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {
+					target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				}
 			}
 		}
 	}

@@ -12,12 +12,11 @@ export interface AlertProps extends CommonProps {
 	/** show or hide the alert */
 	isOpen?: boolean;
 	element?: HTMLDialogElement;
-	actions?: Record<'open' | 'toggle' | 'close', Function>;
 	children?: Snippet;
-	topButtonSlot?: Snippet;
-	messageSlot?: Snippet;
-	buttonZoneSlot?: Snippet;
-	buttonCloseSlot?: Snippet;
+	alertTopButton?: Snippet;
+	alertMessage?: Snippet;
+	alertButtonZone?: Snippet;
+	alertButtonClose?: Snippet;
 }
 
 export const alertDemoValues: DemoerStoryProps<any> = {

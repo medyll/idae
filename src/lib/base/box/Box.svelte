@@ -5,6 +5,13 @@
 	import type { BoxProps } from './types.js';
 	import type { ExpandProps } from '$lib/types/index.js';
 
+	/** box actions */
+	export const actions = {
+		open,
+		toggle,
+		close
+	};
+
 	let {
 		class: className = '',
 		element = $bindable(),
@@ -16,11 +23,6 @@
 		icon,
 		content,
 		bottomZone,
-		actions = {
-			open,
-			toggle,
-			close
-		},
 		children,
 		titleBarTitle,
 		titleBarIcon,

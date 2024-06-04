@@ -28,7 +28,7 @@
 					<Alert {...activeParams}>hi !</Alert>
 					<Alert {...activeParams}>
 						Simple alert with a button
-						{#snippet topButtonSlot()}
+						{#snippet alertTopButton()}
 							<Button>button</Button>
 						{/snippet}
 					</Alert>
@@ -39,10 +39,10 @@
 						}}
 					>
 						Alert with button close
-						{#snippet messageSlot()}
+						{#snippet alertMessage()}
 							description here here
 						{/snippet}
-						{#snippet buttonZoneSlot()}
+						{#snippet alertButtonZone()}
 							<Button data-close>close</Button>
 						{/snippet}
 					</Alert>

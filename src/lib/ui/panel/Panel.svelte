@@ -3,7 +3,12 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { PanelContextType, PanelProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Data } from '$lib/types/index.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
+
+	/** Actions to be performed by the panel */
+	export const actions = {
+		load: (args: any) => {}
+	};
 
 	let {
 		title = 'not set',
@@ -12,11 +17,8 @@
 		showNavigation = true,
 		panelButtonPrevious,
 		panelButtonNext,
-		children,
-		actions = {
-			load: (args: any) => {}
-		}
-	}: PanelProps = $props();
+		children
+	}: ExpandProps<PanelProps> = $props();
 
 	let ref: HTMLDivElement | undefined = undefined;
 	let panelSlideId = getContext<string>('PanelSlide');

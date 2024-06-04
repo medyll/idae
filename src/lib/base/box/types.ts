@@ -27,12 +27,6 @@ export interface BoxProps extends CommonProps {
 	boxBottomZone?: Snippet;
 	titleBarTitle?: Snippet;
 	titleBarIcon?: Snippet;
-	/** @deprecated */
-	slots?: {
-		boxBottomZone: Snippet;
-		titleBarTitle: Snippet;
-		titleBarIcon: Snippet;
-	};
 }
 
 export const BoxDemoValues: DemoStoryProps<BoxProps> = {

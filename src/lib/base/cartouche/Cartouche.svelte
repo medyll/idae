@@ -6,6 +6,12 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 
+	export const actions = {
+		open,
+		toggle,
+		close
+	};
+
 	let {
 		class: className = '',
 		classes = {} as CartoucheClasses,
@@ -22,17 +28,12 @@
 		bordered = true,
 		children,
 		cartoucheIcon,
-		cartouchePrimary: cartouchePrimarySlot,
-		cartoucheSecondary: cartoucheSecondarySlot,
+		cartouchePrimary,
+		cartoucheSecondary,
 		cartoucheButtons,
 		isOpen = $bindable(false),
 		dense,
-		tall,
-		actions = {
-			open,
-			toggle,
-			close
-		}
+		tall
 	}: ExpandProps<CartoucheProps> = $props();
 
 	function open() {
@@ -67,12 +68,12 @@
 			</div>
 		{/if}
 		<div class="controlLabel {classes.controlLabel}">
-			{#if primary || cartouchePrimarySlot}
-				<Slotted child={cartouchePrimarySlot}>
+			{#if primary || cartouchePrimary}
+				<Slotted child={cartouchePrimary}>
 					{primary}
 				</Slotted>
 				<div>
-					<Slotted child={cartoucheSecondarySlot}>
+					<Slotted child={cartoucheSecondary}>
 						{secondary ?? ''}
 					</Slotted>
 				</div>

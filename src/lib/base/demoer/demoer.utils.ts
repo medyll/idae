@@ -1,5 +1,4 @@
 import type { DemoerStoryProps } from './types.js';
-
 export function demoerArgs<T = Record<string, any>>(
 	parametersProps: DemoerStoryProps<T>
 ): {

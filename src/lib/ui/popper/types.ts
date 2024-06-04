@@ -33,10 +33,4 @@ export type PopperProps = CommonProps & {
 	/** binding : The popper will be opened or is opened */
 	isOpen?: boolean;
 	popperHolder?: Snippet;
-	/** actions for the popper */
-	actions?: {
-		toggle: () => void;
-		show: () => void;
-		hide: () => void;
-	};
 };

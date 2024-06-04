@@ -229,6 +229,7 @@ export * from '$lib/ui/tree/tree.utils.js';
 export * from '$lib/ui/tree/types.js';
 export * from '$lib/ui/window/actions.js';
 export * from '$lib/ui/window/store.js';
+export * from '$lib/ui/window/types.js';
 export { default as Window } from '$lib/ui/window/Window.svelte';
 export * from '$lib/utils/content/content-types.js';
 export { default as Content } from '$lib/utils/content/Content.svelte';

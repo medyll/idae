@@ -13,30 +13,31 @@
 		console.log('show');
 	};
 
+	/** actions for the popper */
+	export const actions = {
+		toggle: () => {
+			console.log('toggle');
+		},
+		show: () => {
+			console.log('show');
+		},
+		hide: () => {
+			console.log('hide');
+		}
+	};
+
 	let {
 		class: className = '',
 		element = $bindable(),
-		style = '',
 		code = crypto.randomUUID(),
-		parentNode = undefined,
+		parentNode,
 		stickToHookWidth = false,
-		component = undefined,
+		component,
 		componentProps = {},
 		position = 'BC',
-		content = undefined,
+		content,
 		autoClose = $bindable(true),
 		isOpen = $bindable(false),
-		actions = {
-			toggle: () => {
-				console.log('toggle');
-			},
-			show: () => {
-				console.log('show');
-			},
-			hide: () => {
-				console.log('hide');
-			}
-		},
 		children,
 		popperHolder,
 		...rest
