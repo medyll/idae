@@ -33,14 +33,14 @@ export type FinderProps<T = Data> = {
 	sizeRoot?: ElementProps['width'];
 
 	/** with of the input using  presets */
-	size?: ElementProps['width'];
+	width?: ElementProps['width'];
 	/** with of the input using  presets */
 	tall?: ElementProps['tall'];
 };
 
 const FinderPropsDemoValues: DemoerStoryProps<FinderProps> = {
 	data: {
-		type: 'array',
+		type: 'data',
 		values: [[{ name: 'name1' }, { name: 'name2' }]]
 	},
 	defaultField: {
@@ -48,13 +48,13 @@ const FinderPropsDemoValues: DemoerStoryProps<FinderProps> = {
 		values: ['name'],
 		default: 'name'
 	},
-	size: {
-		type: 'string',
-		values: Object.values(widthPreset)
+	width: {
+		type: 'width',
+		default: widthPreset.default
 	},
 	tall: {
 		type: 'tall',
-		values: Object.values(tallPreset)
+		default: tallPreset.default
 	}
 };
 

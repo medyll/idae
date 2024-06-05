@@ -1,12 +1,7 @@
-import {
-	tallPreset,
-	type CommonProps,
-	type DemoStoryProps,
-	type ElementProps,
-	type IconObj
-} from '$lib/types/index.js';
+import { tallPreset, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { Snippet, SvelteComponent } from 'svelte';
 import { demoerArgs } from '../demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '../demoer/types.js';
 export type CartoucheClasses = {
 	control: string;
 	controlIcon: string;
@@ -51,7 +46,7 @@ export type CartoucheProps = CommonProps & {
 	cartoucheButtons?: Snippet;
 };
 
-export const cartoucheDemoValues: DemoStoryProps<CartoucheProps> = {
+export const cartoucheDemoValues: DemoerStoryProps<CartoucheProps> = {
 	primary: {
 		type: 'string',
 		values: ['A smart title on a smart cartouche', 'second title']
@@ -66,27 +61,22 @@ export const cartoucheDemoValues: DemoStoryProps<CartoucheProps> = {
 	},
 	stacked: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	showTitleDivider: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	bordered: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	isOpen: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	tall: {
 		type: 'tall',
-		values: Object.keys(tallPreset),
 		default: tallPreset.default
 	}
 };

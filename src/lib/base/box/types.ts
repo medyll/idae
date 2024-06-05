@@ -1,6 +1,7 @@
 import type { CommonProps, DemoStoryProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import { demoerArgs } from '../demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '../demoer/types.js';
 
 export interface BoxProps extends CommonProps {
 	element?: HTMLDivElement;
@@ -9,7 +10,7 @@ export interface BoxProps extends CommonProps {
 	isOpen: boolean;
 	/** show a working closer icon */
 	showCloseControl: boolean;
-	/** used to activate the slotted.TitleBar component */
+	/** used to activate the slotted.TitleBar component	 */
 	hasMenu: boolean;
 	/** text to be shown in the title bar */
 	title: string;
@@ -22,27 +23,23 @@ export interface BoxProps extends CommonProps {
 	/** component actions
 	 * @type {Record<'open'|'toggle' | 'close', Function>}
 	 */
-	actions?: Record<'open' | 'toggle' | 'close', Function>;
 	children?: Snippet;
 	boxBottomZone?: Snippet;
 	titleBarTitle?: Snippet;
 	titleBarIcon?: Snippet;
 }
 
-export const BoxDemoValues: DemoStoryProps<BoxProps> = {
+export const BoxDemoValues: DemoerStoryProps<BoxProps> = {
 	isOpen: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	showCloseControl: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	hasMenu: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	title: {

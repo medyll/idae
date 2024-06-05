@@ -1,4 +1,5 @@
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import type { ElementProps } from '$lib/types/index.js';
 
 export type ProgressProps = {
 	/** className off the root component */
@@ -17,7 +18,7 @@ export type ProgressProps = {
 	value: number;
 
 	/** can be vertical or horizontal */
-	direction?: 'vertical' | 'horizontal';
+	orientation?: ElementProps['orientation'];
 };
 
 export const ProgressDemoValues: DemoerStoryProps<ProgressProps> = {
@@ -29,8 +30,7 @@ export const ProgressDemoValues: DemoerStoryProps<ProgressProps> = {
 		type: 'number',
 		values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 	},
-	direction: {
-		type: 'string',
-		values: ['vertical', 'horizontal']
+	orientation: {
+		type: 'orientation'
 	}
 };

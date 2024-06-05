@@ -18,7 +18,7 @@
 <div class="title-bar">
 	<div class="title-bar-content">
 		<div class="title-bar-content-icon">
-			<Slotted child={titleBarIcon}><Icon fontSize="small" {icon} /></Slotted>
+			<Slotted child={titleBarIcon}><Icon iconSize="small" {icon} /></Slotted>
 		</div>
 		<div class="title-bar-content-title">
 			<Slotted child={titleBarTitle}>
@@ -32,7 +32,7 @@
 		</div>
 	{/if}
 	{#if Boolean(onClose)}
-		<Button onclick={onClose} variant="naked" icon="window-close" size="auto" />
+		<Button onclick={onClose} variant="naked" icon="window-close" width="auto" />
 	{/if}
 </div>
 

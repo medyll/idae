@@ -20,8 +20,8 @@
 		endIcon,
 		endIconColor = '#666',
 		usePopper,
-		size = 'auto',
-		height = 'default',
+		width: size = 'auto',
+		tall: height = 'default',
 		borderless = false,
 		transparent = false,
 		value = $bindable(),
@@ -31,7 +31,7 @@
 		...rest
 	}: ExpandProps<TextFieldProps> = $props();
 
-	let niceIconStyle = '';
+	let niceIconStyle = $state('');
 
 	niceIconStyle += icon || inputFirst ? 'padding-left:2.2rem;' : '';
 	niceIconStyle += endIcon || inputLast ? 'padding-right:2.2rem;' : '';

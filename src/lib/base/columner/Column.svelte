@@ -3,6 +3,7 @@
 	import type { ColumnProps, ColumnerStoreType } from './types.js';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	let columner = getContext<ColumnerStoreType>('columner');
 
@@ -43,9 +44,9 @@
 	id={columnId}
 	class="column {className}"
 	use:resizer
-	on:resizer:start={resizeStart}
-	on:resizer:resize={resizeOn}
-	on:resizer:end={resizeEnd}
+	use:onEvent={{ event: 'on:resizer:start', action: resizeStart }}
+	use:onEvent={{ event: 'on:resizer:resize', action: resizeOn }}
+	use:onEvent={{ event: 'on:resizer:end', action: resizeEnd }}
 	style:width
 	{...rest}
 >

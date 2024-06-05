@@ -69,7 +69,7 @@
 				<Button
 					variant="naked"
 					icon={{ icon: iconInitial, color: iconColorInitial }}
-					primary={primaryInitial}
+					value={primaryInitial}
 				/>
 			</Slotted>
 		</div>
@@ -80,7 +80,7 @@
 				<Button onclick={handleClickCancel} variant="naked" icon={iconCancel} title="cancel" />
 			</span>
 			<Slotted child={children} slotArgs={{ step }}>
-				<Button onclick={handleAction} {icon} size="auto" {primary} />
+				<Button onclick={handleAction} {icon} width="auto" {value} />
 			</Slotted>
 		</div>
 	{/if}

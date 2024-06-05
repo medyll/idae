@@ -35,22 +35,18 @@ export interface BackdropProps extends CommonProps {
 export const BackdropDemoValues: DemoerStoryProps<BackdropProps> = {
 	isOpen: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	autoClose: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	isLoading: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	flow: {
-		type: 'flow-preset',
-		values: ['relative', 'absolute', 'fixed'],
+		type: 'flow',
 		default: 'fixed'
 	}
 };

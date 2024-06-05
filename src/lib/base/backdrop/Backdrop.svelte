@@ -57,7 +57,7 @@
 			{#if isLoading}
 				<div class="backdrop-content-loader">
 					<Slotted child={backdropLoading}
-						><Icon icon="mdi:loading" fontSize="large" rotate /></Slotted
+						><Icon icon="mdi:loading" iconSize="large" rotate /></Slotted
 					>
 				</div>
 			{:else}

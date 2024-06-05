@@ -24,12 +24,10 @@ export const titleBarDemoValues: DemoerStoryProps<TitleBarProps> = {
 		values: [() => console.log('close')]
 	},
 	hasMenu: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	icon: {
-		type: 'icon',
-		values: ['mdi:window', 'mdi:user', undefined]
+		type: 'icon'
 	},
 	title: {
 		type: 'string',

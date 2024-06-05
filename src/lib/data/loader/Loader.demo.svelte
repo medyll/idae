@@ -54,16 +54,16 @@
 					<div class="pos-rel h-large w-large">
 						<Loader {...activeParams} on:status:change={() => {}}>
 							{#snippet loaderLoading()}
-								<Icon color="orange" fontSize="big" icon="mdi:loading" rotate />
+								<Icon color="orange" iconSize="big" icon="mdi:loading" rotate />
 							{/snippet}
 							{#snippet loaderError()}
-								<Icon color="red" fontSize="big" icon="mdi:alert-circle-outline" />
+								<Icon color="red" iconSize="big" icon="mdi:alert-circle-outline" />
 							{/snippet}
 							{#snippet loaderEmpty()}
-								<Icon color="gray" fontSize="big" icon="mdi:database-search-outline" />
+								<Icon color="gray" iconSize="big" icon="mdi:database-search-outline" />
 							{/snippet}
 							{#snippet loaderSuccess()}
-								<Icon color="green" fontSize="big" icon="clarity:success-standard-line" />
+								<Icon color="green" iconSize="big" icon="clarity:success-standard-line" />
 							{/snippet}v
 						</Loader>
 					</div>

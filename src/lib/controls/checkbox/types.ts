@@ -34,22 +34,18 @@ export const CheckboxDemoValues: DemoerStoryProps<CheckboxProps> = {
 	},
 	checked: {
 		type: 'boolean',
-		values: [undefined, false, true],
 		default: false
 	},
 	disabled: {
 		type: 'boolean',
-		values: [undefined, false, true],
 		default: false
 	},
 	indeterminate: {
 		type: 'boolean',
-		values: [undefined, true, false],
 		default: false
 	},
 	dense: {
 		type: 'dense',
-		values: Object.values(densePreset),
 		default: densePreset.default
 	}
 };

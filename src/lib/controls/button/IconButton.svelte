@@ -38,6 +38,6 @@
 	}: IconButtonProps = $props();
 </script>
 
-<Button data-iconButton {...rest} bind:element style="{style};aspect-ratio:{ratio};">
-	<Icon {rotation} {icon} fontSize={iconFontSize} />
+<Button {...rest} bind:element style="{style};aspect-ratio:{ratio};" {ratio}>
+	<Icon {rotation} {icon} iconSize={iconFontSize} />
 </Button>

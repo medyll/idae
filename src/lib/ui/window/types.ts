@@ -79,17 +79,14 @@ const windowDemoValues: DemoerStoryProps<WindowProps> = {
 	},
 	icon: {
 		type: 'icon',
-		values: ['add'],
 		default: 'add'
 	},
 	iconClose: {
 		type: 'icon',
-		values: ['close'],
 		default: 'close'
 	},
 	iconValidate: {
 		type: 'icon',
-		values: ['check'],
 		default: 'check'
 	},
 	open: {

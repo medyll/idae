@@ -48,11 +48,11 @@
 				let toggleOrder = sortState?.[next] ? sortState[next] : sortState[0];
 				if (sortByField) doSort(sortByField, toggleOrder);
 			}}
-			primary={sortByTitleField ?? sortByField}
+			value={sortByTitleField ?? sortByField}
 			icon={'mdi' + icons.default[sortState.indexOf(sortByOrder)]}
 			variant="naked"
 			selected={sortByOrder !== 'none' && activeCommonSortField === sortByField}
-			size="auto"
+			width="auto"
 			showChip={sortByOrder !== 'none' && activeCommonSortField === sortByField}
 		/>
 	{/if}

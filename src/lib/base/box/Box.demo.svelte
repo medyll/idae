@@ -38,7 +38,7 @@
 							<span>Title of the box</span>
 						{/snippet}
 						{#snippet titleBarIcon()}
-							<Icon fontSize="small" icon="clock" />
+							<Icon iconSize="small" icon="clock" />
 						{/snippet}
 						{#snippet boxBottomZone()}
 							<div class="flex-h gap-small pad border-t marg-ii-1">bottom zoone</div>

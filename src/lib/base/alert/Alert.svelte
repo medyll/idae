@@ -66,7 +66,7 @@
 	>
 		<article class="dialog-content border-color-scheme-{level}">
 			<header class="header-bar">
-				<div class="dot bg-themed-scheme-{level}" />
+				<div class="dot bg-themed-scheme-{level}"></div>
 				<div class="title">
 					<Slotted child={children}>{message}</Slotted>
 				</div>

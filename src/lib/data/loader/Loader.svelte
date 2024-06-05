@@ -65,24 +65,24 @@
 						<Icon
 							style="color:var(--sld-color-primary)"
 							icon={loadingIcon}
-							fontSize="medium"
+							iconSize="medium"
 							rotate
 						/>
 					</Slotted>
 				{/if}
 				{#if status === 'error' || isError}
 					<Slotted child={loaderError}>
-						<Icon style="color:orange;" icon={errorIcon} fontSize="medium" />
+						<Icon style="color:orange;" icon={errorIcon} iconSize="medium" />
 					</Slotted>
 				{/if}
 				{#if showSuccess && status === 'success'}
 					<Slotted child={loaderSuccess}>
-						<Icon style="color:green;" icon={successIcon} fontSize="medium" />
+						<Icon style="color:green;" icon={successIcon} iconSize="medium" />
 					</Slotted>
 				{/if}
 				{#if status === 'empty' || isEmpty}
 					<Slotted child={loaderEmpty}>
-						<Icon icon={emptyIcon} fontSize="medium" />
+						<Icon icon={emptyIcon} iconSize="medium" />
 					</Slotted>
 				{/if}
 

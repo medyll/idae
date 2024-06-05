@@ -1,6 +1,6 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
-import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import { tallPreset, uiPresets, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
 
@@ -21,10 +21,10 @@ export type TextFieldProps = CommonProps & {
 	usePopper?: UsePopperProps;
 
 	/** width of the input using presets */
-	size?: ElementProps['width'] | 'full';
+	width?: ElementProps['width'];
 
 	/** height of the input, using preset values */
-	height?: string;
+	tall?: ElementProps['tall'];
 
 	/** has no border */
 	borderless?: boolean;
@@ -37,40 +37,30 @@ export type TextFieldProps = CommonProps & {
 
 	inputLast?: Snippet;
 	inputFirst?: Snippet;
+	rest?: Partial<HTMLInputElement>;
 };
 
 export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
 	icon: {
-		type: 'string',
-		values: ['search', 'close']
-	},
-	iconColor: {
-		type: 'string',
-		values: ['primary', 'secondary']
+		type: 'icon',
+		values: ['search', undefined]
 	},
 	endIcon: {
-		type: 'string',
-		values: ['search', 'close']
+		type: 'icon',
+		values: ['search', undefined]
 	},
-	endIconColor: {
-		type: 'string',
-		values: ['primary', 'secondary']
+	width: {
+		type: 'width'
 	},
-	size: {
-		type: 'size',
-		values: ['small', 'medium', 'large']
-	},
-	height: {
-		type: 'string',
-		values: ['small', 'medium', 'large']
+	tall: {
+		type: 'tall',
+		default: tallPreset.default
 	},
 	borderless: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	transparent: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	}
 };
 

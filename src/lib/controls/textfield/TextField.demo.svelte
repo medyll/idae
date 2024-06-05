@@ -1,27 +1,12 @@
 <script lang="ts">
-	/* demo */
-	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	/* demo */
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
-	import type { TextFieldProps } from './types.js';
-
-	let parametersSlot: any = {
-		size: {
-			type: 'size-preset',
-			values: Object.keys(uiPresets.width).reverse()
-		}
-	};
-
-	let componentArgsSlot: TextFieldProps = {
-		value: 'value',
-		size: defaultsArgsFromProps('size', parametersSlot)
-	};
+	import { componentArgs, parameters } from './types.js';
 
 	let parametersProps: any = {
 		icon: {
@@ -33,33 +18,30 @@
 			values: ['search', undefined]
 		},
 		height: {
-			type: 'size-preset',
+			type: 'tall',
 			values: ['small', 'tiny', 'small', 'large']
 		},
-		...parametersSlot
+		...parameters
 	};
 
-	let componentArgsProps = {
-		...componentArgsSlot
-	};
-
-	let codeSlot = `
-<Input >
+	let code = `
+<TextField >
 	{#snippet inputFirst()}
 		<Icon icon="close" />
 	{/snippet}
 	{#snippet inputLast()}
 		<Icon icon="close" />
 	{/snippet}
-</Input>`;
+</TextField>`;
+
 	let codeSlotProps = `
-	<Input icon={icon} endIcon={icon} />`;
+<Input icon={icon} endIcon={icon} />`;
 </script>
 
 <ComponentDemo component="Input">
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="TextField" code={codeSlot}>
-			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
+		<DemoPage title="Using snippets" component="TextField" {code}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h flex-align-middle flex-wrap">
 						<div class="pad-1">
@@ -84,7 +66,7 @@
 			</Demoer>
 		</DemoPage>
 		<DemoPage title="Using props" component="Input" code={codeSlotProps}>
-			<Demoer parameters={parametersProps} componentArgs={componentArgsProps}>
+			<Demoer parameters={parametersProps} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h">
 						<div class="pad-1">

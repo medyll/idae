@@ -1,5 +1,6 @@
 import type { CommonProps } from '$lib/types/index.js';
-import type { Component, Snippet, SvelteComponent } from 'svelte';
+import type { uiPresets } from '$lib/utils/engine/presets.js';
+import type { Component, Snippet } from 'svelte';
 
 export type DemoerProps<T = Record<string, any>> = {
 	title?: string;
@@ -35,7 +36,7 @@ export type DemoPageProps = CommonProps & {
 
 export type DemoerStoryProps<T = Record<string, any>> = {
 	[K in keyof T]: {
-		type: T[K] | K | string;
+		type: keyof typeof uiPresets | T[K] | K | string;
 		values?: T[K][] | any[];
 		default?: T[K];
 		private?: boolean;

@@ -63,7 +63,7 @@
 						<div class="avatarHolder marg-b-2">
 							<div class="avatar flex-h flex-align-middle-center">
 								{#if submitting}
-									<Icon rotate fontSize="large" icon="loading" />
+									<Icon rotate iconSize="large" icon="loading" />
 								{:else}
 									<Slotted child={loginAvatar} />
 								{/if}
@@ -77,7 +77,7 @@
 						<div class="pad-2">
 							<input name="password" type="password" />
 						</div>
-						<Button type="submit" primary="login" loading={submitting}>
+						<Button type="submit" value="login" loading={submitting}>
 							{#if submitting}<i class="fa fa-spinner fa-spin theme-text-primary-complement"
 								></i>{/if}
 							Login

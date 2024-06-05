@@ -1,4 +1,4 @@
-import type { ElementProps } from '$lib/types/index.js';
+import { densePreset, uiPresets, type ElementProps } from '$lib/types/index.js';
 import { demoerArgs } from '../demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '../demoer/types.js';
 
@@ -21,7 +21,7 @@ export type DividerProps = {
 	 * default direction of the divider
 	 * @type {'vertical' | 'horizontal'}
 	 */
-	direction?: 'vertical' | 'horizontal';
+	orientation?: ElementProps['orientation'];
 
 	/**
 	 * expansion of the divider
@@ -38,24 +38,21 @@ export type DividerProps = {
 
 export const DividerDemoValues: DemoerStoryProps<DividerProps> = {
 	dense: {
-		type: 'string',
-		values: ['none', 'tight', 'default', 'medium', 'kind']
+		type: 'dense',
+		default: densePreset.default
 	},
-	direction: {
-		type: 'string',
-		values: ['vertical', 'horizontal']
+	orientation: {
+		type: 'direction'
 	},
 	expansion: {
 		type: 'string',
 		values: ['full', 'padded', 'centered']
 	},
 	shadowed: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	color: {
-		type: 'string',
-		values: ['#ff0000', '#00ff00', '#0000ff']
+		type: 'color'
 	}
 };
 

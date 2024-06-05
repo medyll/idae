@@ -8,7 +8,7 @@
 		style,
 		element = null,
 		dense: density = 'default',
-		direction = 'horizontal',
+		orientation: direction = 'horizontal',
 		expansion = 'full',
 		shadowed: shadow = false,
 		color

@@ -20,7 +20,7 @@
 		mode = 'partial',
 		filteredData = $bindable(filit()),
 		sizeRoot = 'auto',
-		size = 'full',
+		width = 'full',
 		tall = 'default',
 		...restProps
 	}: ExpandProps<FinderProps> = $props();
@@ -80,7 +80,7 @@
 			placeholder="find by {defaultField} {mode}"
 			type="search"
 			inputType="search"
-			{size}
+			{width}
 			class={className}
 			{...restProps}
 		/>

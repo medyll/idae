@@ -24,7 +24,7 @@ export type SliderProps = CommonProps & {
 	/** Determines if the slider's value tooltip will be shown. */
 	tooltip?: boolean;
 	/** Slider's orientation. */
-	orientation?: 'vertical' | 'horizontal';
+	orientation?: ElementProps['orientation'];
 	/** Reverse th slider order . */
 	reverse?: boolean;
 	/** Controls Slider  status. */
@@ -50,23 +50,19 @@ export const SliderDemoValues: DemoerStoryProps<SliderProps> = {
 	},
 	step: {
 		type: 'number',
-		values: [1]
+		values: [1, 5, 10, 20, 50]
 	},
 	tooltip: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	orientation: {
-		type: 'string',
-		values: ['vertical', 'horizontal']
+		type: 'orientation'
 	},
 	reverse: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	disabled: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	dense: {
 		type: 'string',

@@ -1,10 +1,10 @@
-import type { IconObj } from '$lib/types/index.js';
+import type { ElementProps, IconObj } from '$lib/types/index.js';
 import { demoerArgs } from '../demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '../demoer/types.js';
 
 export type IconAppProps = {
 	/** icon name for iconify  */
-	icon?: string | IconObj;
+	icon?: ElementProps['icon'];
 	/** className off the root component */
 	class?: string;
 
@@ -17,11 +17,8 @@ export type IconAppProps = {
 	/** icon object for iconify, replace and invalidate props.icon  */
 	ico?: IconObj;
 
-	/**
-	 * icon size
-	 * @type {'small' | 'medium' | 'large' | 'xlarge'}
-	 */
-	fontSize?: 'small' | 'medium' | 'large' | 'xlarge' | string;
+	/**  icon size 	 */
+	iconSize?: ElementProps['iconSize'];
 
 	/** rotate icon */
 	rotate?: boolean;
@@ -35,24 +32,21 @@ export type IconAppProps = {
 
 export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
 	icon: {
-		type: 'string',
+		type: 'icon',
 		values: ['mdi:window', 'mdi:user', undefined]
 	},
-	fontSize: {
-		type: 'string',
-		values: ['small', 'medium', 'large', 'xlarge']
+	iconSize: {
+		type: 'iconSize'
 	},
 	color: {
-		type: 'string',
-		values: ['#ff0000', '#00ff00', '#0000ff']
+		type: 'string'
 	},
 	rotation: {
 		type: 'number',
 		values: [0, 45, 90, 180, 270]
 	},
 	rotate: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	}
 };
 

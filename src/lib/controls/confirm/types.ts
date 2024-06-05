@@ -1,7 +1,6 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { iconSize, type CommonProps, type ElementProps } from '$lib/types/index.js';
-import { uiPresets } from '$lib/utils/engine/presets.js';
 import type { Snippet } from 'svelte';
 
 export type ConfirmProps = CommonProps &
@@ -52,35 +51,36 @@ export type ConfirmProps = CommonProps &
 export const ConfirmDemoValues: DemoerStoryProps<ConfirmProps> = {
 	primaryInitial: {
 		type: 'string',
-		values: ['Would you please click once ?']
+		values: ['Would you please click once ?'],
+		private: true
 	},
 	tooltipInitial: {
 		type: 'string',
-		values: ['Would you please click once ?']
+		values: ['Would you please click once ?'],
+		private: true
 	},
 	iconInitial: {
-		type: 'string',
-		values: ['fa-solid:question', 'bx:question-mark']
+		type: 'icon',
+		values: ['fa-solid:question']
 	},
 	iconColorInitial: {
-		type: 'icon',
+		type: 'color',
 		values: ['green', 'blue', undefined]
 	},
 	primary: {
 		type: 'icon',
-		values: ['Consfirm deletion']
+		values: ['Confirm deletion']
 	},
 	icon: {
 		type: 'icon',
 		values: ['mdi:close', undefined]
 	},
 	iconColor: {
-		type: 'icon',
+		type: 'color',
 		values: ['red', 'orange', undefined]
 	},
 	iconSize: {
-		type: 'icon-size',
-		values: Object.values(uiPresets.iconSize),
+		type: 'iconSize',
 		default: iconSize.medium
 	}
 };

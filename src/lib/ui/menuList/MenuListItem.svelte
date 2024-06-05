@@ -97,7 +97,7 @@
 	{#if menuStateContext?.hasIcon}
 		<div class="menuListItemIcon">
 			<Slotted child={menuItemFirst}>
-				<Icon {icon} ico={iconFirst} color={iconColor} fontSize={iconSize} />
+				<Icon {icon} ico={iconFirst} color={iconColor} {iconSize} />
 			</Slotted>
 		</div>
 	{/if}

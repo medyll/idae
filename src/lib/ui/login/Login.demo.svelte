@@ -49,7 +49,7 @@
 							<div class="pad-2">
 								<input name="password" type="password" />
 							</div>
-							<Button type="submit" size="medium" primary="login" loading={false}>Login</Button>
+							<Button type="submit" width="medium" value="login" loading={false}>Login</Button>
 						</form>
 					{/snippet}
 				</Login>

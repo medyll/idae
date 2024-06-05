@@ -3,19 +3,18 @@ import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import {
 	buttonVariant,
 	densePreset,
+	uiPresets,
 	widthPreset,
 	type CommonProps,
-	type ElementProps,
-	type IconObj
+	type ElementProps
 } from '$lib/types/index.js';
 import type { MenuListProps } from '$lib/ui/menuList/types.js';
 import type { PopperProps } from '$lib/ui/popper/types.js';
 import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
-import type { Action } from 'svelte/action';
 import type { HTMLButtonAttributes } from 'svelte/elements';
 
-type Button = {
+export interface ButtonProps extends HTMLButtonAttributes {
 	element?: HTMLButtonElement;
 	/** button type */
 	type?: 'button' | 'submit' | 'reset';
@@ -34,27 +33,25 @@ type Button = {
 	showChip?: boolean;
 	/** button style */
 	variant?: ElementProps['buttonVariant'];
-
-	size?: ElementProps['width'];
+	/** preset width of the button */
+	width?: ElementProps['width'];
 	/** add ellipsis on overflowed text */
 	nowrap?: boolean;
 	dense?: ElementProps['dense'];
 	/**  button selected */
 	selected?: boolean;
-	/** @deprecated */
-	primary?: string;
+	/** button value */
 	value?: string;
 	/** reverse the order of the button zone*/
 	reverse?: boolean;
 	/** aspect ratio of the button */
 	ratio?: string;
+	children?: Snippet;
 	buttonPopper?: Snippet;
 	buttonStart?: Snippet;
 	buttonEnd?: Snippet;
 	buttonLoadingIcon?: Snippet;
-};
-
-export type ButtonProps = Button & CommonProps & HTMLButtonAttributes;
+}
 
 export type ButtonMenuProps = ButtonProps & {
 	menuProps?: MenuListProps;
@@ -69,42 +66,34 @@ const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 		default: 'button'
 	},
 	icon: {
-		type: 'string',
-		values: ['mdi:search', 'mdi:user', 'edit', 'icon-park-outline:avatar', 'carbon:phone-ip']
+		type: 'icon'
 	},
 	bgTheme: {
-		type: 'string',
-		values: ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'],
+		type: 'theme',
 		default: 'primary'
 	},
 	variant: {
-		type: 'string',
-		values: Object.values(buttonVariant),
+		type: 'buttonVariant',
 		default: buttonVariant.bordered
 	},
-	size: {
-		type: 'string',
-		values: Object.values(widthPreset),
+	width: {
+		type: 'width',
 		default: widthPreset.default
 	},
 	nowrap: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	dense: {
 		type: 'dense',
-		values: Object.values(densePreset),
 		default: densePreset.default
 	},
 	selected: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	reverse: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	}
 };

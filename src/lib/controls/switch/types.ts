@@ -33,12 +33,10 @@ export type SwitchProps<T = Record<string, any>> = {
 
 export const SwitchDemoValues: DemoerStoryProps<SwitchProps> = {
 	checked: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	disabled: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	}
 };
 export let { parameters, componentArgs } = demoerArgs(SwitchDemoValues);

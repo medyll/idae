@@ -12,13 +12,13 @@
 	</Cartouche>
 	<Cartouche stacked={true} primary="This is another cartouche">
 		{#snippet cartoucheButtons()}
-			<Button size="medium">With button</Button>
+			<Button width="medium">With button</Button>
 		{/snippet}
 		<div class="pad">And some content</div>
 	</Cartouche>
 	<Cartouche primary="With an icon" stacked={true}>
 		{#snippet cartoucheIcon()}
-			<Icon fontSize="small" icon="user" />
+			<Icon iconSize="small" icon="user" />
 		{/snippet}
 		<div class="pad">And some content</div>
 	</Cartouche>

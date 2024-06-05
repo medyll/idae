@@ -67,8 +67,7 @@ export const grouperDemoValues: DemoerStoryProps<GrouperProps> = {
 		values: ['menu', 'button']
 	},
 	showUnGrouped: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	groupByField: {
 		type: 'string',

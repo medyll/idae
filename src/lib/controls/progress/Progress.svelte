@@ -8,7 +8,7 @@
 		element = null,
 		percentBase = 100,
 		value = 0,
-		direction = 'horizontal',
+		orientation: direction = 'horizontal',
 		...rest
 	}: ExpandProps<ProgressProps> = $props();
 

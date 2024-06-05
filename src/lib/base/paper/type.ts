@@ -20,8 +20,7 @@ export type PaperProps = {
 
 export const paperDemoValues: DemoerStoryProps<PaperProps> = {
 	elevation: {
-		type: 'select',
-		values: [0, 1, 2, 3, 4, 5],
+		type: 'elevation',
 		default: 0
 	}
 };

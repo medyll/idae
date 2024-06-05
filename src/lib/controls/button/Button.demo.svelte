@@ -26,8 +26,8 @@
 
 	let parametersMenu: any = {
 		position: {
-			type: 'position',
-			values: uiPresets.position
+			type: 'stickyPosition',
+			values: uiPresets.stickyPosition
 		}
 	};
 	/** */

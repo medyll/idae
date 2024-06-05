@@ -1,13 +1,13 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps } from '$lib/types/index.js';
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 
 export type TabItem = {
 	label: string;
 	code?: string;
-	secondary?: string | number;
-	withUid?: string | number;
+	secondary?: string;
+	withUid?: string;
 	withContent?: any;
 	withComponent?: any;
 	componentProps?: Record<string, any>;
@@ -41,8 +41,7 @@ const tabsDemoValues: DemoerStoryProps<TabsProps> = {
 		values: ['tab1', 'tab2', 'tab3', 'tab4', 'tab5']
 	},
 	orientation: {
-		type: 'string',
-		values: ['horizontal', 'vertical'],
+		type: 'orientation',
 		default: 'vertical'
 	},
 	items: {

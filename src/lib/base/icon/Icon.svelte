@@ -9,7 +9,7 @@
 		class: className,
 		style,
 		element = $bindable<HTMLDivElement>(),
-		fontSize = 'small',
+		iconSize: fontSize = 'small',
 		rotate = false,
 		color,
 		rotation = 0,
@@ -36,8 +36,8 @@
 		bind:this={element}
 		class="icon {className} {finRot}"
 		style="{style};transform: rotate({finRotation}deg)"
-		{onclick}
 		icon={iconName}
+		{...rest}
 	/>
 {/key}
 

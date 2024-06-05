@@ -32,9 +32,9 @@ V.Hugo 1850"
 				{#snippet children({ activeParams })}
 					<Confirm {...activeParams}>
 						{#snippet confirmInitial()}
-							<Button icon="fa-solid:question" size="large">Would you please click once ?</Button>
+							<Button icon="fa-solid:question" width="large">Would you please click once ?</Button>
 						{/snippet}
-						<Button type="submit" size="medium">confirm</Button>
+						<Button type="submit" width="medium">confirm</Button>
 					</Confirm>
 				{/snippet}
 			</Demoer>

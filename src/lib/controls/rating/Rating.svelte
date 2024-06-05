@@ -12,7 +12,7 @@
 		scored = $bindable(0),
 		defaultIcon = $bindable('star'),
 		scoredIcon = $bindable('star-fill'),
-		direction = $bindable('horizontal'),
+		orientation: direction = $bindable('horizontal'),
 		ratingScoredIcon,
 		children,
 		...rest

@@ -1,6 +1,6 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
-import type { CommonProps, Data } from '$lib/types/index.js';
+import { orientation, type CommonProps, type Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
 export type StepperProps<T = Data> = CommonProps & {
@@ -42,9 +42,8 @@ const StepperDemoValues: DemoerStoryProps<StepperProps> = {
 		default: 1
 	},
 	stepperOrientation: {
-		type: 'string',
-		values: ['horizontal', 'vertical'],
-		default: 'horizontal'
+		type: 'orientation',
+		default: orientation.horizontal
 	}
 };
 

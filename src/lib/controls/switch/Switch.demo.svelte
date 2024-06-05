@@ -20,7 +20,7 @@
 		},
 		position: {
 			type: 'string',
-			values: uiPresets.position
+			values: uiPresets.stickyPosition
 		}
 	};
 

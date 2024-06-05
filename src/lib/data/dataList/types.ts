@@ -77,8 +77,7 @@ export const DataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
 		private: true
 	},
 	isSortable: {
-		type: 'boolean',
-		values: [true, false]
+		type: 'boolean'
 	},
 	sortByOrder: {
 		type: 'string',
@@ -116,8 +115,7 @@ export const DataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
 		type: 'boolean'
 	},
 	noWrapHeader: {
-		type: 'boolean',
-		values: [true]
+		type: 'boolean'
 	},
 	columns: {
 		type: 'object',

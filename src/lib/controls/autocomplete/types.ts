@@ -1,9 +1,9 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
-import type { CommonProps } from '$lib/types/index.js';
+import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export type AutoCompleteProps<T = Record<string, any>> = CommonProps & {
+export type AutoCompleteProps<T = Data> = CommonProps & {
 	/** className off the root component */
 	class?: string;
 	/** element root HTMLDivElement props */
@@ -43,7 +43,6 @@ const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
 	},
 	showAllOnEmpty: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	searchField: {

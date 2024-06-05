@@ -135,14 +135,14 @@
 	{#if !filteredData.length && !searchString}
 		<Slotted child={autoCompleteEmpty}>
 			<div class="auto-complete-boot">
-				<Icon fontSize="large" icon="fa-regular:keyboard" />
+				<Icon iconSize="large" icon="fa-regular:keyboard" />
 				perform search
 			</div>
 		</Slotted>
 	{:else if !filteredData.length}
 		<Slotted child={autoCompleteNoResults}>
 			<div class="auto-complete-no-results">
-				<Icon class="dsp-inline" fontSize="large" icon="material-symbols:no-sim-outline" />
+				<Icon class="dsp-inline" iconSize="large" icon="material-symbols:no-sim-outline" />
 				no results
 			</div>
 		</Slotted>

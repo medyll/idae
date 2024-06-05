@@ -66,30 +66,24 @@ const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
 	},
 	isOpen: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	flow: {
-		type: 'flow-preset',
-		values: ['fixed', 'relative', 'absolute']
+		type: 'flow'
 	},
 	stickTo: {
-		type: 'string',
-		values: ['top', 'bottom', 'left', 'right']
+		type: 'stickyPosition'
 	},
 	showOpenerIcon: {
 		type: 'boolean',
-		values: [true, false],
 		default: false
 	},
 	dense: {
 		type: 'dense',
-		values: Object.values(densePreset),
 		default: densePreset.default
 	},
 	tall: {
 		type: 'dense',
-		values: Object.values(tallPreset),
 		default: tallPreset.default
 	}
 };

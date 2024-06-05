@@ -10,20 +10,19 @@
 		element = $bindable(),
 		style,
 		type: buttonType = 'button',
-		icon,
+		icon = $bindable(),
+		iconEnd = $bindable(),
 		variant = 'bordered',
-		iconEnd,
 		bgTheme,
 		usePopper,
 		loading,
 		showChip,
 		popperOpen,
-		size = 'auto',
+		width: size = 'auto',
 		dense = 'kind',
 		nowrap,
 		selected = false,
 		value,
-		primary,
 		reverse = false,
 		ratio = 'auto',
 		buttonPopper,
@@ -31,7 +30,7 @@
 		buttonEnd,
 		buttonLoadingIcon,
 		children,
-		...restProps
+		...rest
 	}: ExpandProps<ButtonProps> = $props();
 
 	let startRef: HTMLDivElement;
@@ -50,7 +49,7 @@
 	{dense}
 	{nowrap}
 	{selected}
-	{...restProps}
+	{...rest}
 	data-width={size}
 	style:color={bgTheme ? 'white' : ''}
 	style:aspect-ratio={ratio}
@@ -60,19 +59,19 @@
 			bind:this={startRef}
 			bind:clientWidth
 			class="button-start"
-			style="--start-position:{children ?? primary ? 'absolute' : 'relative'}"
+			style="--start-position:{children ?? value ? 'absolute' : 'relative'}"
 		>
 			<Slotted child={buttonStart}>
-				<Icon fontSize="small" {icon} />
+				<Icon iconSize="small" {icon} />
 			</Slotted>
 		</div>
 	{/if}
-	{#if children ?? primary}
+	{#if children ?? value}
 		<div
 			class="button-central"
 			style="--content-padding:{buttonStart || icon ? `${clientWidth}px` : ''}"
 		>
-			<Slotted child={children}>{primary ?? ''}</Slotted>
+			<Slotted child={children}>{value ?? ''}</Slotted>
 		</div>
 	{/if}
 	{#if buttonEnd || iconEnd}

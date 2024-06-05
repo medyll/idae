@@ -1,7 +1,8 @@
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
-import type { CommonProps } from '$lib/types/index.js';
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import type { E } from 'vitest/dist/reporters-yx5ZTtEV.js';
 
 export type RatingProps = {
 	/** maximum rate */
@@ -17,7 +18,7 @@ export type RatingProps = {
 	scoredIcon?: string;
 
 	/** can be vertical or horizontal */
-	direction?: 'vertical' | 'horizontal';
+	orientation?: ElementProps['orientation'];
 	/** Snippet for the scored icon */
 	ratingScoredIcon?: Snippet;
 } & CommonProps;
@@ -33,16 +34,15 @@ export const RatingDemoValues: DemoerStoryProps<RatingProps> = {
 		default: 10
 	},
 	defaultIcon: {
-		type: 'string',
+		type: 'icon',
 		values: ['ant-design:star-outlined', 'minus']
 	},
 	scoredIcon: {
-		type: 'string',
+		type: 'icon',
 		values: ['ant-design:star-filled', 'plus']
 	},
-	direction: {
-		type: 'string',
-		values: ['vertical', 'horizontal']
+	orientation: {
+		type: 'orientation'
 	}
 };
 

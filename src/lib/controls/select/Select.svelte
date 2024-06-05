@@ -81,7 +81,7 @@
 	{#snippet popperHolder()}
 		<TextField
 			bind:this={element}
-			on:blur={show(false)}
+			onblur={show(false)}
 			on:focus={show(true)}
 			on:keydown={() => {
 				console.log('red');

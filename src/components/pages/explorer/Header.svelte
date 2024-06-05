@@ -10,7 +10,7 @@
 </div>
 <div class="pad-4 flex-h flex-align-top">
 	<div class="pad-r-4">
-		<Icon fontSize="big" icon="faFile" />
+		<Icon iconSize="big" icon="faFile" />
 	</div>
 	<div class="pad-1 w-8">
 		<div class="pad-b-1">crefrefre</div>

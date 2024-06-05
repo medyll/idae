@@ -4,11 +4,12 @@
 	import Switch from '$lib/controls/switch/Switch.svelte';
 	import type { DemoerProps, DemoerStoryProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import { densePreset, flowPreset } from '$lib/types/index.js';
+	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	let {
 		title,
-		parameters = $bindable({} as DemoerStoryProps<T>),
+		parameters = $bindable<DemoerStoryProps<T>>({} as DemoerStoryProps<T>),
 		component = $bindable(),
 		componentArgs = $bindable<T>({} as T),
 		multiple = {},
@@ -47,6 +48,27 @@
 		}}
 	/>
 {/snippet}
+{#snippet color({ parameter, values })}
+	<input
+		type="color"
+		onchange={(event) => {
+			console.log(parameter, event);
+		}}
+	/>
+{/snippet}
+{#snippet icon({ parameter, values })}
+	{#each ['fa-solid:question', 'mdi:window', 'mdi:user', 'mdi:close', 'search'] as red}
+		<IconButton
+			ratio="1/1"
+			icon={red}
+			title={red}
+			showChip={activeParams[parameter] === red}
+			onclick={() => {
+				activeParams[parameter] = red;
+			}}
+		/>
+	{/each}
+{/snippet}
 
 <div class="pad flex-v gap-small">
 	<div class="flex-h marg-b-2">
@@ -77,7 +99,7 @@
 					{/each}
 				</div>
 			{:else if component}
-				<svelte:component this={component} {componentArgs} {...activeParams} />
+				<svelte:component this={component} {...componentArgs} {...activeParams} />
 			{:else}
 				<Slotted child={children} slotArgs={{ activeParams }} />
 			{/if}
@@ -92,24 +114,50 @@
 			<table style="width:100%;table-layout:auto;border-spacing: 0.5rem">
 				<tbody>
 					{#each Object.keys(parameters) as parameter}
-						<tr>
-							<td class="w-medium-min text-bold">{parameter}</td>
-							<td>{parameters?.[parameter]?.type} </td>
-							<td>
-								<div class="flex flex-align-middle gap-small w-mid-min">
-									{#if parameters?.[parameter]?.type === 'boolean'}
-										{@render boolean({ parameter, values: [false, true] })}
-									{:else if parameters?.[parameter]?.type === 'dense'}
-										{@render main({ parameter, values: Object.values(densePreset) })}
-									{:else if parameters?.[parameter]?.type === 'flow-preset'}
-										{@render main({ parameter, values: Object.values(flowPreset) })}
-									{:else}
-										<!-- array, default -->
-										{@render main({ parameter })}
-									{/if}
-								</div>
-							</td>
-						</tr>
+						{#if parameters?.[parameter]?.private !== true}
+							<tr>
+								<td class="w-medium-min text-bold">{parameter}</td>
+								<td>{parameters?.[parameter]?.type} </td>
+								<td>
+									<div class="flex flex-align-middle gap-small w-mid-min">
+										{#if parameters?.[parameter]?.type === 'boolean'}
+											{@render boolean({ parameter, values: [false, true] })}
+										{:else if parameters?.[parameter]?.type === 'color'}
+											{@render color({ parameter, values: uiPresets.theme })}
+										{:else if parameters?.[parameter]?.type === 'icon'}
+											{@render icon({ parameter })}
+										{:else if parameters?.[parameter]?.type === 'dense'}
+											{@render main({ parameter, values: uiPresets.dense })}
+										{:else if parameters?.[parameter]?.type === 'flow'}
+											{@render main({ parameter, values: uiPresets.flow })}
+										{:else if parameters?.[parameter]?.type === 'buttonVariant'}
+											{@render main({ parameter, values: uiPresets.buttonVariant })}
+										{:else if parameters?.[parameter]?.type === 'iconSize'}
+											{@render main({ parameter, values: uiPresets.iconSize })}
+										{:else if parameters?.[parameter]?.type === 'width'}
+											{@render main({ parameter, values: uiPresets.width })}
+										{:else if parameters?.[parameter]?.type === 'status'}
+											{@render main({ parameter, values: uiPresets.status })}
+										{:else if parameters?.[parameter]?.type === 'stickyPosition'}
+											{@render main({ parameter, values: uiPresets.stickyPosition })}
+										{:else if parameters?.[parameter]?.type === 'position'}
+											{@render main({ parameter, values: uiPresets.position })}
+										{:else if parameters?.[parameter]?.type === 'levels'}
+											{@render main({ parameter, values: uiPresets.levels })}
+										{:else if parameters?.[parameter]?.type === 'theme'}
+											{@render main({ parameter, values: uiPresets.theme })}
+										{:else if parameters?.[parameter]?.type === 'direction'}
+											{@render main({ parameter, values: uiPresets.orientation })}
+										{:else if parameters?.[parameter]?.type === 'elevation'}
+											{@render main({ parameter, values: uiPresets.elevation })}
+										{:else}
+											<!-- array, default -->
+											{@render main({ parameter })}
+										{/if}
+									</div>
+								</td>
+							</tr>
+						{/if}
 					{/each}
 				</tbody>
 			</table>

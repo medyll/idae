@@ -1,4 +1,5 @@
-import { widthPreset, iconSize, type DemoStoryProps } from '$lib/types/index.js';
+import { widthPreset, iconSize } from '$lib/types/index.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 type EnumValueType<T> = T[keyof T];
 export enum statusPreset {
 	success = 'success',
@@ -28,19 +29,17 @@ export interface AvatarProps extends CommonProps {
 	avatarBadge?: Snippet;
 }
 
-export const AvatarDemoValues: DemoStoryProps<AvatarProps> = {
+export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {
 	icon: {
 		type: 'icons',
 		values: ['fa-solid:question', 'bx:question-mark']
 	},
 	size: {
 		type: 'width',
-		values: Object.keys(widthPreset),
 		default: widthPreset.medium
 	},
 	iconSize: {
 		type: 'iconSize',
-		values: Object.keys(iconSize),
 		default: iconSize.medium
 	}
 };

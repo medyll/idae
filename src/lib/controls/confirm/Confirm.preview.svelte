@@ -9,6 +9,6 @@
 			<Button>delete</Button>
 		{/snippet}
 
-		<Button type="submit" size="auto">confirm</Button>
+		<Button type="submit" width="auto">confirm</Button>
 	</Confirm>
 </div>

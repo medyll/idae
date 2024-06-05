@@ -42,10 +42,10 @@
 				>{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1">
 						{#snippet cartoucheButtons()}
-							<Button size="medium">a button</Button>
+							<Button width="medium">a button</Button>
 						{/snippet}
 						{#snippet cartoucheIcon()}
-							<Icon fontSize="small" icon="circle" />
+							<Icon iconSize="small" icon="circle" />
 						{/snippet}
 						{#snippet cartouchePrimary()}
 							This is a cartouche
@@ -70,7 +70,7 @@
 					</Cartouche>
 					<Cartouche primary="And another one" stacked={true}>
 						{#snippet cartoucheIcon()}
-							<Icon fontSize="small" icon="user" />
+							<Icon iconSize="small" icon="user" />
 						{/snippet}
 					</Cartouche>
 				{/snippet}
@@ -84,7 +84,7 @@
 						class="marg-tb-1"
 					>
 						{#snippet cartoucheIcon()}
-							<Icon fontSize="small" icon="info-circle" />
+							<Icon iconSize="small" icon="info-circle" />
 						{/snippet}
 						<div class="marg-l-4">
 							<Cartouche {...activeParams} stacked={true} primary="Inner cartouche">

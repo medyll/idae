@@ -9,7 +9,7 @@
 		size,
 		iconSize,
 		class: className = '',
-		element = $bindable<HTMLDivElement>(),
+		element = $bindable<HTMLElement>(),
 		children,
 		avatarBadge
 	}: ExpandProps<AvatarProps> = $props();
@@ -34,7 +34,7 @@
 	{#if children}
 		{@render children()}
 	{:else}
-		<Icon {icon} fontSize={iconSize} />
+		<Icon {icon} {iconSize} />
 	{/if}
 </figure>
 

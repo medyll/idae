@@ -5,6 +5,34 @@ import type { Snippet } from 'svelte';
 
 export type AppIcon = string;
 
+export enum fontSize {
+	small = 'small',
+	medium = 'medium',
+	large = 'large',
+	xlarge = 'xlarge'
+}
+
+export enum theme {
+	primary = 'primary',
+	secondary = 'secondary',
+	tertiary = 'tertiary',
+	success = 'success',
+	warning = 'warning',
+	danger = 'danger',
+	light = 'light',
+	medium = 'medium',
+	dark = 'dark'
+}
+
+export enum levels {
+	success = 'success',
+	warning = 'warning',
+	alert = 'alert',
+	error = 'error',
+	info = 'info',
+	discrete = 'discrete'
+}
+
 export enum statusPreset {
 	success = 'success',
 	warning = 'warning',
@@ -69,12 +97,21 @@ export enum positionPreset {
 	right = 'right'
 }
 
+export enum orientation {
+	vertical = 'vertical',
+	horizontal = 'horizontal'
+}
+
+const elevation = [0, 1, 2, 3, 4, 5];
+
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
 	dense: keyof typeof densePreset;
+	theme: keyof typeof theme;
 	width: keyof typeof widthPreset;
 	tall: keyof typeof tallPreset;
-	levels: keyof typeof statusPreset;
+	levels: keyof typeof levels;
+	status: keyof typeof statusPreset;
 	buttonVariant: keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
 	flow: keyof typeof flowPreset;
@@ -83,7 +120,46 @@ export interface ElementProps {
 	action: (event: any, data?: Data) => void;
 	iconSize: keyof typeof iconSize;
 	icon: string | IconObj;
+	orientation?: keyof typeof orientation;
+	elevation?: keyof typeof elevation;
 }
+export enum StickyPosition {
+	TC = 'TC', // Top Center
+	TL = 'TL', // Top Left
+	TR = 'TR', // Top Right
+	BC = 'BC', // Bottom Center
+	BL = 'BL', // Bottom Left
+	BR = 'BR', // Bottom Right
+	T = 'T', // Top
+	R = 'R', // Right
+	B = 'B', // Bottom
+	L = 'L', // Left
+	C = 'C' // Center
+}
+
+export const uiPresets = {
+	buttonVariant: Object.keys(buttonVariant),
+	dense: Object.keys(densePreset),
+	tall: Object.keys(tallPreset),
+	status: Object.keys(statusPreset),
+	theme: Object.keys(theme),
+	density: {
+		none: '0',
+		tight: '0.25rem',
+		default: '0.5rem',
+		medium: '1rem',
+		kind: '1.5rem',
+		unset: '1.5rem'
+	},
+	width: Object.keys(widthPreset),
+	iconSize: Object.keys(iconSize),
+	stickyPosition: Object.keys(StickyPosition),
+	position: Object.keys(positionPreset),
+	flow: Object.keys(flowPreset),
+	levels: Object.keys(levels),
+	orientation: Object.keys(orientation),
+	elevation: elevation
+};
 
 export type Data = Record<string, any>;
 

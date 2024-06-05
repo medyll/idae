@@ -1,6 +1,7 @@
 import type { CommonProps, DemoStoryProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import { demoerArgs } from '../demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '../demoer/types.js';
 
 export interface ChipperProps extends CommonProps {
 	/** position of the chipper  */
@@ -25,32 +26,19 @@ export interface ChipperProps extends CommonProps {
 	chipperChip?: Snippet;
 }
 
-export const chipperDemoValues: DemoStoryProps<ChipperProps> = {
+export const chipperDemoValues: DemoerStoryProps<ChipperProps> = {
 	showChip: {
 		type: 'boolean',
-		values: [true, false],
 		default: true
 	},
 	position: {
-		type: 'string',
-		values: ['top', 'right', 'left', 'bottom']
+		type: 'position'
 	},
 	theme: {
-		type: 'string',
-		values: [
-			'primary',
-			'secondary',
-			'tertiary',
-			'success',
-			'warning',
-			'danger',
-			'light',
-			'medium',
-			'dark'
-		]
+		type: 'theme'
 	},
 	color: {
-		type: 'string',
+		type: 'color',
 		values: ['#ff0000', '#00ff00', '#0000ff']
 	},
 	content: {
