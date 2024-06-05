@@ -74,6 +74,16 @@ export enum iconSize {
 	full = 'full'
 }
 
+export const iconFontSize: Record<iconSize, string> = {
+	auto: 'auto',
+	tiny: '1rem',
+	small: '2rem',
+	medium: '4rem',
+	large: '12rem',
+	big: '16rem',
+	full: '100%'
+};
+
 export enum flowPreset {
 	relative = 'relative',
 	absolute = 'absolute',
@@ -106,9 +116,9 @@ const elevation = [0, 1, 2, 3, 4, 5];
 
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense: keyof typeof densePreset;
-	theme: keyof typeof theme;
-	width: keyof typeof widthPreset;
+	dense: densePreset;
+	theme: theme;
+	width: widthPreset;
 	tall: keyof typeof tallPreset;
 	levels: keyof typeof levels;
 	status: keyof typeof statusPreset;
@@ -175,7 +185,7 @@ export type IconObj = IconProps & {
 	rotate?: boolean;
 	color?: string;
 	rotation?: number;
-	size?: keyof typeof iconSize;
+	iconSize?: keyof typeof iconSize;
 	class?: string;
 };
 

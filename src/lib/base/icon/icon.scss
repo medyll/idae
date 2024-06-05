@@ -1,17 +1,17 @@
-	@import '../../styles/presets.scss';
+@import "../../styles/presets.scss";
 
-	.icon {
-		transition: all 0.25s;
-	}
+.icon {
+	transition: all 0.25s;
+}
 
-	.rotate {
-		animation: spinner-frames 3s infinite linear;
+.rotate {
+	animation: spinner-frames 3s infinite linear;
+}
+@keyframes spinner-frames {
+	0% {
+		transform: rotate(0deg);
 	}
-	@keyframes spinner-frames {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
+	100% {
+		transform: rotate(360deg);
 	}
+}

@@ -13,7 +13,7 @@
 	import type { BindableEvent, ContentProps } from './content-types.js';
 
 	let {
-		element,
+		element = $bindable(),
 		dimensions = $bindable({
 			clientHeight: element?.clientHeight,
 			clientWidth: element?.clientWidth,
@@ -45,10 +45,10 @@
 			);
 	});
 
-	$effect(() => {
+	/* $effect(() => {
 		if (element && !solid && element.style.display !== 'none')
 			be(element).setStyle({ display: 'contents' });
-	});
+	}); */
 
 	function transformToObj(dimensions: ContentProps['dimensions']) {
 		let result = {} as any;

@@ -12,7 +12,7 @@ export enum statusPreset {
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import { demoerArgs } from '../demoer/demoer.utils.js';
-export interface AvatarProps extends CommonProps {
+export type AvatarProps = CommonProps & {
 	/** icon name 	*/
 	icon?: string;
 	/**
@@ -23,16 +23,16 @@ export interface AvatarProps extends CommonProps {
 	 * size of the icon
 	 */
 	iconSize?: ElementProps['iconSize'];
-	element?: HTMLDivElement;
+	element?: HTMLElement;
 	class?: string;
 	children?: Snippet;
 	avatarBadge?: Snippet;
-}
+};
 
 export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {
 	icon: {
-		type: 'icons',
-		values: ['fa-solid:question', 'bx:question-mark']
+		type: 'icon',
+		default: 'user'
 	},
 	size: {
 		type: 'width',

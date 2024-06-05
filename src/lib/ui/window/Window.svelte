@@ -124,7 +124,7 @@
 						<div>
 							<Button
 								variant="naked"
-								icon={{ icon: iconClose, size: 'small', color: 'red' }}
+								icon={{ icon: iconClose, iconSize: 'small', color: 'red' }}
 								style="aspect-ratio:1/1"
 								onclick={actions.close}
 							/>

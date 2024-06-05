@@ -46,9 +46,7 @@
 			{component} svelte component
 			<div class="marg-l-4">
 				<Slotted child={children}>
-					<DemoPage {code} {component} {title}>
-						<Demoer parameters componentArgs></Demoer>
-					</DemoPage>
+					<DemoPage {code} {component} {title}></DemoPage>
 				</Slotted>
 			</div>
 		</div>

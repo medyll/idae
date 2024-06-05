@@ -16,7 +16,7 @@
 		children
 	}: DemoerProps<T> = $props();
 
-	let activeParams: T = $state({ ...componentArgs });
+	let activeParams: T = $state(componentArgs);
 </script>
 
 {#if title}

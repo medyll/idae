@@ -1,17 +1,18 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps, ExpandProps } from '$lib/types/index.js';
+	import type { ExpandProps } from '$lib/types/index.js';
 	import type { AvatarProps } from './types.js';
+	import Content from '$lib/utils/content/Content.svelte';
 
 	let {
 		icon = 'icon-park-outline:avatar',
 		size,
 		iconSize,
 		class: className = '',
-		element = $bindable<HTMLElement>(),
+		element = $bindable(),
 		children,
-		avatarBadge
+		avatarBadge,
+		...rest
 	}: ExpandProps<AvatarProps> = $props();
 
 	const sizes = {
@@ -23,20 +24,21 @@
 	};
 </script>
 
-<figure
-	bind:this={element}
+<Content
+	bind:element
+	tag="figure"
 	class="avatar {className}"
 	style="width:{sizes[size]};height:{sizes[size]}"
+	{...rest}
 >
-	{#if avatarBadge}
-		{@render avatarBadge()}
-	{/if}
+	{@render avatarBadge?.()}
+
 	{#if children}
 		{@render children()}
 	{:else}
 		<Icon {icon} {iconSize} />
 	{/if}
-</figure>
+</Content>
 
 <style lang="scss">
 	@import './avatar.scss';

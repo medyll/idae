@@ -33,7 +33,7 @@ export type IconAppProps = {
 export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
 	icon: {
 		type: 'icon',
-		values: ['mdi:window', 'mdi:user', undefined]
+		default: 'user'
 	},
 	iconSize: {
 		type: 'iconSize'
