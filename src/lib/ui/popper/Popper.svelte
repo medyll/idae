@@ -105,7 +105,7 @@
 		class="popper {className}"
 		use:stickTo={{ parentNode, position, stickToHookWidth }}
 		use:clickAway={{ action: clickedAway }}
-		{style}
+		style={rest.style}
 		style:zIndex={makeOnTop()}
 		{...rest}
 	>

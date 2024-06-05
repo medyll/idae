@@ -41,7 +41,8 @@ export type FinderProps<T = Data> = {
 const FinderPropsDemoValues: DemoerStoryProps<FinderProps> = {
 	data: {
 		type: 'data',
-		values: [[{ name: 'name1' }, { name: 'name2' }]]
+		values: [[{ name: 'name1' }, { name: 'name2' }]],
+		private: true
 	},
 	defaultField: {
 		type: 'string',

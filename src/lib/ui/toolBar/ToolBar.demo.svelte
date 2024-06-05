@@ -1,15 +1,11 @@
 <script lang="ts">
-	import Button from '$lib/controls/button/Button.svelte';
-	import Debug from '$lib/base/debug/Debug.svelte';
 	import ToolBar from './ToolBar.svelte';
 
 	/* demo */
-	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
 	let parametersSlot: any = {
@@ -37,7 +33,7 @@
 	$: componentArgsSlot = {
 		...defaultsArgs(parametersSlot),
 		onClose: () => {
-			componentArgsSlot.open = !componentArgsSlot.open;
+			// componentArgsSlot.open = !componentArgsSlot.open;
 		},
 		data: [
 			{ id: 1, name: 'name' },

@@ -10,6 +10,7 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import type { MenuListItemProps } from '$lib/ui/menuList/types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
+	import { densePreset } from '$lib/types/index.js';
 
 	let menuListItems: any[] = [];
 
@@ -33,8 +34,6 @@
 	}
 </script>
 
-s
-
 <Frame>
 	{#snippet drawerTop()}
 		<MenuBar orientation="left" title="Navigation bar ">
@@ -44,7 +43,7 @@ s
 	{#snippet drawerContent()}
 		<MenuList
 			bind:menuListItems
-			dense="default"
+			dense={densePreset.default}
 			onclick={openIn}
 			selectorField="idappscheme"
 			style="height:100%;"

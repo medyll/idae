@@ -1,9 +1,8 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { Demoer } from '$sitedata/slotuiComponents.js';
-	import Icon from '@iconify/svelte';
-	import DemoPage from '../demoer/DemoPage.svelte';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
+	import Icon from '$lib/base/icon/Icon.svelte';
+	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import ContentSwitcher from './ContentSwitcher.svelte';
 	import { contentSwitcherDemoValues } from './types.js';
 

@@ -116,13 +116,13 @@ const elevation = [0, 1, 2, 3, 4, 5];
 
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
-	dense: densePreset;
-	theme: theme;
-	width: widthPreset;
-	tall: keyof typeof tallPreset;
-	levels: keyof typeof levels;
-	status: keyof typeof statusPreset;
-	buttonVariant: keyof typeof buttonVariant;
+	dense: densePreset | keyof typeof densePreset;
+	theme: theme | keyof typeof theme;
+	width: widthPreset | keyof typeof widthPreset;
+	tall: tallPreset | keyof typeof tallPreset;
+	levels: levels | keyof typeof levels;
+	status: statusPreset | keyof typeof statusPreset;
+	buttonVariant: buttonVariant | keyof typeof buttonVariant;
 	alignment: 'center' | 'left' | 'right';
 	flow: keyof typeof flowPreset;
 	position: keyof typeof positionPreset;

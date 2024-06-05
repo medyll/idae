@@ -6,20 +6,21 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import type { FinderProps } from './types.js';
-	import type { ExpandProps } from '$lib/types/index.js';
+	import { widthPreset, type ExpandProps } from '$lib/types/index.js';
+	import { onEvent } from '$lib/utils/uses/event.js';
 
 	let {
 		class: className = '',
 		styleRoot = '',
 		classRoot = '',
 		style = '',
-		element = null,
+		element,
 		data = [],
 		defaultField = '*',
 		showSortMenu = false,
 		mode = 'partial',
 		filteredData = $bindable(filit()),
-		sizeRoot = 'auto',
+		sizeRoot = widthPreset.auto,
 		width = 'full',
 		tall = 'default',
 		...restProps
@@ -67,11 +68,13 @@
 	class="finder-container {classRoot}"
 	data-width={sizeRoot}
 	bind:this={container}
-	onclickAway={() => {
-		popperOpen = false;
+	use:onEvent={{
+		event: 'on:click:away',
+		action: () => {
+			popperOpen = false;
+		}
 	}}
 	style={styleRoot}
-	{tall}
 >
 	<div style:flex="1">
 		<TextField
@@ -92,9 +95,8 @@
 				popperOpen = !popperOpen;
 			}}
 			variant="naked"
-			size="tiny"
-			icon="chevron-{popperOpen ? 'up' : 'down'}"
-			iconSize="small"
+			width="tiny"
+			icon={{ icon: `chevron-${popperOpen ? 'up' : 'down'}`, iconSize: 'tiny' }}
 		/>
 	{/if}
 </div>

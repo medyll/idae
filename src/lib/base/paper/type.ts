@@ -8,7 +8,7 @@ export type PaperProps = {
 	class?: string;
 
 	/** css style off the root component */
-	style?: CSSStyleDeclaration;
+	style?: string;
 
 	/** element root HTMLDivElement props */
 	element?: HTMLDivElement | null;

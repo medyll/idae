@@ -2,16 +2,7 @@
 	import type { CommonProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { Snippet } from 'svelte';
-
-	type ToolBarProps = CommonProps & {
-		/** color of the toolbar */
-		color: string;
-		/** whether the toolbar is vertical */
-		vertical: boolean;
-		/**    */
-		element: HTMLDivElement;
-		toolbarSeparator?: Snippet;
-	};
+	import type { ToolBarProps } from './types.js';
 
 	let {
 		class: className = '',
