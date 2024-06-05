@@ -4,10 +4,10 @@
 	import type { Snippet } from 'svelte';
 
 	import { trans2Tree } from './tree.utils.js';
-	import type { Data, TreeItemType } from './types.js';
+	import type { TreeItemType } from './types.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
-	import type { CommonProps } from '$lib/types/index.js';
+	import type { CommonProps, Data } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	type TreeProps = CommonProps & {

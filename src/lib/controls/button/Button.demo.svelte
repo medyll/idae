@@ -1,12 +1,9 @@
 <script lang="ts">
-	import type { MenuItemProps } from '$lib/ui/menu/types.js';
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	import { type UsePopperProps } from '$lib/ui/popper/usePopper.js';
+	import MenuList from '$lib/ui/menuList/MenuList.svelte';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Debug from '$lib/base/debug/Debug.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
@@ -117,12 +114,12 @@
 				<Button>
 					default action
 					{#snippet buttonPopper()}
-						<Menu style="max-height:350px;overflow:auto" density="default">
-							<MenuItem divider={true} text="strict">menu</MenuItem>
-							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
-							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
-							<MenuItem data={{ some: 'data' }} text="strict">item</MenuItem>
-						</Menu>
+						<MenuList style="max-height:350px;overflow:auto" density="default">
+							<MenuListItem divider={true} text="strict">menu</MenuListItem>
+							<MenuListItem data={{ some: 'data' }} text="strict">item</MenuListItem>
+							<MenuListItem data={{ some: 'data' }} text="strict">item</MenuListItem>
+							<MenuListItem data={{ some: 'data' }} text="strict">item</MenuListItem>
+						</MenuList>
 					{/snippet}
 				</Button>
 			</Demoer>

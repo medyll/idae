@@ -10,7 +10,7 @@
 
 	import { toggleStartMenu, startMenuStore } from '$lib/utils/engine/wactions.utils.js';
 	import { openWindow } from '$lib/ui/window/actions.js';
-	import { afterUpdate, onMount, setContext, getContext } from 'svelte';
+	import { setContext } from 'svelte';
 
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import { writable } from 'svelte/store';

@@ -6,7 +6,6 @@
 	import type { AlertProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	/** alert actions */
 	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
 		toggle,
@@ -21,10 +20,10 @@
 		isOpen = $bindable<boolean>(false),
 		element = $bindable<HTMLDialogElement>(),
 		children,
-		alertTopButton: topButtonSlot,
-		alertMessage: messageSlot,
-		alertButtonZone: buttonZoneSlot,
-		alertButtonClose: buttonCloseSlot
+		alertTopButton,
+		alertMessage,
+		alertButtonZone,
+		alertButtonClose
 	}: ExpandProps<AlertProps> = $props();
 
 	const handleClick = (event: Event) => {
@@ -70,9 +69,9 @@
 				<div class="title">
 					<Slotted child={children}>{message}</Slotted>
 				</div>
-				<Slotted child={topButtonSlot} />
+				<Slotted child={alertTopButton} />
 				<div data-close>
-					<Slotted child={buttonCloseSlot}
+					<Slotted child={alertButtonClose}
 						><Button
 							ratio="1/1"
 							icon="window-close"
@@ -85,13 +84,13 @@
 					>
 				</div>
 			</header>
-			{#if messageSlot}
+			{#if alertMessage}
 				<Divider />
-				{@render messageSlot()}
+				{@render alertMessage()}
 			{/if}
-			{#if buttonZoneSlot}
+			{#if alertButtonZone}
 				<footer class="dialog-footer">
-					{@render buttonZoneSlot()}
+					{@render alertButtonZone()}
 				</footer>
 			{/if}
 		</article>

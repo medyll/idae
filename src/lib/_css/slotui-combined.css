@@ -373,8 +373,8 @@ hr.vertical {
   border-right: 1px solid var(--divider-border-right);
 }
 /** icon.scss -----*/ 
-.icon {
-  transition: all 0.25s;
+:global(.icon) {
+  transition: all 0.2;
 }
 
 .rotate {

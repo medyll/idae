@@ -224,6 +224,7 @@ export * from '$lib/ui/toast/types.js';
 export { default as ToggleBar } from '$lib/ui/toggleBar/ToggleBar.svelte';
 export * from '$lib/ui/toggleBar/types.js';
 export { default as ToolBar } from '$lib/ui/toolBar/ToolBar.svelte';
+export * from '$lib/ui/toolBar/types.js';
 export { default as Tree } from '$lib/ui/tree/Tree.svelte';
 export * from '$lib/ui/tree/tree.utils.js';
 export * from '$lib/ui/tree/types.js';

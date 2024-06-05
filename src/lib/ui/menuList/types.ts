@@ -3,7 +3,6 @@ import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data, IconObj } from '$lib/types/index.js';
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
-
 /**
  * Represents the props for the Menu component.
  *
@@ -19,8 +18,6 @@ export type MenuListProps<T = Data> = CommonProps & {
 	menuListItems?: MenuListItemProps[];
 
 	data?: T[];
-	/** @deprecated use dense*/
-	density?: 'none' | 'tight' | 'default' | 'medium' | 'kind';
 	dense?: ElementProps['dense'];
 	/** index to select the item */
 	selectedIndex?: number;
