@@ -39,18 +39,18 @@
 
 	let selectedData: any = [];
 
-	let parametersSlot: any = {
+	let parameters: any = {
 		showCheckBox: {
 			type: 'boolean',
 			values: [true, false]
 		}
 	};
 
-	let componentArgsSlot = {
-		status: defaultsArgsFromProps('status', parametersSlot)
+	let componentArgs = {
+		status: defaultsArgsFromProps('status', parameters)
 	};
 
-	let codeSlot = `
+	let code = `
 <Tree bind:selectedData
     {data}
     pathField="path"
@@ -62,8 +62,8 @@
 	component="Tree"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Loading" title="Using snippets">
-			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
+		<DemoPage {code} component="Loading" title="Using snippets">
+			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel flex-h">
 						<div style="width:250px;" class="h-large overflow-auto">

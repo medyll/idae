@@ -8,7 +8,7 @@
 		class: className,
 		style,
 		element = $bindable<HTMLDivElement>(),
-		iconSize = $bindable('medium'),
+		iconSize = $bindable('small'),
 		rotate = false,
 		color,
 		rotation = 0,
