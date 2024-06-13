@@ -3,9 +3,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
 	import Avatar from './Avatar.svelte';
-	import { AvatarDemoValues, type AvatarProps } from './types.js';
 
 	import { parameters, componentArgs } from './types.js';
 
