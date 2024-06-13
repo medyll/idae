@@ -41,7 +41,7 @@ input[type=submit] {
   overflow: hidden;
   cursor: default;
   border: 1px solid transparent;
-  transition: 0.4 ease all;
+  transition: 0.2 ease all;
 }
 .button.height-tiny, .button[data-height=tiny],
 button.height-tiny,
@@ -155,55 +155,43 @@ input[type=submit].width-auto,
 input[type=submit][data-width=auto] {
   width: auto;
 }
-.button[tall=small], .button[dense-small], .button.dense-small,
+.button[tall=small], .button.tall-small,
 button[tall=small],
-button[dense-small],
-button.dense-small,
+button.tall-small,
 input[type=button][tall=small],
-input[type=button][dense-small],
-input[type=button].dense-small,
+input[type=button].tall-small,
 input[type=submit][tall=small],
-input[type=submit][dense-small],
-input[type=submit].dense-small {
+input[type=submit].tall-small {
   min-height: 1.5rem;
   --preset-density: 1.5rem;
 }
-.button[tall=default], .button[dense-default], .button.dense-default,
+.button[tall=default], .button.tall-default,
 button[tall=default],
-button[dense-default],
-button.dense-default,
+button.tall-default,
 input[type=button][tall=default],
-input[type=button][dense-default],
-input[type=button].dense-default,
+input[type=button].tall-default,
 input[type=submit][tall=default],
-input[type=submit][dense-default],
-input[type=submit].dense-default {
+input[type=submit].tall-default {
   min-height: 2rem;
   --preset-density: 2rem;
 }
-.button[tall=medium], .button[dense-medium], .button.dense-medium,
+.button[tall=medium], .button.tall-medium,
 button[tall=medium],
-button[dense-medium],
-button.dense-medium,
+button.tall-medium,
 input[type=button][tall=medium],
-input[type=button][dense-medium],
-input[type=button].dense-medium,
+input[type=button].tall-medium,
 input[type=submit][tall=medium],
-input[type=submit][dense-medium],
-input[type=submit].dense-medium {
+input[type=submit].tall-medium {
   min-height: 2.5rem;
   --preset-density: 2.5rem;
 }
-.button[tall=kind], .button[dense-kind], .button.dense-kind,
+.button[tall=kind], .button.tall-kind,
 button[tall=kind],
-button[dense-kind],
-button.dense-kind,
+button.tall-kind,
 input[type=button][tall=kind],
-input[type=button][dense-kind],
-input[type=button].dense-kind,
+input[type=button].tall-kind,
 input[type=submit][tall=kind],
-input[type=submit][dense-kind],
-input[type=submit].dense-kind {
+input[type=submit].tall-kind {
   min-height: 3rem;
   --preset-density: 3rem;
 }

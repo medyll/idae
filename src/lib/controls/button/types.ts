@@ -37,7 +37,7 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	width?: ElementProps['width'];
 	/** add ellipsis on overflowed text */
 	nowrap?: boolean;
-	dense?: ElementProps['dense'];
+	tall?: ElementProps['tall'];
 	/**  button selected */
 	selected?: boolean;
 	/** button value */
@@ -84,7 +84,7 @@ const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 		type: 'boolean',
 		default: false
 	},
-	dense: {
+	tall: {
 		type: 'dense',
 		default: densePreset.default
 	},

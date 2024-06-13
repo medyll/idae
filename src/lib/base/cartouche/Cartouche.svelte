@@ -59,7 +59,7 @@
 	{style}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="control {classes.control} dense-{dense}" onclick={actions.toggle}>
+	<div class="control {classes.control} tall-{tall}" onclick={actions.toggle}>
 		{#if icon || cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
 				<Slotted child={cartoucheIcon}>

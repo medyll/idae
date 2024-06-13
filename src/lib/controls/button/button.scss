@@ -1,5 +1,4 @@
 @import "../../styles/presets.scss";
-// @import "../../styles/slotui-vars.scss";
 
 :root {
     --sld-button-font-size: inherit;
@@ -33,7 +32,7 @@ input[type="button"],
 input[type="submit"] {
     @include input-sizes-presets;
     @include ui-width-presets;
-    @include ui-dense-presets;
+    @include ui-tall-presets;
     @include input-sizes-presets;
 
     text-align: var(--sld-button-text-align);
@@ -50,7 +49,7 @@ input[type="submit"] {
     overflow: hidden;
     cursor: default;
     border: 1px solid transparent;
-    transition: 0.4 ease all;
+    transition: 0.2 ease all;
 
     &[disabled],
     &.disabled {

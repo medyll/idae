@@ -19,7 +19,7 @@
 		showChip,
 		popperOpen,
 		width: size = 'auto',
-		dense = 'kind',
+		tall: dense = 'kind',
 		nowrap,
 		selected = false,
 		value,
@@ -38,7 +38,7 @@
 </script>
 
 <button
-	class={className + ' button dense-' + dense + ' ' + variant}
+	class={className + ' button tall-' + dense + ' ' + variant}
 	class:loading
 	bind:this={element}
 	use:popper={usePopper}

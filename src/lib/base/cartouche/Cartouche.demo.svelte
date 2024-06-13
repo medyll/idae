@@ -5,8 +5,6 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import { cartoucheDemoValues } from './types.js';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
 
 	import { parameters, componentArgs } from './types.js';
 
@@ -35,25 +33,26 @@
 <ComponentDemo
 	component="Cartouche"
 	cite="'Open up', they said. So we stacked<br /> G. Brahms, 1964"
->
-	<div class="flex-v gap-large">
+	><div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="Cartouche" code={code1}>
 			<Demoer title="A simple cartouche" {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1">
-						{#snippet cartoucheButtons()}
+						<!-- {#snippet cartoucheButtons()}
 							<Button width="medium">a button</Button>
-						{/snippet}
-						{#snippet cartoucheIcon()}
+						{/snippet} -->
+						<!-- {#snippet cartoucheIcon()}
 							<Icon iconSize="small" icon="circle" />
-						{/snippet}
-						{#snippet cartouchePrimary()}
+						{/snippet} -->
+						<!-- {#snippet cartouchePrimary()}
 							This is a cartouche
 						{/snippet}
 						{#snippet cartoucheSecondary()}
 							Some subtitle
-						{/snippet}
-						<div class="pad-2 border-t">Some <br />Cartouche <br />content</div>
+						{/snippet} -->
+						<div class="pad-2 border-t">
+							Some <br />Cartouche <br />content
+						</div>
 					</Cartouche>
 				{/snippet}
 			</Demoer>

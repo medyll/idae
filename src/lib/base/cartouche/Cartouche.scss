@@ -35,7 +35,7 @@
     align-items: center;
     gap: var(--cartouche-control-gap);
     background-color: var(--cartouche-background-color);
-    @include ui-dense-presets;
+    @include ui-tall-presets;
     padding: auto 0.25rem;
     &:hover {
       background-color: var(--cartouche-background-color-hover);

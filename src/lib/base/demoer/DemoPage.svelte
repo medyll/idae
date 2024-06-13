@@ -26,17 +26,18 @@
 				<Icon icon="mdi:eye" />
 			</h6>
 			<div class="pad-l-2 pos-rel">
-				<Slotted child={children}></Slotted>
-				<!-- {#if children}
+				<!-- <Slotted child={children}></Slotted> -->
+				{#if children}
 					{@render children?.()}
-				{/if} -->
+				{/if}
 			</div>
 		</div>
 		{#if code || demoerCode}
 			<div class="w-tiers">
-				<Slotted child={demoerCode}>
+				{@render demoerCode?.()}
+				<!-- <Slotted child={demoerCode}>
 					<DemoerCode {code} />
-				</Slotted>
+				</Slotted> -->
 			</div>
 		{/if}
 	</div>

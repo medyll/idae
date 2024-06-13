@@ -16,7 +16,7 @@
 		children
 	}: DemoerProps<T> = $props();
 
-	let activeParams: T = $state(componentArgs);
+	let activeParams: T = $state({ ...componentArgs });
 </script>
 
 {#if title}
@@ -65,6 +65,7 @@
 			showChip={activeParams[parameter] === red}
 			onclick={() => {
 				activeParams[parameter] = red;
+				console.log(activeParams);
 			}}
 		/>
 	{/each}
@@ -99,9 +100,11 @@
 					{/each}
 				</div>
 			{:else if component}
-				<svelte:component this={component} {...componentArgs} {...activeParams} />
+				<!-- <svelte:component this={component} {...componentArgs} {...activeParams} /> -->
 			{:else}
-				<Slotted child={children} slotArgs={{ activeParams }} />
+				{#key activeParams}
+					{@render children?.({ activeParams })}
+				{/key}
 			{/if}
 		</div>
 	</div>
@@ -150,6 +153,8 @@
 											{@render main({ parameter, values: uiPresets.orientation })}
 										{:else if parameters?.[parameter]?.type === 'elevation'}
 											{@render main({ parameter, values: uiPresets.elevation })}
+										{:else if parameters?.[parameter]?.type === 'tall'}
+											{@render main({ parameter, values: uiPresets.tall })}
 										{:else}
 											<!-- array, default -->
 											{@render main({ parameter })}

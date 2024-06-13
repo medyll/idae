@@ -123,6 +123,31 @@
     }
 }
 
+@mixin ui-tall-presets {
+    --preset-density: 2rem;
+    min-height: 2rem;
+    &[tall="small"],
+    &.tall-small {
+        min-height: 1.5rem;
+        --preset-density: 1.5rem;
+    }
+    &[tall="default"],
+    &.tall-default {
+        min-height: 2rem;
+        --preset-density: 2rem;
+    }
+    &[tall="medium"],
+    &.tall-medium {
+        min-height: 2.5rem;
+        --preset-density: 2.5rem;
+    }
+    &[tall="kind"],
+    &.tall-kind {
+        min-height: 3rem;
+        --preset-density: 3rem;
+    }
+}
+
 @mixin ui-dense-presets {
     --preset-density: 2rem;
     min-height: 2rem;

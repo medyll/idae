@@ -23,7 +23,7 @@
 		popperContent = undefined,
 		disabled = false,
 		variant = 'bordered',
-		dense = 'kind',
+		tall = 'kind',
 		children,
 		...rest
 	}: ExpandProps<ButtonActionProps> = $props();
@@ -32,8 +32,8 @@
 	let chevron = 'fluent:chevron-down-20-regular';
 </script>
 
-<div bind:this={holder} class="button button-action selected {variant} dense-{dense} {className}">
-	<Button {...rest} {dense} bind:element variant="naked">
+<div bind:this={holder} class="button button-action selected {variant} tall-{tall} {className}">
+	<Button {...rest} {tall} bind:element variant="naked">
 		<Slotted child={children} />
 	</Button>
 	<Button
@@ -41,7 +41,7 @@
 		onclick={() => {
 			isOpen = true;
 		}}
-		{dense}
+		{tall}
 		variant="naked"
 		class="chevron"><Icon icon={chevron} rotation={isOpen ? 180 : 0} /></Button
 	>

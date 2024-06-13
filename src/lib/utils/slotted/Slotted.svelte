@@ -7,11 +7,15 @@
 		children?: Snippet<[any]>;
 	};
 
-	let { child, children, slotArgs = {} }: Props = $props();
+	let { child, children, slotArgs = $bindable({}) }: Props = $props();
 </script>
 
 {#if child !== undefined}
-	{@render child(slotArgs)}
+	{#key slotArgs}
+		{@render child(slotArgs)}
+	{/key}
 {:else if children}
-	{@render children(slotArgs)}
+	{#key slotArgs}
+		{@render children(slotArgs)}
+	{/key}
 {/if}

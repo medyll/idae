@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Iconify from '@iconify/svelte';
 	import { iconFontSize, type ElementProps, type ExpandProps } from '$lib/types/index.js';
 	import type { IconAppProps } from './types.js';
+	import Iconify from '@iconify/svelte';
 
 	let {
 		icon = $bindable('question'),
@@ -18,7 +18,7 @@
 
 	const sizes: Record<ElementProps['iconSize'], string> = iconFontSize;
 
-	let finalI = ico?.icon ?? (typeof icon === 'object' ? icon.icon : icon);
+	let finalI = $derived(ico?.icon ?? (typeof icon === 'object' ? icon.icon : icon));
 	let finRot = ico?.rotate ?? (typeof icon === 'object' ? icon.rotate : rotate);
 	let finRotation = ico?.rotation ?? (typeof icon === 'object' ? icon.rotation : rotation);
 	let finCol = ico?.color ?? (typeof icon === 'object' ? icon.color : color);
