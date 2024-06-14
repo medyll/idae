@@ -62,7 +62,7 @@
 	component="Tree"
 >
 	<div class="flex-v gap-large">
-		<DemoPage {code} component="Loading" title="Using snippets">
+		<DemoPage {code} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel flex-h">

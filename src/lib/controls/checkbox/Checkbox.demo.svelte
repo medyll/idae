@@ -18,7 +18,7 @@
 
 <ComponentDemo component="Checkbox">
 	<div class="flex-v gap-medium">
-		<DemoPage title="Using snippets" {code} component="Checkbox">
+		<DemoPage {code} component="Checkbox">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Checkbox {...activeParams}>label</Checkbox>

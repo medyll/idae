@@ -87,7 +87,7 @@
 
 <ComponentDemo component="ToggleBar">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="ToggleBar" title="Using snippets">
+		<DemoPage code={codeSlot} component="ToggleBar">
 			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
 				>{#snippet children({ activeParams })}
 					<div class="pad pos-rel">

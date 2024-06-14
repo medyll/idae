@@ -24,7 +24,7 @@
 
 <ComponentDemo component="Backdrop">
 	<div class="flex-v gap-medium">
-		<DemoPage title="Using snippets" code={codeSlot} component="Backdrop">
+		<DemoPage code={codeSlot} component="Backdrop">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div style="width:350px;height:350px;position:realive;">

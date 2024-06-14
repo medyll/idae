@@ -13,7 +13,7 @@
 
 <ComponentDemo component="Icon" cite="The icon is the window to the soul of the app">
 	<div class="flex-v gap-small">
-		<DemoPage title="Using snippets" component="Icon" {code}>
+		<DemoPage component="Icon" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Icon {...activeParams} />

@@ -36,9 +36,9 @@
 </script>
 
 <div class="flex-v gap-large w-full">
-	<div class="flex-h gap-small flex-align-middle">
+	<div class="flex-v gap-small flex-align-middle">
 		<h5>{`<${component} />`}</h5>
-		<span>{compDet?.group}/{compDet?.code}.svelte</span>
+		<span>@medyll/slotted/{compDet?.group}/{compDet?.code}.svelte</span>
 	</div>
 	<cite><p>"{@html citation}"<br />{@html author}</p></cite>
 	{#if children}

@@ -19,7 +19,6 @@
 </script>
 
 <div>
-	{#if title}<h5 class="flex-h flex-align-middle gap-small">{title}</h5>{/if}
 	<div class="pad-l-2">
 		{#if code || demoerCode}
 			<div>

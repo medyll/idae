@@ -109,7 +109,7 @@
 	cite="If you can slide, then there are chances you are a panel<br /> C. Quin 2013"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Panel" title="Using snippets">
+		<DemoPage code={codeSlot} component="Panel">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
 					<div class=" w-full pad pos-rel">

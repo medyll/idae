@@ -63,7 +63,7 @@
 
 <ComponentDemo component="Grouper">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeAll} component="Popper" title="Using snippets">
+		<DemoPage code={codeAll} component="Popper">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-middle gap-tiny">

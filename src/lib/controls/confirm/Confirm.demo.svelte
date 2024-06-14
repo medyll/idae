@@ -27,7 +27,7 @@
 V.Hugo 1850"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
+		<DemoPage component="Chipper" code={codeSlot}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Confirm {...activeParams}>

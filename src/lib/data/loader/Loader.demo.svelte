@@ -48,7 +48,7 @@
 	component="Loader"
 >
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Loading" title="Using snippets">
+		<DemoPage code={codeSlot} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel h-large w-large">

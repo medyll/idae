@@ -21,7 +21,7 @@
 	cite="If it's not you, then it's the other you, <br /> Emma Avatar you, 1652"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Rating" code={code1}>
+		<DemoPage component="Rating" code={code1}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Avatar {...activeParams}>

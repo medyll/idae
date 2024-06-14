@@ -48,7 +48,7 @@
 
 <ComponentDemo component="Switch">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Switch" title="Using snippets">
+		<DemoPage code={codeSlot} component="Switch">
 			<Demoer parameters={parametersSlot} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad-2">

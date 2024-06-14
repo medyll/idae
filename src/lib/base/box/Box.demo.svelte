@@ -30,7 +30,7 @@
 	component="Box"
 	cite="Boxes, essentially, contain other boxes. That's the meaning we'll found if open them<br /> B. Franklin,1854"
 	><div class="flex-v gap-medium">
-		<DemoPage {code} title="Using snippets" component="Box">
+		<DemoPage {code} component="Box">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Box {...activeParams}>

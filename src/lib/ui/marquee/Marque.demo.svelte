@@ -15,7 +15,7 @@
 </script>
 
 <ComponentDemo component="Marquee">
-	<DemoPage title="Using snippets" component="Rating" {code}>
+	<DemoPage component="Rating" {code}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<Marquee {...activeParams}>

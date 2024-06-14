@@ -23,7 +23,7 @@ export type DemoerArgsType =
 export type DemoerParameters = { type: DemoerArgsType; values?: any[]; default?: any };
 
 export type DemoPageProps = CommonProps & {
-	title: string;
+	title?: string;
 	subTitle?: string;
 	component: string;
 	code?: string;

@@ -20,7 +20,7 @@
 </script>
 
 <ComponentDemo component="TitleBar" cite="The title bar is the window to the soul of the app">
-	<DemoPage title="Using snippets" component="TitleBar" {code}>
+	<DemoPage component="TitleBar" {code}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<TitleBar {...activeParams} />

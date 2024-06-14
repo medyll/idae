@@ -25,7 +25,7 @@
 
 <ComponentDemo component="Drawer">
 	<div class="flex-v gap-medium w-full">
-		<DemoPage title="Using snippets" component="Drawer" {code}>
+		<DemoPage component="Drawer" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div style="width:450px;height:500px;position:relative;" class="pad flex-h">

@@ -23,7 +23,7 @@
 </script>
 
 <ComponentDemo component="Chipper">
-	<DemoPage title="Using snippets" component="Chipper" code={codeSlot}>
+	<DemoPage component="Chipper" code={codeSlot}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<Chipper {...activeParams}>

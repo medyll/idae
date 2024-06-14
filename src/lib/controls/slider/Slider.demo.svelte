@@ -19,7 +19,7 @@
 
 <ComponentDemo component="Slider">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="Slider" title="Using snippets">
+		<DemoPage code={codeSlot} component="Slider">
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad-2">

@@ -61,7 +61,7 @@
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
 	<div class="flex-v gap-large">
-		<DemoPage {code} component="Select" title="Using snippets">
+		<DemoPage {code} component="Select">
 			<Demoer {multiple} {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<div class="pad-2 h-large pos-rel">

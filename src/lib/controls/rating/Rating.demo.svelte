@@ -22,7 +22,7 @@
 	cite="First they tell you that it's just about stars.<br/>And then you'll be starred<br/> Amal. Creed, 1824"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Rating" code={ww}>
+		<DemoPage component="Rating" code={ww}>
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
 					<Rating {...activeParams}>

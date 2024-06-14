@@ -21,7 +21,7 @@
 	component="Alert"
 	cite="Then they were informed, then they were messaged, then they were alerted. Br Jhons, 1752"
 >
-	<DemoPage title="Using snippets" component="Alert" code={code1}>
+	<DemoPage component="Alert" code={code1}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<div class="flex-h flex-wrap flex-align-middle gap-medium">

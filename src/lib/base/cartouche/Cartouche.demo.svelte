@@ -34,7 +34,7 @@
 	component="Cartouche"
 	cite="'Open up', they said. So we stacked<br /> G. Brahms, 1964"
 	><div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Cartouche" code={code1}>
+		<DemoPage component="Cartouche" code={code1}>
 			<Demoer title="A simple cartouche" {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
 					<Cartouche {...activeParams} class="marg-tb-1">

@@ -24,7 +24,7 @@
 
 <ComponentDemo component="ContentSwitcher">
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="ContentSwitcher" {code}>
+		<DemoPage component="ContentSwitcher" {code}>
 			<Demoer title="A simple contentSwitcher" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<ContentSwitcher {...activeParams} class="marg-tb-1">

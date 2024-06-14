@@ -17,7 +17,7 @@
 	cite="If a step was a leap it would soar over the next step.<br /> Clara Boxee 2010"
 >
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="Stepper" {code}>
+		<DemoPage component="Stepper" {code}>
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
 					<Stepper {...activeParams}>

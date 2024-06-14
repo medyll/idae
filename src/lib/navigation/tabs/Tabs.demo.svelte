@@ -49,7 +49,7 @@
 </script>
 
 <DemoerComponent component="Tabs">
-	<DemoPage {code} component="Tabs" title="Using snippets">
+	<DemoPage {code} component="Tabs">
 		<Demoer {componentArgs} {parameters}>
 			{#snippet children({ activeParams })}
 				<div style="height:450px;">

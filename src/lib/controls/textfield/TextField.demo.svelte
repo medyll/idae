@@ -40,7 +40,7 @@
 
 <ComponentDemo component="TextField">
 	<div class="flex-v gap-large">
-		<DemoPage title="Using snippets" component="TextField" {code}>
+		<DemoPage component="TextField" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h flex-align-middle flex-wrap">

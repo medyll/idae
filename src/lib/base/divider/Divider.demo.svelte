@@ -19,7 +19,7 @@
 1854"
 >
 	<div class=" flex-v gap-small">
-		<DemoPage title="Using snippets" component="Divider" code={codeSlot}>
+		<DemoPage component="Divider" code={codeSlot}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad">

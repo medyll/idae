@@ -46,7 +46,7 @@
 
 <ComponentDemo component="AutoComplete">
 	<div class="flex-v gap-large">
-		<DemoPage code={codeSlot} component="AutoComplete" title="Using snippets">
+		<DemoPage code={codeSlot} component="AutoComplete">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<AutoComplete
