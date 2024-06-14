@@ -43,7 +43,7 @@
 	{#snippet drawerContent()}
 		<MenuList
 			bind:menuListItems
-			dense={densePreset.default}
+			tall={densePreset.default}
 			onclick={openIn}
 			selectorField="idappscheme"
 			style="height:100%;"

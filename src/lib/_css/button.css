@@ -27,12 +27,12 @@
 button,
 input[type=button],
 input[type=submit] {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-width: var(--sld-width-small);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
-  color: var(--sld-color-foreground);
   padding: var(--sld-button-padding);
   display: inline-flex;
   align-items: center;
@@ -43,199 +43,156 @@ input[type=submit] {
   border: 1px solid transparent;
   transition: 0.2 ease all;
 }
-.button.height-tiny, .button[data-height=tiny],
-button.height-tiny,
-button[data-height=tiny],
-input[type=button].height-tiny,
-input[type=button][data-height=tiny],
-input[type=submit].height-tiny,
-input[type=submit][data-height=tiny] {
-  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="default"]), .button:global([width-default]), .button:global(.width-default),
+button:global([width="default"]),
+button:global([width-default]),
+button:global(.width-default),
+input[type=button]:global([width="default"]),
+input[type=button]:global([width-default]),
+input[type=button]:global(.width-default),
+input[type=submit]:global([width="default"]),
+input[type=submit]:global([width-default]),
+input[type=submit]:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
 }
-.button.height-small, .button[data-height=small],
-button.height-small,
-button[data-height=small],
-input[type=button].height-small,
-input[type=button][data-height=small],
-input[type=submit].height-small,
-input[type=submit][data-height=small] {
-  height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="tiny"]), .button:global([width-tiny]), .button:global(.width-tiny),
+button:global([width="tiny"]),
+button:global([width-tiny]),
+button:global(.width-tiny),
+input[type=button]:global([width="tiny"]),
+input[type=button]:global([width-tiny]),
+input[type=button]:global(.width-tiny),
+input[type=submit]:global([width="tiny"]),
+input[type=submit]:global([width-tiny]),
+input[type=submit]:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
 }
-.button.height-medium, .button[data-height=default],
-button.height-medium,
-button[data-height=default],
-input[type=button].height-medium,
-input[type=button][data-height=default],
-input[type=submit].height-medium,
-input[type=submit][data-height=default] {
-  height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="mini"]), .button:global([width-mini]), .button:global(.width-mini),
+button:global([width="mini"]),
+button:global([width-mini]),
+button:global(.width-mini),
+input[type=button]:global([width="mini"]),
+input[type=button]:global([width-mini]),
+input[type=button]:global(.width-mini),
+input[type=submit]:global([width="mini"]),
+input[type=submit]:global([width-mini]),
+input[type=submit]:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
 }
-.button.height-large, .button[data-height=large],
-button.height-large,
-button[data-height=large],
-input[type=button].height-large,
-input[type=button][data-height=large],
-input[type=submit].height-large,
-input[type=submit][data-height=large] {
-  height: calc(4rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="small"]), .button:global([width-small]), .button:global(.width-small),
+button:global([width="small"]),
+button:global([width-small]),
+button:global(.width-small),
+input[type=button]:global([width="small"]),
+input[type=button]:global([width-small]),
+input[type=button]:global(.width-small),
+input[type=submit]:global([width="small"]),
+input[type=submit]:global([width-small]),
+input[type=submit]:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
-.button[borderless=true],
-button[borderless=true],
-input[type=button][borderless=true],
-input[type=submit][borderless=true] {
-  border: 0px solid none;
+.button:global([width="med"]), .button:global([width-med]), .button:global(.width-med),
+button:global([width="med"]),
+button:global([width-med]),
+button:global(.width-med),
+input[type=button]:global([width="med"]),
+input[type=button]:global([width-med]),
+input[type=button]:global(.width-med),
+input[type=submit]:global([width="med"]),
+input[type=submit]:global([width-med]),
+input[type=submit]:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
 }
-.button.wt, .button[data-width=tiny],
-button.wt,
-button[data-width=tiny],
-input[type=button].wt,
-input[type=button][data-width=tiny],
-input[type=submit].wt,
-input[type=submit][data-width=tiny] {
-  /** size tiny */
-  width: 2rem;
+.button:global([width="kind"]), .button:global([width-kind]), .button:global(.width-kind),
+button:global([width="kind"]),
+button:global([width-kind]),
+button:global(.width-kind),
+input[type=button]:global([width="kind"]),
+input[type=button]:global([width-kind]),
+input[type=button]:global(.width-kind),
+input[type=submit]:global([width="kind"]),
+input[type=submit]:global([width-kind]),
+input[type=submit]:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
 }
-.button.ws, .button[data-width=small],
-button.ws,
-button[data-width=small],
-input[type=button].ws,
-input[type=button][data-width=small],
-input[type=submit].ws,
-input[type=submit][data-width=small] {
-  /** size small */
-  width: 6rem;
+.button:global([width="full"]), .button:global([width-full]), .button:global(.width-full),
+button:global([width="full"]),
+button:global([width-full]),
+button:global(.width-full),
+input[type=button]:global([width="full"]),
+input[type=button]:global([width-full]),
+input[type=button]:global(.width-full),
+input[type=submit]:global([width="full"]),
+input[type=submit]:global([width-full]),
+input[type=submit]:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
 }
-.button.wm, .button[data-width=medium],
-button.wm,
-button[data-width=medium],
-input[type=button].wm,
-input[type=button][data-width=medium],
-input[type=submit].wm,
-input[type=submit][data-width=medium] {
-  /** size medium */
-  width: 8rem;
+.button:global([tall="default"]), .button:global(.tall-default),
+button:global([tall="default"]),
+button:global(.tall-default),
+input[type=button]:global([tall="default"]),
+input[type=button]:global(.tall-default),
+input[type=submit]:global([tall="default"]),
+input[type=submit]:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.button.wd, .button[data-width=default],
-button.wd,
-button[data-width=default],
-input[type=button].wd,
-input[type=button][data-width=default],
-input[type=submit].wd,
-input[type=submit][data-width=default] {
-  /** size default */
-  width: 12rem;
+.button:global([tall="tiny"]), .button:global(.tall-tiny),
+button:global([tall="tiny"]),
+button:global(.tall-tiny),
+input[type=button]:global([tall="tiny"]),
+input[type=button]:global(.tall-tiny),
+input[type=submit]:global([tall="tiny"]),
+input[type=submit]:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.button.wl, .button[data-width=large],
-button.wl,
-button[data-width=large],
-input[type=button].wl,
-input[type=button][data-width=large],
-input[type=submit].wl,
-input[type=submit][data-width=large] {
-  width: 16rem;
+.button:global([tall="mini"]), .button:global(.tall-mini),
+button:global([tall="mini"]),
+button:global(.tall-mini),
+input[type=button]:global([tall="mini"]),
+input[type=button]:global(.tall-mini),
+input[type=submit]:global([tall="mini"]),
+input[type=submit]:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.button.wf, .button[data-width=full],
-button.wf,
-button[data-width=full],
-input[type=button].wf,
-input[type=button][data-width=full],
-input[type=submit].wf,
-input[type=submit][data-width=full] {
-  width: 100%;
+.button:global([tall="small"]), .button:global(.tall-small),
+button:global([tall="small"]),
+button:global(.tall-small),
+input[type=button]:global([tall="small"]),
+input[type=button]:global(.tall-small),
+input[type=submit]:global([tall="small"]),
+input[type=submit]:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
 }
-.button.wa, .button.width-auto, .button[data-width=auto],
-button.wa,
-button.width-auto,
-button[data-width=auto],
-input[type=button].wa,
-input[type=button].width-auto,
-input[type=button][data-width=auto],
-input[type=submit].wa,
-input[type=submit].width-auto,
-input[type=submit][data-width=auto] {
-  width: auto;
+.button:global([tall="med"]), .button:global(.tall-med),
+button:global([tall="med"]),
+button:global(.tall-med),
+input[type=button]:global([tall="med"]),
+input[type=button]:global(.tall-med),
+input[type=submit]:global([tall="med"]),
+input[type=submit]:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
 }
-.button[tall=small], .button.tall-small,
-button[tall=small],
-button.tall-small,
-input[type=button][tall=small],
-input[type=button].tall-small,
-input[type=submit][tall=small],
-input[type=submit].tall-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
-}
-.button[tall=default], .button.tall-default,
-button[tall=default],
-button.tall-default,
-input[type=button][tall=default],
-input[type=button].tall-default,
-input[type=submit][tall=default],
-input[type=submit].tall-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
-}
-.button[tall=medium], .button.tall-medium,
-button[tall=medium],
-button.tall-medium,
-input[type=button][tall=medium],
-input[type=button].tall-medium,
-input[type=submit][tall=medium],
-input[type=submit].tall-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
-}
-.button[tall=kind], .button.tall-kind,
-button[tall=kind],
-button.tall-kind,
-input[type=button][tall=kind],
-input[type=button].tall-kind,
-input[type=submit][tall=kind],
-input[type=submit].tall-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
-}
-.button.height-tiny, .button[data-height=tiny],
-button.height-tiny,
-button[data-height=tiny],
-input[type=button].height-tiny,
-input[type=button][data-height=tiny],
-input[type=submit].height-tiny,
-input[type=submit][data-height=tiny] {
-  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-small, .button[data-height=small],
-button.height-small,
-button[data-height=small],
-input[type=button].height-small,
-input[type=button][data-height=small],
-input[type=submit].height-small,
-input[type=submit][data-height=small] {
-  height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-medium, .button[data-height=default],
-button.height-medium,
-button[data-height=default],
-input[type=button].height-medium,
-input[type=button][data-height=default],
-input[type=submit].height-medium,
-input[type=submit][data-height=default] {
-  height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-large, .button[data-height=large],
-button.height-large,
-button[data-height=large],
-input[type=button].height-large,
-input[type=button][data-height=large],
-input[type=submit].height-large,
-input[type=submit][data-height=large] {
-  height: calc(4rem - var(--sld-border-bottom-size, 2px));
-}
-.button[borderless=true],
-button[borderless=true],
-input[type=button][borderless=true],
-input[type=submit][borderless=true] {
-  border: 0px solid none;
+.button:global([tall="kind"]), .button:global(.tall-kind),
+button:global([tall="kind"]),
+button:global(.tall-kind),
+input[type=button]:global([tall="kind"]),
+input[type=button]:global(.tall-kind),
+input[type=submit]:global([tall="kind"]),
+input[type=submit]:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .button[disabled], .button.disabled,
 button[disabled],

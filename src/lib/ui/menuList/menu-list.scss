@@ -44,11 +44,12 @@ a.menuListItem,
 li.menuListItem {
   @include data-hover;
   @include data-selected;
-  @include ui-dense-presets;
+  @include ui-tall-presets;
+  @include ui-width-presets;
 
   text-decoration: none;
   overflow: hidden;
-  padding-left: calc(var(--preset-density) / 4);
+  padding-left: calc(var(--preset-tall) / 4);
   border: 1px solid transparent;
 
   display: flex;

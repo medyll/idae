@@ -350,7 +350,7 @@ function main() {
 	new FileProcessor().makeIndexFile();
 	slotUiCatalogB();
 	slotUiDemoCatalog();
-	 generateSvelteIndex();
+	// generateSvelteIndex();
 }
 
 main();

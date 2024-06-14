@@ -5,47 +5,59 @@
 .finder-container {
   display: inline-flex;
   gap: var(--finder-gap);
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-width: var(--sld-width-small);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
 }
-.finder-container.wt, .finder-container[data-width=tiny] {
-  /** size tiny */
-  width: 2rem;
+.finder-container:global([width="default"]), .finder-container:global([width-default]), .finder-container:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
 }
-.finder-container.ws, .finder-container[data-width=small] {
-  /** size small */
-  width: 6rem;
+.finder-container:global([width="tiny"]), .finder-container:global([width-tiny]), .finder-container:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
 }
-.finder-container.wm, .finder-container[data-width=medium] {
-  /** size medium */
-  width: 8rem;
+.finder-container:global([width="mini"]), .finder-container:global([width-mini]), .finder-container:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
 }
-.finder-container.wd, .finder-container[data-width=default] {
-  /** size default */
-  width: 12rem;
+.finder-container:global([width="small"]), .finder-container:global([width-small]), .finder-container:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
-.finder-container.wl, .finder-container[data-width=large] {
-  width: 16rem;
+.finder-container:global([width="med"]), .finder-container:global([width-med]), .finder-container:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
 }
-.finder-container.wf, .finder-container[data-width=full] {
-  width: 100%;
+.finder-container:global([width="kind"]), .finder-container:global([width-kind]), .finder-container:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
 }
-.finder-container.wa, .finder-container.width-auto, .finder-container[data-width=auto] {
-  width: auto;
+.finder-container:global([width="full"]), .finder-container:global([width-full]), .finder-container:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
 }
-.finder-container[tall=small], .finder-container[dense-small], .finder-container.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.finder-container:global([tall="default"]), .finder-container:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.finder-container[tall=default], .finder-container[dense-default], .finder-container.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.finder-container:global([tall="tiny"]), .finder-container:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.finder-container[tall=medium], .finder-container[dense-medium], .finder-container.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.finder-container:global([tall="mini"]), .finder-container:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.finder-container[tall=kind], .finder-container[dense-kind], .finder-container.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.finder-container:global([tall="small"]), .finder-container:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.finder-container:global([tall="med"]), .finder-container:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.finder-container:global([tall="kind"]), .finder-container:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }

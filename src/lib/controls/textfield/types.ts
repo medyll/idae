@@ -56,9 +56,6 @@ export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
 		type: 'tall',
 		default: tallPreset.default
 	},
-	borderless: {
-		type: 'boolean'
-	},
 	transparent: {
 		type: 'boolean'
 	}

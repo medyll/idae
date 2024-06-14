@@ -1,5 +1,9 @@
 <script lang="ts" generics="T=Data">
-	import type { Data } from '$lib/types/index.js';
+	import Stepper from '$lib/controls/stepper/Stepper.svelte';
+	import type { StepperProps } from '$lib/controls/stepper/types.js';
+	import type { Data, ExpandProps } from '$lib/types/index.js';
+	import Content from '$lib/utils/content/Content.svelte';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { MarqueeProps } from './types.js';
 
 	let container = $state<HTMLElement>();
@@ -8,9 +12,16 @@
 		showControls = true,
 		autoStart = false,
 		pauseOnHover = false,
+		activeElement = $bindable(0),
+		activeIndex = $bindable(0),
+		showStepper = false,
+		stepperProps = {} as StepperProps,
+		gutter,
+		marqueePrev,
+		marqueeNext,
 		children,
 		...rest
-	}: MarqueeProps = $props();
+	}: ExpandProps<MarqueeProps> = $props();
 
 	/* export function pauseOnHoverFunction(
 		node: HTMLElement | null,
@@ -60,38 +71,29 @@
 
 <div class="marquee-container">
 	{#if showControls}
-		<button onclick={scrollPrev}>Précédent</button>
+		<div class="marquee-controls-prev">
+			<button onclick={scrollPrev}>Précédent</button>
+		</div>
 	{/if}
 	<div bind:this={container} class="marquee" {...rest}>
-		<div class="marquee-children" style="scroll-snap-type: x mandatory;">
+		<Content {gutter} tag="div" class="marquee-children" style="scroll-snap-type: x mandatory;">
 			{#if children}{@render children()}{:else}
-				<div>a one</div>
+				<div>enter content or data</div>
 			{/if}
-		</div>
+		</Content>
 	</div>
 	{#if showControls}
-		<button onclick={scrollNext}>Suivant</button>
+		<div class="marquee-controls-next">
+			<Slotted child={marqueePrev}>
+				<button onclick={scrollNext}>Suivant</button>
+			</Slotted>
+		</div>
 	{/if}
 </div>
+{#if showStepper}
+	<Stepper {...stepperProps} steps={[{ order: 1 }, { order: 2 }]}></Stepper>
+{/if}
 
-<style>
-	.marquee-container {
-		display: flex;
-		align-items: center;
-	}
-
-	.marquee {
-		flex: 1;
-		overflow-x: auto;
-		scroll-behavior: smooth;
-		scroll-snap-type: x mandatory;
-	}
-
-	.marquee-children {
-		display: inline-flex;
-	}
-
-	.marquee-children > * {
-		scroll-snap-align: start;
-	}
+<style lang="scss">
+	@import './marquee.scss';
 </style>

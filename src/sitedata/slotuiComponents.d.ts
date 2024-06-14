@@ -53,6 +53,7 @@ export { default as ChromeFrameButtonList } from '$lib/ui/chromeFrame/ChromeFram
 export { default as ChromeFrameList } from '$lib/ui/chromeFrame/ChromeFrameList.svelte';
 export { default as Frame } from '$lib/ui/frame/Frame.svelte';
 export { default as Login } from '$lib/ui/login/Login.svelte';
+export { default as Marquee } from '$lib/ui/marquee/Marquee.svelte';
 export { default as Menu } from '$lib/ui/menu/Menu.svelte';
 export { default as MenuItem } from '$lib/ui/menu/MenuItem.svelte';
 export { default as MenuTitle } from '$lib/ui/menu/MenuTitle.svelte';

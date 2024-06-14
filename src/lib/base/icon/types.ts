@@ -39,7 +39,7 @@ export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
 		type: 'iconSize'
 	},
 	color: {
-		type: 'string'
+		type: 'color'
 	},
 	rotation: {
 		type: 'number',

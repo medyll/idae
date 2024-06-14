@@ -227,25 +227,33 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   align-items: center;
   gap: var(--cartouche-control-gap);
   background-color: var(--cartouche-background-color);
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   padding: auto 0.25rem;
 }
-.cartouche .control[tall=small], .cartouche .control.tall-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.cartouche .control:global([tall="default"]), .cartouche .control:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.cartouche .control[tall=default], .cartouche .control.tall-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.cartouche .control:global([tall="tiny"]), .cartouche .control:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.cartouche .control[tall=medium], .cartouche .control.tall-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.cartouche .control:global([tall="mini"]), .cartouche .control:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.cartouche .control[tall=kind], .cartouche .control.tall-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.cartouche .control:global([tall="small"]), .cartouche .control:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.cartouche .control:global([tall="med"]), .cartouche .control:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.cartouche .control:global([tall="kind"]), .cartouche .control:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .cartouche .control:hover {
   background-color: var(--cartouche-background-color-hover);
@@ -489,12 +497,12 @@ hr.vertical {
 button,
 input[type=button],
 input[type=submit] {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-width: var(--sld-width-small);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
-  color: var(--sld-color-foreground);
   padding: var(--sld-button-padding);
   display: inline-flex;
   align-items: center;
@@ -505,199 +513,156 @@ input[type=submit] {
   border: 1px solid transparent;
   transition: 0.2 ease all;
 }
-.button.height-tiny, .button[data-height=tiny],
-button.height-tiny,
-button[data-height=tiny],
-input[type=button].height-tiny,
-input[type=button][data-height=tiny],
-input[type=submit].height-tiny,
-input[type=submit][data-height=tiny] {
-  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="default"]), .button:global([width-default]), .button:global(.width-default),
+button:global([width="default"]),
+button:global([width-default]),
+button:global(.width-default),
+input[type=button]:global([width="default"]),
+input[type=button]:global([width-default]),
+input[type=button]:global(.width-default),
+input[type=submit]:global([width="default"]),
+input[type=submit]:global([width-default]),
+input[type=submit]:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
 }
-.button.height-small, .button[data-height=small],
-button.height-small,
-button[data-height=small],
-input[type=button].height-small,
-input[type=button][data-height=small],
-input[type=submit].height-small,
-input[type=submit][data-height=small] {
-  height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="tiny"]), .button:global([width-tiny]), .button:global(.width-tiny),
+button:global([width="tiny"]),
+button:global([width-tiny]),
+button:global(.width-tiny),
+input[type=button]:global([width="tiny"]),
+input[type=button]:global([width-tiny]),
+input[type=button]:global(.width-tiny),
+input[type=submit]:global([width="tiny"]),
+input[type=submit]:global([width-tiny]),
+input[type=submit]:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
 }
-.button.height-medium, .button[data-height=default],
-button.height-medium,
-button[data-height=default],
-input[type=button].height-medium,
-input[type=button][data-height=default],
-input[type=submit].height-medium,
-input[type=submit][data-height=default] {
-  height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="mini"]), .button:global([width-mini]), .button:global(.width-mini),
+button:global([width="mini"]),
+button:global([width-mini]),
+button:global(.width-mini),
+input[type=button]:global([width="mini"]),
+input[type=button]:global([width-mini]),
+input[type=button]:global(.width-mini),
+input[type=submit]:global([width="mini"]),
+input[type=submit]:global([width-mini]),
+input[type=submit]:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
 }
-.button.height-large, .button[data-height=large],
-button.height-large,
-button[data-height=large],
-input[type=button].height-large,
-input[type=button][data-height=large],
-input[type=submit].height-large,
-input[type=submit][data-height=large] {
-  height: calc(4rem - var(--sld-border-bottom-size, 2px));
+.button:global([width="small"]), .button:global([width-small]), .button:global(.width-small),
+button:global([width="small"]),
+button:global([width-small]),
+button:global(.width-small),
+input[type=button]:global([width="small"]),
+input[type=button]:global([width-small]),
+input[type=button]:global(.width-small),
+input[type=submit]:global([width="small"]),
+input[type=submit]:global([width-small]),
+input[type=submit]:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
-.button[borderless=true],
-button[borderless=true],
-input[type=button][borderless=true],
-input[type=submit][borderless=true] {
-  border: 0px solid none;
+.button:global([width="med"]), .button:global([width-med]), .button:global(.width-med),
+button:global([width="med"]),
+button:global([width-med]),
+button:global(.width-med),
+input[type=button]:global([width="med"]),
+input[type=button]:global([width-med]),
+input[type=button]:global(.width-med),
+input[type=submit]:global([width="med"]),
+input[type=submit]:global([width-med]),
+input[type=submit]:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
 }
-.button.wt, .button[data-width=tiny],
-button.wt,
-button[data-width=tiny],
-input[type=button].wt,
-input[type=button][data-width=tiny],
-input[type=submit].wt,
-input[type=submit][data-width=tiny] {
-  /** size tiny */
-  width: 2rem;
+.button:global([width="kind"]), .button:global([width-kind]), .button:global(.width-kind),
+button:global([width="kind"]),
+button:global([width-kind]),
+button:global(.width-kind),
+input[type=button]:global([width="kind"]),
+input[type=button]:global([width-kind]),
+input[type=button]:global(.width-kind),
+input[type=submit]:global([width="kind"]),
+input[type=submit]:global([width-kind]),
+input[type=submit]:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
 }
-.button.ws, .button[data-width=small],
-button.ws,
-button[data-width=small],
-input[type=button].ws,
-input[type=button][data-width=small],
-input[type=submit].ws,
-input[type=submit][data-width=small] {
-  /** size small */
-  width: 6rem;
+.button:global([width="full"]), .button:global([width-full]), .button:global(.width-full),
+button:global([width="full"]),
+button:global([width-full]),
+button:global(.width-full),
+input[type=button]:global([width="full"]),
+input[type=button]:global([width-full]),
+input[type=button]:global(.width-full),
+input[type=submit]:global([width="full"]),
+input[type=submit]:global([width-full]),
+input[type=submit]:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
 }
-.button.wm, .button[data-width=medium],
-button.wm,
-button[data-width=medium],
-input[type=button].wm,
-input[type=button][data-width=medium],
-input[type=submit].wm,
-input[type=submit][data-width=medium] {
-  /** size medium */
-  width: 8rem;
+.button:global([tall="default"]), .button:global(.tall-default),
+button:global([tall="default"]),
+button:global(.tall-default),
+input[type=button]:global([tall="default"]),
+input[type=button]:global(.tall-default),
+input[type=submit]:global([tall="default"]),
+input[type=submit]:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.button.wd, .button[data-width=default],
-button.wd,
-button[data-width=default],
-input[type=button].wd,
-input[type=button][data-width=default],
-input[type=submit].wd,
-input[type=submit][data-width=default] {
-  /** size default */
-  width: 12rem;
+.button:global([tall="tiny"]), .button:global(.tall-tiny),
+button:global([tall="tiny"]),
+button:global(.tall-tiny),
+input[type=button]:global([tall="tiny"]),
+input[type=button]:global(.tall-tiny),
+input[type=submit]:global([tall="tiny"]),
+input[type=submit]:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.button.wl, .button[data-width=large],
-button.wl,
-button[data-width=large],
-input[type=button].wl,
-input[type=button][data-width=large],
-input[type=submit].wl,
-input[type=submit][data-width=large] {
-  width: 16rem;
+.button:global([tall="mini"]), .button:global(.tall-mini),
+button:global([tall="mini"]),
+button:global(.tall-mini),
+input[type=button]:global([tall="mini"]),
+input[type=button]:global(.tall-mini),
+input[type=submit]:global([tall="mini"]),
+input[type=submit]:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.button.wf, .button[data-width=full],
-button.wf,
-button[data-width=full],
-input[type=button].wf,
-input[type=button][data-width=full],
-input[type=submit].wf,
-input[type=submit][data-width=full] {
-  width: 100%;
+.button:global([tall="small"]), .button:global(.tall-small),
+button:global([tall="small"]),
+button:global(.tall-small),
+input[type=button]:global([tall="small"]),
+input[type=button]:global(.tall-small),
+input[type=submit]:global([tall="small"]),
+input[type=submit]:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
 }
-.button.wa, .button.width-auto, .button[data-width=auto],
-button.wa,
-button.width-auto,
-button[data-width=auto],
-input[type=button].wa,
-input[type=button].width-auto,
-input[type=button][data-width=auto],
-input[type=submit].wa,
-input[type=submit].width-auto,
-input[type=submit][data-width=auto] {
-  width: auto;
+.button:global([tall="med"]), .button:global(.tall-med),
+button:global([tall="med"]),
+button:global(.tall-med),
+input[type=button]:global([tall="med"]),
+input[type=button]:global(.tall-med),
+input[type=submit]:global([tall="med"]),
+input[type=submit]:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
 }
-.button[tall=small], .button.tall-small,
-button[tall=small],
-button.tall-small,
-input[type=button][tall=small],
-input[type=button].tall-small,
-input[type=submit][tall=small],
-input[type=submit].tall-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
-}
-.button[tall=default], .button.tall-default,
-button[tall=default],
-button.tall-default,
-input[type=button][tall=default],
-input[type=button].tall-default,
-input[type=submit][tall=default],
-input[type=submit].tall-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
-}
-.button[tall=medium], .button.tall-medium,
-button[tall=medium],
-button.tall-medium,
-input[type=button][tall=medium],
-input[type=button].tall-medium,
-input[type=submit][tall=medium],
-input[type=submit].tall-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
-}
-.button[tall=kind], .button.tall-kind,
-button[tall=kind],
-button.tall-kind,
-input[type=button][tall=kind],
-input[type=button].tall-kind,
-input[type=submit][tall=kind],
-input[type=submit].tall-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
-}
-.button.height-tiny, .button[data-height=tiny],
-button.height-tiny,
-button[data-height=tiny],
-input[type=button].height-tiny,
-input[type=button][data-height=tiny],
-input[type=submit].height-tiny,
-input[type=submit][data-height=tiny] {
-  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-small, .button[data-height=small],
-button.height-small,
-button[data-height=small],
-input[type=button].height-small,
-input[type=button][data-height=small],
-input[type=submit].height-small,
-input[type=submit][data-height=small] {
-  height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-medium, .button[data-height=default],
-button.height-medium,
-button[data-height=default],
-input[type=button].height-medium,
-input[type=button][data-height=default],
-input[type=submit].height-medium,
-input[type=submit][data-height=default] {
-  height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
-}
-.button.height-large, .button[data-height=large],
-button.height-large,
-button[data-height=large],
-input[type=button].height-large,
-input[type=button][data-height=large],
-input[type=submit].height-large,
-input[type=submit][data-height=large] {
-  height: calc(4rem - var(--sld-border-bottom-size, 2px));
-}
-.button[borderless=true],
-button[borderless=true],
-input[type=button][borderless=true],
-input[type=submit][borderless=true] {
-  border: 0px solid none;
+.button:global([tall="kind"]), .button:global(.tall-kind),
+button:global([tall="kind"]),
+button:global(.tall-kind),
+input[type=button]:global([tall="kind"]),
+input[type=button]:global(.tall-kind),
+input[type=submit]:global([tall="kind"]),
+input[type=submit]:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .button[disabled], .button.disabled,
 button[disabled],
@@ -1075,8 +1040,8 @@ input[type=submit] .loadingButtonZone {
 }
 
 .checkbox {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   transition: all 0.2s ease;
   appearance: none;
   outline: none;
@@ -1094,21 +1059,29 @@ input[type=submit] .loadingButtonZone {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.checkbox[tall=small], .checkbox[dense-small], .checkbox.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.checkbox:global([tall="default"]), .checkbox:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.checkbox[tall=default], .checkbox[dense-default], .checkbox.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.checkbox:global([tall="tiny"]), .checkbox:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.checkbox[tall=medium], .checkbox[dense-medium], .checkbox.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.checkbox:global([tall="mini"]), .checkbox:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.checkbox[tall=kind], .checkbox[dense-kind], .checkbox.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.checkbox:global([tall="small"]), .checkbox:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.checkbox:global([tall="med"]), .checkbox:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.checkbox:global([tall="kind"]), .checkbox:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);
@@ -1246,25 +1219,33 @@ input[type=submit] .loadingButtonZone {
   flex-direction: row;
   align-items: center;
   width: 168px;
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   --height: calc(var(--preset-density) / 6);
 }
-.slider[tall=small], .slider[dense-small], .slider.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.slider:global([tall="default"]), .slider:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.slider[tall=default], .slider[dense-default], .slider.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.slider:global([tall="tiny"]), .slider:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.slider[tall=medium], .slider[dense-medium], .slider.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.slider:global([tall="mini"]), .slider:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.slider[tall=kind], .slider[dense-kind], .slider.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.slider:global([tall="small"]), .slider:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.slider:global([tall="med"]), .slider:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.slider:global([tall="kind"]), .slider:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .slider .slider-gouge {
   height: var(--height);
@@ -1379,7 +1360,7 @@ label {
   min-width: 42px;
 }
 /** textfield.scss -----*/ 
-:root {
+.textfield {
   --textfield-background: var(--sld-color-background-alpha-high);
   --textfield-border-width: 1px;
   --textfield-border-color: var(--sld-color-foreground-alpha-mid);
@@ -1390,7 +1371,7 @@ label {
   --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
 }
 
-input {
+.textfield {
   border: var(--textfield-border-width) solid var(--textfield-border-color);
   border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
   border-radius: var(--textfield-radius);
@@ -1398,56 +1379,74 @@ input {
   box-shadow: var(--textfield-shadow);
   background-color: var(--textfield-background);
   color: var(--sld-color-foreground);
+  --preset-width: var(--sld-width-small);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
 }
-input [error] {
+.textfield [error] {
   border-bottom: red;
 }
-input.height-tiny, input[data-height=tiny] {
-  height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
+.textfield:global([width="default"]), .textfield:global([width-default]), .textfield:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
 }
-input.height-small, input[data-height=small] {
-  height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
+.textfield:global([width="tiny"]), .textfield:global([width-tiny]), .textfield:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
 }
-input.height-medium, input[data-height=default] {
-  height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
+.textfield:global([width="mini"]), .textfield:global([width-mini]), .textfield:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
 }
-input.height-large, input[data-height=large] {
-  height: calc(4rem - var(--sld-border-bottom-size, 2px));
+.textfield:global([width="small"]), .textfield:global([width-small]), .textfield:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
-input[borderless=true] {
-  border: 0px solid none;
+.textfield:global([width="med"]), .textfield:global([width-med]), .textfield:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
 }
-input.wt, input[data-width=tiny] {
-  /** size tiny */
-  width: 2rem;
+.textfield:global([width="kind"]), .textfield:global([width-kind]), .textfield:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
 }
-input.ws, input[data-width=small] {
-  /** size small */
-  width: 6rem;
+.textfield:global([width="full"]), .textfield:global([width-full]), .textfield:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
 }
-input.wm, input[data-width=medium] {
-  /** size medium */
-  width: 8rem;
+.textfield:global([tall="default"]), .textfield:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-input.wd, input[data-width=default] {
-  /** size default */
-  width: 12rem;
+.textfield:global([tall="tiny"]), .textfield:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-input.wl, input[data-width=large] {
-  width: 16rem;
+.textfield:global([tall="mini"]), .textfield:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-input.wf, input[data-width=full] {
-  width: 100%;
+.textfield:global([tall="small"]), .textfield:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
 }
-input.wa, input.width-auto, input[data-width=auto] {
-  width: auto;
+.textfield:global([tall="med"]), .textfield:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
 }
-input:hover {
+.textfield:global([tall="kind"]), .textfield:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
+}
+.textfield:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-
-.inputStart {
+.textfield-container {
+  position: relative;
+  display: flex;
+}
+.textfield-start {
   position: absolute;
   height: 100%;
   max-height: 100%;
@@ -1456,12 +1455,11 @@ input:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.25rem;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: var(--textfield-radius, var(--sld-radius-small));
 }
-
-.inputEnd {
+.textfield-end {
   position: absolute;
   right: 0;
   height: 100%;
@@ -1619,49 +1617,61 @@ input:hover {
 .finder-container {
   display: inline-flex;
   gap: var(--finder-gap);
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-width: var(--sld-width-small);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
 }
-.finder-container.wt, .finder-container[data-width=tiny] {
-  /** size tiny */
-  width: 2rem;
+.finder-container:global([width="default"]), .finder-container:global([width-default]), .finder-container:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
 }
-.finder-container.ws, .finder-container[data-width=small] {
-  /** size small */
-  width: 6rem;
+.finder-container:global([width="tiny"]), .finder-container:global([width-tiny]), .finder-container:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
 }
-.finder-container.wm, .finder-container[data-width=medium] {
-  /** size medium */
-  width: 8rem;
+.finder-container:global([width="mini"]), .finder-container:global([width-mini]), .finder-container:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
 }
-.finder-container.wd, .finder-container[data-width=default] {
-  /** size default */
-  width: 12rem;
+.finder-container:global([width="small"]), .finder-container:global([width-small]), .finder-container:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
-.finder-container.wl, .finder-container[data-width=large] {
-  width: 16rem;
+.finder-container:global([width="med"]), .finder-container:global([width-med]), .finder-container:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
 }
-.finder-container.wf, .finder-container[data-width=full] {
-  width: 100%;
+.finder-container:global([width="kind"]), .finder-container:global([width-kind]), .finder-container:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
 }
-.finder-container.wa, .finder-container.width-auto, .finder-container[data-width=auto] {
-  width: auto;
+.finder-container:global([width="full"]), .finder-container:global([width-full]), .finder-container:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
 }
-.finder-container[tall=small], .finder-container[dense-small], .finder-container.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.finder-container:global([tall="default"]), .finder-container:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.finder-container[tall=default], .finder-container[dense-default], .finder-container.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.finder-container:global([tall="tiny"]), .finder-container:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.finder-container[tall=medium], .finder-container[dense-medium], .finder-container.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.finder-container:global([tall="mini"]), .finder-container:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.finder-container[tall=kind], .finder-container[dense-kind], .finder-container.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.finder-container:global([tall="small"]), .finder-container:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.finder-container:global([tall="med"]), .finder-container:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.finder-container:global([tall="kind"]), .finder-container:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 /** loader.scss -----*/ 
 :root {
@@ -1760,27 +1770,35 @@ input:hover {
   z-index: 8600;
 }
 .drawer header, .drawer-header {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   min-height: var(--drawer-header-min-height);
   display: flex;
   width: 100%;
 }
-.drawer header[tall=small], .drawer header[dense-small], .drawer header.dense-small, .drawer-header[tall=small], .drawer-header[dense-small], .drawer-header.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.drawer header:global([tall="default"]), .drawer header:global(.tall-default), .drawer-header:global([tall="default"]), .drawer-header:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.drawer header[tall=default], .drawer header[dense-default], .drawer header.dense-default, .drawer-header[tall=default], .drawer-header[dense-default], .drawer-header.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.drawer header:global([tall="tiny"]), .drawer header:global(.tall-tiny), .drawer-header:global([tall="tiny"]), .drawer-header:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.drawer header[tall=medium], .drawer header[dense-medium], .drawer header.dense-medium, .drawer-header[tall=medium], .drawer-header[dense-medium], .drawer-header.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.drawer header:global([tall="mini"]), .drawer header:global(.tall-mini), .drawer-header:global([tall="mini"]), .drawer-header:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.drawer header[tall=kind], .drawer header[dense-kind], .drawer header.dense-kind, .drawer-header[tall=kind], .drawer-header[dense-kind], .drawer-header.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.drawer header:global([tall="small"]), .drawer header:global(.tall-small), .drawer-header:global([tall="small"]), .drawer-header:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.drawer header:global([tall="med"]), .drawer header:global(.tall-med), .drawer-header:global([tall="med"]), .drawer-header:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.drawer header:global([tall="kind"]), .drawer header:global(.tall-kind), .drawer-header:global([tall="kind"]), .drawer-header:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .drawer header-bar, .drawer-header-bar {
   flex: 1;
@@ -1898,13 +1916,30 @@ input:hover {
   --sld-pad-med: 1rem;
   --sld-pad-large: 1.5rem;
   --sld-gap-tiny: 0.25rem;
+  --sld-gap-mini: 0.4rem;
   --sld-gap-small: 0.5rem;
   --sld-gap-med: 1rem;
   --sld-gap-large: 1.5rem;
+  --sld-gap-default: var(--sld-gap-small);
   --sld-gutter-tiny: 0.25rem;
-  --sld-gutter-small: 0.5rem;
-  --sld-gutter-med: 1rem;
-  --sld-gutter-large: 1.5rem;
+  --sld-gutter-mini: 0.5rem;
+  --sld-gutter-small: 1rem;
+  --sld-gutter-med: 2rem;
+  --sld-gutter-kind: 3rem;
+  --sld-gutter-default: var(--sld-gutter-small);
+  --sld-tall-tiny: 1rem;
+  --sld-tall-mini: 1.5rem;
+  --sld-tall-small: 2.5rem;
+  --sld-tall-med: 3.5rem;
+  --sld-tall-kind: 4rem;
+  --sld-tall-default: var(--sld-tall-small);
+  --sld-width-tiny: 2rem;
+  --sld-width-mini: 3rem;
+  --sld-width-small: 8rem;
+  --sld-width-med: 12rem;
+  --sld-width-kind: 16rem;
+  --sld-width-full: 100%;
+  --sld-width-default: var(--sld-width-med);
 }
 
 :root {
@@ -2224,6 +2259,63 @@ body[data-theme=dark],
   overflow: hidden;
   position: relative;
 }
+/** marquee.scss -----*/ 
+.marquee {
+  flex: 1;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 300px;
+}
+.marquee-container {
+  display: flex;
+  align-items: center;
+  --preset-gutter: var(--sld-gutter-small);
+}
+.marquee-container :global([gutter="default"]), .marquee-container :global([gutter-default]), .marquee-container :global(.gutter-default) {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-container :global([gutter="tiny"]), .marquee-container :global([gutter-tiny]), .marquee-container :global(.gutter-tiny) {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+.marquee-container :global([gutter="mini"]), .marquee-container :global([gutter-mini]), .marquee-container :global(.gutter-mini) {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+.marquee-container :global([gutter="small"]), .marquee-container :global([gutter-small]), .marquee-container :global(.gutter-small) {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+.marquee-container :global([gutter="med"]), .marquee-container :global([gutter-med]), .marquee-container :global(.gutter-med) {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+.marquee-container :global([gutter="kind"]), .marquee-container :global([gutter-kind]), .marquee-container :global(.gutter-kind) {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+.marquee :global(.marquee-children) {
+  display: inline-flex;
+}
+.marquee :global(.marquee-children) > :global(*) {
+  border: 1px solid red;
+  width: 90px;
+  height: 300px;
+}
+.marquee-controls-prev {
+  display: contents;
+}
+.marquee-controls-next {
+  display: contents;
+}
 /** menu.scss -----*/ 
 :root {
   --menu-min-width: 150px;
@@ -2250,8 +2342,8 @@ ul.menu li.menuTitle {
 }
 
 li.menuItem {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;
@@ -2280,21 +2372,29 @@ li.menuItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-li.menuItem[tall=small], li.menuItem[dense-small], li.menuItem.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+li.menuItem:global([tall="default"]), li.menuItem:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-li.menuItem[tall=default], li.menuItem[dense-default], li.menuItem.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+li.menuItem:global([tall="tiny"]), li.menuItem:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-li.menuItem[tall=medium], li.menuItem[dense-medium], li.menuItem.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+li.menuItem:global([tall="mini"]), li.menuItem:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-li.menuItem[tall=kind], li.menuItem[dense-kind], li.menuItem.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+li.menuItem:global([tall="small"]), li.menuItem:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+li.menuItem:global([tall="med"]), li.menuItem:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+li.menuItem:global([tall="kind"]), li.menuItem:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 li.menuItem .menuListItemIcon {
   width: var(--menu-item-icon-width);
@@ -2351,8 +2451,8 @@ li.menuItem .menu-list-item-action {
 
 a.menuListItem,
 li.menuListItem {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   text-decoration: none;
   overflow: hidden;
   padding-left: calc(var(--preset-density) / 4);
@@ -2397,33 +2497,41 @@ li.menuListItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-a.menuListItem[tall=small], a.menuListItem[dense-small], a.menuListItem.dense-small,
-li.menuListItem[tall=small],
-li.menuListItem[dense-small],
-li.menuListItem.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+a.menuListItem:global([tall="default"]), a.menuListItem:global(.tall-default),
+li.menuListItem:global([tall="default"]),
+li.menuListItem:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-a.menuListItem[tall=default], a.menuListItem[dense-default], a.menuListItem.dense-default,
-li.menuListItem[tall=default],
-li.menuListItem[dense-default],
-li.menuListItem.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+a.menuListItem:global([tall="tiny"]), a.menuListItem:global(.tall-tiny),
+li.menuListItem:global([tall="tiny"]),
+li.menuListItem:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-a.menuListItem[tall=medium], a.menuListItem[dense-medium], a.menuListItem.dense-medium,
-li.menuListItem[tall=medium],
-li.menuListItem[dense-medium],
-li.menuListItem.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+a.menuListItem:global([tall="mini"]), a.menuListItem:global(.tall-mini),
+li.menuListItem:global([tall="mini"]),
+li.menuListItem:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-a.menuListItem[tall=kind], a.menuListItem[dense-kind], a.menuListItem.dense-kind,
-li.menuListItem[tall=kind],
-li.menuListItem[dense-kind],
-li.menuListItem.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+a.menuListItem:global([tall="small"]), a.menuListItem:global(.tall-small),
+li.menuListItem:global([tall="small"]),
+li.menuListItem:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+a.menuListItem:global([tall="med"]), a.menuListItem:global(.tall-med),
+li.menuListItem:global([tall="med"]),
+li.menuListItem:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+a.menuListItem:global([tall="kind"]), a.menuListItem:global(.tall-kind),
+li.menuListItem:global([tall="kind"]),
+li.menuListItem:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 a.menuListItem::before,
 li.menuListItem::before {

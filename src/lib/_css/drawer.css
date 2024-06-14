@@ -35,27 +35,35 @@
   z-index: 8600;
 }
 .drawer header, .drawer-header {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   min-height: var(--drawer-header-min-height);
   display: flex;
   width: 100%;
 }
-.drawer header[tall=small], .drawer header[dense-small], .drawer header.dense-small, .drawer-header[tall=small], .drawer-header[dense-small], .drawer-header.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.drawer header:global([tall="default"]), .drawer header:global(.tall-default), .drawer-header:global([tall="default"]), .drawer-header:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.drawer header[tall=default], .drawer header[dense-default], .drawer header.dense-default, .drawer-header[tall=default], .drawer-header[dense-default], .drawer-header.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.drawer header:global([tall="tiny"]), .drawer header:global(.tall-tiny), .drawer-header:global([tall="tiny"]), .drawer-header:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.drawer header[tall=medium], .drawer header[dense-medium], .drawer header.dense-medium, .drawer-header[tall=medium], .drawer-header[dense-medium], .drawer-header.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.drawer header:global([tall="mini"]), .drawer header:global(.tall-mini), .drawer-header:global([tall="mini"]), .drawer-header:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.drawer header[tall=kind], .drawer header[dense-kind], .drawer header.dense-kind, .drawer-header[tall=kind], .drawer-header[dense-kind], .drawer-header.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.drawer header:global([tall="small"]), .drawer header:global(.tall-small), .drawer-header:global([tall="small"]), .drawer-header:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.drawer header:global([tall="med"]), .drawer header:global(.tall-med), .drawer-header:global([tall="med"]), .drawer-header:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.drawer header:global([tall="kind"]), .drawer header:global(.tall-kind), .drawer-header:global([tall="kind"]), .drawer-header:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .drawer header-bar, .drawer-header-bar {
   flex: 1;

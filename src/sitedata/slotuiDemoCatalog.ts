@@ -30,6 +30,7 @@ import  Drawer from '$lib/navigation/drawer/Drawer.demo.svelte';
 import  Tabs from '$lib/navigation/tabs/Tabs.demo.svelte';
 import  Frame from '$lib/ui/frame/Frame.demo.svelte';
 import  Login from '$lib/ui/login/Login.demo.svelte';
+import  Marque from '$lib/ui/marquee/Marque.demo.svelte';
 import  MenuList from '$lib/ui/menuList/MenuList.demo.svelte';
 import  Panel from '$lib/ui/panel/Panel.demo.svelte';
 import  Popper from '$lib/ui/popper/Popper.demo.svelte';
@@ -72,6 +73,7 @@ drawer:{component:Drawer,name:"Drawer",code:"drawer",group:"navigation",root:"dr
 tabs:{component:Tabs,name:"Tabs",code:"tabs",group:"navigation",root:"tabs"},
 frame:{component:Frame,name:"Frame",code:"frame",group:"ui",root:"frame"},
 login:{component:Login,name:"Login",code:"login",group:"ui",root:"login"},
+marque:{component:Marque,name:"Marque",code:"marque",group:"ui",root:"marquee"},
 menulist:{component:MenuList,name:"MenuList",code:"menulist",group:"ui",root:"menuList"},
 panel:{component:Panel,name:"Panel",code:"panel",group:"ui",root:"panel"},
 popper:{component:Popper,name:"Popper",code:"popper",group:"ui",root:"popper"},

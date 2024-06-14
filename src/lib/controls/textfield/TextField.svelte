@@ -20,8 +20,8 @@
 		endIcon,
 		endIconColor = '#666',
 		usePopper,
-		width: size = 'auto',
-		tall: height = 'default',
+		width = $bindable('auto'),
+		tall = 'default',
 		borderless = false,
 		transparent = false,
 		value = $bindable(),
@@ -44,60 +44,44 @@
 	}
 </script>
 
-{#if icon || endIcon || inputType === 'search' || inputFirst || inputLast}
-	<div style="position:relative;display:contents">
-		{#if icon || inputFirst}
-			<div class="inputFirst">
-				<Slotted child={inputLast}>
-					<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
-				</Slotted>
-			</div>
-		{/if}
-		{#if inputLast || endIcon || inputType === 'search'}
-			<div class="inputLast">
-				{#if inputLast || endIcon}
-					<Slotted child={inputLast}>
-						<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
-					</Slotted>
-				{/if}
-				{#if inputType === 'search'}
-					<Button
-						onclick={() => {
-							value = null;
-						}}
-						disabled={!value?.length}
-						variant="naked"
-						icon="mdi:close-circle-outline"
-					/>
-				{/if}
-			</div>
-		{/if}
-		<input
-			bind:value
-			bind:this={element}
-			use:popper={usePopper}
-			type="text"
-			class="w-{size} {className}"
-			data-height={height}
-			data-width={size}
-			{borderless}
-			style={niceIconStyle + ';' + style}
-			{...rest}
-		/>
+<div class="textfield-container">
+	<div class="textfield-start">
+		<Slotted child={inputLast}>
+			<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
+		</Slotted>
 	</div>
-{:else}
+
+	{#if inputLast || endIcon || inputType === 'search'}
+		<div class="textfield-end">
+			{#if inputLast || endIcon}
+				<Slotted child={inputLast}>
+					<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
+				</Slotted>
+			{/if}
+			{#if inputType === 'search'}
+				<Button
+					onclick={() => {
+						value = null;
+					}}
+					disabled={!value?.length}
+					variant="naked"
+					icon="mdi:close-circle-outline"
+				/>
+			{/if}
+		</div>
+	{/if}
 	<input
 		bind:value
 		bind:this={element}
 		use:popper={usePopper}
 		type="text"
-		class="w-{size} {className}"
-		data-height={height}
-		{borderless}
-		{style}
+		class="textfield width-{width} tall-{tall} {className}"
+		style={niceIconStyle + ';' + style}
+		{tall}
+		{width}
 		{...rest}
 	/>
-{/if}
+</div>
 
 <style lang="scss">
 	@import './textfield.scss';

@@ -15,25 +15,33 @@
   flex-direction: row;
   align-items: center;
   width: 168px;
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   --height: calc(var(--preset-density) / 6);
 }
-.slider[tall=small], .slider[dense-small], .slider.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.slider:global([tall="default"]), .slider:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.slider[tall=default], .slider[dense-default], .slider.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.slider:global([tall="tiny"]), .slider:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.slider[tall=medium], .slider[dense-medium], .slider.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.slider:global([tall="mini"]), .slider:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.slider[tall=kind], .slider[dense-kind], .slider.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.slider:global([tall="small"]), .slider:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.slider:global([tall="med"]), .slider:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.slider:global([tall="kind"]), .slider:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .slider .slider-gouge {
   height: var(--height);

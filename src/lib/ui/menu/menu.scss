@@ -28,7 +28,7 @@ ul.menu {
 li.menuItem {
   @include data-hover;
   @include data-selected;
-  @include ui-dense-presets;
+  @include ui-tall-presets;
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;

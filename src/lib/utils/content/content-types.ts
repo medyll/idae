@@ -1,4 +1,4 @@
-import type { CommonProps } from '$lib/types/index.js';
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
 export type ContentProps = CommonProps & {
@@ -7,6 +7,7 @@ export type ContentProps = CommonProps & {
 	element?: Partial<HTMLElement>;
 	cssPrefix?: string;
 	cssVar?: string;
+	gutter?: ElementProps['gutter'];
 	/** uses style.display = contents */
 	solid?: boolean;
 	/* bindable props */

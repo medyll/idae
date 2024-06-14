@@ -27,7 +27,7 @@
 	{#each parameters?.[parameter]?.values ?? values ?? [] as value}
 		{@const finalValue = value === undefined ? 'unset' : value}
 		<Button
-			class="w-small-min"
+			width="mini"
 			variant="flat"
 			showChip={activeParams[parameter] === value}
 			onclick={() => {
@@ -52,30 +52,28 @@
 	<input
 		type="color"
 		onchange={(event) => {
-			console.log(parameter, event);
+			activeParams[parameter] = event.target.value;
 		}}
 	/>
 {/snippet}
 {#snippet icon({ parameter, values })}
-	{#each ['fa-solid:question', 'mdi:window', 'mdi:user', 'mdi:close', 'search'] as red}
+	{#each ['fa-solid:tree', 'mdi:window', 'mdi:user', 'mdi:close', 'search'] as red}
 		<IconButton
-			ratio="1/1"
 			icon={red}
 			title={red}
 			showChip={activeParams[parameter] === red}
 			onclick={() => {
 				activeParams[parameter] = red;
-				console.log(activeParams);
 			}}
 		/>
 	{/each}
 {/snippet}
 
-<div class="pad flex-v gap-small">
-	<div class="flex-h marg-b-2">
-		<div class="pad-2 border-r flex-v flex-align-bottom">
-			<Icon icon="cib:svelte" />
-		</div>
+<div class="flex-v gap-small">
+	<div class="pad-l-8">
+		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
+			<Icon icon="cib:svelte" /> component
+		</h6>
 		<div class="pad-2">
 			{#if Object.entries(multiple).length > 0}
 				<div class="flex-h flex-align-middle flex-wrap gap-medium">
@@ -107,12 +105,10 @@
 				{/key}
 			{/if}
 		</div>
-	</div>
-	<div class="border-b"></div>
-	<div class="flex-h marg-t-2">
-		<div class="pad-2 border-r">
+		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
 			<Icon icon="clarity:command-line" />
-		</div>
+			parameters
+		</h6>
 		<div class=" pad flex-h flex-wrap flex-align-middle gap-small">
 			<table style="width:100%;table-layout:auto;border-spacing: 0.5rem">
 				<tbody>
@@ -155,6 +151,8 @@
 											{@render main({ parameter, values: uiPresets.elevation })}
 										{:else if parameters?.[parameter]?.type === 'tall'}
 											{@render main({ parameter, values: uiPresets.tall })}
+										{:else if parameters?.[parameter]?.type === 'gutter'}
+											{@render main({ parameter, values: uiPresets.gutter })}
 										{:else}
 											<!-- array, default -->
 											{@render main({ parameter })}

@@ -7,7 +7,7 @@
 	import type { Data, IconObj } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	const menuStateContext = getContext<MenuListProps>('menuStateContext');
+	let menuStateContext = getContext<MenuListProps>('menuStateContext');
 
 	let {
 		class: className = '',
@@ -28,7 +28,7 @@
 		onMenuItemClick = () => {},
 		onclick = (event, args) => {},
 		itemIndex = undefined,
-		dense = menuStateContext?.dense ?? 'default',
+		tall = menuStateContext?.tall ?? 'default',
 		children,
 		menuItemFirst,
 		menuItemLast,
@@ -79,13 +79,13 @@
 
 {#if dividerBefore}
 	<li role="separator">
-		<Divider dense="tight" expansion="centered" />
+		<Divider tall="small" expansion="centered" />
 	</li>
 {/if}
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : 'li'}
-	class="menuListItem {className} dense-{dense}"
+	class="menuListItem {className} tall-{menuStateContext?.tall ?? tall}"
 	data-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	aria-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	bind:this={element}
@@ -117,7 +117,7 @@
 </svelte:element>
 {#if divider}
 	<li role="separator">
-		<Divider dense="tight" expansion="padded" />
+		<Divider tall="tight" expansion="padded" />
 	</li>
 {/if}
 

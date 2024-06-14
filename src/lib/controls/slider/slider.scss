@@ -17,7 +17,7 @@
     flex-direction: row;
     align-items: center;
     width: 168px;
-    @include ui-dense-presets;
+    @include ui-tall-presets;
     --height: calc(var(--preset-density) / 6);
     .slider-gouge {
         height: var(--height);

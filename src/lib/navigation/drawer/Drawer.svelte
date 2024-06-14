@@ -117,7 +117,7 @@
 				{#if Boolean(icon) || drawerIcon}
 					<div class="drawer-icon">
 						<Slotted child={drawerIcon}>
-							<Icon {icon} iconSize="medium" />
+							<Icon {icon} />
 						</Slotted>
 					</div>
 				{/if}

@@ -36,7 +36,7 @@ export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {
 	},
 	size: {
 		type: 'width',
-		default: widthPreset.medium
+		default: widthPreset.med
 	},
 	iconSize: {
 		type: 'iconSize',

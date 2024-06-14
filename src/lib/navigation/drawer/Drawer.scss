@@ -37,7 +37,7 @@
   }
   header,
   &-header {
-    @include ui-dense-presets;
+    @include ui-tall-presets;
 
     min-height: var(--drawer-header-min-height);
     display: flex;

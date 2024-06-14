@@ -30,16 +30,14 @@
 button,
 input[type="button"],
 input[type="submit"] {
-    @include input-sizes-presets;
     @include ui-width-presets;
     @include ui-tall-presets;
-    @include input-sizes-presets;
 
     text-align: var(--sld-button-text-align);
     font-size: var(--sld-button-font-size);
     border-radius: var(--sld-button-radius);
 
-    color: var(--sld-color-foreground);
+    //color: var(--sld-color-foreground);
     padding: var(--sld-button-padding);
 
     display: inline-flex;

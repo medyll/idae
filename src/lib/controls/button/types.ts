@@ -19,6 +19,7 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	/** button type */
 	type?: 'button' | 'submit' | 'reset';
 	icon?: ElementProps['icon'];
+	wrap?: ElementProps['wrap'];
 	/** endIcon as a parameter */
 	iconEnd?: ElementProps['icon'];
 	/** background color theme */
@@ -68,25 +69,25 @@ const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 	icon: {
 		type: 'icon'
 	},
+	width: {
+		type: 'width',
+		default: widthPreset.med
+	},
+	tall: {
+		type: 'tall',
+		default: densePreset.default
+	},
 	bgTheme: {
 		type: 'theme',
 		default: 'primary'
 	},
 	variant: {
 		type: 'buttonVariant',
-		default: buttonVariant.bordered
-	},
-	width: {
-		type: 'width',
-		default: widthPreset.default
+		default: buttonVariant.contained
 	},
 	nowrap: {
 		type: 'boolean',
 		default: false
-	},
-	tall: {
-		type: 'dense',
-		default: densePreset.default
 	},
 	selected: {
 		type: 'boolean',

@@ -20,25 +20,22 @@
 
 <div>
 	{#if title}<h5 class="flex-h flex-align-middle gap-small">{title}</h5>{/if}
-	<div class="pad-l-2 flex-h">
-		<div class="flex-main">
-			<h6 class="border-b pad flex-h flex-inline flex-align-middle gap-small">
-				<Icon icon="mdi:eye" />
-			</h6>
-			<div class="pad-l-2 pos-rel">
-				<!-- <Slotted child={children}></Slotted> -->
-				{#if children}
-					{@render children?.()}
-				{/if}
-			</div>
-		</div>
+	<div class="pad-l-2">
 		{#if code || demoerCode}
-			<div class="w-tiers">
-				{@render demoerCode?.()}
-				<!-- <Slotted child={demoerCode}>
+			<div>
+				<!-- {@render demoerCode?.()} -->
+				<Slotted child={demoerCode}>
 					<DemoerCode {code} />
-				</Slotted> -->
+				</Slotted>
 			</div>
 		{/if}
+		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
+			<Icon icon="cib:svelte" /> playground
+		</h6>
+		<div class="os-rel">
+			{#if children}
+				{@render children?.()}
+			{/if}
+		</div>
 	</div>
 </div>

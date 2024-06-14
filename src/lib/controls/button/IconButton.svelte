@@ -33,11 +33,13 @@
 		iconFontSize = 'small',
 		ratio = '1/1',
 		rotation = 0,
+		tall = 'tiny',
+		width = 'tiny',
 		children,
 		...rest
 	}: IconButtonProps = $props();
 </script>
 
-<Button {...rest} bind:element style="{style};aspect-ratio:{ratio};" {ratio}>
+<Button {tall} {width} {...rest} bind:element style="{style};aspect-ratio:{ratio};" {ratio}>
 	<Icon {rotation} {icon} iconSize={iconFontSize} />
 </Button>

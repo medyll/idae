@@ -3,7 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ExpandProps } from '$lib/types/index.js';
+	import { widthPreset, type ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className,
@@ -18,8 +18,8 @@
 		loading,
 		showChip,
 		popperOpen,
-		width: size = 'auto',
-		tall: dense = 'kind',
+		width = widthPreset.med,
+		tall = widthPreset.med,
 		nowrap,
 		selected = false,
 		value,
@@ -38,7 +38,7 @@
 </script>
 
 <button
-	class={className + ' button tall-' + dense + ' ' + variant}
+	class={className + ' button tall-' + tall + ' ' + variant}
 	class:loading
 	bind:this={element}
 	use:popper={usePopper}
@@ -46,12 +46,12 @@
 		popperOpen = false;
 	}}
 	type={buttonType}
-	{dense}
+	{tall}
+	{width}
 	{nowrap}
 	{selected}
 	{...rest}
-	data-width={size}
-	style:color={bgTheme ? 'white' : ''}
+	data-width={width}
 	style:aspect-ratio={ratio}
 >
 	{#if buttonStart || icon}

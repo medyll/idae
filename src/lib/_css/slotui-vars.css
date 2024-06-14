@@ -8,13 +8,30 @@
   --sld-pad-med: 1rem;
   --sld-pad-large: 1.5rem;
   --sld-gap-tiny: 0.25rem;
+  --sld-gap-mini: 0.4rem;
   --sld-gap-small: 0.5rem;
   --sld-gap-med: 1rem;
   --sld-gap-large: 1.5rem;
+  --sld-gap-default: var(--sld-gap-small);
   --sld-gutter-tiny: 0.25rem;
-  --sld-gutter-small: 0.5rem;
-  --sld-gutter-med: 1rem;
-  --sld-gutter-large: 1.5rem;
+  --sld-gutter-mini: 0.5rem;
+  --sld-gutter-small: 1rem;
+  --sld-gutter-med: 2rem;
+  --sld-gutter-kind: 3rem;
+  --sld-gutter-default: var(--sld-gutter-small);
+  --sld-tall-tiny: 1rem;
+  --sld-tall-mini: 1.5rem;
+  --sld-tall-small: 2.5rem;
+  --sld-tall-med: 3.5rem;
+  --sld-tall-kind: 4rem;
+  --sld-tall-default: var(--sld-tall-small);
+  --sld-width-tiny: 2rem;
+  --sld-width-mini: 3rem;
+  --sld-width-small: 8rem;
+  --sld-width-med: 12rem;
+  --sld-width-kind: 16rem;
+  --sld-width-full: 100%;
+  --sld-width-default: var(--sld-width-med);
 }
 
 :root {

@@ -116,14 +116,13 @@
 	</script>
 </svelte:head>
 
-<div class="flex-h h-full overflow-hidden" style="background-color:rgba(255,255,255,0.8)">
+<div class="flex-h h-full overflow-hidden">
 	<Drawer
 		class="overflow-auto h-full"
 		bind:this={DrawerRef}
 		flow={$uiContext.drawerFlow}
 		isOpen={$uiContext.drawerOpen}
-		primary="Menu"
-		icon="home"
+		primary="svelte slotted"
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
 		<MenuList showLastOnSelected={true} style="height:100%;overflow:auto;">
@@ -150,7 +149,7 @@
 			bind:this={navElement}
 			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-medium"
 		>
-			<Button onclick={onDrawerClick} ratio="1/1" icon="mdi:menu" />
+			<Button onclick={onDrawerClick} icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>
 			<div class="flex-main" />
 			<a target="_blank" href="https://github.com/medyll/slot-ui">Github</a>

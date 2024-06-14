@@ -10,7 +10,7 @@
 		element = $bindable<HTMLDivElement>(),
 		iconSize = $bindable('small'),
 		rotate = false,
-		color,
+		color = $bindable(),
 		rotation = 0,
 		ico,
 		...rest
@@ -19,27 +19,27 @@
 	const sizes: Record<ElementProps['iconSize'], string> = iconFontSize;
 
 	let finalI = $derived(ico?.icon ?? (typeof icon === 'object' ? icon.icon : icon));
-	let finRot = ico?.rotate ?? (typeof icon === 'object' ? icon.rotate : rotate);
-	let finRotation = ico?.rotation ?? (typeof icon === 'object' ? icon.rotation : rotation);
-	let finCol = ico?.color ?? (typeof icon === 'object' ? icon.color : color);
-	let finSize = ico?.iconSize ?? (typeof icon === 'object' ? iconSize : iconSize);
+	let finRot = $derived(ico?.rotate ?? (typeof icon === 'object' ? icon.rotate : rotate));
+	let finRotation = $derived(
+		ico?.rotation ?? (typeof icon === 'object' ? icon.rotation : rotation)
+	);
+	let finCol = $derived(ico?.color ?? (typeof icon === 'object' ? icon.color : color));
+	let finSize = $derived(ico?.iconSize ?? (typeof icon === 'object' ? iconSize : iconSize));
 	let iconName = $derived(finalI.includes(':') ? finalI : `mdi:${finalI}`);
 
-	let finalStyle = `display:inline-block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style}`;
+	let finalStyle = $derived(
+		`display:inline-block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
+	);
 </script>
 
-{#key icon}
-	{#key finalStyle}
-		{#key iconName}
-			<Iconify
-				bind:this={element}
-				class="icon medium {className} {finRot ? 'rotate' : ''}"
-				style={finalStyle}
-				icon={iconName}
-				{...rest}
-			/>
-		{/key}
-	{/key}
+{#key [icon, iconName, color, finalStyle]}
+	<Iconify
+		bind:this={element}
+		class="icon medium {className} {finRot ? 'rotate' : ''}"
+		style={finalStyle}
+		icon={iconName}
+		{...rest}
+	/>
 {/key}
 
 <style global lang="scss">

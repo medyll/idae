@@ -49,10 +49,18 @@ export enum densePreset {
 	kind = 'kind'
 }
 
-export enum tallPreset {
+export enum gutterPreset {
 	default = 'default',
 	small = 'small',
-	medium = 'medium',
+	med = 'med',
+	kind = 'kind'
+}
+
+export enum tallPreset {
+	default = 'default',
+	tiny = 'tiny',
+	small = 'small',
+	med = 'med',
 	kind = 'kind'
 }
 
@@ -77,7 +85,7 @@ export enum iconSize {
 export const iconFontSize: Record<iconSize, string> = {
 	auto: 'auto',
 	tiny: '1rem',
-	small: '2rem',
+	small: '1.5rem',
 	medium: '4rem',
 	large: '12rem',
 	big: '16rem',
@@ -91,13 +99,11 @@ export enum flowPreset {
 }
 
 export enum widthPreset {
-	auto = 'auto',
 	tiny = 'tiny',
 	small = 'small',
-	medium = 'medium',
-	large = 'large',
-	full = 'full',
-	default = 'default'
+	med = 'med',
+	kind = 'kind',
+	full = 'full'
 }
 
 export enum positionPreset {
@@ -112,11 +118,18 @@ export enum orientation {
 	horizontal = 'horizontal'
 }
 
+export enum wrapPreset {
+	vertical = 'vertical',
+	horizontal = 'horizontal'
+}
+
 const elevation = [0, 1, 2, 3, 4, 5];
 
 export interface ElementProps {
 	density: 'none' | 'tight' | 'default' | 'medium' | 'kind';
+	wrap: wrapPreset | keyof typeof wrapPreset;
 	dense: densePreset | keyof typeof densePreset;
+	gutter: gutterPreset | keyof typeof gutterPreset;
 	theme: theme | keyof typeof theme;
 	width: widthPreset | keyof typeof widthPreset;
 	tall: tallPreset | keyof typeof tallPreset;
@@ -168,6 +181,7 @@ export const uiPresets = {
 	flow: Object.keys(flowPreset),
 	levels: Object.keys(levels),
 	orientation: Object.keys(orientation),
+	gutter: Object.keys(gutterPreset),
 	elevation: elevation
 };
 

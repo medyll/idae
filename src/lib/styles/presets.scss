@@ -1,88 +1,43 @@
-@mixin input-sizes-presets {
-    &.height-tiny,
-    &[data-height="tiny"] {
-        height: calc(0.5rem - var(--sld-border-bottom-size, 2px));
-    }
-    &.height-small,
-    &[data-height="small"] {
-        height: calc(1.9rem - var(--sld-border-bottom-size, 2px));
-    }
-    &.height-medium,
-    &[data-height="default"] {
-        height: calc(2.5rem - var(--sld-border-bottom-size, 2px));
-    }
-    &.height-large,
-    &[data-height="large"] {
-        height: calc(4rem - var(--sld-border-bottom-size, 2px));
-    }
-
-    &[borderless="true"] {
-        border: 0px solid none;
-    }
-}
 @mixin ui-transition {
     transition: all 0.2s ease;
 }
-@mixin ui-width-presets {
-    &.wt,
-    &[data-width="tiny"] {
-        /** size tiny */
-        width: 2rem;
-    }
-    &.ws,
-    &[data-width="small"] {
-        /** size small */
-        width: 6rem;
-    }
-    &.wm,
-    &[data-width="medium"] {
-        /** size medium */
-        width: 8rem;
-    }
-    &.wd,
-    &[data-width="default"] {
-        /** size default */
-        width: 12rem;
-    }
-    &.wl,
-    &[data-width="large"] {
-        width: 16rem;
-    }
-    &.wf,
-    &[data-width="full"] {
-        width: 100%;
-    }
-    &.wa,
-    &.width-auto,
-    &[data-width="auto"] {
-        width: auto;
+@mixin ui-tall-presets {
+    --preset-tall: 2rem;
+    min-height: var(--preset-tall);
+
+    @each $preset in (default, tiny, mini, small, med, kind) {
+        &:global([tall="#{$preset}"]),
+        &:global(.tall-#{$preset}) {
+            min-height: var(--sld-tall-#{$preset});
+            --preset-tall: var(--sld-tall-#{$preset});
+        }
     }
 }
 
-@mixin ui-density-presets {
-    &.density-none,
-    &[data-density="none"] {
-        padding: 0;
+@mixin ui-gutter-presets {
+    --preset-gutter: var(--sld-gutter-small);
+
+    @each $preset in (default, tiny, mini, small, med, kind) {
+        & :global([gutter="#{$preset}"]),
+        & :global([gutter-#{$preset}]),
+        & :global(.gutter-#{$preset}) {
+            padding: var(--sld-gutter-#{$preset});
+            gap: var(--sld-gutter-#{$preset});
+            --preset-gutter: var(--sld-gutter-#{$preset});
+        }
     }
-    &.density-tight,
-    &[data-density="tight"] {
-        padding: 0.5rem auto;
-    }
-    &.density-small,
-    &[data-density="small"] {
-        padding: 0.75rem auto;
-    }
-    &.density-default,
-    &[data-density="default"] {
-        padding: 1rem auto;
-    }
-    &.density-kind,
-    &[data-density="kind"] {
-        padding: 1.5rem auto;
-    }
-    &.density-unset,
-    &[data-density="unset"] {
-        padding: auto;
+}
+
+@mixin ui-width-presets {
+    --preset-width: var(--sld-width-small);
+
+    @each $preset in (default, tiny, mini, small, med, kind, full) {
+        &:global([width="#{$preset}"]),
+        &:global([width-#{$preset}]),
+        &:global(.width-#{$preset}) {
+            width: var(--sld-width-#{$preset});
+            --preset-width: var(--sld-width-#{$preset});
+        }
     }
 }
 
@@ -119,74 +74,6 @@
             border-radius: var(--sld-radius-med);
             left: 0;
             border: 1px solid var(--sld-color-primary-alpha-mid);
-        }
-    }
-}
-
-@mixin ui-tall-presets {
-    --preset-density: 2rem;
-    min-height: 2rem;
-    &[tall="small"],
-    &.tall-small {
-        min-height: 1.5rem;
-        --preset-density: 1.5rem;
-    }
-    &[tall="default"],
-    &.tall-default {
-        min-height: 2rem;
-        --preset-density: 2rem;
-    }
-    &[tall="medium"],
-    &.tall-medium {
-        min-height: 2.5rem;
-        --preset-density: 2.5rem;
-    }
-    &[tall="kind"],
-    &.tall-kind {
-        min-height: 3rem;
-        --preset-density: 3rem;
-    }
-}
-
-@mixin ui-dense-presets {
-    --preset-density: 2rem;
-    min-height: 2rem;
-    &[tall="small"],
-    &[dense-small],
-    &.dense-small {
-        min-height: 1.5rem;
-        --preset-density: 1.5rem;
-    }
-    &[tall="default"],
-    &[dense-default],
-    &.dense-default {
-        min-height: 2rem;
-        --preset-density: 2rem;
-    }
-    &[tall="medium"],
-    &[dense-medium],
-    &.dense-medium {
-        min-height: 2.5rem;
-        --preset-density: 2.5rem;
-    }
-    &[tall="kind"],
-    &[dense-kind],
-    &.dense-kind {
-        min-height: 3rem;
-        --preset-density: 3rem;
-    }
-}
-
-@mixin ui-gutter-presets {
-    --preset-gutter: var(--sld-gutter-small);
-
-    @each $preset in (tiny, small, med, large) {
-        &[gutter="#{$preset}"],
-        &[gutter-#{$preset}],
-        &.gutter-#{$preset} {
-            padding: var(--sld-gutter-#{$preset});
-            gap: var(--sld-gutter-#{$preset});
-            --preset-gutter: var(--sld-gutter-#{$preset});
         }
     }
 }

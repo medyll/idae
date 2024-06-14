@@ -79,7 +79,7 @@
 >
 	<div class="flex-v gap-medium">
 		<DemoPage title="Using snippets" {code} component="Button">
-			<Demoer {parameters} componentArgs={{ ...componentArgs }}>
+			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}
 						>Using snippets

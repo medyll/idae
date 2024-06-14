@@ -11,14 +11,33 @@ $vendor: "sld";
     --#{$vendor}-pad-large: 1.5rem;
 
     --#{$vendor}-gap-tiny: 0.25rem;
+    --#{$vendor}-gap-mini: 0.4rem;
     --#{$vendor}-gap-small: 0.5rem;
     --#{$vendor}-gap-med: 1rem;
     --#{$vendor}-gap-large: 1.5rem;
+    --#{$vendor}-gap-default: var(--#{$vendor}-gap-small);
 
     --#{$vendor}-gutter-tiny: 0.25rem;
-    --#{$vendor}-gutter-small: 0.5rem;
-    --#{$vendor}-gutter-med: 1rem;
-    --#{$vendor}-gutter-large: 1.5rem;
+    --#{$vendor}-gutter-mini: 0.5rem;
+    --#{$vendor}-gutter-small: 1rem;
+    --#{$vendor}-gutter-med: 2rem;
+    --#{$vendor}-gutter-kind: 3rem;
+    --#{$vendor}-gutter-default: var(--#{$vendor}-gutter-small);
+
+    --#{$vendor}-tall-tiny: 1rem;
+    --#{$vendor}-tall-mini: 1.5rem;
+    --#{$vendor}-tall-small: 2.5rem;
+    --#{$vendor}-tall-med: 3.5rem;
+    --#{$vendor}-tall-kind: 4rem;
+    --#{$vendor}-tall-default: var(--#{$vendor}-tall-small);
+
+    --#{$vendor}-width-tiny: 2rem;
+    --#{$vendor}-width-mini: 3rem;
+    --#{$vendor}-width-small: 8rem;
+    --#{$vendor}-width-med: 12rem;
+    --#{$vendor}-width-kind: 16rem;
+    --#{$vendor}-width-full: 100%;
+    --#{$vendor}-width-default: var(--#{$vendor}-width-med);
 }
 :root {
     --white: #fff;

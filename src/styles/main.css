@@ -14,8 +14,8 @@ body {
   color: var(--sld-color-foreground);
   box-sizing: border-box;
   /* background-color: var(--sld-color-background); */
-  background: var(--sld-color-background);
-  background: linear-gradient(180deg, var(--sld-color-background) 0%, var(--sld-color-paper) 100%);
+  background: var(--sld-color-background)!important;
+  background: linear-gradient(180deg, var(--sld-color-background) 0%, var(--sld-color-paper) 100%)!important;
   overflow: hidden;
 }
 

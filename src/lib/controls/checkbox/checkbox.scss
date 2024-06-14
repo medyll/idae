@@ -16,7 +16,7 @@
 
 .checkbox {
     @include data-hover;
-    @include ui-dense-presets;
+    @include ui-tall-presets;
     @include ui-transition;
     appearance: none;
     outline: none;

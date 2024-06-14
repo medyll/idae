@@ -7,7 +7,7 @@
 	import Marquee from './Marquee.svelte';
 
 	let code = `
-<Marquee {...activeParams}>
+<Marquee >
     <div></div>
     <div></div>
     <div></div>
@@ -19,6 +19,14 @@
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<Marquee {...activeParams}>
+					<div>thumb</div>
+					<div>thumb no !!!</div>
+					<div>thumb</div>
+					<div>thumb</div>
+					<div>thumb</div>
+					<div>thumb</div>
+					<div>thumb</div>
+					<div>thumb</div>
 					<div>thumb</div>
 					<div>thumb</div>
 					<div>thumb</div>

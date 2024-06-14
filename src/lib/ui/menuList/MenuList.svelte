@@ -3,8 +3,8 @@
 
 	import { setContext } from 'svelte';
 	import type { MenuListProps } from './types.js';
-	import MenuItem from './MenuListItem.svelte';
-	import { densePreset, type Data, type ExpandProps } from '$lib/types/index.js';
+	import MenuListItem from './MenuListItem.svelte';
+	import { tallPreset, type Data, type ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	export const actions = {
@@ -25,7 +25,7 @@
 	};
 	let {
 		class: className = '',
-		dense = densePreset.default,
+		tall = tallPreset.default,
 		style = undefined,
 		selectorField,
 		selectedData = $bindable({}),
@@ -43,7 +43,7 @@
 	let defaultStoreValues = {
 		menuItemsList,
 		menuItemsInstances: [],
-		dense,
+		tall,
 		data,
 		onclick,
 		selectorField,
@@ -56,6 +56,9 @@
 
 	$effect(() => {
 		menuStore.selectedIndex = selectedIndex;
+	});
+	$effect(() => {
+		menuStore.tall = tall;
 	});
 	$effect(() => {
 		if (element) {
@@ -94,7 +97,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <ul
 	bind:this={element}
-	class="dense-{dense} menuList {className}"
+	class="tall-{tall} menuList {className}"
 	class:showLastOnSelected
 	tabindex="0"
 	{style}
@@ -105,13 +108,13 @@
 	{#if menuItemsList}
 		{#each menuItemsList ?? [] as menuItem, itemIndex}
 			<Slotted child={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
-				<MenuItem {...menuItem} {itemIndex} />
+				<MenuListItem {...menuItem} {itemIndex} />
 			</Slotted>
 		{/each}
 	{:else if data}
 		{#each data as dta, itemIndex}
 			<Slotted child={children} slotArgs={{ item: dta, itemIndex, menuItem: dta }}>
-				<MenuItem data={dta} {itemIndex} />
+				<MenuListItem data={dta} {itemIndex} />
 			</Slotted>
 		{/each}
 	{:else}

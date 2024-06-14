@@ -18,7 +18,7 @@ export type MenuListProps<T = Data> = CommonProps & {
 	menuListItems?: MenuListItemProps[];
 
 	data?: T[];
-	dense?: ElementProps['dense'];
+	tall?: ElementProps['tall'];
 	/** index to select the item */
 	selectedIndex?: number;
 	/**  field used to  select the item */
@@ -50,7 +50,7 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	/** text props, shown on the right side of the menuItem */
 	action?: string;
 	/**  dense prop */
-	dense?: ElementProps['dense'];
+	tall?: ElementProps['tall'];
 	/** icon displayed in the menu item */
 	icon?: string;
 	/**  icon object at start */
@@ -62,7 +62,7 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	/** href, li will become an a */
 	href?: string;
 	/** size of the icon */
-	iconSize?: IconObj['size'];
+	iconSize?: IconObj['iconSize'];
 	/** whether to show a divider after the menu item */
 	divider?: boolean;
 	/** whether to show a divider before the menu item */
@@ -96,8 +96,8 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 };
 
 const menuListDemoValues: DemoerStoryProps<MenuListProps> = {
-	dense: {
-		type: 'dense'
+	tall: {
+		type: 'tall'
 	}
 	/* menuListItems: {
 		type: 'menuListItems',

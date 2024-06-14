@@ -23,8 +23,8 @@ ul.menu li.menuTitle {
 }
 
 li.menuItem {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;
@@ -53,21 +53,29 @@ li.menuItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-li.menuItem[tall=small], li.menuItem[dense-small], li.menuItem.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+li.menuItem:global([tall="default"]), li.menuItem:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-li.menuItem[tall=default], li.menuItem[dense-default], li.menuItem.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+li.menuItem:global([tall="tiny"]), li.menuItem:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-li.menuItem[tall=medium], li.menuItem[dense-medium], li.menuItem.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+li.menuItem:global([tall="mini"]), li.menuItem:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-li.menuItem[tall=kind], li.menuItem[dense-kind], li.menuItem.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+li.menuItem:global([tall="small"]), li.menuItem:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+li.menuItem:global([tall="med"]), li.menuItem:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+li.menuItem:global([tall="kind"]), li.menuItem:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 li.menuItem .menuListItemIcon {
   width: var(--menu-item-icon-width);

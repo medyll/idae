@@ -13,8 +13,8 @@
 }
 
 .checkbox {
-  --preset-density: 2rem;
-  min-height: 2rem;
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
   transition: all 0.2s ease;
   appearance: none;
   outline: none;
@@ -32,21 +32,29 @@
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.checkbox[tall=small], .checkbox[dense-small], .checkbox.dense-small {
-  min-height: 1.5rem;
-  --preset-density: 1.5rem;
+.checkbox:global([tall="default"]), .checkbox:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
 }
-.checkbox[tall=default], .checkbox[dense-default], .checkbox.dense-default {
-  min-height: 2rem;
-  --preset-density: 2rem;
+.checkbox:global([tall="tiny"]), .checkbox:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
 }
-.checkbox[tall=medium], .checkbox[dense-medium], .checkbox.dense-medium {
-  min-height: 2.5rem;
-  --preset-density: 2.5rem;
+.checkbox:global([tall="mini"]), .checkbox:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
 }
-.checkbox[tall=kind], .checkbox[dense-kind], .checkbox.dense-kind {
-  min-height: 3rem;
-  --preset-density: 3rem;
+.checkbox:global([tall="small"]), .checkbox:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+.checkbox:global([tall="med"]), .checkbox:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+.checkbox:global([tall="kind"]), .checkbox:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);

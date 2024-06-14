@@ -38,7 +38,7 @@
 <Input icon={icon} endIcon={icon} />`;
 </script>
 
-<ComponentDemo component="Input">
+<ComponentDemo component="TextField">
 	<div class="flex-v gap-large">
 		<DemoPage title="Using snippets" component="TextField" {code}>
 			<Demoer {parameters} {componentArgs}>
