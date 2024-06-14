@@ -10,7 +10,7 @@
 <script lang="ts">
 	import { be } from '../engine/elem.js';
 	import Slotted from '../slotted/Slotted.svelte';
-	import type { BindableEvent, ContentProps } from './content-types.js';
+	import type { BindableEvent, ContentProps } from './types.js';
 
 	let {
 		element = $bindable(),
@@ -76,7 +76,19 @@
 	bind:offsetHeight={dimensions.offsetHeight}
 	bind:offsetWidth={dimensions.offsetWidth}
 	style={`${cssVar};${style}`}
+	class={'content ' + rest?.class}
 	{...rest}
 >
 	{@render children?.()}
 </svelte:element>
+
+<style lang="scss">
+	@import '../../styles/presets.scss';
+
+	.content {
+		@include ui-width-presets;
+		@include ui-gutter-presets;
+		@include ui-tall-presets;
+		@include elevation;
+	}
+</style>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { TitleBarProps } from './types.js';
@@ -32,7 +33,7 @@
 		</div>
 	{/if}
 	{#if Boolean(onClose)}
-		<Button onclick={onClose} variant="naked" icon="window-close" width="auto" />
+		<IconButton onclick={onClose} variant="naked" icon="window-close" width={'mini'} />
 	{/if}
 </div>
 

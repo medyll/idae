@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/controls/button/Button.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	function switchThemeMode() {
 		const themeMode = localStorage.getItem('themeMode') ?? 'light';
@@ -9,7 +9,7 @@
 	}
 </script>
 
-<Button
+<IconButton
 	variant="naked"
 	{...$$restProps}
 	onclick={() => {

@@ -5,6 +5,7 @@
 	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
 	import type { AlertProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
 		open,
@@ -72,8 +73,7 @@
 				<Slotted child={alertTopButton} />
 				<div data-close>
 					<Slotted child={alertButtonClose}
-						><Button
-							ratio="1/1"
+						><IconButton
 							icon="window-close"
 							variant="naked"
 							onclick={() => {

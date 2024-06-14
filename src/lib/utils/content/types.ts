@@ -7,7 +7,6 @@ export type ContentProps = CommonProps & {
 	element?: Partial<HTMLElement>;
 	cssPrefix?: string;
 	cssVar?: string;
-	gutter?: ElementProps['gutter'];
 	/** uses style.display = contents */
 	solid?: boolean;
 	/* bindable props */
@@ -18,6 +17,11 @@ export type ContentProps = CommonProps & {
 		offsetWidth?: number;
 	};
 	implementation?: 'inline' | 'style';
+	//
+	tall?: ElementProps['tall'];
+	width?: ElementProps['width'];
+	gutter?: ElementProps['gutter'];
+	elevation?: ElementProps['elevation'];
 	onresize?: (event: BindableEvent) => void;
 	children?: Snippet;
 };

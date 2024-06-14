@@ -4,6 +4,7 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { BoxProps } from './types.js';
 	import type { ExpandProps } from '$lib/types/index.js';
+	import Content from '$lib/utils/content/Content.svelte';
 
 	/** box actions */
 	export const actions = {
@@ -44,12 +45,11 @@
 </script>
 
 {#if isOpen}
-	<div bind:this={element} class="box {className}" {style} {...rest}>
+	<Content bind:element class="box {className}" {style} {...rest}>
 		<TitleBar {hasMenu} {...closer}>
 			<Slotted child={titleBarTitle}>
 				{title ?? ''}
 			</Slotted>
-
 			<Slotted child={titleBarIcon}>
 				{#if icon}
 					<Icon {icon} />
@@ -66,7 +66,7 @@
 				{@html bottomZone ?? ''}
 			</Slotted>
 		</div>
-	</div>
+	</Content>
 {/if}
 
 <style lang="scss">

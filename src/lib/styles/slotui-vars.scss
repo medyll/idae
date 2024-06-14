@@ -29,7 +29,7 @@ $vendor: "sld";
     --#{$vendor}-tall-small: 2.5rem;
     --#{$vendor}-tall-med: 3.5rem;
     --#{$vendor}-tall-kind: 4rem;
-    --#{$vendor}-tall-default: var(--#{$vendor}-tall-small);
+    --#{$vendor}-tall-default: var(--#{$vendor}-tall-small); //
 
     --#{$vendor}-width-tiny: 2rem;
     --#{$vendor}-width-mini: 3rem;

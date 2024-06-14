@@ -118,7 +118,7 @@
 								<td class="w-medium-min text-bold">{parameter}</td>
 								<td>{parameters?.[parameter]?.type} </td>
 								<td>
-									<div class="flex flex-align-middle gap-small w-mid-min">
+									<div class="flex flex-align-middle gap-small w-mid-min flex-wrap">
 										{#if parameters?.[parameter]?.type === 'boolean'}
 											{@render boolean({ parameter, values: [false, true] })}
 										{:else if parameters?.[parameter]?.type === 'color'}

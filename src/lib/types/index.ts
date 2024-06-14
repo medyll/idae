@@ -58,6 +58,7 @@ export enum gutterPreset {
 
 export enum tallPreset {
 	default = 'default',
+	mini = 'mini',
 	tiny = 'tiny',
 	small = 'small',
 	med = 'med',
@@ -100,6 +101,7 @@ export enum flowPreset {
 
 export enum widthPreset {
 	tiny = 'tiny',
+	mini = 'mini',
 	small = 'small',
 	med = 'med',
 	kind = 'kind',

@@ -24,6 +24,7 @@
 	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -149,7 +150,7 @@
 			bind:this={navElement}
 			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-medium"
 		>
-			<Button onclick={onDrawerClick} icon="mdi:menu" />
+			<IconButton onclick={onDrawerClick} icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>
 			<div class="flex-main" />
 			<a target="_blank" href="https://github.com/medyll/slot-ui">Github</a>
