@@ -52,9 +52,11 @@
 		<div>
 			<h1 class="text-bold">svelte.slotted</h1>
 			<h5 class="text-bold">@medyll</h5>
+			<br />
+			<h5 class="text-bold">Component library for svelte 5</h5>
 		</div>
 		<div class="w-full">
-			<div class="text-full">
+			<!-- <div class="text-full">
 				A simplistic library created just to learn some facts about svelte and svelteKit<br /><br />
 				- Very fast learning curve<br />
 				- Component generation and packaging for distribution<br />
@@ -63,7 +65,7 @@
 				And from what i've learned, yes, Svelte is great !<br /><br />
 				(Free to not be used)<br />
 				(Some components do work)<br />
-			</div>
+			</div> -->
 		</div>
 		<div class="w-full">
 			<div class="flex-h gap-large">
@@ -82,12 +84,12 @@
 			</h4>
 			<div class="flex-h flex-wrap flex-align-middle gap-large">
 				{#each groupedData[group] as catalog}
-					<div class="w-large shad-3 radius-small">
+					<div class="w-large">
 						<div class="pad">
-							<div class="pad border-b flex-h flex-align-middle">
-								<h5 class="flex-main" title={componentCite?.[catalog?.code]?.cite}>
-									{catalog?.code ?? ''}
-								</h5>
+							<div class="pad flex-h flex-align-middle">
+								<h6 class="flex-main" title={componentCite?.[catalog?.code]?.cite}>
+									<a href={sitePaths.component(catalog)}>{catalog?.code ?? ''}</a>
+								</h6>
 								{#if Boolean(searchPreview(catalog.code))}
 									<div>
 										<IconButton
@@ -102,18 +104,13 @@
 								{/if}
 							</div>
 						</div>
-						<Menu style="width:100%;">
-							<MenuItem><a href={sitePaths.component(catalog)}>{catalog.name} examples</a></MenuItem
-							>
-							<MenuItem><a href={sitePaths.api(catalog)}>{catalog.name} api</a></MenuItem>
-						</Menu>
 					</div>
 				{/each}
 			</div>
 		</div>
 	{/each}
 	<div class="block">
-		<h5 class="pad-4 text-bold">The why</h5>
+		<!-- <h5 class="pad-4 text-bold">The why</h5>
 		<p>
 			During a period where I had to focus on frontend technologies, I had the opportunity to
 			discover <a class="text-bold" target="_blank" href={svelteLink}>Svelte</a>.<br />
@@ -133,7 +130,7 @@
 			3 weeks of learning confirmed one thing: <br />Current technologies have altered our
 			productivity for the benefit of a certain form of tranquility, and if normally iterations
 			depart from the original model, here they return with great strides!
-		</p>
+		</p> -->
 		<h5 class="pad-4"><a href="./about">@Medyll</a></h5>
 	</div>
 </div>

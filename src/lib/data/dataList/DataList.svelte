@@ -140,15 +140,12 @@
 </script>
 
 {#snippet listCell(item, inItem)}
-	<Slotted
-		child={dataListCell}
-		slotArgs={{
-			fieldName: $dataListContext.columns[inItem]?.field,
-			fieldType: $dataListContext.columns[inItem]?.fieldType,
-			fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
-			fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
-		}}
-	/>
+	{@render dataListCell?.({
+		fieldName: $dataListContext.columns[inItem]?.field,
+		fieldType: $dataListContext.columns[inItem]?.fieldType,
+		fieldValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item)),
+		fieldRawValue: sanitizeHtml(checkGetter({ ...$dataListContext.columns }, inItem, item))
+	})}
 {/snippet}
 
 <ContextRooter bind:contextRoot={dataListContext} contextKey="dataListContext" />
@@ -204,7 +201,7 @@
 {:else}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-	<div bind:this={element} class="datalist {className}" {style} tabindex="0">
+	<table bind:this={element} class="datalist {className}" {style} tabindex="0">
 		{#if element}
 			{#if showHeader}
 				<Slotted child={dataListHead}><DataListHead /></Slotted>
@@ -230,7 +227,7 @@
 		{/if}
 
 		<Slotted child={dataListFooter} />
-	</div>
+	</table>
 {/if}
 
 <style global lang="scss">

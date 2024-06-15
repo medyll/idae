@@ -1,3 +1,5 @@
+@import "./slotui-vars.scss";
+
 @mixin ui-transition {
     transition: all 0.2s ease;
 }
@@ -5,7 +7,7 @@
     --preset-tall: 2rem;
     min-height: var(--preset-tall);
 
-    @each $preset in (default, tiny, mini, small, med, kind) {
+    @each $preset, $value in $preset-tall-list {
         &:global([tall="#{$preset}"]),
         &:global(.tall-#{$preset}) {
             min-height: var(--sld-tall-#{$preset});
@@ -15,11 +17,10 @@
 }
 
 @mixin ui-gutter-presets {
-    --preset-gutter: var(--sld-gutter-small);
+    --preset-gutter: var(--sld-gutter-default);
 
-    @each $preset in (default, tiny, mini, small, med, kind) {
+    @each $preset, $value in $preset-gutter-list {
         & :global([gutter="#{$preset}"]),
-        & :global([gutter-#{$preset}]),
         & :global(.gutter-#{$preset}) {
             padding: var(--sld-gutter-#{$preset});
             gap: var(--sld-gutter-#{$preset});
@@ -29,14 +30,37 @@
 }
 
 @mixin ui-width-presets {
-    --preset-width: var(--sld-width-small);
+    --preset-width: var(--sld-width-default);
 
-    @each $preset in (default, tiny, mini, small, med, kind, full) {
+    @each $preset, $value in $preset-width-list {
         &:global([width="#{$preset}"]),
-        &:global([width-#{$preset}]),
         &:global(.width-#{$preset}) {
             width: var(--sld-width-#{$preset});
             --preset-width: var(--sld-width-#{$preset});
+        }
+    }
+}
+
+@mixin ui-pad-presets {
+    --preset-pad: var(--sld-pad-default);
+
+    @each $preset, $value in $preset-pad-list {
+        &:global([pad="#{$preset}"]),
+        &:global(.pad-#{$preset}) {
+            padding: var(--sld-pad-#{$preset});
+            --preset-pad: var(--sld-pad-#{$preset});
+        }
+    }
+}
+
+@mixin ui-radius-presets {
+    --preset-radius: var(--sld-radius-default);
+
+    @each $preset, $value in $preset-radius-list {
+        &:global([radius="#{$preset}"]),
+        &:global(.radius-#{$preset}) {
+            border-radius: var(--sld-radius-#{$preset});
+            --preset-radius: var(--sld-radius-#{$preset});
         }
     }
 }

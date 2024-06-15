@@ -149,7 +149,7 @@
 </script>
 
 {#if inHeader}
-	<div
+	<td
 		bind:this={element}
 		use:onEvent={{ event: 'resizer:start', action: resizeStart }}
 		use:onEvent={{ event: 'resizer:resize', action: resizeOn }}
@@ -185,9 +185,9 @@
 				</div>
 			{/if}
 		</div>
-	</div>
+	</td>
 {:else}
-	<div
+	<td
 		bind:this={element}
 		data-column-id={columnId}
 		data-noWrap={noWrap}
@@ -205,7 +205,7 @@
 				fieldData: $rowContext?.data?.[field] ?? {}
 			}}
 		/>
-	</div>
+	</td>
 {/if}
 
 <style lang="scss">

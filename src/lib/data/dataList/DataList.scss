@@ -117,7 +117,7 @@
 	}
 }
 
-.dataListRow {
+:global(.dataListRow) {
 	border-bottom: 1px solid var(--datalist-row-border);
 	--webkit-content-visibility: auto;
 	webkit-content-visibility: auto;

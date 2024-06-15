@@ -130,11 +130,24 @@
 										<div class="pad border radius-tiny">More</div>
 									</PanelGrid>
 								</Panel>
-								<Panel title="Other Items">
+								<!-- <Panel title="Other Items">
 									<PanelGrid data={[...Array(7)]} columns={2}>
 										<div class="pad border radius-tiny">Others</div>
 									</PanelGrid>
-								</Panel>
+								</Panel> -->
+								{#snippet panelSlideZoom()}
+									<Panel title="Zoom area">
+										{#snippet children({ data, panelSlideId })}
+											<Panel title="Zoom area">
+												<PanelGrid data={[...Array(130)]} columns={1}>
+													<div class="pad border radius-tiny">
+														list item for {panelSlideId}
+													</div>
+												</PanelGrid>
+											</Panel>
+										{/snippet}
+									</Panel>
+								{/snippet}
 							</PanelSlide>
 							<PanelSlide class="overflow-x-hidden overflow-y-auto" open={false}
 								>{#snippet children({ data, panelSlideId })}

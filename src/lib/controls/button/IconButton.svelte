@@ -30,6 +30,7 @@
 		element,
 		style = '',
 		icon,
+		ratio = '1/1',
 		iconFontSize = 'small',
 		rotation = 0,
 		tall = 'mini',

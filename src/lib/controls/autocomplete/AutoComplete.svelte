@@ -92,7 +92,6 @@
 		<TextField
 			bind:value={searchString}
 			bind:element
-			tall="default"
 			type="search"
 			inputType="search"
 			class={className}

@@ -26,7 +26,7 @@
 
 		/** Unique ID for the panel slide */
 		panelSlideId?: string;
-
+		panelSlideZoom?: import('svelte').Snippet;
 		/** Children   for the default content */
 		children?: Snippet<[any]>;
 	};
@@ -38,8 +38,9 @@
 		open,
 		component,
 		flow = 'absolute',
-		outer = true,
+		outer,
 		panelSlideId = crypto.randomUUID() as string,
+		panelSlideZoom,
 		children,
 		...rest
 	}: PanelSlideProps = $props();
@@ -122,8 +123,17 @@
 	}
 </script>
 
-{#if outer}
-	<svelte:self bind:this={component} outer={false} {...rest} />
+{#if !outer}
+	<svelte:self
+		bind:this={component}
+		outer={true}
+		{panelSlideId}
+		{flow}
+		{open}
+		{style}
+		{children}
+		{panelSlideZoom}
+	/>
 {:else if open}
 	<div
 		bind:this={panelSlideRef}
@@ -134,16 +144,17 @@
 		{style}
 		{...rest}
 	>
-		<Slotted
-			child={children}
-			slotArgs={{ panelSlideId, data: $panelerContext.activePanelSlideData[panelSlideId] }}
-		/>
+		{@render children?.({ panelSlideId, data: $panelerContext.activePanelSlideData[panelSlideId] })}
 	</div>
+	{#if panelSlideZoom}
+		<svelte:self class={className}>
+			{@render panelSlideZoom?.()}
+		</svelte:self>
+	{/if}
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
+	@import './panel.scss';
 	.sidePanel {
 		position: absolute;
 		top: 0;

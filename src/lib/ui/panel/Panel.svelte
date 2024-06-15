@@ -1,14 +1,10 @@
-<script lang="ts" generics="T= Data">
-	import { getContext } from 'svelte';
+<script lang="ts" generics="T=Data">
+	import { run } from 'svelte/legacy';
+
+	import { onMount, getContext } from 'svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { PanelContextType, PanelProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Data, ExpandProps } from '$lib/types/index.js';
-
-	/** Actions to be performed by the panel */
-	export const actions = {
-		load: (args: any) => {}
-	};
+	import type { Data } from '$lib/types/index.js';
 
 	let {
 		title = 'not set',
@@ -18,16 +14,18 @@
 		panelButtonPrevious,
 		panelButtonNext,
 		children
-	}: ExpandProps<PanelProps> = $props();
+	}: PanelProps<T> = $props();
+	export const actions = {
+		load: (args: any) => {}
+	};
 
-	let ref: HTMLDivElement | undefined = undefined;
+	let ref: HTMLDivElement | undefined = $state(undefined);
 	let panelSlideId = getContext<string>('PanelSlide');
 	let panelerContext = getContext<PanelContextType>('Paneler');
 
-	let currentIdx;
-
-	let hasNext: boolean = $state(false);
-	let hasPrev: boolean = $state(false);
+	let currentIdx = $state(),
+		hasNext = $state(),
+		hasPrev = $state();
 
 	$effect(() => {
 		if ($panelerContext.panelSlides) {
@@ -37,8 +35,10 @@
 		}
 	});
 
+	$inspect($panelerContext.panelSlides);
+
 	function prevNextPanel(page: 'next' | 'prev') {
-		const event = new CustomEvent('panel-button-clicked', {
+		const event = new CustomEvent('panel:button:clicked', {
 			detail: { panelId, page, data },
 			bubbles: true
 		});
@@ -51,18 +51,17 @@
 		<div style="flex:1">{title}</div>
 		{#if hasPrev}
 			{#if panelButtonPrevious}
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('prev');
 					}}
 				>
-					<Slotted child={panelButtonPrevious}></Slotted>
+					{@render panelButtonPrevious?.()}
 				</div>
 			{:else}
 				<Button
 					icon="chevron-left"
+					tall="mini"
 					variant="naked"
 					onclick={() => {
 						prevNextPanel('prev');
@@ -72,27 +71,27 @@
 		{/if}
 		{#if hasNext}
 			{#if panelButtonNext}
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					onclick={() => {
 						prevNextPanel('next');
 					}}
 				>
-					<Slotted child={panelButtonNext}></Slotted>
+					{@render panelButtonNext?.()}
 				</div>
 			{:else}
 				<Button
 					iconEnd="chevron-right"
+					variant="naked"
+					tall="mini"
 					onclick={() => {
 						prevNextPanel('next');
-					}}>see all</Button
-				>
+					}}
+				></Button>
 			{/if}
 		{/if}
 	</div>
 	<div class="panelContent">
-		<Slotted child={children} slotArgs={{ panelId, actions }} />
+		{@render children?.({ panelId, actions })}
 	</div>
 </div>
 

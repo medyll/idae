@@ -59,7 +59,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
+<tr
 	bind:this={element}
 	use:onEvent={{ event: 'datalist:sort:clicked', action: () => {} }}
 	onclick={() => {
@@ -88,11 +88,10 @@
 			</DataListCell>
 		{/each}
 	{/if}
-</div>
+</tr>
 
 <style lang="scss">
 	.dataListRow {
-		display: flex;
 		/* grid-template-columns: var(--template-columns);
 		grid-auto-columns: min-content; */
 		content-visibility: auto;

@@ -1,8 +1,6 @@
-<svelte:options />
-
 <script lang="ts" generics="T">
 	import { getContext } from 'svelte';
-	let { contextKey } = $props();
+	let { contextKey = 'red', contextRoot = $bindable() } = $props();
 
-	export const contextRoot = getContext<T>(contextKey);
+	contextRoot = getContext<T>(contextKey);
 </script>

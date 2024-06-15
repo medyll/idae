@@ -38,7 +38,7 @@ export type PanelProps<T = Data> = {
 
 	/** Whether to show navigation or not */
 	showNavigation?: boolean;
-	panelButtonNext?: Snippet;
-	panelButtonPrevious?: Snippet;
-	children?: Snippet;
+	panelButtonPrevious?: import('svelte').Snippet;
+	panelButtonNext?: import('svelte').Snippet;
+	children?: import('svelte').Snippet<[any]>;
 };

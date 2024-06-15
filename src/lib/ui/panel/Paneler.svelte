@@ -8,38 +8,56 @@
 	import type { CommonProps } from '$lib/types/index.js';
 	import { onEvent } from '$lib/utils/uses/event.js';
 
-	type PanelerProps = CommonProps & {
-		/** Data to be displayed in the panel */
+	interface PanelerProps {
+		class?: string;
+		element?: HTMLInputElement | null;
+		style?: string;
 		dd?: string;
-	};
+		children?: import('svelte').Snippet;
+	}
 
 	let {
 		class: className = '',
-		element = $bindable(),
+		element = null,
 		style = '',
-		dd,
-		children,
-		...rest
+		dd = '',
+		children
 	}: PanelerProps = $props();
 
-	export const panelerStore = writable({
+	export const panelerStore: PanelContextType = writable({
 		activePanelId: undefined,
 		activePanelSlideData: {},
 		panelSlides: {},
 		panels: {}
 	});
+
 	setContext<PanelContextType>('Paneler', panelerStore);
 
-	function toggleSlidePanels(event) {}
+	let slideLeft: any;
+	let slideRight: any;
+
+	function toggleSlidePanels(event) {
+		console.log(event);
+		// get children from context
+		// alert("red");
+		/* slideLeft.actions.toggle();
+		slideRight.actions.toggle();
+
+		panelerStore.set({
+			...$panelerStore,
+			open: !$panelerStore?.open
+		});
+		setContext('PanelSlide', panelerStore); */
+	}
 </script>
 
 <div
-	use:onEvent={{ event: 'panel-button-clicked', action: toggleSlidePanels }}
+	use:onEvent={{ event: 'panel:button:clicked', action: toggleSlidePanels }}
 	transition:fade|global={{ duration: 50 }}
 	class={className}
 	{style}
 >
-	<Slotted child={children}></Slotted>
+	{@render children?.()}
 </div>
 
 <style lang="scss">

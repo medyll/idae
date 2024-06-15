@@ -52,27 +52,28 @@
 	let cssVars = setCssGrid($dataListContext.columns ?? []);
 </script>
 
-<div
+<thead
 	bind:this={element}
 	use:onEvent={{ event: 'datalist:sort:clicked', action: doSort }}
 	class:pos-sticky={stickyHeader}
 	class="datalist-head"
 	style="{style};{cssVars}"
 >
-	<Slotted child={children}>
-		{#if $dataListContext.hasColumnsProps}
-			{#each Object.values($dataListContext.columns) as column}
-				<DataListCell noWrap={true} field={column.field}>
-					{column.fieldTitle ?? column.field}
-				</DataListCell>
-			{/each}
-		{/if}
-	</Slotted>
-</div>
+	<tr>
+		<Slotted child={children}>
+			{#if $dataListContext.hasColumnsProps}
+				{#each Object.values($dataListContext.columns) as column}
+					<DataListCell noWrap={true} field={column.field}>
+						{column.fieldTitle ?? column.field}
+					</DataListCell>
+				{/each}
+			{/if}
+		</Slotted>
+	</tr>
+</thead>
 
 <style lang="scss">
 	.datalist-head {
-		display: flex;
 		/* grid-template-columns: var(--template-columns) auto; grid-auto-columns: min-content;
 		grid-auto-columns: min-content; */
 	}
