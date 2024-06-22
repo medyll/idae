@@ -8,7 +8,14 @@ class idbqlStateEvent {
   }
 
   registerEvent(
-    event: "add" | "put" | "delete" | "set",
+    event:
+      | "add"
+      | "put"
+      | "update"
+      | "updateWhere"
+      | "delete"
+      | "deleteWhere"
+      | "set",
     more: {
       collection: string;
       data: any;
@@ -19,6 +26,22 @@ class idbqlStateEvent {
       case "set":
         if (more?.collection && more?.data)
           this.dataState[more.collection] = more.data;
+        break;
+      case "deleteWhere":
+        if (more?.collection && more?.data) {
+          const data = this.dataState[more.collection];
+          const keys = Object.keys(more.data);
+          const result = data.filter((item) => {
+            let isMatch = true;
+            keys.forEach((key) => {
+              if (item[key] !== more.data[key]) {
+                isMatch = false;
+              }
+            });
+            return isMatch;
+          });
+          this.dataState[more.collection] = result;
+        }
         break;
       case "delete":
         if (more?.collection && more?.data && more?.keyPath) {
@@ -34,6 +57,27 @@ class idbqlStateEvent {
           }
         }
         break;
+      case "updateWhere":
+        if (more?.collection && more?.data) {
+          const data = this.dataState[more.collection];
+          const keys = Object.keys(more.data);
+          const result = data.map((item) => {
+            let isMatch = true;
+            keys.forEach((key) => {
+              if (item[key] !== more.data[key]) {
+                isMatch = false;
+              }
+            });
+            if (isMatch) {
+              return { ...item, ...more.data };
+            } else {
+              return item;
+            }
+          });
+          this.dataState[more.collection] = result;
+        }
+        break;
+      case "update":
       case "put": // always got id
         if (more?.collection && more?.data && more?.keyPath) {
           let keyPathValue = more.data[more.keyPath];

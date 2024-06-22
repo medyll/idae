@@ -1,5 +1,8 @@
 import { Collection, CollectionCore } from "../collection/collection.js";
-import { createIdbqlState } from "../state/idbstate.svelte.js";
+import {
+  createIdbqlState,
+  type CollectionDyn,
+} from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
 export type IdbqModel = {
@@ -16,9 +19,13 @@ type Method<T> = {
   // @ts-ignore
   readonly [K in keyof T]: CollectionCore<T[K]>;
 };
+type MethodState<T> = {
+  // @ts-ignore
+  readonly [K in keyof T]: CollectionDyn<T[K]>;
+};
 
 type ReadonlyCollections<T> = Method<ModelTypes<T>>;
-
+type StateCollections<T> = MethodState<ModelTypes<T>>;
 /**
  * Represents the IndexedDB wrapper for managing database operations.
  * @template T - The type of data stored in the IndexedDB.
@@ -142,7 +149,7 @@ export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
       return {
         idbDatabase: idb_ as typeof idb_,
         idbql: idb_ as ReadonlyCollections<T>,
-        idbqlState: createIdbqlState(idb_).state as ReadonlyCollections<T>,
+        idbqlState: createIdbqlState(idb_).state as StateCollections<T>,
       };
     },
   };

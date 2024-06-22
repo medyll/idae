@@ -29,14 +29,13 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
   function addCollection<T>(collectionName: string, keyPath: string = "id") {
-    /*     const col = new CollectionDyn<T>(
+    /* const col = new CollectionDyn<T>(
       collectionName,
       keyPath,
       idbqlEvent.dataState,
       idbBase
     );
-
-    return col; */
+    return col.collectionState.rs; */
     if (!state?.[collectionName]) state[collectionName] = [];
 
     const collectionState = {
@@ -64,9 +63,10 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
      * @returns  {Resultset} The filtered resultset.
      */
     function where(qy: Where<T>, options?: ResultsetOptions) {
-      let c = Operators.parse(collectionState.rs, qy);
+      let c = Operators.parse(state[collectionName], qy); // state[collectionName]
       const r = getResultset<T>(c);
       if (options) r.setOptions(options);
+
       return r;
     }
 
@@ -78,6 +78,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
         );
       }
     }
+
     async function updateWhere(where: Where<T>, data: Partial<T>) {
       if (idbBase && testIdbql(collectionName)) {
         await idbBase[collectionName].updateWhere(where, data);
@@ -99,15 +100,22 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
     }
 
     function get(value: any, pathKey: string = "id"): T[] {
-      return collectionState.rs.filter((d) => d[pathKey] === value) as T[];
+      let f = $derived(
+        state[collectionName].filter((d) => d[pathKey] === value)
+      );
+      return f as T[];
     }
 
     function getOne(value: any, pathKey: string = "id"): T {
-      return collectionState.rs.filter((d) => d[pathKey] === value)[0] as T;
+      let f = $derived(
+        state[collectionName].filter((d) => d[pathKey] === value)[0] as T
+      );
+      return f;
     }
 
     function getAll(): T[] {
-      return getResultset<T>(collectionState.rs);
+      let f = $derived(getResultset<T>(state[collectionName]));
+      return f;
     }
 
     async function del(
@@ -137,17 +145,16 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
       deleteWhere,
     };
 
-    let handler = {
+    /* let handler = {
       get: function (obj, prop, args) {
         if (prop === "where") {
-          console.log("get", prop);
-          // after the where, trigger a set ?
+          console.log("get", prop); 
         }
         return obj?.[prop];
       },
     };
 
-    let proxy = new Proxy(ret, handler);
+    let proxy = new Proxy(ret, handler); */
 
     return ret;
   }
@@ -180,10 +187,10 @@ export const stateIdbql = createIdbqlState;
  * @param {string} [keyPath="id"] - The key path for the collection.
  * @returns {Proxy} - A proxy object with methods to interact with the collection.
  */
-class CollectionDyn<T> {
+export class CollectionDyn<T> {
   private collectionName: string;
   private keyPath: string;
-  private state: any;
+  state: any;
   private idbBase: IdbqlIndexedCore;
 
   constructor(
@@ -219,7 +226,7 @@ class CollectionDyn<T> {
   }
 
   where(qy: Where<T>, options?: ResultsetOptions) {
-    let c = Operators.parse(this.collectionState.rs, qy);
+    let c = $derived(Operators.parse(this.collectionState.rs ?? [], qy));
     const r = getResultset<T>(c);
     if (options) r.setOptions(options);
     return r;
