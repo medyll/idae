@@ -7,8 +7,10 @@
  
 
   let messages = idbqlState.messages;
-  console.log(messages?.where)
-  let results = $derived(messages?.where({chatId:{eq:'35'}}));
+ 
+  let results =  $derived(messages?.where({chatId:{eq:'35'}}) )
+
+   
   /* let all = $derived(messages.getAll());
   let grp = $derived(messages.getAll().groupBy('chatId')); */
 
@@ -18,6 +20,7 @@
        messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'});
        //messages.delete(1)
        messages.add({chatId:'24',content:'bfgdg'});
+       messages.add({chatId:'35',content:'bfgdg'});
        /* dbase.messages.update(2,{chatId:'32'}); */
       // y.add({content:'bfgdg'});
       // y =  dbase.messages.state ;// ({chatId:{eq:'35'}});//.where({chatId:'3'});
@@ -53,15 +56,15 @@
         console.log(ww.groupBy('chatId'));    */
 
         let ti = setInterval(() => { 
-            messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'}); 
+           // messages.update(7,{content:'35'+Math.random()+'..........' }); 
         }, 5000);
-        let tis = setInterval(() => { 
+        /* let tis = setInterval(() => { 
             messages.update(7,{content: Math.random()}); 
-        }, 2000);
+        }, 2000); */
     
         return () => {
           clearInterval(ti);
-          clearInterval(tis);
+          /* clearInterval(tis); */
         }
     });
 
@@ -76,8 +79,8 @@
 $inspect(users) */
 /* $inspect(state.state) */
 // $inspect(messages.getOne(2)?.chatId);
-/* $inspect(results)
-$inspect(all)
+// $inspect(results)
+/*$inspect(all)
 $inspect(grp) */
 </script> 
 
@@ -97,7 +100,7 @@ getAll<br />
 {/each}<hr /> -->
 query<br />
 {#each (results ?? []) as aa}
-{aa.id} {aa.chatId} {aa.content}  <br />
+id:{aa.id} chatId:{aa.chatId} content:{aa.content}  <br />
 {/each}
 <hr />
 {#each results?.sortBy({id:'desc'}) ?? [] as aa}

@@ -47,6 +47,8 @@ const idbqStore = createIdbqDb<typeof idbqModel>(idbqModel, 3);
 export const { idbql, idbqlState, idbDatabase } =
   idbqStore.create("oneDatabase");
 
+// idbqlState.chat.where({});
+
 /* console.log("results", { idbql, idbqlState, idbDatabase }); // the IDBDatabase instance
 console.log("results", dbase.idbDatabase); // the IDBDatabase instance
 console.log("results", dbase.idbql.chat); // indexed db collection, non reactive, can be used a non reactive way
