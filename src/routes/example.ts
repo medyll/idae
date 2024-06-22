@@ -1,8 +1,5 @@
 import { createIdbqDb } from "$lib/scripts/idbqlCore/idbqlCore.js";
-import {
-  createIdbqlState,
-  stateIdbql,
-} from "$lib/scripts/state/idbstate.svelte.js";
+import { createIdbqlState } from "$lib/scripts/state/idbstate.svelte.js";
 
 /** define the data typings to activate autocomplete feature */
 export type Chat = {

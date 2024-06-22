@@ -28,14 +28,9 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    * @param {string} [keyPath="id"] - The key path for the collection.
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
-  function addCollection<T>(collectionName: string, keyPath: string = "id") {
-    /* const col = new CollectionDyn<T>(
-      collectionName,
-      keyPath,
-      idbqlEvent.dataState,
-      idbBase
-    );
-    return col.collectionState.rs; */
+  function addCollection<T>(collectionName: string) {
+    return new CollectionDyn<T>(collectionName, idbBase);
+
     if (!state?.[collectionName]) state[collectionName] = [];
 
     const collectionState = {
@@ -63,19 +58,16 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
      * @returns  {Resultset} The filtered resultset.
      */
     function where(qy: Where<T>, options?: ResultsetOptions) {
-      let c = Operators.parse(state[collectionName], qy); // state[collectionName]
+      let c = Operators.parse(state[collectionName], qy);
       const r = getResultset<T>(c);
       if (options) r.setOptions(options);
 
       return r;
     }
 
-    async function update(keyPathValue: string | number, data: Partial<T>) {
+    function update(keyPathValue: string | number, data: Partial<T>) {
       if (idbBase && testIdbql(collectionName)) {
-        await (idbBase[collectionName] as CollectionCore).update(
-          keyPathValue,
-          data
-        );
+        (idbBase[collectionName] as CollectionCore).update(keyPathValue, data);
       }
     }
 
@@ -175,12 +167,6 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
 };
 
 /**
- * @deprecated
- * use idbqState
- */
-export const stateIdbql = createIdbqlState;
-
-/**
  * Adds a collection to the svelte 5 state and synchronize with indexedDB if it exists.
  * @template T - The type of data in the collection.
  * @param {string} collectionName - The name of the collection.
@@ -189,24 +175,17 @@ export const stateIdbql = createIdbqlState;
  */
 export class CollectionDyn<T> {
   private collectionName: string;
-  private keyPath: string;
-  state: any;
+  private state: any = idbqlEvent.dataState;
   private idbBase: IdbqlIndexedCore;
 
-  constructor(
-    collectionName: string,
-    keyPath: string = "id",
-    state: any,
-    idbBase: IdbqlIndexedCore
-  ) {
-    this.state = state;
+  constructor(collectionName: string, idbBase: IdbqlIndexedCore) {
+    if (!this.state?.[collectionName]) this.state[collectionName] = [];
     this.collectionName = collectionName;
-    this.keyPath = keyPath;
     this.idbBase = idbBase;
 
-    if (!this.state?.[this.collectionName])
-      this.state[this.collectionName] = [];
     this.feed();
+
+    return this;
   }
 
   get collectionState() {
@@ -226,10 +205,19 @@ export class CollectionDyn<T> {
   }
 
   where(qy: Where<T>, options?: ResultsetOptions) {
-    let c = $derived(Operators.parse(this.collectionState.rs ?? [], qy));
+    let c = Operators.parse(this.collectionState ?? [], qy);
     const r = getResultset<T>(c);
     if (options) r.setOptions(options);
     return r;
+  }
+
+  update(keyPathValue: string | number, data: Partial<T>) {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      (this.idbBase[this.collectionName] as CollectionCore).update(
+        keyPathValue,
+        data
+      );
+    }
   }
 
   get(value: any, pathKey: string = "id"): T[] {
@@ -244,40 +232,31 @@ export class CollectionDyn<T> {
     return getResultset<T>(this.collectionState);
   }
 
-  async update(keyPathValue: string | number, data: Partial<T>) {
+  updateWhere(where: Where<T>, data: Partial<T>) {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      await (this.idbBase[this.collectionName] as CollectionCore).update(
-        keyPathValue,
-        data
-      );
+      this.idbBase[this.collectionName].updateWhere(where, data);
     }
   }
 
-  async updateWhere(where: Where<T>, data: Partial<T>) {
+  put(value: Partial<T>) {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      await this.idbBase[this.collectionName].updateWhere(where, data);
+      this.idbBase[this.collectionName].put(value);
     }
   }
 
-  async put(value: Partial<T>) {
+  add(data: T) {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      await this.idbBase[this.collectionName].put(value);
+      this.idbBase[this.collectionName].add(data);
     }
   }
 
-  async add(data: T) {
-    if (this.idbBase && this.testIdbql(this.collectionName)) {
-      await this.idbBase[this.collectionName].add(data);
-    }
-  }
-
-  async del(keyPathValue: string | number): Promise<boolean | undefined> {
+  del(keyPathValue: string | number): boolean | undefined {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return this.idbBase[this.collectionName].delete(keyPathValue);
     }
   }
 
-  async deleteWhere(where: Where<T>): Promise<boolean | undefined> {
+  deleteWhere(where: Where<T>): boolean | undefined {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return this.idbBase[this.collectionName].deleteWhere(where);
     }
