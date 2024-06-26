@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.2](https://github.com/medyll/idbql/compare/v3.3.1...v3.3.2) (2024-06-26)
+
+
+### Bug Fixes
+
+* delete method ([ab7fd3f](https://github.com/medyll/idbql/commit/ab7fd3f28bd9d4c1ededb123b8587d5f009ceb12))
+
 ### [3.3.1](https://github.com/medyll/idbql/compare/v3.3.0...v3.3.1) (2024-06-22)
 
 
