@@ -250,6 +250,12 @@ export class CollectionDyn<T> {
     }
   }
 
+  delete(keyPathValue: string | number): boolean | undefined {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      return this.idbBase[this.collectionName].delete(keyPathValue);
+    }
+  }
+  /** @deprecated */
   del(keyPathValue: string | number): boolean | undefined {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return this.idbBase[this.collectionName].delete(keyPathValue);

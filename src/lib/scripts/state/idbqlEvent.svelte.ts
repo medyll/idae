@@ -43,6 +43,7 @@ class idbqlStateEvent {
           this.dataState[more.collection] = result;
         }
         break;
+      case "del":
       case "delete":
         if (more?.collection && more?.data && more?.keyPath) {
           let keyPathValue = more?.data[more.keyPath];
