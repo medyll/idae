@@ -5,25 +5,30 @@ import {
 } from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
-export type DbPrimitive =
+type IdbObjectify<T extends string> = `array-of-${T}` | `object-${T}` | T;
+export type IdDbPrimitive =
+  | "id"
   | "date"
-  | "string"
+  | "text"
+  | `text-${"tiny" | "short" | "medium" | "long" | "giant"}`
   | "number"
   | "boolean"
   | "array"
   | "object"
   | `${string}.${string}`;
 
-export type DbFieldFkTypes =
-  | DbPrimitive
-  | `array-of-${DbPrimitive}`
-  | `object-${DbPrimitive}`;
+export type IDbFieldFkTypes = IdbObjectify<IdDbPrimitive>;
 
-export type DbFieldTypesO = DbFieldFkTypes | `fk-${DbFieldFkTypes}`;
+export type IDbFieldTypesO =
+  | IdDbPrimitive
+  | IDbFieldFkTypes
+  | `fk-${IdbObjectify<`${string}.${string}`>}`;
+
 export type DbFieldTypes =
-  | DbFieldTypesO
-  | `${DbFieldTypesO}(private | locked | ${string}-on-${string} | ${string})`;
+  | IDbFieldTypesO
+  | `${IDbFieldTypesO}(private | locked | ${string}-on-${string} | ${string})`;
 
+const a: DbFieldTypes = "";
 export type CollectionModel<T> = {
   keyPath: string | any;
   model: any;
