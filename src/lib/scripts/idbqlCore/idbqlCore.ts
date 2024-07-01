@@ -19,7 +19,10 @@ export type DbFieldFkTypes =
   | `array-of-${DbPrimitive}`
   | `object-${DbPrimitive}`;
 
-export type DbFieldTypes = DbFieldFkTypes | `fk-${DbFieldFkTypes}`;
+export type DbFieldTypesO = DbFieldFkTypes | `fk-${DbFieldFkTypes}`;
+export type DbFieldTypes =
+  | DbFieldTypesO
+  | `${DbFieldTypesO}(private | locked | ${string}-on-${string} | ${string})`;
 
 export type CollectionModel<T> = {
   keyPath: string | any;
