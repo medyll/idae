@@ -5,11 +5,21 @@ import {
 } from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
-export type DbFileDtype =
+export type DbPrimitive =
   | "date"
   | "string"
   | "number"
-  | `fk.${string}.${string}`;
+  | "boolean"
+  | "array"
+  | "object"
+  | `${string}.${string}`;
+
+export type DbFieldFkTypes =
+  | DbPrimitive
+  | `array-of-${DbPrimitive}`
+  | `object-${DbPrimitive}`;
+
+export type DbFieldTypes = DbFieldFkTypes | `fk-${DbFieldFkTypes}`;
 
 export type CollectionModel<T> = {
   keyPath: string | any;
@@ -18,7 +28,7 @@ export type CollectionModel<T> = {
   template?: {
     index?: string;
     fields?: {
-      [K in keyof T]: DbFileDtype;
+      [K in keyof T]: DbFieldTypes;
     };
   };
 };
