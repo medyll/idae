@@ -41,7 +41,7 @@ const idbqStore = createIdbqDb<typeof idbqModel>(idbqModel, 3);
 
 // export const dbase = idbqStore.create("oneDatabase");
 // or
-export const { idbql, idbqlState, idbDatabase } =
+export const { idbql, idbqlState, idbDatabase, idbModel } =
   idbqStore.create("oneDatabase");
 
 // idbqlState.chat.where({});

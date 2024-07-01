@@ -100,7 +100,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
 
     function getOne(value: any, pathKey: string = "id"): T {
       let f = $derived(
-        state[collectionName].filter((d) => d[pathKey] === value)[0] as T
+        state[collectionName]?.filter((d) => d[pathKey] === value)[0] as T
       );
       return f;
     }

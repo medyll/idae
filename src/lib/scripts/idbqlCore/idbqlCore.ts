@@ -5,14 +5,28 @@ import {
 } from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
-export type IdbqModel = {
-  [key: string]: {
-    keyPath: string | undefined;
-    model: any;
+export type DbFileDtype =
+  | "date"
+  | "string"
+  | "number"
+  | `fk.${string}.${string}`;
+
+export type CollectionModel<T> = {
+  keyPath: string | any;
+  model: any;
+  ts: any;
+  template?: {
+    index?: string;
+    fields?: {
+      [K in keyof T]: DbFileDtype;
+    };
   };
 };
+export type IdbqModel<T = any> = {
+  readonly [K in keyof T]: CollectionModel<T[K]>;
+};
 
-type ModelTypes<T = Record<string, { keyPath: string | any; model: any }>> = {
+type ModelTypes<T = Record<string, CollectionModel<any>>> = {
   [P in keyof T]: T[P] extends { model: infer M } ? M : never;
 };
 type Method<T> = {
@@ -150,6 +164,7 @@ export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
         idbDatabase: idb_ as typeof idb_,
         idbql: idb_ as ReadonlyCollections<T>,
         idbqlState: createIdbqlState(idb_).state as StateCollections<T>,
+        idbModel: model as IdbqModel<T>,
       };
     },
   };
