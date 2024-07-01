@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idbql",
-	"version": "3.3.5",
+	"version": "3.3.6",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
