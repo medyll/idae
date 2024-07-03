@@ -1,5 +1,5 @@
 interface DraggableProps {
-	disabled?: true;
+	disabled?: boolean;
 }
 
 export function draggebler(node: HTMLElement, props: DraggableProps) {
@@ -10,7 +10,7 @@ export function draggebler(node: HTMLElement, props: DraggableProps) {
 
 	let moving = false;
 
-	let target = node.querySelector('.handle') ?? node;
+	let target = node.querySelector('.bar') ?? node;
 
 	target.style.userSelect = 'none';
 

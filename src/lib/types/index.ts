@@ -105,7 +105,8 @@ export enum widthPreset {
 	small = 'small',
 	med = 'med',
 	kind = 'kind',
-	full = 'full'
+	full = 'full',
+	auto = 'auto'
 }
 
 export enum positionPreset {
@@ -190,6 +191,7 @@ export const uiPresets = {
 export type Data = Record<string, any>;
 
 export interface CommonProps {
+	'anchor-for'?: string;
 	element?: HTMLElement;
 	class?: string;
 	style?: string;

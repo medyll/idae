@@ -28,17 +28,18 @@
 		tall = tallPreset.default,
 		style = undefined,
 		selectorField,
-		selectedData = $bindable({}),
-		selectedIndex = $bindable(-1),
+		selectedData = $bindable(),
+		selectedIndex = $bindable(),
 		element = $bindable(),
-		menuListItems: menuItemsList = $bindable(undefined),
-		data = $bindable(undefined),
+		menuListItems: menuItemsList = $bindable(),
+		data = $bindable(),
 		role = 'menu',
 		onclick,
 		showLastOnSelected = true,
 		children,
+		listItemBottom,
 		...rest
-	}: ExpandProps<MenuListProps> = $props();
+	}: MenuListProps = $props();
 
 	let defaultStoreValues = {
 		menuItemsList,
@@ -102,7 +103,7 @@
 	tabindex="0"
 	{style}
 	{role}
-	use:navigation={{ className: 'menuListItem', selectedIndex: -1 }}
+	use:navigation={{ className: 'menu-list-item', selectedIndex: -1 }}
 	{...rest}
 >
 	{#if menuItemsList}
@@ -120,6 +121,7 @@
 	{:else}
 		<Slotted child={children} />
 	{/if}
+	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
 <style global lang="scss">

@@ -32,7 +32,9 @@
 		children,
 		menuItemFirst,
 		menuItemLast,
+		wrap,
 		role = 'menuitem',
+		tag = 'li',
 		...rest
 	}: MenuListItemProps = $props();
 
@@ -52,7 +54,7 @@
 	$effect(() => {
 		if (itemIndex === undefined && element?.parentElement) {
 			itemIndex = [
-				...element?.parentElement?.querySelectorAll('.menuListItem:not(.menu-list-title')
+				...element?.parentElement?.querySelectorAll('.menu-list-item:not(.menu-list-title')
 			].indexOf(element);
 		}
 	});
@@ -66,7 +68,8 @@
 		onMenuItemClick(data);
 		if (menuStateContext?.onclick) {
 			menuStateContext?.onclick(cevent, data);
-		} else {
+		}
+		if (onclick) {
 			onclick(cevent, data);
 		}
 	};
@@ -84,8 +87,8 @@
 {/if}
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
-	this={href ? 'a' : 'li'}
-	class="menuListItem {className} tall-{menuStateContext?.tall ?? tall}"
+	this={href ? 'a' : tag}
+	class="menu-list-item {className} tall-{menuStateContext?.tall ?? tall}"
 	data-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	aria-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	bind:this={element}
@@ -94,14 +97,14 @@
 	{role}
 	{href}
 >
-	{#if menuStateContext?.hasIcon}
+	{#if icon && iconFirst && menuStateContext?.hasIcon}
 		<div class="menuListItemIcon">
 			<Slotted child={menuItemFirst}>
 				<Icon {icon} ico={iconFirst} color={iconColor} {iconSize} />
 			</Slotted>
 		</div>
 	{/if}
-	<div class="menu-list-item-text">
+	<div class="menu-list-item-text" class:wrap>
 		<Slotted child={children} slotArgs={data}>
 			{text}
 		</Slotted>
@@ -117,7 +120,7 @@
 </svelte:element>
 {#if divider}
 	<li role="separator">
-		<Divider tall="tight" expansion="padded" />
+		<Divider expansion="padded" />
 	</li>
 {/if}
 

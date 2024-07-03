@@ -23,24 +23,35 @@ type StickToProps = {
 };
 /** @type {import('svelte/action').Action<HTMLElement, StickToProps>}  */
 export function stickTo(node: HTMLElement, props: StickToProps) {
-	const { parentNode, position, stickToHookWidth } = props;
+	let { parentNode, position, stickToHookWidth } = props;
 	let nodeObserver: ResizeObserver;
 	let parentObserver: ResizeObserver;
+
 	if (node && parentNode) {
-		document.body.appendChild(node);
-		setPosition(node, position, parentNode);
+		init(props);
+	}
 
-		scrollObserver();
+	function init(props: StickToProps) {
+		parentNode = props.parentNode;
+		position = props.position;
+		stickToHookWidth = props.stickToHookWidth;
 
-		nodeObserver = new ResizeObserver(() => {
-			setPosition(node, position, parentNode);
-		});
-		nodeObserver.observe(node);
+		if (node && props.parentNode) {
+			document.body.appendChild(node);
+			setPosition(node, props.position, props.parentNode);
 
-		parentObserver = new ResizeObserver(() => {
-			setPosition(node, position, parentNode);
-		});
-		parentObserver.observe(parentNode);
+			scrollObserver();
+
+			nodeObserver = new ResizeObserver(() => {
+				setPosition(node, props.position, props.parentNode);
+			});
+			nodeObserver.observe(node);
+
+			parentObserver = new ResizeObserver(() => {
+				setPosition(node, props.position, props.parentNode);
+			});
+			parentObserver.observe(props.parentNode);
+		}
 	}
 
 	function scrollObserver() {
@@ -129,7 +140,14 @@ export function stickTo(node: HTMLElement, props: StickToProps) {
 	}
 
 	return {
-		update() {},
+		update(props: StickToProps) {
+			if (nodeObserver) nodeObserver.disconnect();
+			if (parentObserver) parentObserver.disconnect();
+			window.removeEventListener('scroll', () => {
+				setPosition(node, position, parentNode);
+			});
+			init(props);
+		},
 		destroy() {
 			if (nodeObserver) nodeObserver.disconnect();
 			if (parentObserver) parentObserver.disconnect();

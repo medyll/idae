@@ -31,7 +31,7 @@
 		cartouchePrimary,
 		cartoucheSecondary,
 		cartoucheButtons,
-		isOpen = $bindable(false),
+		isOpen = $bindable(),
 		dense,
 		tall
 	}: ExpandProps<CartoucheProps> = $props();

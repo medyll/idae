@@ -7,13 +7,14 @@
 	import type { PopperProps } from '$lib/ui/popper/types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
+	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 
 	let {
 		element,
 		menuProps = {} as MenuListProps,
 		popperProps = {} as PopperProps,
-		menuItem = undefined,
 		disabled = false,
+		menuItem,
 		children,
 		...rest
 	}: ExpandProps<ButtonMenuProps> = $props();
@@ -29,13 +30,19 @@
 	{...rest}
 	bind:element
 	iconEnd={{ icon: chevron, rotation: isOpen ? 180 : 0 }}
->
-	<Slotted child={children} />
-</Button>
+	{children}
+/>
+
 {#if isOpen && !disabled}
 	<Popper bind:isOpen parentNode={element} {...popperProps}>
 		<MenuList {...menuProps}>
-			<Slotted child={menuItem} />
+			{#snippet children({ item })}
+				{#if menuItem}
+					{@render menuItem?.({ item })}
+				{:else}
+					<MenuListItem data={item} />
+				{/if}
+			{/snippet}
 		</MenuList>
 	</Popper>
 {/if}

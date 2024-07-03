@@ -57,8 +57,6 @@
 		<Icon icon="user" />
 	{/snippet}
 </Button>`;
-
-	$inspect({ parameters, componentArgs });
 </script>
 
 <ButtonAction

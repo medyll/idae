@@ -89,7 +89,7 @@
 					<Icon icon="loading" rotate />
 				</Slotted>
 			</div>
-			<div>loading</div>
+			<div></div>
 		</div>
 	{/if}
 	{#if showChip}

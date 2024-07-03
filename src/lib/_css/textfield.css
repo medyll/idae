@@ -44,6 +44,7 @@
   --sld-tall-small: 2.5rem;
   --sld-tall-med: 3.5rem;
   --sld-tall-kind: 4rem;
+  --sld-tall-auto: auto;
   --sld-tall-default: 2.5rem;
   /* --sld-tall-tiny: 1rem;
   --sld-tall-mini: 1.5rem;
@@ -57,6 +58,7 @@
   --sld-width-med: 12rem;
   --sld-width-kind: 16rem;
   --sld-width-full: 100%;
+  --sld-width-auto: auto;
   --sld-width-default: 12rem;
   /* --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
@@ -350,6 +352,10 @@ body[data-theme=dark],
   width: var(--sld-width-full);
   --preset-width: var(--sld-width-full);
 }
+.textfield:global([width="auto"]), .textfield:global(.width-auto) {
+  width: var(--sld-width-auto);
+  --preset-width: var(--sld-width-auto);
+}
 .textfield:global([width="default"]), .textfield:global(.width-default) {
   width: var(--sld-width-default);
   --preset-width: var(--sld-width-default);
@@ -373,6 +379,10 @@ body[data-theme=dark],
 .textfield:global([tall="kind"]), .textfield:global(.tall-kind) {
   min-height: var(--sld-tall-kind);
   --preset-tall: var(--sld-tall-kind);
+}
+.textfield:global([tall="auto"]), .textfield:global(.tall-auto) {
+  min-height: var(--sld-tall-auto);
+  --preset-tall: var(--sld-tall-auto);
 }
 .textfield:global([tall="default"]), .textfield:global(.tall-default) {
   min-height: var(--sld-tall-default);

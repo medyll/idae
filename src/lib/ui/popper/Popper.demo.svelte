@@ -62,9 +62,16 @@
 			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
 				{#snippet children({ activeParams })}
 					<div class="pos-rel">
-						<Popper bind:isOpen position="BC" {...activeParams} class="w-large marg-t-1">
+						<Popper
+							bind:isOpen
+							position="BC"
+							anchor="popper"
+							{...activeParams}
+							class="w-large marg-t-1"
+						>
 							{#snippet popperHolder()}
 								<Button
+									anchor-for="popper"
 									onclick={() => (isOpen = !isOpen)}
 									style="cursor:pointer"
 									class="border text-center pointer {isOpen ? 'theme-bg-paper shad-3' : ''}"
@@ -73,6 +80,9 @@
 								</Button>
 							{/snippet}
 							<div class="pad-4">Popper content</div>
+							{#snippet popperRight()}
+								cdscdscd
+							{/snippet}
 						</Popper>
 					</div>
 				{/snippet}

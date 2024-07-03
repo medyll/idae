@@ -5,8 +5,6 @@ export function demoerArgs<T = Record<string, any>>(
 	parameters: DemoerStoryProps<T>;
 	componentArgs: T;
 } {
-	console.log('defaultsArgs', defaultsArgs<T>({ ...parametersProps }));
-
 	return { parameters: parametersProps, componentArgs: defaultsArgs<T>({ ...parametersProps }) };
 }
 

@@ -17,8 +17,6 @@
 	}: ExpandProps<StepperProps<T>> = $props();
 
 	let child = children;
-
-	$inspect(steps);
 </script>
 
 <div class="stepper {stepperOrientation}">

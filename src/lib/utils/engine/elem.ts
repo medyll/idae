@@ -1,12 +1,14 @@
+type IsWhat = 'element' | 'array' | 'qy';
 class beElem {
 	private node: HTMLElement | HTMLElement[] | string;
-	private isWhat: string | HTMLElement | HTMLElement[];
+	private isWhat: IsWhat;
 
 	private constructor(node: HTMLElement | HTMLElement[] | string) {
 		this.node = node;
-		this.isWhat = typeof node === 'string' ? 'qy' : node;
+		this.isWhat = typeof node === 'string' ? 'qy' : Array.isArray(node) ? 'array' : 'element';
+		/* this.isWhat = typeof node === 'string' ? 'qy' : node;
 		this.isWhat = Array.isArray(node) ? 'array' : this.isWhat;
-		this.isWhat = node instanceof HTMLElement ? 'element' : this.isWhat;
+		this.isWhat = node instanceof HTMLElement ? 'element' : this.isWhat; */
 	}
 
 	public static elem(node: HTMLElement | HTMLElement[] | string) {
@@ -14,6 +16,27 @@ class beElem {
 	}
 
 	private findWhile(
+		element: Element,
+		direction: 'parent' | 'next' | 'previous',
+		selector?: string
+	): Element | null {
+		if (direction === 'parent') {
+			return selector ? element.closest(selector) : element.parentElement;
+		}
+
+		const siblingProperty = direction === 'next' ? 'nextElementSibling' : 'previousElementSibling';
+		let sibling = element[siblingProperty] as Element | null;
+
+		while (sibling) {
+			if (!selector || sibling.matches(selector)) {
+				return sibling;
+			}
+			sibling = sibling[siblingProperty] as Element | null;
+		}
+
+		return null;
+	}
+	/* 	private findWhile(
 		element: HTMLElement | Element | any,
 		property: keyof HTMLElement,
 		expression: string | number = 0
@@ -25,7 +48,7 @@ class beElem {
 			}
 			sibling = sibling[property];
 		}
-	}
+	} */
 
 	public find(qy: string) {
 		switch (this.isWhat) {
@@ -33,7 +56,7 @@ class beElem {
 				return (this.node as HTMLElement).querySelector(qy);
 			case 'array':
 				return (this.node as HTMLElement[]).map((node) => node.querySelector(qy));
-			case 'string':
+			case 'qy':
 				return document.querySelector(this.node as string)?.querySelector(qy);
 		}
 	}
@@ -44,7 +67,7 @@ class beElem {
 				return (this.node as HTMLElement).querySelectorAll(qy);
 			case 'array':
 				return (this.node as HTMLElement[]).map((node) => node.querySelectorAll(qy));
-			case 'string':
+			case 'qy':
 				return Array.from(document.querySelectorAll(this.node as string)).flatMap((node) =>
 					node.querySelectorAll(qy)
 				);
@@ -57,7 +80,7 @@ class beElem {
 				return this.findWhile(this.node, 'parentNode', qy);
 			case 'array':
 				return (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'parentNode', qy));
-			case 'string':
+			case 'qy':
 				return Array.from(document.querySelectorAll(this.node as string)).flatMap((node) =>
 					this.findWhile(node, 'parentNode', qy)
 				);
@@ -72,7 +95,7 @@ class beElem {
 				return (this.node as HTMLElement[]).map((node) =>
 					this.findWhile(node, 'nextElementSibling', qy)
 				);
-			case 'string':
+			case 'qy':
 				return Array.from(document.querySelectorAll(this.node as string)).flatMap((node) =>
 					this.findWhile(node, 'nextElementSibling', qy)
 				);
@@ -87,7 +110,7 @@ class beElem {
 				return (this.node as HTMLElement[]).map((node) =>
 					this.findWhile(node, 'previousElementSibling', qy)
 				);
-			case 'string':
+			case 'qy':
 				return Array.from(document.querySelectorAll(this.node as string)).flatMap((node) =>
 					this.findWhile(node, 'previousElementSibling', qy)
 				);
@@ -95,6 +118,25 @@ class beElem {
 	}
 
 	public setStyle(styles: Record<string, any>) {
+		const applyStyles = (element: HTMLElement) => {
+			Object.assign(element.style, styles);
+		};
+
+		switch (this.isWhat) {
+			case 'element':
+				applyStyles(this.node as HTMLElement);
+				break;
+			case 'array':
+				(this.node as HTMLElement[]).forEach(applyStyles);
+				break;
+			case 'qy':
+				document
+					.querySelectorAll(this.node as string)
+					.forEach((el) => applyStyles(el as HTMLElement));
+				break;
+		}
+
+		return this;
 		switch (this.isWhat) {
 			case 'element':
 				const elementStyle = this.node.style;
@@ -113,7 +155,7 @@ class beElem {
 				});
 
 				return this.node;
-			case 'string':
+			case 'qy':
 				Array.from(document.querySelectorAll(this.node as string)).forEach((node) => {
 					const elementStyle = (node as HTMLElement).style;
 					for (const property in styles) {
@@ -154,7 +196,6 @@ const elem = (node: HTMLElement | HTMLElement[] | string) => {
 
 	return {
 		find: (qy: string) => {
-			console.log(isWhat, qy);
 			switch (isWhat) {
 				case 'element':
 					return (node as HTMLElement).querySelector(qy);

@@ -7,6 +7,7 @@ $preset-width-list: (
     med: 12rem,
     kind: 16rem,
     full: 100%,
+    auto: auto,
     default: 12rem
 );
 
@@ -16,6 +17,7 @@ $preset-tall-list: (
     small: 2.5rem,
     med: 3.5rem,
     kind: 4rem,
+    auto: auto,
     default: 2.5rem
 );
 

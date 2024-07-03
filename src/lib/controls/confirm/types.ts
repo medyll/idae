@@ -3,50 +3,57 @@ import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { iconSize, type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export type ConfirmProps = CommonProps &
-	Partial<Omit<HTMLDivElement, 'style'>> & {
-		style?: string;
-		element?: HTMLDivElement | null;
+export type ConfirmProps<T = any> = CommonProps & {
+	/** element data sent on confirm */
+	data?: T;
+	/** element initial HTMLDivElement props */
+	initialRef?: HTMLElement | null;
 
-		/** element initial HTMLDivElement props */
-		initialRef?: HTMLElement | null;
+	/** element confirm HTMLDivElement props */
+	contentRef?: HTMLElement | null;
 
-		/** element confirm HTMLDivElement props */
-		contentRef?: HTMLElement | null;
+	/** text displayed on initial button */
+	tooltipInitial?: string | null;
 
-		/** text displayed on initial button */
-		tooltipInitial?: string | null;
+	/** text displayed on initial button */
+	primaryInitial: string;
+	/** text displayed on the confirm phase */
+	primaryConfirm: string;
 
-		/** text displayed on initial button */
-		primaryInitial: string;
+	/** icon displayed on the initial button */
+	iconInitial?: string;
 
-		/** icon displayed on the initial button */
-		iconInitial?: string;
+	/** color of the icon displayed on the initial button */
+	iconColorInitial?: string;
 
-		/** color of the icon displayed on the initial button */
-		iconColorInitial?: string;
+	/** text displayed on confirm button */
+	primary?: string;
 
-		/** text displayed on confirm button */
-		primary?: string;
+	/** icon displayed on the confirm button */
+	icon?: ElementProps['icon'];
+	/**  button height */
+	tall?: ElementProps['tall'];
 
-		/** icon displayed on the confirm button */
-		icon?: ElementProps['icon'];
+	/** color of the icon displayed on the confirm button
+	 * @type string
+	 */
+	iconColor?: string;
 
-		/** color of the icon displayed on the confirm button
-		 * @type string
-		 */
-		iconColor?: string;
+	iconSize?: string;
 
-		iconSize?: string;
+	autoClose?: boolean;
+	/** loading state on validate */
+	loading?: boolean;
+	iconLoading?: ElementProps['icon'];
 
-		/** action initiated on confirmation */
-		readonly action?: () => void;
+	/** action initiated on confirmation */
+	action?: Promise<T> | ((data?: T) => void);
 
-		/** icon to display for back action */
-		iconCancel?: ElementProps['icon'];
-		children?: Snippet;
-		confirmInitial?: Snippet;
-	};
+	/** icon to display for back action */
+	iconCancel?: ElementProps['icon'];
+	children?: Snippet;
+	confirmInitial?: Snippet;
+};
 
 export const ConfirmDemoValues: DemoerStoryProps<ConfirmProps> = {
 	primaryInitial: {

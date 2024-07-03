@@ -35,8 +35,6 @@
 		}
 	});
 
-	$inspect($panelerContext.panelSlides);
-
 	function prevNextPanel(page: 'next' | 'prev') {
 		const event = new CustomEvent('panel:button:clicked', {
 			detail: { panelId, page, data },

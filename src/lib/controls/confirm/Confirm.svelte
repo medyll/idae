@@ -1,11 +1,10 @@
-<script lang="ts">
+<script lang="ts" generics="T=any">
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/controls/button/Button.svelte';
 	import { onDestroy } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { ExpandProps } from '$lib/types/index.js';
 
 	let step: string = $state('initial');
 
@@ -15,19 +14,26 @@
 		contentRef = null,
 		tooltipInitial = null,
 		primaryInitial = '',
+		primaryConfirm = '',
 		iconInitial = '',
 		iconColorInitial = 'inherit',
 		primary = 'confirm',
 		icon = 'check-circle-outline',
 		iconColor = 'green',
+		tall,
+		autoClose = true,
+		loading,
+		data,
 		action = () => {},
-		iconCancel = 'chevron-left',
+		iconCancel = { icon: 'fluent-mdl2:cancel', color: 'red' },
 		children,
 		confirmInitial,
 		...rest
-	}: ExpandProps<ConfirmProps> = $props();
+	}: ConfirmProps<T> & Partial<Omit<HTMLDivElement, 'style'>> = $props();
 
 	let rost = rest as HTMLAttributes<any>;
+
+	let loadingState = $state(false);
 
 	function handleClickInitial(event: any) {
 		event.preventDefault();
@@ -44,7 +50,35 @@
 	function handleAction(event: any) {
 		event.preventDefault();
 		event.stopPropagation();
-		if (action) action();
+		if (action) {
+			if (action instanceof Promise) loadingState = true;
+
+			try {
+				loadingState = true;
+				action(data).then(() => {
+					loadingState = false;
+					if (autoClose) step = 'initial';
+
+					return data;
+				});
+			} catch (e) {
+				if (typeof action == 'function') {
+					action(data);
+					if (autoClose) step = 'initial';
+				}
+			}
+			/* Promise.resolve(action).then(
+				() => { 
+					loadingState = false;
+					console.log('action done');
+					if (autoClose) step = 'initial';
+				},
+				() => {
+					console.log('action done done');
+					if (autoClose) step = 'initial';
+				}
+			); */
+		}
 	}
 
 	onDestroy(() => {
@@ -67,20 +101,39 @@
 		>
 			<Slotted child={confirmInitial} slotArgs={{ step }}>
 				<Button
+					{tall}
 					variant="naked"
+					width="full"
 					icon={{ icon: iconInitial, color: iconColorInitial }}
-					value={primaryInitial}
-				/>
+					title={tooltipInitial}
+				>
+					{primaryInitial}
+				</Button>
 			</Slotted>
 		</div>
 	{/if}
 	{#if step === 'confirm'}
 		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
 			<span>
-				<Button onclick={handleClickCancel} variant="naked" icon={iconCancel} title="cancel" />
+				<Button
+					onclick={handleClickCancel}
+					width="tiny"
+					ratio="1/1"
+					variant="naked"
+					icon={iconCancel}
+					{tall}
+					title="cancel"
+				/>
 			</span>
 			<Slotted child={children} slotArgs={{ step }}>
-				<Button onclick={handleAction} {icon} width="auto" {value} />
+				<Button
+					loading={loadingState}
+					{tall}
+					onclick={handleAction}
+					{icon}
+					width="auto"
+					value={primaryConfirm}
+				/>
 			</Slotted>
 		</div>
 	{/if}

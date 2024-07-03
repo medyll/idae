@@ -6,6 +6,7 @@ import {
 	uiPresets,
 	widthPreset,
 	type CommonProps,
+	type Data,
 	type ElementProps
 } from '$lib/types/index.js';
 import type { MenuListProps } from '$lib/ui/menuList/types.js';
@@ -54,10 +55,10 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	buttonLoadingIcon?: Snippet;
 }
 
-export type ButtonMenuProps = ButtonProps & {
-	menuProps?: MenuListProps;
+export type ButtonMenuProps<T = Data> = ButtonProps & {
+	menuProps?: MenuListProps<T>;
 	popperProps?: PopperProps;
-	menuItem?: Snippet;
+	menuItem?: Snippet<[{ item: T }]>;
 };
 
 const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {

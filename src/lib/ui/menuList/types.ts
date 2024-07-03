@@ -37,7 +37,7 @@ export type MenuListProps<T = Data> = CommonProps & {
 	/** @deprecated use menuItemsList */
 	menuList?: MenuListItemProps[];
 	children?: Snippet<[{ item: Data; itemIndex: number }]>;
-	rest?: any;
+	listItemBottom?: Snippet<[{ item: Data; itemIndex: number }]>;
 };
 
 export type MenuListItemProps<T = Data> = CommonProps & {
@@ -71,8 +71,12 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	data?: T;
 	/** makes the menu item selectable */
 	selectable?: boolean;
+	/** html tag to use, default ul */
+	tag?: string;
 	/** whether the menu item is selected */
 	selected?: boolean;
+	/** wrap */
+	wrap?: boolean;
 	/** @deprecated
 	 * function to be called when the menu item is clicked */
 	onMenuItemClick?: (data: T) => void;

@@ -10,6 +10,7 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { WindowProps } from './types.js';
 	import type { ExpandProps } from '$lib/types/index.js';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	let {
 		class: className = '',
@@ -122,7 +123,7 @@
 					<div class="handle">{title ?? ''}</div>
 					<div class="ctrlZone">
 						<div>
-							<Button
+							<IconButton
 								variant="naked"
 								icon={{ icon: iconClose, iconSize: 'small', color: 'red' }}
 								style="aspect-ratio:1/1"
