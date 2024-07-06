@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.2](https://github.com/medyll/idbql/compare/v3.4.1...v3.4.2) (2024-07-06)
+
+
+### Bug Fixes
+
+* ts for where operators ([62394fc](https://github.com/medyll/idbql/commit/62394fc1c9fd42f9de76bbf5fe25f4843ddd731b))
+
 ### [3.4.1](https://github.com/medyll/idbql/compare/v3.4.0...v3.4.1) (2024-07-06)
 
 ## [3.4.0](https://github.com/medyll/idbql/compare/v3.3.6...v3.4.0) (2024-07-06)
