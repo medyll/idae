@@ -1,3 +1,5 @@
+import type { P } from "vitest/dist/reporters-P7C2ytIv.js";
+
 export type Operator = keyof OperatorType;
 
 export type OperatorType = {
@@ -17,4 +19,6 @@ export type OperatorType = {
 export type WhereKeys<T> = Partial<
   Record<keyof OperatorType, Record<keyof T, any>>
 >;
-export type Where<T> = Partial<Record<keyof T, any> & WhereKeys<T>>;
+export type Where<T> = Partial<
+  Record<keyof T, Partial<Record<keyof WhereKeys<T>, any>>>
+>;
