@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/medyll/idbql/compare/v3.3.6...v3.4.0) (2024-07-06)
+
+
+### Features
+
+* added extra find options ([5b0426d](https://github.com/medyll/idbql/commit/5b0426d852dfff1197d7b1bdd8a5591c6c9c9f29))
+
 ### [3.3.6](https://github.com/medyll/idbql/compare/v3.3.5...v3.3.6) (2024-07-01)
 
 ### [3.3.5](https://github.com/medyll/idbql/compare/v3.3.4...v3.3.5) (2024-07-01)
