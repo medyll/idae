@@ -41,7 +41,6 @@ export class CollectionCore<T = any> {
       );
       this.dBOpenRequest.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest)?.result;
-
         if (!db.objectStoreNames.contains(this._store)) {
           reject("collection not found");
           return false;

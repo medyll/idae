@@ -2,6 +2,7 @@ import type { IdbqlIndexedCore } from "$lib/scripts/idbqlCore/idbqlCore.js";
 import { Operators } from "$lib/scripts/operators/operators.js";
 import {
   getResultset,
+  type ResultSet,
   type ResultsetOptions,
 } from "$lib/scripts/resultSet/Resultset.js";
 import type { Where } from "$lib/scripts/types.js";
@@ -15,7 +16,6 @@ import { idbqlEvent } from "./idbqlEvent.svelte.js";
  * @returns {object} - The state object.
  */
 export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
-  let state = idbqlEvent.dataState;
   let collections: Record<string, any> = {};
 
   if (idbBase.schema) {
@@ -30,130 +30,12 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    */
   function addCollection<T>(collectionName: string) {
     return new CollectionDyn<T>(collectionName, idbBase);
-
-    if (!state?.[collectionName]) state[collectionName] = [];
-
-    const collectionState = {
-      get rs() {
-        return state[collectionName];
-      },
-    };
-
-    feed();
-    function testIdbql(collection: string) {
-      return idbBase && Boolean(idbBase?.[collection]);
-    }
-    function feed() {
-      if (idbBase && testIdbql(collectionName)) {
-        idbBase[collectionName].getAll().then((data) => {
-          state[collectionName] = data;
-        });
-      }
-    }
-
-    /**
-     * Filters the resultset based on the provided query.
-     * @param qy - The query to filter the resultset.
-     * @param options {ResultsetOptions} - Optional resultset options.
-     * @returns  {Resultset} The filtered resultset.
-     */
-    function where(qy: Where<T>, options?: ResultsetOptions) {
-      let c = Operators.parse(state[collectionName], qy);
-      const r = getResultset<T>(c);
-      if (options) r.setOptions(options);
-
-      return r;
-    }
-
-    function update(keyPathValue: string | number, data: Partial<T>) {
-      if (idbBase && testIdbql(collectionName)) {
-        (idbBase[collectionName] as CollectionCore).update(keyPathValue, data);
-      }
-    }
-
-    async function updateWhere(where: Where<T>, data: Partial<T>) {
-      if (idbBase && testIdbql(collectionName)) {
-        await idbBase[collectionName].updateWhere(where, data);
-      }
-    }
-
-    // put data to indexedDB, replace collection content
-    async function put(value: Partial<T>) {
-      if (idbBase && testIdbql(collectionName)) {
-        await idbBase[collectionName].put(value);
-      }
-    }
-
-    /** add data to the store */
-    async function add(data: T) {
-      if (idbBase && testIdbql(collectionName)) {
-        await idbBase[collectionName].add(data);
-      }
-    }
-
-    function get(value: any, pathKey: string = "id"): T[] {
-      let f = $derived(
-        state[collectionName].filter((d) => d[pathKey] === value)
-      );
-      return f as T[];
-    }
-
-    function getOne(value: any, pathKey: string = "id"): T {
-      let f = $derived(
-        state[collectionName]?.filter((d) => d[pathKey] === value)[0] as T
-      );
-      return f;
-    }
-
-    function getAll(): T[] {
-      let f = $derived(getResultset<T>(state[collectionName]));
-      return f;
-    }
-
-    async function del(
-      keyPathValue: string | number
-    ): Promise<boolean | undefined> {
-      if (idbBase && testIdbql(collectionName)) {
-        return await idbBase[collectionName].delete(keyPathValue);
-      }
-    }
-
-    async function deleteWhere(where: Where<T>): Promise<boolean | undefined> {
-      if (idbBase && testIdbql(collectionName)) {
-        return await idbBase[collectionName].deleteWhere(where);
-      }
-    }
-
-    let ret = {
-      where,
-      get,
-      getOne,
-      getAll,
-      update,
-      updateWhere,
-      put,
-      add,
-      delete: del,
-      deleteWhere,
-    };
-
-    /* let handler = {
-      get: function (obj, prop, args) {
-        if (prop === "where") {
-          console.log("get", prop); 
-        }
-        return obj?.[prop];
-      },
-    };
-
-    let proxy = new Proxy(ret, handler); */
-
-    return ret;
   }
 
-  function addCollections(args: Record<string, string>) {
+  function addCollections<T = typeof idbBase.schema>(args: T) {
     Object.keys(args).map((collection) => {
-      collections[collection] = addCollection(collection, args[collection]);
+      const t = args[collection];
+      collections[collection] = addCollection<typeof t>(collection);
     });
   }
 
@@ -175,7 +57,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
  */
 export class CollectionDyn<T> {
   private collectionName: string;
-  private state: any = idbqlEvent.dataState;
+  private state = idbqlEvent.dataState as CollectionDyn<T>;
   private idbBase: IdbqlIndexedCore;
 
   constructor(collectionName: string, idbBase: IdbqlIndexedCore) {
@@ -228,7 +110,7 @@ export class CollectionDyn<T> {
     return this.collectionState.filter((d) => d[pathKey] === value)?.[0] as T;
   }
 
-  getAll(): T[] {
+  getAll(): ResultSet<T> {
     return getResultset<T>(this.collectionState);
   }
 

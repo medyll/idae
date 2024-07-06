@@ -5,47 +5,102 @@ import {
 } from "../state/idbstate.svelte.js";
 import { Schema } from "./schema.js";
 
-type IdbObjectify<T extends string> = `array-of-${T}` | `object-${T}` | T;
-export type IdDbPrimitive =
-  | "id"
-  | "date"
-  | "text"
+type ExpandProps<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+export enum enumPrimitive {
+  id = "id",
+  any = "any",
+  date = "date",
+  text = "text",
+  number = "number", // IdbqModelCollectionTemplate
+  boolean = "boolean",
+  datetime = "datetime",
+  url = "url",
+  email = "email",
+  phone = "phone",
+  time = "time",
+  password = "password",
+}
+
+export enum TplProperties {
+  private = "private",
+  readonly = "readonly",
+  required = "required",
+}
+
+type CombineElements<T extends string, U extends string = T> = T extends any
+  ? T | `${T} ${CombineElements<Exclude<U, T>>}`
+  : never;
+type CombinedArgs = CombineElements<TplProperties>;
+
+type IdbObjectify<T extends string> = `array-of-${T}` | `object-${T}`;
+
+export type TplCollectionFields = Record<string, string>;
+// make a method parse primitive types
+export type TplFieldPrimitive<T = {}> =
+  | keyof typeof enumPrimitive
   | `text-${"tiny" | "short" | "medium" | "long" | "giant"}`
-  | "number"
-  | "boolean"
-  | "array"
-  | "object"
-  | `${string}.${string}`;
+  | `${string}.${string}`
+  | `fk-${string}.${string}`;
 
-export type IDbFieldFkTypes = IdbObjectify<IdDbPrimitive>;
+export type TplObjectFieldPrimitive = IdbObjectify<TplFieldPrimitive>;
+export type TplFieldFk = `fk-${string}.${string}`;
+export type TplFkObject = IdbObjectify<TplFieldFk>;
+export type TplTypes =
+  | TplFieldPrimitive
+  | TplObjectFieldPrimitive
+  | TplFieldFk
+  | TplFkObject;
 
-export type IDbFieldTypesO =
-  | IdDbPrimitive
-  | IDbFieldFkTypes
-  | `fk-${IdbObjectify<`${string}.${string}`>}`;
+export type TplFieldArgs = `${TplTypes} (${CombinedArgs})`;
+const a: TplFieldArgs = "object-any (readonly private)";
+/** rules */
+export type TplFieldRules = TplFieldArgs | TplTypes;
+export type TplFieldType = TplFieldArgs | TplTypes;
 
-export type DbFieldTypes =
-  | IDbFieldTypesO
-  | `${IDbFieldTypesO}(private | locked | ${string}-on-${string} | ${string})`;
+export type IDbForge = {
+  collection?: TplCollectionName;
+  fieldName?: keyof TplFields;
+  fieldType?: TplFieldType;
+  fieldRule?: TplFieldRules;
+  fieldArgs?: [keyof typeof TplProperties] | undefined;
+  is: any;
+};
 
-const a: DbFieldTypes = "";
-export type CollectionModel<T> = {
+export type IdbqModel<T = Record<string, Record<string, any>>> = {
+  readonly [K in keyof T]: CollectionModel<T[K]>;
+};
+export type TplCollectionName<T = TplCollectionFields> = keyof IdbqModel<T>;
+export type Tpl<T = TplCollectionFields> = CollectionModel<T>["template"];
+export type TplFields<T = TplCollectionFields> =
+  CollectionModel<T>["template"]["fields"];
+
+//
+export type CollectionModel<T = TplCollectionFields> = {
   keyPath: string | any;
   model: any;
   ts: any;
-  template?: {
-    index?: string;
-    fields?: {
-      [K in keyof T]: DbFieldTypes;
+  template: {
+    index: string;
+    presentation: CombineElements<keyof CollectionModel<T>["model"]>;
+    fields: {
+      [K in keyof T]: TplFieldRules;
+    };
+    fks: {
+      [K in TplCollectionName]?: {
+        code: K;
+        multiple: boolean;
+        rules: CombinedArgs;
+      };
     };
   };
 };
-export type IdbqModel<T = any> = {
-  readonly [K in keyof T]: CollectionModel<T[K]>;
-};
 
-type ModelTypes<T = Record<string, CollectionModel<any>>> = {
-  [P in keyof T]: T[P] extends { model: infer M } ? M : never;
+type ModelTypes<T = Record<string, any>> = {
+  [P in keyof T]: T[P] extends { ts: infer M }
+    ? M
+    : T[P] extends { model: infer M }
+    ? M
+    : never;
 };
 type Method<T> = {
   // @ts-ignore
@@ -53,11 +108,15 @@ type Method<T> = {
 };
 type MethodState<T> = {
   // @ts-ignore
-  readonly [K in keyof T]: CollectionDyn<T[K]>;
+  [K in keyof T]: CollectionDyn<T[K]>;
 };
 
-type ReadonlyCollections<T> = Method<ModelTypes<T>>;
-type StateCollections<T> = MethodState<ModelTypes<T>>;
+type ReadonlyCollections<T> = Method<
+  ModelTypes<Record<string, CollectionModel<T>>>
+>;
+type StateCollections<T> = MethodState<
+  ModelTypes<Record<string, CollectionModel<T>>>
+>;
 /**
  * Represents the IndexedDB wrapper for managing database operations.
  * @template T - The type of data stored in the IndexedDB.
@@ -103,8 +162,6 @@ export class IdbqlIndexedCore<T = any> {
   get idbqModel() {
     return this.#idbqModel;
   }
-
-  proxifies<T>(obj: T) {}
 
   /**
    * Sets the version of the database.
@@ -182,7 +239,7 @@ export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
         idbDatabase: idb_ as typeof idb_,
         idbql: idb_ as ReadonlyCollections<T>,
         idbqlState: createIdbqlState(idb_).state as StateCollections<T>,
-        idbModel: model as IdbqModel<T>,
+        idbqModel: model as IdbqModel<typeof model>,
       };
     },
   };
