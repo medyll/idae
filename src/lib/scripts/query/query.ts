@@ -1,9 +1,11 @@
+/* src\lib\scripts\query\query.ts */
 import { Operators } from "../operators/operators.js";
+
 import { getResultset } from "../resultSet/Resultset.js";
 
 import type { Operator, Where } from "../types.js";
 
-export class Query<T> {
+export class Query<T extends object> {
   data: T[];
   constructor(data: T[]) {
     this.data = data;
@@ -11,32 +13,37 @@ export class Query<T> {
   }
 
   where(qy: Where<T>) {
-    for (const fieldName in qy) {
-      const query = qy[fieldName];
-      if (
-        typeof query === "object" &&
-        Operators.operators.includes(Object.keys(query)[0] as Operator)
-      ) {
-        for (const key in query) {
-          // if operator
-          if (Operators.operators.includes(key as Operator)) {
-            const operator = key as Operator;
-            const value = query[key as Operator];
+    this.data = this.data.filter((item) => this.matchesQuery(item, qy));
+    return getResultset(this.data);
+  }
 
-            this.data = Operators.filters(
-              fieldName as keyof T,
-              operator,
-              value,
-              this.data
-            );
-          } else {
-          }
-        }
-      } else {
-        this.data = this.data.filter((dt) => dt[fieldName] == query);
-      }
+  private matchesQuery(item: T, query: Where<T>): boolean {
+    if (typeof query !== "object" || query === null) {
+      return false;
     }
 
-    return this.data;
+    return Object.entries(query).every(([key, value]) => {
+      if (Operators.operators.includes(key as Operator)) {
+        return (
+          Operators.filters(key as Operator, "eq", value, [item]).length > 0
+        );
+      } else {
+        return this.matchesField(item, key as keyof T, value);
+      }
+    });
+  }
+
+  private matchesField(item: T, field: keyof T, condition: any): boolean {
+    if (
+      typeof condition === "object" &&
+      condition !== null &&
+      !Array.isArray(condition)
+    ) {
+      return Object.entries(condition).every(
+        ([op, val]) =>
+          Operators.filters(field, op as Operator, val, [item]).length > 0
+      );
+    }
+    return Operators.filters(field, "eq", condition, [item]).length > 0;
   }
 }
