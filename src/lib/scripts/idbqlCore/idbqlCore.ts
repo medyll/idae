@@ -1,9 +1,11 @@
+/* src\lib\scripts\idbqlCore\idbqlCore.ts */
+
 import { Collection, CollectionCore } from "../collection/collection.js";
 import {
   createIdbqlState,
-  type CollectionDyn,
+  type StateCollectionDyn,
 } from "../state/idbstate.svelte.js";
-import { Schema } from "./schema.js";
+import { Schema } from "./idbqlSchema.js";
 
 type ExpandProps<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 export enum enumPrimitive {
@@ -38,7 +40,7 @@ export type TplCollectionFields = Record<string, string>;
 // make a method parse primitive types
 export type TplFieldPrimitive<T = {}> =
   | keyof typeof enumPrimitive
-  | `text-${"tiny" | "short" | "medium" | "long" | "giant"}`
+  | `text-${"tiny" | "short" | "medium" | "long" | "area"}`
   | `${string}.${string}`
   | `fk-${string}.${string}`;
 
@@ -108,7 +110,7 @@ type Method<T> = {
 };
 type MethodState<T> = {
   // @ts-ignore
-  [K in keyof T]: CollectionDyn<T[K]>;
+  [K in keyof T]: StateCollectionDyn<T[K]>;
 };
 
 type ReadonlyCollections<T> = Method<
