@@ -128,7 +128,7 @@ type StateCollections<T extends IdbqModel> = {
 export class IdbqlIndexedCore<T = any> {
   private databaseName: string;
   dbVersion!: number;
-  public idbDatabase?: IDBDatabase;
+  public idbDatabase!: IDBDatabase;
 
   #schema: Record<string, any> = {};
   #idbqModel: IdbqModel = {};
@@ -138,7 +138,6 @@ export class IdbqlIndexedCore<T = any> {
    */
   constructor(databaseName: string, idbqModel: IdbqModel, version: number) {
     this.databaseName = databaseName;
-    this.idbDatabase = undefined;
     this.#idbqModel = idbqModel;
     this.dbVersion = version;
 
@@ -199,8 +198,34 @@ export class IdbqlIndexedCore<T = any> {
           reject(true);
         }
       });
-    } else {
     }
+  }
+
+  async transaction<R>(
+    storeNames: string | string[],
+    mode: IDBTransactionMode,
+    callback: (tx: IDBTransaction) => Promise<R>
+  ): Promise<R> {
+    if (!this.idbDatabase) {
+      throw new Error("Database not initialized");
+    }
+
+    return new Promise((resolve, reject) => {
+      const tx = this.idbDatabase.transaction(storeNames, mode);
+      tx.onerror = () => reject(tx.error);
+      tx.oncomplete = () => resolve(result);
+
+      let result: R;
+      Promise.resolve(callback(tx)).then(
+        (value) => {
+          result = value;
+        },
+        (error) => {
+          tx.abort();
+          reject(error);
+        }
+      );
+    });
   }
 
   // @ts-ignore
@@ -255,5 +280,3 @@ export const createIdbqDb = <T extends IdbqModel>(
 };
 
 export const idbqBase = createIdbqDb;
-
-// Query
