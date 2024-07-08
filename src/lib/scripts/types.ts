@@ -1,24 +1,26 @@
-import type { P } from "vitest/dist/reporters-P7C2ytIv.js";
+/* path: D:\boulot\app-node\idbql\src\lib\scripts\types.ts */
 
 export type Operator = keyof OperatorType;
 
-export type OperatorType = {
-  eq?: string | number | Date | boolean | any;
-  gt?: number | Date | any;
-  gte?: number | Date | any;
-  lt?: number | Date | any;
-  lte?: number | Date | any;
-  ne?: any;
-  in?: any[];
-  nin?: any[];
-  contains?: string;
-  startsWith?: string;
-  endsWith?: string;
+export type OperatorType<T = any> = {
+  eq?: T;
+  gt?: T extends number | Date ? T : never;
+  gte?: T extends number | Date ? T : never;
+  lt?: T extends number | Date ? T : never;
+  lte?: T extends number | Date ? T : never;
+  ne?: T;
+  in?: T[];
+  nin?: T[];
+  contains?: T extends string ? string : never;
+  startsWith?: T extends string ? string : never;
+  endsWith?: T extends string ? string : never;
+  btw?: T extends number ? [T, T] : never;
 };
 
-export type WhereKeys<T> = Partial<
-  Record<keyof OperatorType, Record<keyof T, any>>
->;
-export type Where<T> = Partial<
-  Record<keyof T, Partial<Record<keyof WhereKeys<T>, any>>>
->;
+type WhereCondition<T> = {
+  [K in keyof T]?: T[K] | Partial<OperatorType<T[K]>>;
+};
+
+export type Where<T = Record<string, any>> =
+  | WhereCondition<T>
+  | { [K in keyof OperatorType]?: Partial<T> };
