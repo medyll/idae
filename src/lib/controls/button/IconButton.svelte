@@ -45,8 +45,6 @@
 	{width}
 	{...rest}
 	bind:element
-	style="{style};aspect-ratio:{ratio};overflow:hidden;border:1px solid red!important;;"
-	{ratio}
+	style="{style};aspect-ratio:{ratio};overflow:hidden;align-items:center;"
+	{ratio}><Icon {rotation} {icon} iconSize={iconFontSize} /></Button
 >
-	<Icon {rotation} {icon} iconSize={iconFontSize} />
-</Button>

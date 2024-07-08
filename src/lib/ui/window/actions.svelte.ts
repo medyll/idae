@@ -2,7 +2,7 @@ import Window from '$lib/ui/window/Window.svelte';
 import { wStore } from '$lib/ui/window/store.js';
 import { get } from 'svelte/store';
 import type { ElementProps } from '$lib/types/index.js';
-import type { ComponentConstructorOptions } from 'svelte';
+import { mount, type ComponentConstructorOptions } from 'svelte';
 
 type OpenWindow = {
 	/** Id of the component's instance */ frameId?: string | undefined;
@@ -53,7 +53,7 @@ export const openWindow = <T = any>(
 			? document.querySelector(args.parentNode)
 			: args?.parentNode ?? document.body;
 	if (!w) {
-		let a = new Window({
+		let a = mount(Window, {
 			target: target ?? document.body,
 			...opts,
 			props: {
@@ -63,9 +63,10 @@ export const openWindow = <T = any>(
 				removeFromDomOnClose: true
 			}
 		});
-		a.$set({
+		//a.self = a;
+		/* a.$set({
 			self: a
-		});
+		}); */
 		return a;
 	} else {
 		w.actions.setActive();

@@ -26,10 +26,12 @@
 		element,
 		elementContent,
 		elementContentInner,
+		component,
+		componentProps,
 		classes = {},
 		children,
 		backdropLoading
-	}: ExpandProps<BackdropProps> = $props();
+	}: BackdropProps = $props();
 
 	$effect(() => {
 		element?.addEventListener('click', testAutoClose);
@@ -56,13 +58,17 @@
 		<div bind:this={elementContent} class="backdrop-content">
 			{#if isLoading}
 				<div class="backdrop-content-loader">
-					<Slotted child={backdropLoading}
-						><Icon icon="mdi:loading" iconSize="large" rotate /></Slotted
-					>
+					<Slotted child={backdropLoading}>
+						<Icon icon="mdi:loading" iconSize="large" rotate />
+					</Slotted>
 				</div>
 			{:else}
 				<div class="backdrop-content-inner" bind:this={elementContentInner}>
-					<Slotted child={children} />
+					{#if children}
+						{@render children?.()}
+					{:else if component}
+						<svelte:component this={component} {...componentProps} />
+					{/if}
 				</div>
 			{/if}
 		</div>

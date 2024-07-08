@@ -23,10 +23,10 @@
 		dividerBefore = false,
 		href,
 		selectable = true,
-		data = $bindable({}),
+		data = $bindable(),
 		selected = $bindable(false),
-		onMenuItemClick = () => {},
-		onclick = (event, args) => {},
+		onMenuItemClick,
+		onclick,
 		itemIndex = undefined,
 		tall = menuStateContext?.tall ?? 'default',
 		children,
@@ -54,23 +54,26 @@
 	$effect(() => {
 		if (itemIndex === undefined && element?.parentElement) {
 			itemIndex = [
-				...element?.parentElement?.querySelectorAll('.menu-list-item:not(.menu-list-title')
+				...element?.parentElement?.querySelectorAll('.menu-list-item:not(.menu-list-title)')
 			].indexOf(element);
 		}
 	});
 
 	const handleClick = (event: Event) => {
+		event.stopPropagation();
+		event.stopImmediatePropagation;
+
 		const cevent = new CustomEvent('menu:item:clicked', { detail: data, bubbles: true });
 		if (element) element.dispatchEvent(cevent);
 		// set selectedIndex if we have index
 		// set selected style
 		if (selectable) setSelected();
-		onMenuItemClick(data);
-		if (menuStateContext?.onclick) {
-			menuStateContext?.onclick(cevent, data);
-		}
+		if (onMenuItemClick) onMenuItemClick(data);
+
 		if (onclick) {
-			onclick(cevent, data);
+			onclick(data, itemIndex);
+		} else if (menuStateContext?.onclick) {
+			menuStateContext?.onclick(data, itemIndex);
 		}
 	};
 

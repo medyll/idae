@@ -234,7 +234,7 @@ export * from '$lib/ui/toolBar/types.js';
 export { default as Tree } from '$lib/ui/tree/Tree.svelte';
 export * from '$lib/ui/tree/tree.utils.js';
 export * from '$lib/ui/tree/types.js';
-export * from '$lib/ui/window/actions.js';
+export * from '$lib/ui/window/actions.svelte.js';
 export * from '$lib/ui/window/store.js';
 export * from '$lib/ui/window/types.js';
 export { default as Window } from '$lib/ui/window/Window.svelte';

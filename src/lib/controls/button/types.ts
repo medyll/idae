@@ -97,6 +97,10 @@ const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
 	reverse: {
 		type: 'boolean',
 		default: false
+	},
+	loading: {
+		type: 'boolean',
+		default: false
 	}
 };
 

@@ -1,14 +1,16 @@
 $vendor: "sld";
 
+$presets-ellipsis-line-default: 1;
+
 $preset-width-list: (
     tiny: 2rem,
     mini: 3rem,
-    small: 8rem,
-    med: 12rem,
-    kind: 16rem,
+    small: 10rem,
+    med: 14rem,
+    kind: 20rem,
     full: 100%,
     auto: auto,
-    default: 12rem
+    default: 10rem
 );
 
 $preset-tall-list: (

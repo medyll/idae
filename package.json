@@ -102,6 +102,7 @@
 	"type": "module",
 	"dependencies": {
 		"@iconify/svelte": "^4.0.2",
+		"@medyll/idbql": "file:../idbql",
 		"d3": "^7.9.0",
 		"npm-check-updates": "^17.0.0-5",
 		"postcss-load-config": "^6.0.1",

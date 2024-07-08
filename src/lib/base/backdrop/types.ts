@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { demoerArgs } from '../demoer/demoer.utils.js';
 
-export interface BackdropProps extends CommonProps {
+export interface BackdropProps<T = any, C = any> extends CommonProps {
 	/** backdrop class */
 	class?: string;
 	/** backdrop style */
@@ -22,6 +22,8 @@ export interface BackdropProps extends CommonProps {
 	element?: HTMLDivElement;
 	elementContent?: HTMLDivElement;
 	elementContentInner?: HTMLDivElement;
+	component?: C;
+	componentProps?: Record<string, any>;
 	classes?: {
 		backdrop?: string;
 		backdropContent?: string;

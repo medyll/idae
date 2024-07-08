@@ -1,5 +1,27 @@
 @import "./slotui-vars.scss";
 
+@mixin ui-ellipsises-presets {
+    --preset-ellipsis-line: #{$presets-ellipsis-line-default};
+
+    &.ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @for $i from 1 through 5 {
+        &.ellipsis-line-#{$i} {
+            display: -webkit-box;
+            -webkit-line-clamp: #{$i};
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            --preset-ellipsis-line: #{$i};
+        }
+    }
+}
+
 @mixin ui-transition {
     transition: all 0.2s ease;
 }

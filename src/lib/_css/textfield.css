@@ -54,12 +54,12 @@
   --sld-tall-default: var(--sld-tall-small);  */
   --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
-  --sld-width-small: 8rem;
-  --sld-width-med: 12rem;
-  --sld-width-kind: 16rem;
+  --sld-width-small: 10rem;
+  --sld-width-med: 14rem;
+  --sld-width-kind: 20rem;
   --sld-width-full: 100%;
   --sld-width-auto: auto;
-  --sld-width-default: 12rem;
+  --sld-width-default: 10rem;
   /* --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
   --sld-width-small: 8rem;

@@ -89,14 +89,14 @@
 	});
 
 	const makeOnTop = () => {
-		let max = Math.max(
+		/* let max = Math.max(
 			...Array.from(document.querySelectorAll('body *'), (el) =>
 				parseFloat(window.getComputedStyle(el).zIndex)
 			).filter((zIndex) => !Number.isNaN(zIndex)),
 			0
 		);
 
-		return max + 1;
+		return max + 1; */
 	};
 
 	$effect(() => {
@@ -105,6 +105,8 @@
 			return val?.style?.zIndex >= prev ? val?.style?.zIndex + 1 : prev;
 		}, 0);
 	});
+
+	let hidden = $derived(!(parentNode && ((isOpen && autoClose) || !autoClose)));
 </script>
 
 {#if popperHolder}
@@ -116,26 +118,29 @@
 	<!-- @ts-ignore -->
 	<Button bind:element={holderSlotRef} onclick={() => (isOpen = true)} {...buttonProps} />
 {/if}
-{#if parentNode && ((isOpen && autoClose) || !autoClose)}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<!-- @ts-ignore -->
-	<div
-		bind:this={element}
-		class="popper {className}"
-		use:stickTo={{ parentNode, position, stickToHookWidth }}
-		use:clickAway={{ action: clickedAway }}
-		style={rest.style}
-		style:zIndex={makeOnTop()}
-		{...rest}
-	>
-		<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden">
-			{#if popperLeft}
-				<div style="height:100%;max-height:100%;overflow:hidden;" class="popper-left">
-					{@render popperLeft()}
-				</div>
-			{/if}
-			{#if children}
+<!-- {#if parentNode && ((isOpen && autoClose) || !autoClose)} -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- @ts-ignore -->
+<div
+	bind:this={element}
+	class="popper {className}"
+	use:stickTo={{ parentNode, position, stickToHookWidth }}
+	use:clickAway={{ action: clickedAway }}
+	style={rest.style}
+	style:zIndex={makeOnTop()}
+	style:contentVisibility={hidden ? 'hidden' : 'auto'}
+	style:display={hidden ? 'none!important' : ''}
+	{...rest}
+>
+	<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden">
+		{#if popperLeft}
+			<div style="height:100%;max-height:100%;overflow:hidden;" class="popper-left">
+				{@render popperLeft()}
+			</div>
+		{/if}
+		{#if children}
+			<div style="flex:1">
 				<Slotted child={children}>
 					{#if mounted}
 						{#if component}
@@ -146,13 +151,15 @@
 						{/if}
 					{/if}
 				</Slotted>
-			{/if}
-			{#if popperRight}
-				<div class="popper-right">{@render popperRight()}</div>
-			{/if}
-		</div>
+			</div>
+		{/if}
+		{#if popperRight}
+			<div class="popper-right">{@render popperRight()}</div>
+		{/if}
 	</div>
-{/if}
+</div>
+
+<!-- {/if} -->
 
 <style global lang="scss">
 	@import './popper.scss';

@@ -59,6 +59,7 @@
 </Button>`;
 </script>
 
+<Button variant="contained" value="red" icon="material-symbols-light:post-add-sharp"></Button>
 <ButtonAction
 	>test et essai
 	{#snippet popperContent()}

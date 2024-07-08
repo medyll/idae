@@ -54,12 +54,12 @@
   --sld-tall-default: var(--sld-tall-small);  */
   --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
-  --sld-width-small: 8rem;
-  --sld-width-med: 12rem;
-  --sld-width-kind: 16rem;
+  --sld-width-small: 10rem;
+  --sld-width-med: 14rem;
+  --sld-width-kind: 20rem;
   --sld-width-full: 100%;
   --sld-width-auto: auto;
-  --sld-width-default: 12rem;
+  --sld-width-default: 10rem;
   /* --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
   --sld-width-small: 8rem;
@@ -309,9 +309,10 @@ body[data-theme=dark],
   --menu-list-item-selected-background: var(--sld-selected-background-color);
   --menu-list-item-action-display: flex;
   --menu-list-item-action-justify-content: center;
+  --menu-list-grid-items-count: 0;
 }
 
-:global(ul.menuList) {
+:global(menuList) {
   margin: 0;
   cursor: pointer;
   display: flex;
@@ -319,8 +320,12 @@ body[data-theme=dark],
   align-items: end;
   padding: var(--menu-list-padding);
 }
-:global(ul.menuList) li.menu-list-title,
-:global(ul.menuList) a.menu-list-title {
+:global(menuList).grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
+}
+:global(menuList) li.menu-list-title,
+:global(menuList) a.menu-list-title {
   font-weight: bold;
 }
 

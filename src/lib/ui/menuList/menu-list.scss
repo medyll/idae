@@ -7,9 +7,10 @@
   --menu-list-item-selected-background: var(--sld-selected-background-color);
   --menu-list-item-action-display: flex;
   --menu-list-item-action-justify-content: center;
+  --menu-list-grid-items-count: 0;
 }
 
-:global(ul.menuList) {
+:global(menuList) {
   margin: 0;
   cursor: pointer;
 
@@ -17,6 +18,14 @@
   flex-direction: column;
   align-items: end;
   padding: var(--menu-list-padding);
+
+  &.grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr)
+    );
+  }
 
   li,
   a {

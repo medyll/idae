@@ -96,7 +96,7 @@
 		</form>
 	</Backdrop>
 {:else}
-	<Slotted child={children} />
+	{@render children?.()}
 {/if}
 
 <style lang="scss">

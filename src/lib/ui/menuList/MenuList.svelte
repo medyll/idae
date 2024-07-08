@@ -6,6 +6,7 @@
 	import MenuListItem from './MenuListItem.svelte';
 	import { tallPreset, type Data, type ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import Looper from '$lib/utils/looper/Looper.svelte';
 
 	export const actions = {
 		navigate(e: KeyboardEvent) {
@@ -26,7 +27,7 @@
 	let {
 		class: className = '',
 		tall = tallPreset.default,
-		style = undefined,
+		style,
 		selectorField,
 		selectedData = $bindable(),
 		selectedIndex = $bindable(),
@@ -34,9 +35,11 @@
 		menuListItems: menuItemsList = $bindable(),
 		data = $bindable(),
 		role = 'menu',
+		grid,
 		onclick,
 		showLastOnSelected = true,
 		children,
+		menuListItem,
 		listItemBottom,
 		...rest
 	}: MenuListProps = $props();
@@ -46,7 +49,6 @@
 		menuItemsInstances: [],
 		tall,
 		data,
-		onclick,
 		selectorField,
 		selectedIndex,
 		actions
@@ -63,7 +65,7 @@
 	});
 	$effect(() => {
 		if (element) {
-			element.addEventListener<any>('menu:item:clicked', onMenuClick);
+			element.addEventListener<any>('menu:item:clicked', onMenuItemClick);
 
 			element.addEventListener('click', () => {
 				element?.focus();
@@ -76,10 +78,9 @@
 		}
 	});
 
-	function onMenuClick(e: CustomEvent<any>) {
-		/** @deprecated */
-		let event = new CustomEvent('menu:click', { detail: e.detail, bubbles: true });
-		element?.dispatchEvent(event);
+	function onMenuItemClick(e: CustomEvent<any>) {
+		console.log('onMenuItemClick', e.detail);
+		if (onclick) onclick(e.detail, 2);
 	}
 
 	function scrollToElement(target: HTMLElement) {
@@ -98,10 +99,10 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <ul
 	bind:this={element}
-	class="tall-{tall} menuList {className}"
+	class="tall-{tall} menuList {className} {grid ? 'grid' : ''}"
 	class:showLastOnSelected
 	tabindex="0"
-	{style}
+	style={`${style};var(--menu-list-grid-items-count):${grid ? grid : '0'}`}
 	{role}
 	use:navigation={{ className: 'menu-list-item', selectedIndex: -1 }}
 	{...rest}
@@ -115,7 +116,9 @@
 	{:else if data}
 		{#each data as dta, itemIndex}
 			<Slotted child={children} slotArgs={{ item: dta, itemIndex, menuItem: dta }}>
-				<MenuListItem data={dta} {itemIndex} />
+				<MenuListItem data={dta} {itemIndex}>
+					{@render menuListItem?.({ item: dta, itemIndex })}
+				</MenuListItem>
 			</Slotted>
 		{/each}
 	{:else}

@@ -3,7 +3,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import { widthPreset, type ExpandProps } from '$lib/types/index.js';
+	import { tallPreset, widthPreset, type ExpandProps } from '$lib/types/index.js';
 
 	let {
 		class: className,
@@ -18,8 +18,8 @@
 		loading,
 		showChip,
 		popperOpen,
-		width,
-		tall = widthPreset.med,
+		width = widthPreset.med,
+		tall = tallPreset.med,
 		nowrap,
 		selected = false,
 		value,
@@ -93,7 +93,7 @@
 		</div>
 	{/if}
 	{#if showChip}
-		<span class="chip" />
+		<span class="chip"></span>
 	{/if}
 </button>
 

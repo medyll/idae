@@ -27,7 +27,7 @@
 		startPosition = undefined,
 		closeOnValidate = true,
 		removeFromDomOnClose = false,
-		self,
+		self = $bindable(),
 		componentInstance,
 		outer = true,
 		frameId = crypto.randomUUID(),
@@ -88,6 +88,7 @@
 
 	async function handleValidate(args: any) {
 		let closable = true;
+		console.log({ formRef });
 		if (formRef && formRef.hasOwnProperty('submit')) {
 			closable = await formRef.submit();
 		}
@@ -96,75 +97,82 @@
 	}
 </script>
 
-{#if outer}
+{#key startPosition}
+	<dialog
+		bind:this={element}
+		{style}
+		style:position={flow}
+		style:display={open ? '' : 'none'}
+		use:positioner={{ position: startPosition }}
+		use:draggebler={{ disabled: false }}
+		use:makeOnTop
+		class="window {className} "
+		class:active={$wStore.activatedFrame === frameId}
+	>
+		{#if showHandle}
+			<header class="bar">
+				{#if icon || windowIcon}
+					<div class="bar-icon">
+						<Slotted child={windowIcon}>
+							<Icon iconSize="small" {icon} />
+						</Slotted>
+					</div>
+				{/if}
+				<div class="handle">{title ?? ''}</div>
+				<div class="ctrlZone">
+					<div>
+						<IconButton
+							variant="naked"
+							icon={{ icon: iconClose, iconSize: 'small', color: 'red' }}
+							style="aspect-ratio:1/1"
+							onclick={actions.close}
+						/>
+					</div>
+				</div>
+			</header>
+		{/if}
+		<div>
+			<Slotted child={children}>
+				{#key component}
+					{#if component}
+						<svelte:component this={component} {...componentProps} bind:this={formRef} />
+					{/if}
+				{/key}
+				{#if contentHTML}
+					{@html contentHTML}
+				{/if}
+			</Slotted>
+		</div>
+		{#if !hideCloseButton || !hideAcceptButton}
+			<Slotted child={windowButtonZone}>
+				<footer class="buttonZone">
+					{#if !hideCloseButton}
+						<Button width="auto" variant="naked" icon={iconClose} onclick={actions.close}
+							>Close</Button
+						>
+					{/if}
+					{#if !hideCancelButton}
+						<Button
+							width="auto"
+							variant="naked"
+							icon="ant-design:ellipsis-outlined"
+							onclick={handleCancel}
+							>Cancel
+						</Button>
+					{/if}
+					{#if !hideAcceptButton}
+						<Button width="auto" icon={iconValidate} onclick={handleValidate}>Validate</Button>
+					{/if}
+				</footer>
+			</Slotted>
+		{/if}
+	</dialog>
+{/key}
+
+<!-- {#if outer}
 	<svelte:self bind:this={componentInstance} outer={false} />
 {:else}
-	{#key startPosition}
-		<dialog
-			bind:this={element}
-			{style}
-			style:position={flow}
-			style:display={open ? '' : 'none'}
-			use:positioner={{ position: startPosition }}
-			use:draggebler={{ disabled: false }}
-			use:makeOnTop
-			class="window {className} "
-			class:active={$wStore.activatedFrame === frameId}
-		>
-			{#if showHandle}
-				<header class="bar">
-					{#if icon || windowIcon}
-						<div class="bar-icon">
-							<Slotted child={windowIcon}>
-								<Icon iconSize="small" {icon} />
-							</Slotted>
-						</div>
-					{/if}
-					<div class="handle">{title ?? ''}</div>
-					<div class="ctrlZone">
-						<div>
-							<IconButton
-								variant="naked"
-								icon={{ icon: iconClose, iconSize: 'small', color: 'red' }}
-								style="aspect-ratio:1/1"
-								onclick={actions.close}
-							/>
-						</div>
-					</div>
-				</header>
-			{/if}
-			<div>
-				<Slotted child={children}>
-					{#key component}
-						{#if component}
-							<svelte:component this={component} {...componentProps} bind:formRef />
-						{/if}
-					{/key}
-					{#if contentHTML}
-						{@html contentHTML}
-					{/if}
-				</Slotted>
-			</div>
-			{#if !hideCloseButton || !hideAcceptButton}
-				<Slotted child={windowButtonZone}>
-					<footer class="buttonZone">
-						{#if !hideCloseButton}
-							<Button variant="naked" icon={iconClose} onclick={actions.close}>Close</Button>
-						{/if}
-						{#if !hideCancelButton}
-							<Button variant="naked" icon="ant-design:ellipsis-outlined" onclick={handleCancel}
-								>Cancel
-							</Button>
-						{/if}
-						{#if !hideAcceptButton}
-							<Button icon={iconValidate} onclick={handleValidate}>Validate</Button>
-						{/if}
-					</footer>
-				</Slotted>
-			{/if}
-		</dialog>
-	{/key}
-{/if}
+{/if} -->
 
 <style lang="scss">
 	@import './window.scss';

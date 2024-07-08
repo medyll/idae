@@ -19,6 +19,8 @@ export type MenuListProps<T = Data> = CommonProps & {
 
 	data?: T[];
 	tall?: ElementProps['tall'];
+	/** displayed as a grid */
+	grid?: boolean | number;
 	/** index to select the item */
 	selectedIndex?: number;
 	/**  field used to  select the item */
@@ -37,6 +39,7 @@ export type MenuListProps<T = Data> = CommonProps & {
 	/** @deprecated use menuItemsList */
 	menuList?: MenuListItemProps[];
 	children?: Snippet<[{ item: Data; itemIndex: number }]>;
+	menuListItem?: Snippet<[{ item: Data; itemIndex: number }]>;
 	listItemBottom?: Snippet<[{ item: Data; itemIndex: number }]>;
 };
 
