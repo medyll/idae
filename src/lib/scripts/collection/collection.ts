@@ -1,3 +1,5 @@
+/* path:  src\lib\scripts\collection\collection.ts */
+
 import { type Where } from "../types.js";
 import { Query } from "../query/query.js";
 
@@ -32,29 +34,21 @@ export class CollectionCore<T = any> {
     return this._store;
   }
 
+  private async getDatabase(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(this.dbName, this.version);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
   /** get the collection */
   private async getCollection(): Promise<IDBObjectStore> {
-    return new Promise((resolve, reject) => {
-      this.dBOpenRequest = indexedDB.open(
-        this.dbName,
-        this.version ?? undefined
-      );
-      this.dBOpenRequest.onsuccess = (event) => {
-        const db = (event.target as IDBOpenDBRequest)?.result;
-        if (!db.objectStoreNames.contains(this._store)) {
-          reject("collection not found");
-          return false;
-        }
-        const dBTransaction = db.transaction(this._store, "readwrite");
-
-        const dbCollection = dBTransaction.objectStore(this._store);
-
-        dBTransaction.oncomplete = function (event) {};
-
-        resolve(dbCollection);
-      };
-      this.dBOpenRequest.onerror = () => reject(this.dBOpenRequest.error);
-    });
+    const db = await this.getDatabase();
+    if (!db.objectStoreNames.contains(this._store)) {
+      throw new Error(`Collection ${this._store} not found`);
+    }
+    return db.transaction(this._store, "readwrite").objectStore(this._store);
   }
 
   /**
@@ -64,18 +58,14 @@ export class CollectionCore<T = any> {
    * @returns A promise that resolves to the filtered result set.
    * @throws If an error occurs while retrieving the data.
    */
-  async where(qy: Where<T>, options?: ResultsetOptions) {
-    return new Promise(async (resolve, reject) => {
-      const data = await this.getAll();
-      const query = new Query<T>(data);
-      let resultSet = getResultset(query.where(qy));
-
-      if (options) {
-        resultSet.setOptions(options);
-      }
-
-      resolve(resultSet);
-    });
+  async where(qy: Where<T>, options?: ResultsetOptions): Promise<ResultSet<T>> {
+    const data = await this.getAll();
+    const query = new Query<T>(data);
+    const resultSet = getResultset(query.where(qy));
+    if (options) {
+      resultSet.setOptions(options);
+    }
+    return resultSet;
   }
 
   get(value: any): Promise<T> {
