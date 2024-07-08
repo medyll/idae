@@ -79,11 +79,12 @@ export type TplFields<T = TplCollectionFields> =
 //
 export type CollectionModel<T = TplCollectionFields> = {
   keyPath: string | any;
+  /** @deprecated use ts instead */
   model: any;
   ts: any;
   template: {
     index: string;
-    presentation: CombineElements<keyof CollectionModel<T>["model"]>;
+    presentation: CombineElements<keyof CollectionModel<T>["ts"]>;
     fields: {
       [K in keyof T]: TplFieldRules;
     };
@@ -113,12 +114,13 @@ type MethodState<T> = {
   [K in keyof T]: StateCollectionDyn<T[K]>;
 };
 
-type ReadonlyCollections<T> = Method<
-  ModelTypes<Record<string, CollectionModel<T>>>
->;
-type StateCollections<T> = MethodState<
-  ModelTypes<Record<string, CollectionModel<T>>>
->;
+type ReadonlyCollections<T extends IdbqModel> = {
+  [K in keyof T]: CollectionCore<T[K]["ts"]>;
+};
+
+type StateCollections<T extends IdbqModel> = {
+  [K in keyof T]: StateCollectionDyn<T[K]["ts"]>;
+};
 /**
  * Represents the IndexedDB wrapper for managing database operations.
  * @template T - The type of data stored in the IndexedDB.
@@ -148,7 +150,7 @@ export class IdbqlIndexedCore<T = any> {
 
       Object.defineProperty(this, modelName, {
         // @ts-ignore
-        value: undefined as unknown as Collection<typeof modelInfo.model>,
+        value: undefined as unknown as Collection<(typeof modelInfo)["ts"]>,
         writable: true,
         enumerable: true,
         configurable: true,
@@ -228,20 +230,25 @@ export class IdbqlIndexedCore<T = any> {
  *
  * @typeparam T - The type of data stored in the collections.
  */
-export const createIdbqDb = <T>(model: IdbqModel, version: number) => {
+export const createIdbqDb = <T extends IdbqModel>(
+  model: T,
+  version: number
+) => {
   return {
-    /**
-     * Creates an IndexedDB database store based on the pre-declared model, with a given name.
-     * @param name - The name of the store.
-     * @returns An object containing the database, model, and idbqlState.
-     */
-    create: (name: string) => {
-      const idb_ = new IdbqlIndexedCore(name, model, version);
+    create: (
+      name: string
+    ): {
+      idbDatabase: IdbqlIndexedCore<T>;
+      idbql: ReadonlyCollections<T>;
+      idbqlState: StateCollections<T>;
+      idbqModel: T;
+    } => {
+      const idb_ = new IdbqlIndexedCore<T>(name, model, version);
       return {
-        idbDatabase: idb_ as typeof idb_,
-        idbql: idb_ as ReadonlyCollections<T>,
+        idbDatabase: idb_,
+        idbql: idb_ as unknown as ReadonlyCollections<T>,
         idbqlState: createIdbqlState(idb_).state as StateCollections<T>,
-        idbqModel: model as IdbqModel<typeof model>,
+        idbqModel: model,
       };
     },
   };
