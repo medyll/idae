@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/medyll/idbql/compare/v3.5.0...v3.6.0) (2024-07-08)
+
+
+### Features
+
+* added transactions ([da571f2](https://github.com/medyll/idbql/commit/da571f264c545d2273d7b5a41c2fb3a0cdfab2da))
+
 ## [3.5.0](https://github.com/medyll/idbql/compare/v3.4.2...v3.5.0) (2024-07-08)
 
 
