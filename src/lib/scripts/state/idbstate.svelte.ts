@@ -1,3 +1,4 @@
+/* path: D:\boulot\app-node\idbql\src\lib\scripts\state\idbstate.svelte.ts */
 import type { IdbqlIndexedCore } from "$lib/scripts/idbqlCore/idbqlCore.js";
 import { Operators } from "$lib/scripts/operators/operators.js";
 import {
@@ -29,7 +30,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
    * @returns {Proxy} - A proxy object with methods to interact with the collection.
    */
   function addCollection<T>(collectionName: string) {
-    return new CollectionDyn<T>(collectionName, idbBase);
+    return new StateCollectionDyn<T>(collectionName, idbBase);
   }
 
   function addCollections<T = typeof idbBase.schema>(args: T) {
@@ -55,9 +56,9 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
  * @param {string} [keyPath="id"] - The key path for the collection.
  * @returns {Proxy} - A proxy object with methods to interact with the collection.
  */
-export class CollectionDyn<T> {
+export class StateCollectionDyn<T> {
   private collectionName: string;
-  private state = idbqlEvent.dataState as CollectionDyn<T>;
+  private state = idbqlEvent.dataState as StateCollectionDyn<T>; // svelte state ;)
   private idbBase: IdbqlIndexedCore;
 
   constructor(collectionName: string, idbBase: IdbqlIndexedCore) {

@@ -1,104 +1,98 @@
-class idbqlStateEvent {
-  #dataState = $state<Record<string, any>>({});
+type EventType =
+  | "add"
+  | "put"
+  | "update"
+  | "updateWhere"
+  | "delete"
+  | "deleteWhere"
+  | "set";
 
-  constructor() {}
+interface EventData<T = any> {
+  collection: string;
+  data: T;
+  keyPath: string;
+}
+class IdbqlStateEvent {
+  #dataState = $state<Record<string, any[]>>({});
 
   get dataState() {
     return this.#dataState;
   }
 
-  registerEvent(
-    event:
-      | "add"
-      | "put"
-      | "update"
-      | "updateWhere"
-      | "delete"
-      | "deleteWhere"
-      | "set",
-    more: {
-      collection: string;
-      data: any;
-      keyPath: any;
+  registerEvent(event: EventType, eventData: EventData) {
+    const { collection, data, keyPath } = eventData;
+
+    if (!collection) {
+      console.error(`Collection is mandatory`);
+      return;
     }
-  ) {
+
+    if (!this.#dataState[collection]) {
+      this.#dataState[collection] = [];
+    }
+
     switch (event) {
       case "set":
-        if (more?.collection && more?.data)
-          this.dataState[more.collection] = more.data;
-        break;
-      case "deleteWhere":
-        if (more?.collection && more?.data) {
-          const data = this.dataState[more.collection];
-          const keys = Object.keys(more.data);
-          const result = data.filter((item) => {
-            let isMatch = true;
-            keys.forEach((key) => {
-              if (item[key] !== more.data[key]) {
-                isMatch = false;
-              }
-            });
-            return isMatch;
-          });
-          this.dataState[more.collection] = result;
+        if (data) {
+          this.#dataState[collection] = Array.isArray(data) ? data : [data];
         }
         break;
-      case "del":
-      case "delete":
-        if (more?.collection && more?.data && more?.keyPath) {
-          let keyPathValue = more?.data[more.keyPath];
-          while (true) {
-            const index = this.dataState[more.collection].findIndex(
-              (item) => item[more.keyPath] === keyPathValue
-            );
-            if (index === -1) {
-              break;
-            }
-            this.dataState[more.collection].splice(index, 1);
+
+      case "add":
+        if (data) {
+          this.#dataState[collection].push(data);
+        }
+        break;
+
+      case "put":
+      case "update":
+        if (data && keyPath) {
+          const index = this.#dataState[collection].findIndex(
+            (item) => item[keyPath] === data[keyPath]
+          );
+          if (index !== -1) {
+            this.#dataState[collection][index] = {
+              ...this.#dataState[collection][index],
+              ...data,
+            };
+          } else {
+            this.#dataState[collection].push(data);
           }
         }
         break;
+
       case "updateWhere":
-        if (more?.collection && more?.data) {
-          const data = this.dataState[more.collection];
-          const keys = Object.keys(more.data);
-          const result = data.map((item) => {
-            let isMatch = true;
-            keys.forEach((key) => {
-              if (item[key] !== more.data[key]) {
-                isMatch = false;
-              }
-            });
-            if (isMatch) {
-              return { ...item, ...more.data };
-            } else {
-              return item;
-            }
-          });
-          this.dataState[more.collection] = result;
-        }
-        break;
-      case "update":
-      case "put": // always got id
-        if (more?.collection && more?.data && more?.keyPath) {
-          let keyPathValue = more.data[more.keyPath];
-
-          const index = this.dataState[more.collection].findIndex(
-            (item) => item[more.keyPath] === keyPathValue
+        if (data && typeof data === "object") {
+          this.#dataState[collection] = this.#dataState[collection].map(
+            (item) =>
+              Object.entries(data).every(([key, value]) => item[key] === value)
+                ? { ...item, ...data }
+                : item
           );
-
-          this.dataState[more.collection][index] = more.data;
-        }
-
-        break;
-      case "add":
-        if (more.collection && this.dataState[more.collection]) {
-          if (more?.collection && more?.data)
-            this.dataState[more.collection].push(more.data);
         }
         break;
+
+      case "delete":
+        if (data && keyPath) {
+          this.#dataState[collection] = this.#dataState[collection].filter(
+            (item) => item[keyPath] !== data[keyPath]
+          );
+        }
+        break;
+
+      case "deleteWhere":
+        if (data && typeof data === "object") {
+          this.#dataState[collection] = this.#dataState[collection].filter(
+            (item) =>
+              !Object.entries(data).every(([key, value]) => item[key] === value)
+          );
+        }
+        break;
+
+      default:
+        console.error(`Unhandled event type: ${event}`);
     }
   }
 }
 
-export const idbqlEvent = new idbqlStateEvent();
+export const idbqlEvent = new IdbqlStateEvent();
