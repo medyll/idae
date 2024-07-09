@@ -1,74 +1,66 @@
-import { HtmluDom } from '../../dist/HtmluDom.js';
-import { test, expect } from '@playwright/test';
+import puppeteer from 'puppeteer';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { Htmlu } from './HtmluDom.js';
 
-test('HtmluDom is defined', async ({ page }) => {
-	await page.goto('http://localhost:3000');
+describe('HtmluDomLib', () => {
+	let browser: puppeteer.Browser;
+	let page: puppeteer.Page;
 
-	// Définissez le contenu HTML de la page
-	await page.setContent(`
-     window.testLib = HtmluDom.attach({
-			selectors: [{ element: '#widget', mutations: { attributes: '[lang]' } }],
-			selectorCallback: (mutations, observer) => {
-				return {
-					attributes: (mutation: MutationRecord, observer: MutationObserver) => {
-					},
-					childList: (mutation: MutationRecord, observer: MutationObserver) => {
-					},
-					characterData: (mutation: MutationRecord, observer: MutationObserver) => {
-					}
-				};
-			},
-		});
-  `);
-
-	const isHtmluDomDefined: boolean = await page.evaluate(() => {
-		return typeof window.testLib !== 'undefined';
+	beforeAll(async () => {
+		browser = await puppeteer.launch();
+		page = await browser.newPage();
+		await page.goto('http://localhost:3000'); // Replace with the URL of your application
 	});
-	expect(isHtmluDomDefined).toBe(true);
-});
 
-test('HtmluEvent observe method starts observing the observed element for mutations', () => {
-	const observedElement = new ObservedElement(); // Replace with your observed element instance
-	const htmluEvent = new HtmluEvent(observedElement);
+	afterAll(async () => {
+		await browser.close();
+	});
 
-	htmluEvent.observe();
+	it('should attach the library to the specified elements', async () => {
+		// Write your test logic here
+		// Example:
+		await page.evaluate(() => {
+			const options = {
+				defaultAttributeFilter: ['data-testid'],
+				useSubtree: true,
+				debounceTime: 100,
+				errorHandler: (error) => {
+					throw new Error(`HtmluDomLib error: ${error}`);
+				}
+			};
 
-	// Assert that the observer is created and observing the element
-	// You can use a mocking library like Jest to create a mock observer and assert its behavior
-});
+			Htmlu.updateOptions(options);
 
-test('HtmluEvent disconnect method stops observing the observed element for mutations', () => {
-	const observedElement = new ObservedElement(); // Replace with your observed element instance
-	const htmluEvent = new HtmluEvent(observedElement);
+			Htmlu.attach({
+				selectors: [{ element: '#widget', mutations: { attributes: ['lang'] } }],
+				selectorCallback: (element, mutations, observer) => {
+					// Your callback logic here
+				},
+				observerParameters: { attributeFilter: ['lang'], subtree: true }
+			});
+		});
 
-	htmluEvent.disconnect();
+		// Assert the expected behavior
+		const activeObserversCount = await page.evaluate(() => {
+			return Htmlu.getActiveObserversCount();
+		});
 
-	// Assert that the observer is disconnected from the element
-	// You can use a mocking library like Jest to create a mock observer and assert its behavior
-});
+		expect(activeObserversCount).toBe(1);
+	});
 
-test('HtmluEvent addEvent method adds an event listener to the observed element', () => {
-	const observedElement = new ObservedElement(); // Replace with your observed element instance
-	const htmluEvent = new HtmluEvent(observedElement);
+	it('should detach the library from the specified elements', async () => {
+		// Write your test logic here
+		// Example:
+		await page.evaluate(() => {
+			Htmlu.detach('#widget');
+		});
 
-	const eventType = 'click';
-	const callback = jest.fn();
+		// Assert the expected behavior
+		// Example:
+		const activeObserversCount = await page.evaluate(() => {
+			return Htmlu.getActiveObserversCount();
+		});
 
-	htmluEvent.addEvent(eventType, callback);
-
-	// Assert that the event listener is added to the element
-	// You can use a mocking library like Jest to create a mock element and assert its behavior
-});
-
-test('HtmluEvent removeEvent method removes an event listener from the observed element', () => {
-	const observedElement = new ObservedElement(); // Replace with your observed element instance
-	const htmluEvent = new HtmluEvent(observedElement);
-
-	const eventType = 'click';
-	const callback = jest.fn();
-
-	htmluEvent.removeEvent(eventType, callback);
-
-	// Assert that the event listener is removed from the element
-	// You can use a mocking library like Jest to create a mock element and assert its behavior
+		expect(activeObserversCount).toBe(0);
+	});
 });
