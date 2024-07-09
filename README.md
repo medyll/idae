@@ -1,76 +1,95 @@
 
+# HtmluDom Library
 
-# @medyll/htmludom
-
-The HTMLdom lib contains methods to track attributes changes on HTML elements.
-Mutations Observer and CSS Observer selector method, are utilities for arise, changes and events for specified CSS selectors in the DOM.
+HtmluDom is a powerful library for observing and reacting to DOM changes in web applications. It provides two main classes: CssObserver and HtmluDomLib.
 
 ## Installation
 
-You can install the @medyll/htmludom package using npm, yarn, or pnpm:
-
 ```bash
-npm i @medyll/htmludom
-yarn add @medyll/htmludom
-pnpm add @medyll/htmludom
+npm install @medyll/htmludom
 ```
 
 ## Usage
 
-- ### Mutations Observers
-
-```typescript 
-import { HtmluDom, HtmlDomCore } from '@medyll/htmludom'; 
-
-// using a HtmluDom instance
-HtmluDom.track(['.any_class'], {
-	onAttributesChange: (element, mutation, observer) => {
-		console.log(mutation);
-	},
-	onChildListChange: (mutation) => {
-		console.log(mutation);
-	},
-	onCharacterDataChange: (mutation) => {
-		console.log(mutation);
-	}
-});
-
-// using HtmlDomCore single instance
-HtmlDomCore.attach({
-	selectors: [{ element: '#element', mutations: { attributes: '[data-role]' } }],
-	selectorCallback: (mutations, observer) => {
-		return {
-			attributes: (mutation: MutationRecord, observer: MutationObserver) => {},
-			childList: (mutation: MutationRecord, observer: MutationObserver) => {},
-			characterData: (mutation: MutationRecord, observer: MutationObserver) => {}
-		};
-	}
-}); 
+```javascript
+import { cssDom, HtmluDom } from "@medyll/htmludom";
 ```
 
-- ### CSS Observer
+## CssObserver
 
-The selector function allows you to track elements from their animation events for a specified CSS selector.
+CssObserver allows you to track CSS changes and animations on specified elements.
 
-```typescript
-import { cssDom, type QuerySelector } from '@medyll/htmludom';
+### Key Features:
+- Track new elements matching a selector
+- Observe attribute changes
+- Monitor child list modifications
+- Track element resizing
 
-const qy: QuerySelector = '.your-css-selector'; 
+### Basic Usage:
 
-const eachTracking = cssDom(qy).each((element) => {
-	// Callback function when the animation is completed
-});
-
-const summaryTracking = cssDom(qy).summary((summary) => {
-	// Callback function for summary tracking
+```javascript
+cssDom('#myElement').each((element) => {
+  console.log('Element changed:', element);
 });
 ```
 
-## Contributing  
-* Fork the repository  
-Create your feature branch  
-Commit your changes  
-Push to the branch  
-Create a new Pull Request  
-License  
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Advanced Usage:
+
+```javascript
+cssDom('#myElement', {
+  onlyNew: true,
+  trackChildList: true,
+  trackAttributes: ['class', 'style'],
+  trackResize: true
+}).each((element) => {
+  console.log('Element updated:', element);
+});
+```
+
+## HtmluDomLib (Htmlu)
+
+HtmluDomLib provides a more detailed way to observe DOM mutations.
+
+### Key Features:
+- Singleton instance for global use
+- Flexible mutation tracking
+- Support for multiple selectors and mutation types
+
+### Basic Usage:
+
+```javascript
+Htmlu.track('#myElement', ['class'], {
+  onAttributesChange: (element, mutation, observer) => {
+    console.log('Attribute changed:', mutation);
+  }
+});
+```
+
+### Advanced Usage:
+
+```javascript
+Htmlu.attach({
+  selectors: [{ element: '#myElement', mutations: { attributes: ['class'] } }],
+  selectorCallback: (mutations, observer) => ({
+    attributes: (mutation, observer) => {
+      console.log('Attribute mutation:', mutation);
+    },
+    childList: (mutation, observer) => {
+      console.log('Child list mutation:', mutation);
+    }
+  }),
+  observerParameters: {
+    subtree: true,
+    childList: true
+  }
+});
+```
+
+## Browser Compatibility
+
+HtmluDom uses modern browser features.  
+Ensure your target browsers support MutationObserver and other required APIs.
+
+## License
+
+[MIT License](LICENSE)
