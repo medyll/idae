@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.11.3](https://github.com/medyll/htmludom/compare/v0.11.2...v0.11.3) (2024-07-09)
+
+
+### Features
+
+* **HtmluDom:** Enhance functionality and improve type safety ([478333f](https://github.com/medyll/htmludom/commit/478333f2d6bc9c0f047745dbad16ff34d8afb0ce))
+
 ### [0.11.2](https://github.com/medyll/htmludom/compare/v0.11.1...v0.11.2) (2024-07-09)
 
 
