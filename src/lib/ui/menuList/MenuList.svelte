@@ -79,7 +79,6 @@
 	});
 
 	function onMenuItemClick(e: CustomEvent<any>) {
-		console.log('onMenuItemClick', e.detail);
 		if (onclick) onclick(e.detail, 2);
 	}
 
