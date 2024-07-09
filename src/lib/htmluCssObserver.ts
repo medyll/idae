@@ -1,3 +1,5 @@
+import { Htmlu } from './HtmluDom.js';
+
 /* path: D:\boulot\app-node\htmludom\src\lib\htmluCssObserver.ts */
 export type CssObserverCallBack = (node: Element) => void;
 export type CssObserverCallBackSummary = (nodes: Node[]) => void;
@@ -17,7 +19,11 @@ export class CssObserver {
 	private selector: QuerySelector;
 	private selectorId: string;
 	private activeAnimations: Set<string> = new Set();
+	private resizeObserver: ResizeObserver | null = null;
 
+	/**
+	 * Default options for the CssObserver.
+	 */
 	options: CssObserverOptions = {
 		strictlyNew: true,
 		eventDelay: 1,
@@ -31,13 +37,21 @@ export class CssObserver {
 	 * @param {QuerySelector} selector - The query selector for the instance.
 	 */
 	constructor(selector: QuerySelector) {
+		CssObserver.checkBrowserSupport();
 		this.selector = selector;
+		this.selectorId = this.cleanSpecialChars(selector);
+	}
+
+	/**
+	 * Checks if the browser supports necessary features.
+	 * @throws {Error} If the browser doesn't support required features.
+	 */
+	private static checkBrowserSupport() {
 		if (!('adoptedStyleSheets' in Document.prototype) || !('replace' in CSSStyleSheet.prototype)) {
 			throw new Error(
 				'Your browser does not support the CSSStyleSheet.replace method. Please use a modern browser.'
 			);
 		}
-		this.selectorId = this.cleanSpecialChars(selector);
 	}
 
 	/**
@@ -54,9 +68,20 @@ export class CssObserver {
 	 * @param {CssObserverCallBack} callback - The callback function to be invoked.
 	 * @param {Object} opts - Optional settings.
 	 * @param {boolean} [opts.onlyNew=false] - Whether to track only new elements.
+	 * @param {boolean} [opts.trackChildList] - Whether to track child list changes.
+	 * @param {boolean|string[]} [opts.trackAttributes] - Whether to track attribute changes or an array of specific attributes.
+	 * @param {boolean} [opts.trackResize] - Whether to track resize events.
 	 * @returns {Object} An object with methods to control the animation tracking.
 	 */
-	track(callback: CssObserverCallBack, opts: { onlyNew: boolean } = { onlyNew: false }) {
+	track(
+		callback: CssObserverCallBack,
+		opts: {
+			onlyNew?: boolean;
+			trackChildList?: boolean;
+			trackAttributes?: boolean | string[];
+			trackResize?: boolean;
+		} = {}
+	) {
 		const animationName = crypto.randomUUID();
 		this.activeAnimations.add(animationName);
 		const styleFragment = this.createStyleFragment(this.selector, animationName);
@@ -68,13 +93,30 @@ export class CssObserver {
 		const eventHandler = this.createEventHandler(animationName, callback);
 		let animationLoader = this.addEvent(eventHandler);
 
+		if (opts.trackResize) {
+			this.addResizeObserver(callback);
+		}
+
+		if (opts.trackChildList || opts.trackAttributes) {
+			Htmlu.track(this.selector, opts.trackAttributes ? opts.trackAttributes : [], {
+				onChildListChange: opts.trackChildList ? callback : undefined,
+				onAttributesChange: opts.trackAttributes ? callback : undefined
+			});
+		}
+
 		return {
 			start: () => {
 				animationLoader = this.addEvent(eventHandler);
+				if (opts.trackResize) {
+					this.addResizeObserver(callback);
+				}
 			},
 			pause: () => {
 				clearTimeout(animationLoader);
 				this.removeEvent(eventHandler);
+				if (opts.trackResize) {
+					this.removeResizeObserver();
+				}
 			},
 			destroy: () => {
 				clearTimeout(animationLoader);
@@ -85,6 +127,12 @@ export class CssObserver {
 				}
 				this.removeEvent(eventHandler);
 				this.activeAnimations.delete(animationName);
+				if (opts.trackResize) {
+					this.removeResizeObserver();
+				}
+				if (opts.trackChildList || opts.trackAttributes) {
+					Htmlu.detach(this.selector);
+				}
 			}
 		};
 	}
@@ -224,7 +272,7 @@ export class CssObserver {
 	 * @param {Function} eventHandler - The event handler function.
 	 * @returns {number} The timeout ID.
 	 */
-	private addEvent(eventHandler: (event: AnimationEvent) => void): NodeJS.Timeout {
+	private addEvent(eventHandler: (event: AnimationEvent) => void): number {
 		return setTimeout(() => {
 			document.addEventListener('animationstart', eventHandler, false);
 		}, this.options.eventDelay);
@@ -244,21 +292,63 @@ export class CssObserver {
 	 * Creates a style fragment with the specified selector and animation name.
 	 * @param {string} selector - The CSS selector for the style fragment.
 	 * @param {string} animationName - The name of the animation.
-	 * @returns {CSSStyleSheet} The created style sheet.
+	 * @returns {CSSStyleSheet | HTMLStyleElement} The created style sheet or style element.
 	 */
-	private createStyleFragment(selector: string, animationName: string): CSSStyleSheet | Element {
-		const sheet = new CSSStyleSheet();
-		const styleContent = `@${this.options.legacyCssPrefix}keyframes ${animationName} {
-            from { outline: 1px solid transparent; }
-            to { outline: 0px solid transparent; }
-        }
-        ${selector} {
-            animation-duration: 0.0001s !important;
-            ${this.options.legacyCssPrefix}animation-name: ${animationName} !important;
-        }`;
-		sheet.replaceSync(styleContent);
-		document.adoptedStyleSheets.push(sheet);
-		return sheet;
+	private createStyleFragment(
+		selector: string,
+		animationName: string
+	): CSSStyleSheet | HTMLStyleElement {
+		if ('adoptedStyleSheets' in Document.prototype && 'replace' in CSSStyleSheet.prototype) {
+			const sheet = new CSSStyleSheet();
+			const styleContent = `@${this.options.legacyCssPrefix}keyframes ${animationName} {
+                from { outline: 1px solid transparent; }
+                to { outline: 0px solid transparent; }
+            }
+            ${selector} {
+                animation-duration: 0.0001s !important;
+                ${this.options.legacyCssPrefix}animation-name: ${animationName} !important;
+            }`;
+			sheet.replaceSync(styleContent);
+			document.adoptedStyleSheets.push(sheet);
+			return sheet;
+		} else {
+			const style = document.createElement('style');
+			style.textContent = `@${this.options.legacyCssPrefix}keyframes ${animationName} {
+                from { outline: 1px solid transparent; }
+                to { outline: 0px solid transparent; }
+            }
+            ${selector} {
+                animation-duration: 0.0001s !important;
+                ${this.options.legacyCssPrefix}animation-name: ${animationName} !important;
+            }`;
+			document.head.appendChild(style);
+			return style;
+		}
+	}
+
+	/**
+	 * Adds a ResizeObserver to track size changes of elements matching the selector.
+	 * @param {CssObserverCallBack} callback - The callback function to be invoked on resize.
+	 */
+	private addResizeObserver(callback: CssObserverCallBack) {
+		this.resizeObserver = new ResizeObserver((entries) => {
+			for (let entry of entries) {
+				callback(entry.target as Element);
+			}
+		});
+		document
+			.querySelectorAll(this.selector)
+			.forEach((element) => this.resizeObserver!.observe(element));
+	}
+
+	/**
+	 * Removes the ResizeObserver if it exists.
+	 */
+	private removeResizeObserver() {
+		if (this.resizeObserver) {
+			this.resizeObserver.disconnect();
+			this.resizeObserver = null;
+		}
 	}
 }
 
@@ -271,7 +361,12 @@ export class CssObserver {
  */
 export function cssObserve(
 	selector: QuerySelector,
-	opts?: { onlyNew: boolean; trackChildList: boolean; trackResize: boolean }
+	opts?: {
+		onlyNew?: boolean;
+		trackChildList?: boolean;
+		trackAttributes?: boolean | string[];
+		trackResize?: boolean;
+	}
 ) {
 	const domCss = new CssObserver(selector);
 
@@ -282,7 +377,25 @@ export function cssObserve(
 		 * @returns {Object} An object with methods to control the tracking.
 		 */
 		each: function (callback: CssObserverCallBack) {
-			return domCss.track(callback, opts);
+			const tracker = domCss.track(callback, opts);
+
+			if (opts?.trackChildList || opts?.trackAttributes) {
+				Htmlu.track(selector, opts?.trackAttributes ? opts?.trackAttributes : [], {
+					onChildListChange: opts.trackChildList ? callback : undefined,
+					onAttributesChange: opts.trackAttributes ? callback : undefined
+				});
+			}
+
+			if (opts?.trackResize) {
+				const resizeObserver = new ResizeObserver((entries) => {
+					for (let entry of entries) {
+						callback(entry.target as Element);
+					}
+				});
+				document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
+			}
+
+			return tracker;
 		},
 		/**
 		 * Tracks changes and provides a summary of affected elements.
@@ -290,7 +403,25 @@ export function cssObserve(
 		 * @returns {Object} An object with methods to control the tracking.
 		 */
 		summary: function (callback: CssObserverCallBackSummary) {
-			return domCss.getSummary(callback);
+			const tracker = domCss.getSummary(callback);
+
+			if (opts?.trackChildList || opts?.trackAttributes) {
+				Htmlu.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
+					onChildListChange: opts.trackChildList ? callback : undefined,
+					onAttributesChange: opts.trackAttributes ? callback : undefined
+				});
+			}
+
+			if (opts?.trackResize) {
+				const resizeObserver = new ResizeObserver((entries) => {
+					for (let entry of entries) {
+						callback([entry.target]);
+					}
+				});
+				document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
+			}
+
+			return tracker;
 		}
 	};
 }
