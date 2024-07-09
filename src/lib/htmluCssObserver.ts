@@ -1,7 +1,7 @@
 import { Htmlu } from './HtmluDom.js';
 
 /* path: D:\boulot\app-node\htmludom\src\lib\htmluCssObserver.ts */
-export type CssObserverCallBack = (node: Element) => void;
+export type CssObserverCallBack = (node: Element, mutation?: MutationRecord) => void;
 export type CssObserverCallBackSummary = (nodes: Node[]) => void;
 export type CssObserverOptions = {
 	strictlyNew: boolean;
@@ -97,10 +97,11 @@ export class CssObserver {
 			this.addResizeObserver(callback);
 		}
 
-		if (opts.trackChildList || opts.trackAttributes) {
-			Htmlu.track(this.selector, opts.trackAttributes ? opts.trackAttributes : [], {
-				onChildListChange: opts.trackChildList ? callback : undefined,
-				onAttributesChange: opts.trackAttributes ? callback : undefined
+		if (opts.trackAttributes) {
+			Htmlu.track(this.selector, opts.trackAttributes === true ? [] : opts.trackAttributes, {
+				onAttributesChange: (element, mutation) => {
+					callback(element as Element, mutation);
+				}
 			});
 		}
 
@@ -165,19 +166,33 @@ export class CssObserver {
 	 * Calls the callback function for an element if it hasn't been processed before.
 	 * @param {Element} element - The element to process.
 	 * @param {CssObserverCallBack} callback - The callback function to be invoked.
+	 * @param {MutationRecord} [mutation] - The mutation record associated with the change.
 	 */
-	private callCallback(element: Element, callback: CssObserverCallBack) {
+	private callCallback(element: Element, callback: CssObserverCallBack, mutation?: MutationRecord) {
 		if (this.hasTag(element)) return;
 		this.doTag(element);
-		callback(element);
+		callback(element, mutation);
 	}
 
 	/**
 	 * Gets a summary of changes by grouping them under parent elements.
 	 * @param {CssObserverCallBackSummary} callback - The callback function to be invoked with the summary.
+	 * @param {Object} opts - Optional settings.
+	 * @param {boolean} [opts.onlyNew=false] - Whether to track only new elements.
+	 * @param {boolean} [opts.trackChildList] - Whether to track child list changes.
+	 * @param {boolean|string[]} [opts.trackAttributes] - Whether to track attribute changes or an array of specific attributes.
+	 * @param {boolean} [opts.trackResize] - Whether to track resize events.
 	 * @returns {Object} An object with methods to control the summary tracking.
 	 */
-	getSummary(callback: CssObserverCallBackSummary) {
+	getSummary(
+		callback: CssObserverCallBackSummary,
+		opts: {
+			onlyNew?: boolean;
+			trackChildList?: boolean;
+			trackAttributes?: boolean | string[];
+			trackResize?: boolean;
+		} = {}
+	) {
 		const insertions = new Set<Element>();
 		const debouncedCallback = this.debounce(() => {
 			callback(Array.from(insertions));
@@ -194,7 +209,27 @@ export class CssObserver {
 			debouncedCallback();
 		};
 
-		return this.track(observerCallback);
+		const tracker = this.track(observerCallback, opts);
+
+		if (opts.trackChildList || opts.trackAttributes) {
+			Htmlu.track(this.selector, opts.trackAttributes ? opts.trackAttributes : [], {
+				onChildListChange: opts.trackChildList ? observerCallback : undefined,
+				onAttributesChange: opts.trackAttributes ? observerCallback : undefined
+			});
+		}
+
+		if (opts.trackResize) {
+			const resizeObserver = new ResizeObserver((entries) => {
+				for (let entry of entries) {
+					observerCallback(entry.target as Element);
+				}
+			});
+			document
+				.querySelectorAll(this.selector)
+				.forEach((element) => resizeObserver.observe(element));
+		}
+
+		return tracker;
 	}
 
 	/**
@@ -357,6 +392,9 @@ export class CssObserver {
  * @param {QuerySelector} selector - The CSS selector to query the DOM.
  * @param {Object} [opts] - Optional options for the selector.
  * @param {boolean} [opts.onlyNew] - Whether to observe only new elements.
+ * @param {boolean} [opts.trackChildList] - Whether to track child list changes.
+ * @param {boolean|string[]} [opts.trackAttributes] - Whether to track attribute changes or an array of specific attributes.
+ * @param {boolean} [opts.trackResize] - Whether to track resize events.
  * @returns {Object} An object with methods to track changes.
  */
 export function cssObserve(
@@ -380,9 +418,11 @@ export function cssObserve(
 			const tracker = domCss.track(callback, opts);
 
 			if (opts?.trackChildList || opts?.trackAttributes) {
-				Htmlu.track(selector, opts?.trackAttributes ? opts?.trackAttributes : [], {
+				Htmlu.track(selector, Boolean(opts?.trackAttributes) ? opts?.trackAttributes : [], {
 					onChildListChange: opts.trackChildList ? callback : undefined,
-					onAttributesChange: opts.trackAttributes ? callback : undefined
+					onAttributesChange: opts.trackAttributes
+						? (element, mutation) => callback(element, mutation)
+						: undefined
 				});
 			}
 
@@ -403,12 +443,14 @@ export function cssObserve(
 		 * @returns {Object} An object with methods to control the tracking.
 		 */
 		summary: function (callback: CssObserverCallBackSummary) {
-			const tracker = domCss.getSummary(callback);
+			const tracker = domCss.getSummary(callback, opts);
 
 			if (opts?.trackChildList || opts?.trackAttributes) {
 				Htmlu.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
-					onChildListChange: opts.trackChildList ? callback : undefined,
-					onAttributesChange: opts.trackAttributes ? callback : undefined
+					onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
+					onAttributesChange: opts.trackAttributes
+						? (element, mutation) => callback([element])
+						: undefined
 				});
 			}
 
