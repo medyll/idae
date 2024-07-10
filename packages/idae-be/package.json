@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-	"version": "1.0.0",
+	"version": "0.0.2",
 	"private": false,
 	"scripts": {
 		"dev": "vite dev",
