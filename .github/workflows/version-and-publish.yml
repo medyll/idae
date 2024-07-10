@@ -1,4 +1,4 @@
-name: Release
+name: Release and Publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  release:
+  release-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,9 +17,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
       
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       
       - name: Install changelog tools
         run: npm install --save-dev conventional-changelog-cli @changesets/cli
@@ -47,3 +48,8 @@ jobs:
           git push --set-upstream origin changeset-release/main || echo "No changes to push"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
