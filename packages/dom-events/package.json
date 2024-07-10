@@ -29,6 +29,9 @@
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"devDependencies": {
 		"@playwright/test": "^1.43.1",
 		"@sveltejs/adapter-auto": "^3.2.0",
