@@ -1,11 +1,35 @@
 {
   "name": "root",
-  "private": true,
+  "private": false,
+  "scripts": {
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.1.0",
+    "husky": "^9.0.11",
     "lerna": "^6.4.1",
     "node": "^18.20.2",
     "typescript": "^5.4.5"
