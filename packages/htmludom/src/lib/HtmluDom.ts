@@ -1,5 +1,5 @@
 interface Selector {
-	element: string | Node | NodeList;
+	element: Node | Node[] | NodeList;
 	mutations?: {
 		attributes?: string[];
 	};
@@ -13,7 +13,7 @@ type MutationHandlerCallback = (
 
 type MutationHandlerCallbackReturn = Record<
 	Partial<MutationRecordType>,
-	(mutation: MutationRecord, observer: MutationObserver) => any
+	(element: Node, mutation: MutationRecord, observer: MutationObserver) => any
 >;
 
 type AttachedElement = {
@@ -21,6 +21,13 @@ type AttachedElement = {
 	selectorCallback: MutationHandlerCallback;
 	observerParameters: MutationObserverInit;
 };
+
+interface HtmluDomOptions {
+	defaultAttributeFilter?: string[];
+	useSubtree?: boolean;
+	debounceTime?: number;
+	errorHandler?: (error: Error | any) => void;
+}
 
 type AttachOptionsType = AttachedElement | AttachedElement[];
 
@@ -32,18 +39,32 @@ export type moduleName = string;
  */
 class HtmluDomLib {
 	private static instance: HtmluDomLib;
+	private activeObservers: WeakMap<Node, MutationObserver> = new WeakMap();
+	private options: HtmluDomOptions;
 
-	private constructor() {}
+	private constructor(options: HtmluDomOptions = {}) {
+		this.options = {
+			defaultAttributeFilter: undefined,
+			useSubtree: true,
+			debounceTime: 0,
+			errorHandler: console.error,
+			...options
+		};
+	}
 
 	/**
 	 * Returns the singleton instance of the HtmluDomLoader.
 	 * @returns The singleton instance of the HtmluDomLoader.
 	 */
-	public static getInstance(): HtmluDomLib {
+	public static getInstance(options?: HtmluDomOptions): HtmluDomLib {
 		if (!HtmluDomLib.instance) {
-			HtmluDomLib.instance = new HtmluDomLib();
+			HtmluDomLib.instance = new HtmluDomLib(options);
 		}
 		return HtmluDomLib.instance;
+	}
+
+	public updateOptions(newOptions: Partial<HtmluDomOptions>): void {
+		this.options = { ...this.options, ...newOptions };
 	}
 
 	/**
@@ -55,6 +76,8 @@ class HtmluDomLib {
 		const optionsArray = Array.isArray(opts) ? opts : [opts];
 		if (typeof window == 'undefined' || !optionsArray) return;
 
+		const elementsToObserve: ObservedElement[] = [];
+
 		for (const option of optionsArray as AttachedElement[]) {
 			const selectorsArray = Array.isArray(option.selectors)
 				? option.selectors
@@ -62,18 +85,19 @@ class HtmluDomLib {
 
 			for (const elementSelector of selectorsArray) {
 				const elements = this.getSelectorElements(elementSelector);
-
 				for (const element of elements) {
-					const targetNode = new ObservedElement(
-						element,
-						option.observerParameters,
-						option.selectorCallback
+					elementsToObserve.push(
+						new ObservedElement(element, option.observerParameters, option.selectorCallback)
 					);
-
-					this.observe(targetNode);
 				}
 			}
 		}
+
+		// Batch DOM operations
+		this.scheduleUpdate(() => {
+			elementsToObserve.forEach((el) => this.observe(el));
+		});
+
 		return true;
 	}
 
@@ -108,79 +132,161 @@ class HtmluDomLib {
 			paramOnMutationType = attributeFilterOrMutationType;
 		}
 
-		// Create an empty selectorCallback object
+		// Create a selectorCallback object with defined callbacks
 		const selectorCallback: MutationHandlerCallbackReturn = {} as MutationHandlerCallbackReturn;
 
-		// Set the attributes, childList, and characterData properties of selectorCallback based on the callback functions in paramOnMutationType
-		if (paramOnMutationType.onAttributesChange)
-			selectorCallback.attributes = paramOnMutationType.onAttributesChange;
-		if (paramOnMutationType.onChildListChange)
-			selectorCallback.childList = paramOnMutationType.onChildListChange;
-		if (paramOnMutationType.onCharacterDataChange)
-			selectorCallback.characterData = paramOnMutationType.onCharacterDataChange;
+		if (paramOnMutationType.onAttributesChange) {
+			selectorCallback.attributes = (element, mutation, observer) =>
+				paramOnMutationType.onAttributesChange!(element, mutation, observer);
+		}
+		if (paramOnMutationType.onChildListChange) {
+			selectorCallback.childList = (element, mutation, observer) =>
+				paramOnMutationType.onChildListChange!(element, mutation, observer);
+		}
+		if (paramOnMutationType.onCharacterDataChange) {
+			selectorCallback.characterData = (element, mutation, observer) =>
+				paramOnMutationType.onCharacterDataChange!(element, mutation, observer);
+		}
 
-		// Attach the observer with the specified selector, mutation types, and callback functions
-		this.attach({
-			selectors: [{ element: selector, mutations: { attributes: attributeFilter } }],
-			selectorCallback: (mutations, observer) => selectorCallback,
-			observerParameters: {
-				attributeFilter: attributeFilter ?? undefined,
-				attributes:
-					Boolean(attributeFilter) ?? Boolean(paramOnMutationType.onAttributesChange) ?? undefined,
-				childList: Boolean(paramOnMutationType.onChildListChange),
-				subtree: Boolean(attributeFilter) && Boolean(paramOnMutationType.onChildListChange),
-				characterData: Boolean(paramOnMutationType.onCharacterDataChange)
-			}
-		});
+		if (!selectorParam) return console.error('No selector provided');
 
-		// Return the current instance of the class for chaining
-		return this;
+		const observerParameters = {
+			attributeFilter: attributeFilter ?? this.options.defaultAttributeFilter,
+			attributes: Boolean(attributeFilter) || Boolean(paramOnMutationType.onAttributesChange),
+			childList: Boolean(paramOnMutationType.onChildListChange),
+			subtree:
+				this.options.useSubtree &&
+				(Boolean(attributeFilter) || Boolean(paramOnMutationType.onChildListChange)),
+			characterData: Boolean(paramOnMutationType.onCharacterDataChange)
+		};
+
+		// Attach the observer in debounce mode with the specified selector, mutation types, and callback functions
+		const debouncedAttach = this.options.debounceTime
+			? this.debounce(
+					() =>
+						this.attach({
+							selectors: [
+								{
+									element: selectorParam as Selector['element'],
+									mutations: { attributes: attributeFilter }
+								}
+							],
+							selectorCallback: () => selectorCallback,
+							observerParameters
+						}),
+					this.options.debounceTime
+				)
+			: () =>
+					this.attach({
+						selectors: [
+							{
+								element: selectorParam as Selector['element'],
+								mutations: { attributes: attributeFilter }
+							}
+						],
+						selectorCallback: () => selectorCallback,
+						observerParameters
+					});
+		debouncedAttach();
+
+		return {
+			untrack: () => this.detach(selector)
+		};
+	}
+
+	private debounce(func: Function, wait: number) {
+		let timeout: NodeJS.Timeout;
+		return (...args: any[]) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func(...args), wait);
+		};
 	}
 
 	private observe(observedElement: ObservedElement) {
-		/** create observer */
-		const observer = new MutationObserver(callback.bind(this));
-		/**
-		 * Starts observing the observed element for mutations.
-		 */
 		try {
-			observer.observe(observedElement.element, observedElement.mutationConfig);
-			return observer;
-		} catch (error) {
-			console.error('Error in observe method', error);
-		}
+			const observer = new MutationObserver(this.debounce(callback, 25));
 
-		function callback(mutations: MutationRecord[]) {
-			for (const mutation of mutations) {
-				if (
-					mutation.type &&
-					observedElement.mutationConfig[mutation.type] &&
-					typeof observedElement?.mutationCallback == 'function'
-				) {
-					observedElement
-						.mutationCallback(observedElement.element, mutations, observer)
-						[mutation.type](observedElement.element, mutation);
+			try {
+				observer.observe(observedElement.element, observedElement.mutationConfig);
+				this.activeObservers.set(observedElement.element, observer);
+				return observer;
+			} catch (error) {
+				console.error('Error in observe method', error);
+			}
+
+			function callback(mutations: MutationRecord[]) {
+				for (const mutation of mutations) {
+					if (
+						mutation.type &&
+						observedElement.mutationConfig[mutation.type] &&
+						typeof observedElement?.mutationCallback == 'function'
+					) {
+						const callbackResult = observedElement.mutationCallback(
+							observedElement.element,
+							mutations,
+							observer
+						);
+
+						if (callbackResult && typeof callbackResult[mutation.type] === 'function') {
+							callbackResult[mutation.type](observedElement.element, mutation, observer);
+						}
+					}
 				}
 			}
+		} catch (error) {
+			this.options?.errorHandler?.(error);
 		}
 	}
 
 	private getSelectorElements({ element }: Selector): Node[] {
-		let elementList: Node[] = [];
 		if (element instanceof Node) {
-			elementList = [element];
-		} else if (element instanceof NodeList) {
-			elementList = Array.from(element);
-		} else if (typeof element == 'string') {
-			elementList = Array.from(document.querySelectorAll(element));
+			return [element];
+		} else if (element instanceof NodeList || element instanceof HTMLCollection) {
+			return Array.from(element);
+		} else if (typeof element === 'string') {
+			return Array.from(document.querySelectorAll(element));
+		} else if (Array.isArray(element)) {
+			return element.flatMap((sel) =>
+				typeof sel === 'string'
+					? Array.from(document.querySelectorAll(sel))
+					: sel instanceof Node
+						? [sel]
+						: []
+			);
 		}
-		return elementList;
+		return [];
 	}
+
+	private scheduleUpdate(callback: () => void) {
+		requestAnimationFrame(() => {
+			callback();
+		});
+	}
+
 	/**
 	 * Detaches the HtmluDom library from the specified elements.
 	 * @param args - The options for detaching the library.
 	 */
-	static detach(args: any /* to define */) {}
+	public detach(selector?: string | Node | NodeList | string[]) {
+		if (selector) {
+			const elements = this.getSelectorElements({ element: selector });
+			elements.forEach((element) => {
+				const observer = this.activeObservers.get(element);
+				if (observer) {
+					observer.disconnect();
+					this.activeObservers.delete(element);
+				}
+			});
+		} else {
+			// Détacher tous les observateurs si aucun sélecteur n'est spécifié
+			this.activeObservers.forEach((observer) => observer.disconnect());
+			this.activeObservers.clear();
+		}
+	}
+
+	public getActiveObserversCount(): number {
+		return this.activeObservers.size;
+	}
 }
 
 export const Htmlu = HtmluDomLib.getInstance();

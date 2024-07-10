@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/htmludom",
-	"version": "0.0.2",
+	"version": "0.11.3",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
@@ -43,6 +43,7 @@
 		"@types/eslint": "8.56.9",
 		"@typescript-eslint/eslint-plugin": "^7.6.0",
 		"@typescript-eslint/parser": "^7.6.0",
+		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.37.0",
 		"husky": "^9.0.11",
@@ -61,6 +62,7 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"inquirer": "^9.2.18"
+		"inquirer": "^9.2.18",
+		"puppeteer": "^22.12.1"
 	}
 }
