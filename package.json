@@ -28,10 +28,10 @@
     "@commitlint/config-conventional": "^19.2.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^9.1.0",
+    "eslint": "^9.6.0",
     "husky": "^9.0.11",
-    "lerna": "^6.4.1",
-    "node": "^18.20.2",
+    "lerna": "^8.1.6",
+    "node": "^18.20.4",
     "typescript": "^5.5.3"
   },
   "version": "0.0.2",
