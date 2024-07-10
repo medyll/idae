@@ -1,0 +1,13 @@
+{
+  "domEvents": {
+    "route": "entity"
+  },
+  "messageEvent": {
+    "route": "entity"
+  },
+  "shareEvent": {
+    "objectId" : "",
+    "restrictAccess" : "",
+    "restrictRules" : ""
+  }
+}
