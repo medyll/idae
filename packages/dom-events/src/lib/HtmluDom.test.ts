@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { Htmlu } from './HtmluDom.js';
+import { Htmlu } from './domObserver.js';
 
 describe('HtmluDomLib', () => {
 	let browser: puppeteer.Browser;

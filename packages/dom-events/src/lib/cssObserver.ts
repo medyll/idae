@@ -1,7 +1,7 @@
-import { Htmlu } from './HtmluDom.js';
+import { Htmlu } from './domObserver.js';
 
 /* path: D:\boulot\app-node\htmludom\src\lib\htmluCssObserver.ts */
-export type CssObserverCallBack = (node: Element, mutation?: MutationRecord) => void;
+export type CssObserverCallBack = undefined | ((node: Element, mutation?: MutationRecord) => void);
 export type CssObserverCallBackSummary = (nodes: Node[]) => void;
 export type CssObserverOptions = {
 	strictlyNew: boolean;
@@ -78,38 +78,51 @@ export class CssObserver {
 		opts: {
 			onlyNew?: boolean;
 			trackChildList?: boolean;
-			trackAttributes?: boolean | string[];
+			trackAttributes?: string[];
+			trackCharacterData?: boolean;
 			trackResize?: boolean;
 		} = {}
 	) {
+		/* if (!document?.body) {
+			return;
+			throw new Error('Document body is not available. Please wait for the document to load.');
+		} */
 		const animationName = crypto.randomUUID();
 		this.activeAnimations.add(animationName);
 		const styleFragment = this.createStyleFragment(this.selector, animationName);
 
+		let transCallBak: CssObserverCallBack = (node) => {
+			if (opts.trackResize) {
+				this.addResizeObserver(callback);
+			}
+
+			if (opts.trackAttributes) {
+				Htmlu.track(node, opts.trackAttributes, {
+					onAttributesChange: callback,
+					onChildListChange: opts.trackChildList ? callback : undefined,
+					onCharacterDataChange: Boolean(opts.trackCharacterData) ? callback : undefined
+				});
+			} else if (opts.trackChildList || opts.trackCharacterData) {
+				Htmlu.track(node, {
+					onChildListChange: opts.trackChildList ? callback : undefined,
+					onCharacterDataChange: Boolean(opts.trackCharacterData) ? callback : undefined
+				});
+			}
+			return callback?.(node);
+		};
+
 		if (!opts.onlyNew) {
-			this.processExistingElements(callback);
+			this.processExistingElements(transCallBak);
 		}
 
-		const eventHandler = this.createEventHandler(animationName, callback);
-		let animationLoader = this.addEvent(eventHandler);
-
-		if (opts.trackResize) {
-			this.addResizeObserver(callback);
-		}
-
-		if (opts.trackAttributes) {
-			Htmlu.track(this.selector, opts.trackAttributes === true ? [] : opts.trackAttributes, {
-				onAttributesChange: (element, mutation) => {
-					callback(element as Element, mutation);
-				}
-			});
-		}
+		const eventHandler = this.createEventHandler(animationName, transCallBak);
+		let animationLoader = this.listenToAnimationEvent(eventHandler);
 
 		return {
 			start: () => {
-				animationLoader = this.addEvent(eventHandler);
+				animationLoader = this.listenToAnimationEvent(eventHandler);
 				if (opts.trackResize) {
-					this.addResizeObserver(callback);
+					this.addResizeObserver(transCallBak);
 				}
 			},
 			pause: () => {
@@ -171,7 +184,7 @@ export class CssObserver {
 	private callCallback(element: Element, callback: CssObserverCallBack, mutation?: MutationRecord) {
 		if (this.hasTag(element)) return;
 		this.doTag(element);
-		callback(element, mutation);
+		callback?.(element, mutation);
 	}
 
 	/**
@@ -307,7 +320,7 @@ export class CssObserver {
 	 * @param {Function} eventHandler - The event handler function.
 	 * @returns {number} The timeout ID.
 	 */
-	private addEvent(eventHandler: (event: AnimationEvent) => void): number {
+	private listenToAnimationEvent(eventHandler: (event: AnimationEvent) => void): number {
 		return setTimeout(() => {
 			document.addEventListener('animationstart', eventHandler, false);
 		}, this.options.eventDelay);
@@ -408,6 +421,14 @@ export function cssObserve(
 ) {
 	const domCss = new CssObserver(selector);
 
+	if (document?.body)
+		document?.body?.addEventListener(
+			'DOMContentLoaded',
+			(event) => {
+				console.log('DOMContentLoaded');
+			},
+			false
+		);
 	return {
 		/**
 		 * Tracks changes for each matching element.
@@ -416,24 +437,6 @@ export function cssObserve(
 		 */
 		each: function (callback: CssObserverCallBack) {
 			const tracker = domCss.track(callback, opts);
-
-			if (opts?.trackChildList || opts?.trackAttributes) {
-				Htmlu.track(selector, Boolean(opts?.trackAttributes) ? opts?.trackAttributes : [], {
-					onChildListChange: opts.trackChildList ? callback : undefined,
-					onAttributesChange: opts.trackAttributes
-						? (element, mutation) => callback(element, mutation)
-						: undefined
-				});
-			}
-
-			if (opts?.trackResize) {
-				const resizeObserver = new ResizeObserver((entries) => {
-					for (let entry of entries) {
-						callback(entry.target as Element);
-					}
-				});
-				document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
-			}
 
 			return tracker;
 		},

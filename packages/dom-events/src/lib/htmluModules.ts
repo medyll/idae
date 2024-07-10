@@ -1,4 +1,4 @@
-import { Htmlu, type moduleName, type querySelector } from './HtmluDom.js';
+import { Htmlu, type moduleName, type querySelector } from './domObserver.js';
 
 type HtmluModule = Record<moduleName, [querySelector, querySelector]>;
 

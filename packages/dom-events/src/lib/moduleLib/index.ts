@@ -1,5 +1,5 @@
 import type { moduleName, querySelector } from '$lib/HtmluDom.js';
-import { cssObserve } from '$lib/htmluCssObserver.js';
+import { cssObserve } from '$lib/cssObserver.js';
 
 type HtmluModule = Record<moduleName, [querySelector, querySelector]>;
 

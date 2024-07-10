@@ -37,8 +37,8 @@ export type moduleName = string;
 /**
  * Represents a loader for the HtmluDom library.
  */
-class HtmluDomLib {
-	private static instance: HtmluDomLib;
+class DomObserver {
+	private static instance: DomObserver;
 	private activeObservers: WeakMap<Node, MutationObserver> = new WeakMap();
 	private options: HtmluDomOptions;
 
@@ -56,11 +56,11 @@ class HtmluDomLib {
 	 * Returns the singleton instance of the HtmluDomLoader.
 	 * @returns The singleton instance of the HtmluDomLoader.
 	 */
-	public static getInstance(options?: HtmluDomOptions): HtmluDomLib {
-		if (!HtmluDomLib.instance) {
-			HtmluDomLib.instance = new HtmluDomLib(options);
+	public static getInstance(options?: HtmluDomOptions): DomObserver {
+		if (!DomObserver.instance) {
+			DomObserver.instance = new DomObserver(options);
 		}
-		return HtmluDomLib.instance;
+		return DomObserver.instance;
 	}
 
 	public updateOptions(newOptions: Partial<HtmluDomOptions>): void {
@@ -289,7 +289,7 @@ class HtmluDomLib {
 	}
 }
 
-export const Htmlu = HtmluDomLib.getInstance();
+export const Htmlu = DomObserver.getInstance();
 
 const defaultMutationConfig: MutationObserverInit = {
 	attributeFilter: undefined,
@@ -324,17 +324,15 @@ class ObservedElement {
 
 type OnMutationType = {
 	onChange?: (element: Node, mutation: MutationRecord, observer: MutationObserver) => void;
-	onAttributesChange?: (
-		element: Node,
-		mutation: MutationRecord,
-		observer: MutationObserver
-	) => void;
-	onChildListChange?: (element: Node, mutation: MutationRecord, observer: MutationObserver) => void;
-	onCharacterDataChange?: (
-		element: Node,
-		mutation: MutationRecord,
-		observer: MutationObserver
-	) => void;
+	onAttributesChange?:
+		| undefined
+		| ((element: Node, mutation: MutationRecord, observer: MutationObserver) => void);
+	onChildListChange?:
+		| undefined
+		| ((element: Node, mutation: MutationRecord, observer: MutationObserver) => void);
+	onCharacterDataChange?:
+		| undefined
+		| ((element: Node, mutation: MutationRecord, observer: MutationObserver) => void);
 };
 
 // examples of how to use
