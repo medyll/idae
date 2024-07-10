@@ -32,6 +32,9 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"peerDependencies": {
+		"svelte": "^4.0.0 || ^5.0.0"
+	},
 	"devDependencies": {
 		"@playwright/test": "^1.43.1",
 		"@sveltejs/adapter-auto": "^3.2.0",
