@@ -1,0 +1,14 @@
+{
+  "entity": {
+    "route": "entity"
+  },
+  "dispatch": {
+    "route": "dispatch"
+  },
+  "component": {
+    "route": "component/:action"
+  },
+  "rooms": {
+    "route": "rooms/:room"
+  }
+}
