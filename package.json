@@ -32,7 +32,10 @@
     "husky": "^9.0.11",
     "lerna": "^6.4.1",
     "node": "^18.20.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   },
-  "version": "0.0.2"
+  "version": "0.0.2",
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
 }
