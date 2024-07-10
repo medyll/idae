@@ -10,7 +10,6 @@
 		"sourceMap": true,
 		"strict": true,
 		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"noImplicitAny": false
+		"moduleResolution": "NodeNext"
 	}
 }
