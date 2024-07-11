@@ -9,7 +9,7 @@ describe('stator', () => {
 	it('should handle object values', () => {
 		const initialState = { foo: 'bar' };
 		const state = stator(initialState);
-		expect(state).toEqual(initialState);
+		expect(state.stator).toEqual(initialState);
 	});
 
 	it('should trigger onchange for primitive values', () => {

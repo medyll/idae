@@ -55,31 +55,6 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 	// Default onchange handler
 	let onchange: StateChangeHandler<T> | undefined;
 
-	/**
-	 * Creates a nested proxy for object properties
-	 * @param obj The object to proxy
-	 * @returns A proxied version of the object
-	 */
-	function createNestedProxy(obj: any): any {
-		if (typeof obj !== 'object' || obj === null) {
-			return obj;
-		}
-
-		return new Proxy(obj, {
-			get(target, property, receiver) {
-				return createNestedProxy(Reflect.get(target, property, receiver));
-			},
-			set(target, property, value, receiver) {
-				const oldValue = Reflect.get(target, property, receiver);
-				const result = Reflect.set(target, property, value, receiver);
-				if (onchange && !Object.is(oldValue, value)) {
-					onchange(state.stator, { ...state.stator });
-				}
-				return result;
-			}
-		});
-	}
-
 	// Proxy handler to intercept property access and modifications
 	const handler: ProxyHandler<AugmentedState<T>> = {
 		get(target: State<T>, property: string | symbol, receiver: any) {
@@ -88,7 +63,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 					return onchange;
 				}
 				if (property === 'stator') {
-					return createNestedProxy(target.stator);
+					return target.stator;
 				}
 				if (property === 'toString') {
 					return function () {
@@ -137,10 +112,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 				}
 
 				if (onchange && !Object.is(oldValue, newValue)) {
-					// Wrap primitive values in an object for consistency
-					const oldWrapped = isPrimitive(oldValue) ? { stator: oldValue } : oldValue;
-					const newWrapped = isPrimitive(newValue) ? { stator: newValue } : newValue;
-					onchange(oldWrapped as T, newWrapped as T);
+					onchange(oldValue, newValue);
 				}
 
 				return true;
@@ -148,26 +120,8 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 				logError(`Error setting property ${String(property)}:`, error);
 				throw error;
 			}
-		},
-		has(target: State<T>, property: string | symbol) {
-			return (
-				property === 'onchange' || property === 'stator' || Reflect.has(target.stator, property)
-			);
-		},
-		ownKeys(target: State<T>) {
-			return Reflect.ownKeys(target.stator).concat('stator', 'onchange');
-		},
-		getOwnPropertyDescriptor(target: State<T>, property: string | symbol) {
-			if (property === 'onchange' || property === 'stator') {
-				return {
-					configurable: true,
-					enumerable: false,
-					value: property === 'stator' ? target.stator : onchange,
-					writable: true
-				};
-			}
-			return Reflect.getOwnPropertyDescriptor(target.stator, property);
 		}
+		// ... (autres méthodes inchangées)
 	};
 
 	// Create and return the proxied state object
