@@ -1,14 +1,16 @@
 /* path: D:\boulot\app-node\idbql\src\lib\scripts\state\idbstate.svelte.ts */
-import type { IdbqlIndexedCore } from "$lib/scripts/idbqlCore/idbqlCore.js";
-import { Operators } from "$lib/scripts/operators/operators.js";
+import type { IdbqlIndexedCore } from "$lib/idbqlCore/idbqlCore.js";
+import type { CollectionCore } from "$lib/collection/collection.js";
+import { idbqlEvent } from "./idbqlEvent.svelte.js";
+//
 import {
+  Operators,
   getResultset,
+  type Where,
   type ResultSet,
   type ResultsetOptions,
-} from "$lib/scripts/resultSet/Resultset.js";
-import type { Where } from "$lib/scripts/types.js";
-import type { CollectionCore } from "../collection/collection.js";
-import { idbqlEvent } from "./idbqlEvent.svelte.js";
+} from "@medyll/idae-query";
+//
 
 /**
  * Main entry point.

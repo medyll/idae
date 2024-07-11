@@ -1,14 +1,14 @@
 /* path:  src\lib\scripts\collection\collection.ts */
 
-import { type Where } from "../types.js";
-import { Query } from "../query/query.js";
+import { Query, getResultset } from "@medyll/idae-query";
 
 import {
+  type Where,
   type ResultsetOptions,
   type ResultSet,
-  getResultset,
-} from "../resultSet/Resultset.js";
-import { idbqlEvent } from "../state/idbqlEvent.svelte.js";
+} from "@medyll/idae-query";
+
+import { idbqlEvent } from "$lib/state/idbqlEvent.svelte.js";
 
 export class CollectionCore<T = any> {
   protected _store: string;

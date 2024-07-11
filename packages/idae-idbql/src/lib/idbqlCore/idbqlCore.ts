@@ -102,8 +102,8 @@ type ModelTypes<T = Record<string, any>> = {
   [P in keyof T]: T[P] extends { ts: infer M }
     ? M
     : T[P] extends { model: infer M }
-    ? M
-    : never;
+      ? M
+      : never;
 };
 type Method<T> = {
   // @ts-ignore
@@ -279,4 +279,5 @@ export const createIdbqDb = <T extends IdbqModel>(
   };
 };
 
+// main export is here ?
 export const idbqBase = createIdbqDb;

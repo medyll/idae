@@ -38,5 +38,8 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@medyll/idae-query": "^0.0.1"
+	}
 }
