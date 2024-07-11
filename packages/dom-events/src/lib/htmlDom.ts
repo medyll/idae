@@ -289,7 +289,10 @@ class DomObserver {
 	}
 }
 
-export const Htmlu = DomObserver.getInstance();
+const instance = DomObserver.getInstance();
+/** @deprecated */
+export const Htmlu = instance;
+export const htmlDom = instance;
 
 const defaultMutationConfig: MutationObserverInit = {
 	attributeFilter: undefined,

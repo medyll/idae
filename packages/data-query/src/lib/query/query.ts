@@ -1,7 +1,7 @@
 /* src\lib\scripts\query\query.ts */
 import { Operators } from '$lib/operators/operators.js';
 
-import { getResultset } from '$lib/resultSet/Resultset.js';
+import { getResultset } from '$lib/resultset/resultset.js';
 
 import type { Operator, Where } from '$lib/types.js';
 

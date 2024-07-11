@@ -1,4 +1,4 @@
-import { Htmlu } from './domObserver.js';
+import { Htmlu } from './htmlDom.js';
 
 /* path: D:\boulot\app-node\htmludom\src\lib\htmluCssObserver.ts */
 export type CssObserverCallBack = undefined | ((node: Element, mutation?: MutationRecord) => void);
@@ -410,7 +410,7 @@ export class CssObserver {
  * @param {boolean} [opts.trackResize] - Whether to track resize events.
  * @returns {Object} An object with methods to track changes.
  */
-export function cssObserve(
+export function cssDom(
 	selector: QuerySelector,
 	opts?: {
 		onlyNew?: boolean;
@@ -470,3 +470,23 @@ export function cssObserve(
 		}
 	};
 }
+
+/* function delayedStart(): Promise<Node> {
+		return new Promise((resolve, reject) => {
+			if (typeof window == 'undefined') {
+				console.log('window is undefined');
+				return;
+			}
+			if (typeof window === 'object') {
+				const targetNode =
+					typeof this.targetNode == 'string'
+						? document.getElementById(this.targetNode) ?? document.body
+						: this.targetNode ?? document.body;
+
+				clearTimeout(this.delay);
+				resolve(targetNode);
+
+				return;
+			}
+		});
+	} */
