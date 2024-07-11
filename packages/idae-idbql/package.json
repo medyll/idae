@@ -1,5 +1,6 @@
 {
-	"name": "idae-idbql",
+	"name": "@medyll/idae-idbql",
+	"scope": "@medyll",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
