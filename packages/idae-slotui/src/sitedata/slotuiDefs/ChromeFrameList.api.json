@@ -1,0 +1,54 @@
+{
+  "moduleName": "ChromeFrameList",
+  "filePath": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "chromeListConfig",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

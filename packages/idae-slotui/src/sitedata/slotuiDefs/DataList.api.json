@@ -1,0 +1,280 @@
+{
+  "moduleName": "DataList",
+  "filePath": "src/lib/data/dataList/DataList.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "hideBody",
+      "kind": "let",
+      "description": "show or hide the dataList body",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "showHeader",
+      "kind": "let",
+      "description": "show or hide the dataList headere",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isSortable",
+      "kind": "let",
+      "description": "is the datalist sortable",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortByOrder",
+      "kind": "let",
+      "description": "order on which the sorted list is sorted",
+      "type": "string",
+      "value": "'none'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "groupByField",
+      "kind": "let",
+      "description": "group field on which data will be grouped, can use dot notation as dot path",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "groupByOptions",
+      "kind": "let",
+      "description": "options used when props.groupByField is defined",
+      "type": "{     showMainHeader: true,     showSubGroupsHeader: true,     showEmptyGroup: false }",
+      "value": "{     showMainHeader: true,     showSubGroupsHeader: true,     showEmptyGroup: false }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "fieldValue",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "selectorField",
+      "kind": "let",
+      "description": "field used for selection",
+      "type": "string",
+      "value": "'id'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "selectorFieldValue",
+      "kind": "let",
+      "description": "field value used for selection",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "activeCommonSortField",
+      "kind": "let",
+      "description": "binding, used when multiple buttons",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "noWrap",
+      "kind": "let",
+      "description": "set noWrap = true to have ellipsis on all cells content",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "noWrapHeader",
+      "kind": "let",
+      "description": "set noWrap = true to have ellipsis on all header cells content",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "dataTypes",
+      "kind": "let",
+      "description": "represents your data types used to display values",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "description": "data to loop  trought",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "idField",
+      "kind": "let",
+      "description": "used only if data is provided",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "columns",
+      "kind": "let",
+      "description": "columns declaration",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "virtualizer",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isLoading",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortingIcons",
+      "kind": "let",
+      "type": "{     default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],     numeric: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'] }",
+      "value": "{     default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],     numeric: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'] }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<DataListRow\r\n\t\t\t\t\t\t\tclass={item[selectorField] === selectorFieldValue ? 'theme-bg-paper' : ''}\r\n\t\t\t\t\t\t\tdata={item}\r\n\t\t\t\t\t\t>\r\n\t\t\t\t\t\t\t{#if $dataListContext.hasColumnsProps}\r\n\t\t\t\t\t\t\t\t{#each Object.keys($dataListContext.columns) as inItem}\r\n\t\t\t\t\t\t\t\t\t<slot\r\n\t\t\t\t\t\t\t\t\t\tname=\"dataListCell\"\r\n\t\t\t\t\t\t\t\t\t\tfieldName={$dataListContext.columns[inItem]?.field}\r\n\t\t\t\t\t\t\t\t\t\tfieldType={$dataListContext.columns[inItem]?.fieldType}\r\n\t\t\t\t\t\t\t\t\t\tfieldRawValue={sanitizeHtml(\r\n\t\t\t\t\t\t\t\t\t\t\tcheckGetter({ ...$dataListContext.columns }, inItem, item)\r\n\t\t\t\t\t\t\t\t\t\t)}\r\n\t\t\t\t\t\t\t\t\t\tfieldValue={sanitizeHtml(\r\n\t\t\t\t\t\t\t\t\t\t\tcheckGetter({ ...$dataListContext.columns }, inItem, item)\r\n\t\t\t\t\t\t\t\t\t\t)}\r\n\t\t\t\t\t\t\t\t\t/>\r\n\t\t\t\t\t\t\t\t{/each}\r\n\t\t\t\t\t\t\t{:else}\r\n\t\t\t\t\t\t\t\t{#each Object.keys(item) as inItem}\r\n\t\t\t\t\t\t\t\t\t<slot\r\n\t\t\t\t\t\t\t\t\t\tname=\"dataListCell\"\r\n\t\t\t\t\t\t\t\t\t\tfieldName=\"{$dataListContext.columns[inItem]?.field}}\"\r\n\t\t\t\t\t\t\t\t\t\tfieldType={$dataListContext.columns[inItem]?.fieldType}\r\n\t\t\t\t\t\t\t\t\t\tfieldRawValue={sanitizeHtml(\r\n\t\t\t\t\t\t\t\t\t\t\tcheckGetter({ ...$dataListContext.columns }, inItem, item)\r\n\t\t\t\t\t\t\t\t\t\t)}\r\n\t\t\t\t\t\t\t\t\t\tfieldValue={sanitizeHtml(\r\n\t\t\t\t\t\t\t\t\t\t\tcheckGetter({ ...$dataListContext.columns }, inItem, item)\r\n\t\t\t\t\t\t\t\t\t\t)}\r\n\t\t\t\t\t\t\t\t\t/>\r\n\t\t\t\t\t\t\t\t{/each}\r\n\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t</DataListRow>",
+      "slot_props": "{ slot: groupTitleSlot }"
+    },
+    {
+      "name": "dataListCell",
+      "default": false,
+      "slot_props": "{ fieldType: any, fieldName: any, fieldValue: any, slot: dataListCell }"
+    },
+    { "name": "dataListFooter", "default": false, "slot_props": "{}" },
+    {
+      "name": "groupTitleSlot",
+      "default": false,
+      "fallback": "<div\r\n\t\t\t\t\t\t\tclass=\"flex-h flex-align-middle pad gap-medium groupHead\"\r\n\t\t\t\t\t\t\ton:click={() => {\r\n\t\t\t\t\t\t\t\thidedGroups[red] = !hidedGroups[red];\r\n\t\t\t\t\t\t\t}}\r\n\t\t\t\t\t\t>\r\n\t\t\t\t\t\t\t<div class=\"iconGroup\">\r\n\t\t\t\t\t\t\t\t<Icon class=\"iconGroup\" icon=\"cil:object-group\" />\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div>{groupByField} : <span class=\"text-bold\">{red}</span></div>\r\n\t\t\t\t\t\t\t<div class=\"flex-main border-b divider\" />\r\n\t\t\t\t\t\t\t<div>{groups[red]?.length}</div>\r\n\t\t\t\t\t\t\t<div class=\"pad-l border-l iconGroup\">\r\n\t\t\t\t\t\t\t\t<Button\r\n\t\t\t\t\t\t\t\t\ton:click={() => {\r\n\t\t\t\t\t\t\t\t\t\thidedGroups[red] = !hidedGroups[red];\r\n\t\t\t\t\t\t\t\t\t}}\r\n\t\t\t\t\t\t\t\t\ticon={hidedGroups[red] ? 'chevron-up' : 'chevron-down'}\r\n\t\t\t\t\t\t\t\t\tnaked\r\n\t\t\t\t\t\t\t\t/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>",
+      "slot_props": "{ item: any }"
+    },
+    {
+      "name": "head",
+      "default": false,
+      "fallback": "<DataListHead />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

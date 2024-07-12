@@ -1,0 +1,15 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --auto-complete-pad: var(--sld-pad-medium);
+    --auto-complete-gap: var(--sld-gap-small);
+}
+
+.auto-complete {
+    &-no-results,
+    &-boot {
+        padding: var(--auto-complete-pad);
+        gap: var(--auto-complete-gap);
+        @include flex(row, center);
+    }
+}

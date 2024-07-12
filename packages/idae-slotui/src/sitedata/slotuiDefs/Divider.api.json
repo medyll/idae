@@ -1,0 +1,102 @@
+{
+  "moduleName": "Divider",
+  "filePath": "src/lib/base/divider/Divider.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "className off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "description": "css style off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "description": "element root HTMLDivElement props",
+      "type": "null | HTMLHRElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "density",
+      "kind": "let",
+      "description": "margins applied to divider",
+      "type": "'none' | 'tight' | 'default' | 'medium' | 'kind'",
+      "value": "'default'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "direction",
+      "kind": "let",
+      "description": "default direction of the divider",
+      "type": "'vertical' | 'horizontal'",
+      "value": "'horizontal'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "expansion",
+      "kind": "let",
+      "description": "expansion of the divider",
+      "type": "'full' | 'padded' | 'centered'",
+      "value": "'full'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "shadow",
+      "kind": "let",
+      "description": "give shadow to divider",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "color",
+      "kind": "let",
+      "description": "give color to divider",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

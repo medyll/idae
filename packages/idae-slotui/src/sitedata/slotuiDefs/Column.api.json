@@ -1,0 +1,46 @@
+{
+  "moduleName": "Column",
+  "filePath": "src/lib/base/columner/Column.svelte",
+  "props": [
+    {
+      "name": "columnId",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{}" },
+    { "name": "bottomSLot", "default": false, "slot_props": "{}" },
+    { "name": "drawerTop", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "div" }
+}

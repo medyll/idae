@@ -1,0 +1,51 @@
+{
+  "moduleName": "Jsoner",
+  "filePath": "src/lib/data/jsoner/Jsoner.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "mode",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

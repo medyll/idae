@@ -1,0 +1,91 @@
+{
+  "moduleName": "Virtualize",
+  "filePath": "src/lib/base/virtualize/Virtualize.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "items",
+      "kind": "let",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "height",
+      "kind": "let",
+      "type": "string",
+      "value": "'100%'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "itemHeight",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "start",
+      "kind": "let",
+      "type": "number",
+      "value": "0",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "end",
+      "kind": "let",
+      "type": "number",
+      "value": "0",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "Missing content",
+      "slot_props": "{ item: {row?.data ?? {}} }"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

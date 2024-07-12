@@ -1,0 +1,214 @@
+.text-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/** cssfabric : text*/
+.h1,
+h1 {
+  font-size: 3.1rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.h2,
+h2 {
+  font-size: 2.68rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.h3,
+h3 {
+  font-size: 2.26rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.h4,
+h4 {
+  font-size: 1.84rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.h5,
+h5 {
+  font-size: 1.42rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.h6,
+h6 {
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.text-cap {
+  text-transform: capitalize;
+}
+.text-up {
+  text-transform: uppercase;
+}
+.text-low {
+  text-transform: lowercase;
+}
+.text-none {
+  text-transform: none;
+}
+.text-full {
+  text-transform: full-width;
+}
+.text-50 {
+  font-weight: 50;
+}
+.text-100 {
+  font-weight: 100;
+}
+.text-300 {
+  font-weight: 400;
+}
+.text-500 {
+  font-weight: 500;
+}
+.text-900 {
+  font-weight: 900;
+}
+.text-light {
+  font-weight: lighter;
+}
+.text-cap {
+  font-weight: normal;
+}
+.text-bold {
+  font-weight: bold;
+}
+.text-bolder {
+  font-weight: bolder;
+}
+.text-l {
+  text-align: left;
+}
+.text-r {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-discrete {
+  color: #ccc;
+}
+.text-success {
+  color: green;
+}
+.text-info {
+  color: #ffdd57;
+}
+.text-warning {
+  color: #e6b905;
+}
+.text-alert {
+  color: #ff7300;
+}
+.text-error {
+  color: red;
+}
+.text-yellow {
+  color: #ffb900;
+}
+.text-orange {
+  color: #d83b01;
+}
+.text-red {
+  color: #d13438;
+}
+.text-magenta {
+  color: #b4009e;
+}
+.text-purple {
+  color: #5c2d91;
+}
+.text-green {
+  color: #107c10;
+}
+.text-teal {
+  color: #008272;
+}
+.text-blue {
+  color: #0078d4;
+}
+.text-gray-100 {
+  color: #f4f4f4;
+}
+.text-gray-200 {
+  color: #e9e9e9;
+}
+.text-gray-300 {
+  color: #dddddd;
+}
+.text-gray-400 {
+  color: #d2d2d2;
+}
+.text-gray-500 {
+  color: #c7c7c7;
+}
+.text-gray-600 {
+  color: #bbbbbb;
+}
+.text-gray-700 {
+  color: #b0b0b0;
+}
+.text-gray-800 {
+  color: #a4a4a4;
+}
+.text-gray-900 {
+  color: #999999;
+}
+.text-shad-discrete {
+  text-shad: 0 0 0.125em #ccc;
+}
+.text-shad-success {
+  text-shad: 0 0 0.125em green;
+}
+.text-shad-info {
+  text-shad: 0 0 0.125em #ffdd57;
+}
+.text-shad-warning {
+  text-shad: 0 0 0.125em #e6b905;
+}
+.text-shad-alert {
+  text-shad: 0 0 0.125em #ff7300;
+}
+.text-shad-error {
+  text-shad: 0 0 0.125em red;
+}
+.text-shad-yellow {
+  text-shad: 0 0 0.125em #ffb900;
+}
+.text-shad-orange {
+  text-shad: 0 0 0.125em #d83b01;
+}
+.text-shad-red {
+  text-shad: 0 0 0.125em #d13438;
+}
+.text-shad-magenta {
+  text-shad: 0 0 0.125em #b4009e;
+}
+.text-shad-purple {
+  text-shad: 0 0 0.125em #5c2d91;
+}
+.text-shad-green {
+  text-shad: 0 0 0.125em #107c10;
+}
+.text-shad-teal {
+  text-shad: 0 0 0.125em #008272;
+}
+.text-shad-blue {
+  text-shad: 0 0 0.125em #0078d4;
+}

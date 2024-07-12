@@ -1,0 +1,10 @@
+{
+  "moduleName": "Columner",
+  "filePath": "src/lib/base/columner/Columner.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "div" }
+}

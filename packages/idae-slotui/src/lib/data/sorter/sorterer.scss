@@ -1,0 +1,11 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --sorterer-gap: var(--sld-gap-tiny);
+}
+
+.sorterer {
+    cursor: pointer;
+    @include flex(row, center);
+    gap: var(--sorterer-gap);
+}

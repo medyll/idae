@@ -1,0 +1,106 @@
+{
+  "moduleName": "ToggleBar",
+  "filePath": "src/lib/ui/toggleBar/ToggleBar.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "title",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "orientation",
+      "kind": "let",
+      "type": "string",
+      "value": "'right'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "contentSwitcherIcon",
+      "kind": "let",
+      "type": "string",
+      "value": "'search'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "contentSwitcherIcon",
+      "default": false,
+      "slot_props": "{ slot: contentSwitcherIcon }"
+    },
+    {
+      "name": "contentSwitcherReveal",
+      "default": false,
+      "slot_props": "{ slot: contentSwitcherReveal }"
+    },
+    { "name": "toggleBarButtons", "default": false, "slot_props": "{}" },
+    {
+      "name": "toggleBarIcon",
+      "default": false,
+      "fallback": "<Icon {icon} />",
+      "slot_props": "{}"
+    },
+    {
+      "name": "toggleBarTitle",
+      "default": false,
+      "fallback": "<div\r\n\t\t\t\t\tstyle=\"font-size:18px;min-width:auto;overflow:hidden;height:100%;\"\r\n\t\t\t\t\tclass=\"flex flex-align-middle overflow-hidden text-ellipsis\"\r\n\t\t\t\t>\r\n\t\t\t\t\t<h5 class=\"text-ellipsis\">{title}</h5>\r\n\t\t\t\t</div>",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

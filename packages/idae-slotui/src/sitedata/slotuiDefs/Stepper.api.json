@@ -1,0 +1,58 @@
+{
+  "moduleName": "Stepper",
+  "filePath": "src/lib/base/stepper/Stepper.svelte",
+  "props": [
+    {
+      "name": "steps",
+      "kind": "let",
+      "description": "Number of steps",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "stepperOrientation",
+      "kind": "let",
+      "description": "orientation of the stepper",
+      "type": "string",
+      "value": "'horizontal'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "activeStep",
+      "kind": "let",
+      "description": "Actual active step",
+      "type": "number",
+      "value": "0",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "description": "exported actions for component",
+      "type": "{     setActiveStep: function (step) {         activeStep = step ?? 0;     } }",
+      "value": "{     setActiveStep: function (step) {         activeStep = step ?? 0;     } }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

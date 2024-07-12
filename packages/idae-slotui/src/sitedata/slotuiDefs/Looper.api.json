@@ -1,0 +1,66 @@
+{
+  "moduleName": "Looper",
+  "filePath": "src/lib/utils/looper/Looper.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "naked",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "title",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "slot_props": "{ item: {castValue(item)}, idx: any }"
+    },
+    {
+      "name": "title",
+      "default": false,
+      "fallback": "{title}",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

@@ -1,0 +1,104 @@
+{
+  "moduleName": "Sorter",
+  "filePath": "src/lib/data/sorter/Sorter.svelte",
+  "props": [
+    {
+      "name": "sorterMode",
+      "kind": "let",
+      "description": "Sorter mode",
+      "type": "string",
+      "value": "'button'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortedData",
+      "kind": "let",
+      "description": "binding : final sorted data as raw object",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "sortListItems",
+      "kind": "let",
+      "description": "list of available sorts shown to user",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "description": "data to sort",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortByField",
+      "kind": "let",
+      "description": "field from data to sort by",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortByTitleField",
+      "kind": "let",
+      "description": "presented field from data to sort by",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "sortByOrder",
+      "kind": "let",
+      "description": "order on which the sorted list is sorted",
+      "type": "string",
+      "value": "'none'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "activeCommonSortField",
+      "kind": "let",
+      "description": "binding, used when multiple buttons",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "slot_props": "{ primary: {sortByTitleField ?? sortByField}, icon: {icons.default[sortState.indexOf(sortByOrder)]}, iconFamily: mdi, naked: any, selected: {sortByOrder !== 'none' && activeCommonSortField === sortByField}, size: auto, showChip: {sortByOrder !== 'none' && activeCommonSortField === sortByField} }"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

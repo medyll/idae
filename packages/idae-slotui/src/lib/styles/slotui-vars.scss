@@ -1,0 +1,252 @@
+$vendor: "sld";
+
+$presets-ellipsis-line-default: 1;
+
+$preset-width-list: (
+    tiny: 2rem,
+    mini: 3rem,
+    small: 10rem,
+    med: 14rem,
+    kind: 20rem,
+    full: 100%,
+    auto: auto,
+    default: 10rem
+);
+
+$preset-tall-list: (
+    tiny: 1rem,
+    mini: 1.5rem,
+    small: 2.5rem,
+    med: 3.5rem,
+    kind: 4rem,
+    auto: auto,
+    default: 2.5rem
+);
+
+$preset-gutter-list: (
+    tiny: 0.25rem,
+    mini: 0.5rem,
+    small: 1rem,
+    med: 2rem,
+    kind: 3rem,
+    default: 1rem
+);
+
+$preset-gap-list: (
+    tiny: 0.25rem,
+    mini: 0.4rem,
+    small: 0.5rem,
+    med: 1rem,
+    large: 1.5rem,
+    default: 0.5rem
+);
+
+$preset-pad-list: (
+    tiny: 0.25rem,
+    small: 0.5rem,
+    med: 1rem,
+    large: 1.5rem
+);
+
+$preset-radius-list: (
+    tiny: 2px,
+    small: 4px,
+    med: 8px,
+    large: 16px
+);
+
+:root {
+    @each $preset, $preset-value in $preset-radius-list {
+        --#{$vendor}-radius-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-radius-tiny: 2px;
+    --#{$vendor}-radius-small: 4px;
+    --#{$vendor}-radius-med: 8px;
+    --#{$vendor}-radius-large: 16px; */
+
+    @each $preset, $preset-value in $preset-pad-list {
+        --#{$vendor}-pad-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-pad-tiny: 0.25rem;
+    --#{$vendor}-pad-small: 0.5rem;
+    --#{$vendor}-pad-med: 1rem;
+    --#{$vendor}-pad-large: 1.5rem; */
+
+    @each $preset, $preset-value in $preset-gap-list {
+        --#{$vendor}-gap-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-gap-tiny: 0.25rem;
+    --#{$vendor}-gap-mini: 0.4rem;
+    --#{$vendor}-gap-small: 0.5rem;
+    --#{$vendor}-gap-med: 1rem;
+    --#{$vendor}-gap-large: 1.5rem;
+    --#{$vendor}-gap-default: var(--#{$vendor}-gap-small); */
+
+    @each $preset, $preset-value in $preset-gutter-list {
+        --#{$vendor}-gutter-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-gutter-tiny: 0.25rem;
+    --#{$vendor}-gutter-mini: 0.5rem;
+    --#{$vendor}-gutter-small: 1rem;
+    --#{$vendor}-gutter-med: 2rem;
+    --#{$vendor}-gutter-kind: 3rem;
+    --#{$vendor}-gutter-default: var(--#{$vendor}-gutter-small); */
+
+    @each $preset, $preset-value in $preset-tall-list {
+        --#{$vendor}-tall-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-tall-tiny: 1rem;
+    --#{$vendor}-tall-mini: 1.5rem;
+    --#{$vendor}-tall-small: 2.5rem;
+    --#{$vendor}-tall-med: 3.5rem;
+    --#{$vendor}-tall-kind: 4rem;
+    --#{$vendor}-tall-default: var(--#{$vendor}-tall-small);  */
+
+    @each $preset, $preset-value in $preset-width-list {
+        --#{$vendor}-width-#{$preset}: #{$preset-value};
+    }
+    /* --#{$vendor}-width-tiny: 2rem;
+    --#{$vendor}-width-mini: 3rem;
+    --#{$vendor}-width-small: 8rem;
+    --#{$vendor}-width-med: 12rem;
+    --#{$vendor}-width-kind: 16rem;
+    --#{$vendor}-width-full: 100%;
+    --#{$vendor}-width-default: var(--#{$vendor}-width-med); */
+}
+:root {
+    --white: #fff;
+    --black: #333;
+}
+
+:root.dark,
+:root[data-theme="dark"],
+body[data-theme="dark"],
+:root[theme="dark"] {
+    --white: #333;
+    --black: #ccc;
+}
+:root {
+    --#{$vendor}-color-foreground: #333333;
+    --#{$vendor}-color-background: #ffffff;
+    --#{$vendor}-color-paper: #f1f1f1;
+
+    --#{$vendor}-color-primary: #98b148;
+    --#{$vendor}-color-secondary: #55492b;
+    --#{$vendor}-color-tertiary: #9999cc;
+
+    --#{$vendor}-color-disabled: #ccc;
+    --#{$vendor}-color-disabled-border: #cccccc;
+
+    --#{$vendor}-background-disabled: #ededed;
+}
+
+:root.dark,
+:root[data-theme="dark"],
+body[data-theme="dark"],
+:root[theme="dark"] {
+    --#{$vendor}-color-foreground: #ffffff;
+    --#{$vendor}-color-background: #27323a;
+    --#{$vendor}-color-paper: #3a3b3b;
+}
+
+:root {
+    --#{$vendor}-elevation-1: 0 0 1.75px 0 rgba(0, 0, 0, 0.15), 0 0.15px 0.46px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-2: 0 0 3.44px 0 rgba(0, 0, 0, 0.15), 0 0.3px 0.93px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-3: 0 0 5.17px 0 rgba(0, 0, 0, 0.15), 0 0 1.39px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-4: 0 0 6.89px 0 rgba(0, 0, 0, 0.15), 0 0.61px 1.86px 0 rgba(0, 0, 0, 0.1);
+    --#{$vendor}-elevation-5: 0 0 8.62px 0 rgba(0, 0, 0, 0.15), 0 0.76px 2.32px 0 rgba(0, 0, 0, 0.1);
+}
+
+:root {
+    --#{$vendor}-color-discrete: #ccc;
+    --#{$vendor}-color-success: #075c07;
+    --#{$vendor}-color-info: #ffd324;
+    --#{$vendor}-color-warning: #b49104;
+    --#{$vendor}-color-alert: #cc5c00;
+    --#{$vendor}-color-error: #cc0000;
+}
+:root {
+    $tints: foreground, "background", primary, secondary, tertiary;
+
+    @each $tint in $tints {
+        /* alpha  #{$tint} */
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
+        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
+    }
+    @each $tint in $tints {
+        /* darken  #{$tint} */
+        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
+        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
+        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+    }
+    @each $tint in $tints {
+        /* lighten  #{$tint} */
+        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
+        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
+        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+    }
+
+    $tints: discrete, success, info, warning, alert, error;
+    @each $tint in $tints {
+        /* alpha  #{$tint} */
+        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
+        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
+        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
+    }
+    @each $tint in $tints {
+        /* darken  #{$tint} */
+        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
+        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
+        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+    }
+    @each $tint in $tints {
+        /* lighten  #{$tint} */
+        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
+        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
+        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+    }
+}
+/* presets */
+:root {
+    --#{$vendor}-color-border: var(--#{$vendor}-color-foreground-alpha-low);
+
+    --#{$vendor}-hover-background-color: var(--#{$vendor}-color-secondary-alpha-mid);
+    --#{$vendor}-hover-border-color: var(--#{$vendor}-color-foreground-alpha-high);
+    --#{$vendor}-hover-shadow: var(--#{$vendor}-elevation-3);
+
+    --#{$vendor}-selected-background-color: var(--#{$vendor}-color-primary-alpha-mid);
+    --#{$vendor}-selected-border-color: var(--#{$vendor}-color-primary);
+    --#{$vendor}-selected-shadow: var(--#{$vendor}-elevation-3);
+}
+
+.bg-themed-scheme-discrete {
+    color: black;
+    text-shadow: 0 0 0.125rem #b3b3b3;
+    background-color: #ccc;
+}
+.bg-themed-scheme-success {
+    color: white;
+    text-shadow: 0 0 0.125rem #004d00;
+    background-color: green;
+}
+.bg-themed-scheme-info {
+    color: black;
+    text-shadow: 0 0 0.125rem #ffd324;
+    background-color: #ffdd57;
+}
+.bg-themed-scheme-warning {
+    color: black;
+    text-shadow: 0 0 0.125rem #b49104;
+    background-color: #e6b905;
+}
+.bg-themed-scheme-alert {
+    color: black;
+    text-shadow: 0 0 0.125rem #cc5c00;
+    background-color: #ff7300;
+}
+.bg-themed-scheme-error {
+    color: white;
+    text-shadow: 0 0 0.125rem #cc0000;
+    background-color: red;
+}

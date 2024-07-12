@@ -1,0 +1,39 @@
+{
+  "moduleName": "ChromeFrameButtonList",
+  "filePath": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<Button\r\n\t\t\t\t\tstyle=\"position:relative\"\r\n\t\t\t\t\ton:click={() => {\r\n\t\t\t\t\t\tchromeFrameStore.toggle(value.frameId);\r\n\t\t\t\t\t}}\r\n\t\t\t\t\ton:dblclick={() => {\r\n\t\t\t\t\t\tchromeFrameStore.remove(value.frameId);\r\n\t\t\t\t\t}}\r\n\t\t\t\t\tclass={value.active ? 'active' : ''}\r\n\t\t\t\t>\r\n\t\t\t\t\t{value.title ?? value.frameId}\r\n\t\t\t\t\t<div slot=\"buttonEnd\"><Icon class=\"theme-text-primary\" icon=\"window-close\" /></div>\r\n\t\t\t\t</Button>",
+      "slot_props": "{ chromeFrame: any }"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

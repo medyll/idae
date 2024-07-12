@@ -1,0 +1,119 @@
+{
+  "moduleName": "Frame",
+  "filePath": "src/lib/ui/frame/Frame.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "elementNav",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "frameDrawerRef",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "hideCloseIcon",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "showOpenerIcon",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "drawerWidth",
+      "kind": "let",
+      "type": "string",
+      "value": "'200px'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "type": "{     openNavLeft: () => {         menuOpen = true;     },     toggleNavLeft: () => {         menuOpen = !menuOpen;     },     closeNavLeft: () => {         menuOpen = !menuOpen;     } }",
+      "value": "{     openNavLeft: () => {         menuOpen = true;     },     toggleNavLeft: () => {         menuOpen = !menuOpen;     },     closeNavLeft: () => {         menuOpen = !menuOpen;     } }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "content", "default": false, "slot_props": "{}" },
+    { "name": "drawerContent", "default": false, "slot_props": "{}" },
+    {
+      "name": "drawerTop",
+      "default": false,
+      "slot_props": "{ slot: drawerTop }"
+    },
+    { "name": "frameBottom", "default": false, "slot_props": "{}" },
+    { "name": "frameTop", "default": false, "slot_props": "{}" },
+    { "name": "navLeftHeaderFrameSlot", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": []
+}

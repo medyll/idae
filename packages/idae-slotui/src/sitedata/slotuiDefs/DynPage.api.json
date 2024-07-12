@@ -1,0 +1,21 @@
+{
+  "moduleName": "DynPage",
+  "filePath": "src/lib/ui/bootstrapp/DynPage.svelte",
+  "props": [
+    {
+      "name": "params",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

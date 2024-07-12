@@ -1,0 +1,44 @@
+{
+  "moduleName": "PanelGrid",
+  "filePath": "src/lib/ui/panel/PanelGrid.svelte",
+  "props": [
+    {
+      "name": "data",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "columns",
+      "kind": "let",
+      "type": "number",
+      "value": "3",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isExpanded",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{ data: any }" },
+    { "name": "zoomSlot", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": []
+}

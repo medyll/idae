@@ -1,0 +1,56 @@
+{
+  "moduleName": "DemoPage",
+  "filePath": "src/lib/base/demoer/DemoPage.svelte",
+  "props": [
+    {
+      "name": "title",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "code",
+      "kind": "let",
+      "type": "string",
+      "value": "\"\"",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "subTitle",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "component",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{}" },
+    {
+      "name": "code",
+      "default": false,
+      "fallback": "<DemoerCode {code} />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

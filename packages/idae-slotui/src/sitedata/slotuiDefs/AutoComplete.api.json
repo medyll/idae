@@ -1,0 +1,130 @@
+{
+  "moduleName": "AutoComplete",
+  "filePath": "src/lib/form/autocomplete/AutoComplete.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "description": "initial data to look in",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "searchField",
+      "kind": "let",
+      "description": "default field to be used for searches, can be *",
+      "type": "string",
+      "value": "'*'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "dataFieldName",
+      "kind": "let",
+      "description": "defaults fields to be shown",
+      "type": "string | string[] | undefined",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "mode",
+      "kind": "let",
+      "description": "search mode : exact or partial match",
+      "type": "string",
+      "value": "'partial'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "filteredData",
+      "kind": "let",
+      "description": "external bind use, to read filtered data",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "selectedIndex",
+      "kind": "let",
+      "description": "selectedIndex : index of the selected item in data",
+      "type": "number",
+      "value": "-1",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "onPick",
+      "kind": "let",
+      "description": "selectedIndex : index of the selected item in data",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<MenuItem\r\n\t\t\t\ttext={item?.[dataFieldName]}\r\n\t\t\t\ton:click={() => {\r\n\t\t\t\t\tif (onPick) onPick(item);\r\n\t\t\t\t\t// selectedIndex = itemIndex;\r\n\t\t\t\t\tpopperOpen = false;\r\n\t\t\t\t\tmenuRef.actions.navigate(itemIndex);\r\n\t\t\t\t}}\r\n\t\t\t/>",
+      "slot_props": "{ menuItemData: any }"
+    },
+    {
+      "name": "autoCompleteEmpty",
+      "default": false,
+      "fallback": "<div class=\"pad-2 flex-h flex-align-middle gap-small\">\r\n\t\t\t\t<Icon fontSize=\"large\" icon=\"fa-regular:keyboard\" />\r\n\t\t\t\tperform search\r\n\t\t\t</div>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "autoCompleteNoResults",
+      "default": false,
+      "fallback": "<div class=\"pad-2 flex-h flex-align-middle gap-small\">\r\n\t\t\t\t<Icon class=\"dsp-inline\" fontSize=\"large\" icon=\"material-symbols:no-sim-outline\" />\r\n\t\t\t\tno results\r\n\t\t\t</div>",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [{ "type": "forwarded", "name": "pick", "element": "Input" }],
+  "typedefs": [],
+  "rest_props": { "type": "InlineComponent", "name": "Input" }
+}

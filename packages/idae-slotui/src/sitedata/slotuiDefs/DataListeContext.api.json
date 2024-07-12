@@ -1,0 +1,9 @@
+{
+  "moduleName": "DataListeContext",
+  "filePath": "src/lib/data/dataList/DataListeContext.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": []
+}

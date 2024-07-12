@@ -1,0 +1,59 @@
+{
+  "moduleName": "Elementor",
+  "filePath": "src/lib/base/elementor/Elementor.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "className off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "description": "css style off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "description": "element root HTMLDivElement props",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "item",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "slot_props": "{ itemObject: { key: key, value: item[key] } }"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

@@ -1,0 +1,9 @@
+{
+  "moduleName": "TaskBarContent",
+  "filePath": "src/lib/ui/taskbar/TaskBarContent.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": []
+}

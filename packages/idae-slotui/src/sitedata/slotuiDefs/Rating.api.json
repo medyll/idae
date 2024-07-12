@@ -1,0 +1,112 @@
+{
+  "moduleName": "Rating",
+  "filePath": "src/lib/form/rating/Rating.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "ratingBase",
+      "kind": "let",
+      "description": "maximum rate",
+      "type": "number",
+      "value": "4",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "scored",
+      "kind": "let",
+      "description": "current score",
+      "type": "number",
+      "value": "0",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "defaultIcon",
+      "kind": "let",
+      "description": "default icon to be used when not using slots",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "scoredIcon",
+      "kind": "let",
+      "description": "scored icon to be used when not using slots",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "direction",
+      "kind": "let",
+      "description": "can be vertical or horizontal",
+      "type": "string",
+      "value": "'horizontal'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<Icon icon={defaultIcon} />",
+      "slot_props": "{}"
+    },
+    {
+      "name": "ratingScoredIcon",
+      "default": false,
+      "fallback": "<Icon icon={scoredIcon} />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

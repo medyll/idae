@@ -1,0 +1,179 @@
+{
+  "moduleName": "Input",
+  "filePath": "src/lib/form/input/Input.svelte",
+  "props": [
+    {
+      "name": "type",
+      "kind": "let",
+      "type": "string",
+      "value": "'text'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLInputElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "description": "icon as a parameter",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconColor",
+      "kind": "let",
+      "description": "icon as a parameter",
+      "type": "string",
+      "value": "'#666'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "endIcon",
+      "kind": "let",
+      "description": "icon as a parameter",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "endIconColor",
+      "kind": "let",
+      "description": "icon color as a parameter",
+      "type": "string",
+      "value": "'#666'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "usePopper",
+      "kind": "let",
+      "description": "paramters for usePopper",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "size",
+      "kind": "let",
+      "description": "with of the input using  presets",
+      "type": "string",
+      "value": "'auto'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "height",
+      "kind": "let",
+      "description": "height of the input, using preset values",
+      "type": "string",
+      "value": "'default'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "borderless",
+      "kind": "let",
+      "description": "has no border",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "transparent",
+      "kind": "let",
+      "description": "has no border",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "value",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "inputEnd",
+      "default": false,
+      "fallback": "<Icon icon={endIcon} style=\"max-width:100%;max-height:100%;color:{endIconColor}\" />",
+      "slot_props": "{}"
+    },
+    {
+      "name": "inputStart",
+      "default": false,
+      "fallback": "<Icon {icon} style=\"max-width:100%;max-height:100%;color:{iconColor}\" />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "input" }
+}

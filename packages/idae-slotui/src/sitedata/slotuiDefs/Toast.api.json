@@ -1,0 +1,82 @@
+{
+  "moduleName": "Toast",
+  "filePath": "src/lib/ui/toast/Toast.svelte",
+  "props": [
+    {
+      "name": "toastId",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "autoClose",
+      "kind": "let",
+      "description": "Toast will safe close after delay",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "autoCloseDelay",
+      "kind": "let",
+      "description": "Default delay in milliseconds before auto closing",
+      "type": "number",
+      "value": "5000",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "component",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "componentProps",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "toasterId",
+      "kind": "let",
+      "type": "string",
+      "value": "'defaultToasterRoot'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": true
+    }
+  ],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "InlineComponent", "name": "Box" }
+}

@@ -1,0 +1,42 @@
+{
+  "moduleName": "BreadCrumb",
+  "filePath": "src/lib/base/breadCrumb/BreadCrumb.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "css className to apply",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "breadList",
+      "kind": "const",
+      "type": "[]",
+      "value": "[]",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": []
+}

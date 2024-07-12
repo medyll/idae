@@ -1,0 +1,109 @@
+{
+  "moduleName": "Backdrop",
+  "filePath": "src/lib/base/backdrop/Backdrop.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isOpen",
+      "kind": "let",
+      "description": "show or hide the backdrop",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "isLoading",
+      "kind": "let",
+      "description": "if in loading state, it will show a loading icon or $$slots.loadingSlot",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "flow",
+      "kind": "let",
+      "description": "css position mode of the backdrop",
+      "type": "'absolute' | 'fixed' | 'relative'",
+      "value": "'fixed'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "autoClose",
+      "kind": "let",
+      "description": "auto-close backdrop on click",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "description": "Backdrop controller",
+      "type": "{     close: () => {         isOpen = false;     },     open: () => {         isOpen = true;     } }",
+      "value": "{     close: () => {         isOpen = false;     },     open: () => {         isOpen = true;     } }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{}" },
+    {
+      "name": "backdropLoading",
+      "default": false,
+      "fallback": "<Icon icon=\"mdi:loading\" fontSize=\"large\" rotate />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [{ "type": "forwarded", "name": "click", "element": "div" }],
+  "typedefs": []
+}

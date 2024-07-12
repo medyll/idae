@@ -1,0 +1,55 @@
+html {
+  font-size: 12px;
+  box-sizing: border-box;
+  font-family: "Rubik";
+  line-height: 1.45;
+  height: 100%;
+  max-height: 100%;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+body {
+  height: 100%;
+  max-height: 100%;
+  color: var(--sld-color-foreground);
+  box-sizing: border-box;
+  /* background-color: var(--sld-color-background); */
+  background: var(--sld-color-background)!important;
+  background: linear-gradient(180deg, var(--sld-color-background) 0%, var(--sld-color-paper) 100%)!important;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  &:visited {
+    color: inherit;
+  }
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--sld-color-primary) var(--sld-color-background);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--sld-color-primary);
+  border-radius: 8px;
+  border: 1px solid var(--sld-color-background);
+  box-shadow: 0 0 1px var(--sld-color-secondary);
+}

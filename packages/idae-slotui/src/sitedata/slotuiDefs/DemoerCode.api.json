@@ -1,0 +1,55 @@
+{
+  "moduleName": "DemoerCode",
+  "filePath": "src/lib/base/demoer/DemoerCode.svelte",
+  "props": [
+    {
+      "name": "title",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "code",
+      "kind": "let",
+      "type": "string",
+      "value": "\"\"",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "subTitle",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "component",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "code",
+      "default": false,
+      "fallback": "<pre ><code  lang=\"language-svelte\">{@html highlighted}</code></pre>",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

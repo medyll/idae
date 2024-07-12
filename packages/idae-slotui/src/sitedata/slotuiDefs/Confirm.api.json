@@ -1,0 +1,174 @@
+{
+  "moduleName": "Confirm",
+  "filePath": "src/lib/base/confirm/Confirm.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "className off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "description": "css style off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "initialRef",
+      "kind": "let",
+      "description": "element initial HTMLDivElement props",
+      "type": "null | HTMLSpanElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "contentRef",
+      "kind": "let",
+      "description": "element onfirm HTMLDivElement props",
+      "type": "null | HTMLSpanElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "tooltipInitial",
+      "kind": "let",
+      "description": "text displayed on confirm button",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "primaryInitial",
+      "kind": "let",
+      "description": "text displayed on confirm button",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconInitial",
+      "kind": "let",
+      "description": "icon displayed on the confirm button",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconColorInitial",
+      "kind": "let",
+      "description": "color of the icon displayed on the confirm button",
+      "type": "string",
+      "value": "'inherit'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "primary",
+      "kind": "let",
+      "description": "text displayed on confirm button",
+      "type": "string",
+      "value": "'confirm'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "description": "icon displayed on the confirm button",
+      "type": "string",
+      "value": "'check-circle-outline'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconColor",
+      "kind": "let",
+      "description": "color of the icon displayed on the confirm button",
+      "type": "",
+      "value": "'green'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "action",
+      "kind": "let",
+      "description": "action initiated on confirmation",
+      "type": "() => { }",
+      "value": "() => { }",
+      "isFunction": true,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconCancel",
+      "kind": "let",
+      "description": "icon to display for back action",
+      "type": "string",
+      "value": "'chevron-left'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<Button on:click={handleAction} {iconColor} {icon} size=\"auto\" {primary} focus />",
+      "slot_props": "{}"
+    },
+    {
+      "name": "initial",
+      "default": false,
+      "fallback": "<Button\r\n\t\t\t\tnaked\r\n\t\t\t\ticonColor={iconColorInitial}\r\n\t\t\t\ticon={iconInitial}\r\n\t\t\t\tprimary={primaryInitial}\r\n\t\t\t\ttitle:tooltipInitial\r\n\t\t\t/>",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

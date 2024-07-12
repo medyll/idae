@@ -1,0 +1,58 @@
+{
+  "moduleName": "DataListHead",
+  "filePath": "src/lib/data/dataList/DataListHead.svelte",
+  "props": [
+    {
+      "name": "style",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "stickyHeader",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "onSort",
+      "kind": "let",
+      "type": "() => { }",
+      "value": "() => { }",
+      "isFunction": true,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "{#if $dataListContext.hasColumnsProps}\r\n\t\t\t{#each Object.values($dataListContext.columns) as column}\r\n\t\t\t\t<DataListCell noWrap={true} field={column.field}>\r\n\t\t\t\t\t{column.fieldTitle ?? column.field}\r\n\t\t\t\t</DataListCell>\r\n\t\t\t{/each}\r\n\t\t{/if}",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

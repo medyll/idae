@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+@charset "utf-8";
+
+$theme: (
+        primary: #00B5E2,
+        secondary: #330c2f,
+        tertiary: #cacaaa,
+        foreground: #282230,
+        background: #f1f1f1,
+);
+
+$themes: (
+        light:(
+                foreground: #282230,
+                background: #f1f1f1,
+                paper: #ededed
+        ),
+        dark:(
+                foreground: #f1f1f1,
+                background: #27323a,
+                paper: #3a3b3b
+        ),
+);
+// 
+// moved 
+$theme-color-primary: #00B5E2; 
+$theme-color-secondary: #330c2f;
+$theme-color-tertiary: #cacaaa; 
+
+@import "../node_modules/@medyll/cssfabric/src/cssfabric/modules/vars.scss";

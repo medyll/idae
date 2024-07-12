@@ -1,0 +1,135 @@
+@import "./slotui-vars.scss";
+
+@mixin ui-ellipsises-presets {
+    --preset-ellipsis-line: #{$presets-ellipsis-line-default};
+
+    &.ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @for $i from 1 through 5 {
+        &.ellipsis-line-#{$i} {
+            display: -webkit-box;
+            -webkit-line-clamp: #{$i};
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            --preset-ellipsis-line: #{$i};
+        }
+    }
+}
+
+@mixin ui-transition {
+    transition: all 0.2s ease;
+}
+@mixin ui-tall-presets {
+    --preset-tall: 2rem;
+    min-height: var(--preset-tall);
+
+    @each $preset, $value in $preset-tall-list {
+        &:global([tall="#{$preset}"]),
+        &:global(.tall-#{$preset}) {
+            min-height: var(--sld-tall-#{$preset});
+            --preset-tall: var(--sld-tall-#{$preset});
+        }
+    }
+}
+
+@mixin ui-gutter-presets {
+    --preset-gutter: var(--sld-gutter-default);
+
+    @each $preset, $value in $preset-gutter-list {
+        & :global([gutter="#{$preset}"]),
+        & :global(.gutter-#{$preset}) {
+            padding: var(--sld-gutter-#{$preset});
+            gap: var(--sld-gutter-#{$preset});
+            --preset-gutter: var(--sld-gutter-#{$preset});
+        }
+    }
+}
+
+@mixin ui-width-presets {
+    --preset-width: var(--sld-width-default);
+
+    @each $preset, $value in $preset-width-list {
+        &:global([width="#{$preset}"]),
+        &:global(.width-#{$preset}) {
+            width: var(--sld-width-#{$preset});
+            --preset-width: var(--sld-width-#{$preset});
+        }
+    }
+}
+
+@mixin ui-pad-presets {
+    --preset-pad: var(--sld-pad-default);
+
+    @each $preset, $value in $preset-pad-list {
+        &:global([pad="#{$preset}"]),
+        &:global(.pad-#{$preset}) {
+            padding: var(--sld-pad-#{$preset});
+            --preset-pad: var(--sld-pad-#{$preset});
+        }
+    }
+}
+
+@mixin ui-radius-presets {
+    --preset-radius: var(--sld-radius-default);
+
+    @each $preset, $value in $preset-radius-list {
+        &:global([radius="#{$preset}"]),
+        &:global(.radius-#{$preset}) {
+            border-radius: var(--sld-radius-#{$preset});
+            --preset-radius: var(--sld-radius-#{$preset});
+        }
+    }
+}
+
+@mixin elevation() {
+    @each $level in 0 through 5 {
+        &.elevation-#{$level},
+        &[elevation-#{$level}] {
+            box-shadow: var(--sld-elevation-#{$level});
+        }
+    }
+}
+
+@mixin data-hover {
+    &:hover {
+        border-color: var(--sld-hover-border-color);
+        background-color: var(--sld-background-disabled);
+    }
+}
+
+@mixin data-selected {
+    &.selected,
+    &[aria-selected="true"],
+    &[data-selected="true"] {
+        border-color: none; //var(--sld-selected-border-color);
+        background-color: #ededed; //var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+        box-shadow: var(--sld-selected-shadow);
+        .listItemChip,
+        .menuItemChip {
+            position: absolute;
+            min-height: 16px;
+            height: 50%;
+            width: 3px;
+            background-color: var(--sld-color-primary);
+            border-radius: var(--sld-radius-med);
+            left: 0;
+            border: 1px solid var(--sld-color-primary-alpha-mid);
+        }
+    }
+}
+
+@mixin flex($direction: row, $align-items: flex-start) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align-items;
+}
+
+@mixin flex-main {
+    flex: 1 1 0;
+}

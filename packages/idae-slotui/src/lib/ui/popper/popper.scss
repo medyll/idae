@@ -1,0 +1,35 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --popper-border-radius: var(--sld-radius-tiny);
+    --popper-box-shadow: var(--sld-elevation-4);
+    --popper-background-color: var(--sld-color-background-alpha-mid);
+    --popper-backdrop-filter: blur(30px);
+    --popper-z-index: 30000;
+    --popper-open-border: 1px color red;
+}
+
+:global(.popper) {
+    border-radius: var(--popper-border-radius);
+    overflow: hidden;
+    position: fixed;
+    box-shadow: var(--popper-box-shadow);
+    background-color: var(--popper-background-color);
+    -webkit-backdrop-filter: var(--popper-backdrop-filter);
+    backdrop-filter: var(--popper-backdrop-filter);
+    display: inline-block;
+    top: 0;
+    z-index: var(--popper-z-index);
+
+    .popper-left,
+    .popper-right {
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+    }
+    &::popover-open {
+        border: var(--popper-open-border);
+        margin: none !important;
+        padding: none !important;
+    }
+}

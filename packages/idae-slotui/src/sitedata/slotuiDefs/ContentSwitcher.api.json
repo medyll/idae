@@ -1,0 +1,87 @@
+{
+  "moduleName": "ContentSwitcher",
+  "filePath": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "type": "string",
+      "value": "'toggle'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconback",
+      "kind": "let",
+      "type": "string",
+      "value": "'chevron-left'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "parent",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "contentSwitcherIcon",
+      "default": false,
+      "fallback": "<slot name=\"switcherSlot\">\r\n\t\t\t<IconButton style=\"aspect-ratio:1/1\" {icon} iconFontSize=\"small\" />\r\n\t\t</slot>",
+      "slot_props": "{}"
+    },
+    { "name": "contentSwitcherReveal", "default": false, "slot_props": "{}" },
+    {
+      "name": "switcherSlot",
+      "default": false,
+      "fallback": "<IconButton style=\"aspect-ratio:1/1\" {icon} iconFontSize=\"small\" />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

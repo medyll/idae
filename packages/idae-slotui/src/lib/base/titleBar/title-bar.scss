@@ -1,0 +1,27 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --title-bar-gap: var(--sld-gap-med);
+    --title-bar-pad: var(--sld-pad-med);
+    --title-bar-color-border-bottom: var(--sld-color-border);
+}
+
+.title-bar {
+    @include flex(row, center);
+    &-content {
+        @include flex(row, center);
+        gap: var(--title-bar-gap);
+        min-height: 34px;
+        flex: 1;
+
+        &-icon {
+            padding: var(--title-bar-pad);
+        }
+
+        &-title {
+            flex: 1;
+        }
+    }
+
+    border-bottom: 1px solid var(--title-bar-color-border-bottom);
+}

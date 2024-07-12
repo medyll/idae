@@ -1,0 +1,75 @@
+@import "../../styles/presets.scss";
+
+:root {
+  --cartouche-radius: var(--sld-radius-small);
+  --cartouche-control-gap: var(--sld-gap-small);
+  --cartouche-border: var(--sld-color-foreground-alpha-high);
+  --cartouche-background-color: var(--sld-color-background);
+  --cartouche-background-color-hover: var(--sld-color-background-darken-low);
+  --cartouche-divider-border: var(--sld-color-foreground-alpha-mid);
+}
+
+.cartouche {
+  border-radius: var(--cartouche-radius);
+  background-clip: padding-box;
+  overflow: hidden;
+
+  &[data-bordered="true"] {
+    border: 1px solid var(--cartouche-border);
+  }
+
+  &.stacked {
+    border-radius: 0;
+    &:first-child {
+      border-top-left-radius: var(--cartouche-radius);
+      border-top-right-radius: var(--cartouche-radius);
+    }
+    &:last-child {
+      border-bottom-left-radius: var(--cartouche-radius);
+      border-bottom-right-radius: var(--cartouche-radius);
+    }
+  }
+
+  .control {
+    display: flex;
+    align-items: center;
+    gap: var(--cartouche-control-gap);
+    background-color: var(--cartouche-background-color);
+    @include ui-tall-presets;
+    padding: auto 0.25rem;
+    &:hover {
+      background-color: var(--cartouche-background-color-hover);
+    }
+
+    .controlIcon {
+      display: flex;
+      align-items: center;
+      padding: 0 0.5rem;
+    }
+
+    .controlLabel {
+      cursor: pointer;
+      padding: 0 0.5rem;
+    }
+
+    .chevron {
+      cursor: pointer;
+    }
+
+    .divider {
+      border-bottom: 1px solid var(--cartouche-divider-border);
+    }
+  }
+
+  .content {
+    overflow: hidden;
+    background-color: var(--cartouche-background-color);
+    content-visibility: auto;
+    &[aria-expanded="false"] {
+      display: none;
+    }
+    &[aria-expanded="true"] {
+      border-top: 1px solid var(--cartouche-border);
+    }
+  }
+}
