@@ -2,7 +2,9 @@
   "name": "root",
   "private": false,
   "scripts": {
-    "commit": "cz"
+    "commit": "cz",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "config": {
     "commitizen": {
@@ -20,7 +22,8 @@
     ]
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "config/*"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.7",

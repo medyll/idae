@@ -13,6 +13,7 @@ A powerful and flexible IndexedDB query library for TypeScript and JavaScript ap
 - Easy integration with front-end frameworks, especially Svelte
 - Robust error handling and logging
 - Versioning and database migration support
+- Support for svelte 5 state
 
 ## Installation
 
