@@ -1,0 +1,13 @@
+{
+    "name": "@config/eslint-config",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": "./index.js",
+    "dependencies": {
+        "@types/eslint": "8.56.10",
+        "eslint": "^8.0.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-svelte": "^2.39.3",
+        "@rushstack/eslint-patch": "^1.2.0"
+    }
+}
