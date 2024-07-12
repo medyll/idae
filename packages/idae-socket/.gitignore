@@ -77,3 +77,6 @@ typings/
 # FuseBox cache
 .fusebox/
 /lib/
+
+.svelte-kit/
+dist/

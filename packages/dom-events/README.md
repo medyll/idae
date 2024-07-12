@@ -1,23 +1,23 @@
 
-# HtmluDom Library
+# dom-events Library
 
-HtmluDom is a powerful library for observing and reacting to DOM changes in web applications. It provides two main classes: CssObserver and HtmluDomLib.
+dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides two main classes: cssDom and htmlDom.
 
 ## Installation
 
 ```bash
-npm install @medyll/htmludom
+npm install @medyll/dom-events
 ```
 
 ## Usage
 
 ```javascript
-import { cssDom, HtmluDom } from "@medyll/htmludom";
+import { cssDom, htmlDom } from "@medyll/dom-events";
 ```
 
 ## CssObserver
 
-CssObserver allows you to track CSS changes and animations on specified elements.
+CssObserver allows you to track CSS changes and animations on specified elements to trigger custom actions or updates.
 
 ### Key Features:
 - Track new elements matching a selector
@@ -238,12 +238,12 @@ By combining cssEvents for style-related changes and domChange for structural mo
 
 ### Browser Compatibility
 
-HtmluDom uses modern browser features such as MutationObserver and ResizeObserver. Ensure your target browsers support these APIs. For older browsers, consider using polyfills or fallback mechanisms.
+dom-events uses modern browser features such as MutationObserver and ResizeObserver. Ensure your target browsers support these APIs. For older browsers, consider using polyfills or fallback mechanisms.
  
 
 ## Browser Compatibility
 
-HtmluDom uses modern browser features.  
+dom-events uses modern browser features.  
 Ensure your target browsers support MutationObserver and other required APIs.
 
 ## License
