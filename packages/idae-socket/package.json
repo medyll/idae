@@ -19,7 +19,7 @@
 	"author": "Lebrun Meddy",
 	"license": "ISC",
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.0"
+		"svelte": "^5.0.0-next.1"
 	},
 	"dependencies": {
 		"@socket.io/redis-adapter": "^8.3.0",

@@ -33,7 +33,7 @@
 		"access": "public"
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.0"
+		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.45.1",
