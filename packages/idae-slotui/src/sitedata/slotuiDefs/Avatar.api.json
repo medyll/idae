@@ -1,0 +1,76 @@
+{
+  "moduleName": "Avatar",
+  "filePath": "src/lib/base/avatar/Avatar.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "description": "icon name",
+      "type": "string",
+      "value": "'icon-park-outline:avatar'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "size",
+      "kind": "let",
+      "description": "size of the avatar",
+      "type": "'tiny' | 'small' | 'medium' | 'large' | 'full'",
+      "value": "'large'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconSize",
+      "kind": "let",
+      "description": "size of the icon",
+      "type": "'tiny' | 'small' | 'medium' | 'large' | 'full'",
+      "value": "'large'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<Icon {icon} fontSize={iconSize} />",
+      "slot_props": "{}"
+    },
+    { "name": "avatarBadge", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": []
+}

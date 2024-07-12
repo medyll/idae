@@ -1,0 +1,233 @@
+{
+  "moduleName": "ListItem",
+  "filePath": "src/lib/data/list/ListItem.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLLIElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "description": "icon ti be displayed in the list's header",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "primary",
+      "kind": "let",
+      "description": "title of the list",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "secondary",
+      "kind": "let",
+      "description": "sub-title of the list",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "action",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "selected",
+      "kind": "let",
+      "description": "show selected state",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "showIcon",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "showDivider",
+      "kind": "let",
+      "description": "show divider after listItem",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "dividerProps",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "transition",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "disabled",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "data",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "density",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "<slot name=\"primary\">\r\n\t\t\t\t\t\t<slot name=\"listItemPrimary\">\r\n\t\t\t\t\t\t\t{primary ?? ''}\r\n\t\t\t\t\t\t</slot>\r\n\t\t\t\t\t</slot>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "action",
+      "default": false,
+      "fallback": "{action ?? ''}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "icon",
+      "default": false,
+      "fallback": "{#if icon}<Icon {icon} />{/if}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "listItemAction",
+      "default": false,
+      "fallback": "<slot name=\"action\">\r\n\t\t\t\t{action ?? ''}\r\n\t\t\t</slot>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "listItemContent",
+      "default": false,
+      "fallback": "<div class=\"listItemContent\">\r\n\t\t\t<div>\r\n\t\t\t\t<slot\r\n\t\t\t\t\t><slot name=\"primary\">\r\n\t\t\t\t\t\t<slot name=\"listItemPrimary\">\r\n\t\t\t\t\t\t\t{primary ?? ''}\r\n\t\t\t\t\t\t</slot>\r\n\t\t\t\t\t</slot></slot\r\n\t\t\t\t>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"itemSecondary\">\r\n\t\t\t\t<slot name=\"listItemSecondary\"\r\n\t\t\t\t\t><slot name=\"secondary\">\r\n\t\t\t\t\t\t{secondary ?? ''}\r\n\t\t\t\t\t</slot></slot\r\n\t\t\t\t>\r\n\t\t\t</div>\r\n\t\t</div>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "listItemIcon",
+      "default": false,
+      "fallback": "<slot name=\"icon\">\r\n\t\t\t\t\t{#if icon}<Icon {icon} />{/if}\r\n\t\t\t\t</slot>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "listItemPrimary",
+      "default": false,
+      "fallback": "{primary ?? ''}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "listItemSecondary",
+      "default": false,
+      "fallback": "<slot name=\"secondary\">\r\n\t\t\t\t\t\t{secondary ?? ''}\r\n\t\t\t\t\t</slot>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "primary",
+      "default": false,
+      "fallback": "<slot name=\"listItemPrimary\">\r\n\t\t\t\t\t\t\t{primary ?? ''}\r\n\t\t\t\t\t\t</slot>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "secondary",
+      "default": false,
+      "fallback": "{secondary ?? ''}",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

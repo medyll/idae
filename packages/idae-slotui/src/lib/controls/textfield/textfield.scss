@@ -1,0 +1,61 @@
+@import "../../styles/presets.scss";
+.textfield {
+    --textfield-background: var(--sld-color-background-alpha-high);
+    --textfield-border-width: 1px;
+    --textfield-border-color: var(--sld-color-foreground-alpha-mid);
+    --textfield-border-bottom-width: 2px;
+    --textfield-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+    --textfield-radius: var(--sld-radius-small);
+    --textfield-padding: 0 0.5rem;
+    --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+}
+
+.textfield {
+    border: var(--textfield-border-width) solid var(--textfield-border-color);
+    border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
+    border-radius: var(--textfield-radius);
+    padding: var(--textfield-padding);
+    box-shadow: var(--textfield-shadow);
+    background-color: var(--textfield-background);
+    color: var(--sld-color-foreground);
+
+    [error] {
+        border-bottom: red;
+    }
+
+    @include ui-width-presets;
+    @include ui-tall-presets;
+    @include data-hover;
+    &-container {
+        position: relative;
+        display: flex;
+    }
+
+    &-start {
+        position: absolute;
+        height: 100%;
+        max-height: 100%;
+        width: 24px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: var(--textfield-radius, var(--sld-radius-small));
+    }
+
+    &-end {
+        position: absolute;
+        right: 0;
+        height: 100%;
+        max-height: 100%;
+        width: 24px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.25rem;
+        border-radius: var(--textfield-radius, var(--sld-radius-small));
+    }
+}

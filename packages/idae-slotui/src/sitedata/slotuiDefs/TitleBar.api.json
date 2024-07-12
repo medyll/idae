@@ -1,0 +1,47 @@
+{
+  "moduleName": "TitleBar",
+  "filePath": "src/lib/base/titleBar/TitleBar.svelte",
+  "props": [
+    {
+      "name": "onClose",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": true,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "hasMenu",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "titleBarIcon",
+      "default": false,
+      "fallback": "<Icon fontSize=\"small\" {icon} />",
+      "slot_props": "{}"
+    },
+    { "name": "titleBarTitle", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": []
+}

@@ -1,0 +1,28 @@
+{
+  "moduleName": "ContextRooter",
+  "filePath": "src/lib/utils/contextRooter/ContextRooter.svelte",
+  "props": [
+    {
+      "name": "contextKey",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "contextRoot",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

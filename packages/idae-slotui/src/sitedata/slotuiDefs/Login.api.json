@@ -1,0 +1,123 @@
+{
+  "moduleName": "Login",
+  "filePath": "src/lib/ui/login/Login.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "type": "null | HTMLFormElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "type": "{     toggle: (lo) => {         showLogin = lo ?? !showLogin;     },     toggleLoading: (lo) => {         loading = lo ?? !loading;     } }",
+      "value": "{     toggle: (lo) => {         showLogin = lo ?? !showLogin;     },     toggleLoading: (lo) => {         loading = lo ?? !loading;     } }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    },
+    {
+      "name": "showLogin",
+      "kind": "let",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "transition",
+      "kind": "let",
+      "type": "{ type: fade, args: {} }",
+      "value": "{ type: fade, args: {} }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "fields",
+      "kind": "let",
+      "type": "{ email: '', password: '' }",
+      "value": "{ email: '', password: '' }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "loading",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "submitting",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "onSubmit",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{}" },
+    { "name": "loginAvatar", "default": false, "slot_props": "{}" },
+    {
+      "name": "loginAvatarRoot",
+      "default": false,
+      "fallback": "<div class=\"avatarHolder marg-b-2\">\r\n\t\t\t\t\t\t\t<div class=\"avatar flex-h flex-align-middle-center\">\r\n\t\t\t\t\t\t\t\t{#if submitting}\r\n\t\t\t\t\t\t\t\t\t<Icon rotate fontSize=\"large\" icon=\"loading\" />\r\n\t\t\t\t\t\t\t\t{:else}\r\n\t\t\t\t\t\t\t\t\t<slot name=\"loginAvatar\" />\r\n\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>",
+      "slot_props": "{}"
+    },
+    {
+      "name": "loginForm",
+      "default": false,
+      "fallback": "<div class=\"pad-2\">\r\n\t\t\t\t\t\t\t<input class=\"input\" name=\"email\" type=\"text\" />\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<HintGroup for=\"email\" class=\"color-scheme-error\">\r\n\t\t\t\t\t\t\t<Hint on=\"required\">This is a mandatory field</Hint>\r\n\t\t\t\t\t\t\t<Hint hideWhenRequired on=\"email\">Email is not valid</Hint>\r\n\t\t\t\t\t\t</HintGroup>\r\n\t\t\t\t\t\t<div class=\"pad-2\">\r\n\t\t\t\t\t\t\t<input name=\"password\" type=\"password\" />\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<Hint for=\"password\" let:value on=\"required\" class=\"color-scheme-error\">\r\n\t\t\t\t\t\t\tThe password is required\r\n\t\t\t\t\t\t</Hint>\r\n\t\t\t\t\t\t<Button type=\"submit\" primary=\"login\" loading={submitting} disabled={!$form.valid}>\r\n\t\t\t\t\t\t\t{#if submitting}<i class=\"fa fa-spinner fa-spin theme-text-primary-complement\"\r\n\t\t\t\t\t\t\t\t></i>{/if}\r\n\t\t\t\t\t\t\tLogin\r\n\t\t\t\t\t\t</Button>\r\n\t\t\t\t\t\t{#if grantedError}\r\n\t\t\t\t\t\t\t<div class=\"pad-1 color-scheme-error\">Please verify your input</div>\r\n\t\t\t\t\t\t{/if}",
+      "slot_props": "{}"
+    },
+    { "name": "slotRetrievePassword", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": []
+}

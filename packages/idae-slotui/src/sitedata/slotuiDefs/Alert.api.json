@@ -1,0 +1,103 @@
+{
+  "moduleName": "Alert",
+  "filePath": "src/lib/base/alert/Alert.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "className off the root component",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "description": "element root HTMLDivElement props",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "level",
+      "kind": "let",
+      "description": "type of levels",
+      "type": "'success' | 'info' | 'error' | 'warning' | 'alert' | 'discrete'",
+      "value": "'info'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "message",
+      "kind": "let",
+      "description": "message to be shown",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isDraggable",
+      "kind": "let",
+      "description": "make the alert draggable",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isOpen",
+      "kind": "let",
+      "description": "show or hide the alert",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "description": "component actions",
+      "type": "Record<'open'|'toggle' | 'close', Function>",
+      "value": "{     open,     toggle,     close }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "{message}",
+      "slot_props": "{}"
+    },
+    { "name": "buttonZoneSlot", "default": false, "slot_props": "{}" },
+    { "name": "messageSlot", "default": false, "slot_props": "{}" },
+    { "name": "topButtonSlot", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "button" }
+}

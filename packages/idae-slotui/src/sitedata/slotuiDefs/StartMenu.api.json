@@ -1,0 +1,9 @@
+{
+  "moduleName": "StartMenu",
+  "filePath": "src/lib/ui/startMenu/StartMenu.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

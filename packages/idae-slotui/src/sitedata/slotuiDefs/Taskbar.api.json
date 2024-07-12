@@ -1,0 +1,26 @@
+{
+  "moduleName": "Taskbar",
+  "filePath": "src/lib/ui/taskbar/Taskbar.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    { "name": "__default__", "default": true, "slot_props": "{}" },
+    { "name": "taskBarLeft", "default": false, "slot_props": "{}" },
+    { "name": "taskBarRight", "default": false, "slot_props": "{}" }
+  ],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "div" }
+}

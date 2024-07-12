@@ -1,0 +1,32 @@
+@import "../../styles/presets.scss";
+
+:root {
+    --panel-margin-bottom: 2rem;
+    --panel-bar-margin-bottom: 2rem;
+    --panel-bar-padding-right: var(--sld-pad-tiny);
+    --panel-bar-button-padding: 0 var(--sld-pad-tiny);
+    --panel-bar-button-border: 1px solid rgba(255, 255, 255, 0.05);
+    --panel-bar-button-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.panel {
+    position: relative;
+    margin-bottom: var(--panel-margin-bottom);
+
+    .panel-bar {
+        margin-bottom: var(--panel-bar-margin-bottom);
+        display: flex;
+        min-width: auto;
+        align-items: center;
+        padding-right: var(--panel-bar-padding-right);
+
+        button {
+            padding: var(--panel-bar-button-padding);
+            border: var(--panel-bar-button-border);
+            background-color: var(--panel-bar-button-background-color);
+        }
+    }
+
+    .panelContent {
+    }
+}

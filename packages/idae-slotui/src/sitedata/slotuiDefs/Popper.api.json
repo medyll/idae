@@ -1,0 +1,197 @@
+{
+  "moduleName": "Popper",
+  "filePath": "src/lib/ui/popper/Popper.svelte",
+  "props": [
+    {
+      "name": "element",
+      "kind": "let",
+      "description": "popper HTMLDivElement",
+      "type": "null | HTMLDivElement",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "code",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "parentNode",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "stickToHookWidth",
+      "kind": "let",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "component",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "componentProps",
+      "kind": "let",
+      "type": "{}",
+      "value": "{}",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "position",
+      "kind": "let",
+      "type": "string",
+      "value": "'BC'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "content",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "autoClose",
+      "kind": "let",
+      "description": "The popper will be closed on clickAway",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isOpen",
+      "kind": "let",
+      "description": "binding : The popper will be opened or is opened",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "toggle",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    },
+    {
+      "name": "hide",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    },
+    {
+      "name": "show",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    },
+    {
+      "name": "clickedAway",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    },
+    {
+      "name": "useStickTo",
+      "kind": "const",
+      "type": "(node) => {     if (position) {         stickTo(node, { parentNode, position: position, stickToHookWidth });     } }",
+      "value": "(node) => {     if (position) {         stickTo(node, { parentNode, position: position, stickToHookWidth });     } }",
+      "isFunction": true,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "{#if mounted}\r\n\t\t\t\t{#if component}\r\n\t\t\t\t\t<!-- <svelte:component this={component} {...componentProps} /> -->\r\n\t\t\t\t{/if}\r\n\t\t\t\t{#if content}\r\n\t\t\t\t\t{content}\r\n\t\t\t\t{/if}\r\n\t\t\t{/if}",
+      "slot_props": "{}"
+    },
+    { "name": "holderSlot", "default": false, "slot_props": "{}" },
+    {
+      "name": "popperHolder",
+      "default": false,
+      "fallback": "<slot name=\"holderSlot\" />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [{ "type": "forwarded", "name": "click", "element": "div" }],
+  "typedefs": []
+}

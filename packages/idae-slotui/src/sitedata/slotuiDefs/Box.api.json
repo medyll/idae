@@ -1,0 +1,165 @@
+{
+  "moduleName": "Box",
+  "filePath": "src/lib/base/box/Box.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "isOpen",
+      "kind": "let",
+      "description": "is the content visible",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "showCloseControl",
+      "kind": "let",
+      "description": "show a working closer icon",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "hasMenu",
+      "kind": "let",
+      "description": "used to activate the slotui.TitleBar component",
+      "type": "boolean",
+      "value": "false",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "title",
+      "kind": "let",
+      "description": "text to be shown in the title bar",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "icon",
+      "kind": "let",
+      "description": "alternative to iconSlot, icon to be used with the internat iconify component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "iconFamily",
+      "kind": "let",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "content",
+      "kind": "let",
+      "description": "alternative to contentSlot,  content to be shown in the main area",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "bottomZone",
+      "kind": "let",
+      "description": "alternative to slot.bottomZone, content to be shown in the bottom button zone",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "actions",
+      "kind": "const",
+      "description": "component actions",
+      "type": "Record<'open'|'toggle' | 'close', Function>",
+      "value": "{     open,     toggle,     close }",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "{@html content ?? ''}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "boxBottomZone",
+      "default": false,
+      "fallback": "{@html bottomZone ?? ''}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "titleBarIcon",
+      "default": false,
+      "fallback": "{#if icon}\r\n\t\t\t\t\t<Icon {icon} {iconFamily} />\r\n\t\t\t\t{/if}",
+      "slot_props": "{ slot: titleBarIcon }"
+    },
+    {
+      "name": "titleBarTitle",
+      "default": false,
+      "fallback": "{title ?? ''}",
+      "slot_props": "{ slot: titleBarTitle }"
+    }
+  ],
+  "events": [],
+  "typedefs": [],
+  "rest_props": { "type": "Element", "name": "div" }
+}

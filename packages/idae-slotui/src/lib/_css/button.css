@@ -1,0 +1,1197 @@
+:root {
+  --sld-radius-tiny: 2px;
+  --sld-radius-small: 4px;
+  --sld-radius-med: 8px;
+  --sld-radius-large: 16px;
+  /* --sld-radius-tiny: 2px;
+  --sld-radius-small: 4px;
+  --sld-radius-med: 8px;
+  --sld-radius-large: 16px; */
+  --sld-pad-tiny: 0.25rem;
+  --sld-pad-small: 0.5rem;
+  --sld-pad-med: 1rem;
+  --sld-pad-large: 1.5rem;
+  /* --sld-pad-tiny: 0.25rem;
+  --sld-pad-small: 0.5rem;
+  --sld-pad-med: 1rem;
+  --sld-pad-large: 1.5rem; */
+  --sld-gap-tiny: 0.25rem;
+  --sld-gap-mini: 0.4rem;
+  --sld-gap-small: 0.5rem;
+  --sld-gap-med: 1rem;
+  --sld-gap-large: 1.5rem;
+  --sld-gap-default: 0.5rem;
+  /* --sld-gap-tiny: 0.25rem;
+  --sld-gap-mini: 0.4rem;
+  --sld-gap-small: 0.5rem;
+  --sld-gap-med: 1rem;
+  --sld-gap-large: 1.5rem;
+  --sld-gap-default: var(--sld-gap-small); */
+  --sld-gutter-tiny: 0.25rem;
+  --sld-gutter-mini: 0.5rem;
+  --sld-gutter-small: 1rem;
+  --sld-gutter-med: 2rem;
+  --sld-gutter-kind: 3rem;
+  --sld-gutter-default: 1rem;
+  /* --sld-gutter-tiny: 0.25rem;
+  --sld-gutter-mini: 0.5rem;
+  --sld-gutter-small: 1rem;
+  --sld-gutter-med: 2rem;
+  --sld-gutter-kind: 3rem;
+  --sld-gutter-default: var(--sld-gutter-small); */
+  --sld-tall-tiny: 1rem;
+  --sld-tall-mini: 1.5rem;
+  --sld-tall-small: 2.5rem;
+  --sld-tall-med: 3.5rem;
+  --sld-tall-kind: 4rem;
+  --sld-tall-auto: auto;
+  --sld-tall-default: 2.5rem;
+  /* --sld-tall-tiny: 1rem;
+  --sld-tall-mini: 1.5rem;
+  --sld-tall-small: 2.5rem;
+  --sld-tall-med: 3.5rem;
+  --sld-tall-kind: 4rem;
+  --sld-tall-default: var(--sld-tall-small);  */
+  --sld-width-tiny: 2rem;
+  --sld-width-mini: 3rem;
+  --sld-width-small: 10rem;
+  --sld-width-med: 14rem;
+  --sld-width-kind: 20rem;
+  --sld-width-full: 100%;
+  --sld-width-auto: auto;
+  --sld-width-default: 10rem;
+  /* --sld-width-tiny: 2rem;
+  --sld-width-mini: 3rem;
+  --sld-width-small: 8rem;
+  --sld-width-med: 12rem;
+  --sld-width-kind: 16rem;
+  --sld-width-full: 100%;
+  --sld-width-default: var(--sld-width-med); */
+}
+
+:root {
+  --white: #fff;
+  --black: #333;
+}
+
+:root.dark,
+:root[data-theme=dark],
+body[data-theme=dark],
+:root[theme=dark] {
+  --white: #333;
+  --black: #ccc;
+}
+
+:root {
+  --sld-color-foreground: #333333;
+  --sld-color-background: #ffffff;
+  --sld-color-paper: #f1f1f1;
+  --sld-color-primary: #98b148;
+  --sld-color-secondary: #55492b;
+  --sld-color-tertiary: #9999cc;
+  --sld-color-disabled: #ccc;
+  --sld-color-disabled-border: #cccccc;
+  --sld-background-disabled: #ededed;
+}
+
+:root.dark,
+:root[data-theme=dark],
+body[data-theme=dark],
+:root[theme=dark] {
+  --sld-color-foreground: #ffffff;
+  --sld-color-background: #27323a;
+  --sld-color-paper: #3a3b3b;
+}
+
+:root {
+  --sld-elevation-1: 0 0 1.75px 0 rgba(0, 0, 0, 0.15), 0 0.15px 0.46px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-2: 0 0 3.44px 0 rgba(0, 0, 0, 0.15), 0 0.3px 0.93px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-3: 0 0 5.17px 0 rgba(0, 0, 0, 0.15), 0 0 1.39px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-4: 0 0 6.89px 0 rgba(0, 0, 0, 0.15), 0 0.61px 1.86px 0 rgba(0, 0, 0, 0.1);
+  --sld-elevation-5: 0 0 8.62px 0 rgba(0, 0, 0, 0.15), 0 0.76px 2.32px 0 rgba(0, 0, 0, 0.1);
+}
+
+:root {
+  --sld-color-discrete: #ccc;
+  --sld-color-success: #075c07;
+  --sld-color-info: #ffd324;
+  --sld-color-warning: #b49104;
+  --sld-color-alert: #cc5c00;
+  --sld-color-error: #cc0000;
+}
+
+:root {
+  /* alpha  foreground */
+  --sld-color-foreground-alpha-low: color-mix(in srgb, var(--sld-color-foreground), transparent 10%);
+  --sld-color-foreground-alpha-mid: color-mix(in srgb, var(--sld-color-foreground), transparent 60%);
+  --sld-color-foreground-alpha-high: color-mix(in srgb, var(--sld-color-foreground), transparent 80%);
+  /* alpha  background */
+  --sld-color-background-alpha-low: color-mix(in srgb, var(--sld-color-background), transparent 10%);
+  --sld-color-background-alpha-mid: color-mix(in srgb, var(--sld-color-background), transparent 60%);
+  --sld-color-background-alpha-high: color-mix(in srgb, var(--sld-color-background), transparent 80%);
+  /* alpha  primary */
+  --sld-color-primary-alpha-low: color-mix(in srgb, var(--sld-color-primary), transparent 10%);
+  --sld-color-primary-alpha-mid: color-mix(in srgb, var(--sld-color-primary), transparent 60%);
+  --sld-color-primary-alpha-high: color-mix(in srgb, var(--sld-color-primary), transparent 80%);
+  /* alpha  secondary */
+  --sld-color-secondary-alpha-low: color-mix(in srgb, var(--sld-color-secondary), transparent 10%);
+  --sld-color-secondary-alpha-mid: color-mix(in srgb, var(--sld-color-secondary), transparent 60%);
+  --sld-color-secondary-alpha-high: color-mix(in srgb, var(--sld-color-secondary), transparent 80%);
+  /* alpha  tertiary */
+  --sld-color-tertiary-alpha-low: color-mix(in srgb, var(--sld-color-tertiary), transparent 10%);
+  --sld-color-tertiary-alpha-mid: color-mix(in srgb, var(--sld-color-tertiary), transparent 60%);
+  --sld-color-tertiary-alpha-high: color-mix(in srgb, var(--sld-color-tertiary), transparent 80%);
+  /* darken  foreground */
+  --sld-color-foreground-darken-low: color-mix(in srgb, var(--sld-color-foreground), black 10%);
+  --sld-color-foreground-darken-mid: color-mix(in srgb, var(--sld-color-foreground), black 30%);
+  --sld-color-foreground-darken-high: color-mix(in srgb, var(--sld-color-foreground), black 60%);
+  /* darken  background */
+  --sld-color-background-darken-low: color-mix(in srgb, var(--sld-color-background), black 10%);
+  --sld-color-background-darken-mid: color-mix(in srgb, var(--sld-color-background), black 30%);
+  --sld-color-background-darken-high: color-mix(in srgb, var(--sld-color-background), black 60%);
+  /* darken  primary */
+  --sld-color-primary-darken-low: color-mix(in srgb, var(--sld-color-primary), black 10%);
+  --sld-color-primary-darken-mid: color-mix(in srgb, var(--sld-color-primary), black 30%);
+  --sld-color-primary-darken-high: color-mix(in srgb, var(--sld-color-primary), black 60%);
+  /* darken  secondary */
+  --sld-color-secondary-darken-low: color-mix(in srgb, var(--sld-color-secondary), black 10%);
+  --sld-color-secondary-darken-mid: color-mix(in srgb, var(--sld-color-secondary), black 30%);
+  --sld-color-secondary-darken-high: color-mix(in srgb, var(--sld-color-secondary), black 60%);
+  /* darken  tertiary */
+  --sld-color-tertiary-darken-low: color-mix(in srgb, var(--sld-color-tertiary), black 10%);
+  --sld-color-tertiary-darken-mid: color-mix(in srgb, var(--sld-color-tertiary), black 30%);
+  --sld-color-tertiary-darken-high: color-mix(in srgb, var(--sld-color-tertiary), black 60%);
+  /* lighten  foreground */
+  --sld-color-foreground-lighten-low: color-mix(in srgb, var(--sld-color-foreground), white 10%);
+  --sld-color-foreground-lighten-mid: color-mix(in srgb, var(--sld-color-foreground), white 30%);
+  --sld-color-foreground-lighten-high: color-mix(in srgb, var(--sld-color-foreground), white 60%);
+  /* lighten  background */
+  --sld-color-background-lighten-low: color-mix(in srgb, var(--sld-color-background), white 10%);
+  --sld-color-background-lighten-mid: color-mix(in srgb, var(--sld-color-background), white 30%);
+  --sld-color-background-lighten-high: color-mix(in srgb, var(--sld-color-background), white 60%);
+  /* lighten  primary */
+  --sld-color-primary-lighten-low: color-mix(in srgb, var(--sld-color-primary), white 10%);
+  --sld-color-primary-lighten-mid: color-mix(in srgb, var(--sld-color-primary), white 30%);
+  --sld-color-primary-lighten-high: color-mix(in srgb, var(--sld-color-primary), white 60%);
+  /* lighten  secondary */
+  --sld-color-secondary-lighten-low: color-mix(in srgb, var(--sld-color-secondary), white 10%);
+  --sld-color-secondary-lighten-mid: color-mix(in srgb, var(--sld-color-secondary), white 30%);
+  --sld-color-secondary-lighten-high: color-mix(in srgb, var(--sld-color-secondary), white 60%);
+  /* lighten  tertiary */
+  --sld-color-tertiary-lighten-low: color-mix(in srgb, var(--sld-color-tertiary), white 10%);
+  --sld-color-tertiary-lighten-mid: color-mix(in srgb, var(--sld-color-tertiary), white 30%);
+  --sld-color-tertiary-lighten-high: color-mix(in srgb, var(--sld-color-tertiary), white 60%);
+  /* alpha  discrete */
+  --sld-color-discrete-alpha-low: color-mix(in srgb, var(--sld-color-discrete), transparent 10%);
+  --sld-color-discrete-alpha-mid: color-mix(in srgb, var(--sld-color-discrete), transparent 30%);
+  --sld-color-discrete-alpha-high: color-mix(in srgb, var(--sld-color-discrete), transparent 60%);
+  /* alpha  success */
+  --sld-color-success-alpha-low: color-mix(in srgb, var(--sld-color-success), transparent 10%);
+  --sld-color-success-alpha-mid: color-mix(in srgb, var(--sld-color-success), transparent 30%);
+  --sld-color-success-alpha-high: color-mix(in srgb, var(--sld-color-success), transparent 60%);
+  /* alpha  info */
+  --sld-color-info-alpha-low: color-mix(in srgb, var(--sld-color-info), transparent 10%);
+  --sld-color-info-alpha-mid: color-mix(in srgb, var(--sld-color-info), transparent 30%);
+  --sld-color-info-alpha-high: color-mix(in srgb, var(--sld-color-info), transparent 60%);
+  /* alpha  warning */
+  --sld-color-warning-alpha-low: color-mix(in srgb, var(--sld-color-warning), transparent 10%);
+  --sld-color-warning-alpha-mid: color-mix(in srgb, var(--sld-color-warning), transparent 30%);
+  --sld-color-warning-alpha-high: color-mix(in srgb, var(--sld-color-warning), transparent 60%);
+  /* alpha  alert */
+  --sld-color-alert-alpha-low: color-mix(in srgb, var(--sld-color-alert), transparent 10%);
+  --sld-color-alert-alpha-mid: color-mix(in srgb, var(--sld-color-alert), transparent 30%);
+  --sld-color-alert-alpha-high: color-mix(in srgb, var(--sld-color-alert), transparent 60%);
+  /* alpha  error */
+  --sld-color-error-alpha-low: color-mix(in srgb, var(--sld-color-error), transparent 10%);
+  --sld-color-error-alpha-mid: color-mix(in srgb, var(--sld-color-error), transparent 30%);
+  --sld-color-error-alpha-high: color-mix(in srgb, var(--sld-color-error), transparent 60%);
+  /* darken  discrete */
+  --sld-color-discrete-darken-low: color-mix(in srgb, var(--sld-color-discrete), black 10%);
+  --sld-color-discrete-darken-mid: color-mix(in srgb, var(--sld-color-discrete), black 30%);
+  --sld-color-discrete-darken-high: color-mix(in srgb, var(--sld-color-discrete), black 60%);
+  /* darken  success */
+  --sld-color-success-darken-low: color-mix(in srgb, var(--sld-color-success), black 10%);
+  --sld-color-success-darken-mid: color-mix(in srgb, var(--sld-color-success), black 30%);
+  --sld-color-success-darken-high: color-mix(in srgb, var(--sld-color-success), black 60%);
+  /* darken  info */
+  --sld-color-info-darken-low: color-mix(in srgb, var(--sld-color-info), black 10%);
+  --sld-color-info-darken-mid: color-mix(in srgb, var(--sld-color-info), black 30%);
+  --sld-color-info-darken-high: color-mix(in srgb, var(--sld-color-info), black 60%);
+  /* darken  warning */
+  --sld-color-warning-darken-low: color-mix(in srgb, var(--sld-color-warning), black 10%);
+  --sld-color-warning-darken-mid: color-mix(in srgb, var(--sld-color-warning), black 30%);
+  --sld-color-warning-darken-high: color-mix(in srgb, var(--sld-color-warning), black 60%);
+  /* darken  alert */
+  --sld-color-alert-darken-low: color-mix(in srgb, var(--sld-color-alert), black 10%);
+  --sld-color-alert-darken-mid: color-mix(in srgb, var(--sld-color-alert), black 30%);
+  --sld-color-alert-darken-high: color-mix(in srgb, var(--sld-color-alert), black 60%);
+  /* darken  error */
+  --sld-color-error-darken-low: color-mix(in srgb, var(--sld-color-error), black 10%);
+  --sld-color-error-darken-mid: color-mix(in srgb, var(--sld-color-error), black 30%);
+  --sld-color-error-darken-high: color-mix(in srgb, var(--sld-color-error), black 60%);
+  /* lighten  discrete */
+  --sld-color-discrete-lighten-low: color-mix(in srgb, var(--sld-color-discrete), white 10%);
+  --sld-color-discrete-lighten-mid: color-mix(in srgb, var(--sld-color-discrete), white 30%);
+  --sld-color-discrete-lighten-high: color-mix(in srgb, var(--sld-color-discrete), white 60%);
+  /* lighten  success */
+  --sld-color-success-lighten-low: color-mix(in srgb, var(--sld-color-success), white 10%);
+  --sld-color-success-lighten-mid: color-mix(in srgb, var(--sld-color-success), white 30%);
+  --sld-color-success-lighten-high: color-mix(in srgb, var(--sld-color-success), white 60%);
+  /* lighten  info */
+  --sld-color-info-lighten-low: color-mix(in srgb, var(--sld-color-info), white 10%);
+  --sld-color-info-lighten-mid: color-mix(in srgb, var(--sld-color-info), white 30%);
+  --sld-color-info-lighten-high: color-mix(in srgb, var(--sld-color-info), white 60%);
+  /* lighten  warning */
+  --sld-color-warning-lighten-low: color-mix(in srgb, var(--sld-color-warning), white 10%);
+  --sld-color-warning-lighten-mid: color-mix(in srgb, var(--sld-color-warning), white 30%);
+  --sld-color-warning-lighten-high: color-mix(in srgb, var(--sld-color-warning), white 60%);
+  /* lighten  alert */
+  --sld-color-alert-lighten-low: color-mix(in srgb, var(--sld-color-alert), white 10%);
+  --sld-color-alert-lighten-mid: color-mix(in srgb, var(--sld-color-alert), white 30%);
+  --sld-color-alert-lighten-high: color-mix(in srgb, var(--sld-color-alert), white 60%);
+  /* lighten  error */
+  --sld-color-error-lighten-low: color-mix(in srgb, var(--sld-color-error), white 10%);
+  --sld-color-error-lighten-mid: color-mix(in srgb, var(--sld-color-error), white 30%);
+  --sld-color-error-lighten-high: color-mix(in srgb, var(--sld-color-error), white 60%);
+}
+
+/* presets */
+:root {
+  --sld-color-border: var(--sld-color-foreground-alpha-low);
+  --sld-hover-background-color: var(--sld-color-secondary-alpha-mid);
+  --sld-hover-border-color: var(--sld-color-foreground-alpha-high);
+  --sld-hover-shadow: var(--sld-elevation-3);
+  --sld-selected-background-color: var(--sld-color-primary-alpha-mid);
+  --sld-selected-border-color: var(--sld-color-primary);
+  --sld-selected-shadow: var(--sld-elevation-3);
+}
+
+.bg-themed-scheme-discrete {
+  color: black;
+  text-shadow: 0 0 0.125rem #b3b3b3;
+  background-color: #ccc;
+}
+
+.bg-themed-scheme-success {
+  color: white;
+  text-shadow: 0 0 0.125rem #004d00;
+  background-color: green;
+}
+
+.bg-themed-scheme-info {
+  color: black;
+  text-shadow: 0 0 0.125rem #ffd324;
+  background-color: #ffdd57;
+}
+
+.bg-themed-scheme-warning {
+  color: black;
+  text-shadow: 0 0 0.125rem #b49104;
+  background-color: #e6b905;
+}
+
+.bg-themed-scheme-alert {
+  color: black;
+  text-shadow: 0 0 0.125rem #cc5c00;
+  background-color: #ff7300;
+}
+
+.bg-themed-scheme-error {
+  color: white;
+  text-shadow: 0 0 0.125rem #cc0000;
+  background-color: red;
+}
+
+:root {
+  --sld-button-font-size: inherit;
+  --sld-button-radius: var(--sld-radius-small);
+  --sld-button-border-color: var(--sld-color-primary);
+  --sld-button-border-width: 1px;
+  --sld-button-text-align: center;
+  --sld-button-padding: 0;
+  --sld-button-background: var(--sld-color-primary);
+  --sld-button-hover-border-color: var(--sld-color-primary);
+  --sld-button-active-border-color: var(--sld-color-secondary);
+  --sld-button-focus-border-color: var(--sld-color-primary);
+  --sld-button-hover-shadow: var(--sld-elevation-3);
+  --sld-button-active-shadow: var(--sld-elevation-4);
+  --sld-button-focus-shadow: var(--sld-elevation-4);
+}
+
+.actionButton {
+  height: 100%;
+  width: var(--w-tiny);
+  cursor: pointer;
+}
+.actionButton:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+button,
+.button,
+input[type=button],
+input[type=submit] {
+  --preset-width: var(--sld-width-default);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
+  text-align: var(--sld-button-text-align);
+  font-size: var(--sld-button-font-size);
+  border-radius: var(--sld-button-radius);
+  color: var(--sld-color-foreground);
+  padding: var(--sld-button-padding);
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+  align-content: center;
+  align-items: center;
+}
+button:global([width="tiny"]), button:global(.width-tiny),
+.button:global([width="tiny"]),
+.button:global(.width-tiny),
+input[type=button]:global([width="tiny"]),
+input[type=button]:global(.width-tiny),
+input[type=submit]:global([width="tiny"]),
+input[type=submit]:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
+}
+button:global([width="mini"]), button:global(.width-mini),
+.button:global([width="mini"]),
+.button:global(.width-mini),
+input[type=button]:global([width="mini"]),
+input[type=button]:global(.width-mini),
+input[type=submit]:global([width="mini"]),
+input[type=submit]:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
+}
+button:global([width="small"]), button:global(.width-small),
+.button:global([width="small"]),
+.button:global(.width-small),
+input[type=button]:global([width="small"]),
+input[type=button]:global(.width-small),
+input[type=submit]:global([width="small"]),
+input[type=submit]:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
+}
+button:global([width="med"]), button:global(.width-med),
+.button:global([width="med"]),
+.button:global(.width-med),
+input[type=button]:global([width="med"]),
+input[type=button]:global(.width-med),
+input[type=submit]:global([width="med"]),
+input[type=submit]:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
+}
+button:global([width="kind"]), button:global(.width-kind),
+.button:global([width="kind"]),
+.button:global(.width-kind),
+input[type=button]:global([width="kind"]),
+input[type=button]:global(.width-kind),
+input[type=submit]:global([width="kind"]),
+input[type=submit]:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
+}
+button:global([width="full"]), button:global(.width-full),
+.button:global([width="full"]),
+.button:global(.width-full),
+input[type=button]:global([width="full"]),
+input[type=button]:global(.width-full),
+input[type=submit]:global([width="full"]),
+input[type=submit]:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
+}
+button:global([width="auto"]), button:global(.width-auto),
+.button:global([width="auto"]),
+.button:global(.width-auto),
+input[type=button]:global([width="auto"]),
+input[type=button]:global(.width-auto),
+input[type=submit]:global([width="auto"]),
+input[type=submit]:global(.width-auto) {
+  width: var(--sld-width-auto);
+  --preset-width: var(--sld-width-auto);
+}
+button:global([width="default"]), button:global(.width-default),
+.button:global([width="default"]),
+.button:global(.width-default),
+input[type=button]:global([width="default"]),
+input[type=button]:global(.width-default),
+input[type=submit]:global([width="default"]),
+input[type=submit]:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
+}
+button:global([tall="tiny"]), button:global(.tall-tiny),
+.button:global([tall="tiny"]),
+.button:global(.tall-tiny),
+input[type=button]:global([tall="tiny"]),
+input[type=button]:global(.tall-tiny),
+input[type=submit]:global([tall="tiny"]),
+input[type=submit]:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
+}
+button:global([tall="mini"]), button:global(.tall-mini),
+.button:global([tall="mini"]),
+.button:global(.tall-mini),
+input[type=button]:global([tall="mini"]),
+input[type=button]:global(.tall-mini),
+input[type=submit]:global([tall="mini"]),
+input[type=submit]:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
+}
+button:global([tall="small"]), button:global(.tall-small),
+.button:global([tall="small"]),
+.button:global(.tall-small),
+input[type=button]:global([tall="small"]),
+input[type=button]:global(.tall-small),
+input[type=submit]:global([tall="small"]),
+input[type=submit]:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+button:global([tall="med"]), button:global(.tall-med),
+.button:global([tall="med"]),
+.button:global(.tall-med),
+input[type=button]:global([tall="med"]),
+input[type=button]:global(.tall-med),
+input[type=submit]:global([tall="med"]),
+input[type=submit]:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+button:global([tall="kind"]), button:global(.tall-kind),
+.button:global([tall="kind"]),
+.button:global(.tall-kind),
+input[type=button]:global([tall="kind"]),
+input[type=button]:global(.tall-kind),
+input[type=submit]:global([tall="kind"]),
+input[type=submit]:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
+}
+button:global([tall="auto"]), button:global(.tall-auto),
+.button:global([tall="auto"]),
+.button:global(.tall-auto),
+input[type=button]:global([tall="auto"]),
+input[type=button]:global(.tall-auto),
+input[type=submit]:global([tall="auto"]),
+input[type=submit]:global(.tall-auto) {
+  min-height: var(--sld-tall-auto);
+  --preset-tall: var(--sld-tall-auto);
+}
+button:global([tall="default"]), button:global(.tall-default),
+.button:global([tall="default"]),
+.button:global(.tall-default),
+input[type=button]:global([tall="default"]),
+input[type=button]:global(.tall-default),
+input[type=submit]:global([tall="default"]),
+input[type=submit]:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
+}
+button:focus,
+.button:focus,
+input[type=button]:focus,
+input[type=submit]:focus {
+  outline: 1px solid var(--sld-button-focus-border-color);
+  outline-offset: 2px;
+  box-shadow: var(--sld-button-focus-shadow);
+}
+button:focus-visible,
+.button:focus-visible,
+input[type=button]:focus-visible,
+input[type=submit]:focus-visible {
+  outline: 1px solid var(--sld-button-focus-border-color);
+  outline-offset: -2px;
+  box-shadow: var(--sld-button-focus-shadow);
+}
+button:focus:not(:focus-visible),
+.button:focus:not(:focus-visible),
+input[type=button]:focus:not(:focus-visible),
+input[type=submit]:focus:not(:focus-visible) {
+  box-shadow: var(--sld-button-focus-shadow);
+}
+button:hover,
+.button:hover,
+input[type=button]:hover,
+input[type=submit]:hover {
+  background-color: var(--sld-button-hover-background);
+  box-shadow: var(--sld-button-hover-shadow);
+}
+button:active,
+.button:active,
+input[type=button]:active,
+input[type=submit]:active {
+  transform: translateY(1px);
+  box-shadow: var(--sld-button-active-shadow);
+}
+button .button-start,
+.button .button-start,
+input[type=button] .button-start,
+input[type=submit] .button-start {
+  --preset-ellipsis-line: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5rem;
+}
+button .button-start.ellipsis,
+.button .button-start.ellipsis,
+input[type=button] .button-start.ellipsis,
+input[type=submit] .button-start.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+button .button-start.ellipsis-line-1,
+.button .button-start.ellipsis-line-1,
+input[type=button] .button-start.ellipsis-line-1,
+input[type=submit] .button-start.ellipsis-line-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 1;
+}
+button .button-start.ellipsis-line-2,
+.button .button-start.ellipsis-line-2,
+input[type=button] .button-start.ellipsis-line-2,
+input[type=submit] .button-start.ellipsis-line-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 2;
+}
+button .button-start.ellipsis-line-3,
+.button .button-start.ellipsis-line-3,
+input[type=button] .button-start.ellipsis-line-3,
+input[type=submit] .button-start.ellipsis-line-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 3;
+}
+button .button-start.ellipsis-line-4,
+.button .button-start.ellipsis-line-4,
+input[type=button] .button-start.ellipsis-line-4,
+input[type=submit] .button-start.ellipsis-line-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 4;
+}
+button .button-start.ellipsis-line-5,
+.button .button-start.ellipsis-line-5,
+input[type=button] .button-start.ellipsis-line-5,
+input[type=submit] .button-start.ellipsis-line-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 5;
+}
+button .button-start:empty,
+.button .button-start:empty,
+input[type=button] .button-start:empty,
+input[type=submit] .button-start:empty {
+  display: none;
+}
+button .button-central,
+.button .button-central,
+input[type=button] .button-central,
+input[type=submit] .button-central {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--content-padding, --preset-width);
+  text-align: var(--sld-button-text-align);
+}
+button .button-action,
+.button .button-action,
+input[type=button] .button-action,
+input[type=submit] .button-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--w-tiny);
+  padding: 0 0.5rem;
+  cursor: pointer;
+}
+button .button-action:empty,
+.button .button-action:empty,
+input[type=button] .button-action:empty,
+input[type=submit] .button-action:empty {
+  display: none;
+}
+button .button-action:hover,
+.button .button-action:hover,
+input[type=button] .button-action:hover,
+input[type=submit] .button-action:hover {
+  background-color: var(--sld-button-action-hover-background);
+}
+button.loading, button[aria-busy=true],
+.button.loading,
+.button[aria-busy=true],
+input[type=button].loading,
+input[type=button][aria-busy=true],
+input[type=submit].loading,
+input[type=submit][aria-busy=true] {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+button.loading::after, button[aria-busy=true]::after,
+.button.loading::after,
+.button[aria-busy=true]::after,
+input[type=button].loading::after,
+input[type=button][aria-busy=true]::after,
+input[type=submit].loading::after,
+input[type=submit][aria-busy=true]::after {
+  content: " ";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+  border: 2px solid var(--sld-color-secondary);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: button-spinner 0.6s linear infinite;
+}
+button[disabled], button.disabled, button[aria-disabled=true],
+.button[disabled],
+.button.disabled,
+.button[aria-disabled=true],
+input[type=button][disabled],
+input[type=button].disabled,
+input[type=button][aria-disabled=true],
+input[type=submit][disabled],
+input[type=submit].disabled,
+input[type=submit][aria-disabled=true] {
+  color: var(--color-gray-800);
+  border-color: var(--color-gray-400);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
+}
+button[aria-pressed=true], button.selected,
+.button[aria-pressed=true],
+.button.selected,
+input[type=button][aria-pressed=true],
+input[type=button].selected,
+input[type=submit][aria-pressed=true],
+input[type=submit].selected {
+  box-shadow: var(--sld-elevation-3);
+  background-color: var(--sld-color-secondary);
+  font-weight: bold;
+}
+button .chip,
+.button .chip,
+input[type=button] .chip,
+input[type=submit] .chip {
+  position: absolute;
+  z-index: 2;
+  height: 3px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+  border-radius: var(--sld-radius-large);
+  bottom: 2px;
+}
+button .loadingButtonZone,
+.button .loadingButtonZone,
+input[type=button] .loadingButtonZone,
+input[type=submit] .loadingButtonZone {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  align-content: center;
+  justify-content: space-around;
+}
+
+button,
+.button,
+input[type=button],
+input[type=submit] {
+  --preset-width: var(--sld-width-default);
+  --preset-tall: 2rem;
+  min-height: var(--preset-tall);
+}
+button:global([width="tiny"]), button:global(.width-tiny),
+.button:global([width="tiny"]),
+.button:global(.width-tiny),
+input[type=button]:global([width="tiny"]),
+input[type=button]:global(.width-tiny),
+input[type=submit]:global([width="tiny"]),
+input[type=submit]:global(.width-tiny) {
+  width: var(--sld-width-tiny);
+  --preset-width: var(--sld-width-tiny);
+}
+button:global([width="mini"]), button:global(.width-mini),
+.button:global([width="mini"]),
+.button:global(.width-mini),
+input[type=button]:global([width="mini"]),
+input[type=button]:global(.width-mini),
+input[type=submit]:global([width="mini"]),
+input[type=submit]:global(.width-mini) {
+  width: var(--sld-width-mini);
+  --preset-width: var(--sld-width-mini);
+}
+button:global([width="small"]), button:global(.width-small),
+.button:global([width="small"]),
+.button:global(.width-small),
+input[type=button]:global([width="small"]),
+input[type=button]:global(.width-small),
+input[type=submit]:global([width="small"]),
+input[type=submit]:global(.width-small) {
+  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
+}
+button:global([width="med"]), button:global(.width-med),
+.button:global([width="med"]),
+.button:global(.width-med),
+input[type=button]:global([width="med"]),
+input[type=button]:global(.width-med),
+input[type=submit]:global([width="med"]),
+input[type=submit]:global(.width-med) {
+  width: var(--sld-width-med);
+  --preset-width: var(--sld-width-med);
+}
+button:global([width="kind"]), button:global(.width-kind),
+.button:global([width="kind"]),
+.button:global(.width-kind),
+input[type=button]:global([width="kind"]),
+input[type=button]:global(.width-kind),
+input[type=submit]:global([width="kind"]),
+input[type=submit]:global(.width-kind) {
+  width: var(--sld-width-kind);
+  --preset-width: var(--sld-width-kind);
+}
+button:global([width="full"]), button:global(.width-full),
+.button:global([width="full"]),
+.button:global(.width-full),
+input[type=button]:global([width="full"]),
+input[type=button]:global(.width-full),
+input[type=submit]:global([width="full"]),
+input[type=submit]:global(.width-full) {
+  width: var(--sld-width-full);
+  --preset-width: var(--sld-width-full);
+}
+button:global([width="auto"]), button:global(.width-auto),
+.button:global([width="auto"]),
+.button:global(.width-auto),
+input[type=button]:global([width="auto"]),
+input[type=button]:global(.width-auto),
+input[type=submit]:global([width="auto"]),
+input[type=submit]:global(.width-auto) {
+  width: var(--sld-width-auto);
+  --preset-width: var(--sld-width-auto);
+}
+button:global([width="default"]), button:global(.width-default),
+.button:global([width="default"]),
+.button:global(.width-default),
+input[type=button]:global([width="default"]),
+input[type=button]:global(.width-default),
+input[type=submit]:global([width="default"]),
+input[type=submit]:global(.width-default) {
+  width: var(--sld-width-default);
+  --preset-width: var(--sld-width-default);
+}
+button:global([tall="tiny"]), button:global(.tall-tiny),
+.button:global([tall="tiny"]),
+.button:global(.tall-tiny),
+input[type=button]:global([tall="tiny"]),
+input[type=button]:global(.tall-tiny),
+input[type=submit]:global([tall="tiny"]),
+input[type=submit]:global(.tall-tiny) {
+  min-height: var(--sld-tall-tiny);
+  --preset-tall: var(--sld-tall-tiny);
+}
+button:global([tall="mini"]), button:global(.tall-mini),
+.button:global([tall="mini"]),
+.button:global(.tall-mini),
+input[type=button]:global([tall="mini"]),
+input[type=button]:global(.tall-mini),
+input[type=submit]:global([tall="mini"]),
+input[type=submit]:global(.tall-mini) {
+  min-height: var(--sld-tall-mini);
+  --preset-tall: var(--sld-tall-mini);
+}
+button:global([tall="small"]), button:global(.tall-small),
+.button:global([tall="small"]),
+.button:global(.tall-small),
+input[type=button]:global([tall="small"]),
+input[type=button]:global(.tall-small),
+input[type=submit]:global([tall="small"]),
+input[type=submit]:global(.tall-small) {
+  min-height: var(--sld-tall-small);
+  --preset-tall: var(--sld-tall-small);
+}
+button:global([tall="med"]), button:global(.tall-med),
+.button:global([tall="med"]),
+.button:global(.tall-med),
+input[type=button]:global([tall="med"]),
+input[type=button]:global(.tall-med),
+input[type=submit]:global([tall="med"]),
+input[type=submit]:global(.tall-med) {
+  min-height: var(--sld-tall-med);
+  --preset-tall: var(--sld-tall-med);
+}
+button:global([tall="kind"]), button:global(.tall-kind),
+.button:global([tall="kind"]),
+.button:global(.tall-kind),
+input[type=button]:global([tall="kind"]),
+input[type=button]:global(.tall-kind),
+input[type=submit]:global([tall="kind"]),
+input[type=submit]:global(.tall-kind) {
+  min-height: var(--sld-tall-kind);
+  --preset-tall: var(--sld-tall-kind);
+}
+button:global([tall="auto"]), button:global(.tall-auto),
+.button:global([tall="auto"]),
+.button:global(.tall-auto),
+input[type=button]:global([tall="auto"]),
+input[type=button]:global(.tall-auto),
+input[type=submit]:global([tall="auto"]),
+input[type=submit]:global(.tall-auto) {
+  min-height: var(--sld-tall-auto);
+  --preset-tall: var(--sld-tall-auto);
+}
+button:global([tall="default"]), button:global(.tall-default),
+.button:global([tall="default"]),
+.button:global(.tall-default),
+input[type=button]:global([tall="default"]),
+input[type=button]:global(.tall-default),
+input[type=submit]:global([tall="default"]),
+input[type=submit]:global(.tall-default) {
+  min-height: var(--sld-tall-default);
+  --preset-tall: var(--sld-tall-default);
+}
+button[variant*=bordered], button[bordered=true], button.bordered,
+.button[variant*=bordered],
+.button[bordered=true],
+.button.bordered,
+input[type=button][variant*=bordered],
+input[type=button][bordered=true],
+input[type=button].bordered,
+input[type=submit][variant*=bordered],
+input[type=submit][bordered=true],
+input[type=submit].bordered {
+  color: var(--sld-color-foreground);
+  border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+  box-shadow: var(--sld-elevation-1);
+  background-color: var(--sld-color-background);
+}
+button[variant*=bordered]:hover, button[bordered=true]:hover, button.bordered:hover,
+.button[variant*=bordered]:hover,
+.button[bordered=true]:hover,
+.button.bordered:hover,
+input[type=button][variant*=bordered]:hover,
+input[type=button][bordered=true]:hover,
+input[type=button].bordered:hover,
+input[type=submit][variant*=bordered]:hover,
+input[type=submit][bordered=true]:hover,
+input[type=submit].bordered:hover {
+  border-color: var(--sld-color-primary);
+  box-shadow: var(--sld-button-hover-shadow);
+}
+button[variant*=bordered]:focus, button[variant*=bordered]:active, button[bordered=true]:focus, button[bordered=true]:active, button.bordered:focus, button.bordered:active,
+.button[variant*=bordered]:focus,
+.button[variant*=bordered]:active,
+.button[bordered=true]:focus,
+.button[bordered=true]:active,
+.button.bordered:focus,
+.button.bordered:active,
+input[type=button][variant*=bordered]:focus,
+input[type=button][variant*=bordered]:active,
+input[type=button][bordered=true]:focus,
+input[type=button][bordered=true]:active,
+input[type=button].bordered:focus,
+input[type=button].bordered:active,
+input[type=submit][variant*=bordered]:focus,
+input[type=submit][variant*=bordered]:active,
+input[type=submit][bordered=true]:focus,
+input[type=submit][bordered=true]:active,
+input[type=submit].bordered:focus,
+input[type=submit].bordered:active {
+  border-color: var(--sld-button-active-border-color);
+  box-shadow: var(--sld-button-active-shadow);
+}
+button[variant*=contained], button[contained=true], button.contained,
+.button[variant*=contained],
+.button[contained=true],
+.button.contained,
+input[type=button][variant*=contained],
+input[type=button][contained=true],
+input[type=button].contained,
+input[type=submit][variant*=contained],
+input[type=submit][contained=true],
+input[type=submit].contained {
+  border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+  color: var(--sld-color-on-primary);
+  background-color: var(--sld-button-background);
+  background-clip: padding-box;
+  box-shadow: var(--sld-elevation-1);
+}
+button[variant*=contained]:hover, button[contained=true]:hover, button.contained:hover,
+.button[variant*=contained]:hover,
+.button[contained=true]:hover,
+.button.contained:hover,
+input[type=button][variant*=contained]:hover,
+input[type=button][contained=true]:hover,
+input[type=button].contained:hover,
+input[type=submit][variant*=contained]:hover,
+input[type=submit][contained=true]:hover,
+input[type=submit].contained:hover {
+  background-color: var(--sld-color-secondary);
+  color: var(--sld-color-on-secondary);
+}
+button[variant*=contained]:focus, button[variant*=contained]:active, button[contained=true]:focus, button[contained=true]:active, button.contained:focus, button.contained:active,
+.button[variant*=contained]:focus,
+.button[variant*=contained]:active,
+.button[contained=true]:focus,
+.button[contained=true]:active,
+.button.contained:focus,
+.button.contained:active,
+input[type=button][variant*=contained]:focus,
+input[type=button][variant*=contained]:active,
+input[type=button][contained=true]:focus,
+input[type=button][contained=true]:active,
+input[type=button].contained:focus,
+input[type=button].contained:active,
+input[type=submit][variant*=contained]:focus,
+input[type=submit][variant*=contained]:active,
+input[type=submit][contained=true]:focus,
+input[type=submit][contained=true]:active,
+input[type=submit].contained:focus,
+input[type=submit].contained:active {
+  background-color: var(--sld-color-tertiary);
+  color: var(--sld-color-on-tertiary);
+  box-shadow: var(--sld-button-active-shadow);
+}
+button[variant*=link], button[link=true], button.link, button[role=link],
+.button[variant*=link],
+.button[link=true],
+.button.link,
+.button[role=link],
+input[type=button][variant*=link],
+input[type=button][link=true],
+input[type=button].link,
+input[type=button][role=link],
+input[type=submit][variant*=link],
+input[type=submit][link=true],
+input[type=submit].link,
+input[type=submit][role=link] {
+  color: var(--sld-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.35rem;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+button[variant*=link]:hover, button[link=true]:hover, button.link:hover, button[role=link]:hover,
+.button[variant*=link]:hover,
+.button[link=true]:hover,
+.button.link:hover,
+.button[role=link]:hover,
+input[type=button][variant*=link]:hover,
+input[type=button][link=true]:hover,
+input[type=button].link:hover,
+input[type=button][role=link]:hover,
+input[type=submit][variant*=link]:hover,
+input[type=submit][link=true]:hover,
+input[type=submit].link:hover,
+input[type=submit][role=link]:hover {
+  text-decoration: underline;
+}
+button[variant*=link]:focus, button[variant*=link]:active, button[link=true]:focus, button[link=true]:active, button.link:focus, button.link:active, button[role=link]:focus, button[role=link]:active,
+.button[variant*=link]:focus,
+.button[variant*=link]:active,
+.button[link=true]:focus,
+.button[link=true]:active,
+.button.link:focus,
+.button.link:active,
+.button[role=link]:focus,
+.button[role=link]:active,
+input[type=button][variant*=link]:focus,
+input[type=button][variant*=link]:active,
+input[type=button][link=true]:focus,
+input[type=button][link=true]:active,
+input[type=button].link:focus,
+input[type=button].link:active,
+input[type=button][role=link]:focus,
+input[type=button][role=link]:active,
+input[type=submit][variant*=link]:focus,
+input[type=submit][variant*=link]:active,
+input[type=submit][link=true]:focus,
+input[type=submit][link=true]:active,
+input[type=submit].link:focus,
+input[type=submit].link:active,
+input[type=submit][role=link]:focus,
+input[type=submit][role=link]:active {
+  text-decoration: underline;
+  outline: none;
+  box-shadow: none;
+}
+button[variant*=naked], button[naked=true], button.naked,
+.button[variant*=naked],
+.button[naked=true],
+.button.naked,
+input[type=button][variant*=naked],
+input[type=button][naked=true],
+input[type=button].naked,
+input[type=submit][variant*=naked],
+input[type=submit][naked=true],
+input[type=submit].naked {
+  color: inherit;
+  background-color: transparent;
+  border: 0px solid transparent;
+  cursor: pointer;
+}
+button[variant*=naked]:hover, button[naked=true]:hover, button.naked:hover,
+.button[variant*=naked]:hover,
+.button[naked=true]:hover,
+.button.naked:hover,
+input[type=button][variant*=naked]:hover,
+input[type=button][naked=true]:hover,
+input[type=button].naked:hover,
+input[type=submit][variant*=naked]:hover,
+input[type=submit][naked=true]:hover,
+input[type=submit].naked:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+button[variant*=naked]:hover, button[naked=true]:hover, button.naked:hover,
+.button[variant*=naked]:hover,
+.button[naked=true]:hover,
+.button.naked:hover,
+input[type=button][variant*=naked]:hover,
+input[type=button][naked=true]:hover,
+input[type=button].naked:hover,
+input[type=submit][variant*=naked]:hover,
+input[type=submit][naked=true]:hover,
+input[type=submit].naked:hover {
+  background-color: var(--sld-button-hover-background);
+}
+button[variant*=naked]:active, button[variant*=naked]:focus, button[naked=true]:active, button[naked=true]:focus, button.naked:active, button.naked:focus,
+.button[variant*=naked]:active,
+.button[variant*=naked]:focus,
+.button[naked=true]:active,
+.button[naked=true]:focus,
+.button.naked:active,
+.button.naked:focus,
+input[type=button][variant*=naked]:active,
+input[type=button][variant*=naked]:focus,
+input[type=button][naked=true]:active,
+input[type=button][naked=true]:focus,
+input[type=button].naked:active,
+input[type=button].naked:focus,
+input[type=submit][variant*=naked]:active,
+input[type=submit][variant*=naked]:focus,
+input[type=submit][naked=true]:active,
+input[type=submit][naked=true]:focus,
+input[type=submit].naked:active,
+input[type=submit].naked:focus {
+  background-color: transparent;
+  border: 0.5px solid transparent;
+  color: inherit;
+}
+button[variant*=flat], button[flat=true], button.flat,
+.button[variant*=flat],
+.button[flat=true],
+.button.flat,
+input[type=button][variant*=flat],
+input[type=button][flat=true],
+input[type=button].flat,
+input[type=submit][variant*=flat],
+input[type=submit][flat=true],
+input[type=submit].flat {
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+button[variant*=flat]:hover, button[flat=true]:hover, button.flat:hover,
+.button[variant*=flat]:hover,
+.button[flat=true]:hover,
+.button.flat:hover,
+input[type=button][variant*=flat]:hover,
+input[type=button][flat=true]:hover,
+input[type=button].flat:hover,
+input[type=submit][variant*=flat]:hover,
+input[type=submit][flat=true]:hover,
+input[type=submit].flat:hover {
+  background-color: var(--sld-button-hover-background);
+}
+button[variant*=flat]:active, button[variant*=flat]:focus, button[flat=true]:active, button[flat=true]:focus, button.flat:active, button.flat:focus,
+.button[variant*=flat]:active,
+.button[variant*=flat]:focus,
+.button[flat=true]:active,
+.button[flat=true]:focus,
+.button.flat:active,
+.button.flat:focus,
+input[type=button][variant*=flat]:active,
+input[type=button][variant*=flat]:focus,
+input[type=button][flat=true]:active,
+input[type=button][flat=true]:focus,
+input[type=button].flat:active,
+input[type=button].flat:focus,
+input[type=submit][variant*=flat]:active,
+input[type=submit][variant*=flat]:focus,
+input[type=submit][flat=true]:active,
+input[type=submit][flat=true]:focus,
+input[type=submit].flat:active,
+input[type=submit].flat:focus {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+}
+
+@keyframes button-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

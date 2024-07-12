@@ -1,0 +1,9 @@
+{
+  "moduleName": "Debug",
+  "filePath": "src/lib/base/debug/Debug.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

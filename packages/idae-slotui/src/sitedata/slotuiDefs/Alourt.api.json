@@ -1,0 +1,32 @@
+{
+  "moduleName": "Alourt",
+  "filePath": "src/lib/base/alert/Alourt.svelte",
+  "props": [
+    {
+      "name": "isOpen",
+      "kind": "let",
+      "type": "string",
+      "value": "'red'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "title",
+      "kind": "let",
+      "type": "string",
+      "value": "'提示'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

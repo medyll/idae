@@ -1,0 +1,9 @@
+{
+  "moduleName": "Starter",
+  "filePath": "src/lib/ui/starter/Starter.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

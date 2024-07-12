@@ -1,0 +1,115 @@
+{
+  "moduleName": "Chipper",
+  "filePath": "src/lib/base/chipper/Chipper.svelte",
+  "props": [
+    {
+      "name": "class",
+      "kind": "let",
+      "description": "className off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "style",
+      "kind": "let",
+      "description": "css style off the root component",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "element",
+      "kind": "let",
+      "description": "element root HTMLDivElement props",
+      "type": "null | HTMLDivElement",
+      "value": "null",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": true
+    },
+    {
+      "name": "position",
+      "kind": "let",
+      "description": "position of the chipper",
+      "type": "'top' | 'bottom' | 'left' | 'right'",
+      "value": "'bottom'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "bgTheme",
+      "kind": "let",
+      "description": "theme color of the chip",
+      "type": "'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'light' | 'medium' | 'dark'",
+      "value": "'primary'",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "color",
+      "kind": "let",
+      "description": "css color code for the chip",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "content",
+      "kind": "let",
+      "description": "text or html is slot is not used",
+      "type": "string",
+      "value": "''",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    },
+    {
+      "name": "showChip",
+      "kind": "let",
+      "description": "show or hide the chip",
+      "type": "boolean",
+      "value": "true",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [
+    {
+      "name": "__default__",
+      "default": true,
+      "fallback": "{#if content}\r\n\t\t\t<div class=\"chipperContent\">{@html content ?? ''}</div>\r\n\t\t{/if}",
+      "slot_props": "{}"
+    },
+    {
+      "name": "chipperChip",
+      "default": false,
+      "fallback": "<div class=\"defaultChip\" />",
+      "slot_props": "{}"
+    }
+  ],
+  "events": [],
+  "typedefs": []
+}

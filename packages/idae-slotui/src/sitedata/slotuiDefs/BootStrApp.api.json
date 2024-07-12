@@ -1,0 +1,9 @@
+{
+  "moduleName": "BootStrApp",
+  "filePath": "src/lib/ui/bootstrapp/BootStrApp.svelte",
+  "props": [],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": []
+}

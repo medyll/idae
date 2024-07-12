@@ -1,0 +1,140 @@
+.flex-h {
+  display: flex;
+  flex-direction: row;
+}
+.flex-h > .flex-main {
+  flex: 1 1 0;
+}
+.flex-h.align-middle, .flex-h.flex-align-middle {
+  align-items: center;
+}
+.flex-h.align-top, .flex-h.flex-align-top {
+  align-items: flex-start;
+}
+.flex-h.align-left, .flex-h.flex-align-left {
+  align-items: flex-start;
+}
+.flex-h.align-right, .flex-h.flex-align-right {
+  justify-content: flex-end;
+}
+.flex-h.align-bottom, .flex-h.flex-align-bottom {
+  align-items: flex-end;
+}
+.flex-h.align-center, .flex-h.flex-align-center {
+  justify-content: center;
+}
+.flex-h.align-middle-center, .flex-h.flex-align-middle-center {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.flex-h.align-stretch, .flex-h.flex-align-stretch {
+  color: blue;
+  align-items: stretch;
+}
+
+.flex-v {
+  display: flex;
+  flex-direction: column;
+}
+.flex-v > .flex-main {
+  flex: 1 1 0;
+  max-height: 100%;
+}
+.flex-v.align-middle, .flex-v.flex-align-middle {
+  justify-content: center;
+}
+.flex-v.align-top, .flex-v.flex-align-top {
+  justify-content: flex-start;
+}
+.flex-v.align-left, .flex-v.flex-align-left {
+  align-items: flex-start;
+}
+.flex-v.align-right, .flex-v.flex-align-right {
+  align-items: flex-end;
+}
+.flex-v.align-bottom, .flex-v.flex-align-bottom {
+  justify-content: flex-end;
+}
+.flex-v.align-center, .flex-v.flex-align-center {
+  align-items: center;
+}
+.flex-v.align-middle-center, .flex-v.flex-align-middle-center {
+  align-items: center;
+  justify-content: center;
+}
+.flex-v.align-stretch, .flex-v.flex-align-stretch {
+  color: red;
+  align-items: stretch;
+}
+
+.flex-h,
+.flex-v {
+  box-sizing: border-box;
+}
+.flex-h > *,
+.flex-v > * {
+  box-sizing: border-box;
+}
+.flex-h > *:not(.flex-main),
+.flex-v > *:not(.flex-main) {
+  flex: 0 0 auto;
+}
+.flex-h.flex-inline,
+.flex-v.flex-inline {
+  display: inline-flex;
+}
+.flex-h .flex-grow-1,
+.flex-v .flex-grow-1 {
+  flex-grow: 1;
+}
+.flex-h .flex-shrink-1,
+.flex-v .flex-shrink-1 {
+  flex-shrink: 1;
+}
+.flex-h .flex-grow-2,
+.flex-v .flex-grow-2 {
+  flex-grow: 2;
+}
+.flex-h .flex-shrink-2,
+.flex-v .flex-shrink-2 {
+  flex-shrink: 2;
+}
+.flex-h .flex-grow-3,
+.flex-v .flex-grow-3 {
+  flex-grow: 3;
+}
+.flex-h .flex-shrink-3,
+.flex-v .flex-shrink-3 {
+  flex-shrink: 3;
+}
+.flex-h .flex-grow-4,
+.flex-v .flex-grow-4 {
+  flex-grow: 4;
+}
+.flex-h .flex-shrink-4,
+.flex-v .flex-shrink-4 {
+  flex-shrink: 4;
+}
+
+/** raw css properties distribution */
+.flex-h.flex-wrap,
+.flex-v.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-h.flex-wrap-reverse,
+.flex-v.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+.flex-h .self-start,
+.flex-v .self-start {
+  align-self: flex-start;
+}
+.flex-h .self-end,
+.flex-v .self-end {
+  align-self: flex-end;
+}
+.flex-h .self-stretch,
+.flex-v .self-stretch {
+  align-self: stretch;
+}

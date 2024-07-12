@@ -1,0 +1,19 @@
+{
+  "moduleName": "MenuContextAgent",
+  "filePath": "src/lib/ui/menu/MenuContextAgent.svelte",
+  "props": [
+    {
+      "name": "menuAgent",
+      "kind": "const",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": true,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [],
+  "events": [],
+  "typedefs": []
+}

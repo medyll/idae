@@ -1,0 +1,31 @@
+.buttonActionRoot {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+}
+
+.buttonText {
+  text-align: center;
+}
+
+.button {
+  display: block;
+  width: 64px;
+}
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.action {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 30%;
+  padding: 0.5rem;
+}
+.action:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}

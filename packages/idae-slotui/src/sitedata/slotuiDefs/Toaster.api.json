@@ -1,0 +1,21 @@
+{
+  "moduleName": "Toaster",
+  "filePath": "src/lib/ui/toast/Toaster.svelte",
+  "props": [
+    {
+      "name": "toasterId",
+      "kind": "let",
+      "type": "string",
+      "value": "\"defaultToasterRoot\"",
+      "isFunction": false,
+      "isFunctionDeclaration": false,
+      "isRequired": false,
+      "constant": false,
+      "reactive": false
+    }
+  ],
+  "moduleExports": [],
+  "slots": [{ "name": "__default__", "default": true, "slot_props": "{}" }],
+  "events": [],
+  "typedefs": []
+}
