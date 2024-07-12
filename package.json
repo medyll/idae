@@ -4,7 +4,9 @@
   "scripts": {
     "commit": "cz",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "package-all": "npm run package --workspaces --if-present",
+    "package-watch-all": "npm run package:watch  --workspaces --if-present"
   },
   "config": {
     "commitizen": {
