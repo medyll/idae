@@ -1,6 +1,6 @@
 import {EventDataClientInstance} from './index';
 import {_config} from '../server/_config/config';
-import {start} from '../../index';
+import {start} from '../index';
 
 const parseArgs = require('minimist');
 

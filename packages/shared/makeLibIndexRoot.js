@@ -31,7 +31,7 @@ export class MakeLibIndex {
 			]
 		});
 
-		let svelteFiles = [];
+		let svelteFiles  = [];
 		files.forEach((file) => {
 			if (fsx.statSync(file).isDirectory()) {
 				svelteFiles = svelteFiles.concat(this._recursiveListSvelteFile(file, target));
