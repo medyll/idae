@@ -3,28 +3,27 @@
 @charset "utf-8";
 
 $theme: (
-        primary: #00B5E2,
+        primary: #00b5e2,
         secondary: #330c2f,
         tertiary: #cacaaa,
         foreground: #282230,
-        background: #f1f1f1,
+        background: #f1f1f1
 );
 
 $themes: (
-        light:(
+        light: (
                 foreground: #282230,
                 background: #f1f1f1,
                 paper: #ededed
         ),
-        dark:(
+        dark: (
                 foreground: #f1f1f1,
                 background: #27323a,
                 paper: #3a3b3b
-        ),
-); 
- 
- 
-$theme-color-primary: #00B5E2;
+        )
+);
+
+$theme-color-primary: #00b5e2;
 $theme-color-secondary: #330c2f;
 $theme-color-tertiary: #cacaaa;
 

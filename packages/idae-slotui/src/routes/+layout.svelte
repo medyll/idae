@@ -169,7 +169,7 @@
 </div>
 
 <style global type="scss">
-	@import '../lib/styles/slotui-vars.scss';
+	@import '../lib/styles/slotui-vars.scss'; 
 	#contentSlide {
 		overflow: hidden;
 		flex: 1;
