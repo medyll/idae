@@ -1,5 +1,6 @@
 {
-	"name": "idae-engine",
+	"name": "@medyll/idae-engine",
+	"scope": "@medyll",
 	"version": "1.0.0",
 	"scripts": {
 		"dev": "vite dev",

@@ -2,7 +2,7 @@ import { type ResolverPathType } from "./types.js";
 
 type Data = Record<string, any>;
 
-export type DataGroupResult<T> = {
+export type DataOpGroupResult<T> = {
   [key: string]: {
     title: string;
     code?: string;
@@ -10,7 +10,7 @@ export type DataGroupResult<T> = {
   };
 };
 
-type DataSortBy<T> =
+export type DataOpSortBy<T> =
   | {
       arr: T[];
       by: Partial<
@@ -25,7 +25,7 @@ type DataSortBy<T> =
       options?: { keepRef: true };
     };
 
-type DataFind<T> = {
+export type DataOpFind<T> = {
   kw: number | string;
   arr: T[];
   field?: ResolverPathType<T> | "*";
@@ -33,14 +33,15 @@ type DataFind<T> = {
   strict?: false;
 };
 
-type DataGroupBy<T> = {
+export type DataOpGroupBy<T> = {
   dataList: T[];
-  groupBy:
-    | ((item: T) => { title: string; code: string })
-    | ResolverPathType<T>
-    | ResolverPathType<T>[];
+  groupBy: DataOpGroupByOptions<T>;
   keepUngroupedData?: boolean;
 };
+export type DataOpGroupByOptions<T> = 
+    | ((item: T) => { title: string; code: string })
+    | ResolverPathType<T>
+    | ResolverPathType<T>[]; 
 /** data manipulation class */
 export class dataOp {
   /**
@@ -48,16 +49,16 @@ export class dataOp {
    *
    * @template T - The type of objects in the array, extends Data.
    * @param {Object} options - The options for data operations.
-   * @param {DataSortBy<T>} [options.sort] - Sorting options.
-   * @param {DataFind<T>} [options.find] - Finding options.
-   * @param {DataGroupBy<T>} [options.group] - Grouping options.
+   * @param {DataOpSortBy<T>} [options.sort] - Sorting options.
+   * @param {DataOpFind<T>} [options.find] - Finding options.
+   * @param {DataOpGroupBy<T>} [options.group] - Grouping options.
    * @returns {T[] | GroupResult<T>} The resulting array or grouped data.
    */
   static do<T extends Data>(options: {
-    sort?: DataSortBy<T>;
-    find?: DataFind<T>;
-    group?: DataGroupBy<T>;
-  }): T[] | DataGroupResult<T> {
+    sort?: DataOpSortBy<T>;
+    find?: DataOpFind<T>;
+    group?: DataOpGroupBy<T>;
+  }): T[] | DataOpGroupResult<T> {
     let result: T[] =
       options.sort?.arr || options.find?.arr || options.group?.dataList || [];
 
@@ -79,10 +80,10 @@ export class dataOp {
    * Sorts an array of objects based on one or more specified fields with individual sort directions.
    *
    * @template T - The type of objects in the array, extends Data.
-   * @param {DataSortBy<T>} sortOptions - The sorting options.
+   * @param {DataOpSortBy<T>} sortOptions - The sorting options.
    * @returns {T[]} The sorted array.
    */
-  static sortBy<T extends Data>(sortOptions: DataSortBy<T>): T[] {
+  static sortBy<T extends Data>(sortOptions: DataOpSortBy<T>): T[] {
     const { arr, options } = sortOptions;
     const sortArray = options?.keepRef ? arr : [...arr];
 
@@ -131,7 +132,7 @@ export class dataOp {
    * @returns {T[]} An array of objects that match the search criteria.
    */
   static find<T extends object = Record<string, unknown>>(
-    options: DataFind<T>
+    options: DataOpFind<T>
   ): T[] {
     const {
       arr,
@@ -167,7 +168,7 @@ export class dataOp {
    * @param {boolean} [options.caseSensitive=false] - Whether the search should be case-sensitive.
    * @returns {T | undefined} The first object that matches the search criteria, or undefined if no match is found.
    */
-  static findOne<T extends Data>(options: DataFind<T>): T | undefined {
+  static findOne<T extends Data>(options: DataOpFind<T>): T | undefined {
     const {
       arr,
       kw,
@@ -199,16 +200,16 @@ export class dataOp {
    * @param {T[]} options.dataList - The array to group.
    * @param {((item: T) => { title: string; code: string }) | ResolverPathType<T> | ResolverPathType<T>[]} options.groupBy - The field(s) to group by or a function to determine the group.
    * @param {boolean} [options.keepUngroupedData=false] - Whether to keep ungrouped data.
-   * @returns {DataGroupResult<T>} An object where keys are group codes and values are objects containing title, code, and data array.
+   * @returns {DataOpGroupResult<T>} An object where keys are group codes and values are objects containing title, code, and data array.
    */
-  static groupBy<T = Data>(options: DataGroupBy<T>): DataGroupResult<T> {
+  static groupBy<T = Data>(options: DataOpGroupBy<T>): DataOpGroupResult<T> {
     const {
       dataList,
       groupBy: groupField,
       keepUngroupedData = false,
     } = options;
 
-    return dataList.reduce((result: DataGroupResult<T>, currentItem: T) => {
+    return dataList.reduce((result: DataOpGroupResult<T>, currentItem: T) => {
       let groupInfo: { title: string; code: string } | undefined;
 
       if (typeof groupField === "function") {

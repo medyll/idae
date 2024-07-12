@@ -45,6 +45,8 @@
   },
   "version": "0.0.2",
   "dependencies": {
+    "@medyll/cssfabric": "^0.4.2",
+    "@medyll/idae-engine": "^1.0.0",
     "ts-node": "^10.9.2"
   }
 }

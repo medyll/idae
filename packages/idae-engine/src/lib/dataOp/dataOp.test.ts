@@ -1,4 +1,4 @@
-import { dataOp, type DataGroupResult } from "./dataOp.js";
+import { dataOp, type DataOpGroupResult } from "./dataOp.js";
 import { describe, it, expect } from "vitest";
 
 describe("dataOp", () => {
@@ -169,7 +169,7 @@ describe("dataOp", () => {
         { id: 3, category: "A" },
       ];
       const result = dataOp.groupBy({ dataList: arr, groupBy: "category" });
-      const expected: DataGroupResult<(typeof arr)[0]> = {
+      const expected: DataOpGroupResult<(typeof arr)[0]> = {
         A: {
           title: "A",
           code: "A",
@@ -196,7 +196,7 @@ describe("dataOp", () => {
           code: item.category.toUpperCase(),
         }),
       });
-      const expected: DataGroupResult<(typeof arr)[0]> = {
+      const expected: DataOpGroupResult<(typeof arr)[0]> = {
         A: {
           title: "A",
           code: "A",
@@ -223,7 +223,7 @@ describe("dataOp", () => {
         keepUngroupedData: true,
       });
 
-      const expected: DataGroupResult<(typeof arr)[0]> = {
+      const expected: DataOpGroupResult<(typeof arr)[0]> = {
         "category A": {
           title: "category A",
           code: "category A",
