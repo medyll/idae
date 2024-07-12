@@ -13,7 +13,7 @@ export class ApiServe {
 	private app: Express;
 	private port: number;
 
-	constructor(port: number = 3000, mdbPort: number = 27017, mdbName: string = 'idae') {
+	constructor(port: number = 3000) {
 		this.app = express();
 		this.port = port;
 
@@ -129,5 +129,5 @@ export class ApiServe {
 
 // Usage:
 // import { ServerConfig } from './ServerConfig.js';
-//const server = new ApiServer(3050);
-//server.start();
+// const server = new ApiServer(3050);
+// server.start();
