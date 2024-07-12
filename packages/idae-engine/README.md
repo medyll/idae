@@ -1,58 +1,122 @@
-# create-svelte
+# @medyll/engine
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A powerful TypeScript library for data manipulation and operations across the idae-engine.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+## Installation
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+Install the package using npm:
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+npm install @medyll/idae-engine
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Or using yarn:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+yarn add @medyll/idae-engine
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## Usage
 
-## Building
+The `@medyll/idae-eengine` package contains several utility classes. This section focuses on the `dataOp` class, which provides various data manipulation methods.
 
-To build your library:
+### Importing
 
-```bash
-npm run package
+```typescript
+import { dataOp } from '@medyll/idae-engine';
+```
+## dataOp
+### Methods
+
+#### do
+
+Performs a combination of sort, find, and group operations on data.
+
+```typescript
+const result = dataOp.do({
+  sort: { arr: myArray, by: 'fieldName', sort: 'asc' },
+  find: { arr: myArray, kw: 'searchTerm', field: 'fieldName' },
+  group: { dataList: myArray, groupBy: 'fieldName' }
+});
 ```
 
-To create a production version of your showcase app:
+#### sortBy
 
-```bash
-npm run build
+Sorts an array of objects based on specified fields.
+
+```typescript
+const sortedArray = dataOp.sortBy({
+  arr: myArray,
+  by: 'fieldName',
+  sort: 'asc'
+});
 ```
 
-You can preview the production build with `npm run preview`.
+#### find
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Searches for objects in an array based on specified criteria.
 
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+```typescript
+const foundItems = dataOp.find({
+  arr: myArray,
+  kw: 'searchTerm',
+  field: 'fieldName'
+});
 ```
+
+#### findOne
+
+Searches for the first object in an array that matches the specified criteria.
+
+```typescript
+const foundItem = dataOp.findOne({
+  arr: myArray,
+  kw: 'searchTerm',
+  field: 'fieldName'
+});
+```
+
+#### groupBy
+
+Groups objects in an array based on specified fields or a custom grouping function.
+
+```typescript
+const groupedData = dataOp.groupBy({
+  dataList: myArray,
+  groupBy: 'fieldName'
+});
+```
+
+#### findByIndex
+
+Finds the index of an object in an array based on a specified key-value pair.
+
+```typescript
+const index = dataOp.findByIndex(myArray, 'value', 'keyName');
+```
+
+#### resolveDotPath
+
+Resolves a dot-notated path in an object.
+
+```typescript
+const value = dataOp.resolveDotPath(myObject, 'path.to.property');
+```
+
+### Testing
+
+The `dataOp` class comes with a comprehensive test suite. To run the tests:
+
+1. Clone the repository
+2. Install dependencies: `npm install` or `yarn install`
+3. Run tests: `npm test` or `yarn test`
+
+The tests cover various scenarios for each method, ensuring the reliability and correctness of the `dataOp` class.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
