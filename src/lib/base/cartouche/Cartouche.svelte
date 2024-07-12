@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import type { CartoucheClasses, CartoucheProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
@@ -59,7 +60,7 @@
 	{style}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="control {classes.control} tall-{tall}" onclick={actions.toggle}>
+	<div class="control {classes.control} tall-{tall}" {tall} onclick={actions.toggle}>
 		{#if icon || cartoucheIcon}
 			<div class="controlIcon {classes.controlIcon}">
 				<Slotted child={cartoucheIcon}>
@@ -92,7 +93,7 @@
 			</div>
 		{/if}
 		<div class="chevron">
-			<Button variant="naked" icon={chevronIcon} />
+			<IconButton variant="flat" icon={chevronIcon} />
 		</div>
 	</div>
 	{#if isOpen || keepCartoucheContent}

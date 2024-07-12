@@ -5,7 +5,7 @@
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { PopperProps } from './types.js';
 	import Button from '$lib/controls/button/Button.svelte';
-	import { be, elem } from '$lib/utils/engine/elem.js';
+	import { elem } from '$lib/utils/engine/elem.js';
 
 	export const toggle = function () {};
 	export const hide = function () {

@@ -57,7 +57,7 @@ input[type="submit"] {
     }
     &:focus-visible {
         outline: 1px solid var(--sld-button-focus-border-color);
-        outline-offset: 2px;
+        outline-offset: -2px;
         box-shadow: var(--sld-button-focus-shadow);
     }
     &:focus:not(:focus-visible) {
@@ -156,7 +156,7 @@ input[type="submit"] {
     &[aria-pressed="true"],
     &.selected {
         box-shadow: var(--sld-elevation-3);
-        border: 0.5px solid var(--sld-color-paper-alpha-low);
+        // border: 0.5px solid var(--sld-color-paper-alpha-low);
         background-color: var(--sld-color-secondary);
         font-weight: bold;
     }

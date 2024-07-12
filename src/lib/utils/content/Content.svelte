@@ -8,8 +8,6 @@
 	@ EThe content element will fire a custom 'dom:resize' event when the bindable properties change. 
 -->
 <script lang="ts">
-	import { be } from '../engine/elem.js';
-	import Slotted from '../slotted/Slotted.svelte';
 	import type { BindableEvent, ContentProps } from './types.js';
 
 	let {
@@ -44,11 +42,6 @@
 				})
 			);
 	});
-
-	/* $effect(() => {
-		if (element && !solid && element.style.display !== 'none')
-			be(element).setStyle({ display: 'contents' });
-	}); */
 
 	function transformToObj(dimensions: ContentProps['dimensions']) {
 		let result = {} as any;

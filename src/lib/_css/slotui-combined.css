@@ -5227,35 +5227,6 @@ input[type=submit]:global(.tall-default) {
   min-height: var(--sld-tall-default);
   --preset-tall: var(--sld-tall-default);
 }
-button[disabled], button.disabled, button[aria-disabled=true],
-.button[disabled],
-.button.disabled,
-.button[aria-disabled=true],
-input[type=button][disabled],
-input[type=button].disabled,
-input[type=button][aria-disabled=true],
-input[type=submit][disabled],
-input[type=submit].disabled,
-input[type=submit][aria-disabled=true] {
-  color: var(--color-gray-800);
-  border-color: var(--color-gray-400);
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: none;
-  pointer-events: none;
-}
-button[aria-pressed=true], button.selected,
-.button[aria-pressed=true],
-.button.selected,
-input[type=button][aria-pressed=true],
-input[type=button].selected,
-input[type=submit][aria-pressed=true],
-input[type=submit].selected {
-  box-shadow: var(--sld-elevation-3);
-  border: 0.5px solid var(--sld-color-paper-alpha-low);
-  background-color: var(--sld-color-secondary);
-  font-weight: bold;
-}
 button:focus,
 .button:focus,
 input[type=button]:focus,
@@ -5269,7 +5240,7 @@ button:focus-visible,
 input[type=button]:focus-visible,
 input[type=submit]:focus-visible {
   outline: 1px solid var(--sld-button-focus-border-color);
-  outline-offset: 2px;
+  outline-offset: -2px;
   box-shadow: var(--sld-button-focus-shadow);
 }
 button:focus:not(:focus-visible),
@@ -5450,6 +5421,34 @@ input[type=submit][aria-busy=true]::after {
   border-bottom-color: transparent;
   border-radius: 50%;
   animation: button-spinner 0.6s linear infinite;
+}
+button[disabled], button.disabled, button[aria-disabled=true],
+.button[disabled],
+.button.disabled,
+.button[aria-disabled=true],
+input[type=button][disabled],
+input[type=button].disabled,
+input[type=button][aria-disabled=true],
+input[type=submit][disabled],
+input[type=submit].disabled,
+input[type=submit][aria-disabled=true] {
+  color: var(--color-gray-800);
+  border-color: var(--color-gray-400);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
+}
+button[aria-pressed=true], button.selected,
+.button[aria-pressed=true],
+.button.selected,
+input[type=button][aria-pressed=true],
+input[type=button].selected,
+input[type=submit][aria-pressed=true],
+input[type=submit].selected {
+  box-shadow: var(--sld-elevation-3);
+  background-color: var(--sld-color-secondary);
+  font-weight: bold;
 }
 button .chip,
 .button .chip,

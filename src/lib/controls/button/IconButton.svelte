@@ -22,6 +22,8 @@
 		/** Rotation of the icon */
 		rotation?: number;
 
+		rounded?: boolean;
+
 		/** Children   for the default content */
 		children?: Snippet;
 	} & Partial<ButtonProps>;
@@ -35,6 +37,7 @@
 		rotation = 0,
 		tall = 'mini',
 		width = 'mini',
+		rounded = false,
 		children,
 		...rest
 	}: IconButtonProps = $props();
@@ -45,6 +48,8 @@
 	{width}
 	{...rest}
 	bind:element
-	style="{style};aspect-ratio:{ratio};overflow:hidden;align-items:center;"
+	style="{style};aspect-ratio:{ratio};overflow:hidden;align-items:center;border-radius:{rounded
+		? '50%'
+		: ''}; "
 	{ratio}><Icon {rotation} {icon} iconSize={iconFontSize} /></Button
 >
