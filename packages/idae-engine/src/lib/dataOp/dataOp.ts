@@ -1,6 +1,6 @@
 import { type ResolverPathType } from "./types.js";
 
-type Data = Record<string, any>;
+type Data  = Record<string, any> ;
 
 export type DataOpGroupResult<T> = {
   [key: string]: {
@@ -45,6 +45,38 @@ export type DataOpGroupByOptions<T> =
 /** data manipulation class */
 export class dataOp {
   /**
+  * Get all keys of the objects in an array of objects.
+  * Keys are delimited by a dot.
+  *
+  * @template T - The type of objects in the array.
+  * @param {T[]} arr - The array of objects.
+  * @returns {string[]} An array of all keys.
+  */
+  static getDataKeys(arr: T[]): string[] {
+    const keys = new Set<string>();
+
+    function addKeys(obj: any, prefix = '') {
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const fullKey = prefix ? `${prefix}.${key}` : key;
+          keys.add(fullKey);
+          if (typeof obj[key] === 'object' && obj[key] !== null) {
+            addKeys(obj[key], fullKey);
+          }
+        }
+      }
+    }
+ 
+    const limit = Math.min(arr.length, 100);
+
+    for (let i = 0; i < limit; i++) {
+      addKeys(arr[i]);
+    }
+
+    return Array.from(keys);
+  }
+
+  /**
    * Performs a combination of sort, find, and group operations on data.
    *
    * @template T - The type of objects in the array, extends Data.
@@ -54,7 +86,7 @@ export class dataOp {
    * @param {DataOpGroupBy<T>} [options.group] - Grouping options.
    * @returns {T[] | GroupResult<T>} The resulting array or grouped data.
    */
-  static do<T extends Data>(options: {
+  static do<T extends object>(options: {
     sort?: DataOpSortBy<T>;
     find?: DataOpFind<T>;
     group?: DataOpGroupBy<T>;
@@ -83,7 +115,7 @@ export class dataOp {
    * @param {DataOpSortBy<T>} sortOptions - The sorting options.
    * @returns {T[]} The sorted array.
    */
-  static sortBy<T extends Data>(sortOptions: DataOpSortBy<T>): T[] {
+  static sortBy<T extends object>(sortOptions: DataOpSortBy<T>): T[] {
     const { arr, options } = sortOptions;
     const sortArray = options?.keepRef ? arr : [...arr];
 
@@ -168,7 +200,7 @@ export class dataOp {
    * @param {boolean} [options.caseSensitive=false] - Whether the search should be case-sensitive.
    * @returns {T | undefined} The first object that matches the search criteria, or undefined if no match is found.
    */
-  static findOne<T extends Data>(options: DataOpFind<T>): T | undefined {
+  static findOne<T extends object>(options: DataOpFind<T>): T | undefined {
     const {
       arr,
       kw,
@@ -202,7 +234,7 @@ export class dataOp {
    * @param {boolean} [options.keepUngroupedData=false] - Whether to keep ungrouped data.
    * @returns {DataOpGroupResult<T>} An object where keys are group codes and values are objects containing title, code, and data array.
    */
-  static groupBy<T = Data>(options: DataOpGroupBy<T>): DataOpGroupResult<T> {
+  static groupBy<T extends object>(options: DataOpGroupBy<T>): DataOpGroupResult<T> {
     const {
       dataList,
       groupBy: groupField,
@@ -218,7 +250,7 @@ export class dataOp {
         const fields = Array.isArray(groupField) ? groupField : [groupField];
         const groupValue = fields
           .map((field) =>
-            this.resolveDotPath(currentItem, field as ResolverPathType<T>)
+            this.resolveDotPath(currentItem, field as ResolverPathType<T>) 
           )
           .filter((value) => value !== undefined)
           .join(".");
@@ -264,7 +296,7 @@ export class dataOp {
     );
   }
 
-  static resolveDotPath<T = Data>(
+  static resolveDotPath<T >(
     object: T,
     path: ResolverPathType<T>,
     defaultValue?: any
@@ -281,7 +313,7 @@ export class dataOp {
    * Compares two values for sorting.
    *
    * @private
-   * @template T - The type of objects being compared.
+   * @template T - The type of objects being compared. 
    * @param {T} a - The first object to compare.
    * @param {T} b - The second object to compare.
    * @param {ResolverPathType<T>} field - The field to compare.
