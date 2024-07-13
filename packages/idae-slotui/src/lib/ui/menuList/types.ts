@@ -19,6 +19,8 @@ export type MenuListProps<T = Data> = CommonProps & {
 
 	data?: T[];
 	tall?: ElementProps['tall'];
+	/**  displayed field for the listItem  */
+	presentationField?: [keyof T];
 	/** displayed as a grid */
 	grid?: boolean | number;
 	/** index to select the item */
@@ -44,6 +46,8 @@ export type MenuListProps<T = Data> = CommonProps & {
 };
 
 export type MenuListItemProps<T = Data> = CommonProps & {
+	/**  displayed field for the listItem  */
+	presentationField?: [keyof T];
 	/** element root HTMLDivElement props */
 	element?: HTMLElement | null;
 

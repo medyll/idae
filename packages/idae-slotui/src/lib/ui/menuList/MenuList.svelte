@@ -29,15 +29,16 @@
 		tall = tallPreset.default,
 		style,
 		selectorField,
+		role = 'menu',
+		grid,
+		showLastOnSelected = true,
+		presentationField,
+		onclick,
+		data = $bindable(),
 		selectedData = $bindable(),
 		selectedIndex = $bindable(),
 		element = $bindable(),
-		menuListItems: menuItemsList = $bindable(),
-		data = $bindable(),
-		role = 'menu',
-		grid,
-		onclick,
-		showLastOnSelected = true,
+		menuListItems = $bindable(),
 		children,
 		menuListItem,
 		listItemBottom,
@@ -45,13 +46,14 @@
 	}: MenuListProps = $props();
 
 	let defaultStoreValues = {
-		menuItemsList,
+		menuListItems,
 		menuItemsInstances: [],
 		tall,
 		data,
 		selectorField,
 		selectedIndex,
-		actions
+		actions,
+		presentationField
 	};
 
 	let menuStore = $state(defaultStoreValues);
@@ -92,7 +94,7 @@
 				}
 			}
 		}
-	}
+	} 
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -106,10 +108,10 @@
 	use:navigation={{ className: 'menu-list-item', selectedIndex: -1 }}
 	{...rest}
 >
-	{#if menuItemsList}
-		{#each menuItemsList ?? [] as menuItem, itemIndex}
+	{#if menuListItems}
+		{#each menuListItems ?? [] as menuItem, itemIndex}
 			<Slotted child={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
-				<MenuListItem {...menuItem} {itemIndex} />
+				<MenuListItem {...menuItem} {itemIndex}  />
 			</Slotted>
 		{/each}
 	{:else if data}

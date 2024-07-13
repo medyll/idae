@@ -11,8 +11,7 @@
 
 	let {
 		class: className = '',
-		element = $bindable(),
-		text = undefined,
+		text ,
 		action = undefined,
 		iconFirst = {} as IconObj,
 		iconLast = {} as IconObj,
@@ -21,10 +20,12 @@
 		iconSize = 'small',
 		divider = false,
 		dividerBefore = false,
+		presentationField,
 		href,
 		selectable = true,
 		data = $bindable(),
-		selected = $bindable(false),
+		selected = $bindable(),
+		element = $bindable(),
 		onMenuItemClick,
 		onclick,
 		itemIndex = undefined,
@@ -88,6 +89,7 @@
 		<Divider tall="small" expansion="centered" />
 	</li>
 {/if}
+
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : tag}
@@ -101,7 +103,7 @@
 	{href}
 >
 	{#if icon && iconFirst && menuStateContext?.hasIcon}
-		<div class="menuListItemIcon">
+		<div class="menu-list-item-icon">
 			<Slotted child={menuItemFirst}>
 				<Icon {icon} ico={iconFirst} color={iconColor} {iconSize} />
 			</Slotted>
@@ -109,7 +111,7 @@
 	{/if}
 	<div class="menu-list-item-text" class:wrap>
 		<Slotted child={children} slotArgs={data}>
-			{text}
+			{data?.[presentationField] ?? text}   
 		</Slotted>
 	</div>
 	{#if menuItemLast || action || iconLast}
