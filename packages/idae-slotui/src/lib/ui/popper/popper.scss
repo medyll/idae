@@ -9,7 +9,16 @@
     --popper-open-border: 1px color red;
 }
 
-:global(.popper) {
+:global(dialog.popper) {
+    all: unset;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    // end reset
     border-radius: var(--popper-border-radius);
     overflow: hidden;
     position: fixed;
@@ -20,6 +29,8 @@
     display: inline-block;
     top: 0;
     z-index: var(--popper-z-index);
+
+    //
 
     .popper-left,
     .popper-right {

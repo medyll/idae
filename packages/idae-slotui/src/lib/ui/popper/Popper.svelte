@@ -1,11 +1,9 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
+<script lang="ts"> 
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { PopperProps } from './types.js';
-	import Button from '$lib/controls/button/Button.svelte';
-	import { elem } from '$lib/utils/engine/elem.js';
+	import Button from '$lib/controls/button/Button.svelte'; 
 
 	export const toggle = function () {};
 	export const hide = function () {
@@ -38,8 +36,8 @@
 		componentProps = {},
 		position = 'BC',
 		content,
-		autoClose = $bindable(true),
-		isOpen = $bindable(false),
+		autoClose = $bindable(),
+		isOpen = $bindable(),
 		buttonProps,
 		anchor,
 		children,
@@ -122,18 +120,17 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- @ts-ignore -->
-<div
+<dialog
 	bind:this={element}
 	class="popper {className}"
 	use:stickTo={{ parentNode, position, stickToHookWidth }}
 	use:clickAway={{ action: clickedAway }}
-	style={rest.style}
-	style:zIndex={makeOnTop()}
-	style:contentVisibility={hidden ? 'hidden' : 'auto'}
-	style:display={hidden ? 'none!important' : ''}
 	{...rest}
+	style={rest.style} 
+	style:contentVisibility={!isOpen ? 'hidden' : 'auto'}
+	style:display={!isOpen ? 'none' : ''}
 >
-	<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden">
+	<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden"> 
 		{#if popperLeft}
 			<div style="height:100%;max-height:100%;overflow:hidden;" class="popper-left">
 				{@render popperLeft()}
@@ -157,7 +154,7 @@
 			<div class="popper-right">{@render popperRight()}</div>
 		{/if}
 	</div>
-</div>
+</dialog>
 
 <!-- {/if} -->
 
