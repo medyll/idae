@@ -15,7 +15,7 @@ import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
 import type { HTMLButtonAttributes } from 'svelte/elements';
 
-export interface ButtonProps extends HTMLButtonAttributes {
+type ButtonProps = HTMLButtonAttributes & {
 	element?: HTMLButtonElement;
 	/** button type */
 	type?: 'button' | 'submit' | 'reset';
@@ -53,11 +53,12 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	buttonStart?: Snippet;
 	buttonEnd?: Snippet;
 	buttonLoadingIcon?: Snippet;
-}
+};
 
-export type ButtonMenuProps<T = Data> = ButtonProps & {
+export type ButtonMenuProps<T> = ButtonProps & {
 	menuProps?: MenuListProps<T>;
 	popperProps?: PopperProps;
+	popperElement?: HTMLElement;
 	menuItem?: Snippet<[{ item: T }]>;
 };
 
