@@ -1,4 +1,4 @@
-<script lang="ts" generics="T= Data">
+<script lang="ts" generics="T">
 	import type { AutoCompleteProps } from './types.js';
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
@@ -80,11 +80,12 @@
 		return data ? field.map((field) => data[field]).join(' ') : '';
 	}
 </script>
-
+{popperOpen}
 <Popper
 	bind:isOpen={popperOpen}
 	bind:element={popperHTML}
 	position="BC"
+	stickToHookWidth={true}
 	autoClose
 	class="auto-complete"
 >
@@ -124,7 +125,7 @@
 					text={getFieldName(prop.item, dataFieldName)}
 					data={prop.item}
 					onclick={(event) => {
-						onSelect(event.detail as T, prop.itemIndex);
+						onSelect(event.detail ?? (event as T), prop.itemIndex);
 						popperOpen = false;
 						menuRef.actions.gotoIndex(prop.itemIndex);
 					}}
