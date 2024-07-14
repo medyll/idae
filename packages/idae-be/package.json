@@ -35,6 +35,7 @@
 		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
+		"@config/prettier-config": "^1.0.0",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.18",
 		"@sveltejs/package": "^2.3.2",
