@@ -20,7 +20,7 @@
 		endIcon,
 		endIconColor = '#666',
 		usePopper,
-		width = $bindable('auto'),
+		width = $bindable(),
 		tall = 'default',
 		borderless = false,
 		transparent = false,
@@ -29,7 +29,7 @@
 		inputFirst,
 		inputLast,
 		...rest
-	}: ExpandProps<TextFieldProps> = $props();
+	}: ExpandProps<TextFieldProps> & Partial<HTMLInputElement>  = $props();
 
 	let niceIconStyle = $state('');
 
@@ -46,7 +46,7 @@
 
 <div class="textfield-container">
 	<div class="textfield-start">
-		<Slotted child={inputLast}>
+		<Slotted child={inputFirst}>
 			<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
 		</Slotted>
 	</div>

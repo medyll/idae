@@ -28,7 +28,8 @@
     @include data-hover;
     &-container {
         position: relative;
-        display: flex;
+        display: inline-flex;
+        overflow: hidden;
     }
 
     &-start {
@@ -50,12 +51,16 @@
         right: 0;
         height: 100%;
         max-height: 100%;
-        width: 24px;
+        min-width: 24px;
         overflow: hidden;
         display: flex;
+        gap: 4px;
+        padding: 2px;
         align-items: center;
-        justify-content: center;
-        padding: 0.25rem;
         border-radius: var(--textfield-radius, var(--sld-radius-small));
+        & > * {
+            max-height: calc(100% - 40px) !important;
+            border: 1px solid pink;
+        }
     }
 }

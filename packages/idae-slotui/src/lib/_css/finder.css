@@ -3,42 +3,22 @@
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
   --sld-radius-large: 16px;
-  /* --sld-radius-tiny: 2px;
-  --sld-radius-small: 4px;
-  --sld-radius-med: 8px;
-  --sld-radius-large: 16px; */
   --sld-pad-tiny: 0.25rem;
   --sld-pad-small: 0.5rem;
   --sld-pad-med: 1rem;
   --sld-pad-large: 1.5rem;
-  /* --sld-pad-tiny: 0.25rem;
-  --sld-pad-small: 0.5rem;
-  --sld-pad-med: 1rem;
-  --sld-pad-large: 1.5rem; */
   --sld-gap-tiny: 0.25rem;
   --sld-gap-mini: 0.4rem;
   --sld-gap-small: 0.5rem;
   --sld-gap-med: 1rem;
   --sld-gap-large: 1.5rem;
   --sld-gap-default: 0.5rem;
-  /* --sld-gap-tiny: 0.25rem;
-  --sld-gap-mini: 0.4rem;
-  --sld-gap-small: 0.5rem;
-  --sld-gap-med: 1rem;
-  --sld-gap-large: 1.5rem;
-  --sld-gap-default: var(--sld-gap-small); */
   --sld-gutter-tiny: 0.25rem;
   --sld-gutter-mini: 0.5rem;
   --sld-gutter-small: 1rem;
   --sld-gutter-med: 2rem;
   --sld-gutter-kind: 3rem;
   --sld-gutter-default: 1rem;
-  /* --sld-gutter-tiny: 0.25rem;
-  --sld-gutter-mini: 0.5rem;
-  --sld-gutter-small: 1rem;
-  --sld-gutter-med: 2rem;
-  --sld-gutter-kind: 3rem;
-  --sld-gutter-default: var(--sld-gutter-small); */
   --sld-tall-tiny: 1rem;
   --sld-tall-mini: 1.5rem;
   --sld-tall-small: 2.5rem;
@@ -46,12 +26,6 @@
   --sld-tall-kind: 4rem;
   --sld-tall-auto: auto;
   --sld-tall-default: 2.5rem;
-  /* --sld-tall-tiny: 1rem;
-  --sld-tall-mini: 1.5rem;
-  --sld-tall-small: 2.5rem;
-  --sld-tall-med: 3.5rem;
-  --sld-tall-kind: 4rem;
-  --sld-tall-default: var(--sld-tall-small);  */
   --sld-width-tiny: 2rem;
   --sld-width-mini: 3rem;
   --sld-width-small: 10rem;
@@ -60,13 +34,6 @@
   --sld-width-full: 100%;
   --sld-width-auto: auto;
   --sld-width-default: 10rem;
-  /* --sld-width-tiny: 2rem;
-  --sld-width-mini: 3rem;
-  --sld-width-small: 8rem;
-  --sld-width-med: 12rem;
-  --sld-width-kind: 16rem;
-  --sld-width-full: 100%;
-  --sld-width-default: var(--sld-width-med); */
 }
 
 :root {
@@ -309,9 +276,8 @@ body[data-theme=dark],
 .finder-container {
   display: inline-flex;
   gap: var(--finder-gap);
-  --preset-width: var(--sld-width-default);
-  --preset-tall: 2rem;
-  min-height: var(--preset-tall);
+  --preset-width: unset;
+  --preset-tall: unset;
 }
 .finder-container:global([width="tiny"]), .finder-container:global(.width-tiny) {
   width: var(--sld-width-tiny);
@@ -346,30 +312,30 @@ body[data-theme=dark],
   --preset-width: var(--sld-width-default);
 }
 .finder-container:global([tall="tiny"]), .finder-container:global(.tall-tiny) {
-  min-height: var(--sld-tall-tiny);
+  height: var(--sld-tall-tiny);
   --preset-tall: var(--sld-tall-tiny);
 }
 .finder-container:global([tall="mini"]), .finder-container:global(.tall-mini) {
-  min-height: var(--sld-tall-mini);
+  height: var(--sld-tall-mini);
   --preset-tall: var(--sld-tall-mini);
 }
 .finder-container:global([tall="small"]), .finder-container:global(.tall-small) {
-  min-height: var(--sld-tall-small);
+  height: var(--sld-tall-small);
   --preset-tall: var(--sld-tall-small);
 }
 .finder-container:global([tall="med"]), .finder-container:global(.tall-med) {
-  min-height: var(--sld-tall-med);
+  height: var(--sld-tall-med);
   --preset-tall: var(--sld-tall-med);
 }
 .finder-container:global([tall="kind"]), .finder-container:global(.tall-kind) {
-  min-height: var(--sld-tall-kind);
+  height: var(--sld-tall-kind);
   --preset-tall: var(--sld-tall-kind);
 }
 .finder-container:global([tall="auto"]), .finder-container:global(.tall-auto) {
-  min-height: var(--sld-tall-auto);
+  height: var(--sld-tall-auto);
   --preset-tall: var(--sld-tall-auto);
 }
 .finder-container:global([tall="default"]), .finder-container:global(.tall-default) {
-  min-height: var(--sld-tall-default);
+  height: var(--sld-tall-default);
   --preset-tall: var(--sld-tall-default);
 }

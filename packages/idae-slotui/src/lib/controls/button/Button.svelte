@@ -18,7 +18,7 @@
 		loading,
 		showChip,
 		popperOpen,
-		width = widthPreset.med,
+		width = widthPreset.auto,
 		tall = tallPreset.med,
 		nowrap,
 		selected = false,

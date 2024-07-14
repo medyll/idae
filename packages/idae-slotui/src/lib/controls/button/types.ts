@@ -15,7 +15,7 @@ import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
 import type { HTMLButtonAttributes } from 'svelte/elements';
 
-type ButtonProps = HTMLButtonAttributes & {
+export type ButtonProps = {
 	element?: HTMLButtonElement;
 	/** button type */
 	type?: 'button' | 'submit' | 'reset';
@@ -46,6 +46,8 @@ type ButtonProps = HTMLButtonAttributes & {
 	value?: string;
 	/** reverse the order of the button zone*/
 	reverse?: boolean;
+	/** rounded or rounded corners size */
+	rounded?: boolean | string;
 	/** aspect ratio of the button */
 	ratio?: string;
 	children?: Snippet;
@@ -53,7 +55,7 @@ type ButtonProps = HTMLButtonAttributes & {
 	buttonStart?: Snippet;
 	buttonEnd?: Snippet;
 	buttonLoadingIcon?: Snippet;
-};
+} & HTMLButtonAttributes;
 
 export type ButtonMenuProps<T> = ButtonProps & {
 	menuProps?: MenuListProps<T>;

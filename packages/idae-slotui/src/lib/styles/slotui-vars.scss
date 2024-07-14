@@ -59,60 +59,28 @@ $preset-radius-list: (
     @each $preset, $preset-value in $preset-radius-list {
         --#{$vendor}-radius-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-radius-tiny: 2px;
-    --#{$vendor}-radius-small: 4px;
-    --#{$vendor}-radius-med: 8px;
-    --#{$vendor}-radius-large: 16px; */
 
     @each $preset, $preset-value in $preset-pad-list {
         --#{$vendor}-pad-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-pad-tiny: 0.25rem;
-    --#{$vendor}-pad-small: 0.5rem;
-    --#{$vendor}-pad-med: 1rem;
-    --#{$vendor}-pad-large: 1.5rem; */
 
     @each $preset, $preset-value in $preset-gap-list {
         --#{$vendor}-gap-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-gap-tiny: 0.25rem;
-    --#{$vendor}-gap-mini: 0.4rem;
-    --#{$vendor}-gap-small: 0.5rem;
-    --#{$vendor}-gap-med: 1rem;
-    --#{$vendor}-gap-large: 1.5rem;
-    --#{$vendor}-gap-default: var(--#{$vendor}-gap-small); */
 
     @each $preset, $preset-value in $preset-gutter-list {
         --#{$vendor}-gutter-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-gutter-tiny: 0.25rem;
-    --#{$vendor}-gutter-mini: 0.5rem;
-    --#{$vendor}-gutter-small: 1rem;
-    --#{$vendor}-gutter-med: 2rem;
-    --#{$vendor}-gutter-kind: 3rem;
-    --#{$vendor}-gutter-default: var(--#{$vendor}-gutter-small); */
 
     @each $preset, $preset-value in $preset-tall-list {
         --#{$vendor}-tall-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-tall-tiny: 1rem;
-    --#{$vendor}-tall-mini: 1.5rem;
-    --#{$vendor}-tall-small: 2.5rem;
-    --#{$vendor}-tall-med: 3.5rem;
-    --#{$vendor}-tall-kind: 4rem;
-    --#{$vendor}-tall-default: var(--#{$vendor}-tall-small);  */
 
     @each $preset, $preset-value in $preset-width-list {
         --#{$vendor}-width-#{$preset}: #{$preset-value};
     }
-    /* --#{$vendor}-width-tiny: 2rem;
-    --#{$vendor}-width-mini: 3rem;
-    --#{$vendor}-width-small: 8rem;
-    --#{$vendor}-width-med: 12rem;
-    --#{$vendor}-width-kind: 16rem;
-    --#{$vendor}-width-full: 100%;
-    --#{$vendor}-width-default: var(--#{$vendor}-width-med); */
 }
+
 :root {
     --white: #fff;
     --black: #333;

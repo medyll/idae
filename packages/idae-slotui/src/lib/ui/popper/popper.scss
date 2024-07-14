@@ -10,6 +10,7 @@
 }
 
 :global(dialog.popper) {
+    // Reset
     all: unset;
     box-sizing: border-box;
     margin: 0;
@@ -18,19 +19,55 @@
     background: none;
     color: inherit;
     font: inherit;
-    // end reset
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+
+    // Styles
     border-radius: var(--popper-border-radius);
     overflow: hidden;
     position: fixed;
+    inset: 0;
+
     box-shadow: var(--popper-box-shadow);
     background-color: var(--popper-background-color);
     -webkit-backdrop-filter: var(--popper-backdrop-filter);
     backdrop-filter: var(--popper-backdrop-filter);
-    display: inline-block;
-    top: 0;
     z-index: var(--popper-z-index);
 
-    //
+    opacity: 0;
+    visibility: hidden;
+    align-items: center;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+
+    outline: none;
+
+    width: moz-fit-content;
+    width: fit-content;
+    height: moz-fit-content;
+    height: fit-content;
+
+    /* top: 15rem;
+    left: 40rem; */
+
+    &:focus-visible {
+        outline: 2px solid var(--focus-color);
+        outline-offset: 2px;
+    }
+    z-index: 30000;
+
+    &[open],
+    &:popover-open {
+        opacity: 1;
+        visibility: visible;
+        animation: popoverEnter 0.3s ease-out;
+    }
 
     .popper-left,
     .popper-right {
@@ -38,9 +75,34 @@
         max-height: 100%;
         overflow: hidden;
     }
-    &::popover-open {
-        border: var(--popper-open-border);
-        margin: none !important;
-        padding: none !important;
+
+    &::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+        width: moz-fit-content;
+        width: fit-content;
     }
+}
+
+@keyframes popoverEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* @media (prefers-color-scheme: dark) {
+    :global(dialog.popper) {
+        --popper-background-color: #2a2a2a;
+        --popper-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        --focus-color: #6ab5ff;
+    }
+} */
+
+:global(dialog.popper) {
+    padding-block: 0;
+    padding-inline: 0;
 }

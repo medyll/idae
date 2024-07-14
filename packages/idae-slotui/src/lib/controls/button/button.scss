@@ -26,12 +26,13 @@
     }
 }
 
-button,
-.button,
-input[type="button"],
-input[type="submit"] {
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
     @include ui-width-presets;
     @include ui-tall-presets;
+    @include ui-variants;
 
     text-align: var(--sld-button-text-align);
     font-size: var(--sld-button-font-size);
@@ -49,6 +50,8 @@ input[type="submit"] {
 
     align-content: center;
     align-items: center;
+
+    max-height: 100%;
 
     &:focus {
         outline: 1px solid var(--sld-button-focus-border-color);
@@ -186,12 +189,13 @@ input[type="submit"] {
     }
 }
 
-button,
-.button,
-input[type="button"],
-input[type="submit"] {
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
     @include ui-width-presets;
     @include ui-tall-presets;
+    @include ui-variants;
 
     &[variant*="bordered"],
     &[bordered="true"],

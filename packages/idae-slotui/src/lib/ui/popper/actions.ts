@@ -1,22 +1,16 @@
-import type { PopperPositionType } from '$lib/ui/popper/types.js';
+import type { PopperPositionType, PopperProps } from '$lib/ui/popper/types.js';
 import Popper from '$lib/ui/popper/Popper.svelte';
 import { mount, type SvelteComponent } from 'svelte';
 
 export const popperList: Record<string, Popper> = {};
 
-const openPopper = (
-	popperId: string,
-	args: {
-		position?: PopperPositionType;
-		parentNode?: HTMLElement;
-		component?: SvelteComponent;
-		componentProps?: any;
-	} = {}
-) => {
+const openPopper = (popperId: string, args: PopperProps = {}) => {
 	if (popperList[popperId]) {
-		popperList[popperId].toggle();
+		// popperList[popperId]?.actions?.show?.();
+		popperList[popperId].isOpen = true;
+		return popperList[popperId];
 	} else {
-		createPopper();
+		return createPopper();
 	}
 
 	function createPopper() {
@@ -27,9 +21,11 @@ const openPopper = (
 			props: { code: popperId, ...args }
 		});
 
-		popperList[popperId].$$.on_destroy.push(() => {
+		/* popperList[popperId].$$.on_destroy.push(() => {
 			delete popperList[popperId];
-		});
+		}); */
+
+		return popperList[popperId];
 	}
 };
 

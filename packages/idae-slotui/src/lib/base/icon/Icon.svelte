@@ -28,7 +28,7 @@
 	let iconName = $derived(finalI.includes(':') ? finalI : `mdi:${finalI}`);
 
 	let finalStyle = $derived(
-		`display:inline-block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
+		`display:block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
 	);
 </script>
 
@@ -42,6 +42,6 @@
 	/>
 {/key}
 
-<style global lang="scss">
+<style   lang="scss">
 	@import './icon.scss';
 </style>

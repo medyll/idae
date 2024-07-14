@@ -70,7 +70,9 @@ export enum buttonVariant {
 	contained = 'contained',
 	bordered = 'bordered',
 	naked = 'naked',
-	flat = 'flat'
+	flat = 'flat',
+	square = 'square',
+	rounded = 'rounded'
 }
 
 export enum iconSize {

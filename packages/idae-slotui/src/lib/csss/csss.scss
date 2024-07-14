@@ -1,0 +1,8 @@
+@import "../styles/presets.scss";
+
+:global {
+    * {
+        @include ui-variants;
+        border: 1px solid red;
+    }
+}

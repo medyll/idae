@@ -37,7 +37,6 @@ export type TextFieldProps = CommonProps & {
 
 	inputLast?: Snippet;
 	inputFirst?: Snippet;
-	rest?: Partial<HTMLInputElement>;
 };
 
 export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {

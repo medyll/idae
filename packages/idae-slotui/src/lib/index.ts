@@ -146,6 +146,8 @@ export { default as Checkbox } from '$lib/controls/checkbox/Checkbox.svelte';
 export * from '$lib/controls/checkbox/types.js';
 export { default as Confirm } from '$lib/controls/confirm/Confirm.svelte';
 export * from '$lib/controls/confirm/types.js';
+export { default as InPlaceEdit } from '$lib/controls/inplaceedit/InPlaceEdit.svelte';
+export * from '$lib/controls/inplaceedit/types.js';
 export { default as Progress } from '$lib/controls/progress/Progress.svelte';
 export * from '$lib/controls/progress/types.js';
 export { default as Rating } from '$lib/controls/rating/Rating.svelte';

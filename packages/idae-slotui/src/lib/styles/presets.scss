@@ -1,5 +1,21 @@
 @import "./slotui-vars.scss";
 
+@mixin ui-variants {
+    &[variant*="square"],
+    &[square="true"],
+    &:global(.square) {
+        aspect-ratio: 1;
+        height: auto;
+        border: 1px solid red;
+    }
+
+    &[variant*="rounded"],
+    &[rounded="true"],
+    &.rounded {
+        border-radius: 50%;
+    }
+}
+
 @mixin ui-ellipsises-presets {
     --preset-ellipsis-line: #{$presets-ellipsis-line-default};
 
@@ -26,14 +42,28 @@
     transition: all 0.2s ease;
 }
 @mixin ui-tall-presets {
-    --preset-tall: 2rem;
-    min-height: var(--preset-tall);
+    & {
+        --preset-tall: unset; // 2rem;
+        // min-height: var(--preset-tall);
+    }
 
     @each $preset, $value in $preset-tall-list {
         &:global([tall="#{$preset}"]),
         &:global(.tall-#{$preset}) {
-            min-height: var(--sld-tall-#{$preset});
             --preset-tall: var(--sld-tall-#{$preset});
+            height: var(--sld-tall-#{$preset});
+        }
+    }
+}
+
+@mixin ui-width-presets {
+    --preset-width: unset; //var(--sld-width-default);
+
+    @each $preset, $value in $preset-width-list {
+        &:global([width="#{$preset}"]),
+        &:global(.width-#{$preset}) {
+            --preset-width: var(--sld-width-#{$preset});
+            width: var(--sld-width-#{$preset});
         }
     }
 }
@@ -47,18 +77,6 @@
             padding: var(--sld-gutter-#{$preset});
             gap: var(--sld-gutter-#{$preset});
             --preset-gutter: var(--sld-gutter-#{$preset});
-        }
-    }
-}
-
-@mixin ui-width-presets {
-    --preset-width: var(--sld-width-default);
-
-    @each $preset, $value in $preset-width-list {
-        &:global([width="#{$preset}"]),
-        &:global(.width-#{$preset}) {
-            width: var(--sld-width-#{$preset});
-            --preset-width: var(--sld-width-#{$preset});
         }
     }
 }

@@ -14,6 +14,7 @@ autocomplete:{name:"AutoComplete",code:"autocomplete",group:"controls",root:"aut
 button:{name:"Button",code:"button",group:"controls",root:"button"},
 checkbox:{name:"Checkbox",code:"checkbox",group:"controls",root:"checkbox"},
 confirm:{name:"Confirm",code:"confirm",group:"controls",root:"confirm"},
+inplaceedit:{name:"InPlaceEdit",code:"inplaceedit",group:"controls",root:"inplaceedit"},
 progress:{name:"Progress",code:"progress",group:"controls",root:"progress"},
 rating:{name:"Rating",code:"rating",group:"controls",root:"rating"},
 select:{name:"Select",code:"select",group:"controls",root:"select"},

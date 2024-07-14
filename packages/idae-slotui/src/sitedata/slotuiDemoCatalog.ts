@@ -14,6 +14,7 @@ import  AutoComplete from '$lib/controls/autocomplete/AutoComplete.demo.svelte';
 import  Button from '$lib/controls/button/Button.demo.svelte';
 import  Checkbox from '$lib/controls/checkbox/Checkbox.demo.svelte';
 import  Confirm from '$lib/controls/confirm/Confirm.demo.svelte';
+import  InPlaceEdit from '$lib/controls/inplaceedit/InPlaceEdit.demo.svelte';
 import  Progress from '$lib/controls/progress/Progress.demo.svelte';
 import  Rating from '$lib/controls/rating/Rating.demo.svelte';
 import  Select from '$lib/controls/select/Select.demo.svelte';
@@ -57,6 +58,7 @@ autocomplete:{component:AutoComplete,name:"AutoComplete",code:"autocomplete",gro
 button:{component:Button,name:"Button",code:"button",group:"controls",root:"button"},
 checkbox:{component:Checkbox,name:"Checkbox",code:"checkbox",group:"controls",root:"checkbox"},
 confirm:{component:Confirm,name:"Confirm",code:"confirm",group:"controls",root:"confirm"},
+inplaceedit:{component:InPlaceEdit,name:"InPlaceEdit",code:"inplaceedit",group:"controls",root:"inplaceedit"},
 progress:{component:Progress,name:"Progress",code:"progress",group:"controls",root:"progress"},
 rating:{component:Rating,name:"Rating",code:"rating",group:"controls",root:"rating"},
 select:{component:Select,name:"Select",code:"select",group:"controls",root:"select"},

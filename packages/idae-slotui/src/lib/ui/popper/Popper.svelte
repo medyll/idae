@@ -1,9 +1,9 @@
-<script lang="ts"> 
+<script lang="ts">
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { PopperProps } from './types.js';
-	import Button from '$lib/controls/button/Button.svelte'; 
+	import Button from '$lib/controls/button/Button.svelte';
 
 	export const toggle = function () {};
 	export const hide = function () {
@@ -86,22 +86,20 @@
 		mounted = true;
 	});
 
-	const makeOnTop = () => {
-		/* let max = Math.max(
-			...Array.from(document.querySelectorAll('body *'), (el) =>
-				parseFloat(window.getComputedStyle(el).zIndex)
-			).filter((zIndex) => !Number.isNaN(zIndex)),
-			0
-		);
-
-		return max + 1; */
-	};
-
 	$effect(() => {
 		let siblings = Array.prototype.slice.call(element?.parentElement?.children ?? []) ?? [];
 		zIndex = siblings?.reduce((prev, val) => {
 			return val?.style?.zIndex >= prev ? val?.style?.zIndex + 1 : prev;
 		}, 0);
+	});
+
+	$effect(() => {
+		isOpen;
+		if (!isOpen) {
+			if (element.matches(':popover-open')) {
+				element.hidePopover();
+			}
+		}
 	});
 
 	let hidden = $derived(!(parentNode && ((isOpen && autoClose) || !autoClose)));
@@ -121,22 +119,23 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- @ts-ignore -->
 <dialog
+	open={isOpen}
 	bind:this={element}
 	class="popper {className}"
 	use:stickTo={{ parentNode, position, stickToHookWidth }}
 	use:clickAway={{ action: clickedAway }}
 	{...rest}
-	style={rest.style} 
+	style={rest.style}
 	style:contentVisibility={!isOpen ? 'hidden' : 'auto'}
 	style:display={!isOpen ? 'none' : ''}
 >
-	<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden"> 
+	<div style="display:flex;width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden">
 		{#if popperLeft}
 			<div style="height:100%;max-height:100%;overflow:hidden;" class="popper-left">
 				{@render popperLeft()}
 			</div>
 		{/if}
-		{#if children}
+		{#if children || component || content}
 			<div style="flex:1">
 				<Slotted child={children}>
 					{#if mounted}
