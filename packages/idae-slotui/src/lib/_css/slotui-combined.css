@@ -63,13 +63,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -78,7 +94,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -441,13 +456,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -456,7 +487,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -736,13 +766,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -751,7 +797,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -1050,13 +1095,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -1065,7 +1126,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -1348,13 +1408,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -1363,7 +1439,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -1659,13 +1734,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -1674,7 +1765,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -1944,13 +2034,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -1959,7 +2065,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -2317,13 +2422,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -2332,7 +2453,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -2655,13 +2775,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -2670,7 +2806,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -2958,13 +3093,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -2973,7 +3124,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -3256,13 +3406,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -3271,7 +3437,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -3554,13 +3719,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -3569,7 +3750,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -3857,13 +4037,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -3872,7 +4068,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -4165,13 +4360,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -4180,7 +4391,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -4467,13 +4677,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -4482,7 +4708,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -4684,14 +4909,14 @@ body[data-theme=dark],
   background-color: red;
 }
 
-:root {
+:global(:root) {
   --sld-button-font-size: inherit;
   --sld-button-radius: var(--sld-radius-small);
   --sld-button-border-color: var(--sld-color-primary);
   --sld-button-border-width: 1px;
   --sld-button-text-align: center;
   --sld-button-padding: 0;
-  --sld-button-background: var(--sld-color-background);
+  --sld-button-background: var(--sld-color-foreground-alpha-high);
   --sld-button-contained-background: var(--sld-color-primary);
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
@@ -4719,6 +4944,8 @@ body[data-theme=dark],
   width: var(--preset-width-small);
   --preset-tall: var(--sld-tall-small);
   height: var(--preset-tall-small);
+  border: none;
+  margin: 0;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
@@ -4731,12 +4958,33 @@ body[data-theme=dark],
   cursor: pointer;
   align-content: center;
   align-items: center;
-  height: 25px;
+  background: var(--sld-button-background);
+  /*  &:focus {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: 2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  &:focus-visible {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: -2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  &:focus:not(:focus-visible) {
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  &:hover {
+      background-color: var(--sld-button-hover-background);
+      box-shadow: var(--sld-button-hover-shadow);
+  }
+
+  &:active {
+      transform: translateY(1px);
+      box-shadow: var(--sld-button-active-shadow);
+  } */
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
   --preset-tall: var(--sld-tall-small);
   height: var(--preset-tall-small);
-  height: 25px;
 }
 :global(button),
 :global(.button),
@@ -4991,46 +5239,46 @@ body[data-theme=dark],
 :global(input[type="submit"])[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
-:global(button):focus,
-:global(.button):focus,
-:global(button.button):focus,
-:global(input[type="button"]):focus,
-:global(input[type="submit"]):focus {
+:global(button) :focus,
+:global(.button) :focus,
+:global(button.button) :focus,
+:global(input[type="button"]) :focus,
+:global(input[type="submit"]) :focus {
   outline: 1px solid var(--sld-button-focus-border-color);
   outline-offset: 2px;
   box-shadow: var(--sld-button-focus-shadow);
 }
-:global(button):focus-visible,
-:global(.button):focus-visible,
-:global(button.button):focus-visible,
-:global(input[type="button"]):focus-visible,
-:global(input[type="submit"]):focus-visible {
+:global(button) :focus-visible,
+:global(.button) :focus-visible,
+:global(button.button) :focus-visible,
+:global(input[type="button"]) :focus-visible,
+:global(input[type="submit"]) :focus-visible {
   outline: 1px solid var(--sld-button-focus-border-color);
   outline-offset: -2px;
   box-shadow: var(--sld-button-focus-shadow);
 }
-:global(button):focus:not(:focus-visible),
-:global(.button):focus:not(:focus-visible),
-:global(button.button):focus:not(:focus-visible),
-:global(input[type="button"]):focus:not(:focus-visible),
-:global(input[type="submit"]):focus:not(:focus-visible) {
-  box-shadow: var(--sld-button-focus-shadow);
-}
-:global(button):hover,
-:global(.button):hover,
-:global(button.button):hover,
-:global(input[type="button"]):hover,
-:global(input[type="submit"]):hover {
+:global(button) :hover,
+:global(.button) :hover,
+:global(button.button) :hover,
+:global(input[type="button"]) :hover,
+:global(input[type="submit"]) :hover {
   background-color: var(--sld-button-hover-background);
   box-shadow: var(--sld-button-hover-shadow);
 }
-:global(button):active,
-:global(.button):active,
-:global(button.button):active,
-:global(input[type="button"]):active,
-:global(input[type="submit"]):active {
+:global(button) :active,
+:global(.button) :active,
+:global(button.button) :active,
+:global(input[type="button"]) :active,
+:global(input[type="submit"]) :active {
   transform: translateY(1px);
   box-shadow: var(--sld-button-active-shadow);
+}
+:global(button) :focus:not(:focus-visible),
+:global(.button) :focus:not(:focus-visible),
+:global(button.button) :focus:not(:focus-visible),
+:global(input[type="button"]) :focus:not(:focus-visible),
+:global(input[type="submit"]) :focus:not(:focus-visible) {
+  box-shadow: var(--sld-button-focus-shadow);
 }
 :global(button) .button-start,
 :global(.button) .button-start,
@@ -5953,13 +6201,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -5968,7 +6232,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -6359,13 +6622,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -6374,7 +6653,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -6650,13 +6928,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -6665,7 +6959,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -6952,13 +7245,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -6967,7 +7276,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -7243,13 +7551,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -7258,7 +7582,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -7536,13 +7859,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -7551,7 +7890,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -7891,13 +8229,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -7906,7 +8260,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -8193,13 +8546,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -8208,7 +8577,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -8538,13 +8906,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -8553,7 +8937,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -8947,13 +9330,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -8962,7 +9361,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -9239,13 +9637,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -9254,7 +9668,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -9657,13 +10070,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -9672,7 +10101,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -10012,13 +10440,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -10027,7 +10471,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -10340,13 +10783,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -10355,7 +10814,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -10633,13 +11091,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -10648,7 +11122,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -11000,13 +11473,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -11015,7 +11504,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -11367,13 +11855,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -11382,7 +11886,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -11648,13 +12151,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -11663,7 +12182,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -11931,13 +12449,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -11946,7 +12480,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -12247,13 +12780,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -12262,7 +12811,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -12578,13 +13126,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -12593,7 +13157,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -12916,13 +13479,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -12931,7 +13510,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -13294,13 +13872,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -13309,7 +13903,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -13922,13 +14515,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -13937,7 +14546,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -14229,13 +14837,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -14244,7 +14868,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -14596,13 +15219,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -14611,7 +15250,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -14955,13 +15593,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -14970,7 +15624,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -15262,13 +15915,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -15277,7 +15946,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -15585,13 +16253,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -15600,7 +16284,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -15895,13 +16578,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -15910,7 +16609,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {
@@ -16228,13 +16926,29 @@ body[data-theme=dark],
 :root {
   --sld-color-foreground: #333333;
   --sld-color-background: #ffffff;
-  --sld-color-paper: #f1f1f1;
-  --sld-color-primary: #98b148;
-  --sld-color-secondary: #55492b;
-  --sld-color-tertiary: #9999cc;
-  --sld-color-disabled: #ccc;
-  --sld-color-disabled-border: #cccccc;
-  --sld-background-disabled: #ededed;
+  --sld-color-paper: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground) 10%
+  );
+  --sld-color-primary: color-mix(in srgb, var(--sld-color-foreground) 60%, #4caf50);
+  --sld-color-secondary: color-mix(in srgb, var(--sld-color-foreground) 80%, #2196f3);
+  --sld-color-tertiary: color-mix(in srgb, var(--sld-color-foreground) 70%, #ffc107);
+  --sld-color-disabled: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 20%,
+      var(--sld-color-background)
+  );
+  --sld-color-disabled-border: color-mix(
+      in srgb,
+      var(--sld-color-foreground) 30%,
+      var(--sld-color-background)
+  );
+  --sld-background-disabled: color-mix(
+      in srgb,
+      var(--sld-color-background) 90%,
+      var(--sld-color-foreground)
+  );
 }
 
 :root.dark,
@@ -16243,7 +16957,6 @@ body[data-theme=dark],
 :root[theme=dark] {
   --sld-color-foreground: #ffffff;
   --sld-color-background: #27323a;
-  --sld-color-paper: #3a3b3b;
 }
 
 :root {

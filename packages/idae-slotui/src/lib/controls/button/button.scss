@@ -1,13 +1,13 @@
 @import "../../styles/presets.scss";
 
-:root {
+:global(:root) {
     --sld-button-font-size: inherit;
     --sld-button-radius: var(--sld-radius-small);
     --sld-button-border-color: var(--sld-color-primary);
     --sld-button-border-width: 1px;
     --sld-button-text-align: center;
     --sld-button-padding: 0;
-    --sld-button-background: var(--sld-color-background);
+    --sld-button-background: var(--sld-color-foreground-alpha-high);
     --sld-button-contained-background: var(--sld-color-primary);
     --sld-button-hover-border-color: var(--sld-color-primary);
     --sld-button-active-border-color: var(--sld-color-secondary);
@@ -37,6 +37,9 @@
     @include ui-variants;
     @include elevation;
 
+    border: none;
+    margin: 0;
+
     text-align: var(--sld-button-text-align);
     font-size: var(--sld-button-font-size);
     border-radius: var(--sld-button-radius);
@@ -54,9 +57,32 @@
     align-content: center;
     align-items: center;
 
-    height: 25px;
+    background: var(--sld-button-background);
 
-    &:focus {
+    & {
+        :focus {
+            outline: 1px solid var(--sld-button-focus-border-color);
+            outline-offset: 2px;
+            box-shadow: var(--sld-button-focus-shadow);
+        }
+        :focus-visible {
+            outline: 1px solid var(--sld-button-focus-border-color);
+            outline-offset: -2px;
+            box-shadow: var(--sld-button-focus-shadow);
+        }
+        :hover {
+            background-color: var(--sld-button-hover-background);
+            box-shadow: var(--sld-button-hover-shadow);
+        }
+        :active {
+            transform: translateY(1px);
+            box-shadow: var(--sld-button-active-shadow);
+        }
+        :focus:not(:focus-visible) {
+            box-shadow: var(--sld-button-focus-shadow);
+        }
+    }
+    /*  &:focus {
         outline: 1px solid var(--sld-button-focus-border-color);
         outline-offset: 2px;
         box-shadow: var(--sld-button-focus-shadow);
@@ -77,7 +103,7 @@
     &:active {
         transform: translateY(1px);
         box-shadow: var(--sld-button-active-shadow);
-    }
+    } */
 
     .button-start {
         @include ui-ellipsises-presets;
@@ -198,8 +224,6 @@
     @include ui-width-presets;
     @include ui-tall-presets;
     @include ui-variants;
-
-    height: 25px;
 
     &[variant*="bordered"],
     &[bordered="true"],

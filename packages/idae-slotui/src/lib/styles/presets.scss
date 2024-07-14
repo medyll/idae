@@ -132,7 +132,7 @@
     &[aria-selected="true"],
     &[data-selected="true"] {
         border-color: none; //var(--sld-selected-border-color);
-        background-color: #ededed; //var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+        background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
         box-shadow: var(--sld-selected-shadow);
         .listItemChip,
         .menuItemChip {
