@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import '$lib/htmluModules.js';
-	import { cssDom, HtmluDom } from  '$lib/index.js';
+	import { cssDom, htmlDom } from  '$lib/index.js';
 	let timer: NodeJS.Timeout;
 	let timerData = 0;
 	let timerDelay = 5000;
@@ -24,7 +24,7 @@
 			console.log(element);
 		});
 
-		/* HtmluDom.track('#body', ['data-widget'], {
+		/* htmlDom.track('#body', ['data-widget'], {
 			onAttributesChange: (element, mutation, observer) => {
 				console.log(mutation);
 			},
@@ -40,7 +40,7 @@
 			console.log(element);
 		}); */
 
-		/* HtmluDom.attach({
+		/* htmlDom.attach({
 			selectors: [{ element: '[data-widget]', mutations: { attributes: '[lang]' } }],
 			selectorCallback: (mutations, observer) => {
 				return {
@@ -66,7 +66,7 @@
 			}
 		}); */
 		// monitor some attributes changes
-		/* HtmluDom.track('#body', ['data-widget'], {
+		/* htmlDom.track('#body', ['data-widget'], {
 			onAttributesChange: (element, mutation, observer) => {
 				console.log(mutation);
 			},

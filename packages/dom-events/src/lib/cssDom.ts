@@ -1,7 +1,6 @@
-import { Htmlu } from './htmlDom.js';
+import { htmlDom } from './htmlDom.js';
 
-/* path: D:\boulot\app-node\htmludom\src\lib\htmluCssObserver.ts */
-export type CssObserverCallBack = undefined | ((node: Element, mutation?: MutationRecord) => void);
+export type CssObserverCallBack = undefined | ((node: Node, mutation?: MutationRecord) => void);
 export type CssObserverCallBackSummary = (nodes: Node[]) => void;
 export type CssObserverOptions = {
 	strictlyNew: boolean;
@@ -10,6 +9,7 @@ export type CssObserverOptions = {
 	legacyCssPrefix: 'Webkit' | 'Moz' | 'O' | 'ms' | '';
 	debounceDelay: number;
 };
+/**  QuerySelector */
 type QuerySelector = string;
 
 /**
@@ -20,6 +20,8 @@ export class CssObserver {
 	private selectorId: string;
 	private activeAnimations: Set<string> = new Set();
 	private resizeObserver: ResizeObserver | null = null;
+	// do not load selectors several times
+	private loadedSelectors: Map<string,{fragment:CSSStyleSheet | HTMLStyleElement,selector:string,callback:Function,controller:object}> =  new Map();
 
 	/**
 	 * Default options for the CssObserver.
@@ -76,6 +78,7 @@ export class CssObserver {
 	track(
 		callback: CssObserverCallBack,
 		opts: {
+			animationName?: string;
 			onlyNew?: boolean;
 			trackChildList?: boolean;
 			trackAttributes?: string[];
@@ -83,11 +86,12 @@ export class CssObserver {
 			trackResize?: boolean;
 		} = {}
 	) {
-		/* if (!document?.body) {
-			return;
-			throw new Error('Document body is not available. Please wait for the document to load.');
-		} */
-		const animationName = crypto.randomUUID();
+		
+		if(this.loadedSelectors.has(this.selector) && this.loadedSelectors.get(this.selector)?.controller){
+			return this?.loadedSelectors?.get?.(this.selector)?.controller;
+		}  
+
+		const animationName = opts?.animationName ?? crypto.randomUUID();
 		this.activeAnimations.add(animationName);
 		const styleFragment = this.createStyleFragment(this.selector, animationName);
 
@@ -97,19 +101,20 @@ export class CssObserver {
 			}
 
 			if (opts.trackAttributes) {
-				Htmlu.track(node, opts.trackAttributes, {
+				htmlDom.track(node, opts.trackAttributes, {
 					onAttributesChange: callback,
 					onChildListChange: opts.trackChildList ? callback : undefined,
 					onCharacterDataChange: Boolean(opts.trackCharacterData) ? callback : undefined
 				});
 			} else if (opts.trackChildList || opts.trackCharacterData) {
-				Htmlu.track(node, {
+				htmlDom.track(node, {
 					onChildListChange: opts.trackChildList ? callback : undefined,
 					onCharacterDataChange: Boolean(opts.trackCharacterData) ? callback : undefined
 				});
 			}
 			return callback?.(node);
 		};
+
 
 		if (!opts.onlyNew) {
 			this.processExistingElements(transCallBak);
@@ -118,7 +123,7 @@ export class CssObserver {
 		const eventHandler = this.createEventHandler(animationName, transCallBak);
 		let animationLoader = this.listenToAnimationEvent(eventHandler);
 
-		return {
+		const ret =  {
 			start: () => {
 				animationLoader = this.listenToAnimationEvent(eventHandler);
 				if (opts.trackResize) {
@@ -145,10 +150,15 @@ export class CssObserver {
 					this.removeResizeObserver();
 				}
 				if (opts.trackChildList || opts.trackAttributes) {
-					Htmlu.detach(this.selector);
+					htmlDom.detach(this.selector);
 				}
 			}
 		};
+
+		
+		this.loadedSelectors.set(this.selector,{ controller:ret, fragment:styleFragment,selector:this.selector,callback:transCallBak});
+
+		return ret;
 	}
 
 	/**
@@ -225,7 +235,7 @@ export class CssObserver {
 		const tracker = this.track(observerCallback, opts);
 
 		if (opts.trackChildList || opts.trackAttributes) {
-			Htmlu.track(this.selector, opts.trackAttributes ? opts.trackAttributes : [], {
+			htmlDom.track(this.selector, opts.trackAttributes ? opts.trackAttributes : [], {
 				onChildListChange: opts.trackChildList ? observerCallback : undefined,
 				onAttributesChange: opts.trackAttributes ? observerCallback : undefined
 			});
@@ -320,7 +330,7 @@ export class CssObserver {
 	 * @param {Function} eventHandler - The event handler function.
 	 * @returns {number} The timeout ID.
 	 */
-	private listenToAnimationEvent(eventHandler: (event: AnimationEvent) => void): number {
+	private listenToAnimationEvent(eventHandler: (event: AnimationEvent) => void): NodeJS.Timeout {
 		return setTimeout(() => {
 			document.addEventListener('animationstart', eventHandler, false);
 		}, this.options.eventDelay);
@@ -358,6 +368,7 @@ export class CssObserver {
             }`;
 			sheet.replaceSync(styleContent);
 			document.adoptedStyleSheets.push(sheet);
+
 			return sheet;
 		} else {
 			const style = document.createElement('style');
@@ -370,6 +381,7 @@ export class CssObserver {
                 ${this.options.legacyCssPrefix}animation-name: ${animationName} !important;
             }`;
 			document.head.appendChild(style);
+			
 			return style;
 		}
 	}
@@ -381,7 +393,7 @@ export class CssObserver {
 	private addResizeObserver(callback: CssObserverCallBack) {
 		this.resizeObserver = new ResizeObserver((entries) => {
 			for (let entry of entries) {
-				callback(entry.target as Element);
+				callback?.(entry.target as Element);
 			}
 		});
 		document
@@ -421,72 +433,59 @@ export function cssDom(
 ) {
 	const domCss = new CssObserver(selector);
 
-	if (document?.body)
-		document?.body?.addEventListener(
-			'DOMContentLoaded',
-			(event) => {
-				console.log('DOMContentLoaded');
-			},
-			false
-		);
-	return {
+	const initObserver = () => {
+		return {
 		/**
-		 * Tracks changes for each matching element.
-		 * @param {CssObserverCallBack} callback - The callback function to be invoked for each change.
-		 * @returns {Object} An object with methods to control the tracking.
-		 */
+		* Tracks changes for each matching element.
+		* @param {CssObserverCallBack} callback - The callback function to be invoked for each change.
+		* @returns {Object} An object with methods to control the tracking.
+		*/
 		each: function (callback: CssObserverCallBack) {
 			const tracker = domCss.track(callback, opts);
-
 			return tracker;
 		},
 		/**
-		 * Tracks changes and provides a summary of affected elements.
-		 * @param {CssObserverCallBackSummary} callback - The callback function to be invoked with the summary.
-		 * @returns {Object} An object with methods to control the tracking.
-		 */
+		* Tracks changes and provides a summary of affected elements.
+		* @param {CssObserverCallBackSummary} callback - The callback function to be invoked with the summary.
+		* @returns {Object} An object with methods to control the tracking.
+		*/
 		summary: function (callback: CssObserverCallBackSummary) {
 			const tracker = domCss.getSummary(callback, opts);
-
 			if (opts?.trackChildList || opts?.trackAttributes) {
-				Htmlu.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
-					onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
-					onAttributesChange: opts.trackAttributes
-						? (element, mutation) => callback([element])
-						: undefined
-				});
+			htmlDom.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
+				onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
+				onAttributesChange: opts.trackAttributes ? (element, mutation) => callback([element]) : undefined
+			});
 			}
-
 			if (opts?.trackResize) {
-				const resizeObserver = new ResizeObserver((entries) => {
-					for (let entry of entries) {
-						callback([entry.target]);
-					}
-				});
-				document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
+			const resizeObserver = new ResizeObserver((entries) => {
+				for (let entry of entries) {
+				callback([entry.target]);
+				}
+			});
+			document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
 			}
-
 			return tracker;
 		}
-	};
+		};
+  };
+
+ 
+  const checkDOMAndInit = () => {
+    if (document && document.body) {
+      return initObserver();
+    } else {
+      return new Promise((resolve) => {
+        const checkInterval = setInterval(() => {
+          if (document && document.body) {
+            clearInterval(checkInterval);
+            resolve(initObserver());
+          }
+        }, 10);  
+      });
+    }
+  };
+ 
+ return checkDOMAndInit(); 
+	 
 }
-
-/* function delayedStart(): Promise<Node> {
-		return new Promise((resolve, reject) => {
-			if (typeof window == 'undefined') {
-				console.log('window is undefined');
-				return;
-			}
-			if (typeof window === 'object') {
-				const targetNode =
-					typeof this.targetNode == 'string'
-						? document.getElementById(this.targetNode) ?? document.body
-						: this.targetNode ?? document.body;
-
-				clearTimeout(this.delay);
-				resolve(targetNode);
-
-				return;
-			}
-		});
-	} */
