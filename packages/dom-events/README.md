@@ -46,7 +46,7 @@ cssDom('#myElement', {
 });
 ```
 
-## HtmluDomLib (Htmlu)
+## HtmluDomLib (htmlDom)
 
 HtmluDomLib provides a more detailed way to observe DOM mutations.
 
@@ -58,7 +58,7 @@ HtmluDomLib provides a more detailed way to observe DOM mutations.
 ### Basic Usage:
 
 ```javascript
-Htmlu.track('#myElement', ['class'], {
+htmlDom.track('#myElement', ['class'], {
   onAttributesChange: (element, mutation, observer) => {
     console.log('Attribute changed:', mutation);
   }
@@ -68,7 +68,7 @@ Htmlu.track('#myElement', ['class'], {
 ### Advanced Usage:
 
 ```javascript
-Htmlu.attach({
+htmlDom.attach({
   selectors: [{ element: '#myElement', mutations: { attributes: ['class'] } }],
   selectorCallback: (mutations, observer) => ({
     attributes: (mutation, observer) => {
@@ -105,28 +105,28 @@ cssDom('#myElement').each((element) => {
 
 1. **Track Only New Elements:**
    ```javascript
-   cssDom('#myElement', { onlyNew: true }).each((element) => {
+   cssDom('#myElement', { onlyNew: true }).each((element , changes) => {
      console.log('New element added:', element);
    });
    ```
 
 2. **Observe Child List Changes:**
    ```javascript
-   cssDom('#myElement', { trackChildList: true }).each((element) => {
+   cssDom('#myElement', { trackChildList: true }).each((element , changes) => {
      console.log('Child list changed for:', element);
    });
    ```
 
 3. **Monitor Specific Attributes:**
    ```javascript
-   cssDom('#myElement', { trackAttributes: ['class', 'style'] }).each((element) => {
+   cssDom('#myElement', { trackAttributes: ['class', 'style'] }).each((element , changes) => {
      console.log('Tracked attribute changed for:', element);
    });
    ```
 
 4. **Track Resize Events:**
    ```javascript
-   cssDom('#myElement', { trackResize: true }).each((element) => {
+   cssDom('#myElement', { trackResize: true }).each((element , changes) => {
      console.log('Element resized:', element);
    });
    ```
@@ -137,17 +137,14 @@ cssDom('#myElement').each((element) => {
      console.log('Elements changed:', changedElements);
    });
    ```
-
-### HtmluDomLib (Htmlu)
-
-HtmluDomLib, accessed via the `Htmlu` singleton, offers more granular control over DOM mutation observations.
+ 
 
 #### Basic Usage:
 
 ```javascript
-import { Htmlu } from "@medyll/htmludom";
+import { htmlDom } from "@medyll/htmludom";
 
-Htmlu.track('#myElement', ['class'], {
+htmlDom.track('#myElement', ['class'], {
   onAttributesChange: (element, mutation, observer) => {
     console.log('Class attribute changed:', element, mutation);
   }
@@ -158,7 +155,7 @@ Htmlu.track('#myElement', ['class'], {
 
 1. **Observe Multiple Mutation Types:**
    ```javascript
-   Htmlu.track('#myElement', {
+   htmlDom.track('#myElement', {
      onAttributesChange: (element, mutation, observer) => {
        console.log('Attribute changed:', mutation.attributeName);
      },
@@ -173,7 +170,7 @@ Htmlu.track('#myElement', ['class'], {
 
 2. **Use Complex Selectors:**
    ```javascript
-   Htmlu.track(['#myElement', '.myClass'], ['style', 'class'], {
+   htmlDom.track(['#myElement', '.myClass'], ['style', 'class'], {
      onAttributesChange: (element, mutation, observer) => {
        console.log('Style or class changed for:', element);
      }
@@ -182,7 +179,7 @@ Htmlu.track('#myElement', ['class'], {
 
 3. **Attach Multiple Observers:**
    ```javascript
-   Htmlu.attach([
+   htmlDom.attach([
      {
        selectors: [{ element: '#element1', mutations: { attributes: ['class'] } }],
        selectorCallback: (mutations, observer) => ({
@@ -203,10 +200,10 @@ Htmlu.track('#myElement', ['class'], {
 4. **Detach Observers:**
    ```javascript
    // Detach all observers
-   Htmlu.detach();
+   htmlDom.detach();
 
    // Detach observer for specific selector
-   Htmlu.detach('#myElement');
+   htmlDom.detach('#myElement');
    ```
 
 ### The why and how of using cssEvents and domChange together in web applications. 
@@ -225,10 +222,13 @@ Using cssEvents and domChange offers a balanced approach to tracking DOM changes
 
 6. Ease of use: The API for both methods is designed to be developer-friendly, making it simple to implement and maintain.
 
-7. Scalability: This solution is suitable for both small projects and large-scale applications, adapting well to different complexity levels.
+7. Scalability: This solution is suitable for both small projects and large-scale applications, adapting well to different complexity levels.  
+By combining cssEvents for style-related changes and domChange for structural modifications, developers can create responsive, efficient, and robust web applications that react seamlessly to various types of DOM and CSS updates.  
 
-By combining cssEvents for style-related changes and domChange for structural modifications, developers can create responsive, efficient, and robust web applications that react seamlessly to various types of DOM and CSS updates.
+8. Resume  
+dom-events is a TypeScript library designed to simplify the use of the MutationObserver API, making manipulation of the Document Object Model (DOM) more intuitive and suitable for different use cases. This library is particularly useful for web applications that require dynamic DOM management, such as tracking attribute changes, observing changes in the child list of an element, and detecting character data changes.
 
+     The versatility of dom-events allows it to be used in a wide range of web applications, from simple to complex. It is ideal for situations where dynamic DOM monitoring is required, such as tracking attribute changes, observing changes in the child list of an element, or detecting character data changes.
 ### Performance Considerations
 
 - Use specific selectors when possible to limit the scope of observation.
