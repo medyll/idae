@@ -1,8 +1,5 @@
-Here's a simple README for the root of your Idae monorepo:
-
-```markdown
 # Idae Monorepo
-
+Je 
 This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.
 
 ## Packages
@@ -38,6 +35,3 @@ MIT
 ## Contact
 
 In the package
-```
-
-This README provides a brief overview of your Idae monorepo, lists the packages it contains, and gives basic instructions for getting started. You can expand on this as needed, adding more detailed information about each package, development workflows, or any other relevant details specific to your project.
