@@ -1,4 +1,13 @@
 <script lang="ts">
+
+
+	cssDom('[data-cssDom]',{ 
+			
+	}).each((element,changes) => {
+		console.log(element,changes);
+	});
+
+
 	import { onMount } from 'svelte';
 	import '$lib/htmluModules.js';
 	import { cssDom, htmlDom } from  '$lib/index.js';
@@ -20,75 +29,8 @@
 	}
 
 	onMount(() => {
-		cssDom('[data-cssDom]').each((element) => {
-			console.log(element);
-		});
 
-		/* htmlDom.track('#body', ['data-widget'], {
-			onAttributesChange: (element, mutation, observer) => {
-				console.log(mutation);
-			},
-			onChildListChange: (mutation) => {
-				console.log(mutation);
-			},
-			onCharacterDataChange: (mutation) => {
-				console.log(mutation);
-			}
-		}); */
-
-		/* selector('[data-auto-track]').summary((element) => {
-			console.log(element);
-		}); */
-
-		/* htmlDom.attach({
-			selectors: [{ element: '[data-widget]', mutations: { attributes: '[lang]' } }],
-			selectorCallback: (mutations, observer) => {
-				return {
-					attributes: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log('red')
-					},
-					childList: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log('red')
-					},
-					characterData: (mutation: MutationRecord, observer: MutationObserver) => {
-						console.log('red')
-					}
-				};
-			},
-			observerParameters: {
-				attributeFilter: [],
-				attributes: true,
-				attributeOldValue: true,
-				characterData: true,
-				characterDataOldValue: true,
-				childList: true,
-				subtree: true
-			}
-		}); */
-		// monitor some attributes changes
-		/* htmlDom.track('#body', ['data-widget'], {
-			onAttributesChange: (element, mutation, observer) => {
-				console.log(mutation);
-			},
-			onChildListChange: (element, mutation, observer) => {
-				console.log(mutation);
-			},
-			onCharacterDataChange: (element, mutation, observer) => {
-				console.log(mutation);
-			}
-		}); */
-		/* // monitor all attributes changes on #widget
-		htmlu.track('#widget', {
-			onAttributesChange: (element,mutation,observer) => {
-				console.log(mutation);
-			},
-			onChildListChange: (mutation) => {
-				console.log(mutation);
-			},
-			onCharacterDataChange: (mutation) => {
-				console.log(mutation);
-			}
-		}); */
+		 
 
 		playIt(timerDelay);
 		return () => {
