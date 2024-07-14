@@ -1,13 +1,13 @@
 {
-    "name": "@config/prettier-config",
-    "scope": "@config",
-    "version": "1.0.0",
-    "type": "module",
-    "exports": "./index.js",
-    "dependencies": {
-        "prettier": "^2.8.0"
-    },
-    "devDependencies": {
-        "@config/prettier-config": "^1.0.0"
-    }
+  "name": "@config/prettier-config",
+  "scope": "@config",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": "./index.js",
+  "dependencies": {
+    "prettier": "^2.8.0"
+  },
+  "devDependencies": {
+    "@config/prettier-config": "^1.0.0"
+  }
 }

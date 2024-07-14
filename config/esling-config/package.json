@@ -1,17 +1,17 @@
 {
-    "name": "@config/eslint-config",
-    "scope": "@config",
-    "version": "1.0.0",
-    "type": "module",
-    "exports": "./index.js",
-    "dependencies": {
-        "@rushstack/eslint-patch": "^1.2.0",
-        "@types/eslint": "8.56.10",
-        "eslint": "^8.0.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-svelte": "^2.39.3"
-    },
-    "devDependencies": {
-        "@config/prettier-config": "^1.0.0"
-    }
+  "name": "@config/eslint-config",
+  "scope": "@config",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": "./index.js",
+  "dependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@types/eslint": "8.56.10",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.39.3"
+  },
+  "devDependencies": {
+    "@config/prettier-config": "^1.0.0"
+  }
 }

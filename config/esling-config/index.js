@@ -15,7 +15,7 @@ export default {
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
-    extraFileExtensions: [".svelte",".svelte.ts"],
+    extraFileExtensions: [".svelte", ".svelte.ts"],
   },
   env: {
     browser: true,
