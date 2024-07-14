@@ -3,10 +3,9 @@
 @mixin ui-variants {
     &[variant*="square"],
     &[square="true"],
-    &:global(.square) {
-        aspect-ratio: 1;
+    &.square {
+        aspect-ratio: 1/1 !important;
         height: auto;
-        border: 1px solid red;
     }
 
     &[variant*="rounded"],
@@ -19,6 +18,7 @@
 @mixin ui-ellipsises-presets {
     --preset-ellipsis-line: #{$presets-ellipsis-line-default};
 
+    &[ellipsis],
     &.ellipsis {
         white-space: nowrap;
         overflow: hidden;
@@ -42,28 +42,34 @@
     transition: all 0.2s ease;
 }
 @mixin ui-tall-presets {
+    --preset-tall: var(--sld-tall-small);
+    height: var(--preset-tall-small);
     & {
-        --preset-tall: unset; // 2rem;
-        // min-height: var(--preset-tall);
+        --preset-tall: var(--sld-tall-small);
+        height: var(--preset-tall-small);
     }
 
     @each $preset, $value in $preset-tall-list {
-        &:global([tall="#{$preset}"]),
-        &:global(.tall-#{$preset}) {
-            --preset-tall: var(--sld-tall-#{$preset});
-            height: var(--sld-tall-#{$preset});
+        &[tall="#{$preset}"],
+        &.tall-#{$preset} {
+            height: var(--sld-tall-#{$preset}) !important;
         }
     }
 }
 
 @mixin ui-width-presets {
-    --preset-width: unset; //var(--sld-width-default);
+    --preset-width: var(--sld-width-small);
+    width: var(--preset-width-small);
+    & {
+        --preset-width: var(--sld-width-small);
+        width: var(--preset-width-small);
+    }
 
     @each $preset, $value in $preset-width-list {
-        &:global([width="#{$preset}"]),
-        &:global(.width-#{$preset}) {
+        &[width="#{$preset}"],
+        &.width-#{$preset} {
             --preset-width: var(--sld-width-#{$preset});
-            width: var(--sld-width-#{$preset});
+            width: var(--sld-width-#{$preset}) !important;
         }
     }
 }

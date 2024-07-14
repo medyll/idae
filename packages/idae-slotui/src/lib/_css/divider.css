@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],

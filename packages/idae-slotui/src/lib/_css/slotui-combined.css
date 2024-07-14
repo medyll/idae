@@ -1,5 +1,9 @@
 /** Alert.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -42,6 +46,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -368,6 +378,10 @@ dialog.alert article.dialog-content footer.dialog-footer button {
 }
 /** Avatar.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -410,6 +424,12 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -653,6 +673,10 @@ body[data-theme=dark],
 }
 /** backdrop.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -695,6 +719,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -957,6 +987,10 @@ body[data-theme=dark],
 }
 /** Badge.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -999,6 +1033,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -1245,6 +1285,10 @@ body[data-theme=dark],
 }
 /** Box.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -1287,6 +1331,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -1546,6 +1596,10 @@ body[data-theme=dark],
 }
 /** BreadCrumb.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -1588,6 +1642,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -1821,6 +1881,10 @@ body[data-theme=dark],
 }
 /** Cartouche.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -1863,6 +1927,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -2124,36 +2194,34 @@ body[data-theme=dark],
   align-items: center;
   gap: var(--cartouche-control-gap);
   background-color: var(--cartouche-background-color);
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   padding: auto 0.25rem;
 }
-.cartouche .control:global([tall="tiny"]), .cartouche .control:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.cartouche .control:global([tall="mini"]), .cartouche .control:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.cartouche .control:global([tall="small"]), .cartouche .control:global(.tall-small) {
-  height: var(--sld-tall-small);
+.cartouche .control {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.cartouche .control:global([tall="med"]), .cartouche .control:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.cartouche .control[tall=tiny], .cartouche .control.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.cartouche .control:global([tall="kind"]), .cartouche .control:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.cartouche .control[tall=mini], .cartouche .control.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.cartouche .control:global([tall="auto"]), .cartouche .control:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.cartouche .control[tall=small], .cartouche .control.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.cartouche .control:global([tall="default"]), .cartouche .control:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.cartouche .control[tall=med], .cartouche .control.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.cartouche .control[tall=kind], .cartouche .control.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.cartouche .control[tall=auto], .cartouche .control.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.cartouche .control[tall=default], .cartouche .control.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .cartouche .control:hover {
   background-color: var(--cartouche-background-color-hover);
@@ -2185,6 +2253,10 @@ body[data-theme=dark],
   border-top: 1px solid var(--cartouche-border);
 }
 /** chipper.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -2228,6 +2300,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -2514,6 +2592,10 @@ body[data-theme=dark],
 }
 /** content-switcher.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -2556,6 +2638,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -2807,6 +2895,10 @@ body[data-theme=dark],
 }
 /** Divider.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -2849,6 +2941,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -3095,6 +3193,10 @@ hr.vertical {
 }
 /** icon.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -3137,6 +3239,12 @@ hr.vertical {
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -3383,6 +3491,10 @@ body[data-theme=dark],
 }
 /** paper.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -3425,6 +3537,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -3676,6 +3794,10 @@ body[data-theme=dark],
 }
 /** title-bar.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -3718,6 +3840,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -3974,6 +4102,10 @@ body[data-theme=dark],
 }
 /** auto-complete.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -4016,6 +4148,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -4266,6 +4404,10 @@ body[data-theme=dark],
 }
 /** button.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -4308,6 +4450,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -4543,7 +4691,8 @@ body[data-theme=dark],
   --sld-button-border-width: 1px;
   --sld-button-text-align: center;
   --sld-button-padding: 0;
-  --sld-button-background: var(--sld-color-primary);
+  --sld-button-background: var(--sld-color-background);
+  --sld-button-contained-background: var(--sld-color-primary);
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
   --sld-button-focus-border-color: var(--sld-color-primary);
@@ -4563,10 +4712,13 @@ body[data-theme=dark],
 
 :global(button),
 :global(.button),
+:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: unset;
-  --preset-tall: unset;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
@@ -4579,176 +4731,225 @@ body[data-theme=dark],
   cursor: pointer;
   align-content: center;
   align-items: center;
-  max-height: 100%;
-}
-:global(button):global([width="tiny"]), :global(button):global(.width-tiny),
-:global(.button):global([width="tiny"]),
-:global(.button):global(.width-tiny),
-:global(input[type="button"]):global([width="tiny"]),
-:global(input[type="button"]):global(.width-tiny),
-:global(input[type="submit"]):global([width="tiny"]),
-:global(input[type="submit"]):global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-:global(button):global([width="mini"]), :global(button):global(.width-mini),
-:global(.button):global([width="mini"]),
-:global(.button):global(.width-mini),
-:global(input[type="button"]):global([width="mini"]),
-:global(input[type="button"]):global(.width-mini),
-:global(input[type="submit"]):global([width="mini"]),
-:global(input[type="submit"]):global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-:global(button):global([width="small"]), :global(button):global(.width-small),
-:global(.button):global([width="small"]),
-:global(.button):global(.width-small),
-:global(input[type="button"]):global([width="small"]),
-:global(input[type="button"]):global(.width-small),
-:global(input[type="submit"]):global([width="small"]),
-:global(input[type="submit"]):global(.width-small) {
-  width: var(--sld-width-small);
+  height: 25px;
   --preset-width: var(--sld-width-small);
-}
-:global(button):global([width="med"]), :global(button):global(.width-med),
-:global(.button):global([width="med"]),
-:global(.button):global(.width-med),
-:global(input[type="button"]):global([width="med"]),
-:global(input[type="button"]):global(.width-med),
-:global(input[type="submit"]):global([width="med"]),
-:global(input[type="submit"]):global(.width-med) {
-  width: var(--sld-width-med);
-  --preset-width: var(--sld-width-med);
-}
-:global(button):global([width="kind"]), :global(button):global(.width-kind),
-:global(.button):global([width="kind"]),
-:global(.button):global(.width-kind),
-:global(input[type="button"]):global([width="kind"]),
-:global(input[type="button"]):global(.width-kind),
-:global(input[type="submit"]):global([width="kind"]),
-:global(input[type="submit"]):global(.width-kind) {
-  width: var(--sld-width-kind);
-  --preset-width: var(--sld-width-kind);
-}
-:global(button):global([width="full"]), :global(button):global(.width-full),
-:global(.button):global([width="full"]),
-:global(.button):global(.width-full),
-:global(input[type="button"]):global([width="full"]),
-:global(input[type="button"]):global(.width-full),
-:global(input[type="submit"]):global([width="full"]),
-:global(input[type="submit"]):global(.width-full) {
-  width: var(--sld-width-full);
-  --preset-width: var(--sld-width-full);
-}
-:global(button):global([width="auto"]), :global(button):global(.width-auto),
-:global(.button):global([width="auto"]),
-:global(.button):global(.width-auto),
-:global(input[type="button"]):global([width="auto"]),
-:global(input[type="button"]):global(.width-auto),
-:global(input[type="submit"]):global([width="auto"]),
-:global(input[type="submit"]):global(.width-auto) {
-  width: var(--sld-width-auto);
-  --preset-width: var(--sld-width-auto);
-}
-:global(button):global([width="default"]), :global(button):global(.width-default),
-:global(.button):global([width="default"]),
-:global(.button):global(.width-default),
-:global(input[type="button"]):global([width="default"]),
-:global(input[type="button"]):global(.width-default),
-:global(input[type="submit"]):global([width="default"]),
-:global(input[type="submit"]):global(.width-default) {
-  width: var(--sld-width-default);
-  --preset-width: var(--sld-width-default);
-}
-:global(button):global([tall="tiny"]), :global(button):global(.tall-tiny),
-:global(.button):global([tall="tiny"]),
-:global(.button):global(.tall-tiny),
-:global(input[type="button"]):global([tall="tiny"]),
-:global(input[type="button"]):global(.tall-tiny),
-:global(input[type="submit"]):global([tall="tiny"]),
-:global(input[type="submit"]):global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-:global(button):global([tall="mini"]), :global(button):global(.tall-mini),
-:global(.button):global([tall="mini"]),
-:global(.button):global(.tall-mini),
-:global(input[type="button"]):global([tall="mini"]),
-:global(input[type="button"]):global(.tall-mini),
-:global(input[type="submit"]):global([tall="mini"]),
-:global(input[type="submit"]):global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-:global(button):global([tall="small"]), :global(button):global(.tall-small),
-:global(.button):global([tall="small"]),
-:global(.button):global(.tall-small),
-:global(input[type="button"]):global([tall="small"]),
-:global(input[type="button"]):global(.tall-small),
-:global(input[type="submit"]):global([tall="small"]),
-:global(input[type="submit"]):global(.tall-small) {
-  height: var(--sld-tall-small);
+  width: var(--preset-width-small);
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+  height: 25px;
 }
-:global(button):global([tall="med"]), :global(button):global(.tall-med),
-:global(.button):global([tall="med"]),
-:global(.button):global(.tall-med),
-:global(input[type="button"]):global([tall="med"]),
-:global(input[type="button"]):global(.tall-med),
-:global(input[type="submit"]):global([tall="med"]),
-:global(input[type="submit"]):global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-:global(button):global([tall="kind"]), :global(button):global(.tall-kind),
-:global(.button):global([tall="kind"]),
-:global(.button):global(.tall-kind),
-:global(input[type="button"]):global([tall="kind"]),
-:global(input[type="button"]):global(.tall-kind),
-:global(input[type="submit"]):global([tall="kind"]),
-:global(input[type="submit"]):global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
 }
-:global(button):global([tall="auto"]), :global(button):global(.tall-auto),
-:global(.button):global([tall="auto"]),
-:global(.button):global(.tall-auto),
-:global(input[type="button"]):global([tall="auto"]),
-:global(input[type="button"]):global(.tall-auto),
-:global(input[type="submit"]):global([tall="auto"]),
-:global(input[type="submit"]):global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
 }
-:global(button):global([tall="default"]), :global(button):global(.tall-default),
-:global(.button):global([tall="default"]),
-:global(.button):global(.tall-default),
-:global(input[type="button"]):global([tall="default"]),
-:global(input[type="button"]):global(.tall-default),
-:global(input[type="submit"]):global([tall="default"]),
-:global(input[type="submit"]):global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
 }
-:global(button)[variant*=square], :global(button)[square=true], :global(button):global(.square),
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  height: var(--sld-tall-tiny) !important;
+}
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  height: var(--sld-tall-mini) !important;
+}
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  height: var(--sld-tall-small) !important;
+}
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  height: var(--sld-tall-med) !important;
+}
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
 :global(.button)[variant*=square],
 :global(.button)[square=true],
-:global(.button):global(.square),
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
-:global(input[type="button"]):global(.square),
+:global(input[type="button"]).square,
 :global(input[type="submit"])[variant*=square],
 :global(input[type="submit"])[square=true],
-:global(input[type="submit"]):global(.square) {
-  aspect-ratio: 1;
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
   height: auto;
-  border: 1px solid red;
 }
 :global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -4759,6 +4960,7 @@ body[data-theme=dark],
 }
 :global(button):focus,
 :global(.button):focus,
+:global(button.button):focus,
 :global(input[type="button"]):focus,
 :global(input[type="submit"]):focus {
   outline: 1px solid var(--sld-button-focus-border-color);
@@ -4767,6 +4969,7 @@ body[data-theme=dark],
 }
 :global(button):focus-visible,
 :global(.button):focus-visible,
+:global(button.button):focus-visible,
 :global(input[type="button"]):focus-visible,
 :global(input[type="submit"]):focus-visible {
   outline: 1px solid var(--sld-button-focus-border-color);
@@ -4775,12 +4978,14 @@ body[data-theme=dark],
 }
 :global(button):focus:not(:focus-visible),
 :global(.button):focus:not(:focus-visible),
+:global(button.button):focus:not(:focus-visible),
 :global(input[type="button"]):focus:not(:focus-visible),
 :global(input[type="submit"]):focus:not(:focus-visible) {
   box-shadow: var(--sld-button-focus-shadow);
 }
 :global(button):hover,
 :global(.button):hover,
+:global(button.button):hover,
 :global(input[type="button"]):hover,
 :global(input[type="submit"]):hover {
   background-color: var(--sld-button-hover-background);
@@ -4788,6 +4993,7 @@ body[data-theme=dark],
 }
 :global(button):active,
 :global(.button):active,
+:global(button.button):active,
 :global(input[type="button"]):active,
 :global(input[type="submit"]):active {
   transform: translateY(1px);
@@ -4795,6 +5001,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start,
 :global(.button) .button-start,
+:global(button.button) .button-start,
 :global(input[type="button"]) .button-start,
 :global(input[type="submit"]) .button-start {
   --preset-ellipsis-line: 1;
@@ -4809,6 +5016,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis,
 :global(.button) .button-start.ellipsis,
+:global(button.button) .button-start.ellipsis,
 :global(input[type="button"]) .button-start.ellipsis,
 :global(input[type="submit"]) .button-start.ellipsis {
   white-space: nowrap;
@@ -4817,6 +5025,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-1,
 :global(.button) .button-start.ellipsis-line-1,
+:global(button.button) .button-start.ellipsis-line-1,
 :global(input[type="button"]) .button-start.ellipsis-line-1,
 :global(input[type="submit"]) .button-start.ellipsis-line-1 {
   display: -webkit-box;
@@ -4829,6 +5038,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-2,
 :global(.button) .button-start.ellipsis-line-2,
+:global(button.button) .button-start.ellipsis-line-2,
 :global(input[type="button"]) .button-start.ellipsis-line-2,
 :global(input[type="submit"]) .button-start.ellipsis-line-2 {
   display: -webkit-box;
@@ -4841,6 +5051,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-3,
 :global(.button) .button-start.ellipsis-line-3,
+:global(button.button) .button-start.ellipsis-line-3,
 :global(input[type="button"]) .button-start.ellipsis-line-3,
 :global(input[type="submit"]) .button-start.ellipsis-line-3 {
   display: -webkit-box;
@@ -4853,6 +5064,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-4,
 :global(.button) .button-start.ellipsis-line-4,
+:global(button.button) .button-start.ellipsis-line-4,
 :global(input[type="button"]) .button-start.ellipsis-line-4,
 :global(input[type="submit"]) .button-start.ellipsis-line-4 {
   display: -webkit-box;
@@ -4865,6 +5077,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-5,
 :global(.button) .button-start.ellipsis-line-5,
+:global(button.button) .button-start.ellipsis-line-5,
 :global(input[type="button"]) .button-start.ellipsis-line-5,
 :global(input[type="submit"]) .button-start.ellipsis-line-5 {
   display: -webkit-box;
@@ -4877,12 +5090,14 @@ body[data-theme=dark],
 }
 :global(button) .button-start:empty,
 :global(.button) .button-start:empty,
+:global(button.button) .button-start:empty,
 :global(input[type="button"]) .button-start:empty,
 :global(input[type="submit"]) .button-start:empty {
   display: none;
 }
 :global(button) .button-central,
 :global(.button) .button-central,
+:global(button.button) .button-central,
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   width: 100%;
@@ -4895,6 +5110,7 @@ body[data-theme=dark],
 }
 :global(button) .button-action,
 :global(.button) .button-action,
+:global(button.button) .button-action,
 :global(input[type="button"]) .button-action,
 :global(input[type="submit"]) .button-action {
   position: absolute;
@@ -4910,12 +5126,14 @@ body[data-theme=dark],
 }
 :global(button) .button-action:empty,
 :global(.button) .button-action:empty,
+:global(button.button) .button-action:empty,
 :global(input[type="button"]) .button-action:empty,
 :global(input[type="submit"]) .button-action:empty {
   display: none;
 }
 :global(button) .button-action:hover,
 :global(.button) .button-action:hover,
+:global(button.button) .button-action:hover,
 :global(input[type="button"]) .button-action:hover,
 :global(input[type="submit"]) .button-action:hover {
   background-color: var(--sld-button-action-hover-background);
@@ -4923,6 +5141,8 @@ body[data-theme=dark],
 :global(button).loading, :global(button)[aria-busy=true],
 :global(.button).loading,
 :global(.button)[aria-busy=true],
+:global(button.button).loading,
+:global(button.button)[aria-busy=true],
 :global(input[type="button"]).loading,
 :global(input[type="button"])[aria-busy=true],
 :global(input[type="submit"]).loading,
@@ -4934,6 +5154,8 @@ body[data-theme=dark],
 :global(button).loading::after, :global(button)[aria-busy=true]::after,
 :global(.button).loading::after,
 :global(.button)[aria-busy=true]::after,
+:global(button.button).loading::after,
+:global(button.button)[aria-busy=true]::after,
 :global(input[type="button"]).loading::after,
 :global(input[type="button"])[aria-busy=true]::after,
 :global(input[type="submit"]).loading::after,
@@ -4956,6 +5178,9 @@ body[data-theme=dark],
 :global(.button)[disabled],
 :global(.button).disabled,
 :global(.button)[aria-disabled=true],
+:global(button.button)[disabled],
+:global(button.button).disabled,
+:global(button.button)[aria-disabled=true],
 :global(input[type="button"])[disabled],
 :global(input[type="button"]).disabled,
 :global(input[type="button"])[aria-disabled=true],
@@ -4972,6 +5197,8 @@ body[data-theme=dark],
 :global(button)[aria-pressed=true], :global(button).selected,
 :global(.button)[aria-pressed=true],
 :global(.button).selected,
+:global(button.button)[aria-pressed=true],
+:global(button.button).selected,
 :global(input[type="button"])[aria-pressed=true],
 :global(input[type="button"]).selected,
 :global(input[type="submit"])[aria-pressed=true],
@@ -4982,6 +5209,7 @@ body[data-theme=dark],
 }
 :global(button) .chip,
 :global(.button) .chip,
+:global(button.button) .chip,
 :global(input[type="button"]) .chip,
 :global(input[type="submit"]) .chip {
   position: absolute;
@@ -4996,6 +5224,7 @@ body[data-theme=dark],
 }
 :global(button) .loadingButtonZone,
 :global(.button) .loadingButtonZone,
+:global(button.button) .loadingButtonZone,
 :global(input[type="button"]) .loadingButtonZone,
 :global(input[type="submit"]) .loadingButtonZone {
   z-index: 10;
@@ -5009,182 +5238,218 @@ body[data-theme=dark],
   align-content: center;
   justify-content: space-around;
 }
-
 :global(button),
 :global(.button),
+:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: unset;
-  --preset-tall: unset;
-}
-:global(button):global([width="tiny"]), :global(button):global(.width-tiny),
-:global(.button):global([width="tiny"]),
-:global(.button):global(.width-tiny),
-:global(input[type="button"]):global([width="tiny"]),
-:global(input[type="button"]):global(.width-tiny),
-:global(input[type="submit"]):global([width="tiny"]),
-:global(input[type="submit"]):global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-:global(button):global([width="mini"]), :global(button):global(.width-mini),
-:global(.button):global([width="mini"]),
-:global(.button):global(.width-mini),
-:global(input[type="button"]):global([width="mini"]),
-:global(input[type="button"]):global(.width-mini),
-:global(input[type="submit"]):global([width="mini"]),
-:global(input[type="submit"]):global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-:global(button):global([width="small"]), :global(button):global(.width-small),
-:global(.button):global([width="small"]),
-:global(.button):global(.width-small),
-:global(input[type="button"]):global([width="small"]),
-:global(input[type="button"]):global(.width-small),
-:global(input[type="submit"]):global([width="small"]),
-:global(input[type="submit"]):global(.width-small) {
-  width: var(--sld-width-small);
   --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-:global(button):global([width="med"]), :global(button):global(.width-med),
-:global(.button):global([width="med"]),
-:global(.button):global(.width-med),
-:global(input[type="button"]):global([width="med"]),
-:global(input[type="button"]):global(.width-med),
-:global(input[type="submit"]):global([width="med"]),
-:global(input[type="submit"]):global(.width-med) {
-  width: var(--sld-width-med);
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
   --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
 }
-:global(button):global([width="kind"]), :global(button):global(.width-kind),
-:global(.button):global([width="kind"]),
-:global(.button):global(.width-kind),
-:global(input[type="button"]):global([width="kind"]),
-:global(input[type="button"]):global(.width-kind),
-:global(input[type="submit"]):global([width="kind"]),
-:global(input[type="submit"]):global(.width-kind) {
-  width: var(--sld-width-kind);
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
   --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
 }
-:global(button):global([width="full"]), :global(button):global(.width-full),
-:global(.button):global([width="full"]),
-:global(.button):global(.width-full),
-:global(input[type="button"]):global([width="full"]),
-:global(input[type="button"]):global(.width-full),
-:global(input[type="submit"]):global([width="full"]),
-:global(input[type="submit"]):global(.width-full) {
-  width: var(--sld-width-full);
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
   --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
 }
-:global(button):global([width="auto"]), :global(button):global(.width-auto),
-:global(.button):global([width="auto"]),
-:global(.button):global(.width-auto),
-:global(input[type="button"]):global([width="auto"]),
-:global(input[type="button"]):global(.width-auto),
-:global(input[type="submit"]):global([width="auto"]),
-:global(input[type="submit"]):global(.width-auto) {
-  width: var(--sld-width-auto);
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
   --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
 }
-:global(button):global([width="default"]), :global(button):global(.width-default),
-:global(.button):global([width="default"]),
-:global(.button):global(.width-default),
-:global(input[type="button"]):global([width="default"]),
-:global(input[type="button"]):global(.width-default),
-:global(input[type="submit"]):global([width="default"]),
-:global(input[type="submit"]):global(.width-default) {
-  width: var(--sld-width-default);
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
   --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
 }
-:global(button):global([tall="tiny"]), :global(button):global(.tall-tiny),
-:global(.button):global([tall="tiny"]),
-:global(.button):global(.tall-tiny),
-:global(input[type="button"]):global([tall="tiny"]),
-:global(input[type="button"]):global(.tall-tiny),
-:global(input[type="submit"]):global([tall="tiny"]),
-:global(input[type="submit"]):global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-:global(button):global([tall="mini"]), :global(button):global(.tall-mini),
-:global(.button):global([tall="mini"]),
-:global(.button):global(.tall-mini),
-:global(input[type="button"]):global([tall="mini"]),
-:global(input[type="button"]):global(.tall-mini),
-:global(input[type="submit"]):global([tall="mini"]),
-:global(input[type="submit"]):global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-:global(button):global([tall="small"]), :global(button):global(.tall-small),
-:global(.button):global([tall="small"]),
-:global(.button):global(.tall-small),
-:global(input[type="button"]):global([tall="small"]),
-:global(input[type="button"]):global(.tall-small),
-:global(input[type="submit"]):global([tall="small"]),
-:global(input[type="submit"]):global(.tall-small) {
-  height: var(--sld-tall-small);
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-:global(button):global([tall="med"]), :global(button):global(.tall-med),
-:global(.button):global([tall="med"]),
-:global(.button):global(.tall-med),
-:global(input[type="button"]):global([tall="med"]),
-:global(input[type="button"]):global(.tall-med),
-:global(input[type="submit"]):global([tall="med"]),
-:global(input[type="submit"]):global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-:global(button):global([tall="kind"]), :global(button):global(.tall-kind),
-:global(.button):global([tall="kind"]),
-:global(.button):global(.tall-kind),
-:global(input[type="button"]):global([tall="kind"]),
-:global(input[type="button"]):global(.tall-kind),
-:global(input[type="submit"]):global([tall="kind"]),
-:global(input[type="submit"]):global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-:global(button):global([tall="auto"]), :global(button):global(.tall-auto),
-:global(.button):global([tall="auto"]),
-:global(.button):global(.tall-auto),
-:global(input[type="button"]):global([tall="auto"]),
-:global(input[type="button"]):global(.tall-auto),
-:global(input[type="submit"]):global([tall="auto"]),
-:global(input[type="submit"]):global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  height: var(--sld-tall-small) !important;
 }
-:global(button):global([tall="default"]), :global(button):global(.tall-default),
-:global(.button):global([tall="default"]),
-:global(.button):global(.tall-default),
-:global(input[type="button"]):global([tall="default"]),
-:global(input[type="button"]):global(.tall-default),
-:global(input[type="submit"]):global([tall="default"]),
-:global(input[type="submit"]):global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  height: var(--sld-tall-med) !important;
 }
-:global(button)[variant*=square], :global(button)[square=true], :global(button):global(.square),
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
 :global(.button)[variant*=square],
 :global(.button)[square=true],
-:global(.button):global(.square),
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
-:global(input[type="button"]):global(.square),
+:global(input[type="button"]).square,
 :global(input[type="submit"])[variant*=square],
 :global(input[type="submit"])[square=true],
-:global(input[type="submit"]):global(.square) {
-  aspect-ratio: 1;
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
   height: auto;
-  border: 1px solid red;
 }
 :global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -5197,6 +5462,9 @@ body[data-theme=dark],
 :global(.button)[variant*=bordered],
 :global(.button)[bordered=true],
 :global(.button).bordered,
+:global(button.button)[variant*=bordered],
+:global(button.button)[bordered=true],
+:global(button.button).bordered,
 :global(input[type="button"])[variant*=bordered],
 :global(input[type="button"])[bordered=true],
 :global(input[type="button"]).bordered,
@@ -5206,12 +5474,15 @@ body[data-theme=dark],
   color: var(--sld-color-foreground);
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   box-shadow: var(--sld-elevation-1);
-  background-color: var(--sld-color-background);
+  background-color: var(--sld-button-background);
 }
 :global(button)[variant*=bordered]:hover, :global(button)[bordered=true]:hover, :global(button).bordered:hover,
 :global(.button)[variant*=bordered]:hover,
 :global(.button)[bordered=true]:hover,
 :global(.button).bordered:hover,
+:global(button.button)[variant*=bordered]:hover,
+:global(button.button)[bordered=true]:hover,
+:global(button.button).bordered:hover,
 :global(input[type="button"])[variant*=bordered]:hover,
 :global(input[type="button"])[bordered=true]:hover,
 :global(input[type="button"]).bordered:hover,
@@ -5228,6 +5499,12 @@ body[data-theme=dark],
 :global(.button)[bordered=true]:active,
 :global(.button).bordered:focus,
 :global(.button).bordered:active,
+:global(button.button)[variant*=bordered]:focus,
+:global(button.button)[variant*=bordered]:active,
+:global(button.button)[bordered=true]:focus,
+:global(button.button)[bordered=true]:active,
+:global(button.button).bordered:focus,
+:global(button.button).bordered:active,
 :global(input[type="button"])[variant*=bordered]:focus,
 :global(input[type="button"])[variant*=bordered]:active,
 :global(input[type="button"])[bordered=true]:focus,
@@ -5247,6 +5524,9 @@ body[data-theme=dark],
 :global(.button)[variant*=contained],
 :global(.button)[contained=true],
 :global(.button).contained,
+:global(button.button)[variant*=contained],
+:global(button.button)[contained=true],
+:global(button.button).contained,
 :global(input[type="button"])[variant*=contained],
 :global(input[type="button"])[contained=true],
 :global(input[type="button"]).contained,
@@ -5255,7 +5535,7 @@ body[data-theme=dark],
 :global(input[type="submit"]).contained {
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   color: var(--sld-color-on-primary);
-  background-color: var(--sld-button-background);
+  background-color: var(--sld-button-contained-background);
   background-clip: padding-box;
   box-shadow: var(--sld-elevation-1);
 }
@@ -5263,6 +5543,9 @@ body[data-theme=dark],
 :global(.button)[variant*=contained]:hover,
 :global(.button)[contained=true]:hover,
 :global(.button).contained:hover,
+:global(button.button)[variant*=contained]:hover,
+:global(button.button)[contained=true]:hover,
+:global(button.button).contained:hover,
 :global(input[type="button"])[variant*=contained]:hover,
 :global(input[type="button"])[contained=true]:hover,
 :global(input[type="button"]).contained:hover,
@@ -5279,6 +5562,12 @@ body[data-theme=dark],
 :global(.button)[contained=true]:active,
 :global(.button).contained:focus,
 :global(.button).contained:active,
+:global(button.button)[variant*=contained]:focus,
+:global(button.button)[variant*=contained]:active,
+:global(button.button)[contained=true]:focus,
+:global(button.button)[contained=true]:active,
+:global(button.button).contained:focus,
+:global(button.button).contained:active,
 :global(input[type="button"])[variant*=contained]:focus,
 :global(input[type="button"])[variant*=contained]:active,
 :global(input[type="button"])[contained=true]:focus,
@@ -5300,6 +5589,10 @@ body[data-theme=dark],
 :global(.button)[link=true],
 :global(.button).link,
 :global(.button)[role=link],
+:global(button.button)[variant*=link],
+:global(button.button)[link=true],
+:global(button.button).link,
+:global(button.button)[role=link],
 :global(input[type="button"])[variant*=link],
 :global(input[type="button"])[link=true],
 :global(input[type="button"]).link,
@@ -5320,6 +5613,10 @@ body[data-theme=dark],
 :global(.button)[link=true]:hover,
 :global(.button).link:hover,
 :global(.button)[role=link]:hover,
+:global(button.button)[variant*=link]:hover,
+:global(button.button)[link=true]:hover,
+:global(button.button).link:hover,
+:global(button.button)[role=link]:hover,
 :global(input[type="button"])[variant*=link]:hover,
 :global(input[type="button"])[link=true]:hover,
 :global(input[type="button"]).link:hover,
@@ -5339,6 +5636,14 @@ body[data-theme=dark],
 :global(.button).link:active,
 :global(.button)[role=link]:focus,
 :global(.button)[role=link]:active,
+:global(button.button)[variant*=link]:focus,
+:global(button.button)[variant*=link]:active,
+:global(button.button)[link=true]:focus,
+:global(button.button)[link=true]:active,
+:global(button.button).link:focus,
+:global(button.button).link:active,
+:global(button.button)[role=link]:focus,
+:global(button.button)[role=link]:active,
 :global(input[type="button"])[variant*=link]:focus,
 :global(input[type="button"])[variant*=link]:active,
 :global(input[type="button"])[link=true]:focus,
@@ -5363,6 +5668,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked],
 :global(.button)[naked=true],
 :global(.button).naked,
+:global(button.button)[variant*=naked],
+:global(button.button)[naked=true],
+:global(button.button).naked,
 :global(input[type="button"])[variant*=naked],
 :global(input[type="button"])[naked=true],
 :global(input[type="button"]).naked,
@@ -5378,6 +5686,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -5391,6 +5702,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -5406,6 +5720,12 @@ body[data-theme=dark],
 :global(.button)[naked=true]:focus,
 :global(.button).naked:active,
 :global(.button).naked:focus,
+:global(button.button)[variant*=naked]:active,
+:global(button.button)[variant*=naked]:focus,
+:global(button.button)[naked=true]:active,
+:global(button.button)[naked=true]:focus,
+:global(button.button).naked:active,
+:global(button.button).naked:focus,
 :global(input[type="button"])[variant*=naked]:active,
 :global(input[type="button"])[variant*=naked]:focus,
 :global(input[type="button"])[naked=true]:active,
@@ -5426,6 +5746,9 @@ body[data-theme=dark],
 :global(.button)[variant*=flat],
 :global(.button)[flat=true],
 :global(.button).flat,
+:global(button.button)[variant*=flat],
+:global(button.button)[flat=true],
+:global(button.button).flat,
 :global(input[type="button"])[variant*=flat],
 :global(input[type="button"])[flat=true],
 :global(input[type="button"]).flat,
@@ -5442,6 +5765,9 @@ body[data-theme=dark],
 :global(.button)[variant*=flat]:hover,
 :global(.button)[flat=true]:hover,
 :global(.button).flat:hover,
+:global(button.button)[variant*=flat]:hover,
+:global(button.button)[flat=true]:hover,
+:global(button.button).flat:hover,
 :global(input[type="button"])[variant*=flat]:hover,
 :global(input[type="button"])[flat=true]:hover,
 :global(input[type="button"]).flat:hover,
@@ -5457,6 +5783,12 @@ body[data-theme=dark],
 :global(.button)[flat=true]:focus,
 :global(.button).flat:active,
 :global(.button).flat:focus,
+:global(button.button)[variant*=flat]:active,
+:global(button.button)[variant*=flat]:focus,
+:global(button.button)[flat=true]:active,
+:global(button.button)[flat=true]:focus,
+:global(button.button).flat:active,
+:global(button.button).flat:focus,
 :global(input[type="button"])[variant*=flat]:active,
 :global(input[type="button"])[variant*=flat]:focus,
 :global(input[type="button"])[flat=true]:active,
@@ -5514,6 +5846,10 @@ body[data-theme=dark],
 }
 /** checkbox.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -5556,6 +5892,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -5799,7 +6141,8 @@ body[data-theme=dark],
 }
 
 .checkbox {
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   transition: all 0.2s ease;
   appearance: none;
   outline: none;
@@ -5817,33 +6160,30 @@ body[data-theme=dark],
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.checkbox:global([tall="tiny"]), .checkbox:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.checkbox:global([tall="mini"]), .checkbox:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.checkbox:global([tall="small"]), .checkbox:global(.tall-small) {
-  height: var(--sld-tall-small);
+.checkbox {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.checkbox:global([tall="med"]), .checkbox:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.checkbox[tall=tiny], .checkbox.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.checkbox:global([tall="kind"]), .checkbox:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.checkbox[tall=mini], .checkbox.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.checkbox:global([tall="auto"]), .checkbox:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.checkbox[tall=small], .checkbox.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.checkbox:global([tall="default"]), .checkbox:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.checkbox[tall=med], .checkbox.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.checkbox[tall=kind], .checkbox.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.checkbox[tall=auto], .checkbox.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.checkbox[tall=default], .checkbox.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);
@@ -5912,6 +6252,10 @@ body[data-theme=dark],
 }
 /** confirm.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -5954,6 +6298,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -6193,6 +6543,10 @@ body[data-theme=dark],
 }
 /** progress.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -6235,6 +6589,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -6485,6 +6845,10 @@ body[data-theme=dark],
 }
 /** rating.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -6527,6 +6891,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -6766,6 +7136,10 @@ body[data-theme=dark],
 }
 /** select.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -6808,6 +7182,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -7049,6 +7429,10 @@ body[data-theme=dark],
 }
 /** slider.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -7091,6 +7475,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -7336,36 +7726,34 @@ body[data-theme=dark],
   flex-direction: row;
   align-items: center;
   width: 168px;
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   --height: calc(var(--preset-density) / 6);
 }
-.slider:global([tall="tiny"]), .slider:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.slider:global([tall="mini"]), .slider:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.slider:global([tall="small"]), .slider:global(.tall-small) {
-  height: var(--sld-tall-small);
+.slider {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.slider:global([tall="med"]), .slider:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.slider[tall=tiny], .slider.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.slider:global([tall="kind"]), .slider:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.slider[tall=mini], .slider.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.slider:global([tall="auto"]), .slider:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.slider[tall=small], .slider.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.slider:global([tall="default"]), .slider:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.slider[tall=med], .slider.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.slider[tall=kind], .slider.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.slider[tall=auto], .slider.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.slider[tall=default], .slider.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .slider .slider-gouge {
   height: var(--height);
@@ -7395,6 +7783,10 @@ body[data-theme=dark],
   outline: 4px solid var(--slider-thumb-hover-outline);
 }
 /** stepper.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -7438,6 +7830,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -7688,6 +8086,10 @@ body[data-theme=dark],
 }
 /** switch.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -7730,6 +8132,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -8023,6 +8431,10 @@ label {
 }
 /** textfield.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -8065,6 +8477,12 @@ label {
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -8312,71 +8730,74 @@ body[data-theme=dark],
   box-shadow: var(--textfield-shadow);
   background-color: var(--textfield-background);
   color: var(--sld-color-foreground);
-  --preset-width: unset;
-  --preset-tall: unset;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
 .textfield [error] {
   border-bottom: red;
 }
-.textfield:global([width="tiny"]), .textfield:global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-.textfield:global([width="mini"]), .textfield:global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-.textfield:global([width="small"]), .textfield:global(.width-small) {
-  width: var(--sld-width-small);
+.textfield {
   --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-.textfield:global([width="med"]), .textfield:global(.width-med) {
-  width: var(--sld-width-med);
+.textfield[width=tiny], .textfield.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.textfield[width=mini], .textfield.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.textfield[width=small], .textfield.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.textfield[width=med], .textfield.width-med {
   --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
 }
-.textfield:global([width="kind"]), .textfield:global(.width-kind) {
-  width: var(--sld-width-kind);
+.textfield[width=kind], .textfield.width-kind {
   --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
 }
-.textfield:global([width="full"]), .textfield:global(.width-full) {
-  width: var(--sld-width-full);
+.textfield[width=full], .textfield.width-full {
   --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
 }
-.textfield:global([width="auto"]), .textfield:global(.width-auto) {
-  width: var(--sld-width-auto);
+.textfield[width=auto], .textfield.width-auto {
   --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
 }
-.textfield:global([width="default"]), .textfield:global(.width-default) {
-  width: var(--sld-width-default);
+.textfield[width=default], .textfield.width-default {
   --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
 }
-.textfield:global([tall="tiny"]), .textfield:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.textfield:global([tall="mini"]), .textfield:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.textfield:global([tall="small"]), .textfield:global(.tall-small) {
-  height: var(--sld-tall-small);
+.textfield {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.textfield:global([tall="med"]), .textfield:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.textfield[tall=tiny], .textfield.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.textfield:global([tall="kind"]), .textfield:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.textfield[tall=mini], .textfield.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.textfield:global([tall="auto"]), .textfield:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.textfield[tall=small], .textfield.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.textfield:global([tall="default"]), .textfield:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.textfield[tall=med], .textfield.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.textfield[tall=kind], .textfield.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.textfield[tall=auto], .textfield.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.textfield[tall=default], .textfield.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .textfield:hover {
   border-color: var(--sld-hover-border-color);
@@ -8418,6 +8839,10 @@ body[data-theme=dark],
   border: 1px solid pink;
 }
 /** csss.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -8461,6 +8886,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -8692,15 +9123,18 @@ body[data-theme=dark],
 :global * {
   border: 1px solid red;
 }
-:global *[variant*=square], :global *[square=true], :global *:global(.square) {
-  aspect-ratio: 1;
+:global *[variant*=square], :global *[square=true], :global *.square {
+  aspect-ratio: 1/1 !important;
   height: auto;
-  border: 1px solid red;
 }
 :global *[variant*=rounded], :global *[rounded=true], :global *.rounded {
   border-radius: 50%;
 }
 /** DataList.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -8744,6 +9178,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -9110,6 +9550,10 @@ body[data-theme=dark],
 }
 /** finder.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -9152,6 +9596,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -9387,70 +9837,77 @@ body[data-theme=dark],
 .finder-container {
   display: inline-flex;
   gap: var(--finder-gap);
-  --preset-width: unset;
-  --preset-tall: unset;
-}
-.finder-container:global([width="tiny"]), .finder-container:global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-.finder-container:global([width="mini"]), .finder-container:global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-.finder-container:global([width="small"]), .finder-container:global(.width-small) {
-  width: var(--sld-width-small);
   --preset-width: var(--sld-width-small);
-}
-.finder-container:global([width="med"]), .finder-container:global(.width-med) {
-  width: var(--sld-width-med);
-  --preset-width: var(--sld-width-med);
-}
-.finder-container:global([width="kind"]), .finder-container:global(.width-kind) {
-  width: var(--sld-width-kind);
-  --preset-width: var(--sld-width-kind);
-}
-.finder-container:global([width="full"]), .finder-container:global(.width-full) {
-  width: var(--sld-width-full);
-  --preset-width: var(--sld-width-full);
-}
-.finder-container:global([width="auto"]), .finder-container:global(.width-auto) {
-  width: var(--sld-width-auto);
-  --preset-width: var(--sld-width-auto);
-}
-.finder-container:global([width="default"]), .finder-container:global(.width-default) {
-  width: var(--sld-width-default);
-  --preset-width: var(--sld-width-default);
-}
-.finder-container:global([tall="tiny"]), .finder-container:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.finder-container:global([tall="mini"]), .finder-container:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.finder-container:global([tall="small"]), .finder-container:global(.tall-small) {
-  height: var(--sld-tall-small);
+  width: var(--preset-width-small);
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.finder-container:global([tall="med"]), .finder-container:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.finder-container {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-.finder-container:global([tall="kind"]), .finder-container:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.finder-container[width=tiny], .finder-container.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
 }
-.finder-container:global([tall="auto"]), .finder-container:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.finder-container[width=mini], .finder-container.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
 }
-.finder-container:global([tall="default"]), .finder-container:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.finder-container[width=small], .finder-container.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.finder-container[width=med], .finder-container.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+.finder-container[width=kind], .finder-container.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+.finder-container[width=full], .finder-container.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+.finder-container[width=auto], .finder-container.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+.finder-container[width=default], .finder-container.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+.finder-container {
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+}
+.finder-container[tall=tiny], .finder-container.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
+}
+.finder-container[tall=mini], .finder-container.tall-mini {
+  height: var(--sld-tall-mini) !important;
+}
+.finder-container[tall=small], .finder-container.tall-small {
+  height: var(--sld-tall-small) !important;
+}
+.finder-container[tall=med], .finder-container.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.finder-container[tall=kind], .finder-container.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.finder-container[tall=auto], .finder-container.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.finder-container[tall=default], .finder-container.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 /** loader.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -9494,6 +9951,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -9770,6 +10233,10 @@ body[data-theme=dark],
 }
 /** sorterer.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -9812,6 +10279,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -10053,6 +10526,10 @@ body[data-theme=dark],
 }
 /** Drawer.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -10095,6 +10572,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -10360,38 +10843,36 @@ body[data-theme=dark],
   z-index: 8600;
 }
 .drawer header, .drawer-header {
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   min-height: var(--drawer-header-min-height);
   display: flex;
   width: 100%;
 }
-.drawer header:global([tall="tiny"]), .drawer header:global(.tall-tiny), .drawer-header:global([tall="tiny"]), .drawer-header:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.drawer header:global([tall="mini"]), .drawer header:global(.tall-mini), .drawer-header:global([tall="mini"]), .drawer-header:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.drawer header:global([tall="small"]), .drawer header:global(.tall-small), .drawer-header:global([tall="small"]), .drawer-header:global(.tall-small) {
-  height: var(--sld-tall-small);
+.drawer header, .drawer-header {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.drawer header:global([tall="med"]), .drawer header:global(.tall-med), .drawer-header:global([tall="med"]), .drawer-header:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.drawer header[tall=tiny], .drawer header.tall-tiny, .drawer-header[tall=tiny], .drawer-header.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.drawer header:global([tall="kind"]), .drawer header:global(.tall-kind), .drawer-header:global([tall="kind"]), .drawer-header:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.drawer header[tall=mini], .drawer header.tall-mini, .drawer-header[tall=mini], .drawer-header.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.drawer header:global([tall="auto"]), .drawer header:global(.tall-auto), .drawer-header:global([tall="auto"]), .drawer-header:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.drawer header[tall=small], .drawer header.tall-small, .drawer-header[tall=small], .drawer-header.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.drawer header:global([tall="default"]), .drawer header:global(.tall-default), .drawer-header:global([tall="default"]), .drawer-header:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.drawer header[tall=med], .drawer header.tall-med, .drawer-header[tall=med], .drawer-header.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.drawer header[tall=kind], .drawer header.tall-kind, .drawer-header[tall=kind], .drawer-header.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.drawer header[tall=auto], .drawer header.tall-auto, .drawer-header[tall=auto], .drawer-header.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.drawer header[tall=default], .drawer header.tall-default, .drawer-header[tall=default], .drawer-header.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .drawer header-bar, .drawer-header-bar {
   flex: 1;
@@ -10411,6 +10892,10 @@ body[data-theme=dark],
   width: 100%;
 }
 /** Tabs.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -10454,6 +10939,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -10769,6 +11260,10 @@ body[data-theme=dark],
 }
 /** presets.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -10811,6 +11306,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -11040,6 +11541,10 @@ body[data-theme=dark],
 }
 /** slotui-vars.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -11082,6 +11587,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -11313,6 +11824,10 @@ body[data-theme=dark],
 
 /** chrome-frame.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -11355,6 +11870,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -11619,6 +12140,10 @@ body[data-theme=dark],
 }
 /** frame.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -11661,6 +12186,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -11940,6 +12471,10 @@ body[data-theme=dark],
 }
 /** marquee.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -11982,6 +12517,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -12268,6 +12809,10 @@ body[data-theme=dark],
 }
 /** menu.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -12310,6 +12855,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -12563,7 +13114,8 @@ ul.menu li.menuTitle {
 }
 
 li.menuItem {
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;
@@ -12592,33 +13144,30 @@ li.menuItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-li.menuItem:global([tall="tiny"]), li.menuItem:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-li.menuItem:global([tall="mini"]), li.menuItem:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-li.menuItem:global([tall="small"]), li.menuItem:global(.tall-small) {
-  height: var(--sld-tall-small);
+li.menuItem {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-li.menuItem:global([tall="med"]), li.menuItem:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+li.menuItem[tall=tiny], li.menuItem.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-li.menuItem:global([tall="kind"]), li.menuItem:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+li.menuItem[tall=mini], li.menuItem.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-li.menuItem:global([tall="auto"]), li.menuItem:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+li.menuItem[tall=small], li.menuItem.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-li.menuItem:global([tall="default"]), li.menuItem:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+li.menuItem[tall=med], li.menuItem.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+li.menuItem[tall=kind], li.menuItem.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+li.menuItem[tall=auto], li.menuItem.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+li.menuItem[tall=default], li.menuItem.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 li.menuItem .menuListItemIcon {
   width: var(--menu-item-icon-width);
@@ -12637,6 +13186,10 @@ li.menuItem .menu-list-item-action {
   display: block;
 }
 /** menu-list.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -12680,6 +13233,12 @@ li.menuItem .menu-list-item-action {
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -12918,7 +13477,7 @@ body[data-theme=dark],
   --menu-list-grid-items-count: 0;
 }
 
-:global(.menuList) {
+:global(.menu-list) {
   margin: 0;
   cursor: pointer;
   display: flex;
@@ -12926,13 +13485,320 @@ body[data-theme=dark],
   align-items: end;
   padding: var(--menu-list-padding);
 }
-:global(.menuList).grid {
+:global(.menu-list).grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
 }
-:global(.menuList) li.menu-list-title,
-:global(.menuList) a.menu-list-title {
+:global(.menu-list) li.menu-list-title,
+:global(.menu-list) a.menu-list-title {
   font-weight: bold;
+}
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  border: 1px solid red;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+  --preset-gutter: var(--sld-gutter-default);
+  text-decoration: none;
+  overflow: hidden;
+  padding-left: calc(var(--preset-tall) / 4);
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--menu-list-item-radius);
+  align-self: flex-start;
+}
+:global(.menu-list) .menu-list-item[variant*=square], :global(.menu-list) .menu-list-item[square=true], :global(.menu-list) .menu-list-item.square,
+:global(.menu-list) a.menu-list-item[variant*=square],
+:global(.menu-list) a.menu-list-item[square=true],
+:global(.menu-list) a.menu-list-item.square,
+:global(.menu-list) li.menu-list-item[variant*=square],
+:global(.menu-list) li.menu-list-item[square=true],
+:global(.menu-list) li.menu-list-item.square {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+:global(.menu-list) .menu-list-item[variant*=rounded], :global(.menu-list) .menu-list-item[rounded=true], :global(.menu-list) .menu-list-item.rounded,
+:global(.menu-list) a.menu-list-item[variant*=rounded],
+:global(.menu-list) a.menu-list-item[rounded=true],
+:global(.menu-list) a.menu-list-item.rounded,
+:global(.menu-list) li.menu-list-item[variant*=rounded],
+:global(.menu-list) li.menu-list-item[rounded=true],
+:global(.menu-list) li.menu-list-item.rounded {
+  border-radius: 50%;
+}
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+}
+:global(.menu-list) .menu-list-item[width=tiny], :global(.menu-list) .menu-list-item.width-tiny,
+:global(.menu-list) a.menu-list-item[width=tiny],
+:global(.menu-list) a.menu-list-item.width-tiny,
+:global(.menu-list) li.menu-list-item[width=tiny],
+:global(.menu-list) li.menu-list-item.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(.menu-list) .menu-list-item[width=mini], :global(.menu-list) .menu-list-item.width-mini,
+:global(.menu-list) a.menu-list-item[width=mini],
+:global(.menu-list) a.menu-list-item.width-mini,
+:global(.menu-list) li.menu-list-item[width=mini],
+:global(.menu-list) li.menu-list-item.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(.menu-list) .menu-list-item[width=small], :global(.menu-list) .menu-list-item.width-small,
+:global(.menu-list) a.menu-list-item[width=small],
+:global(.menu-list) a.menu-list-item.width-small,
+:global(.menu-list) li.menu-list-item[width=small],
+:global(.menu-list) li.menu-list-item.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(.menu-list) .menu-list-item[width=med], :global(.menu-list) .menu-list-item.width-med,
+:global(.menu-list) a.menu-list-item[width=med],
+:global(.menu-list) a.menu-list-item.width-med,
+:global(.menu-list) li.menu-list-item[width=med],
+:global(.menu-list) li.menu-list-item.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(.menu-list) .menu-list-item[width=kind], :global(.menu-list) .menu-list-item.width-kind,
+:global(.menu-list) a.menu-list-item[width=kind],
+:global(.menu-list) a.menu-list-item.width-kind,
+:global(.menu-list) li.menu-list-item[width=kind],
+:global(.menu-list) li.menu-list-item.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(.menu-list) .menu-list-item[width=full], :global(.menu-list) .menu-list-item.width-full,
+:global(.menu-list) a.menu-list-item[width=full],
+:global(.menu-list) a.menu-list-item.width-full,
+:global(.menu-list) li.menu-list-item[width=full],
+:global(.menu-list) li.menu-list-item.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(.menu-list) .menu-list-item[width=auto], :global(.menu-list) .menu-list-item.width-auto,
+:global(.menu-list) a.menu-list-item[width=auto],
+:global(.menu-list) a.menu-list-item.width-auto,
+:global(.menu-list) li.menu-list-item[width=auto],
+:global(.menu-list) li.menu-list-item.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(.menu-list) .menu-list-item[width=default], :global(.menu-list) .menu-list-item.width-default,
+:global(.menu-list) a.menu-list-item[width=default],
+:global(.menu-list) a.menu-list-item.width-default,
+:global(.menu-list) li.menu-list-item[width=default],
+:global(.menu-list) li.menu-list-item.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(.menu-list) .menu-list-item[tall=tiny], :global(.menu-list) .menu-list-item.tall-tiny,
+:global(.menu-list) a.menu-list-item[tall=tiny],
+:global(.menu-list) a.menu-list-item.tall-tiny,
+:global(.menu-list) li.menu-list-item[tall=tiny],
+:global(.menu-list) li.menu-list-item.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
+}
+:global(.menu-list) .menu-list-item[tall=mini], :global(.menu-list) .menu-list-item.tall-mini,
+:global(.menu-list) a.menu-list-item[tall=mini],
+:global(.menu-list) a.menu-list-item.tall-mini,
+:global(.menu-list) li.menu-list-item[tall=mini],
+:global(.menu-list) li.menu-list-item.tall-mini {
+  height: var(--sld-tall-mini) !important;
+}
+:global(.menu-list) .menu-list-item[tall=small], :global(.menu-list) .menu-list-item.tall-small,
+:global(.menu-list) a.menu-list-item[tall=small],
+:global(.menu-list) a.menu-list-item.tall-small,
+:global(.menu-list) li.menu-list-item[tall=small],
+:global(.menu-list) li.menu-list-item.tall-small {
+  height: var(--sld-tall-small) !important;
+}
+:global(.menu-list) .menu-list-item[tall=med], :global(.menu-list) .menu-list-item.tall-med,
+:global(.menu-list) a.menu-list-item[tall=med],
+:global(.menu-list) a.menu-list-item.tall-med,
+:global(.menu-list) li.menu-list-item[tall=med],
+:global(.menu-list) li.menu-list-item.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+:global(.menu-list) .menu-list-item[tall=kind], :global(.menu-list) .menu-list-item.tall-kind,
+:global(.menu-list) a.menu-list-item[tall=kind],
+:global(.menu-list) a.menu-list-item.tall-kind,
+:global(.menu-list) li.menu-list-item[tall=kind],
+:global(.menu-list) li.menu-list-item.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(.menu-list) .menu-list-item[tall=auto], :global(.menu-list) .menu-list-item.tall-auto,
+:global(.menu-list) a.menu-list-item[tall=auto],
+:global(.menu-list) a.menu-list-item.tall-auto,
+:global(.menu-list) li.menu-list-item[tall=auto],
+:global(.menu-list) li.menu-list-item.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(.menu-list) .menu-list-item[tall=default], :global(.menu-list) .menu-list-item.tall-default,
+:global(.menu-list) a.menu-list-item[tall=default],
+:global(.menu-list) a.menu-list-item.tall-default,
+:global(.menu-list) li.menu-list-item[tall=default],
+:global(.menu-list) li.menu-list-item.tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(.menu-list) .menu-list-item :global([gutter="tiny"]), :global(.menu-list) .menu-list-item :global(.gutter-tiny),
+:global(.menu-list) a.menu-list-item :global([gutter="tiny"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-tiny),
+:global(.menu-list) li.menu-list-item :global([gutter="tiny"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-tiny) {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+:global(.menu-list) .menu-list-item :global([gutter="mini"]), :global(.menu-list) .menu-list-item :global(.gutter-mini),
+:global(.menu-list) a.menu-list-item :global([gutter="mini"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-mini),
+:global(.menu-list) li.menu-list-item :global([gutter="mini"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-mini) {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+:global(.menu-list) .menu-list-item :global([gutter="small"]), :global(.menu-list) .menu-list-item :global(.gutter-small),
+:global(.menu-list) a.menu-list-item :global([gutter="small"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-small),
+:global(.menu-list) li.menu-list-item :global([gutter="small"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-small) {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+:global(.menu-list) .menu-list-item :global([gutter="med"]), :global(.menu-list) .menu-list-item :global(.gutter-med),
+:global(.menu-list) a.menu-list-item :global([gutter="med"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-med),
+:global(.menu-list) li.menu-list-item :global([gutter="med"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-med) {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+:global(.menu-list) .menu-list-item :global([gutter="kind"]), :global(.menu-list) .menu-list-item :global(.gutter-kind),
+:global(.menu-list) a.menu-list-item :global([gutter="kind"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-kind),
+:global(.menu-list) li.menu-list-item :global([gutter="kind"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-kind) {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+:global(.menu-list) .menu-list-item :global([gutter="default"]), :global(.menu-list) .menu-list-item :global(.gutter-default),
+:global(.menu-list) a.menu-list-item :global([gutter="default"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-default),
+:global(.menu-list) li.menu-list-item :global([gutter="default"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-default) {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+:global(.menu-list) .menu-list-item:hover,
+:global(.menu-list) a.menu-list-item:hover,
+:global(.menu-list) li.menu-list-item:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+:global(.menu-list) .menu-list-item.selected, :global(.menu-list) .menu-list-item[aria-selected=true], :global(.menu-list) .menu-list-item[data-selected=true],
+:global(.menu-list) a.menu-list-item.selected,
+:global(.menu-list) a.menu-list-item[aria-selected=true],
+:global(.menu-list) a.menu-list-item[data-selected=true],
+:global(.menu-list) li.menu-list-item.selected,
+:global(.menu-list) li.menu-list-item[aria-selected=true],
+:global(.menu-list) li.menu-list-item[data-selected=true] {
+  border-color: none;
+  background-color: #ededed;
+  box-shadow: var(--sld-selected-shadow);
+}
+:global(.menu-list) .menu-list-item.selected .listItemChip,
+:global(.menu-list) .menu-list-item.selected .menuItemChip, :global(.menu-list) .menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) .menu-list-item[aria-selected=true] .menuItemChip, :global(.menu-list) .menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) .menu-list-item[data-selected=true] .menuItemChip,
+:global(.menu-list) a.menu-list-item.selected .listItemChip,
+:global(.menu-list) a.menu-list-item.selected .menuItemChip,
+:global(.menu-list) a.menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) a.menu-list-item[aria-selected=true] .menuItemChip,
+:global(.menu-list) a.menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) a.menu-list-item[data-selected=true] .menuItemChip,
+:global(.menu-list) li.menu-list-item.selected .listItemChip,
+:global(.menu-list) li.menu-list-item.selected .menuItemChip,
+:global(.menu-list) li.menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) li.menu-list-item[aria-selected=true] .menuItemChip,
+:global(.menu-list) li.menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) li.menu-list-item[data-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+:global(.menu-list) .menu-list-item::before,
+:global(.menu-list) a.menu-list-item::before,
+:global(.menu-list) li.menu-list-item::before {
+  position: absolute;
+  min-height: 16px;
+  height: 45%;
+  width: 2px;
+  overflow: hidden;
+  max-width: 3px;
+  background-color: transparent;
+  border-radius: var(--sld-radius-med);
+  left: 0px;
+  border: 1px solid transparent;
+  content: " ";
+}
+:global(.menu-list) .menu-list-item .menu-list-item-icon,
+:global(.menu-list) a.menu-list-item .menu-list-item-icon,
+:global(.menu-list) li.menu-list-item .menu-list-item-icon {
+  width: 16px;
+  max-width: 16px;
+  text-align: center;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 0 0.2rem;
+}
+:global(.menu-list) .menu-list-item .menu-list-item-text,
+:global(.menu-list) a.menu-list-item .menu-list-item-text,
+:global(.menu-list) li.menu-list-item .menu-list-item-text {
+  flex: 1;
+}
+:global(.menu-list) .menu-list-item .menu-list-item-text.wrap,
+:global(.menu-list) a.menu-list-item .menu-list-item-text.wrap,
+:global(.menu-list) li.menu-list-item .menu-list-item-text.wrap {
+  text-wrap: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+}
+:global(.menu-list) .menu-list-item .menu-list-item-action,
+:global(.menu-list) a.menu-list-item .menu-list-item-action,
+:global(.menu-list) li.menu-list-item .menu-list-item-action {
+  display: var(--menu-list-item-action-display);
+  justify-content: var(--menu-list-item-action-justify-content);
 }
 
 :global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
@@ -12947,202 +13813,11 @@ body[data-theme=dark],
 :global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
   visibility: hidden;
 }
-
-a.menu-list-item,
-li.menu-list-item {
-  --preset-tall: unset;
-  --preset-width: unset;
-  text-decoration: none;
-  overflow: hidden;
-  padding-left: calc(var(--preset-tall) / 4);
-  border: 1px solid transparent;
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  border: 1px solid transparent;
-  border-radius: var(--menu-list-item-radius);
-  align-self: flex-start;
-}
-a.menu-list-item:hover,
-li.menu-list-item:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-a.menu-list-item.selected, a.menu-list-item[aria-selected=true], a.menu-list-item[data-selected=true],
-li.menu-list-item.selected,
-li.menu-list-item[aria-selected=true],
-li.menu-list-item[data-selected=true] {
-  border-color: none;
-  background-color: #ededed;
-  box-shadow: var(--sld-selected-shadow);
-}
-a.menu-list-item.selected .listItemChip,
-a.menu-list-item.selected .menuItemChip, a.menu-list-item[aria-selected=true] .listItemChip,
-a.menu-list-item[aria-selected=true] .menuItemChip, a.menu-list-item[data-selected=true] .listItemChip,
-a.menu-list-item[data-selected=true] .menuItemChip,
-li.menu-list-item.selected .listItemChip,
-li.menu-list-item.selected .menuItemChip,
-li.menu-list-item[aria-selected=true] .listItemChip,
-li.menu-list-item[aria-selected=true] .menuItemChip,
-li.menu-list-item[data-selected=true] .listItemChip,
-li.menu-list-item[data-selected=true] .menuItemChip {
-  position: absolute;
-  min-height: 16px;
-  height: 50%;
-  width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
-}
-a.menu-list-item:global([tall="tiny"]), a.menu-list-item:global(.tall-tiny),
-li.menu-list-item:global([tall="tiny"]),
-li.menu-list-item:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-a.menu-list-item:global([tall="mini"]), a.menu-list-item:global(.tall-mini),
-li.menu-list-item:global([tall="mini"]),
-li.menu-list-item:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-a.menu-list-item:global([tall="small"]), a.menu-list-item:global(.tall-small),
-li.menu-list-item:global([tall="small"]),
-li.menu-list-item:global(.tall-small) {
-  height: var(--sld-tall-small);
-  --preset-tall: var(--sld-tall-small);
-}
-a.menu-list-item:global([tall="med"]), a.menu-list-item:global(.tall-med),
-li.menu-list-item:global([tall="med"]),
-li.menu-list-item:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
-}
-a.menu-list-item:global([tall="kind"]), a.menu-list-item:global(.tall-kind),
-li.menu-list-item:global([tall="kind"]),
-li.menu-list-item:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
-}
-a.menu-list-item:global([tall="auto"]), a.menu-list-item:global(.tall-auto),
-li.menu-list-item:global([tall="auto"]),
-li.menu-list-item:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
-}
-a.menu-list-item:global([tall="default"]), a.menu-list-item:global(.tall-default),
-li.menu-list-item:global([tall="default"]),
-li.menu-list-item:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
-}
-a.menu-list-item:global([width="tiny"]), a.menu-list-item:global(.width-tiny),
-li.menu-list-item:global([width="tiny"]),
-li.menu-list-item:global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-a.menu-list-item:global([width="mini"]), a.menu-list-item:global(.width-mini),
-li.menu-list-item:global([width="mini"]),
-li.menu-list-item:global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-a.menu-list-item:global([width="small"]), a.menu-list-item:global(.width-small),
-li.menu-list-item:global([width="small"]),
-li.menu-list-item:global(.width-small) {
-  width: var(--sld-width-small);
-  --preset-width: var(--sld-width-small);
-}
-a.menu-list-item:global([width="med"]), a.menu-list-item:global(.width-med),
-li.menu-list-item:global([width="med"]),
-li.menu-list-item:global(.width-med) {
-  width: var(--sld-width-med);
-  --preset-width: var(--sld-width-med);
-}
-a.menu-list-item:global([width="kind"]), a.menu-list-item:global(.width-kind),
-li.menu-list-item:global([width="kind"]),
-li.menu-list-item:global(.width-kind) {
-  width: var(--sld-width-kind);
-  --preset-width: var(--sld-width-kind);
-}
-a.menu-list-item:global([width="full"]), a.menu-list-item:global(.width-full),
-li.menu-list-item:global([width="full"]),
-li.menu-list-item:global(.width-full) {
-  width: var(--sld-width-full);
-  --preset-width: var(--sld-width-full);
-}
-a.menu-list-item:global([width="auto"]), a.menu-list-item:global(.width-auto),
-li.menu-list-item:global([width="auto"]),
-li.menu-list-item:global(.width-auto) {
-  width: var(--sld-width-auto);
-  --preset-width: var(--sld-width-auto);
-}
-a.menu-list-item:global([width="default"]), a.menu-list-item:global(.width-default),
-li.menu-list-item:global([width="default"]),
-li.menu-list-item:global(.width-default) {
-  width: var(--sld-width-default);
-  --preset-width: var(--sld-width-default);
-}
-a.menu-list-item::before,
-li.menu-list-item::before {
-  position: absolute;
-  min-height: 16px;
-  height: 45%;
-  width: 2px;
-  overflow: hidden;
-  max-width: 3px;
-  background-color: transparent;
-  border-radius: var(--sld-radius-med);
-  left: 0px;
-  border: 1px solid transparent;
-  content: " ";
-}
-a.menu-list-item[data-selected=true]:not(.menu-list-title)::before, a.menu-list-item[aria-selected=true]:not(.menu-list-title)::before,
-li.menu-list-item[data-selected=true]:not(.menu-list-title)::before,
-li.menu-list-item[aria-selected=true]:not(.menu-list-title)::before {
-  position: absolute;
-  min-height: 16px;
-  height: 45%;
-  width: 2px;
-  overflow: hidden;
-  max-width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0px;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
-  content: " ";
-}
-a.menu-list-item .menu-list-item-icon,
-li.menu-list-item .menu-list-item-icon {
-  width: 16px;
-  max-width: 16px;
-  text-align: center;
-  overflow: hidden;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  padding: 0 0.2rem;
-}
-a.menu-list-item .menu-list-item-text,
-li.menu-list-item .menu-list-item-text {
-  flex: 1;
-}
-a.menu-list-item .menu-list-item-text.wrap,
-li.menu-list-item .menu-list-item-text.wrap {
-  text-wrap: ellipsis;
-  white-space: normal;
-  overflow: hidden;
-}
-a.menu-list-item .menu-list-item-action,
-li.menu-list-item .menu-list-item-action {
-  display: var(--menu-list-item-action-display);
-  justify-content: var(--menu-list-item-action-justify-content);
-}
 /** panel.scss -----*/ 
+:root {
+  transition: all 0.3s ease-out;
+}
+
 :root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
@@ -13186,6 +13861,12 @@ li.menu-list-item .menu-list-item-action {
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -13441,6 +14122,10 @@ body[data-theme=dark],
 }
 /** popper.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -13483,6 +14168,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -13798,6 +14489,10 @@ body[data-theme=dark],
 }
 /** boot-menu.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -13840,6 +14535,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -14147,6 +14848,10 @@ body[data-theme=dark],
 }
 /** taskbar.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -14189,6 +14894,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -14444,6 +15155,10 @@ body[data-theme=dark],
 }
 /** toggle-bar.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -14486,6 +15201,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -14757,6 +15478,10 @@ body[data-theme=dark],
 }
 /** toolbar.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -14799,6 +15524,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -15057,6 +15788,10 @@ body[data-theme=dark],
 }
 /** tree.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -15099,6 +15834,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -15380,6 +16121,10 @@ body[data-theme=dark],
 }
 /** window.scss -----*/ 
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -15422,6 +16167,12 @@ body[data-theme=dark],
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],

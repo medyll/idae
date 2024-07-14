@@ -56,6 +56,10 @@ $preset-radius-list: (
 );
 
 :root {
+    transition: all 0.3s ease-out;
+}
+
+:root {
     @each $preset, $preset-value in $preset-radius-list {
         --#{$vendor}-radius-#{$preset}: #{$preset-value};
     }
@@ -86,6 +90,13 @@ $preset-radius-list: (
     --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --white: #333;
+        --black: #ccc;
+    }
+}
+
 :root.dark,
 :root[data-theme="dark"],
 body[data-theme="dark"],
@@ -93,6 +104,7 @@ body[data-theme="dark"],
     --white: #333;
     --black: #ccc;
 }
+
 :root {
     --#{$vendor}-color-foreground: #333333;
     --#{$vendor}-color-background: #ffffff;

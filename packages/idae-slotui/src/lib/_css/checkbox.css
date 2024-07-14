@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -284,7 +294,8 @@ body[data-theme=dark],
 }
 
 .checkbox {
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   transition: all 0.2s ease;
   appearance: none;
   outline: none;
@@ -302,33 +313,30 @@ body[data-theme=dark],
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.checkbox:global([tall="tiny"]), .checkbox:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.checkbox:global([tall="mini"]), .checkbox:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.checkbox:global([tall="small"]), .checkbox:global(.tall-small) {
-  height: var(--sld-tall-small);
+.checkbox {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.checkbox:global([tall="med"]), .checkbox:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.checkbox[tall=tiny], .checkbox.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.checkbox:global([tall="kind"]), .checkbox:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.checkbox[tall=mini], .checkbox.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.checkbox:global([tall="auto"]), .checkbox:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.checkbox[tall=small], .checkbox.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.checkbox:global([tall="default"]), .checkbox:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.checkbox[tall=med], .checkbox.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.checkbox[tall=kind], .checkbox.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.checkbox[tall=auto], .checkbox.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.checkbox[tall=default], .checkbox.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);

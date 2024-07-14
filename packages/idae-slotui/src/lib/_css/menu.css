@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -294,7 +304,8 @@ ul.menu li.menuTitle {
 }
 
 li.menuItem {
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;
@@ -323,33 +334,30 @@ li.menuItem[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-li.menuItem:global([tall="tiny"]), li.menuItem:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-li.menuItem:global([tall="mini"]), li.menuItem:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-li.menuItem:global([tall="small"]), li.menuItem:global(.tall-small) {
-  height: var(--sld-tall-small);
+li.menuItem {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-li.menuItem:global([tall="med"]), li.menuItem:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+li.menuItem[tall=tiny], li.menuItem.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-li.menuItem:global([tall="kind"]), li.menuItem:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+li.menuItem[tall=mini], li.menuItem.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-li.menuItem:global([tall="auto"]), li.menuItem:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+li.menuItem[tall=small], li.menuItem.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-li.menuItem:global([tall="default"]), li.menuItem:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+li.menuItem[tall=med], li.menuItem.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+li.menuItem[tall=kind], li.menuItem.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+li.menuItem[tall=auto], li.menuItem.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+li.menuItem[tall=default], li.menuItem.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 li.menuItem .menuListItemIcon {
   width: var(--menu-item-icon-width);

@@ -19,12 +19,12 @@
 		showChip,
 		popperOpen,
 		width = widthPreset.auto,
-		tall = tallPreset.med,
+		tall = tallPreset.small,
 		nowrap,
 		selected = false,
 		value,
 		reverse = false,
-		ratio = 'auto',
+		ratio  ,
 		buttonPopper,
 		buttonStart,
 		buttonEnd,
@@ -35,10 +35,9 @@
 
 	let startRef: HTMLDivElement;
 	let clientWidth: number | undefined = $state();
-</script>
-
+</script> 
 <button
-	class={className + ' button tall-' + tall + ' ' + variant}
+	class={className + ' button '   }
 	class:loading
 	bind:this={element}
 	use:popper={usePopper}
@@ -49,9 +48,9 @@
 	{tall}
 	{width}
 	{nowrap}
+	{variant}
 	{selected}
-	{...rest}
-	data-width={width}
+	{...rest} 
 	style:aspect-ratio={ratio}
 >
 	{#if buttonStart || icon}
@@ -97,6 +96,6 @@
 	{/if}
 </button>
 
-<style lang="scss">
+<style global lang="scss">
 	@import './button.scss';
 </style>

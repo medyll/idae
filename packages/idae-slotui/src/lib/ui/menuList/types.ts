@@ -19,6 +19,7 @@ export type MenuListProps<T = Data> = CommonProps & {
 
 	data?: T[];
 	tall?: ElementProps['tall'];
+	width?: ElementProps['width'];
 	/**  displayed field for the listItem  */
 	presentationField?: [keyof T];
 	/** displayed as a grid */
@@ -38,6 +39,7 @@ export type MenuListProps<T = Data> = CommonProps & {
 		navigate: (e: KeyboardEvent) => void;
 		gotoIndex: (idx: number) => void;
 	};
+	menuListItemProps?: MenuListItemProps<T>;
 	/** @deprecated use menuItemsList */
 	menuList?: MenuListItemProps[];
 	children?: Snippet<[{ item: Data; itemIndex: number }]>;
@@ -50,7 +52,7 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	presentationField?: [keyof T];
 	/** element root HTMLDivElement props */
 	element?: HTMLElement | null;
-
+	selectorField?: keyof T;
 	/** text displayed in the menu item */
 	text?: string;
 
@@ -58,6 +60,8 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	action?: string;
 	/**  dense prop */
 	tall?: ElementProps['tall'];
+	/**  dense prop */
+	width?: ElementProps['width'];
 	/** icon displayed in the menu item */
 	icon?: string;
 	/**  icon object at start */

@@ -1,4 +1,4 @@
-import type { ElementProps } from './index.ts';
+import type { ElementProps } from '../types/index.ts';
 
 declare module 'svelte/elements' {
 	export interface SvelteHTMLElements {
@@ -8,7 +8,7 @@ declare module 'svelte/elements' {
 	export interface HTMLAttributes<T> {
 		width?: ElementProps['width'];
 		tall?: ElementProps['tall'];
-		gutter?: string;
+		gutter?: ElementProps['gutter'];
 		variant?: ElementProps['variant'];
 		ratio?: string | `true` | `false`;
 		square?: string | boolean | `true` | `false`;

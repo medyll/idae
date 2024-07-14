@@ -55,7 +55,7 @@ export type ButtonProps = {
 	buttonStart?: Snippet;
 	buttonEnd?: Snippet;
 	buttonLoadingIcon?: Snippet;
-} & HTMLButtonAttributes;
+};
 
 export type ButtonMenuProps<T> = ButtonProps & {
 	menuProps?: MenuListProps<T>;

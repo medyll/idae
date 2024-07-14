@@ -7,7 +7,8 @@
     --sld-button-border-width: 1px;
     --sld-button-text-align: center;
     --sld-button-padding: 0;
-    --sld-button-background: var(--sld-color-primary);
+    --sld-button-background: var(--sld-color-background);
+    --sld-button-contained-background: var(--sld-color-primary);
     --sld-button-hover-border-color: var(--sld-color-primary);
     --sld-button-active-border-color: var(--sld-color-secondary);
     --sld-button-focus-border-color: var(--sld-color-primary);
@@ -28,11 +29,13 @@
 
 :global(button),
 :global(.button),
+:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
     @include ui-width-presets;
     @include ui-tall-presets;
     @include ui-variants;
+    @include elevation;
 
     text-align: var(--sld-button-text-align);
     font-size: var(--sld-button-font-size);
@@ -51,7 +54,7 @@
     align-content: center;
     align-items: center;
 
-    max-height: 100%;
+    height: 25px;
 
     &:focus {
         outline: 1px solid var(--sld-button-focus-border-color);
@@ -98,8 +101,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 var(--content-padding, --preset-width);
+        padding: 0 0.5rem; //var(--content-padding, 0.25rem);
         text-align: var(--sld-button-text-align);
+        &:empty {
+            display: none;
+        }
     }
 
     .button-action {
@@ -187,15 +193,13 @@
         align-content: center;
         justify-content: space-around;
     }
-}
 
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+    //
     @include ui-width-presets;
     @include ui-tall-presets;
     @include ui-variants;
+
+    height: 25px;
 
     &[variant*="bordered"],
     &[bordered="true"],
@@ -203,7 +207,7 @@
         color: var(--sld-color-foreground);
         border: var(--sld-button-border-width) solid var(--sld-button-border-color);
         box-shadow: var(--sld-elevation-1);
-        background-color: var(--sld-color-background);
+        background-color: var(--sld-button-background);
         &:hover {
             border-color: var(--sld-color-primary);
             box-shadow: var(--sld-button-hover-shadow);
@@ -221,7 +225,7 @@
     &.contained {
         border: var(--sld-button-border-width) solid var(--sld-button-border-color);
         color: var(--sld-color-on-primary);
-        background-color: var(--sld-button-background);
+        background-color: var(--sld-button-contained-background);
         background-clip: padding-box;
         box-shadow: var(--sld-elevation-1);
         &:hover {
@@ -299,6 +303,7 @@
         }
     }
 }
+
 @keyframes button-spinner {
     to {
         transform: rotate(360deg);

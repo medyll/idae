@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -279,7 +289,7 @@ body[data-theme=dark],
   --menu-list-grid-items-count: 0;
 }
 
-:global(.menuList) {
+:global(.menu-list) {
   margin: 0;
   cursor: pointer;
   display: flex;
@@ -287,32 +297,23 @@ body[data-theme=dark],
   align-items: end;
   padding: var(--menu-list-padding);
 }
-:global(.menuList).grid {
+:global(.menu-list).grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
 }
-:global(.menuList) li.menu-list-title,
-:global(.menuList) a.menu-list-title {
+:global(.menu-list) li.menu-list-title,
+:global(.menu-list) a.menu-list-title {
   font-weight: bold;
 }
-
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
-  visibility: visible;
-}
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item[data-selected="true"] .menu-list-item-action) {
-  visibility: visible;
-}
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item .menu-list-item-action) {
-  visibility: hidden;
-}
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
-  visibility: hidden;
-}
-
-a.menu-list-item,
-li.menu-list-item {
-  --preset-tall: unset;
-  --preset-width: unset;
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  border: 1px solid red;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+  --preset-gutter: var(--sld-gutter-default);
   text-decoration: none;
   overflow: hidden;
   padding-left: calc(var(--preset-tall) / 4);
@@ -326,29 +327,237 @@ li.menu-list-item {
   border-radius: var(--menu-list-item-radius);
   align-self: flex-start;
 }
-a.menu-list-item:hover,
-li.menu-list-item:hover {
+:global(.menu-list) .menu-list-item[variant*=square], :global(.menu-list) .menu-list-item[square=true], :global(.menu-list) .menu-list-item.square,
+:global(.menu-list) a.menu-list-item[variant*=square],
+:global(.menu-list) a.menu-list-item[square=true],
+:global(.menu-list) a.menu-list-item.square,
+:global(.menu-list) li.menu-list-item[variant*=square],
+:global(.menu-list) li.menu-list-item[square=true],
+:global(.menu-list) li.menu-list-item.square {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+:global(.menu-list) .menu-list-item[variant*=rounded], :global(.menu-list) .menu-list-item[rounded=true], :global(.menu-list) .menu-list-item.rounded,
+:global(.menu-list) a.menu-list-item[variant*=rounded],
+:global(.menu-list) a.menu-list-item[rounded=true],
+:global(.menu-list) a.menu-list-item.rounded,
+:global(.menu-list) li.menu-list-item[variant*=rounded],
+:global(.menu-list) li.menu-list-item[rounded=true],
+:global(.menu-list) li.menu-list-item.rounded {
+  border-radius: 50%;
+}
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+}
+:global(.menu-list) .menu-list-item[width=tiny], :global(.menu-list) .menu-list-item.width-tiny,
+:global(.menu-list) a.menu-list-item[width=tiny],
+:global(.menu-list) a.menu-list-item.width-tiny,
+:global(.menu-list) li.menu-list-item[width=tiny],
+:global(.menu-list) li.menu-list-item.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(.menu-list) .menu-list-item[width=mini], :global(.menu-list) .menu-list-item.width-mini,
+:global(.menu-list) a.menu-list-item[width=mini],
+:global(.menu-list) a.menu-list-item.width-mini,
+:global(.menu-list) li.menu-list-item[width=mini],
+:global(.menu-list) li.menu-list-item.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(.menu-list) .menu-list-item[width=small], :global(.menu-list) .menu-list-item.width-small,
+:global(.menu-list) a.menu-list-item[width=small],
+:global(.menu-list) a.menu-list-item.width-small,
+:global(.menu-list) li.menu-list-item[width=small],
+:global(.menu-list) li.menu-list-item.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(.menu-list) .menu-list-item[width=med], :global(.menu-list) .menu-list-item.width-med,
+:global(.menu-list) a.menu-list-item[width=med],
+:global(.menu-list) a.menu-list-item.width-med,
+:global(.menu-list) li.menu-list-item[width=med],
+:global(.menu-list) li.menu-list-item.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(.menu-list) .menu-list-item[width=kind], :global(.menu-list) .menu-list-item.width-kind,
+:global(.menu-list) a.menu-list-item[width=kind],
+:global(.menu-list) a.menu-list-item.width-kind,
+:global(.menu-list) li.menu-list-item[width=kind],
+:global(.menu-list) li.menu-list-item.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(.menu-list) .menu-list-item[width=full], :global(.menu-list) .menu-list-item.width-full,
+:global(.menu-list) a.menu-list-item[width=full],
+:global(.menu-list) a.menu-list-item.width-full,
+:global(.menu-list) li.menu-list-item[width=full],
+:global(.menu-list) li.menu-list-item.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(.menu-list) .menu-list-item[width=auto], :global(.menu-list) .menu-list-item.width-auto,
+:global(.menu-list) a.menu-list-item[width=auto],
+:global(.menu-list) a.menu-list-item.width-auto,
+:global(.menu-list) li.menu-list-item[width=auto],
+:global(.menu-list) li.menu-list-item.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(.menu-list) .menu-list-item[width=default], :global(.menu-list) .menu-list-item.width-default,
+:global(.menu-list) a.menu-list-item[width=default],
+:global(.menu-list) a.menu-list-item.width-default,
+:global(.menu-list) li.menu-list-item[width=default],
+:global(.menu-list) li.menu-list-item.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(.menu-list) .menu-list-item,
+:global(.menu-list) a.menu-list-item,
+:global(.menu-list) li.menu-list-item {
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(.menu-list) .menu-list-item[tall=tiny], :global(.menu-list) .menu-list-item.tall-tiny,
+:global(.menu-list) a.menu-list-item[tall=tiny],
+:global(.menu-list) a.menu-list-item.tall-tiny,
+:global(.menu-list) li.menu-list-item[tall=tiny],
+:global(.menu-list) li.menu-list-item.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
+}
+:global(.menu-list) .menu-list-item[tall=mini], :global(.menu-list) .menu-list-item.tall-mini,
+:global(.menu-list) a.menu-list-item[tall=mini],
+:global(.menu-list) a.menu-list-item.tall-mini,
+:global(.menu-list) li.menu-list-item[tall=mini],
+:global(.menu-list) li.menu-list-item.tall-mini {
+  height: var(--sld-tall-mini) !important;
+}
+:global(.menu-list) .menu-list-item[tall=small], :global(.menu-list) .menu-list-item.tall-small,
+:global(.menu-list) a.menu-list-item[tall=small],
+:global(.menu-list) a.menu-list-item.tall-small,
+:global(.menu-list) li.menu-list-item[tall=small],
+:global(.menu-list) li.menu-list-item.tall-small {
+  height: var(--sld-tall-small) !important;
+}
+:global(.menu-list) .menu-list-item[tall=med], :global(.menu-list) .menu-list-item.tall-med,
+:global(.menu-list) a.menu-list-item[tall=med],
+:global(.menu-list) a.menu-list-item.tall-med,
+:global(.menu-list) li.menu-list-item[tall=med],
+:global(.menu-list) li.menu-list-item.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+:global(.menu-list) .menu-list-item[tall=kind], :global(.menu-list) .menu-list-item.tall-kind,
+:global(.menu-list) a.menu-list-item[tall=kind],
+:global(.menu-list) a.menu-list-item.tall-kind,
+:global(.menu-list) li.menu-list-item[tall=kind],
+:global(.menu-list) li.menu-list-item.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(.menu-list) .menu-list-item[tall=auto], :global(.menu-list) .menu-list-item.tall-auto,
+:global(.menu-list) a.menu-list-item[tall=auto],
+:global(.menu-list) a.menu-list-item.tall-auto,
+:global(.menu-list) li.menu-list-item[tall=auto],
+:global(.menu-list) li.menu-list-item.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(.menu-list) .menu-list-item[tall=default], :global(.menu-list) .menu-list-item.tall-default,
+:global(.menu-list) a.menu-list-item[tall=default],
+:global(.menu-list) a.menu-list-item.tall-default,
+:global(.menu-list) li.menu-list-item[tall=default],
+:global(.menu-list) li.menu-list-item.tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(.menu-list) .menu-list-item :global([gutter="tiny"]), :global(.menu-list) .menu-list-item :global(.gutter-tiny),
+:global(.menu-list) a.menu-list-item :global([gutter="tiny"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-tiny),
+:global(.menu-list) li.menu-list-item :global([gutter="tiny"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-tiny) {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+:global(.menu-list) .menu-list-item :global([gutter="mini"]), :global(.menu-list) .menu-list-item :global(.gutter-mini),
+:global(.menu-list) a.menu-list-item :global([gutter="mini"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-mini),
+:global(.menu-list) li.menu-list-item :global([gutter="mini"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-mini) {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+:global(.menu-list) .menu-list-item :global([gutter="small"]), :global(.menu-list) .menu-list-item :global(.gutter-small),
+:global(.menu-list) a.menu-list-item :global([gutter="small"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-small),
+:global(.menu-list) li.menu-list-item :global([gutter="small"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-small) {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+:global(.menu-list) .menu-list-item :global([gutter="med"]), :global(.menu-list) .menu-list-item :global(.gutter-med),
+:global(.menu-list) a.menu-list-item :global([gutter="med"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-med),
+:global(.menu-list) li.menu-list-item :global([gutter="med"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-med) {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+:global(.menu-list) .menu-list-item :global([gutter="kind"]), :global(.menu-list) .menu-list-item :global(.gutter-kind),
+:global(.menu-list) a.menu-list-item :global([gutter="kind"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-kind),
+:global(.menu-list) li.menu-list-item :global([gutter="kind"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-kind) {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+:global(.menu-list) .menu-list-item :global([gutter="default"]), :global(.menu-list) .menu-list-item :global(.gutter-default),
+:global(.menu-list) a.menu-list-item :global([gutter="default"]),
+:global(.menu-list) a.menu-list-item :global(.gutter-default),
+:global(.menu-list) li.menu-list-item :global([gutter="default"]),
+:global(.menu-list) li.menu-list-item :global(.gutter-default) {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+:global(.menu-list) .menu-list-item:hover,
+:global(.menu-list) a.menu-list-item:hover,
+:global(.menu-list) li.menu-list-item:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-a.menu-list-item.selected, a.menu-list-item[aria-selected=true], a.menu-list-item[data-selected=true],
-li.menu-list-item.selected,
-li.menu-list-item[aria-selected=true],
-li.menu-list-item[data-selected=true] {
+:global(.menu-list) .menu-list-item.selected, :global(.menu-list) .menu-list-item[aria-selected=true], :global(.menu-list) .menu-list-item[data-selected=true],
+:global(.menu-list) a.menu-list-item.selected,
+:global(.menu-list) a.menu-list-item[aria-selected=true],
+:global(.menu-list) a.menu-list-item[data-selected=true],
+:global(.menu-list) li.menu-list-item.selected,
+:global(.menu-list) li.menu-list-item[aria-selected=true],
+:global(.menu-list) li.menu-list-item[data-selected=true] {
   border-color: none;
   background-color: #ededed;
   box-shadow: var(--sld-selected-shadow);
 }
-a.menu-list-item.selected .listItemChip,
-a.menu-list-item.selected .menuItemChip, a.menu-list-item[aria-selected=true] .listItemChip,
-a.menu-list-item[aria-selected=true] .menuItemChip, a.menu-list-item[data-selected=true] .listItemChip,
-a.menu-list-item[data-selected=true] .menuItemChip,
-li.menu-list-item.selected .listItemChip,
-li.menu-list-item.selected .menuItemChip,
-li.menu-list-item[aria-selected=true] .listItemChip,
-li.menu-list-item[aria-selected=true] .menuItemChip,
-li.menu-list-item[data-selected=true] .listItemChip,
-li.menu-list-item[data-selected=true] .menuItemChip {
+:global(.menu-list) .menu-list-item.selected .listItemChip,
+:global(.menu-list) .menu-list-item.selected .menuItemChip, :global(.menu-list) .menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) .menu-list-item[aria-selected=true] .menuItemChip, :global(.menu-list) .menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) .menu-list-item[data-selected=true] .menuItemChip,
+:global(.menu-list) a.menu-list-item.selected .listItemChip,
+:global(.menu-list) a.menu-list-item.selected .menuItemChip,
+:global(.menu-list) a.menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) a.menu-list-item[aria-selected=true] .menuItemChip,
+:global(.menu-list) a.menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) a.menu-list-item[data-selected=true] .menuItemChip,
+:global(.menu-list) li.menu-list-item.selected .listItemChip,
+:global(.menu-list) li.menu-list-item.selected .menuItemChip,
+:global(.menu-list) li.menu-list-item[aria-selected=true] .listItemChip,
+:global(.menu-list) li.menu-list-item[aria-selected=true] .menuItemChip,
+:global(.menu-list) li.menu-list-item[data-selected=true] .listItemChip,
+:global(.menu-list) li.menu-list-item[data-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
   height: 50%;
@@ -358,98 +567,9 @@ li.menu-list-item[data-selected=true] .menuItemChip {
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-a.menu-list-item:global([tall="tiny"]), a.menu-list-item:global(.tall-tiny),
-li.menu-list-item:global([tall="tiny"]),
-li.menu-list-item:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-a.menu-list-item:global([tall="mini"]), a.menu-list-item:global(.tall-mini),
-li.menu-list-item:global([tall="mini"]),
-li.menu-list-item:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-a.menu-list-item:global([tall="small"]), a.menu-list-item:global(.tall-small),
-li.menu-list-item:global([tall="small"]),
-li.menu-list-item:global(.tall-small) {
-  height: var(--sld-tall-small);
-  --preset-tall: var(--sld-tall-small);
-}
-a.menu-list-item:global([tall="med"]), a.menu-list-item:global(.tall-med),
-li.menu-list-item:global([tall="med"]),
-li.menu-list-item:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
-}
-a.menu-list-item:global([tall="kind"]), a.menu-list-item:global(.tall-kind),
-li.menu-list-item:global([tall="kind"]),
-li.menu-list-item:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
-}
-a.menu-list-item:global([tall="auto"]), a.menu-list-item:global(.tall-auto),
-li.menu-list-item:global([tall="auto"]),
-li.menu-list-item:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
-}
-a.menu-list-item:global([tall="default"]), a.menu-list-item:global(.tall-default),
-li.menu-list-item:global([tall="default"]),
-li.menu-list-item:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
-}
-a.menu-list-item:global([width="tiny"]), a.menu-list-item:global(.width-tiny),
-li.menu-list-item:global([width="tiny"]),
-li.menu-list-item:global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-a.menu-list-item:global([width="mini"]), a.menu-list-item:global(.width-mini),
-li.menu-list-item:global([width="mini"]),
-li.menu-list-item:global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-a.menu-list-item:global([width="small"]), a.menu-list-item:global(.width-small),
-li.menu-list-item:global([width="small"]),
-li.menu-list-item:global(.width-small) {
-  width: var(--sld-width-small);
-  --preset-width: var(--sld-width-small);
-}
-a.menu-list-item:global([width="med"]), a.menu-list-item:global(.width-med),
-li.menu-list-item:global([width="med"]),
-li.menu-list-item:global(.width-med) {
-  width: var(--sld-width-med);
-  --preset-width: var(--sld-width-med);
-}
-a.menu-list-item:global([width="kind"]), a.menu-list-item:global(.width-kind),
-li.menu-list-item:global([width="kind"]),
-li.menu-list-item:global(.width-kind) {
-  width: var(--sld-width-kind);
-  --preset-width: var(--sld-width-kind);
-}
-a.menu-list-item:global([width="full"]), a.menu-list-item:global(.width-full),
-li.menu-list-item:global([width="full"]),
-li.menu-list-item:global(.width-full) {
-  width: var(--sld-width-full);
-  --preset-width: var(--sld-width-full);
-}
-a.menu-list-item:global([width="auto"]), a.menu-list-item:global(.width-auto),
-li.menu-list-item:global([width="auto"]),
-li.menu-list-item:global(.width-auto) {
-  width: var(--sld-width-auto);
-  --preset-width: var(--sld-width-auto);
-}
-a.menu-list-item:global([width="default"]), a.menu-list-item:global(.width-default),
-li.menu-list-item:global([width="default"]),
-li.menu-list-item:global(.width-default) {
-  width: var(--sld-width-default);
-  --preset-width: var(--sld-width-default);
-}
-a.menu-list-item::before,
-li.menu-list-item::before {
+:global(.menu-list) .menu-list-item::before,
+:global(.menu-list) a.menu-list-item::before,
+:global(.menu-list) li.menu-list-item::before {
   position: absolute;
   min-height: 16px;
   height: 45%;
@@ -462,23 +582,9 @@ li.menu-list-item::before {
   border: 1px solid transparent;
   content: " ";
 }
-a.menu-list-item[data-selected=true]:not(.menu-list-title)::before, a.menu-list-item[aria-selected=true]:not(.menu-list-title)::before,
-li.menu-list-item[data-selected=true]:not(.menu-list-title)::before,
-li.menu-list-item[aria-selected=true]:not(.menu-list-title)::before {
-  position: absolute;
-  min-height: 16px;
-  height: 45%;
-  width: 2px;
-  overflow: hidden;
-  max-width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0px;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
-  content: " ";
-}
-a.menu-list-item .menu-list-item-icon,
-li.menu-list-item .menu-list-item-icon {
+:global(.menu-list) .menu-list-item .menu-list-item-icon,
+:global(.menu-list) a.menu-list-item .menu-list-item-icon,
+:global(.menu-list) li.menu-list-item .menu-list-item-icon {
   width: 16px;
   max-width: 16px;
   text-align: center;
@@ -488,18 +594,34 @@ li.menu-list-item .menu-list-item-icon {
   justify-content: center;
   padding: 0 0.2rem;
 }
-a.menu-list-item .menu-list-item-text,
-li.menu-list-item .menu-list-item-text {
+:global(.menu-list) .menu-list-item .menu-list-item-text,
+:global(.menu-list) a.menu-list-item .menu-list-item-text,
+:global(.menu-list) li.menu-list-item .menu-list-item-text {
   flex: 1;
 }
-a.menu-list-item .menu-list-item-text.wrap,
-li.menu-list-item .menu-list-item-text.wrap {
+:global(.menu-list) .menu-list-item .menu-list-item-text.wrap,
+:global(.menu-list) a.menu-list-item .menu-list-item-text.wrap,
+:global(.menu-list) li.menu-list-item .menu-list-item-text.wrap {
   text-wrap: ellipsis;
   white-space: normal;
   overflow: hidden;
 }
-a.menu-list-item .menu-list-item-action,
-li.menu-list-item .menu-list-item-action {
+:global(.menu-list) .menu-list-item .menu-list-item-action,
+:global(.menu-list) a.menu-list-item .menu-list-item-action,
+:global(.menu-list) li.menu-list-item .menu-list-item-action {
   display: var(--menu-list-item-action-display);
   justify-content: var(--menu-list-item-action-justify-content);
+}
+
+:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item .menu-list-item-action) {
+  visibility: hidden;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
+  visibility: hidden;
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { CommonProps, ElementProps } from '$lib/types/index.js';
+	import type { ElementProps } from '$lib/types/index.js';
 	import type { Snippet } from 'svelte';
 	import type { ButtonProps } from './types.js';
 	type IconButtonProps = {
@@ -21,23 +21,23 @@
 		/** Rotation of the icon */
 		rotation?: number;
 
+		size?: ElementProps['width'];
 		/** Children   for the default content */
 		children?: Snippet;
 	} & Partial<ButtonProps>;
 
 	let {
-		element, 
+		element,
 		icon,
 		ratio = '1/1',
 		iconFontSize = 'full',
 		rotation = 0,
-		width = "mini",  
-		tall="auto",
+		size = 'mini', 
 		children,
 		...rest
 	}: IconButtonProps = $props();
 </script>
 
-<Button   square="true" variant="square" bind:this={element}  {width}  {tall}  {ratio} {...rest}>
-	<Icon  style="display:block;width:100%;" {rotation} {icon} iconSize={iconFontSize} />
+<Button  variant="square" bind:this={element} width={size} tall="unset"   {ratio} {...rest}>
+	<Icon style="display:block;width:100%;" {rotation} {icon} iconSize={iconFontSize} />
 </Button>

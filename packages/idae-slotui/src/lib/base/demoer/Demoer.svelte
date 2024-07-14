@@ -29,8 +29,8 @@
 	{#each parameters?.[parameter]?.values ?? values ?? [] as value}
 		{@const finalValue = value === undefined ? 'unset' : value}
 		<Button
-			width="mini"
-			variant="flat"
+			width="small" 
+			variant="flat" 
 			showChip={activeParams[parameter] === value}
 			onclick={() => {
 				activeParams[parameter] = value;

@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -302,36 +312,34 @@ body[data-theme=dark],
   align-items: center;
   gap: var(--cartouche-control-gap);
   background-color: var(--cartouche-background-color);
-  --preset-tall: unset;
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   padding: auto 0.25rem;
 }
-.cartouche .control:global([tall="tiny"]), .cartouche .control:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.cartouche .control:global([tall="mini"]), .cartouche .control:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.cartouche .control:global([tall="small"]), .cartouche .control:global(.tall-small) {
-  height: var(--sld-tall-small);
+.cartouche .control {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.cartouche .control:global([tall="med"]), .cartouche .control:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.cartouche .control[tall=tiny], .cartouche .control.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.cartouche .control:global([tall="kind"]), .cartouche .control:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.cartouche .control[tall=mini], .cartouche .control.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.cartouche .control:global([tall="auto"]), .cartouche .control:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.cartouche .control[tall=small], .cartouche .control.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.cartouche .control:global([tall="default"]), .cartouche .control:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.cartouche .control[tall=med], .cartouche .control.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.cartouche .control[tall=kind], .cartouche .control.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.cartouche .control[tall=auto], .cartouche .control.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.cartouche .control[tall=default], .cartouche .control.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .cartouche .control:hover {
   background-color: var(--cartouche-background-color-hover);

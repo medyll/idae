@@ -29,7 +29,8 @@
 		onMenuItemClick,
 		onclick,
 		itemIndex = undefined,
-		tall = menuStateContext?.tall ?? 'default',
+		tall = menuStateContext?.tall  , 
+		width = menuStateContext?.width  , 
 		children,
 		menuItemFirst,
 		menuItemLast,
@@ -93,13 +94,15 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : tag}
-	class="menu-list-item {className} tall-{menuStateContext?.tall ?? tall}"
+	class="menu-list-item {className}"
 	data-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	aria-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
 	bind:this={element}
 	tabindex="-1"
 	{...rest}
 	{role}
+	tall={menuStateContext?.tall ?? tall}
+	width={menuStateContext?.width ?? width}
 	{href}
 >
 	{#if icon && iconFirst && menuStateContext?.hasIcon}

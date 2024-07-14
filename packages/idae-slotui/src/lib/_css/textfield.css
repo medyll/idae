@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -288,71 +298,74 @@ body[data-theme=dark],
   box-shadow: var(--textfield-shadow);
   background-color: var(--textfield-background);
   color: var(--sld-color-foreground);
-  --preset-width: unset;
-  --preset-tall: unset;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
 .textfield [error] {
   border-bottom: red;
 }
-.textfield:global([width="tiny"]), .textfield:global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-.textfield:global([width="mini"]), .textfield:global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-.textfield:global([width="small"]), .textfield:global(.width-small) {
-  width: var(--sld-width-small);
+.textfield {
   --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-.textfield:global([width="med"]), .textfield:global(.width-med) {
-  width: var(--sld-width-med);
+.textfield[width=tiny], .textfield.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.textfield[width=mini], .textfield.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.textfield[width=small], .textfield.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.textfield[width=med], .textfield.width-med {
   --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
 }
-.textfield:global([width="kind"]), .textfield:global(.width-kind) {
-  width: var(--sld-width-kind);
+.textfield[width=kind], .textfield.width-kind {
   --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
 }
-.textfield:global([width="full"]), .textfield:global(.width-full) {
-  width: var(--sld-width-full);
+.textfield[width=full], .textfield.width-full {
   --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
 }
-.textfield:global([width="auto"]), .textfield:global(.width-auto) {
-  width: var(--sld-width-auto);
+.textfield[width=auto], .textfield.width-auto {
   --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
 }
-.textfield:global([width="default"]), .textfield:global(.width-default) {
-  width: var(--sld-width-default);
+.textfield[width=default], .textfield.width-default {
   --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
 }
-.textfield:global([tall="tiny"]), .textfield:global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-.textfield:global([tall="mini"]), .textfield:global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-.textfield:global([tall="small"]), .textfield:global(.tall-small) {
-  height: var(--sld-tall-small);
+.textfield {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-.textfield:global([tall="med"]), .textfield:global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+.textfield[tall=tiny], .textfield.tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-.textfield:global([tall="kind"]), .textfield:global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+.textfield[tall=mini], .textfield.tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-.textfield:global([tall="auto"]), .textfield:global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+.textfield[tall=small], .textfield.tall-small {
+  height: var(--sld-tall-small) !important;
 }
-.textfield:global([tall="default"]), .textfield:global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+.textfield[tall=med], .textfield.tall-med {
+  height: var(--sld-tall-med) !important;
+}
+.textfield[tall=kind], .textfield.tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+.textfield[tall=auto], .textfield.tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+.textfield[tall=default], .textfield.tall-default {
+  height: var(--sld-tall-default) !important;
 }
 .textfield:hover {
   border-color: var(--sld-hover-border-color);

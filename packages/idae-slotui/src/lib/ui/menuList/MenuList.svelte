@@ -4,7 +4,7 @@
 	import { setContext } from 'svelte';
 	import type { MenuListProps } from './types.js';
 	import MenuListItem from './MenuListItem.svelte';
-	import { tallPreset, type Data, type ExpandProps } from '$lib/types/index.js';
+	import { tallPreset, widthPreset, type Data, type ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import Looper from '$lib/utils/looper/Looper.svelte';
 
@@ -26,7 +26,8 @@
 	};
 	let {
 		class: className = '',
-		tall = tallPreset.default,
+		tall = tallPreset.small,
+		width = widthPreset.full,
 		style,
 		selectorField,
 		role = 'menu',
@@ -39,21 +40,32 @@
 		selectedIndex = $bindable(),
 		element = $bindable(),
 		menuListItems = $bindable(),
+		menuListItemProps = $bindable(),
 		children,
 		menuListItem,
 		listItemBottom,
 		...rest
 	}: MenuListProps = $props();
 
+	menuListItemProps = {
+		tall,
+		width,
+		selectorField,
+		presentationField, 
+		...menuListItemProps
+	};
+
 	let defaultStoreValues = {
 		menuListItems,
 		menuItemsInstances: [],
 		tall,
+		width,
 		data,
 		selectorField,
 		selectedIndex,
 		actions,
-		presentationField
+		presentationField,
+		...menuListItemProps
 	};
 
 	let menuStore = $state(defaultStoreValues);
@@ -94,13 +106,13 @@
 				}
 			}
 		}
-	} 
+	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <ul
 	bind:this={element}
-	class="tall-{tall} menuList {className} {grid ? 'grid' : ''}"
+	class="menu-list {className} {grid ? 'grid' : ''}"
 	class:showLastOnSelected
 	tabindex="0"
 	style={`${style};var(--menu-list-grid-items-count):${grid ? grid : '0'}`}
@@ -111,13 +123,13 @@
 	{#if menuListItems}
 		{#each menuListItems ?? [] as menuItem, itemIndex}
 			<Slotted child={children} slotArgs={{ item: menuItem, itemIndex, menuItem }}>
-				<MenuListItem {...menuItem} {itemIndex}  />
+				<MenuListItem {...menuListItemProps} {...menuItem} {itemIndex} />
 			</Slotted>
 		{/each}
 	{:else if data}
 		{#each data as dta, itemIndex}
 			<Slotted child={children} slotArgs={{ item: dta, itemIndex, menuItem: dta }}>
-				<MenuListItem data={dta} {itemIndex}>
+				<MenuListItem {...menuListItemProps} data={dta} {itemIndex}>
 					{@render menuListItem?.({ item: dta, itemIndex })}
 				</MenuListItem>
 			</Slotted>

@@ -7,7 +7,7 @@
 	// import cssfabric themer
 	import '../styles/cssfabric-theme.scss';
 	import '../styles/main.css';
-	import '$lib/_css/slotui-vars.css'; 
+	import '$lib/_css/slotui-vars.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
@@ -65,21 +65,6 @@
 	$effect(() => {
 		scrollSpy();
 	});
-
-	/* let red = stator([]);
-	red.onchange = (one, two) => {
-		console.log(one, two, red);
-	};
-	let timer: NodeJS.Timeout; */
-	$effect(() => {
-		/* red.push(red.length);
-		timer = setInterval(() => {
-			red.push(red.length);
-		}, 10000);
-		return () => clearInterval(timer); */
-	});
-
-	// console.log(red);
 </script>
 
 <svelte:head>
@@ -126,14 +111,21 @@
 		primary="svelte slotted"
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
-		<MenuList showLastOnSelected={true} style="height:100%;overflow:auto;">
+		<MenuList 
+			width="full"
+			showLastOnSelected={true}
+			style="height:100%;overflow:auto;width:100%;;"
+		>
 			<Looper data={Object.values(slotuiCatalog)} groupBy="group">
 				{#snippet children({ item })}
-					<MenuListItem
+					<MenuListItem 
 						iconLast={{ icon: 'chevron-right' }}
 						selected={item?.code === data?.params?.component}
 						data={item}
-						href=".{sitePaths.component(item)}"
+						title={item?.name}
+						onclick={() => {
+							goto(`.${sitePaths.component(item)}`);
+						}}
 						text={item?.name}
 					/>
 				{/snippet}
@@ -169,12 +161,8 @@
 </div>
 
 <style global type="scss">
-	@import '../lib/styles/slotui-vars.scss'; 
-	@import '../lib/styles/variants.scss'; 
+	@import '../lib/styles/slotui-vars.scss';
 
-	:global(button)   {
-		@include  ui-variants;
-	}
 	#contentSlide {
 		overflow: hidden;
 		flex: 1;

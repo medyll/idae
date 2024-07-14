@@ -1,4 +1,8 @@
 :root {
+  transition: all 0.3s ease-out;
+}
+
+:root {
   --sld-radius-tiny: 2px;
   --sld-radius-small: 4px;
   --sld-radius-med: 8px;
@@ -41,6 +45,12 @@
   --black: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #333;
+    --black: #ccc;
+  }
+}
 :root.dark,
 :root[data-theme=dark],
 body[data-theme=dark],
@@ -276,7 +286,8 @@ body[data-theme=dark],
   --sld-button-border-width: 1px;
   --sld-button-text-align: center;
   --sld-button-padding: 0;
-  --sld-button-background: var(--sld-color-primary);
+  --sld-button-background: var(--sld-color-background);
+  --sld-button-contained-background: var(--sld-color-primary);
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
   --sld-button-focus-border-color: var(--sld-color-primary);
@@ -296,10 +307,13 @@ body[data-theme=dark],
 
 :global(button),
 :global(.button),
+:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: unset;
-  --preset-tall: unset;
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
   border-radius: var(--sld-button-radius);
@@ -312,176 +326,225 @@ body[data-theme=dark],
   cursor: pointer;
   align-content: center;
   align-items: center;
-  max-height: 100%;
-}
-:global(button):global([width="tiny"]), :global(button):global(.width-tiny),
-:global(.button):global([width="tiny"]),
-:global(.button):global(.width-tiny),
-:global(input[type="button"]):global([width="tiny"]),
-:global(input[type="button"]):global(.width-tiny),
-:global(input[type="submit"]):global([width="tiny"]),
-:global(input[type="submit"]):global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-:global(button):global([width="mini"]), :global(button):global(.width-mini),
-:global(.button):global([width="mini"]),
-:global(.button):global(.width-mini),
-:global(input[type="button"]):global([width="mini"]),
-:global(input[type="button"]):global(.width-mini),
-:global(input[type="submit"]):global([width="mini"]),
-:global(input[type="submit"]):global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-:global(button):global([width="small"]), :global(button):global(.width-small),
-:global(.button):global([width="small"]),
-:global(.button):global(.width-small),
-:global(input[type="button"]):global([width="small"]),
-:global(input[type="button"]):global(.width-small),
-:global(input[type="submit"]):global([width="small"]),
-:global(input[type="submit"]):global(.width-small) {
-  width: var(--sld-width-small);
+  height: 25px;
   --preset-width: var(--sld-width-small);
-}
-:global(button):global([width="med"]), :global(button):global(.width-med),
-:global(.button):global([width="med"]),
-:global(.button):global(.width-med),
-:global(input[type="button"]):global([width="med"]),
-:global(input[type="button"]):global(.width-med),
-:global(input[type="submit"]):global([width="med"]),
-:global(input[type="submit"]):global(.width-med) {
-  width: var(--sld-width-med);
-  --preset-width: var(--sld-width-med);
-}
-:global(button):global([width="kind"]), :global(button):global(.width-kind),
-:global(.button):global([width="kind"]),
-:global(.button):global(.width-kind),
-:global(input[type="button"]):global([width="kind"]),
-:global(input[type="button"]):global(.width-kind),
-:global(input[type="submit"]):global([width="kind"]),
-:global(input[type="submit"]):global(.width-kind) {
-  width: var(--sld-width-kind);
-  --preset-width: var(--sld-width-kind);
-}
-:global(button):global([width="full"]), :global(button):global(.width-full),
-:global(.button):global([width="full"]),
-:global(.button):global(.width-full),
-:global(input[type="button"]):global([width="full"]),
-:global(input[type="button"]):global(.width-full),
-:global(input[type="submit"]):global([width="full"]),
-:global(input[type="submit"]):global(.width-full) {
-  width: var(--sld-width-full);
-  --preset-width: var(--sld-width-full);
-}
-:global(button):global([width="auto"]), :global(button):global(.width-auto),
-:global(.button):global([width="auto"]),
-:global(.button):global(.width-auto),
-:global(input[type="button"]):global([width="auto"]),
-:global(input[type="button"]):global(.width-auto),
-:global(input[type="submit"]):global([width="auto"]),
-:global(input[type="submit"]):global(.width-auto) {
-  width: var(--sld-width-auto);
-  --preset-width: var(--sld-width-auto);
-}
-:global(button):global([width="default"]), :global(button):global(.width-default),
-:global(.button):global([width="default"]),
-:global(.button):global(.width-default),
-:global(input[type="button"]):global([width="default"]),
-:global(input[type="button"]):global(.width-default),
-:global(input[type="submit"]):global([width="default"]),
-:global(input[type="submit"]):global(.width-default) {
-  width: var(--sld-width-default);
-  --preset-width: var(--sld-width-default);
-}
-:global(button):global([tall="tiny"]), :global(button):global(.tall-tiny),
-:global(.button):global([tall="tiny"]),
-:global(.button):global(.tall-tiny),
-:global(input[type="button"]):global([tall="tiny"]),
-:global(input[type="button"]):global(.tall-tiny),
-:global(input[type="submit"]):global([tall="tiny"]),
-:global(input[type="submit"]):global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-:global(button):global([tall="mini"]), :global(button):global(.tall-mini),
-:global(.button):global([tall="mini"]),
-:global(.button):global(.tall-mini),
-:global(input[type="button"]):global([tall="mini"]),
-:global(input[type="button"]):global(.tall-mini),
-:global(input[type="submit"]):global([tall="mini"]),
-:global(input[type="submit"]):global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-:global(button):global([tall="small"]), :global(button):global(.tall-small),
-:global(.button):global([tall="small"]),
-:global(.button):global(.tall-small),
-:global(input[type="button"]):global([tall="small"]),
-:global(input[type="button"]):global(.tall-small),
-:global(input[type="submit"]):global([tall="small"]),
-:global(input[type="submit"]):global(.tall-small) {
-  height: var(--sld-tall-small);
+  width: var(--preset-width-small);
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+  height: 25px;
 }
-:global(button):global([tall="med"]), :global(button):global(.tall-med),
-:global(.button):global([tall="med"]),
-:global(.button):global(.tall-med),
-:global(input[type="button"]):global([tall="med"]),
-:global(input[type="button"]):global(.tall-med),
-:global(input[type="submit"]):global([tall="med"]),
-:global(input[type="submit"]):global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-:global(button):global([tall="kind"]), :global(button):global(.tall-kind),
-:global(.button):global([tall="kind"]),
-:global(.button):global(.tall-kind),
-:global(input[type="button"]):global([tall="kind"]),
-:global(input[type="button"]):global(.tall-kind),
-:global(input[type="submit"]):global([tall="kind"]),
-:global(input[type="submit"]):global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
 }
-:global(button):global([tall="auto"]), :global(button):global(.tall-auto),
-:global(.button):global([tall="auto"]),
-:global(.button):global(.tall-auto),
-:global(input[type="button"]):global([tall="auto"]),
-:global(input[type="button"]):global(.tall-auto),
-:global(input[type="submit"]):global([tall="auto"]),
-:global(input[type="submit"]):global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
 }
-:global(button):global([tall="default"]), :global(button):global(.tall-default),
-:global(.button):global([tall="default"]),
-:global(.button):global(.tall-default),
-:global(input[type="button"]):global([tall="default"]),
-:global(input[type="button"]):global(.tall-default),
-:global(input[type="submit"]):global([tall="default"]),
-:global(input[type="submit"]):global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
 }
-:global(button)[variant*=square], :global(button)[square=true], :global(button):global(.square),
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  height: var(--sld-tall-tiny) !important;
+}
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  height: var(--sld-tall-mini) !important;
+}
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  height: var(--sld-tall-small) !important;
+}
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  height: var(--sld-tall-med) !important;
+}
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
 :global(.button)[variant*=square],
 :global(.button)[square=true],
-:global(.button):global(.square),
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
-:global(input[type="button"]):global(.square),
+:global(input[type="button"]).square,
 :global(input[type="submit"])[variant*=square],
 :global(input[type="submit"])[square=true],
-:global(input[type="submit"]):global(.square) {
-  aspect-ratio: 1;
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
   height: auto;
-  border: 1px solid red;
 }
 :global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -492,6 +555,7 @@ body[data-theme=dark],
 }
 :global(button):focus,
 :global(.button):focus,
+:global(button.button):focus,
 :global(input[type="button"]):focus,
 :global(input[type="submit"]):focus {
   outline: 1px solid var(--sld-button-focus-border-color);
@@ -500,6 +564,7 @@ body[data-theme=dark],
 }
 :global(button):focus-visible,
 :global(.button):focus-visible,
+:global(button.button):focus-visible,
 :global(input[type="button"]):focus-visible,
 :global(input[type="submit"]):focus-visible {
   outline: 1px solid var(--sld-button-focus-border-color);
@@ -508,12 +573,14 @@ body[data-theme=dark],
 }
 :global(button):focus:not(:focus-visible),
 :global(.button):focus:not(:focus-visible),
+:global(button.button):focus:not(:focus-visible),
 :global(input[type="button"]):focus:not(:focus-visible),
 :global(input[type="submit"]):focus:not(:focus-visible) {
   box-shadow: var(--sld-button-focus-shadow);
 }
 :global(button):hover,
 :global(.button):hover,
+:global(button.button):hover,
 :global(input[type="button"]):hover,
 :global(input[type="submit"]):hover {
   background-color: var(--sld-button-hover-background);
@@ -521,6 +588,7 @@ body[data-theme=dark],
 }
 :global(button):active,
 :global(.button):active,
+:global(button.button):active,
 :global(input[type="button"]):active,
 :global(input[type="submit"]):active {
   transform: translateY(1px);
@@ -528,6 +596,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start,
 :global(.button) .button-start,
+:global(button.button) .button-start,
 :global(input[type="button"]) .button-start,
 :global(input[type="submit"]) .button-start {
   --preset-ellipsis-line: 1;
@@ -542,6 +611,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis,
 :global(.button) .button-start.ellipsis,
+:global(button.button) .button-start.ellipsis,
 :global(input[type="button"]) .button-start.ellipsis,
 :global(input[type="submit"]) .button-start.ellipsis {
   white-space: nowrap;
@@ -550,6 +620,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-1,
 :global(.button) .button-start.ellipsis-line-1,
+:global(button.button) .button-start.ellipsis-line-1,
 :global(input[type="button"]) .button-start.ellipsis-line-1,
 :global(input[type="submit"]) .button-start.ellipsis-line-1 {
   display: -webkit-box;
@@ -562,6 +633,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-2,
 :global(.button) .button-start.ellipsis-line-2,
+:global(button.button) .button-start.ellipsis-line-2,
 :global(input[type="button"]) .button-start.ellipsis-line-2,
 :global(input[type="submit"]) .button-start.ellipsis-line-2 {
   display: -webkit-box;
@@ -574,6 +646,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-3,
 :global(.button) .button-start.ellipsis-line-3,
+:global(button.button) .button-start.ellipsis-line-3,
 :global(input[type="button"]) .button-start.ellipsis-line-3,
 :global(input[type="submit"]) .button-start.ellipsis-line-3 {
   display: -webkit-box;
@@ -586,6 +659,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-4,
 :global(.button) .button-start.ellipsis-line-4,
+:global(button.button) .button-start.ellipsis-line-4,
 :global(input[type="button"]) .button-start.ellipsis-line-4,
 :global(input[type="submit"]) .button-start.ellipsis-line-4 {
   display: -webkit-box;
@@ -598,6 +672,7 @@ body[data-theme=dark],
 }
 :global(button) .button-start.ellipsis-line-5,
 :global(.button) .button-start.ellipsis-line-5,
+:global(button.button) .button-start.ellipsis-line-5,
 :global(input[type="button"]) .button-start.ellipsis-line-5,
 :global(input[type="submit"]) .button-start.ellipsis-line-5 {
   display: -webkit-box;
@@ -610,12 +685,14 @@ body[data-theme=dark],
 }
 :global(button) .button-start:empty,
 :global(.button) .button-start:empty,
+:global(button.button) .button-start:empty,
 :global(input[type="button"]) .button-start:empty,
 :global(input[type="submit"]) .button-start:empty {
   display: none;
 }
 :global(button) .button-central,
 :global(.button) .button-central,
+:global(button.button) .button-central,
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   width: 100%;
@@ -628,6 +705,7 @@ body[data-theme=dark],
 }
 :global(button) .button-action,
 :global(.button) .button-action,
+:global(button.button) .button-action,
 :global(input[type="button"]) .button-action,
 :global(input[type="submit"]) .button-action {
   position: absolute;
@@ -643,12 +721,14 @@ body[data-theme=dark],
 }
 :global(button) .button-action:empty,
 :global(.button) .button-action:empty,
+:global(button.button) .button-action:empty,
 :global(input[type="button"]) .button-action:empty,
 :global(input[type="submit"]) .button-action:empty {
   display: none;
 }
 :global(button) .button-action:hover,
 :global(.button) .button-action:hover,
+:global(button.button) .button-action:hover,
 :global(input[type="button"]) .button-action:hover,
 :global(input[type="submit"]) .button-action:hover {
   background-color: var(--sld-button-action-hover-background);
@@ -656,6 +736,8 @@ body[data-theme=dark],
 :global(button).loading, :global(button)[aria-busy=true],
 :global(.button).loading,
 :global(.button)[aria-busy=true],
+:global(button.button).loading,
+:global(button.button)[aria-busy=true],
 :global(input[type="button"]).loading,
 :global(input[type="button"])[aria-busy=true],
 :global(input[type="submit"]).loading,
@@ -667,6 +749,8 @@ body[data-theme=dark],
 :global(button).loading::after, :global(button)[aria-busy=true]::after,
 :global(.button).loading::after,
 :global(.button)[aria-busy=true]::after,
+:global(button.button).loading::after,
+:global(button.button)[aria-busy=true]::after,
 :global(input[type="button"]).loading::after,
 :global(input[type="button"])[aria-busy=true]::after,
 :global(input[type="submit"]).loading::after,
@@ -689,6 +773,9 @@ body[data-theme=dark],
 :global(.button)[disabled],
 :global(.button).disabled,
 :global(.button)[aria-disabled=true],
+:global(button.button)[disabled],
+:global(button.button).disabled,
+:global(button.button)[aria-disabled=true],
 :global(input[type="button"])[disabled],
 :global(input[type="button"]).disabled,
 :global(input[type="button"])[aria-disabled=true],
@@ -705,6 +792,8 @@ body[data-theme=dark],
 :global(button)[aria-pressed=true], :global(button).selected,
 :global(.button)[aria-pressed=true],
 :global(.button).selected,
+:global(button.button)[aria-pressed=true],
+:global(button.button).selected,
 :global(input[type="button"])[aria-pressed=true],
 :global(input[type="button"]).selected,
 :global(input[type="submit"])[aria-pressed=true],
@@ -715,6 +804,7 @@ body[data-theme=dark],
 }
 :global(button) .chip,
 :global(.button) .chip,
+:global(button.button) .chip,
 :global(input[type="button"]) .chip,
 :global(input[type="submit"]) .chip {
   position: absolute;
@@ -729,6 +819,7 @@ body[data-theme=dark],
 }
 :global(button) .loadingButtonZone,
 :global(.button) .loadingButtonZone,
+:global(button.button) .loadingButtonZone,
 :global(input[type="button"]) .loadingButtonZone,
 :global(input[type="submit"]) .loadingButtonZone {
   z-index: 10;
@@ -742,182 +833,218 @@ body[data-theme=dark],
   align-content: center;
   justify-content: space-around;
 }
-
 :global(button),
 :global(.button),
+:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: unset;
-  --preset-tall: unset;
-}
-:global(button):global([width="tiny"]), :global(button):global(.width-tiny),
-:global(.button):global([width="tiny"]),
-:global(.button):global(.width-tiny),
-:global(input[type="button"]):global([width="tiny"]),
-:global(input[type="button"]):global(.width-tiny),
-:global(input[type="submit"]):global([width="tiny"]),
-:global(input[type="submit"]):global(.width-tiny) {
-  width: var(--sld-width-tiny);
-  --preset-width: var(--sld-width-tiny);
-}
-:global(button):global([width="mini"]), :global(button):global(.width-mini),
-:global(.button):global([width="mini"]),
-:global(.button):global(.width-mini),
-:global(input[type="button"]):global([width="mini"]),
-:global(input[type="button"]):global(.width-mini),
-:global(input[type="submit"]):global([width="mini"]),
-:global(input[type="submit"]):global(.width-mini) {
-  width: var(--sld-width-mini);
-  --preset-width: var(--sld-width-mini);
-}
-:global(button):global([width="small"]), :global(button):global(.width-small),
-:global(.button):global([width="small"]),
-:global(.button):global(.width-small),
-:global(input[type="button"]):global([width="small"]),
-:global(input[type="button"]):global(.width-small),
-:global(input[type="submit"]):global([width="small"]),
-:global(input[type="submit"]):global(.width-small) {
-  width: var(--sld-width-small);
   --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
 }
-:global(button):global([width="med"]), :global(button):global(.width-med),
-:global(.button):global([width="med"]),
-:global(.button):global(.width-med),
-:global(input[type="button"]):global([width="med"]),
-:global(input[type="button"]):global(.width-med),
-:global(input[type="submit"]):global([width="med"]),
-:global(input[type="submit"]):global(.width-med) {
-  width: var(--sld-width-med);
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
   --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
 }
-:global(button):global([width="kind"]), :global(button):global(.width-kind),
-:global(.button):global([width="kind"]),
-:global(.button):global(.width-kind),
-:global(input[type="button"]):global([width="kind"]),
-:global(input[type="button"]):global(.width-kind),
-:global(input[type="submit"]):global([width="kind"]),
-:global(input[type="submit"]):global(.width-kind) {
-  width: var(--sld-width-kind);
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
   --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
 }
-:global(button):global([width="full"]), :global(button):global(.width-full),
-:global(.button):global([width="full"]),
-:global(.button):global(.width-full),
-:global(input[type="button"]):global([width="full"]),
-:global(input[type="button"]):global(.width-full),
-:global(input[type="submit"]):global([width="full"]),
-:global(input[type="submit"]):global(.width-full) {
-  width: var(--sld-width-full);
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
   --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
 }
-:global(button):global([width="auto"]), :global(button):global(.width-auto),
-:global(.button):global([width="auto"]),
-:global(.button):global(.width-auto),
-:global(input[type="button"]):global([width="auto"]),
-:global(input[type="button"]):global(.width-auto),
-:global(input[type="submit"]):global([width="auto"]),
-:global(input[type="submit"]):global(.width-auto) {
-  width: var(--sld-width-auto);
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
   --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
 }
-:global(button):global([width="default"]), :global(button):global(.width-default),
-:global(.button):global([width="default"]),
-:global(.button):global(.width-default),
-:global(input[type="button"]):global([width="default"]),
-:global(input[type="button"]):global(.width-default),
-:global(input[type="submit"]):global([width="default"]),
-:global(input[type="submit"]):global(.width-default) {
-  width: var(--sld-width-default);
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
   --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
 }
-:global(button):global([tall="tiny"]), :global(button):global(.tall-tiny),
-:global(.button):global([tall="tiny"]),
-:global(.button):global(.tall-tiny),
-:global(input[type="button"]):global([tall="tiny"]),
-:global(input[type="button"]):global(.tall-tiny),
-:global(input[type="submit"]):global([tall="tiny"]),
-:global(input[type="submit"]):global(.tall-tiny) {
-  height: var(--sld-tall-tiny);
-  --preset-tall: var(--sld-tall-tiny);
-}
-:global(button):global([tall="mini"]), :global(button):global(.tall-mini),
-:global(.button):global([tall="mini"]),
-:global(.button):global(.tall-mini),
-:global(input[type="button"]):global([tall="mini"]),
-:global(input[type="button"]):global(.tall-mini),
-:global(input[type="submit"]):global([tall="mini"]),
-:global(input[type="submit"]):global(.tall-mini) {
-  height: var(--sld-tall-mini);
-  --preset-tall: var(--sld-tall-mini);
-}
-:global(button):global([tall="small"]), :global(button):global(.tall-small),
-:global(.button):global([tall="small"]),
-:global(.button):global(.tall-small),
-:global(input[type="button"]):global([tall="small"]),
-:global(input[type="button"]):global(.tall-small),
-:global(input[type="submit"]):global([tall="small"]),
-:global(input[type="submit"]):global(.tall-small) {
-  height: var(--sld-tall-small);
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
   --preset-tall: var(--sld-tall-small);
+  height: var(--preset-tall-small);
 }
-:global(button):global([tall="med"]), :global(button):global(.tall-med),
-:global(.button):global([tall="med"]),
-:global(.button):global(.tall-med),
-:global(input[type="button"]):global([tall="med"]),
-:global(input[type="button"]):global(.tall-med),
-:global(input[type="submit"]):global([tall="med"]),
-:global(input[type="submit"]):global(.tall-med) {
-  height: var(--sld-tall-med);
-  --preset-tall: var(--sld-tall-med);
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  height: var(--sld-tall-tiny) !important;
 }
-:global(button):global([tall="kind"]), :global(button):global(.tall-kind),
-:global(.button):global([tall="kind"]),
-:global(.button):global(.tall-kind),
-:global(input[type="button"]):global([tall="kind"]),
-:global(input[type="button"]):global(.tall-kind),
-:global(input[type="submit"]):global([tall="kind"]),
-:global(input[type="submit"]):global(.tall-kind) {
-  height: var(--sld-tall-kind);
-  --preset-tall: var(--sld-tall-kind);
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  height: var(--sld-tall-mini) !important;
 }
-:global(button):global([tall="auto"]), :global(button):global(.tall-auto),
-:global(.button):global([tall="auto"]),
-:global(.button):global(.tall-auto),
-:global(input[type="button"]):global([tall="auto"]),
-:global(input[type="button"]):global(.tall-auto),
-:global(input[type="submit"]):global([tall="auto"]),
-:global(input[type="submit"]):global(.tall-auto) {
-  height: var(--sld-tall-auto);
-  --preset-tall: var(--sld-tall-auto);
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  height: var(--sld-tall-small) !important;
 }
-:global(button):global([tall="default"]), :global(button):global(.tall-default),
-:global(.button):global([tall="default"]),
-:global(.button):global(.tall-default),
-:global(input[type="button"]):global([tall="default"]),
-:global(input[type="button"]):global(.tall-default),
-:global(input[type="submit"]):global([tall="default"]),
-:global(input[type="submit"]):global(.tall-default) {
-  height: var(--sld-tall-default);
-  --preset-tall: var(--sld-tall-default);
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  height: var(--sld-tall-med) !important;
 }
-:global(button)[variant*=square], :global(button)[square=true], :global(button):global(.square),
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
 :global(.button)[variant*=square],
 :global(.button)[square=true],
-:global(.button):global(.square),
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
-:global(input[type="button"]):global(.square),
+:global(input[type="button"]).square,
 :global(input[type="submit"])[variant*=square],
 :global(input[type="submit"])[square=true],
-:global(input[type="submit"]):global(.square) {
-  aspect-ratio: 1;
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
   height: auto;
-  border: 1px solid red;
 }
 :global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -930,6 +1057,9 @@ body[data-theme=dark],
 :global(.button)[variant*=bordered],
 :global(.button)[bordered=true],
 :global(.button).bordered,
+:global(button.button)[variant*=bordered],
+:global(button.button)[bordered=true],
+:global(button.button).bordered,
 :global(input[type="button"])[variant*=bordered],
 :global(input[type="button"])[bordered=true],
 :global(input[type="button"]).bordered,
@@ -939,12 +1069,15 @@ body[data-theme=dark],
   color: var(--sld-color-foreground);
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   box-shadow: var(--sld-elevation-1);
-  background-color: var(--sld-color-background);
+  background-color: var(--sld-button-background);
 }
 :global(button)[variant*=bordered]:hover, :global(button)[bordered=true]:hover, :global(button).bordered:hover,
 :global(.button)[variant*=bordered]:hover,
 :global(.button)[bordered=true]:hover,
 :global(.button).bordered:hover,
+:global(button.button)[variant*=bordered]:hover,
+:global(button.button)[bordered=true]:hover,
+:global(button.button).bordered:hover,
 :global(input[type="button"])[variant*=bordered]:hover,
 :global(input[type="button"])[bordered=true]:hover,
 :global(input[type="button"]).bordered:hover,
@@ -961,6 +1094,12 @@ body[data-theme=dark],
 :global(.button)[bordered=true]:active,
 :global(.button).bordered:focus,
 :global(.button).bordered:active,
+:global(button.button)[variant*=bordered]:focus,
+:global(button.button)[variant*=bordered]:active,
+:global(button.button)[bordered=true]:focus,
+:global(button.button)[bordered=true]:active,
+:global(button.button).bordered:focus,
+:global(button.button).bordered:active,
 :global(input[type="button"])[variant*=bordered]:focus,
 :global(input[type="button"])[variant*=bordered]:active,
 :global(input[type="button"])[bordered=true]:focus,
@@ -980,6 +1119,9 @@ body[data-theme=dark],
 :global(.button)[variant*=contained],
 :global(.button)[contained=true],
 :global(.button).contained,
+:global(button.button)[variant*=contained],
+:global(button.button)[contained=true],
+:global(button.button).contained,
 :global(input[type="button"])[variant*=contained],
 :global(input[type="button"])[contained=true],
 :global(input[type="button"]).contained,
@@ -988,7 +1130,7 @@ body[data-theme=dark],
 :global(input[type="submit"]).contained {
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   color: var(--sld-color-on-primary);
-  background-color: var(--sld-button-background);
+  background-color: var(--sld-button-contained-background);
   background-clip: padding-box;
   box-shadow: var(--sld-elevation-1);
 }
@@ -996,6 +1138,9 @@ body[data-theme=dark],
 :global(.button)[variant*=contained]:hover,
 :global(.button)[contained=true]:hover,
 :global(.button).contained:hover,
+:global(button.button)[variant*=contained]:hover,
+:global(button.button)[contained=true]:hover,
+:global(button.button).contained:hover,
 :global(input[type="button"])[variant*=contained]:hover,
 :global(input[type="button"])[contained=true]:hover,
 :global(input[type="button"]).contained:hover,
@@ -1012,6 +1157,12 @@ body[data-theme=dark],
 :global(.button)[contained=true]:active,
 :global(.button).contained:focus,
 :global(.button).contained:active,
+:global(button.button)[variant*=contained]:focus,
+:global(button.button)[variant*=contained]:active,
+:global(button.button)[contained=true]:focus,
+:global(button.button)[contained=true]:active,
+:global(button.button).contained:focus,
+:global(button.button).contained:active,
 :global(input[type="button"])[variant*=contained]:focus,
 :global(input[type="button"])[variant*=contained]:active,
 :global(input[type="button"])[contained=true]:focus,
@@ -1033,6 +1184,10 @@ body[data-theme=dark],
 :global(.button)[link=true],
 :global(.button).link,
 :global(.button)[role=link],
+:global(button.button)[variant*=link],
+:global(button.button)[link=true],
+:global(button.button).link,
+:global(button.button)[role=link],
 :global(input[type="button"])[variant*=link],
 :global(input[type="button"])[link=true],
 :global(input[type="button"]).link,
@@ -1053,6 +1208,10 @@ body[data-theme=dark],
 :global(.button)[link=true]:hover,
 :global(.button).link:hover,
 :global(.button)[role=link]:hover,
+:global(button.button)[variant*=link]:hover,
+:global(button.button)[link=true]:hover,
+:global(button.button).link:hover,
+:global(button.button)[role=link]:hover,
 :global(input[type="button"])[variant*=link]:hover,
 :global(input[type="button"])[link=true]:hover,
 :global(input[type="button"]).link:hover,
@@ -1072,6 +1231,14 @@ body[data-theme=dark],
 :global(.button).link:active,
 :global(.button)[role=link]:focus,
 :global(.button)[role=link]:active,
+:global(button.button)[variant*=link]:focus,
+:global(button.button)[variant*=link]:active,
+:global(button.button)[link=true]:focus,
+:global(button.button)[link=true]:active,
+:global(button.button).link:focus,
+:global(button.button).link:active,
+:global(button.button)[role=link]:focus,
+:global(button.button)[role=link]:active,
 :global(input[type="button"])[variant*=link]:focus,
 :global(input[type="button"])[variant*=link]:active,
 :global(input[type="button"])[link=true]:focus,
@@ -1096,6 +1263,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked],
 :global(.button)[naked=true],
 :global(.button).naked,
+:global(button.button)[variant*=naked],
+:global(button.button)[naked=true],
+:global(button.button).naked,
 :global(input[type="button"])[variant*=naked],
 :global(input[type="button"])[naked=true],
 :global(input[type="button"]).naked,
@@ -1111,6 +1281,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -1124,6 +1297,9 @@ body[data-theme=dark],
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -1139,6 +1315,12 @@ body[data-theme=dark],
 :global(.button)[naked=true]:focus,
 :global(.button).naked:active,
 :global(.button).naked:focus,
+:global(button.button)[variant*=naked]:active,
+:global(button.button)[variant*=naked]:focus,
+:global(button.button)[naked=true]:active,
+:global(button.button)[naked=true]:focus,
+:global(button.button).naked:active,
+:global(button.button).naked:focus,
 :global(input[type="button"])[variant*=naked]:active,
 :global(input[type="button"])[variant*=naked]:focus,
 :global(input[type="button"])[naked=true]:active,
@@ -1159,6 +1341,9 @@ body[data-theme=dark],
 :global(.button)[variant*=flat],
 :global(.button)[flat=true],
 :global(.button).flat,
+:global(button.button)[variant*=flat],
+:global(button.button)[flat=true],
+:global(button.button).flat,
 :global(input[type="button"])[variant*=flat],
 :global(input[type="button"])[flat=true],
 :global(input[type="button"]).flat,
@@ -1175,6 +1360,9 @@ body[data-theme=dark],
 :global(.button)[variant*=flat]:hover,
 :global(.button)[flat=true]:hover,
 :global(.button).flat:hover,
+:global(button.button)[variant*=flat]:hover,
+:global(button.button)[flat=true]:hover,
+:global(button.button).flat:hover,
 :global(input[type="button"])[variant*=flat]:hover,
 :global(input[type="button"])[flat=true]:hover,
 :global(input[type="button"]).flat:hover,
@@ -1190,6 +1378,12 @@ body[data-theme=dark],
 :global(.button)[flat=true]:focus,
 :global(.button).flat:active,
 :global(.button).flat:focus,
+:global(button.button)[variant*=flat]:active,
+:global(button.button)[variant*=flat]:focus,
+:global(button.button)[flat=true]:active,
+:global(button.button)[flat=true]:focus,
+:global(button.button).flat:active,
+:global(button.button).flat:focus,
 :global(input[type="button"])[variant*=flat]:active,
 :global(input[type="button"])[variant*=flat]:focus,
 :global(input[type="button"])[flat=true]:active,
