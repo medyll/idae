@@ -329,7 +329,7 @@ body[data-theme=dark],
 }
 .tree-cell.selected, .tree-cell[aria-selected=true], .tree-cell[data-selected=true] {
   border-color: none;
-  background-color: #ededed;
+  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
   box-shadow: var(--sld-selected-shadow);
 }
 .tree-cell.selected .listItemChip,

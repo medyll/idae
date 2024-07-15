@@ -25,6 +25,7 @@
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import StyleSheet from '$lib/utils/stylesheet/StyleSheet.svelte';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -101,6 +102,7 @@
 		}
 	</script>
 </svelte:head>
+<StyleSheet  />
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer

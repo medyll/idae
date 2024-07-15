@@ -554,7 +554,7 @@ body[data-theme=dark],
 :global(.menu-list) li.menu-list-item[aria-selected=true],
 :global(.menu-list) li.menu-list-item[data-selected=true] {
   border-color: none;
-  background-color: #ededed;
+  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
   box-shadow: var(--sld-selected-shadow);
 }
 :global(.menu-list) .menu-list-item.selected .listItemChip,

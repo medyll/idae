@@ -1,0 +1,90 @@
+$breakpoints: (
+    "xs": var(--breakpoint-xs, 320px),
+    "sm": var(--breakpoint-sm, 480px),
+    "md": var(--breakpoint-md, 640px),
+    "lg": var(--breakpoint-lg, 960px),
+    "xl": var(--breakpoint-xl, 1280px),
+    "xxl": var(--breakpoint-xxl, 1920px),
+    "xxxl": var(--breakpoint-xxxl, 1440px)
+);
+
+$breakpoint-name: "bkp";
+
+@mixin hidden {
+    content-visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    z-index: -10;
+    visibility: hidden;
+}
+
+@mixin visible {
+    content-visibility: auto;
+    opacity: 1;
+    position: static;
+    z-index: auto;
+    visibility: visible;
+}
+
+@function generate-visibility-classes($breakpoints) {
+    $result: ();
+    @each $name, $size in $breakpoints {
+        $result: map-merge(
+            $result,
+            (
+                "hide-more-#{$name}": (
+                    min-width: var(--#{$breakpoint-name}-#{$name}),
+                    class: hidden
+                ),
+                "show-more-#{$name}": (
+                    min-width: var(--#{$breakpoint-name}-#{$name}),
+                    class: visible
+                ),
+                "hide-less-#{$name}": (
+                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
+                    class: hidden
+                ),
+                "show-less-#{$name}": (
+                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
+                    class: visible
+                )
+            )
+        );
+    }
+    @return $result;
+}
+
+// Génération des propriétés CSS pour les breakpoints
+:root {
+    @each $name, $size in $breakpoints {
+        --#{$breakpoint-name}-#{$name}: #{$size};
+    }
+}
+
+// Génération des classes
+$visibility-classes: generate-visibility-classes($breakpoints);
+
+// Boucle pour créer les classes CSS avec media queries
+@each $class, $props in $visibility-classes {
+    @if map-has-key($props, "min-width") {
+        @media (min-width: #{map-get($props, 'min-width')}) {
+            :global(.#{$class}) {
+                @if map-get($props, "class") == hidden {
+                    @include hidden;
+                } @else if map-get($props, "class") == visible {
+                    @include visible;
+                }
+            }
+        }
+    } @else if map-has-key($props, "max-width") {
+        @media (max-width: #{map-get($props, 'max-width')}) {
+            :global(.#{$class}) {
+                @if map-get($props, "class") == hidden {
+                    @include hidden;
+                } @else if map-get($props, "class") == visible {
+                    @include visible;
+                }
+            }
+        }
+    }
+}
