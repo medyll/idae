@@ -1,3 +1,6 @@
+@use "sass:map";
+@import "./containerConfig.css";
+
 $breakpoints: (
     "xs": var(--breakpoint-xs, 320px),
     "sm": var(--breakpoint-sm, 480px),
@@ -9,6 +12,19 @@ $breakpoints: (
 );
 
 $breakpoint-name: "bkp";
+
+$containerItem: "container-item"; //var(--container-item, "container-item");
+$onContainer: var(--on-container, "on-container");
+$than: "than"; // var(--than, "than");
+$showSelector: var(--show, "show");
+$hideSelector: var(--hide, "hide");
+
+@debug ($containerItem);
+:root {
+    @each $name, $size in $breakpoints {
+        --#{$breakpoint-name}-#{$name}: #{$size};
+    }
+}
 
 @mixin hidden {
     content-visibility: hidden;
@@ -54,21 +70,40 @@ $breakpoint-name: "bkp";
     @return $result;
 }
 
-// Génération des propriétés CSS pour les breakpoints
-:root {
-    @each $name, $size in $breakpoints {
-        --#{$breakpoint-name}-#{$name}: #{$size};
+// this mixin uses the @container pseudo-class to generate container queries
+// it is used to hide/show elements based on the container width
+// it uses css properties --hide-on-container-width-less-than and --hide-on-container-more-more-than and
+@mixin generate-container-queries() {
+    @container (min-width: var(--hide-on-container-width-less-#{than})) {
+        .#{$containerItem}-show-max-width {
+            @include hidden;
+        }
+    }
+    @container (max-width: var(--hide-on-container-width-more-#{than})) {
+        .#{$containerItem}-show-min-width {
+            @include hidden;
+        }
+    }
+    @container (min-height: var(--hide-on-container-height-less-#{than})) {
+        .#{$containerItem}-show-max-height {
+            @include hidden;
+        }
+    }
+    @container (max-width: var(--hide-on-container-height-more-#{than})) {
+        .#{$containerItem}-show-min-height {
+            @include hidden;
+        }
     }
 }
 
-// Génération des classes
 $visibility-classes: generate-visibility-classes($breakpoints);
 
-// Boucle pour créer les classes CSS avec media queries
-@each $class, $props in $visibility-classes {
+@each $breakp, $props in $visibility-classes {
     @if map-has-key($props, "min-width") {
         @media (min-width: #{map-get($props, 'min-width')}) {
-            :global(.#{$class}) {
+            [#{$breakp}],
+            [breakpoints*="#{$breakp}"],
+            .#{$breakp} {
                 @if map-get($props, "class") == hidden {
                     @include hidden;
                 } @else if map-get($props, "class") == visible {
@@ -78,7 +113,9 @@ $visibility-classes: generate-visibility-classes($breakpoints);
         }
     } @else if map-has-key($props, "max-width") {
         @media (max-width: #{map-get($props, 'max-width')}) {
-            :global(.#{$class}) {
+            [#{$breakp}],
+            [breakpoints*="#{$breakp}"],
+            .#{$breakp} {
                 @if map-get($props, "class") == hidden {
                     @include hidden;
                 } @else if map-get($props, "class") == visible {
@@ -87,4 +124,20 @@ $visibility-classes: generate-visibility-classes($breakpoints);
             }
         }
     }
+}
+
+:root {
+    [container-inline],
+    [container="inline"],
+    .container-inline {
+        container-type: inline-size;
+    }
+
+    [container-height],
+    [container="height"],
+    .container-height {
+        container-type: size;
+    }
+
+    @include generate-container-queries;
 }

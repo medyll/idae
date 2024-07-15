@@ -13,6 +13,11 @@ declare module 'svelte/elements' {
 		ratio?: string | `true` | `false`;
 		square?: string | boolean | `true` | `false`;
 		rotation?: string | number;
+		container?:   `inline` | `height`;
+		hideMaxWidth?: string;
+		hideMaxHeight?: string;
+		hideMinWidth?: string;
+		hideMinHeight?: string;
 	}
 }
 
