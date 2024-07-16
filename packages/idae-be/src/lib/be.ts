@@ -231,48 +231,95 @@ export class Be {
 		return this;
 	}
 
-	up(qy?: string) {
+	up(qy?: string): Be {
+		let result: HTMLElement | HTMLElement[] | null = null;
 		switch (this.isWhat) {
-			case 'element':
-				return this.findWhile(this.node as HTMLElement, 'parent', qy);
-			case 'array':
-				return (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'parent', qy));
-			case 'qy':
-				return Array.from(document.querySelectorAll(this.node as string)).map((node) =>
-					this.findWhile(node, 'parent', qy)
-				);
+		case 'element':
+			result = this.findWhile(this.node as HTMLElement, 'parent', qy);
+			break;
+		case 'array':
+			result = (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'parent', qy));
+			break;
+		case 'qy':
+			result = Array.from(document.querySelectorAll(this.node as string)).map((node) =>
+			this.findWhile(node, 'parent', qy)
+			);
+			break;
 		}
+		return Be.elem(result);
 	}
 
-	next(qy?: string) {
+	next(qy?: string): Be {
+		let result: HTMLElement | HTMLElement[] | null = null;
 		switch (this.isWhat) {
-			case 'element':
-				return this.findWhile(this.node as HTMLElement, 'next', qy);
-			case 'array':
-				return (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'next', qy));
-			case 'qy':
-				return Array.from(document.querySelectorAll(this.node as string)).map((node) =>
-					this.findWhile(node, 'next', qy)
-				);
+		case 'element':
+			result = this.findWhile(this.node as HTMLElement, 'next', qy);
+			break;
+		case 'array':
+			result = (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'next', qy));
+			break;
+		case 'qy':
+			result = Array.from(document.querySelectorAll(this.node as string)).map((node) =>
+			this.findWhile(node, 'next', qy)
+			);
+			break;
 		}
+		return Be.elem(result);
 	}
 
-	previous(qy?: string) {
+	previous(qy?: string): Be {
+		let result: HTMLElement | HTMLElement[] | null = null;
 		switch (this.isWhat) {
-			case 'element':
-				return this.findWhile(this.node as HTMLElement, 'previous', qy);
-			case 'array':
-				return (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'previous', qy));
-			case 'qy':
-				return Array.from(document.querySelectorAll(this.node as string)).map((node) =>
-					this.findWhile(node, 'previous', qy)
-				);
+		case 'element':
+			result = this.findWhile(this.node as HTMLElement, 'previous', qy);
+			break;
+		case 'array':
+			result = (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'previous', qy));
+			break;
+		case 'qy':
+			result = Array.from(document.querySelectorAll(this.node as string)).map((node) =>
+			this.findWhile(node, 'previous', qy)
+			);
+			break;
 		}
+		return Be.elem(result);
 	}
 
-	styleSet(styles: Record<string, any>) {
-		this.each((el) => Object.assign(el.style, styles));
+
+	/**
+	* Sets one or more CSS styles for the selected element(s), including CSS custom properties.
+	* @param styles An object of CSS properties and values, or a string of CSS properties and values.
+	* @param value The value for a single CSS property when styles is a property name string.
+	* @returns The Be instance for method chaining.
+	*/
+	setStyle(styles: Record<string, string> | string, value?: string): this {
+		if (typeof styles === 'string') {
+			// Handle string input
+			const styleEntries = styles.split(';').filter(s => s.trim() !== '');
+			styleEntries.forEach(entry => {
+				const [property, propertyValue] = entry.split(':').map(s => s.trim());
+				if (property && propertyValue) {
+				this.applyStyle(property, propertyValue);
+				}
+			});
+
+			// If value is provided, treat it as a single property setting
+			if (value !== undefined) {
+				this.applyStyle(styles, value);
+			}
+		} else if (typeof styles === 'object') {
+			// Handle object input
+			Object.entries(styles).forEach(([prop, val]) => {
+				this.applyStyle(prop, val);
+			});
+		}
 		return this;
+	}
+
+	private applyStyle(property: string, value: string): void {
+		this.each((el) => {
+		el.style.setProperty(property, value);
+		});
 	}
 
 	on(eventName: string, handler: EventListener) {
@@ -435,24 +482,24 @@ export class Be {
 		element: Element,
 		direction: 'parent' | 'next' | 'previous',
 		selector?: string
-	): Element | null {
+	): HTMLElement | null {
 		if (direction === 'parent') {
 			return selector ? element.closest(selector) : element.parentElement;
 		}
 
 		const siblingProperty = direction === 'next' ? 'nextElementSibling' : 'previousElementSibling';
-		let sibling = element[siblingProperty] as Element | null;
+		let sibling = element[siblingProperty] as HTMLElement | null;
 
 		while (sibling) {
 			if (!selector || sibling.matches(selector)) {
 				return sibling;
 			}
-			sibling = sibling[siblingProperty] as Element | null;
+			sibling = sibling[siblingProperty] as HTMLElement | null;
 		}
 
 		return null;
 	}
-}
+} 
 
 export function be(selector: string | HTMLElement | HTMLElement[]): Be {
 	return Be.elem(selector);
