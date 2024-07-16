@@ -1,0 +1,148 @@
+@use "sass:map";
+@import "./containerConfig.css";
+
+$breakpoints: (
+    "xs": var(--breakpoint-xs, 320px),
+    "sm": var(--breakpoint-sm, 480px),
+    "md": var(--breakpoint-md, 640px),
+    "lg": var(--breakpoint-lg, 960px),
+    "xl": var(--breakpoint-xl, 1280px),
+    "xxl": var(--breakpoint-xxl, 1920px),
+    "xxxl": var(--breakpoint-xxxl, 1440px)
+);
+
+$breakpoint-name: "bkp";
+
+$containerItem: "container-item"; //var(--container-item, "container-item");
+$onContainer: var(--on-container, "on-container");
+$than: "than"; // var(--than, "than");
+$showSelector: var(--show, "show");
+$hideSelector: var(--hide, "hide");
+
+@debug ($containerItem);
+:root {
+    @each $name, $size in $breakpoints {
+        --#{$breakpoint-name}-#{$name}: #{$size};
+    }
+}
+
+@mixin hidden {
+    content-visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    z-index: -10;
+    visibility: hidden;
+}
+
+@mixin visible {
+    content-visibility: auto;
+    opacity: 1;
+    position: static;
+    z-index: auto;
+    visibility: visible;
+}
+
+@function generate-visibility-classes($breakpoints) {
+    $result: ();
+    @each $name, $size in $breakpoints {
+        $result: map-merge(
+            $result,
+            (
+                "hide-more-#{$name}": (
+                    min-width: var(--#{$breakpoint-name}-#{$name}),
+                    class: hidden
+                ),
+                "show-more-#{$name}": (
+                    min-width: var(--#{$breakpoint-name}-#{$name}),
+                    class: visible
+                ),
+                "hide-less-#{$name}": (
+                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
+                    class: hidden
+                ),
+                "show-less-#{$name}": (
+                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
+                    class: visible
+                )
+            )
+        );
+    }
+    @return $result;
+}
+
+// this mixin uses the @container pseudo-class to generate container queries
+// it is used to hide/show elements based on the container width
+// it uses css properties --hide-on-container-width-less-than and --hide-on-container-more-more-than and
+@mixin generate-container-queries() {
+    @container (max-width: var(--hide-on-container-width-more-#{than})) {
+        :global(.#{$containerItem}-hide-max-width) {
+            color: red;
+            @include hidden;
+        }
+    }
+    @container (max-width: var(--hide-on-container-width-more-#{than})) {
+        .#{$containerItem}-hide-min-width {
+            @include hidden;
+        }
+    }
+    @container (min-height: var(--hide-on-container-height-less-#{than})) {
+        .#{$containerItem}-hide-max-height {
+            @include hidden;
+        }
+    }
+    @container (max-width: var(--hide-on-container-height-more-#{than})) {
+        .#{$containerItem}-hide-min-height {
+            @include hidden;
+        }
+    }
+}
+
+$visibility-classes: generate-visibility-classes($breakpoints);
+
+@each $breakp, $props in $visibility-classes {
+    @if map-has-key($props, "min-width") {
+        @media (min-width: #{map-get($props, 'min-width')}) {
+            [#{$breakp}],
+            [breakpoints*="#{$breakp}"],
+            .#{$breakp} {
+                @if map-get($props, "class") == hidden {
+                    @include hidden;
+                } @else if map-get($props, "class") == visible {
+                    @include visible;
+                }
+            }
+        }
+    } @else if map-has-key($props, "max-width") {
+        @media (max-width: #{map-get($props, 'max-width')}) {
+            [#{$breakp}],
+            [breakpoints*="#{$breakp}"],
+            .#{$breakp} {
+                @if map-get($props, "class") == hidden {
+                    @include hidden;
+                } @else if map-get($props, "class") == visible {
+                    @include visible;
+                }
+            }
+        }
+    }
+}
+
+[container-inline],
+[container="inline"],
+.container-inline {
+    container-type: inline-size;
+}
+
+[container-size],
+[container="size"],
+.container-size {
+    container-type: size;
+}
+
+[container-normal],
+[container="normal"],
+.container-normal {
+    container-type: normal;
+}
+
+@include generate-container-queries;
