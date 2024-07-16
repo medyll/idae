@@ -96,7 +96,7 @@ describe('Be', () => {
 	it('should set styles on the element', () => {
 		const element = document.createElement('div');
 		const beInstance = Be.elem(element);
-		beInstance.styleSet({ color: 'red', fontSize: '16px' });
+		beInstance.setStyle({ color: 'red', fontSize: '16px' });
 		expect(element.style.color).toBe('red');
 		expect(element.style.fontSize).toBe('16px');
 	});
