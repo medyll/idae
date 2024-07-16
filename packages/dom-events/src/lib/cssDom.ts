@@ -43,15 +43,19 @@ export class CssObserver {
 	 * Creates a new instance of CssObserver.
 	 * @param {QuerySelector} selector - The query selector for the instance.
 	 */
-	constructor(selector: QuerySelector) {
-		this.selector = selector;
-		this.selectorId = this.cleanSpecialChars(selector);
-
+	constructor(selector?: QuerySelector) { 
+		if(selector) this.setSelector(selector);
 		if(typeof document !== 'undefined'){
 			CssObserver.checkBrowserSupport();
 			return this;
 		}
 	}
+
+	setSelector(selector: QuerySelector) {
+		this.selector = selector;
+		this.selectorId = this.cleanSpecialChars(selector);
+	}
+
 
 	/**
 	 * Checks if the browser supports necessary features.
@@ -103,10 +107,11 @@ export class CssObserver {
 		if(this.loadedSelectors.has(this.selector) && this.loadedSelectors.get(this.selector)?.controller){
 			return this?.loadedSelectors?.get?.(this.selector)?.controller;
 		}  
+		const selector = this.selector;
 
 		const animationName = opts?.animationName ?? crypto.randomUUID();
 		this.activeAnimations.add(animationName);
-		const styleFragment = this.createStyleFragment(this.selector, animationName);
+		const styleFragment = this.createStyleFragment(selector, animationName);
 
 		let transCallBak: CssObserverCallBack = (node) => {
 			if (opts.trackResize) {
@@ -163,13 +168,13 @@ export class CssObserver {
 					this.removeResizeObserver();
 				}
 				if (opts.trackChildList || opts.trackAttributes) {
-					htmlDom.detach(this.selector);
+					htmlDom.detach(selector);
 				}
 			}
 		};
 
 		
-		this.loadedSelectors.set(this.selector,{ controller:ret, fragment:styleFragment,selector:this.selector,callback:transCallBak});
+		this.loadedSelectors.set(selector,{ controller:ret, fragment:styleFragment,selector:selector,callback:transCallBak});
 
 		return ret;
 	}
@@ -425,6 +430,8 @@ export class CssObserver {
 	}
 }
 
+const cssDomInstance = new CssObserver();
+
 /**
  * Creates a selector object that allows querying the DOM using CSS selectors.
  * @param {QuerySelector} selector - The CSS selector to query the DOM.
@@ -452,7 +459,8 @@ export function cssDom(
 	let eachCallback: CssObserverCallBack | null = null;
 	let summaryCallback: CssObserverCallBackSummary | null = null; 
 
-	const domCss = new CssObserver(selector);
+	// const domCss = new CssObserver(selector);
+	cssDomInstance.setSelector(selector);
 
 	let cssDomObject = {
 		each: function(callback: CssObserverCallBack) {	  
@@ -503,7 +511,7 @@ export function cssDom(
 		* @returns {Object} An object with methods to control the tracking.
 		*/
 		each: function (callback: CssObserverCallBack) {
-			const tracker = domCss.track(callback, opts);
+			const tracker = cssDomInstance.track(callback, opts);
 			return tracker;
 		},
 		/**
@@ -513,7 +521,7 @@ export function cssDom(
 		*/
 		summary: function (callback: CssObserverCallBackSummary) {
 			 
-			const tracker = domCss.getSummary(callback, opts);
+			const tracker = cssDomInstance.getSummary(callback, opts);
 			if (opts?.trackChildList || opts?.trackAttributes) {
 			htmlDom.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
 				onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
