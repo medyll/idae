@@ -58,7 +58,7 @@ export function toContainerQuery(
     const cssVariable = `--${showHide}-${config.onContainer}-${dimension}-${isMax ? `${config.more}-${config.than}` :  `${config.less}-${config.than}`}`;
 
     return {
-      class: castAttribute, // add class to element
+      class: `${config.containerItem}-${castAttribute}`, // add class to element
       style: value ? `${cssVariable}: ${value};` : undefined // add style to element
     };
   }

@@ -88,7 +88,7 @@ export { default as Drawer } from '$lib/navigation/drawer/Drawer.svelte';
 export * from '$lib/navigation/drawer/types.js';
 export { default as Tabs } from '$lib/navigation/tabs/Tabs.svelte';
 export * from '$lib/navigation/tabs/types.js';
-export * from '$lib/styles/slotui-ambient.d.js';
+export * from '$lib/types/slotui-ambient.d.js';
 export { default as BootStrApp } from '$lib/ui/bootstrapp/BootStrApp.svelte';
 export * from '$lib/ui/chromeFrame/chromeFrame.store.js';
 export { default as ChromeFrame } from '$lib/ui/chromeFrame/ChromeFrame.svelte';

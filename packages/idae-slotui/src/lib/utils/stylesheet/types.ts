@@ -10,7 +10,7 @@ export type BreakPointRule = Record<`--bkp-${BreakPointsKeys}`, `${string}${Beak
 
 
 
-export interface StyleSheet extends Partial<BreakPointRule> {
+export interface SlotUiStyleSheet extends Partial<BreakPointRule> {
     breakpoints?: BreakPoints;   
     showSelectors?: boolean;
 }

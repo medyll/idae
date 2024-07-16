@@ -35,16 +35,16 @@ a {
 * {
   scrollbar-width: auto;
   scrollbar-color: var(--sld-color-primary) var(--sld-color-background);
+  scrollbar-gutter: auto;
 }
 
-/* Chrome, Edge, and Safari */
+
+
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  background-color: transparent;
 }
-
 *::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: transparent;
 }
 
 *::-webkit-scrollbar-thumb {

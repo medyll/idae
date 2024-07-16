@@ -31,8 +31,8 @@
 </div>
 
 <style global lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
+	@import '../../styles/slotui-presets.scss';
+	@import '../../styles/slotui-mixins.scss';
 	.buttonRail {
 		button:not(.active) {
 			border: 1px solid transparent;

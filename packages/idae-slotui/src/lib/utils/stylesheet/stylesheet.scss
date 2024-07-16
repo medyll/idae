@@ -74,23 +74,24 @@ $hideSelector: var(--hide, "hide");
 // it is used to hide/show elements based on the container width
 // it uses css properties --hide-on-container-width-less-than and --hide-on-container-more-more-than and
 @mixin generate-container-queries() {
-    @container (min-width: var(--hide-on-container-width-less-#{than})) {
-        .#{$containerItem}-show-max-width {
+    @container (max-width: var(--hide-on-container-width-more-#{than})) {
+        :global(.#{$containerItem}-hide-max-width) {
+            color: red;
             @include hidden;
         }
     }
     @container (max-width: var(--hide-on-container-width-more-#{than})) {
-        .#{$containerItem}-show-min-width {
+        .#{$containerItem}-hide-min-width {
             @include hidden;
         }
     }
     @container (min-height: var(--hide-on-container-height-less-#{than})) {
-        .#{$containerItem}-show-max-height {
+        .#{$containerItem}-hide-max-height {
             @include hidden;
         }
     }
     @container (max-width: var(--hide-on-container-height-more-#{than})) {
-        .#{$containerItem}-show-min-height {
+        .#{$containerItem}-hide-min-height {
             @include hidden;
         }
     }
@@ -126,18 +127,21 @@ $visibility-classes: generate-visibility-classes($breakpoints);
     }
 }
 
-:root {
-    [container-inline],
-    [container="inline"],
-    .container-inline {
-        container-type: inline-size;
-    }
-
-    [container-height],
-    [container="height"],
-    .container-height {
-        container-type: size;
-    }
-
-    @include generate-container-queries;
+:global([container-inline]),
+:global([container="inline"]),
+:global(.container-inline) {
+    container-type: inline-size;
 }
+
+:global([container-size]),
+:global([container="size"]),
+:global(.container-size) {
+    container-type: size;
+}
+
+:global([container-normal]),
+:global([container="normal"]),
+:global(.container-normal) {
+    container-type: normal;
+}
+@include generate-container-queries;

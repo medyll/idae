@@ -76,7 +76,7 @@
 </svelte:element>
 
 <style lang="scss">
-	@import '../../styles/presets.scss';
+	@import '../../styles/slotui-mixins.scss';
 
 	.content {
 		@include ui-width-presets;

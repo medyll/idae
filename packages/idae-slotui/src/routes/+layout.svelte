@@ -25,7 +25,9 @@
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
-	import StyleSheet from '$lib/utils/stylesheet/StyleSheet.svelte';
+	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
+
+	import {cssDom} from "@medyll/dom-events"
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -66,6 +68,8 @@
 	$effect(() => {
 		scrollSpy();
 	});
+
+ 
 </script>
 
 <svelte:head>
@@ -102,7 +106,7 @@
 		}
 	</script>
 </svelte:head>
-<StyleSheet  />
+<SlotuiSheet  />
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer
@@ -163,7 +167,7 @@
 </div>
 
 <style global type="scss">
-	@import '../lib/styles/slotui-vars.scss';
+	@import '../lib/styles/slotui-presets.scss';
 
 	#contentSlide {
 		overflow: hidden;

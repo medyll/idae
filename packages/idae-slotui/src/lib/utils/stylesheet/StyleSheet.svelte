@@ -1,9 +1,11 @@
 <script lang="ts">
-    import { type StyleSheet,type BreakPoints} from './types.js'; 
- import {configCssVars,toContainerQuery} from "./utils.js"
+    import { type SlotUiStyleSheet,type BreakPoints} from './types.js'; 
+    import {configCssVars,toContainerQuery} from "./utils.js";
+
     let {
-        breakpoints,showSelectors
-    }:StyleSheet = $props();
+        breakpoints,
+        showSelectors
+    }:SlotUiStyleSheet = $props();
 
     function castToCssProps(breakpoints: BreakPoints | undefined) {
         if (!breakpoints) return '';
@@ -17,8 +19,14 @@
 </script>
 <svelte:head>
     {castToCssProps(breakpoints)}
-</svelte:head>
-  {#if showSelectors}
+    <style id="idae-slotui-stylesheet" lang="scss">
+        @import './stylesheet.scss'; 
+        // @include generate-container-queries;
+    </style>
+</svelte:head>  
+
+{#if showSelectors}
+{castToCssProps(breakpoints)}ss
     <pre>
         {JSON.stringify(configCssVars, undefined,' ' ) }
     </pre>
@@ -26,7 +34,3 @@
         {JSON.stringify(toContainerQuery('hideMaxWidth','115px'), undefined,' ' ) }
     </pre>
 {/if}
-   
-<style lang="scss">
-    @import './stylesheet.scss';
-</style>

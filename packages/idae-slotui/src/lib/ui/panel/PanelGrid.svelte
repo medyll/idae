@@ -60,8 +60,8 @@
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-vars.scss';
-	@import '../../styles/presets.scss';
+	@import '../../styles/slotui-presets.scss';
+	@import '../../styles/slotui-mixins.scss';
 	.panelGridPreview {
 		display: flex;
 		.panelGridZoom {

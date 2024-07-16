@@ -1,4 +1,5 @@
 import type { AlertProps } from '$lib/base/alert/types.js';
+import type { BreakPointsKeys } from '$lib/utils/stylesheet/types.js';
 import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 import type { IconProps } from '@iconify/svelte';
 import type { Snippet } from 'svelte';
@@ -197,6 +198,11 @@ export interface CommonProps {
 	element?: HTMLElement;
 	class?: string;
 	style?: string;
+	container?:   `inline` | `size` | `normal`;
+	hideMaxWidth?: string;
+	hideMaxHeight?: string;
+	hideMinWidth?: string;
+	hideMinHeight?: string;
 	children?: Snippet<[any]>;
 }
 
@@ -229,3 +235,13 @@ type FilteredBySnippet<T> = {
 type oo = FilteredBySnippet<AlertProps>;
 
 export type ExpandProps<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+
+
+export type ContainerQueriesUnits = '%' | 'px' | 'em' | 'rem' | 'vw' | 'vh' | 'vmin' | 'vmax' | `cqw` | `cqh` | `cqi`  | `cqb` | `cqmin`  | `cqmax` | `normal` ;
+export type ContainerQueriesUnitsAttributes =  `${string}${ContainerQueriesUnits}` ;
+
+
+export type BreakPointsAttribute =  `hide-more-${BreakPointsKeys}` | `hide-less-${BreakPointsKeys}` ;
+export type BreakPointsAttributes =  `hide-more-${BreakPointsKeys}` | `hide-less-${BreakPointsKeys}` ;
+
+export type CombineElements<T extends string, U extends string = T> = T extends any ? T | `${T} ${CombineElements<Exclude<U, T>>}` : never;

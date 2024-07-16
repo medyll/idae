@@ -1,6 +1,6 @@
-// @import "../../styles/slotui-vars.scss";
+// @import "../../styles/slotui-presets.scss";
 
-@import "../../styles/presets.scss";
+@import "../../styles/slotui-mixins.scss";
 
 :root {
   --avatar-radius: var(--css-radius-small);

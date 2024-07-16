@@ -1,6 +1,7 @@
 <script lang="ts" generics="T=any">
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/controls/button/Button.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import { onDestroy } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
@@ -25,7 +26,7 @@
 		loading,
 		data,
 		action = () => {},
-		iconCancel = { icon: 'fluent-mdl2:cancel', color: 'red' },
+		iconCancel = { icon: 'fluent-mdl2:navigate-back', color: 'red' },
 		children,
 		confirmInitial,
 		...rest
@@ -113,9 +114,8 @@
 		</div>
 	{/if}
 	{#if step === 'confirm'}
-		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
-			<span>
-				<Button
+		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>			 
+				<IconButton
 					onclick={handleClickCancel}
 					width="tiny"
 					ratio="1/1"
@@ -123,10 +123,10 @@
 					icon={iconCancel}
 					{tall}
 					title="cancel"
-				/>
-			</span>
+				/> 
 			<Slotted child={children} slotArgs={{ step }}>
-				<Button
+				<IconButton
+					title="confirm"
 					loading={loadingState}
 					{tall}
 					onclick={handleAction}
