@@ -13,6 +13,12 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: Debug project structure
+        run: |
+          ls -R
+          cat package.json
+          cat .changeset/config.json
+      
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -32,7 +38,7 @@ jobs:
         run: node .github/scripts/generate-changesets.js
       
       - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1
+        uses: changesets/action@v1.4.1
         with:
           publish: npx changeset publish
         env:
@@ -45,6 +51,6 @@ jobs:
           git config --local user.name "GitHub Action"
           git add CHANGELOG.md
           git commit -m "chore: update changelog" || echo "No changes to commit"
-          git push --set-upstream origin changeset-release/main || echo "No changes to push"
+          git push origin HEAD:${{ github.ref }} || echo "No changes to push"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

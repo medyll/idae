@@ -42,7 +42,8 @@ import  Tree from '$lib/ui/tree/Tree.demo.svelte';
 import  Window from '$lib/ui/window/Window.demo.svelte';
 import  ContextRooter from '$lib/utils/contextRooter/ContextRooter.demo.svelte';
 import  Css from '$lib/utils/css/Css.demo.svelte';
-import  Looper from '$lib/utils/looper/Looper.demo.svelte';; export const slotuiDemoCatalog = {alert:{component:Alert,name:"Alert",code:"alert",group:"base",root:"alert"},
+import  Looper from '$lib/utils/looper/Looper.demo.svelte';
+import  StyleSheet from '$lib/utils/stylesheet/StyleSheet.demo.svelte';; export const slotuiDemoCatalog = {alert:{component:Alert,name:"Alert",code:"alert",group:"base",root:"alert"},
 avatar:{component:Avatar,name:"Avatar",code:"avatar",group:"base",root:"avatar"},
 backdrop:{component:Backdrop,name:"Backdrop",code:"backdrop",group:"base",root:"backdrop"},
 box:{component:Box,name:"Box",code:"box",group:"base",root:"box"},
@@ -86,4 +87,5 @@ tree:{component:Tree,name:"Tree",code:"tree",group:"ui",root:"tree"},
 window:{component:Window,name:"Window",code:"window",group:"ui",root:"window"},
 contextrooter:{component:ContextRooter,name:"ContextRooter",code:"contextrooter",group:"utils",root:"contextRooter"},
 css:{component:Css,name:"Css",code:"css",group:"utils",root:"css"},
-looper:{component:Looper,name:"Looper",code:"looper",group:"utils",root:"looper"},} as const
+looper:{component:Looper,name:"Looper",code:"looper",group:"utils",root:"looper"},
+stylesheet:{component:StyleSheet,name:"StyleSheet",code:"stylesheet",group:"utils",root:"stylesheet"},} as const

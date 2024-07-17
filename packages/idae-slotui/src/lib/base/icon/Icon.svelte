@@ -8,7 +8,7 @@
 		class: className,
 		style,
 		element = $bindable<HTMLDivElement>(),
-		iconSize = $bindable('small'),
+		iconSize = $bindable(),
 		rotate = false,
 		color = $bindable(),
 		rotation = 0,
@@ -16,6 +16,9 @@
 		...rest
 	}: ExpandProps<IconAppProps> = $props();
 
+
+	iconSize = iconSize || 'small';
+	
 	const sizes: Record<ElementProps['iconSize'], string> = iconFontSize;
 
 	let finalI = $derived(ico?.icon ?? (typeof icon === 'object' ? icon.icon : icon));

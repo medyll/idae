@@ -7,7 +7,7 @@
 	// import cssfabric themer
 	import '../styles/cssfabric-theme.scss';
 	import '../styles/main.css';
-	import '$lib/_css/slotui-vars.css';
+	// import '$lib/_css/slotui-vars.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
@@ -25,6 +25,9 @@
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
+
+	import {cssDom} from "@medyll/dom-events"
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -65,6 +68,8 @@
 	$effect(() => {
 		scrollSpy();
 	});
+
+ 
 </script>
 
 <svelte:head>
@@ -101,6 +106,7 @@
 		}
 	</script>
 </svelte:head>
+<SlotuiSheet  />
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer
@@ -161,7 +167,7 @@
 </div>
 
 <style global type="scss">
-	@import '../lib/styles/slotui-vars.scss';
+	@import '../lib/styles/slotui-presets.scss';
 
 	#contentSlide {
 		overflow: hidden;

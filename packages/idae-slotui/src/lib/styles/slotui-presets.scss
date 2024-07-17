@@ -1,0 +1,56 @@
+$vendor: "sld";
+
+$presets-ellipsis-line-default: 1;
+
+$preset-width-list: (
+    tiny: 2rem,
+    mini: 3rem,
+    small: 10rem,
+    med: 14rem,
+    kind: 20rem,
+    full: 100%,
+    auto: auto,
+    default: 10rem
+);
+
+$preset-tall-list: (
+    tiny: 1rem,
+    mini: 1.5rem,
+    small: 2.5rem,
+    med: 3.5rem,
+    kind: 4rem,
+    auto: auto,
+    default: 2.5rem
+);
+
+$preset-gutter-list: (
+    tiny: 0.25rem,
+    mini: 0.5rem,
+    small: 1rem,
+    med: 2rem,
+    kind: 3rem,
+    default: 1rem
+);
+
+$preset-gap-list: (
+    tiny: 0.25rem,
+    mini: 0.4rem,
+    small: 0.5rem,
+    med: 1rem,
+    large: 1.5rem,
+    default: 0.5rem
+);
+
+$preset-pad-list: (
+    tiny: 0.25rem,
+    small: 0.5rem,
+    med: 1rem,
+    large: 1.5rem
+);
+
+$preset-radius-list: (
+    tiny: 2px,
+    small: 4px,
+    med: 8px,
+    large: 16px
+);
