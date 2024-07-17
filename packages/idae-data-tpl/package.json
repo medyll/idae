@@ -26,7 +26,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -47,7 +47,8 @@
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0-alpha.20",
 		"vite": "^5.0.11",
-		"vitest": "^1.2.0"
+		"vitest": "^1.2.0",
+		"glob": "^7.2.0"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
