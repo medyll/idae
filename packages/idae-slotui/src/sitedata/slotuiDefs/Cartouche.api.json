@@ -1,208 +1,208 @@
 {
-  "moduleName": "Cartouche",
-  "filePath": "src/lib/base/cartouche/Cartouche.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "description": "className off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "classes",
-      "kind": "let",
-      "description": "classNames off the whole component",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "description": "css style off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "description": "element root HTMLDivElement props",
-      "type": "null | HTMLDivElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "primary",
-      "kind": "let",
-      "description": "displayed title of the cartouche",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "secondary",
-      "kind": "let",
-      "description": "displayed sub title of the cartouche",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconProps",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "stacked",
-      "kind": "let",
-      "description": "can be set as a prop or as a className",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "component",
-      "kind": "const",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    },
-    {
-      "name": "componentProps",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "keepCartoucheContent",
-      "kind": "let",
-      "description": "State of content is preserved while visibility is toggled",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showTitleDivider",
-      "kind": "let",
-      "description": "show the title divider line",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "bordered",
-      "kind": "let",
-      "description": "show the default border style",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "isOpen",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "description": "component actions",
-      "type": "Record<'open'|'toggle' | 'close', Function>",
-      "value": "{     open,     toggle,     close }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    { "name": "__default__", "default": true, "slot_props": "{}" },
-    { "name": "cartoucheButtons", "default": false, "slot_props": "{}" },
-    {
-      "name": "cartoucheIcon",
-      "default": false,
-      "fallback": "<Icon {icon} {...iconProps} />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "primarySlot",
-      "default": false,
-      "fallback": "{primary}",
-      "slot_props": "{}"
-    },
-    {
-      "name": "secondarySlot",
-      "default": false,
-      "fallback": "{secondary ?? ''}",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Cartouche",
+	"filePath": "src/lib/base/cartouche/Cartouche.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"description": "className off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "classes",
+			"kind": "let",
+			"description": "classNames off the whole component",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"description": "css style off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"description": "element root HTMLDivElement props",
+			"type": "null | HTMLDivElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "primary",
+			"kind": "let",
+			"description": "displayed title of the cartouche",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "secondary",
+			"kind": "let",
+			"description": "displayed sub title of the cartouche",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconProps",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "stacked",
+			"kind": "let",
+			"description": "can be set as a prop or as a className",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "component",
+			"kind": "const",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		},
+		{
+			"name": "componentProps",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "keepCartoucheContent",
+			"kind": "let",
+			"description": "State of content is preserved while visibility is toggled",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showTitleDivider",
+			"kind": "let",
+			"description": "show the title divider line",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "bordered",
+			"kind": "let",
+			"description": "show the default border style",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "isOpen",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"description": "component actions",
+			"type": "Record<'open'|'toggle' | 'close', Function>",
+			"value": "{     open,     toggle,     close }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{ "name": "__default__", "default": true, "slot_props": "{}" },
+		{ "name": "cartoucheButtons", "default": false, "slot_props": "{}" },
+		{
+			"name": "cartoucheIcon",
+			"default": false,
+			"fallback": "<Icon {icon} {...iconProps} />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "primarySlot",
+			"default": false,
+			"fallback": "{primary}",
+			"slot_props": "{}"
+		},
+		{
+			"name": "secondarySlot",
+			"default": false,
+			"fallback": "{secondary ?? ''}",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

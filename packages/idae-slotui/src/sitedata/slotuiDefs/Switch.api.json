@@ -1,99 +1,99 @@
 {
-  "moduleName": "Switch",
-  "filePath": "src/lib/form/switch/Switch.svelte",
-  "props": [
-    {
-      "name": "name",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "checked",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "disabled",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLLabelElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "metaData",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onChange",
-      "kind": "let",
-      "type": "(val, metaData) => { }",
-      "value": "(val, metaData) => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    { "name": "__default__", "default": true, "slot_props": "{}" },
-    { "name": "label", "default": false, "slot_props": "{}" }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Switch",
+	"filePath": "src/lib/form/switch/Switch.svelte",
+	"props": [
+		{
+			"name": "name",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "checked",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "disabled",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLLabelElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "metaData",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onChange",
+			"kind": "let",
+			"type": "(val, metaData) => { }",
+			"value": "(val, metaData) => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{ "name": "__default__", "default": true, "slot_props": "{}" },
+		{ "name": "label", "default": false, "slot_props": "{}" }
+	],
+	"events": [],
+	"typedefs": []
 }

@@ -29,7 +29,7 @@
 		inputFirst,
 		inputLast,
 		...rest
-	}: ExpandProps<TextFieldProps> & Partial<HTMLInputElement>  = $props();
+	}: ExpandProps<TextFieldProps> & Partial<HTMLInputElement> = $props();
 
 	let niceIconStyle = $state('');
 

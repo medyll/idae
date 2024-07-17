@@ -51,7 +51,7 @@
 		tall,
 		width,
 		selectorField,
-		presentationField, 
+		presentationField,
 		...menuListItemProps
 	};
 

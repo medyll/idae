@@ -1,109 +1,109 @@
 {
-  "moduleName": "Tabs",
-  "filePath": "src/lib/navigation/tabs/Tabs.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLDivElement",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "items",
-      "kind": "let",
-      "type": "[]",
-      "value": "[]",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "activeTabCode",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "orientation",
-      "kind": "let",
-      "description": "orientation",
-      "type": "string",
-      "value": "'vertical'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onTabClick",
-      "kind": "let",
-      "type": "(item) => { }",
-      "value": "(item) => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "fallback": "<div\r\n\t\t\t\t\t\tdata-code={item.code}\r\n\t\t\t\t\t\tdata-activeTabCode={activeTabCode}\r\n\t\t\t\t\t\tstyle=\"display:{display};height:100%;position:relative;flex-direction:column\"\r\n\t\t\t\t\t>\r\n\t\t\t\t\t\t{#if Boolean(item?.secondary)}\r\n\t\t\t\t\t\t\t<div class=\" flex-h pad-tb-2 gap-small\">\r\n\t\t\t\t\t\t\t\t<div class=\"border-r pad-1 shad-3 radius-tiny\">\r\n\t\t\t\t\t\t\t\t\t<Icon style=\"display:block\" inline={false} icon=\"clarity:help-info-solid\" />\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"flex-main pad-t-1\">{@html item?.secondary}</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t<slot name=\"tabsInner\" {item} {activeTabCode}>\r\n\t\t\t\t\t\t\t<div data-code={item.code} style=\"flex:1;overflow:hidden;position:relative;\">\r\n\t\t\t\t\t\t\t\t{#if activeTabCode === item.code}\r\n\t\t\t\t\t\t\t\t\t{#if Boolean(item?.withComponent)}\r\n\t\t\t\t\t\t\t\t\t\t<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withContent)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withContent}\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withUid)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withUid}\r\n\t\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</slot>\r\n\t\t\t\t\t</div>",
-      "slot_props": "{ item: any, activeTabCode: string }"
-    },
-    {
-      "name": "tabLabelSlot",
-      "default": false,
-      "fallback": "{item?.label}",
-      "slot_props": "{ item: any }"
-    },
-    { "name": "tabsButtons", "default": false, "slot_props": "{}" },
-    {
-      "name": "tabsInner",
-      "default": false,
-      "fallback": "<div data-code={item.code} style=\"flex:1;overflow:hidden;position:relative;\">\r\n\t\t\t\t\t\t\t\t{#if activeTabCode === item.code}\r\n\t\t\t\t\t\t\t\t\t{#if Boolean(item?.withComponent)}\r\n\t\t\t\t\t\t\t\t\t\t<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withContent)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withContent}\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withUid)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withUid}\r\n\t\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t</div>",
-      "slot_props": "{ item: any, activeTabCode: string }"
-    },
-    { "name": "tabsTitle", "default": false, "slot_props": "{}" },
-    { "name": "tabsTitleMain", "default": false, "slot_props": "{}" }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Tabs",
+	"filePath": "src/lib/navigation/tabs/Tabs.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLDivElement",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "items",
+			"kind": "let",
+			"type": "[]",
+			"value": "[]",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "activeTabCode",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "orientation",
+			"kind": "let",
+			"description": "orientation",
+			"type": "string",
+			"value": "'vertical'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onTabClick",
+			"kind": "let",
+			"type": "(item) => { }",
+			"value": "(item) => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"fallback": "<div\r\n\t\t\t\t\t\tdata-code={item.code}\r\n\t\t\t\t\t\tdata-activeTabCode={activeTabCode}\r\n\t\t\t\t\t\tstyle=\"display:{display};height:100%;position:relative;flex-direction:column\"\r\n\t\t\t\t\t>\r\n\t\t\t\t\t\t{#if Boolean(item?.secondary)}\r\n\t\t\t\t\t\t\t<div class=\" flex-h pad-tb-2 gap-small\">\r\n\t\t\t\t\t\t\t\t<div class=\"border-r pad-1 shad-3 radius-tiny\">\r\n\t\t\t\t\t\t\t\t\t<Icon style=\"display:block\" inline={false} icon=\"clarity:help-info-solid\" />\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"flex-main pad-t-1\">{@html item?.secondary}</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t<slot name=\"tabsInner\" {item} {activeTabCode}>\r\n\t\t\t\t\t\t\t<div data-code={item.code} style=\"flex:1;overflow:hidden;position:relative;\">\r\n\t\t\t\t\t\t\t\t{#if activeTabCode === item.code}\r\n\t\t\t\t\t\t\t\t\t{#if Boolean(item?.withComponent)}\r\n\t\t\t\t\t\t\t\t\t\t<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withContent)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withContent}\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withUid)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withUid}\r\n\t\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</slot>\r\n\t\t\t\t\t</div>",
+			"slot_props": "{ item: any, activeTabCode: string }"
+		},
+		{
+			"name": "tabLabelSlot",
+			"default": false,
+			"fallback": "{item?.label}",
+			"slot_props": "{ item: any }"
+		},
+		{ "name": "tabsButtons", "default": false, "slot_props": "{}" },
+		{
+			"name": "tabsInner",
+			"default": false,
+			"fallback": "<div data-code={item.code} style=\"flex:1;overflow:hidden;position:relative;\">\r\n\t\t\t\t\t\t\t\t{#if activeTabCode === item.code}\r\n\t\t\t\t\t\t\t\t\t{#if Boolean(item?.withComponent)}\r\n\t\t\t\t\t\t\t\t\t\t<svelte:component this={item.withComponent} {...item.componentProps ?? {}} />\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withContent)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withContent}\r\n\t\t\t\t\t\t\t\t\t{:else if Boolean(item?.withUid)}\r\n\t\t\t\t\t\t\t\t\t\t{item.withUid}\r\n\t\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t\t</div>",
+			"slot_props": "{ item: any, activeTabCode: string }"
+		},
+		{ "name": "tabsTitle", "default": false, "slot_props": "{}" },
+		{ "name": "tabsTitleMain", "default": false, "slot_props": "{}" }
+	],
+	"events": [],
+	"typedefs": []
 }

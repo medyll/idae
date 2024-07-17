@@ -2,16 +2,16 @@
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import Button from './Button.svelte';
-	import type { ButtonMenuProps,   } from './types.js';
+	import type { ButtonMenuProps } from './types.js';
 	import type { MenuListProps } from '$lib/ui/menuList/types.js';
-	import type { PopperProps } from '$lib/ui/popper/types.js'; 
+	import type { PopperProps } from '$lib/ui/popper/types.js';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 
 	let {
 		menuProps = {} as MenuListProps<T>,
 		popperProps = {} as PopperProps,
 		disabled = false,
-		element=$bindable(),
+		element = $bindable(),
 		popperElement,
 		menuItem,
 		children,
@@ -20,8 +20,6 @@
 
 	let isOpen = $state(popperProps?.isOpen);
 	let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevron-up-12-down');
-
- 
 </script>
 
 <Button
@@ -34,13 +32,20 @@
 	{children}
 />
 {#if isOpen && !disabled}
-	<Popper bind:element={popperElement} bind:isOpen parentNode={element} {...popperProps} position="BC" stickToHookWidth={true} >
+	<Popper
+		bind:element={popperElement}
+		bind:isOpen
+		parentNode={element}
+		{...popperProps}
+		position="BC"
+		stickToHookWidth={true}
+	>
 		<MenuList {...menuProps}>
 			{#snippet children({ item })}
 				{#if menuItem}
 					{@render menuItem?.({ item })}
 				{:else}
-					<MenuListItem { ...item }  />
+					<MenuListItem {...item} />
 				{/if}
 			{/snippet}
 		</MenuList>

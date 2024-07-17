@@ -1,108 +1,108 @@
 {
-  "moduleName": "Icon",
-  "filePath": "src/lib/base/icon/Icon.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "description": "className off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "description": "css style off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "description": "element root HTMLDivElement props",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "description": "icon name",
-      "type": "string",
-      "value": "'question'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconFamily",
-      "kind": "let",
-      "type": "string",
-      "value": "'mdi'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "fontSize",
-      "kind": "let",
-      "description": "icon size",
-      "type": "'small' | 'medium' | 'large' | 'xlarge'",
-      "value": "'small'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "rotate",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "color",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "rotation",
-      "kind": "let",
-      "type": "number",
-      "value": "0",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [],
-  "events": [{ "type": "forwarded", "name": "click", "element": "Icon" }],
-  "typedefs": [],
-  "rest_props": { "type": "InlineComponent", "name": "Icon" }
+	"moduleName": "Icon",
+	"filePath": "src/lib/base/icon/Icon.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"description": "className off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"description": "css style off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"description": "element root HTMLDivElement props",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"description": "icon name",
+			"type": "string",
+			"value": "'question'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconFamily",
+			"kind": "let",
+			"type": "string",
+			"value": "'mdi'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "fontSize",
+			"kind": "let",
+			"description": "icon size",
+			"type": "'small' | 'medium' | 'large' | 'xlarge'",
+			"value": "'small'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "rotate",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "color",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "rotation",
+			"kind": "let",
+			"type": "number",
+			"value": "0",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [],
+	"events": [{ "type": "forwarded", "name": "click", "element": "Icon" }],
+	"typedefs": [],
+	"rest_props": { "type": "InlineComponent", "name": "Icon" }
 }

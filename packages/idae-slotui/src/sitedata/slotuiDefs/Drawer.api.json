@@ -1,201 +1,201 @@
 {
-  "moduleName": "Drawer",
-  "filePath": "src/lib/navigation/drawer/Drawer.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "description": "className off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "description": "css style off the root component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "description": "element root HTMLDivElement props",
-      "type": "null | HTMLDivElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "primary",
-      "kind": "let",
-      "description": "title of the drawer",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "secondary",
-      "kind": "let",
-      "description": "sub-title of the drawer",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "description": "icon of the drawer",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "isOpen",
-      "kind": "let",
-      "description": "Should the drawer be open",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "hideCloseIcon",
-      "kind": "let",
-      "description": "Should the closer icon be hidden",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "flow",
-      "kind": "let",
-      "description": "flow",
-      "type": "",
-      "value": "'fixed'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "stickTo",
-      "kind": "let",
-      "description": "stickTo",
-      "type": "'right' | 'left' | 'top' | 'bottom'",
-      "value": "'left'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showOpenerIcon",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "toggle",
-      "kind": "function",
-      "description": "@deprecated use actions.toggle ",
-      "type": "() => any",
-      "value": "() => {     isOpen = visibleSate !== undefined ? visibleSate : !isOpen; }",
-      "isFunction": true,
-      "isFunctionDeclaration": true,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "description": "should be used",
-      "type": "{     toggle: (visibleSate) => {         isOpen = visibleSate !== undefined ? visibleSate : !isOpen;     } }",
-      "value": "{     toggle: (visibleSate) => {         isOpen = visibleSate !== undefined ? visibleSate : !isOpen;     } }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    },
-    {
-      "name": "defaultWidth",
-      "kind": "let",
-      "description": "default width of the drawer in vertical mode",
-      "type": "string",
-      "value": "'288px'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "defaultVisibleArea",
-      "kind": "let",
-      "description": "minimum width of the drawer in vertical mode and closed state",
-      "type": "string",
-      "value": "'0px'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "defaultHeight",
-      "kind": "let",
-      "description": "default height of the drawer in horizontal mode",
-      "type": "string",
-      "value": "'288px'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    { "name": "__default__", "default": true, "slot_props": "{}" },
-    { "name": "drawerBottom", "default": false, "slot_props": "{}" },
-    { "name": "drawerTop", "default": false, "slot_props": "{}" },
-    {
-      "name": "iconSlot",
-      "default": false,
-      "fallback": "<Icon {icon} />",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Drawer",
+	"filePath": "src/lib/navigation/drawer/Drawer.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"description": "className off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"description": "css style off the root component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"description": "element root HTMLDivElement props",
+			"type": "null | HTMLDivElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "primary",
+			"kind": "let",
+			"description": "title of the drawer",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "secondary",
+			"kind": "let",
+			"description": "sub-title of the drawer",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"description": "icon of the drawer",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "isOpen",
+			"kind": "let",
+			"description": "Should the drawer be open",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "hideCloseIcon",
+			"kind": "let",
+			"description": "Should the closer icon be hidden",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "flow",
+			"kind": "let",
+			"description": "flow",
+			"type": "",
+			"value": "'fixed'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "stickTo",
+			"kind": "let",
+			"description": "stickTo",
+			"type": "'right' | 'left' | 'top' | 'bottom'",
+			"value": "'left'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showOpenerIcon",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "toggle",
+			"kind": "function",
+			"description": "@deprecated use actions.toggle ",
+			"type": "() => any",
+			"value": "() => {     isOpen = visibleSate !== undefined ? visibleSate : !isOpen; }",
+			"isFunction": true,
+			"isFunctionDeclaration": true,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"description": "should be used",
+			"type": "{     toggle: (visibleSate) => {         isOpen = visibleSate !== undefined ? visibleSate : !isOpen;     } }",
+			"value": "{     toggle: (visibleSate) => {         isOpen = visibleSate !== undefined ? visibleSate : !isOpen;     } }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		},
+		{
+			"name": "defaultWidth",
+			"kind": "let",
+			"description": "default width of the drawer in vertical mode",
+			"type": "string",
+			"value": "'288px'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "defaultVisibleArea",
+			"kind": "let",
+			"description": "minimum width of the drawer in vertical mode and closed state",
+			"type": "string",
+			"value": "'0px'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "defaultHeight",
+			"kind": "let",
+			"description": "default height of the drawer in horizontal mode",
+			"type": "string",
+			"value": "'288px'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{ "name": "__default__", "default": true, "slot_props": "{}" },
+		{ "name": "drawerBottom", "default": false, "slot_props": "{}" },
+		{ "name": "drawerTop", "default": false, "slot_props": "{}" },
+		{
+			"name": "iconSlot",
+			"default": false,
+			"fallback": "<Icon {icon} />",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

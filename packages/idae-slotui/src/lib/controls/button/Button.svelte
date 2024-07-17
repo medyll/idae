@@ -24,7 +24,7 @@
 		selected = false,
 		value,
 		reverse = false,
-		ratio  ,
+		ratio,
 		buttonPopper,
 		buttonStart,
 		buttonEnd,
@@ -35,9 +35,10 @@
 
 	let startRef: HTMLDivElement;
 	let clientWidth: number | undefined = $state();
-</script> 
+</script>
+
 <button
-	class={className + ' button '   }
+	class={className + ' button '}
 	class:loading
 	bind:this={element}
 	use:popper={usePopper}
@@ -50,7 +51,7 @@
 	{nowrap}
 	{variant}
 	{selected}
-	{...rest} 
+	{...rest}
 	style:aspect-ratio={ratio}
 >
 	{#if buttonStart || icon}

@@ -1,214 +1,214 @@
 {
-  "moduleName": "MenuItem",
-  "filePath": "src/lib/ui/menu/MenuItem.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLLIElement",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "text",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "action",
-      "kind": "let",
-      "description": "text props, shown on the right side of the menuItem",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconColor",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconSize",
-      "kind": "let",
-      "type": "string",
-      "value": "'small'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "divider",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "dividerBefore",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "data",
-      "kind": "let",
-      "type": "{ empty: 'menu item data' }",
-      "value": "{ empty: 'menu item data' }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "selected",
-      "kind": "let",
-      "description": "highlight menu item when selected",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onMenuItemClick",
-      "kind": "let",
-      "type": "() => { }",
-      "value": "() => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "itemIndex",
-      "kind": "let",
-      "description": "position in the list",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "component",
-      "kind": "let",
-      "description": "internal use component instance",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "outer",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "fallback": "<slot name=\"menuListItemText\">{text ?? ''}</slot>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "actionSlot",
-      "default": false,
-      "fallback": "{action}",
-      "slot_props": "{}"
-    },
-    {
-      "name": "divider",
-      "default": false,
-      "fallback": "<Divider density=\"tight\" expansion=\"centered\" />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "iconSlot",
-      "default": false,
-      "fallback": "<Icon {icon} color={iconColor} fontSize={iconSize} />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "menuItemDivider",
-      "default": false,
-      "fallback": "<Divider density=\"tight\" expansion=\"padded\" />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "menuItemEnd",
-      "default": false,
-      "fallback": "<slot name=\"actionSlot\">{action}</slot>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "menuItemStart",
-      "default": false,
-      "fallback": "<slot name=\"iconSlot\">\r\n\t\t\t\t\t\t<Icon {icon} color={iconColor} fontSize={iconSize} />\r\n\t\t\t\t\t</slot>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "menuListItemText",
-      "default": false,
-      "fallback": "{text ?? ''}",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "MenuItem",
+	"filePath": "src/lib/ui/menu/MenuItem.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLLIElement",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "text",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "action",
+			"kind": "let",
+			"description": "text props, shown on the right side of the menuItem",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconColor",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconSize",
+			"kind": "let",
+			"type": "string",
+			"value": "'small'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "divider",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "dividerBefore",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "data",
+			"kind": "let",
+			"type": "{ empty: 'menu item data' }",
+			"value": "{ empty: 'menu item data' }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "selected",
+			"kind": "let",
+			"description": "highlight menu item when selected",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onMenuItemClick",
+			"kind": "let",
+			"type": "() => { }",
+			"value": "() => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "itemIndex",
+			"kind": "let",
+			"description": "position in the list",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "component",
+			"kind": "let",
+			"description": "internal use component instance",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "outer",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"fallback": "<slot name=\"menuListItemText\">{text ?? ''}</slot>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "actionSlot",
+			"default": false,
+			"fallback": "{action}",
+			"slot_props": "{}"
+		},
+		{
+			"name": "divider",
+			"default": false,
+			"fallback": "<Divider density=\"tight\" expansion=\"centered\" />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "iconSlot",
+			"default": false,
+			"fallback": "<Icon {icon} color={iconColor} fontSize={iconSize} />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "menuItemDivider",
+			"default": false,
+			"fallback": "<Divider density=\"tight\" expansion=\"padded\" />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "menuItemEnd",
+			"default": false,
+			"fallback": "<slot name=\"actionSlot\">{action}</slot>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "menuItemStart",
+			"default": false,
+			"fallback": "<slot name=\"iconSlot\">\r\n\t\t\t\t\t\t<Icon {icon} color={iconColor} fontSize={iconSize} />\r\n\t\t\t\t\t</slot>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "menuListItemText",
+			"default": false,
+			"fallback": "{text ?? ''}",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

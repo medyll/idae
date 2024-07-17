@@ -1,109 +1,109 @@
 {
-  "moduleName": "PanelSlide",
-  "filePath": "src/lib/ui/panel/PanelSlide.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "open",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "component",
-      "kind": "let",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "flow",
-      "kind": "let",
-      "type": "string",
-      "value": "'absolute'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "outer",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "panelSlideId",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "type": "{     open: () => {         setVisible(true);     },     close: () => {         setVisible(false);     },     toggle: () => {         setVisible(!open);     },     hasNextPrev: (nextPrev) => {         const registredPanelSlides = $panelerContext.panelSlides;         const slidePanelsKeys = Object.keys(registredPanelSlides);         const activeIdx = slidePanelsKeys.indexOf(panelSlideId);     } }",
-      "value": "{     open: () => {         setVisible(true);     },     close: () => {         setVisible(false);     },     toggle: () => {         setVisible(!open);     },     hasNextPrev: (nextPrev) => {         const registredPanelSlides = $panelerContext.panelSlides;         const slidePanelsKeys = Object.keys(registredPanelSlides);         const activeIdx = slidePanelsKeys.indexOf(panelSlideId);     } }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "slot_props": "{ panelSlideId: any, data: {$panelerContext.activePanelSlideData[panelSlideId]} }"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "PanelSlide",
+	"filePath": "src/lib/ui/panel/PanelSlide.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "open",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "component",
+			"kind": "let",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "flow",
+			"kind": "let",
+			"type": "string",
+			"value": "'absolute'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "outer",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "panelSlideId",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"type": "{     open: () => {         setVisible(true);     },     close: () => {         setVisible(false);     },     toggle: () => {         setVisible(!open);     },     hasNextPrev: (nextPrev) => {         const registredPanelSlides = $panelerContext.panelSlides;         const slidePanelsKeys = Object.keys(registredPanelSlides);         const activeIdx = slidePanelsKeys.indexOf(panelSlideId);     } }",
+			"value": "{     open: () => {         setVisible(true);     },     close: () => {         setVisible(false);     },     toggle: () => {         setVisible(!open);     },     hasNextPrev: (nextPrev) => {         const registredPanelSlides = $panelerContext.panelSlides;         const slidePanelsKeys = Object.keys(registredPanelSlides);         const activeIdx = slidePanelsKeys.indexOf(panelSlideId);     } }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"slot_props": "{ panelSlideId: any, data: {$panelerContext.activePanelSlideData[panelSlideId]} }"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

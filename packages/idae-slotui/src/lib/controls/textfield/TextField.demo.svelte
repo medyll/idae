@@ -2,7 +2,7 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte'; 
+	import Icon from '$lib/base/icon/Icon.svelte';
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
 	import { componentArgs, parameters } from './types.js';

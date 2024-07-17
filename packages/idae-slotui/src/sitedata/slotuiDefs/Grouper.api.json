@@ -1,175 +1,175 @@
 {
-  "moduleName": "Grouper",
-  "filePath": "src/lib/data/grouper/Grouper.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLDivElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "grouperMode",
-      "kind": "let",
-      "description": "Grouper mode",
-      "type": "string",
-      "value": "'menu'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "groupedData",
-      "kind": "let",
-      "description": "binding : final grouped data as raw object",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "groupedTemplateData",
-      "kind": "let",
-      "description": "binding : final grouped data computed by component, available to slotui model caller",
-      "type": "[]",
-      "value": "[]",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "groupListItems",
-      "kind": "let",
-      "description": "list of available groups shown to user",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "data",
-      "kind": "let",
-      "description": "data to group",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "groupByField",
-      "kind": "let",
-      "description": "field from data to group by",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "groupByTitleField",
-      "kind": "let",
-      "description": "presented field from data to group by",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "groupByOrder",
-      "kind": "let",
-      "description": "order on which the grouped list is sorted",
-      "type": "string",
-      "value": "'asc'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showUnGrouped",
-      "kind": "let",
-      "description": "show ungrouped data",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "ungroupedTitle",
-      "kind": "let",
-      "description": "ungrouped title when show ungrouped data props is set to true",
-      "type": "string",
-      "value": "'ungrouped'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "activeGroupField",
-      "kind": "let",
-      "description": "active group field, usefull when several",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "groupBy",
-      "kind": "const",
-      "description": "grouping function",
-      "type": "(dataList, groupField, opt) => {     const out = [];     const gr = dataList.reduce((result, currentValue) => {         const key = opt?.keepUngroupedData             ? currentValue[groupField] ?? 'ungrouped'             : currentValue[groupField];         (result[key] = result[key] || []).push(currentValue);         return result;     }, {});     //     groupedData = gr;     // enhance group title block and format output     Object.keys(gr).forEach((g) => {         const groupTitle = {             isGroup: true,             code: g,             primary: Boolean(opt?.fieldTitle) ? gr[g]?.[0]?.[opt.fieldTitle] : undefined         };         out.push([groupTitle, gr[g]]);         groupedTemplateData.push([groupTitle, gr[g]]);     });     return out; }",
-      "value": "(dataList, groupField, opt) => {     const out = [];     const gr = dataList.reduce((result, currentValue) => {         const key = opt?.keepUngroupedData             ? currentValue[groupField] ?? 'ungrouped'             : currentValue[groupField];         (result[key] = result[key] || []).push(currentValue);         return result;     }, {});     //     groupedData = gr;     // enhance group title block and format output     Object.keys(gr).forEach((g) => {         const groupTitle = {             isGroup: true,             code: g,             primary: Boolean(opt?.fieldTitle) ? gr[g]?.[0]?.[opt.fieldTitle] : undefined         };         out.push([groupTitle, gr[g]]);         groupedTemplateData.push([groupTitle, gr[g]]);     });     return out; }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "fallback": "group by {groupByField}",
-      "slot_props": "{ item: red }"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Grouper",
+	"filePath": "src/lib/data/grouper/Grouper.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLDivElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "grouperMode",
+			"kind": "let",
+			"description": "Grouper mode",
+			"type": "string",
+			"value": "'menu'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "groupedData",
+			"kind": "let",
+			"description": "binding : final grouped data as raw object",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "groupedTemplateData",
+			"kind": "let",
+			"description": "binding : final grouped data computed by component, available to slotui model caller",
+			"type": "[]",
+			"value": "[]",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "groupListItems",
+			"kind": "let",
+			"description": "list of available groups shown to user",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "data",
+			"kind": "let",
+			"description": "data to group",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "groupByField",
+			"kind": "let",
+			"description": "field from data to group by",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "groupByTitleField",
+			"kind": "let",
+			"description": "presented field from data to group by",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "groupByOrder",
+			"kind": "let",
+			"description": "order on which the grouped list is sorted",
+			"type": "string",
+			"value": "'asc'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showUnGrouped",
+			"kind": "let",
+			"description": "show ungrouped data",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "ungroupedTitle",
+			"kind": "let",
+			"description": "ungrouped title when show ungrouped data props is set to true",
+			"type": "string",
+			"value": "'ungrouped'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "activeGroupField",
+			"kind": "let",
+			"description": "active group field, usefull when several",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "groupBy",
+			"kind": "const",
+			"description": "grouping function",
+			"type": "(dataList, groupField, opt) => {     const out = [];     const gr = dataList.reduce((result, currentValue) => {         const key = opt?.keepUngroupedData             ? currentValue[groupField] ?? 'ungrouped'             : currentValue[groupField];         (result[key] = result[key] || []).push(currentValue);         return result;     }, {});     //     groupedData = gr;     // enhance group title block and format output     Object.keys(gr).forEach((g) => {         const groupTitle = {             isGroup: true,             code: g,             primary: Boolean(opt?.fieldTitle) ? gr[g]?.[0]?.[opt.fieldTitle] : undefined         };         out.push([groupTitle, gr[g]]);         groupedTemplateData.push([groupTitle, gr[g]]);     });     return out; }",
+			"value": "(dataList, groupField, opt) => {     const out = [];     const gr = dataList.reduce((result, currentValue) => {         const key = opt?.keepUngroupedData             ? currentValue[groupField] ?? 'ungrouped'             : currentValue[groupField];         (result[key] = result[key] || []).push(currentValue);         return result;     }, {});     //     groupedData = gr;     // enhance group title block and format output     Object.keys(gr).forEach((g) => {         const groupTitle = {             isGroup: true,             code: g,             primary: Boolean(opt?.fieldTitle) ? gr[g]?.[0]?.[opt.fieldTitle] : undefined         };         out.push([groupTitle, gr[g]]);         groupedTemplateData.push([groupTitle, gr[g]]);     });     return out; }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"fallback": "group by {groupByField}",
+			"slot_props": "{ item: red }"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

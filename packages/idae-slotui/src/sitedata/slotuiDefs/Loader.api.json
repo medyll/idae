@@ -1,197 +1,197 @@
 {
-  "moduleName": "Loader",
-  "filePath": "src/lib/data/loader/Loader.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLDivElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "status",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "showSuccess",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "isLoading",
-      "kind": "let",
-      "description": "@deprecated ",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "isError",
-      "kind": "let",
-      "description": "@deprecated ",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "isEmpty",
-      "kind": "let",
-      "description": "@deprecated ",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "loadingIcon",
-      "kind": "let",
-      "description": "icon sources",
-      "type": "string",
-      "value": "'mdi:loading'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "errorIcon",
-      "kind": "let",
-      "type": "string",
-      "value": "'mdi:alert-circle-outline'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "emptyIcon",
-      "kind": "let",
-      "type": "string",
-      "value": "'mdi:database-search-outline'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "successIcon",
-      "kind": "let",
-      "type": "string",
-      "value": "'clarity:success-standard-line'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "message",
-      "kind": "let",
-      "description": "message to display",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "messages",
-      "kind": "let",
-      "description": "used if props.message   is omitted",
-      "type": "{     loading: 'Loading',     error: 'An error occurred',     empty: 'Empty results',     success: 'Success' }",
-      "value": "{     loading: 'Loading',     error: 'An error occurred',     empty: 'Empty results',     success: 'Success' }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "loaderEmpty",
-      "default": false,
-      "fallback": "<Icon icon={emptyIcon} fontSize=\"medium\" />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "loaderError",
-      "default": false,
-      "fallback": "<Icon style=\"color:orange;\" icon={errorIcon} fontSize=\"medium\" />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "loaderLoading",
-      "default": false,
-      "fallback": "<Icon\r\n\t\t\t\t\t\t\tstyle=\"color:var(--sld-color-primary)\"\r\n\t\t\t\t\t\t\ticon={loadingIcon}\r\n\t\t\t\t\t\t\tfontSize=\"medium\"\r\n\t\t\t\t\t\t\trotate\r\n\t\t\t\t\t\t/>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "loaderMessage",
-      "default": false,
-      "fallback": "<div class=\"message\">{finalMessage}</div>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "loaderSuccess",
-      "default": false,
-      "fallback": "<Icon style=\"color:green;\" icon={successIcon} fontSize=\"medium\" />",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Loader",
+	"filePath": "src/lib/data/loader/Loader.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLDivElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "status",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "showSuccess",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "isLoading",
+			"kind": "let",
+			"description": "@deprecated ",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "isError",
+			"kind": "let",
+			"description": "@deprecated ",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "isEmpty",
+			"kind": "let",
+			"description": "@deprecated ",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "loadingIcon",
+			"kind": "let",
+			"description": "icon sources",
+			"type": "string",
+			"value": "'mdi:loading'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "errorIcon",
+			"kind": "let",
+			"type": "string",
+			"value": "'mdi:alert-circle-outline'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "emptyIcon",
+			"kind": "let",
+			"type": "string",
+			"value": "'mdi:database-search-outline'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "successIcon",
+			"kind": "let",
+			"type": "string",
+			"value": "'clarity:success-standard-line'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "message",
+			"kind": "let",
+			"description": "message to display",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "messages",
+			"kind": "let",
+			"description": "used if props.message   is omitted",
+			"type": "{     loading: 'Loading',     error: 'An error occurred',     empty: 'Empty results',     success: 'Success' }",
+			"value": "{     loading: 'Loading',     error: 'An error occurred',     empty: 'Empty results',     success: 'Success' }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "loaderEmpty",
+			"default": false,
+			"fallback": "<Icon icon={emptyIcon} fontSize=\"medium\" />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "loaderError",
+			"default": false,
+			"fallback": "<Icon style=\"color:orange;\" icon={errorIcon} fontSize=\"medium\" />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "loaderLoading",
+			"default": false,
+			"fallback": "<Icon\r\n\t\t\t\t\t\t\tstyle=\"color:var(--sld-color-primary)\"\r\n\t\t\t\t\t\t\ticon={loadingIcon}\r\n\t\t\t\t\t\t\tfontSize=\"medium\"\r\n\t\t\t\t\t\t\trotate\r\n\t\t\t\t\t\t/>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "loaderMessage",
+			"default": false,
+			"fallback": "<div class=\"message\">{finalMessage}</div>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "loaderSuccess",
+			"default": false,
+			"fallback": "<Icon style=\"color:green;\" icon={successIcon} fontSize=\"medium\" />",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

@@ -1,387 +1,387 @@
 {
-  "moduleName": "Button",
-  "filePath": "src/lib/base/button/Button.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLButtonElement",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "type",
-      "kind": "let",
-      "type": "string",
-      "value": "'button'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "description": "icon as a parameter",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconFamily",
-      "kind": "let",
-      "description": "icon as a parameter",
-      "type": "string",
-      "value": "'mdi'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconColor",
-      "kind": "let",
-      "description": "icon color as a parameter",
-      "type": "string",
-      "value": "'#666'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "endIcon",
-      "kind": "let",
-      "description": "endIcon as a parameter",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "endIconColor",
-      "kind": "let",
-      "description": "endIcon color as a parameter",
-      "type": "string",
-      "value": "'#666'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "endIconSize",
-      "kind": "let",
-      "description": "endIcon",
-      "type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
-      "value": "'small'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "bgTheme",
-      "kind": "let",
-      "description": "background color theme",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "usePopper",
-      "kind": "let",
-      "description": "paramters for usePopper",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "loading",
-      "kind": "let",
-      "description": "show loading state",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showChip",
-      "kind": "let",
-      "description": "show chip",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "popperOpen",
-      "kind": "let",
-      "description": "show / hide popper, when $$slots.popper exists",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "contained",
-      "kind": "let",
-      "description": "button style contained",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "bordered",
-      "kind": "let",
-      "description": "button style bordered",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "link",
-      "kind": "let",
-      "description": "button style link",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "naked",
-      "kind": "let",
-      "description": "button style link",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "size",
-      "kind": "let",
-      "description": "with of the button using  presets",
-      "type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
-      "value": "'auto'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "density",
-      "kind": "let",
-      "description": "density of the button, using preset values",
-      "type": "'default' | 'dense' | 'extra-dense'",
-      "value": "'default'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "nowrap",
-      "kind": "let",
-      "description": "add ellipsis on overflowed text",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "height",
-      "kind": "let",
-      "description": "height of the button, using preset values",
-      "type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
-      "value": "'default'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "selected",
-      "kind": "let",
-      "description": "button selected",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "focus",
-      "kind": "let",
-      "description": "give focus to button on display",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "actionStyle",
-      "kind": "let",
-      "description": "action button css style",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "htmlRootStyle",
-      "kind": "let",
-      "description": "whole container css style",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "primary",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "secondary",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "reverse",
-      "kind": "let",
-      "description": "reverse the order of the button zone",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "ratio",
-      "kind": "let",
-      "description": "aspect ratio of the button",
-      "type": "string",
-      "value": "'auto'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "buttonStart",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "fallback": "{primary ?? ''}",
-      "slot_props": "{}"
-    },
-    {
-      "name": "buttonEnd",
-      "default": false,
-      "fallback": "<Icon fontSize=\"small\" icon={endIcon} color={endIconColor} />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "buttonLoadingIcon",
-      "default": false,
-      "fallback": "<Icon icon=\"loading\" rotate />",
-      "slot_props": "{}"
-    },
-    { "name": "buttonPopper", "default": false, "slot_props": "{}" },
-    {
-      "name": "buttonStart",
-      "default": false,
-      "fallback": "{#if icon}\r\n\t\t\t\t\t\t\t<Icon fontSize=\"small\" {icon} color={iconColor} {iconFamily} />\r\n\t\t\t\t\t\t{/if}",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [{ "type": "forwarded", "name": "click", "element": "button" }],
-  "typedefs": [],
-  "rest_props": { "type": "Element", "name": "button" }
+	"moduleName": "Button",
+	"filePath": "src/lib/base/button/Button.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLButtonElement",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "type",
+			"kind": "let",
+			"type": "string",
+			"value": "'button'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"description": "icon as a parameter",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconFamily",
+			"kind": "let",
+			"description": "icon as a parameter",
+			"type": "string",
+			"value": "'mdi'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconColor",
+			"kind": "let",
+			"description": "icon color as a parameter",
+			"type": "string",
+			"value": "'#666'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "endIcon",
+			"kind": "let",
+			"description": "endIcon as a parameter",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "endIconColor",
+			"kind": "let",
+			"description": "endIcon color as a parameter",
+			"type": "string",
+			"value": "'#666'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "endIconSize",
+			"kind": "let",
+			"description": "endIcon",
+			"type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
+			"value": "'small'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "bgTheme",
+			"kind": "let",
+			"description": "background color theme",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "usePopper",
+			"kind": "let",
+			"description": "paramters for usePopper",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "loading",
+			"kind": "let",
+			"description": "show loading state",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showChip",
+			"kind": "let",
+			"description": "show chip",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "popperOpen",
+			"kind": "let",
+			"description": "show / hide popper, when $$slots.popper exists",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "contained",
+			"kind": "let",
+			"description": "button style contained",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "bordered",
+			"kind": "let",
+			"description": "button style bordered",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "link",
+			"kind": "let",
+			"description": "button style link",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "naked",
+			"kind": "let",
+			"description": "button style link",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "size",
+			"kind": "let",
+			"description": "with of the button using  presets",
+			"type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
+			"value": "'auto'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "density",
+			"kind": "let",
+			"description": "density of the button, using preset values",
+			"type": "'default' | 'dense' | 'extra-dense'",
+			"value": "'default'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "nowrap",
+			"kind": "let",
+			"description": "add ellipsis on overflowed text",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "height",
+			"kind": "let",
+			"description": "height of the button, using preset values",
+			"type": "'auto' | 'tiny' | 'small' | 'medium' | 'large' | 'full'",
+			"value": "'default'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "selected",
+			"kind": "let",
+			"description": "button selected",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "focus",
+			"kind": "let",
+			"description": "give focus to button on display",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "actionStyle",
+			"kind": "let",
+			"description": "action button css style",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "htmlRootStyle",
+			"kind": "let",
+			"description": "whole container css style",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "primary",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "secondary",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "reverse",
+			"kind": "let",
+			"description": "reverse the order of the button zone",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "ratio",
+			"kind": "let",
+			"description": "aspect ratio of the button",
+			"type": "string",
+			"value": "'auto'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "buttonStart",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"fallback": "{primary ?? ''}",
+			"slot_props": "{}"
+		},
+		{
+			"name": "buttonEnd",
+			"default": false,
+			"fallback": "<Icon fontSize=\"small\" icon={endIcon} color={endIconColor} />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "buttonLoadingIcon",
+			"default": false,
+			"fallback": "<Icon icon=\"loading\" rotate />",
+			"slot_props": "{}"
+		},
+		{ "name": "buttonPopper", "default": false, "slot_props": "{}" },
+		{
+			"name": "buttonStart",
+			"default": false,
+			"fallback": "{#if icon}\r\n\t\t\t\t\t\t\t<Icon fontSize=\"small\" {icon} color={iconColor} {iconFamily} />\r\n\t\t\t\t\t\t{/if}",
+			"slot_props": "{}"
+		}
+	],
+	"events": [{ "type": "forwarded", "name": "click", "element": "button" }],
+	"typedefs": [],
+	"rest_props": { "type": "Element", "name": "button" }
 }

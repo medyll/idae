@@ -32,12 +32,12 @@
 		ratio = '1/1',
 		iconFontSize = 'full',
 		rotation = 0,
-		size = 'mini', 
+		size = 'mini',
 		children,
 		...rest
 	}: IconButtonProps = $props();
 </script>
 
-<Button  variant="square" bind:element width={size} tall="unset"   {ratio} {...rest}>
+<Button variant="square" bind:element width={size} tall="unset" {ratio} {...rest}>
 	<Icon style="display:block; " {rotation} {icon} iconSize={iconFontSize} />
 </Button>
