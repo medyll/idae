@@ -7,13 +7,13 @@
 	let countObje = stator<{ index: number }>({ index: 0 });
 
 	let monobjSte = stator({ index: 0 });
-	 // la 2eme fois ça ne marche plus
+	// la 2eme fois ça ne marche plus
 	// Mise à jour de la variable réactive quand l'état change
 	countState.onchange = (oldValue, newValue) => {
-		 console.log('countState', oldValue, newValue);
+		console.log('countState', oldValue, newValue);
 	};
 	countObje.onchange = (oldValue, newValue) => {
-		 console.log('countObje', oldValue, newValue);
+		console.log('countObje', oldValue, newValue);
 	};
 
 	onMount(() => {
@@ -32,7 +32,7 @@
 
 	console.log(monobjSte, countState.stator);
 </script>
- 
+
 <h1>Stator Demo</h1>
 
 <p>Count: {countState}-{countObje.stator.index}</p>

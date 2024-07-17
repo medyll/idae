@@ -1,48 +1,61 @@
-import type { CollectionModel, IdbqModel, TplFields } from '@medyll/idae-idbql';
-import { schemeModel } from './dbSchema';
 import type {
 	TplCollectionName,
-	Tpl,
-	IDbForge,
+	IdaeTemplate,
+	IDbForgeFields,
 	IDbFieldRules,
 	IDbForgeArgs,
-	IDbFieldType
+	IDbFieldType,
+	IdaeModelRoot,
+	IdaeTemplateFields,
+	ForgeFieldTypes,
+	CoreModel
 } from './types.js';
-import { TplProperties } from './types.js';
+import { AccessProperties } from './types.js';
 
-/* 
-    renamed from DbCollectionError to IDbErrors
- */
-class IDbError extends Error {
-	constructor(
-		message: string,
-		public readonly code: string
-	) {
-		super(message);
-		this.name = 'DbCollectionError';
-	}
-	static throwError(message: string, code: string) {
-		throw new IDbError(message, code);
-	}
-
-	static handleError(error: unknown): void {
-		if (error instanceof IDbError) {
-			console.error(`${error.name}: ${error.message} (Code: ${error.code})`);
-		} else {
-			console.error('Unexpected error:', error);
+export const exampleModel: IdaeModelRoot = {
+	agent: {
+		template: {
+			index: 'id',
+			presentation: 'name model',
+			fields: {
+				id: 'id (readonly)',
+				name: 'text (private)',
+				code: 'text',
+				model: 'text',
+				prompt: 'text-long',
+				created_at: 'date (private)',
+				ia_lock: 'boolean (private)',
+				agentPromptId: 'fk-agentPrompt.id (required)'
+			},
+			fks: {
+				agentPrompt: {
+					code: 'agentPrompt',
+					rules: 'readonly private',
+					multiple: true
+				}
+			}
 		}
 	}
-}
-// renammed from IDbFields to IDbCollections
-export class IDbCollections<T = Record<string, any>> {
-	model: IdbqModel = schemeModel;
+};
 
-	constructor(model?: IdbqModel) {
-		this.model = schemeModel; //model ?? this.model;
+type fin = IdaeModelRoot<typeof exampleModel>;
+
+// renammed from IDbFields to IDbCollections to IdaeModel
+export class IdaeModelCore<T = Record<string, any>> {
+	model!: IdaeModelRoot<T>;
+
+	constructor() {}
+
+	setModel<C = Record<string, any>>(model: IdaeModelRoot<C>) {
+		this.model = model as IdaeModelRoot<typeof model>;
 	}
 
-	parseAllCollections(): Record<string, Record<string, IDbForge | undefined> | undefined> {
-		let out: Record<string, Record<string, IDbForge | undefined> | undefined> = {};
+	addCollectionTemplate(collection: string, template: IdaeTemplate) {
+		this.model[collection]['template'] = template;
+	}
+
+	parseAllCollections() {
+		let out: Record<string, Record<string, IDbForgeFields | undefined> | undefined> = {};
 		Object.keys(this.model).forEach((collection) => {
 			out[collection] = this.parseRawCollection(collection as TplCollectionName);
 		});
@@ -52,10 +65,10 @@ export class IDbCollections<T = Record<string, any>> {
 
 	parseRawCollection(
 		collection: TplCollectionName
-	): Record<string, IDbForge | undefined> | undefined {
+	): Record<string, IDbForgeFields | undefined> | undefined {
 		const fields = this.getCollectionTemplateFields(collection);
 		if (!fields) return;
-		let out: Record<string, IDbForge | undefined> = {};
+		let out: Record<string, IDbForgeFields | undefined> = {};
 
 		Object.keys(fields).forEach((fieldName) => {
 			let fieldType = fields[fieldName];
@@ -69,8 +82,8 @@ export class IDbCollections<T = Record<string, any>> {
 
 	parseCollectionFieldName(
 		collection: TplCollectionName,
-		fieldName: keyof TplFields
-	): IDbForge<T> | undefined {
+		fieldName: keyof IdaeTemplateFields<any>
+	): IDbForgeFields<T> | undefined {
 		const field = this.#getTemplateFieldRule(collection, fieldName);
 		if (!field) {
 			IDbError.throwError(
@@ -108,7 +121,7 @@ export class IDbCollections<T = Record<string, any>> {
 		fieldRule,
 		fieldArgs,
 		is
-	}: IDbForge<T>): IDbForge {
+	}: IDbForgeFields<T>): IDbForgeFields {
 		return {
 			collection,
 			fieldName,
@@ -124,24 +137,24 @@ export class IDbCollections<T = Record<string, any>> {
 	}
 
 	getCollection(collection: TplCollectionName) {
-		return this.#getModel()[String(collection)] as CollectionModel;
+		return this.#getModel()[String(collection)] as CoreModel;
 	}
 	getCollectionTemplate(collection: TplCollectionName) {
-		return this.getCollection(collection)['template'] as Tpl;
+		return this.getCollection(collection)['template'] as IdaeTemplate;
 	}
 	getCollectionTemplateFks(collection: TplCollectionName) {
-		return this.getCollection(collection)['template']?.fks as Tpl['fks'];
+		return this.getCollection(collection)['template']?.fks as IdaeTemplate['fks'];
 	}
 	getIndexName(collection: string) {
 		return this.getCollection(collection)?.template?.index;
 	}
 	getCollectionTemplateFields(collection: TplCollectionName) {
-		return this.getCollectionTemplate(collection)?.fields as TplFields;
+		return this.getCollectionTemplate(collection)?.fields as IdaeTemplateFields;
 	}
 	getTemplatePresentation(collection: TplCollectionName) {
 		return this.getCollectionTemplate(collection)?.presentation as string;
 	}
-	#getTemplateFieldRule(collection: TplCollectionName, fieldName: keyof TplFields) {
+	#getTemplateFieldRule(collection: TplCollectionName, fieldName: keyof IdaeTemplateFields) {
 		return this.getCollectionTemplateFields(collection)?.[String(fieldName)] as
 			| IDbFieldRules
 			| undefined;
@@ -160,9 +173,9 @@ export class IDbCollections<T = Record<string, any>> {
 	}
 
 	private testIs(
-		what: 'array' | 'object' | 'fk' | 'primitive',
+		what: ForgeFieldTypes,
 		fieldRule: IDbFieldRules
-	): Partial<IDbForge<T>> | undefined {
+	): Partial<IDbForgeFields<T>> | undefined {
 		const typeMappings = {
 			fk: 'fk-',
 			array: 'array-of-',
@@ -176,7 +189,7 @@ export class IDbCollections<T = Record<string, any>> {
 		return undefined;
 	}
 
-	is(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: IDbFieldRules): Partial<IDbForge> {
+	is(what: ForgeFieldTypes, fieldRule: IDbFieldRules): Partial<IDbForgeFields> {
 		return this.extract(what, fieldRule);
 	}
 
@@ -185,10 +198,7 @@ export class IDbCollections<T = Record<string, any>> {
 		return data[presentation];
 	}
 
-	extract(
-		type: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: IDbFieldRules
-	): Partial<IDbForge<T>> {
+	extract(type: ForgeFieldTypes, fieldRule: IDbFieldRules): Partial<IDbForgeFields<T>> {
 		// fieldType
 		function extractAfter(pattern: string, source: string) {
 			// remove all between () on source
@@ -199,11 +209,11 @@ export class IDbCollections<T = Record<string, any>> {
 
 		function extractArgs(
 			source: string
-		): { piece: any; args: [TplProperties] | IDbForgeArgs } | undefined {
+		): { piece: any; args: [AccessProperties] | IDbForgeArgs } | undefined {
 			const [piece, remaining] = source.split('(');
 			if (!remaining) return { piece: piece.trim(), args: undefined };
 			const [central] = remaining?.split(')');
-			const args = central?.split(' ') as [TplProperties | keyof typeof TplProperties];
+			const args = central?.split(' ') as [AccessProperties | keyof typeof AccessProperties];
 			// console.log({ piece, args });
 			return { piece: piece.trim(), args };
 		}
@@ -234,7 +244,7 @@ export class IDbCollections<T = Record<string, any>> {
 		return { fieldType, fieldRule, fieldArgs, is: type };
 	}
 
-	fks(collection: string): { [collection: string]: Tpl } {
+	fks(collection: string): { [collection: string]: IdaeTemplate } {
 		const fks = this.getCollectionTemplateFks(collection);
 		const out: Record<string, any> = {};
 		// loop over fks
@@ -250,7 +260,7 @@ export class IDbCollections<T = Record<string, any>> {
 		const result: Record<string, any> = {};
 
 		Object.entries(this.#getModel()).forEach(([collectionName, collectionModel]) => {
-			const template = (collectionModel as CollectionModel).template;
+			const template = (collectionModel as CoreModel<T>).template;
 			if (template && template.fks) {
 				Object.entries(template.fks).forEach(([fkName, fkConfig]) => {
 					if (fkConfig?.code === targetCollection) {
@@ -269,9 +279,9 @@ export class IDbCollections<T = Record<string, any>> {
 	// iterate base
 	iterateArrayField(
 		collection: TplCollectionName,
-		fieldName: keyof TplFields,
+		fieldName: string,
 		data: T[]
-	): IDbForge<T>[] {
+	): IDbForgeFields<T>[] {
 		const fieldInfo = this.parseCollectionFieldName(collection, fieldName);
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
@@ -282,33 +292,41 @@ export class IDbCollections<T = Record<string, any>> {
 
 	iterateObjectField(
 		collection: TplCollectionName,
-		fieldName: keyof TplFields,
+		fieldName: keyof T,
 		data: Record<string, any>
-	): IDbForge<T>[] {
+	): IDbForgeFields<T>[] {
 		const fieldInfo = this.parseCollectionFieldName(collection, fieldName);
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object') {
 			return [];
 		}
 
 		return Object.keys(data).map((key) =>
-			this.parseCollectionFieldName(collection, key as keyof TplFields)
+			this.parseCollectionFieldName(collection, key as keyof IdaeTemplateFields)
 		);
 	}
 }
+
+export const IdaeModel = new IdaeModelCore();
+
+IdaeModel.setModel(exampleModel);
+IdaeModel.getIndexName('users');
+IdaeModel.is('array', 'array-of-text-long(private required)');
+IdaeModel.reverseFks('users');
+IdaeModel.getFkFieldType('collectio.ners');
 
 // display field values, based on schema and provided data
 // renamed from iDBFieldValues to iDbCollectionValues
 // path D:\boulot\python\wollama\src\lib\db\dbFields.ts
 export class IDbCollectionValues<T extends Record<string, any>> {
-	dbCollections: IDbCollections;
+	dbCollections: IdaeModelCore;
 	private collection: TplCollectionName;
 
-	constructor(collection: TplCollectionName) {
+	constructor(collection: TplCollectionName, idaeModel: IdaeModelRoot) {
 		this.collection = collection;
-		this.dbCollections = new IDbCollections();
+		this.dbCollections = new IdaeModelCore(idaeModel);
 	}
 
-	presentation(data: Record<string, any>): string {
+	presentation(data: T): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const presentation = this.dbCollections.getTemplatePresentation(this.collection);
@@ -327,7 +345,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		}
 	}
 
-	indexValue(data: Record<string, any>): any | null {
+	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const indexName = this.dbCollections.getIndexName(this.collection);
@@ -406,11 +424,14 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		};
 	}
 
-	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] {
+	iterateArrayField(fieldName: keyof IdaeTemplateFields, data: any[]): IDbForgeFields[] {
 		return this.dbCollections.iterateArrayField(this.collection, fieldName, data);
 	}
 
-	iterateObjectField(fieldName: keyof TplFields, data: Record<string, any>): IDbForge[] {
+	iterateObjectField(
+		fieldName: keyof IdaeTemplateFields,
+		data: Record<string, any>
+	): IDbForgeFields[] {
 		return this.dbCollections.iterateObjectField(this.collection, fieldName, data);
 	}
 
@@ -473,18 +494,18 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 		return this.#collectionValues.getInputDataSet(String(fieldName), this.#data);
 	}
 	// renamed from parseCollectionFieldName
-	getForge(fieldName: keyof T): IDbForge | undefined {
+	getForge(fieldName: keyof T): IDbForgeFields | undefined {
 		return this.#collectionValues.dbCollections.parseCollectionFieldName(
 			this.#collection,
 			String(fieldName)
 		);
 	}
 
-	iterateArray(fieldName: string, data: any[]): IDbForge[] {
+	iterateArray(fieldName: string, data: any[]): IDbForgeFields[] {
 		return this.#collectionValues.iterateArrayField(fieldName, data);
 	}
 
-	iterateObject(fieldName: string, data: Record<string, any>): IDbForge[] {
+	iterateObject(fieldName: string, data: Record<string, any>): IDbForgeFields[] {
 		return this.#collectionValues.iterateObjectField(fieldName, data);
 	}
 }
@@ -510,7 +531,7 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 		return this.#collectionValues.getInputDataSet(String(this.#fieldName), this.#data);
 	}
 	// renamed from parseCollectionFieldName
-	get forge(): IDbForge<T> | undefined {
+	get forge(): IDbForgeFields<T> | undefined {
 		return this.#collectionValues.dbCollections.parseCollectionFieldName(
 			this.#collection,
 			String(this.#fieldName)
@@ -544,22 +565,32 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 		return this.#data;
 	}
 
-	iterateArray(fieldName: string, data: any[]): IDbForge<T>[] {
+	iterateArray(fieldName: string, data: any[]): IDbForgeFields<T>[] {
 		return this.#collectionValues.iterateArrayField(fieldName, data);
 	}
 
-	iterateObject(fieldName: string, data: Record<string, any>): IDbForge<T>[] {
+	iterateObject(fieldName: string, data: Record<string, any>): IDbForgeFields<T>[] {
 		return this.#collectionValues.iterateObjectField(fieldName, data);
 	}
 }
 
-export class IDbValidationError extends Error {
+class IDbError extends Error {
 	constructor(
-		public field: string,
-		public code: string,
-		message: string
+		message: string,
+		public readonly code: string
 	) {
 		super(message);
-		this.name = 'IDbValidationError';
+		this.name = 'DbCollectionError';
+	}
+	static throwError(message: string, code: string) {
+		throw new IDbError(message, code);
+	}
+
+	static handleError(error: unknown): void {
+		if (error instanceof IDbError) {
+			console.error(`${error.name}: ${error.message} (Code: ${error.code})`);
+		} else {
+			console.error('Unexpected error:', error);
+		}
 	}
 }

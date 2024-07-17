@@ -52,8 +52,6 @@ describe('Be', () => {
 		expect(foundElements).toEqual([childElement1, childElement2]);
 	});
 
- 
-
 	it('should set the text content of the element', () => {
 		const element = document.createElement('div');
 		const beInstance = Be.elem(element);

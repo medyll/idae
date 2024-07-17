@@ -5,9 +5,9 @@
 </script>
 
 <div data-auto-track="true">
-    <div>
-        <div></div>
-    </div>
+	<div>
+		<div></div>
+	</div>
 	<script data-attr="htmludom" lang="ts">
 		//console.log(this);
 		window.der = function () {

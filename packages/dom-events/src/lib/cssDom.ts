@@ -26,7 +26,15 @@ export class CssObserver {
 	private activeAnimations: Set<string> = new Set();
 	private resizeObserver: ResizeObserver | null = null;
 	// do not load selectors several times
-	private loadedSelectors: Map<string,{fragment:CSSStyleSheet | HTMLStyleElement,selector:string,callback:Function,controller:CssObserverCommands}> =  new Map();
+	private loadedSelectors: Map<
+		string,
+		{
+			fragment: CSSStyleSheet | HTMLStyleElement;
+			selector: string;
+			callback: Function;
+			controller: CssObserverCommands;
+		}
+	> = new Map();
 
 	/**
 	 * Default options for the CssObserver.
@@ -43,9 +51,9 @@ export class CssObserver {
 	 * Creates a new instance of CssObserver.
 	 * @param {QuerySelector} selector - The query selector for the instance.
 	 */
-	constructor(selector?: QuerySelector) { 
-		if(selector) this.setSelector(selector);
-		if(typeof document !== 'undefined'){
+	constructor(selector?: QuerySelector) {
+		if (selector) this.setSelector(selector);
+		if (typeof document !== 'undefined') {
 			CssObserver.checkBrowserSupport();
 			return this;
 		}
@@ -55,7 +63,6 @@ export class CssObserver {
 		this.selector = selector;
 		this.selectorId = this.cleanSpecialChars(selector);
 	}
-
 
 	/**
 	 * Checks if the browser supports necessary features.
@@ -98,15 +105,17 @@ export class CssObserver {
 			trackCharacterData?: boolean;
 			trackResize?: boolean;
 		} = {}
-	):CssObserverCommands {
-
-		if(typeof document === 'undefined'){
-			return
+	): CssObserverCommands {
+		if (typeof document === 'undefined') {
+			return;
 		}
-		
-		if(this.loadedSelectors.has(this.selector) && this.loadedSelectors.get(this.selector)?.controller){
+
+		if (
+			this.loadedSelectors.has(this.selector) &&
+			this.loadedSelectors.get(this.selector)?.controller
+		) {
 			return this?.loadedSelectors?.get?.(this.selector)?.controller;
-		}  
+		}
 		const selector = this.selector;
 
 		const animationName = opts?.animationName ?? crypto.randomUUID();
@@ -133,7 +142,6 @@ export class CssObserver {
 			return callback?.(node);
 		};
 
-
 		if (!opts.onlyNew) {
 			this.processExistingElements(transCallBak);
 		}
@@ -141,7 +149,7 @@ export class CssObserver {
 		const eventHandler = this.createEventHandler(animationName, transCallBak);
 		let animationLoader = this.listenToAnimationEvent(eventHandler);
 
-		const ret: CssObserverCommands =  {
+		const ret: CssObserverCommands = {
 			start: () => {
 				animationLoader = this.listenToAnimationEvent(eventHandler);
 				if (opts.trackResize) {
@@ -173,8 +181,12 @@ export class CssObserver {
 			}
 		};
 
-		
-		this.loadedSelectors.set(selector,{ controller:ret, fragment:styleFragment,selector:selector,callback:transCallBak});
+		this.loadedSelectors.set(selector, {
+			controller: ret,
+			fragment: styleFragment,
+			selector: selector,
+			callback: transCallBak
+		});
 
 		return ret;
 	}
@@ -399,7 +411,7 @@ export class CssObserver {
                 ${this.options.legacyCssPrefix}animation-name: ${animationName} !important;
             }`;
 			document.head.appendChild(style);
-			
+
 			return style;
 		}
 	}
@@ -451,101 +463,92 @@ export function cssDom(
 		trackResize?: boolean;
 	}
 ) {
-
 	let isReady = false;
 	let readyCallbacks: (() => void)[] = [];
 	let timerReady: NodeJS.Timeout | null = null;
 
 	let eachCallback: CssObserverCallBack | null = null;
-	let summaryCallback: CssObserverCallBackSummary | null = null; 
+	let summaryCallback: CssObserverCallBackSummary | null = null;
 
 	// const domCss = new CssObserver(selector);
 	cssDomInstance.setSelector(selector);
 
 	let cssDomObject = {
-		each: function(callback: CssObserverCallBack) {	  
+		each: function (callback: CssObserverCallBack) {
 			return {
 				start: () => {},
 				pause: () => {},
 				destroy: () => {}
-			}; 
+			};
 		},
-		summary: function(callback: CssObserverCallBackSummary) { 
+		summary: function (callback: CssObserverCallBackSummary) {
 			return {
 				start: () => {},
 				pause: () => {},
 				destroy: () => {}
-			}; 
+			};
 		},
-		onReady: function(callback: () => void) {
+		onReady: function (callback: () => void) {
 			callback();
 		}
 	};
 
- 
-	
-	function initializeWhenReady() {		
-		if (typeof document !=='undefined' && document.body) {
-			
+	function initializeWhenReady() {
+		if (typeof document !== 'undefined' && document.body) {
 			isReady = true;
 			cssDomObject = cssDomObjectFinal;
 			//
 			if (eachCallback) cssDomObject.each(eachCallback);
-            if (summaryCallback) cssDomObject.summary(summaryCallback);
-            readyCallbacks.forEach(cb => cb());
-            readyCallbacks = [];
-
+			if (summaryCallback) cssDomObject.summary(summaryCallback);
+			readyCallbacks.forEach((cb) => cb());
+			readyCallbacks = [];
 		} else {
 			clearTimeout(timerReady!);
 			timerReady = setTimeout(initializeWhenReady, 10);
 		}
-	} 
-
-
-
+	}
 
 	const cssDomObjectFinal = {
 		/**
-		* Tracks changes for each matching element.
-		* @param {CssObserverCallBack} callback - The callback function to be invoked for each change.
-		* @returns {Object} An object with methods to control the tracking.
-		*/
+		 * Tracks changes for each matching element.
+		 * @param {CssObserverCallBack} callback - The callback function to be invoked for each change.
+		 * @returns {Object} An object with methods to control the tracking.
+		 */
 		each: function (callback: CssObserverCallBack) {
 			const tracker = cssDomInstance.track(callback, opts);
 			return tracker;
 		},
 		/**
-		* Tracks changes and provides a summary of affected elements.
-		* @param {CssObserverCallBackSummary} callback - The callback function to be invoked with the summary.
-		* @returns {Object} An object with methods to control the tracking.
-		*/
+		 * Tracks changes and provides a summary of affected elements.
+		 * @param {CssObserverCallBackSummary} callback - The callback function to be invoked with the summary.
+		 * @returns {Object} An object with methods to control the tracking.
+		 */
 		summary: function (callback: CssObserverCallBackSummary) {
-			 
 			const tracker = cssDomInstance.getSummary(callback, opts);
 			if (opts?.trackChildList || opts?.trackAttributes) {
-			htmlDom.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
-				onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
-				onAttributesChange: opts.trackAttributes ? (element, mutation) => callback([element]) : undefined
-			});
+				htmlDom.track(selector, opts.trackAttributes ? opts.trackAttributes : [], {
+					onChildListChange: opts.trackChildList ? (element) => callback([element]) : undefined,
+					onAttributesChange: opts.trackAttributes
+						? (element, mutation) => callback([element])
+						: undefined
+				});
 			}
 			if (opts?.trackResize) {
-			const resizeObserver = new ResizeObserver((entries) => {
-				for (let entry of entries) {
-				callback([entry.target]);
-				}
-			});
-			document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
+				const resizeObserver = new ResizeObserver((entries) => {
+					for (let entry of entries) {
+						callback([entry.target]);
+					}
+				});
+				document.querySelectorAll(selector).forEach((element) => resizeObserver.observe(element));
 			}
-			return tracker; 
+			return tracker;
 		},
-		onReady: function (callback: () => void) {	
+		onReady: function (callback: () => void) {
 			callback();
 		}
-	};  
+	};
 
-	
 	initializeWhenReady();
 
 	return cssDomObject;
-
 }

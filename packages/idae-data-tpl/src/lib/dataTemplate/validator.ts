@@ -1,21 +1,27 @@
-import { IDbCollections } from './dataTemplate.js';
-import { enumPrimitive } from './types.js';
+import { IdaeTemplateModel } from './dataTemplate.js';
+import { enumFieldsPrimitives, type IdaeTemplateFields } from './types.js';
 
 /**
  * IDbFormValidate
  *
  *
  */
-export class IDbFormValidate {
-	private dbFields: IDbCollections;
+export class IDbFormValidate<T> {
+	private dbFields: IdaeTemplateModel;
 
 	constructor(private collection: string) {
-		this.dbFields = new IDbCollections();
+		this.dbFields = new IdaeModel();
 	}
 
-	validateField(fieldName: keyof TplFields, value: string): { isValid: boolean; error?: string } {
+	validateField(
+		fieldName: keyof IdaeTemplateFields<T>,
+		value: string
+	): { isValid: boolean; error?: string } {
 		try {
-			const fieldInfo = this.dbFields.parseCollectionFieldName(this.collection, fieldName);
+			const fieldInfo = this.dbFields.parseCollectionFieldName(
+				this.collection,
+				fieldName as string
+			);
 			if (!fieldInfo) {
 				return { isValid: false, error: `Field ${String(fieldName)} not found in collection` };
 			}
@@ -35,24 +41,24 @@ export class IDbFormValidate {
 
 			// Validations spécifiques selon le type de champ
 			switch (fieldInfo.fieldType) {
-				case enumPrimitive.email:
+				case enumFieldsPrimitives.email:
 					if (!this.validateEmail(value)) {
 						return this.#returnError(fieldName, fieldInfo.fieldType);
 					}
 					break;
-				case enumPrimitive.url:
+				case enumFieldsPrimitives.url:
 					if (!this.validateUrl(value)) {
 						return this.#returnError(fieldName, fieldInfo.fieldType);
 					}
 					break;
-				case enumPrimitive.phone:
+				case enumFieldsPrimitives.phone:
 					if (!this.validatePhone(value)) {
 						return this.#returnError(fieldName, fieldInfo.fieldType);
 					}
 					break;
-				case enumPrimitive.date:
-				case enumPrimitive.datetime:
-				case enumPrimitive.time:
+				case enumFieldsPrimitives.date:
+				case enumFieldsPrimitives.datetime:
+				case enumFieldsPrimitives.time:
 					if (!this.validateDateTime(value, fieldInfo.fieldType)) {
 						return this.#returnError(fieldName, fieldInfo.fieldType);
 					}
@@ -69,7 +75,7 @@ export class IDbFormValidate {
 		}
 	}
 
-	validateFieldValue(fieldName: keyof TplFields, value: any): boolean {
+	validateFieldValue(fieldName: keyof IdaeTemplateFields, value: any): boolean {
 		try {
 			this.validateField(fieldName, value);
 			return true;
@@ -105,7 +111,7 @@ export class IDbFormValidate {
 				continue;
 			}
 
-			const result = this.validateField(fieldName as keyof TplFields, formData[fieldName]);
+			const result = this.validateField(fieldName as keyof IdaeTemplateFields, formData[fieldName]);
 			if (!result.isValid) {
 				errors[fieldName] = result.error || 'Invalid field';
 				invalidFields.push(fieldName);
@@ -118,28 +124,31 @@ export class IDbFormValidate {
 
 	#validateType(value: any, type: string | undefined): boolean {
 		switch (type) {
-			case enumPrimitive.number:
+			case enumFieldsPrimitives.number:
 				return typeof value === 'number' && !isNaN(value);
-			case enumPrimitive.boolean:
+			case enumFieldsPrimitives.boolean:
 				return typeof value === 'boolean';
-			case enumPrimitive.text:
-			case enumPrimitive.email:
-			case enumPrimitive.url:
-			case enumPrimitive.phone:
-			case enumPrimitive.password:
+			case enumFieldsPrimitives.text:
+			case enumFieldsPrimitives.email:
+			case enumFieldsPrimitives.url:
+			case enumFieldsPrimitives.phone:
+			case enumFieldsPrimitives.password:
 				return typeof value === 'string';
-			case enumPrimitive.date:
-			case enumPrimitive.datetime:
-			case enumPrimitive.time:
+			case enumFieldsPrimitives.date:
+			case enumFieldsPrimitives.datetime:
+			case enumFieldsPrimitives.time:
 				return value instanceof Date || typeof value === 'string';
-			case enumPrimitive.any:
+			case enumFieldsPrimitives.any:
 				return true;
 			default:
 				return true; // Pour les types non gérés, on considère que c'est valide
 		}
 	}
 
-	#returnError(fieldName: keyof TplFields, enumCode: enumPrimitive | string | undefined): never {
+	#returnError(
+		fieldName: keyof IdaeTemplateFields,
+		enumCode: enumFieldsPrimitives | string | undefined
+	): never {
 		throw new IDbValidationError(
 			String(fieldName),
 			enumCode ?? 'unknown',
@@ -172,15 +181,26 @@ export class IDbFormValidate {
 		if (isNaN(date.getTime())) return false;
 
 		switch (type) {
-			case enumPrimitive.date:
+			case enumFieldsPrimitives.date:
 				return true; // La conversion en Date a déjà validé le format
-			case enumPrimitive.time:
+			case enumFieldsPrimitives.time:
 				// Vérifiez si la chaîne contient uniquement l'heure
 				return /^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/.test(value as string);
-			case enumPrimitive.datetime:
+			case enumFieldsPrimitives.datetime:
 				return true; // La conversion en Date a déjà validé le format
 			default:
 				return false;
 		}
+	}
+}
+
+export class IDbValidationError extends Error {
+	constructor(
+		public field: string,
+		public code: string,
+		message: string
+	) {
+		super(message);
+		this.name = 'IDbValidationError';
 	}
 }

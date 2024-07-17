@@ -88,7 +88,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 				throw error;
 			}
 		},
-		set(target: State<T>, property: string | symbol, value: any, receiver: any) {npm create svelte@latest ; npm -i -f  svelte@next 
+		set(target: State<T>, property: string | symbol, value: any, receiver: any) {
 			if (property === 'onchange') {
 				if (typeof value !== 'function') {
 					throw new TypeError('onchange must be a function');
