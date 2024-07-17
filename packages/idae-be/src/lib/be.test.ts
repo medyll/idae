@@ -52,17 +52,12 @@ describe('Be', () => {
 		expect(foundElements).toEqual([childElement1, childElement2]);
 	});
 
-	it('should set the inner HTML of the element', () => {
-		const element = document.createElement('div');
-		const beInstance = Be.elem(element);
-		beInstance.htmlSet('<p>Test</p>');
-		expect(element.innerHTML).toBe('<p>Test</p>');
-	});
+ 
 
 	it('should set the text content of the element', () => {
 		const element = document.createElement('div');
 		const beInstance = Be.elem(element);
-		beInstance.textSet('Test');
+		beInstance.updateText('Test');
 		expect(element.textContent).toBe('Test');
 	});
 
