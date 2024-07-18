@@ -380,10 +380,10 @@ class ClassesHandler {
 		return this.beElement;
 	}
 
-	/**
-	 * Replace a class on the element(s).
-	 * @param sourceClassName The class to be replaced.
-	 * @param targetClassName The new class to replace with.
+	/**type EventHandlerHandle = {
+	on: { [eventName: string]: EventListenerOrEventListenerObject[] };
+	off: { [eventName: string]: EventListenerOrEventListenerObject }; 
+};e new class to replace with.
 	 * @returns The Be instance for method chaining.
 	 */
 	replace(sourceClassName: string, targetClassName: string): Be {
@@ -402,9 +402,9 @@ class ClassesHandler {
 	}
 }
 
-type EventHandlerHandler = {
-	on: { eventName: string; handler: EventListener };
-	off: { eventName: string; handler: EventListener };
+type EventHandlerHandle = {
+	on: { [eventName: string]: EventListener };
+	off: { [eventName: string]: EventListener }; 
 };
 
 /**
@@ -422,14 +422,17 @@ class EventHandler {
 	 * @param actions An object specifying the event actions to perform.
 	 * @returns The Be instance for method chaining.
 	 */
-	handle(actions: EventHandlerHandler): Be {
+	handle(actions: EventHandlerHandle): Be {
+	 
 		if (actions.on) {
-			this.beElement.each((el) => el.addEventListener(actions.on.eventName, actions.on.handler));
+			Object.entries(actions.on).forEach(([eventName, handler]) => {			
+				this.on(eventName, handler);
+			}) 
 		}
 		if (actions.off) {
-			this.beElement.each((el) =>
-				el.removeEventListener(actions.off.eventName, actions.off.handler)
-			);
+			Object.entries(actions.on).forEach(([eventName, handler]) => {							
+				this.off(eventName, handler);
+			}) 
 		}
 		return this.beElement;
 	}
@@ -891,8 +894,8 @@ export class Be {
 	 * @param actions.off - Events to remove. Can be a space-separated string or an array of [eventName, handler] pairs.
 	 * @returns The Be instance for method chaining.
 	 */
-	events(actions: Partial<EventHandlerHandler>): Be {
-		return this.eventHandler.handle(actions as EventHandlerHandler);
+	events(actions: Partial<EventHandlerHandle>): Be {
+		return this.eventHandler.handle(actions as EventHandlerHandle);
 	}
 
 	attrs(actions: Partial<AttrHandler>): Be {
