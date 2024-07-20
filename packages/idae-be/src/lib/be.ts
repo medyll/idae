@@ -1,13 +1,6 @@
-type CombineElements<T extends string> = T extends any ? T | `${T} ${CombineElements<T>}` : never;
-type IsWhat = 'element' | 'array' | 'qy';
-
-type SnapToOptions =
-	| 'top'
-	| 'right'
-	| 'bottom'
-	| 'left'
-	| `${'top' | 'right' | 'bottom' | 'left'} center`
-	| 'center';
+import { StyleHandler, type BeStylesHandler } from './styles.js';
+import type { CombineElements, PositionSnapOptions, IsWhat } from './types.js';
+import { BeUtils } from './utils.js';
 
 type DataHandlerHandle = {
 	set: (keyOrObject: string | Record<string, string>, value?: string) => Be;
@@ -16,9 +9,14 @@ type DataHandlerHandle = {
 
 class DataHandler {
 	private beElement: Be;
+	static methods = ['get', 'set', 'delete'];
 
 	constructor(element: Be) {
 		this.beElement = element;
+	}
+
+	attach(thatBe: Be, instance: DataHandler, suffix: string = '') {
+		BeUtils.attach<DataHandler>(thatBe, instance, suffix);
 	}
 
 	get(key: string): string | null {
@@ -28,7 +26,7 @@ class DataHandler {
 	}
 
 	set(keyOrObject: string | Record<string, string>, value?: string): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (typeof keyOrObject === 'string' && value !== undefined) {
 				el.dataset[keyOrObject] = value;
 			} else if (typeof keyOrObject === 'object') {
@@ -44,7 +42,7 @@ class DataHandler {
 		return this.beElement;
 	}
 	handle(actions: Partial<DataHandlerHandle>): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (actions.set) {
 			}
 			if (actions.delete) {
@@ -61,8 +59,14 @@ class DataHandler {
 class PropHandler {
 	private element: Be;
 
+	static methods = ['get', 'set'];
+
 	constructor(element: Be) {
 		this.element = element;
+	}
+
+	attach(thatBe: Be, instance: PropHandler, suffix: string = '') {
+		BeUtils.attach<PropHandler>(thatBe, instance, suffix);
 	}
 
 	get(name: string): any {
@@ -71,7 +75,7 @@ class PropHandler {
 	}
 
 	set(nameOrObject: string | Record<string, any>, value?: any): Be {
-		this.element.each((el) => {
+		this.element.eachNode((el) => {
 			if (typeof nameOrObject === 'string' && value !== undefined) {
 				el[nameOrObject] = value;
 			} else if (typeof nameOrObject === 'object') {
@@ -98,17 +102,29 @@ class PropHandler {
 
 type DomHandlerHandle = {
 	update?: string | HTMLElement;
+	updateText?: string | HTMLElement;
 	append?: string | HTMLElement;
 	prepend?: string | HTMLElement;
-	remove?: string | HTMLElement;
+	remove?: boolean;
 	replace?: string | HTMLElement;
 	clear?: boolean;
+	callback?: (element: DonHandlerCallbackProps) => void;
 };
+
+type DonHandlerCallbackProps = { element: Be; fragment: any; root: Be };
+export type DomHandlerHandleCallBack = (element: DonHandlerCallbackProps) => void;
+
 class DomHandler {
+	// update!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
+	// updateText!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
+
 	private beElement: Be;
+
+	static methods = ['update', 'updateText', 'append', 'prepend', 'remove', 'replace', 'clear'];
 
 	constructor(element: Be) {
 		this.beElement = element;
+		// this.attach(this as unknown as Be);
 	}
 
 	get text(): string | null {
@@ -128,22 +144,47 @@ class DomHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	handle(actions: DomHandlerHandle): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (actions.update !== undefined) {
+				const htmlInfo = BeUtils.isHTML(actions.update, { returnHTMLelement: true });
+				if (htmlInfo.isHtml) {
+					el.innerHTML = actions.update; /*  */
+				}
+			}
+			if (actions.updateText !== undefined) {
 				el.innerHTML = actions.update; /*  */
 			}
 			if (actions.append !== undefined) {
+				let newElement: HTMLElement;
 				if (typeof actions.append === 'string') {
-					el.insertAdjacentHTML('beforeend', actions.append);
+					const htmlInfo = BeUtils.isHTML(actions.append, { returnHTMLelement: true });
+					if (htmlInfo.isHtml) {
+						newElement = htmlInfo.node;
+						el.appendChild(htmlInfo.node);
+					} else {
+						newElement = document.createElement('span');
+						newElement.textContent = actions.append;
+						// el.insertAdjacentHTML('beforeend', actions.append);
+					}
 				} else {
-					el.appendChild(actions.append);
+					newElement = el.appendChild(actions.append);
 				}
+				actions?.callback?.({
+					fragment: actions.append,
+					element: be(newElement),
+					root: this.beElement
+				});
 			}
 			if (actions.prepend !== undefined) {
 				if (typeof actions.prepend === 'string') {
+					const htmlInfo = BeUtils.isHTML(actions.prepend, { returnHTMLelement: true });
 					el.insertAdjacentHTML('afterbegin', actions.prepend);
 				} else {
 					el.insertBefore(actions.prepend, el.firstChild);
+				}
+
+				{
+					returnHTMLelement: true;
 				}
 			}
 			if (actions.remove) {
@@ -164,67 +205,41 @@ class DomHandler {
 		return this.beElement;
 	}
 
-	/**
-	 * Updates the innerHTML of the element(s).
-	 * @param content The HTML content to set.
-	 * @returns The Be instance for method chaining.
-	 */
-	update(content: string): Be {
-		return this.handle({ update: content });
+	attach(thatBe: Be, instance: DomHandler, suffix: string = '') {
+		BeUtils.attach<DomHandler>(thatBe, instance, suffix);
 	}
 
-	updateText(content: string): Be {
-		this.beElement.each((el) => {
-			el.textContent = content;
+	attachRoot(that: Be) {
+		DomHandler.methods.forEach((method) => {
+			that[method] = this.handlerFor(method);
 		});
-		return this.beElement;
 	}
 
-	/**
-	 * Appends content to the selected elements.
-	 *
-	 * @param {string | HTMLElement} content - The content to append.
-	 * If a string is provided, it will be parsed as HTML and inserted
-	 * as the last child of each element. If an HTMLElement is provided,
-	 * it will be appended as the last child of each element.
-	 * @return {this} - The Be instance for method chaining.
-	 */
-	append(content: string | HTMLElement): Be {
-		return this.handle({ append: content });
+	handlerFor(command: keyof DomHandlerHandle) {
+		return (content: string | HTMLElement, callback: DomHandlerHandleCallBack) =>
+			this.handle({ [command]: content, callback });
 	}
 
-	/**
-	 * Prepends content to the element(s).
-	 * @param content The content to prepend.
-	 * @returns The Be instance for method chaining.
-	 */
-	prepend(content: string | HTMLElement): Be {
-		return this.handle({ prepend: content });
+	update(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ update: content, callback });
 	}
-
-	/**
-	 * Removes the element(s) from the DOM.
-	 * @return {this} - The Be instance for method chaining.
-	 */
-	remove(): Be {
-		return this.handle({ remove: true });
+	updateText(content: DomHandlerHandle['updateText'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ updateText: content, callback });
 	}
-
-	/**
-	 * Replaces the element(s) with new content.
-	 * @param content The content to replace the element(s) with.
-	 * @returns The Be instance for method chaining.
-	 */
-	replace(content: string | HTMLElement): Be {
-		return this.handle({ replace: content });
+	append(content: DomHandlerHandle['append'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ append: content, callback });
 	}
-
-	/**
-	 * Clears the content of the element(s).
-	 * @returns The Be instance for method chaining.
-	 */
-	clear(): Be {
-		return this.handle({ clear: true });
+	prepend(content: DomHandlerHandle['prepend'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ prepend: content, callback });
+	}
+	replace(content: DomHandlerHandle['replace'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ replace: content, callback });
+	}
+	remove(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ update: content, callback });
+	}
+	clear(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+		this.handle({ update: content, callback });
 	}
 
 	valueOf(): string | null {
@@ -240,8 +255,14 @@ type AttrHandlerHandle = {
 class AttrHandler {
 	private beElement: Be;
 
+	static methods = ['get', 'set', 'delete'];
+
 	constructor(element: Be) {
 		this.beElement = element;
+	}
+
+	attach(thatBe: Be, instance: AttrHandler, suffix: string = '') {
+		BeUtils.attach<AttrHandler>(thatBe, instance, suffix);
 	}
 
 	get(name?: string): string | null {
@@ -251,7 +272,7 @@ class AttrHandler {
 	}
 
 	set(nameOrObject: string | Record<string, string>, value?: string): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (typeof nameOrObject === 'string' && value !== undefined) {
 				el.setAttribute(nameOrObject, value);
 			} else if (typeof nameOrObject === 'object') {
@@ -264,7 +285,7 @@ class AttrHandler {
 	}
 
 	delete(nameOrObject: string | Record<string, string>): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (typeof nameOrObject === 'string') {
 				el.removeAttribute(nameOrObject);
 			} else if (typeof nameOrObject === 'object') {
@@ -277,7 +298,7 @@ class AttrHandler {
 	}
 
 	handle(actions: Partial<AttrHandlerHandle>): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (actions.delete) {
 			}
 			if (actions.set) {
@@ -311,6 +332,8 @@ type ClassHandlerHandler = {
 class ClassesHandler {
 	private beElement: Be;
 
+	static methods = ['add', 'remove', 'toggle', 'replace'];
+
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
@@ -325,7 +348,7 @@ class ClassesHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	handle(actions: ClassHandlerHandler): Be {
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (actions.add) {
 				const classesToAdd = Array.isArray(actions.add) ? actions.add : actions.add.split(' ');
 				el.classList.add(...classesToAdd.filter((c) => c.trim() !== ''));
@@ -365,8 +388,12 @@ class ClassesHandler {
 		return this.beElement;
 	}
 
+	attach(thatBe: Be, instance: ClassesHandler, suffix: string = '') {
+		BeUtils.attach<ClassesHandler>(thatBe, instance, suffix);
+	}
+
 	add(className: string): Be {
-		this.beElement.each((el) => el.classList.add(className));
+		this.beElement.eachNode((el) => el.classList.add(className));
 		return this.beElement;
 	}
 
@@ -376,18 +403,16 @@ class ClassesHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	toggle(className: string): Be {
-		this.beElement.each((el) => el.classList.toggle(className));
+		this.beElement.eachNode((el) => el.classList.toggle(className));
 		return this.beElement;
 	}
 
-	/**type EventHandlerHandle = {
-	on: { [eventName: string]: EventListenerOrEventListenerObject[] };
-	off: { [eventName: string]: EventListenerOrEventListenerObject }; 
-};e new class to replace with.
+	/**
+	 * Replace a class on the element(s).
 	 * @returns The Be instance for method chaining.
 	 */
 	replace(sourceClassName: string, targetClassName: string): Be {
-		this.beElement.each((el) => el.classList.replace(sourceClassName, targetClassName));
+		this.beElement.eachNode((el) => el.classList.replace(sourceClassName, targetClassName));
 		return this.beElement;
 	}
 
@@ -397,21 +422,28 @@ class ClassesHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	remove(className: string): Be {
-		this.beElement.each((el) => el.classList.remove(className));
+		this.beElement.eachNode((el) => el.classList.remove(className));
 		return this.beElement;
 	}
 }
 
-type EventHandlerHandle = {
-	on: { [eventName: string]: EventListener };
-	off: { [eventName: string]: EventListener }; 
+type EventHandlerMethods = 'on' | 'off';
+type EventHandlerMethodsProps = {
+	[key in EventHandlerMethods]: (eventName?: string) => CustomEvent | EventListener | null;
 };
+
+interface EventHandlerHandle {
+	on?: { [eventName: string]: CustomEvent | EventListener };
+	off?: { [eventName: string]: CustomEvent | EventListener };
+}
 
 /**
  * Handles event operations for Be elements.
  */
 class EventHandler {
 	private beElement: Be;
+
+	static methods = ['on', 'off'];
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;
@@ -423,28 +455,31 @@ class EventHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	handle(actions: EventHandlerHandle): Be {
-	 
 		if (actions.on) {
-			Object.entries(actions.on).forEach(([eventName, handler]) => {			
+			Object.entries(actions.on).forEach(([eventName, handler]) => {
 				this.on(eventName, handler);
-			}) 
+			});
 		}
 		if (actions.off) {
-			Object.entries(actions.on).forEach(([eventName, handler]) => {							
+			Object.entries(actions.off).forEach(([eventName, handler]) => {
 				this.off(eventName, handler);
-			}) 
+			});
 		}
 		return this.beElement;
 	}
 
+	attach(thatBe: Be, instance: EventHandler, suffix: string = '') {
+		BeUtils.attach<EventHandler>(thatBe, instance, suffix);
+	}
+
 	on(eventName: string, handler: EventListener) {
-		this.beElement.each((el) => el.addEventListener(eventName, handler));
-		return this;
+		this.beElement.eachNode((el) => el.addEventListener(eventName, handler));
+		return this.beElement;
 	}
 
 	off(eventName: string, handler: EventListener) {
-		this.beElement.each((el) => el.removeEventListener(eventName, handler));
-		return this;
+		this.beElement.eachNode((el) => el.removeEventListener(eventName, handler));
+		return this.beElement;
 	}
 }
 
@@ -454,10 +489,15 @@ class EventHandler {
 class PositionHandler {
 	private beElement: Be;
 
+	static methods = ['clonePosition', 'overlapPosition', 'snapTo'];
+
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
 
+	attach(thatBe: Be, instance: PositionHandler, suffix: string = '') {
+		BeUtils.attach<PositionHandler>(thatBe, instance, suffix);
+	}
 	/**
 	 * Clones the position of a source element to this element.
 	 * @param sourceElement The element or selector of the element whose position is to be cloned.
@@ -486,7 +526,7 @@ class PositionHandler {
 		const targetRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
 		const { offsetX = 0, offsetY = 0, useTransform = false } = options;
 
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (useTransform) {
 				const x = sourceRect.left - targetRect.left + offsetX;
 				const y = sourceRect.top - targetRect.top + offsetY;
@@ -554,7 +594,7 @@ class PositionHandler {
 				break;
 		}
 
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			if (useTransform) {
 				el.style.transform = `translate(${x}px, ${y}px)`;
 			} else {
@@ -578,8 +618,8 @@ class PositionHandler {
 	snapTo(
 		targetElement: string | HTMLElement, // SnapToOptions
 		options: {
-			sourceAnchor: SnapToOptions;
-			targetAnchor: SnapToOptions;
+			sourceAnchor: PositionSnapOptions;
+			targetAnchor: PositionSnapOptions;
 			offset?: { x: number; y: number };
 		}
 	): Be {
@@ -597,17 +637,17 @@ class PositionHandler {
 		let sourceX: number, sourceY: number, targetX: number, targetY: number;
 
 		// Calculate source anchor point
-		[sourceX, sourceY] = this.calculateAnchorPoint(sourceRect, sourceAnchor);
+		[sourceX, sourceY] = BeUtils.calculateAnchorPoint(sourceRect, sourceAnchor);
 
 		// Calculate target anchor point
-		[targetX, targetY] = this.calculateAnchorPoint(targetRect, targetAnchor);
+		[targetX, targetY] = BeUtils.calculateAnchorPoint(targetRect, targetAnchor);
 
 		// Calculate final position
 		const x = targetX - sourceX + offset.x;
 		const y = targetY - sourceY + offset.y;
 
 		// Apply position
-		this.beElement.each((el) => {
+		this.beElement.eachNode((el) => {
 			const computedStyle = window.getComputedStyle(el);
 			const position = computedStyle.position;
 
@@ -621,285 +661,80 @@ class PositionHandler {
 
 		return this.beElement;
 	}
-
-	private calculateAnchorPoint(rect: DOMRect, anchor: string): [number, number] {
-		const [vertical, horizontal] = anchor.split(' ');
-		let x: number, y: number;
-
-		switch (vertical) {
-			case 'top':
-				y = rect.top;
-				break;
-			case 'bottom':
-				y = rect.bottom;
-				break;
-			case 'center':
-				y = rect.top + rect.height / 2;
-				break;
-			default:
-				y = rect.top;
-		}
-
-		switch (horizontal) {
-			case 'left':
-				x = rect.left;
-				break;
-			case 'right':
-				x = rect.right;
-				break;
-			case 'center':
-				x = rect.left + rect.width / 2;
-				break;
-			default:
-				x = rect.left;
-		}
-
-		return [x, y];
-	}
 }
 
-class WalkHandler {
+type WalkerMethods =
+	| 'up'
+	| 'next'
+	| 'previous'
+	| 'siblings'
+	| 'children'
+	| 'closest'
+	| 'lastChild'
+	| 'firstChild'
+	| 'find'
+	| 'findAll';
+
+type WalkerMethodsProps = {
+	[key in WalkerMethods]: (qy?: string) => Be;
+};
+
+interface IdaeWalkHandlerInterface {
+	up: WalkerMethodsProps['up'];
+	next: WalkerMethodsProps['next'];
+	previous: WalkerMethodsProps['previous'];
+	siblings: WalkerMethodsProps['siblings'];
+	children: WalkerMethodsProps['children'];
+	closest: WalkerMethodsProps['closest'];
+	lastChild: WalkerMethodsProps['lastChild'];
+	firstChild: WalkerMethodsProps['firstChild'];
+	find: WalkerMethodsProps['find'];
+	findAll: WalkerMethodsProps['findAll'];
+}
+
+class IdaeWalkHandler implements IdaeWalkHandlerInterface {
+	up!: WalkerMethodsProps['up'];
+	next!: WalkerMethodsProps['next'];
+	previous!: WalkerMethodsProps['previous'];
+	siblings!: WalkerMethodsProps['siblings'];
+	children!: WalkerMethodsProps['children'];
+	closest!: WalkerMethodsProps['closest'];
+	lastChild!: WalkerMethodsProps['lastChild'];
+	firstChild!: WalkerMethodsProps['firstChild'];
+
+	static methods: WalkerMethods[] = [
+		'up',
+		'next',
+		'previous',
+		'siblings',
+		'children',
+		'closest',
+		'lastChild',
+		'firstChild',
+		'find',
+		'findAll'
+	];
+
 	private beElement: Be;
+
 	constructor(beElement: Be) {
 		this.beElement = beElement;
+		this.attachRoot();
 	}
 
-	up(qy?: string): Be {
-		let result: HTMLElement | HTMLElement[] | null = null;
-		switch (this.beElement.isWhat) {
-			case 'element':
-				result = this.beElement.findWhile(this.node as HTMLElement, 'parent', qy);
-				break;
-			case 'array':
-				result = (this.beElement.node as HTMLElement[]).map((node) =>
-					this.findWhile(node, 'parent', qy)
-				);
-				break;
-			case 'qy':
-				result = Array.from(document.querySelectorAll(this.beElement.node as string)).map((node) =>
-					this.findWhile(node, 'parent', qy)
-				);
-				break;
-		}
-		return Be.elem(result);
+	attachRoot() {
+		IdaeWalkHandler.methods.forEach((method) => {
+			this[method] = this.methodize(method);
+		});
 	}
 
-	next(qy?: string): Be {
-		let result: HTMLElement | HTMLElement[] | null = null;
-		switch (this.beElement.isWhat) {
-			case 'element':
-				result = this.findWhile(this.node as HTMLElement, 'next', qy);
-				break;
-			case 'array':
-				result = (this.node as HTMLElement[]).map((node) => this.findWhile(node, 'next', qy));
-				break;
-			case 'qy':
-				result = Array.from(document.querySelectorAll(this.node as string)).map((node) =>
-					this.findWhile(node, 'next', qy)
-				);
-				break;
-		}
-		return Be.elem(result);
+	attach(thatBe: Be, instance: IdaeWalkHandler, suffix: string = '') {
+		BeUtils.attach<IdaeWalkHandler>(thatBe, instance, suffix);
 	}
 
-	previous(qy?: string): Be {
-		let result: HTMLElement | HTMLElement[] | null = null;
-		switch (this.beElement.isWhat) {
-			case 'element':
-				result = this.findWhile(this.beElement.node as HTMLElement, 'previous', qy);
-				break;
-			case 'array':
-				result = (this.beElement.node as HTMLElement[]).map((node) =>
-					this.findWhile(node, 'previous', qy)
-				);
-				break;
-			case 'qy':
-				result = Array.from(document.querySelectorAll(this.beElement.node as string)).map((node) =>
-					this.findWhile(node, 'previous', qy)
-				);
-				break;
-		}
-		return Be.elem(result);
-	}
-	siblings(qy?: string): Be {
-		let result: HTMLElement | HTMLElement[] | null = null;
-		switch (this.beElement.isWhat) {
-			case 'element':
-				result = this.findWhile(this.beElement.node as HTMLElement, 'siblings', qy);
-				break;
-			case 'array':
-				result = (this.beElement.node as HTMLElement[]).map((node) =>
-					this.findWhile(node, 'siblings', qy)
-				);
-				break;
-			case 'qy':
-				result = Array.from(document.querySelectorAll(this.node as string)).map((node) =>
-					this.findWhile(node, 'siblings', qy)
-				);
-				break;
-		}
-		return Be.elem(result);
-	}
-
-	private findWhile(
-		element: Element,
-		direction: 'parent' | 'next' | 'previous' | 'siblings',
-		selector?: string
-	): HTMLElement | null {
-		if (direction === 'parent') {
-			return selector ? element.closest(selector) : element.parentElement;
-		}
-
-		const siblingProperty = direction === 'next' ? 'nextElementSibling' : 'previousElementSibling';
-		let sibling = element[siblingProperty] as HTMLElement | null;
-
-		while (sibling) {
-			if (!selector || sibling.matches(selector)) {
-				return sibling;
-			}
-			sibling = sibling[siblingProperty] as HTMLElement | null;
-		}
-
-		return null;
-	}
-}
-
-export class Be {
-	node: HTMLElement | HTMLElement[] | string;
-	isWhat: IsWhat;
-	attr: AttrHandler;
-	prop: PropHandler;
-	data: DataHandler;
-	// properties
-	private propHandler: PropHandler;
-	setProp: PropHandler['set'];
-	getProp: PropHandler['get'];
-	// dataSet
-	private dataHandler: DataHandler;
-	setData: DataHandler['set'];
-	getData: DataHandler['get'];
-	// attributes
-	private attrHandler: AttrHandler;
-	setAttr: AttrHandler['set'];
-	getAttr: AttrHandler['get'];
-	// position
-	private positionHandler: PositionHandler;
-	clonePosition: PositionHandler['clonePosition'];
-	overlapPosition: PositionHandler['overlapPosition'];
-	snapTo: PositionHandler['snapTo'];
-	// dom
-	private domHandler: DomHandler;
-	update: DomHandler['update'];
-	updateText: DomHandler['updateText'];
-	append: DomHandler['append'];
-	prepend: DomHandler['prepend'];
-	remove: DomHandler['remove'];
-	replace: DomHandler['replace'];
-	clear: DomHandler['clear'];
-	// events
-	private eventHandler: EventHandler;
-	on: EventHandler['on'];
-	off: EventHandler['off'];
-	// classes
-	private classesHandler: ClassesHandler;
-	addClass: ClassesHandler['add'];
-	toggleClass: ClassesHandler['toggle'];
-	replaceClass: ClassesHandler['replace'];
-	removeClass: ClassesHandler['remove'];
-	// walk
-	private walkHandler: WalkHandler;
-	up: WalkHandler['up'];
-	next: WalkHandler['next'];
-	previous: WalkHandler['previous'];
-	siblings: WalkHandler['siblings'];
-
-	private constructor(node: HTMLElement | HTMLElement[] | string) {
-		this.node = node;
-		this.isWhat = typeof node === 'string' ? 'qy' : Array.isArray(node) ? 'array' : 'element';
-
-		this.attr = new AttrHandler(this);
-		this.prop = new PropHandler(this);
-		this.data = new DataHandler(this);
-		// properties
-		this.propHandler = new PropHandler(this);
-		this.setProp = this.propHandler.set;
-		this.getProp = this.propHandler.get;
-		// dataSet
-		this.dataHandler = new DataHandler(this);
-		this.setData = this.dataHandler.set;
-		this.getData = this.dataHandler.get;
-		// attributes
-		this.attrHandler = new AttrHandler(this);
-		this.setAttr = this.attrHandler.set;
-		this.getAttr = this.attrHandler.get;
-		// position
-		this.positionHandler = new PositionHandler(this);
-		this.clonePosition = this.positionHandler.clonePosition;
-		this.overlapPosition = this.positionHandler.overlapPosition;
-		this.snapTo = this.positionHandler.snapTo;
-		// dom
-		this.domHandler = new DomHandler(this);
-		// dom handle
-		this.dom = this.domHandler.handle;
-		this.update = this.domHandler.update;
-		this.updateText = this.domHandler.updateText;
-		this.append = this.domHandler.append;
-		this.prepend = this.domHandler.prepend;
-		this.remove = this.domHandler.remove;
-		this.replace = this.domHandler.replace;
-		this.clear = this.domHandler.clear;
-
-		// events
-		this.eventHandler = new EventHandler(this);
-		this.on = this.eventHandler.on;
-		this.off = this.eventHandler.off;
-
-		// classes
-		this.classesHandler = new ClassesHandler(this);
-		this.addClass = this.classesHandler.add;
-		this.toggleClass = this.classesHandler.toggle;
-		this.replaceClass = this.classesHandler.replace;
-		this.removeClass = this.classesHandler.remove;
-
-		// walk
-		this.walkHandler = new WalkHandler(this);
-		this.up = this.walkHandler.up;
-		this.next = this.walkHandler.next;
-		this.previous = this.walkHandler.previous;
-		this.siblings = this.walkHandler.siblings;
-	}
-
-	static elem(node: HTMLElement | HTMLElement[] | string): Be {
-		return new Be(node);
-	}
-
-	/**
-	 * Manipulate classes on the element(s).
-	 * @param actions An object specifying the actions and the classes to add, remove, toggle, or replace.
-	 * @param actions.add - Classes to add. Can be a space-separated string or an array of strings.
-	 * @param actions.remove - Classes to remove. Can be a space-separated string or an array of strings.
-	 * @param actions.toggle - Classes to toggle. Can be a space-separated string or an array of strings.
-	 * @param actions.replace - Classes to replace. Can be a string in the format "oldClass newClass" or an array of [oldClass, newClass] pairs.
-	 * @param actions.remove -
-	 * @returns The Be instance for method chaining.
-	 */
-	classes(actions: ClassHandlerHandler): Be {
-		return this.classesHandler.handle(actions);
-	}
-
-	/**
-	 * Handle events on the element(s).
-	 * @param actions - Actions to perform on the element(s).
-	 * @param actions.on - Events to add. Can be a space-separated string or an array of [eventName, handler] pairs.
-	 * @param actions.off - Events to remove. Can be a space-separated string or an array of [eventName, handler] pairs.
-	 * @returns The Be instance for method chaining.
-	 */
-	events(actions: Partial<EventHandlerHandle>): Be {
-		return this.eventHandler.handle(actions as EventHandlerHandle);
-	}
-
-	attrs(actions: Partial<AttrHandler>): Be {
-		return this.attrHandler.handle(actions as AttrHandler);
+	handle(actions: DomHandlerHandle) {
+		console.log('not implemented');
+		return;
 	}
 
 	find(qy: string) {
@@ -936,21 +771,193 @@ export class Be {
 		}
 	}
 
-	/** DOM
-	 * Handles various DOM operations on the element(s).
-	 * @param actions An object specifying the DOM actions to perform.
-	 * @returns The Be instance for method chaining.
-	 */
-	dom(actions: DomHandlerHandle): Be {
-		return this.domHandler.handle(actions);
+	private methodize(method: WalkerMethods) {
+		return (qy?: string, callback?: DomHandlerHandleCallBack) => {
+			let result: HTMLElement | HTMLElement[] | null = null;
+			switch (this.beElement.isWhat) {
+				case 'element':
+					result = this.findWhile(this.beElement.node as HTMLElement, method, qy);
+					break;
+				case 'array':
+					result = (this.beElement.node as HTMLElement[]).map((node) =>
+						this.findWhile(node, method, qy)
+					);
+					break;
+				case 'qy':
+					result = Array.from(document.querySelectorAll(this.beElement.node as string)).map(
+						(node) => this.findWhile(node, method, qy)
+					);
+					break;
+			}
+			return Be.elem(result);
+		};
 	}
 
-	get html() {
-		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
+	private findWhile(
+		element: Element,
+		direction: WalkerMethods,
+		selector?: string
+	): HTMLElement | null {
+		const dict: Record<string, keyof Element> = {
+			up: 'parentNode',
+			parent: 'parentNode',
+			next: 'nextElementSibling',
+			previous: 'previousElementSibling',
+			siblings: 'nextElementSibling',
+			children: 'children'
+		};
+
+		const property = dict[direction] ?? direction;
+		let sibling = element[property] as HTMLElement | null;
+
+		while (sibling) {
+			if (!selector || sibling.matches(selector)) {
+				return sibling;
+			}
+			sibling = sibling[property] as HTMLElement | null;
+		}
+
+		return null;
+	}
+}
+
+export class Be {
+	node: HTMLElement | HTMLElement[] | string;
+	isWhat: IsWhat;
+	// styles
+	private styleHandler: StyleHandler;
+	styles: (actions: BeStylesHandler) => Be;
+	setStyle!: StyleHandler['set'];
+	getStyle!: StyleHandler['get'];
+	// properties
+	private propHandler: PropHandler;
+	// dataSet
+	data: (actions: DataHandlerHandle) => Be;
+	private dataHandler: DataHandler;
+	setData!: DataHandler['set'];
+	getData!: DataHandler['get'];
+	// attributes
+	attrs: (actions: Partial<AttrHandlerHandle>) => Be;
+	private attrHandler: AttrHandler;
+	setAttr!: AttrHandler['set'];
+	getAttr!: AttrHandler['get'];
+	// position
+	private positionHandler: PositionHandler;
+	clonePosition!: PositionHandler['clonePosition'];
+	overlapPosition!: PositionHandler['overlapPosition'];
+	snapTo!: PositionHandler['snapTo'];
+	// dom
+	dom: (actions: DomHandlerHandle) => Be;
+	private domHandler: DomHandler;
+	update!: DomHandler['update'];
+	updateText!: DomHandler['updateText'];
+	append!: DomHandler['append'];
+	prepend!: DomHandler['prepend'];
+	remove!: DomHandler['remove'];
+	replace!: DomHandler['replace'];
+	clear!: DomHandler['clear'];
+	// events
+	events: (actions: EventHandlerHandle) => Be;
+	private eventHandler: EventHandler;
+	on!: EventHandler['on'];
+	off!: EventHandler['off'];
+	// classes
+	classes: (actions: ClassHandlerHandler) => Be;
+	private classesHandler: ClassesHandler;
+	addClass!: ClassesHandler['add'];
+	toggleClass!: ClassesHandler['toggle'];
+	replaceClass!: ClassesHandler['replace'];
+	removeClass!: ClassesHandler['remove'];
+	// walk
+	private walkHandler: IdaeWalkHandler;
+	up!: IdaeWalkHandler['up'];
+	next!: IdaeWalkHandler['next'];
+	previous!: IdaeWalkHandler['previous'];
+	siblings!: IdaeWalkHandler['siblings'];
+	children!: IdaeWalkHandler['children'];
+	closest!: IdaeWalkHandler['closest'];
+	lastChild!: IdaeWalkHandler['lastChild'];
+	firstChild!: IdaeWalkHandler['firstChild'];
+	find!: IdaeWalkHandler['find'];
+	findAll!: IdaeWalkHandler['findAll'];
+
+	private constructor(node: HTMLElement | HTMLElement[] | string) {
+		this.node = node;
+		this.isWhat = typeof node === 'string' ? 'qy' : Array.isArray(node) ? 'array' : 'element';
+
+		// styles
+		this.styleHandler = new StyleHandler(this);
+		this.styles = this.styleHandler.handle;
+		BeUtils.attach<StyleHandler>(this, this.styleHandler, 'Style', StyleHandler.methods);
+		// properties
+		this.propHandler = new PropHandler(this);
+		BeUtils.attach<PropHandler>(this, this.propHandler, 'Prop', PropHandler.methods);
+		// dataSet
+		this.dataHandler = new DataHandler(this);
+		this.data = this.dataHandler.handle;
+		BeUtils.attach<DataHandler>(this, this.dataHandler, 'Data', DataHandler.methods);
+		// attributes
+		this.attrHandler = new AttrHandler(this);
+		this.attrs = this.attrHandler.handle;
+		BeUtils.attach<AttrHandler>(this, this.attrHandler, 'Attr', AttrHandler.methods);
+
+		// position
+		this.positionHandler = new PositionHandler(this);
+		BeUtils.attach<PositionHandler>(this, this.positionHandler, '', PositionHandler.methods);
+
+		// dom and handle
+		this.domHandler = new DomHandler(this);
+		this.dom = this.domHandler.handle;
+		BeUtils.attach<DomHandler>(this, this.domHandler, '', DomHandler.methods);
+
+		// events
+		this.eventHandler = new EventHandler(this);
+		this.events = this.eventHandler.handle;
+		BeUtils.attach<EventHandler>(this, this.eventHandler, '', EventHandler.methods);
+
+		// classes
+		this.classesHandler = new ClassesHandler(this);
+		this.classes = this.classesHandler.handle;
+		BeUtils.attach<ClassesHandler>(this, this.classesHandler, 'Class', ClassesHandler.methods);
+
+		// walk
+		this.walkHandler = new IdaeWalkHandler(this);
+		BeUtils.attach<IdaeWalkHandler>(this, this.walkHandler, '', IdaeWalkHandler.methods);
+
+		console.log('that', this);
 	}
 
-	get text() {
-		return this.isWhat === 'element' ? (this.node as HTMLElement).textContent : null;
+	static elem(node: HTMLElement | HTMLElement[] | string): Be {
+		return new Be(node);
+	}
+
+	static createBe(
+		tagOrHtml: CreateFragment,
+		options?: {
+			is?: string;
+			style?: Record<string, string> | string;
+			attributes?: Record<string, string>;
+			className?: string;
+		}
+	): Be {
+		const test = BeUtils.isHTML(tagOrHtml, { returnHTMLelement: true });
+		const testIsTag = test.isHtml && !tagOrHtml.includes(' ') && tagOrHtml.length < 15;
+		let ret: Be;
+		if (test.isHtml && test.beElem) {
+			ret = test.beElem;
+		} else if (testIsTag) {
+			const el = document.createElement(tagOrHtml);
+			ret = be(el);
+		} else {
+			const el = document.createElement('div');
+			ret = be(el);
+		}
+
+		if (options?.style) ret.setStyle(options.style);
+		if (options?.attributes) ret.setAttr(options.attributes);
+		if (options?.className) ret.addClass(options.className);
+
+		return ret;
 	}
 
 	/**
@@ -959,29 +966,6 @@ export class Be {
 	 * @param value The value for a single CSS property when styles is a property name string.
 	 * @returns The Be instance for method chaining.
 	 */
-	setStyle(styles: Record<string, string> | string, value?: string): this {
-		if (typeof styles === 'string') {
-			// Handle string input
-			const styleEntries = styles.split(';').filter((s) => s.trim() !== '');
-			styleEntries.forEach((entry) => {
-				const [property, propertyValue] = entry.split(':').map((s) => s.trim());
-				if (property && propertyValue) {
-					this.applyStyle(property, propertyValue);
-				}
-			});
-
-			// If value is provided, treat it as a single property setting
-			if (value !== undefined) {
-				this.applyStyle(styles, value);
-			}
-		} else if (typeof styles === 'object') {
-			// Handle object input
-			Object.entries(styles).forEach(([prop, val]) => {
-				this.applyStyle(prop, val);
-			});
-		}
-		return this;
-	}
 
 	fetch<T extends object>(options: {
 		url: string;
@@ -996,53 +980,40 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	each(callback: (el: HTMLElement) => void): void {
-		switch (this.isWhat) {
-			case 'element':
-				callback(this.node as HTMLElement);
-				break;
-			case 'array':
-				(this.node as HTMLElement[]).forEach(callback);
-				break;
-			case 'qy':
-				document.querySelectorAll(this.node as string).forEach((el) => callback(el as HTMLElement));
-				break;
-		}
-	}
-
-	private findWhile(
-		element: Element,
-		direction: 'parent' | 'next' | 'previous' | 'siblings',
-		selector?: string
-	): HTMLElement | null {
-		if (direction === 'parent') {
-			return selector ? element.closest(selector) : element.parentElement;
-		}
-
-		const siblingProperty = direction === 'next' ? 'nextElementSibling' : 'previousElementSibling';
-		let sibling = element[siblingProperty] as HTMLElement | null;
-
-		while (sibling) {
-			if (!selector || sibling.matches(selector)) {
-				return sibling;
+	get eachNode() {
+		return function (callback: (el: HTMLElement) => void): void {
+			switch (this.isWhat) {
+				case 'element':
+					callback(this.node as HTMLElement);
+					break;
+				case 'array':
+					(this.node as HTMLElement[]).forEach(callback);
+					break;
+				case 'qy':
+					document
+						.querySelectorAll(this.node as string)
+						.forEach((el) => callback(el as HTMLElement));
+					break;
 			}
-			sibling = sibling[siblingProperty] as HTMLElement | null;
-		}
-
-		return null;
+		};
 	}
 
-	private applyStyle(property: string, value: string): void {
-		this.each((el) => {
-			el.style.setProperty(property, value);
-		});
+	/** DOM
+	 * Handles various DOM operations on the element(s).
+	 * @param actions An object specifying the DOM actions to perform.
+	 * @returns The Be instance for method chaining.
+	 */
+
+	get html() {
+		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
+	}
+
+	get text() {
+		return this.isWhat === 'element' ? (this.node as HTMLElement).textContent : null;
 	}
 }
 
-export function be(selector: string | HTMLElement | HTMLElement[]): Be {
-	return Be.elem(selector);
-}
+type CreateFragment = `<${string}>${string}</${string}>` | string;
 
-be('#dom')
-	.dom({ remove: 'frefr rezfsfds' })
-	.events({ on: { eventName: 'fine', handler: () => {} } });
+export const be = Be.elem;
+export const createBe = Be.createBe;
