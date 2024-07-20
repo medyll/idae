@@ -9,6 +9,8 @@ import type {
 	HandlerCallBack
 } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './data.js';
+import type { EventHandler } from 'svelte/elements';
+import type { EventHandlerHandle } from './events.js';
 
 class PropHandler {
 	private element: Be;
@@ -303,62 +305,6 @@ class ClassesHandler {
 	 */
 	remove(className: string): Be {
 		this.beElement.eachNode((el) => el.classList.remove(className));
-		return this.beElement;
-	}
-}
-
-type EventHandlerMethods = 'on' | 'off';
-type EventHandlerMethodsProps = {
-	[key in EventHandlerMethods]: (eventName?: string) => CustomEvent | EventListener | null;
-};
-
-interface EventHandlerHandle {
-	on?: { [eventName: string]: CustomEvent | EventListener };
-	off?: { [eventName: string]: CustomEvent | EventListener };
-}
-
-/**
- * Handles event operations for Be elements.
- */
-class EventHandler {
-	private beElement: Be;
-
-	static methods = ['on', 'off'];
-
-	constructor(beElement: Be) {
-		this.beElement = beElement;
-	}
-
-	/**
-	 * Handle event actions (add or remove event listeners).
-	 * @param actions An object specifying the event actions to perform.
-	 * @returns The Be instance for method chaining.
-	 */
-	handle(actions: EventHandlerHandle): Be {
-		if (actions.on) {
-			Object.entries(actions.on).forEach(([eventName, handler]) => {
-				this.on(eventName, handler);
-			});
-		}
-		if (actions.off) {
-			Object.entries(actions.off).forEach(([eventName, handler]) => {
-				this.off(eventName, handler);
-			});
-		}
-		return this.beElement;
-	}
-
-	attach(thatBe: Be, instance: EventHandler, suffix: string = '') {
-		BeUtils.attach<EventHandler>(thatBe, instance, suffix);
-	}
-
-	on(eventName: string, handler: EventListener) {
-		this.beElement.eachNode((el) => el.addEventListener(eventName, handler));
-		return this.beElement;
-	}
-
-	off(eventName: string, handler: EventListener) {
-		this.beElement.eachNode((el) => el.removeEventListener(eventName, handler));
 		return this.beElement;
 	}
 }

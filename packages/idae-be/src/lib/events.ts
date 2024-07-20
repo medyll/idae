@@ -1,0 +1,58 @@
+import { Be } from './be.js';
+import { BeUtils } from './utils.js';
+
+export type EventHandlerMethods = 'on' | 'off';
+export type EventHandlerMethodsProps = {
+	[key in EventHandlerMethods]: (eventName?: string) => CustomEvent | EventListener | null;
+};
+
+export interface EventHandlerHandle {
+	on?: { [eventName: string]: CustomEvent | EventListener };
+	off?: { [eventName: string]: CustomEvent | EventListener };
+}
+
+/**
+ * Handles event operations for Be elements.
+ */
+export class EventHandler {
+	private beElement: Be;
+
+	static methods = ['on', 'off'];
+
+	constructor(beElement: Be) {
+		this.beElement = beElement;
+	}
+
+	/**
+	 * Handle event actions (add or remove event listeners).
+	 * @param actions An object specifying the event actions to perform.
+	 * @returns The Be instance for method chaining.
+	 */
+	handle(actions: EventHandlerHandle): Be {
+		if (actions.on) {
+			Object.entries(actions.on).forEach(([eventName, handler]) => {
+				this.on(eventName, handler);
+			});
+		}
+		if (actions.off) {
+			Object.entries(actions.off).forEach(([eventName, handler]) => {
+				this.off(eventName, handler);
+			});
+		}
+		return this.beElement;
+	}
+
+	attach(thatBe: Be, instance: EventHandler, suffix: string = '') {
+		BeUtils.attach<EventHandler>(thatBe, instance, suffix);
+	}
+
+	on(eventName: string, handler: EventListener) {
+		this.beElement.eachNode((el) => el.addEventListener(eventName, handler));
+		return this.beElement;
+	}
+
+	off(eventName: string, handler: EventListener) {
+		this.beElement.eachNode((el) => el.removeEventListener(eventName, handler));
+		return this.beElement;
+	}
+}
