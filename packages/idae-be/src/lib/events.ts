@@ -14,7 +14,7 @@ export interface EventHandlerHandle {
 /**
  * Handles event operations for Be elements.
  */
-export class EventHandler {
+export class EventsHandler {
 	private beElement: Be;
 
 	static methods = ['on', 'off'];
@@ -42,8 +42,8 @@ export class EventHandler {
 		return this.beElement;
 	}
 
-	attach(thatBe: Be, instance: EventHandler, suffix: string = '') {
-		BeUtils.attach<EventHandler>(thatBe, instance, suffix);
+	attach(thatBe: Be, instance: EventsHandler, suffix: string = '') {
+		BeUtils.attach<EventsHandler>(thatBe, instance, suffix);
 	}
 
 	on(eventName: string, handler: EventListener) {

@@ -9,53 +9,9 @@ import type {
 	HandlerCallBack
 } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './data.js';
-import type { EventHandler } from 'svelte/elements';
-import { EventHandler, type EventHandlerHandle } from './events.js';
+import { EventsHandler, type EventHandlerHandle } from './events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './classes.js';
-
-class PropHandler {
-	private element: Be;
-
-	static methods = ['get', 'set'];
-
-	constructor(element: Be) {
-		this.element = element;
-	}
-
-	attach(thatBe: Be, instance: PropHandler, suffix: string = '') {
-		BeUtils.attach<PropHandler>(thatBe, instance, suffix);
-	}
-
-	get(name: string): any {
-		if (this.element.isWhat !== 'element') return null;
-		return (this.element.node as HTMLElement)[name];
-	}
-
-	set(nameOrObject: string | Record<string, any>, value?: any): Be {
-		this.element.eachNode((el) => {
-			if (typeof nameOrObject === 'string' && value !== undefined) {
-				el[nameOrObject] = value;
-			} else if (typeof nameOrObject === 'object') {
-				Object.entries(nameOrObject).forEach(([name, val]) => {
-					el[name] = val;
-				});
-			}
-		});
-		return this.element;
-	}
-
-	valueOf(): Record<string, any> | null {
-		if (this.element.isWhat !== 'element') return null;
-		const el = this.element.node as HTMLElement;
-		const props = {};
-		for (let prop in el) {
-			if (el.hasOwnProperty(prop)) {
-				props[prop] = el[prop];
-			}
-		}
-		return props;
-	}
-}
+import { PropsHandler } from './props.js';
 
 type DomHandlerHandle = {
 	update?: string | HTMLElement;
@@ -549,7 +505,7 @@ export class Be {
 	setStyle!: StyleHandler['set'];
 	getStyle!: StyleHandler['get'];
 	// properties
-	private propHandler: PropHandler;
+	private propHandler: PropsHandler;
 	// dataSet
 	data: (actions: DataHandlerHandle) => Be;
 	private dataHandler: DataHandler;
@@ -577,9 +533,9 @@ export class Be {
 	clear!: DomHandler['clear'];
 	// events
 	events: (actions: EventHandlerHandle) => Be;
-	private eventHandler: EventHandler;
-	on!: EventHandler['on'];
-	off!: EventHandler['off'];
+	private eventHandler: EventsHandler;
+	on!: EventsHandler['on'];
+	off!: EventsHandler['off'];
 	// classes
 	classes: (actions: ClassHandlerHandler) => Be;
 	private classesHandler: ClassesHandler;
@@ -609,8 +565,8 @@ export class Be {
 		this.styles = this.styleHandler.handle;
 		BeUtils.attach<StyleHandler>(this, this.styleHandler, 'Style', StyleHandler.methods);
 		// properties
-		this.propHandler = new PropHandler(this);
-		BeUtils.attach<PropHandler>(this, this.propHandler, 'Prop', PropHandler.methods);
+		this.propHandler = new PropsHandler(this);
+		BeUtils.attach<PropsHandler>(this, this.propHandler, 'Prop', PropsHandler.methods);
 		// dataSet
 		this.dataHandler = new DataHandler(this);
 		this.data = this.dataHandler.handle;
@@ -630,9 +586,9 @@ export class Be {
 		BeUtils.attach<DomHandler>(this, this.domHandler, '', DomHandler.methods);
 
 		// events
-		this.eventHandler = new EventHandler(this);
+		this.eventHandler = new EventsHandler(this);
 		this.events = this.eventHandler.handle;
-		BeUtils.attach<EventHandler>(this, this.eventHandler, '', EventHandler.methods);
+		BeUtils.attach<EventsHandler>(this, this.eventHandler, '', EventsHandler.methods);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
