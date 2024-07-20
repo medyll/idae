@@ -1,4 +1,5 @@
-import type { Be, HandlerCallBack } from './be.js';
+import { Be } from './be.js';
+import type { HandlerCallBack } from './types.js';
 import { BeUtils } from './utils.js';
 
 enum beStyleMethods {
@@ -16,7 +17,7 @@ export interface BeStylesHandler {
 	getKey?: string;
 }
 
-type BeStylesHandlerMethods = keyof typeof beStyleMethods;
+export type BeStylesHandlerMethods = keyof typeof beStyleMethods;
 
 export class StyleHandler {
 	private beElement: Be;

@@ -1,4 +1,4 @@
-import type { Be } from './be.js';
+import { Be } from './be.js';
 import { BeUtils } from './utils.js';
 
 export class PropsHandler {

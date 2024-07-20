@@ -12,7 +12,7 @@ import { type DataHandlerHandle, DataHandler } from './data.js';
 import { EventsHandler, type EventHandlerHandle } from './events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './classes.js';
 import { PropsHandler } from './props.js';
-import type { DomHandler, DomHandlerHandle } from './dom.js';
+import { DomHandler, type DomHandlerHandle } from './dom.js';
 import { PositionHandler } from './position.js';
 import { WalkHandler } from './walk.js';
 
@@ -83,41 +83,41 @@ export class Be {
 		// styles
 		this.styleHandler = new StyleHandler(this);
 		this.styles = this.styleHandler.handle;
-		BeUtils.attach<StyleHandler>(this, this.styleHandler, 'Style', StyleHandler.methods);
+		this.attach<StyleHandler>(this.styleHandler, 'Style', StyleHandler.methods);
 		// properties
 		this.propHandler = new PropsHandler(this);
-		BeUtils.attach<PropsHandler>(this, this.propHandler, 'Prop', PropsHandler.methods);
+		this.attach<PropsHandler>(this.propHandler, 'Prop', PropsHandler.methods);
 		// dataSet
 		this.dataHandler = new DataHandler(this);
 		this.data = this.dataHandler.handle;
-		BeUtils.attach<DataHandler>(this, this.dataHandler, 'Data', DataHandler.methods);
+		this.attach<DataHandler>(this.dataHandler, 'Data', DataHandler.methods);
 		// attributes
 		this.attrHandler = new AttrHandler(this);
 		this.attrs = this.attrHandler.handle;
-		BeUtils.attach<AttrHandler>(this, this.attrHandler, 'Attr', AttrHandler.methods);
+		this.attach<AttrHandler>(this.attrHandler, 'Attr', AttrHandler.methods);
 
 		// position
 		this.positionHandler = new PositionHandler(this);
-		BeUtils.attach<PositionHandler>(this, this.positionHandler, '', PositionHandler.methods);
+		this.attach<PositionHandler>(this.positionHandler, '', PositionHandler.methods);
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
 		this.dom = this.domHandler.handle;
-		BeUtils.attach<DomHandler>(this, this.domHandler, '', DomHandler.methods);
+		this.attach<DomHandler>(this.domHandler, '', DomHandler.methods);
 
 		// events
 		this.eventHandler = new EventsHandler(this);
 		this.events = this.eventHandler.handle;
-		BeUtils.attach<EventsHandler>(this, this.eventHandler, '', EventsHandler.methods);
+		this.attach<EventsHandler>(this.eventHandler, '', EventsHandler.methods);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
 		this.classes = this.classesHandler.handle;
-		BeUtils.attach<ClassesHandler>(this, this.classesHandler, 'Class', ClassesHandler.methods);
+		this.attach<ClassesHandler>(this.classesHandler, 'Class', ClassesHandler.methods);
 
 		// walk
 		this.walkHandler = new WalkHandler(this);
-		BeUtils.attach<WalkHandler>(this, this.walkHandler, '', WalkHandler.methods);
+		this.attach<WalkHandler>(this.walkHandler, '', WalkHandler.methods);
 
 		console.log('that', this);
 	}
@@ -175,12 +175,6 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	static attach<T extends object>(target: T, obj: T, prefix: string, methods: string[]) {
-		methods.forEach((method) => {
-			target[method] = obj[method];
-		});
-	}
-
 	get eachNode() {
 		return function (callback: (el: HTMLElement) => void): void {
 			switch (this.isWhat) {
@@ -211,6 +205,15 @@ export class Be {
 
 	get text() {
 		return this.isWhat === 'element' ? (this.node as HTMLElement).textContent : null;
+	}
+
+	private attach<T>(from: T, suffix: string = '', methods?: (keyof T)[]) {
+		const fromMethods = methods ?? from.methods ?? [];
+		fromMethods.forEach((method) => {
+			const methodName = method + suffix;
+			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
+			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
+		});
 	}
 }
 

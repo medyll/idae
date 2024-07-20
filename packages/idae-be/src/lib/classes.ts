@@ -1,4 +1,4 @@
-import type { Be } from './be.js';
+import { Be } from './be.js';
 import type { CombineElements } from './types.js';
 import { BeUtils } from './utils.js';
 
