@@ -10,3 +10,6 @@ export type PositionSnapOptions =
 	| 'left'
 	| `${'top' | 'right' | 'bottom' | 'left'} center`
 	| 'center';
+
+export type HandlerCallbackProps = { element: Be; fragment: any; root: Be };
+export type HandlerCallBack = (element: HandlerCallbackProps) => void;

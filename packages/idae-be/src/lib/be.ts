@@ -1,62 +1,15 @@
 import { type AttrHandlerHandle, AttrHandler } from './attrs.js';
 import { StyleHandler, type BeStylesHandler } from './styles.js';
-import type { CombineElements, PositionSnapOptions, IsWhat } from './types.js';
 import { BeUtils } from './utils.js';
+import type {
+	CombineElements,
+	PositionSnapOptions,
+	IsWhat,
+	HandlerCallbackProps,
+	HandlerCallBack
+} from './types.js';
+import { type DataHandlerHandle, DataHandler } from './data.js';
 
-type DataHandlerHandle = {
-	set: (keyOrObject: string | Record<string, string>, value?: string) => Be;
-	delete: (keyOrObject: string | Record<string, string>, value?: string) => Be;
-};
-
-class DataHandler {
-	private beElement: Be;
-	static methods = ['get', 'set', 'delete'];
-
-	constructor(element: Be) {
-		this.beElement = element;
-	}
-
-	attach(thatBe: Be, instance: DataHandler, suffix: string = '') {
-		BeUtils.attach<DataHandler>(thatBe, instance, suffix);
-	}
-
-	get(key: string): string | null {
-		// if space in string
-		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).dataset[key] || null;
-	}
-
-	set(keyOrObject: string | Record<string, string>, value?: string): Be {
-		this.beElement.eachNode((el) => {
-			if (typeof keyOrObject === 'string' && value !== undefined) {
-				el.dataset[keyOrObject] = value;
-			} else if (typeof keyOrObject === 'object') {
-				Object.entries(keyOrObject).forEach(([key, val]) => {
-					el.dataset[key] = val;
-				});
-			}
-		});
-		return this.beElement;
-	}
-
-	get beElem(): Be {
-		return this.beElement;
-	}
-	handle(actions: Partial<DataHandlerHandle>): Be {
-		this.beElement.eachNode((el) => {
-			if (actions.set) {
-			}
-			if (actions.delete) {
-			}
-		});
-		return this.beElement;
-	}
-
-	valueOf(): DOMStringMap | null {
-		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).dataset;
-	}
-}
 class PropHandler {
 	private element: Be;
 
@@ -109,11 +62,8 @@ type DomHandlerHandle = {
 	remove?: boolean;
 	replace?: string | HTMLElement;
 	clear?: boolean;
-	callback?: (element: DonHandlerCallbackProps) => void;
+	callback?: (element: HandlerCallbackProps) => void;
 };
-
-type DonHandlerCallbackProps = { element: Be; fragment: any; root: Be };
-export type DomHandlerHandleCallBack = (element: DonHandlerCallbackProps) => void;
 
 class DomHandler {
 	// update!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
@@ -217,29 +167,29 @@ class DomHandler {
 	}
 
 	handlerFor(command: keyof DomHandlerHandle) {
-		return (content: string | HTMLElement, callback: DomHandlerHandleCallBack) =>
+		return (content: string | HTMLElement, callback: HandlerCallBack) =>
 			this.handle({ [command]: content, callback });
 	}
 
-	update(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+	update(content: DomHandlerHandle['update'], callback?: HandlerCallBack) {
 		this.handle({ update: content, callback });
 	}
-	updateText(content: DomHandlerHandle['updateText'], callback?: DomHandlerHandleCallBack) {
+	updateText(content: DomHandlerHandle['updateText'], callback?: HandlerCallBack) {
 		this.handle({ updateText: content, callback });
 	}
-	append(content: DomHandlerHandle['append'], callback?: DomHandlerHandleCallBack) {
+	append(content: DomHandlerHandle['append'], callback?: HandlerCallBack) {
 		this.handle({ append: content, callback });
 	}
-	prepend(content: DomHandlerHandle['prepend'], callback?: DomHandlerHandleCallBack) {
+	prepend(content: DomHandlerHandle['prepend'], callback?: HandlerCallBack) {
 		this.handle({ prepend: content, callback });
 	}
-	replace(content: DomHandlerHandle['replace'], callback?: DomHandlerHandleCallBack) {
+	replace(content: DomHandlerHandle['replace'], callback?: HandlerCallBack) {
 		this.handle({ replace: content, callback });
 	}
-	remove(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+	remove(content: DomHandlerHandle['update'], callback?: HandlerCallBack) {
 		this.handle({ update: content, callback });
 	}
-	clear(content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) {
+	clear(content: DomHandlerHandle['update'], callback?: HandlerCallBack) {
 		this.handle({ update: content, callback });
 	}
 
@@ -702,7 +652,7 @@ class IdaeWalkHandler implements IdaeWalkHandlerInterface {
 	}
 
 	private methodize(method: WalkerMethods) {
-		return (qy?: string, callback?: DomHandlerHandleCallBack) => {
+		return (qy?: string, callback?: HandlerCallBack) => {
 			let result: HTMLElement | HTMLElement[] | null = null;
 			switch (this.beElement.isWhat) {
 				case 'element':

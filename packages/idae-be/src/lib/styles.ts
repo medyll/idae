@@ -1,4 +1,4 @@
-import type { Be, DomHandlerHandleCallBack } from './be.js';
+import type { Be, HandlerCallBack } from './be.js';
 import { BeUtils } from './utils.js';
 
 enum beStyleMethods {
@@ -126,7 +126,7 @@ export class StyleHandler {
 	}
 
 	private handlerFor(command: BeStylesHandlerMethods) {
-		return (content: string | HTMLElement, callback: DomHandlerHandleCallBack) =>
+		return (content: string | HTMLElement, callback: HandlerCallBack) =>
 			this.handle({ [command]: content, callback });
 	}
 

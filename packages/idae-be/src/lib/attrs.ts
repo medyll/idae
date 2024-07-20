@@ -1,4 +1,5 @@
 import type { Be } from './be.js';
+import { BeUtils } from './utils.js';
 
 export type AttrHandlerHandle = {
 	set: AttrHandler['set'];
