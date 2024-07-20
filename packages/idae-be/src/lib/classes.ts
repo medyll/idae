@@ -71,10 +71,6 @@ export class ClassesHandler {
 		return this.beElement;
 	}
 
-	attach(thatBe: Be, instance: ClassesHandler, suffix: string = '') {
-		BeUtils.attach<ClassesHandler>(thatBe, instance, suffix);
-	}
-
 	add(className: string): Be {
 		this.beElement.eachNode((el) => el.classList.add(className));
 		return this.beElement;

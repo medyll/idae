@@ -42,10 +42,6 @@ export class EventsHandler {
 		return this.beElement;
 	}
 
-	attach(thatBe: Be, instance: EventsHandler, suffix: string = '') {
-		BeUtils.attach<EventsHandler>(thatBe, instance, suffix);
-	}
-
 	on(eventName: string, handler: EventListener) {
 		this.beElement.eachNode((el) => el.addEventListener(eventName, handler));
 		return this.beElement;

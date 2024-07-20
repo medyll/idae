@@ -14,10 +14,6 @@ export class DataHandler {
 		this.beElement = element;
 	}
 
-	attach(thatBe: Be, instance: DataHandler, suffix: string = '') {
-		BeUtils.attach<DataHandler>(thatBe, instance, suffix);
-	}
-
 	get(key: string): string | null {
 		// if space in string
 		if (this.beElement.isWhat !== 'element') return null;

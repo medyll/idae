@@ -23,7 +23,6 @@ export class DomHandler {
 
 	constructor(element: Be) {
 		this.beElement = element;
-		// this.attach(this as unknown as Be);
 	}
 
 	get text(): string | null {
@@ -102,10 +101,6 @@ export class DomHandler {
 		});
 
 		return this.beElement;
-	}
-
-	attach(thatBe: Be, instance: DomHandler, suffix: string = '') {
-		BeUtils.attach<DomHandler>(thatBe, instance, suffix);
 	}
 
 	attachRoot(that: Be) {

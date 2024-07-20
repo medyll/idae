@@ -118,8 +118,6 @@ export class Be {
 		// walk
 		this.walkHandler = new WalkHandler(this);
 		this.attach<WalkHandler>(this.walkHandler, '', WalkHandler.methods);
-
-		console.log('that', this);
 	}
 
 	static elem(node: HTMLElement | HTMLElement[] | string): Be {

@@ -72,10 +72,6 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 		});
 	}
 
-	attach(thatBe: Be, instance: WalkHandler, suffix: string = '') {
-		BeUtils.attach<WalkHandler>(thatBe, instance, suffix);
-	}
-
 	handle(actions: DomHandlerHandle) {
 		console.log('not implemented');
 		return;

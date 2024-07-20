@@ -10,10 +10,6 @@ export class PropsHandler {
 		this.element = element;
 	}
 
-	attach(thatBe: Be, instance: PropsHandler, suffix: string = '') {
-		BeUtils.attach<PropsHandler>(thatBe, instance, suffix);
-	}
-
 	get(name: string): any {
 		if (this.element.isWhat !== 'element') return null;
 		return (this.element.node as HTMLElement)[name];

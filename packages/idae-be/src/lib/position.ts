@@ -10,10 +10,6 @@ export class PositionHandler {
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
-
-	attach(thatBe: Be, instance: PositionHandler, suffix: string = '') {
-		BeUtils.attach<PositionHandler>(thatBe, instance, suffix);
-	}
 	/**
 	 * Clones the position of a source element to this element.
 	 * @param sourceElement The element or selector of the element whose position is to be cloned.

@@ -15,10 +15,6 @@ export class AttrHandler {
 		this.beElement = element;
 	}
 
-	attach(thatBe: Be, instance: AttrHandler, suffix: string = '') {
-		BeUtils.attach<AttrHandler>(thatBe, instance, suffix);
-	}
-
 	get(name?: string): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
 		const el = this.beElement.node as HTMLElement;
