@@ -9,11 +9,10 @@
 
 		const d = document.createElement('div');
 
-		be('.content') 
-			.append('<div>Some content</div>', ({ element }) => {
-				console.log({ element }); 
-				//element.setStyle({color:'pink',border:'1px solid red'});
-			});
+		be('.content').append('<div>Some content</div>', ({ element }) => {
+			console.log({ element });
+			//element.setStyle({color:'pink',border:'1px solid red'});
+		});
 
 		// const a = createBe('<div id="ready">ok</div>');
 
