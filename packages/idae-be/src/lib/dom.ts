@@ -103,12 +103,6 @@ export class DomHandler {
 		return this.beElement;
 	}
 
-	attachRoot(that: Be) {
-		DomHandler.methods.forEach((method) => {
-			that[method] = this.handlerFor(method);
-		});
-	}
-
 	handlerFor(command: keyof DomHandlerHandle) {
 		return (content: string | HTMLElement, callback: HandlerCallBack) =>
 			this.handle({ [command]: content, callback });
@@ -121,7 +115,7 @@ export class DomHandler {
 		this.handle({ updateText: content, callback });
 	}
 	append(content: DomHandlerHandle['append'], callback?: HandlerCallBack) {
-		this.handle({ append: content, callback });
+		return this.handle({ append: content, callback });
 	}
 	prepend(content: DomHandlerHandle['prepend'], callback?: HandlerCallBack) {
 		this.handle({ prepend: content, callback });

@@ -5,22 +5,24 @@
 import { Be } from './be.js';
 import type { DomHandlerHandle } from './dom.js';
 import type { HandlerCallBack } from './types.js';
-import { BeUtils } from './utils.js';
 
-export type WalkerMethods =
-	| 'up'
-	| 'next'
-	| 'previous'
-	| 'siblings'
-	| 'children'
-	| 'closest'
-	| 'lastChild'
-	| 'firstChild'
-	| 'find'
-	| 'findAll';
+export enum walkerMethods {
+	up = 'up',
+	next = 'next',
+	previous = 'previous',
+	siblings = 'siblings',
+	children = 'children',
+	closest = 'closest',
+	lastChild = 'lastChild',
+	firstChild = 'firstChild',
+	find = 'find',
+	findAll = 'findAll'
+}
+
+export type WalkerMethods = keyof typeof walkerMethods;
 
 export type WalkerMethodsProps = {
-	[key in WalkerMethods]: (qy?: string) => Be;
+	[key in WalkerMethods]: (qy?: string, callback?: HandlerCallBack) => Be;
 };
 
 export interface IdaeWalkHandlerInterface {
@@ -37,15 +39,6 @@ export interface IdaeWalkHandlerInterface {
 }
 
 export class WalkHandler implements IdaeWalkHandlerInterface {
-	up!: WalkerMethodsProps['up'];
-	next!: WalkerMethodsProps['next'];
-	previous!: WalkerMethodsProps['previous'];
-	siblings!: WalkerMethodsProps['siblings'];
-	children!: WalkerMethodsProps['children'];
-	closest!: WalkerMethodsProps['closest'];
-	lastChild!: WalkerMethodsProps['lastChild'];
-	firstChild!: WalkerMethodsProps['firstChild'];
-
 	static methods: WalkerMethods[] = [
 		'up',
 		'next',
@@ -68,6 +61,7 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 
 	attachRoot() {
 		WalkHandler.methods.forEach((method) => {
+			if (['find', 'findAll'].includes(method)) return;
 			this[method] = this.methodize(method);
 		});
 	}
@@ -129,6 +123,14 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 					);
 					break;
 			}
+
+			callback?.({
+				root: this.beElement,
+				element: Be.elem(result),
+				fragment: 'result',
+				requested: Be.elem(result)
+			});
+
 			return Be.elem(result);
 		};
 	}
@@ -136,7 +138,7 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 	private findWhile(
 		element: Element,
 		direction: WalkerMethods,
-		selector?: string
+		selector: string | undefined
 	): HTMLElement | null {
 		const dict: Record<string, keyof Element> = {
 			up: 'parentNode',

@@ -1,6 +1,5 @@
 import { Be } from './be.js';
 import type { HandlerCallBack } from './types.js';
-import { BeUtils } from './utils.js';
 
 enum beStyleMethods {
 	set = 'set',
@@ -30,7 +29,7 @@ export class StyleHandler {
 
 	handle(actions: BeStylesHandler) {
 		const { method, args } = this.resolveIndirection(actions);
-		console.log({ actions });
+		console.log(this.beElement, { actions });
 		this.beElement.eachNode((el) => {
 			switch (method) {
 				case 'set':
@@ -89,25 +88,24 @@ export class StyleHandler {
 	 * @returns The Be instance for method chaining.
 	 */
 	set(styles: Record<string, string> | string, value?: string): Be {
-		console.log({ styles, value, that: this });
 		if (typeof styles === 'string') {
 			// Handle string input
 			const styleEntries = styles.split(';').filter((s) => s.trim() !== '');
 			styleEntries.forEach((entry) => {
 				const [property, propertyValue] = entry.split(':').map((s) => s.trim());
 				if (property && propertyValue) {
-					BeUtils.applyStyle(this, property, propertyValue);
+					this.applyStyle(property, propertyValue);
 				}
 			});
 
 			// If value is provided, treat it as a single property setting
 			if (value !== undefined) {
-				BeUtils.applyStyle(this, styles, value);
+				this.applyStyle(styles, value);
 			}
 		} else if (typeof styles === 'object') {
 			// Handle object input
 			Object.entries(styles).forEach(([prop, val]) => {
-				BeUtils.applyStyle(this, prop, val);
+				this.applyStyle(prop, val);
 			});
 		}
 
@@ -117,11 +115,11 @@ export class StyleHandler {
 	get(key: string): string | null {
 		return '';
 	}
-	// delete style
-	delete(key: string): string | null {
+	// unset style
+	unset(key: string): string | null {
 		return '';
 	}
-	// delete style
+	//
 	getKey(key: string): string | null {
 		return '';
 	}

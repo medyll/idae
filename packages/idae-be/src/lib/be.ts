@@ -173,22 +173,18 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	get eachNode() {
-		return function (callback: (el: HTMLElement) => void): void {
-			switch (this.isWhat) {
-				case 'element':
-					callback(this.node as HTMLElement);
-					break;
-				case 'array':
-					(this.node as HTMLElement[]).forEach(callback);
-					break;
-				case 'qy':
-					document
-						.querySelectorAll(this.node as string)
-						.forEach((el) => callback(el as HTMLElement));
-					break;
-			}
-		};
+	eachNode(callback: (el: HTMLElement) => void): void {
+		switch (this.isWhat) {
+			case 'element':
+				callback(this.node as HTMLElement);
+				break;
+			case 'array':
+				(this.node as HTMLElement[]).forEach(callback);
+				break;
+			case 'qy':
+				document.querySelectorAll(this.node as string).forEach((el) => callback(el as HTMLElement));
+				break;
+		}
 	}
 
 	/** DOM

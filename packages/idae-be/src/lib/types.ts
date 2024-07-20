@@ -15,3 +15,5 @@ export type PositionSnapOptions =
 
 export type HandlerCallbackProps = { element: Be; fragment: any; root: Be; requested?: any };
 export type HandlerCallBack = (element: HandlerCallbackProps) => void;
+
+export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;

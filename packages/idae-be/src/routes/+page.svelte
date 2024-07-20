@@ -9,14 +9,17 @@
 
 		const d = document.createElement('div');
 
-		be('.content').append('<div>Some content</div>', ({ element }) => {
-			console.log({ element });
-			//element.setStyle({color:'pink',border:'1px solid red'});
-		});
-
-		// const a = createBe('<div id="ready">ok</div>');
-
-		console.log(be('.content'));
+		be('.content')
+			.append('<div>Some content</div>', ({ element }) => {
+				element.setStyle({ color: 'pink', border: '1px solid red' });
+			})
+			.up('#ROOT', ({ element }) => {
+				element.setStyle({ fontSize: '20px!important', border: '10px solid red' });
+				element.append('<div>up</div>');
+				console.log({ element });
+			})
+ 
+		 console.log(be('.content'));
 	});
 </script>
 
