@@ -5,7 +5,7 @@ interface isHTMLReturn {
 	tag: string;
 	attributes: { [key: string]: string };
 	styles: { [key: string]: string };
-	node?: HTMLElement;
+	node: HTMLElement;
 	beElem?: Be;
 	content?: string;
 }
@@ -27,6 +27,7 @@ export class BeUtils {
 			beElem: undefined
 		};
 
+		if (str instanceof HTMLElement) result.node = str;
 		if (typeof str !== 'string') return result;
 		const trimmed = str.trim();
 
@@ -80,6 +81,7 @@ export class BeUtils {
 		if (options.transformTextToHtml && !result.isHtml) {
 			const newElement: HTMLElement = document.createElement('span');
 			newElement.innerHTML = str;
+			result.node = newElement;
 		}
 
 		return result;
@@ -126,11 +128,37 @@ export class BeUtils {
 		});
 	}
 
-	static attach<T>(idaeBe: Be, from: T, suffix: string = '', methods?: (keyof T)[]) {
-		const fromMethods = methods ?? from.methods ?? [];
-		fromMethods.forEach((method) => {
-			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
-			if (from[method]) idaeBe[method + suffix] = from[method]?.bind(from);
-		});
+	static applyCallback(el: HTMLElement | HTMLCollection, callback: (el: HTMLElement) => void) {
+		if (el instanceof HTMLCollection) {
+			return Array.from(el).forEach((ss) => {
+				BeUtils.applyCallback(ss, callback);
+			});
+		} else {
+			return callback(el);
+		}
 	}
+
+	static resolveIndirection<T = CommonHandler>(
+		classHandler: CommonHandler,
+		actions: keyof T
+	): {
+		method: keyof T;
+		props: any;
+	} {
+		let method: keyof T;
+		let props;
+
+		Object.keys(actions).forEach((action) => {
+			if (classHandler.methods.includes(action)) {
+				method = action;
+				props = actions[action as keyof T];
+			}
+		});
+
+		return { method, props };
+	}
+}
+
+export interface CommonHandler<T> {
+	methods: string[] | keyof T;
 }

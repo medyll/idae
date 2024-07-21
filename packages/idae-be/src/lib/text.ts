@@ -2,28 +2,26 @@ import { Be, be } from './be.js';
 import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
 import { BeUtils } from './utils.js';
 
-export type DomHandlerHandle = {
+export type TextHandlerHandle = {
 	update?: string | HTMLElement;
-	updateText?: string | HTMLElement;
 	append?: string | HTMLElement;
 	prepend?: string | HTMLElement;
 	remove?: boolean;
 	replace?: string | HTMLElement;
-	wrap?: string;
+	wrap?: string | HTMLElement;
 	normalize?: boolean;
 	clear?: boolean;
 	callback?: (element: HandlerCallbackProps) => void;
 };
 
-export class DomHandler {
-	// update!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
-	// updateText!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
+export class TextHandler {
+	// update!: (content: TextHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
+	// updateText!: (content: TextHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
 
 	private beElement: Be;
 
 	static methods = [
 		'update',
-		'updateText',
 		'append',
 		'prepend',
 		'remove',
@@ -53,96 +51,73 @@ export class DomHandler {
 	 * @param actions.clear - If true, clears the content of the element(s).
 	 * @returns The Be instance for method chaining.
 	 */
-	handle(actions: DomHandlerHandle): Be {
+	handle(actions: TextHandlerHandle): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
-			const { method, props } = BeUtils.resolveIndirection<DomHandler>(DomHandler, actions);
-			const htmlInfo = BeUtils.isHTML(props, { returnHTMLelement: true });
+			const { method, props } = BeUtils.resolveIndirection<TextHandler>(TextHandler, actions);
 
 			switch (method) {
 				case 'update':
-					el.innerHTML = props;
-					break;
-				case 'updateText':
 					el.innerText = props;
 					break;
-				case 'append':
-					el.appendChild(htmlInfo.node);
+				case 'append': // append to text content
+					el.insertAdjacentHTML('beforebegin', props);
 					break;
 				case 'prepend':
-					el.insertBefore(htmlInfo.node, el.firstChild);
+					el.insertAdjacentHTML('afterbegin', props);
 					break;
 				case 'replace':
-					el.parentNode?.replaceChild(htmlInfo.node, el);
+					el.outerHTML = props;
 					break;
 				case 'remove':
 					el.remove();
 					break;
 				case 'clear':
-					el.innerHTML = '';
+					el.outerHTML = '';
 					break;
 				case 'normalize':
-					el.normalize();
-					break;
-				case 'wrap':
 					el.normalize();
 					break;
 			}
 
 			actions?.callback?.({
-				fragment: actions.append,
+				fragment: props,
 				be: be(el),
 				root: this.beElement
 			});
-
-			/* if (actions.prepend !== undefined) {
-				if (typeof actions.prepend === 'string') {
-					const htmlInfo = BeUtils.isHTML(actions.prepend, { returnHTMLelement: true });
-					el.insertAdjacentHTML('afterbegin', actions.prepend);
-				} else {
-					el.insertBefore(actions.prepend, el.firstChild);
-				} 
-			} */
-			/* if (actions.replace !== undefined) {
-				if (typeof actions.replace === 'string') {
-					el.outerHTML = actions.replace;
-				} else {
-					el.parentNode?.replaceChild(actions.replace, el);
-				}
-			} */
 		});
 
 		return this.beElement;
 	}
 
-	update(content: DomHandlerHandle['update'], callback?: HandlerCallBack) {
+	update(content: TextHandlerHandle['update'], callback?: HandlerCallBack) {
 		this.handle({ update: content, callback });
 	}
-	updateText(content: DomHandlerHandle['updateText'], callback?: HandlerCallBack) {
+	updateText(content: TextHandlerHandle['updateText'], callback?: HandlerCallBack) {
 		this.handle({ updateText: content, callback });
 	}
-	append(content: DomHandlerHandle['append'], callback?: HandlerCallBack) {
+	append(content: TextHandlerHandle['append'], callback?: HandlerCallBack) {
 		return this.handle({ append: content, callback });
 	}
-	prepend(content: DomHandlerHandle['prepend'], callback?: HandlerCallBack) {
+	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBack) {
 		this.handle({ prepend: content, callback });
 	}
-	replace(content: DomHandlerHandle['replace'], callback?: HandlerCallBack) {
+	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBack) {
 		this.handle({ replace: content, callback });
 	}
-	remove(content: DomHandlerHandle['remove'], callback?: HandlerCallBack) {
+	remove(content: TextHandlerHandle['remove'], callback?: HandlerCallBack) {
 		this.handle({ remove: content, callback });
 	}
-	clear(content: DomHandlerHandle['clear'], callback?: HandlerCallBack) {
+	clear(content: TextHandlerHandle['clear'], callback?: HandlerCallBack) {
 		this.handle({ clear: content, callback });
 	}
-	normalize(content: DomHandlerHandle['normalize'], callback?: HandlerCallBack) {
+	normalize(content: TextHandlerHandle['normalize'], callback?: HandlerCallBack) {
 		this.handle({ normalize: content, callback });
 	}
-	wrap(content: DomHandlerHandle['wrap'], callback?: HandlerCallBack) {
+	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBack) {
 		this.handle({ wrap: content, callback });
 	}
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).innerHTML;
+		return (this.beElement.node as HTMLElement).innerText;
 	}
 }

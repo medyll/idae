@@ -9,6 +9,7 @@ export type EventHandlerMethodsProps = {
 export interface EventHandlerHandle {
 	on?: { [eventName: string]: CustomEvent | EventListener };
 	off?: { [eventName: string]: CustomEvent | EventListener };
+	fire?: { [eventName: string]: CustomEvent | EventListener };
 }
 
 /**
@@ -17,7 +18,7 @@ export interface EventHandlerHandle {
 export class EventsHandler {
 	private beElement: Be;
 
-	static methods = ['on', 'off'];
+	static methods = ['on', 'off', 'fire'];
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;

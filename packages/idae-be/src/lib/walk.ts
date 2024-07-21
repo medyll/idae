@@ -46,8 +46,8 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 		'siblings',
 		'children',
 		'closest',
-		'lastChild',
 		'firstChild',
+		'lastChild',
 		'find',
 		'findAll'
 	];
@@ -71,7 +71,7 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 		return;
 	}
 
-	find(qy: string): Be | null {
+	find(qy: string, callback?: HandlerCallBack): Be | null {
 		switch (this.isWhat) {
 			case 'element':
 				return (this.node as HTMLElement).querySelector(qy);
@@ -107,31 +107,36 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 
 	private methodize(method: WalkerMethods) {
 		return (qy?: string, callback?: HandlerCallBack) => {
-			let result: HTMLElement | HTMLElement[] | null = null;
-			switch (this.beElement.isWhat) {
-				case 'element':
-					result = this.findWhile(this.beElement.node as HTMLElement, method, qy);
-					break;
-				case 'array':
-					result = (this.beElement.node as HTMLElement[]).map((node) =>
-						this.findWhile(node, method, qy)
-					);
-					break;
-				case 'qy':
-					result = Array.from(document.querySelectorAll(this.beElement.node as string)).map(
-						(node) => this.findWhile(node, method, qy)
-					);
-					break;
+			try {
+				let result: HTMLElement | HTMLElement[] | null = null;
+				switch (this.beElement.isWhat) {
+					case 'element':
+						result = this.findWhile(this.beElement.node as HTMLElement, method, qy);
+						break;
+					case 'array':
+						result = (this.beElement.node as HTMLElement[]).map((node) =>
+							this.findWhile(node, method, qy)
+						);
+						break;
+					case 'qy':
+						result = Array.from(document.querySelectorAll(this.beElement.node as string)).map(
+							(node) => this.findWhile(node, method, qy)
+						);
+						break;
+				}
+
+				callback?.({
+					root: this.beElement,
+					be: Be.elem(result),
+					fragment: 'result',
+					requested: Be.elem(result)
+				});
+			} catch (e) {
+				console.log(e);
+				console.log(method);
 			}
 
-			callback?.({
-				root: this.beElement,
-				element: Be.elem(result),
-				fragment: 'result',
-				requested: Be.elem(result)
-			});
-
-			return Be.elem(result);
+			return this.beElement;
 		};
 	}
 
@@ -146,14 +151,21 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 			next: 'nextElementSibling',
 			previous: 'previousElementSibling',
 			siblings: 'nextElementSibling',
-			children: 'children'
+			children: 'children',
+			firstChild: 'firstElementChild',
+			lastChild: 'lastElementChild',
+			closest: 'closest'
 		};
 
 		const property = dict[direction] ?? direction;
 		let sibling = element[property] as HTMLElement | null;
 
+		if (property === 'closest') {
+			return element.closest(selector ?? '*');
+		}
+
 		while (sibling) {
-			if (!selector || sibling.matches(selector)) {
+			if (!selector || sibling?.matches(selector)) {
 				return sibling;
 			}
 			sibling = sibling[property] as HTMLElement | null;

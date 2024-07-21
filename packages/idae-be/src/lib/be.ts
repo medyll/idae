@@ -15,6 +15,8 @@ import { PropsHandler } from './props.js';
 import { DomHandler, type DomHandlerHandle } from './dom.js';
 import { PositionHandler } from './position.js';
 import { WalkHandler } from './walk.js';
+import { TextHandler, type TextHandlerHandle } from './text.js';
+import { TimersHandler } from './timers.js';
 
 export class Be {
 	node: HTMLElement | HTMLElement[] | string;
@@ -51,6 +53,9 @@ export class Be {
 	remove!: DomHandler['remove'];
 	replace!: DomHandler['replace'];
 	clear!: DomHandler['clear'];
+	// text
+	text!: (actions: TextHandlerHandle) => Be;
+	private textHandler: TextHandler;
 	// events
 	events: (actions: EventHandlerHandle) => Be;
 	private eventHandler: EventsHandler;
@@ -68,17 +73,22 @@ export class Be {
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
 	previous!: WalkHandler['previous'];
-	siblings!: WalkHandler['siblings'];
+	siblings!: WalkHandler['sibling'];
 	children!: WalkHandler['children'];
 	closest!: WalkHandler['closest'];
 	lastChild!: WalkHandler['lastChild'];
 	firstChild!: WalkHandler['firstChild'];
 	find!: WalkHandler['find'];
 	findAll!: WalkHandler['findAll'];
-
-	private constructor(node: HTMLElement | HTMLElement[] | string) {
-		this.node = node;
-		this.isWhat = typeof node === 'string' ? 'qy' : Array.isArray(node) ? 'array' : 'element';
+	// timer
+	private timerHandler: TimersHandler;
+	timeout!: TimersHandler['timeout'];
+	interval!: TimersHandler['interval'];
+	clearTimeout!: TimersHandler['clearTimeout'];
+	clearInterval!: TimersHandler['clearInterval'];
+	private constructor(input: HTMLElement | HTMLElement[] | string) {
+		this.node = input;
+		this.isWhat = typeof input === 'string' ? 'qy' : Array.isArray(input) ? 'array' : 'element';
 
 		// styles
 		this.styleHandler = new StyleHandler(this);
@@ -100,6 +110,11 @@ export class Be {
 		this.positionHandler = new PositionHandler(this);
 		this.attach<PositionHandler>(this.positionHandler, '', PositionHandler.methods);
 
+		// text
+		this.textHandler = new TextHandler(this);
+		this.dom = this.textHandler.handle;
+		this.attach<TextHandler>(this.textHandler, '', TextHandler.methods);
+
 		// dom and handle
 		this.domHandler = new DomHandler(this);
 		this.dom = this.domHandler.handle;
@@ -118,6 +133,10 @@ export class Be {
 		// walk
 		this.walkHandler = new WalkHandler(this);
 		this.attach<WalkHandler>(this.walkHandler, '', WalkHandler.methods);
+
+		// timers
+		this.timerHandler = new TimersHandler(this);
+		this.attach<TimersHandler>(this.timerHandler, '', TimersHandler.methods);
 	}
 
 	static elem(node: HTMLElement | HTMLElement[] | string): Be {
@@ -176,10 +195,12 @@ export class Be {
 	eachNode(callback: (el: HTMLElement) => void): void {
 		switch (this.isWhat) {
 			case 'element':
-				callback(this.node as HTMLElement);
+				BeUtils.applyCallback(this.node as HTMLElement, callback);
 				break;
 			case 'array':
-				(this.node as HTMLElement[]).forEach(callback);
+				(this.node as HTMLElement[]).forEach((lo) => {
+					BeUtils.applyCallback(lo, callback);
+				});
 				break;
 			case 'qy':
 				document.querySelectorAll(this.node as string).forEach((el) => callback(el as HTMLElement));
@@ -197,15 +218,15 @@ export class Be {
 		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
 	}
 
-	get text() {
+	/* get text() {
 		return this.isWhat === 'element' ? (this.node as HTMLElement).textContent : null;
-	}
+	} */
 
 	private attach<T>(from: T, suffix: string = '', methods?: (keyof T)[]) {
 		const fromMethods = methods ?? from.methods ?? [];
 		fromMethods.forEach((method) => {
 			const methodName = method + suffix;
-			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
+			// if (!from[method]) console.error(`Method ${method} not found in ${from}`);
 			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
 		});
 	}
@@ -214,4 +235,5 @@ export class Be {
 type CreateFragment = `<${string}>${string}</${string}>` | string;
 
 export const be = Be.elem;
+export const beId = (id) => Be.elem(document.getElementById(id));
 export const createBe = Be.createBe;

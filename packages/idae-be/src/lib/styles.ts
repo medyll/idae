@@ -29,7 +29,7 @@ export class StyleHandler {
 
 	handle(actions: BeStylesHandler) {
 		const { method, args } = this.resolveIndirection(actions);
-		console.log(this.beElement, { actions });
+
 		this.beElement.eachNode((el) => {
 			switch (method) {
 				case 'set':
