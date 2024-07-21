@@ -21,6 +21,7 @@ yarn add @medyll/idae-be
 
 ## Key Features
 
+- Part of the unchain global movement
 - Chainable methods for fluid DOM manipulation
 - Support for single elements, arrays of elements, and query selectors
 - Handlers for attributes, DOM manipulation, properties, and data attributes
