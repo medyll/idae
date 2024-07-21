@@ -85,7 +85,10 @@ export class Be {
 	interval!: TimersHandler['interval'];
 	clearTimeout!: TimersHandler['clearTimeout'];
 	clearInterval!: TimersHandler['clearInterval'];
-	private constructor(input: HTMLElement | HTMLElement[] | string) {
+	private constructor(input: HTMLElement | HTMLElement[] | Be | string) {
+		if (input instanceof Be) {
+			return input;
+		}
 		this.node = input;
 		this.isWhat = typeof input === 'string' ? 'qy' : Array.isArray(input) ? 'array' : 'element';
 
