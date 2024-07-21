@@ -16,10 +16,11 @@ export class Be {
 	node: HTMLElement | HTMLElement[] | string;
 	isWhat: IsWhat;
 	// styles
-	private styleHandler: StylesHandler;
 	styles: (actions: BeStylesHandler) => Be;
+	private styleHandler: StylesHandler;
 	setStyle!: StylesHandler['set'];
 	getStyle!: StylesHandler['get'];
+	unsetStyle!: StylesHandler['unset'];
 	// properties
 	private propHandler: PropsHandler;
 	// dataSet
@@ -27,11 +28,14 @@ export class Be {
 	private dataHandler: DataHandler;
 	setData!: DataHandler['set'];
 	getData!: DataHandler['get'];
+	deleteData!: DataHandler['delete'];
+	getKey!: DataHandler['getKey'];
 	// attributes
 	attrs: (actions: Partial<AttrHandlerHandle>) => Be;
 	private attrHandler: AttrHandler;
 	setAttr!: AttrHandler['set'];
 	getAttr!: AttrHandler['get'];
+	deleteAttr!: AttrHandler['delete'];
 	// position
 	private positionHandler: PositionHandler;
 	clonePosition!: PositionHandler['clonePosition'];
@@ -55,13 +59,14 @@ export class Be {
 	private eventHandler: EventsHandler;
 	on!: EventsHandler['on'];
 	off!: EventsHandler['off'];
+	fire!: EventsHandler['fire'];
 	// classes
 	classes: (actions: ClassHandlerHandler) => Be;
 	private classesHandler: ClassesHandler;
 	addClass!: ClassesHandler['add'];
+	removeClass!: ClassesHandler['remove'];
 	toggleClass!: ClassesHandler['toggle'];
 	replaceClass!: ClassesHandler['replace'];
-	removeClass!: ClassesHandler['remove'];
 	// walk
 	private walkHandler: WalkHandler;
 	up!: WalkHandler['up'];
@@ -220,7 +225,7 @@ export class Be {
 		const fromMethods = methods ?? from.methods ?? [];
 		fromMethods.forEach((method) => {
 			const methodName = method + suffix;
-			// if (!from[method]) console.error(`Method ${method} not found in ${from}`);
+			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
 			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
 		});
 	}
@@ -229,5 +234,5 @@ export class Be {
 type CreateFragment = `<${string}>${string}</${string}>` | string;
 
 export const be = Be.elem;
-export const beId = (id) => Be.elem(document.getElementById(id));
+export const beId = (id: string) => Be.elem(`#${id}`);
 export const createBe = Be.createBe;

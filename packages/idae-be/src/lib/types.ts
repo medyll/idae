@@ -27,4 +27,5 @@ export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : nev
 export interface CommonHandler<T> {
 	handle: (actions: any) => Be;
 	methods: string[] | keyof T;
+	valueOf: () => T;
 }
