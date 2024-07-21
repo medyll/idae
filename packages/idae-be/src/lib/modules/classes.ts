@@ -1,5 +1,5 @@
-import { Be } from './be.js';
-import type { CombineElements, CommonHandler } from './types.js';
+import { Be } from '../be.js';
+import type { CombineElements, CommonHandler } from '../types.js';
 
 enum classesMethods {
 	add = 'add',

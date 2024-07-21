@@ -1,5 +1,5 @@
-import { Be } from './be.js';
-import type { CommonHandler, HandlerCallBack } from './types.js';
+import { Be } from '../be.js';
+import type { CommonHandler, HandlerCallBack } from '../types.js';
 
 enum beStyleMethods {
 	set = 'set',

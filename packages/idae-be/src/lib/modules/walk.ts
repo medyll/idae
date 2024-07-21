@@ -2,9 +2,9 @@
  * Handles positioning operations for Be elements.
  */
 
-import { Be } from './be.js';
+import { Be } from '../be.js';
 import type { DomHandlerHandle } from './dom.js';
-import type { CommonHandler, HandlerCallBack } from './types.js';
+import type { CommonHandler, HandlerCallBack } from '../types.js';
 
 export enum walkerMethods {
 	up = 'up',

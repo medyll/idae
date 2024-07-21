@@ -1,5 +1,5 @@
-import { Be } from './be.js';
-import type { CommonHandler } from './types.js';
+import { Be } from '../be.js';
+import type { CommonHandler } from '../types.js';
 
 enum dataMethods {
 	set = 'set',

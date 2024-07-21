@@ -1,22 +1,16 @@
-import { type AttrHandlerHandle, AttrHandler } from './attrs.js';
-import { StylesHandler, type BeStylesHandler } from './styles.js';
+import { type AttrHandlerHandle, AttrHandler } from './modules/attrs.js';
+import { StylesHandler, type BeStylesHandler } from './modules/styles.js';
 import { BeUtils } from './utils.js';
-import type {
-	CombineElements,
-	PositionSnapOptions,
-	IsWhat,
-	HandlerCallbackProps,
-	HandlerCallBack
-} from './types.js';
-import { type DataHandlerHandle, DataHandler } from './data.js';
-import { EventsHandler, type EventHandlerHandle } from './events.js';
-import { type ClassHandlerHandler, ClassesHandler } from './classes.js';
-import { PropsHandler } from './props.js';
-import { DomHandler, type DomHandlerHandle } from './dom.js';
-import { PositionHandler } from './position.js';
-import { WalkHandler } from './walk.js';
-import { TextHandler, type TextHandlerHandle } from './text.js';
-import { TimersHandler } from './timers.js';
+import type { IsWhat } from './types.js';
+import { type DataHandlerHandle, DataHandler } from './modules/data.js';
+import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
+import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
+import { PropsHandler } from './modules/props.js';
+import { DomHandler, type DomHandlerHandle } from './modules/dom.js';
+import { PositionHandler } from './modules/position.js';
+import { WalkHandler } from './modules/walk.js';
+import { TextHandler, type TextHandlerHandle } from './modules/text.js';
+import { TimersHandler } from './modules/timers.js';
 
 export class Be {
 	node: HTMLElement | HTMLElement[] | string;

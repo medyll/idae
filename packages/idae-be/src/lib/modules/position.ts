@@ -1,6 +1,6 @@
-import { Be } from './be.js';
-import type { CommonHandler, PositionSnapOptions } from './types.js';
-import { BeUtils } from './utils.js';
+import { Be } from '../be.js';
+import type { CommonHandler, PositionSnapOptions } from '../types.js';
+import { BeUtils } from '../utils.js';
 
 enum positionMethods {
 	clonePosition = 'clonePosition',

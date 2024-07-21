@@ -1,6 +1,6 @@
-import { Be, be } from './be.js';
-import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from './types.js';
-import { BeUtils } from './utils.js';
+import { Be, be } from '../be.js';
+import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from '../types.js';
+import { BeUtils } from '../utils.js';
 
 enum timersMethods {
 	timeout = 'timeout',
