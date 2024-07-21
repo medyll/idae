@@ -1,6 +1,12 @@
 import { Be } from './be.js';
 import type { CombineElements } from './types.js';
-import { BeUtils } from './utils.js';
+
+enum classesMethods {
+	add = 'add',
+	remove = 'remove',
+	toggle = 'toggle',
+	replace = 'replace'
+}
 
 export type ClassHandlerHandler = {
 	add?: CombineElements<string> | string[];
@@ -15,7 +21,7 @@ export type ClassHandlerHandler = {
 export class ClassesHandler {
 	private beElement: Be;
 
-	static methods = ['add', 'remove', 'toggle', 'replace'];
+	static methods = Object.values(classesMethods);
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;

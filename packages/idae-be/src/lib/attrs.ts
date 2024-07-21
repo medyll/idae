@@ -1,5 +1,10 @@
 import { Be } from './be.js';
-import { BeUtils } from './utils.js';
+
+enum attrMethods {
+	set = 'set',
+	get = 'get',
+	delete = 'delete'
+}
 
 export type AttrHandlerHandle = {
 	set: AttrHandler['set'];
@@ -9,7 +14,7 @@ export type AttrHandlerHandle = {
 export class AttrHandler {
 	private beElement: Be;
 
-	static methods = ['get', 'set', 'delete'];
+	static methods = Object.values(attrMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;

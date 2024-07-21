@@ -1,5 +1,10 @@
 import { Be } from './be.js';
-import { BeUtils } from './utils.js';
+
+enum eventsMethods {
+	on = 'on',
+	off = 'off',
+	fire = 'fire'
+}
 
 export type EventHandlerMethods = 'on' | 'off';
 export type EventHandlerMethodsProps = {
@@ -18,7 +23,7 @@ export interface EventHandlerHandle {
 export class EventsHandler {
 	private beElement: Be;
 
-	static methods = ['on', 'off', 'fire'];
+	static methods = Object.values(eventsMethods);
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;
@@ -50,6 +55,11 @@ export class EventsHandler {
 
 	off(eventName: string, handler: EventListener) {
 		this.beElement.eachNode((el) => el.removeEventListener(eventName, handler));
+		return this.beElement;
+	}
+
+	fire(eventName: string, data: unknown) {
+		this.beElement.eachNode((el) => el.dispatchEvent(new CustomEvent(eventName, { detail: data })));
 		return this.beElement;
 	}
 }

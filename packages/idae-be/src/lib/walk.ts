@@ -39,18 +39,16 @@ export interface IdaeWalkHandlerInterface {
 }
 
 export class WalkHandler implements IdaeWalkHandlerInterface {
-	static methods: WalkerMethods[] = [
-		'up',
-		'next',
-		'previous',
-		'siblings',
-		'children',
-		'closest',
-		'firstChild',
-		'lastChild',
-		'find',
-		'findAll'
-	];
+	up!: WalkerMethodsProps['up'];
+	next!: WalkerMethodsProps['next'];
+	previous!: WalkerMethodsProps['previous'];
+	siblings!: WalkerMethodsProps['siblings'];
+	children!: WalkerMethodsProps['children'];
+	closest!: WalkerMethodsProps['closest'];
+	lastChild!: WalkerMethodsProps['lastChild'];
+	firstChild!: WalkerMethodsProps['firstChild'];
+
+	static methods = Object.values(walkerMethods);
 
 	private beElement: Be;
 
@@ -67,7 +65,7 @@ export class WalkHandler implements IdaeWalkHandlerInterface {
 	}
 
 	handle(actions: DomHandlerHandle) {
-		console.log('not implemented');
+		console.log('not implemented', actions);
 		return;
 	}
 

@@ -2,10 +2,15 @@ import { Be } from './be.js';
 import type { PositionSnapOptions } from './types.js';
 import { BeUtils } from './utils.js';
 
+enum positionMethods {
+	clonePosition = 'clonePosition',
+	overlapPosition = 'overlapPosition',
+	snapTo = 'snapTo'
+}
 export class PositionHandler {
 	private beElement: Be;
 
-	static methods = ['clonePosition', 'overlapPosition', 'snapTo'];
+	static methods = Object.values(positionMethods);
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;

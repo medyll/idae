@@ -124,6 +124,10 @@ export class StyleHandler {
 		return '';
 	}
 
+	delete(key: string): string | null {
+		return '';
+	}
+
 	private handlerFor(command: BeStylesHandlerMethods) {
 		return (content: string | HTMLElement, callback: HandlerCallBack) =>
 			this.handle({ [command]: content, callback });

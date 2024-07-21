@@ -2,6 +2,12 @@ import { Be, be } from './be.js';
 import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
 import { BeUtils } from './utils.js';
 
+enum timersMethods {
+	timeout = 'timeout',
+	interval = 'interval',
+	clearTimeout = 'clearTimeout',
+	clearInterval = 'clearInterval'
+}
 type TimerHandlerHandle = {
 	timeout?: number;
 	clearTimeout?: boolean;
@@ -16,7 +22,7 @@ export class TimersHandler {
 	_timer: NodeJS.Timeout | null = null;
 	_interval: NodeJS.Timeout | null = null;
 
-	static methods = ['timeout', 'interval', 'clearTimeout', 'clearInterval'];
+	static methods = Object.values(timersMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;

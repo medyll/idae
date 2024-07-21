@@ -1,5 +1,11 @@
 import { Be } from './be.js';
-import { BeUtils } from './utils.js';
+
+enum dataMethods {
+	set = 'set',
+	get = 'get',
+	delete = 'delete',
+	getKey = 'getKey'
+}
 
 export type DataHandlerHandle = {
 	set: (keyOrObject: string | Record<string, string>, value?: string) => Be;
@@ -8,7 +14,7 @@ export type DataHandlerHandle = {
 
 export class DataHandler {
 	private beElement: Be;
-	static methods = ['get', 'set', 'delete'];
+	static methods = Object.values(dataMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;
@@ -33,9 +39,17 @@ export class DataHandler {
 		return this.beElement;
 	}
 
-	get beElem(): Be {
+	delete(keyOrObject: string | Record<string, string>, value?: string): Be {
+		console.log('not implemented');
 		return this.beElement;
 	}
+
+	getKey(key: string): string | null {
+		// if space in string
+		if (this.beElement.isWhat !== 'element') return null;
+		return (this.beElement.node as HTMLElement).dataset[key] || null;
+	}
+
 	handle(actions: Partial<DataHandlerHandle>): Be {
 		this.beElement.eachNode((el) => {
 			if (actions.set) {

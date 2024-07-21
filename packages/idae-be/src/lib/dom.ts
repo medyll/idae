@@ -2,6 +2,17 @@ import { Be, be } from './be.js';
 import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
 import { BeUtils } from './utils.js';
 
+enum domMethods {
+	update = 'update',
+	updateText = 'updateText',
+	append = 'append',
+	prepend = 'prepend',
+	remove = 'remove',
+	wrap = 'wrap',
+	normalize = 'normalize',
+	replace = 'replace',
+	clear = 'clear'
+}
 export type DomHandlerHandle = {
 	update?: string | HTMLElement;
 	updateText?: string | HTMLElement;
@@ -21,17 +32,7 @@ export class DomHandler {
 
 	private beElement: Be;
 
-	static methods = [
-		'update',
-		'updateText',
-		'append',
-		'prepend',
-		'remove',
-		'wrap',
-		'normalize',
-		'replace',
-		'clear'
-	];
+	static methods = Object.values(domMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;

@@ -1,10 +1,16 @@
 import { Be } from './be.js';
-import { BeUtils } from './utils.js';
+
+enum PropsMethods {
+	set = 'set',
+	get = 'get',
+	delete = 'delete',
+	getKey = 'getKey'
+}
 
 export class PropsHandler {
 	private element: Be;
 
-	static methods = ['get', 'set'];
+	static methods = Object.values(PropsMethods);
 
 	constructor(element: Be) {
 		this.element = element;
@@ -26,6 +32,12 @@ export class PropsHandler {
 			}
 		});
 		return this.element;
+	}
+
+	delete(name: string): Be {}
+
+	getKey(key: string): string | null {
+		return null;
 	}
 
 	valueOf(): Record<string, any> | null {

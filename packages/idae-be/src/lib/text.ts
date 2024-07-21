@@ -2,6 +2,16 @@ import { Be, be } from './be.js';
 import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
 import { BeUtils } from './utils.js';
 
+enum textMethods {
+	update = 'update',
+	append = 'append',
+	prepend = 'prepend',
+	remove = 'remove',
+	wrap = 'wrap',
+	normalize = 'normalize',
+	replace = 'replace',
+	clear = 'clear'
+}
 export type TextHandlerHandle = {
 	update?: string | HTMLElement;
 	append?: string | HTMLElement;
@@ -15,21 +25,9 @@ export type TextHandlerHandle = {
 };
 
 export class TextHandler {
-	// update!: (content: TextHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
-	// updateText!: (content: TextHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
-
 	private beElement: Be;
 
-	static methods = [
-		'update',
-		'append',
-		'prepend',
-		'remove',
-		'wrap',
-		'normalize',
-		'replace',
-		'clear'
-	];
+	static methods = Object.values(textMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;
@@ -40,17 +38,6 @@ export class TextHandler {
 		return (this.beElement.node as HTMLElement).textContent;
 	}
 
-	/**
-	 * Handles various DOM operations on the element(s).
-	 * @param actions An object specifying the DOM actions to perform.
-	 * @param actions.update - HTML content to update the element(s) with.
-	 * @param actions.append - Content to append to the element(s).
-	 * @param actions.prepend - Content to prepend to the element(s).
-	 * @param actions.remove - If true, removes the element(s) from the DOM.
-	 * @param actions.replace - Content to replace the element(s) with.
-	 * @param actions.clear - If true, clears the content of the element(s).
-	 * @returns The Be instance for method chaining.
-	 */
 	handle(actions: TextHandlerHandle): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			const { method, props } = BeUtils.resolveIndirection<TextHandler>(TextHandler, actions);

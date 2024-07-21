@@ -73,7 +73,7 @@ export class Be {
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
 	previous!: WalkHandler['previous'];
-	siblings!: WalkHandler['sibling'];
+	siblings!: WalkHandler['siblings'];
 	children!: WalkHandler['children'];
 	closest!: WalkHandler['closest'];
 	lastChild!: WalkHandler['lastChild'];
