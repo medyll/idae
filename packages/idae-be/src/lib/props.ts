@@ -1,4 +1,5 @@
 import { Be } from './be.js';
+import type { CommonHandler } from './types.js';
 
 enum PropsMethods {
 	set = 'set',
@@ -7,7 +8,7 @@ enum PropsMethods {
 	getKey = 'getKey'
 }
 
-export class PropsHandler {
+export class PropsHandler implements CommonHandler<PropsHandler> {
 	private element: Be;
 
 	static methods = Object.values(PropsMethods);

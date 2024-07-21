@@ -1,5 +1,5 @@
 import { Be, be } from './be.js';
-import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
+import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from './types.js';
 import { BeUtils } from './utils.js';
 
 enum textMethods {
@@ -24,7 +24,7 @@ export type TextHandlerHandle = {
 	callback?: (element: HandlerCallbackProps) => void;
 };
 
-export class TextHandler {
+export class TextHandler implements CommonHandler<TextHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(textMethods);

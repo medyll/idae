@@ -1,4 +1,5 @@
 import { Be } from './be.js';
+import type { CommonHandler } from './types.js';
 
 enum dataMethods {
 	set = 'set',
@@ -12,7 +13,7 @@ export type DataHandlerHandle = {
 	delete: (keyOrObject: string | Record<string, string>, value?: string) => Be;
 };
 
-export class DataHandler {
+export class DataHandler implements CommonHandler<DataHandler> {
 	private beElement: Be;
 	static methods = Object.values(dataMethods);
 

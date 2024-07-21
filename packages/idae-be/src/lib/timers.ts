@@ -1,5 +1,5 @@
 import { Be, be } from './be.js';
-import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
+import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from './types.js';
 import { BeUtils } from './utils.js';
 
 enum timersMethods {
@@ -16,13 +16,12 @@ type TimerHandlerHandle = {
 	callback?: (element: HandlerCallbackProps) => void;
 };
 
-export class TimersHandler {
+export class TimersHandler implements CommonHandler<TimersHandler> {
 	private beElement: Be;
+	static methods = Object.values(timersMethods);
 
 	_timer: NodeJS.Timeout | null = null;
 	_interval: NodeJS.Timeout | null = null;
-
-	static methods = Object.values(timersMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;

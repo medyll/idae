@@ -4,7 +4,7 @@
 
 import { Be } from './be.js';
 import type { DomHandlerHandle } from './dom.js';
-import type { HandlerCallBack } from './types.js';
+import type { CommonHandler, HandlerCallBack } from './types.js';
 
 export enum walkerMethods {
 	up = 'up',
@@ -25,20 +25,7 @@ export type WalkerMethodsProps = {
 	[key in WalkerMethods]: (qy?: string, callback?: HandlerCallBack) => Be;
 };
 
-export interface IdaeWalkHandlerInterface {
-	up: WalkerMethodsProps['up'];
-	next: WalkerMethodsProps['next'];
-	previous: WalkerMethodsProps['previous'];
-	siblings: WalkerMethodsProps['siblings'];
-	children: WalkerMethodsProps['children'];
-	closest: WalkerMethodsProps['closest'];
-	lastChild: WalkerMethodsProps['lastChild'];
-	firstChild: WalkerMethodsProps['firstChild'];
-	find: WalkerMethodsProps['find'];
-	findAll: WalkerMethodsProps['findAll'];
-}
-
-export class WalkHandler implements IdaeWalkHandlerInterface {
+export class WalkHandler implements CommonHandler<WalkHandler> {
 	up!: WalkerMethodsProps['up'];
 	next!: WalkerMethodsProps['next'];
 	previous!: WalkerMethodsProps['previous'];

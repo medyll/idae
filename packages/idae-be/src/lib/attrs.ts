@@ -1,4 +1,5 @@
 import { Be } from './be.js';
+import type { CommonHandler } from './types.js';
 
 enum attrMethods {
 	set = 'set',
@@ -11,7 +12,7 @@ export type AttrHandlerHandle = {
 	delete: AttrHandler['handle'];
 };
 
-export class AttrHandler {
+export class AttrHandler implements CommonHandler<AttrHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(attrMethods);

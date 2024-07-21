@@ -23,3 +23,8 @@ export type HandlerCallbackProps = {
 export type HandlerCallBack = (element: HandlerCallbackProps) => void;
 
 export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+
+export interface CommonHandler<T> {
+	handle: (actions: any) => Be;
+	methods: string[] | keyof T;
+}

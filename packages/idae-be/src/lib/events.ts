@@ -1,4 +1,5 @@
 import { Be } from './be.js';
+import type { CommonHandler } from './types.js';
 
 enum eventsMethods {
 	on = 'on',
@@ -20,7 +21,7 @@ export interface EventHandlerHandle {
 /**
  * Handles event operations for Be elements.
  */
-export class EventsHandler {
+export class EventsHandler implements CommonHandler<EventsHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(eventsMethods);

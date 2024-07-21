@@ -1,5 +1,5 @@
 import { Be, be } from './be.js';
-import type { HandlerCallbackProps, HandlerCallBack } from './types.js';
+import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from './types.js';
 import { BeUtils } from './utils.js';
 
 enum domMethods {
@@ -26,10 +26,7 @@ export type DomHandlerHandle = {
 	callback?: (element: HandlerCallbackProps) => void;
 };
 
-export class DomHandler {
-	// update!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
-	// updateText!: (content: DomHandlerHandle['update'], callback?: DomHandlerHandleCallBack) => Be;
-
+export class DomHandler implements CommonHandler<DomHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(domMethods);

@@ -1,5 +1,5 @@
 import { type AttrHandlerHandle, AttrHandler } from './attrs.js';
-import { StyleHandler, type BeStylesHandler } from './styles.js';
+import { StylesHandler, type BeStylesHandler } from './styles.js';
 import { BeUtils } from './utils.js';
 import type {
 	CombineElements,
@@ -22,10 +22,10 @@ export class Be {
 	node: HTMLElement | HTMLElement[] | string;
 	isWhat: IsWhat;
 	// styles
-	private styleHandler: StyleHandler;
+	private styleHandler: StylesHandler;
 	styles: (actions: BeStylesHandler) => Be;
-	setStyle!: StyleHandler['set'];
-	getStyle!: StyleHandler['get'];
+	setStyle!: StylesHandler['set'];
+	getStyle!: StylesHandler['get'];
 	// properties
 	private propHandler: PropsHandler;
 	// dataSet
@@ -91,9 +91,9 @@ export class Be {
 		this.isWhat = typeof input === 'string' ? 'qy' : Array.isArray(input) ? 'array' : 'element';
 
 		// styles
-		this.styleHandler = new StyleHandler(this);
+		this.styleHandler = new StylesHandler(this);
 		this.styles = this.styleHandler.handle;
-		this.attach<StyleHandler>(this.styleHandler, 'Style', StyleHandler.methods);
+		this.attach<StylesHandler>(this.styleHandler, 'Style', StylesHandler.methods);
 		// properties
 		this.propHandler = new PropsHandler(this);
 		this.attach<PropsHandler>(this.propHandler, 'Prop', PropsHandler.methods);

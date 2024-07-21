@@ -158,7 +158,3 @@ export class BeUtils {
 		return { method, props };
 	}
 }
-
-export interface CommonHandler<T> {
-	methods: string[] | keyof T;
-}

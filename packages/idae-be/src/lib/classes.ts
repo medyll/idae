@@ -1,5 +1,5 @@
 import { Be } from './be.js';
-import type { CombineElements } from './types.js';
+import type { CombineElements, CommonHandler } from './types.js';
 
 enum classesMethods {
 	add = 'add',
@@ -18,7 +18,7 @@ export type ClassHandlerHandler = {
 /**
  * Handles class operations for Be elements.
  */
-export class ClassesHandler {
+export class ClassesHandler implements CommonHandler<ClassesHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(classesMethods);

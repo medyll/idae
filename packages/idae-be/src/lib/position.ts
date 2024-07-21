@@ -1,5 +1,5 @@
 import { Be } from './be.js';
-import type { PositionSnapOptions } from './types.js';
+import type { CommonHandler, PositionSnapOptions } from './types.js';
 import { BeUtils } from './utils.js';
 
 enum positionMethods {
@@ -7,7 +7,7 @@ enum positionMethods {
 	overlapPosition = 'overlapPosition',
 	snapTo = 'snapTo'
 }
-export class PositionHandler {
+export class PositionHandler implements CommonHandler<PositionHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(positionMethods);

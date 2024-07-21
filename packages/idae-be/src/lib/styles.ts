@@ -1,5 +1,5 @@
 import { Be } from './be.js';
-import type { HandlerCallBack } from './types.js';
+import type { CommonHandler, HandlerCallBack } from './types.js';
 
 enum beStyleMethods {
 	set = 'set',
@@ -18,7 +18,7 @@ export interface BeStylesHandler {
 
 export type BeStylesHandlerMethods = keyof typeof beStyleMethods;
 
-export class StyleHandler {
+export class StylesHandler implements CommonHandler<StylesHandler> {
 	private beElement: Be;
 
 	constructor(beElement: Be) {
@@ -74,7 +74,7 @@ export class StyleHandler {
 		let method;
 		let args;
 		Object.keys(actions).forEach((action: unknown) => {
-			if (StyleHandler.methods.includes(action)) {
+			if (StylesHandler.methods.includes(action)) {
 				method = action;
 				args = actions[action];
 			}
