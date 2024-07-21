@@ -13,7 +13,12 @@
 
 		be('.content')
 			.append('<div>Some content appended</div>', ({ be }) => {
-				be.setStyle({ display:'flex', 'flex-wrap': 'wrap', color: 'pink', border: '1px solid red' });
+				be.setStyle({
+					display: 'flex',
+					'flex-wrap': 'wrap',
+					color: 'pink',
+					border: '1px solid red'
+				});
 				be.interval(5000, ({ be }) => {
 					be.append('<div>timeout children</div>');
 					be.clearInterval();
