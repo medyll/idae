@@ -1,5 +1,5 @@
 import { Be, be } from '../be.js';
-import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from '../types.js';
+import type { HandlerCallbackProps, HandlerCallBackFn, CommonHandler } from '../types.js';
 import { BeUtils } from '../utils.js';
 
 enum textMethods {
@@ -76,31 +76,31 @@ export class TextHandler implements CommonHandler<TextHandler> {
 		return this.beElement;
 	}
 
-	update(content: TextHandlerHandle['update'], callback?: HandlerCallBack) {
+	update(content: TextHandlerHandle['update'], callback?: HandlerCallBackFn) {
 		this.handle({ update: content, callback });
 	}
-	updateText(content: TextHandlerHandle['updateText'], callback?: HandlerCallBack) {
+	updateText(content: TextHandlerHandle['updateText'], callback?: HandlerCallBackFn) {
 		this.handle({ updateText: content, callback });
 	}
-	append(content: TextHandlerHandle['append'], callback?: HandlerCallBack) {
+	append(content: TextHandlerHandle['append'], callback?: HandlerCallBackFn) {
 		return this.handle({ append: content, callback });
 	}
-	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBack) {
+	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBackFn) {
 		this.handle({ prepend: content, callback });
 	}
-	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBack) {
+	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBackFn) {
 		this.handle({ replace: content, callback });
 	}
-	remove(content: TextHandlerHandle['remove'], callback?: HandlerCallBack) {
+	remove(content: TextHandlerHandle['remove'], callback?: HandlerCallBackFn) {
 		this.handle({ remove: content, callback });
 	}
-	clear(content: TextHandlerHandle['clear'], callback?: HandlerCallBack) {
+	clear(content: TextHandlerHandle['clear'], callback?: HandlerCallBackFn) {
 		this.handle({ clear: content, callback });
 	}
-	normalize(content: TextHandlerHandle['normalize'], callback?: HandlerCallBack) {
+	normalize(content: TextHandlerHandle['normalize'], callback?: HandlerCallBackFn) {
 		this.handle({ normalize: content, callback });
 	}
-	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBack) {
+	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBackFn) {
 		this.handle({ wrap: content, callback });
 	}
 	valueOf(): string | null {
