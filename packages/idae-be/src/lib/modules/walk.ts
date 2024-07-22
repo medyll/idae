@@ -4,7 +4,7 @@
 
 import { Be } from '../be.js';
 import type { DomHandlerHandle } from './dom.js';
-import type { CommonHandler, HandlerCallBack } from '../types.js';
+import type { CommonHandler, HandlerCallBackFn } from '../types.js';
 
 export enum walkerMethods {
 	up = 'up',
@@ -22,7 +22,7 @@ export enum walkerMethods {
 export type WalkerMethods = keyof typeof walkerMethods;
 
 export type WalkerMethodsProps = {
-	[key in WalkerMethods]: (qy?: string, callback?: HandlerCallBack) => Be;
+	[key in WalkerMethods]: (qy?: string, callback?: HandlerCallBackFn) => Be;
 };
 
 export class WalkHandler implements CommonHandler<WalkHandler> {
@@ -56,65 +56,48 @@ export class WalkHandler implements CommonHandler<WalkHandler> {
 		return;
 	}
 
-	find(qy: string, callback?: HandlerCallBack): Be | null {
-		switch (this.isWhat) {
-			case 'element':
-				return (this.node as HTMLElement).querySelector(qy);
-			case 'array':
-				return (this.node as HTMLElement[])
-					.map((node) => node.querySelector(qy))
-					.filter((el) => el !== null);
-			case 'qy': {
-				const foundElement = document.querySelector(this.node as string);
-				return foundElement ? foundElement.querySelector(qy) : null;
-			}
-			default:
-				return null;
-		}
+	find(qy: string, callback?: HandlerCallBackFn): Be | null {
+		const ret: HTMLElement[] = [];
+		this.beElement.eachNode((el: HTMLElement) => {
+			ret.push(el.querySelector(qy) as HTMLElement);
+		});
+		callback?.({
+			root: this.beElement,
+			be: Be.elem(ret),
+			fragment: 'result',
+			requested: Be.elem(ret)
+		});
+
+		return this.beElement;
 	}
 
-	findAll(qy: string): Be | null {
-		switch (this.isWhat) {
-			case 'element':
-				return Array.from((this.node as HTMLElement).querySelectorAll(qy));
-			case 'array':
-				return (this.node as HTMLElement[]).flatMap((node) =>
-					Array.from(node.querySelectorAll(qy))
-				);
-			case 'qy':
-				return Array.from(document.querySelectorAll(this.node as string)).flatMap((node) =>
-					Array.from(node.querySelectorAll(qy))
-				);
-			default:
-				return [];
-		}
+	findAll(qy: string, callback?: HandlerCallBackFn): Be | null {
+		const ret: HTMLElement[] = [];
+		this.beElement.eachNode((el: HTMLElement) => {
+			ret.push(el.querySelectorAll(qy) as HTMLElement[]);
+		});
+		callback?.({
+			root: this.beElement,
+			be: Be.elem(ret),
+			fragment: 'result',
+			requested: Be.elem(ret)
+		});
+
+		return this.beElement;
 	}
 
 	private methodize(method: WalkerMethods) {
-		return (qy?: string, callback?: HandlerCallBack) => {
+		return (qy?: string, callback?: HandlerCallBackFn) => {
 			try {
-				let result: HTMLElement | HTMLElement[] | null = null;
-				switch (this.beElement.isWhat) {
-					case 'element':
-						result = this.findWhile(this.beElement.node as HTMLElement, method, qy);
-						break;
-					case 'array':
-						result = (this.beElement.node as HTMLElement[]).map((node) =>
-							this.findWhile(node, method, qy)
-						);
-						break;
-					case 'qy':
-						result = Array.from(document.querySelectorAll(this.beElement.node as string)).map(
-							(node) => this.findWhile(node, method, qy)
-						);
-						break;
-				}
-
+				const ret: HTMLElement[] = [];
+				this.beElement.eachNode((el: HTMLElement) => {
+					ret.push(this.findWhile(el as HTMLElement, method, qy));
+				});
 				callback?.({
 					root: this.beElement,
-					be: Be.elem(result),
+					be: Be.elem(ret),
 					fragment: 'result',
-					requested: Be.elem(result)
+					requested: Be.elem(ret)
 				});
 			} catch (e) {
 				console.log(e);
