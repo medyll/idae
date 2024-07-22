@@ -1,5 +1,5 @@
 import { Be, be } from '../be.js';
-import type { HandlerCallbackProps, HandlerCallBack, CommonHandler } from '../types.js';
+import type { HandlerCallbackProps, HandlerCallBackFn, CommonHandler } from '../types.js';
 import { BeUtils } from '../utils.js';
 
 enum timersMethods {
@@ -63,16 +63,16 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		return this.beElement;
 	}
 
-	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBack) {
+	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBackFn) {
 		return this.handle({ timeout: value, callback });
 	}
-	interval(value: TimerHandlerHandle['interval'], callback?: HandlerCallBack) {
+	interval(value: TimerHandlerHandle['interval'], callback?: HandlerCallBackFn) {
 		return this.handle({ interval: value, callback });
 	}
-	clearTimeout(callback?: HandlerCallBack) {
+	clearTimeout(callback?: HandlerCallBackFn) {
 		return this.handle({ clearTimeout: true, callback });
 	}
-	clearInterval(callback?: HandlerCallBack) {
+	clearInterval(callback?: HandlerCallBackFn) {
 		return this.handle({ clearInterval: true, callback });
 	}
 }
