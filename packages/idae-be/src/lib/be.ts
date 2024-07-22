@@ -13,37 +13,37 @@ import { TextHandler, type TextHandlerHandle } from './modules/text.js';
 import { TimersHandler } from './modules/timers.js';
 
 export class Be {
-	node: HTMLElement | HTMLElement[] | string;
-	isWhat: IsWhat;
+	node!: HTMLElement | HTMLElement[] | string;
+	isWhat!: IsWhat;
 	// styles
-	styles: (actions: BeStylesHandler) => Be;
-	private styleHandler: StylesHandler;
+	styles!: (actions: BeStylesHandler) => Be;
+	private styleHandler!: StylesHandler;
 	setStyle!: StylesHandler['set'];
 	getStyle!: StylesHandler['get'];
 	unsetStyle!: StylesHandler['unset'];
 	// properties
-	private propHandler: PropsHandler;
+	private propHandler!: PropsHandler;
 	// dataSet
-	data: (actions: DataHandlerHandle) => Be;
-	private dataHandler: DataHandler;
+	data!: (actions: DataHandlerHandle) => Be;
+	private dataHandler!: DataHandler;
 	setData!: DataHandler['set'];
 	getData!: DataHandler['get'];
 	deleteData!: DataHandler['delete'];
 	getKey!: DataHandler['getKey'];
 	// attributes
-	attrs: (actions: Partial<AttrHandlerHandle>) => Be;
-	private attrHandler: AttrHandler;
+	attrs!: (actions: Partial<AttrHandlerHandle>) => Be;
+	private attrHandler!: AttrHandler;
 	setAttr!: AttrHandler['set'];
 	getAttr!: AttrHandler['get'];
 	deleteAttr!: AttrHandler['delete'];
 	// position
-	private positionHandler: PositionHandler;
+	private positionHandler!: PositionHandler;
 	clonePosition!: PositionHandler['clonePosition'];
 	overlapPosition!: PositionHandler['overlapPosition'];
 	snapTo!: PositionHandler['snapTo'];
 	// dom
-	dom: (actions: DomHandlerHandle) => Be;
-	private domHandler: DomHandler;
+	dom!: (actions: DomHandlerHandle) => Be;
+	private domHandler!: DomHandler;
 	update!: DomHandler['update'];
 	updateText!: DomHandler['updateText'];
 	append!: DomHandler['append'];
@@ -53,22 +53,22 @@ export class Be {
 	clear!: DomHandler['clear'];
 	// text
 	text!: (actions: TextHandlerHandle) => Be;
-	private textHandler: TextHandler;
+	private textHandler!: TextHandler;
 	// events
-	events: (actions: EventHandlerHandle) => Be;
-	private eventHandler: EventsHandler;
+	events!: (actions: EventHandlerHandle) => Be;
+	private eventHandler!: EventsHandler;
 	on!: EventsHandler['on'];
 	off!: EventsHandler['off'];
 	fire!: EventsHandler['fire'];
 	// classes
-	classes: (actions: ClassHandlerHandler) => Be;
-	private classesHandler: ClassesHandler;
+	classes!: (actions: ClassHandlerHandler) => Be;
+	private classesHandler!: ClassesHandler;
 	addClass!: ClassesHandler['add'];
 	removeClass!: ClassesHandler['remove'];
 	toggleClass!: ClassesHandler['toggle'];
 	replaceClass!: ClassesHandler['replace'];
 	// walk
-	private walkHandler: WalkHandler;
+	private walkHandler!: WalkHandler;
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
 	previous!: WalkHandler['previous'];
@@ -80,7 +80,7 @@ export class Be {
 	find!: WalkHandler['find'];
 	findAll!: WalkHandler['findAll'];
 	// timer
-	private timerHandler: TimersHandler;
+	private timerHandler!: TimersHandler;
 	timeout!: TimersHandler['timeout'];
 	interval!: TimersHandler['interval'];
 	clearTimeout!: TimersHandler['clearTimeout'];
