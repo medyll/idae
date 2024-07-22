@@ -1,5 +1,5 @@
 import { Be } from '../be.js';
-import type { CommonHandler, HandlerCallBack } from '../types.js';
+import type { CommonHandler, HandlerCallBackFn } from '../types.js';
 
 enum beStyleMethods {
 	set = 'set',
@@ -129,7 +129,7 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	}
 
 	private handlerFor(command: BeStylesHandlerMethods) {
-		return (content: string | HTMLElement, callback: HandlerCallBack) =>
+		return (content: string | HTMLElement, callback: HandlerCallBackFn) =>
 			this.handle({ [command]: content, callback });
 	}
 
