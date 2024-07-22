@@ -1,5 +1,10 @@
-import { Be } from '../be.js';
-import type { CommonHandler, PositionSnapOptions } from '../types.js';
+import { Be, be } from '../be.js';
+import type {
+	CommonHandler,
+	HandlerCallBack,
+	HandlerCallBackFn,
+	PositionSnapOptions
+} from '../types.js';
 import { BeUtils } from '../utils.js';
 
 enum positionMethods {
@@ -7,7 +12,16 @@ enum positionMethods {
 	overlapPosition = 'overlapPosition',
 	snapTo = 'snapTo'
 }
-export class PositionHandler implements CommonHandler<PositionHandler> {
+
+export interface PositionHandlerHandle {
+	clonePosition?: { source: string | HTMLElement; options?: PositionSnapOptions } & HandlerCallBack;
+	overlapPosition?: {
+		source: string | HTMLElement;
+		options: PositionSnapOptions;
+	} & HandlerCallBack;
+	snapTo?: { target: string | HTMLElement; options?: PositionSnapOptions } & HandlerCallBack;
+}
+export class PositionHandler implements CommonHandler<PositionHandler, PositionHandlerHandle> {
 	private beElement: Be;
 
 	static methods = Object.values(positionMethods);
@@ -15,9 +29,26 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+
+	handle(actions: PositionHandlerHandle): Be {
+		Object.entries(actions).forEach(([method, props]) => {
+			switch (method) {
+				case 'clonePosition':
+					this.clonePosition(props.source, props.options, props.callback);
+					break;
+				case 'overlapPosition':
+					this.overlapPosition(props.source, props.options, props.callback);
+					break;
+				case 'snapTo':
+					this.snapTo(props.target, props.options, props.callback);
+					break;
+			}
+		});
+		return this.beElement;
+	}
 	/**
 	 * Clones the position of a source element to this element.
-	 * @param sourceElement The element or selector of the element whose position is to be cloned.
+	 * @param source The element or selector of the element whose position is to be cloned.
 	 * @param options Additional options for positioning.
 	 * @param options.offsetX Horizontal offset from the source position.
 	 * @param options.offsetY Vertical offset from the source position.
@@ -25,17 +56,17 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 	 * @returns The Be instance for method chaining.
 	 */
 	clonePosition(
-		sourceElement: string | HTMLElement,
+		source: string | HTMLElement,
 		options: {
 			offsetX?: number;
 			offsetY?: number;
 			useTransform?: boolean;
-		} = {}
+		} = {},
+		callback?: HandlerCallBackFn
 	): Be {
 		if (this.beElement.isWhat !== 'element') return this.beElement;
 
-		const sourceEl =
-			typeof sourceElement === 'string' ? document.querySelector(sourceElement) : sourceElement;
+		const sourceEl = typeof source === 'string' ? document.querySelector(source) : source;
 
 		if (!sourceEl) return this.beElement;
 
@@ -52,6 +83,12 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 				el.style.left = `${sourceRect.left + offsetX}px`;
 				el.style.top = `${sourceRect.top + offsetY}px`;
 			}
+			//
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
 		});
 
 		return this.beElement;
@@ -72,7 +109,8 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 			alignment?: 'center' | 'top' | 'bottom' | 'left' | 'right';
 			offset?: number;
 			useTransform?: boolean;
-		} = {}
+		} = {},
+		callback?: HandlerCallBackFn
 	): Be {
 		if (this.beElement.isWhat !== 'element') return this.beElement;
 
@@ -118,6 +156,12 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 				el.style.left = `${x}px`;
 				el.style.top = `${y}px`;
 			}
+
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
 		});
 
 		return this.beElement;
@@ -138,7 +182,8 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 			sourceAnchor: PositionSnapOptions;
 			targetAnchor: PositionSnapOptions;
 			offset?: { x: number; y: number };
-		}
+		},
+		callback?: HandlerCallBackFn
 	): Be {
 		if (this.beElement.isWhat !== 'element') return this.beElement;
 
@@ -174,8 +219,19 @@ export class PositionHandler implements CommonHandler<PositionHandler> {
 
 			el.style.left = `${x}px`;
 			el.style.top = `${y}px`;
+
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
 		});
 
 		return this.beElement;
+	}
+
+	valueOf(): DOMRect | null {
+		if (this.beElement.isWhat !== 'element') return null;
+		return (this.beElement.node as HTMLElement).getBoundingClientRect();
 	}
 }
