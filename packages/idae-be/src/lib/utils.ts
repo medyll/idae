@@ -1,4 +1,5 @@
 import { type Be, createBe } from './be.js';
+import type { CommonHandler } from './types.js';
 
 interface isHTMLReturn {
 	isHtml: boolean;
