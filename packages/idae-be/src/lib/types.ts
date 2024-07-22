@@ -18,14 +18,15 @@ export type HandlerCallbackProps = {
 	fragment: any;
 	root: Be;
 	requested?: any;
-	method?: any;
+	method?: string;
 };
-export type HandlerCallBack = (element: HandlerCallbackProps) => void;
+export type HandlerCallBackFn = (element: HandlerCallbackProps) => void;
+export type HandlerCallBack = { callback?: (element: HandlerCallbackProps) => void };
 
 export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
-export interface CommonHandler<T> {
-	handle: (actions: any) => Be;
+export interface CommonHandler<T, H, V = unknown> {
+	handle: (actions: H) => Be;
 	methods: string[] | keyof T;
-	valueOf: () => T;
+	valueOf: () => V;
 }
