@@ -51,17 +51,16 @@
 				be.append('<div>closest div</div>', ({ be }) => {
 					be.append('<div>appended !!!</div>');
 				});
-			})
-			.firstChild(undefined, ({ be }) => {
+			});
+		/* .firstChild(undefined, ({ be }) => {
 				be.append('<div>firstChild</div>');
 			})
 			.lastChild(undefined, ({ be }) => {
 				be.append('<div>lastChild of .content</div>');
 			})
 			.find('div', ({ be }) => {
-				console.log(be);
-				//be.append('<div>find div</div>');
-			});
+				console.log(be); 
+			})		 */
 	});
 </script>
 
