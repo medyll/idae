@@ -1,3 +1,4 @@
+import { BeUtils } from '$lib/utils.js';
 import { Be } from '../be.js';
 import type { CombineElements, CommonHandler } from '../types.js';
 
@@ -27,35 +28,15 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 		this.beElement = beElement;
 	}
 
-	/**
-	 * Manipulate classes on the element(s).
-	 * @param actions An object specifying the classes to add, remove, toggle, or replace.
-	 * @param actions.add - Classes to add. Can be a space-separated string or an array of strings.
-	 * @param actions.remove - Classes to remove. Can be a space-separated string or an array of strings.
-	 * @param actions.toggle - Classes to toggle. Can be a space-separated string or an array of strings.
-	 * @param actions.replace - Classes to replace. Can be a string in the format "oldClass newClass" or an array of [oldClass, newClass] pairs.
-	 * @returns The Be instance for method chaining.
-	 */
 	handle(actions: ClassHandlerHandler): Be {
+		const { method, props } = BeUtils.resolveIndirection<ClassesHandler>(ClassesHandler, actions);
+		switch (method) {
+			default:
+				this[method](props);
+				break;
+		}
+
 		this.beElement.eachNode((el) => {
-			if (actions.add) {
-				const classesToAdd = Array.isArray(actions.add) ? actions.add : actions.add.split(' ');
-				el.classList.add(...classesToAdd.filter((c) => c.trim() !== ''));
-			}
-			if (actions.remove) {
-				const classesToRemove = Array.isArray(actions.remove)
-					? actions.remove
-					: actions.remove.split(' ');
-				el.classList.remove(...classesToRemove.filter((c) => c.trim() !== ''));
-			}
-			if (actions.toggle) {
-				const classesToToggle = Array.isArray(actions.toggle)
-					? actions.toggle
-					: actions.toggle.split(' ');
-				classesToToggle.forEach((className) => {
-					el.classList.toggle(className);
-				});
-			}
 			if (actions.replace) {
 				let replacements: [string, string][];
 				if (typeof actions.replace === 'string') {
@@ -77,8 +58,12 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 		return this.beElement;
 	}
 
-	add(className: string): Be {
-		this.beElement.eachNode((el) => el.classList.add(className));
+	add(className: string | string[]): Be {
+		const classesToAdd = Array.isArray(className) ? className : className.split(' ');
+
+		this.beElement.eachNode((el) =>
+			el.classList.add(...classesToAdd.filter((c) => c.trim() !== ''))
+		);
 		return this.beElement;
 	}
 
@@ -87,8 +72,12 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 	 * @param className The class to toggle.
 	 * @returns The Be instance for method chaining.
 	 */
-	toggle(className: string): Be {
-		this.beElement.eachNode((el) => el.classList.toggle(className));
+	toggle(className: string | string[]): Be {
+		const classesToToggle = Array.isArray(className) ? className : className.split(' ');
+		classesToToggle.forEach((className) => {
+			this.beElement.eachNode((el) => el.classList.toggle(className));
+		});
+
 		return this.beElement;
 	}
 
@@ -106,8 +95,12 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 	 * @param className The class to remove.
 	 * @returns The Be instance for method chaining.
 	 */
-	remove(className: string): Be {
-		this.beElement.eachNode((el) => el.classList.remove(className));
+	remove(className: string | string[]): Be {
+		const classesToRemove = Array.isArray(className) ? className : className.split(' ');
+
+		this.beElement.eachNode((el) =>
+			el.classList.remove(...classesToRemove.filter((c) => c.trim() !== ''))
+		);
 		return this.beElement;
 	}
 }
