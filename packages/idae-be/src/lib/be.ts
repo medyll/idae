@@ -5,9 +5,9 @@ import type { IsWhat } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './modules/data.js';
 import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
-import { PropsHandler } from './modules/props.js';
+import { PropsHandler, type PropsHandlerHandle } from './modules/props.js';
 import { DomHandler, type DomHandlerHandle } from './modules/dom.js';
-import { PositionHandler } from './modules/position.js';
+import { PositionHandler, type PositionHandlerHandle } from './modules/position.js';
 import { WalkHandler } from './modules/walk.js';
 import { TextHandler, type TextHandlerHandle } from './modules/text.js';
 import { TimersHandler } from './modules/timers.js';
@@ -22,6 +22,7 @@ export class Be {
 	getStyle!: StylesHandler['get'];
 	unsetStyle!: StylesHandler['unset'];
 	// properties
+	props!: (actions: PropsHandlerHandle) => Be;
 	private propHandler!: PropsHandler;
 	// dataSet
 	data!: (actions: DataHandlerHandle) => Be;
@@ -37,6 +38,7 @@ export class Be {
 	getAttr!: AttrHandler['get'];
 	deleteAttr!: AttrHandler['delete'];
 	// position
+	position!: (actions: PositionHandlerHandle) => Be;
 	private positionHandler!: PositionHandler;
 	clonePosition!: PositionHandler['clonePosition'];
 	overlapPosition!: PositionHandler['overlapPosition'];
@@ -68,6 +70,7 @@ export class Be {
 	toggleClass!: ClassesHandler['toggle'];
 	replaceClass!: ClassesHandler['replace'];
 	// walk
+	walk!: (actions: DataHandlerHandle) => Be;
 	private walkHandler!: WalkHandler;
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
@@ -79,7 +82,8 @@ export class Be {
 	firstChild!: WalkHandler['firstChild'];
 	find!: WalkHandler['find'];
 	findAll!: WalkHandler['findAll'];
-	// timer
+	// timers
+	timers!: (actions: TextHandlerHandle) => Be;
 	private timerHandler!: TimersHandler;
 	timeout!: TimersHandler['timeout'];
 	interval!: TimersHandler['interval'];
@@ -94,50 +98,54 @@ export class Be {
 
 		// styles
 		this.styleHandler = new StylesHandler(this);
-		this.styles = this.styleHandler.handle;
+		this.styles = this.handle(this.styleHandler);
 		this.attach<StylesHandler>(this.styleHandler, 'Style', StylesHandler.methods);
 		// properties
 		this.propHandler = new PropsHandler(this);
+		this.props = this.handle(this.styleHandler);
 		this.attach<PropsHandler>(this.propHandler, 'Prop', PropsHandler.methods);
 		// dataSet
 		this.dataHandler = new DataHandler(this);
-		this.data = this.dataHandler.handle;
+		this.data = this.handle(this.styleHandler);
 		this.attach<DataHandler>(this.dataHandler, 'Data', DataHandler.methods);
 		// attributes
 		this.attrHandler = new AttrHandler(this);
-		this.attrs = this.attrHandler.handle;
+		this.attrs = this.handle(this.styleHandler);
 		this.attach<AttrHandler>(this.attrHandler, 'Attr', AttrHandler.methods);
 
 		// position
 		this.positionHandler = new PositionHandler(this);
+		this.position = this.handle(this.positionHandler);
 		this.attach<PositionHandler>(this.positionHandler, '', PositionHandler.methods);
 
 		// text
 		this.textHandler = new TextHandler(this);
-		this.dom = this.textHandler.handle;
+		this.dom = this.handle(this.textHandler);
 		this.attach<TextHandler>(this.textHandler, '', TextHandler.methods);
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
-		this.dom = this.domHandler.handle;
+		this.dom = this.handle(this.domHandler);
 		this.attach<DomHandler>(this.domHandler, '', DomHandler.methods);
 
 		// events
 		this.eventHandler = new EventsHandler(this);
-		this.events = this.eventHandler.handle;
+		this.events = this.handle(this.eventHandler);
 		this.attach<EventsHandler>(this.eventHandler, '', EventsHandler.methods);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
-		this.classes = this.classesHandler.handle;
+		this.classes = this.handle(this.classesHandler);
 		this.attach<ClassesHandler>(this.classesHandler, 'Class', ClassesHandler.methods);
 
 		// walk
 		this.walkHandler = new WalkHandler(this);
+		this.walk = this.handle(this.walkHandler);
 		this.attach<WalkHandler>(this.walkHandler, '', WalkHandler.methods);
 
 		// timers
 		this.timerHandler = new TimersHandler(this);
+		this.timers = this.handle(this.timerHandler);
 		this.attach<TimersHandler>(this.timerHandler, '', TimersHandler.methods);
 	}
 
@@ -231,6 +239,10 @@ export class Be {
 			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
 			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
 		});
+	}
+
+	private handle<T extends Record<string, any>>(cl: T) {
+		return cl.handle.bind(cl);
 	}
 }
 
