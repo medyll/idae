@@ -1,5 +1,5 @@
-import { Be } from '../be.js';
-import type { CommonHandler } from '../types.js';
+import { be, Be } from '../be.js';
+import type { CommonHandler, HandlerCallBack, HandlerCallBackFn } from '../types.js';
 
 enum eventsMethods {
 	on = 'on',
@@ -13,9 +13,9 @@ export type EventHandlerMethodsProps = {
 };
 
 export interface EventHandlerHandle {
-	on?: { [eventName: string]: CustomEvent | EventListener };
-	off?: { [eventName: string]: CustomEvent | EventListener };
-	fire?: { [eventName: string]: CustomEvent | EventListener };
+	on?: { [eventName: string]: CustomEvent | EventListener } & HandlerCallBack;
+	off?: { [eventName: string]: CustomEvent | EventListener } & HandlerCallBack;
+	fire?: { event: string; detail?: unknown; options?: EventInit } & HandlerCallBack;
 }
 
 /**
@@ -36,31 +36,66 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 	 * @returns The Be instance for method chaining.
 	 */
 	handle(actions: EventHandlerHandle): Be {
-		if (actions.on) {
-			Object.entries(actions.on).forEach(([eventName, handler]) => {
-				this.on(eventName, handler);
+		Object.entries(actions).forEach(([method, props]) => {
+			const [eventName, handler] = Object.entries(props)[0];
+			switch (method) {
+				case 'on':
+				case 'off':
+					this[method](eventName, handler as EventListener, props?.options, props?.callback);
+					break;
+				case 'fire':
+					this.fire(eventName, props?.detail, props?.options, props?.callback);
+					break;
+			}
+		});
+
+		return this.beElement;
+	}
+
+	on(
+		eventName: string,
+		handler: EventListener,
+		options?: boolean | AddEventListenerOptions,
+		callback?: HandlerCallBackFn
+	) {
+		this.beElement.eachNode((el) => {
+			el.addEventListener(eventName, handler, options);
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
 			});
-		}
-		if (actions.off) {
-			Object.entries(actions.off).forEach(([eventName, handler]) => {
-				this.off(eventName, handler);
+		});
+		return this.beElement;
+	}
+
+	off(
+		eventName: string,
+		handler: EventListener,
+		options?: boolean | AddEventListenerOptions,
+		callback?: HandlerCallBackFn
+	) {
+		this.beElement.eachNode((el) => {
+			el.removeEventListener(eventName, handler, options);
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
 			});
-		}
+		});
+
 		return this.beElement;
 	}
 
-	on(eventName: string, handler: EventListener) {
-		this.beElement.eachNode((el) => el.addEventListener(eventName, handler));
-		return this.beElement;
-	}
-
-	off(eventName: string, handler: EventListener) {
-		this.beElement.eachNode((el) => el.removeEventListener(eventName, handler));
-		return this.beElement;
-	}
-
-	fire(eventName: string, data: unknown) {
-		this.beElement.eachNode((el) => el.dispatchEvent(new CustomEvent(eventName, { detail: data })));
+	fire(eventName: string, detail: unknown, options?: EventInit, callback?: HandlerCallBackFn) {
+		this.beElement.eachNode((el) => {
+			el.dispatchEvent(new CustomEvent(eventName, { ...options, detail }));
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 		return this.beElement;
 	}
 }
