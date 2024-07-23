@@ -46,10 +46,10 @@ export class TextHandler implements CommonHandler<TextHandler> {
 				case 'update':
 					el.innerText = props;
 					break;
-				case 'append': // append to text content
+				case 'prepend': // append to text content
 					el.insertAdjacentHTML('beforebegin', props);
 					break;
-				case 'prepend':
+				case 'append':
 					el.insertAdjacentHTML('afterbegin', props);
 					break;
 				case 'replace':

@@ -12,13 +12,23 @@ export type AttrHandlerHandle = {
 	delete: AttrHandler['handle'];
 };
 
-export class AttrHandler implements CommonHandler<AttrHandler> {
+export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	private beElement: Be;
 
 	static methods = Object.values(attrMethods);
 
 	constructor(element: Be) {
 		this.beElement = element;
+	}
+
+	handle(actions: Partial<AttrHandlerHandle>): Be {
+		this.beElement.eachNode((el) => {
+			if (actions.delete) {
+			}
+			if (actions.set) {
+			}
+		});
+		return this.beElement;
 	}
 
 	get(name?: string): string | null {
@@ -48,16 +58,6 @@ export class AttrHandler implements CommonHandler<AttrHandler> {
 				Object.entries(nameOrObject).forEach(([name, val]) => {
 					el.removeAttribute(name);
 				});
-			}
-		});
-		return this.beElement;
-	}
-
-	handle(actions: Partial<AttrHandlerHandle>): Be {
-		this.beElement.eachNode((el) => {
-			if (actions.delete) {
-			}
-			if (actions.set) {
 			}
 		});
 		return this.beElement;
