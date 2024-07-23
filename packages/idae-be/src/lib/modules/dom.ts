@@ -49,11 +49,6 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		this.beElement = element;
 	}
 
-	get text(): string | null {
-		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).textContent;
-	}
-
 	/**
 	 * Handles various DOM operations on the element(s).
 	 * @param actions An object specifying the DOM actions to perform.
@@ -67,7 +62,6 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 	 */
 	handle(actions: DomHandlerHandle): Be {
 		Object.entries(actions).forEach(([method, props]) => {
-			// const { method, props } = BeUtils.resolveIndirection<DomHandler>(DomHandler, actions);
 			switch (method) {
 				case 'update':
 					this.update(props.content, props.callback);
@@ -99,7 +93,7 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		return this.beElement;
 	}
 
-	update(content: Content, callback?: HandlerCallBackFn): Be {
+	update(content: string, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el) {
 				el.innerHTML = content;
@@ -134,7 +128,14 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 
 	prepend(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
-			el.insertBefore(content, el.firstChild);
+			if (content instanceof Be) {
+				content.eachNode((child: HTMLElement) => {
+					el.insertBefore(child, el.firstChild);
+				});
+			} else {
+				el.insertBefore(content, el.firstChild);
+			}
+
 			callback?.({
 				fragment: content,
 				be: be(el),
@@ -145,7 +146,21 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 	}
 
 	replace(content: Content, callback?: HandlerCallBackFn) {
-		this.handle({ replace: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (content instanceof Be) {
+				content.eachNode((child: HTMLElement) => {
+					el.replaceWith(child);
+				});
+			} else {
+				el.replaceWith(content);
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	remove(callback?: HandlerCallBackFn) {
@@ -176,7 +191,7 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		this.beElement.eachNode((el: HTMLElement) => {
 			el.normalize();
 			callback?.({
-				fragment: tag,
+				fragment: undefined,
 				be: be(el),
 				root: this.beElement
 			});
@@ -197,6 +212,7 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		});
 		return this.beElement;
 	}
+
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
 		return (this.beElement.node as HTMLElement).innerHTML;
