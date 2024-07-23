@@ -1,6 +1,5 @@
 import { Be, be } from '../be.js';
-import type { HandlerCallbackProps, HandlerCallBackFn, CommonHandler } from '../types.js';
-import { BeUtils } from '../utils.js';
+import type { HandlerCallBackFn, CommonHandler, HandlerCallBack } from '../types.js';
 
 enum timersMethods {
 	timeout = 'timeout',
@@ -8,13 +7,11 @@ enum timersMethods {
 	clearTimeout = 'clearTimeout',
 	clearInterval = 'clearInterval'
 }
-type TimerHandlerHandle = {
-	timeout?: number;
-	clearTimeout?: boolean;
-	interval?: number;
-	clearInterval?: boolean;
-	callback?: (element: HandlerCallbackProps) => void;
-};
+
+type cd = Record<'timeout' | 'interval', number> & HandlerCallBack;
+type cds = Record<'clearTimeout' | 'clearInterval', HandlerCallBackFn>;
+
+type TimerHandlerHandle = cd & cds;
 
 export class TimersHandler implements CommonHandler<TimersHandler> {
 	private beElement: Be;
@@ -28,51 +25,73 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 	}
 
 	handle(actions: TimerHandlerHandle): Be {
-		this.beElement.eachNode((el: HTMLElement) => {
-			const { method, props } = BeUtils.resolveIndirection<TimersHandler>(TimersHandler, actions);
-
+		if (!actions) return this.beElement;
+		Object.entries(actions).forEach(([method, props]) => {
 			switch (method) {
 				case 'timeout':
-					el._timer = setTimeout(() => {
-						actions?.callback?.({
-							method: el._timer,
-							fragment: props,
-							be: be(el),
-							root: this.beElement
-						});
-					}, props);
+				case 'interval':
+					this[method](props as number, actions.callback);
 					break;
 				case 'clearTimeout':
-					clearTimeout(el._timer);
-					break;
 				case 'clearInterval':
-					clearInterval(el._interval);
+					this[method](actions.callback);
 					break;
-				case 'interval':
-					el._interval = setInterval(() => {
-						actions?.callback?.({
-							method: el._interval,
-							fragment: props,
-							be: be(el),
-							root: this.beElement
-						});
-					}, props);
 			}
 		});
 
 		return this.beElement;
 	}
 
-	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBackFn) {
-		return this.handle({ timeout: value, callback });
+	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBackFn): Be {
+		this.beElement.eachNode((el: HTMLElement) => {
+			const aug = be(el);
+			aug.BeTimer = setTimeout(() => {
+				callback?.({
+					method: 'timeout',
+					fragment: aug.BeTimer,
+					be: be(el),
+					root: this.beElement
+				});
+			}, value);
+		});
+
+		return this.beElement;
 	}
 	interval(value: TimerHandlerHandle['interval'], callback?: HandlerCallBackFn) {
-		return this.handle({ interval: value, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			const aug = be(el);
+			aug.BeTimer = setInterval(() => {
+				callback?.({
+					method: 'interval',
+					fragment: aug.BeTimer,
+					be: be(el),
+					root: this.beElement
+				});
+			}, value);
+		});
+
+		return this.beElement;
 	}
 	clearTimeout(callback?: HandlerCallBackFn) {
-		return this.handle({ clearTimeout: true, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			clearTimeout(be(el).BeTimer);
+			callback?.({
+				method: 'clearTimeout',
+				fragment: be(el).BeTimer,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 	}
 	clearInterval(callback?: HandlerCallBackFn) {
-		return this.handle({ clearInterval: true, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			clearInterval(be(el).BeTimer);
+			callback?.({
+				method: 'clearInterval',
+				fragment: be(el).BeTimer,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 	}
 }
