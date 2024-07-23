@@ -22,7 +22,6 @@ export class DynamicHandler {
 
 	private handler = {
 		get: (target: DynamicHandler, prop: string) => {
-			// Utiliser Reflect.get si la méthode existe sur la cible
 			if (prop in target) {
 				return Reflect.get(target, prop);
 			}
@@ -61,15 +60,15 @@ export class DynamicHandler {
 }
 
 // Utilisation
-const div = createBe('div');
-const styler = new DynamicHandler(div, 'style').proxy();
+/* const div = createBe('div');
+const styler = new DynamicHandler(div, 'style').proxy(); */
 
 // Utilisation des méthodes dynamiques
-styler.setDisplay('block');
-styler.setDisplay(); // Réinitialise la propriété display
+/* styler.setDisplay('block');
+styler.setDisplay();  
 styler.setDisplayNone();
 styler.setPosition('relative');
 styler.setPositionAbsolute();
 styler.setColor('red');
 styler.setBackgroundColor('#f0f0f0');
-styler.setFontSize('16px');
+styler.setFontSize('16px'); */
