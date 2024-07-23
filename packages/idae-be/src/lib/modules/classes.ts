@@ -1,6 +1,6 @@
 import { BeUtils } from '$lib/utils.js';
 import { Be } from '../be.js';
-import type { CombineElements, CommonHandler } from '../types.js';
+import type { CombineElements, CommonHandler, HandlerCallBackFn } from '../types.js';
 
 enum classesMethods {
 	add = 'add',
@@ -16,10 +16,24 @@ export type ClassHandlerHandler = {
 	replace?: `${string} ${string}` | [string, string][];
 };
 
+export type ClassHandlerHandlerHandle = {
+	add?: CombineElements<string> | string[];
+	callback?: HandlerCallBackFn;
+} & {
+	remove?: CombineElements<string> | string[];
+	callback?: HandlerCallBackFn;
+} & {
+	toggle?: CombineElements<string> | string[];
+	callback?: HandlerCallBackFn;
+} & {
+	replace?: `${string} ${string}` | [string, string][];
+	callback?: HandlerCallBackFn;
+};
+
 /**
  * Handles class operations for Be elements.
  */
-export class ClassesHandler implements CommonHandler<ClassesHandler> {
+export class ClassesHandler implements CommonHandler<ClassesHandler, ClassHandlerHandlerHandle> {
 	private beElement: Be;
 
 	static methods = Object.values(classesMethods);
@@ -28,15 +42,17 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 		this.beElement = beElement;
 	}
 
-	handle(actions: ClassHandlerHandler): Be {
-		const { method, props } = BeUtils.resolveIndirection<ClassesHandler>(ClassesHandler, actions);
-		switch (method) {
-			default:
-				this[method](props);
-				break;
-		}
+	handle(actions: ClassHandlerHandlerHandle): Be {
+		if (!actions) return this.beElement;
 
-		this.beElement.eachNode((el) => {
+		Object.entries(actions).forEach(([method, props]) => {
+			switch (method) {
+				default:
+					this[method](props);
+					break;
+			}
+		});
+		/* this.beElement.eachNode((el) => {
 			if (actions.replace) {
 				let replacements: [string, string][];
 				if (typeof actions.replace === 'string') {
@@ -54,7 +70,7 @@ export class ClassesHandler implements CommonHandler<ClassesHandler> {
 					}
 				});
 			}
-		});
+		}); */
 		return this.beElement;
 	}
 
