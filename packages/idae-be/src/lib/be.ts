@@ -15,6 +15,9 @@ import { TimersHandler } from './modules/timers.js';
 export class Be {
 	node!: HTMLElement | HTMLElement[] | string;
 	isWhat!: IsWhat;
+	//
+	BeTimer: NodeJS.Timeout | null = null;
+	BeInterval: NodeJS.Timeout | null = null;
 	// styles
 	styles!: (actions: BeStylesHandler) => Be;
 	private styleHandler!: StylesHandler;
