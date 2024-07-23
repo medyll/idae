@@ -3,8 +3,7 @@
  */
 
 import { Be } from '../be.js';
-import type { DomHandlerHandle } from './dom.js';
-import type { CommonHandler, HandlerCallBackFn } from '../types.js';
+import type { CommonHandler, HandlerCallBackFn, HandlerCallbackProps } from '../types.js';
 
 export enum walkerMethods {
 	up = 'up',
@@ -21,39 +20,83 @@ export enum walkerMethods {
 
 export type WalkerMethods = keyof typeof walkerMethods;
 
-export type WalkerMethodsProps = {
-	[key in WalkerMethods]: (qy?: string, callback?: HandlerCallBackFn) => Be;
-};
+export interface WalkHandlerHandle {
+	up?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	next?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	previous?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	siblings?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	children?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	closest?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	lastChild?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	firstChild?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	find?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	findAll?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+}
 
-export class WalkHandler implements CommonHandler<WalkHandler> {
-	up!: WalkerMethodsProps['up'];
-	next!: WalkerMethodsProps['next'];
-	previous!: WalkerMethodsProps['previous'];
-	siblings!: WalkerMethodsProps['siblings'];
-	children!: WalkerMethodsProps['children'];
-	closest!: WalkerMethodsProps['closest'];
-	lastChild!: WalkerMethodsProps['lastChild'];
-	firstChild!: WalkerMethodsProps['firstChild'];
-
+export class WalkHandler implements CommonHandler<WalkHandler, WalkHandlerHandle> {
 	static methods = Object.values(walkerMethods);
 
 	private beElement: Be;
 
 	constructor(beElement: Be) {
 		this.beElement = beElement;
-		this.attachRoot();
 	}
 
-	attachRoot() {
-		WalkHandler.methods.forEach((method) => {
-			if (['find', 'findAll'].includes(method)) return;
-			this[method] = this.methodize(method);
-		});
-	}
-
-	handle(actions: DomHandlerHandle) {
+	handle(actions: WalkHandlerHandle) {
 		console.log('not implemented', actions);
-		return;
+		return this.beElement;
+	}
+
+	up(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('up')(qy, callback);
+	}
+	previous(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('previous')(qy, callback);
+	}
+	siblings(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('siblings')(qy, callback);
+	}
+	children(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('children')(qy, callback);
+	}
+	closest(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('children')(qy, callback);
+	}
+	lastChild(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('children')(qy, callback);
+	}
+	firstChild(qy: string, callback?: HandlerCallBackFn) {
+		return this.methodize('children')(qy, callback);
 	}
 
 	find(qy: string, callback?: HandlerCallBackFn): Be | null {
