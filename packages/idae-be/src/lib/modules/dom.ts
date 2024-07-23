@@ -5,6 +5,11 @@ enum domMethods {
 	update = 'update',
 	append = 'append',
 	prepend = 'prepend',
+	insert = 'insert',
+	afterBegin = 'afterBegin',
+	afterEnd = 'afterEnd',
+	beforeBegin = 'beforeBegin',
+	beforeEnd = 'beforeEnd',
 	remove = 'remove',
 	wrap = 'wrap',
 	normalize = 'normalize',
@@ -18,11 +23,29 @@ export interface DomHandlerHandle {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
+
 	append?: {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
 	prepend?: {
+		content: Content;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	//"afterbegin" | "afterend" | "beforebegin" | "beforeend"
+	afterbegin?: {
+		content: Content;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	afterend?: {
+		content: Content;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	beforebegin?: {
+		content: Content;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+	beforeend?: {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
@@ -39,8 +62,17 @@ export interface DomHandlerHandle {
 	clear?: true;
 	callback?: (element: HandlerCallbackProps) => void;
 }
+export interface DomHandlerInterface {
+	insert(
+		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend',
+		element: HTMLElement | Be,
+		callback?: HandlerCallBackFn
+	): Be;
+}
 
-export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
+export class DomHandler
+	implements DomHandlerInterface, CommonHandler<DomHandler, DomHandlerHandle>
+{
 	private beElement: Be;
 
 	static methods = Object.values(domMethods);
@@ -109,33 +141,66 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 	}
 
 	append(content: Content, callback?: HandlerCallBackFn): Be {
+		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (content instanceof Be) {
 				content.eachNode((child: HTMLElement) => {
+					ret.push(child);
 					el.appendChild(child);
 				});
 			} else {
+				ret.push(content);
 				el.appendChild(content);
 			}
-			callback?.({
-				fragment: content,
-				be: be(el),
-				root: this.beElement
-			});
+		});
+		callback?.({
+			fragment: content,
+			be: be(ret),
+			root: this.beElement
 		});
 		return this.beElement;
 	}
 
 	prepend(content: Content, callback?: HandlerCallBackFn): Be {
+		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (content instanceof Be) {
 				content.eachNode((child: HTMLElement) => {
+					ret.push(child);
 					el.insertBefore(child, el.firstChild);
 				});
 			} else {
+				ret.push(content);
 				el.insertBefore(content, el.firstChild);
 			}
+		});
+		callback?.({
+			fragment: content,
+			be: be(ret),
+			root: this.beElement
+		});
+		return this.beElement;
+	}
 
+	insert(
+		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend',
+		element: HTMLElement | Be,
+		callback?: HandlerCallBackFn
+	): Be {
+		switch (mode) {
+			case 'afterbegin':
+				return this.afterBegin(element, callback);
+			case 'afterend':
+				return this.afterEnd(element, callback);
+			case 'beforebegin':
+				return this.beforeBegin(element, callback);
+			case 'beforeend':
+				return this.beforeEnd(element, callback);
+		}
+	}
+	afterBegin(content: HTMLElement, callback?: HandlerCallBackFn) {
+		this.beElement.eachNode((el: HTMLElement) => {
+			this.adjacentElement(el, content, 'afterbegin');
 			callback?.({
 				fragment: content,
 				be: be(el),
@@ -145,20 +210,39 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		return this.beElement;
 	}
 
+	afterEnd(content: Content, callback?: HandlerCallBackFn) {
+		this.append(content, callback);
+		return this.beElement;
+	}
+
+	beforeBegin(content: Content, callback?: HandlerCallBackFn) {
+		this.prepend(content, callback);
+		return this.beElement;
+	}
+
+	beforeEnd(content: Content, callback?: HandlerCallBackFn) {
+		this.append(content, callback);
+		return this.beElement;
+	}
+
 	replace(content: Content, callback?: HandlerCallBackFn) {
+		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (content instanceof Be) {
 				content.eachNode((child: HTMLElement) => {
+					ret.push(child);
 					el.replaceWith(child);
 				});
 			} else {
+				ret.push(content);
 				el.replaceWith(content);
 			}
-			callback?.({
-				fragment: content,
-				be: be(el),
-				root: this.beElement
-			});
+		});
+
+		callback?.({
+			fragment: content,
+			be: be(ret),
+			root: this.beElement
 		});
 		return this.beElement;
 	}
@@ -202,7 +286,8 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 		// wrap in tag
 		this.beElement.eachNode((el: HTMLElement) => {
 			const wrapper = document.createElement(tag);
-			el.insertBefore(wrapper, el);
+
+			el.insertAdjacentElement('beforebegin', wrapper); // "afterbegin" | "afterend" | "beforebegin" | "beforeend"
 			wrapper.appendChild(el);
 			callback?.({
 				fragment: tag,
@@ -210,6 +295,15 @@ export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 				root: this.beElement
 			});
 		});
+		return this.beElement;
+	}
+
+	private adjacentElement(
+		element: HTMLElement,
+		content: HTMLElement,
+		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend'
+	) {
+		element.insertAdjacentElement(mode, content);
 		return this.beElement;
 	}
 
