@@ -50,12 +50,18 @@ export class Be {
 	dom!: (actions: DomHandlerHandle) => Be;
 	private domHandler!: DomHandler;
 	update!: DomHandler['update'];
-	updateText!: DomHandler['updateText'];
 	append!: DomHandler['append'];
 	prepend!: DomHandler['prepend'];
+	insert!: DomHandler['insert'];
+	afterBegin!: DomHandler['afterBegin'];
+	afterEnd!: DomHandler['afterEnd'];
+	beforeBegin!: DomHandler['beforeBegin'];
+	beforeEnd!: DomHandler['beforeEnd'];
 	remove!: DomHandler['remove'];
 	replace!: DomHandler['replace'];
 	clear!: DomHandler['clear'];
+	normalize!: DomHandler['normalize'];
+	wrap!: DomHandler['wrap'];
 	// text
 	text!: (actions: TextHandlerHandle) => Be;
 	private textHandler!: TextHandler;
@@ -186,20 +192,28 @@ export class Be {
 		return ret;
 	}
 
-	/** transform a string into a Be element.  */
+	/**
+	 * Creates a new `Be` element based on the provided string or HTMLElement.
+	 * If the input is an HTMLElement, it creates a new `Be` element and sets it as the child of the provided element.
+	 * If the input is a string, it checks if it is a valid HTML string and creates a new `Be` element based on it.
+	 * If the input is neither a string nor an HTMLElement, it creates a new `Be` element with the default tag.
+	 *
+	 * @param str - The string or HTMLElement to create the `Be` element from.
+	 * @param options - Additional options for creating the `Be` element.
+	 * @returns The created `Be` element.
+	 */
 	static toBe(
 		str: string | HTMLElement,
 		options: {
-			defaultTag?: string;
+			tag?: string;
 		} = {}
 	): Be {
-		const { defaultTag = 'span' } = options;
+		const { tag = 'span' } = options;
 
 		let beElem: Be;
 
 		if (str instanceof HTMLElement) {
-			beElem = createBe(str.tagName.toLowerCase());
-			beElem.setElement(str);
+			beElem = be(str);
 		} else if (typeof str === 'string') {
 			const trimmed = str.trim();
 
@@ -207,10 +221,9 @@ export class Be {
 				// Parse as HTML
 				const parser = new DOMParser();
 				const doc = parser.parseFromString(trimmed, 'text/html');
-				const element =
-					(doc.body.firstElementChild as HTMLElement) || document.createElement(defaultTag);
+				const element: HTMLElement =
+					(doc.body.firstElementChild as HTMLElement) || document.createElement(tag);
 
-				const tag = element.tagName.toLowerCase();
 				beElem = createBe(tag);
 				beElem.update(element.innerHTML);
 
@@ -237,12 +250,12 @@ export class Be {
 				});
 			} else {
 				// Create a Be element with the default tag and set text content
-				beElem = createBe(defaultTag);
+				beElem = be(document.createElement(tag));
 				beElem.update(str);
 			}
 		} else {
 			// Handle non-string, non-HTMLElement input
-			beElem = createBe(defaultTag);
+			beElem = createBe(tag);
 		}
 
 		return beElem;
