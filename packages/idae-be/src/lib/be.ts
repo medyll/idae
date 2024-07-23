@@ -186,6 +186,68 @@ export class Be {
 		return ret;
 	}
 
+	/** transform a string into a Be element.  */
+	static toBe(
+		str: string | HTMLElement,
+		options: {
+			defaultTag?: string;
+		} = {}
+	): Be {
+		const { defaultTag = 'span' } = options;
+
+		let beElem: Be;
+
+		if (str instanceof HTMLElement) {
+			beElem = createBe(str.tagName.toLowerCase());
+			beElem.setElement(str);
+		} else if (typeof str === 'string') {
+			const trimmed = str.trim();
+
+			if (trimmed.startsWith('<') && trimmed.endsWith('>') && trimmed.includes('</')) {
+				// Parse as HTML
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(trimmed, 'text/html');
+				const element =
+					(doc.body.firstElementChild as HTMLElement) || document.createElement(defaultTag);
+
+				const tag = element.tagName.toLowerCase();
+				beElem = createBe(tag);
+				beElem.update(element.innerHTML);
+
+				// Apply styles
+				const styles = element.getAttribute('style');
+				if (styles) {
+					const styleObj = Object.fromEntries(
+						styles
+							.split(';')
+							.filter((style) => style.trim())
+							.map((style) => {
+								const [key, value] = style.split(':').map((s) => s.trim());
+								return [key, value];
+							})
+					);
+					beElem.setStyle(styleObj);
+				}
+
+				// Apply other attributes
+				Array.from(element.attributes).forEach((attr) => {
+					if (attr.name !== 'style') {
+						beElem.setAttr(attr.name, attr.value);
+					}
+				});
+			} else {
+				// Create a Be element with the default tag and set text content
+				beElem = createBe(defaultTag);
+				beElem.update(str);
+			}
+		} else {
+			// Handle non-string, non-HTMLElement input
+			beElem = createBe(defaultTag);
+		}
+
+		return beElem;
+	}
+
 	/**
 	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
 	 * @param styles An object of CSS properties and values, or a string of CSS properties and values.
@@ -254,5 +316,6 @@ export class Be {
 type CreateFragment = `<${string}>${string}</${string}>` | string;
 
 export const be = Be.elem;
+export const toBe = Be.toBe;
 export const beId = (id: string) => Be.elem(`#${id}`);
 export const createBe = Be.createBe;
