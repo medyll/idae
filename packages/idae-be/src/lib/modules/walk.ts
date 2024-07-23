@@ -63,7 +63,28 @@ export interface WalkHandlerHandle {
 	};
 }
 
-export class WalkHandler implements CommonHandler<WalkHandler, WalkHandlerHandle> {
+export interface WalkHandlerInterface {
+	up(qy: string, callback?: HandlerCallBackFn): Be;
+	up(callback?: HandlerCallBackFn): Be;
+	next(qy: string, callback?: HandlerCallBackFn): Be;
+	next(callback?: HandlerCallBackFn): Be;
+	previous(qy: string, callback?: HandlerCallBackFn): Be;
+	previous(callback?: HandlerCallBackFn): Be;
+	siblings(qy: string, callback?: HandlerCallBackFn): Be;
+	siblings(callback?: HandlerCallBackFn): Be;
+	children(qy: string, callback?: HandlerCallBackFn): Be;
+	children(callback?: HandlerCallBackFn): Be;
+	closest(qy: string, callback?: HandlerCallBackFn): Be;
+	closest(callback?: HandlerCallBackFn): Be;
+	lastChild(qy: string, callback?: HandlerCallBackFn): Be;
+	lastChild(callback?: HandlerCallBackFn): Be;
+	firstChild(qy: string, callback?: HandlerCallBackFn): Be;
+	firstChild(callback?: HandlerCallBackFn): Be;
+}
+
+export class WalkHandler
+	implements WalkHandlerInterface, CommonHandler<WalkHandler, WalkHandlerHandle>
+{
 	static methods = Object.values(walkerMethods);
 
 	private beElement: Be;
@@ -77,25 +98,33 @@ export class WalkHandler implements CommonHandler<WalkHandler, WalkHandlerHandle
 		return this.beElement;
 	}
 
-	up(qy: string, callback?: HandlerCallBackFn) {
+	up(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('up')(qy, callback);
 	}
-	previous(qy: string, callback?: HandlerCallBackFn) {
+
+	next(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		return this.methodize('next')(qy, callback);
+	}
+	previous(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('previous')(qy, callback);
 	}
-	siblings(qy: string, callback?: HandlerCallBackFn) {
+	siblings(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('siblings')(qy, callback);
 	}
-	children(qy: string, callback?: HandlerCallBackFn) {
+	children(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('children')(qy, callback);
 	}
-	closest(qy: string, callback?: HandlerCallBackFn) {
+	closest(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('children')(qy, callback);
 	}
-	lastChild(qy: string, callback?: HandlerCallBackFn) {
+	lastChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('children')(qy, callback);
 	}
-	firstChild(qy: string, callback?: HandlerCallBackFn) {
+	firstChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('children')(qy, callback);
 	}
 
@@ -134,7 +163,7 @@ export class WalkHandler implements CommonHandler<WalkHandler, WalkHandlerHandle
 			try {
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
-					ret.push(this.findWhile(el as HTMLElement, method, qy));
+					ret.push(this.selectWhile(el as HTMLElement, method, qy));
 				});
 				callback?.({
 					root: this.beElement,
@@ -151,7 +180,7 @@ export class WalkHandler implements CommonHandler<WalkHandler, WalkHandlerHandle
 		};
 	}
 
-	private findWhile(
+	private selectWhile(
 		element: Element,
 		direction: WalkerMethods,
 		selector: string | undefined
