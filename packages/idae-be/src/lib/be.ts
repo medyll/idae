@@ -59,6 +59,7 @@ export class Be {
 	// text
 	text!: (actions: TextHandlerHandle) => Be;
 	private textHandler!: TextHandler;
+	appendText!: TextHandler['append'];
 	// events
 	events!: (actions: EventHandlerHandle) => Be;
 	private eventHandler!: EventsHandler;
@@ -124,7 +125,7 @@ export class Be {
 		// text
 		this.textHandler = new TextHandler(this);
 		this.dom = this.handle(this.textHandler);
-		this.attach<TextHandler>(this.textHandler, '', TextHandler.methods);
+		this.attach<TextHandler>(this.textHandler, 'Text', TextHandler.methods);
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
@@ -239,7 +240,8 @@ export class Be {
 		const fromMethods = methods ?? from.methods ?? [];
 		fromMethods.forEach((method) => {
 			const methodName = method + suffix;
-			if (!from[method]) console.error(`Method ${method} not found in ${from}`);
+			// console.log(methodName);
+			if (!from[method]) console.error(`Method ${method} not found in ${from}`, from);
 			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
 		});
 	}
