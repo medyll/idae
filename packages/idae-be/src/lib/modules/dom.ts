@@ -3,7 +3,6 @@ import type { HandlerCallbackProps, HandlerCallBackFn, CommonHandler } from '../
 
 enum domMethods {
 	update = 'update',
-	updateText = 'updateText',
 	append = 'append',
 	prepend = 'prepend',
 	remove = 'remove',
@@ -12,23 +11,24 @@ enum domMethods {
 	replace = 'replace',
 	clear = 'clear'
 }
+
+type Content = string | HTMLElement | Be;
 export interface DomHandlerHandle {
 	update?: {
-		content: string | HTMLElement;
+		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
-	updateText?: string | HTMLElement;
 	append?: {
-		content: string | HTMLElement;
+		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
 	prepend?: {
-		content: string | HTMLElement;
+		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
 	remove?: true;
 	replace?: {
-		content: string | HTMLElement;
+		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
 	wrap?: {
@@ -40,20 +40,7 @@ export interface DomHandlerHandle {
 	callback?: (element: HandlerCallbackProps) => void;
 }
 
-/* 
-		let act = {
-			update: 'test',
-			append: { content: '', callback: '' },
-			prepend: { content: '', callback: '' },
-			replace: { content: '', callback: '' },
-			remove: true,
-			clear: true,
-			fire: {'dom:node': ''},
-			normalize: true,
-			wrap: { tag: 'div', callback: '' }
-		};
- */
-export class DomHandler implements CommonHandler<DomHandler> {
+export class DomHandler implements CommonHandler<DomHandler, DomHandlerHandle> {
 	private beElement: Be;
 
 	static methods = Object.values(domMethods);
@@ -112,7 +99,7 @@ export class DomHandler implements CommonHandler<DomHandler> {
 		return this.beElement;
 	}
 
-	update(content: string | HTMLElement, callback?: HandlerCallBackFn): Be {
+	update(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el) {
 				el.innerHTML = content;
@@ -126,12 +113,16 @@ export class DomHandler implements CommonHandler<DomHandler> {
 
 		return this.beElement;
 	}
-	updateText(content: string | HTMLElement, callback?: HandlerCallBackFn) {
-		this.handle({ updateText: content, callback });
-	}
-	append(content: string | HTMLElement, callback?: HandlerCallBackFn): Be {
+
+	append(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
-			el.appendChild(content);
+			if (content instanceof Be) {
+				content.eachNode((child: HTMLElement) => {
+					el.appendChild(child);
+				});
+			} else {
+				el.appendChild(content);
+			}
 			callback?.({
 				fragment: content,
 				be: be(el),
@@ -141,7 +132,7 @@ export class DomHandler implements CommonHandler<DomHandler> {
 		return this.beElement;
 	}
 
-	prepend(content: string | HTMLElement, callback?: HandlerCallBackFn): Be {
+	prepend(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			el.insertBefore(content, el.firstChild);
 			callback?.({
@@ -153,7 +144,7 @@ export class DomHandler implements CommonHandler<DomHandler> {
 		return this.beElement;
 	}
 
-	replace(content: string | HTMLElement, callback?: HandlerCallBackFn) {
+	replace(content: Content, callback?: HandlerCallBackFn) {
 		this.handle({ replace: content, callback });
 	}
 
