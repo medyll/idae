@@ -27,7 +27,7 @@ function getBumpType(commitMessage) {
     return "minor";
   if (lowerCaseMessage.startsWith("fix") || lowerCaseMessage.includes("bug"))
     return "patch";
-  return "patch";
+  return "patch"; // Par défaut
 }
 
 function generateChangesetContent(packageName, bumpType, summary) {
@@ -40,6 +40,7 @@ ${summary}
 }
 
 function sanitizeCommitMessage(message) {
+  // Enlève les préfixes courants et nettoie le message
   const prefixes = [
     "feat:",
     "fix:",
