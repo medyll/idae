@@ -2,8 +2,7 @@
 	import { createBe, toBe } from '$lib/be.js';
 	import { be } from '$lib/index.js';
 
-	$effect(() => { 
-
+	$effect(() => {
 		const d = document.createElement('div');
 
 		be('.content')
