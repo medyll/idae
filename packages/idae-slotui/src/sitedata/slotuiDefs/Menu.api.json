@@ -1,117 +1,117 @@
 {
-  "moduleName": "Menu",
-  "filePath": "src/lib/ui/menu/Menu.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "type": "null | HTMLUListElement",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "menuList",
-      "kind": "let",
-      "description": "@deprecated ",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "menuItemsList",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "data",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "density",
-      "kind": "let",
-      "type": "string",
-      "value": "'tight'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "bordered",
-      "kind": "let",
-      "description": "menu can have no border",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "selectedIndex",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "type": "{     navigate: (idx) => {         // set selectedIndex         selectedIndex = idx;         if (menuAgent)             $menuAgent.selectedIndex = idx;         const target = element.querySelector('[data-selected=true]');         if (target) {             const tD = target.getBoundingClientRect();             const sD = element.getBoundingClientRect();             if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });             }         }     } }",
-      "value": "{     navigate: (idx) => {         // set selectedIndex         selectedIndex = idx;         if (menuAgent)             $menuAgent.selectedIndex = idx;         const target = element.querySelector('[data-selected=true]');         if (target) {             const tD = target.getBoundingClientRect();             const sD = element.getBoundingClientRect();             if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });             }         }     } }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "slot_props": "{ item: any, itemIndex: any, menuItem: any }"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Menu",
+	"filePath": "src/lib/ui/menu/Menu.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"type": "null | HTMLUListElement",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "menuList",
+			"kind": "let",
+			"description": "@deprecated ",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "menuItemsList",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "data",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "density",
+			"kind": "let",
+			"type": "string",
+			"value": "'tight'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "bordered",
+			"kind": "let",
+			"description": "menu can have no border",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "selectedIndex",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"type": "{     navigate: (idx) => {         // set selectedIndex         selectedIndex = idx;         if (menuAgent)             $menuAgent.selectedIndex = idx;         const target = element.querySelector('[data-selected=true]');         if (target) {             const tD = target.getBoundingClientRect();             const sD = element.getBoundingClientRect();             if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });             }         }     } }",
+			"value": "{     navigate: (idx) => {         // set selectedIndex         selectedIndex = idx;         if (menuAgent)             $menuAgent.selectedIndex = idx;         const target = element.querySelector('[data-selected=true]');         if (target) {             const tD = target.getBoundingClientRect();             const sD = element.getBoundingClientRect();             if (tD.top - 10 <= sD.top || tD.bottom >= sD.bottom) {                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });             }         }     } }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"slot_props": "{ item: any, itemIndex: any, menuItem: any }"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

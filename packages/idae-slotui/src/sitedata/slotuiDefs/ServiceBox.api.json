@@ -1,9 +1,9 @@
 {
-  "moduleName": "ServiceBox",
-  "filePath": "src/lib/ui/serviceBox/ServiceBox.svelte",
-  "props": [],
-  "moduleExports": [],
-  "slots": [],
-  "events": [],
-  "typedefs": []
+	"moduleName": "ServiceBox",
+	"filePath": "src/lib/ui/serviceBox/ServiceBox.svelte",
+	"props": [],
+	"moduleExports": [],
+	"slots": [],
+	"events": [],
+	"typedefs": []
 }

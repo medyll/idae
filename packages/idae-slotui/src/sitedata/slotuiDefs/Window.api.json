@@ -1,375 +1,375 @@
 {
-  "moduleName": "Window",
-  "filePath": "src/lib/ui/window/Window.svelte",
-  "props": [
-    {
-      "name": "outer",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "frameId",
-      "kind": "let",
-      "description": "Id of the component's instance",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "title",
-      "kind": "let",
-      "description": "the title appears on the handle bar",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "open",
-      "kind": "let",
-      "description": "boolean to show the window",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "minimized",
-      "kind": "let",
-      "description": "state of the window",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "maximized",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "active",
-      "kind": "let",
-      "description": "is on top of others",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "secondaryTitle",
-      "kind": "let",
-      "description": "the secondaryTitle appears below the title",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "description",
-      "kind": "let",
-      "description": "the description appears somewhere",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showHandle",
-      "kind": "let",
-      "description": "shows or hide the handle, if dismissed, then the whole window is draggable",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onClose",
-      "kind": "let",
-      "description": "actions triggered on click",
-      "type": "() => { }",
-      "value": "() => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onCancel",
-      "kind": "let",
-      "type": "() => { }",
-      "value": "() => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "onValidate",
-      "kind": "let",
-      "type": "() => { }",
-      "value": "() => { }",
-      "isFunction": true,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "hideAcceptButton",
-      "kind": "let",
-      "description": "buttons visible in the bottom bar",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "hideCloseButton",
-      "kind": "let",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "hideCancelButton",
-      "kind": "let",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "description": "style of the component",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "component",
-      "kind": "let",
-      "description": "can be opened with a component",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "componentProps",
-      "kind": "let",
-      "description": "used when props.component is used",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "contentHTML",
-      "kind": "let",
-      "description": "content can be set from a html string",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "parentNode",
-      "kind": "let",
-      "description": "parent of the window",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "description": "icon used on the left side",
-      "type": "string",
-      "value": "'bx:window-alt'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconClose",
-      "kind": "let",
-      "type": "string",
-      "value": "'codicon:close'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "iconValidate",
-      "kind": "let",
-      "type": "string",
-      "value": "'el:ok-circle'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "flow",
-      "kind": "let",
-      "type": "string",
-      "value": "'absolute'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "startPosition",
-      "kind": "let",
-      "description": "start position",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "closeOnValidate",
-      "kind": "let",
-      "description": "close the window on accept",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "removeFromDomOnClose",
-      "kind": "let",
-      "description": "destroy the component on close",
-      "type": "boolean",
-      "value": "false",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "self",
-      "kind": "let",
-      "description": "used to destroy component when opened from function.openWindow",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "componentInstance",
-      "kind": "let",
-      "description": "private",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": true,
-      "constant": false,
-      "reactive": true
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "type": "{     close: () => {         open = false;         if (onClose)             onClose();         delete $wStore.instances[frameId];         if (removeFromDomOnClose && self)             self.$destroy();     },     setActive: () => {         if ($wStore.activeFrame !== frameId)             $wStore.activeFrame = frameId;     } }",
-      "value": "{     close: () => {         open = false;         if (onClose)             onClose();         delete $wStore.instances[frameId];         if (removeFromDomOnClose && self)             self.$destroy();     },     setActive: () => {         if ($wStore.activeFrame !== frameId)             $wStore.activeFrame = frameId;     } }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "fallback": "{#key component}\r\n\t\t\t\t\t\t{#if component}\r\n\t\t\t\t\t\t\t<svelte:component this={component} {...componentProps} bind:formRef />\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t{/key}\r\n\t\t\t\t\t{#if contentHTML}\r\n\t\t\t\t\t\t{@html contentHTML}\r\n\t\t\t\t\t{/if}",
-      "slot_props": "{}"
-    },
-    {
-      "name": "windowButtonZone",
-      "default": false,
-      "fallback": "<div class=\"buttonZone\">\r\n\t\t\t\t\t\t{#if !hideCloseButton}\r\n\t\t\t\t\t\t\t<Button naked icon={iconClose} on:click={actions.close}>Close</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t{#if !hideCancelButton}\r\n\t\t\t\t\t\t\t<Button naked icon=\"ant-design:ellipsis-outlined\" on:click={handleCancel}\r\n\t\t\t\t\t\t\t\t>Cancel\r\n\t\t\t\t\t\t\t</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t{#if !hideAcceptButton}\r\n\t\t\t\t\t\t\t<Button icon={iconValidate} on:click={handleValidate}>Validate</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t</div>",
-      "slot_props": "{}"
-    },
-    {
-      "name": "windowIcon",
-      "default": false,
-      "fallback": "<Icon fontSize=\"small\" {icon} />",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Window",
+	"filePath": "src/lib/ui/window/Window.svelte",
+	"props": [
+		{
+			"name": "outer",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "frameId",
+			"kind": "let",
+			"description": "Id of the component's instance",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "title",
+			"kind": "let",
+			"description": "the title appears on the handle bar",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "open",
+			"kind": "let",
+			"description": "boolean to show the window",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "minimized",
+			"kind": "let",
+			"description": "state of the window",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "maximized",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "active",
+			"kind": "let",
+			"description": "is on top of others",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "secondaryTitle",
+			"kind": "let",
+			"description": "the secondaryTitle appears below the title",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "description",
+			"kind": "let",
+			"description": "the description appears somewhere",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showHandle",
+			"kind": "let",
+			"description": "shows or hide the handle, if dismissed, then the whole window is draggable",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onClose",
+			"kind": "let",
+			"description": "actions triggered on click",
+			"type": "() => { }",
+			"value": "() => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onCancel",
+			"kind": "let",
+			"type": "() => { }",
+			"value": "() => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "onValidate",
+			"kind": "let",
+			"type": "() => { }",
+			"value": "() => { }",
+			"isFunction": true,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "hideAcceptButton",
+			"kind": "let",
+			"description": "buttons visible in the bottom bar",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "hideCloseButton",
+			"kind": "let",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "hideCancelButton",
+			"kind": "let",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"description": "style of the component",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "component",
+			"kind": "let",
+			"description": "can be opened with a component",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "componentProps",
+			"kind": "let",
+			"description": "used when props.component is used",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "contentHTML",
+			"kind": "let",
+			"description": "content can be set from a html string",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "parentNode",
+			"kind": "let",
+			"description": "parent of the window",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"description": "icon used on the left side",
+			"type": "string",
+			"value": "'bx:window-alt'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconClose",
+			"kind": "let",
+			"type": "string",
+			"value": "'codicon:close'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "iconValidate",
+			"kind": "let",
+			"type": "string",
+			"value": "'el:ok-circle'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "flow",
+			"kind": "let",
+			"type": "string",
+			"value": "'absolute'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "startPosition",
+			"kind": "let",
+			"description": "start position",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "closeOnValidate",
+			"kind": "let",
+			"description": "close the window on accept",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "removeFromDomOnClose",
+			"kind": "let",
+			"description": "destroy the component on close",
+			"type": "boolean",
+			"value": "false",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "self",
+			"kind": "let",
+			"description": "used to destroy component when opened from function.openWindow",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "componentInstance",
+			"kind": "let",
+			"description": "private",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": true,
+			"constant": false,
+			"reactive": true
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"type": "{     close: () => {         open = false;         if (onClose)             onClose();         delete $wStore.instances[frameId];         if (removeFromDomOnClose && self)             self.$destroy();     },     setActive: () => {         if ($wStore.activeFrame !== frameId)             $wStore.activeFrame = frameId;     } }",
+			"value": "{     close: () => {         open = false;         if (onClose)             onClose();         delete $wStore.instances[frameId];         if (removeFromDomOnClose && self)             self.$destroy();     },     setActive: () => {         if ($wStore.activeFrame !== frameId)             $wStore.activeFrame = frameId;     } }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"fallback": "{#key component}\r\n\t\t\t\t\t\t{#if component}\r\n\t\t\t\t\t\t\t<svelte:component this={component} {...componentProps} bind:formRef />\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t{/key}\r\n\t\t\t\t\t{#if contentHTML}\r\n\t\t\t\t\t\t{@html contentHTML}\r\n\t\t\t\t\t{/if}",
+			"slot_props": "{}"
+		},
+		{
+			"name": "windowButtonZone",
+			"default": false,
+			"fallback": "<div class=\"buttonZone\">\r\n\t\t\t\t\t\t{#if !hideCloseButton}\r\n\t\t\t\t\t\t\t<Button naked icon={iconClose} on:click={actions.close}>Close</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t{#if !hideCancelButton}\r\n\t\t\t\t\t\t\t<Button naked icon=\"ant-design:ellipsis-outlined\" on:click={handleCancel}\r\n\t\t\t\t\t\t\t\t>Cancel\r\n\t\t\t\t\t\t\t</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t\t{#if !hideAcceptButton}\r\n\t\t\t\t\t\t\t<Button icon={iconValidate} on:click={handleValidate}>Validate</Button>\r\n\t\t\t\t\t\t{/if}\r\n\t\t\t\t\t</div>",
+			"slot_props": "{}"
+		},
+		{
+			"name": "windowIcon",
+			"default": false,
+			"fallback": "<Icon fontSize=\"small\" {icon} />",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

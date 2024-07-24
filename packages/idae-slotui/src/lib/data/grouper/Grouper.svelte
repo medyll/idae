@@ -36,16 +36,16 @@
 			return { text: dtaK, data: dtaK } as MenuListItemProps;
 		});
 
-		menuListItems.push({ text: 'un-group', icon: 'cancel',   data: [] });
+		menuListItems.push({ text: 'un-group', icon: 'cancel', data: [] });
 		return {
 			menuListItems,
 			onclick: (field: any) => {
 				//if (field) {
-					activeGroupField = field;
-					groupedData = dataOp.groupBy<T>({
-						dataList: data ?? [],
-						groupBy: field ?? 'undefined'
-					});
+				activeGroupField = field;
+				groupedData = dataOp.groupBy<T>({
+					dataList: data ?? [],
+					groupBy: field ?? 'undefined'
+				});
 				//}
 			}
 		};

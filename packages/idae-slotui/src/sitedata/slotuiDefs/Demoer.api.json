@@ -1,61 +1,61 @@
 {
-  "moduleName": "Demoer",
-  "filePath": "src/lib/base/demoer/Demoer.svelte",
-  "props": [
-    {
-      "name": "title",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "parameters",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "componentArgs",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "component",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "multiple",
-      "kind": "let",
-      "type": "{}",
-      "value": "{}",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Demoer",
+	"filePath": "src/lib/base/demoer/Demoer.svelte",
+	"props": [
+		{
+			"name": "title",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "parameters",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "componentArgs",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "component",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "multiple",
+			"kind": "let",
+			"type": "{}",
+			"value": "{}",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [],
+	"events": [],
+	"typedefs": []
 }

@@ -213,10 +213,10 @@ async function useSvelte2Tsx(files = './src/lib/**/*.svelte') {
 
 	emitDts({
 		libRoot: config.libRoot,
-		declarationDir: 'declarationDir', 
+		declarationDir: 'declarationDir',
 		svelteShimsPath: path.resolve('svelte2tsx/svelte-shims-v4.d.ts')
 	});
- 
+
 	/* svelteFiles.forEach((fileName) => {
 		let content = fs.readFileSync(fileName, 'utf-8');
 		let tr = svelte2tsx(content, { mode: 'dts', isTsFile: true, version: VERSION });

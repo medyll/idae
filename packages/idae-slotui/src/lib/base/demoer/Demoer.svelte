@@ -18,7 +18,7 @@
 
 	let activeParams: T = $state({ ...componentArgs });
 
-	$inspect(activeParams)
+	$inspect(activeParams);
 </script>
 
 {#if title}
@@ -29,8 +29,8 @@
 	{#each parameters?.[parameter]?.values ?? values ?? [] as value}
 		{@const finalValue = value === undefined ? 'unset' : value}
 		<Button
-			width="small" 
-			variant="flat" 
+			width="small"
+			variant="flat"
 			showChip={activeParams[parameter] === value}
 			onclick={() => {
 				activeParams[parameter] = value;

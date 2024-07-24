@@ -71,7 +71,7 @@
 						</div>
 						<div style="width:250px;" class="h-large overflow-auto">
 							<pre>{JSON.stringify(
-									selectedData.filter((x:any) => x),
+									selectedData.filter((x: any) => x),
 									null,
 									' '
 								)}</pre>

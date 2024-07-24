@@ -16,9 +16,8 @@
 		...rest
 	}: ExpandProps<IconAppProps> = $props();
 
-
 	iconSize = iconSize || 'small';
-	
+
 	const sizes: Record<ElementProps['iconSize'], string> = iconFontSize;
 
 	let finalI = $derived(ico?.icon ?? (typeof icon === 'object' ? icon.icon : icon));
@@ -45,6 +44,6 @@
 	/>
 {/key}
 
-<style   lang="scss">
+<style lang="scss">
 	@import './icon.scss';
 </style>

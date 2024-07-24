@@ -1,124 +1,124 @@
 {
-  "moduleName": "ListTitle",
-  "filePath": "src/lib/data/list/ListTitle.svelte",
-  "props": [
-    {
-      "name": "class",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "element",
-      "kind": "let",
-      "value": "null",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "style",
-      "kind": "let",
-      "type": "string",
-      "value": "''",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "icon",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "primary",
-      "kind": "let",
-      "description": "displayed as H5",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "secondary",
-      "kind": "let",
-      "description": "secondary title",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "action",
-      "kind": "let",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "density",
-      "kind": "let",
-      "type": "string",
-      "value": "'default'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    { "name": "__default__", "default": true, "slot_props": "{}" },
-    {
-      "name": "listItemContent",
-      "default": false,
-      "fallback": "<div class=\"listItemContent\">\r\n\t\t\t{#if primary || $$slots.listItemPrimary || $$slots.primary}\r\n\t\t\t\t<slot name=\"listItemPrimary\"><slot name=\"primary\"><h5>{primary}</h5></slot></slot>\r\n\t\t\t{/if}\r\n\t\t\t{#if secondary || $$slots.listTitleSecondary}\r\n\t\t\t\t<div>\r\n\t\t\t\t\t<slot name=\"listTitleSecondary\">{secondary}</slot>\r\n\t\t\t\t</div>\r\n\t\t\t{/if}\r\n\t\t</div>\r\n\t\t<slot />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "listItemPrimary",
-      "default": false,
-      "fallback": "<slot name=\"primary\"><h5>{primary}</h5></slot>",
-      "slot_props": "{}"
-    },
-    { "name": "listTitleAction", "default": false, "slot_props": "{}" },
-    {
-      "name": "listTitleIcon",
-      "default": false,
-      "fallback": "<Icon {icon} />",
-      "slot_props": "{}"
-    },
-    {
-      "name": "listTitleSecondary",
-      "default": false,
-      "fallback": "{secondary}",
-      "slot_props": "{}"
-    },
-    {
-      "name": "primary",
-      "default": false,
-      "fallback": "<h5>{primary}</h5>",
-      "slot_props": "{}"
-    }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "ListTitle",
+	"filePath": "src/lib/data/list/ListTitle.svelte",
+	"props": [
+		{
+			"name": "class",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "element",
+			"kind": "let",
+			"value": "null",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "style",
+			"kind": "let",
+			"type": "string",
+			"value": "''",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "icon",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "primary",
+			"kind": "let",
+			"description": "displayed as H5",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "secondary",
+			"kind": "let",
+			"description": "secondary title",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "action",
+			"kind": "let",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "density",
+			"kind": "let",
+			"type": "string",
+			"value": "'default'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{ "name": "__default__", "default": true, "slot_props": "{}" },
+		{
+			"name": "listItemContent",
+			"default": false,
+			"fallback": "<div class=\"listItemContent\">\r\n\t\t\t{#if primary || $$slots.listItemPrimary || $$slots.primary}\r\n\t\t\t\t<slot name=\"listItemPrimary\"><slot name=\"primary\"><h5>{primary}</h5></slot></slot>\r\n\t\t\t{/if}\r\n\t\t\t{#if secondary || $$slots.listTitleSecondary}\r\n\t\t\t\t<div>\r\n\t\t\t\t\t<slot name=\"listTitleSecondary\">{secondary}</slot>\r\n\t\t\t\t</div>\r\n\t\t\t{/if}\r\n\t\t</div>\r\n\t\t<slot />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "listItemPrimary",
+			"default": false,
+			"fallback": "<slot name=\"primary\"><h5>{primary}</h5></slot>",
+			"slot_props": "{}"
+		},
+		{ "name": "listTitleAction", "default": false, "slot_props": "{}" },
+		{
+			"name": "listTitleIcon",
+			"default": false,
+			"fallback": "<Icon {icon} />",
+			"slot_props": "{}"
+		},
+		{
+			"name": "listTitleSecondary",
+			"default": false,
+			"fallback": "{secondary}",
+			"slot_props": "{}"
+		},
+		{
+			"name": "primary",
+			"default": false,
+			"fallback": "<h5>{primary}</h5>",
+			"slot_props": "{}"
+		}
+	],
+	"events": [],
+	"typedefs": []
 }

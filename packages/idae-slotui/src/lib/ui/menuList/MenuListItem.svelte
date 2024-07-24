@@ -11,7 +11,7 @@
 
 	let {
 		class: className = '',
-		text ,
+		text,
 		action = undefined,
 		iconFirst = {} as IconObj,
 		iconLast = {} as IconObj,
@@ -29,8 +29,8 @@
 		onMenuItemClick,
 		onclick,
 		itemIndex = undefined,
-		tall = menuStateContext?.tall  , 
-		width = menuStateContext?.width  , 
+		tall = menuStateContext?.tall,
+		width = menuStateContext?.width,
 		children,
 		menuItemFirst,
 		menuItemLast,
@@ -114,7 +114,7 @@
 	{/if}
 	<div class="menu-list-item-text" class:wrap>
 		<Slotted child={children} slotArgs={data}>
-			{data?.[presentationField] ?? text}   
+			{data?.[presentationField] ?? text}
 		</Slotted>
 	</div>
 	{#if menuItemLast || action || iconLast}

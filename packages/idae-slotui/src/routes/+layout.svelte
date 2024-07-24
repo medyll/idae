@@ -27,7 +27,7 @@
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
 
-	import {cssDom} from "@medyll/dom-events"
+	import { cssDom } from '@medyll/dom-events';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts
@@ -68,8 +68,6 @@
 	$effect(() => {
 		scrollSpy();
 	});
-
- 
 </script>
 
 <svelte:head>
@@ -106,7 +104,7 @@
 		}
 	</script>
 </svelte:head>
-<SlotuiSheet  />
+<SlotuiSheet />
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer
@@ -117,14 +115,10 @@
 		primary="svelte slotted"
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
-		<MenuList 
-			width="full"
-			showLastOnSelected={true}
-			style="height:100%;overflow:auto;width:100%;;"
-		>
+		<MenuList width="full" showLastOnSelected={true} style="height:100%;overflow:auto;width:100%;;">
 			<Looper data={Object.values(slotuiCatalog)} groupBy="group">
 				{#snippet children({ item })}
-					<MenuListItem 
+					<MenuListItem
 						iconLast={{ icon: 'chevron-right' }}
 						selected={item?.code === data?.params?.component}
 						data={item}

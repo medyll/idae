@@ -2,7 +2,7 @@
   "name": "@config/prettier-config",
   "scope": "@config",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "exports": "./index.js",
   "dependencies": {
     "prettier": "^2.8.0"

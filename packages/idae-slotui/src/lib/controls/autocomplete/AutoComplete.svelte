@@ -80,6 +80,7 @@
 		return data ? field.map((field) => data[field]).join(' ') : '';
 	}
 </script>
+
 {popperOpen}
 <Popper
 	bind:isOpen={popperOpen}

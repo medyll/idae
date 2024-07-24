@@ -1,23 +1,16 @@
 <script lang="ts">
-
-
-	cssDom('[data-cssDom]',{ 
-			
-	}).each((element,changes) => {
-		console.log(element,changes);
+	cssDom('[data-cssDom]', {}).each((element, changes) => {
+		console.log(element, changes);
 	});
-
 
 	import { onMount } from 'svelte';
 	import '$lib/htmluModules.js';
-	import { cssDom, htmlDom } from  '$lib/index.js';
+	import { cssDom, htmlDom } from '$lib/index.js';
 	let timer: NodeJS.Timeout;
 	let timerData = 0;
 	let timerDelay = 5000;
 
 	let showWidget = false;
-
-
 
 	function playIt(delay: number) {
 		timer = setTimeout(() => {
@@ -29,9 +22,6 @@
 	}
 
 	onMount(() => {
-
-		 
-
 		playIt(timerDelay);
 		return () => {
 			clearTimeout(timer);
@@ -68,7 +58,7 @@
 	<div data-htmlu-module-id="myModule">module !!</div>
 	<div data-auto-track="true">module !!</div>
 	<div data-auto-track="true">module !!</div>
-	<div data-auto-track="true" data-htmlu-module >module !!</div>
+	<div data-auto-track="true" data-htmlu-module>module !!</div>
 	<!-- <div data-auto-track="true">
 		<script data-attr="htmludom" lang="ts">
 			//console.log(this);

@@ -15,7 +15,7 @@
 <InPlaceEdit {...activeParams} />`;
 
 	let savedValue = 's';
-</script> 
+</script>
 
 <ComponentDemo component="InPlaceEdit" cite="Edit in place,  save in haste. - Developer's Proverb">
 	<DemoPage component="InPlaceEdit" code={code1}>

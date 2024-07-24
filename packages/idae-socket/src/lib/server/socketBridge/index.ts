@@ -1,10 +1,6 @@
-'use strict'
-import {socketRoom} from './socketRoom';
-import {socketIoServerInstance} from './socketIoServer';
-import {socketThrottle} from './socketThrottle';
+'use strict';
+import { socketRoom } from './socketRoom';
+import { socketIoServerInstance } from './socketIoServer';
+import { socketThrottle } from './socketThrottle';
 
-export {
-  socketIoServerInstance,
-  socketRoom,
-  socketThrottle
-}
+export { socketIoServerInstance, socketRoom, socketThrottle };

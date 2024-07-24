@@ -114,16 +114,16 @@
 		</div>
 	{/if}
 	{#if step === 'confirm'}
-		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>			 
-				<IconButton
-					onclick={handleClickCancel}
-					width="tiny"
-					ratio="1/1"
-					variant="naked"
-					icon={iconCancel}
-					{tall}
-					title="cancel"
-				/> 
+		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
+			<IconButton
+				onclick={handleClickCancel}
+				width="tiny"
+				ratio="1/1"
+				variant="naked"
+				icon={iconCancel}
+				{tall}
+				title="cancel"
+			/>
 			<Slotted child={children} slotArgs={{ step }}>
 				<IconButton
 					title="confirm"

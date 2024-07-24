@@ -1,72 +1,72 @@
 {
-  "moduleName": "Panel",
-  "filePath": "src/lib/ui/panel/Panel.svelte",
-  "props": [
-    {
-      "name": "title",
-      "kind": "let",
-      "type": "string",
-      "value": "'not set'",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "panelId",
-      "kind": "let",
-      "description": "panelId will be bound to the targeted panelSlide",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "data",
-      "kind": "let",
-      "description": "data will be bound to the targeted panelSlide",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "showNavigation",
-      "kind": "let",
-      "description": "data will be bound to the targeted panelSlide",
-      "type": "boolean",
-      "value": "true",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": false,
-      "reactive": false
-    },
-    {
-      "name": "actions",
-      "kind": "const",
-      "type": "{     load: (args) => { } }",
-      "value": "{     load: (args) => { } }",
-      "isFunction": false,
-      "isFunctionDeclaration": false,
-      "isRequired": false,
-      "constant": true,
-      "reactive": false
-    }
-  ],
-  "moduleExports": [],
-  "slots": [
-    {
-      "name": "__default__",
-      "default": true,
-      "slot_props": "{ panelId: any, actions: {     load: (args) => { } } }"
-    },
-    { "name": "panelButtonNext", "default": false, "slot_props": "{}" },
-    { "name": "panelButtonPrevious", "default": false, "slot_props": "{}" }
-  ],
-  "events": [],
-  "typedefs": []
+	"moduleName": "Panel",
+	"filePath": "src/lib/ui/panel/Panel.svelte",
+	"props": [
+		{
+			"name": "title",
+			"kind": "let",
+			"type": "string",
+			"value": "'not set'",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "panelId",
+			"kind": "let",
+			"description": "panelId will be bound to the targeted panelSlide",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "data",
+			"kind": "let",
+			"description": "data will be bound to the targeted panelSlide",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "showNavigation",
+			"kind": "let",
+			"description": "data will be bound to the targeted panelSlide",
+			"type": "boolean",
+			"value": "true",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": false,
+			"reactive": false
+		},
+		{
+			"name": "actions",
+			"kind": "const",
+			"type": "{     load: (args) => { } }",
+			"value": "{     load: (args) => { } }",
+			"isFunction": false,
+			"isFunctionDeclaration": false,
+			"isRequired": false,
+			"constant": true,
+			"reactive": false
+		}
+	],
+	"moduleExports": [],
+	"slots": [
+		{
+			"name": "__default__",
+			"default": true,
+			"slot_props": "{ panelId: any, actions: {     load: (args) => { } } }"
+		},
+		{ "name": "panelButtonNext", "default": false, "slot_props": "{}" },
+		{ "name": "panelButtonPrevious", "default": false, "slot_props": "{}" }
+	],
+	"events": [],
+	"typedefs": []
 }

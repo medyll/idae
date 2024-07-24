@@ -1,5 +1,4 @@
-import { type ElementProps , type ContainerQueriesUnitsAttributes } from './index.ts';
-
+import { type ElementProps, type ContainerQueriesUnitsAttributes } from './index.ts';
 
 declare module 'svelte/elements' {
 	export interface SvelteHTMLElements {
@@ -17,10 +16,10 @@ declare module 'svelte/elements' {
 		/** media queries */
 		'hide-more-than'?: string;
 		/** for container of containerQueries */
-		container?:   `inline` | `size` | `normal`;
-		'hide-max-width'?:  ContainerQueriesUnitsAttributes;
+		container?: `inline` | `size` | `normal`;
+		'hide-max-width'?: ContainerQueriesUnitsAttributes;
 		'hide-max-height'?: ContainerQueriesUnitsAttributes;
-		'hide-min-width'?:  ContainerQueriesUnitsAttributes;
+		'hide-min-width'?: ContainerQueriesUnitsAttributes;
 		'hide-min-height'?: ContainerQueriesUnitsAttributes;
 	}
 }

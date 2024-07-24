@@ -5,8 +5,6 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { parameters, componentArgs } from './types.js';
 
- 
-
 	let code = `
 <Looper groupBy={"lastname"}  {data}>
 	{#snippet children({ item, idx })}
@@ -26,7 +24,7 @@
 				<Looper {...activeParams} groupBy={'lastname'}>
 					{#snippet children({ item, idx })}
 						<div class="flex">
-							<div>{item.name}</div> 
+							<div>{item.name}</div>
 							<div>{item.id}</div>
 							<div>{item.id}</div>
 						</div>

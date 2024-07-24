@@ -1,7 +1,7 @@
 
 # @medyll/idae-be
 
-A lightweight, chainable DOM manipulation library for modern web development.
+A powerful DOM manipulation library with a callback-based approach for precise element targeting.
 
 ## Installation
 
@@ -9,179 +9,146 @@ A lightweight, chainable DOM manipulation library for modern web development.
 npm install @medyll/idae-be
 ```
 
-or
-
-```bash
-yarn add @medyll/idae-be
-```
-
-## Introduction
-
-`@medyll/idae-be` is a powerful and flexible DOM manipulation library that provides a fluent interface for common DOM operations. It's designed to make working with HTML elements easier and more intuitive, with support for chaining methods, handling multiple elements, and performing complex DOM manipulations with ease.
-
 ## Key Features
 
-- Chainable methods for fluid DOM manipulation
-- Support for single elements, arrays of elements, and query selectors
-- Handlers for attributes, DOM manipulation, properties, and data attributes
-- Advanced class manipulation
-- Event handling
-- Element positioning and overlap functionality
-- Lightweight and performant
+- Root object persistence for consistent chaining
+- Callback-based element manipulation for precise targeting
+- Comprehensive DOM traversal and manipulation
+- Event handling, style management, and attribute control
+- Timer integration for dynamic operations
+
+## Unique Approach
+
+Unlike jQuery and other chained libraries, `@medyll/idae-be` always returns the root object. This approach allows for consistent chaining while using callbacks to manipulate targeted elements. This design provides more control and clarity in complex DOM operations.
 
 ## Basic Usage
 
 ```javascript
-import { be } from '@medyll/idae-be';
+import { be, toBe } from '@medyll/idae-be';
 
-// Select an element and modify it
-be('#myElement')
-  .classAdd('highlight')
-  .setStyle('color: blue; font-size: 16px')
-  .on('click', () => console.log('Clicked!'));
+be('#container')
+  .append(toBe('<div>New content</div>'), ({ be }) => {
+    be
+      .addClass('highlight')
+      .on('click', () => console.log('Clicked!'));
+  })
+  .prepend(toBe('<h1>Title</h1>'))
+  .children(undefined, ({ be }) => {
+    be.setStyle({ color: 'blue' });
+  });
 ```
 
 ## API Reference
 
-### Element Selection
+### Core Methods
 
-- `be(selector)`: Create a new Be instance
-    - `selector`: string | HTMLElement | HTMLElement[]
-
-### Class Manipulation
-
-- `classAdd(className: string): Be`
-- `classRemove(className: string): Be`
-- `classToggle(className: string): Be`
-- `classes(actions: ClassHandlerHandler): Be`
-    - `actions.add`: Classes to add (string or string[])
-    - `actions.remove`: Classes to remove (string or string[])
-    - `actions.toggle`: Classes to toggle (string or string[])
-    - `actions.replace`: Classes to replace (string "oldClass newClass" or [string, string][])
+- `be(selector: string | HTMLElement | HTMLElement[]): Be` - Create a new Be instance
+- `toBe(str: string | HTMLElement, options?: { tag?: string }): Be` - Convert string or HTMLElement to Be instance
+- `createBe(tagOrHtml: string, options?: Object): Be` - Create a new Be element
 
 ### DOM Manipulation
 
 - `update(content: string): Be`
-- `updateText(content: string): Be`
 - `append(content: string | HTMLElement): Be`
 - `prepend(content: string | HTMLElement): Be`
+- `insert(mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', element: HTMLElement | Be): Be`
 - `remove(): Be`
 - `replace(content: string | HTMLElement): Be`
 - `clear(): Be`
-- `dom(actions: DomHandlerActions): Be`
-    - `actions.update(content: string): Be`
-    - `actions.updateText(content: string): Be`
-    - `actions.append(content: string | HTMLElement): Be`
-    - `actions.prepend(content: string | HTMLElement): Be`
-    - `actions.remove(): Be`
-    - `actions.replace(content: string | HTMLElement): Be`
-    - `actions.clear(): Be`
+- `normalize(): Be`
+- `wrap(tag?: string): Be`
 
+### Traversal
 
-### Attribute Handling
+- `up(selector?: string, callback?: HandlerCallBackFn): Be`
+- `next(selector?: string, callback?: HandlerCallBackFn): Be`
+- `previous(selector?: string, callback?: HandlerCallBackFn): Be`
+- `siblings(selector?: string, callback?: HandlerCallBackFn): Be`
+- `children(selector?: string, callback?: HandlerCallBackFn): Be`
+- `closest(selector: string, callback?: HandlerCallBackFn): Be`
+- `firstChild(selector?: string, callback?: HandlerCallBackFn): Be`
+- `lastChild(selector?: string, callback?: HandlerCallBackFn): Be`
+- `find(selector: string, callback?: HandlerCallBackFn): Be`
+- `findAll(selector: string, callback?: HandlerCallBackFn): Be`
+- `without(selector: string, callback?: HandlerCallBackFn): Be`
 
-- `attr.get(name?: string): string | null`
-- `attr.set(nameOrObject: string | Record<string, string>, value?: string): Be`
+### Styling
 
-### Data Attribute Handling
+- `setStyle(styles: Record<string, string>): Be`
+- `getStyle(property: string): string | null`
+- `unsetStyle(properties: string[]): Be`
+- `addClass(className: string): Be`
+- `removeClass(className: string): Be`
+- `toggleClass(className: string): Be`
+- `replaceClass(oldClass: string, newClass: string): Be`
 
-- `data.get(key: string): string | null`
-- `data.set(keyOrObject: string | Record<string, string>, value?: string): Be`
-
-### Property Handling
-
-- `prop.get(name: string): any`
-- `prop.set(nameOrObject: string | Record<string, any>, value?: any): Be`
-
-### Event Handling
+### Events
 
 - `on(eventName: string, handler: EventListener): Be`
 - `off(eventName: string, handler: EventListener): Be`
-- `event(actions: EventHandlerActions): Be`
+- `fire(eventName: string, detail?: any): Be`
 
-### Element Positioning
+### Attributes and Properties
 
-- `clonePosition(sourceElement: string | HTMLElement, options?: PositionOptions): Be`
-- `overlapPosition(targetElement: string | HTMLElement, options?: OverlapOptions): Be`
-- `snapTo(targetElement: string | HTMLElement, options: SnapToOptions): Be`
+- `setAttr(name: string, value: string): Be`
+- `getAttr(name: string): string | null`
+- `deleteAttr(name: string): Be`
+- `setData(key: string, value: string): Be`
+- `getData(key: string): string | null`
+- `deleteData(key: string): Be`
 
-## Detailed Examples
+### Timers
 
-### Class Manipulation
+- `timeout(delay: number, callback: HandlerCallBackFn): Be`
+- `interval(delay: number, callback: HandlerCallBackFn): Be`
+- `clearTimeout(): Be`
+- `clearInterval(): Be`
 
-```javascript
-be('.myClass').classes({
-  add: 'newClass anotherClass',
-  remove: 'oldClass',
-  toggle: 'toggleClass',
-  replace: 'oldClass newClass'
-});
-```
-### DOM Manipulation
- 
-```javascript
-// Using individual methods
-be('#myElement').update('<h1>New Heading</h1>');
-be('.myClass').append('<p>Appended paragraph</p>');
-be('[data-id="123"]').remove();
-
-// Using batch operations
-be('#anotherElement').dom({
-  update: '<h1>New Heading</h1>',
-  append: '<p>Appended paragraph</p>',
-  prepend: '<div>Prepended div</div>'
-});
-```
-
-### Event Handling
+## Advanced Example
 
 ```javascript
-be('.button').event({
-  on: {
-    eventName: 'click',
-    handler: (e) => console.log('Clicked!', e)
-  }
-});
+be('#app')
+  .append(toBe('<div id="content"></div>'), ({ be  }) => {
+    be
+      .append(toBe('<button>Add Item</button>'), ({ be }) => {
+        be.on('click', () => {
+          content.append(toBe('<p>New item</p>'), ({ be }) => {
+            be
+              .addClass('item')
+              .setStyle({ color: 'blue' })
+              .on('click', ({ target }) => {
+                be(target).toggleClass('selected');
+              });
+          });
+        });
+      })
+      .children('.item', ({ be }) => {
+        be.setStyle({ padding: '5px', margin: '2px' });
+      });
+  })
+  .up(({ be }) => {
+    be.setStyle({ backgroundColor: '#f0f0f0' });
+  });
 ```
 
-### Element Positioning
-
-```javascript
-be('#floatingElement').clonePosition('#targetElement', {
-  offsetX: 10,
-  offsetY: 20,
-  useTransform: true
-});
-
-be('#overlayElement').overlapPosition('#baseElement', {
-  alignment: 'top',
-  offset: 5
-});
-
-be('#snapElement').snapTo('#anchorElement', {
-  sourceAnchor: 'bottom center',
-  targetAnchor: 'top center',
-  offset: { x: 0, y: 10 }
-});
-```
+This example demonstrates:
+1. Nested element creation and manipulation
+2. Event handling with dynamic content addition
+3. Traversal and bulk operations on children
+4. Accessing and styling parent elements
 
 ## TypeScript Support
 
-This library is written in TypeScript and includes type definitions. You can enjoy full IntelliSense and type checking when using it in a TypeScript project.
+This library is written in TypeScript and includes type definitions for a great developer experience.
 
 ## Browser Support
 
-`@medyll/idae-be` is designed for modern browsers. It uses modern DOM APIs and may require polyfills for older browsers.
+Designed for modern browsers. May require polyfills for older browser support.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please submit pull requests or open issues on our GitHub repository.
 
 ## License
 
 This project is licensed under the MIT License.
-
-## Author
-
- Lebrun Meddy
-
