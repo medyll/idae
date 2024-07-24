@@ -1,37 +1,37 @@
-const { getInfo } = require('@changesets/get-github-info');
+const { getInfo } = require("@changesets/get-github-info");
 
 const changelogFunctions = {
   getDependencyReleaseLine: async (changesets, dependenciesUpdated) => {
-    if (dependenciesUpdated.length === 0) return '';
+    if (dependenciesUpdated.length === 0) return "";
 
     const changesetLinks = changesets.map(
       (changeset) =>
-        `- Updated dependencies [${changeset.commit}](${changeset.link})`
+        `- Updated dependencies [${changeset.commit}](${changeset.link})`,
     );
 
     return [
       `### Dependency Updates`,
-      '',
+      "",
       ...changesetLinks,
-      '',
-      `- Updated ${dependenciesUpdated.join(', ')}`,
-    ].join('\n');
+      "",
+      `- Updated ${dependenciesUpdated.join(", ")}`,
+    ].join("\n");
   },
   getReleaseLine: async (changeset, type) => {
     const [firstLine, ...futureLines] = changeset.summary
-      .split('\n')
+      .split("\n")
       .map((l) => l.trimRight());
 
     let { links } = await getInfo({
-      repo: '@medyll/idae',  
+      repo: "@medyll/idae",
       commit: changeset.commit,
     });
 
     return [
       `- ${firstLine}`,
-      futureLines.map((l) => `  ${l}`).join('\n'),
+      futureLines.map((l) => `  ${l}`).join("\n"),
       links,
-    ].join('\n');
+    ].join("\n");
   },
 };
 
@@ -40,13 +40,13 @@ module.exports = {
   commit: false,
   fixed: [],
   linked: [],
-  access: 'public',
-  baseBranch: 'main',
-  updateInternalDependencies: 'patch',
+  access: "public",
+  baseBranch: "main",
+  updateInternalDependencies: "patch",
   ignore: ["@medyll/idae-socket"],
   ___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH: {
     onlyUpdatePeerDependentsWhenOutOfRange: true,
-    updateInternalDependents: 'always',
+    updateInternalDependents: "always",
     useCalculatedVersionForSnapshots: true,
   },
 };
