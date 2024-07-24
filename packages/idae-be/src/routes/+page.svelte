@@ -1,78 +1,78 @@
 <script lang="ts">
-	import { createBe } from '$lib/be.js';
+	import { createBe, toBe } from '$lib/be.js';
 	import { be } from '$lib/index.js';
 
-	$effect(() => {
-		/* 
-		console.log(be('#ROOT')); 
-		console.log(be('.content'));
-		console.log(be('.content-second')); 
-	*/
+	$effect(() => { 
 
 		const d = document.createElement('div');
 
 		be('.content')
-			.append('<div>Some content appended</div>', ({ be }) => {
-				be.setStyle({
-					display: 'flex',
-					'flex-wrap': 'wrap',
-					color: 'pink',
-					border: '1px solid red'
-				});
-				be.interval(5000, ({ be }) => {
-					be.append('<div>timeout children</div>');
-					be.clearInterval();
+			.append(toBe('appended content element'), ({ be }) => {
+				be.append(toBe('appended content element', { tag: 'button' }), ({ be }) => {
+					be.on('click', () => alert('click')).update('in button', ({ be }) => {});
+				}).timeout(5000, ({ be }) => {
+					be.prepend(toBe('appended content element', { tag: 'span' }));
 				});
 			})
-			.up(undefined, ({ be }) => {
-				be.setStyle({ fontSize: '20px!important', border: '10px solid red' });
-				be.append('<div>append up of .content</div>', ({ be }) => {
-					be.prepend('<div>prepend to append sup of .content</div>');
+			.prepend(toBe('Some content prepended'), ({ be }) => {
+				be.timeout(2500, ({ be }) => {
+					be.prepend(toBe('prepended content element', { tag: 'span' }));
 				});
 			})
-			.next(undefined, ({ be }) => {
-				be.append('<div>   append next  of .content</div>', ({ be }) => {
-					be.normalize();
-				});
+			.up(({ be }) => {
+				be.prepend(toBe('up content element', { tag: 'span' }));
 			})
-			.previous(undefined, ({ be }) => {
-				be?.append('<div>previous</div>');
+			.up('.body', ({ be }) => {
+				be.prepend(toBe('up .body element', { tag: 'span' }));
 			})
-			.siblings(undefined, ({ be }) => {
-				be.append('<div>added siblings</div>');
+			.next(({ be }) => {
+				console.log(be);
+				be.update('--------------------------------------------------');
+			})
+			.previous(({ be }) => {
+				be.update('--------------------------------------------------');
+			})
+			.siblings(({ be }) => {
+				be.prependText('siblings of .content .');
 			})
 			.children(undefined, ({ be }) => {
-				be.append('<div>children</div>');
+				be.appendText('<div>children</div>');
 			})
 			.children(undefined, ({ be }) => {
-				be.append('<div>children</div>');
+				be.appendText('<div>children</div>');
 			})
 			.closest('div', ({ be }) => {
-				be.append('<div>closest div</div>', ({ be }) => {
-					be.append('<div>appended !!!</div>');
-				});
-			});
-		/* .firstChild(undefined, ({ be }) => {
-				be.append('<div>firstChild</div>');
+				be.appendText('<div>closest div</div>');
+			})
+			.firstChild(undefined, ({ be }) => {
+				be.appendText('<div>firstChild</div>');
 			})
 			.lastChild(undefined, ({ be }) => {
-				be.append('<div>lastChild of .content</div>');
+				be.appendText('<div>lastChild of .content</div>');
+			})
+			.wrap('div', ({ be }) => {
+				//be.prepend(toBe('up .body element', { tag: 'span' }));
 			})
 			.find('div', ({ be }) => {
-				console.log(be); 
-			})		 */
+				console.log(be);
+			});
+		/*  */
 	});
+
+	console.log(be('.content').getAttr('red'));
 </script>
 
-<div id="ROOT">
-	<div>before content</div>
-	<div class="content">
-		<div class="content-one">Content none</div>
-		<div class="content-second">Content second</div>
-		<div class="content-third">Content third</div>
+<div class="body">
+	<div id="ROOT">
+		<div></div>
+		<div class="content" red="red" style="border:1px solid red">
+			<div class="content-one"></div>
+			<div class="content-second"></div>
+			<div class="content-third"></div>
+		</div>
+		<div></div>
+		<div title="red"></div>
 	</div>
-	<div>after content</div>
-	<div>to Feed</div>
 </div>
 
 <style>

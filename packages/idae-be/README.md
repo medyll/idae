@@ -27,14 +27,14 @@ Unlike jQuery and other chained libraries, `@medyll/idae-be` always returns the 
 import { be, toBe } from '@medyll/idae-be';
 
 be('#container')
-  .append(toBe('<div>New content</div>'), ({ be: newElement }) => {
-    newElement
+  .append(toBe('<div>New content</div>'), ({ be }) => {
+    be
       .addClass('highlight')
       .on('click', () => console.log('Clicked!'));
   })
   .prepend(toBe('<h1>Title</h1>'))
-  .children(undefined, ({ be: children }) => {
-    children.setStyle({ color: 'blue' });
+  .children(undefined, ({ be }) => {
+    be.setStyle({ color: 'blue' });
   });
 ```
 
@@ -108,12 +108,12 @@ be('#container')
 
 ```javascript
 be('#app')
-  .append(toBe('<div id="content"></div>'), ({ be: content }) => {
-    content
-      .append(toBe('<button>Add Item</button>'), ({ be: button }) => {
-        button.on('click', () => {
-          content.append(toBe('<p>New item</p>'), ({ be: newItem }) => {
-            newItem
+  .append(toBe('<div id="content"></div>'), ({ be  }) => {
+    be
+      .append(toBe('<button>Add Item</button>'), ({ be }) => {
+        be.on('click', () => {
+          content.append(toBe('<p>New item</p>'), ({ be }) => {
+            be
               .addClass('item')
               .setStyle({ color: 'blue' })
               .on('click', ({ target }) => {
@@ -126,8 +126,8 @@ be('#app')
         be.setStyle({ padding: '5px', margin: '2px' });
       });
   })
-  .up(({ be: body }) => {
-    body.setStyle({ backgroundColor: '#f0f0f0' });
+  .up(({ be }) => {
+    be.setStyle({ backgroundColor: '#f0f0f0' });
   });
 ```
 
