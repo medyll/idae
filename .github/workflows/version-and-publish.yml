@@ -3,13 +3,19 @@ name: Release and Publish
 on:
   push:
     branches:
-      - dev
+      - main
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   release-and-publish:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       
@@ -20,7 +26,7 @@ jobs:
           cat .changeset/config.json
       
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
@@ -38,7 +44,7 @@ jobs:
         run: node .github/scripts/generate-changesets.js
       
       - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1.4.1
+        uses: changesets/action@v1
         with:
           publish: npx changeset publish
         env:
