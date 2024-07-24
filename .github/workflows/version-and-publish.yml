@@ -25,6 +25,12 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
       
+      - name: Verify and update package.json files
+        run: node scripts/verify-packages.js
+
+      - name: Update package-lock.json
+        run: npm install --package-lock-only
+
       - name: Install dependencies
         run: npm ci
       
@@ -44,7 +50,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "chore: update versions and changelog" || echo "No changes to commit"
+          git commit -m "chore: update versions, changelog, and package-lock.json" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref }} || echo "No changes to push"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
