@@ -1,10 +1,9 @@
-/**
- * Handles positioning operations for Be elements.
- */
-
 import { Be } from '../be.js';
 import type { CommonHandler, HandlerCallBackFn, HandlerCallbackProps } from '../types.js';
 
+/**
+ * Enum representing the available walker methods.
+ */
 export enum walkerMethods {
 	up = 'up',
 	next = 'next',
@@ -15,11 +14,15 @@ export enum walkerMethods {
 	lastChild = 'lastChild',
 	firstChild = 'firstChild',
 	find = 'find',
-	findAll = 'findAll'
+	findAll = 'findAll',
+	without = 'without'
 }
 
 export type WalkerMethods = keyof typeof walkerMethods;
 
+/**
+ * Interface defining the structure for walk handler actions.
+ */
 export interface WalkHandlerHandle {
 	up?: {
 		selector: string;
@@ -61,8 +64,15 @@ export interface WalkHandlerHandle {
 		selector: string;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
+	without?: {
+		selector: string;
+		callback?: (element: HandlerCallbackProps) => void;
+	};
 }
 
+/**
+ * Interface defining the methods available in the WalkHandler.
+ */
 export interface WalkHandlerInterface {
 	up(qy: string, callback?: HandlerCallBackFn): Be;
 	up(callback?: HandlerCallBackFn): Be;
@@ -80,8 +90,14 @@ export interface WalkHandlerInterface {
 	lastChild(callback?: HandlerCallBackFn): Be;
 	firstChild(qy: string, callback?: HandlerCallBackFn): Be;
 	firstChild(callback?: HandlerCallBackFn): Be;
+	find(qy: string, callback?: HandlerCallBackFn): Be | null;
+	findAll(qy: string, callback?: HandlerCallBackFn): Be | null;
+	without(qy: string, callback?: HandlerCallBackFn): Be;
 }
 
+/**
+ * Handles DOM traversal operations for Be elements.
+ */
 export class WalkHandler
 	implements WalkHandlerInterface, CommonHandler<WalkHandler, WalkHandlerHandle>
 {
@@ -89,15 +105,30 @@ export class WalkHandler
 
 	private beElement: Be;
 
+	/**
+	 * Creates an instance of WalkHandler.
+	 * @param beElement - The Be element to operate on.
+	 */
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
 
+	/**
+	 * Handles multiple walk operations.
+	 * @param actions - The actions to perform.
+	 * @returns The Be instance for method chaining.
+	 */
 	handle(actions: WalkHandlerHandle) {
 		console.log('not implemented', actions);
 		return this.beElement;
 	}
 
+	/**
+	 * Traverses up the DOM tree.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	up(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
 			callback = qy;
@@ -106,28 +137,129 @@ export class WalkHandler
 		return this.methodize('up')(qy, callback);
 	}
 
+	/**
+	 * Traverses to the next sibling element.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	next(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('next')(qy, callback);
 	}
+
+	/**
+	 * Traverses to the previous sibling element.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	previous(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('previous')(qy, callback);
 	}
-	siblings(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
-		return this.methodize('siblings')(qy, callback);
+
+	/**
+	 * Filters out elements that match the given selector.
+	 * @param qy - The selector to match elements against for removal.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
+	without(qy: string, callback?: HandlerCallBackFn): Be {
+		const ret: HTMLElement[] = [];
+
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (!el.matches(qy)) {
+				ret.push(el);
+			}
+		});
+
+		const resultBe = Be.elem(ret);
+
+		callback?.({
+			root: this.beElement,
+			be: resultBe,
+			fragment: 'result',
+			requested: resultBe
+		});
+
+		return this.beElement;
 	}
+
+	/**
+	 * Gets all sibling elements.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
+	siblings(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
+
+		const ret: HTMLElement[] = [];
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (el.parentNode) {
+				const siblings = Array.from(el.parentNode.children).filter((child) => child !== el);
+				ret.push(...siblings.filter((sibling) => !qy || sibling.matches(qy)));
+			}
+		});
+
+		callback?.({
+			root: this.beElement,
+			be: Be.elem(ret),
+			fragment: 'result',
+			requested: Be.elem(ret)
+		});
+
+		return this.beElement;
+	}
+
+	/**
+	 * Gets all child elements.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	children(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		return this.methodize('children')(qy, callback);
 	}
+
+	/**
+	 * Finds the closest ancestor that matches the selector.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	closest(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
-		return this.methodize('children')(qy, callback);
-	}
-	lastChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
-		return this.methodize('children')(qy, callback);
-	}
-	firstChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
-		return this.methodize('children')(qy, callback);
+		return this.methodize('closest')(qy, callback);
 	}
 
+	/**
+	 * Gets the last child element.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
+	lastChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		return this.methodize('lastChild')(qy, callback);
+	}
+
+	/**
+	 * Gets the first child element.
+	 * @param qy - Optional selector or callback function.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
+	firstChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		return this.methodize('firstChild')(qy, callback);
+	}
+
+	/**
+	 * Finds the first descendant that matches the selector.
+	 * @param qy - The selector to match against.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	find(qy: string, callback?: HandlerCallBackFn): Be | null {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
@@ -143,10 +275,16 @@ export class WalkHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Finds all descendants that match the selector.
+	 * @param qy - The selector to match against.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 */
 	findAll(qy: string, callback?: HandlerCallBackFn): Be | null {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			ret.push(el.querySelectorAll(qy) as HTMLElement[]);
+			ret.push(...Array.from(el.querySelectorAll(qy)));
 		});
 		callback?.({
 			root: this.beElement,
@@ -158,12 +296,18 @@ export class WalkHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Helper method to create a function for each walk method.
+	 * @param method - The walk method to create a function for.
+	 * @returns A function that performs the specified walk method.
+	 */
 	private methodize(method: WalkerMethods) {
 		return (qy?: string, callback?: HandlerCallBackFn) => {
 			try {
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
-					ret.push(this.selectWhile(el as HTMLElement, method, qy));
+					const result = this.selectWhile(el as HTMLElement, method, qy);
+					if (result) ret.push(result);
 				});
 				callback?.({
 					root: this.beElement,
@@ -180,6 +324,13 @@ export class WalkHandler
 		};
 	}
 
+	/**
+	 * Helper method to select elements based on the specified method and selector.
+	 * @param element - The starting element.
+	 * @param direction - The direction to traverse.
+	 * @param selector - Optional selector to filter elements.
+	 * @returns The selected HTMLElement or null if not found.
+	 */
 	private selectWhile(
 		element: Element,
 		direction: WalkerMethods,
@@ -205,6 +356,7 @@ export class WalkHandler
 		}
 
 		while (sibling) {
+			console.log({ direction, selector, sibling });
 			if (!selector || sibling?.matches(selector)) {
 				return sibling;
 			}
