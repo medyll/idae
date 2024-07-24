@@ -1,7 +1,7 @@
 import { type AttrHandlerHandle, AttrHandler } from './modules/attrs.js';
 import { StylesHandler, type BeStylesHandler } from './modules/styles.js';
 import { BeUtils } from './utils.js';
-import type { IsWhat } from './types.js';
+import type { CommonHandler, IsWhat } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './modules/data.js';
 import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
@@ -66,6 +66,7 @@ export class Be {
 	text!: (actions: TextHandlerHandle) => Be;
 	private textHandler!: TextHandler;
 	appendText!: TextHandler['append'];
+	prependText!: TextHandler['prepend'];
 	// events
 	events!: (actions: EventHandlerHandle) => Be;
 	private eventHandler!: EventsHandler;
@@ -84,6 +85,7 @@ export class Be {
 	private walkHandler!: WalkHandler;
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
+	without!: WalkHandler['without'];
 	previous!: WalkHandler['previous'];
 	siblings!: WalkHandler['siblings'];
 	children!: WalkHandler['children'];
@@ -109,54 +111,54 @@ export class Be {
 		// styles
 		this.styleHandler = new StylesHandler(this);
 		this.styles = this.handle(this.styleHandler);
-		this.attach<StylesHandler>(this.styleHandler, 'Style', StylesHandler.methods);
+		this.attach(StylesHandler, 'Style');
 		// properties
 		this.propHandler = new PropsHandler(this);
 		this.props = this.handle(this.styleHandler);
-		this.attach<PropsHandler>(this.propHandler, 'Prop', PropsHandler.methods);
+		this.attach<PropsHandler>(PropsHandler, 'Prop');
 		// dataSet
 		this.dataHandler = new DataHandler(this);
 		this.data = this.handle(this.styleHandler);
-		this.attach<DataHandler>(this.dataHandler, 'Data', DataHandler.methods);
+		this.attach<DataHandler>(DataHandler, 'Data');
 		// attributes
 		this.attrHandler = new AttrHandler(this);
 		this.attrs = this.handle(this.styleHandler);
-		this.attach<AttrHandler>(this.attrHandler, 'Attr', AttrHandler.methods);
+		this.attach<AttrHandler>(AttrHandler, 'Attr');
 
 		// position
 		this.positionHandler = new PositionHandler(this);
 		this.position = this.handle(this.positionHandler);
-		this.attach<PositionHandler>(this.positionHandler, '', PositionHandler.methods);
+		this.attach<PositionHandler>(PositionHandler, 'Position');
 
 		// text
 		this.textHandler = new TextHandler(this);
 		this.dom = this.handle(this.textHandler);
-		this.attach<TextHandler>(this.textHandler, 'Text', TextHandler.methods);
+		this.attach<TextHandler>(TextHandler, 'Text');
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
 		this.dom = this.handle(this.domHandler);
-		this.attach<DomHandler>(this.domHandler, '', DomHandler.methods);
+		this.attach<DomHandler>(DomHandler);
 
 		// events
 		this.eventHandler = new EventsHandler(this);
 		this.events = this.handle(this.eventHandler);
-		this.attach<EventsHandler>(this.eventHandler, '', EventsHandler.methods);
+		this.attach<EventsHandler>(EventsHandler);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
 		this.classes = this.handle(this.classesHandler);
-		this.attach<ClassesHandler>(this.classesHandler, 'Class', ClassesHandler.methods);
+		this.attach<ClassesHandler>(ClassesHandler, 'Class');
 
 		// walk
 		this.walkHandler = new WalkHandler(this);
 		this.walk = this.handle(this.walkHandler);
-		this.attach<WalkHandler>(this.walkHandler, '', WalkHandler.methods);
+		this.attach<WalkHandler>(WalkHandler);
 
 		// timers
 		this.timerHandler = new TimersHandler(this);
 		this.timers = this.handle(this.timerHandler);
-		this.attach<TimersHandler>(this.timerHandler, '', TimersHandler.methods);
+		this.attach(TimersHandler);
 	}
 
 	static elem(node: HTMLElement | HTMLElement[] | string): Be {
@@ -307,17 +309,22 @@ export class Be {
 		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
 	}
 
-	/* get text() {
-		return this.isWhat === 'element' ? (this.node as HTMLElement).textContent : null;
-	} */
+	private attach<T extends new (beElement: Be) => unknown>(
+		Handler: T & { methods?: string[] },
+		suffix: string = ''
+	) {
+		const fromMethods = Handler.methods || [];
 
-	private attach<T>(from: T, suffix: string = '', methods?: (keyof T)[]) {
-		const fromMethods = methods ?? from.methods ?? [];
-		fromMethods.forEach((method) => {
+		fromMethods.forEach((method: string) => {
+			const handler = new Handler(this);
 			const methodName = method + suffix;
-			// console.log(methodName);
-			if (!from[method]) console.error(`Method ${method} not found in ${from}`, from);
-			if (from[method] && !this[methodName]) this[methodName] = from[method]?.bind(from);
+			if (!(method in handler)) {
+				console.error(`Method ${method} not found in ${Handler.name}`, handler);
+			} else if (methodName in this) {
+				this[methodName] = (...args: any[]) => {
+					return (handler[method] as Function).apply(handler, args);
+				};
+			}
 		});
 	}
 
