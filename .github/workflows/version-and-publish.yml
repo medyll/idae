@@ -28,18 +28,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Install changelog tools
-        run: npm install --save-dev conventional-changelog-cli @changesets/cli
-      
       - name: Generate Changesets
         run: node scripts/generate-changeset.js
 
       - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1
+        uses: changesets/action@v3
         with:
-          version: npx changeset version
-          commit: "chore: version packages"
-          title: "chore: version packages"
           publish: npx changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
