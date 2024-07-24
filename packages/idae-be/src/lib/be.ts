@@ -1,7 +1,7 @@
 import { type AttrHandlerHandle, AttrHandler } from './modules/attrs.js';
 import { StylesHandler, type BeStylesHandler } from './modules/styles.js';
 import { BeUtils } from './utils.js';
-import type { CommonHandler, IsWhat } from './types.js';
+import type { IsWhat } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './modules/data.js';
 import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
