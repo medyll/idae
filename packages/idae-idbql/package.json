@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-idbql",
 	"scope": "@medyll",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -43,6 +43,6 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@medyll/idae-query": "^0.0.1"
+		"@medyll/idae-query": "^0.1.0"
 	}
 }
