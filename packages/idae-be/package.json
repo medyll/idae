@@ -1,5 +1,5 @@
 {
-	"name": "idae-be",
+	"name": "@medyll/idae-be",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
@@ -55,5 +55,6 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"scope": "medyll"
 }

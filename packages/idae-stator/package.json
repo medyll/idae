@@ -1,5 +1,6 @@
 {
-	"name": "idae-stator",
+
+	"name": "@medyll/idae-stator",
 	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
@@ -52,5 +53,6 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"scope": "medyll"
 }
