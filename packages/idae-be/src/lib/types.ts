@@ -25,7 +25,7 @@ export type HandlerCallBack = { callback?: (element: HandlerCallbackProps) => vo
 
 export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
-export interface CommonHandler<T, H, V = unknown> {
+export interface CommonHandler<T = any, H = any, V = unknown> {
 	handle: (actions: H) => Be;
 	methods: string[] | keyof T;
 	valueOf: () => V;
