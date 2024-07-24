@@ -144,6 +144,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	next(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('next')(qy, callback);
 	}
 
@@ -154,6 +158,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	previous(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('previous')(qy, callback);
 	}
 
@@ -221,6 +229,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	children(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('children')(qy, callback);
 	}
 
@@ -231,6 +243,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	closest(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('closest')(qy, callback);
 	}
 
@@ -241,6 +257,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	lastChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('lastChild')(qy, callback);
 	}
 
@@ -251,6 +271,10 @@ export class WalkHandler
 	 * @returns The Be instance for method chaining.
 	 */
 	firstChild(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
+		if (typeof qy === 'function') {
+			callback = qy;
+			qy = undefined;
+		}
 		return this.methodize('firstChild')(qy, callback);
 	}
 
