@@ -1,6 +1,6 @@
 {
-  "name": "@config/eslint-config",
-  "scope": "@config",
+  "name": "@medyll/idae-eslint-config",
+  "scope": "@medyll",
   "version": "1.0.0",
   "type": "module",
   "exports": "./index.js",

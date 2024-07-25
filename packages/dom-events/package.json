@@ -36,7 +36,7 @@
 		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
-		"@config/prettier-config": "^1.0.0",
+		"@medyll/idae-prettier-config": "^1.0.0",
 		"@playwright/test": "^1.45.1",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.18",

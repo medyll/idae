@@ -14,7 +14,7 @@
     "glob": "^7.2.0"
   },
   "devDependencies": {
-    "@config/prettier-config": "^1.0.0",
+    "@medyll/idae-prettier-config": "^1.0.0",
     "@types/fs-extra": "^11.0.4"
   },
   "scope": "medyll"

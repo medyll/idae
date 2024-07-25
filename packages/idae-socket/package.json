@@ -40,7 +40,7 @@
 		"socket.io-client": "^4.7.5"
 	},
 	"devDependencies": {
-		"@config/prettier-config": "^1.0.0",
+		"@medyll/idae-prettier-config": "^1.0.0",
 		"@types/node": "^20.14.10",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.5.3"
