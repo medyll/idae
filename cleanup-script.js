@@ -41,7 +41,12 @@ packages.forEach((packageName) => {
     }
 
     // Supprimer les fichiers de configuration obsolètes
-    const obsoleteFiles = [".releaserc", ".huskyrc", ".commitlintrc","commitlint.config.js"]; // Ajoutez d'autres fichiers si nécessaire
+    const obsoleteFiles = [
+      ".releaserc",
+      ".huskyrc",
+      ".commitlintrc",
+      "commitlint.config.js",
+    ]; // Ajoutez d'autres fichiers si nécessaire
     obsoleteFiles.forEach((file) => {
       const filePath = path.join(packagesDir, packageName, file);
       if (fs.existsSync(filePath)) {
