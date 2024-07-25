@@ -333,6 +333,7 @@ export class Be {
 	}
 
 	private upred() {}
+	private upredDone() {}
 }
 
 type CreateFragment = `<${string}>${string}</${string}>` | string;
