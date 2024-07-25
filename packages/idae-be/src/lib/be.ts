@@ -331,10 +331,6 @@ export class Be {
 	private handle<T extends Record<string, any>>(cl: T) {
 		return cl.handle.bind(cl);
 	}
-
-	private upred() {}
-	private upredDone() {}
-	private uprssedDone() {}
 }
 
 type CreateFragment = `<${string}>${string}</${string}>` | string;
