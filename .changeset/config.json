@@ -8,9 +8,13 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "@medyll/idae-idbql",
+    "@medyll/idae-query",
     "@medyll/idae-socket",
     "@medyll/dom-events",
     "@medyll/idae-stator",
+    "@medyll/idae-slotui",
+    "@medyll/idae-engine",
     "@medyll/idae-api",
     "@medyll/shared"
   ]
