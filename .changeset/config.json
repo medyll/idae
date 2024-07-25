@@ -9,7 +9,10 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@medyll/idae-socket",
-    "@config/eslint-config",
+    "idae-socket",
+    "eslint-config",
+    "eslint-config",
+    "config/prettier-config",
     "@config/prettier-config",
     "@medyll/shared"
   ]
