@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- 05ad3db: - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183))
+- Updated dependencies [05ad3db]
+  - @medyll/idae-query@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
