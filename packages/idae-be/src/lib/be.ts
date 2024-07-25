@@ -331,10 +331,13 @@ export class Be {
 	private handle<T extends Record<string, any>>(cl: T) {
 		return cl.handle.bind(cl);
 	}
+
+	private upred() {}
 }
 
 type CreateFragment = `<${string}>${string}</${string}>` | string;
 
+/** set exports as root */
 export const be = Be.elem;
 export const toBe = Be.toBe;
 export const beId = (id: string) => Be.elem(`#${id}`);
