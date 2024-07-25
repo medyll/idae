@@ -10,10 +10,6 @@
   "ignore": [
     "@medyll/idae-socket",
     "idae-socket",
-    "eslint-config",
-    "eslint-config",
-    "config/prettier-config",
-    "@config/prettier-config",
     "@medyll/shared"
   ]
 }
