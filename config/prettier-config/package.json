@@ -1,6 +1,6 @@
 {
-  "name": "@config/prettier-config",
-  "scope": "@config",
+  "name": "@medyll/idae-prettier-config",
+  "scope": "@medyll",
   "version": "1.0.0",
   "type": "commonjs",
   "exports": "./index.js",

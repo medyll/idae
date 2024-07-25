@@ -48,6 +48,8 @@
   "dependencies": {
     "@medyll/cssfabric": "file:../app-node/cssfabric",
     "@medyll/idae-engine": "^1.0.0",
+    "@medyll/idae-eslint-config": "^1.0.0",
+    "@medyll/idae-prettier-config": "^1.0.0",
     "glob": "^7.2.0",
     "ts-node": "^10.9.2"
   }
