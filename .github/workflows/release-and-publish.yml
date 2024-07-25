@@ -40,23 +40,13 @@ jobs:
       - name: Generate Changesets
         run: node scripts/generate-changeset.js
 
-      - name: Debug Changesets
-        run: |
-          echo "Listing .changeset directory:"
-          ls -la .changeset
-          echo "Content of .changeset/config.json:"
-          cat .changeset/config.json
-          echo "Listing packages directory:"
-          ls -la packages
-          echo "Content of root package.json:"
-          cat package.json
-
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "chore: update versions, changelog, and package-lock.json" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref }}
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
@@ -65,8 +55,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
-      - name: Push changes
-        run: git push origin HEAD:${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
