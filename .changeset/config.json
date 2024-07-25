@@ -7,8 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@medyll/idae-socket",
-    "@medyll/shared"
-  ]
+  "ignore": ["@medyll/idae-socket", "@medyll/shared"]
 }
