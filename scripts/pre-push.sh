@@ -6,7 +6,7 @@ MAIN_BRANCH="main"
 # Current branch
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# If we're not on the main branch
+# If we are not on the main branch
 if [ "$CURRENT_BRANCH" != "$MAIN_BRANCH" ]; then
   echo "Your branch '$CURRENT_BRANCH' is diverging from '$MAIN_BRANCH'. Do you want to pull? (y/N)"
   read -r response
