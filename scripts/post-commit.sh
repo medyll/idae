@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 #!/bin/sh
 
 # Name of the main branch
