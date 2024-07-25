@@ -25,14 +25,7 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
       
-      - name: Install Husky
-        run: npm install husky --save-dev
 
-      - name: Verify and update package.json files
-        run: node scripts/verify-packages.js
-
-      - name: Update package-lock.json
-        run: npm install --package-lock-only
 
       - name: Install dependencies
         run: npm ci
