@@ -1,36 +1,26 @@
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
 
 function getCommitsSinceLastTag() {
   try {
-    const lastTag = execSync("git describe --tags --abbrev=0")
-      .toString()
-      .trim();
-    console.log("Last tag:", lastTag);
-    const commits = execSync(`git log ${lastTag}..HEAD --pretty=format:%s`)
-      .toString()
-      .trim()
-      .split("\n");
-    console.log("Commits since last tag:", commits);
+    const lastTag = execSync('git describe --tags --abbrev=0').toString().trim();
+    console.log('Last tag:', lastTag);
+    const commits = execSync(`git log ${lastTag}..HEAD --pretty=format:%s`).toString().trim().split('\n');
+    console.log('Commits since last tag:', commits);
     return commits;
   } catch (error) {
-    console.error("Erreur lors de la récupération des commits:", error);
+    console.error('Erreur lors de la récupération des commits:', error);
     return [];
   }
 }
 
 function getBumpType(commitMessage) {
   const lowerCaseMessage = commitMessage.toLowerCase();
-  if (lowerCaseMessage.includes("breaking change")) return "major";
-  if (
-    lowerCaseMessage.startsWith("feat") ||
-    lowerCaseMessage.includes("feature")
-  )
-    return "minor";
-  if (lowerCaseMessage.startsWith("fix") || lowerCaseMessage.includes("bug"))
-    return "patch";
-  return "patch"; // Par défaut
+  if (lowerCaseMessage.includes('breaking change')) return 'major';
+  if (lowerCaseMessage.startsWith('feat') || lowerCaseMessage.includes('feature')) return 'minor';
+  if (lowerCaseMessage.startsWith('fix') || lowerCaseMessage.includes('bug')) return 'patch';
+  return 'patch'; // Par défaut
 }
 
 function generateChangesetContent(packageName, bumpType, summary) {
@@ -44,16 +34,7 @@ ${summary}
 
 function sanitizeCommitMessage(message) {
   // Enlève les préfixes courants et nettoie le message
-  const prefixes = [
-    "feat:",
-    "fix:",
-    "chore:",
-    "docs:",
-    "style:",
-    "refactor:",
-    "perf:",
-    "test:",
-  ];
+  const prefixes = ['feat:', 'fix:', 'chore:', 'docs:', 'style:', 'refactor:', 'perf:', 'test:'];
   let cleanMessage = message;
   for (const prefix of prefixes) {
     if (message.toLowerCase().startsWith(prefix)) {
@@ -66,14 +47,14 @@ function sanitizeCommitMessage(message) {
 
 const commits = getCommitsSinceLastTag();
 
-const packagesDir = path.join(__dirname, "..", "packages");
-console.log("Packages directory:", packagesDir);
+const packagesDir = path.join(__dirname, '..', 'packages');
+console.log('Packages directory:', packagesDir);
 const packages = fs.readdirSync(packagesDir);
-console.log("Packages found:", packages);
+console.log('Packages found:', packages);
 
-packages.forEach((packageName) => {
+packages.forEach(packageName => {
   const packagePath = path.join(packagesDir, packageName);
-  const packageJsonPath = path.join(packagePath, "package.json");
+  const packageJsonPath = path.join(packagePath, 'package.json');
 
   console.log(`Processing package: ${packageName}`);
   console.log(`Package.json path: ${packageJsonPath}`);
@@ -83,16 +64,13 @@ packages.forEach((packageName) => {
     return;
   }
 
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-  console.log(
-    `Package.json content for ${packageName}:`,
-    JSON.stringify(packageJson, null, 2),
-  );
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+  console.log(`Package.json content for ${packageName}:`, JSON.stringify(packageJson, null, 2));
 
   let modified = false;
 
   // Vérifier et ajouter le scope si nécessaire
-  if (!packageJson.name.startsWith("@medyll/")) {
+  if (!packageJson.name.startsWith('@medyll/')) {
     packageJson.name = `@medyll/${packageJson.name}`;
     modified = true;
     console.log(`Scope ajouté au package ${packageName}`);
@@ -100,48 +78,44 @@ packages.forEach((packageName) => {
 
   // Ajouter le champ scope s'il est absent
   if (!packageJson.scope) {
-    packageJson.scope = "medyll";
+    packageJson.scope = 'medyll';
     modified = true;
     console.log(`Champ scope ajouté au package ${packageName}`);
   }
 
   if (modified) {
-    // Écrire les modifications dans le fichier package.json
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    // Écrire les modifications dans le fichier package.json sans ajouter de saut de ligne à la fin
+    const packageJsonString = JSON.stringify(packageJson, null, 2);
+    fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ''));
     console.log(`Le fichier package.json de ${packageName} a été mis à jour`);
   }
 
-  const packageCommits = commits.filter((commit) =>
-    commit.toLowerCase().includes(packageName.toLowerCase()),
+  const packageCommits = commits.filter(commit => 
+    commit.toLowerCase().includes(packageName.toLowerCase())
   );
 
   if (packageCommits.length > 0) {
     const highestBumpType = packageCommits.reduce((highest, commit) => {
       const currentBump = getBumpType(commit);
       return currentBump > highest ? currentBump : highest;
-    }, "patch");
+    }, 'patch');
 
-    const summary = packageCommits.map(sanitizeCommitMessage).join("\n");
+    const summary = packageCommits
+      .map(sanitizeCommitMessage)
+      .join('\n');
 
-    const changesetContent = generateChangesetContent(
-      packageName,
-      highestBumpType,
-      summary,
-    );
+    const changesetContent = generateChangesetContent(packageName, highestBumpType, summary);
 
-    const changesetDir = path.join(__dirname, "..", ".changeset");
+    const changesetDir = path.join(__dirname, '..', '.changeset');
     if (!fs.existsSync(changesetDir)) {
       fs.mkdirSync(changesetDir);
     }
 
-    const changesetFile = path.join(
-      changesetDir,
-      `${packageName}-${Date.now()}.md`,
-    );
+    const changesetFile = path.join(changesetDir, `${packageName}-${Date.now()}.md`);
     fs.writeFileSync(changesetFile, changesetContent);
 
     console.log(`Changeset généré pour ${packageName}`);
   }
 });
 
-console.log("Changeset generation completed");
+console.log('Changeset generation completed');
