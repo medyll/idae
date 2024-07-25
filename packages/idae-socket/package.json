@@ -1,48 +1,48 @@
 {
-	"name": "@medyll/idae-socket",
-	"scope": "@medyll",
-	"version": "0.0.1",
-	"description": "keep your app in sync with your backend!!",
-	"main": "./index.js",
-	"type": "module",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsc --build --verbose --incremental --watch & node.exe -r ts-node/register ./src --port 4000",
-		"build": "tsc --build --verbose --incremental",
-		"start": "node.exe lib --port 4000",
-		"run": "nodemon ./src/index.ts",
-		"watch": "",
-		"package": "svelte-kit sync && svelte-package && publint",
-		"package:watch": "svelte-kit sync && svelte-package --watch"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/medyll/idae.git"
-	},
-	"author": "Lebrun Meddy",
-	"license": "ISC",
-	"peerDependencies": {
-		"svelte": "^5.0.0-next.1"
-	},
-	"dependencies": {
-		"@socket.io/redis-adapter": "^8.3.0",
-		"@types/express": "^4.17.21",
-		"body-parser": "^1.20.2",
-		"cors": "^2.8.5",
-		"events": "^3.3.0",
-		"express": "^4.19.2",
-		"minimist": "^1.2.8",
-		"nodemon": "^3.1.4",
-		"npm-watch": "^0.13.0",
-		"redis": "^4.6.15",
-		"request": "^2.88.2",
-		"socket.io": "^4.7.5",
-		"socket.io-client": "^4.7.5"
-	},
-	"devDependencies": {
-		"@config/prettier-config": "^1.0.0",
-		"@types/node": "^20.14.10",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.5.3"
-	}
+  "name": "@medyll/idae-socket",
+  "scope": "@medyll",
+  "version": "0.0.1",
+  "description": "keep your app in sync with your backend!!",
+  "main": "./index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc --build --verbose --incremental --watch & node.exe -r ts-node/register ./src --port 4000",
+    "build": "tsc --build --verbose --incremental",
+    "start": "node.exe lib --port 4000",
+    "run": "nodemon ./src/index.ts",
+    "watch": "",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "package:watch": "svelte-kit sync && svelte-package --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
+  "author": "Lebrun Meddy",
+  "license": "ISC",
+  "peerDependencies": {
+    "svelte": "^5.0.0-next.1"
+  },
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.3.0",
+    "@types/express": "^4.17.21",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "events": "^3.3.0",
+    "express": "^4.19.2",
+    "minimist": "^1.2.8",
+    "nodemon": "^3.1.4",
+    "npm-watch": "^0.13.0",
+    "redis": "^4.6.15",
+    "request": "^2.88.2",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@config/prettier-config": "^1.0.0",
+    "@types/node": "^20.14.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  }
 }

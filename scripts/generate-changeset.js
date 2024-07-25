@@ -106,8 +106,9 @@ packages.forEach((packageName) => {
   }
 
   if (modified) {
-    // Écrire les modifications dans le fichier package.json
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    // Écrire les modifications dans le fichier package.json sans ajouter de saut de ligne à la fin
+    const packageJsonString = JSON.stringify(packageJson, null, 2);
+    fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
     console.log(`Le fichier package.json de ${packageName} a été mis à jour`);
   }
 
