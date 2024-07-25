@@ -7,5 +7,10 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@medyll/idae-socket"]
+  "ignore": [
+    "@medyll/idae-socket",
+    "@config/eslint-config",
+    "@config/prettier-config",
+    "@medyll/shared"
+  ]
 }
