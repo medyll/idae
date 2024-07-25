@@ -13,7 +13,7 @@
     "@medyll/idae-socket",
     "@medyll/dom-events",
     "@medyll/idae-stator",
-    "@medyll/idae-slotui",
+    "@medyll/idae-slotui-svelte",
     "@medyll/idae-engine",
     "@medyll/idae-api",
     "@medyll/shared"
