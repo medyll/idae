@@ -40,7 +40,7 @@ packages.forEach((packageName) => {
 
   // Ajouter le champ scope s'il est absent
   if (!packageJson.scope) {
-    packageJson.scope = "medyll";
+    packageJson.scope = "@medyll";
     modified = true;
     console.log(`Champ scope ajouté au package ${packageName}`);
   }

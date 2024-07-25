@@ -1,5 +1,6 @@
 {
   "name": "@medyll/shared",
+  "scope": "@medyll",
   "version": "1.0.0",
   "description": "sharing",
   "main": "makeLibIndex.js",
@@ -16,6 +17,5 @@
   "devDependencies": {
     "@medyll/idae-prettier-config": "^1.0.0",
     "@types/fs-extra": "^11.0.4"
-  },
-  "scope": "medyll"
+  }
 }
