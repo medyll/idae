@@ -16,7 +16,6 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"prepare": "husky install",
 		"release:alpha": "standard-version --prerelease alpha",
 		"release:beta": "standard-version --prerelease beta",
 		"release:minor": "standard-version --release-as minor",
@@ -31,24 +30,15 @@
 			"default": "./dist/index.js"
 		}
 	},
-	"typesVersions": {
-		">4.0": {
-			"foo": [
-				"./dist/foo.d.ts"
-			]
-		}
-	},
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.0"
+		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^19.3.0",
-		"@commitlint/config-conventional": "^19.2.2",
 		"@medyll/idae-prettier-config": "^1.0.0",
 		"@playwright/test": "^1.44.1",
 		"@sveltejs/adapter-auto": "^3.2.2",
