@@ -29,6 +29,8 @@ jobs:
         run: npm ci
 
       - name: Generate Changesets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/generate-changeset.js
 
       - name: Apply Changeset Versions
