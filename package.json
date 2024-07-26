@@ -20,6 +20,8 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
+    "@medyll/idae-eslint-config": "^1.0.0",
+    "@medyll/idae-prettier-config": "^1.0.0",
     "@types/jest": "^29.5.12",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -36,8 +38,6 @@
   "dependencies": {
     "@medyll/cssfabric": "^0.4.2",
     "@medyll/idae-engine": "^1.0.0",
-    "@medyll/idae-eslint-config": "^1.0.0",
-    "@medyll/idae-prettier-config": "^1.0.0",
     "@octokit/rest": "^21.0.1",
     "glob": "^7.2.0",
     "ts-node": "^10.9.2"
