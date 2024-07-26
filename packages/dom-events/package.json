@@ -15,8 +15,7 @@
 		"test": "npm run test:unit",
 		"test:unit": "vitest",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
-		"prepare": ""
+		"format": "prettier --write ."
 	},
 	"exports": {
 		".": {
