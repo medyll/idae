@@ -1,59 +1,86 @@
 import mongoose from 'mongoose';
 import type { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
 
-const defaultDbName: string = 'idae';
+dotenv.config();
 
-// this is my middleware to connect to the appropriate database
-class DBaseManager {
-	private static instance: DBaseManager;
-	public static port = 27017;
+const DEFAULT_DB_NAME: string = 'idae';
+const DEFAULT_MONGO_PORT: number = 27017;
+const DEFAULT_MONGO_HOST: string = 'localhost';
 
-	constructor() {}
+interface DatabaseConfig {
+	port: number;
+	host: string;
+	defaultDbName: string;
+}
 
-	public static getInstance(): DBaseManager {
-		if (!DBaseManager.instance) {
-			DBaseManager.instance = new DBaseManager();
-		}
-		return DBaseManager.instance;
+class DatabaseManager {
+	private static instance: DatabaseManager;
+	private config: DatabaseConfig;
+	private connections: Map<string, mongoose.Connection> = new Map();
+
+	private constructor() {
+		this.config = {
+			port: Number(process.env.MONGO_PORT) || DEFAULT_MONGO_PORT,
+			host: process.env.MONGO_HOST || DEFAULT_MONGO_HOST,
+			defaultDbName: process.env.DEFAULT_DB_NAME || DEFAULT_DB_NAME
+		};
 	}
 
-	public async connectToDatabase(
-		req: Request<{ dbName: string; collectionName: string }>,
-		res: Response,
-		next: NextFunction
-	): Promise<void> {
-		const { collectionName } = req.params;
-		let dbName: string;
-		//
-		if (collectionName.includes('.')) {
-			dbName = collectionName.split('.')[0];
-		} else {
-			dbName = defaultDbName;
+	public static getInstance(): DatabaseManager {
+		if (!DatabaseManager.instance) {
+			DatabaseManager.instance = new DatabaseManager();
+		}
+		return DatabaseManager.instance;
+	}
+
+	private getDbNameFromCollectionName(collectionName: string): string {
+		return collectionName.includes('.') ? collectionName.split('.')[0] : this.config.defaultDbName;
+	}
+
+	private async getConnection(dbName: string): Promise<mongoose.Connection> {
+		if (this.connections.has(dbName)) {
+			return this.connections.get(dbName)!;
 		}
 
-		const dbUri = `mongodb://localhost:${DBaseManager.port}/${dbName}`;
+		const dbUri = `mongodb://${this.config.host}:${this.config.port}/${dbName}`;
+		const connection = await mongoose.createConnection(dbUri).asPromise();
+		this.connections.set(dbName, connection);
+		return connection;
+	}
+
+	public async connectToDatabase(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const { collectionName } = req.params;
+		const dbName = this.getDbNameFromCollectionName(collectionName);
 
 		try {
-			if (!mongoose.connection.readyState) {
-				await mongoose.connect(dbUri, {
-					autoIndex: true,
-					dbName
-				});
-			} else if (mongoose.connection.name !== dbName) {
-				await mongoose.disconnect();
-				await mongoose.connect(dbUri, {
-					autoIndex: true,
-					dbName
-				});
-			}
-			console.log('connected to db', `${dbName}`);
+			const connection = await this.getConnection(dbName);
+			req.dbConnection = connection;
+			console.log(`Connected to database: ${dbName}`);
 			next();
-		} catch (error: any) {
-			/** @ts-ignore */
-			res.status(500).send(`Failed to connect to database ${dbName}: ${error.message}`);
+		} catch (error) {
+			console.error(`Failed to connect to database ${dbName}:`, error);
+			res.status(500).json({ error: `Failed to connect to database ${dbName}` });
+		}
+	}
+
+	public async closeAllConnections(): Promise<void> {
+		for (const connection of this.connections.values()) {
+			await connection.close();
+		}
+		this.connections.clear();
+	}
+}
+
+// Extend Express Request interface to include dbConnection
+declare global {
+	namespace Express {
+		interface Request {
+			dbConnection?: mongoose.Connection;
 		}
 	}
 }
-// i can call it as a normal class or as a singleton
-export default DBaseManager.getInstance();
-export { DBaseManager as DatabaseManager, defaultDbName };
+
+const databaseManager = DatabaseManager.getInstance();
+export default databaseManager;
+export { DatabaseManager };
