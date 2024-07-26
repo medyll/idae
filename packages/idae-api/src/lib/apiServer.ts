@@ -3,11 +3,12 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express';
 import { connectToDatabase } from './middleware/databaseMiddleware';
 import { DBaseService } from './engine/DBaseService';
-import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
+import { RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
 
 interface ApiServerOptions {
 	port?: number;
 	routes?: RouteDefinition[];
+	onInUse?: 'reboot' | 'fail' | 'replace';
 }
 
 class RouteManager {
@@ -68,10 +69,14 @@ class RouteManager {
 	}
 }
 
-export class ApiServer {
+class ApiServer {
+	private static instance: ApiServer | null = null;
 	private app: Express;
 	private port: number;
 	private routeManager: RouteManager;
+	private serverInstance: any;
+	private onInUse: 'reboot' | 'fail' | 'replace';
+	private _state: 'stopped' | 'running' = 'stopped';
 
 	public router: {
 		addRoute: (route: RouteDefinition) => void;
@@ -81,10 +86,11 @@ export class ApiServer {
 		disableRoute: (path: string, method: string | string[]) => void;
 	};
 
-	constructor(options: ApiServerOptions = {}) {
+	private constructor(options: ApiServerOptions = {}) {
 		this.app = express();
 		this.port = options.port || 3000;
 		this.routeManager = RouteManager.getInstance();
+		this.onInUse = options.onInUse || 'fail';
 
 		this.router = {
 			addRoute: this.addRoute.bind(this),
@@ -96,6 +102,32 @@ export class ApiServer {
 
 		this.configureMiddleware();
 		this.loadInitialRoutes(options.routes);
+		this.configureRoutes();
+		this.configureErrorHandling();
+	}
+
+	public static getInstance(options?: ApiServerOptions): ApiServer {
+		if (!ApiServer.instance) {
+			ApiServer.instance = new ApiServer(options);
+		}
+		return ApiServer.instance;
+	}
+
+	get state(): 'stopped' | 'running' {
+		return this._state;
+	}
+
+	public setOptions(options: ApiServerOptions = {}): void {
+		if (options.port) {
+			this.port = options.port;
+		}
+		if (options.onInUse) {
+			this.onInUse = options.onInUse;
+		}
+		if (options.routes) {
+			this.routeManager.addRoutes(options.routes);
+		}
+		this.configureMiddleware();
 		this.configureRoutes();
 		this.configureErrorHandling();
 	}
@@ -188,45 +220,80 @@ export class ApiServer {
 	}
 
 	public start(): void {
-		this.app.listen(this.port, () => {
+		this.serverInstance = this.app.listen(this.port, () => {
 			console.log(`Server is running on port: ${this.port}`);
+			this._state = 'running';
 		});
+
+		this.serverInstance.on('error', (error: NodeJS.ErrnoException) => {
+			if (error.code === 'EADDRINUSE') {
+				console.error(`Port ${this.port} is already in use.`);
+				if (this.onInUse === 'reboot') {
+					console.log('Rebooting server...');
+					setTimeout(() => {
+						this.stop();
+						this.start();
+					}, 1000);
+				} else if (this.onInUse === 'replace') {
+					console.log('Replacing existing server...');
+					this.stop();
+					this.start();
+				} else {
+					console.log('Failed to start the server.');
+					process.exit(1);
+				}
+			} else {
+				throw error;
+			}
+		});
+	}
+
+	public stop(): void {
+		if (this.serverInstance) {
+			this.serverInstance.close((err: Error) => {
+				if (err) {
+					console.error('Error while stopping the server:', err);
+				} else {
+					console.log('Server stopped successfully.');
+					this._state = 'stopped';
+				}
+			});
+		}
 	}
 }
 
+// Export a single instance of ApiServer
+const apiServer = ApiServer.getInstance();
+export { apiServer };
+
 // Usage example:
 /*
-import { ApiServer } from './ApiServer';
+import apiServer from './ApiServer';
 import { RouteDefinition } from './config/routeDefinitions';
 
-const customRoutes: RouteDefinition[] = [
-    {
-        method: 'get',
-        path: '/custom',
-        handler: async (service, params) => ({ message: 'Custom route' })
-    }
-];
-
-const server = new ApiServer({ port: 3050, routes: customRoutes });
+// Configure the server
+apiServer.setOptions({ port: 3050, onInUse: 'reboot' });
 
 // Start the server
-server.start();
+apiServer.start();
+
+console.log(apiServer.state); // 'running'
 
 // Add a new route at runtime
-server.router.addRoute({
+apiServer.router.addRoute({
     method: 'post',
     path: '/dynamic',
     handler: async (service, params, body) => ({ message: 'Dynamic route', data: body })
 });
 
 // Disable a route
-server.router.disableRoute('/custom', 'get');
+apiServer.router.disableRoute('/custom', 'get');
 
 // Enable a route
-server.router.enableRoute('/custom', 'get');
+apiServer.router.enableRoute('/custom', 'get');
 
 // Add multiple routes
-server.router.addRoutes([
+apiServer.router.addRoutes([
     {
         method: 'get',
         path: '/multiple1',
@@ -238,4 +305,9 @@ server.router.addRoutes([
         handler: async () => ({ message: 'Multiple 2' })
     }
 ]);
+
+// Stop the server
+apiServer.stop();
+
+console.log(apiServer.state); // 'stopped'
 */
