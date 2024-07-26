@@ -28,20 +28,30 @@ jobs:
       - name: Apply Changeset Versions
         run: npx changeset version
 
+      - name: Wait before creating release PR
+        run: sleep 60
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: npm run release
+          publish: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Wait before publishing to npm
+        run: sleep 60
 
       - name: Publish to npm (dev branch)
         if: steps.changesets.outputs.published != 'true'
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          npx changeset publish --tag next
+          if [ -f package.json ] && grep -q '"release":' package.json; then
+            npm run release
+          else
+            npx changeset publish --tag next
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
