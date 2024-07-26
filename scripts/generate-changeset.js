@@ -42,22 +42,20 @@ class ChangesetGenerator {
     }
   }
 
-  async getCommitsForPackage(packageName, since) {
-    const packagePath = path.join("packages", packageName);
+  async getCommitsForPackage(packageName, packagePath, since) {
     const command = `git log --name-only --pretty=format:"%H£%s£%b£%an£%aI" ${since}..HEAD -- ${packagePath}`;
 
     try {
       const output = execSync(command, { encoding: "utf-8" });
       const commits = output.split("\n\n").map((commit) => {
         const [hash, subject, body, author, date, ...files] = commit.split("£");
-        console.log(`Commit: ${hash}, Date: ${date}`); // Ajoutez ce log pour vérifier les valeurs
         return {
           sha: hash,
           message: subject,
           description: body,
           author,
           date,
-          files: files.filter(Boolean), // Remove empty strings
+          files: files.filter(Boolean),
         };
       });
       return commits;
@@ -154,11 +152,25 @@ ${summary}
       .trim();
     const packages = fs.readdirSync(this.packagesDir);
 
-    for (const packageName of packages) {
+    for (const packageDir of packages) {
+      const packagePath = path.join(this.packagesDir, packageDir);
+      const packageJsonPath = path.join(packagePath, "package.json");
+
+      if (!fs.existsSync(packageJsonPath)) {
+        console.error(
+          `Package ${packageDir} does not have a package.json file`
+        );
+        continue;
+      }
+
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+      const packageName = packageJson.name;
+
       console.log(`Processing package: ${packageName}`);
 
       const packageCommits = await this.getCommitsForPackage(
         packageName,
+        packagePath,
         lastTag
       );
 
@@ -202,7 +214,7 @@ ${summary}
           .slice(0, 8);
         const changesetFile = path.join(
           changesetDir,
-          `${packageName}-${contentHash}.md`
+          `${packageName.replace("/", "-")}-${contentHash}.md`
         );
 
         if (!fs.existsSync(changesetFile)) {
