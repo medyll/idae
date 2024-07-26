@@ -3,7 +3,7 @@
   "scope": "@medyll",
   "version": "1.0.0",
   "description": "sharing",
-  "main": "makeLibIndex.js",
+  "main": "makeLibIndexRoot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
