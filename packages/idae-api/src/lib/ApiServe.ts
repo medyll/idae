@@ -1,6 +1,4 @@
-// ServerConfig.ts
-
-import express, { type Express, type Request, type Response } from 'express';
+import express, { type Express, type Request, type Response, type NextFunction } from 'express';
 import DBaseService from './engine/DBaseService.js';
 import DatabaseManager from './engine/DBaseManager.js';
 import mongoose, { Schema, Model, Document } from 'mongoose';
@@ -9,9 +7,16 @@ interface DynamicDocument extends Document {
 	[key: string]: any;
 }
 
-export class ApiServe {
+export class ApiServer {
 	private app: Express;
 	private port: number;
+	private readonly directCommands = [
+		'findAll',
+		'create',
+		'update',
+		'deleteById',
+		'deleteManyByQuery'
+	];
 
 	constructor(port: number = 3000) {
 		this.app = express();
@@ -19,104 +24,89 @@ export class ApiServe {
 
 		this.configureMiddleware();
 		this.configureRoutes();
+		this.configureErrorHandling();
 	}
 
 	private configureMiddleware(): void {
 		this.app.use(express.json());
+		this.app.use(express.urlencoded({ extended: true }));
+		this.app.use((req: Request, res: Response, next: NextFunction) => {
+			res.header('Access-Control-Allow-Origin', '*');
+			res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+			next();
+		});
+		this.app.use('/:collectionName', DatabaseManager.connectToDatabase);
+	}
+
+	private configureErrorHandling(): void {
+		this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+			console.error(err.stack);
+			res.status(500).json({ error: err.message });
+		});
 	}
 
 	private getDynamicModel(collectionName: string): Model<DynamicDocument> {
 		if (mongoose.models[collectionName]) {
 			return mongoose.models[collectionName] as Model<DynamicDocument>;
 		}
-
 		const schema = new Schema({}, { strict: false });
 		return mongoose.model<DynamicDocument>(collectionName, schema, collectionName);
 	}
 
 	private getCollectionName(collectionName: string): string {
-		let dbName, collection;
-		if (collectionName.includes('.')) {
-			[dbName, collection] = collectionName.split('.');
-		} else {
-			collection = collectionName;
-		}
+		return collectionName.includes('.') ? collectionName.split('.')[1] : collectionName;
+	}
 
-		return collection;
+	private async handleRequest(
+		req: Request,
+		res: Response,
+		next: NextFunction,
+		action: (service: DBaseService, params?: any) => Promise<any>
+	): Promise<void> {
+		try {
+			const { collectionName } = req.params;
+			const collection = this.getCollectionName(collectionName);
+			const databaseService = new DBaseService(collection);
+			const result = await action(databaseService, req.query);
+			res.json(result);
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	private configureRoutes(): void {
-		this.app.use('/:collectionName', DatabaseManager.connectToDatabase);
+		this.app.get('/:collectionName', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.findAll(req.query))
+		);
 
-		this.app.get('/:collectionName', async (req: Request, res: Response) => {
-			try {
-				const { collectionName } = req.params;
-				const collection = this.getCollectionName(collectionName);
-				const databaseService = new DBaseService(collection);
-				const documents = await databaseService.findAll(req.query);
-				res.send(documents);
-			} catch (error) {
-				res.status(500).send(error);
+		this.app.get('/:collectionName/:id', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.findById(req.params.id))
+		);
+
+		this.app.post('/:collectionName', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.create(req.body))
+		);
+
+		this.app.put('/:collectionName/:id', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.update(req.params.id, req.body))
+		);
+
+		this.app.delete('/:collectionName/:id', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.deleteById(req.params.id))
+		);
+
+		this.app.delete('/:collectionName', (req, res, next) =>
+			this.handleRequest(req, res, next, (service) => service.deleteManyByQuery(req.query))
+		);
+
+		this.app.all('/:collectionName/:command/:params?', (req, res, next) => {
+			if (!this.directCommands.includes(req.params.command)) {
+				return res.status(400).json({ error: 'Command not supported' });
 			}
-		});
-
-		this.app.get('/:collectionName/:id', async (req: Request, res: Response) => {
-			try {
-				const { collectionName, id } = req.params;
-				const collection = this.getCollectionName(collectionName);
-				const databaseService = new DBaseService(collection);
-				const document = await databaseService.findById(id);
-				if (!document) {
-					return res.status(404).send({ error: 'Document not found' });
-				}
-				res.send(document);
-			} catch (error) {
-				res.status(500).send(error);
-			}
-		});
-
-		this.app.delete('/:collectionName/:id', async (req: Request, res: Response) => {
-			try {
-				const { collectionName, id } = req.params;
-				const collection = this.getCollectionName(collectionName);
-				const databaseService = new DBaseService(collection);
-				const result = await databaseService.deleteById(id);
-				res.send(result);
-			} catch (error) {
-				res.status(500).send(error);
-			}
-		});
-
-		this.app.delete('/:collectionName/', async (req: Request, res: Response) => {
-			try {
-				const { collectionName } = req.params;
-				const collection = this.getCollectionName(collectionName);
-				const databaseService = new DBaseService(collection);
-				const result = await databaseService.deleteManyByQuery(req.query);
-				res.send(result);
-			} catch (error) {
-				res.status(500).send(error);
-			}
-		});
-
-		const directCommands = ['findAll', 'create', 'update', 'deleteById', 'deleteManyByQuery'];
-
-		this.app.all('/:collectionName/:command/:params?', async (req: Request, res: Response) => {
-			try {
-				const { collectionName, command, params } = req.params;
-				const collection = this.getCollectionName(collectionName);
-				if (!directCommands.includes(command)) {
-					return res.status(400).send({ error: 'Command not supported' });
-				}
-
-				const databaseService = new DBaseService(collection);
-				const decodedParams = params ? databaseService.decodeUrlParams(params) : {};
-				const result = await (databaseService as any)[command](decodedParams);
-
-				res.status(200).send(result);
-			} catch (error) {
-				res.status(400).send({ error: (error as Error).message });
-			}
+			this.handleRequest(req, res, next, (service) => {
+				const decodedParams = req.params.params ? service.decodeUrlParams(req.params.params) : {};
+				return (service as any)[req.params.command](decodedParams);
+			});
 		});
 	}
 
@@ -128,6 +118,6 @@ export class ApiServe {
 }
 
 // Usage:
-// import { ServerConfig } from './ServerConfig.js';
+// import { ApiServer } from './ServerConfig.js';
 // const server = new ApiServer(3050);
 // server.start();
