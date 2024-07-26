@@ -17,6 +17,8 @@ export * from '$lib/_css/breadCrumb.css';
 export * from '$lib/_css/breadCrumb.min.css';
 export * from '$lib/_css/button-action.css';
 export * from '$lib/_css/button-action.min.css';
+export * from '$lib/_css/button-menu.css';
+export * from '$lib/_css/button-menu.min.css';
 export * from '$lib/_css/button.css';
 export * from '$lib/_css/button.min.css';
 export * from '$lib/_css/buttonMenu.css';
