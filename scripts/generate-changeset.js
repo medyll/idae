@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const crypto = require("crypto");
-require('dotenv').config();
+require("dotenv").config();
 
 const rootRepo = "medyll/idae";
 const commitTypes = [
@@ -33,63 +33,57 @@ class ChangesetGenerator {
 
   async checkRateLimit() {
     const { data: rateLimit } = await this.octokit.rest.rateLimit.get();
-    console.log("Actual rate-limit :", rateLimit.rate);
-    return rateLimit.rate;
+    console.log("Rate limit:", rateLimit.rate);
+    if (rateLimit.remaining < 10) {
+      console.log("Rate limit almost exceeded, waiting...");
+      const resetTime = new Date(rateLimit.reset * 1000);
+      const waitTime = resetTime.getTime() - Date.now() + 1000;
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+    }
   }
 
-  async getCommitsSinceLastTag() {
+  async getCommitsForPackage(packageName, since) {
+    const packagePath = path.join("packages", packageName);
+    const command = `git log --name-only --pretty=format:"%H£%s£%b£%an£%aI" ${since}..HEAD -- ${packagePath}`;
+
     try {
-      await this.initOctokit();
-      await this.checkRateLimit();
-      const lastTag = execSync("git describe --tags --abbrev=0")
-        .toString()
-        .trim();
-      console.log("Last tag:", lastTag);
-
-      const [owner, repo] = this.rootRepo.split("/");
-      let allCommits = [];
-      let page = 1;
-      let hasMore = true;
-
-      while (hasMore) {
-        const { data: commits } = await this.octokit.repos.listCommits({
-          owner,
-          repo,
-          since: lastTag,
-          per_page: 100,
-          page,
-        });
-
-        const formattedCommits = await Promise.all(
-          commits.map(async (commit) => {
-            const pr = await this.getPullRequestForCommit({ sha: commit.sha });
-            return {
-              sha: commit.sha,
-              message: commit.commit.message,
-              description: commit.commit.message.split("\n\n")[1] || "",
-              date: commit.commit.author.date,
-              author: commit.commit.author.name,
-              pr: pr ? { number: pr.number, url: pr.html_url } : null,
-            };
-          })
-        );
-
-        allCommits.push(...formattedCommits);
-
-        if (commits.length < 100) {
-          hasMore = false;
-        } else {
-          page++;
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-      }
-
-      console.log("Commits retrieved:", allCommits.length);
-      return allCommits;
+      const output = execSync(command, { encoding: "utf-8" });
+      const commits = output.split("\n\n").map((commit) => {
+        const [hash, subject, body, author, date, ...files] = commit.split("£");
+        console.log(`Commit: ${hash}, Date: ${date}`); // Ajoutez ce log pour vérifier les valeurs
+        return {
+          sha: hash,
+          message: subject,
+          description: body,
+          author,
+          date,
+          files: files.filter(Boolean), // Remove empty strings
+        };
+      });
+      return commits;
     } catch (error) {
-      console.error("Error retrieving commits:", error);
+      console.error(`Error getting commits for package ${packageName}:`, error);
       return [];
     }
+  }
+
+  async getPullRequestForCommit(commit) {
+    try {
+      const [owner, repo] = this.rootRepo.split("/");
+      const { data: pullRequests } =
+        await this.octokit.repos.listPullRequestsAssociatedWithCommit({
+          owner,
+          repo,
+          commit_sha: commit.sha,
+        });
+
+      if (pullRequests.length > 0) {
+        return pullRequests[0];
+      }
+    } catch (error) {
+      console.error(`Error fetching PR for commit ${commit.sha}:`, error);
+    }
+    return null;
   }
 
   getBumpType(commitMessage) {
@@ -123,32 +117,15 @@ class ChangesetGenerator {
     return message.trim();
   }
 
-  async getPullRequestForCommit(commit) {
-    try {
-      const [owner, repo] = this.rootRepo.split("/");
-      const { data: pullRequests } =
-        await this.octokit.repos.listPullRequestsAssociatedWithCommit({
-          owner,
-          repo,
-          commit_sha: commit.sha,
-        });
-
-      if (pullRequests.length > 0) {
-        return pullRequests[0];
-      }
-    } catch (error) {
-      console.error(`Error fetching PR for commit ${commit.sha}:`, error);
-    }
-    return null;
-  }
-
   generateChangesetContent(packageName, bumpType, commits) {
     const summary = commits
       .map((commit) => {
         const sanitizedMessage = this.sanitizeCommitMessage(
           commit.message.split("\n")[0]
         );
-        const date = new Date(commit.date).toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+
+        // Extraire la partie date de la chaîne ISO 8601
+        const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
 
         let commitContent = `- ${sanitizedMessage} ([${commit.sha.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${commit.sha}))`;
         if (commit.pr) {
@@ -172,27 +149,17 @@ ${summary}
   }
 
   async generateChangesets() {
-    const commits = await this.getCommitsSinceLastTag();
+    const lastTag = execSync("git describe --tags --abbrev=0")
+      .toString()
+      .trim();
     const packages = fs.readdirSync(this.packagesDir);
 
     for (const packageName of packages) {
-      const packagePath = path.join(this.packagesDir, packageName);
-      const packageJsonPath = path.join(packagePath, "package.json");
-
       console.log(`Processing package: ${packageName}`);
 
-      if (!fs.existsSync(packageJsonPath)) {
-        console.error(
-          `Package ${packageName} does not have a package.json file`
-        );
-        continue;
-      }
-
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-      const fullPackageName = packageJson.name;
-
-      const packageCommits = commits.filter((commit) =>
-        commit.message.toLowerCase().includes(packageName.toLowerCase())
+      const packageCommits = await this.getCommitsForPackage(
+        packageName,
+        lastTag
       );
 
       console.log(`Commits for ${packageName}:`, packageCommits.length);
@@ -218,7 +185,7 @@ ${summary}
         );
 
         const changesetContent = this.generateChangesetContent(
-          fullPackageName,
+          packageName,
           highestBumpType,
           relevantCommits
         );
