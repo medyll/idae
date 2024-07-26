@@ -1,5 +1,5 @@
 ---
-"@medyll/shared": patch
+"@medyll/idae-shared": patch
 ---
 
 - ci(Update): package.json with correct scope value ([fb0bea0](https://github.com/medyll/idae/commit/fb0bea05298132c0a1381c0801666e93fff11297)) - 2024-07-25 by medyll

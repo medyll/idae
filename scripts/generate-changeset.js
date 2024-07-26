@@ -49,6 +49,7 @@ class ChangesetGenerator {
       const output = execSync(command, { encoding: "utf-8" });
       const commits = output.split("\n\n").map((commit) => {
         const [hash, subject, body, author, date, ...files] = commit.split("£");
+        console.log(`Commit: ${hash}, Date: ${date}`);
         return {
           sha: hash,
           message: subject,
@@ -122,7 +123,6 @@ class ChangesetGenerator {
           commit.message.split("\n")[0]
         );
 
-        // Extraire la partie date de la chaîne ISO 8601
         const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
 
         let commitContent = `- ${sanitizedMessage} ([${commit.sha.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${commit.sha}))`;
@@ -214,7 +214,7 @@ ${summary}
           .slice(0, 8);
         const changesetFile = path.join(
           changesetDir,
-          `${packageName.replace("/", "-")}-${contentHash}.md`
+          `${packageDir}-${contentHash}.md`
         );
 
         if (!fs.existsSync(changesetFile)) {
