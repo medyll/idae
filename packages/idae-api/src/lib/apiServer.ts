@@ -3,12 +3,16 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express';
 import { connectToDatabase } from './middleware/databaseMiddleware';
 import { DBaseService } from './engine/DBaseService';
-import { RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
-
+import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
+import { AuthService } from './services/AuthService.js';
+import { createAuthMiddleware } from '$lib/middleware/authMiddleware';
 interface ApiServerOptions {
 	port?: number;
 	routes?: RouteDefinition[];
 	onInUse?: 'reboot' | 'fail' | 'replace';
+	enableAuth?: boolean;
+	jwtSecret?: string;
+	tokenExpiration?: string;
 }
 
 class RouteManager {
@@ -72,11 +76,12 @@ class RouteManager {
 class ApiServer {
 	private static instance: ApiServer | null = null;
 	private app: Express;
-	private port: number;
+	private options: ApiServerOptions;
 	private routeManager: RouteManager;
 	private serverInstance: any;
-	private onInUse: 'reboot' | 'fail' | 'replace';
 	private _state: 'stopped' | 'running' = 'stopped';
+	private authMiddleware: Function | null = null;
+	private authService: AuthService | null = null;
 
 	public router: {
 		addRoute: (route: RouteDefinition) => void;
@@ -86,11 +91,10 @@ class ApiServer {
 		disableRoute: (path: string, method: string | string[]) => void;
 	};
 
-	private constructor(options: ApiServerOptions = {}) {
+	private constructor() {
 		this.app = express();
-		this.port = options.port || 3000;
+		this.options = {};
 		this.routeManager = RouteManager.getInstance();
-		this.onInUse = options.onInUse || 'fail';
 
 		this.router = {
 			addRoute: this.addRoute.bind(this),
@@ -99,16 +103,11 @@ class ApiServer {
 			enableRoute: this.enableRoute.bind(this),
 			disableRoute: this.disableRoute.bind(this)
 		};
-
-		this.configureMiddleware();
-		this.loadInitialRoutes(options.routes);
-		this.configureRoutes();
-		this.configureErrorHandling();
 	}
 
-	public static getInstance(options?: ApiServerOptions): ApiServer {
+	public static getInstance(): ApiServer {
 		if (!ApiServer.instance) {
-			ApiServer.instance = new ApiServer(options);
+			ApiServer.instance = new ApiServer();
 		}
 		return ApiServer.instance;
 	}
@@ -117,49 +116,153 @@ class ApiServer {
 		return this._state;
 	}
 
-	public setOptions(options: ApiServerOptions = {}): void {
-		if (options.port) {
-			this.port = options.port;
+	public setOptions(options: ApiServerOptions): void {
+		this.options = { ...this.options, ...options };
+	}
+
+	private initializeServices(): void {
+		if (this.options.enableAuth && this.options.jwtSecret && this.options.tokenExpiration) {
+			this.authService = new AuthService(this.options.jwtSecret, this.options.tokenExpiration);
+			this.authMiddleware = createAuthMiddleware(this.authService);
 		}
-		if (options.onInUse) {
-			this.onInUse = options.onInUse;
-		}
-		if (options.routes) {
-			this.routeManager.addRoutes(options.routes);
-		}
+	}
+
+	public configure(): void {
 		this.configureMiddleware();
 		this.configureRoutes();
 		this.configureErrorHandling();
-	}
-
-	private loadInitialRoutes(customRoutes?: RouteDefinition[]): void {
-		const initialRoutes = customRoutes || defaultRoutes;
-		this.routeManager.addRoutes(initialRoutes);
 	}
 
 	private configureMiddleware(): void {
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(connectToDatabase);
-	}
-
-	private configureRoutes(): void {
-		this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
-	}
-
-	private addRouteToExpress(route: RouteDefinition): void {
-		if (Array.isArray(route.method)) {
-			this.app.all(route.path, (req, res, next) => {
-				if (!route.method.includes(req.params.command)) {
-					return res.status(400).json({ error: 'Command not supported' });
-				}
-				this.handleRequest(route.handler)(req, res, next);
-			});
-		} else {
-			this.app[route.method](route.path, this.handleRequest(route.handler));
+		if (this.authMiddleware) {
+			this.app.use(this.authMiddleware);
 		}
 	}
 
+	private configureRoutes(): void {
+		if (this.options.routes) {
+			this.routeManager.addRoutes(this.options.routes);
+		}
+		this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
+		if (this.authService) {
+			this.configureAuthRoutes();
+		}
+	}
+
+	private configureErrorHandling(): void {
+		this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+			console.error(err.stack);
+			res.status(500).json({ error: err.message });
+		});
+	}
+
+	public start(): void {
+		if (this._state === 'running') {
+			console.log('Server is already running.');
+			return;
+		}
+
+		this.initializeServices();
+		this.configure();
+
+		const port = this.options.port || 3000;
+		this.serverInstance = this.app.listen(port, () => {
+			console.log(`Server is running on port: ${port}`);
+			this._state = 'running';
+		});
+
+		this.serverInstance.on('error', this.handleServerError.bind(this));
+	}
+
+	private handleServerError(error: NodeJS.ErrnoException): void {
+		if (error.code === 'EADDRINUSE') {
+			console.error(`Port ${this.options.port} is already in use.`);
+			switch (this.options.onInUse) {
+				case 'reboot':
+					console.log('Rebooting server...');
+					setTimeout(() => {
+						this.stop();
+						this.start();
+					}, 1000);
+					break;
+				case 'replace':
+					console.log('Replacing existing server...');
+					this.stop();
+					this.start();
+					break;
+				default:
+					console.log('Failed to start the server.');
+					process.exit(1);
+			}
+		} else {
+			throw error;
+		}
+	}
+
+	public stop(): void {
+		if (this.serverInstance) {
+			this.serverInstance.close((err: Error) => {
+				if (err) {
+					console.error('Error while stopping the server:', err);
+				} else {
+					console.log('Server stopped successfully.');
+					this._state = 'stopped';
+				}
+			});
+		}
+	}
+
+	// Handle login
+	private handleLogin(req: Request, res: Response): void {
+		const { username, password } = req.body;
+
+		// Validate user credentials (this is a placeholder, replace with actual validation logic)
+		if (username === 'admin' && password === 'password') {
+			const payload = { username };
+			const token = this.authService?.generateToken(payload);
+			res.json({ token });
+		} else {
+			res.status(401).json({ error: 'Invalid credentials' });
+		}
+	}
+
+	// Handle logout
+	private handleLogout(req: Request, res: Response): void {
+		// Invalidate the token (this is a placeholder, implement actual token invalidation logic if needed)
+		res.json({ message: 'Logged out successfully' });
+	}
+
+	// Handle token refresh
+	private handleRefreshToken(req: Request, res: Response): void {
+		const { token } = req.body;
+
+		try {
+			const newToken = this.authService?.refreshToken(token);
+			res.json({ token: newToken });
+		} catch (error) {
+			res.status(401).json({ error: 'Invalid token' });
+		}
+	}
+
+	// Add a route to Express
+	private addRouteToExpress(route: RouteDefinition): void {
+		const handlers = [];
+		if (route.requiresAuth && this.authMiddleware) {
+			handlers.push(this.authMiddleware);
+		}
+		handlers.push(this.handleRequest(route.handler));
+
+		if (Array.isArray(route.method)) {
+			this.app.all(route.path, ...handlers);
+		} else {
+			this.app[route.method](route.path, ...handlers);
+		}
+	}
+
+	// Add a new route
 	public addRoute(route: RouteDefinition): void {
 		this.routeManager.addRoute(route);
 		if (!route.disabled) {
@@ -167,16 +270,19 @@ class ApiServer {
 		}
 	}
 
+	// Add multiple routes
 	public addRoutes(routes: RouteDefinition[]): void {
 		routes.forEach((route) => this.addRoute(route));
 	}
 
+	// Remove a route
 	public removeRoute(path: string, method: string | string[]): void {
 		this.routeManager.removeRoute(path, method);
 		// Note: Express doesn't provide a built-in way to remove routes.
 		// You might need to re-create the Express app to reflect removed routes.
 	}
 
+	// Enable a route
 	public enableRoute(path: string, method: string | string[]): void {
 		this.routeManager.enableRoute(path, method);
 		const route = this.routeManager
@@ -191,12 +297,14 @@ class ApiServer {
 		}
 	}
 
+	// Disable a route
 	public disableRoute(path: string, method: string | string[]): void {
 		this.routeManager.disableRoute(path, method);
 		// Note: Express doesn't provide a built-in way to remove routes.
 		// You might need to re-create the Express app to reflect disabled routes.
 	}
 
+	// Handle request
 	private handleRequest(
 		action: (service: DBaseService<any>, params: any, body?: any) => Promise<any>
 	) {
@@ -212,52 +320,12 @@ class ApiServer {
 		};
 	}
 
-	private configureErrorHandling(): void {
-		this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-			console.error(err.stack);
-			res.status(500).json({ error: err.message });
-		});
-	}
-
-	public start(): void {
-		this.serverInstance = this.app.listen(this.port, () => {
-			console.log(`Server is running on port: ${this.port}`);
-			this._state = 'running';
-		});
-
-		this.serverInstance.on('error', (error: NodeJS.ErrnoException) => {
-			if (error.code === 'EADDRINUSE') {
-				console.error(`Port ${this.port} is already in use.`);
-				if (this.onInUse === 'reboot') {
-					console.log('Rebooting server...');
-					setTimeout(() => {
-						this.stop();
-						this.start();
-					}, 1000);
-				} else if (this.onInUse === 'replace') {
-					console.log('Replacing existing server...');
-					this.stop();
-					this.start();
-				} else {
-					console.log('Failed to start the server.');
-					process.exit(1);
-				}
-			} else {
-				throw error;
-			}
-		});
-	}
-
-	public stop(): void {
-		if (this.serverInstance) {
-			this.serverInstance.close((err: Error) => {
-				if (err) {
-					console.error('Error while stopping the server:', err);
-				} else {
-					console.log('Server stopped successfully.');
-					this._state = 'stopped';
-				}
-			});
+	// Configure authentication routes
+	private configureAuthRoutes(): void {
+		if (this.authService) {
+			this.app.post('/login', this.handleLogin.bind(this));
+			this.app.post('/logout', this.handleLogout.bind(this));
+			this.app.post('/refresh-token', this.handleRefreshToken.bind(this));
 		}
 	}
 }
@@ -272,7 +340,13 @@ import apiServer from './ApiServer';
 import { RouteDefinition } from './config/routeDefinitions';
 
 // Configure the server
-apiServer.setOptions({ port: 3050, onInUse: 'reboot' });
+apiServer.setOptions({
+    port: 3050,
+    enableAuth: true,
+    jwtSecret: 'your_jwt_secret',
+    tokenExpiration: '15m',
+    onInUse: 'reboot'
+});
 
 // Start the server
 apiServer.start();

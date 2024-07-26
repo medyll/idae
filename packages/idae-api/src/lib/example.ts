@@ -1,7 +1,7 @@
 import { apiServer } from './apiServer';
 
 // Configure the server
-apiServer.setOptions({ port: 3050, onInUse: 'reboot' });
+apiServer.setOptions({ port: 3050, onInUse: 'reboot', enableAuth: false });
 
 // Start the server
 apiServer.start();
@@ -36,6 +36,6 @@ apiServer.router.addRoutes([
 ]);
 
 // Stop the server
-apiServer.stop();
+// apiServer.stop();
 
 console.log(apiServer.state); // 'stopped'

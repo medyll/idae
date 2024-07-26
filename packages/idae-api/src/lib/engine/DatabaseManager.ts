@@ -22,7 +22,7 @@ class DatabaseManager {
 		this.config = {
 			port: Number(process.env.MONGODB_DEFAULT_PORT) || 27017,
 			host: process.env.MONGODB_DEFAULT_HOST || 'localhost',
-			defaultDbName: process.env.MONGODB_DEFAULT_DB || 'idae',
+			defaultDbName: process.env?.MONGODB_DEFAULT_DB || 'idaenext_sitebase_app',
 			connectionPrefix: process.env.MONGODB_DEFAULT_CONNECTION_PREFIX || 'mongodb://'
 		};
 	}
@@ -35,6 +35,7 @@ class DatabaseManager {
 	}
 
 	private getDbNameFromCollectionName(collectionName: string): string {
+		console.log({ collectionName });
 		return collectionName.includes('.') ? collectionName.split('.')[0] : this.config.defaultDbName;
 	}
 
@@ -51,6 +52,7 @@ class DatabaseManager {
 
 	public async connectToDatabase(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const { collectionName } = req.params;
+		console.log(req);
 		const dbName = this.getDbNameFromCollectionName(collectionName);
 
 		try {
