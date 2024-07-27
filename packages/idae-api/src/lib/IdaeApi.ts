@@ -61,7 +61,7 @@ class IdaeApi {
 	}
 
 	private configureMiddleware(): void {
-		this.app.use(databaseMiddleware);
+		//this.app.use(databaseMiddleware);
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
 		if (this.authMiddleware) {
@@ -70,6 +70,7 @@ class IdaeApi {
 	}
 
 	private configureRoutes(): void {
+		this.app.use('/:collectionName', databaseMiddleware);
 		// Configurez les routes en premier
 		this.routeManager.addRoutes(defaultRoutes);
 
