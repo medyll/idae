@@ -22,7 +22,7 @@ class DatabaseManager {
 		this.config = {
 			port: Number(process.env.MONGODB_DEFAULT_PORT) || 27017,
 			host: process.env.MONGODB_DEFAULT_HOST || 'localhost',
-			defaultDbName: process.env?.MONGODB_DEFAULT_DB || 'idaenext_sitebase_app',
+			defaultDbName: process.env.MONGODB_DEFAULT_DB || 'idaenext_sitebase_app',
 			connectionPrefix: process.env.MONGODB_DEFAULT_CONNECTION_PREFIX || 'mongodb://'
 		};
 	}
@@ -40,18 +40,26 @@ class DatabaseManager {
 	}
 
 	private async getConnection(dbName: string): Promise<mongoose.Connection> {
+		console.log('getDbNameFromCollectionName:', dbName);
 		if (this.connections.has(dbName)) {
 			return this.connections.get(dbName)!;
 		}
 
 		const dbUri = `${this.config.connectionPrefix}${this.config.host}:${this.config.port}/${dbName}`;
-		const connection = await mongoose.createConnection(dbUri).asPromise();
+		const connection = await mongoose
+			.createConnection(dbUri, {
+				serverSelectionTimeoutMS: 30000, // Augmente le timeout à 30 secondes
+				socketTimeoutMS: 45000, // Augmente le timeout du socket à 45 secondes
+				maxPoolSize: 10 // Ajuste la taille du pool de connexions si nécessaire
+			})
+			.asPromise();
+
 		this.connections.set(dbName, connection);
 		return connection;
 	}
 
 	public async connectToDatabase(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const { collectionName } = req.params;
+		const collectionName = req.params.collectionName || 'default';
 		console.log('Collection Name:', collectionName);
 		const dbName = this.getDbNameFromCollectionName(collectionName);
 
@@ -64,7 +72,6 @@ class DatabaseManager {
 		} catch (error) {
 			console.error(`Failed to connect to database ${dbName}:`, error);
 			res.status(500).json({ error: `Failed to connect to database ${dbName}` });
-			next(error);
 		}
 	}
 

@@ -77,10 +77,10 @@ console.log('IDAE API is running on port 3000');
 console.log('You can now use Postman to test the API endpoints.');
 
 // Exemple d'arrêt du serveur après un certain temps
-setTimeout(() => {
+/* setTimeout(() => {
 	idaeApi.stop();
 	console.log('IDAE API has been stopped');
-}, 60000); // Arrêt après 1 minute
+}, 60000);   */
 
 // Gestion des erreurs
 process.on('unhandledRejection', (reason, promise) => {

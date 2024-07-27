@@ -1,12 +1,12 @@
 // packages\idae-api\src\lib\IdaeApi.ts
 
 import express, { type Express, type Request, type Response, type NextFunction } from 'express';
-import { connectToDatabase } from './middleware/databaseMiddleware';
+import { databaseMiddleware } from './middleware/databaseMiddleware';
 import { DBaseService } from './engine/DBaseService';
 import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
 import { AuthMiddleWare } from './middleware/authMiddleware';
 import { RouteManager } from './engine/routeManager';
-interface ApiServerOptions {
+interface IdaeApiOptions {
 	port?: number;
 	routes?: RouteDefinition[];
 	onInUse?: 'reboot' | 'fail' | 'replace';
@@ -18,7 +18,7 @@ interface ApiServerOptions {
 class IdaeApi {
 	private static instance: IdaeApi | null = null;
 	private app: Express;
-	private options: ApiServerOptions;
+	private options: IdaeApiOptions;
 	private routeManager: RouteManager;
 	private serverInstance: any;
 	private _state: 'stopped' | 'running' = 'stopped';
@@ -41,7 +41,7 @@ class IdaeApi {
 		return this._state;
 	}
 
-	public setOptions(options: ApiServerOptions): void {
+	public setOptions(options: IdaeApiOptions): void {
 		this.options = { ...this.options, ...options };
 	}
 
@@ -55,25 +55,24 @@ class IdaeApi {
 	}
 
 	public configure(): void {
-		this.configureMiddleware();
 		this.configureRoutes();
+		this.configureMiddleware();
 		this.configureErrorHandling();
 	}
 
 	private configureMiddleware(): void {
+		this.app.use(databaseMiddleware);
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
-
 		if (this.authMiddleware) {
 			this.app.use(this.authMiddleware.createMiddleware());
 		}
 	}
 
 	private configureRoutes(): void {
-		// Load default routes
+		// Configurez les routes en premier
 		this.routeManager.addRoutes(defaultRoutes);
 
-		// Load custom routes if any
 		if (this.options.routes) {
 			this.routeManager.addRoutes(this.options.routes);
 		}
@@ -84,7 +83,10 @@ class IdaeApi {
 			this.authMiddleware.configureAuthRoutes(this.app);
 		}
 
-		this.app.use(connectToDatabase);
+		console.log('Routes loaded:');
+
+		// Ajoutez le middleware de connexion à la base de données après la configuration des routes
+		this.app.use(databaseMiddleware);
 	}
 
 	private configureErrorHandling(): void {
@@ -153,6 +155,7 @@ class IdaeApi {
 	// Add a route to Express
 	private addRouteToExpress(route: RouteDefinition): void {
 		const handlers = [];
+		console.log(`Adding route: ${route.method} ${route.path}`);
 		if (route.requiresAuth && this.authMiddleware) {
 			handlers.push(this.authMiddleware.createMiddleware());
 		}
@@ -177,8 +180,13 @@ class IdaeApi {
 	) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
+				console.log('action');
 				const { collectionName } = req.params;
-				const databaseService = new DBaseService(collectionName);
+				const connection = req.dbConnection;
+				if (!connection) {
+					throw new Error('Database connection not established');
+				}
+				const databaseService = new DBaseService(collectionName, connection);
 				const result = await action(databaseService, req.params, req.body);
 				res.json(result);
 			} catch (error) {

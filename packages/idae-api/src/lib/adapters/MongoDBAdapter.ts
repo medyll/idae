@@ -75,29 +75,3 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		return sortOptions;
 	}
 }
-
-// MongoDB configuration
-const MONGODB_DEFAULT_DB = process.env.MONGODB_DEFAULT_DB || 'default_database';
-const MONGODB_DEFAULT_PORT = process.env.MONGODB_DEFAULT_PORT || '27017';
-const MONGODB_DEFAULT_HOST = process.env.MONGODB_DEFAULT_HOST || 'localhost';
-const MONGODB_DEFAULT_CONNECTION_PREFIX =
-	process.env.MONGODB_DEFAULT_CONNECTION_PREFIX || 'mongodb://';
-
-// Construct MongoDB URI
-const MONGODB_URI = `${MONGODB_DEFAULT_CONNECTION_PREFIX}${MONGODB_DEFAULT_HOST}:${MONGODB_DEFAULT_PORT}/${MONGODB_DEFAULT_DB}`;
-
-const MONGODB_OPTIONS = {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-	// Add other MongoDB connection options if needed
-};
-
-// Export configurations for use elsewhere in the application
-export {
-	MONGODB_URI,
-	MONGODB_OPTIONS,
-	MONGODB_DEFAULT_DB,
-	MONGODB_DEFAULT_PORT,
-	MONGODB_DEFAULT_HOST,
-	MONGODB_DEFAULT_CONNECTION_PREFIX
-};
