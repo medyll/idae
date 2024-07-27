@@ -4,8 +4,8 @@ import express, { type Express, type Request, type Response, type NextFunction }
 import { connectToDatabase } from './middleware/databaseMiddleware';
 import { DBaseService } from './engine/DBaseService';
 import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
-import { AuthService } from './services/AuthService.js';
-import { createAuthMiddleware } from '$lib/middleware/authMiddleware';
+import { AuthMiddleWare } from './middleware/authMiddleware';
+import { RouteManager } from './engine/routeManager';
 interface ApiServerOptions {
 	port?: number;
 	routes?: RouteDefinition[];
@@ -15,64 +15,6 @@ interface ApiServerOptions {
 	tokenExpiration?: string;
 }
 
-class RouteManager {
-	private static instance: RouteManager;
-	private routes: RouteDefinition[] = [];
-
-	private constructor() {}
-
-	public static getInstance(): RouteManager {
-		if (!RouteManager.instance) {
-			RouteManager.instance = new RouteManager();
-		}
-		return RouteManager.instance;
-	}
-
-	public addRoute(route: RouteDefinition): void {
-		this.routes.push({ ...route, disabled: route.disabled || false });
-	}
-
-	public addRoutes(routes: RouteDefinition[]): void {
-		routes.forEach((route) => this.addRoute(route));
-	}
-
-	public removeRoute(path: string, method: string | string[]): void {
-		this.routes = this.routes.filter(
-			(r) =>
-				!(
-					r.path === path &&
-					(Array.isArray(r.method) ? r.method.includes(method as string) : r.method === method)
-				)
-		);
-	}
-
-	public getRoutes(): RouteDefinition[] {
-		return this.routes.filter((route) => !route.disabled);
-	}
-
-	public enableRoute(path: string, method: string | string[]): void {
-		const route = this.routes.find(
-			(r) =>
-				r.path === path &&
-				(Array.isArray(r.method) ? r.method.includes(method as string) : r.method === method)
-		);
-		if (route) {
-			route.disabled = false;
-		}
-	}
-
-	public disableRoute(path: string, method: string | string[]): void {
-		const route = this.routes.find(
-			(r) =>
-				r.path === path &&
-				(Array.isArray(r.method) ? r.method.includes(method as string) : r.method === method)
-		);
-		if (route) {
-			route.disabled = true;
-		}
-	}
-}
-
 class ApiServer {
 	private static instance: ApiServer | null = null;
 	private app: Express;
@@ -80,29 +22,12 @@ class ApiServer {
 	private routeManager: RouteManager;
 	private serverInstance: any;
 	private _state: 'stopped' | 'running' = 'stopped';
-	private authMiddleware: Function | null = null;
-	private authService: AuthService | null = null;
-
-	public router: {
-		addRoute: (route: RouteDefinition) => void;
-		addRoutes: (routes: RouteDefinition[]) => void;
-		removeRoute: (path: string, method: string | string[]) => void;
-		enableRoute: (path: string, method: string | string[]) => void;
-		disableRoute: (path: string, method: string | string[]) => void;
-	};
+	private authMiddleware: AuthMiddleWare | null = null;
 
 	private constructor() {
 		this.app = express();
 		this.options = {};
 		this.routeManager = RouteManager.getInstance();
-
-		this.router = {
-			addRoute: this.addRoute.bind(this),
-			addRoutes: this.addRoutes.bind(this),
-			removeRoute: this.removeRoute.bind(this),
-			enableRoute: this.enableRoute.bind(this),
-			disableRoute: this.disableRoute.bind(this)
-		};
 	}
 
 	public static getInstance(): ApiServer {
@@ -122,8 +47,10 @@ class ApiServer {
 
 	private initializeServices(): void {
 		if (this.options.enableAuth && this.options.jwtSecret && this.options.tokenExpiration) {
-			this.authService = new AuthService(this.options.jwtSecret, this.options.tokenExpiration);
-			this.authMiddleware = createAuthMiddleware(this.authService);
+			this.authMiddleware = new AuthMiddleWare(
+				this.options.jwtSecret,
+				this.options.tokenExpiration
+			);
 		}
 	}
 
@@ -136,20 +63,28 @@ class ApiServer {
 	private configureMiddleware(): void {
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
-		this.app.use(connectToDatabase);
+
 		if (this.authMiddleware) {
-			this.app.use(this.authMiddleware);
+			this.app.use(this.authMiddleware.createMiddleware());
 		}
 	}
 
 	private configureRoutes(): void {
+		// Load default routes
+		this.routeManager.addRoutes(defaultRoutes);
+
+		// Load custom routes if any
 		if (this.options.routes) {
 			this.routeManager.addRoutes(this.options.routes);
 		}
+
 		this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
-		if (this.authService) {
-			this.configureAuthRoutes();
+
+		if (this.authMiddleware) {
+			this.authMiddleware.configureAuthRoutes(this.app);
 		}
+
+		this.app.use(connectToDatabase);
 	}
 
 	private configureErrorHandling(): void {
@@ -215,44 +150,18 @@ class ApiServer {
 		}
 	}
 
-	// Handle login
-	private handleLogin(req: Request, res: Response): void {
-		const { username, password } = req.body;
-
-		// Validate user credentials (this is a placeholder, replace with actual validation logic)
-		if (username === 'admin' && password === 'password') {
-			const payload = { username };
-			const token = this.authService?.generateToken(payload);
-			res.json({ token });
-		} else {
-			res.status(401).json({ error: 'Invalid credentials' });
-		}
-	}
-
-	// Handle logout
-	private handleLogout(req: Request, res: Response): void {
-		// Invalidate the token (this is a placeholder, implement actual token invalidation logic if needed)
-		res.json({ message: 'Logged out successfully' });
-	}
-
-	// Handle token refresh
-	private handleRefreshToken(req: Request, res: Response): void {
-		const { token } = req.body;
-
-		try {
-			const newToken = this.authService?.refreshToken(token);
-			res.json({ token: newToken });
-		} catch (error) {
-			res.status(401).json({ error: 'Invalid token' });
-		}
-	}
-
 	// Add a route to Express
 	private addRouteToExpress(route: RouteDefinition): void {
 		const handlers = [];
 		if (route.requiresAuth && this.authMiddleware) {
-			handlers.push(this.authMiddleware);
+			handlers.push(this.authMiddleware.createMiddleware());
 		}
+
+		handlers.push((req: Request, res: Response, next: NextFunction) => {
+			console.log('Route params:', req.params);
+			next();
+		});
+
 		handlers.push(this.handleRequest(route.handler));
 
 		if (Array.isArray(route.method)) {
@@ -260,48 +169,6 @@ class ApiServer {
 		} else {
 			this.app[route.method](route.path, ...handlers);
 		}
-	}
-
-	// Add a new route
-	public addRoute(route: RouteDefinition): void {
-		this.routeManager.addRoute(route);
-		if (!route.disabled) {
-			this.addRouteToExpress(route);
-		}
-	}
-
-	// Add multiple routes
-	public addRoutes(routes: RouteDefinition[]): void {
-		routes.forEach((route) => this.addRoute(route));
-	}
-
-	// Remove a route
-	public removeRoute(path: string, method: string | string[]): void {
-		this.routeManager.removeRoute(path, method);
-		// Note: Express doesn't provide a built-in way to remove routes.
-		// You might need to re-create the Express app to reflect removed routes.
-	}
-
-	// Enable a route
-	public enableRoute(path: string, method: string | string[]): void {
-		this.routeManager.enableRoute(path, method);
-		const route = this.routeManager
-			.getRoutes()
-			.find(
-				(r) =>
-					r.path === path &&
-					(Array.isArray(r.method) ? r.method.includes(method as string) : r.method === method)
-			);
-		if (route) {
-			this.addRouteToExpress(route);
-		}
-	}
-
-	// Disable a route
-	public disableRoute(path: string, method: string | string[]): void {
-		this.routeManager.disableRoute(path, method);
-		// Note: Express doesn't provide a built-in way to remove routes.
-		// You might need to re-create the Express app to reflect disabled routes.
 	}
 
 	// Handle request
@@ -320,13 +187,9 @@ class ApiServer {
 		};
 	}
 
-	// Configure authentication routes
-	private configureAuthRoutes(): void {
-		if (this.authService) {
-			this.app.post('/login', this.handleLogin.bind(this));
-			this.app.post('/logout', this.handleLogout.bind(this));
-			this.app.post('/refresh-token', this.handleRefreshToken.bind(this));
-		}
+	// Expose RouteManager methods
+	public get router() {
+		return this.routeManager;
 	}
 }
 

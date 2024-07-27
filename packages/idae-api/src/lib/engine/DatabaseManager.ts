@@ -52,10 +52,11 @@ class DatabaseManager {
 
 	public async connectToDatabase(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const { collectionName } = req.params;
-		console.log(req);
+		console.log('Collection Name:', collectionName);
 		const dbName = this.getDbNameFromCollectionName(collectionName);
 
 		try {
+			console.log(`Connecting to database: ${dbName}`);
 			const connection = await this.getConnection(dbName);
 			req.dbConnection = connection;
 			console.log(`Connected to database: ${dbName}`);
@@ -63,6 +64,7 @@ class DatabaseManager {
 		} catch (error) {
 			console.error(`Failed to connect to database ${dbName}:`, error);
 			res.status(500).json({ error: `Failed to connect to database ${dbName}` });
+			next(error);
 		}
 	}
 

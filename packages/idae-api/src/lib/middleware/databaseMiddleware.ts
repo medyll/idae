@@ -1,7 +1,7 @@
 // packages\idae-api\src\lib\middleware\databaseMiddleware.ts
 
 import type { Request, Response, NextFunction } from 'express';
-import databaseManager from '../engine/DatabaseManager';
+import databaseManager from '$lib/engine/DatabaseManager';
 
 export const connectToDatabase = async (req: Request, res: Response, next: NextFunction) => {
 	try {
