@@ -1,5 +1,5 @@
 // packages\idae-api\src\lib\engine\DBaseService.ts
-import { type Document } from 'mongoose';
+import mongoose, { type Document } from 'mongoose';
 import { type RequestParams } from './types';
 import { MongoDBAdapter } from '$lib/adapters/MongoDBAdapter';
 import type { DatabaseAdapter } from '$lib/adapters/types';
@@ -9,11 +9,12 @@ class DBaseService<T extends Document> {
 
 	constructor(
 		collection: string,
+		connection: mongoose.Connection,
 		dbType: 'mongodb' | 'mysql' | 'mariadb' | 'postgres' = 'mongodb'
 	) {
 		switch (dbType) {
 			case 'mongodb':
-				this.adapter = new MongoDBAdapter<T>(collection);
+				this.adapter = new MongoDBAdapter<T>(collection, connection);
 				break;
 			case 'mysql':
 			case 'mariadb':
@@ -23,6 +24,7 @@ class DBaseService<T extends Document> {
 				// TODO: Implement postgres adapter
 				throw new Error('Postgres adapter not implemented yet');
 			default:
+				console.log('dbType', dbType);
 				throw new Error(`Unsupported database type: ${dbType}`);
 		}
 	}

@@ -1,12 +1,16 @@
 // packages\idae-api\src\lib\engine\DatabaseManager.ts
 import mongoose from 'mongoose';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request } from 'express';
 import dotenv from 'dotenv';
+import {
+	mongooseConnectionManager,
+	type MongooseConnectionManager
+} from './mongooseConnectionManager';
 
 // Load environment variables
 dotenv.config();
 
-interface DatabaseConfig {
+export interface DatabaseConfig {
 	port: number;
 	host: string;
 	defaultDbName: string;
@@ -16,7 +20,7 @@ interface DatabaseConfig {
 class DatabaseManager {
 	private static instance: DatabaseManager;
 	private config: DatabaseConfig;
-	private connections: Map<string, mongoose.Connection> = new Map();
+	private mongooseConnectionManager: MongooseConnectionManager = mongooseConnectionManager;
 
 	private constructor() {
 		this.config = {
@@ -35,54 +39,48 @@ class DatabaseManager {
 	}
 
 	private getDbNameFromCollectionName(collectionName: string): string {
-		console.log({ collectionName });
 		return collectionName.includes('.') ? collectionName.split('.')[0] : this.config.defaultDbName;
 	}
 
-	private async getConnection(dbName: string): Promise<mongoose.Connection> {
-		console.log('getDbNameFromCollectionName:', dbName);
-		if (this.connections.has(dbName)) {
-			return this.connections.get(dbName)!;
-		}
-
+	private async initConnection(dbName: string): Promise<mongoose.Connection> {
 		const dbUri = `${this.config.connectionPrefix}${this.config.host}:${this.config.port}/${dbName}`;
-		const connection = await mongoose
-			.createConnection(dbUri, {
-				serverSelectionTimeoutMS: 30000, // Augmente le timeout à 30 secondes
-				socketTimeoutMS: 45000, // Augmente le timeout du socket à 45 secondes
-				maxPoolSize: 10 // Ajuste la taille du pool de connexions si nécessaire
-			})
-			.asPromise();
+		// use mongooseConnectionManager
+		const connection = await this.mongooseConnectionManager.createConnection(dbUri, dbName, {
+			dbName,
+			autoIndex: false,
+			bufferCommands: false,
+			serverSelectionTimeoutMS: 30000,
+			socketTimeoutMS: 45000,
+			maxPoolSize: 20
+		});
 
-		this.connections.set(dbName, connection);
 		return connection;
 	}
 
-	public async connectToDatabase(req: Request, res: Response, next: NextFunction): Promise<void> {
+	public async connectToDatabase(
+		req: Request
+	): Promise<{ connection?: mongoose.Connection; dbName?: string; collectionName?: string }> {
 		const collectionName = req.params.collectionName || 'default';
-		console.log('Collection Name:', collectionName);
+
 		const dbName = this.getDbNameFromCollectionName(collectionName);
+		const collectionNames = collectionName.split('.')?.[1] ?? collectionName.split('.')?.[0];
 
 		try {
-			console.log(`Connecting to database: ${dbName}`);
-			const connection = await this.getConnection(dbName);
-			req.dbConnection = connection;
-			console.log(`Connected to database: ${dbName}`);
-			next();
+			const connection = await this.initConnection(dbName);
+			return {
+				connection,
+				dbName,
+				collectionName: collectionNames
+			};
 		} catch (error) {
 			console.error(`Failed to connect to database ${dbName}:`, error);
-			res.status(500).json({ error: `Failed to connect to database ${dbName}` });
+			throw new Error(`Failed to connect to database ${dbName}:`);
 		}
 	}
 
-	public async closeAllConnections(): Promise<void> {
-		for (const connection of this.connections.values()) {
-			await connection.close();
-		}
-		this.connections.clear();
-	}
+	public async closeAllConnections(): Promise<void> {}
 }
 
 const databaseManager = DatabaseManager.getInstance();
 export default databaseManager;
-export { DatabaseManager };
+export { DatabaseManager, databaseManager };
