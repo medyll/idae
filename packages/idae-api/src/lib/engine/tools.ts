@@ -2,6 +2,7 @@
 
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import AutoIncrementFactory from 'mongoose-sequence';
+import { databaseManager } from '$lib/engine/DatabaseManager';
 
 const AutoIncrement = AutoIncrementFactory(mongoose);
 
@@ -13,6 +14,8 @@ export const getModel = <T extends Document>(collectionName: string): Model<T> =
 	if (mongoose.models[collectionName]) {
 		return mongoose.models[collectionName] as Model<T>;
 	}
+
+	console.log('getModel for the model of the collection :', collectionName);
 
 	const schema = new Schema({}, { strict: false });
 	//schema.plugin(AutoIncrement, { inc_field: 'idFieldName' });

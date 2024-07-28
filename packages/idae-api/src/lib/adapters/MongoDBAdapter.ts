@@ -1,8 +1,9 @@
 // packages\idae-api\src\lib\adapters\MongoDBAdapter.ts
-import { getModel } from '$lib/engine/tools';
+
 import type { RequestParams, SortOptions } from '$lib/engine/types';
 import type { Model, FilterQuery, UpdateQuery, Document } from 'mongoose';
 import dotenv from 'dotenv';
+import mongoose, { Schema } from 'mongoose';
 
 // Load environment variables
 dotenv.config();
@@ -20,9 +21,14 @@ interface DatabaseAdapter<T extends Document> {
 // MongoDB Adapter
 export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 	private model: Model<T>;
+	private connection: mongoose.Connection;
 
-	constructor(collection: string) {
-		this.model = getModel<T>(collection);
+	constructor(collection: string, connection: mongoose.Connection) {
+		// just in case
+		collection = collection.split('.')[1] ?? collection.split('.')[0];
+
+		this.connection = connection;
+		this.model = this.getModel<T>(collection);
 	}
 
 	async create(document: Partial<T>): Promise<T> {
@@ -38,28 +44,27 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 			.find(query as FilterQuery<T>)
 			.sort(sortOptions)
 			.limit(Number(limit) || 0)
-			.skip(Number(skip) || 0)
-			.exec();
+			.skip(Number(skip) || 0);
 	}
 
 	async findById(id: string): Promise<T | null> {
-		return this.model.findById(id).exec();
+		return this.model.findById(id);
 	}
 
 	async findOne(params: RequestParams): Promise<T | null> {
-		return this.model.findOne(params.query as FilterQuery<T>).exec();
+		return this.model.findOne(params.query as FilterQuery<T>);
 	}
 
 	async update(id: string, updateData: Partial<T>): Promise<T | null> {
-		return this.model.findByIdAndUpdate(id, updateData as UpdateQuery<T>, { new: true }).exec();
+		return this.model.findByIdAndUpdate(id, updateData as UpdateQuery<T>, { new: true });
 	}
 
 	async deleteById(id: string): Promise<T | null> {
-		return this.model.findByIdAndDelete(id).exec();
+		return this.model.findByIdAndDelete(id);
 	}
 
 	async deleteManyByQuery(params: RequestParams): Promise<{ deletedCount?: number }> {
-		const result = await this.model.deleteMany(params.query as FilterQuery<T>).exec();
+		const result = await this.model.deleteMany(params.query as FilterQuery<T>);
 		return { deletedCount: result.deletedCount };
 	}
 
@@ -74,4 +79,17 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		}
 		return sortOptions;
 	}
+
+	setModel(collection: string) {
+		const schema = new Schema({}, { strict: false });
+		return this.connection.model<T>(collection, schema, collection);
+	}
+
+	getModel = <T extends Document>(collectionName: string): Model<T> => {
+		if (this.connection.models[collectionName]) {
+			return this.connection.model(collectionName) as Model<T>;
+		} else {
+			return this.setModel(collectionName) as unknown as Model<T>;
+		}
+	};
 }

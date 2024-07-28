@@ -30,6 +30,9 @@ idaeApi.setOptions({
 // Démarrage du serveur
 idaeApi.start();
 console.log('IDAE API is running on port 3000');
+setTimeout(() => {
+	fetch('http://localhost:3000/idaenext_sitebase_app.appscheme');
+}, 1000);
 
 // Exemples d'utilisation des routes par défaut avec Postman
 

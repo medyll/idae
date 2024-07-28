@@ -6,6 +6,7 @@ import { DBaseService } from './engine/DBaseService';
 import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
 import { AuthMiddleWare } from './middleware/authMiddleware';
 import { RouteManager } from './engine/routeManager';
+import type { Server } from 'http';
 interface IdaeApiOptions {
 	port?: number;
 	routes?: RouteDefinition[];
@@ -17,17 +18,20 @@ interface IdaeApiOptions {
 
 class IdaeApi {
 	private static instance: IdaeApi | null = null;
-	private app: Express;
+	private _app: Express;
 	private options: IdaeApiOptions;
 	private routeManager: RouteManager;
-	private serverInstance: any;
+	private serverInstance!: Server;
 	private _state: 'stopped' | 'running' = 'stopped';
 	private authMiddleware: AuthMiddleWare | null = null;
 
 	private constructor() {
-		this.app = express();
+		this._app = express();
 		this.options = {};
 		this.routeManager = RouteManager.getInstance();
+
+		this.initializeAuth();
+		this.configureIdaeApi();
 	}
 
 	public static getInstance(): IdaeApi {
@@ -41,11 +45,15 @@ class IdaeApi {
 		return this._state;
 	}
 
+	get app() {
+		return this._app;
+	}
+
 	public setOptions(options: IdaeApiOptions): void {
 		this.options = { ...this.options, ...options };
 	}
 
-	private initializeServices(): void {
+	private initializeAuth(): void {
 		if (this.options.enableAuth && this.options.jwtSecret && this.options.tokenExpiration) {
 			this.authMiddleware = new AuthMiddleWare(
 				this.options.jwtSecret,
@@ -54,24 +62,22 @@ class IdaeApi {
 		}
 	}
 
-	public configure(): void {
-		this.configureRoutes();
+	public configureIdaeApi(): void {
 		this.configureMiddleware();
+		this.configureRoutes();
 		this.configureErrorHandling();
 	}
 
 	private configureMiddleware(): void {
-		//this.app.use(databaseMiddleware);
-		this.app.use(express.json());
-		this.app.use(express.urlencoded({ extended: true }));
+		this._app.use('/:collectionName', databaseMiddleware);
+		this._app.use(express.json());
+		this._app.use(express.urlencoded({ extended: true }));
 		if (this.authMiddleware) {
-			this.app.use(this.authMiddleware.createMiddleware());
+			this._app.use(this.authMiddleware.createMiddleware());
 		}
 	}
 
 	private configureRoutes(): void {
-		this.app.use('/:collectionName', databaseMiddleware);
-		// Configurez les routes en premier
 		this.routeManager.addRoutes(defaultRoutes);
 
 		if (this.options.routes) {
@@ -81,17 +87,12 @@ class IdaeApi {
 		this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
 
 		if (this.authMiddleware) {
-			this.authMiddleware.configureAuthRoutes(this.app);
+			this.authMiddleware.configureAuthRoutes(this._app);
 		}
-
-		console.log('Routes loaded:');
-
-		// Ajoutez le middleware de connexion à la base de données après la configuration des routes
-		this.app.use(databaseMiddleware);
 	}
 
 	private configureErrorHandling(): void {
-		this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+		this._app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 			console.error(err.stack);
 			res.status(500).json({ error: err.message });
 		});
@@ -103,11 +104,8 @@ class IdaeApi {
 			return;
 		}
 
-		this.initializeServices();
-		this.configure();
-
 		const port = this.options.port || 3000;
-		this.serverInstance = this.app.listen(port, () => {
+		this.serverInstance = this._app.listen(port, () => {
 			console.log(`Server is running on port: ${port}`);
 			this._state = 'running';
 		});
@@ -156,22 +154,17 @@ class IdaeApi {
 	// Add a route to Express
 	private addRouteToExpress(route: RouteDefinition): void {
 		const handlers = [];
-		console.log(`Adding route: ${route.method} ${route.path}`);
+
 		if (route.requiresAuth && this.authMiddleware) {
 			handlers.push(this.authMiddleware.createMiddleware());
 		}
 
-		handlers.push((req: Request, res: Response, next: NextFunction) => {
-			console.log('Route params:', req.params);
-			next();
-		});
-
 		handlers.push(this.handleRequest(route.handler));
 
 		if (Array.isArray(route.method)) {
-			this.app.all(route.path, ...handlers);
+			this._app.all(route.path, ...handlers);
 		} else {
-			this.app[route.method](route.path, ...handlers);
+			this._app[route.method](route.path, ...handlers);
 		}
 	}
 
@@ -181,14 +174,15 @@ class IdaeApi {
 	) {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				console.log('action');
 				const { collectionName } = req.params;
+				console.log({ collectionName });
 				const connection = req.dbConnection;
 				if (!connection) {
 					throw new Error('Database connection not established');
 				}
-				const databaseService = new DBaseService(collectionName, connection);
+				const databaseService = new DBaseService(collectionName, connection, 'mongodb');
 				const result = await action(databaseService, req.params, req.body);
+
 				res.json(result);
 			} catch (error) {
 				next(error);

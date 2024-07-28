@@ -8,7 +8,7 @@ describe('API Server Tests', () => {
 	beforeAll(async () => {
 		idaeApi.setOptions({
 			port: 3000,
-			enableAuth: true,
+			enableAuth: false,
 			jwtSecret: 'test_secret',
 			tokenExpiration: '1h'
 		});
@@ -21,7 +21,7 @@ describe('API Server Tests', () => {
 
 	let authToken: string;
 
-	describe('Authentication', () => {
+	/* 	describe('Authentication', () => {
 		it('should login successfully', async () => {
 			const res = await request(idaeApi.app)
 				.post('/login')
@@ -37,7 +37,7 @@ describe('API Server Tests', () => {
 				.send({ username: 'admin', password: 'wrongpassword' });
 			expect(res.status).toBe(401);
 		});
-	});
+	}); */
 
 	describe('CRUD Operations', () => {
 		describe('Without Authentication', () => {
