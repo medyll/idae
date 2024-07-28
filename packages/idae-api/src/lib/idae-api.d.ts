@@ -7,6 +7,8 @@ declare global {
 	namespace Express {
 		interface Request {
 			dbConnection?: mongoose.Connection;
+			collectionName?: string;
+			dbName?: string;
 		}
 	}
 }
