@@ -1,125 +1,47 @@
-import { IdaeApiClientConfig } from './IdaeApiClientConfig';
+// packages\idae-api\src\lib\client\IdaeApiClient.ts
+import {
+	IdaeApiClientConfig,
+	IdaeApiClientConfigCore,
+	type IdaeApiClientConfigCoreOptions
+} from '$lib/client/IdaeApiClientConfig';
+import { IdaeApiClientCollection } from '$lib/client/IdaeApiClientCollection';
+import { IdaeApiClientRequest } from './IdaeApiClientRequest';
 
-type RequestParams = Record<string, any>;
+type RequestParams = Record<string, unknown>;
 
 class IdaeApiClient {
-	private baseUrl: string;
-	private dbList: string[];
+	private clientConfig: IdaeApiClientConfigCore;
+	private _request: IdaeApiClientRequest;
 
-	constructor(baseUrl?: string, dbList?: string[]) {
-		const config = IdaeApiClientConfig.getInstance();
-		this.baseUrl = baseUrl || `${config.method}://${config.host}:${config.port}`;
-		this.dbList = dbList || config.dbList;
+	constructor(clientConfig?: IdaeApiClientConfigCoreOptions & { baseUrl?: string }) {
+		this.clientConfig = IdaeApiClientConfig;
+		this.clientConfig.setOptions(clientConfig);
+		this._request = new IdaeApiClientRequest(this.clientConfig);
 	}
 
-	private async request(method: string, url: string, body?: any): Promise<any> {
-		const response = await fetch(`${this.baseUrl}${url}`, {
-			method,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: body ? JSON.stringify(body) : undefined
-		});
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-
-		return response.json();
+	get request() {
+		return this._request;
 	}
 
-	private buildUrl(
-		dbNameOrCollection: string,
-		collection?: string,
-		command?: string,
-		params?: RequestParams
-	): string {
-		let url = `/${dbNameOrCollection}`;
-		if (collection) {
-			url += `.${collection}`;
-		}
-		if (command) {
-			url += `/${command}`;
-		}
-		if (params) {
-			const queryString = new URLSearchParams(params).toString();
-			url += `?${queryString}`;
-		}
-		return url;
+	async getDbList(): Promise<Response> {
+		return this._request.doRequest({ routeNamespace: 'methods/dbs' });
+	}
+
+	async getCollections(dbName: string): Promise<Response> {
+		return this._request.doRequest({ dbName, routeNamespace: 'methods/collections' });
 	}
 
 	db(dbName: string) {
 		return {
-			collection: (collectionName: string) => ({
-				findAll: (params?: RequestParams) => this.findAll(dbName, collectionName, params),
-				findById: (id: string) => this.findById(dbName, collectionName, id),
-				create: (data: any) => this.create(dbName, collectionName, data),
-				update: (id: string, data: any) => this.update(dbName, collectionName, id, data),
-				deleteById: (id: string) => this.deleteById(dbName, collectionName, id),
-				deleteManyByQuery: (params: RequestParams) =>
-					this.deleteManyByQuery(dbName, collectionName, params),
-				command: (command: string, params?: RequestParams) =>
-					this.command(dbName, collectionName, command, params)
-			})
+			collection: (collectionName: string) =>
+				new IdaeApiClientCollection(this, dbName, collectionName),
+			getCollections: () => this.getCollections(dbName)
 		};
 	}
 
-	collection(collectionName: string) {
-		return {
-			findAll: (params?: RequestParams) => this.findAll('default', collectionName, params),
-			findById: (id: string) => this.findById('default', collectionName, id),
-			create: (data: any) => this.create('default', collectionName, data),
-			update: (id: string, data: any) => this.update('default', collectionName, id, data),
-			deleteById: (id: string) => this.deleteById('default', collectionName, id),
-			deleteManyByQuery: (params: RequestParams) =>
-				this.deleteManyByQuery('default', collectionName, params),
-			command: (command: string, params?: RequestParams) =>
-				this.command('default', collectionName, command, params)
-		};
-	}
-
-	async findAll(dbName: string, collectionName: string, params: RequestParams = {}): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, undefined, params);
-		return this.request('GET', url);
-	}
-
-	async findById(dbName: string, collectionName: string, id: string): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, id);
-		return this.request('GET', url);
-	}
-
-	async create(dbName: string, collectionName: string, data: any): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`);
-		return this.request('POST', url, data);
-	}
-
-	async update(dbName: string, collectionName: string, id: string, data: any): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, id);
-		return this.request('PUT', url, data);
-	}
-
-	async deleteById(dbName: string, collectionName: string, id: string): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, id);
-		return this.request('DELETE', url);
-	}
-
-	async deleteManyByQuery(
-		dbName: string,
-		collectionName: string,
-		params: RequestParams
-	): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, undefined, params);
-		return this.request('DELETE', url);
-	}
-
-	async command(
-		dbName: string,
-		collectionName: string,
-		command: string,
-		params: RequestParams = {}
-	): Promise<any> {
-		const url = this.buildUrl(`${dbName}.${collectionName}`, undefined, command, params);
-		return this.request('GET', url);
+	collection(collectionName: string, dbName?: string) {
+		dbName = dbName || this.clientConfig.defaultDb;
+		return new IdaeApiClientCollection(this, dbName, collectionName);
 	}
 }
 
