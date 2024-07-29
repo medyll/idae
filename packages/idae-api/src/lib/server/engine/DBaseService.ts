@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\engine\DBaseService.ts
 import mongoose, { type Document } from 'mongoose';
-import { type RequestParams } from './types';
+import { type ApiServerRequestParams } from './types';
 import { MongoDBAdapter } from '$lib/server/adapters/MongoDBAdapter';
 import type { DatabaseAdapter } from '$lib/server/adapters/types';
 
@@ -33,7 +33,7 @@ class DBaseService<T extends Document> {
 		return this.adapter.create(document);
 	}
 
-	async findAll(params: RequestParams): Promise<T[]> {
+	async findAll(params: ApiServerRequestParams): Promise<T[]> {
 		return this.adapter.findAll(params);
 	}
 
@@ -41,7 +41,7 @@ class DBaseService<T extends Document> {
 		return this.adapter.findById(id);
 	}
 
-	async findOne(params: RequestParams): Promise<T | null> {
+	async findOne(params: ApiServerRequestParams): Promise<T | null> {
 		return this.adapter.findOne(params);
 	}
 
@@ -53,12 +53,12 @@ class DBaseService<T extends Document> {
 		return this.adapter.deleteById(id);
 	}
 
-	async deleteManyByQuery(params: RequestParams): Promise<{ deletedCount?: number }> {
+	async deleteManyByQuery(params: ApiServerRequestParams): Promise<{ deletedCount?: number }> {
 		return this.adapter.deleteManyByQuery(params);
 	}
 
-	decodeUrlParams(urlParams: string): RequestParams {
-		const params: RequestParams = {};
+	decodeUrlParams(urlParams: string): ApiServerRequestParams {
+		const params: ApiServerRequestParams = {};
 		const urlParamsArray = urlParams.split('&');
 		urlParamsArray.forEach((param) => {
 			const [key, value] = param.split('=');

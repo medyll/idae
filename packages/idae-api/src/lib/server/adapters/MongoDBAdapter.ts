@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\adapters\MongoDBAdapter.ts
 
-import type { RequestParams, SortOptions } from '$lib/server/engine/types';
+import type { ApiServerRequestParams, SortOptions } from '$lib/server/engine/types';
 import type { Model, FilterQuery, UpdateQuery, Document } from 'mongoose';
 import dotenv from 'dotenv';
 import mongoose, { Schema } from 'mongoose';
@@ -10,12 +10,12 @@ dotenv.config();
 
 interface DatabaseAdapter<T extends Document> {
 	create(document: Partial<T>): Promise<T>;
-	findAll(params: RequestParams): Promise<T[]>;
+	findAll(params: ApiServerRequestParams): Promise<T[]>;
 	findById(id: string): Promise<T | null>;
-	findOne(params: RequestParams): Promise<T | null>;
+	findOne(params: ApiServerRequestParams): Promise<T | null>;
 	update(id: string, updateData: Partial<T>): Promise<T | null>;
 	deleteById(id: string): Promise<T | null>;
-	deleteManyByQuery(params: RequestParams): Promise<{ deletedCount?: number }>;
+	deleteManyByQuery(params: ApiServerRequestParams): Promise<{ deletedCount?: number }>;
 }
 
 // MongoDB Adapter
@@ -36,7 +36,7 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		return newDocument.save();
 	}
 
-	async findAll(params: RequestParams): Promise<T[]> {
+	async findAll(params: ApiServerRequestParams): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		const sortOptions: SortOptions = this.parseSortOptions(sortBy);
 
@@ -51,7 +51,7 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		return this.model.findById(id);
 	}
 
-	async findOne(params: RequestParams): Promise<T | null> {
+	async findOne(params: ApiServerRequestParams): Promise<T | null> {
 		return this.model.findOne(params.query as FilterQuery<T>);
 	}
 
@@ -63,7 +63,7 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		return this.model.findByIdAndDelete(id);
 	}
 
-	async deleteManyByQuery(params: RequestParams): Promise<{ deletedCount?: number }> {
+	async deleteManyByQuery(params: ApiServerRequestParams): Promise<{ deletedCount?: number }> {
 		const result = await this.model.deleteMany(params.query as FilterQuery<T>);
 		return { deletedCount: result.deletedCount };
 	}

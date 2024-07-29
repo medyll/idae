@@ -1,7 +1,9 @@
+import type { FilterQuery } from 'mongoose';
+
 // packages\idae-api\src\lib\engine\types.ts
-export interface RequestParams {
+export interface ApiServerRequestParams<T extends object> {
 	id?: string;
-	query?: any;
+	query?: FilterQuery<T>;
 	sortBy?: string;
 	body?: any;
 }

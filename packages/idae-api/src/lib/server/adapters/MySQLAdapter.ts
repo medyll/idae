@@ -1,5 +1,5 @@
 // packages\idae-api\src\lib\adapters\MySQLAdapter.ts
-import type { RequestParams } from '$lib/server/engine/types';
+import type { ApiServerRequestParams } from '$lib/server/engine/types';
 import { Sequelize, Model, DataTypes, type BuildOptions } from 'sequelize';
 import type { DatabaseAdapter } from './types';
 import dotenv from 'dotenv';
@@ -51,7 +51,7 @@ export class MySQLAdapter<T extends MySQLDocument> implements DatabaseAdapter<T>
 		return newDocument as T;
 	}
 
-	async findAll(params: RequestParams): Promise<T[]> {
+	async findAll(params: ApiServerRequestParams): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		const options: any = {
 			where: query,
@@ -68,7 +68,7 @@ export class MySQLAdapter<T extends MySQLDocument> implements DatabaseAdapter<T>
 		return result ? (result as T) : null;
 	}
 
-	async findOne(params: RequestParams): Promise<T | null> {
+	async findOne(params: ApiServerRequestParams): Promise<T | null> {
 		const { query = {} } = params;
 		const result = await this.model.findOne({ where: query });
 		return result ? (result as T) : null;
@@ -91,7 +91,7 @@ export class MySQLAdapter<T extends MySQLDocument> implements DatabaseAdapter<T>
 		return null;
 	}
 
-	async deleteManyByQuery(params: RequestParams): Promise<{ deletedCount?: number }> {
+	async deleteManyByQuery(params: ApiServerRequestParams): Promise<{ deletedCount?: number }> {
 		const { query = {} } = params;
 		const deletedCount = await this.model.destroy({ where: query });
 		return { deletedCount };
