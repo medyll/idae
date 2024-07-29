@@ -7,7 +7,7 @@ import {
 import { IdaeApiClientCollection } from '$lib/client/IdaeApiClientCollection';
 import { IdaeApiClientRequest } from './IdaeApiClientRequest';
 
-type RequestParams = Record<string, unknown>;
+type RequestParams<T = any> = Record<string, T>;
 
 class IdaeApiClient {
 	private clientConfig: IdaeApiClientConfigCore;

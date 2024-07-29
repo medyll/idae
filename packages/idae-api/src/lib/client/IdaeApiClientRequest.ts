@@ -62,6 +62,7 @@ class IdaeApiClientRequest {
 		try {
 			return response.json();
 		} catch (e) {
+			console.error(e);
 			throw new Error(`Invalid returned type`);
 		}
 	}
