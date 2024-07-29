@@ -29,7 +29,7 @@ class IdaeApiClientRequest {
 		this.baseUrl = `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`;
 	}
 
-	async doRequest<T, R = any>({
+	async doRequest<T>({
 		baseUrl = this.baseUrl,
 		method = 'GET',
 		body,
@@ -41,7 +41,7 @@ class IdaeApiClientRequest {
 		slug,
 		params,
 		routeNamespace
-	}: RequestOptions<T>): Promise<R> {
+	}: RequestOptions<T>): Promise<Response> {
 		const url = this.buildUrl({
 			routeNamespace,
 			dbName,
