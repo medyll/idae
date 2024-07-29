@@ -1,55 +1,66 @@
-class IdaeApiClientConfig {
-	private static instance: IdaeApiClientConfig;
-	private _host: string;
-	private _port: number;
-	private _dbList: string[];
-	private _method: 'http' | 'https';
+// packages\idae-api\src\lib\client\IdaeApiClientConfig.ts
+export interface IdaeApiClientConfigCoreOptions {
+	host: string;
+	port: number;
+	method: 'http' | 'https';
+	defaultDb: string;
+	separator: string;
+}
 
-	private constructor() {
-		this._host = 'localhost';
-		this._port = 3000;
-		this._dbList = [];
-		this._method = 'https';
+export class IdaeApiClientConfigCore {
+	private static instance: IdaeApiClientConfigCore;
+
+	private options: IdaeApiClientConfigCoreOptions = {
+		host: 'localhost',
+		port: 3000,
+		method: 'https',
+		defaultDb: 'idaenext_sitebase_app',
+		separator: '//'
+	};
+
+	private _baseUrl!: string;
+
+	private constructor() {}
+
+	public static getInstance(): IdaeApiClientConfigCore {
+		if (!IdaeApiClientConfigCore.instance) {
+			IdaeApiClientConfigCore.instance = new IdaeApiClientConfigCore();
+		}
+		return IdaeApiClientConfigCore.instance;
 	}
 
-	public static getInstance(): IdaeApiClientConfig {
-		if (!IdaeApiClientConfig.instance) {
-			IdaeApiClientConfig.instance = new IdaeApiClientConfig();
-		}
-		return IdaeApiClientConfig.instance;
+	public setOptions(options: Partial<IdaeApiClientConfigCoreOptions> | undefined = {}): void {
+		this.options = { ...this.options, ...options };
+
+		this._baseUrl = this.forgeBaseUrl();
+	}
+
+	public get baseUrl(): string {
+		return this._baseUrl;
+	}
+
+	private forgeBaseUrl(): string {
+		return `${this.method}:${this.separator}${this.host}:${this.port}`;
 	}
 
 	get host(): string {
-		return this._host;
+		return this.options.host;
 	}
-
-	set host(value: string) {
-		this._host = value;
-	}
-
 	get port(): number {
-		return this._port;
-	}
-
-	set port(value: number) {
-		this._port = value;
-	}
-
-	get dbList(): string[] {
-		return this._dbList;
-	}
-
-	set dbList(value: string[]) {
-		this._dbList = value;
+		return this.options.port;
 	}
 
 	get method(): 'http' | 'https' {
-		return this._method;
+		return this.options.method;
 	}
 
-	set method(value: 'http' | 'https') {
-		this._method = value;
+	get separator(): string {
+		return this.options.separator;
+	}
+
+	get defaultDb(): string {
+		return this.options.defaultDb;
 	}
 }
 
-export { IdaeApiClientConfig };
+export const IdaeApiClientConfig = IdaeApiClientConfigCore.getInstance();
