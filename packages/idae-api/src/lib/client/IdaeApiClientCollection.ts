@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\client\IdaeApiClientCollection.ts
 import { IdaeApiClient } from './IdaeApiClient';
-import type { RequestParams } from './IdaeApiClient';
+import type { IdaeApiClientRequestParams } from './IdaeApiClient';
 
 class IdaeApiClientCollection {
 	private apiClient: IdaeApiClient;
@@ -16,7 +16,7 @@ class IdaeApiClientCollection {
 		};
 	}
 
-	async findAll<T>(params?: RequestParams): Promise<Response> {
+	async findAll<T>(params?: IdaeApiClientRequestParams): Promise<Response> {
 		return this.apiClient.request.doRequest<T>({
 			...this.meta,
 			params
@@ -55,7 +55,7 @@ class IdaeApiClientCollection {
 		});
 	}
 
-	async deleteManyByQuery<T>(params: RequestParams): Promise<Response> {
+	async deleteManyByQuery<T>(params: IdaeApiClientRequestParams): Promise<Response> {
 		return this.apiClient.request.doRequest<T>({
 			method: 'DELETE',
 			...this.meta,

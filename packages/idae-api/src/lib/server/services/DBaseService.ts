@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\engine\DBaseService.ts
 import mongoose, { type Document } from 'mongoose';
-import { type ApiServerRequestParams } from './types';
+import { type ApiServerRequestParams } from '../engine/types';
 import { MongoDBAdapter } from '$lib/server/adapters/MongoDBAdapter';
 import type { DatabaseAdapter } from '$lib/server/adapters/types';
 
@@ -34,6 +34,7 @@ class DBaseService<T extends Document> {
 	}
 
 	async findAll(params: ApiServerRequestParams): Promise<T[]> {
+		console.log('findAll', params);
 		return this.adapter.findAll(params);
 	}
 

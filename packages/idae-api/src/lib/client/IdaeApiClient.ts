@@ -7,7 +7,7 @@ import {
 import { IdaeApiClientCollection } from '$lib/client/IdaeApiClientCollection';
 import { IdaeApiClientRequest } from './IdaeApiClientRequest';
 
-type RequestParams<T = any> = Record<string, T>;
+type IdaeApiClientRequestParams<T = any> = Record<string, T>;
 
 class IdaeApiClient {
 	private clientConfig: IdaeApiClientConfigCore;
@@ -46,4 +46,4 @@ class IdaeApiClient {
 }
 
 export { IdaeApiClient };
-export type { RequestParams };
+export type { IdaeApiClientRequestParams };

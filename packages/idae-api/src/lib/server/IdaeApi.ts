@@ -2,7 +2,7 @@
 // version feat
 import express, { type Express, type Request, type Response, type NextFunction } from 'express';
 import { databaseMiddleware } from '$lib/server/middleware/databaseMiddleware';
-import { DBaseService } from '$lib/server/engine/DBaseService';
+import { DBaseService } from '$lib/server/services/DBaseService';
 import { type RouteDefinition, routes as defaultRoutes } from '$lib/config/routeDefinitions';
 import { AuthMiddleWare } from '$lib/server/middleware/authMiddleware';
 import { RouteManager } from '$lib/server/engine/routeManager';
@@ -162,7 +162,7 @@ class IdaeApi {
 		handlers.push(this.handleRequest(route.handler));
 
 		if (Array.isArray(route.method)) {
-			this._app.all(route.path, ...handlers);
+			this._app.post(route.path, ...handlers);
 		} else {
 			this._app[route.method](route.path, ...handlers);
 		}
@@ -175,13 +175,18 @@ class IdaeApi {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
 				const { collectionName } = req.params;
-				console.log({ collectionName });
+
 				const connection = req.dbConnection;
 				if (!connection) {
 					throw new Error('Database connection not established');
 				}
+
+				console.log('----------------------------------------------');
+				console.log(req.body);
+				console.log(req.params);
+
 				const databaseService = new DBaseService(collectionName, connection, 'mongodb');
-				const result = await action(databaseService, req.params, req.body);
+				const result = await action(databaseService, req.params ?? req.body);
 
 				res.json(result);
 			} catch (error) {

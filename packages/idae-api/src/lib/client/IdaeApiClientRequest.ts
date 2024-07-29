@@ -1,7 +1,6 @@
 // packages\idae-api\src\lib\client\IdaeApiClientRequest.ts
 import { IdaeApiClientConfigCore } from './IdaeApiClientConfig';
 
-type RequestParams = Record<string, unknown>;
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type RouteNamespace = `methods/${'dbs' | 'collections'}` | undefined;
 
@@ -80,7 +79,6 @@ class IdaeApiClientRequest {
 
 export {
 	IdaeApiClientRequest,
-	type RequestParams,
 	type HttpMethod,
 	type RouteNamespace,
 	type UrlParams,

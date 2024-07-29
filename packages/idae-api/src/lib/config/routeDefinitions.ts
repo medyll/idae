@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\config\routeDefinitions.ts
 
-import { DBaseService } from '$lib/server/engine/DBaseService';
+import { DBaseService } from '$lib/server/services/DBaseService';
 
 type RouteHandler = (service: DBaseService<any>, params: any, body?: any) => Promise<any>;
 
@@ -44,10 +44,11 @@ export const routes: RouteDefinition[] = [
 	},
 	{
 		method: ['findAll', 'create', 'update', 'deleteById', 'deleteManyByQuery'], // default method is then GET or OPTIONS (set further)
-		path: '/:collectionName/:command/:params?',
-		handler: async (service, params) => {
-			const decodedParams = params.params ? service.decodeUrlParams(params.params) : {};
-			return (service as any)?.[params.command]?.(decodedParams);
+		path: '/:collectionName/:command/:parameters?',
+		handler: async (service, params, body) => {
+			const decodedParams = params.body ? service.decodeUrlParams(params.body) : {};
+			console.log(params.command, 'params --- ', { params });
+			return (service as any)?.[params.command]?.(params);
 		}
 	},
 	{
