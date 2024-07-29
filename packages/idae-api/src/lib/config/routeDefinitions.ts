@@ -43,11 +43,16 @@ export const routes: RouteDefinition[] = [
 		handler: async (service, params) => service.deleteManyByQuery(params)
 	},
 	{
-		method: ['findAll', 'create', 'update', 'deleteById', 'deleteManyByQuery'],
+		method: ['findAll', 'create', 'update', 'deleteById', 'deleteManyByQuery'], // default method is then GET or OPTIONS (set further)
 		path: '/:collectionName/:command/:params?',
 		handler: async (service, params) => {
 			const decodedParams = params.params ? service.decodeUrlParams(params.params) : {};
-			return (service as any)[params.command](decodedParams);
+			return (service as any)?.[params.command]?.(decodedParams);
 		}
+	},
+	{
+		method: ['dbs', 'collections'], // default method is then GET or OPTIONS (set further)
+		path: '/methods/:methodName/:params?',
+		handler: async (service, params) => {}
 	}
 ];
