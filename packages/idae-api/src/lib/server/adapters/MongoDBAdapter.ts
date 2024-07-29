@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\adapters\MongoDBAdapter.ts
 
-import type { RequestParams, SortOptions } from '$lib/engine/types';
+import type { RequestParams, SortOptions } from '$lib/server/engine/types';
 import type { Model, FilterQuery, UpdateQuery, Document } from 'mongoose';
 import dotenv from 'dotenv';
 import mongoose, { Schema } from 'mongoose';

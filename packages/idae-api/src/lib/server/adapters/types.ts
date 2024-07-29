@@ -1,5 +1,5 @@
 // packages\idae-api\src\lib\adapters\types.ts
-import type { RequestParams } from '$lib/engine/types';
+import type { RequestParams } from '$lib/server/engine/types';
 
 // Interface for database adapters
 export interface DatabaseAdapter<T extends Document> {

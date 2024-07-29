@@ -1,11 +1,11 @@
 // packages\idae-api\src\lib\IdaeApi.ts
 // version feat
 import express, { type Express, type Request, type Response, type NextFunction } from 'express';
-import { databaseMiddleware } from './middleware/databaseMiddleware';
-import { DBaseService } from './engine/DBaseService';
-import { type RouteDefinition, routes as defaultRoutes } from './config/routeDefinitions';
-import { AuthMiddleWare } from './middleware/authMiddleware';
-import { RouteManager } from './engine/routeManager';
+import { databaseMiddleware } from '$lib/server/middleware/databaseMiddleware';
+import { DBaseService } from '$lib/server/engine/DBaseService';
+import { type RouteDefinition, routes as defaultRoutes } from '$lib/config/routeDefinitions';
+import { AuthMiddleWare } from '$lib/server/middleware/authMiddleware';
+import { RouteManager } from '$lib/server/engine/routeManager';
 import type { Server } from 'http';
 interface IdaeApiOptions {
 	port?: number;

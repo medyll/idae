@@ -1,5 +1,5 @@
 // packages\idae-api\src\lib\adapters\MySQLAdapter.ts
-import type { RequestParams } from '$lib/engine/types';
+import type { RequestParams } from '$lib/server/engine/types';
 import { Sequelize, Model, DataTypes, type BuildOptions } from 'sequelize';
 import type { DatabaseAdapter } from './types';
 import dotenv from 'dotenv';

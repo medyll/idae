@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\example.ts
 
-import { idaeApi } from './IdaeApi';
+import { idaeApi } from './server/IdaeApi';
 import { type RouteDefinition } from './config/routeDefinitions';
 
 // Exemple de routes personnalisées

@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\config\routeDefinitions.ts
 
-import { DBaseService } from '$lib/engine/DBaseService';
+import { DBaseService } from '$lib/server/engine/DBaseService';
 
 type RouteHandler = (service: DBaseService<any>, params: any, body?: any) => Promise<any>;
 
