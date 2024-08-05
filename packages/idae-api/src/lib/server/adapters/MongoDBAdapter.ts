@@ -8,16 +8,6 @@ import mongoose, { Schema } from 'mongoose';
 // Load environment variables
 dotenv.config();
 
-interface DatabaseAdapter<T extends Document> {
-	create(document: Partial<T>): Promise<T>;
-	findAll(params: ApiServerRequestParams): Promise<T[]>;
-	findById(id: string): Promise<T | null>;
-	findOne(params: ApiServerRequestParams): Promise<T | null>;
-	update(id: string, updateData: Partial<T>): Promise<T | null>;
-	deleteById(id: string): Promise<T | null>;
-	deleteManyByQuery(params: ApiServerRequestParams): Promise<{ deletedCount?: number }>;
-}
-
 // MongoDB Adapter
 export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 	private model: Model<T>;
@@ -36,7 +26,7 @@ export class MongoDBAdapter<T extends Document> implements DatabaseAdapter<T> {
 		return newDocument.save();
 	}
 
-	async findAll(params: ApiServerRequestParams): Promise<T[]> {
+	async where(params: ApiServerRequestParams): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		const sortOptions: SortOptions = this.parseSortOptions(sortBy);
 

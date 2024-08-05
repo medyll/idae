@@ -51,7 +51,7 @@ export class MySQLAdapter<T extends MySQLDocument> implements DatabaseAdapter<T>
 		return newDocument as T;
 	}
 
-	async findAll(params: ApiServerRequestParams): Promise<T[]> {
+	async where(params: ApiServerRequestParams): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		const options: any = {
 			where: query,

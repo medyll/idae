@@ -1,7 +1,7 @@
 // packages\idae-api\src\lib\example.ts
 
-import { idaeApi } from './server/IdaeApi';
-import { type RouteDefinition } from './config/routeDefinitions';
+import { idaeApi } from '$lib/server/IdaeApi';
+import { type RouteDefinition } from '$lib/config/routeDefinitions';
 
 // Exemple de routes personnalisées
 const customRoutes: RouteDefinition[] = [
@@ -31,7 +31,16 @@ idaeApi.setOptions({
 idaeApi.start();
 console.log('IDAE API is running on port 3000');
 setTimeout(() => {
-	fetch('http://localhost:3000/idaenext_sitebase_app.appscheme');
+	fetch('http://localhost:3000/query/idaenext_sitebase_app.appscheme/where', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			name: 'Test Scheme',
+			description: 'This is a test scheme'
+		})
+	});
 }, 1000);
 
 // Exemples d'utilisation des routes par défaut avec Postman

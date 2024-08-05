@@ -162,6 +162,7 @@ class IdaeApi {
 		handlers.push(this.handleRequest(route.handler));
 
 		if (Array.isArray(route.method)) {
+			console.log({ handlers });
 			this._app.post(route.path, ...handlers);
 		} else {
 			this._app[route.method](route.path, ...handlers);
@@ -186,7 +187,7 @@ class IdaeApi {
 				console.log(req.params);
 
 				const databaseService = new DBaseService(collectionName, connection, 'mongodb');
-				const result = await action(databaseService, req.params ?? req.body);
+				const result = await action(databaseService, req.params, req.body);
 
 				res.json(result);
 			} catch (error) {

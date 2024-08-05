@@ -33,9 +33,9 @@ class DBaseService<T extends Document> {
 		return this.adapter.create(document);
 	}
 
-	async findAll(params: ApiServerRequestParams): Promise<T[]> {
-		console.log('findAll', params);
-		return this.adapter.findAll(params);
+	async where(params: ApiServerRequestParams): Promise<T[]> {
+		console.log('where', params);
+		return this.adapter.where(params);
 	}
 
 	async findById(id: string): Promise<T | null> {
