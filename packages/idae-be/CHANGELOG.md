@@ -4,6 +4,7 @@
 
 ### Minor Changes
 
+
 - 11bbd23: - feat(idae-be): Remove unused methods in Be class ([734bdc1](https://github.com/medyll/idae/commit/734bdc1e1fba957ffd1acd4038310323f31bcd42)) - 2024-07-25 by medyll
 
   - fix(idae-be): bad scope configuration ([288b4fe](https://github.com/medyll/idae/commit/288b4fec7b4299653495ee2b394623766b6835fe)) - 2024-07-25 by medyll
