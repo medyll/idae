@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-socket",
 	"scope": "@medyll",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "keep your app in sync with your backend!!",
 	"main": "./index.js",
 	"type": "module",
