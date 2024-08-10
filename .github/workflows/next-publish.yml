@@ -42,18 +42,32 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Run pre-release Script
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          if [ -f package.json ] && grep -q '"release":' package.json; then
+            npm run release
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Run npm publish script
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          if [ -f package.json ] && grep -q '"publish":' package.json; then
+            npm run publish
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Wait before publishing to npm
         run: sleep 10
 
       - name: Publish to npm (dev branch)
         if: steps.changesets.outputs.published != 'true'
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          if [ -f package.json ] && grep -q '"release":' package.json; then
-            npm run release
-          else
-            npx changeset publish --tag next
-          fi
+          npx changeset publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
