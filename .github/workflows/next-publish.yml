@@ -31,7 +31,7 @@ jobs:
         run: npx changeset version
 
       - name: Wait before creating release PR
-        run: sleep 60
+        run: sleep 10
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -43,7 +43,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Wait before publishing to npm
-        run: sleep 60
+        run: sleep 10
 
       - name: Publish to npm (dev branch)
         if: steps.changesets.outputs.published != 'true'
