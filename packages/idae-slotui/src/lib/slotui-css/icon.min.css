@@ -1,0 +1,1 @@
+:global(.icon){transition:all .2}.rotate{animation:spinner-frames 3s infinite linear}@keyframes spinner-frames{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
