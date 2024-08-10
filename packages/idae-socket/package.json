@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-socket",
 	"scope": "@medyll",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "keep your app in sync with your backend!!",
 	"main": "./index.js",
 	"type": "module",
@@ -34,15 +34,14 @@
 		"minimist": "^1.2.8",
 		"nodemon": "^3.1.4",
 		"npm-watch": "^0.13.0",
-		"redis": "^4.6.15",
+		"redis": "^4.7.0",
 		"request": "^2.88.2",
 		"socket.io": "^4.7.5",
 		"socket.io-client": "^4.7.5"
 	},
 	"devDependencies": {
 		"@medyll/idae-prettier-config": "^1.0.0",
-		"@types/node": "^20.14.10",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.5.3"
+		"@types/node": "^22.1.0",
+		"typescript": "^5.5.4"
 	}
 }

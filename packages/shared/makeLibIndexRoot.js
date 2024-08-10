@@ -1,85 +1,84 @@
 import path from "path";
-import glob from "glob";
-import fsx from "fs-extra";
+import { glob } from "glob";
+import fs from "fs-extra";
 
 export class MakeLibIndex {
   /**
-   *
    * @param {string} directory
    * @param {string} target
-   * @returns  {Array.<FileInfo>}
+   * @returns {Promise<Array.<FileInfo>>}
    */
-  _recursiveListSvelteFile(directory, target) {
-    const files = glob.sync(directory + "/*", {
-      ignore: [
-        directory + "/**.html",
-        directory + "/**index.ts",
-        directory + "/**.demo.svelte",
-        directory + "/**Demo.svelte",
-        directory + "/**preview.svelte",
-        directory + "/**sitedata*",
-        directory + "/**.md",
-        directory + "/**.scss*",
-        directory + "/**.test.ts*",
-        directory + "/**wip*",
-        directory + "/**Example.svelte",
-        directory + "/**indexApi*",
-        directory + "/**Readme*",
-      ],
+  /**
+   * @param {string} directory
+   * @param {string} target
+   * @returns {Promise<Array.<FileInfo>>}
+   */
+  async _recursiveListSvelteFile(directory, target) {
+    const ignorePatterns = [
+      "*.html",
+      "index.ts",
+      "*.demo.svelte",
+      "*Demo.svelte",
+      "*preview.svelte",
+      "*sitedata*",
+      "*.md",
+      "*.scss*",
+      "*.test.ts*",
+      "*wip*",
+      "*Example.svelte",
+      "*indexApi*",
+      "*Readme*",
+    ].map(pattern => path.posix.join("**", pattern));
+
+    const files = await glob("**/*", {
+      cwd: directory,
+      ignore: ignorePatterns,
+      nodir: true,
+      absolute: true,
     });
 
-    let svelteFiles = [];
-    files.forEach((file) => {
-      if (fsx.statSync(file).isDirectory()) {
-        svelteFiles = svelteFiles.concat(
-          this._recursiveListSvelteFile(file, target),
-        );
-      } else {
-        let cleanPath = path.normalize(file.replace(target, ""));
-
-        svelteFiles.push({
-          path: cleanPath,
-          file: path.basename(file),
-          moduleName: path.basename(file).replace(/\.[^/.]+$/, ""),
-        });
-      }
+    return files.map(file => {
+      const relativePath = path.relative(target, file);
+      return {
+        path: path.normalize(relativePath),
+        file: path.basename(file),
+        moduleName: path.basename(file, path.extname(file)),
+      };
     });
-    return svelteFiles;
   }
 
   /**
-   *
    * @param {Array.<FileInfo>} fileInfoList
    */
-  _writeExportFromFileInfoList(fileInfoList) {
+  async _writeExportFromFileInfoList(fileInfoList) {
     let exportString = "// Reexport of entry components\n";
     fileInfoList.forEach((fileInfo) => {
-      let file = fileInfo.file;
-      let moduleName = this.dotToCamelCase(fileInfo.moduleName);
-      let path = fileInfo.path.replace(/\\/g, "/").replace(".ts", ".js");
-      let isSvelteFile = file.endsWith(".svelte");
+      const { file, moduleName, path: filePath } = fileInfo;
+      const normalizedPath = filePath.split(path.sep).join('/').replace(".ts", ".js");
+      const isSvelteFile = file.endsWith(".svelte");
 
       if (!isSvelteFile) {
-        exportString += `export * from '$lib${path}';\n`;
+        exportString += `export * from '$lib/${normalizedPath}';\n`;
       } else {
-        exportString += `export { default as ${moduleName} } from '$lib${path}';\n`;
+        const camelCaseModuleName = this.dotToCamelCase(moduleName);
+        exportString += `export { default as ${camelCaseModuleName} } from '$lib/${normalizedPath}';\n`;
       }
     });
-    fsx.writeFileSync("./src/lib/index.ts", exportString);
+    await fs.writeFile(path.join("src", "lib", "index.ts"), exportString);
   }
 
-  makeIndexFile() {
-    let fileInfoList = this._recursiveListSvelteFile("./src/lib", "./src/lib");
-    this._writeExportFromFileInfoList(fileInfoList);
+  async makeIndexFile() {
+    const fileInfoList = await this._recursiveListSvelteFile(path.join("src", "lib"), path.join("src", "lib"));
+    await this._writeExportFromFileInfoList(fileInfoList);
   }
 
   dotToCamelCase(str) {
-    return str.replace(/\.([a-z])/g, function (g) {
-      return g[1].toUpperCase();
-    });
+    return str.replace(/\.([a-z])/g, (_, g) => g.toUpperCase());
   }
 }
 
-function main() {
-  new MakeLibIndex().makeIndexFile();
+/* async function main() {
+  await new MakeLibIndex().makeIndexFile();
 }
+
+main().catch(console.error); */

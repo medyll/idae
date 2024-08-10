@@ -1,0 +1,9 @@
+.confirm {
+  display: contents;
+  display: flex;
+  align-items: center;
+}
+.confirm-validate {
+  display: flex;
+  align-items: center;
+}

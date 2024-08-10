@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const crypto = require("crypto");
+require("dotenv").config();
 
 const rootRepo = "medyll/idae";
 const commitTypes = [
@@ -25,32 +26,63 @@ class ChangesetGenerator {
     this.packagesDir = path.join(__dirname, "..", "packages");
   }
 
-  getCommitsSinceLastTag() {
+  async initOctokit() {
+    const { Octokit } = await import("@octokit/rest");
+    this.octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+  }
+
+  async checkRateLimit() {
+    const { data: rateLimit } = await this.octokit.rest.rateLimit.get();
+    console.log("Rate limit:", rateLimit.rate);
+    if (rateLimit.remaining < 10) {
+      console.log("Rate limit almost exceeded, waiting...");
+      const resetTime = new Date(rateLimit.reset * 1000);
+      const waitTime = resetTime.getTime() - Date.now() + 1000;
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+    }
+  }
+
+  async getCommitsForPackage(packageName, packagePath, since) {
+    const command = `git log --name-only --pretty=format:"%H£%s£%b£%an£%aI" ${since}..HEAD -- ${packagePath}`;
+
     try {
-      const lastTag = execSync("git describe --tags --abbrev=0")
-        .toString()
-        .trim();
-      console.log("Last tag:", lastTag);
-
-      let logCommand = `git log ${lastTag}..HEAD --pretty=format:%H£%s£%b`;
-      if (this.commitDepth !== "all") {
-        logCommand = `git log -n ${this.commitDepth} --pretty=format:%H£%s£%b`;
-      }
-
-      const commits = execSync(logCommand).toString().trim().split("\n");
-
-      const formattedCommits = commits.map((commit) => {
-        const [hash, subject, body] = commit.split("£");
-        const fullMessage = body ? `${subject}\n\n${body}` : subject;
-        return `${hash}£${fullMessage}`; // Utiliser '£' comme séparateur
+      const output = execSync(command, { encoding: "utf-8" });
+      const commits = output.split("\n\n").map((commit) => {
+        const [hash, subject, body, author, date, ...files] = commit.split("£");
+        console.log(`Commit: ${hash}, Date: ${date}`);
+        return {
+          sha: hash,
+          message: subject,
+          description: body,
+          author,
+          date,
+          files: files.filter(Boolean),
+        };
       });
-
-      console.log("Commits retrieved:", formattedCommits);
-      return formattedCommits;
+      return commits;
     } catch (error) {
-      console.error("Error retrieving commits:", error);
+      console.error(`Error getting commits for package ${packageName}:`, error);
       return [];
     }
+  }
+
+  async getPullRequestForCommit(commit) {
+    try {
+      const [owner, repo] = this.rootRepo.split("/");
+      const { data: pullRequests } =
+        await this.octokit.repos.listPullRequestsAssociatedWithCommit({
+          owner,
+          repo,
+          commit_sha: commit.sha,
+        });
+
+      if (pullRequests.length > 0) {
+        return pullRequests[0];
+      }
+    } catch (error) {
+      console.error(`Error fetching PR for commit ${commit.sha}:`, error);
+    }
+    return null;
   }
 
   getBumpType(commitMessage) {
@@ -87,15 +119,24 @@ class ChangesetGenerator {
   generateChangesetContent(packageName, bumpType, commits) {
     const summary = commits
       .map((commit) => {
-        const [hash, message] = commit.split("£", 2);
-        const sanitizedMessage = this.sanitizeCommitMessage(message);
+        const sanitizedMessage = this.sanitizeCommitMessage(
+          commit.message.split("\n")[0]
+        );
 
-        const displayMessage = sanitizedMessage.includes("\n")
-          ? sanitizedMessage.split("\n")[0]
-          : sanitizedMessage;
-        return `- ${displayMessage} ([${hash.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${hash}))`;
+        const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
+
+        let commitContent = `- ${sanitizedMessage} ([${commit.sha.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${commit.sha}))`;
+        if (commit.pr) {
+          commitContent += ` ([#${commit.pr.number}](${commit.pr.url}))`;
+        }
+        commitContent += ` - ${date} by ${commit.author}`;
+
+        if (commit.description) {
+          commitContent += `\n  ${commit.description.replace(/\n/g, "\n  ")}`;
+        }
+        return commitContent;
       })
-      .join("\n");
+      .join("\n\n");
 
     return `---
 "${packageName}": ${bumpType}
@@ -105,40 +146,44 @@ ${summary}
 `;
   }
 
-  generateChangesets() {
-    const commits = this.getCommitsSinceLastTag();
+  async generateChangesets() {
+    const lastTag = execSync("git describe --tags --abbrev=0")
+      .toString()
+      .trim();
     const packages = fs.readdirSync(this.packagesDir);
 
-    packages.forEach((packageName) => {
-      const packagePath = path.join(this.packagesDir, packageName);
+    for (const packageDir of packages) {
+      const packagePath = path.join(this.packagesDir, packageDir);
       const packageJsonPath = path.join(packagePath, "package.json");
-
-      console.log(`Processing package: ${packageName}`);
 
       if (!fs.existsSync(packageJsonPath)) {
         console.error(
-          `Package ${packageName} does not have a package.json file`
+          `Package ${packageDir} does not have a package.json file`
         );
-        return;
+        continue;
       }
 
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-      const fullPackageName = packageJson.name;
+      const packageName = packageJson.name;
 
-      const packageCommits = commits.filter((commit) =>
-        commit.toLowerCase().includes(packageName.toLowerCase())
+      console.log(`Processing package: ${packageName}`);
+
+      const packageCommits = await this.getCommitsForPackage(
+        packageName,
+        packagePath,
+        lastTag
       );
 
-      console.log(`Commits for ${packageName}:`, packageCommits);
+      console.log(`Commits for ${packageName}:`, packageCommits.length);
 
       if (packageCommits.length > 0) {
         const bumpTypes = packageCommits
-          .map((commit) => this.getBumpType(commit.split("£", 2)[1]))
+          .map((commit) => this.getBumpType(commit.message.split("\n")[0]))
           .filter((type) => type !== null);
 
         if (bumpTypes.length === 0) {
           console.log(`No relevant commits found for ${packageName}`);
-          return;
+          continue;
         }
 
         const highestBumpType = bumpTypes.includes("major")
@@ -148,11 +193,11 @@ ${summary}
             : "patch";
 
         const relevantCommits = packageCommits.filter(
-          (commit) => this.getBumpType(commit.split("£", 2)[1]) !== null
+          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null
         );
 
         const changesetContent = this.generateChangesetContent(
-          fullPackageName,
+          packageName,
           highestBumpType,
           relevantCommits
         );
@@ -169,7 +214,7 @@ ${summary}
           .slice(0, 8);
         const changesetFile = path.join(
           changesetDir,
-          `${packageName}-${contentHash}.md`
+          `${packageDir}-${contentHash}.md`
         );
 
         if (!fs.existsSync(changesetFile)) {
@@ -182,12 +227,12 @@ ${summary}
       } else {
         console.log(`No commits found for ${packageName}`);
       }
-    });
+    }
 
     console.log("Changeset generation completed");
   }
 }
- 
+
 const generator = new ChangesetGenerator({
   rootRepo: "medyll/idae",
   commitTypes: ["feat", "fix", "docs", "refactor", "docs", "ci"],

@@ -1,0 +1,136 @@
+:root {
+  --datalist-pad: var(--sld-pad-med);
+  --datalist-gap: var(--sld-gap-med);
+  --datalist-icon-color: #999;
+  --datalist-icon-color-hover: var(--sld-color-primary);
+  --datalist-divider-border: transparent;
+  --datalist-divider-border-hover: var(--sld-color-primary, red);
+  --datalist-background-color: var(--sld-color-paper-alpha-low);
+  --datalist-radius: var(--sld-radius-tiny);
+  --datalist-box-shadow: var(--sld-elevation-1);
+  --datalist-border: var(--sld-color-border);
+  --datalist-cell-border: var(--sld-color-border);
+  --datalist-cell-border-hover: var(--sld-color-primary-alpha);
+  --datalist-row-border: var(--sld-color-border);
+  --datalist-row-background-color-hover: var(--sld-color-paper);
+  --datalist-cell-color: var(--sld-color-foreground);
+  --datalist-cell-background-color-selected: var(--sld-color-primary);
+  --datalist-cell-color-selected: white;
+}
+
+.datalist {
+  height: 100%;
+  position: relative;
+}
+.datalist-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.datalist-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+.datalist-group-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--datalist-pad);
+  gap: var(--datalist-gap);
+  cursor: pointer;
+}
+.datalist-group-head-icon {
+  color: var(--datalist-icon-color);
+}
+.datalist-group-head-divider {
+  border-bottom: 1px solid var(--datalist-divider-border);
+}
+.datalist-group-head:hover-icon {
+  color: var(--datalist-icon-color-hover);
+}
+.datalist-group-head:hover-divider {
+  flex: 1;
+  border-bottom-width: 1px;
+  border-color: var(--datalist-divider-border-hover);
+  cursor: pointer;
+}
+.datalist-group-body {
+  flex: 1;
+  position: relative;
+}
+
+.datalist-group-head {
+  margin: 0.5rem 0;
+  align-items: stretch;
+  height: 32px;
+  z-index: 100;
+  background-color: var(--datalist-background-color);
+  backdrop-filter: blur(20px);
+  border-radius: var(--datalist-radius);
+  box-shadow: var(--datalist-box-shadow);
+  border: 1px solid var(--datalist-border);
+}
+.datalist-group-head .dataListCell {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-right: 1px solid var(--datalist-cell-border);
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.datalist-group-head .dataListCell:last-of-type {
+  border-right: 1px solid transparent;
+}
+.datalist-group-head .dataListCell[data-sortable=true] {
+  cursor: pointer;
+}
+.datalist-group-head .dataListCell[data-sortable=true]:hover {
+  background-color: var(--datalist-cell-border-hover);
+}
+.datalist-group-head .dataListCell .cellHeader {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+.datalist-group-head .dataListCell .cellHeader .cellHeaderContent {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 8px;
+}
+:global(.dataListRow) {
+  border-bottom: 1px solid var(--datalist-row-border);
+  --webkit-content-visibility: auto;
+  webkit-content-visibility: auto;
+}
+:global(.dataListRow):last-of-type {
+  border-bottom: 1px solid transparent;
+}
+:global(.dataListRow):hover {
+  background-color: var(--datalist-row-background-color-hover);
+}
+:global(.dataListRow)[data-selected=true] {
+  background-color: var(--datalist-cell-background-color-selected);
+}
+:global(.dataListRow)[data-selected=true] .dataListCell {
+  color: var(--datalist-cell-color-selected);
+}
+:global(.dataListRow) .dataListCell {
+  padding: 0.5rem 0.5rem;
+  color: var(--datalist-cell-color);
+  border-right: 1px solid var(--datalist-cell-border);
+}
+:global(.dataListRow) .dataListCell:last-of-type {
+  border-right: 1px solid transparent;
+}
+:global(.dataListRow) .dataListCell[data-noWrap=true] {
+  display: box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
