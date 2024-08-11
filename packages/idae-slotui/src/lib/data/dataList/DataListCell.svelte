@@ -1,8 +1,8 @@
 <svelte:options />
-
+<!-- trigger action on datalist -->
 <script lang="ts" generics="T=Data">
 	import type { DataCellType, DataListCellProps, DataListStoreType, RowType } from './types.js';
-	import { getContext, onMount, tick, type Snippet } from 'svelte';
+	import { getContext,  tick } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import type { Data, ExpandProps } from '$lib/types/index.js';

@@ -33,15 +33,6 @@ jobs:
       - name: Wait before creating release PR
         run: sleep 10
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Run pre-release Script
         run: |
           git config --global user.name 'GitHub Action'
@@ -52,12 +43,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Run npm publish script
+      - name: Run npm package-all script if present
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          if [ -f package.json ] && grep -q '"publish":' package.json; then
-            npm run publish
+          if [ -f package.json ] && grep -q '"package-all":' package.json; then
+            npm run package-all
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -66,8 +57,6 @@ jobs:
         run: sleep 10
 
       - name: Publish to npm (dev branch)
-        if: steps.changesets.outputs.published != 'true'
-        run: |
-          npx changeset publish --tag next
+        run: npx changeset publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
