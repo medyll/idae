@@ -3,7 +3,7 @@
 	"scope": "@medyll",
 	"version": "0.0.2",
 	"description": "keep your app in sync with your backend!!",
-	"main": "./index.js",
+	"main": "./scripts/index.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
