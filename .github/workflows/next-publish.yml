@@ -30,6 +30,16 @@ jobs:
       - name: Apply Changeset Versions
         run: npx changeset version
 
+      - name: Commit Changeset Versions
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add .
+          git commit -m "Apply changeset versions"
+          git push origin dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Wait before creating release PR
         run: sleep 5
 
