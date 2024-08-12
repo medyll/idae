@@ -17,36 +17,54 @@ packages.forEach((packageName) => {
   }
 
   let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-  console.log(
-    `Package.json content for ${packageName}:`,
-    JSON.stringify(packageJson, null, 2),
-  );
 
   let modified = false;
 
   if (!packageJson.name || !packageJson.version) {
+    console.log(
+      `Package.json content for ${packageName}:`,
+      JSON.stringify(packageJson, null, 2)
+    );
     console.error(
-      `Le package ${packageName} a un fichier package.json mal formé`,
+      `Le package ${packageName} a un fichier package.json mal formé`
     );
     return;
   }
 
-  // Vérifier et ajouter le scope si nécessaire
+  // Fix scope path for module name
   if (!packageJson.name.startsWith("@medyll/")) {
     packageJson.name = `@medyll/${packageJson.name}`;
     modified = true;
-    console.log(`Scope ajouté au package ${packageName}`);
+    console.log(`Fixed scope path for ${packageName}`);
   }
 
-  // Ajouter le champ scope s'il est absent
+  // Add scope if not exists
   if (!packageJson.scope) {
     packageJson.scope = "@medyll";
     modified = true;
-    console.log(`Champ scope ajouté au package ${packageName}`);
+    console.log(`Added scope field to package ${packageName}`);
+  }
+
+  // "release": "node scripts/release.js", create file if not exists
+  if (!packageJson?.scripts?.release) {
+    if (!fs.existsSync(path.join(packagePath, "scripts", "release.js"))) {
+      fs.mkdirSync(path.join(packagePath, "scripts"), { recursive: true });
+      fs.writeFileSync(
+        path.join(packagePath, "scripts", "release.js"),
+        `// Created scripts/release.js for ${packageName}\r\n
+import { MakeLibIndex } from '../../shared/makeLibIndexRoot.js';
+
+new MakeLibIndex().makeIndexFile();`
+      );
+      console.log(`Created scripts/release.js for ${packageName}`);
+    }
+    packageJson.scripts.release = "node scripts/release.js";
+    modified = true;
+    console.log(`Added  release field to package ${packageName}`);
   }
 
   if (modified) {
-    // Écrire les modifications dans le fichier package.json sans ajouter de saut de ligne à la fin
+    // add definition in package.json
     const packageJsonString = JSON.stringify(packageJson, null, 2);
     fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
     console.log(`Le fichier package.json de ${packageName} a été mis à jour`);
@@ -55,4 +73,4 @@ packages.forEach((packageName) => {
   }
 });
 
-console.log("Vérification et mise à jour des packages terminées");
+console.log("All packages are correctly configured.");
