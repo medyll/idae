@@ -4,12 +4,18 @@ const path = require("path");
 const packagesDir = path.join(__dirname, "..", "packages");
 const packages = fs.readdirSync(packagesDir);
 
+const packagePre = "package:pre";
+const packagePreFile = "package-pre.js";
+const packagePreContent = `// Created scripts/${packagePreFile}\r\n
+import { MakeLibIndex } from '../../shared/makeLibIndexRoot.js';
+new MakeLibIndex().makeIndexFile();`;
+
+console.log("Packages verification started");
+
 packages.forEach((packageName) => {
   const packagePath = path.join(packagesDir, packageName);
   const packageJsonPath = path.join(packagePath, "package.json");
-
-  console.log(`Processing package: ${packageName}`);
-  console.log(`Package.json path: ${packageJsonPath}`);
+  const packageScriptsPath = path.join(packagePath, "scripts");
 
   if (!fs.existsSync(packageJsonPath)) {
     console.error(`Le package ${packageName} n'a pas de fichier package.json`);
@@ -45,32 +51,40 @@ packages.forEach((packageName) => {
     console.log(`Added scope field to package ${packageName}`);
   }
 
-  // "release": "node scripts/release.js", create file if not exists
-  if (!packageJson?.scripts?.release) {
-    if (!fs.existsSync(path.join(packagePath, "scripts", "release.js"))) {
-      fs.mkdirSync(path.join(packagePath, "scripts"), { recursive: true });
-      fs.writeFileSync(
-        path.join(packagePath, "scripts", "release.js"),
-        `// Created scripts/release.js for ${packageName}\r\n
-import { MakeLibIndex } from '../../shared/makeLibIndexRoot.js';
-
-new MakeLibIndex().makeIndexFile();`
-      );
-      console.log(`Created scripts/release.js for ${packageName}`);
-    }
-    packageJson.scripts.release = "node scripts/release.js";
+  // remove packageJson.release if exists
+  if (
+    packageJson?.scripts?.release &&
+    packageJson?.scripts?.release == `node scripts/release.js`
+  ) {
+    delete packageJson?.scripts?.release;
     modified = true;
-    console.log(`Added  release field to package ${packageName}`);
+    console.log(`Removed release field from package ${packageName}`);
+  }
+
+  // "package:pre"
+  if (!packageJson?.scripts?.[packagePre]) {
+    if (!fs.existsSync(path.join(packageScriptsPath, packagePreFile))) {
+      fs.mkdirSync(packageScriptsPath, { recursive: true });
+      fs.writeFileSync(
+        path.join(packageScriptsPath, packagePreFile),
+        packagePreContent
+      );
+      console.log(`Created scripts/package-pre.js for ${packageName}`);
+    }
+    packageJson.scripts[packagePre] = `node scripts/${packagePreFile}`;
+    modified = true;
+    console.log(`Added ${packagePre} field to package ${packageName}`);
   }
 
   if (modified) {
     // add definition in package.json
     const packageJsonString = JSON.stringify(packageJson, null, 2);
     fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
-    console.log(`Le fichier package.json de ${packageName} a été mis à jour`);
+    console.log(`Processed package: ${packageName}`);
+    console.log(`Package.json path: ${packageJsonPath}`);
   } else {
-    console.log(`Le package ${packageName} est correctement configuré`);
+    console.log(`${packageName} is correctly configured`);
   }
 });
 
-console.log("All packages are correctly configured.");
+console.log("Packages verification completed");
