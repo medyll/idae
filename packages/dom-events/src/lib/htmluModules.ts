@@ -137,8 +137,8 @@ class HtmluModules {
 			if (typeof window === 'object') {
 				const targetNode =
 					typeof this.targetNode == 'string'
-						? document.getElementById(this.targetNode) ?? document.body
-						: this.targetNode ?? document.body;
+						? (document.getElementById(this.targetNode) ?? document.body)
+						: (this.targetNode ?? document.body);
 
 				clearTimeout(this.delay);
 				resolve(targetNode);

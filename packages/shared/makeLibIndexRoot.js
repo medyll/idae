@@ -20,8 +20,8 @@ export class MakeLibIndex {
   ];
 
   #libRoot = "lib";
-  #libPath  
-  constructor(options) {
+  #libPath;
+  constructor(options={}) {
     this.#ignorePatterns = options.ignorePatterns ?? this.#ignorePatterns;
     this.#libRoot = options.libRoot ?? this.#libRoot;
 
@@ -40,11 +40,11 @@ export class MakeLibIndex {
    * @returns {Promise<Array.<FileInfo>>}
    */
   async _recursiveListSvelteFile(directory, target) {
-    this.ignorePatterns.map((pattern) => path.posix.join("**", pattern));
+    this.#ignorePatterns.map((pattern) => path.posix.join("**", pattern));
 
     const files = await glob("**/*", {
       cwd: directory,
-      ignore: this.ignorePatterns,
+      ignore: this.#ignorePatterns,
       nodir: true,
       absolute: true,
     });
@@ -79,15 +79,19 @@ export class MakeLibIndex {
         exportString += `export { default as ${camelCaseModuleName} } from '$lib/${normalizedPath}';\n`;
       }
     });
-    await fs.writeFile(path.join("src", this.#libRoot, "index.ts"), exportString);
+    await fs.writeFile(
+      path.join("src", this.#libRoot, "index.ts"),
+      exportString,
+    );
   }
 
   async makeIndexFile() {
     const fileInfoList = await this._recursiveListSvelteFile(
       path.join("src", this.#libRoot),
-      path.join("src", this.#libRoot)
+      path.join("src", this.#libRoot),
     );
-    await this._writeExportFromFileInfoList(fileInfoList);
+    console.log(fileInfoList)
+    // await this._writeExportFromFileInfoList(fileInfoList);
   }
 
   dotToCamelCase(str) {

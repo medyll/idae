@@ -29,10 +29,10 @@ packages.forEach((packageName) => {
   if (!packageJson.name || !packageJson.version) {
     console.log(
       `Package.json content for ${packageName}:`,
-      JSON.stringify(packageJson, null, 2)
+      JSON.stringify(packageJson, null, 2),
     );
     console.error(
-      `Le package ${packageName} a un fichier package.json mal formé`
+      `Le package ${packageName} a un fichier package.json mal formé`,
     );
     return;
   }
@@ -51,23 +51,13 @@ packages.forEach((packageName) => {
     console.log(`Added scope field to package ${packageName}`);
   }
 
-  // remove packageJson.release if exists
-  if (
-    packageJson?.scripts?.release &&
-    packageJson?.scripts?.release == `node scripts/release.js`
-  ) {
-    delete packageJson?.scripts?.release;
-    modified = true;
-    console.log(`Removed release field from package ${packageName}`);
-  }
-
   // "package:pre"
   if (!packageJson?.scripts?.[packagePre]) {
     if (!fs.existsSync(path.join(packageScriptsPath, packagePreFile))) {
       fs.mkdirSync(packageScriptsPath, { recursive: true });
       fs.writeFileSync(
         path.join(packageScriptsPath, packagePreFile),
-        packagePreContent
+        packagePreContent,
       );
       console.log(`Created scripts/package-pre.js for ${packageName}`);
     }
@@ -82,8 +72,6 @@ packages.forEach((packageName) => {
     fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
     console.log(`Processed package: ${packageName}`);
     console.log(`Package.json path: ${packageJsonPath}`);
-  } else {
-    console.log(`${packageName} is correctly configured`);
   }
 });
 

@@ -6,8 +6,8 @@
     "commit": "cz",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "package-all": "npm run package --workspaces --if-present",
-    "package-watch-all": "npm run package:watch  --workspaces --if-present"
+    "package-all:pre": "npm run package:pre --workspaces --if-present",
+    "package-all": "npm run package --workspaces --if-present"
   },
   "config": {
     "commitizen": {

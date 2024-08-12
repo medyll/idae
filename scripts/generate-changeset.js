@@ -120,7 +120,7 @@ class ChangesetGenerator {
     const summary = commits
       .map((commit) => {
         const sanitizedMessage = this.sanitizeCommitMessage(
-          commit.message.split("\n")[0]
+          commit.message.split("\n")[0],
         );
 
         const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
@@ -158,7 +158,7 @@ ${summary}
 
       if (!fs.existsSync(packageJsonPath)) {
         console.error(
-          `Package ${packageDir} does not have a package.json file`
+          `Package ${packageDir} does not have a package.json file`,
         );
         continue;
       }
@@ -171,7 +171,7 @@ ${summary}
       const packageCommits = await this.getCommitsForPackage(
         packageName,
         packagePath,
-        lastTag
+        lastTag,
       );
 
       console.log(`Commits for ${packageName}:`, packageCommits.length);
@@ -193,13 +193,13 @@ ${summary}
             : "patch";
 
         const relevantCommits = packageCommits.filter(
-          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null
+          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null,
         );
 
         const changesetContent = this.generateChangesetContent(
           packageName,
           highestBumpType,
-          relevantCommits
+          relevantCommits,
         );
 
         const changesetDir = path.join(__dirname, "..", ".changeset");
@@ -214,7 +214,7 @@ ${summary}
           .slice(0, 8);
         const changesetFile = path.join(
           changesetDir,
-          `${packageDir}-${contentHash}.md`
+          `${packageDir}-${contentHash}.md`,
         );
 
         if (!fs.existsSync(changesetFile)) {

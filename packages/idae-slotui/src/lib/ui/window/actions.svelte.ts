@@ -51,7 +51,7 @@ export const openWindow = <T = any>(
 	const target =
 		typeof args?.parentNode === 'string'
 			? document.querySelector(args.parentNode)
-			: args?.parentNode ?? document.body;
+			: (args?.parentNode ?? document.body);
 	if (!w) {
 		let a = mount(Window, {
 			target: target ?? document.body,

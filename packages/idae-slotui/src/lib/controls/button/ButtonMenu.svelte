@@ -53,5 +53,5 @@
 {/if}
 
 <style lang="scss">
-	@import './button-menu.scss'; 
+	@import './button-menu.scss';
 </style>

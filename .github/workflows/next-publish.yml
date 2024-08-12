@@ -33,12 +33,12 @@ jobs:
       - name: Wait before creating release PR
         run: sleep 10
 
-      - name: Run pre-release Script
+      - name: Run package-all:pre Script
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          if [ -f package.json ] && grep -q '"release":' package.json; then
-            npm run release
+          if [ -f package.json ] && grep -q '"package-all:pre":' package.json; then
+            npm run package-all:pre
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
