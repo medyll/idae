@@ -41,6 +41,7 @@
     "@medyll/idae-engine": "^1.0.0",
     "@octokit/rest": "^21.0.1",
     "glob": "^11.0.0",
+    "npm": "^10.8.2",
     "publint": "^0.2.9"
   }
 }

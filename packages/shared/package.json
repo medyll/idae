@@ -13,7 +13,8 @@
   "type": "module",
   "dependencies": {
     "fs-extra": "^11.2.0",
-    "glob": "^11.0.0"
+    "glob": "^11.0.0",
+    "svelte-check": "^3.8.5"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4"

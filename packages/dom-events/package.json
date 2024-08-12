@@ -62,6 +62,7 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
+		"blob": "^0.1.0",
 		"inquirer": "^10.1.6",
 		"puppeteer": "^22.15.0"
 	}
