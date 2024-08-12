@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-query",
 	"scope": "@medyll",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -31,7 +31,7 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "^1.0.0",
+		"@medyll/idae-prettier-config": "^1.1.0",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.20",
 		"@sveltejs/package": "^2.3.2",

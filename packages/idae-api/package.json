@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-api",
 	"scope": "@medyll",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -36,7 +36,7 @@
 		"sequelize": "^6.37.3"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "^1.0.0",
+		"@medyll/idae-prettier-config": "^1.1.0",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.20",
 		"@sveltejs/package": "^2.3.2",
