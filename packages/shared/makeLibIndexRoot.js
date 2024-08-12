@@ -3,6 +3,32 @@ import { glob } from "glob";
 import fs from "fs-extra";
 
 export class MakeLibIndex {
+  #ignorePatterns = [
+    "*.html",
+    "index.ts",
+    "*.demo.svelte",
+    "*Demo.svelte",
+    "*preview.svelte",
+    "*sitedata*",
+    "*.md",
+    "*.scss*",
+    "*.test.ts*",
+    "*wip*",
+    "*Example.svelte",
+    "*indexApi*",
+    "*Readme*",
+  ];
+
+  #libRoot = "lib";
+  #libPath  
+  constructor(options) {
+    this.#ignorePatterns = options.ignorePatterns ?? this.#ignorePatterns;
+    this.#libRoot = options.libRoot ?? this.#libRoot;
+
+    this.#libPath = options.libPath ?? path.join(process.cwd(), this.#libRoot);
+
+    console.log("libPath", this.#libPath);
+  }
   /**
    * @param {string} directory
    * @param {string} target
@@ -14,30 +40,16 @@ export class MakeLibIndex {
    * @returns {Promise<Array.<FileInfo>>}
    */
   async _recursiveListSvelteFile(directory, target) {
-    const ignorePatterns = [
-      "*.html",
-      "index.ts",
-      "*.demo.svelte",
-      "*Demo.svelte",
-      "*preview.svelte",
-      "*sitedata*",
-      "*.md",
-      "*.scss*",
-      "*.test.ts*",
-      "*wip*",
-      "*Example.svelte",
-      "*indexApi*",
-      "*Readme*",
-    ].map(pattern => path.posix.join("**", pattern));
+    this.ignorePatterns.map((pattern) => path.posix.join("**", pattern));
 
     const files = await glob("**/*", {
       cwd: directory,
-      ignore: ignorePatterns,
+      ignore: this.ignorePatterns,
       nodir: true,
       absolute: true,
     });
 
-    return files.map(file => {
+    return files.map((file) => {
       const relativePath = path.relative(target, file);
       return {
         path: path.normalize(relativePath),
@@ -54,7 +66,10 @@ export class MakeLibIndex {
     let exportString = "// Reexport of entry components\n";
     fileInfoList.forEach((fileInfo) => {
       const { file, moduleName, path: filePath } = fileInfo;
-      const normalizedPath = filePath.split(path.sep).join('/').replace(".ts", ".js");
+      const normalizedPath = filePath
+        .split(path.sep)
+        .join("/")
+        .replace(".ts", ".js");
       const isSvelteFile = file.endsWith(".svelte");
 
       if (!isSvelteFile) {
@@ -64,11 +79,14 @@ export class MakeLibIndex {
         exportString += `export { default as ${camelCaseModuleName} } from '$lib/${normalizedPath}';\n`;
       }
     });
-    await fs.writeFile(path.join("src", "lib", "index.ts"), exportString);
+    await fs.writeFile(path.join("src", this.#libRoot, "index.ts"), exportString);
   }
 
   async makeIndexFile() {
-    const fileInfoList = await this._recursiveListSvelteFile(path.join("src", "lib"), path.join("src", "lib"));
+    const fileInfoList = await this._recursiveListSvelteFile(
+      path.join("src", this.#libRoot),
+      path.join("src", this.#libRoot)
+    );
     await this._writeExportFromFileInfoList(fileInfoList);
   }
 
@@ -76,9 +94,3 @@ export class MakeLibIndex {
     return str.replace(/\.([a-z])/g, (_, g) => g.toUpperCase());
   }
 }
-
-/* async function main() {
-  await new MakeLibIndex().makeIndexFile();
-}
-
-main().catch(console.error); */
