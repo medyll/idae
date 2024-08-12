@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
     "package-all:pre": "npm run package:pre --workspaces --if-present",
-    "package-all": "npm run package --workspaces --if-present"
+    "package-all": "npm run package-all:pre && npm run package --workspaces --if-present"
   },
   "config": {
     "commitizen": {

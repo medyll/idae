@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import * as sass from 'sass';
-/* import pkg from 'glob';
-const { glob } = pkg; */
+import * as sass from 'sass'; 
 
 export class SCSSConverter {
 	constructor(sourceDir, targetDir) {

@@ -3,7 +3,7 @@
   "scope": "@medyll",
   "version": "1.0.0",
   "description": "sharing",
-  "main": "makeLibIndexRoot.js",
+  "main": "indexIfy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "package:pre": "node scripts/package-pre.js"

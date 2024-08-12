@@ -129,7 +129,7 @@ class ChangesetGenerator {
         if (commit.pr) {
           commitContent += ` ([#${commit.pr.number}](${commit.pr.url}))`;
         }
-        commitContent += ` - ${date} by ${commit.author}`;
+        commitContent += ` - ${date} by @${commit.author}`;
 
         if (commit.description) {
           commitContent += `\n  ${commit.description.replace(/\n/g, "\n  ")}`;
