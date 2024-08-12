@@ -17,6 +17,7 @@
     "svelte-check": "^3.8.5"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "svelte": "^5.0.0-next.218"
   }
 }

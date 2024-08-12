@@ -23,7 +23,7 @@
 	"author": "Lebrun Meddy",
 	"license": "ISC",
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.1"
+		"svelte": "^5.0.0-next"
 	},
 	"dependencies": {
 		"@socket.io/redis-adapter": "^8.3.0",
@@ -44,6 +44,7 @@
 	"devDependencies": {
 		"@medyll/idae-prettier-config": "^1.0.0",
 		"@types/node": "^22.1.0",
+		"svelte": "^5.0.0-next.218",
 		"typescript": "^5.5.4"
 	}
 }

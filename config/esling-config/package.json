@@ -13,6 +13,7 @@
     "svelte-check": "^3.8.5"
   },
   "devDependencies": {
-    "@medyll/idae-prettier-config": "^1.0.0"
+    "@medyll/idae-prettier-config": "^1.0.0",
+    "svelte": "^5.0.0-next.218"
   }
 }
