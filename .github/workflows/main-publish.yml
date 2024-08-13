@@ -49,6 +49,7 @@ jobs:
 
       - name: Commit Changeset Versions
         run: |
+          git pull
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add .
