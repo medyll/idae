@@ -4,19 +4,20 @@ import fs from "fs-extra";
 
 export class MakeLibIndex {
   #ignorePatterns = [
-    "**/*.html",
-    "**/*index.ts",
-    "**/*.demo.svelte",
-    "**/*Demo.svelte",
-    "**/*preview.svelte",
-    "**/*sitedata*",
-    "**/*.md",
-    "**/*.scss*",
-    "**/*.test.ts*",
-    "**/*wip*",
-    "**/*Example.svelte",
-    "**/*indexApi*",
-    "**/*Readme*",
+    "*.json",
+    "*.html",
+    "*index.ts",
+    "*.demo.svelte",
+    "*Demo.svelte",
+    "*preview.svelte",
+    "*sitedata*",
+    "*.md",
+    "*.scss*",
+    "*.test.ts*",
+    "*wip*",
+    "*Example.svelte",
+    "*indexApi*",
+    "*Readme*",
   ];
 
   #libRoot = "lib";
@@ -27,8 +28,9 @@ export class MakeLibIndex {
 
     this.#libPath = options.libPath ?? path.join(process.cwd(), this.#libRoot);
 
-    console.log("libPath", this.#libPath);
+    this.#ignorePatterns = this.#ignorePatterns.map((pattern) => path.posix.join("**", pattern));
     console.log("ignorePatterns", this.#ignorePatterns);
+    console.log("libPath", this.#libPath);
   }
   /**
    * @param {string} directory
@@ -41,8 +43,6 @@ export class MakeLibIndex {
    * @returns {Promise<Array.<FileInfo>>}
    */
   async _recursiveListSvelteFile(directory, target) {
-    this.#ignorePatterns.map((pattern) => path.posix.join("**", pattern));
-
     const files = await glob("**/*", {
       cwd: directory,
       ignore: this.#ignorePatterns,
@@ -75,10 +75,10 @@ export class MakeLibIndex {
       const isSvelteFile = file.endsWith(".svelte");
 
       if (!isSvelteFile) {
-        exportString += `export * from '$lib/${normalizedPath}';\n`;
+        exportString += `export * from '../lib/${normalizedPath}';\n`;
       } else {
         const camelCaseModuleName = this.dotToCamelCase(moduleName);
-        exportString += `export { default as ${camelCaseModuleName} } from '$lib/${normalizedPath}';\n`;
+        exportString += `export { default as ${camelCaseModuleName} } from '../lib/${normalizedPath}';\n`;
       }
     });
     if (fs.existsSync(path.join("src", this.#libRoot, "index.ts")))
