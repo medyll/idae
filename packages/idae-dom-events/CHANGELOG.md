@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.14
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
 ## 0.5.13
 
 ### Patch Changes
