@@ -12,6 +12,7 @@ on:
 
 jobs:
   publish-main:
+  
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true || github.event_name == 'push'
     steps:
@@ -22,8 +23,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -36,14 +38,24 @@ jobs:
       - name: Apply Changeset Versions
         run: npx changeset version
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Run Custom Publish Script
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: npm run release
+          publish: npm run package-all
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit Changeset Versions
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add .
+          git commit -m "Apply changeset versions"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm (main branch)
         if: steps.changesets.outputs.published != 'true'
