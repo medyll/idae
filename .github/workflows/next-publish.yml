@@ -52,7 +52,17 @@ jobs:
           git add .
           git commit --amend --no-edit
           git push origin dev --force-with-lease
+          git push origin dev --force-with-lease
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run npm package-all script if present
+        run: |
+          if [ -f package.json ] && grep -q '"package-all":' package.json; then
+            npm run package-all
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run npm package-all script if present
