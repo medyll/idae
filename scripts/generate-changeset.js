@@ -49,7 +49,6 @@ class ChangesetGenerator {
       const output = execSync(command, { encoding: "utf-8" });
       const commits = output.split("\n\n").map((commit) => {
         const [hash, subject, body, author, date, ...files] = commit.split("£");
-        console.log(`Commit: ${hash}, Date: ${date}`);
         return {
           sha: hash,
           message: subject,
@@ -220,7 +219,6 @@ ${summary}
         if (!fs.existsSync(changesetFile)) {
           fs.writeFileSync(changesetFile, changesetContent);
           console.log(`Changeset generated for ${packageName}`);
-          console.log(`Changeset content:\n${changesetContent}`);
         } else {
           console.log(`Changeset for ${packageName} already exists, skipping.`);
         }

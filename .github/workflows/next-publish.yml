@@ -42,6 +42,7 @@ jobs:
         run: node scripts/generate-changeset.js
 
       - name: Apply Changeset Versions
+        id: changesets
         run: npx changeset version
 
       - name: Amend Changeset Commit
