@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+### Patch Changes
+
+- - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
 ## 0.5.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-dom-events",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
