@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.5
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.4
+
+### Patch Changes
+
+- - fix(ci): Update next-publish.yml to skip applying changeset versions during dev branch publish ([017778f](https://github.com/medyll/idae/commit/017778f4932c69ac3e729aed30c9a529d67e1bb1)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
 ## 0.5.3
 
 ### Patch Changes
