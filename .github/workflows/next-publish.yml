@@ -45,14 +45,13 @@ jobs:
         id: changesets
         run: npx changeset version
 
-      - name: Amend Changeset Commit
+      - name: Changeset Commit
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add .
-          git commit --amend --no-edit
-          git push origin dev --force-with-lease
-          git push origin dev --force-with-lease
+          git commit -m "Apply changeset versions"
+          git push origin dev --force-with-lease 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
