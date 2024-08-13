@@ -21,14 +21,18 @@ export class MakeLibIndex {
   ];
 
   #libRoot = "lib";
+  #libTs = "$lib";
   #libPath;
   constructor(options = {}) {
     this.#ignorePatterns = options.ignorePatterns ?? this.#ignorePatterns;
     this.#libRoot = options.libRoot ?? this.#libRoot;
+    this.#libTs = options.libTs ?? this.#libTs;
 
     this.#libPath = options.libPath ?? path.join(process.cwd(), this.#libRoot);
 
-    this.#ignorePatterns = this.#ignorePatterns.map((pattern) => path.posix.join("**", pattern));
+    this.#ignorePatterns = this.#ignorePatterns.map((pattern) =>
+      path.posix.join("**", pattern)
+    );
     console.log("ignorePatterns", this.#ignorePatterns);
     console.log("libPath", this.#libPath);
   }
@@ -72,13 +76,17 @@ export class MakeLibIndex {
         .split(path.sep)
         .join("/")
         .replace(".ts", ".js");
-      const isSvelteFile = file.endsWith(".svelte");
 
-      if (!isSvelteFile) {
-        exportString += `export * from '../lib/${normalizedPath}';\n`;
+      const isSvelteFile = file.endsWith(".svelte");
+      const isCssFile = file.endsWith(".css");
+
+      if (isCssFile) {
+        exportString += `export * as '${moduleName}.css' from '${this.#libTs}/${normalizedPath}';\n`;
+      } else if (!isSvelteFile) {
+        exportString += `export * from '${this.#libTs}/${normalizedPath}';\n`;
       } else {
         const camelCaseModuleName = this.dotToCamelCase(moduleName);
-        exportString += `export { default as ${camelCaseModuleName} } from '../lib/${normalizedPath}';\n`;
+        exportString += `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
       }
     });
     if (fs.existsSync(path.join("src", this.#libRoot, "index.ts")))
@@ -100,3 +108,5 @@ export class MakeLibIndex {
     return str.replace(/\.([a-z])/g, (_, g) => g.toUpperCase());
   }
 }
+
+// npm i @medyll/idae-be@next @medyll/idae-api@next @medyll/idae-data-tpl@next @medyll/idae-dom-events@next @medyll/idae-engine@next @medyll/idae-idbql@next @medyll/idae-mongo@next @medyll/idae-query@next @medyll/idae-slotui-svelte@next -f

@@ -39,6 +39,7 @@
   "dependencies": {
     "@medyll/cssfabric": "^0.4.2",
     "@medyll/idae-engine": "^1.1.2",
+    "@medyll/idae-socket": "^0.0.2",
     "@octokit/rest": "^21.0.1",
     "glob": "^11.0.0",
     "npm": "^10.8.2",
