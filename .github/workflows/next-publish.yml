@@ -3,9 +3,7 @@ name: Dev Branch Publish
 on:
   push:
     branches:
-      - dev 
-    paths-ignore:
-      - '.github/**'
+      - dev
   pull_request:
     types:
       - closed
