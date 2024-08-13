@@ -62,10 +62,11 @@ jobs:
 
       - name: Amend Changeset Commit
         run: |
+          git pull
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add .
-          git commit --amend --no-edit
+          git commit --amend -m "Apply changeset versions" --no-edit
           git push origin dev --force-with-lease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
