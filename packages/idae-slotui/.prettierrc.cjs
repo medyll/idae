@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('@medyll/idae-prettier-config'), 
+  extends: ['@medyll/idae-prettier-config'],
 };
