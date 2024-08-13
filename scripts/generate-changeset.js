@@ -233,7 +233,7 @@ ${summary}
 
 const generator = new ChangesetGenerator({
   rootRepo: rootRepo,
-  commitTypes: ["feat", "fix", "docs", "refactor", "docs"],
+  commitTypes: ["feat", "fix", "docs", "refactor", "docs", "ci"],
   commitDepth: "all",
 });
 
