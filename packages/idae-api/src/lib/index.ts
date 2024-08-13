@@ -1,7 +1,6 @@
 // Reexport of entry components
 export * from '$lib/idae-api.d.js';
 export * from '$lib/server/IdaeApi.js';
-export * from '$lib/server/apiServer.test.js';
 export * from '$lib/config/routeDefinitions.js';
 export * from '$lib/client/IdaeApiClientRequest.js';
 export * from '$lib/client/IdaeApiClientConfig.js';

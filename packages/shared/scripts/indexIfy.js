@@ -4,19 +4,19 @@ import fs from "fs-extra";
 
 export class MakeLibIndex {
   #ignorePatterns = [
-    "*.html",
-    "index.ts",
-    "*.demo.svelte",
-    "*Demo.svelte",
-    "*preview.svelte",
-    "*sitedata*",
-    "*.md",
-    "*.scss*",
-    "*.test.ts*",
-    "*wip*",
-    "*Example.svelte",
-    "*indexApi*",
-    "*Readme*",
+    "**/*.html",
+    "**/*index.ts",
+    "**/*.demo.svelte",
+    "**/*Demo.svelte",
+    "**/*preview.svelte",
+    "**/*sitedata*",
+    "**/*.md",
+    "**/*.scss*",
+    "**/*.test.ts*",
+    "**/*wip*",
+    "**/*Example.svelte",
+    "**/*indexApi*",
+    "**/*Readme*",
   ];
 
   #libRoot = "lib";
@@ -28,6 +28,7 @@ export class MakeLibIndex {
     this.#libPath = options.libPath ?? path.join(process.cwd(), this.#libRoot);
 
     console.log("libPath", this.#libPath);
+    console.log("ignorePatterns", this.#ignorePatterns);
   }
   /**
    * @param {string} directory
