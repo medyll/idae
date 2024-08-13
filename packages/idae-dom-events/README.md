@@ -6,13 +6,13 @@ dom-events is a powerful library for observing and reacting to DOM changes in we
 ## Installation
 
 ```bash
-npm install @medyll/dom-events
+npm install @medyll/idae-dom-events
 ```
 
 ## Usage
 
 ```javascript
-import { cssDom, htmlDom } from "@medyll/dom-events";
+import { cssDom, htmlDom } from "@medyll/idae-dom-events";
 ```
 
 ## CssObserver

@@ -1,4 +1,4 @@
-// Reexport your entry components here
-export * from './dataTemplate/dataTemplate.js';
-export * from './dataTemplate/types.js';
-export * from './dataTemplate/validator.js';
+// Reexport of entry components
+export * from '$lib/dataTemplate/validator.js';
+export * from '$lib/dataTemplate/types.js';
+export * from '$lib/dataTemplate/dataTemplate.js';

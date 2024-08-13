@@ -59,7 +59,7 @@
 			bind:this={startRef}
 			bind:clientWidth
 			class="button-start"
-			style="--start-position:{children ?? value ? 'absolute' : 'relative'}"
+			style="--start-position:{(children ?? value) ? 'absolute' : 'relative'}"
 		>
 			<Slotted child={buttonStart}>
 				<Icon iconSize="small" {icon} />

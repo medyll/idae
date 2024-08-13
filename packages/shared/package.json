@@ -3,18 +3,21 @@
   "scope": "@medyll",
   "version": "1.0.0",
   "description": "sharing",
-  "main": "makeLibIndexRoot.js",
+  "main": "indexIfy.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package:pre": "node scripts/package-pre.js"
   },
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "fs-extra": "^11.2.0",
-    "glob": "^11.0.0"
+    "glob": "^11.0.0",
+    "svelte-check": "^3.8.5"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "svelte": "^5.0.0-next.218"
   }
 }

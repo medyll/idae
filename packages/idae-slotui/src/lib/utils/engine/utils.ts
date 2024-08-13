@@ -106,7 +106,7 @@ export class dataOp {
 						if (Array.isArray(currentValue[rootField])) {
 							for (const red of currentValue[rootField]) {
 								const arrKey = opt?.keepUngroupedData
-									? dataOp.resolveDotPath(red, restField) ?? '- ungrouped'
+									? (dataOp.resolveDotPath(red, restField) ?? '- ungrouped')
 									: dataOp.resolveDotPath(red, restField);
 								if (arrKey) (result[arrKey] = result[arrKey] || []).push(currentValue);
 							}
@@ -116,7 +116,7 @@ export class dataOp {
 			}
 
 			const key = opt?.keepUngroupedData
-				? dataOp.resolveDotPath(currentValue, groupField) ?? '- ungrouped'
+				? (dataOp.resolveDotPath(currentValue, groupField) ?? '- ungrouped')
 				: dataOp.resolveDotPath(currentValue, groupField);
 
 			if (key !== undefined) (result[key] = result[key] || []).push(currentValue);

@@ -49,7 +49,6 @@ class ChangesetGenerator {
       const output = execSync(command, { encoding: "utf-8" });
       const commits = output.split("\n\n").map((commit) => {
         const [hash, subject, body, author, date, ...files] = commit.split("£");
-        console.log(`Commit: ${hash}, Date: ${date}`);
         return {
           sha: hash,
           message: subject,
@@ -120,7 +119,7 @@ class ChangesetGenerator {
     const summary = commits
       .map((commit) => {
         const sanitizedMessage = this.sanitizeCommitMessage(
-          commit.message.split("\n")[0]
+          commit.message.split("\n")[0],
         );
 
         const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
@@ -129,7 +128,7 @@ class ChangesetGenerator {
         if (commit.pr) {
           commitContent += ` ([#${commit.pr.number}](${commit.pr.url}))`;
         }
-        commitContent += ` - ${date} by ${commit.author}`;
+        commitContent += ` - ${date} by @${commit.author}`;
 
         if (commit.description) {
           commitContent += `\n  ${commit.description.replace(/\n/g, "\n  ")}`;
@@ -158,7 +157,7 @@ ${summary}
 
       if (!fs.existsSync(packageJsonPath)) {
         console.error(
-          `Package ${packageDir} does not have a package.json file`
+          `Package ${packageDir} does not have a package.json file`,
         );
         continue;
       }
@@ -171,7 +170,7 @@ ${summary}
       const packageCommits = await this.getCommitsForPackage(
         packageName,
         packagePath,
-        lastTag
+        lastTag,
       );
 
       console.log(`Commits for ${packageName}:`, packageCommits.length);
@@ -193,13 +192,13 @@ ${summary}
             : "patch";
 
         const relevantCommits = packageCommits.filter(
-          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null
+          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null,
         );
 
         const changesetContent = this.generateChangesetContent(
           packageName,
           highestBumpType,
-          relevantCommits
+          relevantCommits,
         );
 
         const changesetDir = path.join(__dirname, "..", ".changeset");
@@ -214,13 +213,12 @@ ${summary}
           .slice(0, 8);
         const changesetFile = path.join(
           changesetDir,
-          `${packageDir}-${contentHash}.md`
+          `${packageDir}-${contentHash}.md`,
         );
 
         if (!fs.existsSync(changesetFile)) {
           fs.writeFileSync(changesetFile, changesetContent);
           console.log(`Changeset generated for ${packageName}`);
-          console.log(`Changeset content:\n${changesetContent}`);
         } else {
           console.log(`Changeset for ${packageName} already exists, skipping.`);
         }
@@ -234,7 +232,7 @@ ${summary}
 }
 
 const generator = new ChangesetGenerator({
-  rootRepo: "medyll/idae",
+  rootRepo: rootRepo,
   commitTypes: ["feat", "fix", "docs", "refactor", "docs", "ci"],
   commitDepth: "all",
 });

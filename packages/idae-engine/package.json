@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-engine",
 	"scope": "@medyll",
-	"version": "1.1.1",
+	"version": "1.11.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -11,7 +11,8 @@
 		"prepublishOnly": "npm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test": "vitest"
+		"test": "vitest",
+		"package:pre": "node scripts/package-pre.js"
 	},
 	"exports": {
 		".": {
@@ -25,16 +26,15 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.0.0-next.1"
+		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "^1.0.0",
+		"@medyll/idae-prettier-config": "^1.1.0",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.20",
 		"@sveltejs/package": "^2.3.2",
 		"@sveltejs/vite-plugin-svelte": "^3.1.1",
-		"publint": "^0.2.9",
-		"svelte": "^5.0.0-next.183",
+		"svelte": "^5.0.0-next.218",
 		"svelte-check": "^3.8.5",
 		"tslib": "^2.6.3",
 		"typescript": "^5.5.4",

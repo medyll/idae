@@ -1,28 +1,19 @@
-'use strict';
-
-import { _config } from './server/_config/config';
-import { httpDriverInstance } from './server/httpDriver';
-import { EventDataClientInstance } from './client';
-import { startClientDemo } from './client/demo';
-
-const parseArgs = require('minimist');
-const argv = parseArgs(process.argv);
-
-const defaultPort = argv?.port ?? _config.defaultPort;
-
-// auth mode Basic, Bearer
-export function start(port: number) {
-	httpDriverInstance.listen(port);
-
-	startClientDemo(port);
-
-	return httpDriverInstance;
-}
-
-if (argv?.start) {
-	start(defaultPort);
-}
-// start from cmd line
-// node /bin
-
-// nodemon ./src/index.ts
+// Reexport of entry components
+export * from '$lib/server/socketDriver.js';
+export * from '$lib/server/httpDriver.js';
+export * from '$lib/server/dataEvent.js';
+export * from '$lib/client/index.js';
+export * from '$lib/client/demo.js';
+export * from '$lib/server/_utils/routes.js';
+export * from '$lib/server/_utils/eventEmitterInstance.js';
+export * from '$lib/server/_config/config.js';
+export * from '$lib/server/_config/cmdRoutes.json';
+export * from '$lib/server/_config/clientRoutes.json';
+export * from '$lib/server/_config/alowwedHosts.json';
+export * from '$lib/server/socketBridge/socketThrottle.js';
+export * from '$lib/server/socketBridge/socketRoom.js';
+export * from '$lib/server/socketBridge/socketIoServer.js';
+export * from '$lib/server/socketBridge/index.js';
+export * from '$lib/server/fakeZone/package.json';
+export * from '$lib/server/fakeZone/fakeHttpPost.js';
+export * from '$lib/server/@types/index.d.js';

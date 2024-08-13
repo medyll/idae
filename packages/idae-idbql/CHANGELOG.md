@@ -1,5 +1,186 @@
 # Changelog
 
+## 0.11.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.11.0
+
+## 0.10.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.10.0
+
+## 0.9.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.9.0
+
+## 0.8.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.8.0
+
+## 0.7.0
+
+### Minor Changes
+
+- - fix(ci): Update next-publish.yml to skip applying changeset versions during dev branch publish ([017778f](https://github.com/medyll/idae/commit/017778f4932c69ac3e729aed30c9a529d67e1bb1)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.7.0
+
+## 0.6.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.6.0
+
+## 0.5.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.5.0
+
+## 0.4.0
+
+### Minor Changes
+
+- - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.4.0
+
+## 0.3.0
+
+### Minor Changes
+
+- - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+- a42f9db: ci(main): version chore
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies [a42f9db]
+  - @medyll/idae-query@0.3.0
+
+## 0.2.0
+
+### Minor Changes
+
+- - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - refactor: (data-idbql): replaced calls to query by @medyll/data-query ([4004d99](https://github.com/medyll/idae/commit/4004d9977251cfdb63e2c5cb05ddd821c2c80e65)) - 2024-07-11 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+  - refactor(idae-idbql): integrated to monorepo ([7cc5204](https://github.com/medyll/idae/commit/7cc5204c802d77263cbb43f8d6797ebb1df16183)) - 2024-07-10 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+  - @medyll/idae-query@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes
