@@ -46,7 +46,7 @@ jobs:
         id: changesets
         run: npx changeset version
 
-      - name: Changeset Commit
+      - name: Commit Changeset Versions
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
