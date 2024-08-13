@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          
+
       - name: Check commit message
         id: check_message
         run: |
@@ -54,7 +54,7 @@ jobs:
           git config --global user.email 'action@github.com'
           git add .
           git commit -m "Apply changeset versions"
-          git push origin main
+          git push origin main --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
