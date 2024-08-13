@@ -27,7 +27,7 @@
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
 
-	import { cssDom } from '@medyll/dom-events';
+	import { cssDom } from '@medyll/idae-dom-events';
 	// from +layout.server
 	let data: any = {};
 	// from +layout.ts

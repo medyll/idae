@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { be } from '@medyll/idae-be';
-	import { cssDom } from '@medyll/dom-events';
+	import { cssDom } from '@medyll/idae-dom-events';
 	import StyleSheet from './SlotuiSheet.svelte';
 	import { configCssVars, toContainerQuery } from './utils.js';
 
