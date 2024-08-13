@@ -1,5 +1,13 @@
 # @medyll/idae-mongo
 
+## 0.5.0
+
+### Minor Changes
+
+- - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+
 ## 0.4.0
 
 ### Minor Changes

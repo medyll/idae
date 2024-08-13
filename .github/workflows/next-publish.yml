@@ -27,10 +27,6 @@ jobs:
             echo "::set-output name=is_changeset_commit::false"
           fi
 
-      - name: Exit if changeset is applied
-        if: steps.check_message.outputs.is_changeset_commit == 'true'
-        run: exit 0
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -48,23 +44,23 @@ jobs:
       - name: Apply Changeset Versions
         run: npx changeset version
 
-      - name: Run Custom Publish Script
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: npm run package-all
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Amend Changeset Commit
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add .
           git commit --amend --no-edit
-          git push origin dev --force
+          git push origin dev --force-with-lease
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run npm package-all script if present
+        run: |
+          if [ -f package.json ] && grep -q '"package-all":' package.json; then
+            npm run package-all
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm (dev branch)
