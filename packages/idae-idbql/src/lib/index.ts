@@ -1,4 +1,4 @@
-// Reexport of entry components
+// auto exports of entry components
 export * from '$lib/state/idbstate.svelte.js';
 export * from '$lib/state/idbqlEvent.svelte.js';
 export * from '$lib/scripts/types.js';

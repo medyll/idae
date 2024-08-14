@@ -32,9 +32,8 @@ export class MakeLibIndex {
 
     this.#ignorePatterns = this.#ignorePatterns.map((pattern) =>
       path.posix.join("**", pattern)
-    );
-    console.log("ignorePatterns", this.#ignorePatterns);
-    console.log("libPath", this.#libPath);
+    ); 
+    console.log("libPath : ", this.#libPath);
   }
   /**
    * @param {string} directory
@@ -69,7 +68,7 @@ export class MakeLibIndex {
    * @param {Array.<FileInfo>} fileInfoList
    */
   async _writeExportFromFileInfoList(fileInfoList) {
-    let exportString = "// Reexport of entry components\n";
+    let exportString = "// auto exports of entry components\n";
     fileInfoList.forEach((fileInfo) => {
       const { file, moduleName, path: filePath } = fileInfo;
       const normalizedPath = filePath
@@ -79,13 +78,13 @@ export class MakeLibIndex {
 
       const isSvelteFile = file.endsWith(".svelte");
       const isCssFile = file.endsWith(".css");
+      const camelCaseModuleName = this.dotToCamelCase(moduleName);
 
       if (isCssFile) {
-        exportString += `export * as '${moduleName}.css' from '${this.#libTs}/${normalizedPath}';\n`;
+        exportString += `export * as ${camelCaseModuleName}Css from '${this.#libTs}/${normalizedPath}';\n`;
       } else if (!isSvelteFile) {
         exportString += `export * from '${this.#libTs}/${normalizedPath}';\n`;
       } else {
-        const camelCaseModuleName = this.dotToCamelCase(moduleName);
         exportString += `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
       }
     });
@@ -105,7 +104,9 @@ export class MakeLibIndex {
   }
 
   dotToCamelCase(str) {
-    return str.replace(/\.([a-z])/g, (_, g) => g.toUpperCase());
+    str =  str.replace(/\.([a-z])/g, (_, g) => g.toUpperCase());
+    return  str.replace(/\-([a-z])/g, (_, g) => g.toUpperCase());
+  
   }
 }
 

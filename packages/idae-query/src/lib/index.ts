@@ -1,4 +1,4 @@
-// Reexport of entry components
+// auto exports of entry components
 export * from '$lib/types.js';
 export * from '$lib/resultSet/resultset.js';
 export * from '$lib/query/query.js';

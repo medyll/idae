@@ -1,4 +1,4 @@
-// Reexport of entry components
+// auto exports of entry components
 export * from '$lib/utils.js';
 export * from '$lib/types.js';
 export * from '$lib/be.js';
