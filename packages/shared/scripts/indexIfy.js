@@ -46,7 +46,10 @@ export class MakeLibIndex {
    */
   constructor(options = {}) {
     //
-    this.#ignorePatterns = [...options.ignorePatterns ?? [], ...this.#ignorePatterns];
+    this.#ignorePatterns = [
+      ...(options.ignorePatterns ?? []),
+      ...this.#ignorePatterns,
+    ];
     this.#mainGlobPattern = options.mainGlobPattern ?? this.#mainGlobPattern;
     this.#libRoot = options.libRoot ?? this.#libRoot;
     this.#libTs = options.libTs ?? this.#libTs;
@@ -116,11 +119,13 @@ export class MakeLibIndex {
         exportString += `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
       }
     });
-    if (fs.existsSync(path.join("src", this.#libRoot, "index.ts")))
-      await fs.writeFile(
-        path.join("src", this.#libRoot, "index.ts"),
-        exportString
-      );
+    if (fs.existsSync(path.join(this.#srcPath, this.#libRoot, "index.ts"))) {
+      let indexPath = path.join(this.#srcPath, this.#libRoot, "index.ts");
+      // if content differs, write
+      if (fs.readFileSync(indexPath, "utf8") !== exportString) {
+        await fs.writeFile(indexPath, exportString);
+      }
+    }
   }
 
   async makeIndexFile(src, target) {
