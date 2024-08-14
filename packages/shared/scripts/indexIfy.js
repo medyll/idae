@@ -5,7 +5,9 @@ import fs from "fs-extra";
 export class MakeLibIndex {
   #ignorePatterns = [
     "*.json",
+    "*.json",
     "*.html",
+    "*index.ts",
     "*index.ts",
     "*.demo.svelte",
     "*Demo.svelte",
