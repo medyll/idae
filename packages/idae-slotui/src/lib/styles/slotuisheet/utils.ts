@@ -1,4 +1,4 @@
-import sharedConfigCss from "./sheetConfig.css?raw";
+import sharedConfigCss from "./sheetConfig.scss?raw";
 
 interface ContainerItemProps {
   class: string;

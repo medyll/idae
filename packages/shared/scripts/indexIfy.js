@@ -8,6 +8,7 @@ export class MakeLibIndex {
     "*.json",
     "*.json",
     "*.html",
+    "*d.ts",
     "*index.ts",
     "*index.ts",
     "*.demo.svelte",

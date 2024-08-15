@@ -2,6 +2,8 @@
 	"name": "@medyll/idae-api",
 	"scope": "@medyll",
 	"version": "0.24.0",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -19,7 +21,8 @@
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"default": "./dist/index.js"
 		}
 	},
 	"files": [
@@ -27,6 +30,11 @@
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
+	"tshy": {
+		"dialects": [
+			"esm"
+		]
+	},
 	"dependencies": {
 		"@typegoose/auto-increment": "^4.5.0",
 		"express": "^4.19.2",

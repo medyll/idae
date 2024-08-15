@@ -1,1 +1,12 @@
-:root{--auto-complete-pad: var(--sld-pad-medium);--auto-complete-gap: var(--sld-gap-small)}.auto-complete-no-results,.auto-complete-boot{padding:var(--auto-complete-pad);gap:var(--auto-complete-gap);display:flex;flex-direction:row;align-items:center}
+:root {
+  --auto-complete-pad: var(--sld-pad-medium);
+  --auto-complete-gap: var(--sld-gap-small);
+}
+
+.auto-complete-no-results, .auto-complete-boot {
+  padding: var(--auto-complete-pad);
+  gap: var(--auto-complete-gap);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
