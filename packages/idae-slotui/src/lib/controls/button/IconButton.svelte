@@ -38,6 +38,6 @@
 	}: IconButtonProps = $props();
 </script>
 
-<Button variant="square" bind:element width={size} tall="unset" {ratio} {...rest}>
+<!-- <Button variant="square" bind:element width={size} tall="unset" {ratio} {...rest}>
 	<Icon style="display:block; " {rotation} {icon} iconSize={iconFontSize} />
-</Button>
+</Button> -->

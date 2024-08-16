@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { popper, type UsePopperProps } from '$lib/ui/popper/usePopper.js';
+	import { popper} from '$lib/ui/popper/usePopper.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ButtonProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -7,20 +7,21 @@
 
 	let {
 		class: className,
-		element = $bindable(),
 		style,
+		element = $bindable(),
 		type: buttonType = 'button',
 		icon = $bindable(),
 		iconEnd = $bindable(),
 		variant = 'bordered',
 		bgTheme,
-		usePopper,
+		usePopperProps={disabled:true},
 		loading,
 		showChip,
 		popperOpen,
 		width = widthPreset.auto,
 		tall = tallPreset.small,
 		nowrap,
+		ellipsis=true,
 		selected = false,
 		value,
 		reverse = false,
@@ -31,33 +32,33 @@
 		buttonLoadingIcon,
 		children,
 		...rest
-	}: ExpandProps<ButtonProps> = $props();
+	}: ButtonProps = $props();
 
-	let startRef: HTMLDivElement;
-	let clientWidth: number | undefined = $state();
+	let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
+ 
+	$inspect(startRef?.clientWidth)
 </script>
 
 <button
 	class={className + ' button '}
 	class:loading
 	bind:this={element}
-	use:popper={usePopper}
+	use:popper={usePopperProps}
 	onclickAway={() => {
 		popperOpen = false;
 	}}
 	type={buttonType}
 	{tall}
 	{width}
-	{nowrap}
 	{variant}
 	{selected}
 	{...rest}
 	style:aspect-ratio={ratio}
+	style="--content-padding:{buttonStart || icon ? `${startRef?.clientWidth ?? '0.5rem'}px` : '0.5rem'}"
 >
 	{#if buttonStart || icon}
 		<div
 			bind:this={startRef}
-			bind:clientWidth
 			class="button-start"
 			style="--start-position:{(children ?? value) ? 'absolute' : 'relative'}"
 		>
@@ -68,14 +69,14 @@
 	{/if}
 	{#if children ?? value}
 		<div
-			class="button-central"
-			style="--content-padding:{buttonStart || icon ? `${clientWidth}px` : ''}"
+			class="button-central {ellipsis? 'ellipsis' : ''}"
+			style="--content-padding:{buttonStart || icon ? `${startRef?.clientWidth ?? '0.5rem'}px` : '0.5rem'}"
 		>
 			<Slotted child={children}>{value ?? ''}</Slotted>
 		</div>
 	{/if}
 	{#if buttonEnd || iconEnd}
-		<div class="button-action">
+		<div class="button-end">
 			<Slotted child={buttonEnd}>
 				<Icon icon={iconEnd} />
 			</Slotted>
@@ -84,12 +85,7 @@
 
 	{#if loading}
 		<div class="loadingButtonZone">
-			<div>
-				<Slotted child={buttonLoadingIcon}>
-					<Icon icon="loading" rotate />
-				</Slotted>
-			</div>
-			<div></div>
+				<Slotted child={buttonLoadingIcon} /> 
 		</div>
 	{/if}
 	{#if showChip}

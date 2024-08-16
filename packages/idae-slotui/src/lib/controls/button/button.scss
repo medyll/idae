@@ -8,7 +8,7 @@
     --sld-button-text-align: center;
     --sld-button-padding: 0;
     --sld-button-background: var(--sld-color-foreground-alpha-high);
-    --sld-button-contained-background: var(--sld-color-primary);
+    --sld-button-contained-background: var(--sld-color-primary-alpha-high);
     --sld-button-hover-border-color: var(--sld-color-primary);
     --sld-button-active-border-color: var(--sld-color-secondary);
     --sld-button-focus-border-color: var(--sld-color-primary);
@@ -38,6 +38,7 @@
     @include elevation;
 
     border: none;
+    border-radius: 0;
     margin: 0;
 
     text-align: var(--sld-button-text-align);
@@ -48,14 +49,14 @@
     padding: var(--sld-button-padding);
     position: relative;
 
-    display: inline-block;
+    display: inline-flex;
 
     transition: all 0.2s ease-in-out;
     overflow: hidden;
     cursor: pointer;
 
-    align-content: center;
-    align-items: center;
+    align-content: stretch;
+    align-items: stretch;
 
     background: var(--sld-button-background);
 
@@ -82,68 +83,42 @@
             box-shadow: var(--sld-button-focus-shadow);
         }
     }
-    /*  &:focus {
-        outline: 1px solid var(--sld-button-focus-border-color);
-        outline-offset: 2px;
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-    &:focus-visible {
-        outline: 1px solid var(--sld-button-focus-border-color);
-        outline-offset: -2px;
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-    &:focus:not(:focus-visible) {
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-    &:hover {
-        background-color: var(--sld-button-hover-background);
-        box-shadow: var(--sld-button-hover-shadow);
-    }
-
-    &:active {
-        transform: translateY(1px);
-        box-shadow: var(--sld-button-active-shadow);
-    } */
 
     .button-start {
-        @include ui-ellipsises-presets;
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
-        height: 100%;
-        display: flex;
+        max-height: 100%;
         align-items: center;
-        justify-content: center;
-        padding: 0 0.5rem;
-
+        align-content: center;
+        padding: 0 0.15rem;
+        display: block;
         &:empty {
             display: none;
         }
     }
 
     .button-central {
-        width: 100%;
-        height: 100%;
-        display: flex;
+        @include ui-ellipsises-presets;
+        max-width: 100%;
+        max-height: 100%;
+        flex: 1;
         align-items: center;
-        justify-content: center;
-        padding: 0 0.5rem; //var(--content-padding, 0.25rem);
-        text-align: var(--sld-button-text-align);
+        align-content: center;
+        padding-right: calc(var(--content-padding, 0.25rem) / 2);
+        text-align: var(--sld-button-text-align, center);
         &:empty {
             display: none;
         }
     }
 
-    .button-action {
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 100%;
-        display: flex;
+    .button-end {
+        position: relative;
         align-items: center;
-        justify-content: center;
-        width: var(--w-tiny);
+        align-content: center;
+        //width: var(--w-tiny);
         padding: 0 0.5rem;
+        text-align: center;
         cursor: pointer;
 
         &:empty {

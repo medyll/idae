@@ -38,7 +38,7 @@
   },
   "version": "0.0.2",
   "dependencies": {
-    "@medyll/cssfabric": "^0.4.2",
+    "@medyll/cssfabric": "file:../app-node/cssfabric",
     "@medyll/idae-engine": "^1.1.2",
     "@medyll/idae-socket": "^0.0.2",
     "@octokit/rest": "^21.0.1",

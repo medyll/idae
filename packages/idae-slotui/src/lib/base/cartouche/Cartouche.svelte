@@ -34,7 +34,7 @@
 		cartoucheButtons,
 		isOpen = $bindable(),
 		dense,
-		tall
+		tall = "small"
 	}: ExpandProps<CartoucheProps> = $props();
 
 	function open() {

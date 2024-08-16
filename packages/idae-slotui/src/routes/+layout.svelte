@@ -66,7 +66,7 @@
 	}
 
 	$effect(() => {
-		scrollSpy();
+		// scrollSpy();
 	});
 </script>
 
@@ -104,7 +104,7 @@
 		}
 	</script>
 </svelte:head>
-<SlotuiSheet />
+<!-- <SlotuiSheet /> -->
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer

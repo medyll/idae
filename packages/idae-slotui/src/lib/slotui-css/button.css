@@ -6,7 +6,7 @@
   --sld-button-text-align: center;
   --sld-button-padding: 0;
   --sld-button-background: var(--sld-color-foreground-alpha-high);
-  --sld-button-contained-background: var(--sld-color-primary);
+  --sld-button-contained-background: var(--sld-color-primary-alpha-high);
   --sld-button-hover-border-color: var(--sld-color-primary);
   --sld-button-active-border-color: var(--sld-color-secondary);
   --sld-button-focus-border-color: var(--sld-color-primary);
@@ -32,6 +32,7 @@
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
   border: none;
+  border-radius: 0;
   margin: 0;
   text-align: var(--sld-button-text-align);
   font-size: var(--sld-button-font-size);
@@ -39,35 +40,13 @@
   color: var(--sld-color-foreground);
   padding: var(--sld-button-padding);
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   transition: all 0.2s ease-in-out;
   overflow: hidden;
   cursor: pointer;
-  align-content: center;
-  align-items: center;
+  align-content: stretch;
+  align-items: stretch;
   background: var(--sld-button-background);
-  /*  &:focus {
-      outline: 1px solid var(--sld-button-focus-border-color);
-      outline-offset: 2px;
-      box-shadow: var(--sld-button-focus-shadow);
-  }
-  &:focus-visible {
-      outline: 1px solid var(--sld-button-focus-border-color);
-      outline-offset: -2px;
-      box-shadow: var(--sld-button-focus-shadow);
-  }
-  &:focus:not(:focus-visible) {
-      box-shadow: var(--sld-button-focus-shadow);
-  }
-  &:hover {
-      background-color: var(--sld-button-hover-background);
-      box-shadow: var(--sld-button-hover-shadow);
-  }
-
-  &:active {
-      transform: translateY(1px);
-      box-shadow: var(--sld-button-active-shadow);
-  } */
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
 }
@@ -372,93 +351,14 @@
 :global(button.button) .button-start,
 :global(input[type="button"]) .button-start,
 :global(input[type="submit"]) .button-start {
-  --preset-ellipsis-line: 1;
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
-  height: 100%;
-  display: flex;
+  max-height: 100%;
   align-items: center;
-  justify-content: center;
-  padding: 0 0.5rem;
-}
-:global(button) .button-start[ellipsis], :global(button) .button-start.ellipsis,
-:global(.button) .button-start[ellipsis],
-:global(.button) .button-start.ellipsis,
-:global(button.button) .button-start[ellipsis],
-:global(button.button) .button-start.ellipsis,
-:global(input[type="button"]) .button-start[ellipsis],
-:global(input[type="button"]) .button-start.ellipsis,
-:global(input[type="submit"]) .button-start[ellipsis],
-:global(input[type="submit"]) .button-start.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-:global(button) .button-start.ellipsis-line-1,
-:global(.button) .button-start.ellipsis-line-1,
-:global(button.button) .button-start.ellipsis-line-1,
-:global(input[type="button"]) .button-start.ellipsis-line-1,
-:global(input[type="submit"]) .button-start.ellipsis-line-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 1;
-}
-:global(button) .button-start.ellipsis-line-2,
-:global(.button) .button-start.ellipsis-line-2,
-:global(button.button) .button-start.ellipsis-line-2,
-:global(input[type="button"]) .button-start.ellipsis-line-2,
-:global(input[type="submit"]) .button-start.ellipsis-line-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 2;
-}
-:global(button) .button-start.ellipsis-line-3,
-:global(.button) .button-start.ellipsis-line-3,
-:global(button.button) .button-start.ellipsis-line-3,
-:global(input[type="button"]) .button-start.ellipsis-line-3,
-:global(input[type="submit"]) .button-start.ellipsis-line-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 3;
-}
-:global(button) .button-start.ellipsis-line-4,
-:global(.button) .button-start.ellipsis-line-4,
-:global(button.button) .button-start.ellipsis-line-4,
-:global(input[type="button"]) .button-start.ellipsis-line-4,
-:global(input[type="submit"]) .button-start.ellipsis-line-4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 4;
-}
-:global(button) .button-start.ellipsis-line-5,
-:global(.button) .button-start.ellipsis-line-5,
-:global(button.button) .button-start.ellipsis-line-5,
-:global(input[type="button"]) .button-start.ellipsis-line-5,
-:global(input[type="submit"]) .button-start.ellipsis-line-5 {
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 5;
+  align-content: center;
+  padding: 0 0.15rem;
+  display: block;
 }
 :global(button) .button-start:empty,
 :global(.button) .button-start:empty,
@@ -472,13 +372,92 @@
 :global(button.button) .button-central,
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
-  width: 100%;
-  height: 100%;
-  display: flex;
+  --preset-ellipsis-line: 1;
+  max-width: 100%;
+  max-height: 100%;
+  flex: 1;
   align-items: center;
-  justify-content: center;
-  padding: 0 0.5rem;
-  text-align: var(--sld-button-text-align);
+  align-content: center;
+  padding-right: calc(var(--content-padding, 0.25rem) / 2);
+  text-align: var(--sld-button-text-align, center);
+}
+:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
+:global(.button) .button-central[ellipsis],
+:global(.button) .button-central.ellipsis,
+:global(button.button) .button-central[ellipsis],
+:global(button.button) .button-central.ellipsis,
+:global(input[type="button"]) .button-central[ellipsis],
+:global(input[type="button"]) .button-central.ellipsis,
+:global(input[type="submit"]) .button-central[ellipsis],
+:global(input[type="submit"]) .button-central.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:global(button) .button-central.ellipsis-line-1,
+:global(.button) .button-central.ellipsis-line-1,
+:global(button.button) .button-central.ellipsis-line-1,
+:global(input[type="button"]) .button-central.ellipsis-line-1,
+:global(input[type="submit"]) .button-central.ellipsis-line-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 1;
+}
+:global(button) .button-central.ellipsis-line-2,
+:global(.button) .button-central.ellipsis-line-2,
+:global(button.button) .button-central.ellipsis-line-2,
+:global(input[type="button"]) .button-central.ellipsis-line-2,
+:global(input[type="submit"]) .button-central.ellipsis-line-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 2;
+}
+:global(button) .button-central.ellipsis-line-3,
+:global(.button) .button-central.ellipsis-line-3,
+:global(button.button) .button-central.ellipsis-line-3,
+:global(input[type="button"]) .button-central.ellipsis-line-3,
+:global(input[type="submit"]) .button-central.ellipsis-line-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 3;
+}
+:global(button) .button-central.ellipsis-line-4,
+:global(.button) .button-central.ellipsis-line-4,
+:global(button.button) .button-central.ellipsis-line-4,
+:global(input[type="button"]) .button-central.ellipsis-line-4,
+:global(input[type="submit"]) .button-central.ellipsis-line-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 4;
+}
+:global(button) .button-central.ellipsis-line-5,
+:global(.button) .button-central.ellipsis-line-5,
+:global(button.button) .button-central.ellipsis-line-5,
+:global(input[type="button"]) .button-central.ellipsis-line-5,
+:global(input[type="submit"]) .button-central.ellipsis-line-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 5;
 }
 :global(button) .button-central:empty,
 :global(.button) .button-central:empty,
@@ -487,34 +466,30 @@
 :global(input[type="submit"]) .button-central:empty {
   display: none;
 }
-:global(button) .button-action,
-:global(.button) .button-action,
-:global(button.button) .button-action,
-:global(input[type="button"]) .button-action,
-:global(input[type="submit"]) .button-action {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  display: flex;
+:global(button) .button-end,
+:global(.button) .button-end,
+:global(button.button) .button-end,
+:global(input[type="button"]) .button-end,
+:global(input[type="submit"]) .button-end {
+  position: relative;
   align-items: center;
-  justify-content: center;
-  width: var(--w-tiny);
+  align-content: center;
   padding: 0 0.5rem;
+  text-align: center;
   cursor: pointer;
 }
-:global(button) .button-action:empty,
-:global(.button) .button-action:empty,
-:global(button.button) .button-action:empty,
-:global(input[type="button"]) .button-action:empty,
-:global(input[type="submit"]) .button-action:empty {
+:global(button) .button-end:empty,
+:global(.button) .button-end:empty,
+:global(button.button) .button-end:empty,
+:global(input[type="button"]) .button-end:empty,
+:global(input[type="submit"]) .button-end:empty {
   display: none;
 }
-:global(button) .button-action:hover,
-:global(.button) .button-action:hover,
-:global(button.button) .button-action:hover,
-:global(input[type="button"]) .button-action:hover,
-:global(input[type="submit"]) .button-action:hover {
+:global(button) .button-end:hover,
+:global(.button) .button-end:hover,
+:global(button.button) .button-end:hover,
+:global(input[type="button"]) .button-end:hover,
+:global(input[type="submit"]) .button-end:hover {
   background-color: var(--sld-button-action-hover-background);
 }
 :global(button).loading, :global(button)[aria-busy=true],

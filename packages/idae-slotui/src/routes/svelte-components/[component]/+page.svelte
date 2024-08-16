@@ -11,5 +11,5 @@
 	{#if Comp}
 		<Comp />
 	{/if}
-	<ComponentDemo component={data.component} />
+	<!-- <ComponentDemo component={data.component} /> -->
 </div>
