@@ -26,7 +26,7 @@
 		componentProps = {},
 		keepCartoucheContent = true,
 		showTitleDivider = false,
-		bordered = true,
+		bordered = false,
 		children,
 		cartoucheIcon,
 		cartouchePrimary,
@@ -47,7 +47,9 @@
 		isOpen = false;
 	}
 
-	const chevronIcon = !isOpen ? 'chevron-down' : 'chevron-up';
+	const chevronIcon = $derived(!isOpen ? 'chevron-down' : 'chevron-up');
+
+	let Component = $state(component);
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -57,6 +59,7 @@
 	bind:this={element}
 	class="cartouche {className}"
 	data-bordered={bordered ?? false}
+	aria-expanded={isOpen} 
 	{style}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -87,23 +90,24 @@
 					event.preventDefault();
 					event.stopPropagation();
 				}}
-				class="cartoucheAction"
+				class="cartouche-control-actions"
 			>
 				<Slotted child={cartoucheButtons}></Slotted>
 			</div>
 		{/if}
 		<div class="chevron">
-			<IconButton variant="flat" icon={chevronIcon} />
+			<Button variant="flat"   icon={chevronIcon} />
 		</div>
 	</div>
 	{#if isOpen || keepCartoucheContent}
-		<div aria-expanded={isOpen} class="content {classes.content}" transition:slide|global>
-			{#if component}
-				<svelte:component this={component} {...componentProps} />
+	<div class="content-wrapper" aria-expanded={isOpen}>	
+		<div aria-expanded={isOpen} class="content {classes.content}" transition:slide>
+			{#if Component}
+				<Component  {...componentProps} />
 			{/if}
-
 			<Slotted child={children} />
 		</div>
+	</div>
 	{/if}
 </div>
 
