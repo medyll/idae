@@ -5,9 +5,15 @@ import type {
   IdaeDbParams,
   IdaeDbAdapter,
   IdaeDbParamsSortOptions,
-} from "./types.js";
+} from "../types.js";
 
-import { Document, type Filter, type FindCursor } from "mongodb";
+import {
+  Document,
+  type Filter,
+  type ClientSession,
+  type IndexSpecification,
+  type CreateIndexesOptions,
+} from "mongodb";
 import { IdaeDbConnection } from "../IdaeDbConnection.js";
 import { IdaeDBModel } from "../IdaeDBModel.js";
 
@@ -25,11 +31,34 @@ export class MongoDBAdapter<T extends Document> implements IdaeDbAdapter<T> {
     collection = collection.split(".")[1] ?? collection.split(".")[0];
 
     this.connection = connection;
-    this.model = this.connection.getModel<T>(collection);
+    this.model = this.connection.model<T>(collection);
     this.fieldId = this.model.fieldId;
   }
 
-  async findById(id: string): Promise<FindCursor<T>> {
+  async createIndex(
+    fieldOrSpec: IndexSpecification,
+    options?: CreateIndexesOptions
+  ): Promise<string> {
+    return this.model.collection.createIndex(fieldOrSpec, options);
+  }
+  async withTransaction<TResult>(
+    operation: (session: ClientSession) => Promise<TResult>
+  ): Promise<TResult> {
+    const session = this.connection.client.startSession();
+    try {
+      session.startTransaction();
+      const result = await operation(session);
+      await session.commitTransaction();
+      return result;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async findById(id: string) {
     return this.model.collection.find(
       { [this.fieldId]: id },
       { hint: this.fieldId }
@@ -56,17 +85,23 @@ export class MongoDBAdapter<T extends Document> implements IdaeDbAdapter<T> {
       { [this.fieldId]: id },
       updateData,
       {
-        new: true,
+        upsert: true,
       }
     );
   }
 
-  async deleteById(id: string): Promise<T | null> {
+  async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>) {
+    return this.model.collection.updateMany(params.query, updateData, {
+      upsert: true,
+    });
+  }
+
+  async deleteById(id: string) {
     return this.model.collection.deleteMany({ _id: { $eq: id } });
   }
 
-  async deleteManyByQuery(
-    params: IdaeDbParams
+  async deleteWhere(
+    params: IdaeDbParams<T>
   ): Promise<{ deletedCount?: number }> {
     const result = await this.model.collection.deleteMany(
       params.query as Filter<T>
