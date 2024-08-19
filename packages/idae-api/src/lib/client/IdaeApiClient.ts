@@ -39,14 +39,18 @@ class IdaeApiClient {
   db(dbName: string) {
     return {
       collection: (collectionName: string) =>
-        new IdaeApiClientCollection(this, dbName, collectionName),
+        new IdaeApiClientCollection(this.clientConfig, dbName, collectionName),
       getCollections: () => this.getCollections(dbName),
     };
   }
 
   collection(collectionName: string, dbName?: string) {
     dbName = dbName || this.clientConfig.defaultDb;
-    return new IdaeApiClientCollection(this, dbName, collectionName);
+    return new IdaeApiClientCollection(
+      this.clientConfig,
+      dbName,
+      collectionName,
+    );
   }
 }
 

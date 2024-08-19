@@ -1,18 +1,17 @@
 // packages\idae-api\src\lib\client\IdaeApiClientCollection.ts
 import { IdaeApiClient } from "./IdaeApiClient.js";
 import type { IdaeApiClientRequestParams } from "./IdaeApiClient.js";
+import type { IdaeApiClientConfigCoreOptions } from "./IdaeApiClientConfig.js";
 
-class IdaeApiClientCollection {
-  private apiClient: IdaeApiClient;
-
+class IdaeApiClientCollection extends IdaeApiClient {
   private meta: { dbName: string; collectionName: string };
 
   constructor(
-    apiClient: IdaeApiClient,
+    clientConfig: IdaeApiClientConfigCoreOptions,
     dbName: string,
     collectionName: string,
   ) {
-    this.apiClient = apiClient;
+    super(clientConfig);
 
     this.meta = {
       dbName,
@@ -21,21 +20,21 @@ class IdaeApiClientCollection {
   }
 
   async findAll<T>(params?: IdaeApiClientRequestParams): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       ...this.meta,
       params,
     });
   }
 
   async findById<T>(id: string): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       ...this.meta,
       slug: id,
     });
   }
 
   async create<T>(body: T): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       method: "POST",
       ...this.meta,
       body,
@@ -43,7 +42,7 @@ class IdaeApiClientCollection {
   }
 
   async update<T>(id: string, body: T): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       method: "PUT",
       ...this.meta,
       body,
@@ -52,7 +51,7 @@ class IdaeApiClientCollection {
   }
 
   async deleteById<T>(id: string): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       method: "DELETE",
       ...this.meta,
       slug: id,
@@ -62,7 +61,7 @@ class IdaeApiClientCollection {
   async deleteManyByQuery<T>(
     params: IdaeApiClientRequestParams,
   ): Promise<Response> {
-    return this.apiClient.request.doRequest<T>({
+    return this.request.doRequest<T>({
       method: "DELETE",
       ...this.meta,
       params,
