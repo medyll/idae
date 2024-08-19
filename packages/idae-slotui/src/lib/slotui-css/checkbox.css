@@ -13,7 +13,7 @@
 }
 
 .checkbox {
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   appearance: none;
   outline: none;
   border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
