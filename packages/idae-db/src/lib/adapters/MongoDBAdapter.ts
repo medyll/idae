@@ -41,23 +41,6 @@ export class MongoDBAdapter<T extends Document> implements IdaeDbAdapter<T> {
   ): Promise<string> {
     return this.model.collection.createIndex(fieldOrSpec, options);
   }
-  async withTransaction<TResult>(
-    operation: (session: ClientSession) => Promise<TResult>
-  ): Promise<TResult> {
-    const session = this.connection.client.startSession();
-    try {
-      session.startTransaction();
-      const result = await operation(session);
-      await session.commitTransaction();
-      return result;
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
-  }
-
   async findById(id: string) {
     return this.model.collection.find(
       { [this.fieldId]: id },

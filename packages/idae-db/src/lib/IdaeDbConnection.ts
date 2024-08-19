@@ -70,4 +70,8 @@ export class IdaeDbConnection {
         break;
     }
   }
+
+  getDbType(): DbType {
+    return this.dbType;
+  }
 }
