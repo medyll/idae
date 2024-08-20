@@ -52,5 +52,8 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "scope": "@medyll"
+  "scope": "@medyll",
+  "dependencies": {
+    "chromadb": "^1.8.1"
+  }
 }

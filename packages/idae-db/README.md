@@ -1,58 +1,102 @@
-# create-svelte
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+# @medyll/idae-db
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+npm install @medyll/idae-db
 ```
 
-## Developing
+## Key Features
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- Robust support for MongoDB
+- Unified interface for different types of databases
+- Efficient connection management
+- Intuitive and flexible API
 
-```bash
-npm run dev
+## Quick Start with MongoDB
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```typescript
+import { IdaeDb, DbType } from '@medyll/idae-db';
+
+async function main() {
+  // Initialize MongoDB connection
+  const mongoDb = IdaeDb.init('mongodb://localhost:27017', {
+    dbType: DbType.MONGODB,
+    dbScope: 'myapp_'
+  });
+
+  // Create a connection
+  await mongoDb.db('example_db');
+
+  // Use the 'users' collection
+  const usersCollection = mongoDb.collection('users');
+
+  // Insert a document
+  await usersCollection.update('user1', {
+    name: 'John Doe',
+    email: 'john@example.com',
+    age: 30
+  });
+
+  // Find a document
+  const user = await usersCollection.findOne({ query: { email: 'john@example.com' } });
+  console.log('Found user:', user);
+
+  // Close the connection
+  await mongoDb.closeConnection();
+}
+
+main().catch(console.error);
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## MongoDB Features
 
-## Building
+- Easy creation and management of connections
+- Simplified CRUD operations
+- Support for complex queries
+- Index management
+- Transactions (coming soon)
 
-To build your library:
+## Advanced Configuration
 
-```bash
-npm run package
+```typescript
+const mongoDb = IdaeDb.init('mongodb://localhost:27017', {
+  dbType: DbType.MONGODB,
+  dbScope: 'myapp_',
+  dbScopeSeparator: '_',
+  idaeModelOptions: {
+    // Model-specific options
+  }
+});
 ```
 
-To create a production version of your showcase app:
+## MongoDB API
 
-```bash
-npm run build
-```
+- `collection(name: string)`: Access a MongoDB collection
+- `find(params)`: Search for documents
+- `findOne(params)`: Find a single document
+- `update(id, data)`: Update a document
+- `deleteById(id)`: Delete a document by ID
+- `createIndex(fieldOrSpec, options)`: Create an index on the collection
 
-You can preview the production build with `npm run preview`.
+## Connection Management
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Efficiently managed multiple connections
+- Automatic closure of connections
 
-## Publishing
+## Roadmap
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+- Enhanced support for other databases (MySQL, ChromaDB)
+- Advanced features for MongoDB (aggregations, watch)
+- Performance optimizations
 
-To publish your library to [npm](https://www.npmjs.com):
+## Contribution
 
-```bash
-npm publish
-```
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## License
+
+MIT
