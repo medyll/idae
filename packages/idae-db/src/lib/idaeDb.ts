@@ -4,6 +4,7 @@ import { IdaeDbConnection } from './IdaeDbConnection.js';
 import type { IdaeModelOptions } from './IdaeDBModel.js';
 import type { Document } from 'mongodb';
 import { IdaeDbAdapter } from './IdaeDbAdapter.js';
+import type { EventListeners } from './IdaeEventEmitter.js';
 
 type Uri = string;
 type IdaeDbInstanceKey = `${DbType}:${Uri}`;
@@ -15,6 +16,7 @@ type Options = {
 };
 
 export class IdaeDb {
+	private globalEvents?: EventListeners<any>;
 	private static instances: Map<IdaeDbInstanceKey, IdaeDb> = new Map();
 	#connections: Map<IdaeDbInstanceKey, IdaeDbConnection> = new Map();
 
@@ -49,6 +51,14 @@ export class IdaeDb {
 	}
 
 	/**
+	 * Registers event listeners for all collections.
+	 * @param events An object containing event listeners for different operations.
+	 */
+	registerEvents<T extends Document>(events: EventListeners<T>) {
+		this.globalEvents = events;
+	}
+
+	/**
 	 * Creates a new database connection.
 	 * @param dbName The name of the database.
 	 * @returns A Promise resolving to an IdaeDbConnection.
@@ -56,13 +66,12 @@ export class IdaeDb {
 	 */
 	async db(dbName: string): Promise<IdaeDbConnection> {
 		if (this.#connections.has(this.connectionKey)) {
-			console.log(`Connection '${this.connectionKey}' already exists.`);
+			return this.#connections.get(this.connectionKey)!;
 		}
 
 		this.#connection = await new IdaeDbConnection(this, dbName).connect();
 		this.#connections.set(this.connectionKey, this.#connection);
 
-		console.log('connections : ', this.#connections);
 		return this.#connection;
 	}
 
@@ -78,9 +87,28 @@ export class IdaeDb {
 			throw new Error(`Connection for '${this.options.dbType}:${this._uri}' not found.`);
 		}
 
-		return new IdaeDbAdapter<T>(collectionName, this.#connection, this.options.dbType);
+		const adapter = new IdaeDbAdapter<T>(collectionName, this.#connection, this.options.dbType);
+
+		if (this.globalEvents) {
+			this.applyEvents(adapter, this.globalEvents);
+		}
+
+		return adapter;
 	}
 
+	private applyEvents<T>(adapter: IdaeDbAdapter<T>, events: EventListeners<T>) {
+		for (const [method, listeners] of Object.entries(events)) {
+			if (listeners.pre) {
+				adapter.on(`pre:${String(method)}`, listeners.pre);
+			}
+			if (listeners.post) {
+				adapter.on(`post:${String(method)}`, listeners.post);
+			}
+			if (listeners.error) {
+				adapter.on(`error:${String(method)}`, listeners.error);
+			}
+		}
+	}
 	async closeConnection(): Promise<void> {
 		if (this.#connection) {
 			await this.#connection.close();
