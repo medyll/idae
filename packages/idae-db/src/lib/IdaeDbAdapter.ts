@@ -5,7 +5,7 @@ import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
-import { IdaeEventEmitter, withEmitter } from './IdaeEventEmitter.js';
+import { IdaeEventEmitter, withEmitter, type EventListeners } from './IdaeEventEmitter.js';
 
 export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	private adapter: MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T> | any;
@@ -28,6 +28,24 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 				break;
 			default:
 				throw new Error(`Unsupported database type: ${this.dbType}`);
+		}
+	}
+
+	/**
+	 * Registers event listeners specific to this collection.
+	 * @param events An object containing event listeners for different operations.
+	 */
+	registerEvents(events: EventListeners<T>) {
+		for (const [method, listeners] of Object.entries(events)) {
+			if (listeners.pre) {
+				this.on(`pre:${String(method)}`, listeners.pre);
+			}
+			if (listeners.post) {
+				this.on(`post:${String(method)}`, listeners.post);
+			}
+			if (listeners.error) {
+				this.on(`error:${String(method)}`, listeners.error);
+			}
 		}
 	}
 
