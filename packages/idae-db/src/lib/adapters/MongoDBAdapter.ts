@@ -58,7 +58,6 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 	}
 
 	async create(data: Partial<T>) {
-		console.log('fieldId', this.fieldId);
 		// create auto_increment
 		const id = await this.model.getNextIncrement();
 		// ensure Index i set
@@ -71,7 +70,6 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 		);
 	}
 	async update(id: string, updateData: Partial<T>, options?: UpdateOptions) {
-		console.log('fieldId', this.fieldId);
 		return this.model.collection.updateMany(
 			{ [this.fieldId]: id },
 			{ $set: { ...updateData } },
