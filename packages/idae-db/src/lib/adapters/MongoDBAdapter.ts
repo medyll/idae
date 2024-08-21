@@ -37,6 +37,7 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 	): Promise<string> {
 		return this.model.collection.createIndex(fieldOrSpec, options);
 	}
+
 	async findById(id: string) {
 		return this.model.collection.find({ [this.fieldId]: id }, { hint: this.fieldId });
 	}
