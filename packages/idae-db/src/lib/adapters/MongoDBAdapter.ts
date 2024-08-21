@@ -53,7 +53,7 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 			.skip(Number(skip) || 0);
 	}
 
-	findOne(params: IdaeDbParams<T>) {
+	async findOne(params: IdaeDbParams<T>) {
 		return this.model.collection.findOne(params.query);
 	}
 

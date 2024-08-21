@@ -1,14 +1,35 @@
 // lib/IdaeDbAdapter.ts
 
-import { DbType, type IdaeDbParams } from './types.js';
+import { DbType, type IdaeDbAdapterInterface, type IdaeDbParams } from './types.js';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
 import { IdaeEventEmitter, withEmitter, type EventListeners } from './IdaeEventEmitter.js';
 
+type AdapterConstructor<T> = new (
+	collection: string,
+	connection: IdaeDbConnection
+) => IdaeDbAdapterInterface<T>;
+
 export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
-	private adapter: MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T> | any;
+	private adapter!: MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T>;
+	private static adapters: Map<DbType, AdapterConstructor<any>> = new Map();
+
+	static {
+		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
+		IdaeDbAdapter.addAdapter(DbType.MYSQL, MySQLAdapter);
+		IdaeDbAdapter.addAdapter(DbType.CHROMADB, ChromaDBAdapter);
+	}
+
+	/**
+	 * Adds a new adapter for a specific database type.
+	 * @param dbType The type of database for this adapter.
+	 * @param adapterConstructor The constructor function for the adapter.
+	 */
+	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor<A>) {
+		IdaeDbAdapter.adapters.set(dbType, adapterConstructor);
+	}
 
 	constructor(
 		collection: string,
@@ -16,26 +37,22 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 		private dbType: DbType
 	) {
 		super();
-		switch (dbType) {
-			case DbType.MONGODB:
-				this.adapter = new MongoDBAdapter<T>(collection, connection);
-				break;
-			case DbType.MYSQL:
-				this.adapter = new MySQLAdapter<T>(collection, connection);
-				break;
-			case DbType.CHROMADB:
-				this.adapter = new ChromaDBAdapter<T>(collection, connection);
-				break;
-			default:
-				throw new Error(`Unsupported database type: ${this.dbType}`);
+		this.applyAdapter(collection, connection, this.dbType);
+	}
+
+	private applyAdapter(collection: string, connection: IdaeDbConnection, dbType: DbType) {
+		const AdapterConstructor = IdaeDbAdapter.adapters.get(dbType);
+		if (!AdapterConstructor) {
+			throw new Error(`No adapter found for database type: ${dbType}`);
 		}
+		this.adapter = new AdapterConstructor(collection, connection);
 	}
 
 	/**
 	 * Registers event listeners specific to this collection.
 	 * @param events An object containing event listeners for different operations.
 	 */
-	registerEvents(events: EventListeners<T>) {
+	registerEvents(events: EventListeners<T>): void {
 		for (const [method, listeners] of Object.entries(events)) {
 			if (listeners.pre) {
 				this.on(`pre:${String(method)}`, listeners.pre);

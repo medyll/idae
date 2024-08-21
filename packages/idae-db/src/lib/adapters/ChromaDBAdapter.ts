@@ -1,7 +1,7 @@
 // packages/idae-db/lib/adapters/ChromaDBAdapter.ts
 
 import { Collection, type Document, type ChromaClient } from 'chromadb';
-import type { IdaeDbParams, IdaeDbAdapter, IdaeDbAdapterInterface } from '../types.js';
+import type { IdaeDbParams, IdaeDbAdapterInterface } from '../types.js';
 import { IdaeDbConnection } from '../IdaeDbConnection.js';
 
 export class ChromaDBAdapter<T extends Document = Document> implements IdaeDbAdapterInterface<T> {
@@ -23,6 +23,11 @@ export class ChromaDBAdapter<T extends Document = Document> implements IdaeDbAda
 				return collection;
 			});
 		return this;
+	}
+
+	async create(data: Partial<T>) {
+		const { id, vector, metadata } = data;
+		return this.collection.add(id, vector, metadata);
 	}
 
 	async findById(id: string) {
