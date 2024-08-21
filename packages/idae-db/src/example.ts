@@ -20,10 +20,26 @@ async function main() {
 				autoIncrementDbCollection: 'auto_increment'
 			}
 		});
-
 		// create connection to db
 		await mongoDb.db('app');
+
 		const usersCollection = mongoDb.collection<User>('user');
+
+		usersCollection.registerEvents<any>({
+			findById: {
+				pre: (id) => console.log(`About to find document with id: ${id}`),
+				post: (result, id) => console.log(`Found document for id ${id}:`, result),
+				error: (error) => console.error('Error in findById:', error)
+			},
+			update: {
+				pre: (id, data) => console.log(`About to update document ${id} with:`, data),
+				post: (result, id, data) => console.log(`Updated document ${id}:`, result)
+			},
+			create: {
+				pre: (data) => console.log(`About to create document with:`, data),
+				post: (data, result) => console.log(`Created document `, data, result)
+			}
+		});
 
 		// Insertion de documents
 		await usersCollection.create({
@@ -41,15 +57,12 @@ async function main() {
 			email: 'john@example.com',
 			age: 30
 		});
-		console.log('New user inserted:', newUser);
 
 		// Recherche d'un document
 		const user = await usersCollection.findOne({ query: { email: 'john@example.com' } });
-		console.log('Found user:', user);
 
 		// Mise à jour d'un document
 		const updateResult = await usersCollection.update(user.iduser, { age: 31 });
-		console.log('Update result:', updateResult);
 
 		// Recherche avec paramètres
 		const users = await usersCollection.find({
@@ -57,11 +70,9 @@ async function main() {
 			sortBy: 'name:asc',
 			limit: 10
 		});
-		console.log('Users over 25:', await users.toArray());
 
 		// Suppression d'un document
 		const deleteResult = await usersCollection.deleteById(5);
-		console.log('Delete result:', deleteResult);
 
 		// Fermeture de la connexion
 		await mongoDb.closeAllConnections();
