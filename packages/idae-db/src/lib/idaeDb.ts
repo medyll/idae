@@ -2,10 +2,7 @@
 import { DbType } from './types.js';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import type { IdaeModelOptions } from './IdaeDBModel.js';
-import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
-import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import type { Document } from 'mongodb';
-import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
 import { IdaeDbAdapter } from './IdaeDbAdapter.js';
 
 type Uri = string;
