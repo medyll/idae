@@ -117,13 +117,10 @@ export class IdaeDb {
 	}
 
 	async closeAllConnections(): Promise<void> {
-		console.log('Connections before closing:', this.#connections.size);
 		for (const [connectionName, connection] of this.#connections) {
-			console.log('Closing connection:', connectionName);
 			await connection.close();
 		}
 		this.#connections.clear();
-		console.log('Connections after closing:', this.#connections.size);
 	}
 
 	get connectionKey(): IdaeDbInstanceKey {
