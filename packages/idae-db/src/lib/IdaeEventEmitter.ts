@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { IdaeDbAdapter } from './IdaeDbAdapter.js';
 
 /**
  * IdaeEventEmitter extends Node's EventEmitter to provide pre/post method hooks.
@@ -101,3 +102,11 @@ export interface TypedIdaeEventEmitter<T> {
 	): boolean;
 	emit<K extends keyof T>(event: `error:${K & string}`, error: Error): boolean;
 }
+
+export type EventListeners<T> = {
+	[K in keyof IdaeDbAdapter<T>]?: {
+		pre?: PreEventListener<Parameters<IdaeDbAdapter<T>[K]>>;
+		post?: PostEventListener<Parameters<IdaeDbAdapter<T>[K]>, ReturnType<IdaeDbAdapter<T>[K]>>;
+		error?: ErrorEventListener;
+	};
+};
