@@ -1,7 +1,7 @@
 // packages\idae-api\src\lib\adapters\MySQLAdapter.ts
 
 import { Sequelize, Model, DataTypes, type BuildOptions } from 'sequelize';
-import type { IdaeDbAdapter, IdaeDbParams } from '../types.js';
+import type { IdaeDbAdapter, IdaeDbAdapterInterface, IdaeDbParams } from '../types.js';
 import dotenv from 'dotenv';
 
 interface MySQLDocument extends Model {
@@ -15,7 +15,7 @@ type MySQLModelStatic = typeof Model & {
 
 dotenv.config();
 
-export class MySQLAdapter<T extends MySQLDocument> implements IdaeDbAdapter<T> {
+export class MySQLAdapter<T extends MySQLDocument> implements IdaeDbAdapterInterface<T> {
 	private sequelize: Sequelize;
 	private model: MySQLModelStatic;
 

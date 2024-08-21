@@ -1,7 +1,7 @@
 // packages\idae-db\src\lib\adapters\MongoDBAdapter.ts
 
 import dotenv from 'dotenv';
-import type { IdaeDbParams, IdaeDbAdapter, IdaeDbParamsSortOptions } from '../types.js';
+import type { IdaeDbParams, IdaeDbParamsSortOptions, IdaeDbAdapterInterface } from '../types.js';
 
 import {
 	type Document,
@@ -17,7 +17,7 @@ import { IdaeDBModel } from '../IdaeDBModel.js';
 dotenv.config();
 
 // MongoDB Adapter
-export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdapter<T> {
+export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdapterInterface<T> {
 	private model: IdaeDBModel<T>;
 	private connection: IdaeDbConnection;
 	private fieldId: string;

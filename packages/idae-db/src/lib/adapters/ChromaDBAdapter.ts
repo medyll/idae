@@ -1,10 +1,10 @@
 // packages/idae-db/lib/adapters/ChromaDBAdapter.ts
 
 import { Collection, type Document, type ChromaClient } from 'chromadb';
-import type { IdaeDbParams, IdaeDbAdapter } from '../types.js';
+import type { IdaeDbParams, IdaeDbAdapter, IdaeDbAdapterInterface } from '../types.js';
 import { IdaeDbConnection } from '../IdaeDbConnection.js';
 
-export class ChromaDBAdapter<T extends Document = Document> implements IdaeDbAdapter<T> {
+export class ChromaDBAdapter<T extends Document = Document> implements IdaeDbAdapterInterface<T> {
 	private collection!: Collection;
 	private client: ChromaClient;
 
