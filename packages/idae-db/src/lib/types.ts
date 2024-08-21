@@ -12,6 +12,7 @@ import {
 } from 'mongodb';
 
 // Interface for database adapters
+/** @deprecated */
 export interface IdaeDbAdapter<T extends Document> {
 	createIndex(fieldOrSpec: IndexSpecification, options?: CreateIndexesOptions): Promise<string>;
 	findById(id: string): Promise<FindCursor<WithId<T>>>;
@@ -20,6 +21,17 @@ export interface IdaeDbAdapter<T extends Document> {
 	update(id: string, updateData: Partial<T>): Promise<UpdateResult<T>>;
 	updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>): Promise<UpdateResult<T>>;
 	deleteById(id: string): Promise<DeleteResult>;
+	deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }>;
+}
+
+export interface IdaeDbAdapterInterface<T extends Document> {
+	createIndex(fieldOrSpec: IndexSpecification, options?: CreateIndexesOptions): Promise<string>;
+	findById(id: string): Promise<any>;
+	find(params: IdaeDbParams<T>): Promise<any>;
+	findOne(params: IdaeDbParams<T>): Promise<T | null>;
+	update(id: string, updateData: Partial<T>): Promise<any>;
+	updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>): Promise<any>;
+	deleteById(id: string): Promise<any>;
 	deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }>;
 }
 

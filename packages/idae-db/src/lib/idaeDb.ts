@@ -6,6 +6,7 @@ import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import type { Document } from 'mongodb';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
+import { IdaeDbAdapter } from './IdaeDbAdapter.js';
 
 type Uri = string;
 type IdaeDbInstanceKey = `${DbType}:${Uri}`;
@@ -75,23 +76,12 @@ export class IdaeDb {
 	 * @throws Error if the connection is not found or the database type is unsupported.
 	 */
 	// renamed from getAdapter to collection
-	collection<T extends Document>(
-		collectionName: string
-	): MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T> {
+	collection<T extends Document>(collectionName: string): IdaeDbAdapter<T> {
 		if (!this.#connection) {
 			throw new Error(`Connection for '${this.options.dbType}:${this._uri}' not found.`);
 		}
 
-		switch (this.options.dbType) {
-			case DbType.MONGODB:
-				return new MongoDBAdapter<T>(collectionName, this.#connection);
-			case DbType.MYSQL:
-				return new MySQLAdapter<T>(collectionName, this.#connection);
-			case DbType.CHROMADB:
-				return new ChromaDBAdapter<T>(collectionName, this.#connection);
-			default:
-				throw new Error(`Unsupported database type: ${this.options.dbType}`);
-		}
+		return new IdaeDbAdapter<T>(collectionName, this.#connection, this.options.dbType);
 	}
 
 	async closeConnection(): Promise<void> {
