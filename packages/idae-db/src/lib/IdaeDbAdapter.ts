@@ -10,11 +10,11 @@ import { IdaeEventEmitter, withEmitter, type EventListeners } from './IdaeEventE
 export type AdapterConstructor = new <T extends Document = Document>(
 	collection: string,
 	connection: IdaeDbConnection
-) => IdaeDbAdapterInterface<T>;
+) => Omit<IdaeDbAdapterInterface<T>, 'connect' | 'getDb' | 'close'>;
 
 export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
-	private adapter!: MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T>;
-	private static adapters: Map<DbType, AdapterConstructor> = new Map();
+	private adapter!: IdaeDbAdapterInterface<T>;
+	private static adapters: Map<DbType, IdaeDbAdapterInterface<T>> = new Map();
 
 	static {
 		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
