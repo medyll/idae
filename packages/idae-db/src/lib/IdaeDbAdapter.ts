@@ -7,14 +7,14 @@ import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
 import { IdaeEventEmitter, withEmitter, type EventListeners } from './IdaeEventEmitter.js';
 
-type AdapterConstructor<T> = new (
+export type AdapterConstructor = new <T extends Document = Document>(
 	collection: string,
 	connection: IdaeDbConnection
 ) => IdaeDbAdapterInterface<T>;
 
 export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	private adapter!: MongoDBAdapter<T> | MySQLAdapter<T> | ChromaDBAdapter<T>;
-	private static adapters: Map<DbType, AdapterConstructor<any>> = new Map();
+	private static adapters: Map<DbType, AdapterConstructor> = new Map();
 
 	static {
 		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
@@ -27,7 +27,7 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	 * @param dbType The type of database for this adapter.
 	 * @param adapterConstructor The constructor function for the adapter.
 	 */
-	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor<A>) {
+	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor) {
 		IdaeDbAdapter.adapters.set(dbType, adapterConstructor);
 	}
 
@@ -64,6 +64,10 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 				this.on(`error:${String(method)}`, listeners.error);
 			}
 		}
+	}
+
+	static getAdapterForDbType(dbType: DbType) {
+		return IdaeDbAdapter.adapters.get(dbType);
 	}
 
 	@withEmitter()
@@ -104,5 +108,10 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	@withEmitter()
 	async deleteWhere(params: IdaeDbParams<T>) {
 		return this.adapter.deleteWhere(params);
+	}
+
+	@withEmitter()
+	async transaction<TResult>(callback: (session: any) => Promise<TResult>): Promise<TResult> {
+		return this.adapter.transaction(callback);
 	}
 }

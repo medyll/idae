@@ -8,7 +8,10 @@ import {
 	type Filter,
 	type UpdateOptions,
 	type IndexSpecification,
-	type CreateIndexesOptions
+	type CreateIndexesOptions,
+	ClientSession,
+	MongoClient,
+	Db
 } from 'mongodb';
 import { IdaeDbConnection } from '../IdaeDbConnection.js';
 import { IdaeDBModel } from '../IdaeDBModel.js';
@@ -31,6 +34,20 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 		this.fieldId = this.model.fieldId;
 	}
 
+	static async connect(uri: string): Promise<MongoClient> {
+		const client = new MongoClient(uri);
+		await client.connect();
+		return client;
+	}
+
+	static getDb(client: MongoClient, dbName: string): Db {
+		return client.db(dbName);
+	}
+
+	static async close(client: MongoClient): Promise<void> {
+		return client.close();
+	}
+
 	async createIndex(
 		fieldOrSpec: IndexSpecification,
 		options?: CreateIndexesOptions
@@ -39,7 +56,9 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 	}
 
 	async findById(id: string) {
-		return this.model.collection.find({ [this.fieldId]: id }, { hint: this.fieldId });
+		return this.model.collection
+			.find({ [this.fieldId]: id }, { hint: this.fieldId })
+			.toArray() as unknown as T[];
 	}
 
 	async find(params: IdaeDbParams<T>) {
@@ -50,7 +69,8 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 			.find(query as Filter<T>)
 			.sort(sortOptions)
 			.limit(Number(limit) || 0)
-			.skip(Number(skip) || 0);
+			.skip(Number(skip) || 0)
+			.toArray();
 	}
 
 	async findOne(params: IdaeDbParams<T>) {
@@ -88,6 +108,23 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 	async deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }> {
 		const result = await this.model.collection.deleteMany(params.query as Filter<T>);
 		return { deletedCount: result.deletedCount };
+	}
+
+	async transaction<TResult>(
+		callback: (session: ClientSession) => Promise<TResult>
+	): Promise<TResult> {
+		const session = this.connection.getClient<MongoClient>().startSession();
+		try {
+			session.startTransaction();
+			const result = await callback(session);
+			await session.commitTransaction();
+			return result;
+		} catch (error) {
+			await session.abortTransaction();
+			throw error;
+		} finally {
+			await session.endSession();
+		}
 	}
 
 	private parseSortOptions(sortBy?: string): IdaeDbParamsSortOptions {

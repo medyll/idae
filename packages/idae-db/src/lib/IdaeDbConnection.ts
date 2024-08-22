@@ -1,20 +1,17 @@
 // packages\idae-db\lib\IdaeDbConnection.ts
 
-import { MongoClient, Db } from 'mongodb';
-import type { Connection as MysqlConnection } from 'mysql2/promise';
-import { DbType } from './types.js';
+import { DbType, type IdaeDbAdapterInterface } from './types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
 import { IdaeDb } from './idaeDb.js';
 
 export class IdaeDbConnection {
-	private mongoClient: MongoClient | null = null;
-	private mongoDb: Db | null = null;
-	private mysqlConnection: MysqlConnection | null = null;
-	private chromaDbConnection = null;
+	#models = new Map<string, IdaeDBModel<any>>();
+	#uri: string;
+	#dbType: DbType;
 
-	private models = [];
-	private _uri: string;
-	private _dbType: DbType;
+	#Db: any;
+	#client: any;
+	#adapterClass: IdaeDbAdapterInterface<any>;
 
 	#connected: boolean = false;
 
@@ -22,102 +19,57 @@ export class IdaeDbConnection {
 		private _idaeDb: IdaeDb,
 		private _dbName: string
 	) {
-		this._uri = _idaeDb.uri;
-		this._dbType = _idaeDb.options.dbType;
+		this.#uri = _idaeDb.uri;
+		this.#dbType = _idaeDb.options.dbType;
+		this.#adapterClass = _idaeDb.adapterClass as unknown as IdaeDbAdapterInterface<any>;
 		// add prefix if requested
 		this._dbName = this.getFullDbName();
-
-		console.log('dbName', this._dbName);
 	}
 
 	async connect(): Promise<IdaeDbConnection> {
+		if (!this.#adapterClass?.connect) throw new Error('Adapter does not have a connect method');
 		try {
-			switch (this._idaeDb.options.dbType) {
-				case DbType.MONGODB:
-					this.mongoClient = new MongoClient(this._uri);
-					await this.mongoClient.connect();
-					this.mongoDb = this.mongoClient.db(this._dbName);
-					console.log('Connected to MongoDB');
-					this.#connected = true;
-					break;
-				case DbType.MYSQL:
-					// this.mysqlConnection = await mysql.createConnection(...);
-					console.log('Connected to MySQL');
-					this.#connected = false;
-					break;
-				case DbType.CHROMADB:
-					// this.mysqlConnection = await mysql.createConnection(...);
-					console.log('Connected to CHROMADB');
-					this.#connected = false;
-					break;
-				default:
-					this.#connected = false;
-					throw new Error(`Unsupported database type: ${this._dbType}`);
-			}
+			this.#client = await this.#adapterClass.connect(this.#uri);
+			this.#Db = this.#adapterClass.getDb(this.#client, this._dbName);
+
+			this.#connected = true;
 			return this;
 		} catch (error) {
-			console.error(`Error connecting to ${this._dbType}:`, error);
+			console.error(`Error connecting to ${this.#dbType}:`, error);
 			this.#connected = false;
 			throw error;
 		}
 	}
 
-	getDb(): Db | MysqlConnection | ChromaClient {
-		switch (this._dbType) {
-			case DbType.MONGODB:
-				if (!this.mongoDb) {
-					throw new Error('MongoDB not connected. Call connect() first.');
-				}
-				return this.mongoDb;
-			case DbType.MYSQL:
-				if (!this.mysqlConnection) {
-					throw new Error('MySQL not connected. Call connect() first.');
-				}
-				return this.mysqlConnection;
-			case DbType.CHROMADB:
-				if (!this.chromaDbConnection) {
-					throw new Error('ChromaDb not connected. Call connect() first.');
-				}
-				return this.chromaDbConnection;
-			default:
-				throw new Error(`Unsupported database type: ${this._dbType}`);
+	getDb() {
+		if (!this.#Db) {
+			throw new Error('Db not connected. Call connect() first.');
 		}
+		return this.#Db;
 	}
 
 	getModel = <T extends Document>(collectionName: string): IdaeDBModel<T> => {
-		if (this.models[collectionName]) {
-			return this.models[collectionName];
-		} else {
+		if (!this.#models.has(collectionName)) {
 			const model = new IdaeDBModel<T>(
 				this,
 				collectionName,
 				this._idaeDb?.options?.idaeModelOptions
 			);
-			this.models[collectionName] = model;
-			return model;
+			this.#models.set(collectionName, model);
 		}
+		return this.#models.get(collectionName) as IdaeDBModel<T>;
 	};
 
-	private getFullDbName = () => [this.idaeDb.options.dbScope, this._dbName].join('_');
+	getClient<T>(): T {
+		if (!this.#client) {
+			throw new Error('Client not initialized. Call connect() first.');
+		}
+		return this.#client;
+	}
 
 	async close(): Promise<void> {
-		switch (this._dbType) {
-			case DbType.MONGODB:
-				if (this.mongoClient) {
-					await this.mongoClient.close(true);
-					this.mongoClient = null;
-					this.mongoDb = null;
-					console.log('Disconnected from MongoDB');
-					this.#connected = false;
-				}
-				break;
-			case DbType.MYSQL:
-				if (this.mysqlConnection) {
-					await this.mysqlConnection.end();
-					console.log('Disconnected from MySQL');
-				}
-				break;
-		}
+		if (!this.#adapterClass?.close) throw new Error('Adapter does not have a close method');
+		await this.#adapterClass?.close(this.#client);
 	}
 
 	get dbName() {
@@ -131,4 +83,6 @@ export class IdaeDbConnection {
 	get idaeDb() {
 		return this._idaeDb;
 	}
+
+	private getFullDbName = () => [this.idaeDb.options.dbScope, this._dbName].join('_');
 }

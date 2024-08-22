@@ -18,6 +18,7 @@ type Options = {
 export class IdaeDb {
 	private globalEvents?: EventListeners<any>;
 	private static instances: Map<IdaeDbInstanceKey, IdaeDb> = new Map();
+	#adapterClass;
 	#connections: Map<IdaeDbInstanceKey, IdaeDbConnection> = new Map();
 
 	#connection: IdaeDbConnection | undefined = undefined;
@@ -32,6 +33,7 @@ export class IdaeDb {
 		options: Partial<Options> = {} as Options
 	) {
 		this.#options = { ...this.#options, ...options };
+		this.#adapterClass = IdaeDbAdapter.getAdapterForDbType(this.options.dbType);
 	}
 
 	/**
@@ -121,6 +123,10 @@ export class IdaeDb {
 			await connection.close();
 		}
 		this.#connections.clear();
+	}
+
+	get adapterClass() {
+		return this.#adapterClass;
 	}
 
 	get connectionKey(): IdaeDbInstanceKey {
