@@ -3,7 +3,7 @@ import { IdaeDbConnection } from '../IdaeDbConnection.js';
 import { IdaeDBModel } from '../IdaeDBModel.js';
 import mysql from 'mysql2/promise';
 
-export class MysqlAdapter<T extends Record<string, any>> implements AbstractIdaeDbAdapter<T> {
+export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdaeDbAdapter<T> {
 	private model: IdaeDBModel<T>;
 	private connection: IdaeDbConnection;
 	private fieldId: string;

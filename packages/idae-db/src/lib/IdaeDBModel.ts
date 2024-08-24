@@ -1,5 +1,5 @@
 // packages\idae-db\lib\IdaeDBModel.ts
-import type { Collection, Db, Document } from 'mongodb';
+import type { Collection, Db } from 'mongodb';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { IdaeDb } from './idaeDb.js';
 
@@ -8,8 +8,8 @@ export interface IdaeModelOptions {
 	autoIncrementDbCollection?: string;
 }
 // models are attached to a connection
-export class IdaeDBModel<T> {
-	private _collection: Collection<T extends Document ? Document : any>;
+export class IdaeDBModel<T extends object> {
+	private _collection: Collection<T>;
 	private _autoIncrementField: string | undefined = undefined;
 	private _autoIncrementDbCollection: string | undefined = undefined;
 	private _fieldId: string = '_id';

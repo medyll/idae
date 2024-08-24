@@ -1,11 +1,13 @@
 // lib/IdaeDbAdapter.ts
 
 import {
+	AbstractIdaeDbAdapter,
 	DbType,
 	type AdapterConstructor,
-	type IdaeDbAdapterInterfaceNext,
+	type IdaeDbAdapterInterface,
 	type IdaeDbParams
 } from './@types/types.js';
+
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
@@ -18,7 +20,7 @@ import {
 	type PreEventListener
 } from './IdaeEventEmitter.js';
 
-export type EventListeners<T> = {
+export type EventListeners<T extends object> = {
 	[K in keyof IdaeDbAdapter<T>]?: {
 		pre?: PreEventListener<Parameters<IdaeDbAdapter<T>[K]>>;
 		post?: PostEventListener<Parameters<IdaeDbAdapter<T>[K]>, ReturnType<IdaeDbAdapter<T>[K]>>;
@@ -26,8 +28,11 @@ export type EventListeners<T> = {
 	};
 };
 
-export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
-	private adapter!: IdaeDbAdapterInterfaceNext<T>;
+export class IdaeDbAdapter<T extends object>
+	extends IdaeEventEmitter
+	implements AbstractIdaeDbAdapter<T>
+{
+	private adapter!: IdaeDbAdapterInterface<T>;
 	private static adapters: Map<DbType, AdapterConstructor<IdaeDbConnection>> = new Map();
 
 	static {
@@ -41,8 +46,11 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	 * @param dbType The type of database for this adapter.
 	 * @param adapterConstructor The constructor function for the adapter.
 	 */
-	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor<IdaeDbConnection>) {
-		IdaeDbAdapter.adapters.set(dbType, adapterConstructor);
+	static addAdapter<A>(
+		dbType: DbType,
+		adapterConstructor: new (collection: string, connection: IdaeDbConnection) => A
+	) {
+		IdaeDbAdapter.adapters.set(dbType, adapterConstructor as AdapterConstructor<IdaeDbConnection>);
 	}
 
 	constructor(
@@ -86,6 +94,11 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	}
 
 	@withEmitter()
+	async createIndex<F, O>(fieldOrSpec: F, options?: O) {
+		return this.adapter.createIndex(fieldOrSpec, options);
+	}
+
+	@withEmitter()
 	async create(data: Partial<T>) {
 		return this.adapter.create(data);
 	}
@@ -111,8 +124,8 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	}
 
 	@withEmitter()
-	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>) {
-		return this.adapter.updateWhere(params, updateData);
+	async updateWhere<OPT>(params: IdaeDbParams<T>, updateData: Partial<T>, options: OPT) {
+		return this.adapter.updateWhere(params, updateData, options);
 	}
 
 	@withEmitter()
