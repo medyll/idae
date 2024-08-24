@@ -1,9 +1,9 @@
 // packages\idae-api\src\lib\config\routeDefinitions.ts
 
-import { DBaseService } from "$lib/server/services/DBaseService.js";
+import type { IdaeDbAdapter } from "@medyll/idae-db";
 
 type RouteHandler = (
-  service: DBaseService<any>,
+  service: IdaeDbAdapter<any>,
   params: any,
   body?: any,
 ) => Promise<any>;
@@ -19,7 +19,7 @@ export const routes: RouteDefinition[] = [
   {
     method: "get",
     path: "/:collectionName",
-    handler: async (service, params) => service.where(params),
+    handler: async (service, params) => service.find(params),
   },
   {
     method: "get",
@@ -45,15 +45,22 @@ export const routes: RouteDefinition[] = [
   {
     method: "delete",
     path: "/:collectionName",
-    handler: async (service, params) => service.deleteManyByQuery(params),
+    handler: async (service, params) => service.deleteWhere(params),
   },
   {
-    method: ["where", "create", "update", "deleteById", "deleteManyByQuery"], // default method is then GET or OPTIONS (set further)
+    method: [
+      "where",
+      "find",
+      "create",
+      "update",
+      "deleteById",
+      "deleteManyByQuery",
+    ], // default method is then GET or OPTIONS (set further)
     path: "/query/:collectionName/:command/:parameters?",
     handler: async (service, params, body) => {
-      const decodedParams = params.body
+      /* const decodedParams = params.body
         ? service.decodeUrlParams(params.body)
-        : {};
+        : {}; */
       console.log(params.command, "params --- ", { body });
       return (service as any)?.[params.command]?.({ query: body });
     },

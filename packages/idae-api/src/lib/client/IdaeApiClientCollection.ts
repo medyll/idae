@@ -3,7 +3,12 @@ import { IdaeApiClient } from "./IdaeApiClient.js";
 import type { IdaeApiClientRequestParams } from "./IdaeApiClient.js";
 import type { IdaeApiClientConfigCoreOptions } from "./IdaeApiClientConfig.js";
 
-class IdaeApiClientCollection extends IdaeApiClient {
+import type { IdaeDbApiMethods } from "@medyll/idae-db";
+
+class IdaeApiClientCollection
+  extends IdaeApiClient
+  implements IdaeDbApiMethods
+{
   private meta: { dbName: string; collectionName: string };
 
   constructor(

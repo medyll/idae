@@ -10,7 +10,7 @@ import {
 // Load environment variables
 dotenv.config();
 
-export interface DatabaseConfig {
+export interface DatabaseConfigOptions {
   port: number;
   host: string;
   defaultDbName: string;
@@ -19,17 +19,18 @@ export interface DatabaseConfig {
 
 class DatabaseManager {
   private static instance: DatabaseManager;
-  private config: DatabaseConfig;
+  config: DatabaseConfigOptions;
   private mongooseConnectionManager: MongooseConnectionManager =
     mongooseConnectionManager;
 
-  private constructor() {
+  private constructor(config: DatabaseConfigOptions) {
     this.config = {
       port: Number(process.env.MONGODB_DEFAULT_PORT) || 27017,
       host: process.env.MONGODB_DEFAULT_HOST || "localhost",
       defaultDbName: process.env.MONGODB_DEFAULT_DB || "idaenext_sitebase_app",
       connectionPrefix:
         process.env.MONGODB_DEFAULT_CONNECTION_PREFIX || "mongodb://",
+      ...config,
     };
   }
 
@@ -65,9 +66,7 @@ class DatabaseManager {
     return connection;
   }
 
-  public async connectToDatabase(
-    req: Request,
-  ): Promise<{
+  public async connectToDatabase(req: Request): Promise<{
     connection?: mongoose.Connection;
     dbName?: string;
     collectionName?: string;
@@ -88,6 +87,38 @@ class DatabaseManager {
     } catch (error) {
       console.error(`Failed to connect to database ${dbName}:`, error);
       throw new Error(`Failed to connect to database ${dbName}:`);
+    }
+  }
+
+  public fromReq(req: Request): {
+    dbName: string;
+    collectionName: string;
+    dbUri: string;
+  } {
+    const collectionName = req.params.collectionName || "default";
+
+    const dbName = getDbNameFromCollectionName(
+      collectionName,
+      this.config.defaultDbName,
+    );
+    const collectionNames =
+      collectionName.split(".")?.[1] ?? collectionName.split(".")?.[0];
+
+    const dbUri = `${this.config.connectionPrefix}${this.config.host}:${this.config.port}/${dbName}`;
+
+    return {
+      dbName,
+      collectionName: collectionNames,
+      dbUri,
+    };
+
+    function getDbNameFromCollectionName(
+      collectionName: string,
+      defaultDbName: string,
+    ): string {
+      return collectionName.includes(".")
+        ? collectionName.split(".")[0]
+        : defaultDbName;
     }
   }
 
