@@ -1,115 +1,160 @@
-// packages\idae-api\src\lib\adapters\MySQLAdapter.ts
+import { AbstractIdaeDbAdapter, type IdaeDbParams } from '../@types/types.js';
+import { IdaeDbConnection } from '../IdaeDbConnection.js';
+import { IdaeDBModel } from '../IdaeDBModel.js';
+import mysql from 'mysql2/promise';
 
-import { Sequelize, Model, DataTypes, type BuildOptions } from 'sequelize';
-import type { IdaeDbAdapterInterface, IdaeDbParams } from '../types.js';
-import dotenv from 'dotenv';
+export class MysqlAdapter<T extends Record<string, any>> implements AbstractIdaeDbAdapter<T> {
+	private model: IdaeDBModel<T>;
+	private connection: IdaeDbConnection;
+	private fieldId: string;
+	private tableName: string;
 
-interface MySQLDocument extends Model {
-	id: number;
-	[key: string]: any;
-}
-
-type MySQLModelStatic = typeof Model & {
-	new (values?: object, options?: BuildOptions): MySQLDocument;
-};
-
-dotenv.config();
-
-export class MySQLAdapter<T extends MySQLDocument> implements IdaeDbAdapterInterface<T> {
-	private sequelize: Sequelize;
-	private model: MySQLModelStatic;
-
-	constructor(tableName: string) {
-		this.sequelize = new Sequelize({
-			dialect: 'mysql',
-			host: process.env.MYSQL_HOST || 'localhost',
-			port: Number(process.env.MYSQL_PORT) || 3306,
-			database: process.env.MYSQL_DATABASE || 'database',
-			username: process.env.MYSQL_USER || 'root',
-			password: process.env.MYSQL_PASSWORD || 'password'
-		});
-
-		this.model = this.sequelize.define(
-			tableName,
-			{
-				id: {
-					type: DataTypes.INTEGER.UNSIGNED,
-					autoIncrement: true,
-					primaryKey: true
-				}
-				// Define other fields here as needed
-			},
-			{
-				timestamps: false,
-				tableName
-			}
-		) as MySQLModelStatic;
+	constructor(collection: string, connection: IdaeDbConnection) {
+		this.connection = connection;
+		this.model = this.connection.getModel<T>(collection);
+		this.fieldId = this.model.fieldId;
+		this.tableName = collection;
 	}
 
-	async create(document: Partial<T>): Promise<T> {
-		const newDocument = await this.model.create(document);
-		return newDocument as T;
+	async findById(id: string): Promise<T[]> {
+		const [rows] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(`SELECT * FROM ${this.tableName} WHERE ${this.fieldId} = ?`, [id]);
+		return rows as T[];
 	}
 
-	async find(params: IdaeDbParams): Promise<T[]> {
+	async find(params: IdaeDbParams<T>): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
-		const options: any = {
-			where: query,
-			order: this.parseSortOptions(sortBy),
-			limit: limit ? Number(limit) : undefined,
-			offset: skip ? Number(skip) : undefined
-		};
-		const results = await this.model.findAll(options);
-		return results as T[];
-	}
+		let sql = `SELECT * FROM ${this.tableName}`;
+		const values: any[] = [];
 
-	async findById(id: string): Promise<T | null> {
-		const result = await this.model.findByPk(id);
-		return result ? (result as T) : null;
-	}
-
-	async findOne(): Promise<T | null> {
-		const { query = {} } = params;
-		const result = await this.model.findOne({ where: query });
-		return result ? (result as T) : null;
-	}
-
-	async update(id: string, updateData: Partial<T>): Promise<T | null> {
-		const [affectedCount, affectedRows] = await this.model.update(updateData, {
-			where: { id },
-			returning: true
-		});
-		return affectedCount > 0 ? (affectedRows[0] as T) : null;
-	}
-
-	async updateWhere(params: IdaeDbParams, updateData: Partial<T>): Promise<T | null> {
-		const [affectedCount, affectedRows] = await this.model.update(updateData, {
-			where: { id },
-			returning: true
-		});
-		return affectedCount > 0 ? (affectedRows[0] as T) : null;
-	}
-
-	async deleteById(id: string): Promise<T | null> {
-		const result = await this.model.findByPk(id);
-		if (result) {
-			await result.destroy();
-			return result as T;
+		if (Object.keys(query).length > 0) {
+			sql +=
+				' WHERE ' +
+				Object.keys(query)
+					.map((key) => `${key} = ?`)
+					.join(' AND ');
+			values.push(...Object.values(query));
 		}
-		return null;
+
+		if (sortBy) {
+			sql += ' ORDER BY ' + this.parseSortOptions(sortBy);
+		}
+
+		if (limit) {
+			sql += ' LIMIT ?';
+			values.push(Number(limit));
+		}
+
+		if (skip) {
+			sql += ' OFFSET ?';
+			values.push(Number(skip));
+		}
+
+		const [rows] = await this.connection.getClient<mysql.Connection>().execute(sql, values);
+		return rows as T[];
 	}
 
-	async deleteManyByQuery(params: IdaeDbParams): Promise<{ deletedCount?: number }> {
+	async findOne(params: IdaeDbParams<T>): Promise<T | null> {
+		const results = await this.find({ ...params, limit: 1 });
+		return results[0] || null;
+	}
+
+	async create(data: Partial<T>): Promise<T> {
+		const columns = Object.keys(data);
+		const values = Object.values(data);
+		const placeholders = columns.map(() => '?').join(', ');
+
+		const [result] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(
+				`INSERT INTO ${this.tableName} (${columns.join(', ')}) VALUES (${placeholders})`,
+				values
+			);
+
+		const insertId = (result as mysql.ResultSetHeader).insertId;
+		return { ...data, [this.fieldId]: insertId } as T;
+	}
+
+	async update(id: string, updateData: Partial<T>, options?: any): Promise<any> {
+		const setClause = Object.keys(updateData)
+			.map((key) => `${key} = ?`)
+			.join(', ');
+		const values = [...Object.values(updateData), id];
+
+		const [result] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(`UPDATE ${this.tableName} SET ${setClause} WHERE ${this.fieldId} = ?`, values);
+
+		return result;
+	}
+
+	async updateWhere(
+		params: IdaeDbParams<T>,
+		updateData: Partial<T>,
+		options: any = {}
+	): Promise<any> {
 		const { query = {} } = params;
-		const deletedCount = await this.model.destroy({ where: query });
-		return { deletedCount };
+		const setClause = Object.keys(updateData)
+			.map((key) => `${key} = ?`)
+			.join(', ');
+		const whereClause = Object.keys(query)
+			.map((key) => `${key} = ?`)
+			.join(' AND ');
+		const values = [...Object.values(updateData), ...Object.values(query)];
+
+		const [result] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(`UPDATE ${this.tableName} SET ${setClause} WHERE ${whereClause}`, values);
+
+		return result;
 	}
 
-	private parseSortOptions(sortBy?: string): any[] {
-		if (!sortBy) return [];
-		return sortBy.split(',').map((field) => {
-			const [key, order] = field.split(':');
-			return [key, order === 'desc' ? 'DESC' : 'ASC'];
-		});
+	async deleteById(id: string | number): Promise<any> {
+		const [result] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(`DELETE FROM ${this.tableName} WHERE ${this.fieldId} = ?`, [id]);
+
+		return result;
+	}
+
+	async deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }> {
+		const { query = {} } = params;
+		const whereClause = Object.keys(query)
+			.map((key) => `${key} = ?`)
+			.join(' AND ');
+		const values = Object.values(query);
+
+		const [result] = await this.connection
+			.getClient<mysql.Connection>()
+			.execute(`DELETE FROM ${this.tableName} WHERE ${whereClause}`, values);
+
+		return { deletedCount: (result as mysql.ResultSetHeader).affectedRows };
+	}
+
+	async transaction<TResult>(
+		callback: (session: mysql.Connection) => Promise<TResult>
+	): Promise<TResult> {
+		const connection = await this.connection.getClient<mysql.Connection>();
+		await connection.beginTransaction();
+
+		try {
+			const result = await callback(connection);
+			await connection.commit();
+			return result;
+		} catch (error) {
+			await connection.rollback();
+			throw error;
+		}
+	}
+
+	private parseSortOptions(sortBy: string): string {
+		return sortBy
+			.split(',')
+			.map((field) => {
+				const [key, order] = field.split(':');
+				return `${key} ${order === 'desc' ? 'DESC' : 'ASC'}`;
+			})
+			.join(', ');
 	}
 }

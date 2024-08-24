@@ -8,8 +8,8 @@ export interface IdaeModelOptions {
 	autoIncrementDbCollection?: string;
 }
 // models are attached to a connection
-export class IdaeDBModel<T extends Document> {
-	private _collection: Collection<T>;
+export class IdaeDBModel<T> {
+	private _collection: Collection<T extends Document ? Document : any>;
 	private _autoIncrementField: string | undefined = undefined;
 	private _autoIncrementDbCollection: string | undefined = undefined;
 	private _fieldId: string = '_id';

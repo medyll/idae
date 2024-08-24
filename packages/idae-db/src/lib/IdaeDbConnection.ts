@@ -1,6 +1,6 @@
 // packages\idae-db\lib\IdaeDbConnection.ts
 
-import { DbType, type IdaeDbAdapterInterface } from './types.js';
+import { DbType, type IdaeDbAdapterInterfaceNext } from './@types/types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
 import { IdaeDb } from './idaeDb.js';
 
@@ -11,7 +11,7 @@ export class IdaeDbConnection {
 
 	#Db: any;
 	#client: any;
-	#adapterClass: IdaeDbAdapterInterface<any>;
+	#adapterClass: IdaeDbAdapterInterfaceNext<any>;
 
 	#connected: boolean = false;
 
@@ -21,7 +21,7 @@ export class IdaeDbConnection {
 	) {
 		this.#uri = _idaeDb.uri;
 		this.#dbType = _idaeDb.options.dbType;
-		this.#adapterClass = _idaeDb.adapterClass as unknown as IdaeDbAdapterInterface<any>;
+		this.#adapterClass = _idaeDb.adapterClass as unknown as IdaeDbAdapterInterfaceNext<any>;
 		// add prefix if requested
 		this._dbName = this.getFullDbName();
 	}

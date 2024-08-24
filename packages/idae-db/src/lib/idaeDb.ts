@@ -1,5 +1,5 @@
 // packages\idae-db\lib\idaeDb.ts
-import { DbType } from './types.js';
+import { DbType } from './@types/types.js';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import type { IdaeModelOptions } from './IdaeDBModel.js';
 import type { Document } from 'mongodb';
@@ -38,8 +38,11 @@ export class IdaeDb {
 
 	/**
 	 * Initializes or retrieves an IdaeDb instance.
-	 * @param dbType The type of database.
 	 * @param uri The URI of the database.
+	 * @param options.dbType The type of database.
+	 * @param options.dbScope The scope of the database.
+	 * @param options.dbScopeSeparator The separator of the database scope.
+	 * @param options.idaeModelOptions The options of the IdaeDBModel.
 	 * @returns An IdaeDb instance.
 	 */
 	public static init(uri: Uri, options?: Partial<Options>): IdaeDb {

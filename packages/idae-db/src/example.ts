@@ -1,6 +1,6 @@
 // example.ts
 import { IdaeDb } from './lib/idaeDb.js';
-import { DbType } from './lib/types.js';
+import { DbType } from './lib/@types/types.js';
 
 interface User {
 	iduser: number;

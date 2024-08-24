@@ -1,14 +1,18 @@
 // packages\idae-db\src\lib\adapters\MongoDBAdapter.ts
 
 import dotenv from 'dotenv';
-import type { IdaeDbParams, IdaeDbParamsSortOptions, IdaeDbAdapterInterface } from '../types.js';
+import {
+	type IdaeDbParams,
+	type IdaeDbParamsSortOptions,
+	AbstractIdaeDbAdapter
+} from '../@types/types.js';
 
 import {
-	type Document,
 	type Filter,
 	type UpdateOptions,
 	type IndexSpecification,
 	type CreateIndexesOptions,
+	type Document,
 	ClientSession,
 	MongoClient,
 	Db
@@ -20,7 +24,7 @@ import { IdaeDBModel } from '../IdaeDBModel.js';
 dotenv.config();
 
 // MongoDB Adapter
-export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdapterInterface<T> {
+export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter<T> {
 	private model: IdaeDBModel<T>;
 	private connection: IdaeDbConnection;
 	private fieldId: string;
@@ -61,34 +65,33 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 			.toArray() as unknown as T[];
 	}
 
-	async find(params: IdaeDbParams<T>) {
+	async find(params: IdaeDbParams<T>): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		const sortOptions: IdaeDbParamsSortOptions = this.parseSortOptions(sortBy);
 
-		return await this.model.collection
+		return (await this.model.collection
 			.find(query as Filter<T>)
 			.sort(sortOptions)
 			.limit(Number(limit) || 0)
 			.skip(Number(skip) || 0)
-			.toArray();
+			.toArray()) as T[];
 	}
 
-	async findOne(params: IdaeDbParams<T>) {
-		return this.model.collection.findOne(params.query);
+	async findOne(params: IdaeDbParams<T>): Promise<T | null> {
+		const result = await this.model.collection.findOne(params.query);
+		return result as T | null;
 	}
 
-	async create(data: Partial<T>) {
-		// create auto_increment
+	async create(data: Partial<T>): Promise<T> {
 		const id = await this.model.getNextIncrement();
-		// ensure Index i set
-		return this.model.collection.updateOne(
+		const result = await this.model.collection.findOneAndUpdate(
 			{ [this.fieldId]: id },
-			{ $set: { ...data } },
-			{
-				upsert: true
-			}
+			{ $set: { ...data, [this.fieldId]: id } },
+			{ upsert: true, returnDocument: 'after' }
 		);
+		return result.value as T;
 	}
+
 	async update(id: string, updateData: Partial<T>, options?: UpdateOptions) {
 		return this.model.collection.updateMany(
 			{ [this.fieldId]: id },
@@ -97,7 +100,7 @@ export class MongoDBAdapter<T extends Document = Document> implements IdaeDbAdap
 		);
 	}
 
-	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options?: UpdateOptions = {}) {
+	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options: UpdateOptions = {}) {
 		return this.model.collection.updateMany(params.query, updateData, options);
 	}
 

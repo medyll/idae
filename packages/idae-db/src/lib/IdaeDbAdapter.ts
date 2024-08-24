@@ -1,20 +1,34 @@
 // lib/IdaeDbAdapter.ts
 
-import { DbType, type IdaeDbAdapterInterface, type IdaeDbParams } from './types.js';
+import {
+	DbType,
+	type AdapterConstructor,
+	type IdaeDbAdapterInterfaceNext,
+	type IdaeDbParams
+} from './@types/types.js';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
-import { IdaeEventEmitter, withEmitter, type EventListeners } from './IdaeEventEmitter.js';
+import {
+	IdaeEventEmitter,
+	withEmitter,
+	type ErrorEventListener,
+	type PostEventListener,
+	type PreEventListener
+} from './IdaeEventEmitter.js';
 
-export type AdapterConstructor = new <T extends Document = Document>(
-	collection: string,
-	connection: IdaeDbConnection
-) => Omit<IdaeDbAdapterInterface<T>, 'connect' | 'getDb' | 'close'>;
+export type EventListeners<T> = {
+	[K in keyof IdaeDbAdapter<T>]?: {
+		pre?: PreEventListener<Parameters<IdaeDbAdapter<T>[K]>>;
+		post?: PostEventListener<Parameters<IdaeDbAdapter<T>[K]>, ReturnType<IdaeDbAdapter<T>[K]>>;
+		error?: ErrorEventListener;
+	};
+};
 
 export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
-	private adapter!: IdaeDbAdapterInterface<T>;
-	private static adapters: Map<DbType, IdaeDbAdapterInterface<T>> = new Map();
+	private adapter!: IdaeDbAdapterInterfaceNext<T>;
+	private static adapters: Map<DbType, AdapterConstructor<IdaeDbConnection>> = new Map();
 
 	static {
 		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
@@ -27,7 +41,7 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	 * @param dbType The type of database for this adapter.
 	 * @param adapterConstructor The constructor function for the adapter.
 	 */
-	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor) {
+	static addAdapter<A>(dbType: DbType, adapterConstructor: AdapterConstructor<IdaeDbConnection>) {
 		IdaeDbAdapter.adapters.set(dbType, adapterConstructor);
 	}
 
@@ -41,15 +55,16 @@ export class IdaeDbAdapter<T extends Document> extends IdaeEventEmitter {
 	}
 
 	private applyAdapter(collection: string, connection: IdaeDbConnection, dbType: DbType) {
-		const AdapterConstructor = IdaeDbAdapter.adapters.get(dbType);
-		if (!AdapterConstructor) {
-			throw new Error(`No adapter found for database type: ${dbType}`);
+		const adapterConstructor = IdaeDbAdapter.adapters.get(dbType);
+		if (!adapterConstructor) {
+			throw new Error(`Aucun adaptateur trouvé pour le type de base de données : ${dbType}`);
 		}
-		this.adapter = new AdapterConstructor(collection, connection);
+		/** @ts-expect-error  ---  */
+		this.adapter = new adapterConstructor<T>(collection, connection);
 	}
 
 	/**
-	 * Registers event listeners specific to this collection.
+	 * Enregistre les écouteurs d'événements spécifiques à cette collection.
 	 * @param events An object containing event listeners for different operations.
 	 */
 	registerEvents(events: EventListeners<T>): void {
