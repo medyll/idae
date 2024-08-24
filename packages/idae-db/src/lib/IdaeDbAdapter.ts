@@ -21,9 +21,14 @@ import {
 } from './IdaeEventEmitter.js';
 
 export type EventListeners<T extends object> = {
-	[K in keyof IdaeDbAdapter<T>]?: {
-		pre?: PreEventListener<Parameters<IdaeDbAdapter<T>[K]>>;
-		post?: PostEventListener<Parameters<IdaeDbAdapter<T>[K]>, ReturnType<IdaeDbAdapter<T>[K]>>;
+	[K in keyof IdaeDbAdapter<T> as IdaeDbAdapter<T>[K] extends (...args: unknown[]) => unknown
+		? K
+		: never]?: {
+		pre?: PreEventListener<IdaeDbAdapter<T>[K] extends (...args: infer P) => unknown ? P : never>;
+		post?: PostEventListener<
+			IdaeDbAdapter<T>[K] extends (...args: infer P) => unknown ? P : never,
+			IdaeDbAdapter<T>[K] extends (...args: unknown[]) => infer R ? R : never
+		>;
 		error?: ErrorEventListener;
 	};
 };
@@ -52,7 +57,22 @@ export class IdaeDbAdapter<T extends object>
 	) {
 		IdaeDbAdapter.adapters.set(dbType, adapterConstructor as AdapterConstructor<IdaeDbConnection>);
 	}
+	/**
+	 * Retrieves the adapter constructor for a specific database type.
+	 * @param dbType The type of database for which to retrieve the adapter.
+	 * @returns The adapter constructor for the specified database type, or undefined if not found.
+	 */
+	static getAdapterForDbType(dbType: DbType) {
+		return IdaeDbAdapter.adapters.get(dbType);
+	}
 
+	/**
+	 * Creates a new instance of IdaeDbAdapter.
+	 * @param collection The name of the collection or table to operate on.
+	 * @param connection The database connection object.
+	 * @param dbType The type of database being used (e.g., MongoDB, MySQL, ChromaDB).
+	 * @throws {Error} If no adapter is found for the specified database type.
+	 */
 	constructor(
 		collection: string,
 		connection: IdaeDbConnection,
@@ -62,17 +82,8 @@ export class IdaeDbAdapter<T extends object>
 		this.applyAdapter(collection, connection, this.dbType);
 	}
 
-	private applyAdapter(collection: string, connection: IdaeDbConnection, dbType: DbType) {
-		const adapterConstructor = IdaeDbAdapter.adapters.get(dbType);
-		if (!adapterConstructor) {
-			throw new Error(`Aucun adaptateur trouvé pour le type de base de données : ${dbType}`);
-		}
-		/** @ts-expect-error  ---  */
-		this.adapter = new adapterConstructor<T>(collection, connection);
-	}
-
 	/**
-	 * Enregistre les écouteurs d'événements spécifiques à cette collection.
+	 * Register event listeners for different operations.
 	 * @param events An object containing event listeners for different operations.
 	 */
 	registerEvents(events: EventListeners<T>): void {
@@ -87,10 +98,6 @@ export class IdaeDbAdapter<T extends object>
 				this.on(`error:${String(method)}`, listeners.error);
 			}
 		}
-	}
-
-	static getAdapterForDbType(dbType: DbType) {
-		return IdaeDbAdapter.adapters.get(dbType);
 	}
 
 	@withEmitter()
@@ -139,7 +146,16 @@ export class IdaeDbAdapter<T extends object>
 	}
 
 	@withEmitter()
-	async transaction<TResult>(callback: (session: any) => Promise<TResult>): Promise<TResult> {
+	async transaction<TResult>(callback: (session: unknown) => Promise<TResult>): Promise<TResult> {
 		return this.adapter.transaction(callback);
+	}
+
+	private applyAdapter(collection: string, connection: IdaeDbConnection, dbType: DbType) {
+		const adapterConstructor = IdaeDbAdapter.adapters.get(dbType);
+		if (!adapterConstructor) {
+			throw new Error(`No adapter found for database type : ${dbType}`);
+		}
+		/** @ts-expect-error  ---  */
+		this.adapter = new adapterConstructor<T>(collection, connection);
 	}
 }

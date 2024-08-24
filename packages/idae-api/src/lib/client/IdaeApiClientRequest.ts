@@ -49,6 +49,8 @@ class IdaeApiClientRequest {
       params,
     }).replace("//", "/");
 
+    console.log({ url });
+
     const response = await fetch(`${baseUrl}${url}`, {
       method,
       headers,

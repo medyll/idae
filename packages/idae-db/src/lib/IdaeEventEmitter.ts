@@ -57,12 +57,15 @@ export function withEmitter() {
 /**
  * Type for pre-execution event listeners.
  */
-export type PreEventListener<T extends any[]> = (...args: T) => void | Promise<void>;
+export type PreEventListener<T extends unknown[]> = (...args: T) => void | Promise<void>;
 
 /**
  * Type for post-execution event listeners.
  */
-export type PostEventListener<T extends any[], R> = (result: R, ...args: T) => void | Promise<void>;
+export type PostEventListener<T extends unknown[], R> = (
+	result: R,
+	...args: T
+) => void | Promise<void>;
 
 /**
  * Type for error event listeners.

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import {
 	type IdaeDbParams,
 	type IdaeDbParamsSortOptions,
+	type IdaeDbQueryFilter,
 	AbstractIdaeDbAdapter
 } from '../@types/types.js';
 
@@ -100,8 +101,12 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 		);
 	}
 
-	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options: UpdateOptions = {}) {
-		return this.model.collection.updateMany(params.query, updateData, options);
+	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options?: UpdateOptions) {
+		return this.model.collection.updateMany(
+			params.query as IdaeDbQueryFilter<T>,
+			updateData,
+			options
+		);
 	}
 
 	async deleteById(id: string | number) {
