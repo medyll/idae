@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-	"version": "0.34.0",
+	"version": "0.35.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
