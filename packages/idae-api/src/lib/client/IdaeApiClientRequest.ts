@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\client\IdaeApiClientRequest.ts
 import { IdaeApiClientConfigCore } from "./IdaeApiClientConfig.js";
-
+import { encode } from "querystring";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 type RouteNamespace = `methods/${"dbs" | "collections"}` | undefined;
 
@@ -49,8 +49,6 @@ class IdaeApiClientRequest {
       params,
     }).replace("//", "/");
 
-    console.log({ url });
-
     const response = await fetch(`${baseUrl}${url}`, {
       method,
       headers,
@@ -80,7 +78,8 @@ class IdaeApiClientRequest {
     if (dbName ?? collectionName)
       urls.push([dbName, collectionName].filter((x) => x).join("."));
     if (slug) urls.push(slug);
-    if (params) urls.push(`?${new URLSearchParams(params).toString()}`);
+    if (params)
+      urls.push(`?params=${encodeURIComponent(JSON.stringify(params))}`);
 
     return urls.join("/").replace("//", "/");
   }

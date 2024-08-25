@@ -1,37 +1,22 @@
 // packages\idae-api\src\lib\middleware\databaseMiddleware.ts
 
 import type { Request, Response, NextFunction } from "express";
-import databaseManager from "$lib/server/engine/DatabaseManager.js";
-import { IdaeDb, DbType } from "@medyll/idae-db";
+import { requestDatabaseManager } from "$lib/server/engine/requestDatabaseManager.js";
+import { IdaeDb } from "@medyll/idae-db";
+import { idaeApi } from "../IdaeApi.js";
 
-export const databaseMiddleware = async (
+export const idaeDbMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { dbName, collectionName, dbUri } = databaseManager.fromReq(req);
-
-    console.log(
-      "------------------------- Middleware called -----------------------",
-    );
-    console.log({ dbName, collectionName, dbUri });
-    console.log("body :", req.body);
-    console.log("params :", req.params);
+    const { dbName, collectionName, dbUri } =
+      requestDatabaseManager.fromReq(req);
 
     req.collectionName = collectionName;
-    //req.dbConnection = connection;
     req.dbName = dbName;
-
-    req.idaeDb = IdaeDb.init(dbUri, {
-      dbType: DbType.MONGODB,
-      dbScope: "a_idae_db_sitebase",
-      dbScopeSeparator: "_",
-      idaeModelOptions: {
-        autoIncrementFormat: (collection: string) => `id${collection}`,
-        autoIncrementDbCollection: "auto_increment",
-      },
-    });
+    req.idaeDb = IdaeDb.init(dbUri, idaeApi.idaeApiOptions.idaeDbOptions);
 
     // create connection to db
     await req.idaeDb.db("app");
@@ -39,7 +24,15 @@ export const databaseMiddleware = async (
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
 
     console.log("Connected to collection", collectionName);
-
+    if (req.query.params) {
+      try {
+        req.query.params = JSON.parse(
+          decodeURIComponent(req.query.params as string),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
     next();
   } catch (error) {
     console.error("Error in database connection middleware:", error);

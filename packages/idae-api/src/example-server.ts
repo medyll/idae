@@ -2,6 +2,7 @@
 
 import { idaeApi } from "$lib/server/IdaeApi";
 import { type RouteDefinition } from "$lib/config/routeDefinitions";
+import { DbType } from "$lib/@types/types.js";
 
 // Exemple de routes personnalisées
 const customRoutes: RouteDefinition[] = [
@@ -19,15 +20,24 @@ const customRoutes: RouteDefinition[] = [
   },
 ];
 
-// Configuration du serveur
+//  server configuration
 idaeApi.setOptions({
   port: 3000,
-  enableAuth: false, // Désactivé pour cet exemple
+  enableAuth: false,
   onInUse: "reboot",
   routes: customRoutes,
+  idaeDbOptions: {
+    dbType: DbType.MONGODB,
+    dbScope: "a_idae_db_sitebase",
+    dbScopeSeparator: "_",
+    idaeModelOptions: {
+      autoIncrementFormat: (collection: string) => `id${collection}`,
+      autoIncrementDbCollection: "auto_increment",
+    },
+  },
 });
 
-// Démarrage du serveur
+// start server
 idaeApi.start();
 console.log("IDAE API is running on port 3000");
 /* setTimeout(() => {
@@ -96,5 +106,4 @@ console.log("You can now use Postman to test the API endpoints.");
 // Gestion des erreurs
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  // Application specific logging, throwing an error, or other logic here
 });

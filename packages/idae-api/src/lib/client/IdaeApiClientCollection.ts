@@ -7,7 +7,7 @@ import type { IdaeDbApiMethods } from "@medyll/idae-db";
 
 class IdaeApiClientCollection
   extends IdaeApiClient
-  implements IdaeDbApiMethods
+  implements IdaeDbApiMethods<object>
 {
   private meta: { dbName: string; collectionName: string };
 
@@ -24,7 +24,9 @@ class IdaeApiClientCollection
     };
   }
 
-  async findAll<T>(params?: IdaeApiClientRequestParams): Promise<Response> {
+  async find<T extends object>(
+    params?: IdaeApiClientRequestParams,
+  ): Promise<T[]> {
     return this.request.doRequest<T>({
       ...this.meta,
       params,

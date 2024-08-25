@@ -41,6 +41,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.5.2",
 		"mongoose-sequence": "^6.0.1",
+		"qs": "^6.13.0",
 		"sequelize": "^6.37.3"
 	},
 	"devDependencies": {

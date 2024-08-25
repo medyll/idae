@@ -1,12 +1,12 @@
 // packages\idae-api\src\lib\IdaeApi.ts
-// version feat
+import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
   type Express,
   type Request,
   type Response,
   type NextFunction,
 } from "express";
-import { databaseMiddleware } from "$lib/server/middleware/databaseMiddleware.js";
+import { idaeDbMiddleware } from "$lib/server/middleware/databaseMiddleware.js";
 import {
   type RouteDefinition,
   routes as defaultRoutes,
@@ -15,6 +15,7 @@ import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
 import { RouteManager } from "$lib/server/engine/routeManager.js";
 import type { Server } from "http";
 import type { IdaeDbAdapter } from "@medyll/idae-db";
+import qs from "qs";
 
 interface IdaeApiOptions {
   port?: number;
@@ -23,54 +24,64 @@ interface IdaeApiOptions {
   enableAuth?: boolean;
   jwtSecret?: string;
   tokenExpiration?: string;
+  idaeDbOptions?: IdaeDbOptions;
 }
 
 class IdaeApi {
-  private static instance: IdaeApi | null = null;
-  private _app: Express;
-  private options: IdaeApiOptions;
-  private routeManager: RouteManager;
-  private serverInstance!: Server;
-  private _state: "stopped" | "running" = "stopped";
-  private authMiddleware: AuthMiddleWare | null = null;
+  static #instance: IdaeApi | null = null;
+  #app: Express;
+  #idaeApiOptions: IdaeApiOptions;
+  #routeManager: RouteManager;
+  #serverInstance!: Server;
+  #state: "stopped" | "running" = "stopped";
+  #authMiddleware: AuthMiddleWare | null = null;
 
   private constructor() {
-    this._app = express();
-    this.options = {};
-    this.routeManager = RouteManager.getInstance();
+    this.#app = express();
+    this.#idaeApiOptions = {};
+    this.#routeManager = RouteManager.getInstance();
+
+    this.#app.set("query parser", function (str: string) {
+      return qs.parse(str, {
+        parseArrays: true,
+        arrayLimit: Infinity,
+        depth: 10,
+        parameterLimit: 1000,
+      });
+    });
 
     this.initializeAuth();
     this.configureIdaeApi();
   }
 
   public static getInstance(): IdaeApi {
-    if (!IdaeApi.instance) {
-      IdaeApi.instance = new IdaeApi();
+    if (!IdaeApi.#instance) {
+      IdaeApi.#instance = new IdaeApi();
     }
-    return IdaeApi.instance;
+    return IdaeApi.#instance;
   }
 
   get state(): "stopped" | "running" {
-    return this._state;
+    return this.#state;
   }
 
   get app() {
-    return this._app;
+    return this.#app;
   }
 
   public setOptions(options: IdaeApiOptions): void {
-    this.options = { ...this.options, ...options };
+    this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
   }
 
   private initializeAuth(): void {
     if (
-      this.options.enableAuth &&
-      this.options.jwtSecret &&
-      this.options.tokenExpiration
+      this.#idaeApiOptions.enableAuth &&
+      this.#idaeApiOptions.jwtSecret &&
+      this.#idaeApiOptions.tokenExpiration
     ) {
-      this.authMiddleware = new AuthMiddleWare(
-        this.options.jwtSecret,
-        this.options.tokenExpiration,
+      this.#authMiddleware = new AuthMiddleWare(
+        this.#idaeApiOptions.jwtSecret,
+        this.#idaeApiOptions.tokenExpiration,
       );
     }
   }
@@ -82,30 +93,47 @@ class IdaeApi {
   }
 
   private configureMiddleware(): void {
-    this._app.use("/:collectionName", databaseMiddleware);
-    this._app.use(express.json());
-    this._app.use(express.urlencoded({ extended: true }));
-    if (this.authMiddleware) {
-      this._app.use(this.authMiddleware.createMiddleware());
+    this.#app.use("/:collectionName", idaeDbMiddleware);
+    this.#app.use(express.json());
+    this.#app.use(express.urlencoded({ extended: true }));
+    if (this.#authMiddleware) {
+      this.#app.use(this.#authMiddleware.createMiddleware());
     }
   }
 
   private configureRoutes(): void {
-    this.routeManager.addRoutes(defaultRoutes);
+    this.#routeManager.addRoutes(defaultRoutes);
 
-    if (this.options.routes) {
-      this.routeManager.addRoutes(this.options.routes);
+    if (this.#idaeApiOptions.routes) {
+      this.#routeManager.addRoutes(this.#idaeApiOptions.routes);
     }
 
-    this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
+    this.#routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
 
-    if (this.authMiddleware) {
-      this.authMiddleware.configureAuthRoutes(this._app);
+    if (this.#authMiddleware) {
+      this.#authMiddleware.configureAuthRoutes(this.#app);
+    }
+  }
+
+  // Add a route to Express
+  private addRouteToExpress(route: RouteDefinition): void {
+    const handlers = [];
+
+    if (route.requiresAuth && this.#authMiddleware) {
+      handlers.push(this.#authMiddleware.createMiddleware());
+    }
+
+    handlers.push(this.handleRequest(route.handler));
+
+    if (Array.isArray(route.method)) {
+      this.#app.post(route.path, ...handlers);
+    } else {
+      this.#app[route.method as keyof Express](route.path, ...handlers);
     }
   }
 
   private configureErrorHandling(): void {
-    this._app.use(
+    this.#app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         console.error(err.stack);
         res.status(500).json({ error: err.message });
@@ -114,24 +142,28 @@ class IdaeApi {
   }
 
   public start(): void {
-    if (this._state === "running") {
+    if (this.#state === "running") {
       console.log("Server is already running.");
       return;
     }
 
-    const port = this.options.port || 3000;
-    this.serverInstance = this._app.listen(port, () => {
+    const port = this.#idaeApiOptions.port || 3000;
+    this.#serverInstance = this.#app.listen(port, () => {
       console.log(`Server is running on port: ${port}`);
-      this._state = "running";
+      this.#state = "running";
     });
 
-    this.serverInstance.on("error", this.handleServerError.bind(this));
+    this.#serverInstance.on("error", this.handleServerError.bind(this));
+  }
+
+  get idaeApiOptions(): IdaeApiOptions {
+    return this.#idaeApiOptions;
   }
 
   private handleServerError(error: NodeJS.ErrnoException): void {
     if (error.code === "EADDRINUSE") {
-      console.error(`Port ${this.options.port} is already in use.`);
-      switch (this.options.onInUse) {
+      console.error(`Port ${this.#idaeApiOptions.port} is already in use.`);
+      switch (this.#idaeApiOptions.onInUse) {
         case "reboot":
           console.log("Rebooting server...");
           setTimeout(() => {
@@ -153,34 +185,16 @@ class IdaeApi {
     }
   }
 
-  public stop(): void {
-    if (this.serverInstance) {
-      this.serverInstance.close((err: Error) => {
+  stop(): void {
+    if (this.#serverInstance) {
+      this.#serverInstance.close((err: Error) => {
         if (err) {
           console.error("Error while stopping the server:", err);
         } else {
           console.log("Server stopped successfully.");
-          this._state = "stopped";
+          this.#state = "stopped";
         }
       });
-    }
-  }
-
-  // Add a route to Express
-  private addRouteToExpress(route: RouteDefinition): void {
-    const handlers = [];
-
-    if (route.requiresAuth && this.authMiddleware) {
-      handlers.push(this.authMiddleware.createMiddleware());
-    }
-
-    handlers.push(this.handleRequest(route.handler));
-
-    if (Array.isArray(route.method)) {
-      console.log({ handlers });
-      this._app.post(route.path, ...handlers);
-    } else {
-      this._app[route.method](route.path, ...handlers);
     }
   }
 
@@ -212,7 +226,7 @@ class IdaeApi {
           connectedCollection,
           req.params,
           req.body,
-          req.query,
+          req.query.params ?? req.query,
         );
 
         res.json(result);
@@ -224,7 +238,7 @@ class IdaeApi {
 
   // Expose RouteManager methods
   public get router() {
-    return this.routeManager;
+    return this.#routeManager;
   }
 }
 

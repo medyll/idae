@@ -30,18 +30,19 @@ async function runExample() {
 
     // Find all documents
     console.log("\nFinding all documents in user:");
-    const allDocs = await appConfCollection.findAll({
-      email: "Karin@example.com",
+    const allDocs = await appConfCollection.find({
+      email: { $in: ["Karin@example.com", "Test@Value"] },
+      age: 31,
     });
     console.log(allDocs);
 
     // Create a new document
-    console.log("\nCreating a new user in user:");
+    /* console.log("\nCreating a new user in user:");
     const newDoc = await appConfCollection.create({
       name: "new user",
       email: "Test@Value",
     });
-    console.log(newDoc);
+    console.log(newDoc); */
 
     /* 
     // Find all documents

@@ -3,7 +3,7 @@
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 
 type RouteHandler = (
-  service: IdaeDbAdapter<any>,
+  service: IdaeDbAdapter<object>,
   params: any,
   body?: any,
   query?: any,
@@ -14,16 +14,14 @@ export interface RouteDefinition {
   path: string;
   handler: RouteHandler;
   disabled?: boolean;
+  requiresAuth?: boolean;
 }
 
 export const routes: RouteDefinition[] = [
   {
     method: "get",
     path: "/:collectionName",
-    handler: async (service, params, body, query) => {
-      console.log("query --- ", query);
-      return service.find({ query });
-    },
+    handler: async (service, params, body, query) => service.find({ query }),
   },
   {
     method: "get",
@@ -53,19 +51,18 @@ export const routes: RouteDefinition[] = [
   },
   {
     method: [
-      "where",
       "find",
       "findById",
+      "findOne",
       "create",
       "update",
+      "updateWhere",
       "deleteById",
-      "deleteManyByQuery",
+      "deleteWhere",
+      "transaction",
     ], // default method is then GET or OPTIONS (set further)
     path: "/query/:collectionName/:command/:parameters?",
     handler: async (service, params, body) => {
-      /* const decodedParams = params.body
-        ? service.decodeUrlParams(params.body)
-        : {}; */
       console.log(params.command, "params --- ", { body });
       return (service as any)?.[params.command]?.({ query: body });
     },

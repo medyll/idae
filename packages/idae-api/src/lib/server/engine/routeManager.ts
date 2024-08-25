@@ -22,18 +22,6 @@ export class RouteManager {
     routes.forEach((route) => this.addRoute(route));
   }
 
-  public removeRoute(path: string, method: string | string[]): void {
-    this.routes = this.routes.filter(
-      (r) =>
-        !(
-          r.path === path &&
-          (Array.isArray(r.method)
-            ? r.method.includes(method as string)
-            : r.method === method)
-        ),
-    );
-  }
-
   public getRoutes(): RouteDefinition[] {
     return this.routes.filter((route) => !route.disabled);
   }
