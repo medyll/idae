@@ -67,6 +67,9 @@ export type PostEventListener<T extends unknown[], R> = (
 	...args: T
 ) => void | Promise<void>;
 
+export type EventListeners<T, R> = PreEventListener<T> &
+	PostEventListener<T, R> &
+	ErrorEventListener;
 /**
  * Type for error event listeners.
  */

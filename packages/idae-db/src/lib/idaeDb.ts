@@ -8,7 +8,7 @@ import type { EventListeners } from './IdaeEventEmitter.js';
 
 type Uri = string;
 type IdaeDbInstanceKey = `${DbType}:${Uri}`;
-type Options = {
+export type IdaeDbOptions = {
 	dbType: DbType;
 	dbScope: string | undefined;
 	dbScopeSeparator?: string;
@@ -16,21 +16,21 @@ type Options = {
 };
 
 export class IdaeDb {
-	private globalEvents?: EventListeners<any>;
-	private static instances: Map<IdaeDbInstanceKey, IdaeDb> = new Map();
+	#globalEvents?: EventListeners<object, object>;
+	static #instances: Map<IdaeDbInstanceKey, IdaeDb> = new Map();
 	#adapterClass;
 	#connections: Map<IdaeDbInstanceKey, IdaeDbConnection> = new Map();
 
 	#connection: IdaeDbConnection | undefined = undefined;
-	#options: Options = {
+	#options: IdaeDbOptions = {
 		dbType: DbType.MONGODB,
 		dbScope: undefined,
 		idaeModelOptions: {}
-	} as Options;
+	} as IdaeDbOptions;
 
 	private constructor(
 		private _uri: Uri,
-		options: Partial<Options> = {} as Options
+		options: Partial<IdaeDbOptions> = {} as IdaeDbOptions
 	) {
 		this.#options = { ...this.#options, ...options };
 		this.#adapterClass = IdaeDbAdapter.getAdapterForDbType(this.options.dbType);
@@ -46,22 +46,22 @@ export class IdaeDb {
 	 * @param options.idaeModelOptions The options of the IdaeDBModel.
 	 * @returns An IdaeDb instance.
 	 */
-	public static init(uri: Uri, options?: Partial<Options>): IdaeDb {
+	public static init(uri: Uri, options?: Partial<IdaeDbOptions>): IdaeDb {
 		const dbType = options?.dbType ?? DbType.MONGODB;
 		const instanceKey: IdaeDbInstanceKey = `${dbType}:${uri}`;
 
-		if (!IdaeDb.instances.has(instanceKey)) {
-			IdaeDb.instances.set(instanceKey, new IdaeDb(uri, options));
+		if (!IdaeDb.#instances.has(instanceKey)) {
+			IdaeDb.#instances.set(instanceKey, new IdaeDb(uri, options));
 		}
-		return IdaeDb.instances.get(instanceKey)!;
+		return IdaeDb.#instances.get(instanceKey)!;
 	}
 
 	/**
 	 * Registers event listeners for all collections.
 	 * @param events An object containing event listeners for different operations.
 	 */
-	registerEvents<T extends Document>(events: EventListeners<T>) {
-		this.globalEvents = events;
+	registerEvents<T extends object, R extends object>(events: EventListeners<T, R>) {
+		this.#globalEvents = events;
 	}
 
 	/**
@@ -95,14 +95,17 @@ export class IdaeDb {
 
 		const adapter = new IdaeDbAdapter<T>(collectionName, this.#connection, this.options.dbType);
 
-		if (this.globalEvents) {
-			this.applyEvents(adapter, this.globalEvents);
+		if (this.#globalEvents) {
+			this.#applyEvents(adapter, this.#globalEvents);
 		}
 
 		return adapter;
 	}
 
-	private applyEvents<T>(adapter: IdaeDbAdapter<T>, events: EventListeners<T>) {
+	#applyEvents<T extends object = object, R extends object = object>(
+		adapter: IdaeDbAdapter<T>,
+		events: EventListeners<T, R>
+	) {
 		for (const [method, listeners] of Object.entries(events)) {
 			if (listeners.pre) {
 				adapter.on(`pre:${String(method)}`, listeners.pre);
