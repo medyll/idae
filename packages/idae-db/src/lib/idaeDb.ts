@@ -39,6 +39,7 @@ export class IdaeDb {
 	/**
 	 * Initializes or retrieves an IdaeDb instance.
 	 * @param uri The URI of the database.
+	 * @param options options.
 	 * @param options.dbType The type of database.
 	 * @param options.dbScope The scope of the database.
 	 * @param options.dbScopeSeparator The separator of the database scope.

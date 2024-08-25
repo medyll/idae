@@ -17,7 +17,11 @@ export interface IdaeDbAdapterInterface<T extends object> {
 	find(params: IdaeDbParams<T>): Promise<T[]>;
 	findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	update(id: string, updateData: Partial<T>): Promise<any>;
-	updateWhere<OPT>(params: IdaeDbParams<T>, updateData: Partial<T>, options: OPT): Promise<any>;
+	updateWhere<OPT = any>(
+		params: IdaeDbParams<T>,
+		updateData: Partial<T>,
+		options?: OPT
+	): Promise<any>;
 	deleteById(id: string): Promise<any>;
 	deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }>;
 	transaction<TResult>(callback: (session: any) => Promise<TResult>): Promise<TResult>;
@@ -54,10 +58,10 @@ export abstract class AbstractIdaeDbAdapter<T extends object> implements IdaeDbA
 	abstract find(params: IdaeDbParams<T>): Promise<T[]>;
 	abstract findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	abstract update(id: string, updateData: Partial<T>): Promise<any>;
-	abstract updateWhere<OPT>(
+	abstract updateWhere<OPT = any>(
 		params: IdaeDbParams<T>,
 		updateData: Partial<T>,
-		options: OPT
+		options?: OPT
 	): Promise<any>;
 	abstract deleteById(id: string): Promise<any>;
 	abstract deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }>;

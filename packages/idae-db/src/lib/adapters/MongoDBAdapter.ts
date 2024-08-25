@@ -37,15 +37,19 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 		this.connection = connection;
 		this.model = this.connection.getModel<T>(collection);
 		this.fieldId = this.model.fieldId;
+
+		console.log('MongoDBAdapter constructor', collection);
 	}
 
 	static async connect(uri: string): Promise<MongoClient> {
+		console.log('MongoDBAdapter connect', uri);
 		const client = new MongoClient(uri);
 		await client.connect();
 		return client;
 	}
 
 	static getDb(client: MongoClient, dbName: string): Db {
+		console.log('MongoDBAdapter getDb', dbName);
 		return client.db(dbName);
 	}
 
@@ -101,7 +105,7 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 		);
 	}
 
-	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options?: UpdateOptions) {
+	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options: any = {}) {
 		return this.model.collection.updateMany(
 			params.query as IdaeDbQueryFilter<T>,
 			updateData,

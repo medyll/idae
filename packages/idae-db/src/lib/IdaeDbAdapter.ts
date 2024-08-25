@@ -131,8 +131,8 @@ export class IdaeDbAdapter<T extends object>
 	}
 
 	@withEmitter()
-	async updateWhere<OPT>(params: IdaeDbParams<T>, updateData: Partial<T>, options: OPT) {
-		return this.adapter.updateWhere(params, updateData, options);
+	async updateWhere<OPT = any>(params: IdaeDbParams<T>, updateData: Partial<T>, options: OPT) {
+		return this.adapter.updateWhere<OPT>(params, updateData, options);
 	}
 
 	@withEmitter()
