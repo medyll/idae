@@ -26,24 +26,24 @@ async function runExample() {
     console.log(collections); */
 
     // Work with app_conf collection
-    const appConfCollection = client
-      .db("a_idae_db_sitebase_app")
-      .collection("user");
+    const appConfCollection = client.db("app").collection("user");
 
     // Find all documents
     console.log("\nFinding all documents in user:");
-    const allDocs = await appConfCollection.findAll();
+    const allDocs = await appConfCollection.findAll({
+      email: "Karin@example.com",
+    });
     console.log(allDocs);
 
-    /* 
-	// Create a new document
-    console.log("\nCreating a new document in app_conf:");
+    // Create a new document
+    console.log("\nCreating a new user in user:");
     const newDoc = await appConfCollection.create({
-      name: "Test Config",
-      value: "Test Value",
+      name: "new user",
+      email: "Test@Value",
     });
     console.log(newDoc);
 
+    /* 
     // Find all documents
     console.log("\nFinding all documents in app_conf:");
     const allDocs = await appConfCollection.findAll();

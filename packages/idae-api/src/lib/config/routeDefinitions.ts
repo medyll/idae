@@ -6,6 +6,7 @@ type RouteHandler = (
   service: IdaeDbAdapter<any>,
   params: any,
   body?: any,
+  query?: any,
 ) => Promise<any>;
 
 export interface RouteDefinition {
@@ -19,7 +20,10 @@ export const routes: RouteDefinition[] = [
   {
     method: "get",
     path: "/:collectionName",
-    handler: async (service, params) => service.find(params),
+    handler: async (service, params, body, query) => {
+      console.log("query --- ", query);
+      return service.find({ query });
+    },
   },
   {
     method: "get",
@@ -51,6 +55,7 @@ export const routes: RouteDefinition[] = [
     method: [
       "where",
       "find",
+      "findById",
       "create",
       "update",
       "deleteById",

@@ -14,6 +14,7 @@ import {
 import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
 import { RouteManager } from "$lib/server/engine/routeManager.js";
 import type { Server } from "http";
+import type { IdaeDbAdapter } from "@medyll/idae-db";
 
 interface IdaeApiOptions {
   port?: number;
@@ -189,13 +190,11 @@ class IdaeApi {
       service: IdaeDbAdapter<any>,
       params: any,
       body?: any,
+      query?: any,
     ) => Promise<any>,
   ) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { collectionName } = req.params;
-
-        const connection = req.dbConnection;
         const connectedCollection = req.connectedCollection;
 
         if (!connectedCollection) {
@@ -203,11 +202,18 @@ class IdaeApi {
         }
 
         console.log("----------------------------------------------");
-        console.log(req.body);
-        console.log(req.params);
+        console.log("body", req.body);
+        console.log("params", req.params);
+        console.log("query", req.query);
+        console.log("dbName", req.dbName);
 
         // const result = await action(databaseService, req.params, req.body);
-        const result = await action(connectedCollection, req.params, req.body);
+        const result = await action(
+          connectedCollection,
+          req.params,
+          req.body,
+          req.query,
+        );
 
         res.json(result);
       } catch (error) {

@@ -13,6 +13,3 @@ export * from '$lib/server/engine/types.js';
 export * from '$lib/server/engine/routeManager.js';
 export * from '$lib/server/engine/mongooseConnectionManager.js';
 export * from '$lib/server/engine/DatabaseManager.js';
-export * from '$lib/server/adapters/types.js';
-export * from '$lib/server/adapters/MySQLAdapter.js';
-export * from '$lib/server/adapters/MongoDBAdapter.js';

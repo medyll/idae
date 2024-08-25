@@ -12,7 +12,9 @@ export const databaseMiddleware = async (
   try {
     const { dbName, collectionName, dbUri } = databaseManager.fromReq(req);
 
-    console.log("------------------------- -----------------------");
+    console.log(
+      "------------------------- Middleware called -----------------------",
+    );
     console.log({ dbName, collectionName, dbUri });
     console.log("body :", req.body);
     console.log("params :", req.params);
@@ -23,14 +25,20 @@ export const databaseMiddleware = async (
 
     req.idaeDb = IdaeDb.init(dbUri, {
       dbType: DbType.MONGODB,
-      dbScope: "idaenext_sitebase",
+      dbScope: "a_idae_db_sitebase",
       dbScopeSeparator: "_",
+      idaeModelOptions: {
+        autoIncrementFormat: (collection: string) => `id${collection}`,
+        autoIncrementDbCollection: "auto_increment",
+      },
     });
 
     // create connection to db
     await req.idaeDb.db("app");
 
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
+
+    console.log("Connected to collection", collectionName);
 
     next();
   } catch (error) {
