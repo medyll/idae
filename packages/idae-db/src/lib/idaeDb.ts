@@ -13,6 +13,7 @@ export type IdaeDbOptions = {
 	dbScope: string | undefined;
 	dbScopeSeparator?: string;
 	idaeModelOptions?: IdaeModelOptions;
+	dbEvents?: EventListeners<object, object>;
 };
 
 export class IdaeDb {
@@ -25,7 +26,8 @@ export class IdaeDb {
 	#options: IdaeDbOptions = {
 		dbType: DbType.MONGODB,
 		dbScope: undefined,
-		idaeModelOptions: {}
+		idaeModelOptions: {},
+		dbEvents: {} as EventListeners<object, object>
 	} as IdaeDbOptions;
 
 	private constructor(
@@ -34,6 +36,9 @@ export class IdaeDb {
 	) {
 		this.#options = { ...this.#options, ...options };
 		this.#adapterClass = IdaeDbAdapter.getAdapterForDbType(this.options.dbType);
+		if (this.#options.dbEvents) {
+			this.registerEvents(this.#options.dbEvents);
+		}
 	}
 
 	/**
