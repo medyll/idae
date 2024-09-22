@@ -54,5 +54,19 @@ class IdaeApiClient {
   }
 }
 
+// ne fonctionne pas quand multiligne
+export type RED_MATTER = {
+  none: string;
+};
+// ne fonctionne pas quand multiligne
+export interface RED_MATTER_INTERFACE {
+  none: string;
+}
+// fonctionne
 export { IdaeApiClient };
-export type { IdaeApiClientRequestParams };
+// fonctionne
+export type { IdaeApiClientRequestParams, RED_MATTER as RED_______MATTER };
+// ne fonctionne pas quand multiligne
+export function myFunc() {
+  return 15;
+}

@@ -114,7 +114,7 @@
 		</div>
 	{/if}
 	{#if step === 'confirm'}
-		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
+		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}> 
 			<IconButton
 				onclick={handleClickCancel}
 				width="tiny"
