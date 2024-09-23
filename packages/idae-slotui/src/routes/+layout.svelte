@@ -29,9 +29,7 @@
 
 	import { cssDom } from '@medyll/idae-dom-events';
 	// from +layout.server
-	let data: any = {};
-	// from +layout.ts
-	let params = {};
+	let data: any = {}; 
 
 	let store = writable<UiContextType>({
 		drawerFlow: 'fixed',

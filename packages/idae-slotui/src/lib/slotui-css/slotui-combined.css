@@ -409,6 +409,68 @@
   --hide-selector: hide;
 }
 
+/** window.scss ----------------*/
+:root {
+  --window-border-radius: var(--sld-radius-small);
+  --window-background-color: var(--sld-color-background);
+  --window-color: var(--sld-color-foreground);
+  --window-border: 1px solid rgba(255, 255, 255, 0.1);
+  --window-min-width: 250px;
+  --window-z-index: 70000;
+  --window-box-shadow: var(--sld-elevation-1);
+  --window-active-border: 1px solid var(--sld-color-primary);
+  --window-active-box-shadow: var(--sld-elevation-3);
+  --window-header-bar-background-color: var(--sld-color-paper);
+  --window-header-bar-padding: var(--sld-pad-tiny) 0;
+  --window-header-bar-icon-padding: unset var(--sld-pad-med);
+  --window-footer-button-zone-padding: var(--sld-pad-tiny);
+  --window-footer-button-zone-gap: var(--sld-gap-small);
+}
+
+dialog.window {
+  display: block;
+  border-radius: var(--window-border-radius);
+  background-color: var(--window-background-color);
+  color: var(--window-color);
+  border: var(--window-border);
+  min-width: var(--window-min-width);
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: var(--window-z-index);
+  max-height: 100%;
+  padding: 0;
+  box-shadow: var(--window-box-shadow);
+}
+dialog.window.active {
+  border: var(--window-active-border);
+  box-shadow: var(--window-active-box-shadow);
+}
+dialog.window header.bar {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-color: var(--window-header-bar-background-color);
+  color: var(--window-color);
+  padding: var(--window-header-bar-padding);
+}
+dialog.window header.bar-icon {
+  padding: var(--window-header-bar-icon-padding);
+}
+dialog.window header.bar .handle {
+  flex: 1;
+  cursor: pointer;
+}
+dialog.window footer.buttonZone {
+  padding: var(--window-footer-button-zone-padding);
+  display: flex;
+  justify-content: end;
+  gap: var(--window-footer-button-zone-gap);
+}
+dialog.window .ctrlZone {
+  display: flex;
+}
+
 /** tree.scss ----------------*/
 :root {
   --tree-cell-border: 1px solid transparent;
@@ -490,111 +552,6 @@
 .toolbar.vertical divider {
   border: var(--toolbar-vertical-divider-border);
   width: var(--toolbar-vertical-divider-width);
-}
-
-/** window.scss ----------------*/
-:root {
-  --window-border-radius: var(--sld-radius-small);
-  --window-background-color: var(--sld-color-background);
-  --window-color: var(--sld-color-foreground);
-  --window-border: 1px solid rgba(255, 255, 255, 0.1);
-  --window-min-width: 250px;
-  --window-z-index: 70000;
-  --window-box-shadow: var(--sld-elevation-1);
-  --window-active-border: 1px solid var(--sld-color-primary);
-  --window-active-box-shadow: var(--sld-elevation-3);
-  --window-header-bar-background-color: var(--sld-color-paper);
-  --window-header-bar-padding: var(--sld-pad-tiny) 0;
-  --window-header-bar-icon-padding: unset var(--sld-pad-med);
-  --window-footer-button-zone-padding: var(--sld-pad-tiny);
-  --window-footer-button-zone-gap: var(--sld-gap-small);
-}
-
-dialog.window {
-  display: block;
-  border-radius: var(--window-border-radius);
-  background-color: var(--window-background-color);
-  color: var(--window-color);
-  border: var(--window-border);
-  min-width: var(--window-min-width);
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  z-index: var(--window-z-index);
-  max-height: 100%;
-  padding: 0;
-  box-shadow: var(--window-box-shadow);
-}
-dialog.window.active {
-  border: var(--window-active-border);
-  box-shadow: var(--window-active-box-shadow);
-}
-dialog.window header.bar {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  background-color: var(--window-header-bar-background-color);
-  color: var(--window-color);
-  padding: var(--window-header-bar-padding);
-}
-dialog.window header.bar-icon {
-  padding: var(--window-header-bar-icon-padding);
-}
-dialog.window header.bar .handle {
-  flex: 1;
-  cursor: pointer;
-}
-dialog.window footer.buttonZone {
-  padding: var(--window-footer-button-zone-padding);
-  display: flex;
-  justify-content: end;
-  gap: var(--window-footer-button-zone-gap);
-}
-dialog.window .ctrlZone {
-  display: flex;
-}
-
-/** toggle-bar.scss ----------------*/
-:root {
-  --toggle-bar-padding: var(--sld-commandbar-padding, var(--box-density-1));
-  --toggle-bar-border-bottom: var(--sld-topbar-border-bottom-color, var(--sld-color-border));
-  --toggle-bar-gap: var(--sld-commandbar-gap, var(--sld-pad-tiny));
-  --toggle-bar-icon-padding: var(--sld-pad-medium);
-  --toggle-bar-title-font-weight: 500;
-  --toggle-bar-title-content-font-size: 18px;
-}
-
-.toggle-bar {
-  padding: var(--toggle-bar-padding);
-  display: flex;
-  border-bottom: var(--toggle-bar-border-bottom);
-  width: 100%;
-  max-width: 100%;
-  min-width: auto;
-  position: relative;
-  gap: var(--toggle-bar-gap);
-}
-.toggle-bar-icon {
-  padding: var(--toggle-bar-icon-padding);
-}
-.toggle-bar-title {
-  flex: 1;
-  font-weight: var(--toggle-bar-title-font-weight);
-  min-width: auto;
-}
-.toggle-bar-title-content {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: var(--toggle-bar-title-content-font-size);
-  min-width: auto;
-  height: 100%;
-}
-.toggle-bar-content {
-  position: relative;
-  min-width: auto;
-  overflow: hidden;
 }
 
 /** taskbar.scss ----------------*/
@@ -701,6 +658,49 @@ dialog.window .ctrlZone {
   display: flex;
   align-items: end;
   padding: var(--boot-menu-bottom-bar-padding);
+}
+
+/** toggle-bar.scss ----------------*/
+:root {
+  --toggle-bar-padding: var(--sld-commandbar-padding, var(--box-density-1));
+  --toggle-bar-border-bottom: var(--sld-topbar-border-bottom-color, var(--sld-color-border));
+  --toggle-bar-gap: var(--sld-commandbar-gap, var(--sld-pad-tiny));
+  --toggle-bar-icon-padding: var(--sld-pad-medium);
+  --toggle-bar-title-font-weight: 500;
+  --toggle-bar-title-content-font-size: 18px;
+}
+
+.toggle-bar {
+  padding: var(--toggle-bar-padding);
+  display: flex;
+  border-bottom: var(--toggle-bar-border-bottom);
+  width: 100%;
+  max-width: 100%;
+  min-width: auto;
+  position: relative;
+  gap: var(--toggle-bar-gap);
+}
+.toggle-bar-icon {
+  padding: var(--toggle-bar-icon-padding);
+}
+.toggle-bar-title {
+  flex: 1;
+  font-weight: var(--toggle-bar-title-font-weight);
+  min-width: auto;
+}
+.toggle-bar-title-content {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--toggle-bar-title-content-font-size);
+  min-width: auto;
+  height: 100%;
+}
+.toggle-bar-content {
+  position: relative;
+  min-width: auto;
+  overflow: hidden;
 }
 
 /** popper.scss ----------------*/
@@ -3125,6 +3125,19 @@ label {
   color: var(--stepper-active-color);
 }
 
+/** select.scss ----------------*/
+:root {
+  --select-background-color: var(--sld-color-background);
+  --select-radius: var(--sld-radius-small);
+}
+
+.select {
+  background-color: var(--select-background-color);
+  height: 160px;
+  width: 160px;
+  border-radius: var(--select-radius);
+}
+
 /** slider.scss ----------------*/
 :root {
   --slider-background-color: var(--sld-color-background);
@@ -3199,19 +3212,6 @@ label {
   outline: 4px solid var(--slider-thumb-hover-outline);
 }
 
-/** select.scss ----------------*/
-:root {
-  --select-background-color: var(--sld-color-background);
-  --select-radius: var(--sld-radius-small);
-}
-
-.select {
-  background-color: var(--select-background-color);
-  height: 160px;
-  width: 160px;
-  border-radius: var(--select-radius);
-}
-
 /** rating.scss ----------------*/
 :root {
   --rating-gap: var(--sld-gap-small);
@@ -3247,9 +3247,9 @@ label {
 
 /** confirm.scss ----------------*/
 .confirm {
-  display: contents;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 .confirm-validate {
   display: flex;
@@ -3428,9 +3428,30 @@ label {
   transition: all 0.2s ease-in-out;
   overflow: hidden;
   cursor: pointer;
-  align-content: stretch;
-  align-items: stretch;
+  align-content: center;
+  align-items: center;
   background: var(--sld-button-background);
+  /*     :focus {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: 2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :focus-visible {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: -2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :hover {
+      background-color: var(--sld-button-hover-background);
+      box-shadow: var(--sld-button-hover-shadow);
+  }
+  :active {
+      transform: translateY(1px);
+      box-shadow: var(--sld-button-active-shadow);
+  }
+  :focus:not(:focus-visible) {
+      box-shadow: var(--sld-button-focus-shadow);
+  } */
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
 }
@@ -3689,47 +3710,6 @@ label {
 :global(input[type="submit"])[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
-:global(button) :focus,
-:global(.button) :focus,
-:global(button.button) :focus,
-:global(input[type="button"]) :focus,
-:global(input[type="submit"]) :focus {
-  outline: 1px solid var(--sld-button-focus-border-color);
-  outline-offset: 2px;
-  box-shadow: var(--sld-button-focus-shadow);
-}
-:global(button) :focus-visible,
-:global(.button) :focus-visible,
-:global(button.button) :focus-visible,
-:global(input[type="button"]) :focus-visible,
-:global(input[type="submit"]) :focus-visible {
-  outline: 1px solid var(--sld-button-focus-border-color);
-  outline-offset: -2px;
-  box-shadow: var(--sld-button-focus-shadow);
-}
-:global(button) :hover,
-:global(.button) :hover,
-:global(button.button) :hover,
-:global(input[type="button"]) :hover,
-:global(input[type="submit"]) :hover {
-  background-color: var(--sld-button-hover-background);
-  box-shadow: var(--sld-button-hover-shadow);
-}
-:global(button) :active,
-:global(.button) :active,
-:global(button.button) :active,
-:global(input[type="button"]) :active,
-:global(input[type="submit"]) :active {
-  transform: translateY(1px);
-  box-shadow: var(--sld-button-active-shadow);
-}
-:global(button) :focus:not(:focus-visible),
-:global(.button) :focus:not(:focus-visible),
-:global(button.button) :focus:not(:focus-visible),
-:global(input[type="button"]) :focus:not(:focus-visible),
-:global(input[type="submit"]) :focus:not(:focus-visible) {
-  box-shadow: var(--sld-button-focus-shadow);
-}
 :global(button) .button-start,
 :global(.button) .button-start,
 :global(button.button) .button-start,
@@ -3741,7 +3721,7 @@ label {
   max-height: 100%;
   align-items: center;
   align-content: center;
-  padding: 0 0.15rem;
+  padding: 0 0.5rem;
   display: block;
 }
 :global(button) .button-start:empty,
@@ -3757,13 +3737,18 @@ label {
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   --preset-ellipsis-line: 1;
+  display: block;
   max-width: 100%;
   max-height: 100%;
   flex: 1;
   align-items: center;
   align-content: center;
-  padding-right: calc(var(--content-padding, 0.25rem) / 2);
+  justify-content: center;
+  justify-items: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   text-align: var(--sld-button-text-align, center);
+  overflow: hidden;
 }
 :global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
 :global(.button) .button-central[ellipsis],
@@ -4661,24 +4646,6 @@ label {
   box-shadow: var(--sld-elevation-5);
 }
 
-/** icon.scss ----------------*/
-:global(.icon) {
-  transition: all 0.2;
-}
-
-.rotate {
-  animation: spinner-frames 3s infinite linear;
-}
-
-@keyframes spinner-frames {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /** divider.scss ----------------*/
 :root {
   --divider-border-top: var(--sld-color-border, var(--sld-color-foreground-alpha-high, #333));
@@ -4695,6 +4662,24 @@ hr {
 hr.vertical {
   width: 1px;
   border-right: 1px solid var(--divider-border-right);
+}
+
+/** icon.scss ----------------*/
+:global(.icon) {
+  transition: all 0.2;
+}
+
+.rotate {
+  animation: spinner-frames 3s infinite linear;
+}
+
+@keyframes spinner-frames {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /** content-switcher.scss ----------------*/
@@ -4718,6 +4703,64 @@ hr.vertical {
   overflow: var(--sld-content-switcher-overflow);
   min-width: auto;
   flex: 1 1 auto;
+}
+
+/** chipper.scss ----------------*/
+:root {
+  --chipper-gap: var(--sld-gap-tiny);
+  --chipper-radius: var(--sld-radius-large);
+  --chipper-chip-color: var(--css-button-chip-color, var(--sld-color-primary));
+}
+
+.chipper {
+  position: relative;
+  gap: var(--chipper-gap);
+}
+.chipper .chipper-content {
+  padding: 0.5rem;
+}
+.chipper .chipper-chip {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  border-radius: var(--chipper-radius);
+  transition: all 0.25s;
+  max-height: 100%;
+  background-color: var(--chipper-chip-color);
+}
+.chipper .chipper-chip[data-position=left] {
+  top: 2px;
+  left: 2px;
+  height: 100%;
+  width: 3px;
+}
+.chipper .chipper-chip[data-position=right] {
+  top: 2px;
+  right: 2px;
+  height: 130px;
+  width: 3px;
+}
+.chipper .chipper-chip[data-position=top] {
+  height: 4px;
+  top: 2px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+}
+.chipper .chipper-chip[data-position=bottom] {
+  height: 4px;
+  bottom: 2px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+}
+.chipper .chipper-chip .defaultChip,
+.chipper .chipper-chip [slot=chipperChip] {
+  display: block;
+  height: 100%;
+  width: 100%;
+  min-height: 3px;
+  background-color: var(--chipper-chip-color);
 }
 
 /** cartouche.scss ----------------*/
@@ -4828,64 +4871,6 @@ hr.vertical {
 }
 .cartouche .content[aria-expanded=false] {
   display: none;
-}
-
-/** chipper.scss ----------------*/
-:root {
-  --chipper-gap: var(--sld-gap-tiny);
-  --chipper-radius: var(--sld-radius-large);
-  --chipper-chip-color: var(--css-button-chip-color, var(--sld-color-primary));
-}
-
-.chipper {
-  position: relative;
-  gap: var(--chipper-gap);
-}
-.chipper .chipper-content {
-  padding: 0.5rem;
-}
-.chipper .chipper-chip {
-  display: block;
-  position: absolute;
-  z-index: 2;
-  border-radius: var(--chipper-radius);
-  transition: all 0.25s;
-  max-height: 100%;
-  background-color: var(--chipper-chip-color);
-}
-.chipper .chipper-chip[data-position=left] {
-  top: 2px;
-  left: 2px;
-  height: 100%;
-  width: 3px;
-}
-.chipper .chipper-chip[data-position=right] {
-  top: 2px;
-  right: 2px;
-  height: 130px;
-  width: 3px;
-}
-.chipper .chipper-chip[data-position=top] {
-  height: 4px;
-  top: 2px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 50%;
-}
-.chipper .chipper-chip[data-position=bottom] {
-  height: 4px;
-  bottom: 2px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 50%;
-}
-.chipper .chipper-chip .defaultChip,
-.chipper .chipper-chip [slot=chipperChip] {
-  display: block;
-  height: 100%;
-  width: 100%;
-  min-height: 3px;
-  background-color: var(--chipper-chip-color);
 }
 
 /** breadcrumb.scss ----------------*/
