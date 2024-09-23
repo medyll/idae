@@ -35,8 +35,7 @@
 	}: ButtonProps = $props();
 
 	let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
- 
-	$inspect(startRef?.clientWidth)
+  
 </script>
 
 <button

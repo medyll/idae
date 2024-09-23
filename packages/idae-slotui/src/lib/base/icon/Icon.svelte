@@ -32,6 +32,7 @@
 	let finalStyle = $derived(
 		`display:block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
 	);
+ 
 </script>
 
 {#key [icon, iconName, color, finalStyle]}

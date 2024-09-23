@@ -44,9 +44,30 @@
   transition: all 0.2s ease-in-out;
   overflow: hidden;
   cursor: pointer;
-  align-content: stretch;
-  align-items: stretch;
+  align-content: center;
+  align-items: center;
   background: var(--sld-button-background);
+  /*     :focus {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: 2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :focus-visible {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: -2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :hover {
+      background-color: var(--sld-button-hover-background);
+      box-shadow: var(--sld-button-hover-shadow);
+  }
+  :active {
+      transform: translateY(1px);
+      box-shadow: var(--sld-button-active-shadow);
+  }
+  :focus:not(:focus-visible) {
+      box-shadow: var(--sld-button-focus-shadow);
+  } */
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
 }
@@ -305,47 +326,6 @@
 :global(input[type="submit"])[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
-:global(button) :focus,
-:global(.button) :focus,
-:global(button.button) :focus,
-:global(input[type="button"]) :focus,
-:global(input[type="submit"]) :focus {
-  outline: 1px solid var(--sld-button-focus-border-color);
-  outline-offset: 2px;
-  box-shadow: var(--sld-button-focus-shadow);
-}
-:global(button) :focus-visible,
-:global(.button) :focus-visible,
-:global(button.button) :focus-visible,
-:global(input[type="button"]) :focus-visible,
-:global(input[type="submit"]) :focus-visible {
-  outline: 1px solid var(--sld-button-focus-border-color);
-  outline-offset: -2px;
-  box-shadow: var(--sld-button-focus-shadow);
-}
-:global(button) :hover,
-:global(.button) :hover,
-:global(button.button) :hover,
-:global(input[type="button"]) :hover,
-:global(input[type="submit"]) :hover {
-  background-color: var(--sld-button-hover-background);
-  box-shadow: var(--sld-button-hover-shadow);
-}
-:global(button) :active,
-:global(.button) :active,
-:global(button.button) :active,
-:global(input[type="button"]) :active,
-:global(input[type="submit"]) :active {
-  transform: translateY(1px);
-  box-shadow: var(--sld-button-active-shadow);
-}
-:global(button) :focus:not(:focus-visible),
-:global(.button) :focus:not(:focus-visible),
-:global(button.button) :focus:not(:focus-visible),
-:global(input[type="button"]) :focus:not(:focus-visible),
-:global(input[type="submit"]) :focus:not(:focus-visible) {
-  box-shadow: var(--sld-button-focus-shadow);
-}
 :global(button) .button-start,
 :global(.button) .button-start,
 :global(button.button) .button-start,
@@ -357,7 +337,7 @@
   max-height: 100%;
   align-items: center;
   align-content: center;
-  padding: 0 0.15rem;
+  padding: 0 0.5rem;
   display: block;
 }
 :global(button) .button-start:empty,
@@ -373,13 +353,18 @@
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   --preset-ellipsis-line: 1;
+  display: block;
   max-width: 100%;
   max-height: 100%;
   flex: 1;
   align-items: center;
   align-content: center;
-  padding-right: calc(var(--content-padding, 0.25rem) / 2);
+  justify-content: center;
+  justify-items: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   text-align: var(--sld-button-text-align, center);
+  overflow: hidden;
 }
 :global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
 :global(.button) .button-central[ellipsis],

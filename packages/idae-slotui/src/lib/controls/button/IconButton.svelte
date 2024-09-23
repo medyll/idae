@@ -36,8 +36,10 @@
 		children,
 		...rest
 	}: IconButtonProps = $props();
+
+	let finalIcon = $derived(typeof icon === 'object' ? {...icon,iconSize:iconFontSize} : {icon,iconSize:iconFontSize});
 </script>
 
 <Button variant="square" bind:element width={size} tall="unset" {ratio} {...rest}>
-	<Icon style="display:block; " {rotation} {icon} iconSize={iconFontSize} />
+	<Icon style="display:inline; " {rotation} icon={finalIcon}   />
 </Button>

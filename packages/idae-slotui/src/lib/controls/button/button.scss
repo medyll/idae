@@ -55,34 +55,32 @@
     overflow: hidden;
     cursor: pointer;
 
-    align-content: stretch;
-    align-items: stretch;
+    align-content: center;
+    align-items: center;
 
     background: var(--sld-button-background);
 
-    & {
-        :focus {
-            outline: 1px solid var(--sld-button-focus-border-color);
-            outline-offset: 2px;
-            box-shadow: var(--sld-button-focus-shadow);
-        }
-        :focus-visible {
-            outline: 1px solid var(--sld-button-focus-border-color);
-            outline-offset: -2px;
-            box-shadow: var(--sld-button-focus-shadow);
-        }
-        :hover {
-            background-color: var(--sld-button-hover-background);
-            box-shadow: var(--sld-button-hover-shadow);
-        }
-        :active {
-            transform: translateY(1px);
-            box-shadow: var(--sld-button-active-shadow);
-        }
-        :focus:not(:focus-visible) {
-            box-shadow: var(--sld-button-focus-shadow);
-        }
+    /*     :focus {
+        outline: 1px solid var(--sld-button-focus-border-color);
+        outline-offset: 2px;
+        box-shadow: var(--sld-button-focus-shadow);
     }
+    :focus-visible {
+        outline: 1px solid var(--sld-button-focus-border-color);
+        outline-offset: -2px;
+        box-shadow: var(--sld-button-focus-shadow);
+    }
+    :hover {
+        background-color: var(--sld-button-hover-background);
+        box-shadow: var(--sld-button-hover-shadow);
+    }
+    :active {
+        transform: translateY(1px);
+        box-shadow: var(--sld-button-active-shadow);
+    }
+    :focus:not(:focus-visible) {
+        box-shadow: var(--sld-button-focus-shadow);
+    } */
 
     .button-start {
         position: relative;
@@ -91,7 +89,7 @@
         max-height: 100%;
         align-items: center;
         align-content: center;
-        padding: 0 0.15rem;
+        padding: 0 0.5rem;
         display: block;
         &:empty {
             display: none;
@@ -100,13 +98,18 @@
 
     .button-central {
         @include ui-ellipsises-presets;
+        display: block;
         max-width: 100%;
         max-height: 100%;
         flex: 1;
         align-items: center;
         align-content: center;
-        padding-right: calc(var(--content-padding, 0.25rem) / 2);
+        justify-content: center;
+        justify-items: center;
+        padding-left: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
+        padding-right: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
         text-align: var(--sld-button-text-align, center);
+        overflow: hidden;
         &:empty {
             display: none;
         }
