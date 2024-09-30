@@ -2,7 +2,7 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { defaultsArgs } from '../demoer/demoer.utils.js';
+	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import Backdrop from './Backdrop.svelte';
 	import { BackdropDemoValues } from './types.js';
 

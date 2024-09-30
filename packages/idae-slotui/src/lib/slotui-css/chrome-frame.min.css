@@ -1,1 +1,34 @@
-:root{--chrome-frame-color: var(--sld-color-foreground);--chrome-frame-background-color: var(--sld-color-background);--chrome-frame-bar-gap: var(--sld-gap-med);--chrome-frame-bar-padding: var(--sld-pad-medium);--chrome-frame-bar-border-bottom: var(--sld-color-border);--chrome-frame-content-flex: 1}.chrome-frame{display:flex;flex-direction:"column";align-items:flex-start;position:absolute;top:0;height:100%;width:100%;color:var(--chrome-frame-color);background-color:var(--chrome-frame-background-color);overflow:hidden}.chrome-frame-bar{display:flex;flex-direction:"row";align-items:center;gap:var(--chrome-frame-bar-gap);padding:var(--chrome-frame-bar-padding);border-bottom:1px solid var(--chrome-frame-bar-border-bottom)}.chrome-frame-content{flex:var(--chrome-frame-content-flex);overflow:hidden;position:relative}
+:root {
+  --chrome-frame-color: var(--sld-color-foreground);
+  --chrome-frame-background-color: var(--sld-color-background);
+  --chrome-frame-bar-gap: var(--sld-gap-med);
+  --chrome-frame-bar-padding: var(--sld-pad-medium);
+  --chrome-frame-bar-border-bottom: var(--sld-color-border);
+  --chrome-frame-content-flex: 1;
+}
+
+.chrome-frame {
+  display: flex;
+  flex-direction: "column";
+  align-items: flex-start;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  color: var(--chrome-frame-color);
+  background-color: var(--chrome-frame-background-color);
+  overflow: hidden;
+}
+.chrome-frame-bar {
+  display: flex;
+  flex-direction: "row";
+  align-items: center;
+  gap: var(--chrome-frame-bar-gap);
+  padding: var(--chrome-frame-bar-padding);
+  border-bottom: 1px solid var(--chrome-frame-bar-border-bottom);
+}
+.chrome-frame-content {
+  flex: var(--chrome-frame-content-flex);
+  overflow: hidden;
+  position: relative;
+}

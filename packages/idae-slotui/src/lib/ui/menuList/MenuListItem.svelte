@@ -95,8 +95,8 @@
 <svelte:element
 	this={href ? 'a' : tag}
 	class="menu-list-item {className}"
-	data-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
-	aria-selected={selectable ? menuStateContext.selectedIndex === itemIndex : false}
+	data-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
+	aria-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
 	bind:this={element}
 	tabindex="-1"
 	{...rest}
@@ -104,7 +104,7 @@
 	tall={menuStateContext?.tall ?? tall}
 	width={menuStateContext?.width ?? width}
 	{href}
->
+>{menuStateContext.hasIcon}
 	{#if icon && iconFirst && menuStateContext?.hasIcon}
 		<div class="menu-list-item-icon">
 			<Slotted child={menuItemFirst}>

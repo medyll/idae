@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-	"version": "0.17.0",
+	"version": "0.37.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -21,7 +21,8 @@
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"import": "./dist/index.js"
 		}
 	},
 	"files": [
