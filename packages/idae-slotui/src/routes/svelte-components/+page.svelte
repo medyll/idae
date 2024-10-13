@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
+	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js'; 
 	import Paper from '$lib/base/paper/Paper.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Divider from '$lib/base/divider/Divider.svelte';
@@ -16,9 +15,7 @@
 		return out;
 	}
 
-	function filterList(component: string) {
-		return dataOp.searchList(slotUiComponentPreviewList, component, 'code')?.[0] ?? undefined;
-	}
+	 
 </script>
 
 <div class="flex-main pad-4 overflow-auto">
@@ -28,10 +25,7 @@
 				{#each spliced as component}
 					<Paper>
 						{component.name}
-						<Divider />
-						<!-- {#if Boolean(filterList(component.code))}
-							<svelte:component this={filterList(component.code).component} />
-						{/if} -->
+						<Divider /> 
 						<div class="flex-h flex-wrap gap-small">
 							<div class="flex-main">
 								<a href={sitePaths.component(component)}>{component.name} examples</a>

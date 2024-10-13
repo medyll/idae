@@ -1,205 +1,245 @@
 // packages\idae-api\src\lib\IdaeApi.ts
-// version feat
-import express, { type Express, type Request, type Response, type NextFunction } from 'express';
-import { databaseMiddleware } from '$lib/server/middleware/databaseMiddleware';
-import { DBaseService } from '$lib/server/services/DBaseService';
-import { type RouteDefinition, routes as defaultRoutes } from '$lib/config/routeDefinitions';
-import { AuthMiddleWare } from '$lib/server/middleware/authMiddleware';
-import { RouteManager } from '$lib/server/engine/routeManager';
-import type { Server } from 'http';
+import { type IdaeDbOptions } from "@medyll/idae-db";
+import express, {
+  type Express,
+  type Request,
+  type Response,
+  type NextFunction,
+} from "express";
+import { idaeDbMiddleware } from "$lib/server/middleware/databaseMiddleware.js";
+import {
+  type RouteDefinition,
+  routes as defaultRoutes,
+} from "$lib/config/routeDefinitions.js";
+import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
+import { RouteManager } from "$lib/server/engine/routeManager.js";
+import type { Server } from "http";
+import type { IdaeDbAdapter } from "@medyll/idae-db";
+import qs from "qs";
+
 interface IdaeApiOptions {
-	port?: number;
-	routes?: RouteDefinition[];
-	onInUse?: 'reboot' | 'fail' | 'replace';
-	enableAuth?: boolean;
-	jwtSecret?: string;
-	tokenExpiration?: string;
+  port?: number;
+  routes?: RouteDefinition[];
+  onInUse?: "reboot" | "fail" | "replace";
+  enableAuth?: boolean;
+  jwtSecret?: string;
+  tokenExpiration?: string;
+  idaeDbOptions?: IdaeDbOptions;
 }
 
 class IdaeApi {
-	private static instance: IdaeApi | null = null;
-	private _app: Express;
-	private options: IdaeApiOptions;
-	private routeManager: RouteManager;
-	private serverInstance!: Server;
-	private _state: 'stopped' | 'running' = 'stopped';
-	private authMiddleware: AuthMiddleWare | null = null;
+  static #instance: IdaeApi | null = null;
+  #app: Express;
+  #idaeApiOptions: IdaeApiOptions;
+  #routeManager: RouteManager;
+  #serverInstance!: Server;
+  #state: "stopped" | "running" = "stopped";
+  #authMiddleware: AuthMiddleWare | null = null;
 
-	private constructor() {
-		this._app = express();
-		this.options = {};
-		this.routeManager = RouteManager.getInstance();
+  private constructor() {
+    this.#app = express();
+    this.#idaeApiOptions = {};
+    this.#routeManager = RouteManager.getInstance();
 
-		this.initializeAuth();
-		this.configureIdaeApi();
-	}
+    this.#app.set("query parser", function (str: string) {
+      return qs.parse(str, {
+        parseArrays: true,
+        arrayLimit: Infinity,
+        depth: 10,
+        parameterLimit: 1000,
+      });
+    });
 
-	public static getInstance(): IdaeApi {
-		if (!IdaeApi.instance) {
-			IdaeApi.instance = new IdaeApi();
-		}
-		return IdaeApi.instance;
-	}
+    this.initializeAuth();
+    this.configureIdaeApi();
+  }
 
-	get state(): 'stopped' | 'running' {
-		return this._state;
-	}
+  public static getInstance(): IdaeApi {
+    if (!IdaeApi.#instance) {
+      IdaeApi.#instance = new IdaeApi();
+    }
+    return IdaeApi.#instance;
+  }
 
-	get app() {
-		return this._app;
-	}
+  get state(): "stopped" | "running" {
+    return this.#state;
+  }
 
-	public setOptions(options: IdaeApiOptions): void {
-		this.options = { ...this.options, ...options };
-	}
+  get app() {
+    return this.#app;
+  }
 
-	private initializeAuth(): void {
-		if (this.options.enableAuth && this.options.jwtSecret && this.options.tokenExpiration) {
-			this.authMiddleware = new AuthMiddleWare(
-				this.options.jwtSecret,
-				this.options.tokenExpiration
-			);
-		}
-	}
+  public setOptions(options: IdaeApiOptions): void {
+    this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
+  }
 
-	public configureIdaeApi(): void {
-		this.configureMiddleware();
-		this.configureRoutes();
-		this.configureErrorHandling();
-	}
+  private initializeAuth(): void {
+    if (
+      this.#idaeApiOptions.enableAuth &&
+      this.#idaeApiOptions.jwtSecret &&
+      this.#idaeApiOptions.tokenExpiration
+    ) {
+      this.#authMiddleware = new AuthMiddleWare(
+        this.#idaeApiOptions.jwtSecret,
+        this.#idaeApiOptions.tokenExpiration,
+      );
+    }
+  }
 
-	private configureMiddleware(): void {
-		this._app.use('/:collectionName', databaseMiddleware);
-		this._app.use(express.json());
-		this._app.use(express.urlencoded({ extended: true }));
-		if (this.authMiddleware) {
-			this._app.use(this.authMiddleware.createMiddleware());
-		}
-	}
+  public configureIdaeApi(): void {
+    this.configureMiddleware();
+    this.configureRoutes();
+    this.configureErrorHandling();
+  }
 
-	private configureRoutes(): void {
-		this.routeManager.addRoutes(defaultRoutes);
+  private configureMiddleware(): void {
+    this.#app.use("/:collectionName", idaeDbMiddleware);
+    this.#app.use(express.json());
+    this.#app.use(express.urlencoded({ extended: true }));
+    if (this.#authMiddleware) {
+      this.#app.use(this.#authMiddleware.createMiddleware());
+    }
+  }
 
-		if (this.options.routes) {
-			this.routeManager.addRoutes(this.options.routes);
-		}
+  private configureRoutes(): void {
+    this.#routeManager.addRoutes(defaultRoutes);
 
-		this.routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
+    if (this.#idaeApiOptions.routes) {
+      this.#routeManager.addRoutes(this.#idaeApiOptions.routes);
+    }
 
-		if (this.authMiddleware) {
-			this.authMiddleware.configureAuthRoutes(this._app);
-		}
-	}
+    this.#routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
 
-	private configureErrorHandling(): void {
-		this._app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-			console.error(err.stack);
-			res.status(500).json({ error: err.message });
-		});
-	}
+    if (this.#authMiddleware) {
+      this.#authMiddleware.configureAuthRoutes(this.#app);
+    }
+  }
 
-	public start(): void {
-		if (this._state === 'running') {
-			console.log('Server is already running.');
-			return;
-		}
+  // Add a route to Express
+  private addRouteToExpress(route: RouteDefinition): void {
+    const handlers = [];
 
-		const port = this.options.port || 3000;
-		this.serverInstance = this._app.listen(port, () => {
-			console.log(`Server is running on port: ${port}`);
-			this._state = 'running';
-		});
+    if (route.requiresAuth && this.#authMiddleware) {
+      handlers.push(this.#authMiddleware.createMiddleware());
+    }
 
-		this.serverInstance.on('error', this.handleServerError.bind(this));
-	}
+    handlers.push(this.handleRequest(route.handler));
 
-	private handleServerError(error: NodeJS.ErrnoException): void {
-		if (error.code === 'EADDRINUSE') {
-			console.error(`Port ${this.options.port} is already in use.`);
-			switch (this.options.onInUse) {
-				case 'reboot':
-					console.log('Rebooting server...');
-					setTimeout(() => {
-						this.stop();
-						this.start();
-					}, 1000);
-					break;
-				case 'replace':
-					console.log('Replacing existing server...');
-					this.stop();
-					this.start();
-					break;
-				default:
-					console.log('Failed to start the server.');
-					process.exit(1);
-			}
-		} else {
-			throw error;
-		}
-	}
+    if (Array.isArray(route.method)) {
+      this.#app.post(route.path, ...handlers);
+    } else {
+      this.#app[route.method as keyof Express](route.path, ...handlers);
+    }
+  }
 
-	public stop(): void {
-		if (this.serverInstance) {
-			this.serverInstance.close((err: Error) => {
-				if (err) {
-					console.error('Error while stopping the server:', err);
-				} else {
-					console.log('Server stopped successfully.');
-					this._state = 'stopped';
-				}
-			});
-		}
-	}
+  private configureErrorHandling(): void {
+    this.#app.use(
+      (err: Error, req: Request, res: Response, next: NextFunction) => {
+        console.error(err.stack);
+        res.status(500).json({ error: err.message });
+      },
+    );
+  }
 
-	// Add a route to Express
-	private addRouteToExpress(route: RouteDefinition): void {
-		const handlers = [];
+  public start(): void {
+    if (this.#state === "running") {
+      console.log("Server is already running.");
+      return;
+    }
 
-		if (route.requiresAuth && this.authMiddleware) {
-			handlers.push(this.authMiddleware.createMiddleware());
-		}
+    const port = this.#idaeApiOptions.port || 3000;
+    this.#serverInstance = this.#app.listen(port, () => {
+      console.log(`Server is running on port: ${port}`);
+      this.#state = "running";
+    });
 
-		handlers.push(this.handleRequest(route.handler));
+    this.#serverInstance.on("error", this.handleServerError.bind(this));
+  }
 
-		if (Array.isArray(route.method)) {
-			console.log({ handlers });
-			this._app.post(route.path, ...handlers);
-		} else {
-			this._app[route.method](route.path, ...handlers);
-		}
-	}
+  get idaeApiOptions(): IdaeApiOptions {
+    return this.#idaeApiOptions;
+  }
 
-	// Handle request
-	private handleRequest(
-		action: (service: DBaseService<any>, params: any, body?: any) => Promise<any>
-	) {
-		return async (req: Request, res: Response, next: NextFunction) => {
-			try {
-				const { collectionName } = req.params;
+  private handleServerError(error: NodeJS.ErrnoException): void {
+    if (error.code === "EADDRINUSE") {
+      console.error(`Port ${this.#idaeApiOptions.port} is already in use.`);
+      switch (this.#idaeApiOptions.onInUse) {
+        case "reboot":
+          console.log("Rebooting server...");
+          setTimeout(() => {
+            this.stop();
+            this.start();
+          }, 1000);
+          break;
+        case "replace":
+          console.log("Replacing existing server...");
+          this.stop();
+          this.start();
+          break;
+        default:
+          console.log("Failed to start the server.");
+          process.exit(1);
+      }
+    } else {
+      throw error;
+    }
+  }
 
-				const connection = req.dbConnection;
-				if (!connection) {
-					throw new Error('Database connection not established');
-				}
+  stop(): void {
+    if (this.#serverInstance) {
+      this.#serverInstance.close((err: Error) => {
+        if (err) {
+          console.error("Error while stopping the server:", err);
+        } else {
+          console.log("Server stopped successfully.");
+          this.#state = "stopped";
+        }
+      });
+    }
+  }
 
-				console.log('----------------------------------------------');
-				console.log(req.body);
-				console.log(req.params);
+  // Handle request
+  private handleRequest(
+    action: (
+      service: IdaeDbAdapter<any>,
+      params: any,
+      body?: any,
+      query?: any,
+    ) => Promise<any>,
+  ) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const connectedCollection = req.connectedCollection;
 
-				const databaseService = new DBaseService(collectionName, connection, 'mongodb');
-				const result = await action(databaseService, req.params, req.body);
+        if (!connectedCollection) {
+          throw new Error("Database connection not established");
+        }
 
-				res.json(result);
-			} catch (error) {
-				next(error);
-			}
-		};
-	}
+        console.log("----------------------------------------------");
+        console.log("body", req.body);
+        console.log("params", req.params);
+        console.log("query", req.query);
+        console.log("dbName", req.dbName);
 
-	// Expose RouteManager methods
-	public get router() {
-		return this.routeManager;
-	}
+        // const result = await action(databaseService, req.params, req.body);
+        const result = await action(
+          connectedCollection,
+          req.params,
+          req.body,
+          req.query.params ?? req.query,
+        );
+
+        res.json(result);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  // Expose RouteManager methods
+  public get router() {
+    return this.#routeManager;
+  }
 }
 
 // Export a single instance of ApiServer

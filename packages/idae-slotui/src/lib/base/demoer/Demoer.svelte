@@ -18,7 +18,6 @@
 
 	let activeParams: T = $state({ ...componentArgs });
 
-	$inspect(activeParams);
 </script>
 
 {#if title}

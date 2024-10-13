@@ -1,1 +1,73 @@
-:root{--finder-gap: var(--sld-gap-tiny)}.finder-container{display:inline-flex;gap:var(--finder-gap);--preset-width: var(--sld-width-small);width:var(--preset-width-small)}.finder-container{--preset-width: var(--sld-width-small);width:var(--preset-width-small);min-width:var(--preset-width-small)}.finder-container[width=tiny],.finder-container.width-tiny{--preset-width: var(--sld-width-tiny);width:var(--sld-width-tiny) !important}.finder-container[width=mini],.finder-container.width-mini{--preset-width: var(--sld-width-mini);width:var(--sld-width-mini) !important}.finder-container[width=small],.finder-container.width-small{--preset-width: var(--sld-width-small);width:var(--sld-width-small) !important}.finder-container[width=med],.finder-container.width-med{--preset-width: var(--sld-width-med);width:var(--sld-width-med) !important}.finder-container[width=kind],.finder-container.width-kind{--preset-width: var(--sld-width-kind);width:var(--sld-width-kind) !important}.finder-container[width=full],.finder-container.width-full{--preset-width: var(--sld-width-full);width:var(--sld-width-full) !important}.finder-container[width=auto],.finder-container.width-auto{--preset-width: var(--sld-width-auto);width:var(--sld-width-auto) !important}.finder-container[width=default],.finder-container.width-default{--preset-width: var(--sld-width-default);width:var(--sld-width-default) !important}.finder-container{--preset-tall: var(--sld-tall-small);min-height:var(--preset-tall-small);height:var(--preset-tall-small)}.finder-container[tall=tiny],.finder-container.tall-tiny{min-height:var(--sld-tall-tiny) !important}.finder-container[tall=mini],.finder-container.tall-mini{min-height:var(--sld-tall-mini) !important}.finder-container[tall=small],.finder-container.tall-small{min-height:var(--sld-tall-small) !important}.finder-container[tall=med],.finder-container.tall-med{min-height:var(--sld-tall-med) !important}.finder-container[tall=kind],.finder-container.tall-kind{min-height:var(--sld-tall-kind) !important}.finder-container[tall=auto],.finder-container.tall-auto{min-height:var(--sld-tall-auto) !important}.finder-container[tall=default],.finder-container.tall-default{min-height:var(--sld-tall-default) !important}
+:root {
+  --finder-gap: var(--sld-gap-tiny);
+}
+
+.finder-container {
+  display: inline-flex;
+  gap: var(--finder-gap);
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+}
+.finder-container {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  min-width: var(--preset-width-small);
+}
+.finder-container[width=tiny], .finder-container.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.finder-container[width=mini], .finder-container.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.finder-container[width=small], .finder-container.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.finder-container[width=med], .finder-container.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+.finder-container[width=kind], .finder-container.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+.finder-container[width=full], .finder-container.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+.finder-container[width=auto], .finder-container.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+.finder-container[width=default], .finder-container.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+.finder-container {
+  --preset-tall: var(--sld-tall-small);
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.finder-container[tall=tiny], .finder-container.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.finder-container[tall=mini], .finder-container.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.finder-container[tall=small], .finder-container.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.finder-container[tall=med], .finder-container.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.finder-container[tall=kind], .finder-container.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.finder-container[tall=auto], .finder-container.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.finder-container[tall=default], .finder-container.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}

@@ -1,1 +1,1155 @@
-:global(:root){--sld-button-font-size: inherit;--sld-button-radius: var(--sld-radius-small);--sld-button-border-color: var(--sld-color-primary);--sld-button-border-width: 1px;--sld-button-text-align: center;--sld-button-padding: 0;--sld-button-background: var(--sld-color-foreground-alpha-high);--sld-button-contained-background: var(--sld-color-primary);--sld-button-hover-border-color: var(--sld-color-primary);--sld-button-active-border-color: var(--sld-color-secondary);--sld-button-focus-border-color: var(--sld-color-primary);--sld-button-hover-shadow: var(--sld-elevation-3);--sld-button-active-shadow: var(--sld-elevation-4);--sld-button-focus-shadow: var(--sld-elevation-4)}.actionButton{height:100%;width:var(--w-tiny);cursor:pointer}.actionButton:hover{background-color:rgba(255,255,255,.5)}:global(button),:global(.button),:global(button.button),:global(input[type="button"]),:global(input[type="submit"]){--preset-width: var(--sld-width-small);width:var(--preset-width-small);border:none;margin:0;text-align:var(--sld-button-text-align);font-size:var(--sld-button-font-size);border-radius:var(--sld-button-radius);color:var(--sld-color-foreground);padding:var(--sld-button-padding);position:relative;display:inline-block;transition:all .2s ease-in-out;overflow:hidden;cursor:pointer;align-content:center;align-items:center;background:var(--sld-button-background);--preset-width: var(--sld-width-small);width:var(--preset-width-small)}:global(button),:global(.button),:global(button.button),:global(input[type="button"]),:global(input[type="submit"]){--preset-width: var(--sld-width-small);width:var(--preset-width-small);min-width:var(--preset-width-small)}:global(button)[width=tiny],:global(button).width-tiny,:global(.button)[width=tiny],:global(.button).width-tiny,:global(button.button)[width=tiny],:global(button.button).width-tiny,:global(input[type="button"])[width=tiny],:global(input[type="button"]).width-tiny,:global(input[type="submit"])[width=tiny],:global(input[type="submit"]).width-tiny{--preset-width: var(--sld-width-tiny);width:var(--sld-width-tiny) !important}:global(button)[width=mini],:global(button).width-mini,:global(.button)[width=mini],:global(.button).width-mini,:global(button.button)[width=mini],:global(button.button).width-mini,:global(input[type="button"])[width=mini],:global(input[type="button"]).width-mini,:global(input[type="submit"])[width=mini],:global(input[type="submit"]).width-mini{--preset-width: var(--sld-width-mini);width:var(--sld-width-mini) !important}:global(button)[width=small],:global(button).width-small,:global(.button)[width=small],:global(.button).width-small,:global(button.button)[width=small],:global(button.button).width-small,:global(input[type="button"])[width=small],:global(input[type="button"]).width-small,:global(input[type="submit"])[width=small],:global(input[type="submit"]).width-small{--preset-width: var(--sld-width-small);width:var(--sld-width-small) !important}:global(button)[width=med],:global(button).width-med,:global(.button)[width=med],:global(.button).width-med,:global(button.button)[width=med],:global(button.button).width-med,:global(input[type="button"])[width=med],:global(input[type="button"]).width-med,:global(input[type="submit"])[width=med],:global(input[type="submit"]).width-med{--preset-width: var(--sld-width-med);width:var(--sld-width-med) !important}:global(button)[width=kind],:global(button).width-kind,:global(.button)[width=kind],:global(.button).width-kind,:global(button.button)[width=kind],:global(button.button).width-kind,:global(input[type="button"])[width=kind],:global(input[type="button"]).width-kind,:global(input[type="submit"])[width=kind],:global(input[type="submit"]).width-kind{--preset-width: var(--sld-width-kind);width:var(--sld-width-kind) !important}:global(button)[width=full],:global(button).width-full,:global(.button)[width=full],:global(.button).width-full,:global(button.button)[width=full],:global(button.button).width-full,:global(input[type="button"])[width=full],:global(input[type="button"]).width-full,:global(input[type="submit"])[width=full],:global(input[type="submit"]).width-full{--preset-width: var(--sld-width-full);width:var(--sld-width-full) !important}:global(button)[width=auto],:global(button).width-auto,:global(.button)[width=auto],:global(.button).width-auto,:global(button.button)[width=auto],:global(button.button).width-auto,:global(input[type="button"])[width=auto],:global(input[type="button"]).width-auto,:global(input[type="submit"])[width=auto],:global(input[type="submit"]).width-auto{--preset-width: var(--sld-width-auto);width:var(--sld-width-auto) !important}:global(button)[width=default],:global(button).width-default,:global(.button)[width=default],:global(.button).width-default,:global(button.button)[width=default],:global(button.button).width-default,:global(input[type="button"])[width=default],:global(input[type="button"]).width-default,:global(input[type="submit"])[width=default],:global(input[type="submit"]).width-default{--preset-width: var(--sld-width-default);width:var(--sld-width-default) !important}:global(button),:global(.button),:global(button.button),:global(input[type="button"]),:global(input[type="submit"]){--preset-tall: var(--sld-tall-small);min-height:var(--preset-tall-small);height:var(--preset-tall-small)}:global(button)[tall=tiny],:global(button).tall-tiny,:global(.button)[tall=tiny],:global(.button).tall-tiny,:global(button.button)[tall=tiny],:global(button.button).tall-tiny,:global(input[type="button"])[tall=tiny],:global(input[type="button"]).tall-tiny,:global(input[type="submit"])[tall=tiny],:global(input[type="submit"]).tall-tiny{min-height:var(--sld-tall-tiny) !important}:global(button)[tall=mini],:global(button).tall-mini,:global(.button)[tall=mini],:global(.button).tall-mini,:global(button.button)[tall=mini],:global(button.button).tall-mini,:global(input[type="button"])[tall=mini],:global(input[type="button"]).tall-mini,:global(input[type="submit"])[tall=mini],:global(input[type="submit"]).tall-mini{min-height:var(--sld-tall-mini) !important}:global(button)[tall=small],:global(button).tall-small,:global(.button)[tall=small],:global(.button).tall-small,:global(button.button)[tall=small],:global(button.button).tall-small,:global(input[type="button"])[tall=small],:global(input[type="button"]).tall-small,:global(input[type="submit"])[tall=small],:global(input[type="submit"]).tall-small{min-height:var(--sld-tall-small) !important}:global(button)[tall=med],:global(button).tall-med,:global(.button)[tall=med],:global(.button).tall-med,:global(button.button)[tall=med],:global(button.button).tall-med,:global(input[type="button"])[tall=med],:global(input[type="button"]).tall-med,:global(input[type="submit"])[tall=med],:global(input[type="submit"]).tall-med{min-height:var(--sld-tall-med) !important}:global(button)[tall=kind],:global(button).tall-kind,:global(.button)[tall=kind],:global(.button).tall-kind,:global(button.button)[tall=kind],:global(button.button).tall-kind,:global(input[type="button"])[tall=kind],:global(input[type="button"]).tall-kind,:global(input[type="submit"])[tall=kind],:global(input[type="submit"]).tall-kind{min-height:var(--sld-tall-kind) !important}:global(button)[tall=auto],:global(button).tall-auto,:global(.button)[tall=auto],:global(.button).tall-auto,:global(button.button)[tall=auto],:global(button.button).tall-auto,:global(input[type="button"])[tall=auto],:global(input[type="button"]).tall-auto,:global(input[type="submit"])[tall=auto],:global(input[type="submit"]).tall-auto{min-height:var(--sld-tall-auto) !important}:global(button)[tall=default],:global(button).tall-default,:global(.button)[tall=default],:global(.button).tall-default,:global(button.button)[tall=default],:global(button.button).tall-default,:global(input[type="button"])[tall=default],:global(input[type="button"]).tall-default,:global(input[type="submit"])[tall=default],:global(input[type="submit"]).tall-default{min-height:var(--sld-tall-default) !important}:global(button)[variant*=square],:global(button)[square=true],:global(button).square,:global(.button)[variant*=square],:global(.button)[square=true],:global(.button).square,:global(button.button)[variant*=square],:global(button.button)[square=true],:global(button.button).square,:global(input[type="button"])[variant*=square],:global(input[type="button"])[square=true],:global(input[type="button"]).square,:global(input[type="submit"])[variant*=square],:global(input[type="submit"])[square=true],:global(input[type="submit"]).square{aspect-ratio:1/1 !important;height:auto}:global(button)[variant*=rounded],:global(button)[rounded=true],:global(button).rounded,:global(.button)[variant*=rounded],:global(.button)[rounded=true],:global(.button).rounded,:global(button.button)[variant*=rounded],:global(button.button)[rounded=true],:global(button.button).rounded,:global(input[type="button"])[variant*=rounded],:global(input[type="button"])[rounded=true],:global(input[type="button"]).rounded,:global(input[type="submit"])[variant*=rounded],:global(input[type="submit"])[rounded=true],:global(input[type="submit"]).rounded{border-radius:50%}:global(button).elevation-0,:global(button)[elevation-0],:global(.button).elevation-0,:global(.button)[elevation-0],:global(button.button).elevation-0,:global(button.button)[elevation-0],:global(input[type="button"]).elevation-0,:global(input[type="button"])[elevation-0],:global(input[type="submit"]).elevation-0,:global(input[type="submit"])[elevation-0]{box-shadow:var(--sld-elevation-0)}:global(button).elevation-through,:global(button)[elevation-through],:global(.button).elevation-through,:global(.button)[elevation-through],:global(button.button).elevation-through,:global(button.button)[elevation-through],:global(input[type="button"]).elevation-through,:global(input[type="button"])[elevation-through],:global(input[type="submit"]).elevation-through,:global(input[type="submit"])[elevation-through]{box-shadow:var(--sld-elevation-through)}:global(button).elevation-5,:global(button)[elevation-5],:global(.button).elevation-5,:global(.button)[elevation-5],:global(button.button).elevation-5,:global(button.button)[elevation-5],:global(input[type="button"]).elevation-5,:global(input[type="button"])[elevation-5],:global(input[type="submit"]).elevation-5,:global(input[type="submit"])[elevation-5]{box-shadow:var(--sld-elevation-5)}:global(button) :focus,:global(.button) :focus,:global(button.button) :focus,:global(input[type="button"]) :focus,:global(input[type="submit"]) :focus{outline:1px solid var(--sld-button-focus-border-color);outline-offset:2px;box-shadow:var(--sld-button-focus-shadow)}:global(button) :focus-visible,:global(.button) :focus-visible,:global(button.button) :focus-visible,:global(input[type="button"]) :focus-visible,:global(input[type="submit"]) :focus-visible{outline:1px solid var(--sld-button-focus-border-color);outline-offset:-2px;box-shadow:var(--sld-button-focus-shadow)}:global(button) :hover,:global(.button) :hover,:global(button.button) :hover,:global(input[type="button"]) :hover,:global(input[type="submit"]) :hover{background-color:var(--sld-button-hover-background);box-shadow:var(--sld-button-hover-shadow)}:global(button) :active,:global(.button) :active,:global(button.button) :active,:global(input[type="button"]) :active,:global(input[type="submit"]) :active{transform:translateY(1px);box-shadow:var(--sld-button-active-shadow)}:global(button) :focus:not(:focus-visible),:global(.button) :focus:not(:focus-visible),:global(button.button) :focus:not(:focus-visible),:global(input[type="button"]) :focus:not(:focus-visible),:global(input[type="submit"]) :focus:not(:focus-visible){box-shadow:var(--sld-button-focus-shadow)}:global(button) .button-start,:global(.button) .button-start,:global(button.button) .button-start,:global(input[type="button"]) .button-start,:global(input[type="submit"]) .button-start{--preset-ellipsis-line: 1;position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;justify-content:center;padding:0 .5rem}:global(button) .button-start[ellipsis],:global(button) .button-start.ellipsis,:global(.button) .button-start[ellipsis],:global(.button) .button-start.ellipsis,:global(button.button) .button-start[ellipsis],:global(button.button) .button-start.ellipsis,:global(input[type="button"]) .button-start[ellipsis],:global(input[type="button"]) .button-start.ellipsis,:global(input[type="submit"]) .button-start[ellipsis],:global(input[type="submit"]) .button-start.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}:global(button) .button-start.ellipsis-line-1,:global(.button) .button-start.ellipsis-line-1,:global(button.button) .button-start.ellipsis-line-1,:global(input[type="button"]) .button-start.ellipsis-line-1,:global(input[type="submit"]) .button-start.ellipsis-line-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;--preset-ellipsis-line: 1}:global(button) .button-start.ellipsis-line-2,:global(.button) .button-start.ellipsis-line-2,:global(button.button) .button-start.ellipsis-line-2,:global(input[type="button"]) .button-start.ellipsis-line-2,:global(input[type="submit"]) .button-start.ellipsis-line-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;--preset-ellipsis-line: 2}:global(button) .button-start.ellipsis-line-3,:global(.button) .button-start.ellipsis-line-3,:global(button.button) .button-start.ellipsis-line-3,:global(input[type="button"]) .button-start.ellipsis-line-3,:global(input[type="submit"]) .button-start.ellipsis-line-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;--preset-ellipsis-line: 3}:global(button) .button-start.ellipsis-line-4,:global(.button) .button-start.ellipsis-line-4,:global(button.button) .button-start.ellipsis-line-4,:global(input[type="button"]) .button-start.ellipsis-line-4,:global(input[type="submit"]) .button-start.ellipsis-line-4{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;--preset-ellipsis-line: 4}:global(button) .button-start.ellipsis-line-5,:global(.button) .button-start.ellipsis-line-5,:global(button.button) .button-start.ellipsis-line-5,:global(input[type="button"]) .button-start.ellipsis-line-5,:global(input[type="submit"]) .button-start.ellipsis-line-5{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;--preset-ellipsis-line: 5}:global(button) .button-start:empty,:global(.button) .button-start:empty,:global(button.button) .button-start:empty,:global(input[type="button"]) .button-start:empty,:global(input[type="submit"]) .button-start:empty{display:none}:global(button) .button-central,:global(.button) .button-central,:global(button.button) .button-central,:global(input[type="button"]) .button-central,:global(input[type="submit"]) .button-central{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0 .5rem;text-align:var(--sld-button-text-align)}:global(button) .button-central:empty,:global(.button) .button-central:empty,:global(button.button) .button-central:empty,:global(input[type="button"]) .button-central:empty,:global(input[type="submit"]) .button-central:empty{display:none}:global(button) .button-action,:global(.button) .button-action,:global(button.button) .button-action,:global(input[type="button"]) .button-action,:global(input[type="submit"]) .button-action{position:absolute;top:0;right:0;height:100%;display:flex;align-items:center;justify-content:center;width:var(--w-tiny);padding:0 .5rem;cursor:pointer}:global(button) .button-action:empty,:global(.button) .button-action:empty,:global(button.button) .button-action:empty,:global(input[type="button"]) .button-action:empty,:global(input[type="submit"]) .button-action:empty{display:none}:global(button) .button-action:hover,:global(.button) .button-action:hover,:global(button.button) .button-action:hover,:global(input[type="button"]) .button-action:hover,:global(input[type="submit"]) .button-action:hover{background-color:var(--sld-button-action-hover-background)}:global(button).loading,:global(button)[aria-busy=true],:global(.button).loading,:global(.button)[aria-busy=true],:global(button.button).loading,:global(button.button)[aria-busy=true],:global(input[type="button"]).loading,:global(input[type="button"])[aria-busy=true],:global(input[type="submit"]).loading,:global(input[type="submit"])[aria-busy=true]{position:relative;color:rgba(0,0,0,0);pointer-events:none}:global(button).loading::after,:global(button)[aria-busy=true]::after,:global(.button).loading::after,:global(.button)[aria-busy=true]::after,:global(button.button).loading::after,:global(button.button)[aria-busy=true]::after,:global(input[type="button"]).loading::after,:global(input[type="button"])[aria-busy=true]::after,:global(input[type="submit"]).loading::after,:global(input[type="submit"])[aria-busy=true]::after{content:" ";position:absolute;width:16px;height:16px;top:50%;left:50%;margin-top:-8px;margin-left:-8px;border:2px solid var(--sld-color-secondary);border-top-color:rgba(0,0,0,0);border-bottom-color:rgba(0,0,0,0);border-radius:50%;animation:button-spinner .6s linear infinite}:global(button)[disabled],:global(button).disabled,:global(button)[aria-disabled=true],:global(.button)[disabled],:global(.button).disabled,:global(.button)[aria-disabled=true],:global(button.button)[disabled],:global(button.button).disabled,:global(button.button)[aria-disabled=true],:global(input[type="button"])[disabled],:global(input[type="button"]).disabled,:global(input[type="button"])[aria-disabled=true],:global(input[type="submit"])[disabled],:global(input[type="submit"]).disabled,:global(input[type="submit"])[aria-disabled=true]{color:var(--color-gray-800);border-color:var(--color-gray-400);opacity:.6;cursor:not-allowed;box-shadow:none;pointer-events:none}:global(button)[aria-pressed=true],:global(button).selected,:global(.button)[aria-pressed=true],:global(.button).selected,:global(button.button)[aria-pressed=true],:global(button.button).selected,:global(input[type="button"])[aria-pressed=true],:global(input[type="button"]).selected,:global(input[type="submit"])[aria-pressed=true],:global(input[type="submit"]).selected{box-shadow:var(--sld-elevation-3);background-color:var(--sld-color-secondary);font-weight:bold}:global(button) .chip,:global(.button) .chip,:global(button.button) .chip,:global(input[type="button"]) .chip,:global(input[type="submit"]) .chip{position:absolute;z-index:2;height:3px;left:50%;transform:translate(-50%, 0);width:50%;background-color:var(--css-button-chip-color, var(--sld-color-primary));border-radius:var(--sld-radius-large);bottom:2px}:global(button) .loadingButtonZone,:global(.button) .loadingButtonZone,:global(button.button) .loadingButtonZone,:global(input[type="button"]) .loadingButtonZone,:global(input[type="submit"]) .loadingButtonZone{z-index:10;position:absolute;top:0;bottom:0;right:0;left:0;height:100%;overflow:hidden;align-content:center;justify-content:space-around}:global(button),:global(.button),:global(button.button),:global(input[type="button"]),:global(input[type="submit"]){--preset-width: var(--sld-width-small);width:var(--preset-width-small);min-width:var(--preset-width-small)}:global(button)[width=tiny],:global(button).width-tiny,:global(.button)[width=tiny],:global(.button).width-tiny,:global(button.button)[width=tiny],:global(button.button).width-tiny,:global(input[type="button"])[width=tiny],:global(input[type="button"]).width-tiny,:global(input[type="submit"])[width=tiny],:global(input[type="submit"]).width-tiny{--preset-width: var(--sld-width-tiny);width:var(--sld-width-tiny) !important}:global(button)[width=mini],:global(button).width-mini,:global(.button)[width=mini],:global(.button).width-mini,:global(button.button)[width=mini],:global(button.button).width-mini,:global(input[type="button"])[width=mini],:global(input[type="button"]).width-mini,:global(input[type="submit"])[width=mini],:global(input[type="submit"]).width-mini{--preset-width: var(--sld-width-mini);width:var(--sld-width-mini) !important}:global(button)[width=small],:global(button).width-small,:global(.button)[width=small],:global(.button).width-small,:global(button.button)[width=small],:global(button.button).width-small,:global(input[type="button"])[width=small],:global(input[type="button"]).width-small,:global(input[type="submit"])[width=small],:global(input[type="submit"]).width-small{--preset-width: var(--sld-width-small);width:var(--sld-width-small) !important}:global(button)[width=med],:global(button).width-med,:global(.button)[width=med],:global(.button).width-med,:global(button.button)[width=med],:global(button.button).width-med,:global(input[type="button"])[width=med],:global(input[type="button"]).width-med,:global(input[type="submit"])[width=med],:global(input[type="submit"]).width-med{--preset-width: var(--sld-width-med);width:var(--sld-width-med) !important}:global(button)[width=kind],:global(button).width-kind,:global(.button)[width=kind],:global(.button).width-kind,:global(button.button)[width=kind],:global(button.button).width-kind,:global(input[type="button"])[width=kind],:global(input[type="button"]).width-kind,:global(input[type="submit"])[width=kind],:global(input[type="submit"]).width-kind{--preset-width: var(--sld-width-kind);width:var(--sld-width-kind) !important}:global(button)[width=full],:global(button).width-full,:global(.button)[width=full],:global(.button).width-full,:global(button.button)[width=full],:global(button.button).width-full,:global(input[type="button"])[width=full],:global(input[type="button"]).width-full,:global(input[type="submit"])[width=full],:global(input[type="submit"]).width-full{--preset-width: var(--sld-width-full);width:var(--sld-width-full) !important}:global(button)[width=auto],:global(button).width-auto,:global(.button)[width=auto],:global(.button).width-auto,:global(button.button)[width=auto],:global(button.button).width-auto,:global(input[type="button"])[width=auto],:global(input[type="button"]).width-auto,:global(input[type="submit"])[width=auto],:global(input[type="submit"]).width-auto{--preset-width: var(--sld-width-auto);width:var(--sld-width-auto) !important}:global(button)[width=default],:global(button).width-default,:global(.button)[width=default],:global(.button).width-default,:global(button.button)[width=default],:global(button.button).width-default,:global(input[type="button"])[width=default],:global(input[type="button"]).width-default,:global(input[type="submit"])[width=default],:global(input[type="submit"]).width-default{--preset-width: var(--sld-width-default);width:var(--sld-width-default) !important}:global(button),:global(.button),:global(button.button),:global(input[type="button"]),:global(input[type="submit"]){--preset-tall: var(--sld-tall-small);min-height:var(--preset-tall-small);height:var(--preset-tall-small)}:global(button)[tall=tiny],:global(button).tall-tiny,:global(.button)[tall=tiny],:global(.button).tall-tiny,:global(button.button)[tall=tiny],:global(button.button).tall-tiny,:global(input[type="button"])[tall=tiny],:global(input[type="button"]).tall-tiny,:global(input[type="submit"])[tall=tiny],:global(input[type="submit"]).tall-tiny{min-height:var(--sld-tall-tiny) !important}:global(button)[tall=mini],:global(button).tall-mini,:global(.button)[tall=mini],:global(.button).tall-mini,:global(button.button)[tall=mini],:global(button.button).tall-mini,:global(input[type="button"])[tall=mini],:global(input[type="button"]).tall-mini,:global(input[type="submit"])[tall=mini],:global(input[type="submit"]).tall-mini{min-height:var(--sld-tall-mini) !important}:global(button)[tall=small],:global(button).tall-small,:global(.button)[tall=small],:global(.button).tall-small,:global(button.button)[tall=small],:global(button.button).tall-small,:global(input[type="button"])[tall=small],:global(input[type="button"]).tall-small,:global(input[type="submit"])[tall=small],:global(input[type="submit"]).tall-small{min-height:var(--sld-tall-small) !important}:global(button)[tall=med],:global(button).tall-med,:global(.button)[tall=med],:global(.button).tall-med,:global(button.button)[tall=med],:global(button.button).tall-med,:global(input[type="button"])[tall=med],:global(input[type="button"]).tall-med,:global(input[type="submit"])[tall=med],:global(input[type="submit"]).tall-med{min-height:var(--sld-tall-med) !important}:global(button)[tall=kind],:global(button).tall-kind,:global(.button)[tall=kind],:global(.button).tall-kind,:global(button.button)[tall=kind],:global(button.button).tall-kind,:global(input[type="button"])[tall=kind],:global(input[type="button"]).tall-kind,:global(input[type="submit"])[tall=kind],:global(input[type="submit"]).tall-kind{min-height:var(--sld-tall-kind) !important}:global(button)[tall=auto],:global(button).tall-auto,:global(.button)[tall=auto],:global(.button).tall-auto,:global(button.button)[tall=auto],:global(button.button).tall-auto,:global(input[type="button"])[tall=auto],:global(input[type="button"]).tall-auto,:global(input[type="submit"])[tall=auto],:global(input[type="submit"]).tall-auto{min-height:var(--sld-tall-auto) !important}:global(button)[tall=default],:global(button).tall-default,:global(.button)[tall=default],:global(.button).tall-default,:global(button.button)[tall=default],:global(button.button).tall-default,:global(input[type="button"])[tall=default],:global(input[type="button"]).tall-default,:global(input[type="submit"])[tall=default],:global(input[type="submit"]).tall-default{min-height:var(--sld-tall-default) !important}:global(button)[variant*=square],:global(button)[square=true],:global(button).square,:global(.button)[variant*=square],:global(.button)[square=true],:global(.button).square,:global(button.button)[variant*=square],:global(button.button)[square=true],:global(button.button).square,:global(input[type="button"])[variant*=square],:global(input[type="button"])[square=true],:global(input[type="button"]).square,:global(input[type="submit"])[variant*=square],:global(input[type="submit"])[square=true],:global(input[type="submit"]).square{aspect-ratio:1/1 !important;height:auto}:global(button)[variant*=rounded],:global(button)[rounded=true],:global(button).rounded,:global(.button)[variant*=rounded],:global(.button)[rounded=true],:global(.button).rounded,:global(button.button)[variant*=rounded],:global(button.button)[rounded=true],:global(button.button).rounded,:global(input[type="button"])[variant*=rounded],:global(input[type="button"])[rounded=true],:global(input[type="button"]).rounded,:global(input[type="submit"])[variant*=rounded],:global(input[type="submit"])[rounded=true],:global(input[type="submit"]).rounded{border-radius:50%}:global(button)[variant*=bordered],:global(button)[bordered=true],:global(button).bordered,:global(.button)[variant*=bordered],:global(.button)[bordered=true],:global(.button).bordered,:global(button.button)[variant*=bordered],:global(button.button)[bordered=true],:global(button.button).bordered,:global(input[type="button"])[variant*=bordered],:global(input[type="button"])[bordered=true],:global(input[type="button"]).bordered,:global(input[type="submit"])[variant*=bordered],:global(input[type="submit"])[bordered=true],:global(input[type="submit"]).bordered{color:var(--sld-color-foreground);border:var(--sld-button-border-width) solid var(--sld-button-border-color);box-shadow:var(--sld-elevation-1);background-color:var(--sld-button-background)}:global(button)[variant*=bordered]:hover,:global(button)[bordered=true]:hover,:global(button).bordered:hover,:global(.button)[variant*=bordered]:hover,:global(.button)[bordered=true]:hover,:global(.button).bordered:hover,:global(button.button)[variant*=bordered]:hover,:global(button.button)[bordered=true]:hover,:global(button.button).bordered:hover,:global(input[type="button"])[variant*=bordered]:hover,:global(input[type="button"])[bordered=true]:hover,:global(input[type="button"]).bordered:hover,:global(input[type="submit"])[variant*=bordered]:hover,:global(input[type="submit"])[bordered=true]:hover,:global(input[type="submit"]).bordered:hover{border-color:var(--sld-color-primary);box-shadow:var(--sld-button-hover-shadow)}:global(button)[variant*=bordered]:focus,:global(button)[variant*=bordered]:active,:global(button)[bordered=true]:focus,:global(button)[bordered=true]:active,:global(button).bordered:focus,:global(button).bordered:active,:global(.button)[variant*=bordered]:focus,:global(.button)[variant*=bordered]:active,:global(.button)[bordered=true]:focus,:global(.button)[bordered=true]:active,:global(.button).bordered:focus,:global(.button).bordered:active,:global(button.button)[variant*=bordered]:focus,:global(button.button)[variant*=bordered]:active,:global(button.button)[bordered=true]:focus,:global(button.button)[bordered=true]:active,:global(button.button).bordered:focus,:global(button.button).bordered:active,:global(input[type="button"])[variant*=bordered]:focus,:global(input[type="button"])[variant*=bordered]:active,:global(input[type="button"])[bordered=true]:focus,:global(input[type="button"])[bordered=true]:active,:global(input[type="button"]).bordered:focus,:global(input[type="button"]).bordered:active,:global(input[type="submit"])[variant*=bordered]:focus,:global(input[type="submit"])[variant*=bordered]:active,:global(input[type="submit"])[bordered=true]:focus,:global(input[type="submit"])[bordered=true]:active,:global(input[type="submit"]).bordered:focus,:global(input[type="submit"]).bordered:active{border-color:var(--sld-button-active-border-color);box-shadow:var(--sld-button-active-shadow)}:global(button)[variant*=contained],:global(button)[contained=true],:global(button).contained,:global(.button)[variant*=contained],:global(.button)[contained=true],:global(.button).contained,:global(button.button)[variant*=contained],:global(button.button)[contained=true],:global(button.button).contained,:global(input[type="button"])[variant*=contained],:global(input[type="button"])[contained=true],:global(input[type="button"]).contained,:global(input[type="submit"])[variant*=contained],:global(input[type="submit"])[contained=true],:global(input[type="submit"]).contained{border:var(--sld-button-border-width) solid var(--sld-button-border-color);color:var(--sld-color-on-primary);background-color:var(--sld-button-contained-background);background-clip:padding-box;box-shadow:var(--sld-elevation-1)}:global(button)[variant*=contained]:hover,:global(button)[contained=true]:hover,:global(button).contained:hover,:global(.button)[variant*=contained]:hover,:global(.button)[contained=true]:hover,:global(.button).contained:hover,:global(button.button)[variant*=contained]:hover,:global(button.button)[contained=true]:hover,:global(button.button).contained:hover,:global(input[type="button"])[variant*=contained]:hover,:global(input[type="button"])[contained=true]:hover,:global(input[type="button"]).contained:hover,:global(input[type="submit"])[variant*=contained]:hover,:global(input[type="submit"])[contained=true]:hover,:global(input[type="submit"]).contained:hover{background-color:var(--sld-color-secondary);color:var(--sld-color-on-secondary)}:global(button)[variant*=contained]:focus,:global(button)[variant*=contained]:active,:global(button)[contained=true]:focus,:global(button)[contained=true]:active,:global(button).contained:focus,:global(button).contained:active,:global(.button)[variant*=contained]:focus,:global(.button)[variant*=contained]:active,:global(.button)[contained=true]:focus,:global(.button)[contained=true]:active,:global(.button).contained:focus,:global(.button).contained:active,:global(button.button)[variant*=contained]:focus,:global(button.button)[variant*=contained]:active,:global(button.button)[contained=true]:focus,:global(button.button)[contained=true]:active,:global(button.button).contained:focus,:global(button.button).contained:active,:global(input[type="button"])[variant*=contained]:focus,:global(input[type="button"])[variant*=contained]:active,:global(input[type="button"])[contained=true]:focus,:global(input[type="button"])[contained=true]:active,:global(input[type="button"]).contained:focus,:global(input[type="button"]).contained:active,:global(input[type="submit"])[variant*=contained]:focus,:global(input[type="submit"])[variant*=contained]:active,:global(input[type="submit"])[contained=true]:focus,:global(input[type="submit"])[contained=true]:active,:global(input[type="submit"]).contained:focus,:global(input[type="submit"]).contained:active{background-color:var(--sld-color-tertiary);color:var(--sld-color-on-tertiary);box-shadow:var(--sld-button-active-shadow)}:global(button)[variant*=link],:global(button)[link=true],:global(button).link,:global(button)[role=link],:global(.button)[variant*=link],:global(.button)[link=true],:global(.button).link,:global(.button)[role=link],:global(button.button)[variant*=link],:global(button.button)[link=true],:global(button.button).link,:global(button.button)[role=link],:global(input[type="button"])[variant*=link],:global(input[type="button"])[link=true],:global(input[type="button"]).link,:global(input[type="button"])[role=link],:global(input[type="submit"])[variant*=link],:global(input[type="submit"])[link=true],:global(input[type="submit"]).link,:global(input[type="submit"])[role=link]{color:var(--sld-color-primary);text-decoration:underline;text-underline-offset:.35rem;background-color:rgba(0,0,0,0);cursor:pointer;border:none}:global(button)[variant*=link]:hover,:global(button)[link=true]:hover,:global(button).link:hover,:global(button)[role=link]:hover,:global(.button)[variant*=link]:hover,:global(.button)[link=true]:hover,:global(.button).link:hover,:global(.button)[role=link]:hover,:global(button.button)[variant*=link]:hover,:global(button.button)[link=true]:hover,:global(button.button).link:hover,:global(button.button)[role=link]:hover,:global(input[type="button"])[variant*=link]:hover,:global(input[type="button"])[link=true]:hover,:global(input[type="button"]).link:hover,:global(input[type="button"])[role=link]:hover,:global(input[type="submit"])[variant*=link]:hover,:global(input[type="submit"])[link=true]:hover,:global(input[type="submit"]).link:hover,:global(input[type="submit"])[role=link]:hover{text-decoration:underline}:global(button)[variant*=link]:focus,:global(button)[variant*=link]:active,:global(button)[link=true]:focus,:global(button)[link=true]:active,:global(button).link:focus,:global(button).link:active,:global(button)[role=link]:focus,:global(button)[role=link]:active,:global(.button)[variant*=link]:focus,:global(.button)[variant*=link]:active,:global(.button)[link=true]:focus,:global(.button)[link=true]:active,:global(.button).link:focus,:global(.button).link:active,:global(.button)[role=link]:focus,:global(.button)[role=link]:active,:global(button.button)[variant*=link]:focus,:global(button.button)[variant*=link]:active,:global(button.button)[link=true]:focus,:global(button.button)[link=true]:active,:global(button.button).link:focus,:global(button.button).link:active,:global(button.button)[role=link]:focus,:global(button.button)[role=link]:active,:global(input[type="button"])[variant*=link]:focus,:global(input[type="button"])[variant*=link]:active,:global(input[type="button"])[link=true]:focus,:global(input[type="button"])[link=true]:active,:global(input[type="button"]).link:focus,:global(input[type="button"]).link:active,:global(input[type="button"])[role=link]:focus,:global(input[type="button"])[role=link]:active,:global(input[type="submit"])[variant*=link]:focus,:global(input[type="submit"])[variant*=link]:active,:global(input[type="submit"])[link=true]:focus,:global(input[type="submit"])[link=true]:active,:global(input[type="submit"]).link:focus,:global(input[type="submit"]).link:active,:global(input[type="submit"])[role=link]:focus,:global(input[type="submit"])[role=link]:active{text-decoration:underline;outline:none;box-shadow:none}:global(button)[variant*=naked],:global(button)[naked=true],:global(button).naked,:global(.button)[variant*=naked],:global(.button)[naked=true],:global(.button).naked,:global(button.button)[variant*=naked],:global(button.button)[naked=true],:global(button.button).naked,:global(input[type="button"])[variant*=naked],:global(input[type="button"])[naked=true],:global(input[type="button"]).naked,:global(input[type="submit"])[variant*=naked],:global(input[type="submit"])[naked=true],:global(input[type="submit"]).naked{color:inherit;background-color:rgba(0,0,0,0);border:0px solid rgba(0,0,0,0);cursor:pointer}:global(button)[variant*=naked]:hover,:global(button)[naked=true]:hover,:global(button).naked:hover,:global(.button)[variant*=naked]:hover,:global(.button)[naked=true]:hover,:global(.button).naked:hover,:global(button.button)[variant*=naked]:hover,:global(button.button)[naked=true]:hover,:global(button.button).naked:hover,:global(input[type="button"])[variant*=naked]:hover,:global(input[type="button"])[naked=true]:hover,:global(input[type="button"]).naked:hover,:global(input[type="submit"])[variant*=naked]:hover,:global(input[type="submit"])[naked=true]:hover,:global(input[type="submit"]).naked:hover{border-color:var(--sld-hover-border-color);background-color:var(--sld-background-disabled)}:global(button)[variant*=naked]:hover,:global(button)[naked=true]:hover,:global(button).naked:hover,:global(.button)[variant*=naked]:hover,:global(.button)[naked=true]:hover,:global(.button).naked:hover,:global(button.button)[variant*=naked]:hover,:global(button.button)[naked=true]:hover,:global(button.button).naked:hover,:global(input[type="button"])[variant*=naked]:hover,:global(input[type="button"])[naked=true]:hover,:global(input[type="button"]).naked:hover,:global(input[type="submit"])[variant*=naked]:hover,:global(input[type="submit"])[naked=true]:hover,:global(input[type="submit"]).naked:hover{background-color:var(--sld-button-hover-background)}:global(button)[variant*=naked]:active,:global(button)[variant*=naked]:focus,:global(button)[naked=true]:active,:global(button)[naked=true]:focus,:global(button).naked:active,:global(button).naked:focus,:global(.button)[variant*=naked]:active,:global(.button)[variant*=naked]:focus,:global(.button)[naked=true]:active,:global(.button)[naked=true]:focus,:global(.button).naked:active,:global(.button).naked:focus,:global(button.button)[variant*=naked]:active,:global(button.button)[variant*=naked]:focus,:global(button.button)[naked=true]:active,:global(button.button)[naked=true]:focus,:global(button.button).naked:active,:global(button.button).naked:focus,:global(input[type="button"])[variant*=naked]:active,:global(input[type="button"])[variant*=naked]:focus,:global(input[type="button"])[naked=true]:active,:global(input[type="button"])[naked=true]:focus,:global(input[type="button"]).naked:active,:global(input[type="button"]).naked:focus,:global(input[type="submit"])[variant*=naked]:active,:global(input[type="submit"])[variant*=naked]:focus,:global(input[type="submit"])[naked=true]:active,:global(input[type="submit"])[naked=true]:focus,:global(input[type="submit"]).naked:active,:global(input[type="submit"]).naked:focus{background-color:rgba(0,0,0,0);border:.5px solid rgba(0,0,0,0);color:inherit}:global(button)[variant*=flat],:global(button)[flat=true],:global(button).flat,:global(.button)[variant*=flat],:global(.button)[flat=true],:global(.button).flat,:global(button.button)[variant*=flat],:global(button.button)[flat=true],:global(button.button).flat,:global(input[type="button"])[variant*=flat],:global(input[type="button"])[flat=true],:global(input[type="button"]).flat,:global(input[type="submit"])[variant*=flat],:global(input[type="submit"])[flat=true],:global(input[type="submit"]).flat{color:inherit;background-color:rgba(0,0,0,0);border:none;border-radius:0;cursor:pointer}:global(button)[variant*=flat]:hover,:global(button)[flat=true]:hover,:global(button).flat:hover,:global(.button)[variant*=flat]:hover,:global(.button)[flat=true]:hover,:global(.button).flat:hover,:global(button.button)[variant*=flat]:hover,:global(button.button)[flat=true]:hover,:global(button.button).flat:hover,:global(input[type="button"])[variant*=flat]:hover,:global(input[type="button"])[flat=true]:hover,:global(input[type="button"]).flat:hover,:global(input[type="submit"])[variant*=flat]:hover,:global(input[type="submit"])[flat=true]:hover,:global(input[type="submit"]).flat:hover{background-color:var(--sld-button-hover-background)}:global(button)[variant*=flat]:active,:global(button)[variant*=flat]:focus,:global(button)[flat=true]:active,:global(button)[flat=true]:focus,:global(button).flat:active,:global(button).flat:focus,:global(.button)[variant*=flat]:active,:global(.button)[variant*=flat]:focus,:global(.button)[flat=true]:active,:global(.button)[flat=true]:focus,:global(.button).flat:active,:global(.button).flat:focus,:global(button.button)[variant*=flat]:active,:global(button.button)[variant*=flat]:focus,:global(button.button)[flat=true]:active,:global(button.button)[flat=true]:focus,:global(button.button).flat:active,:global(button.button).flat:focus,:global(input[type="button"])[variant*=flat]:active,:global(input[type="button"])[variant*=flat]:focus,:global(input[type="button"])[flat=true]:active,:global(input[type="button"])[flat=true]:focus,:global(input[type="button"]).flat:active,:global(input[type="button"]).flat:focus,:global(input[type="submit"])[variant*=flat]:active,:global(input[type="submit"])[variant*=flat]:focus,:global(input[type="submit"])[flat=true]:active,:global(input[type="submit"])[flat=true]:focus,:global(input[type="submit"]).flat:active,:global(input[type="submit"]).flat:focus{background-color:rgba(0,0,0,0);border:none;border-radius:0;color:inherit}@keyframes button-spinner{to{transform:rotate(360deg)}}
+:global(:root) {
+  --sld-button-font-size: inherit;
+  --sld-button-radius: var(--sld-radius-small);
+  --sld-button-border-color: var(--sld-color-primary);
+  --sld-button-border-width: 1px;
+  --sld-button-text-align: center;
+  --sld-button-padding: 0;
+  --sld-button-background: var(--sld-color-foreground-alpha-high);
+  --sld-button-contained-background: var(--sld-color-primary-alpha-high);
+  --sld-button-hover-border-color: var(--sld-color-primary);
+  --sld-button-active-border-color: var(--sld-color-secondary);
+  --sld-button-focus-border-color: var(--sld-color-primary);
+  --sld-button-hover-shadow: var(--sld-elevation-3);
+  --sld-button-active-shadow: var(--sld-elevation-4);
+  --sld-button-focus-shadow: var(--sld-elevation-4);
+}
+
+.actionButton {
+  height: 100%;
+  width: var(--w-tiny);
+  cursor: pointer;
+}
+.actionButton:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  text-align: var(--sld-button-text-align);
+  font-size: var(--sld-button-font-size);
+  border-radius: var(--sld-button-radius);
+  color: var(--sld-color-foreground);
+  padding: var(--sld-button-padding);
+  position: relative;
+  display: inline-flex;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+  align-content: center;
+  align-items: center;
+  background: var(--sld-button-background);
+  /*     :focus {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: 2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :focus-visible {
+      outline: 1px solid var(--sld-button-focus-border-color);
+      outline-offset: -2px;
+      box-shadow: var(--sld-button-focus-shadow);
+  }
+  :hover {
+      background-color: var(--sld-button-hover-background);
+      box-shadow: var(--sld-button-hover-shadow);
+  }
+  :active {
+      transform: translateY(1px);
+      box-shadow: var(--sld-button-active-shadow);
+  }
+  :focus:not(:focus-visible) {
+      box-shadow: var(--sld-button-focus-shadow);
+  } */
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  min-width: var(--preset-width-small);
+}
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-tall: var(--sld-tall-small);
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
+:global(.button)[variant*=square],
+:global(.button)[square=true],
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
+:global(input[type="button"])[variant*=square],
+:global(input[type="button"])[square=true],
+:global(input[type="button"]).square,
+:global(input[type="submit"])[variant*=square],
+:global(input[type="submit"])[square=true],
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+:global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
+:global(.button)[variant*=rounded],
+:global(.button)[rounded=true],
+:global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
+:global(input[type="button"])[variant*=rounded],
+:global(input[type="button"])[rounded=true],
+:global(input[type="button"]).rounded,
+:global(input[type="submit"])[variant*=rounded],
+:global(input[type="submit"])[rounded=true],
+:global(input[type="submit"]).rounded {
+  border-radius: 50%;
+}
+:global(button).elevation-0, :global(button)[elevation-0],
+:global(.button).elevation-0,
+:global(.button)[elevation-0],
+:global(button.button).elevation-0,
+:global(button.button)[elevation-0],
+:global(input[type="button"]).elevation-0,
+:global(input[type="button"])[elevation-0],
+:global(input[type="submit"]).elevation-0,
+:global(input[type="submit"])[elevation-0] {
+  box-shadow: var(--sld-elevation-0);
+}
+:global(button).elevation-through, :global(button)[elevation-through],
+:global(.button).elevation-through,
+:global(.button)[elevation-through],
+:global(button.button).elevation-through,
+:global(button.button)[elevation-through],
+:global(input[type="button"]).elevation-through,
+:global(input[type="button"])[elevation-through],
+:global(input[type="submit"]).elevation-through,
+:global(input[type="submit"])[elevation-through] {
+  box-shadow: var(--sld-elevation-through);
+}
+:global(button).elevation-5, :global(button)[elevation-5],
+:global(.button).elevation-5,
+:global(.button)[elevation-5],
+:global(button.button).elevation-5,
+:global(button.button)[elevation-5],
+:global(input[type="button"]).elevation-5,
+:global(input[type="button"])[elevation-5],
+:global(input[type="submit"]).elevation-5,
+:global(input[type="submit"])[elevation-5] {
+  box-shadow: var(--sld-elevation-5);
+}
+:global(button) .button-start,
+:global(.button) .button-start,
+:global(button.button) .button-start,
+:global(input[type="button"]) .button-start,
+:global(input[type="submit"]) .button-start {
+  position: relative;
+  top: 0;
+  left: 0;
+  max-height: 100%;
+  align-items: center;
+  align-content: center;
+  padding: 0 0.5rem;
+  display: block;
+}
+:global(button) .button-start:empty,
+:global(.button) .button-start:empty,
+:global(button.button) .button-start:empty,
+:global(input[type="button"]) .button-start:empty,
+:global(input[type="submit"]) .button-start:empty {
+  display: none;
+}
+:global(button) .button-central,
+:global(.button) .button-central,
+:global(button.button) .button-central,
+:global(input[type="button"]) .button-central,
+:global(input[type="submit"]) .button-central {
+  --preset-ellipsis-line: 1;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  flex: 1;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  text-align: var(--sld-button-text-align, center);
+  overflow: hidden;
+}
+:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
+:global(.button) .button-central[ellipsis],
+:global(.button) .button-central.ellipsis,
+:global(button.button) .button-central[ellipsis],
+:global(button.button) .button-central.ellipsis,
+:global(input[type="button"]) .button-central[ellipsis],
+:global(input[type="button"]) .button-central.ellipsis,
+:global(input[type="submit"]) .button-central[ellipsis],
+:global(input[type="submit"]) .button-central.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:global(button) .button-central.ellipsis-line-1,
+:global(.button) .button-central.ellipsis-line-1,
+:global(button.button) .button-central.ellipsis-line-1,
+:global(input[type="button"]) .button-central.ellipsis-line-1,
+:global(input[type="submit"]) .button-central.ellipsis-line-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 1;
+}
+:global(button) .button-central.ellipsis-line-2,
+:global(.button) .button-central.ellipsis-line-2,
+:global(button.button) .button-central.ellipsis-line-2,
+:global(input[type="button"]) .button-central.ellipsis-line-2,
+:global(input[type="submit"]) .button-central.ellipsis-line-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 2;
+}
+:global(button) .button-central.ellipsis-line-3,
+:global(.button) .button-central.ellipsis-line-3,
+:global(button.button) .button-central.ellipsis-line-3,
+:global(input[type="button"]) .button-central.ellipsis-line-3,
+:global(input[type="submit"]) .button-central.ellipsis-line-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 3;
+}
+:global(button) .button-central.ellipsis-line-4,
+:global(.button) .button-central.ellipsis-line-4,
+:global(button.button) .button-central.ellipsis-line-4,
+:global(input[type="button"]) .button-central.ellipsis-line-4,
+:global(input[type="submit"]) .button-central.ellipsis-line-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 4;
+}
+:global(button) .button-central.ellipsis-line-5,
+:global(.button) .button-central.ellipsis-line-5,
+:global(button.button) .button-central.ellipsis-line-5,
+:global(input[type="button"]) .button-central.ellipsis-line-5,
+:global(input[type="submit"]) .button-central.ellipsis-line-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 5;
+}
+:global(button) .button-central:empty,
+:global(.button) .button-central:empty,
+:global(button.button) .button-central:empty,
+:global(input[type="button"]) .button-central:empty,
+:global(input[type="submit"]) .button-central:empty {
+  display: none;
+}
+:global(button) .button-end,
+:global(.button) .button-end,
+:global(button.button) .button-end,
+:global(input[type="button"]) .button-end,
+:global(input[type="submit"]) .button-end {
+  position: relative;
+  align-items: center;
+  align-content: center;
+  padding: 0 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+:global(button) .button-end:empty,
+:global(.button) .button-end:empty,
+:global(button.button) .button-end:empty,
+:global(input[type="button"]) .button-end:empty,
+:global(input[type="submit"]) .button-end:empty {
+  display: none;
+}
+:global(button) .button-end:hover,
+:global(.button) .button-end:hover,
+:global(button.button) .button-end:hover,
+:global(input[type="button"]) .button-end:hover,
+:global(input[type="submit"]) .button-end:hover {
+  background-color: var(--sld-button-action-hover-background);
+}
+:global(button).loading, :global(button)[aria-busy=true],
+:global(.button).loading,
+:global(.button)[aria-busy=true],
+:global(button.button).loading,
+:global(button.button)[aria-busy=true],
+:global(input[type="button"]).loading,
+:global(input[type="button"])[aria-busy=true],
+:global(input[type="submit"]).loading,
+:global(input[type="submit"])[aria-busy=true] {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+:global(button).loading::after, :global(button)[aria-busy=true]::after,
+:global(.button).loading::after,
+:global(.button)[aria-busy=true]::after,
+:global(button.button).loading::after,
+:global(button.button)[aria-busy=true]::after,
+:global(input[type="button"]).loading::after,
+:global(input[type="button"])[aria-busy=true]::after,
+:global(input[type="submit"]).loading::after,
+:global(input[type="submit"])[aria-busy=true]::after {
+  content: " ";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+  border: 2px solid var(--sld-color-secondary);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: button-spinner 0.6s linear infinite;
+}
+:global(button)[disabled], :global(button).disabled, :global(button)[aria-disabled=true],
+:global(.button)[disabled],
+:global(.button).disabled,
+:global(.button)[aria-disabled=true],
+:global(button.button)[disabled],
+:global(button.button).disabled,
+:global(button.button)[aria-disabled=true],
+:global(input[type="button"])[disabled],
+:global(input[type="button"]).disabled,
+:global(input[type="button"])[aria-disabled=true],
+:global(input[type="submit"])[disabled],
+:global(input[type="submit"]).disabled,
+:global(input[type="submit"])[aria-disabled=true] {
+  color: var(--color-gray-800);
+  border-color: var(--color-gray-400);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
+}
+:global(button)[aria-pressed=true], :global(button).selected,
+:global(.button)[aria-pressed=true],
+:global(.button).selected,
+:global(button.button)[aria-pressed=true],
+:global(button.button).selected,
+:global(input[type="button"])[aria-pressed=true],
+:global(input[type="button"]).selected,
+:global(input[type="submit"])[aria-pressed=true],
+:global(input[type="submit"]).selected {
+  box-shadow: var(--sld-elevation-3);
+  background-color: var(--sld-color-secondary);
+  font-weight: bold;
+}
+:global(button) .chip,
+:global(.button) .chip,
+:global(button.button) .chip,
+:global(input[type="button"]) .chip,
+:global(input[type="submit"]) .chip {
+  position: absolute;
+  z-index: 2;
+  height: 3px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+  background-color: var(--css-button-chip-color, var(--sld-color-primary));
+  border-radius: var(--sld-radius-large);
+  bottom: 2px;
+}
+:global(button) .loadingButtonZone,
+:global(.button) .loadingButtonZone,
+:global(button.button) .loadingButtonZone,
+:global(input[type="button"]) .loadingButtonZone,
+:global(input[type="submit"]) .loadingButtonZone {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  align-content: center;
+  justify-content: space-around;
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-width: var(--sld-width-small);
+  width: var(--preset-width-small);
+  min-width: var(--preset-width-small);
+}
+:global(button)[width=tiny], :global(button).width-tiny,
+:global(.button)[width=tiny],
+:global(.button).width-tiny,
+:global(button.button)[width=tiny],
+:global(button.button).width-tiny,
+:global(input[type="button"])[width=tiny],
+:global(input[type="button"]).width-tiny,
+:global(input[type="submit"])[width=tiny],
+:global(input[type="submit"]).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(button)[width=mini], :global(button).width-mini,
+:global(.button)[width=mini],
+:global(.button).width-mini,
+:global(button.button)[width=mini],
+:global(button.button).width-mini,
+:global(input[type="button"])[width=mini],
+:global(input[type="button"]).width-mini,
+:global(input[type="submit"])[width=mini],
+:global(input[type="submit"]).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(button)[width=small], :global(button).width-small,
+:global(.button)[width=small],
+:global(.button).width-small,
+:global(button.button)[width=small],
+:global(button.button).width-small,
+:global(input[type="button"])[width=small],
+:global(input[type="button"]).width-small,
+:global(input[type="submit"])[width=small],
+:global(input[type="submit"]).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(button)[width=med], :global(button).width-med,
+:global(.button)[width=med],
+:global(.button).width-med,
+:global(button.button)[width=med],
+:global(button.button).width-med,
+:global(input[type="button"])[width=med],
+:global(input[type="button"]).width-med,
+:global(input[type="submit"])[width=med],
+:global(input[type="submit"]).width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(button)[width=kind], :global(button).width-kind,
+:global(.button)[width=kind],
+:global(.button).width-kind,
+:global(button.button)[width=kind],
+:global(button.button).width-kind,
+:global(input[type="button"])[width=kind],
+:global(input[type="button"]).width-kind,
+:global(input[type="submit"])[width=kind],
+:global(input[type="submit"]).width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(button)[width=full], :global(button).width-full,
+:global(.button)[width=full],
+:global(.button).width-full,
+:global(button.button)[width=full],
+:global(button.button).width-full,
+:global(input[type="button"])[width=full],
+:global(input[type="button"]).width-full,
+:global(input[type="submit"])[width=full],
+:global(input[type="submit"]).width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(button)[width=auto], :global(button).width-auto,
+:global(.button)[width=auto],
+:global(.button).width-auto,
+:global(button.button)[width=auto],
+:global(button.button).width-auto,
+:global(input[type="button"])[width=auto],
+:global(input[type="button"]).width-auto,
+:global(input[type="submit"])[width=auto],
+:global(input[type="submit"]).width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(button)[width=default], :global(button).width-default,
+:global(.button)[width=default],
+:global(.button).width-default,
+:global(button.button)[width=default],
+:global(button.button).width-default,
+:global(input[type="button"])[width=default],
+:global(input[type="button"]).width-default,
+:global(input[type="submit"])[width=default],
+:global(input[type="submit"]).width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(button),
+:global(.button),
+:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  --preset-tall: var(--sld-tall-small);
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button)[tall=tiny], :global(button).tall-tiny,
+:global(.button)[tall=tiny],
+:global(.button).tall-tiny,
+:global(button.button)[tall=tiny],
+:global(button.button).tall-tiny,
+:global(input[type="button"])[tall=tiny],
+:global(input[type="button"]).tall-tiny,
+:global(input[type="submit"])[tall=tiny],
+:global(input[type="submit"]).tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+:global(button)[tall=mini], :global(button).tall-mini,
+:global(.button)[tall=mini],
+:global(.button).tall-mini,
+:global(button.button)[tall=mini],
+:global(button.button).tall-mini,
+:global(input[type="button"])[tall=mini],
+:global(input[type="button"]).tall-mini,
+:global(input[type="submit"])[tall=mini],
+:global(input[type="submit"]).tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+:global(button)[tall=small], :global(button).tall-small,
+:global(.button)[tall=small],
+:global(.button).tall-small,
+:global(button.button)[tall=small],
+:global(button.button).tall-small,
+:global(input[type="button"])[tall=small],
+:global(input[type="button"]).tall-small,
+:global(input[type="submit"])[tall=small],
+:global(input[type="submit"]).tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+:global(button)[tall=med], :global(button).tall-med,
+:global(.button)[tall=med],
+:global(.button).tall-med,
+:global(button.button)[tall=med],
+:global(button.button).tall-med,
+:global(input[type="button"])[tall=med],
+:global(input[type="button"]).tall-med,
+:global(input[type="submit"])[tall=med],
+:global(input[type="submit"]).tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+:global(button)[tall=kind], :global(button).tall-kind,
+:global(.button)[tall=kind],
+:global(.button).tall-kind,
+:global(button.button)[tall=kind],
+:global(button.button).tall-kind,
+:global(input[type="button"])[tall=kind],
+:global(input[type="button"]).tall-kind,
+:global(input[type="submit"])[tall=kind],
+:global(input[type="submit"]).tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+:global(button)[tall=auto], :global(button).tall-auto,
+:global(.button)[tall=auto],
+:global(.button).tall-auto,
+:global(button.button)[tall=auto],
+:global(button.button).tall-auto,
+:global(input[type="button"])[tall=auto],
+:global(input[type="button"]).tall-auto,
+:global(input[type="submit"])[tall=auto],
+:global(input[type="submit"]).tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+:global(button)[tall=default], :global(button).tall-default,
+:global(.button)[tall=default],
+:global(.button).tall-default,
+:global(button.button)[tall=default],
+:global(button.button).tall-default,
+:global(input[type="button"])[tall=default],
+:global(input[type="button"]).tall-default,
+:global(input[type="submit"])[tall=default],
+:global(input[type="submit"]).tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
+:global(.button)[variant*=square],
+:global(.button)[square=true],
+:global(.button).square,
+:global(button.button)[variant*=square],
+:global(button.button)[square=true],
+:global(button.button).square,
+:global(input[type="button"])[variant*=square],
+:global(input[type="button"])[square=true],
+:global(input[type="button"]).square,
+:global(input[type="submit"])[variant*=square],
+:global(input[type="submit"])[square=true],
+:global(input[type="submit"]).square {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+:global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
+:global(.button)[variant*=rounded],
+:global(.button)[rounded=true],
+:global(.button).rounded,
+:global(button.button)[variant*=rounded],
+:global(button.button)[rounded=true],
+:global(button.button).rounded,
+:global(input[type="button"])[variant*=rounded],
+:global(input[type="button"])[rounded=true],
+:global(input[type="button"]).rounded,
+:global(input[type="submit"])[variant*=rounded],
+:global(input[type="submit"])[rounded=true],
+:global(input[type="submit"]).rounded {
+  border-radius: 50%;
+}
+:global(button)[variant*=bordered], :global(button)[bordered=true], :global(button).bordered,
+:global(.button)[variant*=bordered],
+:global(.button)[bordered=true],
+:global(.button).bordered,
+:global(button.button)[variant*=bordered],
+:global(button.button)[bordered=true],
+:global(button.button).bordered,
+:global(input[type="button"])[variant*=bordered],
+:global(input[type="button"])[bordered=true],
+:global(input[type="button"]).bordered,
+:global(input[type="submit"])[variant*=bordered],
+:global(input[type="submit"])[bordered=true],
+:global(input[type="submit"]).bordered {
+  color: var(--sld-color-foreground);
+  border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+  box-shadow: var(--sld-elevation-1);
+  background-color: var(--sld-button-background);
+}
+:global(button)[variant*=bordered]:hover, :global(button)[bordered=true]:hover, :global(button).bordered:hover,
+:global(.button)[variant*=bordered]:hover,
+:global(.button)[bordered=true]:hover,
+:global(.button).bordered:hover,
+:global(button.button)[variant*=bordered]:hover,
+:global(button.button)[bordered=true]:hover,
+:global(button.button).bordered:hover,
+:global(input[type="button"])[variant*=bordered]:hover,
+:global(input[type="button"])[bordered=true]:hover,
+:global(input[type="button"]).bordered:hover,
+:global(input[type="submit"])[variant*=bordered]:hover,
+:global(input[type="submit"])[bordered=true]:hover,
+:global(input[type="submit"]).bordered:hover {
+  border-color: var(--sld-color-primary);
+  box-shadow: var(--sld-button-hover-shadow);
+}
+:global(button)[variant*=bordered]:focus, :global(button)[variant*=bordered]:active, :global(button)[bordered=true]:focus, :global(button)[bordered=true]:active, :global(button).bordered:focus, :global(button).bordered:active,
+:global(.button)[variant*=bordered]:focus,
+:global(.button)[variant*=bordered]:active,
+:global(.button)[bordered=true]:focus,
+:global(.button)[bordered=true]:active,
+:global(.button).bordered:focus,
+:global(.button).bordered:active,
+:global(button.button)[variant*=bordered]:focus,
+:global(button.button)[variant*=bordered]:active,
+:global(button.button)[bordered=true]:focus,
+:global(button.button)[bordered=true]:active,
+:global(button.button).bordered:focus,
+:global(button.button).bordered:active,
+:global(input[type="button"])[variant*=bordered]:focus,
+:global(input[type="button"])[variant*=bordered]:active,
+:global(input[type="button"])[bordered=true]:focus,
+:global(input[type="button"])[bordered=true]:active,
+:global(input[type="button"]).bordered:focus,
+:global(input[type="button"]).bordered:active,
+:global(input[type="submit"])[variant*=bordered]:focus,
+:global(input[type="submit"])[variant*=bordered]:active,
+:global(input[type="submit"])[bordered=true]:focus,
+:global(input[type="submit"])[bordered=true]:active,
+:global(input[type="submit"]).bordered:focus,
+:global(input[type="submit"]).bordered:active {
+  border-color: var(--sld-button-active-border-color);
+  box-shadow: var(--sld-button-active-shadow);
+}
+:global(button)[variant*=contained], :global(button)[contained=true], :global(button).contained,
+:global(.button)[variant*=contained],
+:global(.button)[contained=true],
+:global(.button).contained,
+:global(button.button)[variant*=contained],
+:global(button.button)[contained=true],
+:global(button.button).contained,
+:global(input[type="button"])[variant*=contained],
+:global(input[type="button"])[contained=true],
+:global(input[type="button"]).contained,
+:global(input[type="submit"])[variant*=contained],
+:global(input[type="submit"])[contained=true],
+:global(input[type="submit"]).contained {
+  border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+  color: var(--sld-color-on-primary);
+  background-color: var(--sld-button-contained-background);
+  background-clip: padding-box;
+  box-shadow: var(--sld-elevation-1);
+}
+:global(button)[variant*=contained]:hover, :global(button)[contained=true]:hover, :global(button).contained:hover,
+:global(.button)[variant*=contained]:hover,
+:global(.button)[contained=true]:hover,
+:global(.button).contained:hover,
+:global(button.button)[variant*=contained]:hover,
+:global(button.button)[contained=true]:hover,
+:global(button.button).contained:hover,
+:global(input[type="button"])[variant*=contained]:hover,
+:global(input[type="button"])[contained=true]:hover,
+:global(input[type="button"]).contained:hover,
+:global(input[type="submit"])[variant*=contained]:hover,
+:global(input[type="submit"])[contained=true]:hover,
+:global(input[type="submit"]).contained:hover {
+  background-color: var(--sld-color-secondary);
+  color: var(--sld-color-on-secondary);
+}
+:global(button)[variant*=contained]:focus, :global(button)[variant*=contained]:active, :global(button)[contained=true]:focus, :global(button)[contained=true]:active, :global(button).contained:focus, :global(button).contained:active,
+:global(.button)[variant*=contained]:focus,
+:global(.button)[variant*=contained]:active,
+:global(.button)[contained=true]:focus,
+:global(.button)[contained=true]:active,
+:global(.button).contained:focus,
+:global(.button).contained:active,
+:global(button.button)[variant*=contained]:focus,
+:global(button.button)[variant*=contained]:active,
+:global(button.button)[contained=true]:focus,
+:global(button.button)[contained=true]:active,
+:global(button.button).contained:focus,
+:global(button.button).contained:active,
+:global(input[type="button"])[variant*=contained]:focus,
+:global(input[type="button"])[variant*=contained]:active,
+:global(input[type="button"])[contained=true]:focus,
+:global(input[type="button"])[contained=true]:active,
+:global(input[type="button"]).contained:focus,
+:global(input[type="button"]).contained:active,
+:global(input[type="submit"])[variant*=contained]:focus,
+:global(input[type="submit"])[variant*=contained]:active,
+:global(input[type="submit"])[contained=true]:focus,
+:global(input[type="submit"])[contained=true]:active,
+:global(input[type="submit"]).contained:focus,
+:global(input[type="submit"]).contained:active {
+  background-color: var(--sld-color-tertiary);
+  color: var(--sld-color-on-tertiary);
+  box-shadow: var(--sld-button-active-shadow);
+}
+:global(button)[variant*=link], :global(button)[link=true], :global(button).link, :global(button)[role=link],
+:global(.button)[variant*=link],
+:global(.button)[link=true],
+:global(.button).link,
+:global(.button)[role=link],
+:global(button.button)[variant*=link],
+:global(button.button)[link=true],
+:global(button.button).link,
+:global(button.button)[role=link],
+:global(input[type="button"])[variant*=link],
+:global(input[type="button"])[link=true],
+:global(input[type="button"]).link,
+:global(input[type="button"])[role=link],
+:global(input[type="submit"])[variant*=link],
+:global(input[type="submit"])[link=true],
+:global(input[type="submit"]).link,
+:global(input[type="submit"])[role=link] {
+  color: var(--sld-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.35rem;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+:global(button)[variant*=link]:hover, :global(button)[link=true]:hover, :global(button).link:hover, :global(button)[role=link]:hover,
+:global(.button)[variant*=link]:hover,
+:global(.button)[link=true]:hover,
+:global(.button).link:hover,
+:global(.button)[role=link]:hover,
+:global(button.button)[variant*=link]:hover,
+:global(button.button)[link=true]:hover,
+:global(button.button).link:hover,
+:global(button.button)[role=link]:hover,
+:global(input[type="button"])[variant*=link]:hover,
+:global(input[type="button"])[link=true]:hover,
+:global(input[type="button"]).link:hover,
+:global(input[type="button"])[role=link]:hover,
+:global(input[type="submit"])[variant*=link]:hover,
+:global(input[type="submit"])[link=true]:hover,
+:global(input[type="submit"]).link:hover,
+:global(input[type="submit"])[role=link]:hover {
+  text-decoration: underline;
+}
+:global(button)[variant*=link]:focus, :global(button)[variant*=link]:active, :global(button)[link=true]:focus, :global(button)[link=true]:active, :global(button).link:focus, :global(button).link:active, :global(button)[role=link]:focus, :global(button)[role=link]:active,
+:global(.button)[variant*=link]:focus,
+:global(.button)[variant*=link]:active,
+:global(.button)[link=true]:focus,
+:global(.button)[link=true]:active,
+:global(.button).link:focus,
+:global(.button).link:active,
+:global(.button)[role=link]:focus,
+:global(.button)[role=link]:active,
+:global(button.button)[variant*=link]:focus,
+:global(button.button)[variant*=link]:active,
+:global(button.button)[link=true]:focus,
+:global(button.button)[link=true]:active,
+:global(button.button).link:focus,
+:global(button.button).link:active,
+:global(button.button)[role=link]:focus,
+:global(button.button)[role=link]:active,
+:global(input[type="button"])[variant*=link]:focus,
+:global(input[type="button"])[variant*=link]:active,
+:global(input[type="button"])[link=true]:focus,
+:global(input[type="button"])[link=true]:active,
+:global(input[type="button"]).link:focus,
+:global(input[type="button"]).link:active,
+:global(input[type="button"])[role=link]:focus,
+:global(input[type="button"])[role=link]:active,
+:global(input[type="submit"])[variant*=link]:focus,
+:global(input[type="submit"])[variant*=link]:active,
+:global(input[type="submit"])[link=true]:focus,
+:global(input[type="submit"])[link=true]:active,
+:global(input[type="submit"]).link:focus,
+:global(input[type="submit"]).link:active,
+:global(input[type="submit"])[role=link]:focus,
+:global(input[type="submit"])[role=link]:active {
+  text-decoration: underline;
+  outline: none;
+  box-shadow: none;
+}
+:global(button)[variant*=naked], :global(button)[naked=true], :global(button).naked,
+:global(.button)[variant*=naked],
+:global(.button)[naked=true],
+:global(.button).naked,
+:global(button.button)[variant*=naked],
+:global(button.button)[naked=true],
+:global(button.button).naked,
+:global(input[type="button"])[variant*=naked],
+:global(input[type="button"])[naked=true],
+:global(input[type="button"]).naked,
+:global(input[type="submit"])[variant*=naked],
+:global(input[type="submit"])[naked=true],
+:global(input[type="submit"]).naked {
+  color: inherit;
+  background-color: transparent;
+  border: 0px solid transparent;
+  cursor: pointer;
+}
+:global(button)[variant*=naked]:hover, :global(button)[naked=true]:hover, :global(button).naked:hover,
+:global(.button)[variant*=naked]:hover,
+:global(.button)[naked=true]:hover,
+:global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
+:global(input[type="button"])[variant*=naked]:hover,
+:global(input[type="button"])[naked=true]:hover,
+:global(input[type="button"]).naked:hover,
+:global(input[type="submit"])[variant*=naked]:hover,
+:global(input[type="submit"])[naked=true]:hover,
+:global(input[type="submit"]).naked:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+:global(button)[variant*=naked]:hover, :global(button)[naked=true]:hover, :global(button).naked:hover,
+:global(.button)[variant*=naked]:hover,
+:global(.button)[naked=true]:hover,
+:global(.button).naked:hover,
+:global(button.button)[variant*=naked]:hover,
+:global(button.button)[naked=true]:hover,
+:global(button.button).naked:hover,
+:global(input[type="button"])[variant*=naked]:hover,
+:global(input[type="button"])[naked=true]:hover,
+:global(input[type="button"]).naked:hover,
+:global(input[type="submit"])[variant*=naked]:hover,
+:global(input[type="submit"])[naked=true]:hover,
+:global(input[type="submit"]).naked:hover {
+  background-color: var(--sld-button-hover-background);
+}
+:global(button)[variant*=naked]:active, :global(button)[variant*=naked]:focus, :global(button)[naked=true]:active, :global(button)[naked=true]:focus, :global(button).naked:active, :global(button).naked:focus,
+:global(.button)[variant*=naked]:active,
+:global(.button)[variant*=naked]:focus,
+:global(.button)[naked=true]:active,
+:global(.button)[naked=true]:focus,
+:global(.button).naked:active,
+:global(.button).naked:focus,
+:global(button.button)[variant*=naked]:active,
+:global(button.button)[variant*=naked]:focus,
+:global(button.button)[naked=true]:active,
+:global(button.button)[naked=true]:focus,
+:global(button.button).naked:active,
+:global(button.button).naked:focus,
+:global(input[type="button"])[variant*=naked]:active,
+:global(input[type="button"])[variant*=naked]:focus,
+:global(input[type="button"])[naked=true]:active,
+:global(input[type="button"])[naked=true]:focus,
+:global(input[type="button"]).naked:active,
+:global(input[type="button"]).naked:focus,
+:global(input[type="submit"])[variant*=naked]:active,
+:global(input[type="submit"])[variant*=naked]:focus,
+:global(input[type="submit"])[naked=true]:active,
+:global(input[type="submit"])[naked=true]:focus,
+:global(input[type="submit"]).naked:active,
+:global(input[type="submit"]).naked:focus {
+  background-color: transparent;
+  border: 0.5px solid transparent;
+  color: inherit;
+}
+:global(button)[variant*=flat], :global(button)[flat=true], :global(button).flat,
+:global(.button)[variant*=flat],
+:global(.button)[flat=true],
+:global(.button).flat,
+:global(button.button)[variant*=flat],
+:global(button.button)[flat=true],
+:global(button.button).flat,
+:global(input[type="button"])[variant*=flat],
+:global(input[type="button"])[flat=true],
+:global(input[type="button"]).flat,
+:global(input[type="submit"])[variant*=flat],
+:global(input[type="submit"])[flat=true],
+:global(input[type="submit"]).flat {
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+:global(button)[variant*=flat]:hover, :global(button)[flat=true]:hover, :global(button).flat:hover,
+:global(.button)[variant*=flat]:hover,
+:global(.button)[flat=true]:hover,
+:global(.button).flat:hover,
+:global(button.button)[variant*=flat]:hover,
+:global(button.button)[flat=true]:hover,
+:global(button.button).flat:hover,
+:global(input[type="button"])[variant*=flat]:hover,
+:global(input[type="button"])[flat=true]:hover,
+:global(input[type="button"]).flat:hover,
+:global(input[type="submit"])[variant*=flat]:hover,
+:global(input[type="submit"])[flat=true]:hover,
+:global(input[type="submit"]).flat:hover {
+  background-color: var(--sld-button-hover-background);
+}
+:global(button)[variant*=flat]:active, :global(button)[variant*=flat]:focus, :global(button)[flat=true]:active, :global(button)[flat=true]:focus, :global(button).flat:active, :global(button).flat:focus,
+:global(.button)[variant*=flat]:active,
+:global(.button)[variant*=flat]:focus,
+:global(.button)[flat=true]:active,
+:global(.button)[flat=true]:focus,
+:global(.button).flat:active,
+:global(.button).flat:focus,
+:global(button.button)[variant*=flat]:active,
+:global(button.button)[variant*=flat]:focus,
+:global(button.button)[flat=true]:active,
+:global(button.button)[flat=true]:focus,
+:global(button.button).flat:active,
+:global(button.button).flat:focus,
+:global(input[type="button"])[variant*=flat]:active,
+:global(input[type="button"])[variant*=flat]:focus,
+:global(input[type="button"])[flat=true]:active,
+:global(input[type="button"])[flat=true]:focus,
+:global(input[type="button"]).flat:active,
+:global(input[type="button"]).flat:focus,
+:global(input[type="submit"])[variant*=flat]:active,
+:global(input[type="submit"])[variant*=flat]:focus,
+:global(input[type="submit"])[flat=true]:active,
+:global(input[type="submit"])[flat=true]:focus,
+:global(input[type="submit"]).flat:active,
+:global(input[type="submit"]).flat:focus {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+}
+
+@keyframes button-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

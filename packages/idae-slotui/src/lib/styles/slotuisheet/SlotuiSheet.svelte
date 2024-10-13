@@ -16,20 +16,29 @@
 
 <svelte:head>
 	{castToCssProps(breakpoints)}
-	<style id="idae-slotui-sheet" lang="scss">
+	<style type="text/css" id="idae-slotui-sheet"  >
 		@import './slotui-sheet.scss';
 	</style>
-	<style id="idae-slotui-queries" lang="scss">
-		@import './stylesheet.scss';
+	<style type="text/css" id="idae-slotui-queries" >
+		@import './stylesheet.scss'; 
 	</style>
 </svelte:head>
-
+<div id="slotui-breakpoints"></div>
 {#if showSelectors}
-	{castToCssProps(breakpoints)}ss
+	{castToCssProps(breakpoints)}
 	<pre>
         {JSON.stringify(configCssVars, undefined, ' ')}
     </pre>
 	<pre>
         {JSON.stringify(toContainerQuery('hideMaxWidth', '115px'), undefined, ' ')}
     </pre>
-{/if}
+{/if} 
+<style lang="scss">
+#breakpoints {
+	position:fixed;
+	top:0;
+	left:0;
+	z-index: -1;
+	pointer-events: none;
+}
+</style>

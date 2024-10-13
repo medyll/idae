@@ -1,47 +1,56 @@
 // packages\idae-api\src\lib\example.ts
 
-import { idaeApi } from '$lib/server/IdaeApi';
-import { type RouteDefinition } from '$lib/config/routeDefinitions';
+import { idaeApi } from "$lib/server/IdaeApi";
+import { type RouteDefinition } from "$lib/config/routeDefinitions";
+import { DbType } from "$lib/@types/types.js";
 
 // Exemple de routes personnalisées
 const customRoutes: RouteDefinition[] = [
-	{
-		method: 'get',
-		path: '/custom/hello',
-		handler: async () => ({ message: 'Hello from custom route!' }),
-		requiresAuth: false
-	},
-	{
-		method: 'post',
-		path: '/custom/echo',
-		handler: async (service, params, body) => ({ echo: body }),
-		requiresAuth: true
-	}
+  {
+    method: "get",
+    path: "/custom/hello",
+    handler: async () => ({ message: "Hello from custom route!" }),
+    requiresAuth: false,
+  },
+  {
+    method: "post",
+    path: "/custom/echo",
+    handler: async (service, params, body) => ({ echo: body }),
+    requiresAuth: true,
+  },
 ];
 
-// Configuration du serveur
+//  server configuration
 idaeApi.setOptions({
-	port: 3000,
-	enableAuth: false, // Désactivé pour cet exemple
-	onInUse: 'reboot',
-	routes: customRoutes
+  port: 3000,
+  enableAuth: false,
+  onInUse: "reboot",
+  routes: customRoutes,
+  idaeDbOptions: {
+    dbType: DbType.MONGODB,
+    dbScope: "a_idae_db_sitebase",
+    dbScopeSeparator: "_",
+    idaeModelOptions: {
+      autoIncrementFormat: (collection: string) => `id${collection}`,
+      autoIncrementDbCollection: "auto_increment",
+    },
+  },
 });
 
-// Démarrage du serveur
+// start server
 idaeApi.start();
-console.log('IDAE API is running on port 3000');
-setTimeout(() => {
-	fetch('http://localhost:3000/query/idaenext_sitebase_app.appscheme/where', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			name: 'Test Scheme',
-			description: 'This is a test scheme'
-		})
-	});
-}, 1000);
+console.log("IDAE API is running on port 3000");
+/* setTimeout(() => {
+  fetch("http://localhost:3000/query/a_idae_db_sitebase_app.user/4", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      iduser: 4,
+    }),
+  });
+}, 1000); */
 
 // Exemples d'utilisation des routes par défaut avec Postman
 
@@ -86,7 +95,7 @@ setTimeout(() => {
 //   "name": "Test Scheme"
 // }
 
-console.log('You can now use Postman to test the API endpoints.');
+console.log("You can now use Postman to test the API endpoints.");
 
 // Exemple d'arrêt du serveur après un certain temps
 /* setTimeout(() => {
@@ -95,7 +104,6 @@ console.log('You can now use Postman to test the API endpoints.');
 }, 60000);   */
 
 // Gestion des erreurs
-process.on('unhandledRejection', (reason, promise) => {
-	console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-	// Application specific logging, throwing an error, or other logic here
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
 });

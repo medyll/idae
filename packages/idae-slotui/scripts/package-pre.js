@@ -5,5 +5,5 @@ const converter = new SCSSConverter('./src/lib', './src/lib/slotui-css');
 
 converter.processAllFiles();
 
-new MakeLibIndex().makeIndexFile();
+new MakeLibIndex({mainGlobPattern:"**/*"}).makeIndexFile();
 

@@ -1,14 +1,21 @@
 @use "sass:map";
-@import "./containerConfig.css";
+@import "./sheetConfig.scss";
 
 $breakpoints: (
-    "xs": var(--breakpoint-xs, 320px),
-    "sm": var(--breakpoint-sm, 480px),
-    "md": var(--breakpoint-md, 640px),
-    "lg": var(--breakpoint-lg, 960px),
-    "xl": var(--breakpoint-xl, 1280px),
-    "xxl": var(--breakpoint-xxl, 1920px),
-    "xxxl": var(--breakpoint-xxxl, 1440px)
+    "xs": 320px,
+    //var(--breakpoint-xs, 320px),
+    "sm": 480px,
+    //var(--breakpoint-sm, 480px),
+    "md": 640px,
+    // var(--breakpoint-md, 640px),
+    "lg": 960px,
+    // var(--breakpoint-lg, 960px),
+    "xl": 1280px,
+    //var(--breakpoint-xl, 1280px),
+    "xxl": 1920px,
+    //var(--breakpoint-xxl, 1920px),
+    "xxxl": 1440px,
+    //var(--breakpoint-xxxl, 1440px)
 );
 
 $breakpoint-name: "bkp";
@@ -19,55 +26,26 @@ $than: "than"; // var(--than, "than");
 $showSelector: var(--show, "show");
 $hideSelector: var(--hide, "hide");
 
-@debug ($containerItem);
 :root {
+    // export css properties variables
     @each $name, $size in $breakpoints {
         --#{$breakpoint-name}-#{$name}: #{$size};
     }
 }
 
 @mixin hidden {
-    content-visibility: hidden;
+    display: none;
     opacity: 0;
     position: absolute;
     z-index: -10;
-    visibility: hidden;
+    content-visibility: hidden;
+    transition: all 0.5s ease-in;
 }
 
 @mixin visible {
-    content-visibility: auto;
-    opacity: 1;
-    position: static;
     z-index: auto;
     visibility: visible;
-}
-
-@function generate-visibility-classes($breakpoints) {
-    $result: ();
-    @each $name, $size in $breakpoints {
-        $result: map-merge(
-            $result,
-            (
-                "hide-more-#{$name}": (
-                    min-width: var(--#{$breakpoint-name}-#{$name}),
-                    class: hidden
-                ),
-                "show-more-#{$name}": (
-                    min-width: var(--#{$breakpoint-name}-#{$name}),
-                    class: visible
-                ),
-                "hide-less-#{$name}": (
-                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
-                    class: hidden
-                ),
-                "show-less-#{$name}": (
-                    max-width: calc(var(--#{$breakpoint-name}-#{$name}) - 1px),
-                    class: visible
-                )
-            )
-        );
-    }
-    @return $result;
+    transition: all 1s ease-in;
 }
 
 // this mixin uses the @container pseudo-class to generate container queries
@@ -75,7 +53,7 @@ $hideSelector: var(--hide, "hide");
 // it uses css properties --hide-on-container-width-less-than and --hide-on-container-more-more-than and
 @mixin generate-container-queries() {
     @container (max-width: var(--hide-on-container-width-more-#{than})) {
-        :global(.#{$containerItem}-hide-max-width) {
+        .#{$containerItem}-hide-max-width {
             color: red;
             @include hidden;
         }
@@ -95,6 +73,36 @@ $hideSelector: var(--hide, "hide");
             @include hidden;
         }
     }
+}
+
+@function generate-visibility-classes($breakpoints) {
+    $result: ();
+    @each $name, $size in $breakpoints {
+        $result: map-merge(
+            $result,
+            (
+                "hide-more-#{$name}": (
+                    min-width: $size,
+                    class: hidden
+                ),
+                "hide-less-#{$name}": (
+                    max-width: $size,
+                    class: hidden
+                ),
+                "show-more-#{$name}": (
+                    min-width: $size,
+                    class: visible
+                ),
+                "show-less-#{$name}": (
+                    max-width: (
+                        $size - 1px
+                    ),
+                    class: visible
+                )
+            )
+        );
+    }
+    @return $result;
 }
 
 $visibility-classes: generate-visibility-classes($breakpoints);

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import PreviewComponent from './../components/PreviewComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { UiContextType } from '../contexts/ui.context.js';
 	import { getContext } from 'svelte';
@@ -9,8 +8,7 @@
 	import Menu from '$lib/ui/menu/Menu.svelte';
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 	import { componentCite } from '$lib/componentCite.js';
-	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
-	import { slotUiComponentPreviewList } from '$sitedata/componentPreviewList.js';
+	import Backdrop from '$lib/base/backdrop/Backdrop.svelte'; 
 	import type { LayoutData } from './$types.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
@@ -33,12 +31,7 @@
 			'group'
 		);
 	}
-
-	function openBackdrop() {}
-
-	function searchPreview(component: string) {
-		return dataOp.searchList(slotUiComponentPreviewList, component, 'code')?.[0] ?? undefined;
-	}
+ 
 </script>
 
 <svelte:head>
@@ -90,18 +83,6 @@
 								<h6 class="flex-main" title={componentCite?.[catalog?.code]?.cite}>
 									<a href={sitePaths.component(catalog)}>{catalog?.code ?? ''}</a>
 								</h6>
-								{#if Boolean(searchPreview(catalog.code))}
-									<div>
-										<IconButton
-											onclick={() => {
-												backdropVisible = true;
-												backdropComponentCode = catalog.code;
-											}}
-											class="prevLink"
-											icon="link"
-										/>
-									</div>
-								{/if}
 							</div>
 						</div>
 					</div>
@@ -143,7 +124,7 @@
 >
 	<div class="flex-h flex-align-middle-center h-full">
 		<div class="radius-tiny">
-			<PreviewComponent componentCode={backdropComponentCode} />
+			 
 		</div>
 	</div>
 </Backdrop>
