@@ -23,7 +23,7 @@ export type ConfirmProps<T = any> = CommonProps & {
   tooltipInitial?: string | null;
 
   /** @deprecated text displayed on initial button */
-  primaryInitial: string;
+  primaryInitial?: string;
   /**  @deprecated text displayed on the confirm phase */
   primaryConfirm: string;
 

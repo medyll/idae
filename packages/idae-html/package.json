@@ -49,5 +49,9 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "scope": "@medyll"
+  "scope": "@medyll",
+  "dependencies": {
+    "@medyll/idae-be": "^0.37.0",
+    "@medyll/idae-dom-events": "^0.5.32"
+  }
 }
