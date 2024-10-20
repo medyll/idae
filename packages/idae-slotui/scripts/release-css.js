@@ -10,7 +10,8 @@ export class SCSSConverter {
     this.sourceDir = sourceDir; //  path.resolve
     this.targetDir = targetDir; //  path.resolve
  
-    this.combinedCSSFile = path.join(this.targetDir, "slotui-combined.css");
+    this.combinedCSSFile = path.join(this.targetDir, "slotui-css.css");
+    this.combinedCSSMinFile = path.join(this.targetDir, "slotui-min-css.css");
   }
 
   // Ensure target directory exists
@@ -30,6 +31,12 @@ export class SCSSConverter {
   }
 
   // Process a single SCSS file
+  /**
+   * Processes a SCSS file, converts it to CSS and minified CSS, and writes the output to the target directory.
+   *
+   * @param {string} filePath - The path to the SCSS file to be processed.
+   * @returns {Promise<{fileName: string, cssContent: string, cssMinContent: string}>} - An object containing the file name, CSS content, and minified CSS content.
+   */
   async processFile(filePath) {
     const cssContent = this.convertScssToCss(filePath);
     const cssMinContent = this.convertScssToCss(filePath, true);
@@ -47,7 +54,7 @@ export class SCSSConverter {
     fs.writeFileSync(targetFilePath, cssContent);
     fs.writeFileSync(targetMinFilePath, cssMinContent);
 
-    return { fileName, cssContent };
+    return { fileName, cssContent, cssMinContent };
   }
 
   // Process all SCSS files and combine them
@@ -55,6 +62,7 @@ export class SCSSConverter {
     this.ensureTargetDir();
 
     const combinedCSSStream = fs.createWriteStream(this.combinedCSSFile);
+    const combinedCSSMinStream = fs.createWriteStream(this.combinedCSSMinFile);
 
     try {
       // Use path.relative to get the correct glob pattern
@@ -72,13 +80,15 @@ export class SCSSConverter {
       for (const file of fileList) { 
         // Use path.resolve to get the absolute file path
         const filePath = path.resolve(file);
-        const { fileName, cssContent } = await this.processFile(filePath);
+        const { fileName, cssContent, cssMinContent } = await this.processFile(filePath);
 
         // Add content to combined CSS file
         combinedCSSStream.write(`\n/** ${fileName} ----------------*/\n${cssContent}\n`);
+        combinedCSSMinStream.write(`\n/** ${fileName} ----------------*/\n${cssMinContent}\n`);
       }
 
       combinedCSSStream.end();
+      combinedCSSMinStream.end();
       console.log("Conversion ended.");
     } catch (error) {
       console.error("Error processing files:", error);
