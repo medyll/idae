@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Box from '$lib/base/box/Box.svelte';
 	import { toastStore } from './store.js';
-	import { onMount } from 'svelte';
+	import { mount, onMount } from 'svelte';
 	import Toaster from './Toaster.svelte';
 	import type { ToastProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -35,12 +35,8 @@
 	onMount(() => {
 		// check parentNode toasterId
 		if (!document.body.querySelector('[data-toasterId=' + toasterId + ']')) {
-			let a = new Toaster({
-				target: document.body,
-				props: { toasterId }
-			});
-
-			console.log(a);
+			let a  = mount(Toaster, { target: document.body, props: { toasterId,children:undefined } });
+ 
 		}
 
 		document?.body
