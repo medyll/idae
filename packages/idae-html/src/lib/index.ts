@@ -1,1 +1,2 @@
-// Reexport your entry components here
+// auto exports of entry components
+export * from '$lib/main.js';
