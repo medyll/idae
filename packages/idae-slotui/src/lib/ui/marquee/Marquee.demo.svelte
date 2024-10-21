@@ -5,6 +5,8 @@
 
 	import { parameters, componentArgs } from './types.js';
 	import Marquee from './Marquee.svelte';
+    import Looper from '$lib/utils/looper/Looper.svelte';
+    import { dataOp } from '@medyll/idae-engine';
 
 	let code = `
 <Marquee >
@@ -13,23 +15,17 @@
     <div></div>
 </Marquee>`;
 </script>
-cdds
+
 <ComponentDemo component="Marquee">
 	<DemoPage component="Rating" {code}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<Marquee {...activeParams}>
-					<div>thumb</div>
-					<div>thumb no !!!</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
-					<div>thumb</div>
+				<Marquee style="width:450px;height:450px;gap!2rem;border:1px solid black;display:flex;" {...activeParams}>					
+					<Looper style="display:flex;"   data={[...Array(90)].map((_,idx)=>({idx}))} >
+						{#snippet children({ item ,idx})}
+							<div style="min-width:250px;height:250px;border:1px solid green;"  >cell {item?.idx}  </div> 
+						{/snippet}		
+					</Looper>
 				</Marquee>
 			{/snippet}
 		</Demoer>

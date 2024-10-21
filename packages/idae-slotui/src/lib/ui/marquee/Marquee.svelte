@@ -69,13 +69,13 @@
 	}
 </script>
 
-<div class="marquee-container">
+<div class="marquee-container" {...rest}>
 	{#if showControls}
 		<div class="marquee-controls-prev">
 			<button onclick={scrollPrev}>Précédent</button>
 		</div>
 	{/if}
-	<div bind:this={container} class="marquee" {...rest}>
+	<div bind:this={container} class="marquee">
 		<Content {gutter} tag="div" class="marquee-children" style="scroll-snap-type: x mandatory;">
 			{#if children}{@render children()}{:else}
 				<div>enter content or data</div>

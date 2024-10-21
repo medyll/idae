@@ -110,7 +110,7 @@
 		bind:this={DrawerRef}
 		flow={$uiContext.drawerFlow}
 		isOpen={$uiContext.drawerOpen}
-		primary="svelte slotted"
+		 
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
 		<MenuList width="full" showLastOnSelected={true} style="height:100%;overflow:auto;width:100%;;">
