@@ -1,1 +1,8 @@
-.button-action{display:inline-flex;position:relative}.button-action .chevron{flex-shrink:1}
+.button-action {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+}
+.button-action .chevron {
+  flex-shrink: 1;
+}

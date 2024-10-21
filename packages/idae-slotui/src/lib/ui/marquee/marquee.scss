@@ -7,19 +7,25 @@
     scroll-snap-type: x mandatory;
 
     width: 300px;
-    &-container {
-        display: flex;
-        align-items: center;
-        @include ui-gutter-presets;
-    }
-    :global(.marquee-children) {
-        display: inline-flex;
-        & > :global(*) {
-            border: 1px solid red;
-            width: 90px;
-            height: 300px;
+    & {
+        :global(-container) {
+            display: flex;
+            align-items: center;
+            @include ui-gutter-presets;
+        }
+
+        & {
+            &-children {
+                display: flex;
+                border: 1px solid red;
+                & > * {
+                    border: 1px solid red;
+                    height: 300px;
+                }
+            }
         }
     }
+
     &-controls {
         &-prev {
             display: contents;

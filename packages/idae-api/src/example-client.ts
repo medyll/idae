@@ -1,75 +1,91 @@
 // example.ts
 
-import { IdaeApiClient, IdaeApiClientConfig } from '@medyll/idae-api';
+import { IdaeApiClient, IdaeApiClientConfig } from "@medyll/idae-api";
 
 async function runExample() {
-	// Configure the client
-	IdaeApiClientConfig.setOptions({
-		host: 'localhost',
-		port: 3000,
-		method: 'http',
-		defaultDb: 'idaenext_sitebase_app'
-	});
+  // Configure the client
+  IdaeApiClientConfig.setOptions({
+    host: "localhost",
+    port: 3000,
+    method: "http",
+    defaultDb: "idaenext_sitebase_app",
+  });
 
-	// Create a new client instance
-	const client = new IdaeApiClient();
+  // Create a new client instance
+  const client = new IdaeApiClient();
 
-	try {
-		// Get list of databases
-		console.log('Getting list of databases:');
+  try {
+    // Get list of databases
+    /* console.log('Getting list of databases:');
 		const dbList = await client.getDbList();
-		console.log(dbList);
+		console.log(dbList); */
 
-		// Get collections for the default database
-		console.log('\nGetting collections for idaenext_sitebase_app:');
-		const collections = await client.getCollections('idaenext_sitebase_app');
-		console.log(collections);
+    // Get collections for the default database
+    /* console.log("\nGetting collections for idaenext_sitebase_app:");
+    const collections = await client.getCollections("idaenext_sitebase_app");
+    console.log(collections); */
 
-		// Work with app_conf collection
-		const appConfCollection = client.collection('app_conf');
+    // Work with app_conf collection
+    const appConfCollection = client.db("app").collection("user");
 
-		// Create a new document
-		console.log('\nCreating a new document in app_conf:');
-		const newDoc = await appConfCollection.create({ name: 'Test Config', value: 'Test Value' });
-		console.log(newDoc);
+    // Find all documents
+    console.log("\nFinding all documents in user:");
+    const allDocs = await appConfCollection.find({
+      email: { $in: ["Karin@example.com", "Test@Value"] },
+      age: 31,
+    });
+    console.log(allDocs);
 
-		// Find all documents
-		console.log('\nFinding all documents in app_conf:');
-		const allDocs = await appConfCollection.findAll();
-		console.log(allDocs);
+    // Create a new document
+    /* console.log("\nCreating a new user in user:");
+    const newDoc = await appConfCollection.create({
+      name: "new user",
+      email: "Test@Value",
+    });
+    console.log(newDoc); */
 
-		// Find a specific document by ID
-		console.log('\nFinding a specific document by ID:');
-		const foundDoc = await appConfCollection.findById(newDoc._id);
-		console.log(foundDoc);
+    /* 
+    // Find all documents
+    console.log("\nFinding all documents in app_conf:");
+    const allDocs = await appConfCollection.findAll();
+    console.log(allDocs);
 
-		// Update the document
-		console.log('\nUpdating the document:');
-		const updatedDoc = await appConfCollection.update(newDoc._id, { value: 'Updated Value' });
-		console.log(updatedDoc);
+    // Find a specific document by ID
+    console.log("\nFinding a specific document by ID:");
+    const foundDoc = await appConfCollection.findById(newDoc._id);
+    console.log(foundDoc);
 
-		// Delete the document
-		console.log('\nDeleting the document:');
-		const deleteResult = await appConfCollection.deleteById(newDoc._id);
-		console.log(deleteResult);
+    // Update the document
+    console.log("\nUpdating the document:");
+    const updatedDoc = await appConfCollection.update(newDoc._id, {
+      value: "Updated Value",
+    });
+    console.log(updatedDoc);
 
-		// Work with appscheme collection
-		const appSchemeCollection = client.db('idaenext_sitebase_app').collection('appscheme');
+    // Delete the document
+    console.log("\nDeleting the document:");
+    const deleteResult = await appConfCollection.deleteById(newDoc._id);
+    console.log(deleteResult);
 
-		// Find all documents in appscheme
-		console.log('\nFinding all documents in appscheme:');
-		const appSchemeDocs = await appSchemeCollection.findAll();
-		console.log(appSchemeDocs);
+    // Work with appscheme collection
+    const appSchemeCollection = client
+      .db("idaenext_sitebase_app")
+      .collection("appscheme");
 
-		// Delete many documents by query (be careful with this!)
-		console.log('\nDeleting documents by query in appscheme_base:');
-		const deleteResult2 = await client
-			.collection('appscheme_base')
-			.deleteManyByQuery({ testField: 'testValue' });
-		console.log(deleteResult2);
-	} catch (error) {
-		console.error('An error occurred:', error);
-	}
+    // Find all documents in appscheme
+    console.log("\nFinding all documents in appscheme:");
+    const appSchemeDocs = await appSchemeCollection.findAll();
+    console.log(appSchemeDocs);
+
+    // Delete many documents by query (be careful with this!)
+    console.log("\nDeleting documents by query in appscheme_base:");
+    const deleteResult2 = await client
+      .collection("appscheme_base")
+      .deleteManyByQuery({ testField: "testValue" });
+    console.log(deleteResult2); */
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
 }
 
 runExample();

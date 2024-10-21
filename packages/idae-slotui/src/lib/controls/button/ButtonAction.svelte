@@ -23,7 +23,7 @@
 		popperContent = undefined,
 		disabled = false,
 		variant = 'bordered',
-		tall = 'kind',
+		tall = 'small',
 		children,
 		...rest
 	}: ExpandProps<ButtonActionProps> = $props();
@@ -42,12 +42,12 @@
 			isOpen = true;
 		}}
 		{tall}
-		variant="naked"
-		class="chevron"><Icon icon={chevron} rotation={isOpen ? 180 : 0} /></Button
-	>
+		variant="naked" 
+		icon={{icon:chevron,rotation:isOpen ? 180 : 0}}
+		class="chevron" />
 </div>
 {#if isOpen && !disabled}
-	<Popper bind:isOpen parentNode={holder} stickToHookWidth={true} {...popperProps}>
+	<Popper bind:isOpen parentNode={holder} stickToHookWidth={true} autoClose={true} {...popperProps}>
 		<Slotted child={popperContent} />
 	</Popper>
 {/if}

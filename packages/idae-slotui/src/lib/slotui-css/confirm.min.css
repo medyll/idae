@@ -1,1 +1,9 @@
-.confirm{display:contents;display:flex;align-items:center}.confirm-validate{display:flex;align-items:center}
+.confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.confirm-validate {
+  display: flex;
+  align-items: center;
+}
