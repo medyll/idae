@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-mongo",
-	"version": "0.37.0",
+	"version": "0.38.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
