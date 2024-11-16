@@ -1,18 +1,23 @@
 <!-- components/ChordTable.svelte -->
 <script lang="ts">
 	import {
-		chordEntries,
-		updateCadences,
 		qualities,
+		armorOptions,
+		modes,
 		rootNotes,
-		modifiers,
-		toggleModifier
-	} from '../functions/functions.svelte.js'; 
+		modifiers
+	} from '$lib/constants/constants.js';
+	import { getScaleNotes, isChordInScale } from '$lib/functions/rules.js';
+
+	import type { ChordEntry } from '$lib/types/types.js';
+	import { chordEntries, updateCadences, toggleModifier } from '../functions/functions.svelte.js';
 
 	function addChordEntry() {
 		chordEntries.push({
 			chord: { root: 'C', quality: qualities.mode[0], modifier: undefined, duration: '1' },
-			timeSignature: chordEntries.length === 0 ? { numerator: 4, denominator: 4 } : undefined
+			timeSignature: chordEntries.length === 0 ? { numerator: 4, denominator: 4 } : undefined,
+			armor: '',
+			mode: undefined
 		});
 		updateCadences();
 	}
@@ -33,6 +38,15 @@
 			chordEntries[index].timeSignature = { numerator: 4, denominator: 4 };
 		}
 	}
+
+	function isNoteInScale(note: string, entry: ChordEntry): boolean {
+		const scaleNotes = getScaleNotes(entry.armor);
+		return scaleNotes.includes(note);
+	}
+
+	function isChordValid(entry: ChordEntry): boolean {
+		return isChordInScale(entry);
+	}
 </script>
 
 <table>
@@ -40,6 +54,7 @@
 		<tr>
 			<th>Measure</th>
 			<th>Time Signature</th>
+			<th>Armor</th>
 			<th>Root</th>
 			<th>Quality</th>
 			<th>Modifier</th>
@@ -51,7 +66,7 @@
 		{#each chordEntries as entry, i}
 			<tr>
 				<td>{i + 1}</td>
-				<td>
+				<td class="timeSignature">
 					{#if entry.timeSignature}
 						<input type="number" bind:value={entry.timeSignature.numerator} min="1" max="32" />
 						/
@@ -61,9 +76,33 @@
 					{/if}
 				</td>
 				<td>
+					<div>
+						<label for="armor-{i}">Armor:</label>
+						<select id="armor-{i}" bind:value={entry.armor} onchange={handleChordChange}>
+							{#each armorOptions as armor}
+								<option value={armor.name}>
+									{armor.name}
+									{armor.value ? `(${armor.value})` : ''}
+								</option>
+							{/each}
+						</select>
+					</div>
+					<div>
+						<label for="mode-{i}">Mode:</label>
+						<select id="mode-{i}" bind:value={entry.mode} onchange={handleChordChange}>
+							<option value={undefined}>Select mode</option>
+							{#each modes as mode}
+								<option value={mode}>{mode}</option>
+							{/each}
+						</select>
+					</div>
+				</td>
+				<td>
 					<select bind:value={entry.chord.root} onchange={handleChordChange}>
 						{#each rootNotes as note}
-							<option value={note}>{note}</option>
+							<option value={note} class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, root: note}})}>
+								{note}
+							</option>
 						{/each}
 					</select>
 				</td>
@@ -71,7 +110,7 @@
 					{#each Object.entries(qualities) as [group, qualityOptions]}
 						<div>
 							{#each qualityOptions as quality}
-								<label>
+								<label class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, quality}})}>
 									<input
 										type="radio"
 										name={`quality-${group}-${i}`}
@@ -92,7 +131,7 @@
 				</td>
 				<td>
 					{#each modifiers as modifier}
-						<label>
+						<label class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, modifier}})}>
 							<input
 								type="radio"
 								name={`modifier-${i}`}
@@ -104,7 +143,7 @@
 						</label>
 					{/each}
 				</td>
-				<td>
+				<td class="duration">
 					<input
 						type="text"
 						bind:value={entry.chord.duration}
@@ -132,7 +171,27 @@
 	td {
 		border: 1px solid #ddd;
 		padding: 8px;
-		text-align: left;
+		text-align: center;
+	}
+	td.timeSignature {
+		& input[type='number'] {
+			width: 40px;
+			text-align: center;
+		}
+
+		& button {
+			padding: 5px 10px;
+			background-color: #f0f0f0;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+	}
+
+	td.duration {
+		& input[type='text'] {
+			width: 60px;
+			text-align: center;
+		}
 	}
 	th {
 		background-color: #f2f2f2;
@@ -141,5 +200,13 @@
 	input[type='text'],
 	input[type='number'] {
 		width: 100%;
+	}
+
+	option.not-in-scale {
+		color: red;
+	}
+
+	label.not-in-scale {
+		color: red;
 	}
 </style>

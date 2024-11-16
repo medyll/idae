@@ -1,7 +1,6 @@
 export type Chord = {
 	root: string;
 	quality: string;
-	mode?: string;
 	augDim?: string;
 	sus?: string;
 	sept?: string;
@@ -16,7 +15,9 @@ export type TimeSignature = {
 
 export type ChordEntry = {
 	chord: Chord;
-	timeSignature?: TimeSignature;
+	timeSignature?: { numerator: number; denominator: number };
+	armor: string;
+	mode?: string;
 };
 
 export type Cadence = {

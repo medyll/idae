@@ -1,30 +1,10 @@
 // functions/functions.svelte.ts
-import type { Chord, Cadence, ChordEntry } from '../types/types';
+import { rootNotes, cadencePatterns, armorOptions } from '$lib/constants/constants.js';
+import type { Chord, Cadence, ChordEntry } from '$lib/types/types';
 
 export const chords = $state<Chord[]>([]);
 export const suggestedCadences = $state<Cadence[]>([]);
 export const chordEntries = $state<ChordEntry[]>([]);
-
-export const cadencePatterns: Cadence[] = [
-	{ name: 'Perfect', chords: ['V', 'I'] },
-	{ name: 'Plagal', chords: ['IV', 'I'] },
-	{ name: 'Deceptive', chords: ['V', 'VI'] },
-	{ name: 'Half', chords: ['I', 'V'] },
-	{ name: 'Italian', chords: ['IV', 'V', 'I'] },
-	{ name: 'German', chords: ['II', 'V', 'I'] },
-	{ name: 'Phrygian', chords: ['IV', 'V', 'III'] }
-];
-
-export const rootNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-
-export const qualities = {
-	mode: ['maj', 'min'],
-	augDim: ['aug', 'dim'],
-	sus: ['sus4', 'sus2'],
-	sept: ['7', '5']
-};
-
-export const modifiers = ['♯', '♭', '♮'];
 
 export function updateCadences() {
 	console.log('Current Chords:', $state.snapshot({ chords }));
@@ -34,6 +14,9 @@ export function updateCadences() {
 		console.log('No chords, no suggestions');
 		return;
 	}
+
+	const lastEntry = chordEntries[chordEntries.length - 1];
+	const lastChordMode = lastEntry.mode;
 
 	const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 	const lastChord = chordEntries[chordEntries.length - 1].chord;
@@ -63,4 +46,9 @@ export function toggleModifier(chordIndex: number, modifier: string) {
 	const chord = chordEntries[chordIndex].chord;
 	chord.modifier = chord.modifier === modifier ? undefined : modifier;
 	updateCadences();
+}
+
+export function getArmorInfo(armorName: string) {
+	const armor = armorOptions.find((a) => a.name === armorName);
+	return armor ? `${armor.name}${armor.value ? ` (${armor.value})` : ''}` : '';
 }

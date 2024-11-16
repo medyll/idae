@@ -1,17 +1,13 @@
 <!-- components/ChordVisualization.svelte -->
 <script lang="ts">
-	import { chordEntries } from '$lib/functions/functions.svelte';
+	import { chordEntries, getArmorInfo } from '$lib/functions/functions.svelte';
 	import type { ChordEntry } from '$lib/types/types';
 
 	function getChordName(entry: ChordEntry) {
 		const { chord } = entry;
 		let name = chord.root;
 
-		if (chord.modifier) {
-			name += chord.modifier;
-		}
-
-		name += chord.mode ?? '';
+		name += chord.modifier ?? ''; 
 		name += chord.augDim ?? '';
 		name += chord.sus ?? '';
 		name += chord.sept ?? '';
@@ -35,15 +31,20 @@
 	{:else}
 		<div class="chord-sequence">
 			{#each chordEntries as entry, i}
-				{#if entry.timeSignature}
+				{#if entry.timeSignature || entry.armor || entry.mode}
 					<div class="signature">
-						- Signature: {entry.timeSignature.numerator}/{entry.timeSignature.denominator}
+						{#if entry.timeSignature}
+							- Signature: {entry.timeSignature.numerator}/{entry.timeSignature.denominator}
+						{/if}
+						{#if entry.armor}
+							- Armure:  {getArmorInfo(entry.armor)}
+						{/if} 
+                        {#if entry.mode}
+                            - Mode: {entry.mode}
+                        {/if}
 					</div>
 				{/if}
-				<div 
-					class="chord" 
-					style="--baseTime:{getDurationValue(entry.chord.duration)}"
-				>
+				<div class="chord" style="--baseTime:{getDurationValue(entry.chord.duration)}">
 					<span>{getChordName(entry)}</span>
 					<span>{entry.chord.duration}</span>
 				</div>
@@ -72,7 +73,7 @@
 		background-color: #fff;
 		border: 1px solid #ccc;
 		border-radius: 5px;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 		text-align: center;
 		width: calc(200px * var(--baseTime, 1));
 		min-width: 30px; /* Ensure a minimum width for very short durations */
