@@ -18,6 +18,11 @@ export type ChordEntry = {
 	timeSignature?: { numerator: number; denominator: number };
 	armor: string;
 	mode?: string;
+	measureInfo: {
+		start: number;
+		end: number;
+		beatStart: number;
+	};
 };
 
 export type Cadence = {

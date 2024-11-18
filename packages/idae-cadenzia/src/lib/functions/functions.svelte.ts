@@ -52,3 +52,65 @@ export function getArmorInfo(armorName: string) {
 	const armor = armorOptions.find((a) => a.name === armorName);
 	return armor ? `${armor.name}${armor.value ? ` (${armor.value})` : ''}` : '';
 }
+
+function getDurationValue(duration: string): number {
+	const [numerator, denominator] = duration.split('/').map(Number);
+	return denominator ? numerator / denominator : numerator;
+}
+
+export function updateMeasureInfo() {
+	let currentMeasure = 1;
+	let currentBeat = 0;
+	let currentTimeSignature = { numerator: 4, denominator: 4 };
+
+	for (let i = 0; i < chordEntries.length; i++) {
+		const entry = chordEntries[i];
+
+		if (entry.timeSignature) {
+			currentTimeSignature = entry.timeSignature;
+			if (currentBeat > 0) {
+				currentMeasure++;
+				currentBeat = 0;
+			}
+		}
+
+		const chordDuration = getDurationValue(entry.chord.duration);
+		const beatsPerMeasure = currentTimeSignature.numerator;
+
+		const measureStart = currentMeasure;
+		const beatStart = currentBeat;
+
+		currentBeat += chordDuration * beatsPerMeasure;
+		while (currentBeat >= beatsPerMeasure) {
+			currentMeasure++;
+			currentBeat -= beatsPerMeasure;
+		}
+
+		chordEntries[i] = {
+			...entry,
+			measureInfo: {
+				start: measureStart,
+				end: currentMeasure,
+				beatStart: beatStart
+			}
+		};
+	}
+}
+
+export function addChordEntry() {
+	const newEntry = {
+		chord: { root: 'C', quality: 'maj', modifier: undefined, duration: '1' },
+		timeSignature: chordEntries.length === 0 ? { numerator: 4, denominator: 4 } : undefined,
+		armor: '',
+		measureInfo: { start: 1, end: 1, beatStart: 0 }
+	};
+	chordEntries.push(newEntry);
+	updateCadences();
+}
+
+export function updateChordEntry(index: number, updatedEntry: Partial<ChordEntry>) {
+	if (index >= 0 && index < chordEntries.length) {
+		chordEntries[index] = { ...chordEntries[index], ...updatedEntry };
+		updateCadences();
+	}
+}

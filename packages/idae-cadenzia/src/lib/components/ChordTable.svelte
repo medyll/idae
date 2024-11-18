@@ -17,7 +17,8 @@
 			chord: { root: 'C', quality: qualities.mode[0], modifier: undefined, duration: '1' },
 			timeSignature: chordEntries.length === 0 ? { numerator: 4, denominator: 4 } : undefined,
 			armor: '',
-			mode: undefined
+			mode: undefined,
+			measureInfo: { start: 1, end: 1, beatStart: 0 }
 		});
 		updateCadences();
 	}
