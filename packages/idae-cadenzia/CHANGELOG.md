@@ -1,5 +1,13 @@
 # @medyll/idae-cadenzia
 
+## 0.3.0
+
+### Minor Changes
+
+- - feat(ajouter): la gestion des informations de mesure pour les entrées d'accords ([b0641d0](https://github.com/medyll/idae/commit/b0641d0e4c236717555b6cb2a853f127092ee194)) - 2024-11-18 by @medyll
+  - feat(ajouter): des constantes musicales et améliorer la gestion des accords avec des options d'armure ([0f48cd9](https://github.com/medyll/idae/commit/0f48cd947ceabadf13a7488110c8bbdc6b32e638)) - 2024-11-16 by @medyll
+  - feat(ajouter): le composant App et les composants associés pour la visualisation des accords ([e7c9517](https://github.com/medyll/idae/commit/e7c95178e328e56f514678bed4c96015e7ef7529)) - 2024-11-16 by @medyll
+
 ## 0.2.0
 
 ### Minor Changes
