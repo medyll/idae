@@ -114,3 +114,26 @@ export function updateChordEntry(index: number, updatedEntry: Partial<ChordEntry
 		updateCadences();
 	}
 }
+
+export function handleChordChange(index: number, changes: Partial<ChordEntry>) {
+	if (index >= 0 && index < chordEntries.length) {
+		const currentEntry = chordEntries[index];
+		const updatedEntry: ChordEntry = { ...currentEntry };
+
+		if (changes.chord) {
+			updatedEntry.chord = { ...currentEntry.chord, ...changes.chord };
+		}
+		if (changes.timeSignature) {
+			updatedEntry.timeSignature = changes.timeSignature;
+		}
+		if (changes.armor !== undefined) {
+			updatedEntry.armor = changes.armor;
+		}
+		if (changes.mode !== undefined) {
+			updatedEntry.mode = changes.mode;
+		}
+
+		chordEntries[index] = updatedEntry;
+		updateCadences();
+	}
+}

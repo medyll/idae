@@ -10,7 +10,7 @@
 	import { getScaleNotes, isChordInScale } from '$lib/functions/rules.js';
 
 	import type { ChordEntry } from '$lib/types/types.js';
-	import { chordEntries, updateCadences, toggleModifier } from '../functions/functions.svelte.js';
+	import { chordEntries, updateCadences, toggleModifier, handleChordChange } from '../functions/functions.svelte.js';
 
 	function addChordEntry() {
 		chordEntries.push({
@@ -28,9 +28,7 @@
 		updateCadences();
 	}
 
-	function handleChordChange() {
-		updateCadences();
-	}
+ 
 
 	function toggleTimeSignature(index: number) {
 		if (chordEntries[index].timeSignature) {
@@ -66,12 +64,30 @@
 	<tbody>
 		{#each chordEntries as entry, i}
 			<tr>
-				<td>{i + 1}</td>
+				<td>
+					{#if entry.measureInfo.start === entry.measureInfo.end}
+						{entry.measureInfo.start}
+					{:else}
+						{entry.measureInfo.start} - {entry.measureInfo.end}
+					{/if}
+				</td>
 				<td class="timeSignature">
 					{#if entry.timeSignature}
-						<input type="number" bind:value={entry.timeSignature.numerator} min="1" max="32" />
+						<input 
+							type="number" 
+							bind:value={entry.timeSignature.numerator} 
+							min="1" 
+							max="32" 
+							onchange={() => handleChordChange(i, { timeSignature: entry.timeSignature })}
+						/>
 						/
-						<input type="number" bind:value={entry.timeSignature.denominator} min="1" max="32" />
+						<input 
+							type="number" 
+							bind:value={entry.timeSignature.denominator} 
+							min="1" 
+							max="32" 
+							onchange={() => handleChordChange(i, { timeSignature: entry.timeSignature })}
+						/>
 					{:else}
 						<button onclick={() => toggleTimeSignature(i)}>Add Time Signature</button>
 					{/if}
@@ -79,7 +95,11 @@
 				<td>
 					<div>
 						<label for="armor-{i}">Armor:</label>
-						<select id="armor-{i}" bind:value={entry.armor} onchange={handleChordChange}>
+						<select 
+							id="armor-{i}" 
+							bind:value={entry.armor} 
+							onchange={() => handleChordChange(i, { armor: entry.armor })}
+						>
 							{#each armorOptions as armor}
 								<option value={armor.name}>
 									{armor.name}
@@ -90,7 +110,11 @@
 					</div>
 					<div>
 						<label for="mode-{i}">Mode:</label>
-						<select id="mode-{i}" bind:value={entry.mode} onchange={handleChordChange}>
+						<select 
+							id="mode-{i}" 
+							bind:value={entry.mode} 
+							onchange={() => handleChordChange(i, { mode: entry.mode })}
+						>
 							<option value={undefined}>Select mode</option>
 							{#each modes as mode}
 								<option value={mode}>{mode}</option>
@@ -99,9 +123,18 @@
 					</div>
 				</td>
 				<td>
-					<select bind:value={entry.chord.root} onchange={handleChordChange}>
+					<select 
+						bind:value={entry.chord.root} 
+						onchange={() => handleChordChange(i, { chord: { ...entry.chord } })}
+					>
 						{#each rootNotes as note}
-							<option value={note} class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, root: note}})}>
+							<option
+								value={note}
+								class:not-in-scale={!isChordValid({
+									...entry,
+									chord: { ...entry.chord, root: note }
+								})}
+							>
 								{note}
 							</option>
 						{/each}
@@ -111,16 +144,20 @@
 					{#each Object.entries(qualities) as [group, qualityOptions]}
 						<div>
 							{#each qualityOptions as quality}
-								<label class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, quality}})}>
+								<label
+									class:not-in-scale={!isChordValid({
+										...entry,
+										chord: { ...entry.chord, quality }
+									})}
+								>
 									<input
 										type="radio"
 										name={`quality-${group}-${i}`}
 										value={quality}
 										checked={entry.chord[group] === quality}
 										onchange={() => {
-											entry.chord[group] = quality;
-											entry.chord.quality = quality;
-											handleChordChange();
+											const updatedChord = { ...entry.chord, [group]: quality, quality };
+											handleChordChange(i, { chord: updatedChord });
 										}}
 									/>
 									{quality}
@@ -132,7 +169,9 @@
 				</td>
 				<td>
 					{#each modifiers as modifier}
-						<label class:not-in-scale={!isChordValid({...entry, chord: {...entry.chord, modifier}})}>
+						<label
+							class:not-in-scale={!isChordValid({ ...entry, chord: { ...entry.chord, modifier } })}
+						>
 							<input
 								type="radio"
 								name={`modifier-${i}`}
@@ -148,7 +187,7 @@
 					<input
 						type="text"
 						bind:value={entry.chord.duration}
-						onchange={handleChordChange}
+						onchange={() => handleChordChange(i, { chord: { ...entry.chord } })}
 						placeholder="e.g., 1, 1/2, 3/4"
 					/>
 				</td>
