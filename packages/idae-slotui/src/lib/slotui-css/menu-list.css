@@ -27,14 +27,11 @@
 :global(.menu-list) .menu-list-item,
 :global(.menu-list) a.menu-list-item,
 :global(.menu-list) li.menu-list-item {
-  border: 1px solid red;
   --preset-width: var(--sld-width-small);
   width: var(--preset-width-small);
   --preset-gutter: var(--sld-gutter-default);
   text-decoration: none;
   overflow: hidden;
-  padding-left: calc(var(--preset-tall) / 4);
-  border: 1px solid transparent;
   display: flex;
   align-items: center;
   position: relative;
