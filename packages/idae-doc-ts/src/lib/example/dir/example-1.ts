@@ -5,6 +5,8 @@ export interface User {
 	id: number;
 	name: string;
 	email: string;
+	/** data is data also */
+	data?: string;
 }
 
 /**
@@ -29,6 +31,7 @@ export class SystemUser implements User {
 	name: string;
 	email: string;
 	role: UserRole;
+	data!: string;
 
 	/**
 	 * Constructor for SystemUser

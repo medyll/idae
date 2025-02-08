@@ -1,3 +1,6 @@
+export type UserNameSimple = string;
+export type UserEmail = string;
+
 /**
  * Interface representing a generic user
  */
@@ -7,7 +10,7 @@ export interface User {
 	/** Name of the user */
 	name: string;
 	/** Email address of the user */
-	email: string;
+	email?: string;
 }
 
 /**

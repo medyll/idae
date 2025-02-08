@@ -11,10 +11,12 @@
 	// Destructure properties passed to the component
 	let {
 		class: className,
+		// comment for message
 		message,
 		draggable = false,
 		level = $bindable<any>('info'), 
 		children,
+		/** Alert top button */
 		alertTopButton,
 	}: ExampleProps = $props();
 
