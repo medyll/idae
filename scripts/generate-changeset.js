@@ -4,6 +4,7 @@ const { execSync } = require("child_process");
 const crypto = require("crypto");
 require("dotenv").config();
 
+// Define the root repository and commit types
 const rootRepo = "medyll/idae";
 const commitTypes = [
   "feat",
@@ -20,6 +21,7 @@ const commitDepth = "all";
 
 class ChangesetGenerator {
   constructor(options = {}) {
+    // Initialize options with defaults
     this.rootRepo = options.rootRepo || rootRepo;
     this.commitTypes = options.commitTypes || commitTypes;
     this.commitDepth = options.commitDepth || commitDepth;
@@ -27,11 +29,13 @@ class ChangesetGenerator {
   }
 
   async initOctokit() {
+    // Initialize Octokit for GitHub API interactions
     const { Octokit } = await import("@octokit/rest");
     this.octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
   }
 
   async checkRateLimit() {
+    // Check GitHub API rate limit and wait if necessary
     const { data: rateLimit } = await this.octokit.rest.rateLimit.get();
     console.log("Rate limit:", rateLimit.rate);
     if (rateLimit.remaining < 10) {
@@ -43,19 +47,21 @@ class ChangesetGenerator {
   }
 
   async getCommitsForPackage(packageName, packagePath, since) {
+    // Get commits for a specific package since the last tag
     const command = `git log --name-only --pretty=format:"%H£%s£%b£%an£%aI" ${since}..HEAD -- ${packagePath}`;
 
     try {
       const output = execSync(command, { encoding: "utf-8" });
       const commits = output.split("\n\n").map((commit) => {
         const [hash, subject, body, author, date, ...files] = commit.split("£");
+        const validFiles = files.filter((file) => file.startsWith(packagePath));
         return {
           sha: hash,
           message: subject,
           description: body,
           author,
           date,
-          files: files.filter(Boolean),
+          files: validFiles.filter(Boolean),
         };
       });
       return commits;
@@ -66,6 +72,7 @@ class ChangesetGenerator {
   }
 
   async getPullRequestForCommit(commit) {
+    // Get the pull request associated with a specific commit
     try {
       const [owner, repo] = this.rootRepo.split("/");
       const { data: pullRequests } =
@@ -85,6 +92,7 @@ class ChangesetGenerator {
   }
 
   getBumpType(commitMessage) {
+    // Determine the bump type (major, minor, patch) based on the commit message
     if (commitMessage.toLowerCase().includes("breaking change")) return "major";
     for (const type of this.commitTypes) {
       if (commitMessage.startsWith(type)) {
@@ -95,6 +103,7 @@ class ChangesetGenerator {
   }
 
   sanitizeCommitMessage(message) {
+    // Sanitize the commit message to follow a consistent format
     const [type, ...rest] = message.split(":");
     if (this.commitTypes.includes(type.trim().toLowerCase())) {
       const scopeMatch = rest
@@ -116,6 +125,7 @@ class ChangesetGenerator {
   }
 
   generateChangesetContent(packageName, bumpType, commits) {
+    // Generate the content for the changeset file
     const summary = commits
       .map((commit) => {
         const sanitizedMessage = this.sanitizeCommitMessage(
@@ -146,6 +156,7 @@ ${summary}
   }
 
   async generateChangesets() {
+    // Generate changesets for all packages
     const lastTag = execSync("git describe --tags --abbrev=0")
       .toString()
       .trim();
@@ -173,7 +184,7 @@ ${summary}
         lastTag,
       );
 
-      console.log(`Commits for ${packageName}:`, packageCommits.length);
+      console.log(`Commits for ${packageName}:`, packageCommits.length );
 
       if (packageCommits.length > 0) {
         const bumpTypes = packageCommits
@@ -231,6 +242,7 @@ ${summary}
   }
 }
 
+// Initialize and run the changeset generator
 const generator = new ChangesetGenerator({
   rootRepo: rootRepo,
   commitTypes: ["feat", "fix", "docs", "refactor", "docs", "ci"],
