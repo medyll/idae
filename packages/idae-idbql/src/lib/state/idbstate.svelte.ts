@@ -1,6 +1,11 @@
 /* path: D:\boulot\app-node\idbql\src\lib\scripts\state\idbstate.svelte.ts */
 import type { IdbqlIndexedCore } from "$lib/idbqlCore/idbqlCore.js";
-import type { CollectionCore } from "$lib/collection/collection.js";
+
+// Add an index signature to IdbqlIndexedCore
+interface IdbqlIndexedCore {
+  [key: string]: CollectionCore<any>;
+}
+import type { CollectionCore } from "$lib/collection/collection.svelte.js";
 import { idbqlEvent } from "./idbqlEvent.svelte.js";
 //
 import {
@@ -60,12 +65,12 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
  */
 export class StateCollectionDyn<T> {
   private collectionName: string;
-  private state = idbqlEvent.dataState as StateCollectionDyn<T>; // svelte state ;)
   private idbBase: IdbqlIndexedCore;
 
   constructor(collectionName: string, idbBase: IdbqlIndexedCore) {
-    if (!idbqlEvent.dataState?.[collectionName])
+    if (!idbqlEvent.dataState?.[collectionName]) {
       idbqlEvent.dataState[collectionName] = [];
+    }
     this.collectionName = collectionName;
     this.idbBase = idbBase;
 
@@ -85,7 +90,10 @@ export class StateCollectionDyn<T> {
   private feed() {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       this.idbBase[this.collectionName].getAll().then((data) => {
-        idbqlEvent.dataState[this.collectionName] = data;
+        idbqlEvent.dataState = {
+          ...idbqlEvent.dataState,
+          [this.collectionName]: data,
+        };
       });
     }
   }
@@ -120,9 +128,10 @@ export class StateCollectionDyn<T> {
     return this.collectionState.filter((d) => d[pathKey] === value)?.[0] as T;
   }
 
-  getAll(): ResultSet<T> {
-    return getResultset<T>(this.collectionState);
-  }
+  getAll = (): ResultSet<T> => {
+    //return this.collectionState;
+    return getResultset(this.collectionState);
+  };
 
   updateWhere(where: Where<T>, data: Partial<T>) {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
@@ -142,21 +151,21 @@ export class StateCollectionDyn<T> {
     }
   }
 
-  delete(keyPathValue: string | number): boolean | undefined {
+  async delete(keyPathValue: string | number): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      return this.idbBase[this.collectionName].delete(keyPathValue);
+      return await this.idbBase[this.collectionName].delete(keyPathValue);
     }
   }
   /** @deprecated */
-  del(keyPathValue: string | number): boolean | undefined {
+  async del(keyPathValue: string | number): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      return this.idbBase[this.collectionName].delete(keyPathValue);
+      return await this.idbBase[this.collectionName].delete(keyPathValue);
     }
   }
 
-  deleteWhere(where: Where<T>): boolean | undefined {
+  async deleteWhere(where: Where<T>): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      return this.idbBase[this.collectionName].deleteWhere(where);
+      return await this.idbBase[this.collectionName].deleteWhere(where);
     }
   }
 }
