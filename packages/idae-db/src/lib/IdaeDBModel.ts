@@ -7,13 +7,22 @@ export interface IdaeModelOptions {
 	autoIncrementFormat?: (collection: string) => string;
 	autoIncrementDbCollection?: string;
 }
-// models are attached to a connection
+
+/**
+ * Models are attached to a connection.
+ */
 export class IdaeDBModel<T extends object> {
 	private _collection: Collection<T>;
 	private _autoIncrementField: string | undefined = undefined;
 	private _autoIncrementDbCollection: string | undefined = undefined;
 	private _fieldId: string = '_id';
 
+	/**
+	 * Creates an instance of IdaeDBModel.
+	 * @param connection The database connection.
+	 * @param _collectionName The name of the collection.
+	 * @param options Optional model options.
+	 */
 	constructor(
 		private connection: IdaeDbConnection,
 		private _collectionName: string,
@@ -38,6 +47,10 @@ export class IdaeDBModel<T extends object> {
 		return this._fieldId;
 	}
 
+	/**
+	 * Gets the next auto-increment value.
+	 * @returns The next increment value.
+	 */
 	async getNextIncrement() {
 		const idaeAuto = IdaeDb.init(this.connection.idaeDb.uri, this.connection.idaeDb.options);
 		const increment_name = 'increment';

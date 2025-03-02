@@ -16,6 +16,9 @@ export type IdaeDbOptions = {
 	dbEvents?: EventListeners<object, object>;
 };
 
+/**
+ * Represents the IdaeDb class.
+ */
 export class IdaeDb {
 	#globalEvents?: EventListeners<object, object>;
 	static #instances: Map<IdaeDbInstanceKey, IdaeDb> = new Map();
@@ -30,6 +33,11 @@ export class IdaeDb {
 		dbEvents: {} as EventListeners<object, object>
 	} as IdaeDbOptions;
 
+	/**
+	 * Creates an instance of IdaeDb.
+	 * @param _uri The URI of the database.
+	 * @param options The options for the database.
+	 */
 	private constructor(
 		private _uri: Uri,
 		options: Partial<IdaeDbOptions> = {} as IdaeDbOptions
@@ -107,6 +115,11 @@ export class IdaeDb {
 		return adapter;
 	}
 
+	/**
+	 * Applies event listeners to the adapter.
+	 * @param adapter The adapter to apply events to.
+	 * @param events The event listeners to apply.
+	 */
 	#applyEvents<T extends object = object, R extends object = object>(
 		adapter: IdaeDbAdapter<T>,
 		events: EventListeners<T, R>
@@ -123,6 +136,11 @@ export class IdaeDb {
 			}
 		}
 	}
+
+	/**
+	 * Closes the current database connection.
+	 * @returns A Promise that resolves when the connection is closed.
+	 */
 	async closeConnection(): Promise<void> {
 		if (this.#connection) {
 			await this.#connection.close();
@@ -130,6 +148,10 @@ export class IdaeDb {
 		}
 	}
 
+	/**
+	 * Closes all database connections.
+	 * @returns A Promise that resolves when all connections are closed.
+	 */
 	async closeAllConnections(): Promise<void> {
 		for (const [connectionName, connection] of this.#connections) {
 			await connection.close();
@@ -137,18 +159,34 @@ export class IdaeDb {
 		this.#connections.clear();
 	}
 
+	/**
+	 * Gets the adapter class for the current database type.
+	 * @returns The adapter class.
+	 */
 	get adapterClass() {
 		return this.#adapterClass;
 	}
 
+	/**
+	 * Gets the connection key for the current database instance.
+	 * @returns The connection key.
+	 */
 	get connectionKey(): IdaeDbInstanceKey {
 		return `${this.options.dbType}:${this._uri}`;
 	}
 
+	/**
+	 * Gets the URI of the database.
+	 * @returns The URI of the database.
+	 */
 	get uri() {
 		return this._uri;
 	}
 
+	/**
+	 * Gets the options for the database.
+	 * @returns The options for the database.
+	 */
 	get options() {
 		return this.#options;
 	}

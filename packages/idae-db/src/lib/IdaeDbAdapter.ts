@@ -33,6 +33,9 @@ export type EventListeners<T extends object> = {
 	};
 };
 
+/**
+ * IdaeDbAdapter class that extends IdaeEventEmitter and implements AbstractIdaeDbAdapter.
+ */
 export class IdaeDbAdapter<T extends object>
 	extends IdaeEventEmitter
 	implements AbstractIdaeDbAdapter<T>
@@ -57,6 +60,7 @@ export class IdaeDbAdapter<T extends object>
 	) {
 		IdaeDbAdapter.adapters.set(dbType, adapterConstructor as AdapterConstructor<IdaeDbConnection>);
 	}
+
 	/**
 	 * Retrieves the adapter constructor for a specific database type.
 	 * @param dbType The type of database for which to retrieve the adapter.
@@ -150,6 +154,13 @@ export class IdaeDbAdapter<T extends object>
 		return this.adapter.transaction(callback);
 	}
 
+	/**
+	 * Applies the appropriate adapter for the specified database type.
+	 * @param collection The name of the collection or table.
+	 * @param connection The database connection object.
+	 * @param dbType The type of database being used.
+	 * @throws {Error} If no adapter is found for the specified database type.
+	 */
 	private applyAdapter(collection: string, connection: IdaeDbConnection, dbType: DbType) {
 		const adapterConstructor = IdaeDbAdapter.adapters.get(dbType);
 		if (!adapterConstructor) {

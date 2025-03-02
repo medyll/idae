@@ -1,7 +1,7 @@
 
 # @medyll/idae-be
 
-A powerful DOM manipulation library with a callback-based approach for precise element targeting.
+A DOM walk and manipulation library with a callback-based approach for precise element targeting.
 
 ## Installation
 
