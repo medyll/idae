@@ -111,12 +111,14 @@ export class StateCollectionDyn<T> {
       this._where(qy, options);
   }
 
-  update(keyPathValue: string | number, data: Partial<T>) {
+  async update(
+    keyPathValue: string | number,
+    data: Partial<T>,
+  ): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      (this.idbBase[this.collectionName] as CollectionCore).update(
-        keyPathValue,
-        data,
-      );
+      return (await (
+        this.idbBase[this.collectionName] as CollectionCore
+      ).update(keyPathValue, data)) as boolean | undefined;
     }
   }
 
@@ -133,27 +135,35 @@ export class StateCollectionDyn<T> {
     return getResultset(this.collectionState);
   };
 
-  updateWhere(where: Where<T>, data: Partial<T>) {
+  async updateWhere(
+    where: Where<T>,
+    data: Partial<T>,
+  ): Promise<boolean | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      this.idbBase[this.collectionName].updateWhere(where, data);
-    }
-  }
-
-  put(value: Partial<T>): Promise<T | undefined> | undefined {
-    if (this.idbBase && this.testIdbql(this.collectionName)) {
-      return this.idbBase[this.collectionName].put(value) as Promise<
-        T | undefined
-      >;
+      return (await this.idbBase[this.collectionName].updateWhere(
+        where,
+        data,
+      )) as Promise<boolean | undefined>;
     }
     return undefined;
   }
 
-  add(data: T): Promise<T | undefined> | undefined {
+  async put(value: Partial<T>): Promise<T | undefined> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      return this.idbBase[this.collectionName].add(data) as Promise<
+      return this.idbBase[this.collectionName].put<T>(value).then((data) => {
+        return data;
+      });
+    }
+    return undefined;
+  }
+
+  async add(data: T): Promise<T | undefined> {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      return (await this.idbBase[this.collectionName].add<T>(data)) as Promise<
         T | undefined
       >;
     }
+    return undefined;
   }
 
   async delete(keyPathValue: string | number): Promise<boolean | undefined> {

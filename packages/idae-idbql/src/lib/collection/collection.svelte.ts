@@ -68,7 +68,7 @@ export class CollectionCore<T = any> {
     return resultSet;
   }
 
-  get(value: any): Promise<T> {
+  get<T>(value: Partial<T>): Promise<T> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       const get = storeObj.get(value);
@@ -123,7 +123,7 @@ export class CollectionCore<T = any> {
   }
 
   // put data to indexedDB, replace collection content if present
-  async put(value: Partial<T>) {
+  async put<T>(value: Partial<T>): Promise<T> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
 
@@ -139,7 +139,7 @@ export class CollectionCore<T = any> {
   }
 
   /** ok add data to the store */
-  async add(data: T): Promise<T | boolean> {
+  async add<T>(data: Partial<T>): Promise<T | boolean> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();
       const add = storeObj.add(data);
