@@ -139,15 +139,20 @@ export class StateCollectionDyn<T> {
     }
   }
 
-  put(value: Partial<T>) {
+  put(value: Partial<T>): Promise<T | undefined> | undefined {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      this.idbBase[this.collectionName].put(value);
+      return this.idbBase[this.collectionName].put(value) as Promise<
+        T | undefined
+      >;
     }
+    return undefined;
   }
 
-  add(data: T) {
+  add(data: T): Promise<T | undefined> | undefined {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
-      this.idbBase[this.collectionName].add(data);
+      return this.idbBase[this.collectionName].add(data) as Promise<
+        T | undefined
+      >;
     }
   }
 
@@ -155,6 +160,7 @@ export class StateCollectionDyn<T> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return await this.idbBase[this.collectionName].delete(keyPathValue);
     }
+    return undefined;
   }
   /** @deprecated */
   async del(keyPathValue: string | number): Promise<boolean | undefined> {
