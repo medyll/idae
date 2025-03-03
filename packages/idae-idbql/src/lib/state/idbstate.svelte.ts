@@ -79,8 +79,8 @@ export class StateCollectionDyn<T> {
     return this;
   }
 
-  get collectionState() {
-    return idbqlEvent?.dataState?.[this.collectionName];
+  get collectionState(): ResultSet<T> {
+    return idbqlEvent?.dataState?.[this.collectionName] as ResultSet<T>;
   }
 
   private testIdbql(collection: string) {
@@ -90,17 +90,19 @@ export class StateCollectionDyn<T> {
   private feed() {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       this.idbBase[this.collectionName].getAll().then((data) => {
-        idbqlEvent.dataState = {
+        idbqlEvent.dataState[this.collectionName] = getResultset(data);
+        /* idbqlEvent.dataState = {
           ...idbqlEvent.dataState,
-          [this.collectionName]: data,
-        };
+          [this.collectionName]: getResultset(data),
+        }; */
       });
     }
   }
 
+  /* READ OP */
   _where(qy: Where<T>, options?: ResultsetOptions) {
     let dts = this.collectionState;
-    let c = Operators.parse(dts ?? [], qy);
+    let c = Operators.parse(dts ?? getResultset([]), qy);
     const r = getResultset<T>(c);
     if (options) r.setOptions(options);
     return r;
@@ -110,6 +112,20 @@ export class StateCollectionDyn<T> {
     return (qy: Where<T>, options?: ResultsetOptions) =>
       this._where(qy, options);
   }
+
+  get(value: any, pathKey: string = "id"): T[] {
+    return this.collectionState.filter((d) => d[pathKey] === value) as T[];
+  }
+
+  getOne(value: any, pathKey: string = "id"): T {
+    return this.collectionState.filter((d) => d?.[pathKey] === value)?.[0] as T;
+  }
+
+  getAll = (): T[] => {
+    return this.collectionState;
+  };
+
+  /* WRITE OP */
 
   async update(
     keyPathValue: string | number,
@@ -121,20 +137,6 @@ export class StateCollectionDyn<T> {
       ).update(keyPathValue, data)) as boolean | undefined;
     }
   }
-
-  get(value: any, pathKey: string = "id"): T[] {
-    return this.collectionState.filter((d) => d[pathKey] === value) as T[];
-  }
-
-  getOne(value: any, pathKey: string = "id"): T {
-    return this.collectionState.filter((d) => d[pathKey] === value)?.[0] as T;
-  }
-
-  getAll = (): T[] => {
-    //return this.collectionState;
-    return this.collectionState;
-    getResultset(this.collectionState);
-  };
 
   async updateWhere(
     where: Where<T>,

@@ -1,4 +1,73 @@
 import { dotPath, type DotPath } from "../path/pathResolver.js";
+export const getResultsetProxy = <T>(data: T) => {
+  return new Proxy(data, {
+    get: (target, prop) => {
+      if (prop === "setOptions") {
+        return (options) => {
+          if (options.sort) {
+            target.sortBy(options.sort);
+          }
+          if (options.groupBy) {
+            target.groupBy(options.groupBy);
+          }
+          return target;
+        };
+      }
+      if (prop === "sortBy") {
+        return (args) => {
+          const keys = Object.keys(args);
+          const values = Object.values(args);
+          target.sort((a, b) => {
+            let i = 0;
+            let result = 0;
+            while (i < keys.length && result === 0) {
+              let value = keys[i];
+              result =
+                values[i] === "asc"
+                  ? Number(dotPath(a, value)) - Number(dotPath(b, value))
+                  : Number(dotPath(b, value)) - Number(dotPath(a, value));
+              i++;
+            }
+            return result;
+          });
+          delete target?.sortBy;
+          return target;
+        };
+      }
+      if (prop === "groupBy") {
+        return (fieldName, transform) => {
+          const finalFieldName =
+            typeof fieldName === "string" ? [fieldName] : fieldName;
+          return target.reduce((acc, curr) => {
+            finalFieldName.forEach((f) => {
+              acc += dotPath(curr, f);
+            });
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(curr);
+            return acc;
+          }, {});
+        };
+      }
+      if (prop === "getPage") {
+        return (page, size) => {
+          const start = (page - 1) * size;
+          const end = page * size;
+          return target.slice(start, end);
+        };
+      }
+      /*     if (prop === "toObject") {
+      return (dotPath) => {
+        return target.map((item) => {
+          return dotPath(item);
+        });
+      };
+    } */
+      return target[prop];
+    },
+  });
+};
 
 /**
  * Represents the options for a result set.
