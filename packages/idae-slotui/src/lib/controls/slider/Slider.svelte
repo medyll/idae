@@ -151,5 +151,5 @@
 </div>
 
 <style lang="scss">
-	@import './slider.scss';
+	@use './slider.scss';
 </style>

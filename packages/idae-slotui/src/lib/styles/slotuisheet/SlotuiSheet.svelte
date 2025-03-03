@@ -17,10 +17,10 @@
 <svelte:head>
 	{castToCssProps(breakpoints)}
 	<style type="text/css" id="idae-slotui-sheet"  >
-		@import './slotui-sheet.scss';
+		@use './slotui-sheet.scss';
 	</style>
 	<style type="text/css" id="idae-slotui-queries" >
-		@import './stylesheet.scss'; 
+		@use './stylesheet.scss'; 
 	</style>
 </svelte:head>
 <div id="slotui-breakpoints"></div>

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
   --menu-list-padding: var(--sld-pad-tiny);
@@ -37,12 +37,12 @@
   .menu-list-item,
   a.menu-list-item,
   li.menu-list-item {
-    @include ui-variants;
-    @include ui-width-presets;
-    @include ui-tall-presets;
-    @include ui-gutter-presets;
-    @include data-hover;
-    @include data-selected;
+    @include slotui-mixins.ui-variants;
+    @include slotui-mixins.ui-width-presets;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-gutter-presets;
+    @include slotui-mixins.data-hover;
+    @include slotui-mixins.data-selected;
     //
 
     text-decoration: none;

@@ -66,5 +66,5 @@
 />
 
 <style lang="scss">
-	@import 'divider.scss';
+	@use 'divider.scss';
 </style>

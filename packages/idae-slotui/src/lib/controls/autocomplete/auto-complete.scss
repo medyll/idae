@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --auto-complete-pad: var(--sld-pad-medium);
@@ -10,6 +10,6 @@
     &-boot {
         padding: var(--auto-complete-pad);
         gap: var(--auto-complete-gap);
-        @include flex(row, center);
+        @include slotui-mixins.flex(row, center);
     }
 }

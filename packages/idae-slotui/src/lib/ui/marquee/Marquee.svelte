@@ -95,5 +95,5 @@
 {/if}
 
 <style lang="scss">
-	@import './marquee.scss';
+	@use './marquee.scss';
 </style>

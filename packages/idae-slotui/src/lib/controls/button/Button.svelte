@@ -93,5 +93,5 @@
 </button>
 
 <style global lang="scss">
-	@import './button.scss';
+	@use './button.scss';
 </style>

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --title-bar-gap: var(--sld-gap-med);
@@ -7,9 +7,9 @@
 }
 
 .title-bar {
-    @include flex(row, center);
+    @include slotui-mixins.flex(row, center);
     &-content {
-        @include flex(row, center);
+        @include slotui-mixins.flex(row, center);
         gap: var(--title-bar-gap);
         min-height: 34px;
         flex: 1;

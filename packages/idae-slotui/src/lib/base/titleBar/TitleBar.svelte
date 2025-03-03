@@ -38,5 +38,5 @@
 </div>
 
 <style global lang="scss">
-	@import './title-bar.scss';
+	@use './title-bar.scss';
 </style>

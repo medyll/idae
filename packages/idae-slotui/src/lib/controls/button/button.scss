@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :global(:root) {
     --sld-button-font-size: inherit;
@@ -32,10 +32,10 @@
 :global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-    @include ui-width-presets;
-    @include ui-tall-presets;
-    @include ui-variants;
-    @include elevation;
+    @include slotui-mixins.ui-width-presets;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-variants;
+    @include slotui-mixins.elevation;
 
     border: none;
     border-radius: 0;
@@ -97,7 +97,7 @@
     }
 
     .button-central {
-        @include ui-ellipsises-presets;
+        @include slotui-mixins.ui-ellipsises-presets;
         display: block;
         max-width: 100%;
         max-height: 100%;
@@ -199,9 +199,9 @@
     }
 
     //
-    @include ui-width-presets;
-    @include ui-tall-presets;
-    @include ui-variants;
+    @include slotui-mixins.ui-width-presets;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-variants;
 
     &[variant*="bordered"],
     &[bordered="true"],
@@ -273,7 +273,7 @@
         background-color: transparent;
         border: 0px solid transparent;
         cursor: pointer;
-        @include data-hover;
+        @include slotui-mixins.data-hover;
         &:hover {
             background-color: var(--sld-button-hover-background);
         }

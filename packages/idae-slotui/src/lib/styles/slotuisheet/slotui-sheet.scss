@@ -1,32 +1,32 @@
-@import "../slotui-presets.scss";
+@use "../slotui-presets.scss";
 
 :root {
     transition: all 0.3s ease-out;
 }
 
 :root {
-    @each $preset, $preset-value in $preset-radius-list {
-        --#{$vendor}-radius-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-radius-list {
+        --#{slotui-presets.$vendor}-radius-#{$preset}: #{$preset-value};
     }
 
-    @each $preset, $preset-value in $preset-pad-list {
-        --#{$vendor}-pad-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-pad-list {
+        --#{slotui-presets.$vendor}-pad-#{$preset}: #{$preset-value};
     }
 
-    @each $preset, $preset-value in $preset-gap-list {
-        --#{$vendor}-gap-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-gap-list {
+        --#{slotui-presets.$vendor}-gap-#{$preset}: #{$preset-value};
     }
 
-    @each $preset, $preset-value in $preset-gutter-list {
-        --#{$vendor}-gutter-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-gutter-list {
+        --#{slotui-presets.$vendor}-gutter-#{$preset}: #{$preset-value};
     }
 
-    @each $preset, $preset-value in $preset-tall-list {
-        --#{$vendor}-tall-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-tall-list {
+        --#{slotui-presets.$vendor}-tall-#{$preset}: #{$preset-value};
     }
 
-    @each $preset, $preset-value in $preset-width-list {
-        --#{$vendor}-width-#{$preset}: #{$preset-value};
+    @each $preset, $preset-value in slotui-presets.$preset-width-list {
+        --#{slotui-presets.$vendor}-width-#{$preset}: #{$preset-value};
     }
 }
 
@@ -51,33 +51,33 @@ body[data-theme="dark"],
 }
 
 :root {
-    --#{$vendor}-color-foreground: #333333;
-    --#{$vendor}-color-background: #ffffff;
+    --#{slotui-presets.$vendor}-color-foreground: #333333;
+    --#{slotui-presets.$vendor}-color-background: #ffffff;
 
-    --#{$vendor}-color-paper: color-mix(
+    --#{slotui-presets.$vendor}-color-paper: color-mix(
         in srgb,
-        var(--#{$vendor}-color-background) 90%,
-        var(--#{$vendor}-color-foreground) 10%
+        var(--#{slotui-presets.$vendor}-color-background) 90%,
+        var(--#{slotui-presets.$vendor}-color-foreground) 10%
     );
 
-    --#{$vendor}-color-primary: color-mix(in srgb, var(--#{$vendor}-color-foreground) 60%, #4caf50);
-    --#{$vendor}-color-secondary: color-mix(in srgb, var(--#{$vendor}-color-foreground) 80%, #2196f3);
-    --#{$vendor}-color-tertiary: color-mix(in srgb, var(--#{$vendor}-color-foreground) 70%, #ffc107);
+    --#{slotui-presets.$vendor}-color-primary: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-foreground) 60%, #4caf50);
+    --#{slotui-presets.$vendor}-color-secondary: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-foreground) 80%, #2196f3);
+    --#{slotui-presets.$vendor}-color-tertiary: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-foreground) 70%, #ffc107);
 
-    --#{$vendor}-color-disabled: color-mix(
+    --#{slotui-presets.$vendor}-color-disabled: color-mix(
         in srgb,
-        var(--#{$vendor}-color-foreground) 20%,
-        var(--#{$vendor}-color-background)
+        var(--#{slotui-presets.$vendor}-color-foreground) 20%,
+        var(--#{slotui-presets.$vendor}-color-background)
     );
-    --#{$vendor}-color-disabled-border: color-mix(
+    --#{slotui-presets.$vendor}-color-disabled-border: color-mix(
         in srgb,
-        var(--#{$vendor}-color-foreground) 30%,
-        var(--#{$vendor}-color-background)
+        var(--#{slotui-presets.$vendor}-color-foreground) 30%,
+        var(--#{slotui-presets.$vendor}-color-background)
     );
-    --#{$vendor}-background-disabled: color-mix(
+    --#{slotui-presets.$vendor}-background-disabled: color-mix(
         in srgb,
-        var(--#{$vendor}-color-background) 90%,
-        var(--#{$vendor}-color-foreground)
+        var(--#{slotui-presets.$vendor}-color-background) 90%,
+        var(--#{slotui-presets.$vendor}-color-foreground)
     );
 }
 
@@ -85,79 +85,79 @@ body[data-theme="dark"],
 :root[data-theme="dark"],
 body[data-theme="dark"],
 :root[theme="dark"] {
-    --#{$vendor}-color-foreground: #ffffff;
-    --#{$vendor}-color-background: #27323a;
+    --#{slotui-presets.$vendor}-color-foreground: #ffffff;
+    --#{slotui-presets.$vendor}-color-background: #27323a;
 }
 
 :root {
-    --#{$vendor}-elevation-1: 0 0 1.75px 0 rgba(0, 0, 0, 0.15), 0 0.15px 0.46px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-2: 0 0 3.44px 0 rgba(0, 0, 0, 0.15), 0 0.3px 0.93px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-3: 0 0 5.17px 0 rgba(0, 0, 0, 0.15), 0 0 1.39px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-4: 0 0 6.89px 0 rgba(0, 0, 0, 0.15), 0 0.61px 1.86px 0 rgba(0, 0, 0, 0.1);
-    --#{$vendor}-elevation-5: 0 0 8.62px 0 rgba(0, 0, 0, 0.15), 0 0.76px 2.32px 0 rgba(0, 0, 0, 0.1);
+    --#{slotui-presets.$vendor}-elevation-1: 0 0 1.75px 0 rgba(0, 0, 0, 0.15), 0 0.15px 0.46px 0 rgba(0, 0, 0, 0.1);
+    --#{slotui-presets.$vendor}-elevation-2: 0 0 3.44px 0 rgba(0, 0, 0, 0.15), 0 0.3px 0.93px 0 rgba(0, 0, 0, 0.1);
+    --#{slotui-presets.$vendor}-elevation-3: 0 0 5.17px 0 rgba(0, 0, 0, 0.15), 0 0 1.39px 0 rgba(0, 0, 0, 0.1);
+    --#{slotui-presets.$vendor}-elevation-4: 0 0 6.89px 0 rgba(0, 0, 0, 0.15), 0 0.61px 1.86px 0 rgba(0, 0, 0, 0.1);
+    --#{slotui-presets.$vendor}-elevation-5: 0 0 8.62px 0 rgba(0, 0, 0, 0.15), 0 0.76px 2.32px 0 rgba(0, 0, 0, 0.1);
 }
 
 :root {
-    --#{$vendor}-color-discrete: #ccc;
-    --#{$vendor}-color-success: #075c07;
-    --#{$vendor}-color-info: #ffd324;
-    --#{$vendor}-color-warning: #b49104;
-    --#{$vendor}-color-alert: #cc5c00;
-    --#{$vendor}-color-error: #cc0000;
+    --#{slotui-presets.$vendor}-color-discrete: #ccc;
+    --#{slotui-presets.$vendor}-color-success: #075c07;
+    --#{slotui-presets.$vendor}-color-info: #ffd324;
+    --#{slotui-presets.$vendor}-color-warning: #b49104;
+    --#{slotui-presets.$vendor}-color-alert: #cc5c00;
+    --#{slotui-presets.$vendor}-color-error: #cc0000;
 }
 :root {
     $tints: foreground, "background", primary, secondary, tertiary;
 
     @each $tint in $tints {
         /* alpha  #{$tint} */
-        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
-        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
-        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 80%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 80%);
     }
     @each $tint in $tints {
         /* darken  #{$tint} */
-        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
-        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
-        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 30%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 60%);
     }
     @each $tint in $tints {
         /* lighten  #{$tint} */
-        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
-        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
-        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 30%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 60%);
     }
 
     $tints: discrete, success, info, warning, alert, error;
     @each $tint in $tints {
         /* alpha  #{$tint} */
-        --#{$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 10%);
-        --#{$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 30%);
-        --#{$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), transparent 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 30%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-alpha-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), transparent 60%);
     }
     @each $tint in $tints {
         /* darken  #{$tint} */
-        --#{$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 10%);
-        --#{$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 30%);
-        --#{$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), black 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 30%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-darken-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), black 60%);
     }
     @each $tint in $tints {
         /* lighten  #{$tint} */
-        --#{$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 10%);
-        --#{$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 30%);
-        --#{$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{$vendor}-color-#{$tint}), white 60%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-low: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 10%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-mid: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 30%);
+        --#{slotui-presets.$vendor}-color-#{$tint}-lighten-high: color-mix(in srgb, var(--#{slotui-presets.$vendor}-color-#{$tint}), white 60%);
     }
 }
 /* presets */
 :root {
-    --#{$vendor}-color-border: var(--#{$vendor}-color-foreground-alpha-low);
+    --#{slotui-presets.$vendor}-color-border: var(--#{slotui-presets.$vendor}-color-foreground-alpha-low);
 
-    --#{$vendor}-hover-background-color: var(--#{$vendor}-color-secondary-alpha-mid);
-    --#{$vendor}-hover-border-color: var(--#{$vendor}-color-foreground-alpha-high);
-    --#{$vendor}-hover-shadow: var(--#{$vendor}-elevation-3);
+    --#{slotui-presets.$vendor}-hover-background-color: var(--#{slotui-presets.$vendor}-color-secondary-alpha-mid);
+    --#{slotui-presets.$vendor}-hover-border-color: var(--#{slotui-presets.$vendor}-color-foreground-alpha-high);
+    --#{slotui-presets.$vendor}-hover-shadow: var(--#{slotui-presets.$vendor}-elevation-3);
 
-    --#{$vendor}-selected-background-color: var(--#{$vendor}-color-primary-alpha-mid);
-    --#{$vendor}-selected-border-color: var(--#{$vendor}-color-primary);
-    --#{$vendor}-selected-shadow: var(--#{$vendor}-elevation-3);
+    --#{slotui-presets.$vendor}-selected-background-color: var(--#{slotui-presets.$vendor}-color-primary-alpha-mid);
+    --#{slotui-presets.$vendor}-selected-border-color: var(--#{slotui-presets.$vendor}-color-primary);
+    --#{slotui-presets.$vendor}-selected-shadow: var(--#{slotui-presets.$vendor}-elevation-3);
 }
 
 .bg-themed-scheme-discrete {

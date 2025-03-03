@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
   --cartouche-radius: var(--sld-radius-small);
@@ -36,8 +36,8 @@
   }
 
   .control {
-    @include ui-tall-presets;
-    @include ui-transition;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-transition;
     display: flex;
     align-items: center;
     gap: var(--cartouche-control-gap);
@@ -78,7 +78,7 @@
   }
 
   .content {
-    @include ui-transition;
+    @include slotui-mixins.ui-transition;
     &-wrapper {
       padding: 1px;
       padding-top: 0;

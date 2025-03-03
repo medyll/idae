@@ -8,5 +8,5 @@
 <MenuListItem {...rest} selectable={false} class="menu-list-title {className}" />
 
 <style lang="scss">
-	@import './menu-list.scss';
+	@use './menu-list.scss';
 </style>

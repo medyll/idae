@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
   --menu-min-width: 150px;
@@ -26,9 +26,9 @@ ul.menu {
 }
 
 li.menuItem {
-  @include data-hover;
-  @include data-selected;
-  @include ui-tall-presets;
+  @include slotui-mixins.data-hover;
+  @include slotui-mixins.data-selected;
+  @include slotui-mixins.ui-tall-presets;
   border-radius: var(--menu-item-border-radius);
   overflow: hidden;
   display: flex;

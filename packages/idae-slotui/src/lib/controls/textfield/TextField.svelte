@@ -84,5 +84,5 @@
 </div>
 
 <style lang="scss">
-	@import './textfield.scss';
+	@use './textfield.scss';
 </style>

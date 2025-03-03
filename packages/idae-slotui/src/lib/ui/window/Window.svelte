@@ -175,5 +175,5 @@
 {/if} -->
 
 <style lang="scss">
-	@import './window.scss';
+	@use './window.scss';
 </style>

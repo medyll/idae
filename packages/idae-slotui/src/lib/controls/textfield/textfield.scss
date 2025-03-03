@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 .textfield {
     --textfield-background: var(--sld-color-background-alpha-high);
     --textfield-border-width: 1px;
@@ -23,9 +23,9 @@
         border-bottom: red;
     }
 
-    @include ui-width-presets;
-    @include ui-tall-presets;
-    @include data-hover;
+    @include slotui-mixins.ui-width-presets;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.data-hover;
     &-container {
         position: relative;
         display: inline-flex;

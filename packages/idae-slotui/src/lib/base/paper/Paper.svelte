@@ -18,5 +18,5 @@
 </div>
 
 <style lang="scss">
-	@import './paper.scss';
+	@use './paper.scss';
 </style>

@@ -29,5 +29,5 @@
 {/if}
 
 <style lang="scss">
-	@import 'badge.scss';
+	@use 'badge.scss';
 </style>

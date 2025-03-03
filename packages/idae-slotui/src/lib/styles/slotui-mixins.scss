@@ -1,4 +1,4 @@
-@import "./slotui-presets.scss";
+@use "slotui-presets.scss";
 
 @mixin ui-variants {
     &[variant*="square"],
@@ -16,7 +16,7 @@
 }
 
 @mixin ui-ellipsises-presets {
-    --preset-ellipsis-line: #{$presets-ellipsis-line-default};
+    --preset-ellipsis-line: #{slotui-presets.$presets-ellipsis-line-default};
 
     &[ellipsis],
     &.ellipsis {
@@ -48,7 +48,7 @@
         height: var(--preset-tall-small);
     }
 
-    @each $preset, $value in $preset-tall-list {
+    @each $preset, $value in slotui-presets.$preset-tall-list {
         & {
             &[tall="#{$preset}"],
             &.tall-#{$preset} {
@@ -67,7 +67,7 @@
         min-width: var(--preset-width-small);
     }
 
-    @each $preset, $value in $preset-width-list {
+    @each $preset, $value in slotui-presets.$preset-width-list {
         &[width="#{$preset}"],
         &.width-#{$preset} {
             --preset-width: var(--sld-width-#{$preset});
@@ -79,7 +79,7 @@
 @mixin ui-gutter-presets {
     --preset-gutter: var(--sld-gutter-default);
 
-    @each $preset, $value in $preset-gutter-list {
+    @each $preset, $value in slotui-presets.$preset-gutter-list {
         & :global([gutter="#{$preset}"]),
         & :global(.gutter-#{$preset}) {
             padding: var(--sld-gutter-#{$preset});
@@ -92,7 +92,7 @@
 @mixin ui-pad-presets {
     --preset-pad: var(--sld-pad-default);
 
-    @each $preset, $value in $preset-pad-list {
+    @each $preset, $value in slotui-presets.$preset-pad-list {
         &:global([pad="#{$preset}"]),
         &:global(.pad-#{$preset}) {
             padding: var(--sld-pad-#{$preset});
@@ -104,7 +104,7 @@
 @mixin ui-radius-presets {
     --preset-radius: var(--sld-radius-default);
 
-    @each $preset, $value in $preset-radius-list {
+    @each $preset, $value in slotui-presets.$preset-radius-list {
         &:global([radius="#{$preset}"]),
         &:global(.radius-#{$preset}) {
             border-radius: var(--sld-radius-#{$preset});

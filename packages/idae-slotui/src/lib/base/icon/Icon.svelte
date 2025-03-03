@@ -46,5 +46,5 @@
 {/key}
 
 <style lang="scss">
-	@import './icon.scss';
+	@use './icon.scss';
 </style>

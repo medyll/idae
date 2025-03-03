@@ -180,5 +180,5 @@
 </div>
 
 <style lang="scss">
-	@import './tree.scss';
+	@use './tree.scss';
 </style>

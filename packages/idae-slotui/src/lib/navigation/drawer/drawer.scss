@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
   --drawer-color: inherit;
@@ -21,7 +21,7 @@
   box-shadow: var(--drawer-box-shadow);
   border-left: 1px solid var(--drawer-border-left);
   overflow: visible;
-  @include flex(column);
+  @include slotui-mixins.flex(column);
   height: 100%;
   transition: all 0.1s;
 
@@ -37,7 +37,7 @@
   }
   header,
   &-header {
-    @include ui-tall-presets;
+    @include slotui-mixins.ui-tall-presets;
 
     min-height: var(--drawer-header-min-height);
     display: flex;

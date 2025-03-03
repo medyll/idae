@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --slider-background-color: var(--sld-color-background);
@@ -17,7 +17,7 @@
     flex-direction: row;
     align-items: center;
     width: 168px;
-    @include ui-tall-presets;
+    @include slotui-mixins.ui-tall-presets;
     --height: calc(var(--preset-density) / 6);
     .slider-gouge {
         height: var(--height);

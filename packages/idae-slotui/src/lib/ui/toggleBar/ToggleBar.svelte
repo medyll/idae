@@ -56,5 +56,5 @@
 </div>
 
 <style lang="scss">
-	@import './toggle-bar.scss';
+	@use './toggle-bar.scss';
 </style>

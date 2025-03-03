@@ -41,5 +41,5 @@
 </div>
 
 <style global lang="scss">
-	@import './chrome-frame.scss';
+	@use './chrome-frame.scss';
 </style>

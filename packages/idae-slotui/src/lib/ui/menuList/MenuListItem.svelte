@@ -133,5 +133,5 @@
 {/if}
 
 <style global lang="scss">
-	@import './menu-list.scss';
+	@use './menu-list.scss';
 </style>

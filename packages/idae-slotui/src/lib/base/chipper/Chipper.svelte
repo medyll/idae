@@ -34,5 +34,5 @@
 </div>
 
 <style lang="scss">
-	@import './chipper.scss';
+	@use './chipper.scss';
 </style>

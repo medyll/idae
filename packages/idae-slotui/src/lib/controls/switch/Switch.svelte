@@ -43,6 +43,6 @@
 ..
 
 <style lang="scss">
-	@import '../../styles/slotui-presets.scss';
-	@import './switch.scss';
+	@use '../../styles/slotui-presets.scss';
+	@use './switch.scss';
 </style>

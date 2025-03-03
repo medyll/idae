@@ -154,5 +154,5 @@
 </div>
 
 <style lang="scss">
-	@import './confirm.scss';
+	@use './confirm.scss';
 </style>

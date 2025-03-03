@@ -42,5 +42,5 @@
 </div>
 
 <style lang="scss">
-	@import './rating.scss';
+	@use './rating.scss';
 </style>

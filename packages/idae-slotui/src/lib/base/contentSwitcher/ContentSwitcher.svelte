@@ -61,5 +61,5 @@
 </div>
 
 <style lang="scss">
-	@import './content-switcher.scss';
+	@use './content-switcher.scss';
 </style>

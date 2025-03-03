@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --sld-checkbox-background: var(--sld-color-background-alpha-high);
@@ -15,9 +15,9 @@
 }
 
 .checkbox {
-    @include data-hover;
-    @include ui-tall-presets;
-    @include ui-transition;
+    @include slotui-mixins.data-hover;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-transition;
     appearance: none;
     outline: none;
     border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);

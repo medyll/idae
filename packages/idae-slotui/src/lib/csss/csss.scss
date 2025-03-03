@@ -1,8 +1,8 @@
-@import "../styles/slotui-mixins.scss";
+@use "../styles/slotui-mixins.scss";
 
 :global {
     * {
-        @include ui-variants;
+        @include slotui-mixins.ui-variants;
         border: 1px solid red;
     }
 }

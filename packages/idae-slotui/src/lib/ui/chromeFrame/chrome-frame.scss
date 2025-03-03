@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --chrome-frame-color: var(--sld-color-foreground);
@@ -10,7 +10,7 @@
 }
 
 .chrome-frame {
-    @include flex("column");
+    @include slotui-mixins.flex("column");
     position: absolute;
     top: 0;
     height: 100%;
@@ -20,7 +20,7 @@
     overflow: hidden;
 
     &-bar {
-        @include flex("row", center);
+        @include slotui-mixins.flex("row", center);
         gap: var(--chrome-frame-bar-gap);
         padding: var(--chrome-frame-bar-padding);
         border-bottom: 1px solid var(--chrome-frame-bar-border-bottom);

@@ -159,7 +159,7 @@
 </div>
 
 <style global type="scss">
-	@import '../lib/styles/slotui-presets.scss';
+	@use '../lib/styles/slotui-presets.scss';
 
 	#contentSlide {
 		overflow: hidden;

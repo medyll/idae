@@ -22,7 +22,7 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-mixins.scss';
+	@use '../../styles/slotui-mixins.scss';
 	.gridIconBis {
 		width: 100%;
 		display: grid;

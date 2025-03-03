@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --tree-cell-border: 1px solid transparent;
@@ -32,7 +32,7 @@
             gap: var(--tree-cell-title-gutter-gap);
         }
 
-        @include data-hover;
-        @include data-selected;
+        @include slotui-mixins.data-hover;
+        @include slotui-mixins.data-selected;
     }
 }

@@ -100,5 +100,5 @@
 {/if}
 
 <style lang="scss">
-	@import './boot-menu.scss';
+	@use './boot-menu.scss';
 </style>

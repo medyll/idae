@@ -24,5 +24,5 @@
 </div>
 
 <style lang="scss">
-	@import './taskbar.scss';
+	@use './taskbar.scss';
 </style>
