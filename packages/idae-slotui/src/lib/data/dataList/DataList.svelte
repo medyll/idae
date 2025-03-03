@@ -1,8 +1,8 @@
 <script lang="ts" generics="T=Data">
-	import { getContext, hasContext, setContext, type Snippet } from 'svelte';
+	import { getContext, hasContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import DataListRow from './DataListRow.svelte';
-	import type { DataCellType, DataListProps, DataListStoreType, groupByOptions } from './types.js';
+	import type { DataCellType, DataListProps, DataListStoreType } from './types.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import DataListHead from './DataListHead.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';

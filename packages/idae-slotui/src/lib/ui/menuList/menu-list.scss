@@ -37,7 +37,6 @@
   .menu-list-item,
   a.menu-list-item,
   li.menu-list-item {
-    border: 1px solid red;
     @include ui-variants;
     @include ui-width-presets;
     @include ui-tall-presets;
@@ -48,8 +47,6 @@
 
     text-decoration: none;
     overflow: hidden;
-    padding-left: calc(var(--preset-tall) / 4);
-    border: 1px solid transparent;
 
     display: flex;
     align-items: center;

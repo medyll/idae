@@ -1,13 +1,12 @@
 <script lang="ts" generics="T=any">
 	import { fade } from 'svelte/transition';
 	import Button from '$lib/controls/button/Button.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import { onDestroy } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ConfirmProps } from './types.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	let step: string = $state('initial');
+	let step: string = $state('initial'); 
 
 	let {
 		class: className = '',
@@ -26,7 +25,11 @@
 		loading,
 		data,
 		action = () => {},
-		iconCancel = { icon: 'fluent-mdl2:navigate-back', color: 'red' },
+		iconCancel = { icon: 'mdi:cancel-bold', color: 'red',iconSize:'large' },
+		variant,
+		buttonInitial,
+		buttonConfirm,
+		buttonCancel,
 		children,
 		confirmInitial,
 		...rest
@@ -87,8 +90,7 @@
 	});
 </script>
 
-<!-- #todo <Content>somecontent</Content> -->
-
+<!-- #todo <Content>somecontent</Content> --> 
 <div {...rost} class="confirm {className}">
 	{#if step === 'initial'}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -101,39 +103,51 @@
 			title={tooltipInitial}
 		>
 			<Slotted child={confirmInitial} slotArgs={{ step }}>
+			{#if buttonInitial}
+				<Button {tall} {variant} {...buttonInitial}  />
+			{:else}
 				<Button
 					{tall}
-					variant="naked"
+					variant= {variant}
 					width="full"
 					icon={{ icon: iconInitial, color: iconColorInitial }}
 					title={tooltipInitial}
 				>
-					{primaryInitial}
+					{primaryInitial} 
 				</Button>
+			{/if} 
 			</Slotted>
 		</div>
 	{/if}
 	{#if step === 'confirm'}
-		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}>
-			<IconButton
-				onclick={handleClickCancel}
-				width="tiny"
-				ratio="1/1"
-				variant="naked"
-				icon={iconCancel}
-				{tall}
-				title="cancel"
-			/>
+			{#if buttonCancel}
+				<Button {tall}   {...buttonCancel} onclick={(event:any)=>{handleClickCancel(event);buttonCancel?.onclick?.(event)}}    />
+			{:else}
+				<Button
+					onclick={handleClickCancel}  
+					variant= {'naked'}
+					icon={iconCancel}
+					{tall}
+					title="cancel"
+					value="cancel"
+					width="auto"
+				/>
+			{/if}
+		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}> 
 			<Slotted child={children} slotArgs={{ step }}>
-				<IconButton
+			{#if buttonConfirm}
+				<Button {tall} {variant} {...buttonConfirm}  onclick={(event:any)=>{handleAction(event);buttonConfirm?.onclick?.(event)}}    />
+			{:else}
+				<Button
 					title="confirm"
 					loading={loadingState}
 					{tall}
 					onclick={handleAction}
-					{icon}
-					width="auto"
+					{icon} 
+					variant= {variant}
 					value={primaryConfirm}
 				/>
+			{/if}
 			</Slotted>
 		</div>
 	{/if}

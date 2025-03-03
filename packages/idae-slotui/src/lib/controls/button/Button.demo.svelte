@@ -72,6 +72,26 @@
 		content
 	{/snippet}
 </ButtonMenu>
+<ButtonMenu
+    tall="small"
+    width="auto"
+    icon="material-symbols-light:post-add-sharp"
+    value={"Some text for the menu with an icon"}
+    popperProps={{ stickToHookWidth: true, position: 'TL', flow: 'fixed', autoClose: true }}
+    variant="naked"
+    menuProps={{
+        data: [],
+        grid: 3, 
+        onclick: (event) => {
+            // chatParams.promptSystem = event;
+        },
+    }}>
+    {#snippet menuItem({ item })}
+        <MenuListItem data={item}>
+            {item?.name}
+        </MenuListItem>
+    {/snippet}
+</ButtonMenu>
 <ComponentDemo
 	component="Button"
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"
@@ -81,7 +101,7 @@
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<Button {...activeParams}
-						>Using snippets
+						>Using snippets scscs dsvdvd
 						<!-- {#snippet buttonStart()}
 							<Icon icon="user" /> 
 						{/snippet} -->

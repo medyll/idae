@@ -39,7 +39,7 @@
 }
 
 @mixin ui-transition {
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
 @mixin ui-tall-presets {
     & {

@@ -16,8 +16,15 @@
 </Confirm>`;
 
 	let codeProps = `
-<Confirm
-  primary="confirm deletion" />`;
+<Confirm 
+	buttonInitial={{
+		icon: {icon:'fa-solid:question', size:'auto',color:'green'},
+		value: 'Would you please click me once ?',
+		ellipsis: true
+	}}
+>
+	<Button type="submit" icon="fa-solid:check" >confirm</Button>
+</Confirm>`;
 </script>
 
 <ComponentDemo
@@ -30,11 +37,14 @@ V.Hugo 1850"
 		<DemoPage component="Chipper" code={codeSlot}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<Confirm {...activeParams}>
-						{#snippet confirmInitial()}
-							<Button icon="fa-solid:question" width="med">Would you please click once ?</Button>
-						{/snippet}
-						<Button type="submit" width="kind">confirm</Button>
+					<Confirm {...activeParams}
+						buttonInitial={{
+							icon: {icon:'fa-solid:question', size:'auto',color:'green'},
+							value: 'Would you please click me once ?',
+							ellipsis: true
+						}}
+					>
+						<Button type="submit" icon="fa-solid:check" >confirm</Button>
 					</Confirm>
 				{/snippet}
 			</Demoer>

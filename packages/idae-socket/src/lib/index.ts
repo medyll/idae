@@ -1,13 +1,12 @@
-// Reexport of entry components
-export * from '../lib/server/socketDriver.js';
-export * from '../lib/server/httpDriver.js';
-export * from '../lib/server/dataEvent.js';
-export * from '../lib/client/demo.js';
-export * from '../lib/server/_utils/routes.js';
-export * from '../lib/server/_utils/eventEmitterInstance.js';
-export * from '../lib/server/_config/config.js';
-export * from '../lib/server/socketBridge/socketThrottle.js';
-export * from '../lib/server/socketBridge/socketRoom.js';
-export * from '../lib/server/socketBridge/socketIoServer.js';
-export * from '../lib/server/fakeZone/fakeHttpPost.js';
-export * from '../lib/server/@types/index.d.js';
+// auto exports of entry components
+export * from './server/socketDriver.js';
+export * from './server/httpDriver.js';
+export * from './server/dataEvent.js';
+export * from './client/demo.js';
+export * from './server/_utils/routes.js';
+export * from './server/_utils/eventEmitterInstance.js';
+export * from './server/_config/config.js';
+export * from './server/fakeZone/fakeHttpPost.js';
+export * from './server/socketBridge/socketThrottle.js';
+export * from './server/socketBridge/socketRoom.js';
+export * from './server/socketBridge/socketIoServer.js';

@@ -1,5 +1,383 @@
 # Changelog
 
+## 0.26.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.25.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.24.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.23.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.22.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.21.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.20.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.19.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.18.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.17.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.16.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.15.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.14.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.13.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.12.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.11.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.10.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.9.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.8.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.7.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.6.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.32
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.31
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.30
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.29
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.28
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.27
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.26
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.25
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.24
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.23
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.22
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.21
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.20
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.19
+
+### Patch Changes
+
+- - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.18
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.17
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.16
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.15
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.14
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
+## 0.5.13
+
+### Patch Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
 ## 0.5.12
 
 ### Patch Changes

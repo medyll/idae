@@ -1,4 +1,4 @@
-@import "./containerConfig.css";
+@import "./sheetConfig.css";
 :root {
   --bkp-xs: var(--breakpoint-xs, 320px);
   --bkp-sm: var(--breakpoint-sm, 480px);

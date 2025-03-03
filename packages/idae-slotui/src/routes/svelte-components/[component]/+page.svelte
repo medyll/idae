@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { slotuiDemoCatalog } from '$sitedata/slotuiDemoCatalog.js';
-	import ComponentDemo from '$components/ComponentApi.svelte';
-	export let data: any = {};
+	import { slotuiDemoCatalog } from '$sitedata/slotuiDemoCatalog.js'; 
 
-	$: Comp = (slotuiDemoCatalog as any)?.[data?.component]?.component;
+	let {data}: any = $props();
+
+	let Comp = $derived((slotuiDemoCatalog as any)?.[data?.component]?.component);
 </script>
 
 <div out:fade|global={{ duration: 200 }} in:fade|global={{ duration: 200 }}>
+ 
 	{#if Comp}
 		<Comp />
-	{/if}
-	<ComponentDemo component={data.component} />
+	{/if} 
 </div>

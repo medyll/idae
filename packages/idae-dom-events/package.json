@@ -1,7 +1,8 @@
 {
 	"name": "@medyll/idae-dom-events",
-	"version": "0.5.12",
+	"version": "0.26.0",
 	"scope": "@medyll",
+	"description": "dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides tools to track CSS changes, monitor DOM mutations, and handle various events efficiently, making it ideal for dynamic web applications.",
 	"scripts": {
 		"dev": "vite dev",
 		"dev:test": "vite dev --port 3000",
@@ -52,7 +53,7 @@
 		"svelte": "^5.0.0-next.218",
 		"svelte-check": "^3.8.5",
 		"tslib": "^2.6.3",
-		"typescript": "^5.5.4",
+		"typescript": "^5.7.3",
 		"vite": "^5.3.5",
 		"vitest": "^2.0.5"
 	},

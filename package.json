@@ -7,7 +7,9 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
     "package-all:pre": "npm run package:pre --workspaces --if-present",
-    "package-all": "npm run package-all:pre && npm run package --workspaces --if-present"
+    "package-all": "npm run package-all:pre && npm run package --workspaces --if-present",
+    "package:verify": "node scripts/verify-packages.js",
+    "postinstall": "npm run package:verify"
   },
   "config": {
     "commitizen": {
@@ -16,35 +18,41 @@
   },
   "workspaces": [
     "packages/*",
-    "config/*"
+    "packages-config/*"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.27.7",
+    "@changesets/cli": "^2.28.1",
     "@medyll/idae-eslint-config": "^1.0.0",
     "@medyll/idae-prettier-config": "^1.0.0",
-    "@types/jest": "^29.5.12",
-    "commitizen": "^4.3.0",
+    "@types/jest": "^29.5.14",
+    "@types/jest": "^29.5.14",
+    "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^16.4.5",
-    "eslint": "^9.9.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.21.0",
     "jest": "^29.7.0",
-    "lerna": "^8.1.8",
-    "node": "^22.6.0",
-    "svelte": "5.0.0-next.218",
-    "ts-jest": "^29.2.4",
-    "tsx": "^4.17.0",
-    "typescript": "^5.5.4"
+    "lerna": "^8.2.0",
+    "node": "^23.9.0",
+    "svelte": "^5.20.5",
+    "ts-jest": "^29.2.6",
+    "tshy": "^3.0.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
   },
   "version": "0.0.2",
   "dependencies": {
-    "@medyll/cssfabric": "^0.4.2",
-    "@medyll/idae-engine": "^1.1.2",
-    "@octokit/rest": "^21.0.1",
-    "glob": "^11.0.0",
-    "npm": "^10.8.2",
-    "publint": "^0.2.9"
+    "@medyll/cssfabric": "file:../app-node/cssfabric",
+    "@medyll/idae-engine": "^1.15.0",
+    "@medyll/idae-socket": "^0.0.2",
+    "@octokit/rest": "^21.1.1",
+    "glob": "^11.0.1",
+    "npm": "^11.1.0",
+    "publint": "^0.3.7"
   },
   "peerDependencies": {
     "svelte": "^5.0.0-next"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }

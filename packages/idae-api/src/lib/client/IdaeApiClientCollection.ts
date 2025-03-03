@@ -1,67 +1,79 @@
 // packages\idae-api\src\lib\client\IdaeApiClientCollection.ts
-import { IdaeApiClient } from './IdaeApiClient';
-import type { IdaeApiClientRequestParams } from './IdaeApiClient';
+import { IdaeApiClient } from "./IdaeApiClient.js";
+import type { IdaeApiClientRequestParams } from "./IdaeApiClient.js";
+import type { IdaeApiClientConfigCoreOptions } from "./IdaeApiClientConfig.js";
 
-class IdaeApiClientCollection {
-	private apiClient: IdaeApiClient;
+import type { IdaeDbApiMethods } from "@medyll/idae-db";
 
-	private meta: { dbName: string; collectionName: string };
+class IdaeApiClientCollection
+  extends IdaeApiClient
+  implements IdaeDbApiMethods<object>
+{
+  private meta: { dbName: string; collectionName: string };
 
-	constructor(apiClient: IdaeApiClient, dbName: string, collectionName: string) {
-		this.apiClient = apiClient;
+  constructor(
+    clientConfig: IdaeApiClientConfigCoreOptions,
+    dbName: string,
+    collectionName: string,
+  ) {
+    super(clientConfig);
 
-		this.meta = {
-			dbName,
-			collectionName
-		};
-	}
+    this.meta = {
+      dbName,
+      collectionName,
+    };
+  }
 
-	async findAll<T>(params?: IdaeApiClientRequestParams): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			...this.meta,
-			params
-		});
-	}
+  async find<T extends object>(
+    params?: IdaeApiClientRequestParams,
+  ): Promise<T[]> {
+    return this.request.doRequest<T>({
+      ...this.meta,
+      params,
+    });
+  }
 
-	async findById<T>(id: string): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			...this.meta,
-			slug: id
-		});
-	}
+  async findById<T>(id: string): Promise<Response> {
+    return this.request.doRequest<T>({
+      ...this.meta,
+      slug: id,
+    });
+  }
 
-	async create<T>(body: T): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			method: 'POST',
-			...this.meta,
-			body
-		});
-	}
+  async create<T>(body: T): Promise<Response> {
+    return this.request.doRequest<T>({
+      method: "POST",
+      ...this.meta,
+      body,
+    });
+  }
 
-	async update<T>(id: string, body: T): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			method: 'PUT',
-			...this.meta,
-			body,
-			slug: id
-		});
-	}
+  async update<T>(id: string, body: T): Promise<Response> {
+    return this.request.doRequest<T>({
+      method: "PUT",
+      ...this.meta,
+      body,
+      slug: id,
+    });
+  }
 
-	async deleteById<T>(id: string): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			method: 'DELETE',
-			...this.meta,
-			slug: id
-		});
-	}
+  async deleteById<T>(id: string): Promise<Response> {
+    return this.request.doRequest<T>({
+      method: "DELETE",
+      ...this.meta,
+      slug: id,
+    });
+  }
 
-	async deleteManyByQuery<T>(params: IdaeApiClientRequestParams): Promise<Response> {
-		return this.apiClient.request.doRequest<T>({
-			method: 'DELETE',
-			...this.meta,
-			params
-		});
-	}
+  async deleteManyByQuery<T>(
+    params: IdaeApiClientRequestParams,
+  ): Promise<Response> {
+    return this.request.doRequest<T>({
+      method: "DELETE",
+      ...this.meta,
+      params,
+    });
+  }
 }
 
 export { IdaeApiClientCollection };

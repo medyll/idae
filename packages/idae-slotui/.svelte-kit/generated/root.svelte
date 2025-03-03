@@ -38,41 +38,59 @@
 		mounted = true;
 		return unsubscribe;
 	});
+
+	const Pyramid_4=$derived(constructors[4])
 </script>
 
 {#if constructors[1]}
-	<!-- svelte-ignore binding_property_non_reactive -->
-	<svelte:component this={constructors[0]} bind:this={components[0]} data={data_0}>
-		{#if constructors[2]}
-			<!-- svelte-ignore binding_property_non_reactive -->
-			<svelte:component this={constructors[1]} bind:this={components[1]} data={data_1}>
-				{#if constructors[3]}
-					<!-- svelte-ignore binding_property_non_reactive -->
-					<svelte:component this={constructors[2]} bind:this={components[2]} data={data_2}>
-						{#if constructors[4]}
+	{@const Pyramid_0 = constructors[0]}
 							<!-- svelte-ignore binding_property_non_reactive -->
-							<svelte:component this={constructors[3]} bind:this={components[3]} data={data_3}>
-								<!-- svelte-ignore binding_property_non_reactive -->
-								<svelte:component this={constructors[4]} bind:this={components[4]} data={data_4} {form} />
-							</svelte:component>
-						{:else}
-							<!-- svelte-ignore binding_property_non_reactive -->
-							<svelte:component this={constructors[3]} bind:this={components[3]} data={data_3} {form} />
-						{/if}
-					</svelte:component>
-				{:else}
-					<!-- svelte-ignore binding_property_non_reactive -->
-					<svelte:component this={constructors[2]} bind:this={components[2]} data={data_2} {form} />
-				{/if}
-			</svelte:component>
-		{:else}
-			<!-- svelte-ignore binding_property_non_reactive -->
-			<svelte:component this={constructors[1]} bind:this={components[1]} data={data_1} {form} />
-		{/if}
-	</svelte:component>
+							<Pyramid_0 bind:this={components[0]} data={data_0} {form}>
+								{#if constructors[2]}
+									{@const Pyramid_1 = constructors[1]}
+															<!-- svelte-ignore binding_property_non_reactive -->
+															<Pyramid_1 bind:this={components[1]} data={data_1} {form}>
+																{#if constructors[3]}
+																	{@const Pyramid_2 = constructors[2]}
+																							<!-- svelte-ignore binding_property_non_reactive -->
+																							<Pyramid_2 bind:this={components[2]} data={data_2} {form}>
+																								{#if constructors[4]}
+																									{@const Pyramid_3 = constructors[3]}
+																															<!-- svelte-ignore binding_property_non_reactive -->
+																															<Pyramid_3 bind:this={components[3]} data={data_3} {form}>
+																																<!-- svelte-ignore binding_property_non_reactive -->
+																																		<Pyramid_4 bind:this={components[4]} data={data_4} {form} />
+																															</Pyramid_3>
+																									
+																								{:else}
+																									{@const Pyramid_3 = constructors[3]}
+																									<!-- svelte-ignore binding_property_non_reactive -->
+																									<Pyramid_3 bind:this={components[3]} data={data_3} {form} />
+																									
+																								{/if}
+																							</Pyramid_2>
+																	
+																{:else}
+																	{@const Pyramid_2 = constructors[2]}
+																	<!-- svelte-ignore binding_property_non_reactive -->
+																	<Pyramid_2 bind:this={components[2]} data={data_2} {form} />
+																	
+																{/if}
+															</Pyramid_1>
+									
+								{:else}
+									{@const Pyramid_1 = constructors[1]}
+									<!-- svelte-ignore binding_property_non_reactive -->
+									<Pyramid_1 bind:this={components[1]} data={data_1} {form} />
+									
+								{/if}
+							</Pyramid_0>
+	
 {:else}
+	{@const Pyramid_0 = constructors[0]}
 	<!-- svelte-ignore binding_property_non_reactive -->
-	<svelte:component this={constructors[0]} bind:this={components[0]} data={data_0} {form} />
+	<Pyramid_0 bind:this={components[0]} data={data_0} {form} />
+	
 {/if}
 
 {#if mounted}

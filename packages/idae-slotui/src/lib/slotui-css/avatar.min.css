@@ -1,1 +1,13 @@
-:root{--avatar-radius: var(--css-radius-small);--avatar-border-color: var(--sld-color-border)}.avatar{position:relative;border-radius:var(--avatar-radius);border:1px solid var(--avatar-border-color);display:grid;place-items:center;overflow:hidden}
+:root {
+  --avatar-radius: var(--css-radius-small);
+  --avatar-border-color: var(--sld-color-border);
+}
+
+.avatar {
+  position: relative;
+  border-radius: var(--avatar-radius);
+  border: 1px solid var(--avatar-border-color);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}

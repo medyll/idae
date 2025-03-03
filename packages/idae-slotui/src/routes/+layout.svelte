@@ -29,9 +29,7 @@
 
 	import { cssDom } from '@medyll/idae-dom-events';
 	// from +layout.server
-	let data: any = {};
-	// from +layout.ts
-	let params = {};
+	let data: any = {}; 
 
 	let store = writable<UiContextType>({
 		drawerFlow: 'fixed',
@@ -66,7 +64,7 @@
 	}
 
 	$effect(() => {
-		scrollSpy();
+		// scrollSpy();
 	});
 </script>
 
@@ -104,7 +102,7 @@
 		}
 	</script>
 </svelte:head>
-<SlotuiSheet />
+<!-- <SlotuiSheet /> -->
 
 <div class="flex-h h-full overflow-hidden">
 	<Drawer
@@ -112,7 +110,7 @@
 		bind:this={DrawerRef}
 		flow={$uiContext.drawerFlow}
 		isOpen={$uiContext.drawerOpen}
-		primary="svelte slotted"
+		 
 		hideCloseIcon={$uiContext.drawerFlow !== 'fixed'}
 	>
 		<MenuList width="full" showLastOnSelected={true} style="height:100%;overflow:auto;width:100%;;">

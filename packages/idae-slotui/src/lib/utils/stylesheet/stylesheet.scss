@@ -1,5 +1,5 @@
 @use "sass:map";
-@import "./containerConfig.css";
+@import "./containerConfig.scss";
 
 $breakpoints: (
     "xs": var(--breakpoint-xs, 320px),
