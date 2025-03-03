@@ -1,147 +1,147 @@
 :root {
-  --menu-list-padding: var(--sld-pad-tiny);
-  --menu-list-item-padding: 0;
-  --menu-list-item-radius: var(--sld-radius-small);
-  --menu-list-item-selected-background: var(--sld-selected-background-color);
-  --menu-list-item-action-display: flex;
-  --menu-list-item-action-justify-content: center;
-  --menu-list-grid-items-count: 0;
+  --menulist-padding: var(--sld-pad-tiny);
+  --menulist-item-padding: 0;
+  --menulist-item-radius: var(--sld-radius-small);
+  --menulist-item-selected-background: var(--sld-selected-background-color);
+  --menulist-item-action-display: flex;
+  --menulist-item-action-justify-content: center;
+  --menulist-grid-items-count: 0;
 }
 
-.menu-list {
+.slotui-menulist {
   margin: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: end;
-  padding: var(--menu-list-padding);
+  padding: var(--menulist-padding);
 }
-.menu-list.grid {
+.slotui-menulist.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
 }
-.menu-list li.menu-list-title,
-.menu-list a.menu-list-title {
+.slotui-menulist li.menulist-title,
+.slotui-menulist a.menulist-title {
   font-weight: bold;
 }
-.menu-list .menu-list-item[variant*=square] {
+.slotui-menulist .menulist-item[variant*=square] {
   aspect-ratio: 1/1 !important;
   height: auto;
 }
-.menu-list .menu-list-item[variant*=rounded] {
+.slotui-menulist .menulist-item[variant*=rounded] {
   border-radius: 50%;
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   width: var(--sld-width-small);
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   --preset-width: var(--sld-width-small);
 }
-.menu-list .menu-list-item[width=tiny], .menu-list .menu-list-item.width-tiny {
+.slotui-menulist .menulist-item[width=tiny], .slotui-menulist .menulist-item.width-tiny {
   --preset-width: var(--sld-width-tiny);
   width: var(--sld-width-tiny) !important;
 }
-.menu-list .menu-list-item[width=mini], .menu-list .menu-list-item.width-mini {
+.slotui-menulist .menulist-item[width=mini], .slotui-menulist .menulist-item.width-mini {
   --preset-width: var(--sld-width-mini);
   width: var(--sld-width-mini) !important;
 }
-.menu-list .menu-list-item[width=small], .menu-list .menu-list-item.width-small {
+.slotui-menulist .menulist-item[width=small], .slotui-menulist .menulist-item.width-small {
   --preset-width: var(--sld-width-small);
   width: var(--sld-width-small) !important;
 }
-.menu-list .menu-list-item[width=med], .menu-list .menu-list-item.width-med {
+.slotui-menulist .menulist-item[width=med], .slotui-menulist .menulist-item.width-med {
   --preset-width: var(--sld-width-med);
   width: var(--sld-width-med) !important;
 }
-.menu-list .menu-list-item[width=kind], .menu-list .menu-list-item.width-kind {
+.slotui-menulist .menulist-item[width=kind], .slotui-menulist .menulist-item.width-kind {
   --preset-width: var(--sld-width-kind);
   width: var(--sld-width-kind) !important;
 }
-.menu-list .menu-list-item[width=full], .menu-list .menu-list-item.width-full {
+.slotui-menulist .menulist-item[width=full], .slotui-menulist .menulist-item.width-full {
   --preset-width: var(--sld-width-full);
   width: var(--sld-width-full) !important;
 }
-.menu-list .menu-list-item[width=auto], .menu-list .menu-list-item.width-auto {
+.slotui-menulist .menulist-item[width=auto], .slotui-menulist .menulist-item.width-auto {
   --preset-width: var(--sld-width-auto);
   width: var(--sld-width-auto) !important;
 }
-.menu-list .menu-list-item[width=default], .menu-list .menu-list-item.width-default {
+.slotui-menulist .menulist-item[width=default], .slotui-menulist .menulist-item.width-default {
   --preset-width: var(--sld-width-default);
   width: var(--sld-width-default) !important;
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   --preset-tall: var(--sld-tall-small);
 }
-.menu-list .menu-list-item[tall=tiny], .menu-list .menu-list-item.tall-tiny {
+.slotui-menulist .menulist-item[tall=tiny], .slotui-menulist .menulist-item.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
 }
-.menu-list .menu-list-item[tall=mini], .menu-list .menu-list-item.tall-mini {
+.slotui-menulist .menulist-item[tall=mini], .slotui-menulist .menulist-item.tall-mini {
   min-height: var(--sld-tall-mini) !important;
 }
-.menu-list .menu-list-item[tall=small], .menu-list .menu-list-item.tall-small {
+.slotui-menulist .menulist-item[tall=small], .slotui-menulist .menulist-item.tall-small {
   min-height: var(--sld-tall-small) !important;
 }
-.menu-list .menu-list-item[tall=med], .menu-list .menu-list-item.tall-med {
+.slotui-menulist .menulist-item[tall=med], .slotui-menulist .menulist-item.tall-med {
   min-height: var(--sld-tall-med) !important;
 }
-.menu-list .menu-list-item[tall=kind], .menu-list .menu-list-item.tall-kind {
+.slotui-menulist .menulist-item[tall=kind], .slotui-menulist .menulist-item.tall-kind {
   min-height: var(--sld-tall-kind) !important;
 }
-.menu-list .menu-list-item[tall=auto], .menu-list .menu-list-item.tall-auto {
+.slotui-menulist .menulist-item[tall=auto], .slotui-menulist .menulist-item.tall-auto {
   min-height: var(--sld-tall-auto) !important;
 }
-.menu-list .menu-list-item[tall=default], .menu-list .menu-list-item.tall-default {
+.slotui-menulist .menulist-item[tall=default], .slotui-menulist .menulist-item.tall-default {
   min-height: var(--sld-tall-default) !important;
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   --preset-gutter: var(--sld-gutter-default);
 }
-.menu-list .menu-list-item [gutter=tiny], .menu-list .menu-list-item .gutter-tiny {
+.slotui-menulist .menulist-item [gutter=tiny], .slotui-menulist .menulist-item .gutter-tiny {
   padding: var(--sld-gutter-tiny);
   gap: var(--sld-gutter-tiny);
   --preset-gutter: var(--sld-gutter-tiny);
 }
-.menu-list .menu-list-item [gutter=mini], .menu-list .menu-list-item .gutter-mini {
+.slotui-menulist .menulist-item [gutter=mini], .slotui-menulist .menulist-item .gutter-mini {
   padding: var(--sld-gutter-mini);
   gap: var(--sld-gutter-mini);
   --preset-gutter: var(--sld-gutter-mini);
 }
-.menu-list .menu-list-item [gutter=small], .menu-list .menu-list-item .gutter-small {
+.slotui-menulist .menulist-item [gutter=small], .slotui-menulist .menulist-item .gutter-small {
   padding: var(--sld-gutter-small);
   gap: var(--sld-gutter-small);
   --preset-gutter: var(--sld-gutter-small);
 }
-.menu-list .menu-list-item [gutter=med], .menu-list .menu-list-item .gutter-med {
+.slotui-menulist .menulist-item [gutter=med], .slotui-menulist .menulist-item .gutter-med {
   padding: var(--sld-gutter-med);
   gap: var(--sld-gutter-med);
   --preset-gutter: var(--sld-gutter-med);
 }
-.menu-list .menu-list-item [gutter=kind], .menu-list .menu-list-item .gutter-kind {
+.slotui-menulist .menulist-item [gutter=kind], .slotui-menulist .menulist-item .gutter-kind {
   padding: var(--sld-gutter-kind);
   gap: var(--sld-gutter-kind);
   --preset-gutter: var(--sld-gutter-kind);
 }
-.menu-list .menu-list-item [gutter=default], .menu-list .menu-list-item .gutter-default {
+.slotui-menulist .menulist-item [gutter=default], .slotui-menulist .menulist-item .gutter-default {
   padding: var(--sld-gutter-default);
   gap: var(--sld-gutter-default);
   --preset-gutter: var(--sld-gutter-default);
 }
-.menu-list .menu-list-item:hover {
+.slotui-menulist .menulist-item:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.menu-list .menu-list-item.selected, .menu-list .menu-list-item[aria-selected=true] {
+.slotui-menulist .menulist-item.selected, .slotui-menulist .menulist-item[aria-selected=true] {
   border-color: none;
   background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
   box-shadow: var(--sld-selected-shadow);
 }
-.menu-list .menu-list-item.selected .chip,
-.menu-list .menu-list-item.selected .menuItemChip, .menu-list .menu-list-item[aria-selected=true] .chip,
-.menu-list .menu-list-item[aria-selected=true] .menuItemChip {
+.slotui-menulist .menulist-item.selected .chip,
+.slotui-menulist .menulist-item.selected .menuItemChip, .slotui-menulist .menulist-item[aria-selected=true] .chip,
+.slotui-menulist .menulist-item[aria-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
   height: 50%;
@@ -151,7 +151,7 @@
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-.menu-list .menu-list-item {
+.slotui-menulist .menulist-item {
   text-decoration: none;
   overflow: hidden;
   display: flex;
@@ -160,10 +160,10 @@
   width: 100%;
   max-width: 100%;
   border: 1px solid transparent;
-  border-radius: var(--menu-list-item-radius);
+  border-radius: var(--menulist-item-radius);
   align-self: flex-start;
 }
-.menu-list .menu-list-item::before {
+.slotui-menulist .menulist-item::before {
   position: absolute;
   min-height: 16px;
   height: 45%;
@@ -176,7 +176,7 @@
   border: 1px solid transparent;
   content: " ";
 }
-.menu-list .menu-list-item .menu-list-item-icon {
+.slotui-menulist .menulist-item .menulist-item-icon {
   width: 16px;
   max-width: 16px;
   text-align: center;
@@ -186,28 +186,28 @@
   justify-content: center;
   padding: 0 0.2rem;
 }
-.menu-list .menu-list-item .menu-list-item-text {
+.slotui-menulist .menulist-item .menulist-item-text {
   flex: 1;
 }
-.menu-list .menu-list-item .menu-list-item-text.wrap {
+.slotui-menulist .menulist-item .menulist-item-text.wrap {
   text-wrap: ellipsis;
   white-space: normal;
   overflow: hidden;
 }
-.menu-list .menu-list-item .menu-list-item-action {
-  display: var(--menu-list-item-action-display);
-  justify-content: var(--menu-list-item-action-justify-content);
+.slotui-menulist .menulist-item .menulist-item-action {
+  display: var(--menulist-item-action-display);
+  justify-content: var(--menulist-item-action-justify-content);
 }
 
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[aria-selected="true"] .menu-list-item-action) {
+:global(ul.menuList.showLastOnSelected) :global(li.menulist-item[aria-selected="true"] .menulist-item-action) {
   visibility: visible;
 }
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item[aria-selected="true"] .menu-list-item-action) {
+:global(ul.menuList.showLastOnSelected) :global(a.menulist-item[aria-selected="true"] .menulist-item-action) {
   visibility: visible;
 }
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item .menu-list-item-action) {
+:global(ul.menuList.showLastOnSelected) :global(li.menulist-item .menulist-item-action) {
   visibility: hidden;
 }
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
+:global(ul.menuList.showLastOnSelected) :global(a.menulist-item .menulist-item-action) {
   visibility: hidden;
 }
