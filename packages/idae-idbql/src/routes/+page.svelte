@@ -8,7 +8,7 @@
 
   let messages = idbqlState.messages;
  
-  let results =  $derived(messages?.where({chatId:{eq:'35'}}));
+  let results =  messages?.where({chatId:{eq:'35'}})
    
 
   /* let all = $derived(messages.getAll());
