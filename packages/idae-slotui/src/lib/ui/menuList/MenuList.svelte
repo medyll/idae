@@ -113,11 +113,11 @@
 <ul
 	bind:this={element}
 	class:showLastOnSelected
-	class="menu-list {className} {grid ? 'grid' : ''}"
+	class="slotui-menulist {className} {grid ? 'grid' : ''}"
 	tabindex="0"
-	style={`${style};var(--menu-list-grid-items-count):${grid ? grid : '0'}`}
+	style={`${style};var(--menulist-grid-items-count):${grid ? grid : '0'}`}
 	{role}
-	use:navigation={{ className: 'menu-list-item', selectedIndex: -1 }}
+	use:navigation={{ className: 'menulist-item', selectedIndex: -1 }}
 	{...rest}
 >
 	{#if menuListItems}

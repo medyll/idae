@@ -5,7 +5,7 @@
 	let { class: className, ...rest }: MenuListItemProps = $props();
 </script>
 
-<MenuListItem {...rest} selectable={false} class="menu-list-title {className}" />
+<MenuListItem {...rest} selectable={false} class="slotui-menulist-title {className}" />
 
 <style lang="scss">
 	@use './menu-list.scss';

@@ -1,23 +1,23 @@
 @use "../../styles/slotui-mixins.scss";
 
 :root {
-  --menu-list-padding: var(--sld-pad-tiny);
-  --menu-list-item-padding: 0;
-  --menu-list-item-radius: var(--sld-radius-small);
-  --menu-list-item-selected-background: var(--sld-selected-background-color);
-  --menu-list-item-action-display: flex;
-  --menu-list-item-action-justify-content: center;
-  --menu-list-grid-items-count: 0;
+  --menulist-padding: var(--sld-pad-tiny);
+  --menulist-item-padding: 0;
+  --menulist-item-radius: var(--sld-radius-small);
+  --menulist-item-selected-background: var(--sld-selected-background-color);
+  --menulist-item-action-display: flex;
+  --menulist-item-action-justify-content: center;
+  --menulist-grid-items-count: 0;
 }
 
-.menu-list {
+.slotui-menulist {
   margin: 0;
   cursor: pointer;
 
   display: flex;
   flex-direction: column;
   align-items: end;
-  padding: var(--menu-list-padding);
+  padding: var(--menulist-padding);
 
   &.grid {
     display: grid;
@@ -29,12 +29,12 @@
 
   li,
   a {
-    &.menu-list-title {
+    &.menulist-title {
       font-weight: bold;
     }
   }
 
-  .menu-list-item {
+  .menulist-item {
     @include slotui-mixins.ui-variants;
     @include slotui-mixins.ui-width-presets;
     @include slotui-mixins.ui-tall-presets;
@@ -54,7 +54,7 @@
       max-width: 100%;
 
       border: 1px solid transparent;
-      border-radius: var(--menu-list-item-radius);
+      border-radius: var(--menulist-item-radius);
       align-self: flex-start;
     }
 
@@ -72,7 +72,7 @@
       content: " ";
     }
 
-    .menu-list-item-icon {
+    .menulist-item-icon {
       width: 16px;
       max-width: 16px;
       text-align: center;
@@ -83,7 +83,7 @@
       padding: 0 0.2rem;
     }
 
-    .menu-list-item-text {
+    .menulist-item-text {
       flex: 1;
       &.wrap {
         text-wrap: ellipsis;
@@ -92,24 +92,24 @@
       }
     }
 
-    .menu-list-item-action {
-      display: var(--menu-list-item-action-display);
-      justify-content: var(--menu-list-item-action-justify-content);
+    .menulist-item-action {
+      display: var(--menulist-item-action-display);
+      justify-content: var(--menulist-item-action-justify-content);
     }
   }
 }
 
 :global(ul.menuList.showLastOnSelected) {
-  :global(li.menu-list-item[aria-selected="true"] .menu-list-item-action) {
+  :global(li.menulist-item[aria-selected="true"] .menulist-item-action) {
     visibility: visible;
   }
-  :global(a.menu-list-item[aria-selected="true"] .menu-list-item-action) {
+  :global(a.menulist-item[aria-selected="true"] .menulist-item-action) {
     visibility: visible;
   }
-  :global(li.menu-list-item .menu-list-item-action) {
+  :global(li.menulist-item .menulist-item-action) {
     visibility: hidden;
   }
-  :global(a.menu-list-item .menu-list-item-action) {
+  :global(a.menulist-item .menulist-item-action) {
     visibility: hidden;
   }
 }
