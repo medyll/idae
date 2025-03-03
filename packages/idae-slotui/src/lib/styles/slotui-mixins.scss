@@ -16,7 +16,9 @@
 }
 
 @mixin ui-ellipsises-presets {
-    --preset-ellipsis-line: #{slotui-presets.$presets-ellipsis-line-default};
+    & {
+        --preset-ellipsis-line: #{slotui-presets.$presets-ellipsis-line-default};
+    }
 
     &[ellipsis],
     &.ellipsis {
@@ -41,31 +43,27 @@
 @mixin ui-transition {
     transition: all 0.25s ease;
 }
+
 @mixin ui-tall-presets {
     & {
         --preset-tall: var(--sld-tall-small);
-        min-height: var(--preset-tall-small);
-        height: var(--preset-tall-small);
     }
+    min-height: var(--preset-tall-small);
+    height: var(--preset-tall-small);
 
     @each $preset, $value in slotui-presets.$preset-tall-list {
-        & {
-            &[tall="#{$preset}"],
-            &.tall-#{$preset} {
-                min-height: var(--sld-tall-#{$preset}) !important;
-            }
+        &[tall="#{$preset}"],
+        &.tall-#{$preset} {
+            min-height: var(--sld-tall-#{$preset}) !important;
         }
     }
 }
 
 @mixin ui-width-presets {
-    --preset-width: var(--sld-width-small);
-    width: var(--preset-width-small);
     & {
         --preset-width: var(--sld-width-small);
-        width: var(--preset-width-small);
-        min-width: var(--preset-width-small);
     }
+    width: var(--sld-width-small);
 
     @each $preset, $value in slotui-presets.$preset-width-list {
         &[width="#{$preset}"],
@@ -77,7 +75,9 @@
 }
 
 @mixin ui-gutter-presets {
-    --preset-gutter: var(--sld-gutter-default);
+    & {
+        --preset-gutter: var(--sld-gutter-default);
+    }
 
     @each $preset, $value in slotui-presets.$preset-gutter-list {
         & :global([gutter="#{$preset}"]),
@@ -90,7 +90,9 @@
 }
 
 @mixin ui-pad-presets {
-    --preset-pad: var(--sld-pad-default);
+    & {
+        --preset-pad: var(--sld-pad-default);
+    }
 
     @each $preset, $value in slotui-presets.$preset-pad-list {
         &:global([pad="#{$preset}"]),
@@ -102,7 +104,9 @@
 }
 
 @mixin ui-radius-presets {
-    --preset-radius: var(--sld-radius-default);
+    & {
+        --preset-radius: var(--sld-radius-default);
+    }
 
     @each $preset, $value in slotui-presets.$preset-radius-list {
         &:global([radius="#{$preset}"]),
