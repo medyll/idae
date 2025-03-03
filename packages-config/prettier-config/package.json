@@ -9,6 +9,7 @@
     "svelte-check": "^3.8.5"
   },
   "devDependencies": {
-    "svelte": "^5.0.0-next.218"
+    "svelte": "^5.0.0-next.218",
+    "typescript": "^5.8.2"
   }
 }
