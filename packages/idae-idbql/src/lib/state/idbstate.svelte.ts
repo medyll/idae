@@ -130,9 +130,10 @@ export class StateCollectionDyn<T> {
     return this.collectionState.filter((d) => d[pathKey] === value)?.[0] as T;
   }
 
-  getAll = (): ResultSet<T> => {
+  getAll = (): T[] => {
     //return this.collectionState;
-    return getResultset(this.collectionState);
+    return this.collectionState;
+    getResultset(this.collectionState);
   };
 
   async updateWhere(
