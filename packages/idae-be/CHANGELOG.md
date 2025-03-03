@@ -1,5 +1,72 @@
 # @medyll/idae-be
 
+## 0.55.0
+
+### Minor Changes
+
+- - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - feat(idae-be): Remove unused methods in Be class ([734bdc1](https://github.com/medyll/idae/commit/734bdc1e1fba957ffd1acd4038310323f31bcd42)) - 2024-07-25 by @medyll
+  - fix(idae-be): bad scope configuration ([288b4fe](https://github.com/medyll/idae/commit/288b4fec7b4299653495ee2b394623766b6835fe)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - ci(idae-be): for be ([f41ef0d](https://github.com/medyll/idae/commit/f41ef0d65d89c17bfdc2fc931d1030d323d13f4b)) - 2024-07-25 by @medyll
+  - ci(idae-be): ([4c6bf30](https://github.com/medyll/idae/commit/4c6bf305adb7d9d9a4f01466ff5920c3cec6a533)) - 2024-07-25 by @medyll
+  - ci(idae-be): ([8c6fdc5](https://github.com/medyll/idae/commit/8c6fdc50f3afefe1bbdd150d972d193721dd7c55)) - 2024-07-25 by @medyll
+  - refactor(idae-be): Update CommonHandler interface ([e5e3d60](https://github.com/medyll/idae/commit/e5e3d60bfecf9e2752c0b86c7fe00d7b9bee8588)) - 2024-07-24 by @medyll
+  - fix(idae-be): Refactor WalkHandler to handle actions with callbacks ([dbf5d0c](https://github.com/medyll/idae/commit/dbf5d0c4c1c3ccdfabe73f594432fdca969b6daf)) - 2024-07-24 by @medyll
+  - docs(idae-be): Update @medyll/idae-be readme ([7b9645b](https://github.com/medyll/idae/commit/7b9645b1726506fe0fd318a194a6265d352ba535)) - 2024-07-24 by @medyll
+  - refactor(idae-be): Update Walker class to handle props, position, walk, and timers actions with callbacks ([18f2701](https://github.com/medyll/idae/commit/18f270181fad646ef052cfa89b9a9a1b7e522dc4)) - 2024-07-24 by @medyll
+  - feat(idae-be): Add prependText method to TextHandler ([6b95f11](https://github.com/medyll/idae/commit/6b95f118658b723471f2de4e4bd43204b59849d7)) - 2024-07-24 by @medyll
+  - refactor(idae-be): Update AttrHandler to handle actions with callbacks ([0b61df3](https://github.com/medyll/idae/commit/0b61df337a3545e1bf136c7bb26e789d4527c583)) - 2024-07-24 by @medyll
+  - refactor(idae-be): Update WalkHandler to handle actions with callbacks ([a708904](https://github.com/medyll/idae/commit/a708904362e8f7b8ed743ade1be7af692c1b5e1b)) - 2024-07-24 by @medyll
+  - feat(idae-be): Add static method to create Be element from string or HTMLElement ([7a79052](https://github.com/medyll/idae/commit/7a790526941878b5295ce529f9518986bc4c3c17)) - 2024-07-24 by @medyll
+  - refactor(idae-be): Update DomHandler to handle DOM insertion at specific positions ([42fbb29](https://github.com/medyll/idae/commit/42fbb29ed3aa7cb7b43be4b4d1eaa8eba8771524)) - 2024-07-24 by @medyll
+  - refactor(idae-be): Update ClassesHandler to handle class actions with callbacks ([ca415c8](https://github.com/medyll/idae/commit/ca415c89323cf051d637a06b165d9118c37a45eb)) - 2024-07-24 by @medyll
+  - feat(idae-be): Removed features ([ff3e79f](https://github.com/medyll/idae/commit/ff3e79f29c0e0608591f878e80d821710d935602)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update DomHandler class typings ([69205d3](https://github.com/medyll/idae/commit/69205d3df847646f6616bf1a94e07824f18e51d6)) - 2024-07-23 by @medyll
+  - feat(idae-be): Update Be class with a toBe static method ([f94072c](https://github.com/medyll/idae/commit/f94072c158edec4d4f7fa0cfb0979ab1cc3d512a)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update Be class to handle props, position, walk, and timers actions with callbacks ([b4de659](https://github.com/medyll/idae/commit/b4de659761686ce73197d37fc0c7d1f64bf06cbc)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update TimersHandler to use callback function in timeout and interval methods ([497b9a8](https://github.com/medyll/idae/commit/497b9a82eeb49d1c36271f33c0a0f75b0842af36)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update Be class to handle timers actions with callbacks ([33cd903](https://github.com/medyll/idae/commit/33cd9030f15fd0d54ab0ff8d94a2dee9105a0959)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update WalkHandler to handle actions with callbacks ([81377c3](https://github.com/medyll/idae/commit/81377c3e6733cb627667f1356a7321d1bea4a487)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Remove commented code in proxyHandler.ts ([e39c391](https://github.com/medyll/idae/commit/e39c39185d3a3f72b2cf62328d83fa6d940b1ed8)) - 2024-07-23 by @medyll
+  - feat(idae-be): Add DynamicHandler class for handling dynamic CSS properties ([cd0f5a2](https://github.com/medyll/idae/commit/cd0f5a2e40d7066d7db3a624f178eef0a56fa1d9)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Remove commented code in +page.svelte ([b28fcf9](https://github.com/medyll/idae/commit/b28fcf9460f62b5a98eef505905d71446e911a39)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update Be class to handle props, position, walk, and timers actions with callbacks ([95aa305](https://github.com/medyll/idae/commit/95aa305f971ec9ae3635c50def87eb2aae966f0d)) - 2024-07-23 by @medyll
+  - refactor(idae-be): Update TimersHandler to use callback function in timeout and interval methods ([29c97c6](https://github.com/medyll/idae/commit/29c97c605ceb8007929295eb4fd421ccf7cb7278)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Import CommonHandler for handling common actions in utils.ts ([e0c4dcd](https://github.com/medyll/idae/commit/e0c4dcda82e5c768ab40e669033fd5d20faffaa8)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update TextHandler to use callback function in various methods ([1d41d67](https://github.com/medyll/idae/commit/1d41d6708c454ed49641552e5397fb24184f5814)) - 2024-07-22 by @medyll
+  - feat(idae-be): Add Fragments class for creating DOM fragments ([70a2bc2](https://github.com/medyll/idae/commit/70a2bc2e2971ab91746171a6dafc8b4d7585d861)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update DomHandler to handle multiple DOM methods at once ([379610b](https://github.com/medyll/idae/commit/379610b8b45d812a5a9ad49e61528ba52261a011)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update StylesHandler to use callback function in handlerFor method ([2b38d68](https://github.com/medyll/idae/commit/2b38d68f5b21f226b0485132f51c66af1d1774cc)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update PropsHandler to handle set and delete actions with callbacks ([782364a](https://github.com/medyll/idae/commit/782364a7c147bb60893f05978c9d224c2697a7b5)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update PositionHandler to handle multiple position methods at once ([97a05ff](https://github.com/medyll/idae/commit/97a05ffc979054f7fe65b495dfc0501d437ca7a5)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update WalkerHandler to use callback function in find and findAll methods ([dd48dad](https://github.com/medyll/idae/commit/dd48dad12fe4f781f407d387047b73f6d5310826)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Import BeUtils for handling actions in DataHandler ([7d565e0](https://github.com/medyll/idae/commit/7d565e0ff3b64ef4585076474df433bdb59388fd)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update ClassesHandler to handle multiple class methods at once ([00b0da6](https://github.com/medyll/idae/commit/00b0da63aebe8ed60f72d040f4e2cc439b67135a)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update EventsHandler to handle multiple event methods at once ([0f5b551](https://github.com/medyll/idae/commit/0f5b55191a249a7a2f4a7d3d68be0f17d3e7c716)) - 2024-07-22 by @medyll
+  - feat(idae-be): Update Be class constructor to accept Be instances ([7203697](https://github.com/medyll/idae/commit/7203697eed8f6257a189359750b783a96010e389)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Update Be class constructor to accept Be instances ([45b4590](https://github.com/medyll/idae/commit/45b459084324d19766c0d1ead6bcf8ed44be7f7f)) - 2024-07-22 by @medyll
+  - refactor(idae-be): Move PropsHandler to separate file ([c096efe](https://github.com/medyll/idae/commit/c096efea5b0c7267c9438836ebdd42a3710948e1)) - 2024-07-21 by @medyll
+  - feat(idae-be): Move PropsHandler to separate file ([4fed9cc](https://github.com/medyll/idae/commit/4fed9cc28af49622cde8f3e81067fdee58a3a516)) - 2024-07-21 by @medyll
+  - fix(idae-be): setted implements CommonHandler ([b8f9778](https://github.com/medyll/idae/commit/b8f9778f7e3b3c6d86646ed21cd4865af12b938f)) - 2024-07-21 by @medyll
+  - fix(idae-be): typings ([81f98b0](https://github.com/medyll/idae/commit/81f98b01f3cb7e5b440fedeb955ab6b7db5c424c)) - 2024-07-21 by @medyll
+  - feat(idae-be): added callback to walker ([2af8dca](https://github.com/medyll/idae/commit/2af8dcae3800803ef8037b9c30c150fe0cd25a71)) - 2024-07-20 by @medyll
+  - refactor(idae-be): removed attach to other classes ([25f835c](https://github.com/medyll/idae/commit/25f835c80d9aa9adf8563631ec46f6a505be0a6f)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved attach to core class ([bd78769](https://github.com/medyll/idae/commit/bd787697ff3a1fbe657c35402222c877550f8c41)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved walker to a separate file ([ab4cad6](https://github.com/medyll/idae/commit/ab4cad618725af52229205b84d58ecb231088a91)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved dom to a separate file ([4b1c393](https://github.com/medyll/idae/commit/4b1c393787d1d39e97dde4d72eb6915ce51fb83e)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved props to a separate file ([033aa4f](https://github.com/medyll/idae/commit/033aa4f1c1951e2206bf65e6d5adb1944f89ca59)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved classes to a separate file ([e2a4e67](https://github.com/medyll/idae/commit/e2a4e67c30ba6073a8039aa989267525da6a4db8)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved events to a separate file ([054c861](https://github.com/medyll/idae/commit/054c86187077ed3f31607846f67cb94c6e4e5d55)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved data to separate file ([7b8118b](https://github.com/medyll/idae/commit/7b8118b49913cb90462e054a8340072b3a3b9b94)) - 2024-07-20 by @medyll
+  - refactor(idae-be): moved attrs to separate file ([462a532](https://github.com/medyll/idae/commit/462a5323369b01fc86d9548fe539808a74f09f1b)) - 2024-07-20 by @medyll
+  - feat(idae-be): added a bunch ([76063cb](https://github.com/medyll/idae/commit/76063cb72ddf200c26144d8db8d1f459c5b5e71b)) - 2024-07-17 by @medyll
+  - feat(idae-be): Refactor Be class methods to use consistent naming conventions ([ec4186d](https://github.com/medyll/idae/commit/ec4186d301bf33ed64e052f2b608a392169227d3)) - 2024-07-17 by @medyll
+  - fix(idae-slotui): fix css variants ([9a71e48](https://github.com/medyll/idae/commit/9a71e48780f7262fc120297bb661130eae9ee00c)) - 2024-07-14 by @medyll
+  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by @medyll
+
 ## 0.54.0
 
 ### Minor Changes
