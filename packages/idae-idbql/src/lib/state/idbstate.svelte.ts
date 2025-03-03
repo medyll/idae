@@ -134,8 +134,9 @@ export class StateCollectionDyn<T> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return (await (
         this.idbBase[this.collectionName] as CollectionCore
-      ).update(keyPathValue, data)) as boolean | undefined;
+      ).update(keyPathValue, data)) as unknown as boolean | undefined;
     }
+    return undefined;
   }
 
   async updateWhere(
