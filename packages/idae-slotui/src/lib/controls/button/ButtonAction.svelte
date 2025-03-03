@@ -53,6 +53,6 @@
 {/if}
 
 <style lang="scss">
-	@import './button.scss';
-	@import './button-action.scss';
+	@use './button.scss';
+	@use './button-action.scss';
 </style>

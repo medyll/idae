@@ -129,7 +129,7 @@
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div
 				data-category-title={pat.path}
-				data-selected={selectedCategory === pat.path}
+				aria-selected={selectedCategory === pat.path}
 				onclick={(event) => {
 					selectedCategory = pat.path;
 					toggle(pat.path);
@@ -180,5 +180,5 @@
 </div>
 
 <style lang="scss">
-	@import './tree.scss';
+	@use './tree.scss';
 </style>

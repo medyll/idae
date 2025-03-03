@@ -94,5 +94,5 @@
 </div>
 
 <style lang="scss">
-	@import './panel.scss';
+	@use './panel.scss';
 </style>

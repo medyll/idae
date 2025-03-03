@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :global(.icon) {
 	transition: all 0.2;

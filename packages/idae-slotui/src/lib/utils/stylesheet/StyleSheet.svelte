@@ -17,7 +17,7 @@
 <svelte:head>
 	{castToCssProps(breakpoints)}
 	<style id="idae-slotui-stylesheet" lang="scss">
-		@import './stylesheet.scss';
+		@use './stylesheet.scss';
 		// @include generate-container-queries;
 	</style>
 </svelte:head>

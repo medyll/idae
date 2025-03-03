@@ -17,16 +17,15 @@
   box-shadow: var(--textfield-shadow);
   background-color: var(--textfield-background);
   color: var(--sld-color-foreground);
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
 }
 .textfield [error] {
   border-bottom: red;
 }
 .textfield {
+  width: var(--sld-width-small);
+}
+.textfield {
   --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
 }
 .textfield[width=tiny], .textfield.width-tiny {
   --preset-width: var(--sld-width-tiny);
@@ -61,9 +60,11 @@
   width: var(--sld-width-default) !important;
 }
 .textfield {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.textfield {
+  --preset-tall: var(--sld-tall-small);
 }
 .textfield[tall=tiny], .textfield.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

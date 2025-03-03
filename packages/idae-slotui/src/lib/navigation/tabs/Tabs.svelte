@@ -156,5 +156,5 @@
 </div>
 
 <style lang="scss">
-	@import './tabs.scss';
+	@use './tabs.scss';
 </style>

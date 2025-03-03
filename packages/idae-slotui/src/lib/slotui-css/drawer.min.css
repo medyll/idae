@@ -11,6 +11,11 @@
 }
 
 .drawer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.drawer {
   color: var(--drawer-color);
   background-color: var(--drawer-background-color);
   --webkit-backdrop-filter: var(--drawer-backdrop-filter);
@@ -19,9 +24,6 @@
   box-shadow: var(--drawer-box-shadow);
   border-left: 1px solid var(--drawer-border-left);
   overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   height: 100%;
   transition: all 0.1s;
 }
@@ -35,14 +37,11 @@
   z-index: 8600;
 }
 .drawer header, .drawer-header {
-  min-height: var(--drawer-header-min-height);
-  display: flex;
-  width: 100%;
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
 }
 .drawer header, .drawer-header {
   --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
 }
 .drawer header[tall=tiny], .drawer header.tall-tiny, .drawer-header[tall=tiny], .drawer-header.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
@@ -64,6 +63,11 @@
 }
 .drawer header[tall=default], .drawer header.tall-default, .drawer-header[tall=default], .drawer-header.tall-default {
   min-height: var(--sld-tall-default) !important;
+}
+.drawer header, .drawer-header {
+  min-height: var(--drawer-header-min-height);
+  display: flex;
+  width: 100%;
 }
 .drawer header-bar, .drawer-header-bar {
   flex: 1;

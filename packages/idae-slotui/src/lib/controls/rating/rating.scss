@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 :root {
     --rating-gap: var(--sld-gap-small);
 }

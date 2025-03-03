@@ -97,5 +97,5 @@
 {/key}
 
 <style lang="scss">
-	@import './loader.scss';
+	@use './loader.scss';
 </style>

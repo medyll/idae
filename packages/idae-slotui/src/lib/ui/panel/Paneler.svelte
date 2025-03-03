@@ -61,5 +61,5 @@
 </div>
 
 <style lang="scss">
-	@import '../../styles/slotui-mixins.scss';
+	@use '../../styles/slotui-mixins.scss';
 </style>

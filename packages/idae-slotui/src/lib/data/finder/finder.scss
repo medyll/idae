@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --finder-gap: var(--sld-gap-tiny);
@@ -8,7 +8,7 @@
     &-container {
         display: inline-flex;
         gap: var(--finder-gap);
-        @include ui-width-presets;
-        @include ui-tall-presets;
+        @include slotui-mixins.ui-width-presets;
+        @include slotui-mixins.ui-tall-presets;
     }
 }

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --frame-background-color: var(--sld-color-paper);
@@ -9,7 +9,7 @@
 .frame {
     z-index: 1;
     height: 100%;
-    @include flex("column");
+    @include slotui-mixins.flex("column");
     overflow: hidden;
     position: relative;
     background-color: var(--frame-background-color);
@@ -18,13 +18,13 @@
     overflow: hidden;
 
     &-container {
-        @include flex("row");
-        @include flex-main();
+        @include slotui-mixins.flex("row");
+        @include slotui-mixins.flex-main();
         position: relative;
         overflow: hidden;
         &-nav {
-            @include flex("column");
-            @include flex-main();
+            @include slotui-mixins.flex("column");
+            @include slotui-mixins.flex-main();
             z-index: 1;
             border-right: 1px solid var(--frame-container-border-right);
             position: relative;
@@ -34,10 +34,10 @@
             flex: 1;
             height: 100%;
             overflow: hidden;
-            @include flex("column");
+            @include slotui-mixins.flex("column");
 
             &-content {
-                @include flex-main();
+                @include slotui-mixins.flex-main();
                 overflow: hidden;
                 position: relative;
             }

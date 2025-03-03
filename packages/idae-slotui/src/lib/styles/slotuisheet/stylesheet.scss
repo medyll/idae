@@ -1,5 +1,5 @@
 @use "sass:map";
-@import "./sheetConfig.scss";
+@use "sheetConfig.scss";
 
 $breakpoints: (
     "xs": 320px,
@@ -78,7 +78,7 @@ $hideSelector: var(--hide, "hide");
 @function generate-visibility-classes($breakpoints) {
     $result: ();
     @each $name, $size in $breakpoints {
-        $result: map-merge(
+        $result: map.merge(
             $result,
             (
                 "hide-more-#{$name}": (
@@ -108,26 +108,26 @@ $hideSelector: var(--hide, "hide");
 $visibility-classes: generate-visibility-classes($breakpoints);
 
 @each $breakp, $props in $visibility-classes {
-    @if map-has-key($props, "min-width") {
-        @media (min-width: #{map-get($props, 'min-width')}) {
+    @if map.has-key($props, "min-width") {
+        @media (min-width: #{map.get($props, 'min-width')}) {
             [#{$breakp}],
             [breakpoints*="#{$breakp}"],
             .#{$breakp} {
-                @if map-get($props, "class") == hidden {
+                @if map.get($props, "class") == hidden {
                     @include hidden;
-                } @else if map-get($props, "class") == visible {
+                } @else if map.get($props, "class") == visible {
                     @include visible;
                 }
             }
         }
-    } @else if map-has-key($props, "max-width") {
-        @media (max-width: #{map-get($props, 'max-width')}) {
+    } @else if map.has-key($props, "max-width") {
+        @media (max-width: #{map.get($props, 'max-width')}) {
             [#{$breakp}],
             [breakpoints*="#{$breakp}"],
             .#{$breakp} {
-                @if map-get($props, "class") == hidden {
+                @if map.get($props, "class") == hidden {
                     @include hidden;
-                } @else if map-get($props, "class") == visible {
+                } @else if map.get($props, "class") == visible {
                     @include visible;
                 }
             }

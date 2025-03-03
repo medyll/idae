@@ -164,5 +164,5 @@
 {/if}
 
 <style lang="scss">
-	@import './finder.scss';
+	@use './finder.scss';
 </style>

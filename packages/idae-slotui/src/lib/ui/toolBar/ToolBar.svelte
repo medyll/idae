@@ -28,5 +28,5 @@
 </div>
 
 <style lang="scss">
-	@import './toolbar.scss';
+	@use './toolbar.scss';
 </style>

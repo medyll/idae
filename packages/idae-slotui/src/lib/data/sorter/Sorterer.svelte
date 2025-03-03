@@ -25,5 +25,5 @@
 </div>
 
 <style lang="scss">
-	@import './sorterer.scss';
+	@use './sorterer.scss';
 </style>

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --paper-radius: var(--sld-radius-small);
@@ -11,5 +11,5 @@
     color: var(--paper-border);
     background-color: var(--paper-background-color);
     border-radius: var(--paper-radius);
-    @include elevation();
+    @include slotui-mixins.elevation();
 }

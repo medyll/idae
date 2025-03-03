@@ -8,5 +8,5 @@
 <MenuItem {...rest} class="menuTitle" />
 
 <style lang="scss">
-	@import './menu.scss';
+	@use './menu.scss';
 </style>

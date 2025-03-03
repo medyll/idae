@@ -12,28 +12,16 @@
   --sld-checkbox-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
 }
 
-.checkbox {
-  transition: all 0.25s ease;
-  appearance: none;
-  outline: none;
-  border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
-  border-radius: var(--sld-checkbox-radius);
-  background-clip: padding-box;
-  background-color: var(--sld-checkbox-background);
-  width: 1.7rem;
-  height: 1.7rem;
-  aspect-ratio: 1/1;
-  padding: 0;
-  margin: 0;
-}
 .checkbox:hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
 .checkbox {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.checkbox {
+  --preset-tall: var(--sld-tall-small);
 }
 .checkbox[tall=tiny], .checkbox.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
@@ -55,6 +43,22 @@
 }
 .checkbox[tall=default], .checkbox.tall-default {
   min-height: var(--sld-tall-default) !important;
+}
+.checkbox {
+  transition: all 0.25s ease;
+}
+.checkbox {
+  appearance: none;
+  outline: none;
+  border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
+  border-radius: var(--sld-checkbox-radius);
+  background-clip: padding-box;
+  background-color: var(--sld-checkbox-background);
+  width: 1.7rem;
+  height: 1.7rem;
+  aspect-ratio: 1/1;
+  padding: 0;
+  margin: 0;
 }
 .checkbox:focus-visible {
   box-shadow: var(--sld-checkbox-shadow);

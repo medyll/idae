@@ -231,5 +231,5 @@
 {/if}
 
 <style global lang="scss">
-	@import './datalist.scss';
+	@use './datalist.scss';
 </style>

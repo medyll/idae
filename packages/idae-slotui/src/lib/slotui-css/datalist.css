@@ -114,10 +114,10 @@
 :global(.dataListRow):hover {
   background-color: var(--datalist-row-background-color-hover);
 }
-:global(.dataListRow)[data-selected=true] {
+:global(.dataListRow)[aria-selected=true] {
   background-color: var(--datalist-cell-background-color-selected);
 }
-:global(.dataListRow)[data-selected=true] .dataListCell {
+:global(.dataListRow)[aria-selected=true] .dataListCell {
   color: var(--datalist-cell-color-selected);
 }
 :global(.dataListRow) .dataListCell {

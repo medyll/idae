@@ -98,5 +98,5 @@
 {/if}
 
 <style lang="scss">
-	@import './alert.scss';
+	@use './alert.scss';
 </style>

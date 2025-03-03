@@ -76,5 +76,5 @@
 {/if}
 
 <style lang="scss">
-	@import './backdrop.scss';
+	@use './backdrop.scss';
 </style>

@@ -56,7 +56,7 @@
 	$effect(() => {
 		if (itemIndex === undefined && element?.parentElement) {
 			itemIndex = [
-				...element?.parentElement?.querySelectorAll('.menu-list-item:not(.menu-list-title)')
+				...element?.parentElement?.querySelectorAll('.menulist-item:not(.menulist-title)')
 			].indexOf(element);
 		}
 	});
@@ -94,8 +94,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : tag}
-	class="menu-list-item {className}"
-	data-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
+	class="menulist-item {className}" 
 	aria-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
 	bind:this={element}
 	tabindex="-1"
@@ -106,19 +105,19 @@
 	{href}
 >{menuStateContext.hasIcon}
 	{#if icon && iconFirst && menuStateContext?.hasIcon}
-		<div class="menu-list-item-icon">
+		<div class="menulist-item-icon">
 			<Slotted child={menuItemFirst}>
 				<Icon {icon} ico={iconFirst} color={iconColor} {iconSize} />
 			</Slotted>
 		</div>
 	{/if}
-	<div class="menu-list-item-text" class:wrap>
+	<div class="menulist-item-text" class:wrap>
 		<Slotted child={children} slotArgs={data}>
 			{data?.[presentationField] ?? text}
 		</Slotted>
 	</div>
 	{#if menuItemLast || action || iconLast}
-		<div class="menu-list-item-action">
+		<div class="menulist-item-action">
 			<Slotted child={menuItemLast}>
 				<Icon ico={iconLast} />
 				{action}
@@ -133,5 +132,5 @@
 {/if}
 
 <style global lang="scss">
-	@import './menu-list.scss';
+	@use './menu-list.scss';
 </style>

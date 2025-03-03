@@ -100,8 +100,8 @@
 {/if}
 
 <style lang="scss">
-	@import '../../styles/slotui-presets.scss';
-	@import '../../styles/slotui-mixins.scss';
+	@use '../../styles/slotui-presets.scss';
+	@use '../../styles/slotui-mixins.scss';
 	form {
 		z-index: 1000;
 	}

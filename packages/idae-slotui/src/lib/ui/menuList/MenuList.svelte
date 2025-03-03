@@ -112,12 +112,12 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <ul
 	bind:this={element}
-	class="menu-list {className} {grid ? 'grid' : ''}"
 	class:showLastOnSelected
+	class="slotui-menulist {className} {grid ? 'grid' : ''}"
 	tabindex="0"
-	style={`${style};var(--menu-list-grid-items-count):${grid ? grid : '0'}`}
+	style={`${style};var(--menulist-grid-items-count):${grid ? grid : '0'}`}
 	{role}
-	use:navigation={{ className: 'menu-list-item', selectedIndex: -1 }}
+	use:navigation={{ className: 'menulist-item', selectedIndex: -1 }}
 	{...rest}
 >
 	{#if menuListItems}
@@ -140,6 +140,6 @@
 	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
-<style global lang="scss">
-	@import './menu-list.scss';
+<style   lang="scss">
+	@use './menu-list.scss';
 </style>

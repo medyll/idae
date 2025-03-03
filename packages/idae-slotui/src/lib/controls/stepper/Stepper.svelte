@@ -28,5 +28,5 @@
 </div>
 
 <style lang="scss">
-	@import './stepper.scss';
+	@use './stepper.scss';
 </style>

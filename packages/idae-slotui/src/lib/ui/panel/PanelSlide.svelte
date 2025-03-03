@@ -154,7 +154,7 @@
 {/if}
 
 <style lang="scss">
-	@import './panel.scss';
+	@use './panel.scss';
 	.sidePanel {
 		position: absolute;
 		top: 0;

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
   --menu-min-width: 150px;
@@ -10,12 +10,14 @@
 }
 
 ul.menu {
-  margin: 0;
-  min-width: var(--menu-min-width);
-  padding: var(--menu-padding);
-  cursor: pointer;
-  display: block;
-  color: var(--menu-color);
+  & {
+    margin: 0;
+    min-width: var(--menu-min-width);
+    padding: var(--menu-padding);
+    cursor: pointer;
+    display: block;
+    color: var(--menu-color);
+  }
 
   li.menuTitle {
     position: sticky;
@@ -26,14 +28,17 @@ ul.menu {
 }
 
 li.menuItem {
-  @include data-hover;
-  @include data-selected;
-  @include ui-tall-presets;
-  border-radius: var(--menu-item-border-radius);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  border: 1px solid transparent;
+  @include slotui-mixins.data-hover;
+  @include slotui-mixins.data-selected;
+  @include slotui-mixins.ui-tall-presets;
+
+  & {
+    border-radius: var(--menu-item-border-radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+  }
 
   .menuListItemIcon {
     width: var(--menu-item-icon-width);

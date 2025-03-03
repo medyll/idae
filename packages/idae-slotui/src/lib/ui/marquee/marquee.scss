@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 .marquee {
     flex: 1;
@@ -11,7 +11,7 @@
         :global(-container) {
             display: flex;
             align-items: center;
-            @include ui-gutter-presets;
+            @include slotui-mixins.ui-gutter-presets;
         }
 
         & {

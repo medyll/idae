@@ -88,5 +88,5 @@
 </div>
 
 <style global lang="scss">
-	@import './frame.scss';
+	@use './frame.scss';
 </style>

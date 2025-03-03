@@ -8,34 +8,36 @@
 .marquee :global(-container) {
   display: flex;
   align-items: center;
+}
+.marquee :global(-container) {
   --preset-gutter: var(--sld-gutter-default);
 }
-.marquee :global(-container) :global([gutter="tiny"]), .marquee :global(-container) :global(.gutter-tiny) {
+.marquee :global(-container) [gutter=tiny], .marquee :global(-container) .gutter-tiny {
   padding: var(--sld-gutter-tiny);
   gap: var(--sld-gutter-tiny);
   --preset-gutter: var(--sld-gutter-tiny);
 }
-.marquee :global(-container) :global([gutter="mini"]), .marquee :global(-container) :global(.gutter-mini) {
+.marquee :global(-container) [gutter=mini], .marquee :global(-container) .gutter-mini {
   padding: var(--sld-gutter-mini);
   gap: var(--sld-gutter-mini);
   --preset-gutter: var(--sld-gutter-mini);
 }
-.marquee :global(-container) :global([gutter="small"]), .marquee :global(-container) :global(.gutter-small) {
+.marquee :global(-container) [gutter=small], .marquee :global(-container) .gutter-small {
   padding: var(--sld-gutter-small);
   gap: var(--sld-gutter-small);
   --preset-gutter: var(--sld-gutter-small);
 }
-.marquee :global(-container) :global([gutter="med"]), .marquee :global(-container) :global(.gutter-med) {
+.marquee :global(-container) [gutter=med], .marquee :global(-container) .gutter-med {
   padding: var(--sld-gutter-med);
   gap: var(--sld-gutter-med);
   --preset-gutter: var(--sld-gutter-med);
 }
-.marquee :global(-container) :global([gutter="kind"]), .marquee :global(-container) :global(.gutter-kind) {
+.marquee :global(-container) [gutter=kind], .marquee :global(-container) .gutter-kind {
   padding: var(--sld-gutter-kind);
   gap: var(--sld-gutter-kind);
   --preset-gutter: var(--sld-gutter-kind);
 }
-.marquee :global(-container) :global([gutter="default"]), .marquee :global(-container) :global(.gutter-default) {
+.marquee :global(-container) [gutter=default], .marquee :global(-container) .gutter-default {
   padding: var(--sld-gutter-default);
   gap: var(--sld-gutter-default);
   --preset-gutter: var(--sld-gutter-default);

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --sld-checkbox-background: var(--sld-color-background-alpha-high);
@@ -15,20 +15,23 @@
 }
 
 .checkbox {
-    @include data-hover;
-    @include ui-tall-presets;
-    @include ui-transition;
-    appearance: none;
-    outline: none;
-    border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
-    border-radius: var(--sld-checkbox-radius);
-    background-clip: padding-box;
-    background-color: var(--sld-checkbox-background);
-    width: 1.7rem;
-    height: 1.7rem;
-    aspect-ratio: 1/1;
-    padding: 0;
-    margin: 0;
+    @include slotui-mixins.data-hover;
+    @include slotui-mixins.ui-tall-presets;
+    @include slotui-mixins.ui-transition;
+
+    & {
+        appearance: none;
+        outline: none;
+        border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
+        border-radius: var(--sld-checkbox-radius);
+        background-clip: padding-box;
+        background-color: var(--sld-checkbox-background);
+        width: 1.7rem;
+        height: 1.7rem;
+        aspect-ratio: 1/1;
+        padding: 0;
+        margin: 0;
+    }
 
     &:focus-visible {
         box-shadow: var(--sld-checkbox-shadow);

@@ -76,12 +76,12 @@
 </svelte:element>
 
 <style lang="scss">
-	@import '../../styles/slotui-mixins.scss';
+	@use '../../styles/slotui-mixins.scss';
 
 	.content {
-		@include ui-width-presets;
-		@include ui-gutter-presets;
-		@include ui-tall-presets;
-		@include elevation;
+		@include slotui-mixins.ui-width-presets;
+		@include slotui-mixins.ui-gutter-presets;
+		@include slotui-mixins.ui-tall-presets;
+		@include slotui-mixins.elevation;
 	}
 </style>

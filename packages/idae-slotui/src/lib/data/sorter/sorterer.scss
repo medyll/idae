@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
     --sorterer-gap: var(--sld-gap-tiny);
@@ -6,6 +6,6 @@
 
 .sorterer {
     cursor: pointer;
-    @include flex(row, center);
+    @include slotui-mixins.flex(row, center);
     gap: var(--sorterer-gap);
 }

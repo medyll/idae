@@ -57,5 +57,5 @@
 </label>
 
 <style lang="scss">
-	@import './checkbox.scss';
+	@use './checkbox.scss';
 </style>

@@ -1,4 +1,4 @@
-@import "../../styles/slotui-mixins.scss";
+@use "../../styles/slotui-mixins.scss";
 
 :root {
 	--datalist-pad: var(--sld-pad-med);
@@ -25,14 +25,14 @@
 	position: relative;
 
 	&-group {
-		@include flex(column);
+		@include slotui-mixins.flex(column);
 		&-wrapper {
-			@include flex(column);
+			@include slotui-mixins.flex(column);
 			height: 100%;
 		}
 
 		&-head {
-			@include flex(row, center);
+			@include slotui-mixins.flex(row, center);
 			padding: var(--datalist-pad);
 			gap: var(--datalist-gap);
 			cursor: pointer;
@@ -130,7 +130,7 @@
 		background-color: var(--datalist-row-background-color-hover);
 	}
 
-	&[data-selected="true"] {
+	&[aria-selected="true"] {
 		background-color: var(--datalist-cell-background-color-selected);
 
 		.dataListCell {

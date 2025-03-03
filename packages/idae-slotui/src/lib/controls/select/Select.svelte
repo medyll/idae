@@ -123,5 +123,5 @@
 </Popper>
 
 <style lang="scss">
-	@import 'select.scss';
+	@use 'select.scss';
 </style>

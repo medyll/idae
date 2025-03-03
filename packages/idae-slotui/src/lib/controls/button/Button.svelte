@@ -39,7 +39,7 @@
 </script>
 
 <button
-	class={className + ' button '}
+	class={className + ' slotui-button '}
 	class:loading
 	bind:this={element}
 	use:popper={usePopperProps}
@@ -49,7 +49,7 @@
 	type={buttonType}
 	{tall}
 	{width}
-	{variant}
+	variant={variant}
 	{selected}
 	{...rest}
 	style:aspect-ratio={ratio}
@@ -58,7 +58,7 @@
 	{#if buttonStart || icon}
 		<div
 			bind:this={startRef}
-			class="button-start"
+			class="start"
 			style="--start-position:{(children ?? value) ? 'absolute' : 'relative'}"
 		>
 			<Slotted child={buttonStart}>
@@ -68,14 +68,14 @@
 	{/if}
 	{#if children ?? value}
 		<div
-			class="button-central {ellipsis? 'ellipsis' : ''}"
+			class="central {ellipsis? 'ellipsis' : ''}"
 			style="--content-padding:{buttonStart || icon ? `${startRef?.clientWidth ?? '0.5rem'}px` : '0.5rem'}"
 		>
 			<Slotted child={children}>{value ?? ''}</Slotted>
 		</div>
 	{/if}
 	{#if buttonEnd || iconEnd}
-		<div class="button-end">
+		<div class="end">
 			<Slotted child={buttonEnd}>
 				<Icon icon={iconEnd} />
 			</Slotted>
@@ -93,5 +93,5 @@
 </button>
 
 <style global lang="scss">
-	@import './button.scss';
+	@use './button.scss';
 </style>

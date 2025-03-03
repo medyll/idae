@@ -70,5 +70,5 @@
 {/if}
 
 <style lang="scss">
-	@import './box.scss';
+	@use './box.scss';
 </style>

@@ -37,7 +37,3 @@
 
 <!-- HTML content of the component -->
 <div></div>
-
-<style lang="scss">
-	@import './alert.scss';
-</style>

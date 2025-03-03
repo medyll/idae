@@ -41,5 +41,5 @@
 </Content>
 
 <style lang="scss">
-	@import './avatar.scss';
+	@use './avatar.scss';
 </style>
