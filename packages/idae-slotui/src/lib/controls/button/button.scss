@@ -27,10 +27,10 @@
     }
 }
 
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+.slotui-button,
+button.slotui-button,
+input[type="button"].slotui-button,
+input[type="submit"].slotui-button {
     @include slotui-mixins.ui-width-presets;
     @include slotui-mixins.ui-tall-presets;
     @include slotui-mixins.ui-variants;
@@ -61,29 +61,7 @@
         background: var(--sld-button-background);
     }
 
-    /*     :focus {
-        outline: 1px solid var(--sld-button-focus-border-color);
-        outline-offset: 2px;
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-    :focus-visible {
-        outline: 1px solid var(--sld-button-focus-border-color);
-        outline-offset: -2px;
-        box-shadow: var(--sld-button-focus-shadow);
-    }
-    :hover {
-        background-color: var(--sld-button-hover-background);
-        box-shadow: var(--sld-button-hover-shadow);
-    }
-    :active {
-        transform: translateY(1px);
-        box-shadow: var(--sld-button-active-shadow);
-    }
-    :focus:not(:focus-visible) {
-        box-shadow: var(--sld-button-focus-shadow);
-    } */
-
-    .button-start {
+    .start {
         position: relative;
         top: 0;
         left: 0;
@@ -97,7 +75,7 @@
         }
     }
 
-    .button-central {
+    .central {
         @include slotui-mixins.ui-ellipsises-presets;
         & {
             display: block;
@@ -118,11 +96,10 @@
         }
     }
 
-    .button-end {
+    .end {
         position: relative;
         align-items: center;
         align-content: center;
-        //width: var(--w-tiny);
         padding: 0 0.5rem;
         text-align: center;
         cursor: pointer;
@@ -138,9 +115,11 @@
 
     &.loading,
     &[aria-busy="true"] {
-        position: relative;
-        color: transparent;
-        pointer-events: none;
+        & {
+            position: relative;
+            color: transparent;
+            pointer-events: none;
+        }
 
         &::after {
             content: " ";
@@ -242,7 +221,6 @@
     }
 
     &[variant*="link"],
-    &[link="true"],
     &.link,
     &[role="link"] {
         color: var(--sld-color-primary);
@@ -267,11 +245,15 @@
     &[variant*="naked"],
     &[naked="true"],
     &.naked {
-        color: inherit;
-        background-color: transparent;
-        border: 0px solid transparent;
-        cursor: pointer;
         @include slotui-mixins.data-hover;
+
+        & {
+            color: inherit;
+            background-color: transparent;
+            border: 0px solid transparent;
+            cursor: pointer;
+        }
+
         &:hover {
             background-color: var(--sld-button-hover-background);
         }

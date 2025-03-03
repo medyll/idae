@@ -24,256 +24,218 @@
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  /*     :focus {
-      outline: 1px solid var(--sld-button-focus-border-color);
-      outline-offset: 2px;
-      box-shadow: var(--sld-button-focus-shadow);
-  }
-  :focus-visible {
-      outline: 1px solid var(--sld-button-focus-border-color);
-      outline-offset: -2px;
-      box-shadow: var(--sld-button-focus-shadow);
-  }
-  :hover {
-      background-color: var(--sld-button-hover-background);
-      box-shadow: var(--sld-button-hover-shadow);
-  }
-  :active {
-      transform: translateY(1px);
-      box-shadow: var(--sld-button-active-shadow);
-  }
-  :focus:not(:focus-visible) {
-      box-shadow: var(--sld-button-focus-shadow);
-  } */
-}
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  --preset-width: var(--sld-width-small);
-}
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+.slotui-button,
+button.slotui-button,
+input[type=button].slotui-button,
+input[type=submit].slotui-button {
   width: var(--sld-width-small);
 }
-:global(button)[width=tiny], :global(button).width-tiny,
-:global(.button)[width=tiny],
-:global(.button).width-tiny,
-:global(input[type="button"])[width=tiny],
-:global(input[type="button"]).width-tiny,
-:global(input[type="submit"])[width=tiny],
-:global(input[type="submit"]).width-tiny {
+.slotui-button,
+button.slotui-button,
+input[type=button].slotui-button,
+input[type=submit].slotui-button {
+  --preset-width: var(--sld-width-small);
+}
+.slotui-button[width=tiny], .slotui-button.width-tiny,
+button.slotui-button[width=tiny],
+button.slotui-button.width-tiny,
+input[type=button].slotui-button[width=tiny],
+input[type=button].slotui-button.width-tiny,
+input[type=submit].slotui-button[width=tiny],
+input[type=submit].slotui-button.width-tiny {
   --preset-width: var(--sld-width-tiny);
   width: var(--sld-width-tiny) !important;
 }
-:global(button)[width=mini], :global(button).width-mini,
-:global(.button)[width=mini],
-:global(.button).width-mini,
-:global(input[type="button"])[width=mini],
-:global(input[type="button"]).width-mini,
-:global(input[type="submit"])[width=mini],
-:global(input[type="submit"]).width-mini {
+.slotui-button[width=mini], .slotui-button.width-mini,
+button.slotui-button[width=mini],
+button.slotui-button.width-mini,
+input[type=button].slotui-button[width=mini],
+input[type=button].slotui-button.width-mini,
+input[type=submit].slotui-button[width=mini],
+input[type=submit].slotui-button.width-mini {
   --preset-width: var(--sld-width-mini);
   width: var(--sld-width-mini) !important;
 }
-:global(button)[width=small], :global(button).width-small,
-:global(.button)[width=small],
-:global(.button).width-small,
-:global(input[type="button"])[width=small],
-:global(input[type="button"]).width-small,
-:global(input[type="submit"])[width=small],
-:global(input[type="submit"]).width-small {
+.slotui-button[width=small], .slotui-button.width-small,
+button.slotui-button[width=small],
+button.slotui-button.width-small,
+input[type=button].slotui-button[width=small],
+input[type=button].slotui-button.width-small,
+input[type=submit].slotui-button[width=small],
+input[type=submit].slotui-button.width-small {
   --preset-width: var(--sld-width-small);
   width: var(--sld-width-small) !important;
 }
-:global(button)[width=med], :global(button).width-med,
-:global(.button)[width=med],
-:global(.button).width-med,
-:global(input[type="button"])[width=med],
-:global(input[type="button"]).width-med,
-:global(input[type="submit"])[width=med],
-:global(input[type="submit"]).width-med {
+.slotui-button[width=med], .slotui-button.width-med,
+button.slotui-button[width=med],
+button.slotui-button.width-med,
+input[type=button].slotui-button[width=med],
+input[type=button].slotui-button.width-med,
+input[type=submit].slotui-button[width=med],
+input[type=submit].slotui-button.width-med {
   --preset-width: var(--sld-width-med);
   width: var(--sld-width-med) !important;
 }
-:global(button)[width=kind], :global(button).width-kind,
-:global(.button)[width=kind],
-:global(.button).width-kind,
-:global(input[type="button"])[width=kind],
-:global(input[type="button"]).width-kind,
-:global(input[type="submit"])[width=kind],
-:global(input[type="submit"]).width-kind {
+.slotui-button[width=kind], .slotui-button.width-kind,
+button.slotui-button[width=kind],
+button.slotui-button.width-kind,
+input[type=button].slotui-button[width=kind],
+input[type=button].slotui-button.width-kind,
+input[type=submit].slotui-button[width=kind],
+input[type=submit].slotui-button.width-kind {
   --preset-width: var(--sld-width-kind);
   width: var(--sld-width-kind) !important;
 }
-:global(button)[width=full], :global(button).width-full,
-:global(.button)[width=full],
-:global(.button).width-full,
-:global(input[type="button"])[width=full],
-:global(input[type="button"]).width-full,
-:global(input[type="submit"])[width=full],
-:global(input[type="submit"]).width-full {
+.slotui-button[width=full], .slotui-button.width-full,
+button.slotui-button[width=full],
+button.slotui-button.width-full,
+input[type=button].slotui-button[width=full],
+input[type=button].slotui-button.width-full,
+input[type=submit].slotui-button[width=full],
+input[type=submit].slotui-button.width-full {
   --preset-width: var(--sld-width-full);
   width: var(--sld-width-full) !important;
 }
-:global(button)[width=auto], :global(button).width-auto,
-:global(.button)[width=auto],
-:global(.button).width-auto,
-:global(input[type="button"])[width=auto],
-:global(input[type="button"]).width-auto,
-:global(input[type="submit"])[width=auto],
-:global(input[type="submit"]).width-auto {
+.slotui-button[width=auto], .slotui-button.width-auto,
+button.slotui-button[width=auto],
+button.slotui-button.width-auto,
+input[type=button].slotui-button[width=auto],
+input[type=button].slotui-button.width-auto,
+input[type=submit].slotui-button[width=auto],
+input[type=submit].slotui-button.width-auto {
   --preset-width: var(--sld-width-auto);
   width: var(--sld-width-auto) !important;
 }
-:global(button)[width=default], :global(button).width-default,
-:global(.button)[width=default],
-:global(.button).width-default,
-:global(input[type="button"])[width=default],
-:global(input[type="button"]).width-default,
-:global(input[type="submit"])[width=default],
-:global(input[type="submit"]).width-default {
+.slotui-button[width=default], .slotui-button.width-default,
+button.slotui-button[width=default],
+button.slotui-button.width-default,
+input[type=button].slotui-button[width=default],
+input[type=button].slotui-button.width-default,
+input[type=submit].slotui-button[width=default],
+input[type=submit].slotui-button.width-default {
   --preset-width: var(--sld-width-default);
   width: var(--sld-width-default) !important;
 }
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+.slotui-button,
+button.slotui-button,
+input[type=button].slotui-button,
+input[type=submit].slotui-button {
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
 }
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+.slotui-button,
+button.slotui-button,
+input[type=button].slotui-button,
+input[type=submit].slotui-button {
   --preset-tall: var(--sld-tall-small);
 }
-:global(button)[tall=tiny], :global(button).tall-tiny,
-:global(.button)[tall=tiny],
-:global(.button).tall-tiny,
-:global(input[type="button"])[tall=tiny],
-:global(input[type="button"]).tall-tiny,
-:global(input[type="submit"])[tall=tiny],
-:global(input[type="submit"]).tall-tiny {
+.slotui-button[tall=tiny], .slotui-button.tall-tiny,
+button.slotui-button[tall=tiny],
+button.slotui-button.tall-tiny,
+input[type=button].slotui-button[tall=tiny],
+input[type=button].slotui-button.tall-tiny,
+input[type=submit].slotui-button[tall=tiny],
+input[type=submit].slotui-button.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
 }
-:global(button)[tall=mini], :global(button).tall-mini,
-:global(.button)[tall=mini],
-:global(.button).tall-mini,
-:global(input[type="button"])[tall=mini],
-:global(input[type="button"]).tall-mini,
-:global(input[type="submit"])[tall=mini],
-:global(input[type="submit"]).tall-mini {
+.slotui-button[tall=mini], .slotui-button.tall-mini,
+button.slotui-button[tall=mini],
+button.slotui-button.tall-mini,
+input[type=button].slotui-button[tall=mini],
+input[type=button].slotui-button.tall-mini,
+input[type=submit].slotui-button[tall=mini],
+input[type=submit].slotui-button.tall-mini {
   min-height: var(--sld-tall-mini) !important;
 }
-:global(button)[tall=small], :global(button).tall-small,
-:global(.button)[tall=small],
-:global(.button).tall-small,
-:global(input[type="button"])[tall=small],
-:global(input[type="button"]).tall-small,
-:global(input[type="submit"])[tall=small],
-:global(input[type="submit"]).tall-small {
+.slotui-button[tall=small], .slotui-button.tall-small,
+button.slotui-button[tall=small],
+button.slotui-button.tall-small,
+input[type=button].slotui-button[tall=small],
+input[type=button].slotui-button.tall-small,
+input[type=submit].slotui-button[tall=small],
+input[type=submit].slotui-button.tall-small {
   min-height: var(--sld-tall-small) !important;
 }
-:global(button)[tall=med], :global(button).tall-med,
-:global(.button)[tall=med],
-:global(.button).tall-med,
-:global(input[type="button"])[tall=med],
-:global(input[type="button"]).tall-med,
-:global(input[type="submit"])[tall=med],
-:global(input[type="submit"]).tall-med {
+.slotui-button[tall=med], .slotui-button.tall-med,
+button.slotui-button[tall=med],
+button.slotui-button.tall-med,
+input[type=button].slotui-button[tall=med],
+input[type=button].slotui-button.tall-med,
+input[type=submit].slotui-button[tall=med],
+input[type=submit].slotui-button.tall-med {
   min-height: var(--sld-tall-med) !important;
 }
-:global(button)[tall=kind], :global(button).tall-kind,
-:global(.button)[tall=kind],
-:global(.button).tall-kind,
-:global(input[type="button"])[tall=kind],
-:global(input[type="button"]).tall-kind,
-:global(input[type="submit"])[tall=kind],
-:global(input[type="submit"]).tall-kind {
+.slotui-button[tall=kind], .slotui-button.tall-kind,
+button.slotui-button[tall=kind],
+button.slotui-button.tall-kind,
+input[type=button].slotui-button[tall=kind],
+input[type=button].slotui-button.tall-kind,
+input[type=submit].slotui-button[tall=kind],
+input[type=submit].slotui-button.tall-kind {
   min-height: var(--sld-tall-kind) !important;
 }
-:global(button)[tall=auto], :global(button).tall-auto,
-:global(.button)[tall=auto],
-:global(.button).tall-auto,
-:global(input[type="button"])[tall=auto],
-:global(input[type="button"]).tall-auto,
-:global(input[type="submit"])[tall=auto],
-:global(input[type="submit"]).tall-auto {
+.slotui-button[tall=auto], .slotui-button.tall-auto,
+button.slotui-button[tall=auto],
+button.slotui-button.tall-auto,
+input[type=button].slotui-button[tall=auto],
+input[type=button].slotui-button.tall-auto,
+input[type=submit].slotui-button[tall=auto],
+input[type=submit].slotui-button.tall-auto {
   min-height: var(--sld-tall-auto) !important;
 }
-:global(button)[tall=default], :global(button).tall-default,
-:global(.button)[tall=default],
-:global(.button).tall-default,
-:global(input[type="button"])[tall=default],
-:global(input[type="button"]).tall-default,
-:global(input[type="submit"])[tall=default],
-:global(input[type="submit"]).tall-default {
+.slotui-button[tall=default], .slotui-button.tall-default,
+button.slotui-button[tall=default],
+button.slotui-button.tall-default,
+input[type=button].slotui-button[tall=default],
+input[type=button].slotui-button.tall-default,
+input[type=submit].slotui-button[tall=default],
+input[type=submit].slotui-button.tall-default {
   min-height: var(--sld-tall-default) !important;
 }
-:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
-:global(.button)[variant*=square],
-:global(.button)[square=true],
-:global(.button).square,
-:global(input[type="button"])[variant*=square],
-:global(input[type="button"])[square=true],
-:global(input[type="button"]).square,
-:global(input[type="submit"])[variant*=square],
-:global(input[type="submit"])[square=true],
-:global(input[type="submit"]).square {
+.slotui-button[variant*=square],
+button.slotui-button[variant*=square],
+input[type=button].slotui-button[variant*=square],
+input[type=submit].slotui-button[variant*=square] {
   aspect-ratio: 1/1 !important;
   height: auto;
 }
-:global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
-:global(.button)[variant*=rounded],
-:global(.button)[rounded=true],
-:global(.button).rounded,
-:global(input[type="button"])[variant*=rounded],
-:global(input[type="button"])[rounded=true],
-:global(input[type="button"]).rounded,
-:global(input[type="submit"])[variant*=rounded],
-:global(input[type="submit"])[rounded=true],
-:global(input[type="submit"]).rounded {
+.slotui-button[variant*=rounded],
+button.slotui-button[variant*=rounded],
+input[type=button].slotui-button[variant*=rounded],
+input[type=submit].slotui-button[variant*=rounded] {
   border-radius: 50%;
 }
-:global(button).elevation-0, :global(button)[elevation-0],
-:global(.button).elevation-0,
-:global(.button)[elevation-0],
-:global(input[type="button"]).elevation-0,
-:global(input[type="button"])[elevation-0],
-:global(input[type="submit"]).elevation-0,
-:global(input[type="submit"])[elevation-0] {
+.slotui-button.elevation-0, .slotui-button[elevation-0],
+button.slotui-button.elevation-0,
+button.slotui-button[elevation-0],
+input[type=button].slotui-button.elevation-0,
+input[type=button].slotui-button[elevation-0],
+input[type=submit].slotui-button.elevation-0,
+input[type=submit].slotui-button[elevation-0] {
   box-shadow: var(--sld-elevation-0);
 }
-:global(button).elevation-through, :global(button)[elevation-through],
-:global(.button).elevation-through,
-:global(.button)[elevation-through],
-:global(input[type="button"]).elevation-through,
-:global(input[type="button"])[elevation-through],
-:global(input[type="submit"]).elevation-through,
-:global(input[type="submit"])[elevation-through] {
+.slotui-button.elevation-through, .slotui-button[elevation-through],
+button.slotui-button.elevation-through,
+button.slotui-button[elevation-through],
+input[type=button].slotui-button.elevation-through,
+input[type=button].slotui-button[elevation-through],
+input[type=submit].slotui-button.elevation-through,
+input[type=submit].slotui-button[elevation-through] {
   box-shadow: var(--sld-elevation-through);
 }
-:global(button).elevation-5, :global(button)[elevation-5],
-:global(.button).elevation-5,
-:global(.button)[elevation-5],
-:global(input[type="button"]).elevation-5,
-:global(input[type="button"])[elevation-5],
-:global(input[type="submit"]).elevation-5,
-:global(input[type="submit"])[elevation-5] {
+.slotui-button.elevation-5, .slotui-button[elevation-5],
+button.slotui-button.elevation-5,
+button.slotui-button[elevation-5],
+input[type=button].slotui-button.elevation-5,
+input[type=button].slotui-button[elevation-5],
+input[type=submit].slotui-button.elevation-5,
+input[type=submit].slotui-button[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
-:global(button),
-:global(.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
+.slotui-button,
+button.slotui-button,
+input[type=button].slotui-button,
+input[type=submit].slotui-button {
   border: none;
   border-radius: 0;
   margin: 0;
@@ -291,10 +253,10 @@
   align-items: center;
   background: var(--sld-button-background);
 }
-:global(button) .button-start,
-:global(.button) .button-start,
-:global(input[type="button"]) .button-start,
-:global(input[type="submit"]) .button-start {
+.slotui-button .start,
+button.slotui-button .start,
+input[type=button].slotui-button .start,
+input[type=submit].slotui-button .start {
   position: relative;
   top: 0;
   left: 0;
@@ -304,33 +266,33 @@
   padding: 0 0.5rem;
   display: block;
 }
-:global(button) .button-start:empty,
-:global(.button) .button-start:empty,
-:global(input[type="button"]) .button-start:empty,
-:global(input[type="submit"]) .button-start:empty {
+.slotui-button .start:empty,
+button.slotui-button .start:empty,
+input[type=button].slotui-button .start:empty,
+input[type=submit].slotui-button .start:empty {
   display: none;
 }
-:global(button) .button-central,
-:global(.button) .button-central,
-:global(input[type="button"]) .button-central,
-:global(input[type="submit"]) .button-central {
+.slotui-button .central,
+button.slotui-button .central,
+input[type=button].slotui-button .central,
+input[type=submit].slotui-button .central {
   --preset-ellipsis-line: 1;
 }
-:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
-:global(.button) .button-central[ellipsis],
-:global(.button) .button-central.ellipsis,
-:global(input[type="button"]) .button-central[ellipsis],
-:global(input[type="button"]) .button-central.ellipsis,
-:global(input[type="submit"]) .button-central[ellipsis],
-:global(input[type="submit"]) .button-central.ellipsis {
+.slotui-button .central[ellipsis], .slotui-button .central.ellipsis,
+button.slotui-button .central[ellipsis],
+button.slotui-button .central.ellipsis,
+input[type=button].slotui-button .central[ellipsis],
+input[type=button].slotui-button .central.ellipsis,
+input[type=submit].slotui-button .central[ellipsis],
+input[type=submit].slotui-button .central.ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-:global(button) .button-central.ellipsis-line-1,
-:global(.button) .button-central.ellipsis-line-1,
-:global(input[type="button"]) .button-central.ellipsis-line-1,
-:global(input[type="submit"]) .button-central.ellipsis-line-1 {
+.slotui-button .central.ellipsis-line-1,
+button.slotui-button .central.ellipsis-line-1,
+input[type=button].slotui-button .central.ellipsis-line-1,
+input[type=submit].slotui-button .central.ellipsis-line-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -339,10 +301,10 @@
   white-space: normal;
   --preset-ellipsis-line: 1;
 }
-:global(button) .button-central.ellipsis-line-2,
-:global(.button) .button-central.ellipsis-line-2,
-:global(input[type="button"]) .button-central.ellipsis-line-2,
-:global(input[type="submit"]) .button-central.ellipsis-line-2 {
+.slotui-button .central.ellipsis-line-2,
+button.slotui-button .central.ellipsis-line-2,
+input[type=button].slotui-button .central.ellipsis-line-2,
+input[type=submit].slotui-button .central.ellipsis-line-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -351,10 +313,10 @@
   white-space: normal;
   --preset-ellipsis-line: 2;
 }
-:global(button) .button-central.ellipsis-line-3,
-:global(.button) .button-central.ellipsis-line-3,
-:global(input[type="button"]) .button-central.ellipsis-line-3,
-:global(input[type="submit"]) .button-central.ellipsis-line-3 {
+.slotui-button .central.ellipsis-line-3,
+button.slotui-button .central.ellipsis-line-3,
+input[type=button].slotui-button .central.ellipsis-line-3,
+input[type=submit].slotui-button .central.ellipsis-line-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -363,10 +325,10 @@
   white-space: normal;
   --preset-ellipsis-line: 3;
 }
-:global(button) .button-central.ellipsis-line-4,
-:global(.button) .button-central.ellipsis-line-4,
-:global(input[type="button"]) .button-central.ellipsis-line-4,
-:global(input[type="submit"]) .button-central.ellipsis-line-4 {
+.slotui-button .central.ellipsis-line-4,
+button.slotui-button .central.ellipsis-line-4,
+input[type=button].slotui-button .central.ellipsis-line-4,
+input[type=submit].slotui-button .central.ellipsis-line-4 {
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -375,10 +337,10 @@
   white-space: normal;
   --preset-ellipsis-line: 4;
 }
-:global(button) .button-central.ellipsis-line-5,
-:global(.button) .button-central.ellipsis-line-5,
-:global(input[type="button"]) .button-central.ellipsis-line-5,
-:global(input[type="submit"]) .button-central.ellipsis-line-5 {
+.slotui-button .central.ellipsis-line-5,
+button.slotui-button .central.ellipsis-line-5,
+input[type=button].slotui-button .central.ellipsis-line-5,
+input[type=submit].slotui-button .central.ellipsis-line-5 {
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
@@ -387,10 +349,10 @@
   white-space: normal;
   --preset-ellipsis-line: 5;
 }
-:global(button) .button-central,
-:global(.button) .button-central,
-:global(input[type="button"]) .button-central,
-:global(input[type="submit"]) .button-central {
+.slotui-button .central,
+button.slotui-button .central,
+input[type=button].slotui-button .central,
+input[type=submit].slotui-button .central {
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -404,16 +366,16 @@
   text-align: var(--sld-button-text-align, center);
   overflow: hidden;
 }
-:global(button) .button-central:empty,
-:global(.button) .button-central:empty,
-:global(input[type="button"]) .button-central:empty,
-:global(input[type="submit"]) .button-central:empty {
+.slotui-button .central:empty,
+button.slotui-button .central:empty,
+input[type=button].slotui-button .central:empty,
+input[type=submit].slotui-button .central:empty {
   display: none;
 }
-:global(button) .button-end,
-:global(.button) .button-end,
-:global(input[type="button"]) .button-end,
-:global(input[type="submit"]) .button-end {
+.slotui-button .end,
+button.slotui-button .end,
+input[type=button].slotui-button .end,
+input[type=submit].slotui-button .end {
   position: relative;
   align-items: center;
   align-content: center;
@@ -421,36 +383,36 @@
   text-align: center;
   cursor: pointer;
 }
-:global(button) .button-end:empty,
-:global(.button) .button-end:empty,
-:global(input[type="button"]) .button-end:empty,
-:global(input[type="submit"]) .button-end:empty {
+.slotui-button .end:empty,
+button.slotui-button .end:empty,
+input[type=button].slotui-button .end:empty,
+input[type=submit].slotui-button .end:empty {
   display: none;
 }
-:global(button) .button-end:hover,
-:global(.button) .button-end:hover,
-:global(input[type="button"]) .button-end:hover,
-:global(input[type="submit"]) .button-end:hover {
+.slotui-button .end:hover,
+button.slotui-button .end:hover,
+input[type=button].slotui-button .end:hover,
+input[type=submit].slotui-button .end:hover {
   background-color: var(--sld-button-action-hover-background);
 }
-:global(button).loading, :global(button)[aria-busy=true],
-:global(.button).loading,
-:global(.button)[aria-busy=true],
-:global(input[type="button"]).loading,
-:global(input[type="button"])[aria-busy=true],
-:global(input[type="submit"]).loading,
-:global(input[type="submit"])[aria-busy=true] {
+.slotui-button.loading, .slotui-button[aria-busy=true],
+button.slotui-button.loading,
+button.slotui-button[aria-busy=true],
+input[type=button].slotui-button.loading,
+input[type=button].slotui-button[aria-busy=true],
+input[type=submit].slotui-button.loading,
+input[type=submit].slotui-button[aria-busy=true] {
   position: relative;
   color: transparent;
   pointer-events: none;
 }
-:global(button).loading::after, :global(button)[aria-busy=true]::after,
-:global(.button).loading::after,
-:global(.button)[aria-busy=true]::after,
-:global(input[type="button"]).loading::after,
-:global(input[type="button"])[aria-busy=true]::after,
-:global(input[type="submit"]).loading::after,
-:global(input[type="submit"])[aria-busy=true]::after {
+.slotui-button.loading::after, .slotui-button[aria-busy=true]::after,
+button.slotui-button.loading::after,
+button.slotui-button[aria-busy=true]::after,
+input[type=button].slotui-button.loading::after,
+input[type=button].slotui-button[aria-busy=true]::after,
+input[type=submit].slotui-button.loading::after,
+input[type=submit].slotui-button[aria-busy=true]::after {
   content: " ";
   position: absolute;
   width: 16px;
@@ -465,16 +427,16 @@
   border-radius: 50%;
   animation: button-spinner 0.6s linear infinite;
 }
-:global(button)[disabled], :global(button).disabled, :global(button)[aria-disabled=true],
-:global(.button)[disabled],
-:global(.button).disabled,
-:global(.button)[aria-disabled=true],
-:global(input[type="button"])[disabled],
-:global(input[type="button"]).disabled,
-:global(input[type="button"])[aria-disabled=true],
-:global(input[type="submit"])[disabled],
-:global(input[type="submit"]).disabled,
-:global(input[type="submit"])[aria-disabled=true] {
+.slotui-button[disabled], .slotui-button.disabled, .slotui-button[aria-disabled=true],
+button.slotui-button[disabled],
+button.slotui-button.disabled,
+button.slotui-button[aria-disabled=true],
+input[type=button].slotui-button[disabled],
+input[type=button].slotui-button.disabled,
+input[type=button].slotui-button[aria-disabled=true],
+input[type=submit].slotui-button[disabled],
+input[type=submit].slotui-button.disabled,
+input[type=submit].slotui-button[aria-disabled=true] {
   color: var(--color-gray-800);
   border-color: var(--color-gray-400);
   opacity: 0.6;
@@ -482,21 +444,21 @@
   box-shadow: none;
   pointer-events: none;
 }
-:global(button)[aria-pressed=true], :global(button).selected,
-:global(.button)[aria-pressed=true],
-:global(.button).selected,
-:global(input[type="button"])[aria-pressed=true],
-:global(input[type="button"]).selected,
-:global(input[type="submit"])[aria-pressed=true],
-:global(input[type="submit"]).selected {
+.slotui-button[aria-pressed=true], .slotui-button.selected,
+button.slotui-button[aria-pressed=true],
+button.slotui-button.selected,
+input[type=button].slotui-button[aria-pressed=true],
+input[type=button].slotui-button.selected,
+input[type=submit].slotui-button[aria-pressed=true],
+input[type=submit].slotui-button.selected {
   box-shadow: var(--sld-elevation-3);
   background-color: var(--sld-color-secondary);
   font-weight: bold;
 }
-:global(button) .chip,
-:global(.button) .chip,
-:global(input[type="button"]) .chip,
-:global(input[type="submit"]) .chip {
+.slotui-button .chip,
+button.slotui-button .chip,
+input[type=button].slotui-button .chip,
+input[type=submit].slotui-button .chip {
   position: absolute;
   z-index: 2;
   height: 3px;
@@ -507,10 +469,10 @@
   border-radius: var(--sld-radius-large);
   bottom: 2px;
 }
-:global(button) .loadingButtonZone,
-:global(.button) .loadingButtonZone,
-:global(input[type="button"]) .loadingButtonZone,
-:global(input[type="submit"]) .loadingButtonZone {
+.slotui-button .loadingButtonZone,
+button.slotui-button .loadingButtonZone,
+input[type=button].slotui-button .loadingButtonZone,
+input[type=submit].slotui-button .loadingButtonZone {
   z-index: 10;
   position: absolute;
   top: 0;
@@ -522,121 +484,118 @@
   align-content: center;
   justify-content: space-around;
 }
-:global(button)[variant*=bordered], :global(button)[bordered=true], :global(button).bordered,
-:global(.button)[variant*=bordered],
-:global(.button)[bordered=true],
-:global(.button).bordered,
-:global(input[type="button"])[variant*=bordered],
-:global(input[type="button"])[bordered=true],
-:global(input[type="button"]).bordered,
-:global(input[type="submit"])[variant*=bordered],
-:global(input[type="submit"])[bordered=true],
-:global(input[type="submit"]).bordered {
+.slotui-button[variant*=bordered], .slotui-button[bordered=true], .slotui-button.bordered,
+button.slotui-button[variant*=bordered],
+button.slotui-button[bordered=true],
+button.slotui-button.bordered,
+input[type=button].slotui-button[variant*=bordered],
+input[type=button].slotui-button[bordered=true],
+input[type=button].slotui-button.bordered,
+input[type=submit].slotui-button[variant*=bordered],
+input[type=submit].slotui-button[bordered=true],
+input[type=submit].slotui-button.bordered {
   color: var(--sld-color-foreground);
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   box-shadow: var(--sld-elevation-1);
   background-color: var(--sld-button-background);
 }
-:global(button)[variant*=bordered]:hover, :global(button)[bordered=true]:hover, :global(button).bordered:hover,
-:global(.button)[variant*=bordered]:hover,
-:global(.button)[bordered=true]:hover,
-:global(.button).bordered:hover,
-:global(input[type="button"])[variant*=bordered]:hover,
-:global(input[type="button"])[bordered=true]:hover,
-:global(input[type="button"]).bordered:hover,
-:global(input[type="submit"])[variant*=bordered]:hover,
-:global(input[type="submit"])[bordered=true]:hover,
-:global(input[type="submit"]).bordered:hover {
+.slotui-button[variant*=bordered]:hover, .slotui-button[bordered=true]:hover, .slotui-button.bordered:hover,
+button.slotui-button[variant*=bordered]:hover,
+button.slotui-button[bordered=true]:hover,
+button.slotui-button.bordered:hover,
+input[type=button].slotui-button[variant*=bordered]:hover,
+input[type=button].slotui-button[bordered=true]:hover,
+input[type=button].slotui-button.bordered:hover,
+input[type=submit].slotui-button[variant*=bordered]:hover,
+input[type=submit].slotui-button[bordered=true]:hover,
+input[type=submit].slotui-button.bordered:hover {
   border-color: var(--sld-color-primary);
   box-shadow: var(--sld-button-hover-shadow);
 }
-:global(button)[variant*=bordered]:focus, :global(button)[variant*=bordered]:active, :global(button)[bordered=true]:focus, :global(button)[bordered=true]:active, :global(button).bordered:focus, :global(button).bordered:active,
-:global(.button)[variant*=bordered]:focus,
-:global(.button)[variant*=bordered]:active,
-:global(.button)[bordered=true]:focus,
-:global(.button)[bordered=true]:active,
-:global(.button).bordered:focus,
-:global(.button).bordered:active,
-:global(input[type="button"])[variant*=bordered]:focus,
-:global(input[type="button"])[variant*=bordered]:active,
-:global(input[type="button"])[bordered=true]:focus,
-:global(input[type="button"])[bordered=true]:active,
-:global(input[type="button"]).bordered:focus,
-:global(input[type="button"]).bordered:active,
-:global(input[type="submit"])[variant*=bordered]:focus,
-:global(input[type="submit"])[variant*=bordered]:active,
-:global(input[type="submit"])[bordered=true]:focus,
-:global(input[type="submit"])[bordered=true]:active,
-:global(input[type="submit"]).bordered:focus,
-:global(input[type="submit"]).bordered:active {
+.slotui-button[variant*=bordered]:focus, .slotui-button[variant*=bordered]:active, .slotui-button[bordered=true]:focus, .slotui-button[bordered=true]:active, .slotui-button.bordered:focus, .slotui-button.bordered:active,
+button.slotui-button[variant*=bordered]:focus,
+button.slotui-button[variant*=bordered]:active,
+button.slotui-button[bordered=true]:focus,
+button.slotui-button[bordered=true]:active,
+button.slotui-button.bordered:focus,
+button.slotui-button.bordered:active,
+input[type=button].slotui-button[variant*=bordered]:focus,
+input[type=button].slotui-button[variant*=bordered]:active,
+input[type=button].slotui-button[bordered=true]:focus,
+input[type=button].slotui-button[bordered=true]:active,
+input[type=button].slotui-button.bordered:focus,
+input[type=button].slotui-button.bordered:active,
+input[type=submit].slotui-button[variant*=bordered]:focus,
+input[type=submit].slotui-button[variant*=bordered]:active,
+input[type=submit].slotui-button[bordered=true]:focus,
+input[type=submit].slotui-button[bordered=true]:active,
+input[type=submit].slotui-button.bordered:focus,
+input[type=submit].slotui-button.bordered:active {
   border-color: var(--sld-button-active-border-color);
   box-shadow: var(--sld-button-active-shadow);
 }
-:global(button)[variant*=contained], :global(button)[contained=true], :global(button).contained,
-:global(.button)[variant*=contained],
-:global(.button)[contained=true],
-:global(.button).contained,
-:global(input[type="button"])[variant*=contained],
-:global(input[type="button"])[contained=true],
-:global(input[type="button"]).contained,
-:global(input[type="submit"])[variant*=contained],
-:global(input[type="submit"])[contained=true],
-:global(input[type="submit"]).contained {
+.slotui-button[variant*=contained], .slotui-button[contained=true], .slotui-button.contained,
+button.slotui-button[variant*=contained],
+button.slotui-button[contained=true],
+button.slotui-button.contained,
+input[type=button].slotui-button[variant*=contained],
+input[type=button].slotui-button[contained=true],
+input[type=button].slotui-button.contained,
+input[type=submit].slotui-button[variant*=contained],
+input[type=submit].slotui-button[contained=true],
+input[type=submit].slotui-button.contained {
   border: var(--sld-button-border-width) solid var(--sld-button-border-color);
   color: var(--sld-color-on-primary);
   background-color: var(--sld-button-contained-background);
   background-clip: padding-box;
   box-shadow: var(--sld-elevation-1);
 }
-:global(button)[variant*=contained]:hover, :global(button)[contained=true]:hover, :global(button).contained:hover,
-:global(.button)[variant*=contained]:hover,
-:global(.button)[contained=true]:hover,
-:global(.button).contained:hover,
-:global(input[type="button"])[variant*=contained]:hover,
-:global(input[type="button"])[contained=true]:hover,
-:global(input[type="button"]).contained:hover,
-:global(input[type="submit"])[variant*=contained]:hover,
-:global(input[type="submit"])[contained=true]:hover,
-:global(input[type="submit"]).contained:hover {
+.slotui-button[variant*=contained]:hover, .slotui-button[contained=true]:hover, .slotui-button.contained:hover,
+button.slotui-button[variant*=contained]:hover,
+button.slotui-button[contained=true]:hover,
+button.slotui-button.contained:hover,
+input[type=button].slotui-button[variant*=contained]:hover,
+input[type=button].slotui-button[contained=true]:hover,
+input[type=button].slotui-button.contained:hover,
+input[type=submit].slotui-button[variant*=contained]:hover,
+input[type=submit].slotui-button[contained=true]:hover,
+input[type=submit].slotui-button.contained:hover {
   background-color: var(--sld-color-secondary);
   color: var(--sld-color-on-secondary);
 }
-:global(button)[variant*=contained]:focus, :global(button)[variant*=contained]:active, :global(button)[contained=true]:focus, :global(button)[contained=true]:active, :global(button).contained:focus, :global(button).contained:active,
-:global(.button)[variant*=contained]:focus,
-:global(.button)[variant*=contained]:active,
-:global(.button)[contained=true]:focus,
-:global(.button)[contained=true]:active,
-:global(.button).contained:focus,
-:global(.button).contained:active,
-:global(input[type="button"])[variant*=contained]:focus,
-:global(input[type="button"])[variant*=contained]:active,
-:global(input[type="button"])[contained=true]:focus,
-:global(input[type="button"])[contained=true]:active,
-:global(input[type="button"]).contained:focus,
-:global(input[type="button"]).contained:active,
-:global(input[type="submit"])[variant*=contained]:focus,
-:global(input[type="submit"])[variant*=contained]:active,
-:global(input[type="submit"])[contained=true]:focus,
-:global(input[type="submit"])[contained=true]:active,
-:global(input[type="submit"]).contained:focus,
-:global(input[type="submit"]).contained:active {
+.slotui-button[variant*=contained]:focus, .slotui-button[variant*=contained]:active, .slotui-button[contained=true]:focus, .slotui-button[contained=true]:active, .slotui-button.contained:focus, .slotui-button.contained:active,
+button.slotui-button[variant*=contained]:focus,
+button.slotui-button[variant*=contained]:active,
+button.slotui-button[contained=true]:focus,
+button.slotui-button[contained=true]:active,
+button.slotui-button.contained:focus,
+button.slotui-button.contained:active,
+input[type=button].slotui-button[variant*=contained]:focus,
+input[type=button].slotui-button[variant*=contained]:active,
+input[type=button].slotui-button[contained=true]:focus,
+input[type=button].slotui-button[contained=true]:active,
+input[type=button].slotui-button.contained:focus,
+input[type=button].slotui-button.contained:active,
+input[type=submit].slotui-button[variant*=contained]:focus,
+input[type=submit].slotui-button[variant*=contained]:active,
+input[type=submit].slotui-button[contained=true]:focus,
+input[type=submit].slotui-button[contained=true]:active,
+input[type=submit].slotui-button.contained:focus,
+input[type=submit].slotui-button.contained:active {
   background-color: var(--sld-color-tertiary);
   color: var(--sld-color-on-tertiary);
   box-shadow: var(--sld-button-active-shadow);
 }
-:global(button)[variant*=link], :global(button)[link=true], :global(button).link, :global(button)[role=link],
-:global(.button)[variant*=link],
-:global(.button)[link=true],
-:global(.button).link,
-:global(.button)[role=link],
-:global(input[type="button"])[variant*=link],
-:global(input[type="button"])[link=true],
-:global(input[type="button"]).link,
-:global(input[type="button"])[role=link],
-:global(input[type="submit"])[variant*=link],
-:global(input[type="submit"])[link=true],
-:global(input[type="submit"]).link,
-:global(input[type="submit"])[role=link] {
+.slotui-button[variant*=link], .slotui-button.link, .slotui-button[role=link],
+button.slotui-button[variant*=link],
+button.slotui-button.link,
+button.slotui-button[role=link],
+input[type=button].slotui-button[variant*=link],
+input[type=button].slotui-button.link,
+input[type=button].slotui-button[role=link],
+input[type=submit].slotui-button[variant*=link],
+input[type=submit].slotui-button.link,
+input[type=submit].slotui-button[role=link] {
   color: var(--sld-color-primary);
   text-decoration: underline;
   text-underline-offset: 0.35rem;
@@ -644,160 +603,151 @@
   cursor: pointer;
   border: none;
 }
-:global(button)[variant*=link]:hover, :global(button)[link=true]:hover, :global(button).link:hover, :global(button)[role=link]:hover,
-:global(.button)[variant*=link]:hover,
-:global(.button)[link=true]:hover,
-:global(.button).link:hover,
-:global(.button)[role=link]:hover,
-:global(input[type="button"])[variant*=link]:hover,
-:global(input[type="button"])[link=true]:hover,
-:global(input[type="button"]).link:hover,
-:global(input[type="button"])[role=link]:hover,
-:global(input[type="submit"])[variant*=link]:hover,
-:global(input[type="submit"])[link=true]:hover,
-:global(input[type="submit"]).link:hover,
-:global(input[type="submit"])[role=link]:hover {
+.slotui-button[variant*=link]:hover, .slotui-button.link:hover, .slotui-button[role=link]:hover,
+button.slotui-button[variant*=link]:hover,
+button.slotui-button.link:hover,
+button.slotui-button[role=link]:hover,
+input[type=button].slotui-button[variant*=link]:hover,
+input[type=button].slotui-button.link:hover,
+input[type=button].slotui-button[role=link]:hover,
+input[type=submit].slotui-button[variant*=link]:hover,
+input[type=submit].slotui-button.link:hover,
+input[type=submit].slotui-button[role=link]:hover {
   text-decoration: underline;
 }
-:global(button)[variant*=link]:focus, :global(button)[variant*=link]:active, :global(button)[link=true]:focus, :global(button)[link=true]:active, :global(button).link:focus, :global(button).link:active, :global(button)[role=link]:focus, :global(button)[role=link]:active,
-:global(.button)[variant*=link]:focus,
-:global(.button)[variant*=link]:active,
-:global(.button)[link=true]:focus,
-:global(.button)[link=true]:active,
-:global(.button).link:focus,
-:global(.button).link:active,
-:global(.button)[role=link]:focus,
-:global(.button)[role=link]:active,
-:global(input[type="button"])[variant*=link]:focus,
-:global(input[type="button"])[variant*=link]:active,
-:global(input[type="button"])[link=true]:focus,
-:global(input[type="button"])[link=true]:active,
-:global(input[type="button"]).link:focus,
-:global(input[type="button"]).link:active,
-:global(input[type="button"])[role=link]:focus,
-:global(input[type="button"])[role=link]:active,
-:global(input[type="submit"])[variant*=link]:focus,
-:global(input[type="submit"])[variant*=link]:active,
-:global(input[type="submit"])[link=true]:focus,
-:global(input[type="submit"])[link=true]:active,
-:global(input[type="submit"]).link:focus,
-:global(input[type="submit"]).link:active,
-:global(input[type="submit"])[role=link]:focus,
-:global(input[type="submit"])[role=link]:active {
+.slotui-button[variant*=link]:focus, .slotui-button[variant*=link]:active, .slotui-button.link:focus, .slotui-button.link:active, .slotui-button[role=link]:focus, .slotui-button[role=link]:active,
+button.slotui-button[variant*=link]:focus,
+button.slotui-button[variant*=link]:active,
+button.slotui-button.link:focus,
+button.slotui-button.link:active,
+button.slotui-button[role=link]:focus,
+button.slotui-button[role=link]:active,
+input[type=button].slotui-button[variant*=link]:focus,
+input[type=button].slotui-button[variant*=link]:active,
+input[type=button].slotui-button.link:focus,
+input[type=button].slotui-button.link:active,
+input[type=button].slotui-button[role=link]:focus,
+input[type=button].slotui-button[role=link]:active,
+input[type=submit].slotui-button[variant*=link]:focus,
+input[type=submit].slotui-button[variant*=link]:active,
+input[type=submit].slotui-button.link:focus,
+input[type=submit].slotui-button.link:active,
+input[type=submit].slotui-button[role=link]:focus,
+input[type=submit].slotui-button[role=link]:active {
   text-decoration: underline;
   outline: none;
   box-shadow: none;
 }
-:global(button)[variant*=naked], :global(button)[naked=true], :global(button).naked,
-:global(.button)[variant*=naked],
-:global(.button)[naked=true],
-:global(.button).naked,
-:global(input[type="button"])[variant*=naked],
-:global(input[type="button"])[naked=true],
-:global(input[type="button"]).naked,
-:global(input[type="submit"])[variant*=naked],
-:global(input[type="submit"])[naked=true],
-:global(input[type="submit"]).naked {
+.slotui-button[variant*=naked]:hover, .slotui-button[naked=true]:hover, .slotui-button.naked:hover,
+button.slotui-button[variant*=naked]:hover,
+button.slotui-button[naked=true]:hover,
+button.slotui-button.naked:hover,
+input[type=button].slotui-button[variant*=naked]:hover,
+input[type=button].slotui-button[naked=true]:hover,
+input[type=button].slotui-button.naked:hover,
+input[type=submit].slotui-button[variant*=naked]:hover,
+input[type=submit].slotui-button[naked=true]:hover,
+input[type=submit].slotui-button.naked:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+.slotui-button[variant*=naked], .slotui-button[naked=true], .slotui-button.naked,
+button.slotui-button[variant*=naked],
+button.slotui-button[naked=true],
+button.slotui-button.naked,
+input[type=button].slotui-button[variant*=naked],
+input[type=button].slotui-button[naked=true],
+input[type=button].slotui-button.naked,
+input[type=submit].slotui-button[variant*=naked],
+input[type=submit].slotui-button[naked=true],
+input[type=submit].slotui-button.naked {
   color: inherit;
   background-color: transparent;
   border: 0px solid transparent;
   cursor: pointer;
 }
-:global(button)[variant*=naked]:hover, :global(button)[naked=true]:hover, :global(button).naked:hover,
-:global(.button)[variant*=naked]:hover,
-:global(.button)[naked=true]:hover,
-:global(.button).naked:hover,
-:global(input[type="button"])[variant*=naked]:hover,
-:global(input[type="button"])[naked=true]:hover,
-:global(input[type="button"]).naked:hover,
-:global(input[type="submit"])[variant*=naked]:hover,
-:global(input[type="submit"])[naked=true]:hover,
-:global(input[type="submit"]).naked:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-:global(button)[variant*=naked]:hover, :global(button)[naked=true]:hover, :global(button).naked:hover,
-:global(.button)[variant*=naked]:hover,
-:global(.button)[naked=true]:hover,
-:global(.button).naked:hover,
-:global(input[type="button"])[variant*=naked]:hover,
-:global(input[type="button"])[naked=true]:hover,
-:global(input[type="button"]).naked:hover,
-:global(input[type="submit"])[variant*=naked]:hover,
-:global(input[type="submit"])[naked=true]:hover,
-:global(input[type="submit"]).naked:hover {
+.slotui-button[variant*=naked]:hover, .slotui-button[naked=true]:hover, .slotui-button.naked:hover,
+button.slotui-button[variant*=naked]:hover,
+button.slotui-button[naked=true]:hover,
+button.slotui-button.naked:hover,
+input[type=button].slotui-button[variant*=naked]:hover,
+input[type=button].slotui-button[naked=true]:hover,
+input[type=button].slotui-button.naked:hover,
+input[type=submit].slotui-button[variant*=naked]:hover,
+input[type=submit].slotui-button[naked=true]:hover,
+input[type=submit].slotui-button.naked:hover {
   background-color: var(--sld-button-hover-background);
 }
-:global(button)[variant*=naked]:active, :global(button)[variant*=naked]:focus, :global(button)[naked=true]:active, :global(button)[naked=true]:focus, :global(button).naked:active, :global(button).naked:focus,
-:global(.button)[variant*=naked]:active,
-:global(.button)[variant*=naked]:focus,
-:global(.button)[naked=true]:active,
-:global(.button)[naked=true]:focus,
-:global(.button).naked:active,
-:global(.button).naked:focus,
-:global(input[type="button"])[variant*=naked]:active,
-:global(input[type="button"])[variant*=naked]:focus,
-:global(input[type="button"])[naked=true]:active,
-:global(input[type="button"])[naked=true]:focus,
-:global(input[type="button"]).naked:active,
-:global(input[type="button"]).naked:focus,
-:global(input[type="submit"])[variant*=naked]:active,
-:global(input[type="submit"])[variant*=naked]:focus,
-:global(input[type="submit"])[naked=true]:active,
-:global(input[type="submit"])[naked=true]:focus,
-:global(input[type="submit"]).naked:active,
-:global(input[type="submit"]).naked:focus {
+.slotui-button[variant*=naked]:active, .slotui-button[variant*=naked]:focus, .slotui-button[naked=true]:active, .slotui-button[naked=true]:focus, .slotui-button.naked:active, .slotui-button.naked:focus,
+button.slotui-button[variant*=naked]:active,
+button.slotui-button[variant*=naked]:focus,
+button.slotui-button[naked=true]:active,
+button.slotui-button[naked=true]:focus,
+button.slotui-button.naked:active,
+button.slotui-button.naked:focus,
+input[type=button].slotui-button[variant*=naked]:active,
+input[type=button].slotui-button[variant*=naked]:focus,
+input[type=button].slotui-button[naked=true]:active,
+input[type=button].slotui-button[naked=true]:focus,
+input[type=button].slotui-button.naked:active,
+input[type=button].slotui-button.naked:focus,
+input[type=submit].slotui-button[variant*=naked]:active,
+input[type=submit].slotui-button[variant*=naked]:focus,
+input[type=submit].slotui-button[naked=true]:active,
+input[type=submit].slotui-button[naked=true]:focus,
+input[type=submit].slotui-button.naked:active,
+input[type=submit].slotui-button.naked:focus {
   background-color: transparent;
   border: 0.5px solid transparent;
   color: inherit;
 }
-:global(button)[variant*=flat], :global(button)[flat=true], :global(button).flat,
-:global(.button)[variant*=flat],
-:global(.button)[flat=true],
-:global(.button).flat,
-:global(input[type="button"])[variant*=flat],
-:global(input[type="button"])[flat=true],
-:global(input[type="button"]).flat,
-:global(input[type="submit"])[variant*=flat],
-:global(input[type="submit"])[flat=true],
-:global(input[type="submit"]).flat {
+.slotui-button[variant*=flat], .slotui-button[flat=true], .slotui-button.flat,
+button.slotui-button[variant*=flat],
+button.slotui-button[flat=true],
+button.slotui-button.flat,
+input[type=button].slotui-button[variant*=flat],
+input[type=button].slotui-button[flat=true],
+input[type=button].slotui-button.flat,
+input[type=submit].slotui-button[variant*=flat],
+input[type=submit].slotui-button[flat=true],
+input[type=submit].slotui-button.flat {
   color: inherit;
   background-color: transparent;
   border: none;
   border-radius: 0;
   cursor: pointer;
 }
-:global(button)[variant*=flat]:hover, :global(button)[flat=true]:hover, :global(button).flat:hover,
-:global(.button)[variant*=flat]:hover,
-:global(.button)[flat=true]:hover,
-:global(.button).flat:hover,
-:global(input[type="button"])[variant*=flat]:hover,
-:global(input[type="button"])[flat=true]:hover,
-:global(input[type="button"]).flat:hover,
-:global(input[type="submit"])[variant*=flat]:hover,
-:global(input[type="submit"])[flat=true]:hover,
-:global(input[type="submit"]).flat:hover {
+.slotui-button[variant*=flat]:hover, .slotui-button[flat=true]:hover, .slotui-button.flat:hover,
+button.slotui-button[variant*=flat]:hover,
+button.slotui-button[flat=true]:hover,
+button.slotui-button.flat:hover,
+input[type=button].slotui-button[variant*=flat]:hover,
+input[type=button].slotui-button[flat=true]:hover,
+input[type=button].slotui-button.flat:hover,
+input[type=submit].slotui-button[variant*=flat]:hover,
+input[type=submit].slotui-button[flat=true]:hover,
+input[type=submit].slotui-button.flat:hover {
   background-color: var(--sld-button-hover-background);
 }
-:global(button)[variant*=flat]:active, :global(button)[variant*=flat]:focus, :global(button)[flat=true]:active, :global(button)[flat=true]:focus, :global(button).flat:active, :global(button).flat:focus,
-:global(.button)[variant*=flat]:active,
-:global(.button)[variant*=flat]:focus,
-:global(.button)[flat=true]:active,
-:global(.button)[flat=true]:focus,
-:global(.button).flat:active,
-:global(.button).flat:focus,
-:global(input[type="button"])[variant*=flat]:active,
-:global(input[type="button"])[variant*=flat]:focus,
-:global(input[type="button"])[flat=true]:active,
-:global(input[type="button"])[flat=true]:focus,
-:global(input[type="button"]).flat:active,
-:global(input[type="button"]).flat:focus,
-:global(input[type="submit"])[variant*=flat]:active,
-:global(input[type="submit"])[variant*=flat]:focus,
-:global(input[type="submit"])[flat=true]:active,
-:global(input[type="submit"])[flat=true]:focus,
-:global(input[type="submit"]).flat:active,
-:global(input[type="submit"]).flat:focus {
+.slotui-button[variant*=flat]:active, .slotui-button[variant*=flat]:focus, .slotui-button[flat=true]:active, .slotui-button[flat=true]:focus, .slotui-button.flat:active, .slotui-button.flat:focus,
+button.slotui-button[variant*=flat]:active,
+button.slotui-button[variant*=flat]:focus,
+button.slotui-button[flat=true]:active,
+button.slotui-button[flat=true]:focus,
+button.slotui-button.flat:active,
+button.slotui-button.flat:focus,
+input[type=button].slotui-button[variant*=flat]:active,
+input[type=button].slotui-button[variant*=flat]:focus,
+input[type=button].slotui-button[flat=true]:active,
+input[type=button].slotui-button[flat=true]:focus,
+input[type=button].slotui-button.flat:active,
+input[type=button].slotui-button.flat:focus,
+input[type=submit].slotui-button[variant*=flat]:active,
+input[type=submit].slotui-button[variant*=flat]:focus,
+input[type=submit].slotui-button[flat=true]:active,
+input[type=submit].slotui-button[flat=true]:focus,
+input[type=submit].slotui-button.flat:active,
+input[type=submit].slotui-button.flat:focus {
   background-color: transparent;
   border: none;
   border-radius: 0;

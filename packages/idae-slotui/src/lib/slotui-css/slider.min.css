@@ -9,15 +9,6 @@
 }
 
 .slider {
-  background-color: var(--slider-background-color);
-  position: relative;
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  width: 168px;
-  --height: calc(var(--preset-density) / 6);
-}
-.slider {
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
 }
@@ -44,6 +35,15 @@
 }
 .slider[tall=default], .slider.tall-default {
   min-height: var(--sld-tall-default) !important;
+}
+.slider {
+  --height: calc(var(--preset-density) / 6);
+  background-color: var(--slider-background-color);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: 168px;
 }
 .slider .slider-gouge {
   height: var(--height);

@@ -100,10 +100,10 @@
 }
 
 :global(ul.menuList.showLastOnSelected) {
-  :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  :global(li.menu-list-item[aria-selected="true"] .menu-list-item-action) {
     visibility: visible;
   }
-  :global(a.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  :global(a.menu-list-item[aria-selected="true"] .menu-list-item-action) {
     visibility: visible;
   }
   :global(li.menu-list-item .menu-list-item-action) {

@@ -94,8 +94,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <svelte:element
 	this={href ? 'a' : tag}
-	class="menu-list-item {className}"
-	data-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
+	class="menu-list-item {className}" 
 	aria-selected={selectable ? menuStateContext?.selectedIndex === itemIndex : false}
 	bind:this={element}
 	tabindex="-1"

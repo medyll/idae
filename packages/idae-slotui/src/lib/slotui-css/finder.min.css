@@ -7,10 +7,10 @@
   gap: var(--finder-gap);
 }
 .finder-container {
-  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small);
 }
 .finder-container {
-  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
 .finder-container[width=tiny], .finder-container.width-tiny {
   --preset-width: var(--sld-width-tiny);

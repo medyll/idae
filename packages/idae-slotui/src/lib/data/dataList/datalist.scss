@@ -130,7 +130,7 @@
 		background-color: var(--datalist-row-background-color-hover);
 	}
 
-	&[data-selected="true"] {
+	&[aria-selected="true"] {
 		background-color: var(--datalist-cell-background-color-selected);
 
 		.dataListCell {

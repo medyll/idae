@@ -23,5 +23,7 @@
         }
     }
 
-    border-bottom: 1px solid var(--title-bar-color-border-bottom);
+    & {
+        border-bottom: 1px solid var(--title-bar-color-border-bottom);
+    }
 }

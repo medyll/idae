@@ -13,17 +13,19 @@
 }
 
 .drawer {
-  color: var(--drawer-color);
-  background-color: var(--drawer-background-color);
-  --webkit-backdrop-filter: var(--drawer-backdrop-filter);
-  backdrop-filter: var(--drawer-backdrop-filter);
-  z-index: 3000;
-  box-shadow: var(--drawer-box-shadow);
-  border-left: 1px solid var(--drawer-border-left);
-  overflow: visible;
   @include slotui-mixins.flex(column);
-  height: 100%;
-  transition: all 0.1s;
+  & {
+    color: var(--drawer-color);
+    background-color: var(--drawer-background-color);
+    --webkit-backdrop-filter: var(--drawer-backdrop-filter);
+    backdrop-filter: var(--drawer-backdrop-filter);
+    z-index: 3000;
+    box-shadow: var(--drawer-box-shadow);
+    border-left: 1px solid var(--drawer-border-left);
+    overflow: visible;
+    height: 100%;
+    transition: all 0.1s;
+  }
 
   &-icon {
     padding: var(--drawer-icon-padding);
@@ -39,9 +41,11 @@
   &-header {
     @include slotui-mixins.ui-tall-presets;
 
-    min-height: var(--drawer-header-min-height);
-    display: flex;
-    width: 100%;
+    & {
+      min-height: var(--drawer-header-min-height);
+      display: flex;
+      width: 100%;
+    }
 
     &-bar {
       flex: 1;

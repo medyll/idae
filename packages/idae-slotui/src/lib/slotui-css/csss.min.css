@@ -1,10 +1,10 @@
-:global * {
-  border: 1px solid red;
-}
-:global *[variant*=square], :global *[square=true], :global *.square {
+:global *[variant*=square] {
   aspect-ratio: 1/1 !important;
   height: auto;
 }
-:global *[variant*=rounded], :global *[rounded=true], :global *.rounded {
+:global *[variant*=rounded] {
   border-radius: 50%;
+}
+:global * {
+  border: 1px solid red;
 }

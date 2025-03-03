@@ -22,10 +22,10 @@
   border-bottom: red;
 }
 .textfield {
-  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small);
 }
 .textfield {
-  width: var(--sld-width-small);
+  --preset-width: var(--sld-width-small);
 }
 .textfield[width=tiny], .textfield.width-tiny {
   --preset-width: var(--sld-width-tiny);
