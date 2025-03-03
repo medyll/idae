@@ -113,15 +113,17 @@ export class StateCollectionDyn<T> {
       this._where(qy, options);
   }
 
-  get(value: any, pathKey: string = "id"): T[] {
-    return this.collectionState.filter((d) => d[pathKey] === value) as T[];
+  get(value: any, pathKey: string = "id"): ResultSet<T> {
+    return this.collectionState.filter(
+      (d) => d[pathKey] === value,
+    ) as ResultSet<T>;
   }
 
   getOne(value: any, pathKey: string = "id"): T {
     return this.collectionState.filter((d) => d?.[pathKey] === value)?.[0] as T;
   }
 
-  getAll = (): T[] => {
+  getAll = (): ResultSet<T> => {
     return this.collectionState;
   };
 
