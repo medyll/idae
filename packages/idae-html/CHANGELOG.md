@@ -1,5 +1,18 @@
 # @medyll/idae-html
 
+## 0.20.0
+
+### Minor Changes
+
+- - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@0.56.0
+  - @medyll/idae-dom-events@0.25.0
+
 ## 0.19.0
 
 ### Minor Changes
