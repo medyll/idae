@@ -471,6 +471,106 @@ dialog.window .ctrlZone {
   display: flex;
 }
 
+/** toggle-bar.scss ----------------*/
+:root {
+  --toggle-bar-padding: var(--sld-commandbar-padding, var(--box-density-1));
+  --toggle-bar-border-bottom: var(--sld-topbar-border-bottom-color, var(--sld-color-border));
+  --toggle-bar-gap: var(--sld-commandbar-gap, var(--sld-pad-tiny));
+  --toggle-bar-icon-padding: var(--sld-pad-medium);
+  --toggle-bar-title-font-weight: 500;
+  --toggle-bar-title-content-font-size: 18px;
+}
+
+.toggle-bar {
+  padding: var(--toggle-bar-padding);
+  display: flex;
+  border-bottom: var(--toggle-bar-border-bottom);
+  width: 100%;
+  max-width: 100%;
+  min-width: auto;
+  position: relative;
+  gap: var(--toggle-bar-gap);
+}
+.toggle-bar-icon {
+  padding: var(--toggle-bar-icon-padding);
+}
+.toggle-bar-title {
+  flex: 1;
+  font-weight: var(--toggle-bar-title-font-weight);
+  min-width: auto;
+}
+.toggle-bar-title-content {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--toggle-bar-title-content-font-size);
+  min-width: auto;
+  height: 100%;
+}
+.toggle-bar-content {
+  position: relative;
+  min-width: auto;
+  overflow: hidden;
+}
+
+/** toolbar.scss ----------------*/
+:root {
+  --toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
+  --toolbar-gap: var(--sld-pad-tiny);
+  --toolbar-divider-border: 1px solid red;
+  --toolbar-divider-height: 1rem;
+  --toolbar-vertical-divider-border: 1px solid green;
+  --toolbar-vertical-divider-width: 1rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--toolbar-padding);
+  gap: var(--toolbar-gap);
+}
+.toolbar divider {
+  border: var(--toolbar-divider-border);
+  height: var(--toolbar-divider-height);
+}
+
+.toolbar.vertical {
+  flex-direction: column;
+}
+.toolbar.vertical divider {
+  border: var(--toolbar-vertical-divider-border);
+  width: var(--toolbar-vertical-divider-width);
+}
+
+/** taskbar.scss ----------------*/
+:root {
+  --taskbar-grid-gap: var(--sld-gap-tiny);
+  --taskbar-background-color: rgba(255, 255, 255, 0.5);
+  --taskbar-backdrop-filter: blur(20px);
+  --taskbar-min-height: 48px;
+  --taskbar-border-bottom: rgba(255, 255, 255, 0.2);
+  --taskbar-box-shadow: var(--sld-elevation-3);
+}
+
+.taskbar {
+  display: flex;
+  align-items: center;
+  grid-gap: var(--taskbar-grid-gap);
+  background-size: auto;
+  background-color: var(--taskbar-background-color);
+  --moz-backdrop-filter: var(--taskbar-backdrop-filter);
+  backdrop-filter: var(--taskbar-backdrop-filter);
+  min-height: var(--taskbar-min-height);
+  border-bottom: 1px solid var(--taskbar-border-bottom);
+  box-shadow: var(--taskbar-box-shadow);
+  box-sizing: border-box;
+}
+.taskbar-main {
+  flex: 1;
+}
+
 /** tree.scss ----------------*/
 :root {
   --tree-cell-border: 1px solid transparent;
@@ -522,478 +622,6 @@ dialog.window .ctrlZone {
   border-radius: var(--sld-radius-med);
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
-}
-
-/** toolbar.scss ----------------*/
-:root {
-  --toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
-  --toolbar-gap: var(--sld-pad-tiny);
-  --toolbar-divider-border: 1px solid red;
-  --toolbar-divider-height: 1rem;
-  --toolbar-vertical-divider-border: 1px solid green;
-  --toolbar-vertical-divider-width: 1rem;
-}
-
-.toolbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: var(--toolbar-padding);
-  gap: var(--toolbar-gap);
-}
-.toolbar divider {
-  border: var(--toolbar-divider-border);
-  height: var(--toolbar-divider-height);
-}
-
-.toolbar.vertical {
-  flex-direction: column;
-}
-.toolbar.vertical divider {
-  border: var(--toolbar-vertical-divider-border);
-  width: var(--toolbar-vertical-divider-width);
-}
-
-/** toggle-bar.scss ----------------*/
-:root {
-  --toggle-bar-padding: var(--sld-commandbar-padding, var(--box-density-1));
-  --toggle-bar-border-bottom: var(--sld-topbar-border-bottom-color, var(--sld-color-border));
-  --toggle-bar-gap: var(--sld-commandbar-gap, var(--sld-pad-tiny));
-  --toggle-bar-icon-padding: var(--sld-pad-medium);
-  --toggle-bar-title-font-weight: 500;
-  --toggle-bar-title-content-font-size: 18px;
-}
-
-.toggle-bar {
-  padding: var(--toggle-bar-padding);
-  display: flex;
-  border-bottom: var(--toggle-bar-border-bottom);
-  width: 100%;
-  max-width: 100%;
-  min-width: auto;
-  position: relative;
-  gap: var(--toggle-bar-gap);
-}
-.toggle-bar-icon {
-  padding: var(--toggle-bar-icon-padding);
-}
-.toggle-bar-title {
-  flex: 1;
-  font-weight: var(--toggle-bar-title-font-weight);
-  min-width: auto;
-}
-.toggle-bar-title-content {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: var(--toggle-bar-title-content-font-size);
-  min-width: auto;
-  height: 100%;
-}
-.toggle-bar-content {
-  position: relative;
-  min-width: auto;
-  overflow: hidden;
-}
-
-/** taskbar.scss ----------------*/
-:root {
-  --taskbar-grid-gap: var(--sld-gap-tiny);
-  --taskbar-background-color: rgba(255, 255, 255, 0.5);
-  --taskbar-backdrop-filter: blur(20px);
-  --taskbar-min-height: 48px;
-  --taskbar-border-bottom: rgba(255, 255, 255, 0.2);
-  --taskbar-box-shadow: var(--sld-elevation-3);
-}
-
-.taskbar {
-  display: flex;
-  align-items: center;
-  grid-gap: var(--taskbar-grid-gap);
-  background-size: auto;
-  background-color: var(--taskbar-background-color);
-  --moz-backdrop-filter: var(--taskbar-backdrop-filter);
-  backdrop-filter: var(--taskbar-backdrop-filter);
-  min-height: var(--taskbar-min-height);
-  border-bottom: 1px solid var(--taskbar-border-bottom);
-  box-shadow: var(--taskbar-box-shadow);
-  box-sizing: border-box;
-}
-.taskbar-main {
-  flex: 1;
-}
-
-/** panel.scss ----------------*/
-:root {
-  --panel-margin-bottom: 2rem;
-  --panel-bar-margin-bottom: 2rem;
-  --panel-bar-padding-right: var(--sld-pad-tiny);
-  --panel-bar-button-padding: 0 var(--sld-pad-tiny);
-  --panel-bar-button-border: 1px solid rgba(255, 255, 255, 0.05);
-  --panel-bar-button-background-color: rgba(255, 255, 255, 0.1);
-}
-
-.panel {
-  position: relative;
-  margin-bottom: var(--panel-margin-bottom);
-}
-.panel .panel-bar {
-  margin-bottom: var(--panel-bar-margin-bottom);
-  display: flex;
-  min-width: auto;
-  align-items: center;
-  padding-right: var(--panel-bar-padding-right);
-}
-.panel .panel-bar button {
-  padding: var(--panel-bar-button-padding);
-  border: var(--panel-bar-button-border);
-  background-color: var(--panel-bar-button-background-color);
-}
-
-/** menu-list.scss ----------------*/
-:root {
-  --menu-list-padding: var(--sld-pad-tiny);
-  --menu-list-item-padding: 0;
-  --menu-list-item-radius: var(--sld-radius-small);
-  --menu-list-item-selected-background: var(--sld-selected-background-color);
-  --menu-list-item-action-display: flex;
-  --menu-list-item-action-justify-content: center;
-  --menu-list-grid-items-count: 0;
-}
-
-:global(.menu-list) {
-  margin: 0;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  padding: var(--menu-list-padding);
-}
-:global(.menu-list).grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
-}
-:global(.menu-list) li.menu-list-title,
-:global(.menu-list) a.menu-list-title {
-  font-weight: bold;
-}
-:global(.menu-list) .menu-list-item,
-:global(.menu-list) a.menu-list-item,
-:global(.menu-list) li.menu-list-item {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  --preset-gutter: var(--sld-gutter-default);
-  text-decoration: none;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  border: 1px solid transparent;
-  border-radius: var(--menu-list-item-radius);
-  align-self: flex-start;
-}
-:global(.menu-list) .menu-list-item[variant*=square], :global(.menu-list) .menu-list-item[square=true], :global(.menu-list) .menu-list-item.square,
-:global(.menu-list) a.menu-list-item[variant*=square],
-:global(.menu-list) a.menu-list-item[square=true],
-:global(.menu-list) a.menu-list-item.square,
-:global(.menu-list) li.menu-list-item[variant*=square],
-:global(.menu-list) li.menu-list-item[square=true],
-:global(.menu-list) li.menu-list-item.square {
-  aspect-ratio: 1/1 !important;
-  height: auto;
-}
-:global(.menu-list) .menu-list-item[variant*=rounded], :global(.menu-list) .menu-list-item[rounded=true], :global(.menu-list) .menu-list-item.rounded,
-:global(.menu-list) a.menu-list-item[variant*=rounded],
-:global(.menu-list) a.menu-list-item[rounded=true],
-:global(.menu-list) a.menu-list-item.rounded,
-:global(.menu-list) li.menu-list-item[variant*=rounded],
-:global(.menu-list) li.menu-list-item[rounded=true],
-:global(.menu-list) li.menu-list-item.rounded {
-  border-radius: 50%;
-}
-:global(.menu-list) .menu-list-item,
-:global(.menu-list) a.menu-list-item,
-:global(.menu-list) li.menu-list-item {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
-}
-:global(.menu-list) .menu-list-item[width=tiny], :global(.menu-list) .menu-list-item.width-tiny,
-:global(.menu-list) a.menu-list-item[width=tiny],
-:global(.menu-list) a.menu-list-item.width-tiny,
-:global(.menu-list) li.menu-list-item[width=tiny],
-:global(.menu-list) li.menu-list-item.width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-:global(.menu-list) .menu-list-item[width=mini], :global(.menu-list) .menu-list-item.width-mini,
-:global(.menu-list) a.menu-list-item[width=mini],
-:global(.menu-list) a.menu-list-item.width-mini,
-:global(.menu-list) li.menu-list-item[width=mini],
-:global(.menu-list) li.menu-list-item.width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-:global(.menu-list) .menu-list-item[width=small], :global(.menu-list) .menu-list-item.width-small,
-:global(.menu-list) a.menu-list-item[width=small],
-:global(.menu-list) a.menu-list-item.width-small,
-:global(.menu-list) li.menu-list-item[width=small],
-:global(.menu-list) li.menu-list-item.width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-:global(.menu-list) .menu-list-item[width=med], :global(.menu-list) .menu-list-item.width-med,
-:global(.menu-list) a.menu-list-item[width=med],
-:global(.menu-list) a.menu-list-item.width-med,
-:global(.menu-list) li.menu-list-item[width=med],
-:global(.menu-list) li.menu-list-item.width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-:global(.menu-list) .menu-list-item[width=kind], :global(.menu-list) .menu-list-item.width-kind,
-:global(.menu-list) a.menu-list-item[width=kind],
-:global(.menu-list) a.menu-list-item.width-kind,
-:global(.menu-list) li.menu-list-item[width=kind],
-:global(.menu-list) li.menu-list-item.width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-:global(.menu-list) .menu-list-item[width=full], :global(.menu-list) .menu-list-item.width-full,
-:global(.menu-list) a.menu-list-item[width=full],
-:global(.menu-list) a.menu-list-item.width-full,
-:global(.menu-list) li.menu-list-item[width=full],
-:global(.menu-list) li.menu-list-item.width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-:global(.menu-list) .menu-list-item[width=auto], :global(.menu-list) .menu-list-item.width-auto,
-:global(.menu-list) a.menu-list-item[width=auto],
-:global(.menu-list) a.menu-list-item.width-auto,
-:global(.menu-list) li.menu-list-item[width=auto],
-:global(.menu-list) li.menu-list-item.width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-:global(.menu-list) .menu-list-item[width=default], :global(.menu-list) .menu-list-item.width-default,
-:global(.menu-list) a.menu-list-item[width=default],
-:global(.menu-list) a.menu-list-item.width-default,
-:global(.menu-list) li.menu-list-item[width=default],
-:global(.menu-list) li.menu-list-item.width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-:global(.menu-list) .menu-list-item,
-:global(.menu-list) a.menu-list-item,
-:global(.menu-list) li.menu-list-item {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-:global(.menu-list) .menu-list-item[tall=tiny], :global(.menu-list) .menu-list-item.tall-tiny,
-:global(.menu-list) a.menu-list-item[tall=tiny],
-:global(.menu-list) a.menu-list-item.tall-tiny,
-:global(.menu-list) li.menu-list-item[tall=tiny],
-:global(.menu-list) li.menu-list-item.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-:global(.menu-list) .menu-list-item[tall=mini], :global(.menu-list) .menu-list-item.tall-mini,
-:global(.menu-list) a.menu-list-item[tall=mini],
-:global(.menu-list) a.menu-list-item.tall-mini,
-:global(.menu-list) li.menu-list-item[tall=mini],
-:global(.menu-list) li.menu-list-item.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-:global(.menu-list) .menu-list-item[tall=small], :global(.menu-list) .menu-list-item.tall-small,
-:global(.menu-list) a.menu-list-item[tall=small],
-:global(.menu-list) a.menu-list-item.tall-small,
-:global(.menu-list) li.menu-list-item[tall=small],
-:global(.menu-list) li.menu-list-item.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-:global(.menu-list) .menu-list-item[tall=med], :global(.menu-list) .menu-list-item.tall-med,
-:global(.menu-list) a.menu-list-item[tall=med],
-:global(.menu-list) a.menu-list-item.tall-med,
-:global(.menu-list) li.menu-list-item[tall=med],
-:global(.menu-list) li.menu-list-item.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-:global(.menu-list) .menu-list-item[tall=kind], :global(.menu-list) .menu-list-item.tall-kind,
-:global(.menu-list) a.menu-list-item[tall=kind],
-:global(.menu-list) a.menu-list-item.tall-kind,
-:global(.menu-list) li.menu-list-item[tall=kind],
-:global(.menu-list) li.menu-list-item.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-:global(.menu-list) .menu-list-item[tall=auto], :global(.menu-list) .menu-list-item.tall-auto,
-:global(.menu-list) a.menu-list-item[tall=auto],
-:global(.menu-list) a.menu-list-item.tall-auto,
-:global(.menu-list) li.menu-list-item[tall=auto],
-:global(.menu-list) li.menu-list-item.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-:global(.menu-list) .menu-list-item[tall=default], :global(.menu-list) .menu-list-item.tall-default,
-:global(.menu-list) a.menu-list-item[tall=default],
-:global(.menu-list) a.menu-list-item.tall-default,
-:global(.menu-list) li.menu-list-item[tall=default],
-:global(.menu-list) li.menu-list-item.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-:global(.menu-list) .menu-list-item :global([gutter="tiny"]), :global(.menu-list) .menu-list-item :global(.gutter-tiny),
-:global(.menu-list) a.menu-list-item :global([gutter="tiny"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-tiny),
-:global(.menu-list) li.menu-list-item :global([gutter="tiny"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-tiny) {
-  padding: var(--sld-gutter-tiny);
-  gap: var(--sld-gutter-tiny);
-  --preset-gutter: var(--sld-gutter-tiny);
-}
-:global(.menu-list) .menu-list-item :global([gutter="mini"]), :global(.menu-list) .menu-list-item :global(.gutter-mini),
-:global(.menu-list) a.menu-list-item :global([gutter="mini"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-mini),
-:global(.menu-list) li.menu-list-item :global([gutter="mini"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-mini) {
-  padding: var(--sld-gutter-mini);
-  gap: var(--sld-gutter-mini);
-  --preset-gutter: var(--sld-gutter-mini);
-}
-:global(.menu-list) .menu-list-item :global([gutter="small"]), :global(.menu-list) .menu-list-item :global(.gutter-small),
-:global(.menu-list) a.menu-list-item :global([gutter="small"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-small),
-:global(.menu-list) li.menu-list-item :global([gutter="small"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-small) {
-  padding: var(--sld-gutter-small);
-  gap: var(--sld-gutter-small);
-  --preset-gutter: var(--sld-gutter-small);
-}
-:global(.menu-list) .menu-list-item :global([gutter="med"]), :global(.menu-list) .menu-list-item :global(.gutter-med),
-:global(.menu-list) a.menu-list-item :global([gutter="med"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-med),
-:global(.menu-list) li.menu-list-item :global([gutter="med"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-med) {
-  padding: var(--sld-gutter-med);
-  gap: var(--sld-gutter-med);
-  --preset-gutter: var(--sld-gutter-med);
-}
-:global(.menu-list) .menu-list-item :global([gutter="kind"]), :global(.menu-list) .menu-list-item :global(.gutter-kind),
-:global(.menu-list) a.menu-list-item :global([gutter="kind"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-kind),
-:global(.menu-list) li.menu-list-item :global([gutter="kind"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-kind) {
-  padding: var(--sld-gutter-kind);
-  gap: var(--sld-gutter-kind);
-  --preset-gutter: var(--sld-gutter-kind);
-}
-:global(.menu-list) .menu-list-item :global([gutter="default"]), :global(.menu-list) .menu-list-item :global(.gutter-default),
-:global(.menu-list) a.menu-list-item :global([gutter="default"]),
-:global(.menu-list) a.menu-list-item :global(.gutter-default),
-:global(.menu-list) li.menu-list-item :global([gutter="default"]),
-:global(.menu-list) li.menu-list-item :global(.gutter-default) {
-  padding: var(--sld-gutter-default);
-  gap: var(--sld-gutter-default);
-  --preset-gutter: var(--sld-gutter-default);
-}
-:global(.menu-list) .menu-list-item:hover,
-:global(.menu-list) a.menu-list-item:hover,
-:global(.menu-list) li.menu-list-item:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-:global(.menu-list) .menu-list-item.selected, :global(.menu-list) .menu-list-item[aria-selected=true], :global(.menu-list) .menu-list-item[data-selected=true],
-:global(.menu-list) a.menu-list-item.selected,
-:global(.menu-list) a.menu-list-item[aria-selected=true],
-:global(.menu-list) a.menu-list-item[data-selected=true],
-:global(.menu-list) li.menu-list-item.selected,
-:global(.menu-list) li.menu-list-item[aria-selected=true],
-:global(.menu-list) li.menu-list-item[data-selected=true] {
-  border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
-  box-shadow: var(--sld-selected-shadow);
-}
-:global(.menu-list) .menu-list-item.selected .listItemChip,
-:global(.menu-list) .menu-list-item.selected .menuItemChip, :global(.menu-list) .menu-list-item[aria-selected=true] .listItemChip,
-:global(.menu-list) .menu-list-item[aria-selected=true] .menuItemChip, :global(.menu-list) .menu-list-item[data-selected=true] .listItemChip,
-:global(.menu-list) .menu-list-item[data-selected=true] .menuItemChip,
-:global(.menu-list) a.menu-list-item.selected .listItemChip,
-:global(.menu-list) a.menu-list-item.selected .menuItemChip,
-:global(.menu-list) a.menu-list-item[aria-selected=true] .listItemChip,
-:global(.menu-list) a.menu-list-item[aria-selected=true] .menuItemChip,
-:global(.menu-list) a.menu-list-item[data-selected=true] .listItemChip,
-:global(.menu-list) a.menu-list-item[data-selected=true] .menuItemChip,
-:global(.menu-list) li.menu-list-item.selected .listItemChip,
-:global(.menu-list) li.menu-list-item.selected .menuItemChip,
-:global(.menu-list) li.menu-list-item[aria-selected=true] .listItemChip,
-:global(.menu-list) li.menu-list-item[aria-selected=true] .menuItemChip,
-:global(.menu-list) li.menu-list-item[data-selected=true] .listItemChip,
-:global(.menu-list) li.menu-list-item[data-selected=true] .menuItemChip {
-  position: absolute;
-  min-height: 16px;
-  height: 50%;
-  width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
-}
-:global(.menu-list) .menu-list-item::before,
-:global(.menu-list) a.menu-list-item::before,
-:global(.menu-list) li.menu-list-item::before {
-  position: absolute;
-  min-height: 16px;
-  height: 45%;
-  width: 2px;
-  overflow: hidden;
-  max-width: 3px;
-  background-color: transparent;
-  border-radius: var(--sld-radius-med);
-  left: 0px;
-  border: 1px solid transparent;
-  content: " ";
-}
-:global(.menu-list) .menu-list-item .menu-list-item-icon,
-:global(.menu-list) a.menu-list-item .menu-list-item-icon,
-:global(.menu-list) li.menu-list-item .menu-list-item-icon {
-  width: 16px;
-  max-width: 16px;
-  text-align: center;
-  overflow: hidden;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  padding: 0 0.2rem;
-}
-:global(.menu-list) .menu-list-item .menu-list-item-text,
-:global(.menu-list) a.menu-list-item .menu-list-item-text,
-:global(.menu-list) li.menu-list-item .menu-list-item-text {
-  flex: 1;
-}
-:global(.menu-list) .menu-list-item .menu-list-item-text.wrap,
-:global(.menu-list) a.menu-list-item .menu-list-item-text.wrap,
-:global(.menu-list) li.menu-list-item .menu-list-item-text.wrap {
-  text-wrap: ellipsis;
-  white-space: normal;
-  overflow: hidden;
-}
-:global(.menu-list) .menu-list-item .menu-list-item-action,
-:global(.menu-list) a.menu-list-item .menu-list-item-action,
-:global(.menu-list) li.menu-list-item .menu-list-item-action {
-  display: var(--menu-list-item-action-display);
-  justify-content: var(--menu-list-item-action-justify-content);
-}
-
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
-  visibility: visible;
-}
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item[data-selected="true"] .menu-list-item-action) {
-  visibility: visible;
-}
-:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item .menu-list-item-action) {
-  visibility: hidden;
-}
-:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
-  visibility: hidden;
 }
 
 /** boot-menu.scss ----------------*/
@@ -1075,6 +703,33 @@ dialog.window .ctrlZone {
   padding: var(--boot-menu-bottom-bar-padding);
 }
 
+/** panel.scss ----------------*/
+:root {
+  --panel-margin-bottom: 2rem;
+  --panel-bar-margin-bottom: 2rem;
+  --panel-bar-padding-right: var(--sld-pad-tiny);
+  --panel-bar-button-padding: 0 var(--sld-pad-tiny);
+  --panel-bar-button-border: 1px solid rgba(255, 255, 255, 0.05);
+  --panel-bar-button-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.panel {
+  position: relative;
+  margin-bottom: var(--panel-margin-bottom);
+}
+.panel .panel-bar {
+  margin-bottom: var(--panel-bar-margin-bottom);
+  display: flex;
+  min-width: auto;
+  align-items: center;
+  padding-right: var(--panel-bar-padding-right);
+}
+.panel .panel-bar button {
+  padding: var(--panel-bar-button-padding);
+  border: var(--panel-bar-button-border);
+  background-color: var(--panel-bar-button-background-color);
+}
+
 /** menu.scss ----------------*/
 :root {
   --menu-min-width: 150px;
@@ -1130,9 +785,11 @@ li.menuItem[data-selected=true] .menuItemChip {
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
 li.menuItem {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+li.menuItem {
+  --preset-tall: var(--sld-tall-small);
 }
 li.menuItem[tall=tiny], li.menuItem.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
@@ -1172,113 +829,220 @@ li.menuItem .menu-list-item-action {
   display: block;
 }
 
-/** marquee.scss ----------------*/
-.marquee {
-  flex: 1;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  width: 300px;
+/** menu-list.scss ----------------*/
+:root {
+  --menu-list-padding: var(--sld-pad-tiny);
+  --menu-list-item-padding: 0;
+  --menu-list-item-radius: var(--sld-radius-small);
+  --menu-list-item-selected-background: var(--sld-selected-background-color);
+  --menu-list-item-action-display: flex;
+  --menu-list-item-action-justify-content: center;
+  --menu-list-grid-items-count: 0;
 }
-.marquee :global(-container) {
+
+.menu-list {
+  margin: 0;
+  cursor: pointer;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: end;
+  padding: var(--menu-list-padding);
+}
+.menu-list.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
+}
+.menu-list li.menu-list-title,
+.menu-list a.menu-list-title {
+  font-weight: bold;
+}
+.menu-list .menu-list-item[variant*=square], .menu-list .menu-list-item[square=true], .menu-list .menu-list-item.square {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+.menu-list .menu-list-item[variant*=rounded], .menu-list .menu-list-item[rounded=true], .menu-list .menu-list-item.rounded {
+  border-radius: 50%;
+}
+.menu-list .menu-list-item {
+  --preset-width: var(--sld-width-small);
+}
+.menu-list .menu-list-item {
+  width: var(--sld-width-small);
+}
+.menu-list .menu-list-item[width=tiny], .menu-list .menu-list-item.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.menu-list .menu-list-item[width=mini], .menu-list .menu-list-item.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.menu-list .menu-list-item[width=small], .menu-list .menu-list-item.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.menu-list .menu-list-item[width=med], .menu-list .menu-list-item.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+.menu-list .menu-list-item[width=kind], .menu-list .menu-list-item.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+.menu-list .menu-list-item[width=full], .menu-list .menu-list-item.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+.menu-list .menu-list-item[width=auto], .menu-list .menu-list-item.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+.menu-list .menu-list-item[width=default], .menu-list .menu-list-item.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+.menu-list .menu-list-item {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.menu-list .menu-list-item {
+  --preset-tall: var(--sld-tall-small);
+}
+.menu-list .menu-list-item[tall=tiny], .menu-list .menu-list-item.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.menu-list .menu-list-item[tall=mini], .menu-list .menu-list-item.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.menu-list .menu-list-item[tall=small], .menu-list .menu-list-item.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.menu-list .menu-list-item[tall=med], .menu-list .menu-list-item.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.menu-list .menu-list-item[tall=kind], .menu-list .menu-list-item.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.menu-list .menu-list-item[tall=auto], .menu-list .menu-list-item.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.menu-list .menu-list-item[tall=default], .menu-list .menu-list-item.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+.menu-list .menu-list-item {
   --preset-gutter: var(--sld-gutter-default);
 }
-.marquee :global(-container) :global([gutter="tiny"]), .marquee :global(-container) :global(.gutter-tiny) {
+.menu-list .menu-list-item :global([gutter="tiny"]), .menu-list .menu-list-item :global(.gutter-tiny) {
   padding: var(--sld-gutter-tiny);
   gap: var(--sld-gutter-tiny);
   --preset-gutter: var(--sld-gutter-tiny);
 }
-.marquee :global(-container) :global([gutter="mini"]), .marquee :global(-container) :global(.gutter-mini) {
+.menu-list .menu-list-item :global([gutter="mini"]), .menu-list .menu-list-item :global(.gutter-mini) {
   padding: var(--sld-gutter-mini);
   gap: var(--sld-gutter-mini);
   --preset-gutter: var(--sld-gutter-mini);
 }
-.marquee :global(-container) :global([gutter="small"]), .marquee :global(-container) :global(.gutter-small) {
+.menu-list .menu-list-item :global([gutter="small"]), .menu-list .menu-list-item :global(.gutter-small) {
   padding: var(--sld-gutter-small);
   gap: var(--sld-gutter-small);
   --preset-gutter: var(--sld-gutter-small);
 }
-.marquee :global(-container) :global([gutter="med"]), .marquee :global(-container) :global(.gutter-med) {
+.menu-list .menu-list-item :global([gutter="med"]), .menu-list .menu-list-item :global(.gutter-med) {
   padding: var(--sld-gutter-med);
   gap: var(--sld-gutter-med);
   --preset-gutter: var(--sld-gutter-med);
 }
-.marquee :global(-container) :global([gutter="kind"]), .marquee :global(-container) :global(.gutter-kind) {
+.menu-list .menu-list-item :global([gutter="kind"]), .menu-list .menu-list-item :global(.gutter-kind) {
   padding: var(--sld-gutter-kind);
   gap: var(--sld-gutter-kind);
   --preset-gutter: var(--sld-gutter-kind);
 }
-.marquee :global(-container) :global([gutter="default"]), .marquee :global(-container) :global(.gutter-default) {
+.menu-list .menu-list-item :global([gutter="default"]), .menu-list .menu-list-item :global(.gutter-default) {
   padding: var(--sld-gutter-default);
   gap: var(--sld-gutter-default);
   --preset-gutter: var(--sld-gutter-default);
 }
-.marquee-children {
-  display: flex;
-  border: 1px solid red;
+.menu-list .menu-list-item:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
 }
-.marquee-children > * {
-  border: 1px solid red;
-  height: 300px;
+.menu-list .menu-list-item.selected, .menu-list .menu-list-item[aria-selected=true], .menu-list .menu-list-item[data-selected=true] {
+  border-color: none;
+  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  box-shadow: var(--sld-selected-shadow);
 }
-.marquee-controls-prev {
-  display: contents;
+.menu-list .menu-list-item.selected .listItemChip,
+.menu-list .menu-list-item.selected .menuItemChip, .menu-list .menu-list-item[aria-selected=true] .listItemChip,
+.menu-list .menu-list-item[aria-selected=true] .menuItemChip, .menu-list .menu-list-item[data-selected=true] .listItemChip,
+.menu-list .menu-list-item[data-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-.marquee-controls-next {
-  display: contents;
-}
-
-/** frame.scss ----------------*/
-:root {
-  --frame-background-color: var(--sld-color-paper);
-  --frame-backdrop-filter: blur(30px);
-  --frame-container-border-right: var(--sld-color-primary);
-}
-
-.frame {
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: "column";
-  align-items: flex-start;
+.menu-list .menu-list-item {
+  text-decoration: none;
   overflow: hidden;
-  position: relative;
-  background-color: var(--frame-background-color);
-  --moz-backdrop-filter: var(--frame-backdrop-filter);
-  backdrop-filter: var(--frame-backdrop-filter);
-  overflow: hidden;
-}
-.frame-container {
   display: flex;
-  flex-direction: "row";
-  align-items: flex-start;
-  flex: 1 1 0;
+  align-items: center;
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--menu-list-item-radius);
+  align-self: flex-start;
+}
+.menu-list .menu-list-item::before {
+  position: absolute;
+  min-height: 16px;
+  height: 45%;
+  width: 2px;
   overflow: hidden;
+  max-width: 3px;
+  background-color: transparent;
+  border-radius: var(--sld-radius-med);
+  left: 0px;
+  border: 1px solid transparent;
+  content: " ";
 }
-.frame-container-nav {
+.menu-list .menu-list-item .menu-list-item-icon {
+  width: 16px;
+  max-width: 16px;
+  text-align: center;
+  overflow: hidden;
+  text-align: center;
   display: flex;
-  flex-direction: "column";
-  align-items: flex-start;
-  flex: 1 1 0;
-  z-index: 1;
-  border-right: 1px solid var(--frame-container-border-right);
-  position: relative;
+  justify-content: center;
+  padding: 0 0.2rem;
 }
-.frame-container-main {
+.menu-list .menu-list-item .menu-list-item-text {
   flex: 1;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: "column";
-  align-items: flex-start;
 }
-.frame-container-main-content {
-  flex: 1 1 0;
+.menu-list .menu-list-item .menu-list-item-text.wrap {
+  text-wrap: ellipsis;
+  white-space: normal;
   overflow: hidden;
-  position: relative;
+}
+.menu-list .menu-list-item .menu-list-item-action {
+  display: var(--menu-list-item-action-display);
+  justify-content: var(--menu-list-item-action-justify-content);
+}
+
+:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item[data-selected="true"] .menu-list-item-action) {
+  visibility: visible;
+}
+:global(ul.menuList.showLastOnSelected) :global(li.menu-list-item .menu-list-item-action) {
+  visibility: hidden;
+}
+:global(ul.menuList.showLastOnSelected) :global(a.menu-list-item .menu-list-item-action) {
+  visibility: hidden;
 }
 
 /** popper.scss ----------------*/
@@ -1366,6 +1130,117 @@ li.menuItem .menu-list-item-action {
 :global(dialog.popper) {
   padding-block: 0;
   padding-inline: 0;
+}
+
+/** frame.scss ----------------*/
+:root {
+  --frame-background-color: var(--sld-color-paper);
+  --frame-backdrop-filter: blur(30px);
+  --frame-container-border-right: var(--sld-color-primary);
+}
+
+.frame {
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: "column";
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--frame-background-color);
+  --moz-backdrop-filter: var(--frame-backdrop-filter);
+  backdrop-filter: var(--frame-backdrop-filter);
+  overflow: hidden;
+}
+.frame-container {
+  display: flex;
+  flex-direction: "row";
+  align-items: flex-start;
+  flex: 1 1 0;
+  position: relative;
+  overflow: hidden;
+}
+.frame-container-nav {
+  display: flex;
+  flex-direction: "column";
+  align-items: flex-start;
+  flex: 1 1 0;
+  z-index: 1;
+  border-right: 1px solid var(--frame-container-border-right);
+  position: relative;
+}
+.frame-container-main {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: "column";
+  align-items: flex-start;
+}
+.frame-container-main-content {
+  flex: 1 1 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/** marquee.scss ----------------*/
+.marquee {
+  flex: 1;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 300px;
+}
+.marquee :global(-container) {
+  display: flex;
+  align-items: center;
+}
+.marquee :global(-container) {
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee :global(-container) :global([gutter="tiny"]), .marquee :global(-container) :global(.gutter-tiny) {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+.marquee :global(-container) :global([gutter="mini"]), .marquee :global(-container) :global(.gutter-mini) {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+.marquee :global(-container) :global([gutter="small"]), .marquee :global(-container) :global(.gutter-small) {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+.marquee :global(-container) :global([gutter="med"]), .marquee :global(-container) :global(.gutter-med) {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+.marquee :global(-container) :global([gutter="kind"]), .marquee :global(-container) :global(.gutter-kind) {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+.marquee :global(-container) :global([gutter="default"]), .marquee :global(-container) :global(.gutter-default) {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-children {
+  display: flex;
+  border: 1px solid red;
+}
+.marquee-children > * {
+  border: 1px solid red;
+  height: 300px;
+}
+.marquee-controls-prev {
+  display: contents;
+}
+.marquee-controls-next {
+  display: contents;
 }
 
 /** chrome-frame.scss ----------------*/
@@ -2459,6 +2334,94 @@ body[data-theme=dark],
   --hide-selector: hide;
 }
 
+/** drawer.scss ----------------*/
+:root {
+  --drawer-color: inherit;
+  --drawer-background-color: var(--sld-color-paper-alpha-low);
+  --drawer-backdrop-filter: blur(0px);
+  --drawer-box-shadow: var(--sld-elevation-3);
+  --drawer-border-left: var(--sld-color-primary-alpha-mid);
+  --drawer-icon-padding: 0 0.5rem;
+  --drawer-header-min-height: 48px;
+  --drawer-header-bar-title-font-size: large;
+  --drawer-content-flex: 1;
+}
+
+.drawer {
+  color: var(--drawer-color);
+  background-color: var(--drawer-background-color);
+  --webkit-backdrop-filter: var(--drawer-backdrop-filter);
+  backdrop-filter: var(--drawer-backdrop-filter);
+  z-index: 3000;
+  box-shadow: var(--drawer-box-shadow);
+  border-left: 1px solid var(--drawer-border-left);
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  transition: all 0.1s;
+}
+.drawer-icon {
+  padding: var(--drawer-icon-padding);
+  display: flex;
+  align-items: center;
+}
+.drawer-opener {
+  position: absolute;
+  z-index: 8600;
+}
+.drawer header, .drawer-header {
+  min-height: var(--drawer-header-min-height);
+  display: flex;
+  width: 100%;
+}
+.drawer header, .drawer-header {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.drawer header, .drawer-header {
+  --preset-tall: var(--sld-tall-small);
+}
+.drawer header[tall=tiny], .drawer header.tall-tiny, .drawer-header[tall=tiny], .drawer-header.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.drawer header[tall=mini], .drawer header.tall-mini, .drawer-header[tall=mini], .drawer-header.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.drawer header[tall=small], .drawer header.tall-small, .drawer-header[tall=small], .drawer-header.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.drawer header[tall=med], .drawer header.tall-med, .drawer-header[tall=med], .drawer-header.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.drawer header[tall=kind], .drawer header.tall-kind, .drawer-header[tall=kind], .drawer-header.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.drawer header[tall=auto], .drawer header.tall-auto, .drawer-header[tall=auto], .drawer-header.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.drawer header[tall=default], .drawer header.tall-default, .drawer-header[tall=default], .drawer-header.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+.drawer header-bar, .drawer-header-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.drawer header-bar-title, .drawer-header-bar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--drawer-header-bar-title-font-size);
+}
+.drawer-content {
+  flex: var(--drawer-content-flex);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
 /** tabs.scss ----------------*/
 :root {
   --tabs-nav-border-color: var(--sld-color-primary-alpha-high);
@@ -2546,92 +2509,6 @@ body[data-theme=dark],
   z-index: 200;
 }
 
-/** drawer.scss ----------------*/
-:root {
-  --drawer-color: inherit;
-  --drawer-background-color: var(--sld-color-paper-alpha-low);
-  --drawer-backdrop-filter: blur(0px);
-  --drawer-box-shadow: var(--sld-elevation-3);
-  --drawer-border-left: var(--sld-color-primary-alpha-mid);
-  --drawer-icon-padding: 0 0.5rem;
-  --drawer-header-min-height: 48px;
-  --drawer-header-bar-title-font-size: large;
-  --drawer-content-flex: 1;
-}
-
-.drawer {
-  color: var(--drawer-color);
-  background-color: var(--drawer-background-color);
-  --webkit-backdrop-filter: var(--drawer-backdrop-filter);
-  backdrop-filter: var(--drawer-backdrop-filter);
-  z-index: 3000;
-  box-shadow: var(--drawer-box-shadow);
-  border-left: 1px solid var(--drawer-border-left);
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  height: 100%;
-  transition: all 0.1s;
-}
-.drawer-icon {
-  padding: var(--drawer-icon-padding);
-  display: flex;
-  align-items: center;
-}
-.drawer-opener {
-  position: absolute;
-  z-index: 8600;
-}
-.drawer header, .drawer-header {
-  min-height: var(--drawer-header-min-height);
-  display: flex;
-  width: 100%;
-}
-.drawer header, .drawer-header {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.drawer header[tall=tiny], .drawer header.tall-tiny, .drawer-header[tall=tiny], .drawer-header.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.drawer header[tall=mini], .drawer header.tall-mini, .drawer-header[tall=mini], .drawer-header.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.drawer header[tall=small], .drawer header.tall-small, .drawer-header[tall=small], .drawer-header.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.drawer header[tall=med], .drawer header.tall-med, .drawer-header[tall=med], .drawer-header.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.drawer header[tall=kind], .drawer header.tall-kind, .drawer-header[tall=kind], .drawer-header.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.drawer header[tall=auto], .drawer header.tall-auto, .drawer-header[tall=auto], .drawer-header.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.drawer header[tall=default], .drawer header.tall-default, .drawer-header[tall=default], .drawer-header.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-.drawer header-bar, .drawer-header-bar {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-.drawer header-bar-title, .drawer-header-bar-title {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: var(--drawer-header-bar-title-font-size);
-}
-.drawer-content {
-  flex: var(--drawer-content-flex);
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-}
-
 /** sorterer.scss ----------------*/
 :root {
   --sorterer-gap: var(--sld-gap-tiny);
@@ -2691,6 +2568,82 @@ body[data-theme=dark],
   padding: var(--loader-message-padding);
   display: inline-block;
   box-shadow: var(--loader-box-shadow);
+}
+
+/** finder.scss ----------------*/
+:root {
+  --finder-gap: var(--sld-gap-tiny);
+}
+
+.finder-container {
+  display: inline-flex;
+  gap: var(--finder-gap);
+}
+.finder-container {
+  --preset-width: var(--sld-width-small);
+}
+.finder-container {
+  width: var(--sld-width-small);
+}
+.finder-container[width=tiny], .finder-container.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.finder-container[width=mini], .finder-container.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.finder-container[width=small], .finder-container.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.finder-container[width=med], .finder-container.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+.finder-container[width=kind], .finder-container.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+.finder-container[width=full], .finder-container.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+.finder-container[width=auto], .finder-container.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+.finder-container[width=default], .finder-container.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+.finder-container {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.finder-container {
+  --preset-tall: var(--sld-tall-small);
+}
+.finder-container[tall=tiny], .finder-container.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.finder-container[tall=mini], .finder-container.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.finder-container[tall=small], .finder-container.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.finder-container[tall=med], .finder-container.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.finder-container[tall=kind], .finder-container.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.finder-container[tall=auto], .finder-container.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.finder-container[tall=default], .finder-container.tall-default {
+  min-height: var(--sld-tall-default) !important;
 }
 
 /** datalist.scss ----------------*/
@@ -2831,79 +2784,156 @@ body[data-theme=dark],
   white-space: nowrap;
 }
 
-/** finder.scss ----------------*/
-:root {
-  --finder-gap: var(--sld-gap-tiny);
+/** textfield.scss ----------------*/
+.textfield {
+  --textfield-background: var(--sld-color-background-alpha-high);
+  --textfield-border-width: 1px;
+  --textfield-border-color: var(--sld-color-foreground-alpha-mid);
+  --textfield-border-bottom-width: 2px;
+  --textfield-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+  --textfield-radius: var(--sld-radius-small);
+  --textfield-padding: 0 0.5rem;
+  --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
 }
 
-.finder-container {
-  display: inline-flex;
-  gap: var(--finder-gap);
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
+.textfield {
+  border: var(--textfield-border-width) solid var(--textfield-border-color);
+  border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
+  border-radius: var(--textfield-radius);
+  padding: var(--textfield-padding);
+  box-shadow: var(--textfield-shadow);
+  background-color: var(--textfield-background);
+  color: var(--sld-color-foreground);
 }
-.finder-container {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
+.textfield [error] {
+  border-bottom: red;
 }
-.finder-container[width=tiny], .finder-container.width-tiny {
+.textfield {
+  --preset-width: var(--sld-width-small);
+}
+.textfield {
+  width: var(--sld-width-small);
+}
+.textfield[width=tiny], .textfield.width-tiny {
   --preset-width: var(--sld-width-tiny);
   width: var(--sld-width-tiny) !important;
 }
-.finder-container[width=mini], .finder-container.width-mini {
+.textfield[width=mini], .textfield.width-mini {
   --preset-width: var(--sld-width-mini);
   width: var(--sld-width-mini) !important;
 }
-.finder-container[width=small], .finder-container.width-small {
+.textfield[width=small], .textfield.width-small {
   --preset-width: var(--sld-width-small);
   width: var(--sld-width-small) !important;
 }
-.finder-container[width=med], .finder-container.width-med {
+.textfield[width=med], .textfield.width-med {
   --preset-width: var(--sld-width-med);
   width: var(--sld-width-med) !important;
 }
-.finder-container[width=kind], .finder-container.width-kind {
+.textfield[width=kind], .textfield.width-kind {
   --preset-width: var(--sld-width-kind);
   width: var(--sld-width-kind) !important;
 }
-.finder-container[width=full], .finder-container.width-full {
+.textfield[width=full], .textfield.width-full {
   --preset-width: var(--sld-width-full);
   width: var(--sld-width-full) !important;
 }
-.finder-container[width=auto], .finder-container.width-auto {
+.textfield[width=auto], .textfield.width-auto {
   --preset-width: var(--sld-width-auto);
   width: var(--sld-width-auto) !important;
 }
-.finder-container[width=default], .finder-container.width-default {
+.textfield[width=default], .textfield.width-default {
   --preset-width: var(--sld-width-default);
   width: var(--sld-width-default) !important;
 }
-.finder-container {
-  --preset-tall: var(--sld-tall-small);
+.textfield {
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
 }
-.finder-container[tall=tiny], .finder-container.tall-tiny {
+.textfield {
+  --preset-tall: var(--sld-tall-small);
+}
+.textfield[tall=tiny], .textfield.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
 }
-.finder-container[tall=mini], .finder-container.tall-mini {
+.textfield[tall=mini], .textfield.tall-mini {
   min-height: var(--sld-tall-mini) !important;
 }
-.finder-container[tall=small], .finder-container.tall-small {
+.textfield[tall=small], .textfield.tall-small {
   min-height: var(--sld-tall-small) !important;
 }
-.finder-container[tall=med], .finder-container.tall-med {
+.textfield[tall=med], .textfield.tall-med {
   min-height: var(--sld-tall-med) !important;
 }
-.finder-container[tall=kind], .finder-container.tall-kind {
+.textfield[tall=kind], .textfield.tall-kind {
   min-height: var(--sld-tall-kind) !important;
 }
-.finder-container[tall=auto], .finder-container.tall-auto {
+.textfield[tall=auto], .textfield.tall-auto {
   min-height: var(--sld-tall-auto) !important;
 }
-.finder-container[tall=default], .finder-container.tall-default {
+.textfield[tall=default], .textfield.tall-default {
   min-height: var(--sld-tall-default) !important;
+}
+.textfield:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+.textfield-container {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+.textfield-start {
+  position: absolute;
+  height: 100%;
+  max-height: 100%;
+  width: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--textfield-radius, var(--sld-radius-small));
+}
+.textfield-end {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  max-height: 100%;
+  min-width: 24px;
+  overflow: hidden;
+  display: flex;
+  gap: 4px;
+  padding: 2px;
+  align-items: center;
+  border-radius: var(--textfield-radius, var(--sld-radius-small));
+}
+.textfield-end > * {
+  max-height: calc(100% - 40px) !important;
+  border: 1px solid pink;
+}
+
+/** stepper.scss ----------------*/
+:root {
+  --stepper-pad: var(--sld-pad-med);
+  --stepper-radius: var(--sld-radius-small);
+  --stepper-active-color: var(--sld-color-secondary);
+}
+
+.stepper {
+  display: flex;
+}
+.stepper.vertical {
+  flex-direction: column;
+}
+.stepper-step {
+  padding: var(--stepper-pad);
+  border-radius: var(--stepper-radius);
+  margin-top: 10px;
+}
+.stepper-step.active {
+  color: var(--stepper-active-color);
 }
 
 /** switch.scss ----------------*/
@@ -2971,135 +3001,6 @@ label {
   min-width: 42px;
 }
 
-/** textfield.scss ----------------*/
-.textfield {
-  --textfield-background: var(--sld-color-background-alpha-high);
-  --textfield-border-width: 1px;
-  --textfield-border-color: var(--sld-color-foreground-alpha-mid);
-  --textfield-border-bottom-width: 2px;
-  --textfield-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
-  --textfield-radius: var(--sld-radius-small);
-  --textfield-padding: 0 0.5rem;
-  --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
-}
-
-.textfield {
-  border: var(--textfield-border-width) solid var(--textfield-border-color);
-  border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
-  border-radius: var(--textfield-radius);
-  padding: var(--textfield-padding);
-  box-shadow: var(--textfield-shadow);
-  background-color: var(--textfield-background);
-  color: var(--sld-color-foreground);
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-}
-.textfield [error] {
-  border-bottom: red;
-}
-.textfield {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
-}
-.textfield[width=tiny], .textfield.width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-.textfield[width=mini], .textfield.width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-.textfield[width=small], .textfield.width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-.textfield[width=med], .textfield.width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-.textfield[width=kind], .textfield.width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-.textfield[width=full], .textfield.width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-.textfield[width=auto], .textfield.width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-.textfield[width=default], .textfield.width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-.textfield {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.textfield[tall=tiny], .textfield.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.textfield[tall=mini], .textfield.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.textfield[tall=small], .textfield.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.textfield[tall=med], .textfield.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.textfield[tall=kind], .textfield.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.textfield[tall=auto], .textfield.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.textfield[tall=default], .textfield.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-.textfield:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-.textfield-container {
-  position: relative;
-  display: inline-flex;
-  overflow: hidden;
-}
-.textfield-start {
-  position: absolute;
-  height: 100%;
-  max-height: 100%;
-  width: 24px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: var(--textfield-radius, var(--sld-radius-small));
-}
-.textfield-end {
-  position: absolute;
-  right: 0;
-  height: 100%;
-  max-height: 100%;
-  min-width: 24px;
-  overflow: hidden;
-  display: flex;
-  gap: 4px;
-  padding: 2px;
-  align-items: center;
-  border-radius: var(--textfield-radius, var(--sld-radius-small));
-}
-.textfield-end > * {
-  max-height: calc(100% - 40px) !important;
-  border: 1px solid pink;
-}
-
 /** select.scss ----------------*/
 :root {
   --select-background-color: var(--sld-color-background);
@@ -3111,28 +3012,6 @@ label {
   height: 160px;
   width: 160px;
   border-radius: var(--select-radius);
-}
-
-/** stepper.scss ----------------*/
-:root {
-  --stepper-pad: var(--sld-pad-med);
-  --stepper-radius: var(--sld-radius-small);
-  --stepper-active-color: var(--sld-color-secondary);
-}
-
-.stepper {
-  display: flex;
-}
-.stepper.vertical {
-  flex-direction: column;
-}
-.stepper-step {
-  padding: var(--stepper-pad);
-  border-radius: var(--stepper-radius);
-  margin-top: 10px;
-}
-.stepper-step.active {
-  color: var(--stepper-active-color);
 }
 
 /** rating.scss ----------------*/
@@ -3179,6 +3058,82 @@ label {
   align-items: center;
 }
 
+/** slider.scss ----------------*/
+:root {
+  --slider-background-color: var(--sld-color-background);
+  --slider-gouge-background-color: var(--sld-color-secondary);
+  --slider-gouge-selected-background-color: var(--sld-color-primary);
+  --slider-thumb-background-color: var(--sld-color-primary);
+  --slider-thumb-border: var(--sld-color-primary-darken-high);
+  --slider-thumb-hover-outline: var(--sld-color-primary-alpha-high);
+  --slider-thumb-hover-box-shadow: var(--sld-elevation-3);
+}
+
+.slider {
+  background-color: var(--slider-background-color);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: 168px;
+  --height: calc(var(--preset-density) / 6);
+}
+.slider {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.slider {
+  --preset-tall: var(--sld-tall-small);
+}
+.slider[tall=tiny], .slider.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.slider[tall=mini], .slider.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.slider[tall=small], .slider.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.slider[tall=med], .slider.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.slider[tall=kind], .slider.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.slider[tall=auto], .slider.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.slider[tall=default], .slider.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+.slider .slider-gouge {
+  height: var(--height);
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--slider-gouge-background-color);
+}
+.slider .slider-gouge-selected {
+  height: var(--height);
+  border-radius: 10px;
+  background-color: var(--slider-gouge-selected-background-color);
+}
+.slider .slider-thumb {
+  top: 0;
+  aspect-ratio: 1/1;
+  height: 90%;
+  transform: translateY(50%);
+  background-color: var(--slider-thumb-background-color);
+  position: absolute;
+  border: 3px solid var(--slider-thumb-border);
+  border-radius: 50%;
+  display: inline-block;
+  background-clip: padding-box;
+}
+.slider .slider-thumb:hover {
+  box-shadow: var(--slider-thumb-hover-box-shadow);
+  outline: 4px solid var(--slider-thumb-hover-outline);
+}
+
 /** checkbox.scss ----------------*/
 :root {
   --sld-checkbox-background: var(--sld-color-background-alpha-high);
@@ -3213,9 +3168,11 @@ label {
   background-color: var(--sld-background-disabled);
 }
 .checkbox {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.checkbox {
+  --preset-tall: var(--sld-tall-small);
 }
 .checkbox[tall=tiny], .checkbox.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
@@ -3305,7 +3262,7 @@ label {
 }
 
 /** button.scss ----------------*/
-:global(:root) {
+:root {
   --sld-button-font-size: inherit;
   --sld-button-radius: var(--sld-radius-small);
   --sld-button-border-color: var(--sld-color-primary);
@@ -3333,27 +3290,8 @@ label {
 
 :global(button),
 :global(.button),
-:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  text-align: var(--sld-button-text-align);
-  font-size: var(--sld-button-font-size);
-  border-radius: var(--sld-button-radius);
-  color: var(--sld-color-foreground);
-  padding: var(--sld-button-padding);
-  position: relative;
-  display: inline-flex;
-  transition: all 0.2s ease-in-out;
-  overflow: hidden;
-  cursor: pointer;
-  align-content: center;
-  align-items: center;
-  background: var(--sld-button-background);
   /*     :focus {
       outline: 1px solid var(--sld-button-focus-border-color);
       outline-offset: 2px;
@@ -3375,23 +3313,22 @@ label {
   :focus:not(:focus-visible) {
       box-shadow: var(--sld-button-focus-shadow);
   } */
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
 }
 :global(button),
 :global(.button),
-:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
   --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
+}
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  width: var(--sld-width-small);
 }
 :global(button)[width=tiny], :global(button).width-tiny,
 :global(.button)[width=tiny],
 :global(.button).width-tiny,
-:global(button.button)[width=tiny],
-:global(button.button).width-tiny,
 :global(input[type="button"])[width=tiny],
 :global(input[type="button"]).width-tiny,
 :global(input[type="submit"])[width=tiny],
@@ -3402,8 +3339,6 @@ label {
 :global(button)[width=mini], :global(button).width-mini,
 :global(.button)[width=mini],
 :global(.button).width-mini,
-:global(button.button)[width=mini],
-:global(button.button).width-mini,
 :global(input[type="button"])[width=mini],
 :global(input[type="button"]).width-mini,
 :global(input[type="submit"])[width=mini],
@@ -3414,8 +3349,6 @@ label {
 :global(button)[width=small], :global(button).width-small,
 :global(.button)[width=small],
 :global(.button).width-small,
-:global(button.button)[width=small],
-:global(button.button).width-small,
 :global(input[type="button"])[width=small],
 :global(input[type="button"]).width-small,
 :global(input[type="submit"])[width=small],
@@ -3426,8 +3359,6 @@ label {
 :global(button)[width=med], :global(button).width-med,
 :global(.button)[width=med],
 :global(.button).width-med,
-:global(button.button)[width=med],
-:global(button.button).width-med,
 :global(input[type="button"])[width=med],
 :global(input[type="button"]).width-med,
 :global(input[type="submit"])[width=med],
@@ -3438,8 +3369,6 @@ label {
 :global(button)[width=kind], :global(button).width-kind,
 :global(.button)[width=kind],
 :global(.button).width-kind,
-:global(button.button)[width=kind],
-:global(button.button).width-kind,
 :global(input[type="button"])[width=kind],
 :global(input[type="button"]).width-kind,
 :global(input[type="submit"])[width=kind],
@@ -3450,8 +3379,6 @@ label {
 :global(button)[width=full], :global(button).width-full,
 :global(.button)[width=full],
 :global(.button).width-full,
-:global(button.button)[width=full],
-:global(button.button).width-full,
 :global(input[type="button"])[width=full],
 :global(input[type="button"]).width-full,
 :global(input[type="submit"])[width=full],
@@ -3462,8 +3389,6 @@ label {
 :global(button)[width=auto], :global(button).width-auto,
 :global(.button)[width=auto],
 :global(.button).width-auto,
-:global(button.button)[width=auto],
-:global(button.button).width-auto,
 :global(input[type="button"])[width=auto],
 :global(input[type="button"]).width-auto,
 :global(input[type="submit"])[width=auto],
@@ -3474,8 +3399,6 @@ label {
 :global(button)[width=default], :global(button).width-default,
 :global(.button)[width=default],
 :global(.button).width-default,
-:global(button.button)[width=default],
-:global(button.button).width-default,
 :global(input[type="button"])[width=default],
 :global(input[type="button"]).width-default,
 :global(input[type="submit"])[width=default],
@@ -3485,18 +3408,20 @@ label {
 }
 :global(button),
 :global(.button),
-:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button),
+:global(.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
   --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
 }
 :global(button)[tall=tiny], :global(button).tall-tiny,
 :global(.button)[tall=tiny],
 :global(.button).tall-tiny,
-:global(button.button)[tall=tiny],
-:global(button.button).tall-tiny,
 :global(input[type="button"])[tall=tiny],
 :global(input[type="button"]).tall-tiny,
 :global(input[type="submit"])[tall=tiny],
@@ -3506,8 +3431,6 @@ label {
 :global(button)[tall=mini], :global(button).tall-mini,
 :global(.button)[tall=mini],
 :global(.button).tall-mini,
-:global(button.button)[tall=mini],
-:global(button.button).tall-mini,
 :global(input[type="button"])[tall=mini],
 :global(input[type="button"]).tall-mini,
 :global(input[type="submit"])[tall=mini],
@@ -3517,8 +3440,6 @@ label {
 :global(button)[tall=small], :global(button).tall-small,
 :global(.button)[tall=small],
 :global(.button).tall-small,
-:global(button.button)[tall=small],
-:global(button.button).tall-small,
 :global(input[type="button"])[tall=small],
 :global(input[type="button"]).tall-small,
 :global(input[type="submit"])[tall=small],
@@ -3528,8 +3449,6 @@ label {
 :global(button)[tall=med], :global(button).tall-med,
 :global(.button)[tall=med],
 :global(.button).tall-med,
-:global(button.button)[tall=med],
-:global(button.button).tall-med,
 :global(input[type="button"])[tall=med],
 :global(input[type="button"]).tall-med,
 :global(input[type="submit"])[tall=med],
@@ -3539,8 +3458,6 @@ label {
 :global(button)[tall=kind], :global(button).tall-kind,
 :global(.button)[tall=kind],
 :global(.button).tall-kind,
-:global(button.button)[tall=kind],
-:global(button.button).tall-kind,
 :global(input[type="button"])[tall=kind],
 :global(input[type="button"]).tall-kind,
 :global(input[type="submit"])[tall=kind],
@@ -3550,8 +3467,6 @@ label {
 :global(button)[tall=auto], :global(button).tall-auto,
 :global(.button)[tall=auto],
 :global(.button).tall-auto,
-:global(button.button)[tall=auto],
-:global(button.button).tall-auto,
 :global(input[type="button"])[tall=auto],
 :global(input[type="button"]).tall-auto,
 :global(input[type="submit"])[tall=auto],
@@ -3561,8 +3476,6 @@ label {
 :global(button)[tall=default], :global(button).tall-default,
 :global(.button)[tall=default],
 :global(.button).tall-default,
-:global(button.button)[tall=default],
-:global(button.button).tall-default,
 :global(input[type="button"])[tall=default],
 :global(input[type="button"]).tall-default,
 :global(input[type="submit"])[tall=default],
@@ -3573,9 +3486,6 @@ label {
 :global(.button)[variant*=square],
 :global(.button)[square=true],
 :global(.button).square,
-:global(button.button)[variant*=square],
-:global(button.button)[square=true],
-:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
 :global(input[type="button"]).square,
@@ -3589,9 +3499,6 @@ label {
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
-:global(button.button)[variant*=rounded],
-:global(button.button)[rounded=true],
-:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -3603,8 +3510,6 @@ label {
 :global(button).elevation-0, :global(button)[elevation-0],
 :global(.button).elevation-0,
 :global(.button)[elevation-0],
-:global(button.button).elevation-0,
-:global(button.button)[elevation-0],
 :global(input[type="button"]).elevation-0,
 :global(input[type="button"])[elevation-0],
 :global(input[type="submit"]).elevation-0,
@@ -3614,8 +3519,6 @@ label {
 :global(button).elevation-through, :global(button)[elevation-through],
 :global(.button).elevation-through,
 :global(.button)[elevation-through],
-:global(button.button).elevation-through,
-:global(button.button)[elevation-through],
 :global(input[type="button"]).elevation-through,
 :global(input[type="button"])[elevation-through],
 :global(input[type="submit"]).elevation-through,
@@ -3625,17 +3528,35 @@ label {
 :global(button).elevation-5, :global(button)[elevation-5],
 :global(.button).elevation-5,
 :global(.button)[elevation-5],
-:global(button.button).elevation-5,
-:global(button.button)[elevation-5],
 :global(input[type="button"]).elevation-5,
 :global(input[type="button"])[elevation-5],
 :global(input[type="submit"]).elevation-5,
 :global(input[type="submit"])[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  text-align: var(--sld-button-text-align);
+  font-size: var(--sld-button-font-size);
+  border-radius: var(--sld-button-radius);
+  color: var(--sld-color-foreground);
+  padding: var(--sld-button-padding);
+  position: relative;
+  display: inline-flex;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+  align-content: center;
+  align-items: center;
+  background: var(--sld-button-background);
+}
 :global(button) .button-start,
 :global(.button) .button-start,
-:global(button.button) .button-start,
 :global(input[type="button"]) .button-start,
 :global(input[type="submit"]) .button-start {
   position: relative;
@@ -3649,17 +3570,91 @@ label {
 }
 :global(button) .button-start:empty,
 :global(.button) .button-start:empty,
-:global(button.button) .button-start:empty,
 :global(input[type="button"]) .button-start:empty,
 :global(input[type="submit"]) .button-start:empty {
   display: none;
 }
 :global(button) .button-central,
 :global(.button) .button-central,
-:global(button.button) .button-central,
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   --preset-ellipsis-line: 1;
+}
+:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
+:global(.button) .button-central[ellipsis],
+:global(.button) .button-central.ellipsis,
+:global(input[type="button"]) .button-central[ellipsis],
+:global(input[type="button"]) .button-central.ellipsis,
+:global(input[type="submit"]) .button-central[ellipsis],
+:global(input[type="submit"]) .button-central.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:global(button) .button-central.ellipsis-line-1,
+:global(.button) .button-central.ellipsis-line-1,
+:global(input[type="button"]) .button-central.ellipsis-line-1,
+:global(input[type="submit"]) .button-central.ellipsis-line-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 1;
+}
+:global(button) .button-central.ellipsis-line-2,
+:global(.button) .button-central.ellipsis-line-2,
+:global(input[type="button"]) .button-central.ellipsis-line-2,
+:global(input[type="submit"]) .button-central.ellipsis-line-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 2;
+}
+:global(button) .button-central.ellipsis-line-3,
+:global(.button) .button-central.ellipsis-line-3,
+:global(input[type="button"]) .button-central.ellipsis-line-3,
+:global(input[type="submit"]) .button-central.ellipsis-line-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 3;
+}
+:global(button) .button-central.ellipsis-line-4,
+:global(.button) .button-central.ellipsis-line-4,
+:global(input[type="button"]) .button-central.ellipsis-line-4,
+:global(input[type="submit"]) .button-central.ellipsis-line-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 4;
+}
+:global(button) .button-central.ellipsis-line-5,
+:global(.button) .button-central.ellipsis-line-5,
+:global(input[type="button"]) .button-central.ellipsis-line-5,
+:global(input[type="submit"]) .button-central.ellipsis-line-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 5;
+}
+:global(button) .button-central,
+:global(.button) .button-central,
+:global(input[type="button"]) .button-central,
+:global(input[type="submit"]) .button-central {
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -3673,94 +3668,14 @@ label {
   text-align: var(--sld-button-text-align, center);
   overflow: hidden;
 }
-:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
-:global(.button) .button-central[ellipsis],
-:global(.button) .button-central.ellipsis,
-:global(button.button) .button-central[ellipsis],
-:global(button.button) .button-central.ellipsis,
-:global(input[type="button"]) .button-central[ellipsis],
-:global(input[type="button"]) .button-central.ellipsis,
-:global(input[type="submit"]) .button-central[ellipsis],
-:global(input[type="submit"]) .button-central.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-:global(button) .button-central.ellipsis-line-1,
-:global(.button) .button-central.ellipsis-line-1,
-:global(button.button) .button-central.ellipsis-line-1,
-:global(input[type="button"]) .button-central.ellipsis-line-1,
-:global(input[type="submit"]) .button-central.ellipsis-line-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 1;
-}
-:global(button) .button-central.ellipsis-line-2,
-:global(.button) .button-central.ellipsis-line-2,
-:global(button.button) .button-central.ellipsis-line-2,
-:global(input[type="button"]) .button-central.ellipsis-line-2,
-:global(input[type="submit"]) .button-central.ellipsis-line-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 2;
-}
-:global(button) .button-central.ellipsis-line-3,
-:global(.button) .button-central.ellipsis-line-3,
-:global(button.button) .button-central.ellipsis-line-3,
-:global(input[type="button"]) .button-central.ellipsis-line-3,
-:global(input[type="submit"]) .button-central.ellipsis-line-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 3;
-}
-:global(button) .button-central.ellipsis-line-4,
-:global(.button) .button-central.ellipsis-line-4,
-:global(button.button) .button-central.ellipsis-line-4,
-:global(input[type="button"]) .button-central.ellipsis-line-4,
-:global(input[type="submit"]) .button-central.ellipsis-line-4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 4;
-}
-:global(button) .button-central.ellipsis-line-5,
-:global(.button) .button-central.ellipsis-line-5,
-:global(button.button) .button-central.ellipsis-line-5,
-:global(input[type="button"]) .button-central.ellipsis-line-5,
-:global(input[type="submit"]) .button-central.ellipsis-line-5 {
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 5;
-}
 :global(button) .button-central:empty,
 :global(.button) .button-central:empty,
-:global(button.button) .button-central:empty,
 :global(input[type="button"]) .button-central:empty,
 :global(input[type="submit"]) .button-central:empty {
   display: none;
 }
 :global(button) .button-end,
 :global(.button) .button-end,
-:global(button.button) .button-end,
 :global(input[type="button"]) .button-end,
 :global(input[type="submit"]) .button-end {
   position: relative;
@@ -3772,14 +3687,12 @@ label {
 }
 :global(button) .button-end:empty,
 :global(.button) .button-end:empty,
-:global(button.button) .button-end:empty,
 :global(input[type="button"]) .button-end:empty,
 :global(input[type="submit"]) .button-end:empty {
   display: none;
 }
 :global(button) .button-end:hover,
 :global(.button) .button-end:hover,
-:global(button.button) .button-end:hover,
 :global(input[type="button"]) .button-end:hover,
 :global(input[type="submit"]) .button-end:hover {
   background-color: var(--sld-button-action-hover-background);
@@ -3787,8 +3700,6 @@ label {
 :global(button).loading, :global(button)[aria-busy=true],
 :global(.button).loading,
 :global(.button)[aria-busy=true],
-:global(button.button).loading,
-:global(button.button)[aria-busy=true],
 :global(input[type="button"]).loading,
 :global(input[type="button"])[aria-busy=true],
 :global(input[type="submit"]).loading,
@@ -3800,8 +3711,6 @@ label {
 :global(button).loading::after, :global(button)[aria-busy=true]::after,
 :global(.button).loading::after,
 :global(.button)[aria-busy=true]::after,
-:global(button.button).loading::after,
-:global(button.button)[aria-busy=true]::after,
 :global(input[type="button"]).loading::after,
 :global(input[type="button"])[aria-busy=true]::after,
 :global(input[type="submit"]).loading::after,
@@ -3824,9 +3733,6 @@ label {
 :global(.button)[disabled],
 :global(.button).disabled,
 :global(.button)[aria-disabled=true],
-:global(button.button)[disabled],
-:global(button.button).disabled,
-:global(button.button)[aria-disabled=true],
 :global(input[type="button"])[disabled],
 :global(input[type="button"]).disabled,
 :global(input[type="button"])[aria-disabled=true],
@@ -3843,8 +3749,6 @@ label {
 :global(button)[aria-pressed=true], :global(button).selected,
 :global(.button)[aria-pressed=true],
 :global(.button).selected,
-:global(button.button)[aria-pressed=true],
-:global(button.button).selected,
 :global(input[type="button"])[aria-pressed=true],
 :global(input[type="button"]).selected,
 :global(input[type="submit"])[aria-pressed=true],
@@ -3855,7 +3759,6 @@ label {
 }
 :global(button) .chip,
 :global(.button) .chip,
-:global(button.button) .chip,
 :global(input[type="button"]) .chip,
 :global(input[type="submit"]) .chip {
   position: absolute;
@@ -3870,7 +3773,6 @@ label {
 }
 :global(button) .loadingButtonZone,
 :global(.button) .loadingButtonZone,
-:global(button.button) .loadingButtonZone,
 :global(input[type="button"]) .loadingButtonZone,
 :global(input[type="submit"]) .loadingButtonZone {
   z-index: 10;
@@ -3884,235 +3786,10 @@ label {
   align-content: center;
   justify-content: space-around;
 }
-:global(button),
-:global(.button),
-:global(button.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
-}
-:global(button)[width=tiny], :global(button).width-tiny,
-:global(.button)[width=tiny],
-:global(.button).width-tiny,
-:global(button.button)[width=tiny],
-:global(button.button).width-tiny,
-:global(input[type="button"])[width=tiny],
-:global(input[type="button"]).width-tiny,
-:global(input[type="submit"])[width=tiny],
-:global(input[type="submit"]).width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-:global(button)[width=mini], :global(button).width-mini,
-:global(.button)[width=mini],
-:global(.button).width-mini,
-:global(button.button)[width=mini],
-:global(button.button).width-mini,
-:global(input[type="button"])[width=mini],
-:global(input[type="button"]).width-mini,
-:global(input[type="submit"])[width=mini],
-:global(input[type="submit"]).width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-:global(button)[width=small], :global(button).width-small,
-:global(.button)[width=small],
-:global(.button).width-small,
-:global(button.button)[width=small],
-:global(button.button).width-small,
-:global(input[type="button"])[width=small],
-:global(input[type="button"]).width-small,
-:global(input[type="submit"])[width=small],
-:global(input[type="submit"]).width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-:global(button)[width=med], :global(button).width-med,
-:global(.button)[width=med],
-:global(.button).width-med,
-:global(button.button)[width=med],
-:global(button.button).width-med,
-:global(input[type="button"])[width=med],
-:global(input[type="button"]).width-med,
-:global(input[type="submit"])[width=med],
-:global(input[type="submit"]).width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-:global(button)[width=kind], :global(button).width-kind,
-:global(.button)[width=kind],
-:global(.button).width-kind,
-:global(button.button)[width=kind],
-:global(button.button).width-kind,
-:global(input[type="button"])[width=kind],
-:global(input[type="button"]).width-kind,
-:global(input[type="submit"])[width=kind],
-:global(input[type="submit"]).width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-:global(button)[width=full], :global(button).width-full,
-:global(.button)[width=full],
-:global(.button).width-full,
-:global(button.button)[width=full],
-:global(button.button).width-full,
-:global(input[type="button"])[width=full],
-:global(input[type="button"]).width-full,
-:global(input[type="submit"])[width=full],
-:global(input[type="submit"]).width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-:global(button)[width=auto], :global(button).width-auto,
-:global(.button)[width=auto],
-:global(.button).width-auto,
-:global(button.button)[width=auto],
-:global(button.button).width-auto,
-:global(input[type="button"])[width=auto],
-:global(input[type="button"]).width-auto,
-:global(input[type="submit"])[width=auto],
-:global(input[type="submit"]).width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-:global(button)[width=default], :global(button).width-default,
-:global(.button)[width=default],
-:global(.button).width-default,
-:global(button.button)[width=default],
-:global(button.button).width-default,
-:global(input[type="button"])[width=default],
-:global(input[type="button"]).width-default,
-:global(input[type="submit"])[width=default],
-:global(input[type="submit"]).width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-:global(button),
-:global(.button),
-:global(button.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-:global(button)[tall=tiny], :global(button).tall-tiny,
-:global(.button)[tall=tiny],
-:global(.button).tall-tiny,
-:global(button.button)[tall=tiny],
-:global(button.button).tall-tiny,
-:global(input[type="button"])[tall=tiny],
-:global(input[type="button"]).tall-tiny,
-:global(input[type="submit"])[tall=tiny],
-:global(input[type="submit"]).tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-:global(button)[tall=mini], :global(button).tall-mini,
-:global(.button)[tall=mini],
-:global(.button).tall-mini,
-:global(button.button)[tall=mini],
-:global(button.button).tall-mini,
-:global(input[type="button"])[tall=mini],
-:global(input[type="button"]).tall-mini,
-:global(input[type="submit"])[tall=mini],
-:global(input[type="submit"]).tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-:global(button)[tall=small], :global(button).tall-small,
-:global(.button)[tall=small],
-:global(.button).tall-small,
-:global(button.button)[tall=small],
-:global(button.button).tall-small,
-:global(input[type="button"])[tall=small],
-:global(input[type="button"]).tall-small,
-:global(input[type="submit"])[tall=small],
-:global(input[type="submit"]).tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-:global(button)[tall=med], :global(button).tall-med,
-:global(.button)[tall=med],
-:global(.button).tall-med,
-:global(button.button)[tall=med],
-:global(button.button).tall-med,
-:global(input[type="button"])[tall=med],
-:global(input[type="button"]).tall-med,
-:global(input[type="submit"])[tall=med],
-:global(input[type="submit"]).tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-:global(button)[tall=kind], :global(button).tall-kind,
-:global(.button)[tall=kind],
-:global(.button).tall-kind,
-:global(button.button)[tall=kind],
-:global(button.button).tall-kind,
-:global(input[type="button"])[tall=kind],
-:global(input[type="button"]).tall-kind,
-:global(input[type="submit"])[tall=kind],
-:global(input[type="submit"]).tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-:global(button)[tall=auto], :global(button).tall-auto,
-:global(.button)[tall=auto],
-:global(.button).tall-auto,
-:global(button.button)[tall=auto],
-:global(button.button).tall-auto,
-:global(input[type="button"])[tall=auto],
-:global(input[type="button"]).tall-auto,
-:global(input[type="submit"])[tall=auto],
-:global(input[type="submit"]).tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-:global(button)[tall=default], :global(button).tall-default,
-:global(.button)[tall=default],
-:global(.button).tall-default,
-:global(button.button)[tall=default],
-:global(button.button).tall-default,
-:global(input[type="button"])[tall=default],
-:global(input[type="button"]).tall-default,
-:global(input[type="submit"])[tall=default],
-:global(input[type="submit"]).tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
-:global(.button)[variant*=square],
-:global(.button)[square=true],
-:global(.button).square,
-:global(button.button)[variant*=square],
-:global(button.button)[square=true],
-:global(button.button).square,
-:global(input[type="button"])[variant*=square],
-:global(input[type="button"])[square=true],
-:global(input[type="button"]).square,
-:global(input[type="submit"])[variant*=square],
-:global(input[type="submit"])[square=true],
-:global(input[type="submit"]).square {
-  aspect-ratio: 1/1 !important;
-  height: auto;
-}
-:global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
-:global(.button)[variant*=rounded],
-:global(.button)[rounded=true],
-:global(.button).rounded,
-:global(button.button)[variant*=rounded],
-:global(button.button)[rounded=true],
-:global(button.button).rounded,
-:global(input[type="button"])[variant*=rounded],
-:global(input[type="button"])[rounded=true],
-:global(input[type="button"]).rounded,
-:global(input[type="submit"])[variant*=rounded],
-:global(input[type="submit"])[rounded=true],
-:global(input[type="submit"]).rounded {
-  border-radius: 50%;
-}
 :global(button)[variant*=bordered], :global(button)[bordered=true], :global(button).bordered,
 :global(.button)[variant*=bordered],
 :global(.button)[bordered=true],
 :global(.button).bordered,
-:global(button.button)[variant*=bordered],
-:global(button.button)[bordered=true],
-:global(button.button).bordered,
 :global(input[type="button"])[variant*=bordered],
 :global(input[type="button"])[bordered=true],
 :global(input[type="button"]).bordered,
@@ -4128,9 +3805,6 @@ label {
 :global(.button)[variant*=bordered]:hover,
 :global(.button)[bordered=true]:hover,
 :global(.button).bordered:hover,
-:global(button.button)[variant*=bordered]:hover,
-:global(button.button)[bordered=true]:hover,
-:global(button.button).bordered:hover,
 :global(input[type="button"])[variant*=bordered]:hover,
 :global(input[type="button"])[bordered=true]:hover,
 :global(input[type="button"]).bordered:hover,
@@ -4147,12 +3821,6 @@ label {
 :global(.button)[bordered=true]:active,
 :global(.button).bordered:focus,
 :global(.button).bordered:active,
-:global(button.button)[variant*=bordered]:focus,
-:global(button.button)[variant*=bordered]:active,
-:global(button.button)[bordered=true]:focus,
-:global(button.button)[bordered=true]:active,
-:global(button.button).bordered:focus,
-:global(button.button).bordered:active,
 :global(input[type="button"])[variant*=bordered]:focus,
 :global(input[type="button"])[variant*=bordered]:active,
 :global(input[type="button"])[bordered=true]:focus,
@@ -4172,9 +3840,6 @@ label {
 :global(.button)[variant*=contained],
 :global(.button)[contained=true],
 :global(.button).contained,
-:global(button.button)[variant*=contained],
-:global(button.button)[contained=true],
-:global(button.button).contained,
 :global(input[type="button"])[variant*=contained],
 :global(input[type="button"])[contained=true],
 :global(input[type="button"]).contained,
@@ -4191,9 +3856,6 @@ label {
 :global(.button)[variant*=contained]:hover,
 :global(.button)[contained=true]:hover,
 :global(.button).contained:hover,
-:global(button.button)[variant*=contained]:hover,
-:global(button.button)[contained=true]:hover,
-:global(button.button).contained:hover,
 :global(input[type="button"])[variant*=contained]:hover,
 :global(input[type="button"])[contained=true]:hover,
 :global(input[type="button"]).contained:hover,
@@ -4210,12 +3872,6 @@ label {
 :global(.button)[contained=true]:active,
 :global(.button).contained:focus,
 :global(.button).contained:active,
-:global(button.button)[variant*=contained]:focus,
-:global(button.button)[variant*=contained]:active,
-:global(button.button)[contained=true]:focus,
-:global(button.button)[contained=true]:active,
-:global(button.button).contained:focus,
-:global(button.button).contained:active,
 :global(input[type="button"])[variant*=contained]:focus,
 :global(input[type="button"])[variant*=contained]:active,
 :global(input[type="button"])[contained=true]:focus,
@@ -4237,10 +3893,6 @@ label {
 :global(.button)[link=true],
 :global(.button).link,
 :global(.button)[role=link],
-:global(button.button)[variant*=link],
-:global(button.button)[link=true],
-:global(button.button).link,
-:global(button.button)[role=link],
 :global(input[type="button"])[variant*=link],
 :global(input[type="button"])[link=true],
 :global(input[type="button"]).link,
@@ -4261,10 +3913,6 @@ label {
 :global(.button)[link=true]:hover,
 :global(.button).link:hover,
 :global(.button)[role=link]:hover,
-:global(button.button)[variant*=link]:hover,
-:global(button.button)[link=true]:hover,
-:global(button.button).link:hover,
-:global(button.button)[role=link]:hover,
 :global(input[type="button"])[variant*=link]:hover,
 :global(input[type="button"])[link=true]:hover,
 :global(input[type="button"]).link:hover,
@@ -4284,14 +3932,6 @@ label {
 :global(.button).link:active,
 :global(.button)[role=link]:focus,
 :global(.button)[role=link]:active,
-:global(button.button)[variant*=link]:focus,
-:global(button.button)[variant*=link]:active,
-:global(button.button)[link=true]:focus,
-:global(button.button)[link=true]:active,
-:global(button.button).link:focus,
-:global(button.button).link:active,
-:global(button.button)[role=link]:focus,
-:global(button.button)[role=link]:active,
 :global(input[type="button"])[variant*=link]:focus,
 :global(input[type="button"])[variant*=link]:active,
 :global(input[type="button"])[link=true]:focus,
@@ -4316,9 +3956,6 @@ label {
 :global(.button)[variant*=naked],
 :global(.button)[naked=true],
 :global(.button).naked,
-:global(button.button)[variant*=naked],
-:global(button.button)[naked=true],
-:global(button.button).naked,
 :global(input[type="button"])[variant*=naked],
 :global(input[type="button"])[naked=true],
 :global(input[type="button"]).naked,
@@ -4334,9 +3971,6 @@ label {
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
-:global(button.button)[variant*=naked]:hover,
-:global(button.button)[naked=true]:hover,
-:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -4350,9 +3984,6 @@ label {
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
-:global(button.button)[variant*=naked]:hover,
-:global(button.button)[naked=true]:hover,
-:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -4368,12 +3999,6 @@ label {
 :global(.button)[naked=true]:focus,
 :global(.button).naked:active,
 :global(.button).naked:focus,
-:global(button.button)[variant*=naked]:active,
-:global(button.button)[variant*=naked]:focus,
-:global(button.button)[naked=true]:active,
-:global(button.button)[naked=true]:focus,
-:global(button.button).naked:active,
-:global(button.button).naked:focus,
 :global(input[type="button"])[variant*=naked]:active,
 :global(input[type="button"])[variant*=naked]:focus,
 :global(input[type="button"])[naked=true]:active,
@@ -4394,9 +4019,6 @@ label {
 :global(.button)[variant*=flat],
 :global(.button)[flat=true],
 :global(.button).flat,
-:global(button.button)[variant*=flat],
-:global(button.button)[flat=true],
-:global(button.button).flat,
 :global(input[type="button"])[variant*=flat],
 :global(input[type="button"])[flat=true],
 :global(input[type="button"]).flat,
@@ -4413,9 +4035,6 @@ label {
 :global(.button)[variant*=flat]:hover,
 :global(.button)[flat=true]:hover,
 :global(.button).flat:hover,
-:global(button.button)[variant*=flat]:hover,
-:global(button.button)[flat=true]:hover,
-:global(button.button).flat:hover,
 :global(input[type="button"])[variant*=flat]:hover,
 :global(input[type="button"])[flat=true]:hover,
 :global(input[type="button"]).flat:hover,
@@ -4431,12 +4050,6 @@ label {
 :global(.button)[flat=true]:focus,
 :global(.button).flat:active,
 :global(.button).flat:focus,
-:global(button.button)[variant*=flat]:active,
-:global(button.button)[variant*=flat]:focus,
-:global(button.button)[flat=true]:active,
-:global(button.button)[flat=true]:focus,
-:global(button.button).flat:active,
-:global(button.button).flat:focus,
 :global(input[type="button"])[variant*=flat]:active,
 :global(input[type="button"])[variant*=flat]:focus,
 :global(input[type="button"])[flat=true]:active,
@@ -4516,80 +4129,6 @@ label {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-/** slider.scss ----------------*/
-:root {
-  --slider-background-color: var(--sld-color-background);
-  --slider-gouge-background-color: var(--sld-color-secondary);
-  --slider-gouge-selected-background-color: var(--sld-color-primary);
-  --slider-thumb-background-color: var(--sld-color-primary);
-  --slider-thumb-border: var(--sld-color-primary-darken-high);
-  --slider-thumb-hover-outline: var(--sld-color-primary-alpha-high);
-  --slider-thumb-hover-box-shadow: var(--sld-elevation-3);
-}
-
-.slider {
-  background-color: var(--slider-background-color);
-  position: relative;
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  width: 168px;
-  --height: calc(var(--preset-density) / 6);
-}
-.slider {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.slider[tall=tiny], .slider.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.slider[tall=mini], .slider.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.slider[tall=small], .slider.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.slider[tall=med], .slider.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.slider[tall=kind], .slider.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.slider[tall=auto], .slider.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.slider[tall=default], .slider.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-.slider .slider-gouge {
-  height: var(--height);
-  width: 100%;
-  border-radius: 10px;
-  background-color: var(--slider-gouge-background-color);
-}
-.slider .slider-gouge-selected {
-  height: var(--height);
-  border-radius: 10px;
-  background-color: var(--slider-gouge-selected-background-color);
-}
-.slider .slider-thumb {
-  top: 0;
-  aspect-ratio: 1/1;
-  height: 90%;
-  transform: translateY(50%);
-  background-color: var(--slider-thumb-background-color);
-  position: absolute;
-  border: 3px solid var(--slider-thumb-border);
-  border-radius: 50%;
-  display: inline-block;
-  background-clip: padding-box;
-}
-.slider .slider-thumb:hover {
-  box-shadow: var(--slider-thumb-hover-box-shadow);
-  outline: 4px solid var(--slider-thumb-hover-outline);
 }
 
 /** title-bar.scss ----------------*/
@@ -4760,6 +4299,94 @@ hr.vertical {
   background-color: var(--chipper-chip-color);
 }
 
+/** breadcrumb.scss ----------------*/
+.breadCrumb ul {
+  display: flex;
+}
+
+/** box.scss ----------------*/
+:root {
+  --box-color-background: var(--sld-color-background);
+  --box-border-bottom: var(--sld-color-primary);
+  --box-radius: var(--sld-radius-small);
+  --box-elevation: var(--sld-elevation-3);
+  --box-gap: var(--sld-gap-tiny);
+  --box-pad: var(--sld-pad-small);
+}
+
+.box {
+  min-height: 160px;
+  min-width: 320px;
+  background-color: var(--box-color-background);
+  border-bottom: 1px solid var(--box-border-bottom);
+  border-radius: var(--box-radius);
+  box-shadow: var(--box-elevation);
+  display: flex;
+  flex-direction: column;
+}
+.box-content {
+  flex: 1;
+}
+.box-button-zone {
+  display: flex;
+  gap: var(--box-gap);
+  padding: var(--box-pad);
+  text-align: right;
+  justify-content: end;
+}
+
+/** badge.scss ----------------*/
+:root {
+  --badge-color-border: var(--sld-color-border);
+}
+
+.badge {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--badge-color-border);
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+}
+.badge .hidden {
+  transform: scale(0, 0);
+}
+
+/** backdrop.scss ----------------*/
+:root {
+  --backdrop-background-color: var(--sld-color-foreground-alpha-high);
+}
+
+.backdrop {
+  z-index: 10000;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.backdrop-content {
+  z-index: 10001;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: var(--backdrop-background-color);
+  backdrop-filter: blur(5px);
+  --moz-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.backdrop-content-loader {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.backdrop-content-inner {
+  display: inherit;
+}
+
 /** cartouche.scss ----------------*/
 :root {
   --cartouche-radius: var(--sld-radius-small);
@@ -4800,9 +4427,11 @@ hr.vertical {
   cursor: pointer;
 }
 .cartouche .control {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.cartouche .control {
+  --preset-tall: var(--sld-tall-small);
 }
 .cartouche .control[tall=tiny], .cartouche .control.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
@@ -4870,60 +4499,6 @@ hr.vertical {
   display: none;
 }
 
-/** breadcrumb.scss ----------------*/
-.breadCrumb ul {
-  display: flex;
-}
-
-/** box.scss ----------------*/
-:root {
-  --box-color-background: var(--sld-color-background);
-  --box-border-bottom: var(--sld-color-primary);
-  --box-radius: var(--sld-radius-small);
-  --box-elevation: var(--sld-elevation-3);
-  --box-gap: var(--sld-gap-tiny);
-  --box-pad: var(--sld-pad-small);
-}
-
-.box {
-  min-height: 160px;
-  min-width: 320px;
-  background-color: var(--box-color-background);
-  border-bottom: 1px solid var(--box-border-bottom);
-  border-radius: var(--box-radius);
-  box-shadow: var(--box-elevation);
-  display: flex;
-  flex-direction: column;
-}
-.box-content {
-  flex: 1;
-}
-.box-button-zone {
-  display: flex;
-  gap: var(--box-gap);
-  padding: var(--box-pad);
-  text-align: right;
-  justify-content: end;
-}
-
-/** badge.scss ----------------*/
-:root {
-  --badge-color-border: var(--sld-color-border);
-}
-
-.badge {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid var(--badge-color-border);
-  display: grid;
-  place-items: center;
-  width: 16px;
-  height: 16px;
-}
-.badge .hidden {
-  transform: scale(0, 0);
-}
-
 /** avatar.scss ----------------*/
 :root {
   --avatar-radius: var(--css-radius-small);
@@ -4937,40 +4512,6 @@ hr.vertical {
   display: grid;
   place-items: center;
   overflow: hidden;
-}
-
-/** backdrop.scss ----------------*/
-:root {
-  --backdrop-background-color: var(--sld-color-foreground-alpha-high);
-}
-
-.backdrop {
-  z-index: 10000;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-.backdrop-content {
-  z-index: 10001;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: var(--backdrop-background-color);
-  backdrop-filter: blur(5px);
-  --moz-backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.backdrop-content-loader {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
-.backdrop-content-inner {
-  display: inherit;
 }
 
 /** alert.scss ----------------*/

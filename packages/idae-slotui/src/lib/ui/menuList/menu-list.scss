@@ -10,7 +10,7 @@
   --menu-list-grid-items-count: 0;
 }
 
-:global(.menu-list) {
+.menu-list {
   margin: 0;
   cursor: pointer;
 
@@ -34,9 +34,7 @@
     }
   }
 
-  .menu-list-item,
-  a.menu-list-item,
-  li.menu-list-item {
+  .menu-list-item {
     @include slotui-mixins.ui-variants;
     @include slotui-mixins.ui-width-presets;
     @include slotui-mixins.ui-tall-presets;
@@ -45,18 +43,20 @@
     @include slotui-mixins.data-selected;
     //
 
-    text-decoration: none;
-    overflow: hidden;
+    & {
+      text-decoration: none;
+      overflow: hidden;
 
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    max-width: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      max-width: 100%;
 
-    border: 1px solid transparent;
-    border-radius: var(--menu-list-item-radius);
-    align-self: flex-start;
+      border: 1px solid transparent;
+      border-radius: var(--menu-list-item-radius);
+      align-self: flex-start;
+    }
 
     &::before {
       position: absolute;

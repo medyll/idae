@@ -10,12 +10,14 @@
 }
 
 ul.menu {
-  margin: 0;
-  min-width: var(--menu-min-width);
-  padding: var(--menu-padding);
-  cursor: pointer;
-  display: block;
-  color: var(--menu-color);
+  & {
+    margin: 0;
+    min-width: var(--menu-min-width);
+    padding: var(--menu-padding);
+    cursor: pointer;
+    display: block;
+    color: var(--menu-color);
+  }
 
   li.menuTitle {
     position: sticky;
@@ -29,11 +31,13 @@ li.menuItem {
   @include slotui-mixins.data-hover;
   @include slotui-mixins.data-selected;
   @include slotui-mixins.ui-tall-presets;
-  border-radius: var(--menu-item-border-radius);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  border: 1px solid transparent;
+  & {
+    border-radius: var(--menu-item-border-radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+  }
 
   .menuListItemIcon {
     width: var(--menu-item-icon-width);

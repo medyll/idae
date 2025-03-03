@@ -1,4 +1,4 @@
-:global(:root) {
+:root {
   --sld-button-font-size: inherit;
   --sld-button-radius: var(--sld-radius-small);
   --sld-button-border-color: var(--sld-color-primary);
@@ -26,27 +26,8 @@
 
 :global(button),
 :global(.button),
-:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  text-align: var(--sld-button-text-align);
-  font-size: var(--sld-button-font-size);
-  border-radius: var(--sld-button-radius);
-  color: var(--sld-color-foreground);
-  padding: var(--sld-button-padding);
-  position: relative;
-  display: inline-flex;
-  transition: all 0.2s ease-in-out;
-  overflow: hidden;
-  cursor: pointer;
-  align-content: center;
-  align-items: center;
-  background: var(--sld-button-background);
   /*     :focus {
       outline: 1px solid var(--sld-button-focus-border-color);
       outline-offset: 2px;
@@ -68,23 +49,22 @@
   :focus:not(:focus-visible) {
       box-shadow: var(--sld-button-focus-shadow);
   } */
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
 }
 :global(button),
 :global(.button),
-:global(button.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
   --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
+}
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  width: var(--sld-width-small);
 }
 :global(button)[width=tiny], :global(button).width-tiny,
 :global(.button)[width=tiny],
 :global(.button).width-tiny,
-:global(button.button)[width=tiny],
-:global(button.button).width-tiny,
 :global(input[type="button"])[width=tiny],
 :global(input[type="button"]).width-tiny,
 :global(input[type="submit"])[width=tiny],
@@ -95,8 +75,6 @@
 :global(button)[width=mini], :global(button).width-mini,
 :global(.button)[width=mini],
 :global(.button).width-mini,
-:global(button.button)[width=mini],
-:global(button.button).width-mini,
 :global(input[type="button"])[width=mini],
 :global(input[type="button"]).width-mini,
 :global(input[type="submit"])[width=mini],
@@ -107,8 +85,6 @@
 :global(button)[width=small], :global(button).width-small,
 :global(.button)[width=small],
 :global(.button).width-small,
-:global(button.button)[width=small],
-:global(button.button).width-small,
 :global(input[type="button"])[width=small],
 :global(input[type="button"]).width-small,
 :global(input[type="submit"])[width=small],
@@ -119,8 +95,6 @@
 :global(button)[width=med], :global(button).width-med,
 :global(.button)[width=med],
 :global(.button).width-med,
-:global(button.button)[width=med],
-:global(button.button).width-med,
 :global(input[type="button"])[width=med],
 :global(input[type="button"]).width-med,
 :global(input[type="submit"])[width=med],
@@ -131,8 +105,6 @@
 :global(button)[width=kind], :global(button).width-kind,
 :global(.button)[width=kind],
 :global(.button).width-kind,
-:global(button.button)[width=kind],
-:global(button.button).width-kind,
 :global(input[type="button"])[width=kind],
 :global(input[type="button"]).width-kind,
 :global(input[type="submit"])[width=kind],
@@ -143,8 +115,6 @@
 :global(button)[width=full], :global(button).width-full,
 :global(.button)[width=full],
 :global(.button).width-full,
-:global(button.button)[width=full],
-:global(button.button).width-full,
 :global(input[type="button"])[width=full],
 :global(input[type="button"]).width-full,
 :global(input[type="submit"])[width=full],
@@ -155,8 +125,6 @@
 :global(button)[width=auto], :global(button).width-auto,
 :global(.button)[width=auto],
 :global(.button).width-auto,
-:global(button.button)[width=auto],
-:global(button.button).width-auto,
 :global(input[type="button"])[width=auto],
 :global(input[type="button"]).width-auto,
 :global(input[type="submit"])[width=auto],
@@ -167,8 +135,6 @@
 :global(button)[width=default], :global(button).width-default,
 :global(.button)[width=default],
 :global(.button).width-default,
-:global(button.button)[width=default],
-:global(button.button).width-default,
 :global(input[type="button"])[width=default],
 :global(input[type="button"]).width-default,
 :global(input[type="submit"])[width=default],
@@ -178,18 +144,20 @@
 }
 :global(button),
 :global(.button),
-:global(button.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(button),
+:global(.button),
 :global(input[type="button"]),
 :global(input[type="submit"]) {
   --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
 }
 :global(button)[tall=tiny], :global(button).tall-tiny,
 :global(.button)[tall=tiny],
 :global(.button).tall-tiny,
-:global(button.button)[tall=tiny],
-:global(button.button).tall-tiny,
 :global(input[type="button"])[tall=tiny],
 :global(input[type="button"]).tall-tiny,
 :global(input[type="submit"])[tall=tiny],
@@ -199,8 +167,6 @@
 :global(button)[tall=mini], :global(button).tall-mini,
 :global(.button)[tall=mini],
 :global(.button).tall-mini,
-:global(button.button)[tall=mini],
-:global(button.button).tall-mini,
 :global(input[type="button"])[tall=mini],
 :global(input[type="button"]).tall-mini,
 :global(input[type="submit"])[tall=mini],
@@ -210,8 +176,6 @@
 :global(button)[tall=small], :global(button).tall-small,
 :global(.button)[tall=small],
 :global(.button).tall-small,
-:global(button.button)[tall=small],
-:global(button.button).tall-small,
 :global(input[type="button"])[tall=small],
 :global(input[type="button"]).tall-small,
 :global(input[type="submit"])[tall=small],
@@ -221,8 +185,6 @@
 :global(button)[tall=med], :global(button).tall-med,
 :global(.button)[tall=med],
 :global(.button).tall-med,
-:global(button.button)[tall=med],
-:global(button.button).tall-med,
 :global(input[type="button"])[tall=med],
 :global(input[type="button"]).tall-med,
 :global(input[type="submit"])[tall=med],
@@ -232,8 +194,6 @@
 :global(button)[tall=kind], :global(button).tall-kind,
 :global(.button)[tall=kind],
 :global(.button).tall-kind,
-:global(button.button)[tall=kind],
-:global(button.button).tall-kind,
 :global(input[type="button"])[tall=kind],
 :global(input[type="button"]).tall-kind,
 :global(input[type="submit"])[tall=kind],
@@ -243,8 +203,6 @@
 :global(button)[tall=auto], :global(button).tall-auto,
 :global(.button)[tall=auto],
 :global(.button).tall-auto,
-:global(button.button)[tall=auto],
-:global(button.button).tall-auto,
 :global(input[type="button"])[tall=auto],
 :global(input[type="button"]).tall-auto,
 :global(input[type="submit"])[tall=auto],
@@ -254,8 +212,6 @@
 :global(button)[tall=default], :global(button).tall-default,
 :global(.button)[tall=default],
 :global(.button).tall-default,
-:global(button.button)[tall=default],
-:global(button.button).tall-default,
 :global(input[type="button"])[tall=default],
 :global(input[type="button"]).tall-default,
 :global(input[type="submit"])[tall=default],
@@ -266,9 +222,6 @@
 :global(.button)[variant*=square],
 :global(.button)[square=true],
 :global(.button).square,
-:global(button.button)[variant*=square],
-:global(button.button)[square=true],
-:global(button.button).square,
 :global(input[type="button"])[variant*=square],
 :global(input[type="button"])[square=true],
 :global(input[type="button"]).square,
@@ -282,9 +235,6 @@
 :global(.button)[variant*=rounded],
 :global(.button)[rounded=true],
 :global(.button).rounded,
-:global(button.button)[variant*=rounded],
-:global(button.button)[rounded=true],
-:global(button.button).rounded,
 :global(input[type="button"])[variant*=rounded],
 :global(input[type="button"])[rounded=true],
 :global(input[type="button"]).rounded,
@@ -296,8 +246,6 @@
 :global(button).elevation-0, :global(button)[elevation-0],
 :global(.button).elevation-0,
 :global(.button)[elevation-0],
-:global(button.button).elevation-0,
-:global(button.button)[elevation-0],
 :global(input[type="button"]).elevation-0,
 :global(input[type="button"])[elevation-0],
 :global(input[type="submit"]).elevation-0,
@@ -307,8 +255,6 @@
 :global(button).elevation-through, :global(button)[elevation-through],
 :global(.button).elevation-through,
 :global(.button)[elevation-through],
-:global(button.button).elevation-through,
-:global(button.button)[elevation-through],
 :global(input[type="button"]).elevation-through,
 :global(input[type="button"])[elevation-through],
 :global(input[type="submit"]).elevation-through,
@@ -318,17 +264,35 @@
 :global(button).elevation-5, :global(button)[elevation-5],
 :global(.button).elevation-5,
 :global(.button)[elevation-5],
-:global(button.button).elevation-5,
-:global(button.button)[elevation-5],
 :global(input[type="button"]).elevation-5,
 :global(input[type="button"])[elevation-5],
 :global(input[type="submit"]).elevation-5,
 :global(input[type="submit"])[elevation-5] {
   box-shadow: var(--sld-elevation-5);
 }
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  text-align: var(--sld-button-text-align);
+  font-size: var(--sld-button-font-size);
+  border-radius: var(--sld-button-radius);
+  color: var(--sld-color-foreground);
+  padding: var(--sld-button-padding);
+  position: relative;
+  display: inline-flex;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+  align-content: center;
+  align-items: center;
+  background: var(--sld-button-background);
+}
 :global(button) .button-start,
 :global(.button) .button-start,
-:global(button.button) .button-start,
 :global(input[type="button"]) .button-start,
 :global(input[type="submit"]) .button-start {
   position: relative;
@@ -342,17 +306,91 @@
 }
 :global(button) .button-start:empty,
 :global(.button) .button-start:empty,
-:global(button.button) .button-start:empty,
 :global(input[type="button"]) .button-start:empty,
 :global(input[type="submit"]) .button-start:empty {
   display: none;
 }
 :global(button) .button-central,
 :global(.button) .button-central,
-:global(button.button) .button-central,
 :global(input[type="button"]) .button-central,
 :global(input[type="submit"]) .button-central {
   --preset-ellipsis-line: 1;
+}
+:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
+:global(.button) .button-central[ellipsis],
+:global(.button) .button-central.ellipsis,
+:global(input[type="button"]) .button-central[ellipsis],
+:global(input[type="button"]) .button-central.ellipsis,
+:global(input[type="submit"]) .button-central[ellipsis],
+:global(input[type="submit"]) .button-central.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:global(button) .button-central.ellipsis-line-1,
+:global(.button) .button-central.ellipsis-line-1,
+:global(input[type="button"]) .button-central.ellipsis-line-1,
+:global(input[type="submit"]) .button-central.ellipsis-line-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 1;
+}
+:global(button) .button-central.ellipsis-line-2,
+:global(.button) .button-central.ellipsis-line-2,
+:global(input[type="button"]) .button-central.ellipsis-line-2,
+:global(input[type="submit"]) .button-central.ellipsis-line-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 2;
+}
+:global(button) .button-central.ellipsis-line-3,
+:global(.button) .button-central.ellipsis-line-3,
+:global(input[type="button"]) .button-central.ellipsis-line-3,
+:global(input[type="submit"]) .button-central.ellipsis-line-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 3;
+}
+:global(button) .button-central.ellipsis-line-4,
+:global(.button) .button-central.ellipsis-line-4,
+:global(input[type="button"]) .button-central.ellipsis-line-4,
+:global(input[type="submit"]) .button-central.ellipsis-line-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 4;
+}
+:global(button) .button-central.ellipsis-line-5,
+:global(.button) .button-central.ellipsis-line-5,
+:global(input[type="button"]) .button-central.ellipsis-line-5,
+:global(input[type="submit"]) .button-central.ellipsis-line-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  --preset-ellipsis-line: 5;
+}
+:global(button) .button-central,
+:global(.button) .button-central,
+:global(input[type="button"]) .button-central,
+:global(input[type="submit"]) .button-central {
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -366,94 +404,14 @@
   text-align: var(--sld-button-text-align, center);
   overflow: hidden;
 }
-:global(button) .button-central[ellipsis], :global(button) .button-central.ellipsis,
-:global(.button) .button-central[ellipsis],
-:global(.button) .button-central.ellipsis,
-:global(button.button) .button-central[ellipsis],
-:global(button.button) .button-central.ellipsis,
-:global(input[type="button"]) .button-central[ellipsis],
-:global(input[type="button"]) .button-central.ellipsis,
-:global(input[type="submit"]) .button-central[ellipsis],
-:global(input[type="submit"]) .button-central.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-:global(button) .button-central.ellipsis-line-1,
-:global(.button) .button-central.ellipsis-line-1,
-:global(button.button) .button-central.ellipsis-line-1,
-:global(input[type="button"]) .button-central.ellipsis-line-1,
-:global(input[type="submit"]) .button-central.ellipsis-line-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 1;
-}
-:global(button) .button-central.ellipsis-line-2,
-:global(.button) .button-central.ellipsis-line-2,
-:global(button.button) .button-central.ellipsis-line-2,
-:global(input[type="button"]) .button-central.ellipsis-line-2,
-:global(input[type="submit"]) .button-central.ellipsis-line-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 2;
-}
-:global(button) .button-central.ellipsis-line-3,
-:global(.button) .button-central.ellipsis-line-3,
-:global(button.button) .button-central.ellipsis-line-3,
-:global(input[type="button"]) .button-central.ellipsis-line-3,
-:global(input[type="submit"]) .button-central.ellipsis-line-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 3;
-}
-:global(button) .button-central.ellipsis-line-4,
-:global(.button) .button-central.ellipsis-line-4,
-:global(button.button) .button-central.ellipsis-line-4,
-:global(input[type="button"]) .button-central.ellipsis-line-4,
-:global(input[type="submit"]) .button-central.ellipsis-line-4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 4;
-}
-:global(button) .button-central.ellipsis-line-5,
-:global(.button) .button-central.ellipsis-line-5,
-:global(button.button) .button-central.ellipsis-line-5,
-:global(input[type="button"]) .button-central.ellipsis-line-5,
-:global(input[type="submit"]) .button-central.ellipsis-line-5 {
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  --preset-ellipsis-line: 5;
-}
 :global(button) .button-central:empty,
 :global(.button) .button-central:empty,
-:global(button.button) .button-central:empty,
 :global(input[type="button"]) .button-central:empty,
 :global(input[type="submit"]) .button-central:empty {
   display: none;
 }
 :global(button) .button-end,
 :global(.button) .button-end,
-:global(button.button) .button-end,
 :global(input[type="button"]) .button-end,
 :global(input[type="submit"]) .button-end {
   position: relative;
@@ -465,14 +423,12 @@
 }
 :global(button) .button-end:empty,
 :global(.button) .button-end:empty,
-:global(button.button) .button-end:empty,
 :global(input[type="button"]) .button-end:empty,
 :global(input[type="submit"]) .button-end:empty {
   display: none;
 }
 :global(button) .button-end:hover,
 :global(.button) .button-end:hover,
-:global(button.button) .button-end:hover,
 :global(input[type="button"]) .button-end:hover,
 :global(input[type="submit"]) .button-end:hover {
   background-color: var(--sld-button-action-hover-background);
@@ -480,8 +436,6 @@
 :global(button).loading, :global(button)[aria-busy=true],
 :global(.button).loading,
 :global(.button)[aria-busy=true],
-:global(button.button).loading,
-:global(button.button)[aria-busy=true],
 :global(input[type="button"]).loading,
 :global(input[type="button"])[aria-busy=true],
 :global(input[type="submit"]).loading,
@@ -493,8 +447,6 @@
 :global(button).loading::after, :global(button)[aria-busy=true]::after,
 :global(.button).loading::after,
 :global(.button)[aria-busy=true]::after,
-:global(button.button).loading::after,
-:global(button.button)[aria-busy=true]::after,
 :global(input[type="button"]).loading::after,
 :global(input[type="button"])[aria-busy=true]::after,
 :global(input[type="submit"]).loading::after,
@@ -517,9 +469,6 @@
 :global(.button)[disabled],
 :global(.button).disabled,
 :global(.button)[aria-disabled=true],
-:global(button.button)[disabled],
-:global(button.button).disabled,
-:global(button.button)[aria-disabled=true],
 :global(input[type="button"])[disabled],
 :global(input[type="button"]).disabled,
 :global(input[type="button"])[aria-disabled=true],
@@ -536,8 +485,6 @@
 :global(button)[aria-pressed=true], :global(button).selected,
 :global(.button)[aria-pressed=true],
 :global(.button).selected,
-:global(button.button)[aria-pressed=true],
-:global(button.button).selected,
 :global(input[type="button"])[aria-pressed=true],
 :global(input[type="button"]).selected,
 :global(input[type="submit"])[aria-pressed=true],
@@ -548,7 +495,6 @@
 }
 :global(button) .chip,
 :global(.button) .chip,
-:global(button.button) .chip,
 :global(input[type="button"]) .chip,
 :global(input[type="submit"]) .chip {
   position: absolute;
@@ -563,7 +509,6 @@
 }
 :global(button) .loadingButtonZone,
 :global(.button) .loadingButtonZone,
-:global(button.button) .loadingButtonZone,
 :global(input[type="button"]) .loadingButtonZone,
 :global(input[type="submit"]) .loadingButtonZone {
   z-index: 10;
@@ -577,235 +522,10 @@
   align-content: center;
   justify-content: space-around;
 }
-:global(button),
-:global(.button),
-:global(button.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
-}
-:global(button)[width=tiny], :global(button).width-tiny,
-:global(.button)[width=tiny],
-:global(.button).width-tiny,
-:global(button.button)[width=tiny],
-:global(button.button).width-tiny,
-:global(input[type="button"])[width=tiny],
-:global(input[type="button"]).width-tiny,
-:global(input[type="submit"])[width=tiny],
-:global(input[type="submit"]).width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-:global(button)[width=mini], :global(button).width-mini,
-:global(.button)[width=mini],
-:global(.button).width-mini,
-:global(button.button)[width=mini],
-:global(button.button).width-mini,
-:global(input[type="button"])[width=mini],
-:global(input[type="button"]).width-mini,
-:global(input[type="submit"])[width=mini],
-:global(input[type="submit"]).width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-:global(button)[width=small], :global(button).width-small,
-:global(.button)[width=small],
-:global(.button).width-small,
-:global(button.button)[width=small],
-:global(button.button).width-small,
-:global(input[type="button"])[width=small],
-:global(input[type="button"]).width-small,
-:global(input[type="submit"])[width=small],
-:global(input[type="submit"]).width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-:global(button)[width=med], :global(button).width-med,
-:global(.button)[width=med],
-:global(.button).width-med,
-:global(button.button)[width=med],
-:global(button.button).width-med,
-:global(input[type="button"])[width=med],
-:global(input[type="button"]).width-med,
-:global(input[type="submit"])[width=med],
-:global(input[type="submit"]).width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-:global(button)[width=kind], :global(button).width-kind,
-:global(.button)[width=kind],
-:global(.button).width-kind,
-:global(button.button)[width=kind],
-:global(button.button).width-kind,
-:global(input[type="button"])[width=kind],
-:global(input[type="button"]).width-kind,
-:global(input[type="submit"])[width=kind],
-:global(input[type="submit"]).width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-:global(button)[width=full], :global(button).width-full,
-:global(.button)[width=full],
-:global(.button).width-full,
-:global(button.button)[width=full],
-:global(button.button).width-full,
-:global(input[type="button"])[width=full],
-:global(input[type="button"]).width-full,
-:global(input[type="submit"])[width=full],
-:global(input[type="submit"]).width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-:global(button)[width=auto], :global(button).width-auto,
-:global(.button)[width=auto],
-:global(.button).width-auto,
-:global(button.button)[width=auto],
-:global(button.button).width-auto,
-:global(input[type="button"])[width=auto],
-:global(input[type="button"]).width-auto,
-:global(input[type="submit"])[width=auto],
-:global(input[type="submit"]).width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-:global(button)[width=default], :global(button).width-default,
-:global(.button)[width=default],
-:global(.button).width-default,
-:global(button.button)[width=default],
-:global(button.button).width-default,
-:global(input[type="button"])[width=default],
-:global(input[type="button"]).width-default,
-:global(input[type="submit"])[width=default],
-:global(input[type="submit"]).width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-:global(button),
-:global(.button),
-:global(button.button),
-:global(input[type="button"]),
-:global(input[type="submit"]) {
-  --preset-tall: var(--sld-tall-small);
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-:global(button)[tall=tiny], :global(button).tall-tiny,
-:global(.button)[tall=tiny],
-:global(.button).tall-tiny,
-:global(button.button)[tall=tiny],
-:global(button.button).tall-tiny,
-:global(input[type="button"])[tall=tiny],
-:global(input[type="button"]).tall-tiny,
-:global(input[type="submit"])[tall=tiny],
-:global(input[type="submit"]).tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-:global(button)[tall=mini], :global(button).tall-mini,
-:global(.button)[tall=mini],
-:global(.button).tall-mini,
-:global(button.button)[tall=mini],
-:global(button.button).tall-mini,
-:global(input[type="button"])[tall=mini],
-:global(input[type="button"]).tall-mini,
-:global(input[type="submit"])[tall=mini],
-:global(input[type="submit"]).tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-:global(button)[tall=small], :global(button).tall-small,
-:global(.button)[tall=small],
-:global(.button).tall-small,
-:global(button.button)[tall=small],
-:global(button.button).tall-small,
-:global(input[type="button"])[tall=small],
-:global(input[type="button"]).tall-small,
-:global(input[type="submit"])[tall=small],
-:global(input[type="submit"]).tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-:global(button)[tall=med], :global(button).tall-med,
-:global(.button)[tall=med],
-:global(.button).tall-med,
-:global(button.button)[tall=med],
-:global(button.button).tall-med,
-:global(input[type="button"])[tall=med],
-:global(input[type="button"]).tall-med,
-:global(input[type="submit"])[tall=med],
-:global(input[type="submit"]).tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-:global(button)[tall=kind], :global(button).tall-kind,
-:global(.button)[tall=kind],
-:global(.button).tall-kind,
-:global(button.button)[tall=kind],
-:global(button.button).tall-kind,
-:global(input[type="button"])[tall=kind],
-:global(input[type="button"]).tall-kind,
-:global(input[type="submit"])[tall=kind],
-:global(input[type="submit"]).tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-:global(button)[tall=auto], :global(button).tall-auto,
-:global(.button)[tall=auto],
-:global(.button).tall-auto,
-:global(button.button)[tall=auto],
-:global(button.button).tall-auto,
-:global(input[type="button"])[tall=auto],
-:global(input[type="button"]).tall-auto,
-:global(input[type="submit"])[tall=auto],
-:global(input[type="submit"]).tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-:global(button)[tall=default], :global(button).tall-default,
-:global(.button)[tall=default],
-:global(.button).tall-default,
-:global(button.button)[tall=default],
-:global(button.button).tall-default,
-:global(input[type="button"])[tall=default],
-:global(input[type="button"]).tall-default,
-:global(input[type="submit"])[tall=default],
-:global(input[type="submit"]).tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-:global(button)[variant*=square], :global(button)[square=true], :global(button).square,
-:global(.button)[variant*=square],
-:global(.button)[square=true],
-:global(.button).square,
-:global(button.button)[variant*=square],
-:global(button.button)[square=true],
-:global(button.button).square,
-:global(input[type="button"])[variant*=square],
-:global(input[type="button"])[square=true],
-:global(input[type="button"]).square,
-:global(input[type="submit"])[variant*=square],
-:global(input[type="submit"])[square=true],
-:global(input[type="submit"]).square {
-  aspect-ratio: 1/1 !important;
-  height: auto;
-}
-:global(button)[variant*=rounded], :global(button)[rounded=true], :global(button).rounded,
-:global(.button)[variant*=rounded],
-:global(.button)[rounded=true],
-:global(.button).rounded,
-:global(button.button)[variant*=rounded],
-:global(button.button)[rounded=true],
-:global(button.button).rounded,
-:global(input[type="button"])[variant*=rounded],
-:global(input[type="button"])[rounded=true],
-:global(input[type="button"]).rounded,
-:global(input[type="submit"])[variant*=rounded],
-:global(input[type="submit"])[rounded=true],
-:global(input[type="submit"]).rounded {
-  border-radius: 50%;
-}
 :global(button)[variant*=bordered], :global(button)[bordered=true], :global(button).bordered,
 :global(.button)[variant*=bordered],
 :global(.button)[bordered=true],
 :global(.button).bordered,
-:global(button.button)[variant*=bordered],
-:global(button.button)[bordered=true],
-:global(button.button).bordered,
 :global(input[type="button"])[variant*=bordered],
 :global(input[type="button"])[bordered=true],
 :global(input[type="button"]).bordered,
@@ -821,9 +541,6 @@
 :global(.button)[variant*=bordered]:hover,
 :global(.button)[bordered=true]:hover,
 :global(.button).bordered:hover,
-:global(button.button)[variant*=bordered]:hover,
-:global(button.button)[bordered=true]:hover,
-:global(button.button).bordered:hover,
 :global(input[type="button"])[variant*=bordered]:hover,
 :global(input[type="button"])[bordered=true]:hover,
 :global(input[type="button"]).bordered:hover,
@@ -840,12 +557,6 @@
 :global(.button)[bordered=true]:active,
 :global(.button).bordered:focus,
 :global(.button).bordered:active,
-:global(button.button)[variant*=bordered]:focus,
-:global(button.button)[variant*=bordered]:active,
-:global(button.button)[bordered=true]:focus,
-:global(button.button)[bordered=true]:active,
-:global(button.button).bordered:focus,
-:global(button.button).bordered:active,
 :global(input[type="button"])[variant*=bordered]:focus,
 :global(input[type="button"])[variant*=bordered]:active,
 :global(input[type="button"])[bordered=true]:focus,
@@ -865,9 +576,6 @@
 :global(.button)[variant*=contained],
 :global(.button)[contained=true],
 :global(.button).contained,
-:global(button.button)[variant*=contained],
-:global(button.button)[contained=true],
-:global(button.button).contained,
 :global(input[type="button"])[variant*=contained],
 :global(input[type="button"])[contained=true],
 :global(input[type="button"]).contained,
@@ -884,9 +592,6 @@
 :global(.button)[variant*=contained]:hover,
 :global(.button)[contained=true]:hover,
 :global(.button).contained:hover,
-:global(button.button)[variant*=contained]:hover,
-:global(button.button)[contained=true]:hover,
-:global(button.button).contained:hover,
 :global(input[type="button"])[variant*=contained]:hover,
 :global(input[type="button"])[contained=true]:hover,
 :global(input[type="button"]).contained:hover,
@@ -903,12 +608,6 @@
 :global(.button)[contained=true]:active,
 :global(.button).contained:focus,
 :global(.button).contained:active,
-:global(button.button)[variant*=contained]:focus,
-:global(button.button)[variant*=contained]:active,
-:global(button.button)[contained=true]:focus,
-:global(button.button)[contained=true]:active,
-:global(button.button).contained:focus,
-:global(button.button).contained:active,
 :global(input[type="button"])[variant*=contained]:focus,
 :global(input[type="button"])[variant*=contained]:active,
 :global(input[type="button"])[contained=true]:focus,
@@ -930,10 +629,6 @@
 :global(.button)[link=true],
 :global(.button).link,
 :global(.button)[role=link],
-:global(button.button)[variant*=link],
-:global(button.button)[link=true],
-:global(button.button).link,
-:global(button.button)[role=link],
 :global(input[type="button"])[variant*=link],
 :global(input[type="button"])[link=true],
 :global(input[type="button"]).link,
@@ -954,10 +649,6 @@
 :global(.button)[link=true]:hover,
 :global(.button).link:hover,
 :global(.button)[role=link]:hover,
-:global(button.button)[variant*=link]:hover,
-:global(button.button)[link=true]:hover,
-:global(button.button).link:hover,
-:global(button.button)[role=link]:hover,
 :global(input[type="button"])[variant*=link]:hover,
 :global(input[type="button"])[link=true]:hover,
 :global(input[type="button"]).link:hover,
@@ -977,14 +668,6 @@
 :global(.button).link:active,
 :global(.button)[role=link]:focus,
 :global(.button)[role=link]:active,
-:global(button.button)[variant*=link]:focus,
-:global(button.button)[variant*=link]:active,
-:global(button.button)[link=true]:focus,
-:global(button.button)[link=true]:active,
-:global(button.button).link:focus,
-:global(button.button).link:active,
-:global(button.button)[role=link]:focus,
-:global(button.button)[role=link]:active,
 :global(input[type="button"])[variant*=link]:focus,
 :global(input[type="button"])[variant*=link]:active,
 :global(input[type="button"])[link=true]:focus,
@@ -1009,9 +692,6 @@
 :global(.button)[variant*=naked],
 :global(.button)[naked=true],
 :global(.button).naked,
-:global(button.button)[variant*=naked],
-:global(button.button)[naked=true],
-:global(button.button).naked,
 :global(input[type="button"])[variant*=naked],
 :global(input[type="button"])[naked=true],
 :global(input[type="button"]).naked,
@@ -1027,9 +707,6 @@
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
-:global(button.button)[variant*=naked]:hover,
-:global(button.button)[naked=true]:hover,
-:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -1043,9 +720,6 @@
 :global(.button)[variant*=naked]:hover,
 :global(.button)[naked=true]:hover,
 :global(.button).naked:hover,
-:global(button.button)[variant*=naked]:hover,
-:global(button.button)[naked=true]:hover,
-:global(button.button).naked:hover,
 :global(input[type="button"])[variant*=naked]:hover,
 :global(input[type="button"])[naked=true]:hover,
 :global(input[type="button"]).naked:hover,
@@ -1061,12 +735,6 @@
 :global(.button)[naked=true]:focus,
 :global(.button).naked:active,
 :global(.button).naked:focus,
-:global(button.button)[variant*=naked]:active,
-:global(button.button)[variant*=naked]:focus,
-:global(button.button)[naked=true]:active,
-:global(button.button)[naked=true]:focus,
-:global(button.button).naked:active,
-:global(button.button).naked:focus,
 :global(input[type="button"])[variant*=naked]:active,
 :global(input[type="button"])[variant*=naked]:focus,
 :global(input[type="button"])[naked=true]:active,
@@ -1087,9 +755,6 @@
 :global(.button)[variant*=flat],
 :global(.button)[flat=true],
 :global(.button).flat,
-:global(button.button)[variant*=flat],
-:global(button.button)[flat=true],
-:global(button.button).flat,
 :global(input[type="button"])[variant*=flat],
 :global(input[type="button"])[flat=true],
 :global(input[type="button"]).flat,
@@ -1106,9 +771,6 @@
 :global(.button)[variant*=flat]:hover,
 :global(.button)[flat=true]:hover,
 :global(.button).flat:hover,
-:global(button.button)[variant*=flat]:hover,
-:global(button.button)[flat=true]:hover,
-:global(button.button).flat:hover,
 :global(input[type="button"])[variant*=flat]:hover,
 :global(input[type="button"])[flat=true]:hover,
 :global(input[type="button"]).flat:hover,
@@ -1124,12 +786,6 @@
 :global(.button)[flat=true]:focus,
 :global(.button).flat:active,
 :global(.button).flat:focus,
-:global(button.button)[variant*=flat]:active,
-:global(button.button)[variant*=flat]:focus,
-:global(button.button)[flat=true]:active,
-:global(button.button)[flat=true]:focus,
-:global(button.button).flat:active,
-:global(button.button).flat:focus,
 :global(input[type="button"])[variant*=flat]:active,
 :global(input[type="button"])[variant*=flat]:focus,
 :global(input[type="button"])[flat=true]:active,

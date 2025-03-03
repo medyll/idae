@@ -18,9 +18,11 @@
   --height: calc(var(--preset-density) / 6);
 }
 .slider {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.slider {
+  --preset-tall: var(--sld-tall-small);
 }
 .slider[tall=tiny], .slider.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

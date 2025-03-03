@@ -8,6 +8,8 @@
 .marquee :global(-container) {
   display: flex;
   align-items: center;
+}
+.marquee :global(-container) {
   --preset-gutter: var(--sld-gutter-default);
 }
 .marquee :global(-container) :global([gutter="tiny"]), .marquee :global(-container) :global(.gutter-tiny) {

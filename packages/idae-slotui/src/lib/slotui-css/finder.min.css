@@ -5,13 +5,12 @@
 .finder-container {
   display: inline-flex;
   gap: var(--finder-gap);
-  --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
 }
 .finder-container {
   --preset-width: var(--sld-width-small);
-  width: var(--preset-width-small);
-  min-width: var(--preset-width-small);
+}
+.finder-container {
+  width: var(--sld-width-small);
 }
 .finder-container[width=tiny], .finder-container.width-tiny {
   --preset-width: var(--sld-width-tiny);
@@ -46,9 +45,11 @@
   width: var(--sld-width-default) !important;
 }
 .finder-container {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.finder-container {
+  --preset-tall: var(--sld-tall-small);
 }
 .finder-container[tall=tiny], .finder-container.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

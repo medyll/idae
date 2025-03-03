@@ -49,7 +49,7 @@
 	type={buttonType}
 	{tall}
 	{width}
-	{variant}
+	variant={variant}
 	{selected}
 	{...rest}
 	style:aspect-ratio={ratio}

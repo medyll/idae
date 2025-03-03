@@ -112,8 +112,8 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <ul
 	bind:this={element}
-	class="menu-list {className} {grid ? 'grid' : ''}"
 	class:showLastOnSelected
+	class="menu-list {className} {grid ? 'grid' : ''}"
 	tabindex="0"
 	style={`${style};var(--menu-list-grid-items-count):${grid ? grid : '0'}`}
 	{role}
@@ -140,6 +140,6 @@
 	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
-<style global lang="scss">
+<style   lang="scss">
 	@use './menu-list.scss';
 </style>

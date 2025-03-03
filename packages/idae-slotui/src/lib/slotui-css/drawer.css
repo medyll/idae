@@ -40,9 +40,11 @@
   width: 100%;
 }
 .drawer header, .drawer-header {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.drawer header, .drawer-header {
+  --preset-tall: var(--sld-tall-small);
 }
 .drawer header[tall=tiny], .drawer header.tall-tiny, .drawer-header[tall=tiny], .drawer-header.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

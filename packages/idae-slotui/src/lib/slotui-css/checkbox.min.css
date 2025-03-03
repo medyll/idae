@@ -31,9 +31,11 @@
   background-color: var(--sld-background-disabled);
 }
 .checkbox {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.checkbox {
+  --preset-tall: var(--sld-tall-small);
 }
 .checkbox[tall=tiny], .checkbox.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

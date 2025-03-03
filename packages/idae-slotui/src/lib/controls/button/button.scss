@@ -27,38 +27,39 @@
     }
 }
 
-button,
-.button,
-button.button,
-input[type="button"],
-input[type="submit"] {
+:global(button),
+:global(.button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
     @include slotui-mixins.ui-width-presets;
     @include slotui-mixins.ui-tall-presets;
     @include slotui-mixins.ui-variants;
     @include slotui-mixins.elevation;
 
-    border: none;
-    border-radius: 0;
-    margin: 0;
+    & {
+        border: none;
+        border-radius: 0;
+        margin: 0;
 
-    text-align: var(--sld-button-text-align);
-    font-size: var(--sld-button-font-size);
-    border-radius: var(--sld-button-radius);
+        text-align: var(--sld-button-text-align);
+        font-size: var(--sld-button-font-size);
+        border-radius: var(--sld-button-radius);
 
-    color: var(--sld-color-foreground);
-    padding: var(--sld-button-padding);
-    position: relative;
+        color: var(--sld-color-foreground);
+        padding: var(--sld-button-padding);
+        position: relative;
 
-    display: inline-flex;
+        display: inline-flex;
 
-    transition: all 0.2s ease-in-out;
-    overflow: hidden;
-    cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        overflow: hidden;
+        cursor: pointer;
 
-    align-content: center;
-    align-items: center;
+        align-content: center;
+        align-items: center;
 
-    background: var(--sld-button-background);
+        background: var(--sld-button-background);
+    }
 
     /*     :focus {
         outline: 1px solid var(--sld-button-focus-border-color);
@@ -98,18 +99,20 @@ input[type="submit"] {
 
     .button-central {
         @include slotui-mixins.ui-ellipsises-presets;
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        flex: 1;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-        padding-left: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
-        padding-right: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
-        text-align: var(--sld-button-text-align, center);
-        overflow: hidden;
+        & {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            flex: 1;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+            padding-left: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
+            padding-right: 0.25rem; //calc(var(--content-padding, 0.25rem) / 2);
+            text-align: var(--sld-button-text-align, center);
+            overflow: hidden;
+        }
         &:empty {
             display: none;
         }
@@ -197,11 +200,6 @@ input[type="submit"] {
         align-content: center;
         justify-content: space-around;
     }
-
-    //
-    @include slotui-mixins.ui-width-presets;
-    @include slotui-mixins.ui-tall-presets;
-    @include slotui-mixins.ui-variants;
 
     &[variant*="bordered"],
     &[bordered="true"],

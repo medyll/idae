@@ -37,9 +37,11 @@
   cursor: pointer;
 }
 .cartouche .control {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+.cartouche .control {
+  --preset-tall: var(--sld-tall-small);
 }
 .cartouche .control[tall=tiny], .cartouche .control.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;

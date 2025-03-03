@@ -46,10 +46,12 @@
 
 @mixin ui-tall-presets {
     & {
+        min-height: var(--preset-tall-small);
+        height: var(--preset-tall-small);
+    }
+    & {
         --preset-tall: var(--sld-tall-small);
     }
-    min-height: var(--preset-tall-small);
-    height: var(--preset-tall-small);
 
     @each $preset, $value in slotui-presets.$preset-tall-list {
         &[tall="#{$preset}"],
@@ -63,7 +65,9 @@
     & {
         --preset-width: var(--sld-width-small);
     }
-    width: var(--sld-width-small);
+    & {
+        width: var(--sld-width-small);
+    }
 
     @each $preset, $value in slotui-presets.$preset-width-list {
         &[width="#{$preset}"],

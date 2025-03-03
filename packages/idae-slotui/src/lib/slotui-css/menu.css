@@ -52,9 +52,11 @@ li.menuItem[data-selected=true] .menuItemChip {
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
 li.menuItem {
-  --preset-tall: var(--sld-tall-small);
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
+}
+li.menuItem {
+  --preset-tall: var(--sld-tall-small);
 }
 li.menuItem[tall=tiny], li.menuItem.tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
