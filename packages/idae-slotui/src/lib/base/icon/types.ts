@@ -2,32 +2,69 @@ import type { ElementProps, IconObj } from "$lib/types/index.js";
 import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 import type { DemoerStoryProps } from "../demoer/types.js";
 
+/**
+ * Properties for the IconApp component.
+ */
 export type IconAppProps = {
-  /** icon name for iconify  */
+  /**
+   * Icon name for Iconify.
+   * @param icon
+   */
   icon?: ElementProps["icon"];
-  /** className off the root component */
+
+  /**
+   * Class name of the root component.
+   * @param class
+   */
   class?: string;
 
-  /** css style off the root component */
+  /**
+   * CSS style of the root component.
+   * @param style
+   */
   style?: string;
 
-  /** element root HTMLDivElement props */
+  /**
+   * Root HTMLDivElement properties.
+   * @param element
+   */
   element?: HTMLDivElement | null | any;
 
-  /** icon object for iconify, replace and invalidate props.icon  */
+  /**
+   * Icon object for Iconify, replaces and invalidates `icon` prop.
+   * @param ico
+   */
   ico?: IconObj;
 
-  /**  icon size 	 */
+  /**
+   * Icon size.
+   * @param iconSize
+   */
   iconSize?: ElementProps["iconSize"];
 
-  /** rotate icon */
+  /**
+   * Rotate icon.
+   * @param rotate
+   */
   rotate?: boolean;
 
-  /** icon color */
+  /**
+   * Icon color.
+   * @param color
+   */
   color?: string;
 
-  /** icon rotation */
+  /**
+   * Icon rotation.
+   * @param rotation
+   */
   rotation?: number;
+
+  /**
+   * Display property for the icon.
+   * @param display
+   */
+  display: "block" | "inline-block" | "inline";
 };
 
 export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {

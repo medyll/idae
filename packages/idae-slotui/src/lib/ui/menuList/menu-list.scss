@@ -35,69 +35,72 @@
       font-weight: bold;
     }
   }
+}
 
-  :global(.menulist-item) {
-    & {
-      text-decoration: none;
+:global(.menulist-item) {
+  @include slotui-mixins.ui-variants;
+  @include slotui-mixins.ui-width-presets;
+  @include slotui-mixins.ui-tall-presets;
+  @include slotui-mixins.ui-gutter-presets;
+  @include slotui-mixins.data-hover;
+  @include slotui-mixins.data-selected;
+
+  & {
+    text-decoration: none;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+
+    border: 1px solid transparent;
+    border-radius: var(--menulist-item-radius);
+    align-self: flex-start;
+  }
+  //
+
+  &::before {
+    position: absolute;
+    min-height: 16px;
+    height: 45%;
+    width: 2px;
+    overflow: hidden;
+    max-width: 3px;
+    background-color: transparent;
+    border-radius: var(--sld-radius-med);
+    left: 0px;
+    border: 1px solid transparent;
+    content: " ";
+  }
+
+  .menulist-item-icon {
+    width: 16px;
+    max-width: 16px;
+    text-align: center;
+    overflow: hidden;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 0 0.2rem;
+  }
+
+  .menulist-item-text {
+    flex: 1;
+    &.wrap {
+      text-wrap: ellipsis;
+      white-space: normal;
       overflow: hidden;
-
-      display: flex;
-      align-items: center;
-      position: relative;
-      width: 100%;
-      max-width: 100%;
-
-      border: 1px solid transparent;
-      border-radius: var(--menulist-item-radius);
-      align-self: flex-start;
     }
-
-    @include slotui-mixins.ui-variants;
-    @include slotui-mixins.ui-width-presets;
-    @include slotui-mixins.ui-tall-presets;
-    @include slotui-mixins.ui-gutter-presets;
-    @include slotui-mixins.data-hover;
-    @include slotui-mixins.data-selected;
-    //
-
-    &::before {
-      position: absolute;
-      min-height: 16px;
-      height: 45%;
-      width: 2px;
-      overflow: hidden;
-      max-width: 3px;
-      background-color: transparent;
-      border-radius: var(--sld-radius-med);
-      left: 0px;
-      border: 1px solid transparent;
-      content: " ";
+    svg {
+      display: inline-block;
     }
+  }
 
-    .menulist-item-icon {
-      width: 16px;
-      max-width: 16px;
-      text-align: center;
-      overflow: hidden;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      padding: 0 0.2rem;
-    }
-
-    .menulist-item-text {
-      flex: 1;
-      &.wrap {
-        text-wrap: ellipsis;
-        white-space: normal;
-        overflow: hidden;
-      }
-    }
-
-    .menulist-item-action {
-      display: var(--menulist-item-action-display);
-      justify-content: var(--menulist-item-action-justify-content);
-    }
+  .menulist-item-action {
+    display: var(--menulist-item-action-display);
+    justify-content: var(--menulist-item-action-justify-content);
   }
 }
 

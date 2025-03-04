@@ -409,36 +409,6 @@
   --hide-selector: hide;
 }
 
-/** toolbar.scss ----------------*/
-:root {
-  --toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
-  --toolbar-gap: var(--sld-pad-tiny);
-  --toolbar-divider-border: 1px solid red;
-  --toolbar-divider-height: 1rem;
-  --toolbar-vertical-divider-border: 1px solid green;
-  --toolbar-vertical-divider-width: 1rem;
-}
-
-.toolbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: var(--toolbar-padding);
-  gap: var(--toolbar-gap);
-}
-.toolbar divider {
-  border: var(--toolbar-divider-border);
-  height: var(--toolbar-divider-height);
-}
-
-.toolbar.vertical {
-  flex-direction: column;
-}
-.toolbar.vertical divider {
-  border: var(--toolbar-vertical-divider-border);
-  width: var(--toolbar-vertical-divider-width);
-}
-
 /** window.scss ----------------*/
 :root {
   --window-border-radius: var(--sld-radius-small);
@@ -551,6 +521,36 @@ dialog.window .ctrlZone {
   border-radius: var(--sld-radius-med);
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+
+/** toolbar.scss ----------------*/
+:root {
+  --toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
+  --toolbar-gap: var(--sld-pad-tiny);
+  --toolbar-divider-border: 1px solid red;
+  --toolbar-divider-height: 1rem;
+  --toolbar-vertical-divider-border: 1px solid green;
+  --toolbar-vertical-divider-width: 1rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--toolbar-padding);
+  gap: var(--toolbar-gap);
+}
+.toolbar divider {
+  border: var(--toolbar-divider-border);
+  height: var(--toolbar-divider-height);
+}
+
+.toolbar.vertical {
+  flex-direction: column;
+}
+.toolbar.vertical divider {
+  border: var(--toolbar-vertical-divider-border);
+  width: var(--toolbar-vertical-divider-width);
 }
 
 /** toggle-bar.scss ----------------*/
@@ -816,7 +816,135 @@ dialog.window .ctrlZone {
 :global(.slotui-menulist) a.menulist-title {
   font-weight: bold;
 }
-:global(.slotui-menulist) :global(.menulist-item) {
+
+:global(.menulist-item)[variant*=square] {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+:global(.menulist-item)[variant*=rounded] {
+  border-radius: 50%;
+}
+:global(.menulist-item) {
+  width: var(--sld-width-small);
+}
+:global(.menulist-item) {
+  --preset-width: var(--sld-width-small);
+}
+:global(.menulist-item)[width=tiny], :global(.menulist-item).width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+:global(.menulist-item)[width=mini], :global(.menulist-item).width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+:global(.menulist-item)[width=small], :global(.menulist-item).width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+:global(.menulist-item)[width=med], :global(.menulist-item).width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+:global(.menulist-item)[width=kind], :global(.menulist-item).width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+:global(.menulist-item)[width=full], :global(.menulist-item).width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+:global(.menulist-item)[width=auto], :global(.menulist-item).width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+:global(.menulist-item)[width=default], :global(.menulist-item).width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+:global(.menulist-item) {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+:global(.menulist-item) {
+  --preset-tall: var(--sld-tall-small);
+}
+:global(.menulist-item)[tall=tiny], :global(.menulist-item).tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+:global(.menulist-item)[tall=mini], :global(.menulist-item).tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+:global(.menulist-item)[tall=small], :global(.menulist-item).tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+:global(.menulist-item)[tall=med], :global(.menulist-item).tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+:global(.menulist-item)[tall=kind], :global(.menulist-item).tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+:global(.menulist-item)[tall=auto], :global(.menulist-item).tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+:global(.menulist-item)[tall=default], :global(.menulist-item).tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+:global(.menulist-item) {
+  --preset-gutter: var(--sld-gutter-default);
+}
+:global(.menulist-item) [gutter=tiny], :global(.menulist-item) .gutter-tiny {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+:global(.menulist-item) [gutter=mini], :global(.menulist-item) .gutter-mini {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+:global(.menulist-item) [gutter=small], :global(.menulist-item) .gutter-small {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+:global(.menulist-item) [gutter=med], :global(.menulist-item) .gutter-med {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+:global(.menulist-item) [gutter=kind], :global(.menulist-item) .gutter-kind {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+:global(.menulist-item) [gutter=default], :global(.menulist-item) .gutter-default {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+:global(.menulist-item):hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+:global(.menulist-item).selected, :global(.menulist-item)[aria-selected=true] {
+  border-color: none;
+  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  box-shadow: var(--sld-selected-shadow);
+}
+:global(.menulist-item).selected .chip,
+:global(.menulist-item).selected .menuItemChip, :global(.menulist-item)[aria-selected=true] .chip,
+:global(.menulist-item)[aria-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+:global(.menulist-item) {
   text-decoration: none;
   overflow: hidden;
   display: flex;
@@ -828,134 +956,7 @@ dialog.window .ctrlZone {
   border-radius: var(--menulist-item-radius);
   align-self: flex-start;
 }
-:global(.slotui-menulist) :global(.menulist-item)[variant*=square] {
-  aspect-ratio: 1/1 !important;
-  height: auto;
-}
-:global(.slotui-menulist) :global(.menulist-item)[variant*=rounded] {
-  border-radius: 50%;
-}
-:global(.slotui-menulist) :global(.menulist-item) {
-  width: var(--sld-width-small);
-}
-:global(.slotui-menulist) :global(.menulist-item) {
-  --preset-width: var(--sld-width-small);
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=tiny], :global(.slotui-menulist) :global(.menulist-item).width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=mini], :global(.slotui-menulist) :global(.menulist-item).width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=small], :global(.slotui-menulist) :global(.menulist-item).width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=med], :global(.slotui-menulist) :global(.menulist-item).width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=kind], :global(.slotui-menulist) :global(.menulist-item).width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=full], :global(.slotui-menulist) :global(.menulist-item).width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=auto], :global(.slotui-menulist) :global(.menulist-item).width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[width=default], :global(.slotui-menulist) :global(.menulist-item).width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item) {
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-:global(.slotui-menulist) :global(.menulist-item) {
-  --preset-tall: var(--sld-tall-small);
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=tiny], :global(.slotui-menulist) :global(.menulist-item).tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=mini], :global(.slotui-menulist) :global(.menulist-item).tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=small], :global(.slotui-menulist) :global(.menulist-item).tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=med], :global(.slotui-menulist) :global(.menulist-item).tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=kind], :global(.slotui-menulist) :global(.menulist-item).tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=auto], :global(.slotui-menulist) :global(.menulist-item).tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item)[tall=default], :global(.slotui-menulist) :global(.menulist-item).tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-:global(.slotui-menulist) :global(.menulist-item) {
-  --preset-gutter: var(--sld-gutter-default);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=tiny], :global(.slotui-menulist) :global(.menulist-item) .gutter-tiny {
-  padding: var(--sld-gutter-tiny);
-  gap: var(--sld-gutter-tiny);
-  --preset-gutter: var(--sld-gutter-tiny);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=mini], :global(.slotui-menulist) :global(.menulist-item) .gutter-mini {
-  padding: var(--sld-gutter-mini);
-  gap: var(--sld-gutter-mini);
-  --preset-gutter: var(--sld-gutter-mini);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=small], :global(.slotui-menulist) :global(.menulist-item) .gutter-small {
-  padding: var(--sld-gutter-small);
-  gap: var(--sld-gutter-small);
-  --preset-gutter: var(--sld-gutter-small);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=med], :global(.slotui-menulist) :global(.menulist-item) .gutter-med {
-  padding: var(--sld-gutter-med);
-  gap: var(--sld-gutter-med);
-  --preset-gutter: var(--sld-gutter-med);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=kind], :global(.slotui-menulist) :global(.menulist-item) .gutter-kind {
-  padding: var(--sld-gutter-kind);
-  gap: var(--sld-gutter-kind);
-  --preset-gutter: var(--sld-gutter-kind);
-}
-:global(.slotui-menulist) :global(.menulist-item) [gutter=default], :global(.slotui-menulist) :global(.menulist-item) .gutter-default {
-  padding: var(--sld-gutter-default);
-  gap: var(--sld-gutter-default);
-  --preset-gutter: var(--sld-gutter-default);
-}
-:global(.slotui-menulist) :global(.menulist-item):hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-:global(.slotui-menulist) :global(.menulist-item).selected, :global(.slotui-menulist) :global(.menulist-item)[aria-selected=true] {
-  border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
-  box-shadow: var(--sld-selected-shadow);
-}
-:global(.slotui-menulist) :global(.menulist-item).selected .chip,
-:global(.slotui-menulist) :global(.menulist-item).selected .menuItemChip, :global(.slotui-menulist) :global(.menulist-item)[aria-selected=true] .chip,
-:global(.slotui-menulist) :global(.menulist-item)[aria-selected=true] .menuItemChip {
-  position: absolute;
-  min-height: 16px;
-  height: 50%;
-  width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
-}
-:global(.slotui-menulist) :global(.menulist-item)::before {
+:global(.menulist-item)::before {
   position: absolute;
   min-height: 16px;
   height: 45%;
@@ -968,7 +969,7 @@ dialog.window .ctrlZone {
   border: 1px solid transparent;
   content: " ";
 }
-:global(.slotui-menulist) :global(.menulist-item) .menulist-item-icon {
+:global(.menulist-item) .menulist-item-icon {
   width: 16px;
   max-width: 16px;
   text-align: center;
@@ -978,15 +979,18 @@ dialog.window .ctrlZone {
   justify-content: center;
   padding: 0 0.2rem;
 }
-:global(.slotui-menulist) :global(.menulist-item) .menulist-item-text {
+:global(.menulist-item) .menulist-item-text {
   flex: 1;
 }
-:global(.slotui-menulist) :global(.menulist-item) .menulist-item-text.wrap {
+:global(.menulist-item) .menulist-item-text.wrap {
   text-wrap: ellipsis;
   white-space: normal;
   overflow: hidden;
 }
-:global(.slotui-menulist) :global(.menulist-item) .menulist-item-action {
+:global(.menulist-item) .menulist-item-text svg {
+  display: inline-block;
+}
+:global(.menulist-item) .menulist-item-action {
   display: var(--menulist-item-action-display);
   justify-content: var(--menulist-item-action-justify-content);
 }
@@ -1102,6 +1106,66 @@ li.menuItem .menu-list-item-action {
   display: block;
 }
 
+/** marquee.scss ----------------*/
+.marquee {
+  flex: 1;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 300px;
+}
+.marquee-container {
+  display: flex;
+  align-items: center;
+}
+.marquee-container {
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-container [gutter=tiny], .marquee-container .gutter-tiny {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+.marquee-container [gutter=mini], .marquee-container .gutter-mini {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+.marquee-container [gutter=small], .marquee-container .gutter-small {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+.marquee-container [gutter=med], .marquee-container .gutter-med {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+.marquee-container [gutter=kind], .marquee-container .gutter-kind {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+.marquee-container [gutter=default], .marquee-container .gutter-default {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-children {
+  display: flex;
+  border: 1px solid red;
+}
+.marquee-children > * {
+  border: 1px solid red;
+  height: 300px;
+}
+.marquee-controls-prev {
+  display: contents;
+}
+.marquee-controls-next {
+  display: contents;
+}
+
 /** panel.scss ----------------*/
 :root {
   --panel-margin-bottom: 2rem;
@@ -1178,66 +1242,6 @@ li.menuItem .menu-list-item-action {
   flex: 1 1 0;
   overflow: hidden;
   position: relative;
-}
-
-/** marquee.scss ----------------*/
-.marquee {
-  flex: 1;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  width: 300px;
-}
-.marquee-container {
-  display: flex;
-  align-items: center;
-}
-.marquee-container {
-  --preset-gutter: var(--sld-gutter-default);
-}
-.marquee-container [gutter=tiny], .marquee-container .gutter-tiny {
-  padding: var(--sld-gutter-tiny);
-  gap: var(--sld-gutter-tiny);
-  --preset-gutter: var(--sld-gutter-tiny);
-}
-.marquee-container [gutter=mini], .marquee-container .gutter-mini {
-  padding: var(--sld-gutter-mini);
-  gap: var(--sld-gutter-mini);
-  --preset-gutter: var(--sld-gutter-mini);
-}
-.marquee-container [gutter=small], .marquee-container .gutter-small {
-  padding: var(--sld-gutter-small);
-  gap: var(--sld-gutter-small);
-  --preset-gutter: var(--sld-gutter-small);
-}
-.marquee-container [gutter=med], .marquee-container .gutter-med {
-  padding: var(--sld-gutter-med);
-  gap: var(--sld-gutter-med);
-  --preset-gutter: var(--sld-gutter-med);
-}
-.marquee-container [gutter=kind], .marquee-container .gutter-kind {
-  padding: var(--sld-gutter-kind);
-  gap: var(--sld-gutter-kind);
-  --preset-gutter: var(--sld-gutter-kind);
-}
-.marquee-container [gutter=default], .marquee-container .gutter-default {
-  padding: var(--sld-gutter-default);
-  gap: var(--sld-gutter-default);
-  --preset-gutter: var(--sld-gutter-default);
-}
-.marquee-children {
-  display: flex;
-  border: 1px solid red;
-}
-.marquee-children > * {
-  border: 1px solid red;
-  height: 300px;
-}
-.marquee-controls-prev {
-  display: contents;
-}
-.marquee-controls-next {
-  display: contents;
 }
 
 /** chrome-frame.scss ----------------*/
@@ -2331,93 +2335,6 @@ body[data-theme=dark],
   --hide-selector: hide;
 }
 
-/** tabs.scss ----------------*/
-:root {
-  --tabs-nav-border-color: var(--sld-color-primary-alpha-high);
-  --tabs-content-background-color: var(--sld-color-background);
-  --tabs-content-secondary-padding: var(--box-density-preset-small);
-  --tabs-content-secondary-gap: var(--sld-gap-small);
-  --tabs-content-secondary-icon-border-right: var(--sld-color-border);
-  --tabs-content-secondary-icon-border-radius: var(--sld-radius-tiny);
-  --tabs-content-secondary-icon-box-shadow: var(--sld-elevation-3);
-  --tabs-content-secondary-icon-padding: var(--sld-padding-small);
-  --tabs-floating-cell-slot-border-radius: var(--sld-radius-small);
-  --tabs-floating-cell-slot-background-color: var(--sld-color-primary);
-}
-
-.tab {
-  position: relative;
-  display: flex;
-}
-.tab[aria-orientation=horizontal] ul {
-  flex-direction: column;
-}
-.tab[aria-orientation=vertical] {
-  flex-direction: column;
-}
-.tab-nav {
-  padding: 0.25rem 0;
-  gap: var(--sld-gap-med);
-  border-bottom: 1px solid var(--tabs-nav-border-color);
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-.tab-nav[aria-orientation=horizontal] {
-  flex-direction: column;
-}
-.tab-nav-rail {
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-}
-.tab-nav-rail > button {
-  padding: var(--box-density-preset-small);
-  min-width: 48px;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-.tab-nav-rail > button.active, .tab-nav-rail > button[aria-selected=true] {
-  font-weight: bold;
-}
-.tab-content {
-  flex: 1;
-  background-color: var(--tabs-content-background-color);
-  position: relative;
-  width: 100%;
-}
-.tab-content-secondary {
-  display: flex;
-  padding: var(--tabs-content-secondary-padding) unset;
-  gap: var(--tabs-content-secondary-gap);
-}
-.tab-content-secondary-icon {
-  border-right: 1px solid var(--tabs-content-secondary-icon-border-right);
-  border-radius: var(--tabs-content-secondary-icon-border-radius);
-  box-shadow: var(--tabs-content-secondary-icon-box-shadow);
-  padding: var(--tabs-content-secondary-icon-padding);
-}
-.tab-floating-cell {
-  top: auto;
-  position: relative;
-  min-height: 4px;
-  height: 4px;
-  transition: all 0.15;
-}
-.tab-floating-cell-snip {
-  border-radius: var(--tabs-floating-cell-slot-border-radius);
-  min-height: 4px;
-  background-color: var(--tabs-floating-cell-slot-background-color);
-  width: 100%;
-  position: absolute;
-  transition: all 0.25s ease-in;
-  z-index: 200;
-}
-
 /** drawer.scss ----------------*/
 :root {
   --drawer-color: inherit;
@@ -2508,6 +2425,93 @@ body[data-theme=dark],
   width: 100%;
 }
 
+/** tabs.scss ----------------*/
+:root {
+  --tabs-nav-border-color: var(--sld-color-primary-alpha-high);
+  --tabs-content-background-color: var(--sld-color-background);
+  --tabs-content-secondary-padding: var(--box-density-preset-small);
+  --tabs-content-secondary-gap: var(--sld-gap-small);
+  --tabs-content-secondary-icon-border-right: var(--sld-color-border);
+  --tabs-content-secondary-icon-border-radius: var(--sld-radius-tiny);
+  --tabs-content-secondary-icon-box-shadow: var(--sld-elevation-3);
+  --tabs-content-secondary-icon-padding: var(--sld-padding-small);
+  --tabs-floating-cell-slot-border-radius: var(--sld-radius-small);
+  --tabs-floating-cell-slot-background-color: var(--sld-color-primary);
+}
+
+.tab {
+  position: relative;
+  display: flex;
+}
+.tab[aria-orientation=horizontal] ul {
+  flex-direction: column;
+}
+.tab[aria-orientation=vertical] {
+  flex-direction: column;
+}
+.tab-nav {
+  padding: 0.25rem 0;
+  gap: var(--sld-gap-med);
+  border-bottom: 1px solid var(--tabs-nav-border-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.tab-nav[aria-orientation=horizontal] {
+  flex-direction: column;
+}
+.tab-nav-rail {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.tab-nav-rail > button {
+  padding: var(--box-density-preset-small);
+  min-width: 48px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.tab-nav-rail > button.active, .tab-nav-rail > button[aria-selected=true] {
+  font-weight: bold;
+}
+.tab-content {
+  flex: 1;
+  background-color: var(--tabs-content-background-color);
+  position: relative;
+  width: 100%;
+}
+.tab-content-secondary {
+  display: flex;
+  padding: var(--tabs-content-secondary-padding) unset;
+  gap: var(--tabs-content-secondary-gap);
+}
+.tab-content-secondary-icon {
+  border-right: 1px solid var(--tabs-content-secondary-icon-border-right);
+  border-radius: var(--tabs-content-secondary-icon-border-radius);
+  box-shadow: var(--tabs-content-secondary-icon-box-shadow);
+  padding: var(--tabs-content-secondary-icon-padding);
+}
+.tab-floating-cell {
+  top: auto;
+  position: relative;
+  min-height: 4px;
+  height: 4px;
+  transition: all 0.15;
+}
+.tab-floating-cell-snip {
+  border-radius: var(--tabs-floating-cell-slot-border-radius);
+  min-height: 4px;
+  background-color: var(--tabs-floating-cell-slot-background-color);
+  width: 100%;
+  position: absolute;
+  transition: all 0.25s ease-in;
+  z-index: 200;
+}
+
 /** sorterer.scss ----------------*/
 :root {
   --sorterer-gap: var(--sld-gap-tiny);
@@ -2519,6 +2523,54 @@ body[data-theme=dark],
   flex-direction: row;
   align-items: center;
   gap: var(--sorterer-gap);
+}
+
+/** loader.scss ----------------*/
+:root {
+  --loader-background-color: var(--sld-color-background-alpha-mid);
+  --loader-box-shadow: var(--sld-elevation-1);
+  --loader-radius: var(--sld-radius-tiny);
+  --loader-border: var(--sld-color-foreground-alpha-high);
+  --loader-message-border-radius: var(--sld-radius-small);
+  --loader-message-border-bottom: var(--sld-color-primary);
+  --loader-message-padding: var(--box-density-1) var(--box-density-2);
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  background-color: var(--loader-background-color);
+  height: 100%;
+  min-width: 128px;
+  max-width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.loader .loader-box {
+  box-shadow: var(--loader-box-shadow);
+  border-radius: var(--loader-radius);
+  border: 1px solid var(--loader-border);
+  padding: 1rem 0;
+  min-width: 128px;
+  width: 100%;
+  margin: 1rem;
+  text-align: center;
+  background-color: var(--loader-background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loader .loader-box .loader-message {
+  border-radius: var(--loader-message-border-radius);
+  border-bottom: 1px solid;
+  border-color: var(--loader-message-border-bottom);
+  padding: var(--loader-message-padding);
+  display: inline-block;
+  box-shadow: var(--loader-box-shadow);
 }
 
 /** finder.scss ----------------*/
@@ -2735,119 +2787,6 @@ body[data-theme=dark],
   white-space: nowrap;
 }
 
-/** loader.scss ----------------*/
-:root {
-  --loader-background-color: var(--sld-color-background-alpha-mid);
-  --loader-box-shadow: var(--sld-elevation-1);
-  --loader-radius: var(--sld-radius-tiny);
-  --loader-border: var(--sld-color-foreground-alpha-high);
-  --loader-message-border-radius: var(--sld-radius-small);
-  --loader-message-border-bottom: var(--sld-color-primary);
-  --loader-message-padding: var(--box-density-1) var(--box-density-2);
-}
-
-.loader {
-  position: absolute;
-  top: 0;
-  background-color: var(--loader-background-color);
-  height: 100%;
-  min-width: 128px;
-  max-width: 100%;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-.loader .loader-box {
-  box-shadow: var(--loader-box-shadow);
-  border-radius: var(--loader-radius);
-  border: 1px solid var(--loader-border);
-  padding: 1rem 0;
-  min-width: 128px;
-  width: 100%;
-  margin: 1rem;
-  text-align: center;
-  background-color: var(--loader-background-color);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.loader .loader-box .loader-message {
-  border-radius: var(--loader-message-border-radius);
-  border-bottom: 1px solid;
-  border-color: var(--loader-message-border-bottom);
-  padding: var(--loader-message-padding);
-  display: inline-block;
-  box-shadow: var(--loader-box-shadow);
-}
-
-/** switch.scss ----------------*/
-:root {
-  --switch-border-radius: var(--sld-radius-large);
-  --switch-background: var(--sld-color-paper);
-  --switch-checked-background: var(--sld-color-primary);
-  --switch-handle-background-color: var(--sld-color-primary);
-  --switch-handle-border: var(--sld-color-secondary-alpha-low);
-  --switch-gutter-border: var(--sld-color-primary-alpha-low);
-  --switch-gutter-background: var(--sld-switch-background);
-  --switch-gutter-padding: 3px;
-}
-
-.switch {
-  display: inline-block;
-  position: relative;
-  border-radius: var(--switch-border-radius);
-  overflow: hidden;
-  cursor: pointer;
-}
-.switch :hover .switchHandle {
-  background-color: var(--sld-color-secondary) !important;
-}
-.switch :has(input:checked) {
-  background-color: var(--switch-checked-background);
-}
-.switch .switchGutter {
-  border: 1px solid var(--switch-gutter-border);
-  border-radius: var(--switch-border-radius);
-  padding: var(--switch-gutter-padding);
-  background-color: var(--switch-gutter-background);
-}
-.switch .switchGutter input {
-  position: absolute;
-  width: 0;
-  height: 0;
-  top: -50px;
-  left: -50px;
-}
-.switch .switchGutter input:checked + .switchHandle {
-  left: calc(100% - 16px);
-  border-color: var(--sld-color-secondary-alpha-mid);
-  box-shadow: var(--sld-elevation-3);
-  background-color: var(--sld-color-background);
-}
-.switch .switchGutter input + .switchHandle {
-  position: relative;
-  display: block;
-  width: 16px;
-  height: 16px;
-  background: white;
-  border-radius: var(--switch-border-radius);
-  left: 0;
-  transition: all 0.1s;
-  background-color: var(--switch-handle-background-color);
-  border: 1px solid var(--switch-handle-border);
-  box-shadow: var(--sld-elevation-1);
-}
-
-label {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  min-width: 42px;
-}
-
 /** textfield.scss ----------------*/
 .slotui-textfield {
   --textfield-background: var(--sld-color-background-alpha-high);
@@ -2998,6 +2937,147 @@ label {
 }
 .stepper-step.active {
   color: var(--stepper-active-color);
+}
+
+/** switch.scss ----------------*/
+:root {
+  --switch-border-radius: var(--sld-radius-large);
+  --switch-background: var(--sld-color-paper);
+  --switch-checked-background: var(--sld-color-primary);
+  --switch-handle-background-color: var(--sld-color-primary);
+  --switch-handle-border: var(--sld-color-secondary-alpha-low);
+  --switch-gutter-border: var(--sld-color-primary-alpha-low);
+  --switch-gutter-background: var(--sld-switch-background);
+  --switch-gutter-padding: 3px;
+}
+
+.switch {
+  display: inline-block;
+  position: relative;
+  border-radius: var(--switch-border-radius);
+  overflow: hidden;
+  cursor: pointer;
+}
+.switch :hover .switchHandle {
+  background-color: var(--sld-color-secondary) !important;
+}
+.switch :has(input:checked) {
+  background-color: var(--switch-checked-background);
+}
+.switch .switchGutter {
+  border: 1px solid var(--switch-gutter-border);
+  border-radius: var(--switch-border-radius);
+  padding: var(--switch-gutter-padding);
+  background-color: var(--switch-gutter-background);
+}
+.switch .switchGutter input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: -50px;
+  left: -50px;
+}
+.switch .switchGutter input:checked + .switchHandle {
+  left: calc(100% - 16px);
+  border-color: var(--sld-color-secondary-alpha-mid);
+  box-shadow: var(--sld-elevation-3);
+  background-color: var(--sld-color-background);
+}
+.switch .switchGutter input + .switchHandle {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: var(--switch-border-radius);
+  left: 0;
+  transition: all 0.1s;
+  background-color: var(--switch-handle-background-color);
+  border: 1px solid var(--switch-handle-border);
+  box-shadow: var(--sld-elevation-1);
+}
+
+label {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  min-width: 42px;
+}
+
+/** slider.scss ----------------*/
+:root {
+  --slider-background-color: var(--sld-color-background);
+  --slider-gouge-background-color: var(--sld-color-secondary);
+  --slider-gouge-selected-background-color: var(--sld-color-primary);
+  --slider-thumb-background-color: var(--sld-color-primary);
+  --slider-thumb-border: var(--sld-color-primary-darken-high);
+  --slider-thumb-hover-outline: var(--sld-color-primary-alpha-high);
+  --slider-thumb-hover-box-shadow: var(--sld-elevation-3);
+}
+
+.slider {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.slider {
+  --preset-tall: var(--sld-tall-small);
+}
+.slider[tall=tiny], .slider.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.slider[tall=mini], .slider.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.slider[tall=small], .slider.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.slider[tall=med], .slider.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.slider[tall=kind], .slider.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.slider[tall=auto], .slider.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.slider[tall=default], .slider.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+.slider {
+  --height: calc(var(--preset-density) / 6);
+  background-color: var(--slider-background-color);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: 168px;
+}
+.slider .slider-gouge {
+  height: var(--height);
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--slider-gouge-background-color);
+}
+.slider .slider-gouge-selected {
+  height: var(--height);
+  border-radius: 10px;
+  background-color: var(--slider-gouge-selected-background-color);
+}
+.slider .slider-thumb {
+  top: 0;
+  aspect-ratio: 1/1;
+  height: 90%;
+  transform: translateY(50%);
+  background-color: var(--slider-thumb-background-color);
+  position: absolute;
+  border: 3px solid var(--slider-thumb-border);
+  border-radius: 50%;
+  display: inline-block;
+  background-clip: padding-box;
+}
+.slider .slider-thumb:hover {
+  box-shadow: var(--slider-thumb-hover-box-shadow);
+  outline: 4px solid var(--slider-thumb-hover-outline);
 }
 
 /** select.scss ----------------*/
@@ -3184,96 +3264,6 @@ label {
 }
 .checkbox-root .checkbox-container .svg path-indeterminate {
   transform: scale(1.1);
-}
-
-/** slider.scss ----------------*/
-:root {
-  --slider-background-color: var(--sld-color-background);
-  --slider-gouge-background-color: var(--sld-color-secondary);
-  --slider-gouge-selected-background-color: var(--sld-color-primary);
-  --slider-thumb-background-color: var(--sld-color-primary);
-  --slider-thumb-border: var(--sld-color-primary-darken-high);
-  --slider-thumb-hover-outline: var(--sld-color-primary-alpha-high);
-  --slider-thumb-hover-box-shadow: var(--sld-elevation-3);
-}
-
-.slider {
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.slider {
-  --preset-tall: var(--sld-tall-small);
-}
-.slider[tall=tiny], .slider.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.slider[tall=mini], .slider.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.slider[tall=small], .slider.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.slider[tall=med], .slider.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.slider[tall=kind], .slider.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.slider[tall=auto], .slider.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.slider[tall=default], .slider.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-.slider {
-  --height: calc(var(--preset-density) / 6);
-  background-color: var(--slider-background-color);
-  position: relative;
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  width: 168px;
-}
-.slider .slider-gouge {
-  height: var(--height);
-  width: 100%;
-  border-radius: 10px;
-  background-color: var(--slider-gouge-background-color);
-}
-.slider .slider-gouge-selected {
-  height: var(--height);
-  border-radius: 10px;
-  background-color: var(--slider-gouge-selected-background-color);
-}
-.slider .slider-thumb {
-  top: 0;
-  aspect-ratio: 1/1;
-  height: 90%;
-  transform: translateY(50%);
-  background-color: var(--slider-thumb-background-color);
-  position: absolute;
-  border: 3px solid var(--slider-thumb-border);
-  border-radius: 50%;
-  display: inline-block;
-  background-clip: padding-box;
-}
-.slider .slider-thumb:hover {
-  box-shadow: var(--slider-thumb-hover-box-shadow);
-  outline: 4px solid var(--slider-thumb-hover-outline);
-}
-
-/** auto-complete.scss ----------------*/
-:root {
-  --auto-complete-pad: var(--sld-pad-medium);
-  --auto-complete-gap: var(--sld-gap-small);
-}
-
-.auto-complete-no-results, .auto-complete-boot {
-  padding: var(--auto-complete-pad);
-  gap: var(--auto-complete-gap);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 /** button.scss ----------------*/
@@ -4112,6 +4102,20 @@ input[type=submit].slotui-button.flat:focus {
   border-bottom: 1px solid var(--title-bar-color-border-bottom);
 }
 
+/** auto-complete.scss ----------------*/
+:root {
+  --auto-complete-pad: var(--sld-pad-medium);
+  --auto-complete-gap: var(--sld-gap-small);
+}
+
+.auto-complete-no-results, .auto-complete-boot {
+  padding: var(--auto-complete-pad);
+  gap: var(--auto-complete-gap);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 /** paper.scss ----------------*/
 :root {
   --paper-radius: var(--sld-radius-small);
@@ -4404,6 +4408,24 @@ hr.vertical {
   justify-content: end;
 }
 
+/** badge.scss ----------------*/
+:root {
+  --badge-color-border: var(--sld-color-border);
+}
+
+.badge {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--badge-color-border);
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+}
+.badge .hidden {
+  transform: scale(0, 0);
+}
+
 /** backdrop.scss ----------------*/
 :root {
   --backdrop-background-color: var(--sld-color-foreground-alpha-high);
@@ -4549,22 +4571,4 @@ dialog.alert article.dialog-content footer.dialog-footer button {
   color: white;
   text-shadow: 0 0 0.125rem #cc0000;
   background-color: red;
-}
-
-/** badge.scss ----------------*/
-:root {
-  --badge-color-border: var(--sld-color-border);
-}
-
-.badge {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid var(--badge-color-border);
-  display: grid;
-  place-items: center;
-  width: 16px;
-  height: 16px;
-}
-.badge .hidden {
-  transform: scale(0, 0);
 }
