@@ -7,22 +7,18 @@
     scroll-snap-type: x mandatory;
 
     width: 300px;
-    & {
-        :global(-container) {
-            display: flex;
-            align-items: center;
-            @include slotui-mixins.ui-gutter-presets;
-        }
+    &-container {
+        display: flex;
+        align-items: center;
+        @include slotui-mixins.ui-gutter-presets;
+    }
 
-        & {
-            &-children {
-                display: flex;
-                border: 1px solid red;
-                & > * {
-                    border: 1px solid red;
-                    height: 300px;
-                }
-            }
+    &-children {
+        display: flex;
+        border: 1px solid red;
+        & > * {
+            border: 1px solid red;
+            height: 300px;
         }
     }
 

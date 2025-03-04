@@ -21,11 +21,10 @@ class SCSSConverter {
 
 	// Convert SCSS to CSS
 	convertScssToCss(filePath, compressed = false) {
-		const result = sass.renderSync({
-			file: filePath,
-			outputStyle: compressed ? 'compressed' : 'expanded'
+		const result = sass.compile(filePath,{ 
+			style: compressed ? 'compressed' : 'expanded'
 		});
-		return result.css.toString();
+		return result.css 
 	}
 
 	// Process a single SCSS file
