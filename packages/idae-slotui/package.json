@@ -19,8 +19,7 @@
 		"publish": "npm run package",
 		"build-docs:watch": "nodemon --watch ./src/lib --watch ./build-docs.js --ignore **/docs/** --ignore ./src/lib/svelte.index.js --ext svelte --ext scss --delay 2.5 build-docs.js",
 		"rename-scss": "node scripts/rename-scss-files.js",
-		"package:pre": "node scripts/package-pre.js",
-		"prepare": "node scripts/package-pre.js && npm run package"
+		"package:pre": "node scripts/package-pre.js"
 	},
 	"exports": {
 		".": {
@@ -43,7 +42,7 @@
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.28",
 		"@sveltejs/package": "^2.3.2",
-		"@sveltejs/vite-plugin-svelte": "^3.1.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@types/eslint": "9.6.0",
 		"@types/fs-extra": "^11.0.4",
 		"@types/prismjs": "^1.26.4",
