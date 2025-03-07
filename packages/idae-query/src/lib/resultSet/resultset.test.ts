@@ -1,47 +1,54 @@
-import { describe, beforeEach, it, expect } from 'vitest';
-import { getResultset } from './Resultset.js';
+import { describe, beforeEach, it, expect } from "vitest";
+import { getResultset } from "./Resultset.js";
 
-describe('getResultset', () => {
-	let data: any[];
+describe("getResultset", () => {
+  let data: any[];
 
-	beforeEach(() => {
-		data = [
-			{ id: 1, name: 'John', age: 25, metadata: { order: 1 } },
-			{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } },
-			{ id: 3, name: 'Bob', age: 35, metadata: { order: 3 } },
-			{ id: 4, name: 'Alice', age: 40, metadata: { order: 4 } }
-		];
-	});
+  beforeEach(() => {
+    data = [
+      { id: 4, name: "Alice", age: 40, metadata: { order: 4 } },
+      { id: 2, name: "Jane", age: 30, metadata: { order: 2 } },
+      { id: 1, name: "John", age: 25, metadata: { order: 1 } },
+      { id: 3, name: "Bob", age: 35, metadata: { order: 3 } },
+    ];
+  });
 
-	it('should set options and apply sorting', () => {
-		const resultSet = getResultset(data);
-		const options = { sort: { age: 'asc' } };
-		//@ts-ignore
-		const result = resultSet.setOptions(options);
-		expect(result).toBe(resultSet);
-		expect(resultSet).toEqual([
-			{ id: 1, name: 'John', age: 25, metadata: { order: 1 } },
-			{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } },
-			{ id: 3, name: 'Bob', age: 35, metadata: { order: 3 } },
-			{ id: 4, name: 'Alice', age: 40, metadata: { order: 4 } }
-		]);
-	});
+  it("should set options and apply sorting", () => {
+    const options = { sort: { age: "asc" } };
+    const resultSet = getResultset(data);
+    const result = resultSet.setOptions(options);
+    delete resultSet?.groupBy;
+    delete resultSet?.setOptions;
+    delete resultSet?.sortBy;
+    delete resultSet?.getPage;
+    expect(result).toBe(resultSet);
+    expect(resultSet).toEqual([
+      { id: 1, name: "John", age: 25, metadata: { order: 1 } },
+      { id: 2, name: "Jane", age: 30, metadata: { order: 2 } },
+      { id: 3, name: "Bob", age: 35, metadata: { order: 3 } },
+      { id: 4, name: "Alice", age: 40, metadata: { order: 4 } },
+    ]);
+  });
 
-	it('should set options and apply sorting', () => {
-		const resultSet = getResultset(data);
-		const options = { sort: { age: 'desc' } };
-		//@ts-ignore
-		const result = resultSet.setOptions(options);
-		expect(result).toBe(resultSet);
-		expect(resultSet).toEqual([
-			{ id: 4, name: 'Alice', age: 40, metadata: { order: 4 } },
-			{ id: 3, name: 'Bob', age: 35, metadata: { order: 3 } },
-			{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } },
-			{ id: 1, name: 'John', age: 25, metadata: { order: 1 } }
-		]);
-	});
+  it("should set options and apply sorting", () => {
+    const resultSet = getResultset(data);
+    const options = { sort: { age: "desc" } };
+    //@ts-ignore
+    const result = resultSet.setOptions(options);
+    delete resultSet?.groupBy;
+    delete resultSet?.setOptions;
+    delete resultSet?.sortBy;
+    delete resultSet?.getPage;
+    expect(result).toBe(resultSet);
+    expect(resultSet).toEqual([
+      { id: 4, name: "Alice", age: 40, metadata: { order: 4 } },
+      { id: 3, name: "Bob", age: 35, metadata: { order: 3 } },
+      { id: 2, name: "Jane", age: 30, metadata: { order: 2 } },
+      { id: 1, name: "John", age: 25, metadata: { order: 1 } },
+    ]);
+  });
 
-	/*   it("should set options and apply grouping", () => {
+  /*   it("should set options and apply grouping", () => {
     const resultSet = getResultset(data);
     const options = { groupBy: "age" };
     const result = resultSet.setOptions(options);
@@ -54,34 +61,40 @@ describe('getResultset', () => {
     });
   }); */
 
-	it('should sort the data in ascending order', () => {
-		const resultSet = getResultset(data);
-		const sortedData = resultSet.sortBy({ age: 'desc' });
-		expect(sortedData).toEqual([
-			{ id: 4, name: 'Alice', age: 40, metadata: { order: 4 } },
-			{ id: 3, name: 'Bob', age: 35, metadata: { order: 3 } },
-			{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } },
-			{ id: 1, name: 'John', age: 25, metadata: { order: 1 } }
-		]);
-	});
+  it("should sort the data in ascending order", () => {
+    const resultSet = getResultset(data);
+    const sortedData = resultSet.sortBy({ age: "desc" });
+    delete sortedData?.groupBy;
+    delete sortedData?.setOptions;
+    delete sortedData?.sortBy;
+    delete sortedData?.getPage;
 
-	it('should group the data by a single field', () => {
-		const resultSet = getResultset(data);
-		const groupedData = resultSet.groupBy('age');
-		expect(groupedData).toEqual({
-			25: [{ id: 1, name: 'John', age: 25, metadata: { order: 1 } }],
-			30: [{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } }],
-			35: [{ id: 3, name: 'Bob', age: 35, metadata: { order: 3 } }],
-			40: [{ id: 4, name: 'Alice', age: 40, metadata: { order: 4 } }]
-		});
-	});
+    expect(sortedData).toEqual([
+      { id: 4, name: "Alice", age: 40, metadata: { order: 4 } },
+      { id: 3, name: "Bob", age: 35, metadata: { order: 3 } },
+      { id: 2, name: "Jane", age: 30, metadata: { order: 2 } },
+      { id: 1, name: "John", age: 25, metadata: { order: 1 } },
+    ]);
+  });
 
-	it('should get the specified page of data', () => {
-		const resultSet = getResultset(data);
-		const pageData = resultSet.getPage(2, 1);
-		expect(pageData).toEqual([
-			{ id: 1, name: 'John', age: 25, metadata: { order: 1 } },
-			{ id: 2, name: 'Jane', age: 30, metadata: { order: 2 } }
-		]);
-	});
+  it("should group the data by a single field", () => {
+    const resultSet = getResultset(data);
+    const groupedData = resultSet.groupBy("age");
+    expect(groupedData).toEqual({
+      25: [{ id: 1, name: "John", age: 25, metadata: { order: 1 } }],
+      30: [{ id: 2, name: "Jane", age: 30, metadata: { order: 2 } }],
+      35: [{ id: 3, name: "Bob", age: 35, metadata: { order: 3 } }],
+      40: [{ id: 4, name: "Alice", age: 40, metadata: { order: 4 } }],
+    });
+  });
+
+  it("should get the specified page of data", () => {
+    const resultSet = getResultset(data);
+    const pageData = resultSet.getPage(2, 2);
+
+    expect(pageData).toEqual([
+      { id: 1, name: "John", age: 25, metadata: { order: 1 } },
+      { id: 3, name: "Bob", age: 35, metadata: { order: 3 } },
+    ]);
+  });
 });
