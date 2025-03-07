@@ -30,19 +30,10 @@ export type IDBArgumentsTypes = `${IDbTypes}(${CombinedArgs})`;
 export type IDbFieldRules = IDBArgumentsTypes | IDbTypes;
 export type IDbFieldType = IDBArgumentsTypes | IDbTypes;
 
-export type CoreModel<T> = {
-	template: IdaeTemplate<T[keyof T]>;
-};
-
-export type IdaeModelRoot<T = Record<string, any>> = Record<string, any> & {
-	[K in keyof T]: {
-		template?: IdaeTemplate<T[K]>;
-	};
-};
-
-// renamed from Tpl to IdaeTemplate
-export type IdaeTemplate<C = Record<string, any>, M = IdaeModelRoot> = {
+// renamed from CollectionModel to IdaeCollectionTemplate
+export type IdaeCollectionTemplate<C = Record<string, any>, M = IdaeModelRoot> = {
 	index: string;
+	ts: any;
 	presentation: CombineElements<keyof C>;
 	fields: IdaeTemplateFields<C>;
 	fks: {
@@ -51,6 +42,16 @@ export type IdaeTemplate<C = Record<string, any>, M = IdaeModelRoot> = {
 			multiple: boolean;
 			rules: CombinedArgs;
 		};
+	};
+};
+
+export type CoreModel<T> = {
+	template: IdaeCollectionTemplate<T[keyof T]>;
+};
+
+export type IdaeModelRoot<T = Record<string, any>> = Record<string, any> & {
+	[K in keyof T]: {
+		template?: IdaeCollectionTemplate<T[K]>;
 	};
 };
 // renamed from TplFields to IdaeTemplateFields

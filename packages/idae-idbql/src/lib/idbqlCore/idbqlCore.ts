@@ -3,7 +3,7 @@
 import { Collection, CollectionCore } from "../collection/collection.svelte.js";
 import {
   createIdbqlState,
-  type StateCollectionDyn,
+  type CollectionState,
 } from "../state/idbstate.svelte.js";
 import { Schema } from "./idbqlSchema.js";
 
@@ -98,28 +98,12 @@ export type CollectionModel<T = TplCollectionFields> = {
   };
 };
 
-type ModelTypes<T = Record<string, any>> = {
-  [P in keyof T]: T[P] extends { ts: infer M }
-    ? M
-    : T[P] extends { model: infer M }
-      ? M
-      : never;
-};
-type Method<T> = {
-  // @ts-ignore
-  readonly [K in keyof T]: CollectionCore<T[K]>;
-};
-type MethodState<T> = {
-  // @ts-ignore
-  [K in keyof T]: StateCollectionDyn<T[K]>;
-};
-
 type ReadonlyCollections<T extends IdbqModel> = {
   [K in keyof T]: CollectionCore<T[K]["ts"]>;
 };
 
 type StateCollections<T extends IdbqModel> = {
-  [K in keyof T]: StateCollectionDyn<T[K]["ts"]>;
+  [K in keyof T]: CollectionState<T[K]["ts"]>;
 };
 /**
  * Represents the IndexedDB wrapper for managing database operations.
@@ -266,13 +250,16 @@ export const createIdbqDb = <T extends IdbqModel>(
       idbDatabase: IdbqlIndexedCore<T>;
       idbql: ReadonlyCollections<T>;
       idbqlState: StateCollections<T>;
+      qolie: any;
       idbqModel: T;
     } => {
       const idb_ = new IdbqlIndexedCore<T>(name, model, version);
+      const idbqlState = createIdbqlState(idb_);
       return {
         idbDatabase: idb_,
         idbql: idb_ as unknown as ReadonlyCollections<T>,
-        idbqlState: createIdbqlState(idb_).state as StateCollections<T>,
+        idbqlState: idbqlState.collectionState as StateCollections<T>,
+        qolie: idbqlState.qolie,
         idbqModel: model,
       };
     },
