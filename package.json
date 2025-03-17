@@ -38,6 +38,7 @@
   "version": "0.0.2",
   "dependencies": {
     "@medyll/cssfabric": "file:../app-node/cssfabric",
+    "@medyll/idae-engine": "next",
     "@octokit/rest": "^21.1.1",
     "glob": "^11.0.1",
     "npm": "^11.1.0",
