@@ -87,23 +87,11 @@ export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
         fieldName: DataOpGroupByOptions<T>,
         keepUngroupedData = true,
       ) {
-        return dataOp.groupBy({ dataList: this, groupBy: fieldName });
-        /* const finalFieldName =
-          typeof fieldName === "string" ? [fieldName] : fieldName;
-        return this.reduce(
-          (acc: { [x: string]: any[] }, curr: Record<string, any>) => {
-            let key = "";
-            for (let i = 0; i < finalFieldName.length; i++) {
-              key += dotPath<typeof curr>(curr, finalFieldName[i]);
-            }
-            if (!acc[key]) {
-              acc[key] = [];
-            }
-            acc[key].push(curr);
-            return acc;
-          },
-          {},
-        ); */
+        return dataOp.groupBy({
+          dataList: this,
+          groupBy: fieldName,
+          keepUngroupedData,
+        });
       },
       enumerable: true,
       configurable: true,

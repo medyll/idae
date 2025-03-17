@@ -1,5 +1,5 @@
 import { describe, beforeEach, it, expect } from "vitest";
-import { getResultset } from "./Resultset.js";
+import { getResultset } from "./resultset.js";
 
 describe("getResultset", () => {
   let data: any[];
@@ -48,7 +48,7 @@ describe("getResultset", () => {
     ]);
   });
 
-  /*   it("should set options and apply grouping", () => {
+  it("should set options and apply grouping", () => {
     const resultSet = getResultset(data);
     const options = { groupBy: "age" };
     const result = resultSet.setOptions(options);
@@ -59,7 +59,7 @@ describe("getResultset", () => {
       35: [{ id: 3, name: "Bob", age: 35, metadata: { order: 3 } }],
       40: [{ id: 4, name: "Alice", age: 40, metadata: { order: 4 } }],
     });
-  }); */
+  });
 
   it("should sort the data in ascending order", () => {
     const resultSet = getResultset(data);
