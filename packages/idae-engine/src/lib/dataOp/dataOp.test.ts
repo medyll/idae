@@ -2,6 +2,31 @@ import { dataOp, type DataOpGroupResult } from "./dataOp.js";
 import { describe, it, expect } from "vitest";
 
 describe("dataOp", () => {
+  let data: any[];
+
+  beforeEach(() => {
+    data = [
+      { id: 3, name: "John", age: 30, city: "New York", class: { order: 3 } },
+      {
+        id: 1,
+        name: "Jane",
+        age: 25,
+        city: "Los Angeles",
+        class: { order: 1 },
+      },
+      {
+        id: 2,
+        name: "John Doe",
+        age: 35,
+        city: "Chicago",
+        class: { order: 2 },
+      },
+      { id: 4, name: "Alice", age: 28, city: "New York", class: { order: 4 } },
+      { id: 5, name: "Bob", age: 32, city: "Los Angeles", class: { order: 5 } },
+      { id: 6, name: "Charlie", age: 40, city: "Chicago", class: { order: 6 } },
+    ];
+  });
+
   describe("do", () => {
     const arr = [
       { id: 3, name: "John", age: 30, city: "New York" },
