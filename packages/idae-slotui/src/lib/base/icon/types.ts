@@ -64,7 +64,7 @@ export type IconAppProps = {
    * Display property for the icon.
    * @param display
    */
-  display: "block" | "inline-block" | "inline";
+  display?: "block" | "inline-block" | "inline";
 };
 
 export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {

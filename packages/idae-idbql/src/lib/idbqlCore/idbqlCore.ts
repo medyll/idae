@@ -98,7 +98,6 @@ export class IdbqlIndexedCore<T = any> {
 
 	async transaction<R>(
 		storeNames: string | string[],
-
 		mode: IDBTransactionMode,
 		callback: (tx: IDBTransaction) => Promise<R>
 	): Promise<R> {

@@ -20,10 +20,10 @@ export class Schema {
 		keyPath: string,
 		autoIncrement: boolean = false
 	): IDBObjectStore | null {
-		if (db.objectStoreNames.contains(storeName)) {
+		/* if (db.objectStoreNames.contains(storeName)) {
 			console.warn(`Store ${storeName} already exists, skipping creation.`);
 			return db.transaction(storeName, 'readwrite').objectStore(storeName);
-		}
+		} */
 		try {
 			return db.createObjectStore(storeName, { keyPath, autoIncrement });
 		} catch (error) {
@@ -51,13 +51,7 @@ export class Schema {
 			const keyPath = incrementField || declaredIndex || fields[0];
 			const increment = Boolean(incrementField);
 
-			let store: IDBObjectStore | null;
-			if (db.objectStoreNames.contains(storeName)) {
-				console.warn(`Store ${storeName} already exists, skipping creation.`);
-				store = db.transaction(storeName, 'readwrite').objectStore(storeName);
-			} else {
-				store = this.createStore(db, storeName, keyPath, increment);
-			}
+			const store = this.createStore(db, storeName, keyPath, increment);
 
 			if (store) {
 				for (const field of fields) {
