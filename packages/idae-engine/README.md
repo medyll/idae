@@ -1,6 +1,6 @@
 # @medyll/engine
 
-A powerful TypeScript library for data manipulation and operations across the idae-engine.
+The main base scripts for idae based modules.
 
 ## Installation
 
