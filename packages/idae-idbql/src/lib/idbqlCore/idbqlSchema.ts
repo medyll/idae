@@ -20,6 +20,10 @@ export class Schema {
 		keyPath: string,
 		autoIncrement: boolean = false
 	): IDBObjectStore | null {
+		/* if (db.objectStoreNames.contains(storeName)) {
+			console.warn(`Store ${storeName} already exists, skipping creation.`);
+			return db.transaction(storeName, 'readwrite').objectStore(storeName);
+		} */
 		try {
 			return db.createObjectStore(storeName, { keyPath, autoIncrement });
 		} catch (error) {

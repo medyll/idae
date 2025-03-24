@@ -12,13 +12,14 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "fs-extra": "^11.2.0",
-    "glob": "^11.0.0",
-    "svelte-check": "^3.8.5"
+    "fs-extra": "^11.3.0",
+    "glob": "^11.0.1",
+    "svelte-check": "^4.1.4"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/fs-extra": "^11.0.4",
-    "svelte": "^5.0.0-next.218",
+    "svelte": "^5.22.4",
     "typescript": "^5.8.2"
   }
 }

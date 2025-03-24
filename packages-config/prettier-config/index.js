@@ -1,8 +1,22 @@
-module.exports = {
+/**
+ * @type {import("prettier").Config}
+ */
+const config = {
   useTabs: true,
   singleQuote: true,
   trailingComma: "none",
+  tabWidth: 2,
   printWidth: 100,
-  plugins: ["prettier-plugin-svelte"],
-  overrides: [{ files: "*.svelte", options: { parser: "svelte" } }],
+  plugins: [
+    "prettier-plugin-svelte",
+    "prettier-plugin-tailwindcss",
+    "@huggingface/prettier-plugin-vertical-align",
+  ],
+  filepath: "./src/**/*.{svelte,css}",
+  overrides: [
+    { files: "*.svelte", options: { parser: "svelte" } },
+    { files: "*.css", options: { parser: "css" } },
+  ],
 };
+
+export default config;

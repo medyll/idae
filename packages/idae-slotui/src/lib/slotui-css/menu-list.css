@@ -8,7 +8,7 @@
   --menulist-grid-items-count: 0;
 }
 
-.slotui-menulist {
+:global(.slotui-menulist) {
   margin: 0;
   cursor: pointer;
   display: flex;
@@ -16,132 +16,133 @@
   align-items: end;
   padding: var(--menulist-padding);
 }
-.slotui-menulist.grid {
+:global(.slotui-menulist).grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr));
 }
-.slotui-menulist li.menulist-title,
-.slotui-menulist a.menulist-title {
+:global(.slotui-menulist) li.menulist-title,
+:global(.slotui-menulist) a.menulist-title {
   font-weight: bold;
 }
-.slotui-menulist .menulist-item[variant*=square] {
+
+:global(.menulist-item)[variant*=square] {
   aspect-ratio: 1/1 !important;
   height: auto;
 }
-.slotui-menulist .menulist-item[variant*=rounded] {
+:global(.menulist-item)[variant*=rounded] {
   border-radius: 50%;
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   width: var(--sld-width-small);
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   --preset-width: var(--sld-width-small);
 }
-.slotui-menulist .menulist-item[width=tiny], .slotui-menulist .menulist-item.width-tiny {
+:global(.menulist-item)[width=tiny], :global(.menulist-item).width-tiny {
   --preset-width: var(--sld-width-tiny);
   width: var(--sld-width-tiny) !important;
 }
-.slotui-menulist .menulist-item[width=mini], .slotui-menulist .menulist-item.width-mini {
+:global(.menulist-item)[width=mini], :global(.menulist-item).width-mini {
   --preset-width: var(--sld-width-mini);
   width: var(--sld-width-mini) !important;
 }
-.slotui-menulist .menulist-item[width=small], .slotui-menulist .menulist-item.width-small {
+:global(.menulist-item)[width=small], :global(.menulist-item).width-small {
   --preset-width: var(--sld-width-small);
   width: var(--sld-width-small) !important;
 }
-.slotui-menulist .menulist-item[width=med], .slotui-menulist .menulist-item.width-med {
+:global(.menulist-item)[width=med], :global(.menulist-item).width-med {
   --preset-width: var(--sld-width-med);
   width: var(--sld-width-med) !important;
 }
-.slotui-menulist .menulist-item[width=kind], .slotui-menulist .menulist-item.width-kind {
+:global(.menulist-item)[width=kind], :global(.menulist-item).width-kind {
   --preset-width: var(--sld-width-kind);
   width: var(--sld-width-kind) !important;
 }
-.slotui-menulist .menulist-item[width=full], .slotui-menulist .menulist-item.width-full {
+:global(.menulist-item)[width=full], :global(.menulist-item).width-full {
   --preset-width: var(--sld-width-full);
   width: var(--sld-width-full) !important;
 }
-.slotui-menulist .menulist-item[width=auto], .slotui-menulist .menulist-item.width-auto {
+:global(.menulist-item)[width=auto], :global(.menulist-item).width-auto {
   --preset-width: var(--sld-width-auto);
   width: var(--sld-width-auto) !important;
 }
-.slotui-menulist .menulist-item[width=default], .slotui-menulist .menulist-item.width-default {
+:global(.menulist-item)[width=default], :global(.menulist-item).width-default {
   --preset-width: var(--sld-width-default);
   width: var(--sld-width-default) !important;
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   min-height: var(--preset-tall-small);
   height: var(--preset-tall-small);
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   --preset-tall: var(--sld-tall-small);
 }
-.slotui-menulist .menulist-item[tall=tiny], .slotui-menulist .menulist-item.tall-tiny {
+:global(.menulist-item)[tall=tiny], :global(.menulist-item).tall-tiny {
   min-height: var(--sld-tall-tiny) !important;
 }
-.slotui-menulist .menulist-item[tall=mini], .slotui-menulist .menulist-item.tall-mini {
+:global(.menulist-item)[tall=mini], :global(.menulist-item).tall-mini {
   min-height: var(--sld-tall-mini) !important;
 }
-.slotui-menulist .menulist-item[tall=small], .slotui-menulist .menulist-item.tall-small {
+:global(.menulist-item)[tall=small], :global(.menulist-item).tall-small {
   min-height: var(--sld-tall-small) !important;
 }
-.slotui-menulist .menulist-item[tall=med], .slotui-menulist .menulist-item.tall-med {
+:global(.menulist-item)[tall=med], :global(.menulist-item).tall-med {
   min-height: var(--sld-tall-med) !important;
 }
-.slotui-menulist .menulist-item[tall=kind], .slotui-menulist .menulist-item.tall-kind {
+:global(.menulist-item)[tall=kind], :global(.menulist-item).tall-kind {
   min-height: var(--sld-tall-kind) !important;
 }
-.slotui-menulist .menulist-item[tall=auto], .slotui-menulist .menulist-item.tall-auto {
+:global(.menulist-item)[tall=auto], :global(.menulist-item).tall-auto {
   min-height: var(--sld-tall-auto) !important;
 }
-.slotui-menulist .menulist-item[tall=default], .slotui-menulist .menulist-item.tall-default {
+:global(.menulist-item)[tall=default], :global(.menulist-item).tall-default {
   min-height: var(--sld-tall-default) !important;
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   --preset-gutter: var(--sld-gutter-default);
 }
-.slotui-menulist .menulist-item [gutter=tiny], .slotui-menulist .menulist-item .gutter-tiny {
+:global(.menulist-item) [gutter=tiny], :global(.menulist-item) .gutter-tiny {
   padding: var(--sld-gutter-tiny);
   gap: var(--sld-gutter-tiny);
   --preset-gutter: var(--sld-gutter-tiny);
 }
-.slotui-menulist .menulist-item [gutter=mini], .slotui-menulist .menulist-item .gutter-mini {
+:global(.menulist-item) [gutter=mini], :global(.menulist-item) .gutter-mini {
   padding: var(--sld-gutter-mini);
   gap: var(--sld-gutter-mini);
   --preset-gutter: var(--sld-gutter-mini);
 }
-.slotui-menulist .menulist-item [gutter=small], .slotui-menulist .menulist-item .gutter-small {
+:global(.menulist-item) [gutter=small], :global(.menulist-item) .gutter-small {
   padding: var(--sld-gutter-small);
   gap: var(--sld-gutter-small);
   --preset-gutter: var(--sld-gutter-small);
 }
-.slotui-menulist .menulist-item [gutter=med], .slotui-menulist .menulist-item .gutter-med {
+:global(.menulist-item) [gutter=med], :global(.menulist-item) .gutter-med {
   padding: var(--sld-gutter-med);
   gap: var(--sld-gutter-med);
   --preset-gutter: var(--sld-gutter-med);
 }
-.slotui-menulist .menulist-item [gutter=kind], .slotui-menulist .menulist-item .gutter-kind {
+:global(.menulist-item) [gutter=kind], :global(.menulist-item) .gutter-kind {
   padding: var(--sld-gutter-kind);
   gap: var(--sld-gutter-kind);
   --preset-gutter: var(--sld-gutter-kind);
 }
-.slotui-menulist .menulist-item [gutter=default], .slotui-menulist .menulist-item .gutter-default {
+:global(.menulist-item) [gutter=default], :global(.menulist-item) .gutter-default {
   padding: var(--sld-gutter-default);
   gap: var(--sld-gutter-default);
   --preset-gutter: var(--sld-gutter-default);
 }
-.slotui-menulist .menulist-item:hover {
+:global(.menulist-item):hover {
   border-color: var(--sld-hover-border-color);
   background-color: var(--sld-background-disabled);
 }
-.slotui-menulist .menulist-item.selected, .slotui-menulist .menulist-item[aria-selected=true] {
+:global(.menulist-item).selected, :global(.menulist-item)[aria-selected=true] {
   border-color: none;
   background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
   box-shadow: var(--sld-selected-shadow);
 }
-.slotui-menulist .menulist-item.selected .chip,
-.slotui-menulist .menulist-item.selected .menuItemChip, .slotui-menulist .menulist-item[aria-selected=true] .chip,
-.slotui-menulist .menulist-item[aria-selected=true] .menuItemChip {
+:global(.menulist-item).selected .chip,
+:global(.menulist-item).selected .menuItemChip, :global(.menulist-item)[aria-selected=true] .chip,
+:global(.menulist-item)[aria-selected=true] .menuItemChip {
   position: absolute;
   min-height: 16px;
   height: 50%;
@@ -151,7 +152,7 @@
   left: 0;
   border: 1px solid var(--sld-color-primary-alpha-mid);
 }
-.slotui-menulist .menulist-item {
+:global(.menulist-item) {
   text-decoration: none;
   overflow: hidden;
   display: flex;
@@ -163,7 +164,7 @@
   border-radius: var(--menulist-item-radius);
   align-self: flex-start;
 }
-.slotui-menulist .menulist-item::before {
+:global(.menulist-item)::before {
   position: absolute;
   min-height: 16px;
   height: 45%;
@@ -176,7 +177,7 @@
   border: 1px solid transparent;
   content: " ";
 }
-.slotui-menulist .menulist-item .menulist-item-icon {
+:global(.menulist-item) .menulist-item-icon {
   width: 16px;
   max-width: 16px;
   text-align: center;
@@ -186,15 +187,18 @@
   justify-content: center;
   padding: 0 0.2rem;
 }
-.slotui-menulist .menulist-item .menulist-item-text {
+:global(.menulist-item) .menulist-item-text {
   flex: 1;
 }
-.slotui-menulist .menulist-item .menulist-item-text.wrap {
+:global(.menulist-item) .menulist-item-text.wrap {
   text-wrap: ellipsis;
   white-space: normal;
   overflow: hidden;
 }
-.slotui-menulist .menulist-item .menulist-item-action {
+:global(.menulist-item) .menulist-item-text svg {
+  display: inline-block;
+}
+:global(.menulist-item) .menulist-item-action {
   display: var(--menulist-item-action-display);
   justify-content: var(--menulist-item-action-justify-content);
 }

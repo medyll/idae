@@ -13,6 +13,7 @@
 		color = $bindable(),
 		rotation = 0,
 		ico,
+		display = 'inline-block',
 		...rest
 	}: ExpandProps<IconAppProps> = $props();
 
@@ -30,7 +31,7 @@
 	let iconName = $derived(finalI.includes(':') ? finalI : `mdi:${finalI}`);
 
 	let finalStyle = $derived(
-		`display:block;font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
+		`display:${display};font-size:${sizes[finSize]};color:${finCol};transform: rotate(${finRotation}deg);${style};`
 	);
  
 </script>

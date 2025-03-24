@@ -101,6 +101,7 @@ class IdbqlStateEvent {
             }
           });
           for (let i = indicesToRemove.length - 1; i >= 0; i--) {
+            this.dataState[collection][indicesToRemove[i]] = undefined;
             this.dataState[collection].splice(indicesToRemove[i], 1);
           }
         }

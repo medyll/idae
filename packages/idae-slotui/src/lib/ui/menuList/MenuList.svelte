@@ -140,6 +140,6 @@
 	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
-<style   lang="scss">
+<style  global lang="scss">
 	@use './menu-list.scss';
 </style>

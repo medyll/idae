@@ -44,15 +44,15 @@
 	}
 </script>
 
-<div class="textfield-container">
-	<div class="textfield-start">
+<div class="slotui-textfield-container">
+	<div class="slotui-textfield-start">
 		<Slotted child={inputFirst}>
 			<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
 		</Slotted>
 	</div>
 
 	{#if inputLast || endIcon || inputType === 'search'}
-		<div class="textfield-end">
+		<div class="slotui-textfield-end">
 			{#if inputLast || endIcon}
 				<Slotted child={inputLast}>
 					<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
@@ -75,7 +75,7 @@
 		bind:this={element}
 		use:popper={usePopper}
 		type="text"
-		class="textfield width-{width} tall-{tall} {className}"
+		class="slotui-textfield width-{width} tall-{tall} {className}"
 		style={niceIconStyle + ';' + style}
 		{tall}
 		{width}

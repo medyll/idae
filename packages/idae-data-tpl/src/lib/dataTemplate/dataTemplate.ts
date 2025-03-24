@@ -1,6 +1,6 @@
 import type {
 	TplCollectionName,
-	IdaeTemplate,
+	IdaeCollectionTemplate,
 	IDbForgeFields,
 	IDbFieldRules,
 	IDbForgeArgs,
@@ -50,20 +50,20 @@ export class IdaeModelCore<T = Record<string, any>> {
 		this.model = model as IdaeModelRoot<typeof model>;
 	}
 
-	addCollectionTemplate(collection: string, template: IdaeTemplate) {
+	addCollectionTemplate(collection: string, template: IdaeCollectionTemplate) {
 		this.model[collection]['template'] = template;
 	}
 
 	parseAllCollections() {
 		let out: Record<string, Record<string, IDbForgeFields | undefined> | undefined> = {};
 		Object.keys(this.model).forEach((collection) => {
-			out[collection] = this.parseRawCollection(collection as TplCollectionName);
+			out[collection] = this.parseCollection(collection as TplCollectionName);
 		});
 
 		return out;
 	}
 
-	parseRawCollection(
+	parseCollection(
 		collection: TplCollectionName
 	): Record<string, IDbForgeFields | undefined> | undefined {
 		const fields = this.getCollectionTemplateFields(collection);
@@ -73,14 +73,14 @@ export class IdaeModelCore<T = Record<string, any>> {
 		Object.keys(fields).forEach((fieldName) => {
 			let fieldType = fields[fieldName];
 			if (fieldType) {
-				out[fieldName] = this.parseCollectionFieldName(collection, fieldName);
+				out[fieldName] = this.parseCollectionFields(collection, fieldName);
 			}
 		});
 
 		return out;
 	}
 
-	parseCollectionFieldName(
+	parseCollectionFields(
 		collection: TplCollectionName,
 		fieldName: keyof IdaeTemplateFields<any>
 	): IDbForgeFields<T> | undefined {
@@ -140,10 +140,10 @@ export class IdaeModelCore<T = Record<string, any>> {
 		return this.#getModel()[String(collection)] as CoreModel;
 	}
 	getCollectionTemplate(collection: TplCollectionName) {
-		return this.getCollection(collection)['template'] as IdaeTemplate;
+		return this.getCollection(collection)['template'] as IdaeCollectionTemplate;
 	}
 	getCollectionTemplateFks(collection: TplCollectionName) {
-		return this.getCollection(collection)['template']?.fks as IdaeTemplate['fks'];
+		return this.getCollection(collection)['template']?.fks as IdaeCollectionTemplate['fks'];
 	}
 	getIndexName(collection: string) {
 		return this.getCollection(collection)?.template?.index;
@@ -244,13 +244,13 @@ export class IdaeModelCore<T = Record<string, any>> {
 		return { fieldType, fieldRule, fieldArgs, is: type };
 	}
 
-	fks(collection: string): { [collection: string]: IdaeTemplate } {
+	fks(collection: string): { [collection: string]: IdaeCollectionTemplate } {
 		const fks = this.getCollectionTemplateFks(collection);
 		const out: Record<string, any> = {};
 		// loop over fks
 		if (fks) {
 			Object.keys(fks).forEach((collection: TplCollectionName) => {
-				out[collection] = this.parseRawCollection(collection as TplCollectionName);
+				out[collection] = this.parseCollection(collection as TplCollectionName);
 			});
 		}
 		return out;
@@ -282,12 +282,12 @@ export class IdaeModelCore<T = Record<string, any>> {
 		fieldName: string,
 		data: T[]
 	): IDbForgeFields<T>[] {
-		const fieldInfo = this.parseCollectionFieldName(collection, fieldName);
+		const fieldInfo = this.parseCollectionFields(collection, fieldName);
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
 
-		return data.map(() => this.parseCollectionFieldName(collection, fieldName)) ?? [];
+		return data.map(() => this.parseCollectionFields(collection, fieldName)) ?? [];
 	}
 
 	iterateObjectField(
@@ -295,13 +295,13 @@ export class IdaeModelCore<T = Record<string, any>> {
 		fieldName: keyof T,
 		data: Record<string, any>
 	): IDbForgeFields<T>[] {
-		const fieldInfo = this.parseCollectionFieldName(collection, fieldName);
+		const fieldInfo = this.parseCollectionFields(collection, fieldName);
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object') {
 			return [];
 		}
 
 		return Object.keys(data).map((key) =>
-			this.parseCollectionFieldName(collection, key as keyof IdaeTemplateFields)
+			this.parseCollectionFields(collection, key as keyof IdaeTemplateFields)
 		);
 	}
 }
@@ -370,7 +370,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.dbCollections.parseCollectionFieldName(
+			const fieldInfo = this.dbCollections.parseCollectionFields(
 				this.collection,
 				fieldName as string
 			);
@@ -406,7 +406,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
 		string
 	> {
-		const fieldInfo = this.dbCollections.parseCollectionFieldName(
+		const fieldInfo = this.dbCollections.parseCollectionFields(
 			this.collection,
 			fieldName as string
 		);
@@ -476,7 +476,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	}
 
 	format(fieldName: keyof T): string | string[] {
-		const fieldInfo = this.#collectionValues.dbCollections.parseCollectionFieldName(
+		const fieldInfo = this.#collectionValues.dbCollections.parseCollectionFields(
 			this.#collection,
 			fieldName
 		);
@@ -495,7 +495,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	}
 	// renamed from parseCollectionFieldName
 	getForge(fieldName: keyof T): IDbForgeFields | undefined {
-		return this.#collectionValues.dbCollections.parseCollectionFieldName(
+		return this.#collectionValues.dbCollections.parseCollectionFields(
 			this.#collection,
 			String(fieldName)
 		);
@@ -532,7 +532,7 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	}
 	// renamed from parseCollectionFieldName
 	get forge(): IDbForgeFields<T> | undefined {
-		return this.#collectionValues.dbCollections.parseCollectionFieldName(
+		return this.#collectionValues.dbCollections.parseCollectionFields(
 			this.#collection,
 			String(this.#fieldName)
 		);

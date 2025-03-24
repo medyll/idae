@@ -140,6 +140,25 @@ const appSchemeViewModel: AppSchemeModel<AppSSchemeView> = {
 const schemes = { appscheme_view: appSchemeViewModel, appscheme: appSchemeModel };
 const fkData = createModel('appscheme_view', appSchemeViewModel);
 
+class Modelize {
+	createModel<T extends AppSchemeModel<T>>(model: string, data: T) {
+		Object.keys(data.fk).forEach((key) => {
+			data.fk[key] = createFk(data.fk[key]);
+		});
+		return data;
+	}
+
+	createFk(fkModel: FkModel): FkModel {
+		// Assuming we need to initialize or modify the fkModel in some ways
+		fkModel = getScheme(fkModel.code); // using the code property as the argument
+		// Here we can add additional initialization logic if required
+		return fkModel;
+	}
+	getScheme(scheme: string): AppSchemeModel {
+		const foundScheme = schemes[scheme];
+		return foundScheme ? foundScheme : ({} as AppSchemeModel);
+	}
+}
 function createFk(fkModel: FkModel): FkModel {
 	// Assuming we need to initialize or modify the fkModel in some way
 	fkModel = getScheme(fkModel.code); // using the code property as the argument
