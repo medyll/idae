@@ -1,5 +1,5 @@
 import { dataOp, type DataOpGroupResult } from "./dataOp.js";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 
 describe("dataOp", () => {
   let data: any[];
@@ -41,7 +41,7 @@ describe("dataOp", () => {
       const result = dataOp.do({
         sort: { arr, by: "id", sort: "asc" },
         find: { kw: "John", arr, field: "name" },
-        group: { dataList: arr, groupBy: "city" },
+        group: { data: arr, groupBy: "city" },
       });
 
       expect(result).toEqual({
@@ -86,7 +86,7 @@ describe("dataOp", () => {
 
     it("should return the grouped data if no sort or find options are provided", () => {
       const result = dataOp.do({
-        group: { dataList: arr, groupBy: "city" },
+        group: { data: arr, groupBy: "city" },
       });
 
       expect(result).toEqual({
@@ -226,7 +226,7 @@ describe("dataOp", () => {
         { id: 2, category: "B" },
         { id: 3, category: "A" },
       ];
-      const result = dataOp.groupBy({ dataList: arr, groupBy: "category" });
+      const result = dataOp.groupBy({ data: arr, groupBy: "category" });
       const expected: DataOpGroupResult<(typeof arr)[0]> = {
         A: {
           title: "A",
@@ -248,7 +248,7 @@ describe("dataOp", () => {
         { id: 3, category: "A" },
       ];
       const result = dataOp.groupBy({
-        dataList: arr,
+        data: arr,
         groupBy: (item) => ({
           title: item.category,
           code: item.category.toUpperCase(),
@@ -276,7 +276,7 @@ describe("dataOp", () => {
         { id: 3, no_category: "category A" },
       ];
       const result = dataOp.groupBy({
-        dataList: arr,
+        data: arr,
         groupBy: "category",
         keepUngroupedData: true,
       });

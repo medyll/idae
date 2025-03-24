@@ -50,14 +50,16 @@ export type DataOpFind<T> = {
  *
  * @template T - The type of the data items in the list.
  *
- * @property {T[]} dataList - The list of data items to be grouped.
+ * @property {T[]} data - The list of data items to be grouped.
  * @property {DataOpGroupByOptions<T>} groupBy - The options for grouping the data items.
  * @property {boolean} [keepUngroupedData] - Optional flag indicating whether to keep ungrouped data items.
  */
 export type DataOpGroupBy<T> = {
-  dataList: T[];
+  data: T[];
   groupBy: DataOpGroupByOptions<T>;
   keepUngroupedData?: boolean;
+  /** @deprecated use data */
+  dataList?: T[];
 };
 
 /**
@@ -127,7 +129,7 @@ export class dataOp {
     group?: DataOpGroupBy<T>;
   }): T[] | DataOpGroupResult<T> {
     let result: T[] =
-      options.sort?.arr || options.find?.arr || options.group?.dataList || [];
+      options.sort?.arr || options.find?.arr || options.group?.data || [];
 
     if (options.sort) {
       result = this.sortBy(options.sort);
@@ -138,7 +140,7 @@ export class dataOp {
     }
 
     if (options.group) {
-      return this.groupBy({ ...options.group, dataList: result });
+      return this.groupBy({ ...options.group, data: result });
     }
 
     return result;
@@ -264,54 +266,58 @@ export class dataOp {
    *
    * @template T - The type of objects in the array, defaults to Data.
    * @param {Object} options - The grouping options.
-   * @param {T[]} options.dataList - The array to group.
+   * @param {T[]} options.data - The array to group.
    * @param {((item: T) => { title: string; code: string }) | ResolverPathType<T> | ResolverPathType<T>[]} options.groupBy - The field(s) to group by or a function to determine the group.
    * @param {boolean} [options.keepUngroupedData=false] - Whether to keep ungrouped data.
    * @returns {DataOpGroupResult<T>} An object where keys are group codes and values are objects containing title, code, and data array.
    */
   static groupBy<T>(options: DataOpGroupBy<T>): DataOpGroupResult<T> {
     const {
+      data,
       dataList,
       groupBy: groupField,
       keepUngroupedData = false,
     } = options;
 
-    return dataList.reduce((result: DataOpGroupResult<T>, currentItem: T) => {
-      let groupInfo: { title: string; code: string } | undefined;
+    return (dataList ?? data).reduce(
+      (result: DataOpGroupResult<T>, currentItem: T) => {
+        let groupInfo: { title: string; code: string } | undefined;
 
-      if (typeof groupField === "function") {
-        groupInfo = groupField(currentItem);
-      } else {
-        const fields = Array.isArray(groupField) ? groupField : [groupField];
-        const groupValue = fields
-          .map((field) =>
-            this.resolveDotPath(currentItem, field as ResolverPathType<T>),
-          )
-          .filter((value) => value !== undefined)
-          .join(".");
+        if (typeof groupField === "function") {
+          groupInfo = groupField(currentItem);
+        } else {
+          const fields = Array.isArray(groupField) ? groupField : [groupField];
+          const groupValue = fields
+            .map((field) =>
+              this.resolveDotPath(currentItem, field as ResolverPathType<T>),
+            )
+            .filter((value) => value !== undefined)
+            .join(".");
 
-        if (groupValue) {
-          groupInfo = { title: groupValue, code: groupValue };
+          if (groupValue) {
+            groupInfo = { title: groupValue, code: groupValue };
+          }
         }
-      }
 
-      if (!groupInfo) {
-        if (!keepUngroupedData) return result;
-        groupInfo = { title: "- Ungrouped", code: "- ungrouped" };
-      }
+        if (!groupInfo) {
+          if (!keepUngroupedData) return result;
+          groupInfo = { title: "- Ungrouped", code: "- ungrouped" };
+        }
 
-      const groupKey = groupInfo.code;
-      if (!result[groupKey]) {
-        result[groupKey] = {
-          title: groupInfo.title,
-          code: groupInfo.code,
-          data: [],
-        };
-      }
-      result[groupKey].data.push(currentItem);
+        const groupKey = groupInfo.code;
+        if (!result[groupKey]) {
+          result[groupKey] = {
+            title: groupInfo.title,
+            code: groupInfo.code,
+            data: [],
+          };
+        }
+        result[groupKey].data.push(currentItem);
 
-      return result;
-    }, {});
+        return result;
+      },
+      {},
+    );
   }
 
   /**
