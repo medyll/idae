@@ -46,10 +46,10 @@ export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
     setOptions: {
       value: function (options: ResultsetOptions = {}) {
         if (options.sort ?? options.sortBy) {
-          this.sortBy(options.sort);
+          this.sortBy(options.sort ?? options.sortBy);
         }
         if (options.groupBy) {
-          this.groupBy(options.groupBy);
+          return this.groupBy(options.groupBy);
         }
         return this;
       },
@@ -75,7 +75,6 @@ export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
           }
           return result;
         });
-        // delete this?.sortBy;
 
         return this;
       },
