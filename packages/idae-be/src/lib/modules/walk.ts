@@ -330,8 +330,8 @@ export class WalkHandler
 			try {
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
-					const result = this.selectWhile(el as HTMLElement, method, qy);
-					if (result) ret.push(result);
+					const results = this.selectWhile(el as HTMLElement, method, qy);
+					ret.push(...results);
 				});
 				callback?.({
 					root: this.beElement,
@@ -341,7 +341,6 @@ export class WalkHandler
 				});
 			} catch (e) {
 				console.log(e);
-				console.log(method);
 			}
 
 			return this.beElement;
@@ -359,7 +358,7 @@ export class WalkHandler
 		element: Element,
 		direction: WalkerMethods,
 		selector: string | undefined
-	): HTMLElement | null {
+	): HTMLElement | HTMLElement[] | null {
 		const dict: Record<string, keyof Element> = {
 			up: 'parentNode',
 			parent: 'parentNode',
@@ -373,15 +372,21 @@ export class WalkHandler
 		};
 
 		const property = dict[direction] ?? direction;
-		let sibling = element[property] as HTMLElement | null;
+
+		if (property === 'children') {
+			const children = Array.from(element.children) as HTMLElement[];
+
+			return selector ? children.filter((child) => child.matches(selector)) : children;
+		}
 
 		if (property === 'closest') {
 			return element.closest(selector ?? '*');
 		}
 
+		let sibling = element[property] as HTMLElement | null;
+
 		while (sibling) {
-			console.log({ direction, selector, sibling });
-			if (!selector || sibling?.matches(selector)) {
+			if (!selector || sibling.matches(selector)) {
 				return sibling;
 			}
 			sibling = sibling[property] as HTMLElement | null;
