@@ -4,16 +4,13 @@ import type { CommonHandler, HandlerCallBackFn } from '../types.js';
 enum beStyleMethods {
 	set = 'set',
 	get = 'get',
-	delete = 'delete',
-	getKey = 'getKey'
+	unset = 'unset'
 }
 
 export interface BeStylesHandler {
 	set?: Record<string, string> | string;
-	value?: string;
 	get?: string;
-	delete?: string;
-	getKey?: string;
+	unset?: string;
 }
 
 export type BeStylesHandlerMethods = keyof typeof beStyleMethods;
@@ -28,11 +25,9 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	static methods = Object.values(beStyleMethods);
 
 	handle(actions: BeStylesHandler) {
-		console.log('StylesHandler.handle', actions);
 		const { method, args } = this.resolveIndirection(actions);
-		console.log({ method, args });
+
 		this.beElement.eachNode((el) => {
-			console.log({ method, args });
 			switch (method) {
 				case 'set':
 					if (typeof args === 'string') {
@@ -44,29 +39,24 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 								this.applyStyle(property, propertyValue);
 							}
 						});
-
-						// If value is provided, treat it as a single property setting
-						/* if (value !== undefined) {
-							this.applyStyle(styles, value);
-						} */
 					} else if (typeof args === 'object') {
 						// Handle object input
 						Object.entries(args).forEach(([prop, val]) => {
 							this.applyStyle(prop, val);
 						});
+					} else {
+						console.warn('Invalid argument type for set method');
 					}
-					console.log({ method, args });
 					break;
 				case 'get':
-					console.log({ method, args });
+					return this.get(args);
 					break;
-				case 'delete':
-					break;
-				case 'getKey':
+				case 'unset':
+					this.unset(args);
 					break;
 			}
 		});
-		console.log('StylesHandler.handle end');
+
 		return this.beElement;
 	}
 
@@ -110,7 +100,11 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 		return this.beElement;
 	}
-	// get style
+	/**
+	 * getStyle Gets the value of a CSS property for the first matched element.
+	 * @param key The CSS property name.
+	 * @returns The value of the CSS property, or null if not found.
+	 */
 	get(key: string): string | null {
 		let css: string | null = null;
 		this.beElement.eachNode((el) => {
@@ -120,20 +114,15 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 				const computedStyle = window.getComputedStyle(el);
 				css = computedStyle.getPropertyValue(key).trim();
 			}
-		});
+		}, true);
 		return css || null;
 	}
 	// unset style
 	unset(key: string): string | null {
-		return '';
-	}
-	//
-	getKey(key: string): string | null {
-		return '';
-	}
-
-	delete(key: string): string | null {
-		return '';
+		this.beElement.eachNode((el) => {
+			el.style.removeProperty(key);
+		});
+		return null;
 	}
 
 	private applyStyle(property: string, value: string): void {
@@ -142,5 +131,13 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 			// el.style.setProperty(property, value);
 			// console.log(`Setting style ${property}: ${value}`);
 		});
+	}
+
+	getKey(key: string): string | null {
+		let value: string | null = null;
+		this.beElement.eachNode((el) => {
+			value = el.style.getPropertyValue(key) || null;
+		});
+		return value;
 	}
 }
