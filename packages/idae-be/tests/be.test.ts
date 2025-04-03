@@ -39,8 +39,14 @@ describe('Be', () => {
 		expect(document.querySelector('#test')?.classList.contains('toggle-class')).toBe(false);
 	});
 
-	it('should set and get styles', () => {
+	it('should set and get styles as an object', () => {
 		be('#test').setStyle({ color: 'red', fontSize: '16px' });
+		expect(be('#test').getStyle('color')).toBe('red');
+		expect(be('#test').getStyle('font-size')).toBe('16px');
+	});
+
+	it('should set and get styles as a string', () => {
+		be('#test').setStyle('color: red; font-size: 16px;');
 		expect(be('#test').getStyle('color')).toBe('red');
 		expect(be('#test').getStyle('font-size')).toBe('16px');
 	});
