@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-	"version": "0.78.0",
+	"version": "0.79.0",
 	"description": "A powerful DOM manipulation library with a callback-based approach for precise element targeting. Provides consistent chaining, comprehensive DOM traversal, event handling, style management, and more. Written in TypeScript for modern browsers.",
 	"scripts": {
 		"dev": "vite dev",
