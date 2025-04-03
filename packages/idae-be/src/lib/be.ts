@@ -263,13 +263,6 @@ export class Be {
 		return beElem;
 	}
 
-	/**
-	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
-	 * @param styles An object of CSS properties and values, or a string of CSS properties and values.
-	 * @param value The value for a single CSS property when styles is a property name string.
-	 * @returns The Be instance for method chaining.
-	 */
-
 	fetch<T extends object>(options: {
 		url: string;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE';
@@ -283,7 +276,7 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	eachNode(callback: (el: HTMLElement) => void): void {
+	eachNode(callback: (el: HTMLElement) => void, firstChild?: boolean): void {
 		switch (this.isWhat) {
 			case 'element':
 				BeUtils.applyCallback(this.node as HTMLElement, callback);
@@ -291,10 +284,14 @@ export class Be {
 			case 'array':
 				(this.node as HTMLElement[]).forEach((lo) => {
 					BeUtils.applyCallback(lo, callback);
+					if (firstChild) return;
 				});
 				break;
 			case 'qy':
-				document.querySelectorAll(this.node as string).forEach((el) => callback(el as HTMLElement));
+				document.querySelectorAll(this.node as string).forEach((el) => {
+					callback(el as HTMLElement);
+					if (firstChild) return;
+				});
 				break;
 		}
 	}
