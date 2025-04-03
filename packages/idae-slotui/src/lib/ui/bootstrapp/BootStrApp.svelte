@@ -24,13 +24,7 @@
 <svelte:head>
 	{#key $page.url}
 		<title>slotui</title>
-		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" />
-		<style>
-			 {@html cssfabric}
-
-		</style>
-		<style></style>
-		<!-- <link href="src/theme/cssfabric.scss" lang="scss" rel="stylesheet" /> -->
+		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" /> 
 	{/key}
 </svelte:head>
 red
