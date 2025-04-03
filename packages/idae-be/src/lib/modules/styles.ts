@@ -28,9 +28,11 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	static methods = Object.values(beStyleMethods);
 
 	handle(actions: BeStylesHandler) {
+		console.log('StylesHandler.handle', actions);
 		const { method, args } = this.resolveIndirection(actions);
-
+		console.log({ method, args });
 		this.beElement.eachNode((el) => {
+			console.log({ method, args });
 			switch (method) {
 				case 'set':
 					if (typeof args === 'string') {
@@ -64,6 +66,7 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 					break;
 			}
 		});
+		console.log('StylesHandler.handle end');
 		return this.beElement;
 	}
 
@@ -89,18 +92,14 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	 */
 	set(styles: Record<string, string> | string, value?: string): Be {
 		if (typeof styles === 'string') {
-			// Handle string input
-			const styleEntries = styles.split(';').filter((s) => s.trim() !== '');
-			styleEntries.forEach((entry) => {
-				const [property, propertyValue] = entry.split(':').map((s) => s.trim());
-				if (property && propertyValue) {
-					this.applyStyle(property, propertyValue);
-				}
-			});
-
-			// If value is provided, treat it as a single property setting
-			if (value !== undefined) {
-				this.applyStyle(styles, value);
+			// Handle string input,   if contains ':' and use cssText
+			if (styles.includes(':')) {
+				this.beElement.eachNode((el) => {
+					el.style.cssText = styles;
+				});
+			} else {
+				// If value is provided, treat it as a single property setting
+				this.applyStyle(styles, value ?? '');
 			}
 		} else if (typeof styles === 'object') {
 			// Handle object input
@@ -113,7 +112,16 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	}
 	// get style
 	get(key: string): string | null {
-		return 'redfer';
+		let css: string | null = null;
+		this.beElement.eachNode((el) => {
+			css = el.style[key as any] || null;
+
+			if (!css) {
+				const computedStyle = window.getComputedStyle(el);
+				css = computedStyle.getPropertyValue(key).trim();
+			}
+		});
+		return css || null;
 	}
 	// unset style
 	unset(key: string): string | null {
@@ -126,11 +134,6 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 	delete(key: string): string | null {
 		return '';
-	}
-
-	private handlerFor(command: BeStylesHandlerMethods) {
-		return (content: string | HTMLElement, callback: HandlerCallBackFn) =>
-			this.handle({ [command]: content, callback });
 	}
 
 	private applyStyle(property: string, value: string): void {
