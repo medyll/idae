@@ -113,7 +113,7 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	}
 	// get style
 	get(key: string): string | null {
-		return '';
+		return 'redfer';
 	}
 	// unset style
 	unset(key: string): string | null {
@@ -135,7 +135,9 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 	private applyStyle(property: string, value: string): void {
 		this.beElement.eachNode((el) => {
-			el.style.setProperty(property, value);
+			el.style[property] = value;
+			// el.style.setProperty(property, value);
+			// console.log(`Setting style ${property}: ${value}`);
 		});
 	}
 }

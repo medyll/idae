@@ -32,8 +32,11 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	}
 
 	get(name?: string): string | null {
+		if (typeof this.beElement.node === 'string')
+			return document.querySelector(this.beElement.node || '')?.getAttribute(name || '') || null;
 		if (this.beElement.isWhat !== 'element') return null;
 		const el = this.beElement.node as HTMLElement;
+
 		return name ? el.getAttribute(name) : null;
 	}
 
