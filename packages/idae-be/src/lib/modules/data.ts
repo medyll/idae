@@ -10,8 +10,10 @@ enum dataMethods {
 }
 
 export type DataHandlerHandle = {
+	get: (keyOrObject: string | Record<string, string>, value?: string) => Be;
 	set: (keyOrObject: string | Record<string, string>, value?: string) => Be;
 	delete: (keyOrObject: string | Record<string, string>, value?: string) => Be;
+	getKey: (keyOrObject: string | Record<string, string>, value?: string) => Be;
 };
 
 export class DataHandler implements CommonHandler<DataHandler> {
@@ -53,12 +55,14 @@ export class DataHandler implements CommonHandler<DataHandler> {
 		return this.beElement;
 	}
 
-	delete(keyOrObject: string | Record<string, string>, value?: string): Be {
+	delete(keyOrObject: string | Record<string, string>): Be {
 		this.beElement.eachNode((el) => {
-			if (typeof keyOrObject === 'string' && value !== undefined) {
-				el.dataset[keyOrObject] = value;
+			if (typeof keyOrObject === 'string') {
+				// Supprime un seul attribut
+				delete el.dataset[keyOrObject];
 			} else if (typeof keyOrObject === 'object') {
-				Object.entries(keyOrObject).forEach(([key, val]) => {
+				// Supprime plusieurs attributs
+				Object.keys(keyOrObject).forEach((key) => {
 					delete el.dataset[key];
 				});
 			}
