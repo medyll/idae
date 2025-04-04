@@ -29,6 +29,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] | keyof PositionHandler = PositionHandler.methods;
 
 	handle(actions: PositionHandlerHandle): Be {
 		Object.entries(actions).forEach(([method, props]) => {
@@ -196,13 +197,8 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		const targetRect = targetEl.getBoundingClientRect();
 		const { sourceAnchor, targetAnchor, offset = { x: 0, y: 0 } } = options;
 
-		let sourceX: number, sourceY: number, targetX: number, targetY: number;
-
-		// Calculate source anchor point
-		[sourceX, sourceY] = BeUtils.calculateAnchorPoint(sourceRect, sourceAnchor);
-
-		// Calculate target anchor point
-		[targetX, targetY] = BeUtils.calculateAnchorPoint(targetRect, targetAnchor);
+		const [sourceX, sourceY] = BeUtils.calculateAnchorPoint(sourceRect, sourceAnchor);
+		const [targetX, targetY] = BeUtils.calculateAnchorPoint(targetRect, targetAnchor);
 
 		// Calculate final position
 		const x = targetX - sourceX + offset.x;

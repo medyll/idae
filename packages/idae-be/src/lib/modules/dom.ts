@@ -86,6 +86,7 @@ export class DomHandler
 	constructor(element: Be) {
 		this.beElement = element;
 	}
+	methods: string[] | keyof DomHandler = DomHandler.methods;
 
 	/**
 	 * Handles various DOM operations on the element(s).

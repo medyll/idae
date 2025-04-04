@@ -32,6 +32,7 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	constructor(element: Be) {
 		this.beElement = element;
 	}
+	methods: string[] | keyof TextHandler = TextHandler.methods;
 
 	get text(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
@@ -40,29 +41,57 @@ export class TextHandler implements CommonHandler<TextHandler> {
 
 	handle(actions: TextHandlerHandle): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
-			const { method, props } = BeUtils.resolveIndirection<TextHandler>(TextHandler, actions);
+			const { method, props } = BeUtils.resolveIndirection<TextHandler>(
+				new TextHandler(this.beElement),
+				actions as unknown as keyof TextHandler
+			);
 
 			switch (method) {
 				case 'update':
-					el.innerText = props;
+					if (typeof props === 'string') {
+						el.innerText = props;
+					}
 					break;
-				case 'prepend': // append to text content
-					el.insertAdjacentHTML('beforebegin', props);
+				case 'prepend':
+					if (typeof props === 'string') {
+						el.insertAdjacentHTML('afterbegin', props);
+					} else {
+						throw new Error('Invalid props for prepend: must be a string.');
+					}
 					break;
 				case 'append':
-					el.insertAdjacentHTML('afterbegin', props);
+					if (typeof props === 'string') {
+						el.insertAdjacentHTML('beforeend', props);
+					} else {
+						throw new Error('Invalid props for append: must be a string.');
+					}
 					break;
 				case 'replace':
-					el.outerHTML = props;
+					if (typeof props === 'string') {
+						el.outerHTML = props;
+					} else {
+						throw new Error('Invalid props for replace: must be a string.');
+					}
 					break;
 				case 'remove':
 					el.remove();
 					break;
 				case 'clear':
-					el.outerHTML = '';
+					el.innerHTML = '';
 					break;
 				case 'normalize':
 					el.normalize();
+					break;
+				case 'wrap':
+					if (typeof props === 'string') {
+						const wrapper = document.createElement('div');
+						wrapper.innerHTML = props.trim();
+						const parent = wrapper.firstElementChild as HTMLElement;
+						if (parent) {
+							el.parentNode?.insertBefore(parent, el);
+							parent.appendChild(el);
+						}
+					}
 					break;
 			}
 
@@ -77,31 +106,28 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	}
 
 	update(content: TextHandlerHandle['update'], callback?: HandlerCallBackFn) {
-		this.handle({ update: content, callback });
-	}
-	updateText(content: TextHandlerHandle['updateText'], callback?: HandlerCallBackFn) {
-		this.handle({ updateText: content, callback });
+		return this.handle({ update: content, callback });
 	}
 	append(content: TextHandlerHandle['append'], callback?: HandlerCallBackFn) {
 		return this.handle({ append: content, callback });
 	}
 	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBackFn) {
-		this.handle({ prepend: content, callback });
+		return this.handle({ prepend: content, callback });
 	}
 	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBackFn) {
-		this.handle({ replace: content, callback });
+		return this.handle({ replace: content, callback });
 	}
-	remove(content: TextHandlerHandle['remove'], callback?: HandlerCallBackFn) {
-		this.handle({ remove: content, callback });
+	remove(callback?: HandlerCallBackFn) {
+		return this.handle({ remove: undefined, callback });
 	}
-	clear(content: TextHandlerHandle['clear'], callback?: HandlerCallBackFn) {
-		this.handle({ clear: content, callback });
+	clear(callback?: HandlerCallBackFn) {
+		return this.handle({ clear: undefined, callback });
 	}
-	normalize(content: TextHandlerHandle['normalize'], callback?: HandlerCallBackFn) {
-		this.handle({ normalize: content, callback });
+	normalize(callback?: HandlerCallBackFn) {
+		return this.handle({ normalize: undefined, callback });
 	}
 	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBackFn) {
-		this.handle({ wrap: content, callback });
+		return this.handle({ wrap: content, callback });
 	}
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
