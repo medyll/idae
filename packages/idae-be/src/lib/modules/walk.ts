@@ -112,6 +112,11 @@ export class WalkHandler
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] = WalkHandler.methods;
+
+	valueOf(): unknown {
+		return this.beElement;
+	}
 
 	/**
 	 * Handles multiple walk operations.
@@ -208,7 +213,6 @@ export class WalkHandler
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el.parentNode) {
 				const siblings = Array.from(el.parentNode.children).filter((child) => child !== el);
-				console.log('siblings found:', siblings); // Debug
 				ret.push(...siblings.filter((sibling) => !qy || sibling.matches(qy)));
 			}
 		});
@@ -289,7 +293,6 @@ export class WalkHandler
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
 			const found = el.querySelector(qy);
-			console.log('find result:', found); // Debug
 			if (found) ret.push(found as HTMLElement);
 		});
 		const resultBe = Be.elem(ret); // Encapsule les résultats dans une instance de Be
@@ -334,7 +337,6 @@ export class WalkHandler
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
 					const result = this.selectWhile(el as HTMLElement, method, qy);
-					console.log(`methodize result for ${method}:`, typeof result, result); // Debug
 					if (result) ret.push(...(Array.isArray(result) ? result : [result]));
 				});
 
@@ -347,7 +349,7 @@ export class WalkHandler
 				});
 				return resultBe;
 			} catch (e) {
-				console.error(`Error in methodize for ${method}:`, e); // Debug
+				console.error(`Error in methodize for ${method}:`, e);
 			}
 
 			return this.beElement;

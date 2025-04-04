@@ -41,7 +41,8 @@ describe('WalkHandler', () => {
         `;
 
 		const siblings = be('#target').siblings();
-		expect(siblings.inputNode.length).toBe(2);
+		console.log(siblings.node());
+		expect(siblings.node().length).toBe(2);
 		/* expect(siblings[0].node.id).toBe('sibling1');
 		expect(siblings[1].node.id).toBe('sibling2'); */
 	});
