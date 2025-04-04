@@ -37,7 +37,7 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	get(key: string): string | null {
 		// if space in string
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).dataset[key] || null;
+		return (this.beElement.inputNode as HTMLElement).dataset[key] || null;
 	}
 
 	set(keyOrObject: string | Record<string, string>, value?: string): Be {
@@ -69,11 +69,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	getKey(key: string | string[]): string | null {
 		// if spaces in string
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).dataset[key] || null;
+		return (this.beElement.inputNode as HTMLElement).dataset[key] || null;
 	}
 
 	valueOf(): DOMStringMap | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).dataset;
+		return (this.beElement.inputNode as HTMLElement).dataset;
 	}
 }

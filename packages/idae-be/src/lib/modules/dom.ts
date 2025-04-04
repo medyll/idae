@@ -309,6 +309,6 @@ export class DomHandler
 
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).innerHTML;
+		return (this.beElement.inputNode as HTMLElement).innerHTML;
 	}
 }

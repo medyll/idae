@@ -208,6 +208,7 @@ export class WalkHandler
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el.parentNode) {
 				const siblings = Array.from(el.parentNode.children).filter((child) => child !== el);
+				console.log('siblings found:', siblings); // Debug
 				ret.push(...siblings.filter((sibling) => !qy || sibling.matches(qy)));
 			}
 		});
@@ -287,16 +288,18 @@ export class WalkHandler
 	find(qy: string, callback?: HandlerCallBackFn): Be | null {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			ret.push(el.querySelector(qy) as HTMLElement);
+			const found = el.querySelector(qy);
+			console.log('find result:', found); // Debug
+			if (found) ret.push(found as HTMLElement);
 		});
+		const resultBe = Be.elem(ret); // Encapsule les résultats dans une instance de Be
 		callback?.({
 			root: this.beElement,
-			be: Be.elem(ret),
+			be: resultBe,
 			fragment: 'result',
-			requested: Be.elem(ret)
+			requested: resultBe
 		});
-
-		return this.beElement;
+		return resultBe;
 	}
 
 	/**
@@ -330,17 +333,21 @@ export class WalkHandler
 			try {
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
-					const results = this.selectWhile(el as HTMLElement, method, qy);
-					ret.push(...results);
+					const result = this.selectWhile(el as HTMLElement, method, qy);
+					console.log(`methodize result for ${method}:`, typeof result, result); // Debug
+					if (result) ret.push(...(Array.isArray(result) ? result : [result]));
 				});
+
+				const resultBe = Be.elem(ret);
 				callback?.({
 					root: this.beElement,
-					be: Be.elem(ret),
+					be: resultBe,
 					fragment: 'result',
-					requested: Be.elem(ret)
+					requested: resultBe
 				});
+				return resultBe;
 			} catch (e) {
-				console.log(e);
+				console.error(`Error in methodize for ${method}:`, e); // Debug
 			}
 
 			return this.beElement;
@@ -357,41 +364,56 @@ export class WalkHandler
 	private selectWhile(
 		element: Element,
 		direction: WalkerMethods,
-		selector: string | undefined
+		selector?: string
 	): HTMLElement | HTMLElement[] | null {
 		const dict: Record<string, keyof Element> = {
-			up: 'parentNode',
-			parent: 'parentNode',
+			up: 'parentElement',
 			next: 'nextElementSibling',
 			previous: 'previousElementSibling',
-			siblings: 'nextElementSibling',
+			siblings: 'parentElement',
 			children: 'children',
 			firstChild: 'firstElementChild',
 			lastChild: 'lastElementChild',
 			closest: 'closest'
 		};
 
-		const property = dict[direction] ?? direction;
+		const property = dict[direction];
 
-		if (property === 'children') {
+		// Handle recursive traversal for `up`
+		if (direction === 'up') {
+			let current: HTMLElement | null = element as HTMLElement;
+			while (current) {
+				current = current[property] as HTMLElement | null;
+				if (!selector || (current && current.matches(selector))) {
+					return current;
+				}
+			}
+			return null;
+		}
+
+		// Handle `siblings`
+		if (direction === 'siblings') {
+			const parent = element.parentElement;
+			if (!parent) return [];
+			const siblings = Array.from(parent.children).filter((child) => child !== element);
+			return selector ? siblings.filter((sibling) => sibling.matches(selector)) : siblings;
+		}
+
+		// Handle `children`
+		if (direction === 'children') {
 			const children = Array.from(element.children) as HTMLElement[];
-
 			return selector ? children.filter((child) => child.matches(selector)) : children;
 		}
 
-		if (property === 'closest') {
-			return element.closest(selector ?? '*');
+		// Handle `closest`
+		if (direction === 'closest') {
+			const closest = element.closest(selector ?? '*') as HTMLElement | null;
+			return closest;
 		}
 
-		let sibling = element[property] as HTMLElement | null;
+		// Handle single-step traversal (e.g., `next`, `previous`, `firstChild`, `lastChild`)
+		const target = element[property] as HTMLElement | null;
 
-		while (sibling) {
-			if (!selector || sibling.matches(selector)) {
-				return sibling;
-			}
-			sibling = sibling[property] as HTMLElement | null;
-		}
-
-		return null;
+		return target && (!selector || target.matches(selector)) ? target : null;
 	}
 }

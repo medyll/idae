@@ -71,7 +71,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		if (!sourceEl) return this.beElement;
 
 		const sourceRect = sourceEl.getBoundingClientRect();
-		const targetRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const targetRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 		const { offsetX = 0, offsetY = 0, useTransform = false } = options;
 
 		this.beElement.eachNode((el) => {
@@ -121,7 +121,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 		const { alignment = 'center', offset = 0, useTransform = false } = options;
 		const targetRect = targetEl.getBoundingClientRect();
-		const selfRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const selfRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 
 		let x = 0,
 			y = 0;
@@ -192,7 +192,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 		if (!targetEl) return this.beElement;
 
-		const sourceRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const sourceRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 		const targetRect = targetEl.getBoundingClientRect();
 		const { sourceAnchor, targetAnchor, offset = { x: 0, y: 0 } } = options;
 
@@ -232,6 +232,6 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	valueOf(): DOMRect | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).getBoundingClientRect();
+		return (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 	}
 }

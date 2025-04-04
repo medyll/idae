@@ -42,7 +42,7 @@ export class PropsHandler implements CommonHandler<PropsHandler, PropsHandlerHan
 
 	get(name: string, callback?: HandlerCallBackFn): any {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement)[name];
+		return (this.beElement.inputNode as HTMLElement)[name];
 	}
 
 	set(nameOrObject: string | Record<string, any>, value?: any, callback?: HandlerCallBackFn): Be {
@@ -66,7 +66,7 @@ export class PropsHandler implements CommonHandler<PropsHandler, PropsHandlerHan
 
 	valueOf(): Record<string, any> | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		const el = this.beElement.node as HTMLElement;
+		const el = this.beElement.inputNode as HTMLElement;
 		const props = {};
 		for (let prop in el) {
 			if (el.hasOwnProperty(prop)) {

@@ -32,10 +32,12 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	}
 
 	get(name?: string): string | null {
-		if (typeof this.beElement.node === 'string')
-			return document.querySelector(this.beElement.node || '')?.getAttribute(name || '') || null;
+		if (typeof this.beElement.inputNode === 'string')
+			return (
+				document.querySelector(this.beElement.inputNode || '')?.getAttribute(name || '') || null
+			);
 		if (this.beElement.isWhat !== 'element') return null;
-		const el = this.beElement.node as HTMLElement;
+		const el = this.beElement.inputNode as HTMLElement;
 
 		return name ? el.getAttribute(name) : null;
 	}
@@ -68,7 +70,7 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 
 	valueOf(): Record<string, string> | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		const el = this.beElement.node as HTMLElement;
+		const el = this.beElement.inputNode as HTMLElement;
 		const attrs = {};
 		for (let i = 0; i < el.attributes.length; i++) {
 			const attr = el.attributes[i];

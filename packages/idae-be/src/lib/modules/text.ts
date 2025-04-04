@@ -35,7 +35,7 @@ export class TextHandler implements CommonHandler<TextHandler> {
 
 	get text(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).textContent;
+		return (this.beElement.inputNode as HTMLElement).textContent;
 	}
 
 	handle(actions: TextHandlerHandle): Be {
@@ -105,6 +105,6 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	}
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).innerText;
+		return (this.beElement.inputNode as HTMLElement).innerText;
 	}
 }

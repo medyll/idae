@@ -13,7 +13,7 @@ import { TextHandler, type TextHandlerHandle } from './modules/text.js';
 import { TimersHandler } from './modules/timers.js';
 
 export class Be {
-	node!: HTMLElement | HTMLElement[] | string;
+	inputNode!: HTMLElement | HTMLElement[] | string;
 	isWhat!: IsWhat;
 	//
 	BeTimer: NodeJS.Timeout | null = null;
@@ -101,12 +101,18 @@ export class Be {
 	interval!: TimersHandler['interval'];
 	clearTimeout!: TimersHandler['clearTimeout'];
 	clearInterval!: TimersHandler['clearInterval'];
+
 	private constructor(input: HTMLElement | HTMLElement[] | Be | string) {
 		if (input instanceof Be) {
 			return input;
 		}
-		this.node = input;
-		this.isWhat = typeof input === 'string' ? 'qy' : Array.isArray(input) ? 'array' : 'element';
+		this.inputNode = Be.getNode(input);
+		this.isWhat =
+			typeof this.inputNode === 'string'
+				? 'qy'
+				: Array.isArray(this.inputNode)
+					? 'array'
+					: 'element';
 
 		// styles
 		this.styleHandler = new StylesHandler(this);
@@ -159,6 +165,26 @@ export class Be {
 		this.timerHandler = new TimersHandler(this);
 		this.timers = this.handle(this.timerHandler);
 		this.attach(TimersHandler);
+	}
+
+	/**
+	 * Normalizes the input to ensure `node` is always an HTMLElement or an array of HTMLElements.
+	 * @param input - The input to normalize (string, HTMLElement, or array of HTMLElements).
+	 * @returns A valid HTMLElement or an array of HTMLElements.
+	 */
+	private static getNode(input: HTMLElement | HTMLElement[] | string): HTMLElement | HTMLElement[] {
+		if (typeof input === 'string') {
+			// Si `input` est une chaîne, sélectionnez les éléments correspondants
+			const elements = Array.from(document.querySelectorAll(input));
+			return elements.length === 1 ? elements[0] : elements;
+		} else if (input instanceof HTMLElement) {
+			// Si `input` est un seul élément DOM, retournez-le
+			return input;
+		} else if (Array.isArray(input)) {
+			// Si `input` est un tableau, filtrez pour ne garder que les éléments DOM valides
+			return input.filter((n) => n instanceof HTMLElement) as HTMLElement[];
+		}
+		throw new Error('Invalid input: must be a string, HTMLElement, or an array of HTMLElements.');
 	}
 
 	static elem(node: HTMLElement | HTMLElement[] | string): Be {
@@ -276,19 +302,30 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
+	get node(): HTMLElement | HTMLElement[] {
+		switch (this.isWhat) {
+			case 'element':
+				return this.inputNode as HTMLElement;
+			case 'array':
+				return Array.from(this.inputNode as HTMLElement[]);
+			case 'qy':
+				return Array.from(document.querySelectorAll(this.inputNode as string)) as HTMLElement[];
+		}
+	}
+
 	eachNode(callback: (el: HTMLElement) => void, firstChild?: boolean): void {
 		switch (this.isWhat) {
 			case 'element':
-				BeUtils.applyCallback(this.node as HTMLElement, callback);
+				BeUtils.applyCallback(this.inputNode as HTMLElement, callback);
 				break;
 			case 'array':
-				(this.node as HTMLElement[]).forEach((lo) => {
+				(this.inputNode as HTMLElement[]).forEach((lo) => {
 					BeUtils.applyCallback(lo, callback);
 					if (firstChild) return;
 				});
 				break;
 			case 'qy':
-				document.querySelectorAll(this.node as string).forEach((el) => {
+				document.querySelectorAll(this.inputNode as string).forEach((el) => {
 					callback(el as HTMLElement);
 					if (firstChild) return;
 				});
@@ -303,7 +340,7 @@ export class Be {
 	 */
 
 	get html() {
-		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
+		return this.isWhat === 'element' ? (this.inputNode as HTMLElement).innerHTML : null;
 	}
 
 	private attach<T extends new (beElement: Be) => unknown>(
