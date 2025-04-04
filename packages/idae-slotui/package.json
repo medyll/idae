@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-slotui-svelte",
-	"version": "0.81.0",
+	"version": "0.82.0",
 	"scope": "@medyll",
 	"scripts": {
 		"dev": "vite dev",
@@ -87,8 +87,8 @@
 	"dependencies": {
 		"@iconify/svelte": "^4.2.0",
 		"@medyll/cssfabric": "^0.4.2",
-		"@medyll/idae-be": "^0.80.0",
-		"@medyll/idae-engine": "^1.78.0",
+		"@medyll/idae-be": "^0.81.0",
+		"@medyll/idae-engine": "^1.79.0",
 		"d3": "^7.9.0",
 		"lerna": "^8.2.1",
 		"npm-check-updates": "^17.1.16",
