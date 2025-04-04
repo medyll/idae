@@ -19,6 +19,12 @@ enum domMethods {
 
 type Content = string | HTMLElement | Be;
 export interface DomHandlerHandle {
+	insert?: {
+		content: string | HTMLElement | Be;
+		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend';
+		callback?: (element: HandlerCallbackProps) => void;
+	};
+
 	update?: {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
@@ -143,14 +149,12 @@ export class DomHandler
 	append(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			if (content instanceof Be) {
-				content.eachNode((child: HTMLElement) => {
-					ret.push(child);
-					el.appendChild(child);
-				});
+			const normalizedContent = this.normalizeContent(content);
+			if (normalizedContent instanceof DocumentFragment) {
+				el.appendChild(normalizedContent);
 			} else {
-				ret.push(content);
-				el.appendChild(content);
+				ret.push(normalizedContent);
+				el.appendChild(normalizedContent);
 			}
 		});
 		callback?.({
@@ -164,14 +168,12 @@ export class DomHandler
 	prepend(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			if (content instanceof Be) {
-				content.eachNode((child: HTMLElement) => {
-					ret.push(child);
-					el.insertBefore(child, el.firstChild);
-				});
+			const normalizedContent = this.normalizeContent(content);
+			if (normalizedContent instanceof DocumentFragment) {
+				el.insertBefore(normalizedContent, el.firstChild);
 			} else {
-				ret.push(content);
-				el.insertBefore(content, el.firstChild);
+				ret.push(normalizedContent);
+				el.insertBefore(normalizedContent, el.firstChild);
 			}
 		});
 		callback?.({
@@ -184,7 +186,7 @@ export class DomHandler
 
 	insert(
 		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend',
-		element: HTMLElement | Be,
+		element: HTMLElement | Be | string,
 		callback?: HandlerCallBackFn
 	): Be {
 		switch (mode) {
@@ -196,9 +198,11 @@ export class DomHandler
 				return this.beforeBegin(element, callback);
 			case 'beforeend':
 				return this.beforeEnd(element, callback);
+			default:
+				throw new Error(`Invalid mode: ${mode}`);
 		}
 	}
-	afterBegin(content: HTMLElement, callback?: HandlerCallBackFn) {
+	afterBegin(content: Content, callback?: HandlerCallBackFn) {
 		this.beElement.eachNode((el: HTMLElement) => {
 			this.adjacentElement(el, content, 'afterbegin');
 			callback?.({
@@ -211,34 +215,55 @@ export class DomHandler
 	}
 
 	afterEnd(content: Content, callback?: HandlerCallBackFn) {
-		this.append(content, callback);
+		this.beElement.eachNode((el: HTMLElement) => {
+			// Insérer après l'élément cible
+			el.parentNode?.insertBefore(this.normalizeContent(content), el.nextSibling);
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 		return this.beElement;
 	}
 
 	beforeBegin(content: Content, callback?: HandlerCallBackFn) {
-		this.prepend(content, callback);
+		this.beElement.eachNode((el: HTMLElement) => {
+			// Insérer avant l'élément cible
+			el.parentNode?.insertBefore(this.normalizeContent(content), el);
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 		return this.beElement;
 	}
 
 	beforeEnd(content: Content, callback?: HandlerCallBackFn) {
-		this.append(content, callback);
+		this.beElement.eachNode((el: HTMLElement) => {
+			// Insérer à la fin de l'élément cible
+			el.appendChild(this.normalizeContent(content));
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
 		return this.beElement;
 	}
 
-	replace(content: Content, callback?: HandlerCallBackFn) {
+	replace(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			if (content instanceof Be) {
-				content.eachNode((child: HTMLElement) => {
-					ret.push(child);
-					el.replaceWith(child);
-				});
+			const normalizedContent = this.normalizeContent(content);
+			if (normalizedContent instanceof DocumentFragment) {
+				el.replaceWith(...normalizedContent.childNodes);
 			} else {
-				ret.push(content);
-				el.replaceWith(content);
+				ret.push(normalizedContent);
+				el.replaceWith(normalizedContent);
 			}
 		});
-
 		callback?.({
 			fragment: content,
 			be: be(ret),
@@ -300,11 +325,71 @@ export class DomHandler
 
 	private adjacentElement(
 		element: HTMLElement,
-		content: HTMLElement,
+		content: HTMLElement | Be | string,
 		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend'
 	) {
-		element.insertAdjacentElement(mode, content);
-		return this.beElement;
+		const normalizedContent = this.normalizeContent(content);
+
+		if (typeof content === 'string') {
+			// Si le contenu est une chaîne HTML, utilisez insertAdjacentHTML
+			element.insertAdjacentHTML(mode, content);
+		} else if (normalizedContent instanceof HTMLElement) {
+			// Si le contenu est un élément DOM, utilisez insertAdjacentElement
+			if (mode === 'afterend') {
+				element.parentNode?.insertBefore(normalizedContent, element.nextSibling);
+			} else if (mode === 'beforebegin') {
+				element.parentNode?.insertBefore(normalizedContent, element);
+			} else {
+				element.insertAdjacentElement(mode, normalizedContent);
+			}
+		} else if (normalizedContent instanceof DocumentFragment) {
+			// Si le contenu est un fragment, insérez chaque nœud
+			Array.from(normalizedContent.childNodes).forEach((node) => {
+				if (mode === 'afterbegin' || mode === 'beforeend') {
+					element.appendChild(node);
+				} else if (mode === 'afterend') {
+					element.parentNode?.insertBefore(node, element.nextSibling);
+				} else if (mode === 'beforebegin') {
+					element.parentNode?.insertBefore(node, element);
+				}
+			});
+		}
+	}
+
+	private normalizeContent(content: string | HTMLElement | Be): HTMLElement | DocumentFragment {
+		if (typeof content === 'string') {
+			// Si le contenu est une chaîne HTML, créez un fragment DOM
+			const template = document.createElement('template');
+			template.innerHTML = content.trim();
+			return template.content;
+		} else if (content instanceof Be) {
+			// Si le contenu est une instance de Be, utilisez son premier nœud
+			if (Array.isArray(content.node)) {
+				const fragment = document.createDocumentFragment();
+				content.node.forEach((node) => {
+					if (node instanceof HTMLElement) {
+						fragment.appendChild(node);
+					}
+				});
+				return fragment;
+			} else if (content.node instanceof HTMLElement) {
+				return content.node;
+			}
+			throw new Error('Invalid Be instance: no valid node found.');
+		} else {
+			// Sinon, le contenu est déjà un HTMLElement
+			return content;
+		}
+	}
+
+	private insertContent(el: HTMLElement, content: Content, mode: 'afterEnd' | 'beforeEnd') {
+		const normalizedContent = this.normalizeContent(content);
+
+		if (mode === 'afterEnd') {
+			el.parentNode?.insertBefore(normalizedContent, el.nextSibling);
+		} else if (mode === 'beforeEnd') {
+			el.appendChild(normalizedContent);
+		}
 	}
 
 	valueOf(): string | null {
