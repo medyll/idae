@@ -1,4 +1,3 @@
-import { BeUtils } from '$lib/utils.js';
 import { Be } from '../be.js';
 import type { CombineElements, CommonHandler, HandlerCallBackFn } from '../types.js';
 
@@ -41,6 +40,11 @@ export class ClassesHandler implements CommonHandler<ClassesHandler, ClassHandle
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] | keyof ClassesHandler = ClassesHandler.methods;
+
+	valueOf(): string {
+		return `[ClassesHandler: methods=${this.methods}]`;
+	}
 
 	handle(actions: ClassHandlerHandlerHandle): Be {
 		if (!actions) return this.beElement;
@@ -48,29 +52,10 @@ export class ClassesHandler implements CommonHandler<ClassesHandler, ClassHandle
 		Object.entries(actions).forEach(([method, props]) => {
 			switch (method) {
 				default:
-					this[method](props);
+					(this[method as keyof ClassesHandler] as (props: unknown) => void)(props);
 					break;
 			}
 		});
-		/* this.beElement.eachNode((el) => {
-			if (actions.replace) {
-				let replacements: [string, string][];
-				if (typeof actions.replace === 'string') {
-					replacements = actions.replace
-						.split(';')
-						.map((pair) => pair.trim().split(' ') as [string, string]);
-				} else if (Array.isArray(actions.replace) && actions.replace.every(Array.isArray)) {
-					replacements = actions.replace as [string, string][];
-				} else {
-					replacements = [actions.replace.split(' ') as [string, string]];
-				}
-				replacements.forEach(([oldClass, newClass]) => {
-					if (oldClass && newClass) {
-						el.classList.replace(oldClass, newClass);
-					}
-				});
-			}
-		}); */
 		return this.beElement;
 	}
 

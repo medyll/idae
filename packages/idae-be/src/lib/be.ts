@@ -67,6 +67,12 @@ export class Be {
 	private textHandler!: TextHandler;
 	appendText!: TextHandler['append'];
 	prependText!: TextHandler['prepend'];
+	updateText!: TextHandler['update'];
+	replaceText!: TextHandler['replace'];
+	removeText!: TextHandler['remove'];
+	clearText!: TextHandler['clear'];
+	normalizeText!: TextHandler['normalize'];
+	wrapText!: TextHandler['wrap'];
 	// events
 	events!: (actions: EventHandlerHandle) => Be;
 	private eventHandler!: EventsHandler;

@@ -18,9 +18,11 @@ export class PropsHandler implements CommonHandler<PropsHandler, PropsHandlerHan
 
 	static methods = Object.values(PropsMethods);
 
-	constructor(element: Be) {
-		this.beElement = element;
+	constructor(beElement: Be) {
+		this.beElement = beElement;
 	}
+
+	methods: (keyof PropsHandler)[] = PropsHandler.methods as (keyof PropsHandler)[];
 
 	handle(actions: PropsHandlerHandle): Be {
 		if (!actions) return this.beElement;
