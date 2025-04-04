@@ -1,5 +1,5 @@
 import { Be } from '../be.js';
-import type { CommonHandler, HandlerCallBackFn } from '../types.js';
+import type { CommonHandler } from '../types.js';
 
 enum beStyleMethods {
 	set = 'set',
@@ -21,13 +21,18 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] = Object.keys(beStyleMethods);
+
+	valueOf(): string {
+		return `[StylesHandler: ${this.methods.join(', ')}]`;
+	}
 
 	static methods = Object.values(beStyleMethods);
 
 	handle(actions: BeStylesHandler) {
 		const { method, args } = this.resolveIndirection(actions);
 
-		this.beElement.eachNode((el) => {
+		this.beElement.eachNode(() => {
 			switch (method) {
 				case 'set':
 					if (typeof args === 'string') {
@@ -42,14 +47,14 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 					} else if (typeof args === 'object') {
 						// Handle object input
 						Object.entries(args).forEach(([prop, val]) => {
-							this.applyStyle(prop, val);
+							this.applyStyle(prop, val as string);
 						});
 					} else {
 						console.warn('Invalid argument type for set method');
 					}
 					break;
 				case 'get':
-					return this.get(args);
+					this.get(args);
 					break;
 				case 'unset':
 					this.unset(args);
@@ -62,17 +67,18 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 	private resolveIndirection(actions: BeStylesHandler): {
 		method: BeStylesHandlerMethods;
-		args: any;
+		args: string | Record<string, string> | undefined;
 	} {
-		let method;
+		let method: BeStylesHandlerMethods = 'get'; // Default to 'get' or any valid method
 		let args;
 		Object.keys(actions).forEach((action: unknown) => {
-			if (StylesHandler.methods.includes(action)) {
-				method = action;
-				args = actions[action];
+			const actionKey = action as string;
+			if (StylesHandler.methods.includes(actionKey as beStyleMethods)) {
+				method = actionKey as BeStylesHandlerMethods;
+				args = actions[actionKey as keyof BeStylesHandler];
 			}
 		});
-		return { method, args };
+		return { method: method as BeStylesHandlerMethods, args };
 	}
 	/**
 	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
@@ -108,8 +114,10 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	get(key: string): string | null {
 		let css: string | null = null;
 		this.beElement.eachNode((el) => {
+			// Prioritize inline styles
 			css = el.style[key as any] || null;
 
+			// Fallback to computed styles if inline style is not set
 			if (!css) {
 				const computedStyle = window.getComputedStyle(el);
 				css = computedStyle.getPropertyValue(key).trim();
@@ -127,9 +135,8 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 	private applyStyle(property: string, value: string): void {
 		this.beElement.eachNode((el) => {
-			el.style[property] = value;
-			// el.style.setProperty(property, value);
-			// console.log(`Setting style ${property}: ${value}`);
+			const kebabProperty = toKebabCase(property);
+			el.style.setProperty(kebabProperty, value);
 		});
 	}
 
@@ -140,4 +147,8 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 		});
 		return value;
 	}
+}
+
+function toKebabCase(property: string): string {
+	return property.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
