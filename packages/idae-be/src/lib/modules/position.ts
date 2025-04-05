@@ -178,7 +178,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 	 * @returns The Be instance for method chaining.
 	 */
 	snapTo(
-		targetElement: string | HTMLElement, // SnapToOptions
+		targetElement: string | HTMLElement,
 		options: {
 			sourceAnchor: PositionSnapOptions;
 			targetAnchor: PositionSnapOptions;
@@ -203,6 +203,8 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		// Calculate final position
 		const x = targetX - sourceX + offset.x;
 		const y = targetY - sourceY + offset.y;
+
+		console.log('Calculated position:', { x, y }, [sourceX, sourceY], { sourceRect });
 
 		// Apply position
 		this.beElement.eachNode((el) => {
