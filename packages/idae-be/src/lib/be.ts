@@ -7,11 +7,12 @@ import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
 import { DomHandler, type DomHandlerHandle } from './modules/dom.js';
 import { PositionHandler, type PositionHandlerHandle } from './modules/position.js';
-import { WalkHandler } from './modules/walk.js';
+import { WalkHandler, type WalkHandlerHandle } from './modules/walk.js';
 import { TextHandler, type TextHandlerHandle } from './modules/text.js';
-import { TimersHandler } from './modules/timers.js';
+import { TimersHandler, type TimerHandlerHandle } from './modules/timers.js';
 
 export class Be {
+	[key: string]: unknown; // Add an index signature to allow dynamic property assignment
 	inputNode!: HTMLElement | HTMLElement[] | string;
 	isWhat!: IsWhat;
 	//
@@ -83,7 +84,7 @@ export class Be {
 	toggleClass!: ClassesHandler['toggle'];
 	replaceClass!: ClassesHandler['replace'];
 	// walk
-	walk!: (actions: DataHandlerHandle) => Be;
+	walk!: (actions: WalkHandlerHandle) => Be;
 	private walkHandler!: WalkHandler;
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
@@ -97,7 +98,7 @@ export class Be {
 	find!: WalkHandler['find'];
 	findAll!: WalkHandler['findAll'];
 	// timers
-	timers!: (actions: TextHandlerHandle) => Be;
+	timers!: (actions: TimerHandlerHandle) => Be;
 	private timerHandler!: TimersHandler;
 	timeout!: TimersHandler['timeout'];
 	interval!: TimersHandler['interval'];
@@ -118,50 +119,52 @@ export class Be {
 
 		// styles
 		this.styleHandler = new StylesHandler(this);
-		this.styles = this.handle(this.styleHandler);
+		this.styles = this.handle(this.styleHandler) as (actions: BeStylesHandler) => Be;
 		this.attach(StylesHandler, 'Style');
 		// dataSet
 		this.dataHandler = new DataHandler(this);
-		this.data = this.handle(this.styleHandler);
-		this.attach<DataHandler>(DataHandler, 'Data');
+		this.data = this.handle(this.dataHandler) as (actions: DataHandlerHandle) => Be;
+		this.attach(DataHandler, 'Data');
 		// attributes
 		this.attrHandler = new AttrHandler(this);
-		this.attrs = this.handle(this.styleHandler);
-		this.attach<AttrHandler>(AttrHandler, 'Attr');
+		this.attrs = this.handle(this.attrHandler) as (actions: Partial<AttrHandlerHandle>) => Be;
+		this.attach(AttrHandler, 'Attr');
 
 		// position
 		this.positionHandler = new PositionHandler(this);
-		this.position = this.handle(this.positionHandler);
-		this.attach<PositionHandler>(PositionHandler);
+		this.position = this.handle(this.positionHandler) as (actions: PositionHandlerHandle) => Be;
+		this.attach(PositionHandler);
 
 		// text
 		this.textHandler = new TextHandler(this);
-		this.dom = this.handle(this.textHandler);
-		this.attach<TextHandler>(TextHandler, 'Text');
+		this.text = this.handle(this.textHandler) as (actions: TextHandlerHandle) => Be;
+		this.attach(TextHandler, 'Text');
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
-		this.dom = this.handle(this.domHandler);
-		this.attach<DomHandler>(DomHandler);
+		this.dom = this.handle(this.domHandler) as (actions: DomHandlerHandle) => Be;
+		this.attach(DomHandler);
 
 		// events
 		this.eventHandler = new EventsHandler(this);
-		this.events = this.handle(this.eventHandler);
-		this.attach<EventsHandler>(EventsHandler);
+		this.events = this.handle(this.eventHandler) as (actions: EventHandlerHandle) => Be;
+		this.attach(EventsHandler);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
-		this.classes = this.handle(this.classesHandler);
-		this.attach<ClassesHandler>(ClassesHandler, 'Class');
+		this.classes = this.handle(this.classesHandler) as unknown as (
+			actions: ClassHandlerHandler
+		) => Be;
+		this.attach(ClassesHandler, 'Class');
 
 		// walk
 		this.walkHandler = new WalkHandler(this);
-		this.walk = this.handle(this.walkHandler);
-		this.attach<WalkHandler>(WalkHandler);
+		this.walk = this.handle(this.walkHandler) as (actions: WalkHandlerHandle) => Be;
+		this.attach(WalkHandler);
 
 		// timers
 		this.timerHandler = new TimersHandler(this);
-		this.timers = this.handle(this.timerHandler);
+		this.timers = this.handle(this.timerHandler) as (actions: TimerHandlerHandle) => Be;
 		this.attach(TimersHandler);
 	}
 
@@ -174,7 +177,7 @@ export class Be {
 		if (typeof input === 'string') {
 			// Si `input` est une chaîne, sélectionnez les éléments correspondants
 			const elements = Array.from(document.querySelectorAll(input));
-			return elements.length === 1 ? elements[0] : elements;
+			return elements.length === 1 ? (elements[0] as HTMLElement) : (elements as HTMLElement[]);
 		} else if (input instanceof HTMLElement) {
 			// Si `input` est un seul élément DOM, retournez-le
 			return input;
@@ -300,17 +303,6 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	get node(): HTMLElement | HTMLElement[] {
-		switch (this.isWhat) {
-			case 'element':
-				return this.inputNode as HTMLElement;
-			case 'array':
-				return Array.from(this.inputNode as HTMLElement[]);
-			case 'qy':
-				return Array.from(document.querySelectorAll(this.inputNode as string)) as HTMLElement[];
-		}
-	}
-
 	eachNode(callback: (el: HTMLElement) => void, firstChild?: boolean): void {
 		switch (this.isWhat) {
 			case 'element':
@@ -331,24 +323,29 @@ export class Be {
 		}
 	}
 
-	/** DOM
-	 * Handles various DOM operations on the element(s).
-	 * @param actions An object specifying the DOM actions to perform.
-	 * @returns The Be instance for method chaining.
-	 */
-
 	get html() {
 		return this.isWhat === 'element' ? (this.inputNode as HTMLElement).innerHTML : null;
 	}
 
-	private attach<T extends new (beElement: Be) => unknown>(
+	get node(): HTMLElement | HTMLElement[] {
+		switch (this.isWhat) {
+			case 'element':
+				return this.inputNode as HTMLElement;
+			case 'array':
+				return Array.from(this.inputNode as HTMLElement[]);
+			case 'qy':
+				return Array.from(document.querySelectorAll(this.inputNode as string)) as HTMLElement[];
+		}
+	}
+
+	private attach<T extends new (beElement: Be) => object>(
 		Handler: T & { methods?: string[] },
 		suffix: string = ''
 	) {
 		const fromMethods = Handler.methods || [];
 
 		fromMethods.forEach((method: string) => {
-			const handler = new Handler(this);
+			const handler = new Handler(this) as InstanceType<T>;
 			const methodName = suffix ? method + suffix : method;
 
 			if (!(method in handler)) {
@@ -358,14 +355,17 @@ export class Be {
 					console.error(`Handler ${Handler.name} not found`, handler);
 				}
 
-				this[methodName] = (...args: any[]) => {
-					return (handler[method] as Function).apply(handler, args);
+				this[methodName] = (...args: unknown[]) => {
+					return (handler[method as keyof typeof handler] as (...args: unknown[]) => unknown).apply(
+						handler,
+						args
+					);
 				};
 			}
 		});
 	}
 
-	private handle<T extends Record<string, any>>(cl: T) {
+	private handle<T, A>(cl: T & { handle: (args: A) => unknown }) {
 		return cl.handle.bind(cl);
 	}
 }

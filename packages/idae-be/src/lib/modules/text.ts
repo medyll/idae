@@ -12,6 +12,7 @@ enum textMethods {
 	replace = 'replace',
 	clear = 'clear'
 }
+
 export type TextHandlerHandle = {
 	update?: string | HTMLElement;
 	append?: string | HTMLElement;

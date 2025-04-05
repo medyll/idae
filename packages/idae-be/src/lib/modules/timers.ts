@@ -11,7 +11,7 @@ enum timersMethods {
 type cd = Record<'timeout' | 'interval', number> & HandlerCallBack;
 type cds = Record<'clearTimeout' | 'clearInterval', HandlerCallBackFn>;
 
-type TimerHandlerHandle = cd & cds;
+export type TimerHandlerHandle = cd & cds;
 
 export class TimersHandler implements CommonHandler<TimersHandler> {
 	private beElement: Be;
