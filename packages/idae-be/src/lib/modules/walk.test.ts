@@ -40,24 +40,27 @@ describe('WalkHandler', () => {
             </div>
         `;
 
-		const siblings = be('#target').siblings();
-		console.log(siblings.node());
-		expect(siblings.node().length).toBe(2);
-		/* expect(siblings[0].node.id).toBe('sibling1');
-		expect(siblings[1].node.id).toBe('sibling2'); */
+		be('#target').siblings(({ be: siblings }) => {
+			expect(siblings.node.length).toBe(2);
+		});
 	});
 
 	it('should find closest ancestor matching selector', () => {
 		document.body.innerHTML = `
-            <div class="ancestor">
+            <div id="ancestor" class="ancestor">
                 <div class="parent">
                     <div id="child"></div>
                 </div>
             </div>
         `;
 
-		const closest = be('#child').closest('.ancestor');
-		expect(closest.inputNode.classList.contains('ancestor')).toBe(true);
+		be('#child').closest('.ancestor', ({ be: closest }) => {
+			if (Array.isArray(closest?.node)) {
+				expect(closest.node[0]?.id).toBe('ancestor');
+			} else {
+				expect(closest?.node?.id).toBe('ancestor');
+			}
+		});
 	});
 
 	it('should find descendants matching selector', () => {
@@ -68,7 +71,9 @@ describe('WalkHandler', () => {
             </div>
         `;
 
-		const descendants = be('#ancestor').find('.descendant');
-		expect(descendants.length).toBe(2);
+		be('#ancestor').findAll('.descendant', ({ be: descendants }) => {
+			descendants.addClass('found');
+		});
+		expect(document.querySelectorAll('.found').length).toBe(2);
 	});
 });
