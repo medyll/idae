@@ -38,7 +38,6 @@ export interface DomHandlerHandle {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
 	};
-	//"afterbegin" | "afterend" | "beforebegin" | "beforeend"
 	afterbegin?: {
 		content: Content;
 		callback?: (element: HandlerCallbackProps) => void;
@@ -76,6 +75,9 @@ export interface DomHandlerInterface {
 	): Be;
 }
 
+/**
+ * Handles DOM manipulation operations for Be elements.
+ */
 export class DomHandler
 	implements DomHandlerInterface, CommonHandler<DomHandler, DomHandlerHandle>
 {
@@ -132,6 +134,16 @@ export class DomHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Updates the content of the element(s).
+	 * @param content - The new content to set.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.update('<p>Updated content</p>'); // Updates the content of the element
+	 */
 	update(content: string, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el) {
@@ -147,6 +159,16 @@ export class DomHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Appends content to the element(s).
+	 * @param content - The content to append (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after appending.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.append('<span>Appended</span>'); // Appends content to the element
+	 */
 	append(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
@@ -166,6 +188,16 @@ export class DomHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Prepends content to the element(s).
+	 * @param content - The content to prepend (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after prepending.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.prepend('<span>Prepended</span>'); // Prepends content to the element
+	 */
 	prepend(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
@@ -185,6 +217,17 @@ export class DomHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Inserts content into the element(s) at a specified position.
+	 * @param mode - The position to insert the content ('afterbegin', 'afterend', 'beforebegin', 'beforeend').
+	 * @param element - The content to insert (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after insertion.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.insert('afterbegin', '<span>Inserted</span>'); // Inserts content at the beginning
+	 */
 	insert(
 		mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend',
 		element: HTMLElement | Be | string,
@@ -203,7 +246,14 @@ export class DomHandler
 				throw new Error(`Invalid mode: ${mode}`);
 		}
 	}
-	afterBegin(content: Content, callback?: HandlerCallBackFn) {
+
+	/**
+	 * Inserts content at the beginning of the element(s).
+	 * @param content - The content to insert (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after insertion.
+	 * @returns The Be instance for method chaining.
+	 */
+	afterBegin(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			this.adjacentElement(el, content, 'afterbegin');
 			callback?.({
@@ -215,7 +265,13 @@ export class DomHandler
 		return this.beElement;
 	}
 
-	afterEnd(content: Content, callback?: HandlerCallBackFn) {
+	/**
+	 * Inserts content after the element(s).
+	 * @param content - The content to insert (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after insertion.
+	 * @returns The Be instance for method chaining.
+	 */
+	afterEnd(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			// Insérer après l'élément cible
 			el.parentNode?.insertBefore(this.normalizeContent(content), el.nextSibling);
@@ -228,7 +284,13 @@ export class DomHandler
 		return this.beElement;
 	}
 
-	beforeBegin(content: Content, callback?: HandlerCallBackFn) {
+	/**
+	 * Inserts content before the element(s).
+	 * @param content - The content to insert (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after insertion.
+	 * @returns The Be instance for method chaining.
+	 */
+	beforeBegin(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			// Insérer avant l'élément cible
 			el.parentNode?.insertBefore(this.normalizeContent(content), el);
@@ -241,7 +303,13 @@ export class DomHandler
 		return this.beElement;
 	}
 
-	beforeEnd(content: Content, callback?: HandlerCallBackFn) {
+	/**
+	 * Inserts content at the end of the element(s).
+	 * @param content - The content to insert (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after insertion.
+	 * @returns The Be instance for method chaining.
+	 */
+	beforeEnd(content: Content, callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			// Insérer à la fin de l'élément cible
 			el.appendChild(this.normalizeContent(content));
@@ -254,6 +322,12 @@ export class DomHandler
 		return this.beElement;
 	}
 
+	/**
+	 * Replaces the element(s) with new content.
+	 * @param content - The content to replace the element(s) with (string, HTMLElement, or Be instance).
+	 * @param callback - Optional callback function to execute after replacement.
+	 * @returns The Be instance for method chaining.
+	 */
 	replace(content: Content, callback?: HandlerCallBackFn): Be {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
@@ -273,7 +347,16 @@ export class DomHandler
 		return this.beElement;
 	}
 
-	remove(callback?: HandlerCallBackFn) {
+	/**
+	 * Removes the element(s) from the DOM.
+	 * @param callback - Optional callback function to execute after removal.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"><span>To be removed</span></div>
+	 * const beInstance = be('#test span');
+	 * beInstance.remove(); // Removes the span element
+	 */
+	remove(callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			el.remove();
 			callback?.({
@@ -285,7 +368,16 @@ export class DomHandler
 		return this.beElement;
 	}
 
-	clear(callback?: HandlerCallBackFn) {
+	/**
+	 * Clears the content of the element(s).
+	 * @param callback - Optional callback function to execute after clearing.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"><span>Content</span></div>
+	 * const beInstance = be('#test');
+	 * beInstance.clear(); // Clears the content of the div
+	 */
+	clear(callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			const fragment = el.innerHTML;
 			el.innerHTML = '';
@@ -297,7 +389,13 @@ export class DomHandler
 		});
 		return this.beElement;
 	}
-	normalize(callback?: HandlerCallBackFn) {
+
+	/**
+	 * Normalizes the content of the element(s).
+	 * @param callback - Optional callback function to execute after normalization.
+	 * @returns The Be instance for method chaining.
+	 */
+	normalize(callback?: HandlerCallBackFn): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
 			el.normalize();
 			callback?.({
@@ -308,7 +406,18 @@ export class DomHandler
 		});
 		return this.beElement;
 	}
-	wrap(tag: string = 'div', callback?: HandlerCallBackFn) {
+
+	/**
+	 * Wraps the element(s) with a new element.
+	 * @param tag - The tag name of the wrapper element (default is 'div').
+	 * @param callback - Optional callback function to execute after wrapping.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.wrap('section'); // Wraps the div with a <section> element
+	 */
+	wrap(tag: string = 'div', callback?: HandlerCallBackFn): Be {
 		// wrap in tag
 		this.beElement.eachNode((el: HTMLElement) => {
 			const wrapper = document.createElement(tag);

@@ -81,10 +81,15 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 		return { method: method as BeStylesHandlerMethods, args };
 	}
 	/**
-	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
-	 * @param styles An object of CSS properties and values, or a string of CSS properties and values.
-	 * @param value The value for a single CSS property when styles is a property name string.
+	 * Sets one or more CSS styles for the selected element(s), including CSS custom properties.
+	 * @param styles - An object of CSS properties and values, or a string of CSS properties and values.
+	 * @param value - The value for a single CSS property when styles is a property name string.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.setStyle({ color: 'red', backgroundColor: 'blue' }); // Sets multiple styles
+	 * beInstance.setStyle('color', 'green'); // Sets a single style
 	 */
 	set(styles: Record<string, string> | string, value?: string): Be {
 		if (typeof styles === 'string') {
@@ -107,9 +112,14 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 		return this.beElement;
 	}
 	/**
-	 * getStyle Gets the value of a CSS property for the first matched element.
-	 * @param key The CSS property name.
+	 * Gets the value of a CSS property for the first matched element.
+	 * @param key - The CSS property name.
 	 * @returns The value of the CSS property, or null if not found.
+	 * @example
+	 * // HTML: <div id="test" style="color: red;"></div>
+	 * const beInstance = be('#test');
+	 * const color = beInstance.getStyle('color');
+	 * console.log(color); // Output: "red"
 	 */
 	get(key: string): string | null {
 		let css: string | null = null;
@@ -125,12 +135,20 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 		}, true);
 		return css || null;
 	}
-	// unset style
-	unset(key: string): string | null {
+	/**
+	 * Removes a CSS property from the selected element(s).
+	 * @param key - The CSS property name to remove.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test" style="color: red;"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.unsetStyle('color'); // Removes the "color" style
+	 */
+	unset(key: string): Be {
 		this.beElement.eachNode((el) => {
 			el.style.removeProperty(key);
 		});
-		return null;
+		return this.beElement;
 	}
 
 	private applyStyle(property: string, value: string): void {

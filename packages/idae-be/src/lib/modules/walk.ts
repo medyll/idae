@@ -133,6 +133,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="child"></div><div id="parent"><div id="child"></div></div>
+	 * const beInstance = be('#child');
+	 * beInstance.up(); // Traverses to the parent element
 	 */
 	up(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -147,6 +151,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling1');
+	 * beInstance.next(); // Traverses to the next sibling
 	 */
 	next(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -161,6 +169,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling2');
+	 * beInstance.previous(); // Traverses to the previous sibling
 	 */
 	previous(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -202,6 +214,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling1');
+	 * beInstance.siblings(); // Finds all sibling elements
 	 */
 	siblings(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -232,6 +248,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="parent"><div id="child"></div></div>
+	 * const beInstance = be('#parent');
+	 * beInstance.children(); // Finds all child elements
 	 */
 	children(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -246,6 +266,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="ancestor"><div id="parent"><div id="child"></div></div></div>
+	 * const beInstance = be('#child');
+	 * beInstance.closest('#ancestor'); // Finds the closest ancestor matching the selector
 	 */
 	closest(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {

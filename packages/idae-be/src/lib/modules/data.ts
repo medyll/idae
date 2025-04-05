@@ -59,6 +59,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 * Retrieves the value of a `data-*` attribute.
 	 * @param key - The key of the `data-*` attribute to retrieve.
 	 * @returns The value of the attribute, or `null` if not found.
+	 * @example
+	 * // HTML: <div id="test" data-role="admin"></div>
+	 * const beInstance = be('#test');
+	 * const role = beInstance.getData('role');
+	 * console.log(role); // Output: "admin"
 	 */
 	get(key: string): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
@@ -70,6 +75,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 * @param keyOrObject - A key-value pair or an object containing multiple key-value pairs.
 	 * @param value - The value to set if a single key is provided.
 	 * @returns The Be element for chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.setData('role', 'admin'); // Sets a single `data-role` attribute
+	 * beInstance.setData({ role: 'admin', type: 'user' }); // Sets multiple `data-*` attributes
 	 */
 	set(keyOrObject: string | Record<string, string>, value?: string): Be {
 		this.beElement.eachNode((el) => {
@@ -88,6 +98,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 * Deletes one or more `data-*` attributes.
 	 * @param keyOrObject - A key or an object containing multiple keys to delete.
 	 * @returns The Be element for chaining.
+	 * @example
+	 * // HTML: <div id="test" data-role="admin" data-type="user"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.deleteData('role'); // Deletes the `data-role` attribute
+	 * beInstance.deleteData({ type: '' }); // Deletes the `data-type` attribute
 	 */
 	delete(keyOrObject: string | Record<string, string>): Be {
 		this.beElement.eachNode((el) => {
@@ -108,6 +123,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 * Retrieves the value of a specific `data-*` attribute.
 	 * @param key - The key of the `data-*` attribute to retrieve.
 	 * @returns The value of the attribute, or `null` if not found.
+	 * @example
+	 * // HTML: <div id="test" data-role="admin"></div>
+	 * const beInstance = be('#test');
+	 * const role = beInstance.getKey('role');
+	 * console.log(role); // Output: "admin"
 	 */
 	getKey(key: string | string[]): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
@@ -117,6 +137,11 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	/**
 	 * Retrieves all `data-*` attributes as a DOMStringMap.
 	 * @returns A DOMStringMap containing all `data-*` attributes, or `null` if not applicable.
+	 * @example
+	 * // HTML: <div id="test" data-role="admin" data-type="user"></div>
+	 * const beInstance = be('#test');
+	 * const dataAttributes = beInstance.data.valueOf();
+	 * console.log(dataAttributes); // Output: { role: "admin", type: "user" }
 	 */
 	valueOf(): DOMStringMap | null {
 		if (this.beElement.isWhat !== 'element') return null;

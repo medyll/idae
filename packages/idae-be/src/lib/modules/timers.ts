@@ -51,6 +51,16 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		return this.beElement;
 	}
 
+	/**
+	 * Sets a timeout for the element(s).
+	 * @param value - The timeout duration in milliseconds.
+	 * @param callback - The callback function to execute after the timeout.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.timeout(1000, () => console.log('Timeout executed')); // Sets a 1-second timeout
+	 */
 	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBackFn): Be {
 		this.beElement.timerOut = setTimeout(() => {
 			callback?.({
@@ -74,6 +84,17 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 
 		return this.beElement;
 	}
+
+	/**
+	 * Sets an interval for the element(s).
+	 * @param value - The interval duration in milliseconds.
+	 * @param callback - The callback function to execute at each interval.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.interval(500, () => console.log('Interval executed')); // Sets a 500ms interval
+	 */
 	interval(value: TimerHandlerHandle['interval'], callback?: HandlerCallBackFn): Be {
 		this.beElement.timerInterval = setInterval(() => {
 			callback?.({
@@ -97,6 +118,17 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 
 		return this.beElement;
 	}
+
+	/**
+	 * Clears the timeout for the element(s).
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.timeout(1000, () => console.log('Timeout executed'));
+	 * beInstance.clearTimeout(); // Clears the timeout
+	 */
 	clearTimeout(callback?: HandlerCallBackFn): Be {
 		if (this.beElement.timerOut) clearTimeout(this.beElement.timerOut);
 		this.beElement.timerOut = null;
@@ -115,6 +147,17 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		});
 		return this.beElement;
 	}
+
+	/**
+	 * Clears the interval for the element(s).
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.interval(500, () => console.log('Interval executed'));
+	 * beInstance.clearInterval(); // Clears the interval
+	 */
 	clearInterval(callback?: HandlerCallBackFn): Be {
 		if (this.beElement.timerInterval) clearInterval(this.beElement.timerInterval);
 		this.beElement.timerInterval = null;

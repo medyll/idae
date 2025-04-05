@@ -49,12 +49,17 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 	}
 	/**
 	 * Clones the position of a source element to this element.
-	 * @param source The element or selector of the element whose position is to be cloned.
-	 * @param options Additional options for positioning.
-	 * @param options.offsetX Horizontal offset from the source position.
-	 * @param options.offsetY Vertical offset from the source position.
-	 * @param options.useTransform Whether to use CSS transform for positioning.
+	 * @param source - The element or selector of the element whose position is to be cloned.
+	 * @param options - Additional options for positioning.
+	 * @param options.offsetX - Horizontal offset from the source position.
+	 * @param options.offsetY - Vertical offset from the source position.
+	 * @param options.useTransform - Whether to use CSS transform for positioning.
+	 * @param callback - Optional callback function to execute after cloning the position.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.clonePosition('#source', { offsetX: 10, offsetY: 20 });
 	 */
 	clonePosition(
 		source: string | HTMLElement,
@@ -97,12 +102,17 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	/**
 	 * Positions this element to overlap a target element.
-	 * @param targetElement The element or selector of the element to overlap.
-	 * @param options Additional options for positioning.
-	 * @param options.alignment The alignment of this element relative to the target.
-	 * @param options.offset The distance to offset from the target element.
-	 * @param options.useTransform Whether to use CSS transform for positioning.
+	 * @param targetElement - The element or selector of the element to overlap.
+	 * @param options - Additional options for positioning.
+	 * @param options.alignment - The alignment of this element relative to the target.
+	 * @param options.offset - The distance to offset from the target element.
+	 * @param options.useTransform - Whether to use CSS transform for positioning.
+	 * @param callback - Optional callback function to execute after positioning.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.overlapPosition('#source', { alignment: 'center', offset: 10 });
 	 */
 	overlapPosition(
 		targetElement: string | HTMLElement,
@@ -170,12 +180,21 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	/**
 	 * Snaps the element to a target element with specified anchor points.
-	 * @param targetElement The element or selector of the element to snap to.
-	 * @param options Snapping options.
-	 * @param options.sourceAnchor The anchor point on the source element.
-	 * @param options.targetAnchor The anchor point on the target element.
-	 * @param options.offset Optional offset from the target anchor point.
+	 * @param targetElement - The element or selector of the element to snap to.
+	 * @param options - Snapping options.
+	 * @param options.sourceAnchor - The anchor point on the source element.
+	 * @param options.targetAnchor - The anchor point on the target element.
+	 * @param options.offset - Optional offset from the target anchor point.
+	 * @param callback - Optional callback function to execute after snapping.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.snapTo('#source', {
+	 *   sourceAnchor: 'center',
+	 *   targetAnchor: 'top left',
+	 *   offset: { x: 10, y: 20 }
+	 * });
 	 */
 	snapTo(
 		targetElement: string | HTMLElement,
@@ -203,8 +222,6 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		// Calculate final position
 		const x = targetX - sourceX + offset.x;
 		const y = targetY - sourceY + offset.y;
-
-		console.log('Calculated position:', { x, y }, [sourceX, sourceY], { sourceRect });
 
 		// Apply position
 		this.beElement.eachNode((el) => {
