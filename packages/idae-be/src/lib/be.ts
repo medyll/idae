@@ -132,7 +132,7 @@ export class Be {
 		// position
 		this.positionHandler = new PositionHandler(this);
 		this.position = this.handle(this.positionHandler);
-		this.attach<PositionHandler>(PositionHandler, 'Position');
+		this.attach<PositionHandler>(PositionHandler);
 
 		// text
 		this.textHandler = new TextHandler(this);
@@ -349,10 +349,15 @@ export class Be {
 
 		fromMethods.forEach((method: string) => {
 			const handler = new Handler(this);
-			const methodName = method + suffix;
+			const methodName = suffix ? method + suffix : method;
+
 			if (!(method in handler)) {
 				console.error(`Method ${method} not found in ${Handler.name}`, handler);
 			} else if (methodName in this) {
+				if (!handler) {
+					console.error(`Handler ${Handler.name} not found`, handler);
+				}
+
 				this[methodName] = (...args: any[]) => {
 					return (handler[method] as Function).apply(handler, args);
 				};

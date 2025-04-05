@@ -40,3 +40,6 @@ coverage
 
 # Yarn Integrity file
 .yarn-integrity
+.idea/prettier.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_Default.xml
