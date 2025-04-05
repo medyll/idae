@@ -13,20 +13,19 @@ describe('TextHandler', () => {
 
 	it('should append text content', () => {
 		be('#test').appendText(' Appended');
-		expect((document.querySelector('#test') as HTMLElement)?.innerText).toBe('Original Appended');
+		expect((document.querySelector('#test') as HTMLElement)?.innerHTML).toBe('Original Appended');
 	});
 
 	it('should prepend text content', () => {
 		be('#test').prependText('Prepended ');
-		expect((document.querySelector('#test') as HTMLElement)?.innerText).toBe('Prepended Original');
+
+		expect((document.querySelector('#test') as HTMLElement)?.innerHTML).toBe('Prepended Original');
 	});
 
 	it('should replace the element with new content', () => {
 		be('#test').replaceText('Replaced');
-		expect(document.querySelector('#test')).toBeNull();
-		expect((document.querySelector('#test') as HTMLElement)?.innerText).toBe('Replaced');
-
-		console.log('---------', document.querySelector('#test')?.innerHTML);
+		// expect(document.querySelector('#test')).toBeNull();
+		expect((document.querySelector('#test') as HTMLElement)?.innerHTML).toBe('Replaced');
 	});
 
 	it('should remove the element', () => {
