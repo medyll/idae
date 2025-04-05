@@ -28,17 +28,15 @@ describe('TimersHandler', () => {
 		const mockCallback = vi.fn();
 		be('#test').interval(100, mockCallback);
 
-		// Avance le temps simulé
 		vi.advanceTimersByTime(300);
 
-		// Le callback doit avoir été appelé 3 fois
 		expect(mockCallback).toHaveBeenCalledTimes(3);
 	});
 
 	it('should clear a timeout', () => {
 		const mockCallback = vi.fn();
-		be('#test').timeout(400, mockCallback);
-		be('#test').clearTimeout();
+		const red = be('#test').timeout(500, mockCallback);
+		red.clearTimeout();
 
 		vi.advanceTimersByTime(600);
 
@@ -47,8 +45,8 @@ describe('TimersHandler', () => {
 
 	it('should clear an interval', () => {
 		const mockCallback = vi.fn();
-		be('#test').interval(400, mockCallback);
-		be('#test').clearInterval();
+		const red = be('#test').interval(400, mockCallback);
+		red.clearInterval();
 
 		vi.advanceTimersByTime(600);
 
