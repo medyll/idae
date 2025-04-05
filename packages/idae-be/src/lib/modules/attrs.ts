@@ -28,6 +28,7 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	constructor(element: Be) {
 		this.beElement = element;
 	}
+	methods: string[] | keyof AttrHandler = AttrHandler.methods;
 
 	/**
 	 * Handles dynamic method calls for attribute operations.
