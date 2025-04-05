@@ -9,7 +9,8 @@ enum attrMethods {
 
 export type AttrHandlerHandle = {
 	set: AttrHandler['set'];
-	delete: AttrHandler['handle'];
+	get: AttrHandler['get'];
+	delete: AttrHandler['delete'];
 };
 
 export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
@@ -22,12 +23,24 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	}
 
 	handle(actions: Partial<AttrHandlerHandle>): Be {
-		this.beElement.eachNode((el) => {
+		Object.entries(actions).forEach(([method, props]) => {
+			switch (method) {
+				case 'set':
+					this.set(props);
+					break;
+				case 'delete':
+					this.delete(props);
+					break;
+			}
+		});
+
+		/* this.beElement.eachNode((el) => {
 			if (actions.delete) {
+				this.delete(actions.delete);
 			}
 			if (actions.set) {
 			}
-		});
+		}); */
 		return this.beElement;
 	}
 
