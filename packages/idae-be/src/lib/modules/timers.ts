@@ -17,8 +17,8 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 	private beElement: Be;
 	static methods = Object.values(timersMethods);
 
-	_timer: NodeJS.Timeout | null = null;
-	_interval: NodeJS.Timeout | null = null;
+	#timer: NodeJS.Timeout | null = null;
+	#interval: NodeJS.Timeout | null = null;
 
 	constructor(element: Be) {
 		this.beElement = element;
@@ -28,8 +28,8 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 	valueOf(): unknown {
 		return {
 			methods: this.methods,
-			timer: this._timer,
-			interval: this._interval
+			timer: this.#timer,
+			interval: this.#interval
 		};
 	}
 
@@ -52,10 +52,10 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 	}
 
 	timeout(value: TimerHandlerHandle['timeout'], callback?: HandlerCallBackFn): Be {
-		this.beElement.BeTimer = setTimeout(() => {
+		this.beElement.timerOut = setTimeout(() => {
 			callback?.({
 				method: 'timeout',
-				fragment: this.beElement.BeTimer,
+				fragment: this.beElement.timerOut,
 				be: this.beElement,
 				root: this.beElement
 			});
@@ -75,10 +75,10 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		return this.beElement;
 	}
 	interval(value: TimerHandlerHandle['interval'], callback?: HandlerCallBackFn): Be {
-		this.beElement.BeInterval = setInterval(() => {
+		this.beElement.timerInterval = setInterval(() => {
 			callback?.({
 				method: 'interval',
-				fragment: this.beElement.BeInterval,
+				fragment: this.beElement.timerInterval,
 				be: this.beElement,
 				root: this.beElement
 			});
@@ -98,8 +98,8 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		return this.beElement;
 	}
 	clearTimeout(callback?: HandlerCallBackFn): Be {
-		clearTimeout(this.beElement?.BeTimer);
-		this.beElement.BeTimer = null;
+		if (this.beElement.timerOut) clearTimeout(this.beElement.timerOut);
+		this.beElement.timerOut = null;
 		/* this.beElement.eachNode((el: HTMLElement) => {
 			const aug = be(el);
 			if (aug.BeTimer !== null) {
@@ -116,8 +116,8 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 		return this.beElement;
 	}
 	clearInterval(callback?: HandlerCallBackFn): Be {
-		clearInterval(this.beElement?.BeInterval);
-		this.beElement.BeInterval = null;
+		if (this.beElement.timerInterval) clearInterval(this.beElement.timerInterval);
+		this.beElement.timerInterval = null;
 		/* this.beElement.eachNode((el: HTMLElement) => {
 			const aug = be(el);
 			if (aug.BeInterval !== null) {
