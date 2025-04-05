@@ -54,21 +54,21 @@ export class TextHandler implements CommonHandler<TextHandler> {
 					break;
 				case 'prepend':
 					if (typeof props === 'string') {
-						el.insertAdjacentHTML('afterbegin', props);
+						el.insertAdjacentText('afterbegin', props);
 					} else {
 						throw new Error('Invalid props for prepend: must be a string.');
 					}
 					break;
 				case 'append':
 					if (typeof props === 'string') {
-						el.insertAdjacentHTML('beforeend', props);
+						el.insertAdjacentText('beforeend', props);
 					} else {
 						throw new Error('Invalid props for append: must be a string.');
 					}
 					break;
 				case 'replace':
 					if (typeof props === 'string') {
-						el.outerHTML = props;
+						el.textContent = props;
 					} else {
 						throw new Error('Invalid props for replace: must be a string.');
 					}
