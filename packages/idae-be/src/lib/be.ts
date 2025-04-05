@@ -5,7 +5,6 @@ import type { IsWhat } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './modules/data.js';
 import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
-import { PropsHandler, type PropsHandlerHandle } from './modules/props.js';
 import { DomHandler, type DomHandlerHandle } from './modules/dom.js';
 import { PositionHandler, type PositionHandlerHandle } from './modules/position.js';
 import { WalkHandler } from './modules/walk.js';
@@ -16,17 +15,14 @@ export class Be {
 	inputNode!: HTMLElement | HTMLElement[] | string;
 	isWhat!: IsWhat;
 	//
-	BeTimer: NodeJS.Timeout | null = null;
-	BeInterval: NodeJS.Timeout | null = null;
+	timerOut: NodeJS.Timeout | null = null;
+	timerInterval: NodeJS.Timeout | null = null;
 	// styles
 	styles!: (actions: BeStylesHandler) => Be;
 	private styleHandler!: StylesHandler;
 	setStyle!: StylesHandler['set'];
 	getStyle!: StylesHandler['get'];
 	unsetStyle!: StylesHandler['unset'];
-	// properties
-	props!: (actions: PropsHandlerHandle) => Be;
-	private propHandler!: PropsHandler;
 	// dataSet
 	data!: (actions: DataHandlerHandle) => Be;
 	private dataHandler!: DataHandler;
@@ -124,10 +120,6 @@ export class Be {
 		this.styleHandler = new StylesHandler(this);
 		this.styles = this.handle(this.styleHandler);
 		this.attach(StylesHandler, 'Style');
-		// properties
-		this.propHandler = new PropsHandler(this);
-		this.props = this.handle(this.styleHandler);
-		this.attach<PropsHandler>(PropsHandler, 'Prop');
 		// dataSet
 		this.dataHandler = new DataHandler(this);
 		this.data = this.handle(this.styleHandler);
