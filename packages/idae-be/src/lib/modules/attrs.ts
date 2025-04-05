@@ -60,7 +60,7 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 			if (typeof nameOrObject === 'string') {
 				el.removeAttribute(nameOrObject);
 			} else if (typeof nameOrObject === 'object') {
-				Object.entries(nameOrObject).forEach(([name, val]) => {
+				Object.entries(nameOrObject).forEach(([name]) => {
 					el.removeAttribute(name);
 				});
 			}
@@ -71,7 +71,7 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	valueOf(): Record<string, string> | null {
 		if (this.beElement.isWhat !== 'element') return null;
 		const el = this.beElement.inputNode as HTMLElement;
-		const attrs = {};
+		const attrs: Record<string, string> = {};
 		for (let i = 0; i < el.attributes.length; i++) {
 			const attr = el.attributes[i];
 			attrs[attr.name] = attr.value;
