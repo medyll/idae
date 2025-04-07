@@ -119,8 +119,26 @@ function generateReadme() {
         readmeContent += `\n##\n`;
     });
 
-    fs.writeFileSync(path.join(monorepoPath, 'README.md'), readmeContent, 'utf8');
-    console.log('Done');
+    const readmePath = path.join(monorepoPath, 'README.md');
+    if (fs.existsSync(readmePath)) {
+        const currentContent = fs.readFileSync(readmePath, 'utf8');
+        if (currentContent === readmeContent) {
+            console.log('README.md is up-to-date. No changes made.');
+            return;
+        }
+    }
+
+    fs.writeFileSync(readmePath, readmeContent, 'utf8');
+    console.log('README.md has been updated.');
+
+    // Commit changes with --amend
+    try {
+        execSync('git add README.md');
+        execSync('git commit --amend --no-edit');
+        console.log('README.md changes have been amended to the last commit.');
+    } catch (error) {
+        console.error('Error during git amend operation:', error.message);
+    }
 }
 
 generateReadme();
