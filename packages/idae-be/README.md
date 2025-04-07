@@ -1,4 +1,3 @@
-
 # @medyll/idae-be
 
 A DOM walk and manipulation library with a callback-based approach for precise element targeting.
@@ -16,138 +15,355 @@ npm install @medyll/idae-be
 - Comprehensive DOM traversal and manipulation
 - Event handling, style management, and attribute control
 - Timer integration for dynamic operations
+- HTTP content loading and insertion
 
 ## Unique Approach
 
 Unlike jQuery and other chained libraries, `@medyll/idae-be` always returns the root object. This approach allows for consistent chaining while using callbacks to manipulate targeted elements. This design provides more control and clarity in complex DOM operations.
 
+---
+
 ## Basic Usage
+
+### Example 1: DOM Manipulation with Callbacks
 
 ```javascript
 import { be, toBe } from '@medyll/idae-be';
 
+// Select the container element
 be('#container')
-  .append(toBe('<div>New content</div>'), ({ be }) => {
-    be
-      .addClass('highlight')
-      .on('click', () => console.log('Clicked!'));
-  })
-  .prepend(toBe('<h1>Title</h1>'))
-  .children(undefined, ({ be }) => {
-    be.setStyle({ color: 'blue' });
-  });
+    .append(toBe('<div>New content</div>'), ({ be }) => {
+        be.addClass('highlight')
+            .on('click', () => console.log('Clicked!'))
+            .append(toBe('<span>Nested content</span>'), ({ be }) => {
+                be.addClass('nested').on('mouseover', () => console.log('Hovered!'));
+            });
+    })
+    .prepend(toBe('<h1>Title</h1>'), ({ be }) => {
+        be.addClass('title').children(({ be }) => {
+            be.setStyle({ color: 'blue' });
+        });
+    });
 ```
+
+---
+
+### Example 2: Event Handling and Traversal
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Add a click event to all buttons inside the container
+be('#container button').on('click', ({ target }) => {
+    be(target)
+        .toggleClass('active')
+        .siblings(({ be }) => {
+            be.removeClass('active').on('mouseover', () => console.log('Sibling hovered!'));
+        });
+});
+
+// Fire a custom event and handle it
+be('#container').fire('customEvent', { detailKey: 'detailValue' }, ({ be }) => {
+    be.children(({ be }) => {
+        be.addClass('custom-event-handled');
+    });
+});
+```
+
+---
+
+### Example 3: Styling and Attributes
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Select an element and update its styles and attributes
+be('#element')
+    .setStyle({ backgroundColor: 'yellow', fontSize: '16px' }, ({ be }) => {
+        be.setAttr('data-role', 'admin').children(({ be }) => {
+            be.setStyle({ color: 'red' }).setAttr('data-child', 'true');
+        });
+    })
+    .addClass('styled-element', ({ be }) => {
+        be.siblings(({ be }) => {
+            be.setStyle({ opacity: '0.5' });
+        });
+    });
+```
+
+---
+
+### Example 4: Timers
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Set a timeout to execute a callback after 100ms
+be('#test').timeout(100, ({ be }) => {
+    be.setStyle({ backgroundColor: 'yellow' }).append('<span>Timeout executed</span>');
+});
+
+// Set an interval to execute a callback every 400ms
+const intervalInstance = be('#test').interval(400, ({ be }) => {
+    be.toggleClass('highlight');
+});
+
+// Clear the interval after 600ms
+setTimeout(() => {
+    intervalInstance.clearInterval();
+}, 600);
+```
+
+---
+
+### Example 5: Walk
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Traverse up the DOM tree to find the parent element
+be('#child').up('#parent', ({ be: parent }) => {
+    parent.addClass('highlight')
+        .children(({ be: child }) => {
+            child.setStyle({ color: 'blue' });
+        });
+});
+
+// Find all siblings of an element and add a class
+be('#target').siblings(({ be: siblings }) => {
+    siblings.addClass('sibling-class').children(({ be }) => {
+        be.setStyle({ fontWeight: 'bold' });
+    });
+});
+
+// Find the closest ancestor matching a selector
+be('#child').closest('.ancestor', ({ be: closest }) => {
+    closest.setStyle({ border: '2px solid red' }).children(({ be }) => {
+        be.addClass('ancestor-child');
+    });
+});
+```
+
+---
+
+### Example 6: HTTP Content Loading and Insertion
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Load content from a URL and update the element
+be('#test').updateHttp('/content.html', ({ be }) => {
+    console.log('Content loaded:', be.html);
+});
+
+// Load content and insert it at a specific position
+be('#test').insertHttp('/content.html', 'afterbegin', ({ be }) => {
+    console.log('Content inserted:', be.html);
+});
+```
+
+---
 
 ## API Reference
 
 ### Core Methods
 
-- `be(selector: string | HTMLElement | HTMLElement[]): Be` - Create a new Be instance
-- `toBe(str: string | HTMLElement, options?: { tag?: string }): Be` - Convert string or HTMLElement to Be instance
-- `createBe(tagOrHtml: string, options?: Object): Be` - Create a new Be element
+#### `be(selector: string | HTMLElement | HTMLElement[]): Be`
+Create a new Be instance.
 
-### DOM Manipulation
+**Example:**
+```javascript
+const instance = be('#test');
+```
 
-- `update(content: string): Be`
-- `append(content: string | HTMLElement): Be`
-- `prepend(content: string | HTMLElement): Be`
-- `insert(mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', element: HTMLElement | Be): Be`
-- `remove(): Be`
-- `replace(content: string | HTMLElement): Be`
-- `clear(): Be`
-- `normalize(): Be`
-- `wrap(tag?: string): Be`
+#### `toBe(str: string | HTMLElement, options?: { tag?: string }): Be`
+Convert a string or HTMLElement to a Be instance.
 
-### Traversal
+**Example:**
+```javascript
+const newElement = toBe('<div>Content</div>');
+```
 
-- `up(selector?: string, callback?: HandlerCallBackFn): Be`
-- `next(selector?: string, callback?: HandlerCallBackFn): Be`
-- `previous(selector?: string, callback?: HandlerCallBackFn): Be`
-- `siblings(selector?: string, callback?: HandlerCallBackFn): Be`
-- `children(selector?: string, callback?: HandlerCallBackFn): Be`
-- `closest(selector: string, callback?: HandlerCallBackFn): Be`
-- `firstChild(selector?: string, callback?: HandlerCallBackFn): Be`
-- `lastChild(selector?: string, callback?: HandlerCallBackFn): Be`
-- `find(selector: string, callback?: HandlerCallBackFn): Be`
-- `findAll(selector: string, callback?: HandlerCallBackFn): Be`
-- `without(selector: string, callback?: HandlerCallBackFn): Be`
+#### `createBe(tagOrHtml: string, options?: Object): Be`
+Create a new Be element.
 
-### Styling
+**Example:**
+```javascript
+const newElement = createBe('div', { className: 'my-class' });
+```
 
-- `setStyle(styles: Record<string, string>): Be`
-- `getStyle(property: string): string | null`
-- `unsetStyle(properties: string[]): Be`
-- `addClass(className: string): Be`
-- `removeClass(className: string): Be`
-- `toggleClass(className: string): Be`
-- `replaceClass(oldClass: string, newClass: string): Be`
+---
 
-### Events
+### HTTP Methods
 
-- `on(eventName: string, handler: EventListener): Be`
-- `off(eventName: string, handler: EventListener): Be`
-- `fire(eventName: string, detail?: any): Be`
+#### `updateHttp(url: string, callback?: HandlerCallBackFn): Be`
+Loads content from a URL and updates the element's content.
 
-### Attributes and Properties
+**Example:**
+```javascript
+be('#test').updateHttp('/content.html', ({ be }) => {
+    console.log(be.html);
+});
+```
 
-- `setAttr(name: string, value: string): Be`
-- `getAttr(name: string): string | null`
-- `deleteAttr(name: string): Be`
-- `setData(key: string, value: string): Be`
-- `getData(key: string): string | null`
-- `deleteData(key: string): Be`
+#### `insertHttp(url: string, mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', callback?: HandlerCallBackFn): Be`
+Loads content from a URL and inserts it into the element at a specified position.
+
+**Example:**
+```javascript
+be('#test').insertHttp('/content.html', 'afterbegin', ({ be }) => {
+    console.log(be.html);
+});
+```
+
+---
 
 ### Timers
 
-- `timeout(delay: number, callback: HandlerCallBackFn): Be`
-- `interval(delay: number, callback: HandlerCallBackFn): Be`
-- `clearTimeout(): Be`
-- `clearInterval(): Be`
+#### `timeout(delay: number, callback: HandlerCallBackFn): Be`
+Set a timeout for an element.
 
-## Advanced Example
-
+**Example:**
 ```javascript
-be('#app')
-  .append(toBe('<div id="content"></div>'), ({ be  }) => {
-    be
-      .append(toBe('<button>Add Item</button>'), ({ be }) => {
-        be.on('click', () => {
-          content.append(toBe('<p>New item</p>'), ({ be }) => {
-            be
-              .addClass('item')
-              .setStyle({ color: 'blue' })
-              .on('click', ({ target }) => {
-                be(target).toggleClass('selected');
-              });
-          });
-        });
-      })
-      .children('.item', ({ be }) => {
-        be.setStyle({ padding: '5px', margin: '2px' });
-      });
-  })
-  .up(({ be }) => {
-    be.setStyle({ backgroundColor: '#f0f0f0' });
-  });
+be('#test').timeout(1000, () => console.log('Timeout executed'));
 ```
 
-This example demonstrates:
-1. Nested element creation and manipulation
-2. Event handling with dynamic content addition
-3. Traversal and bulk operations on children
-4. Accessing and styling parent elements
+#### `interval(delay: number, callback: HandlerCallBackFn): Be`
+Set an interval for an element.
 
-## TypeScript Support
+**Example:**
+```javascript
+be('#test').interval(500, () => console.log('Interval executed'));
+```
 
-This library is written in TypeScript and includes type definitions for a great developer experience.
+#### `clearTimeout(): Be`
+Clear a timeout.
 
-## Browser Support
+**Example:**
+```javascript
+const timeoutInstance = be('#test').timeout(1000, () => console.log('Timeout executed'));
+timeoutInstance.clearTimeout();
+```
 
-Designed for modern browsers. May require polyfills for older browser support.
+#### `clearInterval(): Be`
+Clear an interval.
 
-## Contributing
+**Example:**
+```javascript
+const intervalInstance = be('#test').interval(500, () => console.log('Interval executed'));
+intervalInstance.clearInterval();
+```
 
-Contributions are welcome! Please submit pull requests or open issues on our GitHub repository.
+---
+
+### Traversal
+
+#### `up(selector?: string, callback?: HandlerCallBackFn): Be`
+Traverse up the DOM tree.
+
+**Example:**
+```javascript
+be('#child').up();
+```
+
+#### `next(selector?: string, callback?: HandlerCallBackFn): Be`
+Traverse to the next sibling.
+
+**Example:**
+```javascript
+be('#sibling1').next();
+```
+
+#### `previous(selector?: string, callback?: HandlerCallBackFn): Be`
+Traverse to the previous sibling.
+
+**Example:**
+```javascript
+be('#sibling2').previous();
+```
+
+#### `siblings(selector?: string, callback?: HandlerCallBackFn): Be`
+Find all sibling elements.
+
+**Example:**
+```javascript
+be('#child').siblings();
+```
+
+#### `children(selector?: string, callback?: HandlerCallBackFn): Be`
+Find all child elements.
+
+**Example:**
+```javascript
+be('#parent').children();
+```
+
+#### `closest(selector: string, callback?: HandlerCallBackFn): Be`
+Find the closest ancestor matching a selector.
+
+**Example:**
+```javascript
+be('#child').closest('#ancestor');
+```
+
+---
+
+### Styling
+
+#### `setStyle(styles: Record<string, string>): Be`
+Set CSS styles for an element.
+
+**Example:**
+```javascript
+be('#test').setStyle({ color: 'red', fontSize: '16px' });
+```
+
+#### `getStyle(property: string): string | null`
+Get the value of a CSS property.
+
+**Example:**
+```javascript
+const color = be('#test').getStyle('color');
+console.log(color); // Output: "red"
+```
+
+#### `unsetStyle(property: string): Be`
+Remove a CSS property from an element.
+
+**Example:**
+```javascript
+be('#test').unsetStyle('color');
+```
+
+---
+
+### Events
+
+#### `on(eventName: string, handler: EventListener): Be`
+Add an event listener to an element.
+
+**Example:**
+```javascript
+be('#test').on('click', () => console.log('Clicked!'));
+```
+
+#### `off(eventName: string, handler: EventListener): Be`
+Remove an event listener from an element.
+
+**Example:**
+```javascript
+be('#test').off('click', handler);
+```
+
+#### `fire(eventName: string, detail?: any): Be`
+Dispatch a custom event.
+
+**Example:**
+```javascript
+be('#test').fire('customEvent', { key: 'value' });
+```
+
+---
 
 ## License
 

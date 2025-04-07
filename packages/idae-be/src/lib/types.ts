@@ -1,6 +1,6 @@
 import { Be } from './be.js';
 
-export type CombineElements<T extends string> = T extends any
+export type CombineElements<T extends string> = T extends unknown
 	? T | `${T} ${CombineElements<T>}`
 	: never;
 export type IsWhat = 'element' | 'array' | 'qy';
@@ -10,14 +10,15 @@ export type PositionSnapOptions =
 	| 'right'
 	| 'bottom'
 	| 'left'
-	| `${'top' | 'right' | 'bottom' | 'left'} center`
-	| 'center';
+	| 'center'
+	| `${'top' | 'bottom'} ${'left' | 'right' | 'center'}`
+	| `${'left' | 'right'} ${'top' | 'bottom' | 'center'}`;
 
 export type HandlerCallbackProps = {
 	be: Be;
-	fragment: any;
+	fragment: unknown;
 	root: Be;
-	requested?: any;
+	requested?: unknown;
 	method?: string;
 };
 export type HandlerCallBackFn = (element: HandlerCallbackProps) => void;
@@ -25,7 +26,7 @@ export type HandlerCallBack = { callback?: (element: HandlerCallbackProps) => vo
 
 export type ExpandTyping<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
-export interface CommonHandler<T = any, H = any, V = unknown> {
+export interface CommonHandler<T = unknown, H = unknown, V = unknown> {
 	handle: (actions: H) => Be;
 	methods: string[] | keyof T;
 	valueOf: () => V;

@@ -1,19 +1,16 @@
 import { Be } from '../be.js';
-import type { CommonHandler, HandlerCallBackFn } from '../types.js';
+import type { CommonHandler } from '../types.js';
 
 enum beStyleMethods {
 	set = 'set',
 	get = 'get',
-	delete = 'delete',
-	getKey = 'getKey'
+	unset = 'unset'
 }
 
 export interface BeStylesHandler {
 	set?: Record<string, string> | string;
-	value?: string;
 	get?: string;
-	delete?: string;
-	getKey?: string;
+	unset?: string;
 }
 
 export type BeStylesHandlerMethods = keyof typeof beStyleMethods;
@@ -24,13 +21,18 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] = Object.keys(beStyleMethods);
+
+	valueOf(): string {
+		return `[StylesHandler: ${this.methods.join(', ')}]`;
+	}
 
 	static methods = Object.values(beStyleMethods);
 
 	handle(actions: BeStylesHandler) {
 		const { method, args } = this.resolveIndirection(actions);
 
-		this.beElement.eachNode((el) => {
+		this.beElement.eachNode(() => {
 			switch (method) {
 				case 'set':
 					if (typeof args === 'string') {
@@ -42,65 +44,63 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 								this.applyStyle(property, propertyValue);
 							}
 						});
-
-						// If value is provided, treat it as a single property setting
-						/* if (value !== undefined) {
-							this.applyStyle(styles, value);
-						} */
 					} else if (typeof args === 'object') {
 						// Handle object input
 						Object.entries(args).forEach(([prop, val]) => {
-							this.applyStyle(prop, val);
+							this.applyStyle(prop, val as string);
 						});
+					} else {
+						console.warn('Invalid argument type for set method');
 					}
-					console.log({ method, args });
 					break;
 				case 'get':
-					console.log({ method, args });
+					this.get(args);
 					break;
-				case 'delete':
-					break;
-				case 'getKey':
+				case 'unset':
+					this.unset(args);
 					break;
 			}
 		});
+
 		return this.beElement;
 	}
 
 	private resolveIndirection(actions: BeStylesHandler): {
 		method: BeStylesHandlerMethods;
-		args: any;
+		args: string | Record<string, string> | undefined;
 	} {
-		let method;
+		let method: BeStylesHandlerMethods = 'get'; // Default to 'get' or any valid method
 		let args;
 		Object.keys(actions).forEach((action: unknown) => {
-			if (StylesHandler.methods.includes(action)) {
-				method = action;
-				args = actions[action];
+			const actionKey = action as string;
+			if (StylesHandler.methods.includes(actionKey as beStyleMethods)) {
+				method = actionKey as BeStylesHandlerMethods;
+				args = actions[actionKey as keyof BeStylesHandler];
 			}
 		});
-		return { method, args };
+		return { method: method as BeStylesHandlerMethods, args };
 	}
 	/**
-	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
-	 * @param styles An object of CSS properties and values, or a string of CSS properties and values.
-	 * @param value The value for a single CSS property when styles is a property name string.
+	 * Sets one or more CSS styles for the selected element(s), including CSS custom properties.
+	 * @param styles - An object of CSS properties and values, or a string of CSS properties and values.
+	 * @param value - The value for a single CSS property when styles is a property name string.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.setStyle({ color: 'red', backgroundColor: 'blue' }); // Sets multiple styles
+	 * beInstance.setStyle('color', 'green'); // Sets a single style
 	 */
 	set(styles: Record<string, string> | string, value?: string): Be {
 		if (typeof styles === 'string') {
-			// Handle string input
-			const styleEntries = styles.split(';').filter((s) => s.trim() !== '');
-			styleEntries.forEach((entry) => {
-				const [property, propertyValue] = entry.split(':').map((s) => s.trim());
-				if (property && propertyValue) {
-					this.applyStyle(property, propertyValue);
-				}
-			});
-
-			// If value is provided, treat it as a single property setting
-			if (value !== undefined) {
-				this.applyStyle(styles, value);
+			// Handle string input,   if contains ':' and use cssText
+			if (styles.includes(':')) {
+				this.beElement.eachNode((el) => {
+					el.style.cssText = styles;
+				});
+			} else {
+				// If value is provided, treat it as a single property setting
+				this.applyStyle(styles, value ?? '');
 			}
 		} else if (typeof styles === 'object') {
 			// Handle object input
@@ -111,31 +111,62 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 		return this.beElement;
 	}
-	// get style
+	/**
+	 * Gets the value of a CSS property for the first matched element.
+	 * @param key - The CSS property name.
+	 * @returns The value of the CSS property, or null if not found.
+	 * @example
+	 * // HTML: <div id="test" style="color: red;"></div>
+	 * const beInstance = be('#test');
+	 * const color = beInstance.getStyle('color');
+	 * console.log(color); // Output: "red"
+	 */
 	get(key: string): string | null {
-		return '';
-	}
-	// unset style
-	unset(key: string): string | null {
-		return '';
-	}
-	//
-	getKey(key: string): string | null {
-		return '';
-	}
+		let css: string | null = null;
+		this.beElement.eachNode((el) => {
+			// Prioritize inline styles
+			css = el.style[key as any] || null;
 
-	delete(key: string): string | null {
-		return '';
+			// Fallback to computed styles if inline style is not set
+			if (!css) {
+				const computedStyle = window.getComputedStyle(el);
+				css = computedStyle.getPropertyValue(key).trim();
+			}
+		}, true);
+		return css || null;
 	}
-
-	private handlerFor(command: BeStylesHandlerMethods) {
-		return (content: string | HTMLElement, callback: HandlerCallBackFn) =>
-			this.handle({ [command]: content, callback });
+	/**
+	 * Removes a CSS property from the selected element(s).
+	 * @param key - The CSS property name to remove.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test" style="color: red;"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.unsetStyle('color'); // Removes the "color" style
+	 */
+	unset(key: string): Be {
+		this.beElement.eachNode((el) => {
+			el.style.removeProperty(key);
+		});
+		return this.beElement;
 	}
 
 	private applyStyle(property: string, value: string): void {
 		this.beElement.eachNode((el) => {
-			el.style.setProperty(property, value);
+			const kebabProperty = toKebabCase(property);
+			el.style.setProperty(kebabProperty, value);
 		});
 	}
+
+	getKey(key: string): string | null {
+		let value: string | null = null;
+		this.beElement.eachNode((el) => {
+			value = el.style.getPropertyValue(key) || null;
+		});
+		return value;
+	}
+}
+
+function toKebabCase(property: string): string {
+	return property.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }

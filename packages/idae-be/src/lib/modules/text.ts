@@ -12,6 +12,7 @@ enum textMethods {
 	replace = 'replace',
 	clear = 'clear'
 }
+
 export type TextHandlerHandle = {
 	update?: string | HTMLElement;
 	append?: string | HTMLElement;
@@ -32,37 +33,66 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	constructor(element: Be) {
 		this.beElement = element;
 	}
+	methods: string[] | keyof TextHandler = TextHandler.methods;
 
 	get text(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).textContent;
+		return (this.beElement.inputNode as HTMLElement).textContent;
 	}
 
 	handle(actions: TextHandlerHandle): Be {
 		this.beElement.eachNode((el: HTMLElement) => {
-			const { method, props } = BeUtils.resolveIndirection<TextHandler>(TextHandler, actions);
+			const { method, props } = BeUtils.resolveIndirection<TextHandler>(
+				new TextHandler(this.beElement),
+				actions as unknown as keyof TextHandler
+			);
 
 			switch (method) {
 				case 'update':
-					el.innerText = props;
+					if (typeof props === 'string') {
+						el.innerText = props;
+					}
 					break;
-				case 'prepend': // append to text content
-					el.insertAdjacentHTML('beforebegin', props);
+				case 'prepend':
+					if (typeof props === 'string') {
+						el.insertAdjacentText('afterbegin', props);
+					} else {
+						throw new Error('Invalid props for prepend: must be a string.');
+					}
 					break;
 				case 'append':
-					el.insertAdjacentHTML('afterbegin', props);
+					if (typeof props === 'string') {
+						el.insertAdjacentText('beforeend', props);
+					} else {
+						throw new Error('Invalid props for append: must be a string.');
+					}
 					break;
 				case 'replace':
-					el.outerHTML = props;
+					if (typeof props === 'string') {
+						el.textContent = props;
+					} else {
+						throw new Error('Invalid props for replace: must be a string.');
+					}
 					break;
 				case 'remove':
 					el.remove();
 					break;
 				case 'clear':
-					el.outerHTML = '';
+					el.innerHTML = '';
 					break;
 				case 'normalize':
 					el.normalize();
+					break;
+				case 'wrap':
+					if (typeof props === 'string') {
+						const wrapper = document.createElement('div');
+						wrapper.innerHTML = props.trim();
+						const parent = wrapper.firstElementChild as HTMLElement;
+						if (parent) {
+							el.parentNode?.insertBefore(parent, el);
+							parent.appendChild(el);
+						}
+					}
 					break;
 			}
 
@@ -76,35 +106,117 @@ export class TextHandler implements CommonHandler<TextHandler> {
 		return this.beElement;
 	}
 
+	/**
+	 * Updates the text content of the element(s).
+	 * @param content - The new text content to set.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Original</div>
+	 * const beInstance = be('#test');
+	 * beInstance.updateText('Updated'); // Updates the text content to "Updated"
+	 */
 	update(content: TextHandlerHandle['update'], callback?: HandlerCallBackFn) {
-		this.handle({ update: content, callback });
+		return this.handle({ update: content, callback });
 	}
-	updateText(content: TextHandlerHandle['updateText'], callback?: HandlerCallBackFn) {
-		this.handle({ updateText: content, callback });
-	}
+
+	/**
+	 * Appends text content to the element(s).
+	 * @param content - The text content to append.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Original</div>
+	 * const beInstance = be('#test');
+	 * beInstance.appendText(' Appended'); // Appends " Appended" to the text content
+	 */
 	append(content: TextHandlerHandle['append'], callback?: HandlerCallBackFn) {
 		return this.handle({ append: content, callback });
 	}
+
+	/**
+	 * Prepends text content to the element(s).
+	 * @param content - The text content to prepend.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Original</div>
+	 * const beInstance = be('#test');
+	 * beInstance.prependText('Prepended '); // Prepends "Prepended " to the text content
+	 */
 	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBackFn) {
-		this.handle({ prepend: content, callback });
+		return this.handle({ prepend: content, callback });
 	}
+
+	/**
+	 * Replaces the text content of the element(s).
+	 * @param content - The new text content to replace with.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Original</div>
+	 * const beInstance = be('#test');
+	 * beInstance.replaceText('Replaced'); // Replaces the text content with "Replaced"
+	 */
 	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBackFn) {
-		this.handle({ replace: content, callback });
+		return this.handle({ replace: content, callback });
 	}
-	remove(content: TextHandlerHandle['remove'], callback?: HandlerCallBackFn) {
-		this.handle({ remove: content, callback });
+
+	/**
+	 * Removes the element(s) from the DOM.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">To be removed</div>
+	 * const beInstance = be('#test');
+	 * beInstance.removeText(); // Removes the element
+	 */
+	remove(callback?: HandlerCallBackFn) {
+		return this.handle({ remove: undefined, callback });
 	}
-	clear(content: TextHandlerHandle['clear'], callback?: HandlerCallBackFn) {
-		this.handle({ clear: content, callback });
+
+	/**
+	 * Clears the text content of the element(s).
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Content</div>
+	 * const beInstance = be('#test');
+	 * beInstance.clearText(); // Clears the text content
+	 */
+	clear(callback?: HandlerCallBackFn) {
+		return this.handle({ clear: undefined, callback });
 	}
-	normalize(content: TextHandlerHandle['normalize'], callback?: HandlerCallBackFn) {
-		this.handle({ normalize: content, callback });
+
+	/**
+	 * Normalizes the text content of the element(s).
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Text <span>Fragment</span> Text</div>
+	 * const beInstance = be('#test');
+	 * beInstance.normalizeText(); // Normalizes the text content
+	 */
+	normalize(callback?: HandlerCallBackFn) {
+		return this.handle({ normalize: undefined, callback });
 	}
+
+	/**
+	 * Wraps the element(s) with a new element.
+	 * @param content - The wrapper element as a string or HTMLElement.
+	 * @param callback - Optional callback function.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test">Content</div>
+	 * const beInstance = be('#test');
+	 * beInstance.wrapText('<div class="wrapper"></div>'); // Wraps the element with a <div>
+	 */
 	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBackFn) {
-		this.handle({ wrap: content, callback });
+		return this.handle({ wrap: content, callback });
 	}
+
 	valueOf(): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).innerText;
+		return (this.beElement.inputNode as HTMLElement).innerText;
 	}
 }

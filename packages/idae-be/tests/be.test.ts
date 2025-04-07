@@ -1,6 +1,6 @@
 // tests/be.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
-import { be, toBe } from '../src/lib/be.js';
+import { be, Be } from '../src/lib/be.js';
 
 describe('Be', () => {
 	beforeEach(() => {
@@ -10,20 +10,23 @@ describe('Be', () => {
 	it('should create a Be instance', () => {
 		const instance = be('#test');
 		expect(instance).toBeDefined();
-		expect(instance.node).toBeInstanceOf(HTMLElement);
+		expect(instance).toBeInstanceOf(Be);
+		expect(instance.inputNode).toBeInstanceOf(HTMLElement);
 	});
 
-	it('should append content', () => {
-		be('#test').append(toBe('<span>Appended</span>'), ({ be: appended }) => {
-			expect(appended.node.textContent).toBe('Appended');
-		});
-		expect(document.querySelector('#test span')).toBeDefined();
-	});
+	it('should normalize input to a valid DOM node', () => {
+		document.body.innerHTML = `
+        <div id="parent">
+            <div id="child"></div>
+        </div>
+    `;
 
-	it('should set and get attributes', () => {
-		be('#test').setAttr('data-test', 'value');
-		expect(be('#test').getAttr('data-test')).toBe('value');
-	});
+		const instance = be('#child');
+		expect(instance.inputNode).toBeInstanceOf(HTMLElement);
+		expect((instance.inputNode as HTMLElement).id).toBe('child');
 
-	// Ajoutez d'autres tests pour couvrir les différentes fonctionnalités de votre bibliothèque
+		const parentInstance = be('#parent');
+		expect(parentInstance.inputNode).toBeInstanceOf(HTMLElement);
+		expect((parentInstance.inputNode as HTMLElement).id).toBe('parent');
+	});
 });

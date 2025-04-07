@@ -112,6 +112,11 @@ export class WalkHandler
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] = WalkHandler.methods;
+
+	valueOf(): unknown {
+		return this.beElement;
+	}
 
 	/**
 	 * Handles multiple walk operations.
@@ -128,6 +133,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="child"></div><div id="parent"><div id="child"></div></div>
+	 * const beInstance = be('#child');
+	 * beInstance.up(); // Traverses to the parent element
 	 */
 	up(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -142,6 +151,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling1');
+	 * beInstance.next(); // Traverses to the next sibling
 	 */
 	next(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -156,6 +169,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling2');
+	 * beInstance.previous(); // Traverses to the previous sibling
 	 */
 	previous(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -197,6 +214,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="sibling1"></div><div id="sibling2"></div>
+	 * const beInstance = be('#sibling1');
+	 * beInstance.siblings(); // Finds all sibling elements
 	 */
 	siblings(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -227,6 +248,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="parent"><div id="child"></div></div>
+	 * const beInstance = be('#parent');
+	 * beInstance.children(); // Finds all child elements
 	 */
 	children(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -241,6 +266,10 @@ export class WalkHandler
 	 * @param qy - Optional selector or callback function.
 	 * @param callback - Optional callback function.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="ancestor"><div id="parent"><div id="child"></div></div></div>
+	 * const beInstance = be('#child');
+	 * beInstance.closest('#ancestor'); // Finds the closest ancestor matching the selector
 	 */
 	closest(qy?: string | HandlerCallBackFn, callback?: HandlerCallBackFn) {
 		if (typeof qy === 'function') {
@@ -287,16 +316,17 @@ export class WalkHandler
 	find(qy: string, callback?: HandlerCallBackFn): Be | null {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			ret.push(el.querySelector(qy) as HTMLElement);
+			const found = el.querySelector(qy);
+			if (found) ret.push(found as HTMLElement);
 		});
+		const resultBe = Be.elem(ret); // Encapsule les résultats dans une instance de Be
 		callback?.({
 			root: this.beElement,
-			be: Be.elem(ret),
+			be: resultBe,
 			fragment: 'result',
-			requested: Be.elem(ret)
+			requested: resultBe
 		});
-
-		return this.beElement;
+		return resultBe;
 	}
 
 	/**
@@ -331,17 +361,19 @@ export class WalkHandler
 				const ret: HTMLElement[] = [];
 				this.beElement.eachNode((el: HTMLElement) => {
 					const result = this.selectWhile(el as HTMLElement, method, qy);
-					if (result) ret.push(result);
+					if (result) ret.push(...(Array.isArray(result) ? result : [result]));
 				});
+
+				const resultBe = Be.elem(ret);
 				callback?.({
 					root: this.beElement,
-					be: Be.elem(ret),
+					be: resultBe,
 					fragment: 'result',
-					requested: Be.elem(ret)
+					requested: resultBe
 				});
+				return resultBe;
 			} catch (e) {
-				console.log(e);
-				console.log(method);
+				console.error(`Error in methodize for ${method}:`, e);
 			}
 
 			return this.beElement;
@@ -358,35 +390,56 @@ export class WalkHandler
 	private selectWhile(
 		element: Element,
 		direction: WalkerMethods,
-		selector: string | undefined
-	): HTMLElement | null {
+		selector?: string
+	): HTMLElement | HTMLElement[] | null {
 		const dict: Record<string, keyof Element> = {
-			up: 'parentNode',
-			parent: 'parentNode',
+			up: 'parentElement',
 			next: 'nextElementSibling',
 			previous: 'previousElementSibling',
-			siblings: 'nextElementSibling',
+			siblings: 'parentElement',
 			children: 'children',
 			firstChild: 'firstElementChild',
 			lastChild: 'lastElementChild',
 			closest: 'closest'
 		};
 
-		const property = dict[direction] ?? direction;
-		let sibling = element[property] as HTMLElement | null;
+		const property = dict[direction];
 
-		if (property === 'closest') {
-			return element.closest(selector ?? '*');
-		}
-
-		while (sibling) {
-			console.log({ direction, selector, sibling });
-			if (!selector || sibling?.matches(selector)) {
-				return sibling;
+		// Handle recursive traversal for `up`
+		if (direction === 'up') {
+			let current: HTMLElement | null = element as HTMLElement;
+			while (current) {
+				current = current[property] as HTMLElement | null;
+				if (!selector || (current && current.matches(selector))) {
+					return current;
+				}
 			}
-			sibling = sibling[property] as HTMLElement | null;
+			return null;
 		}
 
-		return null;
+		// Handle `siblings`
+		if (direction === 'siblings') {
+			const parent = element.parentElement;
+			if (!parent) return [];
+			const siblings = Array.from(parent.children).filter((child) => child !== element);
+			return selector ? siblings.filter((sibling) => sibling.matches(selector)) : siblings;
+		}
+
+		// Handle `children`
+		if (direction === 'children') {
+			const children = Array.from(element.children) as HTMLElement[];
+			return selector ? children.filter((child) => child.matches(selector)) : children;
+		}
+
+		// Handle `closest`
+		if (direction === 'closest') {
+			const closest = element.closest(selector ?? '*') as HTMLElement | null;
+			return closest;
+		}
+
+		// Handle single-step traversal (e.g., `next`, `previous`, `firstChild`, `lastChild`)
+		const target = element[property] as HTMLElement | null;
+
+		return target && (!selector || target.matches(selector)) ? target : null;
 	}
 }

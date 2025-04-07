@@ -1,5 +1,5 @@
 import { type Be, createBe } from './be.js';
-import type { CommonHandler } from './types.js';
+import type { CommonHandler, PositionSnapOptions } from './types.js';
 
 interface isHTMLReturn {
 	isHtml: boolean;
@@ -88,36 +88,39 @@ export class BeUtils {
 		return result;
 	}
 
-	static calculateAnchorPoint(rect: DOMRect, anchor: string): [number, number] {
-		const [vertical, horizontal] = anchor.split(' ');
-		let x: number, y: number;
+	static calculateAnchorPoint(rect: DOMRect, anchor: PositionSnapOptions): [number, number] {
+		let x: number = rect.left; // Valeur par défaut pour x
+		let y: number = rect.top; // Valeur par défaut pour y
 
-		switch (vertical) {
-			case 'top':
-				y = rect.top;
-				break;
-			case 'bottom':
-				y = rect.bottom;
-				break;
-			case 'center':
-				y = rect.top + rect.height / 2;
-				break;
-			default:
-				y = rect.top;
-		}
+		if (typeof anchor === 'string') {
+			const [vertical, horizontal] = anchor.split(' ');
 
-		switch (horizontal) {
-			case 'left':
-				x = rect.left;
-				break;
-			case 'right':
-				x = rect.right;
-				break;
-			case 'center':
-				x = rect.left + rect.width / 2;
-				break;
-			default:
-				x = rect.left;
+			switch (vertical) {
+				case 'top':
+					y = rect.top;
+					break;
+				case 'bottom':
+					y = rect.bottom;
+					break;
+				case 'center':
+					y = rect.top + rect.height / 2;
+					x = rect.left + rect.width / 2;
+					break;
+			}
+
+			switch (horizontal) {
+				case 'left':
+					x = rect.left;
+					break;
+				case 'right':
+					x = rect.right;
+					break;
+				case 'center':
+					x = rect.left + rect.width / 2;
+					break;
+			}
+		} else {
+			throw new Error('Invalid anchor type. Expected a string.');
 		}
 
 		return [x, y];

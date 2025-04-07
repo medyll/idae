@@ -5,8 +5,7 @@ const scriptPath = __dirname;
 const monorepoPath = path.resolve(scriptPath, '..');
 const monorepoName = "idae monorepo";
 const monorepoDescription = "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
-const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/';
-
+const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/packages/';
 /**
  * Retrieves repository information from the given repository path.
  *

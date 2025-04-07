@@ -52,6 +52,18 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 		return this.beElement;
 	}
 
+	/**
+	 * Adds an event listener to the element(s).
+	 * @param eventName - The name of the event to listen for.
+	 * @param handler - The event handler function.
+	 * @param options - Optional event listener options.
+	 * @param callback - Optional callback function to execute after adding the event listener.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.on('click', () => console.log('Clicked!')); // Adds a click event listener
+	 */
 	on(
 		eventName: string,
 		handler: EventListener,
@@ -69,6 +81,20 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 		return this.beElement;
 	}
 
+	/**
+	 * Removes an event listener from the element(s).
+	 * @param eventName - The name of the event to remove.
+	 * @param handler - The event handler function.
+	 * @param options - Optional event listener options.
+	 * @param callback - Optional callback function to execute after removing the event listener.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * const handler = () => console.log('Clicked!');
+	 * beInstance.on('click', handler); // Adds a click event listener
+	 * beInstance.off('click', handler); // Removes the click event listener
+	 */
 	off(
 		eventName: string,
 		handler: EventListener,
@@ -87,6 +113,18 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 		return this.beElement;
 	}
 
+	/**
+	 * Dispatches a custom event on the element(s).
+	 * @param eventName - The name of the custom event to dispatch.
+	 * @param detail - Optional data to include in the event.
+	 * @param options - Optional event initialization options.
+	 * @param callback - Optional callback function to execute after dispatching the event.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="test"></div>
+	 * const beInstance = be('#test');
+	 * beInstance.fire('customEvent', { key: 'value' }); // Dispatches a custom event with data
+	 */
 	fire(eventName: string, detail: unknown, options?: EventInit, callback?: HandlerCallBackFn) {
 		this.beElement.eachNode((el) => {
 			el.dispatchEvent(new CustomEvent(eventName, { ...options, detail }));

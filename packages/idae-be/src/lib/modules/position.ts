@@ -29,6 +29,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods: string[] | keyof PositionHandler = PositionHandler.methods;
 
 	handle(actions: PositionHandlerHandle): Be {
 		Object.entries(actions).forEach(([method, props]) => {
@@ -48,12 +49,17 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 	}
 	/**
 	 * Clones the position of a source element to this element.
-	 * @param source The element or selector of the element whose position is to be cloned.
-	 * @param options Additional options for positioning.
-	 * @param options.offsetX Horizontal offset from the source position.
-	 * @param options.offsetY Vertical offset from the source position.
-	 * @param options.useTransform Whether to use CSS transform for positioning.
+	 * @param source - The element or selector of the element whose position is to be cloned.
+	 * @param options - Additional options for positioning.
+	 * @param options.offsetX - Horizontal offset from the source position.
+	 * @param options.offsetY - Vertical offset from the source position.
+	 * @param options.useTransform - Whether to use CSS transform for positioning.
+	 * @param callback - Optional callback function to execute after cloning the position.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.clonePosition('#source', { offsetX: 10, offsetY: 20 });
 	 */
 	clonePosition(
 		source: string | HTMLElement,
@@ -71,7 +77,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		if (!sourceEl) return this.beElement;
 
 		const sourceRect = sourceEl.getBoundingClientRect();
-		const targetRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const targetRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 		const { offsetX = 0, offsetY = 0, useTransform = false } = options;
 
 		this.beElement.eachNode((el) => {
@@ -96,12 +102,17 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	/**
 	 * Positions this element to overlap a target element.
-	 * @param targetElement The element or selector of the element to overlap.
-	 * @param options Additional options for positioning.
-	 * @param options.alignment The alignment of this element relative to the target.
-	 * @param options.offset The distance to offset from the target element.
-	 * @param options.useTransform Whether to use CSS transform for positioning.
+	 * @param targetElement - The element or selector of the element to overlap.
+	 * @param options - Additional options for positioning.
+	 * @param options.alignment - The alignment of this element relative to the target.
+	 * @param options.offset - The distance to offset from the target element.
+	 * @param options.useTransform - Whether to use CSS transform for positioning.
+	 * @param callback - Optional callback function to execute after positioning.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.overlapPosition('#source', { alignment: 'center', offset: 10 });
 	 */
 	overlapPosition(
 		targetElement: string | HTMLElement,
@@ -121,7 +132,7 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 		const { alignment = 'center', offset = 0, useTransform = false } = options;
 		const targetRect = targetEl.getBoundingClientRect();
-		const selfRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const selfRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 
 		let x = 0,
 			y = 0;
@@ -169,15 +180,24 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	/**
 	 * Snaps the element to a target element with specified anchor points.
-	 * @param targetElement The element or selector of the element to snap to.
-	 * @param options Snapping options.
-	 * @param options.sourceAnchor The anchor point on the source element.
-	 * @param options.targetAnchor The anchor point on the target element.
-	 * @param options.offset Optional offset from the target anchor point.
+	 * @param targetElement - The element or selector of the element to snap to.
+	 * @param options - Snapping options.
+	 * @param options.sourceAnchor - The anchor point on the source element.
+	 * @param options.targetAnchor - The anchor point on the target element.
+	 * @param options.offset - Optional offset from the target anchor point.
+	 * @param callback - Optional callback function to execute after snapping.
 	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="source"></div><div id="target"></div>
+	 * const beInstance = be('#target');
+	 * beInstance.snapTo('#source', {
+	 *   sourceAnchor: 'center',
+	 *   targetAnchor: 'top left',
+	 *   offset: { x: 10, y: 20 }
+	 * });
 	 */
 	snapTo(
-		targetElement: string | HTMLElement, // SnapToOptions
+		targetElement: string | HTMLElement,
 		options: {
 			sourceAnchor: PositionSnapOptions;
 			targetAnchor: PositionSnapOptions;
@@ -192,17 +212,12 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 		if (!targetEl) return this.beElement;
 
-		const sourceRect = (this.beElement.node as HTMLElement).getBoundingClientRect();
+		const sourceRect = (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 		const targetRect = targetEl.getBoundingClientRect();
 		const { sourceAnchor, targetAnchor, offset = { x: 0, y: 0 } } = options;
 
-		let sourceX: number, sourceY: number, targetX: number, targetY: number;
-
-		// Calculate source anchor point
-		[sourceX, sourceY] = BeUtils.calculateAnchorPoint(sourceRect, sourceAnchor);
-
-		// Calculate target anchor point
-		[targetX, targetY] = BeUtils.calculateAnchorPoint(targetRect, targetAnchor);
+		const [sourceX, sourceY] = BeUtils.calculateAnchorPoint(sourceRect, sourceAnchor);
+		const [targetX, targetY] = BeUtils.calculateAnchorPoint(targetRect, targetAnchor);
 
 		// Calculate final position
 		const x = targetX - sourceX + offset.x;
@@ -232,6 +247,6 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 
 	valueOf(): DOMRect | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.node as HTMLElement).getBoundingClientRect();
+		return (this.beElement.inputNode as HTMLElement).getBoundingClientRect();
 	}
 }

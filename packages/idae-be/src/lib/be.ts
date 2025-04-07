@@ -5,28 +5,26 @@ import type { IsWhat } from './types.js';
 import { type DataHandlerHandle, DataHandler } from './modules/data.js';
 import { EventsHandler, type EventHandlerHandle } from './modules/events.js';
 import { type ClassHandlerHandler, ClassesHandler } from './modules/classes.js';
-import { PropsHandler, type PropsHandlerHandle } from './modules/props.js';
 import { DomHandler, type DomHandlerHandle } from './modules/dom.js';
 import { PositionHandler, type PositionHandlerHandle } from './modules/position.js';
-import { WalkHandler } from './modules/walk.js';
+import { WalkHandler, type WalkHandlerHandle } from './modules/walk.js';
 import { TextHandler, type TextHandlerHandle } from './modules/text.js';
-import { TimersHandler } from './modules/timers.js';
+import { TimersHandler, type TimerHandlerHandle } from './modules/timers.js';
+import { HttpHandler, type HttpHandlerHandle } from './modules/http.js';
 
 export class Be {
-	node!: HTMLElement | HTMLElement[] | string;
+	[key: string]: unknown; // Add an index signature to allow dynamic property assignment
+	inputNode!: HTMLElement | HTMLElement[] | string;
 	isWhat!: IsWhat;
 	//
-	BeTimer: NodeJS.Timeout | null = null;
-	BeInterval: NodeJS.Timeout | null = null;
+	timerOut: NodeJS.Timeout | null = null;
+	timerInterval: NodeJS.Timeout | null = null;
 	// styles
 	styles!: (actions: BeStylesHandler) => Be;
 	private styleHandler!: StylesHandler;
 	setStyle!: StylesHandler['set'];
 	getStyle!: StylesHandler['get'];
 	unsetStyle!: StylesHandler['unset'];
-	// properties
-	props!: (actions: PropsHandlerHandle) => Be;
-	private propHandler!: PropsHandler;
 	// dataSet
 	data!: (actions: DataHandlerHandle) => Be;
 	private dataHandler!: DataHandler;
@@ -67,6 +65,12 @@ export class Be {
 	private textHandler!: TextHandler;
 	appendText!: TextHandler['append'];
 	prependText!: TextHandler['prepend'];
+	updateText!: TextHandler['update'];
+	replaceText!: TextHandler['replace'];
+	removeText!: TextHandler['remove'];
+	clearText!: TextHandler['clear'];
+	normalizeText!: TextHandler['normalize'];
+	wrapText!: TextHandler['wrap'];
 	// events
 	events!: (actions: EventHandlerHandle) => Be;
 	private eventHandler!: EventsHandler;
@@ -81,7 +85,7 @@ export class Be {
 	toggleClass!: ClassesHandler['toggle'];
 	replaceClass!: ClassesHandler['replace'];
 	// walk
-	walk!: (actions: DataHandlerHandle) => Be;
+	walk!: (actions: WalkHandlerHandle) => Be;
 	private walkHandler!: WalkHandler;
 	up!: WalkHandler['up'];
 	next!: WalkHandler['next'];
@@ -95,70 +99,104 @@ export class Be {
 	find!: WalkHandler['find'];
 	findAll!: WalkHandler['findAll'];
 	// timers
-	timers!: (actions: TextHandlerHandle) => Be;
+	timers!: (actions: TimerHandlerHandle) => Be;
 	private timerHandler!: TimersHandler;
 	timeout!: TimersHandler['timeout'];
 	interval!: TimersHandler['interval'];
 	clearTimeout!: TimersHandler['clearTimeout'];
 	clearInterval!: TimersHandler['clearInterval'];
+	// http
+	http!: (actions: HttpHandlerHandle) => Be;
+	private httpHandler!: HttpHandler;
+	updateHttp!: HttpHandler['update'];
+	insertHttp!: HttpHandler['insert'];
+
 	private constructor(input: HTMLElement | HTMLElement[] | Be | string) {
 		if (input instanceof Be) {
 			return input;
 		}
-		this.node = input;
-		this.isWhat = typeof input === 'string' ? 'qy' : Array.isArray(input) ? 'array' : 'element';
+		this.inputNode = Be.getNode(input);
+		this.isWhat =
+			typeof this.inputNode === 'string'
+				? 'qy'
+				: Array.isArray(this.inputNode)
+					? 'array'
+					: 'element';
 
 		// styles
 		this.styleHandler = new StylesHandler(this);
-		this.styles = this.handle(this.styleHandler);
+		this.styles = this.handle(this.styleHandler) as (actions: BeStylesHandler) => Be;
 		this.attach(StylesHandler, 'Style');
-		// properties
-		this.propHandler = new PropsHandler(this);
-		this.props = this.handle(this.styleHandler);
-		this.attach<PropsHandler>(PropsHandler, 'Prop');
 		// dataSet
 		this.dataHandler = new DataHandler(this);
-		this.data = this.handle(this.styleHandler);
-		this.attach<DataHandler>(DataHandler, 'Data');
+		this.data = this.handle(this.dataHandler) as (actions: DataHandlerHandle) => Be;
+		this.attach(DataHandler, 'Data');
 		// attributes
 		this.attrHandler = new AttrHandler(this);
-		this.attrs = this.handle(this.styleHandler);
-		this.attach<AttrHandler>(AttrHandler, 'Attr');
+		this.attrs = this.handle(this.attrHandler) as (actions: Partial<AttrHandlerHandle>) => Be;
+		this.attach(AttrHandler, 'Attr');
 
 		// position
 		this.positionHandler = new PositionHandler(this);
-		this.position = this.handle(this.positionHandler);
-		this.attach<PositionHandler>(PositionHandler, 'Position');
+		this.position = this.handle(this.positionHandler) as (actions: PositionHandlerHandle) => Be;
+		this.attach(PositionHandler);
 
 		// text
 		this.textHandler = new TextHandler(this);
-		this.dom = this.handle(this.textHandler);
-		this.attach<TextHandler>(TextHandler, 'Text');
+		this.text = this.handle(this.textHandler) as (actions: TextHandlerHandle) => Be;
+		this.attach(TextHandler, 'Text');
 
 		// dom and handle
 		this.domHandler = new DomHandler(this);
-		this.dom = this.handle(this.domHandler);
-		this.attach<DomHandler>(DomHandler);
+		this.dom = this.handle(this.domHandler) as (actions: DomHandlerHandle) => Be;
+		this.attach(DomHandler);
 
 		// events
 		this.eventHandler = new EventsHandler(this);
-		this.events = this.handle(this.eventHandler);
-		this.attach<EventsHandler>(EventsHandler);
+		this.events = this.handle(this.eventHandler) as (actions: EventHandlerHandle) => Be;
+		this.attach(EventsHandler);
 
 		// classes
 		this.classesHandler = new ClassesHandler(this);
-		this.classes = this.handle(this.classesHandler);
-		this.attach<ClassesHandler>(ClassesHandler, 'Class');
+		this.classes = this.handle(this.classesHandler) as unknown as (
+			actions: ClassHandlerHandler
+		) => Be;
+		this.attach(ClassesHandler, 'Class');
 
 		// walk
 		this.walkHandler = new WalkHandler(this);
-		this.walk = this.handle(this.walkHandler);
-		this.attach<WalkHandler>(WalkHandler);
+		this.walk = this.handle(this.walkHandler) as (actions: WalkHandlerHandle) => Be;
+		this.attach(WalkHandler);
 
 		// timers
 		this.timerHandler = new TimersHandler(this);
-		this.timers = this.handle(this.timerHandler);
+		this.timers = this.handle(this.timerHandler) as (actions: TimerHandlerHandle) => Be;
 		this.attach(TimersHandler);
+
+		// http
+		this.httpHandler = new HttpHandler(this);
+		this.http = this.handle(this.httpHandler) as (actions: HttpHandlerHandle) => Be;
+		this.attach(HttpHandler, 'Http');
+	}
+
+	/**
+	 * Normalizes the input to ensure `node` is always an HTMLElement or an array of HTMLElements.
+	 * @param input - The input to normalize (string, HTMLElement, or array of HTMLElements).
+	 * @returns A valid HTMLElement or an array of HTMLElements.
+	 */
+	private static getNode(input: HTMLElement | HTMLElement[] | string): HTMLElement | HTMLElement[] {
+		if (typeof input === 'string') {
+			// Si `input` est une chaîne, sélectionnez les éléments correspondants
+			const elements = Array.from(document.querySelectorAll(input));
+			return elements.length === 1 ? (elements[0] as HTMLElement) : (elements as HTMLElement[]);
+		} else if (input instanceof HTMLElement) {
+			// Si `input` est un seul élément DOM, retournez-le
+			return input;
+		} else if (Array.isArray(input)) {
+			// Si `input` est un tableau, filtrez pour ne garder que les éléments DOM valides
+			return input.filter((n) => n instanceof HTMLElement) as HTMLElement[];
+		}
+		throw new Error('Invalid input: must be a string, HTMLElement, or an array of HTMLElements.');
 	}
 
 	static elem(node: HTMLElement | HTMLElement[] | string): Be {
@@ -210,7 +248,7 @@ export class Be {
 			tag?: string;
 		} = {}
 	): Be {
-		const { tag = 'span' } = options;
+		const { tag = 'div' } = options;
 
 		let beElem: Be;
 
@@ -263,13 +301,6 @@ export class Be {
 		return beElem;
 	}
 
-	/**
-	 * setStyle Sets one or more CSS styles for the selected element(s), including CSS custom properties.
-	 * @param styles An object of CSS properties and values, or a string of CSS properties and values.
-	 * @param value The value for a single CSS property when styles is a property name string.
-	 * @returns The Be instance for method chaining.
-	 */
-
 	fetch<T extends object>(options: {
 		url: string;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE';
@@ -283,52 +314,80 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
-	eachNode(callback: (el: HTMLElement) => void): void {
+	/**
+	 * Iterates over nodes based on the type of `this.isWhat` and applies a callback function to each node.
+	 *
+	 * @param callback - A function to be executed for each node. Receives the current node as an argument.
+	 * @param firstChild - Optional. If `true`, stops further iteration after the first child is processed.
+	 *
+	 * The behavior of the method depends on the value of `this.isWhat`:
+	 * - `'element'`: Applies the callback to a single HTMLElement (`this.inputNode`).
+	 * - `'array'`: Iterates over an array of HTMLElements (`this.inputNode`) and applies the callback to each.
+	 * - `'qy'`: Selects elements using a query selector string (`this.inputNode`) and applies the callback to each.
+	 */
+	eachNode(callback: (el: HTMLElement) => void, firstChild?: boolean): void {
 		switch (this.isWhat) {
 			case 'element':
-				BeUtils.applyCallback(this.node as HTMLElement, callback);
+				BeUtils.applyCallback(this.inputNode as HTMLElement, callback);
 				break;
 			case 'array':
-				(this.node as HTMLElement[]).forEach((lo) => {
+				(this.inputNode as HTMLElement[]).forEach((lo) => {
 					BeUtils.applyCallback(lo, callback);
+					if (firstChild) return;
 				});
 				break;
 			case 'qy':
-				document.querySelectorAll(this.node as string).forEach((el) => callback(el as HTMLElement));
+				document.querySelectorAll(this.inputNode as string).forEach((el) => {
+					callback(el as HTMLElement);
+					if (firstChild) return;
+				});
 				break;
 		}
 	}
 
-	/** DOM
-	 * Handles various DOM operations on the element(s).
-	 * @param actions An object specifying the DOM actions to perform.
-	 * @returns The Be instance for method chaining.
-	 */
-
 	get html() {
-		return this.isWhat === 'element' ? (this.node as HTMLElement).innerHTML : null;
+		return this.isWhat === 'element' ? (this.inputNode as HTMLElement).innerHTML : null;
 	}
 
-	private attach<T extends new (beElement: Be) => unknown>(
+	get node(): HTMLElement | HTMLElement[] {
+		switch (this.isWhat) {
+			case 'element':
+				return this.inputNode as HTMLElement;
+			case 'array':
+				return Array.from(this.inputNode as HTMLElement[]);
+			case 'qy':
+				return Array.from(document.querySelectorAll(this.inputNode as string)) as HTMLElement[];
+		}
+	}
+
+	private attach<T extends new (beElement: Be) => object>(
 		Handler: T & { methods?: string[] },
 		suffix: string = ''
 	) {
 		const fromMethods = Handler.methods || [];
 
 		fromMethods.forEach((method: string) => {
-			const handler = new Handler(this);
-			const methodName = method + suffix;
+			const handler = new Handler(this) as InstanceType<T>;
+			const methodName = suffix ? method + suffix : method;
+
 			if (!(method in handler)) {
 				console.error(`Method ${method} not found in ${Handler.name}`, handler);
 			} else if (methodName in this) {
-				this[methodName] = (...args: any[]) => {
-					return (handler[method] as Function).apply(handler, args);
+				if (!handler) {
+					console.error(`Handler ${Handler.name} not found`, handler);
+				}
+
+				this[methodName] = (...args: unknown[]) => {
+					return (handler[method as keyof typeof handler] as (...args: unknown[]) => unknown).apply(
+						handler,
+						args
+					);
 				};
 			}
 		});
 	}
 
-	private handle<T extends Record<string, any>>(cl: T) {
+	private handle<T, A>(cl: T & { handle: (args: A) => unknown }) {
 		return cl.handle.bind(cl);
 	}
 }

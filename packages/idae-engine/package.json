@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-engine",
 	"scope": "@medyll",
-	"version": "1.72.0",
+	"version": "1.89.0",
 	"description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",
 	"scripts": {
 		"dev": "vite dev",
@@ -31,16 +31,16 @@
 	},
 	"devDependencies": {
 		"@medyll/idae-prettier-config": "^1.1.0",
-		"@sveltejs/adapter-auto": "^4.0.0",
-		"@sveltejs/kit": "^2.18.0",
+		"@sveltejs/adapter-auto": "^5.0.0",
+		"@sveltejs/kit": "^2.20.2",
 		"@sveltejs/package": "^2.3.10",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"svelte": "^5.22.4",
-		"svelte-check": "^4.1.4",
+		"svelte": "^5.25.3",
+		"svelte-check": "^4.1.5",
 		"tslib": "^2.8.1",
 		"typescript": "^5.8.2",
-		"vite": "^6.2.0",
-		"vitest": "^3.0.7"
+		"vite": "^6.2.3",
+		"vitest": "^3.0.9"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
