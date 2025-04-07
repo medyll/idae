@@ -10,6 +10,7 @@ import { PositionHandler, type PositionHandlerHandle } from './modules/position.
 import { WalkHandler, type WalkHandlerHandle } from './modules/walk.js';
 import { TextHandler, type TextHandlerHandle } from './modules/text.js';
 import { TimersHandler, type TimerHandlerHandle } from './modules/timers.js';
+import { HttpHandler, type HttpHandlerHandle } from './modules/http.js';
 
 export class Be {
 	[key: string]: unknown; // Add an index signature to allow dynamic property assignment
@@ -104,6 +105,11 @@ export class Be {
 	interval!: TimersHandler['interval'];
 	clearTimeout!: TimersHandler['clearTimeout'];
 	clearInterval!: TimersHandler['clearInterval'];
+	// http
+	http!: (actions: HttpHandlerHandle) => Be;
+	private httpHandler!: HttpHandler;
+	updateHttp!: HttpHandler['update'];
+	insertHttp!: HttpHandler['insert'];
 
 	private constructor(input: HTMLElement | HTMLElement[] | Be | string) {
 		if (input instanceof Be) {
@@ -166,6 +172,11 @@ export class Be {
 		this.timerHandler = new TimersHandler(this);
 		this.timers = this.handle(this.timerHandler) as (actions: TimerHandlerHandle) => Be;
 		this.attach(TimersHandler);
+
+		// http
+		this.httpHandler = new HttpHandler(this);
+		this.http = this.handle(this.httpHandler) as (actions: HttpHandlerHandle) => Be;
+		this.attach(HttpHandler, 'Http');
 	}
 
 	/**
@@ -237,7 +248,7 @@ export class Be {
 			tag?: string;
 		} = {}
 	): Be {
-		const { tag = 'span' } = options;
+		const { tag = 'div' } = options;
 
 		let beElem: Be;
 
@@ -303,6 +314,17 @@ export class Be {
 		}).then((response) => response.json());
 	}
 
+	/**
+	 * Iterates over nodes based on the type of `this.isWhat` and applies a callback function to each node.
+	 *
+	 * @param callback - A function to be executed for each node. Receives the current node as an argument.
+	 * @param firstChild - Optional. If `true`, stops further iteration after the first child is processed.
+	 *
+	 * The behavior of the method depends on the value of `this.isWhat`:
+	 * - `'element'`: Applies the callback to a single HTMLElement (`this.inputNode`).
+	 * - `'array'`: Iterates over an array of HTMLElements (`this.inputNode`) and applies the callback to each.
+	 * - `'qy'`: Selects elements using a query selector string (`this.inputNode`) and applies the callback to each.
+	 */
 	eachNode(callback: (el: HTMLElement) => void, firstChild?: boolean): void {
 		switch (this.isWhat) {
 			case 'element':
