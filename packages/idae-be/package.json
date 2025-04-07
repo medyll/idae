@@ -1,8 +1,20 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-	"version": "0.91.0",
-	"description": "A powerful DOM manipulation library with a callback-based approach for precise element targeting. Provides consistent chaining, comprehensive DOM traversal, event handling, style management, and more. Written in TypeScript for modern browsers.",
+	"version": "0.89.0",
+	"description": "A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.",
+	"keywords": [
+		"DOM",
+		"manipulation",
+		"library",
+		"typescript",
+		"callback",
+		"events",
+		"attributes",
+		"styles",
+		"http",
+		"timers"
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
