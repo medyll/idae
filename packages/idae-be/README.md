@@ -1,4 +1,3 @@
-
 # @medyll/idae-be
 
 A DOM walk and manipulation library with a callback-based approach for precise element targeting.
@@ -21,133 +20,154 @@ npm install @medyll/idae-be
 
 Unlike jQuery and other chained libraries, `@medyll/idae-be` always returns the root object. This approach allows for consistent chaining while using callbacks to manipulate targeted elements. This design provides more control and clarity in complex DOM operations.
 
+---
+
 ## Basic Usage
+
+### Example 1: DOM Manipulation with Callbacks
 
 ```javascript
 import { be, toBe } from '@medyll/idae-be';
 
+// Select the container element
 be('#container')
-  .append(toBe('<div>New content</div>'), ({ be }) => {
-    be
-      .addClass('highlight')
-      .on('click', () => console.log('Clicked!'));
-  })
-  .prepend(toBe('<h1>Title</h1>'))
-  .children(undefined, ({ be }) => {
-    be.setStyle({ color: 'blue' });
-  });
+	.append(toBe('<div>New content</div>'), ({ be }) => {
+		be.addClass('highlight')
+			.on('click', () => console.log('Clicked!'))
+			.append(toBe('<span>Nested content</span>'), ({ be }) => {
+				be.addClass('nested').on('mouseover', () => console.log('Hovered!'));
+			});
+	})
+	.prepend(toBe('<h1>Title</h1>'), ({ be }) => {
+		be.addClass('title').children(({ be }) => {
+			be.setStyle({ color: 'blue' });
+		});
+	});
 ```
 
-## API Reference
+**Comments:**
 
-### Core Methods
+1. **`append`**: Adds a new `<div>` to the container and applies a class and event listener.
+2. **Nested `append`**: Adds a `<span>` inside the appended `<div>` with its own class and event listener.
+3. **`prepend`**: Adds a title at the beginning of the container and styles its children.
 
-- `be(selector: string | HTMLElement | HTMLElement[]): Be` - Create a new Be instance
-- `toBe(str: string | HTMLElement, options?: { tag?: string }): Be` - Convert string or HTMLElement to Be instance
-- `createBe(tagOrHtml: string, options?: Object): Be` - Create a new Be element
+---
 
-### DOM Manipulation
-
-- `update(content: string): Be`
-- `append(content: string | HTMLElement): Be`
-- `prepend(content: string | HTMLElement): Be`
-- `insert(mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', element: HTMLElement | Be): Be`
-- `remove(): Be`
-- `replace(content: string | HTMLElement): Be`
-- `clear(): Be`
-- `normalize(): Be`
-- `wrap(tag?: string): Be`
-
-### Traversal
-
-- `up(selector?: string, callback?: HandlerCallBackFn): Be`
-- `next(selector?: string, callback?: HandlerCallBackFn): Be`
-- `previous(selector?: string, callback?: HandlerCallBackFn): Be`
-- `siblings(selector?: string, callback?: HandlerCallBackFn): Be`
-- `children(selector?: string, callback?: HandlerCallBackFn): Be`
-- `closest(selector: string, callback?: HandlerCallBackFn): Be`
-- `firstChild(selector?: string, callback?: HandlerCallBackFn): Be`
-- `lastChild(selector?: string, callback?: HandlerCallBackFn): Be`
-- `find(selector: string, callback?: HandlerCallBackFn): Be`
-- `findAll(selector: string, callback?: HandlerCallBackFn): Be`
-- `without(selector: string, callback?: HandlerCallBackFn): Be`
-
-### Styling
-
-- `setStyle(styles: Record<string, string>): Be`
-- `getStyle(property: string): string | null`
-- `unsetStyle(properties: string[]): Be`
-- `addClass(className: string): Be`
-- `removeClass(className: string): Be`
-- `toggleClass(className: string): Be`
-- `replaceClass(oldClass: string, newClass: string): Be`
-
-### Events
-
-- `on(eventName: string, handler: EventListener): Be`
-- `off(eventName: string, handler: EventListener): Be`
-- `fire(eventName: string, detail?: any): Be`
-
-### Attributes and Properties
-
-- `setAttr(name: string, value: string): Be`
-- `getAttr(name: string): string | null`
-- `deleteAttr(name: string): Be`
-- `setData(key: string, value: string): Be`
-- `getData(key: string): string | null`
-- `deleteData(key: string): Be`
-
-### Timers
-
-- `timeout(delay: number, callback: HandlerCallBackFn): Be`
-- `interval(delay: number, callback: HandlerCallBackFn): Be`
-- `clearTimeout(): Be`
-- `clearInterval(): Be`
-
-## Advanced Example
+### Example 2: Event Handling and Traversal
 
 ```javascript
-be('#app')
-  .append(toBe('<div id="content"></div>'), ({ be  }) => {
-    be
-      .append(toBe('<button>Add Item</button>'), ({ be }) => {
-        be.on('click', () => {
-          content.append(toBe('<p>New item</p>'), ({ be }) => {
-            be
-              .addClass('item')
-              .setStyle({ color: 'blue' })
-              .on('click', ({ target }) => {
-                be(target).toggleClass('selected');
-              });
-          });
-        });
-      })
-      .children('.item', ({ be }) => {
-        be.setStyle({ padding: '5px', margin: '2px' });
-      });
-  })
-  .up(({ be }) => {
-    be.setStyle({ backgroundColor: '#f0f0f0' });
-  });
+import { be } from '@medyll/idae-be';
+
+// Add a click event to all buttons inside the container
+be('#container button').on('click', ({ target }) => {
+	be(target)
+		.toggleClass('active')
+		.siblings(({ be }) => {
+			be.removeClass('active').on('mouseover', () => console.log('Sibling hovered!'));
+		});
+});
+
+// Fire a custom event and handle it
+be('#container').fire('customEvent', { detailKey: 'detailValue' }, ({ be }) => {
+	be.children(({ be }) => {
+		be.addClass('custom-event-handled');
+	});
+});
 ```
 
-This example demonstrates:
-1. Nested element creation and manipulation
-2. Event handling with dynamic content addition
-3. Traversal and bulk operations on children
-4. Accessing and styling parent elements
+**Comments:**
 
-## TypeScript Support
+1. **`on`**: Adds a click event to buttons and toggles a class on the clicked button.
+2. **`siblings`**: Removes a class from sibling buttons and adds a hover event.
+3. **`fire`**: Dispatches a custom event and applies a class to all child elements.
 
-This library is written in TypeScript and includes type definitions for a great developer experience.
+---
 
-## Browser Support
+### Example 3: Styling and Attributes
 
-Designed for modern browsers. May require polyfills for older browser support.
+```javascript
+import { be } from '@medyll/idae-be';
 
-## Contributing
+// Select an element and update its styles and attributes
+be('#element')
+	.setStyle({ backgroundColor: 'yellow', fontSize: '16px' }, ({ be }) => {
+		be.setAttr('data-role', 'admin').children(({ be }) => {
+			be.setStyle({ color: 'red' }).setAttr('data-child', 'true');
+		});
+	})
+	.addClass('styled-element', ({ be }) => {
+		be.siblings(({ be }) => {
+			be.setStyle({ opacity: '0.5' });
+		});
+	});
+```
 
-Contributions are welcome! Please submit pull requests or open issues on our GitHub repository.
+**Comments:**
+
+1. **`setStyle`**: Applies styles to the selected element and its children.
+2. **`setAttr`**: Sets attributes on the selected element and its children.
+3. **`addClass`**: Adds a class to the element and modifies its siblings.
+
+---
+
+### Example 4: Timers
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Set a timeout to execute a callback after 100ms
+be('#test').timeout(100, ({ be }) => {
+	be.setStyle({ backgroundColor: 'yellow' }).append('<span>Timeout executed</span>');
+});
+
+// Set an interval to execute a callback every 100ms
+be('#test').interval(100, ({ be }) => {
+	be.toggleClass('highlight');
+});
+
+// Clear a timeout before it executes
+const timeoutInstance = be('#test').timeout(500, ({ be }) => {
+	be.setStyle({ color: 'red' });
+});
+timeoutInstance.clearTimeout();
+
+// Clear an interval after 600ms
+const intervalInstance = be('#test').interval(400, ({ be }) => {
+	be.setStyle({ fontSize: '20px' });
+});
+intervalInstance.clearInterval();
+```
+
+---
+
+### Example 5: Walk
+
+```javascript
+import { be } from '@medyll/idae-be';
+
+// Traverse up the DOM tree to find the parent element
+be('#child').up('#parent', ({ be: parent }) => {
+	parent.addClass('highlight').children(({ be: child }) => {
+		child.setStyle({ color: 'blue' });
+	});
+});
+
+// Find all siblings of an element and add a class
+be('#target').siblings(({ be: siblings }) => {
+	siblings.addClass('sibling-class').children(({ be }) => {
+		be.setStyle({ fontWeight: 'bold' });
+	});
+});
+
+// Find the closest ancestor matching a selector
+be('#child').closest('.ancestor', ({ be: closest }) => {
+	closest.setStyle({ border: '2px solid red' }).children(({ be }) => {
+		be.addClass('ancestor-child');
+	});
+});
+```
+
+---
 
 ## License
 
