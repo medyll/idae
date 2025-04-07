@@ -5,7 +5,7 @@ const scriptPath = __dirname;
 const monorepoPath = path.resolve(scriptPath, '..');
 const monorepoName = "idae monorepo";
 const monorepoDescription = "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
-const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/packages/';
+const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/';
 /**
  * Retrieves repository information from the given repository path.
  *
@@ -34,8 +34,8 @@ function getRepoInfo(repoPath) {
         version: packageJson.version,
         changelog: null,
         changelogPath: fs.existsSync(changelogPath) ? changelogPath : null,
-        changelogLink: githubBaseUrl + path.relative(monorepoPath, changelogPath),
-        githubLink: githubBaseUrl + path.relative(monorepoPath, repoPath)
+        changelogLink: githubBaseUrl + path.relative(monorepoPath, changelogPath).replace(/\\/g, '/'),
+        githubLink: githubBaseUrl + path.relative(monorepoPath, repoPath).replace(/\\/g, '/')
     };
 
     if (fs.existsSync(changelogPath)) {
@@ -100,7 +100,6 @@ function listPackageNames() {
 }
 
 function generateReadme() {
-    console.log('generateReadme')
     const repoInfos = listMonorepo();
     let readmeContent = `# ${monorepoName}\n\n${monorepoDescription}\n`;
 
@@ -108,29 +107,20 @@ function generateReadme() {
 
     readmeContent += '## Details\n\n';
     repoInfos.forEach(info => {
-        readmeContent += `### ${info.name}\n`;
-        // readmeContent += info?.description ? `${info.description}\n\n` : '';
-        if( info?.description){
-        readmeContent += "```\n";
-        readmeContent += `${info.description}\n`
-        readmeContent += "```\n";
-
-
+        readmeContent += `### ${info.name}\n`; 
+        if (info?.description) {
+            readmeContent += `${info.description}\n\n`;  
         }
-        /* if (info.changelog) {
-            readmeContent += `**Latest Changelog:**\n\`\`\`\n${info.changelog}\n\`\`\`\n\n`;
-        } */
-        readmeContent += `**Repo:**:  (${info.githubLink})\n\n `;
+        readmeContent += `**Repo:** [${info.name}](${info.githubLink})\n\n`;
         readmeContent += `**Version:** ${info.version}`;
         if (info.changelogPath) {
-           readmeContent +=  `         [see changelog](${info.changelogLink})\n`;
-          //  readmeContent += `**Latest Changelog:**\n\`\`\`\n${info.changelog}\n\`\`\`\n\n`;
+            readmeContent += ` [see changelog](${info.changelogLink})\n`;
         }
-        readmeContent += `\n##\n`
+        readmeContent += `\n##\n`;
     });
 
     fs.writeFileSync(path.join(monorepoPath, 'README.md'), readmeContent, 'utf8');
-    console.log('Done')
+    console.log('Done');
 }
 
 generateReadme();
