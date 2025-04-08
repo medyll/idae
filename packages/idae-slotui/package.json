@@ -2,6 +2,7 @@
 	"name": "@medyll/idae-slotui-svelte",
 	"version": "0.93.0",
 	"scope": "@medyll",
+	"description": "A Svelte 5 component library for building modular and reactive user interfaces.",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
