@@ -1,62 +1,93 @@
-import { describe, it, expect, vi } from 'vitest';
-import { stator } from './Stator.js';
-describe('stator', () => {
-	it('should handle primitive values', () => {
-		const state = stator(42);
-		expect(state.stator).toBe(42);
-	});
+import { describe, it, expect, vi } from "vitest";
+import { stator } from "./Stator.js";
 
-	it('should handle object values', () => {
-		const initialState = { foo: 'bar' };
-		const state = stator(initialState);
-		expect(state.stator).toEqual(initialState);
-	});
+describe("stator", () => {
+  describe("primitive values", () => {
+    it("should handle number values", () => {
+      const state = stator(42);
+      expect(state.value).toBe(42);
 
-	it('should trigger onchange for primitive values', () => {
-		const state = stator(42);
-		const mockOnChange = vi.fn();
-		state.onchange = mockOnChange;
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
 
-		state.stator = 43;
-		expect(mockOnChange).toHaveBeenCalledWith({ stator: 42 }, { stator: 43 });
-	});
+      state.value = 100;
+      expect(state.value).toBe(100);
+      expect(mockOnChange).toHaveBeenCalledWith(42, 100);
+    });
 
-	it('should trigger onchange for object properties', () => {
-		const state = stator({ count: 0 });
-		const mockOnChange = vi.fn();
-		state.onchange = mockOnChange;
+    it("should handle string values", () => {
+      const state = stator("hello");
+      expect(state.value).toBe("hello");
 
-		state.stator.count = 1;
-		expect(mockOnChange).toHaveBeenCalledWith({ count: 0 }, { count: 1 });
-	});
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
 
-	it('should throw TypeError when setting onchange to non-function', () => {
-		const state = stator(42);
-		expect(() => {
-			(state as any).onchange = 'not a function';
-		}).toThrow(TypeError);
-	});
+      state.value = "world";
+      expect(state.value).toBe("world");
+      expect(mockOnChange).toHaveBeenCalledWith("hello", "world");
+    });
 
-	it('should not enumerate onchange property', () => {
-		const state = stator({ foo: 'bar' });
-		state.onchange = () => {};
-		expect(Object.keys(state)).not.toContain('onchange');
-	});
+    it("should handle boolean values", () => {
+      const state = stator(true);
+      expect(state.value).toBe(true);
 
-	it('should handle null values', () => {
-		const state = stator(null);
-		expect(state.stator).toBeNull();
-	});
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
 
-	it('should log error when accessing non-existent property', () => {
-		const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-		const state = stator({});
+      state.value = false;
+      expect(state.value).toBe(false);
+      expect(mockOnChange).toHaveBeenCalledWith(true, false);
+    });
+  });
 
-		expect(() => {
-			(state as any).nonExistent;
-		}).toThrow();
+  describe("object values", () => {
+    it("should handle object values", () => {
+      const initialState = { foo: "bar" };
+      const state = stator(initialState);
+      expect(state.value).toEqual(initialState);
+    });
+    it("should handle object values update", () => {
+      const initialState = { foo: "bar" };
+      const state = stator(initialState);
+      expect(state).toEqual(initialState);
 
-		expect(consoleSpy).toHaveBeenCalled();
-		consoleSpy.mockRestore();
-	});
+      state.foo = "baz";
+      expect(state.value).toEqual({ foo: "baz" });
+    });
+
+    it("should trigger onchange for object properties", () => {
+      const state = stator({ count: 0 });
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+
+      state.value.count = 1;
+      expect(mockOnChange).toHaveBeenCalledWith({ count: 0 }, { count: 1 });
+    });
+  });
+
+  describe("error handling", () => {
+    it("should throw TypeError when setting onchange to non-function", () => {
+      const state = stator(42);
+      expect(() => {
+        (state as any).onchange = "not a function";
+      }).toThrow(TypeError);
+    });
+
+    it("should not enumerate onchange property", () => {
+      const state = stator({ foo: "bar" });
+      state.onchange = () => {};
+      expect(Object.keys(state)).not.toContain("onchange");
+    });
+
+    it("should handle null values", () => {
+      const state = stator(null);
+      expect(state.value).toBeNull();
+    });
+
+    it("should be undefined when accessing non-existent property", () => {
+      const state = stator({});
+
+      expect((state as any).nonExistent).toBeUndefined();
+    });
+  });
 });
