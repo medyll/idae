@@ -3,7 +3,8 @@ import { be } from '../be.js';
 
 describe('DomHandler', () => {
 	beforeEach(() => {
-		document.body.innerHTML = '<div id="test"></div>';
+		document.body.innerHTML =
+			'<div id="test"></div><div id="wrapper"><span id="child">Content</span></div>';
 	});
 
 	it('should manipulate DOM content', () => {
@@ -109,5 +110,23 @@ describe('DomHandler', () => {
 		be('#test').update('<span>Content</span>');
 		be('#test').clear();
 		expect(document.querySelector('#test')?.innerHTML).toBe('');
+	});
+
+	it('should unwrap an element', () => {
+		const child = document.querySelector('#child');
+		const wrapper = document.querySelector('#wrapper');
+
+		expect(wrapper).not.toBeNull();
+		expect(child?.parentElement).toBe(wrapper);
+
+		be('#child').unwrap();
+
+		expect(document.querySelector('#wrapper')).toBeNull();
+		expect(child?.parentElement).toBe(document.body);
+	});
+
+	it('should not throw an error if the element has no parent', () => {
+		document.body.innerHTML = '<span id="child">Content</span>';
+		expect(() => be('#child').unwrap()).not.toThrow();
 	});
 });

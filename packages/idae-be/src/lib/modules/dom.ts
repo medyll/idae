@@ -14,7 +14,8 @@ enum domMethods {
 	wrap = 'wrap',
 	normalize = 'normalize',
 	replace = 'replace',
-	clear = 'clear'
+	clear = 'clear',
+	unwrap = 'unwrap'
 }
 
 type Content = string | HTMLElement | Be;
@@ -127,6 +128,9 @@ export class DomHandler
 					break;
 				case 'wrap':
 					this.wrap(props.tag, props.callback);
+					break;
+				case 'unwrap':
+					this.unwrap(props.callback);
 					break;
 			}
 		});
@@ -426,6 +430,35 @@ export class DomHandler
 			wrapper.appendChild(el);
 			callback?.({
 				fragment: tag,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
+	}
+
+	/**
+	 * Removes the parent element of the selected element(s), keeping the selected element(s) in the DOM.
+	 * @param callback - Optional callback function to execute after unwrapping.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * // HTML: <div id="wrapper"><span id="child">Content</span></div>
+	 * const beInstance = be('#child');
+	 * beInstance.unwrap(); // Removes the <div id="wrapper">, keeping <span id="child">
+	 */
+	unwrap(callback?: HandlerCallBackFn): Be {
+		this.beElement.eachNode((el: HTMLElement) => {
+			const parent = el.parentElement;
+			if (parent) {
+				// Move the element itself before the parent
+				while (el.firstChild) {
+					parent.insertBefore(el.firstChild, el);
+				}
+				// Remove the parent after moving its children
+				parent.replaceWith(...Array.from(parent.childNodes));
+			}
+			callback?.({
+				fragment: undefined,
 				be: be(el),
 				root: this.beElement
 			});

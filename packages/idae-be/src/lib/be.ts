@@ -60,6 +60,7 @@ export class Be {
 	clear!: DomHandler['clear'];
 	normalize!: DomHandler['normalize'];
 	wrap!: DomHandler['wrap'];
+	unwrap!: DomHandler['unwrap'];
 	// text
 	text!: (actions: TextHandlerHandle) => Be;
 	private textHandler!: TextHandler;
