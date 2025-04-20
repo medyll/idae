@@ -1,6 +1,6 @@
 # @medyll/idae-dom-events
 
-`@medyll/idae-dom-events` is a powerful library for observing and reacting to changes in the DOM of web applications. It provides tools to track CSS changes, monitor DOM mutations, and manage various events efficiently, making it an ideal choice for dynamic web applications.
+`@medyll/idae-dom-events` is a library for observing and reacting to changes in the DOM of web applications. It provides tools to track CSS changes, monitor DOM mutations, and manage various events efficiently, making it an ideal choice for dynamic web applications.
 
 ## Features
 
