@@ -1,6 +1,7 @@
 {
   "name": "@medyll/idae-chroma",
   "version": "0.32.0",
+  "description": "Idae Chroma Client is a library designed to interact with ChromaDB, providing tools for managing collections, adding, updating, and querying entries, as well as monitoring directories for changes using file watchers.",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
