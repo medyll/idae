@@ -1,6 +1,7 @@
 {
 	"name": "@medyll/idae-stator",
 	"version": "0.1.1",
+	"description": "A lightweight and efficient state management library designed for building reactive and scalable JavaScript applications.",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -18,7 +19,7 @@
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"import": "./dist/index.js"
 		}
 	},
 	"files": [
@@ -50,6 +51,23 @@
 		"vite": "^6.2.3",
 		"vitest": "^3.0.9"
 	},
+	"keywords": [
+		"state-management",
+		"reactive",
+		"scalable",
+		"javascript",
+		"library"
+	],
+	"author": "Your Name <your.email@example.com>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/your-repo/idae-stator.git"
+	},
+	"bugs": {
+		"url": "https://github.com/your-repo/idae-stator/issues"
+	},
+	"homepage": "https://github.com/your-repo/idae-stator#readme",
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
