@@ -90,7 +90,14 @@ be('#element')
         });
     });
 ```
+#### `unwrap(callback?: HandlerCallBackFn): Be`
+Removes the parent element of the selected element(s), keeping the selected element(s) in the DOM.
 
+**Example:**
+```javascript
+// HTML: <div id="wrapper"><span id="child">Content</span></div>
+be('#child').unwrap();
+// Result: <span id="child">Content</span>
 ---
 
 ### Example 4: Timers
