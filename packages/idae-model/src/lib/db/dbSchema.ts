@@ -28,6 +28,8 @@ import {
 import { space } from 'postcss/lib/list';
 import type { DbDataModel, DbDataModelTs } from './dataModel';
 
+
+/* here is an example of how to declare a dataModel*/
 export const schemeModelDb = {
 	agent:                  {
 		keyPath:  '++id, promptId, created_at',

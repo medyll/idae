@@ -8,7 +8,7 @@
 		IDbCollections as DbFields,
 		IDbCollectionValues,
 		IDbFormValidate
-	} from '$lib/db/dbFields';
+	} from '$lib/db/dbFields.js';
 	import { schemeModel, idbqlState, idbql } from '$lib/db/dbSchema';
 	import { IconButton } from '@medyll/idae-slotui-svelte';
 	import type { CreateUpdateProps } from './types';

@@ -1,6 +1,6 @@
 <!-- path: D:\boulot\python\wollama\src\components\form\CollectionFieldValue .svelte -->
 <script lang="ts">
-	import { IDbCollectionFieldForge } from '$lib/db/dbFields';
+	import { IDbCollectionFieldForge } from '$lib/db/dbFields.js';
 	import type { TplCollectionName } from '@medyll/idae-idbql';
 	import { IconButton } from '@medyll/idae-slotui-svelte';
 	type LabelPosition = 'before' | 'above' | 'after' | 'below' | boolean;

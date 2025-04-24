@@ -11,5 +11,5 @@ export { default as CollectionFieldValue } from '$lib/form/CollectionFieldValue.
 export { default as CollectionFieldGuess } from '$lib/form/CollectionFieldGuess.svelte';
 export { default as CollectionButton } from '$lib/form/CollectionButton.svelte';
 export * from '$lib/db/dbSchema.js';
-export * from '$lib/db/dbFields';
+export * from '$lib/db/dbFields.js';
 export * from '$lib/db/dataModel.js';
