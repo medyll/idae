@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IDbCollections } from '$lib/db/dbFields.js';
+	import { IDbCollections } from '$lib/db/dbFields';
 	import { schemeModel, idbqlState } from '$lib/db/dbSchema';
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
