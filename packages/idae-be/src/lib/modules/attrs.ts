@@ -37,13 +37,8 @@ export class AttrHandler implements CommonHandler<AttrHandler, AttrHandler> {
 	 */
 	handle(actions: Partial<AttrHandlerHandle>): Be {
 		Object.entries(actions).forEach(([method, props]) => {
-			switch (method) {
-				case 'set':
-					this.set(props);
-					break;
-				case 'delete':
-					this.delete(props);
-					break;
+			if (method in this) {
+				(this[method as keyof AttrHandler] as (props: unknown) => void)(props);
 			}
 		});
 		return this.beElement;

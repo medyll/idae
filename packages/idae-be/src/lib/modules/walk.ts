@@ -123,8 +123,12 @@ export class WalkHandler
 	 * @param actions - The actions to perform.
 	 * @returns The Be instance for method chaining.
 	 */
-	handle(actions: WalkHandlerHandle) {
-		console.log('not implemented', actions);
+	handle(actions: WalkHandlerHandle): Be {
+		Object.entries(actions).forEach(([method, props]) => {
+			if (method in this) {
+				(this[method as keyof WalkHandler] as (props: unknown) => void)(props);
+			}
+		});
 		return this.beElement;
 	}
 
