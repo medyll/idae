@@ -15,7 +15,7 @@ export interface BeStylesHandler {
 
 export type BeStylesHandlerMethods = keyof typeof beStyleMethods;
 
-export class StylesHandler implements CommonHandler<StylesHandler> {
+export class StylesHandler implements CommonHandler<StylesHandler, Partial<BeStylesHandler>> {
 	private beElement: Be;
 
 	constructor(beElement: Be) {
@@ -29,29 +29,13 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 
 	static methods = Object.values(beStyleMethods);
 
-	handle(actions: BeStylesHandler) {
+	handle(actions: Partial<BeStylesHandler>) {
 		const { method, args } = this.resolveIndirection(actions);
 
 		this.beElement.eachNode(() => {
 			switch (method) {
 				case 'set':
-					if (typeof args === 'string') {
-						// Handle string input
-						const styleEntries = args.split(';').filter((s) => s.trim() !== '');
-						styleEntries.forEach((entry) => {
-							const [property, propertyValue] = entry.split(':').map((s) => s.trim());
-							if (property && propertyValue) {
-								this.applyStyle(property, propertyValue);
-							}
-						});
-					} else if (typeof args === 'object') {
-						// Handle object input
-						Object.entries(args).forEach(([prop, val]) => {
-							this.applyStyle(prop, val as string);
-						});
-					} else {
-						console.warn('Invalid argument type for set method');
-					}
+					this.set(args);
 					break;
 				case 'get':
 					this.get(args);
@@ -158,7 +142,7 @@ export class StylesHandler implements CommonHandler<StylesHandler> {
 		});
 	}
 
-	getKey(key: string): string | null {
+	private getKey(key: string): string | null {
 		let value: string | null = null;
 		this.beElement.eachNode((el) => {
 			value = el.style.getPropertyValue(key) || null;

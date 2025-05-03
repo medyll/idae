@@ -13,7 +13,7 @@ type cds = Record<'clearTimeout' | 'clearInterval', HandlerCallBackFn>;
 
 export type TimerHandlerHandle = cd & cds;
 
-export class TimersHandler implements CommonHandler<TimersHandler> {
+export class TimersHandler implements CommonHandler<TimersHandler, TimerHandlerHandle> {
 	private beElement: Be;
 	static methods = Object.values(timersMethods);
 

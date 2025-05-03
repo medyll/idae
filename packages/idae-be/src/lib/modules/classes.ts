@@ -9,7 +9,7 @@ enum classesMethods {
 }
 
 export type ClassHandlerHandler = {
-	add?: CombineElements<string> | string[];
+	add?: string | string[];
 	remove?: CombineElements<string> | string[];
 	toggle?: CombineElements<string> | string[];
 	replace?: `${string} ${string}` | [string, string][];
