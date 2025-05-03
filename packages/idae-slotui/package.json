@@ -17,6 +17,7 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
+		"test:unit:docs": "vitest src/tests/docs.test.js",
 		"publish": "npm run package",
 		"build-docs:watch": "nodemon --watch ./src/lib --watch ./build-docs.js --ignore **/docs/** --ignore ./src/lib/svelte.index.js --ext svelte --ext scss --delay 2.5 build-docs.js",
 		"rename-scss": "node scripts/rename-scss-files.js",

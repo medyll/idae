@@ -1,7 +1,29 @@
+<script module lang="ts" >
+import type { Snippet } from "svelte";
+import type { CommonProps,ElementProps } from '$lib/types/index.js';
+
+export interface AvatarProps    {
+  /** icon name 	*/
+  icon?: string;
+  /**
+   * size of the avatar
+   */
+  size?: ElementProps["width"];
+  /**
+   * size of the icon
+   */
+  iconSize?: ElementProps["iconSize"];
+  element?: HTMLElement;
+  class?: string;
+  children?: Snippet;
+  avatarBadge?: Snippet;
+};
+
+</script>
+
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { ExpandProps } from '$lib/types/index.js';
-	import type { AvatarProps } from './types.js';
+	import type { ExpandProps } from '$lib/types/index.js'; 
 	import Content from '$lib/utils/content/Content.svelte';
 
 	let {
@@ -13,7 +35,7 @@
 		children,
 		avatarBadge,
 		...rest
-	}: ExpandProps<AvatarProps> = $props();
+	}: AvatarProps = $props();
 
 	const sizes = {
 		tiny: '2rem',

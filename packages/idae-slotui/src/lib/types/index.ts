@@ -1,4 +1,3 @@
-import type { AlertProps } from '$lib/base/alert/types.js';
 import type { BreakPointsKeys } from '$lib/utils/stylesheet/types.js';
 import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
 import type { IconProps } from '@iconify/svelte';
@@ -231,8 +230,7 @@ type SnippetKeys<T> = {
 type FilteredBySnippet<T> = {
 	[K in SnippetKeys<T>]: T[K];
 };
-
-type oo = FilteredBySnippet<AlertProps>;
+ 
 
 export type ExpandProps<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 

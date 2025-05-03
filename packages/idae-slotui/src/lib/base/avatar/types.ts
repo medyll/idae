@@ -12,22 +12,8 @@ export enum statusPreset {
 import type { CommonProps, ElementProps } from "$lib/types/index.js";
 import type { Snippet } from "svelte";
 import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
-export type AvatarProps = CommonProps & {
-  /** icon name 	*/
-  icon?: string;
-  /**
-   * size of the avatar
-   */
-  size?: ElementProps["width"];
-  /**
-   * size of the icon
-   */
-  iconSize?: ElementProps["iconSize"];
-  element?: HTMLElement;
-  class?: string;
-  children?: Snippet;
-  avatarBadge?: Snippet;
-};
+import type { AvatarProps } from "./Avatar.svelte";
+
 
 export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {
   icon: {
