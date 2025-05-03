@@ -1,17 +1,32 @@
+<script module lang="ts">
+	import type { Snippet } from "svelte";
+	import type { ElementProps, CommonProps } from '$lib/types/index.js'; 
+ 
+	export interface AlertProps extends CommonProps {
+		/** alert level */
+		level?: ElementProps["levels"];
+		/** message to be shown */
+		message?: string;
+		/** make the alert draggable */
+		draggable?: boolean;
+		/** show or hide the alert */
+		isOpen?: boolean;
+		children?: Snippet;
+		alertTopButton?: Snippet;
+		alertMessage?: Snippet;
+		alertButtonZone?: Snippet;
+		alertButtonClose?: Snippet;
+	}
+</script>
+
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
-	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
-	import type { AlertProps } from './types.js';
+	import type { ExpandProps } from '$lib/types/index.js';
+	// import type { AlertProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
-
-	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
-		open,
-		toggle,
-		close
-	};
 
 	let {
 		class: className,
@@ -25,7 +40,13 @@
 		alertMessage,
 		alertButtonZone,
 		alertButtonClose
-	}: ExpandProps<AlertProps> = $props();
+	}: AlertProps = $props();
+
+	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
+		open,
+		toggle,
+		close
+	};
 
 	const handleClick = (event: Event) => {
 		if ((event?.target as Element)?.getAttribute('data-close')) {
