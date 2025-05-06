@@ -26,7 +26,7 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 	async find(params: IdaeDbParams<T>): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		let sql = `SELECT * FROM ${this.tableName}`;
-		const values: any[] = [];
+		const values: unknown[] = [];
 
 		if (Object.keys(query).length > 0) {
 			sql +=
