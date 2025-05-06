@@ -124,8 +124,11 @@ export class IdaeDb {
 		adapter: IdaeDbAdapter<T>,
 		events: EventListeners<T, R>
 	) {
-		for (const [method, listeners] of Object.entries(events)) {
-			if (listeners.pre) {
+		for (const [method, listeners] of Object.entries(events) as [
+			string,
+			NonNullable<EventListeners<T, R>[keyof EventListeners<T, R>]>
+		][]) {
+			if (listeners?.pre) {
 				adapter.on(`pre:${String(method)}`, listeners.pre);
 			}
 			if (listeners.post) {
@@ -153,7 +156,7 @@ export class IdaeDb {
 	 * @returns A Promise that resolves when all connections are closed.
 	 */
 	async closeAllConnections(): Promise<void> {
-		for (const [connectionName, connection] of this.#connections) {
+		for (const [, connection] of this.#connections) {
 			await connection.close();
 		}
 		this.#connections.clear();

@@ -1,5 +1,5 @@
 // packages\idae-db\lib\IdaeDBModel.ts
-import type { Collection, Db } from 'mongodb';
+import { ObjectId, type Collection, type Db } from 'mongodb';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { IdaeDb } from './idaeDb.js';
 
@@ -59,12 +59,12 @@ export class IdaeDBModel<T extends object> {
 		const incrementCollection = idaeAuto.collection(this._autoIncrementDbCollection as string);
 		// await incrementCollection.createIndex({ _id: 1 }, { unique: true });
 		await incrementCollection.updateWhere(
-			{ query: { _id: this.fieldId } },
+			{ query: { _id: new ObjectId(this.fieldId) } },
 			{ $inc: { value: 1 } },
 			{ upsert: true }
 		);
 
-		const next = await incrementCollection.findOne({ query: { _id: this.fieldId } });
+		const next = await incrementCollection.findOne({ query: { _id: new ObjectId(this.fieldId) } });
 		return next?.value;
 	}
 }
