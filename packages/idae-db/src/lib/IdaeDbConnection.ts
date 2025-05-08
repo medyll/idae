@@ -3,7 +3,7 @@
 import { DbType, IdaeDbAdapterStaticMethods, type IdaeDbAdapterInterface } from './@types/types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
 import { IdaeDb } from './idaeDb.js';
-
+import { type Document } from 'mongodb';
 /**
  * Represents a database connection.
  */
@@ -92,7 +92,7 @@ export class IdaeDbConnection {
 		if (!this.#client) {
 			throw new Error('Client not initialized. Call connect() first.');
 		}
-		return this.#client;
+		return this.#client as T;
 	}
 
 	/**

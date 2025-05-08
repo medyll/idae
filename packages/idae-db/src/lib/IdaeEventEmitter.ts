@@ -17,27 +17,30 @@ export class IdaeEventEmitter extends EventEmitter {
 
 /**
  * Decorator factory to add pre/post hooks to a method.
+ * @template T - The type of the method being decorated.
  * @returns A method decorator that adds event emission for pre/post hooks.
  */
-export function withEmitter() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function withEmitter<T extends (...args: any[]) => any>() {
 	return function (
 		target: object,
 		propertyKey: string | symbol,
-		descriptor: TypedPropertyDescriptor<unknown>
-	): TypedPropertyDescriptor<unknown> | void {
-		if (descriptor === undefined) {
-			descriptor = Object.getOwnPropertyDescriptor(target, propertyKey)!;
+		descriptor: TypedPropertyDescriptor<T>
+	): void {
+		if (!descriptor || !descriptor.value) {
+			throw new Error('Descriptor or method value is undefined');
 		}
+
 		const originalMethod = descriptor.value;
 
-		descriptor.value = async function (this: IdaeEventEmitter, ...args: unknown[]) {
+		descriptor.value = function (this: IdaeEventEmitter, ...args: Parameters<T>): ReturnType<T> {
 			// Emit the pre-execution event
 			this.emit(`pre:${String(propertyKey)}`, ...args);
 
-			let result;
+			let result: ReturnType<T>;
 			try {
 				// Execute the original method
-				result = await (originalMethod as (...args: unknown[]) => unknown).apply(this, args);
+				result = originalMethod.apply(this, args);
 			} catch (error) {
 				// Emit the error event if an exception occurs
 				this.emit(`error:${String(propertyKey)}`, error);
@@ -48,9 +51,7 @@ export function withEmitter() {
 			this.emit(`post:${String(propertyKey)}`, result, ...args);
 
 			return result;
-		};
-
-		return descriptor;
+		} as T;
 	};
 }
 
@@ -114,7 +115,7 @@ export interface TypedIdaeEventEmitter<T extends Record<string, (...args: unknow
  * @template T - The object containing methods to attach listeners to.
  * @template R - The object containing methods to attach listeners to (defaults to T).
  */
-export type EventListeners<T extends object, R extends object = T> = {
+export type EventListeners<T extends object, R = unknown> = {
 	[K in keyof T as T[K] extends (...args: unknown[]) => unknown ? K : never]?: {
 		pre?: PreEventListener<T[K] extends (...args: infer P) => unknown ? P : never>;
 		post?: PostEventListener<

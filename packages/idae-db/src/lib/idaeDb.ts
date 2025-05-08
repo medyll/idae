@@ -13,7 +13,7 @@ export type IdaeDbOptions = {
 	dbScope: string | undefined;
 	dbScopeSeparator?: string;
 	idaeModelOptions?: IdaeModelOptions;
-	dbEvents?: EventListeners<object, object>;
+	dbEvents?: EventListeners<object>;
 };
 
 /**
@@ -30,7 +30,7 @@ export class IdaeDb {
 		dbType: DbType.MONGODB,
 		dbScope: undefined,
 		idaeModelOptions: {},
-		dbEvents: {} as EventListeners<object, object>
+		dbEvents: {} as EventListeners<object>
 	} as IdaeDbOptions;
 
 	/**
