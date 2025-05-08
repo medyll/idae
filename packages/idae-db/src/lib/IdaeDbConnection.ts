@@ -1,6 +1,10 @@
 // packages\idae-db\lib\IdaeDbConnection.ts
 
-import { DbType, IdaeDbAdapterStaticMethods, type IdaeDbAdapterInterface } from './@types/types.js';
+import {
+	DbType,
+	type IdaeDbAdapterStaticMethods,
+	type IdaeDbAdapterInterface
+} from './@types/types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
 import { IdaeDb } from './idaeDb.js';
 import { type Document } from 'mongodb';
