@@ -105,7 +105,7 @@ export class DomHandler
 	handle(actions: DomHandlerHandle): Be {
 		Object.entries(actions).forEach(([method, props]) => {
 			switch (method) {
-				case 'update':
+				case 'update': // be('.test').dom({update: {content: '<p>Updated</p>', callback: () => {}}})
 					this.update(props.content, props.callback);
 					break;
 				case 'append':
