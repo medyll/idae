@@ -17,7 +17,7 @@ export interface IdaeDbAdapterInterface<T extends object> {
 	find(params: IdaeDbParams<T>): Promise<T[]>;
 	findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	update(id: string, updateData: Partial<T>): Promise<unknown>;
-	updateWhere<OPT = unknown>(
+	updateWhere<OPT = never>(
 		params: IdaeDbParams<T>,
 		updateData: Partial<T>,
 		options?: OPT
@@ -58,7 +58,7 @@ export abstract class AbstractIdaeDbAdapter<T extends object> implements IdaeDbA
 	abstract find(params: IdaeDbParams<T>): Promise<T[]>;
 	abstract findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	abstract update(id: string, updateData: Partial<T>): Promise<unknown>;
-	abstract updateWhere<OPT = unknown>(
+	abstract updateWhere<OPT = never>(
 		params: IdaeDbParams<T>,
 		updateData: Partial<T>,
 		options?: OPT
