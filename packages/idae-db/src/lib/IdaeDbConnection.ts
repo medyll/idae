@@ -1,6 +1,6 @@
 // packages\idae-db\lib\IdaeDbConnection.ts
 
-import { DbType, type IdaeDbAdapterInterface } from './@types/types.js';
+import { DbType, IdaeDbAdapterStaticMethods, type IdaeDbAdapterInterface } from './@types/types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
 import { IdaeDb } from './idaeDb.js';
 
@@ -8,13 +8,13 @@ import { IdaeDb } from './idaeDb.js';
  * Represents a database connection.
  */
 export class IdaeDbConnection {
-	#models = new Map<string, IdaeDBModel<any>>();
+	#models = new Map<string, IdaeDBModel<object>>();
 	#uri: string;
 	#dbType: DbType;
 
-	#Db: any;
-	#client: any;
-	#adapterClass: IdaeDbAdapterInterface<any>;
+	#Db: unknown;
+	#client: unknown;
+	#adapterClass: IdaeDbAdapterInterface<object> & IdaeDbAdapterStaticMethods;
 
 	#connected: boolean = false;
 
@@ -29,7 +29,8 @@ export class IdaeDbConnection {
 	) {
 		this.#uri = _idaeDb.uri;
 		this.#dbType = _idaeDb.options.dbType;
-		this.#adapterClass = _idaeDb.adapterClass as unknown as IdaeDbAdapterInterface<any>;
+		this.#adapterClass = _idaeDb.adapterClass as unknown as IdaeDbAdapterInterface<object> &
+			IdaeDbAdapterStaticMethods;
 		// add prefix if requested
 		this._dbName = this.getFullDbName();
 	}
@@ -77,9 +78,9 @@ export class IdaeDbConnection {
 				collectionName,
 				this._idaeDb?.options?.idaeModelOptions
 			);
-			this.#models.set(collectionName, model);
+			this.#models.set(collectionName, model as unknown as IdaeDBModel<object>);
 		}
-		return this.#models.get(collectionName) as IdaeDBModel<T>;
+		return this.#models.get(collectionName) as unknown as IdaeDBModel<T>;
 	};
 
 	/**
