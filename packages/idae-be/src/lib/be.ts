@@ -400,3 +400,10 @@ export const be = Be.elem;
 export const toBe = Be.toBe;
 export const beId = (id: string) => Be.elem(`#${id}`);
 export const createBe = Be.createBe;
+
+// be('.test').dom.update('content', () => {}); // should return be('.test').dom.
+// relies on dom.handle // should return be('.test')
+/* be('.test').dom({
+	update: { content: '<p>Updated</p>', callback: () => {} },
+	append: { content: '<p>Appended</p>', callback: () => {} }
+}); */
