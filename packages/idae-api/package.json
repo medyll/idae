@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-api",
 	"scope": "@medyll",
-	"version": "0.119.0",
+	"version": "0.120.0",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"description": "A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations. It features a modular architecture, dynamic database connection management, and a flexible routing system. The framework supports TypeScript for improved robustness and maintainability.",
@@ -46,7 +46,7 @@
 		"sequelize": "^6.37.7"
 	},
 	"devDependencies": {
-		"@medyll/idae-db": "^0.87.0",
+		"@medyll/idae-db": "^0.88.0",
 		"@medyll/idae-prettier-config": "next",
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/kit": "^2.21.2",

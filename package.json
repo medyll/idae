@@ -22,7 +22,7 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.29.2",
-    "@medyll/idae-db": "^0.87.0",
+    "@medyll/idae-db": "next",
     "@types/jest": "^29.5.14",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
