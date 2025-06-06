@@ -1,5 +1,11 @@
 # @medyll/idae-be
 
+## 1.30.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 1.29.0
 
 ### Minor Changes

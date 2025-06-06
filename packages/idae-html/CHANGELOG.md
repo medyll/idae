@@ -1,5 +1,17 @@
 # @medyll/idae-html
 
+## 0.85.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
+### Patch Changes
+
+- Updated dependencies [92c28b9]
+  - @medyll/idae-dom-events@0.90.0
+  - @medyll/idae-be@1.30.0
+
 ## 0.84.0
 
 ### Minor Changes

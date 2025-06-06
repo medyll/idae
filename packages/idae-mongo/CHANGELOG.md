@@ -1,5 +1,11 @@
 # @medyll/idae-mongo
 
+## 0.119.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.118.0
 
 ### Minor Changes

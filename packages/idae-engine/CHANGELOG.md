@@ -1,5 +1,11 @@
 # @medyll/idae-engine
 
+## 1.119.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 1.118.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-html",
-  "version": "0.84.0",
+  "version": "0.85.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -51,7 +51,7 @@
   "type": "module",
   "scope": "@medyll",
   "dependencies": {
-    "@medyll/idae-be": "^1.29.0",
-    "@medyll/idae-dom-events": "^0.89.0"
+    "@medyll/idae-be": "^1.30.0",
+    "@medyll/idae-dom-events": "^0.90.0"
   }
 }
