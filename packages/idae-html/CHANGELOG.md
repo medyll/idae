@@ -1,5 +1,14 @@
 # @medyll/idae-html
 
+## 0.85.1
+
+### Patch Changes
+
+- 2949d30: latest release
+- Updated dependencies [2949d30]
+  - @medyll/idae-be@1.30.1
+  - @medyll/idae-dom-events@0.90.1
+
 ## 0.85.0
 
 ### Minor Changes

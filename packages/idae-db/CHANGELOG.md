@@ -1,5 +1,11 @@
 # @medyll/idae-db
 
+## 0.89.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.89.0
 
 ### Minor Changes

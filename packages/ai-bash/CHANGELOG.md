@@ -1,5 +1,11 @@
 # ai-bash
 
+## 0.73.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.73.0
 
 ### Minor Changes

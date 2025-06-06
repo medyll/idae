@@ -1,5 +1,11 @@
 # @medyll/idae-engine
 
+## 1.119.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 1.119.0
 
 ### Minor Changes

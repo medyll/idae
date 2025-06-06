@@ -1,5 +1,11 @@
 # @medyll/idae-cadenzia
 
+## 0.81.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.81.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.122.1
+
+### Patch Changes
+
+- 2949d30: latest release
+- Updated dependencies [2949d30]
+  - @medyll/idae-be@1.30.1
+  - @medyll/idae-engine@1.119.1
+
 ## 0.68.0
 
 ### Minor Changes
