@@ -26,6 +26,7 @@ A flexible and extensible Node.js API, based on the [@medyll/idae-db](https://ww
 
 ## Overview
 
+
 `@medyll/idae-api` is a modular Node.js API framework designed to work with multiple database types thanks to the [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db) library. It offers:
 
 - Modular architecture (routes, middlewares, dynamic connection management)
@@ -33,11 +34,16 @@ A flexible and extensible Node.js API, based on the [@medyll/idae-db](https://ww
 - Extension system to support other databases
 - Native support for MongoDB and MySQL (via idae-db)
 - Hooks/events on CRUD operations
+- **MongoDB-like API syntax:** All query and update operations use a syntax very close to MongoDB (operators like `$in`, `$gt`, `$set`, etc.), making it intuitive for developers familiar with MongoDB.
 
 ## Installation
 
 ```bash
 npm install @medyll/idae-api
+
+npm install @medyll/idae-api --latest # to install the latest version
+npm install @medyll/idae-api --next # for the next version (if available)
+
 ```
 
 ---
@@ -165,6 +171,12 @@ usersCollection.registerEvents({
 
 ### Usage Examples
 
+### MongoDB-like Query Syntax
+
+All query and update operations use a syntax very close to MongoDB. For example, you can use operators like `$in`, `$gt`, `$set`, etc. in your queries and updates.
+
+---
+
 #### List databases
 
 ```typescript
@@ -179,27 +191,87 @@ const collections = await client.getCollections('idae_base');
 console.log('Collections:', collections);
 ```
 
-#### Full CRUD on a collection
+#### Find documents with advanced query (MongoDB-like)
 
 ```typescript
-const appConfCollection = client.collection('app_conf');
-
-// Create
-const newDoc = await appConfCollection.create({ name: 'Test', value: 'Value' });
-// Read
-const allDocs = await appConfCollection.findAll();
-const foundDoc = await appConfCollection.findById(newDoc._id);
-// Update
-const updatedDoc = await appConfCollection.update(newDoc._id, { value: 'New value' });
-// Delete
-const deleteResult = await appConfCollection.deleteById(newDoc._id);
+const userCollection = client.db('app').collection('user');
+const users = await userCollection.find({
+  email: { $in: ["Karin@example.com", "Test@Value"] },
+  age: 31,
+});
+console.log(users);
 ```
 
-#### Use a specific database
+#### Create a new document
+
+```typescript
+const newUser = await userCollection.create({
+  name: "new user",
+  email: "Test@Value",
+});
+console.log(newUser);
+```
+
+#### Find all documents in a collection
+
+```typescript
+const allDocs = await userCollection.findAll();
+console.log(allDocs);
+```
+
+#### Find a specific document by ID
+
+```typescript
+const foundDoc = await userCollection.findById(newUser._id);
+console.log(foundDoc);
+```
+
+#### Update a document (MongoDB-like update syntax)
+
+```typescript
+const updatedDoc = await userCollection.update(newUser._id, {
+  $set: { value: "Updated Value" },
+});
+console.log(updatedDoc);
+```
+
+#### Delete a document
+
+```typescript
+const deleteResult = await userCollection.deleteById(newUser._id);
+console.log(deleteResult);
+```
+
+#### Use a specific database and collection
 
 ```typescript
 const appSchemeCollection = client.db('idae_base').collection('appscheme');
 const docs = await appSchemeCollection.findAll();
+console.log(docs);
+```
+
+#### Delete many documents by query (be careful with this!)
+
+```typescript
+const deleteResult2 = await client
+  .collection('appscheme_base')
+  .deleteManyByQuery({ testField: 'testValue' });
+console.log(deleteResult2);
+```
+
+#### Register hooks/events on collection methods
+
+```typescript
+const usersCollection = client.collection('user');
+
+usersCollection.registerEvents({
+  findById: {
+    pre: (id) => console.log(`Before searching for ID: ${id}`),
+    post: (result, id) => console.log(`Result for ${id}:`, result),
+    error: (error) => console.error('Error on findById:', error)
+  },
+  // ... same for update, create, etc.
+});
 ```
 
 ---

@@ -1,4 +1,4 @@
-// packages\idae-api\src\lib\IdaeApi.ts
+// packages\idae-api\src\lib\server\IdaeApi.ts
 import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
   type Express,
