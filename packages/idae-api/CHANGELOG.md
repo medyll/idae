@@ -1,5 +1,11 @@
 # @medyll/idae-api
 
+## 0.121.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.120.0
 
 ### Minor Changes

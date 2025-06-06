@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.119.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
+### Patch Changes
+
+- Updated dependencies [92c28b9]
+  - @medyll/idae-query@0.120.0
+
 ## 0.64.0
 
 ### Minor Changes

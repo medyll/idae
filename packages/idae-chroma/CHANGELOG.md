@@ -1,5 +1,11 @@
 # @medyll/idae-chroma
 
+## 0.55.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.54.0
 
 ### Minor Changes

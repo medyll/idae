@@ -1,5 +1,11 @@
 # ai-bash
 
+## 0.73.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.72.0
 
 ### Minor Changes

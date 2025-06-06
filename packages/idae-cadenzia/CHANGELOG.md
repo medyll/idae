@@ -1,5 +1,11 @@
 # @medyll/idae-cadenzia
 
+## 0.81.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.80.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @medyll/idae-model
 
+## 0.69.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.68.0
 
 ### Minor Changes

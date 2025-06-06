@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.90.0
+
+### Minor Changes
+
+- 92c28b9: Version bump
+
 ## 0.89.0
 
 ### Minor Changes
