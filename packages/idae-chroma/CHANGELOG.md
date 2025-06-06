@@ -1,5 +1,11 @@
 # @medyll/idae-chroma
 
+## 0.55.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.55.0
 
 ### Minor Changes

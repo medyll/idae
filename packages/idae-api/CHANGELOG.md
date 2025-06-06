@@ -1,5 +1,11 @@
 # @medyll/idae-api
 
+## 0.121.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.121.0
 
 ### Minor Changes

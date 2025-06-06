@@ -1,5 +1,11 @@
 # @medyll/idae-mongo
 
+## 0.119.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.119.0
 
 ### Minor Changes

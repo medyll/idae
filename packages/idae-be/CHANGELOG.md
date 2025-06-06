@@ -1,5 +1,11 @@
 # @medyll/idae-be
 
+## 1.30.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 1.30.0
 
 ### Minor Changes

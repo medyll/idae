@@ -1,5 +1,11 @@
 # @medyll/idae-data-tpl
 
+## 0.120.1
+
+### Patch Changes
+
+- 2949d30: latest release
+
 ## 0.120.0
 
 ### Minor Changes
