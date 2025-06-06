@@ -7,7 +7,7 @@ import { DatabaseService } from './database/database.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EntityService } from './entity/entity.service';
-import configuration from './config/configurations';
+import configuration from './config/configuration';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),

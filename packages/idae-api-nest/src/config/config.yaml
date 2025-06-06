@@ -1,8 +1,5 @@
-# Exemple de configuration YAML pour NestJS
 mongo:
   host: localhost
   port: 27017
   user: admin
-  password: your_password
-custom:
-  myValue: 42
+  password: gwetme2011
