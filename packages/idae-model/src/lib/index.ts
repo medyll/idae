@@ -1,5 +1,11 @@
 // auto exports of entry components
 export * from '$lib/types/appschemeTypes.js';
+export { default as Skeleton } from '$lib/fragments/Skeleton.svelte';
+export { default as Selector } from '$lib/fragments/Selector.svelte';
+export { default as List } from '$lib/fragments/List.svelte';
+export { default as InfoLine } from '$lib/fragments/InfoLine.svelte';
+export { default as Frame } from '$lib/fragments/Frame.svelte';
+export { default as Confirm } from '$lib/fragments/Confirm.svelte';
 export * from '$lib/form/types.js';
 export { default as FieldValue } from '$lib/form/FieldValue.svelte';
 export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
