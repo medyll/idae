@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-model",
-	"version": "0.69.1",
+	"version": "0.70.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
