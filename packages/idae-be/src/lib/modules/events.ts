@@ -21,7 +21,7 @@ export interface EventHandlerHandle {
 /**
  * Handles event operations for Be elements.
  */
-export class EventsHandler implements CommonHandler<EventsHandler> {
+export class EventsHandler implements CommonHandler<EventsHandler, EventHandlerHandle> {
 	private beElement: Be;
 
 	static methods = Object.values(eventsMethods);
@@ -29,6 +29,7 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 	constructor(beElement: Be) {
 		this.beElement = beElement;
 	}
+	methods = EventsHandler.methods;
 
 	/**
 	 * Handle event actions (add or remove event listeners).
@@ -134,6 +135,10 @@ export class EventsHandler implements CommonHandler<EventsHandler> {
 				root: this.beElement
 			});
 		});
+		return this.beElement;
+	}
+
+	valueOf() {
 		return this.beElement;
 	}
 }

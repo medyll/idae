@@ -105,8 +105,9 @@ export class IdaeDbAdapter<T extends object>
 	}
 
 	@withEmitter()
-	async createIndex<F, O>(fieldOrSpec: F, options?: O) {
-		return this.adapter.createIndex(fieldOrSpec, options);
+	async createIndex<F, O>(fieldOrSpec: F, options?: O): Promise<string> {
+		const result = await this.adapter.createIndex(fieldOrSpec, options);
+		return String(result);
 	}
 
 	@withEmitter()

@@ -25,7 +25,7 @@ idaeApi.setOptions({
   port: 3000,
   enableAuth: false,
   onInUse: "reboot",
-  routes: customRoutes,
+  // routes: customRoutes,
   idaeDbOptions: {
     dbType: DbType.MONGODB,
     dbScope: "a_idae_db_sitebase",

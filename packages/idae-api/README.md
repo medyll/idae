@@ -1,57 +1,87 @@
 # @medyll/idae-api
 
-A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations.
+A flexible and extensible Node.js API, based on the [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db) library, allowing you to manage multiple types of databases (MongoDB, MySQL, etc.) and providing a complete TypeScript client to interact with your endpoints.
 
-## Features
+---
 
-- Modular architecture with clear separation of concerns
-- Dynamic database connection management
-- Flexible routing system
-- Support for multiple database types (currently MongoDB, with easy extensibility for others)
-- TypeScript support for improved robustness and maintainability
+## Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Main Features](#main-features)
+- [Server Usage](#server-usage)
+  - [Configuration](#configuration)
+  - [Adding Custom Routes](#adding-custom-routes)
+  - [Database Management](#database-management)
+  - [Error Handling](#error-handling)
+- [Client Usage](#client-usage)
+  - [Client Configuration](#client-configuration)
+  - [Available Methods](#available-methods)
+  - [Usage Examples](#usage-examples)
+- [Full List of Methods (inherited from idae-db)](#full-list-of-methods-inherited-from-idae-db)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Overview
+
+
+`@medyll/idae-api` is a modular Node.js API framework designed to work with multiple database types thanks to the [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db) library. It offers:
+
+- Modular architecture (routes, middlewares, dynamic connection management)
+- TypeScript/JavaScript client for easy API consumption
+- Extension system to support other databases
+- Native support for MongoDB and MySQL (via idae-db)
+- Hooks/events on CRUD operations
+- **MongoDB-like API syntax:** All query and update operations use a syntax very close to MongoDB (operators like `$in`, `$gt`, `$set`, etc.), making it intuitive for developers familiar with MongoDB.
 
 ## Installation
 
-```
+```bash
 npm install @medyll/idae-api
+
+npm install @medyll/idae-api --latest # to install the latest version
+npm install @medyll/idae-api --next # for the next version (if available)
+
 ```
 
-## Quick Start
+---
 
-```javascript
+## Main Features
+
+- Multi-database management (MongoDB, MySQL, etc.)
+- Flexible routing and custom route addition
+- Optional authentication middleware
+- Centralized error handling
+- Hooks/events on all CRUD operations
+- Complete TypeScript client for API consumption
+- Inherits all advanced methods from [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db)
+
+---
+
+## Server Usage
+
+### Configuration
+
+```typescript
 import { idaeApi } from '@medyll/idae-api';
 
-// Configure the server
 idaeApi.setOptions({
   port: 3000,
-  enableAuth: false,
-  onInUse: 'reboot'
+  enableAuth: true, // or false
+  jwtSecret: 'your-secret-key',
+  tokenExpiration: '1h',
+  onInUse: 'reboot', // behavior if the port is already in use
+  routes: customRoutes // optional
 });
 
-// Start the server
 idaeApi.start();
 ```
 
-## Configuration
+#### Example of custom routes
 
-You can configure the API server using the `setOptions` method:
-
-```javascript
-idaeApi.setOptions({
-  port: 3000,
-  routes: customRoutes,
-  enableAuth: true,
-  jwtSecret: 'your-secret-key',
-  tokenExpiration: '1h',
-  onInUse: 'reboot'
-});
-```
-
-## Custom Routes
-
-You can add custom routes to the API:
-
-```javascript
+```typescript
 const customRoutes = [
   {
     method: 'get',
@@ -64,21 +94,22 @@ const customRoutes = [
 idaeApi.router.addRoutes(customRoutes);
 ```
 
-## Database Adapters
+### Database Management
 
-The API currently supports MongoDB out of the box. You can easily extend it to support other databases by implementing the `DatabaseAdapter` interface.
+`idae-api` relies on `@medyll/idae-db` for connection and database operation management. You can:
 
-## Error Handling
+- Add new database adapters (see the `DatabaseAdapter` interface in idae-db)
+- Use all hooks/events from idae-db (see below)
 
-The API includes built-in error handling middleware. You can customize error handling by modifying the `configureErrorHandling` method in the `IdaeApi` class.
+### Error Handling
 
-## API Client Usage
+An error handling middleware is included. You can customize it via the `configureErrorHandling` method in the `IdaeApi` class.
 
-The `@medyll/idae-api` package includes a flexible and powerful API client that allows you to interact with your API endpoints easily. Below is a detailed guide on how to use the `IdaeApiClient` and `IdaeApiClientCollection` classes.
+---
 
-### Configuration
+## Client Usage
 
-First, configure the API client using the `IdaeApiClientConfig` singleton. This configuration will set up the host, port, method, default database, and other options for the client.
+### Client Configuration
 
 ```typescript
 import { IdaeApiClientConfig } from '@medyll/idae-api';
@@ -92,9 +123,7 @@ IdaeApiClientConfig.setOptions({
 });
 ```
 
-### Creating a Client Instance
-
-Create an instance of the `IdaeApiClient` class to start interacting with your API.
+### Creating a client instance
 
 ```typescript
 import { IdaeApiClient } from '@medyll/idae-api';
@@ -102,139 +131,184 @@ import { IdaeApiClient } from '@medyll/idae-api';
 const client = new IdaeApiClient();
 ```
 
-### Interacting with Databases and Collections
+### Available Methods
 
-You can interact with different databases and collections using the `db` and `collection` methods.
+#### Database and Collection Management
 
-#### Getting the List of Databases
+- `getDbList()` : List available databases
+- `getCollections(dbName)` : List collections in a database
+- `db(dbName)` : Select a database (returns an object with `collection` and `getCollections`)
+- `collection(collectionName, dbName?)` : Select a collection (optionally in a given database)
 
-```typescript
-async function listDatabases() {
-  try {
-    const dbList = await client.getDbList();
-    console.log('Databases:', dbList);
-  } catch (error) {
-    console.error('Error fetching database list:', error);
-  }
-}
+#### CRUD Operations on a Collection
 
-listDatabases();
-```
+All the following methods are available via the `IdaeApiClientCollection` object:
 
-#### Getting the List of Collections in a Database
+- `findAll(params?)` : List all documents (with filters, sorting, pagination)
+- `findById(id)` : Get a document by its ID
+- `findOne(params)` : Get a document by a filter (inherited from idae-db)
+- `create(body)` : Create a document
+- `update(id, body)` : Update a document
+- `deleteById(id)` : Delete a document by its ID
+- `deleteManyByQuery(params)` : Delete multiple documents by filter
 
-```typescript
-async function listCollections(dbName: string) {
-  try {
-    const collections = await client.getCollections(dbName);
-    console.log(`Collections in ${dbName}:`, collections);
-  } catch (error) {
-    console.error(`Error fetching collections for ${dbName}:`, error);
-  }
-}
+#### Event/Hook Management (inherited from idae-db)
 
-listCollections('idae_base');
-```
-
-#### Performing CRUD Operations on a Collection
-
-You can perform CRUD operations on a collection using the `IdaeApiClientCollection` class.
+You can register hooks on all operations:
 
 ```typescript
-async function performCrudOperations() {
-  const appConfCollection = client.collection('app_conf');
+const usersCollection = client.collection('user');
 
-  try {
-    // Create a new document
-    const newDoc = await appConfCollection.create({ name: 'Test Config', value: 'Test Value' });
-    console.log('Created document:', newDoc);
-
-    // Find all documents
-    const allDocs = await appConfCollection.findAll();
-    console.log('All documents:', allDocs);
-
-    // Find a specific document by ID
-    const foundDoc = await appConfCollection.findById(newDoc._id);
-    console.log('Found document:', foundDoc);
-
-    // Update the document
-    const updatedDoc = await appConfCollection.update(newDoc._id, { value: 'Updated Value' });
-    console.log('Updated document:', updatedDoc);
-
-    // Delete the document
-    const deleteResult = await appConfCollection.deleteById(newDoc._id);
-    console.log('Deleted document:', deleteResult);
-  } catch (error) {
-    console.error('Error performing CRUD operations:', error);
-  }
-}
-
-performCrudOperations();
+usersCollection.registerEvents({
+  findById: {
+    pre: (id) => console.log(`Before searching for ID: ${id}`),
+    post: (result, id) => console.log(`Result for ${id}:`, result),
+    error: (error) => console.error('Error on findById:', error)
+  },
+  // ... same for update, create, etc.
+});
 ```
 
-#### Using a Specific Database
+### Usage Examples
 
-You can also specify a database explicitly when working with collections.
+### MongoDB-like Query Syntax
+
+All query and update operations use a syntax very close to MongoDB. For example, you can use operators like `$in`, `$gt`, `$set`, etc. in your queries and updates.
+
+---
+
+#### List databases
 
 ```typescript
-async function useSpecificDatabase() {
-  const appSchemeCollection = client.db('idae_base').collection('appscheme');
-
-  try {
-    const appSchemeDocs = await appSchemeCollection.findAll();
-    console.log('Documents in appscheme:', appSchemeDocs);
-  } catch (error) {
-    console.error('Error fetching documents from appscheme:', error);
-  }
-}
-
-useSpecificDatabase();
+const dbList = await client.getDbList();
+console.log('Databases:', dbList);
 ```
 
-### Classes and Methods
+#### List collections in a database
 
-#### `IdaeApiClient`
+```typescript
+const collections = await client.getCollections('idae_base');
+console.log('Collections:', collections);
+```
 
-- `constructor(clientConfig?: IdaeApiClientConfigCoreOptions & { baseUrl?: string })`
-- `getDbList(): Promise<Response>`
-- `getCollections(dbName: string): Promise<Response>`
-- `db(dbName: string): { collection: (collectionName: string) => IdaeApiClientCollection; getCollections: () => Promise<Response> }`
-- `collection(collectionName: string, dbName?: string): IdaeApiClientCollection`
+#### Find documents with advanced query (MongoDB-like)
 
-#### `IdaeApiClientCollection`
+```typescript
+const userCollection = client.db('app').collection('user');
+const users = await userCollection.find({
+  email: { $in: ["Karin@example.com", "Test@Value"] },
+  age: 31,
+});
+console.log(users);
+```
 
-- `constructor(apiClient: IdaeApiClient, dbName: string, collectionName: string)`
-- `findAll<T>(params?: RequestParams): Promise<Response>`
-- `findById<T>(id: string): Promise<Response>`
-- `create<T>(body: T): Promise<Response>`
-- `update<T>(id: string, body: T): Promise<Response>`
-- `deleteById<T>(id: string): Promise<Response>`
-- `deleteManyByQuery<T>(params: RequestParams): Promise<Response>`
+#### Create a new document
 
-#### `IdaeApiClientConfig`
+```typescript
+const newUser = await userCollection.create({
+  name: "new user",
+  email: "Test@Value",
+});
+console.log(newUser);
+```
 
-- `setOptions(options: Partial<IdaeApiClientConfigCoreOptions> | undefined = {}): void`
-- `get baseUrl(): string`
+#### Find all documents in a collection
 
-#### `IdaeApiClientRequest`
+```typescript
+const allDocs = await userCollection.findAll();
+console.log(allDocs);
+```
 
-- `constructor(clientConfig: IdaeApiClientConfigCore)`
-- `doRequest<T, R = any>(options: RequestOptions<T>): Promise<R>`
-- `private buildUrl(params: UrlParams): string`
+#### Find a specific document by ID
 
-### Types
+```typescript
+const foundDoc = await userCollection.findById(newUser._id);
+console.log(foundDoc);
+```
 
-- `RequestParams`: `Record<string, unknown>`
-- `HttpMethod`: `'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'`
-- `RouteNamespace`: `` `methods/${'dbs' | 'collections'}` ``
-- `UrlParams`: `{ dbName?: string; collectionName?: string; slug?: string; params?: Record<string, string>; routeNamespace?: RouteNamespace }`
-- `RequestOptions<T>`: `UrlParams & { baseUrl?: string; method?: HttpMethod; body?: T; headers?: RequestInit['headers'] }`
+#### Update a document (MongoDB-like update syntax)
+
+```typescript
+const updatedDoc = await userCollection.update(newUser._id, {
+  $set: { value: "Updated Value" },
+});
+console.log(updatedDoc);
+```
+
+#### Delete a document
+
+```typescript
+const deleteResult = await userCollection.deleteById(newUser._id);
+console.log(deleteResult);
+```
+
+#### Use a specific database and collection
+
+```typescript
+const appSchemeCollection = client.db('idae_base').collection('appscheme');
+const docs = await appSchemeCollection.findAll();
+console.log(docs);
+```
+
+#### Delete many documents by query (be careful with this!)
+
+```typescript
+const deleteResult2 = await client
+  .collection('appscheme_base')
+  .deleteManyByQuery({ testField: 'testValue' });
+console.log(deleteResult2);
+```
+
+#### Register hooks/events on collection methods
+
+```typescript
+const usersCollection = client.collection('user');
+
+usersCollection.registerEvents({
+  findById: {
+    pre: (id) => console.log(`Before searching for ID: ${id}`),
+    post: (result, id) => console.log(`Result for ${id}:`, result),
+    error: (error) => console.error('Error on findById:', error)
+  },
+  // ... same for update, create, etc.
+});
+```
+
+---
+
+## Full List of Methods (inherited from idae-db)
+
+### Collection Methods
+
+- `find(params)` : Advanced search (filters, sorting, pagination)
+- `findOne(params)` : Find a single document by filter
+- `findById(id)` : Find by ID
+- `create(data)` : Create
+- `update(id, data)` : Update
+- `deleteById(id)` : Delete by ID
+- `deleteManyByQuery(params)` : Bulk delete
+- `registerEvents(events)` : Register hooks (pre/post/error) on each method
+
+### Connection Management
+
+- `closeAllConnections()` : Close all active connections
+
+### Useful Types
+
+- `RequestParams` : `Record<string, unknown>`
+- `HttpMethod` : `'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'`
+- `RouteNamespace` : ``methods/${'dbs' | 'collections'}``
+- `UrlParams` : `{ dbName?: string; collectionName?: string; slug?: string; params?: Record<string, string>; routeNamespace?: RouteNamespace }`
+- `RequestOptions<T>` : `UrlParams & { baseUrl?: string; method?: HttpMethod; body?: T; headers?: RequestInit['headers'] }`
+
+---
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Feel free to submit a Pull Request.
+
+---
 
 ## License
 
 This project is licensed under the MIT License.
- 

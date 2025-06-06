@@ -114,7 +114,7 @@ export class IDbCollections {
 		let out: Record<string, IDbForge | undefined> = {};
 
 		Object.keys(fields).forEach((fieldName) => {
-			let fieldType = fields[fieldName];
+			const fieldType = fields[fieldName];
 			if (fieldType) {
 				out[fieldName] = this.parseCollectionFieldName(collection, fieldName);
 			}
@@ -135,7 +135,7 @@ export class IDbCollections {
 			);
 			return undefined;
 		}
-		let fieldType =
+		const fieldType =
 			this.testIs('primitive', field) ??
 			this.testIs('array', field) ??
 			this.testIs('object', field) ??
@@ -146,7 +146,7 @@ export class IDbCollections {
 
 	parsFieldRule(fieldRule: IDbFieldRules) {
 		if (!fieldRule) return;
-		let fieldType =
+		const fieldType =
 			this.testIs('primitive', fieldRule) ??
 			this.testIs('array', fieldRule) ??
 			this.testIs('object', fieldRule) ??

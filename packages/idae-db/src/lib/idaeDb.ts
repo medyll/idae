@@ -13,7 +13,7 @@ export type IdaeDbOptions = {
 	dbScope: string | undefined;
 	dbScopeSeparator?: string;
 	idaeModelOptions?: IdaeModelOptions;
-	dbEvents?: EventListeners<object, object>;
+	dbEvents?: EventListeners<object>;
 };
 
 /**
@@ -30,7 +30,7 @@ export class IdaeDb {
 		dbType: DbType.MONGODB,
 		dbScope: undefined,
 		idaeModelOptions: {},
-		dbEvents: {} as EventListeners<object, object>
+		dbEvents: {} as EventListeners<object>
 	} as IdaeDbOptions;
 
 	/**
@@ -124,8 +124,11 @@ export class IdaeDb {
 		adapter: IdaeDbAdapter<T>,
 		events: EventListeners<T, R>
 	) {
-		for (const [method, listeners] of Object.entries(events)) {
-			if (listeners.pre) {
+		for (const [method, listeners] of Object.entries(events) as [
+			string,
+			NonNullable<EventListeners<T, R>[keyof EventListeners<T, R>]>
+		][]) {
+			if (listeners?.pre) {
 				adapter.on(`pre:${String(method)}`, listeners.pre);
 			}
 			if (listeners.post) {
@@ -153,7 +156,7 @@ export class IdaeDb {
 	 * @returns A Promise that resolves when all connections are closed.
 	 */
 	async closeAllConnections(): Promise<void> {
-		for (const [connectionName, connection] of this.#connections) {
+		for (const [, connection] of this.#connections) {
 			await connection.close();
 		}
 		this.#connections.clear();

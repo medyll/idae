@@ -1,5 +1,260 @@
 # @medyll/idae-html
 
+## 0.83.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.28.0
+  - @medyll/idae-dom-events@0.88.0
+
+## 0.82.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.27.0
+  - @medyll/idae-dom-events@0.87.0
+
+## 0.81.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.26.0
+  - @medyll/idae-dom-events@0.86.0
+
+## 0.80.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.25.0
+  - @medyll/idae-dom-events@0.85.0
+
+## 0.79.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.24.0
+  - @medyll/idae-dom-events@0.84.0
+
+## 0.78.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.23.0
+  - @medyll/idae-dom-events@0.83.0
+
+## 0.77.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.22.0
+  - @medyll/idae-dom-events@0.82.0
+
+## 0.76.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.21.0
+  - @medyll/idae-dom-events@0.81.0
+
+## 0.75.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.20.0
+  - @medyll/idae-dom-events@0.80.0
+
+## 0.74.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.19.0
+  - @medyll/idae-dom-events@0.79.0
+
+## 0.73.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.18.0
+  - @medyll/idae-dom-events@0.78.0
+
+## 0.72.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.17.0
+  - @medyll/idae-dom-events@0.77.0
+
+## 0.71.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.16.0
+  - @medyll/idae-dom-events@0.76.0
+
+## 0.70.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.15.0
+  - @medyll/idae-dom-events@0.75.0
+
+## 0.69.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.14.0
+  - @medyll/idae-dom-events@0.74.0
+
+## 0.68.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.13.0
+  - @medyll/idae-dom-events@0.73.0
+
+## 0.67.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @medyll/idae-be@1.12.0
+  - @medyll/idae-dom-events@0.72.0
+
 ## 0.66.0
 
 ### Minor Changes

@@ -13,7 +13,7 @@ type cds = Record<'clearTimeout' | 'clearInterval', HandlerCallBackFn>;
 
 export type TimerHandlerHandle = cd & cds;
 
-export class TimersHandler implements CommonHandler<TimersHandler> {
+export class TimersHandler implements CommonHandler<TimersHandler, TimerHandlerHandle> {
 	private beElement: Be;
 	static methods = Object.values(timersMethods);
 
@@ -34,20 +34,11 @@ export class TimersHandler implements CommonHandler<TimersHandler> {
 	}
 
 	handle(actions: TimerHandlerHandle): Be {
-		if (!actions) return this.beElement;
 		Object.entries(actions).forEach(([method, props]) => {
-			switch (method) {
-				case 'timeout':
-				case 'interval':
-					this[method](props as number, actions.callback);
-					break;
-				case 'clearTimeout':
-				case 'clearInterval':
-					this[method](actions.callback);
-					break;
+			if (method in this) {
+				(this[method as keyof TimersHandler] as (props: unknown) => void)(props);
 			}
 		});
-
 		return this.beElement;
 	}
 

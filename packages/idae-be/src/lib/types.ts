@@ -1,8 +1,9 @@
 import { Be } from './be.js';
 
-export type CombineElements<T extends string> = T extends unknown
-	? T | `${T} ${CombineElements<T>}`
-	: never;
+type CombineElementsHelper<T extends string, Depth extends number[]> = Depth['length'] extends 10
+	? never
+	: T | `${T} ${CombineElementsHelper<T, [...Depth, 1]>}`;
+export type CombineElements<T extends string> = CombineElementsHelper<T, []>;
 export type IsWhat = 'element' | 'array' | 'qy';
 
 export type PositionSnapOptions =

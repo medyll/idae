@@ -3,7 +3,7 @@ import { IdaeDbConnection } from '../IdaeDbConnection.js';
 import { IdaeDBModel } from '../IdaeDBModel.js';
 import mysql from 'mysql2/promise';
 
-export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdaeDbAdapter<T> {
+export class MySQLAdapter<T extends Record<string, unknown>> implements AbstractIdaeDbAdapter<T> {
 	private model: IdaeDBModel<T>;
 	private connection: IdaeDbConnection;
 	private fieldId: string;
@@ -26,7 +26,7 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 	async find(params: IdaeDbParams<T>): Promise<T[]> {
 		const { query = {}, sortBy, limit, skip } = params;
 		let sql = `SELECT * FROM ${this.tableName}`;
-		const values: any[] = [];
+		const values: unknown[] = [];
 
 		if (Object.keys(query).length > 0) {
 			sql +=
@@ -76,7 +76,8 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 		return { ...data, [this.fieldId]: insertId } as T;
 	}
 
-	async update(id: string, updateData: Partial<T>, options?: any): Promise<any> {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async update(id: string, updateData: Partial<T>, options?: unknown): Promise<unknown> {
 		const setClause = Object.keys(updateData)
 			.map((key) => `${key} = ?`)
 			.join(', ');
@@ -92,8 +93,9 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 	async updateWhere(
 		params: IdaeDbParams<T>,
 		updateData: Partial<T>,
-		options: any = {}
-	): Promise<any> {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		options: unknown = {}
+	): Promise<unknown> {
 		const { query = {} } = params;
 		const setClause = Object.keys(updateData)
 			.map((key) => `${key} = ?`)
@@ -110,7 +112,7 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 		return result;
 	}
 
-	async deleteById(id: string | number): Promise<any> {
+	async deleteById(id: string | number): Promise<unknown> {
 		const [result] = await this.connection
 			.getClient<mysql.Connection>()
 			.execute(`DELETE FROM ${this.tableName} WHERE ${this.fieldId} = ?`, [id]);
@@ -146,6 +148,13 @@ export class MySQLAdapter<T extends Record<string, any>> implements AbstractIdae
 			await connection.rollback();
 			throw error;
 		}
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async createIndex(fieldOrSpec: string, options?: unknown): Promise<string> {
+		const sql = `CREATE INDEX idx_${fieldOrSpec} ON ${this.tableName} (${fieldOrSpec})`;
+		await this.connection.getClient<mysql.Connection>().execute(sql);
+		return `idx_${fieldOrSpec}`;
 	}
 
 	private parseSortOptions(sortBy: string): string {

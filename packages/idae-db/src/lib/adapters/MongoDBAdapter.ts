@@ -37,19 +37,15 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 		this.connection = connection;
 		this.model = this.connection.getModel<T>(collection);
 		this.fieldId = this.model.fieldId;
-
-		console.log('MongoDBAdapter constructor', collection);
 	}
 
 	static async connect(uri: string): Promise<MongoClient> {
-		console.log('MongoDBAdapter connect', uri);
 		const client = new MongoClient(uri);
 		await client.connect();
 		return client;
 	}
 
 	static getDb(client: MongoClient, dbName: string): Db {
-		console.log('MongoDBAdapter getDb', dbName);
 		return client.db(dbName);
 	}
 
@@ -66,7 +62,7 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 
 	async findById(id: string) {
 		return this.model.collection
-			.find({ [this.fieldId]: id }, { hint: this.fieldId })
+			.find({ [this.fieldId]: id } as Filter<T>, { hint: this.fieldId })
 			.toArray() as unknown as T[];
 	}
 
@@ -90,31 +86,31 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 	async create(data: Partial<T>): Promise<T> {
 		const id = await this.model.getNextIncrement();
 		const result = await this.model.collection.findOneAndUpdate(
-			{ [this.fieldId]: id },
+			{ [this.fieldId]: id } as Filter<T>,
 			{ $set: { ...data, [this.fieldId]: id } },
 			{ upsert: true, returnDocument: 'after' }
 		);
-		return result.value as T;
+		return result?.value as T;
 	}
 
 	async update(id: string, updateData: Partial<T>, options?: UpdateOptions) {
 		return this.model.collection.updateMany(
-			{ [this.fieldId]: id },
+			{ [this.fieldId]: id } as Filter<T>,
 			{ $set: { ...updateData } },
 			options
 		);
 	}
 
-	async updateWhere(params: IdaeDbParams<T>, updateData: Partial<T>, options: any = {}) {
+	async updateWhere<OPT = never>(params: IdaeDbParams<T>, updateData: Partial<T>, options?: OPT) {
 		return this.model.collection.updateMany(
 			params.query as IdaeDbQueryFilter<T>,
 			updateData,
-			options
+			options as UpdateOptions
 		);
 	}
 
 	async deleteById(id: string | number) {
-		return this.model.collection.deleteMany({ [this.fieldId]: id });
+		return this.model.collection.deleteMany({ [this.fieldId]: id } as Filter<T>);
 	}
 
 	async deleteWhere(params: IdaeDbParams<T>): Promise<{ deletedCount?: number }> {

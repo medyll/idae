@@ -1,5 +1,6 @@
 <!-- 
     Component button to open a CreateUpdateShow window for a specific collection.    
+    D:\boulot\python\wollama\src\components\form\CollectionButton.svelte
  -->
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
@@ -22,10 +23,4 @@
 	}
 </script>
 
-<Button
-	class="ellipsis"
-	onclick={() => openCrud(collection)}
-	width="auto"
-	icon="mdi:add"
-	value="ui.{rest.mode}-{collection}"
-/>
+<Button class="ellipsis" onclick={() => openCrud(collection)} width="auto" icon="mdi:add" value="ui.{rest.mode}-{collection}" />

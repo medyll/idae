@@ -41,68 +41,11 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	}
 
 	handle(actions: TextHandlerHandle): Be {
-		this.beElement.eachNode((el: HTMLElement) => {
-			const { method, props } = BeUtils.resolveIndirection<TextHandler>(
-				new TextHandler(this.beElement),
-				actions as unknown as keyof TextHandler
-			);
-
-			switch (method) {
-				case 'update':
-					if (typeof props === 'string') {
-						el.innerText = props;
-					}
-					break;
-				case 'prepend':
-					if (typeof props === 'string') {
-						el.insertAdjacentText('afterbegin', props);
-					} else {
-						throw new Error('Invalid props for prepend: must be a string.');
-					}
-					break;
-				case 'append':
-					if (typeof props === 'string') {
-						el.insertAdjacentText('beforeend', props);
-					} else {
-						throw new Error('Invalid props for append: must be a string.');
-					}
-					break;
-				case 'replace':
-					if (typeof props === 'string') {
-						el.textContent = props;
-					} else {
-						throw new Error('Invalid props for replace: must be a string.');
-					}
-					break;
-				case 'remove':
-					el.remove();
-					break;
-				case 'clear':
-					el.innerHTML = '';
-					break;
-				case 'normalize':
-					el.normalize();
-					break;
-				case 'wrap':
-					if (typeof props === 'string') {
-						const wrapper = document.createElement('div');
-						wrapper.innerHTML = props.trim();
-						const parent = wrapper.firstElementChild as HTMLElement;
-						if (parent) {
-							el.parentNode?.insertBefore(parent, el);
-							parent.appendChild(el);
-						}
-					}
-					break;
+		Object.entries(actions).forEach(([method, props]) => {
+			if (method in this) {
+				(this[method as keyof TextHandler] as (props: unknown) => void)(props);
 			}
-
-			actions?.callback?.({
-				fragment: props,
-				be: be(el),
-				root: this.beElement
-			});
 		});
-
 		return this.beElement;
 	}
 
@@ -117,7 +60,17 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.updateText('Updated'); // Updates the text content to "Updated"
 	 */
 	update(content: TextHandlerHandle['update'], callback?: HandlerCallBackFn) {
-		return this.handle({ update: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (typeof content === 'string') {
+				el.innerText = content;
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -131,7 +84,17 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.appendText(' Appended'); // Appends " Appended" to the text content
 	 */
 	append(content: TextHandlerHandle['append'], callback?: HandlerCallBackFn) {
-		return this.handle({ append: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (typeof content === 'string') {
+				el.insertAdjacentText('beforeend', content);
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -145,7 +108,17 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.prependText('Prepended '); // Prepends "Prepended " to the text content
 	 */
 	prepend(content: TextHandlerHandle['prepend'], callback?: HandlerCallBackFn) {
-		return this.handle({ prepend: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (typeof content === 'string') {
+				el.insertAdjacentText('afterbegin', content);
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -159,7 +132,17 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.replaceText('Replaced'); // Replaces the text content with "Replaced"
 	 */
 	replace(content: TextHandlerHandle['replace'], callback?: HandlerCallBackFn) {
-		return this.handle({ replace: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (typeof content === 'string') {
+				el.textContent = content;
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -172,7 +155,15 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.removeText(); // Removes the element
 	 */
 	remove(callback?: HandlerCallBackFn) {
-		return this.handle({ remove: undefined, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			el.remove();
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -185,7 +176,15 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.clearText(); // Clears the text content
 	 */
 	clear(callback?: HandlerCallBackFn) {
-		return this.handle({ clear: undefined, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			el.innerHTML = '';
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -198,7 +197,15 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.normalizeText(); // Normalizes the text content
 	 */
 	normalize(callback?: HandlerCallBackFn) {
-		return this.handle({ normalize: undefined, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			el.normalize();
+			callback?.({
+				fragment: undefined,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	/**
@@ -212,7 +219,23 @@ export class TextHandler implements CommonHandler<TextHandler> {
 	 * beInstance.wrapText('<div class="wrapper"></div>'); // Wraps the element with a <div>
 	 */
 	wrap(content: TextHandlerHandle['wrap'], callback?: HandlerCallBackFn) {
-		return this.handle({ wrap: content, callback });
+		this.beElement.eachNode((el: HTMLElement) => {
+			if (typeof content === 'string') {
+				const wrapper = document.createElement('div');
+				wrapper.innerHTML = content.trim();
+				const parent = wrapper.firstElementChild as HTMLElement;
+				if (parent) {
+					el.parentNode?.insertBefore(parent, el);
+					parent.appendChild(el);
+				}
+			}
+			callback?.({
+				fragment: content,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+		return this.beElement;
 	}
 
 	valueOf(): string | null {

@@ -1,6 +1,6 @@
 # Idae Database Library
 
-The Idae Database Library provides a flexible and extensible way to interact with various databases such as MongoDB, MySQL, and ChromaDB. It includes features like event emitters for pre/post hooks, auto-increment fields, and more.
+The Idae Database Library provides a flexible and extensible way to interact with various databases such as MongoDB, MySQL. It includes features like event emitters for pre/post hooks, auto-increment fields, and more.
 
 ## Installation
 

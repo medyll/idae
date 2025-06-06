@@ -1,5 +1,6 @@
 <!-- 
     Component CollectionReverseFks.svelte :  to display a list of reverse foreign keys for a specific collection.
+    D:\boulot\python\wollama\src\components\form\CollectionReverseFks.svelte
 
     (alias) type Tpl<T = TplCollectionFields> = {
     index: string;
@@ -28,13 +29,7 @@
 		component?:      typeof SvelteComponent;
 		componentProps?: Record<string, any>;
 	};
-	let {
-		collection,
-		children: child,
-		showTitle = false,
-		component,
-		componentProps = {}
-	}: CollectionFksProps = $props();
+	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
 	const dbFields = new IDbCollections(schemeModel);
 	const fks = $derived(dbFields.reverseFks(collection));
 
@@ -50,12 +45,7 @@
 			<div class="p2 font-bold">{item?.[0]}</div>
 		{/if}
 		{#if component}
-			<svelte:component
-				this={component}
-				collection={item[0]}
-				template={item[1]}
-				{...componentProps}
-			/>
+			<svelte:component this={component} collection={item[0]} template={item[1]} {...componentProps} />
 		{:else}
 			{@render child({
 				collection: item[0],
