@@ -22,7 +22,7 @@ export class EntityController {
     @Param('id') id: string,
   ) {
     if (/^\d+$/.test(id)) {
-      return this.entityService.getById(base, entity, Number(id));
+      return this.entityService.getById(base, entity, id);
     }
     return { error: 'Not a valid numeric id', value: id };
   }
