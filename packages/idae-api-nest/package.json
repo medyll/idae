@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "js-yaml": "^3.14.1",
     "mongoose": "^8.15.1",
+    "mongoose-sequence": "^6.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
