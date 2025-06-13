@@ -24,7 +24,6 @@ const customRoutes: RouteDefinition[] = [
 idaeApi.setOptions({
   port: 3000,
   enableAuth: false,
-  onInUse: "reboot",
   // routes: customRoutes,
   idaeDbOptions: {
     dbType: DbType.MONGODB,

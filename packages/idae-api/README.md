@@ -72,7 +72,6 @@ idaeApi.setOptions({
   enableAuth: true, // or false
   jwtSecret: 'your-secret-key',
   tokenExpiration: '1h',
-  onInUse: 'reboot', // behavior if the port is already in use
   routes: customRoutes // optional
 });
 
@@ -140,19 +139,7 @@ const client = new IdaeApiClient();
 - `db(dbName)` : Select a database (returns an object with `collection` and `getCollections`)
 - `collection(collectionName, dbName?)` : Select a collection (optionally in a given database)
 
-#### CRUD Operations on a Collection
-
-All the following methods are available via the `IdaeApiClientCollection` object:
-
-- `findAll(params?)` : List all documents (with filters, sorting, pagination)
-- `findById(id)` : Get a document by its ID
-- `findOne(params)` : Get a document by a filter (inherited from idae-db)
-- `create(body)` : Create a document
-- `update(id, body)` : Update a document
-- `deleteById(id)` : Delete a document by its ID
-- `deleteManyByQuery(params)` : Delete multiple documents by filter
-
-#### Event/Hook Management (inherited from idae-db)
+### Event/Hook Management (inherited from idae-db)
 
 You can register hooks on all operations:
 
@@ -167,6 +154,20 @@ usersCollection.registerEvents({
   },
   // ... same for update, create, etc.
 });
+
+#### CRUD Operations on a Collection
+
+All the following methods are available via the `IdaeApiClientCollection` object:
+
+- `findAll(params?)` : List all documents (with filters, sorting, pagination)
+- `findById(id)` : Get a document by its ID
+- `findOne(params)` : Get a document by a filter (inherited from idae-db)
+- `create(body)` : Create a document
+- `update(id, body)` : Update a document
+- `deleteById(id)` : Delete a document by its ID
+- `deleteManyByQuery(params)` : Delete multiple documents by filter
+
+#
 ```
 
 ### Usage Examples

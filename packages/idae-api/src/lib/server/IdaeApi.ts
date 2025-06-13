@@ -20,7 +20,7 @@ import qs from "qs";
 interface IdaeApiOptions {
   port?: number;
   routes?: RouteDefinition[];
-  onInUse?: "reboot" | "fail" | "replace";
+  onInUse?: "fail" | "replace";
   enableAuth?: boolean;
   jwtSecret?: string;
   tokenExpiration?: string;
@@ -97,7 +97,7 @@ class IdaeApi {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     if (this.#authMiddleware) {
-      this.#app.use(this.#authMiddleware.createMiddleware());
+      this.#app.use(this.#authMiddleware.createMiddleware() as express.RequestHandler);
     }
   }
 
@@ -164,13 +164,6 @@ class IdaeApi {
     if (error.code === "EADDRINUSE") {
       console.error(`Port ${this.#idaeApiOptions.port} is already in use.`);
       switch (this.#idaeApiOptions.onInUse) {
-        case "reboot":
-          console.log("Rebooting server...");
-          setTimeout(() => {
-            this.stop();
-            this.start();
-          }, 1000);
-          break;
         case "replace":
           console.log("Replacing existing server...");
           this.stop();
@@ -257,7 +250,6 @@ apiServer.setOptions({
     enableAuth: true,
     jwtSecret: 'your_jwt_secret',
     tokenExpiration: '15m',
-    onInUse: 'reboot'
 });
 
 // Start the server
