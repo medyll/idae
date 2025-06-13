@@ -5,16 +5,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { SampleFilterFilter } from './sample-filter.filter';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { SampleGatewayGateway } from './sample-gateway.gateway';
 import { SampleMiddlewareMiddleware } from './sample-middleware.middleware';
 import { UsersController } from './users/users.controller';
 import { SampleProvider } from './sample-provider';
 import { IdaeModule } from './idae/idae.module';
+import { AppschemeModule } from './idaee/appscheme/appscheme.module';
+import { JsonwebtokenGuard } from './guards/jsonwebtoken.guard';
 
 // Decorator: Marks this class as a NestJS module, grouping related controllers and providers.
 @Module({
-  imports: [UsersModule, IdaeModule],
+  imports: [UsersModule, IdaeModule, AppschemeModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -23,6 +25,10 @@ import { IdaeModule } from './idae/idae.module';
       useClass: SampleFilterFilter,
     },
     SampleGatewayGateway,
+    {
+      provide: APP_GUARD,
+      useClass: JsonwebtokenGuard,
+    },
     SampleProvider,
   ],
 })
