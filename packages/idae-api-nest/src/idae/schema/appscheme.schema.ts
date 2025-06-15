@@ -1,11 +1,8 @@
 import { Prop, Schema, SchemaFactory,  } from '@nestjs/mongoose';
-import { Document,Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
+import { createFkSchema, type FkValue } from './idae-scheme.utils';
 
-export type FkValue = {
-  code: string;
-  multiple: boolean;
-  order: number;
-};
+ 
 
 @Schema({ timestamps: true })
 export class AppScheme extends Document {
@@ -29,14 +26,7 @@ export class AppScheme extends Document {
 
   @Prop({
     type: Map,
-    of: new MongooseSchema(
-      {
-        code: { type: String, required: true },
-        multiple: { type: Boolean, required: true },
-        order: { type: Number, required: true },
-      },
-      { _id: false }
-    ),
+    of: createFkSchema(),
     default: {},
   })
   fk: Map<string, FkValue>;
