@@ -14,7 +14,7 @@ export class JsonwebtokenGuard implements CanActivate {
     }
     const token = authHeader.split(' ')[1];
     try {
-      // Remplace 'your_jwt_secret' par ta clé secrète réelle
+      // 
       const decoded = jwt.verify(token, 'your_jwt_secret');
       request.user = decoded;
       return true;
