@@ -30,12 +30,29 @@ import { createIdbqDb } from '@medyll/idae-idbql';
 const exampleModel = {
   messages: {
     keyPath: "++id, chatId, created_at",
-    ts: {} as ChatMessage,
+    ts: {} as ChatMessage, // this will provide autocompletion
   },
   chat: {
     keyPath: "&chatId, created_at, dateLastMessage",
     ts: {} as Chat,
-    template: {},
+    template: {
+      index:        string;
+      presentation: CombineElements<keyof CollectionModel<T>['ts']>;
+      fields:       {
+        [K in keyof T]: TplFieldRules;
+        field1: 'array-of-string';
+        field2: 'string (readonly private)';
+        field3: 'text-short'
+        field4: 'fks-messages.is'
+      };
+      fks:          {
+        [K in TplCollectionName]?: {
+          code:     K;
+          multiple: boolean;
+          rules:    CombinedArgs;
+        };
+      };
+    };
   },
 };
 
