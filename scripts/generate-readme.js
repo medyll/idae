@@ -150,4 +150,4 @@ function generateReadme(blacklist = []) {
 
 
 
-generateReadme(['@medyll/idae-chroma','@medyll/idae-cadenzia','@medyll/idae-model','@medyll/idae-data-tpl']);
+generateReadme(['idae-chroma','idae-cadenzia','idae-model','idae-data-tpl']);
