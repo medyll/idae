@@ -1,5 +1,15 @@
 # @medyll/idae-query
 
+## 0.136.0
+
+### Minor Changes
+
+- - feat(update): package description and rename package to @medyll/idae-query; add dependency on @medyll/idae-engine ([7ec80cb](https://github.com/medyll/idae/commit/7ec80cb343d9875fccd0be577e901121d7556a09)) - 2025-03-17 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - fix(idae-query): dependencies update ([2ecb667](https://github.com/medyll/idae/commit/2ecb6671c0e1cee517612f0a635e44e03d1b32e9)) - 2025-03-03 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+
 ## 0.135.0
 
 ### Minor Changes

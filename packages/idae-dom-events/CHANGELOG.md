@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.106.0
+
+### Minor Changes
+
+- - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+
 ## 0.105.0
 
 ### Minor Changes
