@@ -72,6 +72,11 @@ class ChangesetGenerator {
      * @type {boolean}
      */
     this.packageStrict = options.packageStrict ?? false;
+    /**
+     * If true, show detailed logs (except always show start/end summary).
+     * @type {boolean}
+     */
+    this.showlog = options.showlog ?? false;
   }
 
   /**
@@ -91,7 +96,6 @@ class ChangesetGenerator {
   async checkRateLimit() {
     // Check GitHub API rate limit and wait if necessary
     const { data: rateLimit } = await this.octokit.rest.rateLimit.get();
-    console.log("Rate limit:", rateLimit.rate);
     if (rateLimit.remaining < 10) {
       console.log("Rate limit almost exceeded, waiting...");
       const resetTime = new Date(rateLimit.reset * 1000);
@@ -191,10 +195,12 @@ class ChangesetGenerator {
    * @returns {string|null} The bump type or null if not relevant.
    */
   getBumpType(commitMessage) {
-    // Determine the bump type (major, minor, patch) based on the commit message
-    if (commitMessage.toLowerCase().includes("breaking change")) return "major";
+    // Accepts: type: ... ou type(scope): ...
+    const msg = commitMessage.trim().toLowerCase();
+    if (msg.includes("breaking change")) return "major";
     for (const type of this.commitTypes) {
-      if (commitMessage.startsWith(type)) {
+      const typePattern = new RegExp(`^${type}(\\(|:| |$)`, "i");
+      if (typePattern.test(msg)) {
         return type === "feat" ? "minor" : "patch";
       }
     }
@@ -284,6 +290,8 @@ ${summary}
    * @returns {Promise<void>}
    */
   async generateChangesets() {
+    let totalPackages = 0;
+    let totalChangesets = 0;
     // Generate changesets for all packages
     const lastTag = execSync("git describe --tags --abbrev=0")
       .toString()
@@ -295,22 +303,23 @@ ${summary}
       const packageJsonPath = path.join(packagePath, "package.json");
 
       if (!fs.existsSync(packageJsonPath)) {
-        console.error(
-          `Package ${packageDir} does not have a package.json file`,
-        );
+        if (this.showlog) console.error(`Package ${packageDir} does not have a package.json file`);
         continue;
       }
 
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
       const packageName = packageJson.name;
 
-      console.log(chalk.cyanBright.bold(`\n🔍 Processing package:`), chalk.yellowBright(packageName));
+      if (this.showlog) console.log(chalk.cyanBright.bold(`\n🔍 Processing package:`), chalk.yellowBright(packageName));
+      totalPackages++;
 
       let lastChangelogDate = null;
       if (this.commitDepth === "auto") {
         lastChangelogDate = await this.getLastChangelogDate(packagePath);
         if (lastChangelogDate) {
-          console.log(chalk.gray(`  ℹ️  Last changelog date for ${chalk.yellowBright(packageName)}: ${chalk.green(lastChangelogDate)}`));
+          if (this.showlog) {
+            console.log(chalk.gray(`  ℹ️  Last changelog date for ${chalk.yellowBright(packageName)}: ${chalk.green(lastChangelogDate)}`));
+          }
         }
       }
 
@@ -331,73 +340,102 @@ ${summary}
         filteredCommits = packageCommits.filter(commit => commit && typeof commit.message === 'string');
       }
 
-      console.log(chalk.gray(`  📦 Commits for ${chalk.yellowBright(packageName)}:`), chalk.magenta(filteredCommits.length));
+      if (this.showlog) {
+        console.log(chalk.gray(`  📦 Commits for ${chalk.yellowBright(packageName)}:`), chalk.magenta(filteredCommits.length));
+        // DEBUG: Affiche les messages de commit et leur bumpType
+        filteredCommits.forEach(commit => {
+          const bump = this.getBumpType(commit.message.split("\n")[0]);
+          console.log(chalk.gray(`    - '${commit.message.split("\n")[0]}' => bumpType: ${bump}`));
+        });
+      }
 
-      if (filteredCommits.length > 0) {
-        const bumpTypes = filteredCommits
+      let bumpTypes;
+      let relevantCommits;
+      if (this.packageStrict) {
+        bumpTypes = filteredCommits
           .filter(commit => commit && typeof commit.message === 'string')
           .map((commit) => this.getBumpType(commit.message.split("\n")[0]))
           .filter((type) => type !== null);
-
-        if (bumpTypes.length === 0) {
-          console.log(chalk.yellowBright(`⚠️  No relevant commits found for ${chalk.yellow(packageName)}`));
-          continue;
-        }
-
-        const highestBumpType = bumpTypes.includes("major")
-          ? "major"
-          : bumpTypes.includes("minor")
-            ? "minor"
-            : "patch";
-
-        const relevantCommits = filteredCommits.filter(
+        relevantCommits = filteredCommits.filter(
           (commit) => commit && typeof commit.message === 'string' && this.getBumpType(commit.message.split("\n")[0]) !== null,
         );
-
-        const changesetContent = this.generateChangesetContent(
-          packageName,
-          highestBumpType,
-          relevantCommits,
-        );
-
-        const changesetDir = path.join(__dirname, "..", ".changeset");
-        if (!fs.existsSync(changesetDir)) {
-          fs.mkdirSync(changesetDir);
-        }
-
-        const contentHash = crypto
-          .createHash("md5")
-          .update(changesetContent)
-          .digest("hex")
-          .slice(0, 8);
-        const changesetFile = path.join(
-          changesetDir,
-          `${packageDir}-${contentHash}.md`,
-        );
-
-        if (!fs.existsSync(changesetFile)) {
-          fs.writeFileSync(changesetFile, changesetContent);
-          console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
-        } else {
-          console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));
-        }
       } else {
-        console.log(chalk.gray(`🚫 No commits found for ${chalk.yellowBright(packageName)}`));
+        // On prend tous les commits non vides, non merge, non apply changeset
+        relevantCommits = filteredCommits.filter(commit => {
+          const msg = commit.message.split("\n")[0].toLowerCase();
+          if (!msg || msg.startsWith('merge') || msg.startsWith('apply changeset')) return false;
+          return true;
+        });
+        bumpTypes = relevantCommits.map(commit => this.getBumpType(commit.message.split("\n")[0]) || 'patch');
+      }
+
+      if (relevantCommits.length === 0) {
+        if (this.showlog) console.log(chalk.yellowBright(`⚠️  No relevant commits found for ${chalk.yellow(packageName)}`));
+        continue;
+      }
+
+      const highestBumpType = bumpTypes.includes("major")
+        ? "major"
+        : bumpTypes.includes("minor")
+          ? "minor"
+          : "patch";
+
+      const changesetContent = this.generateChangesetContent(
+        packageName,
+        highestBumpType,
+        relevantCommits,
+      );
+
+      const changesetDir = path.join(__dirname, "..", ".changeset");
+      if (!fs.existsSync(changesetDir)) {
+        fs.mkdirSync(changesetDir);
+      }
+
+      const contentHash = crypto
+        .createHash("md5")
+        .update(changesetContent)
+        .digest("hex")
+        .slice(0, 8);
+      const changesetFile = path.join(
+        changesetDir,
+        `${packageDir}-${contentHash}.md`,
+      );
+
+      if (!fs.existsSync(changesetFile)) {
+        fs.writeFileSync(changesetFile, changesetContent);
+        totalChangesets++;
+        if (this.showlog) console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
+      } else {
+        if (this.showlog) console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));
       }
     }
 
-    console.log(chalk.bgGreen.black("\n🎉 Changeset generation completed\n"));
+    // Summary
+    console.log(
+      chalk.greenBright.bold(`\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.`),
+    );
   }
 }
 
 /**
- * Initialize and run the changeset generator with the desired options.
+ * Runs the ChangesetGenerator.
+ * @returns {Promise<void>}
  */
-const generator = new ChangesetGenerator({
-  rootRepo: rootRepo,
-  commitTypes: ["feat", "fix", ], // "docs", "refactor", "docs", "ci"
-  commitDepth: "all",
-  packageStrict: false
-});
+async function run() {
+  const generator = new ChangesetGenerator({
+    rootRepo: process.env.GITHUB_REPOSITORY,
+    commitTypes: process.env.COMMIT_TYPES?.split(",") || commitTypes,
+    commitDepth: process.env.COMMIT_DEPTH || commitDepth,
+    packageStrict: process.env.PACKAGE_STRICT === "true",
+    showlog: process.env.SHOW_LOG === "true",
+  });
 
-generator.generateChangesets();
+  await generator.initOctokit();
+  await generator.checkRateLimit();
+  await generator.generateChangesets();
+}
+
+run().catch((error) => {
+  console.error("Error running ChangesetGenerator:", error);
+  process.exit(1);
+});
