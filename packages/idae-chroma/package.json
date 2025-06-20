@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-chroma",
-  "version": "0.64.0",
+  "version": "0.65.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",

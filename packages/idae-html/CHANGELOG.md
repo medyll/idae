@@ -1,5 +1,21 @@
 # @medyll/idae-html
 
+## 0.95.0
+
+### Minor Changes
+
+- a6624be: - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+
+### Patch Changes
+
+- Updated dependencies [a6624be]
+- Updated dependencies [a6624be]
+  - @medyll/idae-be@1.40.0
+  - @medyll/idae-dom-events@0.100.0
+
 ## 0.94.0
 
 ### Minor Changes
