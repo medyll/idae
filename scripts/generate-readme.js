@@ -68,8 +68,8 @@ function listMonorepo(blacklist = []) {
     const workspaces = monorepoPackageJson.workspaces || [];
 
     const repos = workspaces.flatMap(workspace => {
-        // Remove trailing '*' if present
-        const cleanedWorkspace = workspace.replace(/\/*$/, '');
+        // Remove trailing '/*' if present
+        const cleanedWorkspace = workspace.replace(/\/\*$/, '').replace(/\/$/, '');
         const workspacePath = path.join(monorepoPath, cleanedWorkspace);
     
         if (!fs.existsSync(workspacePath)) {
@@ -79,14 +79,21 @@ function listMonorepo(blacklist = []) {
     }).filter(repo => {
         const repoPath = path.join(monorepoPath, repo);
         return fs.statSync(repoPath).isDirectory();
-    })
-    // Blacklist filtering
-    .filter(repo => {
-        const repoName = path.basename(repo);
-        return !blacklist.includes(repo) && !blacklist.includes(repoName);
     });
 
-    const repoInfos = repos.map(repo => {
+    // Blacklist filtering with logging
+    const excluded = [];
+    const filteredRepos = repos.filter(repo => {
+        const repoName = path.basename(repo);
+        const isExcluded = blacklist.includes(repo) || blacklist.includes(repoName);
+        if (isExcluded) excluded.push(repoName);
+        return !isExcluded;
+    });
+    if (excluded.length > 0) {
+        console.log('Repos exclus :', excluded.join(', '));
+    }
+
+    const repoInfos = filteredRepos.map(repo => {
         const repoPath = path.join(monorepoPath, repo);
         return getRepoInfo(repoPath);
     }).filter(info => info !== null);
@@ -107,6 +114,8 @@ function listPackageNames(blacklist = []) {
 
 function generateReadme(blacklist = []) {
     const repoInfos = listMonorepo(blacklist);
+    // Log the list of processed packages
+    console.log('Packages traités :', repoInfos.map(info => info.name).join(', '));
     let readmeContent = `# ${monorepoName}\n\n${monorepoDescription}\n`;
 
     readmeContent += listPackageNames(blacklist) + '\n';
@@ -147,7 +156,7 @@ function generateReadme(blacklist = []) {
     }
 }
 
+// Exemple d'utilisation :
+// generateReadme(['idae-db', 'idae-chroma']);
 
-
-
-generateReadme(['idae-chroma','idae-cadenzia','idae-model','idae-data-tpl']);
+generateReadme(['ai-bash','idae-chroma','idae-cadenzia','idae-model','idae-data-tpl','idae-api-nest']);
