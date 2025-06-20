@@ -7,8 +7,7 @@ describe("@medyll/idae-api", () => {
     // Configure and start the server
     idaeApi.setOptions({
       port: 3000,
-      enableAuth: false,
-      onInUse: "reboot",
+      enableAuth: false
     });
     await idaeApi.start();
   });

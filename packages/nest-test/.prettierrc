@@ -1,0 +1,5 @@
+// This file contains Prettier configuration for code formatting rules.
+{
+  "singleQuote": true,
+  "trailingComma": "all"
+}

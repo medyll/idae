@@ -53,10 +53,11 @@ function getRepoInfo(repoPath) {
 /**
  * Lists the repositories in a monorepo based on the workspaces defined in the monorepo's package.json.
  *
+ * @param {Array<string>} [blacklist=[]] - List of repo names or relative paths to exclude.
  * @returns {Array<Object>} An array of repository information objects.
  * @throws {Error} If the monorepo's package.json file is not found.
  */
-function listMonorepo() {
+function listMonorepo(blacklist = []) {
     const monorepoPackageJsonPath = path.join(monorepoPath, 'package.json');
  
     if (!fs.existsSync(monorepoPackageJsonPath)) {
@@ -68,7 +69,7 @@ function listMonorepo() {
 
     const repos = workspaces.flatMap(workspace => {
         // Remove trailing '*' if present
-        const cleanedWorkspace = workspace.replace(/\/\*$/, '');
+        const cleanedWorkspace = workspace.replace(/\/*$/, '');
         const workspacePath = path.join(monorepoPath, cleanedWorkspace);
     
         if (!fs.existsSync(workspacePath)) {
@@ -78,20 +79,23 @@ function listMonorepo() {
     }).filter(repo => {
         const repoPath = path.join(monorepoPath, repo);
         return fs.statSync(repoPath).isDirectory();
+    })
+    // Blacklist filtering
+    .filter(repo => {
+        const repoName = path.basename(repo);
+        return !blacklist.includes(repo) && !blacklist.includes(repoName);
     });
- 
 
     const repoInfos = repos.map(repo => {
         const repoPath = path.join(monorepoPath, repo);
         return getRepoInfo(repoPath);
     }).filter(info => info !== null);
 
-  
     return repoInfos;
 }
 
-function listPackageNames() {
-    const repoInfos = listMonorepo();
+function listPackageNames(blacklist = []) {
+    const repoInfos = listMonorepo(blacklist);
     let packageNamesContent = '## Packages\n\n';
 
     repoInfos.forEach(info => {
@@ -101,11 +105,11 @@ function listPackageNames() {
     return packageNamesContent;
 }
 
-function generateReadme() {
-    const repoInfos = listMonorepo();
+function generateReadme(blacklist = []) {
+    const repoInfos = listMonorepo(blacklist);
     let readmeContent = `# ${monorepoName}\n\n${monorepoDescription}\n`;
 
-    readmeContent += listPackageNames() + '\n';
+    readmeContent += listPackageNames(blacklist) + '\n';
 
     readmeContent += '## Details\n\n';
     repoInfos.forEach(info => {
@@ -143,4 +147,7 @@ function generateReadme() {
     }
 }
 
-generateReadme();
+
+
+
+generateReadme(['idae-chroma','idae-cadenzia','idae-model','idae-data-tpl']);
