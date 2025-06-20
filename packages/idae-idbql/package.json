@@ -44,6 +44,6 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@medyll/idae-query": "^0.130.0"
+		"@medyll/idae-query": "^0.128.0"
 	}
 }
