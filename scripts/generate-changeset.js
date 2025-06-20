@@ -321,14 +321,17 @@ ${summary}
       let filteredCommits = packageCommits;
       if (this.packageStrict) {
         filteredCommits = packageCommits.filter(commit =>
-          this.isCommitForPackage(commit.message, packageDir)
+          commit && typeof commit.message === 'string' && this.isCommitForPackage(commit.message, packageDir)
         );
+      } else {
+        filteredCommits = packageCommits.filter(commit => commit && typeof commit.message === 'string');
       }
 
       console.log(`Commits for ${packageName}:`, filteredCommits.length );
 
       if (filteredCommits.length > 0) {
         const bumpTypes = filteredCommits
+          .filter(commit => commit && typeof commit.message === 'string')
           .map((commit) => this.getBumpType(commit.message.split("\n")[0]))
           .filter((type) => type !== null);
 
@@ -344,7 +347,7 @@ ${summary}
             : "patch";
 
         const relevantCommits = filteredCommits.filter(
-          (commit) => this.getBumpType(commit.message.split("\n")[0]) !== null,
+          (commit) => commit && typeof commit.message === 'string' && this.getBumpType(commit.message.split("\n")[0]) !== null,
         );
 
         const changesetContent = this.generateChangesetContent(
@@ -389,7 +392,7 @@ ${summary}
 const generator = new ChangesetGenerator({
   rootRepo: rootRepo,
   commitTypes: ["feat", "fix", ], // "docs", "refactor", "docs", "ci"
-  commitDepth: "all",
+  commitDepth: "auto",
   packageStrict: false
 });
 
