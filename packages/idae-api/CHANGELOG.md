@@ -1,5 +1,26 @@
 # @medyll/idae-api
 
+## 0.138.0
+
+### Minor Changes
+
+- - feat(dependencies): mettre à jour les dépendances et supprimer les anciennes versions obsolètes ([f3c098b](https://github.com/medyll/idae/commit/f3c098bf250da2bec48a067f7357adfd2df45c98)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - fix(idae-api): idae-db options and query are now encoded ([74b507f](https://github.com/medyll/idae/commit/74b507fffaf9822c0fd7ac3e7a30de806bea4cb2)) - 2024-08-26 by @medyll
+  - fix(idae-slotui): css loading and breakpoints ([af54d64](https://github.com/medyll/idae/commit/af54d6429038df6b214026c47f5935e8c552d03d)) - 2024-08-15 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - feat(idae-api): Add IdaeApiClientCollection class for managing API client collections ([8897ca4](https://github.com/medyll/idae/commit/8897ca43bbcc6a6d82fba5a2f948244d3b6244a0)) - 2024-07-29 by @medyll
+  - feat(iadae-api): 1st deliver ([4d3dbe9](https://github.com/medyll/idae/commit/4d3dbe96813a773c5bed60229ea46be8529e4199)) - 2024-07-28 by @medyll
+  - fix(idae-api): empty req.params issue in database middleware ([c4c261d](https://github.com/medyll/idae/commit/c4c261d4e80942205408ffd2c998e3e9d00fe7f9)) - 2024-07-27 by @medyll
+    - Reordered middleware configuration in ApiServer
+    - Moved connectToDatabase after route configuration
+    - Added debug logging for route params
+    - Ensured correct usage of next() in middlewares
+  - fix(idae-api): Update import statement for ApiServer in index.ts ([75844f4](https://github.com/medyll/idae/commit/75844f44292d6ce5f0c0308c8e503b6a8ef1a790)) - 2024-07-26 by @medyll
+  - feat(idae-api): Add MySQLAdapter for MySQL database operations ([cd93f6f](https://github.com/medyll/idae/commit/cd93f6faf2b6694405c86bbc5c91de68db7c7168)) - 2024-07-26 by @medyll
+  - feat(idae-api): added launcher as esm ([1d8e355](https://github.com/medyll/idae/commit/1d8e355a888ed1bc52dad40d9393628733ac4193)) - 2024-07-10 by @medyll
+
 ## 0.137.0
 
 ### Minor Changes
