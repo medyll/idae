@@ -3,41 +3,31 @@
 This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.
 ## Packages
 
-- [@medyll/ai-bash](https://github.com/medyll/idae/tree/main/packages/ai-bash)
 - [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 - [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
-- [@medyll/idae-cadenzia](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia)
-- [@medyll/idae-chroma](https://github.com/medyll/idae/tree/main/packages/idae-chroma)
-- [@medyll/idae-data-tpl](https://github.com/medyll/idae/tree/main/packages/idae-data-tpl)
 - [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 - [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
 - [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
 - [@medyll/idae-html](https://github.com/medyll/idae/tree/main/packages/idae-html)
 - [@medyll/idae-idbql](https://github.com/medyll/idae/tree/main/packages/idae-idbql)
-- [@medyll/idae-model](https://github.com/medyll/idae/tree/main/packages/idae-model)
 - [@medyll/idae-mongo](https://github.com/medyll/idae/tree/main/packages/idae-mongo)
 - [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
 - [@medyll/idae-slotui-svelte](https://github.com/medyll/idae/tree/main/packages/idae-slotui)
 - [@medyll/idae-socket](https://github.com/medyll/idae/tree/main/packages/idae-socket)
 - [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
+- [@medyll/nest-test](https://github.com/medyll/idae/tree/main/packages/nest-test)
 - [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
 - [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/esling-config)
 - [@medyll/idae-prettier-config](https://github.com/medyll/idae/tree/main/packages-config/prettier-config)
 
 ## Details
 
-### @medyll/ai-bash
-**Repo:** [@medyll/ai-bash](https://github.com/medyll/idae/tree/main/packages/ai-bash)
-
-**Version:** 0.71.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/ai-bash/CHANGELOG.md)
-
-##
 ### @medyll/idae-api
 A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations. It features a modular architecture, dynamic database connection management, and a flexible routing system. The framework supports TypeScript for improved robustness and maintainability.
 
 **Repo:** [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 
-**Version:** 0.119.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-api/CHANGELOG.md)
+**Version:** 0.129.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-api/CHANGELOG.md)
 
 ##
 ### @medyll/idae-be
@@ -45,25 +35,7 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 
 **Repo:** [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
 
-**Version:** 1.28.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
-
-##
-### @medyll/idae-cadenzia
-**Repo:** [@medyll/idae-cadenzia](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia)
-
-**Version:** 0.79.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia/CHANGELOG.md)
-
-##
-### @medyll/idae-chroma
-**Repo:** [@medyll/idae-chroma](https://github.com/medyll/idae/tree/main/packages/idae-chroma)
-
-**Version:** 0.53.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-chroma/CHANGELOG.md)
-
-##
-### @medyll/idae-data-tpl
-**Repo:** [@medyll/idae-data-tpl](https://github.com/medyll/idae/tree/main/packages/idae-data-tpl)
-
-**Version:** 0.118.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-data-tpl/CHANGELOG.md)
+**Version:** 1.38.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
 
 ##
 ### @medyll/idae-db
@@ -71,7 +43,7 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 
 **Repo:** [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 
-**Version:** 0.87.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-db/CHANGELOG.md)
+**Version:** 0.97.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-db/CHANGELOG.md)
 
 ##
 ### @medyll/idae-dom-events
@@ -79,7 +51,7 @@ dom-events is a powerful library for observing and reacting to DOM changes in we
 
 **Repo:** [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
 
-**Version:** 0.88.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-dom-events/CHANGELOG.md)
+**Version:** 0.98.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-dom-events/CHANGELOG.md)
 
 ##
 ### @medyll/idae-engine
@@ -87,13 +59,13 @@ A powerful TypeScript library for data manipulation and operations across the id
 
 **Repo:** [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
 
-**Version:** 1.117.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-engine/CHANGELOG.md)
+**Version:** 1.127.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-engine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-html
 **Repo:** [@medyll/idae-html](https://github.com/medyll/idae/tree/main/packages/idae-html)
 
-**Version:** 0.83.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-html/CHANGELOG.md)
+**Version:** 0.93.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-html/CHANGELOG.md)
 
 ##
 ### @medyll/idae-idbql
@@ -101,19 +73,13 @@ A powerful and flexible IndexedDB query library for TypeScript and JavaScript ap
 
 **Repo:** [@medyll/idae-idbql](https://github.com/medyll/idae/tree/main/packages/idae-idbql)
 
-**Version:** 0.117.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-idbql/CHANGELOG.md)
-
-##
-### @medyll/idae-model
-**Repo:** [@medyll/idae-model](https://github.com/medyll/idae/tree/main/packages/idae-model)
-
-**Version:** 0.67.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-model/CHANGELOG.md)
+**Version:** 0.127.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-idbql/CHANGELOG.md)
 
 ##
 ### @medyll/idae-mongo
 **Repo:** [@medyll/idae-mongo](https://github.com/medyll/idae/tree/main/packages/idae-mongo)
 
-**Version:** 0.117.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-mongo/CHANGELOG.md)
+**Version:** 0.127.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-mongo/CHANGELOG.md)
 
 ##
 ### @medyll/idae-query
@@ -121,7 +87,7 @@ A powerful and flexible query library for TypeScript and JavaScript applications
 
 **Repo:** [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
 
-**Version:** 0.118.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-query/CHANGELOG.md)
+**Version:** 0.128.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-query/CHANGELOG.md)
 
 ##
 ### @medyll/idae-slotui-svelte
@@ -129,7 +95,7 @@ A Svelte 5 component library for building modular and reactive user interfaces.
 
 **Repo:** [@medyll/idae-slotui-svelte](https://github.com/medyll/idae/tree/main/packages/idae-slotui)
 
-**Version:** 0.120.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-slotui/CHANGELOG.md)
+**Version:** 0.130.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-slotui/CHANGELOG.md)
 
 ##
 ### @medyll/idae-socket
@@ -148,6 +114,11 @@ A lightweight and efficient state management library designed for building react
 **Version:** 0.1.1 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-stator/CHANGELOG.md)
 
 ##
+### @medyll/nest-test
+**Repo:** [@medyll/nest-test](https://github.com/medyll/idae/tree/main/packages/nest-test)
+
+**Version:** 0.4.0
+##
 ### @medyll/idae-shared
 sharing
 
@@ -158,7 +129,7 @@ sharing
 ### @medyll/idae-eslint-config
 **Repo:** [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/esling-config)
 
-**Version:** 1.1.0 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/esling-config/CHANGELOG.md)
+**Version:** 1.2.1 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/esling-config/CHANGELOG.md)
 
 ##
 ### @medyll/idae-prettier-config
@@ -166,6 +137,6 @@ idae svelte Prettier config
 
 **Repo:** [@medyll/idae-prettier-config](https://github.com/medyll/idae/tree/main/packages-config/prettier-config)
 
-**Version:** 1.1.0 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/prettier-config/CHANGELOG.md)
+**Version:** 1.2.1 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/prettier-config/CHANGELOG.md)
 
 ##

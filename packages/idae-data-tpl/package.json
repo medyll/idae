@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-data-tpl",
 	"scope": "@medyll",
-	"version": "0.128.0",
+	"version": "0.131.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
