@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const crypto = require("crypto");
+const chalk = require("chalk");
 require("dotenv").config();
 
 /**
@@ -101,17 +102,20 @@ class ChangesetGenerator {
 
   /**
    * Reads the date of the latest changelog entry from the package's CHANGELOG.md.
+   * Supports formats: (YYYY-MM-DD), [YYYY-MM-DD], or YYYY-MM-DD at start of line.
    * @param {string} packagePath - The absolute path to the package directory.
    * @returns {Promise<string|null>} The date as 'YYYY-MM-DD' or null if not found.
    */
   async getLastChangelogDate(packagePath) {
-    // Cherche la date du dernier changelog dans le fichier CHANGELOG.md du package
     const changelogPath = path.join(packagePath, "CHANGELOG.md");
     if (!fs.existsSync(changelogPath)) return null;
     const content = fs.readFileSync(changelogPath, "utf-8");
-    // Cherche la première date au format YYYY-MM-DD dans le changelog
-    const dateMatch = content.match(/\((\d{4}-\d{2}-\d{2})/);
-    if (dateMatch) return dateMatch[1];
+    // Try to match (YYYY-MM-DD), [YYYY-MM-DD], or YYYY-MM-DD at start of line
+    const dateMatch = content.match(/\((\d{4}-\d{2}-\d{2})\)|\[(\d{4}-\d{2}-\d{2})\]|^ *(\d{4}-\d{2}-\d{2})/m);
+    if (dateMatch) {
+      // Return the first non-null group
+      return dateMatch[1] || dateMatch[2] || dateMatch[3];
+    }
     return null;
   }
 
@@ -300,13 +304,13 @@ ${summary}
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
       const packageName = packageJson.name;
 
-      console.log(`Processing package: ${packageName}`);
+      console.log(chalk.cyanBright.bold(`\n🔍 Processing package:`), chalk.yellowBright(packageName));
 
       let lastChangelogDate = null;
       if (this.commitDepth === "auto") {
         lastChangelogDate = await this.getLastChangelogDate(packagePath);
         if (lastChangelogDate) {
-          console.log(`Last changelog date for ${packageName}: ${lastChangelogDate}`);
+          console.log(chalk.gray(`  ℹ️  Last changelog date for ${chalk.yellowBright(packageName)}: ${chalk.green(lastChangelogDate)}`));
         }
       }
 
@@ -327,7 +331,7 @@ ${summary}
         filteredCommits = packageCommits.filter(commit => commit && typeof commit.message === 'string');
       }
 
-      console.log(`Commits for ${packageName}:`, filteredCommits.length );
+      console.log(chalk.gray(`  📦 Commits for ${chalk.yellowBright(packageName)}:`), chalk.magenta(filteredCommits.length));
 
       if (filteredCommits.length > 0) {
         const bumpTypes = filteredCommits
@@ -336,7 +340,7 @@ ${summary}
           .filter((type) => type !== null);
 
         if (bumpTypes.length === 0) {
-          console.log(`No relevant commits found for ${packageName}`);
+          console.log(chalk.yellowBright(`⚠️  No relevant commits found for ${chalk.yellow(packageName)}`));
           continue;
         }
 
@@ -373,16 +377,16 @@ ${summary}
 
         if (!fs.existsSync(changesetFile)) {
           fs.writeFileSync(changesetFile, changesetContent);
-          console.log(`Changeset generated for ${packageName}`);
+          console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
         } else {
-          console.log(`Changeset for ${packageName} already exists, skipping.`);
+          console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));
         }
       } else {
-        console.log(`No commits found for ${packageName}`);
+        console.log(chalk.gray(`🚫 No commits found for ${chalk.yellowBright(packageName)}`));
       }
     }
 
-    console.log("Changeset generation completed");
+    console.log(chalk.bgGreen.black("\n🎉 Changeset generation completed\n"));
   }
 }
 
@@ -392,7 +396,7 @@ ${summary}
 const generator = new ChangesetGenerator({
   rootRepo: rootRepo,
   commitTypes: ["feat", "fix", ], // "docs", "refactor", "docs", "ci"
-  commitDepth: "auto",
+  commitDepth: "all",
   packageStrict: false
 });
 

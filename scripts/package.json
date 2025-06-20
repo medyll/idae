@@ -1,0 +1,7 @@
+{
+  "name": "idae-scripts",
+  "private": true,
+  "dependencies": {
+    "chalk": "4.1.2"
+  }
+}
