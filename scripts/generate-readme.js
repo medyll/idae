@@ -159,4 +159,4 @@ function generateReadme(blacklist = []) {
 // Exemple d'utilisation :
 // generateReadme(['idae-db', 'idae-chroma']);
 
-generateReadme(['ai-bash','idae-chroma','idae-cadenzia','idae-model','idae-data-tpl','idae-api-nest']);
+generateReadme(['ai-bash','idae-chroma','idae-cadenzia','idae-model','idae-data-tpl','idae-api-nest','nest-test']);
