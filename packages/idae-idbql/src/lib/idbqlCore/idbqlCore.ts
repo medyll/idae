@@ -78,7 +78,7 @@ export class IdbqlIndexedCore<T = any> {
 					};
 					dbConnection.onupgradeneeded = async (event: Event) => {
 						const db = (event.target as IDBOpenDBRequest).result;
-						console.log('upgrading db', db);
+						
 						if (db) {
 							const m = new Schema();
 							console.log('schema', m);
