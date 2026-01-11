@@ -77,12 +77,34 @@
 		{#each showFields as field}
 			<div class="field">
 				<label for={field + '-input'}>{field}</label>
-				<input
-					id={field + '-input'}
-					type="text"
-					bind:value={formData[field]}
-					readonly={mode === 'show'}
-				/>
+				{#if schema && schema[field]}
+					{#if schema[field].readonly || schema[field].private}
+						<input id={field + '-input'} type="text" value={formData[field]} readonly />
+					{:else if schema[field].type === 'number'}
+						<input id={field + '-input'} type="number" bind:value={formData[field]} readonly={mode === 'show'} />
+					{:else if schema[field].type === 'boolean'}
+						<select id={field + '-input'} bind:value={formData[field]} disabled={mode === 'show'}>
+							<option value="">--</option>
+							<option value="true">true</option>
+							<option value="false">false</option>
+						</select>
+					{:else if schema[field].type === 'email'}
+						<input id={field + '-input'} type="email" bind:value={formData[field]} readonly={mode === 'show'} />
+					{:else if schema[field].type === 'date'}
+						<input id={field + '-input'} type="date" bind:value={formData[field]} readonly={mode === 'show'} />
+					{:else if schema[field].type === 'fk' && schema[field].fkTarget}
+						<select id={field + '-input'} bind:value={formData[field]} disabled={mode === 'show'}>
+							<option value="">--</option>
+							{#each crud ? crud.list(schema[field].fkTarget) : [] as fkItem}
+								<option value={fkItem.id}>{fkItem.name || fkItem.id}</option>
+							{/each}
+						</select>
+					{:else}
+						<input id={field + '-input'} type="text" bind:value={formData[field]} readonly={mode === 'show'} />
+					{/if}
+				{:else}
+					<input id={field + '-input'} type="text" bind:value={formData[field]} readonly={mode === 'show'} />
+				{/if}
 				{#if errors[field]}
 					<span class="error">{errors[field]}</span>
 				{/if}
