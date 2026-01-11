@@ -192,6 +192,12 @@ class IdaeApi {
       handlers.push(this.#authMiddleware.createMiddleware());
     }
 
+    // Add RBAC/ABAC authorization middleware if specified
+    if (route.authorization) {
+      const { authorize } = require("./middleware/authorizationMiddleware.js");
+      handlers.push(authorize(route.authorization));
+    }
+
     handlers.push(this.handleRequest(route.handler));
 
     if (Array.isArray(route.method)) {

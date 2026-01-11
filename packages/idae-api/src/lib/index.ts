@@ -11,6 +11,7 @@ export * from '$lib/server/middleware/databaseMiddleware.js';
 export * from '$lib/server/middleware/authMiddleware.js';
 export * from '$lib/server/middleware/openApiMiddleware.js';
 export * from '$lib/server/middleware/docsMiddleware.js';
+export * from '$lib/server/middleware/authorizationMiddleware.js';
 export * from '$lib/server/engine/types.js';
 export * from '$lib/server/engine/routeManager.js';
 export * from '$lib/server/engine/requestDatabaseManager.js';

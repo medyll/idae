@@ -11,12 +11,15 @@ type RouteHandler = (
   query?: any,
 ) => Promise<any>;
 
+import type { AuthorizationOptions } from "$lib/server/middleware/authorizationMiddleware.js";
+
 export interface RouteDefinition {
   method: string | string[];
   path: string;
   handler: RouteHandler;
   disabled?: boolean;
   requiresAuth?: boolean;
+  authorization?: AuthorizationOptions; // RBAC/ABAC options
   validation?: {
     bodySchema?: z.ZodSchema<any>;
     querySchema?: z.ZodSchema<any>;
