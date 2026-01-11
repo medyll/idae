@@ -21,16 +21,42 @@
 		showFks?: boolean
 	} = $props();
 
+	import { schemeModelDb } from './dbSchema';
+
 	let formData = $state<any>({});
+	let errors = $state<Record<string, string>>({});
+
+	function validate() {
+		errors = {};
+		const schema = schemeModelDb[collection]?.fields || {};
+		for (const field of showFields) {
+			const rule = schema[field];
+			if (rule?.required && !formData[field]) {
+				errors[field] = 'This field is required.';
+			}
+		}
+		return Object.keys(errors).length === 0;
+	}
+
+	function handleSubmit(e: Event) {
+		e.preventDefault();
+		if (validate()) {
+			// TODO: call CRUD service to save
+			// Optionally emit event or update parent
+		}
+	}
 </script>
 
 <div class="create-update">
 	<h2>{collection} - {mode}</h2>
-	<form>
+	<form on:submit={handleSubmit} autocomplete="off">
 		{#each showFields as field}
 			<div class="field">
 				<label for={field + '-input'}>{field}</label>
 				<input id={field + '-input'} type="text" bind:value={formData[field]} readonly={mode === 'show'} />
+				{#if errors[field]}
+					<span class="error">{errors[field]}</span>
+				{/if}
 			</div>
 		{/each}
 		{#if mode !== 'show'}
@@ -80,3 +106,8 @@
 		border-radius: 6px;
 	}
 </style>
+.error {
+	color: #c00;
+	font-size: 0.9em;
+	margin-left: 0.5rem;
+}
