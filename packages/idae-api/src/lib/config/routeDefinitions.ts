@@ -17,6 +17,18 @@ export interface RouteDefinition {
   requiresAuth?: boolean;
 }
 
+const allowedQueryCommands = new Set([
+  "find",
+  "findById",
+  "findOne",
+  "create",
+  "update",
+  "updateWhere",
+  "deleteById",
+  "deleteWhere",
+  "transaction",
+]);
+
 export const routes: RouteDefinition[] = [
   {
     method: "get",
@@ -50,21 +62,27 @@ export const routes: RouteDefinition[] = [
     handler: async (service, params) => service.deleteWhere(params),
   },
   {
-    method: [
-      "find",
-      "findById",
-      "findOne",
-      "create",
-      "update",
-      "updateWhere",
-      "deleteById",
-      "deleteWhere",
-      "transaction",
-    ], // default method is then GET or OPTIONS (set further)
+    method: "post",
     path: "/query/:collectionName/:command/:parameters",
+    requiresAuth: true,
     handler: async (service, params, body) => {
-      console.log(params.command, "params --- ", { body });
-      return (service as any)?.[params.command]?.({ query: body });
+      const command = params.command as string;
+      if (!allowedQueryCommands.has(command)) {
+        const error = new Error("Query command not allowed");
+        (error as any).status = 400;
+        throw error;
+      }
+
+      const payload = body && typeof body === "object" ? body : {};
+      const method = (service as any)?.[command];
+
+      if (typeof method !== "function") {
+        const error = new Error("Query command not implemented");
+        (error as any).status = 400;
+        throw error;
+      }
+
+      return method({ query: payload });
     },
   },
   {

@@ -37,6 +37,14 @@ interface IdaeApiOptions {
   trustProxy?: boolean | number | string;
 }
 
+class HttpError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+}
+
 class IdaeApi {
   static #instance: IdaeApi | null = null;
   #app: Express;
@@ -140,15 +148,16 @@ class IdaeApi {
       this.#app.use(rateLimit(limiterOptions));
     }
 
-    if (this.#authMiddleware) {
-      this.#app.use(this.#authMiddleware.createMiddleware() as express.RequestHandler);
-    }
     this.#app.use(express.json({ limit: jsonLimit }));
     this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
     this.#app.use("/:collectionName", idaeDbMiddleware);
   }
 
   private configureRoutes(): void {
+    if (this.#authMiddleware) {
+      this.#authMiddleware.configureAuthRoutes(this.#app);
+    }
+
     this.#routeManager.addRoutes(defaultRoutes);
 
     if (this.#idaeApiOptions.routes) {
@@ -156,10 +165,6 @@ class IdaeApi {
     }
 
     this.#routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
-
-    if (this.#authMiddleware) {
-      this.#authMiddleware.configureAuthRoutes(this.#app);
-    }
   }
 
   // Add a route to Express
@@ -182,8 +187,17 @@ class IdaeApi {
   private configureErrorHandling(): void {
     this.#app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
-        console.error(err.stack);
-        res.status(500).json({ error: err.message });
+        const status = (err as any)?.status && Number.isInteger((err as any).status)
+          ? (err as any).status
+          : 500;
+        const isServerError = status >= 500;
+        const message = isServerError ? "Internal Server Error" : err.message;
+
+        if (isServerError) {
+          console.error(err.stack ?? err.message);
+        }
+
+        res.status(status).json({ error: message });
       },
     );
   }
@@ -199,7 +213,7 @@ class IdaeApi {
       this.configureIdaeApi();
     }
 
-    const port = this.#idaeApiOptions.port || 3000;
+    const port = this.#idaeApiOptions.port ?? 3000;
     this.#serverInstance = this.#app.listen(port, () => {
       console.log(`Server is running on port: ${port}`);
       this.#state = "running";
@@ -257,16 +271,8 @@ class IdaeApi {
         const connectedCollection = req.connectedCollection;
 
         if (!connectedCollection) {
-          throw new Error("Database connection not established");
+          throw new HttpError(500, "Database connection not established");
         }
-
-        console.log("----------------------------------------------");
-        console.log("body", req.body);
-        console.log("params", req.params);
-        console.log("query", req.query);
-        console.log("dbName", req.dbName);
-
-        // const result = await action(databaseService, req.params, req.body);
         const result = await action(
           connectedCollection,
           req.params,
@@ -276,6 +282,9 @@ class IdaeApi {
 
         res.json(result);
       } catch (error) {
+        if (!(error as any)?.status) {
+          (error as any).status = 500;
+        }
         next(error);
       }
     };
