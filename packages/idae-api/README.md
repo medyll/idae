@@ -48,6 +48,7 @@ npm install @medyll/idae-api --next # for the next version (if available)
 
 ---
 
+
 ## Main Features
 
 - Multi-database management (MongoDB, MySQL, etc.)
@@ -57,6 +58,12 @@ npm install @medyll/idae-api --next # for the next version (if available)
 - Hooks/events on all CRUD operations
 - Complete TypeScript client for API consumption
 - Inherits all advanced methods from [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db)
+
+### Advanced (2026):
+- **OpenAPI auto-generation & docs**: `/openapi.json` (spec), `/docs` (Swagger UI), `/redoc` (Redoc)
+- **RBAC/ABAC**: Per-route authorization via JWT roles/scopes (see `authorization` in route definitions)
+- **Strict multi-tenancy**: Tenant context required for all requests (from JWT, e.g. `tenantId` claim)
+- **Security/validation**: CORS, helmet, rate limiting, payload limits, Zod validation, DB guardrails, health endpoints
 
 ---
 
