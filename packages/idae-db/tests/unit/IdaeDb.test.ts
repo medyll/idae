@@ -88,12 +88,13 @@ describe('IdaeDb - Singleton Pattern', () => {
 
 	describe('options property', () => {
 		it('should return the database options', () => {
-			const options = {
+				const options = {
 				dbType: DbType.MONGODB,
 				dbScope: 'testscope'
 			};
 
-			const db = IdaeDb.init(TEST_URI, options);
+				const uniqueUri = 'mongodb://localhost:27017/test_options';
+				const db = IdaeDb.init(uniqueUri, options);
 			expect(db.options.dbType).toBe(DbType.MONGODB);
 			expect(db.options.dbScope).toBe('testscope');
 		});
@@ -350,7 +351,8 @@ describe('IdaeDb - Singleton Pattern', () => {
 				dbScopeSeparator: '__'
 			};
 
-			const db = IdaeDb.init(TEST_URI, options);
+				const uniqueUri = 'mongodb://localhost:27017/test_custom_defaults';
+				const db = IdaeDb.init(uniqueUri, options);
 
 			expect(db.options.dbScope).toBe('custom');
 			expect(db.options.dbScopeSeparator).toBe('__');
@@ -359,9 +361,10 @@ describe('IdaeDb - Singleton Pattern', () => {
 
 		it('should preserve options across multiple init calls with same URI', () => {
 			const options1 = { dbScope: 'scope1' };
-			const db1 = IdaeDb.init(TEST_URI, options1);
+				const preserveUri = 'mongodb://localhost:27017/test_preserve';
+				const db1 = IdaeDb.init(preserveUri, options1);
 			const options2 = { dbScope: 'scope2' };
-			const db2 = IdaeDb.init(TEST_URI, options2);
+				const db2 = IdaeDb.init(preserveUri, options2);
 
 			// Should return same instance with original options
 			expect(db1).toBe(db2);

@@ -25,6 +25,7 @@ interface IdaeApiOptions {
   jwtSecret?: string;
   tokenExpiration?: string;
   idaeDbOptions?: IdaeDbOptions;
+  useMemoryDb?: boolean;
 }
 
 class IdaeApi {
@@ -71,6 +72,8 @@ class IdaeApi {
 
   public setOptions(options: IdaeApiOptions): void {
     this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
+    this.#app.locals.idaeDbOptions = this.#idaeApiOptions.idaeDbOptions;
+    this.#app.locals.useMemoryDb = this.#idaeApiOptions.useMemoryDb;
   }
 
   private initializeAuth(): void {

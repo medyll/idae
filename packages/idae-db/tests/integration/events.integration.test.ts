@@ -269,7 +269,7 @@ describe('Event System Integration Tests', () => {
 			collection.on('post:find', () => eventLog.push('post:find'));
 
 			const created = await collection.create({ name: 'Test', email: 'test@test.com' });
-			const found = await collection.findOne({});
+			const foundList = await collection.find({});
 
 			expect(eventLog).toContain('pre:create');
 			expect(eventLog).toContain('post:create');

@@ -58,13 +58,15 @@ export class IdaeDBModel<T extends object> {
 		await idaeAuto.db(increment_name);
 		const incrementCollection = idaeAuto.collection(this._autoIncrementDbCollection as string);
 		// await incrementCollection.createIndex({ _id: 1 }, { unique: true });
+		// Use a stable string key per collection+field to track increments
+		const key = `${this._collectionName}:${this._fieldId}`;
 		await incrementCollection.updateWhere(
-			{ query: { _id: new ObjectId(this.fieldId) } },
+			{ query: { _id: key } },
 			{ $inc: { value: 1 } },
 			{ upsert: true }
 		);
 
-		const next = await incrementCollection.findOne({ query: { _id: new ObjectId(this.fieldId) } });
+		const next = await incrementCollection.findOne({ query: { _id: key } });
 		return next?.value;
 	}
 }

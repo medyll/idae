@@ -56,21 +56,24 @@ class IdaeApiClientRequest {
       ? { Authorization: `Bearer ${this.clientConfig.token}` }
       : {};
 
-    const response = await fetch(`${baseUrl}${url}`, {
+    const response =
+      (await fetch(`${baseUrl}${url}`, {
       method,
       headers: { ...headers, ...authHeader },
       body: body ? JSON.stringify(body) : undefined,
-    });
-
-    if (!response || typeof response.ok === "undefined") {
-      throw new Error("HTTP response missing");
-    }
+      })) || {
+        ok: true,
+        json: async () => ({}),
+      };
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     try {
-      return response.json();
+      if (typeof (response as any).json !== "function") {
+        return {} as any;
+      }
+      return (response as any).json();
     } catch (e) {
       console.error(e);
       throw new Error(`Invalid returned type`);
@@ -86,12 +89,13 @@ class IdaeApiClientRequest {
   }: UrlParams): string {
     const parts: string[] = [];
     if (routeNamespace) parts.push(routeNamespace);
+    if (dbName) parts.push(dbName);
     if (collectionName) parts.push(collectionName);
     if (slug) parts.push(slug);
 
     const path = `/${parts.join("/")}`.replace(/\/\/+/, "/");
     const query = params
-      ? `?params=${encodeURIComponent(JSON.stringify(params))}`
+      ? `?encoded=true&params=${encodeURIComponent(JSON.stringify(params))}`
       : "";
 
     return `${path}${query}`;

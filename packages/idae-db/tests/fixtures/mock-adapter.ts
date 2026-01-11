@@ -41,7 +41,18 @@ export class MockAdapter<T extends object = any> implements IdaeDbAdapterInterfa
 	}
 
 	async find(params: IdaeDbParams<T>): Promise<T[]> {
-		const results = Array.from(this.data.values());
+		let results = Array.from(this.data.values());
+
+		// Basic equality filter on top-level fields when params.query is provided
+		if (params && params.query && typeof params.query === 'object') {
+			const query = params.query as Record<string, unknown>;
+			results = results.filter((doc: any) => {
+				for (const [key, value] of Object.entries(query)) {
+					if (doc[key] !== value) return false;
+				}
+				return true;
+			});
+		}
 
 		// Apply limit and skip if provided
 		let filtered = results;

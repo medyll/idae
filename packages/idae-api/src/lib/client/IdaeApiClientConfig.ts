@@ -32,7 +32,12 @@ export class IdaeApiClientConfigCore {
 	}
 
 	public setOptions(options: Partial<IdaeApiClientConfigCoreOptions> | undefined = {}): void {
-		this.options = { ...this.options, ...options };
+		const normalized: Partial<IdaeApiClientConfigCoreOptions> = { ...options } as any;
+		if ((options as any)?.protocol) {
+			normalized.method = (options as any).protocol;
+		}
+
+		this.options = { ...this.options, ...normalized };
 
 		this._baseUrl = this.forgeBaseUrl();
 	}

@@ -293,7 +293,6 @@ describe('IdaeEventEmitter', () => {
 		});
 
 		it('should handle error events with custom error handling', () => {
-			const service = new TestService();
 			const errors: Error[] = [];
 
 			// Add a simple TestService class for this test

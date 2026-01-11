@@ -85,12 +85,13 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 
 	async create(data: Partial<T>): Promise<T> {
 		const id = await this.model.getNextIncrement();
-		const result = await this.model.collection.findOneAndUpdate(
+		await this.model.collection.updateOne(
 			{ [this.fieldId]: id } as Filter<T>,
 			{ $set: { ...data, [this.fieldId]: id } },
-			{ upsert: true, returnDocument: 'after' }
+			{ upsert: true }
 		);
-		return result?.value as T;
+		const result = await this.model.collection.findOne({ [this.fieldId]: id } as Filter<T>);
+		return result as T;
 	}
 
 	async update(id: string, updateData: Partial<T>, options?: UpdateOptions) {

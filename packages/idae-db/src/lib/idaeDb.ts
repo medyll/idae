@@ -65,6 +65,22 @@ export class IdaeDb {
 
 		if (!IdaeDb.#instances.has(instanceKey)) {
 			IdaeDb.#instances.set(instanceKey, new IdaeDb(uri, options));
+		} else if (options) {
+			// Merge only missing options into existing instance (do not override already set values)
+			const existing = IdaeDb.#instances.get(instanceKey)!;
+			const merged: Partial<IdaeDbOptions> = { ...options };
+			// Apply keys where current value is undefined
+			for (const key of Object.keys(merged) as (keyof IdaeDbOptions)[]) {
+				// @ts-expect-error index access on private field within class scope
+				if (existing.#options[key] === undefined && merged[key] !== undefined) {
+					// @ts-expect-error index access on private field within class scope
+					existing.#options[key] = merged[key] as any;
+				}
+			}
+			// If dbEvents were provided, register them
+			if (merged.dbEvents) {
+				existing.registerEvents(merged.dbEvents as EventListeners<object>);
+			}
 		}
 		return IdaeDb.#instances.get(instanceKey)!;
 	}
@@ -148,6 +164,7 @@ export class IdaeDb {
 		if (this.#connection) {
 			await this.#connection.close();
 			this.#connections.delete(this.connectionKey);
+			this.#connection = undefined;
 		}
 	}
 
@@ -160,6 +177,7 @@ export class IdaeDb {
 			await connection.close();
 		}
 		this.#connections.clear();
+		this.#connection = undefined;
 	}
 
 	/**

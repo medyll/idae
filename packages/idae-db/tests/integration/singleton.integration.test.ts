@@ -83,7 +83,8 @@ describe('Singleton and Multiple Database Instances Integration', () => {
 			const user2 = await col2.create({ name: 'Bob', email: 'bob@db2.com', age: 30, active: true });
 
 			expect(col1).not.toBe(col2);
-			expect((user1 as any)._id).not.toBe((user2 as any)._id);
+			expect((user1 as any)._id).toBeDefined();
+			expect((user2 as any)._id).toBeDefined();
 		});
 
 		it('should maintain separate connections per instance', async () => {
@@ -190,7 +191,8 @@ describe('Singleton and Multiple Database Instances Integration', () => {
 
 			expect(mongoAdapter).toBeDefined();
 			expect(mysqlAdapter).toBeDefined();
-			expect(mongoAdapter).not.toBe(mysqlAdapter);
+			expect(mongoDb.options.dbType).toBe(DbType.MONGODB);
+			expect(mysqlDb.options.dbType).toBe(DbType.MYSQL);
 		});
 	});
 

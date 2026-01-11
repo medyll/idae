@@ -445,7 +445,7 @@ describe('IdaeDbAdapter - Facade Pattern', () => {
 
 				await adapter.createIndex('email');
 
-				expect(preListener).toHaveBeenCalledWith('email', undefined);
+				expect(preListener).toHaveBeenCalledWith('email');
 			});
 
 			it('should emit post:createIndex event', async () => {
