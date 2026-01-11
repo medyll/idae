@@ -1,28 +1,33 @@
 <!-- CollectionList.svelte - Version initiale adaptée selon README.md -->
 <script lang="ts">
 	/**
-	 * Composant CollectionList
-	 * Props : collection (nom de la collection à afficher), displayMode, where
+	 * Composant CollectionList (Svelte 5)
+	 * Props : collection, displayMode, where
 	 * TODO : intégrer la logique de filtrage, affichage grid/list, gestion des clics
 	 */
-	export let collection: string;
-	export let displayMode: 'grid' | 'list' = 'grid';
-	export let where: any = {};
-	// Placeholder pour les données, à remplacer par la logique réelle
-	let items: any[] = [];
+	let {
+		collection,
+		displayMode = 'grid',
+		where = {},
+		items = []
+	}: {
+		collection: string,
+		displayMode?: 'grid' | 'list',
+		where?: any,
+		items?: any[]
+	} = $props();
 </script>
 
 <div class="collection-list" data-mode={displayMode}>
 	<h2>{collection} ({displayMode})</h2>
 	<div class={displayMode === 'grid' ? 'grid' : 'list'}>
 		{#each items as item, idx}
-			<div class="item" on:click={() => dispatch('click', { data: item, idx })}>
+			<div class="item" onclick={() => dispatch('click', { data: item, idx })}>
 				{item.name || `Item ${idx+1}`}
 			</div>
-		{/each}
-		{#if items.length === 0}
+		{:else}
 			<p>No items to display.</p>
-		{/if}
+		{/each}
 	</div>
 </div>
 
