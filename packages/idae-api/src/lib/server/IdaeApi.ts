@@ -6,13 +6,17 @@ import express, {
   type Response,
   type NextFunction,
 } from "express";
+import compression from "compression";
+import cors, { type CorsOptions } from "cors";
 import { idaeDbMiddleware } from "$lib/server/middleware/databaseMiddleware.js";
 import {
   type RouteDefinition,
   routes as defaultRoutes,
 } from "$lib/config/routeDefinitions.js";
 import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
+import helmet from "helmet";
 import { RouteManager } from "$lib/server/engine/routeManager.js";
+import rateLimit, { type RateLimitOptions } from "express-rate-limit";
 import type { Server } from "http";
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 import qs from "qs";
@@ -26,6 +30,11 @@ interface IdaeApiOptions {
   tokenExpiration?: string;
   idaeDbOptions?: IdaeDbOptions;
   useMemoryDb?: boolean;
+  cors?: boolean | CorsOptions;
+  rateLimit?: false | RateLimitOptions;
+  payloadLimit?: string;
+  enableCompression?: boolean;
+  trustProxy?: boolean | number | string;
 }
 
 class IdaeApi {
@@ -100,11 +109,42 @@ class IdaeApi {
   }
 
   private configureMiddleware(): void {
+    const jsonLimit = this.#idaeApiOptions.payloadLimit ?? "1mb";
+    const urlEncodedLimit = this.#idaeApiOptions.payloadLimit ?? "1mb";
+
+    if (this.#idaeApiOptions.trustProxy) {
+      this.#app.set("trust proxy", this.#idaeApiOptions.trustProxy);
+    }
+
+    if (this.#idaeApiOptions.enableCompression !== false) {
+      this.#app.use(compression());
+    }
+
+    if (this.#idaeApiOptions.cors !== false) {
+      const corsOptions =
+        this.#idaeApiOptions.cors === true || this.#idaeApiOptions.cors === undefined
+          ? {}
+          : this.#idaeApiOptions.cors;
+      this.#app.use(cors(corsOptions as CorsOptions));
+    }
+
+    this.#app.use(helmet());
+
+    if (this.#idaeApiOptions.rateLimit !== false) {
+      const limiterOptions: RateLimitOptions = this.#idaeApiOptions.rateLimit ?? {
+        windowMs: 60_000,
+        max: 100,
+        standardHeaders: "draft-7",
+        legacyHeaders: false,
+      };
+      this.#app.use(rateLimit(limiterOptions));
+    }
+
     if (this.#authMiddleware) {
       this.#app.use(this.#authMiddleware.createMiddleware() as express.RequestHandler);
     }
-    this.#app.use(express.json());
-    this.#app.use(express.urlencoded({ extended: true }));
+    this.#app.use(express.json({ limit: jsonLimit }));
+    this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
     this.#app.use("/:collectionName", idaeDbMiddleware);
   }
 
