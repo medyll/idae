@@ -13,12 +13,12 @@
 		inPlaceEdit = false,
 		showFks = false
 	}: {
-		collection: string,
-		mode?: 'create' | 'update' | 'show',
-		dataId?: number | null,
-		showFields?: string[],
-		inPlaceEdit?: boolean,
-		showFks?: boolean
+		collection: string;
+		mode?: 'create' | 'update' | 'show';
+		dataId?: number | null;
+		showFields?: string[];
+		inPlaceEdit?: boolean;
+		showFks?: boolean;
 	} = $props();
 
 	import { schemeModelDb } from './dbSchema';
@@ -31,8 +31,21 @@
 		const schema = schemeModelDb[collection]?.fields || {};
 		for (const field of showFields) {
 			const rule = schema[field];
-			if (rule?.required && !formData[field]) {
+			const value = formData[field];
+			if (rule?.required && (value === undefined || value === null || value === '')) {
 				errors[field] = 'This field is required.';
+			} else if (rule?.type === 'number' && value !== undefined && value !== null && value !== '') {
+				if (isNaN(Number(value))) {
+					errors[field] = 'Must be a number.';
+				}
+			} else if (rule?.type === 'email' && value) {
+				if (!/^\S+@\S+\.\S+$/.test(value)) {
+					errors[field] = 'Invalid email address.';
+				}
+			} else if (rule?.type === 'boolean' && value !== undefined && value !== null && value !== '') {
+				if (!(value === true || value === false || value === 'true' || value === 'false' || value === 1 || value === 0)) {
+					errors[field] = 'Must be true or false.';
+				}
 			}
 		}
 		return Object.keys(errors).length === 0;
@@ -49,11 +62,16 @@
 
 <div class="create-update">
 	<h2>{collection} - {mode}</h2>
-	<form on:submit={handleSubmit} autocomplete="off">
+	<form onsubmit={handleSubmit} autocomplete="off">
 		{#each showFields as field}
 			<div class="field">
 				<label for={field + '-input'}>{field}</label>
-				<input id={field + '-input'} type="text" bind:value={formData[field]} readonly={mode === 'show'} />
+				<input
+					id={field + '-input'}
+					type="text"
+					bind:value={formData[field]}
+					readonly={mode === 'show'}
+				/>
 				{#if errors[field]}
 					<span class="error">{errors[field]}</span>
 				{/if}
@@ -84,7 +102,7 @@
 		margin-bottom: 0.25rem;
 		font-weight: bold;
 	}
-	input[type="text"] {
+	input[type='text'] {
 		width: 100%;
 		padding: 0.5rem;
 		border-radius: 4px;
@@ -105,9 +123,9 @@
 		padding: 1rem;
 		border-radius: 6px;
 	}
+	.error {
+		color: #c00;
+		font-size: 0.9em;
+		margin-left: 0.5rem;
+	}
 </style>
-.error {
-	color: #c00;
-	font-size: 0.9em;
-	margin-left: 0.5rem;
-}
