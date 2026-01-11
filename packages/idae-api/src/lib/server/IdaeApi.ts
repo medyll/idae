@@ -36,6 +36,7 @@ class IdaeApi {
   #serverInstance!: Server;
   #state: "stopped" | "running" = "stopped";
   #authMiddleware: AuthMiddleWare | null = null;
+  #configured = false;
 
   private constructor() {
     this.#app = express();
@@ -50,9 +51,6 @@ class IdaeApi {
         parameterLimit: 1000,
       });
     });
-
-    this.initializeAuth();
-    this.configureIdaeApi();
   }
 
   public static getInstance(): IdaeApi {
@@ -71,9 +69,14 @@ class IdaeApi {
   }
 
   public setOptions(options: IdaeApiOptions): void {
+    if (this.#state === "running") {
+      throw new Error("Cannot change options while server is running");
+    }
     this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
     this.#app.locals.idaeDbOptions = this.#idaeApiOptions.idaeDbOptions;
     this.#app.locals.useMemoryDb = this.#idaeApiOptions.useMemoryDb;
+    this.initializeAuth();
+    this.#configured = false;
   }
 
   private initializeAuth(): void {
@@ -93,15 +96,16 @@ class IdaeApi {
     this.configureMiddleware();
     this.configureRoutes();
     this.configureErrorHandling();
+    this.#configured = true;
   }
 
   private configureMiddleware(): void {
-    this.#app.use("/:collectionName", idaeDbMiddleware);
-    this.#app.use(express.json());
-    this.#app.use(express.urlencoded({ extended: true }));
     if (this.#authMiddleware) {
       this.#app.use(this.#authMiddleware.createMiddleware() as express.RequestHandler);
     }
+    this.#app.use(express.json());
+    this.#app.use(express.urlencoded({ extended: true }));
+    this.#app.use("/:collectionName", idaeDbMiddleware);
   }
 
   private configureRoutes(): void {
@@ -148,6 +152,11 @@ class IdaeApi {
     if (this.#state === "running") {
       console.log("Server is already running.");
       return;
+    }
+
+    if (!this.#configured) {
+      this.initializeAuth();
+      this.configureIdaeApi();
     }
 
     const port = this.#idaeApiOptions.port || 3000;
