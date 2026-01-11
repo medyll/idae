@@ -29,7 +29,7 @@ class IdaeApiClientRequest {
   }
 
   async doRequest<T>({
-    baseUrl = this.baseUrl,
+    baseUrl = `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`,
     method = "GET",
     body,
     headers = {

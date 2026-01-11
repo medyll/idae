@@ -10,6 +10,7 @@ import { IdaeApiClientRequest } from "./IdaeApiClientRequest.js";
 type IdaeApiClientRequestParams<T = any> = Record<string, T>;
 
 class IdaeApiClient {
+  private static instance: IdaeApiClient | null = null;
   private clientConfig: IdaeApiClientConfigCore;
   private _request: IdaeApiClientRequest;
 
@@ -21,8 +22,23 @@ class IdaeApiClient {
     this._request = new IdaeApiClientRequest(this.clientConfig);
   }
 
+  public static getInstance(
+    clientConfig?: IdaeApiClientConfigCoreOptions & { baseUrl?: string },
+  ): IdaeApiClient {
+    if (!IdaeApiClient.instance) {
+      IdaeApiClient.instance = new IdaeApiClient(clientConfig);
+    } else if (clientConfig) {
+      IdaeApiClientConfig.setOptions(clientConfig);
+    }
+    return IdaeApiClient.instance;
+  }
+
   get request() {
     return this._request;
+  }
+
+  public setOptions(options?: IdaeApiClientConfigCoreOptions & { baseUrl?: string }): void {
+    this.clientConfig.setOptions(options);
   }
 
   async getDbList(): Promise<Response> {
@@ -39,7 +55,12 @@ class IdaeApiClient {
   db(dbName: string) {
     return {
       collection: (collectionName: string) =>
-        new IdaeApiClientCollection(this.clientConfig, dbName, collectionName),
+        new IdaeApiClientCollection(
+          this.clientConfig,
+          this._request,
+          dbName,
+          collectionName,
+        ),
       getCollections: () => this.getCollections(dbName),
     };
   }
@@ -48,6 +69,7 @@ class IdaeApiClient {
     dbName = dbName || this.clientConfig.defaultDb;
     return new IdaeApiClientCollection(
       this.clientConfig,
+      this._request,
       dbName,
       collectionName,
     );

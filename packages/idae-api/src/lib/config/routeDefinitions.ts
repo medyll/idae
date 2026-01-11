@@ -61,7 +61,7 @@ export const routes: RouteDefinition[] = [
       "deleteWhere",
       "transaction",
     ], // default method is then GET or OPTIONS (set further)
-    path: "/query/:collectionName/:command/:parameters?",
+    path: "/query/:collectionName/:command/:parameters",
     handler: async (service, params, body) => {
       console.log(params.command, "params --- ", { body });
       return (service as any)?.[params.command]?.({ query: body });
@@ -69,7 +69,7 @@ export const routes: RouteDefinition[] = [
   },
   {
     method: ["dbs", "collections"], // default method is then GET or OPTIONS (set further)
-    path: "/methods/:methodName/:params?",
+    path: "/methods/:methodName/:params",
     handler: async (service, params) => {},
   },
 ];

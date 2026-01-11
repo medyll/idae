@@ -39,31 +39,19 @@ class RequestDatabaseManager {
     collectionName: string;
     dbUri: string;
   } {
-    const collectionName = req.params.collectionName || "default";
+    const rawCollectionName = req.params?.collectionName ?? "default";
 
-    const dbName = getDbNameFromCollectionName(
-      collectionName,
-      this.config.defaultDbName,
-    );
-    const collectionNames =
-      collectionName.split(".")?.[1] ?? collectionName.split(".")?.[0];
+    const [dbPart, ...rest] = rawCollectionName.split(".");
+    const dbName = rest.length > 0 ? dbPart || this.config.defaultDbName : this.config.defaultDbName;
+    const collectionName = rest.length > 0 ? rest.join(".") || "default" : rawCollectionName || "default";
 
     const dbUri = `${this.config.connectionPrefix}${this.config.host}:${this.config.port}/${dbName}`;
 
     return {
       dbName,
-      collectionName: collectionNames,
+      collectionName,
       dbUri,
     };
-
-    function getDbNameFromCollectionName(
-      collectionName: string,
-      defaultDbName: string,
-    ): string {
-      return collectionName.includes(".")
-        ? collectionName.split(".")[0]
-        : defaultDbName;
-    }
   }
 
   public async closeAllConnections(): Promise<void> {}
@@ -71,4 +59,4 @@ class RequestDatabaseManager {
 
 const requestDatabaseManager = RequestDatabaseManager.getInstance();
 export default requestDatabaseManager;
-export { RequestDatabaseManager as DatabaseManager, requestDatabaseManager };
+export { RequestDatabaseManager, RequestDatabaseManager as DatabaseManager, requestDatabaseManager };
