@@ -152,6 +152,10 @@ class IdaeApi {
     this.#app.use(express.json({ limit: jsonLimit }));
     this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
     this.#app.use("/:collectionName", idaeDbMiddleware);
+    
+    // Inject tenant context middleware globally after auth (for strict multi-tenancy)
+    const { tenantContextMiddleware } = require("./middleware/tenantContextMiddleware.js");
+    this.#app.use(tenantContextMiddleware({ required: true }));
   }
 
   private configureRoutes(): void {
