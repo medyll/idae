@@ -2,15 +2,15 @@
 <script lang="ts">
 	import { CrudService } from './CrudService.ts';
 	/**
-	 * Composant principal CRUD Zone
-	 * Props : collection (nom de la collection à gérer)
-	 * Intègre la logique CRUD via CrudService
+	 * Composant principal CRUD Zone (Svelte 5)
+	 * Props : collection (nom de la collection à gérer), crud (service)
 	 */
 	export let collection: string;
 	export let crud: CrudService = new CrudService();
 	let items: any[] = [];
 	let selected: any = null;
 
+	// Svelte 5 idiom: reactive to prop changes
 	$: items = crud.list(collection);
 
 	function handleSelect(item: any) {
