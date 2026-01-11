@@ -15,7 +15,7 @@ export default defineConfig({
 					name: 'client',
 					environment: 'jsdom',
 					clearMocks: true,
-					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+					   include: ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/_work/*.spec.ts'],
 					exclude: ['src/lib/server/**'],
 					setupFiles: ['./vitest-setup-client.ts']
 				}
