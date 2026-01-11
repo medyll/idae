@@ -1,18 +1,27 @@
 <!-- CreateUpdate.svelte - Initial version based on README.md -->
 <script lang="ts">
 	/**
-	 * CreateUpdate component
+	 * CreateUpdate component (Svelte 5)
 	 * Props: collection, mode, dataId, showFields, inPlaceEdit, showFks
 	 * TODO: implement form logic, field rendering, FK support
 	 */
-	export let collection: string;
-	export let mode: 'create' | 'update' | 'show' = 'create';
-	export let dataId: number | null = null;
-	export let showFields: string[] = [];
-	export let inPlaceEdit: boolean = false;
-	export let showFks: boolean = false;
-	// Placeholder for form data
-	let formData: any = {};
+	let {
+		collection,
+		mode = 'create',
+		dataId = null,
+		showFields = [],
+		inPlaceEdit = false,
+		showFks = false
+	}: {
+		collection: string,
+		mode?: 'create' | 'update' | 'show',
+		dataId?: number | null,
+		showFields?: string[],
+		inPlaceEdit?: boolean,
+		showFks?: boolean
+	} = $props();
+
+	let formData = $state<any>({});
 </script>
 
 <div class="create-update">
