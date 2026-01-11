@@ -94,8 +94,23 @@ export const idaeDbMiddleware = async (
     if (req.query.params) {
       try {
         const raw = req.query.params;
-        const decoded = typeof raw === "string" ? decodeURIComponent(raw) : raw;
-        req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
+        let decoded = raw;
+        if (typeof raw === "string") {
+          try {
+            decoded = decodeURIComponent(raw);
+          } catch (err) {
+            // If decodeURIComponent fails, log and skip parsing
+            console.error("Failed to decode URI component in query.params:", err);
+            return next();
+          }
+        }
+        try {
+          req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
+        } catch (err) {
+          // If JSON.parse fails, log and skip parsing
+          console.error("Failed to parse JSON in query.params:", err);
+          return next();
+        }
       } catch (error) {
         console.error(error);
       }

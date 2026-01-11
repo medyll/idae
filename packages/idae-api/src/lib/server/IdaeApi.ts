@@ -1,3 +1,7 @@
+import { createValidationMiddleware } from "./middleware/validationMiddleware";
+import { openApiJsonHandler } from "./middleware/openApiMiddleware";
+import { swaggerUiHandler, redocHandler } from "./middleware/docsMiddleware";
+import { tenantContextMiddleware } from "./middleware/tenantContextMiddleware";
 // packages\idae-api\src\lib\server\IdaeApi.ts
 import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
@@ -154,7 +158,6 @@ class IdaeApi {
     this.#app.use("/:collectionName", idaeDbMiddleware);
     
     // Inject tenant context middleware globally after auth (for strict multi-tenancy)
-    const { tenantContextMiddleware } = require("./middleware/tenantContextMiddleware.js");
     this.#app.use(tenantContextMiddleware({ required: true }));
   }
 
@@ -163,8 +166,6 @@ class IdaeApi {
     this.#app.get("/health", healthHandler);
     this.#app.get("/ready", readinessHandler);
     // OpenAPI and docs endpoints (always unprotected)
-    const { openApiJsonHandler } = require("./middleware/openApiMiddleware.js");
-    const { swaggerUiHandler, redocHandler } = require("./middleware/docsMiddleware.js");
     this.#app.get("/openapi.json", openApiJsonHandler);
     this.#app.get("/docs", swaggerUiHandler);
     this.#app.get("/redoc", redocHandler);
@@ -187,8 +188,6 @@ class IdaeApi {
 
     // Add validation middleware if present
     if (route.validation) {
-      // Use relative path for require to avoid alias issues in Node
-      const { createValidationMiddleware } = require("./middleware/validationMiddleware.js");
       handlers.push(createValidationMiddleware(route.validation));
     }
 
