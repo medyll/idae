@@ -5,6 +5,7 @@ export interface IdaeApiClientConfigCoreOptions {
 	method: 'http' | 'https';
 	defaultDb: string;
 	separator: string;
+	token?: string;
 }
 
 export class IdaeApiClientConfigCore {
@@ -15,7 +16,8 @@ export class IdaeApiClientConfigCore {
 		port: 3000,
 		method: 'https',
 		defaultDb: 'idaenext_sitebase_app',
-		separator: '//'
+		separator: '//',
+		token: undefined,
 	};
 
 	private _baseUrl!: string;
@@ -56,6 +58,10 @@ export class IdaeApiClientConfigCore {
 
 	get separator(): string {
 		return this.options.separator;
+	}
+
+	get token(): string | undefined {
+		return this.options.token;
 	}
 
 	get defaultDb(): string {

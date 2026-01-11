@@ -57,9 +57,9 @@ class IdaeApiClient {
       collection: (collectionName: string) =>
         new IdaeApiClientCollection(
           this.clientConfig,
-          this._request,
           dbName,
           collectionName,
+          this._request,
         ),
       getCollections: () => this.getCollections(dbName),
     };
@@ -69,9 +69,9 @@ class IdaeApiClient {
     dbName = dbName || this.clientConfig.defaultDb;
     return new IdaeApiClientCollection(
       this.clientConfig,
-      this._request,
       dbName,
       collectionName,
+      this._request,
     );
   }
 }

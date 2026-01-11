@@ -1,6 +1,6 @@
 // packages\idae-api\src\lib\client\IdaeApiClientCollection.ts
 import type { IdaeApiClientRequestParams } from "./IdaeApiClient.js";
-import type { IdaeApiClientConfigCoreOptions } from "./IdaeApiClientConfig.js";
+import type { IdaeApiClientConfigCore } from "./IdaeApiClientConfig.js";
 import { IdaeApiClientRequest } from "./IdaeApiClientRequest.js";
 
 import type { IdaeDbApiMethods } from "@medyll/idae-db";
@@ -10,12 +10,12 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
   private requestClient: IdaeApiClientRequest;
 
   constructor(
-    clientConfig: IdaeApiClientConfigCoreOptions,
-    requestClient: IdaeApiClientRequest | undefined,
+    clientConfig: IdaeApiClientConfigCore,
     dbName: string,
     collectionName: string,
+    requestClient?: IdaeApiClientRequest,
   ) {
-    this.requestClient = requestClient || new IdaeApiClientRequest(clientConfig);
+    this.requestClient = requestClient ?? new IdaeApiClientRequest(clientConfig);
 
     this.meta = {
       dbName,
