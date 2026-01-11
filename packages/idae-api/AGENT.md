@@ -115,6 +115,7 @@ const users = await client.db('app').collection('user').findAll();
 - If exposing MCP capabilities, mount them here (Express layer). Keep `idae-db` pure (no server).
 
 ## Troubleshooting quick checklist
+- MCP: 403/401 — check tenant context, RBAC config, and that enableMcp is true. 404 — ensure MCP routes are mounted after core middleware.
 - 401/403: check `enableAuth`, JWT secret, and tenant context.
 - 403: check RBAC/ABAC route config and user claims.
 - 500 on DB: ensure `IdaeDb` initialized with correct `DbType` and URI.
