@@ -52,15 +52,18 @@ export const idaeDbMiddleware = async (
   next: NextFunction,
 ) => {
   try {
-    const { dbName, collectionName, dbUri } =
-      requestDatabaseManager.fromReq(req);
+    const { dbName, collectionName, dbUri } = requestDatabaseManager.fromReq(req);
+
+    // Guard: block dangerous DB/collection names
+    const forbidden = ["admin", "system", "local", "config", "test", "__proto__", "constructor", "prototype"];
+    if (forbidden.includes(dbName) || forbidden.includes(collectionName)) {
+      return res.status(403).json({ error: "Forbidden database or collection name" });
+    }
 
     req.collectionName = collectionName;
     req.dbName = dbName;
 
-    const useMemoryDb =
-      req.app?.locals?.useMemoryDb === true ||
-      process.env.IDAE_USE_MEMORY_DB === "true";
+    const useMemoryDb = req.app?.locals?.useMemoryDb === true || process.env.IDAE_USE_MEMORY_DB === "true";
 
     if (useMemoryDb) {
       const adapter = getInMemoryAdapter(dbName, collectionName);
@@ -77,18 +80,17 @@ export const idaeDbMiddleware = async (
           console.error(error);
         }
       }
-      next();
-      return;
+      return next();
     }
 
     const dbOptions = req.app?.locals?.idaeDbOptions ?? {};
     req.idaeDb = IdaeDb.init(dbUri, dbOptions);
 
+    // TODO: Pooling/caching could be added here
     await req.idaeDb.db("app");
 
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
 
-    console.log("Connected to collection", collectionName);
     if (req.query.params) {
       try {
         const raw = req.query.params;

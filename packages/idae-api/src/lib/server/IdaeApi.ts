@@ -20,6 +20,7 @@ import rateLimit, { type RateLimitOptions } from "express-rate-limit";
 import type { Server } from "http";
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 import qs from "qs";
+import { healthHandler, readinessHandler } from "./middleware/healthMiddleware.js";
 
 interface IdaeApiOptions {
   port?: number;
@@ -154,6 +155,9 @@ class IdaeApi {
   }
 
   private configureRoutes(): void {
+    // Health and readiness endpoints (always unprotected)
+    this.#app.get("/health", healthHandler);
+    this.#app.get("/ready", readinessHandler);
     if (this.#authMiddleware) {
       this.#authMiddleware.configureAuthRoutes(this.#app);
     }
