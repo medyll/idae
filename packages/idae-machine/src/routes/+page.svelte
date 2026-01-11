@@ -17,6 +17,29 @@ function handleSelectAgent(agent) {
 	selected = agent;
 	showForm = true;
 }
+let showCreate = $state(false);
+let confirmDelete = $state<{id:number,name:string}|null>(null);
+
+function handleAddAgent() {
+	showCreate = true;
+}
+
+function handleDeleteAgent(agent) {
+	confirmDelete = { id: agent.id, name: agent.name };
+}
+
+function confirmDeleteAgent() {
+	if (confirmDelete) {
+		crud.delete('agents', confirmDelete.id);
+		confirmDelete = null;
+		selected = null;
+		showForm = false;
+	}
+}
+
+function cancelDeleteAgent() {
+	confirmDelete = null;
+}
 </script>
 
 <h1>Demo: Svelte 5 CRUD Components</h1>
@@ -24,15 +47,26 @@ function handleSelectAgent(agent) {
 <section>
 	<CrudZone collection="agents" crud={crud} />
 </section>
+	<button on:click={handleAddAgent}>Ajouter un agent</button>
 
 <section>
 	<h2>CollectionList</h2>
 	<CollectionList collection="agents" items={crud.list('agents')} displayMode="grid" on:click={e => handleSelectAgent(e.detail.data)} />
 </section>
+	<ul>
+		{#each crud.list('agents') as agent}
+			<li>
+				{agent.name} ({agent.code})
+				<button on:click={() => handleSelectAgent(agent)}>Éditer</button>
+				<button on:click={() => handleDeleteAgent(agent)}>Supprimer</button>
+			</li>
+		{/each}
+	</ul>
+	{/if}
 
 {#if showForm}
 	<section>
-		<h2>Edit Agent</h2>
+		<h2>Éditer un agent</h2>
 		<CreateUpdate 
 			collection="agents" 
 			mode="update" 
@@ -40,9 +74,30 @@ function handleSelectAgent(agent) {
 			showFields={["name", "code"]} 
 			crud={crud}
 			on:update={e => { selected = crud.get('agents', selected.id); showForm = false; }}
-			on:create={e => { showForm = false; }}
 		/>
 		<h3>FieldValue Example</h3>
 		<FieldValue collection="agents" fieldName="name" data={selected} mode="show" />
+	</section>
+{/if}
+
+{#if showCreate}
+	<section>
+		<h2>Créer un agent</h2>
+		<CreateUpdate 
+			collection="agents" 
+			mode="create" 
+			showFields={["name", "code"]} 
+			crud={crud}
+			on:create={e => { showCreate = false; }}
+		/>
+	</section>
+{/if}
+
+{#if confirmDelete}
+	<section>
+		<h2>Confirmer la suppression</h2>
+		<p>Supprimer l'agent : <b>{confirmDelete.name}</b> ?</p>
+		<button on:click={confirmDeleteAgent}>Oui, supprimer</button>
+		<button on:click={cancelDeleteAgent}>Annuler</button>
 	</section>
 {/if}
