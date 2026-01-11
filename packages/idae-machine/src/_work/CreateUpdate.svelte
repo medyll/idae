@@ -11,7 +11,9 @@
 		dataId = null,
 		showFields = [],
 		inPlaceEdit = false,
-		showFks = false
+
+		showFks = false,
+		crud
 	}: {
 		collection: string;
 		mode?: 'create' | 'update' | 'show';
@@ -19,6 +21,7 @@
 		showFields?: string[];
 		inPlaceEdit?: boolean;
 		showFks?: boolean;
+		crud?: any;
 	} = $props();
 
 	import { schemeModelDb } from './dbSchema';
@@ -51,18 +54,26 @@
 		return Object.keys(errors).length === 0;
 	}
 
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	function handleSubmit(e: Event) {
 		e.preventDefault();
 		if (validate()) {
-			// TODO: call CRUD service to save
-			// Optionally emit event or update parent
+			if (crud && mode === 'update' && dataId != null) {
+				crud.update(collection, dataId, { ...formData });
+				dispatch('update', { id: dataId, data: { ...formData } });
+			} else if (crud && mode === 'create') {
+				const created = crud.create(collection, { ...formData });
+				dispatch('create', { data: created });
+			}
 		}
 	}
 </script>
 
 <div class="create-update">
 	<h2>{collection} - {mode}</h2>
-	<form onsubmit={handleSubmit} autocomplete="off">
+	<form on:submit={handleSubmit} autocomplete="off">
 		{#each showFields as field}
 			<div class="field">
 				<label for={field + '-input'}>{field}</label>

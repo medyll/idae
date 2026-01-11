@@ -33,7 +33,15 @@ function handleSelectAgent(agent) {
 {#if showForm}
 	<section>
 		<h2>Edit Agent</h2>
-		<CreateUpdate collection="agents" mode="update" dataId={selected.id} showFields={["name", "code"]} />
+		<CreateUpdate 
+			collection="agents" 
+			mode="update" 
+			dataId={selected.id} 
+			showFields={["name", "code"]} 
+			crud={crud}
+			on:update={e => { selected = crud.get('agents', selected.id); showForm = false; }}
+			on:create={e => { showForm = false; }}
+		/>
 		<h3>FieldValue Example</h3>
 		<FieldValue collection="agents" fieldName="name" data={selected} mode="show" />
 	</section>
