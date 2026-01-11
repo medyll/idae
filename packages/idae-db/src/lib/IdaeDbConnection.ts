@@ -120,6 +120,10 @@ export class IdaeDbConnection {
 		return this._idaeDb;
 	}
 
+	get uri() {
+		return this.#uri;
+	}
+
 	/**
 	 * Gets the full database name with scope.
 	 * @returns The full database name.
