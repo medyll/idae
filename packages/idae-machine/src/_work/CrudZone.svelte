@@ -1,14 +1,21 @@
 <!-- CrudZone.svelte - Version initiale adaptée selon README.md -->
 <script lang="ts">
+	import { CrudService } from './CrudService.ts';
 	/**
 	 * Composant principal CRUD Zone
 	 * Props : collection (nom de la collection à gérer)
-	 * TODO : intégrer la logique CRUD, gestion du schéma, affichage liste/détail
+	 * Intègre la logique CRUD via CrudService
 	 */
 	export let collection: string;
-	// Placeholder pour les données, à remplacer par la logique réelle
+	export let crud: CrudService = new CrudService();
 	let items: any[] = [];
 	let selected: any = null;
+
+	$: items = crud.list(collection);
+
+	function handleSelect(item: any) {
+		selected = item;
+	}
 </script>
 
 <div class="crud-zone">
@@ -17,10 +24,15 @@
 		<!-- Liste des items -->
 		<ul>
 			{#each items as item, idx}
-				<li on:click={() => selected = item}>
-					{item.name || `Item ${idx+1}`}
-				</li>
+				   <li>
+					   <button type="button" on:click={() => handleSelect(item)} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(item); }}>
+						   {item.name || `Item ${idx+1}`}
+					   </button>
+				   </li>
 			{/each}
+			{#if items.length === 0}
+				<li>No items found.</li>
+			{/if}
 		</ul>
 	</aside>
 	<main class="crud-detail">
