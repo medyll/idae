@@ -171,6 +171,13 @@ class IdaeApi {
   private addRouteToExpress(route: RouteDefinition): void {
     const handlers = [];
 
+    // Add validation middleware if present
+    if (route.validation) {
+      // Use relative path for require to avoid alias issues in Node
+      const { createValidationMiddleware } = require("./middleware/validationMiddleware.js");
+      handlers.push(createValidationMiddleware(route.validation));
+    }
+
     if (route.requiresAuth && this.#authMiddleware) {
       handlers.push(this.#authMiddleware.createMiddleware());
     }

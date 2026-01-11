@@ -1,6 +1,8 @@
 // packages\idae-api\src\lib\config\routeDefinitions.ts
 
 import type { IdaeDbAdapter } from "@medyll/idae-db";
+import { z } from "zod";
+import { createValidationMiddleware } from "$lib/server/middleware/validationMiddleware.js";
 
 type RouteHandler = (
   service: IdaeDbAdapter<object>,
@@ -15,6 +17,11 @@ export interface RouteDefinition {
   handler: RouteHandler;
   disabled?: boolean;
   requiresAuth?: boolean;
+  validation?: {
+    bodySchema?: z.ZodSchema<any>;
+    querySchema?: z.ZodSchema<any>;
+    paramsSchema?: z.ZodSchema<any>;
+  };
 }
 
 const allowedQueryCommands = new Set([
@@ -33,38 +40,67 @@ export const routes: RouteDefinition[] = [
   {
     method: "get",
     path: "/:collectionName",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1) }),
+      querySchema: z.record(z.any()).optional(),
+    },
     handler: async (service, params, body, query) => service.find({ query }),
   },
   {
     method: "get",
     path: "/:collectionName/:id",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1), id: z.string().min(1) }),
+    },
     handler: async (service, params) => service.findById(params.id as string),
   },
   {
     method: "post",
     path: "/:collectionName",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1) }),
+      bodySchema: z.record(z.any()),
+    },
     handler: async (service, params, body) => service.create(body),
   },
   {
     method: "put",
     path: "/:collectionName/:id",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1), id: z.string().min(1) }),
+      bodySchema: z.record(z.any()),
+    },
     handler: async (service, params, body) =>
       service.update(params.id as string, body),
   },
   {
     method: "delete",
     path: "/:collectionName/:id",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1), id: z.string().min(1) }),
+    },
     handler: async (service, params) => service.deleteById(params.id as string),
   },
   {
     method: "delete",
     path: "/:collectionName",
+    validation: {
+      paramsSchema: z.object({ collectionName: z.string().min(1) }),
+    },
     handler: async (service, params) => service.deleteWhere(params),
   },
   {
     method: "post",
     path: "/query/:collectionName/:command/:parameters",
     requiresAuth: true,
+    validation: {
+      paramsSchema: z.object({
+        collectionName: z.string().min(1),
+        command: z.string().min(1),
+        parameters: z.string().optional(),
+      }),
+      bodySchema: z.record(z.any()).optional(),
+    },
     handler: async (service, params, body) => {
       const command = params.command as string;
       if (!allowedQueryCommands.has(command)) {
@@ -88,6 +124,9 @@ export const routes: RouteDefinition[] = [
   {
     method: ["dbs", "collections"], // default method is then GET or OPTIONS (set further)
     path: "/methods/:methodName/:params",
+    validation: {
+      paramsSchema: z.object({ methodName: z.string().min(1), params: z.string().optional() }),
+    },
     handler: async (service, params) => {},
   },
 ];
