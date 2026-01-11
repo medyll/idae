@@ -1,7 +1,7 @@
 // packages\idae-api\src\lib\middleware\databaseMiddleware.ts
 
 import type { Request, Response, NextFunction } from "express";
-import { requestDatabaseManager } from "$lib/server/engine/requestDatabaseManager.js";
+import requestDatabaseManager from "$lib/server/engine/requestDatabaseManager.js";
 import { IdaeDb } from "@medyll/idae-db";
 import { idaeApi } from "../IdaeApi.js";
 
@@ -26,9 +26,9 @@ export const idaeDbMiddleware = async (
     console.log("Connected to collection", collectionName);
     if (req.query.params) {
       try {
-        req.query.params = JSON.parse(
-          decodeURIComponent(req.query.params as string),
-        );
+        const raw = req.query.params;
+        const decoded = typeof raw === "string" ? decodeURIComponent(raw) : raw;
+        req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
       } catch (error) {
         console.error(error);
       }
