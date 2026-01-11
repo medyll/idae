@@ -1,5 +1,5 @@
 {
-	"name": "@medyll/idae-model",
+	"name": "@medyll/idae-machine",
 	"version": "0.86.0",
 	"scripts": {
 		"dev": "vite dev",
