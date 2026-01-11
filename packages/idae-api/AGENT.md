@@ -9,6 +9,7 @@
 - All MCP endpoints should require tenant context and RBAC/ABAC by default.
 - Keep MCP logic in the API/server layer—do not pollute DB adapters or core business logic.
 
+
 ### Example: Enabling and Registering MCP
 ```ts
 idaeApi.setOptions({
@@ -16,9 +17,10 @@ idaeApi.setOptions({
 	// ...other options
 });
 
+// Mount after core middleware, before custom routes
 if (idaeApi.idaeApiOptions.enableMcp) {
 	const { mcpMiddleware } = require('./server/middleware/mcpMiddleware.js');
-	app.use('/mcp', mcpMiddleware());
+	idaeApi.app.use('/mcp', mcpMiddleware());
 }
 ```
 
