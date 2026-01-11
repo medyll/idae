@@ -1,15 +1,23 @@
 <!-- FieldValue.svelte - Initial version based on README.md -->
 <script lang="ts">
 	/**
-	 * FieldValue component
+	 * FieldValue component (Svelte 5)
 	 * Props: collection, fieldName, data, mode, editInPlace
 	 * TODO: implement type detection and rendering logic
 	 */
-	export let collection: string;
-	export let fieldName: string;
-	export let data: any = {};
-	export let mode: 'edit' | 'show' = 'show';
-	export let editInPlace: boolean = false;
+	let {
+		collection,
+		fieldName,
+		data = {},
+		mode = 'show',
+		editInPlace = false
+	}: {
+		collection: string,
+		fieldName: string,
+		data?: any,
+		mode?: 'edit' | 'show',
+		editInPlace?: boolean
+	} = $props();
 </script>
 
 <div class="field-value">
