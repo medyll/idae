@@ -1,17 +1,21 @@
 <!-- CrudZone.svelte - Version initiale adaptée selon README.md -->
 <script lang="ts">
-	import { CrudService } from './CrudService.ts';
-	/**
-	 * Composant principal CRUD Zone (Svelte 5)
-	 * Props : collection (nom de la collection à gérer), crud (service)
-	 */
-	export let collection: string;
-	export let crud: CrudService = new CrudService();
-	let items: any[] = [];
-	let selected: any = null;
+	import { CrudService } from './CrudService.js';
 
-	// Svelte 5 idiom: reactive to prop changes
-	$: items = crud.list(collection);
+	// Svelte 5: define props with $props rune
+	let {
+		collection,
+		crud = new CrudService()
+	}: {
+		collection: string,
+		crud?: CrudService
+	} = $props();
+
+	// Svelte 5: reactive state with $state
+	let selected = $state<any>(null);
+
+	// Svelte 5: derived value for items
+	let items = $derived(crud.list(collection));
 
 	function handleSelect(item: any) {
 		selected = item;
@@ -21,25 +25,26 @@
 <div class="crud-zone">
 	<aside class="crud-sidebar">
 		<h2>{collection}</h2>
-		<!-- Liste des items -->
 		<ul>
 			{#each items as item, idx}
-				   <li>
-					   <button type="button" on:click={() => handleSelect(item)} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(item); }}>
-						   {item.name || `Item ${idx+1}`}
-					   </button>
-				   </li>
-			{/each}
-			{#if items.length === 0}
+				<li>
+					<button
+						type="button"
+						onclick={() => handleSelect(item)}
+						onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(item); }}
+					>
+						{item.name || `Item ${idx + 1}`}
+					</button>
+				</li>
+			{:else}
 				<li>No items found.</li>
-			{/if}
+			{/each}
 		</ul>
 	</aside>
 	<main class="crud-detail">
 		{#if selected}
 			<h3>Détail</h3>
 			<pre>{JSON.stringify(selected, null, 2)}</pre>
-			<!-- TODO : intégrer formulaire d'édition -->
 		{:else}
 			<p>Sélectionnez un élément pour voir le détail.</p>
 		{/if}
