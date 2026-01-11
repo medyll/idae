@@ -158,6 +158,9 @@ class IdaeApi {
     // Health and readiness endpoints (always unprotected)
     this.#app.get("/health", healthHandler);
     this.#app.get("/ready", readinessHandler);
+    // OpenAPI endpoint (always unprotected)
+    const { openApiJsonHandler } = require("./middleware/openApiMiddleware.js");
+    this.#app.get("/openapi.json", openApiJsonHandler);
     if (this.#authMiddleware) {
       this.#authMiddleware.configureAuthRoutes(this.#app);
     }
