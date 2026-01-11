@@ -49,6 +49,17 @@
 				if (!(value === true || value === false || value === 'true' || value === 'false' || value === 1 || value === 0)) {
 					errors[field] = 'Must be true or false.';
 				}
+			} else if (rule?.type === 'fk' && rule.fkTarget) {
+				// FK required
+				if (rule.required && (value === undefined || value === null || value === '')) {
+					errors[field] = 'This field is required.';
+				} else if (value) {
+					// Existence in target collection
+					const fkList = crud ? crud.list(rule.fkTarget) : [];
+					if (!fkList.some(fkItem => String(fkItem.id) === String(value))) {
+						errors[field] = 'Invalid reference: not found in ' + rule.fkTarget;
+					}
+				}
 			}
 		}
 		return Object.keys(errors).length === 0;
