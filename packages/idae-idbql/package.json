@@ -39,13 +39,13 @@
 		"svelte-check": "^4.1.6",
 		"tslib": "^2.8.1",
 		"typescript": "^5.8.3",
-		"vite": "^6.3.2"
+		"vite": "^6.3.2",		
+		"@medyll/idae-prettier-config": "next",
+		"@medyll/idae-query": "next"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@medyll/idae-prettier-config": "workspace:*",
-		"@medyll/idae-query": "workspace:*"
 	}
 }
