@@ -1,10 +1,6 @@
 {
   "name": "@medyll/idae-api-nest",
-<<<<<<< HEAD
   "version": "0.26.0",
-=======
-  "version": "0.18.0",
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
   "description": "",
   "author": "",
   "private": true,
