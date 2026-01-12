@@ -1,5 +1,45 @@
 # @medyll/idae-query
 
+## 0.143.0
+
+### Minor Changes
+
+- - chore(indexes): ([cdaca2c](https://github.com/medyll/idae/commit/cdaca2c591454911d92376b81de261d251ec5d9e)) - 2025-06-06 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - feat(update): package description and rename package to @medyll/idae-query; add dependency on @medyll/idae-engine ([7ec80cb](https://github.com/medyll/idae/commit/7ec80cb343d9875fccd0be577e901121d7556a09)) - 2025-03-17 by @medyll
+  - test(idae-query): améliorer les tests de tri et de regroupement des données ([34ab8cf](https://github.com/medyll/idae/commit/34ab8cf342ab852ecdb6d9a370d1d6b7a92af605)) - 2025-03-07 by @medyll
+  - test(idae-query): améliorer les tests de filtrage avec de nouveaux cas et données ([c9624a4](https://github.com/medyll/idae/commit/c9624a4b3ae3a99b715ead12ff1727ff83e22141)) - 2025-03-07 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - chore(idae-query): chore ([8f114bb](https://github.com/medyll/idae/commit/8f114bbf7276ef04e3aa341540a716735dd404a5)) - 2025-03-03 by @medyll
+  - chore(idae-idbql): fixes ([1da52fd](https://github.com/medyll/idae/commit/1da52fd940d38e26613b2a4e312b0dda0eee6096)) - 2025-03-03 by @medyll
+  - fix(idae-query): dependencies update ([2ecb667](https://github.com/medyll/idae/commit/2ecb6671c0e1cee517612f0a635e44e03d1b32e9)) - 2025-03-03 by @medyll
+  - chore(main): changes ([2ec363d](https://github.com/medyll/idae/commit/2ec363d41e4b754d274a1672cbf2d1488edd4d46)) - 2024-09-22 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - chore(Update): import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be ([56c00c9](https://github.com/medyll/idae/commit/56c00c9869b123f7ba9e5c88572a736d1605ca92)) - 2024-08-13 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - Version Packages ([128962b](https://github.com/medyll/idae/commit/128962bc0de36f172edfb86001094f4eaf770dd2)) - 2024-08-10 by @github-actions[bot]
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(main): prettier is now global ([ba97128](https://github.com/medyll/idae/commit/ba971285384582936aaa572114a115742fdb102a)) - 2024-07-14 by @medyll
+  - chore(config): packaging ([a16f0a0](https://github.com/medyll/idae/commit/a16f0a01a436f37aef3f244104e487743b257660)) - 2024-07-12 by @medyll
+  - chore(main): packaging repo ([d71ea4d](https://github.com/medyll/idae/commit/d71ea4d0005d5342014ae967b8d5816e834c34ca)) - 2024-07-12 by @medyll
+  - chore(config): renammed packages ([a3084c2](https://github.com/medyll/idae/commit/a3084c2ec7baca0a9e8b569caccd5f8df9ca554b)) - 2024-07-12 by @medyll
+  - chore(idae-query): changed directory to idae-query ([f945bea](https://github.com/medyll/idae/commit/f945bea2feb7edab353ef1f308611bc01aef9dd0)) - 2024-07-12 by @medyll
+
 ## 0.142.0
 
 ### Minor Changes
