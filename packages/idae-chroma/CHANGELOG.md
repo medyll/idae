@@ -1,5 +1,6 @@
 # @medyll/idae-chroma
 
+<<<<<<< HEAD
 ## 0.82.0
 
 ### Minor Changes
@@ -112,6 +113,8 @@
   - chore(add): descriptions to package.json files for improved clarity and documentation ([f4ff601](https://github.com/medyll/idae/commit/f4ff6013fb67fd74bd86d21fd6991b609eeee7a7)) - 2024-10-20 by @medyll
   - chore(main): changes ([2ec363d](https://github.com/medyll/idae/commit/2ec363d41e4b754d274a1672cbf2d1488edd4d46)) - 2024-09-22 by @medyll
 
+=======
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.74.0
 
 ### Minor Changes

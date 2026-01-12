@@ -1,5 +1,6 @@
 # @medyll/idae-cadenzia
 
+<<<<<<< HEAD
 ## 0.108.0
 
 ### Minor Changes
@@ -152,6 +153,8 @@
   - chore(mettre): à jour le nom du package et ajouter un script de préparation ([d01592e](https://github.com/medyll/idae/commit/d01592ea36b788c9459212899d9ce295158ff503)) - 2024-11-15 by @medyll
   - chore(initialiser): le projet Svelte avec configuration de base et fichiers essentiels ([b29577e](https://github.com/medyll/idae/commit/b29577ed6f9a4c1de3464c1e4306bfd9fc987d10)) - 2024-11-15 by @medyll
 
+=======
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.100.0
 
 ### Minor Changes

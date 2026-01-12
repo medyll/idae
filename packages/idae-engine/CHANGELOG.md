@@ -1,5 +1,6 @@
 # @medyll/idae-engine
 
+<<<<<<< HEAD
 ## 1.146.0
 
 ### Minor Changes
@@ -320,6 +321,8 @@
   - chore(idae-engine): ([52ca244](https://github.com/medyll/idae/commit/52ca244378073d0987baf6fba492a3eb8ed721c9)) - 2024-07-12 by @medyll
   - chore(main): peerDeps ([456e142](https://github.com/medyll/idae/commit/456e1428057d32d7a8ed4ef8bd685b655ef9bc7a)) - 2024-07-12 by @medyll
 
+=======
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 1.138.0
 
 ### Minor Changes

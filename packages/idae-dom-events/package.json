@@ -1,6 +1,10 @@
 {
 	"name": "@medyll/idae-dom-events",
+<<<<<<< HEAD
 	"version": "0.117.0",
+=======
+	"version": "0.109.0",
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 	"scope": "@medyll",
 	"description": "dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides tools to track CSS changes, monitor DOM mutations, and handle various events efficiently, making it ideal for dynamic web applications.",
 	"scripts": {

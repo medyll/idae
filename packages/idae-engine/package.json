@@ -1,7 +1,11 @@
 {
 	"name": "@medyll/idae-engine",
 	"scope": "@medyll",
+<<<<<<< HEAD
 	"version": "1.146.0",
+=======
+	"version": "1.138.0",
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 	"description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",
 	"scripts": {
 		"dev": "vite dev",

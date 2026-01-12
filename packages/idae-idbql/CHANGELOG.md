@@ -1,5 +1,6 @@
 # Changelog
 
+<<<<<<< HEAD
 ## 0.146.0
 
 ### Minor Changes
@@ -571,12 +572,18 @@
 - Updated dependencies
   - @medyll/idae-query@0.140.0
 
+=======
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.138.0
 
 ### Minor Changes
 
+<<<<<<< HEAD
 - - feat(add): initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities ([f396f32](https://github.com/medyll/idae/commit/f396f32ff514feb5c1887a01f6a508e4b3aaeb7a)) - 2026-01-12 by @medyll
   - feat(Add): GitHub Copilot instructions and project guide for @medyll/idae-idbql ([102aade](https://github.com/medyll/idae/commit/102aade63699cb588d67757195b46404509eb20e)) - 2025-12-10 by @medyll
+=======
+- - feat(Add): GitHub Copilot instructions and project guide for @medyll/idae-idbql ([102aade](https://github.com/medyll/idae/commit/102aade63699cb588d67757195b46404509eb20e)) - 2025-12-10 by @medyll
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
     - Created copilot-instructions.md to guide developers on using TypeScript and Svelte 5 in the project.
     - Added idae-idbql.PROJECT.md for an overview of the project architecture, key features, and developer workflow.
     - Updated package.json to include a test script and added fake-indexeddb as a dependency.

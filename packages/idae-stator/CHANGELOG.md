@@ -1,5 +1,6 @@
 # idae-stator
 
+<<<<<<< HEAD
 ## 0.12.0
 
 ### Minor Changes
@@ -352,6 +353,8 @@
   - chore(chore): ([ea09ef0](https://github.com/medyll/idae/commit/ea09ef00114b686ee7e5534f71c2c482af7c01ed)) - 2024-07-11 by @medyll
   - refactor(idae-stator): remove svelte 5 support ([0113230](https://github.com/medyll/idae/commit/011323017ff794d1a3f9d0652f943ec6bc0d802a)) - 2024-07-11 by @medyll
 
+=======
+>>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.4.0
 
 ### Minor Changes
