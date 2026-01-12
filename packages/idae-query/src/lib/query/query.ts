@@ -9,12 +9,12 @@ export class Query<T extends object> {
 	data: T[];
 	constructor(data: T[]) {
 		this.data = data;
-		getResultset(this.data ?? []);
+		getResultSet(this.data ?? []);
 	}
 
 	where(qy: Where<T>) {
 		this.data = this.data.filter((item) => this.matchesQuery(item, qy));
-		return getResultset(this.data);
+		return getResultSet(this.data);
 	}
 
 	private matchesQuery(item: T, query: Where<T>): boolean {

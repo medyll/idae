@@ -34,14 +34,21 @@ export type ResultSet<T> = T[] & {
   toObject: (dotPath: DotPath<T>) => T[];
 };
 
+
+/**
+ * @deprecated Use getResultSet instead. Will be removed in future versions.
+ */
+export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
+  return getResultSet(data);
+}
+
 /**
  * Generates a ResultSet based on the provided data array and defines additional properties like setOptions, sortBy, groupBy, and getPage for customization and manipulation.
  *
  * @param {T[]} data - The array of data to generate the ResultSet from.
  * @return {ResultSet<T>} The generated ResultSet with additional properties for customization.
  */
-export function getResultset<T = (typeof arguments)[0]>(data: T[]) {
-  // : ResultSet<T>
+export function getResultSet<T = (typeof arguments)[0]>(data: T[]) {
   Object.defineProperties(data, {
     setOptions: {
       value: function (options: ResultsetOptions = {}) {
