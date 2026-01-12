@@ -139,7 +139,8 @@ class AuthMiddleWare {
 
 		// Validate user credentials (this is a placeholder, replace with actual validation logic)
 		if (username === 'admin' && password === 'password') {
-			const payload = { username };
+			// Add tenantId for test user so tenant context middleware passes
+			const payload = { username, tenantId: 'test-tenant' };
 			const token = this.generateToken(payload);
 			res.json({ token });
 		} else {

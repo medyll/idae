@@ -78,6 +78,7 @@ export const idaeDbMiddleware = async (
           req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
         } catch (error) {
           console.error(error);
+          return next(error instanceof Error ? error : new Error("Failed to parse query.params"));
         }
       }
       return next();
@@ -99,22 +100,25 @@ export const idaeDbMiddleware = async (
           try {
             decoded = decodeURIComponent(raw);
           } catch (err) {
-            // If decodeURIComponent fails, log and skip parsing
+            // If decodeURIComponent fails, log and pass error to next
             console.error("Failed to decode URI component in query.params:", err);
-            return next();
+            return next(err instanceof Error ? err : new Error("Failed to decode URI component in query.params"));
           }
         }
         try {
           req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
         } catch (err) {
-          // If JSON.parse fails, log and skip parsing
+          // If JSON.parse fails, log and pass error to next
           console.error("Failed to parse JSON in query.params:", err);
-          return next();
+          return next(err instanceof Error ? err : new Error("Failed to parse JSON in query.params"));
         }
       } catch (error) {
         console.error(error);
+        return next(error instanceof Error ? error : new Error("Unknown error in query.params parsing"));
       }
     }
+    // If an error occurred in the try/catch above, next(err) was already called and function exited
+    // If no error, continue
     next();
   } catch (error) {
     console.error("Error in database connection middleware:", error);

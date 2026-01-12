@@ -23,9 +23,7 @@ export function createValidationMiddleware({
       }
       next();
     } catch (err) {
-      if (err instanceof ZodError) {
-        return res.status(422).json({ error: "Validation failed", details: err.errors });
-      }
+      // Always pass error to next, including ZodError
       next(err);
     }
   };

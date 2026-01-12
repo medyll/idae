@@ -157,8 +157,7 @@ class IdaeApi {
     this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
     this.#app.use("/:collectionName", idaeDbMiddleware);
     
-    // Inject tenant context middleware globally after auth (for strict multi-tenancy)
-    this.#app.use(tenantContextMiddleware({ required: true }));
+    // Do not inject tenant context middleware globally; it will be added per-route for protected routes
   }
 
   private configureRoutes(): void {
@@ -191,8 +190,10 @@ class IdaeApi {
       handlers.push(createValidationMiddleware(route.validation));
     }
 
+    // Add auth and tenant context middleware for protected routes
     if (route.requiresAuth && this.#authMiddleware) {
       handlers.push(this.#authMiddleware.createMiddleware());
+      handlers.push(tenantContextMiddleware({ required: true }));
     }
 
     // Add RBAC/ABAC authorization middleware if specified
