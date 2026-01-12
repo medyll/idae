@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-html",
-  "version": "0.113.0",
+  "version": "0.114.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -52,6 +52,5 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scope": "@medyll",
-  "dependencies": {
-  }
+  "dependencies": {}
 }

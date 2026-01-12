@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-query",
   "scope": "@medyll",
-  "version": "0.148.0",
+  "version": "0.149.0",
   "description": "A powerful and flexible query library for TypeScript and JavaScript applications, featuring a MongoDB-like query interface, strong TypeScript support, and easy integration with front-end frameworks.",
   "scripts": {
     "dev": "vite dev",
@@ -28,8 +28,7 @@
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "svelte": "^5.0.0-next"
   },

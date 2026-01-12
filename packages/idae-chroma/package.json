@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-chroma",
-  "version": "0.83.0",
+  "version": "0.84.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -46,7 +46,7 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "vitest": "^3.0.9",    
+    "vitest": "^3.0.9",
     "@medyll/idae-prettier-config": "next"
   },
   "svelte": "./dist/index.js",
