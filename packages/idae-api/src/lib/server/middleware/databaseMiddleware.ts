@@ -1,38 +1,137 @@
 // packages\idae-api\src\lib\middleware\databaseMiddleware.ts
 
 import type { Request, Response, NextFunction } from "express";
-import { requestDatabaseManager } from "$lib/server/engine/requestDatabaseManager.js";
+import { randomUUID } from "crypto";
+import requestDatabaseManager from "$lib/server/engine/requestDatabaseManager.js";
 import { IdaeDb } from "@medyll/idae-db";
-import { idaeApi } from "../IdaeApi.js";
 
+/**
+ * idaeDbMiddleware
+ *
+ * Injecte req.idaeDb et req.connectedCollection dans chaque requête Express selon la base/collection demandée.
+ * Supporte un mode mémoire pour les tests/démo. Gère la validation des noms et la désérialisation des filtres avancés.
+ *
+ * @async
+ * @param {Request} req - Requête Express
+ * @param {Response} res - Réponse Express
+ * @param {NextFunction} next - Callback Express
+ * @returns {Promise<void>}
+ *
+ * @example
+ *   app.use('/:collectionName', idaeDbMiddleware)
+ */
+
+const inMemoryStores = new Map<string, Map<string, any>>();
+
+const getInMemoryAdapter = (dbName: string, collectionName: string) => {
+  const key = `${dbName}:${collectionName}`;
+  let store = inMemoryStores.get(key);
+  if (!store) {
+    store = new Map<string, any>();
+    inMemoryStores.set(key, store);
+  }
+
+  return {
+    async find() {
+      return Array.from(store.values());
+    },
+    async findById(id: string) {
+      return store.get(id) ?? null;
+    },
+    async create(body: any) {
+      const id = body?._id ?? randomUUID();
+      const doc = { ...body, _id: id };
+      store.set(id, doc);
+      return doc;
+    },
+    async update(id: string, body: any) {
+      const existing = store.get(id) ?? {};
+      const updated = { ...existing, ...body };
+      store.set(id, updated);
+      return updated;
+    },
+    async deleteById(id: string) {
+      store.delete(id);
+      return;
+    },
+    async deleteWhere() {
+      const count = store.size;
+      store.clear();
+      return count;
+    },
+  } as any;
+};
+
+/**
+ * Middleware Express pour injecter la connexion DB et la collection dans la requête.
+ *
+ * @type {(req: Request, res: Response, next: NextFunction) => Promise<void>}
+ */
 export const idaeDbMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { dbName, collectionName, dbUri } =
-      requestDatabaseManager.fromReq(req);
-
+    const { dbName, collectionName, dbUri } = requestDatabaseManager.fromReq(req);
+    // Guard: block dangerous DB/collection names
+    const forbidden = ["admin", "system", "local", "config", "test", "__proto__", "constructor", "prototype"];
+    if (forbidden.includes(dbName) || forbidden.includes(collectionName)) {
+      return res.status(403).json({ error: "Forbidden database or collection name" });
+    }
     req.collectionName = collectionName;
     req.dbName = dbName;
-    req.idaeDb = IdaeDb.init(dbUri, idaeApi.idaeApiOptions.idaeDbOptions);
-
-    // create connection to db
+    const useMemoryDb = req.app?.locals?.useMemoryDb === true || process.env.IDAE_USE_MEMORY_DB === "true";
+    if (useMemoryDb) {
+      const adapter = getInMemoryAdapter(dbName, collectionName);
+      req.idaeDb = {
+        collection: () => adapter,
+      } as any;
+      req.connectedCollection = adapter;
+      if (req.query.params) {
+        try {
+          const raw = req.query.params;
+          const decoded = typeof raw === "string" ? decodeURIComponent(raw) : raw;
+          req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
+        } catch (error) {
+          console.error(error);
+          return next(error instanceof Error ? error : new Error("Failed to parse query.params"));
+        }
+      }
+      return next();
+    }
+    const dbOptions = req.app?.locals?.idaeDbOptions ?? {};
+    req.idaeDb = IdaeDb.init(dbUri, dbOptions);
+    // TODO: Pooling/caching could be added here
     await req.idaeDb.db("app");
-
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
-
-    console.log("Connected to collection", collectionName);
     if (req.query.params) {
       try {
-        req.query.params = JSON.parse(
-          decodeURIComponent(req.query.params as string),
-        );
+        const raw = req.query.params;
+        let decoded = raw;
+        if (typeof raw === "string") {
+          try {
+            decoded = decodeURIComponent(raw);
+          } catch (err) {
+            // If decodeURIComponent fails, log and pass error to next
+            console.error("Failed to decode URI component in query.params:", err);
+            return next(err instanceof Error ? err : new Error("Failed to decode URI component in query.params"));
+          }
+        }
+        try {
+          req.query.params = typeof decoded === "string" ? JSON.parse(decoded) : decoded;
+        } catch (err) {
+          // If JSON.parse fails, log and pass error to next
+          console.error("Failed to parse JSON in query.params:", err);
+          return next(err instanceof Error ? err : new Error("Failed to parse JSON in query.params"));
+        }
       } catch (error) {
         console.error(error);
+        return next(error instanceof Error ? error : new Error("Unknown error in query.params parsing"));
       }
     }
+    // If an error occurred in the try/catch above, next(err) was already called and function exited
+    // If no error, continue
     next();
   } catch (error) {
     console.error("Error in database connection middleware:", error);

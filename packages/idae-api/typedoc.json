@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["src/lib/server/middleware", "src/lib/server/engine", "src/lib/client"],
+  "out": "docs/api",
+  "exclude": ["**/__tests__/**", "**/*.test.ts", "**/*.spec.ts"],
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "readme": "README.md",
+  "name": "@medyll/idae-api API Reference"
+}

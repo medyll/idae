@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-db",
-  "version": "0.104.0",
+  "version": "0.107.0",
   "description": "@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.",
   "scripts": {
     "dev": "vite dev",
@@ -11,6 +11,9 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:mongodb": "vitest run tests/mongodb.test.ts",
+    "test:watch": "vitest --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "package:pre": "node scripts/package-pre.js"
@@ -36,10 +39,12 @@
     "@sveltejs/package": "^2.3.11",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/eslint": "^9.6.1",
+    "@vitest/coverage-v8": "^3.1.1",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-svelte": "^3.5.1",
     "globals": "^16.0.0",
+    "mongodb-memory-server": "^10.1.4",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
     "publint": "^0.3.12",

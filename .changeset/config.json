@@ -9,7 +9,6 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@medyll/idae-shared",
-    "@medyll/idae-stator",
     "@medyll/idae-socket"
   ]
 }

@@ -8,13 +8,29 @@ export class RouteManager {
   private constructor() {}
 
   public static getInstance(): RouteManager {
-    if (!RouteManager.instance) {
-      RouteManager.instance = new RouteManager();
+    const instance = RouteManager.instance ?? new RouteManager();
+
+    // In test runs we want isolated state between cases
+    if (process.env.NODE_ENV === "test") {
+      instance.clearRoutes();
     }
-    return RouteManager.instance;
+
+    RouteManager.instance = instance;
+    return instance;
   }
 
   public addRoute(route: RouteDefinition): void {
+    // Remove any existing route with the same path/method to avoid stale handlers
+    this.routes = this.routes.filter(
+      (r) =>
+        r.path !== route.path ||
+        (Array.isArray(r.method)
+          ? !Array.isArray(route.method) || !route.method.some((m) => r.method.includes(m))
+          : Array.isArray(route.method)
+            ? !route.method.includes(r.method as string)
+            : r.method !== route.method),
+    );
+
     this.routes.push({ ...route, disabled: route.disabled || false });
   }
 
@@ -27,28 +43,33 @@ export class RouteManager {
   }
 
   public enableRoute(path: string, method: string | string[]): void {
-    const route = this.routes.find(
-      (r) =>
+    this.routes.forEach((r) => {
+      if (
         r.path === path &&
         (Array.isArray(r.method)
           ? r.method.includes(method as string)
-          : r.method === method),
-    );
-    if (route) {
-      route.disabled = false;
-    }
+          : r.method === method)
+      ) {
+        r.disabled = false;
+      }
+    });
   }
 
   public disableRoute(path: string, method: string | string[]): void {
-    const route = this.routes.find(
-      (r) =>
+    this.routes.forEach((r) => {
+      if (
         r.path === path &&
         (Array.isArray(r.method)
           ? r.method.includes(method as string)
-          : r.method === method),
-    );
-    if (route) {
-      route.disabled = true;
-    }
+          : r.method === method)
+      ) {
+        r.disabled = true;
+      }
+    });
+  }
+
+  // Utility primarily for tests to reset state safely
+  public clearRoutes(): void {
+    this.routes = [];
   }
 }

@@ -48,6 +48,8 @@ npm install @medyll/idae-api --next # for the next version (if available)
 
 ---
 
+
+
 ## Main Features
 
 - Multi-database management (MongoDB, MySQL, etc.)
@@ -57,6 +59,30 @@ npm install @medyll/idae-api --next # for the next version (if available)
 - Hooks/events on all CRUD operations
 - Complete TypeScript client for API consumption
 - Inherits all advanced methods from [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db)
+- **Comprehensive middleware system** for authentication, authorization, validation, multi-tenancy, docs, and health endpoints
+- **Strict multi-tenancy**: Tenant context required for all requests (see below)
+- **Robust error handling**: All errors are handled by a centralized middleware
+
+
+### Advanced (2026):
+- **OpenAPI auto-generation & docs**: `/openapi.json` (spec), `/docs` (Swagger UI), `/redoc` (Redoc)
+- **RBAC/ABAC**: Per-route authorization via JWT roles/scopes (see `authorization` in route definitions)
+- **Strict multi-tenancy**: Tenant context required for all requests (from JWT, e.g. `tenantId` claim)
+- **Security/validation**: CORS, helmet, rate limiting, payload limits, Zod validation, DB guardrails, health endpoints
+
+---
+
+## Middleware, Multi-Tenancy, and Error Handling
+
+This project uses a comprehensive middleware system for authentication, authorization, validation, multi-tenancy, documentation, and health endpoints. See [`src/lib/server/middleware/README.md`](src/lib/server/middleware/README.md) for a full list and integration order.
+
+**Multi-tenancy** is enforced via `tenantContextMiddleware`, which extracts the tenant context from the JWT or user object and injects it into the request. All protected routes require a valid tenant context. See the developer docs and middleware README for details and options.
+
+**Error handling** is centralized: any error thrown in a route or middleware is caught and returned as a JSON error response with the appropriate status code.
+
+**Testing**: Extensive tests cover edge cases, error handling, and multi-tenancy scenarios. See `src/lib/server/__tests__/middleware/` for examples.
+
+**CI/CD**: The test suite must pass for all changes. Run `npm run test` locally and ensure your CI pipeline is green before merging.
 
 ---
 
@@ -307,6 +333,41 @@ usersCollection.registerEvents({
 ## Contributing
 
 Contributions are welcome! Feel free to submit a Pull Request.
+
+---
+
+
+---
+
+## Erreurs courantes & troubleshooting
+
+Voici quelques problèmes fréquemment rencontrés et leurs solutions rapides :
+
+- **req.idaeDb ou req.connectedCollection undefined** : la route ne correspond pas au pattern attendu ou le middleware n’est pas appliqué. Vérifie le chemin et l’ordre des middlewares.
+- **Token invalide sur route protégée** : header Authorization absent/mal formé, ou token expiré. Vérifie la config côté client et serveur.
+- **Timeout ou erreur de connexion MongoDB** : URI incorrect ou service MongoDB non démarré. Vérifie la chaîne de connexion et l’état du service.
+- **Résultat de requête vide** : mauvais nom de collection/db, ou filtre trop restrictif. Loggue les paramètres pour debug.
+- **404 ou handler non appelé** : route non enregistrée ou méthode HTTP incorrecte. Vérifie la déclaration dans routeDefinitions.ts.
+- **Mismatch de types client/serveur** : le serveur doit retourner des objets sérialisables, le client doit utiliser les bons types génériques.
+- **Middleware d’auth non appliqué partout** : chaque route protégée doit avoir requiresAuth: true et l’auth doit être activée dans la config.
+
+Pour plus de détails et de cas avancés, consulte :
+- [.github/copilot-instructions.md](.github/copilot-instructions.md)
+- [src/lib/server/middleware/README.md](src/lib/server/middleware/README.md)
+
+---
+
+## Schéma d’architecture (à compléter)
+
+```mermaid
+flowchart TD
+  Client <--> API[IdaeApi (Express)]
+  API --> MW[Middleware]
+  MW --> DB[IdaeDbAdapter (MongoDB/MySQL)]
+  API --> Auth[Auth/JWT]
+  API --> Docs[OpenAPI/Swagger]
+  MW --> MultiTenancy[TenantContext]
+```
 
 ---
 

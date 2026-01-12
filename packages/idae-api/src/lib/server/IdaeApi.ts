@@ -1,3 +1,9 @@
+// Force l'import des types globaux (Express.Request.user)
+import '../../app.js';
+import { createValidationMiddleware } from "./middleware/validationMiddleware.js";
+import { openApiJsonHandler } from "./middleware/openApiMiddleware.js";
+import { swaggerUiHandler, redocHandler } from "./middleware/docsMiddleware.js";
+import { tenantContextMiddleware } from "./middleware/tenantContextMiddleware.js";
 // packages\idae-api\src\lib\server\IdaeApi.ts
 import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
@@ -6,16 +12,29 @@ import express, {
   type Response,
   type NextFunction,
 } from "express";
+import compression from "compression";
+import cors, { type CorsOptions } from "cors";
 import { idaeDbMiddleware } from "$lib/server/middleware/databaseMiddleware.js";
 import {
   type RouteDefinition,
   routes as defaultRoutes,
 } from "$lib/config/routeDefinitions.js";
 import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
+import helmet from "helmet";
 import { RouteManager } from "$lib/server/engine/routeManager.js";
+import rateLimit from "express-rate-limit";
 import type { Server } from "http";
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 import qs from "qs";
+import { healthHandler, readinessHandler } from "./middleware/healthMiddleware.js";
+
+type RateLimitOptions = {
+  windowMs?: number;
+  max?: number;
+  standardHeaders?: boolean | "draft-7" | "draft-6" | "draft-8";
+  legacyHeaders?: boolean;
+  [key: string]: any;
+};
 
 interface IdaeApiOptions {
   port?: number;
@@ -25,6 +44,20 @@ interface IdaeApiOptions {
   jwtSecret?: string;
   tokenExpiration?: string;
   idaeDbOptions?: IdaeDbOptions;
+  useMemoryDb?: boolean;
+  cors?: boolean | CorsOptions;
+  rateLimit?: false | RateLimitOptions;
+  payloadLimit?: string;
+  enableCompression?: boolean;
+  trustProxy?: boolean | number | string;
+}
+
+class HttpError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
 }
 
 class IdaeApi {
@@ -35,6 +68,7 @@ class IdaeApi {
   #serverInstance!: Server;
   #state: "stopped" | "running" = "stopped";
   #authMiddleware: AuthMiddleWare | null = null;
+  #configured = false;
 
   private constructor() {
     this.#app = express();
@@ -49,9 +83,6 @@ class IdaeApi {
         parameterLimit: 1000,
       });
     });
-
-    this.initializeAuth();
-    this.configureIdaeApi();
   }
 
   public static getInstance(): IdaeApi {
@@ -70,7 +101,14 @@ class IdaeApi {
   }
 
   public setOptions(options: IdaeApiOptions): void {
+    if (this.#state === "running") {
+      throw new Error("Cannot change options while server is running");
+    }
     this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
+    this.#app.locals.idaeDbOptions = this.#idaeApiOptions.idaeDbOptions;
+    this.#app.locals.useMemoryDb = this.#idaeApiOptions.useMemoryDb;
+    this.initializeAuth();
+    this.#configured = false;
   }
 
   private initializeAuth(): void {
@@ -90,18 +128,60 @@ class IdaeApi {
     this.configureMiddleware();
     this.configureRoutes();
     this.configureErrorHandling();
+    this.#configured = true;
   }
 
   private configureMiddleware(): void {
-    this.#app.use("/:collectionName", idaeDbMiddleware);
-    this.#app.use(express.json());
-    this.#app.use(express.urlencoded({ extended: true }));
-    if (this.#authMiddleware) {
-      this.#app.use(this.#authMiddleware.createMiddleware() as express.RequestHandler);
+    const jsonLimit = this.#idaeApiOptions.payloadLimit ?? "1mb";
+    const urlEncodedLimit = this.#idaeApiOptions.payloadLimit ?? "1mb";
+
+    if (this.#idaeApiOptions.trustProxy) {
+      this.#app.set("trust proxy", this.#idaeApiOptions.trustProxy);
     }
+
+    if (this.#idaeApiOptions.enableCompression !== false) {
+      this.#app.use(compression());
+    }
+
+    if (this.#idaeApiOptions.cors !== false) {
+      const corsOptions =
+        this.#idaeApiOptions.cors === true || this.#idaeApiOptions.cors === undefined
+          ? {}
+          : this.#idaeApiOptions.cors;
+      this.#app.use(cors(corsOptions as CorsOptions));
+    }
+
+    this.#app.use(helmet());
+
+    if (this.#idaeApiOptions.rateLimit !== false) {
+      const limiterOptions: RateLimitOptions = this.#idaeApiOptions.rateLimit ?? {
+        windowMs: 60_000,
+        max: 100,
+        standardHeaders: "draft-7",
+        legacyHeaders: false,
+      };
+      this.#app.use(rateLimit(limiterOptions));
+    }
+
+    this.#app.use(express.json({ limit: jsonLimit }));
+    this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
+      this.#app.use("/:collectionName", idaeDbMiddleware as any);
+    
+    // Do not inject tenant context middleware globally; it will be added per-route for protected routes
   }
 
   private configureRoutes(): void {
+    // Health and readiness endpoints (always unprotected)
+    this.#app.get("/health", healthHandler);
+    this.#app.get("/ready", readinessHandler);
+    // OpenAPI and docs endpoints (always unprotected)
+    this.#app.get("/openapi.json", openApiJsonHandler);
+    this.#app.get("/docs", swaggerUiHandler);
+    this.#app.get("/redoc", redocHandler);
+    if (this.#authMiddleware) {
+      this.#authMiddleware.configureAuthRoutes(this.#app);
+    }
+
     this.#routeManager.addRoutes(defaultRoutes);
 
     if (this.#idaeApiOptions.routes) {
@@ -109,18 +189,27 @@ class IdaeApi {
     }
 
     this.#routeManager.getRoutes().forEach(this.addRouteToExpress.bind(this));
-
-    if (this.#authMiddleware) {
-      this.#authMiddleware.configureAuthRoutes(this.#app);
-    }
   }
 
   // Add a route to Express
   private addRouteToExpress(route: RouteDefinition): void {
-    const handlers = [];
+    const handlers: any[] = [];
 
+    // Add validation middleware if present
+    if (route.validation) {
+      handlers.push(createValidationMiddleware(route.validation));
+    }
+
+    // Add auth and tenant context middleware for protected routes
     if (route.requiresAuth && this.#authMiddleware) {
       handlers.push(this.#authMiddleware.createMiddleware());
+      handlers.push(tenantContextMiddleware({ required: true }));
+    }
+
+    // Add RBAC/ABAC authorization middleware if specified
+    if (route.authorization) {
+      const { authorize } = require("./middleware/authorizationMiddleware.js");
+      handlers.push(authorize(route.authorization));
     }
 
     handlers.push(this.handleRequest(route.handler));
@@ -135,8 +224,17 @@ class IdaeApi {
   private configureErrorHandling(): void {
     this.#app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
-        console.error(err.stack);
-        res.status(500).json({ error: err.message });
+        const status = (err as any)?.status && Number.isInteger((err as any).status)
+          ? (err as any).status
+          : 500;
+        const isServerError = status >= 500;
+        const message = isServerError ? "Internal Server Error" : err.message;
+
+        if (isServerError) {
+          console.error(err.stack ?? err.message);
+        }
+
+        res.status(status).json({ error: message });
       },
     );
   }
@@ -147,7 +245,12 @@ class IdaeApi {
       return;
     }
 
-    const port = this.#idaeApiOptions.port || 3000;
+    if (!this.#configured) {
+      this.initializeAuth();
+      this.configureIdaeApi();
+    }
+
+    const port = this.#idaeApiOptions.port ?? 3000;
     this.#serverInstance = this.#app.listen(port, () => {
       console.log(`Server is running on port: ${port}`);
       this.#state = "running";
@@ -180,7 +283,7 @@ class IdaeApi {
 
   stop(): void {
     if (this.#serverInstance) {
-      this.#serverInstance.close((err: Error) => {
+      this.#serverInstance.close((err?: Error) => {
         if (err) {
           console.error("Error while stopping the server:", err);
         } else {
@@ -205,16 +308,8 @@ class IdaeApi {
         const connectedCollection = req.connectedCollection;
 
         if (!connectedCollection) {
-          throw new Error("Database connection not established");
+          throw new HttpError(500, "Database connection not established");
         }
-
-        console.log("----------------------------------------------");
-        console.log("body", req.body);
-        console.log("params", req.params);
-        console.log("query", req.query);
-        console.log("dbName", req.dbName);
-
-        // const result = await action(databaseService, req.params, req.body);
         const result = await action(
           connectedCollection,
           req.params,
@@ -224,6 +319,9 @@ class IdaeApi {
 
         res.json(result);
       } catch (error) {
+        if (!(error as any)?.status) {
+          (error as any).status = 500;
+        }
         next(error);
       }
     };

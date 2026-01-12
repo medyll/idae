@@ -10,6 +10,14 @@ To install the library, run:
 npm install idae-db
 ```
 
+## Scripts
+
+```bash
+npm run test            # Run all tests
+npm run test:coverage   # Run tests with coverage (v8)
+npm run test:mongodb    # Run only the MongoDB adapter suite (in-memory mongo)
+```
+
 ## Usage
 
 ### Initialization

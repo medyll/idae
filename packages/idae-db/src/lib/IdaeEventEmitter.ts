@@ -37,20 +37,37 @@ export function withEmitter<T extends (...args: any[]) => any>() {
 			// Emit the pre-execution event
 			this.emit(`pre:${String(propertyKey)}`, ...args);
 
-			let result: ReturnType<T>;
 			try {
 				// Execute the original method
-				result = originalMethod.apply(this, args);
+				const executionResult = originalMethod.apply(this, args) as unknown;
+
+				// If the method returns a Promise, handle async resolution/rejection
+				if (
+					executionResult &&
+					(typeof (executionResult as Promise<unknown>).then === 'function' ||
+						(executionResult as unknown) instanceof Promise)
+				) {
+					const promise = (executionResult as Promise<unknown>)
+						.then((resolved) => {
+							this.emit(`post:${String(propertyKey)}`, resolved as unknown as ReturnType<T>, ...args);
+							return resolved as unknown as ReturnType<T>;
+						})
+						.catch((error: Error) => {
+							this.emit(`error:${String(propertyKey)}`, error);
+							throw error;
+						});
+
+					return promise as unknown as ReturnType<T>;
+				}
+
+				// Synchronous result
+				this.emit(`post:${String(propertyKey)}`, executionResult as unknown as ReturnType<T>, ...args);
+				return executionResult as unknown as ReturnType<T>;
 			} catch (error) {
 				// Emit the error event if an exception occurs
-				this.emit(`error:${String(propertyKey)}`, error);
+				this.emit(`error:${String(propertyKey)}`, error as Error);
 				throw error;
 			}
-
-			// Emit the post-execution event
-			this.emit(`post:${String(propertyKey)}`, result, ...args);
-
-			return result;
 		} as T;
 	};
 }

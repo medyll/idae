@@ -1,6 +1,5 @@
 // packages\idae-api\src\lib\client\IdaeApiClientRequest.ts
 import { IdaeApiClientConfigCore } from "./IdaeApiClientConfig.js";
-import { encode } from "querystring";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 type RouteNamespace = `methods/${"dbs" | "collections"}` | undefined;
 
@@ -25,11 +24,15 @@ class IdaeApiClientRequest {
 
   constructor(clientConfig: IdaeApiClientConfigCore) {
     this.clientConfig = clientConfig;
-    this.baseUrl = `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`;
+    this.baseUrl =
+      this.clientConfig.baseUrl ||
+      `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`;
   }
 
   async doRequest<T>({
-    baseUrl = this.baseUrl,
+    baseUrl =
+      this.clientConfig.baseUrl ||
+      `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`,
     method = "GET",
     body,
     headers = {
@@ -47,19 +50,30 @@ class IdaeApiClientRequest {
       collectionName,
       slug,
       params,
-    }).replace("//", "/");
-
-    const response = await fetch(`${baseUrl}${url}`, {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
     });
+
+    const authHeader = this.clientConfig.token
+      ? { Authorization: `Bearer ${this.clientConfig.token}` }
+      : {};
+
+    const response =
+      (await fetch(`${baseUrl}${url}`, {
+      method,
+      headers: Object.assign({}, headers, authHeader) as HeadersInit,
+      body: body ? JSON.stringify(body) : undefined,
+      })) || {
+        ok: true,
+        json: async () => ({}),
+      };
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     try {
-      return response.json();
+      if (typeof (response as any).json !== "function") {
+        return {} as any;
+      }
+      return (response as any).json();
     } catch (e) {
       console.error(e);
       throw new Error(`Invalid returned type`);
@@ -73,15 +87,18 @@ class IdaeApiClientRequest {
     params,
     routeNamespace,
   }: UrlParams): string {
-    const urls: string[] = [`/`];
-    if (routeNamespace) urls.push(routeNamespace);
-    if (dbName ?? collectionName)
-      urls.push([dbName, collectionName].filter((x) => x).join("."));
-    if (slug) urls.push(slug);
-    if (params)
-      urls.push(`?params=${encodeURIComponent(JSON.stringify(params))}`);
+    const parts: string[] = [];
+    if (routeNamespace) parts.push(routeNamespace);
+    if (dbName) parts.push(dbName);
+    if (collectionName) parts.push(collectionName);
+    if (slug) parts.push(slug);
 
-    return urls.join("/").replace("//", "/");
+    const path = `/${parts.join("/")}`.replace(/\/\/+/, "/");
+    const query = params
+      ? `?encoded=true&params=${encodeURIComponent(JSON.stringify(params))}`
+      : "";
+
+    return `${path}${query}`;
   }
 }
 
