@@ -14,8 +14,8 @@ function checkDeps(pkgJson, pkgPath) {
     if (!pkgJson[field]) continue;
     for (const dep in pkgJson[field]) {
       if (dep.startsWith('@medyll/')) {
-        if (pkgJson[field][dep] !== 'workspace:*') {
-          console.error(`❌ ${pkgPath}: ${field} -> ${dep} doit être "workspace:*" (trouvé: "${pkgJson[field][dep]}")`);
+        if (pkgJson[field][dep] !== 'next') {
+          console.error(`❌ ${pkgPath}: ${field} -> ${dep} doit être \"next\" (trouvé: \"${pkgJson[field][dep]}\")`);
           ok = false;
         }
       }
@@ -50,10 +50,10 @@ function main() {
     if (!walkPackages(configDir)) ok = false;
   }
   if (!ok) {
-    console.error('\nAu moins une dépendance interne @medyll n\'utilise pas workspace:*');
+    console.error('\nAu moins une dépendance interne @medyll n\'utilise pas next');
     process.exit(1);
   } else {
-    console.log('✅ Toutes les dépendances internes @medyll utilisent workspace:*');
+    console.log('✅ Toutes les dépendances internes @medyll utilisent next');
   }
 }
 
