@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-stator",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "A lightweight and efficient state management library designed for building reactive and scalable JavaScript applications.",
 	"scripts": {
 		"dev": "vite dev",
