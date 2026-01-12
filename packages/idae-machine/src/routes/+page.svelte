@@ -62,7 +62,6 @@ function cancelDeleteAgent() {
 			</li>
 		{/each}
 	</ul>
-	{/if}
 
 {#if showForm}
 	<section>
