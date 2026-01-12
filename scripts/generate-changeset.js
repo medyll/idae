@@ -412,7 +412,7 @@ ${summary}
 
     // Summary
     console.log(
-      chalk.greenBright.bold(`\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.`),
+      chalk.greenBright(`\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.`),
     );
   }
 }
