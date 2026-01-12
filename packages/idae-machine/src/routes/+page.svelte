@@ -13,7 +13,7 @@ crud.create('agents', { id: 2, name: 'Jane', code: 'A2' });
 let selected = $state<any>(null);
 let showForm = $state(false);
 
-function handleSelectAgent(agent) {
+function handleSelectAgent(agent: any) {
 	selected = agent;
 	showForm = true;
 }
@@ -24,7 +24,7 @@ function handleAddAgent() {
 	showCreate = true;
 }
 
-function handleDeleteAgent(agent) {
+function handleDeleteAgent(agent: any) {
 	confirmDelete = { id: agent.id, name: agent.name };
 }
 
@@ -47,18 +47,18 @@ function cancelDeleteAgent() {
 <section>
 	<CrudZone collection="agents" crud={crud} />
 </section>
-	<button on:click={handleAddAgent}>Ajouter un agent</button>
+	<button onclick={handleAddAgent}>Ajouter un agent</button>
 
 <section>
 	<h2>DataList</h2>
-	<DataList collection="agents" items={crud.list('agents')} displayMode="grid" on:click={e => handleSelectAgent(e.detail.data)} />
+	<DataList collection="agents" items={crud.list('agents')} displayMode="grid" onItemClick={handleSelectAgent} />
 </section>
 	<ul>
 		{#each crud.list('agents') as agent}
 			<li>
 				{agent.name} ({agent.code})
-				<button on:click={() => handleSelectAgent(agent)}>Éditer</button>
-				<button on:click={() => handleDeleteAgent(agent)}>Supprimer</button>
+				<button onclick={() => handleSelectAgent(agent)}>Éditer</button>
+				<button onclick={() => handleDeleteAgent(agent)}>Supprimer</button>
 			</li>
 		{/each}
 	</ul>
@@ -96,7 +96,7 @@ function cancelDeleteAgent() {
 	<section>
 		<h2>Confirmer la suppression</h2>
 		<p>Supprimer l'agent : <b>{confirmDelete.name}</b> ?</p>
-		<button on:click={confirmDeleteAgent}>Oui, supprimer</button>
-		<button on:click={cancelDeleteAgent}>Annuler</button>
+		<button onclick={confirmDeleteAgent}>Oui, supprimer</button>
+		<button onclick={cancelDeleteAgent}>Annuler</button>
 	</section>
 {/if}

@@ -87,7 +87,7 @@ Displays collection records as grid with click-to-edit.
   collection="agents"
   displayMode="grid"
   where={{ active: { $eq: true } }}
-  on:click={(data, idx) => console.log(data)}
+  onclick={(data, idx) => console.log(data)}
 />
 ```
 

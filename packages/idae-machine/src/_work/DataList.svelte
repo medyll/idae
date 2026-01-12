@@ -9,12 +9,14 @@
 		collection,
 		displayMode = 'grid',
 		where = {},
-		items = []
+		items = [],
+		onItemClick = null
 	}: {
 		collection: string,
 		displayMode?: 'grid' | 'list',
 		where?: any,
-		items?: any[]
+		items?: any[],
+		onItemClick?: ((item: any, idx: number) => void) | null
 	} = $props();
 </script>
 
@@ -22,7 +24,13 @@
 	<h2>{collection} ({displayMode})</h2>
 	<div class={displayMode === 'grid' ? 'grid' : 'list'}>
 		{#each items as item, idx}
-			<div class="item" onclick={() => dispatch('click', { data: item, idx })}>
+			<div
+				class="item"
+				role="button"
+				tabindex="0"
+				onclick={() => onItemClick && onItemClick(item, idx)}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && onItemClick && onItemClick(item, idx)}
+			>
 				{item.name || `Item ${idx+1}`}
 			</div>
 		{:else}
