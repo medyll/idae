@@ -1,6 +1,5 @@
 # @medyll/idae-api
 
-<<<<<<< HEAD
 ## 0.148.0
 
 ### Minor Changes
@@ -1137,8 +1136,6 @@
   - feat(idae-api): added launcher as esm ([1d8e355](https://github.com/medyll/idae/commit/1d8e355a888ed1bc52dad40d9393628733ac4193)) - 2024-07-10 by @medyll
   - chore(idae-api): initial ([93fff5a](https://github.com/medyll/idae/commit/93fff5a5200c808e6f6fff524dea60f3b02960a0)) - 2024-07-10 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.140.0
 
 ### Minor Changes

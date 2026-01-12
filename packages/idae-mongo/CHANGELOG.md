@@ -1,6 +1,5 @@
 # @medyll/idae-mongo
 
-<<<<<<< HEAD
 ## 0.146.0
 
 ### Minor Changes
@@ -177,8 +176,6 @@
   - chore(idae-mongo): Add Entity and SchemeFieldClass to idae-mongo library ([75d2c6b](https://github.com/medyll/idae/commit/75d2c6b3768b5cb44dae43fde2263fec636bbdb4)) - 2024-08-07 by @medyll
   - chore(idae-mongo): initial commit ([a4a5f84](https://github.com/medyll/idae/commit/a4a5f84bc065041eac390b710ca53a0d2c43b6ba)) - 2024-08-05 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.138.0
 
 ### Minor Changes

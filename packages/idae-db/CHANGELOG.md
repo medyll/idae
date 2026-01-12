@@ -1,6 +1,5 @@
 # @medyll/idae-db
 
-<<<<<<< HEAD
 ## 0.116.0
 
 ### Minor Changes
@@ -489,8 +488,6 @@
   - chore(Rename): types.ts file and update IdaeDb class ([e9ab89d](https://github.com/medyll/idae/commit/e9ab89d489ff037abf1d2f748a349ff1aec087de)) - 2024-08-18 by @medyll
   - chore(Add): IdaeDb and IdaeDbConnection classes to idae-db package ([d0f276f](https://github.com/medyll/idae/commit/d0f276f8ae7b6e2f9f417a3217ebff6335f236c1)) - 2024-08-18 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.108.0
 
 ### Minor Changes

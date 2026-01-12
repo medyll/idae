@@ -1,6 +1,5 @@
 # @medyll/idae-model
 
-<<<<<<< HEAD
 ## 0.96.0
 
 ### Minor Changes
@@ -417,18 +416,12 @@
     - Set up initial routing and testing for the application.
     - Configured SvelteKit with Vite for optimized development and testing experience.
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.88.0
 
 ### Minor Changes
 
-<<<<<<< HEAD
 - - feat(add): initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities ([f396f32](https://github.com/medyll/idae/commit/f396f32ff514feb5c1887a01f6a508e4b3aaeb7a)) - 2026-01-12 by @medyll
   - docs(Add): initial documentation for @medyll/idae-machine project ([740a422](https://github.com/medyll/idae/commit/740a422c28de5c03bb46e0e0d85a21aa58830c13)) - 2026-01-12 by @medyll
-=======
-- - docs(Add): initial documentation for @medyll/idae-machine project ([740a422](https://github.com/medyll/idae/commit/740a422c28de5c03bb46e0e0d85a21aa58830c13)) - 2026-01-12 by @medyll
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
   - docs(idae-machine): maj chemins, props et suivi étape 4 CreateUpdate ([87780a7](https://github.com/medyll/idae/commit/87780a77a5c8a0c4711a5336ca01dfd1133e7df0)) - 2026-01-12 by @medyll
   - docs(idae-machine): maj chemins, props et suivi étape 3 CollectionList ([1bfe50d](https://github.com/medyll/idae/commit/1bfe50decc74b5c7fefdb9f3b9145d25f2f126c9)) - 2026-01-12 by @medyll
   - docs(idae-machine): maj chemins, props et suivi étape 2 CrudZone ([60e2d42](https://github.com/medyll/idae/commit/60e2d426bd2057c6076052fa8b150f9cc256cc4b)) - 2026-01-12 by @medyll

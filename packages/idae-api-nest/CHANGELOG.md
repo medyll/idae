@@ -1,6 +1,5 @@
 # @medyll/idae-api-nest
 
-<<<<<<< HEAD
 ## 0.26.0
 
 ### Minor Changes
@@ -137,8 +136,6 @@
   - chore(chore): ([3a71391](https://github.com/medyll/idae/commit/3a7139182da205204c75f96752f2359182424f6d)) - 2025-06-06 by @medyll
   - chore(chore): ([7975176](https://github.com/medyll/idae/commit/7975176bd73d741408d14da613d25322a6676ef7)) - 2025-06-06 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.18.0
 
 ### Minor Changes

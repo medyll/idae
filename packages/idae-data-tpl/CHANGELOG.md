@@ -1,6 +1,5 @@
 # @medyll/idae-data-tpl
 
-<<<<<<< HEAD
 ## 0.147.0
 
 ### Minor Changes
@@ -209,8 +208,6 @@
   - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
   - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.139.0
 
 ### Minor Changes

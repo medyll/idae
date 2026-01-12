@@ -1,6 +1,5 @@
 # @medyll/idae-html
 
-<<<<<<< HEAD
 ## 0.112.0
 
 ### Minor Changes
@@ -177,8 +176,6 @@
   - @medyll/idae-be@1.50.0
   - @medyll/idae-dom-events@0.110.0
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.104.0
 
 ### Minor Changes

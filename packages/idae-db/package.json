@@ -1,10 +1,6 @@
 {
   "name": "@medyll/idae-db",
-<<<<<<< HEAD
   "version": "0.116.0",
-=======
-  "version": "0.108.0",
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
   "description": "@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.",
   "scripts": {
     "dev": "vite dev",

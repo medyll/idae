@@ -1,6 +1,5 @@
 # @medyll/idae-be
 
-<<<<<<< HEAD
 ## 1.57.0
 
 ### Minor Changes
@@ -1193,8 +1192,6 @@
   - chore(npm): publishing ([61c8a9b](https://github.com/medyll/idae/commit/61c8a9be6c9bdae96aee021a17fb792fe4ea47ef)) - 2024-07-10 by @medyll
   - chore(idae-be): initial commit ([0acd550](https://github.com/medyll/idae/commit/0acd550a6333d76d07155d4fce730d0e0bdb44cc)) - 2024-07-10 by @medyll
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 1.49.0
 
 ### Minor Changes

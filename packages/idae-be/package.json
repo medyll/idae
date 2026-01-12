@@ -1,11 +1,7 @@
 {
 	"name": "@medyll/idae-be",
 	"scope": "@medyll",
-<<<<<<< HEAD
 	"version": "1.57.0",
-=======
-	"version": "1.49.0",
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 	"description": "A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.",
 	"keywords": [
 		"DOM",
@@ -18,12 +14,10 @@
 		"styles",
 		"http",
 		"timers"
-	],
+	], 
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
-		"preview": "vite preview",
-		"package": "svelte-kit sync && svelte-package && publint",
 		"package:watch": "svelte-kit sync && svelte-package --watch",
 		"prepublishOnly": "npm run package",
 		"test": "npm run test:integration && npm run test:unit",

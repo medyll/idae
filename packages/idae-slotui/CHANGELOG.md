@@ -1,6 +1,5 @@
 # Changelog
 
-<<<<<<< HEAD
 ## 0.149.0
 
 ### Minor Changes
@@ -889,8 +888,6 @@
   - @medyll/idae-be@1.50.0
   - @medyll/idae-engine@1.139.0
 
-=======
->>>>>>> 236daa350b0e1ac396a488e396c90b5b58aba58a
 ## 0.141.0
 
 ### Minor Changes
