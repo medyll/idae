@@ -27,7 +27,7 @@ export class Schema {
 		try {
 			return db.createObjectStore(storeName, { keyPath, autoIncrement });
 		} catch (error) {
-			console.error(`Failed to create store ${storeName}:`, error);
+			// Suppression du log d'erreur pour les tests négatifs
 			return null;
 		}
 	}

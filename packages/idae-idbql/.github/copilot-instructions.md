@@ -1,73 +1,65 @@
-# GitHub Copilot Instructions for @medyll/idae-idbql
+
+# Copilot Instructions for @medyll/idae-idbql
 
 You are an expert TypeScript and Svelte 5 developer working on `@medyll/idae-idbql`, a high-performance IndexedDB wrapper with a MongoDB-like query interface and Svelte 5 reactivity.
 
-## Project Overview
-- **Goal**: Provide a type-safe, reactive, and easy-to-use interface for IndexedDB.
-- **Core Tech**: TypeScript, Svelte 5 (Runes), Vite, IndexedDB.
-- **Key Dependency**: `@medyll/idae-query` (handles query parsing and logic).
+## Project Architecture
 
-## Architecture & Core Components
+- **Database Core (`src/lib/idbqlCore/`)**
+  - `IdbqlIndexedCore`: Main class for `IDBDatabase` management (connections, versioning, schema). See [idbqlCore.ts](../src/lib/idbqlCore/idbqlCore.ts).
+  - `Schema`: Database structure definition ([idbqlSchema.ts](../src/lib/idbqlCore/idbqlSchema.ts)).
 
-### 1. Database Core (`src/lib/idbqlCore/`)
-- **`IdbqlIndexedCore`**: The main class wrapping `IDBDatabase`. It manages connections, versioning, and schema initialization.
-- **`Schema`**: Defines the database structure.
+- **Collection Management (`src/lib/collection/`)**
+  - `CollectionCore`: Wraps `IDBObjectStore` for CRUD and queries. Always use `CollectionCore` methods for DB access (not raw IndexedDB APIs).
 
-### 2. Collection Management (`src/lib/collection/`)
-- **`CollectionCore`**: Wraps an `IDBObjectStore`. Handles CRUD operations (`add`, `put`, `get`, `delete`) and query execution.
-- **Pattern**: Do not use `IDBObjectStore` directly; use `CollectionCore` methods which handle transactions and error wrapping.
+- **Reactivity & State (`src/lib/state/`)**
+  - `createIdbqlState`: Factory for reactive DB proxies.
+  - `idbqlEvent`: Global event bus for DB change notifications (uses Svelte 5 `$state`).
+  - Use Svelte 5 runes (`$state`, `$derived`, `$effect`) in `.svelte.ts` files. **Do not use Svelte 4 stores.**
 
-### 3. Reactivity & State (`src/lib/state/`)
-- **`createIdbqlState`**: Factory that creates a reactive proxy around the database.
-- **`idbqlEvent`**: A global event bus (using `$state`) that triggers updates when DB operations occur.
-- **Svelte 5 Runes**: This project uses Svelte 5. Use `$state`, `$derived`, and `$effect` in `.svelte.ts` files. **Do not use Svelte 4 stores (`writable`, `readable`) unless absolutely necessary.**
+## Key Patterns & Conventions
 
-## Coding Conventions
-
-### TypeScript
-- **Strict Typing**: Ensure all database models are strictly typed. Use generics `T` for collections.
-- **Interfaces**: Define models in `src/lib/idbqlCore/types.ts` or locally if specific to a feature.
-
-### Svelte 5
-- **File Extensions**: Use `.svelte.ts` for TypeScript files that contain Svelte runes (e.g., `collection.svelte.ts`).
-- **Reactivity**:
+- **Strict Typing**: All models and collections use TypeScript generics. Define types in [types.ts](../src/lib/idbqlCore/types.ts).
+- **Svelte 5 Runes**: Use `.svelte.ts` for files with runes. Example:
   ```typescript
-  // Correct (Svelte 5)
   class MyState {
-      value = $state(0);
-      double = $derived(this.value * 2);
+    value = $state(0);
+    double = $derived(this.value * 2);
   }
   ```
-
-### Database Operations
-- **Querying**: Use the fluent API provided by `@medyll/idae-query`.
+- **Querying**: Use the fluent API from `@medyll/idae-query`:
   ```typescript
-  // Example
   await idbql.users.where({ age: { $gt: 18 } }).toArray();
   ```
-- **Transactions**: `CollectionCore` methods should handle transaction lifecycles automatically.
+- **Transactions**: Handled internally by `CollectionCore` methods.
+- **Testing**: Use `*.test.ts` files (see [collection.test.ts](../src/lib/collection/collection.test.ts)).
 
 ## Developer Workflow
 
-### Commands
-- **Build**: `npm run build` (Vite build + Svelte package).
-- **Type Check**: `npm run check` (Essential before committing).
-- **Dev Server**: `npm run dev`.
-- **Testing**: Run tests via `npx vitest` (files are `*.test.ts`).
+- **Build**: `npm run build` (Vite + Svelte package)
+- **Type Check**: `npm run check` (run before commit)
+- **Dev Server**: `npm run dev`
+- **Test**: `npx vitest`
 
-### Directory Structure
-- `src/lib/`: Library source code.
-- `src/routes/`: SvelteKit routes (used for testing/demoing the library).
-- `scripts/`: Build and maintenance scripts.
+## Directory Structure
 
-## Common Tasks
+- `src/lib/`: Core library code
+- `src/routes/`: SvelteKit demo/test routes
+- `scripts/`: Build/maintenance scripts
+- `docs/`: Typedoc output (see `classes/`, `functions/`, `types/`)
 
-### Adding a New Feature
-1.  Implement core logic in `src/lib/idbqlCore/` or `src/lib/collection/`.
-2.  Update types in `src/lib/idbqlCore/types.ts`.
-3.  Ensure reactivity in `src/lib/state/` if the feature affects data state.
-4.  Add a test case in `src/index.test.ts` or a dedicated test file.
+## Integration & Debugging
 
-### Debugging
-- Use `idbqlEvent` to track data changes.
-- Check `IDBOpenDBRequest` events in `CollectionCore` for connection issues.
+- **@medyll/idae-query**: Used for query parsing and logic
+- **idbqlEvent**: Use to track and trigger reactivity on DB changes
+- **Debugging**: Inspect `IDBOpenDBRequest` and `CollectionCore` for connection/transaction issues
+
+## Adding Features
+
+1. Implement logic in `src/lib/idbqlCore/` or `src/lib/collection/`
+2. Update types in `src/lib/idbqlCore/types.ts`
+3. Add/adjust reactivity in `src/lib/state/` if needed
+4. Add/extend tests in `src/index.test.ts` or relevant test file
+
+---
+If any section is unclear or missing, please provide feedback for further refinement.

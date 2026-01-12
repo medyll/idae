@@ -125,6 +125,7 @@ export class CollectionState<T> {
 
 	/* READ OPERATIONS */
 
+
 	/**
 	 * Performs a "where" query on the collection.
 	 * @param {Where<T>} qy - The "where" query.

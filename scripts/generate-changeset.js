@@ -411,8 +411,7 @@ ${summary}
     }
 
     // Summary
-    console.log(
-      chalk.greenBright.bold(`\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.`),
+    console.log( `\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.` 
     );
   }
 }

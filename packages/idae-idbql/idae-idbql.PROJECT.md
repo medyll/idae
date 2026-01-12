@@ -22,10 +22,66 @@
 -   **Svelte 5 Runes**: Built using Svelte 5's reactive primitives (`$state`, `$effect`, etc.).
 -   **TypeScript Support**: Full type inference for models and query results.
 
+
 ## Developer Workflow
 -   **Build**: `npm run build` (uses Vite + svelte-package).
--   **Test**: `npm run check` (TypeScript check). *Note: Add unit tests if available.*
--   **Dev**: `npm run dev` (starts Vite dev server).
+-   **Type Check**: `npm run check` (TypeScript check, à lancer avant commit).
+-   **Dev**: `npm run dev` (démarre le serveur Vite).
+-   **Test**: `npx vitest` (voir les fichiers `*.test.ts`).
+-   **Backlog & Sprints**: Voir `backlog.md` et `/project-docs/sprints/` pour la planification et le suivi.
+
+## Usage Examples
+
+```typescript
+import { createIdbqDb } from '@medyll/idae-idbql';
+
+const model = {
+	users: { keyPath: '++id', ts: {} as User },
+	messages: { keyPath: '++id, chatId', ts: {} as Message }
+};
+
+const idbqStore = createIdbqDb(model, 1);
+const { idbql } = idbqStore.create('myDb');
+
+// Query
+const users = await idbql.users.where({ age: { $gt: 18 } }).toArray();
+```
+
+## Versioning & Migrations
+
+Pour changer le schéma ou migrer les données :
+
+```typescript
+const idbqStore = createIdbqDb(myModel, 2);
+const { idbDatabase } = idbqStore.create('myDb', {
+	upgrade(oldVersion, newVersion, transaction) {
+		if (oldVersion < 2) {
+			const userStore = transaction.objectStore('users');
+			userStore.createIndex('emailIndex', 'email', { unique: true });
+		}
+	},
+});
+```
+
+## Error Handling
+
+```typescript
+try {
+	await idbql.users.add({ username: 'existing_user' });
+} catch (error) {
+	// Gestion fine des erreurs IndexedDB
+}
+```
+
+## Testing Philosophy
+
+- Les tests unitaires sont dans `*.test.ts` (voir `src/lib/collection/collection.test.ts`).
+- Ciblez les méthodes critiques (CRUD, requêtes complexes, réactivité).
+- Utilisez `fake-indexeddb` pour simuler IndexedDB côté Node.
+
+## Liens Utiles
+- [backlog.md](backlog.md)
+- [Sprints](project-docs/sprints/)
 
 ## Dependencies
 -   **`@medyll/idae-query`**: Core query engine.

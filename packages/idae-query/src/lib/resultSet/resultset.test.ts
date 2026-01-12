@@ -1,7 +1,7 @@
 import { describe, beforeEach, it, expect } from "vitest";
-import { getResultset } from "./resultset.js";
+import { getResultSet } from "./resultset.js";
 
-describe("getResultset", () => {
+describe("getResultSet", () => {
   let data: any[];
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("getResultset", () => {
 
   it("should set options and apply sorting", () => {
     const options = { sort: { age: "asc" } };
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const result = resultSet.setOptions(options);
     delete resultSet?.groupBy;
     delete resultSet?.setOptions;
@@ -31,7 +31,7 @@ describe("getResultset", () => {
   });
 
   it("should set options and apply sorting", () => {
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const options = { sort: { age: "desc" } };
     //@ts-ignore
     const result = resultSet.setOptions(options);
@@ -49,7 +49,7 @@ describe("getResultset", () => {
   });
 
   it("should set options and apply grouping", () => {
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const options = { groupBy: "age" };
     const result = resultSet.setOptions(options);
     // expect(result).toBe(resultSet);
@@ -78,7 +78,7 @@ describe("getResultset", () => {
   });
 
   it("should sort the data in ascending order", () => {
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const sortedData = resultSet.sortBy({ age: "desc" });
     delete sortedData?.groupBy;
     delete sortedData?.setOptions;
@@ -94,7 +94,7 @@ describe("getResultset", () => {
   });
 
   it("should group the data by a single field", () => {
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const groupedData = resultSet.groupBy("age");
     expect(groupedData).toEqual({
       25: {
@@ -121,7 +121,7 @@ describe("getResultset", () => {
   });
 
   it("should get the specified page of data", () => {
-    const resultSet = getResultset(data);
+    const resultSet = getResultSet(data);
     const pageData = resultSet.getPage(2, 2);
 
     expect(pageData).toEqual([

@@ -163,7 +163,7 @@ export class CollectionCore<T = any> {
       objectStoreRequest.onsuccess = () => {
         idbqlEvent.registerEvent("delete", {
           collection: this._store,
-          data: keyPathValue,
+          data: { [this.keyPath]: keyPathValue },
           keyPath: this.keyPath,
         });
         resolve(true);
