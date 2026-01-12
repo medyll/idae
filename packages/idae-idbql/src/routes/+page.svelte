@@ -1,63 +1,11 @@
 
-<svelte:options runes    />
-<script lang="ts">     
-	import {  idbqlState } from './example.js';
-	import { onMount } from 'svelte'; 
- 
- 
+<script lang="ts">
+  import { goto } from '$app/navigation';
+  // Redirige vers la page de démo systémique
+  goto('/demo');
+</script>
 
-  let messages = idbqlState.messages;
- 
-  let results =  messages?.where({chatId:{eq:'35'}})
-   
-
-  /* let all = $derived(messages.getAll());
-  let grp = $derived(messages.getAll().groupBy('chatId')); */
-
-
-  // const state = createState(results);
- $effect(() => {
-       messages.update(3,{chatId:'!!!.........'+Math.random()+'..........',content:'red'});
-       //messages.delete(1)
-       messages.add({chatId:'24',content:'bfgdg'});
-       messages.add({chatId:'35',content:'bfgdg'}); 
-
-        let ti = setInterval(() => { 
-             messages.update(7,{content:'35'+Math.random()+'..........' }); 
-        }, 5000);
-        /* let tis = setInterval(() => { 
-            messages.update(7,{content: Math.random()}); 
-        }, 2000); */
-    
-        return () => {
-          clearInterval(ti);
-          /* clearInterval(tis); */
-        }
-    });
-
-     async function gt() {
-        /* await dbase.chat.add({chatId:'2',title:'name'});
-        await dbase.chat.add({chatId:'19',title:'scored'});
-        await dbase.chat.add({chatId:'35',title:'bfgdg'}); */
-        // a = await dbase.chat.where({title: {'eq':'nein'}}) 
-        // b = await dbase.messages.where({content: {'eq':'bfgdg'}}) 
-     }
-/* $inspect(state)
-$inspect(users) */
-/* $inspect(state.state) */
-// $inspect(messages.getOne(2)?.chatId);
-// $inspect(results)
-/*$inspect(all)
-$inspect(grp) */
-</script> 
-{#each (messages?.getAll() ?? []) as aa}
-{aa.id} {aa.chatId} {aa.content}  <br />
-{/each}
-<!-- {messages.getAll()} -->
-<!-- <hr />
-{messages.getOne(3)?.chatId}
-<hr />
-{messages.get(2)[0]?.content}
+<h1>Redirection vers la démo…</h1>
 <hr /> 
 all <br />
 {#each (all ?? []) as aa}

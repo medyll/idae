@@ -39,7 +39,6 @@ const exampleModel: IdbqModel = {
 	}
 } as const;
 
+// Ce fichier sert d'exemple typé pour les tests/démo, il n'est plus importé par défaut dans les pages.
 const idbqStore = createIdbqDb(exampleModel, 3);
-// export const dbase = idbqStore.create("oneDatabase");
-// or
 export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('oneDatabase');
