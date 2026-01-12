@@ -111,7 +111,7 @@ async function deleteNote(id: number) {
       </li>
     {/each}
   </ul>
-  <form on:submit={e => { e.preventDefault(); addClient(); }} style="margin-top:1em">
+  <form onsubmit={e => { e.preventDefault(); addClient(); }} style="margin-top:1em">
     <input bind:value={newClient.name} placeholder="Nom du client" required />
     <input bind:value={newClient.email} placeholder="Email" required />
     <button type="submit">Ajouter client</button>
@@ -128,7 +128,7 @@ async function deleteNote(id: number) {
       </li>
     {/each}
   </ul>
-  <form on:submit={e => { e.preventDefault(); addNote(); }} style="margin-top:1em">
+  <form onsubmit={e => { e.preventDefault(); addNote(); }} style="margin-top:1em">
     <input bind:value={newNote.content} placeholder="Contenu de la note" required />
     <button type="submit">Ajouter note</button>
   </form>
