@@ -2,7 +2,7 @@
 	import { Button, openWindow, type Props } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$components/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema';
-	import CrudCollectionList from './CollectionListMenu.svelte';
+	import CrudDataList from './DataListMenu.svelte';
 
 	interface CrudZoneProps {
 		collection: string;
@@ -17,7 +17,7 @@
 
 <div style="max-height:100%;height:350px;min-width:750px; {style}" class="flex border">
 	<div class="w-48 border">
-		<CrudCollectionList {collection} target="red" />
+		<CrudDataList {collection} target="red" />
 	</div>
 	<div data-target-zone="red">ss</div>
 </div>

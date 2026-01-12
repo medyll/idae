@@ -61,14 +61,14 @@ export const idbqlState = createIdbqDb(schemeModelDb);
 
 ```svelte
 <script lang="ts">
-  import { CrudZone, CreateUpdate, CollectionList } from '@medyll/idae-machine';
+  import { CrudZone, CreateUpdate, DataList } from '@medyll/idae-machine';
 </script>
 
 <!-- Full CRUD interface -->
 <CrudZone collection="agents" />
 
 <!-- Or compose individually -->
-<CollectionList collection="agents" />
+<DataList collection="agents" />
 <CreateUpdate collection="agents" mode="create" />
 ```
 
@@ -80,10 +80,10 @@ Unified CRUD interface with sidebar list and detail editing.
 <CrudZone collection="agents" style="height: 600px; min-width: 750px" />
 ```
 
-### `<CollectionList>`
+### `<DataList>`
 Displays collection records as grid with click-to-edit.
 ```svelte
-<CollectionList 
+<DataList 
   collection="agents"
   displayMode="grid"
   where={{ active: { $eq: true } }}

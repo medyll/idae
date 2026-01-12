@@ -1,7 +1,7 @@
-<!-- CollectionList.svelte - Version initiale adaptée selon README.md -->
+<!-- DataList.svelte - Version initiale adaptée selon README.md -->
 <script lang="ts">
 	/**
-	 * Composant CollectionList (Svelte 5)
+	 * Composant DataList (Svelte 5)
 	 * Props : collection, displayMode, where
 	 * TODO : intégrer la logique de filtrage, affichage grid/list, gestion des clics
 	 */
@@ -18,7 +18,7 @@
 	} = $props();
 </script>
 
-<div class="collection-list" data-mode={displayMode}>
+<div class="data-list" data-mode={displayMode}>
 	<h2>{collection} ({displayMode})</h2>
 	<div class={displayMode === 'grid' ? 'grid' : 'list'}>
 		{#each items as item, idx}
@@ -32,7 +32,7 @@
 </div>
 
 <style>
-	.collection-list {
+	.data-list {
 		padding: 1rem;
 	}
 	.grid {

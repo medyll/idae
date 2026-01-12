@@ -29,10 +29,10 @@ CrudZone now uses CrudService for item listing and selection.
 - All event handlers and reactivity updated to Svelte 5 idioms.
 - Commit: "Full Svelte 5 refactor: CrudZone.svelte now uses $props, $state, $derived, and Svelte 5 idioms throughout"
 
-## Svelte 5 refactor: CollectionList.svelte (Jan 11, 2026)
+## Svelte 5 refactor: DataList.svelte (Jan 11, 2026)
 
 - Refactored to use $props for props, Svelte 5 event idioms, and removed legacy export let.
-- Commit: "Refactor CollectionList.svelte to Svelte 5: use $props, Svelte 5 event idioms, and remove legacy export let"
+- Commit: "Refactor DataList.svelte to Svelte 5: use $props, Svelte 5 event idioms, and remove legacy export let"
 
 ## Svelte 5 refactor: CreateUpdate.svelte (Jan 11, 2026)
 
@@ -47,9 +47,9 @@ CrudZone now uses CrudService for item listing and selection.
 
 ## Integration: Svelte 5 components in main demo page (Jan 11, 2026)
 
-- Integrated CrudZone, CollectionList, CreateUpdate, and FieldValue into the main demo page (+page.svelte).
+- Integrated CrudZone, DataList, CreateUpdate, and FieldValue into the main demo page (+page.svelte).
 - Live demo now shows CRUD, list, and field value features with Svelte 5 idioms.
-- Commit: "Integrate Svelte 5 components (CrudZone, CollectionList, CreateUpdate, FieldValue) into main demo page"
+- Commit: "Integrate Svelte 5 components (CrudZone, DataList, CreateUpdate, FieldValue) into main demo page"
 
 ## Validation logic: CreateUpdate.svelte (Jan 11, 2026)
 

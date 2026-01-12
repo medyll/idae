@@ -14,7 +14,7 @@
 	import { hydrate, type Snippet } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
-	interface CollectionListProps {
+	interface DataListProps {
 		collection:     string;
 		target?:        string; // html target
 		data?:          COL;
@@ -36,7 +36,7 @@
 		where,
 		children: _children,
 		displayMode
-	}: CollectionListProps = $props();
+	}: DataListProps = $props();
 
 	let test = new IDbCollections();
 	let fieldValues = new IDbCollectionValues(collection);

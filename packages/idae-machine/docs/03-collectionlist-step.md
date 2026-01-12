@@ -1,4 +1,4 @@
-# Step 3: Initialisation of CollectionList component
+# Step 3: Initialisation of DataList component
 
 This component displays a collection in grid or list mode, as described in README.md.
 
@@ -17,4 +17,4 @@ This component displays a collection in grid or list mode, as described in READM
 - Connect to schema and CRUD workflow
 
 ---
-See src/_work/CollectionList.svelte for initial code.
+See src/_work/DataList.svelte for initial code.

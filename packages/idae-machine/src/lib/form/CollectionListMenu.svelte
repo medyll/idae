@@ -6,7 +6,7 @@
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
-	interface CollectionListMenuProps {
+	interface DataListMenuProps {
 		collection:     string;
 		target?:        string; // html target
 		data?:          COL;
@@ -16,7 +16,7 @@
 		onclick?:       (event: CustomEvent, index: number) => void;
 	}
 
-	let { collection, target, data, menuListProps, onclick, style, where }: CollectionListMenuProps = $props();
+	let { collection, target, data, menuListProps, onclick, style, where }: DataListMenuProps = $props();
 
 	let test = new IDbCollections();
 	let fieldValues = new IDbCollectionValues(collection);

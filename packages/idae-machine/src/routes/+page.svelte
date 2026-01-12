@@ -2,7 +2,7 @@
 <script lang="ts">
 import { CrudService } from '../_work/CrudService.js';
 import CrudZone from '../_work/CrudZone.svelte';
-import CollectionList from '../_work/CollectionList.svelte';
+import DataList from '../_work/DataList.svelte';
 import CreateUpdate from '../_work/CreateUpdate.svelte';
 import FieldValue from '../_work/FieldValue.svelte';
 
@@ -50,8 +50,8 @@ function cancelDeleteAgent() {
 	<button on:click={handleAddAgent}>Ajouter un agent</button>
 
 <section>
-	<h2>CollectionList</h2>
-	<CollectionList collection="agents" items={crud.list('agents')} displayMode="grid" on:click={e => handleSelectAgent(e.detail.data)} />
+	<h2>DataList</h2>
+	<DataList collection="agents" items={crud.list('agents')} displayMode="grid" on:click={e => handleSelectAgent(e.detail.data)} />
 </section>
 	<ul>
 		{#each crud.list('agents') as agent}
