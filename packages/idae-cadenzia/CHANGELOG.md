@@ -1,5 +1,24 @@
 # @medyll/idae-cadenzia
 
+## 0.103.0
+
+### Minor Changes
+
+- - chore(indexes): ([cdaca2c](https://github.com/medyll/idae/commit/cdaca2c591454911d92376b81de261d251ec5d9e)) - 2025-06-06 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - feat(améliorer): la gestion des changements d'accords avec une fonction dédiée et mise à jour des entrées d'accords ([9f58fc5](https://github.com/medyll/idae/commit/9f58fc5470ea3f0a19780fdd994e83a9d3b4a63a)) - 2024-11-19 by @medyll
+  - feat(ajouter): la gestion des informations de mesure pour les entrées d'accords ([b0641d0](https://github.com/medyll/idae/commit/b0641d0e4c236717555b6cb2a853f127092ee194)) - 2024-11-18 by @medyll
+  - feat(ajouter): des constantes musicales et améliorer la gestion des accords avec des options d'armure ([0f48cd9](https://github.com/medyll/idae/commit/0f48cd947ceabadf13a7488110c8bbdc6b32e638)) - 2024-11-16 by @medyll
+  - feat(ajouter): le composant App et les composants associés pour la visualisation des accords ([e7c9517](https://github.com/medyll/idae/commit/e7c95178e328e56f514678bed4c96015e7ef7529)) - 2024-11-16 by @medyll
+  - chore(mettre): à jour le nom du package et ajouter un script de préparation ([d01592e](https://github.com/medyll/idae/commit/d01592ea36b788c9459212899d9ce295158ff503)) - 2024-11-15 by @medyll
+  - chore(initialiser): le projet Svelte avec configuration de base et fichiers essentiels ([b29577e](https://github.com/medyll/idae/commit/b29577ed6f9a4c1de3464c1e4306bfd9fc987d10)) - 2024-11-15 by @medyll
+
 ## 0.102.0
 
 ### Minor Changes
