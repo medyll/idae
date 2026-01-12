@@ -129,28 +129,33 @@ const result = await idbql.transaction(
 );
 ```
 
-## Reactive State Management
 
-```typescript
-import { derived } from 'svelte/store';
+## Svelte 5 Reactivity: Usage & Best Practices
 
-const activeUsers = $derived(idbqlState.users.where({ isActive: true }));
-```
+`idbqlState` expose un state réactif Svelte 5 ($state) : toute modification (add, update, delete…) se propage automatiquement à toutes les requêtes (`where`, `groupby`, `sort`, etc.) utilisées dans un `$derived` ou `$effect`.
 
-## Integration with Svelte
+### Exemple d'usage réactif dans un composant Svelte 5
 
 ```svelte
-<script>
-import { derived } from 'svelte/store';
-import { idbqlState } from './store';
+<script lang="ts">
+  // Importez idbqlState depuis votre store
+  import { idbqlState } from './store';
 
-const messages = $derived(idbqlState.messages.where({ chatId: "123" }));
+  // Utilisez $derived pour obtenir une liste réactive
+  // Toute modification de la base (ajout, suppression, update) mettra à jour $activeUsers automatiquement
+  const activeUsers = $derived(() => idbqlState.users.where({ isActive: true }));
 </script>
 
-{#each $messages as message}
-  <p>{message.content}</p>
+<h2>Utilisateurs actifs</h2>
+{#each $activeUsers as user}
+  <p>{user.name}</p>
 {/each}
 ```
+
+### Notes importantes
+- Les méthodes `where`, `groupby`, `sort`, etc. sont synchrones : elles opèrent toujours sur le snapshot courant du state.
+- Pour bénéficier de la réactivité, utilisez-les dans un `$derived` ou `$effect` Svelte 5.
+- Il n'est pas nécessaire d'utiliser de store Svelte 4 : tout est géré par le $state natif Svelte 5.
 
 ## Versioning and Migrations
 
