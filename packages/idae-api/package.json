@@ -32,27 +32,28 @@
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
-	"tshy": {
-		"dialects": [
-			"esm"
-		]
-	},
-	"dependencies": {
-		"@typegoose/auto-increment": "^4.13.0",
-		"compression": "^1.7.4",
-		"cors": "^2.8.5",
-		"express": "^5.1.0",
-		"express-rate-limit": "^7.1.5",
-		"helmet": "^7.2.0",
-		"jsonwebtoken": "^9.0.2",
-		"mongoose": "^8.15.1",
-		"mongoose-sequence": "^6.0.1",
-		"qs": "^6.14.0",
-		"sequelize": "^6.37.7"
-	},
+	   "tshy": {
+		   "dialects": [
+			   "esm"
+		   ]
+	   },
+	   "dependencies": {
+		   "@medyll/idae-db": "workspace:*",
+		   "@medyll/idae-prettier-config": "workspace:*",
+		   "compression": "^1.7.4",
+		   "cors": "^2.8.5",
+		   "express": "^5.1.0",
+		   "express-rate-limit": "^7.1.5",
+		   "helmet": "^7.2.0",
+		   "jsonwebtoken": "^9.0.2",
+		   "mongoose": "^8.15.1",
+		   "mongoose-sequence": "^6.0.1",
+		   "qs": "^6.14.0",
+		   "sequelize": "^6.37.7"
+	   },
 	"devDependencies": {
-		"@medyll/idae-db": "^0.116.0",
-		"@medyll/idae-prettier-config": "next",
+		"@medyll/idae-db": "workspace:*",
+		"@medyll/idae-prettier-config": "workspace:*",
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/kit": "^2.21.2",
 		"@sveltejs/package": "^2.3.11",

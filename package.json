@@ -10,6 +10,8 @@
     "package-all": "npm run package-all:pre && npm run prepack --workspaces --if-present && npm run package --workspaces --if-present",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify"
+    ,
+    "verify:workspace-deps": "node scripts/verify-workspace-deps.js"
   },
   "config": {
     "commitizen": {

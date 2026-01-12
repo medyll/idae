@@ -31,7 +31,6 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "^1.2.1",
 		"@sveltejs/adapter-auto": "^6.0.0",
 		"@sveltejs/kit": "^2.20.7",
 		"@sveltejs/package": "^2.3.11",
@@ -46,6 +45,7 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"@medyll/idae-query": "^0.147.0"
+		"@medyll/idae-prettier-config": "workspace:*",
+		"@medyll/idae-query": "workspace:*"
 	}
 }
