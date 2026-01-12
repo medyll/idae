@@ -1,37 +1,30 @@
-<svelte:options runes />
+
+
 <script module lang="ts">
 import type { IdbqModel } from '$lib/idbqlCore/types.js';
 
-export type Chat = {
-  id?:              number;
-  chatId?:          string;
-  title?:           string;
-  models?:          string[];
-  created_at?:      Date;
-  dateLastMessage?: Date;
-  context?:         number[];
+export type Client = {
+  id?: number;
+  name: string;
+  email: string;
 };
 
-export type ChatMessage = {
-  id?:        string;
-  chatId:     string;
-  messageId?: string;
-  content?:   string;
-  images?:    string[];
-  status?:    'done' | 'sent' | 'streaming' | 'error';
-  context?:   number[];
-  model?:     string;
+export type Note = {
+  id?: number;
+  clientId: number;
+  content: string;
+  date: Date;
 };
 </script>
+
 <script lang="ts">
-import { onMount } from 'svelte';
+import { state, derived, effect } from 'svelte';
 import { createIdbqDb } from '$lib/idbqlCore/idbqlCore.js';
 
-
 const demoModel: IdbqModel = {
-  messages: {
-    keyPath: '++id, chatId, created_at',
-    ts:      {} as ChatMessage,
+  clients: {
+    keyPath: '++id',
+    ts:      {} as Client,
     model:   {},
     template: {
       index:        '',
@@ -40,10 +33,10 @@ const demoModel: IdbqModel = {
       fks:          {}
     }
   },
-  chat:     {
-    keyPath:  '&chatId, created_at, dateLastMessage',
-    ts:       {} as Chat,
-    model:    {},
+  notes: {
+    keyPath: '++id, clientId',
+    ts:      {} as Note,
+    model:   {},
     template: {
       index:        '',
       presentation: '',
@@ -53,108 +46,92 @@ const demoModel: IdbqModel = {
   }
 } as const;
 
-const db = createIdbqDb(demoModel, 3);
+const db = createIdbqDb(demoModel, 1);
 const { idbql, idbqlState } = db.create('demo-db');
 
 // --- FAKES ---
-const fakeChats = [
-  { chatId: '1', title: 'General', created_at: new Date(), dateLastMessage: new Date() },
-  { chatId: '2', title: 'Support', created_at: new Date(), dateLastMessage: new Date() },
+const fakeClients = [
+  { name: 'Alice', email: 'alice@example.com' },
+  { name: 'Bob', email: 'bob@example.com' },
 ];
-const fakeMessages = [
-  { chatId: '1', content: 'Hello from Alice', status: 'done' },
-  { chatId: '2', content: 'Hi from Bob', status: 'sent' },
-  { chatId: '1', content: 'Hey from Charlie', status: 'streaming' },
+const fakeNotes = [
+  { clientId: 1, content: 'Premier contact', date: new Date() },
+  { clientId: 2, content: 'Appel téléphonique', date: new Date() },
 ];
 
-// --- INIT ---
-onMount(async () => {
+effect(async () => {
   // Clean DB for demo
-  for (const c of await idbql.chat.getAll()) await idbql.chat.delete(c.chatId);
-  for (const m of await idbql.messages.getAll()) await idbql.messages.delete(m.id);
+  for (const c of await idbql.clients.getAll()) await idbql.clients.delete(c.id);
+  for (const n of await idbql.notes.getAll()) await idbql.notes.delete(n.id);
   // Insert fakes
-  for (const c of fakeChats) await idbql.chat.put(c);
-  for (const m of fakeMessages) await idbql.messages.put(m);
+  for (const c of fakeClients) await idbql.clients.put(c);
+  for (const n of fakeNotes) await idbql.notes.put(n);
 });
 
-// --- REACTIVITE ---
-let selectedUserId = $state(1);
-let newUser = $state({ name: '', isActive: true });
-let newMessage = $state({ content: '' });
+let selectedClientId = state(1);
+let newClient = state({ name: '', email: '' });
+let newNote = state({ content: '', date: '' });
 
-const activeUsers = $derived((): Chat[] => idbqlState.chat.getAll().filter((c: Chat) => c.title && c.title.length > 0));
-const userMessages = $derived((): ChatMessage[] => idbqlState.messages.getAll().filter((m: ChatMessage) => m.chatId === String(selectedUserId)));
+const allClients = derived(() => idbqlState.clients.getAll());
+const clientNotes = derived(() => idbqlState.notes.getAll().filter((n: Note) => n.clientId === selectedClientId));
 
-async function addUser() {
-  if (!newUser.name) return;
-  const chatId = Date.now().toString();
-  await idbql.chat.put({ chatId, title: newUser.name, created_at: new Date(), dateLastMessage: new Date() });
-  newUser.name = '';
-  newUser.isActive = true;
+async function addClient() {
+  if (!newClient.name || !newClient.email) return;
+  await idbql.clients.put({ name: newClient.name, email: newClient.email });
+  newClient.name = '';
+  newClient.email = '';
 }
-async function deleteUser(chatId: string) {
-  await idbql.chat.delete(chatId);
-  if (String(selectedUserId) === chatId) selectedUserId = 0;
+async function deleteClient(id: number) {
+  await idbql.clients.delete(id);
+  if (selectedClientId === id) selectedClientId = 0;
 }
-async function addMessage() {
-  if (!newMessage.content || !selectedUserId) return;
-  await idbql.messages.put({ chatId: String(selectedUserId), content: newMessage.content, status: 'done' });
-  newMessage.content = '';
+async function addNote() {
+  if (!newNote.content || !selectedClientId) return;
+  await idbql.notes.put({ clientId: selectedClientId, content: newNote.content, date: new Date() });
+  newNote.content = '';
 }
-async function deleteMessage(id: string) {
-  await idbql.messages.delete(id);
+async function deleteNote(id: number) {
+  await idbql.notes.delete(id);
 }
 </script>
 
+
 <h1>Demo IDAE-IDBQL Svelte 5</h1>
 
-
 <section>
-  <h2>Chats (réactif)</h2>
+  <h2>Clients (réactif)</h2>
   <ul>
-    {#each activeUsers() as chat}
+    {#each allClients() as client}
       <li>
-        <strong>{(chat as Chat).title}</strong>
-        <button onclick={() => deleteUser((chat as Chat).chatId!)}>Supprimer</button>
-        <button onclick={() => selectedUserId = Number((chat as Chat).chatId!)} disabled={String(selectedUserId) === (chat as Chat).chatId}>
-          Voir messages
+        <strong>{client.name}</strong> ({client.email})
+        <button onclick={() => deleteClient(client.id!)}>Supprimer</button>
+        <button onclick={() => selectedClientId = client.id!} disabled={selectedClientId === client.id}>
+          Voir notes
         </button>
       </li>
     {/each}
   </ul>
-  <form onsubmit={e => { e.preventDefault(); addUser(); }} style="margin-top:1em">
-    <input bind:value={newUser.name} placeholder="Nom du chat" required />
-    <button type="submit">Ajouter chat</button>
+  <form on:submit={e => { e.preventDefault(); addClient(); }} style="margin-top:1em">
+    <input bind:value={newClient.name} placeholder="Nom du client" required />
+    <input bind:value={newClient.email} placeholder="Email" required />
+    <button type="submit">Ajouter client</button>
   </form>
 </section>
 
 <section style="margin-top:2em">
-  <h2>Messages du chat sélectionné (réactif)</h2>
-  <select bind:value={selectedUserId}>
-    <option value={0}>-- Choisir un chat --</option>
-    {#each activeUsers() as chat}
-      <option value={(chat as Chat).chatId}>{(chat as Chat).title}</option>
-    {/each}
-  </select>
+  <h2>Notes du client sélectionné</h2>
   <ul>
-    {#each userMessages() as msg}
+    {#each clientNotes() as note}
       <li>
-        {(msg as ChatMessage).content}
-        <button onclick={() => deleteMessage((msg as ChatMessage).id!)}>Supprimer</button>
+        <span>{note.content}</span> <em>({note.date && new Date(note.date).toLocaleString()})</em>
+        <button onclick={() => deleteNote(note.id!)}>Supprimer</button>
       </li>
     {/each}
   </ul>
-  <form onsubmit={e => { e.preventDefault(); addMessage(); }} style="margin-top:1em">
-    <input bind:value={newMessage.content} placeholder="Nouveau message" required />
-    <button type="submit" disabled={!selectedUserId}>Envoyer</button>
+  <form on:submit={e => { e.preventDefault(); addNote(); }} style="margin-top:1em">
+    <input bind:value={newNote.content} placeholder="Contenu de la note" required />
+    <button type="submit">Ajouter note</button>
   </form>
 </section>
 
-<style>
-  h1 { margin-bottom: 1.5em; }
-  section { border: 1px solid #ccc; padding: 1em; border-radius: 8px; }
-  ul { list-style: none; padding: 0; }
-  li { margin-bottom: 0.5em; }
-  button { margin-left: 0.5em; }
-  form input { margin-right: 0.5em; }
-</style>
+
