@@ -1,7 +1,7 @@
 import { describe, beforeEach, it, expect } from "vitest";
-import { getResultset } from "./resultset.js";
+import { getResultSet } from "./resultset.js";
 
-describe("getResultset", () => {
+describe("getResultSet", () => {
   let data: any[];
 
   beforeEach(() => {

@@ -20,7 +20,7 @@ npm install @medyll/idae-query
 Here's a quick example to get you started:
 
 ```typescript
-import { getResultset } from '@medyll/idae-query';
+import { getResultSet } from '@medyll/idae-query';
 
 const data = [
   { id: 1, name: 'John', age: 25, metadata: { order: 1 } },
@@ -29,7 +29,7 @@ const data = [
   { id: 4, name: 'Alice', age: 40, metadata: { order: 4 } },
 ];
 
-const resultSet = getResultset(data);
+const resultSet = getResultSet(data);
 
 // Sorting
 const sortedData = resultSet.sortBy({ age: 'asc' });
@@ -55,38 +55,38 @@ console.log(pageData);
 
 ### Multi-criteria Sorting
 ```typescript
-const resultSet = getResultset(data);
+const resultSet = getResultSet(data);
 const sorted = resultSet.sortBy({ age: 'asc', name: 'desc' });
 // Tri d'abord par age croissant, puis par name décroissant
 ```
 
 ### Grouping by Nested Property
 ```typescript
-const resultSet = getResultset(data);
+const resultSet = getResultSet(data);
 const grouped = resultSet.groupBy('metadata.order');
 // Regroupe par la propriété imbriquée metadata.order
 ```
 
 ### Pagination
 ```typescript
-const resultSet = getResultset(data);
+const resultSet = getResultSet(data);
 const page1 = resultSet.getPage(1, 2); // Page 1, 2 éléments
 const page2 = resultSet.getPage(2, 2); // Page 2, 2 éléments
 ```
 
 ### Combined Example
 ```typescript
-const resultSet = getResultset(data)
+const resultSet = getResultSet(data)
   .sortBy({ age: 'asc' })
   .groupBy('age');
 const page = resultSet.getPage(1, 2);
 ```
 
-All operators are used via the main API (`getResultset` or `Query`).
+All operators are used via the main API (`getResultSet` or `Query`).
 
-### Example with getResultset
+### Example with getResultSet
 ```typescript
-import { getResultset } from '@medyll/idae-query';
+import { getResultSet } from '@medyll/idae-query';
 
 const data = [
   { id: 1, name: 'John', age: 25 },
@@ -94,7 +94,7 @@ const data = [
   { id: 3, name: 'Bob', age: 35 },
 ];
 
-const resultSet = getResultset(data);
+const resultSet = getResultSet(data);
 
 // eq
 const eqResult = resultSet.where({ age: { eq: 30 } }); // [{ id: 2, name: 'Jane', age: 30 }]
