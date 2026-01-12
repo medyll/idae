@@ -45,8 +45,8 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "@medyll/idae-be": "workspace:^",
-    "@medyll/idae-dom-events": "workspace:^"
+    "@medyll/idae-be": "next",
+    "@medyll/idae-dom-events": "next"
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",

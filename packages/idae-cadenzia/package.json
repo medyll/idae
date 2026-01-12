@@ -31,8 +31,8 @@
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
     "vitest": "^3.0.9",    
-    "@medyll/idae-be": "workspace:^",
-    "@medyll/idae-prettier-config": "workspace:^"
+    "@medyll/idae-be": "next",
+    "@medyll/idae-prettier-config": "next"
   },
   "scope": "@medyll",
   "dependencies": {

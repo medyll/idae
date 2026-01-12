@@ -39,7 +39,7 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "next",
+		"@medyll/idae-prettier-config": "latest",
 		"@medyll/cssfabric": "next",
 		"@medyll/idae-be": "next",
 		"@medyll/idae-engine": "next",
