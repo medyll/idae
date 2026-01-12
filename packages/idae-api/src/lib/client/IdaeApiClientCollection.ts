@@ -26,52 +26,75 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
   async find<T extends object>(
     params?: IdaeApiClientRequestParams,
   ): Promise<T[]> {
-    return this.requestClient.doRequest<T>({
+    const response = await this.requestClient.doRequest<T[]>({
       ...this.meta,
       params,
     });
+    return await response.json();
   }
 
-  async findById<T>(id: string): Promise<Response> {
-    return this.requestClient.doRequest<T>({
+  async findById<T>(id: string): Promise<T[]> {
+    const response = await this.requestClient.doRequest<T[]>({
       ...this.meta,
       slug: id,
     });
+    return await response.json();
   }
 
-  async create<T>(body: T): Promise<Response> {
-    return this.requestClient.doRequest<T>({
+  async create<T>(body: T): Promise<T> {
+    const response = await this.requestClient.doRequest<T>({
       method: "POST",
       ...this.meta,
       body,
     });
+    return await response.json();
   }
 
-  async update<T>(id: string, body: T): Promise<Response> {
-    return this.requestClient.doRequest<T>({
+  async update<T>(id: string, body: T): Promise<T> {
+    const response = await this.requestClient.doRequest<T>({
       method: "PUT",
       ...this.meta,
       body,
       slug: id,
     });
+    return await response.json();
   }
 
-  async deleteById<T>(id: string): Promise<Response> {
-    return this.requestClient.doRequest<T>({
+  async deleteById<T>(id: string): Promise<T> {
+    const response = await this.requestClient.doRequest<T>({
       method: "DELETE",
       ...this.meta,
       slug: id,
     });
+    return await response.json();
   }
 
   async deleteManyByQuery<T>(
     params: IdaeApiClientRequestParams,
-  ): Promise<Response> {
-    return this.requestClient.doRequest<T>({
+  ): Promise<T[]> {
+    const response = await this.requestClient.doRequest<T[]>({
       method: "DELETE",
       ...this.meta,
       params,
     });
+    return await response.json();
+  }
+
+  // Stubs for missing interface methods
+  async createIndex(fieldOrSpec: unknown, options?: unknown): Promise<string> {
+    throw new Error("Not implemented");
+  }
+  async findOne<T>(params?: any): Promise<T | null> {
+    throw new Error("Not implemented");
+  }
+  async updateWhere(params?: any, update?: any): Promise<void> {
+    throw new Error("Not implemented");
+  }
+  async deleteWhere(params: any): Promise<{ deletedCount?: number }> {
+    throw new Error("Not implemented");
+  }
+  async transaction<TResult>(callback: (session: unknown) => Promise<TResult>): Promise<TResult> {
+    throw new Error("Not implemented");
   }
 }
 

@@ -59,7 +59,7 @@ class IdaeApiClientRequest {
     const response =
       (await fetch(`${baseUrl}${url}`, {
       method,
-      headers: { ...headers, ...authHeader },
+      headers: Object.assign({}, headers, authHeader) as HeadersInit,
       body: body ? JSON.stringify(body) : undefined,
       })) || {
         ok: true,

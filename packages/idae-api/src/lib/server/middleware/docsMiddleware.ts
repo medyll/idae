@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 
-// Serve Swagger UI static HTML (bundled, minimal, no CDN dependency)
+
+/**
+ * Sert la page Swagger UI (HTML statique local, sans CDN)
+ * @param {Request} req - Requête Express
+ * @param {Response} res - Réponse Express
+ */
 export function swaggerUiHandler(req: Request, res: Response) {
   const htmlPath = path.join(__dirname, "../../openApi/swagger-ui.html");
   if (fs.existsSync(htmlPath)) {
@@ -12,7 +17,11 @@ export function swaggerUiHandler(req: Request, res: Response) {
   }
 }
 
-// Serve Redoc static HTML (bundled, minimal, no CDN dependency)
+/**
+ * Sert la page Redoc (HTML statique local, sans CDN)
+ * @param {Request} req - Requête Express
+ * @param {Response} res - Réponse Express
+ */
 export function redocHandler(req: Request, res: Response) {
   const htmlPath = path.join(__dirname, "../../openApi/redoc.html");
   if (fs.existsSync(htmlPath)) {

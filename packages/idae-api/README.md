@@ -336,6 +336,41 @@ Contributions are welcome! Feel free to submit a Pull Request.
 
 ---
 
+
+---
+
+## Erreurs courantes & troubleshooting
+
+Voici quelques problèmes fréquemment rencontrés et leurs solutions rapides :
+
+- **req.idaeDb ou req.connectedCollection undefined** : la route ne correspond pas au pattern attendu ou le middleware n’est pas appliqué. Vérifie le chemin et l’ordre des middlewares.
+- **Token invalide sur route protégée** : header Authorization absent/mal formé, ou token expiré. Vérifie la config côté client et serveur.
+- **Timeout ou erreur de connexion MongoDB** : URI incorrect ou service MongoDB non démarré. Vérifie la chaîne de connexion et l’état du service.
+- **Résultat de requête vide** : mauvais nom de collection/db, ou filtre trop restrictif. Loggue les paramètres pour debug.
+- **404 ou handler non appelé** : route non enregistrée ou méthode HTTP incorrecte. Vérifie la déclaration dans routeDefinitions.ts.
+- **Mismatch de types client/serveur** : le serveur doit retourner des objets sérialisables, le client doit utiliser les bons types génériques.
+- **Middleware d’auth non appliqué partout** : chaque route protégée doit avoir requiresAuth: true et l’auth doit être activée dans la config.
+
+Pour plus de détails et de cas avancés, consulte :
+- [.github/copilot-instructions.md](.github/copilot-instructions.md)
+- [src/lib/server/middleware/README.md](src/lib/server/middleware/README.md)
+
+---
+
+## Schéma d’architecture (à compléter)
+
+```mermaid
+flowchart TD
+  Client <--> API[IdaeApi (Express)]
+  API --> MW[Middleware]
+  MW --> DB[IdaeDbAdapter (MongoDB/MySQL)]
+  API --> Auth[Auth/JWT]
+  API --> Docs[OpenAPI/Swagger]
+  MW --> MultiTenancy[TenantContext]
+```
+
+---
+
 ## License
 
 This project is licensed under the MIT License.

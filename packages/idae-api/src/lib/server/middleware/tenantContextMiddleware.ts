@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 export interface TenantContextOptions {
   /**
@@ -11,11 +11,19 @@ export interface TenantContextOptions {
   required?: boolean;
 }
 
+
 /**
- * Express middleware to inject tenant context into req.tenantId and req.tenant
- * - Extracts from req.user[tenantKey] (default: 'tenantId')
- * - Optionally enforces presence
- * - Optionally attaches a tenant filter for DB queries
+ * Middleware Express pour injecter le contexte tenant dans req.tenantId et req.tenant.
+ *
+ * - Extrait tenantId depuis req.user[tenantKey] (par défaut 'tenantId')
+ * - Peut rendre la présence du tenantId obligatoire (options.required)
+ * - Peut injecter un filtre tenant dans la collection DB si supporté
+ *
+ * @param {TenantContextOptions} options - Options de configuration (clé, obligation)
+ * @returns {(req, res, next) => void} Middleware
+ *
+ * @example
+ *   app.use(tenantContextMiddleware({ required: true }))
  */
 export function tenantContextMiddleware(options: TenantContextOptions = {}) {
   const tenantKey = options.tenantKey || "tenantId";

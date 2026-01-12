@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 
-// Serve the OpenAPI spec as JSON
+
+/**
+ * Sert le fichier OpenAPI (YAML) converti en JSON sur /openapi.json
+ * @param {Request} req - Requête Express
+ * @param {Response} res - Réponse Express
+ */
 export function openApiJsonHandler(req: Request, res: Response) {
   const openApiPath = path.join(__dirname, "../../openApi/openapi-base.yaml");
   try {

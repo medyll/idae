@@ -1,6 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { ZodSchema, ZodError } from "zod";
 
+
+/**
+ * Crée un middleware Express pour valider le body, la query ou les params via Zod.
+ *
+ * @param {object} schemas - Schémas Zod à appliquer (bodySchema, querySchema, paramsSchema)
+ * @returns {(req, res, next) => void} Middleware
+ *
+ * @example
+ *   app.use(createValidationMiddleware({ bodySchema: z.object({ ... }) }))
+ */
 export function createValidationMiddleware({
   bodySchema,
   querySchema,

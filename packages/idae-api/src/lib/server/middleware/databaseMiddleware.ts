@@ -5,6 +5,22 @@ import { randomUUID } from "crypto";
 import requestDatabaseManager from "$lib/server/engine/requestDatabaseManager.js";
 import { IdaeDb } from "@medyll/idae-db";
 
+/**
+ * idaeDbMiddleware
+ *
+ * Injecte req.idaeDb et req.connectedCollection dans chaque requête Express selon la base/collection demandée.
+ * Supporte un mode mémoire pour les tests/démo. Gère la validation des noms et la désérialisation des filtres avancés.
+ *
+ * @async
+ * @param {Request} req - Requête Express
+ * @param {Response} res - Réponse Express
+ * @param {NextFunction} next - Callback Express
+ * @returns {Promise<void>}
+ *
+ * @example
+ *   app.use('/:collectionName', idaeDbMiddleware)
+ */
+
 const inMemoryStores = new Map<string, Map<string, any>>();
 
 const getInMemoryAdapter = (dbName: string, collectionName: string) => {
@@ -46,6 +62,11 @@ const getInMemoryAdapter = (dbName: string, collectionName: string) => {
   } as any;
 };
 
+/**
+ * Middleware Express pour injecter la connexion DB et la collection dans la requête.
+ *
+ * @type {(req: Request, res: Response, next: NextFunction) => Promise<void>}
+ */
 export const idaeDbMiddleware = async (
   req: Request,
   res: Response,
@@ -53,18 +74,14 @@ export const idaeDbMiddleware = async (
 ) => {
   try {
     const { dbName, collectionName, dbUri } = requestDatabaseManager.fromReq(req);
-
     // Guard: block dangerous DB/collection names
     const forbidden = ["admin", "system", "local", "config", "test", "__proto__", "constructor", "prototype"];
     if (forbidden.includes(dbName) || forbidden.includes(collectionName)) {
       return res.status(403).json({ error: "Forbidden database or collection name" });
     }
-
     req.collectionName = collectionName;
     req.dbName = dbName;
-
     const useMemoryDb = req.app?.locals?.useMemoryDb === true || process.env.IDAE_USE_MEMORY_DB === "true";
-
     if (useMemoryDb) {
       const adapter = getInMemoryAdapter(dbName, collectionName);
       req.idaeDb = {
@@ -83,15 +100,11 @@ export const idaeDbMiddleware = async (
       }
       return next();
     }
-
     const dbOptions = req.app?.locals?.idaeDbOptions ?? {};
     req.idaeDb = IdaeDb.init(dbUri, dbOptions);
-
     // TODO: Pooling/caching could be added here
     await req.idaeDb.db("app");
-
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
-
     if (req.query.params) {
       try {
         const raw = req.query.params;

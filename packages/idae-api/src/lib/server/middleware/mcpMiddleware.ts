@@ -1,9 +1,13 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
+
 
 /**
- * Placeholder MCP middleware for future extension.
- * All MCP endpoints should require tenant context and RBAC/ABAC by default.
- * Extend this middleware to add MCP-specific logic, routing, and handlers.
+ * Middleware MCP (Model Context Protocol) - extension future.
+ *
+ * Tous les endpoints MCP doivent exiger le contexte tenant et RBAC/ABAC par défaut.
+ * Étendre ce middleware pour ajouter la logique MCP, le routage, etc.
+ *
+ * @returns {(req, res, next) => void} Middleware
  */
 export function mcpMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => {

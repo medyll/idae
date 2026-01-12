@@ -1,7 +1,9 @@
-import { createValidationMiddleware } from "./middleware/validationMiddleware";
-import { openApiJsonHandler } from "./middleware/openApiMiddleware";
-import { swaggerUiHandler, redocHandler } from "./middleware/docsMiddleware";
-import { tenantContextMiddleware } from "./middleware/tenantContextMiddleware";
+// Force l'import des types globaux (Express.Request.user)
+import '../../app.js';
+import { createValidationMiddleware } from "./middleware/validationMiddleware.js";
+import { openApiJsonHandler } from "./middleware/openApiMiddleware.js";
+import { swaggerUiHandler, redocHandler } from "./middleware/docsMiddleware.js";
+import { tenantContextMiddleware } from "./middleware/tenantContextMiddleware.js";
 // packages\idae-api\src\lib\server\IdaeApi.ts
 import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
@@ -20,11 +22,19 @@ import {
 import { AuthMiddleWare } from "$lib/server/middleware/authMiddleware.js";
 import helmet from "helmet";
 import { RouteManager } from "$lib/server/engine/routeManager.js";
-import rateLimit, { type RateLimitOptions } from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 import type { Server } from "http";
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 import qs from "qs";
 import { healthHandler, readinessHandler } from "./middleware/healthMiddleware.js";
+
+type RateLimitOptions = {
+  windowMs?: number;
+  max?: number;
+  standardHeaders?: boolean | "draft-7" | "draft-6" | "draft-8";
+  legacyHeaders?: boolean;
+  [key: string]: any;
+};
 
 interface IdaeApiOptions {
   port?: number;
@@ -155,7 +165,7 @@ class IdaeApi {
 
     this.#app.use(express.json({ limit: jsonLimit }));
     this.#app.use(express.urlencoded({ extended: true, limit: urlEncodedLimit }));
-    this.#app.use("/:collectionName", idaeDbMiddleware);
+      this.#app.use("/:collectionName", idaeDbMiddleware as any);
     
     // Do not inject tenant context middleware globally; it will be added per-route for protected routes
   }
@@ -183,7 +193,7 @@ class IdaeApi {
 
   // Add a route to Express
   private addRouteToExpress(route: RouteDefinition): void {
-    const handlers = [];
+    const handlers: any[] = [];
 
     // Add validation middleware if present
     if (route.validation) {
@@ -273,7 +283,7 @@ class IdaeApi {
 
   stop(): void {
     if (this.#serverInstance) {
-      this.#serverInstance.close((err: Error) => {
+      this.#serverInstance.close((err?: Error) => {
         if (err) {
           console.error("Error while stopping the server:", err);
         } else {

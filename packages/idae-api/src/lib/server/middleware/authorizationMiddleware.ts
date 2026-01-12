@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 
 export type Role = string;
 export type Scope = string;
@@ -9,9 +9,15 @@ export interface AuthorizationOptions {
   allowAny?: boolean; // If true, allow if any role/scope matches (default: all required)
 }
 
+
 /**
- * Express middleware to enforce RBAC/ABAC based on JWT claims (roles/scopes).
- * Usage: app.use('/admin', authorize({ requiredRoles: ['admin'] }))
+ * Middleware Express pour appliquer RBAC/ABAC sur la base des claims JWT (roles/scopes).
+ *
+ * @param {AuthorizationOptions} options - Règles d'autorisation (roles/scopes requis)
+ * @returns {(req, res, next) => void} Middleware
+ *
+ * @example
+ *   app.use('/admin', authorize({ requiredRoles: ['admin'] }))
  */
 export function authorize(options: AuthorizationOptions) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +28,7 @@ export function authorize(options: AuthorizationOptions) {
     const userRoles: string[] = Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : []);
     const userScopes: string[] = Array.isArray(user.scopes) ? user.scopes : (user.scope ? [user.scope] : []);
 
-    // Check roles
+    // Vérifie les rôles
     if (options.requiredRoles && options.requiredRoles.length > 0) {
       const hasRole = options.allowAny
         ? options.requiredRoles.some(r => userRoles.includes(r))
@@ -31,7 +37,7 @@ export function authorize(options: AuthorizationOptions) {
         return res.status(403).json({ error: 'Forbidden: missing required role' });
       }
     }
-    // Check scopes
+    // Vérifie les scopes
     if (options.requiredScopes && options.requiredScopes.length > 0) {
       const hasScope = options.allowAny
         ? options.requiredScopes.some(s => userScopes.includes(s))
