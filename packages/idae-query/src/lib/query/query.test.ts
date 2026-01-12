@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Query } from "./query.js";
+import { Operators } from '../operators/operators.js';
 
 describe("Query.where", () => {
   const data = [
@@ -111,5 +112,48 @@ describe("Query.where", () => {
       { id: 3, value: 30 },
       { id: 4, value: 30 },
     ]);
+  });
+});
+
+describe('Query - branches et custom', () => {
+  const data = [
+    { id: 1, a: 1, b: 2 },
+    { id: 2, a: 2, b: 2 },
+    { id: 3, a: 1, b: 3 },
+  ];
+
+  it('matchesField with object condition (multi-op)', () => {
+    const query = new Query(data);
+    const result = query.where({ a: { eq: 1, ne: 2 } });
+    expect([...result]).toEqual([
+      { id: 1, a: 1, b: 2 },
+      { id: 3, a: 1, b: 3 },
+    ]);
+  });
+
+  it('matchesField with primitive condition', () => {
+    const query = new Query(data);
+    const result = query.where({ b: 2 });
+    expect([...result]).toEqual([
+      { id: 1, a: 1, b: 2 },
+      { id: 2, a: 2, b: 2 },
+    ]);
+  });
+
+  it('filtrage avec opérateur custom', () => {
+    // Ajout d'un opérateur custom
+    Operators.addCustomOperator('isOne', (field, value, data) => data[field] === 1);
+    const query = new Query(data);
+    const result = query.where({ a: { isOne: true } });
+    expect([...result]).toEqual([
+      { id: 1, a: 1, b: 2 },
+      { id: 3, a: 1, b: 3 },
+    ]);
+  });
+
+  it('branches every/filters (aucun match)', () => {
+    const query = new Query(data);
+    const result = query.where({ a: { eq: 99 } });
+    expect([...result]).toEqual([]);
   });
 });

@@ -89,3 +89,63 @@ describe('Operators.filters', () => {
 		]);
 	});
 });
+
+describe('Operators - branches et custom', () => {
+	const data = [
+		{ id: 1, name: 'alpha' },
+		{ id: 2, name: 'beta' },
+		{ id: 3, name: 'alphabet' },
+	];
+
+	it('equalityComparison with wildcards *abc*', () => {
+		const result = Operators.filters('name', 'eq', '*alph*', data);
+		expect(result).toEqual([
+			{ id: 1, name: 'alpha' },
+			{ id: 3, name: 'alphabet' },
+		]);
+	});
+
+	it('equalityComparison with wildcards *abc', () => {
+		const result = Operators.filters('name', 'eq', '*bet', data);
+		expect(result).toEqual([{ id: 3, name: 'alphabet' }]);
+	});
+
+	it('equalityComparison with wildcards abc*', () => {
+		const result = Operators.filters('name', 'eq', 'alph*', data);
+		expect(result).toEqual([
+			{ id: 1, name: 'alpha' },
+			{ id: 3, name: 'alphabet' },
+		]);
+	});
+
+	it('returns empty if field does not exist', () => {
+		const result = Operators.filters('unknown', 'eq', 'test', data);
+		expect(result).toEqual([]);
+	});
+
+	it('applyOperatorToObject with multiple fields', () => {
+		const multi = [
+			{ a: 1, b: 2 },
+			{ a: 2, b: 2 },
+			{ a: 1, b: 3 },
+		];
+		const result = Operators.filters('eq', 'eq', { a: 1, b: 2 }, multi);
+		expect(result).toEqual([{ a: 1, b: 2 }]);
+	});
+
+	it('addCustomOperator and overwrite', () => {
+		let called = false;
+		Operators.addCustomOperator('custom', (field, value, data) => {
+			called = true;
+			return data[field] === value;
+		});
+		const result = Operators.filters('field', 'custom', 'x', [{ field: 'x' }, { field: 'y' }]);
+		expect(result).toEqual([{ field: 'x' }]);
+		expect(called).toBe(true);
+
+		// Overwrite
+		Operators.addCustomOperator('custom', () => false);
+		const result2 = Operators.filters('field', 'custom', 'x', [{ field: 'x' }]);
+		expect(result2).toEqual([]);
+	});
+});

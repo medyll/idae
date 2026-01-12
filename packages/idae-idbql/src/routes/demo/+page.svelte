@@ -123,7 +123,6 @@ onMount(() => {
 });
 </script>
 
-  if (!idbqlState.clients || typeof idbqlState.clients.getAll !== 'function') return [];
 
 <h1>Demo IDAE-IDBQL Svelte 5</h1>
 
@@ -137,8 +136,7 @@ onMount(() => {
     {/if}
   </span>
 </section>
-
-  if (!idbqlState.notes || typeof idbqlState.notes.getAll !== 'function') return [];
+ 
 <section>
   <h2>Clients (réactif)</h2>
   <ul>
