@@ -43,3 +43,16 @@ coverage
 .idea/prettier.xml
 .idea/vcs.xml
 .idea/inspectionProfiles/Project_Default.xml
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+

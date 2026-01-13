@@ -40,8 +40,8 @@
 		"tslib": "^2.8.1",
 		"typescript": "^5.8.3",
 		"vite": "^6.3.2",
-		"@medyll/idae-prettier-config": "next",
-		"@medyll/idae-query": "next"
+		"@medyll/idae-prettier-config": "*",
+		"@medyll/idae-query": "*"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
