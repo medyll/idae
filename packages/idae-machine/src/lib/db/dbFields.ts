@@ -1,3 +1,9 @@
+	getForge(fieldName: keyof T): IDbForge | undefined {
+		return this.#collectionValues.dbCollections.parseCollectionFieldName(
+			this.#collection,
+			String(fieldName)
+		);
+	}
 /* 
     path: D:\boulot\python\wollama\src\lib\db\dbFields.ts
  */
@@ -514,11 +520,6 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		this.dbCollections = new IDbCollections();
 	}
 
-	/**
-	 * Get the presentation string for a data object, using the collection's presentation template.
-	 * @param data The data object.
-	 * @returns The formatted presentation string.
-	 */
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
@@ -1007,5 +1008,4 @@ export class IDbFormValidate {
 		}
 	}
 
-	// Ajoutez d'autres méthodes de validation spécifiques ici
 }
