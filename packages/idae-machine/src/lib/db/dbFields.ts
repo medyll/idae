@@ -1,9 +1,4 @@
-	getForge(fieldName: keyof T): IDbForge | undefined {
-		return this.#collectionValues.dbCollections.parseCollectionFieldName(
-			this.#collection,
-			String(fieldName)
-		);
-	}
+
 /* 
     path: D:\boulot\python\wollama\src\lib\db\dbFields.ts
  */
@@ -393,9 +388,10 @@ export class IDbCollections {
 				is = is ?? fieldType;
 				break;
 			case 'fk':
-				fieldType = this.getFkFieldType(extractAfter('fk-', fieldRule));
-				is = extractedArgs?.piece;
-				break;
+				   // Pour les fk, fieldType doit rester la string d'origine (ex: 'fk-agentPrompt.id')
+				   fieldType = 'fk-' + extractAfter('fk-', fieldRule);
+				   is = extractedArgs?.piece;
+				   break;
 			case 'primitive':
 				fieldType = extractedArgs?.piece;
 				is = is ?? fieldType;
@@ -710,6 +706,16 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	#collectionValues: IDbCollectionValues<T>;
 	#data: T;
 
+       /**
+	* Returns the IDbForge metadata for a given field name.
+	* @param fieldName The field name to introspect.
+	*/
+       public getForge(fieldName: keyof T): IDbForge | undefined {
+	       return this.#collectionValues.dbCollections.parseCollectionFieldName(
+		       this.#collection,
+		       String(fieldName)
+	       );
+       }
 	constructor(collection: TplCollectionName, data: T) {
 		this.#collection = collection;
 		this.#collectionValues = new IDbCollectionValues(collection);
@@ -1009,3 +1015,4 @@ export class IDbFormValidate {
 	}
 
 }
+// (fin de fichier)

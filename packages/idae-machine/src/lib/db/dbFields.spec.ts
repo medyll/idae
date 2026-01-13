@@ -121,6 +121,7 @@ describe('IDbCollections', () => {
   it('parseCollectionFieldName returns correct IDbForge for fk', () => {
     const field = dbCollections.parseCollectionFieldName('agent', 'agentPromptId');
     expect(field).toBeDefined();
+    expect(typeof field?.fieldType).toBe('string');
     expect(field?.fieldType).toContain('fk-agentPrompt.id');
   });
 

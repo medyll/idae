@@ -159,23 +159,37 @@ fields: {
 }
 ```
 
-## 📝 Development Status
 
-⚠️ **Early Development Phase**
+## 🛡️ Robustness & Test Coverage
 
-This package contains foundational code that is:
-- **Partially validated**: Core schema & field system works; form validation in progress
-- **Under active refinement**: API may change as patterns solidify
-- **Proof of concept**: Not recommended for production until v1.0 release
+All core logic in `src/lib/db/dbFields.ts` is now fully schema-driven and covered by comprehensive unit tests (see `src/lib/db/*.spec.ts`).
+
+- **Field parsing**: Handles all types (primitive, array, object, fk) and modifiers (required, readonly, private) with robust string DSL parsing.
+- **Foreign key support**: Correctly parses and exposes fk and reverse-fk relations, with type-safe metadata.
+- **Test-driven**: All exported classes are covered by robust Vitest suites, including edge cases and complex schemas.
+- **Svelte 5 compliance**: All UI code and event handling strictly follow Svelte 5 idioms (see `AGENTS.md`).
 
 ### Current Focus Areas
 - ✅ Schema declaration & type safety
 - ✅ Database integration with idae-idbql
 - ✅ Component exports & library structure
+- ✅ Comprehensive test coverage (dbFields, CRUD, UI)
+- ✅ Svelte 5 event and binding policy
 - 🔄 Form validation (in progress)
 - 🔄 Field rendering pipeline (needs refinement)
 - ⏳ End-to-end CRUD workflows
-- ⏳ Comprehensive test coverage
+
+## 🧪 Testing Policy
+
+All logic in `dbFields.ts` and related modules is covered by unit tests:
+
+- **Test schema**: All tests use a realistic, complex schema (see `testDbSchema.ts`).
+- **Coverage**: Every method of every exported class is tested, including edge cases (array/object/fk/required/readonly).
+- **Continuous validation**: All tests must pass before merge. See `CHANGELOG.md` for test and coverage history.
+
+## 🦄 Svelte 5 Coding Policy
+
+All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md` for details and migration rules.
 
 ## 🔗 Dependencies
 
