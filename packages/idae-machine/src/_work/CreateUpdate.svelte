@@ -1,5 +1,7 @@
 <!-- CreateUpdate.svelte - Initial version based on README.md -->
 <script lang="ts">
+	import { on } from 'svelte/events';
+
 	/**
 	 * CreateUpdate component (Svelte 5)
 	 * Props: collection, mode, dataId, showFields, inPlaceEdit, showFks
@@ -14,7 +16,10 @@
 		   showFks = false,
 		   crud,
 		   fields = undefined, // new optional prop
-		   item = undefined
+		   item = undefined,
+		   onupdate = (id: number, data: any) => {},
+		   ondelete = (id: number,data: any) => {},
+		   oncreate = (data: any) => {}
 	   }: {
 		   collection: string;
 		   mode?: 'create' | 'update' | 'show';
@@ -25,9 +30,12 @@
 		   crud?: any;
 		   fields?: Record<string, any>;
 		   item?: any;
+		   onupdate?: (id: number,data: any) => void;
+		   oncreate?: (data: any) => void;
+		   ondelete?: (id: number,data: any) => void;
 	   } = $props();
 
-	import { schemeModelDb } from './dbSchema';
+	import { schemeModelDb } from './dbSchema.js';
 
 	let formData = $state<any>(item ? { ...item } : {});
 	let errors = $state<Record<string, string>>({});
@@ -105,12 +113,15 @@
 		   if (validate()) {
 			   if (crud && mode === 'edit' && formData.id != null) {
 				   crud.update(collection, formData.id, { ...formData });
+				   onupdate(formData.id, { data: { ...formData } });
 				   dispatch('update', { id: formData.id, data: { ...formData } });
 			   } else if (crud && mode === 'update' && dataId != null) {
 				   crud.update(collection, dataId, { ...formData });
+				   onupdate(dataId, { data: { ...formData } });
 				   dispatch('update', { id: dataId, data: { ...formData } });
 			   } else if (crud && mode === 'create') {
 				   const created = crud.create(collection, { ...formData });
+				   oncreate({ data: { ...created } });
 				   dispatch('create', { data: created });
 			   }
 		   }

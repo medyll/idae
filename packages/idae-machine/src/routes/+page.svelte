@@ -1,10 +1,10 @@
 
 <script lang="ts">
-import { CrudService } from '../_work/CrudService.js';
-import CrudZone from '../_work/CrudZone.svelte';
-import DataList from '../_work/DataList.svelte';
-import CreateUpdate from '../_work/CreateUpdate.svelte';
-import FieldValue from '../_work/FieldValue.svelte';
+import { CrudService } from '$lib/db/CrudService';
+import CrudZone from '$lib/form/CrudZone.svelte';
+import DataList from '$lib/form/DataList.svelte';
+import CreateUpdate from '$lib/form/CreateUpdate.svelte';
+import FieldValue from '$lib/form/FieldValue.svelte';
 
 const crud = new CrudService();
 crud.create('agents', { id: 1, name: 'John', code: 'A1' });
@@ -45,7 +45,7 @@ function cancelDeleteAgent() {
 <h1>Demo: Svelte 5 CRUD Components</h1>
 
 <section>
-	<CrudZone collection="agents" crud={crud} />
+	<!-- <CrudZone collection="agents" crud={crud} /> -->
 </section>
 	<button onclick={handleAddAgent}>Ajouter un agent</button>
 
@@ -72,7 +72,7 @@ function cancelDeleteAgent() {
 			dataId={selected.id} 
 			showFields={["name", "code"]} 
 			crud={crud}
-			on:update={e => { selected = crud.get('agents', selected.id); showForm = false; }}
+			onupdate={e => { selected = crud.get('agents', selected.id); showForm = false; }}
 		/>
 		<h3>FieldValue Example</h3>
 		<FieldValue collection="agents" fieldName="name" data={selected} mode="show" />

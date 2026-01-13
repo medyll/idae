@@ -142,14 +142,4 @@ export interface IDataset {
 export interface IResultSet {
 	[key: mongoId]: IDataset;
 }
-
-class Typed {
-	_type!: string;
-	_description!: string;
-	_extends!: string[];
-	_omit!: string[];
-}
-
-function doTyped(args: any, _t: string) {}
-
-let a = doTyped(125, 'keyof AppSchemeBase');
+ 

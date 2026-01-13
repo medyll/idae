@@ -25,7 +25,7 @@ import {
 	type DbFieldTypes,
 	type TplFieldType
 } from '@medyll/idae-idbql';
-import { space } from 'postcss/lib/list';
+
 import type { DbDataModel, DbDataModelTs } from './dataModel.js';
 
 /* here is an example of how to declare a dataModel*/

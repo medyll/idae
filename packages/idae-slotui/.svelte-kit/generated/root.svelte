@@ -8,12 +8,14 @@
 	let { stores, page, constructors, components = [], form, data_0 = null, data_1 = null, data_2 = null, data_3 = null, data_4 = null } = $props();
 
 	if (!browser) {
+		// svelte-ignore state_referenced_locally
 		setContext('__svelte__', stores);
 	}
 
 	if (browser) {
 		$effect.pre(() => stores.page.set(page));
 	} else {
+		// svelte-ignore state_referenced_locally
 		stores.page.set(page);
 	}
 	$effect(() => {
@@ -45,52 +47,52 @@
 {#if constructors[1]}
 	{@const Pyramid_0 = constructors[0]}
 							<!-- svelte-ignore binding_property_non_reactive -->
-							<Pyramid_0 bind:this={components[0]} data={data_0} {form}>
+							<Pyramid_0 bind:this={components[0]} data={data_0} {form} params={page.params}>
 								{#if constructors[2]}
 									{@const Pyramid_1 = constructors[1]}
 															<!-- svelte-ignore binding_property_non_reactive -->
-															<Pyramid_1 bind:this={components[1]} data={data_1} {form}>
+															<Pyramid_1 bind:this={components[1]} data={data_1} {form} params={page.params}>
 																{#if constructors[3]}
 																	{@const Pyramid_2 = constructors[2]}
 																							<!-- svelte-ignore binding_property_non_reactive -->
-																							<Pyramid_2 bind:this={components[2]} data={data_2} {form}>
+																							<Pyramid_2 bind:this={components[2]} data={data_2} {form} params={page.params}>
 																								{#if constructors[4]}
 																									{@const Pyramid_3 = constructors[3]}
 																															<!-- svelte-ignore binding_property_non_reactive -->
-																															<Pyramid_3 bind:this={components[3]} data={data_3} {form}>
+																															<Pyramid_3 bind:this={components[3]} data={data_3} {form} params={page.params}>
 																																<!-- svelte-ignore binding_property_non_reactive -->
-																																		<Pyramid_4 bind:this={components[4]} data={data_4} {form} />
+																																		<Pyramid_4 bind:this={components[4]} data={data_4} {form} params={page.params} />
 																															</Pyramid_3>
-																									
+																								
 																								{:else}
 																									{@const Pyramid_3 = constructors[3]}
 																									<!-- svelte-ignore binding_property_non_reactive -->
-																									<Pyramid_3 bind:this={components[3]} data={data_3} {form} />
-																									
+																									<Pyramid_3 bind:this={components[3]} data={data_3} {form} params={page.params} />
+																								
 																								{/if}
 																							</Pyramid_2>
-																	
+																
 																{:else}
 																	{@const Pyramid_2 = constructors[2]}
 																	<!-- svelte-ignore binding_property_non_reactive -->
-																	<Pyramid_2 bind:this={components[2]} data={data_2} {form} />
-																	
+																	<Pyramid_2 bind:this={components[2]} data={data_2} {form} params={page.params} />
+																
 																{/if}
 															</Pyramid_1>
-									
+								
 								{:else}
 									{@const Pyramid_1 = constructors[1]}
 									<!-- svelte-ignore binding_property_non_reactive -->
-									<Pyramid_1 bind:this={components[1]} data={data_1} {form} />
-									
+									<Pyramid_1 bind:this={components[1]} data={data_1} {form} params={page.params} />
+								
 								{/if}
 							</Pyramid_0>
-	
+
 {:else}
 	{@const Pyramid_0 = constructors[0]}
 	<!-- svelte-ignore binding_property_non_reactive -->
-	<Pyramid_0 bind:this={components[0]} data={data_0} {form} />
-	
+	<Pyramid_0 bind:this={components[0]} data={data_0} {form} params={page.params} />
+
 {/if}
 
 {#if mounted}

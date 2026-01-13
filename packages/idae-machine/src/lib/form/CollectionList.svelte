@@ -8,9 +8,9 @@
 		type Props,
 		Looper
 	} from '@medyll/idae-slotui-svelte';
-	import CreateUpdate from '$components/form/CreateUpdate.svelte';
-	import { idbqlState } from '$lib/db/dbSchema';
-	import { IDbCollections, IDbCollectionValues } from '$lib/db/dbFields';
+	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
+	import { idbqlState } from '$lib/db/dbSchema.js';
+	import { IDbCollections, IDbCollectionValues } from '$lib/db/dbFields.js';
 	import { hydrate, type Snippet } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
