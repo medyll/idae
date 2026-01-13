@@ -1,6 +1,6 @@
 {
 	"name": "@medyll/idae-slotui-svelte",
-	"version": "0.152.0",
+	"version": "0.154.0",
 	"scope": "@medyll",
 	"description": "A Svelte 5 component library for building modular and reactive user interfaces.",
 	"scripts": {
@@ -39,10 +39,10 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "latest",
-		"@medyll/cssfabric": "next",
-		"@medyll/idae-be": "next",
-		"@medyll/idae-engine": "next",
+		"@medyll/idae-prettier-config": "*",
+		"@medyll/cssfabric": "*",
+		"@medyll/idae-be": "*",
+		"@medyll/idae-engine": "*",
 		"@playwright/test": "^1.51.1",
 		"@sveltejs/adapter-auto": "^5.0.0",
 		"@sveltejs/kit": "^2.20.2",

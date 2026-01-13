@@ -14,8 +14,8 @@ function checkDeps(pkgJson, pkgPath) {
     if (!pkgJson[field]) continue;
     for (const dep in pkgJson[field]) {
       if (dep.startsWith('@medyll/')) {
-        if (pkgJson[field][dep] !== 'next') {
-          console.error(`❌ ${pkgPath}: ${field} -> ${dep} doit être \"next\" (trouvé: \"${pkgJson[field][dep]}\")`);
+        if (pkgJson[field][dep] !== '*') {
+          console.error(`❌ ${pkgPath}: ${field} -> ${dep} doit être \"*\" (trouvé: \"${pkgJson[field][dep]}\")`);
           ok = false;
         }
       }

@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-html",
-  "version": "0.115.0",
+  "version": "0.117.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -45,8 +45,8 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "@medyll/idae-be": "next",
-    "@medyll/idae-dom-events": "next"
+    "@medyll/idae-be": "*",
+    "@medyll/idae-dom-events": "*"
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",

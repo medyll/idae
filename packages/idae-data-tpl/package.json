@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-data-tpl",
 	"scope": "@medyll",
-	"version": "0.150.0",
+	"version": "0.152.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -49,7 +49,7 @@
 		"typescript-eslint": "^8.28.0",
 		"vite": "^6.2.3",
 		"vitest": "^3.0.9",
-		"@medyll/idae-prettier-config": "next"
+		"@medyll/idae-prettier-config": "*"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
