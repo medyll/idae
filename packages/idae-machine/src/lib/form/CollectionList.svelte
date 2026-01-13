@@ -10,9 +10,11 @@
 	} from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema.js';
-	import { IDbCollections, IDbCollectionValues } from '$lib/db/dbFields.js';
+	import {  IDbCollectionValues } from '$lib/db/dbFields.js';
 	import { hydrate, type Snippet } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
+import {machine } from '$lib/main/machine.js';
+
 
 	interface DataListProps {
 		collection:     string;
@@ -38,9 +40,9 @@
 		displayMode
 	}: DataListProps = $props();
 
-	let test = new IDbCollections();
+	let collections = machine.collections;
 	let fieldValues = new IDbCollectionValues(collection);
-	let index = test.getIndexName(collection);
+	let index = collections.getIndexName(collection);
 
 	let qy = $derived(where ? idbqlState[collection].where(where) : idbqlState[collection].getAll());
 

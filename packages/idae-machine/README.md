@@ -42,8 +42,10 @@ export const schemeModel = {
 Après avoir instancié et démarré Machine :
 
 ```typescript
-import { Machine, schemeModel } from '@medyll/idae-machine';
-const machine = new Machine('my-db', 1, schemeModel);
+import { machine, schemeModel } from '@medyll/idae-machine';
+
+// Initialisation du singleton
+machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
 machine.start();
 
 // Ajouter un agent
@@ -174,15 +176,15 @@ IndexedDB Abstraction (@medyll/idae-idbql)
 
 The recommended way to initialize your app is to use the `Machine` class, which centralizes schema, collections, and IndexedDB access.
 
-```typescript
-import { Machine } from '@medyll/idae-machine';
-import { schemeModel } from '@medyll/idae-machine'; // Or your own model
 
-// Create and start the machine
-const machine = new Machine('my-db', 1, schemeModel);
+```typescript
+import { machine, schemeModel } from '@medyll/idae-machine';
+
+// Initialisation du singleton
+machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
 machine.start();
 
-// Access collections, database, and models
+// Accès aux collections, à la base et au modèle
 const collections = machine.collections;
 const idbql = machine.idbql;
 const idbqlState = machine.idbqlState;

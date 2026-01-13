@@ -98,6 +98,23 @@ class IDbError extends Error {
  */
 export class IDbCollections {
 	/**
+	 * Stores shared instances of IDbCollectionValues per collection
+	 */
+	private _collectionValuesMap: Record<string, IDbCollectionValues<any>> = {};
+	/**
+	 * Stores shared instances of IDbCollectionFieldValues per collection+data
+	 */
+	private _collectionFieldValuesMap: Map<string, IDbCollectionFieldValues<any>> = new Map();
+	/**
+	 * Stores shared instances of IDbCollectionFieldForge per collection, field, and data
+	 */
+	private _collectionFieldForgeMap: Map<string, IDbCollectionFieldForge<any>> = new Map();
+	/**
+	 * Stores shared instances of IDbFormValidate per collection
+	 */
+	private _formValidateMap: Map<string, IDbFormValidate> = new Map();
+		
+	/**
 	 * The database model (schema) used for introspection.
 	 */
 	model: IdbqModel = schemeModel;
@@ -133,7 +150,7 @@ export class IDbCollections {
 	): Record<string, IDbForge | undefined> | undefined {
 		const fields = this.getCollectionTemplateFields(collection);
 		if (!fields) return;
-		let out: Record<string, IDbForge | undefined> = {};
+		const out: Record<string, IDbForge | undefined> = {};
 
 		Object.keys(fields).forEach((fieldName) => {
 			const fieldType = fields[fieldName];
@@ -246,6 +263,62 @@ export class IDbCollections {
 	getIndexName(collection: string) {
 		return this.getCollection(collection)?.template?.index;
 	}
+
+	/**
+	 * Returns a shared instance of IDbCollectionValues for a given collection
+	 */
+	getCollectionValues(collection: TplCollectionName): IDbCollectionValues<any> {
+		if (!this._collectionValuesMap[collection]) {
+			this._collectionValuesMap[collection] = new IDbCollectionValues(collection, this);
+		}
+		return this._collectionValuesMap[collection];
+	}
+
+	/**
+	 * Returns a shared instance of IDbCollectionFieldValues for a given collection and data
+	 * The instance key is based on the collection and the main index of data (or JSON if missing)
+	 */
+	getCollectionFieldValues<T extends Record<string, any>>(collection: TplCollectionName, data: T): IDbCollectionFieldValues<T> {
+		const indexName = this.getIndexName(collection);
+		const indexValue = data?.[indexName];
+		const key = `${collection}:${indexValue ?? JSON.stringify(data)}`;
+		if (!this._collectionFieldValuesMap.has(key)) {
+			this._collectionFieldValuesMap.set(key, new IDbCollectionFieldValues(collection, data, this.getCollectionValues(collection)));
+		}
+		return this._collectionFieldValuesMap.get(key)!;
+	}
+
+	/**
+	 * Returns a shared instance of IDbCollectionFieldForge for a given collection, field, and data
+	 * The instance key is based on collection, field, and the main index of data (or JSON if missing)
+	 */
+	getCollectionFieldForge<T extends Record<string, any>>(
+		collection: TplCollectionName,
+		fieldName: keyof T | string,
+		data: T
+	): IDbCollectionFieldForge<T> {
+		const indexName = this.getIndexName(collection);
+		const indexValue = data?.[indexName];
+		const key = `${collection}:${String(fieldName)}:${indexValue ?? JSON.stringify(data)}`;
+		if (!this._collectionFieldForgeMap.has(key)) {
+			this._collectionFieldForgeMap.set(
+				key,
+				new IDbCollectionFieldForge(collection, fieldName, data, this.getCollectionValues(collection))
+			);
+		}
+		return this._collectionFieldForgeMap.get(key)!;
+	}
+
+	/**
+	 * Returns a shared instance of IDbFormValidate for a given collection
+	 */
+	getFormValidate(collection: TplCollectionName): IDbFormValidate {
+		if (!this._formValidateMap.has(collection)) {
+			this._formValidateMap.set(collection, new IDbFormValidate(collection, this));
+		}
+		return this._formValidateMap.get(collection)!;
+	}
+
 	/**
 	 * Get the fields object for a collection.
 	 * @param collection The collection name.
@@ -493,33 +566,52 @@ export class IDbCollections {
 
 
 /**
- * Utility class to display and format field values for a collection, based on the schema and provided data.
- * Used for dynamic UI rendering, presentation, and extracting metadata for form generation.
- * @template T The data type for the collection.
+ * IDbCollectionValues
+ *
+ * This class provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
+ * It is designed for dynamic UI rendering, presentation logic, and metadata extraction for form generation in schema-driven applications.
+ *
+ * Main responsibilities:
+ * - Holds a reference to the collection name and the schema (IDbCollections).
+ * - Provides methods to format field values according to their type (number, text, array, object, etc.).
+ * - Supplies presentation logic for displaying records (e.g., presentation string, index value).
+ * - Offers input attribute generation for forms (inputDataSet).
+ * - Supports iteration over array/object fields for advanced UI layouts.
+ * - Enables access to field metadata for validation and rendering.
+ *
+ * Usage:
+ *   const values = new IDbCollectionValues('agents');
+ *   const display = values.presentation(agentData); // formatted display string
+ *   const index = values.indexValue(agentData); // index field value
+ *   const formatted = values.format('name', agentData); // formatted field value
+ *   const attrs = values.getInputDataSet('name', agentData); // input attributes for forms
+ *
+ * This class is typically used via IDbCollections.getCollectionValues for shared instance management.
+ * @template T - The type of the data object for the collection.
  */
 export class IDbCollectionValues<T extends Record<string, any>> {
 	/**
 	 * The IDbCollections instance used for schema introspection.
 	 */
-	dbCollections: IDbCollections;
+	idbCollections: IDbCollections;
 	/**
 	 * The collection name this instance operates on.
 	 */
-	private collection: TplCollectionName;
+	private collectionName: TplCollectionName;
 
 	/**
 	 * Create a new IDbCollectionValues instance for a given collection.
-	 * @param collection The collection name.
+	 * @param collectionName The collection name.
 	 */
-	constructor(collection: TplCollectionName) {
-		this.collection = collection;
-		this.dbCollections = new IDbCollections();
+	constructor(collectionName: TplCollectionName,idbCollections?: IDbCollections) {
+		this.collectionName = collectionName;
+		this.idbCollections = idbCollections ?? new IDbCollections();
 	}
 
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.dbCollections.getTemplatePresentation(this.collection);
+			const presentation = this.idbCollections.getTemplatePresentation(this.collectionName);
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
 			const fields = presentation.split(' ');
@@ -543,7 +635,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	indexValue(data: Record<string, any>): any | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.dbCollections.getIndexName(this.collection);
+			const indexName = this.idbCollections.getIndexName(this.collectionName);
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -571,8 +663,8 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.dbCollections.parseCollectionFieldName(
-				this.collection,
+			const fieldInfo = this.idbCollections.parseCollectionFieldName(
+				this.collectionName,
 				fieldName as string
 			);
 			this.#checkError(
@@ -613,16 +705,16 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
 		string
 	> {
-		const fieldInfo = this.dbCollections.parseCollectionFieldName(
-			this.collection,
+		const fieldInfo = this.idbCollections.parseCollectionFieldName(
+			this.collectionName,
 			fieldName as string
 		);
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.dbCollections.getIndexName(this.collection);
+		const indexName = this.idbCollections.getIndexName(this.collectionName);
 
 		return {
-			'data-collection': this.collection,
+			'data-collection': this.collectionName,
 			'data-collectionId':
 				indexName && data?.[indexName] !== undefined ? String(data?.[indexName]) : '',
 			'data-fieldName': String(fieldName),
@@ -638,7 +730,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @returns An array of IDbForge objects.
 	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] {
-		return this.dbCollections.iterateArrayField(this.collection, fieldName, data);
+		return this.idbCollections.iterateArrayField(this.collectionName, fieldName, data);
 	}
 
 	/**
@@ -648,7 +740,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @returns An array of IDbForge objects.
 	 */
 	iterateObjectField(fieldName: keyof TplFields, data: Record<string, any>): IDbForge[] {
-		return this.dbCollections.iterateObjectField(this.collection, fieldName, data);
+		return this.idbCollections.iterateObjectField(this.collectionName, fieldName, data);
 	}
 
 	/**
@@ -711,19 +803,19 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	* @param fieldName The field name to introspect.
 	*/
        public getForge(fieldName: keyof T): IDbForge | undefined {
-	       return this.#collectionValues.dbCollections.parseCollectionFieldName(
+	       return this.#collectionValues.idbCollections.parseCollectionFieldName(
 		       this.#collection,
 		       String(fieldName)
 	       );
        }
-	constructor(collection: TplCollectionName, data: T) {
+	constructor(collection: TplCollectionName,data: T,collectionValues?: IDbCollectionValues<T>) {
 		this.#collection = collection;
-		this.#collectionValues = new IDbCollectionValues(collection);
+		this.#collectionValues = collectionValues ?? new IDbCollectionValues(collection);
 		this.#data = data;
 	}
 
 	format(fieldName: keyof T): string | string[] {
-		const fieldInfo = this.#collectionValues.dbCollections.parseCollectionFieldName(
+		const fieldInfo = this.#collectionValues.idbCollections.parseCollectionFieldName(
 			this.#collection,
 			fieldName
 		);
@@ -754,9 +846,27 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	}
 }
 
-/* 
-    path: D:\boulot\python\wollama\src\lib\db\dbFields.ts
-    forge values for a collection field and $data
+/**
+ * IDbCollectionFieldForge
+ *
+ * This class provides advanced metadata and formatting for a single field of a collection, given a data object.
+ * It is designed for dynamic UI generation, form rendering, and introspection in schema-driven applications.
+ *
+ * Main responsibilities:
+ * - Holds references to the collection name, field name, and the data object for context.
+ * - Provides access to the parsed field metadata (IDbForge) for the field, including type, rules, and arguments.
+ * - Offers formatting utilities for the field value, adapting to type (number, text, array, object, etc.).
+ * - Supplies input attributes and type hints for form generation (e.g., htmlInputType, inputDataSet).
+ * - Supports iteration over array/object fields for complex form layouts.
+ * - Enables extraction of raw data and field arguments for validation and UI logic.
+ *
+ * Usage:
+ *   const forge = new IDbCollectionFieldForge('agents', 'name', agentData);
+ *   const formatted = forge.format; // formatted value for display
+ *   const inputType = forge.htmlInputType; // e.g. 'text', 'area', 'email', etc.
+ *   const meta = forge.forge; // IDbForge metadata for the field
+ *
+ * This class is typically used via IDbCollections.getCollectionFieldForge for shared instance management.
  */
 export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	#collection: TplCollectionName;
@@ -765,9 +875,9 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	#data: T;
 	#forge: IDbForge | undefined;
 
-	constructor(collection: TplCollectionName, fieldName: any, data: T) {
+	constructor(collection: TplCollectionName, fieldName: any, data: T,collectionValues?: IDbCollectionValues<T>) {
 		this.#collection = collection;
-		this.#collectionValues = new IDbCollectionValues(collection);
+		this.#collectionValues = collectionValues ?? new IDbCollectionValues(collection);
 		this.#fieldName = String(fieldName);
 		this.#data = data;
 	}
@@ -781,7 +891,7 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	}
 	// renamed from parseCollectionFieldName
 	get forge(): IDbForge | undefined {
-		return this.#collectionValues.dbCollections.parseCollectionFieldName(
+		return this.#collectionValues.idbCollections.parseCollectionFieldName(
 			this.#collection,
 			String(this.#fieldName)
 		);
@@ -835,15 +945,15 @@ class IDbValidationError extends Error {
 }
 
 export class IDbFormValidate {
-	private dbFields: IDbCollections;
+	private idbCollections: IDbCollections;
 
-	constructor(private collection: TplCollectionName) {
-		this.dbFields = new IDbCollections();
+	constructor(private collection: TplCollectionName,idbCollections?: IDbCollections) {
+		this.idbCollections = idbCollections ?? new IDbCollections();
 	}
 
 	validateField(fieldName: keyof TplFields, value: any): { isValid: boolean; error?: string } {
 		try {
-			const fieldInfo = this.dbFields.parseCollectionFieldName(this.collection, fieldName);
+			const fieldInfo = this.idbCollections.parseCollectionFieldName(this.collection, fieldName);
 			if (!fieldInfo) {
 				return { isValid: false, error: `Field ${String(fieldName)} not found in collection` };
 			}
@@ -920,7 +1030,7 @@ export class IDbFormValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.dbFields.getCollectionTemplateFields(this.collection);
+		const fields = this.idbCollections.getCollectionTemplateFields(this.collection);
 		if (!fields) {
 			return {
 				isValid: false,

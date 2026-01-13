@@ -4,11 +4,11 @@
  -->
 
 <script lang="ts" generics="COL = Record<string,any>">
-	import { IDbCollections as DbFields, IDbFormValidate } from '$lib/db/dbFields';
-	import { idbql, idbqlState, schemeModel } from '$lib/db/dbSchema';
+	import {  IDbFormValidate } from '$lib/db/dbFields.js'; 
 	import type { CreateUpdateProps } from './types';
 	import CollectionReverseFks from './CollectionReverseFks.svelte';
 	import FieldInput from './FieldValue.svelte';
+ 	import {machine} from '$lib/main/machine.js';
 
 	let {
 		collection,
@@ -22,16 +22,20 @@
 		afterCreate,
 		showFks = false
 	}: CreateUpdateProps = $props();
+	
 	let inputForm = `form-${String(collection)}-${mode}`;
-	let dbFields = new DbFields(schemeModel);
-	let indexName = dbFields.getIndexName(collection);
+
+	let collections = machine.collections ;
+	let store = machine.store;
+	let indexName = collections.getIndexName(collection);
+	
 	let formFields = showFields
 		? Object.fromEntries(
-				Object.entries(dbFields.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
+				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
 			)
-		: (dbFields.parseRawCollection(collection) ?? {});
+		: (collections.parseRawCollection(collection) ?? {});
 
-	let qy: any = $derived(dataId && indexName ? idbqlState[collection].where({ [indexName]: { eq: dataId } }) : {});
+	let qy: any = $derived(dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
 
 	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(qy)[0] });
 
@@ -86,13 +90,13 @@
 		switch (mode) {
 			case 'create':
 				if (!dataId) {
-					await idbql[collection].add({ ...datadb, ...withData });
+					await store[collection].add({ ...datadb, ...withData });
 					mode = 'show';
 				}
 				break;
 			case 'update':
 				if (dataId) {
-					await idbqlState[collection].update(dataId, datadb);
+					await store[collection].update(dataId, datadb);
 				}
 				break;
 		}
@@ -141,7 +145,8 @@
 				{collection}
 				{fieldName}
 				{mode}
-				editInPlace={inPlaceEdit === true || (Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
+				editInPlace={inPlaceEdit === true ||
+					(Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
 				bind:data={formData}
 				{inputForm}
 			/>

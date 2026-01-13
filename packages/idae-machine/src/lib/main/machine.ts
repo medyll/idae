@@ -24,7 +24,7 @@
  * // Access the IDBQL data model
  * const model = machine.idbqModel;
  */
-import { schemeModel } from '$lib/db/dbSchema.js';
+
 import { IDbCollections } from '$lib/db/dbFields.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 
@@ -61,7 +61,7 @@ export class Machine {
   /**
    * Database name
    */
-  _dbName: string;
+  _dbName!: string;
 
   /**
    * Schema version
@@ -75,25 +75,20 @@ export class Machine {
 
   /**
    * Main constructor
-   * @param dbName Database name (default: 'idae-machine')
-   * @param version Schema version (default: 1)
-   * @param model Data model (default: schemeModel)
    */
-  constructor(dbName:string = 'idae-machine', version:number = 1, model:IdbqModel = schemeModel) {
-    this._dbName = dbName;
-    this._version = version;
-    this._model = model;
+  constructor() {
+  }
+  
+  init(options?: { dbName?: string; version?: number; model?: IdbqModel }) {
+    this._dbName = options?.dbName ?? this._dbName;
+    this._version = options?.version ?? this._version;
+    this._model = options?.model ?? this._model;
   }
 
   /**
    * Start the machine: initialize collections and IDBQL connection.
-   * @param options Optional overrides: { dbName, version, model }
    */
-  start(options?: { dbName?: string; version?: number; model?: IdbqModel }) {
-    this._dbName = options?.dbName ?? this._dbName;
-    this._version = options?.version ?? this._version;
-    this._model = options?.model ?? this._model;
-
+  start() {
     this.createCollections();
     this.createStore();
   }
@@ -136,12 +131,13 @@ export class Machine {
   /**
    * IDBQL (stateful) instance
    */
-  get idbqlState() {
+  get store() {
     return this._idbqlState;
   }
 
   /**
    * IndexedDB (core) instance
+   * @deprecated
    */
   get indexedb() {
     return this._idbDatabase;
@@ -154,3 +150,5 @@ export class Machine {
     return this._idbqModel;
   }
 }
+
+export const machine = new Machine();
