@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run vitest for machine.spec.ts",
+			"type": "shell",
+			"command": "npx vitest run src/lib/main/machine.spec.ts",
+			"group": "test"
+		},
+		{
+			"label": "Run vitest for machine.spec.ts (instance checks)",
+			"type": "shell",
+			"command": "npx vitest run src/lib/main/machine.spec.ts",
+			"group": "test"
+		}
+	]
+}
