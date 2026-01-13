@@ -9,7 +9,7 @@ import type {
 	Tpl,
 	TplFields
 } from '@medyll/idae-idbql';
-import { schemeModel } from './dbSchema';
+import { schemeModel } from './dbSchema.js';
 
 export enum enumPrimitive {
 	id = 'id',

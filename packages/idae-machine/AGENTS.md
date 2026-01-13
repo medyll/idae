@@ -1,5 +1,5 @@
 
-# AGENT.md
+# AGENTS.md
 
 ## Svelte 5 Coding Policy
 

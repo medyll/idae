@@ -1,6 +1,6 @@
 
 <script lang="ts">
-import { CrudService } from '$lib/db/CrudService';
+import { CrudService } from '$lib/db/CrudService.js';
 import CrudZone from '$lib/form/CrudZone.svelte';
 import DataList from '$lib/form/DataList.svelte';
 import CreateUpdate from '$lib/form/CreateUpdate.svelte';

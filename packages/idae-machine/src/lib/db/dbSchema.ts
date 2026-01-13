@@ -489,4 +489,4 @@ export const schemeModel: IdbqModel = {
 export type DataModelFinal = DbDataModelTs<typeof schemeModelDb>;
 
 const idbqStore = createIdbqDb<typeof schemeModel>(schemeModel, 13);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('woolama');
+export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine');
