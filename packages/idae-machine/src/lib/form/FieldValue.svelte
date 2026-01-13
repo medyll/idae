@@ -1,7 +1,7 @@
 <!-- Component: CollectionFieldValue.svelte (ancien nom CollectionFieldInput.svelte) -->
 <script lang="ts" generics="COL = Record<string,any>">
 	// Importation des types et composants nécessaires
-	import { IDbCollectionFieldForge, IDbCollectionValues } from '$lib/db/dbFields';
+	import { IDbCollectionFieldForge, IDbCollectionValues } from '$lib/db/dbFields.js';
 	import type { TplCollectionName } from '@medyll/idae-idbql';
 	import { IconButton } from '@medyll/idae-slotui-svelte';
 	import { getAllContexts, getContext } from 'svelte';
