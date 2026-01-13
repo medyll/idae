@@ -1,6 +1,6 @@
 // dbSchema.ts - Example schema definition
 // Based on README.md Quick Start
-
+// DO NOT USE THIS FILE AS ANY SOURCE OF TRUTH FOR ACTUAL IMPLEMENTATION
 import type { SchemeModelDb } from './dataModel';
 import { parseFieldRule } from './dbFields';
 

@@ -1,7 +1,7 @@
 // Test unitaire initial pour CrudZone.svelte
 import { render, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
-import CrudZone from './CrudZone.svelte';
+import CrudZone from '../../_work/CrudZone.svelte';
 
 // Ajout de la configuration jsdom pour Vitest
 import { beforeAll } from 'vitest';

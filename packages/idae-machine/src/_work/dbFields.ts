@@ -1,6 +1,6 @@
 // dbFields.ts - Initial field type and validation structure
 // Based on README.md schema DSL
-
+// old file, not accurately reflecting current implementation do not use as source of truth
 export type FieldType =
   | 'id'
   | 'text'
@@ -27,6 +27,7 @@ export type FieldsDefinition = {
 };
 
 // Example: parse DSL string to FieldRule
+/* @deprecated */
 export function parseFieldRule(dsl: string): FieldRule {
   // Very basic parser for demo
   const [typePart, ...modifiers] = dsl.split(' ');
