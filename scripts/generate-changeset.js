@@ -249,7 +249,7 @@ class ChangesetGenerator {
           commit.message.split("\n")[0],
         );
 
-        const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
+        const date = commit?.date?.split?.("T")[0]; // Format date as YYYY-MM-DD
 
         let commitContent = `- ${sanitizedMessage} ([${commit.sha.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${commit.sha}))`;
         if (commit.pr) {
