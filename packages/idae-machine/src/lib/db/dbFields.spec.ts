@@ -8,13 +8,13 @@ describe('IDbCollections', () => {
   const dbCollections = new IDbCollections(schemeModelTestDb);
 
   it('getCollection returns the correct collection object', () => {
-    const agent = dbCollections.getCollection('agent');
+    const agent = dbCollections.getCollectionModel('agent');
     expect(agent).toBeDefined();
     expect(agent.keyPath).toBe('++id, promptId, created_at');
   });
 
   it('getCollectionTemplate returns the template object', () => {
-    const tpl = dbCollections.getCollectionTemplate('agent');
+    const tpl = dbCollections.getCollectionModelTemplate('agent');
     expect(tpl).toBeDefined();
     expect(tpl.index).toBe('id');
   });

@@ -41,7 +41,7 @@ export class Machine {
   /**
    * IDBQL (stateful collections instance)
    */
-  _idbqlState!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"] | undefined;
+  _idbqlState!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"] ;
 
   /**
    * Direct access to IndexedDB (core)
@@ -56,7 +56,7 @@ export class Machine {
   /**
    * Centralized access to schema and collection logic
    */
-  _collections: IDbCollections | undefined;
+  _collections!: IDbCollections ;
 
   /**
    * Database name

@@ -23,12 +23,13 @@
 		showFks = false
 	}: CreateUpdateProps = $props();
 	
+	
 	let inputForm = `form-${String(collection)}-${mode}`;
 
 	let collections = machine.collections ;
 	let store = machine.store;
 	let indexName = collections.getIndexName(collection);
-	
+
 	let formFields = showFields
 		? Object.fromEntries(
 				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))

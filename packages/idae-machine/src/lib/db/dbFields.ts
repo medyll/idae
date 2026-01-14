@@ -91,6 +91,54 @@ class IDbError extends Error {
 	}
 }
 
+/* Single collection relies on IDbCollections */
+export class IDbCollection {
+	collection: TplCollectionName;
+	_dbCollections: IDbCollections;
+
+	constructor(collection: TplCollectionName, dbCollections: IDbCollections) {
+		this.collection = collection;
+		this._dbCollections = dbCollections;
+	}
+
+	getCollectionModelTemplate() {
+		return this._dbCollections.getCollectionModelTemplate(this.collection);
+	}
+
+	getCollectionModelTemplateFks() {
+		return this._dbCollections.getCollectionModelTemplateFks(this.collection);
+	}
+
+	getIndexName() {
+		return this._dbCollections.getIndexName(this.collection);
+	}
+
+	collectionValues() {
+		return this._dbCollections.getCollectionValues(this.collection);
+	}
+
+	collectionFieldValues<T extends Record<string, any>>(data: T) {
+		return this._dbCollections.getCollectionFieldValues(this.collection, data);
+	}
+
+	fieldForge<T extends Record<string, any>>(fieldName: keyof T, data: T) {
+		return this._dbCollections.getCollectionFieldForge(this.collection, fieldName, data);
+	}
+
+	getFormValidate() {
+		return this._dbCollections.getFormValidate(this.collection);
+	}
+
+	fks() {
+		return this._dbCollections.fks(this.collection);
+	}
+
+	reverseFks() {
+		return this._dbCollections.reverseFks(this.collection);
+	}
+
+}
+
 /**
  * Central class for parsing, introspecting, and extracting metadata from the database schema.
  * Provides methods to access collections, templates, fields, foreign keys, and type information.
@@ -127,6 +175,10 @@ export class IDbCollections {
 		this.model = model ?? schemeModel;
 	}
 
+
+	get(collection: TplCollectionName):IDbCollection  {
+		return new IDbCollection(collection,this);
+	}
 	/**
 	 * Parse all collections in the model and return their fields as IDbForge objects.
 	 * @returns An object mapping collection names to their parsed fields.
@@ -236,7 +288,14 @@ export class IDbCollections {
 	 * @param collection The collection name.
 	 * @returns The collection object.
 	 */
-	getCollection(collection: TplCollectionName) {
+	getCollection (collection: TplCollectionName) {
+		return this.#getModel()[String(collection)] as CollectionModel;
+	}	/**
+	 * Get the collection object from the model.
+	 * @param collection The collection name.
+	 * @returns The collection object.
+	 */
+	getCollectionModel(collection: TplCollectionName) {
 		return this.#getModel()[String(collection)] as CollectionModel;
 	}
 	/**
@@ -244,24 +303,24 @@ export class IDbCollections {
 	 * @param collection The collection name.
 	 * @returns The template object.
 	 */
-	getCollectionTemplate(collection: TplCollectionName) {
-		return this.getCollection(collection)['template'] as Tpl;
+	getCollectionModelTemplate(collection: TplCollectionName) {
+		return this.getCollectionModel(collection)['template'] as Tpl;
 	}
 	/**
 	 * Get the foreign keys (fks) object for a collection.
 	 * @param collection The collection name.
 	 * @returns The fks object.
 	 */
-	getCollectionTemplateFks(collection: TplCollectionName) {
-		return this.getCollection(collection)['template']?.fks as Tpl['fks'];
+	getCollectionModelTemplateFks(collection: TplCollectionName) {
+		return this.getCollectionModel(collection)['template']?.fks as Tpl['fks'];
 	}
 	/**
 	 * Get the index field name for a collection.
 	 * @param collection The collection name.
 	 * @returns The index field name.
 	 */
-	getIndexName(collection: string) {
-		return this.getCollection(collection)?.template?.index;
+	getIndexName(collection: TplCollectionName) {
+		return this.getCollectionModel(collection)?.template?.index;
 	}
 
 	/**
@@ -325,7 +384,7 @@ export class IDbCollections {
 	 * @returns The fields object.
 	 */
 	getCollectionTemplateFields(collection: TplCollectionName) {
-		return this.getCollectionTemplate(collection)?.fields as TplFields;
+		return this.getCollectionModelTemplate(collection)?.fields as TplFields;
 	}
 	/**
 	 * Get the presentation string for a collection (used for display).
@@ -333,7 +392,7 @@ export class IDbCollections {
 	 * @returns The presentation string.
 	 */
 	getTemplatePresentation(collection: TplCollectionName) {
-		return this.getCollectionTemplate(collection)?.presentation as string;
+		return this.getCollectionModelTemplate(collection)?.presentation as string;
 	}
 	#getTemplateFieldRule(collection: TplCollectionName, fieldName: keyof TplFields) {
 		return this.getCollectionTemplateFields(collection)?.[String(fieldName)] as
@@ -360,7 +419,7 @@ export class IDbCollections {
 	 */
 	getFkTemplateFields(string: `${string}.${string}`) {
 		const [collection, field] = string.split('.') as [string, string];
-		return this.getCollection(collection).template?.fields;
+		return this.getCollectionModel(collection).template?.fields;
 	}
 
 	/**

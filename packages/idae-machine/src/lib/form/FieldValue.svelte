@@ -1,13 +1,11 @@
 <!-- Component: CollectionFieldValue.svelte (ancien nom CollectionFieldInput.svelte) -->
 <script lang="ts" generics="COL = Record<string,any>">
-	// Importation des types et composants nécessaires
-	import { IDbCollectionFieldForge, IDbCollectionValues } from '$lib/db/dbFields.js';
-	import type { TplCollectionName } from '@medyll/idae-idbql';
-	import { IconButton } from '@medyll/idae-slotui-svelte';
-	import { getAllContexts, getContext } from 'svelte';
-
+	// Importation des types et composants nécessaires 
+	import type { TplCollectionName } from '@medyll/idae-idbql'; 
+	import {  getContext } from 'svelte';
+	import {machine} from '$lib/main/machine.js';
 	interface FieldValueProps {
-		collection?:   TplCollectionName;
+		collection:   TplCollectionName;
 		collectionId?: any;
 		fieldName:     keyof COL;
 		data?:         COL;
@@ -36,11 +34,12 @@
 	data = data ?? ({} as COL);
 
 	// Initialisation des valeurs de champ de collection
-	let collectionFieldValues = new IDbCollectionValues(collection);
+	const forge = machine.collections.get(collection).fieldForge(String(fieldName), data)  
+	let collectionFieldValues = machine.collections.get(collection).collectionValues() 
 	let inputDataset = collectionFieldValues.getInputDataSet(fieldName, data);
 
 	// Création d'une instance de forge de champ de collection
-	const fieldForge = $derived(new IDbCollectionFieldForge(collection, fieldName, data));
+	const fieldForge = $derived(forge);
 
 	// Effet déclenché lorsque collectionId ou editInPlace change
 	$effect(() => {
