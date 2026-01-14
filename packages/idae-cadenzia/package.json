@@ -15,8 +15,8 @@
     "package:pre": "node scripts/package-pre.js"
   },
   "devDependencies": {
-    "@medyll/idae-be": "*",
-    "@medyll/idae-prettier-config": "^1.2.1",
+    "@medyll/idae-be": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",

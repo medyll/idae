@@ -1,48 +1,48 @@
 {
-	"name": "@medyll/idae-engine",
-	"scope": "@medyll",
-	"version": "1.162.0",
-	"description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build && npm run package",
-		"preview": "vite preview",
-		"package": "svelte-kit sync && svelte-package && publint",
-		"package:watch": "svelte-kit sync && svelte-package --watch",
-		"prepublishOnly": "npm run package",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test": "vitest",
-		"package:pre": "node scripts/package-pre.js"
-	},
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
-		}
-	},
-	"files": [
-		"dist",
-		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
-	],
-	"peerDependencies": {
-		"svelte": "^5.0.0-next"
-	},
-	"devDependencies": {
-		"@medyll/idae-prettier-config": "^1.2.1",
-		"@sveltejs/adapter-auto": "^5.0.0",
-		"@sveltejs/kit": "^2.20.2",
-		"@sveltejs/package": "^2.3.10",
-		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"svelte": "^5.25.3",
-		"svelte-check": "^4.1.5",
-		"tslib": "^2.8.1",
-		"typescript": "^5.8.2",
-		"vite": "^6.2.3",
-		"vitest": "^3.0.9"
-	},
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"type": "module"
+  "name": "@medyll/idae-engine",
+  "scope": "@medyll",
+  "version": "1.162.0",
+  "description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && npm run package",
+    "preview": "vite preview",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "package:watch": "svelte-kit sync && svelte-package --watch",
+    "prepublishOnly": "npm run package",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest",
+    "package:pre": "node scripts/package-pre.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
+  ],
+  "peerDependencies": {
+    "svelte": "^5.0.0-next"
+  },
+  "devDependencies": {
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@sveltejs/adapter-auto": "^5.0.0",
+    "@sveltejs/kit": "^2.20.2",
+    "@sveltejs/package": "^2.3.10",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "svelte": "^5.25.3",
+    "svelte-check": "^4.1.5",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3",
+    "vitest": "^3.0.9"
+  },
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module"
 }
