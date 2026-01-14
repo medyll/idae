@@ -29,12 +29,6 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          registry-url: 'https://registry.npmjs.org'
-
-
 
       - name: Install pnpm
         run: npm install -g pnpm@10.28.0
@@ -45,6 +39,13 @@ jobs:
           which pnpm || { echo 'pnpm introuvable'; exit 1; }
           pnpm --version
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+          
       - name: Install dependencies
         run: pnpm install
 
