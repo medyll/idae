@@ -82,8 +82,8 @@ packages.forEach((packageName) => {
 
   if (modified) {
     // add definition in package.json
-    const packageJsonString = JSON.stringify(packageJson, null, 2);
-    fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
+    const packageJsonString = JSON.stringify(packageJson, null, 2) + "\n";
+    fs.writeFileSync(packageJsonPath, packageJsonString);
     console.log(`Processed package: ${packageName}`);
     console.log(`Package.json path: ${packageJsonPath}`);
   }
