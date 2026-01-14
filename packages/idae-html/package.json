@@ -28,6 +28,9 @@
     "svelte": "^4.0.0"
   },
   "devDependencies": {
+    "@medyll/idae-be": "*",
+    "@medyll/idae-dom-events": "*",
+    "@medyll/idae-prettier-config": "^1.2.1",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",
@@ -44,13 +47,10 @@
     "svelte-check": "^4.1.5",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
-    "vite": "^6.2.3",
-    "@medyll/idae-be": "*",
-    "@medyll/idae-dom-events": "*"
+    "vite": "^6.2.3"
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "scope": "@medyll",
-  "dependencies": {}
+  "scope": "@medyll"
 }

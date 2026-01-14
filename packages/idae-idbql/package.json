@@ -31,6 +31,8 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
+		"@medyll/idae-prettier-config": "^1.2.1",
+		"@medyll/idae-query": "*",
 		"@sveltejs/adapter-auto": "^6.0.0",
 		"@sveltejs/kit": "^2.20.7",
 		"@sveltejs/package": "^2.3.11",
@@ -39,12 +41,9 @@
 		"svelte-check": "^4.1.6",
 		"tslib": "^2.8.1",
 		"typescript": "^5.8.3",
-		"vite": "^6.3.2",
-		"@medyll/idae-prettier-config": "*",
-		"@medyll/idae-query": "*"
+		"vite": "^6.3.2"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module",
-	"dependencies": {}
+	"type": "module"
 }

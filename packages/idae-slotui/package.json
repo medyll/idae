@@ -39,10 +39,10 @@
 		"svelte": "^5.0.0-next"
 	},
 	"devDependencies": {
-		"@medyll/idae-prettier-config": "*",
 		"@medyll/cssfabric": "*",
 		"@medyll/idae-be": "*",
 		"@medyll/idae-engine": "*",
+		"@medyll/idae-prettier-config": "^1.2.1",
 		"@playwright/test": "^1.51.1",
 		"@sveltejs/adapter-auto": "^5.0.0",
 		"@sveltejs/kit": "^2.20.2",
