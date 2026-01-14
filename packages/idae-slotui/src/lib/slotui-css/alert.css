@@ -7,6 +7,9 @@
   --alert-gap: var(--sld-gap-small);
 }
 
+dialog.alert[open=true] {
+  display: none;
+}
 dialog.alert {
   position: relative;
   min-width: 350px;
@@ -17,9 +20,6 @@ dialog.alert {
   box-shadow: var(--alert-elevation);
   overflow: hidden;
   padding: 0;
-}
-dialog.alert[open=true] {
-  display: none;
 }
 dialog.alert article.dialog-content {
   padding: var(--alert-pad);

@@ -57,7 +57,11 @@ packages.forEach((packageName) => {
   for (const field of depFields) {
     if (!packageJson[field]) continue;
     for (const dep in packageJson[field]) {
-      if (dep.startsWith("@medyll/") && packageJson[field][dep] !== "workspace:*") {
+      if (
+        dep.startsWith("@medyll/") &&
+        packageJson[field][dep] !== "workspace:*" &&
+        !packageJson[field][dep].includes("file:")
+      ) {
         packageJson[field][dep] = "workspace:*";
         modified = true;
         console.log(`Set ${field} -> ${dep} to workspace:* in ${packageName}`);

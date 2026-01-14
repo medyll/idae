@@ -39,7 +39,7 @@
     "svelte": "^5.0.0-next"
   },
   "devDependencies": {
-    "@medyll/cssfabric": "workspace:*",
+    "@medyll/cssfabric": "file:../../../../../app-node/cssfabric",
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-engine": "workspace:*",
     "@medyll/idae-prettier-config": "workspace:*",

@@ -1,0 +1,6 @@
+dist/
+build/
+.svelte-kit/
+node_modules/
+coverage/
+*.d.ts

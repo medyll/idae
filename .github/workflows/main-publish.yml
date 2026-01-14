@@ -33,7 +33,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Generate Changesets
         env:
@@ -58,10 +58,10 @@ jobs:
       - name: Generate README
         run: node scripts/generate-readme.js
 
-      - name: Run npm package-all script if present
+      - name: Run pnpm package-all script if present
         run: |
           if [ -f package.json ] && grep -q '"package-all":' package.json; then
-            npm run package-all
+            pnpm run package-all
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

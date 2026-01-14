@@ -1,5 +1,3 @@
-import eslintPatch from "@rushstack/eslint-patch/modern-module-resolution.js";
-
 eslintPatch();
 
 export default {
