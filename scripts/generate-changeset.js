@@ -404,6 +404,7 @@ ${summary}
       if (!fs.existsSync(changesetFile)) {
         fs.writeFileSync(changesetFile, changesetContent);
         totalChangesets++;
+        console.log(`✅ Changeset file created: ${changesetFile}`);
         if (this.showlog) console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
       } else {
         if (this.showlog) console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));
