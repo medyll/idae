@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-cadenzia",
-  "version": "0.126.0",
+  "version": "0.127.0",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
