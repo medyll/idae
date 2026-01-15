@@ -7,39 +7,7 @@ import { schemeModelTestDb } from '../db/testDbSchema.js';
 describe('IDbBase', () => {
   const dbCollections = new IDbBase(schemeModelTestDb);
 
-  it('getCollection returns the correct collection object', () => {
-    const agent = dbCollections.getCollectionModel('agent');
-    expect(agent).toBeDefined();
-    expect(agent.keyPath).toBe('++id, promptId, created_at');
-  });
-
-  it('getCollectionTemplate returns the template object', () => {
-    const tpl = dbCollections.getCollectionModelTemplate('agent');
-    expect(tpl).toBeDefined();
-    expect(tpl.index).toBe('id');
-  });
-
-  it('getCollectionTemplateFks returns the fks object', () => {
-    const fks = dbCollections.getCollectionTemplateFks('agent');
-    expect(fks).toBeDefined();
-    expect(fks.agentPrompt).toBeDefined();
-  });
-
-  it('getIndexName returns the index field name', () => {
-    const idx = dbCollections.getIndexName('agent');
-    expect(idx).toBe('id');
-  });
-
-  it('getCollectionTemplateFields returns the fields object', () => {
-    const fields = dbCollections.getCollectionTemplateFields('agent');
-    expect(fields).toBeDefined();
-    expect(fields.name).toBeDefined();
-  });
-
-  it('getTemplatePresentation returns the presentation string', () => {
-    const pres = dbCollections.getTemplatePresentation('agent');
-    expect(pres).toBe('name model');
-  });
+  
 
   it('getFkFieldType returns the fk field type', () => {
     const fkType = dbCollections.getFkFieldType('agentPrompt.id');
@@ -94,14 +62,6 @@ describe('IDbBase', () => {
     expect(Array.isArray(obj)).toBe(true);
   });
 
-  it('parseAllCollections returns all collections with fields', () => {
-    const all = dbCollections.parseAllCollections();
-    expect(all).toBeDefined();
-    expect(Object.keys(all)).toContain('agent');
-    expect(Object.keys(all)).toContain('agentPrompt');
-    expect(all.agent).toBeDefined();
-    expect(all.agentPrompt).toBeDefined();
-  });
 
   it('parseRawCollection returns all fields for a collection', () => {
     const agentFields = dbCollections.parseRawCollection('agent');

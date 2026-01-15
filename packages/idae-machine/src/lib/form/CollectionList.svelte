@@ -41,8 +41,8 @@ import {machine } from '$lib/main/machine.js';
 
 	let collections = machine.collections;
 	let store = machine.store;
-	let fieldValues = machine.collections.get(collection).collectionValues() ;
-	let index = collections.get(collection).getIndexName();
+	let fieldValues = machine.collections.collection(collection).collectionValues() ;
+	let index = collections.collection(collection).getIndexName();
 
 	let qy = $derived(where ? store[collection].where(where) : store[collection].getAll());
 

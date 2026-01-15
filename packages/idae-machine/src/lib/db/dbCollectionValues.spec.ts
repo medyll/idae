@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 
 import { IDbCollectionValues, IDbBase } from '$lib/main/machineDb.js';
 import { schemeModelTestDb } from '$lib/db/testDbSchema.js';
-import { schemeModelTestDb } from '$lib/db/testDbSchema.js';
 
 const agentData = {
   id: 1,

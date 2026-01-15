@@ -97,21 +97,7 @@ class IDbError extends Error {
  * Used for dynamic UI generation, validation, and schema-driven logic.
  */
 export class IDbBase {
-		/**
-		 * Public: Get the foreign keys (fks) object for a collection.
-		 */
-		getCollectionTemplateFks(collection: TplCollectionName) {
-			return this.getCollectionModelTemplateFks(collection);
-		}
 
-		/**
-		 * Public: Get the value of the index field for a given data object.
-		 */
-		indexValue(collection: TplCollectionName, data: object): unknown {
-			const indexName = this.getIndexName(collection);
-			// @ts-ignore
-			return data && typeof data === 'object' && indexName && (data as any)[indexName];
-		}
 	/**
 	 * The database model (schema) used for introspection.
 	 */
@@ -128,8 +114,16 @@ export class IDbBase {
 	/**
 	 * Get an IDbCollection instance for a collection name.
 	 */
-	get(collection: TplCollectionName): IDbCollection {
-		return new IDbCollection(collection, this);
+	collection(collection: TplCollectionName): IDbCollection {
+		return new IDbCollection(collection, this, this.model);
+	}
+
+	/**
+	 * Public: Get the value of the index field for a given data object.
+	 */
+	indexValue(collection: TplCollectionName, data: object): unknown {
+		const indexName = new IDbCollection(collection, this, this.model).getIndexName();		 
+		return data && typeof data === 'object' && indexName && (data as any)[indexName];
 	}
 
 	/**
@@ -161,21 +155,10 @@ export class IDbBase {
 	}
 
 	/**
-	 * Parse all collections in the model and return their fields as IDbForge objects.
-	 */
-	parseAllCollections(): Record<string, Record<string, IDbForge | undefined> | undefined> {
-		let out: Record<string, Record<string, IDbForge | undefined> | undefined> = {};
-		Object.keys(this.model).forEach((collection) => {
-			out[collection] = this.parseRawCollection(collection as TplCollectionName);
-		});
-		return out;
-	}
-
-	/**
 	 * Parse all fields of a given collection.
 	 */
 	parseRawCollection(collection: TplCollectionName): Record<string, IDbForge | undefined> | undefined {
-		const fields = this.getCollectionTemplateFields(collection);
+		const fields = new IDbCollection(collection, this, this.model).getFields();
 		if (!fields) return;
 		const out: Record<string, IDbForge | undefined> = {};
 		Object.keys(fields).forEach((fieldName) => {
@@ -204,40 +187,13 @@ export class IDbBase {
 		return this.forge({ collection, fieldName, ...fieldType });
 	}
 
-	/**
-	 * Internal helper to construct an IDbForge object from its components.
-	 */
-	private forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is }: IDbForge): IDbForge {
-		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
-	}
 
-	#getModel() {
-		return this.model;
-	}
 
-	getCollection(collection: TplCollectionName) {
-		return this.#getModel()[String(collection)] as CollectionModel;
-	}
-	getCollectionModel(collection: TplCollectionName) {
-		return this.#getModel()[String(collection)] as CollectionModel;
-	}
-	getCollectionModelTemplate(collection: TplCollectionName) {
-		return this.getCollectionModel(collection)['template'] as Tpl;
-	}
-	getCollectionModelTemplateFks(collection: TplCollectionName) {
-		return this.getCollectionModel(collection)['template']?.fks as Tpl['fks'];
-	}
-	getIndexName(collection: TplCollectionName) {
-		return this.getCollectionModel(collection)?.template?.index;
-	}
-	getCollectionTemplateFields(collection: TplCollectionName) {
-		return this.getCollectionModelTemplate(collection)?.fields as TplFields;
-	}
-	getTemplatePresentation(collection: TplCollectionName) {
-		return this.getCollectionModelTemplate(collection)?.presentation as string;
-	}
+
+	// Toutes ces méthodes sont maintenant dans IDbCollection
 	#getTemplateFieldRule(collection: TplCollectionName, fieldName: keyof TplFields) {
-		return this.getCollectionTemplateFields(collection)?.[String(fieldName)] as IDbFieldRules | undefined;
+		// Utilise la nouvelle API orientée collection
+		return new IDbCollection(collection, this, this.model).getFieldRule(fieldName);
 	}
 	getFkFieldType(string: `${string}.${string}`) {
 		const [collection, field] = string.split('.') as [string, string];
@@ -246,7 +202,7 @@ export class IDbBase {
 	}
 	getFkTemplateFields(string: `${string}.${string}`) {
 		const [collection, field] = string.split('.') as [string, string];
-		return this.getCollectionModel(collection).template?.fields;
+		return this.collection(collection).getModelTemplate()?.fields;
 	}
 	private testIs(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: IDbFieldRules): Partial<IDbForge> | undefined {
 		const typeMappings = { fk: 'fk-', array: 'array-of-', object: 'object-', primitive: '' };
@@ -302,7 +258,7 @@ export class IDbBase {
 		return { fieldType, fieldRule, fieldArgs, is: type };
 	}
 	fks(collection: string): { [collection: string]: Tpl } {
-		let fks = this.getCollectionModelTemplateFks(collection);
+		let fks = this.collection(collection).getModelTemplateFks();
 		let out: Record<string, any> = {};
 		if (fks) {
 			Object.keys(fks).forEach((collection: TplCollectionName) => {
@@ -313,7 +269,7 @@ export class IDbBase {
 	}
 	reverseFks(targetCollection: TplCollectionName): Record<string, any> {
 		const result: Record<string, any> = {};
-		Object.entries(this.#getModel()).forEach(([collectionName, collectionModel]) => {
+		Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
 			const template = (collectionModel as CollectionModel).template;
 			if (template && template.fks) {
 				Object.entries(template.fks).forEach(([fkName, fkConfig]) => {
@@ -342,28 +298,53 @@ export class IDbBase {
 		}
 		return Object.keys(data).map((key) => ({ ...fieldInfo, fieldName: `${String(fieldName)}.${key}` }));
 	}
+
+	/**
+	 * Internal helper to construct an IDbForge object from its components.
+	 */
+	private forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is }: IDbForge): IDbForge {
+		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
+	}
 }
 
 /* Single collection relies on IDbBase */
 export class IDbCollection {
+	       // --- NOUVELLES MÉTHODES MIGRÉES DE IDbBase ---
+	       
 	collection: TplCollectionName;
 	_dbCollections: IDbBase;
+	model: IdbqModel["Collection"];
 
-	constructor(collection: TplCollectionName, dbCollections: IDbBase) {
+	constructor(collection: TplCollectionName, dbCollections: IDbBase, model: IdbqModel) {
 		this.collection = collection;
 		this._dbCollections = dbCollections;
+		this.model = model[String(collection)];
 	}
 
-	getCollectionModelTemplate() {
-		return this._dbCollections.getCollectionModelTemplate(this.collection);
+
+	getModel() {
+		return this.model;
+	}
+	getFields() {
+		return this.getModelTemplate()?.fields as TplFields;
+	}
+	getPresentation() {
+		return this.getModelTemplate()?.presentation as string;
+	}
+	getFieldRule(fieldName: keyof TplFields) {
+		return this.getFields()?.[String(fieldName)] as IDbFieldRules | undefined;
 	}
 
-	getCollectionModelTemplateFks() {
-		return this._dbCollections.getCollectionModelTemplateFks(this.collection);
+	getModelTemplate() {
+		return this.model['template'] as Tpl;
+	}
+
+	getModelTemplateFks() {
+		return this.model['template']?.fks as  Tpl['fks'];
 	}
 
 	getIndexName() {
-		return this._dbCollections.getIndexName(this.collection);
+		return this.getModelTemplate()?.index;
 	}
 
 	collectionValues() {
@@ -441,7 +422,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.idbBase.getTemplatePresentation(this.collectionName);
+			const presentation = this.idbBase.collection(this.collectionName).getPresentation();
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
 			const fields = presentation.split(' ');
@@ -465,7 +446,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	indexValue(data: Record<string, any>): any | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.idbBase.getIndexName(this.collectionName);
+			const indexName = this.idbBase.collection(this.collectionName).getIndexName();
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -541,7 +522,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		);
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.idbBase.getIndexName(this.collectionName);
+		const indexName = this.idbBase.collection(this.collectionName).getIndexName();
 
 		return {
 			'data-collection': this.collectionName,
@@ -860,7 +841,7 @@ export class IDbFormValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.idbCollections.getCollectionTemplateFields(this.collection);
+		const fields = this.idbCollections.collection(this.collection).getModelTemplate().fields ;
 		if (!fields) {
 			return {
 				isValid: false,
