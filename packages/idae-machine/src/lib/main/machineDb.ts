@@ -314,10 +314,10 @@ export class IDbCollection {
 	#machineDb: MachineDb;
 	#model: IdbqModel["Collection"];
 
-	constructor(collection: TplCollectionName, idbBase: MachineDb, model: IdbqModel) {
-		this.collection = collection;
+	constructor(collectionName: TplCollectionName, idbBase: MachineDb, model: IdbqModel) {
+		this.collection = collectionName;
 		this.#machineDb = idbBase;
-		this.#model = model[String(collection)];
+		this.#model = model[String(collectionName)];
 		this.#template = this.#model['template'] as Tpl;
 	}
 
