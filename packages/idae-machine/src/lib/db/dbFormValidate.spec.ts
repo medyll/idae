@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { IDbFormValidate } from './dbFields.js';
+import { IDbFormValidate } from '../main/machineDb.js';
 
 const agentData = {
   id: 1,

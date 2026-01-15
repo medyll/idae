@@ -32,35 +32,35 @@ import type { DbDataModel, DbDataModelTs } from './dataModel.js';
 // Schéma de test (copie explicite de schemeModelDb)
 export const schemeModelTestDb = {
 	agent: {
-		keyPath: '++id, promptId, created_at',
-		model: {} as DBAgent,
-		ts: {} as DBAgent,
-		template: {
-			index: 'id',
-			presentation: 'name model',
-			fields: {
-				id: 'id (readonly)',
-				name: 'text (private)',
-				code: 'text',
-				model: 'text',
-				prompt: 'text-long',
-				created_at: 'date (private)',
-				ia_lock: 'boolean (private)',
-				agentPromptId: 'fk-agentPrompt.id (required)',
-				tags: 'array-of-text', // array field
-				meta: 'object-any',    // object field
-				relatedAgents: 'array-of-fk-agent.id', // fk multiple
-				status: 'text (required readonly)'
-			},
-			fks: {
-				agentPrompt: {
-					code: 'agentPrompt',
-					rules: 'readonly private',
-					multiple: true
-				}
-			}
-		}
-	},
+ 		keyPath: '++id, promptId, created_at',
+ 		model: {} as DBAgent,
+ 		ts: {} as DBAgent,
+ 		template: {
+ 			index: 'id',
+ 			presentation: 'name model',
+ 			fields: {
+ 				id: 'id (readonly)',
+ 				name: 'text (private)',
+ 				code: 'text',
+ 				model: 'text',
+ 				prompt: 'text-long',
+ 				created_at: 'date (private)',
+ 				ia_lock: 'boolean (private)',
+ 				agentPromptId: 'fk-agentPrompt.id (required)',
+ 				tags: 'array-of-text', // array field
+ 				meta: 'object-any',    // object field
+ 				relatedAgents: 'array-of-fk-agent.id', // fk multiple
+ 				status: 'text (required readonly)'
+ 			},
+ 			fks: {
+ 				agentPrompt: {
+ 					code: 'agentPrompt',
+ 					rules: 'readonly private',
+ 					multiple: true
+ 				}
+ 			}
+ 		}
+ 	},
 	agentPrompt: {
 		keyPath: '++id, created_at',
 		model: {} as DbAgentPrompt,

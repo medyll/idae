@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { IDbCollectionValues, IDbBase } from '$lib/db/dbFields.js';
+import { IDbCollectionValues, IDbBase } from '$lib/main/machineDb.js';
 import { schemeModelTestDb } from '$lib/db/testDbSchema.js';
 import { schemeModelTestDb } from '$lib/db/testDbSchema.js';
 
@@ -22,7 +22,7 @@ const agentData = {
 describe('IDbCollectionValues', () => {
   const values = new IDbCollectionValues('agent');
   // Remplace le modèle par le schéma de test pour tous les tests
-  values.idbCollections = new IDbBase(schemeModelTestDb);
+  values.idbBase = new IDbBase(schemeModelTestDb);
 
   it('format returns joined string for array field', () => {
     // array fields are not formatted specially, but should not throw

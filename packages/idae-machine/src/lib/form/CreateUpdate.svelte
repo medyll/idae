@@ -4,7 +4,7 @@
  -->
 
 <script lang="ts" generics="COL = Record<string,any>">
-	import {  IDbFormValidate } from '$lib/db/dbFields.js'; 
+	import {  IDbFormValidate } from '$lib/main/machineDb.js'; 
 	import type { CreateUpdateProps } from './types';
 	import CollectionReverseFks from './CollectionReverseFks.svelte';
 	import FieldInput from './FieldValue.svelte';

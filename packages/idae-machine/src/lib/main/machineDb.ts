@@ -10,7 +10,7 @@ import type {
 	Tpl,
 	TplFields
 } from '@medyll/idae-idbql';
-import { schemeModel } from './dbSchema.js';
+import { schemeModel } from '../db/dbSchema.js';
 
 export enum enumPrimitive {
 	id = 'id',
@@ -91,60 +91,27 @@ class IDbError extends Error {
 	}
 }
 
-/* Single collection relies on IDbCollections */
-export class IDbCollection {
-	collection: TplCollectionName;
-	_dbCollections: IDbBase;
-
-	constructor(collection: TplCollectionName, dbCollections: IDbBase) {
-		this.collection = collection;
-		this._dbCollections = dbCollections;
-	}
-
-	getCollectionModelTemplate() {
-		return this._dbCollections.getCollectionModelTemplate(this.collection);
-	}
-
-	getCollectionModelTemplateFks() {
-		return this._dbCollections.getCollectionModelTemplateFks(this.collection);
-	}
-
-	getIndexName() {
-		return this._dbCollections.getIndexName(this.collection);
-	}
-
-	collectionValues() {
-		return this._dbCollections.collectionValues(this.collection);
-	}
-
-	collectionFieldValues<T extends Record<string, any>>(data: T) {
-		return this._dbCollections.collectionFieldValues(this.collection, data);
-	}
-
-	fieldForge<T extends Record<string, any>>(fieldName: keyof T, data: T) {
-		return this._dbCollections.collectionFieldForge(this.collection, fieldName, data);
-	}
-
-	getFormValidate() {
-		return this._dbCollections.formValidate(this.collection);
-	}
-
-	fks() {
-		return this._dbCollections.fks(this.collection);
-	}
-
-	reverseFks() {
-		return this._dbCollections.reverseFks(this.collection);
-	}
-
-}
-
 /**
  * Central class for parsing, introspecting, and extracting metadata from the database schema.
  * Provides methods to access collections, templates, fields, foreign keys, and type information.
  * Used for dynamic UI generation, validation, and schema-driven logic.
  */
 export class IDbBase {
+		/**
+		 * Public: Get the foreign keys (fks) object for a collection.
+		 */
+		getCollectionTemplateFks(collection: TplCollectionName) {
+			return this.getCollectionModelTemplateFks(collection);
+		}
+
+		/**
+		 * Public: Get the value of the index field for a given data object.
+		 */
+		indexValue(collection: TplCollectionName, data: object): unknown {
+			const indexName = this.getIndexName(collection);
+			// @ts-ignore
+			return data && typeof data === 'object' && indexName && (data as any)[indexName];
+		}
 	/**
 	 * The database model (schema) used for introspection.
 	 */
@@ -377,6 +344,56 @@ export class IDbBase {
 	}
 }
 
+/* Single collection relies on IDbBase */
+export class IDbCollection {
+	collection: TplCollectionName;
+	_dbCollections: IDbBase;
+
+	constructor(collection: TplCollectionName, dbCollections: IDbBase) {
+		this.collection = collection;
+		this._dbCollections = dbCollections;
+	}
+
+	getCollectionModelTemplate() {
+		return this._dbCollections.getCollectionModelTemplate(this.collection);
+	}
+
+	getCollectionModelTemplateFks() {
+		return this._dbCollections.getCollectionModelTemplateFks(this.collection);
+	}
+
+	getIndexName() {
+		return this._dbCollections.getIndexName(this.collection);
+	}
+
+	collectionValues() {
+		return this._dbCollections.collectionValues(this.collection);
+	}
+
+	collectionFieldValues<T extends Record<string, any>>(data: T) {
+		return this._dbCollections.collectionFieldValues(this.collection, data);
+	}
+
+	fieldForge<T extends Record<string, any>>(fieldName: keyof T, data: T) {
+		return this._dbCollections.collectionFieldForge(this.collection, fieldName, data);
+	}
+
+	getFormValidate() {
+		return this._dbCollections.formValidate(this.collection);
+	}
+
+	fks() {
+		return this._dbCollections.fks(this.collection);
+	}
+
+	reverseFks() {
+		return this._dbCollections.reverseFks(this.collection);
+	}
+
+}
+
+
+
 
 /**
  * IDbCollectionValues
@@ -385,7 +402,7 @@ export class IDbBase {
  * It is designed for dynamic UI rendering, presentation logic, and metadata extraction for form generation in schema-driven applications.
  *
  * Main responsibilities:
- * - Holds a reference to the collection name and the schema (IDbCollections).
+ * - Holds a reference to the collection name and the schema (IDbBase).
  * - Provides methods to format field values according to their type (number, text, array, object, etc.).
  * - Supplies presentation logic for displaying records (e.g., presentation string, index value).
  * - Offers input attribute generation for forms (inputDataSet).
@@ -399,14 +416,14 @@ export class IDbBase {
  *   const formatted = values.format('name', agentData); // formatted field value
  *   const attrs = values.getInputDataSet('name', agentData); // input attributes for forms
  *
- * This class is typically used via IDbCollections.getCollectionValues for shared instance management.
+ * This class is typically used via IDbBase.getCollectionValues for shared instance management.
  * @template T - The type of the data object for the collection.
  */
 export class IDbCollectionValues<T extends Record<string, any>> {
 	/**
-	 * The IDbCollections instance used for schema introspection.
+	 * The IDbBase instance used for schema introspection.
 	 */
-	idbCollections: IDbBase;
+	idbBase: IDbBase;
 	/**
 	 * The collection name this instance operates on.
 	 */
@@ -416,15 +433,15 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * Create a new IDbCollectionValues instance for a given collection.
 	 * @param collectionName The collection name.
 	 */
-	constructor(collectionName: TplCollectionName,idbCollections?: IDbBase) {
+	constructor(collectionName: TplCollectionName,idbBase?: IDbBase) {
 		this.collectionName = collectionName;
-		this.idbCollections = idbCollections ?? new IDbBase();
+		this.idbBase = idbBase ?? new IDbBase();
 	}
 
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.idbCollections.getTemplatePresentation(this.collectionName);
+			const presentation = this.idbBase.getTemplatePresentation(this.collectionName);
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
 			const fields = presentation.split(' ');
@@ -448,7 +465,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	indexValue(data: Record<string, any>): any | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.idbCollections.getIndexName(this.collectionName);
+			const indexName = this.idbBase.getIndexName(this.collectionName);
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -476,7 +493,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.idbCollections.parseCollectionFieldName(
+			const fieldInfo = this.idbBase.parseCollectionFieldName(
 				this.collectionName,
 				fieldName as string
 			);
@@ -518,13 +535,13 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
 		string
 	> {
-		const fieldInfo = this.idbCollections.parseCollectionFieldName(
+		const fieldInfo = this.idbBase.parseCollectionFieldName(
 			this.collectionName,
 			fieldName as string
 		);
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.idbCollections.getIndexName(this.collectionName);
+		const indexName = this.idbBase.getIndexName(this.collectionName);
 
 		return {
 			'data-collection': this.collectionName,
@@ -543,7 +560,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @returns An array of IDbForge objects.
 	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] {
-		return this.idbCollections.iterateArrayField(this.collectionName, fieldName, data);
+		return this.idbBase.iterateArrayField(this.collectionName, fieldName, data);
 	}
 
 	/**
@@ -553,7 +570,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @returns An array of IDbForge objects.
 	 */
 	iterateObjectField(fieldName: keyof TplFields, data: Record<string, any>): IDbForge[] {
-		return this.idbCollections.iterateObjectField(this.collectionName, fieldName, data);
+		return this.idbBase.iterateObjectField(this.collectionName, fieldName, data);
 	}
 
 	/**
@@ -572,7 +589,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param type The text type (e.g. 'text-short').
 	 * @returns The formatted string.
 	 */
-	#formatTextField(value: string, type: string): string {
+	#formatTextField(value: unknown, type: string): string {
 		const lengths = {
 			'text-tiny': 10,
 			'text-short': 20,
@@ -580,8 +597,9 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 			'text-long': 40,
 			'text-giant': 50
 		};
-		const maxLength = lengths[type as keyof typeof lengths] || value.length;
-		return value.substring(0, maxLength);
+		const str = typeof value === 'string' ? value : String(value ?? '');
+		const maxLength = lengths[type as keyof typeof lengths] || str.length;
+		return str.substring(0, maxLength);
 	}
 
 	/**
@@ -616,7 +634,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	* @param fieldName The field name to introspect.
 	*/
        public getForge(fieldName: keyof T): IDbForge | undefined {
-	       return this.#collectionValues.idbCollections.parseCollectionFieldName(
+	       return this.#collectionValues.idbBase.parseCollectionFieldName(
 		       this.#collection,
 		       String(fieldName)
 	       );
@@ -628,7 +646,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	}
 
 	format(fieldName: keyof T): string | string[] {
-		const fieldInfo = this.#collectionValues.idbCollections.parseCollectionFieldName(
+		const fieldInfo = this.#collectionValues.idbBase.parseCollectionFieldName(
 			this.#collection,
 			fieldName
 		);
@@ -679,14 +697,13 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
  *   const inputType = forge.htmlInputType; // e.g. 'text', 'area', 'email', etc.
  *   const meta = forge.forge; // IDbForge metadata for the field
  *
- * This class is typically used via IDbCollections.getCollectionFieldForge for shared instance management.
+ * This class is typically used via IDbBase.getCollectionFieldForge for shared instance management.
  */
 export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	#collection: TplCollectionName;
 	#collectionValues: IDbCollectionValues<T>;
 	#fieldName: keyof T | string;
 	#data: T;
-	#forge: IDbForge | undefined;
 
 	constructor(collection: TplCollectionName, fieldName: any, data: T,collectionValues?: IDbCollectionValues<T>) {
 		this.#collection = collection;
@@ -704,7 +721,7 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	}
 	// renamed from parseCollectionFieldName
 	get forge(): IDbForge | undefined {
-		return this.#collectionValues.idbCollections.parseCollectionFieldName(
+		return this.#collectionValues.idbBase.parseCollectionFieldName(
 			this.#collection,
 			String(this.#fieldName)
 		);
