@@ -1,11 +1,11 @@
 
 import { describe, it, expect } from 'vitest';
 
-import { IDbCollections } from './dbFields.js';
+import { IDbBase } from './dbFields.js';
 import { schemeModelTestDb } from './testDbSchema.js';
 
 describe('IDbCollections', () => {
-  const dbCollections = new IDbCollections(schemeModelTestDb);
+  const dbCollections = new IDbBase(schemeModelTestDb);
 
   it('getCollection returns the correct collection object', () => {
     const agent = dbCollections.getCollectionModel('agent');

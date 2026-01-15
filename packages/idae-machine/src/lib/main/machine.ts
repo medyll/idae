@@ -25,7 +25,7 @@
  * const model = machine.idbqModel;
  */
 
-import { IDbCollections } from '$lib/db/dbFields.js';
+import { IDbBase } from '$lib/db/dbFields.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 
 /**
@@ -56,7 +56,7 @@ export class Machine {
   /**
    * Centralized access to schema and collection logic
    */
-  _collections!: IDbCollections ;
+  _collections!: IDbBase ;
 
   /**
    * Database name
@@ -97,7 +97,7 @@ export class Machine {
     if (!this._model) {
       throw new Error('Data model is not defined');
     }
-    this._collections = new IDbCollections(this._model);
+    this._collections = new IDbBase(this._model);
   }
 
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IDbCollections } from '$lib/db/dbFields.js';
+	import { IDbBase } from '$lib/db/dbFields.js';
 	import { schemeModel, idbqlState } from '$lib/db/dbSchema.js';
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
@@ -15,7 +15,7 @@
 	// idbqlState[fkCollection].get(fkId);
 
 	const dbFields = machine.collections;
-	const collections = new IDbCollections(schemeModel);
+	const collections = new IDbBase(schemeModel);
 	const fks = $derived(collections.fks(collection));
 </script>
 

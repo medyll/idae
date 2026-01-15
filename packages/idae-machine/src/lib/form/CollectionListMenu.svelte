@@ -2,7 +2,7 @@
 	import { type MenuListProps, Button, MenuList, MenuListItem, openWindow, type Props } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema';
-	import { IDbCollections, IDbCollectionValues } from '$lib/db/dbFields';
+	import { IDbBase, IDbCollectionValues } from '$lib/db/dbFields';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
@@ -18,7 +18,7 @@
 
 	let { collection, target, data, menuListProps, onclick, style, where }: DataListMenuProps = $props();
 
-	let test = new IDbCollections();
+	let test = new IDbBase();
 	let fieldValues = new IDbCollectionValues(collection);
 	let index = test.getIndexName(collection);
 

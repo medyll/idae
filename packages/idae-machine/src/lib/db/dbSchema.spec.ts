@@ -1,6 +1,6 @@
 // Unit test for dbSchema.ts
 import { describe, it, expect } from 'vitest';
-import { schemeModelDb } from '../../_work/dbSchema.js';
+import { schemeModelDb } from '$lib/db/dbSchema.js';
 
 describe('dbSchema', () => {
   it('contains agents collection with correct fields', () => {
