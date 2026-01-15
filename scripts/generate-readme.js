@@ -146,17 +146,15 @@ function generateReadme(blacklist = []) {
     fs.writeFileSync(readmePath, readmeContent, 'utf8');
     console.log('README.md has been updated.');
 
-    // Commit changes with --amend
+    // Commit changes with --amend, always from monorepo root
     try {
-        execSync('git add README.md');
-        execSync('git commit --amend --no-edit');
+        execSync('git add README.md', { cwd: monorepoPath });
+        execSync('git commit --amend --no-edit', { cwd: monorepoPath });
         console.log('README.md changes have been amended to the last commit.');
     } catch (error) {
         console.error('Error during git amend operation:', error.message);
     }
 }
 
-// Exemple d'utilisation :
-// generateReadme(['idae-db', 'idae-chroma']);
 
 generateReadme(['ai-bash','idae-chroma','idae-cadenzia','idae-data-tpl','idae-api-nest','nest-test']);
