@@ -68,7 +68,7 @@ importers:
         version: 0.122.0(svelte@5.46.3)
       '@medyll/idae-eslint-config':
         specifier: ^1.2.1
-        version: 1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)
+        version: 1.2.1(jiti@2.6.1)(picomatch@4.0.3)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -14114,7 +14114,7 @@ snapshots:
       - ws
       - zod
 
-  '@medyll/idae-eslint-config@1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)':
+  '@medyll/idae-eslint-config@1.2.1(jiti@2.6.1)(picomatch@4.0.3)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@rushstack/eslint-patch': 1.15.0
       '@types/eslint': 9.6.1
@@ -16872,7 +16872,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.4.3)
+      follow-redirects: 1.15.11(debug@4.3.7)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
