@@ -1,5 +1,131 @@
 # Changelog
 
+## 0.172.0
+
+### Minor Changes
+
+- - fix(idae-slotui): remove .npmrc file from idae-slotui package ([071f254](https://github.com/medyll/idae/commit/071f2548d31fb1a977719af86fe50b87be61829e)) - 2026-01-15 by @medyll
+  - fix(update): @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json ([207fbc5](https://github.com/medyll/idae/commit/207fbc59719ea9d8f97356c7d3052a0159e2bd51)) - 2026-01-15 by @medyll
+  - fix(downgrade): @medyll/cssfabric dependency from 0.2.1-beta.9 to 0.2.1-beta.7 in package.json ([62ef298](https://github.com/medyll/idae/commit/62ef2983043d15e540c052c8f2892e4f3a3a3c3d)) - 2026-01-15 by @medyll
+  - fix(update): @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json ([126ba87](https://github.com/medyll/idae/commit/126ba87770107fe3bbd9173b3a08ae19292880e6)) - 2026-01-15 by @medyll
+  - fix(update): @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json and pnpm-lock.yaml ([f51a4af](https://github.com/medyll/idae/commit/f51a4af59d268ab26b0b834445f4519fcc2b6103)) - 2026-01-14 by @medyll
+  - Refactor code structure for improved readability and maintainability ([50bfcfa](https://github.com/medyll/idae/commit/50bfcfa75bda513b46a1fdf5b1fad2467658ae49)) - 2026-01-14 by @medyll
+  - chore(update): package.json files to use workspace:\* for Medyll dependencies ([e2de3b1](https://github.com/medyll/idae/commit/e2de3b1d8ed752d3c342c75132bede2004dd2eb9)) - 2026-01-14 by @medyll
+    - Changed all instances of Medyll dependencies in package.json files to use "workspace:\*" instead of version numbers.
+    - Updated the verify-packages script to enforce "workspace:_" for all @medyll/_ dependencies.
+    - Ensured consistent formatting and structure across package.json files.
+  - medyll ([- Added](https://github.com/medyll/idae/commit/- Added @medyll/idae-db and @medyll/idae-mongo as dependencies in packages/idae-api-nest/package.json.
+  - Added @medyll/idae-dom-events as a dependency in packages/idae-be/package.json.
+  - Added @medyll/idae-be as a dependency in packages/idae-cadenzia/package.json.
+  - Added @medyll/idae-query as a dependency in packages/idae-db/package.json and packages/idae-idbql/package.json.
+  - Created .prettierrc.cjs configuration file in packages/idae-machine.
+    )) - undefined by @undefined
+    2026-01-14T14:26:59+01:00
+    packages/idae-slotui/package.json
+  - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package dependencies to use 'next' version for consistency across packages ([8a7ddf8](https://github.com/medyll/idae/commit/8a7ddf85c0d365f569613962599e30d67f0b62bf)) - 2026-01-12 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - feat(copilot-instructions): add comprehensive GitHub Copilot instructions for the idae-slotui-svelte package ([3e54ee7](https://github.com/medyll/idae/commit/3e54ee7269be19158c42280d06b19e9767da9490)) - 2025-12-10 by @medyll
+  - chore(indexes): ([cdaca2c](https://github.com/medyll/idae/commit/cdaca2c591454911d92376b81de261d251ec5d9e)) - 2025-06-06 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - feat(idae-slotui): add DocsProcessor class for processing Svelte component props ([ca992f8](https://github.com/medyll/idae/commit/ca992f8e528fdb0ad2673fc1f01da1484f019005)) - 2025-05-03 by @medyll
+  - feat(package.json): add unit test script for documentation tests ([d80d951](https://github.com/medyll/idae/commit/d80d951dcefcc0adfde741c35e3543ca1c7f8402)) - 2025-05-03 by @medyll
+  - feat(idea-slotui): add initial project configuration files for IDE setup ([f857578](https://github.com/medyll/idae/commit/f857578efc47228ea10a41d3dbd3881bd73b2415)) - 2025-05-03 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - feat(idae-main): update dependencies and improve exports in index.ts ([6254fcf](https://github.com/medyll/idae/commit/6254fcf1893abbd7a207e86c6f19b54ab70cc666)) - 2025-03-17 by @medyll
+  - refactor(idae-idbql): clean up code formatting and remove commented-out checks in idbql files ([68a9deb](https://github.com/medyll/idae/commit/68a9deb6100b55930eabe6c7935a167387ff037a)) - 2025-03-17 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - feat(idae-slotui): enhance IconAppProps with display property and improve menu list styles ([22261d6](https://github.com/medyll/idae/commit/22261d6da9aaae649742542f1162ec507581ad2e)) - 2025-03-04 by @medyll
+  - feat(idae-slotui): add display property to control icon layout ([709ddcc](https://github.com/medyll/idae/commit/709ddcc5ed543434ff9eb7236b22397172efaa79)) - 2025-03-04 by @medyll
+  - refactor(idae-slotui): update SCSS imports and mixin usage for consistency ([89a67a7](https://github.com/medyll/idae/commit/89a67a7f52cb2c0a5339fcc802ff99152e7af30a)) - 2025-03-03 by @medyll
+  - refactor(idae-slotui): migrate from @import to @use for SCSS files ([aae5115](https://github.com/medyll/idae/commit/aae51155eba44f6af2f4e3b6bd4b2e5d10f6e28e)) - 2025-03-03 by @medyll
+  - fix(main): added prepack feature ([f8ad556](https://github.com/medyll/idae/commit/f8ad5569fafc128e6ce1cbcae21077a817c41965)) - 2025-03-03 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - style(remove): padding on lietItem ([4a2a5eb](https://github.com/medyll/idae/commit/4a2a5ebcc91bdb5e95141b4b085667c0d691f0b4)) - 2025-02-03 by @medyll
+  - chore(ajouter): un script pour générer des catalogues de composants Svelte et des index de démonstration ([3867c65](https://github.com/medyll/idae/commit/3867c65aa60ff287f5a5825dbad1085ec492c93e)) - 2024-10-21 by @medyll
+  - fix(refactor): Toast component to use mount for Toaster instantiation ([e049667](https://github.com/medyll/idae/commit/e049667ac89d8f95b327212a3efd0d933d0034e8)) - 2024-10-21 by @medyll
+  - chore(ajouter): une nouvelle logique de validation pour les formulaires d'entrée utilisateur ([146ba0f](https://github.com/medyll/idae/commit/146ba0fcc543a50193e8255f923b4d21ca3c2d04)) - 2024-10-21 by @medyll
+  - feat(implement): new validation logic for user input forms ([967837e](https://github.com/medyll/idae/commit/967837eb41287077db52c8f9a5ba95aa78d5ca9b)) - 2024-10-20 by @medyll
+  - chore(auto-export): entry components and enhance module exports in idae-html and idae-slotui ([0686fed](https://github.com/medyll/idae/commit/0686fed5b374c4660c4d2ae357efd2dcfc2e9686)) - 2024-10-20 by @medyll
+  - feat(enhance): SCSSConverter to generate minified CSS and update output file names ([e2431ca](https://github.com/medyll/idae/commit/e2431ca717ce6010e55aadcf4b71020747ed1c7d)) - 2024-10-20 by @medyll
+  - feat(add): dependencies and enhance confirm component types ([c91542c](https://github.com/medyll/idae/commit/c91542c8f7d2b13ec017d508f392815d80513e0f)) - 2024-10-14 by @medyll
+  - chore(site): cleaning ([11b96e7](https://github.com/medyll/idae/commit/11b96e718ecc41c6e4818ea8e58e00f46308dad3)) - 2024-09-23 by @medyll
+  - fix(confirm): style actions ([b861a41](https://github.com/medyll/idae/commit/b861a412553399b5fc97437da76ae06f8247b758)) - 2024-09-23 by @medyll
+  - chore(main): changes ([2ec363d](https://github.com/medyll/idae/commit/2ec363d41e4b754d274a1672cbf2d1488edd4d46)) - 2024-09-22 by @medyll
+  - chore(idae-slotui): Update transition duration for checkbox and cartouche components ([9d31ae2](https://github.com/medyll/idae/commit/9d31ae2333c70007ea8e2b80fa0b6e5befe63cc6)) - 2024-08-19 by @medyll
+  - fix(idae-slotui): css loading and breakpoints ([af54d64](https://github.com/medyll/idae/commit/af54d6429038df6b214026c47f5935e8c552d03d)) - 2024-08-15 by @medyll
+  - ci(main): reject write on unchanged index ([c598444](https://github.com/medyll/idae/commit/c598444fb1763654842ed00f5101c79c1f84c640)) - 2024-08-14 by @medyll
+  - ci(main): Update auto exports of entry components in multiple packages ([d74bf52](https://github.com/medyll/idae/commit/d74bf52270237d6610b84a8321f8bec5f4be3399)) - 2024-08-14 by @medyll
+  - chore(Update): import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be ([56c00c9](https://github.com/medyll/idae/commit/56c00c9869b123f7ba9e5c88572a736d1605ca92)) - 2024-08-13 by @medyll
+  - ci(Remove): unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket ([0f9fb85](https://github.com/medyll/idae/commit/0f9fb85df916ab6d3f917f01a40b9e7707b0bf40)) - 2024-08-13 by @medyll
+  - ci(main): updated prettier config ([2f40961](https://github.com/medyll/idae/commit/2f40961cd99f6511dd0b3cab9c5a86cff7cb69cc)) - 2024-08-13 by @medyll
+  - chore(Update): lerna dependency to version 8.1.8 ([fc28692](https://github.com/medyll/idae/commit/fc286921dd58311cc11db15e6c4b6ad2ace81ebf)) - 2024-08-13 by @medyll
+  - fix(main): version chore ([fa3643e](https://github.com/medyll/idae/commit/fa3643eb99127645960e9aed9de0777d865a990e)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add new packages ([12da964](https://github.com/medyll/idae/commit/12da964e6d963378cd6d0181faa3712542ffe08b)) - 2024-08-13 by @medyll
+  - chore(Update): npm dependencies and TypeScript version ([edd7451](https://github.com/medyll/idae/commit/edd74510d2f6ecbddb47aac81c05238bb8094d18)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - feat(idae-slotui-svelte): update npm dependency to latest stable version ([41e20d2](https://github.com/medyll/idae/commit/41e20d2c9548ae6ac304b6e5f2c9c121fd13c795)) - 2024-08-11 by @medyll
+  - feat(idae-slotui): trigger test ([3979d05](https://github.com/medyll/idae/commit/3979d059555651b9c4699befcb70bd83d7fe74b8)) - 2024-08-11 by @medyll
+  - feat(idae-slotui): main ([62ce047](https://github.com/medyll/idae/commit/62ce047294113a9e52eaf0ab733e30f08c143794)) - 2024-08-11 by @medyll
+  - Version Packages ([128962b](https://github.com/medyll/idae/commit/128962bc0de36f172edfb86001094f4eaf770dd2)) - 2024-08-10 by @github-actions[bot]
+  - fix(idae-slotui): incorrect load of css files ([d59e81b](https://github.com/medyll/idae/commit/d59e81bcf57289570110e83934f67582d74665dc)) - 2024-08-10 by @medyll
+  - chore(Update): component structure in root.svelte file ([f5b30a9](https://github.com/medyll/idae/commit/f5b30a99d77ca4f4643b7246ff4676710071d4a6)) - 2024-08-05 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(Rename): SCSS files to fix case sensitivity issue ([da6d6c9](https://github.com/medyll/idae/commit/da6d6c9f0bd8c9c1c8019e608f7ebd1f30f06014)) - 2024-07-28 by @medyll
+  - chore(main): Update npm dependencies and remove unused devDependencies ([708f55d](https://github.com/medyll/idae/commit/708f55dc764072b75611a8d8fa8c1495aca90a1c)) - 2024-07-27 by @medyll
+  - chore(main): Update package.json and add release script for idae-slotui ([a989031](https://github.com/medyll/idae/commit/a989031bd1c5fba4705cd9c4aae1cbbc4e2c0e8e)) - 2024-07-26 by @medyll
+  - fix(idae-slotui): Remove obsolete SCSS file and update CSS imports in idae-slotui index.ts file ([5cbf5e9](https://github.com/medyll/idae/commit/5cbf5e958c82d1dfa5c045d197193bf9a9f38b20)) - 2024-07-26 by @medyll
+  - chore(main): renaming ([31673c5](https://github.com/medyll/idae/commit/31673c56271ac36828aeca93286daf5df8040f68)) - 2024-07-26 by @medyll
+  - fix(idae_slotui): css case for button-menu ([6825719](https://github.com/medyll/idae/commit/68257194d6583b468221762657f12bba87436380)) - 2024-07-26 by @medyll
+  - chore(idae-slotui): update button menu SCSS import to use kebab-case file name ([e76eddc](https://github.com/medyll/idae/commit/e76eddcb4bf164739fccb98f854d0ff1cdd928d0)) - 2024-07-26 by @medyll
+  - chore(idae-slotui) ([17202a4](https://github.com/medyll/idae/commit/17202a4c78b829d750c2801a41367547e0267516)) - 2024-07-26 by @medyll
+  - chore(idae-slotui): renamed scss file ([8ba9b74](https://github.com/medyll/idae/commit/8ba9b7417d432560931da38f5a8a552eb39055c2)) - 2024-07-26 by @medyll
+  - Rename Badge.scss to badge.scss ([c061539](https://github.com/medyll/idae/commit/c061539afbd2996e6681ccac07beee1d30fad51c)) - 2024-07-26 by @medyll
+  - Rename Avatar.scss to avatar.scss ([fe11190](https://github.com/medyll/idae/commit/fe1119013a60d09c67d8bfd69123d80a9de6b33e)) - 2024-07-26 by @medyll
+  - Rename Alert.scss to alert.scss ([26c7afe](https://github.com/medyll/idae/commit/26c7afecd8b4fa1fc47835b06a2ec3259756e9c2)) - 2024-07-26 by @medyll
+  - fix(idae-slotui): Update CSS imports in index.ts file ([42c593f](https://github.com/medyll/idae/commit/42c593f73fba3fb64bf411b3660f4d071af2afe1)) - 2024-07-26 by @medyll
+  - fix(idae-slotui): Trigger layout load in +layout.ts file ([c249774](https://github.com/medyll/idae/commit/c24977485a23613d0c972beacdaae442020b5afe)) - 2024-07-26 by @medyll
+  - fix(idae-slot-ui): Rename SCSS files in idae-slotui package ([d4fdc3b](https://github.com/medyll/idae/commit/d4fdc3b5de48f9ca1f0feccddb9f76e7ed6f4620)) - 2024-07-26 by @medyll
+  - ci(main): fixed ci ([df8d016](https://github.com/medyll/idae/commit/df8d016db8e1b000819b6edc481758d49acd3f0b)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by @medyll
+  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([7b8cf57](https://github.com/medyll/idae/commit/7b8cf57332078e9c4f952e2e02f94ca2b8796dec)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): update pretttier ([4d8974f](https://github.com/medyll/idae/commit/4d8974f24d708cd2abb77129bf7d22c7692d773d)) - 2024-07-17 by @medyll
+  - chore(idae-slotui): added sheet component ([62cb021](https://github.com/medyll/idae/commit/62cb0210b5fdcbcce4ef7b9b4f331f5a2fc0228b)) - 2024-07-17 by @medyll
+  - chore(idae-slotui): changed scss loading path ([4c8702b](https://github.com/medyll/idae/commit/4c8702becbcaf1d347112c7323f321a2cde83d72)) - 2024-07-17 by @medyll
+  - feat(idae-slotui): added conteiner query component ([a599db9](https://github.com/medyll/idae/commit/a599db9c8c42c13b8e7c64b7ac067159413d5140)) - 2024-07-16 by @medyll
+  - style(idae-slotui): removed unsused css ([f8e7958](https://github.com/medyll/idae/commit/f8e79583810f884d9133257f2ebe3e79d024d7fb)) - 2024-07-16 by @medyll
+  - feat(idae-slotui): new stylesheet component for nreakpoints ([5fdfef6](https://github.com/medyll/idae/commit/5fdfef6d31e0bab98f531122cf8abebd46744f17)) - 2024-07-15 by @medyll
+  - chore(idae-slotui): update CSS variables in presets.scss, box.css, icon.css, and menu.css ([0ed8ecc](https://github.com/medyll/idae/commit/0ed8ecc2ec036b573c8af6bc19a4d86b4dd15f99)) - 2024-07-15 by @medyll
+  - chore(main): prettier is now global ([ba97128](https://github.com/medyll/idae/commit/ba971285384582936aaa572114a115742fdb102a)) - 2024-07-14 by @medyll
+  - fix(idae-slotui): fix css variants ([9a71e48](https://github.com/medyll/idae/commit/9a71e48780f7262fc120297bb661130eae9ee00c)) - 2024-07-14 by @medyll
+  - fix(idae-slotui): fix css variants ([245dc18](https://github.com/medyll/idae/commit/245dc1886c31eb7f94c860821848f77cfe8299db)) - 2024-07-14 by @medyll
+  - fix(idae-slotui): failure on popper ([4ac4bcb](https://github.com/medyll/idae/commit/4ac4bcbb83ec571de8952edabd47f0d5779d0382)) - 2024-07-14 by @medyll
+  - chore(idae-slotui): chore ([571669d](https://github.com/medyll/idae/commit/571669dffee19a11aef9dd4e8bd72a05f97f3407)) - 2024-07-13 by @medyll
+  - fix(idae-slotui): autoclose on autocomplete was broken ([ad9e6e1](https://github.com/medyll/idae/commit/ad9e6e176fa0ec12223a44ff14596be3a4416f99)) - 2024-07-13 by @medyll
+  - fix(idae-soltui):menu list was broken ([b7d2e89](https://github.com/medyll/idae/commit/b7d2e8977bc3efc3a6865a18bbec08f346b40ab6)) - 2024-07-13 by @medyll
+  - feat(idae-slotui): grouper now has several modes ([cf6a690](https://github.com/medyll/idae/commit/cf6a69004d2d50de214cd2e2c63f98453b20fb07)) - 2024-07-13 by @medyll
+  - fic(idae-slotui): popper now use dialog ([1347dcb](https://github.com/medyll/idae/commit/1347dcbf19b486dc3b7eb63e4a7a85a483ab73d2)) - 2024-07-13 by @medyll
+  - fix(idae-slotui): looper integration ([f0ca7fb](https://github.com/medyll/idae/commit/f0ca7fb715e3f51093013d122926a2d1c3ccabb1)) - 2024-07-13 by @medyll
+  - feat(idae-slotui): npm is now idae-slotui-svelte ([b7e7762](https://github.com/medyll/idae/commit/b7e7762607d1cddfeaf65c1d5114f97e1c2de76c)) - 2024-07-12 by @medyll
+    BREAKING CHANGE: name changed
+  - Add 'packages/idae-slotui/' from commit '66389c1bdc3346760d86b2519c97e20f165dac43' ([0eb547d](https://github.com/medyll/idae/commit/0eb547dd5b3faaeac27a9793cf5db4cae5cfc0af)) - 2024-07-12 by @medyll
+    git-subtree-dir: packages/idae-slotui
+    git-subtree-mainline: b1db91e894eff5dfc8961d64698191b1bb9321da
+    git-subtree-split: 66389c1bdc3346760d86b2519c97e20f165dac43
+
 ## 0.171.0
 
 ### Minor Changes
