@@ -37,7 +37,7 @@ packages.forEach((packageName) => {
     return;
   }
 
-  // Fix scope path for module name
+
   if (!packageJson.name.startsWith("@medyll/")) {
     packageJson.name = `@medyll/${packageJson.name}`;
     modified = true;
@@ -49,6 +49,24 @@ packages.forEach((packageName) => {
     packageJson.scope = "@medyll";
     modified = true;
     console.log(`Added scope field to package ${packageName}`);
+  }
+
+  // Force all @medyll/* dependencies to "workspace:*"
+  const depFields = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
+  for (const field of depFields) {
+    if (!packageJson[field]) continue;
+    for (const dep in packageJson[field]) {
+      if (
+        dep.startsWith("@medyll/") &&
+        !dep.includes("cssfabric") &&
+        packageJson[field][dep] !== "workspace:*" &&
+        !packageJson[field][dep].includes("file:")
+      ) {
+        packageJson[field][dep] = "workspace:*";
+        modified = true;
+        console.log(`Set ${field} -> ${dep} to workspace:* in ${packageName}`);
+      }
+    }
   }
 
   // "package:pre"
@@ -68,8 +86,8 @@ packages.forEach((packageName) => {
 
   if (modified) {
     // add definition in package.json
-    const packageJsonString = JSON.stringify(packageJson, null, 2);
-    fs.writeFileSync(packageJsonPath, packageJsonString.replace(/\n$/, ""));
+    const packageJsonString = JSON.stringify(packageJson, null, 2) + "\n";
+    fs.writeFileSync(packageJsonPath, packageJsonString);
     console.log(`Processed package: ${packageName}`);
     console.log(`Package.json path: ${packageJsonPath}`);
   }

@@ -50,10 +50,10 @@ function main() {
     if (!walkPackages(configDir)) ok = false;
   }
   if (!ok) {
-    console.error('\nAu moins une dépendance interne @medyll n\'utilise pas next');
+    console.error('\nAu moins une dépendance interne @medyll n\'utilise pas *');
     process.exit(1);
   } else {
-    console.log('✅ Toutes les dépendances internes @medyll utilisent next');
+    console.log('✅ Toutes les dépendances internes @medyll utilisent *');
   }
 }
 

@@ -29,4 +29,4 @@ $theme-color-tertiary: #cacaaa;
 
 // override cssFabric config
 // delivers new css_vars
-@import "../node_modules/@medyll/cssfabric/src/cssfabric/modules/vars.scss";
+@import "@medyll/cssfabric/src/cssfabric/modules/vars.scss";

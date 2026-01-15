@@ -155,7 +155,6 @@ const result = await idbql.transaction(
 ### Notes importantes
 - Les méthodes `where`, `groupby`, `sort`, etc. sont synchrones : elles opèrent toujours sur le snapshot courant du state.
 - Pour bénéficier de la réactivité, utilisez-les dans un `$derived` ou `$effect` Svelte 5.
-- Il n'est pas nécessaire d'utiliser de store Svelte 4 : tout est géré par le $state natif Svelte 5.
 
 ## Versioning and Migrations
 

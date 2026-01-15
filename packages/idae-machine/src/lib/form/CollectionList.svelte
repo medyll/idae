@@ -8,11 +8,12 @@
 		type Props,
 		Looper
 	} from '@medyll/idae-slotui-svelte';
-	import CreateUpdate from '$components/form/CreateUpdate.svelte';
-	import { idbqlState } from '$lib/db/dbSchema';
-	import { IDbCollections, IDbCollectionValues } from '$lib/db/dbFields';
+	import CreateUpdate from '$lib/form/CreateUpdate.svelte'; 
 	import { hydrate, type Snippet } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
+
+import {machine } from '$lib/main/machine.js';
+
 
 	interface DataListProps {
 		collection:     string;
@@ -38,11 +39,12 @@
 		displayMode
 	}: DataListProps = $props();
 
-	let test = new IDbCollections();
-	let fieldValues = new IDbCollectionValues(collection);
-	let index = test.getIndexName(collection);
+	let collections = machine.collections;
+	let store = machine.store;
+	let fieldValues = machine.collections.get(collection).collectionValues() ;
+	let index = collections.get(collection).getIndexName();
 
-	let qy = $derived(where ? idbqlState[collection].where(where) : idbqlState[collection].getAll());
+	let qy = $derived(where ? store[collection].where(where) : store[collection].getAll());
 
 	function load(event: CustomEvent, indexV: number | string) {
 		openCrud(event[index]);

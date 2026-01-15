@@ -249,7 +249,7 @@ class ChangesetGenerator {
           commit.message.split("\n")[0],
         );
 
-        const date = commit.date.split("T")[0]; // Format date as YYYY-MM-DD
+        const date = commit?.date?.split?.("T")[0]; // Format date as YYYY-MM-DD
 
         let commitContent = `- ${sanitizedMessage} ([${commit.sha.slice(0, 7)}](https://github.com/${this.rootRepo}/commit/${commit.sha}))`;
         if (commit.pr) {
@@ -404,6 +404,7 @@ ${summary}
       if (!fs.existsSync(changesetFile)) {
         fs.writeFileSync(changesetFile, changesetContent);
         totalChangesets++;
+        console.log(`✅ Changeset file created: ${changesetFile}`);
         if (this.showlog) console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
       } else {
         if (this.showlog) console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));

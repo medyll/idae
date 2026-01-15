@@ -16,10 +16,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.28.0
+
+      - name: Debug pnpm version
+        run: |
+          echo 'Vérification de pnpm:'
+          which pnpm || { echo 'pnpm introuvable'; exit 1; }
+          pnpm --version
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
       - name: Build documentation
-        run: npm run doc
+        run: pnpm run doc
       - name: Upload documentation artifact
         uses: actions/upload-artifact@v4
         with:

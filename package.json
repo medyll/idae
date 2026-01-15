@@ -9,8 +9,7 @@
     "package-all:pre": "npm run package:pre --workspaces --if-present",
     "package-all": "npm run package-all:pre && npm run prepack --workspaces --if-present && npm run package --workspaces --if-present",
     "package:verify": "node scripts/verify-packages.js",
-    "postinstall": "npm run package:verify"
-    ,
+    "postinstall": "npm run package:verify",
     "verify:workspace-deps": "node scripts/verify-workspace-deps.js"
   },
   "config": {
@@ -25,6 +24,8 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
+    "@medyll/idae-eslint-config": "^1.2.1",
+    "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
@@ -40,8 +41,6 @@
   },
   "version": "0.0.2",
   "dependencies": {
-    "@medyll/cssfabric": "file:../app-node/cssfabric",
-    "@medyll/idae-engine": "*",
     "@octokit/rest": "^22.0.1",
     "chalk": "^5.6.2",
     "glob": "^13.0.0",
@@ -50,6 +49,8 @@
     "publint": "^0.3.16"
   },
   "peerDependencies": {
+    "@medyll/idae-engine": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@sveltejs/adapter-auto": "^4.0.0",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/package": "^2.0.0",

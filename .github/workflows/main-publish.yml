@@ -30,10 +30,21 @@ jobs:
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
-          cache: 'npm'
+          cache: 'pnpm'
+
+
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.28.0
+
+      - name: Debug pnpm version
+        run: |
+          echo 'Vérification de pnpm:'
+          which pnpm || { echo 'pnpm introuvable'; exit 1; }
+          pnpm --version
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Generate Changesets
         env:
@@ -58,10 +69,10 @@ jobs:
       - name: Generate README
         run: node scripts/generate-readme.js
 
-      - name: Run npm package-all script if present
+      - name: Run pnpm package-all script if present
         run: |
           if [ -f package.json ] && grep -q '"package-all":' package.json; then
-            npm run package-all
+            pnpm run package-all
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

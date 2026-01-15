@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { IDbCollections } from '$lib/db/dbFields.js';
+	import { IDbBase } from '$lib/db/dbFields.js';
 	import { schemeModel, idbqlState } from '$lib/db/dbSchema.js';
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
 
+	import { machine } from '$lib/main/machine.js'; 
 	type CollectionFksProps = {
 		collection:    TplCollectionName;
 		collectionId?: any;
@@ -13,8 +14,9 @@
 
 	// idbqlState[fkCollection].get(fkId);
 
-	const dbFields = new IDbCollections(schemeModel);
-	const fks = $derived(dbFields.fks(collection));
+	const dbFields = machine.collections;
+	const collections = new IDbBase(schemeModel);
+	const fks = $derived(collections.fks(collection));
 </script>
 
 <Looper data={Object.entries(fks)}>

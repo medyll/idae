@@ -1,5 +1,377 @@
 # @medyll/idae-data-tpl
 
+## 0.165.0
+
+### Minor Changes
+
+- - chore(update): package.json files to use workspace:\* for Medyll dependencies ([e2de3b1](https://github.com/medyll/idae/commit/e2de3b1d8ed752d3c342c75132bede2004dd2eb9)) - 2026-01-14 by @medyll
+    - Changed all instances of Medyll dependencies in package.json files to use "workspace:\*" instead of version numbers.
+    - Updated the verify-packages script to enforce "workspace:_" for all @medyll/_ dependencies.
+    - Ensured consistent formatting and structure across package.json files.
+  - medyll ([- Added](https://github.com/medyll/idae/commit/- Added @medyll/idae-db and @medyll/idae-mongo as dependencies in packages/idae-api-nest/package.json.
+  - Added @medyll/idae-dom-events as a dependency in packages/idae-be/package.json.
+  - Added @medyll/idae-be as a dependency in packages/idae-cadenzia/package.json.
+  - Added @medyll/idae-query as a dependency in packages/idae-db/package.json and packages/idae-idbql/package.json.
+  - Created .prettierrc.cjs configuration file in packages/idae-machine.
+    )) - undefined by @undefined
+    2026-01-14T14:26:59+01:00
+    packages/idae-data-tpl/package.json
+  - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.164.0
+
+### Minor Changes
+
+- - chore(update): package.json files to use workspace:\* for Medyll dependencies ([e2de3b1](https://github.com/medyll/idae/commit/e2de3b1d8ed752d3c342c75132bede2004dd2eb9)) - 2026-01-14 by @medyll
+    - Changed all instances of Medyll dependencies in package.json files to use "workspace:\*" instead of version numbers.
+    - Updated the verify-packages script to enforce "workspace:_" for all @medyll/_ dependencies.
+    - Ensured consistent formatting and structure across package.json files.
+  - medyll ([- Added](https://github.com/medyll/idae/commit/- Added @medyll/idae-db and @medyll/idae-mongo as dependencies in packages/idae-api-nest/package.json.
+  - Added @medyll/idae-dom-events as a dependency in packages/idae-be/package.json.
+  - Added @medyll/idae-be as a dependency in packages/idae-cadenzia/package.json.
+  - Added @medyll/idae-query as a dependency in packages/idae-db/package.json and packages/idae-idbql/package.json.
+  - Created .prettierrc.cjs configuration file in packages/idae-machine.
+    )) - undefined by @undefined
+    2026-01-14T14:26:59+01:00
+    packages/idae-data-tpl/package.json
+  - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.163.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.162.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.161.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.160.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.159.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.158.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.157.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.156.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.155.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
+## 0.154.0
+
+### Minor Changes
+
+- - fix(main): packaging and workspace deps ([0cb04ab](https://github.com/medyll/idae/commit/0cb04ab6ed77b7fd07124ef0f6f3676e556edb8e)) - 2026-01-13 by @medyll
+  - feat(update): package.json files to set private flag and adjust dependencies to use 'next' version ([8a821d0](https://github.com/medyll/idae/commit/8a821d057d7196f6006b719f434375d617e056dd)) - 2026-01-12 by @medyll
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(packaging): ([08db0c2](https://github.com/medyll/idae/commit/08db0c2198c604e79c2b6d68beab0a780e4d2adb)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(main): Update npm dependencies and import paths ([97fe164](https://github.com/medyll/idae/commit/97fe164fc8fec89d2a496876a50ca2f2f318774b)) - 2024-08-04 by @medyll
+  - chore(clean): up obsolete tools and configurations ([4275b7d](https://github.com/medyll/idae/commit/4275b7dc557b31766102dc21aedc1b408a09e974)) - 2024-07-25 by @medyll
+  - chore(clean): up obsolete tools and configurations ([228c84f](https://github.com/medyll/idae/commit/228c84fdee19dd7a57329e47c2533b97b70351f1)) - 2024-07-25 by @medyll
+  - chore(version): packages ([4aea40d](https://github.com/medyll/idae/commit/4aea40d612b0d8279d01ca25d662a7552dd5e025)) - 2024-07-24 by @github-actions[bot]
+  - chore(main): deps ([215de17](https://github.com/medyll/idae/commit/215de17f546d3bf1e457b12e8ec5e77a71be42c5)) - 2024-07-17 by @medyll
+  - chore(chore): ([101965e](https://github.com/medyll/idae/commit/101965e063fbe3619c8212676a065ba530017d4a)) - 2024-07-17 by @medyll
+  - chore(idae-tpl): initial commi ([d479f3b](https://github.com/medyll/idae/commit/d479f3b4a861248831d3680b206c2579348f5a08)) - 2024-07-17 by @medyll
+
 ## 0.153.0
 
 ### Minor Changes

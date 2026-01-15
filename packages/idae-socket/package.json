@@ -1,53 +1,51 @@
 {
-	"name": "@medyll/idae-socket",
-	"scope": "@medyll",
-	"version": "0.0.2",
-	"description": "keep your app in sync with your backend!!",
-	"main": "./scripts/index.js",
-	"type": "module",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsc --build --verbose --incremental --watch & node.exe -r ts-node/register ./src --port 4000",
-		"build": "tsc --build --verbose --incremental",
-		"start": "node.exe lib --port 4000",
-		"run": "nodemon ./src/index.ts",
-		"watch": "",
-		"package": "svelte-kit sync && svelte-package && publint",
-		"package:watch": "svelte-kit sync && svelte-package --watch",
-		"package:pre": "node scripts/package-pre.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/medyll/idae.git"
-	},
-	"author": "Lebrun Meddy",
-	"license": "ISC",
-	"peerDependencies": {
-		"svelte": "^5.0.0-next"
-	},
-	"dependencies": {
-		"@socket.io/redis-adapter": "^8.3.0",
-		"@types/express": "^5.0.1",
-		"body-parser": "^1.20.3",
-		"cors": "^2.8.5",
-		"events": "^3.3.0",
-		"express": "^4.21.2",
-		"minimist": "^1.2.8",
-		"nodemon": "^3.1.9",
-		"npm-watch": "^0.13.0",
-		"redis": "^4.7.0",
-		"request": "^2.88.2",
-		"socket.io": "^4.8.1",
-		"socket.io-client": "^4.8.1",
-		"svelte-check": "^4.1.5"
-	},
-	"devDependencies": {
-		"@medyll/idae-prettier-config": "*",
-		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"@types/node": "^22.13.13",
-		"svelte": "^5.25.3",
-		"typescript": "^5.8.2"
-	}
+  "name": "@medyll/idae-socket",
+  "scope": "@medyll",
+  "version": "0.0.2",
+  "description": "keep your app in sync with your backend!!",
+  "main": "./scripts/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc --build --verbose --incremental --watch & node.exe -r ts-node/register ./src --port 4000",
+    "build": "tsc --build --verbose --incremental",
+    "start": "node.exe lib --port 4000",
+    "run": "nodemon ./src/index.ts",
+    "watch": "",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "package:watch": "svelte-kit sync && svelte-package --watch",
+    "package:pre": "node scripts/package-pre.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
+  "author": "Lebrun Meddy",
+  "license": "ISC",
+  "peerDependencies": {
+    "svelte": "^5.0.0-next"
+  },
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.3.0",
+    "@types/express": "^5.0.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "events": "^3.3.0",
+    "express": "^4.21.2",
+    "minimist": "^1.2.8",
+    "nodemon": "^3.1.9",
+    "npm-watch": "^0.13.0",
+    "redis": "^4.7.0",
+    "request": "^2.88.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "svelte-check": "^4.1.5"
+  },
+  "devDependencies": {
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/node": "^22.13.13",
+    "svelte": "^5.25.3",
+    "typescript": "^5.8.2"
+  }
 }
-
-

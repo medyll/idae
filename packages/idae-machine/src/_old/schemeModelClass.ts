@@ -1,4 +1,4 @@
-import { IIdae } from './types.js';
+import { IIdae } from '../lib/db/types.js';
 
 export enum OptSchemeViews {
 	microModel = 'microModel',

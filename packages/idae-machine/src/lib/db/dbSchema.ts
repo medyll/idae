@@ -25,7 +25,7 @@ import {
 	type DbFieldTypes,
 	type TplFieldType
 } from '@medyll/idae-idbql';
-import { space } from 'postcss/lib/list';
+
 import type { DbDataModel, DbDataModelTs } from './dataModel.js';
 
 /* here is an example of how to declare a dataModel*/
@@ -489,4 +489,4 @@ export const schemeModel: IdbqModel = {
 export type DataModelFinal = DbDataModelTs<typeof schemeModelDb>;
 
 const idbqStore = createIdbqDb<typeof schemeModel>(schemeModel, 13);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('woolama');
+export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine');
