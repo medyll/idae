@@ -1,5 +1,40 @@
 # @medyll/idae-mongo
 
+## 0.166.0
+
+### Minor Changes
+
+- - chore(update): package.json files to use workspace:\* for Medyll dependencies ([e2de3b1](https://github.com/medyll/idae/commit/e2de3b1d8ed752d3c342c75132bede2004dd2eb9)) - 2026-01-14 by @medyll
+    - Changed all instances of Medyll dependencies in package.json files to use "workspace:\*" instead of version numbers.
+    - Updated the verify-packages script to enforce "workspace:_" for all @medyll/_ dependencies.
+    - Ensured consistent formatting and structure across package.json files.
+  - medyll ([- Added](https://github.com/medyll/idae/commit/- Added @medyll/idae-db and @medyll/idae-mongo as dependencies in packages/idae-api-nest/package.json.
+  - Added @medyll/idae-dom-events as a dependency in packages/idae-be/package.json.
+  - Added @medyll/idae-be as a dependency in packages/idae-cadenzia/package.json.
+  - Added @medyll/idae-query as a dependency in packages/idae-db/package.json and packages/idae-idbql/package.json.
+  - Created .prettierrc.cjs configuration file in packages/idae-machine.
+    )) - undefined by @undefined
+    2026-01-14T14:26:59+01:00
+    packages/idae-mongo/package.json
+  - reverted before merge catastrophe ([27a207f](https://github.com/medyll/idae/commit/27a207f841622d5c2511a03e58ea066c401418c9)) - 2026-01-12 by @medyll
+  - chore(version): package ([3728642](https://github.com/medyll/idae/commit/3728642b529069957456d0fbeacb3b109e594345)) - 2025-06-06 by @medyll
+  - chore(versioning): ([f85d27e](https://github.com/medyll/idae/commit/f85d27eaf87ab8f19d0385c77843301047d83758)) - 2025-06-06 by @medyll
+  - chore(changeset): ([f843fd3](https://github.com/medyll/idae/commit/f843fd3f48512d52f366cb98077e3fd5161faa36)) - 2025-06-06 by @medyll
+  - chore(idae-main): versions updates ([5faa2c4](https://github.com/medyll/idae/commit/5faa2c40df5f76bc01a6697e9a32a916ace36b1e)) - 2025-03-24 by @medyll
+  - fix(idae-main): mettre à jour les dépendances vers les dernières versions ([e8403a8](https://github.com/medyll/idae/commit/e8403a84732c14a4fd859840a9155d28cd2bc1c1)) - 2025-03-05 by @medyll
+  - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit ([bd4a807](https://github.com/medyll/idae/commit/bd4a807d425ba60f39573c514719946e3404d9dc)) - 2025-03-05 by @medyll
+  - chore(main):package update ([3e5ffbf](https://github.com/medyll/idae/commit/3e5ffbf8134ce03206ac8bdbf1ea22d84bb38ce7)) - 2025-03-03 by @medyll
+  - fix(idae-mongo): schemeModelClass typings ([4179e28](https://github.com/medyll/idae/commit/4179e280f16efd18486433d56d97a6096b61540c)) - 2024-08-19 by @medyll
+  - fix(main): Update npm dependencies and remove unused code ([6eed8a2](https://github.com/medyll/idae/commit/6eed8a218ff0267cf9a66d6ea2f1771e3a50179a)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218 ([6ca1a9f](https://github.com/medyll/idae/commit/6ca1a9f76fec298af4b565d04e624c4b20e9d7df)) - 2024-08-13 by @medyll
+  - chore(main): Update npm dependencies and add new packages ([12da964](https://github.com/medyll/idae/commit/12da964e6d963378cd6d0181faa3712542ffe08b)) - 2024-08-13 by @medyll
+  - feat(main): updated ci ([3da612f](https://github.com/medyll/idae/commit/3da612f0f8f9da1f9dbc635abebce72a5c051a9b)) - 2024-08-13 by @medyll
+  - chore(main): chore ([22ce8c0](https://github.com/medyll/idae/commit/22ce8c09938e19a5dfbdbb637f04b7997cd619b3)) - 2024-08-12 by @medyll
+  - feat(main): Add package-pre script for pre-processing packages ([669b035](https://github.com/medyll/idae/commit/669b0358873f79c790d1ac3cc01e6cf7bdf1e93e)) - 2024-08-12 by @medyll
+  - chore(main): update npm dependencies ([27225c9](https://github.com/medyll/idae/commit/27225c99d1660d6117dea733e96e788eb1333054)) - 2024-08-12 by @medyll
+  - chore(idae-mongo): Add Entity and SchemeFieldClass to idae-mongo library ([75d2c6b](https://github.com/medyll/idae/commit/75d2c6b3768b5cb44dae43fde2263fec636bbdb4)) - 2024-08-07 by @medyll
+  - chore(idae-mongo): initial commit ([a4a5f84](https://github.com/medyll/idae/commit/a4a5f84bc065041eac390b710ca53a0d2c43b6ba)) - 2024-08-05 by @medyll
+
 ## 0.165.0
 
 ### Minor Changes
