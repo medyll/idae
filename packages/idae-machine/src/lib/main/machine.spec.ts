@@ -1,7 +1,7 @@
 // machine.spec.ts
 import { describe, it, expect } from "vitest";
 import { Machine } from "./machine.js";
-import { IDbBase } from "$lib/main/machineDb.js";
+import { MachineDb } from "$lib/main/machineDb.js";
 
 // Copie simplifiée de schemeModel pour le test
 const testSchemeModel = {
@@ -26,7 +26,7 @@ describe("Machine", () => {
     expect(machine.idbqModel).toBeDefined();
 
     // Test d'instance
-    expect(machine.collections).toBeInstanceOf(IDbBase);
+    expect(machine.collections).toBeInstanceOf(MachineDb);
 
     // Pour idbql, idbqlState, indexedb, idbqModel : on vérifie le type object
     expect(typeof machine.idbql).toBe("object");
