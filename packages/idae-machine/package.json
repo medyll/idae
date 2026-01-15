@@ -62,6 +62,8 @@
   },
   "scope": "@medyll",
   "dependencies": {
-    "@huggingface/prettier-plugin-vertical-align": "^0.2.3"
+    "@huggingface/prettier-plugin-vertical-align": "^0.2.3",
+    "@medyll/idae-slotui-svelte": "workspace:*",
+    "@medyll/idae-idbql": "workspace:*"
   }
 }
