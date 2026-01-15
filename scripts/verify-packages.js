@@ -38,7 +38,6 @@ packages.forEach((packageName) => {
   }
 
 
-  // Fix scope path for module name
   if (!packageJson.name.startsWith("@medyll/")) {
     packageJson.name = `@medyll/${packageJson.name}`;
     modified = true;
@@ -61,7 +60,7 @@ packages.forEach((packageName) => {
         dep.startsWith("@medyll/") &&
         packageJson[field][dep] !== "workspace:*" &&
         !packageJson[field][dep].includes("file:") &&
-        !packageJson[field][dep].includes("cssfabric") 
+        !packageJson[field][dep].includes("cssfabric"
       ) {
         packageJson[field][dep] = "workspace:*";
         modified = true;
