@@ -60,7 +60,8 @@ packages.forEach((packageName) => {
       if (
         dep.startsWith("@medyll/") &&
         packageJson[field][dep] !== "workspace:*" &&
-        !packageJson[field][dep].includes("file:")
+        !packageJson[field][dep].includes("file:") &&
+        !packageJson[field][dep].includes("cssfabric") 
       ) {
         packageJson[field][dep] = "workspace:*";
         modified = true;
