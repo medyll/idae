@@ -2,26 +2,50 @@ import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb, enumPrimitive } from '$lib/main/machineDb.js';
 import { IDbValidationError } from './IDbValidationError.js';
 
-
+/**
+ * IDbFormValidate
+ *
+ * Provides validation utilities for form fields in a collection.
+ *
+ * Main responsibilities:
+ * - Holds a reference to the collection and schema.
+ * - Validates field values according to type and arguments.
+ * - Supports custom validation for email, URL, phone, and date/time fields.
+ *
+ * Usage:
+ *   const validator = new IDbFormValidate('agents');
+ *   const result = validator.validateField('email', value);
+ */
 export class IDbFormValidate {
 	private idbCollections: MachineDb;
 
+	/**
+	 * Create a new IDbFormValidate instance.
+	 * @param collection The collection name.
+	 * @param idbCollections Optional MachineDb instance.
+	 */
 	constructor(private collection: TplCollectionName, idbCollections?: MachineDb) {
 		this.idbCollections = idbCollections ?? new MachineDb();
 	}
 
+	/**
+	 * Validate a field value for the collection.
+	 * @param fieldName The field name.
+	 * @param value The value to validate.
+	 * @returns An object with isValid and optional error.
+	 */
 	validateField(fieldName: keyof TplFields, value: any): { isValid: boolean; error?: string; } {
 		try {
 			const fieldInfo = this.idbCollections.parseCollectionFieldName(this.collection, fieldName);
 			if (!fieldInfo) {
 				return { isValid: false, error: `Field ${String(fieldName)} not found in collection` };
 			}
-			// Vérification du type
+			// Type checking
 			if (!this.#validateType(value, fieldInfo.fieldType)) {
 				return this.#returnError(fieldName, fieldInfo.fieldType);
 			}
 
-			// Vérification des arguments du champ (required, etc.)
+			// Check field arguments (required, etc.)
 			if (fieldInfo.fieldArgs) {
 				for (const arg of fieldInfo.fieldArgs) {
 					if (arg === 'required' && (value === undefined || value === null || value === '')) {
@@ -30,7 +54,7 @@ export class IDbFormValidate {
 				}
 			}
 
-			// Validations spécifiques selon le type de champ
+			// Specific validations according to field type
 			switch (fieldInfo.fieldType) {
 				case enumPrimitive.email:
 					if (!this.validateEmail(value)) {
@@ -54,7 +78,7 @@ export class IDbFormValidate {
 						return this.#returnError(fieldName, fieldInfo.fieldType);
 					}
 					break;
-				// Ajoutez d'autres cas spécifiques ici
+				// Add other specific cases here
 			}
 
 			return { isValid: true };

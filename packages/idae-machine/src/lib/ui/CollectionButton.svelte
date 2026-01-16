@@ -5,7 +5,7 @@
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
-	import { type CreateUpdateProps } from './types';
+	import { type CreateUpdateProps } from '../form/types.js';
 
 	type CollectionButtonProps = {
 		collection: string;
