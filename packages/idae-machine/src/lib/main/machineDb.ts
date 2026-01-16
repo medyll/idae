@@ -170,7 +170,7 @@ export class MachineDb {
     const fk = this.machineForge.testIs("fk", field);
     const primitive = this.machineForge.testIs("primitive", field);
     const fieldType = array ?? object ?? fk ?? primitive;
-	
+
     return this.machineForge.forge({ collection, fieldName, ...fieldType });
   }
 
@@ -250,17 +250,4 @@ export class MachineDb {
     return { fieldType, fieldRule, fieldArgs, is: type };
   }
 
-  /**
-   * Internal helper to construct an IDbForge object from its components.
-   */
-  private forge({
-    collection,
-    fieldName,
-    fieldType,
-    fieldRule,
-    fieldArgs,
-    is,
-  }: IDbForge): IDbForge {
-    return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
-  }
 }

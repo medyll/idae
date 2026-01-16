@@ -14,7 +14,9 @@ export type IDbForge = {
   is: unknown;
 };
 
-class MachineForge {
+export class MachineForge {
+
+  constructor() {}
   testIs(
     what: "array" | "object" | "fk" | "primitive",
     fieldRule: IDbFieldRules,
