@@ -2,7 +2,8 @@
 	import { type MenuListProps, Button, MenuList, MenuListItem, openWindow, type Props } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema.js';
-	import { MachineDb, IDbCollectionValues } from '$lib/main/machineDb.js';
+	import { MachineDb } from '$lib/main/machineDb.js';
+	import { IDbCollectionValues } from '$lib/main/IDbCollectionValues';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { IDbCollectionFieldForge } from '../main/machineDb.js';
+import { IDbCollectionFieldForge } from '$lib/main/IDbCollectionFieldForge.js';
 
 const agentData = {
   id: 1,

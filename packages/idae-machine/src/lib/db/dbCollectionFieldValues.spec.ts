@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { IDbCollectionFieldValues } from '../main/machineDb.js';
+import { IDbCollectionFieldValues } from '$lib/main/machine/IDbCollectionFieldValues.js';
 
 const agentData = {
   id: 1,

@@ -10,13 +10,11 @@
 		collectionId?: any;
 		where?:        Where;
 	};
-	let { collection }: CollectionFksProps = $props();
 
-	// idbqlState[fkCollection].get(fkId);
+	let { collection,collectionId,where }: CollectionFksProps = $props();
 
-	const dbFields = machine.collections;
-	const collections = new MachineDb(schemeModel);
-	const fks = $derived(collections.fks(collection));
+ 
+	const fks = $derived(machine.collections.fks(collection)); 
 </script>
 
 <Looper data={Object.entries(fks)}>
