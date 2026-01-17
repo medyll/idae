@@ -51,14 +51,14 @@
   {
     "id": "task-1768680672811-z8dsv3n8m",
     "title": "Migration Tailwind – base/alert",
-    "status": "in_progress",
+    "status": "done",
     "order": 7,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-owfm4rsw5",
     "title": "Migration Tailwind – base/avatar",
-    "status": "ready",
+    "status": "in_progress",
     "order": 8,
     "createdBy": "agent"
   },
