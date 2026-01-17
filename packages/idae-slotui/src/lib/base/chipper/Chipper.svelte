@@ -19,20 +19,22 @@
 	let cssColor = $derived(color ?? (status ? `var(--sld-color-${status})` : ''));
 </script>
 
-<div bind:this={element} style="{style};position:relative;" class="chipper {className} ">
+<div bind:this={element} style="{style};position:relative;" class="chipper relative gap-[var(--chipper-gap)] {className}">
 	<Slotted child={children}>
 		{#if content}
-			<div class="chipper-content">{@html content ?? ''}</div>
+			<div class="chipper-content p-2">{@html content ?? ''}</div>
 		{/if}
 	</Slotted>
 
-	<chip class="chipper-chip" data-position={position} style:--css-button-chip-color={cssColor}>
+		<chip
+			class="chipper-chip block absolute z-2 rounded-[var(--chipper-radius)] transition-all max-h-full bg-[var(--chipper-chip-color)]"
+			data-position={position}
+			style:--css-button-chip-color={cssColor}
+		>
 		{#if showChip}
 			<Slotted child={chipperChip} />
 		{/if}
 	</chip>
 </div>
 
-<style lang="scss">
-	@use './chipper.scss';
-</style>
+
