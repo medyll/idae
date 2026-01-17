@@ -29,7 +29,7 @@
 			{disabled}
 			{...rest}
 			type="checkbox"
-			class="checkbox {className}"
+			class="checkbox {className} appearance-none outline-none border-[var(--sld-checkbox-border-width)] border-[var(--sld-checkbox-border-color)] rounded-[var(--sld-checkbox-radius)] bg-clip-padding bg-[var(--sld-checkbox-background)] w-[1.7rem] h-[1.7rem] aspect-square p-0 m-0 focus-visible:shadow-[var(--sld-checkbox-shadow)] hover:bg-[var(--sld-color-primary-darken-mid)] disabled:border-[#ccc] disabled:bg-[#ededed] disabled:pointer-events-none checked:bg-[var(--sld-checkbox-background-indeterminate)] indeterminate:bg-[var(--sld-checkbox-background-indeterminate)]"
 		/>
 		<svg aria-hidden="true" class="svg" viewBox={'0 0 16 16'}>
 			{#if indeterminate}
@@ -56,6 +56,4 @@
 	{/if}
 </label>
 
-<style lang="scss">
-	@use './checkbox.scss';
-</style>
+
