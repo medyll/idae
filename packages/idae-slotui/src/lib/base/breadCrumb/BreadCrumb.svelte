@@ -12,14 +12,10 @@
 	}: ExpandProps<BreadCrumbProps> = $props();
 </script>
 
-<nav bind:this={element} class="breadCrumb {className ?? ''}" {style}>
-	<ul>
-		<li class="bread">
+<nav bind:this={element} class="{className ?? ''}" {style}>
+	<ul class="flex">
+		<li>
 			<Slotted child={children} />
 		</li>
 	</ul>
 </nav>
-
-<style lang="scss">
-	@use 'breadcrumb.scss';
-</style>
