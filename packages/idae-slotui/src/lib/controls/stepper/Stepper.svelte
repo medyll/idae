@@ -19,14 +19,12 @@
 	let child = children;
 </script>
 
-<div class="stepper {stepperOrientation}">
+<div class="stepper flex {stepperOrientation === 'vertical' ? 'flex-col' : ''}">
 	{#each steps as step, index}
-		<div title={step.title} class="stepper-step">
+		<div title={step.title} class="stepper-step p-[var(--stepper-pad)] rounded-[var(--stepper-radius)] mt-2 {activeStep === index ? 'text-[var(--stepper-active-color)]' : ''}">
 			<Slotted child={children} slotArgs={{ step, index }}>de</Slotted>
 		</div>
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './stepper.scss';
-</style>
+
