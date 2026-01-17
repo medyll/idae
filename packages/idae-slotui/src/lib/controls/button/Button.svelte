@@ -39,7 +39,7 @@
 </script>
 
 <button
-	class={className + ' slotui-button '}
+	class={className + ' slotui-button inline-flex items-center justify-center rounded-[var(--sld-button-radius)] text-[var(--sld-color-foreground)] transition-all overflow-hidden cursor-pointer relative'}
 	class:loading
 	bind:this={element}
 	use:popper={usePopperProps}
@@ -92,6 +92,4 @@
 	{/if}
 </button>
 
-<style global lang="scss">
-	@use './button.scss';
-</style>
+
