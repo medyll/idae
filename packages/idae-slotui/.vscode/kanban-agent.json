@@ -268,35 +268,35 @@
   {
     "id": "task-1768680672811-ht4grrckb",
     "title": "Migration Tailwind – data/jsoner",
-    "status": "ready",
+    "status": "done",
     "order": 38,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-xfd48tw8b",
     "title": "Migration Tailwind – data/list",
-    "status": "ready",
+    "status": "done",
     "order": 39,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-iy47wiues",
     "title": "Migration Tailwind – data/loader",
-    "status": "ready",
+    "status": "done",
     "order": 40,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-mbxf2effq",
     "title": "Migration Tailwind – data/sorter",
-    "status": "ready",
+    "status": "done",
     "order": 41,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-ej1183xmf",
     "title": "Migration Tailwind – navigation/drawer",
-    "status": "ready",
+    "status": "done",
     "order": 42,
     "createdBy": "agent"
   },

@@ -75,7 +75,7 @@
 	}
 </script>
 
-<div bind:this={element} class="tab {className}" aria-orientation={orientation} {style}>
+<div bind:this={element} class="tab {className} flex flex-col bg-base-100 rounded-lg shadow p-2" aria-orientation={orientation} {style}>
 	<div
 		use:onEvent={{ event: 'dom:close', action: () => {} }}
 		use:onEvent={{ event: 'dom:toggle', action: () => {} }}
@@ -89,7 +89,7 @@
 		<div>
 			<Slotted child={tabsTitleMain}></Slotted>
 		</div>
-		<nav bind:this={navElementRef} class="tab-nav-rail">
+		<nav bind:this={navElementRef} class="tab-nav-rail flex flex-row gap-2">
 			{#each items as item}
 				<button
 					data-code={item?.code}
@@ -116,7 +116,7 @@
 	<div class="tab-floating-cell">
 		<div bind:this={activeCellElementRef} class="tab-floating-cell-snip"></div>
 	</div>
-	<div class="tab-content">
+	<div class="tab-content p-4">
 		{#each items as item}
 			{@const display = activeTabCode === item?.code ? 'flex' : 'none'}
 			{#if item && activeTabCode === item?.code}
@@ -128,8 +128,8 @@
 						style="display:{display};height:100%;position:relative;flex-direction:column"
 					>
 						{#if Boolean(item?.secondary)}
-							<div class="tab-content-secondary">
-								<div class="tab-content-secondary-icon">
+							<div class="tab-content-secondary flex items-center gap-2 p-2 bg-base-200 rounded">
+								<div class="tab-content-secondary-icon text-primary">
 									<Icon style="display:block" icon="clarity:help-info-solid" />
 								</div>
 								<div style="flex:1;">{@html item?.secondary}</div>

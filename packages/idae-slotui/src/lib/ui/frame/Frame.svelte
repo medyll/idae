@@ -87,6 +87,4 @@
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './frame.scss';
-</style>
+
