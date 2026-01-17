@@ -45,7 +45,12 @@
 </script>
 
 {#if isOpen}
-	<Content bind:element class="box {className}" {style} {...rest}>
+	<Content
+		bind:element
+		class="min-h-[160px] min-w-[320px] bg-background border-b border-primary rounded-[var(--box-radius)] shadow-[var(--box-elevation)] flex flex-col {className}"
+		{style}
+		{...rest}
+	>
 		<TitleBar {hasMenu} {...closer}>
 			<Slotted child={titleBarTitle}>
 				{title ?? ''}
@@ -56,12 +61,12 @@
 				{/if}
 			</Slotted>
 		</TitleBar>
-		<div class="box-content">
+		<div class="flex-1">
 			<Slotted child={children}>
 				{@html content ?? ''}
 			</Slotted>
 		</div>
-		<div class="box-button-zone">
+		<div class="flex gap-[var(--box-gap)] p-[var(--box-pad)] text-right justify-end">
 			<Slotted child={boxBottomZone}>
 				{@html bottomZone ?? ''}
 			</Slotted>
@@ -69,6 +74,4 @@
 	</Content>
 {/if}
 
-<style lang="scss">
-	@use './box.scss';
-</style>
+
