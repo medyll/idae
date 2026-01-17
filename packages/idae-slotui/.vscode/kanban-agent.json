@@ -44,14 +44,14 @@
   {
     "id": "task-1768680648855-rm4xesi0t",
     "title": "Migration Tailwind – Documenter la stratégie hybride et la procédure",
-    "status": "in_progress",
+    "status": "done",
     "order": 6,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-z8dsv3n8m",
     "title": "Migration Tailwind – base/alert",
-    "status": "ready",
+    "status": "in_progress",
     "order": 7,
     "createdBy": "agent"
   },
