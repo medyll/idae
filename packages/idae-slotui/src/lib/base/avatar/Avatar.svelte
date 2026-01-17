@@ -49,7 +49,7 @@ export interface AvatarProps    {
 <Content
 	bind:element
 	tag="figure"
-	class="avatar {className} relative grid place-items-center overflow-hidden border border-[var(--avatar-border-color)] rounded-[var(--avatar-radius)]"
+	class="avatar {className} relative grid place-items-center overflow-hidden border border-(--avatar-border-color) rounded-(--avatar-radius)"
 	style="width:{sizes[size]};height:{sizes[size]}"
 	{...rest}
 	{@render avatarBadge?.()}
