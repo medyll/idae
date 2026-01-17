@@ -112,19 +112,39 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				'FIELD_NOT_FOUND'
 			);
 
-			switch (fieldInfo?.fieldType) {
-				case 'number':
-					return this.#formatNumberField(data[fieldName]);
-				case 'text':
-				case 'text-tiny':
-				case 'text-short':
-				case 'text-medium':
-				case 'text-long':
-				case 'text-giant':
-					return this.#formatTextField(data[fieldName], fieldInfo.fieldType);
-				default:
-					return String(data[fieldName]);
-			}
+				switch (fieldInfo?.fieldType) {
+					case 'id':
+						return String(data[fieldName]);
+					case 'any':
+						return String(data[fieldName]);
+					case 'date':
+						return this.#formatDateField(data[fieldName]);
+					case 'text':
+					case 'text-tiny':
+					case 'text-short':
+					case 'text-medium':
+					case 'text-long':
+					case 'text-area':
+						return this.#formatTextField(data[fieldName], fieldInfo.fieldType);
+					case 'number':
+						return this.#formatNumberField(data[fieldName]);
+					case 'boolean':
+						return this.#formatBooleanField(data[fieldName]);
+					case 'datetime':
+						return this.#formatDateTimeField(data[fieldName]);
+					case 'url':
+						return this.#formatUrlField(data[fieldName]);
+					case 'email':
+						return this.#formatEmailField(data[fieldName]);
+					case 'phone':
+						return this.#formatPhoneField(data[fieldName]);
+					case 'time':
+						return this.#formatTimeField(data[fieldName]);
+					case 'password':
+						return this.#formatPasswordField(data[fieldName]);
+					default:
+						return String(data[fieldName]);
+				}
 		} catch (error) {
 			IDbError.handleError(error);
 			return '';
@@ -190,34 +210,96 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 		return Object.keys(data).map((key) => ({ ...fieldInfo, fieldName: `${String(fieldName)}.${key}` }));
 	}
 
-	/**
-	 * Internal: Format a number field for display.
-	 * @param value The number value.
-	 * @returns The formatted string.
-	 */
-	#formatNumberField(value: number): string {
-		// Implement number formatting logic here
-		return value.toString();
-	}
+		/**
+		 * Internal: Format a number field for display.
+		 */
+		#formatNumberField(value: number): string {
+			return value !== undefined && value !== null ? value.toString() : '';
+		}
 
-	/**
-	 * Internal: Format a text field for display, with length limits by type.
-	 * @param value The string value.
-	 * @param type The text type (e.g. 'text-short').
-	 * @returns The formatted string.
-	 */
-	#formatTextField(value: unknown, type: string): string {
-		const lengths = {
-			'text-tiny': 10,
-			'text-short': 20,
-			'text-medium': 30,
-			'text-long': 40,
-			'text-giant': 50
-		};
-		const str = typeof value === 'string' ? value : String(value ?? '');
-		const maxLength = lengths[type as keyof typeof lengths] || str.length;
-		return str.substring(0, maxLength);
-	}
+		/**
+		 * Internal: Format a text field for display, with length limits by type.
+		 */
+		#formatTextField(value: unknown, type: string): string {
+			const lengths = {
+				'text-tiny': 10,
+				'text-short': 20,
+				'text-medium': 30,
+				'text-long': 40,
+				'text-area': 100,
+				'text': 50
+			};
+			const str = typeof value === 'string' ? value : String(value ?? '');
+			const maxLength = lengths[type as keyof typeof lengths] || str.length;
+			return str.substring(0, maxLength);
+		}
+
+		/**
+		 * Internal: Format a boolean field for display.
+		 */
+		#formatBooleanField(value: unknown): string {
+			if (typeof value === 'boolean') return value ? '✔' : '✘';
+			if (typeof value === 'string') return value === 'true' ? '✔' : '✘';
+			return '';
+		}
+
+		/**
+		 * Internal: Format a date field for display.
+		 */
+		#formatDateField(value: unknown): string {
+			if (!value) return '';
+			const d = new Date(value as string);
+			return isNaN(d.getTime()) ? '' : d.toLocaleDateString();
+		}
+
+		/**
+		 * Internal: Format a datetime field for display.
+		 */
+		#formatDateTimeField(value: unknown): string {
+			if (!value) return '';
+			const d = new Date(value as string);
+			return isNaN(d.getTime()) ? '' : d.toLocaleString();
+		}
+
+		/**
+		 * Internal: Format a url field for display.
+		 */
+		#formatUrlField(value: unknown): string {
+			if (!value) return '';
+			return String(value);
+		}
+
+		/**
+		 * Internal: Format an email field for display.
+		 */
+		#formatEmailField(value: unknown): string {
+			if (!value) return '';
+			return String(value);
+		}
+
+		/**
+		 * Internal: Format a phone field for display.
+		 */
+		#formatPhoneField(value: unknown): string {
+			if (!value) return '';
+			return String(value);
+		}
+
+		/**
+		 * Internal: Format a time field for display.
+		 */
+		#formatTimeField(value: unknown): string {
+			if (!value) return '';
+			return String(value);
+		}
+
+		/**
+		 * Internal: Format a password field for display (mask).
+		 */
+		#formatPasswordField(value: unknown): string {
+			if (!value) return '';
+			return '••••••••';
+		}
 
 	/**
 	 * Internal: Check if access is allowed (override for custom logic).
