@@ -91,7 +91,7 @@
 </script>
 
 <!-- #todo <Content>somecontent</Content> --> 
-<div {...rost} class="confirm {className}">
+<div {...rost} class="confirm flex items-center gap-2 {className}">
 	{#if step === 'initial'}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -133,7 +133,7 @@
 					width="auto"
 				/>
 			{/if}
-		<div class={className + ' confirm-validate'} in:fade|global bind:this={contentRef}> 
+		<div class={className + ' confirm-validate flex items-center'} in:fade|global bind:this={contentRef}> 
 			<Slotted child={children} slotArgs={{ step }}>
 			{#if buttonConfirm}
 				<Button {tall} {variant} {...buttonConfirm}  onclick={(event:any)=>{handleAction(event);buttonConfirm?.onclick?.(event)}}    />
@@ -153,6 +153,4 @@
 	{/if}
 </div>
 
-<style lang="scss">
-	@use './confirm.scss';
-</style>
+
