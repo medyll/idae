@@ -105,6 +105,7 @@
 			hiddenRef.value = args?.[dataFieldId] ?? args?.['id'] ?? args?.[dataFieldName] ?? args;
 			element.value = args?.[dataFieldName] ?? args?.[dataFieldId] ?? args?.['id'] ?? args;
 		}}
+		class="select bg-[var(--select-background-color)] h-[160px] w-[160px] rounded-[var(--select-radius)]"
 	>
 		{#if data}
 			{#each data as dta}
@@ -122,6 +123,4 @@
 	</Menu>
 </Popper>
 
-<style lang="scss">
-	@use 'select.scss';
-</style>
+

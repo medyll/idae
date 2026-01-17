@@ -52,7 +52,10 @@ export interface AvatarProps    {
 	class="avatar {className} relative grid place-items-center overflow-hidden border border-(--avatar-border-color) rounded-(--avatar-radius)"
 	style="width:{sizes[size]};height:{sizes[size]}"
 	{...rest}
-	{@render avatarBadge?.()}
+>
+	{#if avatarBadge}
+		{@render avatarBadge()}
+	{/if}
 
 	{#if children}
 		{@render children()}
