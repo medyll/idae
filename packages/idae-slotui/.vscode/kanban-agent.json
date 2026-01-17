@@ -30,14 +30,14 @@
   {
     "id": "task-1768680648855-zy6wuscry",
     "title": "Migration Tailwind – Générer et exposer les variables CSS nécessaires",
-    "status": "in_progress",
+    "status": "done",
     "order": 4,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680648855-gxyc75jpk",
     "title": "Migration Tailwind – Adapter les breakpoints Tailwind",
-    "status": "ready",
+    "status": "in_progress",
     "order": 5,
     "createdBy": "agent"
   },
