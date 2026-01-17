@@ -136,14 +136,14 @@
 	</MenuList>
 	{#if !filteredData.length && !searchString}
 		<Slotted child={autoCompleteEmpty}>
-			<div class="auto-complete-boot">
+			<div class="auto-complete-boot p-[var(--auto-complete-pad)] gap-[var(--auto-complete-gap)] flex flex-row items-center">
 				<Icon iconSize="large" icon="fa-regular:keyboard" />
 				perform search
 			</div>
 		</Slotted>
 	{:else if !filteredData.length}
 		<Slotted child={autoCompleteNoResults}>
-			<div class="auto-complete-no-results">
+			<div class="auto-complete-no-results p-[var(--auto-complete-pad)] gap-[var(--auto-complete-gap)] flex flex-row items-center">
 				<Icon class="dsp-inline" iconSize="large" icon="material-symbols:no-sim-outline" />
 				no results
 			</div>
