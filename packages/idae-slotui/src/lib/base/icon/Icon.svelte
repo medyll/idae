@@ -105,15 +105,13 @@ export type IconAppProps = {
 </script>
 
 {#key [icon, iconName, color, finalStyle]}
-	<Iconify
-		bind:this={element}
-		class="icon medium {className} {finRot ? 'rotate' : ''}"
-		style={finalStyle}
-		icon={iconName}
-		{...rest}
-	/>
+  <Iconify
+    bind:this={element}
+    class="icon {className} {finRot ? 'animate-spin' : ''}"
+    style={finalStyle}
+    icon={iconName}
+    {...rest}
+  />
 {/key}
 
-<style lang="scss">
-	@use './icon.scss';
-</style>
+
