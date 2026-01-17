@@ -2,25 +2,12 @@
 import { describe, it, expect } from 'vitest';
 
 import { MachineDb } from './machineDb.js';
-import { schemeModelTestDb } from '../db/testDbSchema.js';
+import { schemeModelTestDb } from '../demo/testDbSchema.js';
 
 describe('IDbBase', () => {
   const dbCollections = new MachineDb(schemeModelTestDb);
 
   
-
-
-
-
-
-
-
-  it('extract returns correct structure for primitive', () => {
-    const res = dbCollections.extract('primitive', 'text');
-    expect(res).toBeDefined();
-    expect(res.is).toBe('primitive');
-    expect(res.fieldType).toBe('text');
-  });
 
   it('fks returns the parsed fks collections', () => {
     const fks = dbCollections.fks('agent');

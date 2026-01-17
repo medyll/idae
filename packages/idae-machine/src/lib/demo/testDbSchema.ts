@@ -26,7 +26,9 @@ import {
 	type TplFieldType
 } from '@medyll/idae-idbql';
 
-import type { DbDataModel, DbDataModelTs } from './dataModel.js';
+
+import type { FieldType, getFieldTypes, registerFieldType } from '../db/fieldTypes.js';
+import type { DbDataModel, DbDataModelTs } from '../db/dataModel.js';
 
 
 // Schéma de test (copie explicite de schemeModelDb)

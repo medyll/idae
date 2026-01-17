@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { MachineDb } from '$lib/main/machineDb.js';
 import { IDbCollectionValues } from '$lib/main/machine/IDbCollectionValues.js';
-import { schemeModelTestDb } from '$lib/db/testDbSchema.js';
+import { schemeModelTestDb } from '$lib/demo/testDbSchema.js';
 
 const agentData = {
   id: 1,

@@ -26,6 +26,8 @@ import {
 	type TplFieldType
 } from '@medyll/idae-idbql';
 
+
+import type { FieldType, getFieldTypes, registerFieldType } from './fieldTypes';
 import type { DbDataModel, DbDataModelTs } from './dataModel.js';
 
 /* here is an example of how to declare a dataModel*/
@@ -480,7 +482,7 @@ export const schemeModelDb = {
 			}
 		}
 	}
-} satisfies DbDataModel;
+} satisfies IdbqModel;
 
 export const schemeModel: IdbqModel = {
 	...schemeModelDb
