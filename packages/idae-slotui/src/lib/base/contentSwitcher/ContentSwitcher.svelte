@@ -48,7 +48,7 @@
 	</Slotted>
 </div>
 <div bind:this={element} style="display:none">
-	<div bind:this={thisRef} class="content-switcher">
+	<div bind:this={thisRef} class="content-switcher w-full max-w-full gap-2 overflow-[var(--sld-content-switcher-overflow)] relative flex items-center flex-1">
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div onclick={handleClick}>
@@ -60,6 +60,4 @@
 	</div>
 </div>
 
-<style lang="scss">
-	@use './content-switcher.scss';
-</style>
+
