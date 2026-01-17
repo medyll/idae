@@ -115,7 +115,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
-	class="slider {className} dense-{dense}"
+	class="slider {className} dense-{dense} inline-flex flex-row items-center relative w-[168px] bg-[var(--slider-background-color)]"
 	onmousedown={key.mouseDown}
 	ontouchstart={key.start}
 	onkeydown={key.keyDown}
@@ -124,12 +124,12 @@
 	{style}
 	bind:this={element}
 >
-	<div class="slider-gouge" bind:this={elementRail}>
-		<div class="slider-gouge-selected" style="width:{percentage}%;"></div>
+	<div class="slider-gouge h-[calc(var(--preset-density)/6)] w-full rounded-[10px] bg-[var(--slider-gouge-background-color)]" bind:this={elementRail}>
+		<div class="slider-gouge-selected h-[calc(var(--preset-density)/6)] rounded-[10px] bg-[var(--slider-gouge-selected-background-color)]" style="width:{percentage}%;"></div>
 	</div>
 
 	<div
-		class="slider-thumb"
+		class="slider-thumb absolute top-0 aspect-square h-[90%] translate-y-1/2 bg-[var(--slider-thumb-background-color)] border-4 border-[var(--slider-thumb-border)] rounded-full inline-block bg-clip-padding hover:shadow-[var(--slider-thumb-hover-box-shadow)] hover:outline-[4px] hover:outline-[var(--slider-thumb-hover-outline)]"
 		aria-valuemin={min}
 		aria-valuemax={max}
 		aria-valuenow={value}
@@ -150,6 +150,4 @@
 	/>
 </div>
 
-<style lang="scss">
-	@use './slider.scss';
-</style>
+
