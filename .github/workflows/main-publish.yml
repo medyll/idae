@@ -36,8 +36,8 @@ jobs:
 
       - name: Debug pnpm version
         run: |
-          echo 'check pnpm:'
-          which pnpm || { echo 'pnpm not found'; exit 1; }
+          echo 'Vérification de pnpm:'
+          which pnpm || { echo 'pnpm introuvable'; exit 1; }
           pnpm --version
 
       - name: Install dependencies
@@ -49,7 +49,7 @@ jobs:
         run: node scripts/generate-changeset.js
 
       - name: Apply Changeset Versions
-        id: changesets
+        id: changesets_second
         run: npx changeset version
 
       - name: Commit Changeset Versions
@@ -94,7 +94,7 @@ jobs:
           pnpm --version
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Generate Changesets
         env:
