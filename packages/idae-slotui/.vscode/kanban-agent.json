@@ -338,49 +338,49 @@
   {
     "id": "task-1768680672811-fegyzbgsy",
     "title": "Migration Tailwind – ui/marquee",
-    "status": "ready",
+    "status": "done",
     "order": 48,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-j6y7gvlcu",
     "title": "Migration Tailwind – ui/menu",
-    "status": "ready",
+    "status": "done",
     "order": 49,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-prwlt6qt6",
     "title": "Migration Tailwind – ui/menuList",
-    "status": "ready",
+    "status": "done",
     "order": 50,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-9y02soqeh",
     "title": "Migration Tailwind – ui/panel",
-    "status": "ready",
+    "status": "done",
     "order": 51,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-m2p2451da",
     "title": "Migration Tailwind – ui/popper",
-    "status": "ready",
+    "status": "done",
     "order": 52,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-85uwpsrph",
     "title": "Migration Tailwind – ui/preview",
-    "status": "ready",
+    "status": "done",
     "order": 53,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-owbismlr1",
     "title": "Migration Tailwind – ui/serviceBox",
-    "status": "ready",
+    "status": "done",
     "order": 54,
     "createdBy": "agent"
   },
@@ -394,14 +394,14 @@
   {
     "id": "task-1768680672811-993i6asou",
     "title": "Migration Tailwind – ui/taskbar",
-    "status": "ready",
+    "status": "done",
     "order": 56,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-udm56dwct",
     "title": "Migration Tailwind – ui/themeswitcher",
-    "status": "ready",
+    "status": "done",
     "order": 57,
     "createdBy": "agent"
   },

@@ -174,6 +174,4 @@
 {:else}
 {/if} -->
 
-<style lang="scss">
-	@use './window.scss';
-</style>
+

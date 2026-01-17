@@ -179,6 +179,4 @@
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './tree.scss';
-</style>
+
