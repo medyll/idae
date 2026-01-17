@@ -79,28 +79,28 @@
   {
     "id": "task-1768680672811-fj13dkxgs",
     "title": "Migration Tailwind – base/box",
-    "status": "ready",
+    "status": "done",
     "order": 11,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-jwsbt5opz",
     "title": "Migration Tailwind – base/breadCrumb",
-    "status": "ready",
+    "status": "done",
     "order": 12,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-5q0bvz7p6",
     "title": "Migration Tailwind – base/cartouche",
-    "status": "ready",
+    "status": "done",
     "order": 13,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-0ytk868k9",
     "title": "Migration Tailwind – base/chipper",
-    "status": "ready",
+    "status": "done",
     "order": 14,
     "createdBy": "agent"
   },

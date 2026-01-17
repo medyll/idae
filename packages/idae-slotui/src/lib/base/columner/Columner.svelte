@@ -12,18 +12,10 @@
 	let { children, ...restProps }: ExpandProps<Props> = $props();
 </script>
 
-<div class="columner" {...restProps}>
+<div class="columner flex h-full relative" {...restProps}>
 	{#if children}
 		{@render children()}
 	{/if}
 </div>
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-	.columner {
-		display: flex;
-		height: 100%;
-		position: relative;
-	}
-</style>
+
