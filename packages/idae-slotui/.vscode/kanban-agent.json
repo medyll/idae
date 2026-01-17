@@ -65,14 +65,14 @@
   {
     "id": "task-1768680672811-vitp51fcs",
     "title": "Migration Tailwind – base/backdrop",
-    "status": "in_progress",
+    "status": "done",
     "order": 9,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-o8ok807qt",
     "title": "Migration Tailwind – base/badge",
-    "status": "ready",
+    "status": "in_progress",
     "order": 10,
     "createdBy": "agent"
   },

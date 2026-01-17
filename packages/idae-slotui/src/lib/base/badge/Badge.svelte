@@ -23,11 +23,9 @@
 </script>
 
 {#if value > ceiling}
-	<div bind:this={element} class="badge" style="{xM[position.x]};{yM[position.y]}">
+	<div bind:this={element} class="badge absolute rounded-full border border-[var(--badge-color-border)] grid place-items-center w-4 h-4" style="{xM[position.x]};{yM[position.y]}">
 		<Slotted child={children}>{value}</Slotted>
 	</div>
 {/if}
 
-<style lang="scss">
-	@use 'badge.scss';
-</style>
+
