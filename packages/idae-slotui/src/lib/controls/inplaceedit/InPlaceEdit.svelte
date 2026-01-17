@@ -76,9 +76,9 @@
 
 <form />
 
-<div class="border pos-rel">
+<div class="border border-gray-300 relative">
 	<dialog id={popperId} open={editing} popover="auto" class="popper" bind:this={popper}>
-		<div class="flex gap-4 pad-1" style="gap:4px">
+		<div class="flex gap-1 p-1">
 			<TextField
 				bind:element={inputElement}
 				bind:value={inputValue}
@@ -86,7 +86,7 @@
 				onblur={handleBlur}
 				onkeydown={handleKeyDown}
 				>{#snippet inputLast()}
-					<button variant="contained square" class="button">
+					<button variant="contained square" class="inline-flex items-center justify-center rounded p-1">
 						<Icon style="display:block;width:100%;" icon="fluent-mdl2:accept-medium" />
 					</button>
 				{/snippet}
@@ -94,7 +94,7 @@
 			<button
 				variant="flat naked square"
 				width="tiny"
-				class="button"
+				class="inline-flex items-center justify-center rounded p-1"
 				style="align-items:center;align-content:center;text-align:center;display:block;"
 				popovertarget={popperId}
 				popovertargetaction="hide"
