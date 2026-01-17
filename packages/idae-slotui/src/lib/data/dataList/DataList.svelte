@@ -230,6 +230,4 @@
 	</table>
 {/if}
 
-<style global lang="scss">
-	@use './datalist.scss';
-</style>
+

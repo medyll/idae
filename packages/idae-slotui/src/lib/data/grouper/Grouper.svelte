@@ -69,7 +69,7 @@
 		</ButtonMenu>
 	{/if}
 	{#if grouperMode === 'button'}
-		<Looper style="display:flex;gap:0.2rem;" class="flex-h" data={groupedFieldList}>
+		<Looper class="flex gap-1" data={groupedFieldList}>
 			{#snippet children({ item })}
 				<Button
 					onclick={() => {

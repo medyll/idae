@@ -163,6 +163,4 @@
 	</Popper>
 {/if}
 
-<style lang="scss">
-	@use './finder.scss';
-</style>
+
