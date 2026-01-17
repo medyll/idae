@@ -16,12 +16,12 @@
 	}: ExpandProps<TitleBarProps> = $props();
 </script>
 
-<div class="title-bar">
-	<div class="title-bar-content">
-		<div class="title-bar-content-icon">
+<div class="title-bar flex flex-row items-center border-b border-[var(--title-bar-color-border-bottom)]">
+	<div class="title-bar-content flex flex-row items-center gap-[var(--title-bar-gap)] min-h-[34px] flex-1">
+		<div class="title-bar-content-icon p-[var(--title-bar-pad)]">
 			<Slotted child={titleBarIcon}><Icon iconSize="small" {icon} /></Slotted>
 		</div>
-		<div class="title-bar-content-title">
+		<div class="title-bar-content-title flex-1">
 			<Slotted child={titleBarTitle}>
 				{title}
 			</Slotted>
@@ -37,6 +37,4 @@
 	{/if}
 </div>
 
-<style global lang="scss">
-	@use './title-bar.scss';
-</style>
+
