@@ -113,7 +113,7 @@
 <ul
 	bind:this={element}
 	class:showLastOnSelected
-	class="slotui-menulist {className} {grid ? 'grid' : ''}"
+	class="slotui-menulist {className} {grid ? 'grid' : ''} bg-base-100 rounded-lg shadow p-2"
 	tabindex="0"
 	style={`${style};var(--menulist-grid-items-count):${grid ? grid : '0'}`}
 	{role}
@@ -140,6 +140,3 @@
 	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
-<style  global lang="scss">
-	@use './menu-list.scss';
-</style>

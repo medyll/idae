@@ -38,14 +38,4 @@
 	</div>
 {/if}
 
-<style lang="scss">
-	.preview-root {
-		display: contents;
-	}
-	.preview {
-		display: flex;
-		.preview-zoom {
-			flex: 1;
-		}
-	}
-</style>
+

@@ -157,6 +157,4 @@
 
 <!-- {/if} -->
 
-<style global lang="scss">
-	@use './popper.scss';
-</style>
+

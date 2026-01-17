@@ -303,35 +303,35 @@
   {
     "id": "task-1768680672811-fwp2flk5b",
     "title": "Migration Tailwind – navigation/tabs",
-    "status": "ready",
+    "status": "done",
     "order": 43,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-1ynbhm62n",
     "title": "Migration Tailwind – ui/bootstrapp",
-    "status": "ready",
+    "status": "done",
     "order": 44,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-9qu79y0sr",
     "title": "Migration Tailwind – ui/chromeFrame",
-    "status": "ready",
+    "status": "done",
     "order": 45,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-mdi7zzmur",
     "title": "Migration Tailwind – ui/frame",
-    "status": "ready",
+    "status": "done",
     "order": 46,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-jfzdg3bfm",
     "title": "Migration Tailwind – ui/login",
-    "status": "ready",
+    "status": "done",
     "order": 47,
     "createdBy": "agent"
   },

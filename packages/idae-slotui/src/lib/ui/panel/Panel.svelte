@@ -93,6 +93,4 @@
 	</div>
 </div>
 
-<style lang="scss">
-	@use './panel.scss';
-</style>
+

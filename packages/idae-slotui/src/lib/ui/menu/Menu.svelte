@@ -6,4 +6,4 @@
 	let { ...rest }: MenuListProps = $props();
 </script>
 
-<MenuList {...rest} class="menu" />
+<MenuList {...rest} class="menu bg-base-100 rounded-lg shadow p-2" />
