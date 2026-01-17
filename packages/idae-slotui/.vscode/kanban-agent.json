@@ -37,14 +37,14 @@
   {
     "id": "task-1768680648855-gxyc75jpk",
     "title": "Migration Tailwind – Adapter les breakpoints Tailwind",
-    "status": "in_progress",
+    "status": "done",
     "order": 5,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680648855-rm4xesi0t",
     "title": "Migration Tailwind – Documenter la stratégie hybride et la procédure",
-    "status": "ready",
+    "status": "in_progress",
     "order": 6,
     "createdBy": "agent"
   },

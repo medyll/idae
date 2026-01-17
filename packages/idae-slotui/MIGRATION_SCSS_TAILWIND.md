@@ -307,29 +307,32 @@ Après :
 
 ---
 
-## Stratégie de migration hybride (optionnel)
+## Stratégie hybride SCSS/Tailwind et procédure de migration
 
-### Stratégie de migration hybride (SCSS + Tailwind)
+### Contexte
+Le projet migre d’un design system 100% SCSS vers une architecture hybride : 
+- Utilisation de Tailwind CSS pour la majorité des utilitaires, breakpoints, couleurs, etc.
+- Conservation des tokens CSS personnalisés (variables CSS générées depuis SCSS) pour la compatibilité, la personnalisation dynamique et la granularité des thèmes.
 
-1. **Migration progressive par composant**
-	- Autoriser la cohabitation des styles SCSS existants et des utilitaires Tailwind dans le codebase.
-	- Migrer les composants un par un, en gardant les SCSS globaux tant que tous les composants ne sont pas migrés.
+### Choix techniques
+- Les presets SCSS (couleurs, radius, gap, pad, elevation, breakpoints, etc.) sont migrés dans `tailwind.config.js` (theme.extend).
+- Les variables CSS générées (slotui-css/*.css) sont importées globalement dans `main.css` pour garantir leur accessibilité dans tous les composants.
+- Les composants peuvent utiliser indifféremment les classes Tailwind et les tokens CSS personnalisés.
+- Les plugins Tailwind recommandés (forms, typography, aspect-ratio, line-clamp) sont installés et configurés.
 
-2. **Interopérabilité des variables CSS**
-	- Continuer à exposer les custom properties générées par SCSS pour les composants non migrés.
-	- Utiliser les mêmes noms de variables dans la config Tailwind (`theme.extend`) pour garantir la compatibilité.
+### Workflow de migration
+1. **Migration des presets SCSS** : Reporter toutes les valeurs utiles dans `tailwind.config.js`.
+2. **Génération des variables CSS** : Compiler les SCSS en CSS via le script `release-css.js` pour produire les fichiers slotui-css.
+3. **Import global** : Importer tous les slotui-css/*.css dans `main.css`.
+4. **Adaptation des breakpoints** : S’assurer que les breakpoints Tailwind correspondent à ceux du design system SCSS.
+5. **Migration des composants** : Adapter chaque composant pour utiliser Tailwind et/ou les tokens CSS selon le besoin.
+6. **Commit entre chaque étape** : Respecter la convention de commit (voir plus haut).
 
-3. **Utilisation sélective des utilitaires**
-	- Appliquer les classes Tailwind uniquement sur les nouveaux composants ou ceux migrés.
-	- Garder les mixins SCSS pour les composants legacy.
-
-4. **Nettoyage progressif**
-	- Supprimer les fichiers SCSS et variables inutiles au fur et à mesure de la migration.
-	- Documenter les composants migrés et ceux restant à migrer.
-
-5. **Tests et validation**
-	- Vérifier la cohérence visuelle et fonctionnelle à chaque étape.
-	- Utiliser des snapshots visuels ou des tests Playwright pour garantir l’absence de régressions.
+### Bonnes pratiques
+- Privilégier les classes utilitaires Tailwind pour la majorité des styles.
+- Utiliser les tokens CSS personnalisés pour la compatibilité, les thèmes dynamiques ou les cas non couverts par Tailwind.
+- Documenter toute variable ou preset ajouté dans `tailwind.config.js` ou dans les fichiers slotui-css.
+- Toujours commit entre chaque étape du kanban.
 
 ---
 
