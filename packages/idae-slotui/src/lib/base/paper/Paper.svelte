@@ -13,10 +13,8 @@
 	}: ExpandProps<PaperProps> = $props();
 </script>
 
-<div bind:this={element} class="paper {className} elevation-{elevation}" {style} {...rest}>
+<div bind:this={element} class="paper {className} rounded-[var(--paper-radius)] bg-[var(--paper-background-color)] text-[var(--paper-border)] shadow-[var(--sld-elevation-{elevation})]" {style} {...rest}>
 	<Slotted child={children} />
 </div>
 
-<style lang="scss">
-	@use './paper.scss';
-</style>
+
