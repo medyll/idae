@@ -23,8 +23,8 @@
 
 <div
 	bind:this={element}
-	class="rating {className}"
-	style="--direction:{direction === 'horizontal' ? 'row' : 'column'};{style}"
+	class="rating flex gap-[var(--rating-gap)] {className}"
+	style="flex-direction:{direction === 'horizontal' ? 'row' : 'column'};{style}"
 	{title}
 	{...rest}
 >
@@ -41,6 +41,4 @@
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './rating.scss';
-</style>
+
