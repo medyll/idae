@@ -44,15 +44,15 @@
 	}
 </script>
 
-<div class="slotui-textfield-container">
-	<div class="slotui-textfield-start">
+<div class="slotui-textfield-container relative inline-flex overflow-hidden">
+	<div class="slotui-textfield-start absolute h-full max-h-full w-6 flex items-center justify-center p-1 bg-white/10 rounded-[var(--textfield-radius)]">
 		<Slotted child={inputFirst}>
 			<Icon {icon} style="max-width:100%;max-height:100%;color:{iconColor}" />
 		</Slotted>
 	</div>
 
 	{#if inputLast || endIcon || inputType === 'search'}
-		<div class="slotui-textfield-end">
+		<div class="slotui-textfield-end absolute right-0 h-full max-h-full min-w-6 flex gap-1 p-0">
 			{#if inputLast || endIcon}
 				<Slotted child={inputLast}>
 					<Icon icon={endIcon} style="max-width:100%;max-height:100%;color:{endIconColor}" />
@@ -75,7 +75,7 @@
 		bind:this={element}
 		use:popper={usePopper}
 		type="text"
-		class="slotui-textfield width-{width} tall-{tall} {className}"
+		class="slotui-textfield width-{width} tall-{tall} {className} border border-[var(--textfield-border-color)] border-b-[var(--textfield-border-bottom-width)] border-b-[var(--textfield-border-bottom-color)] rounded-[var(--textfield-radius)] p-[var(--textfield-padding)] shadow-[var(--textfield-shadow)] bg-[var(--textfield-background)] text-[var(--sld-color-foreground)]"
 		style={niceIconStyle + ';' + style}
 		{tall}
 		{width}
@@ -83,6 +83,4 @@
 	/>
 </div>
 
-<style lang="scss">
-	@use './textfield.scss';
-</style>
+
