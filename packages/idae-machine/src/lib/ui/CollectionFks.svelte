@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { MachineDb } from '$lib/main/machineDb.js';
-	import { schemeModel, idbqlState } from '$lib/db/dbSchema.js';
+
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
 

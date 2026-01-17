@@ -1,34 +1,19 @@
-import type {
-	DbCharacterLink,
+import type { 
 	DBAgent,
 	DbAgentOf,
-	DbAgentPrompt,
-	DbBook,
-	DbBookPrompts,
-	DbCategory,
-	DbChapter,
-	DbCharacter,
-	DbCharacterChapterStatus,
+	DbAgentPrompt, 
+	DbCategory, 
 	DbChat,
-	DbTags,
-	DbWritingGoal,
-	PromptType,
-	DbSpaces
-} from '$types/db';
-import type { DBMessage } from '$types/db';
-import type { SettingsType } from '$types/settings.js';
-import type { UserType } from '$types/user';
-import {
-	createIdbqDb,
-	type IdbqModel,
-	type Tpl,
-	type DbFieldTypes,
-	type TplFieldType
+	DbTags, 
+	PromptType, 
+	DBMessage,
+	UserType
+} from '$lib/demo/types.js';  
+import { 
+	type IdbqModel, 
 } from '@medyll/idae-idbql';
 
 
-import type { FieldType, getFieldTypes, registerFieldType } from './fieldTypes';
-import type { DbDataModel, DbDataModelTs } from './dataModel.js';
 
 /* here is an example of how to declare a dataModel*/
 export const schemeModelDb = {
@@ -136,22 +121,6 @@ export const schemeModelDb = {
 			fks: {}
 		}
 	},
-	space: {
-		keyPath: '++id, code',
-		model: {} as DbSpaces,
-		ts: {} as DbSpaces,
-		template: {
-			index: 'id',
-			presentation: 'name',
-			fields: {
-				id: 'id',
-				code: 'text',
-				name: 'text',
-				ia_lock: 'boolean (private)'
-			},
-			fks: {}
-		}
-	},
 	tags: {
 		keyPath: '++id, code',
 		model: {} as DbTags,
@@ -245,250 +214,11 @@ export const schemeModelDb = {
 			},
 			fks: {}
 		}
-	},
-	// Nouvelles entités pour le Book Creator Helper
-	book: {
-		keyPath: '++id, userId, created_at',
-		model: {} as DbBook,
-		ts: {} as DbBook,
-		template: {
-			index: 'id',
-			presentation: 'title',
-			fields: {
-				id: 'id (readonly)',
-				userId: 'id',
-				title: 'text-long (required)',
-				description: 'text-area',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				status: 'text',
-				ia_lock: 'boolean (private)'
-			},
-			fks: {
-				user: {
-					code: 'user',
-					multiple: false,
-					rules: 'readonly'
-				}
-			}
-		}
-	},
-
-	chapter: {
-		keyPath: '++id, bookId, order',
-		model: {} as DbChapter,
-		ts: {} as DbChapter,
-		template: {
-			index: 'id',
-			presentation: 'title',
-			fields: {
-				id: 'id (readonly)',
-				bookId: 'id',
-				title: 'text-long (required)',
-				content: 'text-area',
-				order: 'number',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				ia_lock: 'boolean (private readonly)'
-			},
-			fks: {
-				book: {
-					code: 'book',
-					multiple: false,
-					rules: 'readonly'
-				}
-			}
-		}
-	},
-
-	writingGoal: {
-		keyPath: '++id, userId, bookId',
-		model: {} as DbWritingGoal,
-		ts: {} as DbWritingGoal,
-		template: {
-			index: 'id',
-			presentation: 'description',
-			fields: {
-				id: 'id (readonly)',
-				userId: 'id',
-				bookId: 'id',
-				description: 'text (required)',
-				targetWordCount: 'number',
-				deadline: 'date',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				ia_lock: 'boolean (private)'
-			},
-			fks: {
-				user: {
-					code: 'user',
-					multiple: false,
-					rules: 'readonly'
-				},
-				book: {
-					code: 'book',
-					multiple: false,
-					rules: 'readonly'
-				}
-			}
-		}
-	},
-
-	character: {
-		keyPath: '++id, bookId',
-		model: {} as DbCharacter,
-		ts: {} as DbCharacter,
-		template: {
-			index: 'id',
-			presentation: 'firstName lastName',
-			fields: {
-				id: 'id (readonly)',
-				bookId: 'id',
-				characterLinkIds: 'array-of-fk-characterLink.id (private)',
-				characterAttributesIds: 'array-of-fk-characterAttributes.id (private)',
-				firstName: 'text (required)',
-				lastName: 'text',
-				nickname: 'text',
-				age: 'number',
-				gender: 'text',
-				occupation: 'text',
-				role: 'text',
-				description: 'text-area',
-				backstory: 'text-area',
-				physicalDescription: 'text-area',
-				personalityTraits: 'array-of-text',
-				goals: 'text-area',
-				conflicts: 'text-area',
-				created_at: 'date (readonly private)',
-				updated_at: 'date (readonly private)',
-				ia_lock: 'boolean (private)'
-			},
-			fks: {
-				characterAttributes: {
-					code: 'characterAttributes',
-					multiple: true,
-					rules: ''
-				},
-				book: {
-					code: 'book',
-					multiple: false,
-					rules: 'readonly'
-				},
-				characterLink: {
-					code: 'characterLink',
-					multiple: true,
-					rules: ''
-				}
-			}
-		}
-	},
-	characterAttributes: {
-		keyPath: '++id',
-		model: {} as DbCharacter,
-		ts: {} as DbCharacter,
-		template: {
-			index: 'id',
-			presentation: 'name',
-			fields: {
-				id: 'id (readonly)',
-				attribute: 'text',
-				name: 'text',
-				created_at: 'date (readonly)',
-				updated_at: 'date'
-			},
-			fks: {}
-		}
-	},
-	characterLink: {
-		keyPath: '++id',
-		model: {} as DbCharacterLink,
-		ts: {} as DbCharacterLink,
-		template: {
-			index: 'id',
-			presentation: 'type',
-			fields: {
-				id: 'id',
-				characterId: 'array-of-fk-character.id',
-				type: 'text-short',
-				description: 'text-medium',
-				active: 'boolean'
-			},
-			fks: {
-				character: {
-					code: 'character',
-					multiple: true,
-					rules: ''
-				}
-			}
-		}
-	},
-	characterChapterStatus: {
-		keyPath: '++id, characterId, chapterId',
-		model: {} as DbCharacterChapterStatus,
-		ts: {} as DbCharacterChapterStatus,
-		template: {
-			index: 'id',
-			presentation: 'characterId chapterId status',
-			fields: {
-				id: 'id (readonly)',
-				characterId: 'id',
-				chapterId: 'id',
-				status: 'text',
-				role: 'text',
-				actions: 'text-long',
-				development: 'text-area',
-				notes: 'text-long',
-				created_at: 'date (readonly)',
-				updated_at: 'date'
-			},
-			fks: {
-				character: {
-					code: 'character',
-					multiple: false,
-					rules: 'readonly'
-				},
-				chapter: {
-					code: 'chapter',
-					multiple: false,
-					rules: 'readonly'
-				}
-			}
-		}
-	},
-
-	bookPrompts: {
-		keyPath: '++id, bookId',
-		model: {} as DbBookPrompts,
-		ts: {} as DbBookPrompts,
-		template: {
-			index: 'id',
-			presentation: 'name',
-			fields: {
-				id: 'id (readonly)',
-				bookId: 'id',
-				name: 'text (required)',
-				category: 'text',
-				content: 'text-area',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				ia_lock: 'boolean (private)'
-			},
-			fks: {
-				book: {
-					code: 'book',
-					multiple: false,
-					rules: 'readonly'
-				}
-			}
-		}
-	}
+	} 
 } satisfies IdbqModel;
 
-export const schemeModel: IdbqModel = {
-	...schemeModelDb
-} as unknown as IdbqModel<typeof schemeModelDb>;
 
-export type DataModelFinal = DbDataModelTs<typeof schemeModelDb>;
+/* const idbqStore = createIdbqDb<typeof schemeModelDb>(schemeModelDb, 13);
+export const { idbql,idbqlState , idbDatabase, idbqModel } = idbqStore.create('idae-machine');
+ */
 
-const idbqStore = createIdbqDb<typeof schemeModel>(schemeModel, 13);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine');

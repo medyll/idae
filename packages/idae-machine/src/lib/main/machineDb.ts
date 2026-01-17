@@ -9,7 +9,7 @@ import type {
   Tpl,
   TplFields,
 } from "@medyll/idae-idbql";
-import { schemeModel } from "../db/dbSchema.js";
+import { schemeModelDb } from "../db/dbSchema.js";
 import { IDbCollection } from "./machine/IDbCollection.js";
 import { IDbError } from "$lib/main/machine/IDbError.js";
 import type { IDbForge } from "./machineForge.js";
@@ -73,7 +73,7 @@ export class MachineDb {
   /**
    * The database model (schema) used for introspection.
    */
-  model: IdbqModel = schemeModel;
+  model: IdbqModel = schemeModelDb;
 
   machineForge: MachineForge = new MachineForge();
 
@@ -84,7 +84,7 @@ export class MachineDb {
    * @param model Optional custom model to use (default: schemeModel)
    */
   constructor(model?: IdbqModel) {
-    this.model = model ?? schemeModel;
+    this.model = model ?? schemeModelDb;
     this.machineForge = new MachineForge();
   }
 
