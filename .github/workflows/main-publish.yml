@@ -9,7 +9,6 @@ on:
 
 jobs:
   publish-main:
-  
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -25,25 +24,24 @@ jobs:
             echo "::set-output name=is_changeset_commit::false"
           fi
 
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install pnpm
         run: npm install -g pnpm@10.28.0
 
       - name: Debug pnpm version
         run: |
-          echo 'Vérification de pnpm:'
-          which pnpm || { echo 'pnpm introuvable'; exit 1; }
+          echo 'check pnpm:'
+          which pnpm || { echo 'pnpm not found'; exit 1; }
           pnpm --version
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Generate Changesets
         env:
@@ -85,8 +83,6 @@ jobs:
           npx changeset publish --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-
 
       - name: Install pnpm
         run: npm install -g pnpm@10.28.0
