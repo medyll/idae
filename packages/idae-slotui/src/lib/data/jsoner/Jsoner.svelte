@@ -16,25 +16,25 @@
 
 {#if data}
 	{#if mode === 'array'}
-		<div class="flex-h w-large flex-wrap gap-small">
+		<div class="flex flex-row flex-wrap gap-2 w-full">
 			{#each data as kdta, index}
-				<div class="border-l"><svelte:self data={kdta} /></div>
+				<div class="border-l border-base-300 pl-2"><svelte:self data={kdta} /></div>
 			{/each}
 		</div>
 	{/if}
 
 	{#if mode === 'object'}
-		<div class="flex-v gap-small">
+		<div class="flex flex-col gap-2">
 			{#each Object.keys(data) as kdta}
-				<div class="flex-h gap-small flex-align-top marg-l">
-					<div class="w-medium pad-1 border-b">- {kdta}</div>
-					<div style="margin-left:4rem;"><svelte:self data={data[kdta]} /></div>
+				<div class="flex flex-row gap-2 items-start ml-4">
+					<div class="min-w-[8rem] px-2 py-1 border-b border-base-300">- {kdta}</div>
+					<div class="ml-16"><svelte:self data={data[kdta]} /></div>
 				</div>
 			{/each}
 		</div>
 	{/if}
 
 	{#if ['string', 'number'].includes(mode)}
-		<div class="pad-1">{data}</div>
+		<div class="px-2 py-1">{data}</div>
 	{/if}
 {/if}

@@ -40,7 +40,7 @@
 	}
 </script>
 
-<div {...rest}>
+<div class="flex items-center gap-2" {...rest}>
 	{#if sorterMode === 'button'}
 		<Button
 			onclick={() => {

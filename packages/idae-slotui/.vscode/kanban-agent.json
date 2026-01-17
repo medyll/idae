@@ -247,21 +247,21 @@
   {
     "id": "task-1768680672811-d60na5leg",
     "title": "Migration Tailwind – data/dataList",
-    "status": "ready",
+    "status": "done",
     "order": 35,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-p1jve5ons",
     "title": "Migration Tailwind – data/finder",
-    "status": "ready",
+    "status": "done",
     "order": 36,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-ua05c1hc6",
     "title": "Migration Tailwind – data/grouper",
-    "status": "ready",
+    "status": "done",
     "order": 37,
     "createdBy": "agent"
   },

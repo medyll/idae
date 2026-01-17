@@ -94,7 +94,7 @@
 
 <div
 	bind:this={element}
-	class="drawer {className}"
+	class="drawer {className} bg-base-100 shadow-lg rounded-lg flex flex-col"
 	style={finalStyle}
 	aria-expanded={isOpen}
 	aria-orientation="vertical"
