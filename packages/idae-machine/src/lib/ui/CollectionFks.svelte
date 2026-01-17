@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IDbBase } from '$lib/db/dbFields.js';
+	import { MachineDb } from '$lib/main/machineDb.js';
 	import { schemeModel, idbqlState } from '$lib/db/dbSchema.js';
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
@@ -10,13 +10,11 @@
 		collectionId?: any;
 		where?:        Where;
 	};
-	let { collection }: CollectionFksProps = $props();
 
-	// idbqlState[fkCollection].get(fkId);
+	let { collection,collectionId,where }: CollectionFksProps = $props();
 
-	const dbFields = machine.collections;
-	const collections = new IDbBase(schemeModel);
-	const fks = $derived(collections.fks(collection));
+ 
+	const fks = $derived(machine.collections.fks(collection)); 
 </script>
 
 <Looper data={Object.entries(fks)}>

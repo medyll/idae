@@ -25,7 +25,7 @@
  * const model = machine.idbqModel;
  */
 
-import { IDbBase } from '$lib/db/dbFields.js';
+import { MachineDb } from '$lib/main/machineDb.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 
 /**
@@ -33,7 +33,6 @@ import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
  */
 export class Machine {
   /**
-
    * IDBQL (readonly collections instance)
    */
   _idbql!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"] | undefined;
@@ -56,7 +55,7 @@ export class Machine {
   /**
    * Centralized access to schema and collection logic
    */
-  _collections!: IDbBase ;
+  _idbbase!: MachineDb ;
 
   /**
    * Database name
@@ -76,7 +75,10 @@ export class Machine {
   /**
    * Main constructor
    */
-  constructor() {
+  constructor(dbName?: string, version?: number, model?: IdbqModel) {
+    this._dbName = dbName ?? '';
+    this._version = version ?? 1;
+    this._model = model ?? undefined;
   }
   
   init(options?: { dbName?: string; version?: number; model?: IdbqModel }) {
@@ -97,7 +99,7 @@ export class Machine {
     if (!this._model) {
       throw new Error('Data model is not defined');
     }
-    this._collections = new IDbBase(this._model);
+    this._idbbase = new MachineDb(this._model);
   }
 
 
@@ -115,10 +117,10 @@ export class Machine {
 
 
   /**
-   * Get the IDbCollections (schema logic) instance
+   * Get the IDbBase (schema logic) instance
    */
   get collections() {
-    return this._collections;
+    return this._idbbase;
   }
 
   /**
@@ -129,9 +131,16 @@ export class Machine {
   }
 
   /**
-   * IDBQL (stateful) instance
+   * IDBQL (stateful) instance , old name was idbqlState => store
    */
   get store() {
+    return this._idbqlState;
+  }
+
+  /**
+   * Direct getter for idbqlState (for test compatibility)
+   */
+  get idbqlState() {
     return this._idbqlState;
   }
 

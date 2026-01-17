@@ -25,6 +25,7 @@
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
     "@medyll/idae-eslint-config": "^1.2.1",
+    "@medyll/idae-prettier-config": "^1.2.1",
     "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
     "commitizen": "^4.3.1",

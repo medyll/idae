@@ -17,7 +17,7 @@ Vérifier que la classe `Machine` centralise correctement la connexion IDBQL et 
    - Tester les méthodes `getSchema`, `getIdbql`, `getIdbqlState`, `getIdbDatabase`, `getIdbqModel`.
    - Vérifier que chaque méthode retourne l’instance attendue.
 
-4. **Interopérabilité avec IDbCollections**
+4. **Interopérabilité avec IDbBase**
    - Utiliser la méthode `getSchema()` pour accéder à des méthodes du schéma (ex: introspection de collections).
 
 5. **Robustesse**
@@ -25,5 +25,5 @@ Vérifier que la classe `Machine` centralise correctement la connexion IDBQL et 
 
 ## Critères de réussite
 - Toutes les propriétés et méthodes exposées fonctionnent comme attendu.
-- L’intégration avec IDBQL et IDbCollections est effective.
+- L’intégration avec IDBQL et IDbBase est effective.
 - La classe reste pilotable et extensible pour des usages avancés.

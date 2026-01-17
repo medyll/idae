@@ -68,7 +68,10 @@ importers:
         version: 0.122.0(svelte@5.46.3)
       '@medyll/idae-eslint-config':
         specifier: ^1.2.1
-        version: 1.2.1(jiti@2.6.1)(picomatch@4.0.3)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)
+        version: 1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)
+      '@medyll/idae-prettier-config':
+        specifier: ^1.2.1
+        version: 1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -136,7 +139,7 @@ importers:
     devDependencies:
       '@medyll/idae-prettier-config':
         specifier: ^1.2.1
-        version: 1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@4.0.0-alpha.13)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -1095,6 +1098,12 @@ importers:
       '@huggingface/prettier-plugin-vertical-align':
         specifier: ^0.2.3
         version: 0.2.3
+      '@medyll/idae-idbql':
+        specifier: workspace:*
+        version: link:../idae-idbql
+      '@medyll/idae-slotui-svelte':
+        specifier: workspace:*
+        version: link:../idae-slotui
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.7
@@ -1303,6 +1312,9 @@ importers:
       npm-check-updates:
         specifier: ^17.1.16
         version: 17.1.18
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.6
       postcss-load-config:
         specifier: ^6.0.1
         version: 6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2)
@@ -14114,7 +14126,7 @@ snapshots:
       - ws
       - zod
 
-  '@medyll/idae-eslint-config@1.2.1(jiti@2.6.1)(picomatch@4.0.3)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)':
+  '@medyll/idae-eslint-config@1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@rushstack/eslint-patch': 1.15.0
       '@types/eslint': 9.6.1
@@ -14133,23 +14145,6 @@ snapshots:
   '@medyll/idae-prettier-config@1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
       prettier: 3.7.4
-      vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - yaml
-
-  '@medyll/idae-prettier-config@1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@4.0.0-alpha.13)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
-    dependencies:
-      prettier: 4.0.0-alpha.13
       vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - '@types/node'
@@ -16872,7 +16867,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.3.7)
+      follow-redirects: 1.15.11(debug@4.4.3)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:

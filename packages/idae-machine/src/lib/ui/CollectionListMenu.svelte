@@ -1,8 +1,9 @@
 <script lang="ts" generics="COL = Record<string,any>">
 	import { type MenuListProps, Button, MenuList, MenuListItem, openWindow, type Props } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
-	import { idbqlState } from '$lib/db/dbSchema';
-	import { IDbBase, IDbCollectionValues } from '$lib/db/dbFields';
+	import { idbqlState } from '$lib/db/dbSchema.js';
+	import { MachineDb } from '$lib/main/machineDb.js';
+	import { IDbCollectionValues } from '$lib/main/IDbCollectionValues';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
@@ -18,7 +19,7 @@
 
 	let { collection, target, data, menuListProps, onclick, style, where }: DataListMenuProps = $props();
 
-	let test = new IDbBase();
+	let test = new MachineDb();
 	let fieldValues = new IDbCollectionValues(collection);
 	let index = test.getIndexName(collection);
 

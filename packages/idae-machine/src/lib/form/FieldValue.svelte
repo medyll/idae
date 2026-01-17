@@ -34,8 +34,8 @@
 	data = data ?? ({} as COL);
 
 	// Initialisation des valeurs de champ de collection
-	const forge = machine.collections.get(collection).fieldForge(String(fieldName), data)  
-	let collectionFieldValues = machine.collections.get(collection).collectionValues() 
+	const forge = machine.collections.collection(collection).fieldForge(String(fieldName), data)  
+	let collectionFieldValues = machine.collections.collection(collection).collectionValues() 
 	let inputDataset = collectionFieldValues.getInputDataSet(fieldName, data);
 
 	// Création d'une instance de forge de champ de collection

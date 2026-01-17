@@ -14,7 +14,7 @@
     } 
  -->
 <script lang="ts">
-	import { IDbBase } from '$lib/db/dbFields.js';
+	import { MachineDb } from '$lib/main/machineDb.js';
 	import { schemeModel, idbqlState } from '$lib/db/dbSchema';
 	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
@@ -30,7 +30,7 @@
 		componentProps?: Record<string, any>;
 	};
 	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
-	const dbFields = new IDbBase(schemeModel);
+	const dbFields = new MachineDb(schemeModel);
 	const fks = $derived(dbFields.reverseFks(collection));
 
 	function getTitle() {
