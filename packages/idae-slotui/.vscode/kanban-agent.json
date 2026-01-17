@@ -415,28 +415,28 @@
   {
     "id": "task-1768680672811-k2xnvxsjw",
     "title": "Migration Tailwind – ui/toggleBar",
-    "status": "ready",
+    "status": "done",
     "order": 59,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-3d9nvdkn1",
     "title": "Migration Tailwind – ui/toolBar",
-    "status": "ready",
+    "status": "done",
     "order": 60,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-ur4gyu2mw",
     "title": "Migration Tailwind – ui/tree",
-    "status": "ready",
+    "status": "done",
     "order": 61,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-gkbq7kthz",
     "title": "Migration Tailwind – ui/window",
-    "status": "ready",
+    "status": "done",
     "order": 62,
     "createdBy": "agent"
   },

@@ -57,7 +57,4 @@
 	<Slotted child={children} />
 </Box>
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-</style>
+
