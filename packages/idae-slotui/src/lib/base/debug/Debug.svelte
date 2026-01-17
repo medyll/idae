@@ -14,7 +14,7 @@
 	];
 </script>
 
-<div style="padding:0.5rem">
+<div class="p-2">
 	<Cartouche isOpen={true} primary="debug zone here">
 		<pre>{JSON.stringify($$props, null, ' ')}</pre>
 	</Cartouche>
