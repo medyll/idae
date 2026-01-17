@@ -1,26 +1,11 @@
 // src/lib/db/fieldTypes.ts
 
+import type { TplTypes } from "@medyll/idae-idbql";
 
-export type FieldTypeId =
-  | 'id'
-  | 'text'
-  | 'text-short'
-  | 'text-medium'
-  | 'text-long'
-  | 'text-area'
-  | 'number'
-  | 'boolean'
-  | 'date'
-  | 'email'
-  | 'password'
-  | 'object-any'
-  | `fk-${string}.id`
-  | `array-of-${string}`
-  | `object-of-${string}`
-  | `array-of-fk-${string}.id`;
+ 
 
 export interface FieldTypeDef {
-  id: FieldTypeId;
+  id: TplTypes;
   formatter: (value: any) => any;
   validator?: (value: any) => boolean;
 }
@@ -38,7 +23,7 @@ export function registerFieldTypes(defs: FieldTypeDef[]) {
   defs.forEach(registerFieldType);
 }
 
-export function getFieldType(id: FieldTypeId): FieldTypeDef | undefined {
+export function getFieldType(id: TplTypes): FieldTypeDef | undefined {
   return fieldTypeRegistry[id];
 }
 
