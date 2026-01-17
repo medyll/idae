@@ -1,0 +1,478 @@
+[
+  {
+    "id": "task-1768680648855-5c509ff7r",
+    "title": "Migration Tailwind – Configurer Tailwind dans le projet",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768681018339-jcrtpu7y1",
+    "title": "effecture la tache 1",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680648855-1frt39rc7",
+    "title": "Migration Tailwind – Reporter les presets SCSS dans theme.extend",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680648855-j9bbd8si2",
+    "title": "Migration Tailwind – Installer et configurer les plugins Tailwind",
+    "status": "in_progress",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680648855-zy6wuscry",
+    "title": "Migration Tailwind – Générer et exposer les variables CSS nécessaires",
+    "status": "ready",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680648855-gxyc75jpk",
+    "title": "Migration Tailwind – Adapter les breakpoints Tailwind",
+    "status": "ready",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680648855-rm4xesi0t",
+    "title": "Migration Tailwind – Documenter la stratégie hybride et la procédure",
+    "status": "ready",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-z8dsv3n8m",
+    "title": "Migration Tailwind – base/alert",
+    "status": "ready",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-owfm4rsw5",
+    "title": "Migration Tailwind – base/avatar",
+    "status": "ready",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-vitp51fcs",
+    "title": "Migration Tailwind – base/backdrop",
+    "status": "ready",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-o8ok807qt",
+    "title": "Migration Tailwind – base/badge",
+    "status": "ready",
+    "order": 10,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-fj13dkxgs",
+    "title": "Migration Tailwind – base/box",
+    "status": "ready",
+    "order": 11,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-jwsbt5opz",
+    "title": "Migration Tailwind – base/breadCrumb",
+    "status": "ready",
+    "order": 12,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-5q0bvz7p6",
+    "title": "Migration Tailwind – base/cartouche",
+    "status": "ready",
+    "order": 13,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-0ytk868k9",
+    "title": "Migration Tailwind – base/chipper",
+    "status": "ready",
+    "order": 14,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-o2d1agamd",
+    "title": "Migration Tailwind – base/columner",
+    "status": "ready",
+    "order": 15,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-xycc06v9i",
+    "title": "Migration Tailwind – base/contentSwitcher",
+    "status": "ready",
+    "order": 16,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-a5hlnr99c",
+    "title": "Migration Tailwind – base/debug",
+    "status": "ready",
+    "order": 17,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-7o9xyb96a",
+    "title": "Migration Tailwind – base/demoer",
+    "status": "ready",
+    "order": 18,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-31pynzezo",
+    "title": "Migration Tailwind – base/divider",
+    "status": "ready",
+    "order": 19,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-bm9r351p2",
+    "title": "Migration Tailwind – base/icon",
+    "status": "ready",
+    "order": 20,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-uyu8iigtm",
+    "title": "Migration Tailwind – base/paper",
+    "status": "ready",
+    "order": 21,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-u1bpob3ol",
+    "title": "Migration Tailwind – base/titleBar",
+    "status": "ready",
+    "order": 22,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-06ords288",
+    "title": "Migration Tailwind – controls/autocomplete",
+    "status": "ready",
+    "order": 23,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-bxm7a6tp5",
+    "title": "Migration Tailwind – controls/button",
+    "status": "ready",
+    "order": 24,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-jpjb4auul",
+    "title": "Migration Tailwind – controls/checkbox",
+    "status": "ready",
+    "order": 25,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ygr6vsk7s",
+    "title": "Migration Tailwind – controls/confirm",
+    "status": "ready",
+    "order": 26,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ckpws119b",
+    "title": "Migration Tailwind – controls/inplaceedit",
+    "status": "ready",
+    "order": 27,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-3h9vnpb4h",
+    "title": "Migration Tailwind – controls/progress",
+    "status": "ready",
+    "order": 28,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ih6mgxq7v",
+    "title": "Migration Tailwind – controls/rating",
+    "status": "ready",
+    "order": 29,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-zxvckdm6r",
+    "title": "Migration Tailwind – controls/select",
+    "status": "ready",
+    "order": 30,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-6333iglxr",
+    "title": "Migration Tailwind – controls/slider",
+    "status": "ready",
+    "order": 31,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-yltcvcv0l",
+    "title": "Migration Tailwind – controls/stepper",
+    "status": "ready",
+    "order": 32,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-kj4eutujy",
+    "title": "Migration Tailwind – controls/switch",
+    "status": "ready",
+    "order": 33,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-7u8otmfdx",
+    "title": "Migration Tailwind – controls/textfield",
+    "status": "ready",
+    "order": 34,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-d60na5leg",
+    "title": "Migration Tailwind – data/dataList",
+    "status": "ready",
+    "order": 35,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-p1jve5ons",
+    "title": "Migration Tailwind – data/finder",
+    "status": "ready",
+    "order": 36,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ua05c1hc6",
+    "title": "Migration Tailwind – data/grouper",
+    "status": "ready",
+    "order": 37,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ht4grrckb",
+    "title": "Migration Tailwind – data/jsoner",
+    "status": "ready",
+    "order": 38,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-xfd48tw8b",
+    "title": "Migration Tailwind – data/list",
+    "status": "ready",
+    "order": 39,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-iy47wiues",
+    "title": "Migration Tailwind – data/loader",
+    "status": "ready",
+    "order": 40,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-mbxf2effq",
+    "title": "Migration Tailwind – data/sorter",
+    "status": "ready",
+    "order": 41,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ej1183xmf",
+    "title": "Migration Tailwind – navigation/drawer",
+    "status": "ready",
+    "order": 42,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-fwp2flk5b",
+    "title": "Migration Tailwind – navigation/tabs",
+    "status": "ready",
+    "order": 43,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-1ynbhm62n",
+    "title": "Migration Tailwind – ui/bootstrapp",
+    "status": "ready",
+    "order": 44,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-9qu79y0sr",
+    "title": "Migration Tailwind – ui/chromeFrame",
+    "status": "ready",
+    "order": 45,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-mdi7zzmur",
+    "title": "Migration Tailwind – ui/frame",
+    "status": "ready",
+    "order": 46,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-jfzdg3bfm",
+    "title": "Migration Tailwind – ui/login",
+    "status": "ready",
+    "order": 47,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-fegyzbgsy",
+    "title": "Migration Tailwind – ui/marquee",
+    "status": "ready",
+    "order": 48,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-j6y7gvlcu",
+    "title": "Migration Tailwind – ui/menu",
+    "status": "ready",
+    "order": 49,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-prwlt6qt6",
+    "title": "Migration Tailwind – ui/menuList",
+    "status": "ready",
+    "order": 50,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-9y02soqeh",
+    "title": "Migration Tailwind – ui/panel",
+    "status": "ready",
+    "order": 51,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-m2p2451da",
+    "title": "Migration Tailwind – ui/popper",
+    "status": "ready",
+    "order": 52,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-85uwpsrph",
+    "title": "Migration Tailwind – ui/preview",
+    "status": "ready",
+    "order": 53,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-owbismlr1",
+    "title": "Migration Tailwind – ui/serviceBox",
+    "status": "ready",
+    "order": 54,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-klkjsmdxc",
+    "title": "Migration Tailwind – ui/startMenu",
+    "status": "ready",
+    "order": 55,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-993i6asou",
+    "title": "Migration Tailwind – ui/taskbar",
+    "status": "ready",
+    "order": 56,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-udm56dwct",
+    "title": "Migration Tailwind – ui/themeswitcher",
+    "status": "ready",
+    "order": 57,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-l2gr2vebq",
+    "title": "Migration Tailwind – ui/toast",
+    "status": "ready",
+    "order": 58,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-k2xnvxsjw",
+    "title": "Migration Tailwind – ui/toggleBar",
+    "status": "ready",
+    "order": 59,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-3d9nvdkn1",
+    "title": "Migration Tailwind – ui/toolBar",
+    "status": "ready",
+    "order": 60,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-ur4gyu2mw",
+    "title": "Migration Tailwind – ui/tree",
+    "status": "ready",
+    "order": 61,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-gkbq7kthz",
+    "title": "Migration Tailwind – ui/window",
+    "status": "ready",
+    "order": 62,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-56yn73l4n",
+    "title": "Migration Tailwind – Nettoyer les imports SCSS et supprimer les fichiers obsolètes",
+    "status": "ready",
+    "order": 63,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680672811-624gxm5zi",
+    "title": "Migration Tailwind – Vérifier la cohérence visuelle et fonctionnelle",
+    "status": "ready",
+    "order": 64,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680740707-d9ivdm5og",
+    "title": "Migration Tailwind – Générer/valider slotui-presets.css et slotui-utilities.css",
+    "status": "ready",
+    "order": 65,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680740707-fnnqiyi34",
+    "title": "Migration Tailwind – Vérifier/remplacer tous les @import SCSS par @use",
+    "status": "ready",
+    "order": 66,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768680740707-8uhw62izw",
+    "title": "Migration Tailwind – Vérifier la documentation utilisateur (README, MIGRATION_SCSS_TAILWIND.md, guides)",
+    "status": "ready",
+    "order": 67,
+    "createdBy": "agent"
+  }
+]
