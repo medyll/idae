@@ -21,10 +21,10 @@
 </script>
 
 <input bind:this={hiddenRef} {name} id={name} value={checked} type="hidden" />
-<label bind:this={element} for="_{name}" class="switch {className}" {style}>
+<label bind:this={element} for="_{name}" class="switch {className} inline-block relative rounded-[var(--switch-border-radius)] overflow-hidden cursor-pointer" {style}>
 	<Slotted child={switchLabel} />
 
-	<div class="switchGutter">
+	<div class="switchGutter border border-[var(--switch-gutter-border)] rounded-[var(--switch-border-radius)] p-[var(--switch-gutter-padding)] bg-[var(--switch-gutter-background)]">
 		<input
 			onchange={(event) => {
 				if (hiddenRef) hiddenRef.value = `${event.currentTarget.checked}`;
@@ -35,14 +35,11 @@
 			{disabled}
 			type="checkbox"
 		/>
-		<div class="switchHandle">
+		<div class="switchHandle relative block w-4 h-4 bg-white rounded-[var(--switch-border-radius)] left-0 transition-all">
 			<Slotted child={children} />
 		</div>
 	</div>
 </label>
 ..
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use './switch.scss';
-</style>
+
