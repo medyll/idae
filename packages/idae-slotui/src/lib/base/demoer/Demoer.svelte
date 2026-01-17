@@ -21,7 +21,7 @@
 </script>
 
 {#if title}
-	<div class="pad">{title}</div>
+	<div class="p-2">{title}</div>
 {/if}
 
 {#snippet main({ parameter, values })}
@@ -70,14 +70,14 @@
 	{/each}
 {/snippet}
 
-<div class="flex-v gap-small">
-	<div class="pad-l-8">
-		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
+<div class="flex flex-col gap-2">
+	<div class="pl-8">
+		<h6 class="border-b w-[var(--w-medium)] p-2 flex items-center gap-2">
 			<Icon icon="cib:svelte" /> component
 		</h6>
-		<div class="pad-2">
+		<div class="p-2">
 			{#if Object.entries(multiple).length > 0}
-				<div class="flex-h flex-align-middle flex-wrap gap-medium">
+				<div class="flex flex-wrap items-center gap-4">
 					{#each Object.keys(multiple) as tiple}
 						{#each Object.keys(multiple[tiple]) as params}
 							<div>
@@ -92,9 +92,9 @@
 								/>
 								<svelte:component this={component} {componentArgs} {...multiple[tiple][params]} />
 
-								<div class="pad-2 text-center">{tiple} {params}</div>
+								  <div class="p-2 text-center">{tiple} {params}</div>
 							</div>
-							<div class="border-r pad-tb-4" />
+							  <div class="border-r py-4" />
 						{/each}
 					{/each}
 				</div>
@@ -106,20 +106,20 @@
 				{/key}
 			{/if}
 		</div>
-		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
+		<h6 class="border-b w-[var(--w-medium)] p-2 flex items-center gap-2">
 			<Icon icon="clarity:command-line" />
 			parameters
 		</h6>
-		<div class=" pad flex-h flex-wrap flex-align-middle gap-small">
-			<table style="width:100%;table-layout:auto;border-spacing: 0.5rem">
+		<div class="p-2 flex flex-wrap items-center gap-2">
+			<table class="w-full" style="table-layout:auto;border-spacing: 0.5rem">
 				<tbody>
 					{#each Object.keys(parameters) as parameter}
 						{#if parameters?.[parameter]?.private !== true}
 							<tr>
-								<td class="w-medium-min text-bold">{parameter}</td>
+								<td class="min-w-[var(--w-medium-min)] font-bold">{parameter}</td>
 								<td>{parameters?.[parameter]?.type} </td>
 								<td>
-									<div class="flex flex-align-middle gap-small w-mid-min flex-wrap">
+									<div class="flex items-center gap-2 min-w-[var(--w-mid-min)] flex-wrap">
 										{#if parameters?.[parameter]?.type === 'boolean'}
 											{@render boolean({ parameter, values: [false, true] })}
 										{:else if parameters?.[parameter]?.type === 'color'}

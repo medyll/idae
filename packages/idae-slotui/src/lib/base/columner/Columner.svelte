@@ -1,21 +1,19 @@
 <script lang="ts">
-	import type { ExpandProps } from '$lib/types/index.js';
-	import type { ColumnerStoreType } from './types.js';
-	import { setContext, type Snippet } from 'svelte';
-	import { writable } from 'svelte/store';
+  import type { ExpandProps } from "$lib/types/index.js";
+  import type { ColumnerStoreType } from "./types.js";
+  import { setContext, type Snippet } from "svelte";
+  import { writable } from "svelte/store";
 
-	const columner = writable<ColumnerStoreType>({});
-	setContext('columner', columner);
-	type Props = {
-		children: Snippet;
-	};
-	let { children, ...restProps }: ExpandProps<Props> = $props();
+  const columner = writable<ColumnerStoreType>({});
+  setContext("columner", columner);
+  type Props = {
+    children: Snippet;
+  };
+  let { children, ...restProps }: ExpandProps<Props> = $props();
 </script>
 
 <div class="columner flex h-full relative" {...restProps}>
-	{#if children}
-		{@render children()}
-	{/if}
+  {#if children}
+    {@render children()}
+  {/if}
 </div>
-
-
