@@ -135,7 +135,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * Get a set of data-* attributes for a field, for use in form generation or UI.
 	 * @param fieldName The field name.
 	 * @param data The data object.
-	 * @returns An object with data-* attributes for the field.
+	 * @returns An object with data-* attributes for the field. 
 	 */
 	getInputDataSet(
 		fieldName: string,
@@ -164,7 +164,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * Iterate over an array field and return an array of IDbForge objects for each element.
 	 * @param fieldName The field name.
 	 * @param data The array data.
-	 * @returns An array of IDbForge objects.
+	 * @returns An array of IDbForge objects. 
 	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
 

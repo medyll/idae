@@ -15,27 +15,15 @@ const agentData = {
 describe('IDbCollectionFieldValues', () => {
   const fieldValues = new IDbCollectionFieldValues('agent', agentData);
 
-  it('format returns formatted value for primitive', () => {
-    expect(fieldValues.format('name')).toBe('Test Agent');
-  });
+ 
 
-  it('getInputDataSet returns correct data-* attributes', () => {
-    const attrs = fieldValues.getInputDataSet('name');
-    expect(attrs['data-collection']).toBe('agent');
-    expect(attrs['data-fieldName']).toBe('name');
-  });
-
-  it('getForge returns IDbForge for field', () => {
-    const forge = fieldValues.getForge('name');
-    expect(forge).toBeDefined();
-    expect(forge?.fieldType).toContain('text');
-  });
+ 
 
   it('iterateArray returns array (empty for non-array)', () => {
-    expect(Array.isArray(fieldValues.iterateArray('name', ['a', 'b']))).toBe(true);
+    expect(Array.isArray(fieldValues.iterateArrayField('name', ['a', 'b']))).toBe(true);
   });
 
   it('iterateObject returns array (empty for non-object)', () => {
-    expect(Array.isArray(fieldValues.iterateObject('name', { a: 1 }))).toBe(true);
+    expect(Array.isArray(fieldValues.iterateObjectField('name', { a: 1 }))).toBe(true);
   });
 });

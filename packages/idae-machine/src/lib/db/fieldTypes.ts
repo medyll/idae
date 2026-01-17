@@ -1,8 +1,6 @@
 // src/lib/db/fieldTypes.ts
 
-import type { TplTypes } from "@medyll/idae-idbql";
-
- 
+import type { TplTypes } from "@medyll/idae-idbql"; 
 
 export interface FieldTypeDef {
   id: TplTypes;

@@ -7,8 +7,7 @@ import type {
 } from "@medyll/idae-idbql";
 import { MachineDb, type IDbFieldRules } from "../machineDb.js";
 import { IDbFormValidate } from "$lib/main/machine/IDbFormValidate.js";
-import { IDbCollectionFieldForge } from "$lib/main/machine/IDbCollectionFieldForge.js";
-import { IDbCollectionFieldValues } from "./IDbCollectionFieldValues.js";
+import { IDbCollectionFieldForge } from "$lib/main/machine/IDbCollectionFieldForge.js"; 
 import { IDbCollectionValues } from "./IDbCollectionValues.js";
 
 /**
@@ -107,16 +106,6 @@ export class IDbCollection {
    */
   collectionValues() {
     return new IDbCollectionValues(this.collection, this.#machineDb);
-  }
-
-  collectionFieldValues<T extends Record<string, any>>(
-    data: T,
-  ): IDbCollectionFieldValues<T> {
-    return new IDbCollectionFieldValues<T>(
-      this.collection,
-      data,
-      this.collectionValues(),
-    );
   }
 
   fieldForge<T extends Record<string, any>>(

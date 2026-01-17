@@ -1,4 +1,4 @@
-import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { IDbCollectionValues } from './IDbCollectionValues.js';
 import type { IDbForge } from '../machineForge.js';
 
@@ -25,16 +25,6 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	#collectionValues: IDbCollectionValues<T>;
 	#data: T;
 
-	/**
-	 * Returns the IDbForge metadata for a given field name.
-	 * @param fieldName The field name to introspect.
-	 */
-	public getForge(fieldName: keyof T): IDbForge | undefined {
-		return this.#collectionValues.idbBase.parseCollectionFieldName(
-			this.#collection,
-			String(fieldName)
-		);
-	}
 
 	/**
 	 * Create a new IDbCollectionFieldValues instance.
@@ -48,52 +38,42 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 		this.#data = data;
 	}
 
-	/**
-	 * Format the value of a field, handling arrays and objects.
-	 * @param fieldName The field name.
-	 */
-	format(fieldName: keyof T): string | string[] {
-		const fieldInfo = this.#collectionValues.idbBase.parseCollectionFieldName(
-			this.#collection,
-			fieldName
-		);
-		if (fieldInfo?.is === 'array') {
-			return this.iterateArray(String(fieldName), this.#data);
-		}
-		if (fieldInfo?.is === 'object') {
-			return this.iterateObject(String(fieldName), this.#data);
-		}
-		return this.#collectionValues.format(fieldName, this.#data);
-	}
+ 
+ 
+
+ 
+
+	 
 
 	/**
-	 * Get input attributes for a field.
-	 * @param fieldName The field name.
-	 */
-	getInputDataSet(fieldName: keyof T) {
-		return this.#collectionValues.getInputDataSet(String(fieldName), this.#data);
-	}
-
-	// renamed from parseCollectionFieldName
-	// get forge(): IDbForge | undefined {
-	//     return undefined; // Pas de #fieldName dans cette classe, getter non pertinent
-	// }
-
-	/**
-	 * Iterate over an array field and return field metadata for each item.
+	 * Iterate over an array field and return an array of IDbForge objects for each element.
 	 * @param fieldName The field name.
 	 * @param data The array data.
+	 * @returns An array of IDbForge objects.
+	 * @deprecated use IDbCollectionValues.iterateArrayField instead
 	 */
-	iterateArray(fieldName: string, data: any[]): IDbForge[] {
-		return this.#collectionValues.iterateArrayField(fieldName, data);
+	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
+
+		const fieldInfo = this.#collectionValues.idbBase.parseCollectionFieldName(this.#collection, fieldName);
+		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
+			return [];
+		}
+		return data.map((_, idx) => ({ ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]` }));
 	}
 
 	/**
-	 * Iterate over an object field and return field metadata for each property.
+	 * Iterate over an object field and return an array of IDbForge objects for each property.
 	 * @param fieldName The field name.
 	 * @param data The object data.
+	 * @returns An array of IDbForge objects.
+	 * @deprecated use IDbCollectionValues.iterateObjectField instead
 	 */
-	iterateObject(fieldName: string, data: Record<string, any>): IDbForge[] {
-		return this.#collectionValues.iterateObjectField(fieldName, data);
+	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
+
+		const fieldInfo = this.#collectionValues.idbBase.parseCollectionFieldName(this.#collection, fieldName);
+		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
+			return [];
+		}
+		return Object.keys(data).map((key) => ({ ...fieldInfo, fieldName: `${String(fieldName)}.${key}` }));
 	}
 }
