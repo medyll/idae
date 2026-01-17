@@ -60,11 +60,8 @@
 
 <hr
 	bind:this={element}
-	class="{extensionClass[direction][expansion]} {className} {shadowClass}"
-	class:vertical={direction === 'vertical'}
+	class="{extensionClass[direction][expansion]} {className} {shadowClass} {direction === 'vertical' ? 'w-px border-r border-[var(--divider-border-right)]' : 'border-0 border-t border-[var(--divider-border-top)] bg-[var(--divider-background-color)] block'}"
 	style={addStyle}
 />
 
-<style lang="scss">
-	@use 'divider.scss';
-</style>
+
