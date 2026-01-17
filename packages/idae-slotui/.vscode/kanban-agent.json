@@ -23,14 +23,14 @@
   {
     "id": "task-1768680648855-j9bbd8si2",
     "title": "Migration Tailwind – Installer et configurer les plugins Tailwind",
-    "status": "in_progress",
+    "status": "done",
     "order": 3,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680648855-zy6wuscry",
     "title": "Migration Tailwind – Générer et exposer les variables CSS nécessaires",
-    "status": "ready",
+    "status": "in_progress",
     "order": 4,
     "createdBy": "agent"
   },

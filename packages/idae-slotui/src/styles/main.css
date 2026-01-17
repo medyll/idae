@@ -57,3 +57,19 @@ a {
   border: 1px solid var(--sld-color-background);
   box-shadow: 0 0 1px var(--sld-color-secondary);
 }
+
+/* Import global slotui-css variables for all components */
+@import '../lib/slotui-css/alert.css';
+@import '../lib/slotui-css/avatar.css';
+@import '../lib/slotui-css/badge.css';
+@import '../lib/slotui-css/backdrop.css';
+@import '../lib/slotui-css/box.css';
+@import '../lib/slotui-css/cartouche.css';
+@import '../lib/slotui-css/chipper.css';
+@import '../lib/slotui-css/columner.css';
+@import '../lib/slotui-css/content-switcher.css';
+@import '../lib/slotui-css/divider.css';
+@import '../lib/slotui-css/icon.css';
+@import '../lib/slotui-css/paper.css';
+@import '../lib/slotui-css/title-bar.css';
+/* ...ajouter les autres fichiers slotui-css nécessaires ici... */

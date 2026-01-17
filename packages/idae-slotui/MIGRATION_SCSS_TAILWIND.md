@@ -332,3 +332,26 @@ Après :
 	- Utiliser des snapshots visuels ou des tests Playwright pour garantir l’absence de régressions.
 
 ---
+
+## Convention de commit à respecter entre chaque tâche du kanban
+
+À chaque étape de migration, il faut effectuer un commit Git en utilisant la convention suivante :
+
+```
+<type>(idae-slotui): <message>
+```
+
+- `<type>` : fix, feat, docs, refactor, chore, style, test, etc. (conventional commit)
+- `(idae-slotui)` : toujours entre parenthèses, indique le scope du package
+- `<message>` : message court et explicite sur la tâche réalisée
+
+Exemple :
+```
+feat(idae-slotui): migrate SCSS presets to tailwind.config.js
+```
+
+Toujours faire :
+- `git add .`
+- `git commit -m "<type>(idae-slotui): <message>"`
+
+avant de passer à la tâche suivante du kanban.
