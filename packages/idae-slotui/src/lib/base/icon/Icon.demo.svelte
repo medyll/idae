@@ -3,7 +3,7 @@
 	import { DemoPage, Demoer } from '$lib/index.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Icon.svelte';
 
 	let code = `
 <Icon>

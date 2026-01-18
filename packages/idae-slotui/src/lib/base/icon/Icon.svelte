@@ -65,6 +65,31 @@ export type IconAppProps = {
    */
   display?: "block" | "inline-block" | "inline";
 };
+
+import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+import type { DemoerStoryProps } from "../demoer/types.js";
+
+export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
+  icon: {
+    type: "icon",
+    default: "user",
+  },
+  iconSize: {
+    type: "iconSize",
+  },
+  color: {
+    type: "color",
+  },
+  rotation: {
+    type: "number",
+    values: [0, 45, 90, 180, 270],
+  },
+  rotate: {
+    type: "boolean",
+  },
+};
+
+export let { parameters, componentArgs } = demoerArgs(iconAppDemoValues);
 </script>
 
 <script lang="ts">

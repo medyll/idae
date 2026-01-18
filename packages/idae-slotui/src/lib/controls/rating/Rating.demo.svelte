@@ -4,7 +4,7 @@
 	import Rating from './Rating.svelte';
 	import Demoer from '../../base/demoer/Demoer.svelte';
 	import DemoPage from '../../base/demoer/DemoPage.svelte';
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Rating.svelte';
 
 	const ww = `
 <Rating>

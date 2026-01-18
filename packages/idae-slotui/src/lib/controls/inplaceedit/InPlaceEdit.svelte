@@ -1,9 +1,8 @@
-<script lang="ts">
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import TextField from '../textfield/TextField.svelte';
-	import { be } from '@medyll/idae-be';
+<script module lang="ts">
+	import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+	import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 
-	type InPlaceEditProps = {
+	export type InPlaceEditProps = {
 		value: string;
 		spanElement: HTMLElement;
 		inputElement: HTMLInputElement;
@@ -12,32 +11,63 @@
 		onSave?: (newValue: string) => void;
 	};
 
-	let initialId: string = 'myText';
-	let popperId: string = 'myPopover';
-
-	let {
-		value = '',
-		inputElement,
-		inputValue,
-		editing = $bindable(),
-		onSave = (newValue) => {}
-	}: InPlaceEditProps = $props();
-
-	function saveChanges() {
-		editing = false;
-		onSave(inputValue);
-	}
-
-	function handleKeyDown(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			saveChanges();
-		} else if (event.key === 'Escape') {
-			editing = false;
-			inputValue = value;
+	export const inPlaceEditDemoValues: DemoerStoryProps<InPlaceEditProps> = {
+		value: {
+			type: 'string',
+			values: ['Initial Value', 'Click to Edit'],
+			default: 'Initial Value'
+		},
+		inputValue: {
+			type: 'string',
+			values: [undefined, 'Editing Value'],
+			default: undefined
+		},
+		editing: {
+			type: 'boolean',
+			values: [true, false],
+			default: false
+		},
+		onSave: {
+			type: 'function',
+			private: true,
+			values: [(newValue: string) => console.log('Saved:', newValue)]
 		}
-	}
+	};
 
-	function handleBlur() {
+	export const { parameters, componentArgs } = demoerArgs(inPlaceEditDemoValues);
+</script>
+
+<script lang="ts">
+		import Icon from '$lib/base/icon/Icon.svelte';
+		import TextField from '../textfield/TextField.svelte';
+		import { be } from '@medyll/idae-be';
+
+		let initialId: string = 'myText';
+		let popperId: string = 'myPopover';
+
+		let {
+				value = '',
+				inputElement,
+				inputValue,
+				editing = $bindable(),
+				onSave = (newValue) => {}
+		}: import('./InPlaceEdit.svelte').InPlaceEditProps = $props();
+
+		function saveChanges() {
+				editing = false;
+				onSave(inputValue);
+		}
+
+		function handleKeyDown(event: KeyboardEvent) {
+				if (event.key === 'Enter') {
+						saveChanges();
+				} else if (event.key === 'Escape') {
+						editing = false;
+						inputValue = value;
+				}
+		}
+
+		function handleBlur() {
 		editing = false;
 		saveChanges();
 	}

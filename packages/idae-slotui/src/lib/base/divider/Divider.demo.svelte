@@ -7,7 +7,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	/* demo */
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Divider.svelte';
 
 	let codeSlot = `
 	<Divider />`;

@@ -4,9 +4,8 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import Backdrop from './Backdrop.svelte';
-	import { BackdropDemoValues } from './types.js';
 
-	import { parameters, componentArgs } from './types.js';
+	import { BackdropDemoValues, parameters, componentArgs } from './Backdrop.svelte';
 
 	let codeSlot = `
 	<Backdrop

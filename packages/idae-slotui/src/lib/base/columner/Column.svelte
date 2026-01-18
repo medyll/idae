@@ -1,11 +1,29 @@
+<script module lang="ts">
+  import type { CommonProps } from '$lib/types/index.js';
+  import type { Snippet } from 'svelte';
+
+  export type ColumnProps = CommonProps & {
+	columnId: string;
+	drawerTop?: Snippet;
+	bottomSlot?: Snippet;
+  };
+  export type ColumnerStoreType = Record<string, ColumnType>;
+
+  export interface ColumnType {
+	columnId: string;
+	state: keyof typeof states;
+  }
+
+  const states = ['expanded', 'equal', 'minimal', 'default'];
+</script>
+
 <script lang="ts">
 	import { getContext, tick } from 'svelte';
-	import type { ColumnProps, ColumnerStoreType } from './types.js';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import { onEvent } from '$lib/utils/uses/event.js';
 
-	let columner = getContext<ColumnerStoreType>('columner');
+	let columner = getContext<import('./Column.svelte').ColumnerStoreType>('columner');
 
 	let {
 		class: className = '',
@@ -16,7 +34,7 @@
 		drawerTop,
 		children,
 		...rest
-	}: ColumnProps = $props();
+	}: import('./Column.svelte').ColumnProps = $props();
 
 	if (!$columner[columnId]) {
 		$columner[columnId] = {

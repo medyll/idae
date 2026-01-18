@@ -1,43 +1,92 @@
+<script module lang="ts">
+	import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+	import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+	import type { CommonProps, Data } from '$lib/types/index.js';
+	import type { Snippet } from 'svelte';
+
+	export type AutoCompleteProps<T = Data> = CommonProps & {
+		class?: string;
+		element?: HTMLDivElement;
+		data: T[];
+		showAllOnEmpty?: boolean;
+		searchField?: string | '*';
+		dataFieldName?: keyof T | (keyof T)[];
+		mode?: 'exact' | 'partial';
+		filteredData?: T[];
+		selectedIndex?: number;
+		onchange?: (args: T) => void;
+		autoCompleteEmpty?: Snippet;
+		autoCompleteNoResults?: Snippet;
+	};
+
+	const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
+		data: {
+			type: 'array',
+			values: [
+				[
+					{ name: 'John', age: 25 },
+					{ name: 'Jane', age: 30 }
+				]
+			],
+			default: []
+		},
+		showAllOnEmpty: {
+			type: 'boolean',
+			default: false
+		},
+		searchField: {
+			type: 'string',
+			values: ['name', 'age', '*'],
+			default: '*'
+		},
+		mode: {
+			type: 'string',
+			values: ['exact', 'partial'],
+			default: 'exact'
+		}
+	};
+
+	export let { parameters, componentArgs } = demoerArgs(AutoCompleteDemoValues);
+</script>
+
 <script lang="ts" generics="T">
-	import type { AutoCompleteProps } from './types.js';
+		import TextField from '$lib/controls/textfield/TextField.svelte';
+		import { dataOp } from '$lib/utils/engine/utils.js';
+		import Popper from '$lib/ui/popper/Popper.svelte';
+		import MenuList from '$lib/ui/menuList/MenuList.svelte';
+		import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
+		import Icon from '$lib/base/icon/Icon.svelte';
+		import type { Data, ExpandProps } from '$lib/types/index.js';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	import TextField from '$lib/controls/textfield/TextField.svelte';
-	import { dataOp } from '$lib/utils/engine/utils.js';
-	import Popper from '$lib/ui/popper/Popper.svelte';
-	import MenuList from '$lib/ui/menuList/MenuList.svelte';
-	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { Data, ExpandProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+		let {
+				class: className = '',
+				element = $bindable(),
+				data = $bindable([]),
+				searchField = '*',
+				dataFieldName,
+				mode = 'partial',
+				filteredData = $bindable<T[]>(data),
+				selectedIndex = $bindable(-1),
+				onchange = (args) => {},
+				showAllOnEmpty = true,
+				children,
+				autoCompleteEmpty,
+				autoCompleteNoResults,
+				...rest
+		}: ExpandProps<import('./AutoComplete.svelte').AutoCompleteProps<T>> & Partial<Omit<HTMLInputElement, 'style'>> = $props();
 
-	let {
-		class: className = '',
-		element = $bindable(),
-		data = $bindable([]),
-		searchField = '*',
-		dataFieldName,
-		mode = 'partial',
-		filteredData = $bindable<T[]>(data),
-		selectedIndex = $bindable(-1),
-		onchange = (args) => {},
-		showAllOnEmpty = true,
-		children,
-		autoCompleteEmpty,
-		autoCompleteNoResults,
-		...rest
-	}: ExpandProps<AutoCompleteProps<T>> & Partial<Omit<HTMLInputElement, 'style'>> = $props();
+		let searchString: string | undefined = $state(undefined);
+		let menuHTML: HTMLElement | null = $state(null);
+		let popperHTML: HTMLElement | undefined = $state(undefined);
+		let popperOpen: boolean = $state(false);
 
-	let searchString: string | undefined = $state(undefined);
-	let menuHTML: HTMLElement | null = $state(null);
-	let popperHTML: HTMLElement | undefined = $state(undefined);
-	let popperOpen: boolean = $state(false);
+		let menuRef: MenuList<T>;
 
-	let menuRef: MenuList<T>;
+		let childs = children;
 
-	let childs = children;
-
-	$effect(() => {
-		element?.addEventListener('keypress', ((e: KeyboardEvent) => {
+		$effect(() => {
+				element?.addEventListener('keypress', ((e: KeyboardEvent) => {
 			preNavigate(e);
 		}) as EventListener);
 	});

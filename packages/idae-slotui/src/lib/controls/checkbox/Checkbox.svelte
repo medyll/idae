@@ -1,21 +1,68 @@
-<script lang="ts">
-	import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { CheckboxProps } from './types.js';
+<script module lang="ts">
+	import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+	import { densePreset, type CommonProps, type ElementProps } from '$lib/types/index.js';
 
-	let {
-		title,
-		indeterminate = $bindable(false),
-		class: className = '',
-		inputElement = $bindable(),
-		labelElement,
-		checked = $bindable(false),
-		value = $bindable(undefined),
-		disabled = $bindable(false),
-		dense,
-		children,
-		...rest
-	}: ExpandProps<CheckboxProps> = $props();
+	export type CheckboxProps = CommonProps &
+		Partial<HTMLInputElement> & {
+			/** The label title for the checkbox. */
+			title?: string;
+			/** Checked state of the checkbox. */
+			checked?: boolean;
+			/** Indeterminate state of the checkbox. */
+			indeterminate?: boolean;
+			/** Sets the `value` attribute of the input element for form usage. */
+			value?: any;
+			/** Determines if the checkbox is disabled for user interaction and styles it accordingly. */
+			disabled?: boolean;
+			/** Provides a bound DOM reference to the checkbox's <input /> element. */
+			inputElement?: HTMLInputElement;
+			/** Provides a bound DOM reference to the checkbox's outer container element. */
+			labelElement?: HTMLLabelElement;
+			dense: ElementProps['dense'];
+		};
+
+	export const CheckboxDemoValues: DemoerStoryProps<CheckboxProps> = {
+		title: {
+			type: 'string',
+			values: [undefined, 'Checkbox', 'Check me'],
+			default: 'Checkbox'
+		},
+		checked: {
+			type: 'boolean',
+			default: false
+		},
+		disabled: {
+			type: 'boolean',
+			default: false
+		},
+		indeterminate: {
+			type: 'boolean',
+			default: false
+		},
+		dense: {
+			type: 'dense',
+			default: densePreset.default
+		}
+	};
+</script>
+
+<script lang="ts">
+		import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
+
+		let {
+				title,
+				indeterminate = $bindable(false),
+				class: className = '',
+				inputElement = $bindable(),
+				labelElement,
+				checked = $bindable(false),
+				value = $bindable(undefined),
+				disabled = $bindable(false),
+				dense,
+				children,
+				...rest
+		}: ExpandProps<import('./Checkbox.svelte').CheckboxProps> = $props();
 </script>
 
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>

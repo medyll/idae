@@ -1,9 +1,88 @@
+<script module lang="ts">
+  import {
+    tallPreset,
+    type CommonProps,
+    type ElementProps,
+  } from "$lib/types/index.js";
+  import type { Snippet, SvelteComponent } from "svelte";
+  import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+  import type { DemoerStoryProps } from "../demoer/types.js";
+
+  export type CartoucheClasses = {
+    control: string;
+    controlIcon: string;
+    controlLabel: string;
+    content: string;
+  };
+  export type CartoucheProps = CommonProps & {
+    class?: string;
+    classes?: CartoucheClasses;
+    style?: string;
+    element?: HTMLDivElement;
+    primary: string;
+    secondary?: string;
+    icon?: ElementProps["icon"];
+    stacked?: boolean;
+    component?: SvelteComponent;
+    componentProps?: Record<string, any>;
+    keepCartoucheContent?: boolean;
+    showTitleDivider?: boolean;
+    bordered?: boolean;
+    isOpen?: boolean;
+    actions?: Record<"open" | "toggle" | "close", (event: Event) => void>;
+    dense?: ElementProps["dense"];
+    tall?: ElementProps["tall"];
+    children?: Snippet;
+    cartoucheIcon?: Snippet;
+    cartouchePrimary?: Snippet;
+    cartoucheSecondary?: Snippet;
+    cartoucheButtons?: Snippet;
+  };
+
+  export const cartoucheDemoValues: DemoerStoryProps<CartoucheProps> = {
+    primary: {
+      type: "string",
+      values: ["A smart title", "Second title"],
+    },
+    secondary: {
+      type: "string",
+      values: [undefined, "A smart subtitle", "Second subtitle"],
+      default: undefined,
+    },
+    icon: {
+      type: "icon",
+      values: ["mdi:window", "mdi:user", undefined],
+    },
+    stacked: {
+      type: "boolean",
+      default: false,
+    },
+    showTitleDivider: {
+      type: "boolean",
+      default: false,
+    },
+    bordered: {
+      type: "boolean",
+      default: false,
+    },
+    isOpen: {
+      type: "boolean",
+      default: true,
+    },
+    tall: {
+      type: "tall",
+      default: tallPreset.default,
+    },
+  };
+
+  export let { parameters, componentArgs } = demoerArgs(cartoucheDemoValues);
+</script>
+
 <script lang="ts">
   import { slide } from "svelte/transition";
   import Icon from "$lib/base/icon/Icon.svelte";
   import Button from "$lib/controls/button/Button.svelte";
   import IconButton from "$lib/controls/button/IconButton.svelte";
-  import type { CartoucheClasses, CartoucheProps } from "./types.js";
   import Slotted from "$lib/utils/slotted/Slotted.svelte";
   import type { ExpandProps } from "$lib/types/index.js";
 
@@ -15,7 +94,7 @@
 
   let {
     class: className = "",
-    classes = {} as CartoucheClasses,
+    classes = {} as (import('./Cartouche.svelte').CartoucheClasses),
     style = undefined,
     element = $bindable(),
     primary,
@@ -35,7 +114,7 @@
     isOpen = $bindable(),
     dense,
     tall = "small",
-  }: ExpandProps<CartoucheProps> = $props();
+  }: ExpandProps<import('./Cartouche.svelte').CartoucheProps> = $props();
 
   function open() {
     isOpen = true;

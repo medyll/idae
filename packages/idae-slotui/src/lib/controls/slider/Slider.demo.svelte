@@ -7,7 +7,7 @@
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	/* demo */
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Slider.svelte';
 
 	let codeSlot = `
 <Slider  name={'switcher'} class="w-small" >

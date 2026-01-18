@@ -5,7 +5,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
-	import { componentArgs, parameters } from './types.js';
+	import { componentArgs, parameters } from './TextField.svelte';
 
 	let parametersProps: any = {
 		icon: {

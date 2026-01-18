@@ -4,9 +4,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import ContentSwitcher from './ContentSwitcher.svelte';
-	import { contentSwitcherDemoValues } from './types.js';
-
-	import { parameters, componentArgs } from './types.js';
+	import { contentSwitcherDemoValues, parameters, componentArgs } from './ContentSwitcher.svelte';
 
 	const code = `
 <ContentSwitcher {...activeParams} class="marg-tb-1">

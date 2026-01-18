@@ -1,43 +1,150 @@
+<script module lang="ts">
+	import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+	import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
+	import {
+		buttonVariant,
+		iconSize,
+		tallPreset,
+		type CommonProps,
+		type ElementProps,
+	} from "$lib/types/index.js";
+	import type { Snippet } from "svelte";
+	import type { ButtonProps } from "../button/Button.svelte";
+
+	export type ConfirmProps<T = any> = CommonProps & {
+		/** element data sent on confirm */
+		data?: T;
+		/** element initial HTMLDivElement props */
+		initialRef?: HTMLElement | null;
+		/** element confirm HTMLDivElement props */
+		contentRef?: HTMLElement | null;
+		/**  @deprecated text displayed on initial button */
+		tooltipInitial?: string | null;
+		/** @deprecated text displayed on initial button */
+		primaryInitial?: string;
+		/**  @deprecated text displayed on the confirm phase */
+		primaryConfirm?: string;
+		/**  @deprecated icon displayed on the initial button */
+		iconInitial?: string;
+		/**  @deprecated color of the icon displayed on the initial button */
+		iconColorInitial?: string;
+		/** text displayed on confirm button */
+		primary?: string;
+		/** icon displayed on the confirm button */
+		icon?: ElementProps["icon"];
+		/**  button height */
+		tall?: ElementProps["tall"];
+		/** variant for buttons */
+		variant: ElementProps["buttonVariant"];
+		/** color of the icon displayed on the confirm button
+		 * @type string
+		 */
+		iconColor?: string;
+		iconSize?: string;
+		autoClose?: boolean;
+		/** loading state on validate */
+		loading?: boolean;
+		iconLoading?: ElementProps["icon"];
+		/** action initiated on confirmation */
+		action?: Promise<T> | ((data?: T) => void);
+		/**  @deprecated icon to display for back action */
+		iconCancel?: ElementProps["icon"];
+		buttonInitial?: ButtonProps;
+		buttonConfirm?: ButtonProps;
+		buttonCancel?: ButtonProps;
+		children?: Snippet;
+		confirmInitial?: Snippet;
+	};
+
+	export const ConfirmDemoValues: DemoerStoryProps<ConfirmProps> = {
+		primaryInitial: {
+			type: "string",
+			values: ["Would you please click once ?"],
+			private: true,
+		},
+		tooltipInitial: {
+			type: "string",
+			values: ["Would you please click once ?"],
+			private: true,
+		},
+		iconInitial: {
+			type: "icon",
+			values: ["fa-solid:question"],
+		},
+		iconColorInitial: {
+			type: "color",
+			values: ["green", "blue", undefined],
+		},
+		primary: {
+			type: "icon",
+			values: ["Confirm deletion"],
+		},
+		icon: {
+			type: "icon",
+			values: ["mdi:close", undefined],
+		},
+		iconColor: {
+			type: "color",
+			values: ["red", "orange", undefined],
+		},
+		iconSize: {
+			type: "iconSize",
+			default: iconSize.medium,
+		},
+		tall: {
+			type: "tall",
+			values: Object.values(tallPreset),
+			default: tallPreset.default,
+		},
+		variant: {
+			type: "buttonVariant",
+			values: Object.values(buttonVariant),
+			default: buttonVariant.contained,
+		},
+	};
+
+	export let { parameters, componentArgs } = demoerArgs(ConfirmDemoValues);
+</script>
+
 <script lang="ts" generics="T=any">
-	import { fade } from 'svelte/transition';
-	import Button from '$lib/controls/button/Button.svelte';
-	import { onDestroy } from 'svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ConfirmProps } from './types.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+		import { fade } from 'svelte/transition';
+		import Button from '$lib/controls/button/Button.svelte';
+		import { onDestroy } from 'svelte';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
+		import type { HTMLAttributes } from 'svelte/elements';
 
-	let step: string = $state('initial'); 
+		let step: string = $state('initial'); 
 
-	let {
-		class: className = '',
-		initialRef = null,
-		contentRef = null,
-		tooltipInitial = null,
-		primaryInitial = '',
-		primaryConfirm = '',
-		iconInitial = '',
-		iconColorInitial = 'inherit',
-		primary = 'confirm',
-		icon = 'check-circle-outline',
-		iconColor = 'green',
-		tall,
-		autoClose = true,
-		loading,
-		data,
-		action = () => {},
-		iconCancel = { icon: 'mdi:cancel-bold', color: 'red',iconSize:'large' },
-		variant,
-		buttonInitial,
-		buttonConfirm,
-		buttonCancel,
-		children,
-		confirmInitial,
-		...rest
-	}: ConfirmProps<T> & Partial<Omit<HTMLDivElement, 'style'>> = $props();
+		let {
+				class: className = '',
+				initialRef = null,
+				contentRef = null,
+				tooltipInitial = null,
+				primaryInitial = '',
+				primaryConfirm = '',
+				iconInitial = '',
+				iconColorInitial = 'inherit',
+				primary = 'confirm',
+				icon = 'check-circle-outline',
+				iconColor = 'green',
+				tall,
+				autoClose = true,
+				loading,
+				data,
+				action = () => {},
+				iconCancel = { icon: 'mdi:cancel-bold', color: 'red',iconSize:'large' },
+				variant,
+				buttonInitial,
+				buttonConfirm,
+				buttonCancel,
+				children,
+				confirmInitial,
+				...rest
+		}: import('./Confirm.svelte').ConfirmProps<T> & Partial<Omit<HTMLDivElement, 'style'>> = $props();
 
-	let rost = rest as HTMLAttributes<any>;
+		let rost = rest as HTMLAttributes<any>;
 
-	let loadingState = $state(false);
+		let loadingState = $state(false);
 
 	function handleClickInitial(event: any) {
 		event.preventDefault();

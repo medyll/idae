@@ -5,7 +5,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	import { CheckboxDemoValues } from './types.js';
+	import { CheckboxDemoValues } from './Checkbox.svelte';
 
 	let parameters = CheckboxDemoValues;
 	let componentArgs = defaultsArgs(parameters);

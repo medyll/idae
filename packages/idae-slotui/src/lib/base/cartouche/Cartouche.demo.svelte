@@ -6,7 +6,7 @@
 	import Button from '$lib/controls/button/Button.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 
-	import { parameters, componentArgs } from './types.js';
+import { parameters, componentArgs } from './Cartouche.svelte';
 
 	let code1 = `
 <Cartouche  class="marg-tb-1">

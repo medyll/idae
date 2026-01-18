@@ -1,43 +1,98 @@
 <svelte:options />
 
+<script module lang="ts">
+	import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+	import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+	import { tallPreset, uiPresets, type CommonProps, type ElementProps } from '$lib/types/index.js';
+	import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
+	import type { Snippet } from 'svelte';
+
+	export type TextFieldProps = CommonProps & {
+		/** icon as a parameter */
+		icon?: ElementProps['icon'];
+		/** icon color as a parameter */
+		iconColor?: string;
+		/** end icon as a parameter */
+		endIcon?: string;
+		/** end icon color as a parameter */
+		endIconColor?: string;
+		/** parameters for usePopper */
+		usePopper?: UsePopperProps;
+		/** width of the input using presets */
+		width?: ElementProps['width'];
+		/** height of the input, using preset values */
+		tall?: ElementProps['tall'];
+		/** has no border */
+		borderless?: boolean;
+		/** has no border */
+		transparent?: boolean;
+		/** value of the input */
+		value?: any;
+		inputLast?: Snippet;
+		inputFirst?: Snippet;
+	};
+
+	export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
+		icon: {
+			type: 'icon',
+			values: ['search', undefined]
+		},
+		endIcon: {
+			type: 'icon',
+			values: ['search', undefined]
+		},
+		width: {
+			type: 'width'
+		},
+		tall: {
+			type: 'tall',
+			default: tallPreset.default
+		},
+		transparent: {
+			type: 'boolean'
+		}
+	};
+
+	export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);
+</script>
+
 <script lang="ts">
-	import { popper } from '$lib/ui/popper/usePopper.js';
-	import Button from '$lib/controls/button/Button.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { TextFieldProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ExpandProps } from '$lib/types/index.js';
+		import { popper } from '$lib/ui/popper/usePopper.js';
+		import Button from '$lib/controls/button/Button.svelte';
+		import Icon from '$lib/base/icon/Icon.svelte';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
+		import type { ExpandProps } from '$lib/types/index.js';
 
-	let inputType = 'text';
-	export { inputType as type };
+		let inputType = 'text';
+		export { inputType as type };
 
-	let {
-		class: className = '',
-		element = $bindable(),
-		style,
-		icon,
-		iconColor = '#666',
-		endIcon,
-		endIconColor = '#666',
-		usePopper,
-		width = $bindable(),
-		tall = 'default',
-		borderless = false,
-		transparent = false,
-		value = $bindable(),
-		children,
-		inputFirst,
-		inputLast,
-		...rest
-	}: ExpandProps<TextFieldProps> & Partial<HTMLInputElement> = $props();
+		let {
+				class: className = '',
+				element = $bindable(),
+				style,
+				icon,
+				iconColor = '#666',
+				endIcon,
+				endIconColor = '#666',
+				usePopper,
+				width = $bindable(),
+				tall = 'default',
+				borderless = false,
+				transparent = false,
+				value = $bindable(),
+				children,
+				inputFirst,
+				inputLast,
+				...rest
+		}: ExpandProps<import('./TextField.svelte').TextFieldProps> & Partial<HTMLInputElement> = $props();
 
-	let niceIconStyle = $state('');
+		let niceIconStyle = $state('');
 
-	niceIconStyle += icon || inputFirst ? 'padding-left:2.2rem;' : '';
-	niceIconStyle += endIcon || inputLast ? 'padding-right:2.2rem;' : '';
+		niceIconStyle += icon || inputFirst ? 'padding-left:2.2rem;' : '';
+		niceIconStyle += endIcon || inputLast ? 'padding-right:2.2rem;' : '';
 
-	if (usePopper) {
-		usePopper.disabled = false;
+		if (usePopper) {
+				usePopper.disabled = false;
 		usePopper.parentNode = element;
 	} else {
 		usePopper = { disabled: true };

@@ -1,40 +1,140 @@
+<script module lang="ts">
+	import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+	import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
+	import {
+		buttonVariant,
+		densePreset,
+		uiPresets,
+		widthPreset,
+		type CommonProps,
+		type Data,
+		type ElementProps,
+	} from "$lib/types/index.js";
+	import type { MenuListProps } from "$lib/ui/menuList/types.js";
+	import type { PopperProps } from "$lib/ui/popper/types.js";
+	import type { UsePopperProps } from "$lib/ui/popper/usePopper.js";
+	import type { Snippet } from "svelte";
+	import type { HTMLButtonAttributes } from "svelte/elements";
+
+	export type ButtonProps = {
+		element?: HTMLButtonElement;
+		type?: "button" | "submit" | "reset";
+		icon?: ElementProps["icon"];
+		wrap?: ElementProps["wrap"];
+		nowrap?: boolean;
+		ellipsis?: boolean;
+		iconEnd?: ElementProps["icon"];
+		bgTheme?: string;
+		usePopperProps?: UsePopperProps;
+		popperOpen?: boolean;
+		loading?: boolean;
+		showChip?: boolean;
+		variant?: ElementProps["buttonVariant"];
+		width?: ElementProps["width"];
+		tall?: ElementProps["tall"];
+		selected?: boolean;
+		value?: string;
+		reverse?: boolean;
+		rounded?: boolean | string;
+		ratio?: string;
+		children?: Snippet;
+		buttonPopper?: Snippet;
+		buttonStart?: Snippet;
+		buttonEnd?: Snippet;
+		buttonLoadingIcon?: Snippet;
+	};
+
+	export type ButtonMenuProps<T> = ButtonProps & {
+		menuProps?: MenuListProps<T>;
+		popperProps?: PopperProps;
+		popperElement?: HTMLElement;
+		menuItem?: Snippet<[{ item: T }]>;
+	};
+
+	const ButtonDemoValues: DemoerStoryProps<ButtonProps> = {
+		type: {
+			type: "string",
+			values: ["button", "submit", "reset"],
+			default: "button",
+		},
+		icon: {
+			type: "icon",
+			values: ["add", "user"],
+			default: "add",
+		},
+		width: {
+			type: "width",
+			default: widthPreset.med,
+		},
+		tall: {
+			type: "tall",
+			default: densePreset.default,
+		},
+		bgTheme: {
+			type: "theme",
+			default: "primary",
+		},
+		variant: {
+			type: "buttonVariant",
+			default: buttonVariant.contained,
+		},
+		ellipsis: {
+			type: "boolean",
+			default: false,
+		},
+		selected: {
+			type: "boolean",
+			default: false,
+		},
+		reverse: {
+			type: "boolean",
+			default: false,
+		},
+		loading: {
+			type: "boolean",
+			default: false,
+		},
+	};
+
+	export let { parameters, componentArgs } = demoerArgs(ButtonDemoValues);
+</script>
+
 <script lang="ts">
-	import { popper} from '$lib/ui/popper/usePopper.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { ButtonProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import { tallPreset, widthPreset, type ExpandProps } from '$lib/types/index.js';
+		import { popper} from '$lib/ui/popper/usePopper.js';
+		import Icon from '$lib/base/icon/Icon.svelte';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
+		import { tallPreset, widthPreset, type ExpandProps } from '$lib/types/index.js';
 
-	let {
-		class: className,
-		style,
-		element = $bindable(),
-		type: buttonType = 'button',
-		icon = $bindable(),
-		iconEnd = $bindable(),
-		variant = 'bordered',
-		bgTheme,
-		usePopperProps={disabled:true},
-		loading,
-		showChip,
-		popperOpen,
-		width = widthPreset.auto,
-		tall = tallPreset.small,
-		nowrap,
-		ellipsis=true,
-		selected = false,
-		value,
-		reverse = false,
-		ratio,
-		buttonPopper,
-		buttonStart,
-		buttonEnd,
-		buttonLoadingIcon,
-		children,
-		...rest
-	}: ButtonProps = $props();
+		let {
+				class: className,
+				style,
+				element = $bindable(),
+				type: buttonType = 'button',
+				icon = $bindable(),
+				iconEnd = $bindable(),
+				variant = 'bordered',
+				bgTheme,
+				usePopperProps={disabled:true},
+				loading,
+				showChip,
+				popperOpen,
+				width = widthPreset.auto,
+				tall = tallPreset.small,
+				nowrap,
+				ellipsis=true,
+				selected = false,
+				value,
+				reverse = false,
+				ratio,
+				buttonPopper,
+				buttonStart,
+				buttonEnd,
+				buttonLoadingIcon,
+				children,
+				...rest
+		}: import('./Button.svelte').ButtonProps = $props();
 
-	let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
+		let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
   
 </script>
 

@@ -1,22 +1,68 @@
+<script module lang="ts">
+	import type { CommonProps } from '$lib/types/index.js';
+	import type { uiPresets } from '$lib/utils/engine/presets.js';
+	import type { Component, Snippet } from 'svelte';
+
+	export type DemoerProps<T = Record<string, any>> = {
+		title?: string;
+		parameters: DemoerStoryProps<T>;
+		componentArgs?: T;
+		component?: Component<any>;
+		multiple?: Record<string, any>;
+		children?: Snippet<[{ activeParams: T }]>;
+	};
+
+	export type DemoerArgsType =
+		| 'boolean'
+		| 'flow-preset'
+		| 'string'
+		| 'icon'
+		| 'dense'
+		| 'tall'
+		| string;
+
+	export type DemoerParameters = { type: DemoerArgsType; values?: any[]; default?: any };
+
+	export type DemoPageProps = CommonProps & {
+		title?: string;
+		subTitle?: string;
+		component: string;
+		code?: string;
+		demoerCode?: Snippet;
+		children: Snippet;
+		slots?: {
+			code: Snippet;
+		};
+	};
+
+	export type DemoerStoryProps<T = Record<string, any>> = {
+		[K in keyof T]: {
+			type: keyof typeof uiPresets | T[K] | K | string;
+			values?: T[K][] | any[];
+			default?: T[K];
+			private?: boolean;
+		};
+	};
+</script>
+
 <script lang="ts" generics="T=Record<string, any>">
-	import Button from '$lib/controls/button/Button.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import Switch from '$lib/controls/switch/Switch.svelte';
-	import type { DemoerProps, DemoerStoryProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+		import Button from '$lib/controls/button/Button.svelte';
+		import Icon from '$lib/base/icon/Icon.svelte';
+		import Switch from '$lib/controls/switch/Switch.svelte';
+		import Slotted from '$lib/utils/slotted/Slotted.svelte';
+		import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
+		import IconButton from '$lib/controls/button/IconButton.svelte';
 
-	let {
-		title,
-		parameters = $bindable<DemoerStoryProps<T>>({} as DemoerStoryProps<T>),
-		component = $bindable(),
-		componentArgs = $bindable<T>({} as T),
-		multiple = {},
-		children
-	}: DemoerProps<T> = $props();
+		let {
+				title,
+				parameters = $bindable<import('./Demoer.svelte').DemoerStoryProps<T>>({} as import('./Demoer.svelte').DemoerStoryProps<T>),
+				component = $bindable(),
+				componentArgs = $bindable<T>({} as T),
+				multiple = {},
+				children
+		}: import('./Demoer.svelte').DemoerProps<T> = $props();
 
-	let activeParams: T = $state({ ...componentArgs });
+		let activeParams: T = $state({ ...componentArgs });
 
 </script>
 

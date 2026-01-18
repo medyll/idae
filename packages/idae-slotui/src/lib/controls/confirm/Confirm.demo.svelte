@@ -5,7 +5,7 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Confirm.svelte';
 
 	let codeSlot = `
 <Confirm {...activeParams}>

@@ -1,43 +1,82 @@
-<script lang="ts">
-	/** extends button */
-	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
-	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import type { DividerProps } from './types.js';
-	let {
-		class: className = '',
-		style,
-		element = null,
-		dense: density = 'default',
-		orientation: direction = 'horizontal',
-		expansion = 'full',
-		shadowed: shadow = false,
-		color
-	}: ExpandProps<DividerProps> = $props();
+<script module lang="ts">
+	import { densePreset, uiPresets, type ElementProps } from "$lib/types/index.js";
+	import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+	import type { DemoerStoryProps } from "../demoer/types.js";
 
-	let extensionClass = {
-		horizontal: {
-			full: '',
-			padded: 'marg-ii-12',
-			centered: 'marg-ii-6'
-		},
-		vertical: {
-			full: '',
-			padded: 'marg-ii-12',
-			centered: 'marg-ii-6'
-		}
+	export type DividerProps = {
+		class?: string;
+		style?: CSSStyleDeclaration;
+		element?: HTMLDivElement | null;
+		dense?: ElementProps["dense"];
+		orientation?: ElementProps["orientation"];
+		expansion?: "full" | "padded" | "centered";
+		shadowed?: boolean;
+		color?: string | null;
 	};
-	let addStyle: string = (style as unknown as string) ?? ('' as unknown as string);
 
-	const shadowClass = $derived(shadow ? 'shad-3' : '');
+	export const DividerDemoValues: DemoerStoryProps<DividerProps> = {
+		dense: {
+			type: "dense",
+			default: densePreset.default,
+		},
+		orientation: {
+			type: "direction",
+		},
+		expansion: {
+			type: "string",
+			values: ["full", "padded", "centered"],
+		},
+		shadowed: {
+			type: "boolean",
+		},
+		color: {
+			type: "color",
+		},
+	};
 
-	if (color) addStyle += `--sld-color-border:${color};`;
+	export let { parameters, componentArgs } = demoerArgs(DividerDemoValues);
+</script>
 
-	// set height od divider when direction === vertical in a flex env
-	if (
-		direction === 'vertical' &&
-		(element?.nextElementSibling ?? element?.previousElementSibling)
-	) {
-		let maxHeight = (
+<script lang="ts">
+		/** extends button */
+		import type { ElementProps, ExpandProps } from '$lib/types/index.js';
+		import { uiPresets } from '$lib/utils/engine/presets.js';
+
+		let {
+				class: className = '',
+				style,
+				element = null,
+				dense: density = 'default',
+				orientation: direction = 'horizontal',
+				expansion = 'full',
+				shadowed: shadow = false,
+				color
+		}: ExpandProps<import('./Divider.svelte').DividerProps> = $props();
+
+		let extensionClass = {
+				horizontal: {
+						full: '',
+						padded: 'marg-ii-12',
+						centered: 'marg-ii-6'
+				},
+				vertical: {
+						full: '',
+						padded: 'marg-ii-12',
+						centered: 'marg-ii-6'
+				}
+		};
+		let addStyle: string = (style as unknown as string) ?? ('' as unknown as string);
+
+		const shadowClass = $derived(shadow ? 'shad-3' : '');
+
+		if (color) addStyle += `--sld-color-border:${color};`;
+
+		// set height od divider when direction === vertical in a flex env
+		if (
+				direction === 'vertical' &&
+				(element?.nextElementSibling ?? element?.previousElementSibling)
+		) {
+				let maxHeight = (
 			element?.previousElementSibling ?? element?.nextElementSibling
 		)?.getBoundingClientRect()?.height;
 

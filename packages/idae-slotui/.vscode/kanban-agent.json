@@ -1,478 +1,184 @@
 [
   {
-    "id": "task-1768680648855-5c509ff7r",
-    "title": "Migration Tailwind – Configurer Tailwind dans le projet",
+    "id": "task-1768694974459-rzmv3q0hc",
+    "title": "Migrer types.ts dans Alert (base/alert)",
     "status": "done",
     "order": 1,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768681018339-jcrtpu7y1",
-    "title": "effecture la tache 1",
-    "status": "done",
-    "order": 1,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680648855-1frt39rc7",
-    "title": "Migration Tailwind – Reporter les presets SCSS dans theme.extend",
+    "id": "task-1768694974459-x4nl48smv",
+    "title": "Migrer types.ts dans Avatar (base/avatar)",
     "status": "done",
     "order": 2,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680648855-j9bbd8si2",
-    "title": "Migration Tailwind – Installer et configurer les plugins Tailwind",
+    "id": "task-1768694974459-1pycbwtws",
+    "title": "Migrer types.ts dans Backdrop (base/backdrop)",
     "status": "done",
     "order": 3,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680648855-zy6wuscry",
-    "title": "Migration Tailwind – Générer et exposer les variables CSS nécessaires",
+    "id": "task-1768694974459-g986otuvk",
+    "title": "Migrer types.ts dans Badge (base/badge)",
     "status": "done",
     "order": 4,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680648855-gxyc75jpk",
-    "title": "Migration Tailwind – Adapter les breakpoints Tailwind",
+    "id": "task-1768694974459-f04sce28d",
+    "title": "Migrer types.ts dans Box (base/box)",
     "status": "done",
     "order": 5,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680648855-rm4xesi0t",
-    "title": "Migration Tailwind – Documenter la stratégie hybride et la procédure",
+    "id": "task-1768694974459-qn4ai093w",
+    "title": "Migrer types.ts dans BreadCrumb (base/breadCrumb)",
     "status": "done",
     "order": 6,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-z8dsv3n8m",
-    "title": "Migration Tailwind – base/alert",
+    "id": "task-1768694974459-wshg73k3h",
+    "title": "Migrer types.ts dans Cartouche (base/cartouche)",
     "status": "done",
     "order": 7,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-owfm4rsw5",
-    "title": "Migration Tailwind – base/avatar",
+    "id": "task-1768694974459-02kxu8m6g",
+    "title": "Migrer types.ts dans Chipper (base/chipper)",
     "status": "done",
     "order": 8,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-vitp51fcs",
-    "title": "Migration Tailwind – base/backdrop",
+    "id": "task-1768694974459-rk4tnvwyz",
+    "title": "Migrer types.ts dans Columner (base/columner)",
     "status": "done",
     "order": 9,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-o8ok807qt",
-    "title": "Migration Tailwind – base/badge",
+    "id": "task-1768694974459-i3ubvazpj",
+    "title": "Migrer types.ts dans ContentSwitcher (base/contentSwitcher)",
     "status": "done",
     "order": 10,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-fj13dkxgs",
-    "title": "Migration Tailwind – base/box",
+    "id": "task-1768694974459-7hrv11a35",
+    "title": "Migrer types.ts dans Demoer (base/demoer)",
     "status": "done",
     "order": 11,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-jwsbt5opz",
-    "title": "Migration Tailwind – base/breadCrumb",
+    "id": "task-1768694974459-ubhljbr55",
+    "title": "Migrer types.ts dans Divider (base/divider)",
     "status": "done",
     "order": 12,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-5q0bvz7p6",
-    "title": "Migration Tailwind – base/cartouche",
+    "id": "task-1768694974459-zxqdpir3k",
+    "title": "Migrer types.ts dans Icon (base/icon)",
     "status": "done",
     "order": 13,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-0ytk868k9",
-    "title": "Migration Tailwind – base/chipper",
+    "id": "task-1768694974459-5cd2e5o2u",
+    "title": "Migrer types.ts dans TitleBar (base/titleBar)",
     "status": "done",
     "order": 14,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-o2d1agamd",
-    "title": "Migration Tailwind – base/columner",
+    "id": "task-1768694974459-zdghvk3rm",
+    "title": "Migrer types.ts dans Autocomplete (controls/autocomplete)",
     "status": "done",
     "order": 15,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-xycc06v9i",
-    "title": "Migration Tailwind – base/contentSwitcher",
+    "id": "task-1768694974459-m0d39th4e",
+    "title": "Migrer types.ts dans Button (controls/button)",
     "status": "done",
     "order": 16,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-a5hlnr99c",
-    "title": "Migration Tailwind – base/debug",
+    "id": "task-1768694974459-mh433js9g",
+    "title": "Migrer types.ts dans Checkbox (controls/checkbox)",
     "status": "done",
     "order": 17,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-7o9xyb96a",
-    "title": "Migration Tailwind – base/demoer",
+    "id": "task-1768694974459-dwj3ps0ex",
+    "title": "Migrer types.ts dans Confirm (controls/confirm)",
     "status": "done",
     "order": 18,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-31pynzezo",
-    "title": "Migration Tailwind – base/divider",
+    "id": "task-1768694974459-f28j4c38m",
+    "title": "Migrer types.ts dans Inplaceedit (controls/inplaceedit)",
     "status": "done",
     "order": 19,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-bm9r351p2",
-    "title": "Migration Tailwind – base/icon",
+    "id": "task-1768694974459-mt6vairij",
+    "title": "Migrer types.ts dans Progress (controls/progress)",
     "status": "done",
     "order": 20,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-uyu8iigtm",
-    "title": "Migration Tailwind – base/paper",
+    "id": "task-1768694974459-2nfauv4ad",
+    "title": "Migrer types.ts dans Rating (controls/rating)",
     "status": "done",
     "order": 21,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-u1bpob3ol",
-    "title": "Migration Tailwind – base/titleBar",
-    "status": "done",
+    "id": "task-1768694974459-4kk3nhm7b",
+    "title": "Migrer types.ts dans Select (controls/select)",
+    "status": "ready",
     "order": 22,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-06ords288",
-    "title": "Migration Tailwind – controls/autocomplete",
+    "id": "task-1768694974459-3hl9euqwh",
+    "title": "Migrer types.ts dans Slider (controls/slider)",
     "status": "done",
     "order": 23,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-bxm7a6tp5",
-    "title": "Migration Tailwind – controls/button",
+    "id": "task-1768694974459-lytqi1ppx",
+    "title": "Migrer types.ts dans Stepper (controls/stepper)",
     "status": "done",
     "order": 24,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-jpjb4auul",
-    "title": "Migration Tailwind – controls/checkbox",
+    "id": "task-1768694974459-ltlzkoi2a",
+    "title": "Migrer types.ts dans Switch (controls/switch)",
     "status": "done",
     "order": 25,
     "createdBy": "agent"
   },
   {
-    "id": "task-1768680672811-ygr6vsk7s",
-    "title": "Migration Tailwind – controls/confirm",
+    "id": "task-1768694974459-elmpeku0z",
+    "title": "Migrer types.ts dans Textfield (controls/textfield)",
     "status": "done",
     "order": 26,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ckpws119b",
-    "title": "Migration Tailwind – controls/inplaceedit",
-    "status": "done",
-    "order": 27,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-3h9vnpb4h",
-    "title": "Migration Tailwind – controls/progress",
-    "status": "done",
-    "order": 28,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ih6mgxq7v",
-    "title": "Migration Tailwind – controls/rating",
-    "status": "done",
-    "order": 29,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-zxvckdm6r",
-    "title": "Migration Tailwind – controls/select",
-    "status": "done",
-    "order": 30,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-6333iglxr",
-    "title": "Migration Tailwind – controls/slider",
-    "status": "done",
-    "order": 31,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-yltcvcv0l",
-    "title": "Migration Tailwind – controls/stepper",
-    "status": "done",
-    "order": 32,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-kj4eutujy",
-    "title": "Migration Tailwind – controls/switch",
-    "status": "done",
-    "order": 33,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-7u8otmfdx",
-    "title": "Migration Tailwind – controls/textfield",
-    "status": "done",
-    "order": 34,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-d60na5leg",
-    "title": "Migration Tailwind – data/dataList",
-    "status": "done",
-    "order": 35,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-p1jve5ons",
-    "title": "Migration Tailwind – data/finder",
-    "status": "done",
-    "order": 36,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ua05c1hc6",
-    "title": "Migration Tailwind – data/grouper",
-    "status": "done",
-    "order": 37,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ht4grrckb",
-    "title": "Migration Tailwind – data/jsoner",
-    "status": "done",
-    "order": 38,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-xfd48tw8b",
-    "title": "Migration Tailwind – data/list",
-    "status": "done",
-    "order": 39,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-iy47wiues",
-    "title": "Migration Tailwind – data/loader",
-    "status": "done",
-    "order": 40,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-mbxf2effq",
-    "title": "Migration Tailwind – data/sorter",
-    "status": "done",
-    "order": 41,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ej1183xmf",
-    "title": "Migration Tailwind – navigation/drawer",
-    "status": "done",
-    "order": 42,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-fwp2flk5b",
-    "title": "Migration Tailwind – navigation/tabs",
-    "status": "done",
-    "order": 43,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-1ynbhm62n",
-    "title": "Migration Tailwind – ui/bootstrapp",
-    "status": "done",
-    "order": 44,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-9qu79y0sr",
-    "title": "Migration Tailwind – ui/chromeFrame",
-    "status": "done",
-    "order": 45,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-mdi7zzmur",
-    "title": "Migration Tailwind – ui/frame",
-    "status": "done",
-    "order": 46,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-jfzdg3bfm",
-    "title": "Migration Tailwind – ui/login",
-    "status": "done",
-    "order": 47,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-fegyzbgsy",
-    "title": "Migration Tailwind – ui/marquee",
-    "status": "done",
-    "order": 48,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-j6y7gvlcu",
-    "title": "Migration Tailwind – ui/menu",
-    "status": "done",
-    "order": 49,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-prwlt6qt6",
-    "title": "Migration Tailwind – ui/menuList",
-    "status": "done",
-    "order": 50,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-9y02soqeh",
-    "title": "Migration Tailwind – ui/panel",
-    "status": "done",
-    "order": 51,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-m2p2451da",
-    "title": "Migration Tailwind – ui/popper",
-    "status": "done",
-    "order": 52,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-85uwpsrph",
-    "title": "Migration Tailwind – ui/preview",
-    "status": "done",
-    "order": 53,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-owbismlr1",
-    "title": "Migration Tailwind – ui/serviceBox",
-    "status": "done",
-    "order": 54,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-klkjsmdxc",
-    "title": "Migration Tailwind – ui/startMenu",
-    "status": "done",
-    "order": 55,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-993i6asou",
-    "title": "Migration Tailwind – ui/taskbar",
-    "status": "done",
-    "order": 56,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-udm56dwct",
-    "title": "Migration Tailwind – ui/themeswitcher",
-    "status": "done",
-    "order": 57,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-l2gr2vebq",
-    "title": "Migration Tailwind – ui/toast",
-    "status": "done",
-    "order": 58,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-k2xnvxsjw",
-    "title": "Migration Tailwind – ui/toggleBar",
-    "status": "done",
-    "order": 59,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-3d9nvdkn1",
-    "title": "Migration Tailwind – ui/toolBar",
-    "status": "done",
-    "order": 60,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-ur4gyu2mw",
-    "title": "Migration Tailwind – ui/tree",
-    "status": "done",
-    "order": 61,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-gkbq7kthz",
-    "title": "Migration Tailwind – ui/window",
-    "status": "done",
-    "order": 62,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-56yn73l4n",
-    "title": "Migration Tailwind – Nettoyer les imports SCSS et supprimer les fichiers obsolètes",
-    "status": "done",
-    "order": 63,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680672811-624gxm5zi",
-    "title": "Migration Tailwind – Vérifier la cohérence visuelle et fonctionnelle",
-    "status": "done",
-    "order": 64,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680740707-d9ivdm5og",
-    "title": "Migration Tailwind – Générer/valider slotui-presets.css et slotui-utilities.css",
-    "status": "done",
-    "order": 65,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680740707-fnnqiyi34",
-    "title": "Migration Tailwind – Vérifier/remplacer tous les @import SCSS par @use",
-    "status": "done",
-    "order": 66,
-    "createdBy": "agent"
-  },
-  {
-    "id": "task-1768680740707-8uhw62izw",
-    "title": "Migration Tailwind – Vérifier la documentation utilisateur (README, MIGRATION_SCSS_TAILWIND.md, guides)",
-    "status": "done",
-    "order": 67,
     "createdBy": "agent"
   }
 ]

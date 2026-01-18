@@ -5,7 +5,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
-	import { ProgressDemoValues } from './types.js';
+	import { ProgressDemoValues } from './Progress.svelte';
 
 	const code = `<Progress value="50" />`;
 

@@ -1,8 +1,63 @@
+<script module lang="ts">
+  import type { CommonProps } from "$lib/types/index.js";
+  import type { Snippet } from "svelte";
+  import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+  import type { DemoerStoryProps } from "../demoer/types.js";
+
+  export interface BoxProps extends CommonProps {
+    element?: HTMLDivElement;
+    style?: string;
+    isOpen: boolean;
+    showCloseControl: boolean;
+    hasMenu: boolean;
+    title: string;
+    icon: string;
+    content: string;
+    bottomZone?: string;
+    children?: Snippet;
+    boxBottomZone?: Snippet;
+    titleBarTitle?: Snippet;
+    titleBarIcon?: Snippet;
+  }
+
+  export const BoxDemoValues: DemoerStoryProps<BoxProps> = {
+    isOpen: {
+      type: "boolean",
+      default: true,
+    },
+    showCloseControl: {
+      type: "boolean",
+      default: true,
+    },
+    hasMenu: {
+      type: "boolean",
+      default: true,
+    },
+    title: {
+      type: "string",
+      values: ["A smart title on a smart box", "second title"],
+    },
+    icon: {
+      type: "icon",
+      values: ["mdi:window", "mdi:user", undefined],
+    },
+    content: {
+      type: "string",
+      values: ["Some content as text / html", "second content"],
+    },
+    bottomZone: {
+      type: "string",
+      values: ["bottomZone as text / html", "second bottomZone"],
+    },
+  };
+
+  export let { parameters, componentArgs } = demoerArgs(BoxDemoValues);
+</script>
+
 <script lang="ts">
   import TitleBar from "$lib/base/titleBar/TitleBar.svelte";
   import Icon from "$lib/base/icon/Icon.svelte";
   import Slotted from "$lib/utils/slotted/Slotted.svelte";
-  import type { BoxProps } from "./types.js";
   import type { ExpandProps } from "$lib/types/index.js";
   import Content from "$lib/utils/content/Content.svelte";
 
@@ -29,7 +84,7 @@
     titleBarIcon,
     boxBottomZone,
     ...rest
-  }: ExpandProps<BoxProps> = $props();
+  }: ExpandProps<import('./Box.svelte').BoxProps> = $props();
 
   function open() {
     isOpen = true;

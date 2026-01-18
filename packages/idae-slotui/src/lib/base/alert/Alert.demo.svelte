@@ -4,7 +4,7 @@
 	import Alert from './Alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Alert.svelte';
 
 	let code1 = `
 <Alert {...activeParams}>

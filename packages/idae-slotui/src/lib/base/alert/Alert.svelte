@@ -1,6 +1,13 @@
+
 <script module lang="ts">
+  import {
+    statusPreset,
+    type CommonProps,
+    type ElementProps,
+  } from "$lib/types/index.js";
   import type { Snippet } from "svelte";
-  import type { ElementProps, CommonProps } from "$lib/types/index.js";
+  import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+  import type { DemoerStoryProps } from "../demoer/types.js";
 
   export interface AlertProps extends CommonProps {
     /** alert level */
@@ -17,6 +24,30 @@
     alertButtonZone?: Snippet;
     alertButtonClose?: Snippet;
   }
+
+  export const alertDemoValues: DemoerStoryProps<any> = {
+    isOpen: {
+      type: "boolean",
+      values: [true, false],
+      default: true,
+    },
+    draggable: {
+      type: "boolean",
+      values: [true, false],
+      default: false,
+    },
+    level: {
+      type: "levels",
+      values: Object.keys(statusPreset),
+      default: statusPreset.info,
+    },
+    message: {
+      type: "string",
+      values: ["Some messages"],
+    },
+  };
+
+  export let { parameters, componentArgs } = demoerArgs(alertDemoValues);
 </script>
 
 <script lang="ts">

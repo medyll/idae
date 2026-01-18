@@ -3,7 +3,7 @@
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './InPlaceEdit.svelte';
 
 	let code1 = `
 <InPlaceEdit 

@@ -1,8 +1,57 @@
+<script module lang="ts">
+  import type { CommonProps, ElementProps } from "$lib/types/index.js";
+  import type { Snippet } from "svelte";
+  import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
+  import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+
+  export interface BackdropProps<T = any, C = any> extends CommonProps {
+    class?: string;
+    style?: string;
+    flow?: ElementProps["flow"];
+    autoClose?: boolean;
+    isOpen?: boolean;
+    isLoading?: boolean;
+    element?: HTMLDivElement;
+    elementContent?: HTMLDivElement;
+    elementContentInner?: HTMLDivElement;
+    component?: C;
+    componentProps?: Record<string, any>;
+    classes?: {
+      backdrop?: string;
+      backdropContent?: string;
+      backdropContentInner?: string;
+    };
+    onclick?: (event: MouseEvent) => void;
+    children?: Snippet;
+    backdropLoading?: Snippet;
+  }
+
+  export const BackdropDemoValues: DemoerStoryProps<BackdropProps> = {
+    isOpen: {
+      type: "boolean",
+      default: true,
+    },
+    autoClose: {
+      type: "boolean",
+      default: true,
+    },
+    isLoading: {
+      type: "boolean",
+      default: false,
+    },
+    flow: {
+      type: "flow",
+      default: "fixed",
+    },
+  };
+
+  export let { parameters, componentArgs } = demoerArgs(BackdropDemoValues);
+</script>
+
 <script lang="ts">
   import { fade } from "svelte/transition";
   import Icon from "$lib/base/icon/Icon.svelte";
-  import type { CommonProps, ExpandProps } from "$lib/types/index.js";
-  import type { BackdropProps } from "./types.js";
+  import type { ExpandProps } from "$lib/types/index.js";
   import Slotted from "$lib/utils/slotted/Slotted.svelte";
 
   /** Backdrop controller */
@@ -31,7 +80,7 @@
     classes = {},
     children,
     backdropLoading,
-  }: BackdropProps = $props();
+  }: import('./Backdrop.svelte').BackdropProps = $props();
 
   $effect(() => {
     element?.addEventListener("click", testAutoClose);

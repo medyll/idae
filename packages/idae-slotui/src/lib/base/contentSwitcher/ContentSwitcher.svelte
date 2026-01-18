@@ -1,8 +1,38 @@
+<script module lang="ts">
+  import type { CommonProps, IconObj } from "$lib/types/index.js";
+  import type { Snippet } from "svelte";
+  import type { DemoerStoryProps } from "../demoer/types.js";
+  import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
+
+  export type ContentSwitcherProps = CommonProps & {
+    class?: string;
+    element?: HTMLDivElement;
+    icon?: string | IconObj;
+    iconback?: string | IconObj;
+    parent?: HTMLElement;
+    contentSwitcherTogglerIcon?: Snippet;
+    contentSwitcherBackIcon?: Snippet;
+    contentSwitcherReveal?: Snippet;
+  };
+
+  export const contentSwitcherDemoValues: DemoerStoryProps<ContentSwitcherProps> = {
+    icon: {
+      type: "icon",
+      values: ["mdi:window", "mdi:user", undefined],
+    },
+    iconback: {
+      type: "icon",
+      values: ["mdi:window", "mdi:user", undefined],
+    },
+  };
+
+  export let { parameters, componentArgs } = demoerArgs(contentSwitcherDemoValues);
+</script>
+
 <script lang="ts">
   import IconButton from "$lib/controls/button/IconButton.svelte";
   import Button from "$lib/controls/button/Button.svelte";
   import Slotted from "$lib/utils/slotted/Slotted.svelte";
-  import type { ContentSwitcherProps } from "./types.js";
   import type { ExpandProps } from "$lib/types/index.js";
 
   let {
@@ -15,7 +45,7 @@
     contentSwitcherTogglerIcon: togglerIcon,
     contentSwitcherBackIcon: backIcon,
     contentSwitcherReveal,
-  }: ExpandProps<ContentSwitcherProps> = $props();
+  }: ExpandProps<import('./ContentSwitcher.svelte').ContentSwitcherProps> = $props();
 
   let visibleSate: boolean = $state(false);
   let thisRef: any;

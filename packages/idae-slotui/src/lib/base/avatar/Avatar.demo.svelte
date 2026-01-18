@@ -5,7 +5,7 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Avatar from './Avatar.svelte';
 
-	import { parameters, componentArgs } from './types.js';
+import { parameters, componentArgs } from './Avatar.svelte';
 
 	let code1 = `
 <Avatar>
