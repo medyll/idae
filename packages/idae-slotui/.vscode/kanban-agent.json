@@ -14,6 +14,13 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768700705875-oy43tjkoj",
+    "title": "Installer Playwright et dépendances",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696839471-v6pyabzom",
     "title": "Add JSDoc to Icon.svelte and document its purpose",
     "status": "done",
@@ -23,6 +30,13 @@
   {
     "id": "task-1768699499146-ffozldjjk",
     "title": "Corriger la documentation dans tous les composants de src/lib/base/",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768700705875-mn0gwp1ye",
+    "title": "Créer la configuration Playwright",
     "status": "done",
     "order": 2,
     "createdBy": "agent"
@@ -42,6 +56,13 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768700705875-xzzdwm2lh",
+    "title": "Ajouter scripts npm pour tests Playwright",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696839471-seazlycvq",
     "title": "Add JSDoc to Paper.svelte and document its purpose",
     "status": "done",
@@ -51,6 +72,13 @@
   {
     "id": "task-1768699499146-ii0y9zl1s",
     "title": "Corriger la documentation dans tous les composants de src/lib/data/",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768700705875-ffi0myzrb",
+    "title": "Créer dossier tests d’intégration",
     "status": "done",
     "order": 4,
     "createdBy": "agent"
@@ -70,6 +98,13 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768700705875-619n4nha3",
+    "title": "Écrire un test Playwright d’exemple",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696933009-vxcyxfz6e",
     "title": "Add JSDoc to Alert.svelte",
     "status": "done",
@@ -84,6 +119,13 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768700705875-msxtrpzqn",
+    "title": "Intégrer Playwright au workflow CI (optionnel)",
+    "status": "ready",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696933009-sdks7jm4d",
     "title": "Add JSDoc to Avatar.svelte",
     "status": "done",
@@ -94,6 +136,13 @@
     "id": "task-1768699499146-o4nbporch",
     "title": "Corriger la documentation dans tous les composants de src/lib/utils/ (si applicable)",
     "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768700705875-ydrze3mml",
+    "title": "Documenter l’utilisation de Playwright dans le README",
+    "status": "ready",
     "order": 7,
     "createdBy": "agent"
   },

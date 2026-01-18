@@ -24,6 +24,9 @@
     "release-css": "node scripts/release-css.js",
     "package:pre": "node scripts/package-pre.js"
   },
+	"test:integration:headed": "playwright test --headed",
+	"test:integration:ui": "playwright test --ui",
+	"test:integration:debug": "playwright test --debug",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
