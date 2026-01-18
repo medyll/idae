@@ -1,7 +1,22 @@
 <script lang="ts">
 	import type { JsonerProps } from './types.js';
 
-	let { class: className = '', element, data = [], mode = 'array' }: JsonerProps = $props();
+	/**
+	 * @property {string} className - className off the root component
+	 * @property {HTMLDivElement | null} element - element root HTMLDivElement props
+	 * @property {Array} data - The data to be displayed
+	 * @property {'array' | 'object' | 'string' | 'number'} mode - The mode of the data
+	 */
+	let {
+		/** className off the root component */
+		class: className = '',
+		/** element root HTMLDivElement props */
+		element,
+		/** The data to be displayed */
+		data = [],
+		/** The mode of the data */
+		mode = 'array'
+	}: JsonerProps = $props();
 
 	if (Array.isArray(data)) {
 		mode = 'array';

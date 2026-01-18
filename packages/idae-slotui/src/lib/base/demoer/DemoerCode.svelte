@@ -26,6 +26,13 @@
 		demoerCode?: Snippet;
 	};
 
+	/**
+	 * @property {string} title - titre du bloc
+	 * @property {string} code - code source à afficher
+	 * @property {string} subTitle - sous-titre
+	 * @property {string} component - nom du composant
+	 * @property {Snippet} demoerCode - slot pour rendu personnalisé
+	 */
 	let { title = undefined, code = '', subTitle, component, demoerCode }: DemoerCodeProps = $props();
 
 	/* Prism.plugins.NormalizeWhitespace.setDefaults({

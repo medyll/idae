@@ -10,15 +10,36 @@
 		default: ['dots-horizontal', 'sort-bool-ascending', 'sort-bool-descending']
 	};
 
+	/**
+	 * @property {Array} data - The data to sort
+	 * @property {Array} sortedData - binding : final sorted data as raw object
+	 * @property {string} sortByField - The field to sort by
+	 * @property {string} sortByTitleField - The title of the field to sort by
+	 * @property {'asc' | 'desc' | 'none' | string} sortByOrder - The order to sort by
+	 * @property {string} activeCommonSortField - Active sort field
+	 * @property {string} sorterMode - Mode du tri (button, ...)
+	 * @property {Snippet} children - Slot for children
+	 * @property {Array} sortListItems - List of available sorts
+	 * @property {object} rest - All additional props spread
+	 */
 	let {
+		/** The data to sort */
 		data = [],
+		/** binding : final sorted data as raw object */
 		sortedData = $bindable(data),
+		/** The field to sort by */
 		sortByField,
+		/** The title of the field to sort by */
 		sortByTitleField,
+		/** The order to sort by */
 		sortByOrder = 'none',
+		/** Active sort field */
 		activeCommonSortField = $bindable(''),
+		/** Mode du tri (button, ...) */
 		sorterMode = 'button',
+		/** Slot for children */
 		children,
+		/** List of available sorts */
 		sortListItems,
 		...rest
 	}: ExpandProps<SorterProps> = $props();

@@ -3,6 +3,9 @@
 	import MenuList from '../menuList/MenuList.svelte';
 	import type { MenuListProps } from '../menuList/types.js';
 
+	/**
+	 * @property {object} rest - All MenuListProps spread
+	 */
 	let { ...rest }: MenuListProps = $props();
 </script>
 

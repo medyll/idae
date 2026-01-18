@@ -35,8 +35,17 @@
   const columner = writable<import('./Columner.svelte').ColumnerStoreType>({});
   setContext("columner", columner);
   type Props = {
-    children: Snippet;
+    /**
+     * Slot for column content
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    children: import('svelte').Snippet<[]>;
   };
+  /**
+   * @property {Snippet<[]>} children - Slot for column content
+   * @property {object} restProps - All additional props spread
+   */
   let { children, ...restProps }: ExpandProps<Props> = $props();
 </script>
 

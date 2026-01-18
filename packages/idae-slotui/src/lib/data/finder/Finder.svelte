@@ -9,19 +9,47 @@
 	import { widthPreset, type ExpandProps } from '$lib/types/index.js';
 	import { onEvent } from '$lib/utils/uses/event.js';
 
+	/**
+	 * @property {string} className - className off the root component
+	 * @property {string} styleRoot - css style off the root component
+	 * @property {string} classRoot - className for the root wrapper
+	 * @property {string} style - css style for the root
+	 * @property {HTMLDivElement | null} element - element root HTMLDivElement props
+	 * @property {Array} data - initial data to look in
+	 * @property {string} defaultField - default field to be used, can be *
+	 * @property {boolean} showSortMenu - show the opener button for the choice of fields
+	 * @property {'exact' | 'partial'} mode - search mode : exact or partial match
+	 * @property {Array} filteredData - external bind use, to read filtered data
+	 * @property {string} sizeRoot - width of the root element using presets
+	 * @property {string} width - width of the input using presets
+	 * @property {string} tall - height of the input using presets
+	 */
 	let {
+		/** className off the root component */
 		class: className = '',
+		/** css style off the root component */
 		styleRoot = '',
+		/** className for the root wrapper */
 		classRoot = '',
+		/** css style for the root */
 		style = '',
+		/** element root HTMLDivElement props */
 		element,
+		/** initial data to look in */
 		data = [],
+		/** default field to be used, can be * */
 		defaultField = '*',
+		/** show the opener button for the choice of fields */
 		showSortMenu = false,
+		/** search mode : exact or partial match*/
 		mode = 'partial',
+		/** external bind use, to read filtered data */
 		filteredData = $bindable(filit()),
+		/** width of the root element using presets */
 		sizeRoot = widthPreset.auto,
+		/** width of the input using presets */
 		width = 'full',
+		/** height of the input using presets */
 		tall = 'default',
 		...restProps
 	}: ExpandProps<FinderProps> = $props();

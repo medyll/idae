@@ -9,6 +9,10 @@
 		showCommands: boolean;
 	};
 
+	/**
+	 * @property {string} frameId - Identifiant du frame
+	 * @property {boolean} showCommands - Affiche la barre de commandes
+	 */
 	let { frameId, showCommands }: ChromeFrameProps = $props();
 
 	const frameStore = getChromeFrame(frameId);

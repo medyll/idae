@@ -14,11 +14,27 @@
   import type { CommonProps } from '$lib/types/index.js';
   import type { Snippet } from 'svelte';
 
-  export type ColumnProps = CommonProps & {
-	columnId: string;
-	drawerTop?: Snippet;
-	bottomSlot?: Snippet;
-  };
+	export type ColumnProps = CommonProps & {
+		/**
+		 * Unique identifier for the column
+		 * @type {string}
+		 */
+		columnId: string;
+
+		/**
+		 * Slot for content at the top of the column (drawer)
+		 * @type {Snippet<[]>}
+		 * @template []
+		 */
+		drawerTop?: import('svelte').Snippet<[]>;
+
+		/**
+		 * Slot for content at the bottom of the column
+		 * @type {Snippet<[]>}
+		 * @template []
+		 */
+		bottomSlot?: import('svelte').Snippet<[]>;
+	};
   export type ColumnerStoreType = Record<string, ColumnType>;
 
   export interface ColumnType {

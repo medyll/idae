@@ -7,6 +7,11 @@
 		children?: Snippet<[any]>;
 	};
 
+	/**
+	 * @property {Snippet<[any]>} child - Slot unique
+	 * @property {Snippet<[any]>} children - Slot multiple
+	 * @property {any} slotArgs - Arguments pour le slot
+	 */
 	let { child, children, slotArgs = $bindable({}) }: Props = $props();
 </script>
 

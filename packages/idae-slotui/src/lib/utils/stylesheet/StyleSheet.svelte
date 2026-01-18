@@ -2,6 +2,10 @@
 	import { type SlotUiStyleSheet, type BreakPoints } from './types.js';
 	import { configCssVars, toContainerQuery } from './utils.js';
 
+	/**
+	 * @property {object} breakpoints - Breakpoints for the stylesheet
+	 * @property {boolean} showSelectors - Show selectors for debug
+	 */
 	let { breakpoints, showSelectors }: SlotUiStyleSheet = $props();
 
 	function castToCssProps(breakpoints: BreakPoints | undefined) {

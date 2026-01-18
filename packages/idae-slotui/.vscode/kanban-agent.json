@@ -2,560 +2,560 @@
   {
     "id": "task-1768696839471-sb79a5tsj",
     "title": "Add JSDoc to Backdrop.svelte and document its purpose",
-    "status": "in_review",
+    "status": "done",
     "order": 1,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696839471-v6pyabzom",
     "title": "Add JSDoc to Icon.svelte and document its purpose",
-    "status": "in_review",
+    "status": "done",
     "order": 2,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696839471-gq6o3w712",
     "title": "Add JSDoc to TitleBar.svelte and document its purpose",
-    "status": "in_review",
+    "status": "done",
     "order": 3,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696839471-seazlycvq",
     "title": "Add JSDoc to Paper.svelte and document its purpose",
-    "status": "in_review",
+    "status": "done",
     "order": 4,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696839471-gujod2rrd",
     "title": "Add JSDoc to Divider.svelte and document its purpose",
-    "status": "in_review",
+    "status": "done",
     "order": 5,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-vxcyxfz6e",
     "title": "Add JSDoc to Alert.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 6,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-sdks7jm4d",
     "title": "Add JSDoc to Avatar.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 7,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-5d70ep8br",
     "title": "Add JSDoc to Badge.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 8,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-g738fw6dk",
     "title": "Add JSDoc to Box.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 9,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-xk6adb9pv",
     "title": "Add JSDoc to BreadCrumb.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 10,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-tprvs4p5k",
     "title": "Add JSDoc to Cartouche.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 11,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-gxl5wmlav",
     "title": "Add JSDoc to Chipper.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 12,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-duarxoi3s",
     "title": "Add JSDoc to Columner.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 13,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-kix6eu003",
     "title": "Add JSDoc to Column.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 14,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-3frc34j3r",
     "title": "Add JSDoc to ContentSwitcher.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 15,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-3guq7r6k9",
     "title": "Add JSDoc to Debug.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 16,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-45ctxw5lo",
     "title": "Add JSDoc to Demoer.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 17,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-4m0xbb1z9",
     "title": "Add JSDoc to DemoerCode.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 18,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-ddtm65adb",
     "title": "Add JSDoc to DemoerComponent.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 19,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-e5ts90luh",
     "title": "Add JSDoc to DemoPage.svelte",
-    "status": "in_review",
+    "status": "done",
     "order": 20,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-id3v3qpc6",
     "title": "Add JSDoc to AutoComplete.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 21,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-1cp6kmaqb",
     "title": "Add JSDoc to Button.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 22,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-m8zcfn2gs",
     "title": "Add JSDoc to ButtonAction.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 23,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-ij7a31c0z",
     "title": "Add JSDoc to ButtonMenu.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 24,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-4lpko67s7",
     "title": "Add JSDoc to IconButton.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 25,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-bk9fg7or3",
     "title": "Add JSDoc to Checkbox.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 26,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-59l7sopgm",
     "title": "Add JSDoc to Confirm.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 27,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-8ykw6jqsa",
     "title": "Add JSDoc to InPlaceEdit.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 28,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-cykzh0v03",
     "title": "Add JSDoc to Progress.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 29,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-za8q9p6dj",
     "title": "Add JSDoc to Rating.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 30,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-p9emis2xs",
     "title": "Add JSDoc to Select.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 31,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-zgh4lp0a3",
     "title": "Add JSDoc to Slider.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 32,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-pw5mybeu1",
     "title": "Add JSDoc to Stepper.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 33,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-tpcb7el3i",
     "title": "Add JSDoc to Switch.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 34,
     "createdBy": "agent"
   },
   {
     "id": "task-1768696933009-neo546exq",
     "title": "Add JSDoc to TextField.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 35,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-2ndu727te",
     "title": "Add JSDoc to DataList.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 36,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-1xcysxb1v",
     "title": "Add JSDoc to DataListCell.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 37,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-zabi8p44r",
     "title": "Add JSDoc to DataListHead.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 38,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-m3f1610rr",
     "title": "Add JSDoc to DataListRow.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 39,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-27ug6zuqa",
     "title": "Add JSDoc to Finder.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 40,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-10mv9n692",
     "title": "Add JSDoc to Grouper.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 41,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-6qa7zf49f",
     "title": "Add JSDoc to Jsoner.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 42,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-hmxdk2z25",
     "title": "Add JSDoc to List.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 43,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-0v25v896m",
     "title": "Add JSDoc to ListItem.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 44,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-av48r0e8z",
     "title": "Add JSDoc to ListTitle.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 45,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-hanvlpy0u",
     "title": "Add JSDoc to Loader.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 46,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-6hyo0dbfr",
     "title": "Add JSDoc to Sorterer.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 47,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-mcq61szih",
     "title": "Add JSDoc to Sorter.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 48,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-s7oyrfn0q",
     "title": "Add JSDoc to Drawer.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 49,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-emtjimf21",
     "title": "Add JSDoc to Tabs.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 50,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-xsx09jjuc",
     "title": "Add JSDoc to BootStrApp.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 51,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-0vzuaiypk",
     "title": "Add JSDoc to ChromeFrame.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 52,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-uq206r613",
     "title": "Add JSDoc to ChromeFrameButtonList.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 53,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-q0dj7f39g",
     "title": "Add JSDoc to ChromeFrameList.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 54,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-435kee4zn",
     "title": "Add JSDoc to Frame.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 55,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-2616so1mg",
     "title": "Add JSDoc to Login.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 56,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-ti2h7ixw6",
     "title": "Add JSDoc to Marquee.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 57,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-t08dzxr79",
     "title": "Add JSDoc to Menu.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 58,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-y4z40hicg",
     "title": "Add JSDoc to MenuItem.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 59,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-bdjfpy58o",
     "title": "Add JSDoc to MenuTitle.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 60,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-d27fb9hwt",
     "title": "Add JSDoc to MenuList.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 61,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-qecbooz9n",
     "title": "Add JSDoc to MenuListItem.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 62,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-pn48es03o",
     "title": "Add JSDoc to MenuListTitle.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 63,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-j6p6bhmha",
     "title": "Add JSDoc to Panel.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 64,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-r9n5hu5mu",
     "title": "Add JSDoc to PanelGrid.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 65,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-zyen7oobk",
     "title": "Add JSDoc to Paneler.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 66,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-050iz8u12",
     "title": "Add JSDoc to PanelSlide.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 67,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-9wanu1p2n",
     "title": "Add JSDoc to Popper.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 68,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-hzjtkhan5",
     "title": "Add JSDoc to Preview.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 69,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-2t30zny1g",
     "title": "Add JSDoc to ServiceBox.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 70,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-gftuwvpup",
     "title": "Add JSDoc to BootMenu.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 71,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-wo2jlvvc0",
     "title": "Add JSDoc to TaskBarContent.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 72,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-o7h9ay4s6",
     "title": "Add JSDoc to Taskbar.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 73,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-3r5p1e56y",
     "title": "Add JSDoc to ThemeSwitcher.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 74,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-jged8o1bo",
     "title": "Add JSDoc to Toast.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 75,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-rzcncabs6",
     "title": "Add JSDoc to Toaster.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 76,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-2vqux1qpe",
     "title": "Add JSDoc to ToggleBar.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 77,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-nh5uot3el",
     "title": "Add JSDoc to ToolBar.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 78,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-nf3t09cc8",
     "title": "Add JSDoc to Tree.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 79,
     "createdBy": "agent"
   },
   {
     "id": "task-1768697014388-yolj3qxkr",
     "title": "Add JSDoc to Window.svelte",
-    "status": "ready",
+    "status": "done",
     "order": 80,
     "createdBy": "agent"
   }
