@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@import "../../styles/slotui-presets.css";
 @import "../../styles/slotui-mixins.css";
 
 :root {
@@ -25,7 +26,7 @@
   input[type="button"].slotui-button,
   input[type="submit"].slotui-button {
     @apply inline-flex items-center justify-center transition-all duration-200 overflow-hidden cursor-pointer content-center items-center;
-    @apply slotui-ui-width slotui-ui-tall slotui-elevation;
+    @apply slotui-ui-width-small slotui-ui-tall-small slotui-elevation-1;
     border: none;
     border-radius: 0;
     margin: 0;

@@ -93,5 +93,5 @@
 </button>
 
 <style global>
-	@import './button.css';
+	@import './button.tailwind.css';
 </style>

@@ -1,0 +1,14 @@
+/* slotui-drawer Tailwind CSS */
+:root {
+  --slotui-drawer-bg: theme(colors.white);
+  --slotui-drawer-fg: theme(colors.gray.900);
+  --slotui-drawer-border: theme(colors.gray.200);
+}
+.slotui-drawer {
+  @apply fixed top-0 left-0 h-full w-64 z-50 flex flex-col border-r shadow-lg transition-transform duration-300;
+  background-color: var(--slotui-drawer-bg);
+  color: var(--slotui-drawer-fg);
+  border-color: var(--slotui-drawer-border);
+  &--open { @apply translate-x-0; }
+  &--closed { @apply -translate-x-full; }
+}

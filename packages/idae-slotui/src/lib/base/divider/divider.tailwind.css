@@ -1,0 +1,8 @@
+/* slotui-divider Tailwind CSS */
+:root {
+  --slotui-divider-fg: theme(colors.gray.300);
+}
+.slotui-divider {
+  @apply w-full h-px my-2 bg-gray-300 border-0;
+  background-color: var(--slotui-divider-fg);
+}

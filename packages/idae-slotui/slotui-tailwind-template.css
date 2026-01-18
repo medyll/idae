@@ -1,0 +1,42 @@
+/*
+  Template CSS Tailwind pour composant SlotUI
+  -------------------------------------------
+  - Utilise @apply pour les utilitaires Tailwind
+  - Variables CSS personnalisées pour la thématisation
+  - Nesting pour les sous-éléments
+*/
+
+:root {
+  --slotui-[component]-bg: theme(colors.neutral.50);
+  --slotui-[component]-fg: theme(colors.neutral.900);
+  --slotui-[component]-border: theme(colors.neutral.200);
+}
+
+.slotui-[component] {
+  @apply relative flex items-center px-4 py-2 rounded border text-base font-medium transition-colors duration-150;
+  background-color: var(--slotui-[component]-bg);
+  color: var(--slotui-[component]-fg);
+  border-color: var(--slotui-[component]-border);
+
+  &--variant-primary {
+    @apply bg-primary-600 text-white border-primary-700;
+  }
+  &--variant-secondary {
+    @apply bg-secondary-100 text-secondary-800 border-secondary-200;
+  }
+  &--disabled {
+    @apply opacity-50 pointer-events-none;
+  }
+
+  /* Sous-élément exemple */
+  &__icon {
+    @apply mr-2 w-5 h-5;
+  }
+}
+
+/* Responsive et états */
+@media (max-width: 640px) {
+  .slotui-[component] {
+    @apply px-2 py-1 text-sm;
+  }
+}

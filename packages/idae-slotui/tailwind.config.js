@@ -9,5 +9,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require('./tailwind-slotui-presets'),
+    require('./tailwind-slotui-mixins'),
   ],
 };

@@ -1,3 +1,6 @@
+<style global>
+	@import '../../base/jsoner/jsoner.tailwind.css';
+</style>
 <script lang="ts">
 	import type { JsonerProps } from './types.js';
 

@@ -1,3 +1,6 @@
+<style global>
+	@import '../../slotui-css/login.tailwind.css';
+</style>
 <script lang="ts">
 	import { fade, type TransitionConfig } from 'svelte/transition';
 

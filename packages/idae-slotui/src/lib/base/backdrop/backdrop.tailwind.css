@@ -1,0 +1,10 @@
+/* slotui-backdrop Tailwind CSS */
+:root {
+  --slotui-backdrop-bg: theme(colors.black / 0.5);
+}
+.slotui-backdrop {
+  @apply fixed inset-0 z-40 flex items-center justify-center transition-opacity duration-200;
+  background-color: var(--slotui-backdrop-bg);
+  &--visible { @apply opacity-100; }
+  &--hidden { @apply opacity-0 pointer-events-none; }
+}

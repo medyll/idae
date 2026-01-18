@@ -1,3 +1,8 @@
+</div>
+
+<style global>
+	@import './sorter.tailwind.css';
+</style>
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';

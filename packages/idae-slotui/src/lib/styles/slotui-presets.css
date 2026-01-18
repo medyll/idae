@@ -1,0 +1,49 @@
+/* slotui-presets.css : expose toutes les variables CSS pour presets, à utiliser dans slotui-mixins.css et les composants */
+:root {
+  /* --- Width presets --- */
+  --preset-width-tiny: 2rem;
+  --preset-width-mini: 3rem;
+  --preset-width-small: 10rem;
+  --preset-width-med: 14rem;
+  --preset-width-kind: 20rem;
+  --preset-width-full: 100%;
+  --preset-width-auto: auto;
+  --preset-width-default: 10rem;
+
+  /* --- Tall presets --- */
+  --preset-tall-tiny: 1rem;
+  --preset-tall-mini: 1.5rem;
+  --preset-tall-small: 2.5rem;
+  --preset-tall-med: 3.5rem;
+  --preset-tall-kind: 4rem;
+  --preset-tall-auto: auto;
+  --preset-tall-default: 2.5rem;
+
+  /* --- Gutter presets --- */
+  --preset-gutter-tiny: 0.25rem;
+  --preset-gutter-mini: 0.5rem;
+  --preset-gutter-small: 1rem;
+  --preset-gutter-med: 2rem;
+  --preset-gutter-kind: 3rem;
+  --preset-gutter-default: 1rem;
+
+  /* --- Gap presets --- */
+  --preset-gap-tiny: 0.25rem;
+  --preset-gap-mini: 0.4rem;
+  --preset-gap-small: 0.5rem;
+  --preset-gap-med: 1rem;
+  --preset-gap-large: 1.5rem;
+  --preset-gap-default: 0.5rem;
+
+  /* --- Pad presets --- */
+  --preset-pad-tiny: 0.25rem;
+  --preset-pad-small: 0.5rem;
+  --preset-pad-med: 1rem;
+  --preset-pad-large: 1.5rem;
+
+  /* --- Radius presets --- */
+  --preset-radius-tiny: 2px;
+  --preset-radius-small: 4px;
+  --preset-radius-med: 8px;
+  --preset-radius-large: 16px;
+}

@@ -1,3 +1,6 @@
+<style global>
+	@import '../../slotui-css/themeswitcher.tailwind.css';
+</style>
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 

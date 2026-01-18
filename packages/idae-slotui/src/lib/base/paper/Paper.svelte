@@ -17,6 +17,10 @@
 	<Slotted child={children} />
 </div>
 
-<style lang="scss">
-	@use './paper.scss';
+<style global>
+	@import './paper.tailwind.css';
+</style>
+</style>
+<style global>
+	@import '../../slotui-css/paper.tailwind.css';
 </style>
