@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-mongo",
 	"description": "MongoDB adapter for seamless integration with the Idae data abstraction layer.",
-	"version": "0.179.0",
+	"version": "0.180.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
