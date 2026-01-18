@@ -153,8 +153,8 @@
 	{/if}
 {/if}
 
-<style lang="scss">
-	@use './panel.scss';
+<style global>
+	@import '../../slotui-css/panel.css';
 	.sidePanel {
 		position: absolute;
 		top: 0;

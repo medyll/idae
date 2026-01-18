@@ -387,7 +387,7 @@
   {
     "id": "task-1768680672811-klkjsmdxc",
     "title": "Migration Tailwind – ui/startMenu",
-    "status": "ready",
+    "status": "done",
     "order": 55,
     "createdBy": "agent"
   },
@@ -443,35 +443,35 @@
   {
     "id": "task-1768680672811-56yn73l4n",
     "title": "Migration Tailwind – Nettoyer les imports SCSS et supprimer les fichiers obsolètes",
-    "status": "ready",
+    "status": "done",
     "order": 63,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680672811-624gxm5zi",
     "title": "Migration Tailwind – Vérifier la cohérence visuelle et fonctionnelle",
-    "status": "ready",
+    "status": "done",
     "order": 64,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680740707-d9ivdm5og",
     "title": "Migration Tailwind – Générer/valider slotui-presets.css et slotui-utilities.css",
-    "status": "ready",
+    "status": "done",
     "order": 65,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680740707-fnnqiyi34",
     "title": "Migration Tailwind – Vérifier/remplacer tous les @import SCSS par @use",
-    "status": "ready",
+    "status": "done",
     "order": 66,
     "createdBy": "agent"
   },
   {
     "id": "task-1768680740707-8uhw62izw",
     "title": "Migration Tailwind – Vérifier la documentation utilisateur (README, MIGRATION_SCSS_TAILWIND.md, guides)",
-    "status": "ready",
+    "status": "done",
     "order": 67,
     "createdBy": "agent"
   }

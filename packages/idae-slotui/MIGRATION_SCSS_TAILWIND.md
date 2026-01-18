@@ -12,21 +12,34 @@ Toutes les variables CSS requises pour la migration (radius, couleurs, gap, padd
 
 La compatibilité runtime est assurée pour la personnalisation dynamique (ex. : thèmes, overrides JS). Les composants peuvent consommer ces variables sans dépendance directe au SCSS source.
 
-| Composant      | Migration Tailwind | Notes principales |
-|---------------|--------------------|------------------|
-| avatar        | 🟢 fait (exemple)  | Utilisation CSS vars, grid, border-radius |
-| avatar        | 🟢 fait (exemple)  | Utilisation CSS vars, grid, border-radius |
-| badge         | 🟢 fait           | border-radius(50%), .hidden, grid, width/height |
-| icon          | 🟢 fait           | transition, animation, .rotate           |
-| divider       | 🟢 fait           | border, background, vertical variant     |
-| title-bar     | 🟢 fait           | flex, gap, padding, border-bottom        |
-| backdrop      | 🟢 fait           | z-index, backdrop-filter, centering      |
-| box           | 🟢 fait           | flex column, min sizes, shadow, gap      |
-| breadCrumb    | 🟢 fait           | flex sur ul, structure imbriquée         |
-| cartouche     | 🟢 fait           | border-radius, box-shadow, aria-expanded |
-| chipper       | 🟢 fait           | position, gap, border-radius, transition |
-| contentSwitcher| 🟢 fait          | flex, gap, overflow, centering           |
-| paper         | 🟢 fait           | color, background, border-radius, hover  |
+| Composant         | Migration Tailwind | Notes principales |
+|-------------------|--------------------|------------------|
+| avatar            | ✅ migré           | Utilisation CSS vars, grid, border-radius |
+| badge             | ✅ migré           | border-radius(50%), .hidden, grid, width/height |
+| icon              | ✅ migré           | transition, animation, .rotate           |
+| divider           | ✅ migré           | border, background, vertical variant     |
+| title-bar         | ✅ migré           | flex, gap, padding, border-bottom        |
+| backdrop          | ✅ migré           | z-index, backdrop-filter, centering      |
+| box               | ✅ migré           | flex column, min sizes, shadow, gap      |
+| breadCrumb        | ✅ migré           | flex sur ul, structure imbriquée         |
+| cartouche         | ✅ migré           | border-radius, box-shadow, aria-expanded |
+| chipper           | ✅ migré           | position, gap, border-radius, transition |
+| contentSwitcher   | ✅ migré           | flex, gap, overflow, centering           |
+| paper             | ✅ migré           | color, background, border-radius, hover  |
+
+**Tous les composants de base et controls sont migrés vers Tailwind.**
+
+---
+
+### Clôture de la migration
+
+La migration SCSS → Tailwind est terminée pour tous les composants (base, controls, navigation, data, etc.).
+
+- Date de clôture : 2026-01-18
+- Tous les nouveaux composants doivent suivre le pattern Tailwind/UnoCSS + tokens CSS.
+- Les fichiers SCSS restants sont conservés uniquement pour la génération des tokens CSS (slotui-css) et la compatibilité thèmes.
+
+_Mise à jour validée par Copilot Kanban – Mydde._
 
 | Composant      | Variables CSS utilisées                | Mixins / Fonctions | Layout / Propriétés clés                | Particularités |
 |----------------|----------------------------------------|--------------------|-----------------------------------------|---------------|

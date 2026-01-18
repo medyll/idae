@@ -1,4 +1,5 @@
-<svelte:options />
+
+
 
 <script lang="ts">
 	import { wStore } from '$lib/ui/window/store.js';
@@ -106,7 +107,7 @@
 		use:positioner={{ position: startPosition }}
 		use:draggebler={{ disabled: false }}
 		use:makeOnTop
-		class="window {className} "
+		class="window rounded-[var(--window-border-radius)] bg-[var(--window-background-color)] text-[var(--window-color)] border-[var(--window-border)] min-w-[var(--window-min-width)] top-0 left-0 overflow-hidden z-[var(--window-z-index)] max-h-full p-0 shadow-[var(--window-box-shadow)] {className}"
 		class:active={$wStore.activatedFrame === frameId}
 	>
 		{#if showHandle}
@@ -118,7 +119,7 @@
 						</Slotted>
 					</div>
 				{/if}
-				<div class="handle">{title ?? ''}</div>
+				<div class="handle flex-1 cursor-pointer">{title ?? ''}</div>
 				<div class="ctrlZone">
 					<div>
 						<IconButton
@@ -145,7 +146,7 @@
 		</div>
 		{#if !hideCloseButton || !hideAcceptButton}
 			<Slotted child={windowButtonZone}>
-				<footer class="buttonZone">
+				<footer class="buttonZone p-[var(--window-footer-button-zone-padding)] flex justify-end gap-[var(--window-footer-button-zone-gap)]">
 					{#if !hideCloseButton}
 						<Button width="auto" variant="naked" icon={iconClose} onclick={actions.close}
 							>Close</Button

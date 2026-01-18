@@ -131,6 +131,6 @@
 	</li>
 {/if}
 
-<style global lang="scss">
-	@use './menu-list.scss';
+<style global>
+	@import '../../slotui-css/menu-list.css';
 </style>

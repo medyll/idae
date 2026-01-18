@@ -99,6 +99,6 @@
 	</div>
 {/if}
 
-<style lang="scss">
-	@use './boot-menu.scss';
+<style global>
+	@import '../../slotui-css/boot-menu.css';
 </style>
