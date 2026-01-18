@@ -10,19 +10,63 @@
   import type { DemoerStoryProps } from "../demoer/types.js";
 
   export interface AlertProps extends CommonProps {
-    /** alert level */
+    /**
+     * The alert level (info, warning, error, success, etc.)
+     * @default "info"
+     */
     level?: ElementProps["levels"];
-    /** message to be shown */
+
+    /**
+     * The message to be shown in the alert.
+     */
     message?: string;
-    /** make the alert draggable */
+
+    /**
+     * If true, the alert is draggable by the user.
+     * @default false
+     */
     draggable?: boolean;
-    /** show or hide the alert */
+
+    /**
+     * Controls the visibility of the alert dialog.
+     * @default false
+     */
     isOpen?: boolean;
-    children?: Snippet;
-    alertTopButton?: Snippet;
-    alertMessage?: Snippet;
-    alertButtonZone?: Snippet;
-    alertButtonClose?: Snippet;
+
+    /**
+     * Slot for custom alert content (replaces message if provided).
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    children?: Snippet<[]>;
+
+    /**
+     * Slot for a custom button in the alert header (top right).
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    alertTopButton?: Snippet<[]>;
+
+    /**
+     * Slot for custom message area (below header).
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    alertMessage?: Snippet<[]>;
+
+    /**
+     * Slot for custom button zone (footer).
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    alertButtonZone?: Snippet<[]>;
+
+    /**
+     * Slot for custom close button (header right).
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    alertButtonClose?: Snippet<[]>;
   }
 
   export const alertDemoValues: DemoerStoryProps<any> = {

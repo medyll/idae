@@ -1,3 +1,16 @@
+/**
+ * DemoerCode.svelte
+ * Affiche un bloc de code mis en forme (PrismJS) pour la documentation/démo de composants.
+ *
+ * Props :
+ * - code (string) : code source à afficher
+ * - title (string) : titre du bloc
+ * - subTitle (string) : sous-titre
+ * - component (string) : nom du composant
+ * - demoerCode (slot/Snippet) : slot pour rendu personnalisé
+ *
+ * Utilise PrismJS pour la coloration syntaxique Svelte.
+ */
 <script lang="ts">
 	import Prism from 'prismjs';
 	import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';

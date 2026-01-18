@@ -1,3 +1,13 @@
+/**
+ * Icon component
+ *
+ * Renders an SVG icon using Iconify. Supports dynamic icon names, color, size, rotation, and animation.
+ * Can be used for any icon in the Iconify ecosystem.
+ *
+ * @component
+ * @example
+ * <Icon icon="mdi:user" color="red" iconSize="large" />
+ */
 <script module lang="ts">
 import type { ElementProps, IconObj } from "$lib/types/index.js"; 
 

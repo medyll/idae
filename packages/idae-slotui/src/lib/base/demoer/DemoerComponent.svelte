@@ -1,3 +1,17 @@
+/**
+ * DemoerComponent.svelte
+ * Affiche la démo d'un composant avec citation, code, titre et slots personnalisés.
+ *
+ * Props :
+ * - component (string) : nom du composant à documenter
+ * - cite (string) : citation associée
+ * - code (string) : code source à afficher
+ * - title (string) : titre de la démo
+ * - componentArgs, parameters (object) : props et paramètres du composant
+ * - children (slot/Snippet) : contenu de la démo
+ *
+ * Utilise <Slotted> pour l'injection de contenu, et componentCite pour les citations.
+ */
 <script lang="ts" generics="T=Data">
 	//import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { componentCite } from '$lib/componentCite.js';

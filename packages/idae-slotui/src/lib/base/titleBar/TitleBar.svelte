@@ -1,3 +1,13 @@
+/**
+ * TitleBar component
+ *
+ * Displays a header bar with an optional icon, title, menu, and close button.
+ * Used as a window or section header in UI layouts.
+ *
+ * @component
+ * @example
+ * <TitleBar title="My App" icon="mdi:home" onClose={() => {}} />
+ */
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';

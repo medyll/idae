@@ -8,9 +8,16 @@ import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 import type { DemoerStoryProps } from "../demoer/types.js";
 
 export interface ChipperProps extends CommonProps {
-  /** position of the chipper  */
+  /**
+   * Position of the chipper
+   * @type {ElementProps["position"]}
+   */
   position?: ElementProps["position"];
-  /** status of the chip */
+
+  /**
+   * Theme/status of the chip
+   * @type {"primary"|"secondary"|"tertiary"|"success"|"warning"|"danger"|"light"|"medium"|"dark"}
+   */
   theme?:
     | "primary"
     | "secondary"
@@ -21,13 +28,31 @@ export interface ChipperProps extends CommonProps {
     | "light"
     | "medium"
     | "dark";
-  /** css color code for the chip */
+
+  /**
+   * CSS color code for the chip
+   * @type {string}
+   */
   color?: string;
-  /** text or html is snippet is not used */
+
+  /**
+   * Text or HTML content (if snippet is not used)
+   * @type {string}
+   */
   content?: string;
-  /** show or hide the chip */
+
+  /**
+   * Show or hide the chip
+   * @type {boolean}
+   */
   showChip?: boolean;
-  chipperChip?: Snippet;
+
+  /**
+   * Slot for custom chip content
+   * @type {Snippet<[]>}
+   * @template []
+   */
+  chipperChip?: import('svelte').Snippet<[]>;
 }
 
 export const chipperDemoValues: DemoerStoryProps<ChipperProps> = {

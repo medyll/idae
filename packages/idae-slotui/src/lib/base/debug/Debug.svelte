@@ -1,3 +1,9 @@
+/**
+ * Debug.svelte
+ * Zone d'affichage pour le débogage, affiche les props reçues et un exemple de Cartouche.
+ *
+ * Utilisé pour le développement et la visualisation des données de props.
+ */
 <script lang="ts">
   import Cartouche from "$lib/base/cartouche/Cartouche.svelte";
   import type TabsItemsProps from "$lib/navigation/tabs/Tabs.svelte";

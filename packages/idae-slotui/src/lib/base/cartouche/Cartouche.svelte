@@ -1,3 +1,21 @@
+/**
+ * Cartouche.svelte
+ * Composant conteneur stylisé avec titre, sous-titre, icône, actions et contenu extensible.
+ *
+ * Props :
+ * - primary (string) : titre principal
+ * - secondary (string) : sous-titre
+ * - icon (string) : nom d'icône (Iconify)
+ * - stacked (boolean) : mode empilé
+ * - bordered (boolean) : bordure visible
+ * - isOpen (boolean) : contrôle l'ouverture/fermeture
+ * - showTitleDivider (boolean) : séparateur visuel
+ * - children, cartoucheIcon, cartouchePrimary, cartoucheSecondary, cartoucheButtons (slot/Snippet) : zones personnalisables
+ * - component, componentProps : composant dynamique à afficher dans le contenu
+ * - element (HTMLDivElement) : référence DOM
+ *
+ * Utilise <Icon>, <Button>, <IconButton>, <Slotted> pour la structure et les actions.
+ */
 <script module lang="ts">
   import {
     tallPreset,
@@ -15,28 +33,142 @@
     content: string;
   };
   export type CartoucheProps = CommonProps & {
+    /**
+     * Custom class for the cartouche
+     * @type {string}
+     */
     class?: string;
+
+    /**
+     * Custom classes for cartouche sub-elements
+     * @type {CartoucheClasses}
+     */
     classes?: CartoucheClasses;
+
+    /**
+     * Custom style string for the cartouche
+     * @type {string}
+     */
     style?: string;
+
+    /**
+     * Reference to the cartouche DOM element
+     * @type {HTMLDivElement}
+     */
     element?: HTMLDivElement;
+
+    /**
+     * Main title of the cartouche
+     * @type {string}
+     */
     primary: string;
+
+    /**
+     * Secondary title (subtitle)
+     * @type {string}
+     */
     secondary?: string;
+
+    /**
+     * Icon name (Iconify string)
+     * @type {ElementProps["icon"]}
+     */
     icon?: ElementProps["icon"];
+
+    /**
+     * Display stacked layout
+     * @type {boolean}
+     */
     stacked?: boolean;
+
+    /**
+     * Svelte component to render inside the cartouche
+     * @type {SvelteComponent}
+     */
     component?: SvelteComponent;
+
+    /**
+     * Props for the dynamic component
+     * @type {Record<string, any>}
+     */
     componentProps?: Record<string, any>;
+
+    /**
+     * Keep the cartouche content visible when closed
+     * @type {boolean}
+     */
     keepCartoucheContent?: boolean;
+
+    /**
+     * Show a divider in the title bar
+     * @type {boolean}
+     */
     showTitleDivider?: boolean;
+
+    /**
+     * Show a border around the cartouche
+     * @type {boolean}
+     */
     bordered?: boolean;
+
+    /**
+     * Controls the open/close state
+     * @type {boolean}
+     */
     isOpen?: boolean;
+
+    /**
+     * Actions for open/toggle/close
+     * @type {Record<"open" | "toggle" | "close", (event: Event) => void>}
+     */
     actions?: Record<"open" | "toggle" | "close", (event: Event) => void>;
+
+    /**
+     * Dense mode
+     * @type {ElementProps["dense"]}
+     */
     dense?: ElementProps["dense"];
+
+    /**
+     * Tall mode
+     * @type {ElementProps["tall"]}
+     */
     tall?: ElementProps["tall"];
-    children?: Snippet;
-    cartoucheIcon?: Snippet;
-    cartouchePrimary?: Snippet;
-    cartoucheSecondary?: Snippet;
-    cartoucheButtons?: Snippet;
+
+    /**
+     * Slot for custom cartouche content
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    children?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom icon
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    cartoucheIcon?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom primary title
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    cartouchePrimary?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom secondary title
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    cartoucheSecondary?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom buttons in the cartouche
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    cartoucheButtons?: import('svelte').Snippet<[]>;
   };
 
   export const cartoucheDemoValues: DemoerStoryProps<CartoucheProps> = {

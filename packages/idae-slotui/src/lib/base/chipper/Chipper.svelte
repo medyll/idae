@@ -1,3 +1,20 @@
+/**
+ * Chipper.svelte
+ * Affiche un composant "chip" positionné avec contenu personnalisable.
+ *
+ * Props :
+ * - content (string) : contenu principal (HTML/text)
+ * - chipperChip (slot) : contenu du chip
+ * - position (string) : position du chip (ex: 'bottom')
+ * - theme (string) : thème/couleur du chip
+ * - color (string) : couleur CSS personnalisée
+ * - showChip (boolean) : affiche ou masque le chip
+ * - class, style : classes et styles personnalisés
+ * - element (HTMLDivElement) : référence DOM
+ * - children (slot) : contenu additionnel
+ *
+ * Utilise <Slotted> pour la gestion des slots.
+ */
 <script lang="ts">
   import type {
     CommonProps,

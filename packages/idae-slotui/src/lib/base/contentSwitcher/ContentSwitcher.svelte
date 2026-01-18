@@ -1,3 +1,16 @@
+/**
+ * ContentSwitcher.svelte
+ * Permet de basculer dynamiquement entre deux contenus (toggle/reveal) avec gestion d'icônes et de slots personnalisés.
+ *
+ * Props :
+ * - icon (string|IconObj) : icône du bouton de bascule
+ * - iconback (string|IconObj) : icône du bouton retour
+ * - parent (HTMLElement) : parent DOM cible pour l'injection
+ * - contentSwitcherTogglerIcon, contentSwitcherBackIcon, contentSwitcherReveal (slot/Snippet) : zones personnalisables
+ * - class, style, element : personnalisation et référence DOM
+ *
+ * Utilise <IconButton>, <Button>, <Slotted> pour la structure et l'interaction.
+ */
 <script module lang="ts">
   import type { CommonProps, IconObj } from "$lib/types/index.js";
   import type { Snippet } from "svelte";

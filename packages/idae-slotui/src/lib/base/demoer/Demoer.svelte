@@ -1,3 +1,17 @@
+/**
+ * Demoer.svelte
+ * Générateur de pages de démonstration pour composants, avec gestion dynamique des paramètres, slots et rendu de variantes.
+ *
+ * Props :
+ * - title (string) : titre de la démo
+ * - parameters (object) : paramètres de configuration du composant
+ * - component (SvelteComponent) : composant à démontrer
+ * - componentArgs (object) : props du composant
+ * - multiple (object) : variantes multiples à afficher
+ * - children (slot/Snippet) : slot pour rendu personnalisé
+ *
+ * Utilise <Button>, <Icon>, <Switch>, <Slotted>, <IconButton> pour l'UI de la démo.
+ */
 <script module lang="ts">
 	import type { CommonProps } from '$lib/types/index.js';
 	import type { uiPresets } from '$lib/utils/engine/presets.js';

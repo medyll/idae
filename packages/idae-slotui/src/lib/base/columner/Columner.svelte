@@ -1,3 +1,13 @@
+/**
+ * Columner.svelte
+ * Fournit un conteneur pour organiser des colonnes dynamiques avec gestion d'état via contexte Svelte.
+ *
+ * Props :
+ * - children (slot/Snippet) : contenu des colonnes
+ * - ...rest : props additionnels passés au conteneur
+ *
+ * Utilise le contexte Svelte pour partager l'état des colonnes.
+ */
 <script module lang="ts">
   import type { CommonProps } from '$lib/types/index.js';
   import type { Snippet } from 'svelte';

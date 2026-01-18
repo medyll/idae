@@ -1,3 +1,15 @@
+/**
+ * Backdrop component
+ *
+ * Displays a modal overlay that can contain custom content or a loading indicator.
+ * Supports auto-close, slot content, and custom components.
+ *
+ * @component
+ * @example
+ * <Backdrop isOpen={true} autoClose={true}>
+ *   <div>Your content here</div>
+ * </Backdrop>
+ */
 <script module lang="ts">
   import type { CommonProps, ElementProps } from "$lib/types/index.js";
   import type { Snippet } from "svelte";

@@ -1,3 +1,17 @@
+/**
+ * DemoPage.svelte
+ * Page de démonstration pour un composant, affichant code, playground et slots personnalisés.
+ *
+ * Props :
+ * - title (string) : titre de la démo
+ * - code (string) : code source à afficher
+ * - subTitle (string) : sous-titre
+ * - component (string) : nom du composant
+ * - demoerCode (slot/Snippet) : slot pour code personnalisé
+ * - children (slot/Snippet) : playground interactif
+ *
+ * Utilise <DemoerCode>, <Slotted>, <Icon> pour la structure de la page de démo.
+ */
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { Snippet } from 'svelte';

@@ -1,7 +1,17 @@
+/**
+ * Avatar component
+ *
+ * Displays a user avatar with optional icon, size, and badge. Supports slot for custom content.
+ *
+ * @component
+ * @example
+ * <Avatar icon="mdi:user" size="medium" />
+ */
 <script module lang="ts">
 	import { widthPreset, iconSize } from "$lib/types/index.js";
 	import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
 	type EnumValueType<T> = T[keyof T];
+
 	export enum statusPreset {
 		success = "success",
 		warning = "warning",
@@ -10,25 +20,55 @@
 		info = "info",
 		discrete = "discrete",
 	}
+	
 	import type { CommonProps, ElementProps } from "$lib/types/index.js";
 	import type { Snippet } from "svelte";
 	import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 
 	export interface AvatarProps {
-		/** icon name  */
-		icon?: string;
 		/**
-		 * size of the avatar
+		 * Icon name (Iconify string)
+		 * @type {string}
+		 */
+		icon?: string;
+
+		/**
+		 * Size of the avatar
+		 * @type {ElementProps["width"]}
 		 */
 		size?: ElementProps["width"];
+
 		/**
-		 * size of the icon
+		 * Size of the icon
+		 * @type {ElementProps["iconSize"]}
 		 */
 		iconSize?: ElementProps["iconSize"];
+
+		/**
+		 * Reference to the avatar DOM element
+		 * @type {HTMLElement}
+		 */
 		element?: HTMLElement;
+
+		/**
+		 * Custom class for the avatar
+		 * @type {string}
+		 */
 		class?: string;
-		children?: Snippet;
-		avatarBadge?: Snippet;
+
+		/**
+		 * Slot for custom avatar content
+		 * @type {Snippet<[]>}
+		 * @template []
+		 */
+		children?: Snippet<[]>;
+
+		/**
+		 * Slot for a badge displayed on the avatar
+		 * @type {Snippet<[]>}
+		 * @template []
+		 */
+		avatarBadge?: Snippet<[]>;
 	}
 
 	export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {

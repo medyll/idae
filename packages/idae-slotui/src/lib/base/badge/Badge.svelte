@@ -1,14 +1,49 @@
+/**
+ * Badge.svelte
+ * Affiche un badge numérique positionnable sur un élément.
+ *
+ * Props :
+ * - value (number) : valeur affichée dans le badge
+ * - ceiling (number) : valeur maximale affichée, au-delà on affiche ceiling+
+ * - element (HTMLDivElement) : référence à l'élément DOM du badge
+ * - position (object) : position du badge { x: 'left'|'right'|'center', y: 'top'|'bottom'|'center' }
+ * - children (slot) : contenu optionnel à afficher dans le badge
+ *
+ * Utilise le composant utilitaire <Slotted> pour la gestion du slot.
+ */
 <script module lang="ts">
   import type { CommonProps } from '$lib/types/index.js';
   export interface BadgeProps extends CommonProps {
-    value: number;
-    ceiling: number;
-    element: HTMLDivElement;
     /**
-     * position of the badge
+     * Value displayed in the badge
+     * @type {number}
+     */
+    value: number;
+
+    /**
+     * Maximum value displayed; if value > ceiling, show ceiling+
+     * @type {number}
+     */
+    ceiling: number;
+
+    /**
+     * Reference to the badge DOM element
+     * @type {HTMLDivElement}
+     */
+    element: HTMLDivElement;
+
+    /**
+     * Position of the badge
      * @type {{ x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' }}
      */
     position: { x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' };
+
+    /**
+     * Slot for custom badge content
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    children?: import('svelte').Snippet<[]>;
   }
 </script>
 

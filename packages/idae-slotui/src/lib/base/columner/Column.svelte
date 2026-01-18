@@ -1,3 +1,15 @@
+/**
+ * Column.svelte
+ * Colonne réactive pour le composant Columner, avec gestion du redimensionnement et slots personnalisés.
+ *
+ * Props :
+ * - columnId (string) : identifiant unique de la colonne
+ * - drawerTop, bottomSlot, children (slot/Snippet) : zones personnalisables
+ * - class, style : classes et styles personnalisés
+ * - element (HTMLElement) : référence DOM
+ *
+ * Utilise le contexte "columner" pour l'état, <Slotted> pour les slots, et un resizer pour la largeur.
+ */
 <script module lang="ts">
   import type { CommonProps } from '$lib/types/index.js';
   import type { Snippet } from 'svelte';

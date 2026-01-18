@@ -1,3 +1,20 @@
+/**
+ * Box.svelte
+ * Composant conteneur flexible avec titre, icône, contenu, zones personnalisables et gestion d'ouverture/fermeture.
+ *
+ * Props :
+ * - isOpen (boolean) : contrôle l'affichage du conteneur
+ * - showCloseControl (boolean) : affiche ou non le bouton de fermeture
+ * - hasMenu (boolean) : affiche ou non un menu dans la barre de titre
+ * - title (string) : titre du conteneur
+ * - icon (string) : nom d'icône (Iconify)
+ * - content (string) : contenu HTML/textuel principal
+ * - bottomZone (string) : zone de contenu en bas
+ * - children, boxBottomZone, titleBarTitle, titleBarIcon (slot/Snippet) : zones personnalisables
+ * - element (HTMLDivElement) : référence DOM
+ *
+ * Utilise <TitleBar>, <Icon>, <Slotted>, <Content> pour la structure.
+ */
 <script module lang="ts">
   import type { CommonProps } from "$lib/types/index.js";
   import type { Snippet } from "svelte";
@@ -5,19 +22,87 @@
   import type { DemoerStoryProps } from "../demoer/types.js";
 
   export interface BoxProps extends CommonProps {
+    /**
+     * Reference to the box DOM element
+     * @type {HTMLDivElement}
+     */
     element?: HTMLDivElement;
+
+    /**
+     * Custom style string for the box
+     * @type {string}
+     */
     style?: string;
+
+    /**
+     * Controls the visibility of the box
+     * @type {boolean}
+     */
     isOpen: boolean;
+
+    /**
+     * Show the close control button
+     * @type {boolean}
+     */
     showCloseControl: boolean;
+
+    /**
+     * Show a menu in the title bar
+     * @type {boolean}
+     */
     hasMenu: boolean;
+
+    /**
+     * Title of the box
+     * @type {string}
+     */
     title: string;
+
+    /**
+     * Icon name (Iconify string)
+     * @type {string}
+     */
     icon: string;
+
+    /**
+     * Main content (HTML/text)
+     * @type {string}
+     */
     content: string;
+
+    /**
+     * Content for the bottom zone (HTML/text)
+     * @type {string}
+     */
     bottomZone?: string;
-    children?: Snippet;
-    boxBottomZone?: Snippet;
-    titleBarTitle?: Snippet;
-    titleBarIcon?: Snippet;
+
+    /**
+     * Slot for custom box content
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    children?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom bottom zone content
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    boxBottomZone?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom title bar title
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    titleBarTitle?: import('svelte').Snippet<[]>;
+
+    /**
+     * Slot for custom title bar icon
+     * @type {Snippet<[]>}
+     * @template []
+     */
+    titleBarIcon?: import('svelte').Snippet<[]>;
   }
 
   export const BoxDemoValues: DemoerStoryProps<BoxProps> = {
