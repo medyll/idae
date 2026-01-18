@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-slotui-svelte",
-  "version": "0.184.0",
+  "version": "0.185.0",
   "scope": "@medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
@@ -24,9 +24,9 @@
     "release-css": "node scripts/release-css.js",
     "package:pre": "node scripts/package-pre.js"
   },
-	"test:integration:headed": "playwright test --headed",
-	"test:integration:ui": "playwright test --ui",
-	"test:integration:debug": "playwright test --debug",
+  "test:integration:headed": "playwright test --headed",
+  "test:integration:ui": "playwright test --ui",
+  "test:integration:debug": "playwright test --debug",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
