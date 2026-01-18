@@ -1,9 +1,9 @@
 <script lang="ts">
-	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Alert from './Alert.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { parameters, componentArgs } from './Alert.svelte';
 
 	let code1 = `
