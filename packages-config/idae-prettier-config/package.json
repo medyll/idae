@@ -4,7 +4,7 @@
   "description": "idae svelte Prettier config",
   "version": "1.2.1",
   "type": "module",
-  "exports": "./index.js",
+  "exports": "./index.cjs",
   "devDependencies": {
     "@huggingface/prettier-plugin-vertical-align": "^0.2.3",
     "@medyll/idae-prettier-config": "^1.2.1",

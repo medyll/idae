@@ -1,3 +1,1 @@
-module.exports = {
-  extends: ['@medyll/idae-prettier-config'],
-};
+module.exports = require('@medyll/idae-prettier-config');
