@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-machine",
   "description": "Logic and automation utilities for orchestrating workflows and state machines.",
-  "version": "0.131.0",
+  "version": "0.132.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run prepack",

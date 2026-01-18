@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-cadenzia",
 	"description": "Advanced Svelte 5 components and utilities for building rich, interactive UIs.",
-	"version": "0.143.0",
+	"version": "0.144.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
