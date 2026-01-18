@@ -1,3 +1,4 @@
+// Shows the foreign key fields for a collection, typically for linking or referencing related data.
 <script lang="ts">
 	import { MachineDb } from '$lib/main/machineDb.js';
 
@@ -9,9 +10,10 @@
 		collection:    TplCollectionName;
 		collectionId?: any;
 		where?:        Where;
+		children?: any;
 	};
 
-	let { collection,collectionId,where }: CollectionFksProps = $props();
+	let { collection,collectionId,where,children }: CollectionFksProps = $props();
 
  
 	const fks = $derived(machine.collections.fks(collection)); 

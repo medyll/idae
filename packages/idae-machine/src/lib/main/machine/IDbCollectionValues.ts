@@ -1,7 +1,7 @@
-import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
-import { MachineDb } from '$lib/main/machineDb.js';
-import { type IDbForge } from '../machineForge.js';
-import { IDbError } from '$lib/main/machine/IDbError.js';
+import type { TplCollectionName, TplFields } from "@medyll/idae-idbql";
+import { MachineDb } from "$lib/main/machineDb.js";
+import { type IDbForge } from "../machineForge.js";
+import { IDbError } from "$lib/main/machine/IDbError.js";
 
 /**
  * IDbCollectionValues
@@ -29,296 +29,331 @@ import { IDbError } from '$lib/main/machine/IDbError.js';
  */
 
 export class IDbCollectionValues<T extends Record<string, any>> {
-	/**
-	 * The IDbBase instance used for schema introspection.
-	 */
-	idbBase: MachineDb;
-	/**
-	 * The collection name this instance operates on.
-	 */
-	private collectionName: TplCollectionName;
+  /**
+   * The IDbBase instance used for schema introspection.
+   */
+  idbBase: MachineDb;
+  /**
+   * The collection name this instance operates on.
+   */
+  private collectionName: TplCollectionName;
 
-	/**
-	 * Create a new IDbCollectionValues instance for a given collection.
-	 * @param collectionName The collection name.
-	 */
-	constructor(collectionName: TplCollectionName, idbBase?: MachineDb) {
-		this.collectionName = collectionName;
-		this.idbBase = idbBase ?? new MachineDb();
-	}
+  /**
+   * Create a new IDbCollectionValues instance for a given collection.
+   * @param collectionName The collection name.
+   */
+  constructor(collectionName: TplCollectionName, idbBase?: MachineDb) {
+    this.collectionName = collectionName;
+    this.idbBase = idbBase ?? new MachineDb();
+  }
 
-	presentation(data: Record<string, any>): string {
-		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.idbBase.collection(this.collectionName).getPresentation();
-			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
+  presentation(data: Record<string, any>): string {
+    try {
+      this.#checkError(!this.#checkAccess(), "Access denied", "ACCESS_DENIED");
+      const presentation = this.idbBase
+        .collection(this.collectionName)
+        .getPresentation();
+      this.#checkError(
+        !presentation,
+        "Presentation template not found",
+        "TEMPLATE_NOT_FOUND",
+      );
 
-			const fields = presentation.split(' ');
-			return fields
-				.map((field: string) => {
-					const value = data[field];
-					return value !== null && value !== undefined ? String(value) : '';
-				})
-				.join(' ');
-		} catch (error) {
-			IDbError.handleError(error);
-			return '';
-		}
-	}
+      const fields = presentation.split(" ");
+      return fields
+        .map((field: string) => {
+          const value = data[field];
+          return value !== null && value !== undefined ? String(value) : "";
+        })
+        .join(" ");
+    } catch (error) {
+      IDbError.handleError(error);
+      return "";
+    }
+  }
 
-	/**
-	 * Get the value of the index field for a data object.
-	 * @param data The data object.
-	 * @returns The value of the index field, or null if not found.
-	 */
-	indexValue(data: Record<string, any>): any | null {
-		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.idbBase.collection(this.collectionName).getIndexName();
-			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
-			this.#checkError(
-				!(indexName in data),
-				`Index field ${indexName} not found in data`,
-				'FIELD_NOT_FOUND'
-			);
-			return data[indexName];
-		} catch (error) {
-			IDbError.handleError(error);
-			return null;
-		}
-	}
+  /**
+   * Get the value of the index field for a data object.
+   * @param data The data object.
+   * @returns The value of the index field, or null if not found.
+   */
+  indexValue(data: Record<string, any>): any | null {
+    try {
+      this.#checkError(!this.#checkAccess(), "Access denied", "ACCESS_DENIED");
+      const indexName = this.idbBase
+        .collection(this.collectionName)
+        .getIndexName();
+      this.#checkError(
+        !indexName,
+        "Index not found for collection",
+        "INDEX_NOT_FOUND",
+      );
+      this.#checkError(
+        !(indexName in data),
+        `Index field ${indexName} not found in data`,
+        "FIELD_NOT_FOUND",
+      );
+      return data[indexName];
+    } catch (error) {
+      IDbError.handleError(error);
+      return null;
+    }
+  }
 
-	/**
-	 * Format a field value for display, using the field type and schema.
-	 * @param fieldName The field name.
-	 * @param data The data object.
-	 * @returns The formatted value as a string.
-	 */
-	format(fieldName: keyof T, data: T): string {
-		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			this.#checkError(
-				!(fieldName in data),
-				`Field ${String(fieldName)} not found in data`,
-				'FIELD_NOT_FOUND'
-			);
-			const fieldInfo = this.idbBase.parseCollectionFieldName(
-				this.collectionName,
-				fieldName as string
-			);
-			this.#checkError(
-				!fieldInfo,
-				`Field ${String(fieldName)} not found in collection`,
-				'FIELD_NOT_FOUND'
-			);
+  /**
+   * Format a field value for display, using the field type and schema.
+   * @param fieldName The field name.
+   * @param data The data object.
+   * @returns The formatted value as a string.
+   */
+  format(fieldName: keyof T, data: T): string {
+    try {
+      this.#checkError(!this.#checkAccess(), "Access denied", "ACCESS_DENIED");
+      this.#checkError(
+        !(fieldName in data),
+        `Field ${String(fieldName)} not found in data`,
+        "FIELD_NOT_FOUND",
+      );
+      const fieldInfo = this.idbBase.parseCollectionFieldName(
+        this.collectionName,
+        fieldName as string,
+      );
+      this.#checkError(
+        !fieldInfo,
+        `Field ${String(fieldName)} not found in collection`,
+        "FIELD_NOT_FOUND",
+      );
 
-				switch (fieldInfo?.fieldType) {
-					case 'id':
-						return String(data[fieldName]);
-					case 'any':
-						return String(data[fieldName]);
-					case 'date':
-						return this.#formatDateField(data[fieldName]);
-					case 'text':
-					case 'text-tiny':
-					case 'text-short':
-					case 'text-medium':
-					case 'text-long':
-					case 'text-area':
-						return this.#formatTextField(data[fieldName], fieldInfo.fieldType);
-					case 'number':
-						return this.#formatNumberField(data[fieldName]);
-					case 'boolean':
-						return this.#formatBooleanField(data[fieldName]);
-					case 'datetime':
-						return this.#formatDateTimeField(data[fieldName]);
-					case 'url':
-						return this.#formatUrlField(data[fieldName]);
-					case 'email':
-						return this.#formatEmailField(data[fieldName]);
-					case 'phone':
-						return this.#formatPhoneField(data[fieldName]);
-					case 'time':
-						return this.#formatTimeField(data[fieldName]);
-					case 'password':
-						return this.#formatPasswordField(data[fieldName]);
-					default:
-						return String(data[fieldName]);
-				}
-		} catch (error) {
-			IDbError.handleError(error);
-			return '';
-		}
-	}
+      switch (fieldInfo?.fieldType) {
+        case "id":
+          return String(data[fieldName]);
+        case "any":
+          return String(data[fieldName]);
+        case "date":
+          return this.#formatDateField(data[fieldName]);
+        case "text":
+        case "text-tiny":
+        case "text-short":
+        case "text-medium":
+        case "text-long":
+        case "text-area":
+          return this.#formatTextField(data[fieldName], fieldInfo.fieldType);
+        case "number":
+          return this.#formatNumberField(data[fieldName]);
+        case "boolean":
+          return this.#formatBooleanField(data[fieldName]);
+        case "datetime":
+          return this.#formatDateTimeField(data[fieldName]);
+        case "url":
+          return this.#formatUrlField(data[fieldName]);
+        case "email":
+          return this.#formatEmailField(data[fieldName]);
+        case "phone":
+          return this.#formatPhoneField(data[fieldName]);
+        case "time":
+          return this.#formatTimeField(data[fieldName]);
+        case "password":
+          return this.#formatPasswordField(data[fieldName]);
+        default:
+          return String(data[fieldName]);
+      }
+    } catch (error) {
+      IDbError.handleError(error);
+      return "";
+    }
+  }
 
-	/**
-	 * Get a set of data-* attributes for a field, for use in form generation or UI.
-	 * @param fieldName The field name.
-	 * @param data The data object.
-	 * @returns An object with data-* attributes for the field. 
-	 */
-	getInputDataSet(
-		fieldName: string,
-		data: T
-	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string
-	> {
-		const fieldInfo = this.idbBase.parseCollectionFieldName(
-			this.collectionName,
-			fieldName as string
-		);
-		const fieldType = fieldInfo?.fieldType ?? '';
-		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.idbBase.collection(this.collectionName).getIndexName();
+  /**
+   * Get a set of data-* attributes for a field, for use in form generation or UI.
+   * @param fieldName The field name.
+   * @param data The data object.
+   * @returns An object with data-* attributes for the field.
+   */
+  getInputDataSet(
+    fieldName: string,
+    data: T,
+  ): Record<
+    `data-${"collection" | "collectionId" | "fieldName" | "fieldType" | "fieldArgs"}`,
+    string
+  > {
+    const fieldInfo = this.idbBase.parseCollectionFieldName(
+      this.collectionName,
+      fieldName as string,
+    );
+    const fieldType = fieldInfo?.fieldType ?? "";
+    const fieldArgs = fieldInfo?.fieldArgs?.join(" ") ?? "";
+    const indexName = this.idbBase
+      .collection(this.collectionName)
+      .getIndexName();
 
-		return {
-			'data-collection': this.collectionName,
-			'data-collectionId': indexName && data?.[indexName] !== undefined ? String(data?.[indexName]) : '',
-			'data-fieldName': String(fieldName),
-			'data-fieldType': fieldType,
-			'data-fieldArgs': fieldArgs
-		};
-	}
+    return {
+      "data-collection": this.collectionName,
+      "data-collectionId":
+        indexName && data?.[indexName] !== undefined
+          ? String(data?.[indexName])
+          : "",
+      "data-fieldName": String(fieldName),
+      "data-fieldType": fieldType,
+      "data-fieldArgs": fieldArgs,
+    };
+  }
 
-	/**
-	 * Iterate over an array field and return an array of IDbForge objects for each element.
-	 * @param fieldName The field name.
-	 * @param data The array data.
-	 * @returns An array of IDbForge objects. 
-	 */
-	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
+  /**
+   * Iterate over an array field and return an array of IDbForge objects for each element.
+   * @param fieldName The field name.
+   * @param data The array data.
+   * @returns An array of IDbForge objects.
+   */
+  iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] {
+    const fieldInfo = this.idbBase.parseCollectionFieldName(
+      this.collectionName,
+      fieldName,
+    );
+    if (fieldInfo?.is !== "array" || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((_, idx) => ({
+      ...fieldInfo,
+      fieldName: `${String(fieldName)}[${idx}]`,
+    }));
+  }
 
-		const fieldInfo = this.idbBase.parseCollectionFieldName(this.collectionName, fieldName);
-		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
-			return [];
-		}
-		return data.map((_, idx) => ({ ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]` }));
-	}
+  /**
+   * Iterate over an object field and return an array of IDbForge objects for each property.
+   * @param fieldName The field name.
+   * @param data The object data.
+   * @returns An array of IDbForge objects.
+   */
+  iterateObjectField(
+    fieldName: keyof TplFields,
+    data: Record<string, unknown>,
+  ): IDbForge[] {
+    const fieldInfo = this.idbBase.parseCollectionFieldName(
+      this.collectionName,
+      fieldName,
+    );
+    if (
+      fieldInfo?.is !== "object" ||
+      typeof data !== "object" ||
+      data === null
+    ) {
+      return [];
+    }
+    return Object.keys(data).map((key) => ({
+      ...fieldInfo,
+      fieldName: `${String(fieldName)}.${key}`,
+    }));
+  }
 
-	/**
-	 * Iterate over an object field and return an array of IDbForge objects for each property.
-	 * @param fieldName The field name.
-	 * @param data The object data.
-	 * @returns An array of IDbForge objects.
-	 */
-	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
+  /**
+   * Internal: Format a number field for display.
+   */
+  #formatNumberField(value: number): string {
+    return value !== undefined && value !== null ? value.toString() : "";
+  }
 
-		const fieldInfo = this.idbBase.parseCollectionFieldName(this.collectionName, fieldName);
-		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
-			return [];
-		}
-		return Object.keys(data).map((key) => ({ ...fieldInfo, fieldName: `${String(fieldName)}.${key}` }));
-	}
+  /**
+   * Internal: Format a text field for display, with length limits by type.
+   */
+  #formatTextField(value: unknown, type: string): string {
+    const lengths = {
+      "text-tiny": 10,
+      "text-short": 20,
+      "text-medium": 30,
+      "text-long": 40,
+      "text-area": 100,
+      text: 50,
+    };
+    const str = typeof value === "string" ? value : String(value ?? "");
+    const maxLength = lengths[type as keyof typeof lengths] || str.length;
+    return str.substring(0, maxLength);
+  }
 
-		/**
-		 * Internal: Format a number field for display.
-		 */
-		#formatNumberField(value: number): string {
-			return value !== undefined && value !== null ? value.toString() : '';
-		}
+  /**
+   * Internal: Format a boolean field for display.
+   */
+  #formatBooleanField(value: unknown): string {
+    if (typeof value === "boolean") return value ? "✔" : "✘";
+    if (typeof value === "string") return value === "true" ? "✔" : "✘";
+    return "";
+  }
 
-		/**
-		 * Internal: Format a text field for display, with length limits by type.
-		 */
-		#formatTextField(value: unknown, type: string): string {
-			const lengths = {
-				'text-tiny': 10,
-				'text-short': 20,
-				'text-medium': 30,
-				'text-long': 40,
-				'text-area': 100,
-				'text': 50
-			};
-			const str = typeof value === 'string' ? value : String(value ?? '');
-			const maxLength = lengths[type as keyof typeof lengths] || str.length;
-			return str.substring(0, maxLength);
-		}
+  /**
+   * Internal: Format a date field for display.
+   */
+  #formatDateField(value: unknown): string {
+    if (!value) return "";
+    const d = new Date(value as string);
+    return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+  }
 
-		/**
-		 * Internal: Format a boolean field for display.
-		 */
-		#formatBooleanField(value: unknown): string {
-			if (typeof value === 'boolean') return value ? '✔' : '✘';
-			if (typeof value === 'string') return value === 'true' ? '✔' : '✘';
-			return '';
-		}
+  /**
+   * Internal: Format a datetime field for display.
+   */
+  #formatDateTimeField(value: unknown): string {
+    if (!value) return "";
+    const d = new Date(value as string);
+    return isNaN(d.getTime()) ? "" : d.toLocaleString();
+  }
 
-		/**
-		 * Internal: Format a date field for display.
-		 */
-		#formatDateField(value: unknown): string {
-			if (!value) return '';
-			const d = new Date(value as string);
-			return isNaN(d.getTime()) ? '' : d.toLocaleDateString();
-		}
+  /**
+   * Internal: Format a url field for display.
+   */
+  #formatUrlField(value: unknown): string {
+    if (!value) return "";
+    return String(value);
+  }
 
-		/**
-		 * Internal: Format a datetime field for display.
-		 */
-		#formatDateTimeField(value: unknown): string {
-			if (!value) return '';
-			const d = new Date(value as string);
-			return isNaN(d.getTime()) ? '' : d.toLocaleString();
-		}
+  /**
+   * Internal: Format an email field for display.
+   */
+  #formatEmailField(value: unknown): string {
+    if (!value) return "";
+    return String(value);
+  }
 
-		/**
-		 * Internal: Format a url field for display.
-		 */
-		#formatUrlField(value: unknown): string {
-			if (!value) return '';
-			return String(value);
-		}
+  /**
+   * Internal: Format a phone field for display.
+   */
+  #formatPhoneField(value: unknown): string {
+    if (!value) return "";
+    return String(value);
+  }
 
-		/**
-		 * Internal: Format an email field for display.
-		 */
-		#formatEmailField(value: unknown): string {
-			if (!value) return '';
-			return String(value);
-		}
+  /**
+   * Internal: Format a time field for display.
+   */
+  #formatTimeField(value: unknown): string {
+    if (!value) return "";
+    return String(value);
+  }
 
-		/**
-		 * Internal: Format a phone field for display.
-		 */
-		#formatPhoneField(value: unknown): string {
-			if (!value) return '';
-			return String(value);
-		}
+  /**
+   * Internal: Format a password field for display (mask).
+   */
+  #formatPasswordField(value: unknown): string {
+    if (!value) return "";
+    return "••••••••";
+  }
 
-		/**
-		 * Internal: Format a time field for display.
-		 */
-		#formatTimeField(value: unknown): string {
-			if (!value) return '';
-			return String(value);
-		}
+  /**
+   * Internal: Check if access is allowed (override for custom logic).
+   * @returns True if access is allowed.
+   */
+  #checkAccess(): boolean {
+    // Implement access check logic here
+    return true;
+  }
 
-		/**
-		 * Internal: Format a password field for display (mask).
-		 */
-		#formatPasswordField(value: unknown): string {
-			if (!value) return '';
-			return '••••••••';
-		}
-
-	/**
-	 * Internal: Check if access is allowed (override for custom logic).
-	 * @returns True if access is allowed.
-	 */
-	#checkAccess(): boolean {
-		// Implement access check logic here
-		return true;
-	}
-
-	/**
-	 * Internal: Throw an error if a condition is met.
-	 * @param condition The condition to check.
-	 * @param message The error message.
-	 * @param code The error code.
-	 */
-	#checkError(condition: boolean, message: string, code: string): void {
-		if (condition) {
-			IDbError.throwError(message, code);
-		}
-	}
+  /**
+   * Internal: Throw an error if a condition is met.
+   * @param condition The condition to check.
+   * @param message The error message.
+   * @param code The error code.
+   */
+  #checkError(condition: boolean, message: string, code: string): void {
+    if (condition) {
+      IDbError.throwError(message, code);
+    }
+  }
 }

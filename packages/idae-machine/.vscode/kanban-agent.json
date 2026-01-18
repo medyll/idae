@@ -1,0 +1,128 @@
+[
+  {
+    "id": "task-1768685916720-lnqsq1qjo",
+    "title": "Créer tests unitaires pour IDbCollection.ts",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768689558133-wt8mj2m3c",
+    "title": "Compléter la documentation utilisateur et développeur",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-n1hghssm0",
+    "title": "List and audit all UI/form components",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-kj6k8ldl1",
+    "title": "Créer tests unitaires pour IDbCollectionFieldForge.ts",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768689558133-u726qqgdg",
+    "title": "Augmenter la couverture de tests sur modules critiques",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-qqjr729va",
+    "title": "Add English role comments to each component",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-19o15k1ft",
+    "title": "Créer tests unitaires pour IDbCollectionValues.ts",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768689558133-ivy21howm",
+    "title": "Renforcer l’intégration front/back (Svelte <-> services TS)",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-4x8tj73y8",
+    "title": "Check and update Svelte 5 syntax",
+    "status": "in_review",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-2coaa3g7d",
+    "title": "Créer tests unitaires pour IDbError.ts",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-rdbrr6ii1",
+    "title": "Create demo page in /routes/+page.svelte",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-x3p2ixxjk",
+    "title": "Créer tests unitaires pour IDbFieldType.ts",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-aukh1g12k",
+    "title": "Document props/events/usage for each component",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-fk3i869un",
+    "title": "Créer tests unitaires pour IDbFormValidate.ts",
+    "status": "done",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690348700-222oksqg1",
+    "title": "Test all components in demo page",
+    "status": "ready",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-bfvo80d5t",
+    "title": "Créer tests unitaires pour IDbValidationError.ts",
+    "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768690940122-x11oo0jh7",
+    "title": "Fix missing files/types in FieldValue.svelte and finalize Svelte 5 migration",
+    "status": "ready",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768685916720-hd1xb8bv5",
+    "title": "Créer tests unitaires pour types.ts",
+    "status": "done",
+    "order": 8,
+    "createdBy": "agent"
+  }
+]

@@ -126,16 +126,16 @@ export class MachineForge {
     const fieldArgs = extractedArgs?.args;
     switch (type) {
       case "array":
-        fieldType = extractAfter("array-of-", fieldRule);
+        fieldType = extractAfter("array-of-", fieldRule)?.trim();
         break;
       case "object":
-        fieldType = extractAfter("object-", fieldRule);
+        fieldType = extractAfter("object-", fieldRule)?.trim();
         break;
       case "fk":
-        fieldType = "fk-" + extractAfter("fk-", fieldRule);
+        fieldType = ("fk-" + extractAfter("fk-", fieldRule))?.trim();
         break;
       case "primitive":
-        fieldType = extractedArgs?.piece;
+        fieldType = extractedArgs?.piece?.trim();
         break;
     }
     return { fieldType, fieldRule, fieldArgs, is: type };

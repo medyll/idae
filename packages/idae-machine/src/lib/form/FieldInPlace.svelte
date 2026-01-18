@@ -1,3 +1,4 @@
+// Inline editable field for a collection item. Allows editing a single field directly in the context of a list or form.
 <script lang="ts">
 	import { Icon } from '@medyll/idae-slotui-svelte';
 

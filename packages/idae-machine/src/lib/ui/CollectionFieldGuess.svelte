@@ -1,3 +1,4 @@
+// Button to trigger AI-based value guessing for a specific field in a collection. Calls a guesser and emits the result.
 <!-- CollectionFieldGuess.svelte -->
 <script lang="ts">
 	import { Guesser } from '$lib/tools/Guesser ';

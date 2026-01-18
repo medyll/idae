@@ -10,6 +10,7 @@
         code: K;
         multiple: boolean;
         rules: CombinedArgs;
+	// Displays a list of reverse foreign keys for a given collection. Useful for showing related entities referencing the current item.
     }; };
     } 
  -->
@@ -24,7 +25,7 @@
 		collection:      TplCollectionName;
 		collectionId?:   any;
 		where?:          Where;
-		children:        Snippet<[{ collection: string; template: Tpl }]>;
+		children?:       Snippet<[{ collection: string; template: Tpl }]>;
 		showTitle?:      boolean | string;
 		component?:      typeof SvelteComponent;
 		componentProps?: Record<string, any>;

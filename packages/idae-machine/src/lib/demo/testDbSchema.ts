@@ -1,34 +1,12 @@
-import type {
-	DbCharacterLink,
-	DBAgent,
-	DbAgentOf,
-	DbAgentPrompt,
-	DbBook,
-	DbBookPrompts,
-	DbCategory,
-	DbChapter,
-	DbCharacter,
-	DbCharacterChapterStatus,
-	DbChat,
-	DbTags,
-	DbWritingGoal,
-	PromptType,
-	DbSpaces
-} from '$types/db';
-import type { DBMessage } from '$types/db';
-import type { SettingsType } from '$types/settings.js';
-import type { UserType } from '$types/user';
-import {
-	createIdbqDb,
-	type IdbqModel,
-	type Tpl,
-	type DbFieldTypes,
-	type TplFieldType
+import type { 
+	DBAgent, 
+	DbAgentPrompt, 
+} from '$types/db'; 
+import { 
+	type IdbqModel, 
 } from '@medyll/idae-idbql';
 
-
-import type { FieldType, getFieldTypes, registerFieldType } from '../db/fieldTypes.js';
-import type { DbDataModel, DbDataModelTs } from '../db/dataModel.js';
+ 
 
 
 // Schéma de test (copie explicite de schemeModelDb)
@@ -54,13 +32,13 @@ export const schemeModelTestDb = {
  				relatedAgents: 'array-of-fk-agent.id', // fk multiple
  				status: 'text (required readonly)'
  			},
- 			fks: {
- 				agentPrompt: {
- 					code: 'agentPrompt',
- 					rules: 'readonly private',
- 					multiple: true
- 				}
- 			}
+			fks: {
+			   agentPrompt: {
+					code: 'agentPrompt',
+					rules: 'readonly private',
+					multiple: true
+				}
+			}
  		}
  	},
 	agentPrompt: {
@@ -80,15 +58,6 @@ export const schemeModelTestDb = {
 			},
 			fks: {}
 		}
-	}
-	// Ajoute ici d'autres collections si besoin pour les tests
-} satisfies DbDataModel;
-
-export const schemeModelTest: IdbqModel = {
-	...schemeModelTestDb
-} as unknown as IdbqModel<typeof schemeModelTestDb>;
-
-export type DataModelTestFinal = DbDataModelTs<typeof schemeModelTestDb>;
-
-const idbqStore = createIdbqDb<typeof schemeModelTest>(schemeModelTest, 99);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine-test');
+	} 
+} satisfies IdbqModel; 
+ 

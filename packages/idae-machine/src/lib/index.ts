@@ -39,6 +39,6 @@ export * from '$lib/main/machine/IDbValidationError.js';
 export * from '$lib/main/machine/IDbFormValidate.js';
 export * from '$lib/main/machine/IDbError.js';
 export * from '$lib/main/machine/IDbCollectionValues.js';
-export * from '$lib/main/machine/IDbCollectionFieldValues.js';
+export * from '$lib/main/machine/IDbFieldType.js';
 export * from '$lib/main/machine/IDbCollectionFieldForge.js';
 export * from '$lib/main/machine/IDbCollection.js';

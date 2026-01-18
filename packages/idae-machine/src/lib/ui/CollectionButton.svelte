@@ -2,6 +2,7 @@
     Component button to open a CreateUpdateShow window for a specific collection.    
     D:\boulot\python\wollama\src\components\form\CollectionButton.svelte
  -->
+// Button component to open a Create/Update window for a specific collection. Used to trigger CRUD actions for a collection item.
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';

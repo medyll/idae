@@ -1,3 +1,4 @@
+// Displays a grid or list of items from a collection, with clickable entries to open details or edit views.
 <script lang="ts" generics="COL = Record<string,any>">
 	import {
 		type MenuListProps,

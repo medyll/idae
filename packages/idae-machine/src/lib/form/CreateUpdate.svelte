@@ -1,3 +1,4 @@
+// Form component for creating, updating, or showing a collection item. Handles validation and field rendering.
 <!-- 
     Component CreateUpdate :  to open a CreateUpdateShow window for a specific collection.
     Button validate and cancel is in the Window component.
@@ -5,10 +6,24 @@
 
 <script lang="ts" generics="COL = Record<string,any>">
 	
-	import { IDbFormValidate } from '$lib/main/IDbFormValidate';
-	import type { CreateUpdateProps } from './types';
-	import CollectionReverseFks from './CollectionReverseFks.svelte';
-	import FieldInput from './FieldValue.svelte';
+	import { IDbFormValidate } from '$lib/main/machine/IDbFormValidate.js';
+	// Update the import path if the file exists elsewhere, for example:
+		// import type { CreateUpdateProps } from '$lib/form/types.ts';
+	// Or, if the type is simple, define it inline as a temporary fix:
+		type CreateUpdateProps = {
+			collection: string;
+			data?: Record<string, any>;
+			dataId?: string | number;
+			mode?: 'create' | 'update' | 'show';
+			withData?: Record<string, any>;
+			showFields?: string[];
+			inPlaceEdit?: boolean | string[];
+			displayMode?: string;
+			afterCreate?: () => void;
+			showFks?: boolean;
+		};
+	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
+	import FieldInput from '$lib/form/FieldValue.svelte';
  	import {machine} from '$lib/main/machine.js';
 
 	let {
@@ -25,28 +40,26 @@
 	}: CreateUpdateProps = $props();
 	
 	
-	let inputForm = `form-${String(collection)}-${mode}`;
-
-	let collections = machine.collections ;
+	let collections = machine.collections;
 	let store = machine.store;
-	let indexName = collections.getIndexName(collection);
 
-	let formFields = showFields
+
+
+let inputForm = `form-${String(collection)}-${mode}`;
+let indexName = collections.collection(collection).getIndexName();
+let formFields = showFields
 		? Object.fromEntries(
 				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
 			)
 		: (collections.parseRawCollection(collection) ?? {});
-
-	let qy: any = $derived(dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
-
-	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(qy)[0] });
+let qy: any = $derived(() => dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
+let formData = { ...data, ...withData, ...(Array.isArray(qy) ? qy[0] : {}) };
+let ds = Object.keys(data).length > 0 ? data : (Array.isArray(qy) ? qy[0] : {});
+let formValidator = new IDbFormValidate(collection);
 
 	$effect.pre(() => {
 		setFormDataDefaultFieldValues();
 	});
-	let ds = Object.keys(data).length > 0 ? data : qy[0];
-
-	let formValidator = new IDbFormValidate(collection);
 	let validationErrors: Record<string, string> = {};
 
 	const validateFormData = (formData: Record<string, any> = {}) => {
@@ -59,7 +72,7 @@
 	};
 
 	export const submit = async (event: FormDataEvent) => {
-		if (!validateFormData($state.snapshot(formData))) {
+		if (!validateFormData(formData)) {
 			Object.entries(validationErrors).forEach(([fieldName, errorMessage]) => {
 				// Trouver l'élément input correspondant dans le formulaire
 				const inputElement = document.querySelector(
@@ -88,7 +101,7 @@
 			});
 			return;
 		}
-		let datadb = $state.snapshot(formData);
+		let datadb = formData;
 		switch (mode) {
 			case 'create':
 				if (!dataId) {
@@ -150,7 +163,7 @@
 				editInPlace={inPlaceEdit === true ||
 					(Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
 				bind:data={formData}
-				{inputForm}
+				inputForm={inputForm}
 			/>
 		{/each}
 	</div>
