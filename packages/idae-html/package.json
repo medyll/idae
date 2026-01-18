@@ -1,7 +1,7 @@
 {
 	"name": "@medyll/idae-html",
 	"description": "HTML utilities and helpers for dynamic content generation and manipulation.",
-	"version": "0.146.0",
+	"version": "0.147.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
