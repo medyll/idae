@@ -15,8 +15,7 @@
     } 
  -->
 <script lang="ts">
-	import { MachineDb } from '$lib/main/machineDb.js';
-	import { schemeModelDb, idbqlState } from '$lib/db/dbSchema.js';
+	import { machine } from '$lib/main/machine.js';
 	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
 	import type { Snippet, SvelteComponent } from 'svelte';
@@ -31,7 +30,7 @@
 		componentProps?: Record<string, any>;
 	};
 	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
-	const dbFields = new MachineDb(schemeModelDb);
+	const dbFields = machine.collections;
 	const fks = $derived(dbFields.reverseFks(collection));
 
 	function getTitle() {

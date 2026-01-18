@@ -13,7 +13,7 @@ import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 import FieldValue from '$lib/form/FieldValue.svelte';
 import { schemeModelTestDb } from '$lib/demo/testDbSchema.js';
 
-machine.init({ dbName: 'demo-db', version: 1, model: schemeModelTestDb });
+machine.init({ dbName: 'demo-db', version: 5, model: schemeModelTestDb });
 machine.start();
 </script>
 
@@ -58,7 +58,7 @@ machine.start();
 
 <section>
 	<h2>CreateUpdate</h2>
-	<CreateUpdate collection="agent" mode="create" showFields={["name", "code"]} />
+	<CreateUpdate collection="agent" mode="create"   />
 </section>
 
 <section>

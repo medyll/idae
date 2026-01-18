@@ -1,4 +1,4 @@
-// Form component for creating, updating, or showing a collection item. Handles validation and field rendering.
+
 <!-- 
     Component CreateUpdate :  to open a CreateUpdateShow window for a specific collection.
     Button validate and cancel is in the Window component.
@@ -8,20 +8,20 @@
 	
 	import { IDbFormValidate } from '$lib/main/machine/IDbFormValidate.js';
 	// Update the import path if the file exists elsewhere, for example:
-		// import type { CreateUpdateProps } from '$lib/form/types.ts';
+	// import type { CreateUpdateProps } from '$lib/form/types.ts';
 	// Or, if the type is simple, define it inline as a temporary fix:
-		type CreateUpdateProps = {
-			collection: string;
-			data?: Record<string, any>;
-			dataId?: string | number;
-			mode?: 'create' | 'update' | 'show';
-			withData?: Record<string, any>;
-			showFields?: string[];
-			inPlaceEdit?: boolean | string[];
-			displayMode?: string;
-			afterCreate?: () => void;
-			showFks?: boolean;
-		};
+	type CreateUpdateProps = {
+		collection: string;
+		data?: Record<string, any>;
+		dataId?: string | number;
+		mode?: 'create' | 'update' | 'show';
+		withData?: Record<string, any>;
+		showFields?: string[];
+		inPlaceEdit?: boolean | string[];
+		displayMode?: string;
+		afterCreate?: () => void;
+		showFks?: boolean;
+	};
 	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
 	import FieldInput from '$lib/form/FieldValue.svelte';
  	import {machine} from '$lib/main/machine.js';
@@ -40,22 +40,39 @@
 	}: CreateUpdateProps = $props();
 	
 	
-	let collections = machine.collections;
-	let store = machine.store;
 
+	const collections = machine.collections;
+	const store = machine.store;
 
-
-let inputForm = `form-${String(collection)}-${mode}`;
-let indexName = collections.collection(collection).getIndexName();
-let formFields = showFields
+	const inputForm = $derived(() => `form-${String(collection)}-${mode}`);
+	const indexName = $derived(() => collections.collection(collection).getIndexName());
+	const formFields = $derived(() => showFields
 		? Object.fromEntries(
-				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
-			)
-		: (collections.parseRawCollection(collection) ?? {});
-let qy: any = $derived(() => dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
-let formData = { ...data, ...withData, ...(Array.isArray(qy) ? qy[0] : {}) };
-let ds = Object.keys(data).length > 0 ? data : (Array.isArray(qy) ? qy[0] : {});
-let formValidator = new IDbFormValidate(collection);
+			Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
+		  )
+		: (collections.parseRawCollection(collection) ?? {}));
+	const qy = $derived(() => dataId && indexName() ? store[collection].where({ [indexName()]: { eq: dataId } }) : {});
+	function getFirstOrEmpty(val: unknown): Record<string, any> {
+		return Array.isArray(val) && val.length > 0 ? val[0] : {};
+	}
+
+	const initialData = $derived(() => {
+		const base: Record<string, any> = { ...data, ...withData, ...getFirstOrEmpty(qy()) };
+		for (const key of Object.keys(formFields())) {
+			if (!(key in base)) base[key] = undefined;
+		}
+		return base;
+	});
+	let formData: Record<string, any> = $state({});
+
+	$effect(() => {
+		const next = initialData();
+		for (const key of Object.keys(next)) {
+			formData[key] = next[key];
+		}
+	});
+	const ds = $derived(() => Object.keys(data).length > 0 ? data : getFirstOrEmpty(qy()));
+	const formValidator = $derived(() => new IDbFormValidate(collection));
 
 	$effect.pre(() => {
 		setFormDataDefaultFieldValues();
@@ -63,8 +80,8 @@ let formValidator = new IDbFormValidate(collection);
 	let validationErrors: Record<string, string> = {};
 
 	const validateFormData = (formData: Record<string, any> = {}) => {
-		const { isValid, errors } = formValidator.validateForm(formData, {
-			ignoreFields: mode == 'create' ? [indexName] : undefined
+		const { isValid, errors } = formValidator().validateForm(formData, {
+			ignoreFields: mode == 'create' ? [indexName()] : undefined
 		});
 		validationErrors = errors;
 
@@ -118,7 +135,7 @@ let formValidator = new IDbFormValidate(collection);
 	};
 
 	function setFormDataDefaultFieldValues() {
-		Object.entries(formFields).forEach(([fieldName, field]) => {
+		Object.entries(formFields()).forEach(([fieldName, field]) => {
 			if (formData[fieldName] === undefined && getDefaultValue(field?.fieldType)) {
 				formData[fieldName] = getDefaultValue(field?.fieldType);
 			}
@@ -142,8 +159,8 @@ let formValidator = new IDbFormValidate(collection);
 </script>
 
 <form
-	id={inputForm}
-	name={inputForm}
+	id={inputForm()}
+	name={inputForm()}
 	onchange={(event) => {
 		console.log('Form changed', event);
 	}}
@@ -163,7 +180,7 @@ let formValidator = new IDbFormValidate(collection);
 				editInPlace={inPlaceEdit === true ||
 					(Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
 				bind:data={formData}
-				inputForm={inputForm}
+				inputForm={inputForm()}
 			/>
 		{/each}
 	</div>

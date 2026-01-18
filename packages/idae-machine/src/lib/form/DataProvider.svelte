@@ -1,4 +1,4 @@
-// Provides collection data and context to child components. Used to wrap lists or forms with data access.
+<!-- // Provides collection data and context to child components. Used to wrap lists or forms with data access. -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';

@@ -1,4 +1,4 @@
-// Displays and optionally edits a single field value for a collection item. Supports various field types and modes.
+<!-- // Displays and optionally edits a single field value for a collection item. Supports various field types and modes. -->
 <!-- Component: CollectionFieldValue.svelte (ancien nom CollectionFieldInput.svelte) -->
 <script lang="ts" generics="COL = Record<string,any>">
 	// Importation des types et composants nécessaires 
@@ -37,15 +37,32 @@
 	let _data = getContext('data');
 	data = data ?? ({} as Record<string, any>);
 
-	// Svelte 5: use derived for all prop-dependent values
-	const fieldForge = $derived(() => machine.collections.collection(collection).fieldForge(String(fieldName), data));
-	const fieldType = $derived(() => fieldForge.fieldType);
-	const fieldArgs = $derived(() => fieldForge.fieldArgs ?? []);
-	const htmlInputType = $derived(() => fieldForge.htmlInputType);
-	const inputDataSet = $derived(() => fieldForge.inputDataSet ?? {});
-	const format = $derived(() => fieldForge.format);
-	const collectionFieldValues = $derived(() => machine.collections.collection(collection).collectionValues());
-	const inputDataset = $derived(() => collectionFieldValues.getInputDataSet(fieldName, data));
+
+
+	function fieldForge() {
+		return machine.collections.collection(collection).fieldForge(String(fieldName), data);
+	}
+	function fieldType() {
+		return fieldForge().fieldType;
+	}
+	function fieldArgs() {
+		return fieldForge().fieldArgs ?? [];
+	}
+	function htmlInputType() {
+		return fieldForge().htmlInputType;
+	}
+	function inputDataSet() {
+		return fieldForge().inputDataSet ?? {};
+	}
+	function format() {
+		return fieldForge().format;
+	}
+	function collectionFieldValues() {
+		return machine.collections.collection(collection).collectionValues();
+	}
+	function inputDataset() {
+		return collectionFieldValues().getInputDataSet(fieldName, data);
+	}
 
 
 	$effect(() => {
@@ -56,18 +73,27 @@
 	});
 
 
-	const isPrivate = $derived(() => fieldArgs.includes('private'));
-	const required = $derived(() => fieldArgs.includes('required'));
-	const readonly = $derived(() => fieldArgs.includes('readonly'));
-	const finalArgs = $derived(() => ({
-		id: String(fieldName),
-		name: String(fieldName),
-		form: inputForm,
-		placeholder: `${String(fieldName)} ${htmlInputType}`,
-		required,
-		readonly,
-		...inputDataSet
-	}));
+	function isPrivate() {
+		return Array.isArray(fieldArgs()) && (fieldArgs() as string[]).includes('private');
+	}
+	function required() {
+		return Array.isArray(fieldArgs()) && (fieldArgs() as string[]).includes('required');
+	}
+	function readonly() {
+		return Array.isArray(fieldArgs()) && (fieldArgs() as string[]).includes('readonly');
+	}
+
+	function finalArgs() {
+		return {
+			id: String(fieldName),
+			name: String(fieldName),
+			form: inputForm,
+			placeholder: `${String(fieldName)} ${htmlInputType()}`,
+			required: required(),
+			readonly: readonly(),
+			...inputDataSet()
+		};
+	}
 
 	/**
 	 * Fonction pour obtenir la position de l'étiquette
@@ -80,8 +106,9 @@
 		return position;
 	}
 
-	// Position de l'étiquette dérivée
-	const labelPosition = $derived(() => getLabelPosition(showLabel));
+	function labelPosition() {
+		return getLabelPosition(showLabel);
+	}
 
 	/**
 	 * Fonction pour gérer la suggestion de valeur
@@ -100,47 +127,49 @@
 	// TODO: Fix or remove iterateArray/iterateObject if needed for Svelte 5
 </script>
 
-{#if !isPrivate}
-	<div class="cell relative flex flex-col gap-2 wrapper-{fieldType}">
-		{#if fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
-			<label form={inputForm} for={String(fieldName)} class="field-label {labelPosition}">{String(fieldName)}</label>
+{#if !isPrivate()}
+	<div class="cell relative flex flex-col gap-2 wrapper-{fieldType()}">
+		{#if fieldType() !== 'id' && (labelPosition() === 'before' || labelPosition() === 'above')}
+			<label form={inputForm} for={String(fieldName)} class="field-label {labelPosition()}">{String(fieldName)}</label>
 		{/if}
 
 		<div class="field-input flex">
 			{#if mode === 'show'}
 				<div class="flex w-48 gap-2">
-					<div class="flex-1" {...inputDataset}>{format}</div>
+						<div class="flex-1" {...inputDataset()}>
+							{fieldName in data ? format() : ''}
+						</div>
 				</div>
-			{:else if fieldType === 'id'}
+			{:else if fieldType() === 'id'}
 				{#if mode !== 'create'}
-					<input type="hidden" value={data[fieldName] ?? ''} oninput={e => { const t = e.target as HTMLInputElement; if (t) data[fieldName] = t.value; }} {...inputDataset} {...finalArgs} />
+					<input type="hidden" value={data[fieldName] ?? ''} oninput={e => { const t = e.target as HTMLInputElement; if (t) data[fieldName] = t.value; }} {...inputDataset()} {...finalArgs()} />
 				{/if}
-			{:else if fieldType === 'boolean'}
-				<input type="checkbox" checked={!!data[fieldName]} oninput={e => { const t = e.target as HTMLInputElement; if (t) data[fieldName] = t.checked; }} {...inputDataset} {...finalArgs} />
-			{:else if fieldType?.includes('area')}
+			{:else if fieldType() === 'boolean'}
+				<input type="checkbox" checked={!!data[fieldName]} oninput={e => { const t = e.target as HTMLInputElement; if (t) data[fieldName] = t.checked; }} {...inputDataset()} {...finalArgs()} />
+			{:else if fieldType()?.includes('area')}
 				<textarea
 					style="width:100%;max-width:100%;"
 					value={data[fieldName] ?? ''}
 					oninput={e => { const t = e.target as HTMLTextAreaElement; if (t) data[fieldName] = t.value; }}
 					rows="3"
 					class="input h-24"
-					{...inputDataset}
-					{...finalArgs}></textarea>
+					{...inputDataset()}
+					{...finalArgs()}></textarea>
 			{:else}
 				<input
 					style="width: 100%"
 					class="input"
 					value={data[fieldName] ?? ''}
 					oninput={e => { const t = e.target as HTMLInputElement; if (t) data[fieldName] = t.value; }}
-					type={htmlInputType}
-					{...inputDataset}
-					{...finalArgs}
+					type={htmlInputType()}
+					{...inputDataset()}
+					{...finalArgs()}
 				/>
 			{/if}
 		</div>
 
-		{#if labelPosition === 'after' || labelPosition === 'below'}
-			<label form={inputForm} for={String(fieldName)} class="field-label {labelPosition}">{String(fieldName)}</label>
+		{#if labelPosition() === 'after' || labelPosition() === 'below'}
+			<label form={inputForm} for={String(fieldName)} class="field-label {labelPosition()}">{String(fieldName)}</label>
 		{/if}
 	</div>
 {/if}
