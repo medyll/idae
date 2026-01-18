@@ -7,7 +7,7 @@ This repository contains the `@medyll/idae-slotui-svelte` package, a Svelte 5 co
 - **Framework:** SvelteKit (used for development, documentation, and packaging)
 - **Build Tool:** Vite
 - **Language:** TypeScript / JavaScript
-- **Styling:** SCSS (custom compilation), UnoCSS, `@medyll/cssfabric`
+- **Styling:**   UnoCSS 
 
 ## Architecture & Key Patterns
 
@@ -71,6 +71,5 @@ This repository contains the `@medyll/idae-slotui-svelte` package, a Svelte 5 co
   - `$styles`: `src/styles`
 
 ## External Dependencies
-- **@medyll/idae-engine**: Core engine utilities.
-- **@medyll/cssfabric**: CSS framework/library.
-- **UnoCSS**: Utility-first CSS.
+- **UnoCSS**: Utility-first CSS. Tailwind
+- **UnoCSS**: Utility-first CSS. Tailwind

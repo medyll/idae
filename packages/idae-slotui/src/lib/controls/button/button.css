@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@import "../../styles/slotui-mixins.css";
+
+:root {
+  --sld-button-font-size: inherit;
+  --sld-button-radius: var(--sld-radius-small);
+  --sld-button-border-color: var(--sld-color-primary);
+  --sld-button-border-width: 1px;
+  --sld-button-text-align: center;
+  --sld-button-padding: 0;
+  --sld-button-background: var(--sld-color-foreground-alpha-high);
+  --sld-button-contained-background: var(--sld-color-primary-alpha-high);
+  --sld-button-hover-border-color: var(--sld-color-primary);
+  --sld-button-active-border-color: var(--sld-color-secondary);
+  --sld-button-focus-border-color: var(--sld-color-primary);
+  --sld-button-hover-shadow: var(--sld-elevation-3);
+  --sld-button-active-shadow: var(--sld-elevation-4);
+  --sld-button-focus-shadow: var(--sld-elevation-4);
+}
+
+@layer components {
+  .slotui-button,
+  button.slotui-button,
+  input[type="button"].slotui-button,
+  input[type="submit"].slotui-button {
+    @apply inline-flex items-center justify-center transition-all duration-200 overflow-hidden cursor-pointer content-center items-center;
+    @apply slotui-ui-width slotui-ui-tall slotui-elevation;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    text-align: var(--sld-button-text-align);
+    font-size: var(--sld-button-font-size);
+    border-radius: var(--sld-button-radius);
+    color: var(--sld-color-foreground);
+    padding: var(--sld-button-padding);
+    position: relative;
+    background: var(--sld-button-background);
+
+    & .start {
+      position: relative;
+      top: 0;
+      left: 0;
+      max-height: 100%;
+      align-items: center;
+      align-content: center;
+      padding: 0 0.5rem;
+      display: block;
+      &:empty { display: none; }
+    }
+    & .central {
+      @apply slotui-ui-ellipsises;
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      flex: 1;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      justify-items: center;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      text-align: var(--sld-button-text-align, center);
+      overflow: hidden;
+      &:empty { display: none; }
+    }
+    & .end {
+      position: relative;
+      align-items: center;
+      align-content: center;
+      padding: 0 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      &:empty { display: none; }
+      &:hover { background-color: var(--sld-button-action-hover-background); }
+    }
+    &.loading,
+    &[aria-busy="true"] {
+      position: relative;
+      color: transparent;
+      pointer-events: none;
+      &::after {
+        content: " ";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-top: -8px;
+        margin-left: -8px;
+        border: 2px solid var(--sld-color-secondary);
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        animation: button-spinner 0.6s linear infinite;
+      }
+    }
+    &[disabled],
+    &.disabled,
+    &[aria-disabled="true"] {
+      color: var(--color-gray-800);
+      border-color: var(--color-gray-400);
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    &[aria-pressed="true"],
+    &.selected {
+      box-shadow: var(--sld-elevation-3);
+      background-color: var(--sld-color-secondary);
+      font-weight: bold;
+    }
+    & .chip {
+      position: absolute;
+      z-index: 2;
+      height: 3px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 50%;
+      background-color: var(--css-button-chip-color, var(--sld-color-primary));
+      border-radius: var(--sld-radius-large);
+      bottom: 2px;
+    }
+    & .loadingButtonZone {
+      z-index: 10;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 100%;
+      overflow: hidden;
+      align-content: center;
+      justify-content: space-around;
+    }
+    &[variant*="bordered"],
+    &[bordered="true"],
+    &.bordered {
+      color: var(--sld-color-foreground);
+      border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+      box-shadow: var(--sld-elevation-1);
+      background-color: var(--sld-button-background);
+      &:hover {
+        border-color: var(--sld-color-primary);
+        box-shadow: var(--sld-button-hover-shadow);
+      }
+      &:focus,
+      &:active {
+        border-color: var(--sld-button-active-border-color);
+        box-shadow: var(--sld-button-active-shadow);
+      }
+    }
+    &[variant*="contained"],
+    &[contained="true"],
+    &.contained {
+      border: var(--sld-button-border-width) solid var(--sld-button-border-color);
+      color: var(--sld-color-on-primary);
+      background-color: var(--sld-button-contained-background);
+      background-clip: padding-box;
+      box-shadow: var(--sld-elevation-1);
+      &:hover {
+        background-color: var(--sld-color-secondary);
+        color: var(--sld-color-on-secondary);
+      }
+      &:focus,
+      &:active {
+        background-color: var(--sld-color-tertiary);
+        color: var(--sld-color-on-tertiary);
+        box-shadow: var(--sld-button-active-shadow);
+      }
+    }
+    &[variant*="link"],
+    &.link,
+    &[role="link"] {
+      color: var(--sld-color-primary);
+      text-decoration: underline;
+      text-underline-offset: 0.35rem;
+      background-color: transparent;
+      cursor: pointer;
+      border: none;
+      &:hover {
+        text-decoration: underline;
+      }
+      &:focus,
+      &:active {
+        text-decoration: underline;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    &[variant*="naked"],
+    &[naked="true"],
+    &.naked {
+      @apply slotui-data-hover;
+      color: inherit;
+      background-color: transparent;
+      border: 0px solid transparent;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--sld-button-hover-background);
+      }
+      &:active,
+      &:focus {
+        background-color: transparent;
+        border: 0.5px solid transparent;
+        color: inherit;
+      }
+    }
+    &[variant*="flat"],
+    &[flat="true"],
+    &.flat {
+      color: inherit;
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--sld-button-hover-background);
+      }
+      &:active,
+      &:focus {
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        color: inherit;
+      }
+    }
+  }
+}
+
+@keyframes button-spinner {
+  to { transform: rotate(360deg); }
+}

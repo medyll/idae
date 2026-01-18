@@ -9,7 +9,4 @@ $theme-color-tertiary: #9999cc;
 $theme-dark-color-foreground: #f1f1f1;
 $theme-dark-color-background: #27323a;
 $theme-dark-color-paper: #3a3b3b;
-
-// override cssFabric config
-// delivers new css_vars
-@import "../node_modules/@medyll/cssfabric/src/cssfabric/modules/vars.scss";
+ 

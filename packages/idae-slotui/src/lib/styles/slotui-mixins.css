@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* ui-variants */
+  .slotui-ui-variants[variant*="square"] {
+    aspect-ratio: 1/1 !important;
+    height: auto;
+  }
+  .slotui-ui-variants[variant*="rounded"] {
+    border-radius: 50%;
+  }
+
+  /* ui-ellipsises-presets */
+  .slotui-ui-ellipsises[ellipsis],
+  .slotui-ui-ellipsises.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .slotui-ui-ellipsises.ellipsis-line-1 { -webkit-line-clamp: 1; }
+  .slotui-ui-ellipsises.ellipsis-line-2 { -webkit-line-clamp: 2; }
+  .slotui-ui-ellipsises.ellipsis-line-3 { -webkit-line-clamp: 3; }
+  .slotui-ui-ellipsises.ellipsis-line-4 { -webkit-line-clamp: 4; }
+  .slotui-ui-ellipsises.ellipsis-line-5 { -webkit-line-clamp: 5; }
+
+  /* ui-tall-presets (simplifié, à compléter dynamiquement si besoin) */
+  .slotui-ui-tall {
+    min-height: var(--preset-tall-small);
+    height: var(--preset-tall-small);
+    --preset-tall: var(--sld-tall-small);
+  }
+  /* autres variantes tall à générer dynamiquement */
+
+  /* ui-width-presets (simplifié) */
+  .slotui-ui-width {
+    width: var(--sld-width-small);
+    --preset-width: var(--sld-width-small);
+  }
+  /* autres variantes width à générer dynamiquement */
+
+  /* elevation */
+  .slotui-elevation.elevation-0, .slotui-elevation[elevation-0] { box-shadow: var(--sld-elevation-0); }
+  .slotui-elevation.elevation-1, .slotui-elevation[elevation-1] { box-shadow: var(--sld-elevation-1); }
+  .slotui-elevation.elevation-2, .slotui-elevation[elevation-2] { box-shadow: var(--sld-elevation-2); }
+  .slotui-elevation.elevation-3, .slotui-elevation[elevation-3] { box-shadow: var(--sld-elevation-3); }
+  .slotui-elevation.elevation-4, .slotui-elevation[elevation-4] { box-shadow: var(--sld-elevation-4); }
+  .slotui-elevation.elevation-5, .slotui-elevation[elevation-5] { box-shadow: var(--sld-elevation-5); }
+
+  /* data-hover */
+  .slotui-data-hover:hover {
+    border-color: var(--sld-hover-border-color);
+    background-color: var(--sld-background-disabled);
+  }
+}

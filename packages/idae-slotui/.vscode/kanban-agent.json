@@ -1,0 +1,72 @@
+[
+  {
+    "id": "task-1768743222151-fxyyvtkr1",
+    "title": "Install Tailwind CSS and configure for Svelte",
+    "status": "in_review",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-cgo4ioc2j",
+    "title": "Create migration_tailwind.md with migration guidelines",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-ibcy50bai",
+    "title": "Migrate shared SCSS mixins to slotui-mixins.css as Tailwind utilities",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-1dlp9r61h",
+    "title": "Migrate one base component (ex: Badge) to Tailwind CSS",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-vgr8g4sw2",
+    "title": "Migrate one control component (ex: Button) to Tailwind CSS",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-n3s4izpwr",
+    "title": "Document and export per-component CSS files with custom properties",
+    "status": "done",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-if6i6noop",
+    "title": "Preserve attribute selectors and nested CSS in new files",
+    "status": "in_review",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-v7v6dsnuw",
+    "title": "Update build scripts and package exports for new CSS structure",
+    "status": "in_review",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-qnl0tt98e",
+    "title": "Test migrated components visually and functionally",
+    "status": "in_progress",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-hkj7ex4jj",
+    "title": "Commit changes with Conventional Commits",
+    "status": "ready",
+    "order": 10,
+    "createdBy": "agent"
+  }
+]
