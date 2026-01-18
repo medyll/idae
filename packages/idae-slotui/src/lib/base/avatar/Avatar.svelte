@@ -1,12 +1,4 @@
-/**
- * Avatar component
- *
- * Displays a user avatar with optional icon, size, and badge. Supports slot for custom content.
- *
- * @component
- * @example
- * <Avatar icon="mdi:user" size="medium" />
- */
+
 <script module lang="ts">
 	import { widthPreset, iconSize } from "$lib/types/index.js";
 	import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
@@ -90,6 +82,15 @@
 </script>
 
 <script lang="ts">
+	/**
+	 * Avatar component
+	 *
+	 * Displays a user avatar with optional icon, size, and badge. Supports slot for custom content.
+	 *
+	 * @component
+	 * @example
+	 * <Avatar icon="mdi:user" size="medium" />
+	 */
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { ExpandProps } from '$lib/types/index.js'; 
 	import Content from '$lib/utils/content/Content.svelte';

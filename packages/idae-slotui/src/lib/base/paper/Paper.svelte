@@ -1,3 +1,11 @@
+<script module lang="ts">
+	import type { ExpandProps } from '$lib/types/index.js';
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import type { PaperProps } from './type.js';
+
+</script>
+
+<script lang="ts">
 /**
  * Paper component
  *
@@ -8,11 +16,6 @@
  * @example
  * <Paper elevation={2}>Content</Paper>
  */
-<script lang="ts">
-	import type { ExpandProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { PaperProps } from './type.js';
-
 	let {
 		class: className = '',
 		style,

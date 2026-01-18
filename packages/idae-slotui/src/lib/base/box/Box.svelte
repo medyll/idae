@@ -1,4 +1,4 @@
-/**
+<!-- /**
  * Box.svelte
  * Composant conteneur flexible avec titre, icône, contenu, zones personnalisables et gestion d'ouverture/fermeture.
  *
@@ -14,7 +14,7 @@
  * - element (HTMLDivElement) : référence DOM
  *
  * Utilise <TitleBar>, <Icon>, <Slotted>, <Content> pour la structure.
- */
+ */ -->
 <script module lang="ts">
   import type { CommonProps } from "$lib/types/index.js";
   import type { Snippet } from "svelte";

@@ -7,8 +7,22 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768699499146-323a1kr20",
+    "title": "Corriger la documentation dans BreadCrumb.svelte",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696839471-v6pyabzom",
     "title": "Add JSDoc to Icon.svelte and document its purpose",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768699499146-ffozldjjk",
+    "title": "Corriger la documentation dans tous les composants de src/lib/base/",
     "status": "done",
     "order": 2,
     "createdBy": "agent"
@@ -21,8 +35,22 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768699499146-auj0356ta",
+    "title": "Corriger la documentation dans tous les composants de src/lib/controls/",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696839471-seazlycvq",
     "title": "Add JSDoc to Paper.svelte and document its purpose",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768699499146-ii0y9zl1s",
+    "title": "Corriger la documentation dans tous les composants de src/lib/data/",
     "status": "done",
     "order": 4,
     "createdBy": "agent"
@@ -35,8 +63,22 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768699499146-4pys14cc7",
+    "title": "Corriger la documentation dans tous les composants de src/lib/navigation/",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696933009-vxcyxfz6e",
     "title": "Add JSDoc to Alert.svelte",
+    "status": "done",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768699499146-e452iobx5",
+    "title": "Corriger la documentation dans tous les composants de src/lib/ui/",
     "status": "done",
     "order": 6,
     "createdBy": "agent"
@@ -49,6 +91,13 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768699499146-o4nbporch",
+    "title": "Corriger la documentation dans tous les composants de src/lib/utils/ (si applicable)",
+    "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696933009-5d70ep8br",
     "title": "Add JSDoc to Badge.svelte",
     "status": "done",
@@ -56,8 +105,22 @@
     "createdBy": "agent"
   },
   {
+    "id": "task-1768699499146-g54q7c5oe",
+    "title": "Ajouter un README.md modèle dans chaque dossier de composant (si absent)",
+    "status": "done",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
     "id": "task-1768696933009-g738fw6dk",
     "title": "Add JSDoc to Box.svelte",
+    "status": "done",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768699499146-usdmcmw1d",
+    "title": "(Optionnel) Créer un script de vérification des docs mal placées",
     "status": "done",
     "order": 9,
     "createdBy": "agent"

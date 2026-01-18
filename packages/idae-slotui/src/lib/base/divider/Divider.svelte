@@ -1,12 +1,4 @@
-/**
- * Divider component
- *
- * Renders a horizontal or vertical line to separate content. Supports density, orientation, color, and shadow.
- *
- * @component
- * @example
- * <Divider orientation="vertical" color="#ccc" />
- */
+
 <script module lang="ts">
 	import { densePreset, uiPresets, type ElementProps } from "$lib/types/index.js";
 	import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
@@ -47,6 +39,15 @@
 </script>
 
 <script lang="ts">
+		/**
+		 * Divider component
+		 *
+		 * Renders a horizontal or vertical line to separate content. Supports density, orientation, color, and shadow.
+		 *
+		 * @component
+		 * @example
+		 * <Divider orientation="vertical" color="#ccc" />
+		 */
 		/** extends button */
 		import type { ElementProps, ExpandProps } from '$lib/types/index.js';
 		import { uiPresets } from '$lib/utils/engine/presets.js';

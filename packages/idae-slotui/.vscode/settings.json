@@ -8,6 +8,6 @@
         "sitedata"
     ],
     "[svelte]": {
-        "editor.defaultFormatter": "svelte.svelte-vscode"
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
     },
 }

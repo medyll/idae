@@ -1,4 +1,4 @@
-/**
+<!-- /**
  * Badge.svelte
  * Affiche un badge numérique positionnable sur un élément.
  *
@@ -10,7 +10,7 @@
  * - children (slot) : contenu optionnel à afficher dans le badge
  *
  * Utilise le composant utilitaire <Slotted> pour la gestion du slot.
- */
+ */ -->
 <script module lang="ts">
   import type { CommonProps } from '$lib/types/index.js';
   export interface BadgeProps extends CommonProps {

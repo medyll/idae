@@ -1,12 +1,16 @@
-<!--
- @component Content
-	@ Adds css properties for width, height, offsetHeight, and offsetWidth to the style of the element.
-	@ var(--${cssPrefix}-height)
-	@ var(--${cssPrefix}-width)
-	@ var(--${cssPrefix}-offset-height)
-	@ var(--${cssPrefix}-offset-width)
-	@ EThe content element will fire a custom 'dom:resize' event when the bindable properties change. 
--->
+<script lang="ts">
+/**
+ * Content component
+ *
+ * Adds css properties for width, height, offsetHeight, and offsetWidth to the style of the element.
+ * var(--${cssPrefix}-height)
+ * var(--${cssPrefix}-width)
+ * var(--${cssPrefix}-offset-height)
+ * var(--${cssPrefix}-offset-width)
+ * The content element will fire a custom 'dom:resize' event when the bindable properties change.
+ *
+ * @component
+ */
 <script lang="ts">
 	import type { BindableEvent, ContentProps } from './types.js';
 
