@@ -2,7 +2,7 @@
   "name": "@medyll/idae-shared",
   "scope": "@medyll",
   "version": "1.0.0",
-  "description": "sharing",
+  "description": "Shared types and utilities for cross-package consistency in the Idae monorepo.",
   "main": "indexIfy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

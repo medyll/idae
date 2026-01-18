@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-api-nest",
   "version": "0.59.0",
-  "description": "",
+  "description": "NestJS REST API backend for Idae, providing robust endpoints and MongoDB integration.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

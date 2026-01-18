@@ -2,7 +2,7 @@
   "name": "@medyll/idae-socket",
   "scope": "@medyll",
   "version": "0.0.2",
-  "description": "keep your app in sync with your backend!!",
+  "description": "Real-time sync and WebSocket utilities to keep your app in sync with the backend.",
   "main": "./scripts/index.js",
   "type": "module",
   "scripts": {
