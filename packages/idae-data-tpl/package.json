@@ -2,7 +2,7 @@
 	"name": "@medyll/idae-data-tpl",
 	"description": "Reusable data templates and schema utilities for consistent data modeling.",
 	"scope": "@medyll",
-	"version": "0.180.0",
+	"version": "0.181.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
