@@ -27,7 +27,7 @@ A flexible and extensible API framework for Node.js, designed to work with multi
 
 **Repo:** [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 
-**Version:** 0.167.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-api/CHANGELOG.md)
+**Version:** 0.181.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-api/CHANGELOG.md)
 
 ##
 ### @medyll/idae-be
@@ -35,7 +35,7 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 
 **Repo:** [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
 
-**Version:** 1.76.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
+**Version:** 1.90.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
 
 ##
 ### @medyll/idae-db
@@ -43,7 +43,7 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 
 **Repo:** [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 
-**Version:** 0.135.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-db/CHANGELOG.md)
+**Version:** 0.149.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-db/CHANGELOG.md)
 
 ##
 ### @medyll/idae-dom-events
@@ -51,7 +51,7 @@ dom-events is a powerful library for observing and reacting to DOM changes in we
 
 **Repo:** [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
 
-**Version:** 0.136.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-dom-events/CHANGELOG.md)
+**Version:** 0.150.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-dom-events/CHANGELOG.md)
 
 ##
 ### @medyll/idae-engine
@@ -59,13 +59,15 @@ A powerful TypeScript library for data manipulation and operations across the id
 
 **Repo:** [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
 
-**Version:** 1.165.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-engine/CHANGELOG.md)
+**Version:** 1.179.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-engine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-html
+HTML utilities and helpers for dynamic content generation and manipulation.
+
 **Repo:** [@medyll/idae-html](https://github.com/medyll/idae/tree/main/packages/idae-html)
 
-**Version:** 0.131.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-html/CHANGELOG.md)
+**Version:** 0.145.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-html/CHANGELOG.md)
 
 ##
 ### @medyll/idae-idbql
@@ -73,19 +75,23 @@ A powerful and flexible IndexedDB query library for TypeScript and JavaScript ap
 
 **Repo:** [@medyll/idae-idbql](https://github.com/medyll/idae/tree/main/packages/idae-idbql)
 
-**Version:** 0.165.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-idbql/CHANGELOG.md)
+**Version:** 0.179.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-idbql/CHANGELOG.md)
 
 ##
 ### @medyll/idae-machine
+Logic and automation utilities for orchestrating workflows and state machines.
+
 **Repo:** [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
 
-**Version:** 0.115.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
+**Version:** 0.129.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-mongo
+MongoDB adapter for seamless integration with the Idae data abstraction layer.
+
 **Repo:** [@medyll/idae-mongo](https://github.com/medyll/idae/tree/main/packages/idae-mongo)
 
-**Version:** 0.165.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-mongo/CHANGELOG.md)
+**Version:** 0.179.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-mongo/CHANGELOG.md)
 
 ##
 ### @medyll/idae-query
@@ -93,7 +99,7 @@ A powerful and flexible query library for TypeScript and JavaScript applications
 
 **Repo:** [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
 
-**Version:** 0.166.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-query/CHANGELOG.md)
+**Version:** 0.180.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-query/CHANGELOG.md)
 
 ##
 ### @medyll/idae-slotui-svelte
@@ -101,11 +107,11 @@ A Svelte 5 component library for building modular and reactive user interfaces.
 
 **Repo:** [@medyll/idae-slotui-svelte](https://github.com/medyll/idae/tree/main/packages/idae-slotui)
 
-**Version:** 0.168.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-slotui/CHANGELOG.md)
+**Version:** 0.182.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-slotui/CHANGELOG.md)
 
 ##
 ### @medyll/idae-socket
-keep your app in sync with your backend!!
+Real-time sync and WebSocket utilities to keep your app in sync with the backend.
 
 **Repo:** [@medyll/idae-socket](https://github.com/medyll/idae/tree/main/packages/idae-socket)
 
@@ -117,11 +123,11 @@ A lightweight and efficient state management library designed for building react
 
 **Repo:** [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
 
-**Version:** 0.31.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-stator/CHANGELOG.md)
+**Version:** 0.45.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-stator/CHANGELOG.md)
 
 ##
 ### @medyll/idae-shared
-sharing
+Shared types and utilities for cross-package consistency in the Idae monorepo.
 
 **Repo:** [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
 

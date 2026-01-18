@@ -1,0 +1,16 @@
+[
+  {
+    "id": "task-1768697798013-b4xrnw4ad",
+    "title": "Rédiger des descriptions attractives et réalistes pour chaque package manquant ou à corriger dans /packages (Sprint 1)",
+    "status": "in_review",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768697798013-j4v0pujvy",
+    "title": "Mettre à jour les champs description dans les package.json concernés (Sprint 1)",
+    "status": "in_progress",
+    "order": 2,
+    "createdBy": "agent"
+  }
+]
