@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-slotui-svelte",
-  "version": "0.179.0",
+  "version": "1.0.0",
   "scope": "@medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
@@ -38,7 +38,7 @@
   "peerDependencies": {
     "svelte": "^5.0.0-next"
   },
-  "devDependencies": { 
+  "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-engine": "workspace:*",
     "@medyll/idae-prettier-config": "workspace:*",
