@@ -17,7 +17,7 @@ export * from '$lib/main/machineDb.js';
 export * from '$lib/main/machineDb.spec.js';
 export * from '$lib/main/machine.js';
 export * from '$lib/main/machine.spec.js';
-export * from '$lib/demo/testDbSchema.js';
+export * from '$lib/demo/testScheme.js';
 export * from '$lib/db/types.js';
 export * from '$lib/db/fieldTypes.js';
 export * from '$lib/db/dbSchema.js';

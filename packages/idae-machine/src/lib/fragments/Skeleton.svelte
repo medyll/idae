@@ -1,5 +1,5 @@
 <script lang="ts">
-	import List from '$components/fragments/List.svelte';
+	import List from '$lib/fragments/List.svelte';
 
 	let className = '';
 	export { className as class };

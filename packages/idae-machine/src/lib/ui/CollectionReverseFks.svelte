@@ -13,12 +13,11 @@
     }; };
     } 
  -->
-<script lang="ts">
-	import { MachineDb } from '$lib/main/machineDb.js';
-	import { schemeModel, idbqlState } from '$lib/db/dbSchema';
+<script lang="ts"> 
 	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
 	import type { Snippet, SvelteComponent } from 'svelte';
+    import { machine } from '$lib/main/machine.js';
 
 	type CollectionFksProps = {
 		collection:      TplCollectionName;
@@ -30,8 +29,9 @@
 		componentProps?: Record<string, any>;
 	};
 	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
-	const dbFields = new MachineDb(schemeModel);
-	const fks = $derived(dbFields.reverseFks(collection));
+	
+	const dbFields = machine;
+	const fks = $derived( machine.logic.reverseFks(collection));
 
 	function getTitle() {
 		if (typeof showTitle === 'string') return showTitle;

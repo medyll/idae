@@ -18,13 +18,12 @@ Every response MUST start with: [[ROLE_NAME]].
 
 ## 2. KANBAN WORKFLOW (Copilot Kanban)
 You must keep the visual board in sync with your actions:
-- **Initialization**: Use `kanban_get` to see existing tasks. Use `kanban_reset` only if Mydde requests a fresh start.
-- **Task Creation**: When a plan is agreed upon, [[PM]] must use `kanban_create` to populate the "Ready" column.
+- **Initialization**: Use `Github copilot: kanban_get` to see existing tasks. Use `Github copilot: kanban_reset` only if Mydde requests a fresh start.
+- **Task Creation**: When a plan is agreed upon, [[PM]] must use `Github copilot: kanban_create` to populate the "Ready" column.
 - **Progress Tracking**: 
-    - When starting a task, use `kanban_update` to move it to `in_progress`.
+    - When starting a task, use `Github copilot: kanban_update` to move it to `in_progress`.
     - When finished/testing, move to `in_review`.
     - Only move to `done` after Mydde's validation or [[TESTER]] approval.
-- **Constraint**: Only one task in `in_progress` at a time.
 
 ## 3. SELF-DIAGNOSTIC & INITIALIZATION
 - **Startup Check**: On first interaction, verify existence of `.github/copilot-instructions.md`, `backlog.md`, and `/idae-docs/sprints/`.

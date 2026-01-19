@@ -2,10 +2,10 @@
 import { describe, it, expect } from 'vitest';
 
 import { MachineDb } from './machineDb.js';
-import { schemeModelTestDb } from '../demo/testDbSchema.js';
+import { testScheme } from '../demo/testScheme.js';
 
 describe('IDbBase', () => {
-  const dbCollections = new MachineDb(schemeModelTestDb);
+  const dbCollections = new MachineDb(testScheme);
 
   
 

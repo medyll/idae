@@ -9,7 +9,6 @@ import type {
   Tpl,
   TplFields,
 } from "@medyll/idae-idbql";
-import { schemeModel } from "../db/dbSchema.js";
 import { IDbCollection } from "./machine/IDbCollection.js";
 import { IDbError } from "$lib/main/machine/IDbError.js";
 import type { IDbForge } from "./machineForge.js";
@@ -73,7 +72,7 @@ export class MachineDb {
   /**
    * The database model (schema) used for introspection.
    */
-  model: IdbqModel = schemeModel;
+  model: IdbqModel;
 
   machineForge: MachineForge = new MachineForge();
 
@@ -81,10 +80,10 @@ export class MachineDb {
 
   /**
    * Create a new IDbBase instance.
-   * @param model Optional custom model to use (default: schemeModel)
+   * @param model  Custom model to use
    */
-  constructor(model?: IdbqModel) {
-    this.model = model ?? schemeModel;
+  constructor(model: IdbqModel) {
+    this.model = model;
     this.machineForge = new MachineForge();
   }
 
@@ -134,11 +133,12 @@ export class MachineDb {
 
   /**
    * Parse all fields of a given collection.
+   * @deprecated use IDbCollection.parseRawCollection
    */
   parseRawCollection(
     collection: TplCollectionName,
   ): Record<string, IDbForge | undefined> | undefined {
-    const fields = new IDbCollection(collection, this, this.model).fields;
+    const fields = this.collection(collection).fields;
     if (!fields) return;
     const out: Record<string, IDbForge | undefined> = {};
     Object.keys(fields).forEach((fieldName) => {
@@ -152,6 +152,7 @@ export class MachineDb {
 
   /**
    * Parse a single field of a collection and return its IDbForge metadata.
+   * @deprecated use IDbCollection.parseCollectionFieldName
    */
   parseCollectionFieldName(
     collection: TplCollectionName,

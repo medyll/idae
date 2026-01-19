@@ -5,11 +5,10 @@
 
 <script lang="ts" generics="COL = Record<string,any>">
 	
-	import { IDbFormValidate } from '$lib/main/IDbFormValidate';
-	import type { CreateUpdateProps } from './types';
-	import CollectionReverseFks from './CollectionReverseFks.svelte';
-	import FieldInput from './FieldValue.svelte';
- 	import {machine} from '$lib/main/machine.js';
+ 	import {machine} from '$lib/main/machine.js'; 
+	import type { CreateUpdateProps } from './types.js';
+	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
+	import FieldInput from '$lib/form/FieldValue.svelte';
 
 	let {
 		collection,
@@ -19,38 +18,33 @@
 		withData,
 		showFields,
 		inPlaceEdit,
-		displayMode = 'wrap',
-		afterCreate,
+		displayMode = 'wrap', 
 		showFks = false
 	}: CreateUpdateProps = $props();
 	
 	
-	let inputForm = `form-${String(collection)}-${mode}`;
+	let inputForm = `form-${String(collection)}-${mode}`; 
 
-	let collections = machine.collections ;
-	let store = machine.store;
-	let indexName = collections.getIndexName(collection);
+	let logic = machine.logic ;
+	let store = machine.store[(collection as string)];
 
-	let formFields = showFields
-		? Object.fromEntries(
-				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
-			)
-		: (collections.parseRawCollection(collection) ?? {});
+	let formFields = logic.collection(collection).parseRawCollection();
+	let validator = logic.collection(collection).validator;
 
-	let qy: any = $derived(dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
+	let indexName = logic.collection(collection).getIndexName();
+	let query: any = $derived(dataId && indexName ? store.where({ [indexName]: { eq: dataId } }) : {});
 
-	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(qy)[0] });
+	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(query)[0] });
 
 	$effect.pre(() => {
 		setFormDataDefaultFieldValues();
 	});
-	let ds = Object.keys(data).length > 0 ? data : qy[0];
-
-	let formValidator = new IDbFormValidate(collection);
+	 
+ 
 	let validationErrors: Record<string, string> = {};
 
 	const validateFormData = (formData: Record<string, any> = {}) => {
-		const { isValid, errors } = formValidator.validateForm(formData, {
+		const { isValid, errors } = validator.validateForm(formData, {
 			ignoreFields: mode == 'create' ? [indexName] : undefined
 		});
 		validationErrors = errors;
@@ -88,17 +82,18 @@
 			});
 			return;
 		}
+		
 		let datadb = $state.snapshot(formData);
 		switch (mode) {
 			case 'create':
 				if (!dataId) {
-					await store[collection].add({ ...datadb, ...withData });
+					await store.add({ ...datadb, ...withData });
 					mode = 'show';
 				}
 				break;
 			case 'update':
 				if (dataId) {
-					await store[collection].update(dataId, datadb);
+					await store.update(dataId, datadb);
 				}
 				break;
 		}

@@ -1,15 +1,17 @@
-
 import type {
   TplCollectionName,
   Tpl,
   IdbqModel,
   TplFields,
+  IDbForge,
 } from "@medyll/idae-idbql";
 import { MachineDb, type IDbFieldRules } from "../machineDb.js";
+import { MachineForge } from "$lib/main/machineForge.js";
 import { IDbFormValidate } from "$lib/main/machine/IDbFormValidate.js";
 import { IDbCollectionFieldForge } from "$lib/main/machine/IDbCollectionFieldForge.js";
 import { IDbCollectionFieldValues } from "./IDbCollectionFieldValues.js";
 import { IDbCollectionValues } from "./IDbCollectionValues.js";
+import { IDbError } from "$lib/index.js";
 
 /**
  * IDbCollection
@@ -38,6 +40,8 @@ export class IDbCollection {
   /** The collection model. */
   #model: IdbqModel["Collection"];
 
+  machineForge: MachineDb["machineForge"];
+
   /**
    * Create a new IDbCollection instance.
    * @param collectionName The collection name.
@@ -53,6 +57,7 @@ export class IDbCollection {
     this.#machineDb = idbBase;
     this.#model = model[String(collectionName)];
     this.#template = this.#model["template"] as Tpl;
+    this.machineForge = new MachineForge();
   }
 
   /**
@@ -73,20 +78,6 @@ export class IDbCollection {
   getPresentation() {
     return this.#template?.presentation as string;
   }
-  /**
-   * Get the field rule for a given field name.
-   * @param fieldName The field name.
-   */
-  getFieldRule(fieldName: keyof TplFields) {
-    return this.fields[String(fieldName)] as IDbFieldRules | undefined;
-  }
-
-  /**
-   * Get the collection template.
-   */
-  getTemplate() {
-    return this.#template;
-  }
 
   /**
    * Get the foreign keys from the model template.
@@ -100,6 +91,21 @@ export class IDbCollection {
    */
   getIndexName() {
     return this.#template?.index;
+  }
+
+  /**
+   * Get the field rule for a given field name.
+   * @param fieldName The field name.
+   */
+  getFieldRule(fieldName: keyof TplFields) {
+    return this.fields[String(fieldName)] as IDbFieldRules | undefined;
+  }
+
+  /**
+   * Get the collection template.
+   */
+  getTemplate() {
+    return this.#template;
   }
 
   /**
@@ -131,8 +137,47 @@ export class IDbCollection {
     );
   }
 
-  getFormValidate(): IDbFormValidate {
+  get validator(): IDbFormValidate {
     return new IDbFormValidate(this.collection, this.#machineDb);
   }
- 
+
+    /**
+     * Parse all fields of a given collection.
+     */
+    parseRawCollection(
+    ): Record<string, IDbForge | undefined> | undefined {
+      const fields = this.fields;
+      if (!fields) return;
+      const out: Record<string, IDbForge | undefined> = {};
+      Object.keys(fields).forEach((fieldName) => {
+        const fieldType = fields[fieldName];
+        if (fieldType) {
+          out[fieldName] = this.parseCollectionFieldName( fieldName);
+        }
+      });
+      return out;
+    }
+  
+    /**
+     * Parse a single field of a collection and return its IDbForge metadata.
+     */
+    parseCollectionFieldName(
+      fieldName: keyof TplFields,
+    ): IDbForge | undefined {
+      const field = this.getFieldRule(fieldName);
+      if (!field) {
+        IDbError.throwError(
+          `Field ${fieldName} not found in collection ${this.collection}`,
+          "FIELD_NOT_FOUND",
+        );
+        return undefined;
+      }
+      const array = this.machineForge.testIs("array", field);
+      const object = this.machineForge.testIs("object", field);
+      const fk = this.machineForge.testIs("fk", field);
+      const primitive = this.machineForge.testIs("primitive", field);
+      const fieldType = array ?? object ?? fk ?? primitive;
+  
+      return this.machineForge.forge({ collection: this.collection, fieldName, ...fieldType });
+    }
 }

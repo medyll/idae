@@ -3,7 +3,7 @@
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema.js';
 	import { MachineDb } from '$lib/main/machineDb.js';
-	import { IDbCollectionValues } from '$lib/main/IDbCollectionValues';
+	import { IDbCollectionValues } from '$lib/main/machine/IDbCollectionValues.js';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 

@@ -32,7 +32,7 @@ import type { DbDataModel, DbDataModelTs } from '../db/dataModel.js';
 
 
 // Schéma de test (copie explicite de schemeModelDb)
-export const schemeModelTestDb = {
+export const testScheme = {
 	agent: {
  		keyPath: '++id, promptId, created_at',
  		model: {} as DBAgent,
@@ -80,15 +80,6 @@ export const schemeModelTestDb = {
 			},
 			fks: {}
 		}
-	}
-	// Ajoute ici d'autres collections si besoin pour les tests
+	} 
 } satisfies DbDataModel;
-
-export const schemeModelTest: IdbqModel = {
-	...schemeModelTestDb
-} as unknown as IdbqModel<typeof schemeModelTestDb>;
-
-export type DataModelTestFinal = DbDataModelTs<typeof schemeModelTestDb>;
-
-const idbqStore = createIdbqDb<typeof schemeModelTest>(schemeModelTest, 99);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine-test');
+ 
