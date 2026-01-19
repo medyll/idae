@@ -47,7 +47,6 @@ export const schemeModelDb = {
 				prompt: 'text-long',
 				created_at: 'date (private)',
 				ia_lock: 'boolean (private)',
-				agentPromptId: 'fk-agentPrompt.id (required)'
 			},
 			fks: {
 				agentPrompt: {

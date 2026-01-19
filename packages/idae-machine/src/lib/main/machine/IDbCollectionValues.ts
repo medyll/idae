@@ -32,7 +32,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	/**
 	 * The IDbBase instance used for schema introspection.
 	 */
-	idbBase: MachineDb;
+	machine: MachineDb;
 	/**
 	 * The collection name this instance operates on.
 	 */
@@ -42,15 +42,15 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * Create a new IDbCollectionValues instance for a given collection.
 	 * @param collectionName The collection name.
 	 */
-	constructor(collectionName: TplCollectionName, idbBase?: MachineDb) {
+	constructor(collectionName: TplCollectionName, machine: MachineDb) {
 		this.collectionName = collectionName;
-		this.idbBase = idbBase ?? new MachineDb();
+		this.machine = machine ;
 	}
 
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.idbBase.collection(this.collectionName).getPresentation();
+			const presentation = this.machine.collection(this.collectionName).template.presentation;
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
 			const fields = presentation.split(' ');
@@ -74,7 +74,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	indexValue(data: Record<string, any>): any | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.idbBase.collection(this.collectionName).getIndexName();
+			const indexName = this.machine.collection(this.collectionName).template.index;
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -102,7 +102,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.idbBase.parseCollectionFieldName(
+			const fieldInfo = this.machine.parseCollectionFieldName(
 				this.collectionName,
 				fieldName as string
 			);
@@ -143,13 +143,13 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	): Record<
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string
 	> {
-		const fieldInfo = this.idbBase.parseCollectionFieldName(
+		const fieldInfo = this.machine.parseCollectionFieldName(
 			this.collectionName,
 			fieldName as string
 		);
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.idbBase.collection(this.collectionName).getIndexName();
+		const indexName = this.machine.collection(this.collectionName).template.index;
 
 		return {
 			'data-collection': this.collectionName,
@@ -168,7 +168,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
 
-		const fieldInfo = this.idbBase.parseCollectionFieldName(this.collectionName, fieldName);
+		const fieldInfo = this.machine.parseCollectionFieldName(this.collectionName, fieldName);
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
@@ -183,7 +183,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 */
 	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
 
-		const fieldInfo = this.idbBase.parseCollectionFieldName(this.collectionName, fieldName);
+		const fieldInfo = this.machine.parseCollectionFieldName(this.collectionName, fieldName);
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}

@@ -48,7 +48,7 @@ export class IDbCollectionFieldForge<T extends Record<string, any>> {
 	}
 	// renamed from parseCollectionFieldName
 	get forge(): IDbForge | undefined {
-		return this.#collectionValues.idbBase.parseCollectionFieldName(
+		return this.#collectionValues.machine.parseCollectionFieldName(
 			this.#collection,
 			String(this.#fieldName)
 		);

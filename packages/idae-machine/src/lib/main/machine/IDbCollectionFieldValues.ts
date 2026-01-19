@@ -1,6 +1,8 @@
 import type { TplCollectionName } from '@medyll/idae-idbql';
 import { IDbCollectionValues } from './IDbCollectionValues.js';
 import type { IDbForge } from '../machineForge.js';
+import { MachineDb } from '../machineDb.js';
+import { machine } from '../machine.js';
 
 
 /**
@@ -30,7 +32,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	 * @param fieldName The field name to introspect.
 	 */
 	public getForge(fieldName: keyof T): IDbForge | undefined {
-		return this.#collectionValues.idbBase.parseCollectionFieldName(
+		return this.#collectionValues.machine.parseCollectionFieldName(
 			this.#collection,
 			String(fieldName)
 		);
@@ -44,7 +46,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	 */
 	constructor(collection: TplCollectionName, data: T, collectionValues?: IDbCollectionValues<T>) {
 		this.#collection = collection;
-		this.#collectionValues = collectionValues ?? new IDbCollectionValues(collection);
+		this.#collectionValues = collectionValues ?? new IDbCollectionValues(collection, machine);
 		this.#data = data;
 	}
 
@@ -53,7 +55,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
 	 * @param fieldName The field name.
 	 */
 	format(fieldName: keyof T): string | string[] {
-		const fieldInfo = this.#collectionValues.idbBase.parseCollectionFieldName(
+		const fieldInfo = this.#collectionValues.machine.parseCollectionFieldName(
 			this.#collection,
 			fieldName
 		);

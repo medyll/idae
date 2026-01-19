@@ -42,8 +42,7 @@ import {machine } from '$lib/main/machine.js';
 	let collections = machine.collections;
 	let store = machine.store;
 	let fieldValues = machine.collections.collection(collection).collectionValues() ;
-	let index = collections.collection(collection).getIndexName();
-
+	let index = collections.collection(collection).template.index;
 	let qy = $derived(where ? store[collection].where(where) : store[collection].getAll());
 
 	function load(event: CustomEvent, indexV: number | string) {

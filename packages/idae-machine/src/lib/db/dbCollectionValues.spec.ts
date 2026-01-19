@@ -22,7 +22,7 @@ const agentData = {
 describe('IDbCollectionValues', () => {
   const values = new IDbCollectionValues('agent');
   // Remplace le modèle par le schéma de test pour tous les tests
-  values.idbBase = new MachineDb(testScheme);
+  values.machine = new MachineDb(testScheme);
 
   it('format returns joined string for array field', () => {
     // array fields are not formatted specially, but should not throw

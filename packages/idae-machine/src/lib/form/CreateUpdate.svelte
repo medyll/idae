@@ -31,7 +31,7 @@
 	let formFields = logic.collection(collection).parseRawCollection();
 	let validator = logic.collection(collection).validator;
 
-	let indexName = logic.collection(collection).getIndexName();
+	let indexName = logic.collection(collection).template.index;
 	let query: any = $derived(dataId && indexName ? store.where({ [indexName]: { eq: dataId } }) : {});
 
 	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(query)[0] });
@@ -138,7 +138,7 @@
 <div style="width:750px;display:flex;">
 	<div class="crud {displayMode}">
 		{#each Object.entries(formFields) as [fieldName, fieldInfo]}
-			<FieldInput
+			<!-- <FieldInput
 				{collection}
 				{fieldName}
 				{mode}
@@ -146,16 +146,16 @@
 					(Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
 				bind:data={formData}
 				{inputForm}
-			/>
+			/> -->
 		{/each}
 	</div>
 	{#if showFks && (mode === 'show' || mode === 'update')}
 		<div>
-			<CollectionReverseFks showTitle={true} {collection} collectionId={dataId}>
+			<!-- <CollectionReverseFks showTitle={true} {collection} collectionId={dataId}>
 				{#snippet children({ collection, template })}
 					<div class="p2">presentation</div>
 				{/snippet}
-			</CollectionReverseFks>
+			</CollectionReverseFks> -->
 		</div>
 	{/if}
 </div>

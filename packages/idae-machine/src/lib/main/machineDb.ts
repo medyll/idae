@@ -101,18 +101,7 @@ export class MachineDb {
     return this.#idbCollectionsList[collection];
   }
 
-  fks(collection: string): { [collection: string]: Tpl } {
-    const fks = this.collection(collection).getModelTemplateFks();
-    const out: Record<string, IDbForge | undefined> = {};
-    if (fks) {
-      Object.keys(fks).forEach((collection: TplCollectionName) => {
-        out[collection] = this.parseRawCollection(
-          collection as TplCollectionName,
-        );
-      });
-    }
-    return out;
-  }
+ 
   reverseFks(targetCollection: TplCollectionName): Record<string, any> {
     const result: Record<string, any> = {};
     Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
@@ -138,7 +127,7 @@ export class MachineDb {
   parseRawCollection(
     collection: TplCollectionName,
   ): Record<string, IDbForge | undefined> | undefined {
-    const fields = this.collection(collection).fields;
+    const fields = this.collection(collection).template.fields;
     if (!fields) return;
     const out: Record<string, IDbForge | undefined> = {};
     Object.keys(fields).forEach((fieldName) => {

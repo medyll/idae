@@ -113,7 +113,7 @@ export class IDbFormValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.idbCollections.collection(this.collection).getTemplate().fields;
+		const fields = this.idbCollections.collection(this.collection).template.fields;
 		if (!fields) {
 			return {
 				isValid: false,

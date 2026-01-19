@@ -66,31 +66,16 @@ export class IDbCollection {
   get model() {
     return this.#model;
   }
+ 
   /**
-   * Get the collection fields.
+   * Get the collection template.
    */
-  get fields() {
-    return this.#template?.fields as TplFields;
-  }
-  /**
-   * Get the presentation string for the collection.
-   */
-  getPresentation() {
-    return this.#template?.presentation as string;
+  get template():Tpl {
+    return this.#template;
   }
 
-  /**
-   * Get the foreign keys from the model template.
-   */
-  getModelTemplateFks() {
-    return this.#template?.fks as Tpl["fks"];
-  }
-
-  /**
-   * Get the index name for the collection.
-   */
-  getIndexName() {
-    return this.#template?.index;
+  get validator(): IDbFormValidate {
+    return new IDbFormValidate(this.collection, this.#machineDb);
   }
 
   /**
@@ -98,14 +83,7 @@ export class IDbCollection {
    * @param fieldName The field name.
    */
   getFieldRule(fieldName: keyof TplFields) {
-    return this.fields[String(fieldName)] as IDbFieldRules | undefined;
-  }
-
-  /**
-   * Get the collection template.
-   */
-  getTemplate() {
-    return this.#template;
+    return this.#template.fields[String(fieldName)] as IDbFieldRules | undefined;
   }
 
   /**
@@ -137,47 +115,59 @@ export class IDbCollection {
     );
   }
 
-  get validator(): IDbFormValidate {
-    return new IDbFormValidate(this.collection, this.#machineDb);
+
+
+  /**
+   * Parse all fields of a given collection.
+   */
+  parseRawCollection(): Record<string, IDbForge | undefined> | undefined {
+    const fields = this.#template.fields;
+    if (!fields) return;
+    const out: Record<string, IDbForge | undefined> = {};
+    Object.keys(fields).forEach((fieldName) => {
+      const fieldType = fields[fieldName];
+      if (fieldType) {
+        out[fieldName] = this.parseCollectionFieldName(fieldName);
+      }
+    });
+    return out;
   }
 
-    /**
-     * Parse all fields of a given collection.
-     */
-    parseRawCollection(
-    ): Record<string, IDbForge | undefined> | undefined {
-      const fields = this.fields;
-      if (!fields) return;
-      const out: Record<string, IDbForge | undefined> = {};
-      Object.keys(fields).forEach((fieldName) => {
-        const fieldType = fields[fieldName];
-        if (fieldType) {
-          out[fieldName] = this.parseCollectionFieldName( fieldName);
-        }
-      });
-      return out;
+  /**
+   * Parse a single field of a collection and return its IDbForge metadata.
+   */
+  parseCollectionFieldName(fieldName: keyof TplFields): IDbForge | undefined {
+    const field = this.getFieldRule(fieldName);
+    if (!field) {
+      IDbError.throwError(
+        `Field ${fieldName} not found in collection ${this.collection}`,
+        "FIELD_NOT_FOUND",
+      );
+      return undefined;
     }
-  
-    /**
-     * Parse a single field of a collection and return its IDbForge metadata.
-     */
-    parseCollectionFieldName(
-      fieldName: keyof TplFields,
-    ): IDbForge | undefined {
-      const field = this.getFieldRule(fieldName);
-      if (!field) {
-        IDbError.throwError(
-          `Field ${fieldName} not found in collection ${this.collection}`,
-          "FIELD_NOT_FOUND",
+    const array = this.machineForge.testIs("array", field);
+    const object = this.machineForge.testIs("object", field);
+    const fk = this.machineForge.testIs("fk", field);
+    const primitive = this.machineForge.testIs("primitive", field);
+    const fieldType = array ?? object ?? fk ?? primitive;
+
+    return this.machineForge.forge({
+      collection: this.collection,
+      fieldName,
+      ...fieldType,
+    });
+  }
+
+  fks(): { [collection: string]: Tpl } {
+    const fks = this.#template?.fks
+    const out: Record<string, IDbForge | undefined> = {};
+    if (fks) {
+      Object.keys(fks).forEach((collection: TplCollectionName) => {
+        out[collection] = this.parseRawCollection(
+          collection as TplCollectionName,
         );
-        return undefined;
-      }
-      const array = this.machineForge.testIs("array", field);
-      const object = this.machineForge.testIs("object", field);
-      const fk = this.machineForge.testIs("fk", field);
-      const primitive = this.machineForge.testIs("primitive", field);
-      const fieldType = array ?? object ?? fk ?? primitive;
-  
-      return this.machineForge.forge({ collection: this.collection, fieldName, ...fieldType });
+      });
     }
+    return out;
+  }
 }
