@@ -194,8 +194,6 @@ const model = machine.idbqModel;
 
 You can now pass `collections` and other instances to Svelte components for CRUD, data listing, and editing.
 
----
-
 ### Legacy/Direct Usage (not recommended)
 You can still use `createIdbqDb` directly if you need low-level access:
 
@@ -237,12 +235,6 @@ Displays collection records as grid with click-to-edit.
   onclick={(data, idx) => console.log(data)}
 />
 ```
-
-### `<CreateUpdate>`
-Form for creating/updating/viewing records.
-```svelte
-<CreateUpdate 
-  collection="agents"
   mode="show"
   dataId={1}
   showFields={['name', 'code', 'model']}
@@ -250,11 +242,7 @@ Form for creating/updating/viewing records.
   showFks={true}
 />
 ```
-
-### `<FieldValue>`
-Renders a single field with intelligent type detection.
 ```svelte
-<FieldValue 
   collection="agents"
   fieldName="name"
   data={formData}

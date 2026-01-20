@@ -26,9 +26,7 @@ import {
 	type TplFieldType
 } from '@medyll/idae-idbql';
 
-
-import type { FieldType, getFieldTypes, registerFieldType } from './fieldTypes';
-import type { DbDataModel, DbDataModelTs } from './dataModel.js';
+ 
 
 /* here is an example of how to declare a dataModel*/
 export const schemeModelDb = {
@@ -482,12 +480,4 @@ export const schemeModelDb = {
 		}
 	}
 } satisfies IdbqModel;
-
-export const schemeModel: IdbqModel = {
-	...schemeModelDb
-} as unknown as IdbqModel<typeof schemeModelDb>;
-
-export type DataModelFinal = DbDataModelTs<typeof schemeModelDb>;
-
-const idbqStore = createIdbqDb<typeof schemeModel>(schemeModel, 13);
-export const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create('idae-machine');
+ 
