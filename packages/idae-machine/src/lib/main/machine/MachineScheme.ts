@@ -25,7 +25,9 @@ export class MachineScheme {
   /** The MachineDb instance. */
   #machineDb: MachineDb;
   /** The collection model. */
-  #model: IdbqModel["Collection"];
+  #collectionModel: IdbqModel["Collection"];
+
+  #model: IdbqModel;
 
   /**
    * Create a new MachineScheme instance.
@@ -41,8 +43,9 @@ export class MachineScheme {
   ) {
     this.collection = collectionName;
     this.#machineDb = idbBase;
-    this.#model = model[String(collectionName)];
-    this.#template = this.#model["template"] as Tpl;
+    this.#collectionModel = model[String(collectionName)];
+    this.#template = this.#collectionModel["template"] as Tpl;
+    this.#model = model;
   }
 
   /**
@@ -51,7 +54,7 @@ export class MachineScheme {
    * @return {IdbqModel["Collection"]} The collection model.
    */
   get model() {
-    return this.#model;
+    return this.#collectionModel;
   }
 
   /**
@@ -144,12 +147,13 @@ export class MachineScheme {
    * @role Foreign key accessor
    * @return {{ [collection: string]: Tpl }} Foreign key collections.
    */
-  parseFks(): { [collection: string]: IDbForge } {
+  parseFks(): { [collection: string]: Record<string, IDbForge | undefined> } {
     const fks = this.#template?.fks;
-    const out: Record<string, IDbForge | undefined> = {};
+    const out: Record<string, Record<string, IDbForge | undefined>> = {};
     if (fks) {
       Object.keys(fks).forEach((collection: TplCollectionName) => {
-        out[collection] = this.parse(collection as TplCollectionName);
+        const fkScheme = new MachineScheme(collection, this.#machineDb, this.#model);
+        out[collection] = fkScheme.parse() ?? {};
       });
     }
     return out;
@@ -158,10 +162,10 @@ export class MachineScheme {
   /**
    * Get all reverse foreign keys for this collection.
    * @role Reverse foreign key accessor
-   * @return {Record<string, Record<string, any>>} Reverse foreign key collections.
+   * @return {Record<string, Record<string, IDbForge | undefined>>} Reverse foreign key collections.
    */
-  parseReverseFks(): Record<string, Record<string, any>> {
-    const result: Record<string, Record<string, any>> = {};
+  parseReverseFks(): Record<string, Record<string, IDbForge | undefined>> {
+    const result: Record<string, Record<string, IDbForge | undefined>> = {};
     Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
       const template = (collectionModel as CollectionModel).template;
       if (template && template.fks) {

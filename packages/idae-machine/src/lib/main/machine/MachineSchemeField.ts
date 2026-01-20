@@ -20,7 +20,7 @@ export class MachineSchemeField {
   #template: Tpl;
 
   constructor(
-    model: IdbqModel,
+    fullIDBModel: IdbqModel,
     collection: TplCollectionName,
     fieldName: keyof TplFields,
   ) {
@@ -28,7 +28,7 @@ export class MachineSchemeField {
     this.#fieldName = fieldName;
     this.#machineForge = new MachineParserForge();
 
-    this.#model = model[String(collection)];
+    this.#model = fullIDBModel[String(collection)];
     this.#template = this.#model["template"] as Tpl;
   }
 

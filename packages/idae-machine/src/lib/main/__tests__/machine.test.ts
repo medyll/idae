@@ -47,4 +47,49 @@ describe('Machine', () => {
     expect(machine.indexedb).toBe(machine._idbDatabase);
     expect(machine.idbqModel).toBe(machine._idbqModel);
   });
+
+  // --- Intégration MachineDb/MachineScheme ---
+  describe('integration: MachineDb/MachineScheme', () => {
+    beforeEach(() => {
+      machine.start();
+    });
+
+    it('should access a collection and its template', () => {
+      const scheme = machine.logic.collection('agent');
+      expect(scheme).toBeDefined();
+      expect(scheme.collection).toBe('agent');
+      expect(scheme.template).toBeDefined();
+    });
+
+    it('should access a field and parse its metadata', () => {
+      const scheme = machine.logic.collection('agent');
+      const field = scheme.field('id');
+      const meta = field.parse();
+      expect(meta).toBeDefined();
+      expect(meta?.fieldName).toBe('id');
+    });
+
+    it('should parse all fields of a collection', () => {
+      const scheme = machine.logic.collection('agent');
+      const parsed = scheme.parse();
+      expect(parsed).toBeDefined();
+      expect(parsed?.id).toBeDefined();
+      expect(parsed?.name).toBeDefined();
+    });
+
+    it('should validate a valid field value', () => {
+      const scheme = machine.logic.collection('agent');
+      const validator = scheme.validator;
+      const result = validator.validateField('id', 1);
+      expect(result).toHaveProperty('isValid');
+    });
+
+    it('should throw MachineError for invalid field', () => {
+      const scheme = machine.logic.collection('agent');
+      const validator = scheme.validator;
+      expect(() => {
+        validator.validateField('notAField', 1);
+      }).toThrowError(/Field notAField not found/);
+    });
+  });
 });
