@@ -1,9 +1,13 @@
 import type { TplCollectionName, TplFields } from "@medyll/idae-idbql";
-import { MachineDb, enumPrimitive } from "$lib/main/machineDb.js";
+import { MachineDb } from "$lib/main/machineDb.js";
 import { MachineErrorValidation } from "./MachineErrorValidation.js";
-import { enumPrimitive } from "$lib/main/machine/MachineFieldType.js";
+import { defaultTypes } from "$lib/main/machine/MachineFieldType.js";
 
 /**
+ * 
+ * 
+ * 
+ * 
  * @class MachineSchemeValidate
  * @role Provides validation utilities for form fields in a collection.
  *
@@ -50,8 +54,7 @@ export class MachineSchemeValidate {
         };
       }
 
-      if (!this.#validateType(value, fieldInfo.fieldType)) {
-        s;
+      if (!this.#validateType(value, fieldInfo.fieldType)) { 
         return this.#returnError(fieldName, fieldInfo.fieldType);
       }
 
@@ -67,24 +70,24 @@ export class MachineSchemeValidate {
       }
 
       switch (fieldInfo.fieldType) {
-        case enumPrimitive.email:
+        case defaultTypes.email:
           if (!this.validateEmail(value)) {
             return this.#returnError(fieldName, fieldInfo.fieldType);
           }
           break;
-        case enumPrimitive.url:
+        case defaultTypes.url:
           if (!this.validateUrl(value)) {
             return this.#returnError(fieldName, fieldInfo.fieldType);
           }
           break;
-        case enumPrimitive.phone:
+        case defaultTypes.phone:
           if (!this.validatePhone(value)) {
             return this.#returnError(fieldName, fieldInfo.fieldType);
           }
           break;
-        case enumPrimitive.date:
-        case enumPrimitive.datetime:
-        case enumPrimitive.time:
+        case defaultTypes.date:
+        case defaultTypes.datetime:
+        case defaultTypes.time:
           if (!this.validateDateTime(value, fieldInfo.fieldType)) {
             return this.#returnError(fieldName, fieldInfo.fieldType);
           }
@@ -154,21 +157,21 @@ export class MachineSchemeValidate {
 
   #validateType(value: any, type: string | undefined): boolean {
     switch (type) {
-      case enumPrimitive.number:
+      case defaultTypes.number:
         return typeof value === "number" && !isNaN(value);
-      case enumPrimitive.boolean:
+      case defaultTypes.boolean:
         return typeof value === "boolean";
-      case enumPrimitive.text:
-      case enumPrimitive.email:
-      case enumPrimitive.url:
-      case enumPrimitive.phone:
-      case enumPrimitive.password:
+      case defaultTypes.text:
+      case defaultTypes.email:
+      case defaultTypes.url:
+      case defaultTypes.phone:
+      case defaultTypes.password:
         return typeof value === "string";
-      case enumPrimitive.date:
-      case enumPrimitive.datetime:
-      case enumPrimitive.time:
+      case defaultTypes.date:
+      case defaultTypes.datetime:
+      case defaultTypes.time:
         return value instanceof Date || typeof value === "string";
-      case enumPrimitive.any:
+      case defaultTypes.any:
         return true;
       default:
         return true; // Pour les types non gérés, on considère que c'est valide
@@ -177,7 +180,7 @@ export class MachineSchemeValidate {
 
   #returnError(
     fieldName: keyof TplFields,
-    enumCode: enumPrimitive | string | undefined,
+    enumCode: defaultTypes | string | undefined,
   ): never {
     throw new MachineErrorValidation(
       String(fieldName),
@@ -201,7 +204,6 @@ export class MachineSchemeValidate {
   }
 
   private validatePhone(phone: string): boolean {
-    // Ceci est un exemple simple. Vous pouvez ajuster selon vos besoins spécifiques
     const phoneRegex = /^\+?[\d\s-]{10,}$/;
     return phoneRegex.test(phone);
   }
@@ -211,12 +213,12 @@ export class MachineSchemeValidate {
     if (isNaN(date.getTime())) return false;
 
     switch (type) {
-      case enumPrimitive.date:
+      case defaultTypes.date:
         return true; // La conversion en Date a déjà validé le format
-      case enumPrimitive.time:
+      case defaultTypes.time:
         // Vérifiez si la chaîne contient uniquement l'heure
         return /^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/.test(value as string);
-      case enumPrimitive.datetime:
+      case defaultTypes.datetime:
         return true; // La conversion en Date a déjà validé le format
       default:
         return false;

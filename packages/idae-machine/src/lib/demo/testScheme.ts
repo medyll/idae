@@ -27,7 +27,8 @@ import {
 } from '@medyll/idae-idbql';
 
 
-import type { FieldType, getFieldTypes, registerFieldType } from '../db/fieldTypes.js';
+import type { FieldTypeDef, FieldTypeId } from '../main/machine/MachineFieldType.js';
+import { MachineFieldType } from '../main/machine/MachineFieldType.js';
 import type { DbDataModel, DbDataModelTs } from '../db/dataModel.js';
 
 

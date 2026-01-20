@@ -7,20 +7,7 @@ import type {
 import { MachineScheme } from "$lib/main/machine/MachineScheme.js";
 import { MachineParserForge } from "$lib/main/machineParserForge.js";
 
-export enum enumPrimitive {
-  id = "id",
-  any = "any",
-  date = "date",
-  datetime = "datetime",
-  time = "time",
-  text = "text",
-  number = "number",
-  boolean = "boolean",
-  url = "url",
-  email = "email",
-  phone = "phone",
-  password = "password",
-}
+
 
 /**
  * @class MachineDb

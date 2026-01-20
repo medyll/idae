@@ -19,7 +19,7 @@ export * from '$lib/main/machine.js';
 export * from '$lib/main/machine.spec.js';
 export * from '$lib/demo/testScheme.js';
 export * from '$lib/db/types.js';
-export * from '$lib/db/fieldTypes.js';
+
 export * from '$lib/db/dbSchema.js';
 export * from '$lib/db/dbSchema.spec.js';
 export * from '$lib/db/dbFormValidate.spec.js';
