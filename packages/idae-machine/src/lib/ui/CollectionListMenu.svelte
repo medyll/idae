@@ -3,7 +3,7 @@
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { idbqlState } from '$lib/db/dbSchema.js';
 	import { MachineDb } from '$lib/main/machineDb.js';
-	import { IDbCollectionValues } from '$lib/main/machine/IDbCollectionValues.js';
+	import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 
@@ -20,7 +20,7 @@
 	let { collection, target, data, menuListProps, onclick, style, where }: DataListMenuProps = $props();
 
 	let test = new MachineDb();
-	let fieldValues = new IDbCollectionValues(collection);
+	let fieldValues = new MachineSchemeValues(collection);
 	let index = test.getIndexName(collection);
 
 	let qy = $derived(where ? idbqlState[collection].where(where) : idbqlState[collection].getAll());

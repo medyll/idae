@@ -1,18 +1,18 @@
 /*
-	renamed from DbCollectionError to IDbErrors
+	renamed from DbCollectionError to MachineError
  */
 
 /**
- * @class IDbError
+ * @class MachineError
  * @role Custom error class for collection-related errors.
  *
  * Usage:
- *   throw new IDbError('Message', 'ERROR_CODE');
- *   IDbError.handleError(error);
+ *   throw new MachineError('Message', 'ERROR_CODE');
+ *   MachineError.handleError(error);
  */
-export class IDbError extends Error {
+export class MachineError extends Error {
   /**
-   * Create a new IDbError instance.
+   * Create a new MachineError instance.
    * @role Constructor
    * @param {string} message The error message.
    * @param {string} code The error code.
@@ -22,28 +22,28 @@ export class IDbError extends Error {
     public readonly code: string,
   ) {
     super(message);
-    this.name = "DbCollectionError";
+    this.name = "MachineError";
   }
 
   /**
-   * Throw a new IDbError.
+   * Throw a new MachineError.
    * @role Error throwing
    * @param {string} message The error message.
    * @param {string} code The error code.
-   * @throws {IDbError}
+   * @throws {MachineError}
    */
   static throwError(message: string, code: string) {
-    throw new IDbError(message, code);
+    throw new MachineError(message, code);
   }
 
   /**
-   * Handle an error, logging details if it's an IDbError.
+   * Handle an error, logging details if it's an MachineError.
    * @role Error handling
    * @param {unknown} error The error to handle.
    * @return {void}
    */
   static handleError(error: unknown): void {
-    if (error instanceof IDbError) {
+    if (error instanceof MachineError) {
       console.error(`${error.name}: ${error.message} (Code: ${error.code})`);
     } else {
       console.error("Unexpected error:", error);

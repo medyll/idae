@@ -4,11 +4,11 @@
  * @role Custom error class for validation errors on form fields.
  *
  * Usage:
- *   throw new IDbValidationError('email', 'INVALID_EMAIL', 'Invalid email address');
+ *   throw new MachineErrorValidation('email', 'INVALID_EMAIL', 'Invalid email address');
  */
-export class IDbValidationError extends Error {
+export class MachineErrorValidation extends Error {
 	/**
-	 * Create a new IDbValidationError instance.
+	 * Create a new MachineErrorValidation instance.
 	 * @role Constructor
 	 * @param {string} field The field name.
 	 * @param {string} code The error code.
@@ -20,6 +20,6 @@ export class IDbValidationError extends Error {
 		message: string
 	) {
 		super(message);
-		this.name = 'IDbValidationError';
+		this.name = 'MachineErrorValidation';
 	}
 }

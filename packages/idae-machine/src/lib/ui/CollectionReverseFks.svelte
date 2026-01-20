@@ -17,7 +17,7 @@
 	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
 	
 	const dbFields = machine;
-	const reverseFks = $derived( machine.logic.collection(collection).reverseFks());
+	const reverseFks = $derived( machine.logic.collection(collection).parseReverseFks());
 
 	function getTitle() {
 		if (typeof showTitle === 'string') return showTitle;

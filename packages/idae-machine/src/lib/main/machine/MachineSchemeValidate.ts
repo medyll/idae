@@ -1,20 +1,20 @@
 import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb, enumPrimitive } from '$lib/main/machineDb.js';
-import { IDbValidationError } from './IDbValidationError.js';
+import { MachineErrorValidation } from './MachineErrorValidation.js';
 
 /**
- * @class IDbFormValidate
+ * @class MachineSchemeValidate
  * @role Provides validation utilities for form fields in a collection.
  *
  * Usage:
  *   const validator = new IDbFormValidate('agent');
  *   const result = validator.validateField('email', value);
  */
-export class IDbFormValidate {
+export class MachineSchemeValidate {
 	private machineDb: MachineDb;
 
 	/**
-	 * Create a new IDbFormValidate instance.
+	 * Create a new MachineSchemeValidate instance.
 	 * @role Constructor
 	 * @param {TplCollectionName} collection The collection name.
 	 * @param {MachineDb} machineDb The MachineDb instance.
@@ -32,12 +32,12 @@ export class IDbFormValidate {
 	 */
 	validateField(fieldName: keyof TplFields, value: any): { isValid: boolean; error?: string; } {
 		try {
-			const fieldInfo = this.machineDb.collection(this.collection).parseCollectionFieldName(this.collection, fieldName);
+			const fieldInfo = this.machineDb.collection(this.collection).field(fieldName).parse();
 			if (!fieldInfo) {
 				return { isValid: false, error: `Field ${String(fieldName)} not found in collection` };
 			}
 			// Type checking
-			if (!this.#validateType(value, fieldInfo.fieldType)) {
+			if (!this.#validateType(value, fieldInfo.fieldType)) {s
 				return this.#returnError(fieldName, fieldInfo.fieldType);
 			}
 
@@ -79,7 +79,7 @@ export class IDbFormValidate {
 
 			return { isValid: true };
 		} catch (error) {
-			if (error instanceof IDbValidationError) {
+			if (error instanceof MachineErrorValidation) {
 				return { isValid: false, error: error.message };
 			}
 			throw error;
@@ -159,7 +159,7 @@ export class IDbFormValidate {
 	}
 
 	#returnError(fieldName: keyof TplFields, enumCode: enumPrimitive | string | undefined): never {
-		throw new IDbValidationError(
+		throw new MachineErrorValidation(
 			String(fieldName),
 			enumCode ?? 'unknown',
 			`Invalid format for field ${String(fieldName)}. Cause "${enumCode}" `

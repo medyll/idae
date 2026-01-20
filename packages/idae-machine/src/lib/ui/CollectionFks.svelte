@@ -12,7 +12,7 @@
 	let { collection,collectionId,where }: CollectionFksProps = $props();
 
  
-	const fks = $derived(machine.logic.collection(collection).fks()); 
+	const fks = $derived(machine.logic.collection(collection).parseFks()); 
 </script>
 
 <Looper data={Object.entries(fks)}>

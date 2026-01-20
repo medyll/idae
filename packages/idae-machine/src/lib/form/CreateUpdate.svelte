@@ -28,7 +28,7 @@
 	let logic = machine.logic ;
 	let store = machine.store[(collection as string)];
 
-	let formFields = logic.collection(collection).parseRawCollection();
+	let formFields = logic.collection(collection).parse();
 	let validator = logic.collection(collection).validator;
 
 	let indexName = logic.collection(collection).template.index;

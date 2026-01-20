@@ -4,8 +4,8 @@ import type {
   IdbqModel,
   TplCollectionName,  
 } from "@medyll/idae-idbql";
-import { IDbCollection } from "$lib/main/machine/IDbCollection";
-import { MachineParserForge } from "$lib/main/machineParserForge";
+import { MachineScheme } from "$lib/main/machine/MachineScheme.js";
+import { MachineParserForge } from "$lib/main/machineParserForge.js";
 
 export enum enumPrimitive {
   id = "id",
@@ -34,7 +34,7 @@ export class MachineDb {
 
   machineForge: MachineParserForge = new MachineParserForge();
 
-  #idbCollectionsList: Record<string, IDbCollection> = {};
+  #idbCollectionsList: Record<string, MachineScheme> = {};
 
   /**
    * Create a new MachineDb instance.
@@ -50,11 +50,11 @@ export class MachineDb {
    * Get an IDbCollection instance for a collection name.
    * @role Collection accessor
    * @param {TplCollectionName} collection The collection name.
-   * @return {IDbCollection} The IDbCollection instance.
+   * @return {MachineScheme} The IDbCollection instance.
    */
-  collection(collection: TplCollectionName): IDbCollection {
+  collection(collection: TplCollectionName): MachineScheme {
     if (!this.#idbCollectionsList[collection]) {
-      this.#idbCollectionsList[collection] = new IDbCollection(
+      this.#idbCollectionsList[collection] = new MachineScheme(
         collection,
         this,
         this.model,

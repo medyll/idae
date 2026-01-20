@@ -336,9 +336,28 @@ All logic in `dbFields.ts` and related modules is covered by unit tests:
 - **Coverage**: Every method of every exported class is tested, including edge cases (array/object/fk/required/readonly).
 - **Continuous validation**: All tests must pass before merge. See `CHANGELOG.md` for test and coverage history.
 
+
 ## 🦄 Svelte 5 Coding Policy
 
 All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md` for details and migration rules.
+
+## 📖 Developer & Documentation Policy
+
+- All classes and methods in the codebase are fully documented with jsDoc, including `@role`, `@param`, and `@return` in English.
+- Internal imports use `$lib` alias for consistency and maintainability.
+- All code is strictly compliant with Svelte 5 standards (see `AGENTS.md`).
+- Pull requests must respect documentation and Svelte 5 rules, or will be rejected.
+
+### Example jsDoc
+```typescript
+/**
+ * @class MachineDb
+ * @role Central class for parsing, introspecting, and extracting metadata from the database schema.
+ * @param {IdbqModel} model Custom model to use.
+ */
+```
+
+See source files for full jsDoc coverage.
 
 ## 🔗 Dependencies
 

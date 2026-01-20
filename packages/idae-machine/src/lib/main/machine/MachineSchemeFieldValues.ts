@@ -1,10 +1,10 @@
 import type { TplCollectionName } from "@medyll/idae-idbql";
-import { IDbCollectionValues } from "./IDbCollectionValues.js";
+import { MachineSchemeValues } from "./MachineSchemeValues.js";
 import type { IDbForge } from "../machineParserForge.js"; 
 import { machine } from "../machine.js";
 
 /**
- * @class IDbCollectionFieldValues
+ * @class MachineSchemeFieldValues
  * @role Utility class for introspecting and formatting field values for a given collection and data object.
  *
  * Provides utilities to introspect and format field values for a given collection and data object.
@@ -15,15 +15,15 @@ import { machine } from "../machine.js";
  * - Supports iteration over array and object fields for advanced UI layouts.
  *
  * Usage:
- *   const fieldValues = new IDbCollectionFieldValues('agents', agentData);
+ *   const fieldValues = new MachineSchemeFieldValues('agents', agentData);
  *   const forge = fieldValues.getForge('name');
  *   const formatted = fieldValues.format('name');
  *
  * @template T The type of the data object for the collection.
  */
-export class IDbCollectionFieldValues<T extends Record<string, any>> {
+export class MachineSchemeFieldValues<T extends Record<string, any>> {
   #collection: TplCollectionName;
-  #collectionValues: IDbCollectionValues<T>;
+  #collectionValues: MachineSchemeValues<T>;
   #data: T;
 
   /**
@@ -35,7 +35,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
   public getForge(fieldName: keyof T): IDbForge | undefined {
     return this.#collectionValues.machine
       .collection(this.#collection)
-      .parseCollectionFieldName(fieldName as string);
+      .field(fieldName).parse();
   }
 
   /**
@@ -43,16 +43,16 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
    * @role Constructor
    * @param {TplCollectionName} collection The collection name.
    * @param {T} data The data object.
-   * @param {IDbCollectionValues<T>=} collectionValues Optional IDbCollectionValues instance.
+   * @param {MachineSchemeValues<T>=} collectionValues Optional IDbCollectionValues instance.
    */
   constructor(
     collection: TplCollectionName,
     data: T,
-    collectionValues?: IDbCollectionValues<T>,
+    collectionValues?: MachineSchemeValues<T>,
   ) {
     this.#collection = collection;
     this.#collectionValues =
-      collectionValues ?? new IDbCollectionValues(collection, machine);
+      collectionValues ?? new MachineSchemeValues(collection, machine);
     this.#data = data;
   }
 
@@ -63,9 +63,7 @@ export class IDbCollectionFieldValues<T extends Record<string, any>> {
    * @return {string | string[]} The formatted value or array of formatted values.
    */
   format(fieldName: keyof T): string | string[] {
-    const fieldInfo = this.#collectionValues.machine.collection(this.#collection).parseCollectionFieldName(
-      fieldName as string
-    );
+    const fieldInfo = this.#collectionValues.machine.collection(this.#collection).field(fieldName).parse();
     if (fieldInfo?.is === "array") {
       return this.iterateArray(String(fieldName), this.#data);
     }

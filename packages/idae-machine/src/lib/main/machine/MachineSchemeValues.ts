@@ -1,17 +1,17 @@
 import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { type IDbForge } from '../machineParserForge.js';
-import { IDbError } from '$lib/main/machine/IDbError.js';
+import { MachineError } from '$lib/main/machine/MachineError.js';
 
 /**
- * @class IDbCollectionValues
+ * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
  *
  * This class is typically used via IDbBase.getCollectionValues for shared instance management.
  *
  * @template T The type of the data object for the collection.
  */
-export class IDbCollectionValues<T extends Record<string, any>> {
+export class MachineSchemeValues<T extends Record<string, any>> {
 	/**
 	 * The IDbBase instance used for schema introspection.
 	 */
@@ -52,7 +52,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				})
 				.join(' ');
 		} catch (error) {
-			IDbError.handleError(error);
+			MachineError.handleError(error);
 			return '';
 		}
 	}
@@ -80,7 +80,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 			);
 			return data[indexName];
 		} catch (error) {
-			IDbError.handleError(error);
+			MachineError.handleError(error);
 			return null;
 		}
 	}
@@ -106,9 +106,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName( 
-				fieldName as string
-			);
+			const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 			this.#checkError(
 				!fieldInfo,
 				`Field ${String(fieldName)} not found in collection`,
@@ -129,7 +127,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 					return String(data[fieldName]);
 			}
 		} catch (error) {
-			IDbError.handleError(error);
+			MachineError.handleError(error);
 			return '';
 		}
 	}
@@ -153,9 +151,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	): Record<
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string
 	> {
-		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName( 
-			fieldName as string
-		);
+		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
 		const indexName = this.machine.collection(this.collectionName).template.index;
@@ -184,7 +180,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
 
-		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName(fieldName);
+		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
@@ -207,7 +203,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 */
 	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
 
-		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName(fieldName);
+		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}
@@ -285,7 +281,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 */
 	#checkError(condition: boolean, message: string, code: string): void {
 		if (condition) {
-			IDbError.throwError(message, code);
+			MachineError.throwError(message, code);
 		}
 	}
 }

@@ -1,16 +1,14 @@
-
 import type {
   TplCollectionName,
   TplFieldRules,
   TplFieldType,
   TplProperties,
-  TplFieldArgs  
+  TplFieldArgs,
+  TplFields,
 } from "@medyll/idae-idbql";
- 
+import type { MachineDb } from "./machineDb.js";
+import { MachineError } from "./machine/MachineError.js";
 
-
- 
-  s
 /**
  * Utility class for parsing and constructing database field definitions (IDbForge).
  * Provides methods to analyze field rules and extract type information for schema generation.
@@ -19,16 +17,20 @@ import type {
 export type IDbForge = {
   collection: TplCollectionName;
   fieldName: string;
-  fieldType: TplFieldType
+  fieldType: TplFieldType;
   fieldRule: TplFieldRules;
-  fieldArgs: TplFieldArgs,
+  fieldArgs: TplFieldArgs;
   is: "array" | "object" | "fk" | "primitive";
 };
 export class MachineParserForge {
+  #machineForge: MachineDb["machineForge"];
+
   /**
    * Create a new MachineParserForge instance.
    */
-  constructor() {}
+  constructor() {
+    this.#machineForge = new MachineParserForge();
+  }
 
   /**
    * Test if a field rule matches a specific type (array, object, fk, primitive).
@@ -113,9 +115,9 @@ export class MachineParserForge {
       if (remaining !== undefined) {
         [central] = remaining.split(")");
       }
-      const args = central ? central.split(" ") as [
-        TplProperties | keyof typeof TplProperties,
-      ] : undefined;
+      const args = central
+        ? (central.split(" ") as [TplProperties | keyof typeof TplProperties])
+        : undefined;
       return { piece: piece.trim(), args };
     }
 
@@ -138,6 +140,7 @@ export class MachineParserForge {
     }
     return { fieldType, fieldRule, fieldArgs, is: type };
   }
+
 
   /**
    * Constructs an IDbForge object from its components.

@@ -8,18 +8,16 @@ import type {
   TplFieldRules,
 } from "@medyll/idae-idbql";
 import { MachineDb } from "$lib/main/machineDb.js";
-import { MachineParserForge } from "$lib/main/machineParserForge.js";
-import { IDbFormValidate } from "$lib/main/machine/IDbFormValidate.js";
-import { IDbCollectionFieldForge } from "$lib/main/machine/IDbCollectionFieldForge.js";
-import { IDbCollectionFieldValues } from "$lib/main/machine/IDbCollectionFieldValues.js";
-import { IDbCollectionValues } from "$lib/main/machine/IDbCollectionValues.js";
-import { IDbError } from "$lib/main/machine/IDbError.js";
+import { MachineSchemeFieldForge } from "$lib/main/machine/MachineSchemeFieldForge.js";
+import { MachineSchemeValues } from "$lib/main/machine/MachineSchemeValues.js";
+import { MachineSchemeValidate } from "$lib/main/machine/MachineSchemeValidate.js";
+import { MachineSchemeField } from "$lib/main/machine/MachineSchemeField.js";
 
- /**
-  * @class IDbCollection
-  * @role Provides schema and field utilities for a collection, including metadata, formatting, and field parsing.
-  */
- export class IDbCollection {
+/**
+ * @class MachineScheme
+ * @role Provides schema and field utilities for a collection, including metadata, formatting, and field parsing.
+ */
+export class MachineScheme {
   /** The collection name. */
   collection: TplCollectionName;
   /** The collection template. */
@@ -29,10 +27,8 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
   /** The collection model. */
   #model: IdbqModel["Collection"];
 
-  #machineForge: MachineDb["machineForge"];
-
   /**
-   * Create a new IDbCollection instance.
+   * Create a new MachineScheme instance.
    * @role Constructor
    * @param {TplCollectionName} collectionName The collection name.
    * @param {MachineDb} idbBase The MachineDb instance.
@@ -47,7 +43,6 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
     this.#machineDb = idbBase;
     this.#model = model[String(collectionName)];
     this.#template = this.#model["template"] as Tpl;
-    this.#machineForge = new MachineParserForge();
   }
 
   /**
@@ -71,10 +66,10 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
   /**
    * Get a form validator for this collection.
    * @role Utility
-   * @return {IDbFormValidate} The form validator instance.
+   * @return {MachineSchemeValidate} The form validator instance.
    */
-  get validator(): IDbFormValidate {
-    return new IDbFormValidate(this.collection, this.#machineDb);
+  get validator(): MachineSchemeValidate {
+    return new MachineSchemeValidate(this.collection, this.#machineDb);
   }
 
   /**
@@ -92,30 +87,37 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
   /**
    * Get a new IDbCollectionValues instance for this collection.
    * @role Utility
-   * @return {IDbCollectionValues} The collection values instance.
+   * @return {MachineSchemeValues} The collection values instance.
    */
   get collectionValues() {
-    return new IDbCollectionValues(this.collection, this.#machineDb);
+    return new MachineSchemeValues(this.collection, this.#machineDb);
   }
 
- 
+  field(fieldName: keyof TplFields): MachineSchemeField  {
+    return new MachineSchemeField(
+      this.#model,
+      this.collection,
+      fieldName as keyof TplFields,
+    );
+  }
   /**
    * Get a field forge instance for a specific field and data.
    * @role Field forge factory
    * @template T
    * @param {keyof T} fieldName The field name.
    * @param {T} data The data object.
-   * @return {IDbCollectionFieldForge<T>} The field forge instance.
+   * @return {MachineSchemeFieldForge<T>} The field forge instance.
    */
   fieldForge<T extends Record<string, any>>(
     fieldName: keyof T,
     data: T,
-  ): IDbCollectionFieldForge<T> {
-    return new IDbCollectionFieldForge<T>(
+  ): MachineSchemeFieldForge<T> {
+    return new MachineSchemeFieldForge<T>(
       this.collection,
       fieldName,
       data,
-      this.collectionValues ,
+      this.collectionValues,
+      this.#machineDb,
     );
   }
 
@@ -124,41 +126,17 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
    * @role Field parsing
    * @return {Record<string, IDbForge | undefined> | undefined} All parsed fields or undefined.
    */
-  parseRawCollection(): Record<string, IDbForge | undefined> | undefined {
+  parse(): Record<string, IDbForge | undefined> | undefined {
     const fields = this.#template.fields;
     if (!fields) return;
     const out: Record<string, IDbForge | undefined> = {};
     Object.keys(fields).forEach((fieldName) => {
       const fieldType = fields[fieldName];
       if (fieldType) {
-        out[fieldName] = this.parseCollectionFieldName(fieldName);
+        out[fieldName] = this.field(fieldName).parse();
       }
     });
     return out;
-  }
-
-  /**
-   * Parse a single field of a collection and return its IDbForge metadata.
-   * @role Field parsing
-   * @param {keyof TplFields} fieldName The field name.
-   * @return {IDbForge | undefined} The field metadata or undefined.
-   */
-  parseCollectionFieldName(fieldName: keyof TplFields): IDbForge | undefined {
-    const field = this.getFieldRule(fieldName);
-    if (!field) {
-      IDbError.throwError(
-        `Field ${fieldName} not found in collection ${this.collection}`,
-        "FIELD_NOT_FOUND",
-      );
-      return undefined;
-    }
-    const array = this.#machineForge.testIs("array", field);
-    const object = this.#machineForge.testIs("object", field);
-    const fk = this.#machineForge.testIs("fk", field);
-    const primitive = this.#machineForge.testIs("primitive", field);
-    const fieldType = array ?? object ?? fk ?? primitive;
-
-     return this.#machineForge.forge({ collection: this.collection, fieldName, ...(fieldType ?? {}), is: fieldType?.is ?? undefined,});
   }
 
   /**
@@ -166,14 +144,12 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
    * @role Foreign key accessor
    * @return {{ [collection: string]: Tpl }} Foreign key collections.
    */
-  fks(): { [collection: string]: Tpl } {
+  parseFks(): { [collection: string]: IDbForge } {
     const fks = this.#template?.fks;
     const out: Record<string, IDbForge | undefined> = {};
     if (fks) {
       Object.keys(fks).forEach((collection: TplCollectionName) => {
-        out[collection] = this.parseRawCollection(
-          collection as TplCollectionName,
-        );
+        out[collection] = this.parse(collection as TplCollectionName);
       });
     }
     return out;
@@ -182,10 +158,10 @@ import { IDbError } from "$lib/main/machine/IDbError.js";
   /**
    * Get all reverse foreign keys for this collection.
    * @role Reverse foreign key accessor
-   * @return {Record<string, any>} Reverse foreign key collections.
+   * @return {Record<string, Record<string, any>>} Reverse foreign key collections.
    */
-  reverseFks(): Record<string, any> {
-    const result: Record<string, any> = {};
+  parseReverseFks(): Record<string, Record<string, any>> {
+    const result: Record<string, Record<string, any>> = {};
     Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
       const template = (collectionModel as CollectionModel).template;
       if (template && template.fks) {
