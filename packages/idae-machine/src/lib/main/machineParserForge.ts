@@ -23,13 +23,14 @@ export type IDbForge = {
   is: "array" | "object" | "fk" | "primitive";
 };
 export class MachineParserForge {
-  #machineForge: MachineDb["machineForge"];
+  #machineForge: MachineDb["machineForge"] | undefined;
 
   /**
    * Create a new MachineParserForge instance.
    */
   constructor() {
-    this.#machineForge = new MachineParserForge();
+    // Correction : ne pas initialiser #machineForge récursivement
+    this.#machineForge = undefined;
   }
 
   /**
