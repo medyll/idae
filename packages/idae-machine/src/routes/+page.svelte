@@ -4,6 +4,7 @@ import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 import { machine } from '$lib/main/machine.js';
 import { testScheme } from '$lib/demo/testScheme.js';
 
+
 machine.init({ dbName: "test-db", version: 1, model: testScheme});
 machine.start();
  
@@ -39,9 +40,7 @@ function cancelDeleteAgent() {
 
  <CreateUpdate 
 	collection="agent" 
-	mode="create" 
-	oncreate={e => { showCreate = false; }}
-	/>
+	mode="create" />
 	 
 
  
