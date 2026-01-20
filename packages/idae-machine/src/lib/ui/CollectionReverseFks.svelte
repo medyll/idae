@@ -1,18 +1,4 @@
-<!-- 
-    Component CollectionReverseFks.svelte :  to display a list of reverse foreign keys for a specific collection.
-    D:\boulot\python\wollama\src\components\form\CollectionReverseFks.svelte
 
-    (alias) type Tpl<T = TplCollectionFields> = {
-    index: string;
-    presentation: string | number | symbol;
-    fields: { [K in keyof T]: TplFieldRules; };
-    fks: { [K in TplCollectionName]?: {
-        code: K;
-        multiple: boolean;
-        rules: CombinedArgs;
-    }; };
-    } 
- -->
 <script lang="ts"> 
 	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { Looper } from '@medyll/idae-slotui-svelte';
@@ -31,7 +17,7 @@
 	let { collection, children: child, showTitle = false, component, componentProps = {} }: CollectionFksProps = $props();
 	
 	const dbFields = machine;
-	const fks = $derived( machine.logic.reverseFks(collection));
+	const reverseFks = $derived( machine.logic.collection(collection).reverseFks());
 
 	function getTitle() {
 		if (typeof showTitle === 'string') return showTitle;
@@ -39,7 +25,7 @@
 	}
 </script>
 
-<Looper data={Object.entries(fks)}>
+<Looper data={Object.entries(reverseFks)}>
 	{#snippet children({ item })}
 		{#if showTitle}
 			<div class="p2 font-bold">{item?.[0]}</div>

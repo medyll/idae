@@ -3,40 +3,36 @@ import { MachineDb, enumPrimitive } from '$lib/main/machineDb.js';
 import { IDbValidationError } from './IDbValidationError.js';
 
 /**
- * IDbFormValidate
- *
- * Provides validation utilities for form fields in a collection.
- *
- * Main responsibilities:
- * - Holds a reference to the collection and schema.
- * - Validates field values according to type and arguments.
- * - Supports custom validation for email, URL, phone, and date/time fields.
+ * @class IDbFormValidate
+ * @role Provides validation utilities for form fields in a collection.
  *
  * Usage:
- *   const validator = new IDbFormValidate('agents');
+ *   const validator = new IDbFormValidate('agent');
  *   const result = validator.validateField('email', value);
  */
 export class IDbFormValidate {
-	private idbCollections: MachineDb;
+	private machineDb: MachineDb;
 
 	/**
 	 * Create a new IDbFormValidate instance.
-	 * @param collection The collection name.
-	 * @param idbCollections Optional MachineDb instance.
+	 * @role Constructor
+	 * @param {TplCollectionName} collection The collection name.
+	 * @param {MachineDb} machineDb The MachineDb instance.
 	 */
-	constructor(private collection: TplCollectionName, idbCollections?: MachineDb) {
-		this.idbCollections = idbCollections ?? new MachineDb();
+	constructor(private collection: TplCollectionName, machineDb: MachineDb) {
+		this.machineDb = machineDb;
 	}
 
 	/**
 	 * Validate a field value for the collection.
-	 * @param fieldName The field name.
-	 * @param value The value to validate.
-	 * @returns An object with isValid and optional error.
+	 * @role Field validation
+	 * @param {keyof TplFields} fieldName The field name.
+	 * @param {any} value The value to validate.
+	 * @return {{ isValid: boolean; error?: string; }} An object with isValid and optional error.
 	 */
 	validateField(fieldName: keyof TplFields, value: any): { isValid: boolean; error?: string; } {
 		try {
-			const fieldInfo = this.idbCollections.parseCollectionFieldName(this.collection, fieldName);
+			const fieldInfo = this.machineDb.collection(this.collection).parseCollectionFieldName(this.collection, fieldName);
 			if (!fieldInfo) {
 				return { isValid: false, error: `Field ${String(fieldName)} not found in collection` };
 			}
@@ -113,7 +109,7 @@ export class IDbFormValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.idbCollections.collection(this.collection).template.fields;
+		const fields = this.machineDb.collection(this.collection).template.fields;
 		if (!fields) {
 			return {
 				isValid: false,

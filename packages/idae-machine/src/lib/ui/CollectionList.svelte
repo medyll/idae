@@ -39,11 +39,11 @@ import {machine } from '$lib/main/machine.js';
 		displayMode
 	}: DataListProps = $props();
 
-	let collections = machine.collections;
+	let logic = machine.logic;
 	let store = machine.store;
-	let fieldValues = machine.collections.collection(collection).collectionValues() ;
-	let index = collections.collection(collection).template.index;
-	let qy = $derived(where ? store[collection].where(where) : store[collection].getAll());
+	let fieldValues = $derived(logic.collection(collection).collectionValues);
+	let index = $derived(logic.collection(collection).template.index);
+	let query = $derived(where ? store[collection].where(where) : store[collection].getAll());
 
 	function load(event: CustomEvent, indexV: number | string) {
 		openCrud(event[index]);
@@ -71,7 +71,7 @@ import {machine } from '$lib/main/machine.js';
 </script>
 
 <div class="grid grid-cols-3 gap-3 p-3">
-	<Looper data={qy}>
+	<Looper data={query}>
 		{#snippet loopTitle()}
 			{@render _children?.()}
 		{/snippet}

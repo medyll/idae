@@ -1,37 +1,32 @@
 
 import type {
   TplCollectionName,
-  TplFields,
+  TplFieldRules,
+  TplFieldType,
   TplProperties,
+  TplFieldArgs  
 } from "@medyll/idae-idbql";
-import type { IDbFieldType, IDbFieldRules, IDbForgeArgs } from "./machineDb.js";
+ 
 
-/**
- * Represents the structure for database field forging.
- * Used to describe and construct database field definitions dynamically.
- */
-export type IDbForge = {
-  /** Name of the collection (table) */
-  collection?: TplCollectionName;
-  /** Name of the field within the collection */
-  fieldName?: keyof TplFields;
-  /** Type of the field (e.g., string, number, fk, array, etc.) */
-  fieldType?: IDbFieldType;
-  /** Field rule string describing the type and constraints */
-  fieldRule?: IDbFieldRules;
-  /** Additional arguments for the field (properties, options, etc.) */
-  fieldArgs?: IDbForgeArgs | undefined;
-  /** The resolved type (array, object, fk, primitive) */
-  is: unknown;
-};
 
+ 
+  s
 /**
  * Utility class for parsing and constructing database field definitions (IDbForge).
  * Provides methods to analyze field rules and extract type information for schema generation.
  */
-export class MachineForge {
+
+export type IDbForge = {
+  collection: TplCollectionName;
+  fieldName: string;
+  fieldType: TplFieldType
+  fieldRule: TplFieldRules;
+  fieldArgs: TplFieldArgs,
+  is: "array" | "object" | "fk" | "primitive";
+};
+export class MachineParserForge {
   /**
-   * Create a new MachineForge instance.
+   * Create a new MachineParserForge instance.
    */
   constructor() {}
 
@@ -43,7 +38,7 @@ export class MachineForge {
    */
   testIs(
     what: "array" | "object" | "fk" | "primitive",
-    fieldRule: IDbFieldRules,
+    fieldRule: TplFieldRules,
   ): Partial<IDbForge> | undefined {
     const typeMappings = {
       fk: "fk-",
@@ -78,7 +73,7 @@ export class MachineForge {
    */
   is(
     what: "array" | "object" | "fk" | "primitive",
-    fieldRule: IDbFieldRules,
+    fieldRule: TplFieldRules,
   ): Partial<IDbForge> {
     return this.extract(what, fieldRule);
   }
@@ -91,7 +86,7 @@ export class MachineForge {
    */
   extract(
     type: "array" | "object" | "fk" | "primitive",
-    fieldRule: IDbFieldRules,
+    fieldRule: TplFieldRules,
   ): Partial<IDbForge> {
     /**
      * Helper to extract the substring after a given pattern, before any arguments.
@@ -101,7 +96,7 @@ export class MachineForge {
      */
     function extractAfter(pattern: string, source: string) {
       const reg = source?.split("(")?.[0];
-      return reg.split(pattern)[1] as IDbFieldRules;
+      return reg.split(pattern)[1] as TplFieldRules;
     }
 
     /**
@@ -111,13 +106,16 @@ export class MachineForge {
      */
     function extractArgs(
       source: string,
-    ): { piece: any; args: [TplProperties] | IDbForgeArgs } | undefined {
+    ): { piece: any; args: [TplProperties] | TplFieldArgs } | undefined {
       const [piece, remaining] = source.split("(");
       if (!remaining) return { piece: piece.trim(), args: undefined };
-      const [central] = remaining?.split(")");
-      const args = central?.split(" ") as [
+      let central: string | undefined;
+      if (remaining !== undefined) {
+        [central] = remaining.split(")");
+      }
+      const args = central ? central.split(" ") as [
         TplProperties | keyof typeof TplProperties,
-      ];
+      ] : undefined;
       return { piece: piece.trim(), args };
     }
 

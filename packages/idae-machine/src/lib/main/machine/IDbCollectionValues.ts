@@ -1,33 +1,16 @@
 import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb } from '$lib/main/machineDb.js';
-import { type IDbForge } from '../machineForge.js';
+import { type IDbForge } from '../machineParserForge.js';
 import { IDbError } from '$lib/main/machine/IDbError.js';
 
 /**
- * IDbCollectionValues
- *
- * This class provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
- * It is designed for dynamic UI rendering, presentation logic, and metadata extraction for form generation in schema-driven applications.
- *
- * Main responsibilities:
- * - Holds a reference to the collection name and the schema (IDbBase).
- * - Provides methods to format field values according to their type (number, text, array, object, etc.).
- * - Supplies presentation logic for displaying records (e.g., presentation string, index value).
- * - Offers input attribute generation for forms (inputDataSet).
- * - Supports iteration over array/object fields for advanced UI layouts.
- * - Enables access to field metadata for validation and rendering.
- *
- * Usage:
- *   const values = new IDbCollectionValues('agents');
- *   const display = values.presentation(agentData); // formatted display string
- *   const index = values.indexValue(agentData); // index field value
- *   const formatted = values.format('name', agentData); // formatted field value
- *   const attrs = values.getInputDataSet('name', agentData); // input attributes for forms
+ * @class IDbCollectionValues
+ * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
  *
  * This class is typically used via IDbBase.getCollectionValues for shared instance management.
- * @template T - The type of the data object for the collection.
+ *
+ * @template T The type of the data object for the collection.
  */
-
 export class IDbCollectionValues<T extends Record<string, any>> {
 	/**
 	 * The IDbBase instance used for schema introspection.
@@ -40,13 +23,21 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 
 	/**
 	 * Create a new IDbCollectionValues instance for a given collection.
-	 * @param collectionName The collection name.
+	 * @role Constructor
+	 * @param {TplCollectionName} collectionName The collection name.
+	 * @param {MachineDb} machine The MachineDb instance.
 	 */
 	constructor(collectionName: TplCollectionName, machine: MachineDb) {
 		this.collectionName = collectionName;
 		this.machine = machine ;
 	}
 
+	/**
+	 * Get the presentation string for a data object, using the collection's presentation template.
+	 * @role Presentation logic
+	 * @param {Record<string, any>} data The data object.
+	 * @return {string} The formatted presentation string.
+	 */
 	presentation(data: Record<string, any>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
@@ -71,6 +62,12 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param data The data object.
 	 * @returns The value of the index field, or null if not found.
 	 */
+	/**
+	 * Get the value of the index field for a data object.
+	 * @role Index accessor
+	 * @param {Record<string, any>} data The data object.
+	 * @return {any | null} The value of the index field, or null if not found.
+	 */
 	indexValue(data: Record<string, any>): any | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
@@ -94,6 +91,13 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param data The data object.
 	 * @returns The formatted value as a string.
 	 */
+	/**
+	 * Format a field value for display, using the field type and schema.
+	 * @role Field formatting
+	 * @param {keyof T} fieldName The field name.
+	 * @param {T} data The data object.
+	 * @return {string} The formatted value as a string.
+	 */
 	format(fieldName: keyof T, data: T): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
@@ -102,8 +106,7 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.machine.parseCollectionFieldName(
-				this.collectionName,
+			const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName( 
 				fieldName as string
 			);
 			this.#checkError(
@@ -137,14 +140,20 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param data The data object.
 	 * @returns An object with data-* attributes for the field.
 	 */
+	/**
+	 * Get a set of data-* attributes for a field, for use in form generation or UI.
+	 * @role Input attribute generation
+	 * @param {string} fieldName The field name.
+	 * @param {T} data The data object.
+	 * @return {Record<`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string>} The data-* attributes for the field.
+	 */
 	getInputDataSet(
 		fieldName: string,
 		data: T
 	): Record<
 		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string
 	> {
-		const fieldInfo = this.machine.parseCollectionFieldName(
-			this.collectionName,
+		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName( 
 			fieldName as string
 		);
 		const fieldType = fieldInfo?.fieldType ?? '';
@@ -166,12 +175,20 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param data The array data.
 	 * @returns An array of IDbForge objects.
 	 */
+	/**
+	 * Iterate over an array field and return an array of IDbForge objects for each element.
+	 * @role Array field iteration
+	 * @param {keyof TplFields} fieldName The field name.
+	 * @param {any[]} data The array data.
+	 * @return {IDbForge[]} An array of IDbForge objects.
+	 */
 	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
 
-		const fieldInfo = this.machine.parseCollectionFieldName(this.collectionName, fieldName);
+		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName(fieldName);
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
+
 		return data.map((_, idx) => ({ ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]` }));
 	}
 
@@ -181,9 +198,16 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param data The object data.
 	 * @returns An array of IDbForge objects.
 	 */
+	/**
+	 * Iterate over an object field and return an array of IDbForge objects for each property.
+	 * @role Object field iteration
+	 * @param {keyof TplFields} fieldName The field name.
+	 * @param {Record<string, unknown>} data The object data.
+	 * @return {IDbForge[]} An array of IDbForge objects.
+	 */
 	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
 
-		const fieldInfo = this.machine.parseCollectionFieldName(this.collectionName, fieldName);
+		const fieldInfo = this.machine.collection(this.collectionName).parseCollectionFieldName(fieldName);
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}
@@ -195,6 +219,12 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param value The number value.
 	 * @returns The formatted string.
 	 */
+	/**
+	 * Internal: Format a number field for display.
+	 * @role Number formatting
+	 * @param {number} value The number value.
+	 * @return {string} The formatted string.
+	 */
 	#formatNumberField(value: number): string {
 		// Implement number formatting logic here
 		return value.toString();
@@ -205,6 +235,13 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param value The string value.
 	 * @param type The text type (e.g. 'text-short').
 	 * @returns The formatted string.
+	 */
+	/**
+	 * Internal: Format a text field for display, with length limits by type.
+	 * @role Text formatting
+	 * @param {unknown} value The string value.
+	 * @param {string} type The text type (e.g. 'text-short').
+	 * @return {string} The formatted string.
 	 */
 	#formatTextField(value: unknown, type: string): string {
 		const lengths = {
@@ -223,6 +260,11 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * Internal: Check if access is allowed (override for custom logic).
 	 * @returns True if access is allowed.
 	 */
+	/**
+	 * Internal: Check if access is allowed (override for custom logic).
+	 * @role Access check
+	 * @return {boolean} True if access is allowed.
+	 */
 	#checkAccess(): boolean {
 		// Implement access check logic here
 		return true;
@@ -233,6 +275,13 @@ export class IDbCollectionValues<T extends Record<string, any>> {
 	 * @param condition The condition to check.
 	 * @param message The error message.
 	 * @param code The error code.
+	 */
+	/**
+	 * Internal: Throw an error if a condition is met.
+	 * @role Error handling
+	 * @param {boolean} condition The condition to check.
+	 * @param {string} message The error message.
+	 * @param {string} code The error code.
 	 */
 	#checkError(condition: boolean, message: string, code: string): void {
 		if (condition) {

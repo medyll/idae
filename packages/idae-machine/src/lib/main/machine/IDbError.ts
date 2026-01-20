@@ -3,9 +3,8 @@
  */
 
 /**
- * IDbError
- *
- * Custom error class for collection-related errors.
+ * @class IDbError
+ * @role Custom error class for collection-related errors.
  *
  * Usage:
  *   throw new IDbError('Message', 'ERROR_CODE');
@@ -14,8 +13,9 @@
 export class IDbError extends Error {
   /**
    * Create a new IDbError instance.
-   * @param message The error message.
-   * @param code The error code.
+   * @role Constructor
+   * @param {string} message The error message.
+   * @param {string} code The error code.
    */
   constructor(
     message: string,
@@ -27,8 +27,10 @@ export class IDbError extends Error {
 
   /**
    * Throw a new IDbError.
-   * @param message The error message.
-   * @param code The error code.
+   * @role Error throwing
+   * @param {string} message The error message.
+   * @param {string} code The error code.
+   * @throws {IDbError}
    */
   static throwError(message: string, code: string) {
     throw new IDbError(message, code);
@@ -36,7 +38,9 @@ export class IDbError extends Error {
 
   /**
    * Handle an error, logging details if it's an IDbError.
-   * @param error The error to handle.
+   * @role Error handling
+   * @param {unknown} error The error to handle.
+   * @return {void}
    */
   static handleError(error: unknown): void {
     if (error instanceof IDbError) {

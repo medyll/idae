@@ -12,7 +12,7 @@ export { default as List } from '$lib/fragments/List.svelte';
 export { default as InfoLine } from '$lib/fragments/InfoLine.svelte';
 export { default as Frame } from '$lib/fragments/Frame.svelte';
 export { default as Confirm } from '$lib/fragments/Confirm.svelte';
-export * from '$lib/main/machineForge.js';
+export * from '$lib/main/machineParserForge.js';
 export * from '$lib/main/machineDb.js';
 export * from '$lib/main/machineDb.spec.js';
 export * from '$lib/main/machine.js';
