@@ -1,7 +1,8 @@
 import type { TplCollectionName, TplFields } from "@medyll/idae-idbql";
 import { MachineDb } from "$lib/main/machineDb.js";
 import { MachineErrorValidation } from "./MachineErrorValidation.js";
-import { defaultTypes } from "$lib/main/machine/MachineFieldType.js";
+import MachineSchemeFieldType, { defaultTypes } from "$lib/main/machine/MachineFieldType.js";
+
 
 /**
  * 
@@ -26,9 +27,9 @@ export class MachineSchemeValidate {
    */
   constructor(
     private collection: TplCollectionName,
-    machineDb: MachineDb,
+    machineDb: MachineDb, 
   ) {
-    this.machineDb = machineDb;
+    this.machineDb = machineDb; 
   }
 
   /**
@@ -40,13 +41,14 @@ export class MachineSchemeValidate {
    */
   validateField(
     fieldName: keyof TplFields,
-    value: any,
+    value: unknown,
   ): { isValid: boolean; error?: string } {
     try {
       const fieldInfo = this.machineDb
         .collection(this.collection)
         .field(fieldName)
         .parse();
+        
       if (!fieldInfo) {
         return {
           isValid: false,
@@ -68,30 +70,12 @@ export class MachineSchemeValidate {
           }
         }
       }
-
-      switch (fieldInfo.fieldType) {
-        case defaultTypes.email:
-          if (!this.validateEmail(value)) {
-            return this.#returnError(fieldName, fieldInfo.fieldType);
-          }
-          break;
-        case defaultTypes.url:
-          if (!this.validateUrl(value)) {
-            return this.#returnError(fieldName, fieldInfo.fieldType);
-          }
-          break;
-        case defaultTypes.phone:
-          if (!this.validatePhone(value)) {
-            return this.#returnError(fieldName, fieldInfo.fieldType);
-          }
-          break;
-        case defaultTypes.date:
-        case defaultTypes.datetime:
-        case defaultTypes.time:
-          if (!this.validateDateTime(value, fieldInfo.fieldType)) {
-            return this.#returnError(fieldName, fieldInfo.fieldType);
-          }
-          break;
+ 
+      const typeDef = MachineSchemeFieldType.getFieldType(fieldInfo.fieldType);
+      if (typeDef && typeDef.validator) {
+        if (!typeDef.validator(value)) {
+          return this.#returnError(fieldName, fieldInfo.fieldType);
+        }
       }
 
       return { isValid: true };
@@ -156,26 +140,11 @@ export class MachineSchemeValidate {
   }
 
   #validateType(value: any, type: string | undefined): boolean {
-    switch (type) {
-      case defaultTypes.number:
-        return typeof value === "number" && !isNaN(value);
-      case defaultTypes.boolean:
-        return typeof value === "boolean";
-      case defaultTypes.text:
-      case defaultTypes.email:
-      case defaultTypes.url:
-      case defaultTypes.phone:
-      case defaultTypes.password:
-        return typeof value === "string";
-      case defaultTypes.date:
-      case defaultTypes.datetime:
-      case defaultTypes.time:
-        return value instanceof Date || typeof value === "string";
-      case defaultTypes.any:
-        return true;
-      default:
-        return true; // Pour les types non gérés, on considère que c'est valide
+    const typeDef = MachineSchemeFieldType.getFieldType(type ?? "any");
+    if (typeDef && typeDef.validator) {
+      return typeDef.validator(value);
     }
+    return true;
   }
 
   #returnError(
@@ -187,41 +156,5 @@ export class MachineSchemeValidate {
       enumCode ?? "unknown",
       `Invalid format for field ${String(fieldName)}. Cause "${enumCode}" `,
     );
-  }
-
-  private validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  private validateUrl(url: string): boolean {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  private validatePhone(phone: string): boolean {
-    const phoneRegex = /^\+?[\d\s-]{10,}$/;
-    return phoneRegex.test(phone);
-  }
-
-  private validateDateTime(value: string | Date, type: string): boolean {
-    const date = value instanceof Date ? value : new Date(value);
-    if (isNaN(date.getTime())) return false;
-
-    switch (type) {
-      case defaultTypes.date:
-        return true; // La conversion en Date a déjà validé le format
-      case defaultTypes.time:
-        // Vérifiez si la chaîne contient uniquement l'heure
-        return /^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/.test(value as string);
-      case defaultTypes.datetime:
-        return true; // La conversion en Date a déjà validé le format
-      default:
-        return false;
-    }
   }
 }

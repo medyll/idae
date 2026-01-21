@@ -1,3 +1,8 @@
+
+/**
+ * Enum of default field types supported by the system.
+ * @role field-type-enum
+ */
 export enum defaultTypes {
   id = "id",
   any = "any",
@@ -15,17 +20,50 @@ export enum defaultTypes {
   image = "image",
 }
 
+/**
+ * Definition of a field type, including formatter and optional validator.
+ * @role field-type-definition
+ */
 export interface FieldTypeDef {
   id: string;
   formatter: (value: any) => any;
   validator?: (value: any) => boolean;
 }
 
-const fieldTypeRegistry: Record<string, FieldTypeDef> = {};
+/**
+ * Alias for a field type identifier.
+ * @role field-type-id
+ */
+export type FieldTypeId = string;
+export type FieldTypeRegistry = {
+  [key: string]: FieldTypeDef;
+};
 
-/* Register default field types */
-const defautlFielTypesDef: Record<string, FieldTypeDef> = {
-  mail : {
+/**
+ * Registry of default field types.
+ */
+export const defaultFieldTypesDef: FieldTypeRegistry = {
+  id: {
+    id: defaultTypes.id,
+    formatter: (value: any) => String(value),
+    validator: (value: any) => true,
+  },
+  password: {
+    id: defaultTypes.password,
+    formatter: (value: any) => String(value),
+    validator: (value: any) => true,
+  },
+  file: {
+    id: defaultTypes.file,
+    formatter: (value: any) => String(value),
+    validator: (value: any) => true,
+  },
+  image: {
+    id: defaultTypes.image,
+    formatter: (value: any) => String(value),
+    validator: (value: any) => true,
+  },
+  email: {
     id: defaultTypes.email,
     formatter: (value: any) => String(value).toLowerCase(),
     validator: (value: any) => {
@@ -44,7 +82,7 @@ const defautlFielTypesDef: Record<string, FieldTypeDef> = {
         return false;
       }
     },
-  },  
+  },
   phone: {
     id: defaultTypes.phone,
     formatter: (value: any) => String(value),
@@ -52,37 +90,35 @@ const defautlFielTypesDef: Record<string, FieldTypeDef> = {
       const phoneRegex = /^\+?[\d\s-]{10,}$/;
       return phoneRegex.test(String(value));
     },
-  },  
+  },
   date: {
     id: defaultTypes.date,
-    formatter: (value: any) => { new Date(value) },
+    formatter: (value: any) => {
+      new Date(value);
+    },
     validator: (value: any) => {
-      const date = new Date(value);      
+      const date = new Date(value);
       return !isNaN(date.getTime());
     },
-  },  
+  },
   datetime: {
     id: defaultTypes.datetime,
-    formatter: (value: any) => { new Date(value) },
+    formatter: (value: any) => {
+      new Date(value);
+    },
     validator: (value: any) => {
-      const date = new Date(value);      
+      const date = new Date(value);
       return !isNaN(date.getTime());
     },
-  },  
+  },
   time: {
     id: defaultTypes.time,
-    formatter: (value: any) => { new Date(value) },
-    validator: (value: any) => {
-      const date = new Date(value);      
-      return !isNaN(date.getTime());
+    formatter: (value: any) => {
+      new Date(value);
     },
-  },  
-  email: {
-    id: defaultTypes.email,
-    formatter: (value: any) => String(value).toLowerCase(),
     validator: (value: any) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(String(value).toLowerCase());
+      const date = new Date(value);
+      return !isNaN(date.getTime());
     },
   },
   text: {
@@ -103,66 +139,140 @@ const defautlFielTypesDef: Record<string, FieldTypeDef> = {
   any: {
     id: defaultTypes.any,
     formatter: (value: any) => value,
-    validator: (value: any) => true,      
+    validator: (value: any) => true,
   },
 };
 
-for (const defKey in defautlFielTypesDef) {
-  const def = defautlFielTypesDef[defKey];
-  fieldTypeRegistry[def.id] = def;
-}
-export class MachineFieldType {
+/**
+ * @role field-type-registry
+ * Singleton registry for all field types (formatters, validators).
+ *
+ * Usage:
+ *   import { MachineSchemeFieldType } from "$lib/main/machine/MachineFieldType";
+ *   MachineSchemeFieldType.registerFieldType({ id: 'custom', formatter: v => v, validator: v => true });
+ *   const isValid = MachineSchemeFieldType.validate('12.34', 'currency'); // true
+ *
+ * To override or extend types globally:
+ *   MachineSchemeFieldType.registerFieldType({ id: 'mytype', formatter: ..., validator: ... });
+ *
+ * To get all types:
+ *   MachineSchemeFieldType.getAllFieldTypes()
+ *
+ * Note: The class MachineFieldType is not exported. Use only the singleton MachineSchemeFieldType.
+ */
+class MachineFieldType {
+  private fieldTypeRegistry: FieldTypeRegistry = {};
+  /**
+   * Initialize the registry with default field types and optional custom types.
+   */
   constructor() {}
 
-  registerFieldType(def: FieldTypeDef) {
-    fieldTypeRegistry[def.id] = def;
+  /**
+   * Initialize the registry with default and/or custom field types.
+   * Clears the registry before registering new types.
+   */
+  init(def: FieldTypeRegistry) {
+    this.fieldTypeRegistry = {};
+    this.registerFieldTypes(def);
   }
 
-  registerFieldTypes(defs: FieldTypeDef[]) {
-    defs.forEach((def) => this.registerFieldType(def));
-  }
-
-  getFieldType(id: FieldTypeId): FieldTypeDef | undefined {
-    return fieldTypeRegistry[id];
-  }
-
-  getAllFieldTypes(): FieldTypeDef[] {
-    return Object.values(fieldTypeRegistry);
-  }
-
-  private validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  private validateUrl(url: string): boolean {
-    try {
-      new URL(url);
-      return true;
-    } catch {
+  validate(value: unknown, typeId: FieldTypeId): boolean {
+    const fieldType = this.getFieldType(typeId);
+    if (!fieldType) {
       return false;
     }
-  }
-
-  private validatePhone(phone: string): boolean {
-    const phoneRegex = /^\+?[\d\s-]{10,}$/;
-    return phoneRegex.test(phone);
-  }
-
-  private validateDateTime(value: string | Date, type: string): boolean {
-    const date = value instanceof Date ? value : new Date(value);
-    if (isNaN(date.getTime())) return false;
-
-    switch (type) {
-      case defaultTypes.date:
-        return true; // La conversion en Date a déjà validé le format
-      case defaultTypes.time:
-        // Vérifiez si la chaîne contient uniquement l'heure
-        return /^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/.test(value as string);
-      case defaultTypes.datetime:
-        return true; // La conversion en Date a déjà validé le format
-      default:
-        return false;
+    if (fieldType.validator) {
+      return fieldType.validator(value);
     }
+    return true;
   }
-}
+
+  /**
+   * Register a custom field type.
+   * @param def Field type definition
+   */
+  registerFieldType(def: FieldTypeDef) {
+    this.fieldTypeRegistry[def.id] = def;
+  }
+  /**
+   * Register multiple custom field types.
+   * @param defs Array of definitions
+   */
+  registerFieldTypes(defs: FieldTypeRegistry) {
+    if (!defs) return;
+    Object.keys(defs).forEach((key) => {
+      this.registerFieldType(defs[key]);
+    });
+  }
+
+  /**
+   * Unregister a field type by its id.
+   * @param id Type identifier to remove
+   * @returns true if removed, false if not found
+   */
+  unregister(id: FieldTypeId): boolean {
+    if (this.fieldTypeRegistry[id]) {
+      delete this.fieldTypeRegistry[id];
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Retrieve the definition of a field type by its id.
+   * @param id Type identifier
+   * @return Field type definition or undefined
+   */
+  getFieldType(id: FieldTypeId): FieldTypeDef | undefined {
+    return this.fieldTypeRegistry[id];
+  }
+
+  /**
+   * Return all registered field types.
+   */
+  getAllFieldTypes(): FieldTypeRegistry {
+    return this.fieldTypeRegistry;
+  }
+
+  /**
+   * Update the validator function for a field type.
+   * @param id Type identifier
+   * @param validator New validator function
+   * @returns true if updated, false if type not found
+   */
+  setValidator(id: FieldTypeId, validator: (value: any) => boolean): boolean {
+    const type = this.getFieldType(id);
+    if (type) {
+      type.validator = validator;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Update the formatter function for a field type.
+   * @param id Type identifier
+   * @param formatter New formatter function
+   * @returns true if updated, false if type not found
+   */
+  setFormatter(id: FieldTypeId, formatter: (value: any) => any): boolean {
+    const type = this.getFieldType(id);
+    if (type) {
+      type.formatter = formatter;
+      return true;
+    }
+    return false;
+  }
+} 
+
+/**
+ * Global singleton instance for all field type logic.
+ * Use this for all registration, validation, and lookup of field types.
+ *
+ * Example:
+ *   MachineSchemeFieldType.registerFieldType({ id: 'custom', formatter: v => v, validator: v => true });
+ *   const isValid = MachineSchemeFieldType.validate('foo', 'custom');
+ */
+export const MachineSchemeFieldType = new MachineFieldType();
+MachineSchemeFieldType.init(defaultFieldTypesDef);
+export default MachineSchemeFieldType;
