@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-be",
   "scope": "@medyll",
-  "version": "1.93.0",
+  "version": "1.94.0",
   "description": "A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.",
   "keywords": [
     "DOM",
