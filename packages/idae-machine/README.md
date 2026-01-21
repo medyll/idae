@@ -1,13 +1,14 @@
+
 ## 🏗️ Model & Template Structure
 
-Un modèle (template) pour `idae-machine` doit définir les collections, les champs, et les relations. Voici un exemple minimal :
+A template for `idae-machine` must define collections, fields, and relationships. Here is a minimal example:
 
 ```typescript
-// Exemple de schemeModel pour Machine
+// Example schemeModel for Machine
 export const schemeModel = {
   agents: {
     keyPath: 'id',
-    ts: {} as Agent, // Typage optionnel pour l'autocomplétion
+    ts: {} as Agent, // Optional typing for autocompletion
     template: {
       index: 'id',
       presentation: 'name',
@@ -39,28 +40,29 @@ export const schemeModel = {
 
 ## 🔍 Query Examples (via Machine)
 
-Après avoir instancié et démarré Machine :
+After instantiating and starting Machine:
 
 ```typescript
 import { machine, schemeModel } from '@medyll/idae-machine';
 
-// Initialisation du singleton
+// Singleton initialization
 machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
 machine.start();
 
-// Ajouter un agent
+
+// Add an agent
 await machine.idbql.agents.add({ name: 'Alice', active: true });
 
-// Requête simple
+// Simple query
 const activeAgents = await machine.idbql.agents.where({ active: true }).toArray();
 
-// Mise à jour
+// Update
 await machine.idbql.agents.put({ id: 1, name: 'Alice Cooper', active: true });
 
-// Suppression
+// Delete
 await machine.idbql.agents.delete(1);
 
-// Transaction multi-collections
+// Multi-collection transaction
 const result = await machine.idbql.transaction([
   'agents', 'groups'
 ], 'readwrite', async (tx) => {
@@ -73,73 +75,31 @@ const result = await machine.idbql.transaction([
 ```
 ## ⚡ Advanced Data & Reactivity
 
-`idae-machine` s’appuie sur la puissance de [@medyll/idae-idbql](https://github.com/medyll/idae-idbql) pour offrir :
-- Un moteur de requêtes IndexedDB inspiré de MongoDB
-- Transactions complexes multi-collections
-- State réactif Svelte 5 (`idbqlState`) pour des UI en temps réel
-- Gestion des migrations et versioning
-- Robustesse et gestion d’erreur avancée
+`idae-machine` leverages the power of [@medyll/idae-idbql](https://github.com/medyll/idae-idbql) to provide:
+- A MongoDB-inspired IndexedDB query engine
+- Complex multi-collection transactions
+- Svelte 5 reactive state (`idbqlState`) for real-time UIs
+- Migration and versioning management
+- Robustness and advanced error handling
 
-### Svelte 5: State Réactif
+### Svelte 5: Reactive State
 
-Utilisez `idbqlState` pour des listes ou des vues réactives :
+Use `store` for reactive lists or views:
 
 ```svelte
 <script lang="ts">
-  import { machine } from './store'; // ou créez votre instance
-  // Liste réactive des agents actifs
+  import { machine } from './store'; // or create your own instance
+  // Reactive list of active agents
   const activeAgents = $derived(() => machine.idbqlState.agents.where({ active: true }));
 </script>
 
-<h2>Agents actifs</h2>
+<h2>Active agents</h2>
 {#each $activeAgents as agent}
   <p>{agent.name}</p>
 {/each}
 ```
 
-### Transactions & Migrations
 
-Vous pouvez effectuer des transactions complexes et gérer les migrations de schéma :
-
-```typescript
-const result = await machine.idbql.transaction([
-  "users", "posts"
-], "readwrite", async (tx) => {
-  const userStore = tx.objectStore("users");
-  const postStore = tx.objectStore("posts");
-  const userId = await userStore.add({ name: "Alice" });
-  const postId = await postStore.add({ userId, title: "Hello" });
-  return { userId, postId };
-});
-
-// Migration
-const { indexedb } = machine;
-indexedb.upgrade(oldVersion, newVersion, transaction => {
-  if (oldVersion < 2) {
-    transaction.objectStore("users").createIndex("emailIndex", "email", { unique: true });
-  }
-});
-```
-
-### Error Handling
-
-```typescript
-try {
-  await machine.idbql.users.add({ username: "existing_user" });
-} catch (error) {
-  if (error instanceof UniqueConstraintError) {
-    console.error("Username already exists");
-  } else {
-    console.error("Unexpected error", error);
-  }
-}
-```
-
-### Performance Tips
-- Utilisez les indexes pour accélérer les requêtes
-- Limitez les résultats avec `.limit(n)`
-- Préférez `.count()` à `.toArray().length`
-- Optimisez vos schémas pour la recherche
 # @medyll/idae-machine
 
 **Low-code UI framework** for rapid data structure visualization and CRUD operations in Svelte 5. Declare your database schema once, automatically generate rich UI components for displaying, creating, and updating structured data in IndexedDB.
@@ -180,11 +140,11 @@ The recommended way to initialize your app is to use the `Machine` class, which 
 ```typescript
 import { machine, schemeModel } from '@medyll/idae-machine';
 
-// Initialisation du singleton
+// Singleton initialization
 machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
 machine.start();
 
-// Accès aux collections, à la base et au modèle
+// Access collections, db, and model
 const collections = machine.collections;
 const idbql = machine.idbql;
 const idbqlState = machine.idbqlState;
@@ -266,7 +226,7 @@ Displays collection records as grid with click-to-edit.
 
 ## 🔧 Schema Definition (dbFields.ts)
 
-Field types are declared using string-based DSL:
+Field types are declared using a string-based DSL:
 
 ```typescript
 fields: {
@@ -298,23 +258,23 @@ fields: {
 
 ## 🛡️ Robustness, Coverage & Performance
 
-Tout le cœur métier (`dbFields.ts`, `machine.ts`, etc.) est testé et optimisé :
-- **Parsing de schéma** : tous les types et modificateurs sont gérés
-- **Relations** : FK et reverse-FK typés et testés
-- **Tests unitaires** : chaque méthode exportée est couverte (Vitest)
-- **Svelte 5** : conformité stricte aux conventions
-- **Gestion d’erreur** : exceptions typées, robustesse transactionnelle
-- **Performance** : indexes, requêtes optimisées, conseils intégrés
+All core logic (`dbFields.ts`, `machine.ts`, etc.) is tested and optimized:
+- **Schema parsing**: all types and modifiers are handled
+- **Relations**: typed and tested FK and reverse-FK
+- **Unit tests**: every exported method is covered (Vitest)
+- **Svelte 5**: strict convention compliance
+- **Error handling**: typed exceptions, transactional robustness
+- **Performance**: indexes, optimized queries, built-in tips
 
-### Focus actuel
-- ✅ Déclaration de schéma & typage
-- ✅ Intégration IndexedDB avancée
-- ✅ Export de composants & structure modulaire
-- ✅ Couverture de tests exhaustive
-- ✅ Politique Svelte 5
-- 🔄 Validation de formulaire (en cours)
-- 🔄 Pipeline de rendu de champ
-- ⏳ Workflows CRUD end-to-end
+### Current Focus
+- ✅ Schema declaration & typing
+- ✅ Advanced IndexedDB integration
+- ✅ Component export & modular structure
+- ✅ Exhaustive test coverage
+- ✅ Svelte 5 policy
+- 🔄 Form validation (in progress)
+- 🔄 Field rendering pipeline
+- ⏳ End-to-end CRUD workflows
 
 ## 🧪 Testing Policy
 
