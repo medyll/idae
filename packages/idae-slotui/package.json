@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-slotui-svelte",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "scope": "@medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
