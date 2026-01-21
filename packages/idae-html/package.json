@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-html",
-  "version": "0.146.0",
+  "version": "0.147.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
