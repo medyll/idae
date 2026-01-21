@@ -9,29 +9,16 @@ machine.init({ dbName: "test-db", version: 1, model: testScheme});
 machine.start();
  
 
-let selected = $state<any>(null);
-let showForm = $state(false);
+  machine.store['agent']?.add({
+	name: "Agent Smith",
+	email: "Bt3o3@example.com",
+	phone: "123-456-7890",
+	address: "123 Main Street, Anytown, USA",
+	age: 42,
+	isActive: true
+});  
 
-function handleSelectAgent(agent: any) {
-	selected = agent;
-	showForm = true;
-}
-let showCreate = $state(false);
-let confirmDelete = $state<{id:number,name:string}|null>(null);
-
-function handleAddAgent() {
-	showCreate = true;
-}
-
-function handleDeleteAgent(agent: any) {
-	confirmDelete = { id: agent.id, name: agent.name };
-}
-
- 
-
-function cancelDeleteAgent() {
-	confirmDelete = null;
-}
+console.log("machine.store:", machine.store.agent?.add); 
 </script>
 
 <h1>Demo: Svelte 5 CRUD Components</h1>

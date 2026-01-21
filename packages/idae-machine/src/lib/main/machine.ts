@@ -124,6 +124,9 @@ _idbql!:
     this._idbqlState = idbqlState;
     this._idbDatabase = idbDatabase;
     this._idbqModel = idbqModel;
+
+    console.log("Machine started with DB:", this._dbName, "Version:", this._version);
+    console.log("IDBQL State Instance:", this._idbqlState);
   }
 
   /**
