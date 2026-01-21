@@ -1,14 +1,15 @@
 import type { TplCollectionName, TplFields } from "@medyll/idae-idbql";
 import { MachineDb } from "$lib/main/machineDb.js";
 import { MachineErrorValidation } from "./MachineErrorValidation.js";
-import MachineSchemeFieldType, { defaultTypes } from "$lib/main/machine/MachineFieldType.js";
-
+import MachineSchemeFieldType, {
+  defaultTypes,
+} from "$lib/main/machine/MachineFieldType.js";
 
 /**
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  * @class MachineSchemeValidate
  * @role Provides validation utilities for form fields in a collection.
  *
@@ -27,9 +28,9 @@ export class MachineSchemeValidate {
    */
   constructor(
     private collection: TplCollectionName,
-    machineDb: MachineDb, 
+    machineDb: MachineDb,
   ) {
-    this.machineDb = machineDb; 
+    this.machineDb = machineDb;
   }
 
   /**
@@ -48,7 +49,7 @@ export class MachineSchemeValidate {
         .collection(this.collection)
         .field(fieldName)
         .parse();
-        
+
       if (!fieldInfo) {
         return {
           isValid: false,
@@ -56,7 +57,7 @@ export class MachineSchemeValidate {
         };
       }
 
-      if (!this.#validateType(value, fieldInfo.fieldType)) { 
+      if (!this.#validateType(value, fieldInfo.fieldType)) {
         return this.#returnError(fieldName, fieldInfo.fieldType);
       }
 
@@ -70,7 +71,7 @@ export class MachineSchemeValidate {
           }
         }
       }
- 
+
       const typeDef = MachineSchemeFieldType.getFieldType(fieldInfo.fieldType);
       if (typeDef && typeDef.validator) {
         if (!typeDef.validator(value)) {

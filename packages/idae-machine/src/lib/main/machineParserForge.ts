@@ -109,15 +109,15 @@ export class MachineParserForge {
      */
     function extractArgs(
       source: string,
-    ): { piece: any; args: [TplProperties] | TplFieldArgs } | undefined {
+    ): { piece: any; args: [keyof typeof TplProperties]  }  {
       const [piece, remaining] = source.split("(");
-      if (!remaining) return { piece: piece.trim(), args: undefined };
+      if (!remaining) return { piece: piece.trim(), args: [] };
       let central: string | undefined;
       if (remaining !== undefined) {
         [central] = remaining.split(")");
       }
       const args = central
-        ? (central.split(" ") as [TplProperties | keyof typeof TplProperties])
+        ? (central.split(" ") as [keyof typeof TplProperties])
         : undefined;
       return { piece: piece.trim(), args };
     }

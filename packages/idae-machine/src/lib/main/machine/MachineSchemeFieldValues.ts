@@ -86,11 +86,6 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
     );
   }
 
-  // renamed from parseCollectionFieldName
-  // get forge(): IDbForge | undefined {
-  //     return undefined; // Pas de #fieldName dans cette classe, getter non pertinent
-  // }
-
   /**
    * Iterate over an array field and return field metadata for each item.
    * @role Array field iteration

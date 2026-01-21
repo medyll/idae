@@ -139,6 +139,7 @@ export class MachineScheme {
         out[fieldName] = this.field(fieldName).parse();
       }
     });
+    console.log("Parsed fields for collection", this.collection, out);
     return out;
   }
 

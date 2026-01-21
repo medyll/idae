@@ -1,43 +1,17 @@
-import type {
-	DbCharacterLink,
-	DBAgent,
-	DbAgentOf,
-	DbAgentPrompt,
-	DbBook,
-	DbBookPrompts,
-	DbCategory,
-	DbChapter,
-	DbCharacter,
-	DbCharacterChapterStatus,
-	DbChat,
-	DbTags,
-	DbWritingGoal,
-	PromptType,
-	DbSpaces
-} from '$types/db';
-import type { DBMessage } from '$types/db';
-import type { SettingsType } from '$types/settings.js';
-import type { UserType } from '$types/user';
-import {
-	createIdbqDb,
-	type IdbqModel,
-	type Tpl,
-	type DbFieldTypes,
-	type TplFieldType
-} from '@medyll/idae-idbql';
+import type { IdbqModel } from "@medyll/idae-idbql";
 
+ 
 
-import type { FieldTypeDef, FieldTypeId } from '../main/machine/MachineFieldType.js';
-import { MachineFieldType } from '../main/machine/MachineFieldType.js';
-import type { DbDataModel, DbDataModelTs } from '../db/dataModel.js';
+ 
+ 
 
 
 // Schéma de test (copie explicite de schemeModelDb)
 export const testScheme = {
 	agent: {
  		keyPath: '++id, promptId, created_at',
- 		model: {} as DBAgent,
- 		ts: {} as DBAgent,
+ 		model: {} ,
+ 		ts: {} ,
  		template: {
  			index: 'id',
  			presentation: 'name model',
@@ -66,8 +40,8 @@ export const testScheme = {
  	},
 	agentPrompt: {
 		keyPath: '++id, created_at',
-		model: {} as DbAgentPrompt,
-		ts: {} as DbAgentPrompt,
+		model: {} ,
+		ts: {} ,
 		template: {
 			index: 'id',
 			presentation: 'name',
@@ -82,5 +56,5 @@ export const testScheme = {
 			fks: {}
 		}
 	} 
-} satisfies DbDataModel;
+} satisfies IdbqModel;
  
