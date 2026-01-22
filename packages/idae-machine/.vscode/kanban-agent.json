@@ -1,0 +1,86 @@
+[
+  {
+    "id": "task-1769100867413-2b3ibydt2",
+    "title": "Implémenter la gestion des valeurs par défaut",
+    "status": "in_progress",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-uw1kavxbn",
+    "title": "Créer un composant CollectionDelete pour la suppression",
+    "status": "ready",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-kdxsw2bwj",
+    "title": "Créer un composant CollectionFieldList pour lister les champs",
+    "status": "ready",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-6gr0p4ytz",
+    "title": "Centraliser la logique de validation dans les formulaires",
+    "status": "ready",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-mhhohei2x",
+    "title": "Finaliser la gestion des erreurs UI",
+    "status": "ready",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-fccnyni0j",
+    "title": "Ajouter des tests unitaires/interactions Svelte",
+    "status": "ready",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-gdee1phv8",
+    "title": "Compléter la documentation MVP",
+    "status": "ready",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-8i811kt4y",
+    "title": "Ajouter des exemples d’intégration réels",
+    "status": "ready",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-ynnlhcvlu",
+    "title": "Vérifier la robustesse sur les cas limites",
+    "status": "ready",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-dip1r00lw",
+    "title": "Harmoniser UI/UX et accessibilité",
+    "status": "ready",
+    "order": 10,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-atoayx5v0",
+    "title": "Optimiser la réactivité Svelte 5",
+    "status": "ready",
+    "order": 11,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1769100867413-njuifjsma",
+    "title": "Vérifier la cohérence des relations FK/reverse FK",
+    "status": "ready",
+    "order": 12,
+    "createdBy": "agent"
+  }
+]

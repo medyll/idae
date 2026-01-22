@@ -2,7 +2,7 @@ import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { type IDbForge } from '../machineParserForge.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
-
+import { getDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 /**
  * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
@@ -284,4 +284,14 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 			MachineError.throwError(message, code);
 		}
 	}
+	/**
+	 * Get default values for the collection, using global and collection-specific factories.
+	 * @role Default values
+	 * @returns {Record<string, any>} An object with default values for each field in the collection.
+	 */
+	getDefaults(): Record<string, any> {
+		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
+		return getDefaultValues(this.collectionName, fields);
+	}
+ 
 }

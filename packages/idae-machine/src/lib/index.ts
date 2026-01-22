@@ -18,7 +18,7 @@ export * from '$lib/main/machineDb.spec.js';
 export * from '$lib/main/machine.js';
 export * from '$lib/main/machine.spec.js';
 export * from '$lib/demo/testScheme.js';
-export * from '$lib/db/types.js';
+export * from '../_old/types.js';
 
 export * from '$lib/db/dbSchema.js';
 export * from '$lib/db/dbSchema.spec.js';
@@ -26,8 +26,7 @@ export * from '$lib/db/dbFormValidate.spec.js';
 export * from '$lib/db/dbCollectionValues.spec.js';
 export * from '$lib/db/dbCollectionFieldValues.spec.js';
 export * from '$lib/db/dbCollectionFieldForge.spec.js';
-export * from '$lib/db/dataModel.js';
-export * from '$lib/db/CrudService.js';
+export * from '$lib/db/dataModel.js'; 
 export * from '$lib/form/types.js';
 export { default as FieldValue } from '$lib/form/FieldValue.svelte';
 export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
