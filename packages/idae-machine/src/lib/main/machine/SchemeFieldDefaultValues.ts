@@ -1,8 +1,39 @@
+// Example: How to use SchemeFieldDefaultValues in a Svelte form
+// (for documentation/demo, not for direct import)
+
+/**
+ * Example: Using SchemeFieldDefaultValues to get default values for a collection
+ *
+ * import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues';
+ *
+ * // For a collection 'agents' with fields ['name', 'role', 'createdAt']
+ * const defaults = SchemeFieldDefaultValues.getDefaults(['name', 'role', 'createdAt'], 'agents');
+ * // defaults = { name: ..., role: ..., createdAt: ... }
+ *
+ * // In a Svelte form (pseudo-code):
+ * let formData = { ...SchemeFieldDefaultValues.getDefaults(Object.keys(formFields), collection) };
+ *
+ * // When rendering the form, fields with no user value will use the default
+ * <input name="name" bind:value={formData.name} />
+ * <input name="role" bind:value={formData.role} />
+ * <input name="createdAt" bind:value={formData.createdAt} />
+ *
+ * // To set or override a default globally:
+ * SchemeFieldDefaultValues.setDefault('role', () => 'admin');
+ *
+ * // To set a default for a specific collection:
+ * SchemeFieldDefaultValues.setDefault('role', () => 'user', 'agents');
+ *
+ * // To set multiple defaults at once:
+ * SchemeFieldDefaultValues.setDefaults({ status: () => 'active', country: () => 'FR' });
+ *
+ * // To set multiple defaults for a collection:
+ * SchemeFieldDefaultValues.setDefaults({ status: () => 'pending' }, 'orders');
+ */
 
 import type { TplCollectionName } from "@medyll/idae-idbql";
 
 
-// ...existing code...
 // Single class declaration with all static methods and properties
 export class SchemeFieldDefaultValues {
   /**
