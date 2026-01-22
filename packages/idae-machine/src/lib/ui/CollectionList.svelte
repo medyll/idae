@@ -43,7 +43,12 @@ import {machine } from '$lib/main/machine.js';
 	let store = machine.store;
 	let fieldValues = $derived(logic.collection(collection).collectionValues);
 	let index = $derived(logic.collection(collection).template.index);
-	let query = $derived(where ? store[collection].where(where) : store[collection].getAll());
+	let query = $derived(where ? store[collection].where(where) : store[collection]?.getAll());
+
+
+	$inspect('CollectionList', { collection, query });
+
+
 
 	function load(event: CustomEvent, indexV: number | string) {
 		openCrud(event[index]);
@@ -86,7 +91,7 @@ import {machine } from '$lib/main/machine.js';
 					}}
 				>
 					<div class="py-3">{fieldValues.presentation(item)}</div>
-					<div class="py-3">date {fieldValues.display('created_at', item)}</div>
+					<div class="py-3">{fieldValues?.format('created_at', item)}</div>
 				</a>
 			</div>
 		{/snippet}

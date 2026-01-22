@@ -37,6 +37,8 @@
 	const forge = $derived(scheme.fieldForge(String(fieldName), data)  )
 	let schemeFieldValues = $derived(scheme.collectionValues) 
 	let inputDataset =  $derived(schemeFieldValues.getInputDataSet(fieldName, data));
+	// Position de l'étiquette dérivée
+	const labelPosition = $derived(getLabelPosition(showLabel));
 
 	// Création d'une instance de forge de champ de collection
 	const fieldForge = $derived(forge);
@@ -80,8 +82,6 @@
 		return position;
 	}
 
-	// Position de l'étiquette dérivée
-	const labelPosition = $derived(getLabelPosition(showLabel));
 
 </script>
 
