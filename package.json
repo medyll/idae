@@ -24,6 +24,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
+    "@medyll/idae-prettier-config": "1.2.4*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
     "commitizen": "^4.3.1",
@@ -57,7 +58,6 @@
   "peerDependencies": {
     "@medyll/idae-engine": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-prettier-config": "workspace:*",
     "@sveltejs/adapter-auto": "^4.0.0",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/package": "^2.0.0",
