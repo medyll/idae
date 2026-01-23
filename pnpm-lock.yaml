@@ -14,6 +14,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:packages-config/idae-prettier-config
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -1225,9 +1228,15 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
     devDependencies:
+      '@huggingface/prettier-plugin-vertical-align':
+        specifier: ^0.2.3
+        version: 0.2.3
       '@medyll/idae-be':
         specifier: workspace:*
         version: link:../idae-be
+      '@medyll/idae-dom-events':
+        specifier: workspace:*
+        version: link:../idae-dom-events
       '@medyll/idae-engine':
         specifier: workspace:*
         version: link:../idae-engine

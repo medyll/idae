@@ -49,6 +49,7 @@
   "peerDependencies": {
     "@medyll/idae-engine": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@sveltejs/adapter-auto": "^4.0.0",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/package": "^2.0.0",
