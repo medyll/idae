@@ -3,7 +3,7 @@ name: Dev Branch Publish
 on:
   push:
     branches:
-      - dev
+      - none
   pull_request:
     types:
       - closed
