@@ -7,6 +7,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "license": "MIT",
   "dependencies": {
     "@rushstack/eslint-patch": "^1.15.0",
