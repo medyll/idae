@@ -13,7 +13,8 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",
@@ -58,7 +60,7 @@
     "library"
   ],
   "author": "Your Name <your.email@example.com>",
-  "license": "MIT",  
+  "license": "MIT",
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",

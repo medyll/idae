@@ -29,7 +29,6 @@
     "format": "prettier --write .",
     "test:integration": "",
     "test:unit": "vitest",
-    "prepackage": "node scripts/package-pre.js",
     "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
@@ -51,6 +50,7 @@
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
     "@playwright/test": "^1.52.0",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/kit": "^2.20.8",
     "@sveltejs/package": "^2.3.11",

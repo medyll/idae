@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@medyll/idae-prettier-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",

@@ -16,7 +16,6 @@
     "test:watch": "vitest --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "prepackage": "node scripts/package-pre.js",
     "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
@@ -37,6 +36,7 @@
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/kit": "^2.20.7",
     "@sveltejs/package": "^2.3.11",

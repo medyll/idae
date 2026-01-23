@@ -14,7 +14,6 @@
     "watch": "",
     "package": "svelte-kit sync && svelte-package && publint",
     "package:watch": "svelte-kit sync && svelte-package --watch",
-    "prepackage": "node scripts/package-pre.js",
     "prepackage": "node scripts/package-pre.js"
   },
   "repository": {
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/node": "^22.13.13",
     "svelte": "^5.25.3",
