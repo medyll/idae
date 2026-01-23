@@ -1,6 +1,7 @@
 {
   "name": "@medyll/idae-socket",
   "scope": "@medyll",
+  "author": "Lebrun Meddy",
   "version": "0.0.2",
   "description": "keep your app in sync with your backend!!",
   "main": "./scripts/index.js",

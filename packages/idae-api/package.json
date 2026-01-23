@@ -1,6 +1,7 @@
 {
   "name": "@medyll/idae-api",
   "scope": "@medyll",
+  "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"

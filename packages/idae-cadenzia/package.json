@@ -35,5 +35,6 @@
     "vite": "^6.2.3",
     "vitest": "^3.0.9"
   },
-  "scope": "@medyll"
+    "scope": "@medyll",
+    "author": "Lebrun Meddy",
 }
