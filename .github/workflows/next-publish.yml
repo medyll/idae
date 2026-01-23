@@ -68,10 +68,10 @@ jobs:
       - name: Generate README
         run: node scripts/generate-readme.js
 
-      - name: Run pnpm package-all script if present
+      - name: Run pnpm package script if present
         run: |
-          if [ -f package.json ] && grep -q '"package-all":' package.json; then
-            pnpm run package-all
+          if [ -f package.json ] && grep -q '"package":' package.json; then
+            pnpm run package
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -13,7 +13,8 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js",
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {

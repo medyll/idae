@@ -17,8 +17,9 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js",
-    "doc": "typedoc --entryPointStrategy expand src/lib/server/middleware src/lib/server/engine src/lib/client"
+    "prepackage": "node scripts/package-pre.js",
+    "doc": "typedoc --entryPointStrategy expand src/lib/server/middleware src/lib/server/engine src/lib/client",
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {

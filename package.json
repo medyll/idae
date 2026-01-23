@@ -6,8 +6,8 @@
     "commit": "cz",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "package-all:pre": "npm run package:pre --workspaces --if-present",
-    "package-all": "npm run package-all:pre && npm run prepack --workspaces --if-present && npm run package --workspaces --if-present",
+    "prepackage": "pnpm -r run prepackage --if-present",
+    "package": "pnpm -r run prepack --if-present && pnpm -r run package --if-present",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",
     "verify:workspace-deps": "node scripts/verify-workspace-deps.js"

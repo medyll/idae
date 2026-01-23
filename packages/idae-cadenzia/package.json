@@ -12,7 +12,8 @@
     "lint": "prettier --check . && eslint .",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js",
+    "prepackage": "node scripts/package-pre.js"
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",

@@ -1,6 +1,4 @@
-<style global>
-	@import '../../slotui-css/toggleBar.tailwind.css';
-</style>
+ 
 <script lang="ts">
 	import ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -59,5 +57,5 @@
 </div>
 
 <style lang="scss">
-	@use './toggle-bar.scss';
+	@use '../../slotui-css/toggleBar.tailwind.css';
 </style>

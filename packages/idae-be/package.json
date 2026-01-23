@@ -29,7 +29,8 @@
     "format": "prettier --write .",
     "test:integration": "",
     "test:unit": "vitest",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js",
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {

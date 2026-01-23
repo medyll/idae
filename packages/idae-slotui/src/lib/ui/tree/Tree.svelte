@@ -1,6 +1,4 @@
-<style global>
-	@import '../../slotui-css/tree.tailwind.css';
-</style>
+
 <svelte:options />
 
 <script lang="ts" generics="T = Data">
@@ -182,6 +180,6 @@
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './tree.scss';
+<style global>
+	@import '../../slotui-css/tree.tailwind.css';
 </style>

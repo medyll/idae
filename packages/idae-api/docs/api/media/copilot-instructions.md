@@ -41,7 +41,7 @@
 ### Build & Package
 ```bash
 npm run build        # Vite build + svelte-kit sync + svelte-package (outputs to dist/)
-npm run package:pre  # Pre-build validation script
+npm run prepackage  # Pre-build validation script
 npm run package      # Publint check before npm publish
 ```
 
