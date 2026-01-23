@@ -27,6 +27,6 @@
 	{/each}
 </div>
 
-<style global>
-	@import './stepper.tailwind.css';
+<style global lang="scss">
+	@use './stepper.scss';
 </style>

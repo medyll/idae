@@ -23,6 +23,6 @@
 	<div class="progress-gouge" style="{attr}:{precWidth}%;{attrTickness}:0.5rem"></div>
 </div>
 
-<style global>
-	@import './progress.tailwind.css';
+<style global lang="scss">
+	@use './progress.scss';
 </style>

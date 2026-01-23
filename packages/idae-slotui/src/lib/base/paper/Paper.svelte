@@ -19,8 +19,5 @@
 
 <style global>
 	@import './paper.tailwind.css';
-</style>
-</style>
-<style global>
 	@import '../../slotui-css/paper.tailwind.css';
 </style>

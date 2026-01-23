@@ -92,6 +92,6 @@
 	{/if}
 </button>
 
-<style global>
-	@import './button.tailwind.css';
+<style global lang="scss">
+	@use './button.scss';
 </style>

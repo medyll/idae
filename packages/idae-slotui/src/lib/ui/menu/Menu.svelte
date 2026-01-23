@@ -1,5 +1,5 @@
-<style global>
-	@import '../../slotui-css/menu.tailwind.css';
+<style global lang="scss">
+	@use './menu.scss';
 </style>
 <script lang="ts" generics="T= Data">
 	import type { Data } from '$lib/types/index.js';

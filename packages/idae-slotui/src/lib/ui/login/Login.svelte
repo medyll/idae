@@ -1,6 +1,4 @@
-<style global>
-	@import '../../slotui-css/login.tailwind.css';
-</style>
+
 <script lang="ts">
 	import { fade, type TransitionConfig } from 'svelte/transition';
 
@@ -102,7 +100,7 @@
 	{@render children?.()}
 {/if}
 
-<style lang="scss">
+<style lang="scss"> 
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	form {

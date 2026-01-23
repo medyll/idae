@@ -1,6 +1,4 @@
-<script lang="ts">
-	// export const data: PageData;
-</script>
+
 
 <svelte:head>
 	<meta

@@ -97,7 +97,7 @@
 
 								<div class="pad-2 text-center">{tiple} {params}</div>
 							</div>
-							<div class="border-r pad-tb-4" />
+							<div class="border-r pad-tb-4"></div>
 						{/each}
 					{/each}
 				</div>

@@ -41,6 +41,6 @@
 	{/each}
 </div>
 
-<style global>
-	@import './rating.tailwind.css';
+<style global lang="scss">
+	@use './rating.scss';
 </style>

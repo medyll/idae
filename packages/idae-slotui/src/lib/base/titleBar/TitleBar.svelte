@@ -38,7 +38,6 @@
 </div>
 
 <style global>
-	@import './titleBar.tailwind.css';
-</style>
+	@import './titleBar.tailwind.css'; 
 	@use './title-bar.scss';
 </style>

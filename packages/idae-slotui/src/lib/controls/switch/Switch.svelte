@@ -42,6 +42,6 @@
 </label>
 ..
 
-<style global>
-	@import './switch.tailwind.css';
+<style global lang="scss">
+	@use './switch.scss';
 </style>

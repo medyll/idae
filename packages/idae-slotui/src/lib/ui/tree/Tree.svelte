@@ -180,6 +180,6 @@
 	{/each}
 </div>
 
-<style global>
-	@import '../../slotui-css/tree.tailwind.css';
+<style global lang="scss">
+	@use './tree.scss';
 </style>

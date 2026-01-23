@@ -11,7 +11,7 @@
 
 	let codeSlot = `
 <Slider  name={'switcher'} class="w-small" >
-  <span   />
+	<span></span>
 </Slider>`;
 
 	let isOpen = false;

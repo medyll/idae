@@ -1,4 +1,8 @@
 /* slotui-avatar Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --slotui-avatar-bg: theme(colors.gray.200);
   --slotui-avatar-fg: theme(colors.gray.900);

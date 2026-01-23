@@ -3,11 +3,14 @@
   ------------------------
   Migration du composant de base "alert" vers Tailwind
 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --slotui-alert-bg: theme(colors.yellow.50);
-  --slotui-alert-fg: theme(colors.yellow.900);
-  --slotui-alert-border: theme(colors.yellow.300);
+  --slotui-alert-bg: var(--color-yellow);
+  --slotui-alert-fg: var(--color-yellow);
+  --slotui-alert-border: var(--color-yellow);
 }
 
 .slotui-alert {

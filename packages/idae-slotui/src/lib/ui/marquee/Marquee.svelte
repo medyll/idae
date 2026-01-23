@@ -96,5 +96,5 @@
 {/if}
 
 <style lang="scss">
-	@use '../../slotui-css/marquee.tailwind.css';
+	@use './marquee.scss';
 </style>

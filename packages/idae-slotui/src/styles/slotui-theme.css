@@ -1,0 +1,88 @@
+/* SlotUI Theme Variables (legacy v4 style, compatible CSS custom properties) */
+:root {
+  /* Font families */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Lexend", sans-serif;
+
+  /* Colors */
+  --color-primary: #00b5e2;
+  --color-secondary: #330c2f;
+  --color-tertiary: #cacaaa;
+  --color-border: var(--sld-color-border, #e5e7eb);
+  --color-success: #075c07;
+  --color-info: #ffd324;
+  --color-warning: #b49104;
+  --color-alert: #cc5c00;
+  --color-error: #cc0000;
+  --color-disabled: #ccc;
+  --color-discrete: #ccc;
+
+  /* Dynamic Colors (Light) */
+  --color-foreground: #282230;
+  --color-background: #f1f1f1;
+  --color-paper: #ededed;
+
+  /* Border radius */
+  --radius-tiny: 2px;
+  --radius-sm: 4px;
+  --radius-med: 8px;
+  --radius-large: 16px;
+  --radius-default: var(--sld-radius, 8px);
+
+  /* Spacing */
+  --spacing-tiny: 0.25rem;
+  --spacing-mini: 0.4rem;
+  --spacing-small: 0.5rem;
+  --spacing-med: 1rem;
+  --spacing-large: 1.5rem;
+  --spacing-kind: 20rem;
+
+  --spacing-gutter-tiny: 0.25rem;
+  --spacing-gutter-mini: 0.5rem;
+  --spacing-gutter-small: 1rem;
+  --spacing-gutter-med: 2rem;
+  --spacing-gutter-kind: 3rem;
+  --spacing-gutter-default: 1rem;
+
+  /* Animation & keyframes */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-bounce-slow: bounce 3s infinite;
+  --animate-spin-fast: spin 0.5s linear infinite;
+
+  /* Box shadows */
+  --shadow-elevation1: 0 0 1.75px 0 rgba(0,0,0,0.15), 0 0.15px 0.46px 0 rgba(0,0,0,0.1);
+  --shadow-elevation2: 0 0 3.44px 0 rgba(0,0,0,0.15), 0 0.3px 0.93px 0 rgba(0,0,0,0.1);
+  --shadow-elevation3: 0 0 5.17px 0 rgba(0,0,0,0.15), 0 0 1.39px 0 rgba(0,0,0,0.1);
+  --shadow-elevation4: 0 0 6.89px 0 rgba(0,0,0,0.15), 0 0.61px 1.86px 0 rgba(0,0,0,0.1);
+  --shadow-elevation5: 0 0 8.62px 0 rgba(0,0,0,0.15), 0 0.76px 2.32px 0 rgba(0,0,0,0.1);
+
+  /* Breakpoints */
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 640px;
+  --breakpoint-lg: 960px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-xxl: 1920px;
+  --breakpoint-xxxl: 1440px;
+}
+
+/* Dark mode overrides */
+.dark, :root.dark {
+  --color-foreground: #f1f1f1;
+  --color-background: #27323a;
+  --color-paper: #3a3b3b;
+}
+
+/* Keyframes (must be defined in CSS, not as variables) */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

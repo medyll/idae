@@ -1,8 +1,3 @@
-</div>
-
-<style global>
-	@import './grouper.tailwind.css';
-</style>
 <script lang="ts" generics="T extends object">
 	import Button from '$lib/controls/button/Button.svelte';
 	import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
@@ -88,3 +83,6 @@
 		</Looper>
 	{/if}
 </div>
+<style global lang="scss">
+	@use './grouper.scss';
+</style>

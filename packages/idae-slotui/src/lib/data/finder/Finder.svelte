@@ -163,6 +163,6 @@
 	</Popper>
 {/if}
 
-<style global>
-	@import './finder.tailwind.css';
+<style lang="scss">
+	@use './finder.scss';
 </style>

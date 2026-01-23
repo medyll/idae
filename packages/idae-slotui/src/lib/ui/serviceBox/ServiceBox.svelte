@@ -21,6 +21,6 @@
 	</div>
 </div>
 
-<style global>
-	@import '../../slotui-css/serviceBox.tailwind.css';
+<style global lang="scss">
+	@use './servicebox.scss';
 </style>

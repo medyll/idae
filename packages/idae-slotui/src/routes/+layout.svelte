@@ -21,8 +21,7 @@
 	import { stator } from '$lib/utils/engine/stator.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
-
-	import { cssDom } from '@medyll/idae-dom-events';
+ 
 	// from +layout.server
 	let data: any = {}; 
 
@@ -137,7 +136,7 @@
 		>
 			<IconButton onclick={onDrawerClick} icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>
-			<div class="flex-main" />
+			<div class="flex-main"></div>
 			<a target="_blank" href="https://github.com/medyll/slot-ui">Github</a>
 			<AutoComplete
 				dataFieldName="code"

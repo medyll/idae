@@ -6,7 +6,7 @@
     "commit": "cz",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "prepackage": "pnpm -r run prepackage --if-present",
+    "package:pre": "pnpm -r run prepackage --if-present",
     "package": "pnpm -r run prepack --if-present && pnpm -r run package --if-present",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",

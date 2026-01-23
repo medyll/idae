@@ -1,5 +1,5 @@
-<style global>
-	@import './inplaceedit.tailwind.css';
+<style global lang="scss">
+	@use './inplaceedit.scss';
 </style>
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';

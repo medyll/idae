@@ -56,6 +56,6 @@
 	</div>
 </div>
 
-<style lang="scss">
-	@use '../../slotui-css/toggleBar.tailwind.css';
+<style global lang="scss">
+	@use './toggle-bar.scss';
 </style>

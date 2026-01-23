@@ -8,7 +8,6 @@
 </script>
 
 <div out:fade|global={{ duration: 200 }} in:fade|global={{ duration: 200 }}>
- 
 	{#if Comp}
 		<Comp />
 	{/if} 

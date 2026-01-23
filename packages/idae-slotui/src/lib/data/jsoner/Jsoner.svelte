@@ -1,6 +1,4 @@
-<style global>
-	@import '../../base/jsoner/jsoner.tailwind.css';
-</style>
+
 <script lang="ts">
 	import type { JsonerProps } from './types.js';
 
@@ -41,3 +39,6 @@
 		<div class="pad-1">{data}</div>
 	{/if}
 {/if}
+<style global lang="scss">
+	@use './jsoner.scss';
+</style>

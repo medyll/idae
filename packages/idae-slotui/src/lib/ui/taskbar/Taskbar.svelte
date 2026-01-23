@@ -23,6 +23,6 @@
 	<Slotted child={taskBarRight} />
 </div>
 
-<style global>
-	@import '../../slotui-css/taskbar.tailwind.css';
+<style global lang="scss">
+	@use './taskbar.scss';
 </style>

@@ -118,6 +118,6 @@
 	</dialog>
 {/if}
 
-<style global>
+<style global> 
 	@import './alert.tailwind.css';
 </style>

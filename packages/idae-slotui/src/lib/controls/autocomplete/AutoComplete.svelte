@@ -1,6 +1,4 @@
-<style global>
-	@import './auto-complete.tailwind.css';
-</style>
+
 <script lang="ts" generics="T">
 	import type { AutoCompleteProps } from './types.js';
 
@@ -153,3 +151,6 @@
 		</Slotted>
 	{/if}
 </Popper>
+<style lang="scss">
+	@import './auto-complete.scss';
+</style>

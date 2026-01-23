@@ -83,7 +83,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class={showTitleDivider ? 'divider' : ''} style="flex:1" />
+		<div class={showTitleDivider ? 'divider' : ''} style="flex:1"></div>
 		{#if cartoucheButtons}
 			<div
 				onclick={(event) => {

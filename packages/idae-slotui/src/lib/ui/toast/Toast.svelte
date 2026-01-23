@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/toast.tailwind.css';
-</style>
 <script lang="ts">
 	import Box from '$lib/base/box/Box.svelte';
 	import { toastStore } from './store.js';
@@ -62,5 +59,5 @@
 
 <style lang="scss">
 	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
+	@use '../../styles/slotui-mixins.scss';   
 </style>
