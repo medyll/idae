@@ -1,6 +1,10 @@
 {
   "name": "@medyll/idae-api",
   "scope": "@medyll",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "version": "0.187.0",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

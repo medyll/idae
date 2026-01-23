@@ -54,6 +54,10 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scope": "@medyll",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "dependencies": {
     "chokidar": "^4.0.3",
     "chromadb": "^2.0.1",

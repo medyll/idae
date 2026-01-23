@@ -3,6 +3,10 @@
   "private": true,
   "version": "9.0.0",
   "scope": "@medyll",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
     "dev": "vite dev",

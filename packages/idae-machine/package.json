@@ -26,6 +26,10 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
