@@ -1,5 +1,5 @@
 <!-- Component: CollectionFieldValue.svelte (ancien nom CollectionFieldInput.svelte) -->
-<script lang="ts" generics="COL = Record<string,any>">
+<script lang="ts" generics="COL extends Record<string,any>">
 	// Importation des types et composants nécessaires 
 	import type { TplCollectionName } from '@medyll/idae-idbql'; 
 	import {  getContext } from 'svelte';
@@ -25,8 +25,7 @@
 		mode = 'show',
 		editInPlace = false,
 		inputForm,
-		showLabel = true,
-		showAiGuess = false
+		showLabel = true
 	}: FieldValueProps = $props();
 
 	let _data = getContext('data'); 
@@ -34,20 +33,15 @@
 	data = data ?? ({} as COL);
 
 	// Initialisation des valeurs de champ de collection
-	const forge = machine.collections.collection(collection).fieldForge(String(fieldName), data)  
-	let collectionFieldValues = machine.collections.collection(collection).collectionValues() 
-	let inputDataset = collectionFieldValues.getInputDataSet(fieldName, data);
+	const scheme = $derived(machine.logic.collection(collection))
+	const forge = $derived(scheme.fieldForge(String(fieldName), data)  )
+	let schemeFieldValues = $derived(scheme.collectionValues) 
+	let inputDataset =  $derived(schemeFieldValues.getInputDataSet(fieldName, data));
+	// Position de l'étiquette dérivée
+	const labelPosition = $derived(getLabelPosition(showLabel));
 
 	// Création d'une instance de forge de champ de collection
 	const fieldForge = $derived(forge);
-
-	// Effet déclenché lorsque collectionId ou editInPlace change
-	$effect(() => {
-		collectionId;
-		if (editInPlace && mode === 'show') {
-			console.log('Edit in place activated for', fieldName);
-		}
-	});
 
 	// Détermination si le champ est privé
 	const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
@@ -68,6 +62,15 @@
 		...fieldForge.inputDataSet
 	};
 
+	// Effet déclenché lorsque collectionId ou editInPlace change
+	$effect(() => {
+		collectionId;
+		if (editInPlace && mode === 'show') {
+			console.log('Edit in place activated for', fieldName);
+		}
+	});
+
+
 	/**
 	 * Fonction pour obtenir la position de l'étiquette
 	 * @param {LabelPosition} position - Position de l'étiquette
@@ -79,35 +82,7 @@
 		return position;
 	}
 
-	// Position de l'étiquette dérivée
-	const labelPosition = $derived(getLabelPosition(showLabel));
 
-	/**
-	 * Fonction pour gérer la suggestion de valeur
-	 * @param {string} fieldName - Nom du champ
-	 * @param {string} value - Valeur suggérée
-	 */
-	function handleGuess(fieldName: string, value: string) {
-		data[fieldName] = value;
-	}
-
-	/**
-	 * Fonction pour itérer sur un tableau de données
-	 * @param {any[]} data - Tableau de données
-	 * @returns {any[]} - Tableau de données itéré
-	 */
-	function iterateArray(data: any[]): any[] {
-		return fieldForge.iterateArrayField(fieldForge.collection, fieldForge.fieldName, data);
-	}
-
-	/**
-	 * Fonction pour itérer sur un objet de données
-	 * @param {Record<string, any>} data - Objet de données
-	 * @returns {Record<string, any>} - Objet de données itéré
-	 */
-	function iterateObject(data: Record<string, any>): Record<string, any> {
-		return dbFields.iterateObjectField(fieldForge.collection, fieldForge.fieldName, data);
-	}
 </script>
 
 {#if !isPrivate}

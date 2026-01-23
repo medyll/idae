@@ -1,0 +1,88 @@
+/* --- Utility classes for Tailwind @apply --- */
+.slotui-ui-width { width: var(--preset-width, auto); }
+.slotui-ui-tall { height: var(--preset-tall, auto); min-height: var(--preset-tall, auto); }
+.slotui-ui-variants[variant*="square"] { aspect-ratio: 1/1 !important; height: auto; }
+.slotui-ui-variants[variant*="rounded"] { border-radius: 50%; }
+.slotui-elevation { box-shadow: var(--shadow-elevation1); }
+
+/* slotui-mixins.css
+   Shared Tailwind utility classes and custom properties for idae-slotui components.
+   Use @apply or @import in component CSS files. */
+
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@theme {
+  --slotui-radius: 0.375rem;
+  --slotui-transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+  /* ...autres custom properties du thème global ici... */
+}
+
+/* --- UI Variants --- */
+[variant*="square"] {
+  aspect-ratio: 1/1 !important;
+  height: auto;
+}
+[variant*="rounded"] {
+  border-radius: 50%;
+}
+
+/* --- Ellipsis --- */
+.ellipsis,
+[ellipsis] {
+  @apply whitespace-nowrap overflow-hidden text-ellipsis;
+}
+.ellipsis-line-1 { @apply line-clamp-1; }
+.ellipsis-line-2 { @apply line-clamp-2; }
+.ellipsis-line-3 { @apply line-clamp-3; }
+.ellipsis-line-4 { @apply line-clamp-4; }
+.ellipsis-line-5 { @apply line-clamp-5; }
+
+/* --- Transition --- */
+.slotui-transition {
+  @apply transition-all duration-200 ease-in-out;
+  transition: var(--slotui-transition, all 0.2s cubic-bezier(0.4,0,0.2,1));
+}
+
+/* --- Radius Presets --- */
+[radius="tiny"],.radius-tiny { border-radius: 2px; }
+[radius="small"],.radius-small { border-radius: 4px; }
+[radius="med"],.radius-med { border-radius: 8px; }
+[radius="large"],.radius-large { border-radius: 16px; }
+
+/* --- Elevation --- */
+.elevation-0 { box-shadow: none; }
+.elevation-1 { box-shadow: var(--shadow-elevation1); }
+.elevation-2 { box-shadow: var(--shadow-elevation2); }
+.elevation-3 { box-shadow: var(--shadow-elevation3); }
+.elevation-4 { box-shadow: var(--shadow-elevation4); }
+.elevation-5 { box-shadow: var(--shadow-elevation5); }
+
+/* --- Flex Utilities --- */
+.slotui-flex { @apply flex; }
+.slotui-flex-row { @apply flex-row; }
+.slotui-flex-col { @apply flex-col; }
+.slotui-flex-main { flex: 1 1 0; }
+
+/* --- Data States --- */
+.slotui-hover:hover {
+  border-color: var(--color-border);
+  background-color: var(--color-disabled);
+}
+.slotui-selected,
+[aria-selected="true"] {
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-elevation2);
+}
+
+/* --- Gutter, Pad, Width, Tall --- */
+/* À compléter selon besoins, exemple : */
+[gutter="tiny"], .gutter-tiny { gap: 0.25rem; }
+[gutter="mini"], .gutter-mini { gap: 0.5rem; }
+[gutter="small"], .gutter-small { gap: 1rem; }
+[gutter="med"], .gutter-med { gap: 2rem; }
+[gutter="kind"], .gutter-kind { gap: 3rem; }
+
+/* Ajoutez d'autres utilitaires selon la migration */

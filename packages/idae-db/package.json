@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-db",
-  "version": "0.146.0",
+  "version": "0.155.0",
   "description": "@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.",
   "scripts": {
     "dev": "vite dev",
@@ -34,7 +34,7 @@
     "svelte": "^5.0.0-next"
   },
   "devDependencies": {
-    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/kit": "^2.20.7",

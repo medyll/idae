@@ -1,61 +1,44 @@
-/**
- * Example usage:
- *
- * import { Machine } from './machine.js';
- *
- * // Create a new Machine instance with default parameters
- * const machine = new Machine( 'example-db', 1, { collections: {} });
- *
- * // Start the machine (initialize collections and IDBQL connection)
- * machine.start();
- *
- * // Access collections (schema logic)
- * const collections = machine.collections;
- *
- * // Access IDBQL (readonly)
- * const idbql = machine.idbql;
- *
- * // Access IDBQL (stateful)
- * const idbqlState = machine.idbqlState;
- *
- * // Access IndexedDB core
- * const db = machine.indexedb;
- *
- * // Access the IDBQL data model
- * const model = machine.idbqModel;
- */
 
-import { MachineDb } from '$lib/main/machineDb.js';
-import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
+import { MachineDb } from "$lib/main/machineDb.js";
+import { createIdbqDb, type IdbqModel } from "@medyll/idae-idbql";
 
 /**
- * Machine: main entry point for managing the IDBQL connection and centralized data access.
+ * @class Machine
+ * @role Main entry point for managing the IDBQL connection and centralized data access.
  */
 export class Machine {
-  /**
-   * IDBQL (readonly collections instance)
-   */
-  _idbql!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"] | undefined;
+/**
+ * IDBQL (readonly collections instance)
+ */
+_idbql!:
+  | ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"]
+  | undefined;
 
   /**
    * IDBQL (stateful collections instance)
    */
-  _idbqlState!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"] ;
+  _idbqlState!: ReturnType<
+    ReturnType<typeof createIdbqDb>["create"]
+  >["idbqlState"];
 
   /**
    * Direct access to IndexedDB (core)
    */
-  _idbDatabase!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbDatabase"] | undefined;
+  _idbDatabase!:
+    | ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbDatabase"]
+    | undefined;
 
   /**
    * IDBQL data model
    */
-  _idbqModel!: ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"] | undefined;
+  _idbqModel!:
+    | ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"]
+    | undefined;
 
   /**
    * Centralized access to schema and collection logic
    */
-  _idbbase!: MachineDb ;
+  _machineDb!: MachineDb;
 
   /**
    * Database name
@@ -74,88 +57,146 @@ export class Machine {
 
   /**
    * Main constructor
+   * @role Constructor
+   * @param {string=} dbName The name of the database.
+   * @param {number=} version The schema version number.
+   * @param {IdbqModel=} model The IDBQL data model.
    */
   constructor(dbName?: string, version?: number, model?: IdbqModel) {
-    this._dbName = dbName ?? '';
+    this._dbName = dbName ?? "";
     this._version = version ?? 1;
     this._model = model ?? undefined;
   }
-  
-  init(options?: { dbName?: string; version?: number; model?: IdbqModel }) {
+
+  /**
+   * Initialize the machine with configuration parameters.
+   * @role Initializer
+   * @param {{ dbName?: string; version?: number; model: IdbqModel }} [options] Optional parameters to set dbName, version, and model.
+   * @return {void}
+   */
+  init(options?: { dbName?: string; version?: number; model: IdbqModel }) {
     this._dbName = options?.dbName ?? this._dbName;
     this._version = options?.version ?? this._version;
     this._model = options?.model ?? this._model;
   }
 
   /**
-   * Start the machine: initialize collections and IDBQL connection.
+   * Start the machine: initializes collections and the IDBQL connection.
+   * Call this after constructing the Machine to set up the database and collections.
+   * @role Initializer
+   * @return {void}
    */
-  start() {
+  start(): void {
     this.createCollections();
     this.createStore();
   }
 
-  private createCollections() {
+  /**
+   * Internal: Creates the collections logic using the provided data model.
+   * Throws an error if the model is not defined.
+   * @role Internal
+   * @private
+   * @return {void}
+   */
+  private createCollections(): void {
     if (!this._model) {
-      throw new Error('Data model is not defined');
+      throw new Error("Data model is not defined");
     }
-    this._idbbase = new MachineDb(this._model);
+    this._machineDb = new MachineDb(this._model);
   }
 
-
-  private createStore() {
+  /**
+   * Internal: Creates the IDBQL store and initializes database connections.
+   * Throws an error if model, dbName, or version is missing.
+   * @role Internal
+   * @private
+   * @return {void}
+   */
+  private createStore(): void {
     if (!this._model || !this._dbName || !this._version) {
-        throw new Error('Model, dbName, or version is not defined');
+      throw new Error("Model, dbName, or version is not defined");
     }
     const idbqStore = createIdbqDb(this._model, this._version);
-    const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create(this._dbName);
+    const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create(
+      this._dbName,
+    );
     this._idbql = idbql;
     this._idbqlState = idbqlState;
     this._idbDatabase = idbDatabase;
     this._idbqModel = idbqModel;
-  }
 
-
-  /**
-   * Get the IDbBase (schema logic) instance
-   */
-  get collections() {
-    return this._idbbase;
+    console.log("Machine started with DB:", this._dbName, "Version:", this._version);
+    console.log("IDBQL State Instance:", this._idbqlState);
   }
 
   /**
-   * IDBQL (readonly) instance
+   * Get the MachineDb (schema logic) instance.
+   * @role Accessor
+   * @deprecated Use logic instead.
+   * @return {MachineDb} The schema and collection logic instance.
    */
-  get idbql() {
+  get collections(): MachineDb {
+    return this._machineDb;
+  }
+
+  /**
+   * Get the IDbBase (schema logic) instance.
+   * Recommended accessor for schema and collection logic.
+   * @role Accessor
+   * @return {MachineDb} The schema and collection logic instance.
+   */
+  get logic(): MachineDb {
+    return this._machineDb;
+  }
+
+  /**
+   * Get the IDBQL (readonly) instance.
+   * Use for read-only access to collections.
+   * @role Accessor
+   * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"] | undefined} The readonly IDBQL instance.
+   */
+  get idbql(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"] | undefined {
     return this._idbql;
   }
 
   /**
-   * IDBQL (stateful) instance , old name was idbqlState => store
+   * Get the IDBQL (stateful) instance.
+   * Previously called idbqlState; use for stateful operations.
+   * @role Accessor
+   * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"]} The stateful IDBQL instance.
    */
-  get store() {
+  get store(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"] {
     return this._idbqlState;
   }
 
   /**
-   * Direct getter for idbqlState (for test compatibility)
+   * Direct getter for idbqlState (for test compatibility).
+   * Returns the stateful IDBQL instance.
+   * @role Accessor
+   * @deprecated Use store instead.
+   * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"]} The stateful IDBQL instance.
    */
-  get idbqlState() {
+  get idbqlState(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"] {
     return this._idbqlState;
   }
 
   /**
-   * IndexedDB (core) instance
-   * @deprecated
+   * Get the IndexedDB (core) instance.
+   * @role Accessor
+   * @deprecated Use IDBQL accessors instead.
+   * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbDatabase"] | undefined} The IndexedDB instance.
    */
-  get indexedb() {
+  get indexedb(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbDatabase"] | undefined {
     return this._idbDatabase;
   }
 
   /**
-   * IDBQL data model instance
+   * Get the IDBQL data model instance.
+   * Returns the current IDBQL model used by the machine.
+   * @role Accessor
+   * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"] | undefined} The IDBQL model instance.
    */
-  get idbqModel() {
+  get idbqModel(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"] | undefined {
     return this._idbqModel;
   }
 }

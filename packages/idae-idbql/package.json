@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-idbql",
   "scope": "@medyll",
-  "version": "0.176.0",
+  "version": "0.185.0",
   "description": "A powerful and flexible IndexedDB query library for TypeScript and JavaScript applications, offering a MongoDB-like query interface, strong TypeScript support, reactive state management, and easy integration with front-end frameworks like Svelte.",
   "scripts": {
     "dev": "vite dev",
@@ -33,7 +33,7 @@
     "svelte": "^5.0.0-next"
   },
   "devDependencies": {
-    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/kit": "^2.20.7",

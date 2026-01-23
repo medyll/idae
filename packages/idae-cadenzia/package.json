@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-cadenzia",
-  "version": "0.138.0",
+  "version": "0.147.0",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
-    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",

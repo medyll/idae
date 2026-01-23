@@ -1,0 +1,37 @@
+/*
+  slotui-alert Tailwind CSS
+  ------------------------
+  Migration du composant de base "alert" vers Tailwind
+*/
+
+:root {
+  --slotui-alert-bg: theme(colors.yellow.50);
+  --slotui-alert-fg: theme(colors.yellow.900);
+  --slotui-alert-border: theme(colors.yellow.300);
+}
+
+.slotui-alert {
+  @apply flex items-center gap-2 px-4 py-2 rounded border text-base font-medium transition-colors duration-150;
+  background-color: var(--slotui-alert-bg);
+  color: var(--slotui-alert-fg);
+  border-color: var(--slotui-alert-border);
+
+  &--info {
+    @apply bg-blue-50 text-blue-900 border-blue-300;
+  }
+  &--success {
+    @apply bg-green-50 text-green-900 border-green-300;
+  }
+  &--warning {
+    @apply bg-yellow-50 text-yellow-900 border-yellow-300;
+  }
+  &--error {
+    @apply bg-red-50 text-red-900 border-red-300;
+  }
+  &--disabled {
+    @apply opacity-50 pointer-events-none;
+  }
+  &__icon {
+    @apply mr-2 w-5 h-5;
+  }
+}

@@ -111,6 +111,6 @@
 	{/if}
 </div>
 
-<style lang="scss">
-	@use './cartouche.scss';
+<style global>
+	@import './cartouche.tailwind.css';
 </style>

@@ -60,6 +60,6 @@
 	</div>
 </div>
 
-<style lang="scss">
-	@use './content-switcher.scss';
+<style global>
+	@import './contentSwitcher.tailwind.css';
 </style>

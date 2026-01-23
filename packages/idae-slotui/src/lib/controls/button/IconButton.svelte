@@ -21,6 +21,8 @@
 		/** Rotation of the icon */
 		rotation?: number;
 
+		onclick?: any;
+
 		size?: ElementProps['width'];
 		/** Children   for the default content */
 		children?: Snippet;

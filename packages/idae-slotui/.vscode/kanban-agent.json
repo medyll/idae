@@ -1,0 +1,576 @@
+[
+  {
+    "id": "task-1768743222151-fxyyvtkr1",
+    "title": "Install Tailwind CSS and configure for Svelte",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-rbrywgf9v",
+    "title": "Lister tous les composants à migrer (base, controls, navigation, data, etc.)",
+    "status": "done",
+    "order": 1,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-cgo4ioc2j",
+    "title": "Create migration_tailwind.md with migration guidelines",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-fq47eix85",
+    "title": "Créer un template CSS Tailwind par composant (structure, @apply, variables, nesting)",
+    "status": "done",
+    "order": 2,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-ibcy50bai",
+    "title": "Migrate shared SCSS mixins to slotui-mixins.css as Tailwind utilities",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-tyfenv6zi",
+    "title": "Migrer les composants de base (src/lib/base) vers Tailwind plugins",
+    "status": "done",
+    "order": 3,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-1dlp9r61h",
+    "title": "Migrate one base component (ex: Badge) to Tailwind CSS",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-q7199eqha",
+    "title": "Migrer les composants controls (src/lib/controls) vers Tailwind plugins",
+    "status": "done",
+    "order": 4,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-vgr8g4sw2",
+    "title": "Migrate one control component (ex: Button) to Tailwind CSS",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-90bg3nw8m",
+    "title": "Migrer les composants navigation (src/lib/navigation) vers Tailwind plugins",
+    "status": "done",
+    "order": 5,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-n3s4izpwr",
+    "title": "Document and export per-component CSS files with custom properties",
+    "status": "done",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-ovmalza04",
+    "title": "Migrer les composants data (src/lib/data) vers Tailwind plugins",
+    "status": "done",
+    "order": 6,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-if6i6noop",
+    "title": "Preserve attribute selectors and nested CSS in new files",
+    "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-vh5hlizzf",
+    "title": "Vérifier et migrer les composants utilitaires et UI (src/lib/ui, src/lib/utils)",
+    "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752358207-b95cem9mt",
+    "title": "Vérifier et migrer les composants UI (src/lib/ui)",
+    "status": "done",
+    "order": 7,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-v7v6dsnuw",
+    "title": "Update build scripts and package exports for new CSS structure",
+    "status": "done",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-bsn5ylg9h",
+    "title": "Adapter les tests et la documentation pour chaque composant migré",
+    "status": "done",
+    "order": 8,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-qnl0tt98e",
+    "title": "Test migrated components visually and functionally",
+    "status": "done",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-2a0wtjk0w",
+    "title": "Valider la cohérence visuelle et fonctionnelle de tous les composants migrés",
+    "status": "done",
+    "order": 9,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768743222151-hkj7ex4jj",
+    "title": "Commit changes with Conventional Commits",
+    "status": "done",
+    "order": 10,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752192899-4ckl4zcsm",
+    "title": "Committer chaque migration avec Conventional Commits",
+    "status": "done",
+    "order": 10,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768752783371-2sdqjea4h",
+    "title": "Mettre à jour chaque composant Svelte pour charger la nouvelle CSS Tailwind dédiée",
+    "status": "done",
+    "order": 11,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753489219-mkyt96sp1",
+    "title": "Mettre à jour chaque composant Svelte controls pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 12,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753489219-zzt6zwgw7",
+    "title": "Mettre à jour chaque composant Svelte navigation pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 13,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753489219-7qfkobar9",
+    "title": "Mettre à jour chaque composant Svelte data pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 14,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753489219-ymz76x89w",
+    "title": "Mettre à jour chaque composant Svelte ui pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 15,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575786-zsrbmxh0n",
+    "title": "Mettre à jour alert pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 16,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-qssvmvg14",
+    "title": "Mettre à jour avatar pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 17,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-kc4242dpn",
+    "title": "Mettre à jour backdrop pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 18,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-xa6jd94dp",
+    "title": "Mettre à jour badge pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 19,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-qxc9v60jt",
+    "title": "Mettre à jour box pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 20,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-dljftbs8k",
+    "title": "Mettre à jour breadCrumb pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 21,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-a3qdeajek",
+    "title": "Mettre à jour cartouche pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 22,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-agr26z6bv",
+    "title": "Mettre à jour chipper pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 23,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-k0xiwpnj7",
+    "title": "Mettre à jour columner pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 24,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-j6ridap8k",
+    "title": "Mettre à jour contentSwitcher pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 25,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-wd8c0z7fp",
+    "title": "Mettre à jour debug pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 26,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-1zavhzda7",
+    "title": "Mettre à jour demoer pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 27,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-kfqrjve0u",
+    "title": "Mettre à jour divider pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 28,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-7es6p5b5t",
+    "title": "Mettre à jour icon pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 29,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-iwekleri3",
+    "title": "Mettre à jour paper pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 30,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753575787-b8m3mszg0",
+    "title": "Mettre à jour titleBar pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 31,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-ooo0hzyxm",
+    "title": "Mettre à jour autocomplete pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 32,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-siyza6als",
+    "title": "Mettre à jour button pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 33,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-2eeo70ze7",
+    "title": "Mettre à jour checkbox pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 34,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-tv40j71m5",
+    "title": "Mettre à jour confirm pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 35,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-apqaqnw2w",
+    "title": "Mettre à jour inplaceedit pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 36,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-xasae1wpe",
+    "title": "Mettre à jour progress pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 37,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-nfsg73hth",
+    "title": "Mettre à jour rating pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 38,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-aqqnii8nh",
+    "title": "Mettre à jour select pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 39,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-vlc2heek9",
+    "title": "Mettre à jour slider pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 40,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-mbnlyrwfh",
+    "title": "Mettre à jour stepper pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 41,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-zo37hq5ru",
+    "title": "Mettre à jour switch pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 42,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753586002-2fck63xqi",
+    "title": "Mettre à jour textfield pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 43,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-nc6a85hvs",
+    "title": "Mettre à jour dataList pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 44,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-w6of7cnga",
+    "title": "Mettre à jour finder pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 45,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-6a5uvgqgk",
+    "title": "Mettre à jour grouper pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 46,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-k2pkv0tyu",
+    "title": "Mettre à jour jsoner pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 47,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-p334ha9r0",
+    "title": "Mettre à jour list pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 48,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-4xzut154w",
+    "title": "Mettre à jour loader pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 49,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753588892-f981evf6i",
+    "title": "Mettre à jour sorter pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 50,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753591110-edn70dwyz",
+    "title": "Mettre à jour drawer pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 51,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753591110-rjg83o386",
+    "title": "Mettre à jour tabs pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 52,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-ugdzjy6j9",
+    "title": "Mettre à jour bootstrapp pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 53,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-sqklx36e3",
+    "title": "Mettre à jour chromeFrame pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 54,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-chx74fyrm",
+    "title": "Mettre à jour frame pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 55,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-oejlmysw2",
+    "title": "Mettre à jour login pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 56,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-99jmak6n1",
+    "title": "Mettre à jour marquee pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 57,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-p7ktb2201",
+    "title": "Mettre à jour menu pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 58,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-yw7puos10",
+    "title": "Mettre à jour menuList pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 59,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-sa6deen2z",
+    "title": "Mettre à jour panel pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 60,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-bzrl04ekk",
+    "title": "Mettre à jour popper pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 61,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-nfnhu4vdp",
+    "title": "Mettre à jour preview pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 62,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-jr772woy6",
+    "title": "Mettre à jour serviceBox pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 63,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-7gr3guujf",
+    "title": "Mettre à jour startMenu pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 64,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-yky18cfy3",
+    "title": "Mettre à jour taskbar pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 65,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-xam3oko5o",
+    "title": "Mettre à jour themeswitcher pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 66,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-mbtsvtwau",
+    "title": "Mettre à jour toast pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 67,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-uyhxfgjsg",
+    "title": "Mettre à jour toggleBar pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 68,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-evanw3ghg",
+    "title": "Mettre à jour toolBar pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 69,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-1z2p1e5x9",
+    "title": "Mettre à jour tree pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 70,
+    "createdBy": "agent"
+  },
+  {
+    "id": "task-1768753595288-ghd85mr9o",
+    "title": "Mettre à jour window pour charger la CSS Tailwind dédiée",
+    "status": "done",
+    "order": 71,
+    "createdBy": "agent"
+  }
+]

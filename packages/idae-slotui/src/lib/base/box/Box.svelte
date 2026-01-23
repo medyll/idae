@@ -69,6 +69,6 @@
 	</Content>
 {/if}
 
-<style lang="scss">
-	@use './box.scss';
+<style global>
+	@import './box.tailwind.css';
 </style>

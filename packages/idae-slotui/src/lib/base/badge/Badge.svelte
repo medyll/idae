@@ -28,6 +28,6 @@
 	</div>
 {/if}
 
-<style lang="scss">
-	@use 'badge.scss';
+<style global>
+	@import './badge.tailwind.css';
 </style>

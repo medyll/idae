@@ -1,3 +1,6 @@
+<style global>
+	@import './inplaceedit.tailwind.css';
+</style>
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import TextField from '../textfield/TextField.svelte';

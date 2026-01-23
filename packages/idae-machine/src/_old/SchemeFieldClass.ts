@@ -1,4 +1,4 @@
-import { IIdae } from '../lib/db/types.js';
+import { IIdae } from './types.js';
 
 class SchemeFieldClass {
 	private _field_code!: IIdae.schemeFieldCode;

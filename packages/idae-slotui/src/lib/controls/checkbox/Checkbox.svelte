@@ -56,6 +56,6 @@
 	{/if}
 </label>
 
-<style lang="scss">
-	@use './checkbox.scss';
+<style global>
+	@import './checkbox.tailwind.css';
 </style>

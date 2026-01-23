@@ -118,6 +118,6 @@
 	</dialog>
 {/if}
 
-<style lang="scss">
-	@use './alert.scss';
+<style global>
+	@import './alert.tailwind.css';
 </style>

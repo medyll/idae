@@ -150,6 +150,6 @@
 	/>
 </div>
 
-<style lang="scss">
-	@use './slider.scss';
+<style global>
+	@import './slider.tailwind.css';
 </style>

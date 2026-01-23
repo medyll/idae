@@ -5,11 +5,11 @@
 
 <script lang="ts" generics="COL = Record<string,any>">
 	
-	import { IDbFormValidate } from '$lib/main/IDbFormValidate';
-	import type { CreateUpdateProps } from './types';
-	import CollectionReverseFks from './CollectionReverseFks.svelte';
-	import FieldInput from './FieldValue.svelte';
- 	import {machine} from '$lib/main/machine.js';
+ 	import {machine} from '$lib/main/machine.js'; 
+	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+	import type { CreateUpdateProps } from './types.js';
+	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
+	import FieldInput from '$lib/form/FieldValue.svelte';
 
 	let {
 		collection,
@@ -19,38 +19,41 @@
 		withData,
 		showFields,
 		inPlaceEdit,
-		displayMode = 'wrap',
-		afterCreate,
+		displayMode = 'wrap', 
 		showFks = false
 	}: CreateUpdateProps = $props();
 	
 	
-	let inputForm = `form-${String(collection)}-${mode}`;
+	let inputForm = `form-${String(collection)}-${mode}`; 
 
-	let collections = machine.collections ;
-	let store = machine.store;
-	let indexName = collections.getIndexName(collection);
+	let logic = machine.logic ;
+	let store = machine.store[(collection as string)];
 
-	let formFields = showFields
-		? Object.fromEntries(
-				Object.entries(collections.parseRawCollection(collection) ?? {}).filter(([key]) => showFields.includes(key))
-			)
-		: (collections.parseRawCollection(collection) ?? {});
+	let formFields = $derived(logic.collection(collection).parse());
+	let validator = $derived(logic.collection(collection).validator);
 
-	let qy: any = $derived(dataId && indexName ? store[collection].where({ [indexName]: { eq: dataId } }) : {});
+	let indexName = $derived(logic.collection(collection).template.index);
+	let query: any = $derived(dataId && indexName ? store.where({ [indexName]: { eq: dataId } }) : {});
 
-	let formData = $state<Record<string, any>>({ ...data, ...withData, ...$state.snapshot(qy)[0] });
+	let formData = $state<Record<string, any>>(
+		mode === 'create'
+			? {
+				...SchemeFieldDefaultValues.getDefaults(Object.keys($derived(logic.collection(collection).parse())), collection),
+				...data,
+				...withData
+			  }
+			: { ...data, ...withData, ...$state.snapshot(query)[0] }
+	);
 
 	$effect.pre(() => {
 		setFormDataDefaultFieldValues();
 	});
-	let ds = Object.keys(data).length > 0 ? data : qy[0];
-
-	let formValidator = new IDbFormValidate(collection);
+	 
+ 
 	let validationErrors: Record<string, string> = {};
 
 	const validateFormData = (formData: Record<string, any> = {}) => {
-		const { isValid, errors } = formValidator.validateForm(formData, {
+		const { isValid, errors } = validator.validateForm(formData, {
 			ignoreFields: mode == 'create' ? [indexName] : undefined
 		});
 		validationErrors = errors;
@@ -88,44 +91,41 @@
 			});
 			return;
 		}
+		
 		let datadb = $state.snapshot(formData);
 		switch (mode) {
 			case 'create':
 				if (!dataId) {
-					await store[collection].add({ ...datadb, ...withData });
+					await store.add({ ...datadb, ...withData });
 					mode = 'show';
 				}
 				break;
 			case 'update':
 				if (dataId) {
-					await store[collection].update(dataId, datadb);
+					await store.update(dataId, datadb);
 				}
 				break;
 		}
 	};
 
-	function setFormDataDefaultFieldValues() {
-		Object.entries(formFields).forEach(([fieldName, field]) => {
-			if (formData[fieldName] === undefined && getDefaultValue(field?.fieldType)) {
-				formData[fieldName] = getDefaultValue(field?.fieldType);
-			}
-		});
-	}
+	// --- INTEGRATION: Default values for creation mode ---
+	// import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+	// ...existing code...
 
-	// déplacer qqpart ?
-	function getDefaultValue(fieldType?: string) {
-		if (mode !== 'create') return undefined;
-		switch (fieldType) {
-			case 'timestamp':
-				return Date.now();
-			case 'date':
-				return new Date().toISOString().split('T')[0];
-			case 'datetime':
-				return new Date().toISOString();
-			case 'time':
-				return new Date().toISOString().split('T')[1].split('.')[0];
-		}
-	}
+	// Replace formData initialization for creation mode
+	// let formData = $state<Record<string, any>>(
+	//   mode === 'create'
+	//     ? {
+	//         ...SchemeFieldDefaultValues.getDefaults(Object.keys($derived(logic.collection(collection).parse())), collection),
+	//         ...data,
+	//         ...withData
+	//       }
+	//     : { ...data, ...withData, ...$state.snapshot(query)[0] }
+	// );
+
+	// Remove or comment out setFormDataDefaultFieldValues and getDefaultValue (now obsolete)
+	// function setFormDataDefaultFieldValues() { ... }
+	// function getDefaultValue(fieldType?: string) { ... }
 </script>
 
 <form
@@ -138,8 +138,8 @@
 		event.preventDefault();
 		// onSubmit(event);
 	}}
-></form>
-
+></form> 
+<input type="submit" form={inputForm}   />
 <div style="width:750px;display:flex;">
 	<div class="crud {displayMode}">
 		{#each Object.entries(formFields) as [fieldName, fieldInfo]}

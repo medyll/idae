@@ -1,0 +1,10 @@
+/* slotui-debug Tailwind CSS */
+:root {
+  --slotui-debug-bg: theme(colors.gray.900);
+  --slotui-debug-fg: theme(colors.green.300);
+}
+.slotui-debug {
+  @apply p-2 rounded text-xs font-mono overflow-x-auto;
+  background-color: var(--slotui-debug-bg);
+  color: var(--slotui-debug-fg);
+}

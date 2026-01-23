@@ -122,6 +122,6 @@
 	</Menu>
 </Popper>
 
-<style lang="scss">
-	@use 'select.scss';
+<style global>
+	@import './select.tailwind.css';
 </style>

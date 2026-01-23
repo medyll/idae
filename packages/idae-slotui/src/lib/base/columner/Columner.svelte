@@ -18,12 +18,6 @@
 	{/if}
 </div>
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-	.columner {
-		display: flex;
-		height: 100%;
-		position: relative;
-	}
+<style global>
+	@import './columner.tailwind.css';
 </style>

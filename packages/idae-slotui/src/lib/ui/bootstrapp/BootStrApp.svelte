@@ -1,3 +1,6 @@
+<style global>
+	@import '../../slotui-css/bootstrapp.tailwind.css';
+</style>
 <script lang="ts">
 	import ChromeFrameButtonList from '$lib/ui/chromeFrame/ChromeFrameButtonList.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';

@@ -1,7 +1,7 @@
 <script lang="ts" generics="T = Record<string, any>">
 	import { Button, openWindow, type Props } from '@medyll/idae-slotui-svelte'; 
 	import { idbqlState } from '$lib/db/dbSchema.js';
-	import CrudDataList from './CollectionListMenu.svelte';
+	import CrudDataList from '$lib/ui/CollectionListMenu.svelte';
 
 	interface CrudZoneProps {
 		collection: string;

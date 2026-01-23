@@ -27,6 +27,6 @@
 	<Slotted child={toolbarSeparator} />
 </div>
 
-<style lang="scss">
-	@use './toolbar.scss';
+<style global>
+	@import '../../slotui-css/toolBar.tailwind.css';
 </style>

@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-machine",
-  "version": "0.126.0",
+  "version": "0.135.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run prepack",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.7",
     "@eslint/js": "^9.23.0",
-    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",
@@ -63,7 +63,7 @@
   "scope": "@medyll",
   "dependencies": {
     "@huggingface/prettier-plugin-vertical-align": "^0.2.3",
-    "@medyll/idae-slotui-svelte": "workspace:*",
-    "@medyll/idae-idbql": "workspace:*"
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-slotui-svelte": "workspace:*"
   }
 }
