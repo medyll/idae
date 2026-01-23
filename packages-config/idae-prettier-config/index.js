@@ -12,7 +12,6 @@ const config = {
     "prettier-plugin-tailwindcss",
     "@huggingface/prettier-plugin-vertical-align",
   ],
-  filepath: "./src/**/*.{svelte,css}",
   overrides: [
     { files: "*.svelte", options: { parser: "svelte" } },
     { files: "*.css", options: { parser: "css" } },
