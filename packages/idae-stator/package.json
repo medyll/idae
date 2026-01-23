@@ -14,8 +14,6 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "prepackage": "node scripts/package-pre.js",
-    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -60,15 +58,7 @@
     "library"
   ],
   "author": "Your Name <your.email@example.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-repo/idae-stator.git"
-  },
-  "bugs": {
-    "url": "https://github.com/your-repo/idae-stator/issues"
-  },
-  "homepage": "https://github.com/your-repo/idae-stator#readme",
+  "license": "MIT",  
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
