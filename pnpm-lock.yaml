@@ -157,7 +157,7 @@ importers:
     dependencies:
       prettier:
         specifier: '>=3.0.0'
-        version: 4.0.0-alpha.13
+        version: 3.8.1
       vite:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -170,10 +170,10 @@ importers:
         version: 6.2.4(svelte@5.47.1)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       prettier-plugin-svelte:
         specifier: ^3.4.1
-        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1)
+        version: 3.4.1(prettier@3.8.1)(svelte@5.47.1)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1))(prettier@4.0.0-alpha.13)
+        version: 0.7.2(prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.47.1))(prettier@3.8.1)
 
   packages/idae-api:
     dependencies:
@@ -16293,7 +16293,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.3.7)
+      follow-redirects: 1.15.11(debug@4.4.3)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -21662,6 +21662,11 @@ snapshots:
       prettier: 3.7.4
       svelte: 5.47.1
 
+  prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.47.1):
+    dependencies:
+      prettier: 3.8.1
+      svelte: 5.47.1
+
   prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1):
     dependencies:
       prettier: 4.0.0-alpha.13
@@ -21673,11 +21678,11 @@ snapshots:
     optionalDependencies:
       prettier-plugin-svelte: 3.4.1(prettier@3.7.4)(svelte@5.47.1)
 
-  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1))(prettier@4.0.0-alpha.13):
+  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.47.1))(prettier@3.8.1):
     dependencies:
-      prettier: 4.0.0-alpha.13
+      prettier: 3.8.1
     optionalDependencies:
-      prettier-plugin-svelte: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1)
+      prettier-plugin-svelte: 3.4.1(prettier@3.8.1)(svelte@5.47.1)
 
   prettier@2.8.8: {}
 
@@ -22791,7 +22796,7 @@ snapshots:
       '@rollup/plugin-node-resolve': 13.3.0(rollup@2.79.2)
       acorn: 8.15.0
       comment-parser: 1.4.1
-      prettier: 3.7.4
+      prettier: 3.8.1
       rollup: 2.79.2
       rollup-plugin-svelte: 7.2.3(rollup@2.79.2)(svelte@4.2.20)
       svelte: 4.2.20
