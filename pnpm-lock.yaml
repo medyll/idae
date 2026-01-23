@@ -11,21 +11,24 @@ importers:
       '@medyll/idae-engine':
         specifier: workspace:*
         version: link:packages/idae-engine
+      '@medyll/idae-eslint-config':
+        specifier: workspace:*
+        version: link:packages-config/idae-eslint-config
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
       '@sveltejs/adapter-auto':
         specifier: ^4.0.0
-        version: 4.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 4.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
       '@sveltejs/kit':
         specifier: ^2.16.0
-        version: 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@sveltejs/package':
         specifier: ^2.0.0
-        version: 2.5.7(svelte@5.46.3)(typescript@5.9.3)
+        version: 2.5.7(svelte@5.47.1)(typescript@5.9.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.0
-        version: 5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
@@ -43,16 +46,16 @@ importers:
         version: 3.7.4
       prettier-plugin-svelte:
         specifier: ^3.3.3
-        version: 3.4.1(prettier@3.7.4)(svelte@5.46.3)
+        version: 3.4.1(prettier@3.7.4)(svelte@5.47.1)
       prettier-plugin-tailwindcss:
         specifier: ^0.6.11
-        version: 0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.46.3))(prettier@3.7.4)
+        version: 0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.47.1))(prettier@3.7.4)
       publint:
         specifier: ^0.3.16
         version: 0.3.16
       svelte:
         specifier: ^5.0.0-next
-        version: 5.46.3
+        version: 5.47.1
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -65,13 +68,7 @@ importers:
         version: 2.29.8(@types/node@22.19.6)
       '@medyll/idae-db':
         specifier: '*'
-        version: 0.122.0(svelte@5.46.3)
-      '@medyll/idae-eslint-config':
-        specifier: ^1.2.1
-        version: 1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)
-      '@medyll/idae-prettier-config':
-        specifier: ^1.2.1
-        version: 1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 0.122.0(svelte@5.47.1)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -96,9 +93,6 @@ importers:
       lerna:
         specifier: ^9.0.3
         version: 9.0.3(@swc/core@1.15.8)(@types/node@22.19.6)
-      node:
-        specifier: ^24.12.0
-        version: 24.13.0
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.28.6)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.6))(esbuild@0.27.2)(jest-util@30.2.0)(jest@30.2.0(@types/node@22.19.6)(esbuild-register@3.6.0(esbuild@0.27.2))(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3)))(typescript@5.9.3)
@@ -124,15 +118,6 @@ importers:
       '@types/eslint':
         specifier: 9.6.1
         version: 9.6.1
-      eslint:
-        specifier: ^9.39.2
-        version: 9.39.2(jiti@2.6.1)
-      eslint-config-prettier:
-        specifier: ^10.1.8
-        version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
-      eslint-plugin-svelte:
-        specifier: ^3.14.0
-        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.47.1)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
       svelte-check:
         specifier: ^4.3.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.47.1)(typescript@5.9.3)
@@ -143,6 +128,24 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
         version: 6.2.4(svelte@5.47.1)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.53.0
+        version: 8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser':
+        specifier: ^8.53.0
+        version: 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.2(jiti@2.6.1)
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-svelte:
+        specifier: ^3.14.0
+        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.47.1)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
       svelte:
         specifier: ^5.47.1
         version: 5.47.1
@@ -154,7 +157,7 @@ importers:
     dependencies:
       prettier:
         specifier: '>=3.0.0'
-        version: 3.7.4
+        version: 4.0.0-alpha.13
       vite:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -162,18 +165,15 @@ importers:
       '@huggingface/prettier-plugin-vertical-align':
         specifier: ^0.2.3
         version: 0.2.3
-      '@medyll/idae-prettier-config':
-        specifier: ^1.2.1
-        version: 1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
         version: 6.2.4(svelte@5.47.1)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       prettier-plugin-svelte:
         specifier: ^3.4.1
-        version: 3.4.1(prettier@3.7.4)(svelte@5.47.1)
+        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.47.1))(prettier@3.7.4)
+        version: 0.7.2(prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1))(prettier@4.0.0-alpha.13)
 
   packages/idae-api:
     dependencies:
@@ -211,9 +211,9 @@ importers:
       '@medyll/idae-db':
         specifier: workspace:*
         version: link:../idae-db
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^6.0.1
         version: 6.1.1(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -368,12 +368,12 @@ importers:
       '@medyll/idae-db':
         specifier: workspace:*
         version: link:../idae-db
+      '@medyll/idae-eslint-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-eslint-config
       '@medyll/idae-mongo':
         specifier: workspace:*
         version: link:../idae-mongo
-      '@medyll/idae-prettier-config':
-        specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
       '@nestjs/cli':
         specifier: ^11.0.0
         version: 11.0.14(@swc/cli@0.6.0(@swc/core@1.15.8)(chokidar@4.0.3))(@swc/core@1.15.8)(@types/node@22.19.6)(esbuild@0.27.2)
@@ -452,9 +452,9 @@ importers:
       '@medyll/idae-dom-events':
         specifier: workspace:*
         version: link:../idae-dom-events
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@playwright/test':
         specifier: ^1.52.0
         version: 1.57.0
@@ -521,9 +521,9 @@ importers:
       '@medyll/idae-be':
         specifier: workspace:*
         version: link:../idae-be
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -585,9 +585,9 @@ importers:
         specifier: ^2.14.0
         version: 2.14.0
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -645,9 +645,9 @@ importers:
 
   packages/idae-data-tpl:
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -712,9 +712,9 @@ importers:
         specifier: ^2.2.1
         version: 2.4.6(encoding@0.1.13)(ws@8.19.0)(zod@3.25.76)
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
@@ -791,9 +791,9 @@ importers:
         specifier: ^24.4.0
         version: 24.35.0(typescript@5.9.3)
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@playwright/test':
         specifier: ^1.51.1
         version: 1.57.0
@@ -860,9 +860,9 @@ importers:
 
   packages/idae-engine:
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -902,9 +902,9 @@ importers:
       '@medyll/idae-dom-events':
         specifier: workspace:*
         version: link:../idae-dom-events
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -959,9 +959,9 @@ importers:
 
   packages/idae-idbql:
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
@@ -1011,9 +1011,9 @@ importers:
       '@eslint/js':
         specifier: ^9.23.0
         version: 9.39.2
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -1077,9 +1077,9 @@ importers:
 
   packages/idae-mongo:
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -1137,9 +1137,9 @@ importers:
       '@medyll/idae-engine':
         specifier: workspace:*
         version: link:../idae-engine
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^6.0.0
         version: 6.1.1(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -1202,7 +1202,7 @@ importers:
     dependencies:
       '@iconify/svelte':
         specifier: ^4.2.0
-        version: 4.2.0(svelte@5.46.3)
+        version: 4.2.0(svelte@5.47.1)
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -1220,7 +1220,7 @@ importers:
         version: 2.17.0
       svelte:
         specifier: ^5.0.0-next
-        version: 5.46.3
+        version: 5.47.1
       svelte-spa-router:
         specifier: ^4.0.1
         version: 4.0.1
@@ -1231,24 +1231,24 @@ importers:
       '@medyll/idae-engine':
         specifier: workspace:*
         version: link:../idae-engine
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@playwright/test':
         specifier: ^1.51.1
         version: 1.57.0
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
-        version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
       '@sveltejs/kit':
         specifier: ^2.20.2
-        version: 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@sveltejs/package':
         specifier: ^2.3.10
-        version: 2.5.7(svelte@5.46.3)(typescript@5.9.3)
+        version: 2.5.7(svelte@5.47.1)(typescript@5.9.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
-        version: 5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@tailwindcss/forms':
         specifier: ^0.5.11
         version: 0.5.11(tailwindcss@4.1.18)
@@ -1302,7 +1302,7 @@ importers:
         version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-svelte:
         specifier: ^3.3.3
-        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
+        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.47.1)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.3
@@ -1314,7 +1314,7 @@ importers:
         version: 4.0.5
       mdsvex:
         specifier: ^0.12.3
-        version: 0.12.6(svelte@5.46.3)
+        version: 0.12.6(svelte@5.47.1)
       micromatch:
         specifier: ^4.0.8
         version: 4.0.8
@@ -1332,7 +1332,7 @@ importers:
         version: 4.0.0-alpha.13
       prettier-plugin-svelte:
         specifier: ^3.3.3
-        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.46.3)
+        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1)
       prism:
         specifier: ^4.1.2
         version: 4.1.2(react@15.7.0)
@@ -1356,7 +1356,7 @@ importers:
         version: 0.22.5(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.2)
       svelte-preprocess:
         specifier: ^6.0.3
-        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.2)(svelte@5.46.3)(typescript@5.9.3)
+        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.2)(svelte@5.47.1)(typescript@5.9.3)
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -1418,9 +1418,9 @@ importers:
         specifier: ^4.1.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.46.3)(typescript@5.9.3)
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.1.1(svelte@5.46.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -1436,9 +1436,9 @@ importers:
 
   packages/idae-stator:
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/adapter-auto':
         specifier: ^5.0.0
         version: 5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
@@ -1506,9 +1506,9 @@ importers:
         specifier: ^4.1.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.46.3)(typescript@5.9.3)
     devDependencies:
-      '@medyll/idae-prettier-config':
+      '@medyll/idae-eslint-config':
         specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        version: link:../../packages-config/idae-eslint-config
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.1.1(svelte@5.46.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -2765,14 +2765,6 @@ packages:
     resolution: {integrity: sha512-NtMcmVUIGjEEpKLXdgcPx1wDTFz7G4oEtPMccVXWQbUUghE98gaY95Rg9h34yFU+BjE5ISpl6eVWAtPxQsILpQ==}
     peerDependencies:
       svelte: ^5.0.0-next
-
-  '@medyll/idae-eslint-config@1.2.1':
-    resolution: {integrity: sha512-uCGE/B/XlzT6J8S3Q6MKubH78c6+0PqJ1HPyu/vW1cZCj5o6ws1awy2BtcLAshn304xTjVzAPwboWX9Rt+4GfQ==}
-
-  '@medyll/idae-prettier-config@1.2.1':
-    resolution: {integrity: sha512-Kt3b2Zt+wSLPU5xV/hontUlIjyfdayNWN6JyFmfnY0tNGZutlqdnugPEZaziWAaFiQ7LT5DQKjtMDFt2CfVGAQ==}
-    peerDependencies:
-      prettier: '>=3.0.0'
 
   '@mongodb-js/saslprep@1.4.4':
     resolution: {integrity: sha512-p7X/ytJDIdwUfFL/CLOhKgdfJe1Fa8uw9seJYvdOmnP9JBWGWHW69HkOixXS6Wy9yvGf1MbhcS6lVmrhy4jm2g==}
@@ -8700,9 +8692,6 @@ packages:
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
-  node-bin-setup@1.1.4:
-    resolution: {integrity: sha512-vWNHOne0ZUavArqPP5LJta50+S8R261Fr5SvGul37HbEDcowvLjwdvd0ZeSr0r2lTSrPxl6okq9QUw8BFGiAxA==}
-
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
@@ -8762,11 +8751,6 @@ packages:
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
-
-  node@24.13.0:
-    resolution: {integrity: sha512-aXcbTE5VzQS/AqA6bBBpkgsGswYAi5Mt5tfi1GgXU75bsbJEOtd2TuPi38paNLtwaGaCOFaSzkVN4T9U0Rg0vg==}
-    engines: {npm: '>=5.0.0'}
-    hasBin: true
 
   nodemon@3.1.11:
     resolution: {integrity: sha512-is96t8F/1//UHAjNPHpbsNY46ELPpftGUoSVNXwUfMk/qdjSylYrWSu1XavVTBOn526kFiOR733ATgNBCQyH0g==}
@@ -9589,6 +9573,11 @@ packages:
 
   prettier@3.7.4:
     resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+  prettier@3.8.1:
+    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -12711,10 +12700,10 @@ snapshots:
 
   '@hutson/parse-repository-url@3.0.2': {}
 
-  '@iconify/svelte@4.2.0(svelte@5.46.3)':
+  '@iconify/svelte@4.2.0(svelte@5.47.1)':
     dependencies:
       '@iconify/types': 2.0.0
-      svelte: 5.46.3
+      svelte: 5.47.1
 
   '@iconify/types@2.0.0': {}
 
@@ -13441,10 +13430,10 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@medyll/idae-db@0.122.0(svelte@5.46.3)':
+  '@medyll/idae-db@0.122.0(svelte@5.47.1)':
     dependencies:
       chromadb: 2.4.6(encoding@0.1.13)(ws@8.19.0)(zod@3.25.76)
-      svelte: 5.46.3
+      svelte: 5.47.1
     transitivePeerDependencies:
       - aws-crt
       - bare-abort-controller
@@ -13453,39 +13442,6 @@ snapshots:
       - react-native-b4a
       - ws
       - zod
-
-  '@medyll/idae-eslint-config@1.2.1(jiti@2.6.1)(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))(typescript@5.9.3)':
-    dependencies:
-      '@rushstack/eslint-patch': 1.15.0
-      '@types/eslint': 9.6.1
-      eslint: 9.39.2(jiti@2.6.1)
-      eslint-config-prettier: 10.1.8(eslint@9.39.2(jiti@2.6.1))
-      eslint-plugin-svelte: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.46.3)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
-      svelte-check: 4.3.5(picomatch@4.0.3)(svelte@5.46.3)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - jiti
-      - picomatch
-      - supports-color
-      - svelte
-      - ts-node
-      - typescript
-
-  '@medyll/idae-prettier-config@1.2.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
-    dependencies:
-      prettier: 3.7.4
-      vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - yaml
 
   '@mongodb-js/saslprep@1.4.4':
     dependencies:
@@ -14925,14 +14881,19 @@ snapshots:
     dependencies:
       acorn: 8.15.0
 
-  '@sveltejs/adapter-auto@4.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
+  '@sveltejs/adapter-auto@4.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
     dependencies:
-      '@sveltejs/kit': 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@sveltejs/kit': 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       import-meta-resolve: 4.2.0
 
   '@sveltejs/adapter-auto@5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
     dependencies:
       '@sveltejs/kit': 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      import-meta-resolve: 4.2.0
+
+  '@sveltejs/adapter-auto@5.0.0(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
+    dependencies:
+      '@sveltejs/kit': 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       import-meta-resolve: 4.2.0
 
   '@sveltejs/adapter-auto@6.1.1(@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
@@ -14960,6 +14921,27 @@ snapshots:
       set-cookie-parser: 2.7.2
       sirv: 3.0.2
       svelte: 5.46.3
+      vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    optionalDependencies:
+      typescript: 5.9.3
+
+  '@sveltejs/kit@2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(typescript@5.9.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@sveltejs/acorn-typescript': 1.0.8(acorn@8.15.0)
+      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@types/cookie': 0.6.0
+      acorn: 8.15.0
+      cookie: 0.6.0
+      devalue: 5.6.1
+      esm-env: 1.2.2
+      kleur: 4.1.5
+      magic-string: 0.30.21
+      mrmime: 2.0.1
+      sade: 1.8.1
+      set-cookie-parser: 2.7.2
+      sirv: 3.0.2
+      svelte: 5.47.1
       vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     optionalDependencies:
       typescript: 5.9.3
@@ -14996,6 +14978,17 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@sveltejs/package@2.5.7(svelte@5.47.1)(typescript@5.9.3)':
+    dependencies:
+      chokidar: 5.0.0
+      kleur: 4.1.5
+      sade: 1.8.1
+      semver: 7.7.3
+      svelte: 5.47.1
+      svelte2tsx: 0.7.46(svelte@5.47.1)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
+
   '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.46.3)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -15011,6 +15004,15 @@ snapshots:
       debug: 4.4.3(supports-color@5.5.0)
       svelte: 5.46.3
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      debug: 4.4.3(supports-color@5.5.0)
+      svelte: 5.47.1
+      vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -15051,6 +15053,19 @@ snapshots:
       svelte: 5.46.3
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       vitefu: 1.1.1(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.47.1)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      debug: 4.4.3(supports-color@5.5.0)
+      deepmerge: 4.3.1
+      kleur: 4.1.5
+      magic-string: 0.30.21
+      svelte: 5.47.1
+      vite: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+      vitefu: 1.1.1(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -16278,7 +16293,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.4.3)
+      follow-redirects: 1.15.11(debug@4.3.7)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -20321,13 +20336,13 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdsvex@0.12.6(svelte@5.46.3):
+  mdsvex@0.12.6(svelte@5.47.1):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 2.0.11
       prism-svelte: 0.4.7
       prismjs: 1.30.0
-      svelte: 5.46.3
+      svelte: 5.47.1
       unist-util-visit: 2.0.3
       vfile-message: 2.0.4
 
@@ -20743,8 +20758,6 @@ snapshots:
   node-addon-api@7.1.1:
     optional: true
 
-  node-bin-setup@1.1.4: {}
-
   node-domexception@1.0.0: {}
 
   node-emoji@1.11.0:
@@ -20819,10 +20832,6 @@ snapshots:
       '@types/node': 22.19.6
 
   node-releases@2.0.27: {}
-
-  node@24.13.0:
-    dependencies:
-      node-bin-setup: 1.1.4
 
   nodemon@3.1.11:
     dependencies:
@@ -21653,26 +21662,28 @@ snapshots:
       prettier: 3.7.4
       svelte: 5.47.1
 
-  prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.46.3):
+  prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1):
     dependencies:
       prettier: 4.0.0-alpha.13
-      svelte: 5.46.3
+      svelte: 5.47.1
 
-  prettier-plugin-tailwindcss@0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.46.3))(prettier@3.7.4):
-    dependencies:
-      prettier: 3.7.4
-    optionalDependencies:
-      prettier-plugin-svelte: 3.4.1(prettier@3.7.4)(svelte@5.46.3)
-
-  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.47.1))(prettier@3.7.4):
+  prettier-plugin-tailwindcss@0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.47.1))(prettier@3.7.4):
     dependencies:
       prettier: 3.7.4
     optionalDependencies:
       prettier-plugin-svelte: 3.4.1(prettier@3.7.4)(svelte@5.47.1)
 
+  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1))(prettier@4.0.0-alpha.13):
+    dependencies:
+      prettier: 4.0.0-alpha.13
+    optionalDependencies:
+      prettier-plugin-svelte: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.47.1)
+
   prettier@2.8.8: {}
 
   prettier@3.7.4: {}
+
+  prettier@3.8.1: {}
 
   prettier@4.0.0-alpha.13: {}
 
@@ -22854,9 +22865,9 @@ snapshots:
       sass: 1.97.2
       typescript: 5.9.3
 
-  svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.2)(svelte@5.46.3)(typescript@5.9.3):
+  svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.2)(svelte@5.47.1)(typescript@5.9.3):
     dependencies:
-      svelte: 5.46.3
+      svelte: 5.47.1
     optionalDependencies:
       '@babel/core': 7.28.6
       postcss: 8.5.6
@@ -22873,6 +22884,13 @@ snapshots:
       dedent-js: 1.0.1
       scule: 1.3.0
       svelte: 5.46.3
+      typescript: 5.9.3
+
+  svelte2tsx@0.7.46(svelte@5.47.1)(typescript@5.9.3):
+    dependencies:
+      dedent-js: 1.0.1
+      scule: 1.3.0
+      svelte: 5.47.1
       typescript: 5.9.3
 
   svelte@4.2.20:

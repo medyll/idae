@@ -41,7 +41,7 @@
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-engine": "workspace:*",
-    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@playwright/test": "^1.51.1",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
