@@ -76,5 +76,5 @@
 {/if}
 
 <style global>
-	@import './backdrop.tailwind.css';
+	@import './backdrop.scss';
 </style>

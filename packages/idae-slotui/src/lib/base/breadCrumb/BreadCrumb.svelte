@@ -21,5 +21,5 @@
 </nav>
 
 <style global>
-	@import './breadCrumb.tailwind.css';
+	@import './breadCrumb.scss';
 </style>

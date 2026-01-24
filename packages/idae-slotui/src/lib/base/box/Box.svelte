@@ -70,5 +70,5 @@
 {/if}
 
 <style global>
-	@import './box.tailwind.css';
+	@import './box.scss';
 </style>

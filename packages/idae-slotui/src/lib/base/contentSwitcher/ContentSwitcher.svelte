@@ -61,5 +61,5 @@
 </div>
 
 <style global>
-	@import './contentSwitcher.tailwind.css';
+	@import './contentSwitcher.scss';
 </style>

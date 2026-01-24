@@ -112,5 +112,5 @@
 </div>
 
 <style global>
-	@import './cartouche.tailwind.css';
+	@import './cartouche.scss';
 </style>

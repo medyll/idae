@@ -34,5 +34,5 @@
 </div>
 
 <style global>
-	@import './chipper.tailwind.css';
+	@import './chipper.scss';
 </style>

@@ -19,5 +19,5 @@
 </div>
 
 <style global>
-	@import './columner.tailwind.css';
+	@import './columner.scss';
 </style>

@@ -29,5 +29,5 @@
 {/if}
 
 <style global>
-	@import './badge.tailwind.css';
+	@import './badge.scss';
 </style>

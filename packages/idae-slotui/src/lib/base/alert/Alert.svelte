@@ -1,6 +1,9 @@
 <script module lang="ts">
 	import type { Snippet } from "svelte";
 	import type { ElementProps, CommonProps } from '$lib/types/index.js'; 
+	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import Divider from '$lib/base/divider/Divider.svelte';
  
 	export interface AlertProps extends CommonProps {
 		/** alert level */
@@ -21,12 +24,7 @@
 
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import Divider from '$lib/base/divider/Divider.svelte';
-	import Button from '$lib/controls/button/Button.svelte';
-	import type { ExpandProps } from '$lib/types/index.js';
 	// import type { AlertProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	let {
 		class: className,
@@ -100,7 +98,6 @@
 							onclick={() => {
 								isOpen = !isOpen;
 							}}
-							aria-label="Close"
 						/></Slotted
 					>
 				</div>
@@ -119,5 +116,5 @@
 {/if}
 
 <style global> 
-	@import './alert.tailwind.css';
+	@import './alert.scss';
 </style>
