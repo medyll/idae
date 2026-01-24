@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-mongo",
+  "bin": {
+    "idae-mongo": "./cli.js"
+  },
   "version": "0.185.0",
   "scripts": {
     "dev": "vite dev",

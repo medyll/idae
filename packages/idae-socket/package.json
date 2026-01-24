@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-socket",
+  "bin": {
+    "idae-socket": "./cli.js"
+  },
   "scope": "@medyll",
   "author": "Lebrun Meddy",
   "version": "0.0.2",

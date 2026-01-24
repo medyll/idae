@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-stator",
+  "bin": {
+    "idae-stator": "./cli.js"
+  },
   "version": "0.51.0",
   "author": "Lebrun Meddy",
   "repository": {

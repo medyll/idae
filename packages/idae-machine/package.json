@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-machine",
+  "bin": {
+    "idae-machine": "./cli.js"
+  },
   "version": "0.135.0",
   "scripts": {
     "dev": "vite dev",
