@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-be",
+  "bin": {
+    "idae-be": "./cli.js"
+  },
   "scope": "@medyll",
   "author": "Lebrun Meddy",
   "repository": {
