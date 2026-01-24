@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-data-tpl",
+  "bin": {
+    "idae-data-tpl": "./cli.js"
+  },
   "scope": "@medyll",
   "author": "Lebrun Meddy",
   "version": "0.186.0",

@@ -1,7 +1,10 @@
 {
   "name": "@medyll/idae-dom-events",
+  "bin": {
+    "idae-dom-events": "./cli.js"
+  },
   "version": "0.156.0",
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

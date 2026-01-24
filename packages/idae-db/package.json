@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-db",
+  "bin": {
+    "idae-db": "./cli.js"
+  },
   "version": "0.155.0",
   "author": "Lebrun Meddy",
   "repository": {
