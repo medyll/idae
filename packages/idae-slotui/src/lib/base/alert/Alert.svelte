@@ -22,7 +22,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Divider from '$lib/base/divider/Divider.svelte';
-	// import type { AlertProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 
