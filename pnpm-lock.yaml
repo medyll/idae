@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@medyll/idae-engine':
-        specifier: workspace:*
-        version: link:packages/idae-engine
-      '@medyll/idae-eslint-config':
-        specifier: workspace:*
-        version: link:packages-config/idae-eslint-config
       '@medyll/idae-prettier-config':
         specifier: 1.2.4
         version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -72,6 +66,9 @@ importers:
       '@medyll/idae-db':
         specifier: '*'
         version: 0.122.0(svelte@5.47.1)
+      '@medyll/idae-eslint-config':
+        specifier: workspace:*
+        version: link:packages-config/idae-eslint-config
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
