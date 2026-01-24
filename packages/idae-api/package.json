@@ -1,6 +1,14 @@
 {
   "name": "@medyll/idae-api",
+  "bin": {
+    "idae-api": "./cli.js"
+  },
   "scope": "@medyll",
+  "author": "Lebrun Meddy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "version": "0.187.0",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,7 +25,7 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js",
+    "prepackage": "node scripts/package-pre.js",
     "doc": "typedoc --entryPointStrategy expand src/lib/server/middleware src/lib/server/engine src/lib/client"
   },
   "exports": {
@@ -52,6 +60,7 @@
   "devDependencies": {
     "@medyll/idae-db": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.1",
     "@sveltejs/kit": "^2.21.2",
     "@sveltejs/package": "^2.3.11",

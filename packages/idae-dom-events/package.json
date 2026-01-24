@@ -1,7 +1,15 @@
 {
   "name": "@medyll/idae-dom-events",
+  "bin": {
+    "idae-dom-events": "./cli.js"
+  },
   "version": "0.156.0",
-  "scope": "@medyll",
+  "scope": "medyll",
+  "author": "Lebrun Meddy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "description": "dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides tools to track CSS changes, monitor DOM mutations, and handle various events efficiently, making it ideal for dynamic web applications.",
   "scripts": {
     "dev": "vite dev",
@@ -17,7 +25,7 @@
     "test:unit": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -36,6 +44,7 @@
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@playwright/test": "^1.51.1",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",

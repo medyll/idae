@@ -75,6 +75,6 @@
 	</div>
 {/if}
 
-<style global>
-	@import './backdrop.tailwind.css';
+<style lang="scss">
+	@use './backdrop.scss';
 </style>

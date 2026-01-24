@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/marquee.tailwind.css';
-</style>
 <script lang="ts" generics="T=Data">
 	import Stepper from '$lib/controls/stepper/Stepper.svelte';
 	import type { StepperProps } from '$lib/controls/stepper/types.js';

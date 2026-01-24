@@ -25,7 +25,7 @@ npm run lint         # Check Prettier + ESLint
 npm run format       # Auto-fix formatting
 npm run check        # Svelte type checking
 npm run check:watch  # Watch mode type checking
-npm run package:pre  # Pre-publish script
+npm run prepackage  # Pre-publish script
 ```
 
 ## Code Patterns & Conventions

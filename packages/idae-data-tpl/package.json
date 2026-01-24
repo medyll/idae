@@ -1,6 +1,10 @@
 {
   "name": "@medyll/idae-data-tpl",
+  "bin": {
+    "idae-data-tpl": "./cli.js"
+  },
   "scope": "@medyll",
+  "author": "Lebrun Meddy",
   "version": "0.186.0",
   "scripts": {
     "dev": "vite dev",
@@ -13,7 +17,7 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -31,6 +35,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",
@@ -53,5 +58,9 @@
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module"
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  }
 }

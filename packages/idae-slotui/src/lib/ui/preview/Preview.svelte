@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/preview.tailwind.css';
-</style>
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';

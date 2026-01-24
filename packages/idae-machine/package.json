@@ -1,5 +1,8 @@
 {
   "name": "@medyll/idae-machine",
+  "bin": {
+    "idae-machine": "./cli.js"
+  },
   "version": "0.135.0",
   "scripts": {
     "dev": "vite dev",
@@ -13,7 +16,7 @@
     "lint": "prettier --check . && eslint .",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "files": [
     "dist",
@@ -26,6 +29,11 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "author": "Lebrun Meddy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -39,6 +47,7 @@
     "@eslint/compat": "^1.2.7",
     "@eslint/js": "^9.23.0",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",

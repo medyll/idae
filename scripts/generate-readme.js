@@ -1,13 +1,14 @@
 // scripts\generate-readme.js
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process'); 
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
 const scriptPath = __dirname;
-const monorepoPath = path.resolve(scriptPath, '..');
+const monorepoPath = path.resolve(scriptPath, "..");
 const monorepoName = "idae monorepo";
-const monorepoDescription = "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
-const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/';
+const monorepoDescription =
+  "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
+const githubBaseUrl = "https://github.com/medyll/idae/tree/main/";
 /**
  * Retrieves repository information from the given repository path.
  *
@@ -22,32 +23,37 @@ const githubBaseUrl = 'https://github.com/medyll/idae/tree/main/';
  * @returns {string} return.githubLink - The GitHub link to the repository.
  */
 function getRepoInfo(repoPath) {
-    const packageJsonPath = path.join(repoPath, 'package.json');
-    const changelogPath = path.join(repoPath, 'CHANGELOG.md');
+  const packageJsonPath = path.join(repoPath, "package.json");
+  const changelogPath = path.join(repoPath, "CHANGELOG.md");
 
-    if (!fs.existsSync(packageJsonPath)) {
-        return null;
-    }
+  if (!fs.existsSync(packageJsonPath)) {
+    return null;
+  }
 
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    const repoInfo = {
-        name: packageJson.name,
-        description: packageJson.description,
-        version: packageJson.version,
-        changelog: null,
-        changelogPath: fs.existsSync(changelogPath) ? changelogPath : null,
-        changelogLink: githubBaseUrl + path.relative(monorepoPath, changelogPath).replace(/\\/g, '/'),
-        githubLink: githubBaseUrl + path.relative(monorepoPath, repoPath).replace(/\\/g, '/')
-    };
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+  const repoInfo = {
+    name: packageJson.name,
+    description: packageJson.description,
+    version: packageJson.version,
+    changelog: null,
+    changelogPath: fs.existsSync(changelogPath) ? changelogPath : null,
+    changelogLink:
+      githubBaseUrl +
+      path.relative(monorepoPath, changelogPath).replace(/\\/g, "/"),
+    githubLink:
+      githubBaseUrl + path.relative(monorepoPath, repoPath).replace(/\\/g, "/"),
+  };
 
-    if (fs.existsSync(changelogPath)) {
-        const changelogContent = fs.readFileSync(changelogPath, 'utf8');
-        const changelogLines = changelogContent.split('\n');
-        const lastChangelogEntry = changelogLines.slice(0, changelogLines.indexOf('##', 1)).join('\n');
-        repoInfo.changelog = lastChangelogEntry;
-    }
+  if (fs.existsSync(changelogPath)) {
+    const changelogContent = fs.readFileSync(changelogPath, "utf8");
+    const changelogLines = changelogContent.split("\n");
+    const lastChangelogEntry = changelogLines
+      .slice(0, changelogLines.indexOf("##", 1))
+      .join("\n");
+    repoInfo.changelog = lastChangelogEntry;
+  }
 
-    return repoInfo;
+  return repoInfo;
 }
 
 /**
@@ -58,103 +64,123 @@ function getRepoInfo(repoPath) {
  * @throws {Error} If the monorepo's package.json file is not found.
  */
 function listMonorepo(blacklist = []) {
-    const monorepoPackageJsonPath = path.join(monorepoPath, 'package.json');
- 
-    if (!fs.existsSync(monorepoPackageJsonPath)) {
-        throw new Error('Monorepo package.json not found');
-    }
+  const monorepoPackageJsonPath = path.join(monorepoPath, "package.json");
 
-    const monorepoPackageJson = JSON.parse(fs.readFileSync(monorepoPackageJsonPath, 'utf8'));
-    const workspaces = monorepoPackageJson.workspaces || [];
+  if (!fs.existsSync(monorepoPackageJsonPath)) {
+    throw new Error("Monorepo package.json not found");
+  }
 
-    const repos = workspaces.flatMap(workspace => {
-        // Remove trailing '/*' if present
-        const cleanedWorkspace = workspace.replace(/\/\*$/, '').replace(/\/$/, '');
-        const workspacePath = path.join(monorepoPath, cleanedWorkspace);
-    
-        if (!fs.existsSync(workspacePath)) {
-            return [];
-        }
-        return fs.readdirSync(workspacePath).map(repo => path.join(cleanedWorkspace, repo));
-    }).filter(repo => {
-        const repoPath = path.join(monorepoPath, repo);
-        return fs.statSync(repoPath).isDirectory();
+  const monorepoPackageJson = JSON.parse(
+    fs.readFileSync(monorepoPackageJsonPath, "utf8"),
+  );
+  const workspaces = monorepoPackageJson.workspaces || [];
+
+  const repos = workspaces
+    .flatMap((workspace) => {
+      // Remove trailing '/*' if present
+      const cleanedWorkspace = workspace
+        .replace(/\/\*$/, "")
+        .replace(/\/$/, "");
+      const workspacePath = path.join(monorepoPath, cleanedWorkspace);
+
+      if (!fs.existsSync(workspacePath)) {
+        return [];
+      }
+      return fs
+        .readdirSync(workspacePath)
+        .map((repo) => path.join(cleanedWorkspace, repo));
+    })
+    .filter((repo) => {
+      const repoPath = path.join(monorepoPath, repo);
+      return fs.statSync(repoPath).isDirectory();
     });
 
-    // Blacklist filtering with logging
-    const excluded = [];
-    const filteredRepos = repos.filter(repo => {
-        const repoName = path.basename(repo);
-        const isExcluded = blacklist.includes(repo) || blacklist.includes(repoName);
-        if (isExcluded) excluded.push(repoName);
-        return !isExcluded;
-    });
-    if (excluded.length > 0) {
-        console.log('Repos exclus :', excluded.join(', '));
-    }
+  // Blacklist filtering with logging
+  const excluded = [];
+  const filteredRepos = repos.filter((repo) => {
+    const repoName = path.basename(repo);
+    const isExcluded = blacklist.includes(repo) || blacklist.includes(repoName);
+    if (isExcluded) excluded.push(repoName);
+    return !isExcluded;
+  });
+  if (excluded.length > 0) {
+    console.log("Repos exclus :", excluded.join(", "));
+  }
 
-    const repoInfos = filteredRepos.map(repo => {
-        const repoPath = path.join(monorepoPath, repo);
-        return getRepoInfo(repoPath);
-    }).filter(info => info !== null);
+  const repoInfos = filteredRepos
+    .map((repo) => {
+      const repoPath = path.join(monorepoPath, repo);
+      return getRepoInfo(repoPath);
+    })
+    .filter((info) => info !== null);
 
-    return repoInfos;
+  return repoInfos;
 }
 
 function listPackageNames(blacklist = []) {
-    const repoInfos = listMonorepo(blacklist);
-    let packageNamesContent = '## Packages\n\n';
+  const repoInfos = listMonorepo(blacklist);
+  let packageNamesContent = "## Packages\n\n";
 
-    repoInfos.forEach(info => {
-        packageNamesContent += `- [${info.name}](${info.githubLink})\n`;
-    });
+  repoInfos.forEach((info) => {
+    packageNamesContent += `- [${info.name}](${info.githubLink})\n`;
+  });
 
-    return packageNamesContent;
+  return packageNamesContent;
 }
 
 function generateReadme(blacklist = []) {
-    const repoInfos = listMonorepo(blacklist);
-    // Log the list of processed packages
-    console.log('Packages traités :', repoInfos.map(info => info.name).join(', '));
-    let readmeContent = `# ${monorepoName}\n\n${monorepoDescription}\n`;
+  const repoInfos = listMonorepo(blacklist);
+  // Log the list of processed packages
+  console.log(
+    "Packages traités :",
+    repoInfos.map((info) => info.name).join(", "),
+  );
+  let readmeContent = `# ${monorepoName}\n\n${monorepoDescription}\n`;
 
-    readmeContent += listPackageNames(blacklist) + '\n';
+  readmeContent += listPackageNames(blacklist) + "\n";
 
-    readmeContent += '## Details\n\n';
-    repoInfos.forEach(info => {
-        readmeContent += `### ${info.name}\n`; 
-        if (info?.description) {
-            readmeContent += `${info.description}\n\n`;  
-        }
-        readmeContent += `**Repo:** [${info.name}](${info.githubLink})\n\n`;
-        readmeContent += `**Version:** ${info.version}`;
-        if (info.changelogPath) {
-            readmeContent += ` [see changelog](${info.changelogLink})\n`;
-        }
-        readmeContent += `\n##\n`;
-    });
-
-    const readmePath = path.join(monorepoPath, 'README.md');
-    if (fs.existsSync(readmePath)) {
-        const currentContent = fs.readFileSync(readmePath, 'utf8');
-        if (currentContent === readmeContent) {
-            console.log('README.md is up-to-date. No changes made.');
-            return;
-        }
+  readmeContent += "## Details\n\n";
+  repoInfos.forEach((info) => {
+    readmeContent += `### ${info.name}\n`;
+    if (info?.description) {
+      readmeContent += `${info.description}\n\n`;
     }
-
-    fs.writeFileSync(readmePath, readmeContent, 'utf8');
-    console.log('README.md has been updated.');
-
-    // Commit changes with --amend, always from monorepo root
-    try {
-        execSync('git add README.md', { cwd: monorepoPath });
-        execSync('git commit --amend --no-edit', { cwd: monorepoPath });
-        console.log('README.md changes have been amended to the last commit.');
-    } catch (error) {
-        console.error('Error during git amend operation:', error.message);
+    readmeContent += `**Repo:** [${info.name}](${info.githubLink})\n\n`;
+    readmeContent += `**Version:** ${info.version}`;
+    if (info.changelogPath) {
+      readmeContent += ` [see changelog](${info.changelogLink})\n`;
     }
+    readmeContent += `\n##\n`;
+  });
+
+  const readmePath = path.join(monorepoPath, "README.md");
+  if (fs.existsSync(readmePath)) {
+    const currentContent = fs.readFileSync(readmePath, "utf8");
+    if (currentContent === readmeContent) {
+      console.log("README.md is up-to-date. No changes made.");
+      return;
+    }
+  }
+
+  fs.writeFileSync(readmePath, readmeContent, "utf8");
+  console.log("README.md has been updated.");
+
+  // Commit changes with --amend, always from monorepo root
+  try {
+    execSync("git add README.md", { cwd: monorepoPath });
+    execSync("git commit --amend --no-edit", { cwd: monorepoPath });
+    console.log("README.md changes have been amended to the last commit.");
+  } catch (error) {
+    console.error("Error during git amend operation:", error.message);
+  }
 }
 
-
-generateReadme(['ai-bash','idae-chroma','idae-cadenzia','idae-data-tpl','idae-api-nest','nest-test']);
+generateReadme([
+  "ai-bash",
+  "idae-chroma",
+  "idae-cadenzia",
+  "idae-data-tpl",
+  "idae-api-nest",
+  "nest-test",
+  "idae-slotui",
+]);

@@ -12,11 +12,12 @@
     "lint": "prettier --check . && eslint .",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -34,5 +35,6 @@
     "vite": "^6.2.3",
     "vitest": "^3.0.9"
   },
-  "scope": "@medyll"
+  "scope": "@medyll",
+  "author": "Lebrun Meddy"
 }

@@ -115,7 +115,9 @@ class ChangesetGenerator {
     if (!fs.existsSync(changelogPath)) return null;
     const content = fs.readFileSync(changelogPath, "utf-8");
     // Try to match (YYYY-MM-DD), [YYYY-MM-DD], or YYYY-MM-DD at start of line
-    const dateMatch = content.match(/\((\d{4}-\d{2}-\d{2})\)|\[(\d{4}-\d{2}-\d{2})\]|^ *(\d{4}-\d{2}-\d{2})/m);
+    const dateMatch = content.match(
+      /\((\d{4}-\d{2}-\d{2})\)|\[(\d{4}-\d{2}-\d{2})\]|^ *(\d{4}-\d{2}-\d{2})/m,
+    );
     if (dateMatch) {
       // Return the first non-null group
       return dateMatch[1] || dateMatch[2] || dateMatch[3];
@@ -131,10 +133,19 @@ class ChangesetGenerator {
    * @param {string|null} [lastChangelogDate] - The date of the last changelog entry (for 'auto' mode).
    * @returns {Promise<Object[]>} The list of commit objects.
    */
-  async getCommitsForPackage(packageName, packagePath, since, lastChangelogDate = null) {
+  async getCommitsForPackage(
+    packageName,
+    packagePath,
+    since,
+    lastChangelogDate = null,
+  ) {
     // Get commits for a specific package since the last tag
     let depthArg = "";
-    if (this.commitDepth !== "all" && this.commitDepth !== "auto" && Number.isInteger(this.commitDepth)) {
+    if (
+      this.commitDepth !== "all" &&
+      this.commitDepth !== "auto" &&
+      Number.isInteger(this.commitDepth)
+    ) {
       depthArg = `-n ${this.commitDepth}`;
     }
     const command = `git log ${depthArg} --name-only --pretty=format:"%H£%s£%b£%an£%aI" ${since}..HEAD -- ${packagePath}`;
@@ -155,7 +166,9 @@ class ChangesetGenerator {
       });
       // Si commitDepth est 'auto', on arrête dès qu'on trouve un commit plus vieux que le dernier changelog
       if (this.commitDepth === "auto" && lastChangelogDate) {
-        commits = commits.filter(c => c.date && c.date.split("T")[0] > lastChangelogDate);
+        commits = commits.filter(
+          (c) => c.date && c.date.split("T")[0] > lastChangelogDate,
+        );
       }
       return commits;
     } catch (error) {
@@ -298,19 +311,35 @@ ${summary}
       .trim();
     const packages = fs.readdirSync(this.packagesDir);
 
+    // Blacklist pour exclure certains packages du process CI
+    const blacklist = ["idae-slotui"];
     for (const packageDir of packages) {
+      if (blacklist.includes(packageDir)) {
+        if (this.showlog)
+          console.log(
+            chalk.gray(`⏭️  Skipping blacklisted package: ${packageDir}`),
+          );
+        continue;
+      }
       const packagePath = path.join(this.packagesDir, packageDir);
       const packageJsonPath = path.join(packagePath, "package.json");
 
       if (!fs.existsSync(packageJsonPath)) {
-        if (this.showlog) console.error(`Package ${packageDir} does not have a package.json file`);
+        if (this.showlog)
+          console.error(
+            `Package ${packageDir} does not have a package.json file`,
+          );
         continue;
       }
 
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
       const packageName = packageJson.name;
 
-      if (this.showlog) console.log(chalk.cyanBright.bold(`\n🔍 Processing package:`), chalk.yellowBright(packageName));
+      if (this.showlog)
+        console.log(
+          chalk.cyanBright.bold(`\n🔍 Processing package:`),
+          chalk.yellowBright(packageName),
+        );
       totalPackages++;
 
       let lastChangelogDate = null;
@@ -318,7 +347,11 @@ ${summary}
         lastChangelogDate = await this.getLastChangelogDate(packagePath);
         if (lastChangelogDate) {
           if (this.showlog) {
-            console.log(chalk.gray(`  ℹ️  Last changelog date for ${chalk.yellowBright(packageName)}: ${chalk.green(lastChangelogDate)}`));
+            console.log(
+              chalk.gray(
+                `  ℹ️  Last changelog date for ${chalk.yellowBright(packageName)}: ${chalk.green(lastChangelogDate)}`,
+              ),
+            );
           }
         }
       }
@@ -327,25 +360,37 @@ ${summary}
         packageName,
         packagePath,
         lastTag,
-        lastChangelogDate
+        lastChangelogDate,
       );
 
       // Filter commits by strict mode if enabled
       let filteredCommits = packageCommits;
       if (this.packageStrict) {
-        filteredCommits = packageCommits.filter(commit =>
-          commit && typeof commit.message === 'string' && this.isCommitForPackage(commit.message, packageDir)
+        filteredCommits = packageCommits.filter(
+          (commit) =>
+            commit &&
+            typeof commit.message === "string" &&
+            this.isCommitForPackage(commit.message, packageDir),
         );
       } else {
-        filteredCommits = packageCommits.filter(commit => commit && typeof commit.message === 'string');
+        filteredCommits = packageCommits.filter(
+          (commit) => commit && typeof commit.message === "string",
+        );
       }
 
       if (this.showlog) {
-        console.log(chalk.gray(`  📦 Commits for ${chalk.yellowBright(packageName)}:`), chalk.magenta(filteredCommits.length));
+        console.log(
+          chalk.gray(`  📦 Commits for ${chalk.yellowBright(packageName)}:`),
+          chalk.magenta(filteredCommits.length),
+        );
         // DEBUG: Affiche les messages de commit et leur bumpType
-        filteredCommits.forEach(commit => {
+        filteredCommits.forEach((commit) => {
           const bump = this.getBumpType(commit.message.split("\n")[0]);
-          console.log(chalk.gray(`    - '${commit.message.split("\n")[0]}' => bumpType: ${bump}`));
+          console.log(
+            chalk.gray(
+              `    - '${commit.message.split("\n")[0]}' => bumpType: ${bump}`,
+            ),
+          );
         });
       }
 
@@ -353,24 +398,40 @@ ${summary}
       let relevantCommits;
       if (this.packageStrict) {
         bumpTypes = filteredCommits
-          .filter(commit => commit && typeof commit.message === 'string')
+          .filter((commit) => commit && typeof commit.message === "string")
           .map((commit) => this.getBumpType(commit.message.split("\n")[0]))
           .filter((type) => type !== null);
         relevantCommits = filteredCommits.filter(
-          (commit) => commit && typeof commit.message === 'string' && this.getBumpType(commit.message.split("\n")[0]) !== null,
+          (commit) =>
+            commit &&
+            typeof commit.message === "string" &&
+            this.getBumpType(commit.message.split("\n")[0]) !== null,
         );
       } else {
         // On prend tous les commits non vides, non merge, non apply changeset
-        relevantCommits = filteredCommits.filter(commit => {
+        relevantCommits = filteredCommits.filter((commit) => {
           const msg = commit.message.split("\n")[0].toLowerCase();
-          if (!msg || msg.startsWith('merge') || msg.startsWith('apply changeset')) return false;
+          if (
+            !msg ||
+            msg.startsWith("merge") ||
+            msg.startsWith("apply changeset")
+          )
+            return false;
           return true;
         });
-        bumpTypes = relevantCommits.map(commit => this.getBumpType(commit.message.split("\n")[0]) || 'patch');
+        bumpTypes = relevantCommits.map(
+          (commit) =>
+            this.getBumpType(commit.message.split("\n")[0]) || "patch",
+        );
       }
 
       if (relevantCommits.length === 0) {
-        if (this.showlog) console.log(chalk.yellowBright(`⚠️  No relevant commits found for ${chalk.yellow(packageName)}`));
+        if (this.showlog)
+          console.log(
+            chalk.yellowBright(
+              `⚠️  No relevant commits found for ${chalk.yellow(packageName)}`,
+            ),
+          );
         continue;
       }
 
@@ -405,14 +466,25 @@ ${summary}
         fs.writeFileSync(changesetFile, changesetContent);
         totalChangesets++;
         console.log(`✅ Changeset file created: ${changesetFile}`);
-        if (this.showlog) console.log(chalk.greenBright(`✅ Changeset generated for ${chalk.yellowBright(packageName)}`));
+        if (this.showlog)
+          console.log(
+            chalk.greenBright(
+              `✅ Changeset generated for ${chalk.yellowBright(packageName)}`,
+            ),
+          );
       } else {
-        if (this.showlog) console.log(chalk.blueBright(`ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`));
+        if (this.showlog)
+          console.log(
+            chalk.blueBright(
+              `ℹ️  Changeset for ${chalk.yellowBright(packageName)} already exists, skipping.`,
+            ),
+          );
       }
     }
 
     // Summary
-    console.log( `\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.` 
+    console.log(
+      `\n✅ Changeset generation completed: ${totalChangesets} changesets created for ${totalPackages} packages.`,
     );
   }
 }

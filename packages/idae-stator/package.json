@@ -1,6 +1,14 @@
 {
   "name": "@medyll/idae-stator",
+  "bin": {
+    "idae-stator": "./cli.js"
+  },
   "version": "0.51.0",
+  "author": "Lebrun Meddy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "description": "A lightweight and efficient state management library designed for building reactive and scalable JavaScript applications.",
   "scripts": {
     "dev": "vite dev",
@@ -14,7 +22,7 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -32,6 +40,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
     "@sveltejs/package": "^2.3.10",
@@ -60,14 +69,6 @@
   ],
   "author": "Your Name <your.email@example.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-repo/idae-stator.git"
-  },
-  "bugs": {
-    "url": "https://github.com/your-repo/idae-stator/issues"
-  },
-  "homepage": "https://github.com/your-repo/idae-stator#readme",
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",

@@ -1,8 +1,3 @@
-</div>
-
-<style global>
-	@import '../../slotui-css/chromeFrame.tailwind.css';
-</style>
 <svelte:options />
 
 <script lang="ts">

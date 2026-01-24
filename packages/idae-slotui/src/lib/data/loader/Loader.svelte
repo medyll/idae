@@ -96,6 +96,6 @@
 	{/if}
 {/key}
 
-<style global>
-	@import './loader.tailwind.css';
+<style lang="scss">
+	@use './loader.scss';
 </style>

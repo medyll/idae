@@ -6,8 +6,8 @@
     "commit": "cz",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "package-all:pre": "npm run package:pre --workspaces --if-present",
-    "package-all": "npm run package-all:pre && npm run prepack --workspaces --if-present && npm run package --workspaces --if-present",
+    "package:pre": "pnpm -r run prepackage --if-present",
+    "package": "pnpm -r run prepack --if-present && pnpm -r run package --if-present",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",
     "verify:workspace-deps": "node scripts/verify-workspace-deps.js"
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
+    "@medyll/idae-prettier-config": "1.2.4*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
     "commitizen": "^4.3.1",
@@ -35,7 +36,15 @@
     "ts-jest": "^29.4.6",
     "tshy": "^3.1.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "semantic-release": "^25.0.2",
+    "multi-semantic-release": "3.1.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/npm": "^13.1.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.2"
   },
   "version": "0.0.2",
   "dependencies": {
@@ -43,8 +52,8 @@
     "chalk": "^5.6.2",
     "glob": "^13.0.0",
     "mongoose-sequence": "^6.0.1",
-    "npm": "^11.7.0",
-    "publint": "^0.3.16"
+    "npm": "^11.8.0",
+    "publint": "^0.3.17"
   },
   "peerDependencies": {
     "@medyll/idae-engine": "workspace:*",
@@ -61,6 +70,6 @@
     "vitest": "^3.0.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.55.1"
+    "@rollup/rollup-linux-x64-gnu": "4.56.0"
   }
 }

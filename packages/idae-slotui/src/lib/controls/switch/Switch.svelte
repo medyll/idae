@@ -42,6 +42,7 @@
 </label>
 ..
 
-<style global>
-	@import './switch.tailwind.css';
+<style lang="scss">
+	@use '../../styles/slotui-presets.scss';
+	@use './switch.scss';
 </style>

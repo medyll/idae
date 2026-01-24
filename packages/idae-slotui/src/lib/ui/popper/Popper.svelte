@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/popper.tailwind.css';
-</style>
 <script lang="ts">
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';

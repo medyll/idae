@@ -7,9 +7,6 @@
 	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 
-<style global>
-	@import './demoer.tailwind.css';
-</style>
 	let {
 		title,
 		parameters = $bindable<DemoerStoryProps<T>>({} as DemoerStoryProps<T>),

@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/menuList.tailwind.css';
-</style>
 <script lang="ts" generics="T= Data">
 	import { navigation } from '$lib/utils/uses/navigation.js';
 

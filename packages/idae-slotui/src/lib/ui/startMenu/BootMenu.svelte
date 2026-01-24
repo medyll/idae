@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/startMenu.tailwind.css';
-</style>
 <svelte:options immutable={true} />
 
 <script lang="ts">

@@ -1,6 +1,10 @@
 {
   "name": "@medyll/idae-socket",
+  "bin": {
+    "idae-socket": "./cli.js"
+  },
   "scope": "@medyll",
+  "author": "Lebrun Meddy",
   "version": "0.0.2",
   "description": "keep your app in sync with your backend!!",
   "main": "./scripts/index.js",
@@ -14,7 +18,7 @@
     "watch": "",
     "package": "svelte-kit sync && svelte-package && publint",
     "package:watch": "svelte-kit sync && svelte-package --watch",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +47,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/node": "^22.13.13",
     "svelte": "^5.25.3",

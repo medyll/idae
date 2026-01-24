@@ -1,6 +1,11 @@
 <script lang="ts">
- 
-
+	/* import Prism from 'prismjs'; */
+	// fabric default vars
+	import '@medyll/cssfabric/src/lib/styles/vars.min.css';
+	// fabric default
+	import '@medyll/cssfabric/src/lib/styles/cssfabric.min.css';
+	// import cssfabric themer
+	import '../styles/cssfabric-theme.scss';
 	import '../styles/main.css';
 	// import '$lib/_css/slotui-vars.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';

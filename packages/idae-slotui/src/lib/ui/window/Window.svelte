@@ -174,6 +174,6 @@
 {:else}
 {/if} -->
 
-<style global>
-	@import '../../slotui-css/window.tailwind.css';
+<style lang="scss">
+	@use './window.scss';
 </style>

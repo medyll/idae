@@ -1,6 +1,3 @@
-<style global>
-	@import '../../base/list/list.tailwind.css';
-</style>
 <script lang="ts">
 	import type { MenuListProps } from '$lib/ui/menuList/types.js';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';

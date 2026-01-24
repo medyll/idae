@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/panel.tailwind.css';
-</style>
 <script lang="ts" generics="T=Data">
 	import { run } from 'svelte/legacy';
 

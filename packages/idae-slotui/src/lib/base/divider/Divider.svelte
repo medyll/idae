@@ -64,7 +64,7 @@
 	class:vertical={direction === 'vertical'}
 	style={addStyle}
 />
- 
-<style global>
-	@import './divider.tailwind.css';
-</style> 
+
+<style lang="scss">
+	@use 'divider.scss';
+</style>

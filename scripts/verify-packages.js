@@ -4,7 +4,7 @@ const path = require("path");
 const packagesDir = path.join(__dirname, "..", "packages");
 const packages = fs.readdirSync(packagesDir);
 
-const packagePre = "package:pre";
+const packagePre = "prepackage";
 const packagePreFile = "package-pre.js";
 const packagePreContent = `// Created scripts/${packagePreFile}\r\n
 import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
@@ -37,7 +37,6 @@ packages.forEach((packageName) => {
     return;
   }
 
-
   if (!packageJson.name.startsWith("@medyll/")) {
     packageJson.name = `@medyll/${packageJson.name}`;
     modified = true;
@@ -52,7 +51,12 @@ packages.forEach((packageName) => {
   }
 
   // Force all @medyll/* dependencies to "workspace:*"
-  const depFields = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
+  const depFields = [
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "optionalDependencies",
+  ];
   for (const field of depFields) {
     if (!packageJson[field]) continue;
     for (const dep in packageJson[field]) {
@@ -69,7 +73,7 @@ packages.forEach((packageName) => {
     }
   }
 
-  // "package:pre"
+  // "prepackage"
   if (!packageJson?.scripts?.[packagePre]) {
     if (!fs.existsSync(path.join(packageScriptsPath, packagePreFile))) {
       fs.mkdirSync(packageScriptsPath, { recursive: true });
@@ -77,7 +81,7 @@ packages.forEach((packageName) => {
         path.join(packageScriptsPath, packagePreFile),
         packagePreContent,
       );
-      console.log(`Created scripts/package-pre.js for ${packageName}`);
+      console.log(`Created scripts/prepackage-pre.js for ${packageName}`);
     }
     packageJson.scripts[packagePre] = `node scripts/${packagePreFile}`;
     modified = true;

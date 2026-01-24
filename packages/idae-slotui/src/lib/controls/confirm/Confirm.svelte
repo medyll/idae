@@ -153,6 +153,6 @@
 	{/if}
 </div>
 
-<style global>
-	@import './confirm.tailwind.css';
+<style lang="scss">
+	@use './confirm.scss';
 </style>

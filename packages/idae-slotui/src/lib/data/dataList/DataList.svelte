@@ -230,6 +230,6 @@
 	</table>
 {/if}
 
-<style global>
-	@import './dataList.tailwind.css';
+<style global lang="scss">
+	@use './datalist.scss';
 </style>

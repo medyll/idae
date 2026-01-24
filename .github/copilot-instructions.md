@@ -32,9 +32,9 @@ This monorepo contains core components for Idae applications (Web, Mobile, Deskt
 - **idae-engine**: `dataOp` utility for sorting, finding, grouping arrays with fluent API
 
 ### Build Commands
-- **Root**: `npm run package-all` → builds and packages all workspaces
+- **Root**: `npm run package` → builds and packages all workspaces
 - **Single Package**: `npm run build` (Vite + svelte-package for libraries; nest build for backend)
-- **Publish Prep**: `npm run package:pre` (pre-publish script) runs before packaging
+- **Publish Prep**: `npm run prepackage` (pre-publish script) runs before packaging
 - **Nx Tasks**: Prefer `nx run` over direct commands: `nx run idae-slotui:build`, `nx affected --target=test`
 
 ### Testing

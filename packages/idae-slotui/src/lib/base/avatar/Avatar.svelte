@@ -1,6 +1,6 @@
 <script module lang="ts" >
 import type { Snippet } from "svelte";
-import type { CommonProps,ElementProps } from '$lib/types/index.js';
+import type {  ElementProps } from '$lib/types/index.js';
 
 export interface AvatarProps    {
   /** icon name 	*/
@@ -62,6 +62,6 @@ export interface AvatarProps    {
 	{/if}
 </Content>
 
-<style global>
-	@import './avatar.tailwind.css';
+<style lang="scss">
+	@use './avatar.scss';
 </style>

@@ -1,6 +1,3 @@
-<style global>
-	@import '../../slotui-css/toast.tailwind.css';
-</style>
 <script lang="ts">
 	import Box from '$lib/base/box/Box.svelte';
 	import { toastStore } from './store.js';

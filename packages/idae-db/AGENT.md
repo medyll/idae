@@ -73,7 +73,7 @@ npm run check             # Svelte type checking
 npm run dev               # Start Vite dev server
 npm run build             # Build and package (vite + svelte-package + publint)
 npm run test              # Run Vitest tests
-npm run package:pre       # Pre-publish script
+npm run  prepackage      # Pre-publish script
 ```
 
 ### Build Pipeline
@@ -216,7 +216,7 @@ npm run format           # Auto-fix formatting
 
 # Build & publish
 npm run build            # Full build pipeline (vite → svelte-package → publint)
-npm run package:pre      # Pre-publish validation
+npm run prepackage      # Pre-publish validation
 ```
 
 ## Implementation Guidelines

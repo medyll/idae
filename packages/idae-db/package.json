@@ -1,6 +1,14 @@
 {
   "name": "@medyll/idae-db",
+  "bin": {
+    "idae-db": "./cli.js"
+  },
   "version": "0.155.0",
+  "author": "Lebrun Meddy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
   "description": "@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.",
   "scripts": {
     "dev": "vite dev",
@@ -16,7 +24,7 @@
     "test:watch": "vitest --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "package:pre": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js"
   },
   "exports": {
     ".": {
@@ -36,6 +44,7 @@
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",
+    "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/kit": "^2.20.7",
     "@sveltejs/package": "^2.3.11",

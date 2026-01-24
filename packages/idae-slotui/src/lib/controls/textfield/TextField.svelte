@@ -83,6 +83,6 @@
 	/>
 </div>
 
-<style global>
-	@import './textfield.tailwind.css';
+<style lang="scss">
+	@use './textfield.scss';
 </style>
