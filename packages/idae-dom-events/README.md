@@ -2,11 +2,12 @@
 
 `@medyll/idae-dom-events` is a library for observing and reacting to changes in the DOM of web applications. It provides tools to track CSS changes, monitor DOM mutations, and manage various events efficiently, making it an ideal choice for dynamic web applications.
 
+
 ## Features
 
-- **CSS Change Tracking**: Use `CssObserver` to monitor animations, style changes, and resize events.
-- **DOM Mutation Observation**: Use `DomObserver` to track DOM mutations, such as attribute changes, child list modifications, and character data updates.
-- **Event Management**: Efficiently manage DOM-related events.
+- **CSS Change Tracking**: Use `cssDom` to monitor animations, style changes, and resize events on selected elements.
+- **DOM Mutation Observation**: Use `htmlDom.track` to observe DOM mutations, such as attribute changes, child list modifications, and character data updates.
+- **Event Management**: Efficiently manage DOM-related events with flexible callback options.
 
 ## Installation
 
@@ -65,6 +66,63 @@ htmlDom.track('#widget', {
         console.log('Character data modified:', mutation);
     }
 });
+```
+
+
+## TypeScript Types
+
+### Types pour `cssDom`
+
+```ts
+export type CssObserverCommands = {
+    start: () => void;
+    pause: () => void;
+    destroy: () => void;
+};
+
+export type CssObserverCallBack = undefined | ((node: Node, mutation?: MutationRecord) => void);
+
+export type CssObserverCallBackSummary = (nodes: Node[]) => void;
+
+export type CssObserverOptions = {
+    strictlyNew: boolean;
+    eventDelay: number;
+    marquee: string;
+    legacyCssPrefix: 'Webkit' | 'Moz' | 'O' | 'ms' | '';
+    debounceDelay: number;
+};
+```
+
+### Types pour `htmlDom.track`
+
+```ts
+type OnMutationType = {
+    onResize?: (
+        element: Node,
+        mutation: MutationRecord,
+        observer: MutationObserver,
+    ) => void;
+    onChange?: (
+        element: Node,
+        mutation: MutationRecord,
+        observer: MutationObserver,
+    ) => void;
+    onAttributesChange?: (
+        element: Node,
+        mutation: MutationRecord,
+        observer: MutationObserver,
+    ) => void;
+    onChildListChange?: (
+        element: Node,
+        mutation: MutationRecord,
+        observer: MutationObserver,
+    ) => void;
+    onCharacterDataChange?: (
+        element: Node,
+        mutation: MutationRecord,
+        observer: MutationObserver,
+    ) => void;
+};
 ```
 
 ## API
