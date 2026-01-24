@@ -23,6 +23,6 @@
 	<Slotted child={taskBarRight} />
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './taskbar.scss';
 </style>

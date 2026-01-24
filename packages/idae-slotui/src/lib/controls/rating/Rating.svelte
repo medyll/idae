@@ -41,6 +41,6 @@
 	{/each}
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './rating.scss';
 </style>

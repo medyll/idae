@@ -37,7 +37,6 @@
 	{/if}
 </div>
 
-<style global>
-	@import './titleBar.tailwind.css'; 
+<style global lang="scss">
 	@use './title-bar.scss';
 </style>

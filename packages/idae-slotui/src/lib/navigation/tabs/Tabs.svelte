@@ -156,6 +156,5 @@
 </div>
 
 <style lang="scss">
-	@use './tabs.scss'; 
-	@import './tabs.tailwind.css';
+	@use './tabs.scss';
 </style>

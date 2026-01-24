@@ -27,6 +27,6 @@
 	{/each}
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './stepper.scss';
 </style>

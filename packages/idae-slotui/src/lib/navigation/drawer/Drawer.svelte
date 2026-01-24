@@ -160,6 +160,6 @@
 	{/if}
 </div>
 
-<style global>
-	@import './drawer.tailwind.css';
+<style global lang="scss">
+	@use './drawer.scss';
 </style>

@@ -14,7 +14,7 @@
 	}
 </script>
 
-<!-- <svelte:head>
+<svelte:head>
 	{castToCssProps(breakpoints)}
 	<style type="text/css" id="idae-slotui-sheet"  >
 		@use './slotui-sheet.scss';
@@ -22,8 +22,7 @@
 	<style type="text/css" id="idae-slotui-queries" >
 		@use './stylesheet.scss'; 
 	</style>
-</svelte:head> -->
-
+</svelte:head>
 <div id="slotui-breakpoints"></div>
 {#if showSelectors}
 	{castToCssProps(breakpoints)}

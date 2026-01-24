@@ -1,6 +1,3 @@
- 
-
- 
 <svelte:options />
 
 <script lang="ts">

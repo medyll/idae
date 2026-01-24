@@ -27,6 +27,6 @@
 	<Slotted child={toolbarSeparator} />
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './toolbar.scss';
 </style>

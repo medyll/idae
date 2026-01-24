@@ -83,6 +83,3 @@
 		</Looper>
 	{/if}
 </div>
-<style global lang="scss">
-	@use './grouper.scss';
-</style>

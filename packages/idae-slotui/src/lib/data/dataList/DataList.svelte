@@ -173,7 +173,7 @@
 								<Icon class="datalist-group-head-icon" icon="cil:object-group" />
 							</div>
 							<div>{groupByField} : <span class="text-bold">{red}</span></div>
-							<div class="datalist-group-head-divider"></div>
+							<div class="datalist-group-head-divider" />
 							<div>{groups[red]?.length}</div>
 							<div class="datalist-group-head-icon">
 								<Button
@@ -230,6 +230,6 @@
 	</table>
 {/if}
 
-<style lang="scss">
-	@import './dataList.scss';
+<style global lang="scss">
+	@use './datalist.scss';
 </style>

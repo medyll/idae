@@ -83,7 +83,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class={showTitleDivider ? 'divider' : ''} style="flex:1"></div>
+		<div class={showTitleDivider ? 'divider' : ''} style="flex:1" />
 		{#if cartoucheButtons}
 			<div
 				onclick={(event) => {
@@ -111,6 +111,6 @@
 	{/if}
 </div>
 
-<style global>
-	@import './cartouche.scss';
+<style lang="scss">
+	@use './cartouche.scss';
 </style>

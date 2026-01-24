@@ -1,0 +1,60 @@
+/* css overflow rules */
+.overflow-visible {
+  overflow: visible;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-clip {
+  overflow: clip;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-x-visible {
+  overflow: visible;
+}
+
+.overflow-x-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-clip {
+  overflow: clip;
+}
+
+.overflow-x-scroll {
+  overflow: scroll;
+}
+
+.overflow-x-auto {
+  overflow: auto;
+}
+
+.overflow-y-visible {
+  overflow: visible;
+}
+
+.overflow-y-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-clip {
+  overflow: clip;
+}
+
+.overflow-y-scroll {
+  overflow: scroll;
+}
+
+.overflow-y-auto {
+  overflow: auto;
+}

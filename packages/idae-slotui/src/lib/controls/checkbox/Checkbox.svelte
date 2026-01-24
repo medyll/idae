@@ -56,6 +56,6 @@
 	{/if}
 </label>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './checkbox.scss';
 </style>

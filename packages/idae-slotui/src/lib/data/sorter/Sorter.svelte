@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
@@ -79,6 +78,3 @@
 		}}
 	></Slotted>
 </div>
-<style global lang="scss">
-	@use './sorterer.scss';
-</style>

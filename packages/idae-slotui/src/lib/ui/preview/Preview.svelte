@@ -1,4 +1,3 @@
- 
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
@@ -40,14 +39,13 @@
 {/if}
 
 <style lang="scss">
-   @use './preview.scss';
-   .preview-root {
-	   display: contents;
-   }
-   .preview {
-	   display: flex;
-	   .preview-zoom {
-		   flex: 1;
-	   }
-   }
+	.preview-root {
+		display: contents;
+	}
+	.preview {
+		display: flex;
+		.preview-zoom {
+			flex: 1;
+		}
+	}
 </style>

@@ -122,6 +122,6 @@
 	</Menu>
 </Popper>
 
-<style global lang="scss">
-	@use './select.scss';
+<style lang="scss">
+	@use 'select.scss';
 </style>

@@ -69,6 +69,6 @@
 	</Content>
 {/if}
 
-<style global>
-	@import './box.scss';
+<style lang="scss">
+	@use './box.scss';
 </style>

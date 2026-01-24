@@ -28,6 +28,6 @@
 	</div>
 {/if}
 
-<style global>
-	@import './badge.scss';
+<style lang="scss">
+	@use 'badge.scss';
 </style>

@@ -42,6 +42,7 @@
 </label>
 ..
 
-<style global lang="scss">
+<style lang="scss">
+	@use '../../styles/slotui-presets.scss';
 	@use './switch.scss';
 </style>

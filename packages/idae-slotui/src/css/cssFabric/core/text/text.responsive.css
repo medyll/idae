@@ -1,0 +1,1266 @@
+.text-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 0rem) {
+  /** cssfabric : text-xxxl*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-xxxl-cap {
+    text-transform: capitalize;
+  }
+  .text-xxxl-up {
+    text-transform: uppercase;
+  }
+  .text-xxxl-low {
+    text-transform: lowercase;
+  }
+  .text-xxxl-none {
+    text-transform: none;
+  }
+  .text-xxxl-full {
+    text-transform: full-width;
+  }
+  .text-xxxl-50 {
+    font-weight: 50;
+  }
+  .text-xxxl-100 {
+    font-weight: 100;
+  }
+  .text-xxxl-300 {
+    font-weight: 400;
+  }
+  .text-xxxl-500 {
+    font-weight: 500;
+  }
+  .text-xxxl-900 {
+    font-weight: 900;
+  }
+  .text-xxxl-light {
+    font-weight: lighter;
+  }
+  .text-xxxl-cap {
+    font-weight: normal;
+  }
+  .text-xxxl-bold {
+    font-weight: bold;
+  }
+  .text-xxxl-bolder {
+    font-weight: bolder;
+  }
+  .text-xxxl-l {
+    text-align: left;
+  }
+  .text-xxxl-r {
+    text-align: right;
+  }
+  .text-xxxl-center {
+    text-align: center;
+  }
+  .text-xxxl-justify {
+    text-align: justify;
+  }
+  .text-xxxl-discrete {
+    color: #ccc;
+  }
+  .text-xxxl-success {
+    color: green;
+  }
+  .text-xxxl-info {
+    color: #ffdd57;
+  }
+  .text-xxxl-warning {
+    color: #e6b905;
+  }
+  .text-xxxl-alert {
+    color: #ff7300;
+  }
+  .text-xxxl-error {
+    color: red;
+  }
+  .text-xxxl-yellow {
+    color: #ffb900;
+  }
+  .text-xxxl-orange {
+    color: #d83b01;
+  }
+  .text-xxxl-red {
+    color: #d13438;
+  }
+  .text-xxxl-magenta {
+    color: #b4009e;
+  }
+  .text-xxxl-purple {
+    color: #5c2d91;
+  }
+  .text-xxxl-green {
+    color: #107c10;
+  }
+  .text-xxxl-teal {
+    color: #008272;
+  }
+  .text-xxxl-blue {
+    color: #0078d4;
+  }
+  .text-xxxl-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-xxxl-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-xxxl-gray-300 {
+    color: #dddddd;
+  }
+  .text-xxxl-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-xxxl-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-xxxl-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-xxxl-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-xxxl-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-xxxl-gray-900 {
+    color: #999999;
+  }
+  .text-xxxl-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-xxxl-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-xxxl-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-xxxl-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-xxxl-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-xxxl-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-xxxl-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-xxxl-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-xxxl-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-xxxl-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-xxxl-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-xxxl-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-xxxl-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-xxxl-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}
+@media only screen and (max-width: 120rem) {
+  /** cssfabric : text-xxl*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-xxl-cap {
+    text-transform: capitalize;
+  }
+  .text-xxl-up {
+    text-transform: uppercase;
+  }
+  .text-xxl-low {
+    text-transform: lowercase;
+  }
+  .text-xxl-none {
+    text-transform: none;
+  }
+  .text-xxl-full {
+    text-transform: full-width;
+  }
+  .text-xxl-50 {
+    font-weight: 50;
+  }
+  .text-xxl-100 {
+    font-weight: 100;
+  }
+  .text-xxl-300 {
+    font-weight: 400;
+  }
+  .text-xxl-500 {
+    font-weight: 500;
+  }
+  .text-xxl-900 {
+    font-weight: 900;
+  }
+  .text-xxl-light {
+    font-weight: lighter;
+  }
+  .text-xxl-cap {
+    font-weight: normal;
+  }
+  .text-xxl-bold {
+    font-weight: bold;
+  }
+  .text-xxl-bolder {
+    font-weight: bolder;
+  }
+  .text-xxl-l {
+    text-align: left;
+  }
+  .text-xxl-r {
+    text-align: right;
+  }
+  .text-xxl-center {
+    text-align: center;
+  }
+  .text-xxl-justify {
+    text-align: justify;
+  }
+  .text-xxl-discrete {
+    color: #ccc;
+  }
+  .text-xxl-success {
+    color: green;
+  }
+  .text-xxl-info {
+    color: #ffdd57;
+  }
+  .text-xxl-warning {
+    color: #e6b905;
+  }
+  .text-xxl-alert {
+    color: #ff7300;
+  }
+  .text-xxl-error {
+    color: red;
+  }
+  .text-xxl-yellow {
+    color: #ffb900;
+  }
+  .text-xxl-orange {
+    color: #d83b01;
+  }
+  .text-xxl-red {
+    color: #d13438;
+  }
+  .text-xxl-magenta {
+    color: #b4009e;
+  }
+  .text-xxl-purple {
+    color: #5c2d91;
+  }
+  .text-xxl-green {
+    color: #107c10;
+  }
+  .text-xxl-teal {
+    color: #008272;
+  }
+  .text-xxl-blue {
+    color: #0078d4;
+  }
+  .text-xxl-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-xxl-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-xxl-gray-300 {
+    color: #dddddd;
+  }
+  .text-xxl-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-xxl-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-xxl-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-xxl-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-xxl-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-xxl-gray-900 {
+    color: #999999;
+  }
+  .text-xxl-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-xxl-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-xxl-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-xxl-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-xxl-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-xxl-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-xxl-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-xxl-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-xxl-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-xxl-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-xxl-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-xxl-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-xxl-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-xxl-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}
+@media only screen and (max-width: 90rem) {
+  /** cssfabric : text-xl*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-xl-cap {
+    text-transform: capitalize;
+  }
+  .text-xl-up {
+    text-transform: uppercase;
+  }
+  .text-xl-low {
+    text-transform: lowercase;
+  }
+  .text-xl-none {
+    text-transform: none;
+  }
+  .text-xl-full {
+    text-transform: full-width;
+  }
+  .text-xl-50 {
+    font-weight: 50;
+  }
+  .text-xl-100 {
+    font-weight: 100;
+  }
+  .text-xl-300 {
+    font-weight: 400;
+  }
+  .text-xl-500 {
+    font-weight: 500;
+  }
+  .text-xl-900 {
+    font-weight: 900;
+  }
+  .text-xl-light {
+    font-weight: lighter;
+  }
+  .text-xl-cap {
+    font-weight: normal;
+  }
+  .text-xl-bold {
+    font-weight: bold;
+  }
+  .text-xl-bolder {
+    font-weight: bolder;
+  }
+  .text-xl-l {
+    text-align: left;
+  }
+  .text-xl-r {
+    text-align: right;
+  }
+  .text-xl-center {
+    text-align: center;
+  }
+  .text-xl-justify {
+    text-align: justify;
+  }
+  .text-xl-discrete {
+    color: #ccc;
+  }
+  .text-xl-success {
+    color: green;
+  }
+  .text-xl-info {
+    color: #ffdd57;
+  }
+  .text-xl-warning {
+    color: #e6b905;
+  }
+  .text-xl-alert {
+    color: #ff7300;
+  }
+  .text-xl-error {
+    color: red;
+  }
+  .text-xl-yellow {
+    color: #ffb900;
+  }
+  .text-xl-orange {
+    color: #d83b01;
+  }
+  .text-xl-red {
+    color: #d13438;
+  }
+  .text-xl-magenta {
+    color: #b4009e;
+  }
+  .text-xl-purple {
+    color: #5c2d91;
+  }
+  .text-xl-green {
+    color: #107c10;
+  }
+  .text-xl-teal {
+    color: #008272;
+  }
+  .text-xl-blue {
+    color: #0078d4;
+  }
+  .text-xl-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-xl-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-xl-gray-300 {
+    color: #dddddd;
+  }
+  .text-xl-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-xl-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-xl-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-xl-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-xl-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-xl-gray-900 {
+    color: #999999;
+  }
+  .text-xl-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-xl-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-xl-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-xl-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-xl-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-xl-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-xl-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-xl-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-xl-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-xl-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-xl-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-xl-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-xl-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-xl-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}
+@media only screen and (max-width: 64rem) {
+  /** cssfabric : text-lg*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-lg-cap {
+    text-transform: capitalize;
+  }
+  .text-lg-up {
+    text-transform: uppercase;
+  }
+  .text-lg-low {
+    text-transform: lowercase;
+  }
+  .text-lg-none {
+    text-transform: none;
+  }
+  .text-lg-full {
+    text-transform: full-width;
+  }
+  .text-lg-50 {
+    font-weight: 50;
+  }
+  .text-lg-100 {
+    font-weight: 100;
+  }
+  .text-lg-300 {
+    font-weight: 400;
+  }
+  .text-lg-500 {
+    font-weight: 500;
+  }
+  .text-lg-900 {
+    font-weight: 900;
+  }
+  .text-lg-light {
+    font-weight: lighter;
+  }
+  .text-lg-cap {
+    font-weight: normal;
+  }
+  .text-lg-bold {
+    font-weight: bold;
+  }
+  .text-lg-bolder {
+    font-weight: bolder;
+  }
+  .text-lg-l {
+    text-align: left;
+  }
+  .text-lg-r {
+    text-align: right;
+  }
+  .text-lg-center {
+    text-align: center;
+  }
+  .text-lg-justify {
+    text-align: justify;
+  }
+  .text-lg-discrete {
+    color: #ccc;
+  }
+  .text-lg-success {
+    color: green;
+  }
+  .text-lg-info {
+    color: #ffdd57;
+  }
+  .text-lg-warning {
+    color: #e6b905;
+  }
+  .text-lg-alert {
+    color: #ff7300;
+  }
+  .text-lg-error {
+    color: red;
+  }
+  .text-lg-yellow {
+    color: #ffb900;
+  }
+  .text-lg-orange {
+    color: #d83b01;
+  }
+  .text-lg-red {
+    color: #d13438;
+  }
+  .text-lg-magenta {
+    color: #b4009e;
+  }
+  .text-lg-purple {
+    color: #5c2d91;
+  }
+  .text-lg-green {
+    color: #107c10;
+  }
+  .text-lg-teal {
+    color: #008272;
+  }
+  .text-lg-blue {
+    color: #0078d4;
+  }
+  .text-lg-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-lg-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-lg-gray-300 {
+    color: #dddddd;
+  }
+  .text-lg-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-lg-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-lg-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-lg-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-lg-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-lg-gray-900 {
+    color: #999999;
+  }
+  .text-lg-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-lg-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-lg-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-lg-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-lg-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-lg-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-lg-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-lg-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-lg-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-lg-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-lg-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-lg-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-lg-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-lg-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}
+@media only screen and (max-width: 48rem) {
+  /** cssfabric : text-md*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-md-cap {
+    text-transform: capitalize;
+  }
+  .text-md-up {
+    text-transform: uppercase;
+  }
+  .text-md-low {
+    text-transform: lowercase;
+  }
+  .text-md-none {
+    text-transform: none;
+  }
+  .text-md-full {
+    text-transform: full-width;
+  }
+  .text-md-50 {
+    font-weight: 50;
+  }
+  .text-md-100 {
+    font-weight: 100;
+  }
+  .text-md-300 {
+    font-weight: 400;
+  }
+  .text-md-500 {
+    font-weight: 500;
+  }
+  .text-md-900 {
+    font-weight: 900;
+  }
+  .text-md-light {
+    font-weight: lighter;
+  }
+  .text-md-cap {
+    font-weight: normal;
+  }
+  .text-md-bold {
+    font-weight: bold;
+  }
+  .text-md-bolder {
+    font-weight: bolder;
+  }
+  .text-md-l {
+    text-align: left;
+  }
+  .text-md-r {
+    text-align: right;
+  }
+  .text-md-center {
+    text-align: center;
+  }
+  .text-md-justify {
+    text-align: justify;
+  }
+  .text-md-discrete {
+    color: #ccc;
+  }
+  .text-md-success {
+    color: green;
+  }
+  .text-md-info {
+    color: #ffdd57;
+  }
+  .text-md-warning {
+    color: #e6b905;
+  }
+  .text-md-alert {
+    color: #ff7300;
+  }
+  .text-md-error {
+    color: red;
+  }
+  .text-md-yellow {
+    color: #ffb900;
+  }
+  .text-md-orange {
+    color: #d83b01;
+  }
+  .text-md-red {
+    color: #d13438;
+  }
+  .text-md-magenta {
+    color: #b4009e;
+  }
+  .text-md-purple {
+    color: #5c2d91;
+  }
+  .text-md-green {
+    color: #107c10;
+  }
+  .text-md-teal {
+    color: #008272;
+  }
+  .text-md-blue {
+    color: #0078d4;
+  }
+  .text-md-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-md-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-md-gray-300 {
+    color: #dddddd;
+  }
+  .text-md-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-md-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-md-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-md-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-md-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-md-gray-900 {
+    color: #999999;
+  }
+  .text-md-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-md-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-md-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-md-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-md-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-md-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-md-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-md-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-md-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-md-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-md-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-md-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-md-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-md-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}
+@media only screen and (max-width: 35.7rem) {
+  /** cssfabric : text-sm*/
+  .h1,
+h1 {
+    font-size: 3.1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h2,
+h2 {
+    font-size: 2.68rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h3,
+h3 {
+    font-size: 2.26rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h4,
+h4 {
+    font-size: 1.84rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h5,
+h5 {
+    font-size: 1.42rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .h6,
+h6 {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .text-sm-cap {
+    text-transform: capitalize;
+  }
+  .text-sm-up {
+    text-transform: uppercase;
+  }
+  .text-sm-low {
+    text-transform: lowercase;
+  }
+  .text-sm-none {
+    text-transform: none;
+  }
+  .text-sm-full {
+    text-transform: full-width;
+  }
+  .text-sm-50 {
+    font-weight: 50;
+  }
+  .text-sm-100 {
+    font-weight: 100;
+  }
+  .text-sm-300 {
+    font-weight: 400;
+  }
+  .text-sm-500 {
+    font-weight: 500;
+  }
+  .text-sm-900 {
+    font-weight: 900;
+  }
+  .text-sm-light {
+    font-weight: lighter;
+  }
+  .text-sm-cap {
+    font-weight: normal;
+  }
+  .text-sm-bold {
+    font-weight: bold;
+  }
+  .text-sm-bolder {
+    font-weight: bolder;
+  }
+  .text-sm-l {
+    text-align: left;
+  }
+  .text-sm-r {
+    text-align: right;
+  }
+  .text-sm-center {
+    text-align: center;
+  }
+  .text-sm-justify {
+    text-align: justify;
+  }
+  .text-sm-discrete {
+    color: #ccc;
+  }
+  .text-sm-success {
+    color: green;
+  }
+  .text-sm-info {
+    color: #ffdd57;
+  }
+  .text-sm-warning {
+    color: #e6b905;
+  }
+  .text-sm-alert {
+    color: #ff7300;
+  }
+  .text-sm-error {
+    color: red;
+  }
+  .text-sm-yellow {
+    color: #ffb900;
+  }
+  .text-sm-orange {
+    color: #d83b01;
+  }
+  .text-sm-red {
+    color: #d13438;
+  }
+  .text-sm-magenta {
+    color: #b4009e;
+  }
+  .text-sm-purple {
+    color: #5c2d91;
+  }
+  .text-sm-green {
+    color: #107c10;
+  }
+  .text-sm-teal {
+    color: #008272;
+  }
+  .text-sm-blue {
+    color: #0078d4;
+  }
+  .text-sm-gray-100 {
+    color: #f4f4f4;
+  }
+  .text-sm-gray-200 {
+    color: #e9e9e9;
+  }
+  .text-sm-gray-300 {
+    color: #dddddd;
+  }
+  .text-sm-gray-400 {
+    color: #d2d2d2;
+  }
+  .text-sm-gray-500 {
+    color: #c7c7c7;
+  }
+  .text-sm-gray-600 {
+    color: #bbbbbb;
+  }
+  .text-sm-gray-700 {
+    color: #b0b0b0;
+  }
+  .text-sm-gray-800 {
+    color: #a4a4a4;
+  }
+  .text-sm-gray-900 {
+    color: #999999;
+  }
+  .text-sm-shad-discrete {
+    text-shad: 0 0 0.125em #ccc;
+  }
+  .text-sm-shad-success {
+    text-shad: 0 0 0.125em green;
+  }
+  .text-sm-shad-info {
+    text-shad: 0 0 0.125em #ffdd57;
+  }
+  .text-sm-shad-warning {
+    text-shad: 0 0 0.125em #e6b905;
+  }
+  .text-sm-shad-alert {
+    text-shad: 0 0 0.125em #ff7300;
+  }
+  .text-sm-shad-error {
+    text-shad: 0 0 0.125em red;
+  }
+  .text-sm-shad-yellow {
+    text-shad: 0 0 0.125em #ffb900;
+  }
+  .text-sm-shad-orange {
+    text-shad: 0 0 0.125em #d83b01;
+  }
+  .text-sm-shad-red {
+    text-shad: 0 0 0.125em #d13438;
+  }
+  .text-sm-shad-magenta {
+    text-shad: 0 0 0.125em #b4009e;
+  }
+  .text-sm-shad-purple {
+    text-shad: 0 0 0.125em #5c2d91;
+  }
+  .text-sm-shad-green {
+    text-shad: 0 0 0.125em #107c10;
+  }
+  .text-sm-shad-teal {
+    text-shad: 0 0 0.125em #008272;
+  }
+  .text-sm-shad-blue {
+    text-shad: 0 0 0.125em #0078d4;
+  }
+}

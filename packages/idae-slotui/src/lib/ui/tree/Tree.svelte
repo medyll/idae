@@ -1,4 +1,3 @@
-
 <svelte:options />
 
 <script lang="ts" generics="T = Data">
@@ -180,6 +179,6 @@
 	{/each}
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './tree.scss';
 </style>

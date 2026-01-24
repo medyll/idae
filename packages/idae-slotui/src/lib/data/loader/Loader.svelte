@@ -96,6 +96,6 @@
 	{/if}
 {/key}
 
-<style global lang="scss">
+<style lang="scss">
 	@use './loader.scss';
 </style>

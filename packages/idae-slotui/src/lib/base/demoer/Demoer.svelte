@@ -7,9 +7,6 @@
 	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 
-<style global>
-	@import './demoer.tailwind.css';
-</style>
 	let {
 		title,
 		parameters = $bindable<DemoerStoryProps<T>>({} as DemoerStoryProps<T>),
@@ -97,7 +94,7 @@
 
 								<div class="pad-2 text-center">{tiple} {params}</div>
 							</div>
-							<div class="border-r pad-tb-4"></div>
+							<div class="border-r pad-tb-4" />
 						{/each}
 					{/each}
 				</div>

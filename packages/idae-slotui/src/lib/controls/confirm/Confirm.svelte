@@ -153,6 +153,6 @@
 	{/if}
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './confirm.scss';
 </style>

@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 

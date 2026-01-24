@@ -33,6 +33,6 @@
 	</chip>
 </div>
 
-<style global>
-	@import './chipper.scss';
+<style lang="scss">
+	@use './chipper.scss';
 </style>

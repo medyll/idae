@@ -19,6 +19,3 @@
 		<pre>{JSON.stringify($$props, null, ' ')}</pre>
 	</Cartouche>
 </div>
-<style global>
-	@import './debug.tailwind.css';
-</style>

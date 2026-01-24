@@ -114,6 +114,6 @@ export type IconAppProps = {
 	/>
 {/key}
 
-<style global>
-  @import './icon.tailwind.css';
+<style lang="scss">
+	@use './icon.scss';
 </style>

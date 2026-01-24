@@ -1,4 +1,5 @@
 <script lang="ts">
+	/** extends button */
 	import type { ElementProps, ExpandProps } from '$lib/types/index.js';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import type { DividerProps } from './types.js';
@@ -63,7 +64,7 @@
 	class:vertical={direction === 'vertical'}
 	style={addStyle}
 />
- 
-<style global>
-	@import './divider.tailwind.css';
-</style> 
+
+<style lang="scss">
+	@use 'divider.scss';
+</style>

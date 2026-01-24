@@ -20,6 +20,6 @@
 	</ul>
 </nav>
 
-<style global>
-	@import './breadCrumb.scss';
+<style lang="scss">
+	@use 'breadcrumb.scss';
 </style>

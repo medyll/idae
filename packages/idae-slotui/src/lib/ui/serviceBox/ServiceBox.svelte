@@ -21,6 +21,30 @@
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './servicebox.scss';
+<style lang="scss">
+	@use '../../styles/slotui-mixins.scss';
+	.gridIconBis {
+		width: 100%;
+		display: grid;
+		grid-gap: 8px;
+		grid-template-columns: repeat(auto-fill, minmax(30%, auto));
+	}
+
+	.service-box {
+		width: 360px;
+		height: 360px;
+		display: flex;
+		flex-direction: column;
+
+		&-main {
+			flex: 1;
+			padding: var(--sld-pad-large);
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
+			padding: var(--sld-pad-med);
+		}
+	}
 </style>

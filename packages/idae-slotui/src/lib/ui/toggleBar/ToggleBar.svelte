@@ -1,4 +1,3 @@
- 
 <script lang="ts">
 	import ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
@@ -56,6 +55,6 @@
 	</div>
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './toggle-bar.scss';
 </style>

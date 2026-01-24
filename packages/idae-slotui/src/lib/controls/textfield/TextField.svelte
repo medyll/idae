@@ -83,6 +83,6 @@
 	/>
 </div>
 
-<style global lang="scss">
+<style lang="scss">
 	@use './textfield.scss';
 </style>
