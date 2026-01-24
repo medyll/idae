@@ -1,6 +1,6 @@
 <script module lang="ts" >
 import type { Snippet } from "svelte";
-import type { CommonProps,ElementProps } from '$lib/types/index.js';
+import type {  ElementProps } from '$lib/types/index.js';
 
 export interface AvatarProps    {
   /** icon name 	*/

@@ -81,7 +81,7 @@ packages.forEach((packageName) => {
         path.join(packageScriptsPath, packagePreFile),
         packagePreContent,
       );
-      console.log(`Created scripts/package-pre.js for ${packageName}`);
+      console.log(`Created scripts/prepackage-pre.js for ${packageName}`);
     }
     packageJson.scripts[packagePre] = `node scripts/${packagePreFile}`;
     modified = true;
