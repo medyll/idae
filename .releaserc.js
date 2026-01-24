@@ -1,5 +1,5 @@
 module.exports = {
-  branches: ["main", { name: "dev", prerelease: "beta" }],
+  branches: ["main", { name: "dev", prerelease: "next" }],
   plugins: [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
@@ -7,7 +7,7 @@ module.exports = {
     [
       "@semantic-release/npm",
       {
-        npmPublish: true, // Publie sur npm si "private": false
+        npmPublish: true,
       },
     ],
     [
