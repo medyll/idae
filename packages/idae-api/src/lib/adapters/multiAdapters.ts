@@ -86,9 +86,10 @@ import { Client as PgClient } from 'pg';
 }
 
 // PouchDB Adapter skeleton
-export class PouchDBAdapter<T> implements IdaeDbAdapterInterface<T> {
   static async connect(uri: string, options?: any): Promise<any> {
-    throw new Error('Not implemented');
+    // Connexion PouchDB (locale ou distante)
+    const PouchDB = (await import('pouchdb')).default;
+    return new PouchDB(uri, options);
   }
   static async getDb(): Promise<any> {
     throw new Error('Not implemented');
