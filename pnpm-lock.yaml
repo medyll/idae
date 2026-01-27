@@ -136,9 +136,6 @@ importers:
 
   packages-config/idae-eslint-config:
     dependencies:
-      '@medyll/idae-prettier-config':
-        specifier: ^1.2.8
-        version: 1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -149,6 +146,9 @@ importers:
         specifier: ^4.3.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.48.2)(typescript@5.9.3)
     devDependencies:
+      '@medyll/idae-prettier-config':
+        specifier: ^1.2.8
+        version: 1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
