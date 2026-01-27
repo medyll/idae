@@ -2,12 +2,16 @@
 
 This is a demonstration of the **Stator** library, which provides reactive state management for JavaScript applications.
 
+
 ## Features
 
 - Reactive state creation using `stator`.
-- Automatic state change detection with `onchange` handlers.
+- Automatic state change detection with `.onchange` handlers (recommended usage).
 - Manual and automatic state updates.
 - Simple UI updates based on state changes.
+
+> **Note**
+> Stator expose aussi une API événementielle compatible EventTarget (addEventListener, removeEventListener, dispatchEvent) pour les cas avancés ou l’interopérabilité, mais l’usage recommandé reste `.onchange` pour la simplicité et la portabilité.
 
 
 ## Code Example
@@ -29,7 +33,7 @@ let userState = stator({
 });
 let arrState = stator([1, 2, { deep: true }]);
 
-// State change handlers
+// State change handlers (recommended)
 countState.onchange = (oldValue, newValue) => {
     console.log('countState', oldValue, newValue);
 };
@@ -39,6 +43,12 @@ userState.onchange = (oldValue, newValue) => {
 arrState.onchange = (oldValue, newValue) => {
     console.log('arrState', oldValue, newValue);
 };
+
+// (Advanced) Using EventTarget API (not recommended for most cases):
+// countState.addEventListener('change', e => {
+//   const { oldValue, newValue } = e.detail;
+//   ...
+// });
 
 // --- Deep reactivity demonstration ---
 // Mutate a nested property (deep object)
