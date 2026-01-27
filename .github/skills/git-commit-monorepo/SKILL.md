@@ -143,7 +143,7 @@ Where `reponame` is the exact name of the package/folder (e.g. `idae-db`, `idae-
 To determine which packages have changes and should be processed for commit, use the following script:
 
 ```sh
-bash .github/skills/git-commit-monorepo/git-commit-monorepo-auto.sh
+bash .github/skills/git-commit-monorepo/scripts/git-commit-monorepo-auto.sh
 ```
 
 This script outputs a list of changed packages and their relative paths, one per line, in the format:
@@ -156,4 +156,4 @@ The skill should use this output to process each package individually for commit
 
 **See also:**
 
-- [copilot-instructions.md](../../copilot-instructions.md) for monorepo rules
+- [copilot-instructions.md](../../copilot-instructions.md) for monorepo rules informations
