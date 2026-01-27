@@ -1,36 +1,71 @@
-import type { IdaiDbAdapterInterface } from '../@types/types';
 
-// TODO: Implement full PouchDB logic
+import type { IdaiDbAdapterInterface, IdaeDbParams } from '../@types/types';
+import PouchDB from 'pouchdb';
+
 export class PouchDBAdapter<T extends object> implements IdaiDbAdapterInterface<T> {
+  private db: PouchDB.Database<T>;
+
+  constructor(collection: string, connection: any) {
+    this.db = connection;
+  }
+
   static async connect(uri: string, options?: any): Promise<any> {
-    // TODO: Implement connection logic
-    throw new Error('PouchDBAdapter.connect not implemented');
+    // uri: pouchdb://./folder or pouchdb://memory
+    let dbPath = uri.replace(/^pouchdb:\/\//, '');
+    if (!dbPath) dbPath = 'idae-pouchdb';
+    return new PouchDB<T>(dbPath, options);
   }
+
   static async getDb(connection: any, dbName: string): Promise<any> {
-    // TODO: Implement getDb logic
-    throw new Error('PouchDBAdapter.getDb not implemented');
+    // PouchDB does not use dbName, just return the connection
+    return connection;
   }
+
   static async close(connection: any): Promise<void> {
-    // TODO: Implement close logic
-    throw new Error('PouchDBAdapter.close not implemented');
+    await connection.close();
   }
 
   async create(data: Partial<T>): Promise<T> {
-    throw new Error('PouchDBAdapter.create not implemented');
+    const doc = { ...data } as T;
+    const result = await this.db.post(doc);
+    return { ...doc, _id: result.id, _rev: result.rev } as T;
   }
-  async find(params?: any): Promise<T[]> {
-    throw new Error('PouchDBAdapter.find not implemented');
+
+  async find(params?: IdaeDbParams<T>): Promise<T[]> {
+    // Only supports simple query for now
+    const { query = {}, limit, sortBy } = params || {};
+    const result = await this.db.find({ selector: query, limit });
+    return result.docs as T[];
   }
-  async findOne(query: any): Promise<T | null> {
-    throw new Error('PouchDBAdapter.findOne not implemented');
+
+  async findOne(params: IdaeDbParams<T>): Promise<T | null> {
+    const docs = await this.find({ ...params, limit: 1 });
+    return docs[0] || null;
   }
-  async update(id: any, data: Partial<T>): Promise<T | null> {
-    throw new Error('PouchDBAdapter.update not implemented');
+
+  async update(id: string, data: Partial<T>): Promise<T | null> {
+    try {
+      const doc = await this.db.get(id);
+      const updated = { ...doc, ...data };
+      const result = await this.db.put(updated);
+      return { ...updated, _rev: result.rev } as T;
+    } catch (e) {
+      return null;
+    }
   }
-  async deleteById(id: any): Promise<boolean> {
-    throw new Error('PouchDBAdapter.deleteById not implemented');
+
+  async deleteById(id: string): Promise<boolean> {
+    try {
+      const doc = await this.db.get(id);
+      await this.db.remove(doc);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
+
   async transaction(fn: () => Promise<any>): Promise<any> {
-    throw new Error('PouchDBAdapter.transaction not implemented');
+    // PouchDB natively does not support transactions
+    return fn();
   }
 }
