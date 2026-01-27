@@ -1,8 +1,7 @@
 ---
-name: git-commit
+name: git-commit-monorepo
 description: 'Execute git commit with conventional commit message analysis, intelligent staging, and message generation. Use when user asks to commit changes, create a git commit, or mentions "/commit". Supports: (1) Auto-detecting type and scope from changes, (2) Generating conventional commit messages from diff, (3) Interactive commit with optional type/scope/description overrides, (4) Intelligent file staging for logical grouping'
-license: MIT
-allowed-tools: Bash
+tools: Bash
 ---
 
 # Git Commit with Conventional Commits
@@ -122,3 +121,39 @@ EOF
 - NEVER skip hooks (--no-verify) unless user asks
 - NEVER force push to main/master
 - If commit fails due to hooks, fix and create NEW commit (don't amend)
+
+---
+
+# Monorepo Commit & Strict Formatting (Idae)
+
+## Monorepo Commit Rules
+
+When working in the Idae monorepo, **never mix changes from different packages in a single commit**. Each commit must only include files from the current package/folder.
+
+**Commit message format is strictly enforced:**
+
+```
+fix(reponame):message
+```
+
+Where `reponame` is the exact name of the package/folder (e.g. `idae-db`, `idae-engine`, or `idae/idae-db` for scoped packages).
+
+### Listing Changed Packages in the Monorepo
+
+To determine which packages have changes and should be processed for commit, use the following script:
+
+```sh
+bash .github/skills/git-commit-monorepo/git-commit-monorepo-auto.sh
+```
+
+This script outputs a list of changed packages and their relative paths, one per line, in the format:
+
+```
+<package-name> <relative-path>
+```
+
+The skill should use this output to process each package individually for commit, enforcing the rule that each commit only includes files from a single package.
+
+**See also:**
+
+- [copilot-instructions.md](../../copilot-instructions.md) for monorepo rules
