@@ -137,8 +137,8 @@ importers:
   packages-config/idae-eslint-config:
     dependencies:
       '@medyll/idae-prettier-config':
-        specifier: 1.2.5
-        version: 1.2.5(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        specifier: '*'
+        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -2643,11 +2643,6 @@ packages:
 
   '@medyll/idae-prettier-config@1.2.4':
     resolution: {integrity: sha512-5gIEhOEkKQi4RLiGrUMx76c9UQCIIv4vhNrVCKDcDrLyPuiQWcLi1gK29KAp+sYJWbm//g6+1LM6AtmXg0TPXQ==}
-    peerDependencies:
-      prettier: '>=3.0.0'
-
-  '@medyll/idae-prettier-config@1.2.5':
-    resolution: {integrity: sha512-UGNgu7Zz7HHV/Q8lvFPGNqCUCFxJg0689/E8fNTa9cZRBoJRJM5YvI31wwk8MnC0xbT3oz18ML+cJzzQTXTuqw==}
     peerDependencies:
       prettier: '>=3.0.0'
 
@@ -13679,7 +13674,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@medyll/idae-prettier-config@1.2.5(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
       prettier: 3.8.1
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -16491,7 +16486,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.3.7)
+      follow-redirects: 1.15.11(debug@4.4.3)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
