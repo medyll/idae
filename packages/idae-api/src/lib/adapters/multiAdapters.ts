@@ -43,9 +43,16 @@ import { Client as PgClient } from 'pg';
 }
 
 // SQLite Adapter skeleton
-export class SQLiteAdapter<T> implements IdaeDbAdapterInterface<T> {
   static async connect(uri: string, options?: any): Promise<any> {
-    throw new Error('Not implemented');
+    // Connexion SQLite via 'sqlite3'
+    const sqlite3 = await import('sqlite3');
+    const { Database } = sqlite3;
+    return new Promise((resolve, reject) => {
+      const db = new Database(uri, options, (err: any) => {
+        if (err) reject(err);
+        else resolve(db);
+      });
+    });
   }
   static async getDb(): Promise<any> {
     throw new Error('Not implemented');
