@@ -86,13 +86,29 @@ export function stator<T>(initialState: T): AugmentedState<T> {
    * Proxy is deeply equal to plain object/array for toEqual.
    */
   // Pass a getter for the current root onchange handler
-  function deepProxy(obj: any, notifyRootChange: (oldVal: any, newVal: any) => void, path: string[] = [], getOnChange?: () => StateChangeHandler<any> | undefined): any {
+  // WeakMap to track root state and handler for each object/array
+  const rootMap: WeakMap<object, { getOnChange: () => StateChangeHandler<any> | undefined, rootState: { value: any } }> = new WeakMap();
+
+  /**
+   * Recursively proxies an object or array to enable deep reactivity.
+   * Ensures all nested objects/arrays are always proxied and tracked.
+   * All deep mutations trigger the root onchange handler.
+   */
+  function deepProxy(obj: any, rootInfo?: { getOnChange: () => StateChangeHandler<any> | undefined, rootState: { value: any } }): any {
     if (isPrimitive(obj) || obj === null) return obj;
+
+    // If already proxied, return the proxy
+    if (rootMap.has(obj)) return obj;
+
+    // Attach rootInfo if not provided
+    if (!rootInfo) {
+      throw new Error('deepProxy called without rootInfo');
+    }
+    rootMap.set(obj, rootInfo);
 
     const handler: ProxyHandler<any> = {
       get(target, property, receiver) {
-        // Special handling for stator API
-        if (property === "onchange") return getOnChange ? getOnChange() : onchange;
+        if (property === "onchange") return rootInfo.getOnChange();
         if (property === "stator") return target;
         if (property === "toString") return function () { return JSON.stringify(target); };
         if (property === "valueOf") return function () { return target; };
@@ -103,62 +119,83 @@ export function stator<T>(initialState: T): AugmentedState<T> {
             return isPrimitive(target) ? target : JSON.stringify(target);
           };
         }
-        // For test: allow deep equality with plain objects/arrays
         if (property === Symbol.for('nodejs.util.inspect.custom')) {
           return () => target;
         }
-        // For test: allow toEqual to work (proxy is deeply equal to plain object/array)
         if (property === 'constructor') return target.constructor;
         if (property === Symbol.iterator && Array.isArray(target)) {
           return target[Symbol.iterator].bind(target);
         }
-
-        // Intercept array mutating methods to trigger onchange
+        // Array mutating methods
         const mutatingArrayMethods = [
           'copyWithin', 'fill', 'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift',
         ];
-        if (Array.isArray(target) && mutatingArrayMethods.includes(property as string)) {
-          return (...args: any[]) => {
-            const oldValue = deepClone(target);
-            const result = Array.prototype[property].apply(target, args);
-            const currentOnChange = getOnChange ? getOnChange() : onchange;
-            if (currentOnChange && !Object.is(oldValue, target)) {
-              currentOnChange(oldValue, deepClone(target));
-            }
-            notifyRootChange(oldValue, deepClone(target));
-            return result;
-          };
+          if (Array.isArray(target) && mutatingArrayMethods.includes(property as string)) {
+            return (...args: any[]) => {
+              const oldValue = deepClone(rootInfo.rootState.value);
+              const result = (Array.prototype as any)[property as string].apply(target, args);
+              rootInfo.rootState.value = target;
+              const currentOnChange = rootInfo.getOnChange();
+              if (currentOnChange && !Object.is(oldValue, rootInfo.rootState.value)) {
+                currentOnChange(oldValue, deepClone(rootInfo.rootState.value));
+              }
+              return result;
+            };
         }
-
-        // Recursively wrap nested objects/arrays
-        const value = Reflect.get(target, property, receiver);
+        let value = Reflect.get(target, property, receiver);
+        // Always proxy nested objects/arrays
         if (typeof value === "object" && value !== null) {
-          return deepProxy(value, notifyRootChange, path.concat(String(property)), getOnChange);
+          // If not already proxied, wrap and attach root info
+          if (!rootMap.has(value)) {
+            value = deepProxy(value, rootInfo);
+            Reflect.set(target, property, value);
+          }
+          return value;
         }
-        // Return undefined for missing properties
         if (!(property in target)) return undefined;
         return value;
       },
       set(target, property, value, receiver) {
-        // Save old value for change notification (deep clone for correct snapshot)
-        const oldValue = deepClone(target);
-        const result = Reflect.set(target, property, value, receiver);
-        // Always notify root onchange for any deep mutation
-        const currentOnChange = getOnChange ? getOnChange() : onchange;
-        if (currentOnChange && !Object.is(oldValue, target)) {
-          currentOnChange(oldValue, deepClone(target));
+        const oldValue = deepClone(rootInfo.rootState.value);
+        // Always proxy assigned objects/arrays
+        let proxiedValue = value;
+        if (typeof value === "object" && value !== null) {
+          if (!rootMap.has(value)) {
+            proxiedValue = deepProxy(value, rootInfo);
+          }
         }
-        notifyRootChange(oldValue, deepClone(target));
+        const result = Reflect.set(target, property, proxiedValue, receiver);
+        rootInfo.rootState.value = target;
+        const currentOnChange = rootInfo.getOnChange();
+        if (process && process.env && process.env.DEBUG_STAT0R) {
+          // eslint-disable-next-line no-console
+          console.log('[Stator Debug] set trap (deepProxy):', {
+            target,
+            property,
+            value,
+            oldValue,
+            handler: !!currentOnChange,
+            isRoot: rootInfo.rootState === target,
+            rootState: rootInfo.rootState,
+          });
+        }
+        if (currentOnChange && !Object.is(oldValue, rootInfo.rootState.value)) {
+          if (process && process.env && process.env.DEBUG_STAT0R) {
+            // eslint-disable-next-line no-console
+            console.log('[Stator Debug] calling onchange (deepProxy)', { oldValue, newValue: deepClone(rootInfo.rootState.value) });
+          }
+          currentOnChange(oldValue, deepClone(rootInfo.rootState.value));
+        }
         return result;
       },
       deleteProperty(target, property) {
-        const oldValue = deepClone(target);
+        const oldValue = deepClone(rootInfo.rootState.value);
         const result = Reflect.deleteProperty(target, property);
-        const currentOnChange = getOnChange ? getOnChange() : onchange;
-        if (currentOnChange && !Object.is(oldValue, target)) {
-          currentOnChange(oldValue, deepClone(target));
+        rootInfo.rootState.value = target;
+        const currentOnChange = rootInfo.getOnChange();
+        if (currentOnChange && !Object.is(oldValue, rootInfo.rootState.value)) {
+          currentOnChange(oldValue, deepClone(rootInfo.rootState.value));
         }
-        notifyRootChange(oldValue, deepClone(target));
         return result;
       },
       ownKeys(target) {
@@ -176,8 +213,31 @@ export function stator<T>(initialState: T): AugmentedState<T> {
     return new Proxy(obj, handler);
   }
 
+
+  // Recursively proxy all nested objects/arrays at initialization
+  function prepareInitialValue(val: any, rootInfo: { getOnChange: () => StateChangeHandler<any> | undefined, rootState: { value: any } }): any {
+    if (isPrimitive(val) || val === null) return val;
+    if (Array.isArray(val)) {
+      for (let i = 0; i < val.length; i++) {
+        val[i] = prepareInitialValue(val[i], rootInfo);
+      }
+      return deepProxy(val, rootInfo);
+    }
+    if (typeof val === 'object') {
+      for (const k in val) {
+        val[k] = prepareInitialValue(val[k], rootInfo);
+      }
+      return deepProxy(val, rootInfo);
+    }
+    return val;
+  }
+
   // Create the state object
-  const state: State<T> = { value: initialState };
+  const state: State<T> = { value: undefined as any };
+
+  // Attach rootInfo for the root value
+  const rootInfo = { getOnChange: () => onchange, rootState: state };
+  state.value = prepareInitialValue(initialState, rootInfo);
 
   // Proxy handler for the root state object
   const handler: ProxyHandler<AugmentedState<T>> = {
@@ -208,11 +268,9 @@ export function stator<T>(initialState: T): AugmentedState<T> {
               : JSON.stringify(target.value);
           };
         }
-        // For test: allow deep equality with plain objects/arrays
         if (property === Symbol.for('nodejs.util.inspect.custom')) {
           return () => target.value;
         }
-        // For test: allow toEqual to work (proxy is deeply equal to plain object/array)
         if (property === 'constructor') return target.value?.constructor;
         if (property === Symbol.iterator && Array.isArray(target.value)) {
           return target.value[Symbol.iterator].bind(target.value);
@@ -220,12 +278,9 @@ export function stator<T>(initialState: T): AugmentedState<T> {
         // For objects/arrays, return a deep proxy for deep reactivity
         const value = Reflect.get(target, "value", receiver);
         if (typeof value === "object" && value !== null) {
-          // Pass a getter for the current root onchange handler
-          return deepProxy(value, (oldVal, newVal) => {
-            if (onchange && !Object.is(oldVal, newVal)) {
-              onchange(oldVal, newVal);
-            }
-          }, [], () => onchange);
+          // Always attach root info and proxy
+          const rootInfo = { getOnChange: () => onchange, rootState: target };
+          return deepProxy(value, rootInfo);
         }
         // For primitives, just return the value
         return value;
