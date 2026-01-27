@@ -3,7 +3,7 @@
   "bin": {
     "idae-html": "./cli.js"
   },
-  "version": "0.2.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
