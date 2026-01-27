@@ -10,6 +10,22 @@ To install the library, run:
 npm install idae-db
 ```
 
+The Idae Database Library provides a flexible and extensible way to interact with various databases such as MongoDB, MySQL, ChromaDB, **PouchDB**, **SQLite** et **PostgreSQL**. Il inclut des fonctionnalités comme les event emitters pour hooks pre/post, l’auto-increment, et plus encore.
+
+## Installation
+
+Pour installer la librairie et les peer dependencies nécessaires selon votre base :
+
+```bash
+npm install idae-db
+# Pour PouchDB :
+npm install pouchdb
+# Pour SQLite :
+npm install sqlite3
+# Pour PostgreSQL :
+npm install pg
+```
+
 ## Scripts
 
 ```bash
@@ -55,6 +71,39 @@ const mysqlDb = IdaeDb.init('mysql://user:password@localhost:3306', {
         autoIncrementFormat: (collection: string) => `id${collection}`,
         autoIncrementDbCollection: 'auto_increment'
     }
+});
+```
+
+#### PouchDB
+
+```typescript
+import { IdaeDb } from './lib/idaeDb.js';
+import { DbType } from './lib/@types/types.js';
+
+const pouchDb = IdaeDb.init('pouchdb://./my-pouchdb-folder', {
+    dbType: DbType.POUCHDB
+});
+```
+
+#### SQLite
+
+```typescript
+import { IdaeDb } from './lib/idaeDb.js';
+import { DbType } from './lib/@types/types.js';
+
+const sqliteDb = IdaeDb.init('sqlite://./mydb.sqlite', {
+    dbType: DbType.SQLITE
+});
+```
+
+#### PostgreSQL
+
+```typescript
+import { IdaeDb } from './lib/idaeDb.js';
+import { DbType } from './lib/@types/types.js';
+
+const pgDb = IdaeDb.init('postgresql://user:password@localhost:5432/mydb', {
+    dbType: DbType.POSTGRESQL
 });
 ```
 

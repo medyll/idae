@@ -39,7 +39,10 @@
     "!dist/**/*.spec.*"
   ],
   "peerDependencies": {
-    "svelte": "^5.0.0-next"
+    "svelte": "^5.0.0-next",
+    "pouchdb": ">=8.0.0",
+    "sqlite3": ">=5.1.0",
+    "pg": ">=8.0.0"
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",

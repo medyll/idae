@@ -47,6 +47,13 @@ export class IdaeDbAdapter<T extends object>
 		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
 		IdaeDbAdapter.addAdapter(DbType.MYSQL, MySQLAdapter);
 		IdaeDbAdapter.addAdapter(DbType.CHROMADB, ChromaDBAdapter);
+		// Nouveaux adapters (ESM import)
+		// @ts-expect-error: Adapter classes may not être fully implemented yet
+		import('./adapters/PouchDBAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.POUCHDB, m.PouchDBAdapter));
+		// @ts-expect-error: Adapter classes may not être fully implemented yet
+		import('./adapters/SQLiteAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.SQLITE, m.SQLiteAdapter));
+		// @ts-expect-error: Adapter classes may not être fully implemented yet
+		import('./adapters/PostgreSQLAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, m.PostgreSQLAdapter));
 	}
 
 	/**

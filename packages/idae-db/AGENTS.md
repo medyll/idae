@@ -23,7 +23,7 @@ All packages in `idae/packages/*` share:
 
 ## Package Overview
 
-**@medyll/idae-db** is a flexible database abstraction layer for **MongoDB**, **MySQL**, and **ChromaDB** with:
+**@medyll/idae-db** is a flexible database abstraction layer for **MongoDB**, **MySQL**, **ChromaDB**, **PouchDB**, **SQLite**, and **PostgreSQL** with:
 - Event-driven CRUD operations (pre/post/error hooks)
 - Auto-increment support (MongoDB)
 - Connection pooling via singleton pattern
@@ -46,7 +46,7 @@ All packages in `idae/packages/*` share:
 | `IdaeDb` | Singleton entry point, manages instances per URI+DbType |
 | `IdaeDbConnection` | Per-database connection, creates collections/tables |
 | `IdaeDbAdapter` | Facade with pre/post hooks via `@withEmitter` decorator |
-| `*Adapter` classes | Database-specific implementations (Mongo, MySQL, ChromaDB) |
+| `*Adapter` classes | Database-specific implementations (Mongo, MySQL, ChromaDB, PouchDB, SQLite, PostgreSQL) |
 | `IdaeDBModel` | MongoDB-specific auto-increment tracking |
 | `IdaeEventEmitter` | Decorator-based event system |
 
@@ -131,17 +131,31 @@ collection.registerEvents<User>({
 
 Events emitted: `pre:methodName`, `post:methodName`, `error:methodName`
 
-### Adding New Adapters
 
-1. Implement `IdaeDbAdapterInterface<T>` from [types.ts](src/lib/@types/types.ts)
-2. Implement static methods: `connect()`, `getDb()`, `close()`
-3. Implement instance methods: `create()`, `find()`, `findOne()`, `update()`, `deleteById()`, `transaction()`
-4. Register in [IdaeDbAdapter.ts](src/lib/IdaeDbAdapter.ts) static initializer:
+### Supported Adapters
 
-```typescript
-static {
-  IdaeDbAdapter.addAdapter(DbType.NEWDB, MyNewAdapter);
-}
+| DbType         | Adapter Class           | Peer Dependency |
+|----------------|------------------------|-----------------|
+| `MONGODB`      | MongoDBAdapter         | mongodb         |
+| `MYSQL`        | MySQLAdapter           | mysql2          |
+| `CHROMADB`     | ChromaDBAdapter        | chromadb        |
+| `POUCHDB`      | PouchDBAdapter         | pouchdb         |
+| `SQLITE`       | SQLiteAdapter          | sqlite3         |
+| `POSTGRESQL`   | PostgreSQLAdapter      | pg              |
+
+To add a new adapter, implement `IdaeDbAdapterInterface<T>` from [types.ts](src/lib/@types/types.ts), implement static and instance methods, and register it in [IdaeDbAdapter.ts](src/lib/IdaeDbAdapter.ts).
+
+### Peer Dependencies
+
+Depending on the adapter you use, install the corresponding peer dependency:
+
+```bash
+# For PouchDB
+pnpm add pouchdb
+# For SQLite
+pnpm add sqlite3
+# For PostgreSQL
+pnpm add pg
 ```
 
 ### Type Safety
