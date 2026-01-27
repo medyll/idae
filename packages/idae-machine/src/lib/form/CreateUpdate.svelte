@@ -1,198 +1,219 @@
-<!-- 
-    Component CreateUpdate :  to open a CreateUpdateShow window for a specific collection.
-    Button validate and cancel is in the Window component.
- -->
-
 <script lang="ts" generics="COL = Record<string,any>">
-	
- 	import {machine} from '$lib/main/machine.js'; 
-	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-	import type { CreateUpdateProps } from './types.js';
-	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
-	import FieldInput from '$lib/form/FieldValue.svelte';
+    import { machine } from '$lib/main/machine.js'; 
+    import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+    import type { CreateUpdateProps } from './types.js';
+    import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
+    import FieldInput from '$lib/form/FieldValue.svelte';
 
-	let {
-		collection,
-		data = {},
-		dataId,
-		mode = 'show',
-		withData,
-		showFields,
-		inPlaceEdit,
-		displayMode = 'wrap', 
-		showFks = false
-	}: CreateUpdateProps = $props();
-	
-	
-	let inputForm = `form-${String(collection)}-${mode}`; 
+    // Define props with Svelte 5 syntax
+    // Replaces createEventDispatcher with a callback prop
+    let { 
+        onsubmit: onsubmit_callback, 
+        ...createUpdateProps 
+    }: CreateUpdateProps<COL> & { onsubmit?: (payload: any) => void } = $props();
 
-	let logic = machine.logic ;
-	let store = machine.store[(collection as string)];
+    // Logic and Store references
+    const logic = machine.logic;
+    const store = $derived(createUpdateProps.collection ? machine.store[createUpdateProps.collection] : undefined);
 
-	let formFields = $derived(logic.collection(collection).parse());
-	let validator = $derived(logic.collection(collection).validator);
+    // Reactive derivations for metadata
+    const collLogic = $derived(createUpdateProps.collection ? logic.collection(createUpdateProps.collection) : null);
+    const formFields = $derived(collLogic?.parse() ?? {});
+    const validator = $derived(collLogic?.validator);
+    const indexName = $derived(collLogic?.template.index);
+    
+    // UI derivations
+    const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
 
-	let indexName = $derived(logic.collection(collection).template.index);
-	let query: any = $derived(dataId && indexName ? store.where({ [indexName]: { eq: dataId } }) : {});
+    // Reactive State
+    let formData = $state<Record<string, any>>({});
+    let validationErrors = $state<Record<string, string>>({});
+    let isSubmitting = $state(false);
 
-	let defaultVAlues = $derived(logic.collection(collection).parse())
+    // Initialize or Reset form data when collection/mode/dataId changes
+    $effect(() => {
+        if (createUpdateProps.mode === 'create') {
+            formData = {
+                ...SchemeFieldDefaultValues.getDefaults(Object.keys(formFields), createUpdateProps.collection),
+                ...createUpdateProps.data,
+                ...createUpdateProps.withData
+            };
+        } else if (store && createUpdateProps.dataId) {
+            // Logic to fetch existing data from store
+            const query = store.where({ [indexName]: { eq: createUpdateProps.dataId } });
+            const snap = $state.snapshot(query);
+            const record = Array.isArray(snap) && snap.length > 0 ? snap[0] : {};
+            
+            formData = {
+                ...createUpdateProps.data,
+                ...createUpdateProps.withData,
+                ...record
+            };
+        }
+    });
 
-	let formData = $state<Record<string, any>>(
-		mode === 'create'
-			? {
-				...SchemeFieldDefaultValues.getDefaults(Object.keys(defaultVAlues), collection),
-				...data,
-				...withData
-			  }
-			: { ...data, ...withData, ...$state.snapshot(query)[0] }
-	);
+    /**
+     * Validates form data using the logic validator
+     */
+    const validate = (data: Record<string, any>) => {
+        const v = typeof validator === 'function' ? validator() : validator;
+        if (!v || typeof v.validateForm !== 'function') return true;
 
-// Default values are set in formData initialization; no need for setFormDataDefaultFieldValues
-	 
- 
-	let validationErrors: Record<string, string> = {};
+        const ignore = createUpdateProps.mode === 'create' && indexName ? [indexName] : undefined;
+        const { isValid, errors } = v.validateForm(data, { ignoreFields: ignore });
+        
+        validationErrors = errors; // Updates UI automatically
+        return isValid;
+    };
 
-	const validateFormData = (formData: Record<string, any> = {}) => {
-		const { isValid, errors } = validator.validateForm(formData, {
-			ignoreFields: mode == 'create' ? [indexName] : undefined
-		});
-		validationErrors = errors;
+    /**
+     * Form submission handler
+     */
+    async function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        isSubmitting = true; 
 
-		return isValid;
-	};
+        const snapshot = $state.snapshot(formData);
 
-	export const submit = async (event: FormDataEvent) => {
-		if (!validateFormData($state.snapshot(formData))) {
-			Object.entries(validationErrors).forEach(([fieldName, errorMessage]) => {
-				// Trouver l'élément input correspondant dans le formulaire
-				const inputElement = document.querySelector(
-					`[name="${fieldName}"][form="${inputForm}"]`
-				) as HTMLInputElement | null;
-				console.log({ inputElement });
+        if (!validate(snapshot)) {
+            isSubmitting = false;
+            return;
+        }
 
-				if (inputElement) {
-					// Ajouter une classe d'erreur à l'élément input
-					inputElement.classList.add('input-error');
+        try {
+            if (createUpdateProps.mode === 'create' && !createUpdateProps.dataId) {
+                await store?.add({ ...snapshot, ...createUpdateProps.withData });
+            } else if (createUpdateProps.mode === 'update' && createUpdateProps.dataId) {
+                await store?.update(createUpdateProps.dataId, snapshot);
+            }
+            
+            // Trigger callback if provided
+            onsubmit_callback?.({ mode: createUpdateProps.mode, data: snapshot });
+        } catch (e) {
+            console.error("Submission failed", e);
+        } finally {
+            isSubmitting = false;
+        }
+    }
 
-					// Créer ou mettre à jour un message d'erreur
-					let errorElement = inputElement.nextElementSibling as HTMLElement;
-					if (!errorElement || !errorElement.classList.contains('error-message')) {
-						errorElement = document.createElement('div');
-						errorElement.classList.add('error-message');
-						inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
-					}
-					errorElement.textContent = errorMessage;
-
-					// Optionnel : Ajouter un attribut aria pour l'accessibilité
-					inputElement.setAttribute('aria-invalid', 'true');
-					inputElement.setAttribute('aria-describedby', `error-${fieldName}`);
-					errorElement.id = `error-${fieldName}`;
-				}
-			});
-			return;
-		}
-		
-		let datadb = $state.snapshot(formData);
-		switch (mode) {
-			case 'create':
-				if (!dataId) {
-					await store.add({ ...datadb, ...withData });
-					mode = 'show';
-				}
-				break;
-			case 'update':
-				if (dataId) {
-					await store.update(dataId, datadb);
-				}
-				break;
-		}
-	};
-
-	// --- INTEGRATION: Default values for creation mode ---
-	// import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-	// ...existing code...
-
-	// Replace formData initialization for creation mode
-	// let formData = $state<Record<string, any>>(
-	//   mode === 'create'
-	//     ? {
-	//         ...SchemeFieldDefaultValues.getDefaults(Object.keys($derived(logic.collection(collection).parse())), collection),
-	//         ...data,
-	//         ...withData
-	//       }
-	//     : { ...data, ...withData, ...$state.snapshot(query)[0] }
-	// );
-
-	// Remove or comment out setFormDataDefaultFieldValues and getDefaultValue (now obsolete)
-	// function setFormDataDefaultFieldValues() { ... }
-	// function getDefaultValue(fieldType?: string) { ... }
+    // Helper to clear error when user modifies a field
+    const clearError = (fieldName: string) => {
+        if (validationErrors[fieldName]) {
+            delete validationErrors[fieldName];
+        }
+    };
 </script>
 
+{#snippet fieldInput(fieldName: string, fieldInfo: any)}
+    <div class="field-wrapper">
+        <FieldInput
+            collection={createUpdateProps.collection}
+            {fieldName}
+            mode={createUpdateProps.mode}
+            editInPlace={createUpdateProps.inPlaceEdit === true ||
+                (Array.isArray(createUpdateProps.inPlaceEdit) && createUpdateProps.inPlaceEdit.includes(fieldName))}
+            data={formData}
+            setData={(field, value) => { 
+                formData[field] = value; 
+                clearError(field); 
+            }}
+            inputForm={inputFormId}
+        />
+        {#if validationErrors[fieldName]}
+            <span class="error-message" id="error-{fieldName}">
+                {validationErrors[fieldName]}
+            </span>
+        {/if}
+    </div>
+{/snippet}
+
 <form
-	id={inputForm}
-	name={inputForm}
-	onchange={(event) => {
-		console.log('Form changed', event);
-	}}
-	onsubmit={(event) => {
-		event.preventDefault();
-		// onSubmit(event);
-	}}
-></form> 
-<input type="submit" form={inputForm}   />
-<div style="width:750px;display:flex;">
-	<div class="crud {displayMode}">
-		{#each Object.entries(formFields) as [fieldName, fieldInfo]}
-			<FieldInput
-				{collection}
-				{fieldName}
-				{mode}
-				editInPlace={inPlaceEdit === true ||
-					(Array.isArray(inPlaceEdit) && inPlaceEdit.includes(fieldName))}
-				bind:data={formData}
-				{inputForm}
-			/>
-		{/each}
-	</div>
-	{#if showFks && (mode === 'show' || mode === 'update')}
-		<div>
-			<CollectionReverseFks showTitle={true} {collection} collectionId={dataId}>
-				{#snippet children({ collection, template })}
-					<div class="p2">presentation</div>
-				{/snippet}
-			</CollectionReverseFks>
-		</div>
-	{/if}
+    id={inputFormId}
+    name={inputFormId}
+    aria-labelledby="form-title"
+    onsubmit={handleSubmit}
+>
+    </form>
+
+<h2 id="form-title" class="sr-only">
+    {createUpdateProps.mode} {createUpdateProps.collection}
+</h2>
+
+<div style="width:750px; display:flex;">
+    <div class="crud {createUpdateProps.displayMode}">
+        {#each Object.entries(formFields) as [fieldName, fieldInfo]}
+            {#if !createUpdateProps.showFields || createUpdateProps.showFields.includes(fieldName)}
+                {@render fieldInput(fieldName, fieldInfo)}
+            {/if}
+        {/each}
+    </div>
+
+    {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')}
+        <div>
+            <CollectionReverseFks 
+                showTitle={true} 
+                collection={createUpdateProps.collection} 
+                collectionId={createUpdateProps.dataId}
+            >
+                {#snippet children()}
+                    <div class="p2">Presentation</div>
+                {/snippet}
+            </CollectionReverseFks>
+        </div>
+    {/if}
 </div>
 
+<button 
+    type="submit" 
+    form={inputFormId} 
+    disabled={isSubmitting} 
+    aria-label="Submit"
+>
+    {isSubmitting ? '...' : 'Valider'}
+</button>
+
 <style lang="postcss">
-	@reference "../../styles/references.css";
+    @reference "../../styles/references.css";
 
-	:global(.crud) {
-		min-width: 32rem;
-		padding: 2rem;
+    :global(.crud) {
+        min-width: 32rem;
+        padding: 2rem;
 
-		&.wrap {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-		}
+        &.wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
 
-		&.inline {
-			display: flex;
-			flex-direction: row;
-			gap: 1rem;
-		}
-	}
+        &.inline {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+        }
+    }
 
-	[aria-invalid='true'] {
-		background-color: #ffeeee;
-		border-color: red;
-	}
+    .field-wrapper {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
 
-	.error-message {
-		color: red;
-		font-size: 0.8em;
-		margin-top: 0.2em;
-	}
+    /* Target inputs with errors using CSS only, driven by Svelte state */
+    .error-message {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border-width: 0;
+    }
 </style>

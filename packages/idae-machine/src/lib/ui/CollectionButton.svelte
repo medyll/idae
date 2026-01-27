@@ -1,26 +1,29 @@
-<!-- 
-    Component button to open a CreateUpdateShow window for a specific collection.    
-    D:\boulot\python\wollama\src\components\form\CollectionButton.svelte
- -->
+<!--
+CollectionButton.svelte
+Svelte 5 button to open CreateUpdate window for a collection
+@role ui-button
+@prop {string} collection - Collection name
+@prop {object} [withData] - Data to prefill
+@slot button - Custom button content
+@event click - Emitted on button click
+-->
+
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { type CreateUpdateProps } from '../form/types.js';
-
-	type CollectionButtonProps = {
-		collection: string;
-		withData?:  Record<string, any>;
-	} & CreateUpdateProps;
-
-	let { collection = 'book', withData, ...rest }: CollectionButtonProps = $props();
-
+	let { collection = 'book', withData, ...rest } = $props<{ collection?: string; withData?: Record<string, any> } & CreateUpdateProps>();
 	function openCrud(collection: string) {
 		openWindow(`create-${collection}`, {
 			component:       CreateUpdate,
-			componentProps:  { collection: collection, withData, ...rest },
+			componentProps:  { collection, withData, ...rest },
 			hideCloseButton: false
 		});
 	}
 </script>
 
-<Button class="ellipsis" onclick={() => openCrud(collection)} width="auto" icon="mdi:add" value="ui.{rest.mode}-{collection}" />
+{#snippet button()}
+	<Button class="ellipsis" onclick={() => openCrud(collection)} width="auto" icon="mdi:add" value={`ui.${rest.mode}-${collection}`} />
+{/snippet}
+
+{@render button()}

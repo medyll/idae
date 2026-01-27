@@ -3,7 +3,7 @@ export { default as CollectionReverseFks } from '$lib/ui/CollectionReverseFks.sv
 export { default as CollectionListMenu } from '$lib/ui/CollectionListMenu.svelte';
 export { default as CollectionList } from '$lib/ui/CollectionList.svelte';
 export { default as CollectionFks } from '$lib/ui/CollectionFks.svelte';
-export { default as CollectionFieldGuess } from '$lib/ui/CollectionFieldGuess.svelte';
+export { default as CollectionFieldGuess } from '../_old/CollectionFieldGuess.svelte';
 export { default as CollectionButton } from '$lib/ui/CollectionButton.svelte';
 export * from '$lib/types/appschemeTypes.js';
 export * from '$lib/main/machineParserForge.js';
@@ -19,7 +19,7 @@ export * from '$lib/form/types.js';
 export { default as FieldValue } from '$lib/form/FieldValue.svelte';
 export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
 export { default as DataProvider } from '$lib/form/DataProvider.svelte';
-export { default as CrudZone } from '$lib/form/CrudZone.svelte';
+export { default as CrudZone } from '../_old/CrudZone.svelte';
 export { default as CreateUpdate } from '$lib/form/CreateUpdate.svelte';
 export { default as CreateOnly } from '$lib/form/CreateOnly.svelte';
 export * from '$lib/demo/testScheme.js';

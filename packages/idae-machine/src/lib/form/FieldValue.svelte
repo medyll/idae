@@ -1,187 +1,138 @@
-<!-- Component: CollectionFieldValue.svelte (ancien nom CollectionFieldInput.svelte) -->
+<!--
+FieldValue.svelte
+Svelte 5 field input for all types
+@role form-field
+@prop {string} collection - Collection name
+@prop {any} collectionId - Optional collection id
+@prop {string} fieldName - Field name
+@prop {object} data - Data object (bindable)
+@prop {'show'|'create'|'update'} [mode] - Form mode
+@prop {boolean} [editInPlace] - Enable in-place editing
+@prop {string} [inputForm] - Form id
+@prop {boolean|string} [showLabel] - Label position
+@slot input (let:fieldName, let:fieldForge, let:data) - Custom input rendering
+@event change - Emitted on value change (future)
+-->
 <script lang="ts" generics="COL extends Record<string,any>">
-	// Importation des types et composants nécessaires 
-	import type { TplCollectionName } from '@medyll/idae-idbql'; 
-	import {  getContext } from 'svelte';
-	import {machine} from '$lib/main/machine.js';
-	interface FieldValueProps {
-		collection:   TplCollectionName;
-		collectionId?: any;
-		fieldName:     keyof COL;
-		data?:         COL;
-		mode?:         'show' | 'create' | 'update';
-		editInPlace?:  boolean;
-		inputForm?:    string;
-		showLabel?:    LabelPosition;
-		showAiGuess?:  boolean;
-	}
+    import type { TplCollectionName } from '@medyll/idae-idbql';
+    import { getContext } from 'svelte';
+    import { machine } from '$lib/main/machine.js';
 
-	// Déclaration des propriétés du composant avec leurs valeurs par défaut
-	let {
-		collection = getContext('collection'),
-		collectionId,
-		fieldName,
-		data = $bindable(),
-		mode = 'show',
-		editInPlace = false,
-		inputForm,
-		showLabel = true
-	}: FieldValueProps = $props();
+    // 1. Unified props with bindable data
+    let { 
+        collection = getContext('collection'),
+        collectionId, 
+        fieldName, 
+        data = $bindable(), 
+        mode = 'show', 
+        editInPlace = false, 
+        inputForm, 
+        showLabel = true 
+    } = $props<{ 
+        collection?: TplCollectionName; 
+        collectionId?: any; 
+        fieldName: keyof COL; 
+        data: COL; 
+        mode?: 'show' | 'create' | 'update'; 
+        editInPlace?: boolean; 
+        inputForm?: string; 
+        showLabel?: boolean | string 
+    }>();
 
-	let _data = getContext('data'); 
+    // 2. Pure reactive derivations
+    const scheme = $derived(machine.logic.collection(collection));
+    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data));
+    const schemeFieldValues = $derived(scheme.collectionValues);
+    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data));
+    
+    const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
+    const labelPosition = $derived(
+        typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
+    );
 
-	data = data ?? ({} as COL);
-
-	// Initialisation des valeurs de champ de collection
-	const scheme = $derived(machine.logic.collection(collection))
-	const forge = $derived(scheme.fieldForge(String(fieldName), data)  )
-	let schemeFieldValues = $derived(scheme.collectionValues) 
-	let inputDataset =  $derived(schemeFieldValues.getInputDataSet(fieldName, data));
-	// Position de l'étiquette dérivée
-	const labelPosition = $derived(getLabelPosition(showLabel));
-
-	// Création d'une instance de forge de champ de collection
-	const fieldForge = $derived(forge);
-
-	// Détermination si le champ est privé
-	const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
-
-	// Arguments de forge pour le champ
-	let forgeArgs = {
-		required: fieldForge.fieldArgs?.includes('required'),
-		readonly: fieldForge.fieldArgs?.includes('readonly')
-	};
-
-	// Arguments finaux pour l'élément de formulaire
-	let finalArgs = {
-		id:          fieldName,
-		name:        fieldName,
-		form:        inputForm,
-		placeholder: `${fieldName} ${fieldForge.htmlInputType}`,
-		...forgeArgs,
-		...fieldForge.inputDataSet
-	};
-
-	// Effet déclenché lorsque collectionId ou editInPlace change
-	$effect(() => {
-		collectionId;
-		if (editInPlace && mode === 'show') {
-			console.log('Edit in place activated for', fieldName);
-		}
-	});
-
-
-	/**
-	 * Fonction pour obtenir la position de l'étiquette
-	 * @param {LabelPosition} position - Position de l'étiquette
-	 * @returns {string} - Position de l'étiquette sous forme de chaîne
-	 */
-	function getLabelPosition(position: LabelPosition): string {
-		if (position === true) return 'above';
-		if (position === false) return '';
-		return position;
-	}
-
-
+    let error = $state<string | null>(null);
 </script>
 
+{#snippet input()}
+    {#if mode === 'show'}
+        <div class="flex w-48 gap-2">
+            <div class="flex-1" {...inputDataset}>{fieldForge.format}</div>
+        </div>
+    {:else if fieldForge.fieldType === 'id'}
+        {#if mode !== 'create'}
+            <input type="hidden" bind:value={data[fieldName]} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
+        {/if}
+    {:else if fieldForge.fieldType === 'boolean'}
+        <input type="checkbox" bind:checked={data[fieldName]} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
+    {:else if fieldForge.fieldType?.includes('area')}
+        <textarea 
+            style="width:100%;max-width:100%;" 
+            bind:value={data[fieldName]} 
+            rows="3" 
+            class="input h-24" 
+            {...inputDataset} 
+            id={fieldName} 
+            name={fieldName} 
+            form={inputForm}
+        ></textarea>
+    {:else}
+        <input 
+            style="width: 100%" 
+            class="input" 
+            bind:value={data[fieldName]} 
+            type={fieldForge.htmlInputType} 
+            {...inputDataset} 
+            id={fieldName} 
+            name={fieldName} 
+            form={inputForm} 
+        />
+    {/if}
+{/snippet}
+
 {#if !isPrivate}
-	<div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
-		{#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
-			<label form={inputForm} for={fieldName} class="field-label {labelPosition}">{fieldName} </label>
-		{/if}
+    <div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
+        {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
+            <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
+                {fieldName}
+            </label>
+        {/if}
 
-		<div class="field-input flex">
-			{#if mode === 'show'}
-				<div class="flex w-48 gap-2">
-					<div class="flex-1" {...inputDataset}>{fieldForge.format}</div>
-					<!-- <IconButton width="tiny" onclick={() => console.log('Edit in place for', fieldName)} icon="mdi:pencil" /> -->
-				</div>
-			{:else if fieldForge.fieldType === 'id'}
-				{#if mode !== 'create'}
-					<input type="hidden" bind:value={data[fieldName]} {...inputDataset} {...finalArgs} />
-				{/if}
-			{:else if fieldForge.fieldType === 'boolean'}
-				<input type="checkbox" bind:checked={data[fieldName]} {...inputDataset} {...finalArgs} />
-			{:else if fieldForge.fieldType?.includes('area')}
-				<textarea
-					style="width:100%;max-width:100%;"
-					bind:value={data[fieldName]}
-					rows="3"
-					class="input h-24"
-					{...inputDataset}
-					{...finalArgs}>{data[fieldName]}</textarea
-				>
-			{:else if fieldForge.fieldType === 'text'}
-				<input
-					style="width: 100%"
-					class="input"
-					bind:value={data[fieldName]}
-					type={fieldForge.htmlInputType}
-					{...inputDataset}
-					{...finalArgs}
-				/>
-			{:else}
-				<input
-					style="width: 100%"
-					class="input"
-					bind:value={data[fieldName]}
-					type={fieldForge.htmlInputType}
-					{...inputDataset}
-					{...finalArgs}
-				/>
-			{/if}
-			<!-- <div><CollectionFieldGuess {collection} {collectionId} fieldNames={fieldName} formData={data} onGuess={handleGuess} /></div> -->
-		</div>
+        <div class="field-input flex">
+            {@render input()}
+        </div>
 
-		{#if labelPosition === 'after' || labelPosition === 'below'}
-			<label form={inputForm} for={fieldName} class="field-label {labelPosition}">{fieldName}</label>
-		{/if}
-	</div>
+        {#if labelPosition === 'after' || labelPosition === 'below'}
+            <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
+                {fieldName}
+            </label>
+        {/if}
+
+        {#if error}
+            <div class="error-message">{error}</div>
+        {/if}
+    </div>
 {/if}
 
 <style lang="postcss">
-	@reference "../../styles/references.css";
-	.field-label {
-		display: block;
-		font-weight: bold;
-		padding: 0.5rem;
-	}
+    @reference "../../styles/references.css";
 
-	.field-label.before,
-	.field-label.after {
-		display: block;
-		margin-right: 0.5em;
-	}
+    .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
+    
+    .field-label {
+        display: block;
+        font-weight: bold;
+        padding: 0.5rem;
+        
+        &.before, &.after { display: block; margin-right: 0.5em; }
+        &.above { margin-bottom: 0.25em; }
+        &.below { margin-top: 0.25em; }
+    }
 
-	.field-label.above {
-		margin-bottom: 0.25em;
-	}
-
-	.field-label.below {
-		margin-top: 0.25em;
-	}
-
-	.field-input {
-	}
-
-	.wrapper-text-tiny {
-		width: 110px;
-	}
-
-	.wrapper-text-medium {
-		width: 370px;
-	}
-
-	.wrapper-text-area {
-		flex-basis: 100%;
-		flex-grow: 1;
-		max-width: 100%;
-	}
-
-	.wrapper-text-long {
-		flex-basis: 100%;
-		flex-grow: 1;
-		max-width: 100%;
-	}
+    .wrapper-text-tiny { width: 110px; }
+    .wrapper-text-medium { width: 370px; }
+    .wrapper-text-area, .wrapper-text-long {
+        flex-basis: 100%;
+        flex-grow: 1;
+        max-width: 100%;
+    }
 </style>
