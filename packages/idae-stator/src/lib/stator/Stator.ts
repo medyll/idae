@@ -1,140 +1,212 @@
-/** Represents primitive types */
-type Primitive = string | number | boolean;
+/** * Represents JavaScript primitive types 
+ */
+type Primitive = string | number | boolean | bigint | symbol | null | undefined;
 
 /**
- * Represents the state type
- * For primitives, it wraps the value in an object
- * For non-primitives, it keeps the original type
+ * Basic state wrapper structure
  */
 type State<T> = { value: T };
 
 /**
  * Callback function type for state changes
- * @param oldValue The previous value of the state
- * @param newValue The new value of the state
  */
-type StateChangeHandler<T> = (oldValue: T, newValue: T) => void;
+type StateChangeHandler<T> = (newValue: T) => void;
 
 /**
- * Augmented state type that includes the onchange handler
+ * Augmented state type providing reactivity, event subscription, and utility methods
  */
 type AugmentedState<T> = State<T> & {
+  /** The callback triggered on any state mutation */
   onchange?: StateChangeHandler<T>;
+  /** Standard event listener for 'change' events */
+  addEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) => void;
+  /** Removes a previously attached 'change' event listener */
+  removeEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) => void;
+  /** Manually dispatches an event */
+  triggerChange: (event: Event) => boolean;
+  /** Returns a JSON string representation of the state */
   toString: () => string;
+  /** Returns the raw underlying value */
   valueOf: () => T;
+  /** Handles implicit type conversion (string/number) */
   [Symbol.toPrimitive]: (hint: string) => Primitive;
+  /** Access to the raw state data */
+  stator: T;
 };
 
 /**
- * Creates a stateful object with change tracking
- * @param initialState The initial state value
- * @returns A proxy object that wraps the state and provides change tracking
+ * Creates a deeply reactive state object.
+ * * Features:
+ * - Deep reactivity via Proxy (works with nested objects and arrays)
+ * - EventTarget compatible (works in Browser and Node.js)
+ * - No redundant notifications on array mutations
+ * - Memory efficient using WeakMap for proxy tracking
+ * * @param initialState The initial value to wrap
+ * @returns A reactive Proxy object
  */
 export function stator<T>(initialState: T): AugmentedState<T> {
+  
   /**
-   * Checks if a value is of primitive type
-   * @param val The value to check
-   * @returns True if the value is a primitive, false otherwise
+   * Internal EventTarget polyfill to ensure cross-environment compatibility (Node/Browser)
+   */
+  class StatorEventTarget {
+    private et: EventTarget;
+    constructor() {
+      if (typeof window !== 'undefined' && typeof window.EventTarget !== 'undefined') {
+        this.et = new window.EventTarget();
+      } else if (typeof document !== 'undefined' && typeof document.createElement === 'function') {
+        this.et = document.createElement('span');
+      } else {
+        // Fallback for Node.js environments without built-in EventTarget
+        let listeners: Record<string, Set<EventListenerOrEventListenerObject>> = {};
+        this.et = {
+          addEventListener(type: string, listener: EventListenerOrEventListenerObject) {
+            if (!listeners[type]) listeners[type] = new Set();
+            listeners[type].add(listener);
+          },
+          removeEventListener(type: string, listener: EventListenerOrEventListenerObject) {
+            listeners[type]?.delete(listener);
+          },
+          dispatchEvent(event: Event) {
+            const ls = listeners[event.type];
+            if (!ls) return true;
+            for (const l of Array.from(ls)) {
+              if (typeof l === 'function') l.call(undefined, event);
+              else if (l && typeof l.handleEvent === 'function') l.handleEvent(event);
+            }
+            return true;
+          }
+        } as unknown as EventTarget;
+      }
+    }
+    addEventListener(...args: Parameters<EventTarget['addEventListener']>) { this.et.addEventListener(...args); }
+    removeEventListener(...args: Parameters<EventTarget['removeEventListener']>) { this.et.removeEventListener(...args); }
+    triggerChange(event: Event) { return this.et.dispatchEvent(event); }
+  }
+
+  const eventTarget = new StatorEventTarget();
+  const proxyCache = new WeakMap<object, any>();
+  
+  let onchange: StateChangeHandler<T> | undefined;
+  let onchangeListener: ((e: Event) => void) | undefined;
+
+  /**
+   * Type guard to check for primitive values
    */
   function isPrimitive(val: unknown): val is Primitive {
-    return (
-      typeof val === "string" ||
-      typeof val === "number" ||
-      typeof val === "boolean"
-    );
+    return val === null || (typeof val !== "object" && typeof val !== "function");
   }
 
   /**
-   * Logs errors with a custom prefix
-   * @param message The error message
-   * @param error The error object
+   * Dispatches the change event to all subscribers
    */
-  function logError(message: string, error: unknown) {
-    console.error(`[Stator Error] ${message}`, error);
+  function notify(newValue: any) {
+    eventTarget.triggerChange(new CustomEvent('change', { detail: { newValue } }));
   }
 
-  // Create the state object
-  const state: State<T> = { value: initialState };
+  /**
+   * Recursively creates a Proxy for nested objects or arrays
+   */
+  function deepProxy(obj: any, info: { getOnChange: () => any, rootState: any }): any {
+    if (isPrimitive(obj)) return obj;
+    if (proxyCache.has(obj)) return proxyCache.get(obj);
 
-  // Default onchange handler
-  let onchange: StateChangeHandler<T> | undefined;
+    const handler: ProxyHandler<any> = {
+      get(target, property, receiver) {
+        // Special internal property mapping
+        const reserved: Record<string | symbol, any> = {
+          onchange: info.getOnChange(),
+          addEventListener: eventTarget.addEventListener.bind(eventTarget),
+          removeEventListener: eventTarget.removeEventListener.bind(eventTarget),
+          triggerChange: eventTarget.triggerChange.bind(eventTarget),
+          stator: target,
+          valueOf: () => target,
+          toString: () => JSON.stringify(target),
+          [Symbol.for('nodejs.util.inspect.custom')]: () => target
+        };
 
-  // Proxy handler to intercept property access and modifications
-  const handler: ProxyHandler<AugmentedState<T>> = {
-    get(target: State<T>, property: string | symbol, receiver: any) {
-      try {
-        if (property === "onchange") {
-          return onchange;
-        }
-        if (property === "stator") {
-          return target.value;
-        }
-        if (property === "toString") {
-          return function () {
-            return String(target.value);
-          };
-        }
-        if (property === "valueOf") {
-          return function () {
-            return target.value;
-          };
-        }
+        if (property in reserved) return reserved[property];
+
         if (property === Symbol.toPrimitive) {
-          return function (hint: string) {
-            if (hint === "number") return Number(target.value);
-            if (hint === "string") return String(target.value);
-            return isPrimitive(target.value)
-              ? target.value
-              : String(target.value);
-          };
+          return (hint: string) => hint === "number" ? Number(target) : JSON.stringify(target);
         }
-        return Reflect.get(target.value, property, receiver);
-      } catch (error) {
-        logError(`Error getting property ${String(property)}:`, error);
-        throw error;
+
+        let value = Reflect.get(target, property, receiver);
+        return isPrimitive(value) ? value : deepProxy(value, info);
+      },
+
+      set(target, property, value, receiver) {
+        const oldValue = target[property];
+        const proxiedValue = isPrimitive(value) ? value : deepProxy(value, info);
+        const result = Reflect.set(target, property, proxiedValue, receiver);
+        
+        // Only notify if the value actually changed to prevent loops
+        if (oldValue !== proxiedValue) {
+          notify(info.rootState.value);
+        }
+        return result;
+      },
+
+      deleteProperty(target, property) {
+        const result = Reflect.deleteProperty(target, property);
+        notify(info.rootState.value);
+        return result;
       }
+    };
+
+    const proxy = new Proxy(obj, handler);
+    proxyCache.set(obj, proxy);
+    return proxy;
+  }
+
+  const stateWrapper: State<T> = { value: undefined as any };
+  const sharedInfo = { getOnChange: () => onchange, rootState: stateWrapper };
+
+  // Initialize the state value
+  stateWrapper.value = isPrimitive(initialState) ? initialState : deepProxy(initialState, sharedInfo);
+
+  /**
+   * Root Proxy Handler
+   */
+  const rootHandler: ProxyHandler<State<T>> = {
+    get(target, property, receiver) {
+      if (property === "value" || property === "stator") return target.value;
+      if (property === "onchange") return onchange;
+      if (property === "addEventListener") return eventTarget.addEventListener.bind(eventTarget);
+      if (property === "removeEventListener") return eventTarget.removeEventListener.bind(eventTarget);
+      
+      // Allow direct property access on the state object (e.g., state.someProp)
+      if (!isPrimitive(target.value)) {
+        return Reflect.get(target.value as object, property, receiver);
+      }
+      return Reflect.get(target, property, receiver);
     },
-    set(
-      target: State<T>,
-      property: string | symbol,
-      value: any,
-      receiver: any,
-    ) {
+
+    set(target, property, value) {
+      // Logic for the onchange callback property
       if (property === "onchange") {
-        if (typeof value !== "function") {
-          throw new TypeError("onchange must be a function");
-        }
-        onchange = value as StateChangeHandler<T>;
-        return true;
-      }
-
-      try {
-        const oldValue = target.value;
-        let newValue: T;
-
-        if (property === "stator") {
-          newValue = value;
-          target.value = value;
-        } else if (typeof target.value === "object" && target.value !== null) {
-          Reflect.set(target.value, property, value);
-          newValue = { ...target.value };
+        if (onchangeListener) eventTarget.removeEventListener("change", onchangeListener);
+        if (typeof value === "function") {
+          onchange = value;
+          onchangeListener = (e: any) => onchange?.(e.detail.newValue);
+          eventTarget.addEventListener("change", onchangeListener);
+        } else if (value == null) {
+          onchange = undefined;
         } else {
-          throw new Error("Cannot set property on primitive value");
+          throw new TypeError("onchange must be a function or undefined");
         }
-
-        if (onchange && !Object.is(oldValue, newValue)) {
-          onchange(oldValue, newValue);
-        }
-
         return true;
-      } catch (error) {
-        logError(`Error setting property ${String(property)}:`, error);
-        throw error;
       }
-    },
-    // ... (other methods unchanged)
+
+      // Logic for updating the core value
+      if (property === "value" || property === "stator") {
+        target.value = isPrimitive(value) ? value : deepProxy(value, sharedInfo);
+        notify(target.value);
+        return true;
+      }
+      return false;
+    }
   };
 
-  // Create and return the proxied state object
-  return new Proxy(state, handler) as unknown as AugmentedState<T>;
+  return new Proxy(stateWrapper, rootHandler) as unknown as AugmentedState<T>;
 }

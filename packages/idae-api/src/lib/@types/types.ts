@@ -1,5 +1,4 @@
 export { DbType } from "@medyll/idae-db";
-
 export interface ApiResponse<T extends object> {
   data?: T[];
   count?: number;

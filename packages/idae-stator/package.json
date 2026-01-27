@@ -4,7 +4,6 @@
     "idae-stator": "./cli.js"
   },
   "version": "0.51.0",
-  "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"

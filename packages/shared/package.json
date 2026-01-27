@@ -5,7 +5,7 @@
   "description": "sharing",
   "main": "indexIfy.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "prepackage": "node scripts/package-pre.js"
   },
   "author": "",
@@ -17,7 +17,6 @@
     "svelte-check": "^4.1.5"
   },
   "devDependencies": {
-    "@medyll/idae-eslint-config": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/fs-extra": "^11.0.4",

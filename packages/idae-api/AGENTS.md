@@ -120,3 +120,66 @@ const users = await client.db('app').collection('user').findAll();
 - 403: check RBAC/ABAC route config and user claims.
 - 500 on DB: ensure `IdaeDb` initialized with correct `DbType` and URI.
 - CORS: configure Express middleware before `idaeApi.start()`.
+
+
+# Database Adapter Extension — Implementation Phases & Focus Points
+
+## Overview
+The current architecture is based on the Adapter pattern (`IdaeDbAdapter`), making it straightforward to add support for new database types (PostgreSQL, SQLite, PouchDB, etc.) without refactoring the core API or client logic.
+
+## Implementation Phases
+
+1. **Adapter Implementation**
+   - Implement a new adapter class (e.g., `PostgreSQLAdapter`, `SQLiteAdapter`, `PouchDBAdapter`) that fulfills the `IdaeDbAdapterInterface<T>` contract (CRUD, transactions, etc.).
+   - Ensure all required static and instance methods are present: `connect()`, `getDb()`, `close()`, `create()`, `find()`, `findOne()`, `update()`, `deleteById()`, `transaction()`, etc.
+
+2. **Registration**
+   - Register the new adapter in the static initializer:
+     ```typescript
+     static {
+       IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, PostgreSQLAdapter);
+       IdaeDbAdapter.addAdapter(DbType.SQLITE, SQLiteAdapter);
+       IdaeDbAdapter.addAdapter(DbType.POUCHDB, PouchDBAdapter);
+       // ...
+     }
+     ```
+   - Extend the `DbType` enum in `@types/types.ts`:
+     ```typescript
+     export enum DbType {
+       MONGODB = 'mongodb',
+       MYSQL = 'mysql',
+       POSTGRESQL = 'postgresql',
+       SQLITE = 'sqlite',
+       POUCHDB = 'pouchdb',
+       // ...
+     }
+     ```
+
+3. **Configuration**
+   - Pass the desired DB type in the API config:
+     ```typescript
+     idaeApi.setOptions({
+       idaeDbOptions: {
+         dbType: DbType.POSTGRESQL, // or SQLITE, POUCHDB, ...
+       }
+     });
+     ```
+   - No changes are required in routes, middleware, or client code: all use the abstract interface.
+
+4. **Testing & Documentation**
+   - Write unit/integration tests for the new adapter (CRUD, filters, transactions, error handling).
+   - Update documentation and usage examples for each supported DB.
+
+## Focus Points
+- **Adapter contract**: Each adapter must fully implement the `IdaeDbAdapterInterface<T>` for compatibility.
+- **Query syntax**: All adapters must support MongoDB-like query syntax (filters, operators) and translate as needed.
+- **Transactions**: Implement transaction support if the backend allows it; otherwise, document limitations.
+- **Testing**: Non-relational/local DBs (e.g., PouchDB) may require special test strategies.
+- **Documentation**: Keep agent and user docs up to date for each new backend.
+
+## Summary
+- PostgreSQL, SQLite, PouchDB, and other DBs can be added without major refactoring.
+- The main effort is in adapter implementation and thorough testing.
+- See technical documentation and agent instructions for detailed procedures.
+
+---

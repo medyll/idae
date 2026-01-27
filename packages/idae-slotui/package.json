@@ -91,7 +91,7 @@
   "type": "module",
   "dependencies": {
     "@iconify/svelte": "^4.2.0",
-    "@medyll/idae-prettier-config": "1.2.4",
+    "@medyll/idae-prettier-config": "workspace:*",
     "d3": "^7.9.0",
     "lerna": "^8.2.1",
     "npm-check-updates": "^17.1.16",

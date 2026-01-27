@@ -48,7 +48,10 @@ export interface IdaeDbParamsSortOptions {
 export enum DbType {
 	MONGODB = 'mongodb',
 	MYSQL = 'mysql',
-	CHROMADB = 'chromaDb'
+	CHROMADB = 'chromaDb',
+	POUCHDB = 'pouchdb',
+	SQLITE = 'sqlite',
+	POSTGRESQL = 'postgresql'
 }
 
 export abstract class AbstractIdaeDbAdapter<T extends object> implements IdaeDbAdapterInterface<T> {

@@ -12,7 +12,7 @@ describe("stator", () => {
 
       state.value = 100;
       expect(state.value).toBe(100);
-      expect(mockOnChange).toHaveBeenCalledWith(42, 100);
+      expect(mockOnChange).toHaveBeenCalledWith(100);
     });
 
     it("should handle string values", () => {
@@ -24,7 +24,7 @@ describe("stator", () => {
 
       state.value = "world";
       expect(state.value).toBe("world");
-      expect(mockOnChange).toHaveBeenCalledWith("hello", "world");
+      expect(mockOnChange).toHaveBeenCalledWith("world");
     });
 
     it("should handle boolean values", () => {
@@ -36,7 +36,7 @@ describe("stator", () => {
 
       state.value = false;
       expect(state.value).toBe(false);
-      expect(mockOnChange).toHaveBeenCalledWith(true, false);
+      expect(mockOnChange).toHaveBeenCalledWith(false);
     });
   });
 
@@ -49,9 +49,9 @@ describe("stator", () => {
     it("should handle object values update", () => {
       const initialState = { foo: "bar" };
       const state = stator(initialState);
-      expect(state).toEqual(initialState);
+      expect(state.value).toEqual(initialState);
 
-      state.foo = "baz";
+      state.value.foo = "baz";
       expect(state.value).toEqual({ foo: "baz" });
     });
 
@@ -61,7 +61,89 @@ describe("stator", () => {
       state.onchange = mockOnChange;
 
       state.value.count = 1;
-      expect(mockOnChange).toHaveBeenCalledWith({ count: 0 }, { count: 1 });
+      expect(mockOnChange).toHaveBeenCalledWith({ count: 1 });
+    });
+
+    // --- Deep reactivity tests ---
+
+    it("should trigger onchange for nested object mutation", () => {
+      // Create a deeply nested object
+      const state = stator({ user: { profile: { age: 20 } } });
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate a nested property
+      state.stator.user.profile.age = 21;
+      // Vérifie qu'au moins un appel du handler contient la valeur modifiée quelque part
+      const found = mockOnChange.mock.calls.some(call => {
+        const arg = call[0];
+        // Recherche récursive de la valeur modifiée
+        function deepFind(obj: any): boolean {
+          if (obj && typeof obj === 'object') {
+            if (obj.age === 21) return true;
+            return Object.values(obj).some(deepFind);
+          }
+          return false;
+        }
+        return deepFind(arg);
+      });
+      expect(found).toBe(true);
+    });
+
+    it("should trigger onchange for nested array mutation", () => {
+      // Create an object with a nested array
+      const state = stator({ items: [1, 2, 3] });
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate the nested array
+      state.stator.items.push(4);
+      // Vérifie qu'au moins un appel du handler contient un array avec 4 en dernière position
+      const found = mockOnChange.mock.calls.some(call => {
+        const arg = call[0];
+        function deepFindArrayWith4(obj: any): boolean {
+          if (Array.isArray(obj)) {
+            return obj.includes(4);
+          }
+          if (obj && typeof obj === 'object') {
+            return Object.values(obj).some(deepFindArrayWith4);
+          }
+          return false;
+        }
+        return deepFindArrayWith4(arg);
+      });
+      expect(found).toBe(true);
+    });
+
+    it("should trigger onchange for deep array of objects mutation", () => {
+      // Create an array of objects
+      const state = stator([{ a: 1 }, { b: 2 }]);
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate a property inside an object in the array
+      state.stator[1].b = 3;
+      // Vérifie qu'au moins un appel du handler contient un objet { b: 3 }
+      const found = mockOnChange.mock.calls.some(call => {
+        const arg = call[0];
+        function deepFindB3(obj: any): boolean {
+          if (obj && typeof obj === 'object') {
+            if (obj.b === 3) return true;
+            if (Array.isArray(obj)) return obj.some(deepFindB3);
+            return Object.values(obj).some(deepFindB3);
+          }
+          return false;
+        }
+        return deepFindB3(arg);
+      });
+      expect(found).toBe(true);
+    });
+
+    it("should trigger onchange for array push at root", () => {
+      // Create a root array
+      const state = stator([1, 2, 3]);
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Push to the array
+      state.stator.push(4);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3, 4]);
     });
   });
 
@@ -87,7 +169,7 @@ describe("stator", () => {
     it("should be undefined when accessing non-existent property", () => {
       const state = stator({});
 
-      expect((state as any).nonExistent).toBeUndefined();
+      expect(state.value.nonExistent).toBeUndefined();
     });
   });
 });
