@@ -125,8 +125,15 @@ import { Client as PgClient } from 'pg';
   }
   static async close(): Promise<void> {
   }
+  private db: any;
+  constructor(collection: string, db: any) {
+    // PouchDB n'a pas de notion de collection, mais on peut utiliser un champ type ou prefix
+    this.db = db;
+  }
   async create(data: T): Promise<T> {
-    throw new Error('Not implemented');
+    // Insert document in PouchDB
+    const result = await this.db.post(data);
+    return { ...data, _id: result.id, _rev: result.rev };
   }
   async find(filter?: any): Promise<T[]> {
     throw new Error('Not implemented');
