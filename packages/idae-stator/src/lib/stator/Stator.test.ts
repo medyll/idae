@@ -49,9 +49,9 @@ describe("stator", () => {
     it("should handle object values update", () => {
       const initialState = { foo: "bar" };
       const state = stator(initialState);
-      expect(state).toEqual(initialState);
+      expect(state.value).toEqual(initialState);
 
-      state.foo = "baz";
+      state.value.foo = "baz";
       expect(state.value).toEqual({ foo: "baz" });
     });
 
@@ -62,6 +62,57 @@ describe("stator", () => {
 
       state.value.count = 1;
       expect(mockOnChange).toHaveBeenCalledWith({ count: 0 }, { count: 1 });
+    });
+
+    // --- Deep reactivity tests ---
+
+    it("should trigger onchange for nested object mutation", () => {
+      // Create a deeply nested object
+      const state = stator({ user: { profile: { age: 20 } } });
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate a nested property
+      state.stator.user.profile.age = 21;
+      expect(mockOnChange).toHaveBeenCalledWith(
+        { user: { profile: { age: 20 } } },
+        { user: { profile: { age: 21 } } }
+      );
+    });
+
+    it("should trigger onchange for nested array mutation", () => {
+      // Create an object with a nested array
+      const state = stator({ items: [1, 2, 3] });
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate the nested array
+      state.stator.items.push(4);
+      expect(mockOnChange).toHaveBeenCalledWith(
+        { items: [1, 2, 3] },
+        { items: [1, 2, 3, 4] }
+      );
+    });
+
+    it("should trigger onchange for deep array of objects mutation", () => {
+      // Create an array of objects
+      const state = stator([{ a: 1 }, { b: 2 }]);
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Mutate a property inside an object in the array
+      state.stator[1].b = 3;
+      expect(mockOnChange).toHaveBeenCalledWith(
+        [{ a: 1 }, { b: 2 }],
+        [{ a: 1 }, { b: 3 }]
+      );
+    });
+
+    it("should trigger onchange for array push at root", () => {
+      // Create a root array
+      const state = stator([1, 2, 3]);
+      const mockOnChange = vi.fn();
+      state.onchange = mockOnChange;
+      // Push to the array
+      state.stator.push(4);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3], [1, 2, 3, 4]);
     });
   });
 
@@ -87,7 +138,7 @@ describe("stator", () => {
     it("should be undefined when accessing non-existent property", () => {
       const state = stator({});
 
-      expect((state as any).nonExistent).toBeUndefined();
+      expect(state.value.nonExistent).toBeUndefined();
     });
   });
 });

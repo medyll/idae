@@ -1,15 +1,18 @@
 ---
 name: make-skill-template
-description: 'Create new Agent Skills for GitHub Copilot from prompts or by duplicating this template. Use when asked to "create a skill", "make a new skill", "scaffold a skill", or when building specialized AI capabilities with bundled resources. Generates SKILL.md files with proper frontmatter, directory structure, and optional scripts/references/assets folders.'
+description: 'Create, optimize, or update Agent Skills for GitHub Copilot from prompts or by duplicating this template. Use when asked to "create a skill", "make a new skill", "scaffold a skill", or when building specialized AI capabilities with bundled resources. Also use when asked to update, optimize, or improve an existing skill. Generates SKILL.md files with proper frontmatter, directory structure, and optional scripts/references/assets folders.'
 ---
+
 
 # Make Skill Template
 
-A meta-skill for creating new Agent Skills. Use this skill when you need to scaffold a new skill folder, generate a SKILL.md file, or help users understand the Agent Skills specification.
+A meta-skill for creating, optimizing, or updating Agent Skills. Use this skill when you need to scaffold a new skill folder, generate or update a SKILL.md file, optimize an existing skill, or help users understand the Agent Skills specification.
+
 
 ## When to Use This Skill
 
-- User asks to "create a skill", "make a new skill", or "scaffold a skill"
+- User asks to "create a skill", "make a new skill", "scaffold a skill", or "update a skill"
+- User veut mettre à jour, optimiser, ou améliorer une skill existante
 - User wants to add a specialized capability to their GitHub Copilot setup
 - User needs help structuring a skill with bundled resources
 - User wants to duplicate this template as a starting point
@@ -20,9 +23,11 @@ A meta-skill for creating new Agent Skills. Use this skill when you need to scaf
 - A clear, keyword-rich description of capabilities and triggers
 - Knowledge of any bundled resources needed (scripts, references, assets, templates)
 
-## Creating a New Skill
 
-### Step 1: Create the Skill Directory
+## Creating or Updating a Skill
+
+
+### Step 1: Create or Locate the Skill Directory
 
 Create a new folder with a lowercase, hyphenated name:
 
@@ -31,9 +36,10 @@ skills/<skill-name>/
 └── SKILL.md          # Required
 ```
 
-### Step 2: Generate SKILL.md with Frontmatter
 
-Every skill requires YAML frontmatter with `name` and `description`:
+### Step 2: Generate or Update SKILL.md with Frontmatter
+
+Every skill requires YAML frontmatter with `name` and `description`. When updating, ensure these fields are current and reflect any new capabilities or triggers:
 
 ```yaml
 ---
@@ -73,9 +79,10 @@ description: 'Toolkit for testing local web applications using Playwright. Use w
 description: 'Web testing helpers'
 ```
 
-### Step 3: Write the Skill Body
 
-After the frontmatter, add markdown instructions. Recommended sections:
+### Step 3: Write or Update the Skill Body
+
+After the frontmatter, add or update markdown instructions. Recommended sections:
 
 | Section | Purpose |
 |---------|---------|
@@ -86,7 +93,8 @@ After the frontmatter, add markdown instructions. Recommended sections:
 | `## Troubleshooting` | Common issues and solutions |
 | `## References` | Links to bundled docs |
 
-### Step 4: Add Optional Directories (If Needed)
+
+### Step 4: Add or Update Optional Directories (If Needed)
 
 | Folder | Purpose | When to Use |
 |--------|---------|-------------|
@@ -94,6 +102,7 @@ After the frontmatter, add markdown instructions. Recommended sections:
 | `references/` | Documentation agent reads | API references, schemas, guides |
 | `assets/` | Static files used AS-IS | Images, fonts, templates |
 | `templates/` | Starter code agent modifies | Scaffolds to extend |
+
 
 ## Example: Complete Skill Structure
 
@@ -112,16 +121,19 @@ my-awesome-skill/
     └── starter.ts              # Code scaffold
 ```
 
-## Quick Start: Duplicate This Template
 
-1. Copy the `make-skill-template/` folder
+## Quick Start: Duplicate or Update This Template
+
+1. To create: Copy the `make-skill-template/` folder
 2. Rename to your skill name (lowercase, hyphens)
 3. Update `SKILL.md`:
-   - Change `name:` to match folder name
-   - Write a keyword-rich `description:`
-   - Replace body content with your instructions
-4. Add bundled resources as needed
-5. Validate with `npm run skill:validate`
+    - Change `name:` to match folder name
+    - Write a keyword-rich `description:`
+    - Replace or complete body content with your instructions
+4. To update: Edit the existing `SKILL.md` and any resources to reflect new capabilities, triggers, or optimizations
+5. Add or update bundled resources as needed
+6. Validate with `npm run skill:validate`
+
 
 ## Validation Checklist
 
@@ -133,6 +145,7 @@ my-awesome-skill/
 - [ ] Body content is under 500 lines
 - [ ] Bundled assets are under 5MB each
 
+
 ## Troubleshooting
 
 | Issue | Solution |
@@ -141,6 +154,7 @@ my-awesome-skill/
 | Validation fails on name | Ensure lowercase, no consecutive hyphens, matches folder |
 | Description too short | Add capabilities, triggers, and keywords |
 | Assets not found | Use relative paths from skill root |
+
 
 ## References
 

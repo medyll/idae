@@ -1,29 +1,30 @@
 
-# AGENTS.md — Conventions pour l'usage d'IA/Copilot dans idae-stator
 
-## Contexte du projet
-- **idae-stator** est une librairie de gestion d'état réactive, agnostique du framework, écrite en TypeScript/JavaScript.
-- Le cœur de la logique se trouve dans `src/lib/stator/Stator.ts`.
-- SvelteKit est utilisé uniquement pour les démos/tests, pas comme cible principale.
+# AGENTS.md — Conventions for AI/Copilot Usage in idae-stator
 
-## Règles et conventions pour les agents IA/Copilot
+## Project Context
+- **idae-stator** is a framework-agnostic, reactive state management library written in TypeScript/JavaScript.
+- The core logic is in `src/lib/stator/Stator.ts`.
+- SvelteKit is used only for demos/tests, not as a primary target.
 
-- **Point d'entrée** : Utiliser la fonction `stator` pour créer des états réactifs.
-- **Gestion des changements** : Les objets d'état exposent un handler `.onchange` pour détecter les modifications.
-- **Modification d'état** : L'état se modifie via la propriété `.stator` (ex : `countState.stator++`).
-- **Mise à jour UI** : Les mises à jour d'UI sont déclenchées manuellement (voir `updateUI()` dans la démo) ou via la réactivité Svelte.
-- **Colocation logique** : Privilégier la colocation de la logique d'état et de la logique UI pour plus de clarté.
-- **Aucune dépendance externe** : N'utiliser aucune librairie de gestion d'état externe.
-- **Extensibilité** : Ajouter de nouveaux helpers d'état dans `src/lib/stator/` si besoin.
+## Rules and Conventions for AI/Copilot Agents
 
-## Bonnes pratiques pour Copilot/IA
-- Suivre les patterns idiomatiques TypeScript/JavaScript et Svelte, sauf indication contraire.
-- Se référer à `README.md` pour les exemples d'usage et la structure HTML attendue.
-- Pour les tests, utiliser Jest (`npx jest src/lib/stator/Stator.test.ts`).
-- Pour le build, utiliser Vite (`vite.config.ts`).
-- Pour l'intégration SvelteKit, voir `svelte.config.js` si besoin.
+- **Entry Point:** Use the `stator` function to create reactive state objects.
+- **Change Handling:** State objects expose an `.onchange` handler to detect modifications.
+- **State Mutation:** State is mutated via the `.stator` property (e.g., `countState.stator++`).
+- **UI Updates:** UI updates are triggered manually (see `updateUI()` in the demo) or via Svelte reactivity.
+- **Logic Co-location:** Prefer colocating state logic and UI logic for clarity.
+- **No External Dependencies:** Do not use any external state management libraries.
+- **Extensibility:** Add new state helpers in `src/lib/stator/` if needed.
 
-## Exemples d'usage (pour l'IA)
+## Best Practices for Copilot/AI
+- Follow idiomatic TypeScript/JavaScript and Svelte patterns unless otherwise specified.
+- Refer to `README.md` for usage examples and expected HTML structure.
+- For tests, use Jest (`npx jest src/lib/stator/Stator.test.ts`).
+- For builds, use Vite (`vite.config.ts`).
+- For SvelteKit integration, see `svelte.config.js` if needed.
+
+## Example Usage (for AI)
 
 ```js
 import { stator } from './Stator.ts';
@@ -32,12 +33,40 @@ count.onchange = (oldVal, newVal) => { /* ... */ };
 count.stator++;
 ```
 
-## Notes complémentaires
-- Le projet ne définit pas de règles IA spécifiques autres que celles ci-dessus.
-- Toujours privilégier la simplicité, la clarté et la compatibilité framework-agnostique.
+## Additional Notes
+- The project does not define any AI-specific rules beyond those above.
+- Always prioritize simplicity, clarity, and framework-agnostic compatibility.
 
 ---
-Pour plus de détails, voir :
+
+## Future Improvements and Directions
+
+- **Deep Reactivity**
+  - Reactivity on objects is shallow: mutation of nested properties is not automatically detected (no deep reactivity).
+  - Possible improvement: support for deep reactivity (deep proxy) or another recursive observation mechanism.
+- **Interoperability**
+  - Integration with other frameworks (React, Vue, etc.) is not demonstrated, even though the library is agnostic.
+  - Possible improvement: provide helpers or examples for other frameworks.
+- **API Ergonomics**
+  - Accessing the value via `.stator` and mutating via the same property can be confusing, especially for objects.
+  - Possible improvement: clarify the distinction between read/write, or offer an alternative API (e.g., `.get()` / `.set()`).
+- **Performance**
+  - Proxies are efficient for simple objects, but handling large or deeply nested structures may be problematic.
+  - Possible improvement: benchmarks, profiling, and possibly optimizing change management.
+- **Tests**
+  - Tests cover basic cases, but lack coverage for deep mutation, performance, and edge cases (e.g., property deletion, arrays, etc.).
+  - Possible improvement: expand test coverage.
+- **Documentation**
+  - Documentation is clear for basic usage, but could include FAQs, advanced cases, and comparisons with other libraries.
+  - Possible improvement: add integration guides, diagrams, and advanced examples.
+- **Extensibility**
+  - Adding helpers is planned, but there are no complementary modules yet (e.g., undo/redo, persistence, etc.).
+  - Possible improvement: provide official extensions or hooks to enrich the library.
+- **Array Handling**
+  - Behavior on arrays is neither documented nor tested.
+  - Possible improvement: clarify and test mutation handling on arrays.
+
+For more details, see:
 - [copilot-instructions.md](.github/copilot-instructions.md)
 - [README.md](README.md)
 - [src/lib/stator/Stator.ts](src/lib/stator/Stator.ts)

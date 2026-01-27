@@ -9,50 +9,60 @@ This is a demonstration of the **Stator** library, which provides reactive state
 - Manual and automatic state updates.
 - Simple UI updates based on state changes.
 
+
 ## Code Example
 
-Below is an example of how to use the Stator library:
+Below is an example of how to use the Stator library, including deep reactivity:
 
 ```javascript
 // Import the stator library
 import { stator } from './Stator.ts';
 
 // Create reactive states
-let countState = stator(0);
-let countObje = stator({ index: 0 });
-let monobjSte = stator({ index: 0 });
+let countState = stator(0); // primitive
+let userState = stator({
+    name: 'Alice',
+    profile: {
+        age: 30,
+        hobbies: ['reading', 'sports']
+    }
+});
+let arrState = stator([1, 2, { deep: true }]);
 
 // State change handlers
 countState.onchange = (oldValue, newValue) => {
     console.log('countState', oldValue, newValue);
 };
-countObje.onchange = (oldValue, newValue) => {
-    console.log('countObje', oldValue, newValue);
+userState.onchange = (oldValue, newValue) => {
+    console.log('userState', oldValue, newValue);
+};
+arrState.onchange = (oldValue, newValue) => {
+    console.log('arrState', oldValue, newValue);
 };
 
-// Increment the value every 30 seconds
-setInterval(() => {
-    // Uncomment to enable automatic increment
-    // countState.stator++;
-    // monobjSte.stator.index++;
-}, 30000);
+// --- Deep reactivity demonstration ---
+// Mutate a nested property (deep object)
+userState.stator.profile.age = 31; // onchange will be triggered
 
-// Function to manually increment the count
-function incrementCount() {
-    countState.stator++;
-    monobjSte.stator.index++;
-    updateUI();
-}
+// Mutate a nested array
+userState.stator.profile.hobbies.push('music'); // onchange will be triggered
 
-// Function to update the UI
+// Mutate a nested object inside an array
+arrState.stator[2].deep = false; // onchange will be triggered
+
+// Add/remove array elements
+arrState.stator.push(99); // onchange will be triggered
+arrState.stator.splice(0, 1); // onchange will be triggered
+
+// Function to update the UI (example)
 function updateUI() {
-    document.getElementById('count').textContent = `${countState.stator}-${countObje.stator.index}`;
+    document.getElementById('count').textContent = `${countState.stator} - ${userState.stator.profile.age}`;
 }
 
 // Initialize the UI
 window.onload = () => {
     updateUI();
-    console.log(monobjSte, countState.stator);
+    console.log(userState, arrState, countState.stator);
 };
 ```
 
@@ -76,12 +86,14 @@ The following HTML structure is used for the demo:
 </html>
 ```
 
+
 ## How It Works
 
 1. **Reactive States**: The `stator` function creates reactive states that automatically notify changes.
-2. **State Handlers**: The `onchange` handlers log state changes to the console.
-3. **UI Updates**: The `updateUI` function updates the DOM based on the current state values.
-4. **Manual Increment**: The `incrementCount` function allows manual state updates via a button click.
+2. **Deep Reactivity**: Mutations to nested properties or arrays (objects within objects, arrays within objects, etc.) are detected and trigger the `onchange` handler.
+3. **State Handlers**: The `onchange` handlers log state changes to the console.
+4. **UI Updates**: The `updateUI` function updates the DOM based on the current state values.
+5. **Manual Increment**: The `incrementCount` function allows manual state updates via a button click.
 
 ## Usage
 
