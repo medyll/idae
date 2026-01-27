@@ -12,6 +12,9 @@ import { IdaeDbConnection } from './IdaeDbConnection.js';
 import { MongoDBAdapter } from './adapters/MongoDBAdapter.js';
 import { MySQLAdapter } from './adapters/MySQLAdapter.js';
 import { ChromaDBAdapter } from './adapters/ChromaDBAdapter.js';
+import { PouchDBAdapter } from './adapters/PouchDBAdapter.js';
+import { SQLiteAdapter } from './adapters/SQLiteAdapter.js';
+import { PostgreSQLAdapter } from './adapters/PostgreSQLAdapter.js';
 import {
 	IdaeEventEmitter,
 	withEmitter,
@@ -47,13 +50,9 @@ export class IdaeDbAdapter<T extends object>
 		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
 		IdaeDbAdapter.addAdapter(DbType.MYSQL, MySQLAdapter);
 		IdaeDbAdapter.addAdapter(DbType.CHROMADB, ChromaDBAdapter);
-		// Nouveaux adapters (ESM import)
-		// @ts-expect-error: Adapter classes may not être fully implemented yet
-		import('./adapters/PouchDBAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.POUCHDB, m.PouchDBAdapter));
-		// @ts-expect-error: Adapter classes may not être fully implemented yet
-		import('./adapters/SQLiteAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.SQLITE, m.SQLiteAdapter));
-		// @ts-expect-error: Adapter classes may not être fully implemented yet
-		import('./adapters/PostgreSQLAdapter.js').then(m => IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, m.PostgreSQLAdapter));
+		IdaeDbAdapter.addAdapter(DbType.POUCHDB, PouchDBAdapter);
+		IdaeDbAdapter.addAdapter(DbType.SQLITE, SQLiteAdapter);
+		IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, PostgreSQLAdapter);
 	}
 
 	/**

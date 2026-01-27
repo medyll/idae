@@ -79,6 +79,8 @@
   "type": "module",
   "scope": "@medyll",
   "dependencies": {
-    "chromadb": "^2.2.1"
+    "chromadb": "^2.2.1",
+    "mongodb": "^7.0.0",
+    "mysql2": "^3.16.0"
   }
 }

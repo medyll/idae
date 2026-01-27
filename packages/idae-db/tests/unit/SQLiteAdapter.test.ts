@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { SQLiteAdapter } from '../../src/lib/adapters/SQLiteAdapter';
+import { SQLiteAdapter } from '../../src/lib/adapters/SQLiteAdapter.js';
 import sqlite3 from 'sqlite3';
 
 interface User {
@@ -10,8 +10,10 @@ interface User {
 }
 
 describe('SQLiteAdapter', () => {
+
   let db: sqlite3.Database;
   let adapter: SQLiteAdapter<User>;
+  let mockConn: { getDb: () => sqlite3.Database };
 
   beforeAll(async () => {
     db = await SQLiteAdapter.connect('sqlite://:memory:');
@@ -21,7 +23,8 @@ describe('SQLiteAdapter', () => {
         (err) => (err ? reject(err) : resolve())
       );
     });
-    adapter = new SQLiteAdapter<User>('user', db);
+    mockConn = { getDb: () => db };
+    adapter = new SQLiteAdapter<User>('user', mockConn);
   });
 
   afterAll(async () => {
@@ -61,5 +64,13 @@ describe('SQLiteAdapter', () => {
     expect(deleted).toBe(true);
     const after = await adapter.findOne({ query: { name: 'Bob' } });
     expect(after).toBeNull();
+  });
+
+  it('should create and find a record', async () => {
+    const user = await adapter.create({ name: 'Alice', email: 'alice@example.com', age: 25 });
+    expect(user).toHaveProperty('id');
+    expect((user as User).name).toBe('Alice');
+    const users = await adapter.find({ query: {} });
+    expect(users.length).toBeGreaterThanOrEqual(1);
   });
 });

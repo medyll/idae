@@ -6,7 +6,8 @@ export class PouchDBAdapter<T extends object> implements IdaiDbAdapterInterface<
   private db: PouchDB.Database<T>;
 
   constructor(collection: string, connection: any) {
-    this.db = connection;
+    // connection est un IdaeDbConnection, on récupère la vraie connexion
+    this.db = connection.getDb();
   }
 
   static async connect(uri: string, options?: any): Promise<any> {

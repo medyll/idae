@@ -7,8 +7,9 @@ export class SQLiteAdapter<T extends object> implements IdaiDbAdapterInterface<T
   private table: string;
   private idField: string;
 
-  constructor(collection: string, connection: sqlite3.Database) {
-    this.db = connection;
+  constructor(collection: string, connection: any) {
+    // connection est un IdaeDbConnection, on récupère la vraie connexion
+    this.db = connection.getDb();
     this.table = collection;
     this.idField = 'id';
   }

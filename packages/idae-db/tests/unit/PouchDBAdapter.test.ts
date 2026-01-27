@@ -21,7 +21,8 @@ describe('PouchDBAdapter', () => {
 
   beforeAll(async () => {
     db = new PouchDB('idae-pouchdb-test', { adapter: 'memory' });
-    adapter = new PouchDBAdapter<User>('user', db);
+    const mockConn = { getDb: () => db };
+    adapter = new PouchDBAdapter<User>('user', mockConn);
   });
 
   afterAll(async () => {

@@ -1,6 +1,6 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { PostgreSQLAdapter } from '../../src/lib/adapters/PostgreSQLAdapter';
+import { PostgreSQLAdapter } from '../../src/lib/adapters/PostgreSQLAdapter.js';
 
 interface User {
   id?: number;
@@ -17,7 +17,8 @@ describe('PostgreSQLAdapter (mock)', () => {
     mockClient = {
       query: vi.fn()
     };
-    adapter = new PostgreSQLAdapter<User>('user', mockClient);
+    const mockConn = { getDb: () => mockClient };
+    adapter = new PostgreSQLAdapter<User>('user', mockConn);
   });
 
   it('should create a user', async () => {
