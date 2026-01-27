@@ -1,8 +1,7 @@
 import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb } from '$lib/main/machineDb.js';
-import { type IDbForge } from '../machineParserForge.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
-import { getDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 /**
  * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
@@ -106,14 +105,17 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
+			const fieldInfo = this.machine.collection(this.collectionName).field(String(fieldName)).parse();
 			this.#checkError(
 				!fieldInfo,
 				`Field ${String(fieldName)} not found in collection`,
 				'FIELD_NOT_FOUND'
 			);
 
-			switch (fieldInfo?.fieldType) {
+			if (!fieldInfo) {
+				return String(data[fieldName]);
+			}
+			switch (fieldInfo.fieldType as string) {
 				case 'number':
 					return this.#formatNumberField(data[fieldName]);
 				case 'text':
@@ -122,7 +124,7 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 				case 'text-medium':
 				case 'text-long':
 				case 'text-giant':
-					return this.#formatTextField(data[fieldName], fieldInfo.fieldType);
+					return this.#formatTextField(data[fieldName], fieldInfo.fieldType as string);
 				default:
 					return String(data[fieldName]);
 			}
@@ -178,14 +180,20 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	 * @param {any[]} data The array data.
 	 * @return {IDbForge[]} An array of IDbForge objects.
 	 */
-	iterateArrayField(fieldName: keyof TplFields, data: any[]): IDbForge[] { 
+	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
+	// TODO: Refine IDbForge type if needed for stricter typing
+	iterateArrayField(fieldName: keyof TplFields, data: any[]): any[] { 
 
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
 
-		return data.map((_, idx) => ({ ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]` }));
+		return data
+			.map((_, idx) => fieldInfo && fieldInfo.fieldType
+				? { ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]`, collection: this.collectionName }
+				: undefined)
+			.filter(Boolean);
 	}
 
 	/**
@@ -201,13 +209,19 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	 * @param {Record<string, unknown>} data The object data.
 	 * @return {IDbForge[]} An array of IDbForge objects.
 	 */
-	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): IDbForge[] { 
+	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
+	// TODO: Refine IDbForge type if needed for stricter typing
+	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): any[] { 
 
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}
-		return Object.keys(data).map((key) => ({ ...fieldInfo, fieldName: `${String(fieldName)}.${key}` }));
+		return Object.keys(data)
+			.map((key) => fieldInfo && fieldInfo.fieldType
+				? { ...fieldInfo, fieldName: `${String(fieldName)}.${key}`, collection: this.collectionName }
+				: undefined)
+			.filter(Boolean);
 	}
 
 	/**
@@ -291,7 +305,7 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	 */
 	getDefaults(): Record<string, any> {
 		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
-		return getDefaultValues(this.collectionName, fields);
+		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}
  
 }

@@ -35,19 +35,19 @@
 	let indexName = $derived(logic.collection(collection).template.index);
 	let query: any = $derived(dataId && indexName ? store.where({ [indexName]: { eq: dataId } }) : {});
 
+	let defaultVAlues = $derived(logic.collection(collection).parse())
+
 	let formData = $state<Record<string, any>>(
 		mode === 'create'
 			? {
-				...SchemeFieldDefaultValues.getDefaults(Object.keys($derived(logic.collection(collection).parse())), collection),
+				...SchemeFieldDefaultValues.getDefaults(Object.keys(defaultVAlues), collection),
 				...data,
 				...withData
 			  }
 			: { ...data, ...withData, ...$state.snapshot(query)[0] }
 	);
 
-	$effect.pre(() => {
-		setFormDataDefaultFieldValues();
-	});
+// Default values are set in formData initialization; no need for setFormDataDefaultFieldValues
 	 
  
 	let validationErrors: Record<string, string> = {};

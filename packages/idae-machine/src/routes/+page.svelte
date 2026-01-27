@@ -19,7 +19,7 @@ machine.start();
 	isActive: true
 });  */ 
 
-console.log("machine.store:", machine.store.agent?.add); 
+// console.log("machine.store:", machine.store.agent?.add); 
 </script>
 
 <h1>Demo: Svelte 5 CRUD Components</h1>
