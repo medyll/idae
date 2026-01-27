@@ -61,6 +61,17 @@ IdaeDb.init(uri, type)
           → Database-specific implementation
 ```
 
+
+## Package Management
+
+This project uses **pnpm** for dependency management. Always use pnpm commands (not npm or yarn) for installing or updating packages:
+
+```bash
+pnpm install         # Install all dependencies
+pnpm add <package>   # Add a new dependency
+pnpm update          # Update dependencies
+```
+
 ## Development
 
 ### Quick Start

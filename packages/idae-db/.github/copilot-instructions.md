@@ -1,47 +1,29 @@
-# Idae Database Library - AI Coding Instructions
 
-## Project Overview
+# Idae Database Library — AI Coding Agent Guide
 
-**@medyll/idae-db** is a TypeScript library providing a flexible database abstraction layer for MongoDB, MySQL, and ChromaDB with event-driven CRUD operations, auto-increment support, and connection pooling via singleton pattern.
+## Project Scope & Architecture
 
-### Architecture
+**@medyll/idae-db** is a TypeScript library providing a database abstraction layer for MongoDB, MySQL, and ChromaDB. It uses a **strategy pattern** with adapters, an event-driven CRUD system, and singleton connection management. All code is strict TypeScript and type-safe.
 
-The library uses a **Strategy pattern** with adapters:
-- **IdaeDb** (singleton): Entry point, manages instances per URI+DbType combo, handles initialization
-- **IdaeDbConnection**: Per-database connection instance, creates collections/tables via adapters
-- **IdaeDbAdapter**: Generic adapter facade with pre/post hooks via decorators
-- **Database-specific adapters**: MongoDBAdapter, MySQLAdapter, ChromaDBAdapter (implement IdaeDbAdapterInterface)
-- **IdaeDBModel**: Per-collection model for MongoDB, handles auto-increment tracking
+**Core flow:**
+`IdaeDb.init(uri, options)` → `.db(dbName)` → `.collection<T>(name)` → CRUD ops (with events)
 
-Key flow: `IdaeDb.init()` → `db(dbName)` → `collection<T>(name)` → operations with events
+**Key components:**
+- `IdaeDb`: Singleton entry, manages instances per URI+DbType
+- `IdaeDbConnection`: Per-database connection, creates collections/tables
+- `IdaeDbAdapter`: Facade with pre/post/error hooks via `@withEmitter` decorator
+- `*Adapter` classes: MongoDBAdapter, MySQLAdapter, ChromaDBAdapter (see `src/lib/adapters/`)
+- `IdaeDBModel`: MongoDB auto-increment tracking
+- `IdaeEventEmitter`: Decorator-based event system
 
-## Development Commands
+## Critical Patterns & Conventions
 
-```bash
-npm run dev          # Start Vite dev server
-npm run build        # Build and package (runs vite build + svelte-package + publint)
-npm run test         # Run Vitest tests (src/**/*.{test,spec}.{js,ts})
-npm run lint         # Check Prettier + ESLint
-npm run format       # Auto-fix formatting
-npm run check        # Svelte type checking
-npm run check:watch  # Watch mode type checking
-npm run prepackage  # Pre-publish script
-```
-
-## Code Patterns & Conventions
-
-### Event System (Critical Pattern)
-
-All adapter methods support pre/post/error hooks via **@withEmitter decorator** (in [IdaeEventEmitter.ts](src/lib/IdaeEventEmitter.ts)):
+### Event System (MUST USE)
+All adapter methods are decorated with `@withEmitter` (see `src/lib/IdaeEventEmitter.ts`). This emits `pre:method`, `post:method`, and `error:method` events. Register listeners via `collection.registerEvents()`:
 
 ```typescript
-// In adapter implementation, decorate methods:
-@withEmitter()
-async create(data: Partial<T>): Promise<T> { ... }
-
-// Register global listeners on connection:
-const collection = db.collection<User>('user');
-collection.registerEvents<User>({
+const users = db.collection<User>('user');
+users.registerEvents({
   create: {
     pre: (data) => console.log('Creating:', data),
     post: (result, data) => console.log('Created:', result),
@@ -50,72 +32,53 @@ collection.registerEvents<User>({
 });
 ```
 
-Emitter events: `pre:methodName`, `post:methodName`, `error:methodName`
-
 ### Adapter Pattern
-
-New adapters must implement `IdaeDbAdapterInterface<T>` from [types.ts](src/lib/@types/types.ts):
-
-```typescript
-// Required static methods for connection lifecycle
-static async connect(uri: string): Promise<Client>
-static getDb(client: Client, dbName: string): Database
-static async close(client: Client): Promise<void>
-
-// Required instance methods
-async create(data: Partial<T>): Promise<T>
-async find(params: IdaeDbParams<T>): Promise<T[]>
-async findOne(params: IdaeDbParams<T>): Promise<T | null>
-async update(id: string, updateData: Partial<T>): Promise<unknown>
-async deleteById(id: string): Promise<unknown>
-async transaction<TResult>(callback: (session) => Promise<TResult>): Promise<TResult>
-```
-
-Register new adapters in [IdaeDbAdapter.ts](src/lib/IdaeDbAdapter.ts) static initializer:
-```typescript
-static {
-  IdaeDbAdapter.addAdapter(DbType.NEWDB, MyNewAdapter);
-}
-```
+To add a new DB, implement `IdaeDbAdapterInterface<T>` (see `src/lib/@types/types.ts`).
+- Implement static: `connect()`, `getDb()`, `close()`
+- Implement instance: `create()`, `find()`, `findOne()`, `update()`, `deleteById()`, `transaction()`
+- Register in `IdaeDbAdapter.ts` static block:
+  ```typescript
+  static { IdaeDbAdapter.addAdapter(DbType.NEWDB, MyNewAdapter); }
+  ```
 
 ### Type Safety
+- All models: `T extends object`
+- Query params: `IdaeDbParams<T>` (with `query`, `sortBy`, `limit`, `skip`)
+- MongoDB filters: use `Filter<T>`
+- ID field: MongoDB uses `_id` or custom via `autoIncrementFormat` (see `IdaeDBModel.fieldId`)
 
-- Enforce strict TypeScript with `strict: true` in tsconfig
-- Use generic `T extends object` for all model types
-- Filter types use MongoDB's `Filter<T>` from driver for consistency
-- Query params: `IdaeDbParams<T>` with optional `query`, `sortBy`, `limit`, `skip`
 
-### ID Fields
+## Package Management
 
-- MongoDB: uses `_id` by default or custom via `autoIncrementFormat`
-- Custom ID tracking via `IdaeDBModel.fieldId` and auto-increment collection
-- Retrieved from model: `adapter.model.fieldId`
+This project uses **pnpm** for dependency management. Always use pnpm commands (not npm or yarn) for installing or updating packages:
 
-## Build & Package
+```bash
+pnpm install         # Install all dependencies
+pnpm add <package>   # Add a new dependency
+pnpm update          # Update dependencies
+```
 
-- **Build**: Vite → ESM output to `dist/`, exports via [index.ts](src/lib/index.ts)
-- **Package**: svelte-package generates `dist/index.d.ts` and `dist/index.js`
-- **Pre-publish**: `scripts/package-pre.js` runs before npm publish
-- **Export maps** in package.json support Svelte, ESM, and TypeScript
+## Developer Workflows
 
-## Testing
+### Build & Test
+- **Build:** `npm run build` (Vite → svelte-package → publint)
+- **Test:** `npm run test` (Vitest, see `vite.config.ts`)
+- **Lint/Format:** `npm run lint` / `npm run format`
+- **Typecheck:** `npm run check`
 
-- Framework: **Vitest** (config in [vite.config.ts](vite.config.ts))
-- Pattern: `describe()`, `it()`, `expect()` (e.g., [index.test.ts](src/index.test.ts))
-- Test files: `src/**/*.{test,spec}.{js,ts}`
-- No test database setup yet—add MongoDB/MySQL fixtures as needed
+### Usage Example
+See `src/example.ts` and `README.md` for full CRUD and event usage.
 
-## External Dependencies
-
-- **mongodb**: MongoDB driver for queries and transactions
-- **svelte/svelte-kit**: Framework (peer dependency for Svelte 5+)
-- **vite/vitest**: Build and test runner
-- **prettier/eslint**: Code formatting and linting
-- **@sveltejs/package**: Packaging utility
+### Integration Points
+- Exports: All public API via `src/lib/index.ts`
+- Peer deps: Svelte 5+, ChromaDB, MongoDB driver (not all in package.json)
 
 ## Known Constraints
+- MongoDB `.db()` usage is not abstracted for all adapters
+- Auto-increment is MongoDB-only
+- No transaction support in MySQL/ChromaDB yet
+- No test DB fixtures (add for integration tests)
+- `DbType` enum is string-based (consider dynamic registration)
 
-- MongoDB adapter references `.db()` for connection, needs refactoring for MySQL/ChromaDB
-- Auto-increment currently MongoDB-specific, needs abstraction
-- No transaction support in MySQL/ChromaDB adapters yet
-- DbType enum is string-based (consider supporting registration for extensibility)
+---
+**Last updated:** January 2026 — Maintained by @medyll
