@@ -137,8 +137,8 @@ importers:
   packages-config/idae-eslint-config:
     dependencies:
       '@medyll/idae-prettier-config':
-        specifier: '*'
-        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        specifier: ^1.2.8
+        version: 1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -2643,6 +2643,11 @@ packages:
 
   '@medyll/idae-prettier-config@1.2.4':
     resolution: {integrity: sha512-5gIEhOEkKQi4RLiGrUMx76c9UQCIIv4vhNrVCKDcDrLyPuiQWcLi1gK29KAp+sYJWbm//g6+1LM6AtmXg0TPXQ==}
+    peerDependencies:
+      prettier: '>=3.0.0'
+
+  '@medyll/idae-prettier-config@1.2.8':
+    resolution: {integrity: sha512-e7msbq8YAC1Ws03r4bQvRbzpeyLxfhl6A2dGXWWNRQW3xcmTRygqrchfD3VMmCXf0fXCcbqJVoxnRQDbh7bGVQ==}
     peerDependencies:
       prettier: '>=3.0.0'
 
@@ -13674,7 +13679,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+  '@medyll/idae-prettier-config@1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
       prettier: 3.8.1
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
