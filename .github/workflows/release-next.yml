@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Patch workspace:* to latest in package.json
+        run: node scripts/patch-workspace-deps.js
+
       - name: Generate README
         run: node scripts/generate-readme.js
 

@@ -3,7 +3,7 @@
   "bin": {
     "idae-dom-events": "./cli.js"
   },
-  "version": "0.156.0",
+  "version": "1.0.0",
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
@@ -43,34 +43,34 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
-    "@playwright/test": "^1.51.1",
-    "@semantic-release/github": "^10.3.5",
-    "@sveltejs/adapter-auto": "^5.0.0",
-    "@sveltejs/kit": "^2.20.2",
-    "@sveltejs/package": "^2.3.10",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@playwright/test": "^1.58.0",
+    "@semantic-release/github": "^12.0.2",
+    "@sveltejs/adapter-auto": "^7.0.0",
+    "@sveltejs/kit": "^2.50.1",
+    "@sveltejs/package": "^2.5.7",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@types/eslint": "9.6.1",
-    "@typescript-eslint/eslint-plugin": "^8.28.0",
-    "@typescript-eslint/parser": "^8.28.0",
-    "@vitest/browser": "^3.0.9",
-    "eslint": "^9.23.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-svelte": "^3.3.3",
-    "happy-dom": "^17.4.4",
-    "prettier": "^3.5.3",
-    "prettier-plugin-svelte": "^3.3.3",
-    "svelte": "^5.25.3",
-    "svelte-check": "^4.1.5",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "@vitest/browser": "^4.0.18",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.14.0",
+    "happy-dom": "^20.3.9",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.4.1",
+    "svelte": "^5.48.4",
+    "svelte-check": "^4.3.5",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.3",
-    "vitest": "^3.0.9"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
   },
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
     "blob": "^0.1.0",
-    "inquirer": "^12.5.0",
-    "puppeteer": "^24.4.0"
+    "inquirer": "^13.2.1",
+    "puppeteer": "^24.36.1"
   }
 }
