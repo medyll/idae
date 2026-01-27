@@ -157,15 +157,25 @@ interface IdaeDbAdapter<T> {
 
 ## Key Dependencies & Integration Points
 
-- **@medyll/idae-db** (v0.106+): Abstract database adapter; provides `IdaeDb` class and `IdaeDbAdapter` interface
-  - Supports MongoDB (Mongoose), MySQL (Sequelize), extensible for others
-  - All query/update ops use MongoDB-like syntax (`$in`, `$set`, `$gt`)
-  - Initialized per-request in `databaseMiddleware` with `IdaeDb.init()`
-  
+
+- **@medyll/idae-db** (v0.106+): Adapter pattern, fournit `IdaeDb` et `IdaeDbAdapter`.
+  - Supporte MongoDB (Mongoose), MySQL (Sequelize), et extensible à PostgreSQL, SQLite, PouchDB, etc.
+  - Pour ajouter un nouveau type de DB :
+    1. Implémentez un adapter qui respecte l'interface `IdaeDbAdapterInterface<T>` (CRUD, transactions, etc.)
+    2. Ajoutez-le via `IdaeDbAdapter.addAdapter(DbType.NEWDB, NewAdapter)`
+    3. Étendez l'enum `DbType` dans `@types/types.ts`
+    4. Aucun changement requis côté routes, middlewares ou client : tout passe par l'interface abstraite.
+  - Les requêtes utilisent une syntaxe MongoDB-like, convertie par chaque adapter.
+  - Initialisation par `IdaeDb.init()` dans le middleware, quel que soit le backend.
+
 - **Express 5.1+**: Web framework; uses streaming responses, advanced middleware
-  
+
 - **Mongoose 8.15+**: MongoDB driver; managed via `MongooseConnectionManager` for connection pooling
-  
+
+- **Sequelize**: Utilisé pour MySQL, PostgreSQL, SQLite (selon l'adapter)
+
+- **PouchDB**: Peut être intégré via un adapter custom (stockage local ou distant)
+
 - **JWT (jsonwebtoken 9.x)**: Token generation/verification in `AuthMiddleWare` (not a separate service)
 
 ## Common Implementation Tasks
@@ -276,17 +286,42 @@ IdaeApiClientConfig.setOptions({
 
 ### Adding Database Adapter Support
 
-- Implement `IdaeDbAdapter` interface from `@medyll/idae-db`
-- Pass config to `idaeApi.setOptions()`:
-```typescript
-idaeApi.setOptions({
-  idaeDbOptions: {
-    dbType: DbType.MYSQL,  // or custom type
-    // ... other adapter options
-  }
-});
-```
-- Adapter is instantiated per-request in `databaseMiddleware`, no code changes needed in routes
+
+#### Procédure générique pour ajouter un nouveau type de base de données (PostgreSQL, SQLite, PouchDB, etc.)
+
+1. Implémentez un adapter qui respecte l'interface `IdaeDbAdapterInterface<T>` (voir `@medyll/idae-db`)
+2. Ajoutez-le dans le static initializer :
+   ```typescript
+   static {
+     IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, PostgreSQLAdapter);
+     IdaeDbAdapter.addAdapter(DbType.SQLITE, SQLiteAdapter);
+     IdaeDbAdapter.addAdapter(DbType.POUCHDB, PouchDBAdapter);
+     // ...
+   }
+   ```
+3. Étendez l'enum `DbType` dans `@types/types.ts` :
+   ```typescript
+   export enum DbType {
+     MONGODB = 'mongodb',
+     MYSQL = 'mysql',
+     POSTGRESQL = 'postgresql',
+     SQLITE = 'sqlite',
+     POUCHDB = 'pouchdb',
+     // ...
+   }
+   ```
+4. Passez le type de DB voulu dans la config :
+   ```typescript
+   idaeApi.setOptions({
+     idaeDbOptions: {
+       dbType: DbType.POSTGRESQL, // ou SQLITE, POUCHDB, ...
+     }
+   });
+   ```
+5. Aucun changement requis côté routes, middlewares ou client : tout passe par l'interface abstraite.
+6. Les requêtes utilisent toujours la syntaxe MongoDB-like (filtres, opérateurs, etc.)
+
+L'adapter est instancié automatiquement par le middleware, quel que soit le backend.
 
 ## Client-Server Request/Response Cycle
 
