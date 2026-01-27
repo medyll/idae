@@ -1,114 +1,122 @@
-# Stator Demo
+# @medyll/idae-stator ⚡
 
-This is a demonstration of the **Stator** library, which provides reactive state management for JavaScript applications.
+**idae-stator** is a lightweight, universal, and deeply reactive state management library for JavaScript and TypeScript. It uses native `Proxy` to track changes at any depth and provides a unified `EventTarget` API for both Browser and Node.js environments.
 
+## 🚀 Key Features
 
-## Features
+* **Deep Reactivity:** Automatically tracks mutations in nested objects and arrays.
+* **Zero Dependencies:** Extremely small footprint.
+* **Universal (Isomorphic):** Works out of the box in the Browser, Node.js, and SSR environments.
+* **Flexible API:** Support for both standard `onchange` callbacks and `addEventListener` patterns.
+* **Developer Friendly:** Seamless integration with TypeScript, providing full intellisense for your state structures.
+* **Smart Updates:** Built-in protection against redundant notifications for primitive values.
 
-- Reactive state creation using `stator`.
-- Automatic state change detection with `.onchange` handlers (recommended usage).
-- Manual and automatic state updates.
-- Simple UI updates based on state changes.
+---
 
-> **Note**
-> Stator expose aussi une API événementielle compatible EventTarget (addEventListener, removeEventListener, dispatchEvent) pour les cas avancés ou l’interopérabilité, mais l’usage recommandé reste `.onchange` pour la simplicité et la portabilité.
+## 📦 Installation
 
+```bash
+npm install @medyll/idae-stator
 
-## Code Example
+```
 
-Below is an example of how to use the Stator library, including deep reactivity:
+---
 
-```javascript
-// Import the stator library
-import { stator } from './Stator.ts';
+## 🛠 Usage
 
-// Create reactive states
-let countState = stator(0); // primitive
-let userState = stator({
-    name: 'Alice',
-    profile: {
-        age: 30,
-        hobbies: ['reading', 'sports']
-    }
+### Basic Reactivity
+
+```typescript
+import { stator } from '@medyll/idae-stator';
+
+const state = stator({ count: 0 });
+
+state.onchange = (newValue) => {
+  console.log(`Count updated to: ${newValue.count}`);
+};
+
+state.count++; // Console: Count updated to: 1
+
+```
+
+### Deep Nesting & Arrays
+
+The library handles deep structures without any extra configuration.
+
+```typescript
+const appState = stator({
+  user: {
+    profile: { name: 'Mydde' },
+    tags: ['dev', 'js']
+  }
 });
-let arrState = stator([1, 2, { deep: true }]);
 
-// State change handlers (recommended)
-countState.onchange = (oldValue, newValue) => {
-    console.log('countState', oldValue, newValue);
-};
-userState.onchange = (oldValue, newValue) => {
-    console.log('userState', oldValue, newValue);
-};
-arrState.onchange = (oldValue, newValue) => {
-    console.log('arrState', oldValue, newValue);
-};
+appState.onchange = (val) => console.log('State changed!');
 
-// (Advanced) Using EventTarget API (not recommended for most cases):
-// countState.addEventListener('change', e => {
-//   const { oldValue, newValue } = e.detail;
-//   ...
-// });
+// All these mutations trigger the reactivity:
+appState.user.profile.name = 'Mydde Dev';
+appState.user.tags.push('stator');
 
-// --- Deep reactivity demonstration ---
-// Mutate a nested property (deep object)
-userState.stator.profile.age = 31; // onchange will be triggered
+```
 
-// Mutate a nested array
-userState.stator.profile.hobbies.push('music'); // onchange will be triggered
+### Event-Driven Pattern
 
-// Mutate a nested object inside an array
-arrState.stator[2].deep = false; // onchange will be triggered
+If you prefer standard web events or need multiple listeners:
 
-// Add/remove array elements
-arrState.stator.push(99); // onchange will be triggered
-arrState.stator.splice(0, 1); // onchange will be triggered
+```typescript
+const state = stator({ status: 'idle' });
 
-// Function to update the UI (example)
-function updateUI() {
-    document.getElementById('count').textContent = `${countState.stator} - ${userState.stator.profile.age}`;
+state.addEventListener('change', (event) => {
+  const { newValue } = event.detail;
+  console.log('New status:', newValue.status);
+});
+
+state.status = 'loading';
+
+```
+
+### Type Safety (TypeScript)
+
+**idae-stator** preserves your types and augments them with reactive properties.
+
+```typescript
+interface User {
+  id: number;
+  role: string;
 }
 
-// Initialize the UI
-window.onload = () => {
-    updateUI();
-    console.log(userState, arrState, countState.stator);
-};
+const state = stator<User>({ id: 1, role: 'admin' });
+// 'state' is now typed as AugmentedState<User>
+
 ```
 
-## HTML Structure
+---
 
-The following HTML structure is used for the demo:
+## ⚙️ Technical Overview
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stator Demo</title>
-</head>
-<body>
-    <h1>Stator Demo</h1>
-    <p>Count: <span id="count">0-0</span></p>
-    <button onclick="incrementCount()">Increment</button>
-</body>
-</html>
-```
+### The Reactivity Engine
 
+The core of the library is built around a recursive `Proxy` system. When you access a nested object, **idae-stator** wraps it on-the-fly (and caches it using a `WeakMap`) to ensure that every leaf of your data tree becomes an observable entry point.
 
-## How It Works
+### Universal Event Bus
 
-1. **Reactive States**: The `stator` function creates reactive states that automatically notify changes.
-2. **Deep Reactivity**: Mutations to nested properties or arrays (objects within objects, arrays within objects, etc.) are detected and trigger the `onchange` handler.
-3. **State Handlers**: The `onchange` handlers log state changes to the console.
-4. **UI Updates**: The `updateUI` function updates the DOM based on the current state values.
-5. **Manual Increment**: The `incrementCount` function allows manual state updates via a button click.
+To ensure compatibility with Node.js (where `EventTarget` was historically missing or inconsistent), **idae-stator** implements a smart polyfill:
 
-## Usage
+1. **Browser:** Uses native `window.EventTarget`.
+2. **Legacy/DOM:** Uses an invisible DOM element as an event bridge.
+3. **Node.js:** Uses a custom high-performance event registry.
 
-1. Clone the repository and include the `Stator.js` library in your project.
-2. Use the provided code to create reactive states and bind them to your UI.
-3. Customize the logic as needed for your application.
+---
 
-Enjoy building reactive applications with **Stator**!  
+## 💎 Utility Properties
+
+* **`state.stator`**: Access the raw data directly.
+* **`state.toString()`**: Returns a `JSON.stringify` version of your state.
+* **`state.valueOf()`**: Returns the underlying value for comparisons.
+* **`Symbol.toPrimitive`**: Allows the state to be used directly in arithmetic (e.g., `state + 1`).
+
+---
+
+## 📜 License
+
+MIT © [Medyll](https://github.com/medyll)

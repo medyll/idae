@@ -9,19 +9,19 @@
 	let monobjSte = stator({ index: 0 });
 	// la 2eme fois ça ne marche plus
 	// Mise à jour de la variable réactive quand l'état change
-	countState.onchange = (oldValue, newValue) => {
-		console.log('countState', oldValue, newValue);
+	countState.onchange = ( newValue) => {
+		console.log('countState',  newValue);
 	};
-	countObje.onchange = (oldValue, newValue) => {
-		console.log('countObje', oldValue, newValue);
+	countObje.onchange = ( newValue) => {
+		console.log('countObje',  newValue);
 	};
 
 	onMount(() => {
 		// Incrémentation de la valeur toutes les secondes
 		setInterval(() => {
-			// countState++;
-			// monobjSte.index++;
-		}, 30000);
+			 countState.stator++;
+			 monobjSte.stator.index++;
+		}, 1000);
 	});
 
 	// Fonction pour incrémenter manuellement
