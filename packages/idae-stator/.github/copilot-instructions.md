@@ -1,48 +1,55 @@
+
 # Copilot Instructions for idae-stator
 
-## Project Overview
-- **idae-stator** provides reactive state management for JavaScript/TypeScript, focusing on simplicity and framework-agnostic usage.
-- SvelteKit is used as a test/demo environment; the package is compatible but not designed specifically for Svelte/SvelteKit (which has its own state management).
-- The core logic is in `src/lib/stator/Stator.ts`.
-- Example usage and patterns are shown in `README.md`.
+## Project Architecture & Purpose
+- **idae-stator** is a framework-agnostic, minimal state management library for JavaScript/TypeScript.
+- The core logic is in [src/lib/stator/Stator.ts](../src/lib/stator/Stator.ts).
+- SvelteKit ([src/routes/](../src/routes/)) is used only for demos/tests, not as a primary target.
+- No external state management dependencies are used or allowed.
 
 ## Key Patterns & Conventions
-- Use the `stator` function to create reactive state objects or primitives.
-- State objects expose an `.onchange` handler for change detection.
-- State is updated via the `.stator` property (e.g., `countState.stator++`).
-- UI updates are triggered manually (see `updateUI()` in the demo) or via Svelte reactivity.
-- Prefer colocating state logic and UI logic for clarity.
+- **State Creation:** Use the `stator` function to create reactive state objects or primitives.
+  - Example: `let count = stator(0);`
+- **State Mutation:** Update state via the `.stator` property (e.g., `count.stator++` or `objState.stator.key = value`).
+- **Change Detection:** Attach an `.onchange` handler to state objects for change tracking.
+  - Example: `count.onchange = (oldVal, newVal) => { ... }`
+- **UI Updates:**
+  - In vanilla JS, trigger UI updates manually (see `updateUI()` in [README.md](../README.md)).
+  - In Svelte, rely on Svelte's reactivity.
+- **Colocation:** Prefer colocating state and UI logic for clarity.
 
-## Directory Structure
-- `src/lib/stator/` — Core stator implementation and tests.
-- `src/routes/` — SvelteKit routes and demo UI.
-- `scripts/` — Project scripts (e.g., packaging).
-- `static/` — Static assets for demos.
+## Directory Structure & Key Files
+- [src/lib/stator/](../src/lib/stator/) — Core stator implementation and tests ([Stator.ts](../src/lib/stator/Stator.ts), [Stator.test.ts](../src/lib/stator/Stator.test.ts))
+- [src/routes/](../src/routes/) — SvelteKit demo UI
+- [scripts/](../scripts/) — Project scripts (e.g., packaging)
+- [static/](../static/) — Static assets for demos
 
 ## Developer Workflows
-- **Build:** Use Vite (`vite.config.ts`) for local dev and builds.
-- **Test:** Run tests with Jest (`jest.config.js`). Example: `npx jest src/lib/stator/Stator.test.ts`.
-- **Type Checking:** Use TypeScript (`tsconfig.json`).
-- **SvelteKit:** Used for testing/demo only; see `svelte.config.js` for integration details if needed.
+- **Build:** Use Vite ([vite.config.ts](../vite.config.ts)) for local dev and builds.
+  - Example: `npx vite build`
+- **Test:** Run tests with Jest ([jest.config.js](../jest.config.js)).
+  - Example: `npx jest src/lib/stator/Stator.test.ts`
+- **Type Checking:** Use TypeScript ([tsconfig.json](../tsconfig.json)).
+- **SvelteKit Integration:** See [svelte.config.js](../svelte.config.js) for demo/test integration.
 
-## Integration & Extensibility
-- Framework-agnostic: works in vanilla JS/TS and is compatible with Svelte/SvelteKit, but not tailored for them.
-- No external state management dependencies.
-- Extend by adding new state helpers in `src/lib/stator/`.
+## Project-Specific Conventions
+- No external state management libraries allowed.
+- Extend only by adding helpers in [src/lib/stator/](../src/lib/stator/).
+- Follow idiomatic TypeScript/JavaScript and Svelte practices unless otherwise noted.
+- See [AGENTS.md](../AGENTS.md) for additional agent conventions (mirrors these instructions).
 
-## Examples
-- See `README.md` for usage patterns and HTML structure.
-- Example state creation:
-  ```js
-  import { stator } from './Stator.ts';
-  let count = stator(0);
-  count.onchange = (oldVal, newVal) => { /* ... */ };
-  count.stator++;
-  ```
+## Example Usage
+```js
+import { stator } from './Stator.ts';
+let count = stator(0);
+count.onchange = (oldVal, newVal) => { /* ... */ };
+count.stator++;
+```
 
-## Additional Notes
-- No project-specific AI rules or agent conventions found in AGENTS.md.
-- Follow idiomatic TypeScript/JavaScript and Svelte best practices unless otherwise noted.
+## References
+- [README.md](../README.md) — Usage patterns, HTML structure, and demo logic
+- [src/lib/stator/Stator.ts](../src/lib/stator/Stator.ts) — Core implementation
+- [AGENTS.md](../AGENTS.md) — AI/agent conventions
 
 ---
-For more, see [README.md](../README.md) and [src/lib/stator/Stator.ts](../src/lib/stator/Stator.ts).
+If any section is unclear or incomplete, please provide feedback for further refinement.
