@@ -71,8 +71,25 @@ import { Client as PgClient } from 'pg';
   }
   static async close(): Promise<void> {
   }
+  private collection: string;
+  private db: any;
+  constructor(collection: string, db: any) {
+    this.collection = collection;
+    this.db = db;
+  }
   async create(data: T): Promise<T> {
-    throw new Error('Not implemented');
+    // Insert data into the table named by this.collection
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    const placeholders = keys.map(() => '?').join(', ');
+    const query = `INSERT INTO ${this.collection} (${keys.join(', ')}) VALUES (${placeholders})`;
+    return new Promise((resolve, reject) => {
+      this.db.run(query, values, function (this: any, err: any) {
+        if (err) return reject(err);
+        // Return the inserted row with lastID if possible
+        resolve({ ...data, id: this.lastID });
+      });
+    });
   }
   async find(filter?: any): Promise<T[]> {
     throw new Error('Not implemented');
