@@ -1,4 +1,5 @@
 // auto exports of entry components
+import "$lib/adapters/registerAdapters.js";
 export * from '$lib/server/IdaeApi.js';
 export * from '$lib/config/routeDefinitions.js';
 export * from '$lib/client/IdaeApiClientRequest.js';
