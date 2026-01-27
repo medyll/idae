@@ -1,83 +1,193 @@
 # Idae Database Library
 
-The Idae Database Library provides a flexible and extensible way to interact with various databases such as MongoDB, MySQL. It includes features like event emitters for pre/post hooks, auto-increment fields, and more.
+**Idae Database Library** is a flexible, type-safe, event-driven database abstraction for Node.js and TypeScript. It supports MongoDB, MySQL, ChromaDB, PouchDB, SQLite, and PostgreSQL with a unified API, event hooks, and singleton connection management.
+
+## Features
+
+- **Multi-Database Support:** MongoDB, MySQL, ChromaDB, PouchDB, SQLite, PostgreSQL
+- **Event-driven CRUD:** Pre/post/error hooks on all operations
+- **Type Safety:** Full TypeScript generics, strict mode
+- **Singleton Pattern:** One connection per URI+DbType
+- **Adapter Pattern:** Easily extend to new databases
+- **Auto-increment:** Native for MongoDB, extensible for others
+- **Transaction Support:** Native in MongoDB/MySQL
+
+## Supported Adapters
+
+| DbType        | Adapter Class         | Peer Dependency |
+|-------------- |----------------------|-----------------|
+| MONGODB       | MongoDBAdapter        | mongodb         |
+| MYSQL         | MySQLAdapter          | mysql2          |
+| CHROMADB      | ChromaDBAdapter       | chromadb        |
+| POUCHDB       | PouchDBAdapter        | pouchdb         |
+| SQLITE        | SQLiteAdapter         | sqlite3         |
+| POSTGRESQL    | PostgreSQLAdapter     | pg              |
 
 ## Installation
 
-To install the library, run:
+Install the core library and the peer dependencies for your database(s):
 
 ```bash
-npm install idae-db
+pnpm add @medyll/idae-db
+# For MongoDB:
+pnpm add mongodb
+# For MySQL:
+pnpm add mysql2
+# For ChromaDB:
+pnpm add chromadb
+# For PouchDB:
+pnpm add pouchdb
+# For SQLite:
+pnpm add sqlite3
+# For PostgreSQL:
+pnpm add pg
 ```
 
-The Idae Database Library provides a flexible and extensible way to interact with various databases such as MongoDB, MySQL, ChromaDB, **PouchDB**, **SQLite** et **PostgreSQL**. Il inclut des fonctionnalités comme les event emitters pour hooks pre/post, l’auto-increment, et plus encore.
+## Quick Start
 
-## Installation
+### 1. Initialize a Database
 
-Pour installer la librairie et les peer dependencies nécessaires selon votre base :
+```typescript
+import { IdaeDb } from '@medyll/idae-db';
+import { DbType } from '@medyll/idae-db/lib/@types/types';
 
-```bash
-npm install idae-db
-# Pour PouchDB :
-npm install pouchdb
-# Pour SQLite :
-npm install sqlite3
-# Pour PostgreSQL :
-npm install pg
+const db = IdaeDb.init('mongodb://localhost:27017', {
+    dbType: DbType.MONGODB,
+    dbScope: 'app',
+});
+await db.db('app');
+```
+
+### 2. Define a Model
+
+```typescript
+interface User {
+    iduser: number;
+    name: string;
+    email: string;
+    age: number;
+}
+```
+
+### 3. CRUD Operations
+
+```typescript
+const users = db.collection<User>('user');
+const newUser = await users.create({ name: 'Alice', email: 'alice@example.com', age: 25 });
+const found = await users.findOne({ query: { email: 'alice@example.com' } });
+await users.update(found.iduser, { age: 26 });
+await users.deleteById(found.iduser);
+```
+
+### 4. Event Hooks
+
+```typescript
+users.registerEvents({
+    create: {
+        pre: (data) => console.log('Creating:', data),
+        post: (result, data) => console.log('Created:', result),
+        error: (err) => console.error(err)
+    }
+});
+```
+
+## Adapter Usage Examples
+
+### MongoDB
+
+```typescript
+const mongoDb = IdaeDb.init('mongodb://localhost:27017', { dbType: DbType.MONGODB });
+await mongoDb.db('app');
+const users = mongoDb.collection<User>('user');
+```
+
+### MySQL
+
+```typescript
+const mysqlDb = IdaeDb.init('mysql://user:password@localhost:3306', { dbType: DbType.MYSQL });
+await mysqlDb.db('app');
+const users = mysqlDb.collection<User>('user');
+```
+
+### ChromaDB
+
+```typescript
+const chromaDb = IdaeDb.init('chromadb://localhost:8000', { dbType: DbType.CHROMADB });
+await chromaDb.db('app');
+const items = chromaDb.collection<any>('item');
+```
+
+### PouchDB
+
+```typescript
+const pouchDb = IdaeDb.init('pouchdb://./my-pouchdb-folder', { dbType: DbType.POUCHDB });
+await pouchDb.db('app');
+const docs = pouchDb.collection<any>('doc');
+```
+
+### SQLite
+
+```typescript
+const sqliteDb = IdaeDb.init('sqlite://./mydb.sqlite', { dbType: DbType.SQLITE });
+await sqliteDb.db('app');
+const users = sqliteDb.collection<User>('user');
+```
+
+### PostgreSQL
+
+```typescript
+const pgDb = IdaeDb.init('postgresql://user:password@localhost:5432/mydb', { dbType: DbType.POSTGRESQL });
+await pgDb.db('app');
+const users = pgDb.collection<User>('user');
+```
+
+## Event System
+
+All CRUD methods emit `pre:method`, `post:method`, and `error:method` events. Register listeners with `registerEvents`:
+
+```typescript
+users.registerEvents({
+    create: {
+        pre: (data) => console.log('Creating:', data),
+        post: (result, data) => console.log('Created:', result),
+        error: (err) => console.error(err)
+    },
+    update: {
+        pre: (id, data) => console.log('Updating:', id, data),
+        post: (result, id, data) => console.log('Updated:', result),
+        error: (err) => console.error(err)
+    }
+});
+```
+
+## Type Safety
+
+- All models are fully typed (`T extends object`)
+- Query params: `IdaeDbParams<T>`
+- MongoDB filters: use `Filter<T>`
+- ID field: MongoDB uses `_id` or custom via `autoIncrementFormat`
+
+## Singleton & Connection Management
+
+- One instance per URI+DbType
+- Use `.closeAllConnections()` to gracefully close all DBs:
+
+```typescript
+await db.closeAllConnections();
 ```
 
 ## Scripts
 
 ```bash
-npm run test            # Run all tests
-npm run test:coverage   # Run tests with coverage (v8)
-npm run test:mongodb    # Run only the MongoDB adapter suite (in-memory mongo)
+pnpm run test            # Run all tests
+pnpm run build           # Build the package
+pnpm run lint            # Lint code
+pnpm run format          # Format code
 ```
 
-## Usage
+## License
 
-### Initialization
-
-First, initialize the database connection:
-
-#### MongoDB
-
-```typescript
-import { IdaeDb } from './lib/idaeDb.js';
-import { DbType } from './lib/@types/types.js';
-
-const mongoDb = IdaeDb.init('mongodb://localhost:27017', {
-    dbType: DbType.MONGODB,
-    dbScope: 'a_idae_db_sitebase',
-    dbScopeSeparator: '_',
-    idaeModelOptions: {
-        autoIncrementFormat: (collection: string) => `id${collection}`,
-        autoIncrementDbCollection: 'auto_increment'
-    }
-});
-```
-
-#### MySQL
-
-```typescript
-import { IdaeDb } from './lib/idaeDb.js';
-import { DbType } from './lib/@types/types.js';
-
-const mysqlDb = IdaeDb.init('mysql://user:password@localhost:3306', {
-    dbType: DbType.MYSQL,
-    dbScope: 'a_idae_db_sitebase',
-    dbScopeSeparator: '_',
-    idaeModelOptions: {
-        autoIncrementFormat: (collection: string) => `id${collection}`,
-        autoIncrementDbCollection: 'auto_increment'
-    }
-});
-```
-
-#### PouchDB
-
-```typescript
-import { IdaeDb } from './lib/idaeDb.js';
+MIT License
 import { DbType } from './lib/@types/types.js';
 
 const pouchDb = IdaeDb.init('pouchdb://./my-pouchdb-folder', {
