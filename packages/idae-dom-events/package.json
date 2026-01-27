@@ -3,7 +3,7 @@
   "bin": {
     "idae-dom-events": "./cli.js"
   },
-  "version": "0.156.0",
+  "version": "1.0.0",
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
@@ -42,7 +42,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-eslint-config": "latest",
     "@playwright/test": "^1.51.1",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
