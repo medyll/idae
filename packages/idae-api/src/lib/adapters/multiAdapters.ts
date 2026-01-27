@@ -15,9 +15,21 @@ import { Client as PgClient } from 'pg';
   static async close(): Promise<void> {
     // TODO: Close connection
   }
-  async create(data: T): Promise<T> {
-    throw new Error('Not implemented');
-  }
+    private collection: string;
+    private client: any;
+    constructor(collection: string, client: any) {
+      this.collection = collection;
+      this.client = client;
+    }
+    async create(data: T): Promise<T> {
+      // Insert data into the table named by this.collection
+      const keys = Object.keys(data);
+      const values = Object.values(data);
+      const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
+      const query = `INSERT INTO ${this.collection} (${keys.join(', ')}) VALUES (${placeholders}) RETURNING *`;
+      const result = await this.client.query(query, values);
+      return result.rows[0];
+    }
   async find(filter?: any): Promise<T[]> {
     throw new Error('Not implemented');
   }
