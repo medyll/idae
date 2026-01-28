@@ -23,8 +23,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
-  },
-  "author": "Lebrun Meddy",
+  }, 
   "license": "ISC",
   "peerDependencies": {
     "svelte": "^5.0.0-next"
@@ -44,6 +43,10 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "svelte-check": "^4.1.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",

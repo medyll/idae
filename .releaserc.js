@@ -5,20 +5,21 @@ module.exports = {
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
-      "@semantic-release/npm",
+      "@semantic-release/exec",
       {
-        npmPublish: true,
+        // pnpm handles the version bump and the workspace protocol transformation
+        prepareCmd: "pnpm version ${nextRelease.version} --no-git-tag-version",
+        publishCmd: "pnpm publish --no-git-checks --access public",
       },
     ],
+    "@semantic-release/github",
     [
       "@semantic-release/git",
       {
-        assets: ["package.json", "CHANGELOG.md"],
-        // Le [skip ci] est vital pour ne pas redéclencher la CI après le push du tag/version
+        assets: ["CHANGELOG.md"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
     ],
-    "@semantic-release/github",
   ],
 };

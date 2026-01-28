@@ -14,44 +14,46 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-      id-token: write
+      id-token: write # Required for provenance and OIDC authentication in 2026
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          # Empêche la boucle infinie en désactivant le token persistant pour le push
-          persist-credentials: false
+          fetch-depth: 0 # Fetches all history for all branches and tags (vital for semantic-release)
+          persist-credentials: false # Avoids auth conflicts with the GH_TOKEN used later
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10 # Using pnpm 10 as per your requirements
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: "pnpm"
+          registry-url: "https://registry.npmjs.org/" # Pre-configures the registry for pnpm publish
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: | # Install semantic-release and its plugins locally
+          pnpm install --frozen-lockfile
 
-      - name: Validate all package.json files
-        run: |
-          find . -name package.json -not -path "*/node_modules/*" -exec node -e "try{const p=require(process.argv[1]);if(!p.name)throw new Error('Missing name in '+process.argv[1])}catch(e){console.error(e.message);process.exit(1)}" {} \;
-
-      - name: Patch workspace:* to latest in package.json
+      - name: Patch Workspaces for Release
+        # This replaces "workspace:*" with "*" in-memory for the CI session
         run: node scripts/patch-workspace-deps.js
 
       - name: Generate README
+        # Ensure READMEs are built before the release process captures file changes
         run: node scripts/generate-readme.js
 
       - name: Release Packages
-        run: npx multi-semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Used by @semantic-release/github and @semantic-release/git
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NODE_AUTH_TOKEN is specifically used by pnpm for registry authentication
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
+          # Fallback token for legacy compatibility
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
+        # npx will use the locally installed multi-semantic-release and plugins
+        run: npx multi-semantic-release

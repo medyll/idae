@@ -39,7 +39,11 @@
     "dist",
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
-  ],
+  ], 
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "peerDependencies": {
     "svelte": "^5.0.0-next"
   },

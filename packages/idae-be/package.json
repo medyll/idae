@@ -54,6 +54,10 @@
   "peerDependencies": {
     "svelte": "^5.0.0-next"
   },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "devDependencies": {
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",

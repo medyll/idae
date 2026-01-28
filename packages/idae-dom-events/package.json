@@ -39,7 +39,8 @@
     "!dist/**/*.spec.*"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "."
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
