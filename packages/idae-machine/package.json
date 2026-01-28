@@ -3,7 +3,7 @@
   "bin": {
     "idae-machine": "./cli.js"
   },
-  "version": "0.135.1",
+  "version": "0.135.2",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run prepack",

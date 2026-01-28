@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
   },
-  "version": "0.187.1",
+  "version": "0.187.2",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "description": "A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations. It features a modular architecture, dynamic database connection management, and a flexible routing system. The framework supports TypeScript for improved robustness and maintainability.",

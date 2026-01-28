@@ -5,7 +5,7 @@
   },
   "scope": "@medyll",
   "author": "Lebrun Meddy",
-  "version": "0.186.1",
+  "version": "0.186.2",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",

@@ -4,7 +4,7 @@
     "idae-slotui": "./cli.js"
   },
   "author": "Lebrun Meddy",
-  "version": "0.181.3",
+  "version": "0.181.4",
   "scope": "@medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
