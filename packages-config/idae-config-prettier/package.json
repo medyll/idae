@@ -2,7 +2,7 @@
   "name": "@medyll/idae-config-prettier",
   "scope": "medyll",
   "description": "idae svelte Prettier config",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "Lebrun Meddy",
   "type": "module",
   "exports": "./index.js",
