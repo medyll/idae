@@ -1,71 +1,1068 @@
 0 silly argv {
 0 silly argv   _: [ 'version' ],
-0 silly argv   private: false,
-0 silly argv   lernaVersion: '8.1.2',
-0 silly argv   '$0': 'c:\\users\\mydde\\appdata\\roaming\\npm\\node_modules\\lerna\\dist\\cli.js'
+0 silly argv   yes: true,
+0 silly argv   y: true,
+0 silly argv   lernaVersion: '9.0.3',
+0 silly argv   '$0': 'node_modules\\lerna\\dist\\cli.js'
 0 silly argv }
-1 notice cli v8.1.2
-2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
-3 verbose rootPath D:\boulot\one-idae\one-idae
-4 info current version 0.0.0
+1 notice cli v9.0.3
+2 verbose packageConfigs Package manager "pnpm" detected. Resolving packages using `pnpm-workspace.yaml`.
+3 verbose rootPath D:\boulot\dev\node\idae
+4 info current version 0.0.2
 5 silly isAnythingCommitted
 6 verbose isAnythingCommitted 1
 7 silly getCurrentBranch
-8 verbose currentBranch main
+8 verbose currentBranch dev
 9 silly remoteBranchExists
 10 silly isBehindUpstream
-11 silly isBehindUpstream main is behind origin/main by 0 commit(s) and ahead by 0
+11 silly isBehindUpstream dev is behind origin/dev by 0 commit(s) and ahead by 0
 12 silly hasTags
 13 verbose hasTags true
-14 silly git-describe.sync "819a1ee" => {"refCount":"21","sha":"819a1ee","isDirty":false}
-15 info Assuming all packages changed
-16 verbose updated @medyll/htmludom
-17 verbose git-describe undefined => "819a1ee"
-18 silly git-describe parsed => {"refCount":"21","sha":"819a1ee","isDirty":false}
-19 info execute Skipping releases
-20 silly lifecycle No script for "preversion" in "root", continuing
-21 silly lifecycle No script for "preversion" in "@medyll/htmludom", continuing
-22 silly lifecycle No script for "version" in "@medyll/htmludom", continuing
-23 silly lifecycle No script for "version" in "root", continuing
-24 verbose version Updating root package-lock.json
-25 error Error: Command failed with exit code 1: npm install --package-lock-only --ignore-scripts
-25 error npm ERR! code ERESOLVE
-25 error npm ERR! ERESOLVE unable to resolve dependency tree
-25 error npm ERR!
-25 error npm ERR! While resolving: @medyll/htmludom@0.0.1
-25 error npm ERR! Found: eslint@9.1.0
-25 error npm ERR! node_modules/eslint
-25 error npm ERR!   dev eslint@"^9.0.0" from @medyll/htmludom@0.0.1
-25 error npm ERR!   packages/htmludom
-25 error npm ERR!     @medyll/htmludom@0.0.1
-25 error npm ERR!     node_modules/@medyll/htmludom
-25 error npm ERR!       workspace packages\htmludom from the root project
-25 error npm ERR!
-25 error npm ERR! Could not resolve dependency:
-25 error npm ERR! peer eslint@"^8.56.0" from @typescript-eslint/parser@7.7.0
-25 error npm ERR! node_modules/@typescript-eslint/parser
-25 error npm ERR!   dev @typescript-eslint/parser@"^7.6.0" from @medyll/htmludom@0.0.1
-25 error npm ERR!   packages/htmludom
-25 error npm ERR!     @medyll/htmludom@0.0.1
-25 error npm ERR!     node_modules/@medyll/htmludom
-25 error npm ERR!       workspace packages\htmludom from the root project
-25 error npm ERR!   peer @typescript-eslint/parser@"^7.0.0" from @typescript-eslint/eslint-plugin@7.7.0
-25 error npm ERR!   node_modules/@typescript-eslint/eslint-plugin
-25 error npm ERR!     dev @typescript-eslint/eslint-plugin@"^7.6.0" from @medyll/htmludom@0.0.1
-25 error npm ERR!     packages/htmludom
-25 error npm ERR!       @medyll/htmludom@0.0.1
-25 error npm ERR!       node_modules/@medyll/htmludom
-25 error npm ERR!
-25 error npm ERR! Fix the upstream dependency conflict, or retry
-25 error npm ERR! this command with --force, or --legacy-peer-deps
-25 error npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
-25 error npm ERR!
-25 error npm ERR! See C:\Users\Mydde\AppData\Local\npm-cache\eresolve-report.txt for a full report.
-25 error
-25 error npm ERR! A complete log of this run can be found in:
-25 error npm ERR!     C:\Users\Mydde\AppData\Local\npm-cache\_logs\2024-04-20T16_54_48_755Z-debug-0.log
-25 error     at makeError (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\node_modules\execa\lib\error.js:59:11)
-25 error     at handlePromise (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\node_modules\execa\index.js:114:26)
-25 error     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-25 error     at async VersionCommand.updatePackageVersions (c:\users\mydde\appdata\roaming\npm\node_modules\lerna\dist\index.js:8469:13)
-25 error     at async Promise.all (index 0)
+14 silly git-describe.sync "@medyll/ai-bash@0.73.1-35-g8424a71f" => {"lastTagName":"@medyll/ai-bash@0.73.1","lastVersion":"0.73.1","refCount":"35","sha":"8424a71f","isDirty":false}
+15 info Looking for changed packages since @medyll/ai-bash@0.73.1
+16 silly checking diff packages-config/idae-eslint-config
+17 silly found diff in packages-config/idae-eslint-config/CHANGELOG.md
+17 silly found diff in packages-config/idae-eslint-config/index.js
+17 silly found diff in packages-config/idae-eslint-config/package.json
+18 verbose filtered diff [
+18 verbose filtered diff   'packages-config/idae-eslint-config/CHANGELOG.md',
+18 verbose filtered diff   'packages-config/idae-eslint-config/index.js',
+18 verbose filtered diff   'packages-config/idae-eslint-config/package.json'
+18 verbose filtered diff ]
+19 silly checking diff packages-config/idae-prettier-config
+20 silly found diff in packages-config/idae-prettier-config/CHANGELOG.md
+20 silly found diff in packages-config/idae-prettier-config/index.js
+20 silly found diff in packages-config/idae-prettier-config/package.json
+21 verbose filtered diff [
+21 verbose filtered diff   'packages-config/idae-prettier-config/CHANGELOG.md',
+21 verbose filtered diff   'packages-config/idae-prettier-config/index.js',
+21 verbose filtered diff   'packages-config/idae-prettier-config/package.json'
+21 verbose filtered diff ]
+22 silly checking diff packages/idae-api
+23 silly found diff in packages/idae-api/.eslintrc.cjs
+23 silly found diff in packages/idae-api/.eslintrc.js
+23 silly found diff in packages/idae-api/.github/agents/idae-master-agent.agent.md
+23 silly found diff in packages/idae-api/.github/copilot-instructions.md
+23 silly found diff in packages/idae-api/.github/skills/git-commit-package/SKILL.md
+23 silly found diff in packages/idae-api/.github/skills/git-commit/SKILL.md
+23 silly found diff in packages/idae-api/.github/skills/idae-agent-full/SKILL.md
+23 silly found diff in packages/idae-api/.github/workflows/docs.yml
+23 silly found diff in packages/idae-api/.prettierrc.cjs
+23 silly found diff in packages/idae-api/.prettierrc.js
+23 silly found diff in packages/idae-api/AGENTS.md
+23 silly found diff in packages/idae-api/CHANGELOG.md
+23 silly found diff in packages/idae-api/README.md
+23 silly found diff in packages/idae-api/SKILL.md
+23 silly found diff in packages/idae-api/cli.js
+23 silly found diff in packages/idae-api/docs/api/.nojekyll
+23 silly found diff in packages/idae-api/docs/api/assets/hierarchy.js
+23 silly found diff in packages/idae-api/docs/api/assets/highlight.css
+23 silly found diff in packages/idae-api/docs/api/assets/icons.js
+23 silly found diff in packages/idae-api/docs/api/assets/icons.svg
+23 silly found diff in packages/idae-api/docs/api/assets/main.js
+23 silly found diff in packages/idae-api/docs/api/assets/navigation.js
+23 silly found diff in packages/idae-api/docs/api/assets/search.js
+23 silly found diff in packages/idae-api/docs/api/assets/style.css
+23 silly found diff in packages/idae-api/docs/api/classes/client_IdaeApiClient.IdaeApiClient.html
+23 silly found diff in packages/idae-api/docs/api/classes/client_IdaeApiClientCollection.IdaeApiClientCollection.html
+23 silly found diff in packages/idae-api/docs/api/classes/client_IdaeApiClientConfig.IdaeApiClientConfigCore.html
+23 silly found diff in packages/idae-api/docs/api/classes/client_IdaeApiClientRequest.IdaeApiClientRequest.html
+23 silly found diff in packages/idae-api/docs/api/classes/server_engine_mongooseConnectionManager.MongooseConnectionManager.html
+23 silly found diff in packages/idae-api/docs/api/classes/server_engine_requestDatabaseManager.RequestDatabaseManager.html
+23 silly found diff in packages/idae-api/docs/api/classes/server_engine_routeManager.RouteManager.html
+23 silly found diff in packages/idae-api/docs/api/classes/server_middleware_authMiddleware.AuthMiddleWare.html
+23 silly found diff in packages/idae-api/docs/api/functions/client_IdaeApiClient.myFunc.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_authorizationMiddleware.authorize.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_databaseMiddleware.idaeDbMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_docsMiddleware.redocHandler.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_docsMiddleware.swaggerUiHandler.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_healthMiddleware.healthHandler.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_healthMiddleware.readinessHandler.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_mcpMiddleware.mcpMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_openApiMiddleware.openApiJsonHandler.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_tenantContextMiddleware.tenantContextMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_validationLayer.validationLayer.html
+23 silly found diff in packages/idae-api/docs/api/functions/server_middleware_validationMiddleware.createValidationMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/hierarchy.html
+23 silly found diff in packages/idae-api/docs/api/index.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/client_IdaeApiClient.RED_MATTER_INTERFACE.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/client_IdaeApiClientConfig.IdaeApiClientConfigCoreOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/client_IdaeApiClientRequest.RequestOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/client_IdaeApiClientRequest.UrlParams.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_engine_requestDatabaseManager.DatabaseConfigOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_engine_types.ApiServerRequestParams.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_engine_types.SortOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_middleware_authorizationMiddleware.AuthorizationOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_middleware_tenantContextMiddleware.TenantContextOptions.html
+23 silly found diff in packages/idae-api/docs/api/interfaces/server_middleware_validationLayer.ValidationLayerOptions.html
+23 silly found diff in packages/idae-api/docs/api/media/README.md
+23 silly found diff in packages/idae-api/docs/api/media/copilot-instructions.md
+23 silly found diff in packages/idae-api/docs/api/modules.html
+23 silly found diff in packages/idae-api/docs/api/modules/client_IdaeApiClient.html
+23 silly found diff in packages/idae-api/docs/api/modules/client_IdaeApiClientCollection.html
+23 silly found diff in packages/idae-api/docs/api/modules/client_IdaeApiClientConfig.html
+23 silly found diff in packages/idae-api/docs/api/modules/client_IdaeApiClientRequest.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_engine_mongooseConnectionManager.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_engine_requestDatabaseManager.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_engine_routeManager.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_engine_types.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_authMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_authorizationMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_databaseMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_docsMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_healthMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_mcpMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_openApiMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_tenantContextMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_validationLayer.html
+23 silly found diff in packages/idae-api/docs/api/modules/server_middleware_validationMiddleware.html
+23 silly found diff in packages/idae-api/docs/api/types/client_IdaeApiClient.IdaeApiClientRequestParams.html
+23 silly found diff in packages/idae-api/docs/api/types/client_IdaeApiClient.RED_MATTER.html
+23 silly found diff in packages/idae-api/docs/api/types/client_IdaeApiClientRequest.HttpMethod.html
+23 silly found diff in packages/idae-api/docs/api/types/client_IdaeApiClientRequest.RouteNamespace.html
+23 silly found diff in packages/idae-api/docs/api/types/server_middleware_authorizationMiddleware.Role.html
+23 silly found diff in packages/idae-api/docs/api/types/server_middleware_authorizationMiddleware.Scope.html
+23 silly found diff in packages/idae-api/docs/api/variables/client_IdaeApiClientConfig.IdaeApiClientConfig.html
+23 silly found diff in packages/idae-api/docs/api/variables/server_engine_mongooseConnectionManager.mongooseConnectionManager.html
+23 silly found diff in packages/idae-api/docs/api/variables/server_engine_requestDatabaseManager.requestDatabaseManager.html
+23 silly found diff in packages/idae-api/eslint.config.js
+23 silly found diff in packages/idae-api/package.json
+23 silly found diff in packages/idae-api/src/app.d.ts
+23 silly found diff in packages/idae-api/src/example-server.ts
+23 silly found diff in packages/idae-api/src/lib/@types/types.ts
+23 silly found diff in packages/idae-api/src/lib/__tests__/README.md
+23 silly found diff in packages/idae-api/src/lib/__tests__/e2e/security.test.ts
+23 silly found diff in packages/idae-api/src/lib/__tests__/e2e/server-client-roundtrip.test.ts
+23 silly found diff in packages/idae-api/src/lib/__tests__/fixtures/mockData.ts
+23 silly found diff in packages/idae-api/src/lib/__tests__/helpers/testUtils.ts
+23 silly found diff in packages/idae-api/src/lib/adapters/.delete_marker
+23 silly found diff in packages/idae-api/src/lib/client/IdaeApiClient.ts
+23 silly found diff in packages/idae-api/src/lib/client/IdaeApiClientCollection.ts
+23 silly found diff in packages/idae-api/src/lib/client/IdaeApiClientConfig.ts
+23 silly found diff in packages/idae-api/src/lib/client/IdaeApiClientRequest.ts
+23 silly found diff in packages/idae-api/src/lib/client/__tests__/IdaeApiClient.test.ts
+23 silly found diff in packages/idae-api/src/lib/config/routeDefinitions.ts
+23 silly found diff in packages/idae-api/src/lib/index.ts
+23 silly found diff in packages/idae-api/src/lib/openApi/redoc.html
+23 silly found diff in packages/idae-api/src/lib/openApi/swagger-ui.html
+23 silly found diff in packages/idae-api/src/lib/server/IdaeApi.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/engine/requestDatabaseManager.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/engine/routeManager.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/authMiddleware.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/databaseMiddleware.edge.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/databaseMiddleware.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/healthMiddleware.edge.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/mcpMiddleware.edge.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/tenantContextMiddleware.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/middleware/validationMiddleware.edge.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/__tests__/queryRoute.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/apiServer.test.ts
+23 silly found diff in packages/idae-api/src/lib/server/engine/requestDatabaseManager.ts
+23 silly found diff in packages/idae-api/src/lib/server/engine/routeManager.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/README.md
+23 silly found diff in packages/idae-api/src/lib/server/middleware/authMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/authorizationMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/databaseMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/docsMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/healthMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/mcpMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/openApiMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/tenantContextMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/validationLayer.ts
+23 silly found diff in packages/idae-api/src/lib/server/middleware/validationMiddleware.ts
+23 silly found diff in packages/idae-api/src/lib/server/services/AuthService.ts
+23 silly found diff in packages/idae-api/tsconfig.json
+23 silly found diff in packages/idae-api/typedoc.json
+23 silly found diff in packages/idae-api/vite.config.ts
+24 verbose filtered diff [
+24 verbose filtered diff   'packages/idae-api/.eslintrc.cjs',
+24 verbose filtered diff   'packages/idae-api/.eslintrc.js',
+24 verbose filtered diff   'packages/idae-api/.github/agents/idae-master-agent.agent.md',
+24 verbose filtered diff   'packages/idae-api/.github/copilot-instructions.md',
+24 verbose filtered diff   'packages/idae-api/.github/skills/git-commit-package/SKILL.md',
+24 verbose filtered diff   'packages/idae-api/.github/skills/git-commit/SKILL.md',
+24 verbose filtered diff   'packages/idae-api/.github/skills/idae-agent-full/SKILL.md',
+24 verbose filtered diff   'packages/idae-api/.github/workflows/docs.yml',
+24 verbose filtered diff   'packages/idae-api/.prettierrc.cjs',
+24 verbose filtered diff   'packages/idae-api/.prettierrc.js',
+24 verbose filtered diff   'packages/idae-api/AGENTS.md',
+24 verbose filtered diff   'packages/idae-api/CHANGELOG.md',
+24 verbose filtered diff   'packages/idae-api/README.md',
+24 verbose filtered diff   'packages/idae-api/SKILL.md',
+24 verbose filtered diff   'packages/idae-api/cli.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/.nojekyll',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/hierarchy.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/highlight.css',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/icons.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/icons.svg',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/main.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/navigation.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/search.js',
+24 verbose filtered diff   'packages/idae-api/docs/api/assets/style.css',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/client_IdaeApiClient.IdaeApiClient.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/client_IdaeApiClientCollection.IdaeApiClientCollection.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/client_IdaeApiClientConfig.IdaeApiClientConfigCore.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/client_IdaeApiClientRequest.IdaeApiClientRequest.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/server_engine_mongooseConnectionManager.MongooseConnectionManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/server_engine_requestDatabaseManager.RequestDatabaseManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/server_engine_routeManager.RouteManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/classes/server_middleware_authMiddleware.AuthMiddleWare.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/client_IdaeApiClient.myFunc.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_authorizationMiddleware.authorize.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_databaseMiddleware.idaeDbMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_docsMiddleware.redocHandler.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_docsMiddleware.swaggerUiHandler.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_healthMiddleware.healthHandler.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_healthMiddleware.readinessHandler.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_mcpMiddleware.mcpMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_openApiMiddleware.openApiJsonHandler.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_tenantContextMiddleware.tenantContextMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_validationLayer.validationLayer.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/functions/server_middleware_validationMiddleware.createValidationMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/hierarchy.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/index.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/client_IdaeApiClient.RED_MATTER_INTERFACE.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/client_IdaeApiClientConfig.IdaeApiClientConfigCoreOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/client_IdaeApiClientRequest.RequestOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/client_IdaeApiClientRequest.UrlParams.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_engine_requestDatabaseManager.DatabaseConfigOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_engine_types.ApiServerRequestParams.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_engine_types.SortOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_middleware_authorizationMiddleware.AuthorizationOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_middleware_tenantContextMiddleware.TenantContextOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/interfaces/server_middleware_validationLayer.ValidationLayerOptions.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/media/README.md',
+24 verbose filtered diff   'packages/idae-api/docs/api/media/copilot-instructions.md',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/client_IdaeApiClient.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/client_IdaeApiClientCollection.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/client_IdaeApiClientConfig.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/client_IdaeApiClientRequest.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_engine_mongooseConnectionManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_engine_requestDatabaseManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_engine_routeManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_engine_types.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_authMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_authorizationMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_databaseMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_docsMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_healthMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_mcpMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_openApiMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_tenantContextMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_validationLayer.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/modules/server_middleware_validationMiddleware.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/client_IdaeApiClient.IdaeApiClientRequestParams.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/client_IdaeApiClient.RED_MATTER.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/client_IdaeApiClientRequest.HttpMethod.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/client_IdaeApiClientRequest.RouteNamespace.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/server_middleware_authorizationMiddleware.Role.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/types/server_middleware_authorizationMiddleware.Scope.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/variables/client_IdaeApiClientConfig.IdaeApiClientConfig.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/variables/server_engine_mongooseConnectionManager.mongooseConnectionManager.html',
+24 verbose filtered diff   'packages/idae-api/docs/api/variables/server_engine_requestDatabaseManager.requestDatabaseManager.html',
+24 verbose filtered diff   'packages/idae-api/eslint.config.js',
+24 verbose filtered diff   'packages/idae-api/package.json',
+24 verbose filtered diff   'packages/idae-api/src/app.d.ts',
+24 verbose filtered diff   'packages/idae-api/src/example-server.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/@types/types.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/__tests__/README.md',
+24 verbose filtered diff   'packages/idae-api/src/lib/__tests__/e2e/security.test.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/__tests__/e2e/server-client-roundtrip.test.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/__tests__/fixtures/mockData.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/__tests__/helpers/testUtils.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/adapters/.delete_marker',
+24 verbose filtered diff   'packages/idae-api/src/lib/client/IdaeApiClient.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/client/IdaeApiClientCollection.ts',
+24 verbose filtered diff   'packages/idae-api/src/lib/client/IdaeApiClientConfig.ts',
+24 verbose filtered diff   ... 35 more items
+24 verbose filtered diff ]
+25 silly checking diff packages/idae-be
+26 silly found diff in packages/idae-be/.eslintrc.cjs
+26 silly found diff in packages/idae-be/.eslintrc.js
+26 silly found diff in packages/idae-be/.github/copilot-instructions.md
+26 silly found diff in packages/idae-be/.github/skills/idae-agent-full/SKILL.md
+26 silly found diff in packages/idae-be/.github/skills/make-skill-template/SKILL.md
+26 silly found diff in packages/idae-be/.github/skills/readme/skill.md
+26 silly found diff in packages/idae-be/.github/skills/svelte-code-writer/SKILL.md
+26 silly found diff in packages/idae-be/.prettierrc
+26 silly found diff in packages/idae-be/.prettierrc.cjs
+26 silly found diff in packages/idae-be/.prettierrc.js
+26 silly found diff in packages/idae-be/CHANGELOG.md
+26 silly found diff in packages/idae-be/SKILL.md
+26 silly found diff in packages/idae-be/cli.js
+26 silly found diff in packages/idae-be/eslint.config.js
+26 silly found diff in packages/idae-be/package.json
+27 verbose filtered diff [
+27 verbose filtered diff   'packages/idae-be/.eslintrc.cjs',
+27 verbose filtered diff   'packages/idae-be/.eslintrc.js',
+27 verbose filtered diff   'packages/idae-be/.github/copilot-instructions.md',
+27 verbose filtered diff   'packages/idae-be/.github/skills/idae-agent-full/SKILL.md',
+27 verbose filtered diff   'packages/idae-be/.github/skills/make-skill-template/SKILL.md',
+27 verbose filtered diff   'packages/idae-be/.github/skills/readme/skill.md',
+27 verbose filtered diff   'packages/idae-be/.github/skills/svelte-code-writer/SKILL.md',
+27 verbose filtered diff   'packages/idae-be/.prettierrc',
+27 verbose filtered diff   'packages/idae-be/.prettierrc.cjs',
+27 verbose filtered diff   'packages/idae-be/.prettierrc.js',
+27 verbose filtered diff   'packages/idae-be/CHANGELOG.md',
+27 verbose filtered diff   'packages/idae-be/SKILL.md',
+27 verbose filtered diff   'packages/idae-be/cli.js',
+27 verbose filtered diff   'packages/idae-be/eslint.config.js',
+27 verbose filtered diff   'packages/idae-be/package.json'
+27 verbose filtered diff ]
+28 silly checking diff packages/idae-cadenzia
+29 silly found diff in packages/idae-cadenzia/.eslintrc.js
+29 silly found diff in packages/idae-cadenzia/.github/copilot-instructions.md
+29 silly found diff in packages/idae-cadenzia/.github/skills/idae-agent-full/SKILL.md
+29 silly found diff in packages/idae-cadenzia/.github/skills/make-skill-template/SKILL.md
+29 silly found diff in packages/idae-cadenzia/.github/skills/readme/skill.md
+29 silly found diff in packages/idae-cadenzia/.github/skills/svelte-code-writer/SKILL.md
+29 silly found diff in packages/idae-cadenzia/.prettierrc
+29 silly found diff in packages/idae-cadenzia/.prettierrc.js
+29 silly found diff in packages/idae-cadenzia/CHANGELOG.md
+29 silly found diff in packages/idae-cadenzia/eslint.config.js
+29 silly found diff in packages/idae-cadenzia/package.json
+30 verbose filtered diff [
+30 verbose filtered diff   'packages/idae-cadenzia/.eslintrc.js',
+30 verbose filtered diff   'packages/idae-cadenzia/.github/copilot-instructions.md',
+30 verbose filtered diff   'packages/idae-cadenzia/.github/skills/idae-agent-full/SKILL.md',
+30 verbose filtered diff   'packages/idae-cadenzia/.github/skills/make-skill-template/SKILL.md',
+30 verbose filtered diff   'packages/idae-cadenzia/.github/skills/readme/skill.md',
+30 verbose filtered diff   'packages/idae-cadenzia/.github/skills/svelte-code-writer/SKILL.md',
+30 verbose filtered diff   'packages/idae-cadenzia/.prettierrc',
+30 verbose filtered diff   'packages/idae-cadenzia/.prettierrc.js',
+30 verbose filtered diff   'packages/idae-cadenzia/CHANGELOG.md',
+30 verbose filtered diff   'packages/idae-cadenzia/eslint.config.js',
+30 verbose filtered diff   'packages/idae-cadenzia/package.json'
+30 verbose filtered diff ]
+31 silly checking diff packages/idae-data-tpl
+32 silly found diff in packages/idae-data-tpl/.eslintrc.js
+32 silly found diff in packages/idae-data-tpl/.github/skills/idae-agent-full/SKILL.md
+32 silly found diff in packages/idae-data-tpl/.github/skills/make-skill-template/SKILL.md
+32 silly found diff in packages/idae-data-tpl/.github/skills/readme/skill.md
+32 silly found diff in packages/idae-data-tpl/.github/skills/svelte-code-writer/SKILL.md
+32 silly found diff in packages/idae-data-tpl/.prettierrc
+32 silly found diff in packages/idae-data-tpl/.prettierrc.js
+32 silly found diff in packages/idae-data-tpl/CHANGELOG.md
+32 silly found diff in packages/idae-data-tpl/SKILL.md
+32 silly found diff in packages/idae-data-tpl/cli.js
+32 silly found diff in packages/idae-data-tpl/eslint.config.js
+32 silly found diff in packages/idae-data-tpl/package.json
+33 verbose filtered diff [
+33 verbose filtered diff   'packages/idae-data-tpl/.eslintrc.js',
+33 verbose filtered diff   'packages/idae-data-tpl/.github/skills/idae-agent-full/SKILL.md',
+33 verbose filtered diff   'packages/idae-data-tpl/.github/skills/make-skill-template/SKILL.md',
+33 verbose filtered diff   'packages/idae-data-tpl/.github/skills/readme/skill.md',
+33 verbose filtered diff   'packages/idae-data-tpl/.github/skills/svelte-code-writer/SKILL.md',
+33 verbose filtered diff   'packages/idae-data-tpl/.prettierrc',
+33 verbose filtered diff   'packages/idae-data-tpl/.prettierrc.js',
+33 verbose filtered diff   'packages/idae-data-tpl/CHANGELOG.md',
+33 verbose filtered diff   'packages/idae-data-tpl/SKILL.md',
+33 verbose filtered diff   'packages/idae-data-tpl/cli.js',
+33 verbose filtered diff   'packages/idae-data-tpl/eslint.config.js',
+33 verbose filtered diff   'packages/idae-data-tpl/package.json'
+33 verbose filtered diff ]
+34 silly checking diff packages/idae-db
+35 silly found diff in packages/idae-db/.eslintrc.js
+35 silly found diff in packages/idae-db/.github/copilot-instructions.md
+35 silly found diff in packages/idae-db/.github/skills/idae-technical-planner/SKILL.md
+35 silly found diff in packages/idae-db/.github/skills/make-skill-template/SKILL.md
+35 silly found diff in packages/idae-db/.github/skills/readme/skill.md
+35 silly found diff in packages/idae-db/.github/skills/svelte-code-writer/SKILL.md
+35 silly found diff in packages/idae-db/.prettierrc
+35 silly found diff in packages/idae-db/.prettierrc.js
+35 silly found diff in packages/idae-db/AGENTS.md
+35 silly found diff in packages/idae-db/CHANGELOG.md
+35 silly found diff in packages/idae-db/README.md
+35 silly found diff in packages/idae-db/SKILL.md
+35 silly found diff in packages/idae-db/TEST_COVERAGE_SUMMARY.md
+35 silly found diff in packages/idae-db/cli.js
+35 silly found diff in packages/idae-db/eslint.config.js
+35 silly found diff in packages/idae-db/package.json
+35 silly found diff in packages/idae-db/src/lib/@types/pg.d.ts
+35 silly found diff in packages/idae-db/src/lib/@types/types.ts
+35 silly found diff in packages/idae-db/src/lib/IdaeDBModel.ts
+35 silly found diff in packages/idae-db/src/lib/IdaeDbAdapter.ts
+35 silly found diff in packages/idae-db/src/lib/IdaeDbConnection.ts
+35 silly found diff in packages/idae-db/src/lib/IdaeEventEmitter.ts
+35 silly found diff in packages/idae-db/src/lib/adapters/MongoDBAdapter.ts
+35 silly found diff in packages/idae-db/src/lib/adapters/PostgreSQLAdapter.ts
+35 silly found diff in packages/idae-db/src/lib/adapters/PouchDBAdapter.ts
+35 silly found diff in packages/idae-db/src/lib/adapters/SQLiteAdapter.ts
+35 silly found diff in packages/idae-db/src/lib/idaeDb.ts
+35 silly found diff in packages/idae-db/src/lib/index.ts
+35 silly found diff in packages/idae-db/tests/fixtures/mock-adapter.ts
+35 silly found diff in packages/idae-db/tests/fixtures/test-data.ts
+35 silly found diff in packages/idae-db/tests/helpers/assertions.ts
+35 silly found diff in packages/idae-db/tests/integration/error-handling.integration.test.ts
+35 silly found diff in packages/idae-db/tests/integration/events.integration.test.ts
+35 silly found diff in packages/idae-db/tests/integration/singleton.integration.test.ts
+35 silly found diff in packages/idae-db/tests/mongodb.test.ts
+35 silly found diff in packages/idae-db/tests/unit/IdaeDBModel.test.ts
+35 silly found diff in packages/idae-db/tests/unit/IdaeDb.test.ts
+35 silly found diff in packages/idae-db/tests/unit/IdaeDbAdapter.test.ts
+35 silly found diff in packages/idae-db/tests/unit/IdaeEventEmitter.test.ts
+35 silly found diff in packages/idae-db/tests/unit/PostgreSQLAdapter.test.ts
+35 silly found diff in packages/idae-db/tests/unit/PouchDBAdapter.test.ts
+35 silly found diff in packages/idae-db/tests/unit/SQLiteAdapter.test.ts
+35 silly found diff in packages/idae-db/vite.config.ts
+36 verbose filtered diff [
+36 verbose filtered diff   'packages/idae-db/.eslintrc.js',
+36 verbose filtered diff   'packages/idae-db/.github/copilot-instructions.md',
+36 verbose filtered diff   'packages/idae-db/.github/skills/idae-technical-planner/SKILL.md',
+36 verbose filtered diff   'packages/idae-db/.github/skills/make-skill-template/SKILL.md',
+36 verbose filtered diff   'packages/idae-db/.github/skills/readme/skill.md',
+36 verbose filtered diff   'packages/idae-db/.github/skills/svelte-code-writer/SKILL.md',
+36 verbose filtered diff   'packages/idae-db/.prettierrc',
+36 verbose filtered diff   'packages/idae-db/.prettierrc.js',
+36 verbose filtered diff   'packages/idae-db/AGENTS.md',
+36 verbose filtered diff   'packages/idae-db/CHANGELOG.md',
+36 verbose filtered diff   'packages/idae-db/README.md',
+36 verbose filtered diff   'packages/idae-db/SKILL.md',
+36 verbose filtered diff   'packages/idae-db/TEST_COVERAGE_SUMMARY.md',
+36 verbose filtered diff   'packages/idae-db/cli.js',
+36 verbose filtered diff   'packages/idae-db/eslint.config.js',
+36 verbose filtered diff   'packages/idae-db/package.json',
+36 verbose filtered diff   'packages/idae-db/src/lib/@types/pg.d.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/@types/types.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/IdaeDBModel.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/IdaeDbAdapter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/IdaeDbConnection.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/IdaeEventEmitter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/adapters/MongoDBAdapter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/adapters/PostgreSQLAdapter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/adapters/PouchDBAdapter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/adapters/SQLiteAdapter.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/idaeDb.ts',
+36 verbose filtered diff   'packages/idae-db/src/lib/index.ts',
+36 verbose filtered diff   'packages/idae-db/tests/fixtures/mock-adapter.ts',
+36 verbose filtered diff   'packages/idae-db/tests/fixtures/test-data.ts',
+36 verbose filtered diff   'packages/idae-db/tests/helpers/assertions.ts',
+36 verbose filtered diff   'packages/idae-db/tests/integration/error-handling.integration.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/integration/events.integration.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/integration/singleton.integration.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/mongodb.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/IdaeDBModel.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/IdaeDb.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/IdaeDbAdapter.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/IdaeEventEmitter.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/PostgreSQLAdapter.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/PouchDBAdapter.test.ts',
+36 verbose filtered diff   'packages/idae-db/tests/unit/SQLiteAdapter.test.ts',
+36 verbose filtered diff   'packages/idae-db/vite.config.ts'
+36 verbose filtered diff ]
+37 silly checking diff packages/idae-dom-events
+38 silly found diff in packages/idae-dom-events/.eslintrc.cjs
+38 silly found diff in packages/idae-dom-events/.eslintrc.js
+38 silly found diff in packages/idae-dom-events/.github/copilot-instructions.md
+38 silly found diff in packages/idae-dom-events/.github/skills/idae-agent-full/SKILL.md
+38 silly found diff in packages/idae-dom-events/.github/skills/make-skill-template/SKILL.md
+38 silly found diff in packages/idae-dom-events/.github/skills/readme/skill.md
+38 silly found diff in packages/idae-dom-events/.github/skills/svelte-code-writer/SKILL.md
+38 silly found diff in packages/idae-dom-events/.prettierrc.cjs
+38 silly found diff in packages/idae-dom-events/.prettierrc.js
+38 silly found diff in packages/idae-dom-events/CHANGELOG.md
+38 silly found diff in packages/idae-dom-events/README.md
+38 silly found diff in packages/idae-dom-events/Readme-1.md
+38 silly found diff in packages/idae-dom-events/SKILL.md
+38 silly found diff in packages/idae-dom-events/cli.js
+38 silly found diff in packages/idae-dom-events/package-lock.json
+38 silly found diff in packages/idae-dom-events/package.json
+39 verbose filtered diff [
+39 verbose filtered diff   'packages/idae-dom-events/.eslintrc.cjs',
+39 verbose filtered diff   'packages/idae-dom-events/.eslintrc.js',
+39 verbose filtered diff   'packages/idae-dom-events/.github/copilot-instructions.md',
+39 verbose filtered diff   'packages/idae-dom-events/.github/skills/idae-agent-full/SKILL.md',
+39 verbose filtered diff   'packages/idae-dom-events/.github/skills/make-skill-template/SKILL.md',
+39 verbose filtered diff   'packages/idae-dom-events/.github/skills/readme/skill.md',
+39 verbose filtered diff   'packages/idae-dom-events/.github/skills/svelte-code-writer/SKILL.md',
+39 verbose filtered diff   'packages/idae-dom-events/.prettierrc.cjs',
+39 verbose filtered diff   'packages/idae-dom-events/.prettierrc.js',
+39 verbose filtered diff   'packages/idae-dom-events/CHANGELOG.md',
+39 verbose filtered diff   'packages/idae-dom-events/README.md',
+39 verbose filtered diff   'packages/idae-dom-events/Readme-1.md',
+39 verbose filtered diff   'packages/idae-dom-events/SKILL.md',
+39 verbose filtered diff   'packages/idae-dom-events/cli.js',
+39 verbose filtered diff   'packages/idae-dom-events/package-lock.json',
+39 verbose filtered diff   'packages/idae-dom-events/package.json'
+39 verbose filtered diff ]
+40 silly checking diff packages/idae-engine
+41 silly found diff in packages/idae-engine/.eslintrc.cjs
+41 silly found diff in packages/idae-engine/.eslintrc.js
+41 silly found diff in packages/idae-engine/.github/agents/idae-master-agent.agent.md
+41 silly found diff in packages/idae-engine/.github/agents/svelte-5-agent.md
+41 silly found diff in packages/idae-engine/.github/skills/git-commit-package/SKILL.md
+41 silly found diff in packages/idae-engine/.github/skills/idae-agent-full/SKILL.md
+41 silly found diff in packages/idae-engine/.github/skills/idae-idbql/SKILL.md
+41 silly found diff in packages/idae-engine/.github/skills/svelte-code-writer/SKILL.md
+41 silly found diff in packages/idae-engine/.prettierrc.cjs
+41 silly found diff in packages/idae-engine/.prettierrc.js
+41 silly found diff in packages/idae-engine/CHANGELOG.md
+41 silly found diff in packages/idae-engine/package.json
+42 verbose filtered diff [
+42 verbose filtered diff   'packages/idae-engine/.eslintrc.cjs',
+42 verbose filtered diff   'packages/idae-engine/.eslintrc.js',
+42 verbose filtered diff   'packages/idae-engine/.github/agents/idae-master-agent.agent.md',
+42 verbose filtered diff   'packages/idae-engine/.github/agents/svelte-5-agent.md',
+42 verbose filtered diff   'packages/idae-engine/.github/skills/git-commit-package/SKILL.md',
+42 verbose filtered diff   'packages/idae-engine/.github/skills/idae-agent-full/SKILL.md',
+42 verbose filtered diff   'packages/idae-engine/.github/skills/idae-idbql/SKILL.md',
+42 verbose filtered diff   'packages/idae-engine/.github/skills/svelte-code-writer/SKILL.md',
+42 verbose filtered diff   'packages/idae-engine/.prettierrc.cjs',
+42 verbose filtered diff   'packages/idae-engine/.prettierrc.js',
+42 verbose filtered diff   'packages/idae-engine/CHANGELOG.md',
+42 verbose filtered diff   'packages/idae-engine/package.json'
+42 verbose filtered diff ]
+43 silly checking diff packages/idae-html
+44 silly found diff in packages/idae-html/.eslintrc.js
+44 silly found diff in packages/idae-html/.github/agents/idae-master-agent.agent.md
+44 silly found diff in packages/idae-html/.github/agents/svelte-5-agent.md
+44 silly found diff in packages/idae-html/.github/skills/git-commit-package/SKILL.md
+44 silly found diff in packages/idae-html/.github/skills/idae-agent-full/SKILL.md
+44 silly found diff in packages/idae-html/.github/skills/idae-idbql/SKILL.md
+44 silly found diff in packages/idae-html/.github/skills/svelte-code-writer/SKILL.md
+44 silly found diff in packages/idae-html/.prettierrc
+44 silly found diff in packages/idae-html/.prettierrc.js
+44 silly found diff in packages/idae-html/CHANGELOG.md
+44 silly found diff in packages/idae-html/SKILL.md
+44 silly found diff in packages/idae-html/cli.js
+44 silly found diff in packages/idae-html/eslint.config.js
+44 silly found diff in packages/idae-html/package.json
+45 verbose filtered diff [
+45 verbose filtered diff   'packages/idae-html/.eslintrc.js',
+45 verbose filtered diff   'packages/idae-html/.github/agents/idae-master-agent.agent.md',
+45 verbose filtered diff   'packages/idae-html/.github/agents/svelte-5-agent.md',
+45 verbose filtered diff   'packages/idae-html/.github/skills/git-commit-package/SKILL.md',
+45 verbose filtered diff   'packages/idae-html/.github/skills/idae-agent-full/SKILL.md',
+45 verbose filtered diff   'packages/idae-html/.github/skills/idae-idbql/SKILL.md',
+45 verbose filtered diff   'packages/idae-html/.github/skills/svelte-code-writer/SKILL.md',
+45 verbose filtered diff   'packages/idae-html/.prettierrc',
+45 verbose filtered diff   'packages/idae-html/.prettierrc.js',
+45 verbose filtered diff   'packages/idae-html/CHANGELOG.md',
+45 verbose filtered diff   'packages/idae-html/SKILL.md',
+45 verbose filtered diff   'packages/idae-html/cli.js',
+45 verbose filtered diff   'packages/idae-html/eslint.config.js',
+45 verbose filtered diff   'packages/idae-html/package.json'
+45 verbose filtered diff ]
+46 silly checking diff packages/idae-idbql
+47 silly found diff in packages/idae-idbql/.eslintrc.cjs
+47 silly found diff in packages/idae-idbql/.eslintrc.js
+47 silly found diff in packages/idae-idbql/.github/agents/idae-master-agent.agent.md
+47 silly found diff in packages/idae-idbql/.github/agents/svelte-5-agent.md
+47 silly found diff in packages/idae-idbql/.github/copilot-instructions.md
+47 silly found diff in packages/idae-idbql/.github/skills/git-commit-package/SKILL.md
+47 silly found diff in packages/idae-idbql/.github/skills/idae-agent-full/SKILL.md
+47 silly found diff in packages/idae-idbql/.github/skills/idae-idbql/SKILL.md
+47 silly found diff in packages/idae-idbql/.github/skills/svelte-code-writer/SKILL.md
+47 silly found diff in packages/idae-idbql/.prettierrc.js
+47 silly found diff in packages/idae-idbql/CHANGELOG.md
+47 silly found diff in packages/idae-idbql/README.md
+47 silly found diff in packages/idae-idbql/SKILL.md
+47 silly found diff in packages/idae-idbql/backlog.md
+47 silly found diff in packages/idae-idbql/cli.js
+47 silly found diff in packages/idae-idbql/idae-idbql.PROJECT.md
+47 silly found diff in packages/idae-idbql/package-lock.json
+47 silly found diff in packages/idae-idbql/package.json
+47 silly found diff in packages/idae-idbql/src/lib/collection/collection.svelte.ts
+47 silly found diff in packages/idae-idbql/src/lib/collection/collection.svelte.unit.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/idbqlCore/idbqlCore.ts
+47 silly found diff in packages/idae-idbql/src/lib/idbqlCore/idbqlSchema.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/idbqlCore/idbqlSchema.ts
+47 silly found diff in packages/idae-idbql/src/lib/idbqlCore/types.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/idbqlCore/types.ts
+47 silly found diff in packages/idae-idbql/src/lib/path/pathResolver.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/state/idbqlEvent.svelte.unit.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/state/idbqlState.reactivity.test.ts
+47 silly found diff in packages/idae-idbql/src/lib/state/idbstate.svelte.ts
+47 silly found diff in packages/idae-idbql/src/lib/state/idbstate.svelte.unit.test.ts
+47 silly found diff in packages/idae-idbql/src/routes/+page.svelte
+47 silly found diff in packages/idae-idbql/src/routes/demo/+page.svelte
+47 silly found diff in packages/idae-idbql/src/routes/example.ts
+47 silly found diff in packages/idae-idbql/vite.config.ts
+48 verbose filtered diff [
+48 verbose filtered diff   'packages/idae-idbql/.eslintrc.cjs',
+48 verbose filtered diff   'packages/idae-idbql/.eslintrc.js',
+48 verbose filtered diff   'packages/idae-idbql/.github/agents/idae-master-agent.agent.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/agents/svelte-5-agent.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/copilot-instructions.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/skills/git-commit-package/SKILL.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/skills/idae-agent-full/SKILL.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/skills/idae-idbql/SKILL.md',
+48 verbose filtered diff   'packages/idae-idbql/.github/skills/svelte-code-writer/SKILL.md',
+48 verbose filtered diff   'packages/idae-idbql/.prettierrc.js',
+48 verbose filtered diff   'packages/idae-idbql/CHANGELOG.md',
+48 verbose filtered diff   'packages/idae-idbql/README.md',
+48 verbose filtered diff   'packages/idae-idbql/SKILL.md',
+48 verbose filtered diff   'packages/idae-idbql/backlog.md',
+48 verbose filtered diff   'packages/idae-idbql/cli.js',
+48 verbose filtered diff   'packages/idae-idbql/idae-idbql.PROJECT.md',
+48 verbose filtered diff   'packages/idae-idbql/package-lock.json',
+48 verbose filtered diff   'packages/idae-idbql/package.json',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/collection/collection.svelte.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/collection/collection.svelte.unit.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/idbqlCore/idbqlCore.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/idbqlCore/idbqlSchema.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/idbqlCore/idbqlSchema.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/idbqlCore/types.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/idbqlCore/types.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/path/pathResolver.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/state/idbqlEvent.svelte.unit.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/state/idbqlState.reactivity.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/state/idbstate.svelte.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/lib/state/idbstate.svelte.unit.test.ts',
+48 verbose filtered diff   'packages/idae-idbql/src/routes/+page.svelte',
+48 verbose filtered diff   'packages/idae-idbql/src/routes/demo/+page.svelte',
+48 verbose filtered diff   'packages/idae-idbql/src/routes/example.ts',
+48 verbose filtered diff   'packages/idae-idbql/vite.config.ts'
+48 verbose filtered diff ]
+49 silly checking diff packages/idae-machine
+50 silly found diff in packages/idae-machine/.continue/mcpServers/new-mcp-server.yaml
+50 silly found diff in packages/idae-machine/.eslintrc.js
+50 silly found diff in packages/idae-machine/.github/agents/idae-agent-full.md
+50 silly found diff in packages/idae-machine/.github/copilot-instructions.md
+50 silly found diff in packages/idae-machine/.github/skills/git-commit-package/SKILL.md
+50 silly found diff in packages/idae-machine/.github/skills/idae-idbql/SKILL.md
+50 silly found diff in packages/idae-machine/.github/skills/idae-technical-planner/SKILL.md
+50 silly found diff in packages/idae-machine/.github/skills/readme/skill.md
+50 silly found diff in packages/idae-machine/.github/skills/svelte-code-writer/SKILL.md
+50 silly found diff in packages/idae-machine/.gitignore
+50 silly found diff in packages/idae-machine/.npmrc
+50 silly found diff in packages/idae-machine/.prettierignore
+50 silly found diff in packages/idae-machine/.prettierrc.js
+50 silly found diff in packages/idae-machine/.vscode/kanban-agent.json
+50 silly found diff in packages/idae-machine/.vscode/tasks.json
+50 silly found diff in packages/idae-machine/CHANGELOG.md
+50 silly found diff in packages/idae-machine/README.md
+50 silly found diff in packages/idae-machine/SKILL.md
+50 silly found diff in packages/idae-machine/cli.js
+50 silly found diff in packages/idae-machine/docs/machine-architecture.md
+50 silly found diff in packages/idae-machine/gemini.md
+50 silly found diff in packages/idae-machine/package.json
+50 silly found diff in packages/idae-machine/scripts/package-pre.js
+50 silly found diff in packages/idae-machine/src/_old/CollectionFieldGuess.svelte
+50 silly found diff in packages/idae-machine/src/_old/CollectionFieldGuess.svelte.d.ts
+50 silly found diff in packages/idae-machine/src/_old/CrudZone.svelte
+50 silly found diff in packages/idae-machine/src/_old/CrudZone.svelte.d.ts
+50 silly found diff in packages/idae-machine/src/_old/Entity.ts
+50 silly found diff in packages/idae-machine/src/_old/SchemeFieldClass.ts
+50 silly found diff in packages/idae-machine/src/_old/SchemeModel.ts
+50 silly found diff in packages/idae-machine/src/_old/schemeModelClass.ts
+50 silly found diff in packages/idae-machine/src/_old/types.ts
+50 silly found diff in packages/idae-machine/src/app.d.ts
+50 silly found diff in packages/idae-machine/src/app.html
+50 silly found diff in packages/idae-machine/src/lib/db/CrudService.ts
+50 silly found diff in packages/idae-machine/src/lib/demo/dbSchema.ts
+50 silly found diff in packages/idae-machine/src/lib/demo/testScheme.ts
+50 silly found diff in packages/idae-machine/src/lib/form/CreateUpdate.svelte
+50 silly found diff in packages/idae-machine/src/lib/form/CreateUpdate.test.ts
+50 silly found diff in packages/idae-machine/src/lib/form/DataProvider.svelte
+50 silly found diff in packages/idae-machine/src/lib/form/FieldInPlace.svelte
+50 silly found diff in packages/idae-machine/src/lib/form/FieldValue.svelte
+50 silly found diff in packages/idae-machine/src/lib/form/types.ts
+50 silly found diff in packages/idae-machine/src/lib/fragments/Confirm.svelte
+50 silly found diff in packages/idae-machine/src/lib/fragments/Frame.svelte
+50 silly found diff in packages/idae-machine/src/lib/fragments/InfoLine.svelte
+50 silly found diff in packages/idae-machine/src/lib/fragments/Selector.svelte
+50 silly found diff in packages/idae-machine/src/lib/fragments/Skeleton.svelte
+50 silly found diff in packages/idae-machine/src/lib/index.ts
+50 silly found diff in packages/idae-machine/src/lib/main/__tests__/MachineFieldType.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/__tests__/machine.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/__tests__/machineDb.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/__tests__/machineFieldDefaultValues.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/__tests__/machineScheme.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineError.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineErrorValidation.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineFieldType.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineScheme.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineSchemeField.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineSchemeFieldForge.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineSchemeFieldValues.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineSchemeValidate.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/MachineSchemeValues.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/SchemeFieldDefaultValues.test.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machine/SchemeFieldDefaultValues.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machineDb.ts
+50 silly found diff in packages/idae-machine/src/lib/main/machineParserForge.ts
+50 silly found diff in packages/idae-machine/src/lib/types/appschemeTypes.ts
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionButton.svelte
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionFks.svelte
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionList.svelte
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionListFieldValues.svelte
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionListMenu.svelte
+50 silly found diff in packages/idae-machine/src/lib/ui/CollectionReverseFks.svelte
+50 silly found diff in packages/idae-machine/src/routes/+page.svelte
+50 silly found diff in packages/idae-machine/static/favicon.png
+50 silly found diff in packages/idae-machine/svelte.config.js
+50 silly found diff in packages/idae-machine/tsconfig.json
+50 silly found diff in packages/idae-machine/vite.config.ts
+50 silly found diff in packages/idae-machine/vitest-setup-client.ts
+51 verbose filtered diff [
+51 verbose filtered diff   'packages/idae-machine/.continue/mcpServers/new-mcp-server.yaml',
+51 verbose filtered diff   'packages/idae-machine/.eslintrc.js',
+51 verbose filtered diff   'packages/idae-machine/.github/agents/idae-agent-full.md',
+51 verbose filtered diff   'packages/idae-machine/.github/copilot-instructions.md',
+51 verbose filtered diff   'packages/idae-machine/.github/skills/git-commit-package/SKILL.md',
+51 verbose filtered diff   'packages/idae-machine/.github/skills/idae-idbql/SKILL.md',
+51 verbose filtered diff   'packages/idae-machine/.github/skills/idae-technical-planner/SKILL.md',
+51 verbose filtered diff   'packages/idae-machine/.github/skills/readme/skill.md',
+51 verbose filtered diff   'packages/idae-machine/.github/skills/svelte-code-writer/SKILL.md',
+51 verbose filtered diff   'packages/idae-machine/.gitignore',
+51 verbose filtered diff   'packages/idae-machine/.npmrc',
+51 verbose filtered diff   'packages/idae-machine/.prettierignore',
+51 verbose filtered diff   'packages/idae-machine/.prettierrc.js',
+51 verbose filtered diff   'packages/idae-machine/.vscode/kanban-agent.json',
+51 verbose filtered diff   'packages/idae-machine/.vscode/tasks.json',
+51 verbose filtered diff   'packages/idae-machine/CHANGELOG.md',
+51 verbose filtered diff   'packages/idae-machine/README.md',
+51 verbose filtered diff   'packages/idae-machine/SKILL.md',
+51 verbose filtered diff   'packages/idae-machine/cli.js',
+51 verbose filtered diff   'packages/idae-machine/docs/machine-architecture.md',
+51 verbose filtered diff   'packages/idae-machine/gemini.md',
+51 verbose filtered diff   'packages/idae-machine/package.json',
+51 verbose filtered diff   'packages/idae-machine/scripts/package-pre.js',
+51 verbose filtered diff   'packages/idae-machine/src/_old/CollectionFieldGuess.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/_old/CollectionFieldGuess.svelte.d.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/CrudZone.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/_old/CrudZone.svelte.d.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/Entity.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/SchemeFieldClass.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/SchemeModel.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/schemeModelClass.ts',
+51 verbose filtered diff   'packages/idae-machine/src/_old/types.ts',
+51 verbose filtered diff   'packages/idae-machine/src/app.d.ts',
+51 verbose filtered diff   'packages/idae-machine/src/app.html',
+51 verbose filtered diff   'packages/idae-machine/src/lib/db/CrudService.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/demo/dbSchema.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/demo/testScheme.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/CreateUpdate.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/CreateUpdate.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/DataProvider.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/FieldInPlace.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/FieldValue.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/form/types.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/fragments/Confirm.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/fragments/Frame.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/fragments/InfoLine.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/fragments/Selector.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/fragments/Skeleton.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/index.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/__tests__/MachineFieldType.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/__tests__/machine.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/__tests__/machineDb.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/__tests__/machineFieldDefaultValues.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/__tests__/machineScheme.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineError.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineErrorValidation.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineFieldType.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineScheme.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineSchemeField.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineSchemeFieldForge.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineSchemeFieldValues.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineSchemeValidate.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/MachineSchemeValues.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/SchemeFieldDefaultValues.test.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machine/SchemeFieldDefaultValues.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machineDb.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/main/machineParserForge.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/types/appschemeTypes.ts',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionButton.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionFks.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionList.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionListFieldValues.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionListMenu.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/lib/ui/CollectionReverseFks.svelte',
+51 verbose filtered diff   'packages/idae-machine/src/routes/+page.svelte',
+51 verbose filtered diff   'packages/idae-machine/static/favicon.png',
+51 verbose filtered diff   'packages/idae-machine/svelte.config.js',
+51 verbose filtered diff   'packages/idae-machine/tsconfig.json',
+51 verbose filtered diff   'packages/idae-machine/vite.config.ts',
+51 verbose filtered diff   'packages/idae-machine/vitest-setup-client.ts'
+51 verbose filtered diff ]
+52 silly checking diff packages/idae-mongo
+53 silly found diff in packages/idae-mongo/.eslintrc.js
+53 silly found diff in packages/idae-mongo/.github/agents/idae-master-agent.agent.md
+53 silly found diff in packages/idae-mongo/.github/skills/git-commit-package/SKILL.md
+53 silly found diff in packages/idae-mongo/.github/skills/make-skill-template/SKILL.md
+53 silly found diff in packages/idae-mongo/.prettierrc
+53 silly found diff in packages/idae-mongo/.prettierrc.js
+53 silly found diff in packages/idae-mongo/CHANGELOG.md
+53 silly found diff in packages/idae-mongo/SKILL.md
+53 silly found diff in packages/idae-mongo/cli.js
+53 silly found diff in packages/idae-mongo/eslint.config.js
+53 silly found diff in packages/idae-mongo/package.json
+54 verbose filtered diff [
+54 verbose filtered diff   'packages/idae-mongo/.eslintrc.js',
+54 verbose filtered diff   'packages/idae-mongo/.github/agents/idae-master-agent.agent.md',
+54 verbose filtered diff   'packages/idae-mongo/.github/skills/git-commit-package/SKILL.md',
+54 verbose filtered diff   'packages/idae-mongo/.github/skills/make-skill-template/SKILL.md',
+54 verbose filtered diff   'packages/idae-mongo/.prettierrc',
+54 verbose filtered diff   'packages/idae-mongo/.prettierrc.js',
+54 verbose filtered diff   'packages/idae-mongo/CHANGELOG.md',
+54 verbose filtered diff   'packages/idae-mongo/SKILL.md',
+54 verbose filtered diff   'packages/idae-mongo/cli.js',
+54 verbose filtered diff   'packages/idae-mongo/eslint.config.js',
+54 verbose filtered diff   'packages/idae-mongo/package.json'
+54 verbose filtered diff ]
+55 silly checking diff packages/idae-query
+56 silly found diff in packages/idae-query/.eslintrc.js
+56 silly found diff in packages/idae-query/.github/agents/idae-master-agent.agent.md
+56 silly found diff in packages/idae-query/.github/copilot-instructions.md
+56 silly found diff in packages/idae-query/.github/skills/git-commit-package/SKILL.md
+56 silly found diff in packages/idae-query/.github/skills/make-skill-template/SKILL.md
+56 silly found diff in packages/idae-query/.prettierrc.cjs
+56 silly found diff in packages/idae-query/.prettierrc.js
+56 silly found diff in packages/idae-query/CHANGELOG.md
+56 silly found diff in packages/idae-query/README.md
+56 silly found diff in packages/idae-query/SKILL.md
+56 silly found diff in packages/idae-query/cli.js
+56 silly found diff in packages/idae-query/package.json
+56 silly found diff in packages/idae-query/src/lib/index.ts
+56 silly found diff in packages/idae-query/src/lib/operators/operators.test.ts
+56 silly found diff in packages/idae-query/src/lib/query/query.test.ts
+56 silly found diff in packages/idae-query/src/lib/query/query.ts
+56 silly found diff in packages/idae-query/src/lib/resultSet/resultset.test.ts
+56 silly found diff in packages/idae-query/src/lib/resultSet/resultset.ts
+57 verbose filtered diff [
+57 verbose filtered diff   'packages/idae-query/.eslintrc.js',
+57 verbose filtered diff   'packages/idae-query/.github/agents/idae-master-agent.agent.md',
+57 verbose filtered diff   'packages/idae-query/.github/copilot-instructions.md',
+57 verbose filtered diff   'packages/idae-query/.github/skills/git-commit-package/SKILL.md',
+57 verbose filtered diff   'packages/idae-query/.github/skills/make-skill-template/SKILL.md',
+57 verbose filtered diff   'packages/idae-query/.prettierrc.cjs',
+57 verbose filtered diff   'packages/idae-query/.prettierrc.js',
+57 verbose filtered diff   'packages/idae-query/CHANGELOG.md',
+57 verbose filtered diff   'packages/idae-query/README.md',
+57 verbose filtered diff   'packages/idae-query/SKILL.md',
+57 verbose filtered diff   'packages/idae-query/cli.js',
+57 verbose filtered diff   'packages/idae-query/package.json',
+57 verbose filtered diff   'packages/idae-query/src/lib/index.ts',
+57 verbose filtered diff   'packages/idae-query/src/lib/operators/operators.test.ts',
+57 verbose filtered diff   'packages/idae-query/src/lib/query/query.test.ts',
+57 verbose filtered diff   'packages/idae-query/src/lib/query/query.ts',
+57 verbose filtered diff   'packages/idae-query/src/lib/resultSet/resultset.test.ts',
+57 verbose filtered diff   'packages/idae-query/src/lib/resultSet/resultset.ts'
+57 verbose filtered diff ]
+58 silly checking diff packages/idae-slotui
+59 silly found diff in packages/idae-slotui/.eslintrc.cjs
+59 silly found diff in packages/idae-slotui/.eslintrc.js
+59 silly found diff in packages/idae-slotui/.github/agents/idae-agent-full.md
+59 silly found diff in packages/idae-slotui/.github/copilot-instructions.md
+59 silly found diff in packages/idae-slotui/.github/skills/git-commit-package/SKILL.md
+59 silly found diff in packages/idae-slotui/.github/skills/idae-agent-full/SKILL.md
+59 silly found diff in packages/idae-slotui/.github/skills/svelte-code-writer/SKILL.md
+59 silly found diff in packages/idae-slotui/.gitignore
+59 silly found diff in packages/idae-slotui/.npmrc
+59 silly found diff in packages/idae-slotui/.prettierrc.js
+59 silly found diff in packages/idae-slotui/.svelte-kit/generated/root.svelte
+59 silly found diff in packages/idae-slotui/.svelte-kit/tsconfig.json
+59 silly found diff in packages/idae-slotui/.vscode/kanban-agent.json
+59 silly found diff in packages/idae-slotui/CHANGELOG.md
+59 silly found diff in packages/idae-slotui/SKILL.md
+59 silly found diff in packages/idae-slotui/cli.js
+59 silly found diff in packages/idae-slotui/package.json
+59 silly found diff in packages/idae-slotui/postcss.config.cjs
+59 silly found diff in packages/idae-slotui/slotui-tailwind-template.css
+59 silly found diff in packages/idae-slotui/src/lib/base/alert/Alert.svelte
+59 silly found diff in packages/idae-slotui/src/lib/base/avatar/Avatar.svelte
+59 silly found diff in packages/idae-slotui/src/lib/base/badge/badge.css
+59 silly found diff in packages/idae-slotui/src/lib/base/debug/debug.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/base/demoer/demoer.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/base/divider/divider.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/base/icon/icon.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/base/paper/paper.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/base/titleBar/titleBar.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/controls/button/button.css
+59 silly found diff in packages/idae-slotui/src/lib/controls/inplaceedit/inplaceedit.scss
+59 silly found diff in packages/idae-slotui/src/lib/csss/csss.ts
+59 silly found diff in packages/idae-slotui/src/lib/data/grouper/grouper.scss
+59 silly found diff in packages/idae-slotui/src/lib/data/jsoner/jsoner.scss
+59 silly found diff in packages/idae-slotui/src/lib/index.ts
+59 silly found diff in packages/idae-slotui/src/lib/navigation/drawer/drawer.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/navigation/tabs/tabs.tailwind.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/alert.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/alert.min.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/grouper.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/grouper.min.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/inplaceedit.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/inplaceedit.min.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/jsoner.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/jsoner.min.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/popper.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/popper.min.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/slotui-css.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-css/slotui-min-css.css
+59 silly found diff in packages/idae-slotui/src/lib/slotui-mixins.css
+59 silly found diff in packages/idae-slotui/src/lib/styles/slotui-mixins.css
+59 silly found diff in packages/idae-slotui/src/lib/styles/slotui-presets.css
+59 silly found diff in packages/idae-slotui/src/lib/utils/looper/Looper.svelte
+59 silly found diff in packages/idae-slotui/src/styles/slotui-theme.css
+59 silly found diff in packages/idae-slotui/styles/cssfabric-theme.scss
+59 silly found diff in packages/idae-slotui/svelte.config.js
+59 silly found diff in packages/idae-slotui/tailwind-slotui-mixins.js
+59 silly found diff in packages/idae-slotui/tailwind-slotui-presets.js
+59 silly found diff in packages/idae-slotui/tailwind.config.js
+60 verbose filtered diff [
+60 verbose filtered diff   'packages/idae-slotui/.eslintrc.cjs',
+60 verbose filtered diff   'packages/idae-slotui/.eslintrc.js',
+60 verbose filtered diff   'packages/idae-slotui/.github/agents/idae-agent-full.md',
+60 verbose filtered diff   'packages/idae-slotui/.github/copilot-instructions.md',
+60 verbose filtered diff   'packages/idae-slotui/.github/skills/git-commit-package/SKILL.md',
+60 verbose filtered diff   'packages/idae-slotui/.github/skills/idae-agent-full/SKILL.md',
+60 verbose filtered diff   'packages/idae-slotui/.github/skills/svelte-code-writer/SKILL.md',
+60 verbose filtered diff   'packages/idae-slotui/.gitignore',
+60 verbose filtered diff   'packages/idae-slotui/.npmrc',
+60 verbose filtered diff   'packages/idae-slotui/.prettierrc.js',
+60 verbose filtered diff   'packages/idae-slotui/.svelte-kit/generated/root.svelte',
+60 verbose filtered diff   'packages/idae-slotui/.svelte-kit/tsconfig.json',
+60 verbose filtered diff   'packages/idae-slotui/.vscode/kanban-agent.json',
+60 verbose filtered diff   'packages/idae-slotui/CHANGELOG.md',
+60 verbose filtered diff   'packages/idae-slotui/SKILL.md',
+60 verbose filtered diff   'packages/idae-slotui/cli.js',
+60 verbose filtered diff   'packages/idae-slotui/package.json',
+60 verbose filtered diff   'packages/idae-slotui/postcss.config.cjs',
+60 verbose filtered diff   'packages/idae-slotui/slotui-tailwind-template.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/alert/Alert.svelte',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/avatar/Avatar.svelte',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/badge/badge.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/debug/debug.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/demoer/demoer.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/divider/divider.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/icon/icon.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/paper/paper.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/base/titleBar/titleBar.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/controls/button/button.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/controls/inplaceedit/inplaceedit.scss',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/csss/csss.ts',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/data/grouper/grouper.scss',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/data/jsoner/jsoner.scss',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/index.ts',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/navigation/drawer/drawer.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/navigation/tabs/tabs.tailwind.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/alert.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/alert.min.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/grouper.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/grouper.min.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/inplaceedit.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/inplaceedit.min.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/jsoner.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/jsoner.min.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/popper.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/popper.min.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/slotui-css.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-css/slotui-min-css.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/slotui-mixins.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/styles/slotui-mixins.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/styles/slotui-presets.css',
+60 verbose filtered diff   'packages/idae-slotui/src/lib/utils/looper/Looper.svelte',
+60 verbose filtered diff   'packages/idae-slotui/src/styles/slotui-theme.css',
+60 verbose filtered diff   'packages/idae-slotui/styles/cssfabric-theme.scss',
+60 verbose filtered diff   'packages/idae-slotui/svelte.config.js',
+60 verbose filtered diff   'packages/idae-slotui/tailwind-slotui-mixins.js',
+60 verbose filtered diff   'packages/idae-slotui/tailwind-slotui-presets.js',
+60 verbose filtered diff   'packages/idae-slotui/tailwind.config.js'
+60 verbose filtered diff ]
+61 silly checking diff packages/idae-socket
+62 silly found diff in packages/idae-socket/.eslintrc.cjs
+62 silly found diff in packages/idae-socket/.eslintrc.js
+62 silly found diff in packages/idae-socket/.github/skills/git-commit-package/SKILL.md
+62 silly found diff in packages/idae-socket/.github/skills/make-skill-template/SKILL.md
+62 silly found diff in packages/idae-socket/.prettierrc.cjs
+62 silly found diff in packages/idae-socket/.prettierrc.js
+62 silly found diff in packages/idae-socket/SKILL.md
+62 silly found diff in packages/idae-socket/cli.js
+62 silly found diff in packages/idae-socket/package-lock.json
+62 silly found diff in packages/idae-socket/package.json
+62 silly found diff in packages/idae-socket/src/.eslintrc.js
+62 silly found diff in packages/idae-socket/src/.prettierrc.js
+62 silly found diff in packages/idae-socket/src/lib/index.ts
+63 verbose filtered diff [
+63 verbose filtered diff   'packages/idae-socket/.eslintrc.cjs',
+63 verbose filtered diff   'packages/idae-socket/.eslintrc.js',
+63 verbose filtered diff   'packages/idae-socket/.github/skills/git-commit-package/SKILL.md',
+63 verbose filtered diff   'packages/idae-socket/.github/skills/make-skill-template/SKILL.md',
+63 verbose filtered diff   'packages/idae-socket/.prettierrc.cjs',
+63 verbose filtered diff   'packages/idae-socket/.prettierrc.js',
+63 verbose filtered diff   'packages/idae-socket/SKILL.md',
+63 verbose filtered diff   'packages/idae-socket/cli.js',
+63 verbose filtered diff   'packages/idae-socket/package-lock.json',
+63 verbose filtered diff   'packages/idae-socket/package.json',
+63 verbose filtered diff   'packages/idae-socket/src/.eslintrc.js',
+63 verbose filtered diff   'packages/idae-socket/src/.prettierrc.js',
+63 verbose filtered diff   'packages/idae-socket/src/lib/index.ts'
+63 verbose filtered diff ]
+64 silly checking diff packages/idae-stator
+65 silly found diff in packages/idae-stator/.eslintrc.js
+65 silly found diff in packages/idae-stator/.github/copilot-instructions.md
+65 silly found diff in packages/idae-stator/.github/skills/git-commit-package/SKILL.md
+65 silly found diff in packages/idae-stator/.github/skills/idae-debug-engine/SKILL.md
+65 silly found diff in packages/idae-stator/.github/skills/idae-technical-planner/SKILL.md
+65 silly found diff in packages/idae-stator/.github/skills/make-skill-template/SKILL.md
+65 silly found diff in packages/idae-stator/.npmrc
+65 silly found diff in packages/idae-stator/.prettierrc.cjs
+65 silly found diff in packages/idae-stator/.prettierrc.js
+65 silly found diff in packages/idae-stator/AGENTS.md
+65 silly found diff in packages/idae-stator/CHANGELOG.md
+65 silly found diff in packages/idae-stator/README.md
+65 silly found diff in packages/idae-stator/SKILL.md
+65 silly found diff in packages/idae-stator/cli.js
+65 silly found diff in packages/idae-stator/package.json
+65 silly found diff in packages/idae-stator/src/lib/stator/Stator.test.ts
+65 silly found diff in packages/idae-stator/src/lib/stator/Stator.ts
+65 silly found diff in packages/idae-stator/src/routes/+page.svelte
+66 verbose filtered diff [
+66 verbose filtered diff   'packages/idae-stator/.eslintrc.js',
+66 verbose filtered diff   'packages/idae-stator/.github/copilot-instructions.md',
+66 verbose filtered diff   'packages/idae-stator/.github/skills/git-commit-package/SKILL.md',
+66 verbose filtered diff   'packages/idae-stator/.github/skills/idae-debug-engine/SKILL.md',
+66 verbose filtered diff   'packages/idae-stator/.github/skills/idae-technical-planner/SKILL.md',
+66 verbose filtered diff   'packages/idae-stator/.github/skills/make-skill-template/SKILL.md',
+66 verbose filtered diff   'packages/idae-stator/.npmrc',
+66 verbose filtered diff   'packages/idae-stator/.prettierrc.cjs',
+66 verbose filtered diff   'packages/idae-stator/.prettierrc.js',
+66 verbose filtered diff   'packages/idae-stator/AGENTS.md',
+66 verbose filtered diff   'packages/idae-stator/CHANGELOG.md',
+66 verbose filtered diff   'packages/idae-stator/README.md',
+66 verbose filtered diff   'packages/idae-stator/SKILL.md',
+66 verbose filtered diff   'packages/idae-stator/cli.js',
+66 verbose filtered diff   'packages/idae-stator/package.json',
+66 verbose filtered diff   'packages/idae-stator/src/lib/stator/Stator.test.ts',
+66 verbose filtered diff   'packages/idae-stator/src/lib/stator/Stator.ts',
+66 verbose filtered diff   'packages/idae-stator/src/routes/+page.svelte'
+66 verbose filtered diff ]
+67 silly checking diff packages/shared
+68 silly found diff in packages/shared/package.json
+68 silly found diff in packages/shared/scripts/indexIfy.js
+69 verbose filtered diff [
+69 verbose filtered diff   'packages/shared/package.json',
+69 verbose filtered diff   'packages/shared/scripts/indexIfy.js'
+69 verbose filtered diff ]
+70 verbose updated @medyll/idae-eslint-config
+71 verbose updated @medyll/idae-prettier-config
+72 verbose updated @medyll/idae-api
+73 verbose updated @medyll/idae-be
+74 verbose updated @medyll/idae-cadenzia
+75 verbose updated @medyll/idae-data-tpl
+76 verbose updated @medyll/idae-db
+77 verbose updated @medyll/idae-dom-events
+78 verbose updated @medyll/idae-engine
+79 verbose updated @medyll/idae-html
+80 verbose updated @medyll/idae-idbql
+81 verbose updated @medyll/idae-machine
+82 verbose updated @medyll/idae-mongo
+83 verbose updated @medyll/idae-query
+84 verbose updated @medyll/idae-slotui-svelte
+85 verbose updated @medyll/idae-socket
+86 verbose updated @medyll/idae-stator
+87 verbose updated @medyll/idae-shared
+88 error Error: Failed to replace env in config: ${NODE_AUTH_TOKEN:-DUMMY_TOKEN}
+88 error     at D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:4623:13
+88 error     at String.replace (<anonymous>)
+88 error     at envReplace (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:4617:14)
+88 error     at parseField (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:4855:11)
+88 error     at Conf.add (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:5273:30)
+88 error     at ConfigChain2.addEnv (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:5182:19)
+88 error     at Conf.addEnv (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:5306:22)
+88 error     at npmConf3 (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:6059:12)
+88 error     at createRunner (D:\boulot\dev\node\idae\node_modules\.pnpm\lerna@9.0.3_@swc+core@1.15.8_@types+node@22.19.6\node_modules\lerna\dist\index.js:6173:15)
