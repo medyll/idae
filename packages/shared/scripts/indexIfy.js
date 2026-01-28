@@ -72,7 +72,7 @@ export class MakeLibIndex {
     this.#cssNamedExport = options.cssNamedExport ?? this.#cssNamedExport;
 
     this.#ignorePatterns = this.#ignorePatterns.map((pattern) =>
-      path.posix.join("**", pattern)
+      path.posix.join("**", pattern),
     );
 
     console.log("libPath : ", this.#libPath);
@@ -109,10 +109,13 @@ export class MakeLibIndex {
    */
   async _writeExportFromFileInfoList(fileInfoList) {
     console.log(
-      "start ----------------------------------------------------------"
+      "start ----------------------------------------------------------",
     );
     let exportString = "// auto exports of entry components\n";
+    const seen = new Set();
+
     fileInfoList.forEach((fileInfo) => {
+      if (!fileInfo) return;
       const { file, moduleName, path: filePath } = fileInfo;
       const normalizedPath = filePath
         .split(path.sep)
@@ -123,22 +126,25 @@ export class MakeLibIndex {
       const isCssFile = file.endsWith(".css");
       const camelCaseModuleName = this.dotToCamelCase(moduleName);
 
-      // Handle only .ts and .js files
-      /* if (file.endsWith(".ts") || file.endsWith(".js")) {
-        const fileExports = this._getExportsFromFile(fileInfo);
-        exportString += fileExports;
-      } else  */
+      let exportKey, exportLine;
       if (isCssFile) {
-        exportString += `export * as ${camelCaseModuleName}Css from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${camelCaseModuleName}Css|export*as`;
+        exportLine = `export * as ${camelCaseModuleName}Css from '${this.#libTs}/${normalizedPath}';\n`;
       } else if (!isSvelteFile) {
-        exportString += `export * from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${moduleName}|${normalizedPath}|export*`;
+        exportLine = `export * from '${this.#libTs}/${normalizedPath}';\n`;
       } else {
-        exportString += `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${camelCaseModuleName}|${normalizedPath}|exportDefaultAs`;
+        exportLine = `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
       }
+
+      if (seen.has(exportKey)) return;
+      seen.add(exportKey);
+      exportString += exportLine;
     });
 
     console.log(
-      "write ----------------------------------------------------------"
+      "write ----------------------------------------------------------",
     );
     if (fs.existsSync(path.join(this.#srcPath, this.#libRoot, "index.ts"))) {
       let indexPath = path.join(this.#srcPath, this.#libRoot, "index.ts");
@@ -167,7 +173,7 @@ export class MakeLibIndex {
     // Match all export statements
     const exportStatements =
       fileContent.match(
-        /export\s+(?:default\s+)?(?:(const|let|var|function|class|interface|type)\s+(\w+)|({\s*[\w\s,]+\s*})|\w+)(?:\s*=\s*(?:{[\s\S]*?}|\([^)]*\)\s*=>|function\s*\([^)]*\)\s*{[\s\S]*?}|[\s\S]*?;))?/gm
+        /export\s+(?:default\s+)?(?:(const|let|var|function|class|interface|type)\s+(\w+)|({\s*[\w\s,]+\s*})|\w+)(?:\s*=\s*(?:{[\s\S]*?}|\([^)]*\)\s*=>|function\s*\([^)]*\)\s*{[\s\S]*?}|[\s\S]*?;))?/gm,
       ) || [];
 
     exportStatements.forEach((statement) => {
@@ -213,14 +219,14 @@ export class MakeLibIndex {
       }
       // Handle default exports
       if (cleanedStatement.startsWith("default")) {
-        exportsString += ""; 
-      } else if (isVariableDeclarationLine(cleanedStatement)) { 
+        exportsString += "";
+      } else if (isVariableDeclarationLine(cleanedStatement)) {
       } else if (
         cleanedStatement.startsWith("type") ||
         cleanedStatement.startsWith("interface") ||
         cleanedStatement.startsWith("class") ||
         cleanedStatement.startsWith("function")
-      ) { 
+      ) {
       } else {
         // Use asMatch to analyze the export statement
         const asMatch = cleanedStatement.match(/(.*?)(\s+as\s+(\w+))?/);
@@ -234,7 +240,7 @@ export class MakeLibIndex {
           // exportsString += `export { ${exportsArray.join(", ")} } from '${this.#libTs}/${normalizedPath}';\n`;
         } else {
           const exportName = exportInput.replace(/^{|}$/g, "").trim(); // Remove curly braces
-            exportsString += `export { ${exportName} } from '${this.#libTs}/${normalizedPath}';\n`;
+          exportsString += `export { ${exportName} } from '${this.#libTs}/${normalizedPath}';\n`;
         }
 
         // Handle aliasing
@@ -272,7 +278,7 @@ export class MakeLibIndex {
 
     const fileInfoList = await this.#recursiveListFiles(
       this.#srcLibPath,
-      this.#target
+      this.#target,
     );
     await this._writeExportFromFileInfoList(fileInfoList);
   }

@@ -6,7 +6,7 @@
 
 	let {
 		class: className,
-		data = [],
+		data = $bindable(),
 		title,
 		groupBy,
 		sortBy,
@@ -23,11 +23,11 @@
 	});
 	let groupedData = $derived.by(() => {
 		if (!groupBy) return undefined;
-		return dataOp.groupBy<T>({ dataList: sortedData, groupBy });
+		return dataOp.groupBy<T>({ data: sortedData ?? [], groupBy });
 	});
 </script>
 
-{#snippet loop(data)}
+{#snippet loop(data: T[])}
 	{#each data ?? [] as item, idx}
 		{@render children?.({ item, idx })}
 	{/each}
@@ -42,6 +42,6 @@
 		{/each}
 	{:else}
 		<Slotted child={loopTitle}>{title}</Slotted>
-		{@render loop(data)}
+		{@render loop(data ?? [])}
 	{/if}
 </div>

@@ -1,49 +1,64 @@
+
+<!--
+Confirm.svelte
+Svelte 5 confirm/cancel fragment
+@role fragment
+@prop {Function} validate - Validation callback
+@prop {string} [message] - Confirm message
+@slot initial - Initial content
+@slot children - Button content
+@slot confirm - Confirm button content (optional)
+@slot cancel - Cancel button content (optional)
+@event confirm - Emitted on confirm
+@event cancel - Emitted on cancel
+-->
+
 <script lang="ts">
 	import { Icon } from '@medyll/idae-slotui-svelte';
-
-	interface ConfirmProps {
-		collection: string;
-		field:      string;
-		validate:   Function;
-		message?:   string | undefined;
-		initial?:   import('svelte').Snippet;
-		children?:  import('svelte').Snippet;
-	}
-
-	let { validate, message = undefined, initial, children }: ConfirmProps = $props();
-
+	let { validate, message = undefined } = $props<{ validate: Function; message?: string }>();
 	let status = $state('default');
 </script>
 
+{#snippet initial()}
+	<!-- Default initial content: empty -->
+{/snippet}
+
+{#snippet children()}
+	<Icon icon="mdi:pencil" class="md" />
+{/snippet}
+
+{#snippet confirm(message)}
+	{message ?? ''}
+	<Icon class="color-success md text-green-800" icon="mdi:done" />
+{/snippet}
+
+{#snippet cancel()}
+	<Icon icon="typcn:cancel" style="color: red" class="md fill-red-800" />
+{/snippet}
+
 <div class="line-gap-2 w-full">
-	{@render initial?.()}
+	{@render initial()}
 	{#if status === 'default'}
 		<button
 			class="line-gap-2"
-			hidden={status !== 'default'}
-			onclick={() => {
-				status = 'show_confirm';
-			}}
+			aria-label="Editer"
+			onclick={() => { status = 'show_confirm'; }}
 		>
-			{@render children?.()}
+			{@render children()}
 		</button>
 	{/if}
 	{#if status === 'show_confirm'}
 		<button
-			onclick={() => {
-				validate?.();
-				status = 'default';
-			}}
+			aria-label="Confirmer"
+			onclick={() => { validate?.(); status = 'default'; }}
 		>
-			{message ?? ''}
-			<Icon class="color-success md text-green-800" icon="mdi:done" />
+			{@render confirm(message)}
 		</button>
 		<button
-			onclick={() => {
-				status = 'default';
-			}}
+			aria-label="Annuler"
+			onclick={() => { status = 'default'; }}
 		>
-			<Icon icon="typcn:cancel" style="color: red" class="md fill-red-800 " />
+			{@render cancel()}
 		</button>
 	{/if}
 </div>

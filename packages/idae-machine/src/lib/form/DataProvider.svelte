@@ -1,20 +1,23 @@
+<!--
+DataProvider.svelte
+Svelte 5 context provider for collection/data
+@role context-provider
+@prop {string} collection - Collection name
+@prop {object[]} data - Data array (bindable)
+@slot children - Render children with context
+-->
+
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
-
-	interface PROPS {
-		collection: string;
-		data:       Record<string, any>[];
-		children:   Snippet;
-	}
-
-	let { collection, children, data = $bindable() }: PROPS = $props();
-	let _data = $derived(data);
-
-	setContext('collection', collection);
-
+	const props = $props<{ collection: string; data?: Record<string, any>[] }>();
+	let data = props.data ?? $bindable();
+	setContext('collection', props.collection);
 	setContext('data', data);
-	$inspect('data.provider', _data); // Corrected to reference others.data directly
+	$inspect('data.provider', data);
 </script>
 
-{@render children?.()}
+{#snippet children()}
+	<!-- Default children: nothing rendered -->
+{/snippet}
+
+{@render children()}
