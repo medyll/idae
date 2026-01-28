@@ -24,6 +24,11 @@ jobs:
           # Empêche la boucle infinie en désactivant le token persistant pour le push
           persist-credentials: false
 
+      - name: Show all package.json after checkout
+        run: |
+          echo '--- PACKAGE.JSON DUMP ---'
+          find . -name package.json -not -path "*/node_modules/*" -exec sh -c 'echo "==== $1 ===="; cat "$1"' _ {} \;
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -54,9 +59,9 @@ jobs:
           find . -name package.json -not -path "*/node_modules/*" -exec sh -c 'echo "==== $1 ===="; cat "$1"' _ {} \;
 
       - name: Release Packages
-        run: npx multi-semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
+        run: npx multi-semantic-release
