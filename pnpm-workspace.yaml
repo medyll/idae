@@ -1,7 +1,6 @@
 packages:
   - packages/*
   - packages-config/*
-  - shared/*
 
 onlyBuiltDependencies:
   - sqlite3
