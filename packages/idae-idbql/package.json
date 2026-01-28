@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
   },
-  "version": "0.185.0",
+  "version": "0.185.1",
   "description": "A powerful and flexible IndexedDB query library for TypeScript and JavaScript applications, offering a MongoDB-like query interface, strong TypeScript support, reactive state management, and easy integration with front-end frameworks like Svelte.",
   "scripts": {
     "dev": "vite dev",

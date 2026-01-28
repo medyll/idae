@@ -3,7 +3,7 @@
   "bin": {
     "idae-db": "./cli.js"
   },
-  "version": "0.155.0",
+  "version": "0.155.1",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@
   "bin": {
     "idae-dom-events": "./cli.js"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
