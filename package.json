@@ -21,6 +21,10 @@
     "packages/*",
     "packages-config/*"
   ],
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
