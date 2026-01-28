@@ -38,14 +38,6 @@ jobs:
       - name: Install dependencies
         run: | # Install semantic-release and its plugins locally
           pnpm install --frozen-lockfile
-          pnpm add -D -w semantic-release \ # Install semantic-release and its ecosystem locally to ensure path resolution
-            multi-semantic-release \
-            @semantic-release/exec \
-            @semantic-release/git \
-            @semantic-release/changelog \
-            @semantic-release/github \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator
 
       - name: Generate README
         # Ensure READMEs are built before the release process captures file changes

@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@medyll/idae-prettier-config':
         specifier: 1.2.4
-        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@4.0.0-alpha.13)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -40,7 +40,7 @@ importers:
         version: 11.8.0
       prettier:
         specifier: ^3.4.2
-        version: 3.7.4
+        version: 4.0.0-alpha.13
       prettier-plugin-svelte:
         specifier: ^3.3.3
         version: 3.4.1(prettier@3.7.4)(svelte@5.47.1)
@@ -52,7 +52,7 @@ importers:
         version: 0.3.17
       svelte:
         specifier: ^5.0.0-next
-        version: 5.47.1
+        version: 5.48.4
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -65,7 +65,7 @@ importers:
         version: 2.29.8(@types/node@22.19.6)
       '@medyll/idae-db':
         specifier: '*'
-        version: 0.122.0(svelte@5.47.1)
+        version: 0.122.0(svelte@5.48.4)
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:packages-config/idae-eslint-config
@@ -78,6 +78,9 @@ importers:
       '@semantic-release/commit-analyzer':
         specifier: ^13.0.1
         version: 13.0.1(semantic-release@25.0.2(typescript@5.9.3))
+      '@semantic-release/exec':
+        specifier: ^7.1.0
+        version: 7.1.0(semantic-release@25.0.2(typescript@5.9.3))
       '@semantic-release/git':
         specifier: ^10.0.1
         version: 10.0.1(semantic-release@25.0.2(typescript@5.9.3))
@@ -3535,6 +3538,12 @@ packages:
   '@semantic-release/error@4.0.0':
     resolution: {integrity: sha512-mgdxrHTLOjOddRVYIYDo0fR3/v61GNN1YGkfbrjuIKg/uMgCd+Qzo3UAXJ+woLQQpos4pl5Esuw5A7AoNlzjUQ==}
     engines: {node: '>=18'}
+
+  '@semantic-release/exec@7.1.0':
+    resolution: {integrity: sha512-4ycZ2atgEUutspPZ2hxO6z8JoQt4+y/kkHvfZ1cZxgl9WKJId1xPj+UadwInj+gMn2Gsv+fLnbrZ4s+6tK2TFQ==}
+    engines: {node: '>=20.8.1'}
+    peerDependencies:
+      semantic-release: '>=24.1.0'
 
   '@semantic-release/git@10.0.1':
     resolution: {integrity: sha512-eWrx5KguUcU2wUPaO6sfvZI0wPafUKAMNC18aXY4EnNcrZL86dEmpNVnC9uMpGZkmZJ9EfCVJBQx4pV4EMGT1w==}
@@ -13820,10 +13829,10 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@medyll/idae-db@0.122.0(svelte@5.47.1)':
+  '@medyll/idae-db@0.122.0(svelte@5.48.4)':
     dependencies:
       chromadb: 2.4.6(encoding@0.1.13)(ws@8.19.0)(zod@3.25.76)
-      svelte: 5.47.1
+      svelte: 5.48.4
     transitivePeerDependencies:
       - aws-crt
       - bare-abort-controller
@@ -13833,9 +13842,9 @@ snapshots:
       - ws
       - zod
 
-  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@4.0.0-alpha.13)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
-      prettier: 3.7.4
+      prettier: 4.0.0-alpha.13
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - '@types/node'
@@ -14653,6 +14662,18 @@ snapshots:
   '@semantic-release/error@3.0.0': {}
 
   '@semantic-release/error@4.0.0': {}
+
+  '@semantic-release/exec@7.1.0(semantic-release@25.0.2(typescript@5.9.3))':
+    dependencies:
+      '@semantic-release/error': 4.0.0
+      aggregate-error: 3.1.0
+      debug: 4.4.3(supports-color@5.5.0)
+      execa: 9.6.1
+      lodash-es: 4.17.23
+      parse-json: 8.3.0
+      semantic-release: 25.0.2(typescript@5.9.3)
+    transitivePeerDependencies:
+      - supports-color
 
   '@semantic-release/git@10.0.1(semantic-release@25.0.2(typescript@5.9.3))':
     dependencies:
@@ -16744,7 +16765,7 @@ snapshots:
 
   axios@1.13.2:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.4.3)
+      follow-redirects: 1.15.11(debug@4.3.7)
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
