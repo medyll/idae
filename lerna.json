@@ -1,4 +1,17 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "0.0.2"
+  "version": "0.0.2",
+  "npmClient": "pnpm",
+  "command": {
+    "version": {
+      "allowBranch": ["main", "dev"],
+      "message": "chore(release): publish %s [skip ci]",
+      "conventionalCommits": true,
+      "exact": true
+    },
+    "publish": {
+      "graphType": "all",
+      "distTag": "latest"
+    }
+  }
 }
