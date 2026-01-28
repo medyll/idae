@@ -42,10 +42,17 @@ jobs:
       #- name: Patch Workspaces for Release
       # This replaces "workspace:*" with "*" in-memory for the CI session
       # run: node scripts/patch-workspace-deps.js
-
       - name: Generate README
         # Ensure READMEs are built before the release process captures file changes
         run: node scripts/generate-readme.js
+
+      # Ensure all tags are fetched before running semantic-release
+      - name: Fetch all tags
+        run: git fetch --tags --force
+
+      # (Optionnel mais recommandé) Vérifier que le tag du package est bien présent
+      - name: List tags for debug
+        run: git tag --list
 
       - name: Release Packages
         env:
