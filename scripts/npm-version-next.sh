@@ -2,7 +2,7 @@
 set -e
 
 # 1. Bump version and create git tag (choose your bump type: patch/minor/major/prerelease)
-npm version prerelease --preid=next
+npm version prerelease --preid=latest
 
 # 2. Push commits and tags to origin
 git push --follow-tags
