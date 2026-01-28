@@ -30,6 +30,7 @@
     "@medyll/idae-db": "*",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -54,7 +55,6 @@
   },
   "version": "0.0.2",
   "dependencies": {
-    "@medyll/idae-prettier-config": "1.2.4",
     "@octokit/rest": "^22.0.1",
     "chalk": "^5.6.2",
     "glob": "^13.0.0",
