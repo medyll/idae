@@ -1,5 +1,6 @@
 {
 	"name": "@medyll/idae-machine",
+	"description": "SvelteKit based framework to build AI powered applications with ease.",
 	"bin": {
 		"idae-machine": "./cli.js"
 	},
