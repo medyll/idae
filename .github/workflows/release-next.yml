@@ -36,10 +36,9 @@ jobs:
           registry-url: "https://registry.npmjs.org/" # Pre-configures the registry for pnpm publish
 
       - name: Install dependencies
-        run: |
+        run: | # Install semantic-release and its plugins locally
           pnpm install --frozen-lockfile
-          # Install semantic-release and its ecosystem locally to ensure path resolution
-          pnpm add -D semantic-release \
+          pnpm add -D -w semantic-release \ # Install semantic-release and its ecosystem locally to ensure path resolution
             multi-semantic-release \
             @semantic-release/exec \
             @semantic-release/git \
