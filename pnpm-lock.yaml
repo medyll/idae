@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@medyll/idae-prettier-config':
-        specifier: 1.2.4
-        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -2781,11 +2778,6 @@ packages:
     resolution: {integrity: sha512-NtMcmVUIGjEEpKLXdgcPx1wDTFz7G4oEtPMccVXWQbUUghE98gaY95Rg9h34yFU+BjE5ISpl6eVWAtPxQsILpQ==}
     peerDependencies:
       svelte: ^5.0.0-next
-
-  '@medyll/idae-prettier-config@1.2.4':
-    resolution: {integrity: sha512-5gIEhOEkKQi4RLiGrUMx76c9UQCIIv4vhNrVCKDcDrLyPuiQWcLi1gK29KAp+sYJWbm//g6+1LM6AtmXg0TPXQ==}
-    peerDependencies:
-      prettier: '>=3.0.0'
 
   '@mongodb-js/saslprep@1.4.4':
     resolution: {integrity: sha512-p7X/ytJDIdwUfFL/CLOhKgdfJe1Fa8uw9seJYvdOmnP9JBWGWHW69HkOixXS6Wy9yvGf1MbhcS6lVmrhy4jm2g==}
@@ -13448,23 +13440,6 @@ snapshots:
       - react-native-b4a
       - ws
       - zod
-
-  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
-    dependencies:
-      prettier: 3.8.1
-      vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - yaml
 
   '@mongodb-js/saslprep@1.4.4':
     dependencies:
