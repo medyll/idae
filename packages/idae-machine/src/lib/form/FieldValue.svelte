@@ -21,11 +21,9 @@ Svelte 5 field input for all types
     // 1. Unified props with bindable data
     let { 
         collection = getContext('collection'),
-        collectionId, 
         fieldName, 
         data = $bindable(), 
         mode = 'show', 
-        editInPlace = false, 
         inputForm, 
         showLabel = true 
     } = $props<{ 
@@ -51,14 +49,18 @@ Svelte 5 field input for all types
     );
 
     let error = $state<string | null>(null);
+
 </script>
 
-{#snippet input()}
-    {#if mode === 'show'}
-        <div class="flex w-48 gap-2">
-            <div class="flex-1" {...inputDataset}>{fieldForge.format}</div>
-        </div>
-    {:else if fieldForge.fieldType === 'id'}
+
+{#snippet fieldShow()}
+    <div class="flex w-48 gap-2">
+        <div class="flex-1" {...inputDataset}>{fieldForge.format}</div>
+    </div>
+{/snippet}
+
+{#snippet fieldInput()}
+    {#if fieldForge.fieldType === 'id'}
         {#if mode !== 'create'}
             <input type="hidden" bind:value={data[fieldName]} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
         {/if}
@@ -89,28 +91,36 @@ Svelte 5 field input for all types
     {/if}
 {/snippet}
 
-{#if !isPrivate}
-    <div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
-        {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
-            <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
-                {fieldName}
-            </label>
-        {/if}
+{#if fieldForge}
+  {#if !isPrivate}
+      <div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
+          {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
+              <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
+                  {fieldName}
+              </label>
+          {/if}
 
-        <div class="field-input flex">
-            {@render input()}
-        </div>
+          <div class="field-input flex">
+              {#if mode === 'show'}
+                  {@render fieldShow()}
+              {:else}
+                  {@render fieldInput()}
+              {/if}
+          </div>
 
-        {#if labelPosition === 'after' || labelPosition === 'below'}
-            <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
-                {fieldName}
-            </label>
-        {/if}
+          {#if labelPosition === 'after' || labelPosition === 'below'}
+              <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
+                  {fieldName}
+              </label>
+          {/if}
 
-        {#if error}
-            <div class="error-message">{error}</div>
-        {/if}
-    </div>
+          {#if error}
+              <div class="error-message">{error}</div>
+          {/if}
+      </div>
+  {/if}
+{:else}
+  <div class="error-message">Champ ou schéma non trouvé pour {fieldName}</div>
 {/if}
 
 <style lang="postcss">

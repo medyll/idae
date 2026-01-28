@@ -18,33 +18,39 @@ Svelte 5 collection list with Looper
 <script lang="ts" generics="COL = Record<string,any>">
 	import {
 		type MenuListProps,
-		Button,
-		MenuList,
-		MenuListItem,
-		openWindow,
-		type Props,
 		Looper
 	} from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
-	import { machine } from '$lib/main/machine.js';
+	import { machine } from '$lib/main/machine.js'; 
+	import CollectionListFieldValues from './CollectionListFieldValues.svelte';
+
+	interface CollectionListProps  {
+		collection:     string;
+		target?:        string;
+		data?:          COL;
+		menuListProps?: MenuListProps;
+		style?:         string;
+		displayMode?:   'line' | 'grid';
+		where?:         Where<COL>;
+		children?:      any;
+		onclick?:       (data: COL, index: number | string) => void;
+	}
 	let {
 		collection,
 		target,
-		data,
-		menuListProps,
 		onclick,
-		style,
 		where,
 		children: _children,
-		displayMode
-	} = $props<{ collection: string; target?: string; data?: COL; menuListProps?: MenuListProps; style?: string; displayMode?: 'line' | 'grid'; where?: Where<COL>; children?: any; onclick?: (data: COL, index: number | string) => void }>();
+	} = $props<CollectionListProps>();
+	
 	let logic = machine.logic;
 	let store = machine.store;
 	let fieldValues = $derived(logic.collection(collection).collectionValues);
 	let index = $derived(logic.collection(collection).template.index);
 	let query = $derived(where ? store[collection].where(where) : store[collection]?.getAll());
+
 	$inspect('CollectionList', { collection, query });
 
 
@@ -72,6 +78,8 @@ Svelte 5 collection list with Looper
 			load(data, index);
 		}
 	};
+
+	$inspect('query', {  query });
 </script>
 
 
@@ -80,19 +88,13 @@ Svelte 5 collection list with Looper
 		{#snippet loopTitle()}
 			<!-- Default: nothing -->
 		{/snippet}
-		{#snippet children(item, idx)}
+		{#snippet children({item, idx})}
 			<div class="flex aspect-square flex-col rounded-2xl border border-gray-300 p-2">
-				<div class="flex-1">edit</div>
-				<a
-					href="/collections/{fieldValues.indexValue(item)}"
-					onclick={(event) => {
-						event.preventDefault();
-						_onclick?.(item, idx);
-					}}
-				>
-					<div class="py-3">{fieldValues.presentation(item)}</div>
-					<div class="py-3">{fieldValues?.format('created_at', item)}</div>
-				</a>
+					<CollectionListFieldValues
+						collection={collection}
+						data={item}
+						mode="show"
+				/>
 			</div>
 		{/snippet}
 	</Looper>

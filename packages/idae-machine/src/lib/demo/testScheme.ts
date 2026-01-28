@@ -3,58 +3,64 @@ import type { IdbqModel } from "@medyll/idae-idbql";
  
 
  
- 
+ export type Product = {
+	id: string;
+	name: string;
+	description: string;
+	price: number;
+	categoryId: string;
+	created_at: Date;
+	is_active: boolean;
+}
+
+export type ProductCategory = {
+	id: string;
+	name: string;
+	description: string;
+}
 
 
-// Schéma de test (copie explicite de schemeModelDb)
+
 export const testScheme = {
-	agent: {
- 		keyPath: '++id, promptId, created_at',
- 		model: {} ,
- 		ts: {} ,
- 		template: {
- 			index: 'id',
- 			presentation: 'name model',
- 			fields: {
- 				id: 'id (readonly)',
- 				name: 'text (private)',
- 				code: 'text',
- 				model: 'text',
- 				prompt: 'text-long',
- 				created_at: 'date (private)',
- 				ia_lock: 'boolean (private)',
- 				agentPromptId: 'fk-agentPrompt.id (required)',
- 				tags: 'array-of-text', // array field
- 				meta: 'object-any',    // object field
- 				relatedAgents: 'array-of-fk-agent.id', // fk multiple
- 				status: 'text (required readonly)'
- 			},
- 			fks: {
- 				agentPrompt: {
- 					code: 'agentPrompt',
- 					rules: 'readonly private',
- 					multiple: true
- 				}
- 			}
- 		}
- 	},
-	agentPrompt: {
-		keyPath: '++id, created_at',
-		model: {} ,
-		ts: {} ,
+	product: {
+		keyPath: '++id',
+		model: {},
+		ts: {} as Product,
+		template: {
+			index: 'id',
+			presentation: 'name category',
+			fields: {
+				id: 'id (readonly)',
+				name: 'text (required)',
+				description: 'text-long',
+				price: 'number (required)',
+				categoryId: 'fk-product_category.id (required)',
+				created_at: 'date',
+				is_active: 'boolean',
+			},
+			fks: {
+				product_category: {
+					code: 'product_category',
+					rules: 'required private',
+					multiple: false
+				}
+			}
+		}
+	},
+	product_category: {
+		keyPath: '++id',
+		model: {},
+		ts: {} as ProductCategory,
 		template: {
 			index: 'id',
 			presentation: 'name',
 			fields: {
 				id: 'id (readonly)',
-				created_at: 'date (private)',
-				value: 'text-long (required)',
 				name: 'text (required)',
-				code: 'text (required)',
-				ia_lock: 'boolean (private)'
+				description: 'text-long',
 			},
 			fks: {}
 		}
-	} 
+	}
 } satisfies IdbqModel;
  

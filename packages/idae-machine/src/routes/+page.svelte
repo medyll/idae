@@ -3,21 +3,19 @@
 import CreateUpdate from '$lib/form/CreateUpdate.svelte'; 
 import { machine } from '$lib/main/machine.js';
 import { testScheme } from '$lib/demo/testScheme.js';
-    import CollectionList from '$lib/ui/CollectionList.svelte';
+import CollectionList from '$lib/ui/CollectionList.svelte';
 
 
-machine.init({ dbName: "test-db", version: 1, model: testScheme});
+machine.init({ dbName: "demo-db", version: 1, model: testScheme});
 machine.start();
  
 
-/*   machine.store['agent']?.add({
-	name: "Agent Smith",
-	email: "Bt3o3@example.com",
-	phone: "123-456-7890",
-	address: "123 Main Street, Anytown, USA",
-	age: 42,
-	isActive: true
-});  */ 
+machine.store['product']?.add({
+	name: "Sample Product",
+	price: 19.99,
+	inStock: true,
+	description: "This is a sample product for demonstration purposes."
+});  
 
 // console.log("machine.store:", machine.store.agent?.add); 
 </script>
@@ -27,9 +25,9 @@ machine.start();
   
 
  <CreateUpdate 
-	collection="agent" 
+	collection="product" 
 	mode="create" />
-	<CollectionList collection="agent" />
+	<CollectionList collection="product" />
 	 
 
  
