@@ -21,7 +21,7 @@
     "directory": "."
   },
   "devDependencies": {
-    "@medyll/idae-prettier-config": "^1.2.12",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/fs-extra": "^11.0.4",

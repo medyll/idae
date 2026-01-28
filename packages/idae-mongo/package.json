@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-prettier-config": "^1.2.12",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
