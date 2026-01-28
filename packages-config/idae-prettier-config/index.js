@@ -8,7 +8,7 @@ const config = {
   tabWidth: 2,
   printWidth: 100,
   plugins: [
-    "prettier-plugin-svelte",
+    "prettier-plugin-svelte", //
     "prettier-plugin-tailwindcss",
     "@huggingface/prettier-plugin-vertical-align",
   ],
