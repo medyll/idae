@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-eslint-config",
   "scope": "medyll",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Lebrun Meddy",
   "type": "module",
   "exports": "./index.js",

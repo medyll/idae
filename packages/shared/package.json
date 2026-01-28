@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-shared",
-  "scope": "@medyll",
-  "version": "1.0.0",
+  "scope": "medyll",
+  "version": "1.0.1",
   "description": "sharing",
   "main": "indexIfy.js",
   "scripts": {
