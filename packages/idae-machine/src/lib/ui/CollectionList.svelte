@@ -79,7 +79,6 @@ Svelte 5 collection list with Looper
 		}
 	};
 
-	$inspect('query', {  query });
 </script>
 
 

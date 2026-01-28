@@ -27,7 +27,7 @@
 	});
 </script>
 
-{#snippet loop(data)}
+{#snippet loop(data: T[])}
 	{#each data ?? [] as item, idx}
 		{@render children?.({ item, idx })}
 	{/each}
@@ -42,6 +42,6 @@
 		{/each}
 	{:else}
 		<Slotted child={loopTitle}>{title}</Slotted>
-		{@render loop(data)}
+		{@render loop(data ?? [])}
 	{/if}
 </div>
