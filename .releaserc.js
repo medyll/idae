@@ -7,9 +7,9 @@ module.exports = {
     [
       "@semantic-release/exec",
       {
-        // On utilise pnpm pour bumper la version sans créer de tag git
+        // 1. On met à jour la version avec pnpm (qui comprend les workspaces)
         prepareCmd: "pnpm version ${nextRelease.version} --no-git-tag-version",
-        // On laisse pnpm publish gérer la conversion workspace:* -> version réelle
+        // 2. On publie : pnpm va transformer workspace:* en version réelle automatiquement
         publishCmd: "pnpm publish --no-git-checks --access public",
       },
     ],
@@ -22,6 +22,7 @@ module.exports = {
     [
       "@semantic-release/git",
       {
+        // On committe la version du package.json (qui contient toujours workspace:*)
         assets: ["package.json", "CHANGELOG.md"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
