@@ -177,8 +177,8 @@ importers:
         version: 4.3.5(picomatch@4.0.3)(svelte@5.48.2)(typescript@5.9.3)
     devDependencies:
       '@medyll/idae-config-prettier':
-        specifier: workspace:*
-        version: link:../idae-config-prettier
+        specifier: latest
+        version: 0.0.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -2821,6 +2821,11 @@ packages:
 
   '@medyll/cssfabric@0.2.1-beta.9':
     resolution: {integrity: sha512-JppHAb8gfuV5ObATLj+dSO3A00uoryiMlNfDW3F7oJeCXYFqpQmnKiLP08RQCBkRQApI2Z/ocIVzd8oNMT2o5g==}
+
+  '@medyll/idae-config-prettier@0.0.1':
+    resolution: {integrity: sha512-b4YcBHYvZ6ap5pXyNF1gLUvdlavA7UUQPIQt3hTcJtRp1z2/bnWegRoce6p49YWrGS4I1Ro9RJ2TxgDnbFfsRg==}
+    peerDependencies:
+      prettier: '>=3.0.0'
 
   '@medyll/idae-db@0.122.0':
     resolution: {integrity: sha512-NtMcmVUIGjEEpKLXdgcPx1wDTFz7G4oEtPMccVXWQbUUghE98gaY95Rg9h34yFU+BjE5ISpl6eVWAtPxQsILpQ==}
@@ -13475,6 +13480,23 @@ snapshots:
       svelte-highlight: 7.9.0
     transitivePeerDependencies:
       - '@types/node'
+
+  '@medyll/idae-config-prettier@0.0.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+    dependencies:
+      prettier: 3.8.1
+      vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - yaml
 
   '@medyll/idae-db@0.122.0(svelte@5.48.4)':
     dependencies:
