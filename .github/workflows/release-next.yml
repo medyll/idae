@@ -36,8 +36,9 @@ jobs:
           registry-url: "https://registry.npmjs.org/"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm add -g semantic-release @semantic-release/exec @semantic-release/git @semantic-release/changelog @semantic-release/github
       - name: Release Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
