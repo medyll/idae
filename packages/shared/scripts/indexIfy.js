@@ -112,32 +112,35 @@ export class MakeLibIndex {
       "start ----------------------------------------------------------",
     );
     let exportString = "// auto exports of entry components\n";
-    const seen = new Set(); // Ajout pour éviter les doublons
+    const seen = new Set();
 
     fileInfoList.forEach((fileInfo) => {
-      if (!fileInfo) return; // skip undefined
+      if (!fileInfo) return;
       const { file, moduleName, path: filePath } = fileInfo;
       const normalizedPath = filePath
         .split(path.sep)
         .join("/")
         .replace(".ts", ".js");
 
-      // Empêche les doublons sur le chemin d'export
-      const exportKey = `${moduleName}|${normalizedPath}`;
-      if (seen.has(exportKey)) return;
-      seen.add(exportKey);
-
       const isSvelteFile = file.endsWith(".svelte");
       const isCssFile = file.endsWith(".css");
       const camelCaseModuleName = this.dotToCamelCase(moduleName);
 
+      let exportKey, exportLine;
       if (isCssFile) {
-        exportString += `export * as ${camelCaseModuleName}Css from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${camelCaseModuleName}Css|export*as`;
+        exportLine = `export * as ${camelCaseModuleName}Css from '${this.#libTs}/${normalizedPath}';\n`;
       } else if (!isSvelteFile) {
-        exportString += `export * from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${moduleName}|${normalizedPath}|export*`;
+        exportLine = `export * from '${this.#libTs}/${normalizedPath}';\n`;
       } else {
-        exportString += `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
+        exportKey = `${camelCaseModuleName}|${normalizedPath}|exportDefaultAs`;
+        exportLine = `export { default as ${camelCaseModuleName} } from '${this.#libTs}/${normalizedPath}';\n`;
       }
+
+      if (seen.has(exportKey)) return;
+      seen.add(exportKey);
+      exportString += exportLine;
     });
 
     console.log(
