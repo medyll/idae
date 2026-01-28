@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "^1.2.12",
     "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.58.0",
     "@semantic-release/github": "^12.0.2",
