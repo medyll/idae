@@ -48,6 +48,11 @@ jobs:
       - name: Generate README
         run: node scripts/generate-readme.js
 
+      - name: Show all package.json before release
+        run: |
+          echo '--- PACKAGE.JSON DUMP ---'
+          find . -name package.json -not -path "*/node_modules/*" -exec sh -c 'echo "==== $1 ===="; cat "$1"' _ {} \;
+
       - name: Release Packages
         run: npx multi-semantic-release
         env:
