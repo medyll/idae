@@ -1,19 +1,7 @@
-import postcss from 'postcss';
+
 
 // Étape 1 : Ajouter des propriétés personnalisées
-const myPlugin = (root: postcss.Root) => {
-	root.walkDecls((decl) => {
-		console.log(`Propriété : ${decl.prop}`);
-		console.log(`Valeur : ${decl.value}`);
-		console.log(`Important : ${decl.important}`);
-		console.log(
-			`Source : ligne ${decl?.source?.start?.line}, colonne ${decl.source?.start?.column}`
-		);
-		// Ajoute un préfixe à toutes les propriétés
-		decl.prop = 'my-prefix-' + decl.prop;
-		// decl?.parent.append({ prop: 'my-prefix-' + decl.prop, value: decl.value });
-	});
-};
+
 
 type all = string | number;
 type top = string | number;
@@ -83,7 +71,7 @@ export interface OpCssF {
 	};
 }
 
-export class Op {
+/* export class Op {
 	outer(decl: postcss.Declaration) {
 		return {
 			display: (value: OpCssF['outer']['display']) => {},
@@ -125,7 +113,7 @@ export class Op {
 			style: (value: string) => {}
 		};
 	}
-}
+} */
 /* const processor = postcss([myPlugin]);
 
 processor.process('a { color: black; }').then((result) => {

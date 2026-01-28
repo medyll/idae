@@ -6,7 +6,7 @@
 
 	let {
 		class: className,
-		data = [],
+		data = $bindable(),
 		title,
 		groupBy,
 		sortBy,
@@ -23,7 +23,7 @@
 	});
 	let groupedData = $derived.by(() => {
 		if (!groupBy) return undefined;
-		return dataOp.groupBy<T>({ dataList: sortedData, groupBy });
+		return dataOp.groupBy<T>({ data: sortedData ?? [], groupBy });
 	});
 </script>
 
