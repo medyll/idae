@@ -1,9 +1,7 @@
 packages:
   - packages/*
   - packages-config/*
-  - packages-demo/*
   - shared/*
-  - scripts
 
 onlyBuiltDependencies:
   - sqlite3
