@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.58.0",
     "@semantic-release/github": "^12.0.2",
     "@sveltejs/adapter-auto": "^7.0.0",

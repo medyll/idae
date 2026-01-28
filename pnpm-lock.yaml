@@ -69,6 +69,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:packages/shared
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -151,8 +154,8 @@ importers:
         version: 4.3.5(picomatch@4.0.3)(svelte@5.48.2)(typescript@5.9.3)
     devDependencies:
       '@medyll/idae-prettier-config':
-        specifier: ^1.2.8
-        version: 1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        specifier: workspace:*
+        version: link:../idae-prettier-config
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -253,6 +256,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -377,6 +383,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@playwright/test':
         specifier: ^1.52.0
         version: 1.57.0
@@ -450,6 +459,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -508,6 +520,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -591,6 +606,9 @@ importers:
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -686,6 +704,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@playwright/test':
         specifier: ^1.58.0
         version: 1.58.0
@@ -759,6 +780,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -805,6 +829,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -869,6 +896,9 @@ importers:
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -922,6 +952,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -992,6 +1025,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1056,6 +1092,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1336,6 +1375,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1358,6 +1400,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -2739,11 +2784,6 @@ packages:
 
   '@medyll/idae-prettier-config@1.2.4':
     resolution: {integrity: sha512-5gIEhOEkKQi4RLiGrUMx76c9UQCIIv4vhNrVCKDcDrLyPuiQWcLi1gK29KAp+sYJWbm//g6+1LM6AtmXg0TPXQ==}
-    peerDependencies:
-      prettier: '>=3.0.0'
-
-  '@medyll/idae-prettier-config@1.2.8':
-    resolution: {integrity: sha512-e7msbq8YAC1Ws03r4bQvRbzpeyLxfhl6A2dGXWWNRQW3xcmTRygqrchfD3VMmCXf0fXCcbqJVoxnRQDbh7bGVQ==}
     peerDependencies:
       prettier: '>=3.0.0'
 
@@ -13410,23 +13450,6 @@ snapshots:
       - zod
 
   '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
-    dependencies:
-      prettier: 3.8.1
-      vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - yaml
-
-  '@medyll/idae-prettier-config@1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
       prettier: 3.8.1
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)

@@ -29,6 +29,7 @@
     "@changesets/cli": "^2.29.8",
     "@medyll/idae-db": "*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
