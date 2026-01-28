@@ -4,12 +4,19 @@ module.exports = {
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    ["@semantic-release/npm", { npmPublish: true }],
+    [
+      "@semantic-release/exec",
+      {
+        // pnpm handles the version bump and the workspace protocol transformation
+        prepareCmd: "pnpm version ${nextRelease.version} --no-git-tag-version",
+        publishCmd: "pnpm publish --no-git-checks --access public",
+      },
+    ],
     "@semantic-release/github",
     [
       "@semantic-release/git",
       {
-        assets: ["CHANGELOG.md"], // SURTOUT PAS de package.json ici pour garder workspace:* dans Git
+        assets: ["CHANGELOG.md"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },

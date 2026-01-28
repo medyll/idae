@@ -38,6 +38,7 @@ jobs:
       - name: Install dependencies
         run: | # Install semantic-release and its plugins locally
           pnpm install --frozen-lockfile
+
       - name: Patch Workspaces for Release
         # This replaces "workspace:*" with "*" in-memory for the CI session
         run: node scripts/patch-workspace-deps.js

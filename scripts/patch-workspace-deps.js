@@ -1,24 +1,21 @@
+// scripts/patch-workspace-deps.js
 const fs = require("fs");
 const path = require("path");
 
-const SCOPE = "@medyll/"; // Ton scope
-
-function patch(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory() && !["node_modules", ".git"].includes(entry.name)) {
-      patch(fullPath);
-    } else if (entry.name === "package.json") {
-      let content = fs.readFileSync(fullPath, "utf8");
+function walk(dir) {
+  const files = fs.readdirSync(dir, { withFileTypes: true });
+  for (const file of files) {
+    const res = path.resolve(dir, file.name);
+    if (file.isDirectory() && !res.includes("node_modules")) {
+      walk(res);
+    } else if (file.name === "package.json") {
+      let content = fs.readFileSync(res, "utf8");
       if (content.includes("workspace:")) {
-        // Remplace workspace:* ou workspace:^ par * pour satisfaire NPM/Semantic-release
-        const patched = content.replace(/"workspace:[^"]*"/g, '"*"');
-        fs.writeFileSync(fullPath, patched);
-        console.log(`✅ Patched workspace protocol in: ${fullPath}`);
+        // Replace workspace:* or workspace:^1.0.0 with *
+        content = content.replace(/"workspace:[^"]*"/g, '"*"');
+        fs.writeFileSync(res, content);
       }
     }
   }
 }
-
-patch(process.cwd());
+walk(process.cwd());
