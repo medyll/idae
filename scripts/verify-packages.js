@@ -51,7 +51,7 @@ packages.forEach((packageName) => {
   }
 
   // Force all @medyll/* dependencies to "workspace:*"
-  const depFields = [
+  /* const depFields = [
     "dependencies",
     "devDependencies",
     "peerDependencies",
@@ -71,7 +71,7 @@ packages.forEach((packageName) => {
         console.log(`Set ${field} -> ${dep} to workspace:* in ${packageName}`);
       }
     }
-  }
+  } */
 
   // "prepackage"
   if (!packageJson?.scripts?.[packagePre]) {
