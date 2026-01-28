@@ -1,12 +1,12 @@
 {
   "name": "@medyll/idae-engine",
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
   },
-  "version": "1.185.0",
+  "version": "1.185.2",
   "description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",
   "scripts": {
     "dev": "vite dev",
@@ -40,6 +40,8 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",

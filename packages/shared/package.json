@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-shared",
-  "scope": "@medyll",
-  "version": "1.0.0",
+  "scope": "medyll",
+  "version": "1.0.4",
   "description": "sharing",
   "main": "indexIfy.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "directory": "."
   },
   "devDependencies": {
+    "@medyll/idae-prettier-config": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/fs-extra": "^11.0.4",

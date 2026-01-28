@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-cadenzia",
-  "version": "0.147.0",
+  "version": "0.147.2",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -21,6 +21,8 @@
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
@@ -39,6 +41,6 @@
     "vite": "^6.2.3",
     "vitest": "^3.0.9"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy"
 }

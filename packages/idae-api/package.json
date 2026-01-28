@@ -3,13 +3,13 @@
   "bin": {
     "idae-api": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
   },
-  "version": "0.187.0",
+  "version": "0.187.2",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "description": "A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations. It features a modular architecture, dynamic database connection management, and a flexible routing system. The framework supports TypeScript for improved robustness and maintainability.",
@@ -65,6 +65,8 @@
   "devDependencies": {
     "@medyll/idae-db": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.2",
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/kit": "^2.50.1",

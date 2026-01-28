@@ -3,7 +3,7 @@
   "bin": {
     "idae-html": "./cli.js"
   },
-  "version": "1.0.0",
+  "version": "1.0.2",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -38,6 +38,8 @@
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.2",
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/kit": "^2.50.1",
@@ -60,7 +62,7 @@
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

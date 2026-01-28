@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@medyll/idae-prettier-config':
-        specifier: 1.2.4
-        version: 1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -69,6 +66,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:packages-config/idae-eslint-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:packages/shared
       '@rushstack/eslint-patch':
         specifier: ^1.15.0
         version: 1.15.0
@@ -151,8 +151,8 @@ importers:
         version: 4.3.5(picomatch@4.0.3)(svelte@5.48.2)(typescript@5.9.3)
     devDependencies:
       '@medyll/idae-prettier-config':
-        specifier: ^1.2.8
-        version: 1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        specifier: '*'
+        version: 1.2.12(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -253,6 +253,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -377,6 +383,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@playwright/test':
         specifier: ^1.52.0
         version: 1.57.0
@@ -450,6 +462,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -508,6 +526,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -588,9 +612,15 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -686,6 +716,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@playwright/test':
         specifier: ^1.58.0
         version: 1.58.0
@@ -759,6 +795,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -805,6 +847,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^12.0.2
         version: 12.0.2(semantic-release@25.0.2(typescript@5.9.3))
@@ -866,9 +914,15 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
       '@medyll/idae-query':
         specifier: workspace:*
         version: link:../idae-query
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -922,6 +976,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -992,6 +1052,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1056,6 +1122,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1122,7 +1194,7 @@ importers:
     dependencies:
       '@iconify/svelte':
         specifier: ^5.2.1
-        version: 5.2.1(svelte@5.48.4)
+        version: 5.2.1(svelte@5.48.5)
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.1.18
@@ -1149,10 +1221,10 @@ importers:
         version: 2.17.0
       svelte:
         specifier: ^5.0.0-next
-        version: 5.48.4
+        version: 5.48.5
       svelte-preprocess:
         specifier: ^6.0.3
-        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.4)(typescript@5.9.3)
+        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.5)(typescript@5.9.3)
       svelte-spa-router:
         specifier: ^4.0.1
         version: 4.0.1
@@ -1169,21 +1241,24 @@ importers:
       '@medyll/idae-engine':
         specifier: workspace:*
         version: link:../idae-engine
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
       '@playwright/test':
         specifier: ^1.58.0
         version: 1.58.0
       '@sveltejs/adapter-auto':
         specifier: ^7.0.0
-        version: 7.0.0(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.4)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.4)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 7.0.0(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
       '@sveltejs/kit':
         specifier: ^2.50.1
-        version: 2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.4)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.4)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@sveltejs/package':
         specifier: ^2.5.7
-        version: 2.5.7(svelte@5.48.4)(typescript@5.9.3)
+        version: 2.5.7(svelte@5.48.5)(typescript@5.9.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
-        version: 6.2.4(svelte@5.48.4)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@types/eslint':
         specifier: 9.6.1
         version: 9.6.1
@@ -1225,7 +1300,7 @@ importers:
         version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-svelte:
         specifier: ^3.14.0
-        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.48.4)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
+        version: 3.14.0(eslint@9.39.2(jiti@2.6.1))(svelte@5.48.5)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
       fs-extra:
         specifier: ^11.3.3
         version: 11.3.3
@@ -1237,7 +1312,7 @@ importers:
         version: 4.0.5
       mdsvex:
         specifier: ^0.12.6
-        version: 0.12.6(svelte@5.48.4)
+        version: 0.12.6(svelte@5.48.5)
       micromatch:
         specifier: ^4.0.8
         version: 4.0.8
@@ -1252,7 +1327,7 @@ importers:
         version: 4.0.0-alpha.13
       prettier-plugin-svelte:
         specifier: ^3.4.1
-        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.4)
+        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.5)
       prism:
         specifier: ^4.1.2
         version: 4.1.2(react@15.7.0)
@@ -1336,6 +1411,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1358,6 +1439,12 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
+      '@medyll/idae-shared':
+        specifier: workspace:*
+        version: link:../shared
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -1429,6 +1516,9 @@ importers:
         specifier: ^4.1.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.46.3)(typescript@5.9.3)
     devDependencies:
+      '@medyll/idae-prettier-config':
+        specifier: workspace:*
+        version: link:../../packages-config/idae-prettier-config
       '@semantic-release/github':
         specifier: ^10.3.5
         version: 10.3.5(semantic-release@25.0.2(typescript@5.9.3))
@@ -2737,13 +2827,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0-next
 
-  '@medyll/idae-prettier-config@1.2.4':
-    resolution: {integrity: sha512-5gIEhOEkKQi4RLiGrUMx76c9UQCIIv4vhNrVCKDcDrLyPuiQWcLi1gK29KAp+sYJWbm//g6+1LM6AtmXg0TPXQ==}
-    peerDependencies:
-      prettier: '>=3.0.0'
-
-  '@medyll/idae-prettier-config@1.2.8':
-    resolution: {integrity: sha512-e7msbq8YAC1Ws03r4bQvRbzpeyLxfhl6A2dGXWWNRQW3xcmTRygqrchfD3VMmCXf0fXCcbqJVoxnRQDbh7bGVQ==}
+  '@medyll/idae-prettier-config@1.2.12':
+    resolution: {integrity: sha512-IZeLj4ZPG9kPZn8cSxoiqAxLy6gcTHWBm+DN4SRA8QZLgMKIGkSYY0BfGMdsbqyH4V49LnboH27kYu5BYQMFkw==}
     peerDependencies:
       prettier: '>=3.0.0'
 
@@ -12792,10 +12877,10 @@ snapshots:
 
   '@hutson/parse-repository-url@3.0.2': {}
 
-  '@iconify/svelte@5.2.1(svelte@5.48.4)':
+  '@iconify/svelte@5.2.1(svelte@5.48.5)':
     dependencies:
       '@iconify/types': 2.0.0
-      svelte: 5.48.4
+      svelte: 5.48.5
 
   '@iconify/types@2.0.0': {}
 
@@ -13409,24 +13494,7 @@ snapshots:
       - ws
       - zod
 
-  '@medyll/idae-prettier-config@1.2.4(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
-    dependencies:
-      prettier: 3.8.1
-      vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - yaml
-
-  '@medyll/idae-prettier-config@1.2.8(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+  '@medyll/idae-prettier-config@1.2.12(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
       prettier: 3.8.1
       vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -20137,13 +20205,13 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdsvex@0.12.6(svelte@5.48.4):
+  mdsvex@0.12.6(svelte@5.48.5):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 2.0.11
       prism-svelte: 0.4.7
       prismjs: 1.30.0
-      svelte: 5.48.4
+      svelte: 5.48.5
       unist-util-visit: 2.0.3
       vfile-message: 2.0.4
 
@@ -21677,10 +21745,10 @@ snapshots:
       prettier: 3.8.1
       svelte: 5.48.5
 
-  prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.4):
+  prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.5):
     dependencies:
       prettier: 4.0.0-alpha.13
-      svelte: 5.48.4
+      svelte: 5.48.5
 
   prettier-plugin-tailwindcss@0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.48.4))(prettier@3.8.1):
     dependencies:
@@ -23008,9 +23076,9 @@ snapshots:
       sass: 1.97.3
       typescript: 5.9.3
 
-  svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.4)(typescript@5.9.3):
+  svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.5)(typescript@5.9.3):
     dependencies:
-      svelte: 5.48.4
+      svelte: 5.48.5
     optionalDependencies:
       '@babel/core': 7.28.6
       postcss: 8.5.6

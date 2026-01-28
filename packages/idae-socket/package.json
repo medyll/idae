@@ -3,9 +3,9 @@
   "bin": {
     "idae-socket": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "keep your app in sync with your backend!!",
   "main": "./scripts/index.js",
   "type": "module",
@@ -23,7 +23,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
-  }, 
+  },
   "license": "ISC",
   "peerDependencies": {
     "svelte": "^5.0.0-next"
@@ -50,6 +50,8 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/node": "^22.13.13",

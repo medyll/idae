@@ -3,9 +3,9 @@
   "bin": {
     "idae-data-tpl": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
-  "version": "0.186.0",
+  "version": "0.186.2",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",

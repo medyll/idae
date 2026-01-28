@@ -3,13 +3,13 @@
   "bin": {
     "idae-be": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
   },
-  "version": "1.96.0",
+  "version": "1.96.2",
   "description": "A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.",
   "keywords": [
     "DOM",
@@ -61,6 +61,8 @@
   "devDependencies": {
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-prettier-config": "workspace:*",
+    "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.52.0",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.0",
