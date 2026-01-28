@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-prettier-config": "*",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",

@@ -38,7 +38,7 @@
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-prettier-config": "*",
+    "@medyll/idae-prettier-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.2",
     "@sveltejs/adapter-auto": "^7.0.0",
