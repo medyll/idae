@@ -3,7 +3,7 @@
   "bin": {
     "idae-data-tpl": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "version": "0.186.2",
   "scripts": {

@@ -3,7 +3,7 @@
   "bin": {
     "idae-be": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

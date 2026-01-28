@@ -3,7 +3,7 @@
   "bin": {
     "idae-socket": "./cli.js"
   },
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "version": "0.0.4",
   "description": "keep your app in sync with your backend!!",

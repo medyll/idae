@@ -5,7 +5,7 @@
   },
   "author": "Lebrun Meddy",
   "version": "0.181.4",
-  "scope": "@medyll",
+  "scope": "medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
     "dev": "vite dev",

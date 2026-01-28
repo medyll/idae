@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-engine",
-  "scope": "@medyll",
+  "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

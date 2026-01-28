@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "scope": "@medyll",
+  "scope": "medyll",
   "private": true,
   "scripts": {
     "commit": "cz",
