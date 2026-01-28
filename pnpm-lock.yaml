@@ -1053,8 +1053,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
       '@medyll/idae-prettier-config':
-        specifier: workspace:*
-        version: link:../../packages-config/idae-prettier-config
+        specifier: '*'
+        version: 1.2.12(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       '@medyll/idae-shared':
         specifier: workspace:*
         version: link:../shared
@@ -13493,6 +13493,23 @@ snapshots:
       - react-native-b4a
       - ws
       - zod
+
+  '@medyll/idae-prettier-config@1.2.12(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.7.4)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
+    dependencies:
+      prettier: 3.7.4
+      vite: 7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - yaml
 
   '@medyll/idae-prettier-config@1.2.12(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)':
     dependencies:
