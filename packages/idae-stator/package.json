@@ -37,6 +37,10 @@
   "peerDependencies": {
     "svelte": "^5.0.0-next"
   },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@semantic-release/github": "^10.3.5",

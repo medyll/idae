@@ -11,14 +11,18 @@ module.exports = {
       },
     ],
     [
+      "@semantic-release/github",
+      {
+        assets: "dist/*.tgz",
+      },
+    ],
+    [
       "@semantic-release/git",
       {
-        assets: ["package.json", "CHANGELOG.md"],
-        // Le [skip ci] est vital pour ne pas redéclencher la CI après le push du tag/version
+        assets: ["CHANGELOG.md"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
     ],
-    "@semantic-release/github",
   ],
 };

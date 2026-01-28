@@ -44,6 +44,10 @@
     "sqlite3": ">=5.1.0",
     "svelte": "^5.0.0-next"
   },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",

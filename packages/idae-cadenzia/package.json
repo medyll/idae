@@ -14,6 +14,10 @@
     "test": "npm run test:unit -- --run",
     "prepackage": "node scripts/package-pre.js"
   },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
