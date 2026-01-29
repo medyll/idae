@@ -1,6 +1,25 @@
+<script module lang="ts">
+import type { CommonProps } from '$lib/types/index.js';
+/**
+ * Props for the Badge component.
+ * Represents a badge indicator with a value, ceiling, and position.
+ */
+export interface BadgeProps extends CommonProps {
+	/** Value to display in the badge */
+	value: number;
+	/** Maximum value before badge is hidden */
+	ceiling: number;
+	/** Reference to the badge element */
+	element: HTMLDivElement;
+	/**
+	 * Position of the badge.
+	 * @type {{ x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' }}
+	 */
+	position: { x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' };
+}
+</script>
 <script lang="ts">
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { BadgeProps } from './types.js';
 
 	let {
 		value,

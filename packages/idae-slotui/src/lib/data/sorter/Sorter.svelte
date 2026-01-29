@@ -1,9 +1,72 @@
+<script module lang="ts">
+import type { ButtonProps } from '$lib/controls/button/types.js';
+import type { CommonProps, Data } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Type for a sortable field in Sorter.
+ */
+export type SorterFieldType = {
+	/** Field to sort by */
+	sortByField: string;
+	/** Optional title for the field */
+	sortByTitleField?: string;
+	/** Sort order */
+	sortByOrder?: 'asc' | 'desc' | 'none';
+	/** Order index */
+	order?: number;
+};
+
+/**
+ * Placeholder for a sort item (extend as needed).
+ */
+export type SortItem = {};
+
+/**
+ * Props for the Sorterer component (legacy, not used in main Sorter).
+ */
+export type SortererProps = CommonProps & {
+	/** Data to be sorted */
+	data: Data[];
+	/** Final sorted data as raw object */
+	sortedData?: Data[];
+	/** Sortable fields */
+	fields: SorterFieldType[];
+	/** Active field for common sort */
+	activeCommonSortField?: string;
+	/** Callback when data is sorted */
+	onSort?: (sortedData: any[]) => void;
+};
+
+/**
+ * Props for the Sorter component.
+ * Represents a sorting widget with customizable fields, order, and slot support.
+ */
+export type SorterProps = {
+	/** The data to sort */
+	data: Data[];
+	/** Final sorted data as raw object */
+	sortedData?: Data[];
+	/** The field to sort by */
+	sortByField: string;
+	/** The title of the field to sort by */
+	sortByTitleField?: string;
+	/** List of available sorts shown to user */
+	sortListItems?: string[];
+	/** The order to sort by */
+	sortByOrder?: 'asc' | 'desc' | 'none' | string;
+	/** The active field to sort by */
+	activeCommonSortField?: string;
+	/** Sorter mode */
+	sorterMode?: 'button' | 'menu' | 'free';
+	/** Slot for children content (ButtonProps) */
+	children?: Snippet<[ButtonProps]>;
+};
+</script>
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { SorterProps } from './types.js';
 
 	const sortState: string[] = ['none', 'asc', 'desc'];
 	const icons = {

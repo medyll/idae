@@ -1,9 +1,72 @@
+<script module lang="ts">
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { Snippet, SvelteComponent } from 'svelte';
+/**
+ * CSS class names for Cartouche sub-elements.
+ */
+export type CartoucheClasses = {
+	control: string;
+	controlIcon: string;
+	controlLabel: string;
+	content: string;
+};
+
+/**
+ * Props for the Cartouche component.
+ * Represents a card-like container with title, subtitle, icon, and flexible slots.
+ */
+export type CartoucheProps = CommonProps & {
+	/** CSS class for the root element */
+	class?: string;
+	/** Custom class names for sub-elements */
+	classes?: CartoucheClasses;
+	/** Inline style for the root element */
+	style?: string;
+	/** Reference to the root HTMLDivElement */
+	element?: HTMLDivElement;
+	/** Title text for the cartouche */
+	primary: string;
+	/** Subtitle text for the cartouche */
+	secondary?: string;
+	/** Icon name for the cartouche */
+	icon?: ElementProps["icon"];
+	/** If true, layout is stacked */
+	stacked?: boolean;
+	/** Svelte component to render inside the cartouche */
+	component?: SvelteComponent;
+	/** Props to pass to the rendered component */
+	componentProps?: Record<string, any>;
+	/** Preserve content state while toggling visibility */
+	keepCartoucheContent?: boolean;
+	/** Show a divider line below the title */
+	showTitleDivider?: boolean;
+	/** Show a border around the cartouche */
+	bordered?: boolean;
+	/** Whether the cartouche is open */
+	isOpen?: boolean;
+	/** Actions for the cartouche (open, toggle, close) */
+	actions?: Record<'open' | 'toggle' | 'close', (event: Event) => void>;
+	/** @deprecated: Use tall instead */
+	dense?: ElementProps["dense"];
+	/** Preset for cartouche height */
+	tall?: ElementProps["tall"];
+	/** Slot for children content */
+	children?: Snippet;
+	/** Slot for the icon */
+	cartoucheIcon?: Snippet;
+	/** Slot for the primary title */
+	cartouchePrimary?: Snippet;
+	/** Slot for the secondary title */
+	cartoucheSecondary?: Snippet;
+	/** Slot for the buttons */
+	cartoucheButtons?: Snippet;
+};
+</script>
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import IconButton from '$lib/controls/button/IconButton.svelte';
-	import type { CartoucheClasses, CartoucheProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 

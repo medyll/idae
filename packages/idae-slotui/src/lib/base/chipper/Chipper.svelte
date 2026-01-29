@@ -1,7 +1,29 @@
+<script module lang="ts">
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the Chipper component.
+ * Represents a chip-style badge with customizable position, color, and content.
+ */
+export interface ChipperProps extends CommonProps {
+	/** Position of the chipper (e.g., 'bottom', 'top', etc.) */
+	position?: ElementProps["position"];
+	/** Theme color for the chip */
+	theme?: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'light' | 'medium' | 'dark';
+	/** CSS color code for the chip */
+	color?: string;
+	/** Text or HTML content for the chip */
+	content?: string;
+	/** Whether to show the chip */
+	showChip?: boolean;
+	/** Slot for chip content */
+	chipperChip?: Snippet;
+}
+</script>
 <script lang="ts">
-	import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
+		import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ChipperProps } from './types.js';
+		// ChipperProps now in module script
 
 	let {
 		class: className = '',
