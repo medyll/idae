@@ -98,11 +98,6 @@ When generating or refactoring Svelte 5 components, strictly adhere to these rul
   });
 </script>
 
-/**
- * @component
- * Standardized Svelte 5 component for reactive data rendering.
- */
-
 <div class="component-wrapper">
   {#each visibleFields() as field}
     <label>{field}</label>
@@ -114,3 +109,28 @@ When generating or refactoring Svelte 5 components, strictly adhere to these rul
   {/if}
 </div>
 ```
+
+---
+
+## How do I document my components?
+
+In editors which use the Svelte Language Server you can document Components, functions and exports using specially formatted comments in html comments.
+
+```svelte
+<script>
+  /** What should we call the user? */
+  export let name = 'world';
+</script>
+
+<!--
+@component
+Here's some documentation for this component.
+It will show up on hover.
+
+- You can use markdown here.
+- You can also use code blocks here.
+- Usage:
+  ```svelte
+  <main name="Arethra">
+-->
+``` 
