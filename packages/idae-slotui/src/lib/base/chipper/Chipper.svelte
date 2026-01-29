@@ -1,6 +1,7 @@
 <script module lang="ts">
-import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
 /**
  * Props for the Chipper component.
  * Represents a chip-style badge with customizable position, color, and content.
@@ -21,8 +22,6 @@ export interface ChipperProps extends CommonProps {
 }
 </script>
 <script lang="ts">
-		import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 		// ChipperProps now in module script
 
 	let {

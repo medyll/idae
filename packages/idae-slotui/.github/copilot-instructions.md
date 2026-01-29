@@ -1,55 +1,43 @@
 
 # Copilot/AI Agent Instructions for @medyll/idae-slotui-svelte
 
+This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs site (`src/routes/`). It is part of a monorepo and shares tooling with other `idae` packages.
 
-This repository contains:
-- A Svelte 5 component library (`@medyll/idae-slotui-svelte`) in `src/lib/`
-- A SvelteKit-powered website (in `src/routes/`) for live demos, documentation, and showcasing all components
-
-This guide enables AI agents to work productively in both the component library and the demo/documentation website.
-
-## Project Architecture
-- **Type:** Svelte 5 component library, built with SvelteKit and Vite
-- **Structure:**
-  - Components: `src/lib/base/` (atomic UI), `src/lib/controls/` (form/interactive)
-  - Utilities: `src/lib/utils/` (slot handling, helpers)
-  - Styles: SCSS per component, compiled to `src/lib/slotui-css/` via `scripts/release-css.js`
-  - Demos/docs: `src/routes/`
-- **Styling:** SCSS (custom build), UnoCSS, `@medyll/cssfabric`
-- **Exports:** All public components and generated CSS are re-exported from `src/lib/index.ts`
+## Architecture & Structure
+- **Component Library:** All UI components are in `src/lib/base/` (atomic) and `src/lib/controls/` (form/interactive). Utilities are in `src/lib/utils/`.
+- **Docs/Demos:** SvelteKit app in `src/routes/` showcases and documents all components.
+- **Styling:** Each component has a `.scss` file, imported via `<style global lang="scss"> @use './component-name.scss'; </style>`. SCSS is canonical; compiled CSS is output to `src/lib/slotui-css/` (never edit generated CSS directly).
+- **Exports:** All public components and CSS are re-exported from `src/lib/index.ts`.
+- **Build:** Uses Vite, SvelteKit, UnoCSS, and `@medyll/cssfabric` for styling.
 
 ## Key Patterns & Conventions
-- **Svelte 5 runes only:** Use `$props`, `$state`, `$derived`, `$bindable`, `$effect` exclusively for reactivity and props
+- **Svelte 5 runes only:** Use `$props`, `$state`, `$derived`, `$bindable`, `$effect` for all reactivity and props. *Legacy Svelte syntax is forbidden.*
   - Example: `const { label, disabled } = $props()`
-- **Slot management:** Use the `Slotted` component (`$lib/utils/slotted/Slotted.svelte`) for all slot/fallback logic
+- **Slot/fallback logic:** Always use the `Slotted` component (`$lib/utils/slotted/Slotted.svelte`) for slot rendering and fallback content.
   - Example: `<Slotted child={children}>{value ?? ''}</Slotted>`
-- **SCSS import:** Each component imports its SCSS with `<style global lang="scss"> @use './component-name.scss'; </style>`
-- **Component creation:**
-  1. Add folder in `src/lib/base` or `src/lib/controls`
-  2. Create `.svelte` and `.scss` files
-  3. Import SCSS as above
-  4. Export from `src/lib/index.ts` (or ensure build script includes it)
-- **Props typing:** Use TypeScript `interface` or `type` for props, inline or in `types.ts` per component
-- **Icons:** Use `Icon` (`$lib/base/icon/Icon.svelte`, wraps Iconify)
-- **Aliases:** `$lib`, `$components`, `$utils`, `$styles` (see `tsconfig.json`)
+- **Props typing:** Use TypeScript `type` or `interface` for all props, inline or in a `types.ts` file per component.
+- **Icons:** Use the `Icon` component (`$lib/base/icon/Icon.svelte`, wraps Iconify).
+- **SCSS mixins/presets:** Use mixins from `src/lib/styles/slotui-mixins.scss` and variables from `slotui-presets.scss` for consistent sizing, spacing, and variants.
+- **Aliases:** Use `$lib`, `$components`, `$utils`, `$styles` as defined in `tsconfig.json`.
 
 ## Developer Workflows
-- **Dev server:** `npm run dev` (Vite + SvelteKit)
+- **Dev server:** `npm run dev`
 - **Build/package:** `npm run build` (Vite + svelte-package), `npm run package`
 - **Test:** `npm run test` (Vitest + Playwright)
-  - Unit: `npm run test:unit` (Vitest)
-  - Integration: `npm run test:integration` (Playwright)
+  - Unit: `npm run test:unit`
+  - Integration: `npm run test:integration`
 - **CSS build:** `npm run release-css` (compiles all SCSS to distributable CSS)
+- **Lint/format:** `npm run lint`, `npm run format`
 
 ## Project-Specific Notes
-- **Do not edit files in `src/lib/slotui-css/` directly**; these are generated
-- **All Svelte code must use runes, not legacy syntax**
-- **SCSS is the canonical source for styles; always update `.scss` and re-run CSS build**
-- **Tests:** Place unit/integration tests in `src/tests/` or alongside components
-- **Monorepo:** Shares tooling/config with other `idae` packages; see root for shared scripts
+- **Never edit files in `src/lib/slotui-css/` directly**; always update SCSS and re-run the CSS build.
+- **Tests:** Place in `src/tests/` or alongside components.
+- **Component creation:** Add new folders/files in `src/lib/base` or `src/lib/controls`, import SCSS, and export from `src/lib/index.ts`.
+- **Docs generation:** See `src/tests/docs.test.js` and `src/lib/docs/docs.js` for automated docs extraction from Svelte components.
+- **Monorepo:** Shares scripts/config with other `idae` packages; see root for shared scripts.
 
 ## Integration & Dependencies
-- **Depends on:** `@medyll/idae-engine`, `@medyll/cssfabric`, UnoCSS
+- **Depends on:** `@medyll/idae-engine`, `@medyll/cssfabric`, UnoCSS, Iconify
 - **Build tools:** Vite, SvelteKit, custom scripts in `scripts/`
 
 ## References
