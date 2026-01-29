@@ -1,21 +1,48 @@
-<script lang="ts">
-	import type { CommonProps, ElementProps, ExpandProps } from '$lib/types/index.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { CheckboxProps } from './types.js';
+<script module lang="ts">
+/**
+ * Props for the Checkbox component.
+ * Represents a checkbox input with support for indeterminate state, dense mode, and slot content.
+ */
+export type CheckboxProps = {
+	/** The label title for the checkbox. */
+	title?: string;
+	/** Checked state of the checkbox. */
+	checked?: boolean;
+	/** Indeterminate state of the checkbox. */
+	indeterminate?: boolean;
+	/** Sets the `value` attribute of the input element for form usage. */
+	value?: any;
+	/** Determines if the checkbox is disabled for user interaction and styles it accordingly. */
+	disabled?: boolean;
+	/** Provides a bound DOM reference to the checkbox's <input /> element. */
+	inputElement?: HTMLInputElement;
+	/** Provides a bound DOM reference to the checkbox's outer container element. */
+	labelElement?: HTMLLabelElement;
+	/** Dense mode for compact display. */
+	dense?: boolean | string;
+	/** Slot for children content (label, etc). */
+	children?: any;
+	/** Additional class for the root element. */
+	class?: string;
+};
+</script>
 
-	let {
-		title,
-		indeterminate = $bindable(false),
-		class: className = '',
-		inputElement = $bindable(),
-		labelElement,
-		checked = $bindable(false),
-		value = $bindable(undefined),
-		disabled = $bindable(false),
-		dense,
-		children,
-		...rest
-	}: ExpandProps<CheckboxProps> = $props();
+<script lang="ts">
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+
+let {
+	title,
+	indeterminate = $bindable(false),
+	class: className = '',
+	inputElement = $bindable(),
+	labelElement,
+	checked = $bindable(false),
+	value = $bindable(undefined),
+	disabled = $bindable(false),
+	dense,
+	children,
+	...rest
+}: CheckboxProps = $props();
 </script>
 
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>

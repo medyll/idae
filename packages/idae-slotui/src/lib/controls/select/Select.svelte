@@ -1,79 +1,79 @@
+<script module lang="ts">
+import type { CommonProps, Data } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the Select component.
+ * Represents a select dropdown with popper, menu, and slot support.
+ */
+export type SelectProps = CommonProps & {
+	/** The position of the popper (e.g., 'bottom', 'top', etc.) */
+	position?: string;
+	/** Whether the popper should stick to the hook width */
+	stickToHookWidth: boolean;
+	/** Whether the popper should auto close */
+	autoClose?: boolean;
+	/** The value of the select */
+	value: any;
+	/** The name of the select */
+	name: string;
+	/** The style of the select */
+	style?: string;
+	/** The class name of the select */
+	className: string;
+	/** The data for the select */
+	data: any[];
+	/** Whether the select is disabled */
+	disabled?: boolean;
+	/** The options for the select */
+	options?: {
+		data?: Data;
+		text: string;
+		icon?: any;
+	}[];
+	/** The data field id for the select */
+	dataFieldId: string;
+	/** The data field name for the select */
+	dataFieldName: string;
+	/** Slot for custom option rendering */
+	children?: Snippet<[{ optionsData: Data }]>;
+};
+</script>
+
 <script lang="ts">
-	import type { CommonProps, Data, ElementProps, ExpandProps } from '$lib/types/index.js';
-	import TextField from '$lib/controls/textfield/TextField.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import Popper from '$lib/ui/popper/Popper.svelte';
-	import Menu from '$lib/ui/menu/Menu.svelte';
-	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Snippet } from 'svelte';
+import type { ExpandProps } from '$lib/types/index.js';
+import TextField from '$lib/controls/textfield/TextField.svelte';
+import Icon from '$lib/base/icon/Icon.svelte';
+import Popper from '$lib/ui/popper/Popper.svelte';
+import Menu from '$lib/ui/menu/Menu.svelte';
+import MenuItem from '$lib/ui/menu/MenuItem.svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	type SelectProps = CommonProps & {
-		/** The position of the popper */
-		position?: ElementProps['popperPosition'];
+let {
+	name,
+	element,
+	disabled = false,
+	data,
+	dataFieldId,
+	dataFieldName,
+	options = [],
+	position,
+	stickToHookWidth,
+	autoClose = false,
+	value = undefined,
+	children,
+	...rest
+}: ExpandProps<SelectProps> = $props();
 
-		/** Whether the popper should stick to the hook width */
-		stickToHookWidth: boolean;
+let hiddenRef;
+let isVisible: boolean = false;
 
-		/** Whether the popper should auto close */
-		autoClose?: boolean;
+let timerClick: any;
 
-		/** The value of the select */
-		value: any;
-
-		/** The name of the select */
-		name: string;
-
-		/** The style of the select */
-		style?: string;
-
-		/** The class name of the select */
-		className: string;
-
-		/** The data for the select */
-		data: any[];
-		disabled?: boolean;
-		/** The options for the select */
-		options?: {
-			data?: Data;
-			text: string;
-			icon?: any;
-		}[];
-
-		/** The data field id for the select */
-		dataFieldId: string;
-
-		/** The data field name for the select */
-		dataFieldName: string;
-		children?: Snippet<[{ optionsData: Data }]>;
-	};
-
-	let {
-		name,
-		element,
-		disabled = false,
-		data,
-		dataFieldId,
-		dataFieldName,
-		options = [],
-		position,
-		stickToHookWidth,
-		autoClose = false,
-		value = undefined,
-		children,
-		...rest
-	}: ExpandProps<SelectProps> = $props();
-
-	let hiddenRef;
-	let isVisible: boolean = false;
-
-	let timerClick: any;
-
-	const show = (visible: boolean) => (event) => {
-		timerClick = setTimeout(() => {
-			isVisible = visible;
-		}, 250);
-	};
+const show = (visible: boolean) => (event) => {
+	timerClick = setTimeout(() => {
+		isVisible = visible;
+	}, 250);
+};
 </script>
 
 <input {value} bind:this={hiddenRef} type="hidden" {name} />

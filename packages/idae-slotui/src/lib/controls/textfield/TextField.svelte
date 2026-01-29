@@ -2,7 +2,7 @@
 <script module lang="ts">
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
-import { tallPreset, uiPresets, type CommonProps, type ElementProps } from '$lib/types/index.js';
+import { tallPreset,  type CommonProps, type ElementProps } from '$lib/types/index.js';
 import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
 import type { Snippet } from 'svelte';
 /**

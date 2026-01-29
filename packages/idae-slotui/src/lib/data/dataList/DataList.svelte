@@ -41,6 +41,22 @@ export type DataListProps<T = any> = {
 	idField?: string;
 	/** Slot for children content */
 	children?: Snippet;
+	 /** columns declaration */
+  columns?: Record<string, DataCellType>;
+
+  /** Virtualizer instance for the list */
+  virtualizer?: boolean;
+
+  /** Loading state of the list */
+  isLoadingDrawerProps?: boolean;
+
+  dataListHead?: Snippet;
+  dataListFooter?: Snippet;
+  dataListRow?: Snippet<[{ rawData: Data; item: Data }]>;
+  dataListCell?: Snippet<
+    [{ fieldType: string; fieldName: string; fieldValue: any }]
+  >;
+  groupTitleSlot?: Snippet<[{ item: Data }]>;
 };
 </script>
 
@@ -48,7 +64,6 @@ export type DataListProps<T = any> = {
 import { getContext, hasContext, setContext } from 'svelte';
 import { writable, type Writable } from 'svelte/store';
 import DataListRow from './DataListRow.svelte';
-import type { DataCellType, DataListProps, DataListStoreType } from './DataList.svelte';
 import { dataOp } from '$lib/utils/engine/utils.js';
 import DataListHead from './DataListHead.svelte';
 import Icon from '$lib/base/icon/Icon.svelte';

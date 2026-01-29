@@ -1,67 +1,99 @@
+<script module lang="ts">
+import type { ElementProps } from '$lib/types/index.js';
+import Button from '$lib/controls/button/Button.svelte';
+import TextField from '$lib/controls/textfield/TextField.svelte';
+import { dataOp } from '$lib/utils/engine/utils.js';
+import Popper from '$lib/ui/popper/Popper.svelte';
+import MenuList from '$lib/ui/menuList/MenuList.svelte';
+import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
+import { widthPreset, type ExpandProps } from '$lib/types/index.js';
+import { onEvent } from '$lib/utils/uses/event.js';
+/**
+ * Props for the Finder component.
+ * Represents a data search/filter widget with customizable fields, mode, and slot support.
+ */
+export type FinderProps<T = Record<string, any>> = {
+	/** Class name for the root component */
+	class?: string;
+	/** Class name for the root container */
+	classRoot?: string;
+	/** Inline style for the root container */
+	styleRoot?: string;
+	/** Inline style for the component */
+	style?: string;
+	/** Reference to the root element */
+	element?: HTMLDivElement | null;
+	/** Initial data to look in */
+	data: T[];
+	/** Default field to be used, can be '*' */
+	defaultField: string;
+	/** Show the opener button for the choice of fields */
+	showSortMenu?: boolean;
+	/** Search mode: exact or partial match */
+	mode?: 'exact' | 'partial';
+	/** External bind use, to read filtered data */
+	filteredData?: T[];
+	/** Width of the root element using presets */
+	sizeRoot?: ElementProps['width'];
+	/** Width of the input using presets */
+	/** with of the input using  presets */
+	width?: ElementProps['width'];
+	/** with of the input using  presets */
+	tall?: ElementProps['tall'];
+};
+</script>
+
 <script lang="ts">
-	import Button from '$lib/controls/button/Button.svelte';
-	import TextField from '$lib/controls/textfield/TextField.svelte';
-	import { dataOp } from '$lib/utils/engine/utils.js';
-	import Popper from '$lib/ui/popper/Popper.svelte';
-	import MenuList from '$lib/ui/menuList/MenuList.svelte';
-	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
-	import type { FinderProps } from './types.js';
-	import { widthPreset, type ExpandProps } from '$lib/types/index.js';
-	import { onEvent } from '$lib/utils/uses/event.js';
 
-	let {
-		class: className = '',
-		styleRoot = '',
-		classRoot = '',
-		style = '',
-		element,
-		data = [],
-		defaultField = '*',
-		showSortMenu = false,
-		mode = 'partial',
-		filteredData = $bindable(filit()),
-		sizeRoot = widthPreset.auto,
-		width = 'full',
-		tall = 'default',
-		...restProps
-	}: ExpandProps<FinderProps> = $props();
+let {
+	class: className = '',
+	styleRoot = '',
+	classRoot = '',
+	style = '',
+	element,
+	data = [],
+	defaultField = '*',
+	showSortMenu = false,
+	mode = 'partial',
+	filteredData = $bindable(filit()),
+	sizeRoot = widthPreset.auto,
+	width = 'full',
+	tall = 'default',
+	...restProps
+}: ExpandProps<FinderProps> = $props();
 
-	let searchString: string | undefined = $state(undefined);
-	let container: HTMLDivElement;
+let searchString: string | undefined = $state(undefined);
+let container: HTMLDivElement;
 
-	/* export var filteredData = $derived(
-		!searchString ? data : doFind(data, searchString, defaultField)
-	); */
+function filit() {
+	let red = $derived(!searchString ? data : doFind(data, searchString, defaultField));
+	return red;
+}
 
-	function filit() {
-		let red = $derived(!searchString ? data : doFind(data, searchString, defaultField));
-		return red;
+function doFind<T = Record<string, any>>(list: T[], kw: string, field: string) {
+	let results: any[];
+	// if kw empty
+	if (!kw) {
+		results = data;
+	} else {
+		let kwEx = kw.replace('*', '.*.');
+		results =
+			mode === 'exact'
+				? dataOp.filterList(list, kwEx, field)
+				: dataOp.searchList(list, kwEx, field);
 	}
+	return results;
+}
 
-	function doFind<T = Record<string, any>>(list: T[], kw: string, field: string) {
-		let results: any[];
-		// if kw empty
-		if (!kw) {
-			results = data;
-		} else {
-			let kwEx = kw.replace('*', '.*.');
-			results =
-				mode === 'exact'
-					? dataOp.filterList(list, kwEx, field)
-					: dataOp.searchList(list, kwEx, field); // filterList(list, kw, field);
-		}
-		return results;
-	}
+let popperOpen: boolean;
 
-	let popperOpen: boolean;
-
-	let dataKeys = $derived(
-		Object.keys(data[0] || {})
-			.filter((r) => ['string', 'number'].includes(typeof data?.[0]?.[r]))
-			.sort((a: string, b: string) => {
-				return a > b ? 1 : a < b ? -1 : 0;
-			})
-	);
+let dataKeys = $derived(
+	Object.keys(data[0] || {})
+		.filter((r) => ['string', 'number'].includes(typeof data?.[0]?.[r]))
+		.sort((a: string, b: string) => {
+			return a > b ? 1 : a < b ? -1 : 0;
+		})
+);
 </script>
 
 <div

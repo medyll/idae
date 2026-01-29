@@ -1,93 +1,141 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+import type { ButtonProps } from '../button/Button.svelte';
+/**
+ * Props for the Confirm component.
+ * Represents a confirm dialog with customizable steps, actions, and slot content.
+ */
+export type ConfirmProps<T = any> = {
+	/** Class name for the root element. */
+	class?: string;
+	/** Data sent on confirm. */
+	data?: T;
+	/** Ref for the initial element. */
+	initialRef?: HTMLElement | null;
+	/** Ref for the confirm content element. */
+	contentRef?: HTMLElement | null;
+	/** Tooltip for the initial button. */
+	tooltipInitial?: string | null;
+	/** Text for the initial button. */
+	primaryInitial?: string;
+	/** Text for the confirm button. */
+	primaryConfirm: string;
+	/** Icon for the initial button. */
+	iconInitial?: string;
+	/** Color for the initial icon. */
+	iconColorInitial?: string;
+	/** Text for the confirm button. */
+	primary?: string;
+	/** Icon for the confirm button. */
+	icon?: any;
+	/** Height preset for the button. */
+	tall?: string;
+	/** Variant for the button. */
+	variant?: string;
+	/** Color for the confirm icon. */
+	iconColor?: string;
+	/** Icon size for the confirm icon. */
+	iconSize?: string;
+	/** Auto-close after confirm. */
+	autoClose?: boolean;
+	/** Loading state for the confirm button. */
+	loading?: boolean;
+	/** Icon for loading state. */
+	iconLoading?: any;
+	/** Action to perform on confirm. */
+	action?: Promise<T> | ((data?: T) => void);
+	/** Icon for cancel action. */
+	iconCancel?: any;
+	/** Props for the initial button. */
+	buttonInitial?: ButtonProps;
+	/** Props for the confirm button. */
+	buttonConfirm?: ButtonProps;
+	/** Props for the cancel button. */
+	buttonCancel?: ButtonProps;
+	/** Slot for children content. */
+	children?: Snippet;
+	/** Slot for initial confirm content. */
+	confirmInitial?: Snippet;
+};
+</script>
+
 <script lang="ts" generics="T=any">
-	import { fade } from 'svelte/transition';
-	import Button from '$lib/controls/button/Button.svelte';
-	import { onDestroy } from 'svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ConfirmProps } from './types.js';
-	import type { HTMLAttributes } from 'svelte/elements';
+import { fade } from 'svelte/transition';
+import Button from '$lib/controls/button/Button.svelte';
+import { onDestroy } from 'svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import type { HTMLAttributes } from 'svelte/elements';
 
-	let step: string = $state('initial'); 
+let step: string = $state('initial');
 
-	let {
-		class: className = '',
-		initialRef = null,
-		contentRef = null,
-		tooltipInitial = null,
-		primaryInitial = '',
-		primaryConfirm = '',
-		iconInitial = '',
-		iconColorInitial = 'inherit',
-		primary = 'confirm',
-		icon = 'check-circle-outline',
-		iconColor = 'green',
-		tall,
-		autoClose = true,
-		loading,
-		data,
-		action = () => {},
-		iconCancel = { icon: 'mdi:cancel-bold', color: 'red',iconSize:'large' },
-		variant,
-		buttonInitial,
-		buttonConfirm,
-		buttonCancel,
-		children,
-		confirmInitial,
-		...rest
-	}: ConfirmProps<T> & Partial<Omit<HTMLDivElement, 'style'>> = $props();
+let {
+	class: className = '',
+	initialRef = null,
+	contentRef = null,
+	tooltipInitial = null,
+	primaryInitial = '',
+	primaryConfirm = '',
+	iconInitial = '',
+	iconColorInitial = 'inherit',
+	primary = 'confirm',
+	icon = 'check-circle-outline',
+	iconColor = 'green',
+	tall,
+	autoClose = true,
+	loading,
+	data,
+	action = () => {},
+	iconCancel = { icon: 'mdi:cancel-bold', color: 'red', iconSize: 'large' },
+	variant,
+	buttonInitial,
+	buttonConfirm,
+	buttonCancel,
+	children,
+	confirmInitial,
+	...rest
+}: ConfirmProps<T> & Partial<Omit<HTMLDivElement, 'style'>> = $props();
 
-	let rost = rest as HTMLAttributes<any>;
+let rost = rest as HTMLAttributes<any>;
 
-	let loadingState = $state(false);
+let loadingState = $state(false);
 
-	function handleClickInitial(event: any) {
-		event.preventDefault();
-		event.stopPropagation();
-		step = 'confirm';
-	}
+function handleClickInitial(event: any) {
+	event.preventDefault();
+	event.stopPropagation();
+	step = 'confirm';
+}
 
-	function handleClickCancel(event: any) {
-		event.preventDefault();
-		event.stopPropagation();
-		step = 'initial';
-	}
+function handleClickCancel(event: any) {
+	event.preventDefault();
+	event.stopPropagation();
+	step = 'initial';
+}
 
-	function handleAction(event: any) {
-		event.preventDefault();
-		event.stopPropagation();
-		if (action) {
-			if (action instanceof Promise) loadingState = true;
+function handleAction(event: any) {
+	event.preventDefault();
+	event.stopPropagation();
+	if (action) {
+		if (action instanceof Promise) loadingState = true;
 
-			try {
-				loadingState = true;
-				action(data).then(() => {
-					loadingState = false;
-					if (autoClose) step = 'initial';
-
-					return data;
-				});
-			} catch (e) {
-				if (typeof action == 'function') {
-					action(data);
-					if (autoClose) step = 'initial';
-				}
+		try {
+			loadingState = true;
+			action(data).then(() => {
+				loadingState = false;
+				if (autoClose) step = 'initial';
+				return data;
+			});
+		} catch (e) {
+			if (typeof action == 'function') {
+				action(data);
+				if (autoClose) step = 'initial';
 			}
-			/* Promise.resolve(action).then(
-				() => { 
-					loadingState = false;
-					console.log('action done');
-					if (autoClose) step = 'initial';
-				},
-				() => {
-					console.log('action done done');
-					if (autoClose) step = 'initial';
-				}
-			); */
 		}
 	}
+}
 
-	onDestroy(() => {
-		step = 'initial';
-	});
+onDestroy(() => {
+	step = 'initial';
+});
 </script>
 
 <!-- #todo <Content>somecontent</Content> --> 
