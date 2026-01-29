@@ -7,7 +7,7 @@ const packages = fs.readdirSync(packagesDir);
 const packagePre = "prepackage";
 const packagePreFile = "package-pre.js";
 const packagePreContent = `// Created scripts/${packagePreFile}\r\n
-import { MakeLibIndex } from '@medyll/idae-shared';
+import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
 new MakeLibIndex().makeIndexFile();`;
 
 console.log("Packages verification started");
