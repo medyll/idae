@@ -17,8 +17,23 @@
 		data,
 		children,
 		...rest
+	<script module lang="ts">
+	import type { Snippet } from 'svelte';
+	import type { CommonProps, Data } from '$lib/types/index.js';
+	/**
+	 * Props for a row in the DataList.
+	 * @template T - The data type for the row.
+	 */
+	export type DataListRowProps<T> = CommonProps & {
+	  /** Data for the row */
+	  data: T;
+	  /** Children snippet for the default cell content */
+	  children?: Snippet;
+	};
+	</script>
 	}: DataListRowProps<T> = $props();
-
+	    import type { DataCellType, DataListStoreType } from './types.js';
+	    // DataListRowProps now in module script
 	const dataStore = writable<RowType>({ data });
 	setContext('dataListRow', dataStore);
 

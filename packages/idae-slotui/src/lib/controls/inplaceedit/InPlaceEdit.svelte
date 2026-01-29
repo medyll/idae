@@ -1,16 +1,24 @@
+<script module lang="ts">
+/**
+ * Props for the InPlaceEdit component.
+ * Allows inline editing of a value with save/cancel support.
+ */
+export type InPlaceEditProps = {
+	/** Value to be edited */
+	value: string;
+	/** Reference to the span element */
+	spanElement: HTMLElement;
+	/** Reference to the input element */
+	inputElement: HTMLInputElement;
+	/** Current value in the input (optional) */
+	inputValue?: any;
+	/** Whether the component is in editing mode (optional) */
+	editing?: boolean;
+	/** Callback when the value is saved (optional) */
+	onSave?: (newValue: string) => void;
+};
+</script>
 <script lang="ts">
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import TextField from '../textfield/TextField.svelte';
-	import { be } from '@medyll/idae-be';
-
-	type InPlaceEditProps = {
-		value: string;
-		spanElement: HTMLElement;
-		inputElement: HTMLInputElement;
-		inputValue?: any;
-		editing?: boolean;
-		onSave?: (newValue: string) => void;
-	};
 
 	let initialId: string = 'myText';
 	let popperId: string = 'myPopover';
@@ -74,7 +82,7 @@
 	let popper;
 </script>
 
-<form />
+
 
 <div class="border pos-rel">
 	<dialog id={popperId} open={editing} popover="auto" class="popper" bind:this={popper}>

@@ -1,6 +1,27 @@
+<script module lang="ts">
+import type { ElementProps } from '$lib/types/index.js';
+/**
+ * Props for the Progress component.
+ * Represents a progress bar with orientation and value support.
+ */
+export type ProgressProps = {
+	/** CSS class for the root element */
+	class?: string;
+	/** Inline style for the root element */
+	style?: string;
+	/** Reference to the root HTMLDivElement */
+	element?: HTMLDivElement | null;
+	/** Base value for the progress (default: 100) */
+	percentBase?: number;
+	/** Current value of the progress */
+	value: number;
+	/** Orientation: 'vertical' or 'horizontal' */
+	orientation?: ElementProps['orientation'];
+};
+</script>
 <script lang="ts">
-	import type { ExpandProps } from '$lib/types/index.js';
-	import type { ProgressProps } from './types.js';
+		import type { ExpandProps } from '$lib/types/index.js';
+		// ProgressProps now in module script
 
 	let {
 		class: className = '',

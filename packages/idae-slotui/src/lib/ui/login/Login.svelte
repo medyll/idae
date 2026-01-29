@@ -1,4 +1,3 @@
-</script>
 <script module lang="ts">
 import type { Snippet } from 'svelte';
 import type { TransitionConfig } from 'svelte/transition';
@@ -71,8 +70,7 @@ export const actions = {
 	toggleLoading: (lo?: boolean) => {
 		loading = lo ?? !loading;
 	}
-};
-</script>
+}; 
 
 	let grantedError = false;
 

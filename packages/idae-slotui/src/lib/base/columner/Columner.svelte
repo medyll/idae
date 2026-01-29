@@ -31,7 +31,7 @@ export interface ColumnType {
 <script lang="ts">
 		import type { ExpandProps } from '$lib/types/index.js';
 		// ColumnerStoreType now in module script
-	import { setContext, type Snippet } from 'svelte';
+	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	const columner = writable<ColumnerStoreType>({});

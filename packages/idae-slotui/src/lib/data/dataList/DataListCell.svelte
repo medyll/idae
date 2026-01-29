@@ -1,8 +1,97 @@
 <svelte:options />
 
 <!-- trigger action on datalist -->
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+import type { Data } from '$lib/types/index.js';
+/**
+ * Props for a single cell in the DataList.
+ * @template T - The data type for the cell.
+ */
+export type DataListCellProps<T> = {
+	/** Reference to the cell element */
+	element?: HTMLElement;
+	/** Field name for the cell */
+	field?: string;
+	/** Inline style for the cell */
+	style?: string;
+	/** Type of the field */
+	fieldType?: string;
+	/** Unique column identifier */
+	columnId?: string | number;
+	/** If true, disables text wrapping */
+	noWrap?: boolean;
+	/** Title attribute for the cell */
+	title?: string;
+	/** Slot for cell content, receives fieldData */
+	children?: Snippet<[{ fieldData: T }]>;
+};
+
+/**
+ * Describes a column/cell type in the DataList.
+ */
+export interface DataCellType {
+	/** Index of the column (internal use) */
+	index?: number;
+	/** Column identifier */
+	columnId?: string | number;
+	/** Width of the column */
+	width: string;
+	/** Inline CSS style for header */
+	headerStyle?: string;
+	/** Inline CSS style for cell */
+	style?: string;
+	/** Order of the column */
+	order?: number;
+	/** Data field name */
+	field?: string;
+	/** Title for the field shown in header */
+	fieldTitle?: string;
+	/** Type of the field */
+	fieldType?: string;
+	/** Function to transform data */
+	getter?: (data: Record<string, unknown>) => void;
+	/** Reference to the HTML element */
+	htmlElement?: HTMLElement;
+}
+
+/**
+ * Store type for DataList context.
+ */
+export interface DataListStoreType {
+	config: {
+		isSortable?: boolean;
+		defaultSortByField?: string;
+		defaultSortByOrder: 'asc' | 'desc' | 'none' | string;
+		sortingIcons: Record<string, string[]>;
+		noWrap?: boolean;
+		dataTypes?: Record<string, (item: any) => any>;
+	};
+	sortBy: {
+		activeSortByField?: string;
+		activeSortByOrder?: 'asc' | 'desc' | 'none' | string;
+	};
+	groupBy: {
+		groupByField: string | string[];
+		groupByOptions: any;
+	};
+	idField?: string;
+	selectedRowId?: string;
+	columns: Record<string, DataCellType>;
+	headerNodes?: Record<string, DataCellType>;
+	hasColumnsProps?: boolean;
+	data: Data[];
+}
+
+/**
+ * Row context type for DataList.
+ */
+export interface RowType {
+	data?: Data;
+}
+</script>
 <script lang="ts" generics="T=Data">
-	import type { DataCellType, DataListCellProps, DataListStoreType, RowType } from './types.js';
+		// DataCellType, DataListCellProps, DataListStoreType, RowType now in module script
 	import { getContext, tick } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';

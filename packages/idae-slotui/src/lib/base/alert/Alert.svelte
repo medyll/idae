@@ -4,7 +4,7 @@ import Divider from '$lib/base/divider/Divider.svelte';
 import { fade } from 'svelte/transition';
 import Slotted from '$lib/utils/slotted/Slotted.svelte';
 /**
- * @component Alert: Represents an alert message with customizable level, message, and slot support.
+ * @description:  Represents an alert message with customizable level, message, and slot support.
  * @property {string} [class] - Class name for the alert root element, allowing custom styling.
  * @property {HTMLDialogElement} [element] - Reference to the dialog element for imperative access.
  * @property {string} [level] - Alert level (e.g., 'info', 'warning', 'error'), used for color and icon.
