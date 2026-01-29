@@ -1,9 +1,29 @@
+<script module lang="ts">
+import type { Data, CommonProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the Preview component.
+ * @template T - The type of the data property (default: Data)
+ */
+export type PreviewProps<T = Data> = CommonProps & {
+	/** Data to be displayed in the grid */
+	data?: T[];
+	/** Number of columns in the grid */
+	columns?: number;
+	/** Whether the grid is expanded or not */
+	isExpanded?: boolean;
+	/** Children snippet for the default content */
+	children?: Snippet<[{ data: T }]>;
+	/** Slot for the zoomed in view */
+	previewZoom?: Snippet<[{ data: T }]>;
+};
+</script>
 <script lang="ts">
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	import { fade } from 'svelte/transition';
-	import type { PreviewProps } from './types.js';
+
 
 	let {
 		class: className = '',

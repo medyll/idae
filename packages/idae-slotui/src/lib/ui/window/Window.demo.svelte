@@ -13,7 +13,7 @@
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './Window.svelte';
 
 	let multiple = {
 		showHandle: {

@@ -1,43 +1,89 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+/**
+ * Props for the DataList component.
+ * Represents a data-driven list with sorting, grouping, and selection features.
+ */
+export type DataListProps<T = any> = {
+	/** Class name for the root component */
+	class?: string;
+	/** CSS style for the root component */
+	style?: string;
+	/** Reference to the root HTMLDivElement */
+	element?: HTMLDivElement | null;
+	/** Show or hide the dataList header */
+	showHeader?: boolean;
+	/** Is the datalist sortable */
+	isSortable?: boolean;
+	/** Order on which the sorted list is sorted */
+	sortByOrder?: 'asc' | 'desc' | 'none' | string;
+	/** Group field on which data will be grouped, can use dot notation as dot path */
+	groupByField?: string | string[];
+	/** Options used when props.groupByField is defined */
+	groupByOptions?: any;
+	/** Field used for selection */
+	selectorField?: string;
+	/** Value for selection field */
+	fieldValue?: any;
+	/** Field value used for selection */
+	selectorFieldValue?: any;
+	/** Binding, used when multiple buttons */
+	activeCommonSortField?: string;
+	/** Disable wrapping for cell content */
+	noWrap?: boolean;
+	/** Disable wrapping for header content */
+	noWrapHeader?: boolean;
+	/** Data types for columns */
+	dataTypes?: any;
+	/** Data array */
+	data?: T[];
+	/** Field used as unique id */
+	idField?: string;
+	/** Slot for children content */
+	children?: Snippet;
+};
+</script>
+
 <script lang="ts" generics="T=Data">
-	import { getContext, hasContext, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	import DataListRow from './DataListRow.svelte';
-	import type { DataCellType, DataListProps, DataListStoreType } from './types.js';
-	import { dataOp } from '$lib/utils/engine/utils.js';
-	import DataListHead from './DataListHead.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import Button from '$lib/controls/button/Button.svelte';
-	import type { Data, ExpandProps } from '$lib/types/index.js';
-	import ContextRooter from '$lib/utils/contextRooter/ContextRooter.svelte';
-	import sanitizeHtml from 'sanitize-html';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import { getContext, hasContext, setContext } from 'svelte';
+import { writable, type Writable } from 'svelte/store';
+import DataListRow from './DataListRow.svelte';
+import type { DataCellType, DataListProps, DataListStoreType } from './DataList.svelte';
+import { dataOp } from '$lib/utils/engine/utils.js';
+import DataListHead from './DataListHead.svelte';
+import Icon from '$lib/base/icon/Icon.svelte';
+import Button from '$lib/controls/button/Button.svelte';
+import type { Data, ExpandProps } from '$lib/types/index.js';
+import ContextRooter from '$lib/utils/contextRooter/ContextRooter.svelte';
+import sanitizeHtml from 'sanitize-html';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
-	export const sortingIcons = {
-		default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],
-		numeric: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending']
-	};
+export const sortingIcons = {
+	default: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending'],
+	numeric: ['mdi:dots-horizontal', 'mdi:sort-bool-ascending', 'mdi:sort-bool-descending']
+};
 
-	let {
-		class: className = '',
-		style = '',
-		element = null,
-		showHeader = true,
-		isSortable = true,
-		sortByOrder = 'none',
-		groupByField = undefined,
-		groupByOptions = {
-			showMainHeader: true,
-			showSubGroupsHeader: true,
-			showEmptyGroup: false
-		},
-		selectorField = 'id',
-		selectorFieldValue = undefined,
-		activeCommonSortField = '',
-		noWrap = true,
-		noWrapHeader = true,
-		dataTypes = undefined,
-		data = [],
-		idField = undefined,
+let {
+	class: className = '',
+	style = '',
+	element = null,
+	showHeader = true,
+	isSortable = true,
+	sortByOrder = 'none',
+	groupByField = undefined,
+	groupByOptions = {
+		showMainHeader: true,
+		showSubGroupsHeader: true,
+		showEmptyGroup: false
+	},
+	selectorField = 'id',
+	selectorFieldValue = undefined,
+	activeCommonSortField = '',
+	noWrap = true,
+	noWrapHeader = true,
+	dataTypes = undefined,
+	data = [],
+	idField = undefined,
 		columns = {},
 		virtualizer = false,
 		isLoading = false,

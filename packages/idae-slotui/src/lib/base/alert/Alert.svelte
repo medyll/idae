@@ -1,42 +1,49 @@
 <script module lang="ts">
-	import type { Snippet } from "svelte";
-	import type { ElementProps, CommonProps } from '$lib/types/index.js'; 
- 
-	export interface AlertProps extends CommonProps {
-		/** alert level */
-		level?: ElementProps["levels"];
-		/** message to be shown */
-		message?: string;
-		/** make the alert draggable */
-		draggable?: boolean;
-		/** show or hide the alert */
-		isOpen?: boolean;
-		children?: Snippet;
-		alertTopButton?: Snippet;
-		alertMessage?: Snippet;
-		alertButtonZone?: Snippet;
-		alertButtonClose?: Snippet;
-	}
+import type { Snippet } from 'svelte';
+/**
+ * Props for the Alert component.
+ * Represents an alert message with customizable level, message, and slot support.
+ */
+export type AlertProps = {
+	/** Class name for the alert root */
+	class?: string;
+	/** Reference to the dialog element */
+	element?: HTMLDialogElement;
+	/** Alert level (e.g., info, warning, error) */
+	level?: string;
+	/** Message to be shown in the alert */
+	message?: string;
+	/** Make the alert draggable */
+	draggable?: boolean;
+	/** Show or hide the alert */
+	isOpen?: boolean;
+	/** Slot for children content */
+	children?: Snippet;
+	/** Slot for top button */
+	alertTopButton?: Snippet;
+	/** Slot for alert message */
+	alertMessage?: Snippet;
+	/** Slot for button zone */
+	alertButtonZone?: Snippet;
+	/** Slot for close button */
+	alertButtonClose?: Snippet;
+};
 </script>
 
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import Divider from '$lib/base/divider/Divider.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	let {
-		class: className,
-		message,
-		draggable = false,
-		level = $bindable<ElementProps['levels']>('info'),
-		isOpen = $bindable<boolean>(false),
-		element = $bindable<HTMLDialogElement>(),
-		children,
-		alertTopButton,
-		alertMessage,
-		alertButtonZone,
-		alertButtonClose
+	  class: className = '',
+	  message,
+	  draggable = false,
+	  level = $bindable<string>('info'),
+	  isOpen = $bindable<boolean>(false),
+	  element = $bindable<HTMLDialogElement>(),
+	  children,
+	  alertTopButton,
+	  alertMessage,
+	  alertButtonZone,
+	  alertButtonClose
 	}: AlertProps = $props();
 
 	export const actions: Record<'open' | 'toggle' | 'close', Function> = {

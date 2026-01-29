@@ -1,10 +1,47 @@
+
+<script module lang="ts">
+/**
+ * Represents a path with associated data for the tree.
+ */
+export type PathDataType = {
+	/** Name of the path */
+	name: string;
+	/** Path string */
+	path: string;
+	/** Arbitrary data associated with the path */
+	data: Record<string, any>;
+};
+
+/**
+ * Array of path data for the tree.
+ */
+export type PathsType = PathDataType[];
+
+/**
+ * Represents a tree item node.
+ * @template T - The type of the data property (default: Record<string, any>)
+ */
+export interface TreeItemType<T = Record<string, any>> {
+	/** Name of the item */
+	name: string;
+	/** Path of the item */
+	path: string;
+	/** Whether the item is checked */
+	checked?: boolean;
+	/** Data associated with the item */
+	data?: T;
+	/** Children of the item */
+	children: TreeItemType<T>[];
+}
+</script>
+
 <svelte:options />
 
 <script lang="ts" generics="T = Data">
 	import type { Snippet } from 'svelte';
 
 	import { trans2Tree } from './tree.utils.js';
-	import type { TreeItemType } from './types.js';
+
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import type { CommonProps, Data } from '$lib/types/index.js';

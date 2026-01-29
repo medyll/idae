@@ -1,8 +1,48 @@
+<script module lang="ts">
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import type { CommonProps, Data, IconObj } from '$lib/types/index.js';
+import type { ElementProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the MenuList component.
+ * @template T - The type of data for the menu items.
+ */
+export type MenuListProps<T = Data> = CommonProps & {
+	menuItemsInstances?: any[];
+	hasIcon?: boolean;
+	onclick?: (event: CustomEvent<T>, itemIndex: number) => void;
+	element?: HTMLElement;
+	menuListItems?: MenuListItemProps[];
+	data?: T[];
+	tall?: ElementProps['tall'];
+	width?: ElementProps['width'];
+	/** Displayed field for the listItem */
+	presentationField?: [keyof T];
+	/** Displayed as a grid */
+	grid?: boolean | number;
+	/** Index to select the item */
+	selectedIndex?: number;
+	/** Field used to select the item */
+	selectorField?: keyof T;
+	/** Selected data */
+	selectedData?: T;
+	/** Show last item on selected */
+	showLastOnSelected?: boolean;
+	/** Role available for li element */
+	role?: 'directory' | 'group' | 'listbox' | 'menu' | 'menubar' | 'tablist' | 'toolbar' | 'tree';
+	/** Actions to be performed on the menu */
+	actions?: {
+		navigate: (e: KeyboardEvent) => void;
+		gotoIndex: (idx: number) => void;
+	};
+};
+</script>
 <script lang="ts" generics="T= Data">
 	import { navigation } from '$lib/utils/uses/navigation.js';
 
 	import { setContext } from 'svelte';
-	import type { MenuListProps } from './types.js';
+
 	import MenuListItem from './MenuListItem.svelte';
 	import { tallPreset, widthPreset, type Data, type ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';

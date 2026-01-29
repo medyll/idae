@@ -1,41 +1,120 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+import type { MenuListProps } from '$lib/ui/menuList/types.js';
+import type { PopperProps } from '$lib/ui/popper/types.js';
+
+/**
+ * Props for the Button component.
+ * Represents a highly customizable button with icon, loading, chip, and popper support.
+ */
+export type ButtonProps = {
+	/** Class name for the button */
+	class?: string;
+	/** Reference to the button element */
+	element?: HTMLButtonElement;
+	/** Button type attribute */
+	type?: 'button' | 'submit' | 'reset';
+	/** Icon to display at the start */
+	icon?: any;
+	/** Add ellipsis on overflowed text */
+	wrap?: any;
+	/** @deprecated Add ellipsis on overflowed text */
+	nowrap?: boolean;
+	/** Add ellipsis on overflowed text */
+	ellipsis?: boolean;
+	/** Icon to display at the end */
+	iconEnd?: any;
+	/** Background color theme */
+	bgTheme?: string;
+	/** Parameters for usePopper */
+	usePopperProps?: any;
+	/** Show/hide popper */
+	popperOpen?: boolean;
+	/** Show loading state */
+	loading?: boolean;
+	/** Show chip indicator */
+	showChip?: boolean;
+	/** Button style variant */
+	variant?: any;
+	/** Preset width of the button */
+	width?: any;
+	/** Preset height (tall) of the button */
+	tall?: any;
+	/** Button selected state */
+	selected?: boolean;
+	/** Button value */
+	value?: string;
+	/** Reverse the order of the button zone */
+	reverse?: boolean;
+	/** Rounded or rounded corners size */
+	rounded?: boolean | string;
+	/** Aspect ratio of the button */
+	ratio?: string;
+	/** Slot for children content */
+	children?: Snippet;
+	/** Slot for popper content */
+	buttonPopper?: Snippet;
+	/** Slot for start content */
+	buttonStart?: Snippet;
+	/** Slot for end content */
+	buttonEnd?: Snippet;
+	/** Slot for loading icon */
+	buttonLoadingIcon?: Snippet;
+};
+
+/**
+ * Props for ButtonMenu, extending ButtonProps with menu and popper support.
+ */
+export type ButtonMenuProps<T> = ButtonProps & {
+	/** Props for the menu list */
+	menuProps?: MenuListProps<T>;
+	/** Props for the popper */
+	popperProps?: PopperProps;
+	/** Reference to the popper element */
+	popperElement?: HTMLElement;
+	/** Slot for menu item rendering */
+	menuItem?: Snippet<[{ item: T }]>;
+	/** Disabled state for the menu button */
+	disabled?: boolean;
+};
+</script>
+
 <script lang="ts">
-	import { popper} from '$lib/ui/popper/usePopper.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { ButtonProps } from './types.js';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import { tallPreset, widthPreset, type ExpandProps } from '$lib/types/index.js';
+import { popper } from '$lib/ui/popper/usePopper.js';
+import Icon from '$lib/base/icon/Icon.svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import { tallPreset, widthPreset, type ExpandProps } from '$lib/types/index.js';
 
-	let {
-		class: className,
-		style,
-		element = $bindable(),
-		type: buttonType = 'button',
-		icon = $bindable(),
-		iconEnd = $bindable(),
-		variant = 'bordered',
-		bgTheme,
-		usePopperProps={disabled:true},
-		loading,
-		showChip,
-		popperOpen,
-		width = widthPreset.auto,
-		tall = tallPreset.small,
-		nowrap,
-		ellipsis=true,
-		selected = false,
-		value,
-		reverse = false,
-		ratio,
-		buttonPopper,
-		buttonStart,
-		buttonEnd,
-		buttonLoadingIcon,
-		children,
-		...rest
-	}: ButtonProps = $props();
+let {
+	class: className,
+	style,
+	element = $bindable(),
+	type: buttonType = 'button',
+	icon = $bindable(),
+	iconEnd = $bindable(),
+	variant = 'bordered',
+	bgTheme,
+	usePopperProps = { disabled: true },
+	loading,
+	showChip,
+	popperOpen,
+	width = widthPreset.auto,
+	tall = tallPreset.small,
+	nowrap,
+	ellipsis = true,
+	selected = false,
+	value,
+	reverse = false,
+	ratio,
+	buttonPopper,
+	buttonStart,
+	buttonEnd,
+	buttonLoadingIcon,
+	children,
+	...rest
+}: ButtonProps = $props();
 
-	let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
-  
+let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(undefined);
 </script>
 
 <button

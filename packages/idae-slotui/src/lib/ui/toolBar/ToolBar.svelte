@@ -1,8 +1,23 @@
+<script module lang="ts">
+import type { CommonProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the ToolBar component.
+ */
+export type ToolBarProps = CommonProps & {
+	/** Color of the toolbar */
+	color?: string;
+	/** Whether the toolbar is vertical */
+	vertical?: boolean;
+	/** Root HTML element reference */
+	element?: HTMLDivElement;
+	/** Custom separator snippet */
+	toolbarSeparator?: Snippet;
+};
+</script>
 <script lang="ts">
-	import type { CommonProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { Snippet } from 'svelte';
-	import type { ToolBarProps } from './types.js';
+
 
 	let {
 		class: className = '',
