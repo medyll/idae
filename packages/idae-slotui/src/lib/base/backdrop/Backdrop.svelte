@@ -1,6 +1,6 @@
 <script module lang="ts">
-import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
+import type { CommonProps, ExpandProps } from '$lib/types/index.js';
 /**
  * Props for the Backdrop component.
  * Represents a modal backdrop with optional content, loading state, and customizable actions.
@@ -45,7 +45,6 @@ export interface BackdropProps<T = any, C = any> extends CommonProps {
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { CommonProps, ExpandProps } from '$lib/types/index.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	/** Backdrop controller */
@@ -74,7 +73,7 @@ export interface BackdropProps<T = any, C = any> extends CommonProps {
 		classes = {},
 		children,
 		backdropLoading
-	}: BackdropProps = $props();
+	}: ExpandProps<BackdropProps> = $props();
 
 	$effect(() => {
 		element?.addEventListener('click', testAutoClose);

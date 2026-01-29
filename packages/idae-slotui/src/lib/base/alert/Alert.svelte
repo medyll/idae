@@ -1,31 +1,76 @@
 <script module lang="ts">
 import type { Snippet } from 'svelte';
+import Divider from '$lib/base/divider/Divider.svelte';
+import { fade } from 'svelte/transition';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
 /**
- * Props for the Alert component.
- * Represents an alert message with customizable level, message, and slot support.
+ * @component Alert: Represents an alert message with customizable level, message, and slot support.
+ * @property {string} [class] - Class name for the alert root element, allowing custom styling.
+ * @property {HTMLDialogElement} [element] - Reference to the dialog element for imperative access.
+ * @property {string} [level] - Alert level (e.g., 'info', 'warning', 'error'), used for color and icon.
+ * @property {string} [message] - Main message to display in the alert body.
+ * @property {boolean} [draggable] - If true, makes the alert dialog draggable by the user.
+ * @property {boolean} [isOpen] - Controls the visibility of the alert dialog.
+ * @property {Snippet} [children] - Slot for custom content inside the alert (replaces message if provided).
+ * @property {Snippet} [alertTopButton] - Slot for a button or element in the alert header (e.g., actions).
+ * @property {Snippet} [alertMessage] - Slot for additional message content below the header.
+ * @property {Snippet} [alertButtonZone] - Slot for custom buttons or actions in the alert footer.
+ * @property {Snippet} [alertButtonClose] - Slot for a custom close button in the header.
  */
 export type AlertProps = {
-	/** Class name for the alert root */
+	/**
+	 * Class name for the alert root element, allowing custom styling.
+	 */
 	class?: string;
-	/** Reference to the dialog element */
+
+	/**
+	 * Reference to the dialog element for imperative access.
+	 */
 	element?: HTMLDialogElement;
-	/** Alert level (e.g., info, warning, error) */
+
+	/**
+	 * Alert level (e.g., 'info', 'warning', 'error'), used for color and icon.
+	 */
 	level?: string;
-	/** Message to be shown in the alert */
+
+	/**
+	 * Main message to display in the alert body.
+	 */
 	message?: string;
-	/** Make the alert draggable */
+
+	/**
+	 * If true, makes the alert dialog draggable by the user.
+	 */
 	draggable?: boolean;
-	/** Show or hide the alert */
+
+	/**
+	 * Controls the visibility of the alert dialog.
+	 */
 	isOpen?: boolean;
-	/** Slot for children content */
+
+	/**
+	 * Slot for custom content inside the alert (replaces message if provided).
+	 */
 	children?: Snippet;
-	/** Slot for top button */
+
+	/**
+	 * Slot for a button or element in the alert header (e.g., actions).
+	 */
 	alertTopButton?: Snippet;
-	/** Slot for alert message */
+
+	/**
+	 * Slot for additional message content below the header.
+	 */
 	alertMessage?: Snippet;
-	/** Slot for button zone */
+
+	/**
+	 * Slot for custom buttons or actions in the alert footer.
+	 */
 	alertButtonZone?: Snippet;
-	/** Slot for close button */
+
+	/**
+	 * Slot for a custom close button in the header.
+	 */
 	alertButtonClose?: Snippet;
 };
 </script>

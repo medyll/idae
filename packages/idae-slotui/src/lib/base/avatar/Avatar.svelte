@@ -28,7 +28,7 @@ export interface AvatarProps    {
 
 	let {
 		icon = 'icon-park-outline:avatar',
-		size,
+		size = 'med',
 		iconSize,
 		class: className = '',
 		element = $bindable(),
