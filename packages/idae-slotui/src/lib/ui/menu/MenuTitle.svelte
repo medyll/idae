@@ -7,6 +7,6 @@
 
 <MenuItem {...rest} class="menuTitle" />
 
-<style lang="scss">
+<style global lang="scss">
 	@use './menu.scss';
 </style>

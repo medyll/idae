@@ -114,6 +114,6 @@ export type IconAppProps = {
 	/>
 {/key}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './icon.scss';
 </style>

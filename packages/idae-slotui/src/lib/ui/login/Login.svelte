@@ -99,7 +99,7 @@
 	{@render children?.()}
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	form {

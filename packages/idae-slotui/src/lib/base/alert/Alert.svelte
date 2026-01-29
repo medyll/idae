@@ -115,6 +115,6 @@
 	</dialog>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './alert.scss';
 </style>

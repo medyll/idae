@@ -52,6 +52,6 @@
 	</Popper>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './button-menu.scss';
 </style>

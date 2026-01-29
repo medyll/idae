@@ -38,7 +38,7 @@
 	</div>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	.preview-root {
 		display: contents;
 	}

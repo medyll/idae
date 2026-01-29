@@ -17,6 +17,6 @@
 	<Slotted child={children} />
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './paper.scss';
 </style>

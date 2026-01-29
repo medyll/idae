@@ -111,6 +111,6 @@
 	{/if}
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './cartouche.scss';
 </style>

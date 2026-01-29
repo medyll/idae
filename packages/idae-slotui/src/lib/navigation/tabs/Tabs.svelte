@@ -155,6 +155,6 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './tabs.scss';
 </style>

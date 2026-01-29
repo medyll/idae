@@ -75,6 +75,6 @@
 	</div>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './backdrop.scss';
 </style>

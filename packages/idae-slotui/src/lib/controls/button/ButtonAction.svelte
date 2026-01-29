@@ -52,7 +52,7 @@
 	</Popper>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './button.scss';
 	@use './button-action.scss';
 </style>

@@ -60,6 +60,6 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './content-switcher.scss';
 </style>
