@@ -253,17 +253,18 @@ describe('MachineParserForge - custom types', () => {
 ```
 
 ### Testing
+- **Use `pnpm` for all commands in this repo (do not use `npm`).**
 - **Vitest + jsdom for Svelte tests**: `src/**/*.svelte.spec.ts` (run separately via vite workspace)
 - **Node environment for logic tests**: `src/**/*.{test,spec}.ts` (core Machine, MachineDb, MachineScheme)
 - Use `src/lib/demo/testScheme.ts` as reference schema for all tests
-- Run all: `npm run test:unit`, single: `npx vitest run src/lib/main/machine.spec.ts`
+- Run all: `pnpm run test:unit`, single: `pnpm vitest run src/lib/main/machine.spec.ts`
 
 ## Developer Commands
-- **Dev**: `npm run dev` (auto-opens browser, Svelte 5 strict mode)
-- **Type check**: `npm run check` (Svelte Kit sync + svelte-check)
-- **Lint/Format**: `npm run lint`, `npm run format` (ESLint + Prettier)
-- **Tests**: `npm run test:unit` (watch mode), `npm run test` (single-run)
-- **Build**: `npm run build` (SvelteKit packaging + publint validation)
+- **Dev**: `pnpm run dev` (auto-opens browser, Svelte 5 strict mode)
+- **Type check**: `pnpm run check` (Svelte Kit sync + svelte-check)
+- **Lint/Format**: `pnpm run lint`, `pnpm run format` (ESLint + Prettier)
+- **Tests**: `pnpm run test:unit` (watch mode), `pnpm run test` (single-run)
+- **Build**: `pnpm run build` (SvelteKit packaging + publint validation)
 
 ## File/Directory Guide
 - `src/lib/main/`: Core logic (`machine.ts`, `machineDb.ts`, `machine/` folder for classes)
