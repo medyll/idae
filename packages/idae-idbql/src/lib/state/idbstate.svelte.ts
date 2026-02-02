@@ -48,6 +48,7 @@ export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
       update: collections[collection].update,
       where: collections[collection].where,
       updateWhere: collections[collection].updateWhere,
+      count: collections[collection].count,
     };
   };
 
@@ -291,5 +292,32 @@ export class CollectionState<T> {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       return await this.idbBase[this.collectionName].deleteWhere(where);
     }
+  }
+
+  /**
+   * Counts the number of documents in the collection.
+   * When called without a query parameter, it uses the native IndexedDB count() method for optimal performance.
+   * When called with a query parameter, it retrieves all matching documents to return the count.
+   * 
+   * @param {Where<T>} [qy] - Optional query object specifying the conditions for filtering the data.
+   * @returns {Promise<number | undefined>} A promise that resolves to the number of documents matching the query (or all documents if no query is provided).
+   * 
+   * @example
+   * // Count all documents in the collection (fast, uses native count)
+   * const totalCount = await collectionState.count();
+   * 
+   * @example
+   * // Count documents matching a query (retrieves matching documents)
+   * const activeCount = await collectionState.count({ status: 'active' });
+   * 
+   * @example
+   * // Count with complex query
+   * const count = await collectionState.count({ age: { $gt: 18 }, status: 'active' });
+   */
+  async count(qy?: Where<T>): Promise<number | undefined> {
+    if (this.idbBase && this.testIdbql(this.collectionName)) {
+      return await this.idbBase[this.collectionName].count(qy);
+    }
+    return undefined;
   }
 }

@@ -68,6 +68,41 @@ export class CollectionCore<T = any> {
     return resultSet;
   }
 
+  /**
+   * Counts the number of documents in the collection.
+   * When called without a query parameter, it uses the native IndexedDB count() method for optimal performance.
+   * When called with a query parameter, it retrieves all matching documents to return the count.
+   * 
+   * @param qy - Optional query object specifying the conditions for filtering the data.
+   * @returns A promise that resolves to the number of documents matching the query (or all documents if no query is provided).
+   * @throws If an error occurs while counting the data.
+   * 
+   * @example
+   * // Count all documents in the collection (fast, uses native count)
+   * const totalCount = await collection.count();
+   * 
+   * @example
+   * // Count documents matching a query (retrieves matching documents)
+   * const activeCount = await collection.count({ status: 'active' });
+   * 
+   * @example
+   * // Count with complex query
+   * const count = await collection.count({ age: { $gt: 18 }, status: 'active' });
+   */
+  async count(qy?: Where<T>): Promise<number> {
+    if (qy) {
+      const resultSet = await this.where(qy);
+      return resultSet.length;
+    }
+
+    return new Promise(async (resolve, reject) => {
+      const storeObj = await this.getCollection();
+      const countRequest = storeObj.count();
+      countRequest.onsuccess = () => resolve(countRequest.result);
+      countRequest.onerror = () => reject(countRequest.error);
+    });
+  }
+
   get<T>(value: Partial<T>): Promise<T> {
     return new Promise(async (resolve, reject) => {
       const storeObj = await this.getCollection();

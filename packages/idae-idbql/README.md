@@ -107,7 +107,33 @@ await idbql.messages.delete(1);
 const recentMessages = await idbql.messages
   .where({ created_at: { gt: new Date(Date.now() - 86400000) } })
   .toArray();
+
+// Count all documents in a collection (fast, uses native IndexedDB count)
+const totalMessages = await idbql.messages.count();
+
+// Count documents matching a query (retrieves and filters matching documents)
+const unreadCount = await idbql.messages.count({ isRead: false });
+
+// Count with complex queries
+const recentUnreadCount = await idbql.messages.count({
+  isRead: false,
+  created_at: { $gt: new Date(Date.now() - 86400000) }
+});
 ```
+
+### Using count() with idbqlState
+
+```typescript
+// Reactive count in Svelte 5 components
+const unreadMessages = $derived(
+  idbqlState.messages.count({ isRead: false })
+);
+
+// Count all items (uses native count for optimal performance)
+const totalMessages = await idbqlState.messages.count();
+```
+
+**Note:** When `count()` is called without parameters, it uses the native IndexedDB count() method for optimal performance. When called with a query parameter, it retrieves all matching documents to return the count.
 
 ## Transactions
 
@@ -188,7 +214,9 @@ try {
 
 - Use appropriate indexes
 - Limit result sets with `.limit(n)`
-- Use `.count()` instead of `.toArray().length`
+- Use `.count()` instead of `.toArray().length` for counting documents
+- When counting all documents, `count()` (without parameters) uses native IndexedDB for optimal performance
+- When counting with filters, `count(query)` retrieves matching documents - consider using indexes for better performance
 - Optimize queries to use indexes effectively
 
 ## Contributing
