@@ -34,6 +34,7 @@
     "cors": "^2.8.5",
     "events": "^3.3.0",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
     "minimist": "^1.2.8",
     "nodemon": "^3.1.9",
     "npm-watch": "^0.13.0",
@@ -53,6 +54,7 @@
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.13.13",
     "svelte": "^5.25.3",
     "typescript": "^5.8.2"

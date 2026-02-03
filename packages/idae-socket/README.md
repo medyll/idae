@@ -93,6 +93,33 @@ To push data to clients, your backend (e.g., NestJS) sends a standard HTTP POST 
 - **`payload`**: The actual data to send to clients.
 - **`payload.own`**: (Optional) Specify a user ID to target a specific user.
 
+## 🔐 Authentication
+
+`idae-socket` supports multiple authentication strategies to secure WebSocket connections.
+
+### Configuration
+Set the strategy via environment variables:
+
+| Strategy | Env Var `IDAE_SOCKET_AUTH_STRATEGY` | Description |
+|----------|-------------------------------------|-------------|
+| **JWT** | `jwt` | Validates a Bearer token locally using `jsonwebtoken`. |
+| **Introspection** | `introspection` | Validates the token by calling an external API. |
+| **None** | `none` | Allows all connections (Dev only). Logs a warning. |
+
+### 1. JWT SStrategy pattern implemented (JWT/Introspection). Currently defaults to "Soft-pass" (logs warning on failure) to facilitate migration.
+- **Transport**: Modernized stack (Express native middlewares, Fetch API)
+```bash
+IDAE_SOCKET_AUTH_STRATEGY=jwt
+IDAE_SOCKET_JWT_SECRET=your-super-secret-key
+```
+
+### 2. Introspection Strategy
+Delegates validation to your main backend API via a POST request. The validator sends `{ token: "..." }` to the specified URL.
+```bash
+IDAE_SOCKET_AUTH_STRATEGY=introspection
+IDAE_SOCKET_INTROSPECTION_URL=http://your-api.com/auth/verify
+```
+
 ## 🏗️ Architecture
 
 1. **Backend Service** (e.g., `idae-api-nest`) modifies data.

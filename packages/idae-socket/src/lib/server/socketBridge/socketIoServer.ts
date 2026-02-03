@@ -11,6 +11,7 @@ import { _config } from '../_config/config';
 
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
+import jwt from 'jsonwebtoken';
 
 /**
  * Interface for Auth Validation
@@ -20,13 +21,68 @@ interface IAuthValidator {
 	validate(token: string): Promise<boolean>;
 }
 
+class JwtValidator implements IAuthValidator {
+	async validate(token: string): Promise<boolean> {
+		return new Promise((resolve) => {
+			if (!token) return resolve(false);
+			const cleanToken = token.replace('Bearer ', '');
+			jwt.verify(cleanToken, _config.auth.jwtSecret, (err) => {
+				if (err) resolve(false);
+				else resolve(true);
+			});
+		});
+	}
+}
+
+class IntrospectionValidator implements IAuthValidator {
+	async validate(token: string): Promise<boolean> {
+		try {
+			if (!token) return false;
+			const cleanToken = token.replace('Bearer ', '');
+			const response = await fetch(_config.auth.introspectionUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token: cleanToken })
+			});
+			// Expecting 200 OK for valid tokens
+			return response.ok;
+		} catch (e) {
+			console.error('Auth Introspection Error:', e);
+			return false;
+		}
+	}
+}
+
+class AllowAllValidator implements IAuthValidator {
+	async validate(token: string): Promise<boolean> {
+		return true;
+	}
+}
+
 class SocketIoServer {
 	ioApp: any;
 
 	private routesConfig: TRoutesConfig;
+	private validator: IAuthValidator;
 
 	constructor() {
 		this.routesConfig = appRoutes.getRoutes();
+		
+		// Initialize Auth Strategy
+		switch (_config.auth.strategy) {
+			case 'jwt':
+				console.log('Socket Auth Strategy: JWT');
+				this.validator = new JwtValidator();
+				break;
+			case 'introspection':
+				console.log('Socket Auth Strategy: Introspection');
+				this.validator = new IntrospectionValidator();
+				break;
+			default:
+				console.warn('Socket Auth Strategy: NONE (Dev Only)');
+				this.validator = new AllowAllValidator();
+				break;
+		}
 	}
 
 	init(app: Server) {
@@ -64,11 +120,13 @@ class SocketIoServer {
 		// In a real scenario, validate the token here.
 		// For now, we allow everything but log a warning if it looks suspicious.
 		// ---------------------------------------------------------
-		const isValid = await this.validateToken(authHeaders);
+		const isValid = await this.validator.validate(authHeaders);
 		if (!isValid) {
 			// Uncomment to enforce auth
 			// return next(new Error('Invalid Credentials'));
-			console.warn('[idae-socket] Auth validation failed (soft-pass)');
+			if (_config.auth.strategy !== 'none') {
+				console.warn(`[idae-socket] Auth failed (${_config.auth.strategy}) for client ${socket.id}`);
+			}
 		}
 
 		next();
@@ -82,12 +140,6 @@ class SocketIoServer {
 			case 'UrlToken':
 				next();
 				break;
-		}
-	}
-
-	async validateToken(token: string): Promise<boolean> {
-		// TODO: Implement real token validation (e.g. JWT verify, or call to idae-api-nest)
-		// For now, simple presence check
 		return !!token && token.length > 5;
 	}
 
