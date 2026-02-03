@@ -32,11 +32,11 @@ import { stator } from '@medyll/idae-stator';
 // For primitive values, use state.value to get/set
 const counter = stator(0);
 
-counter.onchange = (newValue) => {
-  console.log(`Count updated to: ${newValue}`);
+counter.onchange = (oldValue, newValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`);
 };
 
-counter.value = 1; // Console: Count updated to: 1
+counter.value = 1; // Console: Count changed from 0 to 1
 
 ```
 
@@ -47,12 +47,12 @@ import { stator } from '@medyll/idae-stator';
 
 const state = stator({ count: 0 });
 
-state.onchange = (newValue) => {
-  console.log(`Count updated to: ${newValue.count}`);
+state.onchange = (oldValue, newValue) => {
+  console.log(`Count is now: ${newValue.count}`);
 };
 
 // Access object properties via state.value or state.stator
-state.value.count++; // Console: Count updated to: 1
+state.value.count++; // Console: Count is now: 1
 
 ```
 
@@ -68,7 +68,7 @@ const appState = stator({
   }
 });
 
-appState.onchange = (val) => console.log('State changed!');
+appState.onchange = (oldVal, newVal) => console.log('State changed!', newVal);
 
 // All these mutations trigger the reactivity:
 appState.stator.user.profile.name = 'Mydde Dev';
@@ -130,7 +130,7 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 
 * **`state.value`**: Access and mutate the current state value (recommended).
 * **`state.stator`**: Alias for `state.value` - access the reactive state data.
-* **`state.onchange`**: Callback triggered on any state mutation.
+* **`state.onchange`**: Callback `(oldValue, newValue) => void` triggered on any state mutation.
 * **`state.addEventListener('stator:change', fn)`**: Standard event listener for change events.
 * **`state.removeEventListener('stator:change', fn)`**: Remove a previously attached listener.
 * **`state.triggerChange(event)`**: Manually dispatch a change event.

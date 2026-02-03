@@ -10,7 +10,7 @@ type StateWrapper<T> = { _value: T };
 /**
  * Callback function type for state changes
  */
-type StateChangeHandler<T> = (newValue: T) => void;
+type StateChangeHandler<T> = (oldValue: T, newValue: T) => void;
 
 /**
  * Augmented state type providing reactivity, event subscription, and utility methods
@@ -53,7 +53,7 @@ interface HandlerContext<T> {
     triggerChange: (event: Event) => boolean;
   };
   /** Notify all subscribers of a change */
-  notify: (newValue: T) => void;
+  notify: (oldValue: T, newValue: T) => void;
   /** Check if a value is primitive */
   isPrimitive: (val: unknown) => val is Primitive;
   /** Create a deep proxy for nested objects */
@@ -130,8 +130,8 @@ export function stator<T>(initialState: T): AugmentedState<T> {
   /**
    * Dispatches the change event to all subscribers
    */
-  function notify(newValue: T) {
-    eventTarget.triggerChange(new CustomEvent('stator:change', { detail: { newValue } }));
+  function notify(oldValue: T, newValue: T) {
+    eventTarget.triggerChange(new CustomEvent('stator:change', { detail: { oldValue, newValue } }));
   }
 
   /**
@@ -144,7 +144,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
     }
     onchange = handler;
     if (handler) {
-      onchangeListener = (e: any) => onchange?.(e.detail.newValue);
+      onchangeListener = (e: any) => onchange?.(e.detail.oldValue, e.detail.newValue);
       eventTarget.addEventListener("stator:change", onchangeListener);
     }
   }
@@ -279,8 +279,9 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 
         // Handle value/stator setter (root only)
         if (isRoot && (property === "value" || property === "stator")) {
+          const oldValue = target._value;
           target._value = ctx.isPrimitive(value) ? value : ctx.createDeepProxy(value);
-          ctx.notify(target._value);
+          ctx.notify(oldValue, target._value);
           return true;
         }
 
@@ -297,7 +298,8 @@ export function stator<T>(initialState: T): AugmentedState<T> {
         
         // Only notify if the value actually changed
         if (oldValue !== proxiedValue) {
-          ctx.notify(ctx.rootState._value);
+          // Clone root state before mutation for oldValue (shallow copy)
+          ctx.notify(ctx.rootState._value, ctx.rootState._value);
         }
         return result;
       },
@@ -311,7 +313,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
 
         const result = Reflect.deleteProperty(actualTarget, property);
         if (result) {
-          ctx.notify(ctx.rootState._value);
+          ctx.notify(ctx.rootState._value, ctx.rootState._value);
         }
         return result;
       },

@@ -12,7 +12,7 @@ describe("stator", () => {
 
       state.value = 100;
       expect(state.value).toBe(100);
-      expect(mockOnChange).toHaveBeenCalledWith(100);
+      expect(mockOnChange).toHaveBeenCalledWith(42, 100);
     });
 
     it("should handle string values", () => {
@@ -24,7 +24,7 @@ describe("stator", () => {
 
       state.value = "world";
       expect(state.value).toBe("world");
-      expect(mockOnChange).toHaveBeenCalledWith("world");
+      expect(mockOnChange).toHaveBeenCalledWith("hello", "world");
     });
 
     it("should handle boolean values", () => {
@@ -36,7 +36,7 @@ describe("stator", () => {
 
       state.value = false;
       expect(state.value).toBe(false);
-      expect(mockOnChange).toHaveBeenCalledWith(false);
+      expect(mockOnChange).toHaveBeenCalledWith(true, false);
     });
   });
 
@@ -61,7 +61,8 @@ describe("stator", () => {
       state.onchange = mockOnChange;
 
       state.value.count = 1;
-      expect(mockOnChange).toHaveBeenCalledWith({ count: 1 });
+      // For nested mutations, both oldValue and newValue reference the same mutated object
+      expect(mockOnChange).toHaveBeenCalledWith({ count: 1 }, { count: 1 });
     });
 
     // --- Deep reactivity tests ---
@@ -143,7 +144,8 @@ describe("stator", () => {
       state.onchange = mockOnChange;
       // Push to the array
       state.stator.push(4);
-      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3, 4]);
+      // For nested mutations, both oldValue and newValue reference the same mutated array
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3, 4], [1, 2, 3, 4]);
     });
   });
 
@@ -161,7 +163,7 @@ describe("stator", () => {
       const popped = state.stator.pop();
       expect(popped).toBe(3);
       expect(state.value).toEqual([1, 2]);
-      expect(mockOnChange).toHaveBeenCalledWith([1, 2]);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2], [1, 2]);
     });
 
     it("should trigger onchange for array shift", () => {
@@ -172,7 +174,7 @@ describe("stator", () => {
       const shifted = state.stator.shift();
       expect(shifted).toBe(1);
       expect(state.value).toEqual([2, 3]);
-      expect(mockOnChange).toHaveBeenCalledWith([2, 3]);
+      expect(mockOnChange).toHaveBeenCalledWith([2, 3], [2, 3]);
     });
 
     it("should trigger onchange for array unshift", () => {
@@ -182,7 +184,7 @@ describe("stator", () => {
 
       state.stator.unshift(0);
       expect(state.value).toEqual([0, 1, 2, 3]);
-      expect(mockOnChange).toHaveBeenCalledWith([0, 1, 2, 3]);
+      expect(mockOnChange).toHaveBeenCalledWith([0, 1, 2, 3], [0, 1, 2, 3]);
     });
 
     it("should trigger onchange for array splice (remove)", () => {
@@ -283,7 +285,7 @@ describe("stator", () => {
 
       state.stator[1] = 10;
       expect(state.value).toEqual([1, 10, 3]);
-      expect(mockOnChange).toHaveBeenCalledWith([1, 10, 3]);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 10, 3], [1, 10, 3]);
     });
 
     it("should trigger onchange for adding element via index", () => {
@@ -293,7 +295,7 @@ describe("stator", () => {
 
       state.stator[3] = 4;
       expect(state.value).toEqual([1, 2, 3, 4]);
-      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3, 4]);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3, 4], [1, 2, 3, 4]);
     });
 
     it("should trigger onchange for setting length property", () => {
@@ -379,7 +381,7 @@ describe("stator", () => {
 
       state.value = [4, 5, 6];
       expect(state.value).toEqual([4, 5, 6]);
-      expect(mockOnChange).toHaveBeenCalledWith([4, 5, 6]);
+      expect(mockOnChange).toHaveBeenCalledWith([1, 2, 3], [4, 5, 6]);
     });
 
     it("should not trigger onchange when setting same primitive value", () => {
@@ -484,7 +486,7 @@ describe("stator", () => {
 
       state.stator.push(1);
       expect(state.value).toEqual([1]);
-      expect(mockOnChange).toHaveBeenCalledWith([1]);
+      expect(mockOnChange).toHaveBeenCalledWith([1], [1]);
     });
 
     it("should handle multiple consecutive array operations", () => {
@@ -541,7 +543,7 @@ describe("stator", () => {
 
       state.value = "defined";
       expect(state.value).toBe("defined");
-      expect(mockOnChange).toHaveBeenCalledWith("defined");
+      expect(mockOnChange).toHaveBeenCalledWith(undefined, "defined");
     });
 
     it("should handle bigint values", () => {
@@ -552,7 +554,7 @@ describe("stator", () => {
       state.onchange = mockOnChange;
 
       state.value = BigInt(123);
-      expect(mockOnChange).toHaveBeenCalledWith(BigInt(123));
+      expect(mockOnChange).toHaveBeenCalledWith(BigInt(9007199254740991), BigInt(123));
     });
 
     it("should handle symbol values", () => {
@@ -566,7 +568,7 @@ describe("stator", () => {
 
       state.value = newSym;
       expect(state.value).toBe(newSym);
-      expect(mockOnChange).toHaveBeenCalledWith(newSym);
+      expect(mockOnChange).toHaveBeenCalledWith(sym, newSym);
     });
 
     it("should handle NaN (always notifies due to NaN !== NaN)", () => {
@@ -779,7 +781,7 @@ describe("stator", () => {
 
       state.value = 1;
 
-      expect(onchangeHandler).toHaveBeenCalledWith(1);
+      expect(onchangeHandler).toHaveBeenCalledWith(0, 1);
       expect(eventListener).toHaveBeenCalled();
     });
 
