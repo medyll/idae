@@ -74,7 +74,7 @@ describe("OpCssF Style Model", () => {
 
     it("should handle boundaries properties (min/max)", () => {
       const style: Partial<OpCssF> = {
-        boundaries: { minW: 100, minH: 200 },
+        boundaries: { minWidth: 100, minHeight: 200 },
       };
       const css = parser.parse(style);
       expect(css).toContain("min-width: 100px");
@@ -95,10 +95,11 @@ describe("OpCssF Style Model", () => {
 
     it("should handle colors category", () => {
       const style: Partial<OpCssF> = {
-        colors: { bg: "white", text: "black" },
+        fill: { color: "white" },
+        colors: { text: "black" },
       };
       const css = parser.parse(style);
-      expect(css).toContain("background: white");
+      expect(css).toContain("background-color: white");
       expect(css).toContain("color: black");
     });
 
@@ -106,12 +107,12 @@ describe("OpCssF Style Model", () => {
       const style: Partial<OpCssF> = {
         layout: { display: "block" },
         state: {
-          hover: { colors: { bg: "red" } },
+          hover: { fill: { color: "red" } },
         },
       };
       const css = parser.parse(style, ".btn");
       expect(css).toContain(".btn { display: block }");
-      expect(css).toContain(".btn:hover { background: red }");
+      expect(css).toContain(".btn:hover { background-color: red }");
     });
 
     it("should handle media and container queries", () => {
@@ -180,7 +181,7 @@ describe("OpCssF Style Model", () => {
       };
       const css = parser.parse(style);
       expect(css).toContain("width: 100px");
-      expect(css).toContain("background: red");
+      expect(css).toContain("background-color: red");
       expect(css).toContain("display: flex");
       expect(css).toContain("justify-content: center");
       expect(css).toContain("gap: 20px");
@@ -199,7 +200,7 @@ describe("OpCssF Style Model", () => {
       expect(css).toContain("position: absolute");
       expect(css).toContain("width: 100px");
       expect(css).toContain("height: 200px");
-      expect(css).toContain("background: white");
+      expect(css).toContain("background-color: white");
       expect(css).toContain("color: black");
       expect(css).toContain("font-size: 16px");
     });
@@ -219,13 +220,13 @@ describe("OpCssF Style Model", () => {
         .target {
           width: 100,
           shape { height: 200 },
-          colors: "red"
+          fill { color: "red" }
         }
       `;
       const css = parser.parseCsss(content);
       expect(css).toContain("width: 100px");
       expect(css).toContain("height: 200px");
-      expect(css).toContain("background: red");
+      expect(css).toContain("background-color: red");
     });
 
     it("should handle boundary shorthand array", () => {
@@ -241,12 +242,38 @@ describe("OpCssF Style Model", () => {
 
     it("should handle boundary root shortcuts", () => {
       const style: OpCssF = {
-        minW: 100,
-        maxH: "50vh",
+        minWidth: 100,
+        maxHeight: "50vh",
       };
       const css = parser.parse(style);
       expect(css).toContain("min-width: 100px");
       expect(css).toContain("max-height: 50vh");
+    });
+
+    it("should handle fill properties", () => {
+      const css = parser.parse({
+        fill: {
+          image: "url('img.png')",
+          size: "cover",
+          position: "center",
+          repeat: "no-repeat",
+        },
+      });
+      expect(css).toContain("background-image: url('img.png');");
+      expect(css).toContain("background-size: cover;");
+      expect(css).toContain("background-position: center;");
+      expect(css).toContain("background-repeat: no-repeat");
+    });
+
+    it("should handle background shortcuts", () => {
+      const css = parser.parse({
+        image: "url('img.png')",
+        position: "center",
+        repeat: "no-repeat",
+      });
+      expect(css).toContain("background-image: url('img.png');");
+      expect(css).toContain("background-position: center;");
+      expect(css).toContain("background-repeat: no-repeat");
     });
   });
 });
@@ -260,7 +287,7 @@ describe("CsssNode", () => {
   it("should apply styles to an element", () => {
     const el = document.getElementById("test-el")!;
     const node = new CsssNode(el);
-    node.apply({ layout: { display: "flex" } });
+    node.setCsss({ layout: { display: "flex" } });
 
     const styleTag = document.getElementById("idae-csss-runtime");
     expect(styleTag).toBeDefined();
@@ -271,7 +298,7 @@ describe("CsssNode", () => {
   it("should cleanup on destroy", () => {
     const el = document.getElementById("test-el")!;
     const node = new CsssNode(el);
-    node.apply({ layout: { display: "block" } });
+    node.setCsss({ layout: { display: "block" } });
     const className = Array.from(el.classList).find((c) =>
       c.startsWith("csss-"),
     )!;

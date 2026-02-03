@@ -284,7 +284,10 @@ export class OpCssParser {
     const shortcuts: Record<string, keyof OpCssF> = {
       width: "shape",
       height: "shape",
-      bg: "colors",
+      bg: "fill",
+      image: "fill",
+      position: "fill",
+      repeat: "fill",
       text: "colors",
       z: "layout",
       display: "layout",
@@ -297,16 +300,17 @@ export class OpCssParser {
       justify: "content",
       size: "typo",
       weight: "typo",
-      minW: "boundaries",
-      minH: "boundaries",
-      maxW: "boundaries",
-      maxH: "boundaries",
+      minWidth: "boundaries",
+      minHeight: "boundaries",
+      maxWidth: "boundaries",
+      maxHeight: "boundaries",
     };
 
     for (const [key, val] of Object.entries(obj)) {
       if (shortcuts[key]) {
         const cat = shortcuts[key];
-        result[cat] = { ...((result[cat] as object) || {}), [key]: val };
+        const targetKey = key === "bg" ? "color" : key;
+        result[cat] = { ...((result[cat] as object) || {}), [targetKey]: val };
         delete result[key];
       }
     }
@@ -332,17 +336,27 @@ export class OpCssParser {
             result.shape = { width: val[0], height: val[1] };
           else result.shape = { width: val };
           break;
+        case "fill":
+          if (typeof val === "string") result.fill = { color: val };
+          break;
         case "colors":
-          if (Array.isArray(val)) result.colors = { bg: val[0], text: val[1] };
-          else result.colors = { bg: val };
+          if (Array.isArray(val)) {
+            // If array, maybe [background, text]?
+            // Backwards compatibility or new pattern?
+            // Let's assume [background, text] for now but map to correct categories
+            result.fill = { color: val[0] };
+            result.colors = { text: val[1] };
+          } else {
+            result.colors = { text: val };
+          }
           break;
         case "gutter":
           result.gutter = { margin: val };
           break;
         case "boundaries":
           if (Array.isArray(val)) {
-            const [minW, minH, maxW, maxH] = val;
-            result.boundaries = { minW, minH, maxW, maxH };
+            const [minWidth, minHeight, maxWidth, maxHeight] = val;
+            result.boundaries = { minWidth, minHeight, maxWidth, maxHeight };
           }
           break;
         case "typo":

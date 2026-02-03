@@ -3,6 +3,23 @@ import { OpCssParser } from "./parser";
 
 /**
  * CsssNode - Manages style application on DOM elements
+ *
+ * @example
+ * // Single element
+ * const node = new CsssNode(element);
+ * node.setCsss({ bg: 'red', width: 100 });
+ *
+ * @example
+ * // Multiple elements via selector
+ * const boxes = new CsssNode('.box');
+ * boxes.setCsss({
+ *   fill: { color: 'blue' },
+ *   motion: 300
+ * });
+ *
+ * @example
+ * // Reactive update
+ * node.update({ bg: 'green' });
  */
 export class CsssNode {
   private targets: HTMLElement[] = [];
@@ -32,7 +49,7 @@ export class CsssNode {
   /**
    * Applies an OpCssF style model to the target elements
    */
-  apply(style: Partial<OpCssF>) {
+  setCsss(style: Partial<OpCssF>) {
     if (!this.className || this.targets.length === 0) return;
 
     // 1. Generate CSS with the unique class selector
@@ -53,7 +70,7 @@ export class CsssNode {
    * Updates only specific parts of the style
    */
   update(style: Partial<OpCssF>) {
-    this.apply(style); // For now, re-applying the whole object is safer
+    this.setCsss(style); // For now, re-applying the whole object is safer
   }
 
   /**
@@ -95,12 +112,12 @@ export function csss(node: HTMLElement, style: Partial<OpCssF>) {
   const cssNode = new CsssNode(node);
 
   if (style) {
-    cssNode.apply(style);
+    cssNode.setCsss(style);
   }
 
   return {
     update(newStyle: Partial<OpCssF>) {
-      cssNode.apply(newStyle);
+      cssNode.setCsss(newStyle);
     },
     destroy() {
       cssNode.destroy();

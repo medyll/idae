@@ -34,6 +34,14 @@ export type maskSize = string;
 export type maskPosition = string;
 export type maskRepeat = string;
 
+export type backgroundImage = string;
+export type backgroundSize = string;
+export type backgroundPosition = string;
+export type backgroundRepeat = string;
+export type backgroundClip = string;
+export type backgroundOrigin = string;
+export type backgroundAttachment = string;
+
 /**
  * Fundamental CSS Unit types
  */
@@ -74,6 +82,9 @@ export interface OpCssF extends OpCssShortcutProps {
 
   /** Spacing and gaps */
   gutter?: OpGutterProps | MultiValue;
+
+  /** Background and fill styling */
+  fill?: OpFillProps | color;
 
   /** Colors and branding */
   colors?: OpColorsProps | color | [color, color];
@@ -163,10 +174,10 @@ export interface OpShapeProps {
 }
 
 export interface OpBoundariesProps {
-  minW?: width;
-  minH?: height;
-  maxW?: width;
-  maxH?: height;
+  minWidth?: width;
+  minHeight?: height;
+  maxWidth?: width;
+  maxHeight?: height;
 }
 
 export interface OpGutterProps {
@@ -175,8 +186,18 @@ export interface OpGutterProps {
   gap?: GapValue;
 }
 
+export interface OpFillProps {
+  color?: color;
+  image?: backgroundImage;
+  size?: backgroundSize;
+  position?: backgroundPosition;
+  repeat?: backgroundRepeat;
+  clip?: backgroundClip;
+  origin?: backgroundOrigin;
+  attachment?: backgroundAttachment;
+}
+
 export interface OpColorsProps {
-  bg?: color;
   text?: color;
 }
 
@@ -286,10 +307,16 @@ export interface OpCssShortcutProps {
   width?: width;
   /** Shortcut for shape.height */
   height?: height;
-  /** Shortcut for colors.bg */
+  /** Shortcut for fill.color */
   bg?: color;
   /** Shortcut for colors.text */
   text?: color;
+  /** Shortcut for fill.image */
+  image?: backgroundImage;
+  /** Shortcut for fill.position */
+  position?: backgroundPosition;
+  /** Shortcut for fill.repeat */
+  repeat?: backgroundRepeat;
   /** Shortcut for layout.z */
   z?: zIndex;
   /** Shortcut for layout.display */
@@ -312,12 +339,12 @@ export interface OpCssShortcutProps {
   size?: spacing;
   /** Shortcut for typo.weight */
   weight?: OpTypoProps["weight"];
-  /** Shortcut for boundaries.minW */
-  minW?: width;
-  /** Shortcut for boundaries.minH */
-  minH?: height;
-  /** Shortcut for boundaries.maxW */
-  maxW?: width;
-  /** Shortcut for boundaries.maxH */
-  maxH?: height;
+  /** Shortcut for boundaries.minWidth */
+  minWidth?: width;
+  /** Shortcut for boundaries.minHeight */
+  minHeight?: height;
+  /** Shortcut for boundaries.maxWidth */
+  maxWidth?: width;
+  /** Shortcut for boundaries.maxHeight */
+  maxHeight?: height;
 }

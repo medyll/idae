@@ -78,19 +78,19 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
     label: "Dimension Constraints",
     description: "Defines minimum and maximum size constraints.",
     properties: {
-      minW: {
+      minWidth: {
         css: "min-width",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/min-width",
       },
-      minH: {
+      minHeight: {
         css: "min-height",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/min-height",
       },
-      maxW: {
+      maxWidth: {
         css: "max-width",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width",
       },
-      maxH: {
+      maxHeight: {
         css: "max-height",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/max-height",
       },
@@ -115,14 +115,48 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
       },
     },
   },
-  colors: {
-    label: "Colors & Branding",
-    description: "Handles background and text colors.",
+  fill: {
+    label: "Fill & Background",
+    description: "Handles background colors and images.",
     properties: {
-      bg: {
-        css: "background",
-        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background",
+      color: {
+        css: "background-color",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-color",
       },
+      image: {
+        css: "background-image",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-image",
+      },
+      size: {
+        css: "background-size",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-size",
+      },
+      position: {
+        css: "background-position",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-position",
+      },
+      repeat: {
+        css: "background-repeat",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-repeat",
+      },
+      clip: {
+        css: "background-clip",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip",
+      },
+      origin: {
+        css: "background-origin",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-origin",
+      },
+      attachment: {
+        css: "background-attachment",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background-attachment",
+      },
+    },
+  },
+  colors: {
+    label: "Branding",
+    description: "Handles primary branding colors.",
+    properties: {
       text: {
         css: "color",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/color",
