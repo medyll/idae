@@ -7,7 +7,7 @@ import { TRoutesConfig } from '../@types';
 import { appRoutes } from '../_utils/routes';
 // @ts-ignore
 import socketThrottle from './socketThrottle';
-import { _config } from '../_config/config';
+import { _config, IServerConfig } from '../_config/config';
 
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
@@ -22,11 +22,13 @@ interface IAuthValidator {
 }
 
 class JwtValidator implements IAuthValidator {
+	constructor(private authConfig: IServerConfig['auth']) {}
+
 	async validate(token: string): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!token) return resolve(false);
 			const cleanToken = token.replace('Bearer ', '');
-			jwt.verify(cleanToken, _config.auth.jwtSecret, (err) => {
+			jwt.verify(cleanToken, this.authConfig.jwtSecret, (err) => {
 				if (err) resolve(false);
 				else resolve(true);
 			});
@@ -35,11 +37,13 @@ class JwtValidator implements IAuthValidator {
 }
 
 class IntrospectionValidator implements IAuthValidator {
+	constructor(private authConfig: IServerConfig['auth']) {}
+
 	async validate(token: string): Promise<boolean> {
 		try {
 			if (!token) return false;
 			const cleanToken = token.replace('Bearer ', '');
-			const response = await fetch(_config.auth.introspectionUrl, {
+			const response = await fetch(this.authConfig.introspectionUrl, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ token: cleanToken })
@@ -64,19 +68,30 @@ export class SocketIoServer {
 
 	private routesConfig: TRoutesConfig;
 	private validator: IAuthValidator;
+	private config: IServerConfig;
 
-	constructor() {
+	constructor(configOverride: Partial<IServerConfig> = {}) {
+		// Merge default config with overrides
+		this.config = {
+			..._config,
+			...configOverride,
+			auth: {
+				..._config.auth,
+				...(configOverride.auth || {})
+			}
+		};
+
 		this.routesConfig = appRoutes.getRoutes();
 		
 		// Initialize Auth Strategy
-		switch (_config.auth.strategy) {
+		switch (this.config.auth.strategy) {
 			case 'jwt':
 				console.log('Socket Auth Strategy: JWT');
-				this.validator = new JwtValidator();
+				this.validator = new JwtValidator(this.config.auth);
 				break;
 			case 'introspection':
 				console.log('Socket Auth Strategy: Introspection');
-				this.validator = new IntrospectionValidator();
+				this.validator = new IntrospectionValidator(this.config.auth);
 				break;
 			default:
 				console.warn('Socket Auth Strategy: NONE (Dev Only)');
@@ -86,9 +101,9 @@ export class SocketIoServer {
 	}
 
 	init(app: Server) {
-		const corsOrigin = _config.corsOrigin.includes(',') 
-			? _config.corsOrigin.split(',') 
-			: _config.corsOrigin;
+		const corsOrigin = this.config.corsOrigin.includes(',') 
+			? this.config.corsOrigin.split(',') 
+			: this.config.corsOrigin;
 
 		this.ioApp = new SocketIOServer(app, {
 			cors: {
@@ -98,15 +113,15 @@ export class SocketIoServer {
 		});
 
 		// Redis Adapter Configuration
-		if (_config.redisUrl) {
+		if (this.config.redisUrl) {
 			console.log('Initializing Redis Adapter...');
-			const pubClient = createClient({ url: _config.redisUrl });
+			const pubClient = createClient({ url: this.config.redisUrl });
 			const subClient = pubClient.duplicate();
 
 			Promise.all([pubClient.connect(), subClient.connect()])
 				.then(() => {
 					this.ioApp.adapter(createAdapter(pubClient, subClient));
-					console.log(`[idae-socket] Redis Adapter connected (${_config.redisUrl})`);
+					console.log(`[idae-socket] Redis Adapter connected (${this.config.redisUrl})`);
 				})
 				.catch((err) => {
 					console.error('[idae-socket] Redis Adapter connection error:', err);
@@ -145,8 +160,8 @@ export class SocketIoServer {
 		if (!isValid) {
 			// Uncomment to enforce auth
 			// return next(new Error('Invalid Credentials'));
-			if (_config.auth.strategy !== 'none') {
-				console.warn(`[idae-socket] Auth failed (${_config.auth.strategy}) for client ${socket.id}`);
+			if (this.config.auth.strategy !== 'none') {
+				console.warn(`[idae-socket] Auth failed (${this.config.auth.strategy}) for client ${socket.id}`);
 			}
 		}
 

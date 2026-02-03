@@ -120,10 +120,53 @@ IDAE_SOCKET_AUTH_STRATEGY=introspection
 IDAE_SOCKET_INTROSPECTION_URL=http://your-api.com/auth/verify
 ```
 
+## ⚙️ Advanced Configuration
+
+You can override the default configuration and environment variables by passing a config object to the `HttpDriver` (or `SocketIoServer`) constructor.
+
+### Runtime Configuration
+```typescript
+import { HttpDriver, AuthStrategy } from '@medyll/idae-socket';
+
+const server = new HttpDriver({
+  defaultPort: 8080,
+  corsOrigin: 'https://myapp.com',
+  auth: {
+    strategy: 'jwt',
+    jwtSecret: 'runtime-secret-key',
+    introspectionUrl: '' 
+  },
+  // Optional: Connection to Redis for horizontal scaling
+  redisUrl: 'redis://localhost:6379' 
+});
+
+server.listen();
+```
+
+### Payload Mapping (Legacy Integration)
+If your backend sends POST payloads that don't match the strict structure expected by `idae-socket` (e.g., from a legacy PHP app), you can provide a `payloadMapper` function to transform them on the fly.
+
+```typescript
+const server = new HttpDriver({
+  payloadMapper: (legacyData) => {
+    // Transform incoming data to expected format
+    return {
+      rooms: [legacyData.target_room],
+      sender: {
+        roles: ['SYSTEM'],
+        // Pass external session info (cookies, PHPSESSID, etc.)
+        cookie: legacyData.user_cookie 
+      },
+      payload: legacyData.content
+    };
+  }
+});
+```
+
 ## 🏗️ Architecture
 
 1. **Backend Service** (e.g., `idae-api-nest`) modifies data.
-2. **Backend** sends `POST /db-change` to `idae-socket`.
+2. **Backend** sends `POST /entity` to `idae-socket`.
 3. **idae-socket** receives HTTP request via `HttpDriver`.
 4. **Internal EventBus** emits the event.
 5. **Socket.IO Server** broadcasts the payload to matching Clients (based on Rooms/Auth).
@@ -131,11 +174,12 @@ IDAE_SOCKET_INTROSPECTION_URL=http://your-api.com/auth/verify
 
 ## ⚠️ Current Status
 
-**Version**: 0.0.4 (Alpha)
+**Version**: 0.0.5
 
-- **Auth**: Token validation is currently stubbed.
-- **Transport**: Uses `request` (cleanup planned) and `body-parser`.
-- **Scaling**: Redis Adapter pattern is drafted but requires configuration.
+- **Auth**: Flexible Strategy pattern implemented (JWT / Introspection / None).
+- **Transport**: Modernized stack (Native Fetch & Express, removed deprecated libs).
+- **Scaling**: Redis Adapter fully supported for clustering.
+- **Integration**: Supports payload mapping for legacy systems.
 
 ## License
 

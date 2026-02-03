@@ -9,11 +9,12 @@ import cors from 'cors';
 import * as core from 'express-serve-static-core';
 import { appRoutes } from './_utils/routes';
 import { dataEventInstance, TDataEvent } from './dataEvent';
+import { IServerConfig, _config } from './_config/config';
 
 export type THttpDriver = httpDriver;
 
 export class httpDriver {
-	private options: any;
+	private config: IServerConfig;
 	private port!: number;
 	private app!: core.Express;
 	private httpServer!: http.Server;
@@ -22,8 +23,8 @@ export class httpDriver {
 	private dataEventInstance: TDataEvent;
 	private EventsEmitInstance: any;
 
-	constructor(vars?: undefined, options?: undefined) {
-		this.options = Object.assign({}, options || {});
+	constructor(configOverride: Partial<IServerConfig> = {}) {
+		this.config = { ..._config, ...configOverride };
 		this.routesConfig = appRoutes.getRoutes();
 		this.app = appAdapter.use('express');
 
@@ -53,8 +54,17 @@ export class httpDriver {
 		//
 		response.status(200);
 		response.send({ status: 'ok' });
-		//
-		this.EventsEmitInstance.emit(request.path.slice(1), request.body);
+		
+		let data = request.body;
+		if (this.config.payloadMapper) {
+			try {
+				data = this.config.payloadMapper(data);
+			} catch (e) {
+				console.error('[idae-socket] Payload mapping failed:', e);
+			}
+		}
+
+		this.EventsEmitInstance.emit(request.path.slice(1), data);
 	}
 
 	close() {

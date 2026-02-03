@@ -1,6 +1,26 @@
+import { IReceivedDataByPost } from '../@types';
+
 export type AuthStrategy = 'jwt' | 'introspection' | 'none';
 
-export const _config = {
+export interface IServerConfig {
+  defaultPort: number;
+  defaultHost: string;
+  urlTokenVerify: string;
+  corsOrigin: string;
+  redisUrl?: string;
+  /**
+   * Optional function to transform incoming HTTP POST payloads 
+   * to the expected IReceivedDataByPost format.
+   */
+  payloadMapper?: (rawData: any) => IReceivedDataByPost;
+  auth: {
+    strategy: AuthStrategy;
+    jwtSecret: string;
+    introspectionUrl: string;
+  }
+}
+
+export const _config: IServerConfig = {
   defaultPort: 4000,
   defaultHost: "http://127.0.0.1",
   urlTokenVerify: "https://.../json_token.php",

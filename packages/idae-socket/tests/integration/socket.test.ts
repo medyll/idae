@@ -42,6 +42,10 @@ describe('Socket Integration', () => {
                 try {
                     // Expecting full data object with payload
                     expect(data.payload.hello).toBe('world');
+                    // Verify sender info transmission
+                    expect(data.sender.cookie).toBe('PHPSESSID=123456789');
+                    expect(data.sender.externalSource).toBe('LEGACY_APP');
+                    
                     resolve(null);
                 } catch(e) {
                     reject(e);
@@ -55,7 +59,11 @@ describe('Socket Integration', () => {
                     hello: 'world',
                     own: clientSocket.id 
                 },
-                sender: { roles: ['TEST_SYSTEM'] }
+                sender: { 
+                    roles: ['TEST_SYSTEM'],
+                    cookie: 'PHPSESSID=123456789',
+                    externalSource: 'LEGACY_APP'
+                }
             };
 
             const response = await fetch(`http://localhost:${TEST_PORT}/${testEvent}`, {
