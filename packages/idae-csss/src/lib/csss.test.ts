@@ -19,7 +19,7 @@ describe("OpCssF Style Model", () => {
     expect(categories).toContain("gutter");
     expect(categories).toContain("colors");
     expect(categories).toContain("contour");
-    expect(categories).toContain("look");
+    expect(categories).toContain("visual");
     expect(categories).toContain("snap");
     expect(categories).toContain("scroll");
     expect(categories).toContain("typo");
@@ -65,7 +65,7 @@ describe("OpCssF Style Model", () => {
     it("should respect unitless properties", () => {
       const style: Partial<OpCssF> = {
         layout: { z: 10 },
-        look: { opacity: 0.5 },
+        visual: { opacity: 0.5 },
       };
       const css = parser.parse(style);
       expect(css).toContain("z-index: 10");

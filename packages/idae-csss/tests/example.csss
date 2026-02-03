@@ -32,7 +32,7 @@ body {
   colors {
     bg: "#fff"
   },
-  look {
+  visual {
     shadow: "0 2px 10px rgba(0,0,0,0.1)"
   },
   contour {
@@ -40,7 +40,7 @@ body {
   },
   state: {
     hover {
-      look {
+      visual {
         shadow: "0 5px 20px rgba(0,0,0,0.2)"
       }
     }

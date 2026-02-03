@@ -12,6 +12,26 @@ export type duration = string | number;
 export type opacity = number;
 export type zIndex = number;
 export type ratio = string | number;
+export type cursor = string;
+export type clip = string;
+export type filter = string | string[];
+export type blendMode = "normal" | "multiply" | "screen" | "overlay" | string;
+export type fontFace = string;
+export type decoration = string | [string, string?, string?];
+export type appearance = "none" | "auto" | string;
+export type transform = string;
+export type animation = string;
+export type easing = string;
+export type variation = string;
+export type willChange = string;
+export type contain = string;
+export type intrinsic = string;
+export type anchorName = string;
+export type viewTransition = string;
+export type maskImage = string;
+export type maskSize = string;
+export type maskPosition = string;
+export type maskRepeat = string;
 
 /**
  * Fundamental CSS Unit types
@@ -67,9 +87,9 @@ export interface OpCssF {
   /** Anchor Positioning and coordinate-based placement */
   snap: {
     /** Defines an anchor name (anchor-name) */
-    name?: string;
+    name?: anchorName;
     /** Points to an anchor (position-anchor) */
-    to?: string;
+    to?: anchorName;
     /** Positioning coordinates */
     top?: top;
     bottom?: bottom;
@@ -109,29 +129,29 @@ export interface OpCssF {
   };
 
   /** Visual appearance */
-  look: {
+  visual: {
     shadow?: ShadowValue;
     opacity?: opacity;
-    cursor?: string;
-    clip?: string;
-    filter?: string;
+    cursor?: cursor;
+    clip?: clip;
+    filter?: filter;
   };
 
   /** Post-processing and blending effects */
   effect: {
-    blend?: "normal" | "multiply" | "screen" | "overlay" | string;
-    backdrop?: string;
+    blend?: blendMode;
+    backdrop?: filter;
     isolate?: "auto" | "isolate";
     mix?: string;
   };
 
   /** Image masking and gradients */
   mask: {
-    image?: string;
-    size?: string;
-    position?: string;
-    repeat?: string;
-    clip?: string;
+    image?: maskImage;
+    size?: maskSize;
+    position?: maskPosition;
+    repeat?: maskRepeat;
+    clip?: clip;
   };
 
   /** Scroll behavior and snapping */
@@ -145,18 +165,18 @@ export interface OpCssF {
 
   /** Typography and text rendering */
   typo: {
-    face?: string;
+    face?: fontFace;
     size?: spacing;
     weight?: "normal" | "bold" | "light" | number;
     align?: "left" | "center" | "right" | "justify";
     lineHeight?: spacing;
     spacing?: spacing;
     transform?: "uppercase" | "lowercase" | "capitalize" | "none";
-    decoration?: string | [string, string?, string?];
+    decoration?: decoration;
     /** Modern text-wrap (balance, pretty) */
     wrap?: "pretty" | "balance" | "nowrap" | "wrap";
     /** Variable fonts support */
-    variation?: string;
+    variation?: variation;
     indent?: spacing;
     rendering?: "optimizeSpeed" | "optimizeLegibility" | "geometricPrecision";
   };
@@ -167,7 +187,7 @@ export interface OpCssF {
     caret?: color;
     pointer?: "auto" | "none" | "all";
     select?: "none" | "text" | "all" | "auto";
-    appearance?: "none" | "auto" | string;
+    appearance?: appearance;
     touch?: "auto" | "none" | "manipulation" | "pan-x" | "pan-y";
   };
 
@@ -176,9 +196,9 @@ export interface OpCssF {
     /** content-visibility */
     visibility?: "visible" | "hidden" | "auto";
     /** contain-intrinsic-size */
-    intrinsic?: string;
-    willChange?: string;
-    contain?: string;
+    intrinsic?: intrinsic;
+    willChange?: willChange;
+    contain?: contain;
   };
 
   /** CSS Variables / Custom Properties */
@@ -187,13 +207,13 @@ export interface OpCssF {
   /** Animation and transitions */
   motion: {
     transition?: TransitionValue;
-    animate?: string;
+    animate?: animation;
     duration?: duration;
-    easing?: string;
+    easing?: easing;
     delay?: duration;
-    transform?: string;
+    transform?: transform;
     /** View Transitions API support */
-    viewTransition?: string;
+    viewTransition?: viewTransition;
   };
 
   /** Advanced interactivity and states */
@@ -362,7 +382,7 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
       },
     },
   },
-  look: {
+  visual: {
     label: "Visual Style",
     description: "Handles the aesthetic properties like colors and shadows.",
     properties: {
