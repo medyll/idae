@@ -1,7 +1,7 @@
 import { type Socket, SocketOptions } from "socket.io-client";
 import { ManagerOptions } from "socket.io-client";
 
-const io = require("socket.io-client");
+import io from "socket.io-client";
 
 export class EventDataConfig {
   private _authentication!: {

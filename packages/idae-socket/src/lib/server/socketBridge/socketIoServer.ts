@@ -5,14 +5,21 @@ import socketIO from 'socket.io';
 import { Server } from 'net';
 import { TRoutesConfig } from '../@types';
 import { appRoutes } from '../_utils/routes';
+// @ts-ignore
+import socketThrottle from './socketThrottle';
+import { _config } from '../_config/config';
+import bodyParser from 'body-parser';
 
-const request = require('request');
-const socketThrottle = require('./socketThrottle');
-const { _config } = require('../_config/config');
-const bodyParser = require('body-parser');
+import { createAdapter } from '@socket.io/redis-adapter';
+import { createClient } from 'redis';
 
-const { createAdapter } = require('@socket.io/redis-adapter');
-const { createClient } = require('redis');
+/**
+ * Interface for Auth Validation
+ * Implement this interface to provide real authentication
+ */
+interface IAuthValidator {
+	validate(token: string): Promise<boolean>;
+}
 
 class SocketIoServerInstance {
 	listeningIo: any;
@@ -58,6 +65,18 @@ class SocketIoServer {
 		if (!authHeaders) {
 			return next(new Error('Missing Auth method'));
 		}
+		
+		// ---------------------------------------------------------
+		// AUTH DELEGATION
+		// In a real scenario, validate the token here.
+		// For now, we allow everything but log a warning if it looks suspicious.
+		// ---------------------------------------------------------
+		const isValid = await this.validateToken(authHeaders);
+		if (!isValid) {
+			// Uncomment to enforce auth
+			// return next(new Error('Invalid Credentials'));
+			console.warn('[idae-socket] Auth validation failed (soft-pass)');
+		}
 
 		next();
 
@@ -71,6 +90,12 @@ class SocketIoServer {
 				next();
 				break;
 		}
+	}
+
+	async validateToken(token: string): Promise<boolean> {
+		// TODO: Implement real token validation (e.g. JWT verify, or call to idae-api-nest)
+		// For now, simple presence check
+		return !!token && token.length > 5;
 	}
 
 	onConnection() {
