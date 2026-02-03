@@ -745,8 +745,8 @@ describe("stator", () => {
       const listener1 = vi.fn();
       const listener2 = vi.fn();
 
-      state.addEventListener("change", listener1);
-      state.addEventListener("change", listener2);
+      state.addEventListener("stator:change", listener1);
+      state.addEventListener("stator:change", listener2);
 
       state.value = 1;
 
@@ -759,10 +759,10 @@ describe("stator", () => {
       const listener1 = vi.fn();
       const listener2 = vi.fn();
 
-      state.addEventListener("change", listener1);
-      state.addEventListener("change", listener2);
+      state.addEventListener("stator:change", listener1);
+      state.addEventListener("stator:change", listener2);
 
-      state.removeEventListener("change", listener1);
+      state.removeEventListener("stator:change", listener1);
       state.value = 1;
 
       expect(listener1).not.toHaveBeenCalled();
@@ -775,7 +775,7 @@ describe("stator", () => {
       const eventListener = vi.fn();
 
       state.onchange = onchangeHandler;
-      state.addEventListener("change", eventListener);
+      state.addEventListener("stator:change", eventListener);
 
       state.value = 1;
 

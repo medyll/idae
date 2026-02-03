@@ -131,7 +131,7 @@ export function stator<T>(initialState: T): AugmentedState<T> {
    * Dispatches the change event to all subscribers
    */
   function notify(newValue: T) {
-    eventTarget.triggerChange(new CustomEvent('change', { detail: { newValue } }));
+    eventTarget.triggerChange(new CustomEvent('stator:change', { detail: { newValue } }));
   }
 
   /**
@@ -139,13 +139,13 @@ export function stator<T>(initialState: T): AugmentedState<T> {
    */
   function setOnChange(handler: StateChangeHandler<T> | undefined) {
     if (onchangeListener) {
-      eventTarget.removeEventListener("change", onchangeListener);
+      eventTarget.removeEventListener("stator:change", onchangeListener);
       onchangeListener = undefined;
     }
     onchange = handler;
     if (handler) {
       onchangeListener = (e: any) => onchange?.(e.detail.newValue);
-      eventTarget.addEventListener("change", onchangeListener);
+      eventTarget.addEventListener("stator:change", onchangeListener);
     }
   }
 
