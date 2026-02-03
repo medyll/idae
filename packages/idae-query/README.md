@@ -2,6 +2,7 @@
 
 A powerful and flexible query library for TypeScript and JavaScript applications.
 
+
 ## Features
 
 - Chainable and iterable result sets
@@ -52,7 +53,7 @@ npm install @medyll/idae-query
 Here's a quick example to get you started:
 
 ```typescript
-import { getResultSet } from '@medyll/idae-query';
+import { Query } from '@medyll/idae-query';
 
 const data = [
   { id: 1, name: 'John', age: 25, metadata: { order: 1 } },
@@ -61,16 +62,19 @@ const data = [
   { id: 4, name: 'Alice', age: 40, metadata: { order: 4 } },
 ];
 
-const resultSet = getResultSet(data);
+const query = new Query(data);
+
+// Filtering with where()
+const adults = query.where({ age: { gte: 30 } });
 
 // Sorting
-const sortedData = resultSet.sortBy({ age: 'asc' });
+const sortedData = adults.sortBy({ age: 'asc' });
 
 // Grouping
-const groupedData = resultSet.groupBy('age');
+const groupedData = adults.groupBy('age');
 
 // Pagination
-const pageData = resultSet.getPage(1, 2);
+const pageData = adults.getPage(1, 2);
 
 console.log(sortedData);
 console.log(groupedData);
@@ -87,23 +91,24 @@ console.log(pageData);
 
 ### Multi-criteria Sorting
 ```typescript
-const resultSet = getResultSet(data);
-const sorted = resultSet.sortBy({ age: 'asc', name: 'desc' });
-// Tri d'abord par age croissant, puis par name décroissant
+const query = new Query(data);
+const sorted = query.where({}).sortBy({ age: 'asc', name: 'desc' });
+// Sort first by age ascending, then by name descending
 ```
 
 ### Grouping by Nested Property
 ```typescript
-const resultSet = getResultSet(data);
-const grouped = resultSet.groupBy('metadata.order');
-// Regroupe par la propriété imbriquée metadata.order
+const query = new Query(data);
+const grouped = query.where({}).groupBy('metadata.order');
+// Groups by the nested property metadata.order
 ```
 
 ### Pagination
 ```typescript
-const resultSet = getResultSet(data);
-const page1 = resultSet.getPage(1, 2); // Page 1, 2 éléments
-const page2 = resultSet.getPage(2, 2); // Page 2, 2 éléments
+const query = new Query(data);
+const resultSet = query.where({});
+const page1 = resultSet.getPage(1, 2); // Page 1, 2 items
+const page2 = resultSet.getPage(2, 2); // Page 2, 2 items
 ```
 
 ### New Methods Overview
@@ -201,20 +206,21 @@ const last = resultSet.sortBy({ age: 'desc' }).last();
 
 #### Chaining Operations
 ```typescript
-const resultSet = getResultSet(data);
+const query = new Query(data);
 
 // Multi-step transformation
-const result = resultSet
-  .filter((item) => item.age > 25)
+const result = query
+  .where({ age: { gt: 25 } })
   .sortBy({ age: 'asc' })
   .pluck('name');  // ['Jane', 'Bob', 'Alice']
 ```
 
 #### Statistical Analysis
 ```typescript
-const resultSet = getResultSet(data);
+const query = new Query(data);
+const resultSet = query.where({});
 
-// Calculate statistics on filtered data
+// Calculate statistics on data
 const stats = {
   total: resultSet.count(),
   adults: resultSet.count({ age: { gte: 18 } }),
@@ -226,11 +232,11 @@ const stats = {
 
 #### Data Transformation Pipeline
 ```typescript
-const resultSet = getResultSet(data);
+const query = new Query(data);
 
 // Build a summary report
-const report = resultSet
-  .filter((item) => item.age >= 18)
+const report = query
+  .where({ age: { gte: 18 } })
   .reduce((acc, item) => {
     acc.total++;
     acc.ages.push(item.age);
@@ -241,41 +247,43 @@ const report = resultSet
 
 #### Distinct with Filtering
 ```typescript
-const resultSet = getResultSet(data);
+const query = new Query(data);
 
 // Find unique categories
-const uniqueMetadata = resultSet
+const uniqueMetadata = query
+  .where({})
   .distinct('metadata.order')
   .pluck('metadata.order');
 ```
 
 ### Combined Examples
 ```typescript
-const resultSet = getResultSet(data);
+const query = new Query(data);
+const resultSet = query.where({});
 
 // Sorting and grouping
 const sorted = resultSet.sortBy({ age: 'asc' }).groupBy('age');
 
 // Pagination with filtering
-const page = resultSet
-  .filter((item) => item.age > 25)
+const page = query
+  .where({ age: { gt: 25 } })
   .getPage(1, 10);
 
 // Complex query chain
 const summary = {
   count: resultSet.count({ age: { gt: 30 } }),
-  names: resultSet
-    .filter((item) => item.age > 30)
+  names: query
+    .where({ age: { gt: 30 } })
     .pluck('name'),
   maxAge: resultSet.max('age'),
 };
 ```
 
-All operators are used via the main API (`getResultSet` or `Query`).
+All operators are accessed through `Query` (primary API). `ResultSet` is returned by `Query.where()` and shouldn’t be used directly.
 
-### Example with getResultSet
+### Query Operators Reference
 ```typescript
-import { getResultSet } from '@medyll/idae-query';
+import { Query, Operators } from '@medyll/idae-query';
 
 const data = [
   { id: 1, name: 'John', age: 25 },
@@ -283,73 +291,65 @@ const data = [
   { id: 3, name: 'Bob', age: 35 },
 ];
 
-const resultSet = getResultSet(data);
+const query = new Query(data);
 
-// eq
-const eqResult = resultSet.where({ age: { eq: 30 } }); // [{ id: 2, name: 'Jane', age: 30 }]
+// eq - equals
+const eqResult = query.where({ age: { eq: 30 } }); // [{ id: 2, name: 'Jane', age: 30 }]
 
-// gt
-const gtResult = resultSet.where({ age: { gt: 25 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
+// gt - greater than
+const gtResult = query.where({ age: { gt: 25 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
 
-// gte
-const gteResult = resultSet.where({ age: { gte: 30 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
+// gte - greater than or equal
+const gteResult = query.where({ age: { gte: 30 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
 
-// lt
-const ltResult = resultSet.where({ age: { lt: 30 } }); // [{ id: 1, name: 'John', age: 25 }]
+// lt - less than
+const ltResult = query.where({ age: { lt: 30 } }); // [{ id: 1, name: 'John', age: 25 }]
 
-// lte
-const lteResult = resultSet.where({ age: { lte: 30 } }); // [{ id: 1, name: 'John', age: 25 }, { id: 2, name: 'Jane', age: 30 }]
+// lte - less than or equal
+const lteResult = query.where({ age: { lte: 30 } }); // [{ id: 1, name: 'John', age: 25 }, { id: 2, name: 'Jane', age: 30 }]
 
-// ne
-const neResult = resultSet.where({ age: { ne: 25 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
+// ne - not equal
+const neResult = query.where({ age: { ne: 25 } }); // [{ id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
 
-// in
-const inResult = resultSet.where({ age: { in: [25, 35] } }); // [{ id: 1, name: 'John', age: 25 }, { id: 3, name: 'Bob', age: 35 }]
+// in - value in array
+const inResult = query.where({ age: { in: [25, 35] } }); // [{ id: 1, name: 'John', age: 25 }, { id: 3, name: 'Bob', age: 35 }]
 
-// nin
-const ninResult = resultSet.where({ age: { nin: [25, 35] } }); // [{ id: 2, name: 'Jane', age: 30 }]
+// nin - value not in array
+const ninResult = query.where({ age: { nin: [25, 35] } }); // [{ id: 2, name: 'Jane', age: 30 }]
 
-// contains
-const containsResult = resultSet.where({ name: { contains: 'an' } }); // [{ id: 2, name: 'Jane', age: 30 }]
+// contains - string contains
+const containsResult = query.where({ name: { contains: 'an' } }); // [{ id: 2, name: 'Jane', age: 30 }]
 
-// startsWith
-const startsWithResult = resultSet.where({ name: { startsWith: 'Ja' } }); // [{ id: 2, name: 'Jane', age: 30 }]
+// startsWith - string starts with
+const startsWithResult = query.where({ name: { startsWith: 'Ja' } }); // [{ id: 2, name: 'Jane', age: 30 }]
 
-// endsWith
-const endsWithResult = resultSet.where({ name: { endsWith: 'hn' } }); // [{ id: 1, name: 'John', age: 25 }]
+// endsWith - string ends with
+const endsWithResult = query.where({ name: { endsWith: 'hn' } }); // [{ id: 1, name: 'John', age: 25 }]
 
-// btw
-const btwResult = resultSet.where({ age: { btw: [25, 35] } }); // [{ id: 1, name: 'John', age: 25 }, { id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
+// btw - between (inclusive)
+const btwResult = query.where({ age: { btw: [25, 35] } }); // [{ id: 1, name: 'John', age: 25 }, { id: 2, name: 'Jane', age: 30 }, { id: 3, name: 'Bob', age: 35 }]
+
+// Combined operators
+const combinedResult = query.where({ age: { gt: 15, lt: 35 } }); // [{ id: 1, name: 'John', age: 25 }, { id: 2, name: 'Jane', age: 30 }]
 
 // Custom operator
-import { Operators } from '@medyll/idae-query';
 Operators.addCustomOperator('isEven', (field, value, data) => data[field] % 2 === 0);
-const customResult = resultSet.where({ age: { isEven: true } }); // [{ id: 2, name: 'Jane', age: 30 }]
-```
-
-### Example with Query class
-```typescript
-import { Query } from '@medyll/idae-query';
-
-const data = [
-  { id: 1, value: 10 },
-  { id: 2, value: 20 },
-  { id: 3, value: 30 },
-];
-
-const query = new Query(data);
-const result = query.where({ value: { gt: 15, lt: 30 } }); // [{ id: 2, value: 20 }]
+const customResult = query.where({ age: { isEven: true } }); // [{ id: 2, name: 'Jane', age: 30 }]
 ```
 
 ## API
 
+### `Query<T>`
+
+Primary entry point for building queries. `Query` owns the dataset and exposes `where()` to return a `ResultSet` for chaining transformations and aggregations. It is the intended public API.
+
 ### `getResultset(data: any[]): ResultSet`
 
-Creates a new result set from the provided data.
+Low-level helper that creates a new result set from the provided data. Prefer `Query` in application code.
 
 ### `ResultSet<T>`
 
-A chainable and iterable result set of data with 13+ methods for manipulation and querying.
+Chainable result set returned by `Query.where()`. It isn’t intended to be used directly.
 
 #### Transformation Methods (Chainable)
 
@@ -385,8 +385,8 @@ A chainable and iterable result set of data with 13+ methods for manipulation an
 To run the tests:
 
 1. Clone the repository
-2. Install dependencies: `npm install` or `yarn install`
-3. Run tests: `npm test` or `yarn test`
+2. Install dependencies: `pnpm install` or `yarn install`
+3. Run tests: `pnpm test` or `yarn test`
 
 The tests cover various scenarios for each method, ensuring the reliability and correctness of the `ResultSet` class.
 
