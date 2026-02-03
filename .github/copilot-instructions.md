@@ -97,10 +97,11 @@ This monorepo contains core components for Idae applications (Web, Mobile, Deskt
 ### idae-socket & idae-stator in Data Flow
 **idae-socket** (WebSocket synchronization):
 - Purpose: "Keep your app in sync with your backend"
-- Bi-directional real-time sync using Socket.io
-- Listens for backend data changes and updates local state
-- Works alongside `idae-idbql` to push updates to IndexedDB when backend changes
-- Pattern: Backend publishes change events → `idae-socket` receives → triggers `idbqlEvent` → UI updates via Svelte reactivity
+- **Hybrid Gateway**: Accepts HTTP POST requests from Backend; Broadcasts them as Socket.IO events to Frontend.
+- Bi-directional real-time sync using Socket.io.
+- Listens for backend data changes and updates local state.
+- Works alongside `idae-idbql` to push updates to IndexedDB when backend changes.
+- Pattern: Backend publishes change events via HTTP POST → `idae-socket` relays → triggers `idbqlEvent` → UI updates via Svelte reactivity.
 
 **idae-stator** (Lightweight state management):
 - Purpose: Reactive state proxy for non-Svelte contexts
