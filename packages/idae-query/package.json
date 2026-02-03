@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-query",
   "bin": {
-    "idae-query": "./cli.js"
+    "idae-query": "./script/cli.js"
   },
   "scope": "medyll",
   "author": "Lebrun Meddy",
