@@ -15,8 +15,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-      "strict": true,
-      "noImplicitAny": false,
+    "strict": true,
+    "noImplicitAny": true
   },
   "include": [
     "src/lib/**/*.ts"

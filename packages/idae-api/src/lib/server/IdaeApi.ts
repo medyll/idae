@@ -1,10 +1,11 @@
-// Force l'import des types globaux (Express.Request.user)
-import '../../app.js';
 import { createValidationMiddleware } from "./middleware/validationMiddleware.js";
 import { openApiJsonHandler } from "./middleware/openApiMiddleware.js";
 import { swaggerUiHandler, redocHandler } from "./middleware/docsMiddleware.js";
 import { tenantContextMiddleware } from "./middleware/tenantContextMiddleware.js";
-// packages\idae-api\src\lib\server\IdaeApi.ts
+import { HttpError } from "$lib/server/errors/HttpError.js";
+import { logger } from "$lib/server/services/logger.js";
+import { z } from "zod";
+
 import { type IdaeDbOptions } from "@medyll/idae-db";
 import express, {
   type Express,
@@ -28,6 +29,9 @@ import type { IdaeDbAdapter } from "@medyll/idae-db";
 import qs from "qs";
 import { healthHandler, readinessHandler } from "./middleware/healthMiddleware.js";
 
+/**
+ * Options for rate limiting configuration.
+ */
 type RateLimitOptions = {
   windowMs?: number;
   max?: number;
@@ -36,30 +40,59 @@ type RateLimitOptions = {
   [key: string]: any;
 };
 
+// Zod Schema for IdaeApiOptions validation
+const IdaeApiOptionsSchema = z.object({
+  port: z.number().optional(),
+  routes: z.array(z.any()).optional(), // z.any() because RouteDefinition is complex, could be refined
+  onInUse: z.enum(["fail", "replace"]).optional(),
+  enableAuth: z.boolean().optional(),
+  jwtSecret: z.string().optional(),
+  tokenExpiration: z.string().optional(),
+  idaeDbOptions: z.any().optional(), // IdaeDbOptions is complex, treating as any for now
+  useMemoryDb: z.boolean().optional(),
+  cors: z.union([z.boolean(), z.any()]).optional(), // CorsOptions is external
+  rateLimit: z.union([z.literal(false), z.any()]).optional(),
+  payloadLimit: z.string().optional(),
+  enableCompression: z.boolean().optional(),
+  trustProxy: z.union([z.boolean(), z.number(), z.string()]).optional(),
+});
+
+/**
+ * Configuration options for the IdaeApi server.
+ */
 interface IdaeApiOptions {
+  /** Port number to listen on (default: 3000) */
   port?: number;
+  /** Custom routes to add to the server */
   routes?: RouteDefinition[];
+  /** Action to take if the port is already in use */
   onInUse?: "fail" | "replace";
+  /** Whether to enable authentication middleware */
   enableAuth?: boolean;
+  /** JWT secret key definition for authentication */
   jwtSecret?: string;
+  /** JWT token expiration time (e.g., '1h', '7d') */
   tokenExpiration?: string;
+  /** Options for the underlying IdaeDb instance */
   idaeDbOptions?: IdaeDbOptions;
+  /** Whether to use an in-memory database (for testing/dev) */
   useMemoryDb?: boolean;
+  /** CORS configuration options */
   cors?: boolean | CorsOptions;
+  /** Rate limiting configuration options */
   rateLimit?: false | RateLimitOptions;
+  /** Payload size limit for body parser (default: '1mb') */
   payloadLimit?: string;
+  /** Whether to enable response compression (default: true) */
   enableCompression?: boolean;
+  /** Trust proxy setting for Express (for running behind proxies) */
   trustProxy?: boolean | number | string;
 }
 
-class HttpError extends Error {
-  status: number;
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-  }
-}
-
+/**
+ * Main class for the IdaeApi server.
+ * Implements a singleton pattern to manage the Express application and its configuration.
+ */
 class IdaeApi {
   static #instance: IdaeApi | null = null;
   #app: Express;
@@ -85,11 +118,27 @@ class IdaeApi {
     });
   }
 
+  /**
+   * Returns the singleton instance of IdaeApi.
+   * Creates the instance if it doesn't exist.
+   * @returns {IdaeApi} The singleton instance.
+   */
   public static getInstance(): IdaeApi {
     if (!IdaeApi.#instance) {
       IdaeApi.#instance = new IdaeApi();
     }
     return IdaeApi.#instance;
+  }
+
+  /**
+   * Resets the singleton instance.
+   * Useful for testing purposes to ensure a clean state between tests.
+   */
+  public static resetInstance(): void {
+    if (IdaeApi.#instance && IdaeApi.#instance.state === "running") {
+        IdaeApi.#instance.stop();
+    }
+    IdaeApi.#instance = null;
   }
 
   get state(): "stopped" | "running" {
@@ -100,15 +149,32 @@ class IdaeApi {
     return this.#app;
   }
 
+  /**
+   * Updates the server configuration.
+   * Can only be called when the server is not running.
+   *
+   * @param options - Configuration options to merge with current settings
+   * @throws Error if the server is already running or if options are invalid
+   */
   public setOptions(options: IdaeApiOptions): void {
     if (this.#state === "running") {
       throw new Error("Cannot change options while server is running");
     }
-    this.#idaeApiOptions = { ...this.#idaeApiOptions, ...options };
-    this.#app.locals.idaeDbOptions = this.#idaeApiOptions.idaeDbOptions;
-    this.#app.locals.useMemoryDb = this.#idaeApiOptions.useMemoryDb;
-    this.initializeAuth();
-    this.#configured = false;
+
+    try {
+      const validatedOptions = IdaeApiOptionsSchema.parse(options || {});
+      this.#idaeApiOptions = { ...this.#idaeApiOptions, ...validatedOptions };
+      this.#app.locals.idaeDbOptions = this.#idaeApiOptions.idaeDbOptions;
+      this.#app.locals.useMemoryDb = this.#idaeApiOptions.useMemoryDb;
+      this.initializeAuth();
+      this.#configured = false;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        logger.error({ err: error }, "Invalid configuration options provided to setOptions");
+        throw new Error(`Invalid configuration: ${error.message}`);
+      }
+      throw error;
+    }
   }
 
   private initializeAuth(): void {
@@ -124,6 +190,11 @@ class IdaeApi {
     }
   }
 
+  /**
+   * Applies the configuration settings to the server.
+   * This includes middleware, routes, and error handling.
+   * It is automatically called by start() if not called manually.
+   */
   public configureIdaeApi(): void {
     this.configureMiddleware();
     this.configureRoutes();
@@ -221,6 +292,10 @@ class IdaeApi {
     }
   }
 
+  /**
+   * Configures global error handling middleware.
+   * Catches errors and sends a JSON response with status code.
+   */
   private configureErrorHandling(): void {
     this.#app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -231,7 +306,7 @@ class IdaeApi {
         const message = isServerError ? "Internal Server Error" : err.message;
 
         if (isServerError) {
-          console.error(err.stack ?? err.message);
+          logger.error({ err }, "Server Error");
         }
 
         res.status(status).json({ error: message });
@@ -239,9 +314,14 @@ class IdaeApi {
     );
   }
 
-  public start(): void {
+  /**
+   * Starts the API server.
+   * If the server is already running, it logs a warning and returns.
+   * It also handles port conflicts based on the 'onInUse' option.
+   */
+  public async start(): Promise<void> {
     if (this.#state === "running") {
-      console.log("Server is already running.");
+      logger.warn("Server is already running.");
       return;
     }
 
@@ -251,50 +331,80 @@ class IdaeApi {
     }
 
     const port = this.#idaeApiOptions.port ?? 3000;
-    this.#serverInstance = this.#app.listen(port, () => {
-      console.log(`Server is running on port: ${port}`);
-      this.#state = "running";
-    });
+    
+    return new Promise((resolve, reject) => {
+      try {
+        this.#serverInstance = this.#app.listen(port, () => {
+          logger.info(`Server is running on port: ${port}`);
+          this.#state = "running";
+          resolve();
+        });
 
-    this.#serverInstance.on("error", this.handleServerError.bind(this));
+        this.#serverInstance.on("error", (error: NodeJS.ErrnoException) => {
+          this.handleServerError(error);
+          reject(error);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   get idaeApiOptions(): IdaeApiOptions {
     return this.#idaeApiOptions;
   }
 
+  /**
+   * Handles server errors, specifically port conflicts.
+   * @param error - The error thrown by the server.
+   */
   private handleServerError(error: NodeJS.ErrnoException): void {
     if (error.code === "EADDRINUSE") {
-      console.error(`Port ${this.#idaeApiOptions.port} is already in use.`);
+      logger.error(`Port ${this.#idaeApiOptions.port} is already in use.`);
       switch (this.#idaeApiOptions.onInUse) {
         case "replace":
-          console.log("Replacing existing server...");
-          this.stop();
-          this.start();
+          logger.info("Replacing existing server...");
+          this.stop().then(() => this.start());
           break;
         default:
-          console.log("Failed to start the server.");
-          process.exit(1);
+          logger.error("Failed to start the server.");
+          if (process.env.NODE_ENV !== "test") {
+            process.exit(1);
+          }
       }
     } else {
-      throw error;
+      logger.error({ err: error }, "Server Error");
     }
   }
 
-  stop(): void {
-    if (this.#serverInstance) {
-      this.#serverInstance.close((err?: Error) => {
-        if (err) {
-          console.error("Error while stopping the server:", err);
-        } else {
-          console.log("Server stopped successfully.");
-          this.#state = "stopped";
-        }
+  /**
+   * Stops the API server.
+   * Closes the underlying HTTP server and updates the state.
+   */
+  public async stop(): Promise<void> {
+    if (this.#serverInstance && this.#state === "running") {
+      return new Promise((resolve, reject) => {
+        this.#serverInstance.close((err?: Error) => {
+          if (err) {
+            logger.error({ err }, "Error while stopping the server");
+            reject(err);
+          } else {
+            logger.info("Server stopped successfully.");
+            this.#state = "stopped";
+            resolve();
+          }
+        });
       });
     }
+    this.#state = "stopped";
   }
 
-  // Handle request
+  /**
+   * Higher-order function to wrap route actions with error handling and database connection check.
+   * 
+   * @param action - The logic to execute for the route.
+   * @returns An Express middleware function.
+   */
   private handleRequest(
     action: (
       service: IdaeDbAdapter<any>,
@@ -339,51 +449,19 @@ export { idaeApi };
 
 // Usage example:
 /*
-import apiServer from './ApiServer';
-import { RouteDefinition } from './config/routeDefinitions';
+import { idaeApi } from './IdaeApi';
+import { logger } from './IdaeApiLogger';
 
 // Configure the server
-apiServer.setOptions({
+idaeApi.setOptions({
     port: 3050,
     enableAuth: true,
-    jwtSecret: 'your_jwt_secret',
-    tokenExpiration: '15m',
+    jwtSecret: 'your_jwt_secret'
 });
 
 // Start the server
-apiServer.start();
-
-console.log(apiServer.state); // 'running'
-
-// Add a new route at runtime
-apiServer.router.addRoute({
-    method: 'post',
-    path: '/dynamic',
-    handler: async (service, params, body) => ({ message: 'Dynamic route', data: body })
-});
-
-// Disable a route
-apiServer.router.disableRoute('/custom', 'get');
-
-// Enable a route
-apiServer.router.enableRoute('/custom', 'get');
-
-// Add multiple routes
-apiServer.router.addRoutes([
-    {
-        method: 'get',
-        path: '/multiple1',
-        handler: async () => ({ message: 'Multiple 1' })
-    },
-    {
-        method: 'get',
-        path: '/multiple2',
-        handler: async () => ({ message: 'Multiple 2' })
-    }
-]);
+idaeApi.start();
 
 // Stop the server
-apiServer.stop();
-
-console.log(apiServer.state); // 'stopped'
+idaeApi.stop();
 */

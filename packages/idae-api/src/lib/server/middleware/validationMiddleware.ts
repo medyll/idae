@@ -1,40 +1,64 @@
 import type { Request, Response, NextFunction } from "express";
-import { ZodSchema, ZodError } from "zod";
-
+import { z } from "zod";
+import { logger } from "$lib/server/services/logger.js";
 
 /**
- * Crée un middleware Express pour valider le body, la query ou les params via Zod.
- *
- * @param {object} schemas - Schémas Zod à appliquer (bodySchema, querySchema, paramsSchema)
- * @returns {(req, res, next) => void} Middleware
- *
- * @example
- *   app.use(createValidationMiddleware({ bodySchema: z.object({ ... }) }))
+ * Interface for the validation schema used in routes.
  */
-export function createValidationMiddleware({
-  bodySchema,
-  querySchema,
-  paramsSchema,
-}: {
-  bodySchema?: ZodSchema<any>;
-  querySchema?: ZodSchema<any>;
-  paramsSchema?: ZodSchema<any>;
-}) {
+export interface ValidationSchema {
+  bodySchema?: z.ZodSchema<any>;
+  querySchema?: z.ZodSchema<any>;
+  paramsSchema?: z.ZodSchema<any>;
+}
+
+/**
+ * Creates a middleware that validates the request body, query, and params against Zod schemas.
+ */
+export function createValidationMiddleware(validationSchema: ValidationSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (bodySchema) {
+      const { bodySchema, querySchema, paramsSchema } = validationSchema;
+
+      if (bodySchema && typeof bodySchema.parse === "function") {
         req.body = bodySchema.parse(req.body);
       }
-      if (querySchema) {
-        req.query = querySchema.parse(req.query);
+      
+      if (querySchema && typeof querySchema.parse === "function") {
+        req.query = querySchema.parse(req.query) as any;
       }
-      if (paramsSchema) {
-        req.params = paramsSchema.parse(req.params);
+      
+      if (paramsSchema && typeof paramsSchema.parse === "function") {
+        req.params = paramsSchema.parse(req.params) as any;
       }
+      
       next();
-    } catch (err) {
-      // Always pass error to next, including ZodError
-      next(err);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        logger.warn({ 
+          method: req.method, 
+          url: req.url, 
+          errors: error.errors 
+        }, "Validation failed");
+
+        res.status(400).json({
+          error: "Validation failed",
+          details: error.errors.map((e) => ({
+            path: e.path.join("."),
+            message: e.message,
+          })),
+        });
+        return;
+      }
+      
+      logger.error({ 
+        method: req.method, 
+        url: req.url, 
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
+      }, "Unexpected error during validation");
+      
+      next(error);
     }
   };
 }
+
