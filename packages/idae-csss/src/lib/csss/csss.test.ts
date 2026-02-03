@@ -72,9 +72,9 @@ describe("OpCssF Style Model", () => {
       expect(css).toContain("opacity: 0.5");
     });
 
-    it("should handle nested properties (shape.min/max)", () => {
+    it("should handle boundaries properties (min/max)", () => {
       const style: Partial<OpCssF> = {
-        shape: { min: { width: 100, height: 200 } },
+        boundaries: { minW: 100, minH: 200 },
       };
       const css = parser.parse(style);
       expect(css).toContain("min-width: 100px");
@@ -143,6 +143,110 @@ describe("OpCssF Style Model", () => {
       expect(css).toContain(
         "body { display: flex; position: relative; font-size: 16px }",
       );
+    });
+
+    it("should handle composite border values as tuples", () => {
+      const style: Partial<OpCssF> = {
+        contour: {
+          border: [1, "solid", "red"],
+          outline: ["2px", "dashed", "blue"],
+        },
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("border: 1px solid red");
+      expect(css).toContain("outline: 2px dashed blue");
+    });
+
+    it("should handle animation/transition durations in ms", () => {
+      const style: Partial<OpCssF> = {
+        motion: {
+          duration: 300,
+          delay: 100,
+        },
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("transition-duration: 300ms");
+      expect(css).toContain("transition-delay: 100ms");
+    });
+
+    it("should handle root-level shortcuts (Short Declaration)", () => {
+      const style: OpCssF = {
+        width: 100,
+        bg: "red",
+        display: "flex",
+        justify: "center",
+        gap: 20,
+        z: 50,
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("width: 100px");
+      expect(css).toContain("background: red");
+      expect(css).toContain("display: flex");
+      expect(css).toContain("justify-content: center");
+      expect(css).toContain("gap: 20px");
+      expect(css).toContain("z-index: 50");
+    });
+
+    it("should handle category shorthands", () => {
+      const style: OpCssF = {
+        layout: "flex absolute",
+        shape: [100, 200],
+        colors: ["white", "black"],
+        typo: 16,
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("display: flex");
+      expect(css).toContain("position: absolute");
+      expect(css).toContain("width: 100px");
+      expect(css).toContain("height: 200px");
+      expect(css).toContain("background: white");
+      expect(css).toContain("color: black");
+      expect(css).toContain("font-size: 16px");
+    });
+
+    it("should merge root shortcuts and category object", () => {
+      const style: OpCssF = {
+        width: 100,
+        shape: { height: 200 },
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("width: 100px");
+      expect(css).toContain("height: 200px");
+    });
+
+    it("should parse mixed .csss syntax with shortcuts and blocks", () => {
+      const content = `
+        .target {
+          width: 100,
+          shape { height: 200 },
+          colors: "red"
+        }
+      `;
+      const css = parser.parseCsss(content);
+      expect(css).toContain("width: 100px");
+      expect(css).toContain("height: 200px");
+      expect(css).toContain("background: red");
+    });
+
+    it("should handle boundary shorthand array", () => {
+      const style: OpCssF = {
+        boundaries: [100, 200, 500, 600],
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("min-width: 100px");
+      expect(css).toContain("min-height: 200px");
+      expect(css).toContain("max-width: 500px");
+      expect(css).toContain("max-height: 600px");
+    });
+
+    it("should handle boundary root shortcuts", () => {
+      const style: OpCssF = {
+        minW: 100,
+        maxH: "50vh",
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("min-width: 100px");
+      expect(css).toContain("max-height: 50vh");
     });
   });
 });
