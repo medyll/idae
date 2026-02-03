@@ -1,5 +1,6 @@
 {
   "name": "@medyll/idae-html",
+  "description": "Raw HTML utility library for dynamic web apps/sites (client & client-server), inspired by Svelte/React but builderless. Provides advanced HTML generation, parsing, and manipulation in JS/TS. Integrates with @medyll/idae-dom-events, idae-idbql, and @medyll/idae-stator (monorepo).",
   "bin": {
     "idae-html": "./cli.js"
   },
