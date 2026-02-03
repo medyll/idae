@@ -298,6 +298,10 @@ export class OpCssParser {
       padding: "gutter",
       gap: "gutter",
       justify: "content",
+      items: "content",
+      align: "content",
+      placeItems: "content",
+      placeContent: "content",
       size: "typo",
       weight: "typo",
       minWidth: "boundaries",
@@ -310,53 +314,95 @@ export class OpCssParser {
       if (shortcuts[key]) {
         const cat = shortcuts[key];
         const targetKey = key === "bg" ? "color" : key;
-        result[cat] = { ...((result[cat] as object) || {}), [targetKey]: val };
+
+        // Ensure we handle merging with existing shorthands or objects
+        const existing = result[cat];
+        let base = {};
+
+        if (
+          existing &&
+          typeof existing === "object" &&
+          !Array.isArray(existing)
+        ) {
+          base = existing;
+        } else if (existing !== undefined) {
+          // If it's a shorthand, we need to normalize it first or at least not spread it
+          // We'll let the second pass handle the shorthand normalization
+          // For now, we move the shorthand to its proper place if we can infer it
+          // But it's safer to just keep the object-based merge
+          base = {};
+          // Note: If cat is 'fill' and existing is 'red', we should probably treat it as {color: 'red'}
+          if (cat === "fill" && typeof existing === "string")
+            base = { color: existing };
+          if (
+            cat === "typo" &&
+            (typeof existing === "number" || !isNaN(Number(existing)))
+          )
+            base = { size: existing };
+          if (
+            cat === "shape" &&
+            (typeof existing === "number" || typeof existing === "string")
+          )
+            base = { width: existing };
+          if (cat === "colors" && typeof existing === "string")
+            base = { text: existing };
+        }
+
+        result[cat] = { ...base, [targetKey]: val };
         delete result[key];
       }
     }
 
     // 2. Resolve category-level shorthands (layout: "flex", shape: 100)
     for (const [cat, val] of Object.entries(result)) {
-      if (
-        val === null ||
-        val === undefined ||
-        (typeof val === "object" && !Array.isArray(val))
-      )
-        continue;
+      if (val === null || val === undefined) continue;
+
+      // If it's already a properly formed object, we only check if it needs additional normalization
+      // but we don't process it as a shorthand itself
+      if (typeof val === "object" && !Array.isArray(val)) continue;
 
       switch (cat) {
         case "layout":
           if (typeof val === "string") {
             const [display, flow] = val.split(" ");
-            result.layout = { display, flow } as any;
+            result.layout = { ...result.layout, display, flow };
+          }
+          break;
+        case "content":
+          if (typeof val === "string") {
+            result.content = { ...result.content, content: val };
           }
           break;
         case "shape":
           if (Array.isArray(val))
-            result.shape = { width: val[0], height: val[1] };
-          else result.shape = { width: val };
+            result.shape = { ...result.shape, width: val[0], height: val[1] };
+          else result.shape = { ...result.shape, width: val };
           break;
         case "fill":
-          if (typeof val === "string") result.fill = { color: val };
+          if (typeof val === "string")
+            result.fill = { ...result.fill, color: val };
           break;
         case "colors":
           if (Array.isArray(val)) {
-            // If array, maybe [background, text]?
-            // Backwards compatibility or new pattern?
-            // Let's assume [background, text] for now but map to correct categories
-            result.fill = { color: val[0] };
-            result.colors = { text: val[1] };
+            result.fill = { ...result.fill, color: val[0] };
+            result.colors = { ...result.colors, text: val[1] };
           } else {
-            result.colors = { text: val };
+            result.colors = { ...result.colors, text: val };
           }
           break;
         case "gutter":
-          result.gutter = { margin: val };
+          result.gutter = { ...result.gutter, margin: val };
           break;
         case "boundaries":
           if (Array.isArray(val)) {
             const [minWidth, minHeight, maxWidth, maxHeight] = val;
-            result.boundaries = { minWidth, minHeight, maxWidth, maxHeight };
+            result.boundaries = {
+              ...result.boundaries,
+              minWidth,
+              minHeight,
+              maxWidth,
+              maxHeight,
+            };
           }
           break;
         case "typo":
@@ -364,21 +410,25 @@ export class OpCssParser {
             typeof val === "number" ||
             (typeof val === "string" && !isNaN(Number(val)))
           ) {
-            result.typo = { size: val };
+            result.typo = { ...result.typo, size: val };
           } else if (typeof val === "string") {
-            result.typo = { face: val };
+            result.typo = { ...result.typo, face: val };
           }
           break;
         case "motion":
           if (Array.isArray(val))
-            result.motion = { duration: val[0], delay: val[1] };
-          else result.motion = { duration: val };
+            result.motion = {
+              ...result.motion,
+              duration: val[0],
+              delay: val[1],
+            };
+          else result.motion = { ...result.motion, duration: val };
           break;
         case "visual":
-          result.visual = { shadow: val };
+          result.visual = { ...result.visual, shadow: val };
           break;
         case "ui":
-          result.ui = { accent: val };
+          result.ui = { ...result.ui, accent: val as string };
           break;
       }
     }
@@ -394,6 +444,25 @@ export class OpCssParser {
   }
 
   private normalizeUnit(cssProp: string, value: any): string {
+    if (typeof value === "string") {
+      const mappings: Record<string, string> = {
+        between: "space-between",
+        around: "space-around",
+        evenly: "space-evenly",
+      };
+      if (
+        [
+          "justify-content",
+          "align-content",
+          "place-content",
+          "justify-self",
+          "align-self",
+        ].includes(cssProp)
+      ) {
+        return mappings[value] || value;
+      }
+    }
+
     if (typeof value === "number") {
       const noUnitProps = [
         "opacity",

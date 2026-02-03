@@ -20,6 +20,11 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
     description:
       "Handles alignment and distribution of children (Flexbox/Grid).",
     properties: {
+      items: { css: "align-items" },
+      content: { css: "justify-content" },
+      self: { css: "align-self" },
+      placeItems: { css: "place-items" },
+      placeContent: { css: "place-content" },
       align: { css: "align-items" },
       justify: { css: "justify-content" },
       wrap: { css: "flex-wrap" },

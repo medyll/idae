@@ -188,9 +188,28 @@ describe("OpCssF Style Model", () => {
       expect(css).toContain("z-index: 50");
     });
 
+    it("should handle content and alignment properties", () => {
+      const style: OpCssF = {
+        display: "flex",
+        align: "center",
+        justify: "between",
+        items: "stretch",
+        placeItems: "center center",
+        placeContent: "space-between end",
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("display: flex");
+      expect(css).toContain("align-items: center");
+      expect(css).toContain("justify-content: space-between");
+      expect(css).toContain("align-items: stretch");
+      expect(css).toContain("place-items: center center");
+      expect(css).toContain("place-content: space-between end");
+    });
+
     it("should handle category shorthands", () => {
       const style: OpCssF = {
         layout: "flex absolute",
+        content: "between",
         shape: [100, 200],
         colors: ["white", "black"],
         typo: 16,
@@ -198,6 +217,7 @@ describe("OpCssF Style Model", () => {
       const css = parser.parse(style);
       expect(css).toContain("display: flex");
       expect(css).toContain("position: absolute");
+      expect(css).toContain("justify-content: space-between");
       expect(css).toContain("width: 100px");
       expect(css).toContain("height: 200px");
       expect(css).toContain("background-color: white");

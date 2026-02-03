@@ -85,8 +85,9 @@ Define your styles in separate `.csss` files with a mix of blocks and properties
 ```
 
 ### 4. Svelte 5 Integration
-Native support for Svelte 5 reactivity via the `csss` action:
+Native support for Svelte 5 reactivity via the `csss` action or via standard `<style>` tags when using the Vite plugin:
 
+#### Using the `csss` Action
 ```svelte
 <script lang="ts">
   import { csss } from '@medyll/idae-csss';
@@ -100,6 +101,56 @@ Native support for Svelte 5 reactivity via the `csss` action:
 }}>
   Hello CSSS
 </div>
+```
+
+#### Using `<style lang="csss">`
+You can use semantic CSSS syntax directly in your Svelte files. The Vite plugin will automatically transform these blocks into standard CSS.
+
+```svelte
+<div class="my-card">
+  Content
+</div>
+
+<style lang="csss">
+  .my-card {
+    width: 300,
+    radius: 8,
+    bg: "white",
+    shadow: "0 4px 6px rgba(0,0,0,0.1)",
+    
+    typo {
+      size: 18,
+      weight: "bold"
+    }
+  }
+</style>
+```
+
+### 5. Dynamic Runtime (CsssNode)
+For non-Svelte environments or direct DOM manipulation, use the `CsssNode` class:
+
+```typescript
+import { CsssNode } from '@medyll/idae-csss';
+
+// Initialize with a DOM element
+const el = document.getElementById('my-el');
+const node = new CsssNode(el);
+
+// Apply styles using semantic objects or shortcuts
+node.setCsss({
+  bg: 'blue',
+  width: 200,
+  layout: { display: 'flex', justify: 'center' }
+});
+
+// You can also use .csss string syntax
+node.setCsss(`
+  bg: "red",
+  typo { size: 20, weight: "bold" }
+`);
+
+// Automatic cleanup when no longer needed
+node.destroy();
 ```
 
 ## ⚙️ Vite Configuration

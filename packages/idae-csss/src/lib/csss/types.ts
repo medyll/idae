@@ -1,4 +1,21 @@
-export type unit = string | number;
+/**
+ * Fundamental CSS Unit types
+ */
+export type CssUnit =
+  | "px"
+  | "rem"
+  | "em"
+  | "%"
+  | "vh"
+  | "vw"
+  | "ch"
+  | "ex"
+  | "vmin"
+  | "vmax"
+  | "svh"
+  | "lvh"
+  | "dvh";
+export type unit = number | `${number}${CssUnit}` | (string & {});
 export type all = unit;
 export type top = unit;
 export type bottom = unit;
@@ -11,7 +28,24 @@ export type spacing = unit;
 export type color = string;
 export type duration = unit;
 export type opacity = number;
-export type zIndex = number;
+export type zIndex =
+  | number
+  | "auto"
+  | "initial"
+  | "inherit"
+  | -1
+  | 0
+  | 1
+  | 10
+  | 20
+  | 30
+  | 40
+  | 50
+  | 100
+  | 200
+  | 500
+  | 1000
+  | 9999;
 export type ratio = unit;
 export type cursor = string;
 export type clip = string;
@@ -42,9 +76,6 @@ export type backgroundClip = string;
 export type backgroundOrigin = string;
 export type backgroundAttachment = string;
 
-/**
- * Fundamental CSS Unit types
- */
 export type CssValue = unit;
 export type MultiValue =
   | unit
@@ -142,7 +173,26 @@ export interface OpLayoutProps {
 }
 
 export interface OpContentProps {
+  /** align-items */
+  items?: "start" | "center" | "end" | "stretch" | "baseline";
+  /** justify-content */
+  content?:
+    | "start"
+    | "center"
+    | "end"
+    | "between"
+    | "around"
+    | "evenly"
+    | "stretch";
+  /** place-items shortcut */
+  placeItems?: string;
+  /** place-content shortcut */
+  placeContent?: string;
+  /** align-self */
+  self?: "auto" | "start" | "center" | "end" | "stretch" | "baseline";
+  /** Shortcut for align-items */
   align?: "start" | "center" | "end" | "stretch" | "baseline";
+  /** Shortcut for justify-content */
   justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
   wrap?: "wrap" | "nowrap" | "reverse";
 }
@@ -304,9 +354,9 @@ export interface OpScaleProps {
  */
 export interface OpCssShortcutProps {
   /** Shortcut for shape.width */
-  width?: width;
+  width?: width | [width, width] | [width, width, width];
   /** Shortcut for shape.height */
-  height?: height;
+  height?: height | [height, height] | [height, height, height];
   /** Shortcut for fill.color */
   bg?: color;
   /** Shortcut for colors.text */
@@ -335,6 +385,14 @@ export interface OpCssShortcutProps {
   gap?: GapValue;
   /** Shortcut for content.justify */
   justify?: OpContentProps["justify"];
+  /** Shortcut for content.items */
+  items?: OpContentProps["items"];
+  /** Shortcut for content.align */
+  align?: OpContentProps["align"];
+  /** Shortcut for content.placeItems */
+  placeItems?: OpContentProps["placeItems"];
+  /** Shortcut for content.placeContent */
+  placeContent?: OpContentProps["placeContent"];
   /** Shortcut for typo.size */
   size?: spacing;
   /** Shortcut for typo.weight */
