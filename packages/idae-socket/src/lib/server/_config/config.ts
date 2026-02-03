@@ -4,6 +4,8 @@ export const _config = {
   defaultPort: 4000,
   defaultHost: "http://127.0.0.1",
   urlTokenVerify: "https://.../json_token.php",
+  corsOrigin: process.env.IDAE_SOCKET_CORS_ORIGIN || '*',
+  redisUrl: process.env.IDAE_SOCKET_REDIS_URL,
   auth: {
     // 'jwt' for local validation, 'introspection' for remote API check
     strategy: (process.env.IDAE_SOCKET_AUTH_STRATEGY || 'none') as AuthStrategy,

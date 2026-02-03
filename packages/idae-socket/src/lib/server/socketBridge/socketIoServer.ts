@@ -59,7 +59,7 @@ class AllowAllValidator implements IAuthValidator {
 	}
 }
 
-class SocketIoServer {
+export class SocketIoServer {
 	ioApp: any;
 
 	private routesConfig: TRoutesConfig;
@@ -86,12 +86,33 @@ class SocketIoServer {
 	}
 
 	init(app: Server) {
+		const corsOrigin = _config.corsOrigin.includes(',') 
+			? _config.corsOrigin.split(',') 
+			: _config.corsOrigin;
+
 		this.ioApp = new SocketIOServer(app, {
 			cors: {
-				origin: '*',
+				origin: corsOrigin,
 				methods: ['GET', 'POST']
 			}
 		});
+
+		// Redis Adapter Configuration
+		if (_config.redisUrl) {
+			console.log('Initializing Redis Adapter...');
+			const pubClient = createClient({ url: _config.redisUrl });
+			const subClient = pubClient.duplicate();
+
+			Promise.all([pubClient.connect(), subClient.connect()])
+				.then(() => {
+					this.ioApp.adapter(createAdapter(pubClient, subClient));
+					console.log(`[idae-socket] Redis Adapter connected (${_config.redisUrl})`);
+				})
+				.catch((err) => {
+					console.error('[idae-socket] Redis Adapter connection error:', err);
+				});
+		}
+
 		this.ioApp.use(this.authorization.bind(this));
 
 		this.onConnection();
@@ -140,7 +161,7 @@ class SocketIoServer {
 			case 'UrlToken':
 				next();
 				break;
-		return !!token && token.length > 5;
+		}
 	}
 
 	onConnection() {

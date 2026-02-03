@@ -12,7 +12,7 @@ import { dataEventInstance, TDataEvent } from './dataEvent';
 
 export type THttpDriver = httpDriver;
 
-class httpDriver {
+export class httpDriver {
 	private options: any;
 	private port!: number;
 	private app!: core.Express;
@@ -55,6 +55,12 @@ class httpDriver {
 		response.send({ status: 'ok' });
 		//
 		this.EventsEmitInstance.emit(request.path.slice(1), request.body);
+	}
+
+	close() {
+		if (this.httpServer) {
+			this.httpServer.close();
+		}
 	}
 }
 
