@@ -42,6 +42,25 @@ Import and use the components in your Svelte application:
 
 Contributions are welcome! Please refer to the [contribution guidelines](../../CONTRIBUTING.md) for more details.
 
+
+## Architecture
+
+```mermaid
+flowchart TD
+  User[Developer] --> Comp[Svelte Component]
+  
+  subgraph Component [Internal Structure]
+    Comp --> Runes[Svelte 5 Runes $props, $state...]
+    Comp --> Slotted[Slotted Utility]
+    Comp --> Style[SCSS + UnoCSS]
+  end
+
+  subgraph Exports [Build Output]
+    Style --> CSS[slotui-css]
+    Comp --> Lib[Svelte Library]
+  end
+```
+
 ## License
 
 This package is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for more information.

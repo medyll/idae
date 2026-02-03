@@ -185,6 +185,28 @@ pnpm run lint            # Lint code
 pnpm run format          # Format code
 ```
 
+
+## Architecture
+
+```mermaid
+flowchart TD
+  User[User / App] --> IdaeDb[IdaeDb Singleton]
+  IdaeDb --> Connection[IdaeDbConnection]
+  Connection --> Adapter[IdaeDbAdapter]
+  
+  subgraph Adapters [Database Adapters]
+    Adapter --> Mongo[MongoDBAdapter]
+    Adapter --> MySQL[MySQLAdapter]
+    Adapter --> PG[PostgreSQLAdapter]
+    Adapter --> SQLite[SQLiteAdapter]
+  end
+
+  Mongo --> MongoDB[(MongoDB)]
+  MySQL --> MySQLDB[(MySQL)]
+  PG --> PGDB[(PostgreSQL)]
+  SQLite --> SQLiteDB[(SQLite)]
+```
+
 ## License
 
 MIT License

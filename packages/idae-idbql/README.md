@@ -223,6 +223,27 @@ try {
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
+
+## Architecture
+
+```mermaid
+flowchart TD
+  User[User / Svelte App] --> State[createIdbqlState]
+  State --> Proxy[IdbqlState Proxy]
+  Proxy --> Col[Collection]
+  
+  subgraph DataLayer [Storage & Sync]
+    Col --> Core[CollectionCore]
+    Core --> IDB[(IndexedDB)]
+    Core --> Query[idae-query]
+  end
+
+  subgraph Reactivity [Svelte 5 Runes]
+    IDB -- Change --> Event[idbqlEvent $state]
+    Event --> UI[UI Update]
+  end
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

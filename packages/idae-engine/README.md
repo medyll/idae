@@ -117,6 +117,28 @@ The tests cover various scenarios for each method, ensuring the reliability and 
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+
+## Architecture
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Input[Data Array] --> DataOp[dataOp()]
+  
+  subgraph FluentAPI [Fluent interface]
+    DataOp --> Filter[Filters]
+    DataOp --> Sort[Sorters]
+    DataOp --> Group[Groupers]
+    DataOp --> Find[Finders]
+  end
+
+  Filter --> Output[Processed Results]
+  Sort --> Output
+  Group --> Output
+  Find --> Output
+```
+
 ## License
 
 This project is licensed under the MIT License.

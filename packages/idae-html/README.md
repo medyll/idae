@@ -40,3 +40,13 @@ const dom = parseHtml(markup);
 ---
 
 For more, see the monorepo documentation or contact the maintainers.
+
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Input[Template / Data] --> Engine[HTML Generator]
+  Engine --> Sanitizer[Sanitization]
+  Sanitizer --> Output[HTML String]
+```

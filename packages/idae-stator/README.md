@@ -143,3 +143,15 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 ## 📜 License
 
 MIT © [Medyll](https://github.com/medyll)
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Raw[Plain Object/Value] --> Stator[stator()]
+  Stator --> Proxy[Reactive Proxy]
+  
+  subgraph Reactions [Observable State]
+    Proxy -- Mutation --> Callback[onChange Callback]
+    Proxy -- Get --> Access[Value Access]
+  end

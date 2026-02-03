@@ -390,6 +390,24 @@ To run the tests:
 
 The tests cover various scenarios for each method, ensuring the reliability and correctness of the `ResultSet` class.
 
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Data[Array of Objects] --> RS[getResultset]
+  RS --> Query[Query Engine]
+  
+  subgraph Engine [Processing]
+    Query --> Op[Operators $eq, $gt...]
+    RS --> Path[PathResolver]
+    RS --> Sort[Sorting]
+    RS --> Page[Pagination]
+  end
+
+  Page --> Final[Resultset Output]
+```
+
 ## License
 
 This project is licensed under the MIT License.

@@ -358,3 +358,13 @@ MIT - See LICENSE file
 2. Add comprehensive test suite
 3. Document TypeScript schema inference
 4. Create migration guides from legacy code in `src/_old/`
+
+
+## Architecture
+
+```mermaid
+flowchart LR
+  State[Current State] --> Event[Event Trigger]
+  Event --> Transition[Transition Logic]
+  Transition --> NewState[Next State]
+```

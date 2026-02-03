@@ -181,6 +181,21 @@ const server = new HttpDriver({
 - **Scaling**: Redis Adapter fully supported for clustering.
 - **Integration**: Supports payload mapping for legacy systems.
 
+
+## Architecture
+
+```mermaid
+flowchart TD
+  BE[Backend NestJS] -- HTTP POST --> Gateway[IdaeSocket Gateway]
+  Gateway -- Socket.io Broadcast --> Client[IdaeSocket Client]
+  
+  subgraph Integration [Frontend Sync]
+    Client --> Event[idbqlEvent]
+    Event --> IDB[IndexedDB Update]
+    Event --> UI[Svelte Reactivity]
+  end
+```
+
 ## License
 
 ISC

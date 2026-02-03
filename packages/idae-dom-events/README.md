@@ -154,6 +154,26 @@ The following npm scripts are available for development and testing:
 
 Contributions are welcome! Feel free to submit a pull request or open an issue to report bugs or propose features.
 
+
+## Architecture
+
+## Architecture
+
+```mermaid
+flowchart TD
+  Dom[DOM Element] --> Obs[Observer / Event Listener]
+  
+  subgraph EventSystems [Event Modules]
+    Obs --> Resize[ResizePanel]
+    Obs --> HtmlDom[HtmlDom Utils]
+    Obs --> CssDom[CssDom Utils]
+  end
+
+  HtmlDom --> CB[Callback Execution]
+  Resize --> CB
+  CssDom --> CB
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for more details.
