@@ -146,9 +146,9 @@ type OnMutationType = {
 
 The following npm scripts are available for development and testing:
 
-- `npm run dev`: Starts the development server.
-- `npm run build`: Compiles the library for production.
-- `npm run test`: Runs unit tests.
+- `pnpm run dev`: Starts the development server.
+- `pnpm run build`: Compiles the library for production.
+- `pnpm run test`: Runs unit tests.
 
 ## Contribution
 

@@ -1,31 +1,32 @@
 
 
-# AGENTS.md — Conventions for AI/Copilot Usage in idae-stator
+# GitHub Copilot Instructions for idae-stator
 
-## Project Context
-- **idae-stator** is a framework-agnostic, reactive state management library written in TypeScript/JavaScript.
-- The core logic is in `src/lib/stator/Stator.ts`.
-- SvelteKit is used only for demos/tests, not as a primary target.
+**Package Manager**: This package is part of the Idae monorepo, which uses **pnpm** for dependency and script management. Use `pnpm install`, `pnpm run`, etc. to ensure consistency.
 
-## Rules and Conventions for AI/Copilot Agents
+## Overview
 
-- **Entry Point:** Use the `stator` function to create reactive state objects.
-- **Change Handling:** State objects expose an `.onchange` handler to detect modifications.
-- **State Mutation:** State is mutated via the `.stator` property (e.g., `countState.stator++`).
-- **UI Updates:** UI updates are triggered manually (see `updateUI()` in the demo) or via Svelte reactivity.
-- **Logic Co-location:** Prefer colocating state logic and UI logic for clarity.
-- **No External Dependencies:** Do not use any external state management libraries.
-- **Extensibility:** Add new state helpers in `src/lib/stator/` if needed.
+`idae-stator` is a framework-agnostic, reactive state management library for TypeScript/JavaScript. Core logic is in `src/lib/stator/Stator.ts`. SvelteKit is used only for demos/tests.
 
-## Best Practices for Copilot/AI
-- Follow idiomatic TypeScript/JavaScript and Svelte patterns unless otherwise specified.
-- Refer to `README.md` for usage examples and expected HTML structure.
-- For tests, use Jest (`npx jest src/lib/stator/Stator.test.ts`).
-- For builds, use Vite (`vite.config.ts`).
-- For SvelteKit integration, see `svelte.config.js` if needed.
+### Critical Patterns
+- Use the `stator` function to create reactive state objects.
+- State objects expose an `.onchange` handler for change detection.
+- Mutate state via the `.stator` property (e.g., `count.stator++`).
+- UI updates are manual (see `updateUI()` in demo) or via Svelte reactivity.
+- Do not use external state management libraries.
+- Add new helpers in `src/lib/stator/` if needed.
 
-## Example Usage (for AI)
+### Build & Test
+- Build: `pnpm run build` (Vite)
+- Test: `pnpm run test` (Jest)
+- Lint/format: `pnpm run lint && pnpm run format`
 
+### Best Practices
+- Prefer colocating state and UI logic for clarity.
+- Follow idiomatic TypeScript/JavaScript and Svelte patterns.
+- See [README.md](README.md) for usage and HTML structure.
+
+### Example
 ```js
 import { stator } from './Stator.ts';
 let count = stator(0);
@@ -33,31 +34,9 @@ count.onchange = (oldVal, newVal) => { /* ... */ };
 count.stator++;
 ```
 
-## Additional Notes
-- The project does not define any AI-specific rules beyond those above.
-- Always prioritize simplicity, clarity, and framework-agnostic compatibility.
-
 ---
 
-## Future Improvements and Directions
-
-- **Deep Reactivity**
-  - Reactivity on objects is shallow: mutation of nested properties is not automatically detected (no deep reactivity).
-  - Possible improvement: support for deep reactivity (deep proxy) or another recursive observation mechanism.
-- **Interoperability**
-  - Integration with other frameworks (React, Vue, etc.) is not demonstrated, even though the library is agnostic.
-  - Possible improvement: provide helpers or examples for other frameworks.
-- **API Ergonomics**
-  - Accessing the value via `.stator` and mutating via the same property can be confusing, especially for objects.
-  - Possible improvement: clarify the distinction between read/write, or offer an alternative API (e.g., `.get()` / `.set()`).
-- **Performance**
-  - Proxies are efficient for simple objects, but handling large or deeply nested structures may be problematic.
-  - Possible improvement: benchmarks, profiling, and possibly optimizing change management.
-- **Tests**
-  - Tests cover basic cases, but lack coverage for deep mutation, performance, and edge cases (e.g., property deletion, arrays, etc.).
-  - Possible improvement: expand test coverage.
-- **Documentation**
-  - Documentation is clear for basic usage, but could include FAQs, advanced cases, and comparisons with other libraries.
+For more, see the package [README.md](README.md) or monorepo documentation.
   - Possible improvement: add integration guides, diagrams, and advanced examples.
 - **Extensibility**
   - Adding helpers is planned, but there are no complementary modules yet (e.g., undo/redo, persistence, etc.).
