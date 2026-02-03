@@ -1,14 +1,13 @@
 'use strict';
 
 import type { Socket } from 'socket.io';
-import socketIO from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 import { Server } from 'net';
 import { TRoutesConfig } from '../@types';
 import { appRoutes } from '../_utils/routes';
 // @ts-ignore
 import socketThrottle from './socketThrottle';
 import { _config } from '../_config/config';
-import bodyParser from 'body-parser';
 
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
@@ -21,17 +20,6 @@ interface IAuthValidator {
 	validate(token: string): Promise<boolean>;
 }
 
-class SocketIoServerInstance {
-	listeningIo: any;
-
-	constructor(app: Server) {
-		//@ts-ignore
-		this.listeningIo = socketIO(app);
-
-		return this.listeningIo;
-	}
-}
-
 class SocketIoServer {
 	ioApp: any;
 
@@ -42,8 +30,13 @@ class SocketIoServer {
 	}
 
 	init(app: Server) {
-		this.ioApp = new SocketIoServerInstance(app);
-		this.ioApp.use(this.authorization);
+		this.ioApp = new SocketIOServer(app, {
+			cors: {
+				origin: '*',
+				methods: ['GET', 'POST']
+			}
+		});
+		this.ioApp.use(this.authorization.bind(this));
 
 		this.onConnection();
 

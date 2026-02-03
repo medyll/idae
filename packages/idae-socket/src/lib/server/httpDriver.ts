@@ -7,7 +7,6 @@ import * as http from 'http';
 import express from 'express';
 import cors from 'cors';
 import * as core from 'express-serve-static-core';
-import bodyParser from 'body-parser';
 import { appRoutes } from './_utils/routes';
 import { dataEventInstance, TDataEvent } from './dataEvent';
 
@@ -63,9 +62,9 @@ class appAdapter {
 	static use(type: 'express') {
 		const app = express();
 		app.use(express.static('public'));
-		app.use(bodyParser.urlencoded({ extended: true }));
-		app.use(bodyParser.json());
-		app.use(bodyParser.raw());
+		app.use(express.urlencoded({ extended: true }));
+		app.use(express.json());
+		// app.use(express.raw()); 
 		app.use(cors());
 		//
 		return app;
