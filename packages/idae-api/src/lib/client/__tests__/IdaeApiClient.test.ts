@@ -10,6 +10,10 @@ global.fetch = vi.fn();
 describe('IdaeApiClient', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(global.fetch as any).mockResolvedValue({
+			ok: true,
+			json: async () => ({})
+		});
 		IdaeApiClientConfig.setOptions({
 			host: 'localhost',
 			port: 3000,
@@ -150,6 +154,10 @@ describe('IdaeApiClientCollection', () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(global.fetch as any).mockResolvedValue({
+			ok: true,
+			json: async () => ({})
+		});
 		IdaeApiClientConfig.setOptions({
 			host: 'localhost',
 			port: 3000,
@@ -382,6 +390,10 @@ describe('IdaeApiClientRequest', () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(global.fetch as any).mockResolvedValue({
+			ok: true,
+			json: async () => ({})
+		});
 		IdaeApiClientConfig.setOptions({
 			host: 'localhost',
 			port: 3000,

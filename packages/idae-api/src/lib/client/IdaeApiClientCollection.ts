@@ -26,58 +26,52 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
   async find<T extends object>(
     params?: IdaeApiClientRequestParams,
   ): Promise<T[]> {
-    const response = await this.requestClient.doRequest<T[]>({
+    return await this.requestClient.doRequest<T[]>({
       ...this.meta,
       params,
     });
-    return await response.json();
   }
 
   async findById<T>(id: string): Promise<T[]> {
-    const response = await this.requestClient.doRequest<T[]>({
+    return await this.requestClient.doRequest<T[]>({
       ...this.meta,
       slug: id,
     });
-    return await response.json();
   }
 
   async create<T>(body: T): Promise<T> {
-    const response = await this.requestClient.doRequest<T>({
+    return await this.requestClient.doRequest<T>({
       method: "POST",
       ...this.meta,
       body,
     });
-    return await response.json();
   }
 
   async update<T>(id: string, body: T): Promise<T> {
-    const response = await this.requestClient.doRequest<T>({
+    return await this.requestClient.doRequest<T>({
       method: "PUT",
       ...this.meta,
       body,
       slug: id,
     });
-    return await response.json();
   }
 
   async deleteById<T>(id: string): Promise<T> {
-    const response = await this.requestClient.doRequest<T>({
+    return await this.requestClient.doRequest<T>({
       method: "DELETE",
       ...this.meta,
       slug: id,
     });
-    return await response.json();
   }
 
   async deleteManyByQuery<T>(
     params: IdaeApiClientRequestParams,
   ): Promise<T[]> {
-    const response = await this.requestClient.doRequest<T[]>({
+    return await this.requestClient.doRequest<T[]>({
       method: "DELETE",
       ...this.meta,
       params,
     });
-    return await response.json();
   }
 
   // Stubs for missing interface methods
