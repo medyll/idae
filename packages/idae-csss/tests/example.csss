@@ -1,4 +1,8 @@
 body {
+  vars {
+    primary: "#007bff",
+    spacing: "1rem"
+  },
   layout {
     display: "flex",
     flow: "relative"

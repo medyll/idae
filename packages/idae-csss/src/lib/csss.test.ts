@@ -73,6 +73,18 @@ describe("OpCssF Style Model", () => {
       expect(css).toContain("min-height: 200px");
     });
 
+    it("should handle CSS variables", () => {
+      const style: Partial<OpCssF> = {
+        vars: {
+          primary: "red",
+          "--secondary": "blue",
+        },
+      };
+      const css = parser.parse(style);
+      expect(css).toContain("--primary: red");
+      expect(css).toContain("--secondary: blue");
+    });
+
     it("should handle states with selectors", () => {
       const style: Partial<OpCssF> = {
         layout: { display: "block" },

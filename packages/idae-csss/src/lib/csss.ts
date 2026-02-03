@@ -158,6 +158,9 @@ export interface OpCssF {
     contain?: string;
   };
 
+  /** CSS Variables / Custom Properties */
+  vars?: Record<string, CssValue>;
+
   /** Animation and transitions */
   motion: {
     transition?: string | string[];
@@ -394,6 +397,11 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
       },
       willChange: { css: "will-change" },
     },
+  },
+  vars: {
+    label: "CSS Variables",
+    description: "Custom CSS properties (variables).",
+    properties: {},
   },
   motion: {
     label: "Motion & Transform",
@@ -660,6 +668,15 @@ export class OpCssParser {
 
     for (const [category, values] of Object.entries(obj)) {
       if (category === "state" || category === "scale") continue;
+
+      // Special handling for CSS variables
+      if (category === "vars" && values) {
+        for (const [vName, vValue] of Object.entries(values as object)) {
+          const name = vName.startsWith("--") ? vName : `--${vName}`;
+          cssRules.push(`${name}: ${vValue}`);
+        }
+        continue;
+      }
 
       const meta = StyleModelMeta[category as keyof OpCssF];
       if (!meta || !values) continue;
