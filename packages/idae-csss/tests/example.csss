@@ -21,16 +21,22 @@ body {
   },
   typo: {
     size: 16,
-    weight: "bold",
-    color: "#333"
+    weight: "bold"
+  },
+  colors: {
+    text: "#333"
   }
 }
 
 .card {
+  colors {
+    bg: "#fff"
+  },
   look {
-    bg: "#fff",
-    radius: 8,
     shadow: "0 2px 10px rgba(0,0,0,0.1)"
+  },
+  contour {
+    radius: 8
   },
   state: {
     hover {

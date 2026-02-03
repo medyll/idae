@@ -1,10 +1,17 @@
-type all = string | number;
-type top = string | number;
-type bottom = string | number;
-type left = string | number;
-type right = string | number;
-type width = string | number;
-type height = string | number;
+export type all = string | number;
+export type top = string | number;
+export type bottom = string | number;
+export type left = string | number;
+export type right = string | number;
+export type width = string | number;
+export type height = string | number;
+export type radius = string | number;
+export type spacing = string | number;
+export type color = string;
+export type duration = string | number;
+export type opacity = number;
+export type zIndex = number;
+export type ratio = string | number;
 
 /**
  * Fundamental CSS Unit types
@@ -15,6 +22,12 @@ export type MultiValue =
   | [CssValue]
   | [CssValue, CssValue]
   | [CssValue, CssValue, CssValue, CssValue];
+
+export type BorderValue = string | [CssValue, string?, string?];
+export type OutlineValue = string | [CssValue, string?, string?];
+export type ShadowValue = string | string[];
+export type TransitionValue = string | string[];
+export type GapValue = CssValue | [CssValue, CssValue];
 
 /**
  * OpCssF - The core model for style re-categorization
@@ -32,7 +45,7 @@ export interface OpCssF {
       | "inline-grid";
     flow?: "absolute" | "fixed" | "static" | "relative" | "sticky";
     order?: number;
-    z?: number;
+    z?: zIndex;
     layer?: "top" | "middle" | "bottom" | number;
   };
 
@@ -58,36 +71,47 @@ export interface OpCssF {
     /** Points to an anchor (position-anchor) */
     to?: string;
     /** Positioning coordinates */
-    top?: CssValue;
-    bottom?: CssValue;
-    left?: CssValue;
-    right?: CssValue;
+    top?: top;
+    bottom?: bottom;
+    left?: left;
+    right?: right;
     inset?: MultiValue;
   };
 
   /** Physical dimensions and spacing */
   shape: {
-    w?: CssValue | [CssValue, CssValue] | [CssValue, CssValue, CssValue]; // [val, min, max]
-    h?: CssValue | [CssValue, CssValue] | [CssValue, CssValue, CssValue];
-    min?: { width?: CssValue; height?: CssValue };
-    max?: { width?: CssValue; height?: CssValue };
-    ratio?: string | number;
+    w?: width | [width, width] | [width, width, width]; // [val, min, max]
+    h?: height | [height, height] | [height, height, height];
+    min?: { width?: width; height?: height };
+    max?: { width?: width; height?: height };
+    ratio?: ratio;
   };
 
   /** Spacing and gaps */
   gutter: {
     margin?: MultiValue;
     padding?: MultiValue;
-    gap?: CssValue | [CssValue, CssValue];
+    gap?: GapValue;
   };
 
-  /** Visual appearance and borders */
-  look: {
-    bg?: string;
+  /** Colors and branding */
+  colors: {
+    bg?: color;
+    text?: color;
+  };
+
+  /** Border and outlines */
+  contour: {
     radius?: MultiValue;
-    border?: string | [CssValue, string?, string?];
-    shadow?: string | string[];
-    opacity?: number;
+    border?: BorderValue;
+    outline?: OutlineValue;
+    offset?: spacing;
+  };
+
+  /** Visual appearance */
+  look: {
+    shadow?: ShadowValue;
+    opacity?: opacity;
     cursor?: string;
     clip?: string;
     filter?: string;
@@ -122,26 +146,25 @@ export interface OpCssF {
   /** Typography and text rendering */
   typo: {
     face?: string;
-    size?: CssValue;
+    size?: spacing;
     weight?: "normal" | "bold" | "light" | number;
-    color?: string;
     align?: "left" | "center" | "right" | "justify";
-    lineHeight?: CssValue;
-    spacing?: CssValue;
+    lineHeight?: spacing;
+    spacing?: spacing;
     transform?: "uppercase" | "lowercase" | "capitalize" | "none";
     decoration?: string | [string, string?, string?];
     /** Modern text-wrap (balance, pretty) */
     wrap?: "pretty" | "balance" | "nowrap" | "wrap";
     /** Variable fonts support */
     variation?: string;
-    indent?: CssValue;
+    indent?: spacing;
     rendering?: "optimizeSpeed" | "optimizeLegibility" | "geometricPrecision";
   };
 
   /** Interactivity and UI behavior */
   ui: {
-    accent?: string;
-    caret?: string;
+    accent?: color;
+    caret?: color;
     pointer?: "auto" | "none" | "all";
     select?: "none" | "text" | "all" | "auto";
     appearance?: "none" | "auto" | string;
@@ -163,11 +186,11 @@ export interface OpCssF {
 
   /** Animation and transitions */
   motion: {
-    transition?: string | string[];
+    transition?: TransitionValue;
     animate?: string;
-    duration?: string | number;
+    duration?: duration;
     easing?: string;
-    delay?: string | number;
+    delay?: duration;
     transform?: string;
     /** View Transitions API support */
     viewTransition?: string;
@@ -303,15 +326,24 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
       },
     },
   },
-  look: {
-    label: "Visual Style",
-    description:
-      "Handles the aesthetic properties like colors, borders, and shadows.",
+  colors: {
+    label: "Colors & Branding",
+    description: "Handles background and text colors.",
     properties: {
       bg: {
         css: "background",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/background",
       },
+      text: {
+        css: "color",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/color",
+      },
+    },
+  },
+  contour: {
+    label: "Contour & Borders",
+    description: "Handles borders, outlines, and corner rounding.",
+    properties: {
       radius: {
         css: "border-radius",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius",
@@ -320,6 +352,20 @@ export const StyleModelMeta: Record<keyof OpCssF, any> = {
         css: "border",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/border",
       },
+      outline: {
+        css: "outline",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/outline",
+      },
+      offset: {
+        css: "outline-offset",
+        spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/outline-offset",
+      },
+    },
+  },
+  look: {
+    label: "Visual Style",
+    description: "Handles the aesthetic properties like colors and shadows.",
+    properties: {
       shadow: {
         css: "box-shadow",
         spec: "https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow",
@@ -727,6 +773,113 @@ export class OpCssParser {
     }
     return String(value);
   }
+}
+
+/**
+ * CsssNode - Manages style application on DOM elements
+ */
+export class CsssNode {
+  private targets: HTMLElement[] = [];
+  private parser = new OpCssParser();
+  private className: string | null = null;
+  private currentCss: string = "";
+
+  private static styleTag: HTMLStyleElement | null = null;
+  private static rulesMap: Map<string, string> = new Map();
+
+  constructor(target: string | HTMLElement | HTMLElement[] | NodeList) {
+    if (typeof window === "undefined") return;
+
+    if (typeof target === "string") {
+      this.targets = Array.from(document.querySelectorAll(target));
+    } else if (target instanceof HTMLElement) {
+      this.targets = [target];
+    } else if (target instanceof NodeList) {
+      this.targets = Array.from(target) as HTMLElement[];
+    } else if (Array.isArray(target)) {
+      this.targets = target;
+    }
+
+    this.className = `csss-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
+  /**
+   * Applies an OpCssF style model to the target elements
+   */
+  apply(style: Partial<OpCssF>) {
+    if (!this.className || this.targets.length === 0) return;
+
+    // 1. Generate CSS with the unique class selector
+    const css = this.parser.parse(style, `.${this.className}`);
+
+    // 2. Update the targets with the class
+    this.targets.forEach((el) => {
+      if (!el.classList.contains(this.className!)) {
+        el.classList.add(this.className!);
+      }
+    });
+
+    // 3. Update global styles
+    this.updateGlobalStyles(css);
+  }
+
+  /**
+   * Updates only specific parts of the style
+   */
+  update(style: Partial<OpCssF>) {
+    this.apply(style); // For now, re-applying the whole object is safer
+  }
+
+  /**
+   * Cleans up styles and removes classes
+   */
+  destroy() {
+    if (this.className) {
+      this.targets.forEach((el) => el.classList.remove(this.className!));
+      CsssNode.rulesMap.delete(this.className);
+      this.refreshStyleTag();
+    }
+  }
+
+  private updateGlobalStyles(css: string) {
+    if (!this.className) return;
+    CsssNode.rulesMap.set(this.className, css);
+    this.refreshStyleTag();
+  }
+
+  private refreshStyleTag() {
+    if (typeof document === "undefined") return;
+
+    if (!CsssNode.styleTag) {
+      CsssNode.styleTag = document.createElement("style");
+      CsssNode.styleTag.id = "idae-csss-runtime";
+      document.head.appendChild(CsssNode.styleTag);
+    }
+
+    const allCss = Array.from(CsssNode.rulesMap.values()).join("\n");
+    CsssNode.styleTag.textContent = allCss;
+  }
+}
+
+/**
+ * Svelte 5 Action for idae-csss
+ * Usage: <div use:csss={{ layout: { display: 'flex' } }}></div>
+ */
+export function csss(node: HTMLElement, style: Partial<OpCssF>) {
+  const cssNode = new CsssNode(node);
+
+  if (style) {
+    cssNode.apply(style);
+  }
+
+  return {
+    update(newStyle: Partial<OpCssF>) {
+      cssNode.apply(newStyle);
+    },
+    destroy() {
+      cssNode.destroy();
+    },
+  };
 }
 
 /**
