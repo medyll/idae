@@ -17,20 +17,9 @@ export const idaeCssVitePlugin = () => {
       if (!id.endsWith(".csss")) return null;
 
       try {
-        // Simple evaluation for now, in a real scenario we'd use a safer parser or JSON
-        // If the file is valid JSON, parse it, otherwise try to evaluate it as a JS object
-        let styleObj;
-        try {
-          styleObj = JSON.parse(code);
-        } catch {
-          // If not JSON, it might be an exported object or raw object literal
-          // This is a very basic implementation
-          const cleanCode = code
-            .replace(/export\s+default\s+/, "")
-            .replace(/;$/, "");
-          styleObj = new Function(`return ${cleanCode}`)();
-        }
-
+        // Parse the .csss source using the dedicated parser without executing it as code.
+        // NOTE: Avoid evaluating user-provided content (e.g. via `new Function` or `eval`)
+        // to prevent code injection vulnerabilities.
         const css = parser.parseCsss(code);
 
         // Return as a JS module that exports the CSS string
