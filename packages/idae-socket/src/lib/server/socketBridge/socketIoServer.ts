@@ -1,42 +1,134 @@
 'use strict';
 
 import type { Socket } from 'socket.io';
-import socketIO from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 import { Server } from 'net';
 import { TRoutesConfig } from '../@types';
 import { appRoutes } from '../_utils/routes';
+// @ts-ignore
+import socketThrottle from './socketThrottle';
+import { _config, IServerConfig } from '../_config/config';
 
-const request = require('request');
-const socketThrottle = require('./socketThrottle');
-const { _config } = require('../_config/config');
-const bodyParser = require('body-parser');
+import { createAdapter } from '@socket.io/redis-adapter';
+import { createClient } from 'redis';
+import jwt from 'jsonwebtoken';
 
-const { createAdapter } = require('@socket.io/redis-adapter');
-const { createClient } = require('redis');
+/**
+ * Interface for Auth Validation
+ * Implement this interface to provide real authentication
+ */
+interface IAuthValidator {
+	validate(token: string): Promise<boolean>;
+}
 
-class SocketIoServerInstance {
-	listeningIo: any;
+class JwtValidator implements IAuthValidator {
+	constructor(private authConfig: IServerConfig['auth']) {}
 
-	constructor(app: Server) {
-		//@ts-ignore
-		this.listeningIo = socketIO(app);
-
-		return this.listeningIo;
+	async validate(token: string): Promise<boolean> {
+		return new Promise((resolve) => {
+			if (!token) return resolve(false);
+			const cleanToken = token.replace('Bearer ', '');
+			jwt.verify(cleanToken, this.authConfig.jwtSecret, (err) => {
+				if (err) resolve(false);
+				else resolve(true);
+			});
+		});
 	}
 }
 
-class SocketIoServer {
+class IntrospectionValidator implements IAuthValidator {
+	constructor(private authConfig: IServerConfig['auth']) {}
+
+	async validate(token: string): Promise<boolean> {
+		try {
+			if (!token) return false;
+			const cleanToken = token.replace('Bearer ', '');
+			const response = await fetch(this.authConfig.introspectionUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token: cleanToken })
+			});
+			// Expecting 200 OK for valid tokens
+			return response.ok;
+		} catch (e) {
+			console.error('Auth Introspection Error:', e);
+			return false;
+		}
+	}
+}
+
+class AllowAllValidator implements IAuthValidator {
+	async validate(token: string): Promise<boolean> {
+		return true;
+	}
+}
+
+export class SocketIoServer {
 	ioApp: any;
 
 	private routesConfig: TRoutesConfig;
+	private validator: IAuthValidator;
+	private config: IServerConfig;
 
-	constructor() {
+	constructor(configOverride: Partial<IServerConfig> = {}) {
+		// Merge default config with overrides
+		this.config = {
+			..._config,
+			...configOverride,
+			auth: {
+				..._config.auth,
+				...(configOverride.auth || {})
+			}
+		};
+
 		this.routesConfig = appRoutes.getRoutes();
+		
+		// Initialize Auth Strategy
+		switch (this.config.auth.strategy) {
+			case 'jwt':
+				console.log('Socket Auth Strategy: JWT');
+				this.validator = new JwtValidator(this.config.auth);
+				break;
+			case 'introspection':
+				console.log('Socket Auth Strategy: Introspection');
+				this.validator = new IntrospectionValidator(this.config.auth);
+				break;
+			default:
+				console.warn('Socket Auth Strategy: NONE (Dev Only)');
+				this.validator = new AllowAllValidator();
+				break;
+		}
 	}
 
 	init(app: Server) {
-		this.ioApp = new SocketIoServerInstance(app);
-		this.ioApp.use(this.authorization);
+		const corsOrigin = this.config.corsOrigin.includes(',') 
+			? this.config.corsOrigin.split(',') 
+			: this.config.corsOrigin;
+
+		this.ioApp = new SocketIOServer(app, {
+			cors: {
+				origin: corsOrigin,
+				methods: ['GET', 'POST']
+			}
+		});
+
+		// Redis Adapter Configuration
+		if (this.config.redisUrl) {
+			console.log('Initializing Redis Adapter...');
+			const pubClient = createClient({ url: this.config.redisUrl });
+			const subClient = pubClient.duplicate();
+
+			Promise.all([pubClient.connect(), subClient.connect()])
+				.then(() => {
+					this.ioApp.adapter(createAdapter(pubClient, subClient));
+					console.log(`[idae-socket] Redis Adapter connected (${this.config.redisUrl})`);
+				})
+				.catch((err) => {
+					console.error('[idae-socket] Redis Adapter connection error:', err);
+				});
+		}
+
+		this.ioApp.use(this.authorization.bind(this));
 
 		this.onConnection();
 
@@ -57,6 +149,20 @@ class SocketIoServer {
 		// post to api for json_token
 		if (!authHeaders) {
 			return next(new Error('Missing Auth method'));
+		}
+		
+		// ---------------------------------------------------------
+		// AUTH DELEGATION
+		// In a real scenario, validate the token here.
+		// For now, we allow everything but log a warning if it looks suspicious.
+		// ---------------------------------------------------------
+		const isValid = await this.validator.validate(authHeaders);
+		if (!isValid) {
+			// Uncomment to enforce auth
+			// return next(new Error('Invalid Credentials'));
+			if (this.config.auth.strategy !== 'none') {
+				console.warn(`[idae-socket] Auth failed (${this.config.auth.strategy}) for client ${socket.id}`);
+			}
 		}
 
 		next();

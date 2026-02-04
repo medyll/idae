@@ -12,8 +12,8 @@ function walk(dir) {
       let content = fs.readFileSync(res, "utf8");
       if (content.includes("workspace:")) {
         // Replace workspace:* or workspace:^1.0.0 with *
-        content = content.replace(/"workspace:[^"]*"/g, '"*"');
-        fs.writeFileSync(res, content);
+        //content = content.replace(/"workspace:[^"]*"/g, '"*"');
+        //fs.writeFileSync(res, content);
       }
     }
   }

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	type Props = {
+	export type SlottedProps = {
 		child?: Snippet<[any]>;
 		slotArgs?: any;
 		children?: Snippet<[any]>;
 	};
 
-	let { child, children, slotArgs = $bindable({}) }: Props = $props();
+	let { child, children, slotArgs = $bindable({}) }: SlottedProps = $props();
 </script>
 
 {#if child !== undefined}

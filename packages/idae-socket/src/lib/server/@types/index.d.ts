@@ -7,11 +7,19 @@ export interface IReceivedDataByPost {
 	rooms: string[];
 	sender: {
 		roles: any[];
-		token: string;
+		token?: string;
+		/**
+		 * Origine session identifiers
+		 * (e.g. PHPSESSION, cookie, external system ID)
+		 */
+		cookie?: string;
+		sessionId?: string;
+		[key: string]: any;
 	};
 	payload: {
-		own: string;
-		action: TCrudOpt;
+		own?: string;
+		action?: TCrudOpt;
+		[key: string]: any;
 	};
 }
 

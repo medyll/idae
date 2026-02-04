@@ -4,7 +4,8 @@
 	import DataListCell from '$lib/data/dataList/DataListCell.svelte';
 	import DataListHead from '$lib/data/dataList/DataListHead.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import type { DataCellType, DataListProps } from './types.js';
+	import type { DataCellType } from './types.js';
+	import type { DataListProps } from './DataList.svelte';
 	import Demoer from '$lib/base/demoer/Demoer.svelte';
 
 	import { parameters, componentArgs } from './types.js';

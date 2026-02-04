@@ -1,5 +1,24 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+/**
+ * Props for the DataListHead component.
+ */
+export type DataListHeadProps = {
+	/** Inline style for the head element */
+	style?: string;
+	/** Reference to the head element */
+	element?: HTMLDivElement;
+	/** If true, header is sticky */
+	stickyHeader?: boolean;
+	/** Sort handler function */
+	onSort?: Function;
+	/** Slot for header children */
+	children?: Snippet;
+};
+</script>
 <script lang="ts">
-	import type { DataListHeadProps, DataListStoreType } from './types.js';
+		import type { DataListStoreType } from './types.js';
+		// DataListHeadProps now in module script
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { DataCellType } from './types.js';

@@ -1,8 +1,33 @@
+<script module lang="ts">
+import type { CommonProps, IconObj } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the ContentSwitcher component.
+ * Represents a UI control for toggling content visibility with icons and slots.
+ */
+export type ContentSwitcherProps = CommonProps & {
+	/** CSS class for the root element */
+	class?: string;
+	/** Reference to the root HTMLDivElement */
+	element?: HTMLDivElement;
+	/** Icon for the switcher */
+	icon?: string | IconObj;
+	/** Icon for the back action */
+	iconback?: string | IconObj;
+	/** Parent element for the switcher */
+	parent?: HTMLElement;
+	/** Slot for the toggler icon */
+	contentSwitcherTogglerIcon?: Snippet;
+	/** Slot for the back icon */
+	contentSwitcherBackIcon?: Snippet;
+	/** Slot for the reveal content */
+	contentSwitcherReveal?: Snippet;
+};
+</script>
 <script lang="ts">
 	import IconButton from '$lib/controls/button/IconButton.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ContentSwitcherProps } from './types.js';
 	import type { ExpandProps } from '$lib/types/index.js';
 
 	let {
@@ -60,6 +85,6 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './content-switcher.scss';
 </style>

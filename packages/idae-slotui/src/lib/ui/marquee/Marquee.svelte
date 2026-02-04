@@ -94,6 +94,6 @@
 	<Stepper {...stepperProps} steps={[{ order: 1 }, { order: 2 }]}></Stepper>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './marquee.scss';
 </style>

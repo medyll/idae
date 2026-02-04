@@ -95,4 +95,26 @@ describe("CollectionCore", () => {
     const result = await collection.deleteWhere(where);
     expect(result).toBe(true);
   });
+
+  it("should count all documents in the collection", async () => {
+    const count = await collection.count();
+    expect(count).toBeGreaterThan(0);
+    expect(typeof count).toBe("number");
+  });
+
+  it("should count documents matching a query", async () => {
+    const count = await collection.count({ title: "Chat 1" });
+    expect(count).toBe(1);
+  });
+
+  it("should return 0 for query with no matches", async () => {
+    const count = await collection.count({ title: "NonExistent" });
+    expect(count).toBe(0);
+  });
+
+  it("should count documents with complex query", async () => {
+    await collection.put({ chatId: "5", title: "Chat 5" });
+    const count = await collection.count({ chatId: { $in: ["1", "2", "3"] } });
+    expect(count).toBeGreaterThanOrEqual(3);
+  });
 });

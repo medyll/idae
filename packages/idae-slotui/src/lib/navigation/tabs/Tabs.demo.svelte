@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Tabs from './Tabs.svelte';
 	import Cartouche from '$lib/base/cartouche/Cartouche.svelte';
-	import type { TabsItemsProps } from './types.js';
+	import type { TabsItemsProps } from './Tabs.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import DemoerComponent from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoPage from '$lib/base/demoer/DemoPage.svelte';

@@ -1,42 +1,94 @@
 <script module lang="ts">
-	import type { Snippet } from "svelte";
-	import type { ElementProps, CommonProps } from '$lib/types/index.js'; 
- 
-	export interface AlertProps extends CommonProps {
-		/** alert level */
-		level?: ElementProps["levels"];
-		/** message to be shown */
-		message?: string;
-		/** make the alert draggable */
-		draggable?: boolean;
-		/** show or hide the alert */
-		isOpen?: boolean;
-		children?: Snippet;
-		alertTopButton?: Snippet;
-		alertMessage?: Snippet;
-		alertButtonZone?: Snippet;
-		alertButtonClose?: Snippet;
-	}
+import type { Snippet } from 'svelte';
+import Divider from '$lib/base/divider/Divider.svelte';
+import { fade } from 'svelte/transition';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+/**
+ * @description:  Represents an alert message with customizable level, message, and slot support.
+ * @property {string} [class] - Class name for the alert root element, allowing custom styling.
+ * @property {HTMLDialogElement} [element] - Reference to the dialog element for imperative access.
+ * @property {string} [level] - Alert level (e.g., 'info', 'warning', 'error'), used for color and icon.
+ * @property {string} [message] - Main message to display in the alert body.
+ * @property {boolean} [draggable] - If true, makes the alert dialog draggable by the user.
+ * @property {boolean} [isOpen] - Controls the visibility of the alert dialog.
+ * @property {Snippet} [children] - Slot for custom content inside the alert (replaces message if provided).
+ * @property {Snippet} [alertTopButton] - Slot for a button or element in the alert header (e.g., actions).
+ * @property {Snippet} [alertMessage] - Slot for additional message content below the header.
+ * @property {Snippet} [alertButtonZone] - Slot for custom buttons or actions in the alert footer.
+ * @property {Snippet} [alertButtonClose] - Slot for a custom close button in the header.
+ */
+export type AlertProps = {
+	/**
+	 * Class name for the alert root element, allowing custom styling.
+	 */
+	class?: string;
+
+	/**
+	 * Reference to the dialog element for imperative access.
+	 */
+	element?: HTMLDialogElement;
+
+	/**
+	 * Alert level (e.g., 'info', 'warning', 'error'), used for color and icon.
+	 */
+	level?: string;
+
+	/**
+	 * Main message to display in the alert body.
+	 */
+	message?: string;
+
+	/**
+	 * If true, makes the alert dialog draggable by the user.
+	 */
+	draggable?: boolean;
+
+	/**
+	 * Controls the visibility of the alert dialog.
+	 */
+	isOpen?: boolean;
+
+	/**
+	 * Slot for custom content inside the alert (replaces message if provided).
+	 */
+	children?: Snippet;
+
+	/**
+	 * Slot for a button or element in the alert header (e.g., actions).
+	 */
+	alertTopButton?: Snippet;
+
+	/**
+	 * Slot for additional message content below the header.
+	 */
+	alertMessage?: Snippet;
+
+	/**
+	 * Slot for custom buttons or actions in the alert footer.
+	 */
+	alertButtonZone?: Snippet;
+
+	/**
+	 * Slot for a custom close button in the header.
+	 */
+	alertButtonClose?: Snippet;
+};
 </script>
 
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import Divider from '$lib/base/divider/Divider.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
 
 	let {
-		class: className,
-		message,
-		draggable = false,
-		level = $bindable<ElementProps['levels']>('info'),
-		isOpen = $bindable<boolean>(false),
-		element = $bindable<HTMLDialogElement>(),
-		children,
-		alertTopButton,
-		alertMessage,
-		alertButtonZone,
-		alertButtonClose
+	  class: className = '',
+	  message,
+	  draggable = false,
+	  level = $bindable<string>('info'),
+	  isOpen = $bindable<boolean>(false),
+	  element = $bindable<HTMLDialogElement>(),
+	  children,
+	  alertTopButton,
+	  alertMessage,
+	  alertButtonZone,
+	  alertButtonClose
 	}: AlertProps = $props();
 
 	export const actions: Record<'open' | 'toggle' | 'close', Function> = {
@@ -115,6 +167,6 @@
 	</dialog>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './alert.scss';
 </style>

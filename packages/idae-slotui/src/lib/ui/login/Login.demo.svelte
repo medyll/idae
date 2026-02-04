@@ -13,7 +13,9 @@
 	import Button from '../../controls/button/Button.svelte';
 	import DemoerComponent from '$lib/base/demoer/DemoerComponent.svelte';
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './types.js'; // keep for now if needed for demo values
+	// Types are now in Login.svelte, update type imports if needed
+// import type { LoginProps } from './Login.svelte';
 
 	let submitting: boolean = false;
 	let showLogin: boolean = true;

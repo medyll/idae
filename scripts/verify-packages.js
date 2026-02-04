@@ -7,7 +7,7 @@ const packages = fs.readdirSync(packagesDir);
 const packagePre = "prepackage";
 const packagePreFile = "package-pre.js";
 const packagePreContent = `// Created scripts/${packagePreFile}\r\n
-import { MakeLibIndex } from '@medyll/idae-shared';
+import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
 new MakeLibIndex().makeIndexFile();`;
 
 console.log("Packages verification started");
@@ -51,7 +51,7 @@ packages.forEach((packageName) => {
   }
 
   // Force all @medyll/* dependencies to "workspace:*"
-  const depFields = [
+  /* const depFields = [
     "dependencies",
     "devDependencies",
     "peerDependencies",
@@ -71,7 +71,7 @@ packages.forEach((packageName) => {
         console.log(`Set ${field} -> ${dep} to workspace:* in ${packageName}`);
       }
     }
-  }
+  } */
 
   // "prepackage"
   if (!packageJson?.scripts?.[packagePre]) {

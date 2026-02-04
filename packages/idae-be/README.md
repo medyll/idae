@@ -372,6 +372,24 @@ be('#test').fire('customEvent', { key: 'value' });
 
 ---
 
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Target[Selector / Element] --> Be[be()]
+  Be --> Chain[Chained Operations]
+  
+  subgraph Operations [DOM Manipulation]
+    Chain --> Attr[Attributes / Classes]
+    Chain --> Style[Styles]
+    Chain --> Events[Event Listeners]
+    Chain --> Content[Append / Prepend]
+  end
+
+  Chain -- returns --> Be
+```
+
 ## License
 
 This project is licensed under the MIT License.

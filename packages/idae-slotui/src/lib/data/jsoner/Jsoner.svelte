@@ -1,17 +1,34 @@
+<script module lang="ts">
+import type { CommonProps, Data } from '$lib/types/index.js';
+/**
+ * Props for the Jsoner component.
+ * Displays and introspects JSON-like data in various modes.
+ */
+export type JsonerProps = CommonProps & {
+	/** The data to be displayed */
+	data: Data[];
+	/** The mode of the data */
+	mode?: 'array' | 'object' | 'string' | 'number';
+};
+</script>
+
 <script lang="ts">
-	import type { JsonerProps } from './types.js';
+let {
+	class: className = '',
+	element,
+	data = [],
+	mode = 'array'
+} = $props<JsonerProps>();
 
-	let { class: className = '', element, data = [], mode = 'array' }: JsonerProps = $props();
-
-	if (Array.isArray(data)) {
-		mode = 'array';
-	} else if (typeof data === 'object') {
-		mode = 'object';
-	} else if (typeof data === 'string') {
-		mode = 'string';
-	} else if (typeof data === 'number') {
-		mode = 'number';
-	}
+if (Array.isArray(data)) {
+	mode = 'array';
+} else if (typeof data === 'object') {
+	mode = 'object';
+} else if (typeof data === 'string') {
+	mode = 'string';
+} else if (typeof data === 'number') {
+	mode = 'number';
+}
 </script>
 
 {#if data}

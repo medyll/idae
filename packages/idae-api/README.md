@@ -1,6 +1,6 @@
 # @medyll/idae-api
 
-A flexible and extensible Node.js API, based on the [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db) library, allowing you to manage multiple types of databases (MongoDB, MySQL, etc.) and providing a complete TypeScript client to interact with your endpoints.
+A flexible and extensible Node.js API framework, built on top of [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db). It provides a complete solution for managing multiple database types (MongoDB, MySQL, PostgreSQL, SQLite, PouchDB, ChromaDB) with a modular architecture and a type-safe TypeScript client.
 
 ---
 
@@ -9,364 +9,254 @@ A flexible and extensible Node.js API, based on the [@medyll/idae-db](https://ww
 - [Overview](#overview)
 - [Installation](#installation)
 - [Main Features](#main-features)
-- [Server Usage](#server-usage)
-  - [Configuration](#configuration)
-  - [Adding Custom Routes](#adding-custom-routes)
-  - [Database Management](#database-management)
+- [Server-Side Usage](#server-side-usage)
+  - [Initialization & Configuration](#initialization--configuration)
+  - [Routing & Custom Endpoints](#routing--custom-endpoints)
+  - [Middleware & Multi-Tenancy](#middleware--multi-tenancy)
   - [Error Handling](#error-handling)
-- [Client Usage](#client-usage)
+- [Client-Side Usage](#client-side-usage)
   - [Client Configuration](#client-configuration)
-  - [Available Methods](#available-methods)
   - [Usage Examples](#usage-examples)
-- [Full List of Methods (inherited from idae-db)](#full-list-of-methods-inherited-from-idae-db)
-- [Contributing](#contributing)
+  - [Method Reference](#method-reference)
+  - [Query Syntax (MongoDB-like)](#query-syntax-mongodb-like)
+- [Troubleshooting](#troubleshooting)
+- [Architecture](#architecture)
 - [License](#license)
 
 ---
 
 ## Overview
 
+`@medyll/idae-api` bridges your data layer and your application with a powerful API framework.
 
-`@medyll/idae-api` is a modular Node.js API framework designed to work with multiple database types thanks to the [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db) library. It offers:
-
-- Modular architecture (routes, middlewares, dynamic connection management)
-- TypeScript/JavaScript client for easy API consumption
-- Extension system to support other databases
-- Native support for MongoDB and MySQL (via idae-db)
-- Hooks/events on CRUD operations
-- **MongoDB-like API syntax:** All query and update operations use a syntax very close to MongoDB (operators like `$in`, `$gt`, `$set`, etc.), making it intuitive for developers familiar with MongoDB.
+- **Unified Data Access**: Manage MongoDB, MySQL, PostgreSQL, SQLite, PouchDB, and ChromaDB through a single interface.
+- **Developer Experience**: TypeScript-first approach, auto-generated OpenAPI docs, and intuitive MongoDB-like syntax for all databases.
+- **Enterprise Features**: Strict multi-tenancy, JWT authentication, RBAC/ABAC authorization, and centralized error handling (moved to `HttpError`).
+- **Observability**: Structured logging with `pino` default integration.
 
 ## Installation
 
 ```bash
 npm install @medyll/idae-api
-
-npm install @medyll/idae-api --latest # to install the latest version
-npm install @medyll/idae-api --next # for the next version (if available)
-
 ```
 
 ---
-
-
 
 ## Main Features
 
-- Multi-database management (MongoDB, MySQL, etc.)
-- Flexible routing and custom route addition
-- Optional authentication middleware
-- Centralized error handling
-- Hooks/events on all CRUD operations
-- Complete TypeScript client for API consumption
-- Inherits all advanced methods from [@medyll/idae-db](https://www.npmjs.com/package/@medyll/idae-db)
-- **Comprehensive middleware system** for authentication, authorization, validation, multi-tenancy, docs, and health endpoints
-- **Strict multi-tenancy**: Tenant context required for all requests (see below)
-- **Robust error handling**: All errors are handled by a centralized middleware
-
-
-### Advanced (2026):
-- **OpenAPI auto-generation & docs**: `/openapi.json` (spec), `/docs` (Swagger UI), `/redoc` (Redoc)
-- **RBAC/ABAC**: Per-route authorization via JWT roles/scopes (see `authorization` in route definitions)
-- **Strict multi-tenancy**: Tenant context required for all requests (from JWT, e.g. `tenantId` claim)
-- **Security/validation**: CORS, helmet, rate limiting, payload limits, Zod validation, DB guardrails, health endpoints
+| Server Side | Client Side |
+|-------------|-------------|
+| 🛠 **Modular Architecture**: Express-based with dynamic connection management. | 📦 **Type-Safe Client**: Full TypeScript support for API consumption. |
+| 🔌 **Multi-DB Support**: Native support for **MongoDB, MySQL, PostgreSQL, SQLite, PouchDB, and ChromaDB** via `idae-db`. | 🔍 **Unified Query Syntax**: Use MongoDB operators (`$in`, `$gt`, `$set`) for all DBs. |
+| 🛡 **Security**: JWT Auth, RBAC Authorization, Rate Limiting, Helmet. | ⚡ **Reactive Hooks**: Register `pre` and `post` hooks on any CRUD operation. |
+| 🏢 **Multi-Tenancy**: Built-in tenant context enforcement. | 🔗 **Chainable API**: Easy selection of databases and collections. |
+| 📝 **Documentation**: Auto-generated OpenAPI (Swagger/Redoc). | |
 
 ---
 
-## Middleware, Multi-Tenancy, and Error Handling
+# Server-Side Usage
 
-This project uses a comprehensive middleware system for authentication, authorization, validation, multi-tenancy, documentation, and health endpoints. See [`src/lib/server/middleware/README.md`](src/lib/server/middleware/README.md) for a full list and integration order.
+This section covers how to set up and run the `idae-api` server.
 
-**Multi-tenancy** is enforced via `tenantContextMiddleware`, which extracts the tenant context from the JWT or user object and injects it into the request. All protected routes require a valid tenant context. See the developer docs and middleware README for details and options.
+### Initialization & Configuration
 
-**Error handling** is centralized: any error thrown in a route or middleware is caught and returned as a JSON error response with the appropriate status code.
-
-**Testing**: Extensive tests cover edge cases, error handling, and multi-tenancy scenarios. See `src/lib/server/__tests__/middleware/` for examples.
-
-**CI/CD**: The test suite must pass for all changes. Run `npm run test` locally and ensure your CI pipeline is green before merging.
-
----
-
-## Server Usage
-
-### Configuration
+Use `idaeApi.setOptions()` to configure the server before starting it.
 
 ```typescript
 import { idaeApi } from '@medyll/idae-api';
+import { logger } from '@medyll/idae-api/services/logger'; // If available or custom logger
 
 idaeApi.setOptions({
   port: 3000,
-  enableAuth: true, // or false
-  jwtSecret: 'your-secret-key',
+  enableAuth: true,
+  jwtSecret: process.env.JWT_SECRET,
   tokenExpiration: '1h',
-  routes: customRoutes // optional
+  onInUse: 'replace', // 'fail' or 'replace' if port is busy
+  cors: { origin: '*' }, // Standard CORS options
+  rateLimit: { windowMs: 60000, max: 100 }
 });
 
 idaeApi.start();
+logger.info(`Server state: ${idaeApi.state}`);
 ```
 
-#### Example of custom routes
+### Routing & Custom Endpoints
+
+You can inject custom routes into the API.
 
 ```typescript
 const customRoutes = [
   {
     method: 'get',
     path: '/custom/hello',
-    handler: async () => ({ message: 'Hello from custom route!' }),
-    requiresAuth: false
+    requiresAuth: false,
+    // Handler receives the connected service derived from the URL context if applicable,
+    // otherwise it's a standard endpoint.
+    handler: async (service, params, body, query) => {
+      return { message: 'Hello from custom route!' };
+    }
   }
 ];
 
 idaeApi.router.addRoutes(customRoutes);
 ```
 
-### Database Management
+### Middleware & Multi-Tenancy
 
-`idae-api` relies on `@medyll/idae-db` for connection and database operation management. You can:
+The API server comes with a pre-configured middleware stack:
+1. **Security**: Helmet, CORS, Rate Limiting.
+2. **Body Parsing**: JSON and URL-encoded with configurable limits.
+3. **Authentication**: (Optional) JWT validation.
+4. **Tenant Context**: Enforced via `tenantContextMiddleware`. Extracts tenant info from the token.
+5. **Database Context**: Resolves the correct DB/Collection based on the URL path.
 
-- Add new database adapters (see the `DatabaseAdapter` interface in idae-db)
-- Use all hooks/events from idae-db (see below)
+**Multi-Tenancy Note**: All protected routes require a valid tenant context, which is automatically injected into `req` by the middleware.
 
-### Error Handling
+### Error Handling & Logging
 
-An error handling middleware is included. You can customize it via the `configureErrorHandling` method in the `IdaeApi` class.
+Errors are managed centrally. 
+- Use the exported `HttpError` class to throw standard errors with status codes.
+- All 500 errors are logged via `pino` (structured logging).
+- The server automatically responds with formatted JSON error objects.
+
+```typescript
+import { HttpError } from '@medyll/idae-api/errors';
+
+// Inside a handler
+if (!user) {
+  throw new HttpError(404, "User not found");
+}
+```
 
 ---
 
-## Client Usage
+# Client-Side Usage
+
+This section covers the purely client-side library used to consume the API.
 
 ### Client Configuration
 
+Configure the client singleton before usage.
+
 ```typescript
-import { IdaeApiClientConfig } from '@medyll/idae-api';
+import { IdaeApiClientConfig, IdaeApiClient } from '@medyll/idae-api/client';
 
 IdaeApiClientConfig.setOptions({
   host: 'localhost',
   port: 3000,
-  method: 'http',
+  method: 'http', // or 'https'
   defaultDb: 'idae_base',
-  separator: '//'
+  headers: { 'Authorization': 'Bearer ...' } // Global headers
 });
-```
-
-### Creating a client instance
-
-```typescript
-import { IdaeApiClient } from '@medyll/idae-api';
 
 const client = new IdaeApiClient();
 ```
 
-### Available Methods
-
-#### Database and Collection Management
-
-- `getDbList()` : List available databases
-- `getCollections(dbName)` : List collections in a database
-- `db(dbName)` : Select a database (returns an object with `collection` and `getCollections`)
-- `collection(collectionName, dbName?)` : Select a collection (optionally in a given database)
-
-### Event/Hook Management (inherited from idae-db)
-
-You can register hooks on all operations:
-
-```typescript
-const usersCollection = client.collection('user');
-
-usersCollection.registerEvents({
-  findById: {
-    pre: (id) => console.log(`Before searching for ID: ${id}`),
-    post: (result, id) => console.log(`Result for ${id}:`, result),
-    error: (error) => console.error('Error on findById:', error)
-  },
-  // ... same for update, create, etc.
-});
-
-#### CRUD Operations on a Collection
-
-All the following methods are available via the `IdaeApiClientCollection` object:
-
-- `findAll(params?)` : List all documents (with filters, sorting, pagination)
-- `findById(id)` : Get a document by its ID
-- `findOne(params)` : Get a document by a filter (inherited from idae-db)
-- `create(body)` : Create a document
-- `update(id, body)` : Update a document
-- `deleteById(id)` : Delete a document by its ID
-- `deleteManyByQuery(params)` : Delete multiple documents by filter
-
-#
-```
-
 ### Usage Examples
 
-### MongoDB-like Query Syntax
-
-All query and update operations use a syntax very close to MongoDB. For example, you can use operators like `$in`, `$gt`, `$set`, etc. in your queries and updates.
-
----
-
-#### List databases
-
+#### Basic CRUD
 ```typescript
-const dbList = await client.getDbList();
-console.log('Databases:', dbList);
-```
+// Select collection
+const users = client.db('app').collection('users');
 
-#### List collections in a database
+// Create
+const newUser = await users.create({ name: "Alice", age: 30 });
 
-```typescript
-const collections = await client.getCollections('idae_base');
-console.log('Collections:', collections);
-```
-
-#### Find documents with advanced query (MongoDB-like)
-
-```typescript
-const userCollection = client.db('app').collection('user');
-const users = await userCollection.find({
-  email: { $in: ["Karin@example.com", "Test@Value"] },
-  age: 31,
+// Find One (MongoDB-like syntax)
+const user = await users.findOne({ 
+    _id: newUser._id 
 });
-console.log(users);
-```
 
-#### Create a new document
-
-```typescript
-const newUser = await userCollection.create({
-  name: "new user",
-  email: "Test@Value",
+// Update
+await users.update(user._id, { 
+    $set: { age: 31 } 
 });
-console.log(newUser);
+
+// Delete
+await users.deleteById(user._id);
 ```
 
-#### Find all documents in a collection
-
+#### Advanced Querying
 ```typescript
-const allDocs = await userCollection.findAll();
-console.log(allDocs);
-```
-
-#### Find a specific document by ID
-
-```typescript
-const foundDoc = await userCollection.findById(newUser._id);
-console.log(foundDoc);
-```
-
-#### Update a document (MongoDB-like update syntax)
-
-```typescript
-const updatedDoc = await userCollection.update(newUser._id, {
-  $set: { value: "Updated Value" },
+// Find with complex filters
+const results = await users.find({
+  age: { $gt: 18 },
+  roles: { $in: ["admin", "editor"] }
 });
-console.log(updatedDoc);
+
+console.log(results);
 ```
 
-#### Delete a document
+### Method Reference
 
-```typescript
-const deleteResult = await userCollection.deleteById(newUser._id);
-console.log(deleteResult);
-```
+The client exposes `IdaeApiClientCollection` with these core methods:
 
-#### Use a specific database and collection
+*   **`findAll(params?)`**: Retrieve all documents (paginated).
+*   **`findById(id)`**: Get by unique ID.
+*   **`findOne(filter)`**: Get first match.
+*   **`find(filter, options?)`**: Search with full criteria.
+*   **`create(data)`**: Create a new resource.
+*   **`update(id, data)`**: Update existing resource.
+*   **`deleteById(id)`**: Remove by ID.
+*   **`deleteManyByQuery(filter)`**: Bulk delete.
+*   **`registerEvents(hooks)`**: Add `pre`, `post`, or `error` hooks to local operations.
 
-```typescript
-const appSchemeCollection = client.db('idae_base').collection('appscheme');
-const docs = await appSchemeCollection.findAll();
-console.log(docs);
-```
+### Query Syntax (MongoDB-like)
 
-#### Delete many documents by query (be careful with this!)
-
-```typescript
-const deleteResult2 = await client
-  .collection('appscheme_base')
-  .deleteManyByQuery({ testField: 'testValue' });
-console.log(deleteResult2);
-```
-
-#### Register hooks/events on collection methods
-
-```typescript
-const usersCollection = client.collection('user');
-
-usersCollection.registerEvents({
-  findById: {
-    pre: (id) => console.log(`Before searching for ID: ${id}`),
-    post: (result, id) => console.log(`Result for ${id}:`, result),
-    error: (error) => console.error('Error on findById:', error)
-  },
-  // ... same for update, create, etc.
-});
-```
+We support standard MongoDB query operators across all supported database types:
+*   **Comparison**: `$eq`, `$gt`, `$gte`, `$in`, `$lt`, `$lte`, `$ne`, `$nin`
+*   **Logical**: `$or`, `$and`, `$not`, `$nor`
+*   **Element**: `$exists`, `$type`
+*   **Evaluation**: `$regex`
+*   **Update**: `$set`, `$unset`, `$inc`, `$push`, `$pull`
 
 ---
 
-## Full List of Methods (inherited from idae-db)
+## Troubleshooting
 
-### Collection Methods
+Common issues and solutions:
 
-- `find(params)` : Advanced search (filters, sorting, pagination)
-- `findOne(params)` : Find a single document by filter
-- `findById(id)` : Find by ID
-- `create(data)` : Create
-- `update(id, data)` : Update
-- `deleteById(id)` : Delete by ID
-- `deleteManyByQuery(params)` : Bulk delete
-- `registerEvents(events)` : Register hooks (pre/post/error) on each method
+- **"Database connection not established" (Server)**:
+  - Check if the route includes `/:collectionName`. The DB middleware attaches only when a collection context matches request params.
+- **"Token invalid" (Client/Server)**:
+  - Verify `jwtSecret` matches on both (or the token provider).
+  - Check `tokenExpiration` settings.
+- **Empty Query Results**:
+  - Ensure you are querying the correct `db` and `collection`.
+  - Check if tenant isolation is hiding data (if multi-tenancy is active).
+- **CORS Errors**:
+  - Update `cors` options in `idaeApi.setOptions()`.
 
-### Connection Management
-
-- `closeAllConnections()` : Close all active connections
-
-### Useful Types
-
-- `RequestParams` : `Record<string, unknown>`
-- `HttpMethod` : `'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'`
-- `RouteNamespace` : ``methods/${'dbs' | 'collections'}``
-- `UrlParams` : `{ dbName?: string; collectionName?: string; slug?: string; params?: Record<string, string>; routeNamespace?: RouteNamespace }`
-- `RequestOptions<T>` : `UrlParams & { baseUrl?: string; method?: HttpMethod; body?: T; headers?: RequestInit['headers'] }`
+See full documentation in `src/lib/server/middleware/README.md` for advanced middleware configuration.
 
 ---
 
-## Contributing
-
-Contributions are welcome! Feel free to submit a Pull Request.
-
----
-
-
----
-
-## Erreurs courantes & troubleshooting
-
-Voici quelques problèmes fréquemment rencontrés et leurs solutions rapides :
-
-- **req.idaeDb ou req.connectedCollection undefined** : la route ne correspond pas au pattern attendu ou le middleware n’est pas appliqué. Vérifie le chemin et l’ordre des middlewares.
-- **Token invalide sur route protégée** : header Authorization absent/mal formé, ou token expiré. Vérifie la config côté client et serveur.
-- **Timeout ou erreur de connexion MongoDB** : URI incorrect ou service MongoDB non démarré. Vérifie la chaîne de connexion et l’état du service.
-- **Résultat de requête vide** : mauvais nom de collection/db, ou filtre trop restrictif. Loggue les paramètres pour debug.
-- **404 ou handler non appelé** : route non enregistrée ou méthode HTTP incorrecte. Vérifie la déclaration dans routeDefinitions.ts.
-- **Mismatch de types client/serveur** : le serveur doit retourner des objets sérialisables, le client doit utiliser les bons types génériques.
-- **Middleware d’auth non appliqué partout** : chaque route protégée doit avoir requiresAuth: true et l’auth doit être activée dans la config.
-
-Pour plus de détails et de cas avancés, consulte :
-- [.github/copilot-instructions.md](.github/copilot-instructions.md)
-- [src/lib/server/middleware/README.md](src/lib/server/middleware/README.md)
-
----
-
-## Schéma d’architecture (à compléter)
+## Architecture
 
 ```mermaid
 flowchart TD
-  Client <--> API[IdaeApi (Express)]
-  API --> MW[Middleware]
-  MW --> DB[IdaeDbAdapter (MongoDB/MySQL)]
-  API --> Auth[Auth/JWT]
-  API --> Docs[OpenAPI/Swagger]
-  MW --> MultiTenancy[TenantContext]
+  subgraph ClientSide [APP / Client]
+    ClientInstance[IdaeApiClient]
+  end
+
+  subgraph ServerSide [API Server]
+    API[IdaeApi (Express)]
+    Auth[Auth Middleware]
+    Tenant[Tenant Context]
+    DB_MW[DB Middleware]
+    
+    API --> Auth --> Tenant --> DB_MW
+  end
+
+  subgraph DataLayer [Data Persistence]
+    IdaeDB[IdaeDB Adapter]
+    DBs[(MongoDB / MySQL / PG / SQLite / PouchDB / ChromaDB)]
+    
+    DB_MW --> IdaeDB
+    IdaeDB --> DBs
+  end
+
+  ClientInstance -- HTTP/JSON --> API
 ```
 
 ---

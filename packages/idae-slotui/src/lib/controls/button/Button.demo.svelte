@@ -10,7 +10,9 @@
 	import ButtonAction from './ButtonAction.svelte';
 	import ButtonMenu from './ButtonMenu.svelte';
 
-	import { parameters, componentArgs } from './types.js';
+	import { parameters, componentArgs } from './types.js'; // keep for now if needed for demo values
+	// Types are now in Button.svelte, update type imports if needed
+// import type { ButtonProps, ButtonMenuProps } from './Button.svelte';
 
 	let multiple = {
 		bgTheme: {

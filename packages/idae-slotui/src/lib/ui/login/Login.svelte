@@ -1,44 +1,76 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+import type { TransitionConfig } from 'svelte/transition';
+/**
+ * Props for the Login component.
+ * Represents a login form with customizable fields, loading, and slot support.
+ */
+export type LoginProps = {
+	/** Whether to show the login form or not */
+	showLogin: boolean;
+	/** Transition configuration for the login form */
+	transition: TransitionConfig;
+	/** Fields for the login form */
+	fields: { email: string; password: string };
+	/** Whether the form is loading or not */
+	loading: boolean;
+	/** Whether the form is submitting or not */
+	submitting: boolean;
+	/** Function to call when the form is submitted */
+	onSubmit: (args: any) => Promise<any>;
+	/** Children snippet for the default content */
+	children?: Snippet;
+	/** Slot for the login avatar root */
+	loginAvatarRoot?: Snippet;
+	/** Slot for the login avatar */
+	loginAvatar?: Snippet;
+	/** Slot for the login form */
+	loginForm?: Snippet;
+	/** Slot for retrieve password */
+	slotRetrievePassword?: Snippet;
+};
+</script>
+
 <script lang="ts">
-	import { fade, type TransitionConfig } from 'svelte/transition';
+import { fade, type TransitionConfig } from 'svelte/transition';
+import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
+import Button from '$lib/controls/button/Button.svelte';
+import Icon from '$lib/base/icon/Icon.svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import type { LoginProps } from './Login.svelte';
 
-	import Backdrop from '$lib/base/backdrop/Backdrop.svelte';
-	import Button from '$lib/controls/button/Button.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { LoginProps } from './types.js';
+let {
+	class: className = '',
+	element = $bindable(),
+	style = '',
+	showLogin = true,
+	transition = { type: fade, args: {} },
+	fields = { email: '', password: '' },
+	loading = false,
+	submitting = false,
+	onSubmit = function (args) {
+		return new Promise((resolve, reject) => {
+			return setTimeout(() => {
+				resolve(true);
+			}, 2000);
+		});
+	},
+	children,
+	slotRetrievePassword,
+	loginAvatarRoot,
+	loginAvatar,
+	loginForm,
+	...rest
+}: LoginProps = $props();
 
-	let {
-		class: className = '',
-		element = $bindable(),
-		style = '',
-		showLogin = true,
-		transition = { type: fade, args: {} },
-		fields = { email: '', password: '' },
-		loading = false,
-		submitting = false,
-		onSubmit = function (args) {
-			return new Promise((resolve, reject) => {
-				return setTimeout(() => {
-					resolve(true);
-				}, 2000);
-			});
-		},
-		children,
-		slotRetrievePassword,
-		loginAvatarRoot,
-		loginAvatar,
-		loginForm,
-		...rest
-	}: LoginProps = $props();
-
-	export const actions = {
-		toggle: (lo?: boolean) => {
-			showLogin = lo ?? !showLogin;
-		},
-		toggleLoading: (lo?: boolean) => {
-			loading = lo ?? !loading;
-		}
-	};
+export const actions = {
+	toggle: (lo?: boolean) => {
+		showLogin = lo ?? !showLogin;
+	},
+	toggleLoading: (lo?: boolean) => {
+		loading = lo ?? !loading;
+	}
+}; 
 
 	let grantedError = false;
 
@@ -99,7 +131,7 @@
 	{@render children?.()}
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	form {

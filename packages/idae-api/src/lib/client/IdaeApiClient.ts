@@ -41,11 +41,22 @@ class IdaeApiClient {
     this.clientConfig.setOptions(options);
   }
 
-  async getDbList(): Promise<Response> {
+  /**
+   * Retrieves the list of available databases.
+   *
+   * @returns A promise that resolves to an array of database names or metadata
+   */
+  async getDbList(): Promise<any> {
     return this._request.doRequest({ routeNamespace: "methods/dbs" });
   }
 
-  async getCollections(dbName: string): Promise<Response> {
+  /**
+   * Retrieves the list of collections for a specific database.
+   *
+   * @param dbName - The name of the database to query
+   * @returns A promise that resolves to an array of collection names or metadata
+   */
+  async getCollections(dbName: string): Promise<any> {
     return this._request.doRequest({
       dbName,
       routeNamespace: "methods/collections",

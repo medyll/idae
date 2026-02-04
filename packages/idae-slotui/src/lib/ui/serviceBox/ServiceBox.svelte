@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use '../../styles/slotui-mixins.scss';
 	.gridIconBis {
 		width: 100%;

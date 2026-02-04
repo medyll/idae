@@ -1,43 +1,97 @@
 <svelte:options runes />
 
+<script module lang="ts">
+/**
+ * Represents a single tab item in the Tabs component.
+ */
+export type TabItem = {
+	/** Label to display on the tab */
+	label: string;
+	/** Unique code for the tab */
+	code?: string;
+	/** Secondary label or description */
+	secondary?: string;
+	/** Unique identifier for the tab (optional) */
+	withUid?: string;
+	/** Content to display in the tab */
+	withContent?: any;
+	/** Component to render in the tab */
+	withComponent?: any;
+	/** Props to pass to the component */
+	componentProps?: Record<string, any>;
+};
+
+/**
+ * Array of TabItem objects.
+ */
+export type TabsItemsProps = TabItem[];
+
+/**
+ * Props for the Tabs component.
+ */
+export type TabsProps = {
+	/** Active tab code */
+	activeTabCode?: string;
+	/** Reference to the tabs element */
+	element?: HTMLElement;
+	/** Tabs to display */
+	items?: TabsItemsProps;
+	/** Orientation of the tabs */
+	orientation?: 'horizontal' | 'vertical';
+	/** Event handler for tab click */
+	onTabClick?: (item: TabItem) => void;
+	/** Slot for the main title */
+	tabsTitleMain?: any;
+	/** Slot for the tab label */
+	tabsLabel?: any;
+	/** Slot for the title */
+	tabsTitle?: any;
+	/** Slot for the button zone */
+	tabsButtonZone?: any;
+	/** Slot for the inner content */
+	tabsInner?: any;
+	/** Slot for children */
+	children?: any;
+};
+</script>
+
 <script lang="ts" generics="T=Data">
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import { elem } from '$lib/utils/engine/elem.js';
+import Icon from '$lib/base/icon/Icon.svelte';
+import type { TabItem, TabsProps } from './Tabs.svelte';
+import type { Data, ExpandProps } from '$lib/types/index.js';
+import { onEvent } from '$lib/utils/uses/event.js';
 
-	import { elem } from '$lib/utils/engine/elem.js';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { TabItem, TabsProps } from './types.js';
-	import type { Data, ExpandProps } from '$lib/types/index.js';
-	import { onEvent } from '$lib/utils/uses/event.js';
+let {
+	class: className = '',
+	element = $bindable(),
+	style = '',
+	activeTabCode = $bindable(),
+	items = [],
+	orientation = 'horizontal',
+	onTabClick = (item: TabItem) => {},
+	children,
+	tabsTitleMain,
+	tabsLabel,
+	tabsTitle,
+	tabsButtonZone,
+	tabsInner,
+	...rest
+}: ExpandProps<TabsProps> = $props();
 
-	let {
-		class: className = '',
-		element = $bindable(),
-		style = '',
-		activeTabCode = $bindable(),
-		items = [],
-		orientation = 'horizontal',
-		onTabClick = (item: TabItem) => {},
-		children,
-		tabsTitleMain,
-		tabsLabel,
-		tabsTitle,
-		tabsButtonZone,
-		tabsInner,
-		...rest
-	}: ExpandProps<TabsProps> = $props();
+let navElementRef: HTMLElement;
+let tabsElementRef: HTMLElement;
+let activeCellElementRef: HTMLElement;
+let boundingClientRect: DOMRect;
 
-	let navElementRef: HTMLElement;
-	let tabsElementRef: HTMLElement;
-	let activeCellElementRef: HTMLElement;
-	let boundingClientRect: DOMRect;
+const handleClick = (item: TabItem) => {
+	onTabClick(item);
+	const event = new CustomEvent('on:tabs:click', { detail: item, bubbles: true });
+	element?.dispatchEvent(event);
+};
 
-	const handleClick = (item: TabItem) => {
-		onTabClick(item);
-		const event = new CustomEvent('on:tabs:click', { detail: item, bubbles: true });
-		element?.dispatchEvent(event);
-	};
-
-	const setChipPos = (code: any) => {
+const setChipPos = (code: any) => {
 		if (!elem(navElementRef) || !code) return;
 		const node = elem(navElementRef).find(`[data-code=${code}]`);
 		if (node && activeCellElementRef?.parentElement) {
@@ -155,6 +209,6 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './tabs.scss';
 </style>

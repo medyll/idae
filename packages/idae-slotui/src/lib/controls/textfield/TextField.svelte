@@ -1,10 +1,71 @@
+
+<script module lang="ts">
+import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+import { tallPreset,  type CommonProps, type ElementProps } from '$lib/types/index.js';
+import type { UsePopperProps } from '$lib/ui/popper/usePopper.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the TextField component.
+ */
+export type TextFieldProps = CommonProps & {
+	/** Icon as a parameter */
+	icon?: ElementProps['icon'];
+	/** Icon color as a parameter */
+	iconColor?: string;
+	/** End icon as a parameter */
+	endIcon?: string;
+	/** End icon color as a parameter */
+	endIconColor?: string;
+	/** Parameters for usePopper */
+	usePopper?: UsePopperProps;
+	/** Width of the input using presets */
+	width?: ElementProps['width'];
+	/** Height of the input, using preset values */
+	tall?: ElementProps['tall'];
+	/** Has no border */
+	borderless?: boolean;
+	/** Transparent input */
+	transparent?: boolean;
+	/** Value of the input */
+	value?: any;
+	/** Slot before the input */
+	inputFirst?: Snippet;
+	/** Slot after the input */
+	inputLast?: Snippet;
+};
+
+export const TextFieldDemoValues: DemoerStoryProps<TextFieldProps> = {
+	icon: {
+		type: 'icon',
+		values: ['search', undefined]
+	},
+	endIcon: {
+		type: 'icon',
+		values: ['search', undefined]
+	},
+	width: {
+		type: 'width'
+	},
+	tall: {
+		type: 'tall',
+		default: tallPreset.default
+	},
+	transparent: {
+		type: 'boolean'
+	}
+};
+
+export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);
+</script>
+
 <svelte:options />
 
 <script lang="ts">
 	import { popper } from '$lib/ui/popper/usePopper.js';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { TextFieldProps } from './types.js';
+
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 

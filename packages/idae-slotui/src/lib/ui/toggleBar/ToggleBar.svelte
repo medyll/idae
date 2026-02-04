@@ -1,8 +1,36 @@
+<script module lang="ts">
+import type { ContentSwitcherProps } from '$lib/base/contentSwitcher/types.js';
+import type { CommonProps } from '$lib/types/index.js';
+import type { Snippet } from 'svelte';
+/**
+ * Props for the ToggleBar component.
+ */
+export type ToggleBarProps = CommonProps & {
+	/** Title of the toggle bar */
+	title?: string;
+	/** Icon of the toggle bar */
+	icon?: string;
+	/** Orientation of the toggle bar */
+	orientation?: 'right' | 'left';
+	/** Props for the content switcher */
+	contentSwitcherProps?: ContentSwitcherProps;
+	/** Custom icon snippet */
+	toggleBarIcon?: Snippet;
+	/** Custom title snippet */
+	toggleBarTitle?: Snippet;
+	/** Custom buttons snippet */
+	toggleBarButtons?: Snippet;
+	/** Custom icon for content switcher */
+	contentSwitcherIcon?: Snippet;
+	/** Custom reveal for content switcher */
+	contentSwitcherReveal?: Snippet;
+};
+</script>
 <script lang="ts">
 	import ContentSwitcher from '$lib/base/contentSwitcher/ContentSwitcher.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ToggleBarProps } from './types.js';
+
 
 	let {
 		class: className = '',

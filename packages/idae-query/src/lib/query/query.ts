@@ -1,7 +1,7 @@
 /* src\lib\scripts\query\query.ts */
 import { Operators } from '$lib/operators/operators.js';
 
-import { getResultSet } from '$lib/resultset/resultset.js';
+import { getResultSet, type ResultSet } from '$lib/resultset/resultset.js';
 
 import type { Operator, Where } from '$lib/types.js';
 
@@ -12,7 +12,7 @@ export class Query<T extends object> {
 		getResultSet(this.data ?? []);
 	}
 
-	where(qy: Where<T>) {
+	where(qy: Where<T>): ResultSet<T> {
 		this.data = this.data.filter((item) => this.matchesQuery(item, qy));
 		return getResultSet(this.data);
 	}

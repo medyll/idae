@@ -24,18 +24,35 @@ npm install @medyll/idae-stator
 
 ## 🛠 Usage
 
-### Basic Reactivity
+### Basic Reactivity with Primitives
+
+```typescript
+import { stator } from '@medyll/idae-stator';
+
+// For primitive values, use state.value to get/set
+const counter = stator(0);
+
+counter.onchange = (oldValue, newValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`);
+};
+
+counter.value = 1; // Console: Count changed from 0 to 1
+
+```
+
+### Object Reactivity
 
 ```typescript
 import { stator } from '@medyll/idae-stator';
 
 const state = stator({ count: 0 });
 
-state.onchange = (newValue) => {
-  console.log(`Count updated to: ${newValue.count}`);
+state.onchange = (oldValue, newValue) => {
+  console.log(`Count is now: ${newValue.count}`);
 };
 
-state.count++; // Console: Count updated to: 1
+// Access object properties via state.value or state.stator
+state.value.count++; // Console: Count is now: 1
 
 ```
 
@@ -51,11 +68,11 @@ const appState = stator({
   }
 });
 
-appState.onchange = (val) => console.log('State changed!');
+appState.onchange = (oldVal, newVal) => console.log('State changed!', newVal);
 
 // All these mutations trigger the reactivity:
-appState.user.profile.name = 'Mydde Dev';
-appState.user.tags.push('stator');
+appState.stator.user.profile.name = 'Mydde Dev';
+appState.stator.user.tags.push('stator');
 
 ```
 
@@ -66,12 +83,12 @@ If you prefer standard web events or need multiple listeners:
 ```typescript
 const state = stator({ status: 'idle' });
 
-state.addEventListener('change', (event) => {
+state.addEventListener('stator:change', (event) => {
   const { newValue } = event.detail;
   console.log('New status:', newValue.status);
 });
 
-state.status = 'loading';
+state.stator.status = 'loading';
 
 ```
 
@@ -87,6 +104,7 @@ interface User {
 
 const state = stator<User>({ id: 1, role: 'admin' });
 // 'state' is now typed as AugmentedState<User>
+// Access via state.value or state.stator
 
 ```
 
@@ -110,13 +128,30 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 
 ## 💎 Utility Properties
 
-* **`state.stator`**: Access the raw data directly.
+* **`state.value`**: Access and mutate the current state value (recommended).
+* **`state.stator`**: Alias for `state.value` - access the reactive state data.
+* **`state.onchange`**: Callback `(oldValue, newValue) => void` triggered on any state mutation.
+* **`state.addEventListener('stator:change', fn)`**: Standard event listener for change events.
+* **`state.removeEventListener('stator:change', fn)`**: Remove a previously attached listener.
+* **`state.triggerChange(event)`**: Manually dispatch a change event.
 * **`state.toString()`**: Returns a `JSON.stringify` version of your state.
-* **`state.valueOf()`**: Returns the underlying value for comparisons.
-* **`Symbol.toPrimitive`**: Allows the state to be used directly in arithmetic (e.g., `state + 1`).
+* **`state.valueOf()`**: Returns the underlying raw value for comparisons.
+* **`Symbol.toPrimitive`**: Allows the state to be used directly in arithmetic (e.g., `state + 1` for primitive states).
 
 ---
 
 ## 📜 License
 
 MIT © [Medyll](https://github.com/medyll)
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Raw[Plain Object/Value] --> Stator[stator()]
+  Stator --> Proxy[Reactive Proxy]
+  
+  subgraph Reactions [Observable State]
+    Proxy -- Mutation --> Callback[onChange Callback]
+    Proxy -- Get --> Access[Value Access]
+  end

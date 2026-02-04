@@ -1,35 +1,47 @@
+<script module lang="ts">
+import type { Snippet } from 'svelte';
+import type { PopperProps } from '$lib/ui/popper/types.js';
+import type { MenuProps } from '$lib/ui/menu/types.js';
+import type { ButtonProps } from './Button.svelte';
+/**
+ * Props for the ButtonAction component.
+ * Extends ButtonProps with popper and menu support.
+ */
+export type ButtonActionProps = ButtonProps & {
+  /** Props for the menu (optional) */
+  menuProps?: MenuProps;
+  /** Props for the popper (optional) */
+  popperProps?: PopperProps;
+  /** Slot for popper content (optional) */
+  popperContent?: Snippet;
+};
+</script>
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { PopperProps } from '$lib/ui/popper/types.js';
 	import type { MenuProps } from '$lib/ui/menu/types.js';
 	import Popper from '$lib/ui/popper/Popper.svelte';
 	import Button from './Button.svelte';
-	import type { ButtonProps } from './types.js';
+	import type { ButtonProps } from './Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 
-	type ButtonActionProps = ButtonProps & {
-		menuProps?: MenuProps;
-		popperProps?: PopperProps;
-		popperContent?: Snippet;
-	};
-
-	let {
-		element,
-		class: className = '',
-		menuProps = {},
-		popperProps = {},
-		popperContent = undefined,
-		disabled = false,
-		variant = 'bordered',
-		tall = 'small',
-		children,
-		...rest
-	}: ExpandProps<ButtonActionProps> = $props();
-	let holder: HTMLDivElement;
-	let isOpen = $state(popperProps?.isOpen);
-	let chevron = 'fluent:chevron-down-20-regular';
+let {
+	element,
+	class: className = '',
+	menuProps = {},
+	popperProps = {},
+	popperContent = undefined,
+	disabled = false,
+	variant = 'bordered',
+	tall = 'small',
+	children,
+	...rest
+}: ExpandProps<ButtonActionProps> = $props();
+let holder = $state<HTMLDivElement>();
+let isOpen = $derived(() => popperProps?.isOpen ?? false);
+let chevron = 'fluent:chevron-down-20-regular';
 </script>
 
 <div bind:this={holder} class="button button-action selected {variant} tall-{tall} {className}">
@@ -52,7 +64,7 @@
 	</Popper>
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './button.scss';
 	@use './button-action.scss';
 </style>

@@ -1,8 +1,48 @@
+<script module lang="ts">
+import type { ButtonProps } from '$lib/controls/button/types.js';
+import type { CommonProps, ElementProps } from '$lib/types/index.js';
+import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';
+import type { ComponentType, Snippet } from 'svelte';
+/**
+ * Type for popper position.
+ */
+export type PopperPositionType = StickToPositionType;
+
+/**
+ * Props for the Popper component.
+ */
+export type PopperProps = CommonProps & {
+	/** Unique code for the popper */
+	code?: string;
+	/** Parent node of the popper */
+	parentNode?: HTMLElement | null;
+	/** Whether the popper should stick to hook width */
+	stickToHookWidth?: boolean;
+	/** Component to be displayed in the popper */
+	component?: ComponentType;
+	/** Props for the component */
+	componentProps?: {};
+	/** Props for the button */
+	buttonProps?: ButtonProps;
+	/** Position of the popper */
+	position?: StickToPositionType;
+	/** Content of the popper */
+	content?: any;
+	/** The popper will be closed on clickAway */
+	autoClose?: boolean;
+	/** Layout flow */
+	flow?: ElementProps['flow'];
+	/** Binding: The popper will be opened or is opened */
+	isOpen?: boolean;
+	/** Anchor for the popper */
+	anchor?: `${string}` | HTMLElement | null;
+};
+</script>
 <script lang="ts">
 	import { stickTo } from '$lib/utils/uses/stickTo/stickTo.js';
 	import { clickAway } from '$lib/utils/uses/clickAway/clickAway.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { PopperProps } from './types.js';
+
 	import Button from '$lib/controls/button/Button.svelte';
 
 	export const toggle = function () {};

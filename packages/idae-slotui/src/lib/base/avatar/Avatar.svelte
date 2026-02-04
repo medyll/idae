@@ -28,7 +28,7 @@ export interface AvatarProps    {
 
 	let {
 		icon = 'icon-park-outline:avatar',
-		size,
+		size = 'med',
 		iconSize,
 		class: className = '',
 		element = $bindable(),
@@ -62,6 +62,6 @@ export interface AvatarProps    {
 	{/if}
 </Content>
 
-<style lang="scss">
+<style global lang="scss">
 	@use './avatar.scss';
 </style>

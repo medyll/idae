@@ -153,7 +153,7 @@
 	{/if}
 {/if}
 
-<style lang="scss">
+<style global lang="scss">
 	@use './panel.scss';
 	.sidePanel {
 		position: absolute;

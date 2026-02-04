@@ -146,13 +146,33 @@ type OnMutationType = {
 
 The following npm scripts are available for development and testing:
 
-- `npm run dev`: Starts the development server.
-- `npm run build`: Compiles the library for production.
-- `npm run test`: Runs unit tests.
+- `pnpm run dev`: Starts the development server.
+- `pnpm run build`: Compiles the library for production.
+- `pnpm run test`: Runs unit tests.
 
 ## Contribution
 
 Contributions are welcome! Feel free to submit a pull request or open an issue to report bugs or propose features.
+
+
+## Architecture
+
+## Architecture
+
+```mermaid
+flowchart TD
+  Dom[DOM Element] --> Obs[Observer / Event Listener]
+  
+  subgraph EventSystems [Event Modules]
+    Obs --> Resize[ResizePanel]
+    Obs --> HtmlDom[HtmlDom Utils]
+    Obs --> CssDom[CssDom Utils]
+  end
+
+  HtmlDom --> CB[Callback Execution]
+  Resize --> CB
+  CssDom --> CB
+```
 
 ## License
 

@@ -1,0 +1,48 @@
+body {
+  vars {
+    primary: "#007bff",
+    spacing: "1rem"
+  },
+  layout {
+    display: "flex",
+    flow: "relative"
+  },
+  content: {
+    align: "center",
+    justify: "between"
+  },
+  shape: {
+    w: [100, 50, 200],
+    h: 100
+  },
+  gutter: {
+    margin: [10, 20],
+    gap: 15
+  },
+  typo: {
+    size: 16,
+    weight: "bold"
+  },
+  colors: {
+    text: "#333"
+  }
+}
+
+.card {
+  colors {
+    bg: "#fff"
+  },
+  visual {
+    shadow: "0 2px 10px rgba(0,0,0,0.1)"
+  },
+  contour {
+    radius: 8
+  },
+  state: {
+    hover {
+      visual {
+        shadow: "0 5px 20px rgba(0,0,0,0.2)"
+      }
+    }
+  }
+}

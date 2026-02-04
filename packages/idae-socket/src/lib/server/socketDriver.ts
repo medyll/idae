@@ -4,7 +4,7 @@ import { appRoutes } from "./_utils/routes.js";
 import { TRoutesConfig } from "./@types";
 import { eventEmitterInstance } from "./_utils/eventEmitterInstance.js";
 
-const parseArgs = require("minimist");
+import parseArgs from "minimist";
 
 const argv = parseArgs(process.argv);
 const defaultPort = argv?.port ?? _config.defaultPort;
