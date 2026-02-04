@@ -1,5 +1,20 @@
 {
   "name": "root",
+  "version": "0.0.2",
+  "description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
+  "keywords": [
+    "data-management",
+    "storage",
+    "ui",
+    "reactivity",
+    "data schema",
+    "server sync",
+    "postgresql",
+    "mysql",
+    "sqlite",
+    "mongodb",
+    "pouchdb"
+  ],
   "scope": "medyll",
   "private": true,
   "scripts": {
@@ -52,7 +67,6 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
-  "version": "0.0.2",
   "dependencies": {
     "@octokit/rest": "^22.0.1",
     "chalk": "^5.6.2",

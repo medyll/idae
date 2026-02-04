@@ -5,8 +5,13 @@ const { execSync } = require("child_process");
 
 const scriptPath = __dirname;
 const monorepoPath = path.resolve(scriptPath, "..");
-const monorepoName = "idae monorepo";
+const rootPackageJson = JSON.parse(
+  fs.readFileSync(path.join(monorepoPath, "package.json"), "utf8"),
+);
+const monorepoName =
+  rootPackageJson.name === "root" ? "Idae Monorepo" : rootPackageJson.name;
 const monorepoDescription =
+  rootPackageJson.description ||
   "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
 const githubBaseUrl = "https://github.com/medyll/idae/tree/main/";
 /**
