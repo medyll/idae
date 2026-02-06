@@ -61,7 +61,7 @@
   "devDependencies": {
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-config-prettier": "workspace:*",
+    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.52.0",
     "@semantic-release/github": "^10.3.5",
