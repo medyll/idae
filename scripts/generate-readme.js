@@ -158,27 +158,6 @@ function generateReadme(blacklist = []) {
     readmeContent += `\n##\n`;
   });
 
-  readmeContent += `\n## Global Architecture\n\n`;
-  readmeContent += "```mermaid\n";
-  readmeContent += "flowchart TD\n";
-  readmeContent += "  subgraph Frontend [Web / Mobile / Desktop]\n";
-  readmeContent += "    UI[idae-slotui] --> App[Your Application]\n";
-  readmeContent += "    App --> Sync[idae-socket]\n";
-  readmeContent += "    App --> LocalDB[idae-idbql]\n";
-  readmeContent += "    LocalDB --> Query[idae-query]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  subgraph Backend [API Server]\n";
-  readmeContent += "    API[idae-api] --> Auth[Middleware]\n";
-  readmeContent += "    Auth --> MultiTenant[Tenant Context]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  subgraph DataLayer [Data Persistence]\n";
-  readmeContent += "    MultiTenant --> DB[idae-db]\n";
-  readmeContent += "    DB --> Adapters[(MongoDB / MySQL / SQLite / ...)]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  App -- REST API -- > API\n";
-  readmeContent += "  Sync -- WebSockets -- > App\n";
-  readmeContent += "```\n";
-
   const readmePath = path.join(monorepoPath, "README.md");
   if (fs.existsSync(readmePath)) {
     const currentContent = fs.readFileSync(readmePath, "utf8");
