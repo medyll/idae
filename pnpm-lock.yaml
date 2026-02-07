@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@medyll/idae-pnpm-release':
+        specifier: ^1.0.26
+        version: 1.0.26(@pnpm/logger@5.2.0)
       '@medyll/monorepo-pnpm-release':
         specifier: ^1.0.22
         version: 1.0.22(@pnpm/logger@5.2.0)
@@ -90,9 +93,6 @@ importers:
       jest:
         specifier: ^30.2.0
         version: 30.2.0(@types/node@22.19.6)(esbuild-register@3.6.0(esbuild@0.27.2))(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3))
-      lerna:
-        specifier: ^9.0.3
-        version: 9.0.3(@swc/core@1.15.8)(@types/node@22.19.6)
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.28.6)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.6))(esbuild@0.27.2)(jest-util@30.2.0)(jest@30.2.0(@types/node@22.19.6)(esbuild-register@3.6.0(esbuild@0.27.2))(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@22.19.6)(typescript@5.9.3)))(typescript@5.9.3)
@@ -1341,11 +1341,11 @@ importers:
         specifier: ^6.0.14
         version: 6.0.14
       prettier:
-        specifier: ^4.0.0-alpha.8
-        version: 4.0.0-alpha.13
+        specifier: ^3.0.0
+        version: 3.8.1
       prettier-plugin-svelte:
         specifier: ^3.4.1
-        version: 3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.5)
+        version: 3.4.1(prettier@3.8.1)(svelte@5.48.5)
       prism:
         specifier: ^4.1.2
         version: 4.1.2(react@15.7.0)
@@ -1452,7 +1452,7 @@ importers:
         version: 22.19.6
       '@vitest/coverage-v8':
         specifier: ^3.2.4
-        version: 3.2.4(@vitest/browser@3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 3.2.4(@vitest/browser@3.2.4)(vitest@3.2.4)
       svelte:
         specifier: ^5.25.3
         version: 5.46.3
@@ -1460,8 +1460,8 @@ importers:
         specifier: ^5.8.2
         version: 5.9.3
       vitest:
-        specifier: ^4.0.18
-        version: 4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+        specifier: ^3.2.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.6)(@vitest/browser@3.2.4)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     publishDirectory: .
 
   packages/idae-stator:
@@ -2829,6 +2829,10 @@ packages:
     resolution: {integrity: sha512-NtMcmVUIGjEEpKLXdgcPx1wDTFz7G4oEtPMccVXWQbUUghE98gaY95Rg9h34yFU+BjE5ISpl6eVWAtPxQsILpQ==}
     peerDependencies:
       svelte: ^5.0.0-next
+
+  '@medyll/idae-pnpm-release@1.0.26':
+    resolution: {integrity: sha512-eeyBEC3slQwhuamJCej0Ot5+mFvOENK5D97U+fv/vTFVFBZ7e+OmKD2CVybq0MhMNB8frvvGmmSvaGN57cc9YQ==}
+    hasBin: true
 
   '@medyll/monorepo-pnpm-release@1.0.22':
     resolution: {integrity: sha512-ni7pALVwhkpa1p6bDw7v2CQqWVLrNaYfh4is8NtJUQKZutsdvvIlLchTxARxKdP+m72lURfwCTe4xGPb7S5X8w==}
@@ -13710,6 +13714,16 @@ snapshots:
       - ws
       - zod
 
+  '@medyll/idae-pnpm-release@1.0.26(@pnpm/logger@5.2.0)':
+    dependencies:
+      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@5.2.0)
+      commander: 14.0.3
+      conventional-commits-parser: 6.2.1
+      execa: 9.6.1
+      semver: 7.7.3
+    transitivePeerDependencies:
+      - '@pnpm/logger'
+
   '@medyll/monorepo-pnpm-release@1.0.22(@pnpm/logger@5.2.0)':
     dependencies:
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@5.2.0)
@@ -16488,7 +16502,7 @@ snapshots:
       - vite
     optional: true
 
-  '@vitest/browser@3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@vitest/browser@3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@3.2.4)':
     dependencies:
       '@testing-library/dom': 10.4.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
@@ -16497,7 +16511,7 @@ snapshots:
       magic-string: 0.30.21
       sirv: 3.0.2
       tinyrainbow: 2.0.0
-      vitest: 4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.6)(@vitest/browser@3.2.4)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
       ws: 8.19.0
     optionalDependencies:
       playwright: 1.58.0
@@ -16525,27 +16539,6 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/coverage-v8@3.2.4(@vitest/browser@3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@bcoe/v8-coverage': 1.0.2
-      ast-v8-to-istanbul: 0.3.10
-      debug: 4.4.3(supports-color@5.5.0)
-      istanbul-lib-coverage: 3.2.2
-      istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6
-      istanbul-reports: 3.2.0
-      magic-string: 0.30.21
-      magicast: 0.3.5
-      std-env: 3.10.0
-      test-exclude: 7.0.1
-      tinyrainbow: 2.0.0
-      vitest: 4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    optionalDependencies:
-      '@vitest/browser': 3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18(@types/node@22.19.6)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitest/coverage-v8@3.2.4(@vitest/browser@3.2.4)(vitest@3.2.4)':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -16563,7 +16556,7 @@ snapshots:
       tinyrainbow: 2.0.0
       vitest: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.6)(@vitest/browser@3.2.4)(happy-dom@20.3.9)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     optionalDependencies:
-      '@vitest/browser': 3.2.4(playwright@1.58.0)(vite@6.4.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(playwright@1.58.0)(vite@7.3.1(@types/node@22.19.6)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@3.2.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -22349,11 +22342,6 @@ snapshots:
   prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.48.5):
     dependencies:
       prettier: 3.8.1
-      svelte: 5.48.5
-
-  prettier-plugin-svelte@3.4.1(prettier@4.0.0-alpha.13)(svelte@5.48.5):
-    dependencies:
-      prettier: 4.0.0-alpha.13
       svelte: 5.48.5
 
   prettier-plugin-tailwindcss@0.6.14(prettier-plugin-svelte@3.4.1(prettier@3.8.1)(svelte@5.48.5))(prettier@3.8.1):
