@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased] - 2026-02-07
+- **2026-02-07** - chore: update @medyll/idae-pnpm-release to version 1.0.27 in package.json and pnpm-lock.yaml
+- **2026-02-07** - chore: update dependencies and remove lerna
 - **2026-02-07** - chore: remove unused @changesets/cli dependency from package.json and pnpm-lock.yaml
 - **2026-02-07** - chore: update svelte-check to version 4.3.6 and add dependencies
 - **2026-02-07** - feat: add CLI functionality for README retrieval and SKILL installation
