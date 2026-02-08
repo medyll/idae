@@ -1,9 +1,9 @@
 // auto exports of entry components
+export * from '$lib/idaeDb.js';
 export * from '$lib/IdaeEventEmitter.js';
-export * from '$lib/IdaeDBModel.js';
 export * from '$lib/IdaeDbConnection.js';
 export * from '$lib/IdaeDbAdapter.js';
-export * from '$lib/idaeDb.js';
+export * from '$lib/IdaeDBModel.js';
 export * from '$lib/adapters/SQLiteAdapter.js';
 export * from '$lib/adapters/PouchDBAdapter.js';
 export * from '$lib/adapters/PostgreSQLAdapter.js';
