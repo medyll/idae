@@ -43,7 +43,7 @@
   "devDependencies": {
     "@medyll/idae-db": "*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-pnpm-release": "^1.0.28",
+    "@medyll/idae-pnpm-release": "^1.0.29",
     "@medyll/idae-shared": "workspace:*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
