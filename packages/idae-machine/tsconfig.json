@@ -12,6 +12,7 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext"
 	}
+	,
 	"exclude": [
 		"src/_old",
 		"src/_old/**",
