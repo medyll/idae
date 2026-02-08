@@ -43,6 +43,7 @@
   "devDependencies": {
     "@medyll/idae-db": "*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-pnpm-release": "^1.0.28",
     "@medyll/idae-shared": "workspace:*",
     "@rushstack/eslint-patch": "^1.15.0",
     "@types/jest": "^30.0.0",
@@ -57,7 +58,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@medyll/idae-pnpm-release": "^1.0.27",
     "@medyll/monorepo-pnpm-release": "^1.0.22",
     "@octokit/rest": "^22.0.1",
     "chalk": "^5.6.2",

@@ -92,7 +92,8 @@ export class MachineParserForge {
      */
     function extractAfter(pattern: string, source: string) {
       const reg = source?.split("(")?.[0];
-      return reg.split(pattern)[1] as TplFieldRules;
+      const after = reg.split(pattern)[1];
+      return (after?.split("(")?.[0]?.trim() as unknown) as TplFieldRules;
     }
 
     /**
@@ -102,7 +103,7 @@ export class MachineParserForge {
      */
     function extractArgs(
       source: string,
-    ): { piece: string; args?: Array<keyof typeof TplProperties> } {
+    ): { piece: string; args?: TplFieldArgs } {
       const [piece, remaining] = source.split("(");
       if (!remaining) return { piece: piece.trim() };
       let central: string | undefined;
@@ -110,14 +111,14 @@ export class MachineParserForge {
         [central] = remaining.split(")");
       }
       const args = central
-        ? (central.split(" ").map((s) => s.trim()).filter(Boolean) as Array<keyof typeof TplProperties>)
+        ? ((central.split(" ").map((s) => s.trim()).filter(Boolean) as unknown) as TplFieldArgs)
         : undefined;
       return { piece: piece.trim(), args };
     }
 
     const extractedArgs = extractArgs(fieldRule);
-    let fieldType: unknown;
-    const fieldArgs = extractedArgs?.args;
+    let fieldType: TplFieldType | undefined;
+    const fieldArgs: TplFieldArgs | undefined = extractedArgs?.args;
     switch (type) {
       case "array":
         fieldType = extractAfter("array-of-", fieldRule);
@@ -129,15 +130,15 @@ export class MachineParserForge {
         fieldType = "fk-" + extractAfter("fk-", fieldRule);
         break;
       case "primitive":
-        fieldType = extractedArgs?.piece;
+        fieldType = (extractedArgs?.piece as unknown) as TplFieldType | undefined;
         break;
     }
-    return {
+    const result: Partial<IDbForge> = {
       fieldType: fieldType as TplFieldType | undefined,
-      fieldRule,
-      fieldArgs: fieldArgs as unknown as TplFieldArgs,
-      is: type,
-    } as unknown as Partial<IDbForge>;
+      fieldArgs: (fieldArgs as unknown) as any,
+      is: type as any,
+    };
+    return result;
   }
 
 

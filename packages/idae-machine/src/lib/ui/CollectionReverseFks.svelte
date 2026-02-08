@@ -24,14 +24,16 @@ Svelte 5 reverse FK relation viewer for a collection
 </script>
 
 <Looper data={Object.entries(reverseFks)}>
-	{#snippet children(collection, template)}
+	{#snippet children(item)}
 		{#if showTitle}
 			<div class="p2 font-bold">{collection}</div>
 		{/if}
 		{#if component}
-			<svelte:component this={component} collection={collection} template={template} {...componentProps} />
+			<svelte:component this={component} collection={collection} template={item[1]} {...componentProps} />
 		{:else}
-			{@render children(collection, template)}
+			{#if children}
+				{@render children(item)}
+			{/if}
 		{/if}
 	{/snippet}
 </Looper>

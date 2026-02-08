@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@medyll/idae-pnpm-release':
-        specifier: ^1.0.27
-        version: 1.0.27(@pnpm/logger@5.2.0)
       '@medyll/monorepo-pnpm-release':
         specifier: ^1.0.22
         version: 1.0.22(@pnpm/logger@5.2.0)
@@ -69,6 +66,9 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:packages-config/idae-eslint-config
+      '@medyll/idae-pnpm-release':
+        specifier: ^1.0.28
+        version: 1.0.28(@pnpm/logger@5.2.0)
       '@medyll/idae-shared':
         specifier: workspace:*
         version: link:packages/shared
@@ -2830,8 +2830,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0-next
 
-  '@medyll/idae-pnpm-release@1.0.27':
-    resolution: {integrity: sha512-7gkHIr8PaV7NCBt8rnMHX4Qnnjh5hfLy9JuIaYqwjsigDEfSEHIbLeHMBNMYMuXlPqN56gYECgDm7+3Ja8H1YQ==}
+  '@medyll/idae-pnpm-release@1.0.28':
+    resolution: {integrity: sha512-rfr+0EewcVuGFIX3FB5zmyWR/m4sz30QDctCxxIxL66gq8S75Tsp/w6PewsVauGMx56AzVuU/Zfb3zaYaaijng==}
     hasBin: true
 
   '@medyll/monorepo-pnpm-release@1.0.22':
@@ -13751,7 +13751,7 @@ snapshots:
       - ws
       - zod
 
-  '@medyll/idae-pnpm-release@1.0.27(@pnpm/logger@5.2.0)':
+  '@medyll/idae-pnpm-release@1.0.28(@pnpm/logger@5.2.0)':
     dependencies:
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@5.2.0)
       commander: 14.0.3
@@ -13912,7 +13912,7 @@ snapshots:
       '@npmcli/name-from-folder': 4.0.0
       '@npmcli/package-json': 7.0.2
       glob: 13.0.1
-      minimatch: 10.1.1
+      minimatch: 10.1.2
 
   '@npmcli/metavuln-calculator@9.0.3':
     dependencies:
@@ -15755,7 +15755,7 @@ snapshots:
   '@tufjs/models@4.1.0':
     dependencies:
       '@tufjs/canonical-json': 2.0.0
-      minimatch: 10.1.1
+      minimatch: 10.1.2
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
@@ -19517,7 +19517,7 @@ snapshots:
 
   ignore-walk@8.0.0:
     dependencies:
-      minimatch: 10.1.1
+      minimatch: 10.1.2
 
   ignore@5.3.2: {}
 
