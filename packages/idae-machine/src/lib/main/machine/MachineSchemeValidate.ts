@@ -72,7 +72,7 @@ export class MachineSchemeValidate {
         }
       }
 
-      const typeDef = MachineSchemeFieldType.getFieldType(fieldInfo.fieldType);
+      const typeDef = MachineSchemeFieldType.getFieldType(fieldInfo.fieldType ?? 'any'); 
       if (typeDef && typeDef.validator) {
         if (!typeDef.validator(value)) {
           return this.#returnError(fieldName, fieldInfo.fieldType);

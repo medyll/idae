@@ -5,6 +5,7 @@ import type {
   TplProperties,
   TplFieldArgs,
   TplFields,
+  IDbForge,
 } from "@medyll/idae-idbql";
 import type { MachineDb } from "./machineDb.js";
 import { MachineError } from "./machine/MachineError.js";
@@ -14,14 +15,6 @@ import { MachineError } from "./machine/MachineError.js";
  * Provides methods to analyze field rules and extract type information for schema generation.
  */
 
-export type IDbForge = {
-  collection: TplCollectionName;
-  fieldName: string;
-  fieldType: TplFieldType;
-  fieldRule: TplFieldRules;
-  fieldArgs: TplFieldArgs;
-  is: "array" | "object" | "fk" | "primitive";
-};
 export class MachineParserForge {
   #machineForge: MachineDb["machineForge"] | undefined;
 
@@ -109,21 +102,21 @@ export class MachineParserForge {
      */
     function extractArgs(
       source: string,
-    ): { piece: any; args: [keyof typeof TplProperties]  }  {
+    ): { piece: string; args?: Array<keyof typeof TplProperties> } {
       const [piece, remaining] = source.split("(");
-      if (!remaining) return { piece: piece.trim(), args: [] };
+      if (!remaining) return { piece: piece.trim() };
       let central: string | undefined;
       if (remaining !== undefined) {
         [central] = remaining.split(")");
       }
       const args = central
-        ? (central.split(" ") as [keyof typeof TplProperties])
+        ? (central.split(" ").map((s) => s.trim()).filter(Boolean) as Array<keyof typeof TplProperties>)
         : undefined;
       return { piece: piece.trim(), args };
     }
 
     const extractedArgs = extractArgs(fieldRule);
-    let fieldType;
+    let fieldType: unknown;
     const fieldArgs = extractedArgs?.args;
     switch (type) {
       case "array":
@@ -139,7 +132,12 @@ export class MachineParserForge {
         fieldType = extractedArgs?.piece;
         break;
     }
-    return { fieldType, fieldRule, fieldArgs, is: type };
+    return {
+      fieldType: fieldType as TplFieldType | undefined,
+      fieldRule,
+      fieldArgs: fieldArgs as unknown as TplFieldArgs,
+      is: type,
+    } as unknown as Partial<IDbForge>;
   }
 
 

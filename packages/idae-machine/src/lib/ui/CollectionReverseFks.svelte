@@ -15,7 +15,7 @@ Svelte 5 reverse FK relation viewer for a collection
 	import { Looper } from '@medyll/idae-slotui-svelte';
 	import type { SvelteComponent } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	let { collection, showTitle = false, component, componentProps = {}, children: child } = $props<{ collection: TplCollectionName; collectionId?: any; where?: Where; showTitle?: boolean | string; component?: typeof SvelteComponent; componentProps?: Record<string, any>; children?: any }>();
+	let { collection, showTitle = false, component, componentProps = {}, children } = $props<{ collection: TplCollectionName; collectionId?: any; where?: Where; showTitle?: boolean | string; component?: typeof SvelteComponent; componentProps?: Record<string, any>; children?: any }>();
 	const reverseFks = $derived(machine.logic.collection(collection).parseReverseFks());
 	function getTitle() {
 		if (typeof showTitle === 'string') return showTitle;
@@ -31,7 +31,7 @@ Svelte 5 reverse FK relation viewer for a collection
 		{#if component}
 			<svelte:component this={component} collection={collection} template={template} {...componentProps} />
 		{:else}
-			{@render child(collection, template)}
+			{@render children(collection, template)}
 		{/if}
 	{/snippet}
 </Looper>

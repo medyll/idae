@@ -64,7 +64,7 @@ export class Machine {
   /**
    * Data model
    */
-  _model!: IdbqModel;
+  _model!: IdbqModel | undefined;
 
   /**
    * Main constructor

@@ -1,6 +1,6 @@
 import type { TplCollectionName } from "@medyll/idae-idbql";
 import { MachineSchemeValues } from "./MachineSchemeValues.js";
-import type { IDbForge } from "../machineParserForge.js"; 
+import type { IDbForge } from "@medyll/idae-idbql";
 import { machine } from "../machine.js";
 
 /**
@@ -35,7 +35,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
   public getForge(fieldName: keyof T): IDbForge | undefined {
     return this.#collectionValues.machine
       .collection(this.#collection)
-      .field(fieldName).parse();
+      .field(String(fieldName)).parse();
   }
 
   /**
@@ -52,7 +52,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
   ) {
     this.#collection = collection;
     this.#collectionValues =
-      collectionValues ?? new MachineSchemeValues(collection, machine);
+      collectionValues ?? new MachineSchemeValues(collection, machine.logic);
     this.#data = data;
   }
 
@@ -62,8 +62,8 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * @param {keyof T} fieldName The field name.
    * @return {string | string[]} The formatted value or array of formatted values.
    */
-  format(fieldName: keyof T): string | string[] {
-    const fieldInfo = this.#collectionValues.machine.collection(this.#collection).field(fieldName).parse();
+  format(fieldName: keyof T): string | string[] | any[] {
+    const fieldInfo = this.#collectionValues.machine.collection(this.#collection).field(String(fieldName)).parse();
     if (fieldInfo?.is === "array") {
       return this.iterateArray(String(fieldName), this.#data);
     }
@@ -93,7 +93,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * @param {any[]} data The array data.
    * @return {IDbForge[]} Array of field metadata objects for each item.
    */
-  iterateArray(fieldName: string, data: any[]): IDbForge[] {
+  iterateArray(fieldName: string, data: any[]): any[] {
     return this.#collectionValues.iterateArrayField(fieldName, data);
   }
 
