@@ -5,5 +5,10 @@
   "build": false,
   "package": true,
   "regenerate-changelog": false,
-  "generate-readme-root": true
+  "generate-readme-root": true,
+  "ignore-file-changes": [
+    "CHANGELOG.md",
+    "package.json",
+    "README.md"
+  ]
 }
