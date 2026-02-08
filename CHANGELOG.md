@@ -1,5 +1,1968 @@
 # Changelog
 
+## [0.0.5-next.0] - 2026-02-08
+**Features:**
+- add Vite configuration for testing and coverage setup
+- add schema types and update tsconfig to exclude old directories
+- add alternative instance management methods to Machine class for enhanced flexibility
+- enhance Machine class with agent management and improve error handling in MachineScheme
+- add instance management to Machine class with registry and accessor methods
+- add CLI functionality for README retrieval and SKILL installation
+- update CLI file extension and repository URL format in package.json
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- remove generate-changeset script and related functionality
+- update package.json and generate-readme.js for improved metadata and clarity
+- remove outdated README.md for csss; eliminate unnecessary content and improve repository clarity
+- update README.md to enhance semantic model description and usage examples; improve clarity and structure
+- enhance OpCssF model with content and alignment properties; update parser and tests
+- update OpCssF model to enhance fill and boundaries properties; improve parser and tests
+- introduce OpCssF styling model with parser, runtime, and plugin support
+- rename 'look' to 'visual' in OpCssF model and related tests; update example styles accordingly
+- enhance OpCssF model with colors and contour properties; update tests and example styles
+- add support for CSS variables in OpCssF and OpCssParser
+- initialize idae-csss library with basic structure and configurations
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- add HttpError class for standardized HTTP error handling
+- add advanced integration tests for payload transformation and server setup
+- enhance README and type definitions, add advanced configuration options and payload mapping support
+- enhance testing setup with Vitest, add integration and unit tests for socket functionality
+- implement authentication strategies with JWT and introspection for secure WebSocket connections
+- replace body-parser with express built-in middleware for improved performance and simplicity
+- refactor imports and update main entry point in package.json for improved module structure
+- enhance idae-socket documentation with detailed agent instructions and usage examples
+- update onchange callback to provide old and new values for improved state change tracking
+- update event handling to use 'stator:change' for improved clarity and consistency
+- add comprehensive edge case tests for stator state management
+- add comprehensive tests for array operations and reactivity in Stator
+- Enhance README with new features and methods; remove outdated CLI script
+- Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- Add comprehensive documentation for idae-html, including README and copilot instructions; remove outdated SKILL.md
+- Add validation and verification scripts for AGENTS.md structure and content
+- update testing instructions to use pnpm and add AI agent guide
+- enhance copilot instructions with detailed architecture, workflows, and DSL references
+- implement count() method for document counting in CollectionCore and CollectionState
+- update Copilot instructions and enhance Chipper component with new props
+- add documentation section for component documentation in SKILL.md
+- add documentation guidelines for Svelte components in SKILL.md
+- enhance component documentation and props typing across multiple files
+- add props interfaces for multiple components to enhance type safety and documentation
+- Refactor components to use module scripts and improve type definitions
+- update SCSS imports to use global styles across multiple Svelte components
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- add @medyll/idae-prettier-config as a workspace dependency
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- enhance release workflow with workspace patching and update semantic-release configuration
+- add workspace patching step to release workflow and enhance patching script
+- update semantic-release dependencies and remove installation from workflow
+- enhance release workflow with detailed comments and improved semantic-release commands
+- update release workflow to install dependencies and configure semantic-release
+- add publishDirectory to multiple packages in pnpm-lock.yaml
+- update publishConfig in package.json files to include directory for public access
+- add publishConfig to package.json for public access
+- add step to show package.json files after checkout in release workflow
+- add step to show all package.json files before release
+- add validation step for package.json files in release workflow
+- add npm version management script for prerelease tagging and publishing
+- enhance Svelte components with new features and improved structure; add CollectionListFieldValues component and refactor existing components
+- add unit tests for CreateUpdate component and improve form validation
+- add CollectionFieldGuess and CrudZone components for enhanced UI functionality
+- add technical planner and README creator skills for enhanced project documentation
+- add script to patch workspace dependencies to latest in package.json
+- add TypeScript declaration for 'pg' module
+- enhance Stator with EventTarget compatibility and improve onchange handling
+- implement PostgreSQL and SQLite adapters with CRUD operations and unit tests
+- implement core PouchDBAdapter methods including create, find, findOne, update, and deleteById
+- add support for PouchDB, SQLite, and PostgreSQL adapters; update documentation and peer dependencies
+- add technical planner skill and agent instructions; remove obsolete full agent skill
+- implement deep reactivity in stator with enhanced proxy handling and initialization
+- add idae-debug-engine and idae-skill-template skills; remove obsolete make-skill-template
+- add scripts for automated package detection and secure commits
+- implémente toutes les méthodes CRUD et transaction pour PostgreSQLAdapter
+- implement create() for PouchDBAdapter (insert doc)
+- implement create() for SQLiteAdapter (insert row)
+- implement create() for PostgreSQLAdapter (insert row)
+- implement connect() for PouchDBAdapter using pouchdb
+- implement connect() for SQLiteAdapter using sqlite3
+- implement connect() for PostgreSQLAdapter using pg
+- add skeletons and registration for PostgreSQL, SQLite, PouchDB adapters; extend DbType enum
+- add MCP integration documentation and usage examples
+- enhance documentation for database adapter implementation and add git commit skill
+- add comprehensive documentation and instructions for various skills and tools in the idae-dom-events package
+- add SKILL.md for git commit with conventional commit message analysis
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- update package.json scripts and dependencies
+- Update GitHub workflows for publishing and release management; add release-next.yml and .releaserc.js
+- Add Svelte code writer skill and enhance package exports; update README generation script
+- Integrate default value factories for SchemeField and add unit tests
+- Implement default value factories and associated tests for SchemeField
+- Add CreateOnly component for collection creation and integrate CollectionList in the demo page
+- Implement field type validation and registration in MachineSchemeValidate
+- Add Copilot instructions and remove outdated AGENTS.md and data model files
+- Add MachineFieldType enum and class for field type management
+- Enhance schema management with new tests for MachineDb and MachineScheme integration
+- Implement MachineScheme and related classes for schema management and validation
+- add test scheme and refactor machine logic
+- migrate all SCSS mixins and component styles to Tailwind plugins, ensure per-component CSS, attribute selectors, and custom properties. Remove legacy slotui-mixins.css. BREAKING CHANGE: all styling now uses Tailwind plugin utilities.
+- update auto exports in multiple index files to include new components and services
+- introduce field types and enhance data model structure; update test schemas and imports
+- implement new UI components for collection management and enhance error handling with detailed documentation
+- add comprehensive instructions for Mydde AI Agent with role definitions and Kanban integration
+- add debug step for pnpm version verification in workflow files
+- enable corepack and setup pnpm version 10.28.0 in workflow files
+- add initial ESLint configuration and changelog for idae-eslint-config
+- enhance IDbCollections with new methods and improve collection handling; update dependencies and tests
+- refactor machine initialization and enhance IDbCollections with shared instances; update README and tests
+- remove obsolete components and services; clean up unused code
+- update README with detailed schema model, query examples, and performance tips; enhance robustness and testing coverage sections
+- implement Machine class with core functionality and testing; add vitest tasks for testing
+- enhance README with robustness and testing details; add test plan for Machine class; refactor dbFields and remove obsolete tests
+- add getForge method for parsing collection field names
+- add Svelte 5 coding policy and remove outdated tests; update import paths
+- migrate components from _work to /lib and adapt to Svelte 5
+- update package dependencies to use 'next' version for consistency across packages
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- refactor demo page to manage clients and notes; update data structures and UI
+- add Svelte 5 agent documentation and refactor demo page for chat functionality
+- implement demo page with user and message management; update example types
+- enhance Svelte 5 reactivity documentation and add tests for user state updates
+- add initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities
+- Add API documentation generation and update middleware
+- initialize CrudService, docs, unit test
+- initialize dataModel, dbSchema, docs, unit test
+- initialize dbFields, docs, unit test
+- initialize FieldValue, docs, unit test (jsdom)
+- initialize CreateUpdate, docs, unit test (jsdom)
+- initialize CollectionList, docs, unit test (jsdom)
+- initialisation CrudZone, doc étape, test unitaire jsdom
+- add type definitions for compression, express-rate-limit, and helmet
+- integration
+- scaffold MCP middleware placeholder for future integration
+- strict multi-tenancy with tenant context injection and enforcement
+- add RBAC/ABAC middleware and per-route authorization support
+- expose Swagger UI and Redoc at /docs and /redoc
+- add OpenAPI /openapi.json endpoint (auto-generation ready)
+- db guardrails, health endpoints, validation layer skeleton
+- add zod validation middleware to all routes
+- lock query route and errors
+- add security middleware
+- enhance database middleware and testing configurations
+- Add CRUD components and fragments for enhanced form handling
+- Add Nx configuration guidelines and workspace settings
+- Add GitHub Copilot instructions and project guide for @medyll/idae-idbql
+- add comprehensive GitHub Copilot instructions for the idae-slotui-svelte package
+- enhance ChangesetGenerator with logging options and improve commit filtering logic
+- add chalk dependency for improved console output styling
+- Enhance listMonorepo function to clean workspace paths and add logging for excluded repositories. Update generateReadme to log processed packages.
+- add blacklist filtering to repository listing and README generation
+- enhance README generation with blacklist filtering for repositories
+- update dependencies and add new packages for improved functionality
+- add Idae entity definition and update JsonwebtokenGuard comments
+- implement FkValue type and createFkSchema utility for Mongoose integration
+- add JsonwebtokenGuard and integrate into app module; update dependencies
+- remove 'reboot' option from onInUse settings and update related documentation
+- add mongoose-sequence dependency for enhanced Mongoose functionality
+- add mongoose-sequence dependency for enhanced mongoose functionality
+- refactor connection handling and improve configuration management
+- implement EntityDBModel and update EntityService for dynamic Mongoose model handling
+- update configuration file paths and add YAML configuration loader
+- initialize project structure with configuration files, environment setup, and scripts
+- implement initial AppController, AppService, DatabaseService, and main entry point
+- add YAML configuration and loader for NestJS
+- add EntityController and EntityService for handling entity operations
+- implement initial schema and module for AppScheme, AppSchemeBase, AppSchemeField, AppSchemeGroup, and AppSchemeType
+- add DocsProcessor class for processing Svelte component props
+- add unit test script for documentation tests
+- add initial project configuration files for IDE setup
+- add initial project configuration files for IDE setup
+- add initial Entity, SchemeFieldClass, and SchemeModel implementations
+- add new Svelte components for confirmation, layout, and data display
+- ajouter la méthode unwrap pour supprimer l'élément parent tout en conservant les enfants
+- add unwrap method to remove parent element while keeping children
+- enhance package.json and add README for Stator library demo
+- add README generation step and improve README update logic
+- add HTTP handler integration with methods for update and insert
+- implement HTTP handler for content update and insertion
+- initialize methods property in AttrHandler class
+- add index signature and update type definitions for handlers
+- enhance documentation with detailed JSDoc comments for attribute and DOM manipulation methods
+- refactor timer properties and remove unused props handler
+- replace HTML insertion methods with text-safe alternatives for prepend, append, and replace operations
+- refactor timer handling to use private fields and improve property naming
+- add text handling methods to enhance text manipulation capabilities
+- enhance timer handling with methods property and improved clearTimeout/clearInterval functionality
+- enhance DataHandler with detailed method documentation and improve attribute handling
+- add methods property and improve sibling node handling in tests
+- add methods property to handlers and improve method handling
+- enhance style handling with improved method resolution and kebab case conversion
+- add getKey method and refine delete method for improved data manipulation
+- add getKey method and refine delete method for improved data manipulation
+- enhance content insertion methods and add normalization for diverse content types
+- update test cases and modify result structure for grouping
+- add .gitignore to exclude IDE and local storage files
+- update dependencies and improve exports in index.ts
+- update package description and rename package to @medyll/idae-query; add dependency on @medyll/idae-engine
+- ajouter un fichier de configuration Prettier et améliorer l'importation des modules
+- ajouter des composants CRUD et types pour la gestion des collections
+- mettre à jour les dépendances et supprimer les anciennes versions obsolètes
+- ajouter une classe Modelize pour la création et la gestion des modèles
+- ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit
+- enhance IconAppProps with display property and improve menu list styles
+- add display property to control icon layout
+- css generation
+- rename package and add pre-packaging script
+- ajouter des références supplémentaires dans AppSSchemeView et refactoriser AppSchemeModel
+- refactor Fk type and enhance AppSchemeModel with createModel function
+- ajouter la configuration de base et les fichiers nécessaires pour le projet
+- ajouter des exports automatiques pour les composants d'entrée
+- ajouter des exports pour les modules Svelte et CommonJS dans package.json
+- ajouter des fichiers de configuration et des tests pour le projet Svelte
+- refactor collection methods to return promises and enhance type safety
+- update put and add methods to return promises in StateCollectionDyn
+- update collection imports and enhance state management in idbql
+- ajouter des commentaires JSDoc pour améliorer la documentation des classes et méthodes dans le package Idae
+- update README.md with detailed usage instructions and examples for Idae Database Library
+- initial setup for ai-bash package with configuration files and basic structure
+- changeset generator
+- mettre à jour TypeScript et ajouter des dépendances, implémenter des classes et des interfaces pour la gestion des utilisateurs
+- améliorer la gestion des changements d'accords avec une fonction dédiée et mise à jour des entrées d'accords
+- ajouter la gestion des informations de mesure pour les entrées d'accords
+- ajouter des constantes musicales et améliorer la gestion des accords avec des options d'armure
+- ajouter le composant App et les composants associés pour la visualisation des accords
+- implement new validation logic for user input forms
+- enhance SCSSConverter to generate minified CSS and update output file names
+- add script to generate README.md for monorepo with repository details
+- add dependencies and enhance confirm component types
+- Update IdaeApiClientCollection to implement IdaeDbApiMethods
+- Update IdaeDbAdapter to register event listeners for different operations
+- Add IdaeEventEmitter class and withEmitter decorator
+- Update Cartouche component to remove border and improve styling
+- Add server utils and routes exports
+- Update main-publish.yml to force push changes to origin main branch
+- updated ci
+- Add package-pre script for pre-processing packages
+- Fix scope path and add release script for packages
+- update npm dependency to latest stable version
+- trigger test
+- main
+- Add IdaeApiClientCollection class for managing API client collections
+- 1st deliver
+- Add MySQLAdapter for MySQL database operations
+- Remove unused methods in Be class
+- Add prependText method to TextHandler
+- Add static method to create Be element from string or HTMLElement
+- Removed features
+- Update Be class with a toBe static method
+- Add DynamicHandler class for handling dynamic CSS properties
+- Add Fragments class for creating DOM fragments
+- Update Be class constructor to accept Be instances
+- Move PropsHandler to separate file
+- added callback to walker
+- added a bunch
+- Refactor Be class methods to use consistent naming conventions
+- refactor CssObserver constructor and add setSelector method
+- added conteiner query component
+- new stylesheet component for nreakpoints
+- grouper now has several modes
+- npm is now idae-slotui-svelte
+- added launcher as esm
+- updated ci
+- added marquee component
+- props now use uiPresets
+- svelte update
+- added demos for base components
+- removed all svelte 4 exports, done
+- added css gutter preset
+- migrated scss properties for ui  components
+- migrated scss properties for navigation  components
+- migrated scss properties for data  components
+- migrated scss properties for controls  components
+- migrated scss properties for base components
+- removed cssFabric utility classes
+- initial commit
+- created menu-list merging menu and list
+- migrated looper
+- added density to slider as a css preset
+- migrated slider
+- upgraded checkbox
+- updated popper to svelte 5
+- taskbar migration
+- migrated togglebar
+- migrated toolbar
+- css export per component + global
+- upgraded to latest
+- Finder  migrated to svelte 5 snippets
+- TitleBar  migrated to svelte 5 snippets
+- new component slot
+- Stepper  migrated to svelte 5 snippets
+- Slider  migrated to svelte 5 snippets
+- Paper  migrated to svelte 5 snippets
+- Icon  migrated to svelte 5 snippets
+- Divider  migrated to svelte 5 snippets
+- DemoPage  migrated to svelte 5 snippets
+- DemoerCode  migrated to svelte 5 snippets
+- ContentSwitcher  migrated to svelte 5 snippets
+- Confirm  migrated to svelte 5 snippets
+- Columner  migrated to svelte 5 snippets
+- Chipper  migrated to svelte 5 snippets
+- Cartouche  migrated to svelte 5 snippets
+- ButtonMenu  migrated to svelte 5 snippets
+- ButtonAction  migrated to svelte 5 snippets
+- Button  migrated to svelte 5 snippets
+- BreadCrumb  migrated to svelte 5 snippets
+- Box  migrated to svelte 5 snippets
+- Badge  migrated to svelte 5 snippets
+- Backdrop migrated to svelte 5 snippets
+- Avatar migrated to svelte 5 snippets
+- Alert migrated to svelte 5 snippets
+- migrated Alert to svelte 5 runes
+- now using Constructable Stylesheets for css observer
+- svelte 5
+- listitem styling
+- svelte 5 optin
+- renamed title to svelte-slotted
+- migrated css properties to slotui from cssfabric
+- Initial commit
+- added collect.js
+- jsoner
+- confirmer
+- loader demo
+- loader index
+- loader
+- columner
+- sorterer
+- usePopper
+- chromeFrame area
+
+**Bug Fixes:**
+- enable credential persistence for GitHub Actions checkout step
+- reorder environment variable configuration for release step
+- update release workflow to set git user configuration before running pnpm release
+- update pnpm-release command to use latest version
+- enable verbose mode for pnpm release command
+- remove dry-run and set verbose to false in release configuration
+- update dbSchema and index exports for improved type handling and organization
+- update pnpm-release version and adjust related dependencies in lockfile
+- update import paths and enhance type definitions across multiple files
+- remove unnecessary closing script tag in Login.svelte
+- update version to 0.0.3 in @medyll/idae-config-prettier package.json
+- update @medyll/idae-config-prettier dependency specifier to latest in package.json and pnpm-lock.yaml
+- update @medyll/idae-config-prettier dependency specifier in package.json
+- add steps to fetch all tags before release process in CI workflow
+- add comment to prettier-plugin-svelte entry in config
+- add description field to @medyll/idae-machine package.json
+- update @medyll/idae-prettier-config dependency specifier to latest in pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- lock
+- comment out workspace dependency replacement logic in patch script
+- remove shared directory from pnpm workspace configuration
+- remove packages-demo from pnpm workspace configuration
+- update @medyll/idae-prettier-config dependency to use workspace protocol in pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency from workspace to latest version
+- remove @medyll/idae-prettier-config from devDependencies
+- update package scopes from '@medyll' to 'medyll' for consistency
+- add conventional commits flags and update git-describe output in lerna debug log
+- update npm auth token format in .npmrc and adjust lerna debug log output
+- reorder exports in index.ts to include config.js
+- remove package.json from assets in semantic-release git configuration
+- update prettier and svelte dependencies in pnpm-lock.yaml
+- update dependency installation command in release workflow for semantic-release
+- remove redundant NODE_AUTH_TOKEN from release workflow
+- update devDependencies to use workspace references for idae-be and idae-engine
+- update version and dependencies in package.json
+- update npm version script to use 'latest' as preid for prerelease tagging
+- update loop function signature to include type annotation and handle null data gracefully
+- prevent duplicate exports in MakeLibIndex by refining export key generation
+- prevent duplicate exports and improve export statement formatting in MakeLibIndex
+- update data binding in Looper component and ensure proper grouping of sorted data
+- update NPM_TOKEN to use NPM_TOKEN_2026 for release workflow
+- update version to 0.181.1 in package.json
+- update package versions to latest in package.json and pnpm-lock.yaml
+- update version to 1.0.0 in package.json
+- update package versions in package.json and pnpm-lock.yaml
+- update version to 1.0.0 in package.json and set @medyll/idae-eslint-config to latest
+- update version to 0.1.1 in package.json and move @medyll/idae-prettier-config to devDependencies in pnpm-lock.yaml
+- move @medyll/idae-prettier-config to devDependencies in package.json
+- update @medyll/idae-prettier-config version to 1.2.8 and adjust dependency specifier
+- update @medyll/idae-prettier-config version to 1.2.8 and specify dependency version in idae-eslint-config
+- bump version to 1.2.7 in package.json
+- update @medyll/idae-prettier-config dependency to use wildcard version and correct version reference
+- update @medyll/idae-prettier-config dependency to use wildcard version
+- mocks IdaeDbConnection pour tous les adapters, uniformisation imports ESM/types, dépendances peer installées, tous les tests passent
+- correct increment logic for monobjSte in setInterval
+- documentation du format de commit monorepo et extraction du nom du package
+- add GH_TOKEN to release workflow and update eslint-config dependency
+- add postcss dependency for improved CSS processing
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- add default export to package.json for better module compatibility
+- update main-publish.yml to enhance changeset handling and README generation
+- update README.md generation script to commit changes from monorepo root
+- remove 'idae-model' from example usage in generateReadme function
+- remove .npmrc file from idae-slotui package
+- update dependency checks to exclude cssfabric in package verification script
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- downgrade @medyll/cssfabric dependency from 0.2.1-beta.9 to 0.2.1-beta.7 in package.json
+- remove unnecessary comment and correct cssfabric dependency check in package verification script
+- exclude cssfabric from being forced to "workspace:*" in package dependencies
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json and pnpm-lock.yaml
+- reorder Node.js setup step in workflow for proper execution
+- replace corepack setup with direct pnpm installation in workflow files
+- update cache configuration from npm to pnpm in workflow files
+- add console log for changeset file creation in generate-changeset script
+- handle potential undefined values in commit date formatting
+- ensure newline at the end of package.json when saving modifications
+- add comment to clarify context retrieval in FieldValue component
+- update .gitignore to include specific SvelteKit generated files
+- update error messages to reflect correct dependency requirement
+- update import paths to include file extensions for consistency
+- CI
+- packaging and workspace deps
+- update changeset generation log message to use standard formatting
+- update changeset generation log message to use non-bold formatting
+- correct function name from getResultset to getResultSet in README and tests
+- correct function name from getResultset to getResultSet and deprecate old function
+- update delete event data structure in CollectionCore
+- update demo page to improve database handling and reactivity
+- correct form event handling in demo page
+- fix auth init order
+- done sme things
+- Update example usage to include 'nest-test' in the generateReadme function call
+- update repository names in generateReadme function
+- update variable declarations to use const for better readability and consistency
+- update import paths to remove .js extension for dbFields and related components
+- update import paths to include .js extension for dbFields
+- update state structure from 'stator' to 'value' for consistency in Stator implementation
+- update GitHub base URL and improve README formatting
+- update version and enhance description in package.json
+- update GitHub base URL to point to packages directory
+- correct AttrHandlerHandle type definition and refactor handle method
+- add console log for calculated position in snapTo method
+- optimize attribute removal by eliminating unnecessary value handling
+- update selectWhile to return multiple results and improve sibling selection logic
+- restore export for collection.svelte.js in index.ts
+- restore export for collection.svelte.js in index.ts
+- gérer correctement la suppression des éléments dans l'état des données
+- mettre à jour les dépendances vers les dernières versions
+- corriger les exportations et renommer les classes de menu
+- fix scss errors and deprecations
+- bad imports
+- added prepack feature
+- dependencies
+- update return types of get and getAll methods to ResultSet<T>
+- cast update return type to unknown and handle undefined case
+- demendancies update
+- updated dependencies
+- dependencies update
+- removed object destruction in event main manager
+- corriger le type de retour de la méthode getAll pour retourner un tableau d'éléments
+- corriger les tests et mettre à jour les dépendances dans package.json
+- corriger la description de la bibliothèque dans le README.md pour plus de clarté
+- refactor Toast component to use mount for Toaster instantiation
+- confirm style actions
+- idae-db options and query are now encoded
+- fixed typings for AdapterConstructor
+- schemeModelClass typings
+- Update databaseMiddleware and IdaeApiClient imports
+- css loading and breakpoints
+- bad dependency
+- Update next-publish.yml to skip applying changeset versions during dev branch publish
+- Update next-publish.yml to skip applying changeset versions during dev branch publish
+- main
+- version chore
+- changeset generation
+- Update npm dependencies and remove unused code
+- Update npm dependencies and TypeScript version
+- added ignored packages
+- incorrect load of css files
+- empty req.params issue in database middleware
+- Update import statement for ApiServer in index.ts
+- Remove obsolete SCSS file and update CSS imports in idae-slotui index.ts file
+- css case for button-menu
+- Update CSS imports in index.ts file
+- Trigger layout load in +layout.ts file
+- Rename SCSS files in idae-slotui package
+- bad scope configuration
+- Refactor WalkHandler to handle actions with callbacks
+- setted implements CommonHandler
+- typings
+- added dom check to ensure consistent load
+- fix css variants
+- fix css variants
+- failure on popper
+- autoclose on autocomplete was broken
+- menu list was broken
+- looper integration
+- fixes
+- demoer state was locked
+- iconify reloading
+- presets declaration
+- actions export as const
+- Drawer actions exports
+- removed old optional decalrations
+- removed all slot directive from demo files
+- removed all slot calls in components
+- removed old event attributes
+- removed all slots call
+- drawer size
+- removed cssFabric usage for backdrop
+- tabs
+- menu list
+- ts optional vars
+- Button menu now use the popper
+- button simplified props, and removed dyn parts reserved to buttonAction
+- itemindex
+- menuitem context
+- examples update
+- context state for menu
+- tree migration
+- window
+- autocomplete snippets
+- menuItem
+- upgraded to latest
+- bad runes declarations
+- missing runes declaration
+- debug missing
+- Demoer migrated to snippets
+- Demoer now shows its content
+- bad color on switch
+- Demoer now shows its content
+- list styling
+- exports
+- Refactor component names in +page.svelte and usePopper.ts
+- Update dependencies and fix Virtualizer style
+- data binding issue in layout.svelte
+- Add mdsvex package and update dependencies
+- fix security audit removing svelte-preprocess-markdown
+- issues
+- reverting sevltekit package version
+- menuItem defaultSelected state
+- menuItem defaultSelected state
+- confirm demo
+- search box
+- missing slot in grouped datalist
+- window parentNode
+- menu props leaks
+- removed debug in chipper
+- loader delay and key wip
+- loader delay and key
+- uiPresets for finder container
+- button border
+- finder width
+- input start icon slot
+- window default pos and returned instance
+- package path
+- window commands
+- missing dep scss
+- Tabs height
+- ListItem classNAme
+- ListItem without list was causing bug
+- dataListItem without default field
+- removed auto indexes
+- window.actions
+- window.actions
+- bad engine path
+- demo for menu
+- demo for menu
+- demo for popper
+- using grid for datalist
+- button theme
+- resizer
+- error thrown in dataListCell
+- dataList freeze
+- lis extra margin
+- tabs use nav
+- list reverse
+- tabs height
+- popper default stick width
+- bad documentation build
+- tooltip fails on vercel
+- typo in iconSlot
+- removed title from dataCell
+- bad .d.ts paths in packages
+- sveltekit packge now export the correct pathes
+- Finder issue on numbers
+- vercel build, removed build dirs
+- vercel build, change root paths
+- gitignore
+- packaging wip
+- export wip
+- export wip
+- path modification for typings
+- issue on full export
+- .md file exports
+- unusable exports
+- removed bad links
+- makedocs was weirdo
+- home typo
+- removed Finder from tree
+- main scroll area now is dynamic
+- home component page layout
+- +layout is browsable
+- dataOp class methods
+- missing assets
+- removed sort none on datalist
+- removed logs
+- overflow is back for frameLeft
+- missing appscheme declaration
+- missing appscheme declaration
+- datalist without slot
+- Drawer backdrop was causing weird border bugs
+- Loader width was 100%
+- missing git files
+- virtual list got header
+- list default slot
+- icon search is visible in input
+- headings in title
+- input css, alerts
+- button css
+- tabs
+- default slot for input, default border color
+- 2 way binding for input type
+- input password
+- grouper component
+- git
+- layout done for sites routes
+- list now get command bar
+- list now accepts raw data
+- themeswitcher
+- removed old themeWrapper
+- input end icon
+- removed fade from listItem
+- use of currentTarget on button menu
+- menu now close on menuItem click
+- listitem props
+- document not ready for ChromeFrameListChromeFrameList
+- document not ready for
+- forwarded event on list
+
+**Documentation:**
+- clarify entry point and usage of ResultSet in README
+- update README to enhance clarity on features, installation, and usage examples
+- translate and update improvement section to 'Future developments' in copilot-instructions.md
+- update copilot instructions for clarity and structure
+- update SKILL.md for git-commit-monorepo skill
+- expand README with advanced usage examples for query operators
+- Add initial documentation for @medyll/idae-machine project
+- maj chemins, props et suivi étape 4 CreateUpdate
+- maj chemins, props et suivi étape 3 CollectionList
+- maj chemins, props et suivi étape 2 CrudZone
+- add MCP troubleshooting note to agent guide
+- document MCP config flag usage, middleware order, and code example
+- add MCP integration section with config flag and best practices
+- update README with script instructions and add MongoDB test script to package.json
+- update README for improved clarity and structure
+- remove ChromaDB mention for clarity
+- add detailed library description, features, installation, and usage examples to README
+- simplify description of the library
+- update README to include library features, installation, usage, API, and contribution guidelines
+- améliorer le README et ajouter des sections sur l'utilisation et la licence
+- add HTTP content loading and insertion examples to README
+- update examples and improve clarity in usage section
+- Add API client usage guide and classes
+- made docs
+- Update @medyll/idae-be readme
+- done readme
+
+**Styling:**
+- remove padding on lietItem
+- removed unsused css
+- changed packge name
+- renammed repo
+
+**Refactoring:**
+- update CLI path and add new CLI file
+- update import paths for MakeLibIndex in package-pre.js scripts
+- component props and types across multiple files
+- code structure for improved readability and maintainability
+- update documentation and improve default value handling in CreateUpdate component
+- remove multiAdapters and registerAdapters files for cleaner architecture
+- update pnpm-lock.yaml to remove and re-add idae-eslint-config dependency
+- remove unused import of AlertProps in Alert.svelte
+- update package dependencies and remove obsolete files
+- remove TEST_IMPLEMENTATION_SUMMARY.md as part of test suite cleanup
+- remove processor and watcher classes, update CLI for README retrieval
+- remove idae-api-nest package and add idae-be and idae-idbql packages with CLI skills
+- Move Node.js setup step to improve workflow organization
+- Update ESLint configuration to use baseConfig and reorganize dependencies in package.json
+- Remove unnecessary filepath property from Prettier config and clean up package.json
+- Clean up code formatting and improve readability in idbstate and machine modules
+- Remove outdated documentation and files; update architecture diagram and clarify project structure
+- Remove deprecated field types and update references to use new MachineFieldType structure
+- Update CreateUpdate component to use $derived for reactive form fields and clean up +page.svelte
+- clean up README and dbSchema by removing outdated sections and unused imports
+- update IDbCollection and related classes to use MachineDb instance, streamline field parsing and template access
+- update pnpm debug messages to French and adjust changeset ID
+- clean up YAML workflows by standardizing formatting and improving debug messages
+- improve CombineElements type definition and add typing for createIdbqDb
+- update import paths for IDbCollectionFieldForge and IDbFormValidate; expose MachineForge class
+- rename constructor parameter for clarity in IDbCollection
+- replace IDbBase with MachineDb across multiple files for improved consistency and clarity
+- update IDbBase and IDbCollection methods for improved clarity and consistency
+- replace IDbCollections with IDbBase across multiple files for consistency
+- update IdaeApiClient and related classes for improved request handling and configuration
+- restructure fk property to use Mongoose schema and define FkValue type
+- improve CombineElements type definition for better depth handling
+- enhance EventsHandler to support EventHandlerHandle and add valueOf method
+- update comment for clarity in handle method
+- format import statements for better readability
+- improve type safety in various components and enhance event listener types
+- enhance type safety in MySQLAdapter by using 'unknown' type
+- enhance type safety in MySQLAdapter by using 'unknown' type
+- improve type safety in IdaeDbConnection and related types
+- enhance type safety and improve type handling in database adapters
+- improve type handling and MongoDB queries in IdaeDb and IdaeDBModel
+- enhance type safety in IdaeEventEmitter and related types
+- streamline action handling in attrs, text, timers, and walk modules
+- streamline action handling in attrs, text, timers, and walk modules
+- rename node to inputNode for clarity and update related methods
+- replace deprecated methods and enhance style handling
+- remove deprecated setStyle method and enhance eachNode functionality
+- improve style handling and add debugging logs
+- rename dataList to data for consistency in grouping methods
+- clean up code formatting and remove commented-out checks in idbql files
+- rename menu list classes and update related styles
+- fix deprecations for scss
+- update SCSS imports and mixin usage for consistency
+- migrate from @import to @use for SCSS files
+- Update express middleware configuration and error handling
+- Update CommonHandler interface
+- Update Walker  class to handle props, position, walk, and timers actions with callbacks
+- Update AttrHandler to handle actions with callbacks
+- Update WalkHandler to handle actions with callbacks
+- Update DomHandler to handle DOM insertion at specific positions
+- Update ClassesHandler to handle class actions with callbacks
+- Update DomHandler class typings
+- Update Be class to handle props, position, walk, and timers actions with callbacks
+- Update TimersHandler to use callback function in timeout and interval methods
+- Update Be class to handle timers actions with callbacks
+- Update WalkHandler to handle actions with callbacks
+- Remove commented code in proxyHandler.ts
+- Remove commented code in +page.svelte
+- Update Be class to handle props, position, walk, and timers actions with callbacks
+- Update TimersHandler to use callback function in timeout and interval methods
+- Import CommonHandler for handling common actions in utils.ts
+- Update TextHandler to use callback function in various methods
+- Update DomHandler to handle multiple DOM methods at once
+- Update StylesHandler to use callback function in handlerFor method
+- Update PropsHandler to handle set and delete actions with callbacks
+- Update PositionHandler to handle multiple position methods at once
+- Update WalkerHandler to use callback function in find and findAll methods
+- Import BeUtils for handling actions in DataHandler
+- Update ClassesHandler to handle multiple class methods at once
+- Update EventsHandler to handle multiple event methods at once
+- Update Be class constructor to accept Be instances
+- Move PropsHandler to separate file
+- removed attach  to other  classes
+- moved attach  to core class
+- moved walker  to a separate file
+- moved dom  to a separate file
+- moved props  to a separate file
+- moved classes  to a separate file
+- moved events  to a separate file
+- moved data  to separate file
+- moved attrs to separate file
+- main config changes
+- create shared eslint and prettier config dir
+- (data-idbql): replaced calls to query by @medyll/data-query
+- remove svelte 5 support
+- integrated to monorepo
+- updated version
+- cartouche css names
+
+**Tests:**
+- add unit tests for Machine class functionality and initialization
+- add unit and e2e tests for AppController, DatabaseService, and EntityController
+- enhance styles test to include styles method for setting and unsetting styles
+- add unit tests for DocsProcessor to validate property extraction
+- add HTTP handler for content update and insertion with tests
+- enhance calculateAnchorPoint to support PositionSnapOptions and improve error handling
+- update assertions to use innerHTML for text manipulation tests
+- refactor timer test cases to use returned references for clearTimeout and clearInterval
+- refactor test cases to use callback syntax for improved readability
+- add tests for custom event handling and multiple event scenarios
+- add comprehensive tests for content manipulation methods
+- enhance style handling tests for object and string formats
+- added tests
+- add setup for test data in beforeEach hook
+- updated tests
+- améliorer les tests de tri et de regroupement des données
+- améliorer les tests de filtrage avec de nouveaux cas et données
+- mongodb tests
+- added tests
+- Reorder middleware configuration and fix empty req.params issue in database middleware
+- tests implementation
+
+**Chores:**
+- add initial changelog for shared package with recent updates and fixes
+- update changelog with recent dependency updates and enhancements
+- update @medyll/idae-pnpm-release to version 1.0.27 in package.json and pnpm-lock.yaml
+- update dependencies and remove lerna
+- remove unused @changesets/cli dependency from package.json and pnpm-lock.yaml
+- update svelte-check to version 4.3.6 and add dependencies
+- remove semantic-release dependencies and update release workflow trigger
+- update dependencies and versions in pnpm-lock.yaml
+- update lerna configuration to include command settings
+- release v0.0.2
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- update package versions in eslint, prettier, and shared configurations
+- update package versions and scopes in package.json files
+- update dependencies in idae-eslint-config package.json and pnpm-lock.yaml
+- publish idae-prettier-config to npm
+- update idae-prettier-config package.json
+- translate and optimize SKILL.md (English, clarified, structured, automation rules)
+- update prerelease identifier for dev branch from beta to next
+- add SKILL.md for multi-role agent and Svelte code writer tools; remove unused alias from svelte.config.js
+- migrate styles from Tailwind CSS to SCSS for multiple components
+- add SKILL.md for multi-role agent and Svelte code writer tools
+- add step to generate README in release workflow
+- add author field to package.json files across multiple packages
+- add repository field to @medyll/idae-eslint-config package.json
+- update @medyll/idae-prettier-config version in package.json and pnpm-lock.yaml
+- add private field to @medyll/idae-chroma package.json
+- add repository field to package.json files across multiple packages
+- move @medyll/idae-prettier-config dependency from devDependencies to dependencies in package.json and pnpm-lock.yaml
+- update @medyll/idae-prettier-config version to 1.2.4 in pnpm-lock.yaml
+- update @medyll/idae-prettier-config version from workspace to 1.2.4 in package.json
+- update @semantic-release/github version to 12.0.2 in package.json and pnpm-lock.yaml
+- update Node.js version to 24 in release workflow
+- fix duplicate run command for multi-semantic-release in release workflow
+- add NODE_AUTH_TOKEN to release step environment variables
+- update package.json files to correct scope and versioning
+- remove outdated changesets for idae-socket and idae-shared
+- Ensure package is marked as private in package.json
+- Remove duplicate prepackage script and clean up package.json metadata
+- Remove unnecessary newline in next-publish.yml for cleaner formatting
+- Update dependencies in package.json for eslint and related packages
+- update dependencies in pnpm-lock.yaml, including prettier to 4.0.0-alpha.13 and add Tailwind CSS plugins
+- update Prettier configuration and dependencies for improved formatting
+- update package.json files to use workspace:* for Medyll dependencies
+- remove outdated changesets for idae-socket and idae-shared
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- update dependencies and modify workspace dependency checks
+- update package versions and enhance test coverage for query and operators
+- remove outdated changeset file for idae-model
+- remove package.json and package-lock.json files
+- remove outdated changesets for idae-socket, idae-stator, and idae-shared
+- remove package.json for @medyll/ai-bash
+- chore
+- chore
+- chore
+- chore
+- chore
+- deleted bad package
+- deleted bad package
+- indexes
+- version package
+- version bump
+- versioning
+- packaging
+- changeset
+- versioning
+- packaging
+- changeset
+- changeset
+- chore
+- update dependencies in package.json and package-lock.json
+- deleted playwright files
+- update package versions in README and add execSync import
+- Remove idae-doc-ts package and its associated files
+- mettre à jour les dépendances Svelte, ESLint et Vitest vers les dernières versions
+- mettre à jour les dépendances Svelte et Vite vers les dernières versions
+- update chromadb and svelte dependencies to latest versions
+- update dependencies in idae-api package
+- update dependencies in package.json
+- bump version to 1.0.0 and enhance package description
+- update .gitignore to include IDE configuration files
+- mise à jour des dépendances et amélioration du fichier BootStrApp.svelte
+- dependencies update
+- versions updates
+- update eslint, npm, publint, and rollup dependencies
+- chore
+- package update
+- add .dockerignore and update package.json with optional dependencies
+- remove unnecessary $derived from results assignment
+- chore
+- fixes
+- ajouter des exports manquants pour les composants et les utilitaires
+- ajouter l'export de fakeHttpPost depuis le répertoire fakeZone
+- update dependencies in package.json to latest versions
+- chore
+- cadenzia initial
+- initial commit
+- mettre à jour le nom du package et ajouter un script de préparation
+- initialiser le projet Svelte avec configuration de base et fichiers essentiels
+- améliorer le composant Marquee avec un Looper et des styles personnalisés
+- ajouter un script pour générer des catalogues de composants Svelte et des index de démonstration
+- ajouter une nouvelle logique de validation pour les formulaires d'entrée utilisateur
+- auto-export entry components and enhance module exports in idae-html and idae-slotui
+- add descriptions to package.json files for improved clarity and documentation
+- update devDependencies and dependencies to latest versions
+- update svelte and related dependencies to latest versions
+- idae-html initial commit
+- site cleaning
+- main changes
+- Register event listeners for different operations in IdaeDbAdapter
+- chore
+- Update IdaeDbAdapter to support optional options in updateWhere method
+- Remove unused MySQLAdapter and MongoDBAdapter files
+- Update IdaeDbAdapter to support additional options in updateWhere method
+- Update IdaeDbAdapter to support additional options in updateWhere method
+- Update IdaeDbAdapter to register event listeners for different operations
+- Update IdaeDbAdapter to register event listeners for different operations
+- Add transaction support and database connection management methods
+- Refactor IdaeDbAdapter class to improve code organization and readability
+- Remove console.log statements and improve code organization in IdaeDb class
+- Register event listeners for findById, update, and create operations in usersCollection
+- Add typed event listener support to IdaeEventEmitter
+- Register global event listeners in IdaeDb class
+- Remove console.log statements in MongoDBAdapter
+- Refactor IdaeDbAdapter class to improve code organization and readability
+- Update IdaeDbAdapter classes to implement IdaeDbAdapterInterface
+- Refactor IdaeDbAdapter class to improve code organization and readability
+- Add ChromaDBAdapter and update dependencies
+- Remove deprecated IdaeDb class and related methods
+- Add ChromaDBAdapter implementation
+- global configuration
+- Update package.json with additional "package:verify" script
+- Update fakeHttpPost import in index.ts
+- Update package.json with additional "import" field
+- Update transition duration for checkbox and cartouche components
+- Update imports and typings in example.ts and +page.svelte files
+- Update IdaeApiClientCollection to extend IdaeApiClient
+- Update dependencies for idae-db package
+- Add new files and configurations for idae-db package
+- Rename types.ts file and update IdaeDb class
+- Add IdaeDb and IdaeDbConnection classes to idae-db package
+- Update dependencies and fix CSS loading and breakpoints
+- removed changesets
+- Update import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be
+- Update git commit command to force push changeset versions
+- Update npm cache configuration in next-publish.yml
+- Update next-publish.yml to remove force-with-lease option when pushing to dev branch
+- Apply changeset versions
+- Update next-publish.yml to skip applying changeset versions during dev branch publish
+- main-publish
+- Update lerna dependency to version 8.1.8
+- version chore
+- Update npm dependencies and add Svelte v5.0.0-next.218
+- Update npm dependencies and add new packages
+- Update npm dependencies and TypeScript version
+- chore
+- update npm dependencies and TypeScript version
+- update npm dependencies
+- update versions, changelog, and package-lock.json
+- ci hangouts
+- Reduce wait time before creating release PR and publishing to npm
+- Add Entity and SchemeFieldClass to idae-mongo library
+- Update component structure in root.svelte file
+- Refactor findAll to where in MySQLAdapter and DBaseService
+- initial commit
+- Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- Update npm dependencies and import paths
+- Update npm dependencies and gitignore files
+- Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- Update RequestParams and ApiServerRequestParams types for database adapters
+- Remove unused essai.ts file
+- Update RequestParams type definition
+- Update IdaeApiClientRequest to return a Promise of Response
+- Update import paths for server files in idae-api package
+- Refactor IdaeApiClientConfig to use options object for configuration
+- Add IdaeApiClientRequest class for making API requests
+- Add IdaeApiClientConfig class for managing API client configuration
+- Add IdaeApiClient class for making API requests
+- Rename SCSS files to fix case sensitivity issue
+- Import MongooseConnectionManager class in mongooseConnectionManager.ts
+- Add lazy loading for images in page load
+- Update DBaseService to use MongooseConnectionManager for database connections
+- Add MongooseConnectionManager class for managing MongoDB connections
+- Add collectionName and dbName properties to Express Request interface
+- Refactor databaseMiddleware to store database connection details in request object
+- Update npm dependencies and remove unused devDependencies
+- Update middleware configuration and add database middleware for route handling
+- Update mongoose and mongoose-sequence dependencies
+- Refactor ApiServer to improve middleware configuration and fix req.params issue in database middleware
+- Refactor IdaeApi to improve middleware configuration and fix req.params issue in database middleware
+- chore
+- Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- Add @types/mongoose-sequence dependency
+- Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- Refactor DBaseService to use database adapters
+- Add DatabaseManager for managing database connections
+- Add route definitions for API endpoints
+- Add types for database adapters
+- Add database middleware for connecting to the database
+- Extend Express Request interface to include dbConnection
+- Add MongoDBAdapter for MongoDB database operations
+- Add mysql2 and sequelize dependencies to package.json
+- Refactor DBaseService to use database adapters
+- Refactor DBaseManager to use environment variables for MongoDB configuration
+- Update package.json and add release script for idae-slotui
+- Set up GitHub Actions workflows for publication and version management
+- Update npm dependencies and devDependencies
+- renaming
+- update button menu SCSS import to use kebab-case file name
+- Update package name to "@medyll/idae-shared"
+- renamed scss file
+- trying to limit secondary rate
+- ci on
+- Update scripts to use shebang for better compatibility
+- Update and configured husky to version 9.1.2
+- Update workflows for publishing on main and dev branches
+- update versions, changelog, and package-lock.json
+- remove svelte 5 support
+- Remove unused methods in Be class
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- Update internal dependencies and configuration
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- Update package-lock.json and dependencies configuration
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- Update package.json with correct scope value
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- update versions, changelog, and package-lock.json
+- clean up obsolete tools and configurations
+- update versions, changelog, and package-lock.json
+- clean up obsolete tools and configurations
+- update versions, changelog, and package-lock.json
+- clean up obsolete tools and configurations
+- update versions, changelog, and package-lock.json
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- update versions, changelog, and package-lock.json
+- Update .changeset/config.json file
+- Update package-lock.json and .changeset/config.json files
+- update versions, changelog, and package-lock.json
+- clean up obsolete tools and configurations
+- update versions, changelog, and package-lock.json
+- Clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update version and publish workflow
+- Update versions, changelog, and package-lock.json
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update generate-changeset.js script to sanitize commit messages
+- Update changeset action to v1 for version and publish workflow
+- Update .changeset/config.json file
+- Remove unused .changeset/config.json file
+- Remove unused .changeset/config.json file
+- Update changelog generation script and add changeset generation script
+- Update changelog generation script and add changeset generation script
+- Update changelog generation script and add changeset generation script
+- Update changelog generation script and add changeset generation script
+- version packages
+- update versions and changelog
+- update versions and changelog
+- Update GitHub Actions workflow and dependencies
+- Update test-results and +page.svelte files
+- cleaning
+- Update package.json scripts
+- Update types.ts file in idae-be package
+- Update READ
+- Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- chore
+- chore
+- typings
+- (idae-be): handle modification for EventHandlerHandle
+- Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- deps
+- main update pretttier
+- chore
+- initial commi
+- Update version-and-publish workflow branch filter to use "main" branch
+- Update branch filter in version-and-publish workflow
+- Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- update Be class to use setStyle instead of styleSet
+- added sheet component
+- changed scss loading path
+- update CSS variables in presets.scss, box.css, icon.css, and menu.css
+- format
+- added husky
+- prettier is now global
+- updated readme
+- added type module du package
+- chore
+- setup cleaning phase
+- packaging
+- packaging repo
+- updated config
+- updated config
+- removed shared dataops class
+- renammed packages
+- readme updated with latests changes
+- changed directory to idae-query
+- peerDeps
+- migration to monorepo
+- created dataOp
+- svelte version set to next
+- chore
+- added operators
+- versions
+- chore
+- added readme
+- chore
+- chore
+- dependencies
+- update idae-socket
+- 1st integration in monorepo
+- versions
+- update npm dependencies
+- vers
+- revamped htmludom
+- ver
+- chore
+- ver
+- npm publishing
+- npm setup
+- gac
+- noce version in actions
+- initial
+- initial commit
+- chore
+- chore
+- chore
+- versions to @next
+- chore
+- fix demo title
+- fixed prest for tall
+- updated versions
+- chore
+- chore
+- added expand ts support and definitions
+- added  parameters, componentArgs for  controls
+- added auto export for demoComponents controls
+- ts job
+- removed accessors options
+- added idae typings
+- chore
+- created demo values
+- 0.7.0-beta.1
+- exported types on Avatar
+- imports on Alert
+- 0.7.0-beta.0
+- ver
+- 0.2.0-beta.4
+- ver
+- 0.2.0
+- ver
+- 0.2.0
+- vers
+- chore
+- compressed css
+- presets
+- updated demo component
+- chore
+- migrating to monorepo
+- 0.11.1
+- Mise à jour des dépendances dans package.json
+- chore
+- svelte 5 mogration
+- chore
+- typings
+- deprecated menu
+- scss
+- chore
+- moved assets
+- chore
+- deprecations
+- styling issues
+- menuItem
+- chore
+- chore
+- verson
+- chore
+- chore on upgrade
+- Mise à jour des dépendances dans package.json
+- 0.2.0-beta.3
+- svelte latest
+- 0.2.0-beta.2
+- chore
+- 0.11.0
+- chore
+- 0.2.0-beta.1
+- chore
+- 0.10.0
+- added versioning
+- Ajouter un nouvel attribut privé selectorId à la classe HtmluCssObserver et ajouter une nouvelle méthode cleanSpecialChars pour nettoyer les caractères spéciaux dans le sélecteur. Ajouter une nouvelle option strictlyNew à la méthode track pour contrôler le suivi des animations existantes. Ajouter une nouvelle méthode callCallback pour appeler le callback et mettre à jour la méthode track pour appeler le callback pour les éléments existants si strictlyNew est désactivé. Mettre à jour la méthode doTag pour utiliser le nouvel attribut selectorId. Mettre à jour la méthode elementObserve pour prendre en compte la nouvelle option strictlyNew.
+- cleaning publication script
+- removed old md files
+- 0.2.0-beta.0
+- chore
+- chore
+- chore
+- @iconify/svelte
+- added ts defs  for demo components
+- removed calls to svelte/internal
+- version
+- 0.1.1
+- css-properties rewrite
+- minor
+- chore
+- 0.1.1-beta.2
+- 0.1.1-beta.1
+- updated peerDeps
+- 0.1.1-beta.0
+- cleaning
+- Delete unused files and update import paths
+- Refactor file paths and update component imports
+- Update file paths and dependencies
+- storybook gen with sveld
+- Update import paths in several files
+- Update file paths and imports
+- Add new enum for position and update stickTo function
+- 0.1.1-alpha.0
+- 0.1.0
+- 0.0.6-alpha.0
+- 0.0.5
+- Update import paths for slotuiCatalog and componentCite
+- Fix code formatting and import statements
+- Update dependencies and fix layout styles
+- 0.0.4
+- 0.0.3
+- 0.0.2
+- Remove deprecated code and add new exports scripts to package.json
+- svelte upgrade
+- migration to svelte 4
+- Add test scripts for integration and unit testing
+- updated packages
+- updated packages
+- updated publish
+- removed auto-indexes
+- before migration
+- updated cssfabric version
+- added preview link on home page chore
+- added preview link on home page
+- scroll
+- bad imports
+- added some credits, sort of
+- added some credits, sort of
+- footer text on home
+- confirm
+- site fixes
+- ver 0.4.8
+- docs
+- ts
+- added cite
+- menu fixes site links external
+- added slots next and previous to panel buttons
+- added unque cell to dataliste
+- ver 0.4.5
+- added hook for css
+- ver 0.4.1
+- chipper
+- ver 0.4.0
+- confirm wip
+- ver 0.3.9
+- list footer
+- ver 0.3.8
+- docs
+- switcher path
+- ver 0.3.6
+- switcher
+- removed logs
+- contentswitcher
+- ver 0.3.5
+- migrzte listTitle slots
+- ver 0.3.4
+- migrzte listItems slots
+- ver 0.3.3
+- icon button is back
+- ver 0.3.2
+- window.center
+- docs
+- added site.utils
+- slider wip
+- slider
+- slots
+- css presets
+- togglebar demo
+- window wip
+- window self destroy()
+- login try
+- ver 0.2.8-dev
+- removed logs
+- dataList pathes
+- columner
+- ver 0.2.4-dev
+- ver 0.2.2-dev
+- contextRoot api wip
+- contextRoot api
+- demos
+- autoComplete demo
+- it works ....
+- grouper demo wip
+- grouper demo
+- indexes are back
+- resolving entry point
+- fixes
+- wip
+- wip
+- indexes
+- progress
+- automatic def files for package
+- panel demo
+- panel wip
+- ver 0.1.94-dev
+- window wip
+- ver 0.1.93-dev
+- window wip
+- ver 0.1.92-dev
+- select demo wip
+- select demo
+- switch
+- switch
+- ver 0.1.91-dev
+- pre-push
+- ver 0.1.90-dev
+- tree demo wip
+- tree demo
+- tabs demo
+- loader demo
+- scss presets
+- list demo wip
+- list demo wip
+- code blocks formattings wip
+- code blocks formattings
+- install primsjs
+- input  demo
+- drawer  demo
+- divider  demo
+- confirm  demo
+- chipper demo
+- cartouche demo
+- box demo
+- badge wip
+- backdrop demo
+- button demo wip
+- button demo wip
+- alert demo wip
+- demoer
+- ver 0.1.89-dev
+- ver 0.1.88-dev
+- package
+- ver 0.1.87-dev
+- Button and List updates
+- ver 0.1.85-dev
+- removed logs
+- cartouche
+- ver 0.1.85-dev
+- publish
+- ver 0.1.84
+- ver 0.1.83
+- ver 0.1.82
+- Tabs demo
+- window wip
+- stickto fixed
+- menu wip
+- ver 0.1.81
+- ver 0.1.80
+- added defaultWidth to Frame.drawer
+- added dividerBefore to menuItem
+- added selected css for menuItem
+- datalist grouping
+- props removing for datalist
+- added options to datatable
+- updated docs
+- updated docs
+- updated docs
+- ongoing tooltip
+- finder menu got max height
+- updated favicon
+- updated adapter-vercel
+- readme
+- utils and finder tools
+- added website link to the readme file
+- version
+- css styling on vercel build
+- usezPopper and stickTo are back
+- datalist demo now correctly sort
+- datalist demo is back
+- button demo
+- default site's drawer state
+- dataList is back with header
+- removed demoData
+- vercel site browsable
+- adapter-vercel implem wip
+- adapter-vercel implem wip
+- adapter-vercel implem
+- previews, added links
+- previews
+- cssFabric theme update
+- readme update end
+- readme update
+- documentation preview file wip
+- documentation preview file
+- Finder component
+- site on going
+- migrate cleaning wip
+- migrate cleaning
+- svelte update
+- wip datalist
+- update to vite 1.914
+- ver
+- ver
+- tree
+- treelist
+- docs
+- dataList
+- button and loader
+- header
+- datalist auto-width
+- ver 0.0.48
+- ver 0.1.47
+- ver 0.1.46
+- massive
+- propsProxy accepts functions
+- list reach beta
+- divider for list item
+- divider demo
+- added cite for list
+- started divider demo
+- drawer
+- demo
+- drawer
+- loader demo
+- cartouche
+- cartouche
+- svelte.config
+- list
+- auto-updater
+- fixes
+- ver 0.1.25
+- ver 0.1.24
+- css migration
+- main site
+- added list utils
+- pressed state
+- ver 1.23
+- tabs get content
+- maintenance
+- setted logs ver.18
+- ver .16
+- vr
+- button variants ok
+- propDef try
+- ver
+- button popper box
+- popper
+- button
+- installed highliht
+- deleted Prism
+- demoer on grouper
+- SvelteMarkdown
+- Grouper demo
+- menuItem is clickable
+- grouper
+- grouper
+- ver
+- ver
+- ver
+
+**CI/CD:**
+- reject write on unchanged index
+- Update git push command in next-publish workflow
+- Update auto exports of entry components in multiple packages
+- Update auto exports of entry components in multiple packages
+- Update npm dependencies and reexport entry components
+- Update ignore patterns in MakeLibIndex class
+- Remove unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket
+- Remove unnecessary branch restriction in main-publish.yml workflow
+- Remove unnecessary branch restriction in main-publish.yml workflow
+- Update next-publish.yml to remove force-with-lease option when pushing to dev branch
+- Add "ci" commit type to the list of allowed commit types in generate-changeset.js
+- Update workflow files to skip applying changeset versions during dev branch publish
+- Amend changeset commit
+- chore
+- Apply changeset versions
+- updated prettier config
+- Add package-pre script for pre-processing packages
+- update MakeLibIndex to use options for ignore patterns and lib root
+- fix error 127
+- broken ci
+- broken ci
+- Clean up obsolete tools and configurations
+- updated  main-ci
+- Update CSS imports in idae-slotui index.ts file
+- Update CSS imports in idae-slotui index.ts file
+- removed pre-push hooks
+- added hooks
+- added hooks
+- fixed changeset configuration
+- Update package dependencies for @medyll/idae-slotui-svelte
+- fixed ci
+- Update package.json with correct scope value
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- for be
+- idae-be
+- idae-be
+- idae-be
+- main ci
+- main ci
+- chore
+- socket client-server for idae
+- upgraded tsconfig
+- initial setup for actions
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Update packages/idae-csss/src/lib/csss/plugin.ts
+- Add verification scripts for AGENTS.md commands and content
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor CSS for window and panel components; consolidate styles and remove unused code
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- commit
+- revert: suppression des adapters custom, nettoyage pour migration sur idae-db
+- Refactor code structure for improved readability and maintainability
+- restore: revert idae-slotui to pre-tailwind state (a8c463c6) for full SCSS/cssFabric support
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor: code structure and remove redundant changes
+- Apply changeset versions
+- Refactor IDb classes for improved structure and clarity
+- Apply changeset versions
+- Refactor styles to use Tailwind CSS across components
+- Apply changeset versions
+- Refactor:  code structure for improved readability and maintainability
+- Apply changeset versions
+- Refactor MachineDb and introduce MachineForge for improved field type handling
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor IDbBase and Machine classes; add comprehensive tests for IDbBase functionality
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor and enhance database schema handling
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor AGENT.md to establish Svelte 5 coding policy; remove outdated migration strategy and consolidate rules for compliance.
+- Add AGENT.md for Svelte 5 migration strategy; update DataList and +page.svelte for event handling consistency
+- Rename CollectionList to DataList across components and documentation; update imports and references accordingly.
+- Remove unnecessary closing tag for each block in +page.svelte
+- Add integration tests for CreateUpdate component; implement CRUD operations and validation logic
+- Enhance middleware and documentation: add comprehensive middleware system, improve error handling, and update validation logic; include tests for database, health, and tenant context middleware.
+- Advanced validation: foreign keys required and must exist in target collection (CreateUpdate.svelte)
+- Advanced CreateUpdate.svelte: handle all field types, readonly/private, and FK as select dropdowns in UI
+- Add create and delete UI for agents: support create mode, delete with confirmation, and edit in main demo page
+- Integrate CreateUpdate.svelte with CrudService and event handling in main demo page
+- Enhance CreateUpdate.svelte validation: add type checks for number, email, and boolean fields using schema rules
+- Add validation logic to CreateUpdate.svelte: required fields checked using schema, errors shown, submit prevented if invalid
+- Integrate Svelte 5 components (CrudZone, CollectionList, CreateUpdate, FieldValue) into main demo page
+- Refactor FieldValue.svelte to Svelte 5: use  for props and update logic to Svelte 5 idioms
+- Refactor CreateUpdate.svelte to Svelte 5: use  for props,  for formData, and update logic to Svelte 5 idioms
+- Refactor CollectionList.svelte to Svelte 5: use , Svelte 5 event idioms, and remove legacy export let
+- Full Svelte 5 refactor: CrudZone.svelte now uses , , , and Svelte 5 idioms throughout
+- Refactor CrudZone.svelte to Svelte 5 idioms and syntax
+- Integrate CrudService into CrudZone.svelte via props; update integration test for shared service instance
+- Add unit tests for IdaeDb, IdaeDbAdapter, and IdaeEventEmitter
+- Add comprehensive tests for auth and database middleware
+- Apply changeset versions
+- Apply changeset versions
+- Enhance ChangesetGenerator with detailed JSDoc comments and improve commit filtering logic
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Remove ai-bash package and all associated files, including README, configuration, source code, and tests.
+- Apply changeset versions
+- Remove ai-bash package and all associated files, including README, configuration, source code, and tests.
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- chore : changeset
+- chore : changeset
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Implement feature X to enhance user experience and fix bug Y in module Z
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Aucune modification de code à enregistrer
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Version Packages
+- Version Packages
+- Refactor(idae-api) IdaeApi to use database adapters and add route definitions for API endpoints
+- chore(idae-slotui)
+- Rename Badge.scss to badge.scss
+- Rename Avatar.scss to avatar.scss
+- Rename Alert.scss to alert.scss
+- Create grumpy-pans-drop.md
+- Update README.md
+- refacto(main): for lib
+- Update README.md
+- chore (idae-engine): added getDataKeys to dataOp
+- fic(idae-slotui): popper now use dialog
+- chore(idae-engine):
+- Squashed 'packages/data-events/' content from commit 2b61cb2
+- Squashed 'idae-idbql/' content from commit 4f84156
+- Version Packages
+- Squashed 'packages/htmludom/' content from commit 45fa0d2
+- 0.0.2
+- 0.0.1
+- v0.0.2
+- Initial commit
+- Fix: TypeScript import paths and add missing type annotations
+- Fix: positioning and styling issues in Popper component
+- dev: Add svelte-kit to peerDependencies
+- dev: standard-version
+- bug: fixed exports
+- dev :Update package.json and vite.config.ts
+- Refactor HTMLu module loader and add CSS observer
+- Update HtmluDom imports and add new exports
+- dev: Add @playwright/test and playwright as devDependencies
+- Initial commit
+- 0.4.16
+- ...
+- 0.4.15
+- 0.4.14
+- 0.4.13
+- 0.4.12
+- 0.4.11
+- 0.4.10
+- 0.4.9
+- ts for demoer
+- added route load
+- 0.4.8
+- 0.4.6
+- 0.4.5
+- 0.4.4
+- 0.4.3
+- 0.4.2
+- 0.4.1
+- 0.4.0
+- 0.3.9
+- 0.3.8
+- 0.3.7
+- 0.3.6
+- 0.3.5
+- 0.3.4
+- 0.3.3
+- 0.3.2
+- 0.3.1
+- docs
+- 0.3.0
+- 0.2.8-dev
+- 0.2.7-dev
+- 0.2.6-dev
+- 0.2.5-dev
+- 0.2.4-dev
+- 0.2.3-dev
+- 0.2.2-dev
+- 0.2.1-dev
+- 0.2.0-dev
+- 0.1.99-dev
+- 0.1.98-dev
+- 0.1.97-dev
+- 0.1.96-dev
+- 0.1.95-dev
+- 0.1.94-dev
+- 0.1.93-dev
+- 0.1.92-dev
+- 0.1.91-dev
+- 0.1.90-dev
+- 0.1.89-dev
+- 0.1.88-dev
+- 0.1.87-dev
+- 0.1.86-dev
+- 0.1.85-dev
+- cjore: demoer
+- ver: 0.1.78
+- ver: 0.1.76
+- ver: 0.1.74
+- ver
+- ver: .68
+- ver: .68
+- ver: 0.1.66
+- chor: ver 0.1.65
+- 1st build
+- fixes
+- fixes
+- chore
+- ver: 0.1.35
+- ver: 0.1.34
+- ver:0.1.33 bug fixes
+- ver:0.1.32
+- divider color
+- ver: .29
+- ver: 0.1.26
+- chore tabs
+- added hooks to frame store, ver.20
+- fet: ver 0.1.17
+- md
+- upadted fabric
+- ver
+- ver
+- icons got classes
+- sveltekit to next
+- raw update, passing tests
+- updated version
+- updated elements
+- k,,owing it's alpha
+- updated ui.Login component
+- moved assets
+- updated npm info
+- avatar resolution
+- setted tests
+- adapter config
+- added conf files
+- setup test with jest
+- tree: done
+- card: done
+- card: done
+- cartouche: done
+- absolute animated chip for tabs
+- more
+- more
+- Left panel preselection is back
+- started select
+- more
+- more
+- done alert
+- done alert
+- more
+- done more
+- done avatar
+- done menu
+- installed storybook
+- more
+- Action button
+- Elementor
+- listItem active state is now ok
+- virtual list
+- more
+- more
+- more
+- list store is no more a singleton
+- more
+- more
+- changes
+- more
+- more
+- ContentSwitcher
+- updated more
+- updated xMachine
+- more
+- more
+- more
+- more
+- more
+- more more
+- more
+- more
+- done things
+- material icons
+- material icons
+- upgraded to shadow endpoints version
+- upgraded to shadow endpoints version
+- sx4u more
+- sx4u!
+- not really initial
+- Initial commit
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-08** - fix: update dbSchema and index exports for improved type handling and organization
 - **2026-02-08** - fix: update pnpm-release version and adjust related dependencies in lockfile feat: enhance Vite config by removing unnecessary file extension feat: add missing export for CollectionListFieldValues and adjust existing exports in index.ts fix: improve type handling in MachineParserForge methods fix: update CollectionReverseFks.svelte to use correct item structure
