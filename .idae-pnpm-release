@@ -1,7 +1,7 @@
 {
   "dry-run": false,
   "pre-id": "next",
-  "verbose": true,
+  "verbose": false,
   "build": false,
   "package": true,
   "regenerate-changelog": false,

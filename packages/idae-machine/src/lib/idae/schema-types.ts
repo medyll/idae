@@ -4,6 +4,8 @@
  */
 
 // --- Reusable utility fields ---
+export SchemeType = 'type' | 'group' | 'status' | 'range';
+
 export type SchemeName = string;
 export type Name = string;
 export interface WithName {
@@ -11,7 +13,6 @@ export interface WithName {
   name?: Name; 
 }
 
-export SchemeType = 'type' | 'group' | 'status' | 'range';
 /** Icon identifier (font-awesome or icon key) */
 export type Icon = string;
 export interface WithIcon {
@@ -190,7 +191,8 @@ export interface AppSchemeHasField extends Extendable, WithID, WithCode, WithOrd
   idappscheme_has_field: ID;
   idappscheme_field?: ID;
   visible?: boolean;
-  rules?: ValidationRule;
+  readonly?: boolean;
+  required?: boolean;
   options?: AppFieldOptions;   
   gridFks: { 
     appscheme: gridFksItem<AppScheme>, 
