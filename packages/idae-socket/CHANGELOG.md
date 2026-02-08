@@ -1,25 +1,54 @@
-# @medyll/idae-socket
+# Changelog
 
-## 0.0.2
-
-### Patch Changes
-
-- 11bbd23: - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by medyll
-
-  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by medyll
-  - refactor(config): main config changes ([b1db91e](https://github.com/medyll/idae/commit/b1db91e894eff5dfc8961d64698191b1bb9321da)) - 2024-07-12 by medyll
-    BREAKING CHANGE: new path for module
-  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by medyll
-  - ci(idae-socket): socket client-server for idae ([4565270](https://github.com/medyll/idae/commit/45652707ef218968e242a99c9c5047469f4ed617)) - 2024-07-11 by medyll
-
-## 0.0.2
-
-### Patch Changes
-
-- 11bbd23: - ci(clean): up obsolete tools and configurations ([2ca5705](https://github.com/medyll/idae/commit/2ca57057f7318dd84a931d3ad3522512cf9b55d6)) - 2024-07-25 by medyll
-
-  - ci(clean): up obsolete tools and configurations ([74419ef](https://github.com/medyll/idae/commit/74419ef0f91f27915db7235fbc348c5196ccfc2b)) - 2024-07-25 by medyll
-  - refactor(config): main config changes ([b1db91e](https://github.com/medyll/idae/commit/b1db91e894eff5dfc8961d64698191b1bb9321da)) - 2024-07-12 by medyll
-    BREAKING CHANGE: new path for module
-  - ci(chore): ([5b10e56](https://github.com/medyll/idae/commit/5b10e560043ed1d2283b2b3907ec6094ae322c3d)) - 2024-07-11 by medyll
-  - ci(idae-socket): socket client-server for idae ([4565270](https://github.com/medyll/idae/commit/45652707ef218968e242a99c9c5047469f4ed617)) - 2024-07-11 by medyll
+## [Unreleased] - 2026-02-08
+- **2026-02-03** - feat: add advanced integration tests for payload transformation and server setup
+- **2026-02-03** - feat: enhance README and type definitions, add advanced configuration options and payload mapping support
+- **2026-02-03** - feat: enhance testing setup with Vitest, add integration and unit tests for socket functionality
+- **2026-02-03** - feat: implement authentication strategies with JWT and introspection for secure WebSocket connections
+- **2026-02-03** - feat: replace body-parser with express built-in middleware for improved performance and simplicity
+- **2026-02-03** - feat: refactor imports and update main entry point in package.json for improved module structure
+- **2026-02-03** - feat: enhance idae-socket documentation with detailed agent instructions and usage examples
+- **2026-01-29** - refactor: update import paths for MakeLibIndex in package-pre.js scripts
+- **2026-01-28** - feat: update package dependencies to use @medyll/idae-shared and refactor import paths
+- **2026-01-28** - fix: reorder exports in index.ts to include config.js
+- **2026-01-27** - docs: update SKILL.md for git-commit-monorepo skill
+- **2026-01-24** - refactor: remove processor and watcher classes, update CLI for README retrieval
+- **2026-01-24** - feat: add skills to retrieve README.md for multiple packages via CLI
+- **2026-01-24** - feat: add CLI scripts to retrieve README.md for multiple packages
+- **2026-01-23** - feat: Add Svelte code writer skill and enhance package exports; update README generation script
+- **2026-01-23** - Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- **2026-01-23** - Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- **2026-01-23** - Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- **2026-01-17** - feat: update auto exports in multiple index files to include new components and services
+- **2026-01-14** - Refactor code structure for improved readability and maintainability
+- **2025-03-17** - feat(idae-main): update dependencies and improve exports in index.ts
+- **2025-03-08** - feat(idae-model): ajouter des composants CRUD et types pour la gestion des collections
+- **2025-03-03** - chore(idae-main): chore
+- **2025-03-02** - chore(idae-socket): ajouter l'export de fakeHttpPost depuis le répertoire fakeZone
+- **2024-08-19** - chore(idae-socket): Update fakeHttpPost import in index.ts
+- **2024-08-17** - chore: Update dependencies and fix CSS loading and breakpoints
+- **2024-08-15** - feat(idae-socket): Add server utils and routes exports
+- **2024-08-15** - fix(idae-slotui): css loading and breakpoints
+- **2024-08-14** - ci(main):  reject write on unchanged index
+- **2024-08-14** - ci(main): Update auto exports of entry components in multiple packages
+- **2024-08-14** - Merge branch 'main' into dev
+- **2024-08-14** - ci(main): Update auto exports of entry components in multiple packages
+- **2024-08-13** - ci: Update npm dependencies and reexport entry components
+- **2024-08-13** - chore: Update import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be
+- **2024-08-13** - ci: Remove unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket
+- **2024-08-13** - ci(main): updated prettier config
+- **2024-08-13** - feat(main): updated ci
+- **2024-08-12** - chore(main): chore
+- **2024-08-12** - feat(main): Add package-pre script for pre-processing packages
+- **2024-08-12** - chore(main): update npm dependencies
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-17** - chore(main): deps
+- **2024-07-14** - chore(main): prettier is now global
+- **2024-07-12** - chore(config): packaging
+- **2024-07-12** - refactor(config): main config changes
+- **2024-07-12** - chore(main): packaging repo
+- **2024-07-12** - chore(config): renammed packages
+- **2024-07-11** - ci: chore
+- **2024-07-11** - chore: chore
+- **2024-07-11** - ci(idae-socket): socket client-server for idae
+- **2024-07-10** - chore(idae-socket): 1st integration in monorepo

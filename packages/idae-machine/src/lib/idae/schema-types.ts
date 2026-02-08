@@ -11,6 +11,7 @@ export interface WithName {
   name?: Name; 
 }
 
+export SchemeType = 'type' | 'group' | 'status' | 'range';
 /** Icon identifier (font-awesome or icon key) */
 export type Icon = string;
 export interface WithIcon {
@@ -111,42 +112,47 @@ export interface Extendable {
  */
 export interface gridFksItem<T = any> extends Extendable {
   uid?: string;
-  table: string; 
-  base?: string; 
   name: SchemeName;
   code: Code;
   icon: Icon;
   order: Order;
   multiple: boolean;
+  required: boolean;
   /** Nested scheme data populated during hydration */
   scheme?: T;
 }
 
-/** --- COLLECTIONS INTERFACES --- **/
 
 /** Base database definition */
 export interface AppSchemeBase extends Extendable, WithID, WithCode, WithName {
   idappscheme_base: ID;
-  codeAppscheme_base: Code;
-  mainscope_app?: string;
 }
 
 /** Main scheme definition */
 export interface AppScheme<T = Record<string, any>> extends Extendable, WithID, WithCode, WithName, WithColor, WithIcon {
   idappscheme: ID;
   idappscheme_base: ID;
-  hasTypeScheme?: boolean;
-  hasCodeScheme?: boolean;
-  hasOrdreScheme?: boolean;
-  hasRangeScheme?: boolean;
+  idappscheme_type: ID;
+  schemeType: SchemeType;
   codeAppscheme_base?: Code;
   codeAppscheme_type?: Code;
-  /** Relations */
   gridFks?: { 
-    appscheme_base?: gridFksItem<AppSchemeBase>, 
-    appscheme_type?: gridFksItem<AppSchemeType> 
+    [ key: string]: gridFksItem
   };
-  app_table_one?: T;
+}
+
+export interface AppSchemeCore<T = Record<string, any>> extends  AppScheme<T> {
+  idappscheme: ID;
+  idappscheme_base: ID;
+  idappscheme_type: ID;
+  schemeType: SchemeType;
+  codeAppscheme_base?: Code;
+  codeAppscheme_type?: Code;
+  gridFks?: { 
+    appscheme_base: gridFksItem<AppSchemeBase>, 
+    appscheme_type: gridFksItem<AppSchemeType>,
+    [ key: string]: gridFksItem
+  };
 }
 
 export interface AppSchemeType extends Extendable, WithID, WithName, WithCode {
@@ -186,7 +192,6 @@ export interface AppSchemeHasField extends Extendable, WithID, WithCode, WithOrd
   visible?: boolean;
   rules?: ValidationRule;
   options?: AppFieldOptions;   
-  /** Relations */
   gridFks: { 
     appscheme: gridFksItem<AppScheme>, 
     appscheme_field: gridFksItem<AppSchemeField> 
@@ -201,9 +206,27 @@ export interface AppSchemeHasTableField extends Extendable, WithID, WithOrder {
   codeAppscheme_link?: Code;
   /** Relations */
   gridFks: { 
-    appscheme_field: gridFksItem<AppSchemeField>, 
-    appscheme_link: gridFksItem<AppSchemaCollection> 
+    appscheme_field: gridFksItem<AppSchemeField>
   };
+}
+
+export interface AppSchemeLog extends Extendable, WithID {
+  /** Primary key for the log row */
+  idappscheme_log: ID;
+  /** Related scheme (if applicable) */
+  idappscheme?: ID;
+  /** Operation performed */
+  operation: AppSchemeLogOperation;
+  /** Optional human-friendly scheme name */
+  scheme?: SchemeName;
+  /** Actor identifier (user id or system) */
+  actorId?: ID;
+  /** ISO timestamp or Date object */
+  timestamp?: DateValue;
+  /** Optional free-form details / context */
+  details?: Extendable;
+  /** Optional structured list of changes (before/after) */
+  changes?: Extendable;
 }
 
 /* @deprecated Legacy type for column model entries, to be replaced by AppSchemeField */
@@ -250,6 +273,22 @@ export interface ViewColumnModelEntry_Legacy extends Extendable, WithIcon {
 
 export type ViewField = ViewColumnModelEntry | ViewColumnModelEntry_Legacy;
 
+
+export interface AppSchemeModel<T = Record<string, any>> extends Extendable, WithName, WithCode {
+  model: {
+    base: AppSchemeBase;
+    scheme: {
+      scheme: AppScheme;
+      schemeType: AppSchemeType;
+      schemeField: AppSchemeField;
+      schemeHasField: AppSchemeHasField;
+      schemeHasTableField: AppSchemeHasTableField;      
+      schemeFieldGroup: AppSchemeFieldGroup;
+      schemeFieldType: AppSchemeFieldType;
+    };
+  };
+}
+  /*  @deprecated */
 export interface AppSchemeJson<T = Record<string, any>> extends Extendable, WithName, WithCode {
   hasTypeScheme?: boolean;
   hasCodeScheme?: boolean; 
@@ -260,6 +299,17 @@ export interface AppSchemeJson<T = Record<string, any>> extends Extendable, With
   miniModel?: Array<ViewField>;
 }
 
+/** Log of CRUD operations performed on schemes */
+export type AppSchemeLogOperation =
+  | 'create'
+  | 'read'
+  | 'update'
+  | 'delete'
+  | 'migrate'
+  | (string & {});
+
+
+
 /** Union of all possible metadata collections */
 export type AppSchemaCollection =
   | AppSchemeBase
@@ -269,4 +319,5 @@ export type AppSchemaCollection =
   | AppSchemeFieldGroup
   | AppSchemeHasField
   | AppSchemeHasTableField
-  | AppSchemeType;
+  | AppSchemeType
+  | AppSchemeLog;
