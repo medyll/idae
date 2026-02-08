@@ -42,11 +42,11 @@ jobs:
         run: git fetch --tags --force
 
       - name: Release Packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npx @medyll/idae-pnpm-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
