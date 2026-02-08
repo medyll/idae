@@ -1,4 +1,3 @@
-
 ## 🏗️ Model & Template Structure
 
 A template for `idae-machine` must define collections, fields, and relationships. Here is a minimal example:
@@ -153,6 +152,37 @@ const model = machine.idbqModel;
 ```
 
 You can now pass `collections` and other instances to Svelte components for CRUD, data listing, and editing.
+
+## Alternative instances: `machine.createInstance` and `machine.instance`
+
+- **`machine.createInstance()`**: Creates and returns a new, independent `Machine` instance. This is useful for tests, isolated environments, or when you need multiple databases in the same application. Example:
+
+```typescript
+import { machine, schemeModel } from '@medyll/idae-machine';
+
+// create an isolated instance
+const other = machine.createInstance();
+other.init({ dbName: 'other-db', version: 1, model: schemeModel });
+await other.start();
+
+// use the independent instance
+await other.idbql.agents.add({ name: 'Test' });
+const list = await other.idbql.agents.toArray();
+```
+
+- **`machine.instance`**: A reference to the active singleton instance. After calling `machine.init()` and `machine.start()`, `machine.instance` points to the same instance as the default `machine` export and can be used interchangeably. Example:
+
+```typescript
+import { machine, schemeModel } from '@medyll/idae-machine';
+
+machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
+await machine.start();
+
+const singleton = machine.instance; // same as `machine`
+await singleton.idbql.agents.add({ name: 'Alice' });
+```
+
+Note: `machine.createInstance()` does not replace the singleton — it returns a separate instance that you manage explicitly.
 
 ### Legacy/Direct Usage (not recommended)
 You can still use `createIdbqDb` directly if you need low-level access:

@@ -21,6 +21,7 @@ export type ProductCategory = {
 
 
 
+
 export const testScheme = {
 	product: {
 		keyPath: '++id',
@@ -58,6 +59,21 @@ export const testScheme = {
 				id: 'id (readonly)',
 				name: 'text (required)',
 				description: 'text-long',
+			},
+			fks: {}
+		}
+	},
+	agent: {
+		keyPath: '++id',
+		model: {},
+		ts: {} as { id: string; name: string; role?: string },
+		template: {
+			index: 'id',
+			presentation: 'name role',
+			fields: {
+				id: 'id (readonly)',
+				name: 'text (required)',
+				role: 'text',
 			},
 			fks: {}
 		}

@@ -1,13 +1,10 @@
 {
   "name": "@medyll/idae-query",
-  "bin": {
-    "idae-query": "./script/cli.js"
-  },
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medyll/idae.git"
+    "url": "git+https://github.com/medyll/idae.git"
   },
   "version": "0.186.2",
   "description": "A powerful and flexible query library for TypeScript and JavaScript applications, featuring a MongoDB-like query interface, strong TypeScript support, and easy integration with front-end frameworks.",
@@ -46,7 +43,7 @@
   "devDependencies": {
     "@medyll/idae-engine": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-config-prettier": "workspace:*",
+    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^10.3.5",
     "@sveltejs/adapter-auto": "^6.0.0",

@@ -3,8 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - dev
-      - main
+      - none
 
 jobs:
   release:
@@ -39,9 +38,6 @@ jobs:
         run: | # Install semantic-release and its plugins locally
           pnpm install --frozen-lockfile
 
-      #- name: Patch Workspaces for Release
-      # This replaces "workspace:*" with "*" in-memory for the CI session
-      # run: node scripts/patch-workspace-deps.js
       - name: Generate README
         # Ensure READMEs are built before the release process captures file changes
         run: node scripts/generate-readme.js

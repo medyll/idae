@@ -1,3 +1,4 @@
+import { MachineError } from './MachineError.js';
 import type {
   TplCollectionName,
   Tpl,
@@ -44,6 +45,12 @@ export class MachineScheme {
     this.collection = collectionName;
     this.#machineDb = idbBase;
     this.#collectionModel = model[String(collectionName)];
+    if (!this.#collectionModel || typeof this.#collectionModel["template"] === "undefined") {
+      throw new MachineError(
+        `Collection '${collectionName}' not found in model or missing 'template' property.`,
+        'COLLECTION_NOT_FOUND'
+      );
+    }
     this.#template = this.#collectionModel["template"] as Tpl;
     this.#model = model;
   }
@@ -139,7 +146,6 @@ export class MachineScheme {
         out[fieldName] = this.field(fieldName).parse();
       }
     });
-    console.log("Parsed fields for collection", this.collection, out);
     return out;
   }
 
@@ -165,8 +171,8 @@ export class MachineScheme {
    * @role Reverse foreign key accessor
    * @return {Record<string, Record<string, IDbForge | undefined>>} Reverse foreign key collections.
    */
-  parseReverseFks(): Record<string, Record<string, IDbForge | undefined>> {
-    const result: Record<string, Record<string, IDbForge | undefined>> = {};
+  parseReverseFks(): Record<string, Record<string, any>> {
+    const result: Record<string, Record<string, any>> = {};
     Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
       const template = (collectionModel as CollectionModel).template;
       if (template && template.fks) {

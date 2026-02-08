@@ -5,8 +5,13 @@ const { execSync } = require("child_process");
 
 const scriptPath = __dirname;
 const monorepoPath = path.resolve(scriptPath, "..");
-const monorepoName = "idae monorepo";
+const rootPackageJson = JSON.parse(
+  fs.readFileSync(path.join(monorepoPath, "package.json"), "utf8"),
+);
+const monorepoName =
+  rootPackageJson.name === "root" ? "Idae Monorepo" : rootPackageJson.name;
 const monorepoDescription =
+  rootPackageJson.description ||
   "This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.";
 const githubBaseUrl = "https://github.com/medyll/idae/tree/main/";
 /**
@@ -152,27 +157,6 @@ function generateReadme(blacklist = []) {
     }
     readmeContent += `\n##\n`;
   });
-
-  readmeContent += `\n## Global Architecture\n\n`;
-  readmeContent += "```mermaid\n";
-  readmeContent += "flowchart TD\n";
-  readmeContent += "  subgraph Frontend [Web / Mobile / Desktop]\n";
-  readmeContent += "    UI[idae-slotui] --> App[Your Application]\n";
-  readmeContent += "    App --> Sync[idae-socket]\n";
-  readmeContent += "    App --> LocalDB[idae-idbql]\n";
-  readmeContent += "    LocalDB --> Query[idae-query]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  subgraph Backend [API Server]\n";
-  readmeContent += "    API[idae-api] --> Auth[Middleware]\n";
-  readmeContent += "    Auth --> MultiTenant[Tenant Context]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  subgraph DataLayer [Data Persistence]\n";
-  readmeContent += "    MultiTenant --> DB[idae-db]\n";
-  readmeContent += "    DB --> Adapters[(MongoDB / MySQL / SQLite / ...)]\n";
-  readmeContent += "  end\n\n";
-  readmeContent += "  App -- REST API -- > API\n";
-  readmeContent += "  Sync -- WebSockets -- > App\n";
-  readmeContent += "```\n";
 
   const readmePath = path.join(monorepoPath, "README.md");
   if (fs.existsSync(readmePath)) {

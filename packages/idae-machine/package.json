@@ -52,7 +52,7 @@
 		"@eslint/compat": "^1.2.7",
 		"@eslint/js": "^9.23.0",
 		"@medyll/idae-eslint-config": "workspace:*",
-		"@medyll/idae-config-prettier": "workspace:*",
+		"@medyll/idae-config-prettier": "latest",
 		"@medyll/idae-shared": "workspace:*",
 		"@semantic-release/github": "^10.3.5",
 		"@sveltejs/adapter-auto": "^5.0.0",

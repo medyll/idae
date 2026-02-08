@@ -1,10 +1,14 @@
 {
   "name": "@medyll/idae-slotui-svelte",
   "bin": {
-    "idae-slotui": "./cli.js"
+    "idae-slotui": "./cli.cjs"
   },
   "author": "Lebrun Meddy",
   "version": "0.181.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
   "scope": "medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",
   "scripts": {
@@ -78,7 +82,7 @@
     "micromatch": "^4.0.8",
     "nodemon": "^3.1.11",
     "pm2": "^6.0.14",
-    "prettier": "^4.0.0-alpha.8",
+    "prettier": "^3.0.0",
     "prettier-plugin-svelte": "^3.4.1",
     "prism": "^4.1.2",
     "prism-svelte": "^0.5.0",
@@ -87,6 +91,7 @@
     "rimraf": "^6.1.2",
     "sass": "^1.97.3",
     "sveld": "^0.25.12",
+    "svelte-check": "^4.3.6",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

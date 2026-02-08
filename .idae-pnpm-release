@@ -1,0 +1,9 @@
+{
+  "dry-run": false,
+  "pre-id": "next",
+  "verbose": true,
+  "build": false,
+  "package": true,
+  "regenerate-changelog": false,
+  "generate-readme-root": true
+}

@@ -1,9 +1,24 @@
+<script module lang="ts">
+	import type { Snippet } from 'svelte';
+	import type { CommonProps, Data } from '$lib/types/index.js';
+	/**
+	 * Props for a row in the DataList.
+	 * @template T - The data type for the row.
+	 */
+	export type DataListRowProps<T> = CommonProps & {
+	  /** Data for the row */
+	  data: T;
+	  /** Children snippet for the default cell content */
+	  children?: Snippet;
+	};
+</script>
+
 <script lang="ts" generics="T=Data">
 	import sanitizeHtml from 'sanitize-html';
 	import type { Data } from '$lib/types/index.js';
 	import { writable, type Writable } from 'svelte/store';
 	import DataListCell from './DataListCell.svelte';
-	import type { DataCellType, DataListRowProps, DataListStoreType } from './types.js';
+	import type { DataCellType, DataListStoreType } from './types.js';
 	import type { RowType } from './types.js';
 	import { dataOp } from '$lib/utils/engine/utils.js';
 	import { getContext, setContext } from 'svelte';
@@ -17,23 +32,9 @@
 		data,
 		children,
 		...rest
-	<script module lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { CommonProps, Data } from '$lib/types/index.js';
-	/**
-	 * Props for a row in the DataList.
-	 * @template T - The data type for the row.
-	 */
-	export type DataListRowProps<T> = CommonProps & {
-	  /** Data for the row */
-	  data: T;
-	  /** Children snippet for the default cell content */
-	  children?: Snippet;
-	};
-	</script>
 	}: DataListRowProps<T> = $props();
-	    import type { DataCellType, DataListStoreType } from './types.js';
-	    // DataListRowProps now in module script
+
+	// DataListRowProps now in module script
 	const dataStore = writable<RowType>({ data });
 	setContext('dataListRow', dataStore);
 

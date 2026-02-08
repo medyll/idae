@@ -7,12 +7,23 @@ import { createIdbqDb, type IdbqModel } from "@medyll/idae-idbql";
  * @role Main entry point for managing the IDBQL connection and centralized data access.
  */
 export class Machine {
-/**
- * IDBQL (readonly collections instance)
- */
-_idbql!:
-  | ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"]
-  | undefined;
+
+  /**
+   * Static registry of named Machine instances
+   */
+  static instanceRegistry: Record<string, Machine> = {};
+
+  /**
+   * Instance name (optional)
+   */
+  instanceName?: string;
+
+  /**
+   * IDBQL (readonly collections instance)
+   */
+  _idbql!:
+    | ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"]
+    | undefined;
 
   /**
    * IDBQL (stateful collections instance)
@@ -53,7 +64,7 @@ _idbql!:
   /**
    * Data model
    */
-  _model!: IdbqModel;
+  _model!: IdbqModel | undefined;
 
   /**
    * Main constructor
@@ -199,6 +210,27 @@ _idbql!:
   get idbqModel(): ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"] | undefined {
     return this._idbqModel;
   }
+
+  createInstance(instanceName?: string, dbName?: string, version?: number, model?: IdbqModel): Machine {
+    const instance = new Machine(dbName, version, model);
+    if (instanceName) {
+      instance.instanceName = instanceName;
+      Machine.instanceRegistry[instanceName] = instance;
+    }
+    instance.start();
+    return instance;
+  }
+
+  /**
+   * Get a Machine instance by name from the registry.
+   * @role Accessor
+   * @param {string} instanceName The name of the instance.
+   * @return {Machine | undefined} The Machine instance, or undefined if not found.
+   */
+  static instance(instanceName: string): Machine | undefined {
+    return Machine.instanceRegistry[instanceName];
+  }
+  
 }
 
 export const machine = new Machine();

@@ -5,6 +5,7 @@ import type {
   TplProperties,
   TplFieldArgs,
   TplFields,
+  IDbForge,
 } from "@medyll/idae-idbql";
 import type { MachineDb } from "./machineDb.js";
 import { MachineError } from "./machine/MachineError.js";
@@ -14,14 +15,6 @@ import { MachineError } from "./machine/MachineError.js";
  * Provides methods to analyze field rules and extract type information for schema generation.
  */
 
-export type IDbForge = {
-  collection: TplCollectionName;
-  fieldName: string;
-  fieldType: TplFieldType;
-  fieldRule: TplFieldRules;
-  fieldArgs: TplFieldArgs;
-  is: "array" | "object" | "fk" | "primitive";
-};
 export class MachineParserForge {
   #machineForge: MachineDb["machineForge"] | undefined;
 
@@ -99,7 +92,8 @@ export class MachineParserForge {
      */
     function extractAfter(pattern: string, source: string) {
       const reg = source?.split("(")?.[0];
-      return reg.split(pattern)[1] as TplFieldRules;
+      const after = reg.split(pattern)[1];
+      return (after?.split("(")?.[0]?.trim() as unknown) as TplFieldRules;
     }
 
     /**
@@ -109,22 +103,22 @@ export class MachineParserForge {
      */
     function extractArgs(
       source: string,
-    ): { piece: any; args: [keyof typeof TplProperties]  }  {
+    ): { piece: string; args?: TplFieldArgs } {
       const [piece, remaining] = source.split("(");
-      if (!remaining) return { piece: piece.trim(), args: [] };
+      if (!remaining) return { piece: piece.trim() };
       let central: string | undefined;
       if (remaining !== undefined) {
         [central] = remaining.split(")");
       }
       const args = central
-        ? (central.split(" ") as [keyof typeof TplProperties])
+        ? ((central.split(" ").map((s) => s.trim()).filter(Boolean) as unknown) as TplFieldArgs)
         : undefined;
       return { piece: piece.trim(), args };
     }
 
     const extractedArgs = extractArgs(fieldRule);
-    let fieldType;
-    const fieldArgs = extractedArgs?.args;
+    let fieldType: TplFieldType | undefined;
+    const fieldArgs: TplFieldArgs | undefined = extractedArgs?.args;
     switch (type) {
       case "array":
         fieldType = extractAfter("array-of-", fieldRule);
@@ -136,10 +130,15 @@ export class MachineParserForge {
         fieldType = "fk-" + extractAfter("fk-", fieldRule);
         break;
       case "primitive":
-        fieldType = extractedArgs?.piece;
+        fieldType = (extractedArgs?.piece as unknown) as TplFieldType | undefined;
         break;
     }
-    return { fieldType, fieldRule, fieldArgs, is: type };
+    const result: Partial<IDbForge> = {
+      fieldType: fieldType as TplFieldType | undefined,
+      fieldArgs: (fieldArgs as unknown) as any,
+      is: type as any,
+    };
+    return result;
   }
 
 

@@ -4,7 +4,7 @@ import type {
   TplFieldType,
 } from "@medyll/idae-idbql";
 import { MachineSchemeValues } from "$lib/main/machine/MachineSchemeValues.js";
-import type { IDbForge } from "../machineParserForge.js";
+import type { IDbForge } from "@medyll/idae-idbql";
 import type { MachineDb } from "../machineDb.js";
 
 /**
@@ -80,7 +80,7 @@ export class MachineSchemeFieldForge<T extends Record<string, any>> {
    * @return {TplFieldArgs | undefined} The field arguments or undefined.
    */
   get fieldArgs(): TplFieldArgs | undefined {
-    return this.forge?.fieldArgs;
+    return this.forge?.fieldArgs as unknown as TplFieldArgs | undefined;
   }
   /**
    * Get the field type for the field.

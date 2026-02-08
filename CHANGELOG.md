@@ -1,15 +1,3614 @@
-## [0.0.2](https://github.com/medyll/idae/compare/v0.11.1...v0.0.2) (2024-04-20)
+# Changelog
 
-### Features
+## [Unreleased] - 2026-02-07
+- **2026-02-07** - chore: update @medyll/idae-pnpm-release to version 1.0.27 in package.json and pnpm-lock.yaml
+- **2026-02-07** - chore: update dependencies and remove lerna
+- **2026-02-07** - chore: remove unused @changesets/cli dependency from package.json and pnpm-lock.yaml
+- **2026-02-07** - chore: update svelte-check to version 4.3.6 and add dependencies
+- **2026-02-07** - feat: add CLI functionality for README retrieval and SKILL installation
+- **2026-02-07** - feat: update CLI file extension and repository URL format in package.json
+- **2026-02-07** - chore: remove semantic-release dependencies and update release workflow trigger
+- **2026-02-07** - Refactor code structure for improved readability and maintainability
+- **2026-02-06** - chore: update dependencies and versions in pnpm-lock.yaml
+- **2026-02-06** - feat: update @medyll/idae-config-prettier dependency to latest version across all packages
+- **2026-02-06** - feat: remove generate-changeset script and related functionality
+- **2026-02-04** - feat: update package.json and generate-readme.js for improved metadata and clarity
+- **2026-02-04** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-02-04** - feat: remove outdated README.md for csss; eliminate unnecessary content and improve repository clarity
+- **2026-02-04** - Update packages/idae-csss/src/lib/csss/plugin.ts
+- **2026-02-04** - feat: update README.md to enhance semantic model description and usage examples; improve clarity and structure
+- **2026-02-04** - feat: enhance OpCssF model with content and alignment properties; update parser and tests
+- **2026-02-04** - feat: update OpCssF model to enhance fill and boundaries properties; improve parser and tests
+- **2026-02-03** - feat: introduce OpCssF styling model with parser, runtime, and plugin support
+- **2026-02-03** - feat: rename 'look' to 'visual' in OpCssF model and related tests; update example styles accordingly
+- **2026-02-03** - feat: enhance OpCssF model with colors and contour properties; update tests and example styles
+- **2026-02-03** - feat: add support for CSS variables in OpCssF and OpCssParser
+- **2026-02-03** - feat: initialize idae-csss library with basic structure and configurations
+- **2026-02-03** - feat: update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- **2026-02-03** - feat: add HttpError class for standardized HTTP error handling
+- **2026-02-03** - feat: add advanced integration tests for payload transformation and server setup
+- **2026-02-03** - feat: enhance README and type definitions, add advanced configuration options and payload mapping support
+- **2026-02-03** - feat: enhance testing setup with Vitest, add integration and unit tests for socket functionality
+- **2026-02-03** - feat: implement authentication strategies with JWT and introspection for secure WebSocket connections
+- **2026-02-03** - feat: replace body-parser with express built-in middleware for improved performance and simplicity
+- **2026-02-03** - feat: refactor imports and update main entry point in package.json for improved module structure
+- **2026-02-03** - feat: enhance idae-socket documentation with detailed agent instructions and usage examples
+- **2026-02-03** - feat: update onchange callback to provide old and new values for improved state change tracking
+- **2026-02-03** - feat: update event handling to use 'stator:change' for improved clarity and consistency
+- **2026-02-03** - feat: add comprehensive edge case tests for stator state management
+- **2026-02-03** - feat: add comprehensive tests for array operations and reactivity in Stator
+- **2026-02-03** - docs: clarify entry point and usage of ResultSet in README
+- **2026-02-03** - refactor: update CLI path and add new CLI file
+- **2026-02-03** - feat: Enhance README with new features and methods; remove outdated CLI script
+- **2026-02-03** - feat: Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- **2026-02-03** - feat: Add comprehensive documentation for idae-html, including README and copilot instructions; remove outdated SKILL.md
+- **2026-02-02** - feat: Add validation and verification scripts for AGENTS.md structure and content
+- **2026-02-02** - feat: update testing instructions to use pnpm and add AI agent guide
+- **2026-02-02** - feat: enhance copilot instructions with detailed architecture, workflows, and DSL references
+- **2026-02-02** - Add verification scripts for AGENTS.md commands and content
+- **2026-02-02** - feat: implement count() method for document counting in CollectionCore and CollectionState
+- **2026-01-29** - feat: update Copilot instructions and enhance Chipper component with new props
+- **2026-01-29** - feat: add documentation section for component documentation in SKILL.md
+- **2026-01-29** - feat: add documentation guidelines for Svelte components in SKILL.md
+- **2026-01-29** - refactor: update import paths for MakeLibIndex in package-pre.js scripts
+- **2026-01-29** - fix: remove unnecessary closing script tag in Login.svelte
+- **2026-01-29** - feat: enhance component documentation and props typing across multiple files
+- **2026-01-29** - feat: add props interfaces for multiple components to enhance type safety and documentation
+- **2026-01-29** - feat: Refactor components to use module scripts and improve type definitions
+- **2026-01-29** - refactor: component props and types across multiple files
+- **2026-01-29** - feat: update SCSS imports to use global styles across multiple Svelte components
+- **2026-01-28** - fix: update version to 0.0.3 in @medyll/idae-config-prettier package.json
+- **2026-01-28** - fix: update @medyll/idae-config-prettier dependency specifier to latest in package.json and pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-config-prettier dependency specifier in package.json
+- **2026-01-28** - feat: add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- **2026-01-28** - fix: add steps to fetch all tags before release process in CI workflow
+- **2026-01-28** - fix: add comment to prettier-plugin-svelte entry in config
+- **2026-01-28** - fix: add description field to @medyll/idae-machine package.json
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency specifier to latest in pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use workspace wildcard in pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- **2026-01-28** - fix: lock
+- **2026-01-28** - fix: comment out workspace dependency replacement logic in patch script
+- **2026-01-28** - fix: remove shared directory from pnpm workspace configuration
+- **2026-01-28** - fix: remove packages-demo from pnpm workspace configuration
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use workspace protocol in pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- **2026-01-28** - fix: update @medyll/idae-prettier-config dependency from workspace to latest version
+- **2026-01-28** - fix: remove @medyll/idae-prettier-config from devDependencies
+- **2026-01-28** - feat: add @medyll/idae-prettier-config as a workspace dependency
+- **2026-01-28** - fix: update package scopes from '@medyll' to 'medyll' for consistency
+- **2026-01-28** - feat: update package dependencies to use @medyll/idae-shared and refactor import paths
+- **2026-01-28** - fix: add conventional commits flags and update git-describe output in lerna debug log
+- **2026-01-28** - fix: update npm auth token format in .npmrc and adjust lerna debug log output
+- **2026-01-28** - Refactor code structure for improved readability and maintainability
+- **2026-01-28** - chore: update lerna configuration to include command settings
+- **2026-01-28** - chore: release v0.0.2
+- **2026-01-28** - fix: reorder exports in index.ts to include config.js
+- **2026-01-28** - chore: update package versions to latest across multiple packages
+- **2026-01-28** - chore: update package versions across multiple packages to latest
+- **2026-01-28** - chore: update package versions in eslint, prettier, and shared configurations
+- **2026-01-28** - chore: update package versions and scopes in package.json files
+- **2026-01-28** - feat: enhance release workflow with workspace patching and update semantic-release configuration
+- **2026-01-28** - refactor: code structure for improved readability and maintainability
+- **2026-01-28** - feat: add workspace patching step to release workflow and enhance patching script
+- **2026-01-28** - fix: remove package.json from assets in semantic-release git configuration
+- **2026-01-28** - fix: update prettier and svelte dependencies in pnpm-lock.yaml
+- **2026-01-28** - feat: update semantic-release dependencies and remove installation from workflow
+- **2026-01-28** - fix: update dependency installation command in release workflow for semantic-release
+- **2026-01-28** - feat: enhance release workflow with detailed comments and improved semantic-release commands
+- **2026-01-28** - fix: remove redundant NODE_AUTH_TOKEN from release workflow
+- **2026-01-28** - feat: update release workflow to install dependencies and configure semantic-release
+- **2026-01-28** - feat: add publishDirectory to multiple packages in pnpm-lock.yaml
+- **2026-01-28** - feat: update publishConfig in package.json files to include directory for public access
+- **2026-01-28** - feat: add publishConfig to package.json for public access
+- **2026-01-28** - feat: add step to show package.json files after checkout in release workflow
+- **2026-01-28** - feat: add step to show all package.json files before release
+- **2026-01-28** - feat: add validation step for package.json files in release workflow
+- **2026-01-28** - fix: update devDependencies to use workspace references for idae-be and idae-engine
+- **2026-01-28** - fix: update version and dependencies in package.json
+- **2026-01-28** - fix: update npm version script to use 'latest' as preid for prerelease tagging
+- **2026-01-28** - feat: add npm version management script for prerelease tagging and publishing
+- **2026-01-28** - fix: update loop function signature to include type annotation and handle null data gracefully
+- **2026-01-28** - Refactor code structure for improved readability and maintainability
+- **2026-01-28** - feat: enhance Svelte components with new features and improved structure; add CollectionListFieldValues component and refactor existing components
+- **2026-01-28** - Refactor CSS for window and panel components; consolidate styles and remove unused code
+- **2026-01-28** - fix: prevent duplicate exports in MakeLibIndex by refining export key generation
+- **2026-01-28** - fix: prevent duplicate exports and improve export statement formatting in MakeLibIndex
+- **2026-01-28** - fix: update data binding in Looper component and ensure proper grouping of sorted data
+- **2026-01-28** - fix: update NPM_TOKEN to use NPM_TOKEN_2026 for release workflow
+- **2026-01-28** - feat: add unit tests for CreateUpdate component and improve form validation
+- **2026-01-27** - feat: add CollectionFieldGuess and CrudZone components for enhanced UI functionality
+- **2026-01-27** - refactor: update documentation and improve default value handling in CreateUpdate component
+- **2026-01-27** - feat: add technical planner and README creator skills for enhanced project documentation
+- **2026-01-27** - fix: update version to 0.181.1 in package.json
+- **2026-01-27** - fix: update package versions to latest in package.json and pnpm-lock.yaml
+- **2026-01-27** - Refactor code structure for improved readability and maintainability
+- **2026-01-27** - feat: add script to patch workspace dependencies to latest in package.json
+- **2026-01-27** - fix: update version to 1.0.0 in package.json
+- **2026-01-27** - fix: update package versions in package.json and pnpm-lock.yaml
+- **2026-01-27** - Refactor code structure for improved readability and maintainability
+- **2026-01-27** - fix: update version to 1.0.0 in package.json and set @medyll/idae-eslint-config to latest
+- **2026-01-27** - fix: update version to 0.1.1 in package.json and move @medyll/idae-prettier-config to devDependencies in pnpm-lock.yaml
+- **2026-01-27** - fix: move @medyll/idae-prettier-config to devDependencies in package.json
+- **2026-01-27** - fix: update @medyll/idae-prettier-config version to 1.2.8 and adjust dependency specifier
+- **2026-01-27** - fix: update @medyll/idae-prettier-config version to 1.2.8 and specify dependency version in idae-eslint-config
+- **2026-01-27** - fix: bump version to 1.2.7 in package.json
+- **2026-01-27** - fix: update @medyll/idae-prettier-config dependency to use wildcard version and correct version reference
+- **2026-01-27** - fix: update @medyll/idae-prettier-config dependency to use wildcard version
+- **2026-01-27** - docs: update README to enhance clarity on features, installation, and usage examples
+- **2026-01-27** - feat: add TypeScript declaration for 'pg' module
+- **2026-01-27** - fix: mocks IdaeDbConnection pour tous les adapters, uniformisation imports ESM/types, dépendances peer installées, tous les tests passent
+- **2026-01-27** - fix: correct increment logic for monobjSte in setInterval
+- **2026-01-27** - feat: enhance Stator with EventTarget compatibility and improve onchange handling
+- **2026-01-27** - feat: implement PostgreSQL and SQLite adapters with CRUD operations and unit tests
+- **2026-01-27** - feat: implement core PouchDBAdapter methods including create, find, findOne, update, and deleteById
+- **2026-01-27** - feat: add support for PouchDB, SQLite, and PostgreSQL adapters; update documentation and peer dependencies
+- **2026-01-27** - feat: add technical planner skill and agent instructions; remove obsolete full agent skill
+- **2026-01-27** - feat: implement deep reactivity in stator with enhanced proxy handling and initialization
+- **2026-01-27** - feat: add idae-debug-engine and idae-skill-template skills; remove obsolete make-skill-template
+- **2026-01-27** - commit
+- **2026-01-27** - docs: translate and update improvement section to 'Future developments' in copilot-instructions.md
+- **2026-01-27** - docs: update copilot instructions for clarity and structure
+- **2026-01-27** - feat(git-commit-monorepo): add scripts for automated package detection and secure commits
+- **2026-01-27** - docs: update SKILL.md for git-commit-monorepo skill
+- **2026-01-27** - fix(idae-stator): documentation du format de commit monorepo et extraction du nom du package
+- **2026-01-27** - refactor: remove multiAdapters and registerAdapters files for cleaner architecture
+- **2026-01-27** - revert: suppression des adapters custom, nettoyage pour migration sur idae-db
+- **2026-01-27** - feat(postgresql-adapter): implémente toutes les méthodes CRUD et transaction pour PostgreSQLAdapter
+- **2026-01-27** - feat(pouchdb-adapter): implement create() for PouchDBAdapter (insert doc)
+- **2026-01-27** - feat(sqlite-adapter): implement create() for SQLiteAdapter (insert row)
+- **2026-01-27** - feat(postgresql-adapter): implement create() for PostgreSQLAdapter (insert row)
+- **2026-01-27** - feat(pouchdb-adapter): implement connect() for PouchDBAdapter using pouchdb
+- **2026-01-27** - feat(sqlite-adapter): implement connect() for SQLiteAdapter using sqlite3
+- **2026-01-27** - feat(postgresql-adapter): implement connect() for PostgreSQLAdapter using pg
+- **2026-01-27** - feat(db-adapters): add skeletons and registration for PostgreSQL, SQLite, PouchDB adapters; extend DbType enum
+- **2026-01-27** - feat: add MCP integration documentation and usage examples
+- **2026-01-27** - feat: enhance documentation for database adapter implementation and add git commit skill
+- **2026-01-24** - feat: add comprehensive documentation and instructions for various skills and tools in the idae-dom-events package
+- **2026-01-24** - chore: update dependencies in idae-eslint-config package.json and pnpm-lock.yaml - Bump @medyll/idae-prettier-config from 1.2.4 to 1.2.5 - Update @semantic-release/github from ^10.3.5 to ^12.0.2 - Bump @typescript-eslint/eslint-plugin and @typescript-eslint/parser from ^8.53.0 to ^8.53.1 - Update svelte from ^5.47.1 to ^5.48.2
+- **2026-01-24** - chore(prettier): publish idae-prettier-config to npm
+- **2026-01-24** - chore(prettier): update idae-prettier-config package.json
+- **2026-01-24** - feat: add SKILL.md for git commit with conventional commit message analysis
+- **2026-01-24** - chore(agent): translate and optimize SKILL.md (English, clarified, structured, automation rules)
+- **2026-01-24** - refactor: update pnpm-lock.yaml to remove and re-add idae-eslint-config dependency
+- **2026-01-24** - fix: add GH_TOKEN to release workflow and update eslint-config dependency
+- **2026-01-24** - Refactor code structure for improved readability and maintainability
+- **2026-01-24** - refactor: remove unused import of AlertProps in Alert.svelte
+- **2026-01-24** - refactor: update package dependencies and remove obsolete files
+- **2026-01-24** - refactor: remove TEST_IMPLEMENTATION_SUMMARY.md as part of test suite cleanup
+- **2026-01-24** - refactor: remove processor and watcher classes, update CLI for README retrieval
+- **2026-01-24** - chore: update prerelease identifier for dev branch from beta to next
+- **2026-01-24** - refactor: remove idae-api-nest package and add idae-be and idae-idbql packages with CLI skills
+- **2026-01-24** - feat: add skills to retrieve README.md for multiple packages via CLI
+- **2026-01-24** - feat: add bin entries for CLI scripts in multiple package.json files
+- **2026-01-24** - feat: add CLI scripts to retrieve README.md for multiple packages
+- **2026-01-24** - feat: update package.json scripts and dependencies
+- **2026-01-24** - chore: add SKILL.md for multi-role agent and Svelte code writer tools; remove unused alias from svelte.config.js
+- **2026-01-24** - restore: revert idae-slotui to pre-tailwind state (a8c463c6) for full SCSS/cssFabric support
+- **2026-01-24** - chore: migrate styles from Tailwind CSS to SCSS for multiple components
+- **2026-01-24** - chore: add SKILL.md for multi-role agent and Svelte code writer tools
+- **2026-01-23** - chore: add step to generate README in release workflow
+- **2026-01-23** - chore: add author field to package.json files across multiple packages
+- **2026-01-23** - chore: add repository field to @medyll/idae-eslint-config package.json
+- **2026-01-23** - chore: update @medyll/idae-prettier-config version in package.json and pnpm-lock.yaml
+- **2026-01-23** - chore: add private field to @medyll/idae-chroma package.json
+- **2026-01-23** - chore: add repository field to package.json files across multiple packages
+- **2026-01-23** - chore: move @medyll/idae-prettier-config dependency from devDependencies to dependencies in package.json and pnpm-lock.yaml
+- **2026-01-23** - chore: update @medyll/idae-prettier-config version to 1.2.4 in pnpm-lock.yaml
+- **2026-01-23** - chore: update @medyll/idae-prettier-config version from workspace to 1.2.4 in package.json
+- **2026-01-23** - chore: update @semantic-release/github version to 12.0.2 in package.json and pnpm-lock.yaml
+- **2026-01-23** - chore: update Node.js version to 24 in release workflow
+- **2026-01-23** - Refactor code structure for improved readability and maintainability
+- **2026-01-23** - chore: fix duplicate run command for multi-semantic-release in release workflow
+- **2026-01-23** - chore: add NODE_AUTH_TOKEN to release step environment variables
+- **2026-01-23** - chore: update package.json files to correct scope and versioning
+- **2026-01-23** - chore: remove outdated changesets for idae-socket and idae-shared
+- **2026-01-23** - chore: Ensure package is marked as private in package.json
+- **2026-01-23** - chore: Remove duplicate prepackage script and clean up package.json metadata
+- **2026-01-23** - Refactor code structure for improved readability and maintainability
+- **2026-01-23** - feat: Update GitHub workflows for publishing and release management; add release-next.yml and .releaserc.js
+- **2026-01-23** - feat: Add Svelte code writer skill and enhance package exports; update README generation script
+- **2026-01-23** - Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- **2026-01-23** - Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- **2026-01-23** - chore: Remove unnecessary newline in next-publish.yml for cleaner formatting
+- **2026-01-23** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-23** - refactor: Move Node.js setup step to improve workflow organization
+- **2026-01-23** - Apply changeset versions
+- **2026-01-23** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-23** - Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- **2026-01-23** - refactor: Update ESLint configuration to use baseConfig and reorganize dependencies in package.json
+- **2026-01-23** - refactor: Remove unnecessary filepath property from Prettier config and clean up package.json
+- **2026-01-22** - Apply changeset versions
+- **2026-01-22** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-22** - feat: Integrate default value factories for SchemeField and add unit tests
+- **2026-01-22** - feat: Implement default value factories and associated tests for SchemeField
+- **2026-01-22** - feat: Add CreateOnly component for collection creation and integrate CollectionList in the demo page
+- **2026-01-21** - Apply changeset versions
+- **2026-01-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-21** - refactor: Clean up code formatting and improve readability in idbstate and machine modules
+- **2026-01-21** - Apply changeset versions
+- **2026-01-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-21** - refactor: Remove outdated documentation and files; update architecture diagram and clarify project structure
+- **2026-01-21** - Apply changeset versions
+- **2026-01-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-21** - feat: Implement field type validation and registration in MachineSchemeValidate
+- **2026-01-21** - Apply changeset versions
+- **2026-01-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-21** - feat: Add Copilot instructions and remove outdated AGENTS.md and data model files
+- **2026-01-21** - Apply changeset versions
+- **2026-01-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-21** - Refactor: code structure and remove redundant changes
+- **2026-01-21** - chore: Update dependencies in package.json for eslint and related packages
+- **2026-01-20** - Apply changeset versions
+- **2026-01-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-20** - refactor: Remove deprecated field types and update references to use new MachineFieldType structure
+- **2026-01-20** - feat: Add MachineFieldType enum and class for field type management
+- **2026-01-20** - refactor: Update CreateUpdate component to use $derived for reactive form fields and clean up +page.svelte
+- **2026-01-20** - feat: Enhance schema management with new tests for MachineDb and MachineScheme integration
+- **2026-01-20** - test: add unit tests for Machine class functionality and initialization
+- **2026-01-20** - refactor: clean up README and dbSchema by removing outdated sections and unused imports
+- **2026-01-20** - feat: Implement MachineScheme and related classes for schema management and validation
+- **2026-01-20** - Refactor IDb classes for improved structure and clarity
+- **2026-01-19** - refactor: update IDbCollection and related classes to use MachineDb instance, streamline field parsing and template access
+- **2026-01-19** - Apply changeset versions
+- **2026-01-19** - feat: add test scheme and refactor machine logic
+- **2026-01-18** - chore: update dependencies in pnpm-lock.yaml, including prettier to 4.0.0-alpha.13 and add Tailwind CSS plugins
+- **2026-01-18** - Refactor styles to use Tailwind CSS across components
+- **2026-01-18** - feat(idae-slotui): migrate all SCSS mixins and component styles to Tailwind plugins, ensure per-component CSS, attribute selectors, and custom properties. Remove legacy slotui-mixins.css. BREAKING CHANGE: all styling now uses Tailwind plugin utilities.
+- **2026-01-17** - Apply changeset versions
+- **2026-01-17** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-17** - Refactor:  code structure for improved readability and maintainability
+- **2026-01-17** - feat: update auto exports in multiple index files to include new components and services
+- **2026-01-17** - feat: introduce field types and enhance data model structure; update test schemas and imports
+- **2026-01-17** - refactor: update pnpm debug messages to French and adjust changeset ID
+- **2026-01-17** - Apply changeset versions
+- **2026-01-17** - refactor: clean up YAML workflows by standardizing formatting and improving debug messages
+- **2026-01-17** - refactor(idae-idbql): improve CombineElements type definition and add typing for createIdbqDb
+- **2026-01-16** - feat: implement new UI components for collection management and enhance error handling with detailed documentation
+- **2026-01-16** - refactor: update import paths for IDbCollectionFieldForge and IDbFormValidate; expose MachineForge class
+- **2026-01-16** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-16** - chore: update Prettier configuration and dependencies for improved formatting
+- **2026-01-16** - Refactor MachineDb and introduce MachineForge for improved field type handling
+- **2026-01-15** - Apply changeset versions
+- **2026-01-16** - refactor: rename constructor parameter for clarity in IDbCollection
+- **2026-01-15** - Apply changeset versions
+- **2026-01-16** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-16** - refactor: replace IDbBase with MachineDb across multiple files for improved consistency and clarity
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-15** - feat: add comprehensive instructions for Mydde AI Agent with role definitions and Kanban integration
+- **2026-01-15** - refactor: update IDbBase and IDbCollection methods for improved clarity and consistency
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - Refactor IDbBase and Machine classes; add comprehensive tests for IDbBase functionality
+- **2026-01-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-15** - fix: add postcss dependency for improved CSS processing
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - fix: update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- **2026-01-15** - fix: add default export to package.json for better module compatibility
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - fix: update main-publish.yml to enhance changeset handling and README generation
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-15** - fix: update README.md generation script to commit changes from monorepo root
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-15** - fix: remove 'idae-model' from example usage in generateReadme function
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - fix(idae-slotui): remove .npmrc file from idae-slotui package
+- **2026-01-15** - Apply changeset versions
+- **2026-01-15** - fix: update dependency checks to exclude cssfabric in package verification script
+- **2026-01-15** - fix: update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- **2026-01-15** - refactor: replace IDbCollections with IDbBase across multiple files for consistency
+- **2026-01-15** - fix: downgrade @medyll/cssfabric dependency from 0.2.1-beta.9 to 0.2.1-beta.7 in package.json
+- **2026-01-15** - fix: remove unnecessary comment and correct cssfabric dependency check in package verification script
+- **2026-01-15** - fix: exclude cssfabric from being forced to "workspace:*" in package dependencies
+- **2026-01-15** - fix: update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- **2026-01-14** - Apply changeset versions
+- **2026-01-14** - fix: update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json and pnpm-lock.yaml
+- **2026-01-14** - fix: reorder Node.js setup step in workflow for proper execution
+- **2026-01-14** - feat: add debug step for pnpm version verification in workflow files
+- **2026-01-14** - fix: replace corepack setup with direct pnpm installation in workflow files
+- **2026-01-14** - feat: enable corepack and setup pnpm version 10.28.0 in workflow files
+- **2026-01-14** - fix: update cache configuration from npm to pnpm in workflow files
+- **2026-01-14** - Refactor code structure for improved readability and maintainability
+- **2026-01-14** - feat: add initial ESLint configuration and changelog for idae-eslint-config
+- **2026-01-14** - fix: add console log for changeset file creation in generate-changeset script
+- **2026-01-14** - fix: handle potential undefined values in commit date formatting
+- **2026-01-14** - fix: ensure newline at the end of package.json when saving modifications
+- **2026-01-14** - chore: update package.json files to use workspace:* for Medyll dependencies
+- **2026-01-14** - fix: add comment to clarify context retrieval in FieldValue component
+- **2026-01-14** - chore: remove outdated changesets for idae-socket and idae-shared
+- **2026-01-14** - Merge branches 'dev' and 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-14** - chore: update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- **2026-01-14** - Apply changeset versions
+- **2026-01-14** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-14** - feat: enhance IDbCollections with new methods and improve collection handling; update dependencies and tests
+- **2026-01-14** - feat: refactor machine initialization and enhance IDbCollections with shared instances; update README and tests
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - feat: remove obsolete components and services; clean up unused code
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - feat: update README with detailed schema model, query examples, and performance tips; enhance robustness and testing coverage sections
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - feat: implement Machine class with core functionality and testing; add vitest tasks for testing
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - feat: enhance README with robustness and testing details; add test plan for Machine class; refactor dbFields and remove obsolete tests
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - fix: update .gitignore to include specific SvelteKit generated files
+- **2026-01-13** - feat: add getForge method for parsing collection field names
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Refactor and enhance database schema handling
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - fix: update error messages to reflect correct dependency requirement
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - fix: update import paths to include file extensions for consistency
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - feat: add Svelte 5 coding policy and remove outdated tests; update import paths
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-13** - feat(migration): migrate components from _work to /lib and adapt to Svelte 5
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - fix(main): CI
+- **2026-01-13** - Apply changeset versions
+- **2026-01-13** - fix(main): packaging and workspace deps
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - fix: update changeset generation log message to use standard formatting
+- **2026-01-12** - fix: update changeset generation log message to use non-bold formatting
+- **2026-01-12** - chore: update dependencies and modify workspace dependency checks
+- **2026-01-12** - feat: update package dependencies to use 'next' version for consistency across packages
+- **2026-01-12** - feat: update package.json files to set private flag and adjust dependencies to use 'next' version
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - feat: update package dependencies to use workspace:* and add verification script for internal dependencies
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - reverted before merge catastrophe
+- **2026-01-12** - Refactor code structure for improved readability and maintainability
+- **2026-01-12** - Merge branch 'main' of https://github.com/medyll/idae into dev
+- **2026-01-12** - fix: correct function name from getResultset to getResultSet in README and tests
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - fix: correct function name from getResultset to getResultSet and deprecate old function
+- **2026-01-12** - docs: expand README with advanced usage examples for query operators
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - chore: update package versions and enhance test coverage for query and operators
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - fix: update delete event data structure in CollectionCore
+- **2026-01-12** - fix: update demo page to improve database handling and reactivity
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - fix: correct form event handling in demo page
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - feat: refactor demo page to manage clients and notes; update data structures and UI
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - feat: add Svelte 5 agent documentation and refactor demo page for chat functionality
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - feat: implement demo page with user and message management; update example types
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2026-01-12** - feat: enhance Svelte 5 reactivity documentation and add tests for user state updates
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - feat: add initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - Apply changeset versions
+- **2026-01-12** - chore: remove outdated changeset file for idae-model
+- **2026-01-12** - chore: remove package.json and package-lock.json files
+- **2026-01-12** - docs: Add initial documentation for @medyll/idae-machine project
+- **2026-01-12** - feat: Add API documentation generation and update middleware
+- **2026-01-12** - docs(idae-machine): maj chemins, props et suivi étape 4 CreateUpdate
+- **2026-01-12** - docs(idae-machine): maj chemins, props et suivi étape 3 CollectionList
+- **2026-01-12** - docs(idae-machine): maj chemins, props et suivi étape 2 CrudZone
+- **2026-01-12** - Refactor AGENT.md to establish Svelte 5 coding policy; remove outdated migration strategy and consolidate rules for compliance.
+- **2026-01-12** - Add AGENT.md for Svelte 5 migration strategy; update DataList and +page.svelte for event handling consistency
+- **2026-01-12** - Rename CollectionList to DataList across components and documentation; update imports and references accordingly.
+- **2026-01-12** - Remove unnecessary closing tag for each block in +page.svelte
+- **2026-01-12** - Add integration tests for CreateUpdate component; implement CRUD operations and validation logic
+- **2026-01-12** - Enhance middleware and documentation: add comprehensive middleware system, improve error handling, and update validation logic; include tests for database, health, and tenant context middleware.
+- **2026-01-11** - Advanced validation: foreign keys required and must exist in target collection (CreateUpdate.svelte)
+- **2026-01-11** - Advanced CreateUpdate.svelte: handle all field types, readonly/private, and FK as select dropdowns in UI
+- **2026-01-11** - Add create and delete UI for agents: support create mode, delete with confirmation, and edit in main demo page
+- **2026-01-11** - Integrate CreateUpdate.svelte with CrudService and event handling in main demo page
+- **2026-01-11** - Enhance CreateUpdate.svelte validation: add type checks for number, email, and boolean fields using schema rules
+- **2026-01-11** - Add validation logic to CreateUpdate.svelte: required fields checked using schema, errors shown, submit prevented if invalid
+- **2026-01-11** - Integrate Svelte 5 components (CrudZone, CollectionList, CreateUpdate, FieldValue) into main demo page
+- **2026-01-11** - Refactor FieldValue.svelte to Svelte 5: use  for props and update logic to Svelte 5 idioms
+- **2026-01-11** - Refactor CreateUpdate.svelte to Svelte 5: use  for props,  for formData, and update logic to Svelte 5 idioms
+- **2026-01-11** - Refactor CollectionList.svelte to Svelte 5: use , Svelte 5 event idioms, and remove legacy export let
+- **2026-01-11** - Full Svelte 5 refactor: CrudZone.svelte now uses , , , and Svelte 5 idioms throughout
+- **2026-01-11** - Refactor CrudZone.svelte to Svelte 5 idioms and syntax
+- **2026-01-11** - Integrate CrudService into CrudZone.svelte via props; update integration test for shared service instance
+- **2026-01-11** - feat(idae-machine): initialize CrudService, docs, unit test
+- **2026-01-11** - feat(idae-machine): initialize dataModel, dbSchema, docs, unit test
+- **2026-01-11** - feat(idae-machine): initialize dbFields, docs, unit test
+- **2026-01-11** - feat(idae-machine): initialize FieldValue, docs, unit test (jsdom)
+- **2026-01-11** - feat(idae-machine): initialize CreateUpdate, docs, unit test (jsdom)
+- **2026-01-11** - feat(idae-machine): initialize CollectionList, docs, unit test (jsdom)
+- **2026-01-11** - feat(idae-machine): initialisation CrudZone, doc étape, test unitaire jsdom
+- **2026-01-11** - feat(deps): add type definitions for compression, express-rate-limit, and helmet
+- **2026-01-11** - feat(test): integration
+- **2026-01-11** - docs(idae-api): add MCP troubleshooting note to agent guide
+- **2026-01-11** - docs(idae-api): document MCP config flag usage, middleware order, and code example
+- **2026-01-11** - feat(mcp): scaffold MCP middleware placeholder for future integration
+- **2026-01-11** - docs(AGENT): add MCP integration section with config flag and best practices
+- **2026-01-11** - feat(idae-api): strict multi-tenancy with tenant context injection and enforcement
+- **2026-01-11** - feat(idae-api): add RBAC/ABAC middleware and per-route authorization support
+- **2026-01-11** - feat(idae-api): expose Swagger UI and Redoc at /docs and /redoc
+- **2026-01-11** - feat(idae-api): add OpenAPI /openapi.json endpoint (auto-generation ready)
+- **2026-01-11** - feat(idae-api): db guardrails, health endpoints, validation layer skeleton
+- **2026-01-11** - feat(idae-api): add zod validation middleware to all routes
+- **2026-01-11** - feat(idae-api): lock query route and errors
+- **2026-01-11** - feat(idae-api): add security middleware
+- **2026-01-11** - docs: update README with script instructions and add MongoDB test script to package.json
+- **2026-01-11** - fix(idae-api): fix auth init order
+- **2026-01-11** - fix(idae-api): done sme things
+- **2026-01-11** - refactor: update IdaeApiClient and related classes for improved request handling and configuration
+- **2026-01-11** - feat: enhance database middleware and testing configurations
+- **2026-01-11** - Add unit tests for IdaeDb, IdaeDbAdapter, and IdaeEventEmitter
+- **2026-01-11** - Add comprehensive tests for auth and database middleware
+- **2026-01-11** - feat: Add CRUD components and fragments for enhanced form handling
+- **2026-01-11** - feat: Add Nx configuration guidelines and workspace settings
+- **2025-12-10** - feat: Add GitHub Copilot instructions and project guide for @medyll/idae-idbql
+- **2025-12-10** - feat(copilot-instructions): add comprehensive GitHub Copilot instructions for the idae-slotui-svelte package
+- **2025-06-20** - feat(generate-changeset): enhance ChangesetGenerator with logging options and improve commit filtering logic
+- **2025-06-20** - feat(idae-main): add chalk dependency for improved console output styling
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - chore(main): remove outdated changesets for idae-socket, idae-stator, and idae-shared
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Enhance ChangesetGenerator with detailed JSDoc comments and improve commit filtering logic
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Merge branch 'main' of https://github.com/medyll/idae into dev
+- **2025-06-20** - chore: chore
+- **2025-06-20** - chore(ai-bash): remove package.json for @medyll/ai-bash
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-20** - fix(idae-main): Update example usage to include 'nest-test' in the generateReadme function call
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - chore(idae-main): chore
+- **2025-06-20** - Merge branch 'main' of https://github.com/medyll/idae into dev
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-20** - feat(idae-main): Enhance listMonorepo function to clean workspace paths and add logging for excluded repositories. Update generateReadme to log processed packages.
+- **2025-06-20** - Remove ai-bash package and all associated files, including README, configuration, source code, and tests.
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Remove ai-bash package and all associated files, including README, configuration, source code, and tests.
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-20** - fix(generate-readme): update repository names in generateReadme function
+- **2025-06-20** - Apply changeset versions
+- **2025-06-20** - feat(idae-main): add blacklist filtering to repository listing and README generation
+- **2025-06-20** - feat(idae-main): enhance README generation with blacklist filtering for repositories
+- **2025-06-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-15** - feat(package-lock): update dependencies and add new packages for improved functionality
+- **2025-06-15** - feat(nest-test): add Idae entity definition and update JsonwebtokenGuard comments
+- **2025-06-15** - feat(nest-api): implement FkValue type and createFkSchema utility for Mongoose integration
+- **2025-06-15** - refactor(idae-api-nest): restructure fk property to use Mongoose schema and define FkValue type
+- **2025-06-13** - Apply changeset versions
+- **2025-06-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-13** - feat(nest-test): add JsonwebtokenGuard and integrate into app module; update dependencies
+- **2025-06-13** - chore(nest-test): chore
+- **2025-06-13** - Apply changeset versions
+- **2025-06-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-13** - feat(idae-api): remove 'reboot' option from onInUse settings and update related documentation
+- **2025-06-07** - Apply changeset versions
+- **2025-06-07** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-07** - feat(idae-main): add mongoose-sequence dependency for enhanced Mongoose functionality
+- **2025-06-07** - feat(idae-api-nest): add mongoose-sequence dependency for enhanced mongoose functionality
+- **2025-06-07** - feat(database-service): refactor connection handling and improve configuration management
+- **2025-06-07** - feat(idae-api-nest): implement EntityDBModel and update EntityService for dynamic Mongoose model handling
+- **2025-06-06** - feat(idae-api-nest): update configuration file paths and add YAML configuration loader
+- **2025-06-06** - Apply changeset versions
+- **2025-06-06** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-06** - feat(idae-api-nest): initialize project structure with configuration files, environment setup, and scripts
+- **2025-06-06** - feat(idae-api-nest): implement initial AppController, AppService, DatabaseService, and main entry point
+- **2025-06-06** - feat(idae-api-nest): add YAML configuration and loader for NestJS
+- **2025-06-06** - feat(idae-api-nest): add EntityController and EntityService for handling entity operations
+- **2025-06-06** - feat(idae-api-nest): implement initial schema and module for AppScheme, AppSchemeBase, AppSchemeField, AppSchemeGroup, and AppSchemeType
+- **2025-06-06** - test(idae-api-nest): add unit and e2e tests for AppController, DatabaseService, and EntityController
+- **2025-06-06** - chore: chore
+- **2025-06-06** - Apply changeset versions
+- **2025-06-06** - chore: chore
+- **2025-06-06** - chore: chore
+- **2025-06-06** - chore(idae-main): deleted bad package
+- **2025-06-06** - chore(idae-main): deleted bad package
+- **2025-06-06** - Merge branch 'main' into dev
+- **2025-06-06** - chore: indexes
+- **2025-06-06** - chore: version package
+- **2025-06-06** - chore: version bump
+- **2025-06-06** - chore: versioning
+- **2025-06-06** - chore : changeset
+- **2025-06-06** - chore: packaging
+- **2025-06-06** - chore: changeset
+- **2025-06-06** - chore: versioning
+- **2025-06-06** - chore : changeset
+- **2025-06-06** - chore: packaging
+- **2025-06-06** - chore: changeset
+- **2025-06-06** - chore: changeset
+- **2025-06-06** - chore: chore
+- **2025-06-04** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-06-04** - docs(idae-api): update README for improved clarity and structure
+- **2025-05-08** - Apply changeset versions
+- **2025-05-09** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-05-09** - chore(idae-be): update dependencies in package.json and package-lock.json
+- **2025-05-09** - test(idae-be): enhance styles test to include styles method for setting and unsetting styles
+- **2025-05-09** - refactor(idae-be): improve CombineElements type definition for better depth handling
+- **2025-05-09** - refactor(idae-be): enhance EventsHandler to support EventHandlerHandle and add valueOf method
+- **2025-05-09** - refactor(idae-be): update comment for clarity in handle method
+- **2025-05-09** - chore(idae-be): deleted playwright files
+- **2025-05-08** - Apply changeset versions
+- **2025-05-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-05-08** - docs(idae-db): remove ChromaDB mention for clarity
+- **2025-05-08** - Apply changeset versions
+- **2025-05-08** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-08** - refactor(idae-db): format import statements for better readability
+- **2025-05-08** - Apply changeset versions
+- **2025-05-08** - refactor(idae-db): improve type safety in various components and enhance event listener types
+- **2025-05-08** - Apply changeset versions
+- **2025-05-08** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-08** - refactor(idae-db): enhance type safety in MySQLAdapter by using 'unknown' type
+- **2025-05-08** - refactor(idae-db): enhance type safety in MySQLAdapter by using 'unknown' type
+- **2025-05-08** - refactor(idae-db): improve type safety in IdaeDbConnection and related types
+- **2025-05-06** - Apply changeset versions
+- **2025-05-06** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-06** - refactor(idae-db): enhance type safety and improve type handling in database adapters
+- **2025-05-06** - Apply changeset versions
+- **2025-05-06** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-06** - refactor(idae-db): improve type handling and MongoDB queries in IdaeDb and IdaeDBModel
+- **2025-05-06** - refactor(idae-db): enhance type safety in IdaeEventEmitter and related types
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-05-03** - refactor(idae-be): streamline action handling in attrs, text, timers, and walk modules
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-03** - refactor(idae-be): streamline action handling in attrs, text, timers, and walk modules
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-03** - test(docs): add unit tests for DocsProcessor to validate property extraction
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - feat(idae-slotui): add DocsProcessor class for processing Svelte component props
+- **2025-05-03** - feat(package.json): add unit test script for documentation tests
+- **2025-05-03** - feat(idea-slotui): add initial project configuration files for IDE setup
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-03** - feat(idea-config): add initial project configuration files for IDE setup
+- **2025-05-03** - feat(idae-model): add initial Entity, SchemeFieldClass, and SchemeModel implementations
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-03** - Apply changeset versions
+- **2025-05-03** - fix(idae-model): update variable declarations to use const for better readability and consistency
+- **2025-05-03** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-05-03** - feat(idae-model): add new Svelte components for confirmation, layout, and data display
+- **2025-04-24** - Apply changeset versions
+- **2025-04-24** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-24** - fix: update import paths to remove .js extension for dbFields and related components feat: add CollectionList and DataProvider components for enhanced data handling refactor: rename CollectionFieldInput to FieldValue and streamline input handling
+- **2025-04-24** - fix(idae-model): update import paths to include .js extension for dbFields
+- **2025-04-22** - Apply changeset versions
+- **2025-04-22** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-22** - feat(README): ajouter la méthode unwrap pour supprimer l'élément parent tout en conservant les enfants
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - feat(idae-be): add unwrap method to remove parent element while keeping children
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-20** - chore(idae-main): update package versions in README and add execSync import
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-20** - docs(idae-chroma): add detailed library description, features, installation, and usage examples to README
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-20** - docs(idae-dom-events): simplify description of the library
+- **2025-04-20** - Apply changeset versions
+- **2025-04-20** - Merge branch 'main' into dev
+- **2025-04-20** - docs(idae-dom-events): update README to include library features, installation, usage, API, and contribution guidelines
+- **2025-04-20** - chore(idae-doc-ts): Remove idae-doc-ts package and its associated files
+- **2025-04-20** - chore(idae-query): mettre à jour les dépendances Svelte, ESLint et Vitest vers les dernières versions
+- **2025-04-20** - chore(idae-idbql): mettre à jour les dépendances Svelte et Vite vers les dernières versions
+- **2025-04-20** - chore(idae-db): update chromadb and svelte dependencies to latest versions
+- **2025-04-20** - chore(idae-api): update dependencies in idae-api package
+- **2025-04-20** - chore(idae-main): update dependencies in package.json
+- **2025-04-11** - Apply changeset versions
+- **2025-04-11** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-11** - fix: update state structure from 'stator' to 'value' for consistency in Stator implementation
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-08** - feat: enhance package.json and add README for Stator library demo
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-08** - docs: améliorer le README et ajouter des sections sur l'utilisation et la licence
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Apply changeset versions
+- **2025-04-08** - Implement feature X to enhance user experience and fix bug Y in module Z
+- **2025-04-08** - feat: add README generation step and improve README update logic
+- **2025-04-08** - fix(idae-main): update GitHub base URL and improve README formatting
+- **2025-04-08** - chore(idae-be): bump version to 1.0.0 and enhance package description
+- **2025-04-08** - fix(idae-be): update version and enhance description in package.json
+- **2025-04-07** - Apply changeset versions
+- **2025-04-08** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-08** - fix(idae-main): update GitHub base URL to point to packages directory
+- **2025-04-07** - Apply changeset versions
+- **2025-04-08** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-08** - docs(idae-be): add HTTP content loading and insertion examples to README
+- **2025-04-07** - feat(idae-be): add HTTP handler integration with methods for update and insert
+- **2025-04-07** - test(idae-be): add HTTP handler for content update and insertion with tests
+- **2025-04-07** - feat(idae-be): implement HTTP handler for content update and insertion
+- **2025-04-07** - Apply changeset versions
+- **2025-04-07** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-07** - docs(idae-be): update examples and improve clarity in usage section
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-05** - feat(idae-be): initialize methods property in AttrHandler class
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-05** - feat(idae-be): add index signature and update type definitions for handlers
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-05** - feat(idae-be): enhance documentation with detailed JSDoc comments for attribute and DOM manipulation methods
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - fix(idae-be): correct AttrHandlerHandle type definition and refactor handle method
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-05** - chore: update .gitignore to include IDE configuration files
+- **2025-04-05** - test(idae-be): enhance calculateAnchorPoint to support PositionSnapOptions and improve error handling
+- **2025-04-05** - fix(idae-be): add console log for calculated position in snapTo method
+- **2025-04-05** - Apply changeset versions
+- **2025-04-05** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-05** - test(idae-be): update assertions to use innerHTML for text manipulation tests
+- **2025-04-05** - fix(attrs): optimize attribute removal by eliminating unnecessary value handling
+- **2025-04-05** - test(idae-be): refactor timer test cases to use returned references for clearTimeout and clearInterval
+- **2025-04-05** - test(idae-be): refactor test cases to use callback syntax for improved readability
+- **2025-04-05** - feat(idae-be): refactor timer properties and remove unused props handler
+- **2025-04-05** - feat(idae-be): replace HTML insertion methods with text-safe alternatives for prepend, append, and replace operations
+- **2025-04-05** - feat(idae-be): refactor timer handling to use private fields and improve property naming
+- **2025-04-04** - Apply changeset versions
+- **2025-04-04** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-04** - feat(idae-be): add text handling methods to enhance text manipulation capabilities
+- **2025-04-04** - feat(idae-be): enhance timer handling with methods property and improved clearTimeout/clearInterval functionality
+- **2025-04-04** - feat(idae-be): enhance DataHandler with detailed method documentation and improve attribute handling
+- **2025-04-04** - feat(idae-be): add methods property and improve sibling node handling in tests
+- **2025-04-04** - feat(dom, position, text): add methods property to handlers and improve method handling
+- **2025-04-04** - feat(styles): enhance style handling with improved method resolution and kebab case conversion
+- **2025-04-04** - feat(data-handler): add getKey method and refine delete method for improved data manipulation
+- **2025-04-04** - feat(data-handler): add getKey method and refine delete method for improved data manipulation
+- **2025-04-04** - Apply changeset versions
+- **2025-04-04** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-04** - test(idae-be): add tests for custom event handling and multiple event scenarios
+- **2025-04-04** - test(idae-be): add comprehensive tests for content manipulation methods
+- **2025-04-04** - feat(idae-be): enhance content insertion methods and add normalization for diverse content types
+- **2025-04-04** - Apply changeset versions
+- **2025-04-04** - Merge remote-tracking branch 'origin/dev' into dev
+- **2025-04-04** - refactor(idae-be): rename node to inputNode for clarity and update related methods
+- **2025-04-03** - Apply changeset versions
+- **2025-04-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-03** - refactor(idae-be): replace deprecated methods and enhance style handling
+- **2025-04-03** - Apply changeset versions
+- **2025-04-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-03** - refactor(idae-be): remove deprecated setStyle method and enhance eachNode functionality
+- **2025-04-03** - test(idae-be): enhance style handling tests for object and string formats
+- **2025-04-03** - refactor(styles): improve style handling and add debugging logs
+- **2025-04-03** - Apply changeset versions
+- **2025-04-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-04-03** - chore: mise à jour des dépendances et amélioration du fichier BootStrApp.svelte
+- **2025-04-03** - Apply changeset versions
+- **2025-04-03** - test(idae-be): added tests
+- **2025-04-03** - chore(idae-main): dependencies update
+- **2025-03-26** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-26** - fix(idae-be): update selectWhile to return multiple results and improve sibling selection logic
+- **2025-03-24** - Apply changeset versions
+- **2025-03-24** - chore(idae-main): versions updates
+- **2025-03-24** - Apply changeset versions
+- **2025-03-24** - Apply changeset versions
+- **2025-03-24** - Merge branch 'main' into dev
+- **2025-03-24** - Apply changeset versions
+- **2025-03-24** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-24** - fix(idae-slotui): restore export for collection.svelte.js in index.ts
+- **2025-03-24** - fix(idae-slotui): restore export for collection.svelte.js in index.ts
+- **2025-03-24** - refactor(dataOp): rename dataList to data for consistency in grouping methods
+- **2025-03-24** - Apply changeset versions
+- **2025-03-24** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-24** - chore(package): update eslint, npm, publint, and rollup dependencies
+- **2025-03-24** - feat(resultset): update test cases and modify result structure for grouping
+- **2025-03-17** - Apply changeset versions
+- **2025-03-17** - feat: add .gitignore to exclude IDE and local storage files
+- **2025-03-17** - feat(idae-main): update dependencies and improve exports in index.ts
+- **2025-03-17** - test(idae-engine): add setup for test data in beforeEach hook
+- **2025-03-17** - refactor(idae-idbql): clean up code formatting and remove commented-out checks in idbql files
+- **2025-03-17** - feat: update package description and rename package to @medyll/idae-query; add dependency on @medyll/idae-engine
+- **2025-03-17** - Apply changeset versions
+- **2025-03-17** - test(idae-engine): updated tests
+- **2025-03-11** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-11** - feat(idae-idbql): ajouter un fichier de configuration Prettier et améliorer l'importation des modules
+- **2025-03-07** - Apply changeset versions
+- **2025-03-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-08** - feat(idae-model): ajouter des composants CRUD et types pour la gestion des collections
+- **2025-03-07** - fix(idae-idbql): gérer correctement la suppression des éléments dans l'état des données
+- **2025-03-07** - test(idae-query): améliorer les tests de tri et de regroupement des données
+- **2025-03-07** - test(idae-query): améliorer les tests de filtrage avec de nouveaux cas et données
+- **2025-03-05** - Apply changeset versions
+- **2025-03-05** - fix(idae-main): mettre à jour les dépendances vers les dernières versions
+- **2025-03-05** - feat(dependencies): mettre à jour les dépendances et supprimer les anciennes versions obsolètes
+- **2025-03-05** - feat(idae-model): ajouter une classe Modelize pour la création et la gestion des modèles
+- **2025-03-05** - feat(svelte-kit): ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit
+- **2025-03-04** - feat(idae-slotui): enhance IconAppProps with display property and improve menu list styles
+- **2025-03-04** - feat(idae-slotui): add display property to control icon layout
+- **2025-03-04** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-04** - feat(idae-slotui): css generation
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - Merge branch 'main' into dev
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - fix(idae-api, idae-slotui): corriger les exportations et renommer les classes de menu
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - refactor(idae-slotui): rename menu list classes and update related styles
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - fix(idae-slotui): fix scss errors and deprecations
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - refactor(idae-slotui): fix deprecations for scss
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - refactor(idae-slotui): update SCSS imports and mixin usage for consistency
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - refactor(idae-slotui): migrate from @import to @use for SCSS files
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - chore(idae-main): chore
+- **2025-03-03** - fix(idae-doc-ts):bad imports
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - fix(main): added prepack feature
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - chore(main):package update
+- **2025-03-03** - Aucune modification de code à enregistrer
+- **2025-03-03** - chore(idae-main): add .dockerignore and update package.json with optional dependencies
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-03** - chore(idae-idbql): remove unnecessary $derived from results assignment
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - fix(idae-stator): dependencies
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - fix(idae-idbql): update return types of get and getAll methods to ResultSet<T>
+- **2025-03-03** - chore(idae-query): chore
+- **2025-03-03** - fix(idae-idbql): cast update return type to unknown and handle undefined case
+- **2025-03-03** - Apply changeset versions
+- **2025-03-03** - feat(ai-bash): rename package and add pre-packaging script
+- **2025-03-03** - fix(idae-main): demendancies update
+- **2025-03-03** - chore(idae-idbql): fixes
+- **2025-03-03** - fix(idbql): updated dependencies
+- **2025-03-03** - fix(idae-query): dependencies update
+- **2025-03-03** - fix(idbqlEvent): removed object destruction in event main manager
+- **2025-03-03** - fix(idbstate): corriger le type de retour de la méthode getAll pour retourner un tableau d'éléments
+- **2025-03-03** - feat(idae-model): ajouter des références supplémentaires dans AppSSchemeView et refactoriser AppSchemeModel
+- **2025-03-03** - feat(idae-model): refactor Fk type and enhance AppSchemeModel with createModel function
+- **2025-03-02** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-03-02** - feat(idae-model): ajouter la configuration de base et les fichiers nécessaires pour le projet
+- **2025-03-02** - feat(idae-doc-ts): ajouter des exports automatiques pour les composants d'entrée
+- **2025-03-02** - chore(idae-slotui): ajouter des exports manquants pour les composants et les utilitaires
+- **2025-03-02** - chore(idae-socket): ajouter l'export de fakeHttpPost depuis le répertoire fakeZone
+- **2025-03-02** - feat(idae-idbql): ajouter des exports pour les modules Svelte et CommonJS dans package.json
+- **2025-03-02** - feat(idae-model): ajouter des fichiers de configuration et des tests pour le projet Svelte
+- **2025-03-02** - feat(idae-idbql): refactor collection methods to return promises and enhance type safety
+- **2025-03-02** - feat: update put and add methods to return promises in StateCollectionDyn
+- **2025-02-28** - feat: update collection imports and enhance state management in idbql
+- **2025-02-19** - Apply changeset versions
+- **2025-02-19** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-19** - fix(idae-be): corriger les tests et mettre à jour les dépendances dans package.json
+- **2025-02-19** - Apply changeset versions
+- **2025-02-19** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-19** - fix(idae-be): corriger la description de la bibliothèque dans le README.md pour plus de clarté
+- **2025-02-19** - Apply changeset versions
+- **2025-02-19** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-19** - feat: ajouter des commentaires JSDoc pour améliorer la documentation des classes et méthodes dans le package Idae
+- **2025-02-19** - Apply changeset versions
+- **2025-02-19** - chore: update dependencies in package.json to latest versions
+- **2025-02-19** - feat: update README.md with detailed usage instructions and examples for Idae Database Library
+- **2025-02-17** - feat: initial setup for ai-bash package with configuration files and basic structure
+- **2025-02-08** - Apply changeset versions
+- **2025-02-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-08** - feat: changeset generator
+- **2025-02-08** - Apply changeset versions
+- **2025-02-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-08** - chore: chore
+- **2025-02-08** - Apply changeset versions
+- **2025-02-08** - feat: mettre à jour TypeScript et ajouter des dépendances, implémenter des classes et des interfaces pour la gestion des utilisateurs
+- **2025-02-08** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2025-02-08** - chore: cadenzia initial
+- **2025-02-08** - chore: initial commit
+- **2025-02-03** - Apply changeset versions
+- **2025-02-03** - style: remove padding on lietItem
+- **2024-11-19** - Apply changeset versions
+- **2024-11-19** - feat: améliorer la gestion des changements d'accords avec une fonction dédiée et mise à jour des entrées d'accords
+- **2024-11-18** - Apply changeset versions
+- **2024-11-18** - feat: ajouter la gestion des informations de mesure pour les entrées d'accords
+- **2024-11-16** - Apply changeset versions
+- **2024-11-16** - feat: ajouter des constantes musicales et améliorer la gestion des accords avec des options d'armure
+- **2024-11-16** - Apply changeset versions
+- **2024-11-16** - feat: ajouter le composant App et les composants associés pour la visualisation des accords
+- **2024-11-15** - chore: mettre à jour le nom du package et ajouter un script de préparation
+- **2024-11-15** - chore: initialiser le projet Svelte avec configuration de base et fichiers essentiels
+- **2024-10-21** - Apply changeset versions
+- **2024-10-21** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-10-21** - chore: améliorer le composant Marquee avec un Looper et des styles personnalisés
+- **2024-10-21** - Apply changeset versions
+- **2024-10-21** - chore: ajouter un script pour générer des catalogues de composants Svelte et des index de démonstration
+- **2024-10-21** - fix: refactor Toast component to use mount for Toaster instantiation
+- **2024-10-21** - chore: ajouter une nouvelle logique de validation pour les formulaires d'entrée utilisateur
+- **2024-10-20** - feat: implement new validation logic for user input forms
+- **2024-10-20** - chore: auto-export entry components and enhance module exports in idae-html and idae-slotui
+- **2024-10-20** - feat: enhance SCSSConverter to generate minified CSS and update output file names
+- **2024-10-20** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-10-20** - chore: add descriptions to package.json files for improved clarity and documentation
+- **2024-10-20** - feat: add script to generate README.md for monorepo with repository details
+- **2024-10-13** - Apply changeset versions
+- **2024-10-14** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-10-14** - chore: update devDependencies and dependencies to latest versions
+- **2024-10-13** - Apply changeset versions
+- **2024-10-14** - chore: update svelte and related dependencies to latest versions
+- **2024-10-14** - feat: add dependencies and enhance confirm component types
+- **2024-09-30** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-09-30** - chore: idae-html initial commit
+- **2024-09-23** - Apply changeset versions
+- **2024-09-23** - chore: site cleaning
+- **2024-09-23** - fix: confirm style actions
+- **2024-09-22** - chore: main changes
+- **2024-09-01** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-29** - chore(idae-db): Register event listeners for different operations in IdaeDbAdapter
+- **2024-08-25** - Apply changeset versions
+- **2024-08-26** - chore(idae-db): chore
+- **2024-08-26** - fix(idae-api): idae-db options and query are now encoded
+- **2024-08-25** - chore(idae-db): Update IdaeDbAdapter to support optional options in updateWhere method
+- **2024-08-25** - chore: Remove unused MySQLAdapter and MongoDBAdapter files
+- **2024-08-25** - chore(idae-db): Update IdaeDbAdapter to support additional options in updateWhere method
+- **2024-08-24** - chore(idae-db): Update IdaeDbAdapter to support additional options in updateWhere method
+- **2024-08-24** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-24** - chore(idae-db): Update IdaeDbAdapter to register event listeners for different operations
+- **2024-08-24** - feat(idae-api): Update IdaeApiClientCollection to implement IdaeDbApiMethods
+- **2024-08-22** - Apply changeset versions
+- **2024-08-22** - fix(idae-db): fixed typings for AdapterConstructor
+- **2024-08-22** - Apply changeset versions
+- **2024-08-22** - chore(idae-db): Update IdaeDbAdapter to register event listeners for different operations
+- **2024-08-22** - chore(idae-db): Add transaction support and database connection management methods
+- **2024-08-21** - Apply changeset versions
+- **2024-08-21** - chore(idae-db): Refactor IdaeDbAdapter class to improve code organization and readability
+- **2024-08-21** - chore(idae-db): Remove console.log statements and improve code organization in IdaeDb class
+- **2024-08-21** - chore(idae-db): Register event listeners for findById, update, and create operations in usersCollection
+- **2024-08-21** - chore(idae-db): Add typed event listener support to IdaeEventEmitter
+- **2024-08-21** - chore(idae-db): Register global event listeners in IdaeDb class
+- **2024-08-21** - chore(idae-db): Remove console.log statements in MongoDBAdapter
+- **2024-08-21** - feat(idae-db): Update IdaeDbAdapter to register event listeners for different operations
+- **2024-08-21** - chore(idae-db): Refactor IdaeDbAdapter class to improve code organization and readability
+- **2024-08-21** - feat(idae-db): Add IdaeEventEmitter class and withEmitter decorator
+- **2024-08-21** - chore(idae-db): Update IdaeDbAdapter classes to implement IdaeDbAdapterInterface
+- **2024-08-21** - chore(idae-db): Refactor IdaeDbAdapter class to improve code organization and readability
+- **2024-08-20** - Apply changeset versions
+- **2024-08-20** - test(idae-bd): mongodb tests
+- **2024-08-20** - Apply changeset versions
+- **2024-08-20** - chore(idae-db): Add ChromaDBAdapter and update dependencies
+- **2024-08-20** - chore(idae-db): Remove deprecated IdaeDb class and related methods
+- **2024-08-20** - chore(idae-db): Add ChromaDBAdapter implementation
+- **2024-08-19** - chore(main): global configuration
+- **2024-08-19** - Apply changeset versions
+- **2024-08-19** - chore(main): Update package.json with additional "package:verify" script
+- **2024-08-19** - chore(idae-socket): Update fakeHttpPost import in index.ts
+- **2024-08-19** - chore(idae-be): Update package.json with additional "import" field
+- **2024-08-19** - fix(idae-mongo): schemeModelClass typings
+- **2024-08-19** - chore(idae-slotui): Update transition duration for checkbox and cartouche components
+- **2024-08-19** - chore(idae-idbql): Update imports and typings in example.ts and +page.svelte files
+- **2024-08-19** - chore(idae-api): Update IdaeApiClientCollection to extend IdaeApiClient
+- **2024-08-19** - chore(idae-db): Update dependencies for idae-db package
+- **2024-08-19** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-19** - chore(idae-db): Add new files and configurations for idae-db package
+- **2024-08-18** - chore: Rename types.ts file and update IdaeDb class
+- **2024-08-18** - chore: Add IdaeDb and IdaeDbConnection classes to idae-db package
+- **2024-08-17** - Apply changeset versions
+- **2024-08-17** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-17** - feat(idae-slotted): Update Cartouche component to remove border and improve styling
+- **2024-08-16** - Apply changeset versions
+- **2024-08-17** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-17** - chore: Update dependencies and fix CSS loading and breakpoints
+- **2024-08-15** - Apply changeset versions
+- **2024-08-15** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-15** - feat(idae-socket): Add server utils and routes exports
+- **2024-08-15** - fix(idae-api): Update databaseMiddleware and IdaeApiClient imports
+- **2024-08-15** - Apply changeset versions
+- **2024-08-15** - fix(idae-slotui): css loading and breakpoints
+- **2024-08-14** - Apply changeset versions
+- **2024-08-14** - ci(main):  reject write on unchanged index
+- **2024-08-14** - Apply changeset versions
+- **2024-08-14** - ci(main): Update git push command in next-publish workflow
+- **2024-08-14** - ci(main): Update auto exports of entry components in multiple packages
+- **2024-08-14** - Merge branch 'main' into dev
+- **2024-08-14** - chore(main): removed changesets
+- **2024-08-14** - Apply changeset versions
+- **2024-08-14** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-14** - fix(idae-slotui-svelte): bad dependency
+- **2024-08-14** - Apply changeset versions
+- **2024-08-14** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-14** - ci(main): Update auto exports of entry components in multiple packages
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - ci: Update npm dependencies and reexport entry components
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - ci(main): Update ignore patterns in MakeLibIndex class
+- **2024-08-13** - chore: Update import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be
+- **2024-08-13** - ci: Remove unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket
+- **2024-08-13** - chore: Update git commit command to force push changeset versions
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - ci(main): Remove unnecessary branch restriction in main-publish.yml workflow
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - ci: Remove unnecessary branch restriction in main-publish.yml workflow
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - feat(main): Update main-publish.yml to force push changes to origin main branch
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - ci(main): Update next-publish.yml to remove force-with-lease option when pushing to dev branch
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - ci(main): Add "ci" commit type to the list of allowed commit types in generate-changeset.js
+- **2024-08-13** - chore: Update npm cache configuration in next-publish.yml
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - chore: Update next-publish.yml to remove force-with-lease option when pushing to dev branch
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - chore: Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - ci: Update workflow files to skip applying changeset versions during dev branch publish
+- **2024-08-13** - fix(ci): Update next-publish.yml to skip applying changeset versions during dev branch publish
+- **2024-08-13** - fix(ci): Update next-publish.yml to skip applying changeset versions during dev branch publish
+- **2024-08-13** - fix(ci): main
+- **2024-08-13** - chore: Update next-publish.yml to skip applying changeset versions during dev branch publish
+- **2024-08-13** - ci: Amend changeset commit
+- **2024-08-13** - ci(main): chore
+- **2024-08-13** - ci(main): Apply changeset versions
+- **2024-08-13** - chore(main): main-publish
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - ci(main): updated prettier config
+- **2024-08-13** - Apply changeset versions
+- **2024-08-13** - chore: Update lerna dependency to version 8.1.8
+- **2024-08-13** - fix(main): version chore
+- **2024-08-12** - Apply changeset versions
+- **2024-08-13** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-13** - chore(ci): version chore
+- **2024-08-12** - Apply changeset versions
+- **2024-08-13** - fix(ci): changeset generation
+- **2024-08-13** - fix(main): Update npm dependencies and remove unused code
+- **2024-08-13** - fix(main): Update npm dependencies and TypeScript version
+- **2024-08-13** - chore(main): Update npm dependencies and add Svelte v5.0.0-next.218
+- **2024-08-13** - chore(main): Update npm dependencies and add new packages
+- **2024-08-13** - chore: Update npm dependencies and TypeScript version
+- **2024-08-13** - feat(main): updated ci
+- **2024-08-12** - chore(main): chore
+- **2024-08-12** - feat(main): Add package-pre script for pre-processing packages
+- **2024-08-12** - ci(main): Add package-pre script for pre-processing packages
+- **2024-08-12** - feat(main): Fix scope path and add release script for packages
+- **2024-08-12** - ci(main): update MakeLibIndex to use options for ignore patterns and lib root
+- **2024-08-12** - chore(main): update npm dependencies and TypeScript version
+- **2024-08-12** - chore(main): update npm dependencies
+- **2024-08-11** - ci(main): fix error 127
+- **2024-08-11** - fix(main): added ignored packages
+- **2024-08-11** - feat(idae-slotui-svelte): update npm dependency to latest stable version
+- **2024-08-11** - feat(idae-slotui): trigger test
+- **2024-08-11** - feat(idae-slotui): main
+- **2024-08-11** - Merge branch 'main' into dev
+- **2024-08-10** - chore: update versions, changelog, and package-lock.json
+- **2024-08-10** - Version Packages
+- **2024-08-11** - chore(main): ci hangouts
+- **2024-08-11** - chore(main): Reduce wait time before creating release PR and publishing to npm
+- **2024-08-10** - fix(idae-slotui): incorrect load of css files
+- **2024-08-07** - chore(idae-mongo): Add Entity and SchemeFieldClass to idae-mongo library
+- **2024-08-05** - chore: Update component structure in root.svelte file
+- **2024-08-05** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-08-05** - chore(idae-api): Refactor findAll to where in MySQLAdapter and DBaseService
+- **2024-08-05** - chore(idae-mongo): initial commit
+- **2024-08-04** - chore(idae-api): Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- **2024-08-04** - chore(idae-api): Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- **2024-08-04** - chore(main): Update npm dependencies and import paths
+- **2024-08-03** - Version Packages
+- **2024-08-04** - chore(main): Update npm dependencies and gitignore files
+- **2024-07-29** - chore(idae-api): Update RequestParams and IdaeApiClientRequestParams types, and import paths
+- **2024-07-29** - chore(idae-api): Update RequestParams and ApiServerRequestParams types for database adapters
+- **2024-07-29** - chore(idae-api): Remove unused essai.ts file
+- **2024-07-29** - chore(idae-api): Update RequestParams type definition
+- **2024-07-29** - chore(idae-api): Update IdaeApiClientRequest to return a Promise of Response
+- **2024-07-29** - chore(idae-api): Update import paths for server files in idae-api package
+- **2024-07-29** - docs(idae-api): Add API client usage guide and classes
+- **2024-07-29** - feat(idae-api): Add IdaeApiClientCollection class for managing API client collections
+- **2024-07-29** - chore(idae-api): Refactor IdaeApiClientConfig to use options object for configuration
+- **2024-07-29** - chore(idae-api): Add IdaeApiClientRequest class for making API requests
+- **2024-07-28** - chore(idae-api): Add IdaeApiClientConfig class for managing API client configuration
+- **2024-07-28** - chore(idae-api): Add IdaeApiClient class for making API requests
+- **2024-07-28** - chore: Rename SCSS files to fix case sensitivity issue
+- **2024-07-28** - feat(iadae-api): 1st deliver
+- **2024-07-28** - test(idae-api): added tests
+- **2024-07-28** - docs(idae-api): made docs
+- **2024-07-28** - chore(idae-api): Import MongooseConnectionManager class in mongooseConnectionManager.ts
+- **2024-07-28** - chore(idae-api): Add lazy loading for images in page load
+- **2024-07-28** - chore(idae-api): Update DBaseService to use MongooseConnectionManager for database connections
+- **2024-07-28** - chore(idae-api): Add MongooseConnectionManager class for managing MongoDB connections
+- **2024-07-28** - chore(idae-api): Add collectionName and dbName properties to Express Request interface
+- **2024-07-28** - chore(idae-api): Refactor databaseMiddleware to store database connection details in request object
+- **2024-07-27** - chore(main): Update npm dependencies and remove unused devDependencies
+- **2024-07-27** - chore(idae-api): Update middleware configuration and add database middleware for route handling
+- **2024-07-27** - chore(idae-api): Update mongoose and mongoose-sequence dependencies
+- **2024-07-27** - Refactor(idae-api) IdaeApi to use database adapters and add route definitions for API endpoints
+- **2024-07-27** - chore(idae-api): Refactor ApiServer to improve middleware configuration and fix req.params issue in database middleware
+- **2024-07-27** - chore(idae-api): Refactor IdaeApi to improve middleware configuration and fix req.params issue in database middleware
+- **2024-07-27** - test(idae-api): Reorder middleware configuration and fix empty req.params issue in database middleware
+- **2024-07-27** - fix(idae-api): empty req.params issue in database middleware
+- **2024-07-27** - chore(idae-api): chore
+- **2024-07-26** - chore(idae-api): Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- **2024-07-26** - chore(idae-api): Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- **2024-07-26** - fix(idae-api): Update import statement for ApiServer in index.ts
+- **2024-07-26** - chore(idae-api): Add @types/mongoose-sequence dependency
+- **2024-07-26** - chore(idae-api): Refactor ApiServer to use database adapters and add route definitions for API endpoints
+- **2024-07-26** - chore(idae-api): Refactor DBaseService to use database adapters
+- **2024-07-26** - chore(idae-api): Add DatabaseManager for managing database connections
+- **2024-07-26** - chore(idae-api): Add route definitions for API endpoints
+- **2024-07-26** - feat(idae-api): Add MySQLAdapter for MySQL database operations
+- **2024-07-26** - chore(idae-api): Add types for database adapters
+- **2024-07-26** - chore(idae-api): Add database middleware for connecting to the database
+- **2024-07-26** - chore(idae-api): Extend Express Request interface to include dbConnection
+- **2024-07-26** - chore(idae-api): Add MongoDBAdapter for MongoDB database operations
+- **2024-07-26** - chore(idae-api): Add mysql2 and sequelize dependencies to package.json
+- **2024-07-26** - chore(idae-api): Refactor DBaseService to use database adapters
+- **2024-07-26** - chore(idae-api): Refactor DBaseManager to use environment variables for MongoDB configuration
+- **2024-07-26** - refactor(ApiServe): Update express middleware configuration and error handling
+- **2024-07-26** - chore(main): Update package.json and add release script for idae-slotui
+- **2024-07-26** - chore(main): Set up GitHub Actions workflows for publication and version management
+- **2024-07-26** - chore(main): Update npm dependencies and devDependencies
+- **2024-07-26** - fix(idae-slotui): Remove obsolete SCSS file and update CSS imports in idae-slotui index.ts file
+- **2024-07-26** - chore(main): renaming
+- **2024-07-26** - fix(idae_slotui): css case for button-menu
+- **2024-07-26** - chore(idae-slotui): update button menu SCSS import to use kebab-case file name
+- **2024-07-26** - ci(main): broken ci
+- **2024-07-26** - chore(main): Update package name to "@medyll/idae-shared"
+- **2024-07-26** - ci(main): broken ci
+- **2024-07-26** - ci(main): Clean up obsolete tools and configurations
+- **2024-07-26** - ci(main): updated  main-ci
+- **2024-07-26** - ci(main): Update CSS imports in idae-slotui index.ts file
+- **2024-07-26** - ci(main): Update CSS imports in idae-slotui index.ts file
+- **2024-07-26** - chore(idae-slotui)
+- **2024-07-26** - chore(idae-slotui): renamed scss file
+- **2024-07-26** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-07-26** - chore(main): trying to limit secondary rate
+- **2024-07-26** - Rename Badge.scss to badge.scss
+- **2024-07-26** - Rename Avatar.scss to avatar.scss
+- **2024-07-26** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-07-26** - chore(main): ci on
+- **2024-07-26** - Rename Alert.scss to alert.scss
+- **2024-07-26** - fix(idae-slotui): Update CSS imports in index.ts file
+- **2024-07-26** - ci(main): removed pre-push hooks
+- **2024-07-26** - chore(main): Update scripts to use shebang for better compatibility
+- **2024-07-26** - ci(main): added hooks
+- **2024-07-26** - ci(main): added hooks
+- **2024-07-26** - chore(main): Update and configured husky to version 9.1.2
+- **2024-07-26** - fix(idae-slotui): Trigger layout load in +layout.ts file
+- **2024-07-26** - fix(idae-slot-ui): Rename SCSS files in idae-slotui package
+- **2024-07-26** - chore(main): Update workflows for publishing on main and dev branches
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore(idae-stator): remove svelte 5 support
+- **2024-07-25** - Merge branch 'main' into dev
+- **2024-07-25** - chore(idae-be):Remove unused methods in Be class
+- **2024-07-25** - feat(idae-be): Remove unused methods in Be class
+- **2024-07-25** - ci(main): fixed changeset configuration
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #36 from medyll/dev
+- **2024-07-25** - Create grumpy-pans-drop.md
+- **2024-07-25** - fix(idae-be): bad scope configuration
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #35 from medyll/dev
+- **2024-07-25** - ci: Update package dependencies for @medyll/idae-slotui-svelte
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #34 from medyll/dev
+- **2024-07-25** - chore: Update internal dependencies and configuration
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #33 from medyll/dev
+- **2024-07-25** - chore: Update package-lock.json and dependencies configuration
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - ci(main): merge commit
+- **2024-07-25** - ci(main): fixed ci
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #31 from medyll/dev
+- **2024-07-25** - chore: Update package.json with correct scope value
+- **2024-07-25** - ci: Update package.json with correct scope value
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #30 from medyll/dev
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #29 from medyll/dev
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - ci: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #28 from medyll/dev
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #27 from medyll/dev
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #26 from medyll/dev
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #25 from medyll/dev
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #24 from medyll/dev
+- **2024-07-25** - chore: Update .changeset/config.json file
+- **2024-07-25** - chore: Update package-lock.json and .changeset/config.json files
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge pull request #23 from medyll/dev
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: update versions, changelog, and package-lock.json
+- **2024-07-25** - chore: Clean up obsolete tools and configurations
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: clean up obsolete tools and configurations
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - ci(idae-be): for be
+- **2024-07-25** - ci: idae-be
+- **2024-07-25** - ci: idae-be
+- **2024-07-25** - ci: idae-be
+- **2024-07-25** - ci: main ci
+- **2024-07-25** - ci: main ci
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - chore: Update version and publish workflow
+- **2024-07-25** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-07-25** - chore: Update versions, changelog, and package-lock.json
+- **2024-07-25** - Merge branch 'main' into dev
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - chore: Update package.json files to include scope for @medyll packages
+- **2024-07-25** - Merge pull request #13 from medyll/dev
+- **2024-07-25** - chore: Update generate-changeset.js script to sanitize commit messages
+- **2024-07-25** - chore: Update changeset action to v1 for version and publish workflow
+- **2024-07-25** - Merge pull request #12 from medyll/dev
+- **2024-07-25** - chore: Update .changeset/config.json file
+- **2024-07-25** - chore: Remove unused .changeset/config.json file
+- **2024-07-25** - Merge pull request #11 from medyll/dev
+- **2024-07-25** - chore: Remove unused .changeset/config.json file
+- **2024-07-24** - chore: Update changelog generation script and add changeset generation script
+- **2024-07-24** - chore: Update changelog generation script and add changeset generation script
+- **2024-07-24** - Merge pull request #10 from medyll/dev
+- **2024-07-24** - chore(main): Update changelog generation script and add changeset generation script
+- **2024-07-24** - chore(main): Update changelog generation script and add changeset generation script
+- **2024-07-24** - chore: version packages
+- **2024-07-24** - chore: update versions and changelog
+- **2024-07-24** - chore: update versions and changelog
+- **2024-07-24** - chore(idae-be): Update GitHub Actions workflow and dependencies
+- **2024-07-24** - chore(idae-be): Update test-results and +page.svelte files
+- **2024-07-24** - chore(idae-be): cleaning
+- **2024-07-24** - chore(idae-be): Update package.json scripts
+- **2024-07-24** - refactor(idae-be): Update CommonHandler interface
+- **2024-07-24** - fix(idae-be): Refactor WalkHandler to handle actions with callbacks
+- **2024-07-24** - docs(idae-be): Update @medyll/idae-be readme
+- **2024-07-24** - refactor(idae-be): Update Walker  class to handle props, position, walk, and timers actions with callbacks
+- **2024-07-24** - feat(idae-be): Add prependText method to TextHandler
+- **2024-07-24** - refactor(idae-be): Update AttrHandler to handle actions with callbacks
+- **2024-07-24** - refactor(idae-be): Update WalkHandler to handle actions with callbacks
+- **2024-07-24** - feat(idae-be): Add static method to create Be element from string or HTMLElement
+- **2024-07-24** - refactor(idae-be): Update DomHandler to handle DOM insertion at specific positions
+- **2024-07-24** - refactor(idae-be): Update ClassesHandler to handle class actions with callbacks
+- **2024-07-23** - feat(idae-be): Removed features
+- **2024-07-23** - refactor(idae-be): Update DomHandler class typings
+- **2024-07-23** - feat(idae-be): Update Be class with a toBe static method
+- **2024-07-23** - refactor(idae-be): Update Be class to handle props, position, walk, and timers actions with callbacks
+- **2024-07-23** - refactor(idae-be): Update TimersHandler to use callback function in timeout and interval methods
+- **2024-07-23** - refactor(idae-be): Update Be class to handle timers actions with callbacks
+- **2024-07-23** - refactor(idae-be): Update WalkHandler to handle actions with callbacks
+- **2024-07-23** - refactor(idae-be): Remove commented code in proxyHandler.ts
+- **2024-07-23** - feat(idae-be): Add DynamicHandler class for handling dynamic CSS properties
+- **2024-07-23** - refactor(idae-be): Remove commented code in +page.svelte
+- **2024-07-23** - refactor(idae-be): Update Be class to handle props, position, walk, and timers actions with callbacks
+- **2024-07-22** - refactor(idae-be): Update TimersHandler to use callback function in timeout and interval methods
+- **2024-07-22** - refactor(idae-be): Import CommonHandler for handling common actions in utils.ts
+- **2024-07-22** - refactor(idae-be): Update TextHandler to use callback function in various methods
+- **2024-07-22** - feat(idae-be): Add Fragments class for creating DOM fragments
+- **2024-07-22** - refactor(idae-be): Update DomHandler to handle multiple DOM methods at once
+- **2024-07-22** - refactor(idae-be): Update StylesHandler to use callback function in handlerFor method
+- **2024-07-22** - refactor(idae-be): Update PropsHandler to handle set and delete actions with callbacks
+- **2024-07-22** - refactor(idae-be): Update PositionHandler to handle multiple position methods at once
+- **2024-07-22** - refactor(idae-be): Update WalkerHandler to use callback function in find and findAll methods
+- **2024-07-22** - refactor(idae-be): Import BeUtils for handling actions in DataHandler
+- **2024-07-22** - refactor(idae-be): Update ClassesHandler to handle multiple class methods at once
+- **2024-07-22** - refactor(idae-be): Update EventsHandler to handle multiple event methods at once
+- **2024-07-22** - chore(idae-be): Update types.ts file in idae-be package
+- **2024-07-22** - feat(idae-be): Update Be class constructor to accept Be instances
+- **2024-07-22** - refactor(idae-be): Update Be class constructor to accept Be instances
+- **2024-07-22** - chore: Update READ
+- **2024-07-22** - Merge branch 'dev' of https://github.com/medyll/idae into dev
+- **2024-07-22** - chore: Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- **2024-07-22** - Update README.md
+- **2024-07-21** - refactor(idae-be): Move PropsHandler to separate file
+- **2024-07-21** - feat(idae-be): Move PropsHandler to separate file
+- **2024-07-21** - fix(idae-be):  setted implements CommonHandler
+- **2024-07-21** - fix(idae-be):  typings
+- **2024-07-21** - chore:chore
+- **2024-07-21** - chore:chore
+- **2024-07-20** - feat(idae-be): added callback to walker
+- **2024-07-20** - refactor(idae-be): removed attach  to other  classes
+- **2024-07-20** - refactor(idae-be): moved attach  to core class
+- **2024-07-20** - refactor(idae-be): moved walker  to a separate file
+- **2024-07-20** - refactor(idae-be): moved dom  to a separate file
+- **2024-07-20** - refactor(idae-be): moved props  to a separate file
+- **2024-07-20** - refactor(idae-be): moved classes  to a separate file
+- **2024-07-20** - refactor(idae-be): moved events  to a separate file
+- **2024-07-20** - refactor(idae-be): moved data  to separate file
+- **2024-07-20** - refactor(idae-be): moved attrs to separate file
+- **2024-07-20** - chore(idae-be): typings
+- **2024-07-20** - refacto(main): for lib
+- **2024-07-18** - chore:(idae-be): handle modification for EventHandlerHandle
+- **2024-07-18** - chore: Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- **2024-07-18** - chore: Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- **2024-07-17** - chore(main): deps
+- **2024-07-17** - chore: main update pretttier
+- **2024-07-17** - chore: chore
+- **2024-07-17** - chore(idae-tpl): initial commi
+- **2024-07-17** - chore: Update version-and-publish workflow branch filter to use "main" branch
+- **2024-07-17** - chore(main): Update branch filter in version-and-publish workflow
+- **2024-07-17** - chore(idae-be): Update Be class to use consistent naming conventions and setStyle instead of styleSet
+- **2024-07-17** - feat(idae-be): added a bunch
+- **2024-07-17** - feat(idae-be): Refactor Be class methods to use consistent naming conventions
+- **2024-07-17** - chore(idae-be): update Be class to use setStyle instead of styleSet
+- **2024-07-17** - feat(dom-events): refactor CssObserver constructor and add setSelector method
+- **2024-07-17** - chore(idae-slotui): added sheet component
+- **2024-07-17** - chore(idae-slotui): changed scss loading path
+- **2024-07-16** - feat(idae-slotui): added conteiner query component
+- **2024-07-16** - style(idae-slotui): removed unsused css
+- **2024-07-15** - feat(idae-slotui): new stylesheet component for nreakpoints
+- **2024-07-15** - chore(idae-slotui): update CSS variables in presets.scss, box.css, icon.css, and menu.css
+- **2024-07-14** - chore(main): format
+- **2024-07-14** - chore(main):added husky
+- **2024-07-14** - chore(main): prettier is now global
+- **2024-07-14** - test(dom-events): tests implementation
+- **2024-07-14** - chore(dom-events): updated readme
+- **2024-07-14** - fix(dom-events): added dom check to ensure consistent load
+- **2024-07-14** - Update README.md
+- **2024-07-14** - fix(idae-slotui): fix css variants
+- **2024-07-14** - fix(idae-slotui): fix css variants
+- **2024-07-14** - fix(idae-slotui): failure on popper
+- **2024-07-13** - chore(idae-socket): added type module du package
+- **2024-07-13** - chore(idae-slotui): chore
+- **2024-07-13** - fix(idae-slotui): autoclose on autocomplete was broken
+- **2024-07-13** - chore (idae-engine): added getDataKeys to dataOp
+- **2024-07-13** - fix(idae-soltui):menu list was broken
+- **2024-07-13** - feat(idae-slotui): grouper now has several modes
+- **2024-07-13** - fic(idae-slotui): popper now use dialog
+- **2024-07-13** - chore(main): setup cleaning phase
+- **2024-07-13** - fix(idae-slotui): looper integration
+- **2024-07-12** - chore(config): packaging
+- **2024-07-12** - feat(idae-slotui): npm is now idae-slotui-svelte
+- **2024-07-12** - Add 'packages/idae-slotui/' from commit '66389c1bdc3346760d86b2519c97e20f165dac43'
+- **2024-07-12** - refactor(config): main config changes
+- **2024-07-12** - chore(main): packaging repo
+- **2024-07-12** - chore(idae-be): updated config
+- **2024-07-12** - chore(idae-api): updated config
+- **2024-07-12** - chore(config): removed shared dataops class
+- **2024-07-12** - chore(config): renammed packages
+- **2024-07-12** - refactor(config): create shared eslint and prettier config dir
+- **2024-07-12** - chore(idae-idbql): readme updated with latests changes
+- **2024-07-12** - chore(idae-query): changed directory to idae-query
+- **2024-07-12** - docs(idae-query): done readme
+- **2024-07-12** - chore(idae-engine):
+- **2024-07-12** - chore(main): peerDeps
+- **2024-07-12** - chore: migration to monorepo
+- **2024-07-12** - chore(shared): created dataOp
+- **2024-07-11** - chore(main): svelte version set to next
+- **2024-07-11** - chore: chore
+- **2024-07-11** - refactor:(data-idbql): replaced calls to query by @medyll/data-query
+- **2024-07-11** - ci: chore
+- **2024-07-11** - chore(data-query): added operators
+- **2024-07-11** - chore: versions
+- **2024-07-11** - chore:chore
+- **2024-07-11** - refactor(idae-stator): remove svelte 5 support
+- **2024-07-11** - chore: added readme
+- **2024-07-11** - chore: chore
+- **2024-07-11** - chore: chore
+- **2024-07-11** - chore(idae-idbql): dependencies
+- **2024-07-11** - ci(idae-socket): socket client-server for idae
+- **2024-07-10** - chore: update idae-socket
+- **2024-07-10** - chore(idae-socket): 1st integration in monorepo
+- **2024-07-10** - Merge commit 'e61104a74a26da5fbdd2166e64ccdfc0cef70af9' as 'packages/data-events'
+- **2024-07-10** - Squashed 'packages/data-events/' content from commit 2b61cb2
+- **2024-07-10** - ci(idae-api): upgraded tsconfig
+- **2024-07-10** - chore: versions
+- **2024-07-10** - chore: update npm dependencies
+- **2024-07-10** - Merge branch 'main' of https://github.com/medyll/idae into main
+- **2024-07-10** - feat(idae-api): added launcher as esm
+- **2024-07-10** - refactor(idae-idbql): integrated to monorepo
+- **2024-07-10** - Merge commit '8422ba4b563358f7412b4632d2aaa5c7f5711dd5' as 'idae-idbql'
+- **2024-07-10** - Squashed 'idae-idbql/' content from commit 4f84156
+- **2024-07-10** - Merge pull request #1 from medyll/changeset-release/main
+- **2024-07-10** - feat: updated ci
+- **2024-07-10** - Version Packages
+- **2024-07-10** - chore(dom-events): vers
+- **2024-07-10** - refactor(dom-events): updated version
+- **2024-07-10** - style(dom-events): changed packge name
+- **2024-07-10** - style(dom-events): renammed repo
+- **2024-07-10** - Merge commit '895d2cd6c7ecf3aa23fa445444544fe4bcd4f4ac' as 'packages/htmludom'
+- **2024-07-10** - Squashed 'packages/htmludom/' content from commit 45fa0d2
+- **2024-07-10** - chore: revamped htmludom
+- **2024-07-10** - chore: ver
+- **2024-07-10** - 0.0.2
+- **2024-07-10** - 0.0.1
+- **2024-07-10** - chore:chore
+- **2024-07-10** - chore: ver
+- **2024-07-10** - chore: npm publishing
+- **2024-07-10** - chore: npm setup
+- **2024-07-10** - chore: gac
+- **2024-07-10** - chore: noce version in actions
+- **2024-07-10** - chore(idae-api): initial
+- **2024-07-10** - ci: initial setup for actions
+- **2024-07-10** - chore(idae-be): initial commit
+- **2024-07-09** - chore: chore
+- **2024-07-09** - chore: chore
+- **2024-07-03** - fix: fixes
+- **2024-06-15** - chore: chore
+- **2024-06-14** - chore: versions to @next
+- **2024-06-14** - chore: chore
+- **2024-06-14** - chore: fix demo title
+- **2024-06-14** - chore: fixed prest for tall
+- **2024-06-13** - feat: added marquee component
+- **2024-06-13** - chore: updated versions
+- **2024-06-13** - fix: demoer state was locked
+- **2024-06-06** - chore: chore
+- **2024-06-06** - fix: iconify reloading
+- **2024-06-05** - fix: presets declaration
+- **2024-06-05** - chore: chore
+- **2024-06-05** - feat: props now use uiPresets
+- **2024-06-04** - fix: actions export as const
+- **2024-06-04** - feat: svelte update
+- **2024-06-04** - chore: added expand ts support and definitions
+- **2024-06-03** - chore: added  parameters, componentArgs for  controls
+- **2024-06-03** - chore: added auto export for demoComponents controls
+- **2024-06-03** - feat: added demos for base components
+- **2024-06-02** - chore: ts job
+- **2024-06-01** - fix: Drawer actions exports
+- **2024-06-01** - chore: removed accessors options
+- **2024-06-01** - fix: removed old optional decalrations
+- **2024-06-01** - fix: removed all slot directive from demo files
+- **2024-06-01** - fix: removed all slot calls in components
+- **2024-05-31** - fix: removed old event attributes
+- **2024-05-30** - fix: removed all slots call
+- **2024-05-29** - chore: added idae typings
+- **2024-05-28** - chore: chore
+- **2024-05-25** - chore: created demo values
+- **2024-05-25** - chore(release): 0.7.0-beta.1
+- **2024-05-25** - feat: removed all svelte 4 exports, done
+- **2024-05-15** - feat: added css gutter preset
+- **2024-05-13** - chore: exported types on Avatar
+- **2024-05-13** - chore: imports on Alert
+- **2024-04-26** - chore(release): 0.7.0-beta.0
+- **2024-04-26** - chore: ver
+- **2024-04-26** - chore(release): 0.2.0-beta.4
+- **2024-04-26** - chore:ver
+- **2024-04-26** - chore(release): 0.2.0
+- **2024-04-26** - chore:ver
+- **2024-04-26** - chore(release): 0.2.0
+- **2024-04-26** - chore:vers
+- **2024-04-26** - feat: migrated scss properties for ui  components
+- **2024-04-26** - feat: migrated scss properties for navigation  components
+- **2024-04-26** - feat: migrated scss properties for data  components
+- **2024-04-26** - feat: migrated scss properties for controls  components
+- **2024-04-26** - feat: migrated scss properties for base components
+- **2024-04-26** - chore: chore
+- **2024-04-24** - chore: compressed css
+- **2024-04-22** - fix: drawer size
+- **2024-04-22** - feat: removed cssFabric utility classes
+- **2024-04-21** - fix: removed cssFabric usage for backdrop
+- **2024-04-21** - chore: presets
+- **2024-04-20** - chore: updated demo component
+- **2024-04-20** - v0.0.2
+- **2024-04-20** - chore: chore
+- **2024-04-20** - Add 'packages/htmludom/' from commit '7fd6ca21d1e9cacaf059540f1507106130d17207'
+- **2024-04-20** - chore: migrating to monorepo
+- **2024-04-20** - feat: initial commit
+- **2024-04-20** - Initial commit
+- **2024-04-15** - chore(release): 0.11.1
+- **2024-04-15** - chore: Mise à jour des dépendances dans package.json
+- **2024-04-15** - chore: chore
+- **2024-04-14** - fix: tabs
+- **2024-04-12** - chore: svelte 5 mogration
+- **2024-04-12** - fix: menu list
+- **2024-04-09** - chore: chore
+- **2024-04-09** - chore: typings
+- **2024-04-09** - feat: created menu-list merging menu and list
+- **2024-04-09** - feat: migrated looper
+- **2024-04-09** - chore: deprecated menu
+- **2024-04-04** - chore: scss
+- **2024-04-04** - feat: added density to slider as a css preset
+- **2024-04-04** - feat: migrated slider
+- **2024-04-03** - chore: chore
+- **2024-04-03** - chore: moved assets
+- **2024-04-03** - feat: upgraded checkbox
+- **2024-04-03** - fix: ts optional vars
+- **2024-04-03** - chore:chore
+- **2024-04-03** - fix: Button menu now use the popper
+- **2024-04-02** - fix: button simplified props, and removed dyn parts reserved to buttonAction
+- **2024-04-01** - chore: deprecations
+- **2024-04-01** - chore: styling issues
+- **2024-04-01** - fix: itemindex
+- **2024-04-01** - fix: menuitem context
+- **2024-04-01** - feat: updated popper to svelte 5
+- **2024-03-31** - fix: examples update
+- **2024-03-31** - feat: taskbar migration
+- **2024-03-31** - fix: context state for menu
+- **2024-03-31** - feat: migrated togglebar
+- **2024-03-31** - feat: migrated toolbar
+- **2024-03-31** - fix: tree migration
+- **2024-03-31** - fix: window
+- **2024-03-31** - chore: menuItem
+- **2024-03-30** - fix: autocomplete snippets
+- **2024-03-30** - Merge branch 'dev' of https://github.com/medyll/slot-ui into dev
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: verson
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: chore on upgrade
+- **2024-03-27** - feat: css export per component + global
+- **2024-03-25** - fix!: menuItem
+- **2024-03-19** - chore: Mise à jour des dépendances dans package.json
+- **2024-03-18** - chore(release): 0.2.0-beta.3
+- **2024-03-18** - chore: svelte latest
+- **2024-03-18** - chore(release): 0.2.0-beta.2
+- **2024-03-18** - fix!: upgraded to latest
+- **2024-03-18** - chore: chore
+- **2024-03-18** - chore(release): 0.11.0
+- **2024-03-18** - feat!: upgraded to latest
+- **2024-03-10** - feat: Finder  migrated to svelte 5 snippets
+- **2024-03-09** - chore:chore
+- **2024-03-09** - chore(release): 0.2.0-beta.1
+- **2024-03-09** - chore: chore
+- **2024-03-09** - fix: bad runes declarations
+- **2024-03-09** - feat: TitleBar  migrated to svelte 5 snippets
+- **2024-03-09** - feat: new component slot
+- **2024-03-09** - feat: Stepper  migrated to svelte 5 snippets
+- **2024-03-09** - feat: Slider  migrated to svelte 5 snippets
+- **2024-03-09** - fix: missing runes declaration
+- **2024-03-08** - feat: Paper  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Icon  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Divider  migrated to svelte 5 snippets
+- **2024-03-08** - feat: DemoPage  migrated to svelte 5 snippets
+- **2024-03-08** - feat: DemoerCode  migrated to svelte 5 snippets
+- **2024-03-08** - feat: ContentSwitcher  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Confirm  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Columner  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Chipper  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Cartouche  migrated to svelte 5 snippets
+- **2024-03-08** - fix: debug missing
+- **2024-03-08** - feat: ButtonMenu  migrated to svelte 5 snippets
+- **2024-03-08** - feat: ButtonAction  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Button  migrated to svelte 5 snippets
+- **2024-03-08** - feat: BreadCrumb  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Box  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Badge  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Backdrop migrated to svelte 5 snippets
+- **2024-03-08** - feat: Avatar migrated to svelte 5 snippets
+- **2024-03-08** - feat: Alert migrated to svelte 5 snippets
+- **2024-03-08** - fix: Demoer migrated to snippets
+- **2024-03-08** - feat: migrated Alert to svelte 5 runes
+- **2024-03-08** - chore(release): 0.10.0
+- **2024-03-08** - chore: added versioning
+- **2024-03-08** - chore: Ajouter un nouvel attribut privé selectorId à la classe HtmluCssObserver et ajouter une nouvelle méthode cleanSpecialChars pour nettoyer les caractères spéciaux dans le sélecteur. Ajouter une nouvelle option strictlyNew à la méthode track pour contrôler le suivi des animations existantes. Ajouter une nouvelle méthode callCallback pour appeler le callback et mettre à jour la méthode track pour appeler le callback pour les éléments existants si strictlyNew est désactivé. Mettre à jour la méthode doTag pour utiliser le nouvel attribut selectorId. Mettre à jour la méthode elementObserve pour prendre en compte la nouvelle option strictlyNew.
+- **2024-03-07** - feat!: now using Constructable Stylesheets for css observer
+- **2024-03-07** - feat!: svelte 5
+- **2024-03-07** - chore: cleaning publication script
+- **2024-03-07** - chore: removed old md files
+- **2024-03-07** - chore(release): 0.2.0-beta.0
+- **2024-03-07** - feat: listitem styling
+- **2024-03-07** - chore: chore
+- **2024-03-07** - fix!: Demoer now shows its content
+- **2024-03-07** - chore: chore
+- **2024-03-07** - chore: chore
+- **2024-03-07** - refactor: cartouche css names
+- **2024-03-07** - fix:bad color on switch
+- **2024-03-07** - fix!: Demoer now shows its content
+- **2024-03-04** - chore: @iconify/svelte
+- **2024-03-04** - chore: added ts defs  for demo components
+- **2024-03-02** - chore: removed calls to svelte/internal
+- **2024-03-02** - chore: version
+- **2024-03-02** - chore(release): 0.1.1
+- **2024-03-02** - feat: svelte 5 optin
+- **2024-03-01** - chore: css-properties rewrite
+- **2024-03-01** - feat: renamed title to svelte-slotted
+- **2024-03-01** - feat: migrated css properties to slotui from cssfabric
+- **2024-03-01** - fix: list styling
+- **2024-02-23** - chore: minor
+- **2024-02-22** - chore: chore
+- **2024-02-21** - chore(release): 0.1.1-beta.2
+- **2024-02-21** - chore(release): 0.1.1-beta.1
+- **2024-02-21** - chore: updated peerDeps
+- **2024-02-21** - chore(release): 0.1.1-beta.0
+- **2024-02-21** - chore: cleaning
+- **2024-01-19** - chore: Delete unused files and update import paths
+- **2024-01-19** - chore: Refactor file paths and update component imports
+- **2024-01-18** - chore: Update file paths and dependencies
+- **2024-01-18** - chore: storybook gen with sveld
+- **2024-01-18** - Fix: TypeScript import paths and add missing type annotations
+- **2024-01-17** - fix: exports
+- **2024-01-17** - chore: Update import paths in several files
+- **2024-01-17** - chore:Update file paths and imports
+- **2024-01-16** - Fix: positioning and styling issues in Popper component
+- **2024-01-16** - chore: Add new enum for position and update stickTo function
+- **2024-01-16** - fix: Refactor component names in +page.svelte and usePopper.ts
+- **2024-01-16** - fix: Update dependencies and fix Virtualizer style
+- **2024-01-16** - chore(release): 0.1.1-alpha.0
+- **2024-01-16** - chore(release): 0.1.0
+- **2024-01-16** - chore(release): 0.0.6-alpha.0
+- **2024-01-16** - chore(release): 0.0.5
+- **2024-01-16** - fix: data binding issue in layout.svelte
+- **2024-01-16** - chore: Update import paths for slotuiCatalog and componentCite
+- **2024-01-16** - fix: Add mdsvex package and update dependencies
+- **2024-01-16** - chore: Fix code formatting and import statements
+- **2024-01-10** - chore: Update dependencies and fix layout styles
+- **2024-01-10** - chore(release): 0.0.4
+- **2024-01-10** - dev: Add svelte-kit to peerDependencies
+- **2024-01-10** - chore(release): 0.0.3
+- **2024-01-10** - dev: standard-version
+- **2024-01-10** - chore(release): 0.0.2
+- **2024-01-10** - bug: fixed exports
+- **2024-01-10** - dev :Update package.json and vite.config.ts
+- **2024-01-10** - chore: Remove deprecated code and add new exports scripts to package.json
+- **2024-01-10** - chore: svelte upgrade
+- **2024-01-10** - chore: migration to svelte 4
+- **2024-01-05** - Refactor HTMLu module loader and add CSS observer
+- **2024-01-04** - Update HtmluDom imports and add new exports
+- **2024-01-02** - chore: Add test scripts for integration and unit testing
+- **2024-01-02** - dev: Add @playwright/test and playwright as devDependencies
+- **2024-01-02** - feat: Initial commit
+- **2024-01-02** - Initial commit
+- **2023-03-25** - 0.4.16
+- **2023-03-25** - ...
+- **2023-03-25** - 0.4.15
+- **2023-03-25** - 0.4.14
+- **2023-03-25** - fix:fix security audit removing svelte-preprocess-markdown
+- **2023-03-25** - 0.4.13
+- **2023-03-25** - 0.4.12
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - 0.4.11
+- **2023-03-25** - feat: added collect.js
+- **2023-03-25** - fix:issues
+- **2023-03-25** - 0.4.10
+- **2023-03-25** - chore:updated publish
+- **2023-03-25** - fix:reverting sevltekit package version
+- **2023-03-25** - chore:removed auto-indexes
+- **2023-03-25** - chore: before migration
+- **2023-03-25** - 0.4.9
+- **2023-03-25** - chore:updated cssfabric version
+- **2023-02-12** - chore: added preview link on home page chore
+- **2023-02-12** - chore: added preview link on home page
+- **2023-02-12** - fix: menuItem defaultSelected state
+- **2023-02-10** - fix: menuItem defaultSelected state
+- **2023-02-06** - chore: scroll
+- **2023-02-03** - chore: bad imports
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-01-31** - chore: footer text on home
+- **2023-01-30** - fix: confirm demo
+- **2023-01-30** - fix: search box
+- **2023-01-30** - chore: confirm
+- **2023-01-30** - ts for demoer
+- **2023-01-29** - added route load
+- **2023-01-29** - chore: site fixes
+- **2023-01-29** - chore: ver 0.4.8
+- **2023-01-29** - 0.4.8
+- **2023-01-29** - chore: docs
+- **2023-01-29** - chore: ts
+- **2023-01-29** - chore: added cite
+- **2023-01-29** - chore: menu fixes site links external
+- **2023-01-15** - chore: added slots next and previous to panel buttons
+- **2023-01-13** - fix: missing slot in grouped datalist
+- **2023-01-12** - chore: added unque cell to dataliste
+- **2023-01-09** - 0.4.6
+- **2023-01-09** - fix: window parentNode
+- **2023-01-08** - chore: ver 0.4.5
+- **2023-01-08** - 0.4.5
+- **2023-01-08** - fix: menu props leaks
+- **2022-11-15** - 0.4.4
+- **2022-11-15** - chore: added hook for css
+- **2022-10-25** - 0.4.3
+- **2022-10-25** - fix: removed debug in chipper
+- **2022-10-24** - 0.4.2
+- **2022-10-24** - fix: loader delay and key wip
+- **2022-10-24** - chore: ver 0.4.1
+- **2022-10-24** - 0.4.1
+- **2022-10-24** - fix: loader delay and key
+- **2022-10-21** - chore: chipper
+- **2022-10-21** - chore: ver 0.4.0
+- **2022-10-21** - 0.4.0
+- **2022-10-21** - chore: confirm wip
+- **2022-10-21** - chore: ver 0.3.9
+- **2022-10-21** - 0.3.9
+- **2022-10-21** - chore: list footer
+- **2022-10-21** - chore: ver 0.3.8
+- **2022-10-21** - 0.3.8
+- **2022-10-21** - chore: docs
+- **2022-10-21** - fix: uiPresets for finder container
+- **2022-10-21** - fix: button border
+- **2022-10-21** - fix: finder width
+- **2022-10-21** - 0.3.7
+- **2022-10-21** - chore: switcher path
+- **2022-10-21** - chore: ver 0.3.6
+- **2022-10-21** - 0.3.6
+- **2022-10-21** - chore: switcher
+- **2022-10-20** - chore: removed logs
+- **2022-10-20** - chore: contentswitcher
+- **2022-10-20** - chore: ver 0.3.5
+- **2022-10-20** - 0.3.5
+- **2022-10-20** - chore: migrzte listTitle slots
+- **2022-10-20** - chore: ver 0.3.4
+- **2022-10-20** - 0.3.4
+- **2022-10-20** - chore: migrzte listItems slots
+- **2022-10-20** - chore: ver 0.3.3
+- **2022-10-20** - 0.3.3
+- **2022-10-20** - chore: icon button is back
+- **2022-10-18** - chore: ver 0.3.2
+- **2022-10-18** - 0.3.2
+- **2022-10-18** - fix: input start icon slot
+- **2022-10-17** - chore: window.center
+- **2022-10-17** - 0.3.1
+- **2022-10-17** - fix: window default pos and returned instance
+- **2022-10-16** - docs
+- **2022-10-16** - chore: docs
+- **2022-10-16** - chore: added site.utils
+- **2022-10-16** - 0.3.0
+- **2022-10-16** - fix: package path
+- **2022-10-15** - chore: slider wip
+- **2022-10-15** - chore: slider
+- **2022-10-15** - chore: slots
+- **2022-10-15** - chore: css presets
+- **2022-10-15** - chore: togglebar demo
+- **2022-10-15** - chore: window wip
+- **2022-10-15** - chore: window self destroy()
+- **2022-10-14** - chore: login try
+- **2022-10-12** - chore: ver 0.2.8-dev
+- **2022-10-12** - 0.2.8-dev
+- **2022-10-12** - fix: window commands
+- **2022-10-12** - chore: removed logs
+- **2022-10-12** - 0.2.7-dev
+- **2022-10-12** - chore:dataList pathes
+- **2022-10-12** - 0.2.6-dev
+- **2022-10-12** - chore: columner
+- **2022-10-11** - 0.2.5-dev
+- **2022-10-11** - fix: missing dep scss
+- **2022-10-11** - chore: ver 0.2.4-dev
+- **2022-10-11** - 0.2.4-dev
+- **2022-10-11** - fix: Tabs height
+- **2022-10-11** - fix: ListItem classNAme
+- **2022-10-11** - 0.2.3-dev
+- **2022-10-11** - fix: ListItem without list was causing bug
+- **2022-10-11** - chore: ver 0.2.2-dev
+- **2022-10-11** - 0.2.2-dev
+- **2022-10-11** - fix: dataListItem without default field
+- **2022-10-10** - chore: contextRoot api wip
+- **2022-10-10** - chore: contextRoot api
+- **2022-10-10** - 0.2.1-dev
+- **2022-10-10** - chore: demos
+- **2022-10-09** - chore: autoComplete demo
+- **2022-10-09** - chore: it works ....
+- **2022-10-08** - chore: grouper demo wip
+- **2022-10-08** - chore: grouper demo
+- **2022-10-07** - 0.2.0-dev
+- **2022-10-07** - chore: indexes are back
+- **2022-10-07** - 0.1.99-dev
+- **2022-10-07** - chore: resolving entry point
+- **2022-10-07** - fix: removed auto indexes
+- **2022-10-07** - 0.1.98-dev
+- **2022-10-07** - chore: fixes
+- **2022-10-07** - 0.1.97-dev
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - 0.1.96-dev
+- **2022-10-07** - fix: bad engine path
+- **2022-10-07** - 0.1.95-dev
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: indexes
+- **2022-10-07** - chore: progress
+- **2022-10-06** - chore: automatic def files for package
+- **2022-10-06** - chore: panel demo
+- **2022-10-06** - chore: panel wip
+- **2022-10-05** - chore: ver 0.1.94-dev
+- **2022-10-05** - 0.1.94-dev
+- **2022-10-05** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.93-dev
+- **2022-10-04** - 0.1.93-dev
+- **2022-10-04** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.92-dev
+- **2022-10-04** - 0.1.92-dev
+- **2022-10-04** - chore: select demo wip
+- **2022-10-04** - chore: select demo
+- **2022-10-04** - chore: switch
+- **2022-10-04** - chore: switch
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for popper
+- **2022-10-03** - chore: ver 0.1.91-dev
+- **2022-10-03** - 0.1.91-dev
+- **2022-10-03** - chore: pre-push
+- **2022-10-03** - fix: using grid for datalist
+- **2022-10-02** - chore: ver 0.1.90-dev
+- **2022-10-02** - 0.1.90-dev
+- **2022-10-02** - chore: tree demo wip
+- **2022-10-02** - chore: tree demo
+- **2022-10-02** - chore: tabs demo
+- **2022-10-02** - chore: loader demo
+- **2022-10-02** - chore: scss presets
+- **2022-10-02** - fix: button theme
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: code blocks formattings wip
+- **2022-10-02** - chore: code blocks formattings
+- **2022-10-02** - chore: install primsjs
+- **2022-10-02** - chore: input  demo
+- **2022-10-02** - chore: drawer  demo
+- **2022-10-02** - chore: divider  demo
+- **2022-10-02** - chore: confirm  demo
+- **2022-10-02** - chore: chipper demo
+- **2022-10-02** - chore: cartouche demo
+- **2022-10-01** - chore: box demo
+- **2022-10-01** - chore: badge wip
+- **2022-10-01** - chore: backdrop demo
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: alert demo wip
+- **2022-10-01** - chore: demoer
+- **2022-09-30** - chore: ver 0.1.89-dev
+- **2022-09-30** - 0.1.89-dev
+- **2022-09-30** - fix: resizer
+- **2022-09-30** - chore: ver 0.1.88-dev
+- **2022-09-30** - 0.1.88-dev
+- **2022-09-30** - chore: package
+- **2022-09-30** - chore: ver 0.1.87-dev
+- **2022-09-30** - 0.1.87-dev
+- **2022-09-30** - chore: Button and List updates
+- **2022-09-29** - chore: ver 0.1.85-dev
+- **2022-09-29** - 0.1.86-dev
+- **2022-09-29** - chore: removed logs
+- **2022-09-29** - fix: error thrown in dataListCell
+- **2022-09-28** - chore: cartouche
+- **2022-09-28** - chore: ver 0.1.85-dev
+- **2022-09-28** - 0.1.85-dev
+- **2022-09-28** - chore: publish
+- **2022-09-28** - fix: dataList freeze
+- **2022-09-28** - chore: ver 0.1.84
+- **2022-09-28** - fix: lis extra margin
+- **2022-09-28** - fix: tabs use nav
+- **2022-09-28** - fix: list reverse
+- **2022-09-28** - fix: tabs height
+- **2022-09-28** - chore: ver 0.1.83
+- **2022-09-28** - fix: popper default stick width
+- **2022-09-28** - fix: bad documentation build
+- **2022-09-28** - Merge branch 'main' into dev
+- **2022-09-28** - fix: tooltip fails on vercel
+- **2022-09-28** - chore: ver 0.1.82
+- **2022-09-28** - chore: Tabs demo
+- **2022-09-28** - chore: window wip
+- **2022-09-27** - chore: stickto fixed
+- **2022-09-27** - chore: menu wip
+- **2022-09-27** - fix: typo in iconSlot
+- **2022-09-27** - chore: ver 0.1.81
+- **2022-09-26** - chore: ver 0.1.80
+- **2022-09-26** - cjore: demoer
+- **2022-09-26** - chore: added defaultWidth to Frame.drawer
+- **2022-09-26** - chore: added dividerBefore to menuItem
+- **2022-09-26** - chore: added selected css for menuItem
+- **2022-09-26** - chore: datalist grouping
+- **2022-09-23** - chore: props removing for datalist
+- **2022-09-23** - chore: added options to datatable
+- **2022-09-22** - ver: 0.1.78
+- **2022-09-22** - fix: removed title from dataCell
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: ongoing tooltip
+- **2022-09-20** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-20** - ver: 0.1.76
+- **2022-09-19** - chore: finder menu got max height
+- **2022-09-15** - ver: 0.1.74
+- **2022-09-15** - fix: bad .d.ts paths in packages
+- **2022-09-15** - chore: updated favicon
+- **2022-09-15** - chore: updated adapter-vercel
+- **2022-09-15** - chore: readme
+- **2022-09-15** - chore: utils and finder tools
+- **2022-09-12** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-12** - fix: sveltekit packge now export the correct pathes
+- **2022-09-12** - chore: added website link to the readme file
+- **2022-09-12** - ver
+- **2022-09-12** - fix: Finder issue on numbers
+- **2022-09-12** - fix: vercel build, removed build dirs
+- **2022-09-12** - fix: vercel build, change root paths
+- **2022-09-12** - fix: gitignore
+- **2022-09-12** - chore: version
+- **2022-09-09** - chore: css styling on vercel build
+- **2022-09-09** - fix: packaging wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: path modification for typings
+- **2022-09-09** - fix: issue on full export
+- **2022-09-09** - fix: .md file exports
+- **2022-09-08** - fix: unusable exports
+- **2022-09-08** - ver: .68
+- **2022-09-08** - ver: .68
+- **2022-09-08** - fix: removed bad links
+- **2022-09-05** - chore: usezPopper and stickTo are back
+- **2022-09-05** - chore: datalist demo now correctly sort
+- **2022-09-05** - chore: datalist demo is back
+- **2022-09-05** - chore: button demo
+- **2022-09-05** - chore: default site's drawer state
+- **2022-09-05** - chore: dataList is back with header
+- **2022-09-05** - chore: removed demoData
+- **2022-09-04** - chore: vercel site browsable
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem
+- **2022-09-01** - fix: makedocs was weirdo
+- **2022-09-01** - ver: 0.1.66
+- **2022-09-01** - fix: home typo
+- **2022-08-31** - chore: previews, added links
+- **2022-08-31** - chore: previews
+- **2022-08-31** - fix: removed Finder from tree
+- **2022-08-31** - fix: main scroll area now is dynamic
+- **2022-08-31** - chore: cssFabric theme update
+- **2022-08-31** - fix: home component page layout
+- **2022-08-31** - fix: +layout is browsable
+- **2022-08-31** - chore: readme update end
+- **2022-08-31** - chore: readme update
+- **2022-08-30** - chore: documentation preview file wip
+- **2022-08-30** - chore: documentation preview file
+- **2022-08-29** - chor: ver 0.1.65
+- **2022-08-29** - fix: dataOp class methods
+- **2022-08-29** - chore: Finder component
+- **2022-08-29** - chore: site on going
+- **2022-08-26** - chore: migrate cleaning wip
+- **2022-08-26** - chore: migrate cleaning
+- **2022-08-26** - fix: missing assets
+- **2022-08-26** - chore: svelte update
+- **2022-08-24** - 1st build
+- **2022-07-14** - chore: wip datalist
+- **2022-07-13** - chore: update to vite 1.914
+- **2022-07-13** - chore: ver
+- **2022-07-13** - chore: ver
+- **2022-07-04** - fix: removed sort none on datalist
+- **2022-07-04** - chore: tree
+- **2022-07-03** - chore: treelist
+- **2022-07-01** - fix: removed logs
+- **2022-07-01** - chore: docs
+- **2022-07-01** - chore: dataList
+- **2022-06-30** - fix: overflow is back for frameLeft
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: datalist without slot
+- **2022-06-28** - chore: button and loader
+- **2022-06-28** - chore: header
+- **2022-06-28** - chore: datalist auto-width
+- **2022-06-27** - chore: ver 0.0.48
+- **2022-06-27** - fix: Drawer backdrop was causing weird border bugs
+- **2022-06-27** - fix: Loader width was 100%
+- **2022-06-27** - chore: ver 0.1.47
+- **2022-06-27** - chore: ver 0.1.46
+- **2022-06-27** - chore: massive
+- **2022-06-26** - chore: propsProxy accepts functions
+- **2022-06-26** - chore: list reach beta
+- **2022-06-26** - fix: missing git files
+- **2022-06-26** - fix: virtual list got header
+- **2022-06-26** - chore: divider for list item
+- **2022-06-26** - chore: divider demo
+- **2022-06-26** - chore: added cite for list
+- **2022-06-26** - chore: started divider demo
+- **2022-06-26** - chore: drawer
+- **2022-06-26** - chore: demo
+- **2022-06-25** - fix: list default slot
+- **2022-06-25** - chore: drawer
+- **2022-06-25** - chore: loader demo
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: svelte.config
+- **2022-06-25** - chore: list
+- **2022-06-24** - feat: jsoner
+- **2022-06-23** - fixes
+- **2022-06-23** - fixes
+- **2022-06-23** - chore: auto-updater
+- **2022-06-23** - chore
+- **2022-06-23** - feat: confirmer
+- **2022-06-22** - fix: icon search is visible in input
+- **2022-06-22** - feat: loader demo
+- **2022-06-22** - feat: loader index
+- **2022-06-22** - feat: loader
+- **2022-06-22** - feat: columner
+- **2022-06-22** - fix: headings in title
+- **2022-06-22** - feat: sorterer
+- **2022-06-22** - ver: 0.1.35
+- **2022-06-22** - chore: fixes
+- **2022-06-21** - ver: 0.1.34
+- **2022-06-21** - chore: ver 0.1.25
+- **2022-06-21** - chore: ver 0.1.24
+- **2022-06-20** - ver:0.1.33 bug fixes
+- **2022-06-20** - ver:0.1.32
+- **2022-06-20** - fix: input css, alerts
+- **2022-06-20** - fix: button css
+- **2022-06-20** - fix: tabs
+- **2022-06-20** - divider color
+- **2022-06-20** - ver: .29
+- **2022-06-20** - fix: default slot for input, default border color
+- **2022-06-20** - fix: 2 way binding for input type
+- **2022-06-20** - fix: input password
+- **2022-06-20** - ver: 0.1.26
+- **2022-06-20** - fix: grouper component
+- **2022-06-19** - chore: css migration
+- **2022-06-19** - fix: git
+- **2022-06-19** - chore: main site
+- **2022-06-19** - fix: layout done for sites routes
+- **2022-06-19** - fix: list now get command bar
+- **2022-06-18** - fix: list now accepts raw data
+- **2022-06-18** - fix: themeswitcher
+- **2022-06-18** - fix: removed old themeWrapper
+- **2022-06-18** - fix: input end icon
+- **2022-06-18** - chore: added list utils
+- **2022-06-17** - chore: pressed state
+- **2022-06-17** - chore tabs
+- **2022-06-17** - chore: ver 1.23
+- **2022-06-17** - chore: tabs get content
+- **2022-06-16** - added hooks to frame store, ver.20
+- **2022-06-16** - chore: maintenance
+- **2022-06-16** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-06-16** - chore: setted logs ver.18
+- **2022-06-15** - fet: ver 0.1.17
+- **2022-06-14** - chore: ver .16
+- **2022-06-14** - md
+- **2022-06-14** - chore: vr
+- **2022-06-13** - chore: button variants ok
+- **2022-06-13** - chore: propDef try
+- **2022-06-13** - chore: ver
+- **2022-06-13** - fix: removed fade from listItem
+- **2022-06-13** - chore: button popper box
+- **2022-06-13** - chore: popper
+- **2022-06-13** - chore: button
+- **2022-06-12** - feat: usePopper
+- **2022-06-12** - chore: installed highliht
+- **2022-06-12** - fix: use of currentTarget on button menu
+- **2022-06-12** - fix: menu now close on menuItem click
+- **2022-06-12** - chore: deleted Prism
+- **2022-06-12** - chore: demoer on grouper
+- **2022-06-12** - chore: SvelteMarkdown
+- **2022-06-12** - chore: Grouper demo
+- **2022-06-12** - chore: menuItem is clickable
+- **2022-06-12** - chore: grouper
+- **2022-06-11** - chore: grouper
+- **2022-06-11** - fix: listitem props
+- **2022-06-11** - chore: ver
+- **2022-06-11** - chore:ver
+- **2022-06-10** - fix: document not ready for ChromeFrameListChromeFrameList
+- **2022-06-10** - fix: document not ready for
+- **2022-06-10** - chore: ver
+- **2022-06-09** - fix: forwarded event on list
+- **2022-06-08** - upadted fabric
+- **2022-06-08** - ver
+- **2022-06-08** - feat: chromeFrame area
+- **2022-06-07** - ver
+- **2022-06-07** - icons got classes
+- **2022-06-07** - sveltekit to next
+- **2022-06-07** - raw update, passing tests
+- **2022-04-19** - updated version
+- **2022-04-19** - updated elements
+- **2022-04-11** - k,,owing it's alpha
+- **2022-04-11** - updated ui.Login component
+- **2022-04-09** - moved assets
+- **2022-04-09** - updated npm info
+- **2022-04-07** - avatar resolution
+- **2022-04-06** - setted tests
+- **2022-04-04** - adapter config
+- **2022-04-04** - added conf files
+- **2022-04-04** - setup test with jest
+- **2022-03-06** - tree: done
+- **2022-03-06** - card: done
+- **2022-03-06** - card: done
+- **2022-03-06** - cartouche: done
+- **2022-03-06** - absolute animated chip for tabs
+- **2022-03-04** - more
+- **2022-02-28** - more
+- **2022-02-28** - Left panel preselection is back
+- **2022-02-22** - started select
+- **2022-02-20** - more
+- **2022-02-19** - more
+- **2022-02-18** - done alert
+- **2022-02-18** - done alert
+- **2022-02-16** - more
+- **2022-02-15** - done more
+- **2022-02-15** - done avatar
+- **2022-02-15** - done menu
+- **2022-02-14** - installed storybook
+- **2022-02-14** - more
+- **2022-02-13** - Action button
+- **2022-02-13** - Elementor
+- **2022-02-13** - listItem active state is now ok
+- **2022-02-13** - virtual list
+- **2022-02-13** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-12** - list store is no more a singleton
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-12** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-12** - changes
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-11** - ContentSwitcher
+- **2022-02-11** - updated more
+- **2022-02-10** - updated xMachine
+- **2022-02-09** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more more
+- **2022-02-06** - more
+- **2022-02-06** - more
+- **2022-02-05** - done things
+- **2022-02-05** - material icons
+- **2022-02-04** - material icons
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-02** - sx4u more
+- **2022-02-02** - sx4u!
+- **2022-01-31** - not really initial
+- **2022-01-31** - Initial commit
 
-- initial commit ([2043127](https://github.com/medyll/idae/commit/2043127f144cc446ee94b5ac9e8afba2b0a52c7c))
+## [3.6.0] - 2024-07-08
+- **2024-07-08** - chore(release): 3.6.0
+- **2024-07-08** - chore: updated readme
+- **2024-07-08** - feat: added transactions
 
-## [0.11.1](https://github.com/medyll/idae/compare/v0.11.0...v0.11.1) (2024-04-15)
+## [3.5.0] - 2024-07-08
+- **2024-07-08** - chore(release): 3.5.0
+- **2024-07-08** - chore: pkg versions
+- **2024-07-08** - chore: update idbqlCore schema import and refactor code
+- **2024-07-08** - chore: update idbqlCore schema import and refactor code
+- **2024-07-08** - chore: update idbqlCore schema import in index.ts and types.ts
+- **2024-07-08** - chore: refactor Query class and improve query filtering
+- **2024-07-08** - chore: refactor collection.ts and improve database handling
+- **2024-07-08** - chore: refactor idbqlCore schema.ts
+- **2024-07-08** - chore: refactor idbqlStateEvent class and improve event registration
+- **2024-07-08** - chore: update idbqlCore.ts and add idbqlSchema.ts
+- **2024-07-08** - feat: added support for "btw" operator in query parsing
 
-# [0.11.0](https://github.com/medyll/idae/compare/v0.10.0...v0.11.0) (2024-03-18)
+## [3.4.2] - 2024-07-06
+- **2024-07-06** - chore(release): 3.4.2
+- **2024-07-06** - fix: ts for where operators
 
-# [0.10.0](https://github.com/medyll/idae/compare/95438a2576989f5530a6bdbad75c14471e523c8d...v0.10.0) (2024-03-07)
+## [3.4.1] - 2024-07-06
+- **2024-07-06** - chore(release): 3.4.1
 
-### Features
+## [3.4.0] - 2024-07-06
+- **2024-07-06** - chore(release): 3.4.0
+- **2024-07-06** - chore: added indexes
+- **2024-07-06** - feat: added extra find options
 
-- Initial commit ([95438a2](https://github.com/medyll/idae/commit/95438a2576989f5530a6bdbad75c14471e523c8d))
+## [3.3.6] - 2024-07-01
+- **2024-07-01** - chore(release): 3.3.6
+- **2024-07-01** - chore: types for fields model
+
+## [3.3.5] - 2024-07-01
+- **2024-07-01** - chore(release): 3.3.5
+- **2024-07-01** - chore: types for fields model
+
+## [3.3.4] - 2024-07-01
+- **2024-07-01** - chore(release): 3.3.4
+- **2024-07-01** - chore: types
+
+## [3.3.3] - 2024-07-01
+- **2024-07-01** - chore(release): 3.3.3
+- **2024-07-01** - fix: typings for template
+
+## [3.3.2] - 2024-06-26
+- **2024-06-26** - chore(release): 3.3.2
+- **2024-06-26** - fix: delete method
+
+## [3.3.1] - 2024-06-22
+- **2024-06-22** - chore(release): 3.3.1
+- **2024-06-22** - chore: added collectionDyn
+- **2024-06-22** - chore: svelte to next
+- **2024-06-22** - chore: rubbishes
+- **2024-06-22** - fix: update and core class
+- **2024-06-22** - chore: test for collection
+
+## [3.3.0] - 2024-04-21
+- **2024-04-21** - chore(release): 3.3.0
+- **2024-04-21** - feat: ver
+- **2024-03-23** - chore: chore
+- **2024-03-23** - test: added some
+- **2024-03-21** - test: idbqlStateEvent
+- **2024-03-21** - chore: chore
+
+## [3.2.2] - 2024-03-20
+- **2024-03-20** - chore(release): 3.2.2
+- **2024-03-20** - fix: reactivity for get and getOne ops
+
+## [3.2.1] - 2024-03-20
+- **2024-03-20** - chore(release): 3.2.1
+- **2024-03-20** - fix: state export was missing
+- **2024-03-20** - chore: chore
+
+## [3.2.0] - 2024-03-20
+- **2024-03-20** - chore(release): 3.2.0
+- **2024-03-20** - docs: chore
+- **2024-03-20** - fix: autocompletion
+- **2024-03-20** - docs: docs
+- **2024-03-20** - feat: new Proxy for collection class
+- **2024-03-18** - fix: bad version
+
+## [3.1.4] - 2024-03-18
+- **2024-03-18** - chore(release): 3.1.4
+- **2024-03-18** - fix: peerDeps format
+
+## [3.1.3] - 2024-03-18
+- **2024-03-18** - chore(release): 3.1.3
+- **2024-03-18** - chore: docs
+- **2024-03-18** - chore: updated deps to latest
+
+## [3.1.2] - 2024-03-18
+- **2024-03-18** - chore(release): 3.1.2
+- **2024-03-18** - chore: updated svelteKit/package to last version
+
+## [3.1.1] - 2024-03-18
+- **2024-03-18** - chore(release): 3.1.1
+- **2024-03-18** - fix: incorrect path mapping for runes files
+
+## [3.1.0] - 2024-03-18
+- **2024-03-18** - chore(release): 3.1.0
+- **2024-03-18** - feat: update version
+- **2024-03-18** - fix: generator
+- **2024-03-18** - fix: missing state export
+
+## [3.0.1] - 2024-03-18
+- **2024-03-18** - chore(release): 3.0.1
+- **2024-03-18** - fix: npm registry name and scope, svelte version
+
+## [3.0.0] - 2024-03-18
+- **2024-03-18** - chore(release): 3.0.0
+- **2024-03-18** - chore: cleaning
+- **2024-03-18** - feat: added some documentation
+- **2024-03-18** - chore: chore
+- **2024-03-18** - feat!: new idbql launcher with typings
+- **2024-03-17** - feat: finished state implementation for resultset
+- **2024-03-16** - chore: fail
+- **2024-03-15** - chore: chore
+- **2024-03-13** - feat: svelte state for idb implementation
+- **2024-03-12** - chore: svelte 5 store implementation
+
+## [2.0.0] - 2024-03-09
+- **2024-03-09** - chore(release): 2.0.0
+- **2024-03-09** - feat!: final version 1
+- **2024-02-05** - chore: pdate reexports and add event observation
+- **2024-01-31** - chore: refactor collection constructor arguments
+- **2024-01-31** - test: add resultSet class to handle query results
+- **2024-01-30** - test: update imports and fix code formatting
+- **2024-01-28** - test: update dependencies and refactor code
+- **2023-12-22** - chore(release): 0.2.1
+- **2023-12-22** - chore: husky comitizen comitlint standard version
+- **2023-12-22** - chore: renamed package
+- **2023-12-22** - fix: returned values were undefined
+- **2023-12-22** - feat: added options to sort and paginate
+- **2023-12-22** - chore: completed docs
+- **2023-12-22** - feat: readme
+- **2023-12-22** - feat: added tests for operators
+- **2023-12-21** - feat: initial commit
+- **2023-12-20** - initial commit
+- **2023-12-20** - Initial commit
+
+## [0.11.3] - 2024-07-09
+- **2024-07-09** - chore(release): 0.11.3
+- **2024-07-09** - feat(HtmluDom): Enhance functionality and improve type safety
+- **2024-07-09** - chore: readme with detailled steps
+- **2024-07-09** - chore: added docs
+
+## [0.11.2] - 2024-07-09
+- **2024-07-09** - chore(release): 0.11.2
+- **2024-07-09** - tests: added tests
+- **2024-07-09** - refactor(HtmluDomLib): Enhance functionality and improve type safety
+- **2024-07-09** - feat(CssObserver): add support for tracking child list, attributes, and resize events
+- **2024-07-09** - refactor(CssObserver): enhance performance and browser compatibility
+- **2024-04-20** - chore: migrating to monorepo
+
+## [0.11.1] - 2024-04-15
+- **2024-04-15** - chore(release): 0.11.1
+- **2024-04-15** - chore: Mise à jour des dépendances dans package.json
+- **2024-04-15** - chore: chore
+
+## [0.11.0] - 2024-03-18
+- **2024-03-18** - chore(release): 0.11.0
+- **2024-03-18** - feat!: upgraded to latest
+
+## [0.10.0] - 2024-03-08
+- **2024-03-08** - chore(release): 0.10.0
+- **2024-03-08** - chore: added versioning
+- **2024-03-08** - chore: Ajouter un nouvel attribut privé selectorId à la classe HtmluCssObserver et ajouter une nouvelle méthode cleanSpecialChars pour nettoyer les caractères spéciaux dans le sélecteur. Ajouter une nouvelle option strictlyNew à la méthode track pour contrôler le suivi des animations existantes. Ajouter une nouvelle méthode callCallback pour appeler le callback et mettre à jour la méthode track pour appeler le callback pour les éléments existants si strictlyNew est désactivé. Mettre à jour la méthode doTag pour utiliser le nouvel attribut selectorId. Mettre à jour la méthode elementObserve pour prendre en compte la nouvelle option strictlyNew.
+- **2024-03-07** - feat!: now using Constructable Stylesheets for css observer
+- **2024-02-23** - chore: minor
+- **2024-02-22** - chore: chore
+- **2024-01-05** - Refactor HTMLu module loader and add CSS observer
+- **2024-01-04** - Update HtmluDom imports and add new exports
+- **2024-01-02** - chore: Add test scripts for integration and unit testing
+- **2024-01-02** - dev: Add @playwright/test and playwright as devDependencies
+- **2024-01-02** - feat: Initial commit
+- **2024-01-02** - Initial commit
+
+## [0.7.0-beta.1] - 2024-05-25
+- **2024-05-25** - chore(release): 0.7.0-beta.1
+- **2024-05-25** - feat: removed all svelte 4 exports, done
+- **2024-05-15** - feat: added css gutter preset
+- **2024-05-13** - chore: exported types on Avatar
+- **2024-05-13** - chore: imports on Alert
+
+## [0.7.0-beta.0] - 2024-04-26
+- **2024-04-26** - chore(release): 0.7.0-beta.0
+- **2024-04-26** - chore: ver
+- **2024-04-26** - chore(release): 0.2.0-beta.4
+- **2024-04-26** - chore:ver
+- **2024-04-26** - chore(release): 0.2.0
+- **2024-04-26** - chore:ver
+- **2024-04-26** - chore(release): 0.2.0
+- **2024-04-26** - chore:vers
+- **2024-04-26** - feat: migrated scss properties for ui  components
+- **2024-04-26** - feat: migrated scss properties for navigation  components
+- **2024-04-26** - feat: migrated scss properties for data  components
+- **2024-04-26** - feat: migrated scss properties for controls  components
+- **2024-04-26** - feat: migrated scss properties for base components
+- **2024-04-26** - chore: chore
+- **2024-04-24** - chore: compressed css
+- **2024-04-22** - fix: drawer size
+- **2024-04-22** - feat: removed cssFabric utility classes
+- **2024-04-21** - fix: removed cssFabric usage for backdrop
+- **2024-04-21** - chore: presets
+- **2024-04-20** - chore: updated demo component
+- **2024-04-14** - fix: tabs
+- **2024-04-12** - chore: svelte 5 mogration
+- **2024-04-12** - fix: menu list
+- **2024-04-09** - chore: chore
+- **2024-04-09** - chore: typings
+- **2024-04-09** - feat: created menu-list merging menu and list
+- **2024-04-09** - feat: migrated looper
+- **2024-04-09** - chore: deprecated menu
+- **2024-04-04** - chore: scss
+- **2024-04-04** - feat: added density to slider as a css preset
+- **2024-04-04** - feat: migrated slider
+- **2024-04-03** - chore: chore
+- **2024-04-03** - chore: moved assets
+- **2024-04-03** - feat: upgraded checkbox
+- **2024-04-03** - fix: ts optional vars
+- **2024-04-03** - chore:chore
+- **2024-04-03** - fix: Button menu now use the popper
+- **2024-04-02** - fix: button simplified props, and removed dyn parts reserved to buttonAction
+- **2024-04-01** - chore: deprecations
+- **2024-04-01** - chore: styling issues
+- **2024-04-01** - fix: itemindex
+- **2024-04-01** - fix: menuitem context
+- **2024-04-01** - feat: updated popper to svelte 5
+- **2024-03-31** - fix: examples update
+- **2024-03-31** - feat: taskbar migration
+- **2024-03-31** - fix: context state for menu
+- **2024-03-31** - feat: migrated togglebar
+- **2024-03-31** - feat: migrated toolbar
+- **2024-03-31** - fix: tree migration
+- **2024-03-31** - fix: window
+- **2024-03-31** - chore: menuItem
+- **2024-03-30** - fix: autocomplete snippets
+- **2024-03-30** - Merge branch 'dev' of https://github.com/medyll/slot-ui into dev
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: verson
+- **2024-03-30** - chore: chore
+- **2024-03-30** - chore: chore on upgrade
+- **2024-03-27** - feat: css export per component + global
+- **2024-03-25** - fix!: menuItem
+- **2024-03-19** - chore: Mise à jour des dépendances dans package.json
+- **2024-03-18** - chore(release): 0.2.0-beta.3
+- **2024-03-18** - chore: svelte latest
+- **2024-03-18** - chore(release): 0.2.0-beta.2
+- **2024-03-18** - fix!: upgraded to latest
+- **2024-03-18** - chore: chore
+- **2024-03-10** - feat: Finder  migrated to svelte 5 snippets
+- **2024-03-09** - chore:chore
+- **2024-03-09** - chore(release): 0.2.0-beta.1
+- **2024-03-09** - chore: chore
+- **2024-03-09** - fix: bad runes declarations
+- **2024-03-09** - feat: TitleBar  migrated to svelte 5 snippets
+- **2024-03-09** - feat: new component slot
+- **2024-03-09** - feat: Stepper  migrated to svelte 5 snippets
+- **2024-03-09** - feat: Slider  migrated to svelte 5 snippets
+- **2024-03-09** - fix: missing runes declaration
+- **2024-03-08** - feat: Paper  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Icon  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Divider  migrated to svelte 5 snippets
+- **2024-03-08** - feat: DemoPage  migrated to svelte 5 snippets
+- **2024-03-08** - feat: DemoerCode  migrated to svelte 5 snippets
+- **2024-03-08** - feat: ContentSwitcher  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Confirm  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Columner  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Chipper  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Cartouche  migrated to svelte 5 snippets
+- **2024-03-08** - fix: debug missing
+- **2024-03-08** - feat: ButtonMenu  migrated to svelte 5 snippets
+- **2024-03-08** - feat: ButtonAction  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Button  migrated to svelte 5 snippets
+- **2024-03-08** - feat: BreadCrumb  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Box  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Badge  migrated to svelte 5 snippets
+- **2024-03-08** - feat: Backdrop migrated to svelte 5 snippets
+- **2024-03-08** - feat: Avatar migrated to svelte 5 snippets
+- **2024-03-08** - feat: Alert migrated to svelte 5 snippets
+- **2024-03-08** - fix: Demoer migrated to snippets
+- **2024-03-08** - feat: migrated Alert to svelte 5 runes
+- **2024-03-07** - feat!: svelte 5
+- **2024-03-07** - chore: cleaning publication script
+- **2024-03-07** - chore: removed old md files
+- **2024-03-07** - chore(release): 0.2.0-beta.0
+- **2024-03-07** - feat: listitem styling
+- **2024-03-07** - chore: chore
+- **2024-03-07** - fix!: Demoer now shows its content
+- **2024-03-07** - chore: chore
+- **2024-03-07** - chore: chore
+- **2024-03-07** - refactor: cartouche css names
+- **2024-03-07** - fix:bad color on switch
+- **2024-03-07** - fix!: Demoer now shows its content
+- **2024-03-04** - chore: @iconify/svelte
+- **2024-03-04** - chore: added ts defs  for demo components
+- **2024-03-02** - chore: removed calls to svelte/internal
+- **2024-03-02** - chore: version
+- **2024-03-02** - chore(release): 0.1.1
+- **2024-03-02** - feat: svelte 5 optin
+- **2024-03-01** - chore: css-properties rewrite
+- **2024-03-01** - feat: renamed title to svelte-slotted
+- **2024-03-01** - feat: migrated css properties to slotui from cssfabric
+- **2024-03-01** - fix: list styling
+- **2024-02-21** - chore(release): 0.1.1-beta.2
+- **2024-02-21** - chore(release): 0.1.1-beta.1
+- **2024-02-21** - chore: updated peerDeps
+- **2024-02-21** - chore(release): 0.1.1-beta.0
+- **2024-02-21** - chore: cleaning
+- **2024-01-19** - chore: Delete unused files and update import paths
+- **2024-01-19** - chore: Refactor file paths and update component imports
+- **2024-01-18** - chore: Update file paths and dependencies
+- **2024-01-18** - chore: storybook gen with sveld
+- **2024-01-18** - Fix: TypeScript import paths and add missing type annotations
+- **2024-01-17** - fix: exports
+- **2024-01-17** - chore: Update import paths in several files
+- **2024-01-17** - chore:Update file paths and imports
+- **2024-01-16** - Fix: positioning and styling issues in Popper component
+- **2024-01-16** - chore: Add new enum for position and update stickTo function
+- **2024-01-16** - fix: Refactor component names in +page.svelte and usePopper.ts
+- **2024-01-16** - fix: Update dependencies and fix Virtualizer style
+- **2024-01-16** - chore(release): 0.1.1-alpha.0
+- **2024-01-16** - chore(release): 0.1.0
+- **2024-01-16** - chore(release): 0.0.6-alpha.0
+- **2024-01-16** - chore(release): 0.0.5
+- **2024-01-16** - fix: data binding issue in layout.svelte
+- **2024-01-16** - chore: Update import paths for slotuiCatalog and componentCite
+- **2024-01-16** - fix: Add mdsvex package and update dependencies
+- **2024-01-16** - chore: Fix code formatting and import statements
+- **2024-01-10** - chore: Update dependencies and fix layout styles
+- **2024-01-10** - chore(release): 0.0.4
+- **2024-01-10** - dev: Add svelte-kit to peerDependencies
+- **2024-01-10** - chore(release): 0.0.3
+- **2024-01-10** - dev: standard-version
+- **2024-01-10** - chore(release): 0.0.2
+- **2024-01-10** - bug: fixed exports
+- **2024-01-10** - dev :Update package.json and vite.config.ts
+- **2024-01-10** - chore: Remove deprecated code and add new exports scripts to package.json
+- **2024-01-10** - chore: svelte upgrade
+- **2024-01-10** - chore: migration to svelte 4
+- **2023-03-25** - 0.4.16
+- **2023-03-25** - ...
+- **2023-03-25** - 0.4.15
+- **2023-03-25** - 0.4.14
+- **2023-03-25** - fix:fix security audit removing svelte-preprocess-markdown
+- **2023-03-25** - 0.4.13
+- **2023-03-25** - 0.4.12
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - 0.4.11
+- **2023-03-25** - feat: added collect.js
+- **2023-03-25** - fix:issues
+- **2023-03-25** - 0.4.10
+- **2023-03-25** - chore:updated publish
+- **2023-03-25** - fix:reverting sevltekit package version
+- **2023-03-25** - chore:removed auto-indexes
+- **2023-03-25** - chore: before migration
+- **2023-03-25** - 0.4.9
+- **2023-03-25** - chore:updated cssfabric version
+- **2023-02-12** - chore: added preview link on home page chore
+- **2023-02-12** - chore: added preview link on home page
+- **2023-02-12** - fix: menuItem defaultSelected state
+- **2023-02-10** - fix: menuItem defaultSelected state
+- **2023-02-06** - chore: scroll
+- **2023-02-03** - chore: bad imports
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-01-31** - chore: footer text on home
+- **2023-01-30** - fix: confirm demo
+- **2023-01-30** - fix: search box
+- **2023-01-30** - chore: confirm
+- **2023-01-30** - ts for demoer
+- **2023-01-29** - added route load
+- **2023-01-29** - chore: site fixes
+- **2023-01-29** - chore: ver 0.4.8
+
+## [0.4.8] - 2023-01-29
+- **2023-01-29** - 0.4.8
+- **2023-01-29** - chore: docs
+- **2023-01-29** - chore: ts
+- **2023-01-29** - chore: added cite
+- **2023-01-29** - chore: menu fixes site links external
+- **2023-01-15** - chore: added slots next and previous to panel buttons
+- **2023-01-13** - fix: missing slot in grouped datalist
+- **2023-01-12** - chore: added unque cell to dataliste
+
+## [0.4.6] - 2023-01-09
+- **2023-01-09** - 0.4.6
+- **2023-01-09** - fix: window parentNode
+- **2023-01-08** - chore: ver 0.4.5
+
+## [0.4.5] - 2023-01-08
+- **2023-01-08** - 0.4.5
+- **2023-01-08** - fix: menu props leaks
+
+## [0.4.4] - 2022-11-15
+- **2022-11-15** - 0.4.4
+- **2022-11-15** - chore: added hook for css
+
+## [0.4.3] - 2022-10-25
+- **2022-10-25** - 0.4.3
+- **2022-10-25** - fix: removed debug in chipper
+
+## [0.4.2] - 2022-10-24
+- **2022-10-24** - 0.4.2
+- **2022-10-24** - fix: loader delay and key wip
+- **2022-10-24** - chore: ver 0.4.1
+
+## [0.4.1] - 2022-10-24
+- **2022-10-24** - 0.4.1
+- **2022-10-24** - fix: loader delay and key
+- **2022-10-21** - chore: chipper
+- **2022-10-21** - chore: ver 0.4.0
+
+## [0.4.0] - 2022-10-21
+- **2022-10-21** - 0.4.0
+- **2022-10-21** - chore: confirm wip
+- **2022-10-21** - chore: ver 0.3.9
+
+## [0.3.9] - 2022-10-21
+- **2022-10-21** - 0.3.9
+- **2022-10-21** - chore: list footer
+- **2022-10-21** - chore: ver 0.3.8
+
+## [0.3.8] - 2022-10-21
+- **2022-10-21** - 0.3.8
+- **2022-10-21** - chore: docs
+- **2022-10-21** - fix: uiPresets for finder container
+- **2022-10-21** - fix: button border
+- **2022-10-21** - fix: finder width
+
+## [0.3.7] - 2022-10-21
+- **2022-10-21** - 0.3.7
+- **2022-10-21** - chore: switcher path
+- **2022-10-21** - chore: ver 0.3.6
+
+## [0.3.6] - 2022-10-21
+- **2022-10-21** - 0.3.6
+- **2022-10-21** - chore: switcher
+- **2022-10-20** - chore: removed logs
+- **2022-10-20** - chore: contentswitcher
+- **2022-10-20** - chore: ver 0.3.5
+
+## [0.3.5] - 2022-10-20
+- **2022-10-20** - 0.3.5
+- **2022-10-20** - chore: migrzte listTitle slots
+- **2022-10-20** - chore: ver 0.3.4
+
+## [0.3.4] - 2022-10-20
+- **2022-10-20** - 0.3.4
+- **2022-10-20** - chore: migrzte listItems slots
+- **2022-10-20** - chore: ver 0.3.3
+
+## [0.3.3] - 2022-10-20
+- **2022-10-20** - 0.3.3
+- **2022-10-20** - chore: icon button is back
+- **2022-10-18** - chore: ver 0.3.2
+
+## [0.3.2] - 2022-10-18
+- **2022-10-18** - 0.3.2
+- **2022-10-18** - fix: input start icon slot
+- **2022-10-17** - chore: window.center
+
+## [0.3.1] - 2022-10-17
+- **2022-10-17** - 0.3.1
+- **2022-10-17** - fix: window default pos and returned instance
+- **2022-10-16** - docs
+- **2022-10-16** - chore: docs
+- **2022-10-16** - chore: added site.utils
+
+## [0.3.0] - 2022-10-16
+- **2022-10-16** - 0.3.0
+- **2022-10-16** - fix: package path
+- **2022-10-15** - chore: slider wip
+- **2022-10-15** - chore: slider
+- **2022-10-15** - chore: slots
+- **2022-10-15** - chore: css presets
+- **2022-10-15** - chore: togglebar demo
+- **2022-10-15** - chore: window wip
+- **2022-10-15** - chore: window self destroy()
+- **2022-10-14** - chore: login try
+- **2022-10-12** - chore: ver 0.2.8-dev
+- **2022-10-12** - 0.2.8-dev
+- **2022-10-12** - fix: window commands
+- **2022-10-12** - chore: removed logs
+- **2022-10-12** - 0.2.7-dev
+- **2022-10-12** - chore:dataList pathes
+
+## [0.2.6-dev] - 2022-10-12
+- **2022-10-12** - 0.2.6-dev
+- **2022-10-12** - chore: columner
+- **2022-10-11** - 0.2.5-dev
+- **2022-10-11** - fix: missing dep scss
+- **2022-10-11** - chore: ver 0.2.4-dev
+- **2022-10-11** - 0.2.4-dev
+- **2022-10-11** - fix: Tabs height
+- **2022-10-11** - fix: ListItem classNAme
+- **2022-10-11** - 0.2.3-dev
+- **2022-10-11** - fix: ListItem without list was causing bug
+- **2022-10-11** - chore: ver 0.2.2-dev
+- **2022-10-11** - 0.2.2-dev
+- **2022-10-11** - fix: dataListItem without default field
+- **2022-10-10** - chore: contextRoot api wip
+- **2022-10-10** - chore: contextRoot api
+- **2022-10-10** - 0.2.1-dev
+- **2022-10-10** - chore: demos
+- **2022-10-09** - chore: autoComplete demo
+- **2022-10-09** - chore: it works ....
+- **2022-10-08** - chore: grouper demo wip
+- **2022-10-08** - chore: grouper demo
+- **2022-10-07** - 0.2.0-dev
+- **2022-10-07** - chore: indexes are back
+- **2022-10-07** - 0.1.99-dev
+- **2022-10-07** - chore: resolving entry point
+- **2022-10-07** - fix: removed auto indexes
+- **2022-10-07** - 0.1.98-dev
+- **2022-10-07** - chore: fixes
+- **2022-10-07** - 0.1.97-dev
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - 0.1.96-dev
+- **2022-10-07** - fix: bad engine path
+- **2022-10-07** - 0.1.95-dev
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: indexes
+- **2022-10-07** - chore: progress
+- **2022-10-06** - chore: automatic def files for package
+- **2022-10-06** - chore: panel demo
+- **2022-10-06** - chore: panel wip
+- **2022-10-05** - chore: ver 0.1.94-dev
+- **2022-10-05** - 0.1.94-dev
+- **2022-10-05** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.93-dev
+- **2022-10-04** - 0.1.93-dev
+- **2022-10-04** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.92-dev
+- **2022-10-04** - 0.1.92-dev
+- **2022-10-04** - chore: select demo wip
+- **2022-10-04** - chore: select demo
+- **2022-10-04** - chore: switch
+- **2022-10-04** - chore: switch
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for popper
+- **2022-10-03** - chore: ver 0.1.91-dev
+- **2022-10-03** - 0.1.91-dev
+- **2022-10-03** - chore: pre-push
+- **2022-10-03** - fix: using grid for datalist
+- **2022-10-02** - chore: ver 0.1.90-dev
+- **2022-10-02** - 0.1.90-dev
+- **2022-10-02** - chore: tree demo wip
+- **2022-10-02** - chore: tree demo
+- **2022-10-02** - chore: tabs demo
+- **2022-10-02** - chore: loader demo
+- **2022-10-02** - chore: scss presets
+- **2022-10-02** - fix: button theme
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: code blocks formattings wip
+- **2022-10-02** - chore: code blocks formattings
+- **2022-10-02** - chore: install primsjs
+- **2022-10-02** - chore: input  demo
+- **2022-10-02** - chore: drawer  demo
+- **2022-10-02** - chore: divider  demo
+- **2022-10-02** - chore: confirm  demo
+- **2022-10-02** - chore: chipper demo
+- **2022-10-02** - chore: cartouche demo
+- **2022-10-01** - chore: box demo
+- **2022-10-01** - chore: badge wip
+- **2022-10-01** - chore: backdrop demo
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: alert demo wip
+- **2022-10-01** - chore: demoer
+- **2022-09-30** - chore: ver 0.1.89-dev
+- **2022-09-30** - 0.1.89-dev
+- **2022-09-30** - fix: resizer
+- **2022-09-30** - chore: ver 0.1.88-dev
+- **2022-09-30** - 0.1.88-dev
+- **2022-09-30** - chore: package
+- **2022-09-30** - chore: ver 0.1.87-dev
+- **2022-09-30** - 0.1.87-dev
+- **2022-09-30** - chore: Button and List updates
+- **2022-09-29** - chore: ver 0.1.85-dev
+- **2022-09-29** - 0.1.86-dev
+- **2022-09-29** - chore: removed logs
+- **2022-09-29** - fix: error thrown in dataListCell
+- **2022-09-28** - chore: cartouche
+- **2022-09-28** - chore: ver 0.1.85-dev
+- **2022-09-28** - 0.1.85-dev
+- **2022-09-28** - chore: publish
+- **2022-09-28** - fix: dataList freeze
+- **2022-09-28** - chore: ver 0.1.84
+- **2022-09-28** - fix: lis extra margin
+- **2022-09-28** - fix: tabs use nav
+- **2022-09-28** - fix: list reverse
+- **2022-09-28** - fix: tabs height
+- **2022-09-28** - chore: ver 0.1.83
+- **2022-09-28** - fix: popper default stick width
+- **2022-09-28** - fix: bad documentation build
+- **2022-09-28** - Merge branch 'main' into dev
+- **2022-09-28** - fix: tooltip fails on vercel
+- **2022-09-28** - chore: ver 0.1.82
+- **2022-09-28** - chore: Tabs demo
+- **2022-09-28** - chore: window wip
+- **2022-09-27** - chore: stickto fixed
+- **2022-09-27** - chore: menu wip
+- **2022-09-27** - fix: typo in iconSlot
+- **2022-09-27** - chore: ver 0.1.81
+- **2022-09-26** - chore: ver 0.1.80
+- **2022-09-26** - cjore: demoer
+- **2022-09-26** - chore: added defaultWidth to Frame.drawer
+- **2022-09-26** - chore: added dividerBefore to menuItem
+- **2022-09-26** - chore: added selected css for menuItem
+- **2022-09-26** - chore: datalist grouping
+- **2022-09-23** - chore: props removing for datalist
+- **2022-09-23** - chore: added options to datatable
+- **2022-09-22** - ver: 0.1.78
+- **2022-09-22** - fix: removed title from dataCell
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: ongoing tooltip
+- **2022-09-20** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-20** - ver: 0.1.76
+- **2022-09-19** - chore: finder menu got max height
+- **2022-09-15** - ver: 0.1.74
+- **2022-09-15** - fix: bad .d.ts paths in packages
+- **2022-09-15** - chore: updated favicon
+- **2022-09-15** - chore: updated adapter-vercel
+- **2022-09-15** - chore: readme
+- **2022-09-15** - chore: utils and finder tools
+- **2022-09-12** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-12** - fix: sveltekit packge now export the correct pathes
+- **2022-09-12** - chore: added website link to the readme file
+- **2022-09-12** - ver
+- **2022-09-12** - fix: Finder issue on numbers
+- **2022-09-12** - fix: vercel build, removed build dirs
+- **2022-09-12** - fix: vercel build, change root paths
+- **2022-09-12** - fix: gitignore
+- **2022-09-12** - chore: version
+- **2022-09-09** - chore: css styling on vercel build
+- **2022-09-09** - fix: packaging wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: path modification for typings
+- **2022-09-09** - fix: issue on full export
+- **2022-09-09** - fix: .md file exports
+- **2022-09-08** - fix: unusable exports
+- **2022-09-08** - ver: .68
+- **2022-09-08** - ver: .68
+- **2022-09-08** - fix: removed bad links
+- **2022-09-05** - chore: usezPopper and stickTo are back
+- **2022-09-05** - chore: datalist demo now correctly sort
+- **2022-09-05** - chore: datalist demo is back
+- **2022-09-05** - chore: button demo
+- **2022-09-05** - chore: default site's drawer state
+- **2022-09-05** - chore: dataList is back with header
+- **2022-09-05** - chore: removed demoData
+- **2022-09-04** - chore: vercel site browsable
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem
+- **2022-09-01** - fix: makedocs was weirdo
+- **2022-09-01** - ver: 0.1.66
+- **2022-09-01** - fix: home typo
+- **2022-08-31** - chore: previews, added links
+- **2022-08-31** - chore: previews
+- **2022-08-31** - fix: removed Finder from tree
+- **2022-08-31** - fix: main scroll area now is dynamic
+- **2022-08-31** - chore: cssFabric theme update
+- **2022-08-31** - fix: home component page layout
+- **2022-08-31** - fix: +layout is browsable
+- **2022-08-31** - chore: readme update end
+- **2022-08-31** - chore: readme update
+- **2022-08-30** - chore: documentation preview file wip
+- **2022-08-30** - chore: documentation preview file
+- **2022-08-29** - chor: ver 0.1.65
+- **2022-08-29** - fix: dataOp class methods
+- **2022-08-29** - chore: Finder component
+- **2022-08-29** - chore: site on going
+- **2022-08-26** - chore: migrate cleaning wip
+- **2022-08-26** - chore: migrate cleaning
+- **2022-08-26** - fix: missing assets
+- **2022-08-26** - chore: svelte update
+- **2022-08-24** - 1st build
+- **2022-07-14** - chore: wip datalist
+- **2022-07-13** - chore: update to vite 1.914
+- **2022-07-13** - chore: ver
+- **2022-07-13** - chore: ver
+- **2022-07-04** - fix: removed sort none on datalist
+- **2022-07-04** - chore: tree
+- **2022-07-03** - chore: treelist
+- **2022-07-01** - fix: removed logs
+- **2022-07-01** - chore: docs
+- **2022-07-01** - chore: dataList
+- **2022-06-30** - fix: overflow is back for frameLeft
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: datalist without slot
+- **2022-06-28** - chore: button and loader
+- **2022-06-28** - chore: header
+- **2022-06-28** - chore: datalist auto-width
+- **2022-06-27** - chore: ver 0.0.48
+- **2022-06-27** - fix: Drawer backdrop was causing weird border bugs
+- **2022-06-27** - fix: Loader width was 100%
+- **2022-06-27** - chore: ver 0.1.47
+- **2022-06-27** - chore: ver 0.1.46
+- **2022-06-27** - chore: massive
+- **2022-06-26** - chore: propsProxy accepts functions
+- **2022-06-26** - chore: list reach beta
+- **2022-06-26** - fix: missing git files
+- **2022-06-26** - fix: virtual list got header
+- **2022-06-26** - chore: divider for list item
+- **2022-06-26** - chore: divider demo
+- **2022-06-26** - chore: added cite for list
+- **2022-06-26** - chore: started divider demo
+- **2022-06-26** - chore: drawer
+- **2022-06-26** - chore: demo
+- **2022-06-25** - fix: list default slot
+- **2022-06-25** - chore: drawer
+- **2022-06-25** - chore: loader demo
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: svelte.config
+- **2022-06-25** - chore: list
+- **2022-06-24** - feat: jsoner
+- **2022-06-23** - fixes
+- **2022-06-23** - fixes
+- **2022-06-23** - chore: auto-updater
+- **2022-06-23** - chore
+- **2022-06-23** - feat: confirmer
+- **2022-06-22** - fix: icon search is visible in input
+- **2022-06-22** - feat: loader demo
+- **2022-06-22** - feat: loader index
+- **2022-06-22** - feat: loader
+- **2022-06-22** - feat: columner
+- **2022-06-22** - fix: headings in title
+- **2022-06-22** - feat: sorterer
+- **2022-06-22** - ver: 0.1.35
+- **2022-06-22** - chore: fixes
+- **2022-06-21** - ver: 0.1.34
+- **2022-06-21** - chore: ver 0.1.25
+- **2022-06-21** - chore: ver 0.1.24
+- **2022-06-20** - ver:0.1.33 bug fixes
+- **2022-06-20** - ver:0.1.32
+- **2022-06-20** - fix: input css, alerts
+- **2022-06-20** - fix: button css
+- **2022-06-20** - fix: tabs
+- **2022-06-20** - divider color
+- **2022-06-20** - ver: .29
+- **2022-06-20** - fix: default slot for input, default border color
+- **2022-06-20** - fix: 2 way binding for input type
+- **2022-06-20** - fix: input password
+- **2022-06-20** - ver: 0.1.26
+- **2022-06-20** - fix: grouper component
+- **2022-06-19** - chore: css migration
+- **2022-06-19** - fix: git
+- **2022-06-19** - chore: main site
+- **2022-06-19** - fix: layout done for sites routes
+- **2022-06-19** - fix: list now get command bar
+- **2022-06-18** - fix: list now accepts raw data
+- **2022-06-18** - fix: themeswitcher
+- **2022-06-18** - fix: removed old themeWrapper
+- **2022-06-18** - fix: input end icon
+- **2022-06-18** - chore: added list utils
+- **2022-06-17** - chore: pressed state
+- **2022-06-17** - chore tabs
+- **2022-06-17** - chore: ver 1.23
+- **2022-06-17** - chore: tabs get content
+- **2022-06-16** - added hooks to frame store, ver.20
+- **2022-06-16** - chore: maintenance
+- **2022-06-16** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-06-16** - chore: setted logs ver.18
+- **2022-06-15** - fet: ver 0.1.17
+- **2022-06-14** - chore: ver .16
+- **2022-06-14** - md
+- **2022-06-14** - chore: vr
+- **2022-06-13** - chore: button variants ok
+- **2022-06-13** - chore: propDef try
+- **2022-06-13** - chore: ver
+- **2022-06-13** - fix: removed fade from listItem
+- **2022-06-13** - chore: button popper box
+- **2022-06-13** - chore: popper
+- **2022-06-13** - chore: button
+- **2022-06-12** - feat: usePopper
+- **2022-06-12** - chore: installed highliht
+- **2022-06-12** - fix: use of currentTarget on button menu
+- **2022-06-12** - fix: menu now close on menuItem click
+- **2022-06-12** - chore: deleted Prism
+- **2022-06-12** - chore: demoer on grouper
+- **2022-06-12** - chore: SvelteMarkdown
+- **2022-06-12** - chore: Grouper demo
+- **2022-06-12** - chore: menuItem is clickable
+- **2022-06-12** - chore: grouper
+- **2022-06-11** - chore: grouper
+- **2022-06-11** - fix: listitem props
+- **2022-06-11** - chore: ver
+- **2022-06-11** - chore:ver
+- **2022-06-10** - fix: document not ready for ChromeFrameListChromeFrameList
+- **2022-06-10** - fix: document not ready for
+- **2022-06-10** - chore: ver
+- **2022-06-09** - fix: forwarded event on list
+- **2022-06-08** - upadted fabric
+- **2022-06-08** - ver
+- **2022-06-08** - feat: chromeFrame area
+- **2022-06-07** - ver
+- **2022-06-07** - icons got classes
+- **2022-06-07** - sveltekit to next
+- **2022-06-07** - raw update, passing tests
+- **2022-04-19** - updated version
+- **2022-04-19** - updated elements
+- **2022-04-11** - k,,owing it's alpha
+- **2022-04-11** - updated ui.Login component
+- **2022-04-09** - moved assets
+- **2022-04-09** - updated npm info
+- **2022-04-07** - avatar resolution
+- **2022-04-06** - setted tests
+- **2022-04-04** - adapter config
+- **2022-04-04** - added conf files
+- **2022-04-04** - setup test with jest
+- **2022-03-06** - tree: done
+- **2022-03-06** - card: done
+- **2022-03-06** - card: done
+- **2022-03-06** - cartouche: done
+- **2022-03-06** - absolute animated chip for tabs
+- **2022-03-04** - more
+- **2022-02-28** - more
+- **2022-02-28** - Left panel preselection is back
+- **2022-02-22** - started select
+- **2022-02-20** - more
+- **2022-02-19** - more
+- **2022-02-18** - done alert
+- **2022-02-18** - done alert
+- **2022-02-16** - more
+- **2022-02-15** - done more
+- **2022-02-15** - done avatar
+- **2022-02-15** - done menu
+- **2022-02-14** - installed storybook
+- **2022-02-14** - more
+- **2022-02-13** - Action button
+- **2022-02-13** - Elementor
+- **2022-02-13** - listItem active state is now ok
+- **2022-02-13** - virtual list
+- **2022-02-13** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-12** - list store is no more a singleton
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-12** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-12** - changes
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-11** - ContentSwitcher
+- **2022-02-11** - updated more
+- **2022-02-10** - updated xMachine
+- **2022-02-09** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more more
+- **2022-02-06** - more
+- **2022-02-06** - more
+- **2022-02-05** - done things
+- **2022-02-05** - material icons
+- **2022-02-04** - material icons
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-02** - sx4u more
+- **2022-02-02** - sx4u!
+- **2022-01-31** - not really initial
+- **2022-01-31** - Initial commit
+
+## [0.2.1] - 2023-12-22
+- **2023-12-22** - chore(release): 0.2.1
+- **2023-12-22** - chore: husky comitizen comitlint standard version
+- **2023-12-22** - chore: renamed package
+- **2023-12-22** - fix: returned values were undefined
+- **2023-12-22** - feat: added options to sort and paginate
+- **2023-12-22** - chore: completed docs
+- **2023-12-22** - feat: readme
+- **2023-12-22** - feat: added tests for operators
+- **2023-12-21** - feat: initial commit
+- **2023-12-20** - initial commit
+- **2023-12-20** - Initial commit
+
+## [0.1.85-dev] - 2022-09-28
+- **2022-09-28** - 0.1.85-dev
+- **2022-09-28** - chore: publish
+- **2022-09-28** - fix: dataList freeze
+- **2022-09-28** - chore: ver 0.1.84
+- **2022-09-28** - fix: lis extra margin
+- **2022-09-28** - fix: tabs use nav
+- **2022-09-28** - fix: list reverse
+- **2022-09-28** - fix: tabs height
+- **2022-09-28** - chore: ver 0.1.83
+- **2022-09-28** - fix: popper default stick width
+- **2022-09-28** - fix: bad documentation build
+- **2022-09-28** - Merge branch 'main' into dev
+- **2022-09-28** - fix: tooltip fails on vercel
+- **2022-09-28** - chore: ver 0.1.82
+- **2022-09-28** - chore: Tabs demo
+- **2022-09-28** - chore: window wip
+- **2022-09-27** - chore: stickto fixed
+- **2022-09-27** - chore: menu wip
+- **2022-09-27** - fix: typo in iconSlot
+- **2022-09-27** - chore: ver 0.1.81
+- **2022-09-26** - chore: ver 0.1.80
+- **2022-09-26** - cjore: demoer
+- **2022-09-26** - chore: added defaultWidth to Frame.drawer
+- **2022-09-26** - chore: added dividerBefore to menuItem
+- **2022-09-26** - chore: added selected css for menuItem
+- **2022-09-26** - chore: datalist grouping
+- **2022-09-23** - chore: props removing for datalist
+- **2022-09-23** - chore: added options to datatable
+- **2022-09-22** - ver: 0.1.78
+- **2022-09-22** - fix: removed title from dataCell
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: ongoing tooltip
+- **2022-09-20** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-20** - ver: 0.1.76
+- **2022-09-19** - chore: finder menu got max height
+- **2022-09-15** - ver: 0.1.74
+- **2022-09-15** - fix: bad .d.ts paths in packages
+- **2022-09-15** - chore: updated favicon
+- **2022-09-15** - chore: updated adapter-vercel
+- **2022-09-15** - chore: readme
+- **2022-09-15** - chore: utils and finder tools
+- **2022-09-12** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-12** - fix: sveltekit packge now export the correct pathes
+- **2022-09-12** - chore: added website link to the readme file
+- **2022-09-12** - ver
+- **2022-09-12** - fix: Finder issue on numbers
+- **2022-09-12** - fix: vercel build, removed build dirs
+- **2022-09-12** - fix: vercel build, change root paths
+- **2022-09-12** - fix: gitignore
+
+## [0.1.1-beta.0] - 2024-02-21
+- **2024-02-21** - chore(release): 0.1.1-beta.0
+- **2024-02-21** - chore: cleaning
+- **2024-01-19** - chore: Delete unused files and update import paths
+- **2024-01-19** - chore: Refactor file paths and update component imports
+- **2024-01-18** - chore: Update file paths and dependencies
+- **2024-01-18** - chore: storybook gen with sveld
+- **2024-01-18** - Fix: TypeScript import paths and add missing type annotations
+- **2024-01-17** - fix: exports
+- **2024-01-17** - chore: Update import paths in several files
+- **2024-01-17** - chore:Update file paths and imports
+- **2024-01-16** - Fix: positioning and styling issues in Popper component
+- **2024-01-16** - chore: Add new enum for position and update stickTo function
+- **2024-01-16** - fix: Refactor component names in +page.svelte and usePopper.ts
+- **2024-01-16** - fix: Update dependencies and fix Virtualizer style
+- **2024-01-16** - chore(release): 0.1.1-alpha.0
+- **2024-01-16** - chore(release): 0.1.0
+- **2024-01-16** - chore(release): 0.0.6-alpha.0
+
+## [0.0.5] - 2024-01-16
+- **2024-01-16** - chore(release): 0.0.5
+- **2024-01-16** - fix: data binding issue in layout.svelte
+- **2024-01-16** - chore: Update import paths for slotuiCatalog and componentCite
+- **2024-01-16** - fix: Add mdsvex package and update dependencies
+- **2024-01-16** - chore: Fix code formatting and import statements
+- **2024-01-10** - chore: Update dependencies and fix layout styles
+
+## [0.0.4] - 2024-01-10
+- **2024-01-10** - chore(release): 0.0.4
+- **2024-01-10** - dev: Add svelte-kit to peerDependencies
+- **2024-01-10** - chore(release): 0.0.3
+- **2024-01-10** - dev: standard-version
+- **2024-01-10** - chore(release): 0.0.2
+- **2024-01-10** - bug: fixed exports
+- **2024-01-10** - dev :Update package.json and vite.config.ts
+- **2024-01-10** - chore: Remove deprecated code and add new exports scripts to package.json
+- **2024-01-10** - chore: svelte upgrade
+- **2024-01-10** - chore: migration to svelte 4
+- **2023-03-25** - 0.4.16
+- **2023-03-25** - ...
+- **2023-03-25** - 0.4.15
+- **2023-03-25** - 0.4.14
+- **2023-03-25** - fix:fix security audit removing svelte-preprocess-markdown
+- **2023-03-25** - 0.4.13
+- **2023-03-25** - 0.4.12
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - chore:updated packages
+- **2023-03-25** - 0.4.11
+- **2023-03-25** - feat: added collect.js
+- **2023-03-25** - fix:issues
+- **2023-03-25** - 0.4.10
+- **2023-03-25** - chore:updated publish
+- **2023-03-25** - fix:reverting sevltekit package version
+- **2023-03-25** - chore:removed auto-indexes
+- **2023-03-25** - chore: before migration
+- **2023-03-25** - 0.4.9
+- **2023-03-25** - chore:updated cssfabric version
+- **2023-02-12** - chore: added preview link on home page chore
+- **2023-02-12** - chore: added preview link on home page
+- **2023-02-12** - fix: menuItem defaultSelected state
+- **2023-02-10** - fix: menuItem defaultSelected state
+- **2023-02-06** - chore: scroll
+- **2023-02-03** - chore: bad imports
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-02-03** - chore: added some credits, sort of
+- **2023-01-31** - chore: footer text on home
+- **2023-01-30** - fix: confirm demo
+- **2023-01-30** - fix: search box
+- **2023-01-30** - chore: confirm
+- **2023-01-30** - ts for demoer
+- **2023-01-29** - added route load
+- **2023-01-29** - chore: site fixes
+- **2023-01-29** - chore: ver 0.4.8
+- **2023-01-29** - 0.4.8
+- **2023-01-29** - chore: docs
+- **2023-01-29** - chore: ts
+- **2023-01-29** - chore: added cite
+- **2023-01-29** - chore: menu fixes site links external
+- **2023-01-15** - chore: added slots next and previous to panel buttons
+- **2023-01-13** - fix: missing slot in grouped datalist
+- **2023-01-12** - chore: added unque cell to dataliste
+- **2023-01-09** - 0.4.6
+- **2023-01-09** - fix: window parentNode
+- **2023-01-08** - chore: ver 0.4.5
+- **2023-01-08** - 0.4.5
+- **2023-01-08** - fix: menu props leaks
+- **2022-11-15** - 0.4.4
+- **2022-11-15** - chore: added hook for css
+- **2022-10-25** - 0.4.3
+- **2022-10-25** - fix: removed debug in chipper
+- **2022-10-24** - 0.4.2
+- **2022-10-24** - fix: loader delay and key wip
+- **2022-10-24** - chore: ver 0.4.1
+- **2022-10-24** - 0.4.1
+- **2022-10-24** - fix: loader delay and key
+- **2022-10-21** - chore: chipper
+- **2022-10-21** - chore: ver 0.4.0
+- **2022-10-21** - 0.4.0
+- **2022-10-21** - chore: confirm wip
+- **2022-10-21** - chore: ver 0.3.9
+- **2022-10-21** - 0.3.9
+- **2022-10-21** - chore: list footer
+- **2022-10-21** - chore: ver 0.3.8
+- **2022-10-21** - 0.3.8
+- **2022-10-21** - chore: docs
+- **2022-10-21** - fix: uiPresets for finder container
+- **2022-10-21** - fix: button border
+- **2022-10-21** - fix: finder width
+- **2022-10-21** - 0.3.7
+- **2022-10-21** - chore: switcher path
+- **2022-10-21** - chore: ver 0.3.6
+- **2022-10-21** - 0.3.6
+- **2022-10-21** - chore: switcher
+- **2022-10-20** - chore: removed logs
+- **2022-10-20** - chore: contentswitcher
+- **2022-10-20** - chore: ver 0.3.5
+- **2022-10-20** - 0.3.5
+- **2022-10-20** - chore: migrzte listTitle slots
+- **2022-10-20** - chore: ver 0.3.4
+- **2022-10-20** - 0.3.4
+- **2022-10-20** - chore: migrzte listItems slots
+- **2022-10-20** - chore: ver 0.3.3
+- **2022-10-20** - 0.3.3
+- **2022-10-20** - chore: icon button is back
+- **2022-10-18** - chore: ver 0.3.2
+- **2022-10-18** - 0.3.2
+- **2022-10-18** - fix: input start icon slot
+- **2022-10-17** - chore: window.center
+- **2022-10-17** - 0.3.1
+- **2022-10-17** - fix: window default pos and returned instance
+- **2022-10-16** - docs
+- **2022-10-16** - chore: docs
+- **2022-10-16** - chore: added site.utils
+- **2022-10-16** - 0.3.0
+- **2022-10-16** - fix: package path
+- **2022-10-15** - chore: slider wip
+- **2022-10-15** - chore: slider
+- **2022-10-15** - chore: slots
+- **2022-10-15** - chore: css presets
+- **2022-10-15** - chore: togglebar demo
+- **2022-10-15** - chore: window wip
+- **2022-10-15** - chore: window self destroy()
+- **2022-10-14** - chore: login try
+- **2022-10-12** - chore: ver 0.2.8-dev
+- **2022-10-12** - 0.2.8-dev
+- **2022-10-12** - fix: window commands
+- **2022-10-12** - chore: removed logs
+- **2022-10-12** - 0.2.7-dev
+- **2022-10-12** - chore:dataList pathes
+- **2022-10-12** - 0.2.6-dev
+- **2022-10-12** - chore: columner
+- **2022-10-11** - 0.2.5-dev
+- **2022-10-11** - fix: missing dep scss
+- **2022-10-11** - chore: ver 0.2.4-dev
+- **2022-10-11** - 0.2.4-dev
+- **2022-10-11** - fix: Tabs height
+- **2022-10-11** - fix: ListItem classNAme
+- **2022-10-11** - 0.2.3-dev
+- **2022-10-11** - fix: ListItem without list was causing bug
+- **2022-10-11** - chore: ver 0.2.2-dev
+- **2022-10-11** - 0.2.2-dev
+- **2022-10-11** - fix: dataListItem without default field
+- **2022-10-10** - chore: contextRoot api wip
+- **2022-10-10** - chore: contextRoot api
+- **2022-10-10** - 0.2.1-dev
+- **2022-10-10** - chore: demos
+- **2022-10-09** - chore: autoComplete demo
+- **2022-10-09** - chore: it works ....
+- **2022-10-08** - chore: grouper demo wip
+- **2022-10-08** - chore: grouper demo
+- **2022-10-07** - 0.2.0-dev
+- **2022-10-07** - chore: indexes are back
+- **2022-10-07** - 0.1.99-dev
+- **2022-10-07** - chore: resolving entry point
+- **2022-10-07** - fix: removed auto indexes
+- **2022-10-07** - 0.1.98-dev
+- **2022-10-07** - chore: fixes
+- **2022-10-07** - 0.1.97-dev
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - fix: window.actions
+- **2022-10-07** - 0.1.96-dev
+- **2022-10-07** - fix: bad engine path
+- **2022-10-07** - 0.1.95-dev
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: wip
+- **2022-10-07** - chore: indexes
+- **2022-10-07** - chore: progress
+- **2022-10-06** - chore: automatic def files for package
+- **2022-10-06** - chore: panel demo
+- **2022-10-06** - chore: panel wip
+- **2022-10-05** - chore: ver 0.1.94-dev
+- **2022-10-05** - 0.1.94-dev
+- **2022-10-05** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.93-dev
+- **2022-10-04** - 0.1.93-dev
+- **2022-10-04** - chore: window wip
+- **2022-10-04** - chore: ver 0.1.92-dev
+- **2022-10-04** - 0.1.92-dev
+- **2022-10-04** - chore: select demo wip
+- **2022-10-04** - chore: select demo
+- **2022-10-04** - chore: switch
+- **2022-10-04** - chore: switch
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for menu
+- **2022-10-03** - fix: demo for popper
+- **2022-10-03** - chore: ver 0.1.91-dev
+- **2022-10-03** - 0.1.91-dev
+- **2022-10-03** - chore: pre-push
+- **2022-10-03** - fix: using grid for datalist
+- **2022-10-02** - chore: ver 0.1.90-dev
+- **2022-10-02** - 0.1.90-dev
+- **2022-10-02** - chore: tree demo wip
+- **2022-10-02** - chore: tree demo
+- **2022-10-02** - chore: tabs demo
+- **2022-10-02** - chore: loader demo
+- **2022-10-02** - chore: scss presets
+- **2022-10-02** - fix: button theme
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: list demo wip
+- **2022-10-02** - chore: code blocks formattings wip
+- **2022-10-02** - chore: code blocks formattings
+- **2022-10-02** - chore: install primsjs
+- **2022-10-02** - chore: input  demo
+- **2022-10-02** - chore: drawer  demo
+- **2022-10-02** - chore: divider  demo
+- **2022-10-02** - chore: confirm  demo
+- **2022-10-02** - chore: chipper demo
+- **2022-10-02** - chore: cartouche demo
+- **2022-10-01** - chore: box demo
+- **2022-10-01** - chore: badge wip
+- **2022-10-01** - chore: backdrop demo
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: button demo wip
+- **2022-10-01** - chore: alert demo wip
+- **2022-10-01** - chore: demoer
+- **2022-09-30** - chore: ver 0.1.89-dev
+- **2022-09-30** - 0.1.89-dev
+- **2022-09-30** - fix: resizer
+- **2022-09-30** - chore: ver 0.1.88-dev
+- **2022-09-30** - 0.1.88-dev
+- **2022-09-30** - chore: package
+- **2022-09-30** - chore: ver 0.1.87-dev
+- **2022-09-30** - 0.1.87-dev
+- **2022-09-30** - chore: Button and List updates
+- **2022-09-29** - chore: ver 0.1.85-dev
+- **2022-09-29** - 0.1.86-dev
+- **2022-09-29** - chore: removed logs
+- **2022-09-29** - fix: error thrown in dataListCell
+- **2022-09-28** - chore: cartouche
+- **2022-09-28** - chore: ver 0.1.85-dev
+- **2022-09-28** - 0.1.85-dev
+- **2022-09-28** - chore: publish
+- **2022-09-28** - fix: dataList freeze
+- **2022-09-28** - chore: ver 0.1.84
+- **2022-09-28** - fix: lis extra margin
+- **2022-09-28** - fix: tabs use nav
+- **2022-09-28** - fix: list reverse
+- **2022-09-28** - fix: tabs height
+- **2022-09-28** - chore: ver 0.1.83
+- **2022-09-28** - fix: popper default stick width
+- **2022-09-28** - fix: bad documentation build
+- **2022-09-28** - Merge branch 'main' into dev
+- **2022-09-28** - fix: tooltip fails on vercel
+- **2022-09-28** - chore: ver 0.1.82
+- **2022-09-28** - chore: Tabs demo
+- **2022-09-28** - chore: window wip
+- **2022-09-27** - chore: stickto fixed
+- **2022-09-27** - chore: menu wip
+- **2022-09-27** - fix: typo in iconSlot
+- **2022-09-27** - chore: ver 0.1.81
+- **2022-09-26** - chore: ver 0.1.80
+- **2022-09-26** - cjore: demoer
+- **2022-09-26** - chore: added defaultWidth to Frame.drawer
+- **2022-09-26** - chore: added dividerBefore to menuItem
+- **2022-09-26** - chore: added selected css for menuItem
+- **2022-09-26** - chore: datalist grouping
+- **2022-09-23** - chore: props removing for datalist
+- **2022-09-23** - chore: added options to datatable
+- **2022-09-22** - ver: 0.1.78
+- **2022-09-22** - fix: removed title from dataCell
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: updated docs
+- **2022-09-21** - chore: ongoing tooltip
+- **2022-09-20** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-20** - ver: 0.1.76
+- **2022-09-19** - chore: finder menu got max height
+- **2022-09-15** - ver: 0.1.74
+- **2022-09-15** - fix: bad .d.ts paths in packages
+- **2022-09-15** - chore: updated favicon
+- **2022-09-15** - chore: updated adapter-vercel
+- **2022-09-15** - chore: readme
+- **2022-09-15** - chore: utils and finder tools
+- **2022-09-12** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-09-12** - fix: sveltekit packge now export the correct pathes
+- **2022-09-12** - chore: added website link to the readme file
+- **2022-09-12** - ver
+- **2022-09-12** - fix: Finder issue on numbers
+- **2022-09-12** - fix: vercel build, removed build dirs
+- **2022-09-12** - fix: vercel build, change root paths
+- **2022-09-12** - fix: gitignore
+- **2022-09-12** - chore: version
+- **2022-09-09** - chore: css styling on vercel build
+- **2022-09-09** - fix: packaging wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: export wip
+- **2022-09-09** - fix: path modification for typings
+- **2022-09-09** - fix: issue on full export
+- **2022-09-09** - fix: .md file exports
+- **2022-09-08** - fix: unusable exports
+- **2022-09-08** - ver: .68
+- **2022-09-08** - ver: .68
+- **2022-09-08** - fix: removed bad links
+- **2022-09-05** - chore: usezPopper and stickTo are back
+- **2022-09-05** - chore: datalist demo now correctly sort
+- **2022-09-05** - chore: datalist demo is back
+- **2022-09-05** - chore: button demo
+- **2022-09-05** - chore: default site's drawer state
+- **2022-09-05** - chore: dataList is back with header
+- **2022-09-05** - chore: removed demoData
+- **2022-09-04** - chore: vercel site browsable
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem wip
+- **2022-09-03** - chore: adapter-vercel implem
+- **2022-09-01** - fix: makedocs was weirdo
+- **2022-09-01** - ver: 0.1.66
+- **2022-09-01** - fix: home typo
+- **2022-08-31** - chore: previews, added links
+- **2022-08-31** - chore: previews
+- **2022-08-31** - fix: removed Finder from tree
+- **2022-08-31** - fix: main scroll area now is dynamic
+- **2022-08-31** - chore: cssFabric theme update
+- **2022-08-31** - fix: home component page layout
+- **2022-08-31** - fix: +layout is browsable
+- **2022-08-31** - chore: readme update end
+- **2022-08-31** - chore: readme update
+- **2022-08-30** - chore: documentation preview file wip
+- **2022-08-30** - chore: documentation preview file
+- **2022-08-29** - chor: ver 0.1.65
+- **2022-08-29** - fix: dataOp class methods
+- **2022-08-29** - chore: Finder component
+- **2022-08-29** - chore: site on going
+- **2022-08-26** - chore: migrate cleaning wip
+- **2022-08-26** - chore: migrate cleaning
+- **2022-08-26** - fix: missing assets
+- **2022-08-26** - chore: svelte update
+- **2022-08-24** - 1st build
+- **2022-07-14** - chore: wip datalist
+- **2022-07-13** - chore: update to vite 1.914
+- **2022-07-13** - chore: ver
+- **2022-07-13** - chore: ver
+- **2022-07-04** - fix: removed sort none on datalist
+- **2022-07-04** - chore: tree
+- **2022-07-03** - chore: treelist
+- **2022-07-01** - fix: removed logs
+- **2022-07-01** - chore: docs
+- **2022-07-01** - chore: dataList
+- **2022-06-30** - fix: overflow is back for frameLeft
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: missing appscheme declaration
+- **2022-06-29** - fix: datalist without slot
+- **2022-06-28** - chore: button and loader
+- **2022-06-28** - chore: header
+- **2022-06-28** - chore: datalist auto-width
+- **2022-06-27** - chore: ver 0.0.48
+- **2022-06-27** - fix: Drawer backdrop was causing weird border bugs
+- **2022-06-27** - fix: Loader width was 100%
+- **2022-06-27** - chore: ver 0.1.47
+- **2022-06-27** - chore: ver 0.1.46
+- **2022-06-27** - chore: massive
+- **2022-06-26** - chore: propsProxy accepts functions
+- **2022-06-26** - chore: list reach beta
+- **2022-06-26** - fix: missing git files
+- **2022-06-26** - fix: virtual list got header
+- **2022-06-26** - chore: divider for list item
+- **2022-06-26** - chore: divider demo
+- **2022-06-26** - chore: added cite for list
+- **2022-06-26** - chore: started divider demo
+- **2022-06-26** - chore: drawer
+- **2022-06-26** - chore: demo
+- **2022-06-25** - fix: list default slot
+- **2022-06-25** - chore: drawer
+- **2022-06-25** - chore: loader demo
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: cartouche
+- **2022-06-25** - chore: svelte.config
+- **2022-06-25** - chore: list
+- **2022-06-24** - feat: jsoner
+- **2022-06-23** - fixes
+- **2022-06-23** - fixes
+- **2022-06-23** - chore: auto-updater
+- **2022-06-23** - chore
+- **2022-06-23** - feat: confirmer
+- **2022-06-22** - fix: icon search is visible in input
+- **2022-06-22** - feat: loader demo
+- **2022-06-22** - feat: loader index
+- **2022-06-22** - feat: loader
+- **2022-06-22** - feat: columner
+- **2022-06-22** - fix: headings in title
+- **2022-06-22** - feat: sorterer
+- **2022-06-22** - ver: 0.1.35
+- **2022-06-22** - chore: fixes
+- **2022-06-21** - ver: 0.1.34
+- **2022-06-21** - chore: ver 0.1.25
+- **2022-06-21** - chore: ver 0.1.24
+- **2022-06-20** - ver:0.1.33 bug fixes
+- **2022-06-20** - ver:0.1.32
+- **2022-06-20** - fix: input css, alerts
+- **2022-06-20** - fix: button css
+- **2022-06-20** - fix: tabs
+- **2022-06-20** - divider color
+- **2022-06-20** - ver: .29
+- **2022-06-20** - fix: default slot for input, default border color
+- **2022-06-20** - fix: 2 way binding for input type
+- **2022-06-20** - fix: input password
+- **2022-06-20** - ver: 0.1.26
+- **2022-06-20** - fix: grouper component
+- **2022-06-19** - chore: css migration
+- **2022-06-19** - fix: git
+- **2022-06-19** - chore: main site
+- **2022-06-19** - fix: layout done for sites routes
+- **2022-06-19** - fix: list now get command bar
+- **2022-06-18** - fix: list now accepts raw data
+- **2022-06-18** - fix: themeswitcher
+- **2022-06-18** - fix: removed old themeWrapper
+- **2022-06-18** - fix: input end icon
+- **2022-06-18** - chore: added list utils
+- **2022-06-17** - chore: pressed state
+- **2022-06-17** - chore tabs
+- **2022-06-17** - chore: ver 1.23
+- **2022-06-17** - chore: tabs get content
+- **2022-06-16** - added hooks to frame store, ver.20
+- **2022-06-16** - chore: maintenance
+- **2022-06-16** - Merge branch 'main' of https://github.com/medyll/slot-ui into main
+- **2022-06-16** - chore: setted logs ver.18
+- **2022-06-15** - fet: ver 0.1.17
+- **2022-06-14** - chore: ver .16
+- **2022-06-14** - md
+- **2022-06-14** - chore: vr
+- **2022-06-13** - chore: button variants ok
+- **2022-06-13** - chore: propDef try
+- **2022-06-13** - chore: ver
+- **2022-06-13** - fix: removed fade from listItem
+- **2022-06-13** - chore: button popper box
+- **2022-06-13** - chore: popper
+- **2022-06-13** - chore: button
+- **2022-06-12** - feat: usePopper
+- **2022-06-12** - chore: installed highliht
+- **2022-06-12** - fix: use of currentTarget on button menu
+- **2022-06-12** - fix: menu now close on menuItem click
+- **2022-06-12** - chore: deleted Prism
+- **2022-06-12** - chore: demoer on grouper
+- **2022-06-12** - chore: SvelteMarkdown
+- **2022-06-12** - chore: Grouper demo
+- **2022-06-12** - chore: menuItem is clickable
+- **2022-06-12** - chore: grouper
+- **2022-06-11** - chore: grouper
+- **2022-06-11** - fix: listitem props
+- **2022-06-11** - chore: ver
+- **2022-06-11** - chore:ver
+- **2022-06-10** - fix: document not ready for ChromeFrameListChromeFrameList
+- **2022-06-10** - fix: document not ready for
+- **2022-06-10** - chore: ver
+- **2022-06-09** - fix: forwarded event on list
+- **2022-06-08** - upadted fabric
+- **2022-06-08** - ver
+- **2022-06-08** - feat: chromeFrame area
+- **2022-06-07** - ver
+- **2022-06-07** - icons got classes
+- **2022-06-07** - sveltekit to next
+- **2022-06-07** - raw update, passing tests
+- **2022-04-19** - updated version
+- **2022-04-19** - updated elements
+- **2022-04-11** - k,,owing it's alpha
+- **2022-04-11** - updated ui.Login component
+- **2022-04-09** - moved assets
+- **2022-04-09** - updated npm info
+- **2022-04-07** - avatar resolution
+- **2022-04-06** - setted tests
+- **2022-04-04** - adapter config
+- **2022-04-04** - added conf files
+- **2022-04-04** - setup test with jest
+- **2022-03-06** - tree: done
+- **2022-03-06** - card: done
+- **2022-03-06** - card: done
+- **2022-03-06** - cartouche: done
+- **2022-03-06** - absolute animated chip for tabs
+- **2022-03-04** - more
+- **2022-02-28** - more
+- **2022-02-28** - Left panel preselection is back
+- **2022-02-22** - started select
+- **2022-02-20** - more
+- **2022-02-19** - more
+- **2022-02-18** - done alert
+- **2022-02-18** - done alert
+- **2022-02-16** - more
+- **2022-02-15** - done more
+- **2022-02-15** - done avatar
+- **2022-02-15** - done menu
+- **2022-02-14** - installed storybook
+- **2022-02-14** - more
+- **2022-02-13** - Action button
+- **2022-02-13** - Elementor
+- **2022-02-13** - listItem active state is now ok
+- **2022-02-13** - virtual list
+- **2022-02-13** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-13** - more
+- **2022-02-12** - list store is no more a singleton
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-12** - Merge branch 'main' of https://github.com/medyll/svelte into main
+- **2022-02-12** - changes
+- **2022-02-12** - more
+- **2022-02-12** - more
+- **2022-02-11** - ContentSwitcher
+- **2022-02-11** - updated more
+- **2022-02-10** - updated xMachine
+- **2022-02-09** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more
+- **2022-02-08** - more more
+- **2022-02-06** - more
+- **2022-02-06** - more
+- **2022-02-05** - done things
+- **2022-02-05** - material icons
+- **2022-02-04** - material icons
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-04** - upgraded to shadow endpoints version
+- **2022-02-02** - sx4u more
+- **2022-02-02** - sx4u!
+- **2022-01-31** - not really initial
+- **2022-01-31** - Initial commit
+
+## [0.0.1] - 2024-07-10
+- **2024-07-10** - 0.0.1
+- **2024-07-10** - chore:chore
+- **2024-07-10** - chore: ver
+- **2024-07-10** - chore: npm publishing
+- **2024-07-10** - chore: npm setup
+- **2024-07-10** - chore: gac
+- **2024-07-10** - chore: noce version in actions
+- **2024-07-10** - chore(idae-api): initial
+- **2024-07-10** - ci: initial setup for actions
+- **2024-07-10** - chore(idae-be): initial commit
+- **2024-04-20** - v0.0.2
+- **2024-04-20** - chore: chore
+- **2024-04-20** - Add 'packages/htmludom/' from commit '7fd6ca21d1e9cacaf059540f1507106130d17207'
+- **2024-04-20** - chore: migrating to monorepo
+- **2024-04-20** - feat: initial commit
+- **2024-04-20** - Initial commit
+- **2024-04-15** - chore(release): 0.11.1
+- **2024-04-15** - chore: Mise à jour des dépendances dans package.json
+- **2024-04-15** - chore: chore
+- **2024-03-18** - chore(release): 0.11.0
+- **2024-03-18** - feat!: upgraded to latest
+- **2024-03-08** - chore(release): 0.10.0
+- **2024-03-08** - chore: added versioning
+- **2024-03-08** - chore: Ajouter un nouvel attribut privé selectorId à la classe HtmluCssObserver et ajouter une nouvelle méthode cleanSpecialChars pour nettoyer les caractères spéciaux dans le sélecteur. Ajouter une nouvelle option strictlyNew à la méthode track pour contrôler le suivi des animations existantes. Ajouter une nouvelle méthode callCallback pour appeler le callback et mettre à jour la méthode track pour appeler le callback pour les éléments existants si strictlyNew est désactivé. Mettre à jour la méthode doTag pour utiliser le nouvel attribut selectorId. Mettre à jour la méthode elementObserve pour prendre en compte la nouvelle option strictlyNew.
+- **2024-03-07** - feat!: now using Constructable Stylesheets for css observer
+- **2024-02-23** - chore: minor
+- **2024-02-22** - chore: chore
+- **2024-01-05** - Refactor HTMLu module loader and add CSS observer
+- **2024-01-04** - Update HtmluDom imports and add new exports
+- **2024-01-02** - chore: Add test scripts for integration and unit testing
+- **2024-01-02** - dev: Add @playwright/test and playwright as devDependencies
+- **2024-01-02** - feat: Initial commit
+- **2024-01-02** - Initial commit

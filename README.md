@@ -1,10 +1,11 @@
-# idae monorepo
+# Idae Monorepo
 
-This monorepo centralizes all core components needed to develop Idae applications for web, mobile, or desktop platforms.
+A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.
 ## Packages
 
 - [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 - [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
+- [@medyll/idae-csss](https://github.com/medyll/idae/tree/main/packages/idae-csss)
 - [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 - [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
 - [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
@@ -36,6 +37,13 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 
 **Version:** 1.96.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
 
+##
+### @medyll/idae-csss
+CSS and Style utility library for the Idae ecosystem.
+
+**Repo:** [@medyll/idae-csss](https://github.com/medyll/idae/tree/main/packages/idae-csss)
+
+**Version:** 0.0.1
 ##
 ### @medyll/idae-db
 @medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.
