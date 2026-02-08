@@ -1,4 +1,3 @@
-
 ## 🏗️ Model & Template Structure
 
 A template for `idae-machine` must define collections, fields, and relationships. Here is a minimal example:

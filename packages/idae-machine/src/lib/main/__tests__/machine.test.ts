@@ -8,6 +8,18 @@ function createTestMachine() {
 }
 
 describe('Machine', () => {
+    it('should create named instance and store in registry', () => {
+      const named = Machine.prototype.createInstance('foo', 'foo-db', 1, testScheme);
+      expect(named.instanceName).toBe('foo');
+      expect(Machine.instanceRegistry['foo']).toBe(named);
+    });
+
+    it('should retrieve instance by name using instance', () => {
+      const named = Machine.prototype.createInstance('bar', 'bar-db', 1, testScheme);
+      const retrieved = Machine.instance('bar');
+      expect(retrieved).toBe(named);
+      expect(retrieved?.instanceName).toBe('bar');
+    });
   let machine: Machine;
 
   beforeEach(() => {

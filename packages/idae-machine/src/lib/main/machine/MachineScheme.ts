@@ -1,3 +1,4 @@
+import { MachineError } from './MachineError';
 import type {
   TplCollectionName,
   Tpl,
@@ -44,6 +45,11 @@ export class MachineScheme {
     this.collection = collectionName;
     this.#machineDb = idbBase;
     this.#collectionModel = model[String(collectionName)];
+    if (!this.#collectionModel || typeof this.#collectionModel["template"] === "undefined") {
+      throw new MachineError(
+        `Collection '${collectionName}' not found in model or missing 'template' property.`
+      );
+    }
     this.#template = this.#collectionModel["template"] as Tpl;
     this.#model = model;
   }
@@ -139,7 +145,6 @@ export class MachineScheme {
         out[fieldName] = this.field(fieldName).parse();
       }
     });
-    console.log("Parsed fields for collection", this.collection, out);
     return out;
   }
 
