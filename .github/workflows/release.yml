@@ -20,8 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # Fetches all history for all branches and tags (vital for changelog generation)
-          persist-credentials: false # Avoids auth conflicts with the GH_TOKEN used later
+          persist-credentials: true
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
