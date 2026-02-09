@@ -74,10 +74,4 @@ Design notes:
 - This package is ESM (`type: module`) and built with Vite. `npm run prepackage` runs `scripts/package-pre.js` to prepare package outputs.
 - Keep exports compatible with Svelte packaging expectations when changing `src/lib/index.ts`.
 
-## Contributing
-
-Open a branch from `dev`, add focused commits, and submit a PR with a short description of behavior changes and any required demo steps to verify locally.
-
 ---
-
-If you want, I can also add a short PR checklist and a sample unit test for `functions.svelte.ts` — which would you prefer next?
