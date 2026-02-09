@@ -222,10 +222,10 @@ export { default as DataListCell } from '$lib/data/dataList/DataListCell.svelte'
 export { default as DataList } from '$lib/data/dataList/DataList.svelte';
 export * from '$lib/controls/textfield/types.js';
 export { default as TextField } from '$lib/controls/textfield/TextField.svelte';
-export * from '$lib/controls/stepper/types.js';
-export { default as Stepper } from '$lib/controls/stepper/Stepper.svelte';
 export * from '$lib/controls/switch/types.js';
 export { default as Switch } from '$lib/controls/switch/Switch.svelte';
+export * from '$lib/controls/stepper/types.js';
+export { default as Stepper } from '$lib/controls/stepper/Stepper.svelte';
 export * from '$lib/controls/slider/types.js';
 export { default as Slider } from '$lib/controls/slider/Slider.svelte';
 export { default as Select } from '$lib/controls/select/Select.svelte';

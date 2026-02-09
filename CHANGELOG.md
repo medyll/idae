@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.8-next.0] - 2026-02-09
+**Chores:**
+- remove contributing section from README for clarity
+
+
+
 ## [0.0.7-next.0] - 2026-02-09
 **Features:**
 - update function documentation to English for armor and measure utilities
