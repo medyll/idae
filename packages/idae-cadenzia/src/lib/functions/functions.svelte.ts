@@ -1,11 +1,31 @@
 // functions/functions.svelte.ts
-import { rootNotes, cadencePatterns, armorOptions } from '$lib/constants/constants.js';
 import type { Chord, Cadence, ChordEntry } from '$lib/types/types';
+import { suggestCadencesFromEntries } from '$lib/functions/cadence.js';
+import { getArmorInfo } from '$lib/functions/armor.js';
+import { computeMeasureInfos } from '$lib/functions/measure.js';
+import { toggleModifierOnChord } from '$lib/functions/modifiers.js';
 
+/**
+ * Reactive list of current chords (Svelte `$state`).
+ * Type: `Chord[]`
+ */
 export const chords = $state<Chord[]>([]);
+
+/**
+ * Reactive list of suggested cadences (updated by `updateCadences`).
+ * Type: `Cadence[]`
+ */
 export const suggestedCadences = $state<Cadence[]>([]);
+
+/**
+ * Reactive list of `ChordEntry` objects representing the current progression.
+ */
 export const chordEntries = $state<ChordEntry[]>([]);
 
+/**
+ * Update `suggestedCadences` based on the last `ChordEntry`.
+ * Uses `suggestCadencesFromEntries` for pure logic.
+ */
 export function updateCadences() {
 	console.log('Current Chords:', $state.snapshot({ chords }));
 
@@ -18,85 +38,46 @@ export function updateCadences() {
 	const lastEntry = chordEntries[chordEntries.length - 1];
 	const lastChordMode = lastEntry.mode;
 
-	const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-	const lastChord = chordEntries[chordEntries.length - 1].chord;
-
-	const rootIndex = rootNotes.indexOf(lastChord.root.toUpperCase());
-	let lastChordRoman = rootIndex !== -1 ? romanNumerals[rootIndex] : null;
-
-	if (lastChord.modifier === '♯') {
-		lastChordRoman += '#';
-	} else if (lastChord.modifier === '♭') {
-		lastChordRoman += 'b';
-	}
-
-	console.log('Last Chord Roman:', lastChordRoman);
-
-	const suggestions = cadencePatterns.filter((cadence) => {
-		return cadence.chords[0] === lastChordRoman;
-	});
-
+	const suggestions = suggestCadencesFromEntries(chordEntries);
 	suggestedCadences.length = 0;
 	suggestedCadences.push(...suggestions);
 
 	console.log('Suggested Cadences:', $state.snapshot({ suggestedCadences }));
 }
 
+/**
+ * Toggle a `modifier` on the chord at `chordIndex` and recompute suggestions.
+ * (This has a side-effect on the reactive `chordEntries`.)
+ *
+ * @param chordIndex - Index of the chord entry to modify
+ * @param modifier - Accidental symbol to toggle
+ */
 export function toggleModifier(chordIndex: number, modifier: string) {
 	const chord = chordEntries[chordIndex].chord;
-	chord.modifier = chord.modifier === modifier ? undefined : modifier;
+	chordEntries[chordIndex].chord = toggleModifierOnChord(chord, modifier);
 	updateCadences();
 }
 
-export function getArmorInfo(armorName: string) {
-	const armor = armorOptions.find((a) => a.name === armorName);
-	return armor ? `${armor.name}${armor.value ? ` (${armor.value})` : ''}` : '';
+/**
+ * Wrapper around `getArmorInfo` exposing a function usable from Svelte components.
+ *
+ * @param armorName - Name of the key/armor
+ */
+export function getArmorInfoWrapper(armorName: string) {
+	return getArmorInfo(armorName);
 }
-
-function getDurationValue(duration: string): number {
-	const [numerator, denominator] = duration.split('/').map(Number);
-	return denominator ? numerator / denominator : numerator;
-}
-
+/**
+ * Update `measureInfo` for all `chordEntries` using `computeMeasureInfos` (pure helper).
+ */
 export function updateMeasureInfo() {
-	let currentMeasure = 1;
-	let currentBeat = 0;
-	let currentTimeSignature = { numerator: 4, denominator: 4 };
-
-	for (let i = 0; i < chordEntries.length; i++) {
-		const entry = chordEntries[i];
-
-		if (entry.timeSignature) {
-			currentTimeSignature = entry.timeSignature;
-			if (currentBeat > 0) {
-				currentMeasure++;
-				currentBeat = 0;
-			}
-		}
-
-		const chordDuration = getDurationValue(entry.chord.duration);
-		const beatsPerMeasure = currentTimeSignature.numerator;
-
-		const measureStart = currentMeasure;
-		const beatStart = currentBeat;
-
-		currentBeat += chordDuration * beatsPerMeasure;
-		while (currentBeat >= beatsPerMeasure) {
-			currentMeasure++;
-			currentBeat -= beatsPerMeasure;
-		}
-
-		chordEntries[i] = {
-			...entry,
-			measureInfo: {
-				start: measureStart,
-				end: currentMeasure,
-				beatStart: beatStart
-			}
-		};
-	}
+	const updated = computeMeasureInfos(chordEntries);
+	// copy back into reactive state
+	chordEntries.length = 0;
+	chordEntries.push(...updated);
 }
-
+/**
+ * Add a default progression entry and update suggestions.
+ */
 export function addChordEntry() {
 	const newEntry = {
 		chord: { root: 'C', quality: 'maj', modifier: undefined, duration: '1' },
@@ -108,6 +89,9 @@ export function addChordEntry() {
 	updateCadences();
 }
 
+/**
+ * Replace the entry at `index` with an updated version (merges properties) and recompute suggestions.
+ */
 export function updateChordEntry(index: number, updatedEntry: Partial<ChordEntry>) {
 	if (index >= 0 && index < chordEntries.length) {
 		chordEntries[index] = { ...chordEntries[index], ...updatedEntry };
@@ -115,6 +99,10 @@ export function updateChordEntry(index: number, updatedEntry: Partial<ChordEntry
 	}
 }
 
+/**
+ * Apply incremental changes to the chord entry at `index`.
+ * Handles sub-fields `chord`, `timeSignature`, `armor`, and `mode`.
+ */
 export function handleChordChange(index: number, changes: Partial<ChordEntry>) {
 	if (index >= 0 && index < chordEntries.length) {
 		const currentEntry = chordEntries[index];
