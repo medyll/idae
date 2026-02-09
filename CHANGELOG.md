@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.6-next.0] - 2026-02-08
+**Features:**
+- enhance app model declaration and schema types with additional fields for improved data representation
+
+
+
 ## [0.0.5-next.0] - 2026-02-08
 **Features:**
 - add Vite configuration for testing and coverage setup
