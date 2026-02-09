@@ -1,11 +1,11 @@
 import type { ChordEntry, TimeSignature } from '$lib/types/types';
 
 /**
- * Convertit une durée donnée en valeur numérique (ex: '1/4' -> 0.25).
- * Accepte des entiers ou des fractions au format 'numerator/denominator'.
+ * Convert a duration string into a numeric value (e.g. '1/4' -> 0.25).
+ * Accepts integers or fractions in the form 'numerator/denominator'.
  *
- * @param duration - Chaîne de durée (ex: '1', '1/4')
- * @returns Valeur numérique représentant la fraction de mesure
+ * @param duration - Duration string (e.g. '1', '1/4')
+ * @returns Numeric value representing the fraction of a measure
  */
 export function getDurationValue(duration: string): number {
   const parts = duration.split('/').map(Number);
@@ -15,13 +15,12 @@ export function getDurationValue(duration: string): number {
 }
 
 /**
- * Calcule et renvoie une nouvelle liste d'`entries` avec `measureInfo` rempli
- * pour chaque entrée. La fonction n'altère pas l'entrée d'origine (retourne une
- * copie profonde).
+ * Compute and return a new list of entries with `measureInfo` populated for
+ * each entry. This function does not mutate the original input (returns a deep copy).
  *
- * @param entries - Tableau d'entrées d'accords à traiter
- * @param defaultTimeSignature - Signature par défaut si aucune fournie
- * @returns Nouveau tableau d'entrées avec `measureInfo` calculé
+ * @param entries - Array of chord entries to process
+ * @param defaultTimeSignature - Default time signature used when none is provided
+ * @returns New array of entries with calculated `measureInfo`
  */
 export function computeMeasureInfos(entries: ChordEntry[], defaultTimeSignature: TimeSignature = { numerator: 4, denominator: 4 }) {
   const out = JSON.parse(JSON.stringify(entries)) as ChordEntry[];

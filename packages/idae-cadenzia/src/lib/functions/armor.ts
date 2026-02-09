@@ -1,11 +1,11 @@
 import { armorOptions } from '$lib/constants/constants.js';
 
 /**
- * Récupère une chaîne descriptive pour une armure donnée.
- * Exemple: `getArmorInfo('G')` -> 'G (1♯)' si une valeur est définie.
+ * Retrieve a descriptive string for a given key/armor.
+ * Example: `getArmorInfo('G')` -> 'G (1♯)' when a value is defined.
  *
- * @param armorName - Nom de l'armure/tonalité à chercher
- * @returns Chaîne formatée ou chaîne vide si non trouvée
+ * @param armorName - Name of the key/armor to look up
+ * @returns Formatted string or an empty string if not found
  */
 export function getArmorInfo(armorName: string) {
   const armor = armorOptions.find((a) => a.name === armorName);
