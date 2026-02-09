@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.7-next.0] - 2026-02-09
+**Features:**
+- update function documentation to English for armor and measure utilities
+- implement musical functions and tests for chords, cadences, and measures
+- update README and package configuration for improved clarity and usability
+- add keywords to package.json files for improved discoverability
+
+
+
 ## [0.0.6-next.0] - 2026-02-08
 **Features:**
 - enhance app model declaration and schema types with additional fields for improved data representation
