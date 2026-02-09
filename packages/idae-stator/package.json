@@ -66,13 +66,14 @@
     "vitest": "^4.0.18"
   },
   "keywords": [
+    "idae",
+    "stator",
     "state-management",
     "reactive",
-    "scalable",
     "javascript",
     "library"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Lebrun Meddy",
   "license": "MIT",
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",

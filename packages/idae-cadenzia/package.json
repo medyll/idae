@@ -18,6 +18,14 @@
     "access": "public",
     "directory": "."
   },
+  "keywords": [
+    "idae",
+    "cadenzia",
+    "ui",
+    "component",
+    "svelte",
+    "plugin"
+  ],
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",

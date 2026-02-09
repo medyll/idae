@@ -2,11 +2,19 @@
 	"name": "fake_zone",
 	"version": "1.0.0",
 	"description": "",
+	"private": true,
 	"main": "fakeHttpPost.js",
+	"keywords": [
+		"idae",
+		"fake-zone",
+		"testing",
+		"socket",
+		"server"
+	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node fakeHttpPost"
 	},
-	"author": "",
+	"author": "Lebrun Meddy",
 	"license": "ISC"
 }

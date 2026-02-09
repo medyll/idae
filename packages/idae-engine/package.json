@@ -54,6 +54,15 @@
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
+  "keywords": [
+    "idae",
+    "engine",
+    "data",
+    "utilities",
+    "data-operations",
+    "sorting",
+    "grouping"
+  ],
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module"

@@ -11,6 +11,14 @@
     "url": "https://github.com/medyll/idae.git"
   },
   "description": "dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides tools to track CSS changes, monitor DOM mutations, and handle various events efficiently, making it ideal for dynamic web applications.",
+  "keywords": [
+    "idae",
+    "dom-events",
+    "dom",
+    "mutations",
+    "events",
+    "observer"
+  ],
   "scripts": {
     "dev": "vite dev",
     "dev:test": "vite dev --port 3000",

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\"",
     "prepackage": "node scripts/package-pre.js"
   },
-  "author": "",
+  "author": "Lebrun Meddy",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -20,6 +20,13 @@
     "access": "public",
     "directory": "."
   },
+  "keywords": [
+    "idae",
+    "shared",
+    "utilities",
+    "monorepo",
+    "config"
+  ],
   "devDependencies": {
     "@medyll/idae-config-prettier": "latest",
     "@semantic-release/github": "^12.0.5",

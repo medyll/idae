@@ -77,6 +77,14 @@
 		"vitest": "^4.0.18"
 	},
 	"scope": "medyll",
+	"keywords": [
+		"idae",
+		"machine",
+		"framework",
+		"sveltekit",
+		"ai",
+		"application"
+	],
 	"dependencies": {
 		"@huggingface/prettier-plugin-vertical-align": "^0.2.3",
 		"@medyll/idae-idbql": "workspace:*",

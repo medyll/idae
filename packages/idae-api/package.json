@@ -105,6 +105,16 @@
     "vitest": "^4.0.18",
     "zod": "^4.3.6"
   },
+  "keywords": [
+    "idae",
+    "api",
+    "framework",
+    "backend",
+    "nestjs",
+    "rest",
+    "express",
+    "database"
+  ],
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module"

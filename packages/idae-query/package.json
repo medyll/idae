@@ -66,6 +66,14 @@
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
+  "keywords": [
+    "idae",
+    "query",
+    "resultset",
+    "filter",
+    "sorting",
+    "in-memory"
+  ],
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module"

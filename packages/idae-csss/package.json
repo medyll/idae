@@ -33,9 +33,11 @@
   "keywords": [
     "idae",
     "css",
+    "scss",
     "utility",
     "typescript",
-    "svelte"
+    "svelte",
+    "unocss"
   ],
   "author": "Lebrun Meddy",
   "license": "ISC",
