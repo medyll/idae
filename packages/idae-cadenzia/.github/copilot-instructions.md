@@ -24,98 +24,56 @@ npm run test         # Run Vitest tests (src/**/*.{test,spec}.{js,ts})
 npm run lint         # Check Prettier + ESLint
 npm run format       # Auto-fix formatting
 npm run check        # Svelte type checking
-npm run check:watch  # Watch mode type checking
-npm run prepackage  # Pre-publish script
+ # idae-cadenzia — AI Coding Instructions
+
+This file guides AI coding agents working on the `@medyll/idae-cadenzia` Svelte component package.
+
+**Quick commands**
+
+```bash
+npm run dev        # start local dev server (vite)
+npm run build      # build library (vite)
+npm run preview    # preview production build
+npm run check      # svelte type checking (svelte-check)
+npm run format     # prettier --write
+npm run lint       # prettier check + eslint
+npm run test       # run unit tests (vitest)
+npm run prepackage # run scripts/package-pre.js before publishing
 ```
 
-## Code Patterns & Conventions
+**Big-picture architecture**
+- This package is a Svelte component library and demo using Svelte v5 + TypeScript. Main UI pieces live under `src/lib/components/` (e.g. `App.svelte`, `CadencePanel.svelte`, `ChordTable.svelte`, `ChordVisualization.svelte`).
+- Exports for consumers are assembled in `src/lib/index.ts` — add new public components there.
+- `src/lib/functions/` contains non-UI logic: `functions.svelte.ts` (component helpers) and `rules.ts` (domain rule engine). Keep pure logic in these files to ease unit testing.
+- Types are centralized under `src/lib/types/types.ts` and constants under `src/lib/constants/constants.ts`.
+- A small demo route is available at `src/routes/+page.svelte` used by the dev server and demos.
 
-### Event System (Critical Pattern)
+**Project-specific conventions**
+- Svelte components use strict TypeScript; keep types in `src/lib/types/types.ts` and reference them across components.
+- Prefer splitting logic into `functions/*.svelte.ts` or `rules.ts` rather than large script blocks inside `.svelte` files.
+- Expose only public API from `src/lib/index.ts` so consumers import from the package root.
+- Example: to add `MyWidget.svelte`, place it in `src/lib/components/`, then export from `src/lib/index.ts`.
 
-All adapter methods support pre/post/error hooks via **@withEmitter decorator** (in [IdaeEventEmitter.ts](src/lib/IdaeEventEmitter.ts)):
+**Testing & demo guidance**
+- Unit tests use `vitest`. Example test file: `src/demo.spec.ts` — follow the same pattern (`describe`, `it`, `expect`).
+- Keep UI logic small and testable by moving computation out of `.svelte` into `functions.svelte.ts`.
 
-```typescript
-// In adapter implementation, decorate methods:
-@withEmitter()
-async create(data: Partial<T>): Promise<T> { ... }
+**Linting / formatting**
+- Formatting: `prettier` + `prettier-plugin-svelte` (run `npm run format`).
+- Lint: `eslint` with project presets (`npm run lint`).
 
-// Register global listeners on connection:
-const collection = db.collection<User>('user');
-collection.registerEvents<User>({
-  create: {
-    pre: (data) => console.log('Creating:', data),
-    post: (result, data) => console.log('Created:', result),
-    error: (err) => console.error(err)
-  }
-});
+**Build / Publish notes**
+- `npm run prepackage` runs `scripts/package-pre.js` — update that script when changing package outputs or entry points.
+- The package uses ESM (`type: module`) and Svelte v5. Keep exports compatible with Svelte packaging expectations.
+
+**Files to reference when coding or reviewing**
+- `src/lib/components/` — main components
+- `src/lib/index.ts` — public exports
+- `src/lib/functions/functions.svelte.ts` — component helpers
+- `src/lib/functions/rules.ts` — rule engine/logic
+- `src/lib/types/types.ts` — shared types
+- `src/routes/+page.svelte` — demo page
+- `src/demo.spec.ts` — example test
+
+If anything in this file seems unclear or you'd like more detail (examples of adding a component, test templates, or the `prepackage` workflow), tell me which area and I'll expand the instructions.
 ```
-
-Emitter events: `pre:methodName`, `post:methodName`, `error:methodName`
-
-### Adapter Pattern
-
-New adapters must implement `IdaeDbAdapterInterface<T>` from [types.ts](src/lib/@types/types.ts):
-
-```typescript
-// Required static methods for connection lifecycle
-static async connect(uri: string): Promise<Client>
-static getDb(client: Client, dbName: string): Database
-static async close(client: Client): Promise<void>
-
-// Required instance methods
-async create(data: Partial<T>): Promise<T>
-async find(params: IdaeDbParams<T>): Promise<T[]>
-async findOne(params: IdaeDbParams<T>): Promise<T | null>
-async update(id: string, updateData: Partial<T>): Promise<unknown>
-async deleteById(id: string): Promise<unknown>
-async transaction<TResult>(callback: (session) => Promise<TResult>): Promise<TResult>
-```
-
-Register new adapters in [IdaeDbAdapter.ts](src/lib/IdaeDbAdapter.ts) static initializer:
-```typescript
-static {
-  IdaeDbAdapter.addAdapter(DbType.NEWDB, MyNewAdapter);
-}
-```
-
-### Type Safety
-
-- Enforce strict TypeScript with `strict: true` in tsconfig
-- Use generic `T extends object` for all model types
-- Filter types use MongoDB's `Filter<T>` from driver for consistency
-- Query params: `IdaeDbParams<T>` with optional `query`, `sortBy`, `limit`, `skip`
-
-### ID Fields
-
-- MongoDB: uses `_id` by default or custom via `autoIncrementFormat`
-- Custom ID tracking via `IdaeDBModel.fieldId` and auto-increment collection
-- Retrieved from model: `adapter.model.fieldId`
-
-## Build & Package
-
-- **Build**: Vite → ESM output to `dist/`, exports via [index.ts](src/lib/index.ts)
-- **Package**: svelte-package generates `dist/index.d.ts` and `dist/index.js`
-- **Pre-publish**: `scripts/package-pre.js` runs before npm publish
-- **Export maps** in package.json support Svelte, ESM, and TypeScript
-
-## Testing
-
-- Framework: **Vitest** (config in [vite.config.ts](vite.config.ts))
-- Pattern: `describe()`, `it()`, `expect()` (e.g., [index.test.ts](src/index.test.ts))
-- Test files: `src/**/*.{test,spec}.{js,ts}`
-- No test database setup yet—add MongoDB/MySQL fixtures as needed
-
-## External Dependencies
-
-- **mongodb**: MongoDB driver for queries and transactions
-- **svelte/svelte-kit**: Framework (peer dependency for Svelte 5+)
-- **vite/vitest**: Build and test runner
-- **prettier/eslint**: Code formatting and linting
-- **@sveltejs/package**: Packaging utility
-
-## Known Constraints
-
-- MongoDB adapter references `.db()` for connection, needs refactoring for MySQL/ChromaDB
-- Auto-increment currently MongoDB-specific, needs abstraction
-- No transaction support in MySQL/ChromaDB adapters yet
-- DbType enum is string-based (consider supporting registration for extensibility)

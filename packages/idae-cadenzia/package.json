@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:lib": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -13,6 +14,19 @@
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
     "prepackage": "node scripts/package-pre.js"
+  },
+  "files": [
+    "dist",
+    "src/lib"
+  ],
+  "types": "dist/types/index.d.ts",
+  "prepare": "npm run prepackage && npm run build:lib",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "publishConfig": {
     "access": "public",
