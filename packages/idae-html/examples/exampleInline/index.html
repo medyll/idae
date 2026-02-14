@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>exampleInline demo</title>
+  <style>
+    body{font-family:system-ui,Arial,sans-serif;padding:16px}
+    .log{font-family:monospace;background:#111;color:#bada55;padding:8px;margin-top:8px;height:120px;overflow:auto}
+    .card{border:1px solid #ddd;padding:8px;margin:8px 0}
+  </style>
+</head>
+<body>
+  <h1>exampleInline — demo</h1>
+  <p>Demonstrates the exampleInline component behavior (console-driven). The demo inserts multiple blocks that trigger the component's runtime.</p>
+
+  <div>
+    <button id="insert">Insert example block</button>
+    <button id="insert-5">Insert 5 blocks</button>
+  </div>
+
+  <div id="container"></div>
+
+  <div class="card">
+    <h3>Console log (captured)</h3>
+    <div id="out" class="log"></div>
+  </div>
+
+  <script>
+    // capture console.log to UI for demo
+    (function(){
+      const out = document.getElementById('out');
+      const orig = console.log;
+      console.log = function(...args){
+        orig.apply(console,args);
+        const el = document.createElement('div');
+        el.textContent = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+        out.appendChild(el);
+        out.scrollTop = out.scrollHeight;
+      }
+    })();
+
+    async function insertOne(){
+      const res = await fetch('/packages/idae-html/dist/exampleInline.html');
+      const text = await res.text();
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = text;
+      const tmpl = wrapper.querySelector('template');
+      const node = tmpl ? tmpl.content.cloneNode(true) : wrapper.querySelector('body').innerHTML;
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.appendChild(node);
+      document.getElementById('container').appendChild(el);
+    }
+
+    document.getElementById('insert').addEventListener('click', insertOne);
+    document.getElementById('insert-5').addEventListener('click', ()=>{ for(let i=0;i<5;i++) insertOne(); });
+
+    // auto insert one
+    insertOne();
+  </script>
+</body>
+</html>

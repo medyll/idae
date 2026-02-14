@@ -20,3 +20,6 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Explicitly ignore svelte-kit generated package outputs
+/.svelte-kit/__package__/

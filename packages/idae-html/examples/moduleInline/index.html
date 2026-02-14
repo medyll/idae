@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>moduleInline demo</title>
+  <style>body{font-family:system-ui,Arial,sans-serif;padding:16px}</style>
+</head>
+<body>
+  <h1>moduleInline — demo</h1>
+  <p>This demo inserts the moduleInline component and shows interaction examples.</p>
+
+  <div id="holder"></div>
+
+  <script>
+    async function load(){
+      const res = await fetch('/packages/idae-html/dist/moduleInline.html');
+      const text = await res.text();
+      const wrapper = document.createElement('div'); wrapper.innerHTML = text;
+      const tmpl = wrapper.querySelector('template');
+      const node = tmpl ? tmpl.content.cloneNode(true) : wrapper.querySelector('body').innerHTML;
+      document.getElementById('holder').appendChild(node);
+    }
+    load();
+  </script>
+</body>
+</html>

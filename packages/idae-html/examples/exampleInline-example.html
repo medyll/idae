@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>exampleInline example</title>
+</head>
+<body>
+  <h2>exampleInline example</h2>
+  <div id="target"></div>
+
+  <script>
+    (async function(){
+      const res = await fetch('/packages/idae-html/dist/exampleInline.html');
+      const text = await res.text();
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = text;
+      const tmpl = wrapper.querySelector('template');
+      if (tmpl) document.getElementById('target').appendChild(tmpl.content.cloneNode(true));
+    })();
+  </script>
+</body>
+</html>
