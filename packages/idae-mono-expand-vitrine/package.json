@@ -23,9 +23,9 @@
   "author": "Lebrun Meddy",
   "license": "MIT",
   "dependencies": {
-    "@octokit/rest": "^20.0.0",
-    "commander": "^11.0.0",
-    "glob": "^10.0.0",
+    "@octokit/rest": "^22.0.1",
+    "commander": "^14.0.3",
+    "glob": "^13.0.3",
     "js-yaml": "^4.1.1"
   },
   "scope": "@medyll"
