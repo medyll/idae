@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.11-next.0] - 2026-02-14
+**Features:**
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add scripts for bundling React app and initializing project with shadcn/ui components
+
+**Tests:**
+- add test for CLI dry-run mode and output verification
+
+**Other:**
+- Add dependencies for command and commander in package.json
+- Add htmluSveltePreprocess module and update test results
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.10-next.0] - 2026-02-14
 **Features:**
 - add new HTML components with dynamic behavior and resize observation

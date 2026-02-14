@@ -1,6 +1,7 @@
 // auto exports of entry components
 export * from '$lib/index.cjs.js';
 export * from '$lib/svelte/htmlu-svelte-preprocess.js';
+export * from '$lib/htmlu/preprocess.js';
 export * from '$lib/htmlu/htmlu.js';
 export * from '$lib/htmlu/htmlu-utility-first.js';
 export * from '$lib/htmlu/htmlu-types.js';

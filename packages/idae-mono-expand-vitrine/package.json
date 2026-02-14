@@ -10,7 +10,8 @@
   "main": "bin/sync-vitrine.js",
   "scripts": {
     "start": "node bin/sync-vitrine.js",
-    "test": "node --test"
+    "test": "node --test",
+    "prepackage": "node scripts/package-pre.js"
   },
   "keywords": [
     "monorepo",
