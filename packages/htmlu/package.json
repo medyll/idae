@@ -1,0 +1,58 @@
+{
+  "name": "idae-htmlu",
+  "version": "0.1.3",
+  "author": "Lebrun Meddy",
+  "description": "htmlu : vite preprocess utility allowing to use classNames as elements tags. The next step of utility classNames",
+  "main": "./dist/index.js",
+  "bin": {
+    "idae-htmlu": "./dist/bin/bin.js"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && npm run package",
+    "preview": "vite preview",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "prepublishOnly": "npm run package",
+    "test": "npm run test:integration && npm run test:unit",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test:integration": "playwright test",
+    "test:unit": "vitest",
+    "prepackage": "node scripts/package-pre.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "svelte": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
+  ],
+  "peerDependencies": {
+    "svelte": "^4.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.28.1",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/package": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/jsdom": "^21.1.6",
+    "publint": "^0.1.9",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "svelte-preprocess": "^5.1.3",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.3",
+    "vite-tsconfig-paths": "^4.2.3",
+    "vitest": "^1.0.0"
+  },
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module"
+}
