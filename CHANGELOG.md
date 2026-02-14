@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.9-next.0] - 2026-02-14
+**Chores:**
+- remove unused configuration and agent documentation files
+
+
+
 ## [0.0.8-next.0] - 2026-02-09
 **Chores:**
 - remove contributing section from README for clarity
