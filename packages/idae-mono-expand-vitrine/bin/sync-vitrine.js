@@ -47,9 +47,9 @@ options.verbose = options.verbose ?? options.verbose ?? false;
 
 // Normalize suffix: commander returns true when flag present without value
 let suffixOption;
-if (Object.prototype.hasOwnProperty.call(options, 'suffix')) {
-  if (options.suffix === true) suffixOption = 'showcase';
-  else if (typeof options.suffix === 'string' && options.suffix.length > 0)
+if (Object.prototype.hasOwnProperty.call(options, "suffix")) {
+  if (options.suffix === true) suffixOption = "showcase";
+  else if (typeof options.suffix === "string" && options.suffix.length > 0)
     suffixOption = options.suffix;
   else suffixOption = null; // explicit --suffix "" treated as no suffix
 } else {
