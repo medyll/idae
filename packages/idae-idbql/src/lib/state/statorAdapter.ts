@@ -1,4 +1,4 @@
-import { stator } from "@medyll/idae-stator";
+import { stator } from "../../../../idae-stator/dist/index.js";
 
 export type StatorAdapterOptions = {
   // future options: dedupe, timing, keyPath detection, ...
@@ -55,63 +55,68 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
 
       case "add":
         if (data) {
-          s.stator.push(data);
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          arr.push(data);
+          s.value = arr;
         }
         break;
 
       case "put":
       case "update":
         if (data && keyPath) {
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
           let found = false;
-          for (let i = 0; i < s.stator.length; i++) {
-            const item = s.stator[i];
+          for (let i = 0; i < arr.length; i++) {
+            const item = arr[i];
             if (item && item[keyPath] === data[keyPath]) {
-              s.stator[i] = { ...item, ...data };
+              arr[i] = { ...item, ...data };
               found = true;
               break;
             }
           }
           if (!found) {
-            s.stator.push(data);
+            arr.push(data);
           }
+          s.value = arr;
         }
         break;
 
       case "updateWhere":
         if (data && typeof data === "object") {
-          for (let i = 0; i < s.stator.length; i++) {
-            const item = s.stator[i];
-            if (
-              Object.entries(data).every(([k, v]) => item && item[k] === v)
-            ) {
-              s.stator[i] = { ...item, ...data };
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          for (let i = 0; i < arr.length; i++) {
+            const item = arr[i];
+            if (Object.entries(data).every(([k, v]) => item && item[k] === v)) {
+              arr[i] = { ...item, ...data };
             }
           }
+          s.value = arr;
         }
         break;
 
       case "delete":
         if (data && keyPath) {
-          for (let i = s.stator.length - 1; i >= 0; i--) {
-            const item = s.stator[i];
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          for (let i = arr.length - 1; i >= 0; i--) {
+            const item = arr[i];
             if (item && item[keyPath] === data[keyPath]) {
-              s.stator.splice(i, 1);
+              arr.splice(i, 1);
             }
           }
+          s.value = arr;
         }
         break;
 
       case "deleteWhere":
         if (data && typeof data === "object") {
-          for (let i = s.stator.length - 1; i >= 0; i--) {
-            const item = s.stator[i];
-            if (
-              item &&
-              Object.entries(data).every(([k, v]) => item[k] === v)
-            ) {
-              s.stator.splice(i, 1);
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          for (let i = arr.length - 1; i >= 0; i--) {
+            const item = arr[i];
+            if (item && Object.entries(data).every(([k, v]) => item[k] === v)) {
+              arr.splice(i, 1);
             }
           }
+          s.value = arr;
         }
         break;
 
