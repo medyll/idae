@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.12-next.0] - 2026-02-14
+**Features:**
+- add --suffix option (optional value; default 'showcase' when flag only) and adjust repo-name generation
+
+
+
 ## [0.0.11-next.0] - 2026-02-14
 **Features:**
 - migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
