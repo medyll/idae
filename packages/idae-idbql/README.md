@@ -3,11 +3,13 @@
 ````markdown
 # @medyll/idae-idbql
 
-A flexible, high-performance IndexedDB query library for TypeScript and JavaScript.
+A flexible, high-performance state-full IndexedDB query library for TypeScript and JavaScript, with a focus on performance and ease of use.
+
+
 
 ## Features
 
-- MongoDB-like query interface for IndexedDB
+- Object-like query interface for IndexedDB
 - Strong TypeScript support with full type inference
 - Reactive state management for real-time UI updates
 - Support for complex CRUD operations and advanced querying
@@ -17,6 +19,9 @@ A flexible, high-performance IndexedDB query library for TypeScript and JavaScri
 - Robust error handling and logging
 - Versioning and database migration support
 - First-class support for Svelte 5 reactivity
+- Full compatibility with `@medyll/idae-stator` for alternative reactive state management  
+- Cross-browser compatibility (Chrome, Firefox, Safari, Edge)
+-
 
 ## Installation
 
