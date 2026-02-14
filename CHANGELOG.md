@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.20-next.0] - 2026-02-14
+**Features:**
+- remove deprecated brand guidelines and agent skills; update pnpm-lock.yaml with new dependencies
+- add verification script for AGENTS.md content
+- add core engine module with global app registry and update import paths
+
+
+
 ## [0.0.19-next.0] - 2026-02-14
 **Features:**
 - enhance idae-html package with new examples and build scripts
