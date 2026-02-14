@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.19-next.0] - 2026-02-14
+**Features:**
+- enhance idae-html package with new examples and build scripts
+- initialize idae-htmlu package with Svelte preprocess utility
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.18-next.0] - 2026-02-14
 **Bug Fixes:**
 - update CLI entry point in sync-vitrine test
