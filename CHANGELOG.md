@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.13-next.0] - 2026-02-14
+**Features:**
+- Add multi-role agent skill and debugging capabilities
+
+
+
 ## [0.0.12-next.0] - 2026-02-14
 **Features:**
 - add --suffix option (optional value; default 'showcase' when flag only) and adjust repo-name generation
