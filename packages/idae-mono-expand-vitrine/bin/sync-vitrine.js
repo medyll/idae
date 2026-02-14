@@ -31,6 +31,10 @@ program
     false,
   )
   .option("-v, --verbose", "display detailed execution logs", false)
+  .option(
+    "-s, --suffix [value]",
+    'append suffix to repo name; if passed without value uses "showcase"',
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -40,6 +44,17 @@ options.dry_run = options.dry_run ?? options.dryRun ?? false;
 options.allow_private = options.allow_private ?? options.allowPrivate ?? false;
 options.cleanup = options.cleanup ?? options.clean ?? options.cleanUp ?? false;
 options.verbose = options.verbose ?? options.verbose ?? false;
+
+// Normalize suffix: commander returns true when flag present without value
+let suffixOption;
+if (Object.prototype.hasOwnProperty.call(options, 'suffix')) {
+  if (options.suffix === true) suffixOption = 'showcase';
+  else if (typeof options.suffix === 'string' && options.suffix.length > 0)
+    suffixOption = options.suffix;
+  else suffixOption = null; // explicit --suffix "" treated as no suffix
+} else {
+  suffixOption = undefined; // not provided
+}
 
 /**
  * CONFIGURATION
@@ -123,10 +138,19 @@ async function syncVitrines() {
       ? pkgJson.name.split("/").pop()
       : pkgJson.name.replace("@", "");
     const rawName = baseName.replace(/\//g, "-");
-    // If the base already starts with the monorepo name (e.g. "idae-..."), don't prefix again
-    const repoName = baseName.startsWith(`${MONOREPO_NAME}-`)
-      ? `${baseName}-showcase`
-      : `${MONOREPO_NAME}-${rawName}-showcase`;
+    // Build base repo name (avoid duplicating monorepo prefix)
+    const baseRepo = baseName.startsWith(`${MONOREPO_NAME}-`)
+      ? baseName
+      : `${MONOREPO_NAME}-${rawName}`;
+
+    // Apply suffix rules:
+    // - suffixOption === undefined -> no suffix (use baseRepo)
+    // - suffixOption === null -> no suffix (explicit empty)
+    // - suffixOption is string -> append `-${suffixOption}`
+    const repoName =
+      suffixOption === undefined || suffixOption === null
+        ? baseRepo
+        : `${baseRepo}-${suffixOption}`;
     const readmePath = path.join(pkgPath, "README.md");
 
     // Filters
