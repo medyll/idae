@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10-next.0] - 2026-02-14
+**Features:**
+- add new HTML components with dynamic behavior and resize observation
+- add content component and resize panel functionality
+
+
+
 ## [0.0.9-next.0] - 2026-02-14
 **Chores:**
 - remove unused configuration and agent documentation files
