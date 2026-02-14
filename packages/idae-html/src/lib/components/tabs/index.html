@@ -1,0 +1,39 @@
+<style>
+  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .tabs{display:flex;gap:6px}
+  .tab{padding:8px 12px;border:1px solid #ddd;cursor:pointer}
+  .tab[aria-selected="true"]{background:#eee}
+  .panel{border:1px solid #ddd;padding:12px;margin-top:8px}
+</style>
+
+<h1>Tabs</h1>
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1">One</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2">Two</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3">Three</button>
+</div>
+<div id="p1" class="panel" role="tabpanel">Panel one content</div>
+<div id="p2" class="panel" role="tabpanel" hidden>Panel two content</div>
+<div id="p3" class="panel" role="tabpanel" hidden>Panel three content</div>
+
+<script type="module">
+  import { be, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  const tabsBe = be('[role="tab"]');
+  const panelsBe = be('[role="tabpanel"]');
+  const tabs = Array.isArray(tabsBe.node) ? tabsBe.node : [tabsBe.node as HTMLElement];
+  const panels = Array.isArray(panelsBe.node) ? panelsBe.node : [panelsBe.node as HTMLElement];
+  tabs.forEach((t, i)=> be(t).on('click', ()=> activate(i)));
+  function activate(i){
+    tabs.forEach((t,idx)=>{
+      be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
+      if (idx===i) be(panels[idx]).deleteAttr('hidden'); else be(panels[idx]).setAttr('hidden','');
+    });
+    (tabs[i] as HTMLElement).focus();
+  }
+  be('body').on('keydown',(e)=>{
+    const idx = tabs.findIndex(t=>t===document.activeElement);
+    if (idx<0) return;
+    if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
+    if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
+  });
+</script>

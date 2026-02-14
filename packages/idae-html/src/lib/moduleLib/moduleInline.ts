@@ -1,11 +1,14 @@
 // Self-contained module demo — lightweight DOM demo
-(function(){
+export function moduleInline(el?: Element){
   try{
-    window.der = function () { console.log('der', this); };
-    var fr = function () { console.log('fr', this); };
+    const host = el || document.createElement('div');
+    const der = function () { console.log('der', this); };
+    const fr = function () { console.log('fr', this); };
     function getRequest(){ console.log('getRequest', this); }
-    try { window.der(); fr(); getRequest(); } catch(e){}
-  }catch(e){}
-})();
+    try { der.call(host); fr.call(host); getRequest.call(host); } catch(e){}
+    if (!el) document.body.appendChild(host);
+    return host;
+  }catch(e){ console.error(e); }
+}
 
-export {};
+export default moduleInline;

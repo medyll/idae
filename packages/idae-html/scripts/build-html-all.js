@@ -47,22 +47,12 @@ async function buildOne(entryPath) {
 
   const finalJs = js + '\n' + wrapper;
 
-  const html = `<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${name} component</title>
-</head>
-<body>
-  <template id="idae-${name}-template">
-    <div class="idae-${name}" data-component="${name}"></div>
-  </template>
-  <script>
+  // produce a minimal component HTML that contains only script (and optional style if needed)
+  const html = `
+<script>
 ${finalJs}
-  </script>
-</body>
-</html>`;
+</script>
+`;
 
   fs.writeFileSync(outHtml, html, 'utf8');
   try { fs.unlinkSync(tmpFile); } catch(e){}

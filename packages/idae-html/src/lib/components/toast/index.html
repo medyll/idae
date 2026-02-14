@@ -1,0 +1,25 @@
+<style>
+  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .toast-area{position:fixed;right:16px;top:16px;display:flex;flex-direction:column;gap:8px;z-index:999}
+  .toast{background:#333;color:#fff;padding:8px 12px;border-radius:6px;min-width:180px}
+</style>
+
+<h1>Toast</h1>
+<button id="push">Push toast</button>
+
+<div class="toast-area" id="toasts"></div>
+
+<script type="module">
+  import { be, toBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  function push(text, ttl=3000){
+    const id = Math.random().toString(36).slice(2,9);
+    be('#toasts').append(toBe(`<div class="toast">${text}</div>`), ({ be }) => {
+      const nodeBe = be;
+      setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
+    });
+    return id;
+  }
+
+  be('#push').on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
+</script>

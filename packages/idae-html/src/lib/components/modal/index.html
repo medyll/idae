@@ -1,0 +1,59 @@
+<style>
+  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+  .dialog{background:#fff;padding:20px;border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .hidden{display:none}
+</style>
+
+<h1>Modal</h1>
+<button id="open">Open modal</button>
+
+<div id="backdrop" class="backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+  <div class="dialog" tabindex="-1">
+    <h2 id="dlg-title">Dialog title</h2>
+    <p>This is a demo modal. Press ESC or click outside to close. Focus is trapped.</p>
+    <button id="close">Close</button>
+  </div>
+</div>
+
+<script type="module">
+  import { be, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  const openBe = be('#open');
+  const backdropBe = be('#backdrop');
+  const backdropEl = backdropBe.node as HTMLElement;
+  const dialogBe = backdropBe.find('.dialog');
+  const dialog = Array.isArray(dialogBe.node) ? dialogBe.node[0] : (dialogBe.node as HTMLElement);
+  const closeBe = be('#close');
+  let lastActive = null;
+
+  function trapFocus(e){
+    const focusable = Array.from(dialog.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length-1];
+    if (e.key === 'Tab'){
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
+  function openDialog(){
+    lastActive = document.activeElement;
+    backdropBe.removeClass('hidden');
+    dialog.focus();
+    be('body').on('keydown', onKey);
+    be(dialog).on('keydown', trapFocus);
+  }
+  function closeDialog(){
+    backdropBe.addClass('hidden');
+    // remove global handlers
+    // remove global body key handler via idae-be
+    be('body').off('keydown', onKey);
+    be(dialog).off('keydown', trapFocus);
+    if (lastActive) (lastActive as HTMLElement).focus();
+  }
+  function onKey(e){ if (e.key === 'Escape') closeDialog(); }
+
+  openBe.on('click', openDialog);
+  closeBe.on('click', closeDialog);
+  backdropBe.on('click', (e)=>{ if (e.target === backdropEl) closeDialog(); });
+</script>

@@ -16,7 +16,7 @@ async function run() {
     outfile: tmpFile,
     bundle: true,
     format: 'iife',
-    globalName: 'resizePanelBundle',
+    globalName: 'resizePanel',
     platform: 'browser',
     minify: true,
     sourcemap: false,
@@ -48,27 +48,12 @@ async function run() {
 
   const finalJs = js + '\n' + wrapper;
 
-  // Create a simple HTML component file
-  const html = `<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>resizePanel component</title>
-</head>
-<body>
-  <!-- Usage: fetch this file and insert into DOM, or copy its <template> contents into your page -->
-  <template id="idae-resizePanel-template">
-    <div class="idae-resize-panel" data-resize-panel>
-      <!-- panel content goes here -->
-    </div>
-  </template>
-
+  // Create a minimal HTML component file (only script/style allowed by spec)
+  const html = `
   <script>
 ${finalJs}
   </script>
-</body>
-</html>`;
+`;
 
   fs.writeFileSync(outHtml, html, 'utf8');
   // remove tmp file

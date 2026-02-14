@@ -1,0 +1,15 @@
+<h2>resizePanel example</h2>
+<div id="target"></div>
+
+<script type="module">
+  import { be, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  (async function(){
+    const res = await fetch('/packages/idae-html/dist/resizePanel.html');
+    const text = await res.text();
+    const wrapperBe = createBe('div');
+    wrapperBe.update(text);
+    const tmplBe = wrapperBe.find('template');
+    const tmplEl = Array.isArray(tmplBe.node) ? tmplBe.node[0] as HTMLTemplateElement : tmplBe.node as HTMLTemplateElement;
+    if (tmplEl) be('#target').append(tmplEl.content.cloneNode(true));
+  })();
+</script>
