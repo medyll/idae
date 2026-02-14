@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.14-next.0] - 2026-02-14
+**Features:**
+- Implement CLI for syncing pnpm monorepo packages to GitHub showcase repositories
+
+**Documentation:**
+- add README with usage and options
+
+**Chores:**
+- Update dependencies in pnpm-lock.yaml for improved compatibility
+- point bin/main to bin/sync-vitrine.js for npx usage
+
+
+
 ## [0.0.13-next.0] - 2026-02-14
 **Features:**
 - Add multi-role agent skill and debugging capabilities
