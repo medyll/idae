@@ -1,0 +1,33 @@
+<!-- 
+ 
+<script>
+
+    cssDom('[data-cssDom]',{
+        trackChildList: true,
+    }).each((element) => {
+        console.log(element);
+    });
+</script>
+
+<div data-auto-track="true">
+    <script data-attr="htmludom" lang="ts">
+        //console.log(this);
+        window.der = function () {
+            // Amazing stuff!
+            console.log('der', this);
+        };
+
+        var fr = function () {
+            console.log('fr', this);
+        };
+
+        function getRequest() {
+            console.log('getRequest', this);
+        }
+
+        window.der.bind(this)();
+        fr.bind(this)();
+        getRequest.bind(this)();
+    </script>
+    auto-track
+</div> -->
