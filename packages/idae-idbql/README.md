@@ -182,6 +182,37 @@ const result = await idbql.transaction(
 - Les méthodes `where`, `groupby`, `sort`, etc. sont synchrones : elles opèrent toujours sur le snapshot courant du state.
 - Pour bénéficier de la réactivité, utilisez-les dans un `$derived` ou `$effect` Svelte 5.
 
+## Stator Compatibility
+
+- **Compatibility**: `@medyll/idae-idbql` provides optional, opt-in compatibility with `@medyll/idae-stator` via an adapter. When enabled, collection state can be backed by Stator proxies for alternative reactivity models.
+- **Opt-in usage**: enable the adapter when creating the reactive state by passing `adapter: 'stator'` to `createIdbqlState(idbBase, options)`.
+- **Install**: add the companion package to your project:
+
+```bash
+pnpm add @medyll/idae-stator
+```
+
+- **Example**:
+
+```ts
+import { createIdbqDb } from '@medyll/idae-idbql';
+import { createIdbqlState } from '@medyll/idae-idbql';
+
+const model = { /* your model */ };
+const idbqStore = createIdbqDb(model, 1);
+const { idbql } = idbqStore.create('myDatabase');
+
+// Create reactive state backed by idae-stator
+const state = createIdbqlState(idbql, {
+  adapter: 'stator',
+  adapterOptions: {}, // optional adapter-specific options
+});
+
+// Use state.collectionState or state.qolie('collection') as usual
+```
+
+- **Notes**: This adapter is opt-in and non-breaking for existing Svelte 5 usage. If you enable the `stator` adapter, ensure `@medyll/idae-stator` is installed in your workspace so imports resolve correctly.
+
 ## Versioning and Migrations
 
 ```typescript
