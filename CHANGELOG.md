@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.15-next.0] - 2026-02-14
+**Bug Fixes:**
+- update event handling to use local state array instead of stator
+
+**Documentation:**
+- add Stator compatibility section with usage examples
+
+**Chores:**
+- ensure package.json fields for scope, repository, author, and publishConfig
+- ensure repository/scope/author/publishConfig in package.json (verified)
+
+**Other:**
+- Refactor exports in idae-socket and update package.json for idae-stator
+
+
+
 ## [0.0.14-next.0] - 2026-02-14
 **Features:**
 - Implement CLI for syncing pnpm monorepo packages to GitHub showcase repositories
