@@ -12,6 +12,11 @@ STATUS — idae-html package
 - There are build artifacts and a `__package__` output in `.svelte-kit`, indicating prior packaging or local builds were run and compiled outputs were committed or left in tree.
 - Static assets available in `static/`.
 
+**Recent runtime additions (detected)**
+- Added a central runtime module at `src/lib/core-engine.ts` which re-exports DOM helpers and hosts a global application registry on `window`.
+- The module exposes a single `core` object: `{ app, be, toBe, createBe }` intended as the canonical import surface for `idae-html` components (components should not import `@medyll/idae-be` directly).
+- The global `app` registry implements resource tracking and loaders: `loadScript(url, key?)`, `loadStyle(url, key?)`, and `loadResources(urls[])`. It records loaded resources to avoid double-loading.
+
 **Detected intentions & leads**
 - Build a library of HTML components (the user's stated goal). The repo mixes Svelte tooling and plain HTML examples, indicating two parallel aims:
   - produce reusable HTML fragments / modules (vanilla HTML usage), and
@@ -44,10 +49,14 @@ Implications & recommended small fixes from the source files:
 - Preserve `+page.svelte` as a development preview harness, but move stable examples to `examples/` and make them import the same modules that `dist/` will ship.
 - Add a short `EXAMPLES.md` or README in `src/source` describing how each file is intended to be used (preview, docs, or example embed), plus the runtime attributes (`data-auto-track`, `data-htmlu-module-id`, `data-cssDom`, `data-attr="htmludom"`).
 
+- Ensure all examples and components follow the new `core` import convention and stop importing `@medyll/idae-be` directly. Consider adding a lint rule or CI check that flags direct `idae-be` imports inside `packages/idae-html`.
+
 **Immediate issues & observations**
 - Build outputs in `.svelte-kit/__package__` appear committed — these should usually be generated and ignored (`.gitignore`) or moved to `dist/`.
 - The repository mixes source and generated artifacts; needs cleanup to make the source-of-truth clear.
 - Missing or incomplete documentation in `README.md` about how to build, preview, and publish the library.
+
+- `core-engine.ts` now provides the canonical runtime API; document its usage in `README.md` (example import, `core.app.loadResources([...])`, and the `core` object shape).
 
 **Open questions (to decide next)**
 - What is the target consumer API? (vanilla HTML snippets, ES modules, web components, or Svelte-specific wrappers?)
@@ -61,6 +70,8 @@ Implications & recommended small fixes from the source files:
 - Create `examples/` or `docs/` that reuse `example.html` and `module.html` as static demos; provide a Vite dev preview for live editing.
 - Add a minimal CI check: `pnpm build` and a linter step to avoid committing built outputs.
 - Add a small test or validation harness for `resizePanel` behaviour (unit test or Playwright smoke demo) to anchor component API.
+
+- Run a verification sweep to ensure no files in `packages/idae-html` import `@medyll/idae-be` directly and update remaining files to import `core` instead. This is recommended before publishing.
 
 **Longer-term suggestions**
 - Choose a publishing format and implement the build pipeline to output `dist/` artifacts (ESM + types, optional UMD), update `package.json` `main`/`module`/`types` fields.

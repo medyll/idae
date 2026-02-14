@@ -1,6 +1,6 @@
 // Core engine for idae-html components
 // Re-exports idae-be helpers and exposes a global app registry on window
-import * as beMod from '/packages/idae-be/src/lib/index.ts';
+import * as beMod from '/packages/idae-be/src/lib/index.js';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -87,11 +87,11 @@ if (!win.__idae_app) {
 export const app = win.__idae_app as AppRegistry;
 
 // Re-export commonly used helpers from idae-be so components import from core-engine
-export const be = (beMod as any).be;
-export const toBe = (beMod as any).toBe;
-export const createBe = (beMod as any).createBe;
+const be = (beMod as any).be;
+const toBe = (beMod as any).toBe;
+const createBe = (beMod as any).createBe;
 
-export default {
+export const core = {
   app,
   be,
   toBe,
