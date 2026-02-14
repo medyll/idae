@@ -5,11 +5,11 @@
   "private": false,
   "type": "module",
   "bin": {
-    "idae-mono-expand-vitrine": "bin/sync-vitrine.js"
+    "idae-mono-expand-vitrine": "bin/cli.js"
   },
-  "main": "bin/sync-vitrine.js",
+  "main": "bin/cli.js",
   "scripts": {
-    "start": "node bin/sync-vitrine.js",
+    "start": "node bin/cli.js",
     "test": "node --test",
     "prepackage": "node scripts/package-pre.js"
   },
