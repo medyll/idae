@@ -51,8 +51,8 @@
 	"devDependencies": {
 		"@eslint/compat": "^2.0.2",
 		"@eslint/js": "^10.0.1",
-		"@medyll/idae-eslint-config": "workspace:*",
 		"@medyll/idae-config-prettier": "latest",
+		"@medyll/idae-eslint-config": "workspace:*",
 		"@medyll/idae-shared": "workspace:*",
 		"@semantic-release/github": "^12.0.5",
 		"@sveltejs/adapter-auto": "^7.0.0",
@@ -88,6 +88,8 @@
 	"dependencies": {
 		"@huggingface/prettier-plugin-vertical-align": "^0.2.3",
 		"@medyll/idae-idbql": "workspace:*",
-		"@medyll/idae-slotui-svelte": "workspace:*"
+		"@medyll/idae-slotui-svelte": "workspace:*",
+		"command": "^1.1.1",
+		"commander": "^14.0.3"
 	}
 }

@@ -41,9 +41,9 @@
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
+    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.5",
     "@sveltejs/adapter-auto": "^7.0.0",
@@ -75,5 +75,9 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scope": "medyll",
-  "author": "Lebrun Meddy"
+  "author": "Lebrun Meddy",
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
+  }
 }

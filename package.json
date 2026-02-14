@@ -1,6 +1,7 @@
 {
   "name": "root",
   "version": "0.0.10-next.0",
+  "type": "module",
   "description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
   "keywords": [
     "data-management",
@@ -60,6 +61,7 @@
   "dependencies": {
     "@medyll/monorepo-pnpm-release": "^1.0.22",
     "@octokit/rest": "^22.0.1",
+    "js-yaml": "^4.1.0",
     "chalk": "^5.6.2",
     "glob": "^13.0.1",
     "mongoose-sequence": "^6.0.1",

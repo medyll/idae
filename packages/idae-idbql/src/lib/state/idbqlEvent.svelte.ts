@@ -15,6 +15,13 @@ interface EventData<T = any> {
 class IdbqlStateEvent {
   // main application shared state
   dataState = $state<Record<string, any[]>>({});
+  private _adapter: {
+    applyEvent?: (event: IdbqlEventPayload) => void;
+  } | null = null;
+
+  registerAdapter(adapter: { applyEvent?: (event: IdbqlEventPayload) => void } | null) {
+    this._adapter = adapter;
+  }
 
   registerEvent(event: EventType, eventData: EventData) {
     const { collection, data, keyPath } = eventData;
@@ -138,6 +145,20 @@ class IdbqlStateEvent {
 
       default:
         console.error(`Unhandled event type: ${event}`);
+    }
+
+    // Delegate to adapter if present (non-breaking: adapter mirrors changes)
+    if (this._adapter && typeof this._adapter.applyEvent === "function") {
+      try {
+        this._adapter.applyEvent({
+          collection,
+          op: event,
+          data,
+          keyPath,
+        });
+      } catch (e) {
+        // adapter errors should not break the main flow
+      }
     }
   }
 }

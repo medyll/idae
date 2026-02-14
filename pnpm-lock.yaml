@@ -32,6 +32,9 @@ importers:
       glob:
         specifier: ^13.0.1
         version: 13.0.1
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.1
       mongoose-sequence:
         specifier: ^6.0.1
         version: 6.0.1(mongoose@9.1.6(@aws-sdk/credential-providers@3.968.0)(socks@2.8.7))
@@ -113,6 +116,12 @@ importers:
 
   packages-config/idae-config-prettier:
     dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       prettier:
         specifier: '>=3.0.0'
         version: 3.8.1
@@ -145,6 +154,12 @@ importers:
       '@types/eslint':
         specifier: 9.6.1
         version: 9.6.1
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       svelte-check:
         specifier: ^4.3.6
         version: 4.3.6(picomatch@4.0.3)(svelte@5.50.0)(typescript@5.9.3)
@@ -185,6 +200,13 @@ importers:
     publishDirectory: .
 
   packages/htmlu:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@playwright/test':
         specifier: ^1.58.2
@@ -234,6 +256,12 @@ importers:
 
   packages/idae-api:
     dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       compression:
         specifier: ^1.8.1
         version: 1.8.1
@@ -394,6 +422,13 @@ importers:
     publishDirectory: .
 
   packages/idae-be:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -473,6 +508,13 @@ importers:
     publishDirectory: .
 
   packages/idae-cadenzia:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-be':
         specifier: workspace:*
@@ -540,6 +582,13 @@ importers:
     publishDirectory: .
 
   packages/idae-csss:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -588,6 +637,13 @@ importers:
         version: 4.0.18(@types/node@25.2.2)(happy-dom@20.5.0)(jiti@2.6.1)(jsdom@28.0.0(@noble/hashes@1.8.0))(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/idae-data-tpl:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -665,6 +721,12 @@ importers:
       chromadb:
         specifier: ^3.2.2
         version: 3.2.2
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       mongodb:
         specifier: ^7.1.0
         version: 7.1.0(@aws-sdk/credential-providers@3.968.0)(socks@2.8.7)
@@ -772,6 +834,12 @@ importers:
       blob:
         specifier: ^0.1.0
         version: 0.1.0
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       inquirer:
         specifier: ^13.2.2
         version: 13.2.2(@types/node@25.2.2)
@@ -857,6 +925,13 @@ importers:
     publishDirectory: .
 
   packages/idae-engine:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -903,6 +978,13 @@ importers:
     publishDirectory: .
 
   packages/idae-html:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-be':
         specifier: workspace:*
@@ -976,6 +1058,13 @@ importers:
     publishDirectory: .
 
   packages/idae-idbql:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -1032,6 +1121,12 @@ importers:
       '@medyll/idae-slotui-svelte':
         specifier: workspace:*
         version: link:../idae-slotui
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.2
@@ -1114,6 +1209,13 @@ importers:
     publishDirectory: .
 
   packages/idae-mongo:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -1180,7 +1282,29 @@ importers:
         version: 4.0.18(@types/node@25.2.2)(happy-dom@20.5.0)(jiti@2.6.1)(jsdom@28.0.0(@noble/hashes@1.8.0))(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     publishDirectory: .
 
+  packages/idae-mono-expand-vitrine:
+    dependencies:
+      '@octokit/rest':
+        specifier: ^20.0.0
+        version: 20.1.2
+      commander:
+        specifier: ^11.0.0
+        version: 11.1.0
+      glob:
+        specifier: ^10.0.0
+        version: 10.5.0
+      js-yaml:
+        specifier: ^4.1.1
+        version: 4.1.1
+
   packages/idae-query:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -1260,13 +1384,19 @@ importers:
     dependencies:
       '@iconify/svelte':
         specifier: ^5.2.1
-        version: 5.2.1(svelte@5.48.5)
+        version: 5.2.1(svelte@5.51.0)
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.1.18
       autoprefixer:
         specifier: ^10.4.24
         version: 10.4.24(postcss@8.5.6)
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       d3:
         specifier: ^7.9.0
         version: 7.9.0
@@ -1287,10 +1417,10 @@ importers:
         version: 2.17.0
       svelte:
         specifier: ^5.0.0-next
-        version: 5.48.5
+        version: 5.51.0
       svelte-preprocess:
         specifier: ^6.0.3
-        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.5)(typescript@5.9.3)
+        version: 6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.51.0)(typescript@5.9.3)
       svelte-spa-router:
         specifier: ^4.0.1
         version: 4.0.1
@@ -1315,16 +1445,16 @@ importers:
         version: 1.58.2
       '@sveltejs/adapter-auto':
         specifier: ^7.0.0
-        version: 7.0.0(@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 7.0.0(@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
       '@sveltejs/kit':
         specifier: ^2.50.2
-        version: 2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@sveltejs/package':
         specifier: ^2.5.7
-        version: 2.5.7(svelte@5.48.5)(typescript@5.9.3)
+        version: 2.5.7(svelte@5.51.0)(typescript@5.9.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
-        version: 6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@types/eslint':
         specifier: 9.6.1
         version: 9.6.1
@@ -1366,7 +1496,7 @@ importers:
         version: 10.1.8(eslint@10.0.0(jiti@2.6.1))
       eslint-plugin-svelte:
         specifier: ^3.14.0
-        version: 3.14.0(eslint@10.0.0(jiti@2.6.1))(svelte@5.48.5)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3))
+        version: 3.14.0(eslint@10.0.0(jiti@2.6.1))(svelte@5.51.0)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3))
       fs-extra:
         specifier: ^11.3.3
         version: 11.3.3
@@ -1378,7 +1508,7 @@ importers:
         version: 4.0.5
       mdsvex:
         specifier: ^0.12.6
-        version: 0.12.6(svelte@5.48.5)
+        version: 0.12.6(svelte@5.51.0)
       micromatch:
         specifier: ^4.0.8
         version: 4.0.8
@@ -1393,7 +1523,7 @@ importers:
         version: 3.8.1
       prettier-plugin-svelte:
         specifier: ^3.4.1
-        version: 3.4.1(prettier@3.8.1)(svelte@5.48.5)
+        version: 3.4.1(prettier@3.8.1)(svelte@5.51.0)
       prism:
         specifier: ^4.1.2
         version: 4.1.2(react@15.7.0)
@@ -1417,7 +1547,7 @@ importers:
         version: 0.25.13(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)
       svelte-check:
         specifier: ^4.3.6
-        version: 4.3.6(picomatch@4.0.3)(svelte@5.48.5)(typescript@5.9.3)
+        version: 4.3.6(picomatch@4.0.3)(svelte@5.51.0)(typescript@5.9.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1440,6 +1570,12 @@ importers:
       '@types/express':
         specifier: ^5.0.6
         version: 5.0.6
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       cors:
         specifier: ^2.8.6
         version: 2.8.6
@@ -1513,6 +1649,13 @@ importers:
     publishDirectory: .
 
   packages/idae-stator:
+    dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -1584,6 +1727,12 @@ importers:
 
   packages/shared:
     dependencies:
+      command:
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       fs-extra:
         specifier: ^11.3.3
         version: 11.3.3
@@ -3501,6 +3650,199 @@ packages:
   '@quansync/fs@1.0.0':
     resolution: {integrity: sha512-4TJ3DFtlf1L5LDMaM6CanJ/0lckGNtJcMjQ1NAV6zDmA0tEHKZtxNKin8EgPaVX1YzljbxckyT2tJrpQKAtngQ==}
 
+  '@radix-ui/primitive@1.1.3':
+    resolution: {integrity: sha512-JTF99U/6XIjCBo0wqkU5sK10glYe27MRRsfwoiq5zzOEZLHU3A3KCMa5X/azekYRCJ0HlwI0crAXS/5dEHTzDg==}
+
+  '@radix-ui/react-compose-refs@1.1.2':
+    resolution: {integrity: sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-context@1.1.2':
+    resolution: {integrity: sha512-jCi/QKUM2r1Ju5a3J64TH2A5SpKAgh0LpknyqdQ4m6DCV0xJ2HG1xARRwNGPQfi1SLdLWZ1OJz6F4OMBBNiGJA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-dialog@1.1.15':
+    resolution: {integrity: sha512-TCglVRtzlffRNxRMEyR36DGBLJpeusFcgMVD9PZEzAKnUs1lKCgX5u9BmC2Yg+LL9MgZDugFFs1Vl+Jp4t/PGw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-dismissable-layer@1.1.11':
+    resolution: {integrity: sha512-Nqcp+t5cTB8BinFkZgXiMJniQH0PsUt2k51FUhbdfeKvc4ACcG2uQniY/8+h1Yv6Kza4Q7lD7PQV0z0oicE0Mg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-focus-guards@1.1.3':
+    resolution: {integrity: sha512-0rFg/Rj2Q62NCm62jZw0QX7a3sz6QCQU0LpZdNrJX8byRGaGVTqbrW9jAoIAHyMQqsNpeZ81YgSizOt5WXq0Pw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-focus-scope@1.1.7':
+    resolution: {integrity: sha512-t2ODlkXBQyn7jkl6TNaw/MtVEVvIGelJDCG41Okq/KwUsJBwQ4XVZsHAVUkK4mBv3ewiAS3PGuUWuY2BoK4ZUw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-id@1.1.1':
+    resolution: {integrity: sha512-kGkGegYIdQsOb4XjsfM97rXsiHaBwco+hFI66oO4s9LU+PLAC5oJ7khdOVFxkhsmlbpUqDAvXw11CluXP+jkHg==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-portal@1.1.9':
+    resolution: {integrity: sha512-bpIxvq03if6UNwXZ+HTK71JLh4APvnXntDc6XOX8UVq4XQOVl7lwok0AvIl+b8zgCw3fSaVTZMpAPPagXbKmHQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-presence@1.1.5':
+    resolution: {integrity: sha512-/jfEwNDdQVBCNvjkGit4h6pMOzq8bHkopq458dPt2lMjx+eBQUohZNG9A7DtO/O5ukSbxuaNGXMjHicgwy6rQQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-primitive@2.1.3':
+    resolution: {integrity: sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-primitive@2.1.4':
+    resolution: {integrity: sha512-9hQc4+GNVtJAIEPEqlYqW5RiYdrr8ea5XQ0ZOnD6fgru+83kqT15mq2OCcbe8KnjRZl5vF3ks69AKz3kh1jrhg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-slot@1.2.3':
+    resolution: {integrity: sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-slot@1.2.4':
+    resolution: {integrity: sha512-Jl+bCv8HxKnlTLVrcDE8zTMJ09R9/ukw4qBs/oZClOfoQk/cOTbDn+NceXfV7j09YPVQUryJPHurafcSg6EVKA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-callback-ref@1.1.1':
+    resolution: {integrity: sha512-FkBMwD+qbGQeMu1cOHnuGB6x4yzPjho8ap5WtbEJ26umhgqVXbhekKUQO+hZEL1vU92a3wHwdp0HAcqAUF5iDg==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-controllable-state@1.2.2':
+    resolution: {integrity: sha512-BjasUjixPFdS+NKkypcyyN5Pmg83Olst0+c6vGov0diwTEo6mgdqVR6hxcEgFuh4QrAs7Rc+9KuGJ9TVCj0Zzg==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-effect-event@0.0.2':
+    resolution: {integrity: sha512-Qp8WbZOBe+blgpuUT+lw2xheLP8q0oatc9UpmiemEICxGvFLYmHm9QowVZGHtJlGbS6A6yJ3iViad/2cVjnOiA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-escape-keydown@1.1.1':
+    resolution: {integrity: sha512-Il0+boE7w/XebUHyBjroE+DbByORGR9KKmITzbR7MyQ4akpORYP/ZmbhAr0DG7RmmBqoOnZdy2QlvajJ2QA59g==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-layout-effect@1.1.1':
+    resolution: {integrity: sha512-RbJRS4UWQFkzHTTwVymMTUv8EqYhOp8dOOviLj2ugtTiXRaRQS7GLGxZTLL1jWhMeoSCf5zmcZkqTl9IiYfXcQ==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   '@redis/bloom@5.10.0':
     resolution: {integrity: sha512-doIF37ob+l47n0rkpRNgU8n4iacBlKM9xLiP1LtTZTvz8TloJB8qx/MgvhMhKdYG+CvCY2aPBnN2706izFn/4A==}
     engines: {node: '>= 18'}
@@ -5036,6 +5378,10 @@ packages:
   argv-formatter@1.0.0:
     resolution: {integrity: sha512-F2+Hkm9xFaRg+GkaNnbwXNDV5O6pnCFEmqyhvfC/Ic5LbgOWjJh3L+mN/s91rxVL3znE7DYVpW0GJFT+4YBgWw==}
 
+  aria-hidden@1.2.6:
+    resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
+    engines: {node: '>=10'}
+
   aria-query@5.3.0:
     resolution: {integrity: sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==}
 
@@ -5686,6 +6032,16 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
+  command@1.1.1:
+    resolution: {integrity: sha512-fHB+pqDl7pkLI5CX14nYAaz0ECw0MdHXam029VB4zvDJHbtjkkbPGuUuCgvAZWL8iB5eMvVRTr5Vx3XzGQQIWw==}
+    peerDependencies:
+      react: ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^18 || ^19 || ^19.0.0-rc
+
+  commander@11.1.0:
+    resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
+    engines: {node: '>=16'}
+
   commander@14.0.3:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
@@ -6230,6 +6586,9 @@ packages:
   detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
+
+  detect-node-es@1.1.0:
+    resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
 
   devalue@5.6.1:
     resolution: {integrity: sha512-jDwizj+IlEZBunHcOuuFVBnIMPAEHvTsJj0BcIp94xYguLRVBcXO853px/MyIJvbVzWdsGvrRweIUWJw8hBP7A==}
@@ -6943,6 +7302,10 @@ packages:
   get-intrinsic@1.3.0:
     resolution: {integrity: sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==}
     engines: {node: '>= 0.4'}
+
+  get-nonce@1.0.1:
+    resolution: {integrity: sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==}
+    engines: {node: '>=6'}
 
   get-package-type@0.1.0:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
@@ -9984,6 +10347,11 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
+    peerDependencies:
+      react: ^19.2.4
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -9992,6 +10360,36 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  react-remove-scroll-bar@2.3.8:
+    resolution: {integrity: sha512-9r+yi9+mgU33AKcj6IbT9oRCO78WriSj6t/cF8DWBZJ9aOGPOTEDvdUDz1FwKim7QXWwmHqtdHnRJfhAxEG46Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  react-remove-scroll@2.7.2:
+    resolution: {integrity: sha512-Iqb9NjCCTt6Hf+vOdNIZGdTiH1QSqr27H/Ek9sv/a97gfueI/5h1s3yRi1nngzMUaOOToin5dI1dXKdXiF+u0Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  react-style-singleton@2.2.3:
+    resolution: {integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   react@15.7.0:
     resolution: {integrity: sha512-5/MMRYmpmM0sMTHGLossnJCrmXQIiJilD6y3YN3TzAwGFj6zdnMtFv6xmi65PHKRV+pehIHpT7oy67Sr6s9AHA==}
@@ -10281,6 +10679,9 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
+
+  scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
   scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
@@ -11369,6 +11770,26 @@ packages:
 
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
+
+  use-callback-ref@1.3.3:
+    resolution: {integrity: sha512-jQL3lRnocaFtu3V00JToYz/4QkNWswxijDaCVNZRiRTO3HQDLsdu1ZtmIUvV4yPp+rvWm5j0y0TG/S61cuijTg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  use-sidecar@1.1.3:
+    resolution: {integrity: sha512-Fedw0aZvkhynoPYlA5WXrMCAMm+nSWdZt6lzJQ7Ok8S6Q+VsHmHpRWndVRJ8Be0ZbkfPc5LRYH+5XrzXcEeLRQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -12892,10 +13313,10 @@ snapshots:
 
   '@hutson/parse-repository-url@3.0.2': {}
 
-  '@iconify/svelte@5.2.1(svelte@5.48.5)':
+  '@iconify/svelte@5.2.1(svelte@5.51.0)':
     dependencies:
       '@iconify/types': 2.0.0
-      svelte: 5.48.5
+      svelte: 5.51.0
 
   '@iconify/types@2.0.0': {}
 
@@ -14365,6 +14786,122 @@ snapshots:
     dependencies:
       quansync: 1.0.0
 
+  '@radix-ui/primitive@1.1.3': {}
+
+  '@radix-ui/react-compose-refs@1.1.2(react@15.7.0)':
+    dependencies:
+      react: 15.7.0
+
+  '@radix-ui/react-context@1.1.2(react@15.7.0)':
+    dependencies:
+      react: 15.7.0
+
+  '@radix-ui/react-dialog@1.1.15(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.3
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      '@radix-ui/react-context': 1.1.2(react@15.7.0)
+      '@radix-ui/react-dismissable-layer': 1.1.11(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-focus-guards': 1.1.3(react@15.7.0)
+      '@radix-ui/react-focus-scope': 1.1.7(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-id': 1.1.1(react@15.7.0)
+      '@radix-ui/react-portal': 1.1.9(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-presence': 1.1.5(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-primitive': 2.1.3(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-slot': 1.2.3(react@15.7.0)
+      '@radix-ui/react-use-controllable-state': 1.2.2(react@15.7.0)
+      aria-hidden: 1.2.6
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+      react-remove-scroll: 2.7.2(react@15.7.0)
+
+  '@radix-ui/react-dismissable-layer@1.1.11(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.3
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      '@radix-ui/react-primitive': 2.1.3(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-use-callback-ref': 1.1.1(react@15.7.0)
+      '@radix-ui/react-use-escape-keydown': 1.1.1(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-focus-guards@1.1.3(react@15.7.0)':
+    dependencies:
+      react: 15.7.0
+
+  '@radix-ui/react-focus-scope@1.1.7(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      '@radix-ui/react-primitive': 2.1.3(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-use-callback-ref': 1.1.1(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-id@1.1.1(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-use-layout-effect': 1.1.1(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-portal@1.1.9(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-primitive': 2.1.3(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-use-layout-effect': 1.1.1(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-presence@1.1.5(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      '@radix-ui/react-use-layout-effect': 1.1.1(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-primitive@2.1.3(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-slot': 1.2.3(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-primitive@2.1.4(react-dom@19.2.4(react@15.7.0))(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-slot': 1.2.4(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+
+  '@radix-ui/react-slot@1.2.3(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-slot@1.2.4(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-use-callback-ref@1.1.1(react@15.7.0)':
+    dependencies:
+      react: 15.7.0
+
+  '@radix-ui/react-use-controllable-state@1.2.2(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-use-effect-event': 0.0.2(react@15.7.0)
+      '@radix-ui/react-use-layout-effect': 1.1.1(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-use-effect-event@0.0.2(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-use-layout-effect': 1.1.1(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-use-escape-keydown@1.1.1(react@15.7.0)':
+    dependencies:
+      '@radix-ui/react-use-callback-ref': 1.1.1(react@15.7.0)
+      react: 15.7.0
+
+  '@radix-ui/react-use-layout-effect@1.1.1(react@15.7.0)':
+    dependencies:
+      react: 15.7.0
+
   '@redis/bloom@5.10.0(@redis/client@5.10.0)':
     dependencies:
       '@redis/client': 5.10.0
@@ -14931,13 +15468,13 @@ snapshots:
       '@sveltejs/kit': 2.49.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.48.5)(vite@6.4.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@6.4.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       import-meta-resolve: 4.2.0
 
-  '@sveltejs/adapter-auto@7.0.0(@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
-    dependencies:
-      '@sveltejs/kit': 2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
-
   '@sveltejs/adapter-auto@7.0.0(@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.50.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
     dependencies:
       '@sveltejs/kit': 2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.50.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+
+  '@sveltejs/adapter-auto@7.0.0(@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
+    dependencies:
+      '@sveltejs/kit': 2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
 
   '@sveltejs/adapter-auto@7.0.1(@sveltejs/kit@2.51.0(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))':
     dependencies:
@@ -14964,27 +15501,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      '@standard-schema/spec': 1.1.0
-      '@sveltejs/acorn-typescript': 1.0.8(acorn@8.15.0)
-      '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
-      '@types/cookie': 0.6.0
-      acorn: 8.15.0
-      cookie: 0.6.0
-      devalue: 5.6.2
-      esm-env: 1.2.2
-      kleur: 4.1.5
-      magic-string: 0.30.21
-      mrmime: 2.0.1
-      sade: 1.8.1
-      set-cookie-parser: 3.0.1
-      sirv: 3.0.2
-      svelte: 5.48.5
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-    optionalDependencies:
-      typescript: 5.9.3
-
   '@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.50.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -15002,6 +15518,27 @@ snapshots:
       set-cookie-parser: 3.0.1
       sirv: 3.0.2
       svelte: 5.50.0
+      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    optionalDependencies:
+      typescript: 5.9.3
+
+  '@sveltejs/kit@2.50.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.51.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@sveltejs/acorn-typescript': 1.0.8(acorn@8.15.0)
+      '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.51.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@types/cookie': 0.6.0
+      acorn: 8.15.0
+      cookie: 0.6.0
+      devalue: 5.6.2
+      esm-env: 1.2.2
+      kleur: 4.1.5
+      magic-string: 0.30.21
+      mrmime: 2.0.1
+      sade: 1.8.1
+      set-cookie-parser: 3.0.1
+      sirv: 3.0.2
+      svelte: 5.51.0
       vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     optionalDependencies:
       typescript: 5.9.3
@@ -15069,13 +15606,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte-inspector@5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
-      obug: 2.1.1
-      svelte: 5.48.5
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-
   '@sveltejs/vite-plugin-svelte-inspector@5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -15102,16 +15632,6 @@ snapshots:
       vitefu: 1.1.1(vite@6.4.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
     transitivePeerDependencies:
       - supports-color
-
-  '@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))(svelte@5.48.5)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
-      deepmerge: 4.3.1
-      magic-string: 0.30.21
-      obug: 2.1.1
-      svelte: 5.48.5
-      vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-      vitefu: 1.1.1(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
 
   '@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.0)(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -16269,6 +16789,10 @@ snapshots:
 
   argv-formatter@1.0.0: {}
 
+  aria-hidden@1.2.6:
+    dependencies:
+      tslib: 2.8.1
+
   aria-query@5.3.0:
     dependencies:
       dequal: 2.0.3
@@ -16977,6 +17501,20 @@ snapshots:
     dependencies:
       delayed-stream: 1.0.0
 
+  command@1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0):
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(react@15.7.0)
+      '@radix-ui/react-dialog': 1.1.15(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      '@radix-ui/react-id': 1.1.1(react@15.7.0)
+      '@radix-ui/react-primitive': 2.1.4(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
+      react: 15.7.0
+      react-dom: 19.2.4(react@15.7.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+
+  commander@11.1.0: {}
+
   commander@14.0.3: {}
 
   commander@2.15.1: {}
@@ -17516,6 +18054,8 @@ snapshots:
 
   detect-newline@3.1.0: {}
 
+  detect-node-es@1.1.0: {}
+
   devalue@5.6.1: {}
 
   devalue@5.6.2: {}
@@ -17805,24 +18345,6 @@ snapshots:
     dependencies:
       eslint: 10.0.0(jiti@2.6.1)
 
-  eslint-plugin-svelte@3.14.0(eslint@10.0.0(jiti@2.6.1))(svelte@5.48.5)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3)):
-    dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@10.0.0(jiti@2.6.1))
-      '@jridgewell/sourcemap-codec': 1.5.5
-      eslint: 10.0.0(jiti@2.6.1)
-      esutils: 2.0.3
-      globals: 16.5.0
-      known-css-properties: 0.37.0
-      postcss: 8.5.6
-      postcss-load-config: 3.1.4(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3))
-      postcss-safe-parser: 7.0.1(postcss@8.5.6)
-      semver: 7.7.3
-      svelte-eslint-parser: 1.4.1(svelte@5.48.5)
-    optionalDependencies:
-      svelte: 5.48.5
-    transitivePeerDependencies:
-      - ts-node
-
   eslint-plugin-svelte@3.14.0(eslint@10.0.0(jiti@2.6.1))(svelte@5.50.0)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3)):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.0.0(jiti@2.6.1))
@@ -17838,6 +18360,24 @@ snapshots:
       svelte-eslint-parser: 1.4.1(svelte@5.50.0)
     optionalDependencies:
       svelte: 5.50.0
+    transitivePeerDependencies:
+      - ts-node
+
+  eslint-plugin-svelte@3.14.0(eslint@10.0.0(jiti@2.6.1))(svelte@5.51.0)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3)):
+    dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.0.0(jiti@2.6.1))
+      '@jridgewell/sourcemap-codec': 1.5.5
+      eslint: 10.0.0(jiti@2.6.1)
+      esutils: 2.0.3
+      globals: 16.5.0
+      known-css-properties: 0.37.0
+      postcss: 8.5.6
+      postcss-load-config: 3.1.4(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.15.8)(@types/node@25.2.2)(typescript@5.9.3))
+      postcss-safe-parser: 7.0.1(postcss@8.5.6)
+      semver: 7.7.3
+      svelte-eslint-parser: 1.4.1(svelte@5.51.0)
+    optionalDependencies:
+      svelte: 5.51.0
     transitivePeerDependencies:
       - ts-node
 
@@ -18391,6 +18931,8 @@ snapshots:
       has-symbols: 1.1.0
       hasown: 2.0.2
       math-intrinsics: 1.1.0
+
+  get-nonce@1.0.1: {}
 
   get-package-type@0.1.0: {}
 
@@ -20051,13 +20593,13 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdsvex@0.12.6(svelte@5.48.5):
+  mdsvex@0.12.6(svelte@5.51.0):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 2.0.11
       prism-svelte: 0.4.7
       prismjs: 1.30.0
-      svelte: 5.48.5
+      svelte: 5.51.0
       unist-util-visit: 2.0.3
       vfile-message: 2.0.4
 
@@ -21846,11 +22388,37 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
+  react-dom@19.2.4(react@15.7.0):
+    dependencies:
+      react: 15.7.0
+      scheduler: 0.27.0
+
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-remove-scroll-bar@2.3.8(react@15.7.0):
+    dependencies:
+      react: 15.7.0
+      react-style-singleton: 2.2.3(react@15.7.0)
+      tslib: 2.8.1
+
+  react-remove-scroll@2.7.2(react@15.7.0):
+    dependencies:
+      react: 15.7.0
+      react-remove-scroll-bar: 2.3.8(react@15.7.0)
+      react-style-singleton: 2.2.3(react@15.7.0)
+      tslib: 2.8.1
+      use-callback-ref: 1.3.3(react@15.7.0)
+      use-sidecar: 1.1.3(react@15.7.0)
+
+  react-style-singleton@2.2.3(react@15.7.0):
+    dependencies:
+      get-nonce: 1.0.1
+      react: 15.7.0
+      tslib: 2.8.1
 
   react@15.7.0:
     dependencies:
@@ -22212,6 +22780,8 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
+
+  scheduler@0.27.0: {}
 
   scule@1.3.0: {}
 
@@ -22784,18 +23354,6 @@ snapshots:
       - stylus
       - sugarss
 
-  svelte-check@4.3.6(picomatch@4.0.3)(svelte@5.48.5)(typescript@5.9.3):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.31
-      chokidar: 4.0.3
-      fdir: 6.5.0(picomatch@4.0.3)
-      picocolors: 1.1.1
-      sade: 1.8.1
-      svelte: 5.48.5
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - picomatch
-
   svelte-check@4.3.6(picomatch@4.0.3)(svelte@5.50.0)(typescript@5.9.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
@@ -22804,6 +23362,18 @@ snapshots:
       picocolors: 1.1.1
       sade: 1.8.1
       svelte: 5.50.0
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - picomatch
+
+  svelte-check@4.3.6(picomatch@4.0.3)(svelte@5.51.0)(typescript@5.9.3):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      chokidar: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.3)
+      picocolors: 1.1.1
+      sade: 1.8.1
+      svelte: 5.51.0
       typescript: 5.9.3
     transitivePeerDependencies:
       - picomatch
@@ -22820,17 +23390,6 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
-  svelte-eslint-parser@1.4.1(svelte@5.48.5):
-    dependencies:
-      eslint-scope: 8.4.0
-      eslint-visitor-keys: 4.2.1
-      espree: 10.4.0
-      postcss: 8.5.6
-      postcss-scss: 4.0.9(postcss@8.5.6)
-      postcss-selector-parser: 7.1.1
-    optionalDependencies:
-      svelte: 5.48.5
-
   svelte-eslint-parser@1.4.1(svelte@5.50.0):
     dependencies:
       eslint-scope: 8.4.0
@@ -22842,6 +23401,17 @@ snapshots:
     optionalDependencies:
       svelte: 5.50.0
 
+  svelte-eslint-parser@1.4.1(svelte@5.51.0):
+    dependencies:
+      eslint-scope: 8.4.0
+      eslint-visitor-keys: 4.2.1
+      espree: 10.4.0
+      postcss: 8.5.6
+      postcss-scss: 4.0.9(postcss@8.5.6)
+      postcss-selector-parser: 7.1.1
+    optionalDependencies:
+      svelte: 5.51.0
+
   svelte-highlight@7.9.0:
     dependencies:
       highlight.js: 11.11.1
@@ -22849,16 +23419,6 @@ snapshots:
   svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@4.2.20)(typescript@5.9.3):
     dependencies:
       svelte: 4.2.20
-    optionalDependencies:
-      '@babel/core': 7.28.6
-      postcss: 8.5.6
-      postcss-load-config: 6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2)
-      sass: 1.97.3
-      typescript: 5.9.3
-
-  svelte-preprocess@6.0.3(@babel/core@7.28.6)(postcss-load-config@6.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(yaml@2.8.2))(postcss@8.5.6)(sass@1.97.3)(svelte@5.48.5)(typescript@5.9.3):
-    dependencies:
-      svelte: 5.48.5
     optionalDependencies:
       '@babel/core': 7.28.6
       postcss: 8.5.6
@@ -23522,6 +24082,17 @@ snapshots:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
+
+  use-callback-ref@1.3.3(react@15.7.0):
+    dependencies:
+      react: 15.7.0
+      tslib: 2.8.1
+
+  use-sidecar@1.1.3(react@15.7.0):
+    dependencies:
+      detect-node-es: 1.1.0
+      react: 15.7.0
+      tslib: 2.8.1
 
   util-deprecate@1.0.2: {}
 

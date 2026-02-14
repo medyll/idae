@@ -1,5 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const packagesDir = path.join(__dirname, "..", "packages");
 const packages = fs.readdirSync(packagesDir);
@@ -83,6 +87,7 @@ packages.forEach((packageName) => {
       );
       console.log(`Created scripts/prepackage-pre.js for ${packageName}`);
     }
+    packageJson.scripts = packageJson.scripts || {};
     packageJson.scripts[packagePre] = `node scripts/${packagePreFile}`;
     modified = true;
     console.log(`Added ${packagePre} field to package ${packageName}`);

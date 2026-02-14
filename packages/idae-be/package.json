@@ -61,9 +61,9 @@
     "directory": "."
   },
   "devDependencies": {
+    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@semantic-release/github": "^12.0.5",
@@ -89,5 +89,9 @@
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
+  }
 }

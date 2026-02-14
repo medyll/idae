@@ -62,5 +62,9 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
   }
 }

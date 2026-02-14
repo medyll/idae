@@ -38,8 +38,8 @@
     "directory": "."
   },
   "devDependencies": {
-    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-config-prettier": "latest",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.5",
     "@sveltejs/adapter-auto": "^7.0.0",
@@ -75,5 +75,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/medyll/idae.git"
+  },
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
   }
 }

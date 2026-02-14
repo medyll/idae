@@ -1,0 +1,31 @@
+{
+  "name": "@medyll/idae-mono-expand-vitrine",
+  "version": "1.1.0",
+  "description": "Sync pnpm monorepo packages to individual GitHub showcase repositories",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "idae-mono-expand-vitrine": "bin/sync-vitrine.js"
+  },
+  "main": "bin/sync-vitrine.js",
+  "scripts": {
+    "start": "node bin/sync-vitrine.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "monorepo",
+    "showcase",
+    "sync",
+    "github",
+    "pnpm"
+  ],
+  "author": "Lebrun Meddy",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "commander": "^11.0.0",
+    "glob": "^10.0.0",
+    "js-yaml": "^4.1.1"
+  },
+  "scope": "@medyll"
+}

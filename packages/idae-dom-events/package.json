@@ -51,8 +51,8 @@
     "directory": "."
   },
   "devDependencies": {
-    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-config-prettier": "latest",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@semantic-release/github": "^12.0.5",
@@ -81,6 +81,8 @@
   "type": "module",
   "dependencies": {
     "blob": "^0.1.0",
+    "command": "^1.1.1",
+    "commander": "^14.0.3",
     "inquirer": "^13.2.2",
     "puppeteer": "^24.37.2"
   }
