@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.18-next.0] - 2026-02-14
+**Bug Fixes:**
+- update CLI entry point in sync-vitrine test
+- normalize operator keys in filters for consistency
+
+
+
 ## [0.0.17-next.0] - 2026-02-14
 **Documentation:**
 - clarify Stator compatibility section and enhance description
