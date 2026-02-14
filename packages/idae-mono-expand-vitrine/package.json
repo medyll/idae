@@ -28,5 +28,13 @@
     "glob": "^13.0.3",
     "js-yaml": "^4.1.1"
   },
-  "scope": "@medyll"
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  }
 }

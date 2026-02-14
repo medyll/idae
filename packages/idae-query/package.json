@@ -4,7 +4,7 @@
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/medyll/idae.git"
+    "url": "https://github.com/medyll/idae.git"
   },
   "version": "0.186.2",
   "description": "A powerful and flexible query library for TypeScript and JavaScript applications, featuring a MongoDB-like query interface, strong TypeScript support, and easy integration with front-end frameworks.",

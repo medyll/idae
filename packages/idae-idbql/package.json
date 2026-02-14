@@ -41,7 +41,9 @@
     "svelte": "^5.0.0-next"
   },
   "dependencies": {
-    "@medyll/idae-stator": "workspace:*"
+    "@medyll/idae-stator": "workspace:*",
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
   },
   "publishConfig": {
     "access": "public",
@@ -74,9 +76,5 @@
   ],
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
-  "dependencies": {
-    "command": "^1.1.1",
-    "commander": "^14.0.3"
-  }
+  "type": "module"
 }

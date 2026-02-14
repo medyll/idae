@@ -42,7 +42,7 @@
   "author": "Lebrun Meddy",
   "license": "ISC",
   "packageManager": "pnpm@10.29.1",
-  "scope": "@medyll",
+  "scope": "medyll",
   "peerDependencies": {
     "svelte": "^5.0.0"
   },
@@ -66,5 +66,13 @@
   "dependencies": {
     "command": "^1.1.1",
     "commander": "^14.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
   }
 }
