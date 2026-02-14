@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.17-next.0] - 2026-02-14
+**Documentation:**
+- clarify Stator compatibility section and enhance description
+
+
+
 ## [0.0.16-next.0] - 2026-02-14
 **Documentation:**
 - enhance description and update features for clarity
