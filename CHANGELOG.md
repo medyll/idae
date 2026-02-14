@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.16-next.0] - 2026-02-14
+**Documentation:**
+- enhance description and update features for clarity
+
+
+
 ## [0.0.15-next.0] - 2026-02-14
 **Bug Fixes:**
 - update event handling to use local state array instead of stator
