@@ -409,6 +409,58 @@
   --hide-selector: hide;
 }
 
+/** tree.scss ----------------*/
+:root {
+  --tree-cell-border: 1px solid transparent;
+  --tree-cell-padding: var(--sld-pad-tiny);
+  --tree-cell-border-radius: var(--sld-radius-small);
+  --tree-cell-gap: var(--sld-gap-tiny);
+  --tree-cell-arrow-width: 16px;
+  --tree-cell-title-gutter-gap: var(--sld-pad-tiny);
+}
+
+.tree-cell {
+  border: var(--tree-cell-border);
+  padding: var(--tree-cell-padding);
+  padding-left: var(--tree-level);
+  border-radius: var(--tree-cell-border-radius);
+  gap: var(--tree-cell-gap);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+.tree-cell-arrow {
+  width: var(--tree-cell-arrow-width);
+  text-align: center;
+}
+.tree-cell-title-gutter {
+  display: flex;
+  align-items: center;
+  gap: var(--tree-cell-title-gutter-gap);
+}
+.tree-cell:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+.tree-cell.selected, .tree-cell[aria-selected=true] {
+  border-color: none;
+  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
+  box-shadow: var(--sld-selected-shadow);
+}
+.tree-cell.selected .chip,
+.tree-cell.selected .menuItemChip, .tree-cell[aria-selected=true] .chip,
+.tree-cell[aria-selected=true] .menuItemChip {
+  position: absolute;
+  min-height: 16px;
+  height: 50%;
+  width: 3px;
+  background-color: var(--sld-color-primary);
+  border-radius: var(--sld-radius-med);
+  left: 0;
+  border: 1px solid var(--sld-color-primary-alpha-mid);
+}
+
 /** window.scss ----------------*/
 :root {
   --window-border-radius: var(--sld-radius-small);
@@ -469,58 +521,6 @@ dialog.window footer.buttonZone {
 }
 dialog.window .ctrlZone {
   display: flex;
-}
-
-/** tree.scss ----------------*/
-:root {
-  --tree-cell-border: 1px solid transparent;
-  --tree-cell-padding: var(--sld-pad-tiny);
-  --tree-cell-border-radius: var(--sld-radius-small);
-  --tree-cell-gap: var(--sld-gap-tiny);
-  --tree-cell-arrow-width: 16px;
-  --tree-cell-title-gutter-gap: var(--sld-pad-tiny);
-}
-
-.tree-cell {
-  border: var(--tree-cell-border);
-  padding: var(--tree-cell-padding);
-  padding-left: var(--tree-level);
-  border-radius: var(--tree-cell-border-radius);
-  gap: var(--tree-cell-gap);
-  display: flex;
-  align-items: center;
-  width: 100%;
-  cursor: pointer;
-}
-.tree-cell-arrow {
-  width: var(--tree-cell-arrow-width);
-  text-align: center;
-}
-.tree-cell-title-gutter {
-  display: flex;
-  align-items: center;
-  gap: var(--tree-cell-title-gutter-gap);
-}
-.tree-cell:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-.tree-cell.selected, .tree-cell[aria-selected=true] {
-  border-color: none;
-  background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid));
-  box-shadow: var(--sld-selected-shadow);
-}
-.tree-cell.selected .chip,
-.tree-cell.selected .menuItemChip, .tree-cell[aria-selected=true] .chip,
-.tree-cell[aria-selected=true] .menuItemChip {
-  position: absolute;
-  min-height: 16px;
-  height: 50%;
-  width: 3px;
-  background-color: var(--sld-color-primary);
-  border-radius: var(--sld-radius-med);
-  left: 0;
-  border: 1px solid var(--sld-color-primary-alpha-mid);
 }
 
 /** toolbar.scss ----------------*/
@@ -1037,6 +1037,66 @@ dialog.window .ctrlZone {
   visibility: hidden;
 }
 
+/** marquee.scss ----------------*/
+.marquee {
+  flex: 1;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 300px;
+}
+.marquee-container {
+  display: flex;
+  align-items: center;
+}
+.marquee-container {
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-container [gutter=tiny], .marquee-container .gutter-tiny {
+  padding: var(--sld-gutter-tiny);
+  gap: var(--sld-gutter-tiny);
+  --preset-gutter: var(--sld-gutter-tiny);
+}
+.marquee-container [gutter=mini], .marquee-container .gutter-mini {
+  padding: var(--sld-gutter-mini);
+  gap: var(--sld-gutter-mini);
+  --preset-gutter: var(--sld-gutter-mini);
+}
+.marquee-container [gutter=small], .marquee-container .gutter-small {
+  padding: var(--sld-gutter-small);
+  gap: var(--sld-gutter-small);
+  --preset-gutter: var(--sld-gutter-small);
+}
+.marquee-container [gutter=med], .marquee-container .gutter-med {
+  padding: var(--sld-gutter-med);
+  gap: var(--sld-gutter-med);
+  --preset-gutter: var(--sld-gutter-med);
+}
+.marquee-container [gutter=kind], .marquee-container .gutter-kind {
+  padding: var(--sld-gutter-kind);
+  gap: var(--sld-gutter-kind);
+  --preset-gutter: var(--sld-gutter-kind);
+}
+.marquee-container [gutter=default], .marquee-container .gutter-default {
+  padding: var(--sld-gutter-default);
+  gap: var(--sld-gutter-default);
+  --preset-gutter: var(--sld-gutter-default);
+}
+.marquee-children {
+  display: flex;
+  border: 1px solid red;
+}
+.marquee-children > * {
+  border: 1px solid red;
+  height: 300px;
+}
+.marquee-controls-prev {
+  display: contents;
+}
+.marquee-controls-next {
+  display: contents;
+}
+
 /** menu.scss ----------------*/
 :root {
   --menu-min-width: 150px;
@@ -1133,66 +1193,6 @@ li.menuItem .menu-list-item-text {
 }
 li.menuItem .menu-list-item-action {
   display: block;
-}
-
-/** marquee.scss ----------------*/
-.marquee {
-  flex: 1;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  width: 300px;
-}
-.marquee-container {
-  display: flex;
-  align-items: center;
-}
-.marquee-container {
-  --preset-gutter: var(--sld-gutter-default);
-}
-.marquee-container [gutter=tiny], .marquee-container .gutter-tiny {
-  padding: var(--sld-gutter-tiny);
-  gap: var(--sld-gutter-tiny);
-  --preset-gutter: var(--sld-gutter-tiny);
-}
-.marquee-container [gutter=mini], .marquee-container .gutter-mini {
-  padding: var(--sld-gutter-mini);
-  gap: var(--sld-gutter-mini);
-  --preset-gutter: var(--sld-gutter-mini);
-}
-.marquee-container [gutter=small], .marquee-container .gutter-small {
-  padding: var(--sld-gutter-small);
-  gap: var(--sld-gutter-small);
-  --preset-gutter: var(--sld-gutter-small);
-}
-.marquee-container [gutter=med], .marquee-container .gutter-med {
-  padding: var(--sld-gutter-med);
-  gap: var(--sld-gutter-med);
-  --preset-gutter: var(--sld-gutter-med);
-}
-.marquee-container [gutter=kind], .marquee-container .gutter-kind {
-  padding: var(--sld-gutter-kind);
-  gap: var(--sld-gutter-kind);
-  --preset-gutter: var(--sld-gutter-kind);
-}
-.marquee-container [gutter=default], .marquee-container .gutter-default {
-  padding: var(--sld-gutter-default);
-  gap: var(--sld-gutter-default);
-  --preset-gutter: var(--sld-gutter-default);
-}
-.marquee-children {
-  display: flex;
-  border: 1px solid red;
-}
-.marquee-children > * {
-  border: 1px solid red;
-  height: 300px;
-}
-.marquee-controls-prev {
-  display: contents;
-}
-.marquee-controls-next {
-  display: contents;
 }
 
 /** frame.scss ----------------*/
@@ -2581,82 +2581,6 @@ body[data-theme=dark],
 /** grouper.scss ----------------*/
 /* SCSS placeholder for Grouper */
 
-/** finder.scss ----------------*/
-:root {
-  --finder-gap: var(--sld-gap-tiny);
-}
-
-.finder-container {
-  display: inline-flex;
-  gap: var(--finder-gap);
-}
-.finder-container {
-  width: var(--sld-width-small);
-}
-.finder-container {
-  --preset-width: var(--sld-width-small);
-}
-.finder-container[width=tiny], .finder-container.width-tiny {
-  --preset-width: var(--sld-width-tiny);
-  width: var(--sld-width-tiny) !important;
-}
-.finder-container[width=mini], .finder-container.width-mini {
-  --preset-width: var(--sld-width-mini);
-  width: var(--sld-width-mini) !important;
-}
-.finder-container[width=small], .finder-container.width-small {
-  --preset-width: var(--sld-width-small);
-  width: var(--sld-width-small) !important;
-}
-.finder-container[width=med], .finder-container.width-med {
-  --preset-width: var(--sld-width-med);
-  width: var(--sld-width-med) !important;
-}
-.finder-container[width=kind], .finder-container.width-kind {
-  --preset-width: var(--sld-width-kind);
-  width: var(--sld-width-kind) !important;
-}
-.finder-container[width=full], .finder-container.width-full {
-  --preset-width: var(--sld-width-full);
-  width: var(--sld-width-full) !important;
-}
-.finder-container[width=auto], .finder-container.width-auto {
-  --preset-width: var(--sld-width-auto);
-  width: var(--sld-width-auto) !important;
-}
-.finder-container[width=default], .finder-container.width-default {
-  --preset-width: var(--sld-width-default);
-  width: var(--sld-width-default) !important;
-}
-.finder-container {
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.finder-container {
-  --preset-tall: var(--sld-tall-small);
-}
-.finder-container[tall=tiny], .finder-container.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.finder-container[tall=mini], .finder-container.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.finder-container[tall=small], .finder-container.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.finder-container[tall=med], .finder-container.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.finder-container[tall=kind], .finder-container.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.finder-container[tall=auto], .finder-container.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.finder-container[tall=default], .finder-container.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-
 /** datalist.scss ----------------*/
 :root {
   --datalist-pad: var(--sld-pad-med);
@@ -2795,6 +2719,82 @@ body[data-theme=dark],
   white-space: nowrap;
 }
 
+/** finder.scss ----------------*/
+:root {
+  --finder-gap: var(--sld-gap-tiny);
+}
+
+.finder-container {
+  display: inline-flex;
+  gap: var(--finder-gap);
+}
+.finder-container {
+  width: var(--sld-width-small);
+}
+.finder-container {
+  --preset-width: var(--sld-width-small);
+}
+.finder-container[width=tiny], .finder-container.width-tiny {
+  --preset-width: var(--sld-width-tiny);
+  width: var(--sld-width-tiny) !important;
+}
+.finder-container[width=mini], .finder-container.width-mini {
+  --preset-width: var(--sld-width-mini);
+  width: var(--sld-width-mini) !important;
+}
+.finder-container[width=small], .finder-container.width-small {
+  --preset-width: var(--sld-width-small);
+  width: var(--sld-width-small) !important;
+}
+.finder-container[width=med], .finder-container.width-med {
+  --preset-width: var(--sld-width-med);
+  width: var(--sld-width-med) !important;
+}
+.finder-container[width=kind], .finder-container.width-kind {
+  --preset-width: var(--sld-width-kind);
+  width: var(--sld-width-kind) !important;
+}
+.finder-container[width=full], .finder-container.width-full {
+  --preset-width: var(--sld-width-full);
+  width: var(--sld-width-full) !important;
+}
+.finder-container[width=auto], .finder-container.width-auto {
+  --preset-width: var(--sld-width-auto);
+  width: var(--sld-width-auto) !important;
+}
+.finder-container[width=default], .finder-container.width-default {
+  --preset-width: var(--sld-width-default);
+  width: var(--sld-width-default) !important;
+}
+.finder-container {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.finder-container {
+  --preset-tall: var(--sld-tall-small);
+}
+.finder-container[tall=tiny], .finder-container.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.finder-container[tall=mini], .finder-container.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.finder-container[tall=small], .finder-container.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.finder-container[tall=med], .finder-container.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.finder-container[tall=kind], .finder-container.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.finder-container[tall=auto], .finder-container.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.finder-container[tall=default], .finder-container.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+
 /** textfield.scss ----------------*/
 .slotui-textfield {
   --textfield-background: var(--sld-color-background-alpha-high);
@@ -2925,6 +2925,28 @@ body[data-theme=dark],
   border: 1px solid pink;
 }
 
+/** stepper.scss ----------------*/
+:root {
+  --stepper-pad: var(--sld-pad-med);
+  --stepper-radius: var(--sld-radius-small);
+  --stepper-active-color: var(--sld-color-secondary);
+}
+
+.stepper {
+  display: flex;
+}
+.stepper.vertical {
+  flex-direction: column;
+}
+.stepper-step {
+  padding: var(--stepper-pad);
+  border-radius: var(--stepper-radius);
+  margin-top: 10px;
+}
+.stepper-step.active {
+  color: var(--stepper-active-color);
+}
+
 /** switch.scss ----------------*/
 :root {
   --switch-border-radius: var(--sld-radius-large);
@@ -2990,26 +3012,17 @@ label {
   min-width: 42px;
 }
 
-/** stepper.scss ----------------*/
+/** select.scss ----------------*/
 :root {
-  --stepper-pad: var(--sld-pad-med);
-  --stepper-radius: var(--sld-radius-small);
-  --stepper-active-color: var(--sld-color-secondary);
+  --select-background-color: var(--sld-color-background);
+  --select-radius: var(--sld-radius-small);
 }
 
-.stepper {
-  display: flex;
-}
-.stepper.vertical {
-  flex-direction: column;
-}
-.stepper-step {
-  padding: var(--stepper-pad);
-  border-radius: var(--stepper-radius);
-  margin-top: 10px;
-}
-.stepper-step.active {
-  color: var(--stepper-active-color);
+.select {
+  background-color: var(--select-background-color);
+  height: 160px;
+  width: 160px;
+  border-radius: var(--select-radius);
 }
 
 /** slider.scss ----------------*/
@@ -3088,19 +3101,6 @@ label {
   outline: 4px solid var(--slider-thumb-hover-outline);
 }
 
-/** select.scss ----------------*/
-:root {
-  --select-background-color: var(--sld-color-background);
-  --select-radius: var(--sld-radius-small);
-}
-
-.select {
-  background-color: var(--select-background-color);
-  height: 160px;
-  width: 160px;
-  border-radius: var(--select-radius);
-}
-
 /** rating.scss ----------------*/
 :root {
   --rating-gap: var(--sld-gap-small);
@@ -3134,9 +3134,6 @@ label {
   max-width: 100%;
 }
 
-/** inplaceedit.scss ----------------*/
-/* SCSS placeholder for InPlaceEdit */
-
 /** confirm.scss ----------------*/
 .confirm {
   display: flex;
@@ -3148,133 +3145,21 @@ label {
   align-items: center;
 }
 
-/** checkbox.scss ----------------*/
+/** inplaceedit.scss ----------------*/
+/* SCSS placeholder for InPlaceEdit */
+
+/** auto-complete.scss ----------------*/
 :root {
-  --sld-checkbox-background: var(--sld-color-background-alpha-high);
-  --sld-checkbox-background-hover: var(--sld-color-primary);
-  --sld-checkbox-background-checked: var(--sld-color-primary);
-  --sld-checkbox-background-indeterminate: var(--sld-color-primary-alpha-mid);
-  --sld-checkbox-border-width: 2px;
-  --sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
-  --sld-checkbox-border-bottom-width: 2px;
-  --sld-checkbox-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
-  --sld-checkbox-radius: var(--sld-radius-small);
-  --sld-checkbox-padding: 0 0.5rem;
-  --sld-checkbox-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+  --auto-complete-pad: var(--sld-pad-medium);
+  --auto-complete-gap: var(--sld-gap-small);
 }
 
-.checkbox:hover {
-  border-color: var(--sld-hover-border-color);
-  background-color: var(--sld-background-disabled);
-}
-.checkbox {
-  min-height: var(--preset-tall-small);
-  height: var(--preset-tall-small);
-}
-.checkbox {
-  --preset-tall: var(--sld-tall-small);
-}
-.checkbox[tall=tiny], .checkbox.tall-tiny {
-  min-height: var(--sld-tall-tiny) !important;
-}
-.checkbox[tall=mini], .checkbox.tall-mini {
-  min-height: var(--sld-tall-mini) !important;
-}
-.checkbox[tall=small], .checkbox.tall-small {
-  min-height: var(--sld-tall-small) !important;
-}
-.checkbox[tall=med], .checkbox.tall-med {
-  min-height: var(--sld-tall-med) !important;
-}
-.checkbox[tall=kind], .checkbox.tall-kind {
-  min-height: var(--sld-tall-kind) !important;
-}
-.checkbox[tall=auto], .checkbox.tall-auto {
-  min-height: var(--sld-tall-auto) !important;
-}
-.checkbox[tall=default], .checkbox.tall-default {
-  min-height: var(--sld-tall-default) !important;
-}
-.checkbox {
-  transition: all 0.25s ease;
-}
-.checkbox {
-  appearance: none;
-  outline: none;
-  border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
-  border-radius: var(--sld-checkbox-radius);
-  background-clip: padding-box;
-  background-color: var(--sld-checkbox-background);
-  width: 1.7rem;
-  height: 1.7rem;
-  aspect-ratio: 1/1;
-  padding: 0;
-  margin: 0;
-}
-.checkbox:focus-visible {
-  box-shadow: var(--sld-checkbox-shadow);
-}
-.checkbox:hover {
-  background-color: var(--sld-color-primary-darken-mid);
-}
-.checkbox:active + .svg {
-  color: var(--sld-color-secondary);
-}
-.checkbox:disabled {
-  border-color: #ccc;
-  background-color: #ededed;
-  pointer-events: none;
-}
-.checkbox:checked, .checkbox:indeterminate {
-  background-color: var(--sld-checkbox-background-indeterminate);
-}
-.checkbox:checked:hover, .checkbox:indeterminate:hover {
-  background-color: var(--sld-checkbox-background-hover);
-}
-.checkbox:checked:active, .checkbox:checked:focus, .checkbox:indeterminate:active, .checkbox:indeterminate:focus {
-  background-color: var(--sld-checkbox-background-checked);
-}
-.checkbox:checked:disabled, .checkbox:checked[disabled], .checkbox:indeterminate:disabled, .checkbox:indeterminate[disabled] {
-  border-color: #ccc;
-  background-color: #ededed;
-  pointer-events: none;
-}
-.checkbox:checked:disabled + .svg, .checkbox:checked[disabled] + .svg, .checkbox:indeterminate:disabled + .svg, .checkbox:indeterminate[disabled] + .svg {
-  color: #ededed;
-}
-
-.checkbox-root {
+.auto-complete-no-results, .auto-complete-boot {
+  padding: var(--auto-complete-pad);
+  gap: var(--auto-complete-gap);
   display: flex;
+  flex-direction: row;
   align-items: center;
-  -webkit-user-select: none;
-  user-select: none;
-  min-block-size: 32px;
-  gap: 0.5rem;
-}
-.checkbox-root.disabled > span {
-  color: #ededed;
-}
-.checkbox-root .checkbox-container {
-  display: inline-flex;
-  justify-content: center;
-  position: relative;
-}
-.checkbox-root .checkbox-container .svg {
-  position: absolute;
-  color: white;
-  height: 100%;
-  width: 100%;
-  padding: 3px;
-}
-.checkbox-root .checkbox-container .svg path {
-  transform-origin: center;
-}
-.checkbox-root .checkbox-container .svg path-check {
-  transform: scale(1.1);
-  fill: white;
-}
-.checkbox-root .checkbox-container .svg path-indeterminate {
-  transform: scale(1.1);
 }
 
 /** button.scss ----------------*/
@@ -4083,18 +3968,133 @@ input[type=submit].slotui-button.flat:focus {
   flex-shrink: 1;
 }
 
-/** auto-complete.scss ----------------*/
+/** checkbox.scss ----------------*/
 :root {
-  --auto-complete-pad: var(--sld-pad-medium);
-  --auto-complete-gap: var(--sld-gap-small);
+  --sld-checkbox-background: var(--sld-color-background-alpha-high);
+  --sld-checkbox-background-hover: var(--sld-color-primary);
+  --sld-checkbox-background-checked: var(--sld-color-primary);
+  --sld-checkbox-background-indeterminate: var(--sld-color-primary-alpha-mid);
+  --sld-checkbox-border-width: 2px;
+  --sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
+  --sld-checkbox-border-bottom-width: 2px;
+  --sld-checkbox-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+  --sld-checkbox-radius: var(--sld-radius-small);
+  --sld-checkbox-padding: 0 0.5rem;
+  --sld-checkbox-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
 }
 
-.auto-complete-no-results, .auto-complete-boot {
-  padding: var(--auto-complete-pad);
-  gap: var(--auto-complete-gap);
+.checkbox:hover {
+  border-color: var(--sld-hover-border-color);
+  background-color: var(--sld-background-disabled);
+}
+.checkbox {
+  min-height: var(--preset-tall-small);
+  height: var(--preset-tall-small);
+}
+.checkbox {
+  --preset-tall: var(--sld-tall-small);
+}
+.checkbox[tall=tiny], .checkbox.tall-tiny {
+  min-height: var(--sld-tall-tiny) !important;
+}
+.checkbox[tall=mini], .checkbox.tall-mini {
+  min-height: var(--sld-tall-mini) !important;
+}
+.checkbox[tall=small], .checkbox.tall-small {
+  min-height: var(--sld-tall-small) !important;
+}
+.checkbox[tall=med], .checkbox.tall-med {
+  min-height: var(--sld-tall-med) !important;
+}
+.checkbox[tall=kind], .checkbox.tall-kind {
+  min-height: var(--sld-tall-kind) !important;
+}
+.checkbox[tall=auto], .checkbox.tall-auto {
+  min-height: var(--sld-tall-auto) !important;
+}
+.checkbox[tall=default], .checkbox.tall-default {
+  min-height: var(--sld-tall-default) !important;
+}
+.checkbox {
+  transition: all 0.25s ease;
+}
+.checkbox {
+  appearance: none;
+  outline: none;
+  border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
+  border-radius: var(--sld-checkbox-radius);
+  background-clip: padding-box;
+  background-color: var(--sld-checkbox-background);
+  width: 1.7rem;
+  height: 1.7rem;
+  aspect-ratio: 1/1;
+  padding: 0;
+  margin: 0;
+}
+.checkbox:focus-visible {
+  box-shadow: var(--sld-checkbox-shadow);
+}
+.checkbox:hover {
+  background-color: var(--sld-color-primary-darken-mid);
+}
+.checkbox:active + .svg {
+  color: var(--sld-color-secondary);
+}
+.checkbox:disabled {
+  border-color: #ccc;
+  background-color: #ededed;
+  pointer-events: none;
+}
+.checkbox:checked, .checkbox:indeterminate {
+  background-color: var(--sld-checkbox-background-indeterminate);
+}
+.checkbox:checked:hover, .checkbox:indeterminate:hover {
+  background-color: var(--sld-checkbox-background-hover);
+}
+.checkbox:checked:active, .checkbox:checked:focus, .checkbox:indeterminate:active, .checkbox:indeterminate:focus {
+  background-color: var(--sld-checkbox-background-checked);
+}
+.checkbox:checked:disabled, .checkbox:checked[disabled], .checkbox:indeterminate:disabled, .checkbox:indeterminate[disabled] {
+  border-color: #ccc;
+  background-color: #ededed;
+  pointer-events: none;
+}
+.checkbox:checked:disabled + .svg, .checkbox:checked[disabled] + .svg, .checkbox:indeterminate:disabled + .svg, .checkbox:indeterminate[disabled] + .svg {
+  color: #ededed;
+}
+
+.checkbox-root {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+  min-block-size: 32px;
+  gap: 0.5rem;
+}
+.checkbox-root.disabled > span {
+  color: #ededed;
+}
+.checkbox-root .checkbox-container {
+  display: inline-flex;
+  justify-content: center;
+  position: relative;
+}
+.checkbox-root .checkbox-container .svg {
+  position: absolute;
+  color: white;
+  height: 100%;
+  width: 100%;
+  padding: 3px;
+}
+.checkbox-root .checkbox-container .svg path {
+  transform-origin: center;
+}
+.checkbox-root .checkbox-container .svg path-check {
+  transform: scale(1.1);
+  fill: white;
+}
+.checkbox-root .checkbox-container .svg path-indeterminate {
+  transform: scale(1.1);
 }
 
 /** title-bar.scss ----------------*/
@@ -4125,29 +4125,6 @@ input[type=submit].slotui-button.flat:focus {
 }
 .title-bar {
   border-bottom: 1px solid var(--title-bar-color-border-bottom);
-}
-
-/** paper.scss ----------------*/
-:root {
-  --paper-radius: var(--sld-radius-small);
-  --paper-border: var(--sld-color-foreground-alpha-high);
-  --paper-background-color: var(--sld-color-paper);
-  --paper-background-color-hover: var(--sld-color-paper-darken-low);
-}
-
-.paper {
-  color: var(--paper-border);
-  background-color: var(--paper-background-color);
-  border-radius: var(--paper-radius);
-}
-.paper.elevation-0, .paper[elevation-0] {
-  box-shadow: var(--sld-elevation-0);
-}
-.paper.elevation-through, .paper[elevation-through] {
-  box-shadow: var(--sld-elevation-through);
-}
-.paper.elevation-5, .paper[elevation-5] {
-  box-shadow: var(--sld-elevation-5);
 }
 
 /** icon.scss ----------------*/
@@ -4184,6 +4161,29 @@ hr {
 hr.vertical {
   width: 1px;
   border-right: 1px solid var(--divider-border-right);
+}
+
+/** paper.scss ----------------*/
+:root {
+  --paper-radius: var(--sld-radius-small);
+  --paper-border: var(--sld-color-foreground-alpha-high);
+  --paper-background-color: var(--sld-color-paper);
+  --paper-background-color-hover: var(--sld-color-paper-darken-low);
+}
+
+.paper {
+  color: var(--paper-border);
+  background-color: var(--paper-background-color);
+  border-radius: var(--paper-radius);
+}
+.paper.elevation-0, .paper[elevation-0] {
+  box-shadow: var(--sld-elevation-0);
+}
+.paper.elevation-through, .paper[elevation-through] {
+  box-shadow: var(--sld-elevation-through);
+}
+.paper.elevation-5, .paper[elevation-5] {
+  box-shadow: var(--sld-elevation-5);
 }
 
 /** content-switcher.scss ----------------*/
