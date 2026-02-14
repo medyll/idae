@@ -149,9 +149,9 @@ const result = await idbql.transaction(['users', 'posts'], 'readwrite', async (t
 - Methods such as `where`, `groupBy`, and `sort` operate synchronously on the current snapshot of the state.
 - Use them inside `$derived` or `$effect` to get reactive updates.
 
-## Stator Compatibility
+## Stator Full Compatibility
 
-- **Compatibility**: `@medyll/idae-idbql` offers optional, opt-in compatibility with `@medyll/idae-stator` through an adapter. When enabled, collection state can be backed by Stator proxies as an alternative reactivity model.
+- **idae-idbql**: `@medyll/idae-idbql` offers optional, opt-in compatibility with `@medyll/idae-stator` through an adapter. When enabled, collection state can be backed by Stator proxies as an alternative reactivity model.
 - **Opt-in usage**: enable the adapter when creating the reactive state by passing `adapter: 'stator'` to `createIdbqlState(idbBase, options)`.
 - **Install**: add the companion package to your project:
 
