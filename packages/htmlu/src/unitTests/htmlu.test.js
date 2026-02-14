@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import {htmluSveltePreprocess} from "../lib/htmlu/preprocess";
+import { htmluSveltePreprocess } from "../lib/htmlu/preprocess.js";
 
-const preprocess  = htmluSveltePreprocess();
+const preprocess = htmluSveltePreprocess();
 
 describe("htmluPreprocessor", () => {
   it("should transform tag to class attributes>", () => {
@@ -22,7 +22,7 @@ describe("htmluPreprocessor", () => {
     const result = preprocess.markup({
       content: "<span theme-bg > content </span>",
     });
-    expect(result.code).toBe('<span theme-bg > content </span>');
+    expect(result.code).toBe("<span theme-bg > content </span>");
   });
 
   it('should transform <flex-col:relative gap-2 pad-2> to <div class="flex-col relative gap-2 pad-2">', () => {
@@ -30,7 +30,7 @@ describe("htmluPreprocessor", () => {
       content: "<flex-col:relative gap-2 pad-2>content</flex-col:relative>",
     });
     expect(result.code).toBe(
-      '<div class="flex-col relative gap-2 pad-2">content</div>'
+      '<div class="flex-col relative gap-2 pad-2">content</div>',
     );
   });
 

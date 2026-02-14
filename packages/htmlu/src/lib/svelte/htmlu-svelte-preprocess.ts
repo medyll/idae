@@ -19,7 +19,7 @@ type HtmluSveltePreprocessOptionsType = {
  * @returns The preprocessor group object.
  */
 function htmluSveltePreprocess(
-  options: HtmluSveltePreprocessOptionsType = {} as HtmluSveltePreprocessOptionsType
+  options: HtmluSveltePreprocessOptionsType = {} as HtmluSveltePreprocessOptionsType,
 ): PreprocessorGroup {
   /** tags to exclude from transformation */
   const excludeTags = [

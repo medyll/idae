@@ -1,5 +1,5 @@
 {
-  "name": "idae-htmlu",
+  "name": "@medyll/idae-htmlu",
   "version": "0.1.3",
   "author": "Lebrun Meddy",
   "description": "htmlu : vite preprocess utility allowing to use classNames as elements tags. The next step of utility classNames",
@@ -36,23 +36,24 @@
     "svelte": "^4.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.28.1",
-    "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/package": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "@types/jsdom": "^21.1.6",
-    "publint": "^0.1.9",
-    "svelte": "^4.2.7",
-    "svelte-check": "^3.6.0",
-    "svelte-preprocess": "^5.1.3",
-    "tslib": "^2.4.1",
-    "typescript": "^5.0.0",
-    "vite": "^5.0.3",
-    "vite-tsconfig-paths": "^4.2.3",
-    "vitest": "^1.0.0"
+    "@playwright/test": "^1.58.2",
+    "@sveltejs/adapter-auto": "^7.0.1",
+    "@sveltejs/kit": "^2.51.0",
+    "@sveltejs/package": "^2.5.7",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@types/jsdom": "^27.0.0",
+    "publint": "^0.3.17",
+    "svelte": "^5.51.0",
+    "svelte-check": "^4.4.0",
+    "svelte-preprocess": "^6.0.3",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module"
+  "type": "module",
+  "scope": "@medyll"
 }
