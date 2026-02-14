@@ -47,7 +47,6 @@
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-config-prettier": "latest",
-    "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@semantic-release/github": "^12.0.5",
@@ -83,6 +82,8 @@
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "dependencies": {
+    "@medyll/idae-dom-events": "workspace:*",
+    "@medyll/idae-stator": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
   }

@@ -1,6 +1,11 @@
 // Core engine for idae-html components
 // Re-exports idae-be helpers and exposes a global app registry on window
 import * as beMod from '/packages/idae-be/src/lib/index.js';
+// Re-export helpers from idae-dom-events so this package "delivers" it as part
+// of the core runtime surface. Use same workspace path pattern as other imports.
+import * as domMod from '/packages/idae-dom-events/src/lib/index.js';
+// Include idae-stator helpers so `core` exposes state utilities as well.
+import * as statorMod from '/packages/idae-stator/src/lib/index.js';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -91,9 +96,25 @@ const be = (beMod as any).be;
 const toBe = (beMod as any).toBe;
 const createBe = (beMod as any).createBe;
 
+// idae-dom-events exports (htmlDom, cssDom, htmluModules)
+const htmlDom = (domMod as any).htmlDom || (domMod as any).Htmlu;
+const cssDom = (domMod as any).cssDom;
+const htmluModules = (domMod as any).htmluModules;
+// idae-stator exports (state helpers). Expose commonly used helpers.
+const stator = (statorMod as any).stator || (statorMod as any).default || (statorMod as any).createStator;
+const createStator = (statorMod as any).createStator || (statorMod as any).default || (statorMod as any).stator;
+
 export const core = {
   app,
   be,
   toBe,
   createBe
+  ,
+  // convenience re-exports from idae-dom-events
+  htmlDom,
+  cssDom,
+  htmluModules,
+  // state helpers
+  stator,
+  createStator
 };

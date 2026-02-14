@@ -1,45 +1,57 @@
+<!-- Copilot / AI agent instructions for contributors and assistants -->
+
 # Copilot Instructions for idae-html
 
-## Project Overview
-- **idae-html** is a raw HTML utility library for dynamic web apps/sites, client and client-server, inspired by Svelte/React but without a builder.
-- Focus: advanced HTML generation, parsing, and manipulation in JS/TS, usable in browser and Node.js.
-- All code is raw HTML—no build step required for core usage.
+Purpose: give AI coding agents the exact, actionable context needed to make safe, small, and correct changes in this package.
 
-## Architecture & Key Patterns
+Quick start
+- Install: `pnpm install`
+- Common scripts: check `package.json` for exact names. Typical commands used by maintainers:
+	- `pnpm run build` — package build (packaging scripts may invoke `scripts/*.js`)
+	- `pnpm run test` — run tests
+	- `pnpm run lint` / `pnpm run format` — code quality
+	- Look in `scripts/` for repository-specific build helpers: `build-html-all.js`, `build-html-component.js`, `build-resizePanel.js`.
 
-Main entry: `src/lib/` (see `index.ts`, `main.ts`).
-Utilities: `html`, `escapeHtml`, `parseHtml` (see README usage example).
-Dynamic content: use template literals and helpers for safe, composable markup.
-No framework-specific abstractions; everything is plain JS/TS and HTML.
-Integration: designed to work with other Idae packages for UI/data flow, but remains standalone.
+Big picture (what/where/why)
+- Core runtime and exports live in `src/lib/` — see `src/lib/index.ts` and `src/lib/main.ts` for entry points.
+- `src/lib/core-engine.ts` contains runtime helpers for rendering/manipulating HTML fragments.
+- Components are raw HTML snippets under `src/lib/components/` (each example is a plain `.html` file used as both documentation and a runtime fragment).
+- `src/lib/moduleLib/` contains TypeScript modules that implement component logic (examples: `moduleInline.ts`, `resizePanel.ts`). Modules are small, functional, and return or mutate HTML/state rather than using a framework lifecycle.
+- The package is intentionally framework-agnostic: templates are plain HTML/strings and can be used server-side or client-side. Use `escapeHtml` for user-supplied content and `parseHtml` when converting strings to DOM structures.
 
-### Monorepo Dependencies
-- `@medyll/idae-dom-events`: DOM event helpers and advanced event-driven logic (see `main.ts`).
-- `idae-idbql`: IndexedDB query layer for client-side persistence (used in advanced scenarios; check monorepo for details).
-- `@medyll/idae-stator`: state management and reactivity utilities (used for advanced stateful UI/data flows; see monorepo for usage patterns).
+Data flow and integration
+- Template → string (via helpers in `src/lib/*`) → inserted into DOM or served over HTTP. Keep changes local to the string/DOM boundary.
+- Event wiring is often delegated to `@medyll/idae-dom-events` (see `main.ts`) and small per-component modules in `moduleLib`.
+- Persistent or advanced behaviors may integrate with `idae-idbql` and `@medyll/idae-stator` elsewhere in the monorepo — prefer small, explicit imports rather than implicit globals.
 
-## Developer Workflows
-- **Install dependencies:** `pnpm install`
-- **Build:** `pnpm run build` (if needed for packaging)
-- **Test:** `pnpm run test`
-- **Lint/Format:** `pnpm run lint && pnpm run format`
-- No custom build tools—avoid assumptions about Webpack, Vite, etc. for this package.
+Project conventions (explicit, observable rules)
+- Prefer functional, composable helpers over classes. New features should be small exported functions.
+- Safe escaping: always use `escapeHtml` for any value that may contain user data.
+- Examples and demos are plain `.html` files under `src/lib/components/*` and `src/source/*`. Update both when changing component markup.
+- TypeScript: follow the existing patterns in `src/lib/moduleLib/*.ts` for types and exports. Keep public exports minimal and documented in `src/lib/index.ts`.
 
-## Conventions & Practices
-- Follow monorepo code style and commit message conventions.
-- Add tests for new features/bug fixes in `src/`.
-- Use safe escaping (`escapeHtml`) for user input in templates.
-- Prefer composable, functional helpers over class-based or OOP patterns.
-- Reference the monorepo root README for broader conventions.
+How to add/update a component (concrete steps)
+1. Add component markup under `src/lib/components/<name>/index.html`.
+2. If behavior is required, add `src/lib/moduleLib/<name>.ts` exporting focused functions.
+3. Export any public APIs in `src/lib/index.ts` so other packages in the monorepo can import them.
+4. Add or update example pages in `src/source/` and the Svelte route if present (`src/routes/+page.svelte`).
+5. Run `pnpm run build` and `pnpm run test` (or the specific script in `package.json`) to validate.
 
-## Integration Points
-- Works with other Idae packages (UI/data flow), but does not depend on external frameworks.
-- No direct Svelte/React/Vue integration—focus on raw HTML and JS/TS.
+Build & debug notes (repo-specific)
+- Several JS build helpers live in `scripts/` and are used by packaging steps — inspect them before changing build behaviour.
+- This package is used directly in Svelte examples — to validate changes, open `src/routes/+page.svelte` or `src/source/example.html` and test the integration.
+- There may not be a dedicated dev server script in this package; check the monorepo root or `package.json` for `dev`/`start` scripts.
 
-## Key Files & Directories
-- `src/lib/index.ts`, `src/lib/main.ts`: core logic and exports
-- `src/routes/+page.svelte`: example integration (if present)
-- `README.md`: usage, features, and workflow summary
+What not to change without confirmation
+- Global monorepo conventions (lint rules, commit format). If your change touches config at repo root, confirm with maintainers.
+
+References (examples to inspect)
+- Core runtime: `src/lib/core-engine.ts` and `src/lib/index.ts`
+- Examples/components: `src/lib/components/resizePanel/index.html`, `src/lib/components/exampleInline/index.html`
+- Module implementations: `src/lib/moduleLib/resizePanel.ts`, `src/lib/moduleLib/moduleInline.ts`
+- Packaging helpers: `scripts/build-html-all.js`, `scripts/build-html-component.js`
+
+If anything is ambiguous, ask: "Where is the intended consumer of this change — examples, packaged artifact, or another monorepo package?" That determines whether to update `components/`, `moduleLib/`, or `index.ts` exports.
 
 ---
-For questions or missing context, see the monorepo documentation or contact maintainers.
+If you want, I can (1) run tests/build locally, (2) open a PR with a small example change, or (3) expand these notes into a CONTRIBUTING.md section. Which would you prefer?
