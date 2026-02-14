@@ -5,7 +5,8 @@ import path from "path";
 
 test("cli runs in dry-run and prints expected markers", () => {
   const pkgRoot = path.resolve();
-  const bin = path.join(pkgRoot, "bin", "sync-vitrine.js");
+  // cli entry is `bin/cli.js` (previously named sync-vitrine.js)
+  const bin = path.join(pkgRoot, "bin", "cli.js");
 
   // Run from repository root so the workspace config is found
   const repoRoot = path.resolve(pkgRoot, "..", "..");
