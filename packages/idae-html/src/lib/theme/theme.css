@@ -1,0 +1,95 @@
+/* Theme declaration using CSS variables */
+/* Base theme (light) */
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0f172a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #3b82f6;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
+  /* Spacing variables */
+  --gutter-xs: 0.25rem;
+  --gutter-sm: 0.5rem;
+  --gutter-md: 1rem;
+  --gutter-lg: 1.5rem;
+  --gutter-xl: 2rem;
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --border-xs: 0.5px;
+  --border-sm: 1px;
+  --border-md: 2px;
+  --border-lg: 3px;
+  --border-xl: 4px;
+}
+
+/* Dark theme */
+.dark {
+  --color-background: #0f172a;
+  --color-foreground: #f8fafc;
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #f8fafc;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f8fafc;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #3b82f6;
+  --color-card: #1e293b;
+  --color-card-foreground: #f8fafc;
+  --color-popover: #1e293b;
+  --color-popover-foreground: #f8fafc;
+}
+
+/* Utility classes based on CSS variables */
+
+/* Padding classes */
+.pad-xs { padding: var(--gutter-xs); }
+.pad-sm { padding: var(--gutter-sm); }
+.pad-md { padding: var(--gutter-md); }
+.pad-lg { padding: var(--gutter-lg); }
+.pad-xl { padding: var(--gutter-xl); }
+
+/* Margin classes */
+.marg-xs { margin: var(--gutter-xs); }
+.marg-sm { margin: var(--gutter-sm); }
+.marg-md { margin: var(--gutter-md); }
+.marg-lg { margin: var(--gutter-lg); }
+.marg-xl { margin: var(--gutter-xl); }
+
+/* Font size classes */
+.font-xs { font-size: var(--font-xs); }
+.font-sm { font-size: var(--font-sm); }
+.font-md { font-size: var(--font-md); }
+.font-lg { font-size: var(--font-lg); }
+.font-xl { font-size: var(--font-xl); }
+
+/* Border width classes */
+.border-xs { border-width: var(--border-xs); }
+.border-sm { border-width: var(--border-sm); }
+.border-md { border-width: var(--border-md); }
+.border-lg { border-width: var(--border-lg); }
+.border-xl { border-width: var(--border-xl); }
+
+

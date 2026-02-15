@@ -14,7 +14,7 @@
   import { be, toBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('toast', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
     const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
@@ -29,5 +29,14 @@
     }
 
     be(pushEl).on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A toast notification component for displaying temporary messages.'
+    }
+  });
 </script>

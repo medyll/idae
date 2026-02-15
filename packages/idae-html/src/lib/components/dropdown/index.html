@@ -19,7 +19,7 @@
   import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('dropdown', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const triggerEl = rootEl.querySelector('[data-trigger]') as HTMLElement | null;
     const menuEl = rootEl.querySelector('[data-menu]') as HTMLElement | null;
@@ -57,5 +57,14 @@
     }
 
     be(document.body).on('click', (e)=>{ if (!menuEl.contains(e.target as Node) && e.target !== triggerEl) hide(); });
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A dropdown component with keyboard navigation and accessibility features.'
+    }
+  });
 </script>

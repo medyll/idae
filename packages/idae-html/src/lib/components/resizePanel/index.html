@@ -22,31 +22,40 @@
   import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('resizePanel-demo', {
-    script(root){
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const addBtn = rootEl.querySelector('[data-add]') as HTMLElement | null;
-    const addTwoBtn = rootEl.querySelector('[data-add-two]') as HTMLElement | null;
-    const containerBe = be(rootEl.querySelector('[data-root]'));
-    if (!containerBe) return;
+    script: (root, props)=> {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const addBtn = rootEl.querySelector('[data-add]') as HTMLElement | null;
+      const addTwoBtn = rootEl.querySelector('[data-add-two]') as HTMLElement | null;
+      const containerBe = be(rootEl.querySelector('[data-root]'));
+      if (!containerBe) return;
 
-    async function addPanel(containerBeLocal){
-      try{
-        const mod = await import('/packages/idae-html/src/lib/moduleLib/resizePanel.ts');
-        const init = mod.resizePanel || mod.default;
-        const holderBe = createBe('div', { className: 'container' });
-        const panelBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
-        panelBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
-        holderBe.append(panelBe);
-        containerBeLocal.append(holderBe);
-        const panelEl = Array.isArray(panelBe.node) ? panelBe.node[0] : (panelBe.node as HTMLElement);
-        if (typeof init === 'function') init(panelEl);
-      }catch(e){ console.error(e); }
+      async function addPanel(containerBeLocal){
+        try{
+          const mod = await import('/packages/idae-html/src/lib/moduleLib/resizePanel.ts');
+          const init = mod.resizePanel || mod.default;
+          const holderBe = createBe('div', { className: 'container' });
+          const panelBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
+          panelBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
+          holderBe.append(panelBe);
+          containerBeLocal.append(holderBe);
+          const panelEl = Array.isArray(panelBe.node) ? panelBe.node[0] : (panelBe.node as HTMLElement);
+          if (typeof init === 'function') init(panelEl);
+        }catch(e){ console.error(e); }
+      }
+
+      if (addBtn) be(addBtn).on('click', ()=> addPanel(containerBe));
+      if (addTwoBtn) be(addTwoBtn).on('click', ()=> { addPanel(containerBe); addPanel(containerBe); });
+
+      // auto add one on init
+      addPanel(containerBe);
+    },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A demo component for the resizePanel functionality.'
     }
-
-    if (addBtn) be(addBtn).on('click', ()=> addPanel(containerBe));
-    if (addTwoBtn) be(addTwoBtn).on('click', ()=> { addPanel(containerBe); addPanel(containerBe); });
-
-    // auto add one on init
-    addPanel(containerBe);
-  }});
+  });
 </script>

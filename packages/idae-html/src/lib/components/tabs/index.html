@@ -14,32 +14,34 @@
   import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('tabs', {
-    script(root){
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const tabs = Array.from(rootEl.querySelectorAll('[role="tab"]')) as HTMLElement[];
-    const panels = Array.from(rootEl.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
-    if (!tabs.length || !panels.length) return;
-    tabs.forEach((t, i)=> be(t).on('click', ()=> activate(i)));
-    function activate(i:number){
-      tabs.forEach((t,idx)=>{
-        be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
-        if (idx===i) be(panels[idx]).deleteAttr('hidden'); else be(panels[idx]).setAttr('hidden','');
+    script: (root, props)=> {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const tabs = Array.from(rootEl.querySelectorAll('[role="tab"]')) as HTMLElement[];
+      const panels = Array.from(rootEl.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
+      if (!tabs.length || !panels.length) return;
+      tabs.forEach((t, i)=> be(t).on('click', ()=> activate(i)));
+      function activate(i:number){
+        tabs.forEach((t,idx)=>{
+          be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
+          if (idx===i) be(panels[idx]).deleteAttr('hidden'); else be(panels[idx]).setAttr('hidden','');
+        });
+        (tabs[i] as HTMLElement).focus();
+      }
+      be(document.body).on('keydown',(e)=>{
+        const idx = tabs.findIndex(t=>t===document.activeElement);
+        if (idx<0) return;
+        if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
+        if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
       });
-      (tabs[i] as HTMLElement).focus();
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A tabs component with keyboard navigation and accessibility features.'
     }
-    be(document.body).on('keydown',(e)=>{
-      const idx = tabs.findIndex(t=>t===document.activeElement);
-      if (idx<0) return;
-      if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
-      if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
-    });
-  }});
-</script>
-  }
-  be('body').on('keydown',(e)=>{
-    const idx = tabs.findIndex(t=>t===document.activeElement);
-    if (idx<0) return;
-    if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
-    if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
   });
 </script>
+ 

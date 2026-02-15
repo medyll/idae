@@ -11,7 +11,7 @@
   import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('moduleInline', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const holder = rootEl.querySelector('[data-holder]') as HTMLElement | null;
     if (!holder) return;
@@ -37,5 +37,14 @@
       if (typeof init === 'function') init(node);
     }
     load();
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A module component that dynamically loads and inserts other modules.'
+    }
+  });
 </script>

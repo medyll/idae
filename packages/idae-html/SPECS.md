@@ -1,99 +1,99 @@
-STATUS — idae-html package
+SPECS — idae-html package
 =================================
 
-**Purpose**
-- Provide a short snapshot of the current state, detected intentions and possible next steps for the `idae-html` package (HTML components library).
+## 1. Vision & Purpose
+**idae-html** is a "HTML-first" Web Component library designed for **Progressive Enhancement**. It treats standard HTML fragments as components, hydrating them with scoped logic via a lightweight runtime. It avoids heavy framework abstractions (like standard Custom Elements classes) in favor of a declarative, metadata-driven approach where HTML is the source of truth.
 
-**Current state**
-- Package scaffold exists with Svelte/Vite toolchain files: `package.json`, `svelte.config.js`, `vite.config.ts`, `tsconfig.json`.
-- Source code lives under `src/lib` (notably `src/lib/index.ts` and `src/lib/moduleLib/resizePanel.ts`).
-- Demo / example pages exist under `src/routes` and `src/source` (`+page.svelte`, `content.html`, `example.html`, `module.html`).
-- A CLI entry `cli.cjs` and `scripts/package-pre.js` are present — packaging script fragments exist.
-- There are build artifacts and a `__package__` output in `.svelte-kit`, indicating prior packaging or local builds were run and compiled outputs were committed or left in tree.
-- Static assets available in `static/`.
+---
 
-**Recent runtime additions (detected)**
-- Added a central runtime module at `src/lib/core-engine.ts` which re-exports DOM helpers and hosts a global application registry on `window`.
-- The module exposes a single `core` object: `{ app, be, toBe, createBe }` intended as the canonical import surface for `idae-html` components (components should not import `@medyll/idae-be` directly).
-- The global `app` registry implements resource tracking and loaders: `loadScript(url, key?)`, `loadStyle(url, key?)`, and `loadResources(urls[])`. It records loaded resources to avoid double-loading.
+## 2. Core Architecture
+### 2.1 The Runtime (`core-engine.ts`)
+The package centers around a singleton runtime exposed as the `core` object. This acts as the exclusive bridge for all library operations.
+* **Canonical Import**: `{ app, be, core }` from `/src/lib/core-engine.ts`.
+* **Global Registry**: Attached to `window.__idae_app` for cross-context resource tracking.
+* **Abstraction Layer**: Components must **never** import `@medyll/idae-be` directly. They must interface through the `core` and `be` proxies.
 
-**Detected intentions & leads**
-- Build a library of HTML components (the user's stated goal). The repo mixes Svelte tooling and plain HTML examples, indicating two parallel aims:
-  - produce reusable HTML fragments / modules (vanilla HTML usage), and
-  - use Svelte/Vite to author, preview, and package components.
-- `moduleLib/resizePanel` shows a concrete component implementation and a pattern for future components (a small JS module exposing behavior).
-- Example/demo pages (`example.html`, `module.html`, `src/source/+page.svelte`) suggest the author wants easy local previews and embedable examples.
-- `cli.cjs` + `package-pre.js` show intent for an automated packaging flow (prepackage / build hooks).
+### 2.2 Component Registration (`ComponentSpec`)
+Components are registered via `core.registerComponent(name, spec)`. The `spec` object defines behavior, dependencies, and data schema.
 
-**Source files analysis (src/source)**
-- `+page.svelte` ([packages/idae-html/src/source/+page.svelte](packages/idae-html/src/source/+page.svelte)):
-  - Svelte test/preview page that imports `$lib/htmluModules.js` and uses `cssDom`/`htmlDom` helpers.
-  - Demonstrates runtime behaviors: periodic DOM updates (`playIt()`), conditional module mounting (`data-htmlu-module-id`, `data-auto-track`) and custom data attributes (`data-cssDom`, `data-htmlu-*`).
-  - Signals: author uses Svelte for interactive preview and relies on library runtime APIs to wire behavior to DOM attributes.
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| **`script`** | `(root, props) => void \| Function` | **Mandatory.** The hydration logic. Receives the element and parsed props. **Must return a cleanup function** if listeners need to be removed on unmount. |
+| **`props`** | `Record<string, any>` | Default values and schema for data-attributes. Used to parse `data-*` attributes into typed values. |
+| **`resources`** | `string[]` | List of external JS/CSS URLs required before the `script` can execute (e.g., specific charting libs). |
+| **`on`** | `Record<string, Function>` | Global event listeners (e.g., `resize`, `scroll`) managed efficiently by the engine for component instances. |
+| **`meta`** | `Object` | Metadata for tooling (author, version, description). |
 
-- `content.html` ([packages/idae-html/src/source/content.html](packages/idae-html/src/source/content.html)):
-  - Shows a declarative content syntax (custom elements/templating tags like `<loop>`, `<if>`, `<bind>`) and usage of `ResizeObserver` and `data binding` placeholders.
-  - Signals: there is either a custom runtime that parses these tags or they are examples for a templating layer; indicates ambition for higher-level HTML DSL or micro-templates.
+---
 
-- `example.html` ([packages/idae-html/src/source/example.html](packages/idae-html/src/source/example.html)):
-  - Small demo that runs `cssDom(...).each(...)` and an inline `<script data-attr="htmludom">` block which binds `window.der`, etc.
-  - Signals: examples include inline behavior scripts that expect to be executed in the page context and rely on `data-attr` attributes to attach behavior.
+## 3. Lifecycle & Hydration Mechanics
 
-- `module.html` ([packages/idae-html/src/source/module.html](packages/idae-html/src/source/module.html)):
-  - Another demo with Svelte-like `PageData` typing at top and inline `data-attr="htmludom"` script. Intended as a module preview page.
-  - Signals: mixing of Svelte typing with vanilla HTML demo—used for previewing modules inside Svelte routing.
+### 3.1 Automated Detection (MutationObserver)
+The engine utilizes a global `MutationObserver` to ensure zero-latency hydration and cleanup:
+* **`addedNodes`**: Automatically detects new elements with `[data-component="name"]` and triggers `initComponent`.
+* **`removedNodes`**: Detects when a hydrated component is removed from the DOM and executes the **cleanup function** returned by the `script` (stored in a `WeakMap`).
 
-Implications & recommended small fixes from the source files:
-- Inline scripts using `data-attr="htmludom"` should be refactored into separate modules under `src/lib/moduleLib/` and imported by preview pages—this clarifies packaging vs runtime responsibilities.
-- The custom templating tags in `content.html` need explicit documentation or an implementation; decide whether to keep them as examples for a future templating layer or remove them to avoid confusion.
-- Preserve `+page.svelte` as a development preview harness, but move stable examples to `examples/` and make them import the same modules that `dist/` will ship.
-- Add a short `EXAMPLES.md` or README in `src/source` describing how each file is intended to be used (preview, docs, or example embed), plus the runtime attributes (`data-auto-track`, `data-htmlu-module-id`, `data-cssDom`, `data-attr="htmludom"`).
+### 3.2 Hydration Logic (`initComponent`)
+For every detected instance of a component, the engine performs the following steps:
+1.  **Instance Guard**: Checks for a `data-hydrated` attribute to prevent double initialization.
+2.  **Resource Awaiting**: Pauses execution until all `resources` defined in the spec are loaded via `app.loadResources`.
+3.  **Prop Parsing**: Merges the `props` schema with the element's `dataset`. It automatically converts strings into typed values (booleans, numbers, JSON) so the script receives a clean object.
+4.  **Execution**: Calls `script(root, props)` and stores the returned cleanup function.
 
-- Ensure all examples and components follow the new `core` import convention and stop importing `@medyll/idae-be` directly. Consider adding a lint rule or CI check that flags direct `idae-be` imports inside `packages/idae-html`.
+---
 
-**Immediate issues & observations**
-- Build outputs in `.svelte-kit/__package__` appear committed — these should usually be generated and ignored (`.gitignore`) or moved to `dist/`.
-- The repository mixes source and generated artifacts; needs cleanup to make the source-of-truth clear.
-- Missing or incomplete documentation in `README.md` about how to build, preview, and publish the library.
+## 4. Authoring Patterns
 
-- `core-engine.ts` now provides the canonical runtime API; document its usage in `README.md` (example import, `core.app.loadResources([...])`, and the `core` object shape).
+### 4.1 Component File Structure (.html)
+Components are authored as portable HTML units:
+* **Markup**: Semantic HTML with ARIA roles and a `data-component="name"` identifier.
+* **Logic Module**: A `<script type="module">` that imports the engine and registers the spec.
 
-**Open questions (to decide next)**
-- What is the target consumer API? (vanilla HTML snippets, ES modules, web components, or Svelte-specific wrappers?)
-- Desired distribution formats: ESM only, UMD for browser direct use, or web components (custom elements)?
-- Publishing strategy: npm package (source + types), CDN bundle, or git-hosted examples?
+**Example: Tabs Component**
+```html
+<div data-component="tabs" data-initial-tab="1">
+  </div>
 
-**Recommended short-term next steps**
-- Clean repository: remove or gitignore generated artifacts in `.svelte-kit/__package__` and keep only `src/` as source.
-- Explicitly define target formats and export surface in `src/lib/index.ts` (decide whether to export web components, plain JS modules, or Svelte wrappers).
-- Consolidate packaging scripts: make `package.json` scripts predictable (`build`, `prepackage`, `preview`, `clean`, `pack`) and document them in `README.md`.
-- Create `examples/` or `docs/` that reuse `example.html` and `module.html` as static demos; provide a Vite dev preview for live editing.
-- Add a minimal CI check: `pnpm build` and a linter step to avoid committing built outputs.
-- Add a small test or validation harness for `resizePanel` behaviour (unit test or Playwright smoke demo) to anchor component API.
+<script type="module">
+  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
-- Run a verification sweep to ensure no files in `packages/idae-html` import `@medyll/idae-be` directly and update remaining files to import `core` instead. This is recommended before publishing.
+  core.registerComponent('tabs', {
+    props: { initialTab: 0 }, // Default value
+    resources: ['/libs/animation-utils.js'], // Dependency
+    script: (root, props)=> {
+      // props.initialTab is a number here
+      console.log('Init tabs with:', props.initialTab);
+      
+      const handler = () => { /* ... */ };
+      be(root).on('click', handler);
 
-**Longer-term suggestions**
-- Choose a publishing format and implement the build pipeline to output `dist/` artifacts (ESM + types, optional UMD), update `package.json` `main`/`module`/`types` fields.
-- Add documentation for component authoring guidelines (CSS strategy, class naming, accessibility checklist).
-- Consider a lightweight storybook-like preview (Vite pages) so designers/devs can explore components.
+      // Return cleanup function
+      return () => {
+         console.log('Tabs destroyed');
+      };
+    }
+  });
+</script>
+```
+### 4.2 The be() Helper
+Inside the script function, the be() proxy is the standard tool for:
 
-**References / quick file pointers**
-- Source: [packages/idae-html/src/lib/index.ts](packages/idae-html/src/lib/index.ts)
-- Example pages: [packages/idae-html/src/source/+page.svelte](packages/idae-html/src/source/+page.svelte)
-- CLI & scripts: [packages/idae-html/cli.cjs](packages/idae-html/cli.cjs)  [packages/idae-html/scripts/package-pre.js](packages/idae-html/scripts/package-pre.js)
-- Existing compiled package artifacts: [packages/idae-html/.svelte-kit/__package__/index.js](packages/idae-html/.svelte-kit/__package__/index.js)
- 
-**Web components (English)**
+Scoped event listeners: be(root).on('click', ...)
 
-- Purpose: `idae-html` is a lightweight library of web components and small HTML-driven UI primitives. Components follow the Custom Elements / web-components style but remain "quasi-raw": minimal runtime, plain HTML templates, and small focused behavior modules rather than large framework abstractions.
+Declarative DOM updates: be(el).setAttr('hidden', '')
 
-- Usage modes: components can be consumed in multiple ways:
-  - Direct page load: include the built bundle or a runtime script in a page (`<script src="/path/to/idae-html/dist/index.js" type="module"></script>` or non-module bundles) and use components and attributes directly in HTML.
-  - ES module import: import component modules as ESM (for bundlers or native module loading): `import { MyComponent } from '.../idae-html/dist/index.js'`.
-  - Over HTTP / CDN: serve the built module file(s) from a CDN or static HTTP server and reference them by URL (supports dynamic import and static module script tags).
+State synchronization between DOM attributes and internal logic.
 
-- Integration style: components are intended to be used directly in markup (data-attributes, custom tags, or by registering Custom Elements). The runtime exposes a small `core` surface (see `src/lib/core-engine.ts`) for resource loading, component registration, and helper utilities — consumers may rely on `window.__idae_app` or import the `core` object when using modules.
+## 5. Build & Distribution
+Target Consumer: Can be used via <script type="module"> (direct browser), ESM imports (Vite/Webpack), or CDN.
 
-- Design goals: minimal JS overhead, easy to embed in legacy pages, compatible with module-based applications, and simple to host via HTTP/CDN. The library deliberately avoids heavy frameworks: it favors tiny behavior modules, declarative attributes, and raw HTML fragments.
+Artifacts: The build process ensures .html component files and their associated static assets are correctly mapped in the dist/ output.
 
+Scaffold: Svelte/Vite toolchain is preserved solely for previewing, testing, and bundling the core engine.
+
+## 6. Constraints & Standards
+Scoping: All logic must be scoped to the root element provided to the script.
+
+No Direct Coupling: Direct imports of @medyll/idae-be are strictly forbidden.
+
+Performance: Heavy logic should be deferred until necessary resources are loaded by the engine.

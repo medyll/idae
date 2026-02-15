@@ -37,38 +37,47 @@
   })();
 
   core.registerComponent('exampleInline', {
-    script(root){
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const insertBtn = rootEl.querySelector('[data-insert]') as HTMLElement | null;
-    const insert5Btn = rootEl.querySelector('[data-insert-5]') as HTMLElement | null;
-    const container = rootEl.querySelector('[data-container]') as HTMLElement | null;
-    if (!insertBtn || !insert5Btn || !container) return;
+    script: (root, props)=> {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const insertBtn = rootEl.querySelector('[data-insert]') as HTMLElement | null;
+      const insert5Btn = rootEl.querySelector('[data-insert-5]') as HTMLElement | null;
+      const container = rootEl.querySelector('[data-container]') as HTMLElement | null;
+      if (!insertBtn || !insert5Btn || !container) return;
 
-    async function insertOne(){
-      const res = await fetch('/packages/idae-html/dist/exampleInline.html');
-      const text = await res.text();
-      const wrapperBe = createBe('div'); wrapperBe.update(text);
-      const styleBe = wrapperBe.find('style'); const scriptBe = wrapperBe.find('script');
-      const styleEl = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
-      const scriptEl = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
-      if (styleEl){
-        const existing = be('head').find('style[data-component="exampleInline"]');
-        const found = existing.node;
-        const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
-        if (!hasExisting){ const sBe = createBe('style', { attributes: { 'data-component': 'exampleInline' } }); sBe.update(styleEl.textContent || ''); be('head').append(sBe); }
+      async function insertOne(){
+        const res = await fetch('/packages/idae-html/dist/exampleInline.html');
+        const text = await res.text();
+        const wrapperBe = createBe('div'); wrapperBe.update(text);
+        const styleBe = wrapperBe.find('style'); const scriptBe = wrapperBe.find('script');
+        const styleEl = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
+        const scriptEl = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
+        if (styleEl){
+          const existing = be('head').find('style[data-component="exampleInline"]');
+          const found = existing.node;
+          const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
+          if (!hasExisting){ const sBe = createBe('style', { attributes: { 'data-component': 'exampleInline' } }); sBe.update(styleEl.textContent || ''); be('head').append(sBe); }
+        }
+        if (scriptEl){ const scBe = createBe('script'); scBe.update(scriptEl.textContent || ''); be('head').append(scBe); }
+        const elBe = createBe('div', { className: 'card' });
+        const innerBe = createBe('div', { attributes: { 'data-component': 'exampleInline' } });
+        elBe.append(innerBe);
+        be(container).append(elBe);
+        const init = (window as any)['exampleInline'] || (window as any)['exampleInline'.replace(/[^a-zA-Z0-9]/g,'_')];
+        const innerEl = Array.isArray(innerBe.node) ? innerBe.node[0] : (innerBe.node as HTMLElement);
+        if (typeof init === 'function') init(innerEl);
       }
-      if (scriptEl){ const scBe = createBe('script'); scBe.update(scriptEl.textContent || ''); be('head').append(scBe); }
-      const elBe = createBe('div', { className: 'card' });
-      const innerBe = createBe('div', { attributes: { 'data-component': 'exampleInline' } });
-      elBe.append(innerBe);
-      be(container).append(elBe);
-      const init = (window as any)['exampleInline'] || (window as any)['exampleInline'.replace(/[^a-zA-Z0-9]/g,'_')];
-      const innerEl = Array.isArray(innerBe.node) ? innerBe.node[0] : (innerBe.node as HTMLElement);
-      if (typeof init === 'function') init(innerEl);
-    }
 
-    be(insertBtn).on('click', insertOne);
-    be(insert5Btn).on('click', ()=>{ for(let i=0;i<5;i++) insertOne(); });
-    insertOne();
-  }});
+      be(insertBtn).on('click', insertOne);
+      be(insert5Btn).on('click', ()=>{ for(let i=0;i<5;i++) insertOne(); });
+      insertOne();
+    },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'An example component that dynamically loads and inserts other components.'
+    }
+  });
 </script>

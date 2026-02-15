@@ -22,7 +22,7 @@
   import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('modal', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const openEl = rootEl.querySelector('[data-open]') as HTMLElement | null;
     const backdropEl = rootEl.querySelector('[data-backdrop]') as HTMLElement | null;
@@ -63,5 +63,14 @@
     openBe.on('click', openDialog);
     be(closeEl).on('click', closeDialog);
     backdropBe.on('click', (e)=>{ if (e.target === backdropEl) closeDialog(); });
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A modal dialog component with focus trapping and keyboard navigation.'
+    }
+  });
 </script>

@@ -20,7 +20,7 @@
   import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('inputs', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const formEl = rootEl.querySelector('form') as HTMLFormElement | null;
     if (!formEl) return;
@@ -51,5 +51,14 @@
       if (!/\+?\d{2,}/.test(((formEl.elements as any)['phone'].value || ''))){ setError('phone','Enter a valid phone'); ok=false; } else setError('phone','');
       if (ok) alert('Form OK — '+JSON.stringify({name:(formEl.elements as any)['name'].value, age: (formEl.elements as any)['age'].value, phone: (formEl.elements as any)['phone'].value}));
     });
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A form inputs component with validation and masking.'
+    }
+  });
 </script>

@@ -35,6 +35,11 @@
       <li><a href="./toast/index.html">toast</a></li>
       <li><a href="./inputs/index.html">inputs</a></li>
       <li><a href="./progress/index.html">progress</a></li>
+      <li><a href="./accordion/index.html">accordion</a></li>
+      <li><a href="./carousel/index.html">carousel</a></li>
+      <li><a href="./tooltip/index.html">tooltip</a></li>
+      <li><a href="./sidebar/index.html">sidebar</a></li>
+      <li><a href="./card/index.html">card</a></li>
     </ul>
   </div>
 </div>
@@ -43,7 +48,7 @@
   import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('components-index', {
-    script(root){
+    script: (root, props)=> {
       const rootEl = (root instanceof Element) ? root : (root as any).node || document;
       const exResize = rootEl.querySelector('[data-ex-resize]');
       const loadResize = rootEl.querySelector('[data-load-resize]');
@@ -76,5 +81,14 @@
         // automatically load one exampleInline for preview
         loadExampleInline();
       }
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'An index component that loads and demonstrates other components.'
+    }
+  });
 </script>

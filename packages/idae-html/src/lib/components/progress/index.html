@@ -25,7 +25,7 @@
   import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
   core.registerComponent('progress', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const fillEl = rootEl.querySelector('[data-fill]') as HTMLElement | null;
     const startEl = rootEl.querySelector('[data-start]') as HTMLElement | null;
@@ -45,5 +45,14 @@
       const show = (spinEl.style.display === 'none') ? 'inline-block' : 'none';
       spinBe.setStyle({ display: show });
     });
-  }});
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A progress bar and spinner component for indicating loading states.'
+    }
+  });
 </script>
