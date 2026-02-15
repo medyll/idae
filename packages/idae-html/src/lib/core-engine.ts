@@ -8,6 +8,8 @@ import * as domMod from '/packages/idae-dom-events/src/lib/index.js';
 import * as statorMod from '/packages/idae-stator/src/lib/index.js';
 // Include idae-csss so core can redistribute styling helpers
 import * as csssMod from '/packages/idae-csss/src/lib/index.ts';
+// Optional: idae-idbql persistence helpers (exposed when package is present in monorepo)
+import * as idbqlMod from '/packages/idae-idbql/src/lib/index.js';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -110,6 +112,10 @@ const createStator = (statorMod as any).createStator || (statorMod as any).defau
 const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
 const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
 const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
+// idae-idbql helpers (may be undefined if package not present at runtime)
+const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
+const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
+const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
 function registerComponent(name: string, value: any) {
   // Accept either a function initializer (legacy) or an object spec { script: fn, style?: string, meta?: {...} }
   const spec = (typeof value === 'function') ? { script: value } : value || {};
@@ -160,6 +166,10 @@ export const core = {
   csss,
   CsssNode,
   csssParser : OpCssParser,
+  // persistence helpers (optional)
+  createIdbqDb,
+  createIdbqlState,
+  idbql,
   // registry helpers
   registerComponent,
   initComponent,

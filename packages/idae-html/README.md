@@ -18,6 +18,42 @@
 - DOM parsing and manipulation utilities
 - Integrates with other Idae packages for UI, data flow, and state management
 
+## Persistence (IndexedDB)
+
+This package exposes optional helpers that integrate with the monorepo's IndexedDB query layer `@medyll/idae-idbql` when that package is available in the workspace/runtime. The core runtime (`core`) will provide the following helpers when `idae-idbql` is present:
+
+- `core.createIdbqDb(model, version)` — create an IndexedDB instance for the given model and version.
+- `core.createIdbqlState(idbqlInstance, options)` — create a reactive state surface for use in UI examples.
+- `core.idbql` — passthrough to the idbql API when available.
+
+These helpers are optional: `idae-html` will still work without `idae-idbql` installed, but persistence-related helpers will be `undefined`.
+
+Example (browser/demo usage):
+
+```js
+import { core } from '/packages/idae-html/src/lib/core-engine.js';
+
+// minimal model example
+const model = {
+  notes: { keyPath: '++id, created_at' }
+};
+
+// create DB (if helper is present)
+if (core.createIdbqDb) {
+  const store = core.createIdbqDb(model, 1);
+  const { idbql, idbqlState } = store.create('demo-db');
+
+  // add a note
+  idbql.notes.add({ content: 'hello', created_at: Date.now() });
+
+  // reactive state (optional)
+  if (core.createIdbqlState) {
+    const state = core.createIdbqlState(idbql);
+    // use state in examples or derived UI
+  }
+}
+```
+
 ## Usage
 Import the required helpers from the package:
 ```js
