@@ -51,11 +51,15 @@ Components are authored as portable HTML units:
 
 **Example: Tabs Component**
 ```html
+<style>
+ .className {}
+</style>
+
 <div data-component="tabs" data-initial-tab="1">
   </div>
 
 <script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('tabs', {
     props: { initialTab: 0 }, // Default value

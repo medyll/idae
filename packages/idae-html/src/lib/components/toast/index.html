@@ -4,7 +4,7 @@
   .toast{background:var(--color-popover);color:var(--color-popover-foreground);padding:8px 12px;border-radius:6px;min-width:180px}
 </style>
 
-<h1 class="font-lg text-foreground">Toast</h1>
+
 <div data-component="toast" class="toast-root">
   <button data-push>Push toast</button>
   <div class="toast-area" data-toasts></div>
@@ -15,26 +15,26 @@
 
   core.registerComponent('toast', {
     script: (root, props)=> {
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
-    const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
-    if (!pushEl || !toastsEl) return;
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
+      const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
+      if (!pushEl || !toastsEl) return;
 
-    function push(text: string, ttl=3000){
-      const id = Math.random().toString(36).slice(2,9);
-      be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
-        setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
-      });
-      return id;
-    }
+      function push(text: string, ttl=3000){
+        const id = Math.random().toString(36).slice(2,9);
+        be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
+          setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
+        });
+        return id;
+      }
 
-    function onPush(){ push('Notification at '+new Date().toLocaleTimeString()); }
-    be(pushEl).on('click', onPush);
+      function onPush(){ push('Notification at '+new Date().toLocaleTimeString()); }
+      be(pushEl).on('click', onPush);
 
-    return () => {
-      try{ be(pushEl).off('click', onPush); }catch(e){}
-    };
-  },
+      return () => {
+        try{ be(pushEl).off('click', onPush); }catch(e){}
+      };
+    },
     props: {},
     resources: [],
     on: {},
