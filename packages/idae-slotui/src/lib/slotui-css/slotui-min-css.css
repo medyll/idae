@@ -2514,19 +2514,6 @@ body[data-theme=dark],
   width: 100%;
 }
 
-/** sorterer.scss ----------------*/
-:root {
-  --sorterer-gap: var(--sld-gap-tiny);
-}
-
-.sorterer {
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--sorterer-gap);
-}
-
 /** loader.scss ----------------*/
 :root {
   --loader-background-color: var(--sld-color-background-alpha-mid);
@@ -2577,6 +2564,19 @@ body[data-theme=dark],
 
 /** jsoner.scss ----------------*/
 /* SCSS placeholder for Jsoner */
+
+/** sorterer.scss ----------------*/
+:root {
+  --sorterer-gap: var(--sld-gap-tiny);
+}
+
+.sorterer {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sorterer-gap);
+}
 
 /** grouper.scss ----------------*/
 /* SCSS placeholder for Grouper */
