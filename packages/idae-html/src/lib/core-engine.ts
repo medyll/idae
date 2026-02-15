@@ -198,6 +198,13 @@ function autoInitRegisteredComponents() {
   }
 }
 
+/**
+ * Sets up a MutationObserver to detect when components enter or leave the DOM.
+ * Automatically initializes newly added components and logs when components are removed.
+ * @example
+ * import { core } from '/packages/idee-html/src/lib/core-engine.ts';
+ * core.setupDomObserver();
+ */
 function setupDomObserver() {
   htmlDom.track(document.body, {
     onChildListChange: (element: Node, mutation: MutationRecord, observer: MutationObserver) => {

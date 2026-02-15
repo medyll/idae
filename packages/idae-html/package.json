@@ -7,7 +7,7 @@
   "version": "1.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medyll/idae.git"
+    "url": "git+https://github.com/medyll/idae.git"
   },
   "scripts": {
     "dev": "vite dev",

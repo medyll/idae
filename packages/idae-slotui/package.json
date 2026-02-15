@@ -7,7 +7,7 @@
   "version": "0.181.4",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medyll/idae.git"
+    "url": "git+https://github.com/medyll/idae.git"
   },
   "scope": "medyll",
   "description": "A Svelte 5 component library for building modular and reactive user interfaces.",

@@ -45,11 +45,11 @@
 </div>
 
 <script type="module">
-  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.js';
 
   core.registerComponent('components-index', {
     script: (root, props)=> {
-      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const rootEl = (root instanceof Element) ? root : root.node || document;
       const exResize = rootEl.querySelector('[data-ex-resize]');
       const loadResize = rootEl.querySelector('[data-load-resize]');
       const exExample = rootEl.querySelector('[data-ex-exampleInline]');
@@ -57,21 +57,21 @@
       async function loadResizePanel(){
         const mod = await import('/src/lib/moduleLib/resizePanel.ts');
         const init = mod.resizePanel || mod.default;
-        const containerBe = be(exResize as HTMLElement);
+        const containerBe = be(exResize);
         const elBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
         elBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
         containerBe.append(elBe);
-        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
+        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node);
         if (typeof init === 'function') init(el);
       }
 
       async function loadExampleInline(){
         const mod = await import('/src/lib/moduleLib/exampleInline.ts');
         const init = mod.exampleInline || mod.default;
-        const containerBe = be(exExample as HTMLElement);
+        const containerBe = be(exExample);
         const elBe = createBe('div', { className: 'example-inline' });
         containerBe.append(elBe);
-        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
+        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node);
         if (typeof init === 'function') init(el);
       }
 
