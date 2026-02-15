@@ -1,0 +1,33 @@
+<style>
+  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .toast-area{position:fixed;right:16px;top:16px;display:flex;flex-direction:column;gap:8px;z-index:999}
+  .toast{background:#333;color:#fff;padding:8px 12px;border-radius:6px;min-width:180px}
+</style>
+
+<h1>Toast</h1>
+<div data-component="toast">
+  <button data-push>Push toast</button>
+  <div class="toast-area" data-toasts></div>
+</div>
+
+<script type="module">
+  import { be, toBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  core.registerComponent('toast', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
+    const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
+    if (!pushEl || !toastsEl) return;
+
+    function push(text: string, ttl=3000){
+      const id = Math.random().toString(36).slice(2,9);
+      be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
+        setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
+      });
+      return id;
+    }
+
+    be(pushEl).on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
+  }});
+</script>

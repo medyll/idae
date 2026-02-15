@@ -1,9 +1,15 @@
 {
   "dry-run": false,
   "pre-id": "next",
-  "verbose": true,
+  "verbose": false,
   "build": false,
   "package": true,
   "regenerate-changelog": false,
-  "generate-readme-root": true
+  "generate-readme-root": false,
+  "ignore-file-changes": [
+    "CHANGELOG.md",
+    "package.json",
+    "README.md",
+    "index.ts"
+  ]
 }

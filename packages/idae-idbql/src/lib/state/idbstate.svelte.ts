@@ -7,6 +7,7 @@ interface IdbqlIndexedCore {
 }
 import type { CollectionCore } from "$lib/collection/collection.svelte.js";
 import { idbqlEvent } from "./idbqlEvent.svelte.js";
+import { createStatorAdapter } from "./statorAdapter.js";
 //
 import {
   Operators,
@@ -26,8 +27,17 @@ type IDBCollections<T> = {
  * @param {IdbqlIndexedCore} [idbBase] - The IdbqlCore instance.
  * @returns {object} - The state object.
  */
-export const createIdbqlState = (idbBase: IdbqlIndexedCore) => {
+export const createIdbqlState = (
+  idbBase: IdbqlIndexedCore,
+  options?: { adapter?: "svelte" | "stator"; adapterOptions?: any },
+) => {
   let collections: Record<string, CollectionState<any>> = {};
+
+  // setup stator adapter if requested
+  if (options?.adapter === "stator") {
+    const adapter = createStatorAdapter(options?.adapterOptions);
+    idbqlEvent.registerAdapter(adapter as any);
+  }
 
   if (idbBase.schema) {
     addCollections(idbBase.schema);

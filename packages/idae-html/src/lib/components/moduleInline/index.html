@@ -1,0 +1,41 @@
+<style>body{font-family:system-ui,Arial,sans-serif;padding:16px}</style>
+
+<h1>moduleInline — demo</h1>
+<p>This demo inserts the moduleInline component and shows interaction examples.</p>
+
+<div data-component="moduleInline">
+  <div data-holder></div>
+</div>
+
+<script type="module">
+  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  core.registerComponent('moduleInline', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const holder = rootEl.querySelector('[data-holder]') as HTMLElement | null;
+    if (!holder) return;
+
+    async function load(){
+      const res = await fetch('/packages/idae-html/dist/moduleInline.html');
+      const text = await res.text();
+      const wrapperBe = createBe('div'); wrapperBe.update(text);
+      const styleBe = wrapperBe.find('style'); const scriptBe = wrapperBe.find('script');
+      const styleEl = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
+      const scriptEl = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
+      if (styleEl){
+        const existing = be('head').find('style[data-component="moduleInline"]');
+        const found = existing.node;
+        const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
+        if (!hasExisting){ const sBe = createBe('style', { attributes: { 'data-component':'moduleInline' } }); sBe.update(styleEl.textContent || ''); be('head').append(sBe); }
+      }
+      if (scriptEl){ const scBe = createBe('script'); scBe.update(scriptEl.textContent || ''); be('head').append(scBe); }
+      const nodeBe = createBe('div', { attributes: { 'data-component': 'moduleInline' } });
+      be(holder).append(nodeBe);
+      const init = (window as any)['moduleInline'] || (window as any)['moduleInline'.replace(/[^a-zA-Z0-9]/g,'_')];
+      const node = Array.isArray(nodeBe.node) ? nodeBe.node[0] : (nodeBe.node as HTMLElement);
+      if (typeof init === 'function') init(node);
+    }
+    load();
+  }});
+</script>

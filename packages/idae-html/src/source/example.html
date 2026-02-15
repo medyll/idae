@@ -1,0 +1,27 @@
+<div id="example">
+    <h3>HTML component demo (resizePanel)</h3>
+    <div id="insertion"></div>
+</div>
+
+<script>
+    async function loadComponent() {
+        try {
+            const res = await fetch('/packages/idae-html/dist/resizePanel.html');
+            if (!res.ok) return console.error('component fetch failed', res.status);
+            const text = await res.text();
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = text;
+            // find template inside
+            const tmpl = wrapper.querySelector('template');
+            if (tmpl) {
+                const clone = tmpl.content.cloneNode(true);
+                document.getElementById('insertion').appendChild(clone);
+            } else {
+                // fallback: insert body contents
+                const body = wrapper.querySelector('body');
+                if (body) document.getElementById('insertion').innerHTML = body.innerHTML;
+            }
+        } catch (e) { console.error(e); }
+    }
+    loadComponent();
+</script>

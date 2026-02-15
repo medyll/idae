@@ -1,0 +1,67 @@
+<style>
+  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+  .dialog{background:#fff;padding:20px;border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .hidden{display:none}
+</style>
+
+<h1>Modal</h1>
+<div data-component="modal">
+  <button data-open>Open modal</button>
+
+  <div data-backdrop class="backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="dialog" tabindex="-1">
+      <h2 id="dlg-title">Dialog title</h2>
+      <p>This is a demo modal. Press ESC or click outside to close. Focus is trapped.</p>
+      <button data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  core.registerComponent('modal', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const openEl = rootEl.querySelector('[data-open]') as HTMLElement | null;
+    const backdropEl = rootEl.querySelector('[data-backdrop]') as HTMLElement | null;
+    if (!openEl || !backdropEl) return;
+    const closeEl = backdropEl.querySelector('[data-close]') as HTMLElement | null;
+    const dialog = backdropEl.querySelector('.dialog') as HTMLElement | null;
+    if (!dialog || !closeEl) return;
+
+    const openBe = be(openEl);
+    const backdropBe = be(backdropEl);
+    let lastActive: Element | null = null;
+
+    function trapFocus(e: KeyboardEvent){
+      const focusable = Array.from(dialog.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) return;
+      const first = focusable[0] as HTMLElement, last = focusable[focusable.length-1] as HTMLElement;
+      if (e.key === 'Tab'){
+        if ((e as any).shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+        else if (!(e as any).shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+    }
+
+    function openDialog(){
+      lastActive = document.activeElement;
+      backdropBe.removeClass('hidden');
+      dialog.focus();
+      be('body').on('keydown', onKey);
+      be(dialog).on('keydown', trapFocus as any);
+    }
+    function closeDialog(){
+      backdropBe.addClass('hidden');
+      be('body').off('keydown', onKey);
+      be(dialog).off('keydown', trapFocus as any);
+      if (lastActive) (lastActive as HTMLElement).focus();
+    }
+    function onKey(e: KeyboardEvent){ if (e.key === 'Escape') closeDialog(); }
+
+    openBe.on('click', openDialog);
+    be(closeEl).on('click', closeDialog);
+    backdropBe.on('click', (e)=>{ if (e.target === backdropEl) closeDialog(); });
+  }});
+</script>

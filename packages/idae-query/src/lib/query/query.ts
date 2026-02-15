@@ -23,8 +23,9 @@ export class Query<T extends object> {
 		}
 
 		return Object.entries(query).every(([key, value]) => {
-			if (Operators.operators.includes(key as Operator)) {
-				return Operators.filters(key as Operator, 'eq', value, [item]).length > 0;
+			const keyNorm = typeof key === 'string' && key.startsWith('$') ? (key.slice(1) as Operator) : (key as Operator);
+			if (Operators.operators.includes(keyNorm)) {
+				return Operators.filters(keyNorm, 'eq', value, [item]).length > 0;
 			} else {
 				return this.matchesField(item, key as keyof T, value);
 			}
@@ -33,9 +34,10 @@ export class Query<T extends object> {
 
 	private matchesField(item: T, field: keyof T, condition: any): boolean {
 		if (typeof condition === 'object' && condition !== null && !Array.isArray(condition)) {
-			return Object.entries(condition).every(
-				([op, val]) => Operators.filters(field, op as Operator, val, [item]).length > 0
-			);
+			return Object.entries(condition).every(([op, val]) => {
+				const opNorm = typeof op === 'string' && op.startsWith('$') ? (op.slice(1) as Operator) : (op as Operator);
+				return Operators.filters(field, opNorm, val, [item]).length > 0;
+			});
 		}
 		return Operators.filters(field, 'eq', condition, [item]).length > 0;
 	}

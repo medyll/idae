@@ -1,7 +1,10 @@
 /* constants/constants.ts */
 import type { Cadence } from '$lib/types/types';
 
-// Definition of common musical cadences
+/**
+ * Liste des cadences musicales communes. Chaque cadence contient un nom
+ * et la séquence des degrés (chiffres romains) qui la définissent.
+ */
 export const cadencePatterns: Cadence[] = [
 	{ name: 'Perfect', chords: ['V', 'I'] },
 	{ name: 'Plagal', chords: ['IV', 'I'] },
@@ -12,10 +15,12 @@ export const cadencePatterns: Cadence[] = [
 	{ name: 'Phrygian', chords: ['IV', 'V', 'III'] }
 ];
 
-// Fundamental root notes in order
+/** Ordre des notes tonales fondamentales (utilisé pour conversion en chiffres romains). */
 export const rootNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-// Different chord qualities grouped by category
+/**
+ * Qualités d'accords groupées par catégorie (mode, altérations, suspensions, septièmes).
+ */
 export const qualities = {
 	mode: ['maj', 'min'],
 	augDim: ['aug', 'dim'],
@@ -23,10 +28,13 @@ export const qualities = {
 	sept: ['7', '5']
 };
 
-// Modifier symbols (sharp, flat, natural)
+/** Symboles d'altération supportés (dièse, bémol, naturel). */
 export const modifiers = ['♯', '♭', '♮'];
 
-// Armor options with alteration value and key name
+/**
+ * Options d'armure (alterations) : chaque objet contient la valeur d'altération
+ * et le nom de la tonalité associée.
+ */
 export const armorOptions = [
 	{ value: '', name: 'C' },
 	{ value: '1♯', name: 'G' },
@@ -45,5 +53,5 @@ export const armorOptions = [
 	{ value: '7♭', name: 'C♭' }
 ];
 
-// Musical modes
+/** Tableau des modes musicaux diatoniques courants. */
 export const modes = ['Ionian', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian', 'Aeolian', 'Locrian'];

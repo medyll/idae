@@ -33,14 +33,16 @@
   "keywords": [
     "idae",
     "css",
+    "scss",
     "utility",
     "typescript",
-    "svelte"
+    "svelte",
+    "unocss"
   ],
   "author": "Lebrun Meddy",
   "license": "ISC",
-  "packageManager": "pnpm@10.28.0",
-  "scope": "@medyll",
+  "packageManager": "pnpm@10.29.1",
+  "scope": "medyll",
   "peerDependencies": {
     "svelte": "^5.0.0"
   },
@@ -48,17 +50,29 @@
     "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
-    "@sveltejs/adapter-auto": "^5.0.0",
-    "@sveltejs/kit": "^2.20.2",
-    "@sveltejs/package": "^2.3.10",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@sveltejs/adapter-auto": "^7.0.0",
+    "@sveltejs/kit": "^2.50.2",
+    "@sveltejs/package": "^2.5.7",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "postcss": "^8.5.6",
-    "publint": "^0.3.7",
-    "svelte": "^5.25.3",
-    "svelte-check": "^4.1.5",
+    "publint": "^0.3.17",
+    "svelte": "^5.50.0",
+    "svelte-check": "^4.3.6",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.3",
-    "vitest": "^3.0.9"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
   }
 }

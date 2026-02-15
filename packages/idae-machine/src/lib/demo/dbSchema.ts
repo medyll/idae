@@ -163,7 +163,7 @@ export const schemeModelDb = {
   prompts: {
     keyPath: "++id, created_at",
     model: {},
-    ts: {} as PromptType,
+    ts: {} ,
     template: {
       index: "id",
       presentation: "name",
@@ -306,8 +306,8 @@ export const schemeModelDb = {
 
   character: {
     keyPath: "++id, bookId",
-    model: {} as DbCharacter,
-    ts: {} as DbCharacter,
+    model: {} ,
+    ts: {}  ,
     template: {
       index: "id",
       presentation: "firstName lastName",
@@ -354,8 +354,8 @@ export const schemeModelDb = {
   },
   characterAttributes: {
     keyPath: "++id",
-    model: {} as DbCharacter,
-    ts: {} as DbCharacter,
+    model: {} ,
+    ts: {}  ,
     template: {
       index: "id",
       presentation: "name",
@@ -371,8 +371,8 @@ export const schemeModelDb = {
   },
   characterLink: {
     keyPath: "++id",
-    model: {} as DbCharacterLink,
-    ts: {} as DbCharacterLink,
+    model: {} ,
+    ts: {}  ,
     template: {
       index: "id",
       presentation: "type",
@@ -394,8 +394,8 @@ export const schemeModelDb = {
   },
   characterChapterStatus: {
     keyPath: "++id, characterId, chapterId",
-    model: {} as DbCharacterChapterStatus,
-    ts: {} as DbCharacterChapterStatus,
+    model: {} ,
+    ts: {}  ,
     template: {
       index: "id",
       presentation: "characterId chapterId status",
@@ -428,8 +428,8 @@ export const schemeModelDb = {
 
   bookPrompts: {
     keyPath: "++id, bookId",
-    model: {} as DbBookPrompts,
-    ts: {} as DbBookPrompts,
+    model: {} ,
+    ts: {}  ,
     template: {
       index: "id",
       presentation: "name",

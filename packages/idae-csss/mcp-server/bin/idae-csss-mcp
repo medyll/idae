@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+/* small npx entrypoint — requires compiled dist to exist */
+try {
+  require("../dist/index.js");
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error(
+    "Failed to run idae-csss-mcp: make sure you ran `pnpm --filter @workspace_idae-csss-mcp-server build` or installed the package.",
+  );
+  // eslint-disable-next-line no-console
+  console.error(err?.message || err);
+  process.exit(1);
+}

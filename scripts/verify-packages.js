@@ -1,5 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const packagesDir = path.join(__dirname, "..", "packages");
 const packages = fs.readdirSync(packagesDir);
@@ -43,11 +47,41 @@ packages.forEach((packageName) => {
     console.log(`Fixed scope path for ${packageName}`);
   }
 
-  // Add scope if not exists
-  if (!packageJson.scope) {
-    packageJson.scope = "@medyll";
+  // Ensure scope field
+  if (!packageJson.scope || packageJson.scope !== "medyll") {
+    packageJson.scope = "medyll";
     modified = true;
-    console.log(`Added scope field to package ${packageName}`);
+    console.log(`Added/Fixed scope field to package ${packageName}`);
+  }
+
+  // Ensure repository field points to the monorepo
+  const repoUrl = "https://github.com/medyll/idae.git";
+  if (
+    !packageJson.repository ||
+    packageJson.repository.type !== "git" ||
+    packageJson.repository.url !== repoUrl
+  ) {
+    packageJson.repository = { type: "git", url: repoUrl };
+    modified = true;
+    console.log(`Added/Fixed repository field for ${packageName}`);
+  }
+
+  // Ensure author
+  if (!packageJson.author || packageJson.author !== "Lebrun Meddy") {
+    packageJson.author = "Lebrun Meddy";
+    modified = true;
+    console.log(`Added/Fixed author for ${packageName}`);
+  }
+
+  // Ensure publishConfig
+  if (
+    !packageJson.publishConfig ||
+    packageJson.publishConfig.access !== "public" ||
+    packageJson.publishConfig.directory !== "."
+  ) {
+    packageJson.publishConfig = { access: "public", directory: "." };
+    modified = true;
+    console.log(`Added/Fixed publishConfig for ${packageName}`);
   }
 
   // Force all @medyll/* dependencies to "workspace:*"
@@ -83,6 +117,7 @@ packages.forEach((packageName) => {
       );
       console.log(`Created scripts/prepackage-pre.js for ${packageName}`);
     }
+    packageJson.scripts = packageJson.scripts || {};
     packageJson.scripts[packagePre] = `node scripts/${packagePreFile}`;
     modified = true;
     console.log(`Added ${packagePre} field to package ${packageName}`);

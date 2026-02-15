@@ -1,0 +1,32 @@
+<style>
+  .demo{font-family:system-ui,Arial,sans-serif;padding:12px;border:1px dashed #ccc}
+  .panel{border:1px solid #eee;padding:8px;margin:8px 0}
+</style>
+
+<h2>slotDemo — démonstration `<slot>`</h2>
+<p>Ce composant montre un `slot` nommé `header` et un slot par défaut.</p>
+
+<div id="slot-demo" class="demo"></div>
+
+<script type="module">
+  import { core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  const template = `
+    <section class="panel">
+      <header><slot name="header">Header fallback</slot></header>
+      <div class="body"><slot>Default fallback content</slot></div>
+      <footer><small>footer</small></footer>
+    </section>
+  `;
+
+  const container = document.getElementById('slot-demo');
+  if (!container) throw new Error('missing container');
+
+  // Example: inject named slot and default slot (allowHtml=true to insert markup)
+  const frag = (core as any).renderHtmlWithSlots(template, {
+    header: '<h3>Injected header HTML</h3>',
+    default: '<p><strong>Injected</strong> default content</p>'
+  }, { allowHtml: true });
+
+  container.appendChild(frag);
+</script>
