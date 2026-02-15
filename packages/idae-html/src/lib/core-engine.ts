@@ -98,6 +98,9 @@ try {
 
 export const app = win.__idae_app as AppRegistry;
 
+// Track per-instance cleanup functions so we can call them when elements are removed
+const mountedCleanup: WeakMap<HTMLElement, Function> = new WeakMap();
+
 // Re-exports
 const be = (beMod as any).be;
 const toBe = (beMod as any).toBe;
@@ -131,12 +134,22 @@ function registerComponent(name: string, value: ComponentSpec) {
   const spec: ComponentSpec = value;
   app.registerComponent(name, spec);
 
-  if (spec.resources?.length) {
-    app.loadResources(spec.resources);
-  }
-  try { 
-    initComponent(name); 
-  } catch (e) { /* ignore */ }
+  // Ensure declared resources are loaded before initializing existing instances.
+  // Components should still guard against missing resources in their own logic,
+  // but the engine will attempt to await declared resources when possible.
+  (async () => {
+    try {
+      if (spec.resources?.length) {
+        await app.loadResources(spec.resources);
+      }
+    } catch (e) {
+      // ignore resource loading failures; components must handle missing deps
+    }
+
+    try {
+      initComponent(name);
+    } catch (e) { /* ignore */ }
+  })();
 }
 
 function parsePropsFromDataset(dataset: DOMStringMap): Record<string, any> {
@@ -169,13 +182,36 @@ function initComponent(name: string, root: ParentNode = document) {
   if (typeof script !== 'function') return;
 
   try {
-    const els = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)) : [];
-    els.forEach((el: any) => {
+    const els: HTMLElement[] = [];
+    // If the root itself is a matching element, include it
+    if ((root as any).nodeType === Node.ELEMENT_NODE) {
+      const rootEl = root as Element;
+      if (rootEl.getAttribute && rootEl.getAttribute('data-component') === name) {
+        els.push(rootEl as HTMLElement);
+      }
+    }
+
+    if ((root as any).querySelectorAll) {
+      Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)).forEach((e: Element) => els.push(e as HTMLElement));
+    }
+
+    els.forEach((el: HTMLElement) => {
       try {
+        // Prevent double initialization
+        if (el.hasAttribute('data-hydrated')) return;
+
         const defaultProps = comp.props || {};
         const elementProps = parsePropsFromDataset(el.dataset);
         const props = { ...defaultProps, ...elementProps };
-        script(el, props);
+
+        const maybeCleanup = script(el, props);
+        if (typeof maybeCleanup === 'function') {
+          mountedCleanup.set(el, maybeCleanup as Function);
+        }
+
+        try {
+          el.setAttribute('data-hydrated', '1');
+        } catch {}
       } catch (e) { console.error('component init error', name, e); }
     });
   } catch (e) { /* ignore */ }
@@ -226,8 +262,19 @@ function setupDomObserver() {
       });
       // When components leave the DOM
       mutation.removedNodes.forEach((node: Node) => {
-        console.log('Component left DOM:', node);
-        // Optionally, add cleanup logic here if needed
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as unknown as HTMLElement;
+          // Call cleanup if one was registered for this element
+          try {
+            const fn = mountedCleanup.get(el as HTMLElement);
+            if (typeof fn === 'function') {
+              try { fn(); } catch (e) { console.error('component cleanup error', e); }
+              mountedCleanup.delete(el as HTMLElement);
+            }
+          } catch (e) {
+            // ignore
+          }
+        }
       });
     }
   });

@@ -21,6 +21,7 @@
     "format": "prettier --write .",
     "prepackage": "node scripts/package-pre.js",
     "build:types": "tsc -p tsconfig.build.json",
+    "extract:inline": "node scripts/extract-inline-scripts.js",
     "build:dist": "node scripts/build-resizePanel.js"
     ,
     "build:html": "node scripts/build-html-component.js"

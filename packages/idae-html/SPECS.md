@@ -18,7 +18,7 @@ Components are registered via `core.registerComponent(name, spec)`. The `spec` o
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| **`script`** | `(root, props) => void \| Function` | **Mandatory.** The hydration logic. Receives the element and parsed props. **Must return a cleanup function** if listeners need to be removed on unmount. |
+| **`script`** | `(root, props) => void \| Function` | **Mandatory.** The hydration logic. Receives the element and parsed props. **May return a cleanup function** if listeners need to be removed on unmount — note: the engine currently does not automatically invoke cleanup on DOM removal (see 3.1 notes). |
 | **`props`** | `Record<string, any>` | Default values and schema for data-attributes. Used to parse `data-*` attributes into typed values. |
 | **`resources`** | `string[]` | List of external JS/CSS URLs required before the `script` can execute (e.g., specific charting libs). |
 | **`on`** | `Record<string, Function>` | Global event listeners (e.g., `resize`, `scroll`) managed efficiently by the engine for component instances. |
@@ -31,14 +31,14 @@ Components are registered via `core.registerComponent(name, spec)`. The `spec` o
 ### 3.1 Automated Detection (MutationObserver)
 The engine utilizes a global `MutationObserver` to ensure zero-latency hydration and cleanup:
 * **`addedNodes`**: Automatically detects new elements with `[data-component="name"]` and triggers `initComponent`.
-* **`removedNodes`**: Detects when a hydrated component is removed from the DOM and executes the **cleanup function** returned by the `script` (stored in a `WeakMap`).
+* **`removedNodes`**: Detects when a hydrated component is removed from the DOM. NOTE: the current implementation logs removed nodes but does not automatically execute a cleanup function — component cleanup must be handled by the component itself or the engine must be extended to track and invoke per-instance cleanup functions.
 
 ### 3.2 Hydration Logic (`initComponent`)
 For every detected instance of a component, the engine performs the following steps:
-1.  **Instance Guard**: Checks for a `data-hydrated` attribute to prevent double initialization.
-2.  **Resource Awaiting**: Pauses execution until all `resources` defined in the spec are loaded via `app.loadResources`.
+1.  **Instance Guard**: The engine currently does not enforce an automatic `data-hydrated` guard. Component implementations should protect against double initialization themselves (for example by setting and checking a `data-hydrated` attribute or an internal flag).
+2.  **Resource Awaiting**: The engine will trigger `app.loadResources` for the `resources` defined in the spec, but it does not reliably pause `script` execution until those resources are loaded. If a component depends on a resource being available before initialization, it should either await `app.loadResources(...)` itself or handle missing resources gracefully.
 3.  **Prop Parsing**: Merges the `props` schema with the element's `dataset`. It automatically converts strings into typed values (booleans, numbers, JSON) so the script receives a clean object.
-4.  **Execution**: Calls `script(root, props)` and stores the returned cleanup function.
+4.  **Execution**: Calls `script(root, props)` but does NOT currently store or track the returned cleanup function; components that need deterministic cleanup should manage and invoke cleanup themselves or the engine should be extended to track per-instance cleanup functions.
 
 ---
 
