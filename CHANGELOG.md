@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.21-next.0] - 2026-02-15
+**Features:**
+- implement MCP server with CSS parsing capabilities; add README, entry point, and configuration files
+- add IndexedDB persistence helpers to core engine and update README with usage examples
+- add slot demonstration component and update README with slot usage details
+- enhance build scripts to include optional CSS from component HTML; update core engine to integrate idae-csss for styling
+
+**Other:**
+- Refactor components to use data attributes for improved readability and maintainability; update core engine to support component registration and initialization; enhance toast, modal, tabs, progress, resizePanel, inputs, and example components with new structure and functionality; implement slot rendering utility for dynamic content insertion.
+
+
+
 ## [0.0.20-next.0] - 2026-02-14
 **Features:**
 - remove deprecated brand guidelines and agent skills; update pnpm-lock.yaml with new dependencies
