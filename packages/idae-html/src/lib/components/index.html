@@ -1,99 +1,80 @@
 <style>body{font-family:system-ui,Arial,sans-serif;padding:20px;} .card{border:1px solid #ddd;padding:12px;margin:8px 0}</style>
 
 <h1>idae-html examples</h1>
-<div class="card">
-  <h3>resizePanel</h3>
-  <p>Fetches and inserts the generated component at <code>dist/resizePanel.html</code>.</p>
-  <div id="ex-resize"></div>
-  <button id="load-resize">Load resizePanel</button>
-</div>
+<div data-component="components-index">
+  <div class="card">
+    <h3>resizePanel</h3>
+    <p>Fetches and inserts the generated component at <code>dist/resizePanel.html</code>.</p>
+    <div data-ex-resize></div>
+    <button data-load-resize>Load resizePanel</button>
+  </div>
 
-<div class="card">
-  <h3>exampleInline</h3>
-  <p>Demonstrates the exampleInline component.</p>
-  <div id="ex-exampleInline"></div>
-  <a href="./exampleInline/index.html">Open exampleInline demo</a>
-</div>
+  <div class="card">
+    <h3>exampleInline</h3>
+    <p>Demonstrates the exampleInline component.</p>
+    <div data-ex-exampleInline></div>
+    <a href="./exampleInline/index.html">Open exampleInline demo</a>
+  </div>
 
-<div class="card">
-  <h3>moduleInline</h3>
-  <p>Demonstrates the moduleInline component.</p>
-  <a href="./moduleInline/index.html">Open moduleInline demo</a>
-</div>
+  <div class="card">
+    <h3>moduleInline</h3>
+    <p>Demonstrates the moduleInline component.</p>
+    <a href="./moduleInline/index.html">Open moduleInline demo</a>
+  </div>
 
-<div class="card">
-  <h3>All component examples</h3>
-  <p>Open individual demos:</p>
-  <ul>
-    <li><a href="./resizePanel/index.html">resizePanel</a></li>
-    <li><a href="./exampleInline/index.html">exampleInline</a></li>
-    <li><a href="./moduleInline/index.html">moduleInline</a></li>
-    <li><a href="./modal/index.html">modal</a></li>
-    <li><a href="./dropdown/index.html">dropdown</a></li>
-    <li><a href="./tabs/index.html">tabs</a></li>
-    <li><a href="./toast/index.html">toast</a></li>
-    <li><a href="./inputs/index.html">inputs</a></li>
-    <li><a href="./progress/index.html">progress</a></li>
-  </ul>
+  <div class="card">
+    <h3>All component examples</h3>
+    <p>Open individual demos:</p>
+    <ul>
+      <li><a href="./resizePanel/index.html">resizePanel</a></li>
+      <li><a href="./exampleInline/index.html">exampleInline</a></li>
+      <li><a href="./moduleInline/index.html">moduleInline</a></li>
+      <li><a href="./modal/index.html">modal</a></li>
+      <li><a href="./dropdown/index.html">dropdown</a></li>
+      <li><a href="./tabs/index.html">tabs</a></li>
+      <li><a href="./toast/index.html">toast</a></li>
+      <li><a href="./inputs/index.html">inputs</a></li>
+      <li><a href="./progress/index.html">progress</a></li>
+    </ul>
+  </div>
 </div>
 
 <script type="module">
-  import { be, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
-  async function loadComponentAndInsert(url, targetId, componentName){
-    try{
-      const res = await fetch(url);
-      if (!res.ok) return console.error('fetch failed', res.status);
-      const text = await res.text();
-      // parse style and script using idae-be
-      const wrapperBe = createBe('div'); wrapperBe.update(text);
-      const styleBe = wrapperBe.find('style');
-      const scriptBe = wrapperBe.find('script');
-      const style = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
-      const script = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
-      if (style){
-        const existing = be('head').find('style[data-component="'+componentName+'"]');
-        const found = existing.node;
-        const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
-        if (!hasExisting){
-          const sBe = createBe('style', { attributes: { 'data-component': componentName } });
-          sBe.update(style.textContent || '');
-          be('head').append(sBe);
-        }
+  core.registerComponent('components-index', {
+    script(root){
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const exResize = rootEl.querySelector('[data-ex-resize]');
+      const loadResize = rootEl.querySelector('[data-load-resize]');
+      const exExample = rootEl.querySelector('[data-ex-exampleInline]');
+
+      async function loadResizePanel(){
+        const mod = await import('/src/lib/moduleLib/resizePanel.ts');
+        const init = mod.resizePanel || mod.default;
+        const containerBe = be(exResize as HTMLElement);
+        const elBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
+        elBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
+        containerBe.append(elBe);
+        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
+        if (typeof init === 'function') init(el);
       }
-      if (script){
-        const scBe = createBe('script'); scBe.update(script.textContent || '');
-        be('head').append(scBe);
+
+      async function loadExampleInline(){
+        const mod = await import('/src/lib/moduleLib/exampleInline.ts');
+        const init = mod.exampleInline || mod.default;
+        const containerBe = be(exExample as HTMLElement);
+        const elBe = createBe('div', { className: 'example-inline' });
+        containerBe.append(elBe);
+        const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
+        if (typeof init === 'function') init(el);
       }
-      const containerBe = be('#'+targetId);
-      const elBe = createBe('div', { attributes: { 'data-component': componentName } });
-      containerBe.append(elBe);
-      // call initializer if exposed
-      const gname = componentName.replace(/[^a-zA-Z0-9]/g,'_');
-      const init = window[gname] || window[''+gname];
-      const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
-      if (typeof init === 'function') init(el);
-    }catch(e){console.error(e)}
-  }
 
-  be('#load-resize').on('click', async ()=>{
-    const mod = await import('/src/lib/moduleLib/resizePanel.ts');
-    const init = mod.resizePanel || mod.default;
-    const containerBe = be('#ex-resize');
-    const elBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
-    elBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
-    containerBe.append(elBe);
-    const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
-    if (typeof init === 'function') init(el);
-  });
-
-  be('#load-exampleInline').on('click', async ()=>{
-    const mod = await import('/src/lib/moduleLib/exampleInline.ts');
-    const init = mod.exampleInline || mod.default;
-    const containerBe = be('#ex-exampleInline');
-    const elBe = createBe('div', { className: 'example-inline' });
-    containerBe.append(elBe);
-    const el = Array.isArray(elBe.node) ? elBe.node[0] : (elBe.node as HTMLElement);
-    if (typeof init === 'function') init(el);
-  });
+      if (loadResize) be(loadResize).on('click', loadResizePanel);
+      // expose an anchor to load exampleInline if needed
+      if (exExample) {
+        // automatically load one exampleInline for preview
+        loadExampleInline();
+      }
+  }});
 </script>

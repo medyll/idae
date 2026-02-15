@@ -2,7 +2,7 @@
 <div id="target"></div>
 
 <script type="module">
-  import { be, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
   (async function(){
     const res = await fetch('/packages/idae-html/dist/exampleInline.html');
     const text = await res.text();

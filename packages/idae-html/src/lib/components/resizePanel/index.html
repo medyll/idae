@@ -9,33 +9,44 @@
 <h1>resizePanel component — demo</h1>
 <p class="note">This demo imports the source ESM initializer from <code>src/lib/moduleLib/resizePanel.ts</code> for dev (no build required).</p>
 
-<div>
-  <button id="add">Add panel</button>
-  <button id="add-two">Add two panels side-by-side</button>
+<div data-component="resizePanel-demo">
+  <div>
+    <button data-add>Add panel</button>
+    <button data-add-two>Add two panels side-by-side</button>
+  </div>
+
+  <div data-root></div>
 </div>
 
-<div id="root"></div>
-
 <script type="module">
-  import { be, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
-  
-  async function addPanel(containerBe){
-    try{
-      const mod = await import('/packages/idae-html/src/lib/moduleLib/resizePanel.ts');
-      const init = mod.resizePanel || mod.default;
-      const holderBe = createBe('div', { className: 'container' });
-      const panelBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
-      panelBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
-      holderBe.append(panelBe);
-      containerBe.append(holderBe);
-      const panelEl = Array.isArray(panelBe.node) ? panelBe.node[0] : (panelBe.node as HTMLElement);
-      if (typeof init === 'function') init(panelEl);
-    }catch(e){ console.error(e); }
-  }
+  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
-  be('#add').on('click', ()=> addPanel(be('#root')));
-  be('#add-two').on('click', ()=> { addPanel(be('#root')); addPanel(be('#root')); });
+  core.registerComponent('resizePanel-demo', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const addBtn = rootEl.querySelector('[data-add]') as HTMLElement | null;
+    const addTwoBtn = rootEl.querySelector('[data-add-two]') as HTMLElement | null;
+    const containerBe = be(rootEl.querySelector('[data-root]'));
+    if (!containerBe) return;
 
-  // auto add one on load
-  addPanel(be('#root'));
+    async function addPanel(containerBeLocal){
+      try{
+        const mod = await import('/packages/idae-html/src/lib/moduleLib/resizePanel.ts');
+        const init = mod.resizePanel || mod.default;
+        const holderBe = createBe('div', { className: 'container' });
+        const panelBe = createBe('div', { className: 'idae-resize-panel', attributes: { 'data-component': 'resizePanel' } });
+        panelBe.update('<div class="panel">Resizable panel<br><small>Drag edge to resize</small></div>');
+        holderBe.append(panelBe);
+        containerBeLocal.append(holderBe);
+        const panelEl = Array.isArray(panelBe.node) ? panelBe.node[0] : (panelBe.node as HTMLElement);
+        if (typeof init === 'function') init(panelEl);
+      }catch(e){ console.error(e); }
+    }
+
+    if (addBtn) be(addBtn).on('click', ()=> addPanel(containerBe));
+    if (addTwoBtn) be(addTwoBtn).on('click', ()=> { addPanel(containerBe); addPanel(containerBe); });
+
+    // auto add one on init
+    addPanel(containerBe);
+  }});
 </script>

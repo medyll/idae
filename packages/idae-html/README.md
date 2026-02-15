@@ -27,6 +27,51 @@ const markup = html`<div>${escapeHtml(userInput)}</div>`;
 const dom = parseHtml(markup);
 ```
 
+## Components registry
+
+This package provides a small, opinionated registry for initialising HTML components in demos and pages.
+
+- Register an initializer: `core.registerComponent(name, spec)` — `spec` may be either a function (legacy) or an object `{ script: (root)=>{}, style?: string, meta?: {...} }`.
+  - If `spec` is a function it is treated as the `script` initializer for backwards compatibility.
+  - The recommended, normative shape is an object with a `script` property:
+
+```js
+core.registerComponent('dropdown', {
+  script(root){
+    // initializer runs with the component root element
+  },
+  style: '/* optional component-level CSS string to inject */',
+  meta: { author: 'you' }
+});
+```
+- Mark component roots in markup with `data-component="<name>"` and scope runtime selectors inside the component root to avoid global IDs.
+- Helpers: `core.initComponent(name, root?)`, `core.initRegisteredComponents(root?)`, `core.autoInitRegisteredComponents()`.
+- Example:
+
+```html
+<div data-component="dropdown">
+  <button data-trigger>Open</button>
+  <div data-menu>...</div>
+</div>
+
+<script type="module">
+  import { core } from '/packages/idae-html/src/lib/core-engine.ts';
+  core.registerComponent('dropdown', {
+    script(root){
+      // init dropdown inside `root`
+    }
+  });
+</script>
+```
+
+Using `data-component` keeps components composable and avoids global ID collisions in examples.
+
+## CSSS support (lang="csss")
+
+Component `<style>` blocks may declare `lang="csss"`. During build the scripts will attempt to compile `csss` to plain CSS using the local `idae-csss` module and emit standard `<style>` in the built output. If the compiler is unavailable or fails, the original contents are emitted as-is.
+
+If you author component styles using the `csss` syntax, add `lang="csss"` to the `<style>` tag in component HTML files (examples updated in `src/lib/components`).
+
 ## Build & Test
 - Build: `pnpm run build`
 - Test: `pnpm run test`

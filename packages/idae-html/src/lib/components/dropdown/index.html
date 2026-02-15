@@ -6,9 +6,9 @@
 </style>
 
 <h1>Dropdown</h1>
-<div style="position:relative;display:inline-block">
-  <button id="trigger" aria-haspopup="true" aria-expanded="false">Select an option</button>
-  <div id="menu" class="menu" role="listbox" aria-hidden="true" style="display:none;min-width:160px">
+<div data-component="dropdown" style="position:relative;display:inline-block">
+  <button data-trigger aria-haspopup="true" aria-expanded="false">Select an option</button>
+  <div data-menu class="menu" role="listbox" aria-hidden="true" style="display:none;min-width:160px">
     <div class="item" role="option" tabindex="0">Option A</div>
     <div class="item" role="option" tabindex="0">Option B</div>
     <div class="item" role="option" tabindex="0">Option C</div>
@@ -16,34 +16,46 @@
 </div>
 
 <script type="module">
-  import { be, app } from '/packages/idae-html/src/lib/core-engine.ts';
-  const triggerBe = be('#trigger');
-  const menuBe = be('#menu');
-  let items = [];
-  menuBe.findAll('.item', ({ be: itemsBe }) => {
-    items = Array.isArray(itemsBe.node) ? itemsBe.node : [itemsBe.node as HTMLElement];
-  });
-  let open = false; let focused = 0;
-  function show(){ menuBe.setStyle({ display: 'block' }).setAttr('aria-hidden','false'); triggerBe.setAttr('aria-expanded','true'); open=true; if (items[0]) (items[0] as HTMLElement).focus(); }
-  function hide(){ menuBe.setStyle({ display: 'none' }).setAttr('aria-hidden','true'); triggerBe.setAttr('aria-expanded','false'); open=false; }
-  triggerBe.on('click', ()=> open? hide() : show());
-  menuBe.on('keydown', (e)=>{
-    if (e.key === 'ArrowDown'){ focused = (focused+1)%items.length; (items[focused] as HTMLElement).focus(); e.preventDefault(); }
-    if (e.key === 'ArrowUp'){ focused = (focused-1+items.length)%items.length; (items[focused] as HTMLElement).focus(); e.preventDefault(); }
-      if (e.key === 'Enter'){ select(document.activeElement); }
-    if (e.key === 'Escape'){ hide(); (triggerBe.node as HTMLElement).focus(); }
-  });
-  items.forEach((it, idx)=>{
-    be(it).on('click', ()=> select(it));
-    be(it).on('focus', ()=> focused = idx);
-  });
-  function select(el){
-    if (!el || !(el instanceof HTMLElement)) return;
-    items.forEach(i=> be(i).deleteAttr('aria-selected'));
-    be(el).setAttr('aria-selected','true');
-    triggerBe.updateText((el as HTMLElement).textContent || '');
-    hide();
-    (triggerBe.node as HTMLElement).focus();
-  }
-  be('body').on('click', (e)=>{ if (!(menuBe.node as HTMLElement).contains(e.target) && e.target !== (triggerBe.node as HTMLElement)) hide(); });
+  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+  core.registerComponent('dropdown', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const triggerEl = rootEl.querySelector('[data-trigger]') as HTMLElement | null;
+    const menuEl = rootEl.querySelector('[data-menu]') as HTMLElement | null;
+    if (!triggerEl || !menuEl) return;
+
+    const triggerBe = be(triggerEl);
+    const menuBe = be(menuEl);
+    let items: HTMLElement[] = Array.from(menuEl.querySelectorAll('.item')) as HTMLElement[];
+    let open = false; let focused = 0;
+
+    function show(){ menuBe.setStyle({ display: 'block' }).setAttr('aria-hidden','false'); triggerBe.setAttr('aria-expanded','true'); open=true; if (items[0]) items[0].focus(); }
+    function hide(){ menuBe.setStyle({ display: 'none' }).setAttr('aria-hidden','true'); triggerBe.setAttr('aria-expanded','false'); open=false; }
+
+    triggerBe.on('click', ()=> open? hide() : show());
+
+    menuBe.on('keydown', (e)=>{
+      if (e.key === 'ArrowDown'){ focused = (focused+1)%items.length; items[focused].focus(); e.preventDefault(); }
+      if (e.key === 'ArrowUp'){ focused = (focused-1+items.length)%items.length; items[focused].focus(); e.preventDefault(); }
+      if (e.key === 'Enter'){ select(document.activeElement as HTMLElement); }
+      if (e.key === 'Escape'){ hide(); triggerEl.focus(); }
+    });
+
+    items.forEach((it, idx)=>{
+      be(it).on('click', ()=> select(it));
+      be(it).on('focus', ()=> focused = idx);
+    });
+
+    function select(el){
+      if (!el || !(el instanceof HTMLElement)) return;
+      items.forEach(i=> be(i).deleteAttr('aria-selected'));
+      be(el).setAttr('aria-selected','true');
+      triggerBe.updateText(el.textContent || '');
+      hide();
+      triggerEl.focus();
+    }
+
+    be(document.body).on('click', (e)=>{ if (!menuEl.contains(e.target as Node) && e.target !== triggerEl) hide(); });
+  }});
 </script>

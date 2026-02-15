@@ -5,21 +5,29 @@
 </style>
 
 <h1>Toast</h1>
-<button id="push">Push toast</button>
-
-<div class="toast-area" id="toasts"></div>
+<div data-component="toast">
+  <button data-push>Push toast</button>
+  <div class="toast-area" data-toasts></div>
+</div>
 
 <script type="module">
-  import { be, toBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, toBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
 
-  function push(text, ttl=3000){
-    const id = Math.random().toString(36).slice(2,9);
-    be('#toasts').append(toBe(`<div class="toast">${text}</div>`), ({ be }) => {
-      const nodeBe = be;
-      setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
-    });
-    return id;
-  }
+  core.registerComponent('toast', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
+    const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
+    if (!pushEl || !toastsEl) return;
 
-  be('#push').on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
+    function push(text: string, ttl=3000){
+      const id = Math.random().toString(36).slice(2,9);
+      be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
+        setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
+      });
+      return id;
+    }
+
+    be(pushEl).on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
+  }});
 </script>

@@ -111,16 +111,22 @@ const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
 const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
 const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
 function registerComponent(name: string, value: any) {
-  app.registerComponent(name, value);
+  // Accept either a function initializer (legacy) or an object spec { script: fn, style?: string, meta?: {...} }
+  const spec = (typeof value === 'function') ? { script: value } : value || {};
+  app.registerComponent(name, spec);
+  try { initComponent(name); } catch (e) { /* ignore init errors on register */ }
 }
 
 function initComponent(name: string, root: ParentNode = document) {
   const comp = app.getComponent(name);
-  if (typeof comp !== 'function') return;
+  if (!comp) return;
+  // comp may be a function (legacy) or an object spec { script }
+  const script = (typeof comp === 'function') ? comp : (comp && comp.script ? comp.script : null);
+  if (typeof script !== 'function') return;
   try {
     const els = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)) : [];
     els.forEach((el: any) => {
-      try { comp(el); } catch (e) { console.error('component init error', name, e); }
+      try { script(el); } catch (e) { console.error('component init error', name, e); }
     });
   } catch (e) { /* ignore */ }
 }
@@ -153,10 +159,82 @@ export const core = {
   // styling helpers from idae-csss
   csss,
   CsssNode,
-  csssParser : OpCssParser
+  csssParser : OpCssParser,
   // registry helpers
   registerComponent,
   initComponent,
   initRegisteredComponents,
   autoInitRegisteredComponents
 };
+
+// Utility: render HTML (string or Node) and replace <slot> elements using DOM parsing.
+// slots: { [name: string]: string | Node } where `default` represents unnamed slot content.
+// options.allowHtml: when false (default) string slot content is inserted as text (escaped).
+function escapeHtml(s: string) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function applySlotsToElement(root: ParentNode, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
+  if (!slots) return;
+  const allowHtml = !!(options && options.allowHtml);
+  const slotEls = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll('slot')) : [];
+  slotEls.forEach((slotEl: Element) => {
+    const name = slotEl.getAttribute('name') || 'default';
+    const provided = slots[name];
+    const parent = slotEl.parentNode;
+    if (!parent) return;
+    // Determine replacement nodes
+    let nodes: Node[] = [];
+    if (provided == null) {
+      // use fallback content : children of slotEl
+      nodes = Array.from(slotEl.childNodes as any as Node[]);
+    } else if (typeof provided === 'string') {
+      if (allowHtml) {
+        const t = document.createElement('template');
+        t.innerHTML = provided;
+        nodes = Array.from(t.content.childNodes);
+      } else {
+        nodes = [document.createTextNode(provided)];
+      }
+    } else if (provided instanceof Node) {
+      nodes = [provided.cloneNode(true) as Node];
+    }
+    // Replace slot element with nodes (or remove if none)
+    if (nodes.length === 0) {
+      parent.removeChild(slotEl);
+    } else {
+      nodes.forEach((n) => parent.insertBefore(n, slotEl));
+      parent.removeChild(slotEl);
+    }
+  });
+}
+
+function renderHtmlWithSlots(template: string | Node, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
+  const frag = document.createDocumentFragment();
+  if (typeof template === 'string') {
+    const t = document.createElement('template');
+    t.innerHTML = template;
+    // apply slots to template content
+    applySlotsToElement(t.content as unknown as ParentNode, slots, options);
+    frag.appendChild(t.content.cloneNode(true));
+  } else if (template instanceof Node) {
+    const container = document.createElement('div');
+    container.appendChild(template.cloneNode(true));
+    applySlotsToElement(container, slots, options);
+    // move children into fragment
+    Array.from(container.childNodes).forEach((n) => frag.appendChild(n));
+  }
+  return frag;
+}
+
+// Export helpers on core for external usage
+(core as any).applySlotsToElement = applySlotsToElement;
+(core as any).renderHtmlWithSlots = renderHtmlWithSlots;
+
+// Auto-initialize any components that have been registered and are present in the document.
+core.autoInitRegisteredComponents();

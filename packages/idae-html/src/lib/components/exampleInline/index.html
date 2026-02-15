@@ -7,12 +7,14 @@
 <h1>exampleInline — demo</h1>
 <p>Demonstrates the exampleInline component behavior (console-driven). The demo inserts multiple blocks that trigger the component's runtime.</p>
 
-<div>
-  <button id="insert">Insert example block</button>
-  <button id="insert-5">Insert 5 blocks</button>
-</div>
 
-<div id="container"></div>
+<div data-component="exampleInline">
+  <div>
+    <button data-insert>Insert example block</button>
+    <button data-insert-5>Insert 5 blocks</button>
+  </div>
+  <div data-container></div>
+</div>
 
 <div class="card">
   <h3>Console log (captured)</h3>
@@ -20,7 +22,7 @@
 </div>
 
 <script type="module">
-  import { be, toBe, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  import { be, toBe, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
   // capture console.log to UI for demo
   (function(){
     const outBe = be('#out');
@@ -34,32 +36,39 @@
     }
   })();
 
-  async function insertOne(){
-    const res = await fetch('/packages/idae-html/dist/exampleInline.html');
-    const text = await res.text();
-    const wrapperBe = createBe('div'); wrapperBe.update(text);
-    const styleBe = wrapperBe.find('style'); const scriptBe = wrapperBe.find('script');
-    const styleEl = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
-    const scriptEl = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
-    if (styleEl){
-      const existing = be('head').find('style[data-component="exampleInline"]');
-      const found = existing.node;
-      const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
-      if (!hasExisting){ const sBe = createBe('style', { attributes: { 'data-component': 'exampleInline' } }); sBe.update(styleEl.textContent || ''); be('head').append(sBe); }
+  core.registerComponent('exampleInline', {
+    script(root){
+    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+    const insertBtn = rootEl.querySelector('[data-insert]') as HTMLElement | null;
+    const insert5Btn = rootEl.querySelector('[data-insert-5]') as HTMLElement | null;
+    const container = rootEl.querySelector('[data-container]') as HTMLElement | null;
+    if (!insertBtn || !insert5Btn || !container) return;
+
+    async function insertOne(){
+      const res = await fetch('/packages/idae-html/dist/exampleInline.html');
+      const text = await res.text();
+      const wrapperBe = createBe('div'); wrapperBe.update(text);
+      const styleBe = wrapperBe.find('style'); const scriptBe = wrapperBe.find('script');
+      const styleEl = Array.isArray(styleBe.node) ? (styleBe.node[0] as HTMLElement) : (styleBe.node as HTMLElement);
+      const scriptEl = Array.isArray(scriptBe.node) ? (scriptBe.node[0] as HTMLElement) : (scriptBe.node as HTMLElement);
+      if (styleEl){
+        const existing = be('head').find('style[data-component="exampleInline"]');
+        const found = existing.node;
+        const hasExisting = Array.isArray(found) ? (found as HTMLElement[]).length > 0 : !!found;
+        if (!hasExisting){ const sBe = createBe('style', { attributes: { 'data-component': 'exampleInline' } }); sBe.update(styleEl.textContent || ''); be('head').append(sBe); }
+      }
+      if (scriptEl){ const scBe = createBe('script'); scBe.update(scriptEl.textContent || ''); be('head').append(scBe); }
+      const elBe = createBe('div', { className: 'card' });
+      const innerBe = createBe('div', { attributes: { 'data-component': 'exampleInline' } });
+      elBe.append(innerBe);
+      be(container).append(elBe);
+      const init = (window as any)['exampleInline'] || (window as any)['exampleInline'.replace(/[^a-zA-Z0-9]/g,'_')];
+      const innerEl = Array.isArray(innerBe.node) ? innerBe.node[0] : (innerBe.node as HTMLElement);
+      if (typeof init === 'function') init(innerEl);
     }
-    if (scriptEl){ const scBe = createBe('script'); scBe.update(scriptEl.textContent || ''); be('head').append(scBe); }
-    const elBe = createBe('div', { className: 'card' });
-    const innerBe = createBe('div', { attributes: { 'data-component': 'exampleInline' } });
-    elBe.append(innerBe);
-    be('#container').append(elBe);
-    const init = window['exampleInline'] || window['exampleInline'.replace(/[^a-zA-Z0-9]/g,'_')];
-    const innerEl = Array.isArray(innerBe.node) ? innerBe.node[0] : (innerBe.node as HTMLElement);
-    if (typeof init === 'function') init(innerEl);
-  }
 
-  be('#insert').on('click', insertOne);
-  be('#insert-5').on('click', ()=>{ for(let i=0;i<5;i++) insertOne(); });
-
-  // auto insert one
-  insertOne();
+    be(insertBtn).on('click', insertOne);
+    be(insert5Btn).on('click', ()=>{ for(let i=0;i<5;i++) insertOne(); });
+    insertOne();
+  }});
 </script>
