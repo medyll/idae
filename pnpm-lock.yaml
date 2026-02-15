@@ -848,6 +848,9 @@ importers:
       '@medyll/idae-dom-events':
         specifier: workspace:*
         version: link:../idae-dom-events
+      '@medyll/idae-idbql':
+        specifier: workspace:*
+        version: link:../idae-idbql
       '@medyll/idae-stator':
         specifier: workspace:*
         version: link:../idae-stator
