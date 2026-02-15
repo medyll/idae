@@ -1,0 +1,16 @@
+<style>
+  .spacer-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .spacer{height:var(--gutter-md)}
+</style>
+
+<h1 class="font-lg text-foreground">Spacer</h1>
+<div data-component="spacer" class="spacer-root">
+  <div class="card">Bloc au-dessus</div>
+  <div class="spacer" aria-hidden="true"></div>
+  <div class="card">Bloc en-dessous</div>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('spacer', { script: () => () => {}, props: {}, resources: [], on: {}, meta: { description: 'Simple spacer' } });
+</script>

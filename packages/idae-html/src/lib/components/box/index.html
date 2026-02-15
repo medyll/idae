@@ -1,0 +1,23 @@
+<style>
+  .box-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .box{border:1px solid var(--color-border);padding:var(--gutter-sm);background:var(--color-card);color:var(--color-card-foreground)}
+</style>
+
+<h1 class="font-lg text-foreground">Box</h1>
+<div data-component="box" class="box-root">
+  <div class="box">Contenu du conteneur générique</div>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+
+  core.registerComponent('box', {
+    script: (root) => {
+      return () => {};
+    },
+    props: {},
+    resources: [],
+    on: {},
+    meta: { description: 'Generic container box' }
+  });
+</script>

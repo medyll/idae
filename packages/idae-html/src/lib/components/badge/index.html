@@ -1,0 +1,14 @@
+<style>
+  .badge-root{padding:var(--gutter-md)}
+  .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--color-secondary);color:var(--color-secondary-foreground);font-size:90%}
+</style>
+
+<h1 class="font-lg text-foreground">Badge</h1>
+<div data-component="badge" class="badge-root">
+  <span class="badge" data-count>New</span>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('badge', { script: ()=>()=>{}, props:{}, resources:[], on:{}, meta:{description:'Small status badge'} });
+</script>

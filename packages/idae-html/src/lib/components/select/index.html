@@ -1,0 +1,38 @@
+<style>
+  .select-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .custom-select{position:relative;display:inline-block}
+  .select-trigger{padding:6px 10px;border:1px solid var(--color-border);background:var(--color-card);cursor:pointer}
+  .select-menu{position:absolute;left:0;top:100%;background:var(--color-popover);border:1px solid var(--color-border);display:none;min-width:160px}
+  .select-menu[aria-hidden="false"]{display:block}
+  .select-item{padding:6px 10px;cursor:pointer}
+</style>
+
+<h1 class="font-lg text-foreground">Select</h1>
+<div data-component="select" class="select-root">
+  <div class="custom-select">
+    <div class="select-trigger" data-trigger>Choisir...</div>
+    <div class="select-menu" data-menu aria-hidden="true">
+      <div class="select-item">Option 1</div>
+      <div class="select-item">Option 2</div>
+      <div class="select-item">Option 3</div>
+    </div>
+  </div>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+
+  core.registerComponent('select', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const trigger = rootEl.querySelector('[data-trigger]') as HTMLElement | null;
+      const menu = rootEl.querySelector('[data-menu]') as HTMLElement | null;
+      if (!trigger || !menu) return;
+      function toggle(){ const hidden = menu.getAttribute('aria-hidden') === 'true'; menu.setAttribute('aria-hidden', String(!hidden)); }
+      function onItem(e:MouseEvent){ const t = e.currentTarget as HTMLElement; trigger.textContent = t.textContent; menu.setAttribute('aria-hidden','true'); }
+      be(trigger).on('click', toggle);
+      Array.from(menu.querySelectorAll('.select-item')).forEach(it=> be(it).on('click', onItem));
+      return () => { try{ be(trigger).off('click', toggle); }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Stylised select (basic)'}
+  });
+</script>

@@ -1,0 +1,36 @@
+<style>
+  .drawer-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none}
+  .drawer-backdrop.open{display:block}
+  .drawer-panel{position:fixed;right:0;top:0;height:100vh;width:320px;background:var(--color-popover);color:var(--color-popover-foreground);box-shadow:-6px 0 18px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .25s}
+  .drawer-panel.open{transform:translateX(0)}
+</style>
+
+<h1 class="font-lg text-foreground">Drawer</h1>
+<div data-component="drawer" class="drawer-root">
+  <button data-open>Open drawer</button>
+  <div class="drawer-backdrop" data-backdrop>
+    <aside class="drawer-panel" data-panel>
+      <button data-close>Close</button>
+      <nav><a href="#">Item A</a><a href="#">Item B</a></nav>
+    </aside>
+  </div>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+  core.registerComponent('drawer', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const openBtn = rootEl.querySelector('[data-open]') as HTMLElement | null;
+      const back = rootEl.querySelector('[data-backdrop]') as HTMLElement | null;
+      const panel = rootEl.querySelector('[data-panel]') as HTMLElement | null;
+      const closeBtn = rootEl.querySelector('[data-close]') as HTMLElement | null;
+      if (!openBtn || !back || !panel || !closeBtn) return;
+      function open(){ back.classList.add('open'); panel.classList.add('open'); }
+      function close(){ panel.classList.remove('open'); back.classList.remove('open'); }
+      be(openBtn).on('click', open); be(closeBtn).on('click', close); be(back).on('click', (e:MouseEvent)=>{ if (e.target === back) close(); });
+      return () => { try{ be(openBtn).off('click', open); }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Drawer panel'}
+  });
+</script>

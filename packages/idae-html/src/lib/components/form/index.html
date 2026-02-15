@@ -1,0 +1,28 @@
+<style>
+  .form-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .field{margin-bottom:var(--gutter-sm)}
+</style>
+
+<h1 class="font-lg text-foreground">Form wrapper</h1>
+<div data-component="form" class="form-root">
+  <form>
+    <div class="field"><label>Nom: <input name="name"></label></div>
+    <div class="field"><label>Email: <input name="email" type="email"></label></div>
+    <div><button type="submit">Envoyer</button></div>
+  </form>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+
+  core.registerComponent('form', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const form = rootEl.querySelector('form') as HTMLFormElement | null;
+      if (!form) return;
+      function onSubmit(e:Event){ e.preventDefault(); const data = new FormData(form); console.log('form submit', Object.fromEntries(data.entries())); }
+      be(form).on('submit', onSubmit);
+      return () => { try{ be(form).off('submit', onSubmit); }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Form wrapper with basic submit handling'}
+  });
+</script>

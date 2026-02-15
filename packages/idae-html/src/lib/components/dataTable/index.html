@@ -1,0 +1,33 @@
+<style>
+  .datatable-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px;border-bottom:1px solid var(--color-border)}
+  th{cursor:pointer}
+</style>
+
+<h1 class="font-lg text-foreground">DataTable</h1>
+<div data-component="dataTable" class="datatable-root">
+  <table>
+    <thead><tr><th data-sort="name">Name</th><th data-sort="age">Age</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td>30</td></tr>
+      <tr><td>Bob</td><td>25</td></tr>
+      <tr><td>Clara</td><td>28</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+  core.registerComponent('dataTable', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const headers = Array.from(rootEl.querySelectorAll('th[data-sort]')) as HTMLElement[];
+      const tbody = rootEl.querySelector('tbody') as HTMLElement | null;
+      if (!tbody) return;
+      function sortBy(key:string){ const rows = Array.from(tbody.querySelectorAll('tr')); rows.sort((a,b)=>{ const aVal = (a.querySelectorAll('td')[ key==='age'?1:0].textContent||''); const bVal = (b.querySelectorAll('td')[ key==='age'?1:0].textContent||''); return key==='age' ? Number(aVal)-Number(bVal) : aVal.localeCompare(bVal); }); rows.forEach(r=> tbody.appendChild(r)); }
+      headers.forEach(h=> be(h).on('click', ()=> sortBy(h.getAttribute('data-sort') || 'name')));
+      return () => { headers.forEach(h=>{ try{ be(h).off('click'); }catch(e){} }); };
+    }, props:{}, resources:[], on:{}, meta:{description:'Simple sortable data table'}
+  });
+</script>

@@ -1,0 +1,26 @@
+<style>
+  .textarea-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  textarea.auto{width:100%;min-height:60px;padding:6px;border:1px solid var(--color-border);box-sizing:border-box}
+</style>
+
+<h1 class="font-lg text-foreground">Textarea (auto-expand)</h1>
+<div data-component="textarea" class="textarea-root">
+  <textarea class="auto" placeholder="Tapez ..." data-auto></textarea>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+
+  core.registerComponent('textarea', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const ta = rootEl.querySelector('[data-auto]') as HTMLTextAreaElement | null;
+      if (!ta) return;
+      function resize(){ ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+      be(ta).on('input', resize);
+      // init
+      resize();
+      return () => { try{ be(ta).off('input', resize); }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Auto-expanding textarea'}
+  });
+</script>

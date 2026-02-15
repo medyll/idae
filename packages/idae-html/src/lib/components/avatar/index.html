@@ -1,0 +1,24 @@
+<style>
+  .avatar-root{padding:var(--gutter-md)}
+  .avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:var(--color-muted);color:var(--color-muted-foreground)}
+</style>
+
+<h1 class="font-lg text-foreground">Avatar</h1>
+<div data-component="avatar" class="avatar-root">
+  <div class="avatar"><img src="" alt="" data-img style="width:100%;height:100%;object-fit:cover;display:none"><span data-initials>AB</span></div>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+  core.registerComponent('avatar', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const img = rootEl.querySelector('[data-img]') as HTMLImageElement | null;
+      const initials = rootEl.querySelector('[data-initials]') as HTMLElement | null;
+      if (!img || !initials) return;
+      img.addEventListener('error', ()=>{ img.style.display='none'; initials.style.display='inline-flex'; });
+      img.addEventListener('load', ()=>{ initials.style.display='none'; img.style.display='block'; });
+      return () => { try{ img.onload = null; img.onerror = null; }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Avatar with initials fallback'}
+  });
+</script>
