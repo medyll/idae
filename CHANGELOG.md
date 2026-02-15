@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.23-next.0] - 2026-02-15
+**Bug Fixes:**
+- update repository URLs in package.json files to use git+ protocol
+
+
+
 ## [0.0.22-next.0] - 2026-02-15
 **Features:**
 - Refactor components to use new script structure and add metadata
