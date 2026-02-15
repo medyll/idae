@@ -90,12 +90,7 @@ export function detectAndAct(
 					characterData: mutation?.type === 'characterData'
 				};
 				console.log(element, changes, mutation);
-				callback(element, {
-					attributes: mutation,
-					childList: mutation,
-					characterData: mutation,
-					resize: changes.resize
-				});
+				callback(element as Element, changes);
 			});
 
 			return {

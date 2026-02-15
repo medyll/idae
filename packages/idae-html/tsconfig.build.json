@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "lib": ["ES2020", "DOM"],
+    "module": "NodeNext",
+    "target": "ES2020"
+  },
+  "include": ["src/**/*"]
+}

@@ -26,7 +26,7 @@ function dispatchHandleElements<M extends string = string, E = Element, A = any>
 }
 
 export const resizePanel = (
-	panel: Element,
+	panel: HTMLElement,
 	options: resizePanelOptions = {
 		directions: ['right']
 	}
@@ -46,16 +46,16 @@ export const resizePanel = (
 
 	const onDirection = (dx: number, dy: number) => {
 		if (directions.includes('right') || directions.includes('horizontal')) {
-			panel.style.width = `${initialWidth + dx}px`;
+				(panel as HTMLElement).style.width = `${initialWidth + dx}px`;
 		}
 		if (directions.includes('left') || directions.includes('horizontal')) {
-			panel.style.width = `${initialWidth - dx}px`;
+			(panel as HTMLElement).style.width = `${initialWidth - dx}px`;
 		}
 		if (directions.includes('bottom') || directions.includes('vertical')) {
-			panel.style.height = `${initialHeight + dy}px`;
+			(panel as HTMLElement).style.height = `${initialHeight + dy}px`;
 		}
 		if (directions.includes('top') || directions.includes('vertical')) {
-			panel.style.height = `${initialHeight - dy}px`;
+			(panel as HTMLElement).style.height = `${initialHeight - dy}px`;
 		}
 	};
 

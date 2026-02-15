@@ -257,7 +257,7 @@ function escapeHtml(s: string) {
 function applySlotsToElement(root: ParentNode, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
   if (!slots) return;
   const allowHtml = !!(options && options.allowHtml);
-  const slotEls = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll('slot')) : [];
+  const slotEls = ((root as any).querySelectorAll ? Array.from((root as any).querySelectorAll('slot')) : []) as Element[];
   slotEls.forEach((slotEl: Element) => {
     const name = slotEl.getAttribute('name') || 'default';
     const provided = slots[name];
@@ -308,3 +308,25 @@ function renderHtmlWithSlots(template: string | Node, slots?: Record<string, str
 (core as any).renderHtmlWithSlots = renderHtmlWithSlots;
 
 core.autoInitRegisteredComponents();
+
+// Named exports for individual helpers so inline modules can import them directly
+export {
+  be,
+  toBe,
+  createBe,
+  htmlDom,
+  cssDom,
+  htmluModules,
+  stator,
+  createStator,
+  csss,
+  CsssNode,
+  OpCssParser,
+  createIdbqDb,
+  createIdbqlState,
+  idbql,
+  registerComponent,
+  initComponent,
+  initRegisteredComponents,
+  autoInitRegisteredComponents
+};

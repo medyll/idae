@@ -1,67 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accordion Component</title>
-    <style>
-        .accordion {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-        .accordion-item {
-            border: 1px solid #ddd;
-            margin-bottom: 5px;
-        }
-        .accordion-header {
-            background-color: #f1f1f1;
-            padding: 10px;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            text-align: left;
-            font-size: 16px;
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px;
-            background-color: #fafafa;
-        }
-        .accordion-content.show {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-    <div class="accordion">
-        <div class="accordion-item">
-            <button class="accordion-header">Section 1</button>
-            <div class="accordion-content">
-                <p>This is the content for section 1.</p>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <button class="accordion-header">Section 2</button>
-            <div class="accordion-content">
-                <p>This is the content for section 2.</p>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <button class="accordion-header">Section 3</button>
-            <div class="accordion-content">
-                <p>This is the content for section 3.</p>
-            </div>
+<style>
+    body{font-family:system-ui,Arial,sans-serif;padding:12px}
+    .accordion{width:100%;max-width:640px;margin:8px 0}
+    .accordion-item{border:1px solid #ddd;margin-bottom:6px}
+    .accordion-header{background:#f6f6f6;padding:10px;cursor:pointer;border:0;width:100%;text-align:left}
+    .accordion-content{display:none;padding:10px;background:#fff}
+    .accordion-content[aria-hidden="false"]{display:block}
+</style>
+
+<h1>Accordion</h1>
+<div data-component="accordion" class="accordion">
+    <div class="accordion-item">
+        <button data-accordion-header class="accordion-header" aria-expanded="false">Section 1</button>
+        <div data-accordion-content class="accordion-content" aria-hidden="true">
+            <p>This is the content for section 1.</p>
         </div>
     </div>
+    <div class="accordion-item">
+        <button data-accordion-header class="accordion-header" aria-expanded="false">Section 2</button>
+        <div data-accordion-content class="accordion-content" aria-hidden="true">
+            <p>This is the content for section 2.</p>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <button data-accordion-header class="accordion-header" aria-expanded="false">Section 3</button>
+        <div data-accordion-content class="accordion-content" aria-hidden="true">
+            <p>This is the content for section 3.</p>
+        </div>
+    </div>
+</div>
 
-    <script>
-        document.querySelectorAll('.accordion-header').forEach(button => {
-            button.addEventListener('click', () => {
-                const content = button.nextElementSibling;
-                content.classList.toggle('show');
+<script type="module" lang="ts">
+    import { be, core } from '$lib/core-engine.ts';
+
+    core.registerComponent('accordion', {
+        props: {},
+        resources: [],
+        script: (root, props) => {
+            const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+            const headers = Array.from(rootEl.querySelectorAll('[data-accordion-header]')) as HTMLElement[];
+            if (!headers.length) return;
+
+            const handlers: Function[] = [];
+
+            function makeToggle(header: HTMLElement){
+                return () => {
+                    const content = header.nextElementSibling as HTMLElement | null;
+                    if (!content) return;
+                    const expanded = header.getAttribute('aria-expanded') === 'true';
+                    header.setAttribute('aria-expanded', String(!expanded));
+                    content.setAttribute('aria-hidden', String(expanded));
+                };
+            }
+
+            headers.forEach((h)=>{
+                const fn = makeToggle(h);
+                handlers.push(fn);
+                be(h).on('click', fn);
             });
-        });
-    </script>
-</body>
-</html>
+
+            // return cleanup per SPECS
+            return () => {
+                headers.forEach((h, i)=>{ try{ be(h).off('click', handlers[i]); }catch(e){} });
+            };
+        },
+        on: {},
+        meta: { author: 'idae-html', version: '1.0.0', description: 'Accordion with proper cleanup and ARIA.' }
+    });
+</script>

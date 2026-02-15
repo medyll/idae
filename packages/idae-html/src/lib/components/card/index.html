@@ -1,65 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Component</title>
-    <style>
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.3s;
-            width: 300px;
-            margin: 20px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        }
-        .card-header {
-            padding: 10px;
-            background-color: #f1f1f1;
-            border-radius: 5px 5px 0 0;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .card-footer {
-            padding: 10px;
-            background-color: #f1f1f1;
-            border-radius: 0 0 5px 5px;
-        }
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-        }
-    </style>
-</head>
-<body>
-    <div class="card-container">
-        <div class="card">
-            <div class="card-header">
-                <h3>Card Title 1</h3>
-            </div>
-            <div class="card-body">
-                <p>This is some content inside the card.</p>
-            </div>
-            <div class="card-footer">
-                <button>Action</button>
-            </div>
-        </div>
+<style>
+    body{font-family:system-ui,Arial,sans-serif;padding:12px}
+    .card-container{display:flex;flex-wrap:wrap;gap:12px}
+    .card{box-shadow:0 4px 8px rgba(0,0,0,0.12);transition:box-shadow .2s;width:300px;border-radius:6px;overflow:hidden}
+    .card:hover{box-shadow:0 10px 24px rgba(0,0,0,0.14)}
+    .card-header{padding:12px;background:#f6f6f6}
+    .card-body{padding:16px;background:#fff}
+    .card-footer{padding:10px;background:#fafafa;text-align:right}
+</style>
 
-        <div class="card">
-            <div class="card-header">
-                <h3>Card Title 2</h3>
-            </div>
-            <div class="card-body">
-                <p>Another card with different content.</p>
-            </div>
-            <div class="card-footer">
-                <button>Action</button>
-            </div>
-        </div>
+<h1>Card examples</h1>
+<div data-component="card" class="card-container">
+    <div class="card">
+        <div class="card-header"><h3>Card Title 1</h3></div>
+        <div class="card-body"><p>This is some content inside the card.</p></div>
+        <div class="card-footer"><button data-action>Action</button></div>
     </div>
-</body>
-</html>
+
+    <div class="card">
+        <div class="card-header"><h3>Card Title 2</h3></div>
+        <div class="card-body"><p>Another card with different content.</p></div>
+        <div class="card-footer"><button data-action>Action</button></div>
+    </div>
+</div>
+
+<script type="module" lang="ts">
+    import { be, core } from '$lib/core-engine.ts';
+
+    core.registerComponent('card', {
+        props: {},
+        resources: [],
+        script: (root, props) => {
+            const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+            const buttons = Array.from(rootEl.querySelectorAll('[data-action]')) as HTMLElement[];
+            if (!buttons.length) return;
+
+            const handlers: Function[] = [];
+
+            function makeHandler(idx: number){
+                return () => {
+                    // Simple demo action: toggle a selected state
+                    const btn = buttons[idx];
+                    const card = btn.closest('.card') as HTMLElement | null;
+                    if (!card) return;
+                    const sel = card.getAttribute('data-selected') === 'true';
+                    card.setAttribute('data-selected', String(!sel));
+                    btn.textContent = sel ? 'Action' : 'Selected';
+                };
+            }
+
+            buttons.forEach((b, i)=>{
+                const h = makeHandler(i);
+                handlers.push(h);
+                be(b).on('click', h);
+            });
+
+            return () => { buttons.forEach((b, i)=>{ try{ be(b).off('click', handlers[i]); }catch(e){} }); };
+        },
+        on: {},
+        meta: { author: 'idae-html', version: '1.0.0', description: 'Simple card examples with action handlers and cleanup.' }
+    });
+</script>

@@ -44,8 +44,8 @@
   </div>
 </div>
 
-<script type="module">
-  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.js';
+<script type="module" lang="ts">
+  import { be, createBe, core } from '$lib/core-engine.ts';
 
   core.registerComponent('components-index', {
     script: (root, props)=> {
@@ -81,6 +81,9 @@
         // automatically load one exampleInline for preview
         loadExampleInline();
       }
+      return () => {
+        try{ if (loadResize) be(loadResize).off('click', loadResizePanel); }catch(e){}
+      };
   },
     props: {},
     resources: [],

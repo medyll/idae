@@ -1,78 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carousel Component</title>
-    <style>
-        .carousel {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-        }
-        .carousel-container {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        .carousel-slide {
-            min-width: 100%;
-            box-sizing: border-box;
-            padding: 20px;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-        .carousel-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .carousel-button.prev {
-            left: 10px;
-        }
-        .carousel-button.next {
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="carousel">
-        <div class="carousel-container" id="carousel-container">
-            <div class="carousel-slide">Slide 1</div>
-            <div class="carousel-slide">Slide 2</div>
-            <div class="carousel-slide">Slide 3</div>
-        </div>
-        <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
-        <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+<style>
+    body{font-family:system-ui,Arial,sans-serif;padding:12px}
+    .carousel{width:100%;max-width:700px;margin:8px auto;position:relative;overflow:hidden}
+    .carousel-container{display:flex;transition:transform .5s ease}
+    .carousel-slide{min-width:100%;box-sizing:border-box;padding:24px;text-align:center;background:#f7f7f7}
+    .carousel-button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:0;padding:10px;cursor:pointer}
+    .carousel-button.prev{left:8px}
+    .carousel-button.next{right:8px}
+</style>
+
+<h1>Carousel</h1>
+<div data-component="carousel" class="carousel" aria-roledescription="carousel">
+    <div class="carousel-container" data-carousel-root role="list">
+        <div class="carousel-slide" role="group">Slide 1</div>
+        <div class="carousel-slide" role="group">Slide 2</div>
+        <div class="carousel-slide" role="group">Slide 3</div>
     </div>
+    <button class="carousel-button prev" data-prev aria-label="Previous">&#10094;</button>
+    <button class="carousel-button next" data-next aria-label="Next">&#10095;</button>
+</div>
 
-    <script>
-        let currentSlide = 0;
-        const container = document.getElementById('carousel-container');
-        const slides = container.children;
+<script type="module" lang="ts">
+    import { be, core } from '$lib/core-engine.ts';
 
-        function showSlide(index) {
-            container.style.transform = `translateX(-${index * 100}%)`;
-        }
+    core.registerComponent('carousel', {
+        props: {},
+        resources: [],
+        script: (root, props) => {
+            const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+            const container = rootEl.querySelector('[data-carousel-root]') as HTMLElement | null;
+            const prevBtn = rootEl.querySelector('[data-prev]') as HTMLElement | null;
+            const nextBtn = rootEl.querySelector('[data-next]') as HTMLElement | null;
+            if (!container || !prevBtn || !nextBtn) return;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
+            const slides = Array.from(container.children) as HTMLElement[];
+            let current = 0;
+            let interval: any = null;
 
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
-        }
+            function show(i: number){
+                if (!container) return;
+                const idx = ((i % slides.length) + slides.length) % slides.length;
+                container.style.transform = `translateX(-${idx * 100}%)`;
+                current = idx;
+            }
 
-        // Auto-play
-        setInterval(nextSlide, 3000);
-    </script>
-</body>
-</html>
+            function onNext(){ show(current + 1); }
+            function onPrev(){ show(current - 1); }
+
+            be(nextBtn).on('click', onNext);
+            be(prevBtn).on('click', onPrev);
+
+            // autoplay if not disabled via data attribute
+            if ((rootEl as HTMLElement).dataset.autoplay !== 'false'){
+                interval = setInterval(onNext, 3000);
+            }
+
+            // cleanup
+            return () => {
+                try{ be(nextBtn).off('click', onNext); }catch(e){}
+                try{ be(prevBtn).off('click', onPrev); }catch(e){}
+                if (interval) clearInterval(interval);
+            };
+        },
+        on: {},
+        meta: { author: 'idae-html', version: '1.0.0', description: 'Carousel with autoplay and cleanup.' }
+    });
+</script>

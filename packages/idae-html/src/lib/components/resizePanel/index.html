@@ -18,8 +18,8 @@
   <div data-root></div>
 </div>
 
-<script type="module">
-  import { be, createBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, createBe, core } from '$lib/core-engine.ts';
 
   core.registerComponent('resizePanel-demo', {
     script: (root, props)=> {
@@ -48,6 +48,11 @@
 
       // auto add one on init
       addPanel(containerBe);
+
+      return () => {
+        try{ if (addBtn) be(addBtn).off('click'); }catch(e){}
+        try{ if (addTwoBtn) be(addTwoBtn).off('click'); }catch(e){}
+      };
     },
     props: {},
     resources: [],

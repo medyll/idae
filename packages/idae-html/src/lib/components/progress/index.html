@@ -21,8 +21,8 @@
   </div>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.js';
 
   core.registerComponent('progress', {
     script: (root, props)=> {
@@ -35,16 +35,26 @@
 
     const fillBe = be(fillEl);
     let p = 0; let interval: any = null;
-    be(startEl).on('click', ()=>{
+
+    function onStart(){
       p = 0; fillBe.setStyle({ width: '0%' }); clearInterval(interval);
       interval = setInterval(()=>{ p += 5; fillBe.setStyle({ width: p + '%' }); if (p>=100) clearInterval(interval); }, 200);
-    });
+    }
 
-    const spinBe = be(spinEl);
-    be(toggleEl).on('click', ()=>{
+    function onToggle(){
       const show = (spinEl.style.display === 'none') ? 'inline-block' : 'none';
-      spinBe.setStyle({ display: show });
-    });
+      be(spinEl).setStyle({ display: show });
+    }
+
+    be(startEl).on('click', onStart);
+    be(toggleEl).on('click', onToggle);
+
+    // cleanup function returned per SPECS
+    return () => {
+      clearInterval(interval);
+      try{ be(startEl).off('click', onStart); }catch(e){}
+      try{ be(toggleEl).off('click', onToggle); }catch(e){}
+    };
   },
     props: {},
     resources: [],

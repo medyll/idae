@@ -16,8 +16,8 @@
   </form>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('inputs', {
     script: (root, props)=> {
@@ -40,9 +40,9 @@
     }
 
     const phone = (formEl.elements as any)['phone'];
-    if (phone) be(phone).on('input', ()=>{ phone.value = phoneMask(phone.value); });
+    function onPhoneInput(){ if (phone) phone.value = phoneMask(phone.value); }
 
-    be(formEl).on('submit', (e)=>{
+    function onSubmit(e: Event){
       e.preventDefault();
       let ok = true;
       if (!((formEl.elements as any)['name'].value || '').trim()){ setError('name','Name is required'); ok=false; } else setError('name','');
@@ -50,7 +50,15 @@
       if (isNaN(age) || age<1 || age>100){ setError('age','Age must be between 1 and 100'); ok=false; } else setError('age','');
       if (!/\+?\d{2,}/.test(((formEl.elements as any)['phone'].value || ''))){ setError('phone','Enter a valid phone'); ok=false; } else setError('phone','');
       if (ok) alert('Form OK — '+JSON.stringify({name:(formEl.elements as any)['name'].value, age: (formEl.elements as any)['age'].value, phone: (formEl.elements as any)['phone'].value}));
-    });
+    }
+
+    if (phone) be(phone).on('input', onPhoneInput);
+    be(formEl).on('submit', onSubmit);
+
+    return () => {
+      try{ if (phone) be(phone).off('input', onPhoneInput); }catch(e){}
+      try{ be(formEl).off('submit', onSubmit); }catch(e){}
+    };
   },
     props: {},
     resources: [],

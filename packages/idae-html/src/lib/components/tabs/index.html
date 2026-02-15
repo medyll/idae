@@ -10,8 +10,8 @@
   <div class="panel" role="tabpanel" hidden>Panel three content</div>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('tabs', {
     script: (root, props)=> {
@@ -19,7 +19,7 @@
       const tabs = Array.from(rootEl.querySelectorAll('[role="tab"]')) as HTMLElement[];
       const panels = Array.from(rootEl.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
       if (!tabs.length || !panels.length) return;
-      tabs.forEach((t, i)=> be(t).on('click', ()=> activate(i)));
+
       function activate(i:number){
         tabs.forEach((t,idx)=>{
           be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
@@ -27,12 +27,27 @@
         });
         (tabs[i] as HTMLElement).focus();
       }
-      be(document.body).on('keydown',(e)=>{
+
+      const onTabClickHandlers: Function[] = [];
+      tabs.forEach((t, i)=>{
+        const h = () => activate(i);
+        onTabClickHandlers.push(h);
+        be(t).on('click', h);
+      });
+
+      function onBodyKey(e: KeyboardEvent){
         const idx = tabs.findIndex(t=>t===document.activeElement);
         if (idx<0) return;
         if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
         if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
-      });
+      }
+
+      be(document.body).on('keydown', onBodyKey);
+
+      return () => {
+        tabs.forEach((t, i)=>{ try{ be(t).off('click', onTabClickHandlers[i]); }catch(e){} });
+        try{ be(document.body).off('keydown', onBodyKey); }catch(e){}
+      };
   },
     props: {},
     resources: [],
