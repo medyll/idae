@@ -1,17 +1,24 @@
 <style>
   .dropdown-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
-  .menu{border:1px solid var(--color-border);background:var(--color-popover);padding:4px;position:absolute}
+  /* anchor positions the popup relative to the trigger */
+  .anchor{position:relative;display:inline-block}
+  /* Anchor Positioning API: use position-anchor + inset-area when supported.
+    Avoid using @position-try (poor browser support). Fallback handled in JS. */
+  .dialog-popup{position:absolute;position-anchor: --dropdown-anchor;inset-area: top;left:0;margin-top:var(--gutter-xs);min-width:160px;border:1px solid var(--color-border);background:var(--color-popover);padding:var(--gutter-xs);box-shadow:0 8px 24px rgba(0,0,0,0.08);z-index:999}
+  .dialog-popup[aria-hidden="true"]{display:none}
   .item{padding:6px 12px;cursor:pointer}
   .item[aria-selected="true"]{background:var(--color-secondary)}
 </style>
 
 <h1 class="font-lg text-foreground">Dropdown</h1>
-<div data-component="dropdown" class="dropdown-root" style="position:relative;display:inline-block">
-  <button data-trigger aria-haspopup="true" aria-expanded="false">Select an option</button>
-  <div data-menu class="menu" role="listbox" aria-hidden="true" style="display:none;min-width:160px">
-    <div class="item" role="option" tabindex="0">Option A</div>
-    <div class="item" role="option" tabindex="0">Option B</div>
-    <div class="item" role="option" tabindex="0">Option C</div>
+<div data-component="dropdown" class="dropdown-root">
+  <div class="anchor" style="display:inline-block">
+    <button data-trigger aria-haspopup="true" aria-expanded="false">Select an option</button>
+    <div data-menu class="dialog-popup" role="listbox" aria-hidden="true">
+      <div class="item" role="option" tabindex="0">Option A</div>
+      <div class="item" role="option" tabindex="0">Option B</div>
+      <div class="item" role="option" tabindex="0">Option C</div>
+    </div>
   </div>
 </div>
 
@@ -25,13 +32,53 @@
     const menuEl = rootEl.querySelector('[data-menu]') as HTMLElement | null;
     if (!triggerEl || !menuEl) return;
 
+    // Feature-detect Anchor Positioning API (best-effort).
+    const supportsAnchor = typeof CSS !== 'undefined' && CSS.supports && (CSS.supports('inset-area', 'top') || CSS.supports('position-anchor', '--x'));
+
+    // Ensure trigger has an anchor name for the CSS API
+    try { triggerEl.style.setProperty('anchor-name', '--dropdown-anchor'); } catch (e) {}
+
+    // If using a <dialog>, ensure it's positioned absolutely for anchor API
+    if (menuEl.tagName === 'DIALOG') {
+      (menuEl as HTMLElement).style.position = 'absolute';
+      // avoid default dialog centering when opened via show(); we'll use attributes/display instead
+    }
+
     const triggerBe = be(triggerEl);
     const menuBe = be(menuEl);
     let items: HTMLElement[] = Array.from(menuEl.querySelectorAll('.item')) as HTMLElement[];
     let open = false; let focused = 0;
 
-    function show(){ menuBe.setStyle({ display: 'block' }).setAttr('aria-hidden','false'); triggerBe.setAttr('aria-expanded','true'); open=true; if (items[0]) items[0].focus(); }
-    function hide(){ menuBe.setStyle({ display: 'none' }).setAttr('aria-hidden','true'); triggerBe.setAttr('aria-expanded','false'); open=false; }
+    function applyFallbackPosition() {
+      // Basic JS fallback: place menu below trigger
+      const rect = triggerEl.getBoundingClientRect();
+      const left = rect.left + window.pageXOffset;
+      const top = rect.bottom + window.pageYOffset;
+      (menuEl as HTMLElement).style.left = left + 'px';
+      (menuEl as HTMLElement).style.top = top + 'px';
+    }
+
+    function show(){
+      if (supportsAnchor) {
+        menuBe.deleteAttr('aria-hidden');
+        triggerBe.setAttr('aria-expanded','true');
+      } else {
+        applyFallbackPosition();
+        menuBe.setStyle({ display: 'block' }).deleteAttr('aria-hidden');
+        triggerBe.setAttr('aria-expanded','true');
+      }
+      open=true; if (items[0]) items[0].focus();
+    }
+    function hide(){
+      if (supportsAnchor) {
+        menuBe.setAttr('aria-hidden','true');
+        triggerBe.setAttr('aria-expanded','false');
+      } else {
+        menuBe.setStyle({ display: 'none' }).setAttr('aria-hidden','true');
+        triggerBe.setAttr('aria-expanded','false');
+      }
+      open=false;
+    }
 
     function onTriggerClick(){ open? hide() : show(); }
 
@@ -54,25 +101,34 @@
       triggerEl.focus();
     }
 
-    function onBodyClick(e: MouseEvent){ if (!menuEl.contains(e.target as Node) && e.target !== triggerEl) hide(); }
+    function onBodyClick(e: MouseEvent){
+      if (!menuEl.contains(e.target as Node) && e.target !== triggerEl) hide();
+    }
 
     // attach
     be(triggerEl).on('click', onTriggerClick);
-    be(menuEl).on('keydown', onMenuKey);
+    menuBe.on('keydown', onMenuKey);
     items.forEach((it, idx)=>{
       be(it).on('click', onItemClick(it));
       be(it).on('focus', onItemFocus(idx));
     });
     be(document.body).on('click', onBodyClick);
 
+    // If window resizes/scrolls, reposition fallback popup
+    function onWindowChange(){ if (!supportsAnchor && open) applyFallbackPosition(); }
+    window.addEventListener('resize', onWindowChange);
+    window.addEventListener('scroll', onWindowChange, true);
+
     return () => {
       try{ be(triggerEl).off('click', onTriggerClick); }catch(e){}
-      try{ be(menuEl).off('keydown', onMenuKey); }catch(e){}
+      try{ menuBe.off('keydown', onMenuKey); }catch(e){}
       items.forEach((it, idx)=>{
         try{ be(it).off('click', onItemClick(it)); }catch(e){}
         try{ be(it).off('focus', onItemFocus(idx)); }catch(e){}
       });
       try{ be(document.body).off('click', onBodyClick); }catch(e){}
+      try{ window.removeEventListener('resize', onWindowChange); }catch(e){}
+      try{ window.removeEventListener('scroll', onWindowChange, true); }catch(e){}
     };
   },
     props: {},
@@ -81,7 +137,7 @@
     meta: {
       author: 'idae-html',
       version: '1.0.0',
-      description: 'A dropdown component with keyboard navigation and accessibility features.'
+      description: 'A dropdown component with keyboard navigation, Anchor Positioning API when available, and JS fallback.'
     }
   });
 </script>
