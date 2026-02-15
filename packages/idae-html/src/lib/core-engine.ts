@@ -86,6 +86,16 @@ if (!win.__idae_app) {
   win.__idae_app = registry;
 }
 
+// Auto-load package theme CSS so components use centralized styling.
+try {
+  // Resolve the theme path relative to this module so bundlers produce a correct URL
+  const themeUrl = new URL('./theme/theme.css', import.meta.url).href;
+  // Load without awaiting; ignore failures silently
+  (win.__idae_app as AppRegistry).loadStyle(themeUrl, 'idae-theme').catch(() => {});
+} catch (e) {
+  // import.meta may not be available in some non-module contexts; ignore silently
+}
+
 export const app = win.__idae_app as AppRegistry;
 
 // Re-exports
