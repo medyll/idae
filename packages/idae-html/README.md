@@ -27,6 +27,46 @@ const markup = html`<div>${escapeHtml(userInput)}</div>`;
 const dom = parseHtml(markup);
 ```
 
+## Slots (insertion de contenu)
+
+`idae-html` fournit des utilitaires légers pour supporter un modèle de `slot` (injection de contenu enfant)
+en utilisant le parsing DOM — ce qui est robuste côté client et compatible avec JSDOM côté serveur.
+
+- `core.renderHtmlWithSlots(template, slots, options)`
+  - `template: string | Node` — HTML template contenant des éléments `<slot>`.
+  - `slots: Record<string, string|Node>` — contenu à injecter. La clef `default` correspond au slot non nommé.
+  - `options.allowHtml?: boolean` — quand `true`, les valeurs de type `string` sont interprétées comme HTML (par défaut elles sont insérées comme texte).
+  - Retourne un `DocumentFragment` prêt à être inséré dans le DOM.
+
+- `core.applySlotsToElement(root, slots, options)` — applique les slots à un `ParentNode` existant.
+
+Comportements pris en charge :
+- `<slot name="header"></slot>` — slot nommé `header`.
+- `<slot>fallback</slot>` — contenu de fallback si aucun contenu fourni.
+- Slot non nommé → clé `default` dans l'objet `slots`.
+
+Exemple rapide :
+
+```js
+import { core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+const tpl = `
+  <section>
+    <header><slot name="header">Fallback header</slot></header>
+    <div><slot>Fallback body</slot></div>
+  </section>`;
+
+const frag = core.renderHtmlWithSlots(tpl, {
+  header: '<h3>Injected header</h3>',
+  default: '<p>Injected body</p>'
+}, { allowHtml: true });
+
+document.body.appendChild(frag);
+```
+
+Sécurité : par défaut, les valeurs `string` sont insérées comme texte (échappées). N'utilisez `allowHtml: true` que pour du HTML de confiance.
+
+
 ## Components registry
 
 This package provides a small, opinionated registry for initialising HTML components in demos and pages.
