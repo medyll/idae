@@ -45,7 +45,7 @@ STATUS — idae-html package
 
 Implications & recommended small fixes from the source files:
 - Inline scripts using `data-attr="htmludom"` should be refactored into separate modules under `src/lib/moduleLib/` and imported by preview pages—this clarifies packaging vs runtime responsibilities.
-- The custom templating tags in `content.html` need explicit documentation or a parser implementation; decide whether to keep them as examples for a future templating layer or remove them to avoid confusion.
+- The custom templating tags in `content.html` need explicit documentation or an implementation; decide whether to keep them as examples for a future templating layer or remove them to avoid confusion.
 - Preserve `+page.svelte` as a development preview harness, but move stable examples to `examples/` and make them import the same modules that `dist/` will ship.
 - Add a short `EXAMPLES.md` or README in `src/source` describing how each file is intended to be used (preview, docs, or example embed), plus the runtime attributes (`data-auto-track`, `data-htmlu-module-id`, `data-cssDom`, `data-attr="htmludom"`).
 
@@ -83,4 +83,17 @@ Implications & recommended small fixes from the source files:
 - Example pages: [packages/idae-html/src/source/+page.svelte](packages/idae-html/src/source/+page.svelte)
 - CLI & scripts: [packages/idae-html/cli.cjs](packages/idae-html/cli.cjs)  [packages/idae-html/scripts/package-pre.js](packages/idae-html/scripts/package-pre.js)
 - Existing compiled package artifacts: [packages/idae-html/.svelte-kit/__package__/index.js](packages/idae-html/.svelte-kit/__package__/index.js)
+ 
+**Web components (English)**
+
+- Purpose: `idae-html` is a lightweight library of web components and small HTML-driven UI primitives. Components follow the Custom Elements / web-components style but remain "quasi-raw": minimal runtime, plain HTML templates, and small focused behavior modules rather than large framework abstractions.
+
+- Usage modes: components can be consumed in multiple ways:
+  - Direct page load: include the built bundle or a runtime script in a page (`<script src="/path/to/idae-html/dist/index.js" type="module"></script>` or non-module bundles) and use components and attributes directly in HTML.
+  - ES module import: import component modules as ESM (for bundlers or native module loading): `import { MyComponent } from '.../idae-html/dist/index.js'`.
+  - Over HTTP / CDN: serve the built module file(s) from a CDN or static HTTP server and reference them by URL (supports dynamic import and static module script tags).
+
+- Integration style: components are intended to be used directly in markup (data-attributes, custom tags, or by registering Custom Elements). The runtime exposes a small `core` surface (see `src/lib/core-engine.ts`) for resource loading, component registration, and helper utilities — consumers may rely on `window.__idae_app` or import the `core` object when using modules.
+
+- Design goals: minimal JS overhead, easy to embed in legacy pages, compatible with module-based applications, and simple to host via HTTP/CDN. The library deliberately avoids heavy frameworks: it favors tiny behavior modules, declarative attributes, and raw HTML fragments.
 

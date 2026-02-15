@@ -6,6 +6,8 @@ import * as beMod from '/packages/idae-be/src/lib/index.js';
 import * as domMod from '/packages/idae-dom-events/src/lib/index.js';
 // Include idae-stator helpers so `core` exposes state utilities as well.
 import * as statorMod from '/packages/idae-stator/src/lib/index.js';
+// Include idae-csss so core can redistribute styling helpers
+import * as csssMod from '/packages/idae-csss/src/lib/index.ts';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -104,6 +106,36 @@ const htmluModules = (domMod as any).htmluModules;
 const stator = (statorMod as any).stator || (statorMod as any).default || (statorMod as any).createStator;
 const createStator = (statorMod as any).createStator || (statorMod as any).default || (statorMod as any).stator;
 
+// idae-csss exports (parser, action, runtime helpers)
+const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
+const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
+const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
+function registerComponent(name: string, value: any) {
+  app.registerComponent(name, value);
+}
+
+function initComponent(name: string, root: ParentNode = document) {
+  const comp = app.getComponent(name);
+  if (typeof comp !== 'function') return;
+  try {
+    const els = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)) : [];
+    els.forEach((el: any) => {
+      try { comp(el); } catch (e) { console.error('component init error', name, e); }
+    });
+  } catch (e) { /* ignore */ }
+}
+
+function initRegisteredComponents(root: ParentNode = document) {
+  try {
+    Object.keys(app.components || {}).forEach((name) => initComponent(name, root));
+  } catch (e) { /* ignore */ }
+}
+
+function autoInitRegisteredComponents() {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => initRegisteredComponents(document));
+  else initRegisteredComponents(document);
+}
+
 export const core = {
   app,
   be,
@@ -117,4 +149,14 @@ export const core = {
   // state helpers
   stator,
   createStator
+  ,
+  // styling helpers from idae-csss
+  csss,
+  CsssNode,
+  csssParser : OpCssParser
+  // registry helpers
+  registerComponent,
+  initComponent,
+  initRegisteredComponents,
+  autoInitRegisteredComponents
 };

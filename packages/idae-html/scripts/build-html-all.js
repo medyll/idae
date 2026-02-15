@@ -1,6 +1,7 @@
 import { build } from 'esbuild';
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 
 const moduleDir = path.resolve('src/lib/moduleLib');
 const outDir = path.resolve('dist');
@@ -47,12 +48,43 @@ async function buildOne(entryPath) {
 
   const finalJs = js + '\n' + wrapper;
 
-  // produce a minimal component HTML that contains only script (and optional style if needed)
-  const html = `
-<script>
-${finalJs}
-</script>
-`;
+  // Try to include a style block from the matching component HTML (if present)
+  let styleBlock = '';
+  try {
+    const compHtmlPath = path.resolve('src/lib/components', name, 'index.html');
+    if (fs.existsSync(compHtmlPath)) {
+      const compHtml = fs.readFileSync(compHtmlPath, 'utf8');
+      const m = compHtml.match(/<style\b([^>]*)>([\s\S]*?)<\/style>/i);
+      if (m) {
+        // If style block declares lang="csss", try to compile it to CSS using idae-csss
+        const attrs = m[1] || '';
+        const langMatch = attrs.match(/\blang\s*=\s*(?:"|')?([^"'\s>]+)/i);
+        const lang = langMatch && langMatch[1] ? langMatch[1].toLowerCase() : null;
+        let cssContent = m[2] || '';
+        if (lang === 'csss') {
+          try {
+            const csssPath = path.resolve(__dirname, '..', '..', 'idae-csss', 'src', 'lib', 'index.js');
+            if (fs.existsSync(csssPath)) {
+              const csssMod = await import(pathToFileURL(csssPath).href);
+              const compiler = csssMod.csss || csssMod.default || csssMod;
+              if (typeof compiler === 'function') {
+                const out = compiler(cssContent);
+                if (typeof out === 'string' && out.trim()) cssContent = out;
+              } else if (compiler && typeof compiler.compile === 'function') {
+                const out = compiler.compile(cssContent);
+                if (typeof out === 'string' && out.trim()) cssContent = out;
+              }
+            }
+          } catch (e) { console.warn('csss compile failed for', compHtmlPath, e && e.message); }
+        }
+        // emit as plain CSS (drop lang attribute)
+        styleBlock = `<style>${cssContent}</style>`;
+      }
+    }
+  } catch (e) { /* ignore */ }
+
+  // produce a minimal component HTML that contains the optional style and the script
+  const html = `\n${styleBlock}\n<script>\n${finalJs}\n</script>\n`;
 
   fs.writeFileSync(outHtml, html, 'utf8');
   try { fs.unlinkSync(tmpFile); } catch(e){}

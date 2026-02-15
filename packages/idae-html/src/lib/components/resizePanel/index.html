@@ -1,4 +1,4 @@
-<style>
+<style lang="csss">
   body{font-family:system-ui,Arial,sans-serif;padding:16px}
   .row{display:flex;gap:12px}
   .panel{border:1px solid #aaa;padding:8px;background:#fafafa;min-width:80px;min-height:80px}
@@ -18,6 +18,7 @@
 
 <script type="module">
   import { be, createBe, app } from '/packages/idae-html/src/lib/core-engine.ts';
+  
   async function addPanel(containerBe){
     try{
       const mod = await import('/packages/idae-html/src/lib/moduleLib/resizePanel.ts');
