@@ -1,11 +1,11 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
-  .toast-area{position:fixed;right:16px;top:16px;display:flex;flex-direction:column;gap:8px;z-index:999}
-  .toast{background:#333;color:#fff;padding:8px 12px;border-radius:6px;min-width:180px}
+  .toast-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .toast-area{position:fixed;right:var(--gutter-md);top:var(--gutter-md);display:flex;flex-direction:column;gap:var(--gutter-sm);z-index:999}
+  .toast{background:var(--color-popover);color:var(--color-popover-foreground);padding:8px 12px;border-radius:6px;min-width:180px}
 </style>
 
-<h1>Toast</h1>
-<div data-component="toast">
+<h1 class="font-lg text-foreground">Toast</h1>
+<div data-component="toast" class="toast-root">
   <button data-push>Push toast</button>
   <div class="toast-area" data-toasts></div>
 </div>

@@ -1,15 +1,15 @@
 <style lang="csss">
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
-  .row{display:flex;gap:12px}
-  .panel{border:1px solid #aaa;padding:8px;background:#fafafa;min-width:80px;min-height:80px}
-  .container{display:flex;align-items:flex-start;gap:8px}
-  .note{color:#666;font-size:90%}
+  .resize-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .row{display:flex;gap:var(--gutter-md)}
+  .panel{border:1px solid var(--color-border);padding:var(--gutter-sm);background:var(--color-card);min-width:80px;min-height:80px;color:var(--color-card-foreground)}
+  .container{display:flex;align-items:flex-start;gap:var(--gutter-sm)}
+  .note{color:var(--color-muted-foreground);font-size:90%}
 </style>
 
-<h1>resizePanel component — demo</h1>
+<h1 class="font-lg text-foreground">resizePanel component — demo</h1>
 <p class="note">This demo imports the source ESM initializer from <code>src/lib/moduleLib/resizePanel.ts</code> for dev (no build required).</p>
 
-<div data-component="resizePanel-demo">
+<div data-component="resizePanel-demo" class="resize-root">
   <div>
     <button data-add>Add panel</button>
     <button data-add-two>Add two panels side-by-side</button>

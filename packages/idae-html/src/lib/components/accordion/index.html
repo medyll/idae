@@ -1,14 +1,14 @@
 <style>
-    body{font-family:system-ui,Arial,sans-serif;padding:12px}
-    .accordion{width:100%;max-width:640px;margin:8px 0}
-    .accordion-item{border:1px solid #ddd;margin-bottom:6px}
-    .accordion-header{background:#f6f6f6;padding:10px;cursor:pointer;border:0;width:100%;text-align:left}
-    .accordion-content{display:none;padding:10px;background:#fff}
+    .accordion-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .accordion{width:100%;max-width:640px;margin:var(--gutter-sm) 0}
+    .accordion-item{border:1px solid var(--color-border);margin-bottom:6px;background:var(--color-card);color:var(--color-card-foreground)}
+    .accordion-header{background:var(--color-secondary);padding:var(--gutter-sm);cursor:pointer;border:0;width:100%;text-align:left}
+    .accordion-content{display:none;padding:var(--gutter-sm);background:var(--color-card)}
     .accordion-content[aria-hidden="false"]{display:block}
 </style>
 
-<h1>Accordion</h1>
-<div data-component="accordion" class="accordion">
+<h1 class="font-lg text-foreground">Accordion</h1>
+<div data-component="accordion" class="accordion accordion-root">
     <div class="accordion-item">
         <button data-accordion-header class="accordion-header" aria-expanded="false">Section 1</button>
         <div data-accordion-content class="accordion-content" aria-hidden="true">

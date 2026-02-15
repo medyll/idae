@@ -1,15 +1,15 @@
 <style>
-    body{font-family:system-ui,Arial,sans-serif;padding:12px}
-    .card-container{display:flex;flex-wrap:wrap;gap:12px}
-    .card{box-shadow:0 4px 8px rgba(0,0,0,0.12);transition:box-shadow .2s;width:300px;border-radius:6px;overflow:hidden}
+    .card-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .card-container{display:flex;flex-wrap:wrap;gap:var(--gutter-md)}
+    .card{box-shadow:0 4px 8px rgba(0,0,0,0.12);transition:box-shadow .2s;width:300px;border-radius:6px;overflow:hidden;background:var(--color-card);color:var(--color-card-foreground)}
     .card:hover{box-shadow:0 10px 24px rgba(0,0,0,0.14)}
-    .card-header{padding:12px;background:#f6f6f6}
-    .card-body{padding:16px;background:#fff}
-    .card-footer{padding:10px;background:#fafafa;text-align:right}
+    .card-header{padding:var(--gutter-sm);background:var(--color-secondary)}
+    .card-body{padding:var(--gutter-md);background:var(--color-card)}
+    .card-footer{padding:var(--gutter-sm);background:var(--color-accent);text-align:right}
 </style>
 
-<h1>Card examples</h1>
-<div data-component="card" class="card-container">
+<h1 class="font-lg text-foreground">Card examples</h1>
+<div data-component="card" class="card-container card-root">
     <div class="card">
         <div class="card-header"><h3>Card Title 1</h3></div>
         <div class="card-body"><p>This is some content inside the card.</p></div>

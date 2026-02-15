@@ -11,9 +11,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #333;
-            padding-top: 20px;
+            background-color: var(--color-foreground);
+            padding-top: var(--gutter-md);
             transition: 0.3s;
+            color: var(--color-popover-foreground);
         }
         .sidebar.collapsed {
             width: 0;
@@ -22,16 +23,17 @@
             padding: 10px 15px;
             text-decoration: none;
             font-size: 18px;
-            color: white;
+            color: var(--color-popover-foreground);
             display: block;
         }
         .sidebar a:hover {
-            background-color: #555;
+            background-color: var(--color-muted);
         }
         .content {
             margin-left: 250px;
-            padding: 20px;
+            padding: var(--gutter-md);
             transition: 0.3s;
+            color: var(--color-foreground);
         }
         .content.shifted {
             margin-left: 0;
@@ -40,10 +42,10 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #333;
-            color: white;
+            background-color: var(--color-foreground);
+            color: var(--color-popover-foreground);
             border: none;
-            padding: 10px;
+            padding: var(--gutter-sm);
             cursor: pointer;
         }
     </style>

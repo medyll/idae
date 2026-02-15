@@ -1,12 +1,12 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .modal-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
   .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
-  .dialog{background:#fff;padding:20px;border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .dialog{background:var(--color-popover);color:var(--color-popover-foreground);padding:var(--gutter-md);border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
   .hidden{display:none}
 </style>
 
-<h1>Modal</h1>
-<div data-component="modal">
+<h1 class="font-lg text-foreground">Modal</h1>
+<div data-component="modal" class="modal-root">
   <button data-open>Open modal</button>
 
   <div data-backdrop class="backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dlg-title">

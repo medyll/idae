@@ -1,15 +1,15 @@
 <style>
-    body{font-family:system-ui,Arial,sans-serif;padding:12px}
-    .carousel{width:100%;max-width:700px;margin:8px auto;position:relative;overflow:hidden}
+    .carousel-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .carousel{width:100%;max-width:700px;margin:var(--gutter-sm) auto;position:relative;overflow:hidden}
     .carousel-container{display:flex;transition:transform .5s ease}
-    .carousel-slide{min-width:100%;box-sizing:border-box;padding:24px;text-align:center;background:#f7f7f7}
-    .carousel-button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:0;padding:10px;cursor:pointer}
+    .carousel-slide{min-width:100%;box-sizing:border-box;padding:var(--gutter-lg);text-align:center;background:var(--color-muted);color:var(--color-muted-foreground)}
+    .carousel-button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:var(--color-primary-foreground);border:0;padding:10px;cursor:pointer}
     .carousel-button.prev{left:8px}
     .carousel-button.next{right:8px}
 </style>
 
-<h1>Carousel</h1>
-<div data-component="carousel" class="carousel" aria-roledescription="carousel">
+<h1 class="font-lg text-foreground">Carousel</h1>
+<div data-component="carousel" class="carousel carousel-root" aria-roledescription="carousel">
     <div class="carousel-container" data-carousel-root role="list">
         <div class="carousel-slide" role="group">Slide 1</div>
         <div class="carousel-slide" role="group">Slide 2</div>

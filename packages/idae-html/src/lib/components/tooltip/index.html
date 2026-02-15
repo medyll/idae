@@ -13,11 +13,11 @@
         .tooltip .tooltip-text {
             visibility: hidden;
             width: 120px;
-            background-color: #555;
-            color: #fff;
+            background-color: var(--color-popover);
+            color: var(--color-popover-foreground);
             text-align: center;
             border-radius: 6px;
-            padding: 5px;
+            padding: var(--gutter-xs);
             position: absolute;
             z-index: 1;
             bottom: 125%;
@@ -38,7 +38,7 @@
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: #555 transparent transparent transparent;
+            border-color: var(--color-popover) transparent transparent transparent;
         }
     </style>
 </head>

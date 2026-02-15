@@ -1,5 +1,12 @@
-<h1>Tabs</h1>
-<div data-component="tabs">
+<h1 class="font-lg text-foreground">Tabs</h1>
+<div data-component="tabs" class="tabs-root">
+  <style>
+    .tabs-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .tabs{display:flex;gap:var(--gutter-sm);margin-bottom:var(--gutter-sm)}
+    .tab{background:var(--color-secondary);color:var(--color-secondary-foreground);padding:var(--gutter-xs) var(--gutter-sm);border:0;border-radius:4px}
+    .tab[aria-selected="true"]{background:var(--color-primary);color:var(--color-primary-foreground)}
+    .panel{padding:var(--gutter-md);background:var(--color-card);color:var(--color-card-foreground)}
+  </style>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true">One</button>
     <button class="tab" role="tab" aria-selected="false">Two</button>

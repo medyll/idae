@@ -1,12 +1,12 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
-  .menu{border:1px solid #ddd;background:#fff;padding:4px;position:absolute}
+  .dropdown-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .menu{border:1px solid var(--color-border);background:var(--color-popover);padding:4px;position:absolute}
   .item{padding:6px 12px;cursor:pointer}
-  .item[aria-selected="true"]{background:#eee}
+  .item[aria-selected="true"]{background:var(--color-secondary)}
 </style>
 
-<h1>Dropdown</h1>
-<div data-component="dropdown" style="position:relative;display:inline-block">
+<h1 class="font-lg text-foreground">Dropdown</h1>
+<div data-component="dropdown" class="dropdown-root" style="position:relative;display:inline-block">
   <button data-trigger aria-haspopup="true" aria-expanded="false">Select an option</button>
   <div data-menu class="menu" role="listbox" aria-hidden="true" style="display:none;min-width:160px">
     <div class="item" role="option" tabindex="0">Option A</div>

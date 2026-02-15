@@ -1,7 +1,10 @@
-<style>body{font-family:system-ui,Arial,sans-serif;padding:20px;} .card{border:1px solid #ddd;padding:12px;margin:8px 0}</style>
+<style>
+  .components-root{padding:var(--gutter-lg);font-size:var(--font-md);color:var(--color-foreground)}
+  .card{border:1px solid var(--color-border);padding:var(--gutter-md);margin:var(--gutter-sm) 0;background:var(--color-card);color:var(--color-card-foreground)}
+</style>
 
 <h1>idae-html examples</h1>
-<div data-component="components-index">
+<div data-component="components-index" class="components-root">
   <div class="card">
     <h3>resizePanel</h3>
     <p>Fetches and inserts the generated component at <code>dist/resizePanel.html</code>.</p>
