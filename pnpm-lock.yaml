@@ -851,6 +851,9 @@ importers:
       '@medyll/idae-idbql':
         specifier: workspace:*
         version: link:../idae-idbql
+      '@medyll/idae-query':
+        specifier: workspace:*
+        version: link:../idae-query
       '@medyll/idae-stator':
         specifier: workspace:*
         version: link:../idae-stator
