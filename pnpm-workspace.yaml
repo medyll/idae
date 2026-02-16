@@ -4,3 +4,4 @@ packages:
 
 onlyBuiltDependencies:
   - sqlite3
+  - esbuild
