@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "**/src/lib/components/*.html": "svelte"
+  },
+  "emmet.includeLanguages": {
+    "svelte": "html"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
+}

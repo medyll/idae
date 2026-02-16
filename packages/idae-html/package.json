@@ -7,19 +7,20 @@
   "version": "1.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medyll/idae.git"
+    "url": "git+https://github.com/medyll/idae.git"
   },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
     "preview": "vite preview",
-    "package": "svelte-kit sync && svelte-package && publint",
+    "package": "npm run build:html:all && svelte-kit sync && node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
     "prepublishOnly": "npm run package",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "prepackage": "node scripts/package-pre.js",
+    "build:types": "tsc -p tsconfig.build.json",
     "build:dist": "node scripts/build-resizePanel.js"
     ,
     "build:html": "node scripts/build-html-component.js"
@@ -84,6 +85,7 @@
   "dependencies": {
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-stator": "workspace:*",
+    "@medyll/idae-idbql": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
   }

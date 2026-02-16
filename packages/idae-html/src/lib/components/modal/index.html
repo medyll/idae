@@ -1,12 +1,12 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
+  .modal-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
   .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
-  .dialog{background:#fff;padding:20px;border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .dialog{background:var(--color-popover);color:var(--color-popover-foreground);padding:var(--gutter-md);border-radius:6px;min-width:280px;max-width:90%;box-shadow:0 8px 24px rgba(0,0,0,.2)}
   .hidden{display:none}
 </style>
 
-<h1>Modal</h1>
-<div data-component="modal">
+
+<div data-component="modal" class="modal-root">
   <button data-open>Open modal</button>
 
   <div data-backdrop class="backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('modal', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const openEl = rootEl.querySelector('[data-open]') as HTMLElement | null;
     const backdropEl = rootEl.querySelector('[data-backdrop]') as HTMLElement | null;
@@ -45,6 +45,8 @@
       }
     }
 
+    function onKey(e: KeyboardEvent){ if (e.key === 'Escape') closeDialog(); }
+
     function openDialog(){
       lastActive = document.activeElement;
       backdropBe.removeClass('hidden');
@@ -58,10 +60,28 @@
       be(dialog).off('keydown', trapFocus as any);
       if (lastActive) (lastActive as HTMLElement).focus();
     }
-    function onKey(e: KeyboardEvent){ if (e.key === 'Escape') closeDialog(); }
+
+    function onBackdropClick(e: MouseEvent){ if (e.target === backdropEl) closeDialog(); }
 
     openBe.on('click', openDialog);
     be(closeEl).on('click', closeDialog);
-    backdropBe.on('click', (e)=>{ if (e.target === backdropEl) closeDialog(); });
-  }});
+    backdropBe.on('click', onBackdropClick);
+
+    return () => {
+      try{ openBe.off('click', openDialog); }catch(e){}
+      try{ be(closeEl).off('click', closeDialog); }catch(e){}
+      try{ backdropBe.off('click', onBackdropClick); }catch(e){}
+      try{ be('body').off('keydown', onKey); }catch(e){}
+      try{ be(dialog).off('keydown', trapFocus as any); }catch(e){}
+    };
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A modal dialog component with focus trapping and keyboard navigation.'
+    }
+  });
 </script>

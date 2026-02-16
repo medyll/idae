@@ -1,0 +1,32 @@
+<style>
+  .checkbox-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .switch{display:inline-flex;align-items:center;gap:8px}
+  .toggle{width:40px;height:22px;border-radius:12px;background:var(--color-muted);position:relative;cursor:pointer}
+  .knob{position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:9px;background:#fff;transition:left .15s}
+  .toggle.on{background:var(--color-primary)}
+  .toggle.on .knob{left:20px}
+</style>
+
+<div data-component="checkbox" class="checkbox-root">
+  <label class="switch">
+    <div role="switch" tabindex="0" aria-checked="false" class="toggle" data-toggle>
+      <div class="knob"></div>
+    </div>
+    <span>Activer</span>
+  </label>
+</div>
+
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
+
+  core.registerComponent('checkbox', {
+    script: (root) => {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const toggle = rootEl.querySelector('[data-toggle]') as HTMLElement | null;
+      if (!toggle) return;
+      function flip(){ const on = toggle.classList.toggle('on'); toggle.setAttribute('aria-checked', String(on)); }
+      be(toggle).on('click', flip).on('keydown', (e:KeyboardEvent)=>{ if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); } });
+      return () => { try{ be(toggle).off('click', flip); }catch(e){} };
+    }, props:{}, resources:[], on:{}, meta:{description:'Checkbox / switch component'}
+  });
+</script>

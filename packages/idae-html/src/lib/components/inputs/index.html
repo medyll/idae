@@ -1,12 +1,13 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
-  .field{margin-bottom:12px}
-  .error{color:#c00;font-size:90%}
-  input.invalid{border-color:#c00}
+  .inputs-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .field{margin-bottom:var(--gutter-sm)}
+  .error{color:var(--color-destructive);font-size:90%}
+  input.invalid{border-color:var(--color-destructive)}
+  input{border-style:solid;border-width:var(--border-sm);border-color:var(--color-border);padding:6px}
 </style>
 
-<h1>Inputs</h1>
-<div data-component="inputs">
+
+<div data-component="inputs" class="inputs-root">
   <form>
     <div class="field"><label>Text (required): <input name="name" required></label><div class="error" data-for="name"></div></div>
     <div class="field"><label>Number (1-100): <input name="age" type="number" min="1" max="100"></label><div class="error" data-for="age"></div></div>
@@ -16,11 +17,11 @@
   </form>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('inputs', {
-    script(root){
+    script: (root, props)=> {
     const rootEl = (root instanceof Element) ? root : (root as any).node || document;
     const formEl = rootEl.querySelector('form') as HTMLFormElement | null;
     if (!formEl) return;
@@ -40,9 +41,9 @@
     }
 
     const phone = (formEl.elements as any)['phone'];
-    if (phone) be(phone).on('input', ()=>{ phone.value = phoneMask(phone.value); });
+    function onPhoneInput(){ if (phone) phone.value = phoneMask(phone.value); }
 
-    be(formEl).on('submit', (e)=>{
+    function onSubmit(e: Event){
       e.preventDefault();
       let ok = true;
       if (!((formEl.elements as any)['name'].value || '').trim()){ setError('name','Name is required'); ok=false; } else setError('name','');
@@ -50,6 +51,23 @@
       if (isNaN(age) || age<1 || age>100){ setError('age','Age must be between 1 and 100'); ok=false; } else setError('age','');
       if (!/\+?\d{2,}/.test(((formEl.elements as any)['phone'].value || ''))){ setError('phone','Enter a valid phone'); ok=false; } else setError('phone','');
       if (ok) alert('Form OK — '+JSON.stringify({name:(formEl.elements as any)['name'].value, age: (formEl.elements as any)['age'].value, phone: (formEl.elements as any)['phone'].value}));
-    });
-  }});
+    }
+
+    if (phone) be(phone).on('input', onPhoneInput);
+    be(formEl).on('submit', onSubmit);
+
+    return () => {
+      try{ if (phone) be(phone).off('input', onPhoneInput); }catch(e){}
+      try{ be(formEl).off('submit', onSubmit); }catch(e){}
+    };
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A form inputs component with validation and masking.'
+    }
+  });
 </script>

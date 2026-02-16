@@ -1,5 +1,12 @@
-<h1>Tabs</h1>
-<div data-component="tabs">
+
+<div data-component="tabs" class="tabs-root">
+  <style>
+    .tabs-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .tabs{display:flex;gap:var(--gutter-sm);margin-bottom:var(--gutter-sm)}
+    .tab{background:var(--color-secondary);color:var(--color-secondary-foreground);padding:var(--gutter-xs) var(--gutter-sm);border:0;border-radius:4px}
+    .tab[aria-selected="true"]{background:var(--color-primary);color:var(--color-primary-foreground)}
+    .panel{padding:var(--gutter-md);background:var(--color-card);color:var(--color-card-foreground)}
+  </style>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true">One</button>
     <button class="tab" role="tab" aria-selected="false">Two</button>
@@ -10,36 +17,53 @@
   <div class="panel" role="tabpanel" hidden>Panel three content</div>
 </div>
 
-<script type="module">
-  import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, core } from '$lib/core-engine.ts';
 
   core.registerComponent('tabs', {
-    script(root){
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const tabs = Array.from(rootEl.querySelectorAll('[role="tab"]')) as HTMLElement[];
-    const panels = Array.from(rootEl.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
-    if (!tabs.length || !panels.length) return;
-    tabs.forEach((t, i)=> be(t).on('click', ()=> activate(i)));
-    function activate(i:number){
-      tabs.forEach((t,idx)=>{
-        be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
-        if (idx===i) be(panels[idx]).deleteAttr('hidden'); else be(panels[idx]).setAttr('hidden','');
+    script: (root, props)=> {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const tabs = Array.from(rootEl.querySelectorAll('[role="tab"]')) as HTMLElement[];
+      const panels = Array.from(rootEl.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
+      if (!tabs.length || !panels.length) return;
+
+      function activate(i:number){
+        tabs.forEach((t,idx)=>{
+          be(t).setAttr('aria-selected', idx===i ? 'true' : 'false');
+          if (idx===i) be(panels[idx]).deleteAttr('hidden'); else be(panels[idx]).setAttr('hidden','');
+        });
+        (tabs[i] as HTMLElement).focus();
+      }
+
+      const onTabClickHandlers: Function[] = [];
+      tabs.forEach((t, i)=>{
+        const h = () => activate(i);
+        onTabClickHandlers.push(h);
+        be(t).on('click', h);
       });
-      (tabs[i] as HTMLElement).focus();
+
+      function onBodyKey(e: KeyboardEvent){
+        const idx = tabs.findIndex(t=>t===document.activeElement);
+        if (idx<0) return;
+        if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
+        if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
+      }
+
+      be(document.body).on('keydown', onBodyKey);
+
+      return () => {
+        tabs.forEach((t, i)=>{ try{ be(t).off('click', onTabClickHandlers[i]); }catch(e){} });
+        try{ be(document.body).off('keydown', onBodyKey); }catch(e){}
+      };
+  },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A tabs component with keyboard navigation and accessibility features.'
     }
-    be(document.body).on('keydown',(e)=>{
-      const idx = tabs.findIndex(t=>t===document.activeElement);
-      if (idx<0) return;
-      if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
-      if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
-    });
-  }});
-</script>
-  }
-  be('body').on('keydown',(e)=>{
-    const idx = tabs.findIndex(t=>t===document.activeElement);
-    if (idx<0) return;
-    if (e.key === 'ArrowRight') activate((idx+1)%tabs.length);
-    if (e.key === 'ArrowLeft') activate((idx-1+tabs.length)%tabs.length);
   });
 </script>
+ 

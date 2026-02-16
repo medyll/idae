@@ -1,0 +1,148 @@
+/* Theme declaration using CSS variables */
+/* Base theme (light) */
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0f172a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #3b82f6;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
+  /* Spacing variables */
+  --gutter-xs: 0.25rem;
+  --gutter-sm: 0.5rem;
+  --gutter-md: 1rem;
+  --gutter-lg: 1.5rem;
+  --gutter-xl: 2rem;
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --border-xs: 0.5px;
+  --border-sm: 1px;
+  --border-md: 2px;
+  --border-lg: 3px;
+  --border-xl: 4px;
+}
+
+/* Dark theme */
+.dark {
+  --color-background: #0f172a;
+  --color-foreground: #f8fafc;
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #f8fafc;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f8fafc;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #3b82f6;
+  --color-card: #1e293b;
+  --color-card-foreground: #f8fafc;
+  --color-popover: #1e293b;
+  --color-popover-foreground: #f8fafc;
+}
+
+/* Utility classes based on CSS variables */
+
+/* Padding classes */
+.pad-xs { padding: var(--gutter-xs); }
+.pad-sm { padding: var(--gutter-sm); }
+.pad-md { padding: var(--gutter-md); }
+.pad-lg { padding: var(--gutter-lg); }
+.pad-xl { padding: var(--gutter-xl); }
+
+/* Margin classes */
+.marg-xs { margin: var(--gutter-xs); }
+.marg-sm { margin: var(--gutter-sm); }
+.marg-md { margin: var(--gutter-md); }
+.marg-lg { margin: var(--gutter-lg); }
+.marg-xl { margin: var(--gutter-xl); }
+
+/* Font size classes */
+.font-xs { font-size: var(--font-xs); }
+.font-sm { font-size: var(--font-sm); }
+.font-md { font-size: var(--font-md); }
+.font-lg { font-size: var(--font-lg); }
+.font-xl { font-size: var(--font-xl); }
+
+/* Border width classes */
+.border-xs { border-width: var(--border-xs); }
+.border-sm { border-width: var(--border-sm); }
+.border-md { border-width: var(--border-md); }
+.border-lg { border-width: var(--border-lg); }
+.border-xl { border-width: var(--border-xl); }
+
+/* Color utility classes */
+
+/* Text colors */
+.text-foreground { color: var(--color-foreground); }
+.text-primary { color: var(--color-primary); }
+.text-primary-foreground { color: var(--color-primary-foreground); }
+.text-secondary { color: var(--color-secondary); }
+.text-secondary-foreground { color: var(--color-secondary-foreground); }
+.text-muted { color: var(--color-muted); }
+.text-muted-foreground { color: var(--color-muted-foreground); }
+.text-accent { color: var(--color-accent); }
+.text-accent-foreground { color: var(--color-accent-foreground); }
+.text-destructive { color: var(--color-destructive); }
+.text-destructive-foreground { color: var(--color-destructive-foreground); }
+.text-border { color: var(--color-border); }
+.text-input { color: var(--color-input); }
+.text-ring { color: var(--color-ring); }
+.text-card { color: var(--color-card); }
+.text-card-foreground { color: var(--color-card-foreground); }
+.text-popover { color: var(--color-popover); }
+.text-popover-foreground { color: var(--color-popover-foreground); }
+
+/* Background colors */
+.bg-background { background-color: var(--color-background); }
+.bg-foreground { background-color: var(--color-foreground); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-foreground { background-color: var(--color-primary-foreground); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-secondary-foreground { background-color: var(--color-secondary-foreground); }
+.bg-muted { background-color: var(--color-muted); }
+.bg-muted-foreground { background-color: var(--color-muted-foreground); }
+.bg-accent { background-color: var(--color-accent); }
+.bg-accent-foreground { background-color: var(--color-accent-foreground); }
+.bg-destructive { background-color: var(--color-destructive); }
+.bg-destructive-foreground { background-color: var(--color-destructive-foreground); }
+.bg-border { background-color: var(--color-border); }
+.bg-input { background-color: var(--color-input); }
+.bg-ring { background-color: var(--color-ring); }
+.bg-card { background-color: var(--color-card); }
+.bg-card-foreground { background-color: var(--color-card-foreground); }
+.bg-popover { background-color: var(--color-popover); }
+.bg-popover-foreground { background-color: var(--color-popover-foreground); }
+
+/* Border colors */
+.border-color-primary { border-color: var(--color-primary); }
+.border-color-secondary { border-color: var(--color-secondary); }
+.border-color-muted { border-color: var(--color-muted); }
+.border-color-accent { border-color: var(--color-accent); }
+.border-color-destructive { border-color: var(--color-destructive); }
+.border-color-border { border-color: var(--color-border); }
+.border-color-input { border-color: var(--color-input); }
+.border-color-ring { border-color: var(--color-ring); }
+
+

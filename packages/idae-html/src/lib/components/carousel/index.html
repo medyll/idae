@@ -1,0 +1,67 @@
+<style>
+    .carousel-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+    .carousel{width:100%;max-width:700px;margin:var(--gutter-sm) auto;position:relative;overflow:hidden}
+    .carousel-container{display:flex;transition:transform .5s ease}
+    .carousel-slide{min-width:100%;box-sizing:border-box;padding:var(--gutter-lg);text-align:center;background:var(--color-muted);color:var(--color-muted-foreground)}
+    .carousel-button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:var(--color-primary-foreground);border:0;padding:10px;cursor:pointer}
+    .carousel-button.prev{left:8px}
+    .carousel-button.next{right:8px}
+</style>
+
+
+<div data-component="carousel" class="carousel carousel-root" aria-roledescription="carousel">
+    <div class="carousel-container" data-carousel-root role="list">
+        <div class="carousel-slide" role="group">Slide 1</div>
+        <div class="carousel-slide" role="group">Slide 2</div>
+        <div class="carousel-slide" role="group">Slide 3</div>
+    </div>
+    <button class="carousel-button prev" data-prev aria-label="Previous">&#10094;</button>
+    <button class="carousel-button next" data-next aria-label="Next">&#10095;</button>
+</div>
+
+<script type="module" lang="ts">
+    import { be, core } from '$lib/core-engine.ts';
+
+    core.registerComponent('carousel', {
+        props: {},
+        resources: [],
+        script: (root, props) => {
+            const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+            const container = rootEl.querySelector('[data-carousel-root]') as HTMLElement | null;
+            const prevBtn = rootEl.querySelector('[data-prev]') as HTMLElement | null;
+            const nextBtn = rootEl.querySelector('[data-next]') as HTMLElement | null;
+            if (!container || !prevBtn || !nextBtn) return;
+
+            const slides = Array.from(container.children) as HTMLElement[];
+            let current = 0;
+            let interval: any = null;
+
+            function show(i: number){
+                if (!container) return;
+                const idx = ((i % slides.length) + slides.length) % slides.length;
+                container.style.transform = `translateX(-${idx * 100}%)`;
+                current = idx;
+            }
+
+            function onNext(){ show(current + 1); }
+            function onPrev(){ show(current - 1); }
+
+            be(nextBtn).on('click', onNext);
+            be(prevBtn).on('click', onPrev);
+
+            // autoplay if not disabled via data attribute
+            if ((rootEl as HTMLElement).dataset.autoplay !== 'false'){
+                interval = setInterval(onNext, 3000);
+            }
+
+            // cleanup
+            return () => {
+                try{ be(nextBtn).off('click', onNext); }catch(e){}
+                try{ be(prevBtn).off('click', onPrev); }catch(e){}
+                if (interval) clearInterval(interval);
+            };
+        },
+        on: {},
+        meta: { author: 'idae-html', version: '1.0.0', description: 'Carousel with autoplay and cleanup.' }
+    });
+</script>

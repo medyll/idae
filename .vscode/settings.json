@@ -1,4 +1,15 @@
 {
+  "files.associations": {
+    "**/packages/idae-html/src/lib/components/*.html": "svelte"
+  },
+  "emmet.includeLanguages": {
+    "svelte": "html"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
+}
+{
     "cSpell.words": [
         "CHROMADB",
         "Idae",

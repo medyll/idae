@@ -1,0 +1,17 @@
+<style>
+  .stack-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .stack{display:flex;flex-direction:column;gap:var(--gutter-sm)}
+</style>
+
+<div data-component="stack" class="stack-root">
+  <div class="stack">
+    <div class="card">Élément 1</div>
+    <div class="card">Élément 2</div>
+    <div class="card">Élément 3</div>
+  </div>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('stack', { script: () => () => {}, props: {}, resources: [], on: {}, meta: { description: 'Vertical stack helper' } });
+</script>

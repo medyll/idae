@@ -1,23 +1,18 @@
 // Core engine for idae-html components
 // Re-exports idae-be helpers and exposes a global app registry on window
-import * as beMod from '/packages/idae-be/src/lib/index.js';
-// Re-export helpers from idae-dom-events so this package "delivers" it as part
-// of the core runtime surface. Use same workspace path pattern as other imports.
-import * as domMod from '/packages/idae-dom-events/src/lib/index.js';
-// Include idae-stator helpers so `core` exposes state utilities as well.
-import * as statorMod from '/packages/idae-stator/src/lib/index.js';
-// Include idae-csss so core can redistribute styling helpers
-import * as csssMod from '/packages/idae-csss/src/lib/index.ts';
-// Optional: idae-idbql persistence helpers (exposed when package is present in monorepo)
-import * as idbqlMod from '/packages/idae-idbql/src/lib/index.js';
+import * as beMod from '@medyll/idae-be';
+import * as domMod from '@medyll/idae-dom-events';
+import * as statorMod from '@medyll/idae-stator';
+import * as csssMod from '@medyll/idae-csss';
+import * as idbqlMod from '@medyll/idae-idbql';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
-  components: Record<string, any>;
+  components: Record<string, ComponentSpec>;
   registerScript: (key: string, url?: string) => void;
   isScriptLoaded: (key: string) => boolean;
-  registerComponent: (name: string, value: any) => void;
-  getComponent: (name: string) => any;
+  registerComponent: (name: string, value: ComponentSpec) => void;
+  getComponent: (name: string) => ComponentSpec;
   loadScript: (url: string, key?: string) => Promise<void>;
   loadStyle: (url: string, key?: string) => Promise<void>;
   loadResources: (urls: string[]) => Promise<void>;
@@ -35,7 +30,7 @@ if (!win.__idae_app) {
     isScriptLoaded(key: string) {
       return !!registry.loadedScripts[key];
     },
-    registerComponent(name: string, value: any) {
+    registerComponent(name: string, value: ComponentSpec) {
       registry.components[name] = value;
     },
     getComponent(name: string) {
@@ -78,13 +73,11 @@ if (!win.__idae_app) {
           reject(e);
         }
       });
-    }
-    ,
+    },
     async loadResources(urls: string[]) {
       const loaders = urls.map((u) => {
         const url = String(u);
         if (url.endsWith('.css')) return registry.loadStyle(url);
-        // treat as script by default
         return registry.loadScript(url);
       });
       await Promise.all(loaders);
@@ -93,46 +86,133 @@ if (!win.__idae_app) {
   win.__idae_app = registry;
 }
 
+// Auto-load package theme CSS so components use centralized styling.
+try {
+  // Resolve the theme path relative to this module so bundlers produce a correct URL
+  const themeUrl = new URL('./theme/theme.css', import.meta.url).href;
+  // Load without awaiting; ignore failures silently
+  (win.__idae_app as AppRegistry).loadStyle(themeUrl, 'idae-theme').catch(() => {});
+} catch (e) {
+  // import.meta may not be available in some non-module contexts; ignore silently
+}
+
 export const app = win.__idae_app as AppRegistry;
 
-// Re-export commonly used helpers from idae-be so components import from core-engine
+// Track per-instance cleanup functions so we can call them when elements are removed
+const mountedCleanup: WeakMap<HTMLElement, Function> = new WeakMap();
+
+// Re-exports
 const be = (beMod as any).be;
 const toBe = (beMod as any).toBe;
 const createBe = (beMod as any).createBe;
-
-// idae-dom-events exports (htmlDom, cssDom, htmluModules)
 const htmlDom = (domMod as any).htmlDom || (domMod as any).Htmlu;
 const cssDom = (domMod as any).cssDom;
 const htmluModules = (domMod as any).htmluModules;
-// idae-stator exports (state helpers). Expose commonly used helpers.
 const stator = (statorMod as any).stator || (statorMod as any).default || (statorMod as any).createStator;
 const createStator = (statorMod as any).createStator || (statorMod as any).default || (statorMod as any).stator;
-
-// idae-csss exports (parser, action, runtime helpers)
 const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
 const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
 const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
-// idae-idbql helpers (may be undefined if package not present at runtime)
 const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
 const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
 const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
-function registerComponent(name: string, value: any) {
-  // Accept either a function initializer (legacy) or an object spec { script: fn, style?: string, meta?: {...} }
-  const spec = (typeof value === 'function') ? { script: value } : value || {};
-  app.registerComponent(name, spec);
-  try { initComponent(name); } catch (e) { /* ignore init errors on register */ }
+
+interface ComponentSpec {
+  script: (root: HTMLElement, props: any) => void | Function; 
+  props?: Record<string, any>; 
+  resources?: string[]; 
+  on?: Record<string, (root: HTMLElement, event: Event) => void>; 
+  meta?: {
+    author?: string;
+    version?: string;
+    description?: string;
+    [key: string]: any;
+  };
 }
 
+function registerComponent(name: string, value: ComponentSpec) { 
+  const spec: ComponentSpec = value;
+  app.registerComponent(name, spec);
+
+  // Ensure declared resources are loaded before initializing existing instances.
+  // Components should still guard against missing resources in their own logic,
+  // but the engine will attempt to await declared resources when possible.
+  (async () => {
+    try {
+      if (spec.resources?.length) {
+        await app.loadResources(spec.resources);
+      }
+    } catch (e) {
+      // ignore resource loading failures; components must handle missing deps
+    }
+
+    try {
+      initComponent(name);
+    } catch (e) { /* ignore */ }
+  })();
+}
+
+function parsePropsFromDataset(dataset: DOMStringMap): Record<string, any> {
+  const props: Record<string, any> = {};
+  for (const key in dataset) {
+    if (Object.prototype.hasOwnProperty.call(dataset, key)) {
+      const value = dataset[key];
+      if (value === 'true') props[key] = true;
+      else if (value === 'false') props[key] = false;
+      else if (/^\d+$/.test(value!)) props[key] = parseInt(value!, 10);
+      else if (/^\d*\.\d+$/.test(value!)) props[key] = parseFloat(value!);
+      else if (value?.startsWith('{') || value?.startsWith('[')) {
+        try { props[key] = JSON.parse(value!); } catch { props[key] = value; }
+      } else {
+        props[key] = value;
+      }
+    }
+  }
+  return props;
+}
+
+/**
+ * Initializes a specific component on a given root
+ */
 function initComponent(name: string, root: ParentNode = document) {
   const comp = app.getComponent(name);
   if (!comp) return;
-  // comp may be a function (legacy) or an object spec { script }
+
   const script = (typeof comp === 'function') ? comp : (comp && comp.script ? comp.script : null);
   if (typeof script !== 'function') return;
+
   try {
-    const els = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)) : [];
-    els.forEach((el: any) => {
-      try { script(el); } catch (e) { console.error('component init error', name, e); }
+    const els: HTMLElement[] = [];
+    // If the root itself is a matching element, include it
+    if ((root as any).nodeType === Node.ELEMENT_NODE) {
+      const rootEl = root as Element;
+      if (rootEl.getAttribute && rootEl.getAttribute('data-component') === name) {
+        els.push(rootEl as HTMLElement);
+      }
+    }
+
+    if ((root as any).querySelectorAll) {
+      Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)).forEach((e: Element) => els.push(e as HTMLElement));
+    }
+
+    els.forEach((el: HTMLElement) => {
+      try {
+        // Prevent double initialization
+        if (el.hasAttribute('data-hydrated')) return;
+
+        const defaultProps = comp.props || {};
+        const elementProps = parsePropsFromDataset(el.dataset);
+        const props = { ...defaultProps, ...elementProps };
+
+        const maybeCleanup = script(el, props);
+        if (typeof maybeCleanup === 'function') {
+          mountedCleanup.set(el, maybeCleanup as Function);
+        }
+
+        try {
+          el.setAttribute('data-hydrated', '1');
+        } catch {}
+      } catch (e) { console.error('component init error', name, e); }
     });
   } catch (e) { /* ignore */ }
 }
@@ -143,43 +223,85 @@ function initRegisteredComponents(root: ParentNode = document) {
   } catch (e) { /* ignore */ }
 }
 
+/**
+ * Automatically initializes all registered components on the document once it is loaded.
+ * If the document is already loaded, it will initialize the components immediately.
+ * Additionally, sets up DOM observation to monitor when components enter or leave the DOM.
+ * @example
+ * import { core } from '/packages/idee-html/src/lib/core-engine.ts';
+ * core.autoInitRegisteredComponents();
+ */
 function autoInitRegisteredComponents() {
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => initRegisteredComponents(document));
-  else initRegisteredComponents(document);
+  const initAndSetup = () => {
+    initRegisteredComponents(document);
+    setupDomObserver();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAndSetup);
+  } else {
+    initAndSetup();
+  }
+}
+
+/**
+ * Sets up a MutationObserver to detect when components enter or leave the DOM.
+ * Automatically initializes newly added components and logs when components are removed.
+ * @example
+ * import { core } from '/packages/idee-html/src/lib/core-engine.ts';
+ * core.setupDomObserver();
+ */
+function setupDomObserver() {
+  htmlDom.track(document.body, {
+    onChildListChange: (element: Node, mutation: MutationRecord, observer: MutationObserver) => {
+      // When components enter the DOM
+      mutation.addedNodes.forEach((node: Node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          initRegisteredComponents(node as ParentNode);
+        }
+      });
+      // When components leave the DOM
+      mutation.removedNodes.forEach((node: Node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as unknown as HTMLElement;
+          // Call cleanup if one was registered for this element
+          try {
+            const fn = mountedCleanup.get(el as HTMLElement);
+            if (typeof fn === 'function') {
+              try { fn(); } catch (e) { console.error('component cleanup error', e); }
+              mountedCleanup.delete(el as HTMLElement);
+            }
+          } catch (e) {
+            // ignore
+          }
+        }
+      });
+    }
+  });
 }
 
 export const core = {
   app,
   be,
   toBe,
-  createBe
-  ,
-  // convenience re-exports from idae-dom-events
+  createBe,
   htmlDom,
   cssDom,
   htmluModules,
-  // state helpers
   stator,
-  createStator
-  ,
-  // styling helpers from idae-csss
+  createStator,
   csss,
   CsssNode,
   csssParser : OpCssParser,
-  // persistence helpers (optional)
   createIdbqDb,
   createIdbqlState,
   idbql,
-  // registry helpers
   registerComponent,
   initComponent,
   initRegisteredComponents,
   autoInitRegisteredComponents
 };
 
-// Utility: render HTML (string or Node) and replace <slot> elements using DOM parsing.
-// slots: { [name: string]: string | Node } where `default` represents unnamed slot content.
-// options.allowHtml: when false (default) string slot content is inserted as text (escaped).
 function escapeHtml(s: string) {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -192,17 +314,16 @@ function escapeHtml(s: string) {
 function applySlotsToElement(root: ParentNode, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
   if (!slots) return;
   const allowHtml = !!(options && options.allowHtml);
-  const slotEls = (root as any).querySelectorAll ? Array.from((root as any).querySelectorAll('slot')) : [];
+  const slotEls = ((root as any).querySelectorAll ? Array.from((root as any).querySelectorAll('slot')) : []) as Element[];
   slotEls.forEach((slotEl: Element) => {
     const name = slotEl.getAttribute('name') || 'default';
     const provided = slots[name];
     const parent = slotEl.parentNode;
     if (!parent) return;
-    // Determine replacement nodes
+
     let nodes: Node[] = [];
     if (provided == null) {
-      // use fallback content : children of slotEl
-      nodes = Array.from(slotEl.childNodes as any as Node[]);
+      nodes = Array.from(slotEl.childNodes);
     } else if (typeof provided === 'string') {
       if (allowHtml) {
         const t = document.createElement('template');
@@ -212,9 +333,9 @@ function applySlotsToElement(root: ParentNode, slots?: Record<string, string | N
         nodes = [document.createTextNode(provided)];
       }
     } else if (provided instanceof Node) {
-      nodes = [provided.cloneNode(true) as Node];
+      nodes = [provided.cloneNode(true)];
     }
-    // Replace slot element with nodes (or remove if none)
+
     if (nodes.length === 0) {
       parent.removeChild(slotEl);
     } else {
@@ -229,22 +350,40 @@ function renderHtmlWithSlots(template: string | Node, slots?: Record<string, str
   if (typeof template === 'string') {
     const t = document.createElement('template');
     t.innerHTML = template;
-    // apply slots to template content
     applySlotsToElement(t.content as unknown as ParentNode, slots, options);
     frag.appendChild(t.content.cloneNode(true));
   } else if (template instanceof Node) {
     const container = document.createElement('div');
     container.appendChild(template.cloneNode(true));
     applySlotsToElement(container, slots, options);
-    // move children into fragment
     Array.from(container.childNodes).forEach((n) => frag.appendChild(n));
   }
   return frag;
 }
 
-// Export helpers on core for external usage
 (core as any).applySlotsToElement = applySlotsToElement;
 (core as any).renderHtmlWithSlots = renderHtmlWithSlots;
 
-// Auto-initialize any components that have been registered and are present in the document.
 core.autoInitRegisteredComponents();
+
+// Named exports for individual helpers so inline modules can import them directly
+export {
+  be,
+  toBe,
+  createBe,
+  htmlDom,
+  cssDom,
+  htmluModules,
+  stator,
+  createStator,
+  csss,
+  CsssNode,
+  OpCssParser,
+  createIdbqDb,
+  createIdbqlState,
+  idbql,
+  registerComponent,
+  initComponent,
+  initRegisteredComponents,
+  autoInitRegisteredComponents
+};

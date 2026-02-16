@@ -1,0 +1,114 @@
+
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            max-width: 220px;
+            background-color: var(--color-popover, #222);
+            color: var(--color-popover-foreground, #fff);
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.4rem 0.5rem;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 180ms ease, transform 180ms ease;
+            pointer-events: none;
+        }
+        .tooltip .tooltip-text[data-visible="true"] {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(-4px);
+        }
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--color-popover, #222) transparent transparent transparent;
+        }
+        /* Minimal focus styles for trigger elements */
+        .tooltip [data-tooltip-trigger]:focus {
+            outline: 2px solid Highlight;
+            outline-offset: 2px;
+        }
+    </style>
+
+
+    <!-- Component instances: markup is the source-of-truth. -->
+    <div data-component="tooltip" data-content="Tooltip text" data-position="top">
+        <span data-tooltip-trigger tabindex="0">Hover over me</span>
+        <span class="tooltip-text" aria-hidden="true"></span>
+    </div>
+
+    <div data-component="tooltip" data-content="Another tooltip" data-position="top">
+        <button data-tooltip-trigger>Hover me too</button>
+        <span class="tooltip-text" aria-hidden="true"></span>
+    </div>
+
+    <script type="module">
+        import { be, core } from '/packages/idae-html/src/lib/core-engine.ts';
+
+        core.registerComponent('tooltip', {
+            props: { content: '', position: 'top' },
+            script: (root, props) => {
+                // Hydration guard to avoid double-init
+                if (root.dataset.hydrated) return;
+                root.dataset.hydrated = '1';
+
+                const trigger = root.querySelector('[data-tooltip-trigger]') || root.firstElementChild;
+                if (!trigger) return;
+
+                let tooltip = root.querySelector('.tooltip-text');
+                if (!tooltip) {
+                    tooltip = document.createElement('span');
+                    tooltip.className = 'tooltip-text';
+                    root.appendChild(tooltip);
+                }
+
+                // Ensure accessible relationship
+                const id = tooltip.id || (`tooltip-${Math.random().toString(36).slice(2,9)}`);
+                tooltip.id = id;
+                trigger.setAttribute('aria-describedby', id);
+                tooltip.setAttribute('role', 'tooltip');
+                tooltip.setAttribute('aria-hidden', 'true');
+
+                // Prefer explicit data-content prop, fallback to existing text
+                if (props.content) tooltip.textContent = props.content;
+                else if (!tooltip.textContent) tooltip.textContent = root.dataset.content || '';
+
+                const show = () => {
+                    tooltip.setAttribute('data-visible', 'true');
+                    tooltip.setAttribute('aria-hidden', 'false');
+                };
+                const hide = () => {
+                    tooltip.removeAttribute('data-visible');
+                    tooltip.setAttribute('aria-hidden', 'true');
+                };
+
+                // Use `be()` for scoped event binding per SPECS
+                be(trigger).on('mouseenter', show).on('focus', show).on('mouseleave', hide).on('blur', hide);
+
+                // Return cleanup so callers or future engine improvements can dispose deterministically
+                return () => {
+                    try {
+                        be(trigger).off('mouseenter', show).off('focus', show).off('mouseleave', hide).off('blur', hide);
+                    } catch (err) {
+                        // be().off might not exist in older runtimes — defensive noop
+                    }
+                };
+            }
+        });
+    </script>

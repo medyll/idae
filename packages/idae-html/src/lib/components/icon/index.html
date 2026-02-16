@@ -1,0 +1,14 @@
+<style>
+  .icon-root{padding:var(--gutter-md)}
+  .icon{width:24px;height:24px;display:inline-block}
+</style>
+
+
+<div data-component="icon" class="icon-root">
+  <span class="icon" aria-hidden="true">🔔</span>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('icon', { script: ()=>()=>{}, props:{}, resources:[], on:{}, meta:{description:'Simple icon wrapper'} });
+</script>

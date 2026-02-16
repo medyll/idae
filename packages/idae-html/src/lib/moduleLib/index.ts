@@ -1,4 +1,4 @@
-import type { moduleName, querySelector } from '$lib/HtmluDom.js';
+/* import type { moduleName, querySelector } from '$lib/HtmluDom.js';
 
 type HtmluModule = Record<moduleName, [querySelector, querySelector]>;
 
@@ -10,7 +10,7 @@ export let HtmluModuleActions = {
 	'[attach]': { '[data-click] [data-click]': (selectors: string) => {} },
 	'[toggle]': { '[data-click] [data-click]': (selectors: string) => {} },
 	'[wrap]': { '[data-click] [data-click]': (selectors: string) => {} }
-};
+}; */
 
 /* the module receives custom events data
  init, load, destroy, attributes changed */

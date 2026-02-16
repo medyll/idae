@@ -1,0 +1,16 @@
+<style>
+  .skeleton-root{padding:var(--gutter-md)}
+  .skeleton{background:linear-gradient(90deg,var(--color-muted),var(--color-muted-light));height:16px;border-radius:4px;animation:shimmer 1.2s linear infinite}
+  @keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+</style>
+
+
+<div data-component="skeleton" class="skeleton-root">
+  <div class="skeleton" style="width:60%;height:18px;margin-bottom:8px"></div>
+  <div class="skeleton" style="width:40%;height:14px"></div>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('skeleton', { script: ()=>()=>{}, props:{}, resources:[], on:{}, meta:{description:'Loading skeleton placeholders'} });
+</script>

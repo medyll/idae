@@ -4,7 +4,7 @@
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medyll/idae.git"
+    "url": "git+https://github.com/medyll/idae.git"
   },
   "version": "1.185.2",
   "description": "A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.",

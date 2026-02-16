@@ -1,6 +1,6 @@
 <style>
-  .demo{font-family:system-ui,Arial,sans-serif;padding:12px;border:1px dashed #ccc}
-  .panel{border:1px solid #eee;padding:8px;margin:8px 0}
+  .demo{padding:var(--gutter-md);border:1px dashed var(--color-border);font-size:var(--font-md);color:var(--color-foreground)}
+  .panel{border:1px solid var(--color-border);padding:var(--gutter-sm);margin:var(--gutter-sm) 0;background:var(--color-card);color:var(--color-card-foreground)}
 </style>
 
 <h2>slotDemo — démonstration `<slot>`</h2>
@@ -8,8 +8,8 @@
 
 <div id="slot-demo" class="demo"></div>
 
-<script type="module">
-  import { core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
 
   const template = `
     <section class="panel">

@@ -1,0 +1,20 @@
+<style>
+  .grid-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--gutter-sm)}
+  .grid-item{padding:var(--gutter-sm);background:var(--color-card);color:var(--color-card-foreground)}
+</style>
+
+
+<div data-component="grid" class="grid-root">
+  <div class="grid">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+  </div>
+</div>
+
+<script type="module" lang="ts">
+  import { core } from '$lib/core-engine.ts';
+  core.registerComponent('grid', { script: () => () => {}, props: {}, resources: [], on: {}, meta: { description: 'Responsive grid system' } });
+</script>

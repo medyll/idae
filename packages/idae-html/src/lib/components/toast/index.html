@@ -1,33 +1,47 @@
 <style>
-  body{font-family:system-ui,Arial,sans-serif;padding:16px}
-  .toast-area{position:fixed;right:16px;top:16px;display:flex;flex-direction:column;gap:8px;z-index:999}
-  .toast{background:#333;color:#fff;padding:8px 12px;border-radius:6px;min-width:180px}
+  .toast-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
+  .toast-area{position:fixed;right:var(--gutter-md);top:var(--gutter-md);display:flex;flex-direction:column;gap:var(--gutter-sm);z-index:999}
+  .toast{background:var(--color-popover);color:var(--color-popover-foreground);padding:8px 12px;border-radius:6px;min-width:180px}
 </style>
 
-<h1>Toast</h1>
-<div data-component="toast">
+
+<div data-component="toast" class="toast-root">
   <button data-push>Push toast</button>
   <div class="toast-area" data-toasts></div>
 </div>
 
-<script type="module">
-  import { be, toBe, core } from '/packages/idae-html/src/lib/core-engine.ts';
+<script type="module" lang="ts">
+  import { be, toBe, core } from '$lib/core-engine.ts';
 
   core.registerComponent('toast', {
-    script(root){
-    const rootEl = (root instanceof Element) ? root : (root as any).node || document;
-    const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
-    const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
-    if (!pushEl || !toastsEl) return;
+    script: (root, props)=> {
+      const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+      const pushEl = rootEl.querySelector('[data-push]') as HTMLElement | null;
+      const toastsEl = rootEl.querySelector('[data-toasts]') as HTMLElement | null;
+      if (!pushEl || !toastsEl) return;
 
-    function push(text: string, ttl=3000){
-      const id = Math.random().toString(36).slice(2,9);
-      be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
-        setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
-      });
-      return id;
+      function push(text: string, ttl=3000){
+        const id = Math.random().toString(36).slice(2,9);
+        be(toastsEl).append(toBe(`<div class="toast">${text}</div>`), ({ be: nodeBe }) => {
+          setTimeout(()=>{ nodeBe.setStyle({ transition: 'opacity .3s', opacity: '0' }); setTimeout(()=> nodeBe.remove(), 300); }, ttl);
+        });
+        return id;
+      }
+
+      function onPush(){ push('Notification at '+new Date().toLocaleTimeString()); }
+      be(pushEl).on('click', onPush);
+
+      return () => {
+        try{ be(pushEl).off('click', onPush); }catch(e){}
+      };
+    },
+    props: {},
+    resources: [],
+    on: {},
+    meta: {
+      author: 'idae-html',
+      version: '1.0.0',
+      description: 'A toast notification component for displaying temporary messages.'
     }
-
-    be(pushEl).on('click', ()=> push('Notification at '+new Date().toLocaleTimeString()));
-  }});
+  });
 </script>

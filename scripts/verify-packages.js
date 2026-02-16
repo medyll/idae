@@ -55,7 +55,7 @@ packages.forEach((packageName) => {
   }
 
   // Ensure repository field points to the monorepo
-  const repoUrl = "https://github.com/medyll/idae.git";
+  const repoUrl = "git+https://github.com/medyll/idae.git";
   if (
     !packageJson.repository ||
     packageJson.repository.type !== "git" ||

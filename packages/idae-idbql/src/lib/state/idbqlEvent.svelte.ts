@@ -82,10 +82,18 @@ class IdbqlStateEvent {
 
       case "updateWhere":
         if (data && typeof data === "object") {
+          const dataKeys = Object.keys(data);
           this.dataState[collection].forEach((item, index) => {
-            if (
-              Object.entries(data).every(([key, value]) => item[key] === value)
-            ) {
+            let match = true;
+            for (const k of dataKeys) {
+              if (Object.prototype.hasOwnProperty.call(item, k)) {
+                if (item[k] !== (data as any)[k]) {
+                  match = false;
+                  break;
+                }
+              }
+            }
+            if (match) {
               this.dataState[collection][index] = { ...item, ...data };
             }
           });
