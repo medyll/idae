@@ -151,7 +151,7 @@ export class IdbqlIndexedCore<T = any> {
  *
  * @typeparam T - The type of data stored in the collections.
  */
-export const createIdbqDb = <T extends IdbqModel>(model: T, version: number) => {
+export const createDb = <T extends IdbqModel>(model: T, version: number) => {
 	return {
 		create: (
 			name: string
@@ -175,5 +175,8 @@ export const createIdbqDb = <T extends IdbqModel>(model: T, version: number) => 
 	};
 };
 
-// main export is here ?
-export const idbqBase = createIdbqDb;
+/** @deprecated use createDb instead */
+export const createIdbqDb = createDb
+
+/** @deprecated use createDb instead */
+export const idbqBase = createDb;
