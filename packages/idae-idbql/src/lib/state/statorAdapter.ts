@@ -84,9 +84,20 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
       case "updateWhere":
         if (data && typeof data === "object") {
           const arr = Array.isArray(s.value) ? [...s.value] : [];
+          const dataKeys = Object.keys(data);
           for (let i = 0; i < arr.length; i++) {
             const item = arr[i];
-            if (Object.entries(data).every(([k, v]) => item && item[k] === v)) {
+            let match = true;
+            for (const k of dataKeys) {
+              // only treat a key as a matcher if the existing item already has it
+              if (item && Object.prototype.hasOwnProperty.call(item, k)) {
+                if (item[k] !== (data as any)[k]) {
+                  match = false;
+                  break;
+                }
+              }
+            }
+            if (match) {
               arr[i] = { ...item, ...data };
             }
           }

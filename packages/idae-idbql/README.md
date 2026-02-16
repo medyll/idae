@@ -1,6 +1,8 @@
+
 # @medyll/idae-idbql
 
-````markdown
+
+
 # @medyll/idae-idbql
 
 A flexible, high-performance state-full IndexedDB query library for TypeScript and JavaScript, with a focus on performance and ease of use.
@@ -149,17 +151,19 @@ const result = await idbql.transaction(['users', 'posts'], 'readwrite', async (t
 - Methods such as `where`, `groupBy`, and `sort` operate synchronously on the current snapshot of the state.
 - Use them inside `$derived` or `$effect` to get reactive updates.
 
-## Stator Full Compatibility
+## Stator Integration (optional)
 
-- **idae-idbql**: `@medyll/idae-idbql` offers optional, opt-in compatibility with `@medyll/idae-stator` through an adapter. When enabled, collection state can be backed by Stator proxies as an alternative reactivity model.
-- **Opt-in usage**: enable the adapter when creating the reactive state by passing `adapter: 'stator'` to `createIdbqlState(idbBase, options)`.
-- **Install**: add the companion package to your project:
+`@medyll/idae-idbql` now supports an optional, opt-in adapter that lets you back collection state with `@medyll/idae-stator` instead of (or alongside) the default Svelte 5 reactive surface. This gives consumers an alternative reactivity model while keeping current Svelte 5 usage fully supported and non-breaking.
+
+- **How it works**: when you call `createIdbqlState(idbBase, options)` you may pass `options.adapter` set to either `"svelte"` (default) or `"stator"`. When `"stator"` is selected the library creates a Stator adapter and registers it with the internal `idbqlEvent` bus. Events applied to the Svelte state are mirrored to the Stator adapter by the event bus, so both reactivity models reflect DB changes.
+
+- **Install companion package**:
 
 ```bash
 pnpm add @medyll/idae-stator
 ```
 
-- **Example**:
+- **Create state with Stator adapter**:
 
 ```ts
 import { createIdbqDb, createIdbqlState } from '@medyll/idae-idbql';
@@ -170,14 +174,30 @@ const { idbql } = idbqStore.create('myDatabase');
 
 // Create reactive state backed by idae-stator
 const state = createIdbqlState(idbql, {
-  adapter: 'stator',
-  adapterOptions: {}, // optional
+  adapter: 'stator', // or 'svelte'
+  adapterOptions: {}, // optional adapter-specific options
 });
 
 // Use state.collectionState or state.qolie('collection') as usual
 ```
 
-- **Notes**: This adapter is opt-in and non-breaking for existing Svelte 5 usage. If you enable the `stator` adapter, make sure `@medyll/idae-stator` is installed so imports resolve correctly in your workspace.
+- **Adapter behavior & API**
+
+  - The adapter implements `getCollectionState(name)`, `applyEvent(event)` and `dispose()` and is registered with `idbqlEvent.registerAdapter(...)`.
+  - The internal event bus (`idbqlEvent`) keeps a Svelte `$state` mirror and delegates every state-changing event to the adapter (if present). Adapter errors are caught to avoid breaking the primary flow.
+  - Supported event types: `set`, `add`, `put`, `update`, `updateWhere`, `delete`, `deleteWhere`.
+
+- **Coexistence**
+
+  - The adapter is opt-in and non-breaking: the default remains Svelte 5 runes (`$state`, `$derived`, `$effect`). Enabling the Stator adapter mirrors events so both the Svelte and Stator surfaces stay in sync.
+  - This enables projects that prefer Stator proxies or polyglot apps that use different reactivity solutions in different layers.
+
+- **Migration notes**
+
+  - To switch an existing app to Stator-backed state: install `@medyll/idae-stator`, set `adapter: 'stator'` when calling `createIdbqlState`, and update any consumer code that reads `idbqlEvent.dataState` to instead use the Stator collection proxies via the adapter's `getCollectionState()` if you want to access the Stator objects directly.
+  - If you rely on Svelte runes in UI code, you can keep using them; the event bus will continue to update the Svelte surface.
+
+If you have questions about adapter options or need additional adapter features (deduplication, change batching, custom keyPath detection), open an issue or a PR with a proposal.
 
 ## Versioning and Migrations
 
@@ -246,7 +266,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Support
 
 If you encounter issues or have questions, please open an issue on the repository.
-````
+
 
 ```mermaid
 flowchart TD
@@ -273,4 +293,65 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Support
 
 If you encounter any issues or have questions, please file an issue on the GitHub repository.
+
+## Extended Examples & Developer Notes
+
+- **Package scripts (monorepo / pnpm)**
+
+```bash
+pnpm install
+pnpm run build    # build the package
+pnpm run check    # type checks
+pnpm run test     # run unit tests (vitest)
+```
+
+- **Quick Svelte 5 usage (reactive list)**
+
+```svelte
+<script lang="ts">
+  import { createIdbqDb, createIdbqlState } from '@medyll/idae-idbql';
+
+  const model = { users: { keyPath: '++id', ts: {} as User } };
+  const db = createIdbqDb(model, 1);
+  const { idbql } = db.create('app');
+
+  // default uses Svelte runes for reactivity
+  const state = createIdbqlState(idbql, { adapter: 'svelte' });
+  const users = $derived(() => state.qolie('users').where({ isActive: true }));
+</script>
+
+{#each $users as user}
+  <div>{user.name}</div>
+{/each}
+```
+
+- **Using Stator as the reactive surface**
+
+```ts
+import { createIdbqDb, createIdbqlState } from '@medyll/idae-idbql';
+import { stator } from '@medyll/idae-stator';
+
+const model = { notes: { keyPath: '++id', ts: {} as Note } };
+const db = createIdbqDb(model, 1);
+const { idbql } = db.create('app');
+
+// Create a Stator-backed state
+const state = createIdbqlState(idbql, { adapter: 'stator' });
+// Access the underlying Stator collection proxy if needed:
+// const statorCollection = state.collectionState.notes; // or via adapter.getCollectionState('notes')
+```
+
+- **Adapter internals / reference files**
+
+  - The Stator adapter implementation is in `src/lib/state/statorAdapter.ts`.
+  - The event-bus and Svelte state mirror live in `src/lib/state/idbqlEvent.svelte.ts`.
+  - The public state factory is `src/lib/state/idbstate.svelte.ts` (exports `createIdbqlState`).
+
+- **Testing & contribution tips**
+
+  - Tests live under `src/` next to the modules and use `vitest`.
+  - Run `pnpm run test` to execute the suite. Add unit tests for adapter behavior when changing reactivity logic.
+  - Follow TypeScript typing conventions: update `src/lib/idbqlCore/types.ts` when changing public types.
+
+If you'd like, I can add a short example project demonstrating both Svelte and Stator flows, or open a small integration test that exercises the adapter mirroring behavior.
  
