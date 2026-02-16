@@ -845,18 +845,6 @@ importers:
 
   packages/idae-html:
     dependencies:
-      '@medyll/idae-dom-events':
-        specifier: workspace:*
-        version: link:../idae-dom-events
-      '@medyll/idae-idbql':
-        specifier: workspace:*
-        version: link:../idae-idbql
-      '@medyll/idae-query':
-        specifier: workspace:*
-        version: link:../idae-query
-      '@medyll/idae-stator':
-        specifier: workspace:*
-        version: link:../idae-stator
       command:
         specifier: ^1.1.1
         version: 1.1.1(react-dom@19.2.4(react@15.7.0))(react@15.7.0)
@@ -870,12 +858,27 @@ importers:
       '@medyll/idae-config-prettier':
         specifier: latest
         version: 0.0.3(@types/node@25.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(prettier@3.8.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+      '@medyll/idae-csss':
+        specifier: workspace:*
+        version: link:../idae-csss
+      '@medyll/idae-dom-events':
+        specifier: workspace:*
+        version: link:../idae-dom-events
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-idbql':
+        specifier: workspace:*
+        version: link:../idae-idbql
+      '@medyll/idae-query':
+        specifier: workspace:*
+        version: link:../idae-query
       '@medyll/idae-shared':
         specifier: workspace:*
         version: link:../shared
+      '@medyll/idae-stator':
+        specifier: workspace:*
+        version: link:../idae-stator
       '@semantic-release/github':
         specifier: ^12.0.5
         version: 12.0.5(semantic-release@25.0.3(typescript@5.9.3))

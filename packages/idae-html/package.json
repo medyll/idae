@@ -48,6 +48,11 @@
     "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
+    "@medyll/idae-dom-events": "workspace:*",
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-query": "workspace:*",
+    "@medyll/idae-stator": "workspace:*",
+    "@medyll/idae-csss": "workspace:*",
     "@semantic-release/github": "^12.0.5",
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/kit": "^2.50.2",
@@ -81,10 +86,6 @@
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "dependencies": {
-    "@medyll/idae-dom-events": "workspace:*",
-    "@medyll/idae-idbql": "workspace:*",
-    "@medyll/idae-query": "workspace:*",
-    "@medyll/idae-stator": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
   }
