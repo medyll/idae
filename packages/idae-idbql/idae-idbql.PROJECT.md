@@ -9,7 +9,7 @@
 ### Core Components
 - **`IdbqlIndexedCore`** (`src/lib/idbqlCore/idbqlCore.ts`): The main entry point for database management. It handles opening the database, versioning, and schema creation.
 - **`CollectionCore`** (`src/lib/collection/collection.svelte.ts`): Represents a single IndexedDB object store. It provides methods for CRUD operations (`add`, `put`, `get`, `getAll`, `delete`) and advanced querying (`where`).
-- **`createIdbqlState`** (`src/lib/state/idbstate.svelte.ts`): A factory function that creates a reactive state object synchronized with the IndexedDB. It exposes methods that trigger UI updates.
+- **`createDb`** (`src/lib/state/idbstate.svelte.ts`): A factory function that creates a reactive state object synchronized with the IndexedDB. It exposes methods that trigger UI updates.
 - **`idbqlEvent`** (`src/lib/state/idbqlEvent.svelte.ts`): Handles events to ensure reactivity across the application.
 
 ### Data Flow
