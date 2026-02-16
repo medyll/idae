@@ -1,65 +1,99 @@
-# Svelte library
+# idae-router
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
+A lightweight, framework-agnostic SPA router (factory `createRouter`) with path params, query parsing, lifecycle hooks, DOM rendering into an outlet, link interception, and support for actions that return cleanup functions.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+## Complex Example
 
-## Creating a project
+This example demonstrates routes that return HTML, DOM nodes, perform async effects, return cleanup functions, and use lifecycle hooks and programmatic navigation.
 
-If you're seeing this, you've probably already done this step. Congrats!
+```ts
+import { createRouter } from './src/lib';
 
-```sh
-# create a new project in the current directory
-npx sv create
+const routes = [
+	{ path: '/', action: () => '<h1>Home</h1><p>Welcome.</p>' },
+	{
+		path: '/about',
+		action: () => {
+			const frag = document.createDocumentFragment();
+			const h = document.createElement('h1');
+			h.textContent = 'About';
+			frag.appendChild(h);
+			return frag;
+		}
+	},
+	{
+		path: '/user/:id',
+		action: async (ctx) => {
+			// simulate async data load
+			const data = await new Promise((res) =>
+				setTimeout(() => res({ id: ctx.params.id, name: 'User ' + ctx.params.id }), 200)
+			);
+			const div = document.createElement('div');
+			div.innerHTML = `<h1>User ${ctx.params.id}</h1><p>Name: ${(data as any).name}</p>`;
+			// return a cleanup function to be called on leave
+			const timer = setInterval(() => console.log('polling for user', ctx.params.id), 1000);
+			return () => clearInterval(timer);
+		}
+	},
+	{
+		path: '/posts',
+		action: (ctx) => {
+			const el = document.createElement('div');
+			el.innerHTML =
+				'<h1>Posts</h1><ul><li><a href="/posts/1/comments">Post 1 comments</a></li></ul>';
+			return el;
+		}
+	},
+	{
+		path: '/posts/:postId/comments',
+		action: (ctx) => {
+			// effect-only action (no render) — e.g., track analytics
+			console.log('Viewing comments for', ctx.params.postId);
+			return; // keep previous view
+		}
+	}
+];
 
-# create a new project in my-app
-npx sv create my-app
+const router = createRouter({
+	routes,
+	outlet: '#app',
+	mode: 'history',
+	linkInterception: true,
+	notFound: () => '<h1>404 — Not Found</h1>'
+});
+
+// before hook: block access to /posts if not authed
+router.before((to, from, next) => {
+	if (to.path.startsWith('/posts') && !window.localStorage.getItem('authed')) {
+		// redirect to /login
+		next('/login');
+		return;
+	}
+	next();
+});
+
+router.after((to) => {
+	console.log('navigated to', to.path);
+});
+
+router.onLeave((from) => {
+	console.log('left', from.path);
+});
+
+// programmatic navigation examples
+document.getElementById('go-user')?.addEventListener('click', () => router.push('/user/42'));
+document.getElementById('refresh')?.addEventListener('click', () => router.refresh());
 ```
 
-To recreate this project with the same configuration:
+Behavior notes:
 
-```sh
-# recreate this project
-pnpm dlx sv create --template library --types ts --add prettier eslint vitest="usages:unit" playwright --install pnpm ./
-```
+- `action` may return `string | Node | DocumentFragment` to render into the outlet.
+- `action` may return `void` for effect-only actions (router keeps previous DOM view).
+- `action` may return a function — this will be treated as a cleanup and invoked when navigating away.
+- `before(to, from, next)` supports async flows via calling `next()`/`next(path)`/`next(false)`.
 
-## Developing
+## Usage
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```sh
-npm pack
-```
-
-To create a production version of your showcase app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```sh
-npm publish
-```
+- Import `createRouter` from the package entry (`src/lib` during development).
+- Provide an `outlet` selector (default `#app`) where views are mounted.
+- Use `push`, `replace`, and `refresh` on the router instance for programmatic navigation.
