@@ -10,24 +10,19 @@ import type {
 import { compilePath, matchCompiled, parseQuery } from './matcher';
 import { mountResult } from './render';
 
-type CompiledRoute = { route: Route; compiled: ReturnType<typeof compilePath> };
-
 export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	const mode = opts.mode || 'history';
 	const base = (opts.base || '').replace(/\/$/, '');
 	const outletEl = resolveOutlet(opts.outlet || '#app');
 	const linkInterception = opts.linkInterception ?? true;
 
-	const routes: CompiledRoute[] = (opts.routes || []).map((r) => ({
-		route: r,
-		compiled: compilePath(r.path)
-	}));
+	const routes: Route[] = opts.routes || [];
 	const beforeHooks: BeforeHook[] = [];
 	const afterHooks: AfterHook[] = [];
 	const onLeaveHooks: OnLeaveHook[] = [];
 
 	let currentContext: Context | null = null;
-	let currentCleanup: (() => void) | null = null;
+	let currentCleanups: Array<(() => void) | null> = [];
 
 	function resolveOutlet(sel: string | Element): Element {
 		if (typeof sel === 'string') {
@@ -52,24 +47,17 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		metadata?: Record<string, unknown>
 	): Context {
 		const [pathname, search] = pathWithQuery.split('?');
-		for (const cr of routes) {
-			const params = matchCompiled(cr.compiled, pathname) as Record<string, string> | null;
-			if (params) {
-				return {
-					path: pathname + (search ? '?' + search : ''),
-					params,
-					query: parseQuery(search || ''),
-					state,
-					metadata: (cr.route.metadata as Record<string, unknown>) || metadata
-				};
-			}
-		}
+		// find matched chain and merge params
+		const chain = findRouteChain(routes, pathname);
+		const mergedParams: Record<string, string> = {};
+		for (const rec of chain) Object.assign(mergedParams, rec.params);
 		return {
-			path: pathWithQuery,
-			params: {},
-			query: parseQuery(pathWithQuery.split('?')[1] || ''),
+			path: pathname + (search ? '?' + search : ''),
+			params: mergedParams,
+			query: parseQuery(search || ''),
 			state,
-			metadata: metadata || {}
+			metadata: (chain.length ? chain[chain.length - 1].route.metadata : metadata) || metadata || {},
+			matched: chain
 		};
 	}
 
@@ -90,17 +78,54 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		return { allow: true };
 	}
 
-	function findRoute(pathname: string) {
-		for (const cr of routes) {
-			const params = matchCompiled(cr.compiled, pathname);
-			if (params) return { route: cr.route, params };
+	// helper: join parent and child path pieces
+	function joinPaths(parent: string, child: string) {
+		if (!parent) return child.startsWith('/') ? child : '/' + child;
+		if (child.startsWith('/')) return child;
+		return (parent.replace(/\/$/, '') + '/' + child).replace(/\/+/g, '/');
+	}
+
+	// recursively attempt to match a route tree against the pathname
+	function findRouteChain(rs: Route[], pathname: string, parentPrefix = ''): Array<{ route: Route; params: Record<string, string>; path: string }> {
+		for (const r of rs) {
+			const fullPath = r.path.startsWith('/') ? r.path : joinPaths(parentPrefix || '', r.path);
+			const compiled = compilePath(fullPath);
+			const params = matchCompiled(compiled, pathname);
+			// if exact match found (leaf)
+			if (params) {
+				const record = { route: r, params, path: fullPath };
+				if (r.children && r.children.length) {
+					const childChain = findRouteChain(r.children, pathname, fullPath);
+					if (childChain.length) return [record, ...childChain];
+				}
+				return [record];
+			}
+			// if no exact match, but there are children, check prefix match so parent can match a portion
+			if (r.children && r.children.length) {
+				const src = compiled.regex.source.replace(/\$$/, '');
+				const prefixRe = new RegExp(src + '(?:/|$)');
+				const m = prefixRe.exec(pathname);
+				if (m) {
+					// extract params for the prefix match
+					const params: Record<string, string> = {};
+					for (let i = 1; i < m.length; i++) {
+						const key = compiled.keys[i - 1] || String(i - 1);
+						params[key] = decodeURIComponent(m[i] || '');
+					}
+					const record = { route: r, params, path: fullPath };
+					const childChain = findRouteChain(r.children, pathname, fullPath);
+					if (childChain.length) return [record, ...childChain];
+					// no child matched, but parent matched as prefix: return parent
+					return [record];
+				}
+			}
 		}
-		return null;
+		return [];
 	}
 
 	async function handleNavigation(pathWithQuery: string, state?: unknown) {
 		const [pathname] = pathWithQuery.split('?');
-		const match = findRoute(pathname);
+		const chain = findRouteChain(routes, pathname);
 		const toContext = buildContext(pathWithQuery, state);
 		const fromContext = currentContext;
 
@@ -112,39 +137,56 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 			return;
 		}
 
-		// call onLeave for previous view and cleanup
-		if (currentCleanup) {
-			try {
-				currentCleanup();
-			} catch (e) {
-				void e;
+		// call onLeave for previous view and cleanup (all levels)
+		if (currentCleanups && currentCleanups.length) {
+			for (const fn of currentCleanups) {
+				if (typeof fn === 'function') {
+					try {
+						fn();
+					} catch (e) {
+						void e;
+					}
+				}
 			}
-			currentCleanup = null;
+			currentCleanups = [];
 		}
 		if (fromContext) {
 			for (const fn of onLeaveHooks) fn(fromContext);
 		}
 
-		if (!match) {
+		if (!chain.length) {
 			if (opts.notFound) {
 				const res = await opts.notFound(toContext);
-				if (typeof res === 'function') currentCleanup = res as () => void;
-				else mountResult(outletEl, res as unknown as string | Node | DocumentFragment);
+				if (typeof res === 'function') currentCleanups = [res as () => void];
+				else {
+					currentCleanups = [];
+					mountResult(outletEl, res as unknown as string | Node | DocumentFragment);
+				}
 			}
 			currentContext = toContext;
 			for (const h of afterHooks) h(toContext, fromContext);
 			return;
 		}
 
-		const action = match.route.action;
-		const result = await Promise.resolve(action(toContext));
-		if (typeof result === 'function') {
-			currentCleanup = result as () => void;
-		} else {
-			currentCleanup = null;
-			mountResult(outletEl, result as unknown as string | Node | DocumentFragment);
+		// mount matched chain parent -> child. Track per-level cleanup functions
+		const newCleanups: Array<(() => void) | null> = [];
+		let parentOutlet = outletEl;
+		for (const rec of chain) {
+			const action = rec.route.action;
+			const result = await Promise.resolve(action(toContext));
+			if (typeof result === 'function') {
+				newCleanups.push(result as () => void);
+			} else {
+				newCleanups.push(null);
+				mountResult(parentOutlet, result as unknown as string | Node | DocumentFragment);
+				// find child outlet inside the mounted parent content
+				const childOutlet = parentOutlet.querySelector('[data-idae-outlet]') as Element | null;
+				if (childOutlet) parentOutlet = childOutlet;
+				// otherwise parentOutlet stays the same as fallback
+			}
 		}
 
+		currentCleanups = newCleanups;
 		currentContext = toContext;
 		for (const h of afterHooks) h(toContext, fromContext);
 	}

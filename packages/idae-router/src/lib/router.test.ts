@@ -84,4 +84,39 @@ describe('router', () => {
 		await wait(30);
 		expect(outlet.innerHTML).toContain('Login');
 	});
+
+	it('mounts parent and child into parent outlet for nested routes', async () => {
+		const routes = [
+			{
+				path: '/parent/:id',
+				action: () => '<div><h1>Parent</h1><div data-idae-outlet></div></div>',
+				children: [
+					{
+						path: 'child',
+						action: () => '<p>Child</p>'
+					},
+					{
+						path: 'other',
+						action: () => '<p>Other</p>'
+					}
+				]
+			}
+		];
+		const router = createRouter({
+			routes,
+			outlet: outlet,
+			mode: 'history',
+			linkInterception: false
+		});
+		router.push('/parent/1/child');
+		await wait(30);
+		expect(outlet.innerHTML).toContain('Parent');
+		expect(outlet.innerHTML).toContain('Child');
+
+		// navigate to sibling child; parent should remain
+		router.push('/parent/1/other');
+		await wait(30);
+		expect(outlet.innerHTML).toContain('Parent');
+		expect(outlet.innerHTML).toContain('Other');
+	});
 });

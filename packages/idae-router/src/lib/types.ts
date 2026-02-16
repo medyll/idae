@@ -12,6 +12,7 @@ export interface Context {
 	query: Record<string, string | string[]>;
 	state?: unknown;
 	metadata?: Record<string, unknown>;
+    matched?: RouteRecord[];
 }
 
 export type Action = (ctx: Context) => ActionResult;
@@ -20,6 +21,13 @@ export interface Route {
 	path: string;
 	action: Action;
 	metadata?: Record<string, unknown>;
+	children?: Route[];
+}
+
+export interface RouteRecord {
+	route: Route;
+	params: Record<string, string>;
+	path: string; // resolved full path for this record
 }
 
 export type BeforeNext = (nextArg?: false | string | void) => void;
