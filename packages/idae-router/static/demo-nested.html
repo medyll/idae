@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>idae-router nested demo</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <nav>
+      <a href="/">Home</a> | <a href="/parent/1/child">Parent 1 - Child</a>
+    </nav>
+
+    <script type="module">
+      import { createRouter } from '/dist/index.js';
+
+      const routes = [
+        {
+          path: '/parent/:id',
+          action: (ctx) => {
+            return `<div><h1>Parent ${ctx.params.id}</h1><div data-idae-outlet></div></div>`;
+          },
+          children: [
+            { path: 'child', action: () => '<p>Child</p>' },
+            { path: 'other', action: () => '<p>Other</p>' }
+          ]
+        }
+      ];
+
+      const router = createRouter({ routes, outlet: '#app', mode: 'history', linkInterception: true });
+    </script>
+  </body>
+</html>

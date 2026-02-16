@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createRouter } from './index';
+import { createRouter } from './index.js';
 
 function wait(ms = 10) {
 	return new Promise((r) => setTimeout(r, ms));

@@ -97,3 +97,35 @@ Behavior notes:
 - Import `createRouter` from the package entry (`src/lib` during development).
 - Provide an `outlet` selector (default `#app`) where views are mounted.
 - Use `push`, `replace`, and `refresh` on the router instance for programmatic navigation.
+
+## Nested routes
+
+This router supports nested route trees via a `children` array on a `Route` object. When a route and one of its descendants match the current pathname the router will:
+
+- match the ancestor chain (parent → ... → leaf) and expose it as `Context.matched`, an array of `RouteRecord` objects in ancestor→leaf order. Each `RouteRecord` contains `{ route, params, path }` where `path` is the resolved full path for that record.
+- merge params from the matched chain into `Context.params` (descendant params override parent keys when duplicated).
+- mount parent actions first, then mount children into the parent's outlet element. A parent should provide a placeholder element for children using the `data-idae-outlet` attribute (e.g. `<div data-idae-outlet></div>`). If the placeholder is absent the router will fall back to mounting the child into the parent's mounted outlet.
+
+Example:
+
+```ts
+const routes = [
+	{
+		path: '/parent/:id',
+		action: (ctx) => `<div><h1>Parent ${ctx.params.id}</h1><div data-idae-outlet></div></div>`,
+		children: [
+			{ path: 'child', action: () => '<p>Child</p>' },
+			{ path: 'other', action: () => '<p>Other</p>' }
+		]
+	}
+];
+
+// child paths are relative by default: 'child' -> '/parent/:id/child'
+// if a child path starts with `/` it is treated as absolute and not joined to the parent prefix.
+```
+
+Notes:
+
+- Parent actions can return cleanup functions; the router tracks cleanup per-level and invokes the appropriate cleanup when that level is left.
+- The nested behavior is backward-compatible: a flat `routes: Route[]` still works exactly as before.
+- `Context.matched` is useful for breadcrumbs, meta lookups, and for actions that need access to ancestor metadata.
