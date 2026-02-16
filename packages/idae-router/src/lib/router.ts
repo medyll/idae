@@ -7,8 +7,9 @@ import type {
 	AfterHook,
 	OnLeaveHook
 } from './types';
-import { compilePath, matchCompiled, parseQuery } from './matcher';
+import { parseQuery, matchRouteTree } from './matcher';
 import { mountResult } from './render';
+import { findOutlet } from './render';
 
 export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	const mode = opts.mode || 'history';
@@ -48,7 +49,7 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	): Context {
 		const [pathname, search] = pathWithQuery.split('?');
 		// find matched chain and merge params
-		const chain = findRouteChain(routes, pathname);
+		const chain = matchRouteTree(routes, pathname);
 		const mergedParams: Record<string, string> = {};
 		for (const rec of chain) Object.assign(mergedParams, rec.params);
 		return {
@@ -78,54 +79,11 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		return { allow: true };
 	}
 
-	// helper: join parent and child path pieces
-	function joinPaths(parent: string, child: string) {
-		if (!parent) return child.startsWith('/') ? child : '/' + child;
-		if (child.startsWith('/')) return child;
-		return (parent.replace(/\/$/, '') + '/' + child).replace(/\/+/g, '/');
-	}
-
-	// recursively attempt to match a route tree against the pathname
-	function findRouteChain(rs: Route[], pathname: string, parentPrefix = ''): Array<{ route: Route; params: Record<string, string>; path: string }> {
-		for (const r of rs) {
-			const fullPath = r.path.startsWith('/') ? r.path : joinPaths(parentPrefix || '', r.path);
-			const compiled = compilePath(fullPath);
-			const params = matchCompiled(compiled, pathname);
-			// if exact match found (leaf)
-			if (params) {
-				const record = { route: r, params, path: fullPath };
-				if (r.children && r.children.length) {
-					const childChain = findRouteChain(r.children, pathname, fullPath);
-					if (childChain.length) return [record, ...childChain];
-				}
-				return [record];
-			}
-			// if no exact match, but there are children, check prefix match so parent can match a portion
-			if (r.children && r.children.length) {
-				const src = compiled.regex.source.replace(/\$$/, '');
-				const prefixRe = new RegExp(src + '(?:/|$)');
-				const m = prefixRe.exec(pathname);
-				if (m) {
-					// extract params for the prefix match
-					const params: Record<string, string> = {};
-					for (let i = 1; i < m.length; i++) {
-						const key = compiled.keys[i - 1] || String(i - 1);
-						params[key] = decodeURIComponent(m[i] || '');
-					}
-					const record = { route: r, params, path: fullPath };
-					const childChain = findRouteChain(r.children, pathname, fullPath);
-					if (childChain.length) return [record, ...childChain];
-					// no child matched, but parent matched as prefix: return parent
-					return [record];
-				}
-			}
-		}
-		return [];
-	}
+	// matchRouteTree provided by matcher handles recursive route tree matching
 
 	async function handleNavigation(pathWithQuery: string, state?: unknown) {
 		const [pathname] = pathWithQuery.split('?');
-		const chain = findRouteChain(routes, pathname);
+		const chain = matchRouteTree(routes, pathname);
 		const toContext = buildContext(pathWithQuery, state);
 		const fromContext = currentContext;
 
@@ -180,7 +138,7 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 				newCleanups.push(null);
 				mountResult(parentOutlet, result as unknown as string | Node | DocumentFragment);
 				// find child outlet inside the mounted parent content
-				const childOutlet = parentOutlet.querySelector('[data-idae-outlet]') as Element | null;
+				const childOutlet = findOutlet(parentOutlet);
 				if (childOutlet) parentOutlet = childOutlet;
 				// otherwise parentOutlet stays the same as fallback
 			}

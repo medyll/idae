@@ -10,13 +10,13 @@
     "url": "git+https://github.com/medyll/idae.git"
   },
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite",
     "build": "vite build && npm run package",
     "preview": "vite preview",
-    "package": "npm run build:html:all && svelte-kit sync && node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
+    "package": "npm run build:html:all && node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
     "prepublishOnly": "npm run package",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "check": "tsc -p ./tsconfig.json --noEmit",
+    "check:watch": "tsc -p ./tsconfig.json --noEmit --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "prepackage": "node scripts/package-pre.js",

@@ -24,3 +24,9 @@ export function mountResult(outlet: Element, result: ActionResult) {
 	}
 	// function (cleanup) is handled by router; do not mount
 }
+
+export function findOutlet(root: Element, selector = '[data-idae-outlet]'): Element | null {
+	if (!root) return null;
+	if (root.matches && root.matches(selector)) return root;
+	return root.querySelector(selector);
+}
