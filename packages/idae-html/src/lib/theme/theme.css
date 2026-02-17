@@ -145,4 +145,60 @@
 .border-color-input { border-color: var(--color-input); }
 .border-color-ring { border-color: var(--color-ring); }
 
+/* Layout & utility helpers */
+
+/* Flex direction helpers */
+.flex-h { display: flex; flex-direction: row; }
+.flex-v { display: flex; flex-direction: column; }
+
+/* Alignment helpers: behavior depends on whether container is horizontal (flex-h) or vertical (flex-v)
+  - For .flex-h: .flex-center -> horizontal centering (justify-content)
+            .flex-middle -> vertical centering (align-items)
+  - For .flex-v: .flex-center -> horizontal centering (align-items)
+            .flex-middle -> vertical centering (justify-content)
+  Top/Bottom map to start/end on the axis corresponding to the primary flow.
+*/
+.flex-h.flex-center { justify-content: center; }
+.flex-h.flex-middle { align-items: center; }
+.flex-h.flex-top { align-items: flex-start; }
+.flex-h.flex-bottom { align-items: flex-end; }
+
+.flex-v.flex-center { align-items: center; }
+.flex_v.flex-center { align-items: center; }
+.flex-v.flex-middle { justify-content: center; }
+.flex-v.flex-top { justify-content: flex-start; }
+.flex-v.flex-bottom { justify-content: flex-end; }
+
+/* Scrolling helpers */
+.scroll { overflow: auto; -webkit-overflow-scrolling: touch; }
+.no-scroll { overflow: hidden; }
+
+/* Position / display helpers */
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+.contents { display: contents; }
+.none { display: none; }
+
+/* Grid helpers */
+/* Basic responsive grid with sensible defaults */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--gutter-md);
+}
+
+/* Common fixed column counts */
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Grid item helpers */
+.grid-item { display: block; }
+.grid-item-center { justify-self: center; align-self: center; }
+.grid-item-start { justify-self: start; align-self: start; }
+.grid-item-end { justify-self: end; align-self: end; }
+.grid-item-stretch { justify-self: stretch; align-self: stretch; }
+
+
 
