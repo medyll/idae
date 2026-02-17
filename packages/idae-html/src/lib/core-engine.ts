@@ -2,9 +2,9 @@
 // Re-exports idae-be helpers and exposes a global app registry on window
 import * as beMod from '@medyll/idae-be';
 import * as domMod from '@medyll/idae-dom-events';
-import * as statorMod from '@medyll/idae-stator';
+ import * as statorMod from '@medyll/idae-stator';
 import * as csssMod from '@medyll/idae-csss';
-import * as idbqlMod from '@medyll/idae-idbql';
+// import * as idbqlMod from '@medyll/idae-idbql';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -113,9 +113,9 @@ const createStator = (statorMod as any).createStator || (statorMod as any).defau
 const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
 const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
 const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
-const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
-const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
-const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
+// const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
+// const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
+// const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
 
 interface ComponentSpec {
   script: (root: HTMLElement, props: any) => void | Function; 
@@ -293,9 +293,9 @@ export const core = {
   csss,
   CsssNode,
   csssParser : OpCssParser,
-  createIdbqDb,
-  createIdbqlState,
-  idbql,
+  // createIdbqDb,
+  // createIdbqlState,
+  //idbql,
   registerComponent,
   initComponent,
   initRegisteredComponents,
@@ -379,9 +379,9 @@ export {
   csss,
   CsssNode,
   OpCssParser,
-  createIdbqDb,
-  createIdbqlState,
-  idbql,
+  // createIdbqDb,
+  // createIdbqlState,
+  // idbql,
   registerComponent,
   initComponent,
   initRegisteredComponents,
