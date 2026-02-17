@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "vite build && npm run package",
     "preview": "vite preview",
-    "package": "npm run build:html:all && node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
+    "package": "node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
     "prepublishOnly": "npm run package",
     "check": "tsc -p ./tsconfig.json --noEmit",
     "check:watch": "tsc -p ./tsconfig.json --noEmit --watch",

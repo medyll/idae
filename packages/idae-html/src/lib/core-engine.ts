@@ -1,9 +1,9 @@
 // Core engine for idae-html components
 // Re-exports idae-be helpers and exposes a global app registry on window
-import * as beMod from '@medyll/idae-be';
-import * as domMod from '@medyll/idae-dom-events';
- import * as statorMod from '@medyll/idae-stator';
-import * as csssMod from '@medyll/idae-csss';
+import { be, toBe } from '@medyll/idae-be';
+import { cssDom, htmlDom } from '@medyll/idae-dom-events';
+import { stator } from '@medyll/idae-stator';
+import { csss, OpCssParser } from '@medyll/idae-csss';
 // import * as idbqlMod from '@medyll/idae-idbql';
 
 type AppRegistry = {
@@ -101,18 +101,9 @@ export const app = win.__idae_app as AppRegistry;
 // Track per-instance cleanup functions so we can call them when elements are removed
 const mountedCleanup: WeakMap<HTMLElement, Function> = new WeakMap();
 
-// Re-exports
-const be = (beMod as any).be;
-const toBe = (beMod as any).toBe;
-const createBe = (beMod as any).createBe;
-const htmlDom = (domMod as any).htmlDom || (domMod as any).Htmlu;
-const cssDom = (domMod as any).cssDom;
-const htmluModules = (domMod as any).htmluModules;
-const stator = (statorMod as any).stator || (statorMod as any).default || (statorMod as any).createStator;
-const createStator = (statorMod as any).createStator || (statorMod as any).default || (statorMod as any).stator;
-const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
-const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
-const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
+// `be` and `toBe` imported directly above
+// `stator` imported directly above
+// `csss`, `CsssNode` and `OpCssParser` imported directly above
 // const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
 // const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
 // const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
@@ -284,18 +275,11 @@ export const core = {
   app,
   be,
   toBe,
-  createBe,
   htmlDom,
   cssDom,
-  htmluModules,
   stator,
-  createStator,
   csss,
-  CsssNode,
   csssParser : OpCssParser,
-  // createIdbqDb,
-  // createIdbqlState,
-  //idbql,
   registerComponent,
   initComponent,
   initRegisteredComponents,
@@ -366,24 +350,27 @@ function renderHtmlWithSlots(template: string | Node, slots?: Record<string, str
 
 core.autoInitRegisteredComponents();
 
-// Named exports for individual helpers so inline modules can import them directly
-export {
-  be,
-  toBe,
-  createBe,
-  htmlDom,
-  cssDom,
-  htmluModules,
-  stator,
-  createStator,
-  csss,
-  CsssNode,
-  OpCssParser,
-  // createIdbqDb,
-  // createIdbqlState,
-  // idbql,
-  registerComponent,
-  initComponent,
-  initRegisteredComponents,
-  autoInitRegisteredComponents
-};
+
+cssDom('[data-component]', {
+  trackChildList: true,
+  trackAttributes: true,
+  trackResize: true
+}).each((element, changes  ) => {
+  console.log('Detected element:', element);
+
+  if (changes?.attributes) {
+      console.log('Attribute changes:', changes.attributes);
+  }
+
+  if (changes?.childList) {
+      console.log('Child list modifications:', changes.childList);
+  }
+
+  if (changes?.characterData) {
+      console.log('Character data changes:', changes.characterData);
+  }
+
+  if (changes?.resize) {
+      console.log('Resize detected:', changes.resize);
+  }
+});
