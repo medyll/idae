@@ -62,6 +62,43 @@ const colors = {
   gray: "\x1b[90m"
 };
 
+// Server-side slots feature flags / limits
+const ENABLE_SERVER_SLOTS = process.env.IDAE_ENABLE_SERVER_SLOTS !== 'false';
+const ALLOW_UNSAFE_SLOTS = process.env.IDAE_ALLOW_UNSAFE_SLOTS === 'true';
+const SLOTS_MAX_KB = parseInt(process.env.IDAE_SLOTS_MAX_KB || '200', 10) * 1024; // total KB
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function applyServerSlotsToHtml(html, slots = {}, options = { allowHtml: false }) {
+  if (!slots || Object.keys(slots).length === 0) return html;
+  const allowHtml = !!options.allowHtml;
+
+  // First, replace named slots: <slot name="...">fallback</slot>
+  html = html.replace(/<slot[^>]*name=["']([^"']+)["'][^>]*>([\s\S]*?)<\/slot>/gi, (m, name, fallback) => {
+    const provided = slots[name];
+    if (provided == null) return fallback || '';
+    if (!allowHtml) return escapeHtml(provided);
+    return provided;
+  });
+
+  // Then replace unnamed/default slots
+  html = html.replace(/<slot(?![^>]*name=)[^>]*>([\s\S]*?)<\/slot>/gi, (m, fallback) => {
+    const provided = slots['default'];
+    if (provided == null) return fallback || '';
+    if (!allowHtml) return escapeHtml(provided);
+    return provided;
+  });
+
+  return html;
+}
+
 
 // --- Cache Layer ---
 let redisClient = null;
@@ -209,7 +246,32 @@ async function processHtmlOnce(html) {
     }
   }
 
-  return rootNode.toString();
+  let resultHtml = rootNode.toString();
+
+  if (ENABLE_SERVER_SLOTS) {
+    try {
+      const slotEls = rootNode.querySelectorAll('[data-slot]');
+      const slots = {};
+      let totalBytes = 0;
+      for (const el of slotEls) {
+        const name = el.getAttribute('data-slot') || 'default';
+        const content = (el.innerHTML || '');
+        const size = Buffer.byteLength(content, 'utf8');
+        totalBytes += size;
+        if (totalBytes > SLOTS_MAX_KB) {
+          if (options.debug) console.warn(`${colors.yellow}[slots] total size exceeded ${SLOTS_MAX_KB} bytes, truncating${colors.reset}`);
+          break;
+        }
+        slots[name] = content;
+        try { el.setAttribute('data-done', '1'); } catch (e) {}
+      }
+      resultHtml = applyServerSlotsToHtml(resultHtml, slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
+    } catch (e) {
+      if (options.debug) console.error(`${colors.red}[slots] apply failed: ${e.message}${colors.reset}`);
+    }
+  }
+
+  return resultHtml;
 }
 
 
