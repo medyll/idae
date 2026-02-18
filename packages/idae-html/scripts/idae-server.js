@@ -9,6 +9,19 @@ import proxy from 'koa-proxies';
 import { createServer } from 'vite';
 import { program } from 'commander';
 import open from 'open';
+import { parse } from 'node-html-parser';
+import Redis from 'ioredis';
+import selfsigned from 'selfsigned';
+
+/**
+ * DATA ATTRIBUTES USED:
+ * - [data-path]: Local file path (relative to src/www).
+ * - [data-http]: Remote or relative URL to fetch.
+ * - [data-done]: Processing flag ("1" or "error") to prevent loops.
+ * - [data-uuid]: Unique ID added after processing.
+ * - [data-source]: Tagged as "local-path" for filesystem reads.
+ * - [data-from-cache]: Set to "1" if content served from cache.
+ */
 
 // --- CLI Configuration ---
 program
@@ -18,13 +31,21 @@ program
   .option('-a, --enable-api', 'Enable API proxying to backend', false)
   .option('--proxy-target <url>', 'Backend proxy target URL', 'http://localhost:3000')
   .option('--https', 'Enable self-signed HTTPS', false)
+  .option('--fetch-timeout <ms>', 'Timeout for data-http fetches', (val) => parseInt(val, 10), 5000)
+  .option('--cache-type <type>', 'Cache storage type (memory or redis)', 'memory')
+  .option('--cache-ttl <seconds>', 'Cache TTL in seconds', (val) => parseInt(val, 10), 60)
+  .option('--redis-url <url>', 'Redis connection URL', 'redis://127.0.0.1:6379')
+  .option('--www <url>', 'Base URL for auto-detection of internal fetches', '')
   .parse(process.argv);
 
 const options = program.opts();
 const PORT = options.port;
 const root = process.cwd();
+const wwwDir = path.resolve(root, 'src/www');
+const bootstrapBody = '%idae.body%';
 
-// Terminal colors
+const BASE_URL = options.www || `${options.https ? 'https' : 'http'}://localhost:${PORT}`;
+
 const colors = {
   reset: "\x1b[0m",
   bright: "\x1b[1m",
@@ -32,167 +53,209 @@ const colors = {
   yellow: "\x1b[33m",
   red: "\x1b[31m",
   cyan: "\x1b[36m",
-  gray: "\x1b[90m",
-  magenta: "\x1b[35m"
+  gray: "\x1b[90m"
 };
 
-const mimeTypes = {
-  '.html': 'text/html',
-  '.js': 'text/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.gif': 'image/gif',
-  '.svg': 'image/svg+xml',
-  '.txt': 'text/plain'
+// --- Cache Layer ---
+let redisClient = null;
+const memoryCache = new Map();
+
+const cache = {
+  async get(key) {
+    if (options.cacheType === 'redis' && redisClient) {
+      return await redisClient.get(`idae:cache:${key}`);
+    }
+    const entry = memoryCache.get(key);
+    if (entry && (Date.now() - entry.timestamp < options.cacheTtl * 1000)) {
+      return entry.data;
+    }
+    return null;
+  },
+  async set(key, value) {
+    if (options.cacheType === 'redis' && redisClient) {
+      await redisClient.set(`idae:cache:${key}`, value, 'EX', options.cacheTtl);
+    } else {
+      memoryCache.set(key, { data: value, timestamp: Date.now() });
+    }
+  }
 };
 
-/**
- * Ensures SSL certificates exist or generates them
- * @returns {Object} credentials for https server
- */
+// --- Unified Recursive Processor ---
+
+async function processHtmlRecursive(html) {
+  let currentHtml = html;
+  let hasPendingWork = true;
+
+  while (hasPendingWork) {
+    const rootNode = parse(currentHtml);
+    const localEls = rootNode.querySelectorAll('[data-path]:not([data-done])');
+    const httpEls = rootNode.querySelectorAll('[data-http]:not([data-done])');
+
+    if (localEls.length === 0 && httpEls.length === 0) {
+      hasPendingWork = false;
+      break;
+    }
+
+    // 1. Process local-path
+    for (const el of localEls) {
+      const filePath = el.getAttribute('data-path');
+      try {
+        const resolvedPath = path.join(wwwDir, path.join('/', filePath));
+        if (!resolvedPath.startsWith(wwwDir)) throw new Error('Traversal blocked');
+
+        if (existsSync(resolvedPath)) {
+          const content = await fs.readFile(resolvedPath, 'utf-8');
+          el.set_content(content);
+          el.setAttribute('data-uuid', crypto.randomUUID());
+          el.setAttribute('data-done', '1');
+          el.setAttribute('data-source', 'local-path');
+        }
+      } catch (e) {
+        if (options.debug) console.error(`${colors.red}[Path Error] ${filePath}: ${e.message}${colors.reset}`);
+        el.set_content(`Path error: ${e.message}`);
+        el.setAttribute('data-done', 'error');
+      }
+    }
+
+    // 2. Process data-http
+    for (const el of httpEls) {
+      let url = el.getAttribute('data-http');
+      if (!url.startsWith('http')) url = new URL(url, BASE_URL).href;
+
+      const cachedData = await cache.get(url);
+      if (cachedData) {
+        el.set_content(cachedData);
+        el.setAttribute('data-uuid', crypto.randomUUID());
+        el.setAttribute('data-done', '1');
+        el.setAttribute('data-from-cache', '1');
+        continue;
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), options.fetchTimeout);
+
+      try {
+        const response = await fetch(url, { 
+          signal: controller.signal,
+          headers: { 'x-idae-internal': 'true' } 
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.text();
+
+        await cache.set(url, data);
+        el.set_content(data);
+        el.setAttribute('data-uuid', crypto.randomUUID());
+        el.setAttribute('data-done', '1');
+      } catch (e) {
+        clearTimeout(timeoutId);
+        el.set_content(`Fetch error: ${e.message}`);
+        el.setAttribute('data-done', 'error');
+      }
+    }
+
+    currentHtml = rootNode.toString();
+  }
+  return currentHtml;
+}
+
+// --- Utilities ---
+
 async function ensureCertificates() {
   const keyPath = path.resolve(root, '.idae-key.pem');
   const certPath = path.resolve(root, '.idae-cert.pem');
-
+  
   if (existsSync(keyPath) && existsSync(certPath)) {
-    return {
-      key: await fs.readFile(keyPath),
-      cert: await fs.readFile(certPath)
-    };
+    return { key: await fs.readFile(keyPath), cert: await fs.readFile(certPath) };
   }
 
-  console.log(`${colors.yellow}⚠️  SSL Certificates not found. Generating self-signed certs...${colors.reset}`);
-
-  // Generate a basic self-signed pair using native crypto
-  const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-    publicKeyEncoding: { type: 'spki', format: 'pem' },
-    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
-  });
-
-  // Note: This is a raw PEM. For full browser trust, use mkcert.
-  await fs.writeFile(keyPath, privateKey);
-  await fs.writeFile(certPath, publicKey); // In real scenarios, this would be an X.509 cert
-
-  console.log(`${colors.green}✅ Temporary certificates created at root.${colors.reset}`);
-  return { key: privateKey, cert: publicKey };
+  // Uses selfsigned to create a proper X.509 certificate for the HTTPS server
+  const pems = selfsigned.generate([{ name: 'commonName', value: 'localhost' }], { days: 365 });
+  await fs.writeFile(keyPath, pems.private);
+  await fs.writeFile(certPath, pems.cert);
+  
+  return { key: pems.private, cert: pems.cert };
 }
 
-async function startIdaeServer() {
-  const app = new Koa();
+// --- Server Startup ---
 
-  // 1. Vite Setup
+async function startIdaeServer() {
+  if (options.cacheType === 'redis') redisClient = new Redis(options.redisUrl);
+
+  const app = new Koa();
   const vite = await createServer({
     root,
-    server: { 
-      middlewareMode: true,
-      hmr: { port: PORT + 1 },
-      https: options.https 
-    },
+    server: { middlewareMode: true, hmr: { port: PORT + 1 }, https: options.https },
     appType: 'custom',
-    resolve: {
-      alias: { '$lib': path.resolve(root, 'src/lib') }
-    }
+    resolve: { alias: { '$lib': path.resolve(root, 'src/lib') } }
   });
 
-  // 2. Proxy Setup
-  if (options.enableApi) {
-    app.use(proxy('/api', {
-      target: options.proxyTarget,
-      changeOrigin: true,
-      logs: options.debug,
-    }));
-  }
-
-  // 3. Logger Middleware
-  if (options.debug) {
-    app.use(async (ctx, next) => {
-      const start = Date.now();
-      await next();
-      const ms = Date.now() - start;
-      const statusColor = ctx.status >= 400 ? colors.yellow : colors.green;
-      console.log(`${colors.gray}[${new Date().toLocaleTimeString()}]${colors.reset} ${colors.cyan}${ctx.method}${colors.reset} ${ctx.url} - ${statusColor}${ctx.status}${colors.reset} (${ms}ms)`);
-    });
-  }
-
-  // 4. Error Handler
-  app.use(async (ctx, next) => {
-    try {
-      await next();
-      if (ctx.status === 404 && !ctx.body) ctx.throw(404);
-    } catch (err) {
-      ctx.status = err.status || 500;
-      vite.ssrFixStacktrace(err);
-      ctx.type = 'text/html';
-      ctx.body = `<div style="font-family: monospace; padding: 20px; background: #1a1a1a; color: #ff5f5f;"><h1>Error ${ctx.status}</h1><pre>${options.debug ? err.stack : err.message}</pre></div>`;
-      ctx.app.emit('error', err, ctx);
-    }
-  });
-
-  // 5. Vite Middleware
+  if (options.enableApi) app.use(proxy('/api', { target: options.proxyTarget, changeOrigin: true }));
   app.use(c2k(vite.middlewares));
 
-  // 6. Rendering Logic
   app.use(async (ctx, next) => {
     if (ctx.method !== 'GET') return next();
 
+    const isInternal = ctx.headers['x-idae-internal'] === 'true';
     const isHtml = ctx.headers.accept?.includes('text/html');
+    
     let urlPath = ctx.path === '/' ? '/index.html' : ctx.path;
     if (isHtml && !path.extname(urlPath)) urlPath += '.html';
 
-    const extension = path.extname(urlPath).toLowerCase();
-    const pagePath = path.resolve(root, 'src/www', urlPath.replace(/^\//, ''));
+    const pagePath = path.resolve(wwwDir, urlPath.replace(/^\//, ''));
     const bootstrapPath = path.resolve(root, 'src/app.html');
 
-    if (extension === '.html') {
-      let finalPath = existsSync(pagePath) ? pagePath : path.resolve(root, 'src/www/index.html');
+    if (path.extname(urlPath).toLowerCase() === '.html') {
+      const finalPath = existsSync(pagePath) ? pagePath : path.resolve(wwwDir, 'index.html');
+      
       if (existsSync(finalPath)) {
         try {
-          const [bootstrap, pageContent] = await Promise.all([
-            fs.readFile(bootstrapPath, 'utf-8').catch(() => '<%idae-kit%>'),
-            fs.readFile(finalPath, 'utf-8')
-          ]);
-          let html = bootstrap.replace('<%idae-kit%>', pageContent);
+          const rawContent = await fs.readFile(finalPath, 'utf-8');
+
+          if (isInternal) {
+            ctx.type = 'text/html';
+            ctx.body = rawContent;
+            return;
+          }
+
+          const bootstrap = await fs.readFile(bootstrapPath, 'utf-8').catch(() => bootstrapBody);
+          
+          // Unified recursive processing
+          const processedContent = await processHtmlRecursive(rawContent);
+
+          const html = bootstrap.replace(bootstrapBody, processedContent);
           ctx.body = await vite.transformIndexHtml(ctx.url, html);
           ctx.type = 'text/html';
           return;
         } catch (e) { ctx.throw(500, e); }
       }
-    } 
+    }
     
     if (existsSync(pagePath)) {
-      ctx.type = mimeTypes[extension] || 'application/octet-stream';
       ctx.body = await fs.readFile(pagePath);
       return;
     }
     await next();
   });
 
-  // 7. Server Start
-  let server;
-  const protocol = options.https ? 'https' : 'http';
-
-  if (options.https) {
-    const credentials = await ensureCertificates();
-    server = https.createServer(credentials, app.callback());
-  } else {
-    server = app.listen(PORT);
-  }
-
   const onStart = () => {
-    const url = `${protocol}://localhost:${PORT}`;
-    console.log(`\n${colors.green}${colors.bright}🚀 IDAE-Server engine running at:${colors.reset} ${url}`);
-    if (options.enableApi) console.log(`${colors.magenta}📡 API Proxy: /api -> ${options.proxyTarget}${colors.reset}`);
-    if (options.open) open(url);
+    console.log(`\n${colors.green}${colors.bright}🚀 IDAE-Server engine running at ${BASE_URL}${colors.reset}`);
+    if (options.open) open(BASE_URL);
   };
 
-  if (options.https) server.listen(PORT, onStart);
-  else onStart();
+  if (options.https) {
+    const creds = await ensureCertificates();
+    https.createServer(creds, app.callback()).listen(PORT, onStart);
+  } else {
+    app.listen(PORT, onStart);
+  }
 }
 
-startIdaeServer().catch(err => {
-  console.error(colors.red + 'Server start failed:' + colors.reset, err);
-  process.exit(1);
+// Cleanup
+process.on('SIGINT', () => {
+  if (redisClient) redisClient.quit();
+  process.exit();
 });
+
+startIdaeServer().catch(err => console.error(err));

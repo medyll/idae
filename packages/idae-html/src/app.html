@@ -10,24 +10,15 @@
       #app { color: #111; }
     </style>
 	<script type="module">
-		import('/src/lib/core-engine.js').then((m) => {
-			const el = document.getElementById('app');
-			if (el) el.textContent = 'idae-html dev server running';
-			console.log('idae-html module loaded', m);
-		}).catch((err) => {
-			const el = document.getElementById('app');
-			if (el) el.textContent = 'Erreur de chargement (voir console)';
+		import('/src/lib/core-engine.js').then((m) => { 
+		}).catch((err) => { 
 			console.error(err);
 		});
 	</script>
   </head>
-  <body>
-	<div id="app">Chargement…</div>
+  <body> 
 	<div style="display:contents">
-		 <div data-component="loop" >
-			</div>
-		 <div data-htmlu-module="loop" >
-			</div>
+		%idae.body%
 	</div>
   </body>
 </html>
