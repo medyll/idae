@@ -24,6 +24,9 @@ Behavior notes
 --------------
 - Slots are collected from elements with `data-slot="name"` in the processed HTML. Their innerHTML is used as the provided slot value.
 - If a slot is missing, the template's fallback content inside the `<slot>` element is preserved.
+ - Slots are collected from elements with `data-slot="name"` in the processed HTML. Their innerHTML is used as the provided slot value.
+ - When a parent page contains a `data-http` container, any `data-slot` elements authored inside that container are preserved and merged with the fetched template. Parent-provided `data-slot` elements are appended after the fetched content before slot application, so they take precedence (override) over defaults declared inside the fetched template's `<slot>` elements.
+ - If a slot is missing, the template's fallback content inside the `<slot>` element is preserved.
 - By default slot values are escaped (`&lt;`, `&gt;`, ...). Enable `IDAE_ALLOW_UNSAFE_SLOTS=true` only for trusted contexts.
 - Rendered HTML is cached by hashing `template+props+slots`. Cached entries respect TTL and `IDAE_RENDER_CACHE_MAX`.
 - On cache or render errors, the code falls back to a direct slot-apply pass and logs the error when `--debug` is used.

@@ -182,9 +182,17 @@ async function processHtmlOnce(html) {
       url = url + sep + httpVars.replace(/^\?/, '');
     }
 
+    // Preserve any author-provided slot elements that live inside the `data-http` container
+    // so they can be applied to `<slot>` placeholders in the fetched template.
+    // We will append these provided slot elements after the fetched content so that
+    // parent-provided slots override any defaults coming from the fetched template.
+    const existingProvidedSlots = el.querySelectorAll('[data-slot]') || [];
+    const providedSlotsHtml = existingProvidedSlots.length ? existingProvidedSlots.map(s => s.toString()).join('') : '';
+
     const cachedData = await cache.get(url);
     if (cachedData) {
-      el.set_content(cachedData);
+      // merge fetched template with provided slots (fetched content first, provided slots after)
+      el.set_content(String(cachedData) + providedSlotsHtml);
       el.setAttribute('data-uuid', crypto.randomUUID());
       el.setAttribute('data-done', '1');
       el.setAttribute('data-from-cache', '1');
@@ -205,7 +213,8 @@ async function processHtmlOnce(html) {
       const data = await response.text();
 
       await cache.set(url, data);
-      el.set_content(data);
+      // merge fetched template with any provided slots from the parent container
+      el.set_content(String(data) + providedSlotsHtml);
       el.setAttribute('data-uuid', crypto.randomUUID());
       el.setAttribute('data-done', '1');
     } catch (e) {
