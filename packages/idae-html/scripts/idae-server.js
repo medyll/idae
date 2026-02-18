@@ -10,6 +10,7 @@ import { createServer } from 'vite';
 import { program } from 'commander';
 import open from 'open';
 import { parse } from 'node-html-parser';
+import { fileURLToPath } from 'node:url';
 import { applyServerSlotsToHtml, collectSlotsFromHtml, renderWithCache } from './server-slots.js';
 import Redis from 'ioredis';
 import selfsigned from 'selfsigned';
@@ -398,4 +399,10 @@ process.on('SIGINT', () => {
   process.exit();
 });
 
-startIdaeServer().catch(err => console.error(err));
+// Export `processHtmlOnce` for integration tests.
+export { processHtmlOnce };
+
+// Only start the server when this script is executed directly (not imported by tests)
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  startIdaeServer().catch(err => console.error(err));
+}
