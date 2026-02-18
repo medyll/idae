@@ -223,7 +223,7 @@ async function processHtmlOnce(html) {
       const collected = collectSlotsFromHtml(resultHtml, SLOTS_MAX_KB);
       if (collected.truncated && options.debug) console.warn(`${colors.yellow}[slots] total size exceeded ${SLOTS_MAX_KB} bytes, truncated${colors.reset}`);
       try {
-        resultHtml = renderWithCache(resultHtml, {}, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
+        resultHtml = await renderWithCache(resultHtml, {}, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
       } catch (e) {
         // Fallback to direct apply
         resultHtml = applyServerSlotsToHtml(resultHtml, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
