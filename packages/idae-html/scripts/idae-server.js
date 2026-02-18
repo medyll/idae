@@ -302,7 +302,19 @@ async function startIdaeServer() {
           // Single-pass processing
           const processedContent = await processHtmlOnce(rawContent);
 
-          const html = bootstrap.replace(bootstrapBody, processedContent);
+          // If server-side slots were applied, add a small meta marker in <head>
+          let bootstrapWithMarker = bootstrap;
+          if (ENABLE_SERVER_SLOTS && !bootstrap.includes('<meta name="idae-server-slots"')) {
+            const marker = '<meta name="idae-server-slots" content="1">';
+            if (bootstrapWithMarker.includes('</head>')) {
+              bootstrapWithMarker = bootstrapWithMarker.replace('</head>', `${marker}</head>`);
+            } else {
+              // fallback: prepend marker to body
+              bootstrapWithMarker = marker + bootstrapWithMarker;
+            }
+          }
+
+          const html = bootstrapWithMarker.replace(bootstrapBody, processedContent);
           ctx.body = await vite.transformIndexHtml(ctx.url, html);
           ctx.type = 'text/html';
           return;

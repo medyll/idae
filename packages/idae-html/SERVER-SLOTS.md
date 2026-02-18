@@ -28,12 +28,15 @@ Behavior notes
 - Rendered HTML is cached by hashing `template+props+slots`. Cached entries respect TTL and `IDAE_RENDER_CACHE_MAX`.
 - On cache or render errors, the code falls back to a direct slot-apply pass and logs the error when `--debug` is used.
 
-Quick test
-----------
 From package root run:
 
 ```bash
 node scripts/test-server-slots.js
 ```
+Client detection
+----------------
+- The server injects a marker meta tag into the page head when server-side slots were applied:
+	- `<meta name="idae-server-slots" content="1">`
+- Client code (components) can detect this with `document.querySelector('meta[name="idae-server-slots"]')` and avoid re-inserting slot content or perform a hydrate-specific path.
 
 This runs basic tests for XSS escaping, fallback, and slot size truncation.
