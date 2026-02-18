@@ -1,4 +1,4 @@
-import { stator } from "../../../../idae-stator/dist/index.js";
+import { stator } from "@medyll/idae-stator";
 
 export type StatorAdapterOptions = {
   // future options: dedupe, timing, keyPath detection, ...

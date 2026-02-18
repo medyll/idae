@@ -1,10 +1,10 @@
 // Core engine for idae-html components
 // Re-exports idae-be helpers and exposes a global app registry on window
-import * as beMod from '@medyll/idae-be';
-import * as domMod from '@medyll/idae-dom-events';
-import * as statorMod from '@medyll/idae-stator';
-import * as csssMod from '@medyll/idae-csss';
-import * as idbqlMod from '@medyll/idae-idbql';
+import { be, toBe } from '@medyll/idae-be';
+import { cssDom, htmlDom } from '@medyll/idae-dom-events';
+import { stator } from '@medyll/idae-stator';
+import { csss, OpCssParser } from '@medyll/idae-csss';
+// import * as idbqlMod from '@medyll/idae-idbql';
 
 type AppRegistry = {
   loadedScripts: Record<string, boolean>;
@@ -101,21 +101,12 @@ export const app = win.__idae_app as AppRegistry;
 // Track per-instance cleanup functions so we can call them when elements are removed
 const mountedCleanup: WeakMap<HTMLElement, Function> = new WeakMap();
 
-// Re-exports
-const be = (beMod as any).be;
-const toBe = (beMod as any).toBe;
-const createBe = (beMod as any).createBe;
-const htmlDom = (domMod as any).htmlDom || (domMod as any).Htmlu;
-const cssDom = (domMod as any).cssDom;
-const htmluModules = (domMod as any).htmluModules;
-const stator = (statorMod as any).stator || (statorMod as any).default || (statorMod as any).createStator;
-const createStator = (statorMod as any).createStator || (statorMod as any).default || (statorMod as any).stator;
-const csss = (csssMod as any).csss || (csssMod as any).default || csssMod;
-const CsssNode = (csssMod as any).CsssNode || (csssMod as any).CsssNode;
-const OpCssParser = (csssMod as any).OpCssParser || (csssMod as any).OpCssParser;
-const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
-const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
-const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
+// `be` and `toBe` imported directly above
+// `stator` imported directly above
+// `csss`, `CsssNode` and `OpCssParser` imported directly above
+// const createIdbqDb = (idbqlMod as any).createIdbqDb || (idbqlMod as any).createIdbDb || undefined;
+// const createIdbqlState = (idbqlMod as any).createIdbqlState || undefined;
+// const idbql = (idbqlMod as any).idbql || (idbqlMod as any).default || undefined;
 
 interface ComponentSpec {
   script: (root: HTMLElement, props: any) => void | Function; 
@@ -284,23 +275,32 @@ export const core = {
   app,
   be,
   toBe,
-  createBe,
   htmlDom,
   cssDom,
-  htmluModules,
   stator,
-  createStator,
   csss,
-  CsssNode,
   csssParser : OpCssParser,
-  createIdbqDb,
-  createIdbqlState,
-  idbql,
   registerComponent,
   initComponent,
   initRegisteredComponents,
   autoInitRegisteredComponents
 };
+
+/**
+ * Returns true when the server has pre-rendered slots for this page.
+ * Client components can call this to avoid double-inserting slot content.
+ * Usage: if (core.serverSlotsEnabled()) { /* hydrate-only path *\/ }
+ */
+function serverSlotsEnabled() {
+  try {
+    if (typeof document === 'undefined') return false;
+    return !!document.querySelector('meta[name="idae-server-slots"]');
+  } catch (e) {
+    return false;
+  }
+}
+
+(core as any).serverSlotsEnabled = serverSlotsEnabled;
 
 function escapeHtml(s: string) {
   return String(s)
@@ -364,26 +364,77 @@ function renderHtmlWithSlots(template: string | Node, slots?: Record<string, str
 (core as any).applySlotsToElement = applySlotsToElement;
 (core as any).renderHtmlWithSlots = renderHtmlWithSlots;
 
+/**
+ * Render a template (string or Node) with provided slots.
+ * Works both in-browser (uses DOM) and server-side (string-based fallback).
+ */
+function renderComponent(template: string | Node, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
+  const allowHtml = !!(options && options.allowHtml);
+
+  // Browser path: reuse existing DOM-based renderer
+  if (typeof document !== 'undefined' && typeof (template as any) !== 'string') {
+    const frag = renderHtmlWithSlots(template as Node, slots, options);
+    const container = document.createElement('div');
+    container.appendChild(frag.cloneNode(true));
+    return container.innerHTML;
+  }
+
+  // If template is a Node in a server environment, try to serialize it
+  if (typeof document !== 'undefined' && typeof (template as any) === 'string') {
+    const frag = renderHtmlWithSlots(template as string, slots, options);
+    const container = document.createElement('div');
+    container.appendChild(frag.cloneNode(true));
+    return container.innerHTML;
+  }
+
+  // Server-side string-only fallback: simple regex-based slot replacement
+  let html = typeof template === 'string' ? template : '';
+  if (!slots || Object.keys(slots).length === 0) return html;
+
+  // Replace named slots with fallback handling
+  html = html.replace(/<slot[^>]*name=["']([^"']+)["'][^>]*>([\s\S]*?)<\/slot>/gi, (m, name, fallback) => {
+    const provided = slots[name];
+    if (provided == null) return fallback || '';
+    if (typeof provided === 'string') return allowHtml ? provided : escapeHtml(provided as string);
+    return '';
+  });
+
+  // Replace default/unnamed slots
+  html = html.replace(/<slot(?![^>]*name=)[^>]*>([\s\S]*?)<\/slot>/gi, (m, fallback) => {
+    const provided = (slots as any)['default'];
+    if (provided == null) return fallback || '';
+    if (typeof provided === 'string') return allowHtml ? provided : escapeHtml(provided as string);
+    return '';
+  });
+
+  return html;
+}
+
+(core as any).renderComponent = renderComponent;
+
 core.autoInitRegisteredComponents();
 
-// Named exports for individual helpers so inline modules can import them directly
-export {
-  be,
-  toBe,
-  createBe,
-  htmlDom,
-  cssDom,
-  htmluModules,
-  stator,
-  createStator,
-  csss,
-  CsssNode,
-  OpCssParser,
-  createIdbqDb,
-  createIdbqlState,
-  idbql,
-  registerComponent,
-  initComponent,
-  initRegisteredComponents,
-  autoInitRegisteredComponents
-};
+
+cssDom('[data-component]', {
+  trackChildList: true,
+  trackAttributes: true,
+  trackResize: true
+}).each((element, changes  ) => {
+  console.log('Detected element:', element);
+
+  if (changes?.attributes) {
+      console.log('Attribute changes:', changes.attributes);
+  }
+
+  if (changes?.childList) {
+      console.log('Child list modifications:', changes.childList);
+  }
+
+  if (changes?.characterData) {
+      console.log('Character data changes:', changes.characterData);
+  }
+
+  if (changes?.resize) {
+      console.log('Resize detected:', changes.resize);
+  }
+});

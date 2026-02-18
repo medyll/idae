@@ -30,7 +30,7 @@ cssDom('[data-cssDom]', {
     trackAttributes: true,
     trackResize: true
 }).each((element, changes) => {
-    console.log('Modified element:', element);
+    console.log('Detected element:', element);
 
     if (changes.attributes) {
         console.log('Attribute changes:', changes.attributes);

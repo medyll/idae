@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "vite build && npm run package",
     "preview": "vite preview",
-    "package": "npm run build:html:all && node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
+    "package": "node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
     "prepublishOnly": "npm run package",
     "check": "tsc -p ./tsconfig.json --noEmit",
     "check:watch": "tsc -p ./tsconfig.json --noEmit --watch",
@@ -23,8 +23,12 @@
     "build:types": "tsc -p tsconfig.build.json",
     "build:dist": "node scripts/build-resizePanel.js",
     "build:html": "node scripts/build-html-component.js",
-    "build:html:all": "node scripts/build-html-all.js"
+    "build:html:all": "node scripts/build-html-all.js",
+    "test": "vitest"
   },
+    "vitest": {
+      "include": ["test/**/*.test.js", "scripts/test-server-slots.js"]
+    },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -46,8 +50,13 @@
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-config-prettier": "latest",
+    "@medyll/idae-csss": "workspace:*",
+    "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-query": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
+    "@medyll/idae-stator": "workspace:*",
     "@semantic-release/github": "^12.0.5",
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/kit": "^2.50.2",
@@ -66,8 +75,10 @@
     "svelte-check": "^4.3.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^1.5.5"
   },
+  
   "keywords": [
     "idae",
     "html",
@@ -81,11 +92,14 @@
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "dependencies": {
-    "@medyll/idae-dom-events": "workspace:*",
-    "@medyll/idae-idbql": "workspace:*",
-    "@medyll/idae-query": "workspace:*",
-    "@medyll/idae-stator": "workspace:*",
     "command": "^1.1.1",
-    "commander": "^14.0.3"
+    "commander": "^14.0.3",
+    "ioredis": "^5.9.3",
+    "koa": "^3.1.1",
+    "koa-connect": "^2.1.1",
+    "koa-proxies": "^0.12.4",
+    "node-html-parser": "^7.0.2",
+    "open": "^11.0.0",
+    "selfsigned": "^5.5.0"
   }
 }

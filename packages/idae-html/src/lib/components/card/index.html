@@ -12,13 +12,13 @@
 <div data-component="card" class="card-container card-root">
     <div class="card">
         <div class="card-header"><h3>Card Title 1</h3></div>
-        <div class="card-body"><p>This is some content inside the card.</p></div>
+        <div class="card-body"><slot name="body"><p>This is some content inside the card.</p></slot></div>
         <div class="card-footer"><button data-action>Action</button></div>
     </div>
 
     <div class="card">
         <div class="card-header"><h3>Card Title 2</h3></div>
-        <div class="card-body"><p>Another card with different content.</p></div>
+        <div class="card-body"><slot name="body"><p>Another card with different content.</p></slot></div>
         <div class="card-footer"><button data-action>Action</button></div>
     </div>
 </div>
@@ -31,6 +31,20 @@
         resources: [],
         script: (root, props) => {
             const rootEl = (root instanceof Element) ? root : (root as any).node || document;
+
+            // If the page was server-rendered with slots, avoid client-side insertion.
+            const serverRendered = core.serverSlotsEnabled && core.serverSlotsEnabled();
+            if (!serverRendered) {
+                // Client-side: fill any empty slots with fallback content or props
+                const slotEls = Array.from(rootEl.querySelectorAll('slot')) as HTMLSlotElement[];
+                slotEls.forEach((s) => {
+                    if (!s.hasChildNodes()) {
+                        const name = s.getAttribute('name') || 'default';
+                        const txt = (props && props[name]) ? String((props as any)[name]) : 'Client-inserted content';
+                        try { s.textContent = txt; } catch (e) {}
+                    }
+                });
+            }
             const buttons = Array.from(rootEl.querySelectorAll('[data-action]')) as HTMLElement[];
             if (!buttons.length) return;
 
