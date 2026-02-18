@@ -10,6 +10,7 @@ import { createServer } from 'vite';
 import { program } from 'commander';
 import open from 'open';
 import { parse } from 'node-html-parser';
+import { applyServerSlotsToHtml } from './server-slots.js';
 import Redis from 'ioredis';
 import selfsigned from 'selfsigned';
 
@@ -66,38 +67,6 @@ const colors = {
 const ENABLE_SERVER_SLOTS = process.env.IDAE_ENABLE_SERVER_SLOTS !== 'false';
 const ALLOW_UNSAFE_SLOTS = process.env.IDAE_ALLOW_UNSAFE_SLOTS === 'true';
 const SLOTS_MAX_KB = parseInt(process.env.IDAE_SLOTS_MAX_KB || '200', 10) * 1024; // total KB
-
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function applyServerSlotsToHtml(html, slots = {}, options = { allowHtml: false }) {
-  if (!slots || Object.keys(slots).length === 0) return html;
-  const allowHtml = !!options.allowHtml;
-
-  // First, replace named slots: <slot name="...">fallback</slot>
-  html = html.replace(/<slot[^>]*name=["']([^"']+)["'][^>]*>([\s\S]*?)<\/slot>/gi, (m, name, fallback) => {
-    const provided = slots[name];
-    if (provided == null) return fallback || '';
-    if (!allowHtml) return escapeHtml(provided);
-    return provided;
-  });
-
-  // Then replace unnamed/default slots
-  html = html.replace(/<slot(?![^>]*name=)[^>]*>([\s\S]*?)<\/slot>/gi, (m, fallback) => {
-    const provided = slots['default'];
-    if (provided == null) return fallback || '';
-    if (!allowHtml) return escapeHtml(provided);
-    return provided;
-  });
-
-  return html;
-}
 
 
 // --- Cache Layer ---

@@ -348,6 +348,54 @@ function renderHtmlWithSlots(template: string | Node, slots?: Record<string, str
 (core as any).applySlotsToElement = applySlotsToElement;
 (core as any).renderHtmlWithSlots = renderHtmlWithSlots;
 
+/**
+ * Render a template (string or Node) with provided slots.
+ * Works both in-browser (uses DOM) and server-side (string-based fallback).
+ */
+function renderComponent(template: string | Node, slots?: Record<string, string | Node>, options?: { allowHtml?: boolean }) {
+  const allowHtml = !!(options && options.allowHtml);
+
+  // Browser path: reuse existing DOM-based renderer
+  if (typeof document !== 'undefined' && typeof (template as any) !== 'string') {
+    const frag = renderHtmlWithSlots(template as Node, slots, options);
+    const container = document.createElement('div');
+    container.appendChild(frag.cloneNode(true));
+    return container.innerHTML;
+  }
+
+  // If template is a Node in a server environment, try to serialize it
+  if (typeof document !== 'undefined' && typeof (template as any) === 'string') {
+    const frag = renderHtmlWithSlots(template as string, slots, options);
+    const container = document.createElement('div');
+    container.appendChild(frag.cloneNode(true));
+    return container.innerHTML;
+  }
+
+  // Server-side string-only fallback: simple regex-based slot replacement
+  let html = typeof template === 'string' ? template : '';
+  if (!slots || Object.keys(slots).length === 0) return html;
+
+  // Replace named slots with fallback handling
+  html = html.replace(/<slot[^>]*name=["']([^"']+)["'][^>]*>([\s\S]*?)<\/slot>/gi, (m, name, fallback) => {
+    const provided = slots[name];
+    if (provided == null) return fallback || '';
+    if (typeof provided === 'string') return allowHtml ? provided : escapeHtml(provided as string);
+    return '';
+  });
+
+  // Replace default/unnamed slots
+  html = html.replace(/<slot(?![^>]*name=)[^>]*>([\s\S]*?)<\/slot>/gi, (m, fallback) => {
+    const provided = (slots as any)['default'];
+    if (provided == null) return fallback || '';
+    if (typeof provided === 'string') return allowHtml ? provided : escapeHtml(provided as string);
+    return '';
+  });
+
+  return html;
+}
+
+(core as any).renderComponent = renderComponent;
+
 core.autoInitRegisteredComponents();
 
 
