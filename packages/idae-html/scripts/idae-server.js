@@ -13,15 +13,18 @@ import { parse } from 'node-html-parser';
 import Redis from 'ioredis';
 import selfsigned from 'selfsigned';
 
+
 /**
  * DATA ATTRIBUTES USED:
  * - [data-path]: Local file path (relative to src/www).
  * - [data-http]: Remote or relative URL to fetch.
+ * - [data-vars]: Variable url params for data-http or data-path
  * - [data-done]: Processing flag ("1" or "error") to prevent loops.
  * - [data-uuid]: Unique ID added after processing.
  * - [data-source]: Tagged as "local-path" for filesystem reads.
  * - [data-from-cache]: Set to "1" if content served from cache.
  */
+
 
 // --- CLI Configuration ---
 program
@@ -38,13 +41,16 @@ program
   .option('--www <url>', 'Base URL for auto-detection of internal fetches', '')
   .parse(process.argv);
 
+
 const options = program.opts();
 const PORT = options.port;
 const root = process.cwd();
 const wwwDir = path.resolve(root, 'src/www');
 const bootstrapBody = '%idae.body%';
 
+
 const BASE_URL = options.www || `${options.https ? 'https' : 'http'}://localhost:${PORT}`;
+
 
 const colors = {
   reset: "\x1b[0m",
@@ -56,9 +62,11 @@ const colors = {
   gray: "\x1b[90m"
 };
 
+
 // --- Cache Layer ---
 let redisClient = null;
 const memoryCache = new Map();
+
 
 const cache = {
   async get(key) {
@@ -80,85 +88,130 @@ const cache = {
   }
 };
 
-// --- Unified Recursive Processor ---
 
-async function processHtmlRecursive(html) {
-  let currentHtml = html;
-  let hasPendingWork = true;
+// --- HTML Processor (single pass) ---
 
-  while (hasPendingWork) {
-    const rootNode = parse(currentHtml);
-    const localEls = rootNode.querySelectorAll('[data-path]:not([data-done])');
-    const httpEls = rootNode.querySelectorAll('[data-http]:not([data-done])');
+async function processHtmlOnce(html) {
+  const rootNode = parse(html);
 
-    if (localEls.length === 0 && httpEls.length === 0) {
-      hasPendingWork = false;
-      break;
-    }
+  // 1. Process local-path
+  const localEls = rootNode.querySelectorAll('[data-path]:not([data-done])');
 
-    // 1. Process local-path
-    for (const el of localEls) {
-      const filePath = el.getAttribute('data-path');
-      try {
-        const resolvedPath = path.join(wwwDir, path.join('/', filePath));
-        if (!resolvedPath.startsWith(wwwDir)) throw new Error('Traversal blocked');
+  for (const el of localEls) {
+    const filePath = el.getAttribute('data-path');
+    try {
+      const vars = el.getAttribute('data-vars');
 
-        if (existsSync(resolvedPath)) {
-          const content = await fs.readFile(resolvedPath, 'utf-8');
-          el.set_content(content);
+      // If data-vars present, perform an internal fetch (GET with querystring)
+      if (vars) {
+        let url = filePath;
+        if (!url.startsWith('http')) url = new URL(url, BASE_URL).href;
+
+        // append vars as querystring
+        const sep = url.includes('?') ? '&' : '?';
+        url = url + sep + vars.replace(/^\?/, '');
+
+        const cachedData = await cache.get(url);
+        if (cachedData) {
+          el.set_content(cachedData);
+          el.setAttribute('data-uuid', crypto.randomUUID());
+          el.setAttribute('data-done', '1');
+          el.setAttribute('data-from-cache', '1');
+          el.setAttribute('data-source', 'local-path');
+          continue;
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), options.fetchTimeout);
+
+        try {
+          const response = await fetch(url, { signal: controller.signal, headers: { 'x-idae-internal': 'true' } });
+          clearTimeout(timeoutId);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.text();
+          await cache.set(url, data);
+          el.set_content(data);
           el.setAttribute('data-uuid', crypto.randomUUID());
           el.setAttribute('data-done', '1');
           el.setAttribute('data-source', 'local-path');
+          continue;
+        } catch (e) {
+          clearTimeout(timeoutId);
+          if (options.debug) console.error(`${colors.red}[data-path fetch] ${filePath}: ${e.message}${colors.reset}`);
+          // fall through to filesystem attempt below
         }
-      } catch (e) {
-        if (options.debug) console.error(`${colors.red}[Path Error] ${filePath}: ${e.message}${colors.reset}`);
-        el.set_content(`Path error: ${e.message}`);
-        el.setAttribute('data-done', 'error');
       }
-    }
 
-    // 2. Process data-http
-    for (const el of httpEls) {
-      let url = el.getAttribute('data-http');
-      if (!url.startsWith('http')) url = new URL(url, BASE_URL).href;
+      // Fallback: local filesystem read (no vars)
+      const resolvedPath = path.join(wwwDir, path.join('/', filePath));
+      if (!resolvedPath.startsWith(wwwDir)) throw new Error('Traversal blocked');
 
-      const cachedData = await cache.get(url);
-      if (cachedData) {
-        el.set_content(cachedData);
+      if (existsSync(resolvedPath)) {
+        const content = await fs.readFile(resolvedPath, 'utf-8');
+        el.set_content(content);
         el.setAttribute('data-uuid', crypto.randomUUID());
         el.setAttribute('data-done', '1');
-        el.setAttribute('data-from-cache', '1');
-        continue;
+        el.setAttribute('data-source', 'local-path');
       }
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), options.fetchTimeout);
-
-      try {
-        const response = await fetch(url, { 
-          signal: controller.signal,
-          headers: { 'x-idae-internal': 'true' } 
-        });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.text();
-
-        await cache.set(url, data);
-        el.set_content(data);
-        el.setAttribute('data-uuid', crypto.randomUUID());
-        el.setAttribute('data-done', '1');
-      } catch (e) {
-        clearTimeout(timeoutId);
-        el.set_content(`Fetch error: ${e.message}`);
-        el.setAttribute('data-done', 'error');
+    } catch (e) {
+      if (options.debug) {
+        console.error(`${colors.red}[Path Error] ${filePath}: ${e.message}${colors.reset}`);
       }
+      el.set_content(`Path error: ${e.message}`);
+      el.setAttribute('data-done', 'error');
     }
-
-    currentHtml = rootNode.toString();
   }
-  return currentHtml;
+
+  // 2. Process data-http
+  const httpEls = rootNode.querySelectorAll('[data-http]:not([data-done])');
+
+  for (const el of httpEls) {
+    let url = el.getAttribute('data-http');
+    if (!url.startsWith('http')) url = new URL(url, BASE_URL).href;
+
+    // support data-vars appended to data-http
+    const httpVars = el.getAttribute('data-vars');
+    if (httpVars) {
+      const sep = url.includes('?') ? '&' : '?';
+      url = url + sep + httpVars.replace(/^\?/, '');
+    }
+
+    const cachedData = await cache.get(url);
+    if (cachedData) {
+      el.set_content(cachedData);
+      el.setAttribute('data-uuid', crypto.randomUUID());
+      el.setAttribute('data-done', '1');
+      el.setAttribute('data-from-cache', '1');
+      continue;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), options.fetchTimeout);
+
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: { 'x-idae-internal': 'true' }
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.text();
+
+      await cache.set(url, data);
+      el.set_content(data);
+      el.setAttribute('data-uuid', crypto.randomUUID());
+      el.setAttribute('data-done', '1');
+    } catch (e) {
+      clearTimeout(timeoutId);
+      el.set_content(`Fetch error: ${e.message}`);
+      el.setAttribute('data-done', 'error');
+    }
+  }
+
+  return rootNode.toString();
 }
+
 
 // --- Utilities ---
 
@@ -177,6 +230,7 @@ async function ensureCertificates() {
   
   return { key: pems.private, cert: pems.cert };
 }
+
 
 // --- Server Startup ---
 
@@ -221,14 +275,16 @@ async function startIdaeServer() {
 
           const bootstrap = await fs.readFile(bootstrapPath, 'utf-8').catch(() => bootstrapBody);
           
-          // Unified recursive processing
-          const processedContent = await processHtmlRecursive(rawContent);
+          // Single-pass processing
+          const processedContent = await processHtmlOnce(rawContent);
 
           const html = bootstrap.replace(bootstrapBody, processedContent);
           ctx.body = await vite.transformIndexHtml(ctx.url, html);
           ctx.type = 'text/html';
           return;
-        } catch (e) { ctx.throw(500, e); }
+        } catch (e) {
+          ctx.throw(500, e);
+        }
       }
     }
     

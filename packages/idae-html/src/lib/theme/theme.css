@@ -197,3 +197,23 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   UTILITIES: Full width / Full height (with min/max variants)
+   Uses nested selectors so modifiers compile with PostCSS/processor.
+   Add classes: .h-full, .h-full-min, .h-full-max, .w-full, .w-full-min, .w-full-max
+   ========================================================================== */
+.h-full {
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  &-min { min-height: 100%; height:auto; }
+  &-max { max-height: 100%; }
+}
+.w-full {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  &-min { min-width: 100%; width:auto; }
+  &-max { max-width: 100%; }
+}
