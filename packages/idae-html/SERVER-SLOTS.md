@@ -22,13 +22,18 @@ Files
 
 Behavior notes
 --------------
-- Slots are collected from elements with `data-slot="name"` in the processed HTML. Their innerHTML is used as the provided slot value.
+- Slots are collected from elements with `data-slot="name"` in the processed HTML. Their `innerHTML` is used as the provided slot value.
+- When a parent page contains a `data-http` (or `data-path`) container, authored slot values can be provided in two ways inside the container:
+	- `div` elements with `data-slot="name"` (recommended), e.g. `<div data-slot="test">value</div>`
+	- inline `<slot name="name">fallback</slot>` elements — the server will treat these as parent-provided values and convert them to `data-slot` entries.
+- The server-side pipeline will:
+	1. Collect all `data-slot` entries from the processed HTML (including those authored inside a `data-http` container) and remove their source elements from the DOM to avoid duplicate output.
+	2. Convert any `data-slot` elements found inside a fetched template into `<slot name="...">fallback</slot>` before insertion. This preserves the template's fallback behaviour while allowing parent-provided slots to override them.
+	3. Apply collected slot values to `<slot name="...">` placeholders in the cleaned template. Parent-provided values win over template fallbacks.
 - If a slot is missing, the template's fallback content inside the `<slot>` element is preserved.
- - Slots are collected from elements with `data-slot="name"` in the processed HTML. Their innerHTML is used as the provided slot value.
- - When a parent page contains a `data-http` container, any `data-slot` elements authored inside that container are preserved and merged with the fetched template. Parent-provided `data-slot` elements are appended after the fetched content before slot application, so they take precedence (override) over defaults declared inside the fetched template's `<slot>` elements.
- - If a slot is missing, the template's fallback content inside the `<slot>` element is preserved.
 - By default slot values are escaped (`&lt;`, `&gt;`, ...). Enable `IDAE_ALLOW_UNSAFE_SLOTS=true` only for trusted contexts.
-- Rendered HTML is cached by hashing `template+props+slots`. Cached entries respect TTL and `IDAE_RENDER_CACHE_MAX`.
+- Debug logging: when the server is started with `--debug` the slots pipeline emits informative logs showing collected slots, previews, cache hits/misses, and applied slots. See `scripts/server-slots.js` for exact messages.
+- Rendered HTML is cached by hashing `template+props+slots`. Cached entries respect TTL (`IDAE_RENDER_CACHE_TTL_S`) and `IDAE_RENDER_CACHE_MAX`.
 - On cache or render errors, the code falls back to a direct slot-apply pass and logs the error when `--debug` is used.
 
 From package root run:

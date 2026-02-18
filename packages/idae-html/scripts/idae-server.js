@@ -184,15 +184,38 @@ async function processHtmlOnce(html) {
 
     // Preserve any author-provided slot elements that live inside the `data-http` container
     // so they can be applied to `<slot>` placeholders in the fetched template.
-    // We will append these provided slot elements after the fetched content so that
-    // parent-provided slots override any defaults coming from the fetched template.
-    const existingProvidedSlots = el.querySelectorAll('[data-slot]') || [];
-    const providedSlotsHtml = existingProvidedSlots.length ? existingProvidedSlots.map(s => s.toString()).join('') : '';
+    // Support both explicit `[data-slot]` elements and authored `<slot name="...">...`
+    // We will append these provided slot elements (as `div[data-slot]`) after the fetched content
+    // so that parent-provided slots override any defaults coming from the fetched template.
+    const providedEls_dataSlot = el.querySelectorAll('[data-slot]') || [];
+    const providedEls_slotTag = el.querySelectorAll('slot[name]') || [];
+
+    const providedFromDataSlot = providedEls_dataSlot.length ? providedEls_dataSlot.map(s => s.toString()).join('') : '';
+    const providedFromSlotTag = providedEls_slotTag.length ? providedEls_slotTag.map(s => {
+      const nm = s.getAttribute('name') || 'default';
+      const inner = s.innerHTML || '';
+      return `<div data-slot="${nm}">${inner}</div>`;
+    }).join('') : '';
+
+    const providedSlotsHtml = providedFromDataSlot + providedFromSlotTag;
 
     const cachedData = await cache.get(url);
     if (cachedData) {
-      // merge fetched template with provided slots (fetched content first, provided slots after)
-      el.set_content(String(cachedData) + providedSlotsHtml);
+      // transform any child-provided data-slot elements into <slot> fallbacks
+      try {
+        const fetchedRoot = parse(String(cachedData));
+        const childSlots = fetchedRoot.querySelectorAll('[data-slot]');
+        for (const s of childSlots) {
+          const nm = s.getAttribute('data-slot') || 'default';
+          const inner = s.innerHTML || '';
+          // replace data-slot element with a <slot name="...">fallback</slot>
+          s.replaceWith(`<slot name="${nm}">${inner}</slot>`);
+        }
+        const transformed = fetchedRoot.toString();
+        el.set_content(transformed + providedSlotsHtml);
+      } catch (e) {
+        el.set_content(String(cachedData) + providedSlotsHtml);
+      }
       el.setAttribute('data-uuid', crypto.randomUUID());
       el.setAttribute('data-done', '1');
       el.setAttribute('data-from-cache', '1');
@@ -213,8 +236,21 @@ async function processHtmlOnce(html) {
       const data = await response.text();
 
       await cache.set(url, data);
-      // merge fetched template with any provided slots from the parent container
-      el.set_content(String(data) + providedSlotsHtml);
+      // transform any child-provided data-slot elements into <slot> fallbacks
+      try {
+        const fetchedRoot = parse(String(data));
+        const childSlots = fetchedRoot.querySelectorAll('[data-slot]');
+        for (const s of childSlots) {
+          const nm = s.getAttribute('data-slot') || 'default';
+          const inner = s.innerHTML || '';
+          s.replaceWith(`<slot name="${nm}">${inner}</slot>`);
+        }
+        const transformed = fetchedRoot.toString();
+        // merge fetched template (with slot fallbacks) with any provided slots from the parent container
+        el.set_content(transformed + providedSlotsHtml);
+      } catch (e) {
+        el.set_content(String(data) + providedSlotsHtml);
+      }
       el.setAttribute('data-uuid', crypto.randomUUID());
       el.setAttribute('data-done', '1');
     } catch (e) {
@@ -229,13 +265,16 @@ async function processHtmlOnce(html) {
   if (ENABLE_SERVER_SLOTS) {
     try {
       // Collect slots from the processed HTML and use render cache keyed by template+props+slots
-      const collected = collectSlotsFromHtml(resultHtml, SLOTS_MAX_KB);
+      const collected = collectSlotsFromHtml(resultHtml, SLOTS_MAX_KB, { debug: options.debug });
       if (collected.truncated && options.debug) console.warn(`${colors.yellow}[slots] total size exceeded ${SLOTS_MAX_KB} bytes, truncated${colors.reset}`);
       try {
-        resultHtml = await renderWithCache(resultHtml, {}, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
+        // Use the cleaned template (without data-slot elements) for rendering
+        const templateWithoutSlots = collected.html || resultHtml;
+        resultHtml = await renderWithCache(templateWithoutSlots, {}, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS, ttlS: options.cacheTtl, debug: options.debug });
       } catch (e) {
-        // Fallback to direct apply
-        resultHtml = applyServerSlotsToHtml(resultHtml, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
+        // Fallback to direct apply on cleaned template
+        const templateWithoutSlots = collected.html || resultHtml;
+        resultHtml = applyServerSlotsToHtml(templateWithoutSlots, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS, debug: options.debug });
       }
     } catch (e) {
       if (options.debug) console.error(`${colors.red}[slots] apply failed: ${e.message}${colors.reset}`);

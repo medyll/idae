@@ -26,6 +26,9 @@
     "build:html:all": "node scripts/build-html-all.js",
     "test": "vitest"
   },
+    "vitest": {
+      "include": ["test/**/*.test.js", "scripts/test-server-slots.js"]
+    },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
