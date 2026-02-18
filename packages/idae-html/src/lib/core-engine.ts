@@ -286,6 +286,22 @@ export const core = {
   autoInitRegisteredComponents
 };
 
+/**
+ * Returns true when the server has pre-rendered slots for this page.
+ * Client components can call this to avoid double-inserting slot content.
+ * Usage: if (core.serverSlotsEnabled()) { /* hydrate-only path *\/ }
+ */
+function serverSlotsEnabled() {
+  try {
+    if (typeof document === 'undefined') return false;
+    return !!document.querySelector('meta[name="idae-server-slots"]');
+  } catch (e) {
+    return false;
+  }
+}
+
+(core as any).serverSlotsEnabled = serverSlotsEnabled;
+
 function escapeHtml(s: string) {
   return String(s)
     .replace(/&/g, '&amp;')
