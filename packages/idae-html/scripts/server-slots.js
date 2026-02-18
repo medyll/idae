@@ -56,3 +56,38 @@ export function collectSlotsFromHtml(html, maxBytes = 200 * 1024) {
   }
   return { slots, truncated };
 }
+
+// Simple in-memory render cache (LRU-ish)
+const RENDER_CACHE = new Map();
+const DEFAULT_TTL_S = parseInt(process.env.IDAE_RENDER_CACHE_TTL_S || '60', 10);
+const DEFAULT_MAX = parseInt(process.env.IDAE_RENDER_CACHE_MAX || '1000', 10);
+
+function pruneRenderCache(maxEntries = DEFAULT_MAX) {
+  if (RENDER_CACHE.size <= maxEntries) return;
+  // remove oldest entries
+  const keys = RENDER_CACHE.keys();
+  while (RENDER_CACHE.size > maxEntries) {
+    const k = keys.next().value;
+    RENDER_CACHE.delete(k);
+  }
+}
+
+import crypto from 'node:crypto';
+
+export function renderWithCache(templateHtml, props = {}, slots = {}, options = { ttlS: DEFAULT_TTL_S, maxEntries: DEFAULT_MAX, allowHtml: false }) {
+  const keyObj = { props, slots };
+  const hash = crypto.createHash('sha256').update(String(templateHtml) + JSON.stringify(keyObj)).digest('hex');
+  const now = Date.now();
+
+  const entry = RENDER_CACHE.get(hash);
+  if (entry && (now - entry.ts < (options.ttlS || DEFAULT_TTL_S) * 1000)) {
+    return entry.html;
+  }
+
+  // produce rendered HTML via applyServerSlotsToHtml
+  const html = applyServerSlotsToHtml(String(templateHtml), slots, { allowHtml: !!options.allowHtml });
+
+  RENDER_CACHE.set(hash, { html, ts: now });
+  pruneRenderCache(options.maxEntries || DEFAULT_MAX);
+  return html;
+}

@@ -10,7 +10,7 @@ import { createServer } from 'vite';
 import { program } from 'commander';
 import open from 'open';
 import { parse } from 'node-html-parser';
-import { applyServerSlotsToHtml } from './server-slots.js';
+import { applyServerSlotsToHtml, collectSlotsFromHtml, renderWithCache } from './server-slots.js';
 import Redis from 'ioredis';
 import selfsigned from 'selfsigned';
 
@@ -219,22 +219,15 @@ async function processHtmlOnce(html) {
 
   if (ENABLE_SERVER_SLOTS) {
     try {
-      const slotEls = rootNode.querySelectorAll('[data-slot]');
-      const slots = {};
-      let totalBytes = 0;
-      for (const el of slotEls) {
-        const name = el.getAttribute('data-slot') || 'default';
-        const content = (el.innerHTML || '');
-        const size = Buffer.byteLength(content, 'utf8');
-        totalBytes += size;
-        if (totalBytes > SLOTS_MAX_KB) {
-          if (options.debug) console.warn(`${colors.yellow}[slots] total size exceeded ${SLOTS_MAX_KB} bytes, truncating${colors.reset}`);
-          break;
-        }
-        slots[name] = content;
-        try { el.setAttribute('data-done', '1'); } catch (e) {}
+      // Collect slots from the processed HTML and use render cache keyed by template+props+slots
+      const collected = collectSlotsFromHtml(resultHtml, SLOTS_MAX_KB);
+      if (collected.truncated && options.debug) console.warn(`${colors.yellow}[slots] total size exceeded ${SLOTS_MAX_KB} bytes, truncated${colors.reset}`);
+      try {
+        resultHtml = renderWithCache(resultHtml, {}, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
+      } catch (e) {
+        // Fallback to direct apply
+        resultHtml = applyServerSlotsToHtml(resultHtml, collected.slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
       }
-      resultHtml = applyServerSlotsToHtml(resultHtml, slots, { allowHtml: ALLOW_UNSAFE_SLOTS });
     } catch (e) {
       if (options.debug) console.error(`${colors.red}[slots] apply failed: ${e.message}${colors.reset}`);
     }
