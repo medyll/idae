@@ -191,10 +191,11 @@ async function processHtmlOnce(html) {
     }
 
     // Preserve any author-provided slot elements that live inside the `data-http` container
-    // so they can be applied to `<slot>` placeholders in the fetched template.
-    // Support both explicit `[data-slot]` elements and authored `<slot name="...">...`
-    // We will append these provided slot elements (as `div[data-slot]`) after the fetched content
-    // so that parent-provided slots override any defaults coming from the fetched template.
+    // so they can be applied to `<slot name="...">` placeholders in the fetched template.
+    // Convention: caller provides `<div data-slot="name">...</div>` and callee uses
+    // `<slot name="name">fallback</slot>` in the fetched template. We will append the
+    // caller-provided `div[data-slot]` elements after the fetched content so they can
+    // override defaults when server-side slot application runs.
     const providedEls_dataSlot = el.querySelectorAll('[data-slot]') || [];
     const providedEls_slotTag = el.querySelectorAll('slot[name]') || [];
 
@@ -209,16 +210,9 @@ async function processHtmlOnce(html) {
 
     const cachedData = await cache.get(url);
     if (cachedData) {
-      // transform any child-provided data-slot elements into <slot> fallbacks
+      // Fetched template is expected to contain `<slot name="...">fallback</slot>` placeholders.
       try {
         const fetchedRoot = parse(String(cachedData));
-        const childSlots = fetchedRoot.querySelectorAll('[data-slot]');
-        for (const s of childSlots) {
-          const nm = s.getAttribute('data-slot') || 'default';
-          const inner = s.innerHTML || '';
-          // replace data-slot element with a <slot name="...">fallback</slot>
-          s.replaceWith(`<slot name="${nm}">${inner}</slot>`);
-        }
         const transformed = fetchedRoot.toString();
         el.set_content(transformed + providedSlotsHtml);
       } catch (e) {
@@ -244,15 +238,9 @@ async function processHtmlOnce(html) {
       const data = await response.text();
 
       await cache.set(url, data);
-      // transform any child-provided data-slot elements into <slot> fallbacks
+      // Fetched template is expected to contain `<slot name="...">fallback</slot>` placeholders.
       try {
         const fetchedRoot = parse(String(data));
-        const childSlots = fetchedRoot.querySelectorAll('[data-slot]');
-        for (const s of childSlots) {
-          const nm = s.getAttribute('data-slot') || 'default';
-          const inner = s.innerHTML || '';
-          s.replaceWith(`<slot name="${nm}">${inner}</slot>`);
-        }
         const transformed = fetchedRoot.toString();
         // merge fetched template (with slot fallbacks) with any provided slots from the parent container
         el.set_content(transformed + providedSlotsHtml);

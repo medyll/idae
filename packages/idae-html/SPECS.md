@@ -13,6 +13,19 @@ The package centers around a singleton runtime exposed as the `core` object. Thi
 * **Global Registry**: Attached to `window.__idae_app` for cross-context resource tracking.
 * **Abstraction Layer**: Components must **never** import `@medyll/idae-be` directly. They must interface through the `core` and `be` proxies.
 
+### 2.3 Server-side slots & server scripts
+
+The package provides server-side helpers used by the local preview server (`scripts/idae-server.js`) to compose fetched templates and execute small server-side modules. Important conventions and behaviors:
+
+- Slot convention: the *caller* provides content as `<div data-slot="name">...</div>` and the *callee* (fetched template) contains `<slot name="name">fallback</slot>` placeholders. During processing the runtime appends caller `div[data-slot]` elements after the fetched template so slot application can map provided content to matching `<slot>` placeholders.
+
+- Server-side scripts: any `<script data-server>` present in the processed HTML will be executed as an ES module on the server. `script[type="module"][data-server]` is also accepted. When executed:
+  - `$lib/...` imports are rewritten to `file://` paths when a `baseLibDir` is provided to the executor.
+  - Each server-script is written to a temporary `.mjs` file and imported as an ES module. The imported module's exports are surfaced as `componentData` for template rendering.
+  - Remote `src` values (starting with `http` or `//`) are skipped for execution.
+
+Security note: server-side execution runs arbitrary JS from local files — keep the preview environment isolated and avoid executing untrusted code.
+
 ### 2.2 Component Registration (`ComponentSpec`)
 Components are registered via `core.registerComponent(name, spec)`. The `spec` object defines behavior, dependencies, and data schema.
 

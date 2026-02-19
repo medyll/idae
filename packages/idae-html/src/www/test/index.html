@@ -1,16 +1,11 @@
 
 <script type="module" >
-    import {  core } from '$lib/core-engine.js';     
-    console.log('test module loaded');
-    console.log('core', core);
+    import {  core } from '$lib/core-engine.js';      
 </script>
 <div class="w-full h-full border flex gap-2xl">
-    <div data-slot="test">
+    <slot name="test">
         default value
-    </div>
-    <div data-slot="test">
-        default value
-    </div>
+    </slot>
 </div>
 <script data-server type="module"> 
     export const a ="D";
