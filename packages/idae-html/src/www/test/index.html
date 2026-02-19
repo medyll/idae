@@ -1,8 +1,20 @@
-<div class="w-full h-full">
-<div data-slot="test">
-    default value
-</div>
-</div>
+
 <script type="module" >
     import {  core } from '$lib/core-engine.js';     
+    console.log('test module loaded');
+    console.log('core', core);
+</script>
+<div class="w-full h-full border flex gap-2xl">
+    <div data-slot="test">
+        default value
+    </div>
+    <div data-slot="test">
+        default value
+    </div>
+</div>
+<script data-server type="module"> 
+    export const a ="D";
+    export const b = 42;
+    console.log('test page loaded');
+    console.log('nope', a);
 </script>

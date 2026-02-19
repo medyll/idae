@@ -11,9 +11,11 @@ import { program } from 'commander';
 import open from 'open';
 import { parse } from 'node-html-parser';
 import { fileURLToPath } from 'node:url';
+import os from 'node:os';
 import { applyServerSlotsToHtml, collectSlotsFromHtml, renderWithCache } from './server-slots.js';
 import Redis from 'ioredis';
 import selfsigned from 'selfsigned';
+import { renderTemplate } from './eta-renderer.js';
 
 
 /**
@@ -98,6 +100,11 @@ const cache = {
 
 // --- HTML Processor (single pass) ---
 
+/**
+ * Process HTML once, applying all data-* attributes and server-side slots in a single pass.
+ * @param {string} html - Input HTML string to be processed.
+ * @return {Promise<string>} - Processed HTML string with all data-* attributes and server-side slots applied.
+ */
 async function processHtmlOnce(html) {
   const rootNode = parse(html);
 
@@ -285,6 +292,71 @@ async function processHtmlOnce(html) {
   return resultHtml;
 }
 
+/**
+ * Execute scripts marked with `data-server` or `type="server"` as ES modules.
+ * - resolves `$lib/...` imports to file:// paths when baseLibDir provided
+ * - writes a temporary .mjs file per script and imports it
+ */
+async function execServerScripts(html, opts = {}) {
+  const baseLibDir = opts.baseLibDir ? path.resolve(opts.baseLibDir) : undefined;
+  const rootNode = parse(html);
+  // Include scripts tagged with `data-server` even when they use `type="module"`.
+  const scripts = rootNode.querySelectorAll('script[data-server], script[type="server"], script[type="module"][data-server]');
+
+  let componentData = null;
+  for (let i = 0; i < scripts.length; i++) {
+    const s = scripts[i];
+    try {
+      let code = '';
+      const src = s.getAttribute('src');
+      if (src) {
+        // Resolve src: allow $lib/... or relative to wwwDir
+        if (src.startsWith('$lib/')) {
+          const rel = src.replace(/^\$lib\//, '');
+          const filePath = path.join(opts.baseLibDir || path.resolve(root, 'src/lib'), rel);
+          code = await fs.readFile(filePath, 'utf8');
+        } else if (src.startsWith('http') || src.startsWith('//')) {
+          // skip remote scripts
+          if (options.debug) console.warn(`${colors.yellow}[execServerScripts] skipping remote src ${src}${colors.reset}`);
+          continue;
+        } else {
+          // relative to the page (opts.pageDir) or wwwDir
+          const pageDir = opts.pageDir || wwwDir;
+          const filePath = path.join(pageDir, src);
+          code = await fs.readFile(filePath, 'utf8');
+        }
+      } else {
+        code = s.innerHTML || s.text || '';
+      }
+
+      if (!code.trim()) continue;
+
+      // Resolve $lib imports to file:// absolute paths when baseLibDir present
+      if (baseLibDir) {
+        code = code.replace(/(['"])\$lib\/([^'"\)]+)\1/g, (_, q, p) => {
+          const filePath = path.join(baseLibDir, p).replace(/\\/g, '/');
+          return `${q}file://${filePath}${q}`;
+        });
+      }
+
+      // Write temp .mjs and import it as module
+      const tmpFile = path.join(os.tmpdir(), `idae-server-${Date.now()}-${i}.mjs`);
+      await fs.writeFile(tmpFile, code, 'utf8');
+      
+      try {
+           componentData =  await import('file://' + tmpFile);
+        if (options.debug) console.log(`${colors.cyan}[execServerScripts] executed script ${src || '(inline)'}${colors.reset}`,componentData);
+      } finally {
+        await fs.unlink(tmpFile).catch(() => {});
+      }
+    } catch (err) {
+      if (options.debug) console.error(`${colors.red}[execServerScripts] error: ${err.message}${colors.reset}`);
+    }
+  }
+
+  return [rootNode.toString(),componentData];
+}
+
 
 // --- Utilities ---
 
@@ -349,7 +421,11 @@ async function startIdaeServer() {
           const bootstrap = await fs.readFile(bootstrapPath, 'utf-8').catch(() => bootstrapBody);
           
           // Single-pass processing
-          const processedContent = await processHtmlOnce(rawContent);
+          let processedContent = await processHtmlOnce(rawContent);
+          // Execute any server-side scripts (<script data-server>)
+          const processExec = await execServerScripts(processedContent, { baseLibDir: path.resolve(root, 'src/lib'), pageDir: path.dirname(finalPath) });
+          processedContent = processExec[0];
+          const componentData = processExec[1];
 
           // If server-side slots were applied, add a small meta marker in <head>
           let bootstrapWithMarker = bootstrap;
@@ -363,7 +439,14 @@ async function startIdaeServer() {
             }
           }
 
-          const html = bootstrapWithMarker.replace(bootstrapBody, processedContent);
+          let html = bootstrapWithMarker.replace(bootstrapBody, processedContent);
+
+          try {
+            html = await renderTemplate(html, { body: processedContent, componentData }, { debug: options.debug });
+          } catch (e) {
+            if (options.debug) console.error(`${colors.red}[eta] render failed: ${e.message}${colors.reset}`);
+          }
+
           ctx.body = await vite.transformIndexHtml(ctx.url, html);
           ctx.type = 'text/html';
           return;

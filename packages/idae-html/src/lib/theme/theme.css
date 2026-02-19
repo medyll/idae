@@ -78,6 +78,9 @@
 }
 
 .border {
+  border-style: solid;
+  border-width: var(--border-xs);
+  border-color: var(--color-border);
   &-xs { border-width: var(--border-xs); }
   &-sm { border-width: var(--border-sm); }
   &-md { border-width: var(--border-md); }
@@ -86,6 +89,7 @@
     &-primary { border-color: var(--color-primary); }
     &-border { border-color: var(--color-border); }
   }
+ 
 }
 
 .font {
@@ -218,3 +222,22 @@
   &-min { min-width: 100%; width:auto; }
   &-max { max-width: 100%; }
 }
+
+/* ==========================================================================
+   UTILITIES: Percent width / height
+   Add simple percentage helpers: .w-10 .w-25 .w-33 .w-50 .w-70 .w-90
+   and .h-10 .h-25 .h-33 .h-50 .h-70 .h-90
+   ========================================================================== */
+.w-10 { width: 10%; }
+.w-25 { width: 25%; }
+.w-33 { width: 33.3333%; }
+.w-50 { width: 50%; }
+.w-70 { width: 70%; }
+.w-90 { width: 90%; }
+
+.h-10 { height: 10%; min-height: 10%; }
+.h-25 { height: 25%; min-height: 25%; }
+.h-33 { height: 33.3333%; min-height: 33.3333%; }
+.h-50 { height: 50%; min-height: 50%; }
+.h-70 { height: 70%; min-height: 70%; }
+.h-90 { height: 90%; min-height: 90%; }
