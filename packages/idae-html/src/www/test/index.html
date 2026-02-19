@@ -4,6 +4,7 @@
     /*  let props = props(); variant, proposal; takes exported props from data-server, fresh props from data-vars*/
     // prefer resolving props via pageUuid injected by server or via data-props-id on element
     let data = props(); // will fallback to page-level uuid or dataset-derived props
+    console.log('props in test page', data);
 </script>
 <div class="w-full h-full border flex gap-2xl" data-props-id="<%~ it.pageUuid %>">
     <slot name="test">
@@ -13,7 +14,7 @@
 <script data-server type="module"> 
     /* all exports are props, extracted as componentData in idae-server */
     export const a ="D";
-    export const b = 42;
+    export const b = 64;
     export const {d, r} = {d: 1, r: 2};
     console.log('test page loaded');
     console.log('nope', a);
