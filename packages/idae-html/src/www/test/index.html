@@ -1,8 +1,8 @@
 
 <script type="module" >
     import {  core } from '$lib/core-engine.js';     
-    /*  let props = props('test'); variant, proposal; takes allowaed and defaul props from data-server, fresh props from data-vars*/
-    let data = props();
+    /*  let props = props(); variant, proposal; takes exported props from data-server, fresh props from data-vars*/
+    let data = props();// client side: props is in fact componentData
 </script>
 <div class="w-full h-full border flex gap-2xl">
     <slot name="test">
@@ -10,7 +10,7 @@
     </slot>
 </div>
 <script data-server type="module"> 
-    /* all exports are props */
+    /* all exports are props, extracted as componentData in idae-server */
     export const a ="D";
     export const b = 42;
     export const {d, r} = {d: 1, r: 2};
