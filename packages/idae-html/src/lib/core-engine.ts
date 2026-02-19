@@ -183,7 +183,7 @@ function initComponent(name: string, root: ParentNode = document) {
     }
 
     if ((root as any).querySelectorAll) {
-      Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)).forEach((e: Element) => els.push(e as HTMLElement));
+      Array.from((root as any).querySelectorAll(`[data-component="${name}"]`)).forEach((e) => els.push(e as HTMLElement));
     }
 
     els.forEach((el: HTMLElement) => {
@@ -271,7 +271,7 @@ function setupDomObserver() {
   });
 }
 
-export const core = {
+export const core: any = {
   app,
   be,
   toBe,
@@ -414,12 +414,72 @@ function renderComponent(template: string | Node, slots?: Record<string, string 
 
 core.autoInitRegisteredComponents();
 
+/**
+ * props(arg?)
+ * - arg: Element | string (uuid)
+ * Behavior:
+ * - If arg is Element: read `data-props-id` from dataset.
+ * - If arg is string: treat as uuid.
+ * - If no arg: try `window.__idae_componentDataPageUuid`, then fallback to dataset props.
+ * Returns a shallow-cloned plain object with server exports or dataset props.
+ */
+export function props(arg?: HTMLElement | string): Record<string, any> {
+  try {
+    const winAny = (globalThis as any) as any;
+    const map = winAny.__idae_componentDataMap || {};
+    const pageUuid = winAny.__idae_componentDataPageUuid || undefined;
+
+    let uuid: string | undefined;
+
+    if (arg && typeof arg === 'string') {
+      uuid = arg;
+    } else if (arg instanceof HTMLElement) {
+      const el = arg as HTMLElement;
+      uuid = (el as any).dataset?.propsId || el.getAttribute('data-props-id') || undefined;
+    }
+
+    if (!uuid) uuid = pageUuid;
+
+    if (uuid && map && map[uuid]) {
+      const mod = map[uuid];
+      const out: Record<string, any> = {};
+      Object.keys(mod || {}).forEach((k) => {
+        try { out[k] = (mod as any)[k]; } catch { /* ignore */ }
+      });
+      return { ...out };
+    }
+
+    // Fallback: if arg is HTMLElement, return dataset props
+    if (arg instanceof HTMLElement) {
+      return parsePropsFromDataset((arg as HTMLElement).dataset);
+    }
+
+    // No arg: try to find first element with data-props-id and merge map+dataset if possible
+    if (!arg && typeof document !== 'undefined') {
+      const el = document.querySelector('[data-props-id]') as HTMLElement | null;
+      if (el) {
+        const dsProps = parsePropsFromDataset(el.dataset);
+        const dp = el.getAttribute('data-props-id');
+        if (dp && map && map[dp]) return { ...(map[dp] || {}), ...dsProps };
+        return dsProps;
+      }
+    }
+
+    return {};
+  } catch (e) {
+    return {};
+  }
+}
+
+// expose on core registry as convenience
+(core as any).props = props;
+
 
 cssDom('[data-component]', {
   trackChildList: true,
   trackAttributes: true,
   trackResize: true
-}).each((element, changes  ) => {
+}).each((element, changes: any) => {
   console.log('Detected element:', element);
 
   if (changes?.attributes) {

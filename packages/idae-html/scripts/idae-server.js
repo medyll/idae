@@ -290,8 +290,9 @@ async function execServerScripts(html, opts = {}) {
   const rootNode = parse(html);
   // Include scripts tagged with `data-server` even when they use `type="module"`.
   const scripts = rootNode.querySelectorAll('script[data-server], script[type="server"], script[type="module"][data-server]');
-
-  let componentData = null;
+  // Map uuid -> module namespace for each executed server script
+  const componentDataMap = {};
+  let pageUuid = null;
   for (let i = 0; i < scripts.length; i++) {
     const s = scripts[i];
     try {
@@ -330,10 +331,13 @@ async function execServerScripts(html, opts = {}) {
       // Write temp .mjs and import it as module
       const tmpFile = path.join(os.tmpdir(), `idae-server-${Date.now()}-${i}.mjs`);
       await fs.writeFile(tmpFile, code, 'utf8');
-      
       try {
-           componentData =  await import('file://' + tmpFile);
-        if (options.debug) console.log(`${colors.cyan}[execServerScripts] executed script ${src || '(inline)'}${colors.reset}`,componentData);
+        const moduleNs = await import('file://' + tmpFile);
+        // generate uuid for this module exports
+        const uuid = (crypto.randomUUID && crypto.randomUUID()) || String(Date.now()) + '-' + i;
+        componentDataMap[uuid] = moduleNs;
+        pageUuid = uuid; // convenience: last executed module's uuid
+        if (options.debug) console.log(`${colors.cyan}[execServerScripts] executed script ${src || '(inline)'}${colors.reset}`, { uuid, moduleNs });
       } finally {
         await fs.unlink(tmpFile).catch(() => {});
       }
@@ -342,7 +346,7 @@ async function execServerScripts(html, opts = {}) {
     }
   }
 
-  return [rootNode.toString(),componentData];
+  return [rootNode.toString(), componentDataMap, pageUuid];
 }
 
 
@@ -411,9 +415,10 @@ async function startIdaeServer() {
           // Single-pass processing
           let processedContent = await processHtmlOnce(rawContent);
           // Execute any server-side scripts (<script data-server>)
-          const processExec = await execServerScripts(processedContent, { baseLibDir: path.resolve(root, 'src/lib'), pageDir: path.dirname(finalPath) });
-          processedContent = processExec[0];
-          const componentData = processExec[1];
+          const [processedContentAfterExec, componentDataMap, pageUuid] = await execServerScripts(processedContent, { baseLibDir: path.resolve(root, 'src/lib'), pageDir: path.dirname(finalPath) });
+          processedContent = processedContentAfterExec;
+          // convenience single componentData (last executed script) kept for backwards compat
+          const componentData = (componentDataMap && pageUuid) ? componentDataMap[pageUuid] : null;
 
           // If server-side slots were applied, add a small meta marker in <head>
           let bootstrapWithMarker = bootstrap;
@@ -430,7 +435,7 @@ async function startIdaeServer() {
           let html = bootstrapWithMarker.replace(bootstrapBody, processedContent);
 
           try {
-            html = await renderTemplate(html, { body: processedContent, componentData }, { debug: options.debug });
+            html = await renderTemplate(html, { body: processedContent, componentDataMap, pageUuid, componentData }, { debug: options.debug });
           } catch (e) {
             if (options.debug) console.error(`${colors.red}[eta] render failed: ${e.message}${colors.reset}`);
           }

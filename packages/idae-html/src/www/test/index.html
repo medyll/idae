@@ -1,10 +1,11 @@
 
 <script type="module" >
-    import {  core } from '$lib/core-engine.js';     
+    import { core, props } from '$lib/core-engine.js';
     /*  let props = props(); variant, proposal; takes exported props from data-server, fresh props from data-vars*/
-    let data = props();// client side: props is in fact componentData
+    // prefer resolving props via pageUuid injected by server or via data-props-id on element
+    let data = props(); // will fallback to page-level uuid or dataset-derived props
 </script>
-<div class="w-full h-full border flex gap-2xl">
+<div class="w-full h-full border flex gap-2xl" data-props-id="<%~ it.pageUuid %>">
     <slot name="test">
         default value 
     </slot>
