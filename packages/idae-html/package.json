@@ -10,7 +10,7 @@
     "url": "git+https://github.com/medyll/idae.git"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/server/idae-server.js",
     "build": "vite build && npm run package",
     "preview": "vite preview",
     "package": "node scripts/build/copy-components.js && node scripts/build/transpile-html-scripts.js && npm run build:types && publint",
