@@ -27,18 +27,19 @@ export function applyServerSlotsToHtml(html, slots = {}, options = { allowHtml: 
 
   // Replace named slots: <slot name="...">fallback</slot>
   html = html.replace(/<slot[^>]*name=["']([^"']+)["'][^>]*>([\s\S]*?)<\/slot>/gi, (m, name, fallback) => {
-    const provided = slots[name];
+    const slotName = (name || '').trim() || 'default';
+    const provided = slots[slotName];
     if (provided == null) {
-      if (debug) console.log(`${colors.cyan}[server-slots] slot "${name}" not provided, keeping fallback${colors.reset}`);
+      if (debug) console.log(`${colors.cyan}[server-slots] slot "${slotName}" not provided, keeping fallback${colors.reset}`);
       return fallback || '';
     }
-    applied.add(name);
+    applied.add(slotName);
     if (debug) {
       const preview = String(provided).replace(/\s+/g, ' ').slice(0, 120);
-      console.log(`${colors.cyan}[server-slots] applying slot "${name}" (provided length=${String(provided).length}) preview="${preview}${String(provided).length > 120 ? '...' : ''}"${colors.reset}`);
+      console.log(`${colors.cyan}[server-slots] applying slot "${slotName}" (provided length=${String(provided).length}) preview="${preview}${String(provided).length > 120 ? '...' : ''}"${colors.reset}`);
     }
     if (!allowHtml) {
-      if (debug) console.log(`${colors.cyan}[server-slots] escaping content for slot "${name}"${colors.reset}`);
+      if (debug) console.log(`${colors.cyan}[server-slots] escaping content for slot "${slotName}"${colors.reset}`);
       return escapeHtml(provided);
     }
     return provided;
@@ -80,7 +81,8 @@ export function collectSlotsFromHtml(html, maxBytes = 200 * 1024, options = { de
   let total = 0;
   let truncated = false;
   for (const el of slotEls) {
-    const name = el.getAttribute('data-slot') || 'default';
+    const raw = el.getAttribute('data-slot');
+    const name = (raw == null ? 'default' : String(raw).trim()) || 'default';
     const content = el.innerHTML || '';
     const size = Buffer.byteLength(content, 'utf8');
     if (debug) console.log(`${colors.cyan}[server-slots] found data-slot="${name}" size=${size} bytes${colors.reset}`);
