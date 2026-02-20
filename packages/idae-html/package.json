@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "vite build && npm run package",
     "preview": "vite preview",
-    "package": "node scripts/copy-components.js && node scripts/transpile-html-scripts.js && npm run build:types && publint",
+    "package": "node scripts/build/copy-components.js && node scripts/build/transpile-html-scripts.js && npm run build:types && publint",
     "prepublishOnly": "npm run package",
     "check": "tsc -p ./tsconfig.json --noEmit",
     "check:watch": "tsc -p ./tsconfig.json --noEmit --watch",
@@ -21,13 +21,13 @@
     "format": "prettier --write .",
     "prepackage": "node scripts/package-pre.js",
     "build:types": "tsc -p tsconfig.build.json",
-    "build:dist": "node scripts/build-resizePanel.js",
-    "build:html": "node scripts/build-html-component.js",
-    "build:html:all": "node scripts/build-html-all.js",
+    "build:dist": "node scripts/build/build-resizePanel.js",
+    "build:html": "node scripts/build/build-html-component.js",
+    "build:html:all": "node scripts/build/build-html-all.js",
     "test": "vitest"
   },
     "vitest": {
-      "include": ["test/**/*.test.js", "scripts/test-server-slots.js"]
+      "include": ["test/**/*.test.js", "scripts/server/test-server-slots.js"]
     },
   "exports": {
     ".": {
