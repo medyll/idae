@@ -1,0 +1,98 @@
+
+  <style>
+    /* Specific Styleguide layout */
+    section { padding-block: var(--gutter-xl); border-bottom: 1px solid var(--color-border); }
+    .color-swatch { height: 60px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
+  </style>
+  
+
+  <main class="container py-md animate-fade">
+    <header class="marg-b-md">
+      <h1 class="font-xl font-bold text-pretty">Styleguide 2026</h1>
+      <p class="text-muted">Testing system for direct loading CSS framework</p>
+    </header>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Colors & Opacity</h2>
+      <div class="grid grid-cols-2 md-cols-4 gap-md">
+        <div class="color-swatch bg-primary text-white rounded-md">Primary</div>
+        <div class="color-swatch bg-primary-50 text-white rounded-md">Primary 50%</div>
+        <div class="color-swatch bg-primary-20 text-primary rounded-md border">Primary 20%</div>
+        <div class="color-swatch bg-primary-10 text-primary rounded-md border">Primary 10%</div>
+        
+        <div class="color-swatch bg-destructive text-white rounded-md">Destructive</div>
+        <div class="color-swatch bg-destructive-10 text-destructive rounded-md border">Destructive 10%</div>
+        
+        <div class="color-swatch bg-secondary text-foreground rounded-md">Secondary</div>
+        <div class="color-swatch bg-muted text-muted rounded-md border">Muted</div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Typography</h2>
+      <div class="flex-v gap-sm">
+        <p class="font-xl font-bold">Font XL Bold</p>
+        <p class="font-lg font-medium">Font LG Medium</p>
+        <p class="font-fluid text-primary">Fluid Typography (Clamp)</p>
+        <p class="text-balance text-muted">This is a balanced text that avoids widows on long titles or descriptions. It looks better.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Grid & Spacing</h2>
+      <div class="grid md-cols-3 gap-md">
+        <div class="pad-md bg-secondary rounded-md border text-center">Grid Item 1</div>
+        <div class="pad-md bg-secondary rounded-md border text-center">Grid Item 2</div>
+        <div class="pad-md bg-secondary rounded-md border text-center">Grid Item 3</div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Motion (Refresh to see)</h2>
+      <div class="grid grid-cols-2 gap-xl">
+        <div class="animate-slide pad-md bg-card shadow-md rounded-md border">
+          <p class="font-bold">Slide Up</p>
+          <p class="font-xs text-muted">animate-slide</p>
+        </div>
+        <div class="animate-scale pad-md bg-card shadow-md rounded-md border">
+          <p class="font-bold">Scale In</p>
+          <p class="font-xs text-muted">animate-scale</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Interactions</h2>
+      <div class="flex-h flex-wrap gap-md">
+        <button class="interactive bg-primary text-white pad-x-md pad-sm rounded-md border-none font-bold">
+          Primary Button
+        </button>
+        <button class="interactive bg-secondary text-foreground pad-x-md pad-sm rounded-md border font-medium">
+          Secondary Action
+        </button>
+        <button class="interactive bg-destructive text-white pad-x-md pad-sm rounded-md border-none" disabled>
+          Disabled
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-lg font-bold marg-b-md">Aspect Ratio & Image Isolation</h2>
+      <div class="grid grid-cols-2 gap-md">
+        <div class="aspect-square bg-muted rounded-md overflow-hidden">
+          <img src="https://picsum.photos/400/400" alt="Test">
+        </div>
+        <div class="aspect-video bg-muted rounded-md overflow-hidden">
+          <img src="https://picsum.photos/800/450" alt="Test">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="fixed inset-x-0 bottom-md flex-h flex-center">
+    <button onclick="document.body.classList.toggle('dark')" class="interactive bg-foreground text-background pad-sm pad-x-md rounded-full font-bold shadow-lg">
+      Toggle Dark Mode
+    </button>
+  </div>
+ 

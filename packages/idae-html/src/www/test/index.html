@@ -1,8 +1,22 @@
-<div class="w-full h-full">
-<div data-slot="test">
-    default value
-</div>
-</div>
+
 <script type="module" >
-    import {  core } from '$lib/core-engine.js';     
+    import { core, props } from '$lib/core-engine.js';
+    let data = props();
+    console.log('props in test page', data);
+</script>
+
+<div class="w-full h-full border flex gap-2xl" data-props-id="<%~ it.pageUuid %>">
+    <button>top</button>
+    <slot name="test">
+        default value 
+    </slot>
+    <button>bottom</button>
+</div>
+<script data-server type="module">
+    /* all exports are props, extracted as componentData in idae-server */
+    export const a ="D";
+    export const b = 64;
+    export const {d, r} = {d: 1, r: 2};
+    console.log('test page loaded');
+    console.log('nope', a);
 </script>

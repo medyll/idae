@@ -2,55 +2,67 @@
    FOUNDATIONS (Variables & Themes)
    ========================================================================== */
 @import './reset.css';
+
 :root {
-  /* Colors - Light Theme */
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-  --color-primary: #3b82f6;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
-  --color-muted: #f8fafc;
-  --color-muted-foreground: #64748b;
-  --color-accent: #f1f5f9;
-  --color-accent-foreground: #0f172a;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #3b82f6;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
+  /* HSL Raw values for transparency support (modern spec) */
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --primary: 217 91% 60%;
+  --primary-fg: 0 0% 100%;
+  --secondary: 210 40% 96.1%;
+  --secondary-fg: 222 47% 11%;
+  --muted: 210 40% 96.1%;
+  --muted-fg: 215 16% 47%;
+  --accent: 210 40% 96.1%;
+  --accent-fg: 222 47% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-fg: 210 40% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 217 91% 60%;
+  --card: 0 0% 100%;
+  --card-fg: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-fg: 222 47% 11%;
+
+  /* Color Mapping */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-fg));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-fg));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-fg));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-fg));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-fg));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-fg));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-fg));
 
   /* Spacing & Typography */
   --gutter-xs: 0.25rem; --gutter-sm: 0.5rem; --gutter-md: 1rem; --gutter-lg: 1.5rem; --gutter-xl: 2rem;
   --font-xs: 0.75rem; --font-sm: 0.875rem; --font-md: 1rem; --font-lg: 1.125rem; --font-xl: 1.25rem;
+  --font-fluid: clamp(1rem, 2vw + 1rem, 1.5rem);
+  --weight-normal: 400; --weight-medium: 500; --weight-bold: 700;
   --border-xs: 0.5px; --border-sm: 1px; --border-md: 2px; --border-lg: 3px; --border-xl: 4px;
+
+  /* Radius & Shadows */
+  --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 
   /* Transitions & Z-index */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   --z-below: -1; --z-base: 1; --z-above: 10; --z-header: 100; --z-modal: 1000;
-
-  /* Dark Theme Override */
-  & .dark {
-    --color-background: #0f172a;
-    --color-foreground: #f8fafc;
-    --color-secondary: #1e293b;
-    --color-secondary-foreground: #f8fafc;
-    --color-muted: #1e293b;
-    --color-muted-foreground: #94a3b8;
-    --color-accent: #1e293b;
-    --color-accent-foreground: #f8fafc;
-    --color-border: #334155;
-    --color-input: #334155;
-    --color-card: #1e293b;
-    --color-card-foreground: #f8fafc;
-    --color-popover: #1e293b;
-    --color-popover-foreground: #f8fafc;
-  }
 
   /* Responsive Spacing */
   @media (min-width: 768px) {
@@ -59,68 +71,166 @@
   }
 }
 
+/* Dark Theme Override */
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --secondary: 217 33% 17%;
+  --secondary-fg: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-fg: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-fg: 210 40% 98%;
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --card: 222 47% 11%;
+  --card-fg: 210 40% 98%;
+  --popover: 222 47% 11%;
+  --popover-fg: 210 40% 98%;
+}
+
 /* ==========================================================================
    UTILITIES VISUALS (Colors, Text, Borders)
    ========================================================================== */
-.text {
-  &-foreground { color: var(--color-foreground); }
-  &-primary { color: var(--color-primary); }
-  &-muted { color: var(--color-muted-foreground); }
-  &-destructive { color: var(--color-destructive); }
+.text-foreground { color: var(--color-foreground); }
+.text-primary { color: var(--color-primary); }
+.text-muted { color: var(--color-muted-foreground); }
+.text-destructive { color: var(--color-destructive); }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+.bg-background { background-color: var(--color-background); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-muted { background-color: var(--color-muted); }
+.bg-card { background-color: var(--color-card); }
+
+/* Aliases et utilitaires manquants utilisés par la page de démonstration */
+.text-white { color: #ffffff; }
+.text-background { color: var(--color-background); }
+
+/* Bordures */
+.border-none { border: none !important; }
+
+/* Overflow & position helpers */
+.overflow-hidden { overflow: hidden; }
+.inset-x-0 { inset-inline: 0; }
+.bottom-md { bottom: var(--gutter-md); }
+
+/* Padding aliases (shorthand utilisés dans la démo) */
+.py-md { padding-block: var(--gutter-md); }
+.px-md { padding-inline: var(--gutter-md); }
+
+/* Responsive grid column aliases (classes utilisées dans la démo) */
+@media (min-width: 768px) {
+  .md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .md-cols-4 { grid-template-columns: repeat(4, 1fr); }
 }
 
-.bg {
-  &-background { background-color: var(--color-background); }
-  &-primary { background-color: var(--color-primary); }
-  &-secondary { background-color: var(--color-secondary); }
-  &-muted { background-color: var(--color-muted); }
-  &-card { background-color: var(--color-card); }
-}
+/* s'assurer que les images fonctionnent même si seul .aspect-square est utilisé */
+.aspect-square img, .aspect-video img { object-fit: cover; width: 100%; height: 100%; }
+
+
+/* Opacity Variants */
+.bg-primary-10 { background-color: hsl(var(--primary) / 0.1); }
+.bg-primary-20 { background-color: hsl(var(--primary) / 0.2); }
+.bg-primary-50 { background-color: hsl(var(--primary) / 0.5); }
+
+.bg-secondary-10 { background-color: hsl(var(--secondary) / 0.1); }
+.bg-secondary-20 { background-color: hsl(var(--secondary) / 0.2); }
+.bg-secondary-50 { background-color: hsl(var(--secondary) / 0.5); }
+
+.bg-muted-10 { background-color: hsl(var(--muted) / 0.1); }
+.bg-muted-20 { background-color: hsl(var(--muted) / 0.2); }
+.bg-muted-50 { background-color: hsl(var(--muted) / 0.5); }
+
+.bg-destructive-10 { background-color: hsl(var(--destructive) / 0.1); }
+.bg-destructive-20 { background-color: hsl(var(--destructive) / 0.2); }
+.bg-destructive-50 { background-color: hsl(var(--destructive) / 0.5); }
+
+.bg-accent-10 { background-color: hsl(var(--accent) / 0.1); }
+.bg-accent-20 { background-color: hsl(var(--accent) / 0.2); }
+.bg-accent-50 { background-color: hsl(var(--accent) / 0.5); }
+
+.bg-foreground-10 { background-color: hsl(var(--foreground) / 0.1); }
 
 .border {
-  &-xs { border-width: var(--border-xs); }
-  &-sm { border-width: var(--border-sm); }
-  &-md { border-width: var(--border-md); }
-  
-  &-color {
-    &-primary { border-color: var(--color-primary); }
-    &-border { border-color: var(--color-border); }
-  }
+  border-style: solid;
+  border-width: var(--border-xs);
+  border-color: var(--color-border);
 }
+.border-xs { border-width: var(--border-xs); }
+.border-sm { border-width: var(--border-sm); }
+.border-md { border-width: var(--border-md); }
+.border-lg { border-width: var(--border-lg); }
+.border-color-primary { border-color: var(--color-primary); }
+.border-color-border { border-color: var(--color-border); }
 
-.font {
-  &-xs { font-size: var(--font-xs); }
-  &-sm { font-size: var(--font-sm); }
-  &-md { font-size: var(--font-md); }
-  &-lg { font-size: var(--font-lg); }
-}
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: var(--radius-full); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+.font-xs { font-size: var(--font-xs); }
+.font-sm { font-size: var(--font-sm); }
+.font-md { font-size: var(--font-md); }
+.font-lg { font-size: var(--font-lg); }
+.font-xl { font-size: var(--font-xl); }
+.font-fluid { font-size: var(--font-fluid); }
+.font-medium { font-weight: var(--weight-medium); }
+.font-bold { font-weight: var(--weight-bold); }
 
 /* ==========================================================================
    LAYOUT & BOX MODEL
    ========================================================================== */
-.pad {
-  &-xs { padding: var(--gutter-xs); }
-  &-sm { padding: var(--gutter-sm); }
-  &-md { padding: var(--gutter-md); }
-  &-lg { padding: var(--gutter-lg); }
-}
+.pad-xs { padding: var(--gutter-xs); }
+.pad-sm { padding: var(--gutter-sm); }
+.pad-md { padding: var(--gutter-md); }
+.pad-lg { padding: var(--gutter-lg); }
+.pad-x-md { padding-inline: var(--gutter-md); }
+.pad-y-md { padding-block: var(--gutter-md); }
+.pad-t-md { padding-top: var(--gutter-md); }
+.pad-b-md { padding-bottom: var(--gutter-md); }
 
-.marg {
-  &-xs { margin: var(--gutter-xs); }
-  &-sm { margin: var(--gutter-sm); }
-  &-md { margin: var(--gutter-md); }
-}
+.marg-xs { margin: var(--gutter-xs); }
+.marg-sm { margin: var(--gutter-sm); }
+.marg-md { margin: var(--gutter-md); }
+.marg-x-auto { margin-inline: auto; }
+.marg-t-md { margin-top: var(--gutter-md); }
+.marg-b-md { margin-bottom: var(--gutter-md); }
+
+.gap-xs { gap: var(--gutter-xs); }
+.gap-sm { gap: var(--gutter-sm); }
+.gap-md { gap: var(--gutter-md); }
+.gap-lg { gap: var(--gutter-lg); }
 
 .flex-h, .flex-v {
   display: flex;
-  &.flex-center { justify-content: center; align-items: center; }
+  
+  &.flex-center { place-content: center; place-items: center; }
   &.flex-middle { justify-content: center; }
   &.flex-top { align-items: flex-start; }
   &.flex-bottom { align-items: flex-end; }
+  &.flex-between { justify-content: space-between; }
+  &.flex-wrap { flex-wrap: wrap; }
 }
 
 .flex-h { flex-direction: row; }
 .flex-v { flex-direction: column; }
+
+/* Explicit utility classes (avoid relying on nesting preprocessors) */
+.flex-center { justify-content: center; align-items: center; }
+.flex-middle { justify-content: center; }
+.flex-top { align-items: flex-start; }
+.flex-bottom { align-items: flex-end; }
+.flex-between { justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
 
 .grid {
   display: grid;
@@ -130,27 +240,54 @@
   @media (min-width: 480px) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-
-  &-cols-2 { grid-template-columns: repeat(2, 1fr); }
-
-  @media (min-width: 768px) {
-    &-md-cols-3 { grid-template-columns: repeat(3, 1fr); }
-    &-md-cols-4 { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  &-item {
-    display: block;
-    &-center { justify-self: center; align-self: center; }
-    &-stretch { justify-self: stretch; align-self: stretch; }
-  }
 }
+
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* common breakpoint aliases used by demo */
+.md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.md-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.gap-xl { gap: var(--gutter-xl); }
+
+@media (min-width: 768px) {
+  .grid-md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-md-cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+.grid-item {
+  display: block;
+}
+.grid-item-center { place-self: center; }
+.grid-item-stretch { place-self: stretch; }
 
 .container {
   width: 100%;
   margin-inline: auto;
   padding-inline: var(--gutter-md);
+  
   @media (min-width: 768px) { max-width: 720px; }
   @media (min-width: 1024px) { max-width: 960px; }
+  @media (min-width: 1440px) { max-width: 1200px; }
+}
+
+/* ==========================================================================
+   MOTION (Animations 2026)
+   ========================================================================== */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+.animate-fade { animation: fade-in var(--transition-normal) forwards; }
+.animate-slide { animation: slide-up var(--transition-normal) forwards; }
+.animate-scale { animation: scale-in var(--transition-normal) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ==========================================================================
@@ -171,50 +308,63 @@
 .aspect {
   display: block;
   width: 100%;
-  &-square { aspect-ratio: 1/1; }
-  &-video { aspect-ratio: 16/9; }
+  
   & img, & video { object-fit: cover; width: 100%; height: 100%; }
 }
+.aspect-square { aspect-ratio: 1/1; }
+.aspect-video { aspect-ratio: 16/9; }
 
-.layer {
-  &-base { z-index: var(--z-base); }
-  &-header { z-index: var(--z-header); }
-  &-modal { z-index: var(--z-modal); position: fixed; inset: 0; }
+.layer-base { z-index: var(--z-base); }
+.layer-header { z-index: var(--z-header); }
+.layer-modal { 
+  z-index: var(--z-modal); 
+  position: fixed; 
+  inset: 0; 
+  isolation: isolate; 
 }
 
 /* ==========================================================================
    HELPERS & ACCESSIBILITY
    ========================================================================== */
-.scroll { overflow: auto; -webkit-overflow-scrolling: touch; }
+.scroll { overflow: auto; -webkit-overflow-scrolling: touch; scrollbar-gutter: stable; }
 .no-scroll { overflow: hidden; }
 .none { display: none; }
 .absolute { position: absolute; }
 .fixed { position: fixed; }
+.inset-0 { inset: 0; }
+.isolate { isolation: isolate; }
 
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* ==========================================================================
-   UTILITIES: Full width / Full height (with min/max variants)
-   Uses nested selectors so modifiers compile with PostCSS/processor.
-   Add classes: .h-full, .h-full-min, .h-full-max, .w-full, .w-full-min, .w-full-max
+   UTILITIES: Dimensions
    ========================================================================== */
-.h-full {
-  height: 100%;
-  min-height: 100%;
-  max-height: 100%;
-  &-min { min-height: 100%; height:auto; }
-  &-max { max-height: 100%; }
-}
-.w-full {
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
-  &-min { min-width: 100%; width:auto; }
-  &-max { max-width: 100%; }
-}
+.h-full { height: 100%; min-height: 100%; max-height: 100%; }
+.h-full-min { min-height: 100%; height: auto; }
+.h-full-max { max-height: 100%; }
+
+.w-full { width: 100%; min-width: 100%; max-width: 100%; }
+.w-full-min { min-width: 100%; width: auto; }
+.w-full-max { max-width: 100%; }
+
+.w-10 { width: 10%; }
+.w-25 { width: 25%; }
+.w-33 { width: 33.3333%; }
+.w-50 { width: 50%; }
+.w-70 { width: 70%; }
+.w-90 { width: 90%; }
+
+.h-10 { height: 10%; min-height: 10%; }
+.h-25 { height: 25%; min-height: 25%; }
+.h-33 { height: 33.3333%; min-height: 33.3333%; }
+.h-50 { height: 50%; min-height: 50%; }
+.h-70 { height: 70%; min-height: 70%; }
+.h-90 { height: 90%; min-height: 90%; }

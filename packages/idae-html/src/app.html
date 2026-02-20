@@ -15,8 +15,15 @@
 			console.error(err);
 		});
 	</script>
+  <!-- Inject server-side componentData map and pageUuid when provided by idae-server -->
+  <script>
+    // Eta render context exposes variables via `it` — use unescaped output in templates
+    // Note: this will be present only when idae-server provided `componentDataMap` / `pageUuid`.
+    window.__idae_componentDataMap = <%~ JSON.stringify(it.componentDataMap || {}) %>;
+    window.__idae_componentDataPageUuid = <%~ JSON.stringify(it.pageUuid || null) %>;
+  </script>
   </head>
-  <body> 
+  <body class="bg-background text-foreground font-md">
 	<div style="display:contents">
 		%idae.body%
 	</div>

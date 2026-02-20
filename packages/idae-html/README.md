@@ -63,44 +63,28 @@ const markup = html`<div>${escapeHtml(userInput)}</div>`;
 const dom = parseHtml(markup);
 ```
 
-## Slots (insertion de contenu)
+## Server-side slots and slot convention
 
-`idae-html` fournit des utilitaires légers pour supporter un modèle de `slot` (injection de contenu enfant)
-en utilisant le parsing DOM — ce qui est robuste côté client et compatible avec JSDOM côté serveur.
+`idae-html` supports a lightweight server-side slot model designed to work with template fragments that may be fetched and composed on the server.
 
-- `core.renderHtmlWithSlots(template, slots, options)`
-  - `template: string | Node` — HTML template contenant des éléments `<slot>`.
-  - `slots: Record<string, string|Node>` — contenu à injecter. La clef `default` correspond au slot non nommé.
-  - `options.allowHtml?: boolean` — quand `true`, les valeurs de type `string` sont interprétées comme HTML (par défaut elles sont insérées comme texte).
-  - Retourne un `DocumentFragment` prêt à être inséré dans le DOM.
+Convention used by the server runtime:
+- Caller (the page requesting/inserting a component) provides slot content as `div` elements with a `data-slot` attribute, e.g. `<div data-slot="header">...content...</div>`.
+- Callee (the fetched template/component) exposes placeholders using standard shadow-style slots: `<slot name="header">fallback</slot>`.
 
-- `core.applySlotsToElement(root, slots, options)` — applique les slots à un `ParentNode` existant.
+Key behaviors and notes:
+- Unnamed/default slots: caller-provided slots that are not explicitly named (or whose `data-slot` value is empty/whitespace) are normalized to the key `"default"`. On the callee side, `<slot>` (without `name`) is treated the same as `<slot name="default">` when server-side slot application runs. This ensures the common usage patterns below map correctly:
+  - Caller examples that map to the same slot: `<div data-slot>content</div>`, `<div data-slot="default">content</div>`, or an unnamed wrapper element.
+  - Callee examples that are equivalent: `<slot></slot>` and `<slot name="default"></slot>`.
+- Application: runtime helpers such as `collectSlotsFromHtml` and `applyServerSlotsToHtml` perform this normalization. By default applied string slot values are escaped; set `allowHtml: true` to allow raw HTML insertion for trusted content.
 
-Comportements pris en charge :
-- `<slot name="header"></slot>` — slot nommé `header`.
-- `<slot>fallback</slot>` — contenu de fallback si aucun contenu fourni.
-- Slot non nommé → clé `default` dans l'objet `slots`.
+Helpers:
+- `core.renderHtmlWithSlots(template, slots, options)` — renders a template containing `<slot>` placeholders. `slots` is a map where keys are slot names and values are strings or Nodes. By default string values are escaped; set `options.allowHtml=true` to treat strings as trusted HTML.
 
-Exemple rapide :
+Compatibility & tests:
+- A set of small compatibility wrappers expose server helpers under `scripts/*.js` while the canonical implementation lives in `scripts/server/*` (this keeps tests and legacy tooling stable).
+- The repository contains unit/integration tests covering slot collection and application (see `test/integration-server-slots.test.js`). After the recent normalization change, tests pass locally.
 
-```js
-import { core } from '/packages/idae-html/src/lib/core-engine.ts';
-
-const tpl = `
-  <section>
-    <header><slot name="header">Fallback header</slot></header>
-    <div><slot>Fallback body</slot></div>
-  </section>`;
-
-const frag = core.renderHtmlWithSlots(tpl, {
-  header: '<h3>Injected header</h3>',
-  default: '<p>Injected body</p>'
-}, { allowHtml: true });
-
-document.body.appendChild(frag);
-```
-
-Sécurité : par défaut, les valeurs `string` sont insérées comme texte (échappées). N'utilisez `allowHtml: true` que pour du HTML de confiance.
+Security: caller-provided slot HTML is appended verbatim to the processed template. By default strings are escaped when applied via runtime helpers; avoid `allowHtml: true` for untrusted content.
 
 
 ## Components registry
