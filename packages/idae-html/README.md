@@ -71,12 +71,18 @@ Convention used by the server runtime:
 - Caller (the page requesting/inserting a component) provides slot content as `div` elements with a `data-slot` attribute, e.g. `<div data-slot="header">...content...</div>`.
 - Callee (the fetched template/component) exposes placeholders using standard shadow-style slots: `<slot name="header">fallback</slot>`.
 
-How it works (server-side processing):
-- When a template is fetched (via `data-http` or `data-path`), the fetched HTML is expected to contain `<slot name="...">` placeholders.
-- The runtime appends any caller-provided `<div data-slot="name">` elements after the fetched template so that later slot application (server-side or client-side) can inject the provided content and override fallbacks.
+Key behaviors and notes:
+- Unnamed/default slots: caller-provided slots that are not explicitly named (or whose `data-slot` value is empty/whitespace) are normalized to the key `"default"`. On the callee side, `<slot>` (without `name`) is treated the same as `<slot name="default">` when server-side slot application runs. This ensures the common usage patterns below map correctly:
+  - Caller examples that map to the same slot: `<div data-slot>content</div>`, `<div data-slot="default">content</div>`, or an unnamed wrapper element.
+  - Callee examples that are equivalent: `<slot></slot>` and `<slot name="default"></slot>`.
+- Application: runtime helpers such as `collectSlotsFromHtml` and `applyServerSlotsToHtml` perform this normalization. By default applied string slot values are escaped; set `allowHtml: true` to allow raw HTML insertion for trusted content.
 
 Helpers:
 - `core.renderHtmlWithSlots(template, slots, options)` — renders a template containing `<slot>` placeholders. `slots` is a map where keys are slot names and values are strings or Nodes. By default string values are escaped; set `options.allowHtml=true` to treat strings as trusted HTML.
+
+Compatibility & tests:
+- A set of small compatibility wrappers expose server helpers under `scripts/*.js` while the canonical implementation lives in `scripts/server/*` (this keeps tests and legacy tooling stable).
+- The repository contains unit/integration tests covering slot collection and application (see `test/integration-server-slots.test.js`). After the recent normalization change, tests pass locally.
 
 Security: caller-provided slot HTML is appended verbatim to the processed template. By default strings are escaped when applied via runtime helpers; avoid `allowHtml: true` for untrusted content.
 
