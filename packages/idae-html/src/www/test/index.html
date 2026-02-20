@@ -1,17 +1,18 @@
 
 <script type="module" >
     import { core, props } from '$lib/core-engine.js';
-    /*  let props = props(); variant, proposal; takes exported props from data-server, fresh props from data-vars*/
-    // prefer resolving props via pageUuid injected by server or via data-props-id on element
-    let data = props(); // will fallback to page-level uuid or dataset-derived props
+    let data = props();
     console.log('props in test page', data);
 </script>
+
 <div class="w-full h-full border flex gap-2xl" data-props-id="<%~ it.pageUuid %>">
+    <button>top</button>
     <slot name="test">
         default value 
     </slot>
+    <button>bottom</button>
 </div>
-<script data-server type="module"> 
+<script data-server type="module">
     /* all exports are props, extracted as componentData in idae-server */
     export const a ="D";
     export const b = 64;

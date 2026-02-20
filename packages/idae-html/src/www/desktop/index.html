@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mock Desktop — idae</title>
+  <link rel="stylesheet" href="../../lib/theme/theme.css" />
+  <style>
+    :root{--sidebar-width:260px;--taskbar-height:44px;--topbar-height:48px}
+    html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Arial}
+    .desktop{display:grid;grid-template-rows:var(--topbar-height) 1fr var(--taskbar-height);height:100vh}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:var(--color-surface,#0f172a);color:var(--color-on-surface,#fff);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+    .content{display:flex;overflow:hidden}
+    .sidebar{width:var(--sidebar-width);background:var(--color-muted,#0b1220);color:#fff;padding:12px;overflow:auto;transition:width .2s}
+    .sidebar.collapsed{width:72px}
+    .main{flex:1;padding:20px;background:var(--color-bg,#0b1226);color:var(--color-text,#eee);overflow:auto}
+    .dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    .widget{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.05));padding:16px;border-radius:8px;min-height:120px}
+    .taskbar{display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:var(--color-surface-dark,#071022);color:#fff;height:var(--taskbar-height)}
+    .start-button{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:6px;cursor:pointer}
+    .quick-icons{display:flex;gap:8px;align-items:center}
+    .system-tray{display:flex;gap:12px;align-items:center}
+    .menu{position:absolute;left:12px;bottom:var(--taskbar-height);background:var(--color-surface,#081029);border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,0.6);display:none}
+    .menu.open{display:block}
+    .logo{font-weight:700}
+    .topbar .controls{display:flex;gap:8px;align-items:center}
+    .icon{width:28px;height:28px;background:rgba(255,255,255,0.06);border-radius:6px;display:inline-flex;align-items:center;justify-content:center}
+    a{color:inherit}
+  </style>
+</head>
+<body>
+  <div class="desktop">
+    <header class="topbar">
+      <div class="left">
+        <button id="toggleSidebar" class="icon" title="Basculer la barre latérale">≡</button>
+        <span class="logo" style="margin-left:10px">Prototype Desktop</span>
+      </div>
+      <div class="controls">
+        <span class="icon">🔔</span>
+        <span class="icon">⚙️</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <aside class="sidebar" id="sidebar">
+        <nav>
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="margin-bottom:8px"><strong>Dashboard</strong></li>
+            <li><a href="#" style="display:block;padding:8px;border-radius:6px">Overview</a></li>
+            <li><a href="#" style="display:block;padding:8px;border-radius:6px">Analytics</a></li>
+            <li><a href="#" style="display:block;padding:8px;border-radius:6px">Files</a></li>
+            <li><a href="#" style="display:block;padding:8px;border-radius:6px">Settings</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <section class="dashboard-grid">
+          <div class="widget">
+            <h3>Welcome</h3>
+            <p>Mock desktop interface using theme.css variables.</p>
+          </div>
+          <div class="widget">
+            <h3>Quick Stats</h3>
+            <ul>
+              <li>CPU: 12%</li>
+              <li>Memory: 1.8GB</li>
+            </ul>
+          </div>
+          <div class="widget">
+            <h3>Files</h3>
+            <p>Recent documents and shortcuts.</p>
+          </div>
+          <div class="widget">
+            <h3>Notes</h3>
+            <p>A small note or sticky widget.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="taskbar">
+      <div class="left">
+        <div class="start-button" id="startBtn">☰ Start</div>
+        <div class="quick-icons" style="margin-left:12px">
+          <div class="icon">🌐</div>
+          <div class="icon">✉️</div>
+          <div class="icon">🗔</div>
+        </div>
+      </div>
+      <div class="right system-tray">
+        <div class="icon">🔊</div>
+        <div class="icon">🔋</div>
+        <div class="icon">🕒 <span id="clock">12:00</span></div>
+      </div>
+    </footer>
+
+    <div class="menu" id="startMenu">
+      <ul style="list-style:none;padding:8px;margin:0;min-width:200px">
+        <li style="padding:8px;border-radius:6px">Profile</li>
+        <li style="padding:8px;border-radius:6px">Open Folder</li>
+        <li style="padding:8px;border-radius:6px">Settings</li>
+        <li style="padding:8px;border-radius:6px">Logout</li>
+      </ul>
+    </div>
+
+    <script>
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('toggleSidebar');
+      const startBtn = document.getElementById('startBtn');
+      const startMenu = document.getElementById('startMenu');
+      toggle.addEventListener('click', ()=> sidebar.classList.toggle('collapsed'));
+      startBtn.addEventListener('click', (e)=> {
+        startMenu.classList.toggle('open');
+        const rect = startBtn.getBoundingClientRect();
+        startMenu.style.left = rect.left + 'px';
+      });
+      document.addEventListener('click', (e)=>{
+        if(!startBtn.contains(e.target) && !startMenu.contains(e.target)) startMenu.classList.remove('open');
+      });
+      function updateClock(){
+        const el = document.getElementById('clock');
+        if(!el) return;
+        const d = new Date();
+        el.textContent = d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      }
+      updateClock();setInterval(updateClock,60000);
+    </script>
+  </div>
+</body>
+</html>
