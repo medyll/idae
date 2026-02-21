@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.28-next.0] - 2026-02-21
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+
+**Chores:**
+- publish packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Reorder exports in index.ts for consistency and clarity
+
+
+
 ## [0.0.27-next.0] - 2026-02-21
 **Bug Fixes:**
 - update import statements for prettier configuration across multiple packages
