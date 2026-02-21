@@ -8,7 +8,7 @@ import {
   type ResultSet,
 } from "@medyll/idae-query";
 
-import { idbqlEvent } from "$lib/state/idbqlEvent.svelte.js";
+import { getIdbqlEvent } from "$lib/state/idbqlEvent.svelte.js";
 
 export class CollectionCore<T = any> {
   protected _store: string;
@@ -196,7 +196,7 @@ export class CollectionCore<T = any> {
       let objectStoreRequest = storeObj.delete(keyPathValue);
 
       objectStoreRequest.onsuccess = () => {
-        idbqlEvent.registerEvent("delete", {
+        getIdbqlEvent().registerEvent("delete", {
           collection: this._store,
           data: { [this.keyPath]: keyPathValue },
           keyPath: this.keyPath,
@@ -250,7 +250,7 @@ function createIDBStoreProxy(store) {
                 (origMethod as Function)
                   .apply(instance, args)
                   .then((res) => {
-                    idbqlEvent.registerEvent(prop as any, {
+                    getIdbqlEvent().registerEvent(prop as any, {
                       collection: instance._store,
                       data: res,
                       keyPath: instance.keyPath,

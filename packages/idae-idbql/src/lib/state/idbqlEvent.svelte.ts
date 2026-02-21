@@ -14,10 +14,25 @@ interface EventData<T = any> {
 }
 class IdbqlStateEvent {
   // main application shared state
-  dataState = $state<Record<string, any[]>>({});
+  dataState: Record<string, any[]>;
   private _adapter: {
     applyEvent?: (event: IdbqlEventPayload) => void;
   } | null = null;
+
+  constructor() {
+    // Initialize dataState with Svelte runes when available, otherwise use plain object
+    // `typeof $state` is safe even if `$state` is not defined in this environment.
+    // In Svelte compile context `$state` exists and returns a reactive store proxy.
+    if (typeof $state !== "undefined") {
+      // use the Svelte rune to create reactive state
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.dataState = $state<Record<string, any[]>>({});
+    } else {
+      // fallback for non-Svelte environments: plain object
+      this.dataState = {} as Record<string, any[]>;
+    }
+  }
 
   registerAdapter(adapter: { applyEvent?: (event: IdbqlEventPayload) => void } | null) {
     this._adapter = adapter;
@@ -171,4 +186,28 @@ class IdbqlStateEvent {
   }
 }
 
-export const idbqlEvent = new IdbqlStateEvent();
+export function createIdbqlEvent() {
+  return new IdbqlStateEvent();
+}
+
+let _idbqlEventSingleton: IdbqlStateEvent | null = null;
+
+export function getIdbqlEvent() {
+  if (!_idbqlEventSingleton) {
+    _idbqlEventSingleton = createIdbqlEvent();
+  }
+  return _idbqlEventSingleton;
+}
+
+// Backwards-compatible lazy proxy: accessing properties will instantiate the singleton.
+export const idbqlEvent = new Proxy({} as any, {
+  get(_, prop) {
+    const inst = getIdbqlEvent() as any;
+    return inst[prop];
+  },
+  set(_, prop, value) {
+    const inst = getIdbqlEvent() as any;
+    inst[prop] = value;
+    return true;
+  },
+}) as unknown as IdbqlStateEvent;

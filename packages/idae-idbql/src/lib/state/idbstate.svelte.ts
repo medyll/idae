@@ -6,7 +6,7 @@ interface IdbqlIndexedCore {
   [key: string]: CollectionCore<any>;
 }
 import type { CollectionCore } from "$lib/collection/collection.svelte.js";
-import { idbqlEvent } from "./idbqlEvent.svelte.js";
+import { getIdbqlEvent } from "./idbqlEvent.svelte.js";
 import { createStatorAdapter } from "./statorAdapter.js";
 //
 import {
@@ -36,7 +36,7 @@ export const createIdbqlState = (
   // setup stator adapter if requested
   if (options?.adapter === "stator") {
     const adapter = createStatorAdapter(options?.adapterOptions);
-    idbqlEvent.registerAdapter(adapter as any);
+    getIdbqlEvent().registerAdapter(adapter as any);
   }
 
   if (idbBase.schema) {
@@ -95,8 +95,9 @@ export class CollectionState<T> {
    * @param {IdbqlIndexedCore} idbBase - The instance of the IndexedDB base.
    */
   constructor(collectionName: string, idbBase: IdbqlIndexedCore) {
-    if (!idbqlEvent.dataState?.[collectionName]) {
-      idbqlEvent.dataState[collectionName] = [];
+    const _ev = getIdbqlEvent();
+    if (!_ev.dataState?.[collectionName]) {
+      _ev.dataState[collectionName] = [];
     }
     this.collectionName = collectionName;
     this.idbBase = idbBase;
@@ -111,7 +112,7 @@ export class CollectionState<T> {
    * @returns {ResultSet<T>} The state of the collection.
    */
   get collectionState(): ResultSet<T> {
-    return idbqlEvent?.dataState?.[this.collectionName] as ResultSet<T>;
+    return getIdbqlEvent().dataState?.[this.collectionName] as ResultSet<T>;
   }
 
   /**
@@ -129,7 +130,7 @@ export class CollectionState<T> {
   private feed(): void {
     if (this.idbBase && this.testIdbql(this.collectionName)) {
       this.idbBase[this.collectionName].getAll().then((data) => {
-        idbqlEvent.dataState[this.collectionName] = getResultset(data);
+        getIdbqlEvent().dataState[this.collectionName] = getResultset(data);
       });
     }
   }
