@@ -60,7 +60,7 @@
 - **2026-01-14** - Refactor code structure for improved readability and maintainability
 - **2026-01-14** - fix: add console log for changeset file creation in generate-changeset script
 - **2026-01-14** - fix: add comment to clarify context retrieval in FieldValue component
-- **2026-01-14** - chore: update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- **2026-01-14** - chore: update @medyll/idae-config-prettier to version ^1.2.1 across multiple packages
 - **2026-01-14** - feat: enhance IDbCollections with new methods and improve collection handling; update dependencies and tests
 - **2026-01-14** - feat: refactor machine initialization and enhance IDbCollections with shared instances; update README and tests
 - **2026-01-13** - feat: remove obsolete components and services; clean up unused code

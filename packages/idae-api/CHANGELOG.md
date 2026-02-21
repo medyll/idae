@@ -60,7 +60,7 @@
 - **2026-01-14** - Refactor code structure for improved readability and maintainability
 - **2026-01-14** - chore: update package.json files to use workspace:* for Medyll dependencies
 - **2026-01-14** - Merge branches 'dev' and 'dev' of https://github.com/medyll/idae into dev
-- **2026-01-14** - chore: update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- **2026-01-14** - chore: update @medyll/idae-config-prettier to version ^1.2.1 across multiple packages
 - **2026-01-14** - Apply changeset versions
 - **2026-01-13** - Apply changeset versions
 - **2026-01-13** - Apply changeset versions
