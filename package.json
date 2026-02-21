@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.0.28-next.0",
+  "version": "0.0.29-next.0",
   "type": "module",
   "description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
   "keywords": [
