@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.26-next.0] - 2026-02-21
+**Bug Fixes:**
+- adjust script placement for cssDom component registration
+
+
+
 ## [0.0.25-next.0] - 2026-02-21
 **Bug Fixes:**
 - lazy-init idbqlEvent to avoid  crash in non-Svelte environments
