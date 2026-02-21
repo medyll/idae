@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.27-next.0] - 2026-02-21
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+
+
+
 ## [0.0.26-next.0] - 2026-02-21
 **Bug Fixes:**
 - adjust script placement for cssDom component registration
