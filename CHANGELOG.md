@@ -1,5 +1,74 @@
 # Changelog
 
+## [0.0.24-next.0] - 2026-02-21
+**Features:**
+- implement desktop layout and update test page structure with improved slot handling
+- enhance README and SPECS documentation with slot normalization details and compatibility wrappers
+- add compatibility wrappers for server entry points and enhance slot processing utilities
+- add utility classes and responsive grid column aliases for improved layout handling
+- update dev script to run server instead of vite
+- implement server-side slot processing utilities and caching
+- add CSS module declarations and update index.html for improved data handling in test script
+- enhance server script execution and props handling with componentDataMap and pageUuid
+- enhance comments for clarity in index.html script sections
+- update props initialization and enhance comments for clarity
+- add props function call to initialize data in test script
+- add destructured exports for improved variable management in test script
+- update server-side slot handling and improve documentation
+- add integration tests for server-slots and processHtmlOnce functionality
+- enhance server-side slot processing with debug logging and improve test structure
+- enhance server-side slot processing and add unit tests for slot utilities
+- implement slot support in card component and add minimal reset CSS
+- add serverSlotsEnabled function to check for pre-rendered slots
+- add client detection for server-side slots and implement integration tests
+- add server-side slots documentation and enhance caching with Redis support
+- enhance server-side slot processing with caching support and HTML rendering optimizations
+- add server-side slot processing utilities and integrate with core rendering logic
+- implement server-side slots feature with HTML content handling and size limits
+- add selfsigned package for certificate generation; enhance HTML processing and styling; update index.html and pnpm-lock.yaml
+- add caching support with Redis and memory options; enhance HTML processing and server configuration
+- update README.md logging messages, refine package script, and enhance app.html structure; remove unused Svelte page and add new index.html
+- reorganize theme.css for improved structure and readability; consolidate variable declarations and enhance dark theme support
+- add layout and utility helpers for flexbox, scrolling, positioning, and grid systems
+- update package.json and pnpm-lock.yaml to include additional workspace dependencies; enhance app.html and vite.config.ts for improved functionality
+- remove svelte.config.js from idae-html package
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- update package.json for idae-html and idae-query with new build scripts and exports
+- enhance router functionality with recursive route matching and outlet handling
+- add support for nested routes with parent-child rendering and update demo files
+- implement nested route handling with parent-child mounting and cleanup logic
+- implement core router functionality with path matching, context handling, and lifecycle hooks
+- enhance Stator adapter with updateWhere logic and add additional tests
+- remove heading elements from multiple components and replace with div wrappers
+- add VSCode settings for Svelte file associations and formatting
+- add VSCode settings for Svelte file associations and formatting
+- add new UI components including Avatar, Badge, Box, Checkbox, DataTable, Drawer, Form, Grid, Icon, Image, Select, Skeleton, Spacer, Stack, and Textarea
+- implement per-instance cleanup for components and enhance resource loading logic
+- enhance dropdown component with Anchor Positioning API support and fallback positioning
+- update component styles to use CSS variables for improved theming and consistency
+- auto-load theme CSS for centralized styling in components
+- add idbql package to workspace dependencies
+- Refactor components and improve functionality
+
+**Bug Fixes:**
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update createIdbqlState to createDb in project guide
+
+**Refactoring:**
+- comment out unused idbql imports and related variables in core-engine.ts
+- rename createIdbqDb to createDb and update deprecation notices
+
+**Chores:**
+- add esbuild to onlyBuiltDependencies in pnpm-workspace.yaml
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- ok
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.23-next.0] - 2026-02-15
 **Bug Fixes:**
 - update repository URLs in package.json files to use git+ protocol
