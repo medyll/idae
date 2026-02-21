@@ -6,6 +6,6 @@ export * from '$lib/htmlu/htmlu.js';
 export * from '$lib/htmlu/htmlu-utility-first.js';
 export * from '$lib/htmlu/htmlu-types.js';
 export * from '$lib/htmlu/htmlu-dom-elements.js';
-export * from '$lib/bin/bin.js';
 export * from '$lib/adapters/tailwind-js.js';
 export * from '$lib/adapters/css-fabric.js';
+export * from '$lib/bin/bin.js';
