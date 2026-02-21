@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.25-next.0] - 2026-02-21
+**Bug Fixes:**
+- lazy-init idbqlEvent to avoid  crash in non-Svelte environments
+
+
+
 ## [0.0.24-next.0] - 2026-02-21
 **Features:**
 - implement desktop layout and update test page structure with improved slot handling
