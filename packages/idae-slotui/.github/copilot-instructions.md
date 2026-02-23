@@ -1,4 +1,7 @@
 
+
+# Always refer to MIGRATION.md at the project root for up-to-date migration rules, requirements, and conventions during any migration or refactor task.
+
 # Copilot/AI Agent Instructions for @medyll/idae-slotui-svelte
 
 This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs site (`src/routes/`). It is part of a monorepo and shares tooling with other `idae` packages.
