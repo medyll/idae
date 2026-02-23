@@ -1,0 +1,15 @@
+:root {
+    --paper-radius: var(--sld-radius-medium);
+    --paper-bg: var(--sld-color-background);
+    --paper-border: var(--sld-color-border);
+    --paper-padding: 1.5rem;
+    --paper-shadow: var(--sld-elevation-1);
+}
+
+.paper {
+    border-radius: var(--paper-radius);
+    background: var(--paper-bg);
+    border: 1px solid var(--paper-border);
+    padding: var(--paper-padding);
+    box-shadow: var(--paper-shadow);
+}

@@ -1,0 +1,14 @@
+:root {
+    --demoer-radius: var(--sld-radius-medium);
+    --demoer-bg: var(--sld-color-demoer-bg);
+    --demoer-color: var(--sld-color-demoer-text);
+    --demoer-padding: 1rem;
+}
+
+.demoer {
+    border-radius: var(--demoer-radius);
+    background: var(--demoer-bg);
+    color: var(--demoer-color);
+    padding: var(--demoer-padding);
+    font-size: 1em;
+}

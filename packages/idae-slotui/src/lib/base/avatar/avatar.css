@@ -1,0 +1,29 @@
+:root {
+    --avatar-radius: var(--sld-radius-round);
+    --avatar-size: var(--sld-size-avatar);
+    --avatar-border: var(--sld-color-border);
+    --avatar-bg: var(--sld-color-background);
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--avatar-radius);
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border: 2px solid var(--avatar-border);
+    background-color: var(--avatar-bg);
+    overflow: hidden;
+}
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--avatar-radius);
+}
+.avatar .initials {
+    font-weight: bold;
+    color: var(--sld-color-text);
+    font-size: calc(var(--avatar-size) * 0.4);
+}

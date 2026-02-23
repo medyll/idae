@@ -1,0 +1,14 @@
+:root {
+    --box-radius: var(--sld-radius-medium);
+    --box-bg: var(--sld-color-background);
+    --box-border: var(--sld-color-border);
+    --box-padding: 1rem;
+}
+
+.box {
+    border-radius: var(--box-radius);
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    padding: var(--box-padding);
+    box-shadow: var(--sld-elevation-2);
+}

@@ -1,0 +1,15 @@
+:root {
+    --debug-bg: #f5f5f5;
+    --debug-color: #333;
+    --debug-radius: 6px;
+    --debug-padding: 0.5rem 1rem;
+}
+
+.debug {
+    background: var(--debug-bg);
+    color: var(--debug-color);
+    border-radius: var(--debug-radius);
+    padding: var(--debug-padding);
+    font-size: 0.95em;
+    font-family: monospace;
+}

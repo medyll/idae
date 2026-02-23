@@ -1,0 +1,12 @@
+:root {
+    --icon-size: 1.5em;
+    --icon-color: var(--sld-color-icon);
+}
+
+.icon {
+    display: inline-block;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    color: var(--icon-color);
+    vertical-align: middle;
+}

@@ -1,0 +1,21 @@
+:root {
+    --backdrop-bg: rgba(0,0,0,0.5);
+    --backdrop-blur: 4px;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--backdrop-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.backdrop[data-hidden] {
+    display: none;
+}

@@ -1,0 +1,12 @@
+:root {
+    --columner-gap: 1rem;
+}
+
+.columner {
+    display: flex;
+    flex-direction: row;
+    gap: var(--columner-gap);
+}
+.columner.vertical {
+    flex-direction: column;
+}
