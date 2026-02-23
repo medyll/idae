@@ -31,6 +31,10 @@ if (Array.isArray(data)) {
 }
 </script>
 
+<style global>
+  @import './jsoner.css';
+</style>
+
 {#if data}
 	{#if mode === 'array'}
 		<div class="flex-h w-large flex-wrap gap-small">

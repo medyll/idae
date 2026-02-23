@@ -1,4 +1,3 @@
-
 <script module lang="ts">
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
@@ -327,6 +326,6 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {:else}
 {/if} -->
 
-<style lang="scss">
-	@use './window.scss';
+<style global lang="css">
+  @import './window.css';
 </style>

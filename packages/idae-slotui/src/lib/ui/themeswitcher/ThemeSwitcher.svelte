@@ -9,6 +9,10 @@
 	}
 </script>
 
+<style global lang="css">
+  @import './ThemeSwitcher.css';
+</style>
+
 <IconButton
 	variant="naked"
 	{...$$restProps}

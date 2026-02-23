@@ -117,6 +117,10 @@ function buttonSelect(field: any) {
 }
 </script>
 
+<style global>
+  @import './grouper.css';
+</style>
+
 <div bind:this={element} class="grouper {className}" {style}>
 	{#if grouperMode === 'menu'}
 		<ButtonMenu bind:element={elementButton} {...buttonProps} {menuProps}>

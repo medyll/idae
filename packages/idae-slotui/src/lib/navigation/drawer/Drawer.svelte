@@ -202,6 +202,6 @@ $effect(() => {
 	{/if}
 </div>
 
-<style global lang="scss">
-	@use './drawer.scss';
+<style global>
+  @import './drawer.css';
 </style>

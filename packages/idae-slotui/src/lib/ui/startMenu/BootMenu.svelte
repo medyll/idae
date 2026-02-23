@@ -99,6 +99,6 @@
 	</div>
 {/if}
 
-<style lang="scss">
-	@use './boot-menu.scss';
+<style global lang="css">
+  @import './BootMenu.css';
 </style>

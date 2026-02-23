@@ -197,6 +197,6 @@ export type PopperProps = CommonProps & {
 
 <!-- {/if} -->
 
-<style global lang="scss">
-	@use './popper.scss';
+<style global lang="css">
+  @import './popper.css';
 </style>

@@ -209,6 +209,6 @@ const setChipPos = (code: any) => {
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './tabs.scss';
+<style global>
+  @import './tabs.css';
 </style>

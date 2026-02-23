@@ -27,7 +27,11 @@
 		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" /> 
 	{/key}
 </svelte:head>
-red
+
+<style global lang="css">
+  @import './BootStrApp.css';
+</style>
+
 <Login showLogin={false}>
 	<div class="h-full overflow-hidden flex-v">
 		<Taskbar>

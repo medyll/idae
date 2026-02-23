@@ -145,6 +145,6 @@ export type PanelProps<T = Data> = {
 	</div>
 </div>
 
-<style lang="scss">
-	@use './panel.scss';
+<style global lang="css">
+  @import './panel.css';
 </style>

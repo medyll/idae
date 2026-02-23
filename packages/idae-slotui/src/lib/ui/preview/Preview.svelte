@@ -58,14 +58,6 @@ export type PreviewProps<T = Data> = CommonProps & {
 	</div>
 {/if}
 
-<style global lang="scss">
-	.preview-root {
-		display: contents;
-	}
-	.preview {
-		display: flex;
-		.preview-zoom {
-			flex: 1;
-		}
-	}
+<style global lang="css">
+	@import './preview.css';
 </style>

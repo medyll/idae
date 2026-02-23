@@ -131,43 +131,6 @@ export const actions = {
 	{@render children?.()}
 {/if}
 
-<style global lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-	form {
-		z-index: 1000;
-	}
-	.retrieve {
-		padding: var(--sld-pad-med);
-	}
-	.form {
-		height: 33% !important;
-		width: 20%;
-
-		.avatarHolder {
-			width: 50%;
-			padding-bottom: 50%;
-			position: relative;
-
-			.avatar {
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				width: 100%;
-				height: 100%;
-				border-radius: 50%;
-				border: 1px solid var(--sld-color-foreground-alpha-mid);
-				box-shadow: 0 0 5px 1px rgba(32, 123, 21, 0.3);
-				background-color: var(--sld-color-background-alpha-mid);
-			}
-		}
-
-		.name {
-			text-align: center;
-			margin: 0.5rem;
-		}
-
-		.input {
-		}
-	}
+<style global lang="css">
+  @import './login.css';
 </style>

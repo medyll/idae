@@ -180,6 +180,6 @@ export type MenuListProps<T = Data> = CommonProps & {
 	{@render listItemBottom?.({ item: {}, itemIndex: -1 })}
 </ul>
 
-<style  global lang="scss">
-	@use './menu-list.scss';
+<style global lang="css">
+	@import './menuList.css';
 </style>

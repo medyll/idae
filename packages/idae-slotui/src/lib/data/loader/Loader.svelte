@@ -133,6 +133,6 @@ $effect(() => {
 	{/if}
 {/key}
 
-<style lang="scss">
-	@use './loader.scss';
+<style global>
+  @import './loader.css';
 </style>
