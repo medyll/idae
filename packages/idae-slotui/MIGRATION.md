@@ -22,12 +22,10 @@ This document records all steps, questions, technical choices, and points of att
 - Migration of the project to Svelte 5 (runes, new API, etc.)
 - Adoption of the shadcn-svelte design system for UI components
 
+
 ## Migration Tracking
 
-| Component Path                | Status      | Notes                |
-|------------------------------|-------------|----------------------|
-| src/lib/base/alert/Alert     | in-progress |                      |
-| ...                          |             |                      |
+The migration tracking table for all components and their status will be maintained in the file: MIGRATION_STATUS.md.
 
 ## Migration Steps
 - [ ] Audit of existing code (components, styles, dependencies)
