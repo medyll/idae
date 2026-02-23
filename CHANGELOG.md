@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.33-next.0] - 2026-02-23
+**Features:**
+- add CSS files for various components with custom properties for styling
+- add initial CSS files for various components with custom properties for styling
+- update migration documentation and theme variables for improved clarity and structure
+
+
+
 ## [0.0.32-next.0] - 2026-02-23
 **Features:**
 - enhance idae-idbql documentation with modular references and examples
