@@ -12,8 +12,7 @@
   --slotui-[component]-border: theme(colors.neutral.200);
 }
 
-.slotui-[component] {
-  @apply relative flex items-center px-4 py-2 rounded border text-base font-medium transition-colors duration-150;
+.slotui-[component] { 
   background-color: var(--slotui-[component]-bg);
   color: var(--slotui-[component]-fg);
   border-color: var(--slotui-[component]-border);

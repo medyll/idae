@@ -3,9 +3,7 @@
   --slotui-titleBar-bg: theme(colors.primary.600);
   --slotui-titleBar-fg: theme(colors.white);
 }
-.slotui-titleBar {
-  @apply flex items-center px-4 py-2 rounded-t font-bold text-lg transition-colors duration-150;
+.slotui-titleBar { 
   background-color: var(--slotui-titleBar-bg);
-  color: var(--slotui-titleBar-fg);
-  &__icon { @apply mr-2 w-6 h-6; }
+  color: var(--slotui-titleBar-fg); 
 }

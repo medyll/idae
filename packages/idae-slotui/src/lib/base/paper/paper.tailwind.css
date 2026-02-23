@@ -4,8 +4,7 @@
   --slotui-paper-fg: theme(colors.gray.900);
   --slotui-paper-border: theme(colors.gray.200);
 }
-.slotui-paper {
-  @apply p-6 rounded shadow border transition-colors duration-150;
+.slotui-paper { 
   background-color: var(--slotui-paper-bg);
   color: var(--slotui-paper-fg);
   border-color: var(--slotui-paper-border);

@@ -1,0 +1,1 @@
+; export const slotuiDemoCatalog = {} as const

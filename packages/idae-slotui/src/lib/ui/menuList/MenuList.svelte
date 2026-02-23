@@ -181,5 +181,5 @@ export type MenuListProps<T = Data> = CommonProps & {
 </ul>
 
 <style global lang="css">
-	@import './menuList.css';
+	@import './menu-list.css';
 </style>

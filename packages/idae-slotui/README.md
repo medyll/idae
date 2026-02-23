@@ -52,7 +52,6 @@ flowchart TD
   subgraph Component [Internal Structure]
     Comp --> Runes[Svelte 5 Runes $props, $state...]
     Comp --> Slotted[Slotted Utility]
-    Comp --> Style[SCSS + UnoCSS]
   end
 
   subgraph Exports [Build Output]
@@ -60,6 +59,10 @@ flowchart TD
     Comp --> Lib[Svelte Library]
   end
 ```
+
+## Migration note
+- SCSS support has been removed. All styling now uses Tailwind CSS and PostCSS.
+- If you encounter errors, ensure `@tailwindcss/postcss` is installed and referenced in `postcss.config.cjs`.
 
 ## License
 

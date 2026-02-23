@@ -1,0 +1,89 @@
+:root {
+  --menulist-padding: var(--sld-pad-tiny);
+  --menulist-item-padding: 0;
+  --menulist-item-radius: var(--sld-radius-small);
+  --menulist-item-selected-background: var(--sld-selected-background-color);
+  --menulist-item-action-display: flex;
+  --menulist-item-action-justify-content: center;
+  --menulist-grid-items-count: 0;
+}
+
+.slotui-menulist {
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding: var(--menulist-padding);
+}
+.slotui-menulist.grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(max(var(--grid-item-min-width), 100% / var(--grid-items-count)), 1fr)
+  );
+}
+.slotui-menulist li.menulist-title,
+	slotui-menulist a.menulist-title {
+		font-weight: bold;
+	}
+
+	.menulist-item {
+			/* SCSS mixins replaced by utility classes or left for Tailwind */
+			text-decoration: none;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			position: relative;
+			width: 100%;
+			max-width: 100%;
+			border: 1px solid transparent;
+			border-radius: var(--menulist-item-radius);
+			align-self: flex-start;
+	}
+	.menulist-item::before {
+			position: absolute;
+			min-height: 16px;
+			height: 45%;
+			width: 2px;
+			overflow: hidden;
+			max-width: 3px;
+			background-color: transparent;
+			border-radius: var(--sld-radius-med);
+			left: 0px;
+			border: 1px solid transparent;
+			content: " ";
+	}
+	.menulist-item-icon {
+			width: 16px;
+			max-width: 16px;
+			text-align: center;
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			padding: 0 0.2rem;
+	}
+	.menulist-item-text {
+			flex: 1;
+	}
+	.menulist-item-text.wrap {
+			text-wrap: ellipsis;
+			white-space: normal;
+			overflow: hidden;
+	}
+	.menulist-item-text svg {
+			display: inline-block;
+	}
+	.menulist-item-action {
+			display: var(--menulist-item-action-display);
+			justify-content: var(--menulist-item-action-justify-content);
+	}
+
+	ul.menuList.showLastOnSelected li.menulist-item[aria-selected="true"] .menulist-item-action,
+	ul.menuList.showLastOnSelected a.menulist-item[aria-selected="true"] .menulist-item-action {
+			visibility: visible;
+	}
+	ul.menuList.showLastOnSelected li.menulist-item .menulist-item-action,
+	ul.menuList.showLastOnSelected a.menulist-item .menulist-item-action {
+			visibility: hidden;
+	}

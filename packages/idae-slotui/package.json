@@ -27,7 +27,7 @@
     "test:unit": "vitest",
     "test:unit:docs": "vitest src/tests/docs.test.js",
     "publish": "npm run package",
-    "build-docs:watch": "nodemon --watch ./src/lib --watch ./build-docs.js --ignore **/docs/** --ignore ./src/lib/svelte.index.js --ext svelte --ext scss --delay 2.5 build-docs.js",
+    "build-docs:watch": "nodemon --watch ./src/lib --watch ./build-docs.js --ignore **/docs/** --ignore ./src/lib/svelte.index.js --ext svelte --delay 2.5 build-docs.js",
     "rename-scss": "node scripts/rename-scss-files.js",
     "package:pre": "node scripts/package-pre.js",
     "prepackage": "node scripts/package-pre.js"
@@ -89,7 +89,6 @@
     "prismjs": "^1.30.0",
     "query-string": "^9.3.1",
     "rimraf": "^6.1.2",
-    "sass": "^1.97.3",
     "sveld": "^0.25.13",
     "svelte-check": "^4.3.6",
     "tslib": "^2.8.1",
@@ -104,7 +103,6 @@
     "svelte5",
     "ui",
     "component-library",
-    "scss",
     "unocss"
   ],
   "svelte": "./dist/index.js",

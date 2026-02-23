@@ -1,36 +1,6 @@
 {
 	"compilerOptions": {
 		"paths": {
-			"$stores": [
-				"../src/stores"
-			],
-			"$stores/*": [
-				"../src/stores/*"
-			],
-			"$utils": [
-				"../src/utils"
-			],
-			"$utils/*": [
-				"../src/utils/*"
-			],
-			"$styles": [
-				"../src/styles"
-			],
-			"$styles/*": [
-				"../src/styles/*"
-			],
-			"$sitedata": [
-				"../src/sitedata"
-			],
-			"$sitedata/*": [
-				"../src/sitedata/*"
-			],
-			"$slotuiDefs": [
-				"../src/sitedata/slotuiDefs"
-			],
-			"$slotuiDefs/*": [
-				"../src/sitedata/slotuiDefs/*"
-			],
 			"$lib": [
 				"../src/lib"
 			],
