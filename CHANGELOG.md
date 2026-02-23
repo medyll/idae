@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.29-next.0] - 2026-02-21
+**Bug Fixes:**
+- ensure deterministic ordering of fileInfoList in MakeLibIndex
+
+**Other:**
+- Refactor exports in index.ts for improved organization and clarity
+
+
+
 ## [0.0.28-next.0] - 2026-02-21
 **Bug Fixes:**
 - update import statements for prettier configuration across multiple packages

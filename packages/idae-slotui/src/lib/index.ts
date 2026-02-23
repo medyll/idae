@@ -243,6 +243,7 @@ export * from '$lib/ui/popper/actions.js';
 export { default as Popper } from '$lib/ui/popper/Popper.svelte';
 export * from '$lib/ui/popper/types.js';
 export * from '$lib/ui/popper/usePopper.js';
+export { default as Preview } from '$lib/ui/preview/Preview.svelte';
 export * from '$lib/ui/preview/types.js';
 export { default as ServiceBox } from '$lib/ui/serviceBox/ServiceBox.svelte';
 export { default as BootMenu } from '$lib/ui/startMenu/BootMenu.svelte';
