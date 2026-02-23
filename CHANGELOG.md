@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.30-next.0] - 2026-02-23
+**Chores:**
+- update VSCode settings and improve accordion component styles; add skill creation guide
+
+
+
 ## [0.0.29-next.0] - 2026-02-21
 **Bug Fixes:**
 - ensure deterministic ordering of fileInfoList in MakeLibIndex
