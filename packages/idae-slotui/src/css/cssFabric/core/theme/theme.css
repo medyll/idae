@@ -1,8 +1,19 @@
 .theme-text-primary {
   color: orange;
 }
+/* Light Theme Variables */
 :root {
   --theme-text-primary-color: orange;
+  --theme-foreground: #282230;
+  --theme-background: #f1f1f1;
+  --theme-paper: #ededed;
+}
+
+/* Dark Theme Variables */
+:root[data-theme="dark"] {
+  --theme-foreground: #f1f1f1;
+  --theme-background: #27323a;
+  --theme-paper: #3a3b3b;
 }
 
 .theme-text-primary-light {
@@ -27,9 +38,7 @@
 .theme-bg-primary {
   background-color: orange;
 }
-:root {
-  --theme-bg-primary-background-color: orange;
-}
+/* ...existing code... */
 
 .theme-bg-primary-light {
   background-color: #ffc04d;
@@ -79,9 +88,7 @@
 .theme-text-secondary {
   color: #005aff;
 }
-:root {
-  --theme-text-secondary-color: #005aff;
-}
+/* ...existing code... */
 
 .theme-text-secondary-light {
   color: #4d8cff;
@@ -105,9 +112,7 @@
 .theme-bg-secondary {
   background-color: #005aff;
 }
-:root {
-  --theme-bg-secondary-background-color: #005aff;
-}
+/* ...existing code... */
 
 .theme-bg-secondary-light {
   background-color: #4d8cff;
@@ -131,9 +136,7 @@
 .theme-border-secondary {
   border-color: #005aff;
 }
-:root {
-  --theme-border-secondary-border-color: #005aff;
-}
+/* ...existing code... */
 
 .theme-border-secondary-light {
   border-color: #4d8cff;
@@ -157,9 +160,7 @@
 .theme-text-tertiary {
   color: orange;
 }
-:root {
-  --theme-text-tertiary-color: orange;
-}
+/* ...existing code... */
 
 .theme-text-tertiary-light {
   color: #ffc04d;
@@ -183,9 +184,7 @@
 .theme-bg-tertiary {
   background-color: orange;
 }
-:root {
-  --theme-bg-tertiary-background-color: orange;
-}
+/* ...existing code... */
 
 .theme-bg-tertiary-light {
   background-color: #ffc04d;
@@ -209,9 +208,7 @@
 .theme-border-tertiary {
   border-color: orange;
 }
-:root {
-  --theme-border-tertiary-border-color: orange;
-}
+/* ...existing code... */
 
 .theme-border-tertiary-light {
   border-color: #ffc04d;

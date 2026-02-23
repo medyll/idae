@@ -1,8 +1,7 @@
+
 # MIGRATION.md
 
 This document records all steps, questions, technical choices, and points of attention during the migration of the project to Svelte 5 and the integration of the shadcn-svelte design system.
-
----
 
 ## Table of Contents
 - [Context](#context)
@@ -11,43 +10,55 @@ This document records all steps, questions, technical choices, and points of att
 - [Issues Encountered](#issues-encountered)
 - [Useful Resources](#useful-resources)
 
----
+ 
 
 ## Context
-- The current project uses Svelte 5, SCSS with mixins, and a custom theme.
-- Components are located in: `src/lib/base`, `src/lib/controls`, `src/lib/data`, `src/lib/navigation`, and `src/lib/ui`.
-- All component types must be properly declared at the top of each component file, inside a `<script module lang="ts">` block.
-- Each component must start with an HTML comment `@component` describing its purpose.
-- All types must be declared in block form, with clear English comments for each property.
-- Migration of the project to Svelte 5 (runes, new API, etc.)
-- Adoption of the shadcn-svelte design system for UI components
+  	- The current project uses Svelte 5, SCSS with mixins, and a custom theme.
+	- Components are located in: `src/lib/base`, `src/lib/controls`, `src/lib/data`, `src/lib/navigation`, and `src/lib/ui`.
+	- All component types must be properly declared at the top of each component file, inside a `<script module lang="ts">` block.
+	- Each component must start with an HTML comment `@component` describing its purpose.
+	- All types must be declared in block form, with clear English comments for each property.
+	- Migration of the project to Svelte 5 (runes, new API, etc.)
+	- Adoption of the shadcn-svelte design system for UI components
 
 
 ## Migration Tracking
 
-The migration tracking table for all components and their status will be maintained in the file: MIGRATION_STATUS.md.
+The migration tracking table for the migration steps and for all components and their status will be maintained in the file: MIGRATION_STATUS.md.
 
 ## Migration Steps
-- [ ] Audit of existing code (components, styles, dependencies)
-- [ ] Migration of components to Svelte 5 (runes, $props, $state, etc.)
-- [ ] Integration and configuration of shadcn-svelte
-- [ ] Progressive replacement of native components by those from the design system
-- [ ] Migration from SCSS to CSS (where applicable)
-	- For each SCSS file, create a new .css file with the same base name in the same directory.
-	- Do not delete the original .scss files during migration; both formats should coexist until the migration is fully validated.
-	- Note: You will likely encounter errors and incompatibilities when converting from SCSS to PostCSS. Document any issues and solutions in the Issues Encountered section.
-- [ ] Install Tailwind CSS v4 as a priority before any other migration steps.
-- [ ] Create and configure the theme (theme.css) for Tailwind v4.
-	- Collect all theme indices and variables found in SCSS mixins and shared SCSS files, and migrate them to theme.css.
-- [ ] Style and theme adjustments
-- [ ] Testing and validation
-- [ ] After each implementation step, review the relevant guidelines (Svelte 5, shadcn-svelte, Tailwind v4, etc.) to ensure compliance and best practices.
+	- [ ] Audit of existing code (components, styles, dependencies)
+	- [ ] Migration of components to Svelte 5 (runes, $props, $state, etc.)
+	- [ ] Integration and configuration of shadcn-svelte
+	- [ ] Progressive replacement of native components by those from the design system
+	- [ ] Migration from SCSS to CSS (where applicable)
+		- For each SCSS file, create a new .css file with the same base name in the same directory.
+		- Do not delete the original .scss files during migration; both formats should coexist until the migration is fully validated.
+		- Note: You will likely encounter errors and incompatibilities when converting from SCSS to PostCSS. Document any issues and solutions in the Issues Encountered section.
+	- [ ] Install Tailwind CSS v4 as a priority before any other migration steps.
+	- [ ] Create and configure the theme (theme.css) for Tailwind v4.
+		- Collect all theme indices and variables found in SCSS mixins and shared SCSS files, and migrate them to theme.css.
+	- [ ] Style and theme adjustments
+	- [ ] Testing and validation
+	- [ ] After each implementation step, review the relevant guidelines (Svelte 5, shadcn-svelte, Tailwind v4, etc.) to ensure compliance and best practices.
+
+## Migration steps tracking
+
+1. Audit of existing code (components, styles, dependencies)
+2. Migration of components to Svelte 5 (runes, $props, $state, etc.)
+3. Installation and configuration of Tailwind CSS v4 (priority)
+4. Creation and configuration of Tailwind v4 theme (theme.css)
+5. Integration and configuration of shadcn-svelte
+6. Progressive replacement of native components by those from the design system
+7. Migration SCSS → CSS (keep both formats until validation)
+8. Style and theme adjustments
+9. Testing and validation
 
 ## Questions and Decisions
-- To be completed throughout the migration
+	- To be completed throughout the migration
 
 ## Issues Encountered
-- To be completed throughout the migration
+	- To be completed throughout the migration
 
 ## Useful Resources
 - [Svelte 5 documentation](https://svelte.dev/docs)
@@ -56,4 +67,5 @@ The migration tracking table for all components and their status will be maintai
 - [shadcn-svelte Migration Guide](https://www.shadcn-svelte.com/docs/migration.md)
 - [shadcn-svelte Svelte 5 Migration](https://shadcn-svelte.com/docs/migration/svelte-5)
 - [shadcn-svelte Tailwind v4 Migration](https://shadcn-svelte.com/docs/migration/tailwind-v4)
+
 
