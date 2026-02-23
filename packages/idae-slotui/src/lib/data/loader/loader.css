@@ -1,0 +1,14 @@
+:root {
+    --loader-radius: var(--sld-radius-medium);
+    --loader-bg: var(--sld-color-background);
+    --loader-border: var(--sld-color-border);
+    --loader-padding: 0.5rem 1rem;
+}
+
+.loader {
+    border-radius: var(--loader-radius);
+    background: var(--loader-bg);
+    border: 1px solid var(--loader-border);
+    padding: var(--loader-padding);
+    font-size: 1em;
+}

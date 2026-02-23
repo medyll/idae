@@ -1,0 +1,14 @@
+:root {
+    --datalist-radius: var(--sld-radius-medium);
+    --datalist-bg: var(--sld-color-background);
+    --datalist-border: var(--sld-color-border);
+    --datalist-padding: 0.5rem 1rem;
+}
+
+.datalist {
+    border-radius: var(--datalist-radius);
+    background: var(--datalist-bg);
+    border: 1px solid var(--datalist-border);
+    padding: var(--datalist-padding);
+    font-size: 1em;
+}

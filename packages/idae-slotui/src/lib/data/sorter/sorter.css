@@ -1,0 +1,14 @@
+:root {
+    --sorter-radius: var(--sld-radius-medium);
+    --sorter-bg: var(--sld-color-background);
+    --sorter-border: var(--sld-color-border);
+    --sorter-padding: 0.5rem 1rem;
+}
+
+.sorter {
+    border-radius: var(--sorter-radius);
+    background: var(--sorter-bg);
+    border: 1px solid var(--sorter-border);
+    padding: var(--sorter-padding);
+    font-size: 1em;
+}

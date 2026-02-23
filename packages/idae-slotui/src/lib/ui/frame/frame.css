@@ -1,0 +1,14 @@
+:root {
+    --frame-radius: var(--sld-radius-medium);
+    --frame-bg: var(--sld-color-background);
+    --frame-border: var(--sld-color-border);
+    --frame-padding: 1rem;
+}
+
+.frame {
+    border-radius: var(--frame-radius);
+    background: var(--frame-bg);
+    border: 1px solid var(--frame-border);
+    padding: var(--frame-padding);
+    font-size: 1em;
+}

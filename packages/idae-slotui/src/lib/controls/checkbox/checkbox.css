@@ -1,0 +1,24 @@
+:root {
+    --checkbox-size: 1.2em;
+    --checkbox-border: var(--sld-color-border);
+    --checkbox-bg: var(--sld-color-background);
+    --checkbox-checked-bg: var(--sld-color-primary);
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.checkbox input[type="checkbox"] {
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border: 2px solid var(--checkbox-border);
+    border-radius: 4px;
+    background: var(--checkbox-bg);
+    appearance: none;
+    cursor: pointer;
+}
+.checkbox input[type="checkbox"]:checked {
+    background: var(--checkbox-checked-bg);
+}

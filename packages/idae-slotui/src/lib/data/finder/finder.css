@@ -1,0 +1,14 @@
+:root {
+    --finder-radius: var(--sld-radius-medium);
+    --finder-bg: var(--sld-color-background);
+    --finder-border: var(--sld-color-border);
+    --finder-padding: 0.5rem 1rem;
+}
+
+.finder {
+    border-radius: var(--finder-radius);
+    background: var(--finder-bg);
+    border: 1px solid var(--finder-border);
+    padding: var(--finder-padding);
+    font-size: 1em;
+}

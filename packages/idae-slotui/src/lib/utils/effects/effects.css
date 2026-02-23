@@ -1,0 +1,14 @@
+:root {
+    --effects-radius: var(--sld-radius-medium);
+    --effects-bg: var(--sld-color-background);
+    --effects-border: var(--sld-color-border);
+    --effects-padding: 1rem;
+}
+
+.effects {
+    border-radius: var(--effects-radius);
+    background: var(--effects-bg);
+    border: 1px solid var(--effects-border);
+    padding: var(--effects-padding);
+    font-size: 1em;
+}

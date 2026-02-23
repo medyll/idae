@@ -1,0 +1,14 @@
+:root {
+    --grouper-radius: var(--sld-radius-medium);
+    --grouper-bg: var(--sld-color-background);
+    --grouper-border: var(--sld-color-border);
+    --grouper-padding: 0.5rem 1rem;
+}
+
+.grouper {
+    border-radius: var(--grouper-radius);
+    background: var(--grouper-bg);
+    border: 1px solid var(--grouper-border);
+    padding: var(--grouper-padding);
+    font-size: 1em;
+}

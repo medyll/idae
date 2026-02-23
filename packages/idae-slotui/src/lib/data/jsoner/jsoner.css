@@ -1,0 +1,15 @@
+:root {
+    --jsoner-radius: var(--sld-radius-medium);
+    --jsoner-bg: var(--sld-color-background);
+    --jsoner-border: var(--sld-color-border);
+    --jsoner-padding: 0.5rem 1rem;
+}
+
+.jsoner {
+    border-radius: var(--jsoner-radius);
+    background: var(--jsoner-bg);
+    border: 1px solid var(--jsoner-border);
+    padding: var(--jsoner-padding);
+    font-size: 1em;
+    font-family: monospace;
+}
