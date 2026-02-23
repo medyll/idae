@@ -122,6 +122,6 @@ const show = (visible: boolean) => (event) => {
 	</Menu>
 </Popper>
 
-<style lang="scss">
-	@use 'select.scss';
+<style global>
+  @import './select.css';
 </style>

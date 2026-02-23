@@ -85,6 +85,6 @@ export type ContentSwitcherProps = CommonProps & {
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './content-switcher.scss';
+<style global>
+  @import './contentSwitcher.css';
 </style>

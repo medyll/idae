@@ -117,6 +117,6 @@ export interface BackdropProps<T = any, C = any> extends CommonProps {
 	</div>
 {/if}
 
-<style global lang="scss">
-	@use './backdrop.scss';
+<style global>
+	@import './backdrop.css';
 </style>

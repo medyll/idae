@@ -120,21 +120,21 @@ export type CartoucheProps = CommonProps & {
 <div
 	class:stacked
 	bind:this={element}
-	class="cartouche {className}"
+	class="cartouche {className} overflow-hidden rounded shadow-sm bg-[var(--cartouche-background-color)]"
 	data-bordered={bordered ?? false}
 	aria-expanded={isOpen} 
 	{style}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="control {classes.control} tall-{tall}" {tall} onclick={actions.toggle}>
+	<div class="control {classes.control} tall-{tall} flex items-center gap-[var(--cartouche-control-gap)] cursor-pointer px-1 py-0.5 bg-[var(--cartouche-background-color)] hover:bg-[var(--cartouche-background-color-hover)]" {tall} onclick={actions.toggle}>
 		{#if icon || cartoucheIcon}
-			<div class="controlIcon {classes.controlIcon}">
+			<div class="controlIcon {classes.controlIcon} flex items-center px-2">
 				<Slotted child={cartoucheIcon}>
 					<Icon {icon} />
 				</Slotted>
 			</div>
 		{/if}
-		<div class="controlLabel {classes.controlLabel}">
+		<div class="controlLabel {classes.controlLabel} cursor-pointer px-2">
 			{#if primary || cartouchePrimary}
 				<Slotted child={cartouchePrimary}>
 					{primary}
@@ -158,13 +158,13 @@ export type CartoucheProps = CommonProps & {
 				<Slotted child={cartoucheButtons}></Slotted>
 			</div>
 		{/if}
-		<div class="chevron">
-			<Button variant="flat"   icon={chevronIcon} />
+		<div class="chevron cursor-pointer p-2 flex items-center">
+			<Button variant="flat" icon={chevronIcon} />
 		</div>
 	</div>
 	{#if isOpen || keepCartoucheContent}
 	<div class="content-wrapper" aria-expanded={isOpen}>	
-		<div aria-expanded={isOpen} class="content {classes.content}" transition:slide>
+		<div aria-expanded={isOpen} class="content {classes.content} overflow-hidden bg-[var(--cartouche-background-color)] p-1 pt-0 rounded" transition:slide>
 			{#if Component}
 				<Component  {...componentProps} />
 			{/if}
@@ -174,6 +174,6 @@ export type CartoucheProps = CommonProps & {
 	{/if}
 </div>
 
-<style global lang="scss">
-	@use './cartouche.scss';
+<style global>
+	@import './cartouche.css';
 </style>

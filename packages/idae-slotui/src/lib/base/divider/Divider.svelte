@@ -65,6 +65,6 @@
 	style={addStyle}
 />
 
-<style global lang="scss">
-	@use 'divider.scss';
+<style global>
+  @import './divider.css';
 </style>

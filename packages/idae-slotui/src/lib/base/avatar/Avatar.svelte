@@ -62,6 +62,6 @@ export interface AvatarProps    {
 	{/if}
 </Content>
 
-<style global lang="scss">
-	@use './avatar.scss';
+<style global>
+  @import './avatar.css';
 </style>

@@ -37,6 +37,6 @@ export type PaperProps = CommonProps & {
 	<Slotted child={children} />
 </div>
 
-<style global lang="scss">
-	@use './paper.scss';
+<style global>
+  @import './paper.css';
 </style>

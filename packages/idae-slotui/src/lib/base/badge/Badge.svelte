@@ -47,6 +47,6 @@ export interface BadgeProps extends CommonProps {
 	</div>
 {/if}
 
-<style global lang="scss">
-	@use 'badge.scss';
+<style global>
+  @import './badge.css';
 </style>

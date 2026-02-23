@@ -104,6 +104,6 @@ export interface BoxProps extends CommonProps {
 	</Content>
 {/if}
 
-<style global lang="scss">
-	@use './box.scss';
+<style global>
+  @import './box.css';
 </style>

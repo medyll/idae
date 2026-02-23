@@ -14,6 +14,10 @@
 	];
 </script>
 
+<style global>
+  @import './debug.css';
+</style>
+
 <div style="padding:0.5rem">
 	<Cartouche isOpen={true} primary="debug zone here">
 		<pre>{JSON.stringify($$props, null, ' ')}</pre>

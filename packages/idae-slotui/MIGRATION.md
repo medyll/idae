@@ -28,12 +28,13 @@ The migration tracking table for the migration steps  and their status will be m
 The migration tracking table for the  for all components and their status will be maintained in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md).
 
 ## Migration Steps
-	- [ ✅ Done ] Audit of existing code (components, styles, dependencies)
-	- [✅ Done  ] Migration of components to Svelte 5 (runes, $props, $state, etc.)
-	- [✅ Done  ] Migration from SCSS to CSS (where applicable)
-		- For each SCSS file, create a new .css file with the same base name in the same directory.
-		- Do not delete the original .scss files during migration; both formats should coexist until the migration is fully validated.
-		- Note: You will likely encounter errors and incompatibilities when converting from SCSS to PostCSS. Document any issues and solutions in the Issues Encountered section.
+   - [ ✅ Done ] Audit of existing code (components, styles, dependencies)
+   - [✅ Done  ] Migration of components to Svelte 5 (runes, $props, $state, etc.)
+   - [✅ Done  ] Migration from SCSS to CSS (where applicable)
+	   - For each SCSS file, create a new .css file with the same base name in the same directory.
+	   - Do not delete the original .scss files during migration; both formats should coexist until the migration is fully validated.
+	   - Note: You will likely encounter errors and incompatibilities when converting from SCSS to PostCSS. Document any issues and solutions in the Issues Encountered section.
+	- **Important:** Update all `<style global lang="scss"> @use 'file.scss'; </style>` blocks to `<style global> @import 'file.css'; </style>` in Svelte components as part of the migration to Tailwind and CSS. Always use `@import` for .css files.
 	- [ ] Install Tailwind CSS v4 as a priority before any other migration steps.
 	- [ ] Create and configure the theme (theme.css) for Tailwind v4.
 		- Collect all theme indices and variables found in SCSS mixins and shared SCSS files, and migrate them to theme.css.

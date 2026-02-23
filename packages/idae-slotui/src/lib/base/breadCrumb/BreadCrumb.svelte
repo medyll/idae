@@ -55,14 +55,14 @@ export interface BreadCrumbProps extends CommonProps {
 	}: ExpandProps<BreadCrumbProps> = $props();
 </script>
 
-<nav bind:this={element} class="breadCrumb {className ?? ''}" {style}>
-	<ul>
-		<li class="bread">
+<nav bind:this={element} class="flex items-center gap-[var(--breadcrumb-gap)] text-[var(--breadcrumb-color)] {className ?? ''}" {style}>
+	<ul class="flex">
+		<li class="flex items-center">
 			<Slotted child={children} />
 		</li>
 	</ul>
 </nav>
 
-<style global lang="scss">
-	@use 'breadcrumb.scss';
+<style global>
+  @import './breadCrumb.css';
 </style>

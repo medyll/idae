@@ -46,3 +46,7 @@ export type IconButtonProps = Partial<ButtonProps> & {
 <Button variant="square" bind:element width={size} tall="unset" {ratio} {...rest}>
 	<Icon style="display:inline; " {rotation} icon={finalIcon}   />
 </Button>
+
+<style global>
+  @import './button.css';
+</style>

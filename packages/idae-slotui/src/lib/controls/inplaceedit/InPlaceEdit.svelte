@@ -82,7 +82,9 @@ export type InPlaceEditProps = {
 	let popper;
 </script>
 
-
+<style global>
+  @import './inplaceedit.css';
+</style>
 
 <div class="border pos-rel">
 	<dialog id={popperId} open={editing} popover="auto" class="popper" bind:this={popper}>

@@ -168,3 +168,7 @@
 		</div>
 	</div>
 </div>
+
+<style global>
+  @import './demoer.css';
+</style>

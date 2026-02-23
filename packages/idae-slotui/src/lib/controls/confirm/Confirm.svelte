@@ -201,6 +201,6 @@ onDestroy(() => {
 	{/if}
 </div>
 
-<style lang="scss">
-	@use './confirm.scss';
+<style global>
+  @import './confirm.css';
 </style>

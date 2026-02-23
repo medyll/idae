@@ -69,6 +69,6 @@ const title = `${scored} / ${ratingBase}`;
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './rating.scss';
+<style global>
+  @import './rating.css';
 </style>

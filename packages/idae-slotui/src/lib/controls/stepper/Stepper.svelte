@@ -59,6 +59,6 @@ let child = children;
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './stepper.scss';
+<style global>
+  @import './stepper.css';
 </style>
