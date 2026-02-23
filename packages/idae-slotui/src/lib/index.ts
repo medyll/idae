@@ -311,3 +311,11 @@ export * from '$lib/utils/uses/stickTo/stickTo.js';
 export * from '$lib/utils/uses/sx4u/sx4u.js';
 export * from '$lib/utils/uses/sx4u/sx4uPreprocess.js';
 export * from '$lib/utils/uses/toggler.js';
+
+// Correction des exports en doublon
+export { parameters as alertParameters, componentArgs as alertComponentArgs } from '$lib/base/alert/types.ts';
+export { parameters as looperParameters, componentArgs as looperComponentArgs } from '$lib/utils/looper/types.ts';
+export {
+  BreakPointName as slotuiBreakPointName,
+  BeakPointsUnits as slotuiBeakPointsUnits
+} from '$lib/styles/slotuisheet/types.ts';

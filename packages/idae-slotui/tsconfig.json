@@ -10,7 +10,13 @@
 		"sourceMap": true,
 		"strict": true,
 		"module": "NodeNext",
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "NodeNext",
+		"paths" : {
+			"$lib": ["./src/lib"],
+			"$sitedata": ["./src/sitedata"],
+			"$lib/*": ["./src/lib/*"],
+			"$sitedata/*": ["./src/sitedata/*"]
+		}
 	},
 	"include": ["src/**/*"]
 }
