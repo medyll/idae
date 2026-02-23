@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.31-next.0] - 2026-02-23
+**Features:**
+- add skill to retrieve idae-idbql README documentation via CLI
+
+
+
 ## [0.0.30-next.0] - 2026-02-23
 **Chores:**
 - update VSCode settings and improve accordion component styles; add skill creation guide
