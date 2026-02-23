@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.32-next.0] - 2026-02-23
+**Features:**
+- enhance idae-idbql documentation with modular references and examples
+- update migration documentation with tracking table and Tailwind CSS v4 setup instructions
+- add dark mode strategies documentation and setup instructions for Tailwind v4
+
+
+
 ## [0.0.31-next.0] - 2026-02-23
 **Features:**
 - add skill to retrieve idae-idbql README documentation via CLI
