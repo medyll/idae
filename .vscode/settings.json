@@ -1,36 +1,27 @@
 {
   "files.associations": {
-    "**/packages/idae-html/src/lib/components/*.html": "svelte"
+    "**/packages/idae-html/src/lib/components/*.html": "html",
   },
   "emmet.includeLanguages": {
-    "svelte": "html"
+    "svelte": "html",
+    "html": "html"
   },
+  "cSpell.words": ["CHROMADB", "Idae", "idaenext", "medyll", "sitebase"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "[svelte]": {
-    "editor.defaultFormatter": "svelte.svelte-vscode"
-  }
-
-    "cSpell.words": [
-        "CHROMADB",
-        "Idae",
-        "idaenext",
-        "medyll",
-        "sitebase"
-    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  },
+  "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "[svelte]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
 }

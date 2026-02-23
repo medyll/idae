@@ -1,63 +1,145 @@
+# idae-idbql Command Reference Skill
+
+This skill provides a comprehensive list of all commands and methods available in the `@medyll/idae-idbql` library, accessible via the main entry point (`createIdbqlState`, `createIdbqDb`, or similar). Use this skill to discover, autocomplete, or document all available operations for IndexedDB collections managed by idae-idbql.
+
 ---
-name: idae-idbql-readme
-package: '@medyll/idae-idbql'
-description: Skill to dynamically retrieve the documentation (README.md) of the idae-idbql package via the standardized CLI. idae-idbql is a powerful and flexible IndexedDB query library for TypeScript and JavaScript, offering a MongoDB-like query interface, strong TypeScript support, reactive state management, and easy integration with Svelte. Useful for AI agents, automation scripts, or users needing up-to-date package docs.
----
 
-# Skill: Read idae-idbql README
+## Overview
 
-## Description
-This skill allows you to access the full documentation of the idae-idbql package by using the CLI get-readme command. It is designed for use by AI agents, automation scripts, or any user who wants to quickly fetch the official package documentation.
+The idae-idbql API exposes a MongoDB-like, chainable interface for working with IndexedDB collections. All collection methods are available via the `idbql` object returned from `createIdbqlState` or `createIdbqDb(...).create(...)`.
 
-## Usage
+### Access Pattern
 
-### Locally (in the monorepo):
-```bash
-npx @medyll/idae-idbql get-readme
+```typescript
+const { idbql } = createIdbqDb(model, version).create('my_db');
+// or
+const idbql = createIdbqlState(idbqlCoreInstance);
+
+// Access a collection:
+idbql.users.method(...)
 ```
 
-### As an AI skill (VS Code, Claude, Copilot, etc.):
-- Instruct the agent to run the above command to fetch the latest documentation.
-- The output will be the content of the package's README.md.
+---
 
-## Integration Examples
-- Automatic generation of contextual documentation
-- Answering questions about the idae-idbql API or usage patterns
-- Onboarding or contextual help in the editor
+## Collection Methods
 
-## Best Practices
-- Always use the get-readme command to ensure the documentation is up to date (avoid static copies)
-- Can be combined with other skills to explore the API, exports, or code examples of the package
+Each collection (e.g., `idbql.users`, `idbql.tasks`) exposes the following methods:
 
-## Limitations
-- This skill only returns the content of README.md (not example files or detailed API docs)
-- Requires the CLI to be properly exposed in package.json (bin field)
+### Reading Data
+- **where(query, options?)**: Advanced filtering with operator support. Returns a ResultSet or Promise<ResultSet>.
+- **get(id, pathKey?)**: Get a single item by key (default: 'id').
+- **getBy(value, pathKey?)**: Get all items matching a key/value pair.
+- **getOne(id, pathKey?)**: Alias for `get` (deprecated).
+- **getAll()**: Get all items in the collection.
+- **count(query?)**: Count documents, optionally filtered by a query.
 
-# Skill : Lecture du README de idae-idbql
+### Writing Data
+- **put(data)**: Insert or update an item. Returns the inserted/updated item.
+- **add(data)**: Insert a new item. Returns the inserted item.
+- **update(id, changes)**: Update an item by key.
+- **updateWhere(query, changes)**: Bulk update items matching a query.
 
-## Description
-Ce skill permet d'accéder à la documentation complète du package idae-idbql en utilisant la commande CLI get-readme. Il est conçu pour être utilisé par l'IA, des scripts d'automatisation, ou tout utilisateur souhaitant obtenir rapidement la doc officielle du package.
+### Deleting Data
+- **delete(id)**: Delete an item by key.
+- **del(id)**: Alias for `delete` (deprecated).
+- **deleteWhere(query)**: Bulk delete items matching a query.
 
-## Utilisation
+---
 
-### En local (dans le monorepo) :
-```bash
-npx @medyll/idae-idbql get-readme
+## Method Signatures
+
+```typescript
+// Reading
+where(query: Where<T>, options?: ResultsetOptions): ResultSet<T> | Promise<ResultSet<T>>
+get(id: any, pathKey?: string): T | undefined
+getBy(value: any, pathKey?: string): ResultSet<T>
+getOne(id: any, pathKey?: string): T | undefined // deprecated
+getAll(): ResultSet<T> | Promise<T[]>
+count(query?: Where<T>): Promise<number | undefined>
+
+// Writing
+put(data: Partial<T>): Promise<T | undefined>
+add(data: T): Promise<T | undefined>
+update(id: string | number, changes: Partial<T>): Promise<boolean | undefined>
+updateWhere(query: Where<T>, changes: Partial<T>): Promise<boolean | undefined>
+
+// Deleting
+delete(id: string | number): Promise<boolean | undefined>
+del(id: string | number): Promise<boolean | undefined> // deprecated
+deleteWhere(query: Where<T>): Promise<boolean | undefined>
 ```
 
-### En tant que skill IA (VS Code, Claude, Copilot, etc.) :
-- Demander à l'agent d'exécuter la commande ci-dessus pour obtenir la documentation la plus à jour.
-- Le résultat affichera le contenu du README.md du package.
+---
 
-## Exemples d'intégration
-- Génération automatique de documentation contextuelle
-- Réponse à une question sur l'API ou les patterns d'utilisation de idae-idbql
-- Onboarding ou aide contextuelle dans l'éditeur
+## Usage Example
 
-## Bonnes pratiques
-- Toujours utiliser la commande get-readme pour garantir que la documentation est à jour (éviter les copies statiques)
-- Peut être combiné avec d'autres skills pour explorer l'API, les exports, ou les exemples du package
+```typescript
+// Insert a user
+await idbql.users.put({ name: 'Alice', age: 30 });
 
-## Limites
-- Le skill retourne uniquement le contenu du README.md (pas les fichiers d'exemples ou la doc API détaillée)
-- Nécessite que la CLI soit bien exposée dans le package.json (champ bin)
+// Query users
+const adults = await idbql.users.where({ age: { $gte: 18 } });
+
+// Update users
+await idbql.users.updateWhere({ active: true }, { lastLogin: Date.now() });
+
+// Delete a user
+await idbql.users.delete(123);
+```
+
+---
+
+## Notes
+- All methods are type-safe and support TypeScript generics.
+- Query operators (`$gt`, `$in`, `$or`, etc.) are supported via `@medyll/idae-query`.
+- For reactivity, use Svelte 5 runes or idae-stator as described in the main documentation.
+- Deprecated methods (`getOne`, `del`) are included for backward compatibility.
+
+---
+
+## Advanced Examples
+
+### Complex Query Example
+
+```typescript
+// Complex filtering with object-style syntax
+const results = await idbql.posts.where({
+	status: 'published',
+	tags: { $in: ['svelte', 'idb'] },
+	views: { $gt: 100 },
+	$or: [
+		{ author: 'Mydde' },
+		{ featured: true }
+	]
+}).toArray();
+```
+
+### Svelte 5 Runes Example
+
+```svelte
+<script lang="ts">
+import { createIdbqDb } from '@medyll/idae-idbql';
+
+const { idbql } = createIdbqDb(model, 1).create('my_app_db');
+
+// Use $derived to create reactive views of your data
+let adults = $derived(idbql.users.where({ age: { $gte: 18 } }));
+</script>
+
+{#each adults.value as user}
+	<p>{user.name}</p>
+{/each}
+```
+
+### idae-stator Example
+
+```typescript
+import { createIdbqDb } from '@medyll/idae-idbql';
+
+const { idbql } = createIdbqDb(model, 1, { engine: 'stator' }).create('my_app_db');
+
+const query = idbql.users.where({ role: 'admin' });
+query.onchange((oldValue, newValue) => {
+	console.log('Data updated:', newValue);
+});
+```
