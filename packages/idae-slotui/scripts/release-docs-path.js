@@ -62,16 +62,15 @@ async function slotUiCatalogB() {
   // write file
   const targetPath = path.join(projectRoot, "src/sitedata/slotuiCatalog.ts");
   if (fs.existsSync(targetPath)) {
-    console.log("slotuiCatalog.ts exists already at:", targetPath);
+    // console.log("slotuiCatalog.ts exists already at:", targetPath);
   } else {
     console.log("slotuiCatalog.ts does not exist, will create:", targetPath);
   }
-  console.log("Writing slotuiCatalog.ts to:", targetPath);
+   
   fs.writeFileSync(
     targetPath,
     `export const slotuiCatalog = {${indexContent}} as const`,
-  );
-  console.log("slotuiCatalog.ts written.");
+  ); 
 }
 
 /**
@@ -96,8 +95,7 @@ async function slotUiDemoCatalog() {
 
   const demoTargetPath = path.join(projectRoot, "src/sitedata/slotuiDemoCatalog.ts");
   const demoIndex = await generateDemoIndex();
-  if (fs.existsSync(demoTargetPath)) {
-    console.log("slotuiDemoCatalog.ts exists already at:", demoTargetPath);
+  if (fs.existsSync(demoTargetPath)) { 
   } else {
     console.log("slotuiDemoCatalog.ts does not exist, will create:", demoTargetPath);
   }
@@ -105,9 +103,8 @@ async function slotUiDemoCatalog() {
   fs.writeFileSync(
     demoTargetPath,
     `${demoIndex};\r export const slotuiDemoCatalog = {${indexContent}} as const`,
-  );
-  console.log("slotuiDemoCatalog.ts written.");
-}
+  ); 
+} 
 
 // slotuiDemoComponents
 async function generateDemoIndex() {

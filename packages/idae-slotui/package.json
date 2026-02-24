@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-slotui-svelte",
   "bin": {
-    "idae-slotui": "./scripts/cli.js"
+    "idae-slotui-svelte": "./scripts/cli.js"
   },
   "author": "Lebrun Meddy",
   "version": "0.181.4",
@@ -68,10 +68,6 @@
     "@types/sanitize-html": "^2.16.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
-    "@unocss/preset-mini": "^66.6.0",
-    "@unocss/preset-uno": "^66.6.0",
-    "@unocss/preset-wind": "^66.6.0",
-    "@unocss/svelte-scoped": "^66.6.0",
     "commitizen": "^4.3.1",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",

@@ -1,6 +1,9 @@
 <script module lang="ts" >
 import type { Snippet } from "svelte";
 import type {  ElementProps } from '$lib/types/index.js';
+import Icon from '$lib/base/icon/Icon.svelte';
+import type { ExpandProps } from '$lib/types/index.js'; 
+import Content from '$lib/utils/content/Content.svelte';
 
 export interface AvatarProps    {
   /** icon name 	*/
@@ -22,9 +25,6 @@ export interface AvatarProps    {
 </script>
 
 <script lang="ts">
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import type { ExpandProps } from '$lib/types/index.js'; 
-	import Content from '$lib/utils/content/Content.svelte';
 
 	let {
 		icon = 'icon-park-outline:avatar',
