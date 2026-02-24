@@ -100,5 +100,5 @@
 {/if}
 
 <style global lang="css">
-  @import './BootMenu.css';
+  @import './boot-menu.css';
 </style>

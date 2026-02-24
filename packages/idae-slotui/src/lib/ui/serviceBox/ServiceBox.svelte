@@ -21,6 +21,4 @@
 	</div>
 </div>
 
-<style global lang="css">
-	@import './serviceBox.css';
-</style>
+ 

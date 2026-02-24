@@ -100,13 +100,52 @@ This ensures consistent and discoverable exports for all Svelte components. The 
 ### Status: Completed
 
 All SCSS files in the following directories have been successfully migrated to CSS:
-
-1. `controls/`
-2. `data/`
-3. `navigation/`
-4. `ui/`
-5. `utils/`
-
 Each corresponding Svelte component has been updated to reference the new CSS files.
 
 
+
+
+---
+
+
+### Snippet Migration Instructions (STRICT)
+
+#### 1. Target Directories
+
+Process each directory sequentially: `controls/`, `data/`, `navigation/`, `ui/`, `utils/`.
+
+#### 2. File Location (CRITICAL)
+
+* **DO NOT** create a `snippets/` subdirectory.
+* **DO NOT** move new components to a central folder.
+* **MANDATORY**: Each new component **MUST** be created in the **same directory** as its parent component.
+* *Example:* If `Button.svelte` is in `controls/`, then `ButtonStart.svelte` must also be created in `controls/`.
+
+
+
+#### 3. Identification Logic
+
+Scan for properties matching: `^[ \t]*(?!children).*\bSnippet\b.*;$`
+
+#### 4. Component Structure
+
+For each identified snippet (excluding `children`), generate a new Svelte component using **PascalCase**:
+
+```svelte
+ <!-- snippet component for root: {ParentComponentName} -->
+<script>
+  let { children, ...restProps }: {snippetProps} = $props();
+</script>
+
+{#snippet {snippetName}()}
+  {@render children?.()}
+{/snippet}
+
+```
+
+#### 5. Execution Rules
+
+* **No sub-folders**: Every new file stays at the root of the current processed directory.
+* **No interruptions**: Process one full directory before moving to the next.
+* **No questions**: Execute following the template strictly.
+ 

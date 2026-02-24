@@ -58,6 +58,4 @@ export type PreviewProps<T = Data> = CommonProps & {
 	</div>
 {/if}
 
-<style global lang="css">
-	@import './preview.css';
-</style>
+

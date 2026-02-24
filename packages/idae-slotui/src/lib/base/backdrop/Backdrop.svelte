@@ -43,8 +43,7 @@ export interface BackdropProps<T = any, C = any> extends CommonProps {
 }
 </script>
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import Icon from '$lib/base/icon/Icon.svelte';
+	import { createEventDispatcher } from 'svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 	/** Backdrop controller */
@@ -86,6 +85,10 @@ export interface BackdropProps<T = any, C = any> extends CommonProps {
 		if (autoClose) isOpen = false;
 	}
 </script>
+
+/** Component for rendering the `backdropLoading` slot */
+export let backdropLoading: Snippet;
+const dispatch = createEventDispatcher();
 
 {#if isOpen}
 	<div
