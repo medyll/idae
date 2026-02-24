@@ -97,7 +97,7 @@ async function processDir(dir) {
   }
 }
 
-async function main() {
+export async function makeIndexFile() {
   // Générer index.ts racine de src/lib
   const libRoot = path.resolve(__dirname, '..', 'src/lib');
   const libExportLines = COMPONENT_ROOTS.map(root => {
@@ -141,4 +141,7 @@ async function main() {
   console.log('index.ts files generated for all component folders and roots.');
 }
 
-main();
+// Si exécuté en CLI, lance makeIndexFile()
+if (import.meta.url === `file://${process.argv[1]}`) {
+  makeIndexFile();
+}

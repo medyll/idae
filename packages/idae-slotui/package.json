@@ -1,7 +1,7 @@
 {
   "name": "@medyll/idae-slotui-svelte",
   "bin": {
-    "idae-slotui": "./cli.cjs"
+    "idae-slotui": "./scripts/cli.js"
   },
   "author": "Lebrun Meddy",
   "version": "0.181.4",
@@ -125,6 +125,7 @@
     "sanitize-html": "^2.17.1",
     "svelte-preprocess": "^6.0.3",
     "svelte-spa-router": "^4.0.1",
+    "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1"
   }
 }
