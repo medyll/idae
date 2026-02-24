@@ -62,5 +62,5 @@ export type TitleBarProps = {
 </div>
 
 <style global>
-  @import '../../slotui-css/title-bar.css';
+  @import './titleBar.css';
 </style>

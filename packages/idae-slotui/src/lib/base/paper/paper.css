@@ -1,15 +1,12 @@
 :root {
-    --paper-radius: var(--sld-radius-medium);
-    --paper-bg: var(--sld-color-background);
-    --paper-border: var(--sld-color-border);
-    --paper-padding: 1.5rem;
-    --paper-shadow: var(--sld-elevation-1);
+    --paper-radius: var(--sld-radius-small);
+    --paper-border: var(--sld-color-foreground-alpha-high);
+    --paper-background-color: var(--sld-color-paper);
+    --paper-background-color-hover: var(--sld-color-paper-darken-low);
 }
 
 .paper {
+    color: var(--paper-border);
+    background-color: var(--paper-background-color);
     border-radius: var(--paper-radius);
-    background: var(--paper-bg);
-    border: 1px solid var(--paper-border);
-    padding: var(--paper-padding);
-    box-shadow: var(--paper-shadow);
 }

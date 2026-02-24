@@ -1,14 +1,31 @@
 :root {
-    --box-radius: var(--sld-radius-medium);
-    --box-bg: var(--sld-color-background);
-    --box-border: var(--sld-color-border);
-    --box-padding: 1rem;
+    --box-color-background: var(--sld-color-background);
+    --box-border-bottom: var(--sld-color-primary);
+    --box-radius: var(--sld-radius-small);
+    --box-elevation: var(--sld-elevation-3);
+    --box-gap: var(--sld-gap-tiny);
+    --box-pad: var(--sld-pad-small);
 }
 
 .box {
+    min-height: 160px;
+    min-width: 320px;
+    background-color: var(--box-color-background);
+    border-bottom: 1px solid var(--box-border-bottom);
     border-radius: var(--box-radius);
-    background: var(--box-bg);
-    border: 1px solid var(--box-border);
-    padding: var(--box-padding);
-    box-shadow: var(--sld-elevation-2);
+    box-shadow: var(--box-elevation);
+    display: flex;
+    flex-direction: column;
+}
+
+.box-content {
+    flex: 1;
+}
+
+.box-button-zone {
+    display: flex;
+    gap: var(--box-gap);
+    padding: var(--box-pad);
+    text-align: right;
+    justify-content: end;
 }

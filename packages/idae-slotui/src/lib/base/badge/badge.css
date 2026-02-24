@@ -4,15 +4,19 @@
     --badge-color: var(--sld-color-badge-text);
     --badge-padding: 0.25em 0.75em;
     --badge-font-size: 0.85em;
+    --badge-color-border: var(--sld-color-border);
 }
 
 .badge {
-    display: inline-block;
-    border-radius: var(--badge-radius);
-    background: var(--badge-bg);
-    color: var(--badge-color);
-    padding: var(--badge-padding);
-    font-size: var(--badge-font-size);
-    font-weight: 600;
-    line-height: 1;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--badge-color-border);
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+}
+
+.badge .hidden {
+    transform: scale(0, 0);
 }
