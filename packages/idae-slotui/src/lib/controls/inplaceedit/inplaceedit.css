@@ -1,14 +1,1 @@
-:root {
-    --inplaceedit-radius: var(--sld-radius-medium);
-    --inplaceedit-bg: var(--sld-color-background);
-    --inplaceedit-border: var(--sld-color-border);
-    --inplaceedit-padding: 0.5rem 1rem;
-}
-
-.inplaceedit {
-    border-radius: var(--inplaceedit-radius);
-    background: var(--inplaceedit-bg);
-    border: 1px solid var(--inplaceedit-border);
-    padding: var(--inplaceedit-padding);
-    font-size: 1em;
-}
+/* Placeholder for InPlaceEdit styles */

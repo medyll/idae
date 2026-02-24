@@ -2,6 +2,10 @@
 	import Looper from '../looper/Looper.svelte';
 </script>
 
+<style global>
+    @import './css.css';
+</style>
+
 {#snippet cssBlock(color)}
 	<div>
 		<div class="flex-h gap-small">
@@ -56,9 +60,3 @@ elevation 1/5
 		{@render cssElevation(item)}
 	{/snippet}
 </Looper>
-
-<style>
-	div {
-		padding: 1rem;
-	}
-</style>

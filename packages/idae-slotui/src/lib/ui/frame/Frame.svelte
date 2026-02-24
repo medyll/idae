@@ -87,6 +87,6 @@
 	</div>
 </div>
 
-<style global lang="css">
+<style global>
 	@import './frame.css';
 </style>

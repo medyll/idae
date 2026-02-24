@@ -215,6 +215,6 @@ export interface TreeItemType<T = Record<string, any>> {
 	{/each}
 </div>
 
-<style global lang="css">
-  @import './tree.css';
+<style global>
+    @import './tree.css';
 </style>

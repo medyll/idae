@@ -326,6 +326,6 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {:else}
 {/if} -->
 
-<style global lang="css">
-  @import './window.css';
+<style global>
+    @import './window.css';
 </style>

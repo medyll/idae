@@ -1,0 +1,22 @@
+:root {
+    --window-border-radius: var(--sld-radius-small);
+    --window-background-color: var(--sld-color-background);
+    --window-color: var(--sld-color-foreground);
+    --window-border: 1px solid rgba(255, 255, 255, 0.1);
+    --window-min-width: 250px;
+    --window-z-index: 70000;
+    --window-box-shadow: var(--sld-elevation-1);
+    --window-active-border: 1px solid var(--sld-color-primary);
+    --window-active-box-shadow: var(--sld-elevation-3);
+    --window-header-bar-background-color: var(--sld-color-paper);
+    --window-header-bar-padding: var(--sld-pad-tiny) 0;
+    --window-header-bar-icon-padding: unset var(--sld-pad-med);
+    --window-footer-button-zone-padding: var(--sld-pad-tiny);
+    --window-footer-button-zone-gap: var(--sld-gap-small);
+}
+
+dialog.window {
+    border-radius: var(--window-border-radius);
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+}

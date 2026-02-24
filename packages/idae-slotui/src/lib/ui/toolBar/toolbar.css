@@ -1,0 +1,16 @@
+:root {
+	--toolbar-padding: var(--sld-toolbar-padding, var(--box-density-1, var(--sld-pad-tiny)));
+	--toolbar-gap: var(--sld-pad-tiny);
+	--toolbar-divider-border: 1px solid red;
+	--toolbar-divider-height: 1rem;
+	--toolbar-vertical-divider-border: 1px solid green;
+	--toolbar-vertical-divider-width: 1rem;
+}
+
+.toolbar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: var(--toolbar-padding);
+	gap: var(--toolbar-gap);
+}

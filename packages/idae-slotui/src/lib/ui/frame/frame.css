@@ -1,14 +1,18 @@
 :root {
-    --frame-radius: var(--sld-radius-medium);
-    --frame-bg: var(--sld-color-background);
-    --frame-border: var(--sld-color-border);
-    --frame-padding: 1rem;
+    --frame-background-color: var(--sld-color-paper);
+    --frame-backdrop-filter: blur(30px);
+    --frame-container-border-right: var(--sld-color-primary);
 }
 
 .frame {
-    border-radius: var(--frame-radius);
-    background: var(--frame-bg);
-    border: 1px solid var(--frame-border);
-    padding: var(--frame-padding);
-    font-size: 1em;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--frame-background-color);
+    --moz-backdrop-filter: var(--frame-backdrop-filter);
+    backdrop-filter: var(--frame-backdrop-filter);
+    overflow: hidden;
 }

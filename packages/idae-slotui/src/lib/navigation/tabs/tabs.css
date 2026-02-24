@@ -9,6 +9,7 @@
 
 .tabs {
     display: flex;
+    flex-direction: row;
     gap: var(--tabs-gap);
     border-radius: var(--tabs-radius);
     background: var(--tabs-bg);

@@ -292,5 +292,5 @@ let {
 {/if}
 
 <style global>
-  @import './dataList.css';
+  @import './datalist.css';
 </style>

@@ -45,6 +45,6 @@ let {
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './sorterer.scss';
+<style global>
+  @import './sorterer.css';
 </style>

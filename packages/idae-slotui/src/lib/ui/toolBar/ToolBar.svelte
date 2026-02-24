@@ -42,6 +42,6 @@ export type ToolBarProps = CommonProps & {
 	<Slotted child={toolbarSeparator} />
 </div>
 
-<style global lang="css">
-  @import './toolbar.css';
+<style global>
+    @import './toolbar.css';
 </style>

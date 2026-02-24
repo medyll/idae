@@ -83,6 +83,6 @@ export type ToggleBarProps = CommonProps & {
 	</div>
 </div>
 
-<style global lang="css">
-  @import './toggleBar.css';
+<style global>
+    @import './toggle-bar.css';
 </style>

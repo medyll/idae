@@ -1,6 +1,6 @@
 /* MIGRATION: SCSS to CSS for textfield component. See MIGRATION.md for rules. */
 
-.slotui-textfield {
+:root {
     --textfield-background: var(--sld-color-background-alpha-high);
     --textfield-border-width: 1px;
     --textfield-border-color: var(--sld-color-foreground-alpha-mid);
@@ -9,8 +9,9 @@
     --textfield-radius: var(--sld-radius-small);
     --textfield-padding: 0 0.5rem;
     --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+}
 
-    /* width/tall presets, hover: migrate mixins to utility classes or Tailwind if needed */
+.slotui-textfield {
     border: var(--textfield-border-width) solid var(--textfield-border-color);
     border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
     border-radius: var(--textfield-radius);

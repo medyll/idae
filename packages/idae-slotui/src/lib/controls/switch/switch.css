@@ -1,0 +1,18 @@
+:root {
+    --switch-border-radius: var(--sld-radius-large);
+    --switch-background: var(--sld-color-paper);
+    --switch-checked-background: var(--sld-color-primary);
+    --switch-handle-background-color: var(--sld-color-primary);
+    --switch-handle-border: var(--sld-color-secondary-alpha-low);
+    --switch-gutter-border: var(--sld-color-primary-alpha-low);
+    --switch-gutter-background: var(--sld-switch-background);
+    --switch-gutter-padding: 3px;
+}
+
+.switch {
+    display: inline-block;
+    position: relative;
+    border-radius: var(--switch-border-radius);
+    overflow: hidden;
+    cursor: pointer;
+}
