@@ -63,7 +63,7 @@ export type GrouperProps<T extends object> = CommonProps & {
 
 <script lang="ts" generics="T extends object">
 import Button from '$lib/controls/button/Button.svelte';
-import ButtonMenu from '$lib/controls/button/ButtonMenu.svelte';
+import ButtonMenu from '$lib/controls/buttonMenu/ButtonMenu.svelte';
 import { dataOp } from '@medyll/idae-engine';
 import Looper from '$lib/utils/looper/Looper.svelte';
 import type { MenuListItemProps } from '$lib/ui/menuList/types.js';

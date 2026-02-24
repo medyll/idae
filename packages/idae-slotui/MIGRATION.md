@@ -110,42 +110,90 @@ Each corresponding Svelte component has been updated to reference the new CSS fi
 
 ### Snippet Migration Instructions (STRICT)
 
-#### 1. Target Directories
+Purpose: standardize creation of small "snippet" components discovered inside parent components.
 
-Process each directory sequentially: `controls/`, `data/`, `navigation/`, `ui/`, `utils/`.
+1) Scope and order
+- Process directories in this exact sequence: `controls/`, `data/`, `navigation/`, `ui/`, `utils/`.
 
-#### 2. File Location (CRITICAL)
+2) Discovery (identification)
+- Find candidate snippet properties using the regex: `^[ \t]*(?!children).*\bSnippet\b.*;$` in component scripts.
+- The migration script `scripts/migrate-snippet.js` can produce a preview list; run it locally to inspect results:
 
-* **DO NOT** create a `snippets/` subdirectory.
-* **DO NOT** move new components to a central folder.
-* **MANDATORY**: Each new component **MUST** be created in the **same directory** as its parent component.
-* *Example:* If `Button.svelte` is in `controls/`, then `ButtonStart.svelte` must also be created in `controls/`.
-
-
-
-#### 3. Identification Logic
-
-Scan for properties matching: `^[ \t]*(?!children).*\bSnippet\b.*;$`
-
-#### 4. Component Structure
-
-For each identified snippet (excluding `children`), generate a new Svelte component using **PascalCase**:
-
-```svelte
- <!-- snippet component for root: {ParentComponentName} -->
-<script>
-  let { children, ...restProps }: {snippetProps} = $props();
-</script>
-
-{#snippet {snippetName}()}
-  {@render children?.()}
-{/snippet}
-
+```powershell
+node .\scripts\migrate-snippet.js
 ```
 
-#### 5. Execution Rules
+3) File placement rules (CRITICAL)
+- Do NOT create a `snippets/` subdirectory.
+- Do NOT move new components into a central directory.
+- Each generated snippet component MUST be created in the same directory as its parent component. Example: if `Button.svelte` lives in `src/lib/controls/button/`, then `ButtonStart.svelte` must also be created in `src/lib/controls/button/`.
 
-* **No sub-folders**: Every new file stays at the root of the current processed directory.
-* **No interruptions**: Process one full directory before moving to the next.
-* **No questions**: Execute following the template strictly.
+4) Naming conventions
+- Use PascalCase for filenames and component names (example: `ButtonStart.svelte`).
+- Name should be meaningful and, when helpful, prefixed by the parent component name.
+
+5) Component template (mandatory)
+- Every snippet file must include a `@component` HTML comment, a typed `script module` block for exported types copied from the corresponding snippet typing; and use Svelte 5 runes for props. Keep implementations minimal: the snippet should render its `children` slot (if any) and forward props.
+
+Canonical template (replace types and names):
+
+```svelte
+<!-- @component Snippet: ButtonStart — small renderable part for Button -->
+<script module lang="ts">
+/**
+ * Props for `ButtonStart` snippet
+ * - `label` : optional label text
+ * - `...rest` : forwarded props
+ */
+export type ButtonStartProps = {
+	label?: string;
+	[key: string]: unknown;
+};
+</script>
+
+<script lang="ts">
+const { children, ...rest }: ButtonStartProps = $props();
+</script>
+
+{#snippet ButtonStart()}
+	{@render children?.()}
+{/snippet}
+
+<style global>
+@import './ButtonStart.css';
+</style>
+```
+
+Notes about the template:
+- Use `<script module lang="ts">` to declare exported types at file top (required for project conventions).
+- Use `$props()` from Svelte 5 runes to destructure `children` and other props.
+- Keep the snippet logic minimal — it should not contain unrelated implementation details.
+
+6) Styling
+- Import the component's CSS using `<style global> @import './Name.css'; </style>` as required by the migration rules.
+
+7) Execution rules / workflow
+- Work on one directory at a time. Finish generating and checking all snippet files for that directory before moving to the next.
+- Do not change parent component file locations.
+- Follow the exact template and naming rules — automated tools and downstream scripts rely on these conventions.
+
+8) Validation
+- After creating snippet files for a directory, run TypeScript checking and unit tests locally:
+
+```powershell
+pnpm run build
+pnpm run test:unit
+```
+
+- If `scripts/migrate-snippet.js` supports a dry-run or preview mode, use it first to validate detection patterns.
+
+9) Troubleshooting
+- If the migration script errors: inspect its output, fix the offending component manually using the template, and re-run the checks.
+- If a generated snippet requires additional props, add explicit typing in the `script module` block and keep the restProps spread for forwards.
+
+10) Example: complete minimal generated file
+
+See the template above. Ensure the file begins with the `@component` comment and exports a type in the `script module` block.
+
+Follow these rules strictly — do not deviate without updating this document and the migration tooling.
  

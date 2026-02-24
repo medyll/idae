@@ -5,7 +5,7 @@
 	import type { DemoerProps, DemoerStoryProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 
 	let {
 		title,

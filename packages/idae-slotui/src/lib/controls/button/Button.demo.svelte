@@ -7,8 +7,8 @@
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import ButtonAction from './ButtonAction.svelte';
-	import ButtonMenu from './ButtonMenu.svelte';
+	import ButtonAction from '../buttonAction/ButtonAction.svelte';
+	import ButtonMenu from '../buttonMenu/ButtonMenu.svelte';
 
 	import { parameters, componentArgs } from './types.js'; // keep for now if needed for demo values
 	// Types are now in Button.svelte, update type imports if needed

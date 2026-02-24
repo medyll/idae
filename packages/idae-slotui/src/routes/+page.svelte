@@ -11,7 +11,7 @@
 	import Backdrop from '$lib/base/backdrop/Backdrop.svelte'; 
 	import type { LayoutData } from './$types.js';
 	import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	let uiContext = getContext<Writable<UiContextType>>('uiContext');
 	let BackdropRef;
 	let backdropVisible: boolean = $state(false);

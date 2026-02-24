@@ -162,7 +162,7 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 
 	import type { WindowProps } from './Window.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 
 	let {
 		class: className = '',

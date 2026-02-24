@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 import Divider from '$lib/base/divider/Divider.svelte';
 import { fade } from 'svelte/transition';
 import Slotted from '$lib/utils/slotted/Slotted.svelte';
-import IconButton from '$lib/controls/button/IconButton.svelte';
+import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 /**
  * @description:  Represents an alert message with customizable level, message, and slot support.
  * @property {string} [class] - Class name for the alert root element, allowing custom styling.

@@ -27,7 +27,7 @@ export type ButtonMenuProps<T = any> = {
 <script lang="ts" generics="T">
 import Popper from '$lib/ui/popper/Popper.svelte';
 import MenuList from '$lib/ui/menuList/MenuList.svelte';
-import Button from './Button.svelte';
+import Button from '../button/Button.svelte';
 import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 
 let {
@@ -75,6 +75,7 @@ let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevr
 	</Popper>
 {/if}
 
-<style global lang="scss">
-	@use './button-menu.scss';
+<style global lang="css">
+	@import '../button/button.css';
+	@import './button-menu.css';
 </style>

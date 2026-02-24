@@ -1,14 +1,14 @@
 <script module lang="ts">
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
-import type { ButtonProps } from './types.js';
+import type { ButtonProps } from '../button/types.js';
 import Button from '$lib/controls/button/Button.svelte';
 import Icon from '$lib/base/icon/Icon.svelte';
 /**
  * Props for the IconButton component.
  * Extends ButtonProps with icon, size, and slot support.
  */
-export type IconButtonProps = Partial<ButtonProps> & {
+export type ButtonIconProps = Partial<ButtonProps> & {
 	/** Icon to be displayed */
 	icon: ElementProps['icon'];
 	/** Show a ship indicator (optional) */
@@ -40,7 +40,7 @@ export type IconButtonProps = Partial<ButtonProps> & {
 		size = 'mini',
 		children,
 		...rest
-	}: IconButtonProps = $props();
+	}: ButtonIconProps = $props();
 
 	let finalIcon = $derived(typeof icon === 'object' ? {...icon,iconSize:iconFontSize} : {icon,iconSize:iconFontSize});
 </script>
@@ -50,5 +50,5 @@ export type IconButtonProps = Partial<ButtonProps> & {
 </Button>
 
 <style global>
-  @import './button.css';
+  @import '../button/button.css';
 </style>

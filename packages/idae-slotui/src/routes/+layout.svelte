@@ -19,7 +19,7 @@
 	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
 
 	import { cssDom } from '@medyll/idae-dom-events';

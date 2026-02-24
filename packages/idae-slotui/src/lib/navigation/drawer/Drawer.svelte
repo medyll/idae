@@ -44,7 +44,7 @@ export type DrawerProps<T = any> = CommonProps & {
 </script>
 
 <script lang="ts" generics="T">
-import IconButton from '$lib/controls/button/IconButton.svelte';
+import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 import Button from '$lib/controls/button/Button.svelte';
 import Icon from '$lib/base/icon/Icon.svelte';
 import Slotted from '$lib/utils/slotted/Slotted.svelte';

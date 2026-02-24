@@ -2,7 +2,11 @@
 import type { Snippet } from 'svelte';
 import type { PopperProps } from '$lib/ui/popper/types.js';
 import type { MenuProps } from '$lib/ui/menu/types.js';
-import type { ButtonProps } from './Button.svelte';
+import type { ButtonProps } from '../button/Button.svelte';
+import Popper from '$lib/ui/popper/Popper.svelte';
+import Button from '../button/Button.svelte';  
+import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import type { ExpandProps } from '$lib/types/index.js';
 /**
  * Props for the ButtonAction component.
  * Extends ButtonProps with popper and menu support.
@@ -16,16 +20,7 @@ export type ButtonActionProps = ButtonProps & {
   popperContent?: Snippet;
 };
 </script>
-<script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { PopperProps } from '$lib/ui/popper/types.js';
-	import type { MenuProps } from '$lib/ui/menu/types.js';
-	import Popper from '$lib/ui/popper/Popper.svelte';
-	import Button from './Button.svelte';
-	import type { ButtonProps } from './Button.svelte';
-	import Icon from '$lib/base/icon/Icon.svelte';
-	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { ExpandProps } from '$lib/types/index.js';
+<script lang="ts"> 
 
 let {
 	element,
@@ -64,7 +59,6 @@ let chevron = 'fluent:chevron-down-20-regular';
 	</Popper>
 {/if}
 
-<style global lang="scss">
-	@use './button.scss';
-	@use './button-action.scss';
+<style global lang="css">
+	@import '../button/button.css';
 </style>
