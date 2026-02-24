@@ -58,6 +58,26 @@ npm install @medyll/idae-api
 
 This section covers how to set up and run the `idae-api` server.
 
+---
+
+## Default REST API Routes
+
+The following routes are available by default for all collections. All endpoints require the `:collectionName` parameter (the name of your collection/table).
+
+| Method | Path | Validation | Handler Description |
+|--------|------|------------|---------------------|
+| GET    | `/:collectionName` | `paramsSchema: { collectionName: string }`<br>`querySchema: Record<string, any> (optional)` | Returns all documents matching the query. |
+| GET    | `/:collectionName/:id` | `paramsSchema: { collectionName: string, id: string }` | Returns a single document by ID. |
+| POST   | `/:collectionName` | `paramsSchema: { collectionName: string }`<br>`bodySchema: Record<string, any>` | Creates a new document. |
+| PUT    | `/:collectionName/:id` | `paramsSchema: { collectionName: string, id: string }`<br>`bodySchema: Record<string, any>` | Updates a document by ID. |
+| DELETE | `/:collectionName/:id` | `paramsSchema: { collectionName: string, id: string }` | Deletes a document by ID. |
+| DELETE | `/:collectionName` | `paramsSchema: { collectionName: string }` | Deletes documents matching the filter. |
+| POST   | `/query/:collectionName/:command/:parameters` | `paramsSchema: { collectionName: string, command: string, parameters?: string }`<br>`bodySchema: Record<string, any> (optional)` | Executes an advanced query command (e.g., find, update, delete). Requires authentication. |
+
+**Note:** All validation uses [zod](https://zod.dev/) schemas. See the source for advanced usage and custom route injection.
+
+---
+
 ### Initialization & Configuration
 
 Use `idaeApi.setOptions()` to configure the server before starting it.
