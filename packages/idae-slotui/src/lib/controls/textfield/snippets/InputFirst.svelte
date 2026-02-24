@@ -1,5 +1,5 @@
  
-<!-- snippet component for root: TextField -->
+<!-- @component snippet component for root: TextField -->
 
 <script>
   // Destructure children and additional snippet props

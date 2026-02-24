@@ -1,4 +1,4 @@
-<!-- @component Snippet: AutoCompleteEmpty - snippet component for root: AutoComplete -->
+<!-- @component snippet component AutoCompleteEmpty for root: AutoComplete -->
 <script lang="ts">
   let { children, ...restProps }: { children?: any; [key: string]: any } = $props();
 </script>

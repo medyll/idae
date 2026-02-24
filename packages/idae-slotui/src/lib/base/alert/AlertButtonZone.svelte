@@ -1,4 +1,4 @@
-<!-- snippet component for root: alert -->
+<!-- @component snippet component for root: alert -->
 <script>
     let { children } = $props();
 </script>

@@ -138,7 +138,7 @@ node .\scripts\migrate-snippet.js
 Canonical template (replace types and names):
 
 ```svelte
-<!-- @component Snippet: ButtonStart — small renderable part for Button -->
+<!-- @component snippet component ButtonStart — small renderable part for Button -->
 <script lang="ts">
 const { children } = $props();
 </script>

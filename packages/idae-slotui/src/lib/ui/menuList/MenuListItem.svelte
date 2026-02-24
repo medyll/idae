@@ -85,7 +85,7 @@
 	};
 </script>
 
-<!-- snippet component for root: menuList -->
+<!-- @component snippet component for root: menuList -->
 <!-- <script>
     let { children } = $props();
 </script>

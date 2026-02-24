@@ -1,4 +1,4 @@
-<!-- snippet component for root: titleBar -->
+<!-- @component snippet component for root: titleBar -->
 <script>
     let { children } = $props();
 </script>

@@ -1,4 +1,4 @@
-<!-- snippet component for root: looper -->
+<!-- @component snippet component for root: looper -->
 
 <script>
     let { children } = $props();

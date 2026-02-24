@@ -1,4 +1,4 @@
-<!-- snippet component for root: marquee -->
+<!-- @component snippet component for root: marquee -->
 <script>
     let { children } = $props();
 </script>

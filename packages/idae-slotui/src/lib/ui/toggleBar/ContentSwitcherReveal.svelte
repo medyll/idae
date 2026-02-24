@@ -1,4 +1,4 @@
-<!-- snippet component for root: toggleBar -->
+<!-- @component snippet component for root: toggleBar -->
 
 <script>
     let { children } = $props();
