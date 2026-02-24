@@ -1,13 +1,18 @@
-
-
 # Always refer to MIGRATION.md at the project root for up-to-date migration rules, requirements, and conventions during any migration or refactor task.
 
 # Copilot/AI Agent Instructions for @medyll/idae-slotui-svelte
 
 This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs site (`src/routes/`). It is part of a monorepo and shares tooling with other `idae` packages.
 
+## Features
+- **Reusable Components**: Prebuilt slot-based components to speed up development.
+- **Customizable**: Easily adapt components to fit your application's design and functionality.
+- **Svelte Integration**: Designed specifically for Svelte, ensuring seamless integration.
+- **Lightweight**: Minimal dependencies for optimal performance.
+
 ## Architecture & Structure
 - **Component Library:** All UI components are in `src/lib/base/` (atomic) and `src/lib/controls/` (form/interactive). Utilities are in `src/lib/utils/`.
+- **Slot-based Design:** Components are designed around slots for maximum reusability and flexibility.
 - **Docs/Demos:** SvelteKit app in `src/routes/` showcases and documents all components.
 - **Styling:** Each component has a `.scss` file, imported via `<style global lang="scss"> @use './component-name.scss'; </style>`. SCSS is canonical; compiled CSS is output to `src/lib/slotui-css/` (never edit generated CSS directly).
 - **Exports:** All public components and CSS are re-exported from `src/lib/index.ts`.
@@ -31,6 +36,7 @@ This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs
   - Integration: `npm run test:integration`
 - **CSS build:** `npm run release-css` (compiles all SCSS to distributable CSS)
 - **Lint/format:** `npm run lint`, `npm run format`
+- **Docs generation:** See `src/tests/docs.test.js` and `src/lib/docs/docs.js` for automated docs extraction from Svelte components.
 
 ## Project-Specific Notes
 - **Never edit files in `src/lib/slotui-css/` directly**; always update SCSS and re-run the CSS build.
@@ -48,13 +54,17 @@ This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs
   import Component2 from "./Component2.svelte";
   export { Component2 };
   ```
-  Run this script after adding or renaming components to ensure consistent exports.
-- **Docs generation:** See `src/tests/docs.test.js` and `src/lib/docs/docs.js` for automated docs extraction from Svelte components.
-- **Monorepo:** Shares scripts/config with other `idae` packages; see root for shared scripts.
 
 ## Integration & Dependencies
 - **Depends on:** `@medyll/idae-engine`, `@medyll/cssfabric`, UnoCSS, Iconify
 - **Build tools:** Vite, SvelteKit, custom scripts in `scripts/`
+- **Installation:**
+  ```bash
+  npm install @medyll/idae-slotui-svelte
+  ```
+
+## Contributing
+Contributions are welcome! Please refer to the [contribution guidelines](../../CONTRIBUTING.md) for more details.
 
 ## References
 - [README.md](../../README.md): Usage, examples, and more details
@@ -63,4 +73,4 @@ This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs
 - [tsconfig.json](../../tsconfig.json): Aliases and strictness
 
 ---
-**Last updated:** January 2026
+**Last updated:** February 2026
