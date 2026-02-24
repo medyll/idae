@@ -7,6 +7,12 @@
 			"$lib/*": [
 				"../src/lib/*"
 			],
+			"$sitedata": [
+				"../src/sitedata"
+			],
+			"$sitedata/*": [
+				"../src/sitedata/*"
+			],
 			"$app/types": [
 				"./types/index.d.ts"
 			]

@@ -9,8 +9,8 @@
 	}
 </script>
 
-<style global lang="css">
-  @import './ThemeSwitcher.css';
+<style global>
+  @import './theme-switcher.css';
 </style>
 
 <IconButton

@@ -81,7 +81,8 @@ let {
 	drawerSecondary,
 	drawerTop,
 	drawerFooter,
-	children
+	children,
+	...rest
 } = $props<DrawerProps<T>>();
 
 let dspStyle: string;

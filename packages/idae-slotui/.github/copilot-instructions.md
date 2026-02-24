@@ -36,6 +36,19 @@ This repo is a Svelte 5 component library (`src/lib/`) and a SvelteKit demo/docs
 - **Never edit files in `src/lib/slotui-css/` directly**; always update SCSS and re-run the CSS build.
 - **Tests:** Place in `src/tests/` or alongside components.
 - **Component creation:** Add new folders/files in `src/lib/base` or `src/lib/controls`, import SCSS, and export from `src/lib/index.ts`.
+- **Automated export index:** Use the `scripts/make-export.ts` script to generate (or update) an `index.ts` file in each component directory under `src/lib/`. This script loops through all components and creates an `index.ts` that re-exports all `.svelte` components in the directory. Example:
+  ```ts
+  import Component from "./Component.svelte";
+  export { Component };
+  ```
+  For multiple components:
+  ```ts
+  import Component1 from "./Component1.svelte";
+  export { Component1 };
+  import Component2 from "./Component2.svelte";
+  export { Component2 };
+  ```
+  Run this script after adding or renaming components to ensure consistent exports.
 - **Docs generation:** See `src/tests/docs.test.js` and `src/lib/docs/docs.js` for automated docs extraction from Svelte components.
 - **Monorepo:** Shares scripts/config with other `idae` packages; see root for shared scripts.
 

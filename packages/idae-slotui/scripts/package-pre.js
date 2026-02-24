@@ -1,9 +1,9 @@
-import { SCSSConverter } from './release-css.js';
+// import { SCSSConverter } from './release-css.js';
 import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
 
-const converter = new SCSSConverter('./src/lib', './src/lib/slotui-css');
+// const converter = new SCSSConverter('./src/lib', './src/lib/slotui-css');
 
-converter.processAllFiles();
+// converter.processAllFiles();
 
 new MakeLibIndex({mainGlobPattern:"**/*"}).makeIndexFile();
 

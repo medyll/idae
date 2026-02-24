@@ -1,4 +1,6 @@
 <script module lang="ts">
+import { iconFontSize,   type ExpandProps } from '$lib/types/index.js'; 
+import Iconify from '@iconify/svelte';
 import type { ElementProps, IconObj } from "$lib/types/index.js"; 
 
 /**
@@ -68,8 +70,6 @@ export type IconAppProps = {
 </script>
 
 <script lang="ts">
-	import { iconFontSize,   type ExpandProps } from '$lib/types/index.js'; 
-	import Iconify from '@iconify/svelte';
 
 	let {
 		icon = $bindable('question'),

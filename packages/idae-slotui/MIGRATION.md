@@ -38,6 +38,7 @@ The migration tracking table for the  for all components and their status will b
 	- [ ] Install Tailwind CSS v4 as a priority before any other migration steps.
 	- [ ] Create and configure the theme (theme.css) for Tailwind v4.
 		- Collect all theme indices and variables found in SCSS mixins and shared SCSS files, and migrate them to theme.css.
+	- [ ] Change export mode for .svelte modules: automate index.ts creation for each component directory (see below)
 	- [ ] Integration and configuration of shadcn-svelte
 	- [ ] Progressive replacement of native components by those from the design system
 	- [ ] Style and theme adjustments
@@ -55,6 +56,31 @@ The migration tracking table for the  for all components and their status will b
 7. Integration and configuration of shadcn-svelte
 8. Style and theme adjustments
 9. Testing and validation
+10. Automated export index generation for Svelte components
+
+### Automated Export Index Generation
+
+To standardize and automate the export of Svelte components, a script should be created:
+
+- **Script:** `scripts/make-export.ts`
+- **Purpose:** Loops through all components and component directories in `src/lib/`.
+- **For each component or component directory:**
+	- Creates (or updates) an `index.ts` file in that directory.
+	- The `index.ts` file must re-export all `.svelte` components in the directory.
+	- Example content for a single component:
+		```ts
+		import Component from "./Component.svelte";
+		export { Component };
+		```
+	- Example for multiple components:
+		```ts
+		import Component1 from "./Component1.svelte";
+		export { Component1 };
+		import Component2 from "./Component2.svelte";
+		export { Component2 };
+		```
+
+This ensures consistent and discoverable exports for all Svelte components. The script should be run after adding or renaming components.
 
 ## Questions and Decisions
 	- To be completed throughout the migration
