@@ -1,4 +1,3 @@
-
 # MIGRATION.md
 
 This document records all steps, questions, technical choices, and points of attention during the migration of the project to Svelte 5 and the integration of the shadcn-svelte design system.
@@ -95,5 +94,19 @@ This ensures consistent and discoverable exports for all Svelte components. The 
 - [shadcn-svelte Migration Guide](https://www.shadcn-svelte.com/docs/migration.md)
 - [shadcn-svelte Svelte 5 Migration](https://shadcn-svelte.com/docs/migration/svelte-5)
 - [shadcn-svelte Tailwind v4 Migration](https://shadcn-svelte.com/docs/migration/tailwind-v4)
+
+## SCSS to CSS Migration
+
+### Status: Completed
+
+All SCSS files in the following directories have been successfully migrated to CSS:
+
+1. `controls/`
+2. `data/`
+3. `navigation/`
+4. `ui/`
+5. `utils/`
+
+Each corresponding Svelte component has been updated to reference the new CSS files.
 
 

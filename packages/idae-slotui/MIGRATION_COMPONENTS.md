@@ -67,5 +67,33 @@ Component migration status checklist
 | [ ] Tree            | [x]  | [~]      | [ ]    |
 | [ ] Window          | [x]  | [~]      | [ ]    |
 
+### Components Updated for SCSS to CSS Migration
+
+The following components have been updated to reference the new CSS files:
+
+#### controls/
+- `Switch.svelte`
+- `Rating.svelte`
+- `Stepper.svelte`
+
+#### data/
+- `Finder.svelte`
+- `Sorter.svelte`
+
+#### navigation/
+- `Tabs.svelte`
+- `Drawer.svelte`
+
+#### ui/
+- `Frame.svelte`
+- `Tree.svelte`
+- `Window.svelte`
+- `ToggleBar.svelte`
+- `ToolBar.svelte`
+
+#### utils/
+- `Css.svelte`
+- `Slotted.svelte`
+
 > Check each box as you progress: `[x]` for done, `[ ]` for to-do.
 

@@ -12,4 +12,14 @@ Ce fichier suit l'avancement de la migration Svelte 5 et shadcn-svelte.
 | shadcn-svelte intégration | ⬜ Not started      |                                        |
 | Tests/validation       | ⬜ Not started        |                                        |
 
+### SCSS to CSS Migration Status
+
+- **controls/**: Completed
+- **data/**: Completed
+- **navigation/**: Completed
+- **ui/**: Completed
+- **utils/**: Completed
+
+All SCSS files have been migrated to CSS, and the corresponding Svelte components have been updated.
+
 Mise à jour : première étape de nettoyage et conformité Svelte 5 terminée.
