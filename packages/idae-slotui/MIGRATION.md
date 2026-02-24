@@ -139,29 +139,14 @@ Canonical template (replace types and names):
 
 ```svelte
 <!-- @component Snippet: ButtonStart — small renderable part for Button -->
-<script module lang="ts">
-/**
- * Props for `ButtonStart` snippet
- * - `label` : optional label text
- * - `...rest` : forwarded props
- */
-export type ButtonStartProps = {
-	label?: string;
-	[key: string]: unknown;
-};
-</script>
-
 <script lang="ts">
-const { children, ...rest }: ButtonStartProps = $props();
+const { children } = $props();
 </script>
 
 {#snippet ButtonStart()}
 	{@render children?.()}
 {/snippet}
 
-<style global>
-@import './ButtonStart.css';
-</style>
 ```
 
 Notes about the template:

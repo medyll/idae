@@ -1,12 +1,14 @@
 <script module lang="ts">
+import type { Snippet } from 'svelte';
 import type { MenuListProps } from '$lib/ui/menuList/types.js';
 import type { PopperProps } from '$lib/ui/popper/types.js';
+import type { ButtonProps } from '../button/types.js';
 /**
  * Props for the ButtonMenu component.
  * Extends ButtonProps with menu and popper support.
  * @template T - The type of the menu data
  */
-export type ButtonMenuProps<T = any> = {
+export type ButtonMenuProps<T = any> = ButtonProps & {
 	/** Props for the menu list */
 	menuProps?: MenuListProps<T>;
 	/** Props for the popper */
@@ -18,11 +20,12 @@ export type ButtonMenuProps<T = any> = {
 	/** Reference to the popper element */
 	popperElement?: HTMLElement;
 	/** Custom menu item renderer */
-	menuItem?: (args: { item: T }) => any;
+	menuItem?: Snippet<[{ item: T }]>;
 	/** Slot for children content */
 	children?: any;
 	// ...rest of ButtonProps fields (not repeated here for brevity)
 };
+ 
 </script>
 <script lang="ts" generics="T">
 import Popper from '$lib/ui/popper/Popper.svelte';
