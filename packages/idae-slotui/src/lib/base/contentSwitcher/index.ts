@@ -3,4 +3,14 @@ import ContentSwitcherBackIcon from "./ContentSwitcherBackIcon.svelte";
 import ContentSwitcherReveal from "./ContentSwitcherReveal.svelte";
 import ContentSwitcherTogglerIcon from "./ContentSwitcherTogglerIcon.svelte";
 
-export const ContentSwitcher = { Root: ContentSwitcherRoot, BackIcon: ContentSwitcherBackIcon, Reveal: ContentSwitcherReveal, TogglerIcon: ContentSwitcherTogglerIcon };
+export {
+  ContentSwitcherRoot,
+  ContentSwitcherBackIcon,
+  ContentSwitcherReveal,
+  ContentSwitcherTogglerIcon,
+  // 
+  ContentSwitcherRoot as ContentSwitcher,
+  ContentSwitcherBackIcon as BackIcon,
+  ContentSwitcherReveal as Reveal,
+  ContentSwitcherTogglerIcon as TogglerIcon
+};

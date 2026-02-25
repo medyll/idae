@@ -7,4 +7,22 @@ import DrawerSecondary from "./DrawerSecondary.svelte";
 import DrawerTitle from "./DrawerTitle.svelte";
 import DrawerTop from "./DrawerTop.svelte";
 
-export const Drawer = { Root: DrawerRoot, Content: DrawerContent, Footer: DrawerFooter, Icon: DrawerIcon, Primary: DrawerPrimary, Secondary: DrawerSecondary, Title: DrawerTitle, Top: DrawerTop };
+export {
+  DrawerRoot,
+  DrawerContent,
+  DrawerFooter,
+  DrawerIcon,
+  DrawerPrimary,
+  DrawerSecondary,
+  DrawerTitle,
+  DrawerTop,
+  // 
+  DrawerRoot as Drawer,
+  DrawerContent as Content,
+  DrawerFooter as Footer,
+  DrawerIcon as Icon,
+  DrawerPrimary as Primary,
+  DrawerSecondary as Secondary,
+  DrawerTitle as Title,
+  DrawerTop as Top
+};

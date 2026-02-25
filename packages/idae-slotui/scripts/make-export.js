@@ -66,7 +66,6 @@ class IndexGenerator {
 
   /**
    * Simple export for a single component or forced flat mode
-   * Converts filenames to PascalCase for the export name
    */
   async writeFlatIndex(dir, files) {
     const exports = files.map(f => {
@@ -78,12 +77,13 @@ class IndexGenerator {
   }
 
   /**
-   * Structured export: One Root component and others as properties
+   * Structured export: Named exports with aliases
+   * Generates: export { AlertRoot, AlertMessage, // AlertRoot as Alert, AlertMessage as Message }
    */
   async writeMultipleIndex(dir, files) {
     const names = files.map(f => path.basename(f, '.svelte'));
     
-    // Find the shortest name to use as Root (base for naming)
+    // Find the shortest name to use as Root
     const rawRootName = names.reduce((acc, curr) => 
       (curr.length < acc.length || (curr.length === acc.length && curr < acc)) ? curr : acc
     );
@@ -92,21 +92,24 @@ class IndexGenerator {
     const importLines = [`import ${rootExportName}Root from "./${rawRootName}.svelte";`];
     
     const subComponents = names.filter(n => n !== rawRootName);
-    const objectProps = [`Root: ${rootExportName}Root`];
+    
+    const rawNames = [`${rootExportName}Root`];
+    const aliasNames = [`${rootExportName}Root as ${rootExportName}`];
 
     for (const n of subComponents) {
       const componentName = this.toPascalCase(n);
       importLines.push(`import ${componentName} from "./${n}.svelte";`);
 
-      // Extract suffix: if name starts with root, slice it, else use full name
+      // Extract suffix for alias
       let prop = n.startsWith(rawRootName) ? n.slice(rawRootName.length) : n;
-      // Clean potential separators and convert to PascalCase
       prop = this.toPascalCase(prop || n);
       
-      objectProps.push(`${prop}: ${componentName}`);
+      rawNames.push(componentName);
+      aliasNames.push(`${componentName} as ${prop}`);
     }
 
-    const content = `${importLines.join('\n')}\n\nexport const ${rootExportName} = { ${objectProps.join(', ')} };\n`;
+    const content = `${importLines.join('\n')}\n\nexport {\n  ${rawNames.join(',\n  ')},\n  // \n  ${aliasNames.join(',\n  ')}\n};\n`;
+    
     await fs.writeFile(path.join(dir, 'index.ts'), content);
   }
 
@@ -129,7 +132,7 @@ class IndexGenerator {
         await this.writeMultipleIndex(dir, files);
       }
     } catch (e) {
-      // Ignore errors for missing directories
+      // Ignore errors
     }
   }
 
@@ -139,7 +142,6 @@ class IndexGenerator {
   async generate() {
     const libRoot = path.resolve(this.baseDir, '..', 'src/lib');
     
-    // Generate main library entry point
     const libExports = this.roots
       .map(root => `export * from './${path.basename(root)}/index.js';`)
       .join('\n') + '\n';
@@ -179,3 +181,5 @@ export { IndexGenerator };
 if (import.meta.url === `file://${process.argv[1]}`) {
   new IndexGenerator(COMPONENT_ROOTS, EXCLUDE_GLOBS).generate();
 }
+
+// old version, do not trash or remove : export const Alert = { Root: AlertRoot, ButtonClose: AlertButtonClose, ButtonZone: AlertButtonZone, Message: AlertMessage, TopButton: AlertTopButton };

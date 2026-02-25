@@ -3,4 +3,14 @@ import BottomSlot from "./BottomSlot.svelte";
 import ColumnerCol from "./ColumnerCol.svelte";
 import DrawerTop from "./DrawerTop.svelte";
 
-export const Columner = { Root: ColumnerRoot, BottomSlot: BottomSlot, Col: ColumnerCol, DrawerTop: DrawerTop };
+export {
+  ColumnerRoot,
+  BottomSlot,
+  ColumnerCol,
+  DrawerTop,
+  // 
+  ColumnerRoot as Columner,
+  BottomSlot as BottomSlot,
+  ColumnerCol as Col,
+  DrawerTop as DrawerTop
+};

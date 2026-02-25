@@ -1,4 +1,10 @@
 import ButtonActionRoot from "./ButtonAction.svelte";
 import PopperContent from "./PopperContent.svelte";
 
-export const ButtonAction = { Root: ButtonActionRoot, PopperContent: PopperContent };
+export {
+  ButtonActionRoot,
+  PopperContent,
+  // 
+  ButtonActionRoot as ButtonAction,
+  PopperContent as PopperContent
+};

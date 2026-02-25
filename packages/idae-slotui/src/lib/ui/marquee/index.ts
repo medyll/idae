@@ -1,4 +1,10 @@
 import MarqueeRoot from "./Marquee.svelte";
 import MarqueeChildren from "./MarqueeChildren.svelte";
 
-export const Marquee = { Root: MarqueeRoot, Children: MarqueeChildren };
+export {
+  MarqueeRoot,
+  MarqueeChildren,
+  // 
+  MarqueeRoot as Marquee,
+  MarqueeChildren as Children
+};

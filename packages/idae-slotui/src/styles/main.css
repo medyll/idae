@@ -8,6 +8,9 @@ html {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+/* SlotUI mixins/utilities for Tailwind */
+@import '../lib/styles/slotui-mixins.css';
+
 body {
   height: 100%;
   max-height: 100%;

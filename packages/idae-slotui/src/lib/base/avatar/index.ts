@@ -1,4 +1,10 @@
 import AvatarRoot from "./Avatar.svelte";
 import AvatarBadge from "./AvatarBadge.svelte";
 
-export const Avatar = { Root: AvatarRoot, Badge: AvatarBadge };
+export {
+  AvatarRoot,
+  AvatarBadge,
+  // 
+  AvatarRoot as Avatar,
+  AvatarBadge as Badge
+};

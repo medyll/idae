@@ -3,4 +3,14 @@ import BoxBottomZone from "./BoxBottomZone.svelte";
 import TitleBarIcon from "./TitleBarIcon.svelte";
 import TitleBarTitle from "./TitleBarTitle.svelte";
 
-export const Box = { Root: BoxRoot, BottomZone: BoxBottomZone, TitleBarIcon: TitleBarIcon, TitleBarTitle: TitleBarTitle };
+export {
+  BoxRoot,
+  BoxBottomZone,
+  TitleBarIcon,
+  TitleBarTitle,
+  // 
+  BoxRoot as Box,
+  BoxBottomZone as BottomZone,
+  TitleBarIcon as TitleBarIcon,
+  TitleBarTitle as TitleBarTitle
+};

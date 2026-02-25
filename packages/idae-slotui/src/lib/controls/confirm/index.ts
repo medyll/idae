@@ -1,4 +1,10 @@
 import ConfirmRoot from "./Confirm.svelte";
 import ConfirmInitial from "./ConfirmInitial.svelte";
 
-export const Confirm = { Root: ConfirmRoot, Initial: ConfirmInitial };
+export {
+  ConfirmRoot,
+  ConfirmInitial,
+  // 
+  ConfirmRoot as Confirm,
+  ConfirmInitial as Initial
+};

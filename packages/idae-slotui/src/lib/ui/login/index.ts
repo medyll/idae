@@ -4,4 +4,16 @@ import LoginAvatarRoot from "./LoginAvatarRoot.svelte";
 import LoginForm from "./LoginForm.svelte";
 import SlotRetrievePassword from "./SlotRetrievePassword.svelte";
 
-export const Login = { Root: LoginRoot, Avatar: LoginAvatar, AvatarRoot: LoginAvatarRoot, Form: LoginForm, SlotRetrievePassword: SlotRetrievePassword };
+export {
+  LoginRoot,
+  LoginAvatar,
+  LoginAvatarRoot,
+  LoginForm,
+  SlotRetrievePassword,
+  // 
+  LoginRoot as Login,
+  LoginAvatar as Avatar,
+  LoginAvatarRoot as AvatarRoot,
+  LoginForm as Form,
+  SlotRetrievePassword as SlotRetrievePassword
+};

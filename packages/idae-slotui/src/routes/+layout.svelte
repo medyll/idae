@@ -3,6 +3,7 @@
 	// import cssfabric themer 
 	import '../styles/main.css';
 	import '../styles/slotui-theme.css';
+	import '../styles/theme.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';

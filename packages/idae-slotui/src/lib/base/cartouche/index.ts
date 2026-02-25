@@ -4,4 +4,16 @@ import CartoucheIcon from "./CartoucheIcon.svelte";
 import CartouchePrimary from "./CartouchePrimary.svelte";
 import CartoucheSecondary from "./CartoucheSecondary.svelte";
 
-export const Cartouche = { Root: CartoucheRoot, Buttons: CartoucheButtons, Icon: CartoucheIcon, Primary: CartouchePrimary, Secondary: CartoucheSecondary };
+export {
+  CartoucheRoot,
+  CartoucheButtons,
+  CartoucheIcon,
+  CartouchePrimary,
+  CartoucheSecondary,
+  // 
+  CartoucheRoot as Cartouche,
+  CartoucheButtons as Buttons,
+  CartoucheIcon as Icon,
+  CartouchePrimary as Primary,
+  CartoucheSecondary as Secondary
+};

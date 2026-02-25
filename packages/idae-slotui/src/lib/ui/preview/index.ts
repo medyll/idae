@@ -1,4 +1,10 @@
 import PreviewRoot from "./Preview.svelte";
 import PreviewZoom from "./PreviewZoom.svelte";
 
-export const Preview = { Root: PreviewRoot, Zoom: PreviewZoom };
+export {
+  PreviewRoot,
+  PreviewZoom,
+  // 
+  PreviewRoot as Preview,
+  PreviewZoom as Zoom
+};

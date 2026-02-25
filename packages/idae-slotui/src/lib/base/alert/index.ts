@@ -4,4 +4,16 @@ import AlertButtonZone from "./AlertButtonZone.svelte";
 import AlertMessage from "./AlertMessage.svelte";
 import AlertTopButton from "./AlertTopButton.svelte";
 
-export const Alert = { Root: AlertRoot, ButtonClose: AlertButtonClose, ButtonZone: AlertButtonZone, Message: AlertMessage, TopButton: AlertTopButton };
+export {
+  AlertRoot,
+  AlertButtonClose,
+  AlertButtonZone,
+  AlertMessage,
+  AlertTopButton,
+  // 
+  AlertRoot as Alert,
+  AlertButtonClose as ButtonClose,
+  AlertButtonZone as ButtonZone,
+  AlertMessage as Message,
+  AlertTopButton as TopButton
+};
