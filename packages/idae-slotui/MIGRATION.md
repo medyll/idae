@@ -23,9 +23,9 @@ This document records all steps, questions, technical choices, and points of att
 
 ## Migration Tracking, important
 
-The migration tracking table for the migration steps  and their status will be maintained in the file: [MIGRATION_STATUS](MIGRATION_STATUS.md).
-The migration tracking table for the  for all components and their status will be maintained in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md).
-Global information about components can be found in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md).
+Global information about components can be found in the file: [COMPONENT_MAP](COMPONENT_MAP.md). It's a central file about component appliances and their status.
+The migration tracking table for the migration steps  and their status will be maintained in the file: [MIGRATION_STATUS](MIGRATION_STATUS.md). 
+The migration tracking table for the  for all components and their status will be maintained in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md). 
 
 ## Migration Steps
    - [ ✅ Done ] Audit of existing code (components, styles, dependencies)
@@ -185,11 +185,7 @@ pnpm run test:unit
 
 - If `scripts/migrate-snippet.js` supports a dry-run or preview mode, use it first to validate detection patterns.
 
-9) Troubleshooting
-- If the migration script errors: inspect its output, fix the offending component manually using the template, and re-run the checks.
-- If a generated snippet requires additional props, add explicit typing in the `script module` block and keep the restProps spread for forwards.
-
-10) Example: complete minimal generated file
+ 
 
 
 

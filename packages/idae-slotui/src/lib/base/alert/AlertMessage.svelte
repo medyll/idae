@@ -1,6 +1,10 @@
 <!-- @component snippet component for root: alert -->
-<script>
-    let { children } = $props();
+<script module lang="ts">
+export type AlertMessageProps = Record<string, any>;
+</script>
+
+<script lang="ts">
+const { children } = $props<AlertMessageProps>();
 </script>
 
 {#snippet alertMessage()}

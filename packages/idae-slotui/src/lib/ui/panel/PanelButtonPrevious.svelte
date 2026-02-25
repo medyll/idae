@@ -1,10 +1,10 @@
-<!-- @component snippet component PanelButtonPrevious — small renderable part for Panel -->
+<!-- @component snippet component PanelButtonPrevious — for Panel -->
 <script module lang="ts">
-	export type PanelButtonPreviousProps = any;
+	export type PanelButtonPreviousProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-	const { children } = $props();
+	const { children } = $props<PanelButtonPreviousProps>();
 </script>
 
 {#snippet PanelButtonPrevious()}

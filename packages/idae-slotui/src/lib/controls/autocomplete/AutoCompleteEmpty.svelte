@@ -1,6 +1,10 @@
 <!-- @component snippet component AutoCompleteEmpty for root: AutoComplete -->
+<script module lang="ts">
+export type AutoCompleteEmptyProps = Record<string, any>;
+</script>
+
 <script lang="ts">
-  let { children, ...restProps }: { children?: any; [key: string]: any } = $props();
+  const { children, ...restProps } = $props<AutoCompleteEmptyProps & { children?: any }>();
 </script>
 
 {#snippet autoCompleteEmpty()}

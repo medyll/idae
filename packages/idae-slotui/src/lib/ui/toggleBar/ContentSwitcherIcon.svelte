@@ -1,7 +1,10 @@
-<!-- @component snippet component for root: toggleBar -->
+<!-- @component snippet component ContentSwitcherIcon — for ToggleBar -->
+<script module lang="ts">
+    export type ContentSwitcherIconProps = Record<string, any>;
+</script>
 
-<script>
-    let { children } = $props();
+<script lang="ts">
+    const { children } = $props<ContentSwitcherIconProps>();
 </script>
 
 {#snippet contentSwitcherIcon()}

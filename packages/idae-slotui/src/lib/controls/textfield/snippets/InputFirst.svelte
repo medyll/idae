@@ -1,9 +1,10 @@
- 
 <!-- @component snippet component for root: TextField -->
+<script module lang="ts">
+export type InputFirstProps = Record<string, any>;
+</script>
 
-<script>
-  // Destructure children and additional snippet props
-  let { children, ...restProps } = $props();
+<script lang="ts">
+  const { children, ...restProps } = $props<InputFirstProps & { children?: any }>();
 </script>
 
 {#snippet inputFirst()}

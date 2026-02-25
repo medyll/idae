@@ -1,10 +1,10 @@
-<!-- @component snippet component Child  for Slotted -->
+<!-- @component snippet component Child — for Slotted -->
 <script module lang="ts">
-	export type ChildProps = any;
+	export type ChildProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-	const { children } = $props();
+	const { children } = $props<ChildProps>();
 </script>
 
 {#snippet Child()}

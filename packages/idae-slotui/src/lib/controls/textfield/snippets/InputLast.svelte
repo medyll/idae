@@ -1,11 +1,10 @@
 <script module lang="ts">
-  /* snippet component for root: TextField */ 
+export type InputLastProps = Record<string, any>;
 </script>
 
-<script>
-  // Destructure children and additional snippet props
-  let { children, ...restProps } = $props();
-</script>
+<script lang="ts">
+  const { children, ...restProps } = $props<InputLastProps & { children?: any }>();
+}</script>
 
 {#snippet inputLast()}
   {@render children?.()}

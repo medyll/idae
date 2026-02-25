@@ -1,6 +1,10 @@
-<!-- @component snippet component ButtonLoadingIcon for root: Button --> 
+<!-- @component snippet component ButtonLoadingIcon — for Button -->
+<script module lang="ts">
+  export type ButtonLoadingIconProps = Record<string, any>;
+</script>
+
 <script lang="ts">
-  let { children, ...restProps }: { children?: any; [key: string]: any } = $props();
+  const { children } = $props<ButtonLoadingIconProps>();
 </script>
 
 {#snippet buttonLoadingIcon()}

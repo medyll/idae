@@ -1,6 +1,10 @@
-<!-- @component snippet component TaskBarRight — small renderable part for Taskbar -->
+<!-- @component snippet component TaskBarRight — for Taskbar -->
+<script module lang="ts">
+	export type TaskBarRightProps = Record<string, any>;
+</script>
+
 <script lang="ts">
-const { children } = $props();
+	const { children } = $props<TaskBarRightProps>();
 </script>
 
 {#snippet TaskBarRight()}

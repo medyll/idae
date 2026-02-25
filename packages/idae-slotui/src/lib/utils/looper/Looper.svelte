@@ -7,7 +7,7 @@ import type { DataOpGroupByOptions, DataOpSortBy } from '@medyll/idae-engine';
  * Loops over data, with optional grouping, sorting, and slot support.
  * @template T - The type of the data property
  */
-export type LoopProps<T> = CommonProps & {
+export type LooperProps<T> = CommonProps & {
 	/** Title for the looped section */
 	title?: string;
 	/** Data array to loop over */
@@ -39,16 +39,16 @@ export type LoopProps<T> = CommonProps & {
 		data = $bindable(),
 		title,
 		groupBy,
-		sortBy,
-		tag,
-		loopTitle,
+		};
+		</script>
+		<script lang="ts" generics="T= Data">
 		loopGroupTitle,
 		children,
 		...rest
 	}: LoopProps<T> = $props();
 
-	let sortedData = $derived.by(() => {
-		if (!sortBy) return data;
+
+		let {
 		return dataOp.sortBy<T>({ arr: data, by: sortBy });
 	});
 	let groupedData = $derived.by(() => {
@@ -59,7 +59,7 @@ export type LoopProps<T> = CommonProps & {
 
 {#snippet loop(data: T[])}
 	{#each data ?? [] as item, idx}
-		{@render children?.({ item, idx })}
+			}: LooperProps<T> = $props();
 	{/each}
 {/snippet}
 <div class={className} style={className ? ' ' : ';display:contents;'} {...rest}>

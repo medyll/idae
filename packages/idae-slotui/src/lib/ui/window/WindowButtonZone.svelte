@@ -1,10 +1,10 @@
-<!-- @component snippet component for root: window -->
+<!-- @component snippet component WindowButtonZone — for Window -->
 <script module lang="ts">
-    export type WindowButtonZoneProps = any;
+    export type WindowButtonZoneProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-    const { children } = $props();
+    const { children } = $props<WindowButtonZoneProps>();
 </script>
 
 {#snippet windowButtonZone()}

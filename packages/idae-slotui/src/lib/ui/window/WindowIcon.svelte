@@ -1,10 +1,10 @@
-<!-- @component snippet component for root: window -->
+<!-- @component snippet component WindowIcon — for Window -->
 <script module lang="ts">
-    export type WindowIconProps = any;
+    export type WindowIconProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-    const { children } = $props();
+    const { children } = $props<WindowIconProps>();
 </script>
 
 {#snippet windowIcon()}

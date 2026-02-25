@@ -1,10 +1,10 @@
-<!-- @component snippet component for root: toolbar -->
+<!-- @component snippet component ToolbarSeparator — for ToolBar -->
 <script module lang="ts">
-    export type ToolbarSeparatorProps = any;
+    export type ToolbarSeparatorProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-    const { children } = $props();
+    const { children } = $props<ToolbarSeparatorProps>();
 </script>
 
 {#snippet toolbarSeparator()}

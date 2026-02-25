@@ -1,6 +1,10 @@
 <!-- @component snippet component AutoCompleteNoResults for root: AutoComplete -->
+<script module lang="ts">
+export type AutoCompleteNoResultsProps = Record<string, any>;
+</script>
+
 <script lang="ts">
-  let { children, ...restProps }: { children?: any; [key: string]: any } = $props();
+  const { children, ...restProps } = $props<AutoCompleteNoResultsProps & { children?: any }>();
 </script>
 
 {#snippet autoCompleteNoResults()}

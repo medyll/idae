@@ -1,10 +1,10 @@
-<!-- @component snippet component for root: toggleBar -->
+<!-- @component snippet component ToggleBarTitle — for ToggleBar -->
 <script module lang="ts">
-    export type ToggleBarTitleProps = any;
+    export type ToggleBarTitleProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-    const { children } = $props();
+    const { children } = $props<ToggleBarTitleProps>();
 </script>
 
 {#snippet toggleBarTitle()}

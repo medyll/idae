@@ -1,6 +1,10 @@
-<!-- @component snippet component ButtonPopper for root: Button -->
+<!-- @component snippet component ButtonPopper — for Button -->
+<script module lang="ts">
+  export type ButtonPopperProps = Record<string, any>;
+</script>
+
 <script lang="ts">
-  let { children, ...restProps }: { children?: any; [key: string]: any } = $props();
+  const { children } = $props<ButtonPopperProps>();
 </script>
 
 {#snippet buttonPopper()}

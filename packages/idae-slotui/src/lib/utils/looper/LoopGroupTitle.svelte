@@ -1,10 +1,10 @@
-<!-- @component snippet component for root: looper -->
+<!-- @component snippet component LoopGroupTitle — for Looper -->
 <script module lang="ts">
-    export type LoopGroupTitleProps = any;
+    export type LoopGroupTitleProps = Record<string, any>;
 </script>
 
 <script lang="ts">
-    const { children } = $props();
+    const { children } = $props<LoopGroupTitleProps>();
 </script>
 
 {#snippet loopGroupTitle()}
