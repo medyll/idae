@@ -27,7 +27,7 @@
 	{#snippet windowIcon()}
 		<Icon icon="bx:window-alt" />
 	{/snippet}
-  <div class="pad-4 align-center">
+  <div class="p-4 align-center">
   some slotted content
   </div>
 </Window>
@@ -39,7 +39,7 @@
 		openWindow("html", {
 		componentProps: { some: "props", someother: "deprops" },
 		contentHTML:
-			'<div class="pad-4 align-center">some html content</div>',
+			'<div class="p-4 align-center">some html content</div>',
 		});
 	}}>
 	Window with html content
@@ -64,12 +64,12 @@
 		<DemoPage {code} component="Select">
 			<Demoer {multiple} {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
-					<div class="pad-2 h-large pos-rel">
+					<div class="p-2 h-large pos-rel">
 						<Window title="Slotted window" frameId="slotted" {...activeParams}>
 							{#snippet windowIcon()}
 								<Icon icon="bx:window-alt" />
 							{/snippet}
-							<div class="pad-4 align-center">some slotted content</div>
+							<div class="p-4 align-center">some slotted content</div>
 						</Window>
 					</div>
 				{/snippet}
@@ -84,7 +84,7 @@
 								onclick={() => {
 									openWindow('html', {
 										componentProps: { some: 'props', someother: 'deprops' },
-										contentHTML: '<div class="pad-4 align-center">some html content</div>'
+										contentHTML: '<div class="p-4 align-center">some html content</div>'
 									});
 								}}
 							>

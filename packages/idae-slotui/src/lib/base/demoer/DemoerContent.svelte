@@ -37,7 +37,7 @@
 		>
 			{finalValue}
 		</Button>
-		<div class="border-r pad-tb-1"></div>
+		<div class="border-r p-tb-1"></div>
 	{/each}
 {/snippet}
 {#snippet boolean({ parameter })}
@@ -71,11 +71,11 @@
 {/snippet}
 
 <div class="flex-v gap-small">
-	<div class="pad-l-8">
+	<div class="p-l-8">
 		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
 			<Icon icon="cib:svelte" /> component
 		</h6>
-		<div class="pad-2">
+		<div class="p-2">
 			{#if Object.entries(multiple).length > 0}
 				<div class="flex-h flex-align-middle flex-wrap gap-medium">
 					{#each Object.keys(multiple) as tiple}
@@ -92,9 +92,9 @@
 								/>
 								<svelte:component this={component} {componentArgs} {...multiple[tiple][params]} />
 
-								<div class="pad-2 text-center">{tiple} {params}</div>
+								<div class="p-2 text-center">{tiple} {params}</div>
 							</div>
-							<div class="border-r pad-tb-4" />
+							<div class="border-r p-tb-4" />
 						{/each}
 					{/each}
 				</div>

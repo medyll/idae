@@ -17,7 +17,7 @@
 </script>
 
 <div>
-	<div class="pad-l-2">
+	<div class="p-l-2">
 		{#if code || demoerCode}
 			<div>
 				<!-- {@render demoerCode?.()} -->

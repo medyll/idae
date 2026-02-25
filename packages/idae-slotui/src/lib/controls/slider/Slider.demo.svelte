@@ -22,7 +22,7 @@
 		<DemoPage code={codeSlot} component="Slider">
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}
-					<div class="pad-2">
+					<div class="p-2">
 						<Slider {...activeParams} class="flex-h flex-align-middle w-small">
 							<span>tooltip</span>
 						</Slider>

@@ -42,7 +42,7 @@
 	{#if children}
 		<div class="flex-v gap-medium">
 			{component} svelte component
-			<div class="marg-l-4">
+			<div class="m-l-4">
 				<Slotted child={children} />
 			</div>
 		</div>

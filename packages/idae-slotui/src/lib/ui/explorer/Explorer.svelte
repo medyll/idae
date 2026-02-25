@@ -65,15 +65,15 @@ let appscheme = {}
 		</Header>
 	{/snippet}
 	{#snippet frameContent()}
-		<div class="flex-main overflow-auto pad-4">
+		<div class="flex-main overflow-auto p-4">
 			{#if activeData}
 				<!-- {#snippet children({ itemObject })}
 						<div class="flex-h flex-align-middle">
-							<div class="pad-2 border-b" style="width:120px;overflow: hidden">
+							<div class="p-2 border-b" style="width:120px;overflow: hidden">
 								{itemObject.key}
 							</div>
-							<div class="pad-2">:</div>
-							<div class="pad-2">{JSON.stringify(itemObject.value)}</div>
+							<div class="p-2">:</div>
+							<div class="p-2">{JSON.stringify(itemObject.value)}</div>
 						</div>
 					{/snippet} -->
 			{/if}

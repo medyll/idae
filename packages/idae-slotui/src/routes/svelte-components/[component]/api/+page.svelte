@@ -16,7 +16,7 @@
 </div>
 <div class="flex-v gap-medium">
 	<h5>Link to examples :</h5>
-	<div class="marg-l-4">
+	<div class="m-l-4">
 		<a rel="external" href={sitePaths.component({ code: data.component.toLowerCase() })}
 			>Component "{data.component}" implementation examples</a
 		>

@@ -4,7 +4,7 @@ export type InputLastProps = Record<string, any>;
 
 <script lang="ts">
   const { children, ...restProps } = $props<InputLastProps & { children?: any }>();
-}</script>
+</script>
 
 {#snippet inputLast()}
   {@render children?.()}

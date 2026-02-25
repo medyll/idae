@@ -51,7 +51,7 @@
 		<DemoPage code={codeSlot} component="Switch">
 			<Demoer parameters={parametersSlot} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<div class="pad-2">
+					<div class="p-2">
 						<Switch {...activeParams} name={'switcher'}></Switch>
 					</div>
 				{/snippet}

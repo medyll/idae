@@ -35,7 +35,7 @@
 	<div class="h-full overflow-hidden flex-v">
 		<Taskbar>
 			{#snippet taskBarLeft()}
-				<box class="pad-1">
+				<box class="p-1">
 					<h5>slotui</h5>
 				</box>
 				<a href="/tooling" >link </a>
@@ -69,13 +69,13 @@
 			{#snippet drawerTop()}
 				<TopBar title="Drawer with menu bar ">
 					{#snippet menuBarSwitcher()}
-						<div class="pad-1">
+						<div class="p-1">
 							<input placeholder="Search in Bar" style="width:100%;" type="text" />
 						</div>
 					{/snippet}
 				</TopBar>
 			{/snippet}
-			<div class="pad-2">
+			<div class="p-2">
 				<MenuList onItemClick={() => {}}>
 					{#each [...Array(10)] as key, val}
 						<MenuListItem>

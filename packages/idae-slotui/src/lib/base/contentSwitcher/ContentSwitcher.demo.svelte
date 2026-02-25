@@ -9,7 +9,7 @@
 	import { parameters, componentArgs } from './types.js';
 
 	const code = `
-<ContentSwitcher {...activeParams} class="marg-tb-1">
+<ContentSwitcher {...activeParams} class="m-tb-1">
     {#snippet contentSwitcherTogglerIcon()}
         <Icon icon="mdi:tree" />
     {/snippet}
@@ -17,7 +17,7 @@
         <span>Switch</span>
     {/snippet}
     {#snippet contentSwitcherReveal()}
-        <div class="pad-2 border-t">Some <br />switched <br />content</div>
+        <div class="p-2 border-t">Some <br />switched <br />content</div>
     {/snippet}
 </ContentSwitcher>`;
 </script>
@@ -27,7 +27,7 @@
 		<DemoPage component="ContentSwitcher" {code}>
 			<Demoer title="A simple contentSwitcher" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<ContentSwitcher {...activeParams} class="marg-tb-1">
+					<ContentSwitcher {...activeParams} class="m-tb-1">
 						{#snippet contentSwitcherTogglerIcon()}
 							<Icon icon="mdi:tree" />
 						{/snippet}
@@ -35,7 +35,7 @@
 							<span>Switch</span>
 						{/snippet}
 						{#snippet contentSwitcherReveal()}
-							<div class="pad-2 border-t">Some <br />switched <br />content</div>
+							<div class="p-2 border-t">Some <br />switched <br />content</div>
 						{/snippet}
 					</ContentSwitcher>
 				{/snippet}

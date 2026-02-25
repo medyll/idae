@@ -45,10 +45,10 @@
 							method="post"
 							on:submit|preventDefault={validate}
 						>
-							<div class="pad-2">
+							<div class="p-2">
 								<input name="email" type="text" value="..." />
 							</div>
-							<div class="pad-2">
+							<div class="p-2">
 								<input name="password" type="password" />
 							</div>
 							<Button type="submit" width="medium" value="login" loading={false}>Login</Button>

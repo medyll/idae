@@ -41,7 +41,7 @@
 	/>
 </svelte:head>
 <div class="overflow-auto flex-v gap-large flex-align-middle-center">
-	<div class="block h-full flex-v gap-large pad-t-10">
+	<div class="block h-full flex-v gap-large p-t-10">
 		<div>
 			<h1 class="text-bold">svelte.slotted</h1>
 			<h5 class="text-bold">@medyll</h5>
@@ -72,7 +72,7 @@
 
 	{#each Object.keys(groupedData) as group}
 		<div class="block">
-			<h4 class="pad-4 text-bold">
+			<h4 class="p-4 text-bold">
 				slotted {group ?? ''}
 			</h4>
 			<div class="flex-h flex-wrap flex-align-middle gap-large">
@@ -91,7 +91,7 @@
 		</div>
 	{/each}
 	<div class="block">
-		<!-- <h5 class="pad-4 text-bold">The why</h5>
+		<!-- <h5 class="p-4 text-bold">The why</h5>
 		<p>
 			During a period where I had to focus on frontend technologies, I had the opportunity to
 			discover <a class="text-bold" target="_blank" href={svelteLink}>Svelte</a>.<br />
@@ -112,7 +112,7 @@
 			productivity for the benefit of a certain form of tranquility, and if normally iterations
 			depart from the original model, here they return with great strides!
 		</p> -->
-		<h5 class="pad-4"><a href="./about">@Medyll</a></h5>
+		<h5 class="p-4"><a href="./about">@Medyll</a></h5>
 	</div>
 </div>
 <Backdrop

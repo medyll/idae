@@ -18,10 +18,10 @@
 		<Icon fontSize="small" icon="clock" />
 	{/snippet}
 	{#snippet boxBottomZone()}
-		<div class="flex-h gap-small pad border-t marg-ii-1">bottom zoone</div>
+		<div class="flex-h gap-small pad border-t m-ii-1">bottom zoone</div>
 	{/snippet}
 	{#snippet children()}
-		<div class="pad-2">Content of the box</div>
+		<div class="p-2">Content of the box</div>
 	{/snippet}
 </Box>`;
 </script>
@@ -41,10 +41,10 @@
 							<Icon iconSize="small" icon="clock" />
 						{/snippet}
 						{#snippet boxBottomZone()}
-							<div class="flex-h gap-small pad border-t marg-ii-1">bottom zoone</div>
+							<div class="flex-h gap-small pad border-t m-ii-1">bottom zoone</div>
 						{/snippet}
 						{#snippet children()}
-							<div class="pad-2">Content of the box</div>
+							<div class="p-2">Content of the box</div>
 						{/snippet}
 					</Box>
 				{/snippet}

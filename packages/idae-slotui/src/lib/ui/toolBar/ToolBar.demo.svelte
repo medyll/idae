@@ -57,7 +57,7 @@
 		openWindow("html", {
 		componentProps: { some: "props", someother: "deprops" },
 		contentHTML:
-			'<div class="pad-4 align-center">some html content</div>',
+			'<div class="p-4 align-center">some html content</div>',
 		});
 	}}>
 	Window with html content
@@ -82,7 +82,7 @@
 		<DemoPage code={codeSlot} component="ToolBar">
 			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
 				>{#snippet children({ activeParams })}
-					<div class="pad-2 h-large pos-rel">
+					<div class="p-2 h-large pos-rel">
 						<ToolBar {...activeParams}>
 							<span>item 1</span>
 							<span>item 2</span>

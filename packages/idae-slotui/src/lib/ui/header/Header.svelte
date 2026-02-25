@@ -5,20 +5,20 @@
 	let { title, children } = $props();
 </script>
 
-<div class="pad-2 pad-tb-6 flex-main">
+<div class="p-2 p-tb-6 flex-main">
 	<h3>{title}</h3>
 </div>
-<div class="pad-4 flex-h flex-align-top">
-	<div class="pad-r-4">
+<div class="p-4 flex-h flex-align-top">
+	<div class="p-r-4">
 		<Icon iconSize="big" icon="faFile" />
 	</div>
-	<div class="pad-1 w-8">
-		<div class="pad-b-1">crefrefre</div>
-		<div class="pad-b-1">crefrefre</div>
+	<div class="p-1 w-8">
+		<div class="p-b-1">crefrefre</div>
+		<div class="p-b-1">crefrefre</div>
 	</div>
-	<div class="pad-1">
-		<div class="pad-b-1">crefrefre</div>
-		<div class="pad-b-1">crefrefre</div>
+	<div class="p-1">
+		<div class="p-b-1">crefrefre</div>
+		<div class="p-b-1">crefrefre</div>
 	</div>
 </div>
 <Divider />

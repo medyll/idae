@@ -135,7 +135,7 @@ export type AlertProps = {
 		transition:fade|global
 		class="alert {className} rounded border shadow-lg bg-[var(--alert-color-background)] border-[var(--alert-color-border)] min-w-[350px] p-0 inline-block relative overflow-hidden">
 		<article class="dialog-content border-b-4 border-[var(--alert-color-border)] p-[var(--alert-pad)]">
-			<header class="header-bar flex items-center gap-[var(--alert-gap-small,1rem)] p-[var(--alert-pad-small)]">
+			<header class="header-bar flex items-center gap-[var(--alert-gap-small,1rem)] p-[var(--alert-p-small)]">
 				<div class="dot bg-themed-scheme-{level} border border-[var(--alert-color-border)] rounded h-4 w-1"></div>
 				<div class="title flex-1 flex items-center">
 					<Slotted child={children}>{message}</Slotted>

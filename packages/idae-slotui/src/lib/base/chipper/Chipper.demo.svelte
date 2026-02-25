@@ -10,7 +10,7 @@
 
 	let codeSlot = `
 <Chipper >
-	<div class="pad-2">some content</div>
+	<div class="p-2">some content</div>
 	{#snippet chipperChip()}
 		<div class="theme-bg-primary radius-small w-full h-full"></div>
 	{/snippet}
@@ -27,7 +27,7 @@
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<Chipper {...activeParams}>
-					<div class="pad-2">some content</div>
+					<div class="p-2">some content</div>
 					{#snippet chipperChip()}
 						<div class="theme-bg-primary radius-small w-full h-full"></div>
 					{/snippet}

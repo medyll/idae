@@ -8,7 +8,7 @@
 	});
 </script>
 
-<div style="height:350px;width:450px;" class="what pos-rel overflow-hidden pad-1">
+<div style="height:350px;width:450px;" class="what pos-rel overflow-hidden p-1">
 	<DataList {data}>
 		{#snippet dataListHead()}
 			<DataListHead>

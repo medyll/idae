@@ -92,7 +92,7 @@ export const actions = {
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
 				<div class="form flex-v flex-align-middle-center">
 					<Slotted child={loginAvatarRoot}>
-						<div class="avatarHolder marg-b-2">
+						<div class="avatarHolder m-b-2">
 							<div class="avatar flex-h flex-align-middle-center">
 								{#if submitting}
 									<Icon rotate iconSize="large" icon="loading" />
@@ -103,10 +103,10 @@ export const actions = {
 						</div>
 					</Slotted>
 					<Slotted child={loginForm}>
-						<div class="pad-2">
+						<div class="p-2">
 							<input class="input" name="email" type="text" />
 						</div>
-						<div class="pad-2">
+						<div class="p-2">
 							<input name="password" type="password" />
 						</div>
 						<Button type="submit" value="login" loading={submitting}>
@@ -115,7 +115,7 @@ export const actions = {
 							Login
 						</Button>
 						{#if grantedError}
-							<div class="pad-1 color-scheme-error">Please verify your input</div>
+							<div class="p-1 color-scheme-error">Please verify your input</div>
 						{/if}
 					</Slotted>
 					{#if slotRetrievePassword}

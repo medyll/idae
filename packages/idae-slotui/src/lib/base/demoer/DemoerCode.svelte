@@ -33,8 +33,8 @@
 		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
 			<Icon icon="mdi:code" /> code
 		</h6>
-		{#if title}<div class="text-bold pad pad-l-4">- {title}</div>{/if}
-		<div class="marg-l-2 dsp-block-inline radius-small pad-ii-2">
+		{#if title}<div class="text-bold pad p-l-4">- {title}</div>{/if}
+		<div class="m-l-2 dsp-block-inline radius-small p-ii-2">
 			{#if demoerCode}
 				{@render demoerCode()}
 			{:else}

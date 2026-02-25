@@ -36,7 +36,7 @@
 			popper
 		</Button>
 	{/snippet}
-	<div class="pad-4">Popper content</div>
+	<div class="p-4">Popper content</div>
 </Popper>`;
 
 	let codeProps = `
@@ -67,7 +67,7 @@
 							position="BC"
 							anchor="popper"
 							{...activeParams}
-							class="w-large marg-t-1"
+							class="w-large m-t-1"
 						>
 							{#snippet popperHolder()}
 								<Button
@@ -79,7 +79,7 @@
 									popper
 								</Button>
 							{/snippet}
-							<div class="pad-4">Popper content</div>
+							<div class="p-4">Popper content</div>
 							{#snippet popperRight()}
 								cdscdscd
 							{/snippet}

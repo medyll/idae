@@ -82,7 +82,7 @@
 		<DemoPage code={codeSlot} component="Select">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
-					<div class="pad-2">
+					<div class="p-2">
 						<Select
 							{...activeParams}
 							value="2"

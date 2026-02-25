@@ -14,11 +14,11 @@
 		<Icon icon="window" />
 	{/snippet}
 	{#snippet drawerTop()}
-		<div class="pad-2">Drawer's title</div>
+		<div class="p-2">Drawer's title</div>
 	{/snippet}
-	<div class="pad-2">Drawer's content</div>
+	<div class="p-2">Drawer's content</div>
 	{#snippet drawerBottom()}
-		<div class="pad-2">Drawer's bottom zone</div>
+		<div class="p-2">Drawer's bottom zone</div>
 	{/snippet}
 </Drawer>s`;
 </script>
@@ -29,7 +29,7 @@
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div style="width:450px;height:500px;position:relative;" class="pad flex-h">
-						<div class="flex-main pad-4 text-right">
+						<div class="flex-main p-4 text-right">
 							Side content Side content Side content Side content
 						</div>
 						<Drawer {...activeParams}>
@@ -37,12 +37,12 @@
 								<Icon icon="window" />
 							{/snippet}
 							{#snippet drawerTop()}
-								<div class="pad-2">Drawer's title</div>
+								<div class="p-2">Drawer's title</div>
 							{/snippet}
 							{#snippet drawerFooter()}
-								<div class="pad-2">Drawer's bottom zone</div>
+								<div class="p-2">Drawer's bottom zone</div>
 							{/snippet}
-							<div class="pad-2">Drawer's content</div>
+							<div class="p-2">Drawer's content</div>
 						</Drawer>
 					</div>
 				{/snippet}

@@ -30,7 +30,7 @@
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-bottom gap-small">
-						<div class="pad-tiny">
+						<div class="p-tiny">
 							<MenuList {...activeParams}>
 								<MenuItem>menu item</MenuItem>
 								<MenuItem>menu item</MenuItem>

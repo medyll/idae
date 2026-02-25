@@ -13,6 +13,6 @@
 	<title>SlotUi component list</title>
 	<meta name="description" />
 </svelte:head>
-<div class="pad-4">
+<div class="p-4">
 	<slot />
 </div>

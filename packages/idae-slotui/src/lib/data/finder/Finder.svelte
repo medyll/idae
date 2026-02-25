@@ -147,7 +147,7 @@ let dataKeys = $derived(
 				}}
 			>
 				{#snippet menuItemLast()}
-					<div class="pad-r-1">
+					<div class="p-r-1">
 						<input type="checkbox" checked={mode === 'exact'} style="display:block;margin:0" />
 					</div>
 				{/snippet}
@@ -159,7 +159,7 @@ let dataKeys = $derived(
 					defaultField = '*';
 				}}
 				>{#snippet menuItemLast()}
-					<div class="pad-r-1">
+					<div class="p-r-1">
 						{#if defaultField === '*'}
 							<input
 								type="checkbox"
@@ -178,7 +178,7 @@ let dataKeys = $derived(
 						defaultField = kk;
 					}}
 					>{#snippet menuItemLast()}
-						<div class="pad-r-1">
+						<div class="p-r-1">
 							{#if defaultField === kk}
 								<input
 									type="checkbox"

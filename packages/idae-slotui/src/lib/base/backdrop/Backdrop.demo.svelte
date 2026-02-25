@@ -13,7 +13,7 @@
 		flow="relative"
 		onclick={()=>{}}> 
 		<div class="flex-h flex-align-middle-center h-full">
-			<div class="pad-4 border radius-small theme-bg">
+			<div class="p-4 border radius-small theme-bg">
 				some content
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 							{...activeParams}
 						>
 							<div class="flex-h flex-align-middle-center h-full">
-								<div class="pad-4 border radius-small theme-bg">some content</div>
+								<div class="p-4 border radius-small theme-bg">some content</div>
 							</div>
 						</Backdrop>
 					</div>

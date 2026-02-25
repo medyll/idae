@@ -47,8 +47,8 @@ if (Array.isArray(data)) {
 	{#if mode === 'object'}
 		<div class="flex-v gap-small">
 			{#each Object.keys(data) as kdta}
-				<div class="flex-h gap-small flex-align-top marg-l">
-					<div class="w-medium pad-1 border-b">- {kdta}</div>
+				<div class="flex-h gap-small flex-align-top m-l">
+					<div class="w-medium p-1 border-b">- {kdta}</div>
 					<div style="margin-left:4rem;"><svelte:self data={data[kdta]} /></div>
 				</div>
 			{/each}
@@ -56,6 +56,6 @@ if (Array.isArray(data)) {
 	{/if}
 
 	{#if ['string', 'number'].includes(mode)}
-		<div class="pad-1">{data}</div>
+		<div class="p-1">{data}</div>
 	{/if}
 {/if}

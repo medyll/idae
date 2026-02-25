@@ -48,7 +48,7 @@
         <PanelGrid data={[...Array(9)]} let:data>
             <div class="pad border radius-tiny">Some</div>
             {#snippet panelGridZoom()}
-				<div class="pad-4 text-center theme-bg-primary">Some large</div>
+				<div class="p-4 text-center theme-bg-primary">Some large</div>
 			{/snippet}
             Some large
             </div>
@@ -87,7 +87,7 @@
             openWindow("html", {
             componentProps: { some: "props", someother: "deprops" },
             contentHTML:
-                '<div class="pad-4 align-center">some html content</div>',
+                '<div class="p-4 align-center">some html content</div>',
             });
         }}>
         Window with html content
@@ -121,7 +121,7 @@
 											<div class="pad border radius-tiny">Some</div>
 										{/snippet}
 										{#snippet panelGridZoom()}
-											<div class="pad-4 text-center theme-bg-primary">Some large</div>
+											<div class="p-4 text-center theme-bg-primary">Some large</div>
 										{/snippet}
 									</PanelGrid>
 								</Panel>

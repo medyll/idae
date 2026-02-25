@@ -9,7 +9,7 @@
 	let componentArgs = defaultsArgs(parameters);
 
 	let code = `
-    <TitleBar {...activeParams} class="marg-tb-1">
+    <TitleBar {...activeParams} class="m-tb-1">
         {#snippet titleBarIcon()}
             <Icon fontSize="small" icon="circle" />
         {/snippet}

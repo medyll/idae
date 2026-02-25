@@ -39,7 +39,7 @@
 			{/snippet}
 			{#snippet tabsInner()}
 				<div class="h-full">
-					<div class="pad-4 h-full overflow-auto">
+					<div class="p-4 h-full overflow-auto">
 						<!-- selected : {activeTabCode} -->
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 						{/snippet}
 						{#snippet tabsInner({ activeTabCode })}
 							<div class="h-full">
-								<div class="pad-4 h-full overflow-auto">
+								<div class="p-4 h-full overflow-auto">
 									selected : {activeTabCode}
 								</div>
 							</div>

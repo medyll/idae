@@ -65,7 +65,7 @@
 <ButtonAction
 	>test et essai
 	{#snippet popperContent()}
-		<div class="pad-4">content</div>
+		<div class="p-4">content</div>
 	{/snippet}
 </ButtonAction>
 <ButtonMenu

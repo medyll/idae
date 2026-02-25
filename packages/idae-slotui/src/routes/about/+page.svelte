@@ -8,7 +8,7 @@
 		content="About Medyll, a lead dev on the senior side, dual stack focused"
 	/>
 </svelte:head>
-<div class="marg-t-5 flex-v gap-large flex-align-middle-center">
+<div class="m-t-5 flex-v gap-large flex-align-middle-center">
 	<div class="blocks">
 		<div class="flex-h flex-align-middle gap-medium">
 			<div>
@@ -19,8 +19,8 @@
 				<h5 class="text-bold">about</h5>
 			</div>
 		</div>
-		<cite class="pad-tb">a lead dev on the senior side</cite><br />
-		<cite class="pad-tb">dual stack focused</cite><br />
+		<cite class="p-tb">a lead dev on the senior side</cite><br />
+		<cite class="p-tb">dual stack focused</cite><br />
 	</div>
 	<div class="blocks">
 		Focused on computer science since epoch, my adventures was as diverses as enrichisantes, and

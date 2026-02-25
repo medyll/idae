@@ -18,7 +18,7 @@
 
 	let codeSlot = `
 <AutoComplete 
-	class="marg-b"
+	class="m-b"
 	placeholder="Search in list"
 	style="width:200px"
 	{data}>
@@ -38,7 +38,7 @@
   let:menuItemData
   {data}
   onPick={()=>{}}
-  class="marg-b"
+  class="m-b"
   placeholder="Search in list"
   style="width:200px"
   dataFieldName="name" />`;
@@ -51,7 +51,7 @@
 				{#snippet children({ activeParams })}
 					<AutoComplete
 						{...activeParams}
-						class="marg-b"
+						class="m-b"
 						placeholder="Search in list"
 						style="width:200px"
 						{data}
@@ -76,7 +76,7 @@
 						{...activeParams}
 						{data}
 						onchange={() => {}}
-						class="marg-b"
+						class="m-b"
 						placeholder="Search in list"
 						style="width:200px"
 						dataFieldName="name"
