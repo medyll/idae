@@ -27,7 +27,7 @@
 	{/key}
 </svelte:head>
 
-<style global lang="css">
+<style global lang="postcss">
   @import './BootStrApp.css';
 </style>
 

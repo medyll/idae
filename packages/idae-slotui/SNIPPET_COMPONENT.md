@@ -8,9 +8,9 @@ Purpose: standardize creation and maintenance of "snippet components".
 
 
     2) Discovery (identification) 
-    - The migration script `scripts/check-internal-typs.js` can produce a preview list; run it locally to inspect results:
+    - The migration script `scripts/make-component-maps.js` can produce a preview list; run it locally to inspect results:
     ```powershell
-    node .\scripts\check-internal-typs.js
+    node .\scripts\make-component-maps.js
     ```
     - if the column Int. is ❌ , then there are chances this is a "snippet component" which need to be corrected.
 
@@ -45,5 +45,5 @@ Canonical template (replace types and names) STRICT:
 6) Verification (mandatory)
 - run the list command th see if Int. is ✅ for the component. It will create or update the file (COMPONENT_MAP.md)[COMPONENT_MAP.md]
 ```powershell
-node .\scripts\check-internal-typs.js
+node .\scripts\make-component-maps.js
 ```

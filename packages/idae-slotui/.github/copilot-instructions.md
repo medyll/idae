@@ -16,7 +16,7 @@ When a maintainer asks "what should I work on next?", check the migration guidan
 To regenerate `COMPONENT_MAP.md` from project heuristics and type checks run:
 
 ```bash
-node scripts/check-internal-typs.js
+node scripts/make-component-maps.js
 ```
 
 
@@ -24,7 +24,7 @@ node scripts/check-internal-typs.js
 - `src/lib/index.ts` — public export surface (used by packaging). Update when adding public components.
 - `scripts/make-export.js` — regenerates `index.ts` files per component folder. 
 - `src/tests/docs.test.js` + `src/lib/docs/docs.js` — automated docs extraction used in CI/docs.
-- `scripts/check-internal-typs.js` — get component map from project heuristics.
+- `scripts/make-component-maps.js` — get component map from project heuristics.
 
 3) Developer workflows & commands (exact)
 - Package: `npm run package` 

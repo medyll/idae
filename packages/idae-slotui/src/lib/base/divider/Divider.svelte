@@ -65,6 +65,6 @@
 	style={addStyle}
 />
 
-<style global>
-  @import './divider.css';
+<style global lang="postcss">
+	@import './divider.css';
 </style>

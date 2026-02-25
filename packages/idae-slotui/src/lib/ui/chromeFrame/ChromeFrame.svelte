@@ -40,6 +40,6 @@
 	</div>
 </div>
 
-<style global lang="css">
+<style global lang="postcss">
 	@import './chrome-frame.css';
 </style>

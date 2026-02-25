@@ -82,7 +82,7 @@ export type InPlaceEditProps = {
 	let popper;
 </script>
 
-<style global>
+<style global lang="postcss">
   @import './inplaceedit.css';
 </style>
 

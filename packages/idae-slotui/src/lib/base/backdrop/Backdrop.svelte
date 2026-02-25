@@ -120,6 +120,6 @@ const dispatch = createEventDispatcher();
 	</div>
 {/if}
 
-<style global>
+<style global lang="postcss">
 	@import './backdrop.css';
 </style>

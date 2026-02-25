@@ -2,7 +2,7 @@
 	import Looper from '../looper/Looper.svelte';
 </script>
 
-<style global>
+<style global lang="postcss">
     @import './css.css';
 </style>
 

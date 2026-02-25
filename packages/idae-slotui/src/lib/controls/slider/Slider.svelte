@@ -190,6 +190,6 @@ function getSliderVal(event: Event) {
 	/>
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './slider.css';
 </style>

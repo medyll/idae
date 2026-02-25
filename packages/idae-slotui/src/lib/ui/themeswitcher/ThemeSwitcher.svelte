@@ -9,7 +9,7 @@
 	}
 </script>
 
-<style global>
+<style global lang="postcss">
   @import './theme-switcher.css';
 </style>
 

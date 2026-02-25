@@ -87,6 +87,6 @@
 	</div>
 </div>
 
-<style global>
+<style global lang="postcss">
 	@import './frame.css';
 </style>

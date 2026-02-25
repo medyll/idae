@@ -149,7 +149,7 @@ is a datalist table <br /> B. Franklin, 1854"
 	</DemoPage>
 </ComponentDemo>
 
-<style lang="scss">
+<style lang="postcss">
 	.what {
 		background-color: var(--sld-color-background);
 		color: var(--sld-color-foreground);

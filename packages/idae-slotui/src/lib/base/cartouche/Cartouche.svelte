@@ -174,6 +174,6 @@ export type CartoucheProps = CommonProps & {
 	{/if}
 </div>
 
-<style global>
+<style global lang="postcss">
 	@import './cartouche.css';
 </style>

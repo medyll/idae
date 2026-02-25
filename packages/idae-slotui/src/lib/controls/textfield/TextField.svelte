@@ -143,6 +143,6 @@ export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);
 	/>
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './textfield.css';
 </style>

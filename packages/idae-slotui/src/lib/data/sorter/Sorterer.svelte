@@ -45,6 +45,6 @@ let {
 	{/each}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './sorterer.css';
 </style>

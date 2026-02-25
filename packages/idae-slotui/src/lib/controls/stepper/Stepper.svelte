@@ -59,6 +59,6 @@ let child = children;
 	{/each}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './stepper.css';
 </style>

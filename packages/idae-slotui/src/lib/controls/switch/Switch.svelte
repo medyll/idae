@@ -70,6 +70,6 @@ let hiddenRef: HTMLInputElement;
 </label>
 ..
 
-<style global>
+<style global lang="postcss">
   @import './switch.css';
 </style>

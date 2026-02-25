@@ -131,6 +131,6 @@ export const actions = {
 	{@render children?.()}
 {/if}
 
-<style global lang="css">
+<style global lang="postcss">
   @import './login.css';
 </style>

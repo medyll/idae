@@ -43,7 +43,7 @@ export type MenuProps<T = Data> = CommonProps & {
 	let { ...rest }: MenuListProps = $props();
 </script>
 
-<style global lang="css">
+<style global lang="postcss">
   @import './menu.css';
 </style>
 

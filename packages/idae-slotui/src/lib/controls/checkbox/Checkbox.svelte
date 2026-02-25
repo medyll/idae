@@ -83,6 +83,6 @@ let {
 	{/if}
 </label>
 
-<style global>
+<style global lang="postcss">
   @import './checkbox.css';
 </style>

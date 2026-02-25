@@ -6,7 +6,7 @@
 		$props();
 </script>
 
-<style global>
+<style global lang="postcss">
   @import './list.css';
 </style>
 

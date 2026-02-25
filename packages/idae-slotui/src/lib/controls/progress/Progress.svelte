@@ -44,6 +44,6 @@ export type ProgressProps = {
 	<div class="progress-gouge" style="{attr}:{precWidth}%;{attrTickness}:0.5rem"></div>
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './progress.css';
 </style>

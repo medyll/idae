@@ -49,6 +49,6 @@ export type ButtonIconProps = Partial<ButtonProps> & {
 	<Icon style="display:inline; " {rotation} icon={finalIcon}   />
 </Button>
 
-<style global>
+<style global lang="postcss">
   @import '../button/button.css';
 </style>

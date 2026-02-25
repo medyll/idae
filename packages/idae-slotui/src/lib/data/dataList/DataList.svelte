@@ -291,6 +291,6 @@ let {
 	</table>
 {/if}
 
-<style global>
+<style global lang="postcss">
   @import './datalist.css';
 </style>

@@ -169,6 +169,6 @@
 	</div>
 </div>
 
-<style global>
-  @import './demoer.css';
+<style global lang="postcss">
+	@import './demoer.css';
 </style>

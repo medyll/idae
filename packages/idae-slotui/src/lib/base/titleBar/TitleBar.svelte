@@ -61,6 +61,6 @@ export type TitleBarProps = {
 	{/if}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './titleBar.css';
 </style>

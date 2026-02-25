@@ -59,6 +59,6 @@ let chevron = 'fluent:chevron-down-20-regular';
 	</Popper>
 {/if}
 
-<style global lang="css">
+<style global lang="postcss">
 	@import '../button/button.css';
 </style>

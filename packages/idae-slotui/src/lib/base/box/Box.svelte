@@ -124,6 +124,6 @@ export interface BoxProps extends CommonProps {
 
  
 
-<style global>
-	@import './box.css';
-  </style>
+<style global lang="postcss">
+		@import './box.css';
+	</style>

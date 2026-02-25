@@ -14,8 +14,8 @@
 	];
 </script>
 
-<style global>
-  @import './debug.css';
+<style global lang="postcss">
+	@import './debug.css';
 </style>
 
 <div style="padding:0.5rem">

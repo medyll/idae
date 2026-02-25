@@ -117,7 +117,7 @@ function buttonSelect(field: any) {
 }
 </script>
 
-<style global>
+<style global lang="postcss">
   @import './grouper.css';
 </style>
 

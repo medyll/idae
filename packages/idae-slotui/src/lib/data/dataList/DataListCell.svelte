@@ -298,7 +298,7 @@ export interface RowType {
 	</td>
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	.dataListCell {
 		// transition: all  0.1s;
 	}

@@ -92,6 +92,6 @@ export type ToastType = {
 	<Slotted child={children} />
 </Box>
 
-<style   >
+<style lang="postcss">
   @import './toast.css';
 </style>

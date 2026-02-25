@@ -176,8 +176,10 @@ async function main() {
   }
 
   let md = '# Component Map\n\n';
+  md += 'you can update this files status by running the code\n\n```powershell\nnode ./scripts/make-component-maps.js\n```\n\n';
   md += '### Legend\n- ✅ : Requirement met / No error\n- ❌ : Requirement not met / Error detected\n- ─ : Not applicable (Snippet or no style)\n\n';
   md += '### Columns\n- **Int.** (Internal): The `Props` type must be used within the Svelte component body.\n- **Ext.** (External): The `Props` type must **not** be imported from `./types.ts`.\n- **Type**: The `Props` type must **not** be declared in the `types.ts` file.\n- **File**: The `types.ts` file must exist in the component folder.\n- **Demo**: `[component]DemoValues` must be exported from `types.ts`.\n- **PostCss**: Component must use `lang="postcss"` on at least one `<style>` tag when a style is present.\n- **Ref**: The `<style>` content must include `@reference "tailwindcss"` when a style is present.\n- **Css**: The `<style>` must NOT import external `.css` files or use `url(...)` (presence = ❌).\n- **Sc.**: Snippet component.\n\n';
+  md += '### Fixes\n- **Add Props:** Add the component `Props` definition inside a `<script module>` tag.\n- **Remove import:** Remove `import { ... } from "./types"` when the `Props` type is used internally.\n- **Delete Props:** Remove redundant `Props` type declarations from `types.ts`.\n- **Create types.ts:** Add an adjacent `types.ts` with `export {};` for components that need it.\n- **Add demo values:** Export `[component]DemoValues` from `types.ts`.\n- **PostCSS:** Add `lang="postcss"` to the component `<style>` tag.\n- **Reference:** Add `@reference "tailwindcss"` inside the component style.\n- **Remove CSS imports:** Replace external `.css` imports with PostCSS workflow or move rules to SCSS.\n\n';
   md += '| File | Int. | Ext. | Type | File | Demo | PostCss | Ref | Css | Sc. |\n| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n';
 
   const report = { internal: [], external: [], type: [], file: [], demo: [], postcss: [], reference: [], css: [] };
@@ -281,7 +283,7 @@ async function main() {
   mdSec("Missing types.ts File (File)", report.file, "Create the `types.ts` file with `export {};`.");
   mdSec("Missing Demo Values (Demo)", report.demo, "Export the missing `componentDemoValues` from `types.ts`.");
   // New markdown sections for the style checks:
-  mdSec("Missing lang=\"postcss\" on <style>", report.postcss, "Add `lang=\"postcss\"` to the component's <style> tag.");
+  mdSec("Missing lang=\"postcss\" on &lt;style&gt;", report.postcss, "Add `lang=\"postcss\"` to the component's <style> tag.");
   mdSec("Missing @reference \"tailwindcss\" in style", report.reference, "Add `@reference \"tailwindcss\"` to the style content.");
   mdSec("External CSS import present (Css)", report.css, "Remove external `.css` imports from the component style.");
 

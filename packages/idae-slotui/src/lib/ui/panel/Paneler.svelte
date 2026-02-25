@@ -60,6 +60,6 @@
 	{@render children?.()}
 </div>
 
-<style global lang="scss">
+<style global lang="postcss">
 	@use '../../styles/slotui-mixins.scss';
 </style>

@@ -201,6 +201,6 @@ onDestroy(() => {
 	{/if}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './confirm.css';
 </style>

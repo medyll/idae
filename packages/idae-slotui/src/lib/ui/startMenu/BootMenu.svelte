@@ -99,6 +99,6 @@
 	</div>
 {/if}
 
-<style global lang="css">
+<style global lang="postcss">
   @import './boot-menu.css';
 </style>

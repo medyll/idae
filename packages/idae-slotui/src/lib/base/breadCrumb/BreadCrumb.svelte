@@ -63,6 +63,6 @@ export interface BreadCrumbProps extends CommonProps {
 	</ul>
 </nav>
 
-<style global>
-  @import './breadcrumb.css';
+<style global lang="postcss">
+	@import './breadcrumb.css';
 </style>

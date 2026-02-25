@@ -48,6 +48,6 @@ export interface ColumnType {
 	{/if}
 </div>
 
-<style global>
-  @import './columner.css';
+<style global lang="postcss">
+	@import './columner.css';
 </style>

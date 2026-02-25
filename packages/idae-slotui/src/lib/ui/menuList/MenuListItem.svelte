@@ -140,6 +140,6 @@
 	</li>
 {/if}
 
-<style global lang="scss">
+<style global lang="postcss">
 	@use './menu-list.scss';
 </style>

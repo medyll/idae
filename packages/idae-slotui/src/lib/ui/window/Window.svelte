@@ -326,6 +326,6 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {:else}
 {/if} -->
 
-<style global>
+<style global lang="postcss">
     @import './window.css';
 </style>

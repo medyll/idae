@@ -203,6 +203,6 @@ $effect(() => {
 	{/if}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './drawer.css';
 </style>

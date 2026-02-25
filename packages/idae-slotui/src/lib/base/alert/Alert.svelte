@@ -165,6 +165,6 @@ export type AlertProps = {
 	 
  
 
-<style global>
+<style global lang="postcss">
 	@import './alert.css';
 </style>

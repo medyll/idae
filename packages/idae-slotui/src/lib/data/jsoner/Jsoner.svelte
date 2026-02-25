@@ -31,7 +31,7 @@ if (Array.isArray(data)) {
 }
 </script>
 
-<style global>
+<style global lang="postcss">
   @import './jsoner.css';
 </style>
 

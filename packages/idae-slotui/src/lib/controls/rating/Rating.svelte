@@ -69,6 +69,6 @@ const title = `${scored} / ${ratingBase}`;
 	{/each}
 </div>
 
-<style global>
+<style global lang="postcss">
   @import './rating.css';
 </style>

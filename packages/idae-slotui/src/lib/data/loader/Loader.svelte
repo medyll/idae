@@ -133,6 +133,6 @@ $effect(() => {
 	{/if}
 {/key}
 
-<style global>
+<style global lang="postcss">
   @import './loader.css';
 </style>

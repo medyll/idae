@@ -114,6 +114,6 @@ export type IconAppProps = {
 	/>
 {/key}
 
-<style global>
+<style global lang="postcss">
   @import './icon.css';
 </style>

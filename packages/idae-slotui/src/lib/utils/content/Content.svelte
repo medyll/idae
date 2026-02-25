@@ -75,7 +75,7 @@
 	{@render children?.()}
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	@use '../../styles/slotui-mixins.scss';
 
 	.content {

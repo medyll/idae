@@ -78,7 +78,7 @@ let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevr
 	</Popper>
 {/if}
 
-<style global lang="css">
+<style global lang="postcss">
 	@import '../button/button.css';
 	@import './button-menu.css';
 </style>

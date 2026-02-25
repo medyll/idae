@@ -62,6 +62,6 @@ export interface AvatarProps    {
 	{/if}
 </Content>
 
-<style global>
-  @import './avatar.css';
+<style global lang="postcss">
+	@import './avatar.css';
 </style>

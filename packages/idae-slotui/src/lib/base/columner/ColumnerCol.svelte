@@ -59,7 +59,7 @@
 	<Slotted child={bottomSlot}></Slotted>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	.column {

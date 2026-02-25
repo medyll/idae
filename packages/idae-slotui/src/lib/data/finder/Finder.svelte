@@ -195,6 +195,6 @@ let dataKeys = $derived(
 	</Popper>
 {/if}
 
-<style global>
+<style global lang="postcss">
   @import './finder.css';
 </style>

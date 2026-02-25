@@ -20,7 +20,7 @@
 	</DataList>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	.what {
 		background-color: var(--sld-color-background);
 		color: var(--sld-color-foreground);

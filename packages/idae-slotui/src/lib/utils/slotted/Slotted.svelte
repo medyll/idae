@@ -10,7 +10,7 @@
 	let { child, children, slotArgs = $bindable({}) }: SlottedProps = $props();
 </script>
 
-<style>
+<style lang="postcss">
     /* Add any necessary styles here */
 </style>
 
