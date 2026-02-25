@@ -47,9 +47,7 @@ async function main() {
       presentInTypes = new RegExp(`(?:export\\s+)?(?:type|interface)\\s+${typeName}\\b`).test(typesContent);
     } catch (e) {}
 
-    // Check if imported from ./types
     const isImported = new RegExp(`import\\s+[^>]*?\\b${typeName}\\b[^>]*?from\\s+['"]\\./types['"]`).test(content);
-    
     const bodyOnly = content.replace(/import\s+[\s\S]*?from\s+.*?/g, '');
     const internalUse = new RegExp(`\\b${typeName}\\b`).test(bodyOnly);
 
@@ -57,14 +55,13 @@ async function main() {
     groups[rootDir].push({
       file: path.relative(repoRoot, file),
       internal: internalUse,
-      externalError: !isImported, // True if NOT imported
+      externalError: !isImported,
       inTypes: presentInTypes,
       hasFile: typesFileExists,
       isSnippet
     });
   }
 
-  // --- MARKDOWN GENERATION ---
   let md = '# Component Map\n\n';
   md += '### Legend\n';
   md += '- ✅ : Requirement met / No error\n';
@@ -81,18 +78,20 @@ async function main() {
   md += '| :--- | :---: | :---: | :---: | :---: | :---: |\n';
 
   for (const [groupName, files] of Object.entries(groups)) {
+    // Console Header
     console.log(`\n=== FOLDER: ${groupName.toUpperCase()} ===`);
+    console.log(`${'File'.padEnd(50)} | Int. | Ext. | Type | File | Sc.`);
+    console.log(`- Int : Internal usage | Ext. : Not imported | Type : In types.ts | File : types.ts exists | Sc. : Snippet`);
+    console.log('-'.repeat(105));
+
     md += `| **${groupName.toUpperCase()}** | | | | | |\n`;
 
     for (const r of files) {
       const col1 = r.internal ? '✅' : '❌';
-      
-      // Inverted logic for Ext: ✅ if error (not imported), ❌ if imported
       const col2 = r.externalError ? '✅' : '❌';
-      
       const col3 = r.isSnippet ? '─' : (r.inTypes ? '✅' : '❌');
       const col4 = r.hasFile ? '✅' : '❌';
-      const colSc = r.isSnippet ? '`[snippet]`' : '';
+      const colSc = r.isSnippet ? '[snippet]' : ''.padEnd(9);
       
       console.log(`${r.file.padEnd(50)} |  ${col1.padEnd(3)} |  ${col2.padEnd(3)} |  ${col3.padEnd(3)} |  ${col4.padEnd(3)} | ${colSc}`);
       console.log();
@@ -102,7 +101,7 @@ async function main() {
   }
 
   await fs.writeFile(path.join(repoRoot, 'COMPONENT_MAP.md'), md);
-  console.log(`\n📄 COMPONENT_MAP.md updated with inverted Ext. logic.`);
+  console.log(`\n📄 COMPONENT_MAP.md updated.`);
 }
 
 main().catch(console.error);
