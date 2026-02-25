@@ -30,8 +30,6 @@ async function main() {
     if (!file.endsWith('.svelte') || filename.includes('.demo.') || filename.includes('preview')) continue;
 
     const content = await fs.readFile(file, 'utf8');
-    
-    // Detects snippet component even in JSDoc/comments
     const isSnippet = /snippet[\s\S]*?component|component[\s\S]*?snippet/i.test(content);
 
     const relPath = path.relative(start, file);
@@ -49,7 +47,9 @@ async function main() {
       presentInTypes = new RegExp(`(?:export\\s+)?(?:type|interface)\\s+${typeName}\\b`).test(typesContent);
     } catch (e) {}
 
-    const externalUse = new RegExp(`import\\s+[^>]*?\\b${typeName}\\b[^>]*?from\\s+['"]\\./types['"]`).test(content);
+    // Check if imported from ./types
+    const isImported = new RegExp(`import\\s+[^>]*?\\b${typeName}\\b[^>]*?from\\s+['"]\\./types['"]`).test(content);
+    
     const bodyOnly = content.replace(/import\s+[\s\S]*?from\s+.*?/g, '');
     const internalUse = new RegExp(`\\b${typeName}\\b`).test(bodyOnly);
 
@@ -57,38 +57,52 @@ async function main() {
     groups[rootDir].push({
       file: path.relative(repoRoot, file),
       internal: internalUse,
-      external: externalUse,
+      externalError: !isImported, // True if NOT imported
       inTypes: presentInTypes,
       hasFile: typesFileExists,
       isSnippet
     });
   }
 
-  
-    console.log();
-    console.log(`- Int : Internal usage | Ext. : Imported from ./types | Type : Declared in types.ts | File : types.ts exists | Sc. : Snippet Component`);
-    console.log();
-    console.log();
+  // --- MARKDOWN GENERATION ---
+  let md = '# Component Map\n\n';
+  md += '### Legend\n';
+  md += '- ✅ : Requirement met / No error\n';
+  md += '- ❌ : Requirement not met / Error detected\n';
+  md += '- ─ : Not applicable (Snippet)\n\n';
+  md += '### Columns\n';
+  md += '- **Int.** (Internal): The `Props` type is used within the Svelte component body.\n';
+  md += '- **Ext.** (External): The `Props` type is **not** imported from `./types.ts`.\n';
+  md += '- **Type**: The `Props` type is declared in the `types.ts` file.\n';
+  md += '- **File**: The `types.ts` file exists in the component folder.\n';
+  md += '- **Sc.**: Snippet component (contains "snippet component" in its documentation).\n\n';
+
+  md += '| File | Int. | Ext. | Type | File | Sc. |\n';
+  md += '| :--- | :---: | :---: | :---: | :---: | :---: |\n';
 
   for (const [groupName, files] of Object.entries(groups)) {
     console.log(`\n=== FOLDER: ${groupName.toUpperCase()} ===`);
-    console.log(`${'File'.padEnd(50)} | Int. | Ext. | Type | File | Sc.`);
-    console.log('-'.repeat(110));
+    md += `| **${groupName.toUpperCase()}** | | | | | |\n`;
 
     for (const r of files) {
-      const col1 = (r.internal ? '✅' : '❌').padEnd(4);
-      const col2 = (r.external ? '❌' : '✅').padEnd(4);
+      const col1 = r.internal ? '✅' : '❌';
       
-      // If snippet, show horizontal bar instead of status
-      const col3 = (r.isSnippet ? ' ─ ' : (r.inTypes ? '✅' : '❌')).padEnd(4);
+      // Inverted logic for Ext: ✅ if error (not imported), ❌ if imported
+      const col2 = r.externalError ? '✅' : '❌';
       
-      const col4 = (r.hasFile ? '✅' : '❌').padEnd(4);
-      const colSc = r.isSnippet ? '[snippet]' : ''.padEnd(9);
+      const col3 = r.isSnippet ? '─' : (r.inTypes ? '✅' : '❌');
+      const col4 = r.hasFile ? '✅' : '❌';
+      const colSc = r.isSnippet ? '`[snippet]`' : '';
       
-      console.log(`${r.file.padEnd(50)} |  ${col1} |  ${col2} |  ${col3} |  ${col4} | ${colSc}`);
+      console.log(`${r.file.padEnd(50)} |  ${col1.padEnd(3)} |  ${col2.padEnd(3)} |  ${col3.padEnd(3)} |  ${col4.padEnd(3)} | ${colSc}`);
       console.log();
+
+      md += `| \`${r.file}\` | ${col1} | ${col2} | ${col3} | ${col4} | ${colSc} |\n`;
     }
   }
+
+  await fs.writeFile(path.join(repoRoot, 'COMPONENT_MAP.md'), md);
+  console.log(`\n📄 COMPONENT_MAP.md updated with inverted Ext. logic.`);
 }
 
 main().catch(console.error);

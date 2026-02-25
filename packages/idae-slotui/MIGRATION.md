@@ -25,6 +25,7 @@ This document records all steps, questions, technical choices, and points of att
 
 The migration tracking table for the migration steps  and their status will be maintained in the file: [MIGRATION_STATUS](MIGRATION_STATUS.md).
 The migration tracking table for the  for all components and their status will be maintained in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md).
+Global information about components can be found in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md).
 
 ## Migration Steps
    - [ ✅ Done ] Audit of existing code (components, styles, dependencies)
@@ -196,53 +197,5 @@ pnpm run test:unit
 
 
 
-### Snippet Components Correction Instructions (STRICT)
 
-Purpose: standardize creation of small "snippet" components discovered inside parent components.
-
-1) Scope and order
-- Process directories in this exact sequence: `controls/`, `data/`, `navigation/`, `ui/`, `utils/`.
-- a "snippet component" is a svelte component with the word "snippet component" in its content, referring to a parent component's snippet.
-
-
-2) Discovery (identification) 
-- The migration script `scripts/check-internal-typs.js` can produce a preview list; run it locally to inspect results:
-```powershell
-node .\scripts\check-internal-typs.js
-```
-- if the column Int. is ❌ , then there are chances this is a "snippet component" which need to be corrected.
-
-3) File placement rules (CRITICAL)
-- Do NOT create a `snippets/` subdirectory.
-- Do NOT move new components into a central directory.
-- Each generated snippet component MUST be created in the same directory as its parent component. Example: if `Button.svelte` lives in `src/lib/controls/button/`, then `ButtonStart.svelte` must also be created in `src/lib/controls/button/`.
-
-
-5) Component template (mandatory)
-- Every snippet file must include a `@component` HTML comment, use Svelte 5 runes for props. Keep implementations minimal.
-- The component must not contain "<style />"
-
-Canonical template (replace types and names) STRICT:
-
-```svelte
-<!-- @component snippet component ButtonStart — for Button -->
-<script module lang="ts">
-	export type ButtonStartProps = any; // inherits from the snippet buttonStart declared in the module part of Button.svelte; ex: buttonStart: Snippet<[Record<string, any>]> => export type ButtonStartProps = Record<string, any>]>;
-</script>
-
-<script lang="ts">
-	const { children } = $props();
-</script>
-
-{#snippet buttonStart()}
-	{@render children?.()}
-{/snippet}
-
-```
-
-6) Verification (mandatory)
-- run the list command th see if Int. is ✅ for the component.
-```powershell
-node .\scripts\check-internal-typs.js
-```
  
