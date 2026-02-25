@@ -44,7 +44,7 @@ async function* walk(dir) {
  *  - whether the `componentDemoValues` export exists in `types.ts`
  *
  * It prints a formatted table to the console and writes a markdown
- * file `COMPONENT_MAP.md` summarising the findings.
+ * file `COMPONENT_MAP.md` summarizing the findings.
  *
  * Note: this function is intentionally side-effecting (console + file write).
  * It does not return a value but throws on unexpected filesystem errors.
@@ -54,6 +54,7 @@ async function* walk(dir) {
 async function main() {
   const repoRoot = path.resolve(__dirname, '..');
   const start = path.join(repoRoot, 'src', 'lib');
+  /* @type {Record<string, Array<{ file: string, internal: boolean, externalError: boolean, typeError: boolean, hasFile: boolean, isSnippet: boolean, hasDemoValues: boolean, demoName: string }>>>} */
   const groups = {};
   let totalChecks = 0;
   let totalSuccess = 0;
@@ -135,20 +136,21 @@ async function main() {
 
   const report = { internal: [], external: [], type: [], file: [], demo: [] };
 
+  /* drawing of the table */
   for (const [groupName, files] of Object.entries(groups)) {
     let gChecks = 0, gSuccess = 0;
     console.log(`\n=== FOLDER: ${groupName.toUpperCase()} ===`);
     console.log(`${'File'.padEnd(50)} | Int. | Ext. | Type | File | Demo | Sc.`);
     console.log('-'.repeat(115));
     md += `| **${groupName.toUpperCase()}** | | | | | | |\n`;
-
+    /* drawing of the rows */
     for (const r of files) {
-      const col1 = r.internal ? '✅' : '❌';
-      const col2 = r.externalError ? '✅' : '❌';
-      const col3 = r.isSnippet ? '─' : (!r.typeError ? '✅' : '❌');
-      const col4 = r.hasFile ? '✅' : '❌';
-      const col5 = r.hasDemoValues ? '✅' : '❌';
-      const colSc = r.isSnippet ? '[snippet]' : '';
+      const col_internal = r.internal ? '✅' : '❌';
+      const col_external = r.externalError ? '✅' : '❌';
+      const col_type = r.isSnippet ? '─' : (!r.typeError ? '✅' : '❌');
+      const col_file = r.hasFile ? '✅' : '❌';
+      const col_demo = r.hasDemoValues ? '✅' : '❌';
+      const col_sc = r.isSnippet ? '[snippet]' : '';
 
       if (!r.internal) report.internal.push(r.file);
       if (!r.externalError) report.external.push(r.file);
@@ -159,9 +161,10 @@ async function main() {
       const rowChecks = r.isSnippet ? 4 : 5;
       const rowSuccess = (r.internal ? 1 : 0) + (r.externalError ? 1 : 0) + (r.hasFile ? 1 : 0) + (r.hasDemoValues ? 1 : 0) + (!r.isSnippet && !r.typeError ? 1 : 0);
       gChecks += rowChecks; gSuccess += rowSuccess;
-
-      console.log(`${r.file.padEnd(50)} |  ${col1.padEnd(3)} |  ${col2.padEnd(3)} |  ${col3.padEnd(3)} |  ${col4.padEnd(3)} |  ${col5.padEnd(3)} | ${colSc}`);
-      md += `| \`${r.file}\` | ${col1} | ${col2} | ${col3} | ${col4} | ${col5} | ${colSc} |\n`;
+      /* log of the rows */
+      console.log(`${r.file.padEnd(50)} |  ${col_internal.padEnd(3)} |  ${col_external.padEnd(3)} |  ${col_type.padEnd(3)} |  ${col_file.padEnd(3)} |  ${col_demo.padEnd(3)} | ${col_sc}`);
+      /* writing of the row line */
+      md += `| \`${r.file}\` | ${col_internal} | ${col_external} | ${col_type} | ${col_file} | ${col_demo} | ${col_sc} |\n`;
     }
     const gScore = ((gSuccess / gChecks) * 100).toFixed(1);
     console.log(`\n> Folder Score: ${gScore}% (${gSuccess}/${gChecks})\n`);
@@ -196,6 +199,7 @@ async function main() {
   mdSec("Missing types.ts File (File)", report.file, "Create the `types.ts` file with `export {};`.");
   mdSec("Missing Demo Values (Demo)", report.demo, "Export the missing `componentDemoValues` from `types.ts`.");
 
+  /* writing the markdown file  COMPONENT_MAP.md*/
   await fs.writeFile(path.join(repoRoot, 'COMPONENT_MAP.md'), md);
   console.log(`\n📄 COMPONENT_MAP.md updated.`);
 }

@@ -57,6 +57,7 @@
 | `src\lib\base\demoer\DemoerCode.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\base\demoer\DemoerComponent.svelte` | ❌ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\base\demoer\DemoerContent.svelte` | ❌ | ✅ | ─ | ✅ | ❌ | [snippet] |
+| `src\lib\base\demoer\DemoPage.svelte` | ❌ | ✅ | ❌ | ✅ | ❌ |  |
 | `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ |  |
 | `src\lib\base\icon\Icon.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\base\paper\Paper.svelte` | ✅ | ✅ | ─ | ❌ | ❌ | [snippet] |
@@ -183,7 +184,7 @@
 | `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ❌ | ✅ | ❌ |  |
 | `src\lib\utils\contextRooter\ContextRooter.svelte` | ❌ | ✅ | ✅ | ❌ | ❌ |  |
 | `src\lib\utils\css\Css.svelte` | ❌ | ✅ | ✅ | ❌ | ❌ |  |
-| `src\lib\utils\looper\Looper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | [snippet] |
+| `src\lib\utils\looper\Looper.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | [snippet] |
 | `src\lib\utils\looper\LoopGroupTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\utils\looper\LoopTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\utils\slotted\Child.svelte` | ✅ | ✅ | ─ | ❌ | ❌ | [snippet] |
@@ -192,8 +193,8 @@
 
 
 ## Global Compliance Index
-**Score: 69.7%**
-`█████████████░░░░░░░` (481/690 passed)
+**Score: 69.4%**
+`█████████████░░░░░░░` (482/695 passed)
 
 ---
 
@@ -207,6 +208,7 @@
 - `src\lib\base\demoer\Demoer.svelte`
 - `src\lib\base\demoer\DemoerComponent.svelte`
 - `src\lib\base\demoer\DemoerContent.svelte`
+- `src\lib\base\demoer\DemoPage.svelte`
 - `src\lib\base\icon\Icon.svelte`
 - `src\lib\base\titleBar\TitleBarIcon.svelte`
 - `src\lib\base\titleBar\TitleBarTitle.svelte`
@@ -228,6 +230,7 @@
 - `src\lib\ui\toast\Toaster.svelte`
 - `src\lib\utils\contextRooter\ContextRooter.svelte`
 - `src\lib\utils\css\Css.svelte`
+- `src\lib\utils\looper\Looper.svelte`
 - `src\lib\utils\stylesheet\StyleSheet.svelte`
 
 ### Incorrectly Imported (Ext.)
@@ -242,6 +245,7 @@ _None_
 - `src\lib\base\badge\Badge.svelte`
 - `src\lib\base\columner\ColumnerCol.svelte`
 - `src\lib\base\demoer\Demoer.svelte`
+- `src\lib\base\demoer\DemoPage.svelte`
 - `src\lib\base\divider\Divider.svelte`
 - `src\lib\controls\checkbox\Checkbox.svelte`
 - `src\lib\controls\progress\Progress.svelte`
@@ -315,6 +319,7 @@ _None_
 - `src\lib\base\demoer\DemoerCode.svelte (Expected: demoerCodeDemoValues)`
 - `src\lib\base\demoer\DemoerComponent.svelte (Expected: demoerComponentDemoValues)`
 - `src\lib\base\demoer\DemoerContent.svelte (Expected: demoerContentDemoValues)`
+- `src\lib\base\demoer\DemoPage.svelte (Expected: demoPageDemoValues)`
 - `src\lib\base\icon\Icon.svelte (Expected: iconDemoValues)`
 - `src\lib\base\paper\Paper.svelte (Expected: paperDemoValues)`
 - `src\lib\base\titleBar\TitleBarIcon.svelte (Expected: titleBarIconDemoValues)`
