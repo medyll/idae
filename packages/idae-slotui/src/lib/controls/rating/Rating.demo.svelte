@@ -2,8 +2,8 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Rating from './Rating.svelte';
-	import Demoer from '../../base/demoer/Demoer.svelte';
-	import DemoPage from '../../base/demoer/DemoPage.svelte';
+	import Demoer from '../../base/demoer/DemoerContent.svelte';
+	import DemoPage from '../../base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	const ww = `

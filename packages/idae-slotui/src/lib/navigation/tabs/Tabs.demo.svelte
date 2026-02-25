@@ -6,8 +6,8 @@
 	import type { TabsItemsProps } from './Tabs.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import DemoerComponent from '$lib/base/demoer/DemoerComponent.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 
 	import { parameters, componentArgs } from './types.js';
 

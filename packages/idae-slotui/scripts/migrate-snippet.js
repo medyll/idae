@@ -7,10 +7,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const SRC_LIB = path.join(ROOT, 'src', 'lib');
-const TARGET_DIRS = ['controls', 'data', 'navigation', 'ui', 'utils'];
+// Include 'base' so components under src/lib/base are also scanned
+const TARGET_DIRS = ['base', 'controls', 'data', 'navigation', 'ui', 'utils'];
 
 // Regex to capture snippet props (ignoring 'children')
-const SNIPPET_REGEX = /^\s*(?:readonly\s+)?(?<prop>[\w$]+)\s*\??\s*:\s*Snippet\b/gm;
+// Accepts optional generics (Snippet<...>), unions (Snippet | undefined),
+// trailing commas/semicolons and typical TypeScript formatting.
+const SNIPPET_REGEX = /^\s*(?:readonly\s+)?(?<prop>[\w$]+)\s*\??\s*:\s*Snippet\b(?:\s*<[^>]*>)?(?:\s*\|[^;\n]*)?\s*[;,]/gm;
 
 function pascalCase(name) {
   if (!name) return name;

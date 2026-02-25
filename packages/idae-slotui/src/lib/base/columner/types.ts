@@ -1,7 +1,7 @@
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export type ColumnProps = CommonProps & {
+export type ColumnerColProps = CommonProps & {
 	/** unique id of the column */
 	columnId: string;
 	/** snippet for the top of the drawer */
@@ -9,9 +9,9 @@ export type ColumnProps = CommonProps & {
 	/** snippet for the bottom of the column */
 	bottomSlot?: Snippet;
 };
-export type ColumnerStoreType = Record<string, ColumnType>;
+export type ColumnerStoreType = Record<string, ColumnerColType>;
 
-export interface ColumnType {
+export interface ColumnerColType {
 	columnId: string;
 	state: keyof typeof states;
 }

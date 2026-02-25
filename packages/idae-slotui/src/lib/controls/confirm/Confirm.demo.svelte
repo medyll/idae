@@ -3,8 +3,8 @@
 	import Confirm from '$lib/controls/confirm/Confirm.svelte';
 
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let codeSlot = `

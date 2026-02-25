@@ -1,6 +1,6 @@
 import DemoerRoot from "./Demoer.svelte";
 import DemoerCode from "./DemoerCode.svelte";
 import DemoerComponent from "./DemoerComponent.svelte";
-import DemoPage from "./DemoPage.svelte";
+import DemoerContent from "./DemoerContent.svelte";
 
-export const Demoer = { Root: DemoerRoot, Code: DemoerCode, Component: DemoerComponent, DemoPage: DemoPage };
+export const Demoer = { Root: DemoerRoot, Code: DemoerCode, Component: DemoerComponent, Content: DemoerContent };

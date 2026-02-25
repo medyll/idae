@@ -6,10 +6,10 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import type { DataCellType } from './types.js';
 	import type { DataListProps } from './DataList.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 
 	import { parameters, componentArgs } from './types.js';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 
 	let data = [...Array(50)].map((caches, index: number) => {
 		return {

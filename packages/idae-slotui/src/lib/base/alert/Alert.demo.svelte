@@ -2,8 +2,8 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Alert from './Alert.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let code1 = `

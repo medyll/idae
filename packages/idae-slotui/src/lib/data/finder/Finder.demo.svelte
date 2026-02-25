@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Jsoner from '../jsoner/Jsoner.svelte';
 	import Finder from './Finder.svelte';

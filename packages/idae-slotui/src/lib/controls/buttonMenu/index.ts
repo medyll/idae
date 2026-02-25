@@ -1,2 +1,4 @@
+import MenuItemRoot from "./MenuItem.svelte";
 import ButtonMenu from "./ButtonMenu.svelte";
-export { ButtonMenu };
+
+export const MenuItem = { Root: MenuItemRoot, ButtonMenu: ButtonMenu };

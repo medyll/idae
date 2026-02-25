@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext, tick } from 'svelte';
-	import type { ColumnProps, ColumnerStoreType } from './types.js';
+	import type { ColumnerColProps, ColumnerStoreType } from './types.js';
 	import { resizer } from '$lib/utils/uses/resizer/resizer.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import { onEvent } from '$lib/utils/uses/event.js';
@@ -16,7 +16,7 @@
 		drawerTop,
 		children,
 		...rest
-	}: ColumnProps = $props();
+	}: ColumnerColProps = $props();
 
 	if (!$columner[columnId]) {
 		$columner[columnId] = {
