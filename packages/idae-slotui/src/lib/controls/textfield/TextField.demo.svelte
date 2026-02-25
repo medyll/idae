@@ -38,7 +38,7 @@
 </script>
 
 <ComponentDemo component="TextField">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="TextField" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

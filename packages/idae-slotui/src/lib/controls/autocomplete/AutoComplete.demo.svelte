@@ -45,7 +45,7 @@
 </script>
 
 <ComponentDemo component="AutoComplete">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="AutoComplete">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

@@ -23,7 +23,7 @@
 </script>
 
 <ComponentDemo component="Backdrop">
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<DemoPage code={codeSlot} component="Backdrop">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

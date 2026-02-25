@@ -14,8 +14,8 @@ export {
   ToggleBarTitle,
   // 
   ToggleBarRoot as ToggleBar,
-  ContentSwitcherIcon as ContentSwitcherIcon,
-  ContentSwitcherReveal as ContentSwitcherReveal,
+  ContentSwitcherIcon as SwitcherIcon,
+  ContentSwitcherReveal as SwitcherReveal,
   ToggleBarButtons as Buttons,
   ToggleBarIcon as Icon,
   ToggleBarTitle as Title

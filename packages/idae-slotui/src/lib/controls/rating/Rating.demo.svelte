@@ -21,7 +21,7 @@
 	component="Rating"
 	cite="First they tell you that it's just about stars.<br/>And then you'll be starred<br/> Amal. Creed, 1824"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Rating" code={ww}>
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}

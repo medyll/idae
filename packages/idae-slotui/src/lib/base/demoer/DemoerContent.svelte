@@ -70,14 +70,14 @@
 	{/each}
 {/snippet}
 
-<div class="flex-v gap-small">
+<div class="flex flex-col gap-small">
 	<div class="p-l-8">
 		<h6 class="border-b w-medium pad flex-h flex-align-middle gap-small">
 			<Icon icon="cib:svelte" /> component
 		</h6>
 		<div class="p-2">
 			{#if Object.entries(multiple).length > 0}
-				<div class="flex-h flex-align-middle flex-wrap gap-medium">
+				<div class="flex-h flex-align-middle flex-wrap gap-2">
 					{#each Object.keys(multiple) as tiple}
 						{#each Object.keys(multiple[tiple]) as params}
 							<div>

@@ -78,7 +78,7 @@
 	component="ToolBar"
 	cite="Way more than putting tools in a bar : having them in a toolbar ! <br /> Quead Jones, 450"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="ToolBar">
 			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
 				>{#snippet children({ activeParams })}

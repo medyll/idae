@@ -108,7 +108,7 @@
 	component="Panel"
 	cite="If you can slide, then there are chances you are a panel<br /> C. Quin 2013"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Panel">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}

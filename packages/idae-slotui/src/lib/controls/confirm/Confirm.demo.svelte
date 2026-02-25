@@ -33,7 +33,7 @@
 <br />
 V.Hugo 1850"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Chipper" code={codeSlot}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

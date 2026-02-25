@@ -10,7 +10,7 @@ export {
   TaskBarRight,
   // 
   TaskbarRoot as Taskbar,
-  TaskBarContent as TaskBarContent,
-  TaskBarLeft as TaskBarLeft,
-  TaskBarRight as TaskBarRight
+  TaskBarContent as BarContent,
+  TaskBarLeft as BarLeft,
+  TaskBarRight as BarRight
 };

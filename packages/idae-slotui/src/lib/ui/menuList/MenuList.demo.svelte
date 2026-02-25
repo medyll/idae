@@ -25,7 +25,7 @@
 	component="Menu"
 	cite="A menu is not a list, it's just like a list but more and less"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Popper">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

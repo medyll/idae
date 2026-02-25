@@ -19,7 +19,7 @@
 </script>
 
 <ComponentDemo component="Grouper">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Popper">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

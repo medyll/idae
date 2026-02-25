@@ -2,8 +2,8 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Alert from './Alert.svelte';
-	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
-	import DemoPage from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let code1 = `
@@ -24,7 +24,7 @@
 	<DemoPage component="Alert" code={code1}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<div class="flex-h flex-wrap flex-align-middle gap-medium">
+				<div class="flex-h flex-wrap flex-align-middle gap-2">
 					<Alert {...activeParams}>hi !</Alert>
 					<Alert {...activeParams}>
 						Simple alert with a button
@@ -53,7 +53,7 @@
 	<DemoPage title="Using props" component="Alert" code={code2}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<div class="flex-h flex-wrap gap-medium">
+				<div class="flex-h flex-wrap gap-2">
 					<Alert {...activeParams} />
 				</div>
 			{/snippet}

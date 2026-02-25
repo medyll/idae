@@ -61,7 +61,7 @@
 	cite="We were looking for leaves and we found trees<br /> B. Esein, 1354"
 	component="Tree"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

@@ -37,7 +37,7 @@
 <br />
 <h5>Api parameters for {`<${componentName} />`}</h5>
 <br />
-<div class="flex-v" style="gap:0.5rem;">
+<div class="flex flex-col" style="gap:0.5rem;">
 	<table style="table-layout:fixed;width:auto;">
 		<tbody>
 			{#each propsOpt as prop}

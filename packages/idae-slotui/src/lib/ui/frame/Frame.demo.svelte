@@ -7,7 +7,7 @@
 </script>
 
 <ComponentDemo component="Frame">
-	<div class="flex-h gap-medium border overflow-hidden">
+	<div class="flex-h gap-2 border overflow-hidden">
 		<Frame style="height:350px;width:80%">
 			{#snippet drawerTop()}
 				<div class="pad">

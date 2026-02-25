@@ -14,7 +14,7 @@
 <div>
 	<!-- <svelte:component this={tt} /> -->
 </div>
-<div class="flex-v gap-medium">
+<div class="flex flex-col gap-2">
 	<h5>Link to examples :</h5>
 	<div class="m-l-4">
 		<a rel="external" href={sitePaths.component({ code: data.component.toLowerCase() })}

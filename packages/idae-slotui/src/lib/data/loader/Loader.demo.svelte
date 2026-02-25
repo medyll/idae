@@ -47,7 +47,7 @@
 	phase was that of waiting.<br /> D. Pentes, 824"
 	component="Loader"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

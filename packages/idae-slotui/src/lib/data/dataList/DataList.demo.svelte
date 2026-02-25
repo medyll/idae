@@ -51,7 +51,7 @@
 is a datalist table <br /> B. Franklin, 1854"
 >
 	<DemoPage title="red">
-		<div class="flex-v gap-medium">
+		<div class="flex flex-col gap-2">
 			<h5>Automatique datalist, without columns definitions</h5>
 			<div class="what pos-rel pad">
 				<Demoer {parameters} {componentArgs}>

@@ -32,7 +32,7 @@
 </style>
 
 <Login showLogin={false}>
-	<div class="h-full overflow-hidden flex-v">
+	<div class="h-full overflow-hidden flex flex-col">
 		<Taskbar>
 			{#snippet taskBarLeft()}
 				<box class="p-1">

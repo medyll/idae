@@ -29,7 +29,7 @@
 <ComponentDemo
 	component="Box"
 	cite="Boxes, essentially, contain other boxes. That's the meaning we'll found if open them<br /> B. Franklin,1854"
-	><div class="flex-v gap-medium">
+	><div class="flex flex-col gap-2">
 		<DemoPage {code} component="Box">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

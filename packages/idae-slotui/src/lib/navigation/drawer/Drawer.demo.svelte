@@ -24,7 +24,7 @@
 </script>
 
 <ComponentDemo component="Drawer">
-	<div class="flex-v gap-medium w-full">
+	<div class="flex flex-col gap-2 w-full">
 		<DemoPage component="Drawer" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

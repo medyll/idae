@@ -33,7 +33,7 @@
 <ComponentDemo
 	component="Cartouche"
 	cite="'Open up', they said. So we stacked<br /> G. Brahms, 1964"
-	><div class="flex-v gap-large">
+	><div class="flex flex-col gap-large">
 		<DemoPage component="Cartouche" code={code1}>
 			<Demoer title="A simple cartouche" {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
