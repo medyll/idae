@@ -40,26 +40,10 @@ export interface BoxProps extends CommonProps {
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 	import Content from '$lib/utils/content/Content.svelte';
-	import { createEventDispatcher } from 'svelte'; 
-import Slotted from '$lib/utils/slotted/Slotted.svelte';
+	import { createEventDispatcher } from 'svelte';  
 
-/**
- * Component for rendering the `boxBottomZone` slot.
- */
-export let boxBottomZone: Snippet;
-const dispatch = createEventDispatcher();
-
-/**
- * Component for rendering the `titleBarTitle` slot.
- */
-export let titleBarTitle: Snippet;
-const dispatchTitleBar = createEventDispatcher();
-
-/**
- * Component for rendering the `titleBarIcon` slot.
- */
-export let titleBarIcon: Snippet;
-const dispatchTitleBarIcon = createEventDispatcher();
+ 
+ 
 	/** box actions */
 	export const actions = {
 		open,
@@ -125,7 +109,7 @@ const dispatchTitleBarIcon = createEventDispatcher();
 
 
 
-<Slotted child={boxBottomZone}>
+<!-- <Slotted child={boxBottomZone}>
   <slot name="boxBottomZone" />
 </Slotted>
 
@@ -135,21 +119,10 @@ const dispatchTitleBarIcon = createEventDispatcher();
 
 <Slotted child={titleBarIcon}>
   <slot name="titleBarIcon" />
-</Slotted>
+</Slotted> -->
+
 
  
-
-<Slotted child={boxBottomZone}>
-  <slot name="boxBottomZone" />
-</Slotted>
-
-<Slotted child={titleBarTitle}>
-  <slot name="titleBarTitle" />
-</Slotted>
-
-<Slotted child={titleBarIcon}>
-  <slot name="titleBarIcon" />
-</Slotted>
 
 <style global>
 	@import './box.css';

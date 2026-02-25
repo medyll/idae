@@ -3,8 +3,7 @@
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Login from '$lib/ui/login/Login.svelte';
 	import Taskbar from '$lib/ui/taskbar/Taskbar.svelte';
-
-	import { link, push } from 'svelte-spa-router';
+ 
 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import TopBar from '$lib/ui//toggleBar/ToggleBar.svelte';
@@ -17,7 +16,7 @@
 	let { children, ...rest } = $props();
 
 	function signOut() {
-		push('/#login');
+		 
 	}
 </script>
 
@@ -39,7 +38,7 @@
 				<box class="pad-1">
 					<h5>slotui</h5>
 				</box>
-				<a href="/tooling" use:link>link </a>
+				<a href="/tooling" >link </a>
 			{/snippet}
 			<ChromeFrameButtonList />
 			{#snippet taskBarRight()}<button onclick={signOut}>signOut</button>{/snippet}

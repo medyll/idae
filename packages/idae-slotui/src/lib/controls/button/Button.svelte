@@ -62,7 +62,7 @@ export type ButtonProps = {
 	buttonLoadingIcon?: Snippet;
 };
 
-
+</script>
 
 <script lang="ts">
 import { popper } from '$lib/ui/popper/usePopper.js';
