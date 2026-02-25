@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: ContentSwitcherTogglerIcon -->
+<!-- @component snippet component ContentSwitcherTogglerIcon — for ContentSwitcher -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for ContentSwitcherTogglerIcon
+  export type ContentSwitcherTogglerIconProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet contentSwitcherTogglerIcon()}
+  {@render children?.()}
+{/snippet}
+

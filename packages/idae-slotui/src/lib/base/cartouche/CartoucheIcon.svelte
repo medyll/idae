@@ -1,8 +1,13 @@
-<!-- @component Snippet: CartoucheIcon — small renderable part for Cartouche -->
-<script lang="ts">
-const { children } = $props();
+<!-- @component snippet component CartoucheIcon — for Cartouche -->
+<script module lang="ts">
+	export type CartoucheIconProps = any;
 </script>
 
-{#snippet CartoucheIcon()}
+<script lang="ts">
+	const { children } = $props();
+</script>
+
+{#snippet cartoucheIcon()}
 	{@render children?.()}
 {/snippet}
+

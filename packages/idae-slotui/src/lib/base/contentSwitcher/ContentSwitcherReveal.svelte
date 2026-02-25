@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: ContentSwitcherReveal -->
+<!-- @component snippet component ContentSwitcherReveal — for ContentSwitcher -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for ContentSwitcherReveal
+  export type ContentSwitcherRevealProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet contentSwitcherReveal()}
+  {@render children?.()}
+{/snippet}
+

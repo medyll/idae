@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: BoxBottomZone -->
+<!-- @component snippet component BoxBottomZone — for Box -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for BoxBottomZone
+  export type BoxBottomZoneProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet boxBottomZone()}
+  {@render children?.()}
+{/snippet}
+

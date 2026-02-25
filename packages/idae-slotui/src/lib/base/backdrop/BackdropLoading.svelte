@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: BackdropLoading -->
+<!-- @component snippet component BackdropLoading — for Backdrop -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for BackdropLoading
+  export type BackdropLoadingProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet backdropLoading()}
+  {@render children?.()}
+{/snippet}
+

@@ -1,8 +1,13 @@
-<!-- @component Snippet: ChipperChip — small renderable part for Chipper -->
-<script lang="ts">
-const { children } = $props();
+<!-- @component snippet component ChipperChip — for Chipper -->
+<script module lang="ts">
+	export type ChipperChipProps = any;
 </script>
 
-{#snippet ChipperChip()}
+<script lang="ts">
+	const { children } = $props();
+</script>
+
+{#snippet chipperChip()}
 	{@render children?.()}
 {/snippet}
+

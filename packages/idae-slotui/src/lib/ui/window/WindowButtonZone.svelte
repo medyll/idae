@@ -1,6 +1,10 @@
 <!-- @component snippet component for root: window -->
-<script>
-    let { children } = $props();
+<script module lang="ts">
+    export type WindowButtonZoneProps = any;
+</script>
+
+<script lang="ts">
+    const { children } = $props();
 </script>
 
 {#snippet windowButtonZone()}

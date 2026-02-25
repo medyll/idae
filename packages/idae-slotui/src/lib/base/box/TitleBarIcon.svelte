@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: TitleBarIcon -->
+<!-- @component snippet component TitleBarIcon — for TitleBar -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for TitleBarIcon
+  export type TitleBarIconProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet titleBarIcon()}
+  {@render children?.()}
+{/snippet}
+

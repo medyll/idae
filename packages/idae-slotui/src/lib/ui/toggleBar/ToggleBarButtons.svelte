@@ -6,3 +6,10 @@
 {#snippet toggleBarButtons()}
     {@render children?.()}
 {/snippet}
+<script module lang="ts">
+    export type ToggleBarButtonsProps = any;
+</script>
+
+<script lang="ts">
+    const { children } = $props();
+</script>

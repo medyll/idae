@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: DrawerTop -->
+<!-- @component snippet component DrawerTop — for Columner -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for DrawerTop
+  export type DrawerTopProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet drawerTop()}
+  {@render children?.()}
+{/snippet}
+

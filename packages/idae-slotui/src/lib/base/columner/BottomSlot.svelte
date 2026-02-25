@@ -1,10 +1,13 @@
-<!-- Snippet placeholder: BottomSlot -->
+<!-- @component snippet component BottomSlot — for Columner -->
 <script module lang="ts">
-  // Migration-generated snippet placeholder for BottomSlot
+  export type BottomSlotProps = any;
 </script>
 
 <script lang="ts">
-  const {} = $props();
+  const { children } = $props();
 </script>
 
-<slot />
+{#snippet bottomSlot()}
+  {@render children?.()}
+{/snippet}
+

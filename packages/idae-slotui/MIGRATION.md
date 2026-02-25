@@ -14,7 +14,7 @@ This document records all steps, questions, technical choices, and points of att
 ## Context
   	- The current project uses Svelte 5, SCSS with mixins, and a custom theme.
 	- Components are located in: `src/lib/base`, `src/lib/controls`, `src/lib/data`, `src/lib/navigation`, and `src/lib/ui`.
-	- All component types must be properly declared at the top of each component file, inside a `<script module lang="ts">` block.
+	- All component types must be properly declared at the top of each component file, inside a `<script module lang="ts">` block, except for "// snippet components".
 	- Each component must start with an HTML comment `@component` describing its purpose.
 	- All types must be declared in block form, with clear English comments for each property.
 	- Migration of the project to Svelte 5 (runes, new API, etc.)
@@ -74,9 +74,17 @@ To standardize and automate the export of Svelte components, a script should be 
 	- Example for multiple components:
 		```ts
 		import Component1 from "./Component1.svelte";
-		export { Component1 };
 		import Component2 from "./Component2.svelte";
-		export { Component2 };
+		export { Component1, Component2 };
+	- Example for hierarchical components:
+		```ts
+		import AlertRoot from "./Alert.svelte";
+		import AlertButtonClose from "./AlertButtonClose.svelte";
+		import AlertButtonZone from "./AlertButtonZone.svelte";
+		import AlertMessage from "./AlertMessage.svelte";
+		import AlertTopButton from "./AlertTopButton.svelte";
+
+		export const Alert = { Root: AlertRoot, ButtonClose: AlertButtonClose, ButtonZone: AlertButtonZone, Message: AlertMessage, TopButton: AlertTopButton };
 		```
 
 This ensures consistent and discoverable exports for all Svelte components. The script should be run after adding or renaming components.
@@ -133,24 +141,28 @@ node .\scripts\migrate-snippet.js
 - Name should be meaningful and, when helpful, prefixed by the parent component name.
 
 5) Component template (mandatory)
-- Every snippet file must include a `@component` HTML comment, a typed `script module` block for exported types copied from the corresponding snippet typing; and use Svelte 5 runes for props. Keep implementations minimal: the snippet should render its `children` slot (if any) and forward props.
+- Every snippet file must include a `@component` HTML comment, use Svelte 5 runes for props. Keep implementations minimal.
+- no <script module lang="ts"> in snippet component
 
 Canonical template (replace types and names):
 
 ```svelte
-<!-- @component snippet component ButtonStart — small renderable part for Button -->
+<!-- @component snippet component ButtonStart — for Button -->
 <script lang="ts">
-const { children } = $props();
+	export type ButtonStartProps = any; // inherits from the snippet buttonStart declared in the module part of Button.svelte; ex: Snippet<[Record<string, any>]> => export type ButtonStartProps = Record<string, any>]>;
 </script>
 
-{#snippet ButtonStart()}
+<script lang="ts">
+	const { children } = $props();
+</script>
+
+{#snippet buttonStart()}
 	{@render children?.()}
 {/snippet}
 
 ```
 
 Notes about the template:
-- Use `<script module lang="ts">` to declare exported types at file top (required for project conventions).
 - Use `$props()` from Svelte 5 runes to destructure `children` and other props.
 - Keep the snippet logic minimal — it should not contain unrelated implementation details.
 
@@ -178,7 +190,59 @@ pnpm run test:unit
 
 10) Example: complete minimal generated file
 
-See the template above. Ensure the file begins with the `@component` comment and exports a type in the `script module` block.
 
-Follow these rules strictly — do not deviate without updating this document and the migration tooling.
+
+
+
+
+
+### Snippet Components Correction Instructions (STRICT)
+
+Purpose: standardize creation of small "snippet" components discovered inside parent components.
+
+1) Scope and order
+- Process directories in this exact sequence: `controls/`, `data/`, `navigation/`, `ui/`, `utils/`.
+- a "snippet component" is a svelte component with the word "snippet component" in its content, referring to a parent component's snippet.
+
+
+2) Discovery (identification) 
+- The migration script `scripts/check-internal-typs.js` can produce a preview list; run it locally to inspect results:
+```powershell
+node .\scripts\check-internal-typs.js
+```
+- if the column Int. is ❌ , then there are chances this is a "snippet component" which need to be corrected.
+
+3) File placement rules (CRITICAL)
+- Do NOT create a `snippets/` subdirectory.
+- Do NOT move new components into a central directory.
+- Each generated snippet component MUST be created in the same directory as its parent component. Example: if `Button.svelte` lives in `src/lib/controls/button/`, then `ButtonStart.svelte` must also be created in `src/lib/controls/button/`.
+
+
+5) Component template (mandatory)
+- Every snippet file must include a `@component` HTML comment, use Svelte 5 runes for props. Keep implementations minimal.
+- The component must not contain "<style />"
+
+Canonical template (replace types and names) STRICT:
+
+```svelte
+<!-- @component snippet component ButtonStart — for Button -->
+<script module lang="ts">
+	export type ButtonStartProps = any; // inherits from the snippet buttonStart declared in the module part of Button.svelte; ex: buttonStart: Snippet<[Record<string, any>]> => export type ButtonStartProps = Record<string, any>]>;
+</script>
+
+<script lang="ts">
+	const { children } = $props();
+</script>
+
+{#snippet buttonStart()}
+	{@render children?.()}
+{/snippet}
+
+```
+
+6) Verification (mandatory)
+- run the list command th see if Int. is ✅ for the component.
+```powershell
+node .\scripts\check-internal-typs.js
+```
  
