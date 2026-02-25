@@ -6,5 +6,5 @@ export {
   ButtonMenu,
   // 
   MenuItemRoot as MenuItem,
-  ButtonMenu as ButtonMenu
+  ButtonMenu as Menu
 };

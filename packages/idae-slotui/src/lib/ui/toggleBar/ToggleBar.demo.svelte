@@ -86,7 +86,7 @@
 </script>
 
 <ComponentDemo component="ToggleBar">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="ToggleBar">
 			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
 				>{#snippet children({ activeParams })}

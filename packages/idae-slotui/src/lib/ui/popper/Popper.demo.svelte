@@ -57,7 +57,7 @@
 </script>
 
 <ComponentDemo component="Popper" cite="This Popper is the base of all the flyout stuff: it pops">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Popper">
 			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
 				{#snippet children({ activeParams })}

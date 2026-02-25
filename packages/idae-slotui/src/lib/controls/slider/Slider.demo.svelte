@@ -18,7 +18,7 @@
 </script>
 
 <ComponentDemo component="Slider">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Slider">
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}

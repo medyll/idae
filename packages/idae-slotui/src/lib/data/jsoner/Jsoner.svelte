@@ -45,7 +45,7 @@ if (Array.isArray(data)) {
 	{/if}
 
 	{#if mode === 'object'}
-		<div class="flex-v gap-small">
+		<div class="flex flex-col gap-small">
 			{#each Object.keys(data) as kdta}
 				<div class="flex-h gap-small flex-align-top m-l">
 					<div class="w-medium p-1 border-b">- {kdta}</div>

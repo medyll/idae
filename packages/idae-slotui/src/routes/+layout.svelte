@@ -131,10 +131,10 @@
 			</Looper>
 		</MenuList>
 	</Drawer>
-	<div id="contentSlide" class="flex-v" bind:this={contentSlide}>
+	<div id="contentSlide" class="flex flex-col" bind:this={contentSlide}>
 		<nav
 			bind:this={navElement}
-			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-medium"
+			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-2"
 		>
 			<IconButton onclick={onDrawerClick} icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>

@@ -6,5 +6,5 @@ export {
   ToolbarSeparator,
   // 
   ToolBarRoot as ToolBar,
-  ToolbarSeparator as ToolbarSeparator
+  ToolbarSeparator as Separator
 };

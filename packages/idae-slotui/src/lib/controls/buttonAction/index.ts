@@ -6,5 +6,5 @@ export {
   PopperContent,
   // 
   ButtonActionRoot as ButtonAction,
-  PopperContent as PopperContent
+  PopperContent as Content
 };

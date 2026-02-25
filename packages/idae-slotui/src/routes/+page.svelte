@@ -40,8 +40,8 @@
 		content="SlotUi is a svelte component library built around a slotted life style"
 	/>
 </svelte:head>
-<div class="overflow-auto flex-v gap-large flex-align-middle-center">
-	<div class="block h-full flex-v gap-large p-t-10">
+<div class="overflow-auto flex flex-col gap-large flex-align-middle-center">
+	<div class="block h-full flex flex-col gap-large p-t-10">
 		<div>
 			<h1 class="text-bold">svelte.slotted</h1>
 			<h5 class="text-bold">@medyll</h5>

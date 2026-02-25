@@ -41,7 +41,7 @@
 					{/snippet}
 					{#snippet loginForm()}
 						<form
-							class="h-full w-full flex-v flex-align-middle-center"
+							class="h-full w-full flex flex-col flex-align-middle-center"
 							method="post"
 							on:submit|preventDefault={validate}
 						>
@@ -58,7 +58,7 @@
 			{/snippet}
 		</Demoer>
 	</DemoPage>
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoerCode title="myContext" code={codeSlot}></DemoerCode>
 	</div>
 </ComponentDemo>

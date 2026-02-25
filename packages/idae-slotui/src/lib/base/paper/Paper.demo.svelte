@@ -19,7 +19,7 @@
 	component="Paper"
 	cite="What is separating before from after is not a time nor a place : it's only a component <br /> B. Franklin, 1854"
 >
-	<div class=" flex-v gap-small">
+	<div class=" flex flex-col gap-small">
 		<DemoPage component="Paper" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

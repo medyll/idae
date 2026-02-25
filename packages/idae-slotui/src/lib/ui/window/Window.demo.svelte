@@ -60,7 +60,7 @@
 	component="Window"
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Select">
 			<Demoer {multiple} {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
@@ -78,7 +78,7 @@
 		<DemoPage code={codeProps} component="Select" title="Using props">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<div class="flex-h flex-align-middle pos-rel gap-medium">
+					<div class="flex-h flex-align-middle pos-rel gap-2">
 						<div>
 							<Button
 								onclick={() => {

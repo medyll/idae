@@ -15,5 +15,5 @@ export {
   LoginAvatar as Avatar,
   LoginAvatarRoot as AvatarRoot,
   LoginForm as Form,
-  SlotRetrievePassword as SlotRetrievePassword
+  SlotRetrievePassword as RetrievePassword
 };

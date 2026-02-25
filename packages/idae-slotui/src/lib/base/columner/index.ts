@@ -10,7 +10,7 @@ export {
   DrawerTop,
   // 
   ColumnerRoot as Columner,
-  BottomSlot as BottomSlot,
+  BottomSlot as Slot,
   ColumnerCol as Col,
-  DrawerTop as DrawerTop
+  DrawerTop as Top
 };

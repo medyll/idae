@@ -27,7 +27,7 @@
 </script>
 
 <ComponentDemo component="ContextRoot">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoerCode title="myContext" code={codeSlot} />
 	</div>
 </ComponentDemo>

@@ -23,7 +23,7 @@
 </script>
 
 <ComponentDemo component="ContentSwitcher">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="ContentSwitcher" {code}>
 			<Demoer title="A simple contentSwitcher" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

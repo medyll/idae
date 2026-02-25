@@ -20,14 +20,14 @@
 	cite="This constant need about knowing what i was looking for, this need, i gave it a name.<br /> H.
 Maifield, 1996"
 >
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<Demoer {parameters}>
 			{#snippet children({ activeParams })}
 				<Finder {...activeParams} style="width:200px" bind:filteredData {data} />
 			{/snippet}
 		</Demoer>
 		<h5>Props</h5>
-		<div class="flex-v gap-medium">
+		<div class="flex flex-col gap-2">
 			<h6>Default props</h6>
 			<div>
 				<Finder defaultField="id" class="m-b" style="width:200px" bind:filteredData {data} />
@@ -46,9 +46,9 @@ Maifield, 1996"
 		</div>
 	</div>
 	<br />
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<h5>Results</h5>
-		<div class="flex-h gap-medium">
+		<div class="flex-h gap-2">
 			<div class="w-large flex-main"><Jsoner data={filteredData} /></div>
 		</div>
 	</div>

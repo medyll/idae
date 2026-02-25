@@ -90,7 +90,7 @@ export const actions = {
 			on:submit|preventDefault={validate}
 		>
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
-				<div class="form flex-v flex-align-middle-center">
+				<div class="form flex flex-col flex-align-middle-center">
 					<Slotted child={loginAvatarRoot}>
 						<div class="avatarHolder m-b-2">
 							<div class="avatar flex-h flex-align-middle-center">

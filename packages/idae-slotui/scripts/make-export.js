@@ -80,10 +80,12 @@ class IndexGenerator {
    * Structured export: Named exports with aliases
    * Generates: export { AlertRoot, AlertMessage, // AlertRoot as Alert, AlertMessage as Message }
    */
+  /**
+   * Structured export: Named exports with aliases
+   */
   async writeMultipleIndex(dir, files) {
     const names = files.map(f => path.basename(f, '.svelte'));
     
-    // Find the shortest name to use as Root
     const rawRootName = names.reduce((acc, curr) => 
       (curr.length < acc.length || (curr.length === acc.length && curr < acc)) ? curr : acc
     );
@@ -92,7 +94,6 @@ class IndexGenerator {
     const importLines = [`import ${rootExportName}Root from "./${rawRootName}.svelte";`];
     
     const subComponents = names.filter(n => n !== rawRootName);
-    
     const rawNames = [`${rootExportName}Root`];
     const aliasNames = [`${rootExportName}Root as ${rootExportName}`];
 
@@ -100,8 +101,20 @@ class IndexGenerator {
       const componentName = this.toPascalCase(n);
       importLines.push(`import ${componentName} from "./${n}.svelte";`);
 
-      // Extract suffix for alias
-      let prop = n.startsWith(rawRootName) ? n.slice(rawRootName.length) : n;
+      let prop = n;
+      if (n.startsWith(rawRootName)) {
+        // Case: ToggleBarButtons -> Buttons
+        prop = n.slice(rawRootName.length);
+      } else {
+        // Case: ContentSwitcherIcon -> SwitcherIcon
+        // logic: find common words or just remove the first "Group" of kebab/pascal case
+        // We simplify: if it's a known sub-pattern, we strip the prefix
+        const parts = n.split(/(?=[A-Z])|[-_]/);
+        if (parts.length > 1) {
+            prop = parts.slice(1).join('');
+        }
+      }
+
       prop = this.toPascalCase(prop || n);
       
       rawNames.push(componentName);

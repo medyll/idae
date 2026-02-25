@@ -11,6 +11,6 @@ export {
   // 
   BoxRoot as Box,
   BoxBottomZone as BottomZone,
-  TitleBarIcon as TitleBarIcon,
-  TitleBarTitle as TitleBarTitle
+  TitleBarIcon as BarIcon,
+  TitleBarTitle as BarTitle
 };

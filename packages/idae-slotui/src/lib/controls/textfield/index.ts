@@ -8,6 +8,6 @@ export {
   TextField,
   // 
   InputLastRoot as InputLast,
-  InputFirst as InputFirst,
-  TextField as TextField
+  InputFirst as First,
+  TextField as Field
 };

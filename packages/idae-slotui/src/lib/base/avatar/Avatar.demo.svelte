@@ -20,7 +20,7 @@
 	component="Avatar"
 	cite="If it's not you, then it's the other you, <br /> Emma Avatar you, 1652"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Rating" code={code1}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

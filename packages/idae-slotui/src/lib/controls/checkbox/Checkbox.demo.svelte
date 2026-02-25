@@ -17,7 +17,7 @@
 </script>
 
 <ComponentDemo component="Checkbox">
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<DemoPage {code} component="Checkbox">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

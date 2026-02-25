@@ -18,5 +18,5 @@ export {
   DataListFooter as Footer,
   DataListHead as Head,
   DataListRow as Row,
-  GroupTitleSlot as GroupTitleSlot
+  GroupTitleSlot as TitleSlot
 };

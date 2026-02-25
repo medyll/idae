@@ -14,6 +14,6 @@
 	let selectedData: any[] = [];
 </script>
 
-<div class="flex-v gap-medium h-large-min">
+<div class="flex flex-col gap-2 h-large-min">
 	<Tree pathField="path" paths={pathsData} bind:selectedData />
 </div>

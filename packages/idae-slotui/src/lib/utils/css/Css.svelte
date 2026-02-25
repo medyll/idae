@@ -55,7 +55,7 @@ discrete, success, info, warning, alert, error
 	</Looper>
 </div>
 elevation 1/5
-<Looper naked={false} class="flex-v gap-small" data={[1, 2, 3, 4, 5]}>
+<Looper naked={false} class="flex flex-col gap-small" data={[1, 2, 3, 4, 5]}>
 	{#snippet children(item)}
 		{@render cssElevation(item)}
 	{/snippet}

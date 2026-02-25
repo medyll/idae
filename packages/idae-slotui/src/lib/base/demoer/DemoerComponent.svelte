@@ -33,14 +33,14 @@
 	// const compDet = '';Object.values(slotuiCatalog).find((x) => x.name === component);
 </script>
 
-<div class="flex-v gap-large w-full">
-	<div class="flex-v gap-small flex-align-middle">
+<div class="flex flex-col gap-large w-full">
+	<div class="flex flex-col gap-small flex-align-middle">
 		<h5>{`<${component} />`}</h5>
 		<!-- <span>@medyll/slotted/{compDet?.group}/{compDet?.code}.svelte</span> -->
 	</div>
 	<cite><p>"{@html citation}"<br />{@html author}</p></cite>
 	{#if children}
-		<div class="flex-v gap-medium">
+		<div class="flex flex-col gap-2">
 			{component} svelte component
 			<div class="m-l-4">
 				<Slotted child={children} />

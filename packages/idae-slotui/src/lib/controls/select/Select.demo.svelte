@@ -78,7 +78,7 @@
 </script>
 
 <ComponentDemo component="Select">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Select">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
