@@ -20,31 +20,14 @@ This document records all steps, questions, technical choices, and points of att
 	- Migration of the project to Svelte 5 (runes, new API, etc.)
 	- Adoption of the shadcn-svelte design system for UI components
 
+## Project status per component : PRIORITY
+	- this file [COMPONENT_MAP](COMPONENT_MAP.md) is very important, it delivers information about what is left to do.
 
 ## Migration Tracking, important
 
-	- Global information about components can be found in the file: [COMPONENT_MAP](COMPONENT_MAP.md). It's a central file about component appliances and their status.
 	- In [COMPONENT_MAP](COMPONENT_MAP.md) you will find useful information about what to do next in the 'error report' section
 	- The migration tracking table for the migration steps  and their status will be maintained in the file: [MIGRATION_STATUS](MIGRATION_STATUS.md). 
 	- The migration tracking table for the  for all components and their status will be maintained in the file: [MIGRATION_COMPONENTS](MIGRATION_COMPONENTS.md). 
-
-## Migration Status Steps
-   - [ ✅ Done ] Audit of existing code (components, styles, dependencies)
-   - [✅ Done  ] Migration of components to Svelte 5 (runes, $props, $state, etc.)
-   - [✅ Done  ] Migration from SCSS to CSS (where applicable)
-	   - For each SCSS file, create a new .css file with the same base name in the same directory.
-	   - Do not delete the original .scss files during migration; both formats should coexist until the migration is fully validated.
-	   - Note: You will likely encounter errors and incompatibilities when converting from SCSS to PostCSS. Document any issues and solutions in the Issues Encountered section.
-	- [ ✅ Done ] Install Tailwind CSS v4 as a priority before any other migration steps.
-	- [ ✅ Done ] Create and configure the theme (theme.css) for Tailwind v4. be aware of mid-migrate *-mixins.css file and related others.
-		- Collect all theme indices and variables found in SCSS mixins and shared SCSS files, and migrate them to theme.css.
-	- [ ✅ Done ] Change export mode for .svelte modules: automate index.ts creation for each component directory (see below)
-	- [ ] per-component adaptation of the component classnames from the style in the component.css file. preserve the classnames in the component.css file , like  .component .component-header, .component-header-title, etc.
-
-	- [ ] Integration and configuration of compatibility with shadcn-svelte
-	- [ ] Style and theme adjustments
-	- [ ] Testing and validation
-	- [ ] After each implementation step, review the relevant guidelines (Svelte 5, shadcn-svelte, Tailwind v4, etc.) to ensure compliance and best practices.
 
 ## Migration steps tracking
 
@@ -86,7 +69,19 @@ To standardize and automate the export of Svelte components, a script should be 
 		import AlertMessage from "./AlertMessage.svelte";
 		import AlertTopButton from "./AlertTopButton.svelte";
 
-		export const Alert = { Root: AlertRoot, ButtonClose: AlertButtonClose, ButtonZone: AlertButtonZone, Message: AlertMessage, TopButton: AlertTopButton };
+		export {
+			AlertRoot,
+			AlertButtonClose,
+			AlertButtonZone,
+			AlertMessage,
+			AlertTopButton,
+			// 
+			AlertRoot as Alert,
+			AlertButtonClose as ButtonClose,
+			AlertButtonZone as ButtonZone,
+			AlertMessage as Message,
+			AlertTopButton as TopButton
+		};
 		```
 
 This ensures consistent and discoverable exports for all Svelte components. The script should be run after adding or renaming components.
