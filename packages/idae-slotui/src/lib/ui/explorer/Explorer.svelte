@@ -1,9 +1,8 @@
 <script lang="ts">
 	import ListItem from '$lib/data/list/ListItem.svelte';
 	import type { PropsProxyProps } from '$lib/utils/engine/utils.js';
-	import { propsProxy } from '$lib/utils/engine/utils.js';
-	import appscheme from '../../../demoData/appscheme.json';
-	import Header from './Header.svelte';
+	import { propsProxy } from '$lib/utils/engine/utils.js'; 
+	import Header from '../header/Header.svelte';
 	import MenuBar from '$lib/ui/toggleBar/ToggleBar.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Input from '$lib/controls/textfield/TextField.svelte';
@@ -13,7 +12,7 @@
 	import { densePreset } from '$lib/types/index.js';
 
 	let menuListItems: any[] = [];
-
+let appscheme = {}
 	let activeData: any;
 	let schemeName = 'Appscheme';
 

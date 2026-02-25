@@ -132,7 +132,9 @@
 | `src\lib\ui\chromeFrame\ChromeFrame.svelte` | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\chromeFrame\ChromeFrameList.svelte` | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\ui\explorer\Explorer.svelte` | ❌ | ✅ | ✅ | ❌ | ❌ |  |
 | `src\lib\ui\frame\Frame.svelte` | ✅ | ✅ | ❌ | ✅ | ❌ |  |
+| `src\lib\ui\header\Header.svelte` | ❌ | ✅ | ✅ | ❌ | ❌ |  |
 | `src\lib\ui\login\Login.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\login\LoginAvatar.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\login\LoginAvatarRoot.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | [snippet] |
@@ -190,8 +192,8 @@
 
 
 ## Global Compliance Index
-**Score: 70.1%**
-`██████████████░░░░░░` (477/680 passed)
+**Score: 69.7%**
+`█████████████░░░░░░░` (481/690 passed)
 
 ---
 
@@ -214,6 +216,8 @@
 - `src\lib\styles\slotuisheet\SlotuiSheet.svelte`
 - `src\lib\ui\bootstrapp\BootStrApp.svelte`
 - `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte`
+- `src\lib\ui\explorer\Explorer.svelte`
+- `src\lib\ui\header\Header.svelte`
 - `src\lib\ui\menu\MenuItem.svelte`
 - `src\lib\ui\menu\MenuTitle.svelte`
 - `src\lib\ui\menuList\MenuListTitle.svelte`
@@ -270,6 +274,8 @@ _None_
 - `src\lib\data\list\ListItem.svelte`
 - `src\lib\data\list\ListTitle.svelte`
 - `src\lib\ui\bootstrapp\BootStrApp.svelte`
+- `src\lib\ui\explorer\Explorer.svelte`
+- `src\lib\ui\header\Header.svelte`
 - `src\lib\ui\serviceBox\ServiceBox.svelte`
 - `src\lib\ui\startMenu\BootMenu.svelte`
 - `src\lib\ui\themeswitcher\ThemeSwitcher.svelte`
@@ -367,7 +373,9 @@ _None_
 - `src\lib\ui\chromeFrame\ChromeFrame.svelte (Expected: chromeFrameDemoValues)`
 - `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte (Expected: chromeFrameButtonListDemoValues)`
 - `src\lib\ui\chromeFrame\ChromeFrameList.svelte (Expected: chromeFrameListDemoValues)`
+- `src\lib\ui\explorer\Explorer.svelte (Expected: explorerDemoValues)`
 - `src\lib\ui\frame\Frame.svelte (Expected: frameDemoValues)`
+- `src\lib\ui\header\Header.svelte (Expected: headerDemoValues)`
 - `src\lib\ui\login\Login.svelte (Expected: loginDemoValues)`
 - `src\lib\ui\login\LoginAvatar.svelte (Expected: loginAvatarDemoValues)`
 - `src\lib\ui\login\LoginAvatarRoot.svelte (Expected: loginAvatarRootDemoValues)`
