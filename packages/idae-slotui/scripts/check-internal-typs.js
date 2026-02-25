@@ -31,6 +31,26 @@ async function* walk(dir) {
   } catch (e) {}
 }
 
+/**
+ * Main entrypoint that scans the component library and generates
+ * a compliance report about internal/external type usage and demo values.
+ *
+ * This function performs a recursive walk of `src/lib` and examines
+ * each `.svelte` component (excluding demo/preview files). For each
+ * component it computes a small checklist:
+ *  - whether the `<ComponentName>Props` type is referenced internally
+ *  - whether that type is incorrectly imported from `./types`
+ *  - whether a `types.ts` file exists in the component folder
+ *  - whether the `componentDemoValues` export exists in `types.ts`
+ *
+ * It prints a formatted table to the console and writes a markdown
+ * file `COMPONENT_MAP.md` summarising the findings.
+ *
+ * Note: this function is intentionally side-effecting (console + file write).
+ * It does not return a value but throws on unexpected filesystem errors.
+ *
+ * @returns {Promise<void>} Resolves when scanning and file write complete.
+ */
 async function main() {
   const repoRoot = path.resolve(__dirname, '..');
   const start = path.join(repoRoot, 'src', 'lib');
@@ -38,41 +58,62 @@ async function main() {
   let totalChecks = 0;
   let totalSuccess = 0;
 
+  // Walk the directory tree and process each file asynchronously.
+  // We use the `walk` async generator defined above.
   for await (const file of walk(start)) {
+    // Only analyze Svelte components; skip demos/previews used by docs.
     const filename = path.basename(file);
     if (!file.endsWith('.svelte') || filename.includes('.demo.') || filename.includes('preview')) continue;
 
+    // Read component source to run a few regex-based checks.
     const content = await fs.readFile(file, 'utf8');
-    // Check for snippet-based components
+
+    // Determine whether this is a snippet-style component (special handling).
+    // The pattern searches for the words "snippet" and "component" near each other.
     const isSnippet = /snippet[\s\S]*?component|component[\s\S]*?snippet/i.test(content);
 
+    // Compute grouping path and common derived names used for type checks.
     const relPath = path.relative(start, file);
     const rootDir = relPath.split(path.sep)[0] || '.';
-    
+
+    // Base filename (without extension) and derived type/demo names.
     const baseName = path.basename(file, '.svelte');
     const typeName = pascalize(baseName) + 'Props';
     const dPascal = pascalize(baseName) + 'DemoValues';
     const dCamel = camelize(baseName) + 'DemoValues';
-    
-    const typesPath = path.join(path.dirname(file), 'types.ts');
-    
-    let typesFileExists = false;
-    let presentInTypes = false;
-    let hasDemoValues = false;
 
+    // Path to an adjacent `types.ts` file that may exist for the component.
+    const typesPath = path.join(path.dirname(file), 'types.ts');
+
+    // Flags we will compute below
+    let typesFileExists = false;
+    let presentInTypes = false; // whether the Props type is declared in types.ts
+    let hasDemoValues = false; // whether the DemoValues export exists in types.ts
+
+    // Attempt to read `types.ts` if present and evaluate a couple of checks.
     try {
       const typesContent = await fs.readFile(typesPath, 'utf8');
       typesFileExists = true;
-      // Check if Props type is incorrectly still in types.ts
-      presentInTypes = new RegExp(`(?:export\\s+)?(?:type|interface)\\s+${typeName}\\b`).test(typesContent);
-      // Check for export of demo values (camel or pascal)
-      hasDemoValues = new RegExp(`export\\s+(?:const|let|var)\\s+(${dPascal}|${dCamel})\\b`).test(typesContent);
-    } catch (e) {}
 
+      // Check if the Props type is still declared inside types.ts (it shouldn't be).
+      presentInTypes = new RegExp(`(?:export\\s+)?(?:type|interface)\\s+${typeName}\\b`).test(typesContent);
+
+      // Check whether either Pascal or camel DemoValues export exists.
+      hasDemoValues = new RegExp(`export\\s+(?:const|let|var)\\s+(${dPascal}|${dCamel})\\b`).test(typesContent);
+    } catch (e) {
+      // Missing file is expected for many components; swallow errors here.
+    }
+
+    // Check whether the Svelte file imports the Props type from ./types
+    // (we flag that as an external-error if it does import it).
     const isImported = new RegExp(`import\\s+[^>]*?\\b${typeName}\\b[^>]*?from\\s+['"]\\./types['"]`).test(content);
+
+    // To test internal usage we remove import lines then search the remaining
+    // body for occurrences of the Props type name (avoids false positives).
     const bodyOnly = content.replace(/import\s+[\s\S]*?from\s+.*?/g, '');
     const internalUse = new RegExp(`\\b${typeName}\\b`).test(bodyOnly);
 
+    // Group results by the top-level folder and store a concise result object.
     if (!groups[rootDir]) groups[rootDir] = [];
     groups[rootDir].push({
       file: path.relative(repoRoot, file),
