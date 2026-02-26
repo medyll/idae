@@ -1,0 +1,13 @@
+{
+  "name": "window.demo",
+  "title": "window.demo",
+  "description": "Component generated from src/lib/ui/window/Window.demo.svelte",
+  "files": [
+    "src/lib/ui/window/Window.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "divider",
+  "title": "divider",
+  "description": "Component generated from src/lib/base/divider/Divider.svelte",
+  "files": [
+    "src/lib/base/divider/Divider.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

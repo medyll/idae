@@ -1,0 +1,13 @@
+{
+  "name": "content",
+  "title": "content",
+  "description": "Component generated from src/lib/utils/content/Content.svelte",
+  "files": [
+    "src/lib/utils/content/Content.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "login-form",
+  "title": "login-form",
+  "description": "Component generated from src/lib/ui/login/LoginForm.svelte",
+  "files": [
+    "src/lib/ui/login/LoginForm.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "frame",
+  "title": "frame",
+  "description": "Component generated from src/lib/ui/frame/Frame.svelte",
+  "files": [
+    "src/lib/ui/frame/Frame.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

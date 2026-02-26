@@ -1,0 +1,13 @@
+{
+  "name": "window-icon",
+  "title": "window-icon",
+  "description": "Component generated from src/lib/ui/window/WindowIcon.svelte",
+  "files": [
+    "src/lib/ui/window/WindowIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

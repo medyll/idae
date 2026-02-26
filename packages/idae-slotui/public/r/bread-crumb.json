@@ -1,0 +1,13 @@
+{
+  "name": "bread-crumb",
+  "title": "bread-crumb",
+  "description": "Component generated from src/lib/base/breadCrumb/BreadCrumb.svelte",
+  "files": [
+    "src/lib/base/breadCrumb/BreadCrumb.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

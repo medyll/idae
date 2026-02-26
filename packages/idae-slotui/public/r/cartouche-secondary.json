@@ -1,0 +1,13 @@
+{
+  "name": "cartouche-secondary",
+  "title": "cartouche-secondary",
+  "description": "Component generated from src/lib/base/cartouche/CartoucheSecondary.svelte",
+  "files": [
+    "src/lib/base/cartouche/CartoucheSecondary.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

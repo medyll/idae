@@ -1,0 +1,13 @@
+{
+  "name": "panel-button-previous",
+  "title": "panel-button-previous",
+  "description": "Component generated from src/lib/ui/panel/PanelButtonPrevious.svelte",
+  "files": [
+    "src/lib/ui/panel/PanelButtonPrevious.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

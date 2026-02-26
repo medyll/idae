@@ -4,9 +4,24 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createInterface } from 'node:readline';
 import { Command } from 'commander';
+import { spawnSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const program = new Command();
+
+// Ensure pnpx component list exists when CLI runs (useful for npx/pnpx installs)
+try {
+  const makeScript = path.join(__dirname, 'make-pnpx.cjs');
+  if (fs.existsSync(makeScript)) {
+    const res = spawnSync(process.execPath, [makeScript], { stdio: 'ignore' });
+    if (res.error) {
+      // non-fatal; log for diagnostics
+      console.error('pnpx generator error:', res.error);
+    }
+  }
+} catch (e) {
+  // ignore errors to keep CLI usable
+}
 
 // Helper for confirmation
 const ask = (query) => {
@@ -43,7 +58,16 @@ program
   .command('list')
   .description('List all available components')
   .action(() => {
-    const registryPath = path.join(__dirname, '../components');
+    let registryPath = path.join(__dirname, '../components');
+    if (!fs.existsSync(registryPath)) {
+      registryPath = path.join(__dirname, '../registry/ui');
+    }
+
+    if (!fs.existsSync(registryPath)) {
+      console.log('\n📦 No components directory found (expected components/ or registry/ui/)');
+      return;
+    }
+
     const components = fs.readdirSync(registryPath)
       .filter(f => f.endsWith('.svelte'))
       .map(f => f.replace('.svelte', ''));

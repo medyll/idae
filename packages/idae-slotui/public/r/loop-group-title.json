@@ -1,0 +1,13 @@
+{
+  "name": "loop-group-title",
+  "title": "loop-group-title",
+  "description": "Component generated from src/lib/utils/looper/LoopGroupTitle.svelte",
+  "files": [
+    "src/lib/utils/looper/LoopGroupTitle.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

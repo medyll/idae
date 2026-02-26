@@ -1,0 +1,13 @@
+{
+  "name": "switch-label",
+  "title": "switch-label",
+  "description": "Component generated from src/lib/controls/switch/SwitchLabel.svelte",
+  "files": [
+    "src/lib/controls/switch/SwitchLabel.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

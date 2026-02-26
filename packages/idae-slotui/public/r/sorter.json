@@ -1,0 +1,13 @@
+{
+  "name": "sorter",
+  "title": "sorter",
+  "description": "Component generated from src/lib/data/sorter/Sorter.svelte",
+  "files": [
+    "src/lib/data/sorter/Sorter.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

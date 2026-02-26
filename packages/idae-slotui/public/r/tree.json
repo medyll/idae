@@ -1,0 +1,13 @@
+{
+  "name": "tree",
+  "title": "tree",
+  "description": "Component generated from src/lib/ui/tree/Tree.svelte",
+  "files": [
+    "src/lib/ui/tree/Tree.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

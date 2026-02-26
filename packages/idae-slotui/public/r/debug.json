@@ -1,0 +1,13 @@
+{
+  "name": "debug",
+  "title": "debug",
+  "description": "Component generated from src/lib/base/debug/Debug.svelte",
+  "files": [
+    "src/lib/base/debug/Debug.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

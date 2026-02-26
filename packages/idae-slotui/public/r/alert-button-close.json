@@ -1,0 +1,13 @@
+{
+  "name": "alert-button-close",
+  "title": "alert-button-close",
+  "description": "Component generated from src/lib/base/alert/AlertButtonClose.svelte",
+  "files": [
+    "src/lib/base/alert/AlertButtonClose.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

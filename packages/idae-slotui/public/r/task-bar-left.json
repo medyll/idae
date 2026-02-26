@@ -1,0 +1,13 @@
+{
+  "name": "task-bar-left",
+  "title": "task-bar-left",
+  "description": "Component generated from src/lib/ui/taskbar/TaskBarLeft.svelte",
+  "files": [
+    "src/lib/ui/taskbar/TaskBarLeft.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

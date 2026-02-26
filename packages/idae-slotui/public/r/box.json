@@ -1,0 +1,13 @@
+{
+  "name": "box",
+  "title": "box",
+  "description": "Component generated from src/lib/base/box/Box.svelte",
+  "files": [
+    "src/lib/base/box/Box.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

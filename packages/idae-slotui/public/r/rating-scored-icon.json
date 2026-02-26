@@ -1,0 +1,13 @@
+{
+  "name": "rating-scored-icon",
+  "title": "rating-scored-icon",
+  "description": "Component generated from src/lib/controls/rating/RatingScoredIcon.svelte",
+  "files": [
+    "src/lib/controls/rating/RatingScoredIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "stepper",
+  "title": "stepper",
+  "description": "Component generated from src/lib/controls/stepper/Stepper.svelte",
+  "files": [
+    "src/lib/controls/stepper/Stepper.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

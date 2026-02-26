@@ -1,0 +1,13 @@
+{
+  "name": "popper.demo",
+  "title": "popper.demo",
+  "description": "Component generated from src/lib/ui/popper/Popper.demo.svelte",
+  "files": [
+    "src/lib/ui/popper/Popper.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

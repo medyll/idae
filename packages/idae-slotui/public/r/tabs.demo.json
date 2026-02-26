@@ -1,0 +1,13 @@
+{
+  "name": "tabs.demo",
+  "title": "tabs.demo",
+  "description": "Component generated from src/lib/navigation/tabs/Tabs.demo.svelte",
+  "files": [
+    "src/lib/navigation/tabs/Tabs.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

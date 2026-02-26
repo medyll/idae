@@ -1,0 +1,13 @@
+{
+  "name": "title-bar-icon",
+  "title": "title-bar-icon",
+  "description": "Component generated from src/lib/base/titleBar/TitleBarIcon.svelte",
+  "files": [
+    "src/lib/base/titleBar/TitleBarIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

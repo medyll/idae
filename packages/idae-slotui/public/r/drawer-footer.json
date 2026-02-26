@@ -1,0 +1,13 @@
+{
+  "name": "drawer-footer",
+  "title": "drawer-footer",
+  "description": "Component generated from src/lib/navigation/drawer/DrawerFooter.svelte",
+  "files": [
+    "src/lib/navigation/drawer/DrawerFooter.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

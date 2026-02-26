@@ -1,0 +1,13 @@
+{
+  "name": "loader.preview",
+  "title": "loader.preview",
+  "description": "Component generated from src/lib/data/loader/Loader.preview.svelte",
+  "files": [
+    "src/lib/data/loader/Loader.preview.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

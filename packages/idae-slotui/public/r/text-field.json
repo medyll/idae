@@ -1,0 +1,13 @@
+{
+  "name": "text-field",
+  "title": "text-field",
+  "description": "Component generated from src/lib/controls/textfield/TextField.svelte",
+  "files": [
+    "src/lib/controls/textfield/TextField.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "input-last",
+  "title": "input-last",
+  "description": "Component generated from src/lib/controls/textfield/snippets/InputLast.svelte",
+  "files": [
+    "src/lib/controls/textfield/snippets/InputLast.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

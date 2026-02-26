@@ -1,0 +1,13 @@
+{
+  "name": "checkbox.demo",
+  "title": "checkbox.demo",
+  "description": "Component generated from src/lib/controls/checkbox/Checkbox.demo.svelte",
+  "files": [
+    "src/lib/controls/checkbox/Checkbox.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

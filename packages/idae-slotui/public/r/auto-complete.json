@@ -1,0 +1,13 @@
+{
+  "name": "auto-complete",
+  "title": "auto-complete",
+  "description": "Component generated from src/lib/controls/autocomplete/AutoComplete.svelte",
+  "files": [
+    "src/lib/controls/autocomplete/AutoComplete.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

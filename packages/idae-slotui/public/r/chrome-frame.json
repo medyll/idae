@@ -1,0 +1,13 @@
+{
+  "name": "chrome-frame",
+  "title": "chrome-frame",
+  "description": "Component generated from src/lib/ui/chromeFrame/ChromeFrame.svelte",
+  "files": [
+    "src/lib/ui/chromeFrame/ChromeFrame.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

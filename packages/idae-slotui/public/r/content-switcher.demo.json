@@ -1,0 +1,13 @@
+{
+  "name": "content-switcher.demo",
+  "title": "content-switcher.demo",
+  "description": "Component generated from src/lib/base/contentSwitcher/ContentSwitcher.demo.svelte",
+  "files": [
+    "src/lib/base/contentSwitcher/ContentSwitcher.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

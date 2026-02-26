@@ -1,11 +1,9 @@
 {
-  "name": "idae-slotui-svelte-lib-registry",
-  "version": "1.0.0",
-  "generated_at": "2026-02-26T22:45:52.258Z",
+  "generated_at": "2026-02-26T22:46:13.847Z",
+  "source": "registry/registry.json",
   "components": [
     {
       "name": "alert",
-      "source": "src/lib/base/alert/Alert.svelte",
       "files": [
         {
           "path": "src/lib/base/alert/Alert.svelte",
@@ -13,11 +11,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/alert.json"
     },
     {
       "name": "alert-button-close",
-      "source": "src/lib/base/alert/AlertButtonClose.svelte",
       "files": [
         {
           "path": "src/lib/base/alert/AlertButtonClose.svelte",
@@ -25,11 +23,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/alert-button-close.json"
     },
     {
       "name": "alert-button-zone",
-      "source": "src/lib/base/alert/AlertButtonZone.svelte",
       "files": [
         {
           "path": "src/lib/base/alert/AlertButtonZone.svelte",
@@ -37,11 +35,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/alert-button-zone.json"
     },
     {
       "name": "alert-message",
-      "source": "src/lib/base/alert/AlertMessage.svelte",
       "files": [
         {
           "path": "src/lib/base/alert/AlertMessage.svelte",
@@ -49,11 +47,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/alert-message.json"
     },
     {
       "name": "alert-top-button",
-      "source": "src/lib/base/alert/AlertTopButton.svelte",
       "files": [
         {
           "path": "src/lib/base/alert/AlertTopButton.svelte",
@@ -61,11 +59,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/alert-top-button.json"
     },
     {
       "name": "avatar",
-      "source": "src/lib/base/avatar/Avatar.svelte",
       "files": [
         {
           "path": "src/lib/base/avatar/Avatar.svelte",
@@ -73,11 +71,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/avatar.json"
     },
     {
       "name": "avatar-badge",
-      "source": "src/lib/base/avatar/AvatarBadge.svelte",
       "files": [
         {
           "path": "src/lib/base/avatar/AvatarBadge.svelte",
@@ -85,11 +83,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/avatar-badge.json"
     },
     {
       "name": "backdrop",
-      "source": "src/lib/base/backdrop/Backdrop.svelte",
       "files": [
         {
           "path": "src/lib/base/backdrop/Backdrop.svelte",
@@ -97,11 +95,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/backdrop.json"
     },
     {
       "name": "backdrop-loading",
-      "source": "src/lib/base/backdrop/BackdropLoading.svelte",
       "files": [
         {
           "path": "src/lib/base/backdrop/BackdropLoading.svelte",
@@ -109,11 +107,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/backdrop-loading.json"
     },
     {
       "name": "badge",
-      "source": "src/lib/base/badge/Badge.svelte",
       "files": [
         {
           "path": "src/lib/base/badge/Badge.svelte",
@@ -121,11 +119,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/badge.json"
     },
     {
       "name": "box",
-      "source": "src/lib/base/box/Box.svelte",
       "files": [
         {
           "path": "src/lib/base/box/Box.svelte",
@@ -133,11 +131,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/box.json"
     },
     {
       "name": "box-bottom-zone",
-      "source": "src/lib/base/box/BoxBottomZone.svelte",
       "files": [
         {
           "path": "src/lib/base/box/BoxBottomZone.svelte",
@@ -145,11 +143,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/box-bottom-zone.json"
     },
     {
       "name": "title-bar-icon",
-      "source": "src/lib/base/box/TitleBarIcon.svelte",
       "files": [
         {
           "path": "src/lib/base/box/TitleBarIcon.svelte",
@@ -157,11 +155,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/title-bar-icon.json"
     },
     {
       "name": "title-bar-title",
-      "source": "src/lib/base/box/TitleBarTitle.svelte",
       "files": [
         {
           "path": "src/lib/base/box/TitleBarTitle.svelte",
@@ -169,11 +167,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/title-bar-title.json"
     },
     {
       "name": "bread-crumb",
-      "source": "src/lib/base/breadCrumb/BreadCrumb.svelte",
       "files": [
         {
           "path": "src/lib/base/breadCrumb/BreadCrumb.svelte",
@@ -181,11 +179,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/bread-crumb.json"
     },
     {
       "name": "cartouche",
-      "source": "src/lib/base/cartouche/Cartouche.svelte",
       "files": [
         {
           "path": "src/lib/base/cartouche/Cartouche.svelte",
@@ -193,11 +191,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/cartouche.json"
     },
     {
       "name": "cartouche-buttons",
-      "source": "src/lib/base/cartouche/CartoucheButtons.svelte",
       "files": [
         {
           "path": "src/lib/base/cartouche/CartoucheButtons.svelte",
@@ -205,11 +203,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/cartouche-buttons.json"
     },
     {
       "name": "cartouche-icon",
-      "source": "src/lib/base/cartouche/CartoucheIcon.svelte",
       "files": [
         {
           "path": "src/lib/base/cartouche/CartoucheIcon.svelte",
@@ -217,11 +215,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/cartouche-icon.json"
     },
     {
       "name": "cartouche-primary",
-      "source": "src/lib/base/cartouche/CartouchePrimary.svelte",
       "files": [
         {
           "path": "src/lib/base/cartouche/CartouchePrimary.svelte",
@@ -229,11 +227,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/cartouche-primary.json"
     },
     {
       "name": "cartouche-secondary",
-      "source": "src/lib/base/cartouche/CartoucheSecondary.svelte",
       "files": [
         {
           "path": "src/lib/base/cartouche/CartoucheSecondary.svelte",
@@ -241,11 +239,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/cartouche-secondary.json"
     },
     {
       "name": "chipper",
-      "source": "src/lib/base/chipper/Chipper.svelte",
       "files": [
         {
           "path": "src/lib/base/chipper/Chipper.svelte",
@@ -253,11 +251,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/chipper.json"
     },
     {
       "name": "chipper-chip",
-      "source": "src/lib/base/chipper/ChipperChip.svelte",
       "files": [
         {
           "path": "src/lib/base/chipper/ChipperChip.svelte",
@@ -265,11 +263,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/chipper-chip.json"
     },
     {
       "name": "bottom-slot",
-      "source": "src/lib/base/columner/BottomSlot.svelte",
       "files": [
         {
           "path": "src/lib/base/columner/BottomSlot.svelte",
@@ -277,11 +275,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/bottom-slot.json"
     },
     {
       "name": "columner",
-      "source": "src/lib/base/columner/Columner.svelte",
       "files": [
         {
           "path": "src/lib/base/columner/Columner.svelte",
@@ -289,11 +287,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/columner.json"
     },
     {
       "name": "columner-col",
-      "source": "src/lib/base/columner/ColumnerCol.svelte",
       "files": [
         {
           "path": "src/lib/base/columner/ColumnerCol.svelte",
@@ -301,11 +299,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/columner-col.json"
     },
     {
       "name": "drawer-top",
-      "source": "src/lib/base/columner/DrawerTop.svelte",
       "files": [
         {
           "path": "src/lib/base/columner/DrawerTop.svelte",
@@ -313,11 +311,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-top.json"
     },
     {
       "name": "content-switcher",
-      "source": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
       "files": [
         {
           "path": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
@@ -325,11 +323,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher.json"
     },
     {
       "name": "content-switcher-back-icon",
-      "source": "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
       "files": [
         {
           "path": "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
@@ -337,11 +335,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher-back-icon.json"
     },
     {
       "name": "content-switcher-reveal",
-      "source": "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
       "files": [
         {
           "path": "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
@@ -349,11 +347,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher-reveal.json"
     },
     {
       "name": "content-switcher-toggler-icon",
-      "source": "src/lib/base/contentSwitcher/ContentSwitcherTogglerIcon.svelte",
       "files": [
         {
           "path": "src/lib/base/contentSwitcher/ContentSwitcherTogglerIcon.svelte",
@@ -361,11 +359,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher-toggler-icon.json"
     },
     {
       "name": "debug",
-      "source": "src/lib/base/debug/Debug.svelte",
       "files": [
         {
           "path": "src/lib/base/debug/Debug.svelte",
@@ -373,11 +371,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/debug.json"
     },
     {
       "name": "demoer",
-      "source": "src/lib/base/demoer/Demoer.svelte",
       "files": [
         {
           "path": "src/lib/base/demoer/Demoer.svelte",
@@ -385,11 +383,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demoer.json"
     },
     {
       "name": "demoer-code",
-      "source": "src/lib/base/demoer/DemoerCode.svelte",
       "files": [
         {
           "path": "src/lib/base/demoer/DemoerCode.svelte",
@@ -397,11 +395,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demoer-code.json"
     },
     {
       "name": "demoer-component",
-      "source": "src/lib/base/demoer/DemoerComponent.svelte",
       "files": [
         {
           "path": "src/lib/base/demoer/DemoerComponent.svelte",
@@ -409,11 +407,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demoer-component.json"
     },
     {
       "name": "demoer-content",
-      "source": "src/lib/base/demoer/DemoerContent.svelte",
       "files": [
         {
           "path": "src/lib/base/demoer/DemoerContent.svelte",
@@ -421,11 +419,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demoer-content.json"
     },
     {
       "name": "demo-page",
-      "source": "src/lib/base/demoer/DemoPage.svelte",
       "files": [
         {
           "path": "src/lib/base/demoer/DemoPage.svelte",
@@ -433,11 +431,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demo-page.json"
     },
     {
       "name": "divider",
-      "source": "src/lib/base/divider/Divider.svelte",
       "files": [
         {
           "path": "src/lib/base/divider/Divider.svelte",
@@ -445,11 +443,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/divider.json"
     },
     {
       "name": "icon",
-      "source": "src/lib/base/icon/Icon.svelte",
       "files": [
         {
           "path": "src/lib/base/icon/Icon.svelte",
@@ -457,11 +455,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/icon.json"
     },
     {
       "name": "paper",
-      "source": "src/lib/base/paper/Paper.svelte",
       "files": [
         {
           "path": "src/lib/base/paper/Paper.svelte",
@@ -469,11 +467,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/paper.json"
     },
     {
       "name": "title-bar",
-      "source": "src/lib/base/titleBar/TitleBar.svelte",
       "files": [
         {
           "path": "src/lib/base/titleBar/TitleBar.svelte",
@@ -481,11 +479,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/title-bar.json"
     },
     {
       "name": "title-bar-icon",
-      "source": "src/lib/base/titleBar/TitleBarIcon.svelte",
       "files": [
         {
           "path": "src/lib/base/titleBar/TitleBarIcon.svelte",
@@ -493,11 +491,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/title-bar-icon.json"
     },
     {
       "name": "title-bar-title",
-      "source": "src/lib/base/titleBar/TitleBarTitle.svelte",
       "files": [
         {
           "path": "src/lib/base/titleBar/TitleBarTitle.svelte",
@@ -505,11 +503,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/title-bar-title.json"
     },
     {
       "name": "auto-complete",
-      "source": "src/lib/controls/autocomplete/AutoComplete.svelte",
       "files": [
         {
           "path": "src/lib/controls/autocomplete/AutoComplete.svelte",
@@ -517,11 +515,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/auto-complete.json"
     },
     {
       "name": "auto-complete-empty",
-      "source": "src/lib/controls/autocomplete/AutoCompleteEmpty.svelte",
       "files": [
         {
           "path": "src/lib/controls/autocomplete/AutoCompleteEmpty.svelte",
@@ -529,11 +527,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/auto-complete-empty.json"
     },
     {
       "name": "auto-complete-no-results",
-      "source": "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
       "files": [
         {
           "path": "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
@@ -541,11 +539,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/auto-complete-no-results.json"
     },
     {
       "name": "button",
-      "source": "src/lib/controls/button/Button.svelte",
       "files": [
         {
           "path": "src/lib/controls/button/Button.svelte",
@@ -553,11 +551,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button.json"
     },
     {
       "name": "button-end",
-      "source": "src/lib/controls/button/ButtonEnd.svelte",
       "files": [
         {
           "path": "src/lib/controls/button/ButtonEnd.svelte",
@@ -565,11 +563,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-end.json"
     },
     {
       "name": "button-loading-icon",
-      "source": "src/lib/controls/button/ButtonLoadingIcon.svelte",
       "files": [
         {
           "path": "src/lib/controls/button/ButtonLoadingIcon.svelte",
@@ -577,11 +575,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-loading-icon.json"
     },
     {
       "name": "button-popper",
-      "source": "src/lib/controls/button/ButtonPopper.svelte",
       "files": [
         {
           "path": "src/lib/controls/button/ButtonPopper.svelte",
@@ -589,11 +587,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-popper.json"
     },
     {
       "name": "button-start",
-      "source": "src/lib/controls/button/ButtonStart.svelte",
       "files": [
         {
           "path": "src/lib/controls/button/ButtonStart.svelte",
@@ -601,11 +599,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-start.json"
     },
     {
       "name": "button-action",
-      "source": "src/lib/controls/buttonAction/ButtonAction.svelte",
       "files": [
         {
           "path": "src/lib/controls/buttonAction/ButtonAction.svelte",
@@ -613,11 +611,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-action.json"
     },
     {
       "name": "popper-content",
-      "source": "src/lib/controls/buttonAction/PopperContent.svelte",
       "files": [
         {
           "path": "src/lib/controls/buttonAction/PopperContent.svelte",
@@ -625,11 +623,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/popper-content.json"
     },
     {
       "name": "button-icon",
-      "source": "src/lib/controls/buttonIcon/ButtonIcon.svelte",
       "files": [
         {
           "path": "src/lib/controls/buttonIcon/ButtonIcon.svelte",
@@ -637,11 +635,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-icon.json"
     },
     {
       "name": "button-menu",
-      "source": "src/lib/controls/buttonMenu/ButtonMenu.svelte",
       "files": [
         {
           "path": "src/lib/controls/buttonMenu/ButtonMenu.svelte",
@@ -649,11 +647,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/button-menu.json"
     },
     {
       "name": "menu-item",
-      "source": "src/lib/controls/buttonMenu/MenuItem.svelte",
       "files": [
         {
           "path": "src/lib/controls/buttonMenu/MenuItem.svelte",
@@ -661,11 +659,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-item.json"
     },
     {
       "name": "checkbox",
-      "source": "src/lib/controls/checkbox/Checkbox.svelte",
       "files": [
         {
           "path": "src/lib/controls/checkbox/Checkbox.svelte",
@@ -673,11 +671,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/checkbox.json"
     },
     {
       "name": "confirm",
-      "source": "src/lib/controls/confirm/Confirm.svelte",
       "files": [
         {
           "path": "src/lib/controls/confirm/Confirm.svelte",
@@ -685,11 +683,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/confirm.json"
     },
     {
       "name": "confirm-initial",
-      "source": "src/lib/controls/confirm/ConfirmInitial.svelte",
       "files": [
         {
           "path": "src/lib/controls/confirm/ConfirmInitial.svelte",
@@ -697,11 +695,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/confirm-initial.json"
     },
     {
       "name": "in-place-edit",
-      "source": "src/lib/controls/inplaceedit/InPlaceEdit.svelte",
       "files": [
         {
           "path": "src/lib/controls/inplaceedit/InPlaceEdit.svelte",
@@ -709,11 +707,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/in-place-edit.json"
     },
     {
       "name": "progress",
-      "source": "src/lib/controls/progress/Progress.svelte",
       "files": [
         {
           "path": "src/lib/controls/progress/Progress.svelte",
@@ -721,11 +719,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/progress.json"
     },
     {
       "name": "rating",
-      "source": "src/lib/controls/rating/Rating.svelte",
       "files": [
         {
           "path": "src/lib/controls/rating/Rating.svelte",
@@ -733,11 +731,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/rating.json"
     },
     {
       "name": "rating-scored-icon",
-      "source": "src/lib/controls/rating/RatingScoredIcon.svelte",
       "files": [
         {
           "path": "src/lib/controls/rating/RatingScoredIcon.svelte",
@@ -745,11 +743,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/rating-scored-icon.json"
     },
     {
       "name": "select",
-      "source": "src/lib/controls/select/Select.svelte",
       "files": [
         {
           "path": "src/lib/controls/select/Select.svelte",
@@ -757,11 +755,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/select.json"
     },
     {
       "name": "slider",
-      "source": "src/lib/controls/slider/Slider.svelte",
       "files": [
         {
           "path": "src/lib/controls/slider/Slider.svelte",
@@ -769,11 +767,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/slider.json"
     },
     {
       "name": "stepper",
-      "source": "src/lib/controls/stepper/Stepper.svelte",
       "files": [
         {
           "path": "src/lib/controls/stepper/Stepper.svelte",
@@ -781,11 +779,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/stepper.json"
     },
     {
       "name": "switch",
-      "source": "src/lib/controls/switch/Switch.svelte",
       "files": [
         {
           "path": "src/lib/controls/switch/Switch.svelte",
@@ -793,11 +791,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/switch.json"
     },
     {
       "name": "switch-label",
-      "source": "src/lib/controls/switch/SwitchLabel.svelte",
       "files": [
         {
           "path": "src/lib/controls/switch/SwitchLabel.svelte",
@@ -805,11 +803,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/switch-label.json"
     },
     {
       "name": "input-first",
-      "source": "src/lib/controls/textfield/InputFirst.svelte",
       "files": [
         {
           "path": "src/lib/controls/textfield/InputFirst.svelte",
@@ -817,11 +815,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/input-first.json"
     },
     {
       "name": "input-last",
-      "source": "src/lib/controls/textfield/InputLast.svelte",
       "files": [
         {
           "path": "src/lib/controls/textfield/InputLast.svelte",
@@ -829,11 +827,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/input-last.json"
     },
     {
       "name": "input-first",
-      "source": "src/lib/controls/textfield/snippets/InputFirst.svelte",
       "files": [
         {
           "path": "src/lib/controls/textfield/snippets/InputFirst.svelte",
@@ -841,11 +839,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/input-first.json"
     },
     {
       "name": "input-last",
-      "source": "src/lib/controls/textfield/snippets/InputLast.svelte",
       "files": [
         {
           "path": "src/lib/controls/textfield/snippets/InputLast.svelte",
@@ -853,11 +851,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/input-last.json"
     },
     {
       "name": "text-field",
-      "source": "src/lib/controls/textfield/TextField.svelte",
       "files": [
         {
           "path": "src/lib/controls/textfield/TextField.svelte",
@@ -865,11 +863,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/text-field.json"
     },
     {
       "name": "data-list",
-      "source": "src/lib/data/dataList/DataList.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/DataList.svelte",
@@ -877,11 +875,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/data-list.json"
     },
     {
       "name": "data-list-cell",
-      "source": "src/lib/data/dataList/DataListCell.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/DataListCell.svelte",
@@ -889,11 +887,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/data-list-cell.json"
     },
     {
       "name": "data-list-footer",
-      "source": "src/lib/data/dataList/DataListFooter.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/DataListFooter.svelte",
@@ -901,11 +899,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/data-list-footer.json"
     },
     {
       "name": "data-list-head",
-      "source": "src/lib/data/dataList/DataListHead.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/DataListHead.svelte",
@@ -913,11 +911,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/data-list-head.json"
     },
     {
       "name": "data-list-row",
-      "source": "src/lib/data/dataList/DataListRow.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/DataListRow.svelte",
@@ -925,11 +923,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/data-list-row.json"
     },
     {
       "name": "group-title-slot",
-      "source": "src/lib/data/dataList/GroupTitleSlot.svelte",
       "files": [
         {
           "path": "src/lib/data/dataList/GroupTitleSlot.svelte",
@@ -937,11 +935,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/group-title-slot.json"
     },
     {
       "name": "finder",
-      "source": "src/lib/data/finder/Finder.svelte",
       "files": [
         {
           "path": "src/lib/data/finder/Finder.svelte",
@@ -949,11 +947,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/finder.json"
     },
     {
       "name": "grouper",
-      "source": "src/lib/data/grouper/Grouper.svelte",
       "files": [
         {
           "path": "src/lib/data/grouper/Grouper.svelte",
@@ -961,11 +959,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/grouper.json"
     },
     {
       "name": "jsoner",
-      "source": "src/lib/data/jsoner/Jsoner.svelte",
       "files": [
         {
           "path": "src/lib/data/jsoner/Jsoner.svelte",
@@ -973,11 +971,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/jsoner.json"
     },
     {
       "name": "list",
-      "source": "src/lib/data/list/List.svelte",
       "files": [
         {
           "path": "src/lib/data/list/List.svelte",
@@ -985,11 +983,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/list.json"
     },
     {
       "name": "list-item",
-      "source": "src/lib/data/list/ListItem.svelte",
       "files": [
         {
           "path": "src/lib/data/list/ListItem.svelte",
@@ -997,11 +995,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/list-item.json"
     },
     {
       "name": "list-title",
-      "source": "src/lib/data/list/ListTitle.svelte",
       "files": [
         {
           "path": "src/lib/data/list/ListTitle.svelte",
@@ -1009,11 +1007,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/list-title.json"
     },
     {
       "name": "loader",
-      "source": "src/lib/data/loader/Loader.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/Loader.svelte",
@@ -1021,11 +1019,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader.json"
     },
     {
       "name": "loader-empty",
-      "source": "src/lib/data/loader/LoaderEmpty.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/LoaderEmpty.svelte",
@@ -1033,11 +1031,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader-empty.json"
     },
     {
       "name": "loader-error",
-      "source": "src/lib/data/loader/LoaderError.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/LoaderError.svelte",
@@ -1045,11 +1043,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader-error.json"
     },
     {
       "name": "loader-loading",
-      "source": "src/lib/data/loader/LoaderLoading.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/LoaderLoading.svelte",
@@ -1057,11 +1055,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader-loading.json"
     },
     {
       "name": "loader-message",
-      "source": "src/lib/data/loader/LoaderMessage.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/LoaderMessage.svelte",
@@ -1069,11 +1067,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader-message.json"
     },
     {
       "name": "loader-success",
-      "source": "src/lib/data/loader/LoaderSuccess.svelte",
       "files": [
         {
           "path": "src/lib/data/loader/LoaderSuccess.svelte",
@@ -1081,11 +1079,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loader-success.json"
     },
     {
       "name": "sorter",
-      "source": "src/lib/data/sorter/Sorter.svelte",
       "files": [
         {
           "path": "src/lib/data/sorter/Sorter.svelte",
@@ -1093,11 +1091,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/sorter.json"
     },
     {
       "name": "sorterer",
-      "source": "src/lib/data/sorter/Sorterer.svelte",
       "files": [
         {
           "path": "src/lib/data/sorter/Sorterer.svelte",
@@ -1105,11 +1103,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/sorterer.json"
     },
     {
       "name": "drawer",
-      "source": "src/lib/navigation/drawer/Drawer.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/Drawer.svelte",
@@ -1117,11 +1115,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer.json"
     },
     {
       "name": "drawer-content",
-      "source": "src/lib/navigation/drawer/DrawerContent.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerContent.svelte",
@@ -1129,11 +1127,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-content.json"
     },
     {
       "name": "drawer-footer",
-      "source": "src/lib/navigation/drawer/DrawerFooter.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerFooter.svelte",
@@ -1141,11 +1139,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-footer.json"
     },
     {
       "name": "drawer-icon",
-      "source": "src/lib/navigation/drawer/DrawerIcon.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerIcon.svelte",
@@ -1153,11 +1151,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-icon.json"
     },
     {
       "name": "drawer-primary",
-      "source": "src/lib/navigation/drawer/DrawerPrimary.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerPrimary.svelte",
@@ -1165,11 +1163,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-primary.json"
     },
     {
       "name": "drawer-secondary",
-      "source": "src/lib/navigation/drawer/DrawerSecondary.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerSecondary.svelte",
@@ -1177,11 +1175,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-secondary.json"
     },
     {
       "name": "drawer-title",
-      "source": "src/lib/navigation/drawer/DrawerTitle.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerTitle.svelte",
@@ -1189,11 +1187,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-title.json"
     },
     {
       "name": "drawer-top",
-      "source": "src/lib/navigation/drawer/DrawerTop.svelte",
       "files": [
         {
           "path": "src/lib/navigation/drawer/DrawerTop.svelte",
@@ -1201,11 +1199,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/drawer-top.json"
     },
     {
       "name": "tabs",
-      "source": "src/lib/navigation/tabs/Tabs.svelte",
       "files": [
         {
           "path": "src/lib/navigation/tabs/Tabs.svelte",
@@ -1213,11 +1211,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/tabs.json"
     },
     {
       "name": "boot-str-app",
-      "source": "src/lib/ui/bootstrapp/BootStrApp.svelte",
       "files": [
         {
           "path": "src/lib/ui/bootstrapp/BootStrApp.svelte",
@@ -1225,11 +1223,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/boot-str-app.json"
     },
     {
       "name": "chrome-frame",
-      "source": "src/lib/ui/chromeFrame/ChromeFrame.svelte",
       "files": [
         {
           "path": "src/lib/ui/chromeFrame/ChromeFrame.svelte",
@@ -1237,11 +1235,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/chrome-frame.json"
     },
     {
       "name": "chrome-frame-button-list",
-      "source": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
       "files": [
         {
           "path": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
@@ -1249,11 +1247,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/chrome-frame-button-list.json"
     },
     {
       "name": "chrome-frame-list",
-      "source": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
       "files": [
         {
           "path": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
@@ -1261,11 +1259,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/chrome-frame-list.json"
     },
     {
       "name": "explorer",
-      "source": "src/lib/ui/explorer/Explorer.svelte",
       "files": [
         {
           "path": "src/lib/ui/explorer/Explorer.svelte",
@@ -1273,11 +1271,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/explorer.json"
     },
     {
       "name": "frame",
-      "source": "src/lib/ui/frame/Frame.svelte",
       "files": [
         {
           "path": "src/lib/ui/frame/Frame.svelte",
@@ -1285,11 +1283,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/frame.json"
     },
     {
       "name": "header",
-      "source": "src/lib/ui/header/Header.svelte",
       "files": [
         {
           "path": "src/lib/ui/header/Header.svelte",
@@ -1297,11 +1295,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/header.json"
     },
     {
       "name": "login",
-      "source": "src/lib/ui/login/Login.svelte",
       "files": [
         {
           "path": "src/lib/ui/login/Login.svelte",
@@ -1309,11 +1307,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/login.json"
     },
     {
       "name": "login-avatar",
-      "source": "src/lib/ui/login/LoginAvatar.svelte",
       "files": [
         {
           "path": "src/lib/ui/login/LoginAvatar.svelte",
@@ -1321,11 +1319,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/login-avatar.json"
     },
     {
       "name": "login-avatar-root",
-      "source": "src/lib/ui/login/LoginAvatarRoot.svelte",
       "files": [
         {
           "path": "src/lib/ui/login/LoginAvatarRoot.svelte",
@@ -1333,11 +1331,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/login-avatar-root.json"
     },
     {
       "name": "login-form",
-      "source": "src/lib/ui/login/LoginForm.svelte",
       "files": [
         {
           "path": "src/lib/ui/login/LoginForm.svelte",
@@ -1345,11 +1343,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/login-form.json"
     },
     {
       "name": "slot-retrieve-password",
-      "source": "src/lib/ui/login/SlotRetrievePassword.svelte",
       "files": [
         {
           "path": "src/lib/ui/login/SlotRetrievePassword.svelte",
@@ -1357,11 +1355,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/slot-retrieve-password.json"
     },
     {
       "name": "marquee",
-      "source": "src/lib/ui/marquee/Marquee.svelte",
       "files": [
         {
           "path": "src/lib/ui/marquee/Marquee.svelte",
@@ -1369,11 +1367,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/marquee.json"
     },
     {
       "name": "marquee-children",
-      "source": "src/lib/ui/marquee/MarqueeChildren.svelte",
       "files": [
         {
           "path": "src/lib/ui/marquee/MarqueeChildren.svelte",
@@ -1381,11 +1379,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/marquee-children.json"
     },
     {
       "name": "menu",
-      "source": "src/lib/ui/menu/Menu.svelte",
       "files": [
         {
           "path": "src/lib/ui/menu/Menu.svelte",
@@ -1393,11 +1391,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu.json"
     },
     {
       "name": "menu-item",
-      "source": "src/lib/ui/menu/MenuItem.svelte",
       "files": [
         {
           "path": "src/lib/ui/menu/MenuItem.svelte",
@@ -1405,11 +1403,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-item.json"
     },
     {
       "name": "menu-title",
-      "source": "src/lib/ui/menu/MenuTitle.svelte",
       "files": [
         {
           "path": "src/lib/ui/menu/MenuTitle.svelte",
@@ -1417,11 +1415,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-title.json"
     },
     {
       "name": "menu-list",
-      "source": "src/lib/ui/menuList/MenuList.svelte",
       "files": [
         {
           "path": "src/lib/ui/menuList/MenuList.svelte",
@@ -1429,11 +1427,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-list.json"
     },
     {
       "name": "menu-list-item",
-      "source": "src/lib/ui/menuList/MenuListItem.svelte",
       "files": [
         {
           "path": "src/lib/ui/menuList/MenuListItem.svelte",
@@ -1441,11 +1439,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-list-item.json"
     },
     {
       "name": "menu-list-title",
-      "source": "src/lib/ui/menuList/MenuListTitle.svelte",
       "files": [
         {
           "path": "src/lib/ui/menuList/MenuListTitle.svelte",
@@ -1453,11 +1451,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/menu-list-title.json"
     },
     {
       "name": "panel",
-      "source": "src/lib/ui/panel/Panel.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/Panel.svelte",
@@ -1465,11 +1463,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel.json"
     },
     {
       "name": "panel-button-next",
-      "source": "src/lib/ui/panel/PanelButtonNext.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/PanelButtonNext.svelte",
@@ -1477,11 +1475,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel-button-next.json"
     },
     {
       "name": "panel-button-previous",
-      "source": "src/lib/ui/panel/PanelButtonPrevious.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/PanelButtonPrevious.svelte",
@@ -1489,11 +1487,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel-button-previous.json"
     },
     {
       "name": "paneler",
-      "source": "src/lib/ui/panel/Paneler.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/Paneler.svelte",
@@ -1501,11 +1499,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/paneler.json"
     },
     {
       "name": "panel-grid",
-      "source": "src/lib/ui/panel/PanelGrid.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/PanelGrid.svelte",
@@ -1513,11 +1511,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel-grid.json"
     },
     {
       "name": "panel-grid-zoom",
-      "source": "src/lib/ui/panel/PanelGridZoom.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/PanelGridZoom.svelte",
@@ -1525,11 +1523,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel-grid-zoom.json"
     },
     {
       "name": "panel-slide",
-      "source": "src/lib/ui/panel/PanelSlide.svelte",
       "files": [
         {
           "path": "src/lib/ui/panel/PanelSlide.svelte",
@@ -1537,11 +1535,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/panel-slide.json"
     },
     {
       "name": "popper",
-      "source": "src/lib/ui/popper/Popper.svelte",
       "files": [
         {
           "path": "src/lib/ui/popper/Popper.svelte",
@@ -1549,11 +1547,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/popper.json"
     },
     {
       "name": "preview",
-      "source": "src/lib/ui/preview/Preview.svelte",
       "files": [
         {
           "path": "src/lib/ui/preview/Preview.svelte",
@@ -1561,11 +1559,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/preview.json"
     },
     {
       "name": "preview-zoom",
-      "source": "src/lib/ui/preview/PreviewZoom.svelte",
       "files": [
         {
           "path": "src/lib/ui/preview/PreviewZoom.svelte",
@@ -1573,11 +1571,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/preview-zoom.json"
     },
     {
       "name": "service-box",
-      "source": "src/lib/ui/serviceBox/ServiceBox.svelte",
       "files": [
         {
           "path": "src/lib/ui/serviceBox/ServiceBox.svelte",
@@ -1585,11 +1583,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/service-box.json"
     },
     {
       "name": "boot-menu",
-      "source": "src/lib/ui/startMenu/BootMenu.svelte",
       "files": [
         {
           "path": "src/lib/ui/startMenu/BootMenu.svelte",
@@ -1597,11 +1595,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/boot-menu.json"
     },
     {
       "name": "taskbar",
-      "source": "src/lib/ui/taskbar/Taskbar.svelte",
       "files": [
         {
           "path": "src/lib/ui/taskbar/Taskbar.svelte",
@@ -1609,11 +1607,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/taskbar.json"
     },
     {
       "name": "task-bar-content",
-      "source": "src/lib/ui/taskbar/TaskBarContent.svelte",
       "files": [
         {
           "path": "src/lib/ui/taskbar/TaskBarContent.svelte",
@@ -1621,11 +1619,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/task-bar-content.json"
     },
     {
       "name": "task-bar-left",
-      "source": "src/lib/ui/taskbar/TaskBarLeft.svelte",
       "files": [
         {
           "path": "src/lib/ui/taskbar/TaskBarLeft.svelte",
@@ -1633,11 +1631,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/task-bar-left.json"
     },
     {
       "name": "task-bar-right",
-      "source": "src/lib/ui/taskbar/TaskBarRight.svelte",
       "files": [
         {
           "path": "src/lib/ui/taskbar/TaskBarRight.svelte",
@@ -1645,11 +1643,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/task-bar-right.json"
     },
     {
       "name": "theme-switcher",
-      "source": "src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
       "files": [
         {
           "path": "src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
@@ -1657,11 +1655,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/theme-switcher.json"
     },
     {
       "name": "toast",
-      "source": "src/lib/ui/toast/Toast.svelte",
       "files": [
         {
           "path": "src/lib/ui/toast/Toast.svelte",
@@ -1669,11 +1667,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toast.json"
     },
     {
       "name": "toaster",
-      "source": "src/lib/ui/toast/Toaster.svelte",
       "files": [
         {
           "path": "src/lib/ui/toast/Toaster.svelte",
@@ -1681,11 +1679,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toaster.json"
     },
     {
       "name": "content-switcher-icon",
-      "source": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
@@ -1693,11 +1691,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher-icon.json"
     },
     {
       "name": "content-switcher-reveal",
-      "source": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
@@ -1705,11 +1703,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content-switcher-reveal.json"
     },
     {
       "name": "toggle-bar",
-      "source": "src/lib/ui/toggleBar/ToggleBar.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ToggleBar.svelte",
@@ -1717,11 +1715,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toggle-bar.json"
     },
     {
       "name": "toggle-bar-buttons",
-      "source": "src/lib/ui/toggleBar/ToggleBarButtons.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ToggleBarButtons.svelte",
@@ -1729,11 +1727,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toggle-bar-buttons.json"
     },
     {
       "name": "toggle-bar-icon",
-      "source": "src/lib/ui/toggleBar/ToggleBarIcon.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ToggleBarIcon.svelte",
@@ -1741,11 +1739,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toggle-bar-icon.json"
     },
     {
       "name": "toggle-bar-title",
-      "source": "src/lib/ui/toggleBar/ToggleBarTitle.svelte",
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ToggleBarTitle.svelte",
@@ -1753,11 +1751,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toggle-bar-title.json"
     },
     {
       "name": "tool-bar",
-      "source": "src/lib/ui/toolBar/ToolBar.svelte",
       "files": [
         {
           "path": "src/lib/ui/toolBar/ToolBar.svelte",
@@ -1765,11 +1763,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/tool-bar.json"
     },
     {
       "name": "toolbar-separator",
-      "source": "src/lib/ui/toolBar/ToolbarSeparator.svelte",
       "files": [
         {
           "path": "src/lib/ui/toolBar/ToolbarSeparator.svelte",
@@ -1777,11 +1775,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/toolbar-separator.json"
     },
     {
       "name": "tree",
-      "source": "src/lib/ui/tree/Tree.svelte",
       "files": [
         {
           "path": "src/lib/ui/tree/Tree.svelte",
@@ -1789,11 +1787,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/tree.json"
     },
     {
       "name": "window",
-      "source": "src/lib/ui/window/Window.svelte",
       "files": [
         {
           "path": "src/lib/ui/window/Window.svelte",
@@ -1801,11 +1799,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/window.json"
     },
     {
       "name": "window-button-zone",
-      "source": "src/lib/ui/window/WindowButtonZone.svelte",
       "files": [
         {
           "path": "src/lib/ui/window/WindowButtonZone.svelte",
@@ -1813,11 +1811,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/window-button-zone.json"
     },
     {
       "name": "window-icon",
-      "source": "src/lib/ui/window/WindowIcon.svelte",
       "files": [
         {
           "path": "src/lib/ui/window/WindowIcon.svelte",
@@ -1825,11 +1823,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/window-icon.json"
     },
     {
       "name": "content",
-      "source": "src/lib/utils/content/Content.svelte",
       "files": [
         {
           "path": "src/lib/utils/content/Content.svelte",
@@ -1837,11 +1835,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/content.json"
     },
     {
       "name": "context-rooter",
-      "source": "src/lib/utils/contextRooter/ContextRooter.svelte",
       "files": [
         {
           "path": "src/lib/utils/contextRooter/ContextRooter.svelte",
@@ -1849,11 +1847,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/context-rooter.json"
     },
     {
       "name": "looper",
-      "source": "src/lib/utils/looper/Looper.svelte",
       "files": [
         {
           "path": "src/lib/utils/looper/Looper.svelte",
@@ -1861,11 +1859,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/looper.json"
     },
     {
       "name": "loop-group-title",
-      "source": "src/lib/utils/looper/LoopGroupTitle.svelte",
       "files": [
         {
           "path": "src/lib/utils/looper/LoopGroupTitle.svelte",
@@ -1873,11 +1871,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loop-group-title.json"
     },
     {
       "name": "loop-title",
-      "source": "src/lib/utils/looper/LoopTitle.svelte",
       "files": [
         {
           "path": "src/lib/utils/looper/LoopTitle.svelte",
@@ -1885,11 +1883,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/loop-title.json"
     },
     {
       "name": "child",
-      "source": "src/lib/utils/slotted/Child.svelte",
       "files": [
         {
           "path": "src/lib/utils/slotted/Child.svelte",
@@ -1897,11 +1895,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/child.json"
     },
     {
       "name": "slotted",
-      "source": "src/lib/utils/slotted/Slotted.svelte",
       "files": [
         {
           "path": "src/lib/utils/slotted/Slotted.svelte",
@@ -1909,11 +1907,11 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/slotted.json"
     },
     {
       "name": "style-sheet",
-      "source": "src/lib/utils/stylesheet/StyleSheet.svelte",
       "files": [
         {
           "path": "src/lib/utils/stylesheet/StyleSheet.svelte",
@@ -1921,7 +1919,8 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": []
+      "registryDependencies": [],
+      "publicMetadata": "public/r/style-sheet.json"
     }
   ]
 }

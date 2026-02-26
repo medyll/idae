@@ -1,0 +1,13 @@
+{
+  "name": "explorer",
+  "title": "explorer",
+  "description": "Component generated from src/lib/ui/explorer/Explorer.svelte",
+  "files": [
+    "src/lib/ui/explorer/Explorer.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

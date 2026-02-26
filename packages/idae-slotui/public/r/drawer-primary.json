@@ -1,0 +1,13 @@
+{
+  "name": "drawer-primary",
+  "title": "drawer-primary",
+  "description": "Component generated from src/lib/navigation/drawer/DrawerPrimary.svelte",
+  "files": [
+    "src/lib/navigation/drawer/DrawerPrimary.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

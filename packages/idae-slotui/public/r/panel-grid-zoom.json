@@ -1,0 +1,13 @@
+{
+  "name": "panel-grid-zoom",
+  "title": "panel-grid-zoom",
+  "description": "Component generated from src/lib/ui/panel/PanelGridZoom.svelte",
+  "files": [
+    "src/lib/ui/panel/PanelGridZoom.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

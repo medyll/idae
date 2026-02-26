@@ -1,0 +1,13 @@
+{
+  "name": "preview",
+  "title": "preview",
+  "description": "Component generated from src/lib/ui/preview/Preview.svelte",
+  "files": [
+    "src/lib/ui/preview/Preview.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

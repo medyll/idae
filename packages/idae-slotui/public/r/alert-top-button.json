@@ -1,0 +1,13 @@
+{
+  "name": "alert-top-button",
+  "title": "alert-top-button",
+  "description": "Component generated from src/lib/base/alert/AlertTopButton.svelte",
+  "files": [
+    "src/lib/base/alert/AlertTopButton.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

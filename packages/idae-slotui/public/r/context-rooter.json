@@ -1,0 +1,13 @@
+{
+  "name": "context-rooter",
+  "title": "context-rooter",
+  "description": "Component generated from src/lib/utils/contextRooter/ContextRooter.svelte",
+  "files": [
+    "src/lib/utils/contextRooter/ContextRooter.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

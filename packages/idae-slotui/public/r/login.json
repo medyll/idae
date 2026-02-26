@@ -1,0 +1,13 @@
+{
+  "name": "login",
+  "title": "login",
+  "description": "Component generated from src/lib/ui/login/Login.svelte",
+  "files": [
+    "src/lib/ui/login/Login.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

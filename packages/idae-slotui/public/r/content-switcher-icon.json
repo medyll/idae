@@ -1,0 +1,13 @@
+{
+  "name": "content-switcher-icon",
+  "title": "content-switcher-icon",
+  "description": "Component generated from src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
+  "files": [
+    "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

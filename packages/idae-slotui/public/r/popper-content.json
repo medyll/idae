@@ -1,0 +1,13 @@
+{
+  "name": "popper-content",
+  "title": "popper-content",
+  "description": "Component generated from src/lib/controls/buttonAction/PopperContent.svelte",
+  "files": [
+    "src/lib/controls/buttonAction/PopperContent.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

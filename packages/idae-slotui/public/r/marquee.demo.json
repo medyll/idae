@@ -1,0 +1,13 @@
+{
+  "name": "marquee.demo",
+  "title": "marquee.demo",
+  "description": "Component generated from src/lib/ui/marquee/Marquee.demo.svelte",
+  "files": [
+    "src/lib/ui/marquee/Marquee.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

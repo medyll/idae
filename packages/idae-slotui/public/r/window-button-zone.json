@@ -1,0 +1,13 @@
+{
+  "name": "window-button-zone",
+  "title": "window-button-zone",
+  "description": "Component generated from src/lib/ui/window/WindowButtonZone.svelte",
+  "files": [
+    "src/lib/ui/window/WindowButtonZone.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

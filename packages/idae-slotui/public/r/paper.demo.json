@@ -1,0 +1,13 @@
+{
+  "name": "paper.demo",
+  "title": "paper.demo",
+  "description": "Component generated from src/lib/base/paper/Paper.demo.svelte",
+  "files": [
+    "src/lib/base/paper/Paper.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

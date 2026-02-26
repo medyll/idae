@@ -1,0 +1,13 @@
+{
+  "name": "header",
+  "title": "header",
+  "description": "Component generated from src/lib/ui/header/Header.svelte",
+  "files": [
+    "src/lib/ui/header/Header.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

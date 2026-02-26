@@ -1,0 +1,13 @@
+{
+  "name": "alert-message",
+  "title": "alert-message",
+  "description": "Component generated from src/lib/base/alert/AlertMessage.svelte",
+  "files": [
+    "src/lib/base/alert/AlertMessage.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

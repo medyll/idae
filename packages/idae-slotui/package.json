@@ -29,9 +29,10 @@
     "publish": "npm run package",
     "build-docs:watch": "nodemon --watch ./src/lib --watch ./build-docs.js --ignore **/docs/** --ignore ./src/lib/svelte.index.js --ext svelte --delay 2.5 build-docs.js",
     "rename-scss": "node scripts/rename-scss-files.js",
+    "make-pnpx": "node scripts/make-pnpx.cjs",
     "setup-tailwind-v4": "node scripts/generate-theme-css.cjs",
     "package:pre": "node scripts/package-pre.js",
-    "prepackage": "node scripts/package-pre.js"
+    "prepackage": "node scripts/package-pre.js && node scripts/generate-registry-from-lib.cjs && node scripts/make-pnpx.cjs"
   },
   "exports": {
     ".": {

@@ -1,0 +1,13 @@
+{
+  "name": "content-switcher-back-icon",
+  "title": "content-switcher-back-icon",
+  "description": "Component generated from src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
+  "files": [
+    "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

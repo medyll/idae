@@ -1,0 +1,13 @@
+{
+  "name": "cartouche",
+  "title": "cartouche",
+  "description": "Component generated from src/lib/base/cartouche/Cartouche.svelte",
+  "files": [
+    "src/lib/base/cartouche/Cartouche.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

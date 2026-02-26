@@ -1,0 +1,13 @@
+{
+  "name": "loop-title",
+  "title": "loop-title",
+  "description": "Component generated from src/lib/utils/looper/LoopTitle.svelte",
+  "files": [
+    "src/lib/utils/looper/LoopTitle.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "icon.demo",
+  "title": "icon.demo",
+  "description": "Component generated from src/lib/base/icon/Icon.demo.svelte",
+  "files": [
+    "src/lib/base/icon/Icon.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "backdrop",
+  "title": "backdrop",
+  "description": "Component generated from src/lib/base/backdrop/Backdrop.svelte",
+  "files": [
+    "src/lib/base/backdrop/Backdrop.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

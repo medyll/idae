@@ -1,0 +1,13 @@
+{
+  "name": "toast.demo",
+  "title": "toast.demo",
+  "description": "Component generated from src/lib/ui/toast/Toast.demo.svelte",
+  "files": [
+    "src/lib/ui/toast/Toast.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

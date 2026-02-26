@@ -1,0 +1,13 @@
+{
+  "name": "cartouche-buttons",
+  "title": "cartouche-buttons",
+  "description": "Component generated from src/lib/base/cartouche/CartoucheButtons.svelte",
+  "files": [
+    "src/lib/base/cartouche/CartoucheButtons.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

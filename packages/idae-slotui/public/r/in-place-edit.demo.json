@@ -1,0 +1,13 @@
+{
+  "name": "in-place-edit.demo",
+  "title": "in-place-edit.demo",
+  "description": "Component generated from src/lib/controls/inplaceedit/InPlaceEdit.demo.svelte",
+  "files": [
+    "src/lib/controls/inplaceedit/InPlaceEdit.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

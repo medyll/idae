@@ -1,0 +1,13 @@
+{
+  "name": "slider",
+  "title": "slider",
+  "description": "Component generated from src/lib/controls/slider/Slider.svelte",
+  "files": [
+    "src/lib/controls/slider/Slider.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "task-bar-right",
+  "title": "task-bar-right",
+  "description": "Component generated from src/lib/ui/taskbar/TaskBarRight.svelte",
+  "files": [
+    "src/lib/ui/taskbar/TaskBarRight.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

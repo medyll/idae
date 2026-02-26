@@ -1,0 +1,13 @@
+{
+  "name": "button-menu",
+  "title": "button-menu",
+  "description": "Component generated from src/lib/controls/buttonMenu/ButtonMenu.svelte",
+  "files": [
+    "src/lib/controls/buttonMenu/ButtonMenu.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

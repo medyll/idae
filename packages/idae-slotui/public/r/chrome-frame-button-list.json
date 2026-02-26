@@ -1,0 +1,13 @@
+{
+  "name": "chrome-frame-button-list",
+  "title": "chrome-frame-button-list",
+  "description": "Component generated from src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
+  "files": [
+    "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "toolbar-separator",
+  "title": "toolbar-separator",
+  "description": "Component generated from src/lib/ui/toolBar/ToolbarSeparator.svelte",
+  "files": [
+    "src/lib/ui/toolBar/ToolbarSeparator.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

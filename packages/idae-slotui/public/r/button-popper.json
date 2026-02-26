@@ -1,0 +1,13 @@
+{
+  "name": "button-popper",
+  "title": "button-popper",
+  "description": "Component generated from src/lib/controls/button/ButtonPopper.svelte",
+  "files": [
+    "src/lib/controls/button/ButtonPopper.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}
