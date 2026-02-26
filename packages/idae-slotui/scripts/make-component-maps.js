@@ -64,7 +64,7 @@ const COLUMNS = [
     key: 'internal',
     label: 'Int.',
     legend: '**Int.** (Internal): The `[Component]Props` type must be used within the Svelte component body.',
-    fix: 'Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.',
+    fix: 'Add [Component]Props to `<script module>`. Do not make "export type Props = any", verify if [Component]Props is already in the component file.',
     consoleFix: 'Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file',
     validator: ({ bodyOnly, typeName }) =>
       new RegExp(`\\b${typeName}\\b`).test(bodyOnly) ? '✅' : '❌',

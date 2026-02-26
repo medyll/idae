@@ -36,7 +36,7 @@ node ./scripts/make-component-maps.js
 - **Sc.**: Snippet component.
 
 ### Fixes
-- **Int.:** Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
+- **Int.:** Add [Component]Props to `<script module>`. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
 - **Ext.:** Remove the import from `./types`.
 - **Type:** Delete the `[Component]Props` from `types.ts`.
 - **File:** Create the `types.ts` file with `export {};`.
@@ -48,7 +48,7 @@ node ./scripts/make-component-maps.js
 | File | Int. | Ext. | Type | File | Demo | PostCss | Ref | Css | Sc. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **BASE** |  |  |  |  |  |  |  |  | |
-| `src\lib\base\alert\Alert.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\alert\Alert.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\base\alert\AlertButtonClose.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\alert\AlertButtonZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\alert\AlertMessage.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -57,7 +57,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\avatar\AvatarBadge.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\backdrop\Backdrop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\backdrop\BackdropLoading.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\badge\Badge.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\badge\Badge.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\base\box\Box.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\box\BoxBottomZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\box\TitleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -72,19 +72,19 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\chipper\ChipperChip.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\columner\BottomSlot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\columner\Columner.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\base\columner\ColumnerCol.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\columner\ColumnerCol.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\columner\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcher.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherBackIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherTogglerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\debug\Debug.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\base\demoer\Demoer.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\base\demoer\Demoer.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\base\demoer\DemoerCode.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\demoer\DemoerComponent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\demoer\DemoerContent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\base\demoer\DemoPage.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\demoer\DemoPage.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\icon\Icon.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\paper\Paper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\titleBar\TitleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
@@ -104,11 +104,11 @@ node ./scripts/make-component-maps.js
 | `src\lib\controls\buttonIcon\ButtonIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\buttonMenu\ButtonMenu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\buttonMenu\MenuItem.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\checkbox\Checkbox.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\checkbox\Checkbox.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\controls\confirm\Confirm.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\confirm\ConfirmInitial.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\inplaceedit\InPlaceEdit.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\controls\progress\Progress.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\progress\Progress.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\controls\rating\Rating.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\rating\RatingScoredIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\select\Select.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
@@ -219,15 +219,15 @@ node ./scripts/make-component-maps.js
 
 
 ## Global Compliance Index
-**Score: 95.2%**
-`███████████████████░` (876/920 passed)
+**Score: 96.1%**
+`███████████████████░` (884/920 passed)
 
 ---
 
 ## Error Report (❌ Items)
 
 ### Int.
-**Fix:** Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
+**Fix:** Add [Component]Props to `<script module>`. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
 
 _None_
 
@@ -239,14 +239,6 @@ _None_
 ### Type
 **Fix:** Delete the `[Component]Props` from `types.ts`.
 
-- `src\lib\base\alert\Alert.svelte`
-- `src\lib\base\badge\Badge.svelte`
-- `src\lib\base\columner\ColumnerCol.svelte`
-- `src\lib\base\demoer\Demoer.svelte`
-- `src\lib\base\demoer\DemoPage.svelte`
-- `src\lib\base\divider\Divider.svelte`
-- `src\lib\controls\checkbox\Checkbox.svelte`
-- `src\lib\controls\progress\Progress.svelte`
 - `src\lib\controls\slider\Slider.svelte`
 - `src\lib\data\dataList\DataListCell.svelte`
 - `src\lib\data\dataList\DataListRow.svelte`

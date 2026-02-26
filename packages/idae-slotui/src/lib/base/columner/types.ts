@@ -1,14 +1,8 @@
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export type ColumnerColProps = CommonProps & {
-	/** unique id of the column */
-	columnId: string;
-	/** snippet for the top of the drawer */
-	drawerTop?: Snippet;
-	/** snippet for the bottom of the column */
-	bottomSlot?: Snippet;
-};
+// NOTE: `ColumnerColProps` moved to component module script during migration.
+// Keep other exports intact.
 export type ColumnerStoreType = Record<string, ColumnerColType>;
 
 export interface ColumnerColType {

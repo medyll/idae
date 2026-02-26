@@ -6,21 +6,8 @@ import {
 import type { Snippet } from "svelte";
 import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 import type { DemoerStoryProps } from "../demoer/types.js";
-export interface AlertProps extends CommonProps {
-  /** alert level */
-  level?: ElementProps["levels"];
-  /** message to be shown */
-  message?: string;
-  /** make the alert draggable */
-  draggable?: boolean;
-  /** show or hide the alert */
-  isOpen?: boolean;
-  children?: Snippet;
-  alertTopButton?: Snippet;
-  alertMessage?: Snippet;
-  alertButtonZone?: Snippet;
-  alertButtonClose?: Snippet;
-}
+// NOTE: `AlertProps` moved to component module script during migration.
+// Keep demo exports below; do not reintroduce `AlertProps` here.
 
 export const alertDemoValues: DemoerStoryProps<any> = {
   isOpen: {

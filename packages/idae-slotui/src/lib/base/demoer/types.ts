@@ -2,14 +2,6 @@ import type { CommonProps } from '$lib/types/index.js';
 import type { uiPresets } from '$lib/utils/engine/presets.js';
 import type { Component, Snippet } from 'svelte';
 
-export type DemoerProps<T = Record<string, any>> = {
-	title?: string;
-	parameters: DemoerStoryProps<T>;
-	componentArgs?: T;
-	component?: Component<any> /** svelte component*/;
-	multiple?: Record<string, any>;
-	children?: Snippet<[{ activeParams: T }]>;
-};
 
 export type DemoerArgsType =
 	| 'boolean'
@@ -22,17 +14,9 @@ export type DemoerArgsType =
 
 export type DemoerParameters = { type: DemoerArgsType; values?: any[]; default?: any };
 
-export type DemoPageProps = CommonProps & {
-	title?: string;
-	subTitle?: string;
-	component: string;
-	code?: string;
-	demoerCode?: Snippet;
-	children: Snippet;
-	slots?: {
-		code: Snippet;
-	};
-};
+// NOTE: `DemoerProps` and `DemoPageProps` have been moved into their
+// respective component module scripts as part of the migration.
+// Keep utility types and demo exports here.
 
 export type DemoerStoryProps<T = Record<string, any>> = {
 	[K in keyof T]: {
