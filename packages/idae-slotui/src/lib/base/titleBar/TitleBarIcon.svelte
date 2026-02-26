@@ -1,7 +1,7 @@
 <!-- @component snippet component for root: titleBar -->
 <script module lang="ts">
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type TitleBarIconProps = Record<string, unknown>;
 </script>
 
 <script>

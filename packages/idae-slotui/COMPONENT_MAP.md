@@ -79,17 +79,17 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\contentSwitcher\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherTogglerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\debug\Debug.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\base\demoer\Demoer.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\base\demoer\Demoer.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\base\demoer\DemoerCode.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\demoer\DemoerComponent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\demoer\DemoerContent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\base\demoer\DemoPage.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\base\demoer\DemoerComponent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\base\demoer\DemoerContent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\base\demoer\DemoPage.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\base\icon\Icon.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\icon\Icon.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\paper\Paper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\titleBar\TitleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\base\titleBar\TitleBarIcon.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\titleBar\TitleBarTitle.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\base\titleBar\TitleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\base\titleBar\TitleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | **CONTROLS** |  |  |  |  |  |  |  |  | |
 | `src\lib\controls\autocomplete\AutoComplete.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\autocomplete\AutoCompleteEmpty.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -219,8 +219,8 @@ node ./scripts/make-component-maps.js
 
 
 ## Global Compliance Index
-**Score: 94.5%**
-`██████████████████░░` (869/920 passed)
+**Score: 95.2%**
+`███████████████████░` (876/920 passed)
 
 ---
 
@@ -229,13 +229,7 @@ node ./scripts/make-component-maps.js
 ### Int.
 **Fix:** Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
 
-- `src\lib\base\demoer\Demoer.svelte`
-- `src\lib\base\demoer\DemoerComponent.svelte`
-- `src\lib\base\demoer\DemoerContent.svelte`
-- `src\lib\base\demoer\DemoPage.svelte`
-- `src\lib\base\icon\Icon.svelte`
-- `src\lib\base\titleBar\TitleBarIcon.svelte`
-- `src\lib\base\titleBar\TitleBarTitle.svelte`
+_None_
 
 ### Ext.
 **Fix:** Remove the import from `./types`.

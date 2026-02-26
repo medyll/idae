@@ -1,6 +1,6 @@
 <script module lang="ts">
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type DemoerContentProps = Record<string, unknown>;
 export type DemoerProps<T = Record<string, any>> = any;
 export type DemoerStoryProps<T = Record<string, any>> = any;
 </script>

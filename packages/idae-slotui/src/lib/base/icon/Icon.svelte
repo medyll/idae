@@ -116,7 +116,7 @@ export type IconAppProps = {
 
 <script module lang="ts">
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type IconProps = Record<string, unknown>;
 </script>
 
 <style global lang="postcss">
