@@ -42,6 +42,7 @@ export type ToolBarProps = CommonProps & {
 	<Slotted child={toolbarSeparator} />
 </div>
 
-<style lang="scss">
-	@use './toolbar.scss';
+<style global lang="postcss">
+    @import './toolbar.css';
+	@reference "tailwindcss"
 </style>

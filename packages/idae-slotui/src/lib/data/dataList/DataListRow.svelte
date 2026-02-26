@@ -106,7 +106,7 @@
 	{/if}
 </tr>
 
-<style lang="scss">
+<style lang="postcss">
 	.dataListRow {
 		/* grid-template-columns: var(--template-columns);
 		grid-auto-columns: min-content; */

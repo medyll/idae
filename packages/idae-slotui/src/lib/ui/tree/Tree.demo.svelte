@@ -3,8 +3,8 @@
 
 	/* demo */
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 	import { defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	/* demo */
 
@@ -61,7 +61,7 @@
 	cite="We were looking for leaves and we found trees<br /> B. Esein, 1354"
 	component="Tree"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import Backdrop from './Backdrop.svelte';
 	import { BackdropDemoValues } from './types.js';
@@ -13,7 +13,7 @@
 		flow="relative"
 		onclick={()=>{}}> 
 		<div class="flex-h flex-align-middle-center h-full">
-			<div class="pad-4 border radius-small theme-bg">
+			<div class="p-4 border radius-small theme-bg">
 				some content
 			</div>
 		</div>
@@ -23,7 +23,7 @@
 </script>
 
 <ComponentDemo component="Backdrop">
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<DemoPage code={codeSlot} component="Backdrop">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
@@ -38,7 +38,7 @@
 							{...activeParams}
 						>
 							<div class="flex-h flex-align-middle-center h-full">
-								<div class="pad-4 border radius-small theme-bg">some content</div>
+								<div class="p-4 border radius-small theme-bg">some content</div>
 							</div>
 						</Backdrop>
 					</div>

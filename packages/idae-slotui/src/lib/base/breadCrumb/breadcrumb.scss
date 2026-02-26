@@ -1,11 +1,4 @@
 // @import "../../styles/slotui-presets.scss";
 @use "../../styles/slotui-mixins.scss";
 
-.breadCrumb {
-    ul {
-        display: flex;
-
-        .bread {
-        }
-    }
-}
+// Only keep mixins and variables, remove legacy selectors. All layout is now handled by Tailwind utilities.

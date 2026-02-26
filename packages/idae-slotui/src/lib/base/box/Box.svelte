@@ -40,7 +40,10 @@ export interface BoxProps extends CommonProps {
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
 	import Content from '$lib/utils/content/Content.svelte';
+	import { createEventDispatcher } from 'svelte';  
 
+ 
+ 
 	/** box actions */
 	export const actions = {
 		open,
@@ -104,6 +107,24 @@ export interface BoxProps extends CommonProps {
 	</Content>
 {/if}
 
-<style global lang="scss">
-	@use './box.scss';
-</style>
+
+
+<!-- <Slotted child={boxBottomZone}>
+  <slot name="boxBottomZone" />
+</Slotted>
+
+<Slotted child={titleBarTitle}>
+  <slot name="titleBarTitle" />
+</Slotted>
+
+<Slotted child={titleBarIcon}>
+  <slot name="titleBarIcon" />
+</Slotted> -->
+
+
+ 
+
+<style global lang="postcss">
+		@reference "tailwindcss"
+		@import './box.css';
+	</style>

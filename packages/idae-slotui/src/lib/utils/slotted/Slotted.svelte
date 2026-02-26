@@ -10,6 +10,11 @@
 	let { child, children, slotArgs = $bindable({}) }: SlottedProps = $props();
 </script>
 
+<style lang="postcss">
+	@reference "tailwindcss"
+	/* Add any necessary styles here */
+</style>
+
 {#if child !== undefined}
 	{#key slotArgs}
 		{@render child(slotArgs)}

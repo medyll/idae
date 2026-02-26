@@ -1,41 +1,17 @@
 {
 	"compilerOptions": {
 		"paths": {
-			"$stores": [
-				"../src/stores"
+			"$lib": [
+				"../src/lib"
 			],
-			"$stores/*": [
-				"../src/stores/*"
-			],
-			"$utils": [
-				"../src/utils"
-			],
-			"$utils/*": [
-				"../src/utils/*"
-			],
-			"$styles": [
-				"../src/styles"
-			],
-			"$styles/*": [
-				"../src/styles/*"
+			"$lib/*": [
+				"../src/lib/*"
 			],
 			"$sitedata": [
 				"../src/sitedata"
 			],
 			"$sitedata/*": [
 				"../src/sitedata/*"
-			],
-			"$slotuiDefs": [
-				"../src/sitedata/slotuiDefs"
-			],
-			"$slotuiDefs/*": [
-				"../src/sitedata/slotuiDefs/*"
-			],
-			"$lib": [
-				"../src/lib"
-			],
-			"$lib/*": [
-				"../src/lib/*"
 			],
 			"$app/types": [
 				"./types/index.d.ts"
@@ -66,6 +42,9 @@
 		"../src/**/*.js",
 		"../src/**/*.ts",
 		"../src/**/*.svelte",
+		"../test/**/*.js",
+		"../test/**/*.ts",
+		"../test/**/*.svelte",
 		"../tests/**/*.js",
 		"../tests/**/*.ts",
 		"../tests/**/*.svelte"

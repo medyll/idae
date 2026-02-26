@@ -6,8 +6,8 @@
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import DemoerCode from '$lib/base/demoer/DemoerCode.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import Button from '../../controls/button/Button.svelte';
@@ -41,14 +41,14 @@
 					{/snippet}
 					{#snippet loginForm()}
 						<form
-							class="h-full w-full flex-v flex-align-middle-center"
+							class="h-full w-full flex flex-col flex-align-middle-center"
 							method="post"
 							on:submit|preventDefault={validate}
 						>
-							<div class="pad-2">
+							<div class="p-2">
 								<input name="email" type="text" value="..." />
 							</div>
-							<div class="pad-2">
+							<div class="p-2">
 								<input name="password" type="password" />
 							</div>
 							<Button type="submit" width="medium" value="login" loading={false}>Login</Button>
@@ -58,7 +58,7 @@
 			{/snippet}
 		</Demoer>
 	</DemoPage>
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoerCode title="myContext" code={codeSlot}></DemoerCode>
 	</div>
 </ComponentDemo>

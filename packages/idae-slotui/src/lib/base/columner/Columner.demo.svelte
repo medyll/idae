@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Column from './Column.svelte';
+	import Column from './ColumnerCol.svelte';
 	import Columner from './Columner.svelte';
 </script>
 

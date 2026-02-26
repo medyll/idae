@@ -15,16 +15,16 @@ export type RatingProps = {
 	scoredIcon?: string;
 	/** Orientation: 'horizontal' or 'vertical' */
 	orientation?: 'horizontal' | 'vertical';
-	/** Snippet for the scored icon */
-	ratingScoredIcon?: Snippet;
-	/** Slot for children content (default icon) */
-	children?: any;
 	/** Additional class for the root element */
 	class?: string;
 	/** Inline style for the root element */
 	style?: string;
 	/** Reference to the root element */
 	element?: HTMLElement;
+	/** Slot for children content (default icon) */
+	children?: Snippet;
+	/** Snippet for the scored icon */
+	ratingScoredIcon?: Snippet;
 };
 </script>
 
@@ -69,6 +69,6 @@ const title = `${scored} / ${ratingBase}`;
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './rating.scss';
+<style global lang="postcss">
+  @import './rating.css';
 </style>

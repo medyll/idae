@@ -1,5 +1,75 @@
 # Changelog
 
+## [0.0.33-next.0] - 2026-02-23
+**Features:**
+- add CSS files for various components with custom properties for styling
+- add initial CSS files for various components with custom properties for styling
+- update migration documentation and theme variables for improved clarity and structure
+
+
+
+## [0.0.32-next.0] - 2026-02-23
+**Features:**
+- enhance idae-idbql documentation with modular references and examples
+- update migration documentation with tracking table and Tailwind CSS v4 setup instructions
+- add dark mode strategies documentation and setup instructions for Tailwind v4
+
+
+
+## [0.0.31-next.0] - 2026-02-23
+**Features:**
+- add skill to retrieve idae-idbql README documentation via CLI
+
+
+
+## [0.0.30-next.0] - 2026-02-23
+**Chores:**
+- update VSCode settings and improve accordion component styles; add skill creation guide
+
+
+
+## [0.0.29-next.0] - 2026-02-21
+**Bug Fixes:**
+- ensure deterministic ordering of fileInfoList in MakeLibIndex
+
+**Other:**
+- Refactor exports in index.ts for improved organization and clarity
+
+
+
+## [0.0.28-next.0] - 2026-02-21
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+
+**Chores:**
+- publish packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Reorder exports in index.ts for consistency and clarity
+
+
+
+## [0.0.27-next.0] - 2026-02-21
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+
+
+
+## [0.0.26-next.0] - 2026-02-21
+**Bug Fixes:**
+- adjust script placement for cssDom component registration
+
+
+
+## [0.0.25-next.0] - 2026-02-21
+**Bug Fixes:**
+- lazy-init idbqlEvent to avoid  crash in non-Svelte environments
+
+
+
 ## [0.0.24-next.0] - 2026-02-21
 **Features:**
 - implement desktop layout and update test page structure with improved slot handling

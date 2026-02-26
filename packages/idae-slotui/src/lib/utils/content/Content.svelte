@@ -75,7 +75,8 @@
 	{@render children?.()}
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
+	@reference "tailwindcss"
 	@use '../../styles/slotui-mixins.scss';
 
 	.content {

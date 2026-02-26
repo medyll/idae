@@ -83,6 +83,7 @@ export type ToggleBarProps = CommonProps & {
 	</div>
 </div>
 
-<style lang="scss">
-	@use './toggle-bar.scss';
+<style global lang="postcss">
+  @reference "tailwindcss"
+    @import './toggle-bar.css';
 </style>

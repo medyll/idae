@@ -6,6 +6,10 @@
 		$props();
 </script>
 
+<style global lang="postcss">
+  @import './list.css';
+</style>
+
 <MenuList
 	{...rest}
 	bind:element

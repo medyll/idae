@@ -18,7 +18,7 @@
 	 
 </script>
 
-<div class="flex-main pad-4 overflow-auto">
+<div class="flex-main p-4 overflow-auto">
 	<div class="gridDemo">
 		{#each spliceArray(Object.values(slotuiCatalog), 3) as spliced}
 			<div>

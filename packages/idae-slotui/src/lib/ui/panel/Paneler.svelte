@@ -60,6 +60,7 @@
 	{@render children?.()}
 </div>
 
-<style global lang="scss">
+<style global lang="postcss">
+	@reference "tailwindcss"
 	@use '../../styles/slotui-mixins.scss';
 </style>

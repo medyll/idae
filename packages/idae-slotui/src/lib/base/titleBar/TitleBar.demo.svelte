@@ -2,14 +2,14 @@
 	import { titleBarDemoValues } from './types.js';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 	import TitleBar from './TitleBar.svelte';
 	let parameters = titleBarDemoValues;
 	let componentArgs = defaultsArgs(parameters);
 
 	let code = `
-    <TitleBar {...activeParams} class="marg-tb-1">
+    <TitleBar {...activeParams} class="m-tb-1">
         {#snippet titleBarIcon()}
             <Icon fontSize="small" icon="circle" />
         {/snippet}

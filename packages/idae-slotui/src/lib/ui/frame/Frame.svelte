@@ -87,6 +87,6 @@
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './frame.scss';
+<style global lang="postcss">
+	@import './frame.css';
 </style>

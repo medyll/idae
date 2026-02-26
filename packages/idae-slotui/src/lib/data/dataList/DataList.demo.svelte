@@ -6,10 +6,10 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import type { DataCellType } from './types.js';
 	import type { DataListProps } from './DataList.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 
 	import { parameters, componentArgs } from './types.js';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 
 	let data = [...Array(50)].map((caches, index: number) => {
 		return {
@@ -51,7 +51,7 @@
 is a datalist table <br /> B. Franklin, 1854"
 >
 	<DemoPage title="red">
-		<div class="flex-v gap-medium">
+		<div class="flex flex-col gap-2">
 			<h5>Automatique datalist, without columns definitions</h5>
 			<div class="what pos-rel pad">
 				<Demoer {parameters} {componentArgs}>
@@ -149,7 +149,7 @@ is a datalist table <br /> B. Franklin, 1854"
 	</DemoPage>
 </ComponentDemo>
 
-<style lang="scss">
+<style lang="postcss">
 	.what {
 		background-color: var(--sld-color-background);
 		color: var(--sld-color-foreground);

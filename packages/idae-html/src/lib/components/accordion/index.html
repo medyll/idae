@@ -1,12 +1,42 @@
 <style>
-    .accordion-root{padding:var(--gutter-md);font-size:var(--font-md);color:var(--color-foreground)}
-    .accordion{width:100%;max-width:640px;margin:var(--gutter-sm) 0}
-    .accordion-item{border:1px solid var(--color-border);margin-bottom:6px;background:var(--color-card);color:var(--color-card-foreground)}
-    .accordion-header{background:var(--color-secondary);padding:var(--gutter-sm);cursor:pointer;border:0;width:100%;text-align:left}
-    .accordion-content{display:none;padding:var(--gutter-sm);background:var(--color-card)}
-    .accordion-content[aria-hidden="false"]{display:block}
-</style>
+    .accordion-root {
+        padding: var(--gutter-md);
+        font-size: var(--font-md);
+        color: var(--color-foreground)
+    }
 
+    .accordion {
+        width: 100%;
+        max-width: 640px;
+        margin: var(--gutter-sm) 0
+    }
+
+    .accordion-item {
+        border: 1px solid var(--color-border);
+        margin-bottom: 6px;
+        background: var(--color-card);
+        color: var(--color-card-foreground)
+    }
+
+    .accordion-header {
+        background: var(--color-secondary);
+        padding: var(--gutter-sm);
+        cursor: pointer;
+        border: 0;
+        width: 100%;
+        text-align: left
+    }
+
+    .accordion-content {
+        display: none;
+        padding: var(--gutter-sm);
+        background: var(--color-card)
+    }
+
+    .accordion-content[aria-hidden="false"] {
+        display: block
+    }
+</style>
 
 <div data-component="accordion" class="accordion accordion-root">
     <div class="accordion-item">
@@ -42,7 +72,7 @@
 
             const handlers: Function[] = [];
 
-            function makeToggle(header: HTMLElement){
+            function makeToggle(header: HTMLElement) {
                 return () => {
                     const content = header.nextElementSibling as HTMLElement | null;
                     if (!content) return;
@@ -52,7 +82,7 @@
                 };
             }
 
-            headers.forEach((h)=>{
+            headers.forEach((h) => {
                 const fn = makeToggle(h);
                 handlers.push(fn);
                 be(h).on('click', fn);
@@ -60,7 +90,7 @@
 
             // return cleanup per SPECS
             return () => {
-                headers.forEach((h, i)=>{ try{ be(h).off('click', handlers[i]); }catch(e){} });
+                headers.forEach((h, i) => { try { be(h).off('click', handlers[i]); } catch (e) { } });
             };
         },
         on: {},

@@ -33,7 +33,7 @@
         {JSON.stringify(toContainerQuery('hideMaxWidth', '115px'), undefined, ' ')}
     </pre>
 {/if} 
-<style lang="scss">
+	<style lang="postcss">
 #breakpoints {
 	position:fixed;
 	top:0;

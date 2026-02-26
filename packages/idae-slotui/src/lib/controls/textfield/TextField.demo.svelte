@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 
 	import TextField from '$lib/controls/textfield/TextField.svelte';
@@ -38,22 +38,22 @@
 </script>
 
 <ComponentDemo component="TextField">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="TextField" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h flex-align-middle flex-wrap">
-						<div class="pad-1">
+						<div class="p-1">
 							<TextField {...activeParams}>
 								{#snippet inputFirst()}
 									<Icon icon="close" />
 								{/snippet}
 							</TextField>
 						</div>
-						<div class="pad-1">
+						<div class="p-1">
 							<TextField {...activeParams} />
 						</div>
-						<div class="pad-1">
+						<div class="p-1">
 							<TextField {...activeParams}>
 								{#snippet inputLast()}
 									<Icon icon="close" />
@@ -68,7 +68,7 @@
 			<Demoer parameters={parametersProps} {componentArgs}>
 				{#snippet children({ activeParams })}
 					<div class="pad flex-h">
-						<div class="pad-1">
+						<div class="p-1">
 							<TextField {...activeParams} />
 						</div>
 					</div>

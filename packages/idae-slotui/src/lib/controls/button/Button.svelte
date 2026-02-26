@@ -62,21 +62,6 @@ export type ButtonProps = {
 	buttonLoadingIcon?: Snippet;
 };
 
-/**
- * Props for ButtonMenu, extending ButtonProps with menu and popper support.
- */
-export type ButtonMenuProps<T> = ButtonProps & {
-	/** Props for the menu list */
-	menuProps?: MenuListProps<T>;
-	/** Props for the popper */
-	popperProps?: PopperProps;
-	/** Reference to the popper element */
-	popperElement?: HTMLElement;
-	/** Slot for menu item rendering */
-	menuItem?: Snippet<[{ item: T }]>;
-	/** Disabled state for the menu button */
-	disabled?: boolean;
-};
 </script>
 
 <script lang="ts">
@@ -171,6 +156,6 @@ let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(un
 	{/if}
 </button>
 
-<style global lang="scss">
-	@use './button.scss';
+<style global lang="postcss">
+  @import './button.css';
 </style>

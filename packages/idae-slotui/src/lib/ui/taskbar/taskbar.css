@@ -1,0 +1,27 @@
+
+:root {
+    --taskbar-grid-gap: var(--sld-gap-tiny);
+    --taskbar-background-color: rgba(255, 255, 255, 0.5);
+    --taskbar-backdrop-filter: blur(20px);
+    --taskbar-min-height: 48px;
+    --taskbar-border-bottom: rgba(255, 255, 255, 0.2);
+    --taskbar-box-shadow: var(--sld-elevation-3);
+}
+
+.taskbar {
+    display: flex;
+    align-items: center;
+    grid-gap: var(--taskbar-grid-gap);
+    background-size: auto;
+    background-color: var(--taskbar-background-color);
+    --moz-backdrop-filter: var(--taskbar-backdrop-filter);
+    backdrop-filter: var(--taskbar-backdrop-filter);
+    min-height: var(--taskbar-min-height);
+    border-bottom: 1px solid var(--taskbar-border-bottom);
+    box-shadow: var(--taskbar-box-shadow);
+    box-sizing: border-box;
+
+    &-main {
+        flex: 1;
+    }
+}

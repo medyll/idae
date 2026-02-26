@@ -12,26 +12,15 @@ interface EventData<T = any> {
   data: T;
   keyPath: string;
 }
-class IdbqlStateEvent {
-  // main application shared state
+class IdbqlStateEventBase {
+  // main application shared state (fallback non-Svelte)
   dataState: Record<string, any[]>;
   private _adapter: {
     applyEvent?: (event: IdbqlEventPayload) => void;
   } | null = null;
 
   constructor() {
-    // Initialize dataState with Svelte runes when available, otherwise use plain object
-    // `typeof $state` is safe even if `$state` is not defined in this environment.
-    // In Svelte compile context `$state` exists and returns a reactive store proxy.
-    if (typeof $state !== "undefined") {
-      // use the Svelte rune to create reactive state
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.dataState = $state<Record<string, any[]>>({});
-    } else {
-      // fallback for non-Svelte environments: plain object
-      this.dataState = {} as Record<string, any[]>;
-    }
+    this.dataState = {} as Record<string, any[]>;
   }
 
   registerAdapter(adapter: { applyEvent?: (event: IdbqlEventPayload) => void } | null) {
@@ -186,11 +175,28 @@ class IdbqlStateEvent {
   }
 }
 
-export function createIdbqlEvent() {
-  return new IdbqlStateEvent();
+// Svelte-specific subclass uses the `$state` rune as a class field initializer.
+// Instantiating this subclass in a non-Svelte environment will throw; callers
+// should use `createIdbqlEvent()` which falls back to the base implementation.
+class IdbqlStateEvent extends IdbqlStateEventBase {
+  // main application shared state - Svelte rune (only valid in Svelte contexts)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  dataState = $state<Record<string, any[]>>({});
 }
 
-let _idbqlEventSingleton: IdbqlStateEvent | null = null;
+export function createIdbqlEvent() {
+  try {
+    // Try to instantiate the Svelte-aware subclass. In non-Svelte
+    // environments this will throw (because `$state` is not defined),
+    // so we fallback to the base implementation.
+    return new IdbqlStateEvent();
+  } catch (e) {
+    return new IdbqlStateEventBase();
+  }
+}
+
+let _idbqlEventSingleton: IdbqlStateEventBase | IdbqlStateEvent | null = null;
 
 export function getIdbqlEvent() {
   if (!_idbqlEventSingleton) {

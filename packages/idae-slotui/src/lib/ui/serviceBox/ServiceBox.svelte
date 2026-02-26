@@ -1,6 +1,6 @@
 <script lang="ts">
-	import IconButton from '$lib/controls/button/IconButton.svelte';
-	import ButtonMenu from '$lib/controls/button/ButtonAction.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
+	import ButtonMenu from '$lib/controls/buttonAction/ButtonAction.svelte';
 	import Debug from '$lib/base/debug/Debug.svelte';
 
 	const onclose = function () {
@@ -21,30 +21,4 @@
 	</div>
 </div>
 
-<style global lang="scss">
-	@use '../../styles/slotui-mixins.scss';
-	.gridIconBis {
-		width: 100%;
-		display: grid;
-		grid-gap: 8px;
-		grid-template-columns: repeat(auto-fill, minmax(30%, auto));
-	}
-
-	.service-box {
-		width: 360px;
-		height: 360px;
-		display: flex;
-		flex-direction: column;
-
-		&-main {
-			flex: 1;
-			padding: var(--sld-pad-large);
-		}
-
-		&-buttons {
-			display: flex;
-			justify-content: flex-end;
-			padding: var(--sld-pad-med);
-		}
-	}
-</style>
+ 

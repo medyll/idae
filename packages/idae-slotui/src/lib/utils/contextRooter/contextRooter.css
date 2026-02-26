@@ -1,0 +1,14 @@
+:root {
+    --contextrooter-radius: var(--sld-radius-medium);
+    --contextrooter-bg: var(--sld-color-background);
+    --contextrooter-border: var(--sld-color-border);
+    --contextrooter-padding: 1rem;
+}
+
+.context-rooter {
+    border-radius: var(--contextrooter-radius);
+    background: var(--contextrooter-bg);
+    border: 1px solid var(--contextrooter-border);
+    padding: var(--contextrooter-padding);
+    font-size: 1em;
+}

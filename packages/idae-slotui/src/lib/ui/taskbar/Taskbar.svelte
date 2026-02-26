@@ -40,6 +40,7 @@ export type TaskbarProps = CommonProps & {
 	<Slotted child={taskBarRight} />
 </div>
 
-<style lang="scss">
-	@use './taskbar.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './taskbar.css';
 </style>

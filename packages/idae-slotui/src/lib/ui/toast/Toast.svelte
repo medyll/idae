@@ -92,7 +92,7 @@ export type ToastType = {
 	<Slotted child={children} />
 </Box>
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
+<style lang="postcss">
+	@reference "tailwindcss"
+	@import './toast.css';
 </style>

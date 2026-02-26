@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { chipperDemoValues, type ChipperProps } from './types.js';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import Chipper from './Chipper.svelte';
@@ -10,7 +10,7 @@
 
 	let codeSlot = `
 <Chipper >
-	<div class="pad-2">some content</div>
+	<div class="p-2">some content</div>
 	{#snippet chipperChip()}
 		<div class="theme-bg-primary radius-small w-full h-full"></div>
 	{/snippet}
@@ -27,7 +27,7 @@
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
 				<Chipper {...activeParams}>
-					<div class="pad-2">some content</div>
+					<div class="p-2">some content</div>
 					{#snippet chipperChip()}
 						<div class="theme-bg-primary radius-small w-full h-full"></div>
 					{/snippet}

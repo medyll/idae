@@ -141,3 +141,7 @@ export type SorterProps = {
 		}}
 	></Slotted>
 </div>
+
+<style global lang="postcss">
+  @import './sorter.css';
+</style>

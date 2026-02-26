@@ -70,7 +70,6 @@ let hiddenRef: HTMLInputElement;
 </label>
 ..
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use './switch.scss';
+<style global lang="postcss">
+  @import './switch.css';
 </style>

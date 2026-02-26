@@ -1,13 +1,9 @@
 <script lang="ts">
-	/* import Prism from 'prismjs'; */
-	// fabric default vars
-	import '@medyll/cssfabric/src/lib/styles/vars.min.css';
-	// fabric default
-	import '@medyll/cssfabric/src/lib/styles/cssfabric.min.css';
-	// import cssfabric themer
-	import '../styles/cssfabric-theme.scss';
+	/* import Prism from 'prismjs'; */ 
+	// import cssfabric themer 
 	import '../styles/main.css';
-	// import '$lib/_css/slotui-vars.css';
+	import '../styles/slotui-theme.css';
+	import '../styles/theme.css';
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import ThemeSwitcher from '$lib/ui/themeswitcher/ThemeSwitcher.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
@@ -24,7 +20,7 @@
 	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	import Looper from '$lib/utils/looper/Looper.svelte';
 	import { stator } from '$lib/utils/engine/stator.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	import SlotuiSheet from '$lib/styles/slotuisheet/SlotuiSheet.svelte';
 
 	import { cssDom } from '@medyll/idae-dom-events';
@@ -135,10 +131,10 @@
 			</Looper>
 		</MenuList>
 	</Drawer>
-	<div id="contentSlide" class="flex-v" bind:this={contentSlide}>
+	<div id="contentSlide" class="flex flex-col" bind:this={contentSlide}>
 		<nav
 			bind:this={navElement}
-			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-medium"
+			class="nav flex-h pos-sticky pad flex-align-middle gap-small zI-10 w-full gap-2"
 		>
 			<IconButton onclick={onDrawerClick} icon="mdi:menu" />
 			<h3><a href="/">svelte-slotted</a></h3>

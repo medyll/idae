@@ -3,6 +3,7 @@ import type { Snippet } from 'svelte';
 import Divider from '$lib/base/divider/Divider.svelte';
 import { fade } from 'svelte/transition';
 import Slotted from '$lib/utils/slotted/Slotted.svelte';
+import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 /**
  * @description:  Represents an alert message with customizable level, message, and slot support.
  * @property {string} [class] - Class name for the alert root element, allowing custom styling.
@@ -132,41 +133,39 @@ export type AlertProps = {
 		{draggable}
 		bind:this={element}
 		transition:fade|global
-		class="alert {className}"
-	>
-		<article class="dialog-content border-color-scheme-{level}">
-			<header class="header-bar">
-				<div class="dot bg-themed-scheme-{level}"></div>
-				<div class="title">
+		class="alert {className} rounded border shadow-lg bg-[var(--alert-color-background)] border-[var(--alert-color-border)] min-w-[350px] p-0 inline-block relative overflow-hidden">
+		<article class="dialog-content border-b-4 border-[var(--alert-color-border)] p-[var(--alert-pad)]">
+			<header class="header-bar flex items-center gap-[var(--alert-gap-small,1rem)] p-[var(--alert-p-small)]">
+				<div class="dot bg-themed-scheme-{level} border border-[var(--alert-color-border)] rounded h-4 w-1"></div>
+				<div class="title flex-1 flex items-center">
 					<Slotted child={children}>{message}</Slotted>
 				</div>
 				<Slotted child={alertTopButton} />
-				<div data-close>
-					<Slotted child={alertButtonClose}
-						><IconButton
+				<button data-close type="button" class="rounded m-1 p-1" onclick={() => { isOpen = !isOpen; }} aria-label="Close">
+					<Slotted child={alertButtonClose}>
+						<IconButton
 							icon="window-close"
 							variant="naked"
-							onclick={() => {
-								isOpen = !isOpen;
-							}}
-							aria-label="Close"
-						/></Slotted
-					>
-				</div>
+						/>
+					</Slotted>
+				</button>
 			</header>
 			{#if alertMessage}
 				<Divider />
 				{@render alertMessage()}
 			{/if}
 			{#if alertButtonZone}
-				<footer class="dialog-footer">
+				<footer class="dialog-footer flex justify-end p-[var(--alert-pad)] border-t border-[var(--alert-color-border)]">
 					{@render alertButtonZone()}
 				</footer>
 			{/if}
 		</article>
 	</dialog>
-{/if}
+{/if}  
+	 
+ 
 
-<style global lang="scss">
-	@use './alert.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './alert.css';
 </style>

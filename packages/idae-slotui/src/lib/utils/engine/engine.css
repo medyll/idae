@@ -1,0 +1,14 @@
+:root {
+    --engine-radius: var(--sld-radius-medium);
+    --engine-bg: var(--sld-color-background);
+    --engine-border: var(--sld-color-border);
+    --engine-padding: 1rem;
+}
+
+.engine {
+    border-radius: var(--engine-radius);
+    background: var(--engine-bg);
+    border: 1px solid var(--engine-border);
+    padding: var(--engine-padding);
+    font-size: 1em;
+}

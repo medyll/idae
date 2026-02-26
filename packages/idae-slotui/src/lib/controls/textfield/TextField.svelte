@@ -1,4 +1,3 @@
-
 <script module lang="ts">
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
@@ -144,6 +143,6 @@ export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);
 	/>
 </div>
 
-<style lang="scss">
-	@use './textfield.scss';
+<style global lang="postcss">
+  @import './textfield.css';
 </style>

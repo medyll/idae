@@ -4,8 +4,8 @@
 	/* demo */
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	/* demo */
 
 	let parametersSlot: any = {
@@ -57,7 +57,7 @@
 		openWindow("html", {
 		componentProps: { some: "props", someother: "deprops" },
 		contentHTML:
-			'<div class="pad-4 align-center">some html content</div>',
+			'<div class="p-4 align-center">some html content</div>',
 		});
 	}}>
 	Window with html content
@@ -78,11 +78,11 @@
 	component="ToolBar"
 	cite="Way more than putting tools in a bar : having them in a toolbar ! <br /> Quead Jones, 450"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="ToolBar">
 			<Demoer {multiple} parameters={parametersSlot} componentArgs={componentArgsSlot}
 				>{#snippet children({ activeParams })}
-					<div class="pad-2 h-large pos-rel">
+					<div class="p-2 h-large pos-rel">
 						<ToolBar {...activeParams}>
 							<span>item 1</span>
 							<span>item 2</span>

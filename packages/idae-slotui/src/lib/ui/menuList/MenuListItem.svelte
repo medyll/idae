@@ -85,6 +85,15 @@
 	};
 </script>
 
+<!-- @component snippet component for root: menuList -->
+<!-- <script>
+    let { children } = $props();
+</script>
+
+{#snippet menuListItem()}
+    {@render children?.()}
+{/snippet} -->
+
 {#if dividerBefore}
 	<li role="separator">
 		<Divider tall="small" expansion="centered" />
@@ -131,6 +140,7 @@
 	</li>
 {/if}
 
-<style global lang="scss">
+<style global lang="postcss">
+	@reference "tailwindcss"
 	@use './menu-list.scss';
 </style>

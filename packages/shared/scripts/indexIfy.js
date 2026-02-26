@@ -114,7 +114,17 @@ export class MakeLibIndex {
     let exportString = "// auto exports of entry components\n";
     const seen = new Set();
 
-    fileInfoList.forEach((fileInfo) => {
+    // Ensure deterministic ordering: remove falsy entries and sort by path
+    const normalizedList = (fileInfoList || [])
+      .filter(Boolean)
+      .sort((a, b) =>
+        a.path.localeCompare(b.path, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        }),
+      );
+
+    normalizedList.forEach((fileInfo) => {
       if (!fileInfo) return;
       const { file, moduleName, path: filePath } = fileInfo;
       const normalizedPath = filePath

@@ -7,8 +7,8 @@
 	/* demo */
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	/* demo */
 
 	let parametersSlot: any = {
@@ -48,7 +48,7 @@
         <PanelGrid data={[...Array(9)]} let:data>
             <div class="pad border radius-tiny">Some</div>
             {#snippet panelGridZoom()}
-				<div class="pad-4 text-center theme-bg-primary">Some large</div>
+				<div class="p-4 text-center theme-bg-primary">Some large</div>
 			{/snippet}
             Some large
             </div>
@@ -87,7 +87,7 @@
             openWindow("html", {
             componentProps: { some: "props", someother: "deprops" },
             contentHTML:
-                '<div class="pad-4 align-center">some html content</div>',
+                '<div class="p-4 align-center">some html content</div>',
             });
         }}>
         Window with html content
@@ -108,7 +108,7 @@
 	component="Panel"
 	cite="If you can slide, then there are chances you are a panel<br /> C. Quin 2013"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Panel">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
@@ -121,7 +121,7 @@
 											<div class="pad border radius-tiny">Some</div>
 										{/snippet}
 										{#snippet panelGridZoom()}
-											<div class="pad-4 text-center theme-bg-primary">Some large</div>
+											<div class="p-4 text-center theme-bg-primary">Some large</div>
 										{/snippet}
 									</PanelGrid>
 								</Panel>

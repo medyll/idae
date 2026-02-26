@@ -3,8 +3,8 @@
 	import MenuItem from './MenuListItem.svelte';
 	/* demo */
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	/* demo */
@@ -25,12 +25,12 @@
 	component="Menu"
 	cite="A menu is not a list, it's just like a list but more and less"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Popper">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<div class="flex-h flex-align-bottom gap-small">
-						<div class="pad-tiny">
+						<div class="p-tiny">
 							<MenuList {...activeParams}>
 								<MenuItem>menu item</MenuItem>
 								<MenuItem>menu item</MenuItem>

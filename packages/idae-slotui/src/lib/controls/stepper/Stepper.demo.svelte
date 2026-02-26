@@ -2,8 +2,8 @@
 	import Stepper from './Stepper.svelte';
 
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let code = `
@@ -16,7 +16,7 @@
 	component="Stepper"
 	cite="If a step was a leap it would soar over the next step.<br /> Clara Boxee 2010"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Stepper" {code}>
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}

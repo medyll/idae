@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 	import Looper from './Looper.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let code = `

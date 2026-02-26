@@ -12,7 +12,7 @@
 	import { openWindow } from '$lib/ui/window/actions.svelte.js';
 	import { setContext } from 'svelte';
 
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	import { writable } from 'svelte/store';
 	import Debug from '$lib/base/debug/Debug.svelte';
 	import { onEvent } from '$lib/utils/uses/event.js';
@@ -99,6 +99,7 @@
 	</div>
 {/if}
 
-<style lang="scss">
-	@use './boot-menu.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './boot-menu.css';
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 
 	function switchThemeMode() {
 		const themeMode = localStorage.getItem('themeMode') ?? 'light';
@@ -8,6 +8,11 @@
 		localStorage.setItem('themeMode', newThemeMode);
 	}
 </script>
+
+<style global lang="postcss">
+	@reference "tailwindcss"
+  @import './theme-switcher.css';
+</style>
 
 <IconButton
 	variant="naked"

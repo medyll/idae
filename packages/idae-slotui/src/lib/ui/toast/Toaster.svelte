@@ -10,7 +10,7 @@ called automatically
 
 <div
 	style="position:fixed;bottom:0;right:0;margin:1rem;"
-	class="flex-v gap-tiny"
+	class="flex flex-col gap-tiny"
 	{...rest}
 	data-toasterId={toasterId}
 >

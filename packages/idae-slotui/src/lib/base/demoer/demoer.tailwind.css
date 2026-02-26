@@ -3,8 +3,7 @@
   --slotui-demoer-bg: theme(colors.gray.50);
   --slotui-demoer-fg: theme(colors.gray.900);
 }
-.slotui-demoer {
-  @apply p-4 rounded border border-dashed text-sm transition-colors duration-150;
+.slotui-demoer { 
   background-color: var(--slotui-demoer-bg);
   color: var(--slotui-demoer-fg);
 }

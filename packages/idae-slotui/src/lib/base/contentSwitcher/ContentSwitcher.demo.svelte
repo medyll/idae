@@ -2,14 +2,14 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import { Demoer } from '$sitedata/slotuiComponents.js';
 	import Icon from '$lib/base/icon/Icon.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import ContentSwitcher from './ContentSwitcher.svelte';
 	import { contentSwitcherDemoValues } from './types.js';
 
 	import { parameters, componentArgs } from './types.js';
 
 	const code = `
-<ContentSwitcher {...activeParams} class="marg-tb-1">
+<ContentSwitcher {...activeParams} class="m-tb-1">
     {#snippet contentSwitcherTogglerIcon()}
         <Icon icon="mdi:tree" />
     {/snippet}
@@ -17,17 +17,17 @@
         <span>Switch</span>
     {/snippet}
     {#snippet contentSwitcherReveal()}
-        <div class="pad-2 border-t">Some <br />switched <br />content</div>
+        <div class="p-2 border-t">Some <br />switched <br />content</div>
     {/snippet}
 </ContentSwitcher>`;
 </script>
 
 <ComponentDemo component="ContentSwitcher">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="ContentSwitcher" {code}>
 			<Demoer title="A simple contentSwitcher" {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<ContentSwitcher {...activeParams} class="marg-tb-1">
+					<ContentSwitcher {...activeParams} class="m-tb-1">
 						{#snippet contentSwitcherTogglerIcon()}
 							<Icon icon="mdi:tree" />
 						{/snippet}
@@ -35,7 +35,7 @@
 							<span>Switch</span>
 						{/snippet}
 						{#snippet contentSwitcherReveal()}
-							<div class="pad-2 border-t">Some <br />switched <br />content</div>
+							<div class="p-2 border-t">Some <br />switched <br />content</div>
 						{/snippet}
 					</ContentSwitcher>
 				{/snippet}

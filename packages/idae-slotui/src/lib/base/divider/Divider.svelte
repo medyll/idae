@@ -17,13 +17,13 @@
 	let extensionClass = {
 		horizontal: {
 			full: '',
-			padded: 'marg-ii-12',
-			centered: 'marg-ii-6'
+			padded: 'm-ii-12',
+			centered: 'm-ii-6'
 		},
 		vertical: {
 			full: '',
-			padded: 'marg-ii-12',
-			centered: 'marg-ii-6'
+			padded: 'm-ii-12',
+			centered: 'm-ii-6'
 		}
 	};
 	let addStyle: string = (style as unknown as string) ?? ('' as unknown as string);
@@ -65,6 +65,6 @@
 	style={addStyle}
 />
 
-<style global lang="scss">
-	@use 'divider.scss';
+<style global lang="postcss">
+	@import './divider.css';
 </style>

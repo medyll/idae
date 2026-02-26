@@ -4,8 +4,8 @@
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
@@ -78,11 +78,11 @@
 </script>
 
 <ComponentDemo component="Select">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Select">
 			<Demoer parameters={parametersSlot} componentArgs={componentArgsSlot}>
 				{#snippet children({ activeParams })}
-					<div class="pad-2">
+					<div class="p-2">
 						<Select
 							{...activeParams}
 							value="2"

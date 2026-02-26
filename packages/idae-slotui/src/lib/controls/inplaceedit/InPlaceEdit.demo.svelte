@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import { parameters, componentArgs } from './types.js';
 
@@ -21,7 +21,7 @@
 	<DemoPage component="InPlaceEdit" code={code1}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<div class="flex-v gap-medium">
+				<div class="flex flex-col gap-2">
 					<div>
 						<InPlaceEdit {...activeParams} onSave={() => {}} />
 					</div>

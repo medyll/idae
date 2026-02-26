@@ -24,7 +24,7 @@
 	<DemoPage component="Alert" code={code1}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<div class="flex-h flex-wrap flex-align-middle gap-medium">
+				<div class="flex-h flex-wrap flex-align-middle gap-2">
 					<Alert {...activeParams}>hi !</Alert>
 					<Alert {...activeParams}>
 						Simple alert with a button
@@ -53,7 +53,7 @@
 	<DemoPage title="Using props" component="Alert" code={code2}>
 		<Demoer {parameters} {componentArgs}>
 			{#snippet children({ activeParams })}
-				<div class="flex-h flex-wrap gap-medium">
+				<div class="flex-h flex-wrap gap-2">
 					<Alert {...activeParams} />
 				</div>
 			{/snippet}

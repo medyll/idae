@@ -1,7 +1,57 @@
-@import "tailwindcss"; 
+/*
+  Normalized SlotUI mixins for Tailwind.
+  Combines existing utilities and Tailwind @layer utilities so components can @apply them.
+*/
+
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+:root {
+  --preset-width-tiny: 2rem;
+  --preset-width-mini: 4rem;
+  --preset-width-small: 8rem;
+  --preset-width-med: 12rem;
+  --preset-width-kind: 16rem;
+  --preset-width-full: 100%;
+  --preset-width-auto: auto;
+  --preset-width-default: auto;
+
+  --preset-tall-tiny: 1.5rem;
+  --preset-tall-mini: 2.5rem;
+  --preset-tall-small: 4rem;
+  --preset-tall-med: 6rem;
+  --preset-tall-kind: 8rem;
+  --preset-tall-auto: auto;
+  --preset-tall-default: auto;
+
+  --preset-gutter-tiny: 0.25rem;
+  --preset-gutter-mini: 0.5rem;
+  --preset-gutter-small: 1rem;
+  --preset-gutter-med: 2rem;
+  --preset-gutter-kind: 3rem;
+  --preset-gutter-default: 1rem;
+
+  --preset-pad-tiny: 0.25rem;
+  --preset-pad-small: 0.5rem;
+  --preset-pad-med: 1rem;
+  --preset-pad-large: 2rem;
+
+  --preset-radius-tiny: 2px;
+  --preset-radius-small: 4px;
+  --preset-radius-med: 8px;
+  --preset-radius-large: 16px;
+
+  --shadow-elevation1: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-elevation2: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-elevation3: 0 10px 20px rgba(0,0,0,0.12);
+  --shadow-elevation4: 0 15px 30px rgba(0,0,0,0.14);
+  --shadow-elevation5: 0 25px 50px rgba(0,0,0,0.16);
+}
 
 @layer utilities {
-  /* --- Width presets --- */
+  /* Width presets */
   .slotui-ui-width-tiny { width: var(--preset-width-tiny); }
   .slotui-ui-width-mini { width: var(--preset-width-mini); }
   .slotui-ui-width-small { width: var(--preset-width-small); }
@@ -11,7 +61,7 @@
   .slotui-ui-width-auto { width: var(--preset-width-auto); }
   .slotui-ui-width-default { width: var(--preset-width-default); }
 
-  /* --- Tall presets --- */
+  /* Tall presets */
   .slotui-ui-tall-tiny { min-height: var(--preset-tall-tiny); height: var(--preset-tall-tiny); }
   .slotui-ui-tall-mini { min-height: var(--preset-tall-mini); height: var(--preset-tall-mini); }
   .slotui-ui-tall-small { min-height: var(--preset-tall-small); height: var(--preset-tall-small); }
@@ -20,7 +70,7 @@
   .slotui-ui-tall-auto { min-height: var(--preset-tall-auto); height: var(--preset-tall-auto); }
   .slotui-ui-tall-default { min-height: var(--preset-tall-default); height: var(--preset-tall-default); }
 
-  /* --- Gutter presets --- */
+  /* Gutter presets */
   .slotui-ui-gutter-tiny { padding: var(--preset-gutter-tiny); gap: var(--preset-gutter-tiny); }
   .slotui-ui-gutter-mini { padding: var(--preset-gutter-mini); gap: var(--preset-gutter-mini); }
   .slotui-ui-gutter-small { padding: var(--preset-gutter-small); gap: var(--preset-gutter-small); }
@@ -28,19 +78,19 @@
   .slotui-ui-gutter-kind { padding: var(--preset-gutter-kind); gap: var(--preset-gutter-kind); }
   .slotui-ui-gutter-default { padding: var(--preset-gutter-default); gap: var(--preset-gutter-default); }
 
-  /* --- Pad presets --- */
+  /* Pad presets */
   .slotui-ui-pad-tiny { padding: var(--preset-pad-tiny); }
   .slotui-ui-pad-small { padding: var(--preset-pad-small); }
   .slotui-ui-pad-med { padding: var(--preset-pad-med); }
   .slotui-ui-pad-large { padding: var(--preset-pad-large); }
 
-  /* --- Radius presets --- */
+  /* Radius presets */
   .slotui-ui-radius-tiny { border-radius: var(--preset-radius-tiny); }
   .slotui-ui-radius-small { border-radius: var(--preset-radius-small); }
   .slotui-ui-radius-med { border-radius: var(--preset-radius-med); }
   .slotui-ui-radius-large { border-radius: var(--preset-radius-large); }
 
-  /* --- Ellipsis --- */
+  /* Ellipsis */
   .slotui-ui-ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .slotui-ui-ellipsis-line-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; }
   .slotui-ui-ellipsis-line-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; }
@@ -48,7 +98,7 @@
   .slotui-ui-ellipsis-line-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; }
   .slotui-ui-ellipsis-line-5 { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; }
 
-  /* --- Elevation --- */
+  /* Elevation */
   .slotui-elevation-0 { box-shadow: none; }
   .slotui-elevation-1 { box-shadow: var(--shadow-elevation1); }
   .slotui-elevation-2 { box-shadow: var(--shadow-elevation2); }
@@ -56,17 +106,20 @@
   .slotui-elevation-4 { box-shadow: var(--shadow-elevation4); }
   .slotui-elevation-5 { box-shadow: var(--shadow-elevation5); }
 
-  /* --- Variants --- */
+  /* Variants */
   .slotui-variant-square { aspect-ratio: 1/1 !important; height: auto; }
   .slotui-variant-rounded { border-radius: 50%; }
 
-  /* --- Data states --- */
+  /* Data states */
   .slotui-data-hover:hover { border-color: var(--sld-hover-border-color); background-color: var(--sld-background-disabled); }
   .slotui-data-selected.selected,
   .slotui-data-selected[aria-selected="true"] { background-color: var(--sld-selected-background-color, var(--sld-color-background-darken-mid)); box-shadow: var(--sld-selected-shadow); }
 
-  /* --- Flex utilities --- */
+  /* Flex utilities */
   .slotui-flex-row { display: flex; flex-direction: row; align-items: flex-start; }
   .slotui-flex-col { display: flex; flex-direction: column; align-items: flex-start; }
   .slotui-flex-main { flex: 1 1 0; }
-} 
+
+  /* Transition and misc */
+  .slotui-transition { transition: var(--slotui-transition, all 0.2s cubic-bezier(0.4,0,0.2,1)); }
+}

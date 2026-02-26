@@ -82,11 +82,14 @@ export type InPlaceEditProps = {
 	let popper;
 </script>
 
-
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './inplaceedit.css';
+</style>
 
 <div class="border pos-rel">
 	<dialog id={popperId} open={editing} popover="auto" class="popper" bind:this={popper}>
-		<div class="flex gap-4 pad-1" style="gap:4px">
+		<div class="flex gap-4 p-1" style="gap:4px">
 			<TextField
 				bind:element={inputElement}
 				bind:value={inputValue}

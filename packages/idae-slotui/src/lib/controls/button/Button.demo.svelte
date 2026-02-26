@@ -2,13 +2,13 @@
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
 	import MenuListItem from '$lib/ui/menuList/MenuListItem.svelte';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Button from './Button.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
-	import ButtonAction from './ButtonAction.svelte';
-	import ButtonMenu from './ButtonMenu.svelte';
+	import ButtonAction from '../buttonAction/ButtonAction.svelte';
+	import ButtonMenu from '../buttonMenu/ButtonMenu.svelte';
 
 	import { parameters, componentArgs } from './types.js'; // keep for now if needed for demo values
 	// Types are now in Button.svelte, update type imports if needed
@@ -65,7 +65,7 @@
 <ButtonAction
 	>test et essai
 	{#snippet popperContent()}
-		<div class="pad-4">content</div>
+		<div class="p-4">content</div>
 	{/snippet}
 </ButtonAction>
 <ButtonMenu
@@ -98,7 +98,7 @@
 	component="Button"
 	cite="There were a place where we used to click. You've called it a button, and we clicked yes.<br /> R. Falgt, 1354"
 >
-	<div class="flex-v gap-medium">
+	<div class="flex flex-col gap-2">
 		<DemoPage {code} component="Button">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

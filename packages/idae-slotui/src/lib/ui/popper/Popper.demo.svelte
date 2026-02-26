@@ -4,8 +4,8 @@
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
 
@@ -36,7 +36,7 @@
 			popper
 		</Button>
 	{/snippet}
-	<div class="pad-4">Popper content</div>
+	<div class="p-4">Popper content</div>
 </Popper>`;
 
 	let codeProps = `
@@ -57,7 +57,7 @@
 </script>
 
 <ComponentDemo component="Popper" cite="This Popper is the base of all the flyout stuff: it pops">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Popper">
 			<Demoer componentArgs={componentArgsSlot} parameters={parametersSlot}>
 				{#snippet children({ activeParams })}
@@ -67,7 +67,7 @@
 							position="BC"
 							anchor="popper"
 							{...activeParams}
-							class="w-large marg-t-1"
+							class="w-large m-t-1"
 						>
 							{#snippet popperHolder()}
 								<Button
@@ -79,7 +79,7 @@
 									popper
 								</Button>
 							{/snippet}
-							<div class="pad-4">Popper content</div>
+							<div class="p-4">Popper content</div>
 							{#snippet popperRight()}
 								cdscdscd
 							{/snippet}

@@ -90,9 +90,9 @@ export const actions = {
 			on:submit|preventDefault={validate}
 		>
 			<div transition:fade|global class="pos-rel h-full w-full flex-h flex-align-middle-center">
-				<div class="form flex-v flex-align-middle-center">
+				<div class="form flex flex-col flex-align-middle-center">
 					<Slotted child={loginAvatarRoot}>
-						<div class="avatarHolder marg-b-2">
+						<div class="avatarHolder m-b-2">
 							<div class="avatar flex-h flex-align-middle-center">
 								{#if submitting}
 									<Icon rotate iconSize="large" icon="loading" />
@@ -103,10 +103,10 @@ export const actions = {
 						</div>
 					</Slotted>
 					<Slotted child={loginForm}>
-						<div class="pad-2">
+						<div class="p-2">
 							<input class="input" name="email" type="text" />
 						</div>
-						<div class="pad-2">
+						<div class="p-2">
 							<input name="password" type="password" />
 						</div>
 						<Button type="submit" value="login" loading={submitting}>
@@ -115,7 +115,7 @@ export const actions = {
 							Login
 						</Button>
 						{#if grantedError}
-							<div class="pad-1 color-scheme-error">Please verify your input</div>
+							<div class="p-1 color-scheme-error">Please verify your input</div>
 						{/if}
 					</Slotted>
 					{#if slotRetrievePassword}
@@ -131,43 +131,6 @@ export const actions = {
 	{@render children?.()}
 {/if}
 
-<style global lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-	form {
-		z-index: 1000;
-	}
-	.retrieve {
-		padding: var(--sld-pad-med);
-	}
-	.form {
-		height: 33% !important;
-		width: 20%;
-
-		.avatarHolder {
-			width: 50%;
-			padding-bottom: 50%;
-			position: relative;
-
-			.avatar {
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				width: 100%;
-				height: 100%;
-				border-radius: 50%;
-				border: 1px solid var(--sld-color-foreground-alpha-mid);
-				box-shadow: 0 0 5px 1px rgba(32, 123, 21, 0.3);
-				background-color: var(--sld-color-background-alpha-mid);
-			}
-		}
-
-		.name {
-			text-align: center;
-			margin: 0.5rem;
-		}
-
-		.input {
-		}
-	}
+<style global lang="postcss">
+  @import './login.css';
 </style>

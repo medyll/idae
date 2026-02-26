@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
 	import { defaultsArgs } from '$lib/base/demoer/demoer.utils.js';
 	import Paper from './Paper.svelte';
 	import { paperDemoValues, type PaperProps } from './type.js';
@@ -19,7 +19,7 @@
 	component="Paper"
 	cite="What is separating before from after is not a time nor a place : it's only a component <br /> B. Franklin, 1854"
 >
-	<div class=" flex-v gap-small">
+	<div class=" flex flex-col gap-small">
 		<DemoPage component="Paper" {code}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

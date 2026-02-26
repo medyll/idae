@@ -3,8 +3,7 @@
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Login from '$lib/ui/login/Login.svelte';
 	import Taskbar from '$lib/ui/taskbar/Taskbar.svelte';
-
-	import { link, push } from 'svelte-spa-router';
+ 
 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import TopBar from '$lib/ui//toggleBar/ToggleBar.svelte';
@@ -17,7 +16,7 @@
 	let { children, ...rest } = $props();
 
 	function signOut() {
-		push('/#login');
+		 
 	}
 </script>
 
@@ -27,15 +26,19 @@
 		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" /> 
 	{/key}
 </svelte:head>
-red
+
+<style global lang="postcss">
+  @import './BootStrApp.css';
+</style>
+
 <Login showLogin={false}>
-	<div class="h-full overflow-hidden flex-v">
+	<div class="h-full overflow-hidden flex flex-col">
 		<Taskbar>
 			{#snippet taskBarLeft()}
-				<box class="pad-1">
+				<box class="p-1">
 					<h5>slotui</h5>
 				</box>
-				<a href="/tooling" use:link>link </a>
+				<a href="/tooling" >link </a>
 			{/snippet}
 			<ChromeFrameButtonList />
 			{#snippet taskBarRight()}<button onclick={signOut}>signOut</button>{/snippet}
@@ -66,13 +69,13 @@ red
 			{#snippet drawerTop()}
 				<TopBar title="Drawer with menu bar ">
 					{#snippet menuBarSwitcher()}
-						<div class="pad-1">
+						<div class="p-1">
 							<input placeholder="Search in Bar" style="width:100%;" type="text" />
 						</div>
 					{/snippet}
 				</TopBar>
 			{/snippet}
-			<div class="pad-2">
+			<div class="p-2">
 				<MenuList onItemClick={() => {}}>
 					{#each [...Array(10)] as key, val}
 						<MenuListItem>

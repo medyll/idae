@@ -48,12 +48,6 @@ export interface ColumnType {
 	{/if}
 </div>
 
-<style lang="scss">
-	@use '../../styles/slotui-presets.scss';
-	@use '../../styles/slotui-mixins.scss';
-	.columner {
-		display: flex;
-		height: 100%;
-		position: relative;
-	}
+<style global lang="postcss">
+	@import './columner.css';
 </style>

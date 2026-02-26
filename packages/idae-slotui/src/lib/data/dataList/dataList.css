@@ -1,0 +1,27 @@
+:root {
+    --datalist-pad: var(--sld-pad-med);
+    --datalist-gap: var(--sld-gap-med);
+    --datalist-icon-color: #999;
+    --datalist-icon-color-hover: var(--sld-color-primary);
+    --datalist-divider-border: transparent;
+    --datalist-divider-border-hover: var(--sld-color-primary, red);
+    --datalist-background-color: var(--sld-color-paper-alpha-low);
+    --datalist-radius: var(--sld-radius-tiny);
+    --datalist-box-shadow: var(--sld-elevation-1);
+    --datalist-border: var(--sld-color-border);
+    --datalist-cell-border: var(--sld-color-border);
+    --datalist-cell-border-hover: var(--sld-color-primary-alpha);
+    --datalist-row-border: var(--sld-color-border);
+    --datalist-row-background-color-hover: var(--sld-color-paper);
+    --datalist-cell-color: var(--sld-color-foreground);
+    --datalist-cell-background-color-selected: var(--sld-color-primary);
+    --datalist-cell-color-selected: white;
+}
+
+.datalist {
+    border-radius: var(--datalist-radius);
+    background: var(--datalist-background-color);
+    border: 1px solid var(--datalist-border);
+    padding: var(--datalist-pad);
+    font-size: 1em;
+}

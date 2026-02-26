@@ -197,6 +197,7 @@ export type PopperProps = CommonProps & {
 
 <!-- {/if} -->
 
-<style global lang="scss">
-	@use './popper.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './popper.css';
 </style>

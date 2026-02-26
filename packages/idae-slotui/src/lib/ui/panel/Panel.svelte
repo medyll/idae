@@ -145,6 +145,7 @@ export type PanelProps<T = Data> = {
 	</div>
 </div>
 
-<style lang="scss">
-	@use './panel.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './panel.css';
 </style>

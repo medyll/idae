@@ -3,8 +3,8 @@
 
 	/* demo */
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	/* demo */
 
 	import { parameters, componentArgs } from './types.js';
@@ -18,7 +18,7 @@
 	cite="What is separating before from after is not a time nor a place : it's only a component <br /> B. Franklin,
 1854"
 >
-	<div class=" flex-v gap-small">
+	<div class=" flex flex-col gap-small">
 		<DemoPage component="Divider" code={codeSlot}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

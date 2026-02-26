@@ -2,8 +2,8 @@
 	import Grouper from './Grouper.svelte';
 
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	/* demo */
 
 	import { parameters, componentArgs } from './types.js';
@@ -19,7 +19,7 @@
 </script>
 
 <ComponentDemo component="Grouper">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Popper">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

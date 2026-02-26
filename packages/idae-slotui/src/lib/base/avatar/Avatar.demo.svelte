@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Avatar from './Avatar.svelte';
 
@@ -20,7 +20,7 @@
 	component="Avatar"
 	cite="If it's not you, then it's the other you, <br /> Emma Avatar you, 1652"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Rating" code={code1}>
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}

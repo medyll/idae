@@ -7,8 +7,8 @@
 	/* demo */
 	import { defaultsArgs, defaultsArgsFromProps } from '$lib/base/demoer/demoer.utils.js';
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import { uiPresets } from '$lib/utils/engine/presets.js';
 	/* demo */
@@ -27,7 +27,7 @@
 	{#snippet windowIcon()}
 		<Icon icon="bx:window-alt" />
 	{/snippet}
-  <div class="pad-4 align-center">
+  <div class="p-4 align-center">
   some slotted content
   </div>
 </Window>
@@ -39,7 +39,7 @@
 		openWindow("html", {
 		componentProps: { some: "props", someother: "deprops" },
 		contentHTML:
-			'<div class="pad-4 align-center">some html content</div>',
+			'<div class="p-4 align-center">some html content</div>',
 		});
 	}}>
 	Window with html content
@@ -60,16 +60,16 @@
 	component="Window"
 	cite="Claiming they were not doors, made what they are today : windows <br /> Ch XX, 1320"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage {code} component="Select">
 			<Demoer {multiple} {parameters} {componentArgs}
 				>{#snippet children({ activeParams })}
-					<div class="pad-2 h-large pos-rel">
+					<div class="p-2 h-large pos-rel">
 						<Window title="Slotted window" frameId="slotted" {...activeParams}>
 							{#snippet windowIcon()}
 								<Icon icon="bx:window-alt" />
 							{/snippet}
-							<div class="pad-4 align-center">some slotted content</div>
+							<div class="p-4 align-center">some slotted content</div>
 						</Window>
 					</div>
 				{/snippet}
@@ -78,13 +78,13 @@
 		<DemoPage code={codeProps} component="Select" title="Using props">
 			<Demoer {parameters} {componentArgs}>
 				{#snippet children({ activeParams })}
-					<div class="flex-h flex-align-middle pos-rel gap-medium">
+					<div class="flex-h flex-align-middle pos-rel gap-2">
 						<div>
 							<Button
 								onclick={() => {
 									openWindow('html', {
 										componentProps: { some: 'props', someother: 'deprops' },
-										contentHTML: '<div class="pad-4 align-center">some html content</div>'
+										contentHTML: '<div class="p-4 align-center">some html content</div>'
 									});
 								}}
 							>

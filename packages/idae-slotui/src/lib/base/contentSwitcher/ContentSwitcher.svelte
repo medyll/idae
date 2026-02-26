@@ -25,7 +25,7 @@ export type ContentSwitcherProps = CommonProps & {
 };
 </script>
 <script lang="ts">
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	import Button from '$lib/controls/button/Button.svelte';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
@@ -85,6 +85,6 @@ export type ContentSwitcherProps = CommonProps & {
 	</div>
 </div>
 
-<style global lang="scss">
-	@use './content-switcher.scss';
+<style global lang="postcss">
+	@import './contentSwitcher.css';
 </style>

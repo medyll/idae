@@ -2,6 +2,11 @@
 	import Looper from '../looper/Looper.svelte';
 </script>
 
+<style global lang="postcss">
+	@import './css.css';
+	@reference "tailwindcss"
+</style>
+
 {#snippet cssBlock(color)}
 	<div>
 		<div class="flex-h gap-small">
@@ -51,14 +56,8 @@ discrete, success, info, warning, alert, error
 	</Looper>
 </div>
 elevation 1/5
-<Looper naked={false} class="flex-v gap-small" data={[1, 2, 3, 4, 5]}>
+<Looper naked={false} class="flex flex-col gap-small" data={[1, 2, 3, 4, 5]}>
 	{#snippet children(item)}
 		{@render cssElevation(item)}
 	{/snippet}
 </Looper>
-
-<style>
-	div {
-		padding: 1rem;
-	}
-</style>

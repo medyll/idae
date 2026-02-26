@@ -11,8 +11,10 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { VERSION } from "svelte/compiler";
 import lib from "sveld";
 
+ 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = "."; //dirname(__filename);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 console.log({ __dirname });
 
@@ -58,10 +60,17 @@ async function slotUiCatalogB() {
     .join("\n");
 
   // write file
+  const targetPath = path.join(projectRoot, "src/sitedata/slotuiCatalog.ts");
+  if (fs.existsSync(targetPath)) {
+    // console.log("slotuiCatalog.ts exists already at:", targetPath);
+  } else {
+    console.log("slotuiCatalog.ts does not exist, will create:", targetPath);
+  }
+   
   fs.writeFileSync(
-    path.join(__dirname, "src/sitedata/slotuiCatalog.ts"),
+    targetPath,
     `export const slotuiCatalog = {${indexContent}} as const`,
-  );
+  ); 
 }
 
 /**
@@ -84,13 +93,18 @@ async function slotUiDemoCatalog() {
     .filter((f) => f)
     .join("\n");
 
-  await generateDemoIndex();
-  // write file
+  const demoTargetPath = path.join(projectRoot, "src/sitedata/slotuiDemoCatalog.ts");
+  const demoIndex = await generateDemoIndex();
+  if (fs.existsSync(demoTargetPath)) { 
+  } else {
+    console.log("slotuiDemoCatalog.ts does not exist, will create:", demoTargetPath);
+  }
+  console.log("Writing slotuiDemoCatalog.ts to:", demoTargetPath);
   fs.writeFileSync(
-    path.join(__dirname, "src/sitedata/slotuiDemoCatalog.ts"),
-    `${await generateDemoIndex()};\r export const slotuiDemoCatalog = {${indexContent}} as const`,
-  );
-}
+    demoTargetPath,
+    `${demoIndex};\r export const slotuiDemoCatalog = {${indexContent}} as const`,
+  ); 
+} 
 
 // slotuiDemoComponents
 async function generateDemoIndex() {
@@ -119,15 +133,17 @@ const readFile = (fileName) => {
 };
 
 const config = {
-  sitedata: "./src/sitedata",
-  tsxFiles: "./src/sitedata/tsx",
-  slotuiDefs: "./src/sitedata/slotuiDefs",
-  libRoot: "./src",
+  sitedata: path.join(projectRoot, "src/sitedata"),
+  tsxFiles: path.join(projectRoot, "src/sitedata/tsx"),
+  slotuiDefs: path.join(projectRoot, "src/sitedata/slotuiDefs"),
+  libRoot: path.join(projectRoot, "src"),
 };
 
 function main() {
+  console.log("Creating directories:", config.slotuiDefs, config.tsxFiles);
   fs.mkdirSync(config.slotuiDefs, { recursive: true });
   fs.mkdirSync(config.tsxFiles, { recursive: true });
+  console.log("Directories created.");
 
   slotUiCatalogB();
   slotUiDemoCatalog(); 

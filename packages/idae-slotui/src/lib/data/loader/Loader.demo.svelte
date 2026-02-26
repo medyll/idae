@@ -3,8 +3,8 @@
 
 	/* demo */
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import type { LoaderProps } from './types.js';
 	/* demo */
@@ -47,7 +47,7 @@
 	phase was that of waiting.<br /> D. Pentes, 824"
 	component="Loader"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="Loading">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}

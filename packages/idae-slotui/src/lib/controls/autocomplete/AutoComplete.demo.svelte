@@ -3,8 +3,8 @@
 	import MenuItem from '$lib/ui/menu/MenuItem.svelte';
 
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
-	import Demoer from '$lib/base/demoer/Demoer.svelte';
-	import DemoPage from '$lib/base/demoer/DemoPage.svelte';
+	import Demoer from '$lib/base/demoer/DemoerContent.svelte';
+	import DemoPage from '$lib/base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	let data = [
@@ -18,7 +18,7 @@
 
 	let codeSlot = `
 <AutoComplete 
-	class="marg-b"
+	class="m-b"
 	placeholder="Search in list"
 	style="width:200px"
 	{data}>
@@ -38,20 +38,20 @@
   let:menuItemData
   {data}
   onPick={()=>{}}
-  class="marg-b"
+  class="m-b"
   placeholder="Search in list"
   style="width:200px"
   dataFieldName="name" />`;
 </script>
 
 <ComponentDemo component="AutoComplete">
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage code={codeSlot} component="AutoComplete">
 			<Demoer {componentArgs} {parameters}>
 				{#snippet children({ activeParams })}
 					<AutoComplete
 						{...activeParams}
-						class="marg-b"
+						class="m-b"
 						placeholder="Search in list"
 						style="width:200px"
 						{data}
@@ -76,7 +76,7 @@
 						{...activeParams}
 						{data}
 						onchange={() => {}}
-						class="marg-b"
+						class="m-b"
 						placeholder="Search in list"
 						style="width:200px"
 						dataFieldName="name"

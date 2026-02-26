@@ -2,8 +2,8 @@
 	import ComponentDemo from '$lib/base/demoer/DemoerComponent.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Rating from './Rating.svelte';
-	import Demoer from '../../base/demoer/Demoer.svelte';
-	import DemoPage from '../../base/demoer/DemoPage.svelte';
+	import Demoer from '../../base/demoer/DemoerContent.svelte';
+	import DemoPage from '../../base/demoer/Demoer.svelte';
 	import { parameters, componentArgs } from './types.js';
 
 	const ww = `
@@ -21,7 +21,7 @@
 	component="Rating"
 	cite="First they tell you that it's just about stars.<br/>And then you'll be starred<br/> Amal. Creed, 1824"
 >
-	<div class="flex-v gap-large">
+	<div class="flex flex-col gap-large">
 		<DemoPage component="Rating" code={ww}>
 			<Demoer {parameters} {...componentArgs}>
 				{#snippet children({ activeParams })}

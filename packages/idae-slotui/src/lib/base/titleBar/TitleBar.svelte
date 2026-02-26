@@ -25,7 +25,7 @@ export type TitleBarProps = {
 <script lang="ts">
 		import Icon from '$lib/base/icon/Icon.svelte';
 		import Button from '$lib/controls/button/Button.svelte';
-		import IconButton from '$lib/controls/button/IconButton.svelte';
+		import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 		import type { ExpandProps } from '$lib/types/index.js';
 		import Slotted from '$lib/utils/slotted/Slotted.svelte';
 		// TitleBarProps now in module script
@@ -61,6 +61,6 @@ export type TitleBarProps = {
 	{/if}
 </div>
 
-<style global lang="scss">
-	@use './title-bar.scss';
+<style global lang="postcss">
+  @import './titleBar.css';
 </style>

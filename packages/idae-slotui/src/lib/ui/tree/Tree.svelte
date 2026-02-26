@@ -1,4 +1,3 @@
-
 <script module lang="ts">
 /**
  * Represents a path with associated data for the tree.
@@ -216,6 +215,7 @@ export interface TreeItemType<T = Record<string, any>> {
 	{/each}
 </div>
 
-<style lang="scss">
-	@use './tree.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './tree.css';
 </style>

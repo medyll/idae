@@ -1,4 +1,3 @@
-
 <script module lang="ts">
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
@@ -163,7 +162,7 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 
 	import type { WindowProps } from './Window.svelte';
 	import type { ExpandProps } from '$lib/types/index.js';
-	import IconButton from '$lib/controls/button/IconButton.svelte';
+	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 
 	let {
 		class: className = '',
@@ -327,6 +326,7 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {:else}
 {/if} -->
 
-<style lang="scss">
-	@use './window.scss';
+<style global lang="postcss">
+	@reference "tailwindcss"
+	@import './window.css';
 </style>

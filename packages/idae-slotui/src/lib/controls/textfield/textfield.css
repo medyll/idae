@@ -1,0 +1,65 @@
+/* MIGRATION: SCSS to CSS for textfield component. See MIGRATION.md for rules. */
+
+:root {
+    --textfield-background: var(--sld-color-background-alpha-high);
+    --textfield-border-width: 1px;
+    --textfield-border-color: var(--sld-color-foreground-alpha-mid);
+    --textfield-border-bottom-width: 2px;
+    --textfield-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+    --textfield-radius: var(--sld-radius-small);
+    --textfield-padding: 0 0.5rem;
+    --textfield-shadow: inset 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+}
+
+.slotui-textfield {
+    border: var(--textfield-border-width) solid var(--textfield-border-color);
+    border-bottom: var(--textfield-border-bottom-width) solid var(--textfield-border-bottom-color);
+    border-radius: var(--textfield-radius);
+    padding: var(--textfield-padding);
+    box-shadow: var(--textfield-shadow);
+    background-color: var(--textfield-background);
+    color: var(--sld-color-foreground);
+}
+
+.slotui-textfield[error] {
+    border-bottom: red;
+}
+
+.slotui-textfield-container {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+}
+
+.slotui-textfield-start {
+    position: absolute;
+    height: 100%;
+    max-height: 100%;
+    width: 24px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--textfield-radius, var(--sld-radius-small));
+}
+
+.slotui-textfield-end {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    max-height: 100%;
+    min-width: 24px;
+    overflow: hidden;
+    display: flex;
+    gap: 4px;
+    padding: 2px;
+    align-items: center;
+    border-radius: var(--textfield-radius, var(--sld-radius-small));
+}
+
+.slotui-textfield-end > * {
+    max-height: calc(100% - 40px) !important;
+    border: 1px solid pink;
+}

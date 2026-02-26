@@ -1,5 +1,5 @@
-import idaePrettierConfig from "@medyll/idae-prettier-config";
+import idaeConfigPrettier from "@medyll/idae-config-prettier";
 
 export default {
-  ...idaePrettierConfig,
+  ...idaeConfigPrettier,
 };

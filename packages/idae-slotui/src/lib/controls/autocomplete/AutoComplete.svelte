@@ -66,6 +66,9 @@
 	export let { parameters, componentArgs } = demoerArgs(AutoCompleteDemoValues);
 </script>
 
+<style global lang="postcss">
+  @import './autocomplete.css';
+</style>
 
 <script lang="ts" generics="T">
 

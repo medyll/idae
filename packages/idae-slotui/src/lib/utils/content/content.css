@@ -1,0 +1,14 @@
+:root {
+    --content-radius: var(--sld-radius-medium);
+    --content-bg: var(--sld-color-background);
+    --content-border: var(--sld-color-border);
+    --content-padding: 1rem;
+}
+
+.content {
+    border-radius: var(--content-radius);
+    background: var(--content-bg);
+    border: 1px solid var(--content-border);
+    padding: var(--content-padding);
+    font-size: 1em;
+}
