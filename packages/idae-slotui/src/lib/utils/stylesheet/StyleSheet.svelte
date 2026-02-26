@@ -59,6 +59,7 @@ export interface SlotUiStyleSheet extends Partial<BreakPointRule> {
 <svelte:head>
 	{castToCssProps(breakpoints)}
 	<style id="idae-slotui-stylesheet" lang="postcss">
+		@reference "tailwindcss"
 		@use './stylesheet.scss';
 		// @include generate-container-queries;
 	</style>

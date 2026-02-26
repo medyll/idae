@@ -8,5 +8,6 @@
 <MenuListItem {...rest} selectable={false} class="slotui-menulist-title {className}" />
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@use './menu-list.scss';
 </style>

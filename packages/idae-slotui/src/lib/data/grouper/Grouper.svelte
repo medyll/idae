@@ -118,7 +118,8 @@ function buttonSelect(field: any) {
 </script>
 
 <style global lang="postcss">
-  @import './grouper.css';
+	@reference "tailwindcss"
+	@import './grouper.css';
 </style>
 
 <div bind:this={element} class="grouper {className}" {style}>

@@ -32,7 +32,8 @@ if (Array.isArray(data)) {
 </script>
 
 <style global lang="postcss">
-  @import './jsoner.css';
+	@reference "tailwindcss"
+	@import './jsoner.css';
 </style>
 
 {#if data}

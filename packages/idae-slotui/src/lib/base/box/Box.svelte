@@ -125,5 +125,6 @@ export interface BoxProps extends CommonProps {
  
 
 <style global lang="postcss">
+		@reference "tailwindcss"
 		@import './box.css';
 	</style>

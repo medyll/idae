@@ -61,5 +61,6 @@
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@use '../../styles/slotui-mixins.scss';
 </style>

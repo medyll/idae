@@ -141,5 +141,6 @@
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@use './menu-list.scss';
 </style>

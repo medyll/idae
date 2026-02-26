@@ -44,4 +44,5 @@ export type ToolBarProps = CommonProps & {
 
 <style global lang="postcss">
     @import './toolbar.css';
+	@reference "tailwindcss"
 </style>

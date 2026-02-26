@@ -175,5 +175,6 @@ export type CartoucheProps = CommonProps & {
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './cartouche.css';
 </style>

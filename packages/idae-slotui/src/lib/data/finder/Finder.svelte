@@ -196,5 +196,6 @@ let dataKeys = $derived(
 {/if}
 
 <style global lang="postcss">
-  @import './finder.css';
+	@reference "tailwindcss"
+	@import './finder.css';
 </style>

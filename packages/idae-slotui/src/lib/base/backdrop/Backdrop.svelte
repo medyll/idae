@@ -121,5 +121,6 @@ const dispatch = createEventDispatcher();
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './backdrop.css';
 </style>

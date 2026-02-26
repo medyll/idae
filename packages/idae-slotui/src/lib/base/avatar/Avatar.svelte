@@ -63,5 +63,6 @@ export interface AvatarProps    {
 </Content>
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './avatar.css';
 </style>

@@ -64,5 +64,6 @@ export interface BreadCrumbProps extends CommonProps {
 </nav>
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './breadcrumb.css';
 </style>

@@ -204,5 +204,6 @@ $effect(() => {
 </div>
 
 <style global lang="postcss">
-  @import './drawer.css';
+	@reference "tailwindcss"
+	@import './drawer.css';
 </style>

@@ -166,5 +166,6 @@ export type AlertProps = {
  
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './alert.css';
 </style>

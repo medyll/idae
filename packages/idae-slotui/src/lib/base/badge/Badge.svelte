@@ -48,5 +48,6 @@ export interface BadgeProps extends CommonProps {
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@import './badge.css';
 </style>

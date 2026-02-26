@@ -216,5 +216,6 @@ export interface TreeItemType<T = Record<string, any>> {
 </div>
 
 <style global lang="postcss">
-    @import './tree.css';
+	@reference "tailwindcss"
+	@import './tree.css';
 </style>

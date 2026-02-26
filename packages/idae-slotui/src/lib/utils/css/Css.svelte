@@ -3,7 +3,8 @@
 </script>
 
 <style global lang="postcss">
-    @import './css.css';
+	@import './css.css';
+	@reference "tailwindcss"
 </style>
 
 {#snippet cssBlock(color)}

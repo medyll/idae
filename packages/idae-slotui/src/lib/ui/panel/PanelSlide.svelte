@@ -155,9 +155,9 @@
 
 <style global lang="postcss">
 	@use './panel.scss';
+	@reference "tailwindcss"
 	.sidePanel {
 		position: absolute;
-		top: 0;
 		bottom: 0;
 		padding: 1rem 2rem;
 		width: 100%;

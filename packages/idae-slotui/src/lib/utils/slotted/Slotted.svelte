@@ -11,7 +11,8 @@
 </script>
 
 <style lang="postcss">
-    /* Add any necessary styles here */
+	@reference "tailwindcss"
+	/* Add any necessary styles here */
 </style>
 
 {#if child !== undefined}

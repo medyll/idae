@@ -60,6 +60,7 @@
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss"
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	.panelGridPreview {
