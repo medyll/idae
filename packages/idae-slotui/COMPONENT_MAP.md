@@ -112,7 +112,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\controls\rating\Rating.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\rating\RatingScoredIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\select\Select.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\controls\slider\Slider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\slider\Slider.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\controls\stepper\Stepper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\switch\Switch.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\switch\SwitchLabel.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -123,14 +123,14 @@ node ./scripts/make-component-maps.js
 | `src\lib\controls\textfield\TextField.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | **DATA** |  |  |  |  |  |  |  |  | |
 | `src\lib\data\dataList\DataList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\data\dataList\DataListCell.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\data\dataList\DataListCell.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\data\dataList\DataListFooter.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\dataList\DataListHead.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\data\dataList\DataListRow.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\data\dataList\DataListRow.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\data\dataList\GroupTitleSlot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\finder\Finder.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\data\grouper\Grouper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\data\jsoner\Jsoner.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\data\jsoner\Jsoner.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\data\list\List.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\data\list\ListItem.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\data\list\ListTitle.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
@@ -141,7 +141,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\data\loader\LoaderMessage.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\loader\LoaderSuccess.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\sorter\Sorter.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\data\sorter\Sorterer.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\data\sorter\Sorterer.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | **NAVIGATION** |  |  |  |  |  |  |  |  | |
 | `src\lib\navigation\drawer\Drawer.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\navigation\drawer\DrawerContent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -151,7 +151,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\navigation\drawer\DrawerSecondary.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\navigation\drawer\DrawerTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\navigation\drawer\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\tabs\Tabs.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\navigation\tabs\Tabs.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | **STYLES** |  |  |  |  |  |  |  |  | |
 | `src\lib\styles\slotuisheet\SlotuiSheet.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | **UI** |  |  |  |  |  |  |  |  | |
@@ -160,17 +160,17 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\chromeFrame\ChromeFrameList.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\explorer\Explorer.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\ui\frame\Frame.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\ui\frame\Frame.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\header\Header.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\login\Login.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\login\LoginAvatar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\login\LoginAvatarRoot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\login\LoginForm.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\login\SlotRetrievePassword.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\marquee\Marquee.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\marquee\Marquee.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\marquee\MarqueeChildren.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\menu\Menu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\ui\menu\MenuItem.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\menu\MenuItem.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\menu\MenuTitle.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\menuList\MenuList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\menuList\MenuListItem.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
@@ -179,7 +179,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\panel\PanelButtonNext.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\panel\PanelButtonPrevious.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\panel\Paneler.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\ui\panel\PanelGrid.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\panel\PanelGrid.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\panel\PanelGridZoom.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\panel\PanelSlide.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\popper\Popper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
@@ -207,7 +207,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\window\WindowButtonZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\window\WindowIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | **UTILS** |  |  |  |  |  |  |  |  | |
-| `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\utils\contextRooter\ContextRooter.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\utils\css\Css.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\utils\looper\Looper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -219,8 +219,8 @@ node ./scripts/make-component-maps.js
 
 
 ## Global Compliance Index
-**Score: 96.1%**
-`███████████████████░` (884/920 passed)
+**Score: 97.3%**
+`███████████████████░` (895/920 passed)
 
 ---
 
@@ -239,17 +239,7 @@ _None_
 ### Type
 **Fix:** Delete the `[Component]Props` from `types.ts`.
 
-- `src\lib\controls\slider\Slider.svelte`
-- `src\lib\data\dataList\DataListCell.svelte`
-- `src\lib\data\dataList\DataListRow.svelte`
-- `src\lib\data\jsoner\Jsoner.svelte`
-- `src\lib\data\sorter\Sorterer.svelte`
-- `src\lib\navigation\tabs\Tabs.svelte`
-- `src\lib\ui\frame\Frame.svelte`
-- `src\lib\ui\marquee\Marquee.svelte`
-- `src\lib\ui\menu\MenuItem.svelte`
-- `src\lib\ui\panel\PanelGrid.svelte`
-- `src\lib\utils\content\Content.svelte`
+_None_
 
 ### File
 **Fix:** Create the `types.ts` file with `export {};`.

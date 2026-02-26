@@ -4,21 +4,9 @@ import type { StepperProps } from '$lib/controls/stepper/types.js';
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 
-export interface MarqueeProps {
-	showControls?: boolean;
-	autoStart?: boolean;
-	pauseOnHover?: boolean;
-	activeElement?: number;
-	activeIndex?: number;
-	gutter?: ElementProps['gutter'];
-	showStepper?: boolean;
-	stepperProps?: StepperProps;
-	marqueePrev?: Snippet;
-	marqueeNext?: Snippet;
-	children?: Snippet;
-}
+// Props moved to the component module script during migration.
 
-export const MarqueDemoValues: DemoerStoryProps<MarqueeProps> = {
+export const MarqueDemoValues: DemoerStoryProps<any> = {
 	showControls: {
 		type: 'boolean',
 		default: true

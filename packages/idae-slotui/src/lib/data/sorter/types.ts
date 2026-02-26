@@ -11,16 +11,7 @@ export type SorterFieldType = {
 
 export type SortItem = {};
 
-export type SortererProps = CommonProps & {
-	/** Data to be sorted */
-	data: Data[];
-	/** binding : final sorted data as raw object  */
-	sortedData?: Data[];
-	fields: SorterFieldType[];
-	activeCommonSortField?: string;
-	/** Function to call when the data is sorted */
-	onSort?: (sortedData: any[]) => void;
-};
+// NOTE: `SortererProps` moved to the component module script during migration.
 
 export type SorterProps = {
 	/** The data to sort */
