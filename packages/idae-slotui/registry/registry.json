@@ -1,7 +1,7 @@
 {
   "name": "idae-slotui-svelte-lib-registry",
   "version": "1.0.0",
-  "generated_at": "2026-02-26T22:58:16.992Z",
+  "generated_at": "2026-02-26T23:08:50.656Z",
   "components": [
     {
       "name": "alert",
@@ -1545,30 +1545,6 @@
       "files": [
         {
           "path": "src/lib/ui/popper/Popper.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "preview",
-      "source": "src/lib/ui/preview/Preview.svelte",
-      "files": [
-        {
-          "path": "src/lib/ui/preview/Preview.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "preview-zoom",
-      "source": "src/lib/ui/preview/PreviewZoom.svelte",
-      "files": [
-        {
-          "path": "src/lib/ui/preview/PreviewZoom.svelte",
           "type": "registry:ui"
         }
       ],

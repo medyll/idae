@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-26T22:58:17.094Z",
-  "source": "registry/registry.json",
+  "generated_at": "2026-02-26T23:08:50.656Z",
+  "source": "src/lib",
   "components": [
     {
       "name": "alert",
@@ -11,7 +11,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/alert.json"
     },
     {
@@ -23,7 +22,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/alert-button-close.json"
     },
     {
@@ -35,7 +33,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/alert-button-zone.json"
     },
     {
@@ -47,7 +44,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/alert-message.json"
     },
     {
@@ -59,7 +55,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/alert-top-button.json"
     },
     {
@@ -71,7 +66,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/avatar.json"
     },
     {
@@ -83,7 +77,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/avatar-badge.json"
     },
     {
@@ -95,7 +88,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/backdrop.json"
     },
     {
@@ -107,7 +99,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/backdrop-loading.json"
     },
     {
@@ -119,7 +110,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/badge.json"
     },
     {
@@ -131,7 +121,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/box.json"
     },
     {
@@ -143,7 +132,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/box-bottom-zone.json"
     },
     {
@@ -155,7 +143,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/title-bar-icon.json"
     },
     {
@@ -167,7 +154,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/title-bar-title.json"
     },
     {
@@ -179,7 +165,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/bread-crumb.json"
     },
     {
@@ -191,7 +176,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/cartouche.json"
     },
     {
@@ -203,7 +187,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/cartouche-buttons.json"
     },
     {
@@ -215,7 +198,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/cartouche-icon.json"
     },
     {
@@ -227,7 +209,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/cartouche-primary.json"
     },
     {
@@ -239,7 +220,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/cartouche-secondary.json"
     },
     {
@@ -251,7 +231,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/chipper.json"
     },
     {
@@ -263,7 +242,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/chipper-chip.json"
     },
     {
@@ -275,7 +253,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/bottom-slot.json"
     },
     {
@@ -287,7 +264,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/columner.json"
     },
     {
@@ -299,7 +275,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/columner-col.json"
     },
     {
@@ -311,7 +286,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-top.json"
     },
     {
@@ -323,7 +297,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher.json"
     },
     {
@@ -335,7 +308,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-back-icon.json"
     },
     {
@@ -347,7 +319,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-reveal.json"
     },
     {
@@ -359,7 +330,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-toggler-icon.json"
     },
     {
@@ -371,7 +341,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/debug.json"
     },
     {
@@ -383,7 +352,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/demoer.json"
     },
     {
@@ -395,7 +363,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/demoer-code.json"
     },
     {
@@ -407,7 +374,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/demoer-component.json"
     },
     {
@@ -419,7 +385,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/demoer-content.json"
     },
     {
@@ -431,7 +396,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/demo-page.json"
     },
     {
@@ -443,7 +407,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/divider.json"
     },
     {
@@ -455,7 +418,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/icon.json"
     },
     {
@@ -467,7 +429,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/paper.json"
     },
     {
@@ -479,7 +440,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/title-bar.json"
     },
     {
@@ -491,7 +451,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/title-bar-icon.json"
     },
     {
@@ -503,7 +462,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/title-bar-title.json"
     },
     {
@@ -515,7 +473,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/auto-complete.json"
     },
     {
@@ -527,7 +484,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/auto-complete-empty.json"
     },
     {
@@ -539,7 +495,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/auto-complete-no-results.json"
     },
     {
@@ -551,7 +506,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button.json"
     },
     {
@@ -563,7 +517,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-end.json"
     },
     {
@@ -575,7 +528,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-loading-icon.json"
     },
     {
@@ -587,7 +539,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-popper.json"
     },
     {
@@ -599,7 +550,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-start.json"
     },
     {
@@ -611,7 +561,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-action.json"
     },
     {
@@ -623,7 +572,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/popper-content.json"
     },
     {
@@ -635,7 +583,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-icon.json"
     },
     {
@@ -647,7 +594,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/button-menu.json"
     },
     {
@@ -659,7 +605,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-item.json"
     },
     {
@@ -671,7 +616,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/checkbox.json"
     },
     {
@@ -683,7 +627,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/confirm.json"
     },
     {
@@ -695,7 +638,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/confirm-initial.json"
     },
     {
@@ -707,7 +649,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/in-place-edit.json"
     },
     {
@@ -719,7 +660,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/progress.json"
     },
     {
@@ -731,7 +671,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/rating.json"
     },
     {
@@ -743,7 +682,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/rating-scored-icon.json"
     },
     {
@@ -755,7 +693,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/select.json"
     },
     {
@@ -767,7 +704,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/slider.json"
     },
     {
@@ -779,7 +715,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/stepper.json"
     },
     {
@@ -791,7 +726,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/switch.json"
     },
     {
@@ -803,7 +737,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/switch-label.json"
     },
     {
@@ -815,7 +748,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/input-first.json"
     },
     {
@@ -827,7 +759,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/input-last.json"
     },
     {
@@ -839,7 +770,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/input-first.json"
     },
     {
@@ -851,7 +781,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/input-last.json"
     },
     {
@@ -863,7 +792,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/text-field.json"
     },
     {
@@ -875,7 +803,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/data-list.json"
     },
     {
@@ -887,7 +814,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/data-list-cell.json"
     },
     {
@@ -899,7 +825,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/data-list-footer.json"
     },
     {
@@ -911,7 +836,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/data-list-head.json"
     },
     {
@@ -923,7 +847,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/data-list-row.json"
     },
     {
@@ -935,7 +858,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/group-title-slot.json"
     },
     {
@@ -947,7 +869,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/finder.json"
     },
     {
@@ -959,7 +880,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/grouper.json"
     },
     {
@@ -971,7 +891,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/jsoner.json"
     },
     {
@@ -983,7 +902,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/list.json"
     },
     {
@@ -995,7 +913,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/list-item.json"
     },
     {
@@ -1007,7 +924,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/list-title.json"
     },
     {
@@ -1019,7 +935,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader.json"
     },
     {
@@ -1031,7 +946,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader-empty.json"
     },
     {
@@ -1043,7 +957,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader-error.json"
     },
     {
@@ -1055,7 +968,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader-loading.json"
     },
     {
@@ -1067,7 +979,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader-message.json"
     },
     {
@@ -1079,7 +990,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loader-success.json"
     },
     {
@@ -1091,7 +1001,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/sorter.json"
     },
     {
@@ -1103,7 +1012,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/sorterer.json"
     },
     {
@@ -1115,7 +1023,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer.json"
     },
     {
@@ -1127,7 +1034,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-content.json"
     },
     {
@@ -1139,7 +1045,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-footer.json"
     },
     {
@@ -1151,7 +1056,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-icon.json"
     },
     {
@@ -1163,7 +1067,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-primary.json"
     },
     {
@@ -1175,7 +1078,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-secondary.json"
     },
     {
@@ -1187,7 +1089,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-title.json"
     },
     {
@@ -1199,7 +1100,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/drawer-top.json"
     },
     {
@@ -1211,7 +1111,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/tabs.json"
     },
     {
@@ -1223,7 +1122,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/boot-str-app.json"
     },
     {
@@ -1235,7 +1133,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/chrome-frame.json"
     },
     {
@@ -1247,7 +1144,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/chrome-frame-button-list.json"
     },
     {
@@ -1259,7 +1155,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/chrome-frame-list.json"
     },
     {
@@ -1271,7 +1166,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/explorer.json"
     },
     {
@@ -1283,7 +1177,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/frame.json"
     },
     {
@@ -1295,7 +1188,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/header.json"
     },
     {
@@ -1307,7 +1199,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/login.json"
     },
     {
@@ -1319,7 +1210,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/login-avatar.json"
     },
     {
@@ -1331,7 +1221,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/login-avatar-root.json"
     },
     {
@@ -1343,7 +1232,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/login-form.json"
     },
     {
@@ -1355,7 +1243,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/slot-retrieve-password.json"
     },
     {
@@ -1367,7 +1254,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/marquee.json"
     },
     {
@@ -1379,7 +1265,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/marquee-children.json"
     },
     {
@@ -1391,7 +1276,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu.json"
     },
     {
@@ -1403,7 +1287,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-item.json"
     },
     {
@@ -1415,7 +1298,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-title.json"
     },
     {
@@ -1427,7 +1309,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-list.json"
     },
     {
@@ -1439,7 +1320,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-list-item.json"
     },
     {
@@ -1451,7 +1331,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/menu-list-title.json"
     },
     {
@@ -1463,7 +1342,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel.json"
     },
     {
@@ -1475,7 +1353,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel-button-next.json"
     },
     {
@@ -1487,7 +1364,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel-button-previous.json"
     },
     {
@@ -1499,7 +1375,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/paneler.json"
     },
     {
@@ -1511,7 +1386,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel-grid.json"
     },
     {
@@ -1523,7 +1397,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel-grid-zoom.json"
     },
     {
@@ -1535,7 +1408,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/panel-slide.json"
     },
     {
@@ -1547,32 +1419,7 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/popper.json"
-    },
-    {
-      "name": "preview",
-      "files": [
-        {
-          "path": "src/lib/ui/preview/Preview.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/preview.json"
-    },
-    {
-      "name": "preview-zoom",
-      "files": [
-        {
-          "path": "src/lib/ui/preview/PreviewZoom.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/preview-zoom.json"
     },
     {
       "name": "service-box",
@@ -1583,7 +1430,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/service-box.json"
     },
     {
@@ -1595,7 +1441,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/boot-menu.json"
     },
     {
@@ -1607,7 +1452,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/taskbar.json"
     },
     {
@@ -1619,7 +1463,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/task-bar-content.json"
     },
     {
@@ -1631,7 +1474,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/task-bar-left.json"
     },
     {
@@ -1643,7 +1485,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/task-bar-right.json"
     },
     {
@@ -1655,7 +1496,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/theme-switcher.json"
     },
     {
@@ -1667,7 +1507,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toast.json"
     },
     {
@@ -1679,7 +1518,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toaster.json"
     },
     {
@@ -1691,7 +1529,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-icon.json"
     },
     {
@@ -1703,7 +1540,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-reveal.json"
     },
     {
@@ -1715,7 +1551,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toggle-bar.json"
     },
     {
@@ -1727,7 +1562,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toggle-bar-buttons.json"
     },
     {
@@ -1739,7 +1573,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toggle-bar-icon.json"
     },
     {
@@ -1751,7 +1584,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toggle-bar-title.json"
     },
     {
@@ -1763,7 +1595,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/tool-bar.json"
     },
     {
@@ -1775,7 +1606,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/toolbar-separator.json"
     },
     {
@@ -1787,7 +1617,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/tree.json"
     },
     {
@@ -1799,7 +1628,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/window.json"
     },
     {
@@ -1811,7 +1639,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/window-button-zone.json"
     },
     {
@@ -1823,7 +1650,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/window-icon.json"
     },
     {
@@ -1835,7 +1661,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/content.json"
     },
     {
@@ -1847,7 +1672,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/context-rooter.json"
     },
     {
@@ -1859,7 +1683,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/looper.json"
     },
     {
@@ -1871,7 +1694,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loop-group-title.json"
     },
     {
@@ -1883,7 +1705,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/loop-title.json"
     },
     {
@@ -1895,7 +1716,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/child.json"
     },
     {
@@ -1907,7 +1727,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/slotted.json"
     },
     {
@@ -1919,7 +1738,6 @@
         }
       ],
       "dependencies": [],
-      "registryDependencies": [],
       "publicMetadata": "public/r/style-sheet.json"
     }
   ]

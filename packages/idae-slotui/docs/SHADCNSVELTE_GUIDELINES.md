@@ -58,3 +58,16 @@ public/
 - Document external deps in each component metadata file.
 - Prefer explicit utilities (`cn()`, `cva`) and avoid internal deep imports.
 
+13. Registry generator flags
+- A generator script is available at `scripts/generate-registry-from-lib.cjs` to produce a shadcn-compatible registry and per-component metadata.
+- Supported CLI options (defaults shown):
+	- `--src-lib <path>` (default: `src/lib`) — source directory to scan for `.svelte` files.
+	- `--out-dir <path>` (default: `registry`) — directory where registry files are written.
+	- `--public-dir <path>` (default: `public/r`) — directory for per-component metadata JSON files.
+	- `--registry-out <file>` (default: `registry-from-lib.json`) — registry output filename.
+	- `--canonical-registry <file>` (default: `registry.json`) — canonical registry filename written alongside `registry-out`.
+	- `--pmpx-out <file>` (default: `pmpx-components.json`) — summary used by pnpx/pmpx tooling.
+	- `--exclude <patterns>` — comma-separated micromatch patterns to exclude (in addition to built-in defaults). Example: `--exclude="**/demo/**,**/preview/**"`.
+
+Use these flags when running locally or in packaging scripts to tune what gets published to the registry.
+
