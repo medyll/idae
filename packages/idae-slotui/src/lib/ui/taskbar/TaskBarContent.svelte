@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import { wStore } from '$lib/ui/window/store.js';
 	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';

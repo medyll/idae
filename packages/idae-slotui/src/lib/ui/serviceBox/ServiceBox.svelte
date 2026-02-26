@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 	import ButtonMenu from '$lib/controls/buttonAction/ButtonAction.svelte';

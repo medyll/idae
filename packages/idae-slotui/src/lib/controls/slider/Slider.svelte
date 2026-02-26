@@ -192,5 +192,22 @@ function getSliderVal(event: Event) {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './slider.css';
+
+	:root {
+		--slider-background-color: var(--sld-color-background);
+		--slider-gouge-background-color: var(--sld-color-secondary);
+		--slider-gouge-selected-background-color: var(--sld-color-primary);
+		--slider-thumb-background-color: var(--sld-color-primary);
+		--slider-thumb-border: var(--sld-color-primary-darken-high);
+		--slider-thumb-hover-outline: var(--sld-color-primary-alpha-high);
+		--slider-thumb-hover-box-shadow: var(--sld-elevation-3);
+	}
+
+	.slider {
+		--height: calc(var(--preset-density) / 6);
+		background-color: var(--slider-background-color);
+		position: relative;
+		display: inline-flex;
+		flex-direction: row;
+	}
 </style>

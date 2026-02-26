@@ -68,7 +68,21 @@
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './autocomplete.css';
+
+	:root {
+		--autocomplete-radius: var(--sld-radius-medium);
+		--autocomplete-bg: var(--sld-color-background);
+		--autocomplete-border: var(--sld-color-border);
+		--autocomplete-padding: 0.5rem 1rem;
+	}
+
+	.autocomplete {
+		border-radius: var(--autocomplete-radius);
+		background: var(--autocomplete-bg);
+		border: 1px solid var(--autocomplete-border);
+		padding: var(--autocomplete-padding);
+		font-size: 1em;
+	}
 </style>
 
 <script lang="ts" generics="T">

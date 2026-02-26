@@ -1,5 +1,10 @@
 <svelte:options immutable={true} />
 
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 

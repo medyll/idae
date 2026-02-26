@@ -38,8 +38,8 @@ A ❌ cell flags a violation to fix. A ─ cell means the rule does not apply to
 The global score at the bottom reflects the overall compliance level of the library.
 
 Conventions checked:
-- Props type must be defined inline in the component (not imported from ./types)
-- types.ts must exist and export DemoValues
+- [Component]Props type must be defined inline in the component (not imported from ./types)
+- types.ts must exist and export [component]DemoValues
 - Style blocks must use lang="postcss" and @reference "tailwindcss"
 - No external .css file imports are allowed
 `.trim();
@@ -63,16 +63,16 @@ const COLUMNS = [
   {
     key: 'internal',
     label: 'Int.',
-    legend: '**Int.** (Internal): The `Props` type must be used within the Svelte component body.',
-    fix: 'Add the component Props definition inside a `<script module>` tag.',
-    consoleFix: 'Add Props to <script module>',
+    legend: '**Int.** (Internal): The `[Component]Props` type must be used within the Svelte component body.',
+    fix: 'Add the component [Component]Props definition inside a `<script module>` tag.',
+    consoleFix: 'Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file',
     validator: ({ bodyOnly, typeName }) =>
       new RegExp(`\\b${typeName}\\b`).test(bodyOnly) ? '✅' : '❌',
   },
   {
     key: 'external',
     label: 'Ext.',
-    legend: '**Ext.** (External): The `Props` type must **not** be imported from `./types.ts`.',
+    legend: '**Ext.** (External): The `[Component]Props` type must **not** be imported from `./types.ts`.',
     fix: 'Remove the import from `./types`.',
     consoleFix: 'Remove import from ./types',
     validator: ({ content, typeName }) =>

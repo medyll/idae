@@ -35,7 +35,7 @@ export type TabsProps = CommonProps & {
 	children?: Snippet<[{ item: any; activeTabCode: string }]>;
 };
 
-const tabsDemoValues: DemoerStoryProps<TabsProps> = {
+export const tabsDemoValues: DemoerStoryProps<TabsProps> = {
 	activeTabCode: {
 		type: 'string',
 		values: ['tab1', 'tab2', 'tab3', 'tab4', 'tab5']
@@ -80,3 +80,6 @@ const tabsDemoValues: DemoerStoryProps<TabsProps> = {
 };
 
 export const { parameters, componentArgs } = demoerArgs<TabsProps>(tabsDemoValues);
+
+// Export tabs demo values for generator
+export { tabsDemoValues };

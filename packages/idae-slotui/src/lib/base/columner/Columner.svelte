@@ -27,6 +27,9 @@ export interface ColumnType {
 	/** State of the column (expanded, equal, minimal, default) */
 	state: 'expanded' | 'equal' | 'minimal' | 'default';
 }
+
+// Module-level Props marker for migration tooling
+export type Props = any;
 </script>
 <script lang="ts">
 		import type { ExpandProps } from '$lib/types/index.js';

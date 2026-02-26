@@ -1,3 +1,7 @@
+<script module lang="ts">
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import type { MenuListProps } from '$lib/ui/menuList/types.js';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';

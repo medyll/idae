@@ -96,5 +96,22 @@
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './marquee.css';
+
+	:root {
+		--marquee-radius: var(--sld-radius-medium);
+		--marquee-bg: var(--sld-color-background);
+		--marquee-border: var(--sld-color-border);
+		--marquee-padding: 1rem;
+	}
+
+	.marquee {
+		border-radius: var(--marquee-radius);
+		background: var(--marquee-bg);
+		border: 1px solid var(--marquee-border);
+		padding: var(--marquee-padding);
+		font-size: 1em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>

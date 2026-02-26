@@ -2,6 +2,11 @@
 Wrapper for the toaster family
 called automatically
 -->
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 

@@ -125,6 +125,37 @@ export interface BoxProps extends CommonProps {
  
 
 <style global lang="postcss">
-		@reference "tailwindcss"
-		@import './box.css';
+		@reference "tailwindcss";
+
+		:root {
+			--box-color-background: var(--sld-color-background);
+			--box-border-bottom: var(--sld-color-primary);
+			--box-radius: var(--sld-radius-small);
+			--box-elevation: var(--sld-elevation-3);
+			--box-gap: var(--sld-gap-tiny);
+			--box-pad: var(--sld-pad-small);
+		}
+
+		.box {
+			min-height: 160px;
+			min-width: 320px;
+			background-color: var(--box-color-background);
+			border-bottom: 1px solid var(--box-border-bottom);
+			border-radius: var(--box-radius);
+			box-shadow: var(--box-elevation);
+			display: flex;
+			flex-direction: column;
+		}
+
+		.box-content {
+			flex: 1;
+		}
+
+		.box-button-zone {
+			display: flex;
+			gap: var(--box-gap);
+			padding: var(--box-pad);
+			text-align: right;
+			justify-content: end;
+		}
 	</style>

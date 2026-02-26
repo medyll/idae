@@ -83,8 +83,8 @@ export type InPlaceEditProps = {
 </script>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './inplaceedit.css';
+	@reference "tailwindcss";
+	/* no styles required (inplaceedit.css is placeholder) */
 </style>
 
 <div class="border pos-rel">

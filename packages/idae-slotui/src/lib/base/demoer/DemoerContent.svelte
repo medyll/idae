@@ -1,8 +1,14 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+export type DemoerProps<T = Record<string, any>> = any;
+export type DemoerStoryProps<T = Record<string, any>> = any;
+</script>
+
 <script lang="ts" generics="T=Record<string, any>">
 	import Button from '$lib/controls/button/Button.svelte';
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Switch from '$lib/controls/switch/Switch.svelte';
-	import type { DemoerProps, DemoerStoryProps } from './types.js';
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
 	import { densePreset, flowPreset, uiPresets } from '$lib/types/index.js';
 	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
@@ -14,7 +20,7 @@
 		componentArgs = $bindable<T>({} as T),
 		multiple = {},
 		children
-	}: DemoerProps<T> = $props();
+	} = $props();
 
 	let activeParams: T = $state({ ...componentArgs });
 
@@ -171,5 +177,19 @@
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './demoer.css';
+
+	:root {
+		--demoer-radius: var(--sld-radius-medium);
+		--demoer-bg: var(--sld-color-demoer-bg);
+		--demoer-color: var(--sld-color-demoer-text);
+		--demoer-padding: 1rem;
+	}
+
+	.demoer {
+		border-radius: var(--demoer-radius);
+		background: var(--demoer-bg);
+		color: var(--demoer-color);
+		padding: var(--demoer-padding);
+		font-size: 1em;
+	}
 </style>

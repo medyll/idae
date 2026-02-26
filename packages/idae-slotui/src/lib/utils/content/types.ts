@@ -33,3 +33,8 @@ export type BindableEvent = CustomEvent<{
 	offsetHeight?: number;
 	offsetWidth?: number;
 }>;
+
+import type { DemoerStoryProps } from '../../base/demoer/types.js';
+
+// Placeholder demo export for Content utility
+export const contentDemoValues: DemoerStoryProps<any> = {};

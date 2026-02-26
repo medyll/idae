@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Divider from '$lib/base/divider/Divider.svelte';

@@ -20,3 +20,13 @@ export type ToggleBarProps = CommonProps & {
 	contentSwitcherIcon?: Snippet;
 	contentSwitcherReveal?: Snippet;
 };
+
+import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
+
+// Placeholder demo exports for toggleBar and contentSwitcher slots
+export const contentSwitcherIconDemoValues: DemoerStoryProps<any> = {};
+export const contentSwitcherRevealDemoValues: DemoerStoryProps<any> = {};
+export const toggleBarDemoValues: DemoerStoryProps<any> = {};
+export const toggleBarButtonsDemoValues: DemoerStoryProps<any> = {};
+export const toggleBarIconDemoValues: DemoerStoryProps<any> = {};
+export const toggleBarTitleDemoValues: DemoerStoryProps<any> = {};

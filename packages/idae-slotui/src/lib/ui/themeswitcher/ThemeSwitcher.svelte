@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import IconButton from '$lib/controls/buttonIcon/ButtonIcon.svelte';
 
@@ -10,8 +15,9 @@
 </script>
 
 <style global lang="postcss">
-		@reference "tailwindcss";
-	@import './theme-switcher.css';
+	@reference "tailwindcss";
+
+	/* theme-switcher.css was empty; add styles here if needed */
 </style>
 
 <IconButton

@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import { type SlotUiStyleSheet, type BreakPoints } from './types.js';
 	import { configCssVars, toContainerQuery } from './utils.js';

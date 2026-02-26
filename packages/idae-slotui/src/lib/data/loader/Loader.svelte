@@ -135,5 +135,28 @@ $effect(() => {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './loader.css';
+
+	:root {
+		--loader-background-color: var(--sld-color-background-alpha-mid);
+		--loader-box-shadow: var(--sld-elevation-1);
+		--loader-radius: var(--sld-radius-tiny);
+		--loader-border: var(--sld-color-foreground-alpha-high);
+		--loader-message-border-radius: var(--sld-radius-small);
+		--loader-message-border-bottom: var(--sld-color-primary);
+		--loader-message-padding: var(--box-density-1) var(--box-density-2);
+	}
+
+	.loader {
+		position: absolute;
+		top: 0;
+		background-color: var(--loader-background-color);
+		height: 100%;
+		min-width: 128px;
+		max-width: 100%;
+		display: inline-flex;
+		border-radius: var(--loader-radius);
+		border: 1px solid var(--loader-border);
+		padding: var(--loader-padding);
+		font-size: 1em;
+	}
 </style>

@@ -1,5 +1,10 @@
 <svelte:options />
 
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import { chromeFrameStore } from './chromeFrame.store.js';
 	import Button from '$lib/controls/button/Button.svelte';

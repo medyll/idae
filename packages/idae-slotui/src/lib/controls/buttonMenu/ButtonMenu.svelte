@@ -79,7 +79,37 @@ let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevr
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss";
-	@import '../button/button.css';
-	@import './button-menu.css';
+		@reference "tailwindcss";
+		/* MIGRATION: uses shared `button.css` — manual review required. */
+
+		/* Inlined button-menu.css */
+		.buttonActionRoot {
+			display: inline-block;
+			position: relative;
+			width: 64px;
+		}
+
+		.buttonText {
+			text-align: center;
+		}
+
+		.button {
+			display: block;
+			width: 64px;
+		}
+
+		.button:hover { background-color: rgba(255, 255, 255, 0.3); }
+
+		.action {
+			position: absolute;
+			display: block;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			background-color: rgba(255, 255, 255, 0.1);
+			width: 30%;
+			padding: 0.5rem;
+		}
+
+		.action:hover { background-color: rgba(255, 255, 255, 0.5); }
 </style>

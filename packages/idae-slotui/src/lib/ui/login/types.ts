@@ -38,7 +38,7 @@ export type LoginProps = CommonProps & {
 	slotRetrievePassword?: Snippet;
 };
 
-const loginDemoValues: DemoerStoryProps<LoginProps> = {
+export const loginDemoValues: DemoerStoryProps<LoginProps> = {
 	showLogin: {
 		type: 'boolean',
 		values: [true, false],
@@ -66,3 +66,10 @@ const loginDemoValues: DemoerStoryProps<LoginProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(loginDemoValues);
+
+// Export the main demo values and add slot placeholders
+export { loginDemoValues };
+export const loginAvatarDemoValues: DemoerStoryProps<any> = {};
+export const loginAvatarRootDemoValues: DemoerStoryProps<any> = {};
+export const loginFormDemoValues: DemoerStoryProps<any> = {};
+export const slotRetrievePasswordDemoValues: DemoerStoryProps<any> = {};

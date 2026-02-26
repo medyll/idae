@@ -60,3 +60,7 @@ const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(AutoCompleteDemoValues);
+
+// Placeholder demo exports for autocomplete subcomponents
+export const autoCompleteEmptyDemoValues: DemoerStoryProps<any> = {};
+export const autoCompleteNoResultsDemoValues: DemoerStoryProps<any> = {};

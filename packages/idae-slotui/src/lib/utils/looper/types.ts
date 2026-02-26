@@ -62,3 +62,7 @@ export const looperDemoValues: DemoerStoryProps<any> = {
 	}
 };
 export let { parameters, componentArgs } = demoerArgs(looperDemoValues);
+
+// Placeholder demo exports for loop title/group title slots
+export const loopGroupTitleDemoValues: DemoerStoryProps<any> = {};
+export const loopTitleDemoValues: DemoerStoryProps<any> = {};

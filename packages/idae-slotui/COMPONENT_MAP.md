@@ -8,8 +8,8 @@
 > The global score at the bottom reflects the overall compliance level of the library.
 > 
 > Conventions checked:
-> - Props type must be defined inline in the component (not imported from ./types)
-> - types.ts must exist and export DemoValues
+> - [Component]Props type must be defined inline in the component (not imported from ./types)
+> - types.ts must exist and export [component]DemoValues
 > - Style blocks must use lang="postcss" and @reference "tailwindcss"
 > - No external .css file imports are allowed
 
@@ -25,8 +25,8 @@ node ./scripts/make-component-maps.js
 - ─ : Not applicable (Snippet or no style)
 
 ### Columns
-- **Int.** (Internal): The `Props` type must be used within the Svelte component body.
-- **Ext.** (External): The `Props` type must **not** be imported from `./types.ts`.
+- **Int.** (Internal): The `[Component]Props` type must be used within the Svelte component body.
+- **Ext.** (External): The `[Component]Props` type must **not** be imported from `./types.ts`.
 - **Type**: The `Props` type must **not** be declared in the `types.ts` file.
 - **File**: The `types.ts` file must exist in the component folder.
 - **Demo**: `[component]DemoValues` must be exported from `types.ts`.
@@ -36,7 +36,7 @@ node ./scripts/make-component-maps.js
 - **Sc.**: Snippet component.
 
 ### Fixes
-- **Int.:** Add the component Props definition inside a `<script module>` tag.
+- **Int.:** Add the component [Component]Props definition inside a `<script module>` tag.
 - **Ext.:** Remove the import from `./types`.
 - **Type:** Delete the `ComponentProps` from `types.ts`.
 - **File:** Create the `types.ts` file with `export {};`.
@@ -58,10 +58,10 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\backdrop\Backdrop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\backdrop\BackdropLoading.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\badge\Badge.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\base\box\Box.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\box\Box.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\box\BoxBottomZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\box\TitleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\box\TitleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
+| `src\lib\base\box\TitleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\base\box\TitleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\breadCrumb\BreadCrumb.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\cartouche\Cartouche.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\cartouche\CartoucheButtons.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -78,49 +78,49 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\contentSwitcher\ContentSwitcherBackIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherTogglerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\debug\Debug.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\debug\Debug.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\demoer\Demoer.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\base\demoer\DemoerCode.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\demoer\DemoerComponent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\demoer\DemoerContent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\demoer\DemoerContent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\demoer\DemoPage.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\base\icon\Icon.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |  |
-| `src\lib\base\paper\Paper.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\base\titleBar\TitleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\divider\Divider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\icon\Icon.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\paper\Paper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\base\titleBar\TitleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\titleBar\TitleBarIcon.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\titleBar\TitleBarTitle.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | **CONTROLS** |  |  |  |  |  |  |  |  | |
-| `src\lib\controls\autocomplete\AutoComplete.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\controls\autocomplete\AutoCompleteEmpty.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\autocomplete\AutoCompleteNoResults.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\button\Button.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\autocomplete\AutoComplete.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\controls\autocomplete\AutoCompleteEmpty.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\controls\autocomplete\AutoCompleteNoResults.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\controls\button\Button.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\button\ButtonEnd.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\button\ButtonLoadingIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\button\ButtonPopper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\button\ButtonStart.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\buttonAction\ButtonAction.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\buttonAction\ButtonAction.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\buttonAction\PopperContent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\buttonIcon\ButtonIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\controls\buttonMenu\ButtonMenu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\buttonIcon\ButtonIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\controls\buttonMenu\ButtonMenu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\buttonMenu\MenuItem.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\checkbox\Checkbox.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\controls\confirm\Confirm.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\checkbox\Checkbox.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\confirm\Confirm.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\confirm\ConfirmInitial.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\inplaceedit\InPlaceEdit.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\controls\progress\Progress.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\controls\rating\Rating.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\inplaceedit\InPlaceEdit.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\controls\progress\Progress.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\rating\Rating.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\rating\RatingScoredIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\controls\select\Select.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\controls\slider\Slider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\controls\stepper\Stepper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\controls\switch\Switch.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\select\Select.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\controls\slider\Slider.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\controls\stepper\Stepper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\controls\switch\Switch.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\controls\switch\SwitchLabel.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\textfield\InputFirst.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\textfield\InputLast.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\textfield\snippets\InputFirst.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\controls\textfield\snippets\InputLast.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\controls\textfield\TextField.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\controls\textfield\TextField.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | **DATA** |  |  |  |  |  |  |  |  | |
 | `src\lib\data\dataList\DataList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\data\dataList\DataListCell.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
@@ -134,7 +134,7 @@ node ./scripts/make-component-maps.js
 | `src\lib\data\list\List.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\data\list\ListItem.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\data\list\ListTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\data\loader\Loader.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\data\loader\Loader.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\data\loader\LoaderEmpty.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\loader\LoaderError.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\loader\LoaderLoading.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -143,17 +143,17 @@ node ./scripts/make-component-maps.js
 | `src\lib\data\sorter\Sorter.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\data\sorter\Sorterer.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | **NAVIGATION** |  |  |  |  |  |  |  |  | |
-| `src\lib\navigation\drawer\Drawer.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\navigation\drawer\DrawerContent.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerFooter.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerPrimary.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerSecondary.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\drawer\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\navigation\tabs\Tabs.svelte` | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ |  |
+| `src\lib\navigation\drawer\Drawer.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\navigation\drawer\DrawerContent.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerFooter.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerPrimary.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerSecondary.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\drawer\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\navigation\tabs\Tabs.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | **STYLES** |  |  |  |  |  |  |  |  | |
-| `src\lib\styles\slotuisheet\SlotuiSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |  |
+| `src\lib\styles\slotuisheet\SlotuiSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | **UI** |  |  |  |  |  |  |  |  | |
 | `src\lib\ui\bootstrapp\BootStrApp.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\chromeFrame\ChromeFrame.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
@@ -162,17 +162,17 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\explorer\Explorer.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\frame\Frame.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\header\Header.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\ui\login\Login.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\ui\login\LoginAvatar.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\login\LoginAvatarRoot.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\login\LoginForm.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\login\SlotRetrievePassword.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\marquee\Marquee.svelte` | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\marquee\MarqueeChildren.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\login\Login.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\login\LoginAvatar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\login\LoginAvatarRoot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\login\LoginForm.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\login\SlotRetrievePassword.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\marquee\Marquee.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\marquee\MarqueeChildren.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\menu\Menu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\menu\MenuItem.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\menu\MenuTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\ui\menuList\MenuList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\menuList\MenuList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\menuList\MenuListItem.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\menuList\MenuListTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\panel\Panel.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
@@ -187,47 +187,47 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\preview\PreviewZoom.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\serviceBox\ServiceBox.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\startMenu\BootMenu.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\taskbar\Taskbar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\taskbar\Taskbar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\taskbar\TaskBarContent.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\taskbar\TaskBarLeft.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\taskbar\TaskBarRight.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\themeswitcher\ThemeSwitcher.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\toast\Toast.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\themeswitcher\ThemeSwitcher.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\toast\Toast.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\toast\Toaster.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\ui\toggleBar\ContentSwitcherIcon.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\toggleBar\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\toggleBar\ToggleBar.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\ui\toggleBar\ToggleBarButtons.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\toggleBar\ToggleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\toggleBar\ToggleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\toolBar\ToolBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\toggleBar\ContentSwitcherIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\toggleBar\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\toggleBar\ToggleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\ui\toggleBar\ToggleBarButtons.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\toggleBar\ToggleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\toggleBar\ToggleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\ui\toolBar\ToolBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\toolBar\ToolbarSeparator.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\tree\Tree.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\window\Window.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\ui\tree\Tree.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\window\Window.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\window\WindowButtonZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\window\WindowIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | **UTILS** |  |  |  |  |  |  |  |  | |
-| `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |  |
-| `src\lib\utils\contextRooter\ContextRooter.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ | ─ | ─ | ─ |  |
-| `src\lib\utils\css\Css.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |  |
+| `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\contextRooter\ContextRooter.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\utils\css\Css.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\utils\looper\Looper.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\utils\looper\LoopGroupTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\utils\looper\LoopTitle.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\utils\slotted\Child.svelte` | ✅ | ✅ | ─ | ✅ | ❌ | ─ | ─ | ─ | [snippet] |
-| `src\lib\utils\slotted\Slotted.svelte` | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |  |
-| `src\lib\utils\stylesheet\StyleSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\looper\LoopGroupTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\utils\looper\LoopTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\utils\slotted\Child.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\utils\slotted\Slotted.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\stylesheet\StyleSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 
 
 ## Global Compliance Index
-**Score: 84.2%**
-`████████████████░░░░` (775/920 passed)
+**Score: 92.1%**
+`██████████████████░░` (847/920 passed)
 
 ---
 
 ## Error Report (❌ Items)
 
 ### Int.
-**Fix:** Add the component Props definition inside a `<script module>` tag.
+**Fix:** Add the component [Component]Props definition inside a `<script module>` tag.
 
 - `src\lib\base\columner\Columner.svelte`
 - `src\lib\base\debug\Debug.svelte`
@@ -295,44 +295,7 @@ _None_
 ### Demo
 **Fix:** Export the missing `componentDemoValues` from `types.ts`.
 
-- `src\lib\base\box\TitleBarIcon.svelte (Expected: titleBarIconDemoValues)`
-- `src\lib\base\box\TitleBarTitle.svelte (Expected: titleBarTitleDemoValues)`
-- `src\lib\base\icon\Icon.svelte (Expected: iconDemoValues)`
-- `src\lib\base\paper\Paper.svelte (Expected: paperDemoValues)`
-- `src\lib\controls\autocomplete\AutoCompleteEmpty.svelte (Expected: autoCompleteEmptyDemoValues)`
-- `src\lib\controls\autocomplete\AutoCompleteNoResults.svelte (Expected: autoCompleteNoResultsDemoValues)`
-- `src\lib\data\loader\Loader.svelte (Expected: loaderDemoValues)`
-- `src\lib\navigation\drawer\Drawer.svelte (Expected: drawerDemoValues)`
-- `src\lib\navigation\drawer\DrawerContent.svelte (Expected: drawerContentDemoValues)`
-- `src\lib\navigation\drawer\DrawerFooter.svelte (Expected: drawerFooterDemoValues)`
-- `src\lib\navigation\drawer\DrawerIcon.svelte (Expected: drawerIconDemoValues)`
-- `src\lib\navigation\drawer\DrawerPrimary.svelte (Expected: drawerPrimaryDemoValues)`
-- `src\lib\navigation\drawer\DrawerSecondary.svelte (Expected: drawerSecondaryDemoValues)`
-- `src\lib\navigation\drawer\DrawerTitle.svelte (Expected: drawerTitleDemoValues)`
-- `src\lib\navigation\drawer\DrawerTop.svelte (Expected: drawerTopDemoValues)`
-- `src\lib\navigation\tabs\Tabs.svelte (Expected: tabsDemoValues)`
-- `src\lib\styles\slotuisheet\SlotuiSheet.svelte (Expected: slotuiSheetDemoValues)`
-- `src\lib\ui\login\Login.svelte (Expected: loginDemoValues)`
-- `src\lib\ui\login\LoginAvatar.svelte (Expected: loginAvatarDemoValues)`
-- `src\lib\ui\login\LoginAvatarRoot.svelte (Expected: loginAvatarRootDemoValues)`
-- `src\lib\ui\login\LoginForm.svelte (Expected: loginFormDemoValues)`
-- `src\lib\ui\login\SlotRetrievePassword.svelte (Expected: slotRetrievePasswordDemoValues)`
-- `src\lib\ui\marquee\Marquee.svelte (Expected: marqueeDemoValues)`
-- `src\lib\ui\marquee\MarqueeChildren.svelte (Expected: marqueeChildrenDemoValues)`
-- `src\lib\ui\toggleBar\ContentSwitcherIcon.svelte (Expected: contentSwitcherIconDemoValues)`
-- `src\lib\ui\toggleBar\ContentSwitcherReveal.svelte (Expected: contentSwitcherRevealDemoValues)`
-- `src\lib\ui\toggleBar\ToggleBar.svelte (Expected: toggleBarDemoValues)`
-- `src\lib\ui\toggleBar\ToggleBarButtons.svelte (Expected: toggleBarButtonsDemoValues)`
-- `src\lib\ui\toggleBar\ToggleBarIcon.svelte (Expected: toggleBarIconDemoValues)`
-- `src\lib\ui\toggleBar\ToggleBarTitle.svelte (Expected: toggleBarTitleDemoValues)`
-- `src\lib\utils\content\Content.svelte (Expected: contentDemoValues)`
-- `src\lib\utils\contextRooter\ContextRooter.svelte (Expected: contextRooterDemoValues)`
-- `src\lib\utils\css\Css.svelte (Expected: cssDemoValues)`
-- `src\lib\utils\looper\LoopGroupTitle.svelte (Expected: loopGroupTitleDemoValues)`
-- `src\lib\utils\looper\LoopTitle.svelte (Expected: loopTitleDemoValues)`
-- `src\lib\utils\slotted\Child.svelte (Expected: childDemoValues)`
-- `src\lib\utils\slotted\Slotted.svelte (Expected: slottedDemoValues)`
-- `src\lib\utils\stylesheet\StyleSheet.svelte (Expected: styleSheetDemoValues)`
+_None_
 
 ### PostCss
 **Fix:** Add `lang="postcss"` to the component's `<style>` tag.
@@ -351,59 +314,25 @@ _None_
 - `src\lib\base\avatar\Avatar.svelte (contains external CSS import)`
 - `src\lib\base\backdrop\Backdrop.svelte (contains external CSS import)`
 - `src\lib\base\badge\Badge.svelte (contains external CSS import)`
-- `src\lib\base\box\Box.svelte (contains external CSS import)`
 - `src\lib\base\breadCrumb\BreadCrumb.svelte (contains external CSS import)`
 - `src\lib\base\cartouche\Cartouche.svelte (contains external CSS import)`
 - `src\lib\base\chipper\Chipper.svelte (contains external CSS import)`
 - `src\lib\base\columner\Columner.svelte (contains external CSS import)`
 - `src\lib\base\contentSwitcher\ContentSwitcher.svelte (contains external CSS import)`
-- `src\lib\base\debug\Debug.svelte (contains external CSS import)`
-- `src\lib\base\demoer\DemoerContent.svelte (contains external CSS import)`
-- `src\lib\base\divider\Divider.svelte (contains external CSS import)`
-- `src\lib\base\icon\Icon.svelte (contains external CSS import)`
-- `src\lib\base\paper\Paper.svelte (contains external CSS import)`
-- `src\lib\base\titleBar\TitleBar.svelte (contains external CSS import)`
-- `src\lib\controls\autocomplete\AutoComplete.svelte (contains external CSS import)`
-- `src\lib\controls\button\Button.svelte (contains external CSS import)`
-- `src\lib\controls\buttonAction\ButtonAction.svelte (contains external CSS import)`
-- `src\lib\controls\buttonIcon\ButtonIcon.svelte (contains external CSS import)`
-- `src\lib\controls\buttonMenu\ButtonMenu.svelte (contains external CSS import)`
-- `src\lib\controls\checkbox\Checkbox.svelte (contains external CSS import)`
-- `src\lib\controls\confirm\Confirm.svelte (contains external CSS import)`
-- `src\lib\controls\inplaceedit\InPlaceEdit.svelte (contains external CSS import)`
-- `src\lib\controls\progress\Progress.svelte (contains external CSS import)`
-- `src\lib\controls\rating\Rating.svelte (contains external CSS import)`
-- `src\lib\controls\select\Select.svelte (contains external CSS import)`
-- `src\lib\controls\slider\Slider.svelte (contains external CSS import)`
-- `src\lib\controls\stepper\Stepper.svelte (contains external CSS import)`
-- `src\lib\controls\switch\Switch.svelte (contains external CSS import)`
-- `src\lib\controls\textfield\TextField.svelte (contains external CSS import)`
 - `src\lib\data\dataList\DataList.svelte (contains external CSS import)`
 - `src\lib\data\finder\Finder.svelte (contains external CSS import)`
 - `src\lib\data\grouper\Grouper.svelte (contains external CSS import)`
 - `src\lib\data\jsoner\Jsoner.svelte (contains external CSS import)`
 - `src\lib\data\list\List.svelte (contains external CSS import)`
-- `src\lib\data\loader\Loader.svelte (contains external CSS import)`
 - `src\lib\data\sorter\Sorter.svelte (contains external CSS import)`
 - `src\lib\data\sorter\Sorterer.svelte (contains external CSS import)`
-- `src\lib\navigation\drawer\Drawer.svelte (contains external CSS import)`
 - `src\lib\navigation\tabs\Tabs.svelte (contains external CSS import)`
 - `src\lib\ui\bootstrapp\BootStrApp.svelte (contains external CSS import)`
 - `src\lib\ui\chromeFrame\ChromeFrame.svelte (contains external CSS import)`
 - `src\lib\ui\frame\Frame.svelte (contains external CSS import)`
 - `src\lib\ui\login\Login.svelte (contains external CSS import)`
-- `src\lib\ui\marquee\Marquee.svelte (contains external CSS import)`
 - `src\lib\ui\menu\Menu.svelte (contains external CSS import)`
-- `src\lib\ui\menuList\MenuList.svelte (contains external CSS import)`
 - `src\lib\ui\panel\Panel.svelte (contains external CSS import)`
 - `src\lib\ui\popper\Popper.svelte (contains external CSS import)`
 - `src\lib\ui\startMenu\BootMenu.svelte (contains external CSS import)`
-- `src\lib\ui\taskbar\Taskbar.svelte (contains external CSS import)`
-- `src\lib\ui\themeswitcher\ThemeSwitcher.svelte (contains external CSS import)`
-- `src\lib\ui\toast\Toast.svelte (contains external CSS import)`
-- `src\lib\ui\toggleBar\ToggleBar.svelte (contains external CSS import)`
-- `src\lib\ui\toolBar\ToolBar.svelte (contains external CSS import)`
-- `src\lib\ui\tree\Tree.svelte (contains external CSS import)`
-- `src\lib\ui\window\Window.svelte (contains external CSS import)`
-- `src\lib\utils\css\Css.svelte (contains external CSS import)`
 

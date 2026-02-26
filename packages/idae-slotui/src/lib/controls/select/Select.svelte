@@ -124,5 +124,16 @@ const show = (visible: boolean) => (event) => {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './select.css';
+
+	:root {
+		--select-background-color: var(--sld-color-background);
+		--select-radius: var(--sld-radius-small);
+	}
+
+	.select {
+		background-color: var(--select-background-color);
+		height: 160px;
+		width: 160px;
+		border-radius: var(--select-radius);
+	}
 </style>

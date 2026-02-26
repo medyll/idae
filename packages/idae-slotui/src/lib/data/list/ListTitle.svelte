@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type Props = any;
+</script>
+
 <script lang="ts">
 	import MenuListTitle from '$lib/ui/menuList/MenuListTitle.svelte';
 	import type { MenuListItemProps } from '$lib/ui/menuList/types.js';

@@ -85,5 +85,24 @@ export type ToggleBarProps = CommonProps & {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-		@import './toggle-bar.css';
+
+	:root {
+		--toggle-bar-padding: var(--sld-commandbar-padding, var(--box-density-1));
+		--toggle-bar-border-bottom: var(--sld-topbar-border-bottom-color, var(--sld-color-border));
+		--toggle-bar-gap: var(--sld-commandbar-gap, var(--sld-pad-tiny));
+		--toggle-bar-icon-padding: var(--sld-pad-medium);
+		--toggle-bar-title-font-weight: 500;
+		--toggle-bar-title-content-font-size: 18px;
+	}
+
+	.toggle-bar {
+		padding: var(--toggle-bar-padding);
+		display: flex;
+		border-bottom: var(--toggle-bar-border-bottom);
+		width: 100%;
+		max-width: 100%;
+		min-width: auto;
+		position: relative;
+		gap: var(--toggle-bar-gap);
+	}
 </style>

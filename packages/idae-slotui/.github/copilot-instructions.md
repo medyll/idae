@@ -71,5 +71,6 @@ References
 - Slotted helper: [src/lib/utils/slotted/Slotted.svelte](src/lib/utils/slotted/Slotted.svelte)
 - Export generator: [scripts/make-export.js](scripts/make-export.js)
 - Migration rules: [MIGRATION.md](MIGRATION.md)
+- shadcn component compliance specifications: [SHACDN_SPECS.md](SHACDN_SPECS.md)
 
 Last updated: February 2026
