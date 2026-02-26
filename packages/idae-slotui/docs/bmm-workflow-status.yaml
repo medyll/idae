@@ -30,3 +30,14 @@ recommended_next: "create-prd"
 notes: |
   - For Level 2 projects PRD and Architecture are recommended/required.
   - Use bmad helpers to update this file programmatically.
+  - Standards: docs/SHADCNSVELTE_GUIDELINES.md adopted for component implementation.
+
+standards:
+  shadcn_svelte:
+    path: docs/SHADCNSVELTE_GUIDELINES.md
+    status: adopted
+    applied_to: "src/lib/"
+registry:
+  present: true
+  local_path: registry/registry.json
+  public_url: "https://example.org/registry.json"

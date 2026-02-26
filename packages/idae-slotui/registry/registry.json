@@ -1,0 +1,24 @@
+{
+  "name": "idae-slotui-svelte-registry",
+  "version": "1.0.0",
+  "components": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "files": [
+        { "path": "registry/ui/button.svelte", "type": "registry:ui" }
+      ],
+      "dependencies": ["@iconify/svelte"],
+      "registryDependencies": []
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "files": [
+        { "path": "registry/ui/card.svelte", "type": "registry:ui" }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    }
+  ]
+}

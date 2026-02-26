@@ -1,0 +1,8 @@
+{
+  "name": "button",
+  "title": "Button",
+  "description": "Headless button primitive (Svelte 5) compatible with Bits UI / shadcn-svelte.",
+  "files": ["registry/ui/button.svelte"],
+  "dependencies": ["@iconify/svelte"],
+  "keywords": ["button", "primitive", "shadcn", "bits-ui"]
+}

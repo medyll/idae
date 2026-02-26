@@ -14,3 +14,14 @@ notes: |
 
 templates_used:
   - config/project-config.template.yaml
+
+standards:
+  shadcn_svelte:
+    path: docs/SHADCNSVELTE_GUIDELINES.md
+    adopted: true
+    notes: "Follow Bits UI / shadcn-svelte patterns for Svelte 5 components"
+
+registry:
+  local_path: registry/registry.json
+  public_url: "https://example.org/registry.json" # replace with your hosted registry URL when available
+  note: "This project exposes a shadcn-compatible registry to allow component 'copy into project' workflows."
