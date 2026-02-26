@@ -53,5 +53,17 @@ export type ColumnerProps = Record<string, unknown>;
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './columner.css';
+
+	:root {
+		--columner-gap: 1rem;
+	}
+
+	.columner {
+		display: flex;
+		flex-direction: row;
+		gap: var(--columner-gap);
+	}
+	.columner.vertical {
+		flex-direction: column;
+	}
 </style>

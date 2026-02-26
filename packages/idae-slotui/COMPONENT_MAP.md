@@ -48,30 +48,30 @@ node ./scripts/make-component-maps.js
 | File | Int. | Ext. | Type | File | Demo | PostCss | Ref | Css | Sc. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **BASE** |  |  |  |  |  |  |  |  | |
-| `src\lib\base\alert\Alert.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\alert\Alert.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\alert\AlertButtonClose.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\alert\AlertButtonZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\alert\AlertMessage.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\alert\AlertTopButton.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\avatar\Avatar.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\avatar\Avatar.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\avatar\AvatarBadge.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\backdrop\Backdrop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\backdrop\Backdrop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\backdrop\BackdropLoading.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\badge\Badge.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\badge\Badge.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\box\Box.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\box\BoxBottomZone.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\box\TitleBarIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\box\TitleBarTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\breadCrumb\BreadCrumb.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\base\cartouche\Cartouche.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\breadCrumb\BreadCrumb.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
+| `src\lib\base\cartouche\Cartouche.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\cartouche\CartoucheButtons.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\cartouche\CartoucheIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\cartouche\CartouchePrimary.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\cartouche\CartoucheSecondary.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\chipper\Chipper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
+| `src\lib\base\chipper\Chipper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\base\chipper\ChipperChip.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\columner\BottomSlot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\columner\Columner.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\columner\Columner.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\columner\ColumnerCol.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\columner\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcher.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
@@ -219,8 +219,8 @@ node ./scripts/make-component-maps.js
 
 
 ## Global Compliance Index
-**Score: 97.3%**
-`███████████████████░` (895/920 passed)
+**Score: 98.2%**
+`███████████████████░` (903/920 passed)
 
 ---
 
@@ -264,14 +264,6 @@ _None_
 ### Css
 **Fix:** Remove external `[component-name].css` imports from the component style.
 
-- `src\lib\base\alert\Alert.svelte (contains external CSS import)`
-- `src\lib\base\avatar\Avatar.svelte (contains external CSS import)`
-- `src\lib\base\backdrop\Backdrop.svelte (contains external CSS import)`
-- `src\lib\base\badge\Badge.svelte (contains external CSS import)`
-- `src\lib\base\breadCrumb\BreadCrumb.svelte (contains external CSS import)`
-- `src\lib\base\cartouche\Cartouche.svelte (contains external CSS import)`
-- `src\lib\base\chipper\Chipper.svelte (contains external CSS import)`
-- `src\lib\base\columner\Columner.svelte (contains external CSS import)`
 - `src\lib\base\contentSwitcher\ContentSwitcher.svelte (contains external CSS import)`
 - `src\lib\data\dataList\DataList.svelte (contains external CSS import)`
 - `src\lib\data\finder\Finder.svelte (contains external CSS import)`

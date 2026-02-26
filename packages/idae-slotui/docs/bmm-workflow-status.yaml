@@ -1,0 +1,32 @@
+project: "@medyll/idae-slotui-svelte"
+display_name: "idae-slotui-svelte"
+created_at: "2026-02-26"
+
+phases:
+  analysis:
+    description: "Research, product brief and brainstorming"
+    status: not_started
+    artifacts: []
+
+  planning:
+    prd:
+      required: true
+      status: not_started
+    tech_spec:
+      required: false
+      status: not_started
+
+  solutioning:
+    architecture:
+      required: true
+      status: not_started
+
+  implementation:
+    sprint_planning:
+      status: not_started
+
+recommended_next: "create-prd"
+
+notes: |
+  - For Level 2 projects PRD and Architecture are recommended/required.
+  - Use bmad helpers to update this file programmatically.

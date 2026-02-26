@@ -48,6 +48,28 @@ export interface BadgeProps extends CommonProps {
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './badge.css';
+	@reference "tailwindcss";
+
+	:root {
+		--badge-radius: var(--sld-radius-pill);
+		--badge-bg: var(--sld-color-badge-bg);
+		--badge-color: var(--sld-color-badge-text);
+		--badge-padding: 0.25em 0.75em;
+		--badge-font-size: 0.85em;
+		--badge-color-border: var(--sld-color-border);
+	}
+
+	.badge {
+		position: absolute;
+		border-radius: 50%;
+		border: 1px solid var(--badge-color-border);
+		display: grid;
+		place-items: center;
+		width: 16px;
+		height: 16px;
+	}
+
+	.badge .hidden {
+		transform: scale(0, 0);
+	}
 </style>
