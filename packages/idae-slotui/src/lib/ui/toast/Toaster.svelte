@@ -4,7 +4,7 @@ called automatically
 -->
 <script module lang="ts">
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type ToasterProps = Record<string, unknown>;
 </script>
 
 <script lang="ts">

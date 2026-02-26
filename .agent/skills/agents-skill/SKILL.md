@@ -55,14 +55,9 @@ brew install bash
 
 # Or add to PATH (optional)
 export PATH="/opt/homebrew/bin:$PATH"
-```
 
-The scripts will detect incompatible Bash versions and exit with a helpful error message.
-
-## CRITICAL: Full Verification Required
 
 **NEVER trust existing AGENTS.md content as accurate.** Always verify documented information against the actual codebase:
-
 ### Mandatory Verification Steps
 
 1. **Extract actual state from source files:**

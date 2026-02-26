@@ -36,14 +36,14 @@ node ./scripts/make-component-maps.js
 - **Sc.**: Snippet component.
 
 ### Fixes
-- **Int.:** Add the component [Component]Props definition inside a `<script module>` tag.
+- **Int.:** Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
 - **Ext.:** Remove the import from `./types`.
-- **Type:** Delete the `ComponentProps` from `types.ts`.
+- **Type:** Delete the `[Component]Props` from `types.ts`.
 - **File:** Create the `types.ts` file with `export {};`.
-- **Demo:** Export the missing `componentDemoValues` from `types.ts`.
+- **Demo:** Export the missing `[Component]DemoValues` from `types.ts`.
 - **PostCss:** Add `lang="postcss"` to the component's `<style>` tag.
 - **Ref:** Add `@reference "tailwindcss"` to the style content.
-- **Css:** Remove external `.css` imports from the component style.
+- **Css:** Remove external `[component-name].css` imports from the component style.
 
 | File | Int. | Ext. | Type | File | Demo | PostCss | Ref | Css | Sc. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -71,14 +71,14 @@ node ./scripts/make-component-maps.js
 | `src\lib\base\chipper\Chipper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\chipper\ChipperChip.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\columner\BottomSlot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\columner\Columner.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\base\columner\Columner.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\base\columner\ColumnerCol.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\columner\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcher.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherBackIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\contentSwitcher\ContentSwitcherTogglerIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\base\debug\Debug.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\base\debug\Debug.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\base\demoer\Demoer.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\base\demoer\DemoerCode.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\base\demoer\DemoerComponent.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -131,9 +131,9 @@ node ./scripts/make-component-maps.js
 | `src\lib\data\finder\Finder.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\data\grouper\Grouper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\data\jsoner\Jsoner.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\data\list\List.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\data\list\ListItem.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\data\list\ListTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\data\list\List.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\data\list\ListItem.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\data\list\ListTitle.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\data\loader\Loader.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\data\loader\LoaderEmpty.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\data\loader\LoaderError.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -153,15 +153,15 @@ node ./scripts/make-component-maps.js
 | `src\lib\navigation\drawer\DrawerTop.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\navigation\tabs\Tabs.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | **STYLES** |  |  |  |  |  |  |  |  | |
-| `src\lib\styles\slotuisheet\SlotuiSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\styles\slotuisheet\SlotuiSheet.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | **UI** |  |  |  |  |  |  |  |  | |
-| `src\lib\ui\bootstrapp\BootStrApp.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\ui\bootstrapp\BootStrApp.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\chromeFrame\ChromeFrame.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\chromeFrame\ChromeFrameList.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\ui\explorer\Explorer.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\explorer\Explorer.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\frame\Frame.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
-| `src\lib\ui\header\Header.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\header\Header.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\login\Login.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\login\LoginAvatar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\login\LoginAvatarRoot.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -170,11 +170,11 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\marquee\Marquee.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\marquee\MarqueeChildren.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\menu\Menu.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
-| `src\lib\ui\menu\MenuItem.svelte` | ❌ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\ui\menu\MenuTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\menu\MenuItem.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\menu\MenuTitle.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\menuList\MenuList.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
 | `src\lib\ui\menuList\MenuListItem.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\ui\menuList\MenuListTitle.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\menuList\MenuListTitle.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\panel\Panel.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\panel\PanelButtonNext.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\panel\PanelButtonPrevious.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
@@ -185,15 +185,15 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\popper\Popper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ❌ | [snippet] |
 | `src\lib\ui\preview\Preview.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\preview\PreviewZoom.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\serviceBox\ServiceBox.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\ui\startMenu\BootMenu.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
+| `src\lib\ui\serviceBox\ServiceBox.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\startMenu\BootMenu.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |  |
 | `src\lib\ui\taskbar\Taskbar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\ui\taskbar\TaskBarContent.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\taskbar\TaskBarContent.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\taskbar\TaskBarLeft.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\taskbar\TaskBarRight.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
-| `src\lib\ui\themeswitcher\ThemeSwitcher.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\ui\themeswitcher\ThemeSwitcher.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 | `src\lib\ui\toast\Toast.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
-| `src\lib\ui\toast\Toaster.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\ui\toast\Toaster.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
 | `src\lib\ui\toggleBar\ContentSwitcherIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\toggleBar\ContentSwitcherReveal.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\ui\toggleBar\ToggleBar.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ✅ | ✅ | ✅ | [snippet] |
@@ -208,29 +208,27 @@ node ./scripts/make-component-maps.js
 | `src\lib\ui\window\WindowIcon.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | **UTILS** |  |  |  |  |  |  |  |  | |
 | `src\lib\utils\content\Content.svelte` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\utils\contextRooter\ContextRooter.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
-| `src\lib\utils\css\Css.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\utils\looper\Looper.svelte` | ❌ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
+| `src\lib\utils\contextRooter\ContextRooter.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ─ | ─ | ─ |  |
+| `src\lib\utils\css\Css.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\looper\Looper.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\utils\looper\LoopGroupTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\utils\looper\LoopTitle.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\utils\slotted\Child.svelte` | ✅ | ✅ | ─ | ✅ | ✅ | ─ | ─ | ─ | [snippet] |
 | `src\lib\utils\slotted\Slotted.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
-| `src\lib\utils\stylesheet\StyleSheet.svelte` | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
+| `src\lib\utils\stylesheet\StyleSheet.svelte` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 
 
 ## Global Compliance Index
-**Score: 92.1%**
-`██████████████████░░` (847/920 passed)
+**Score: 94.5%**
+`██████████████████░░` (869/920 passed)
 
 ---
 
 ## Error Report (❌ Items)
 
 ### Int.
-**Fix:** Add the component [Component]Props definition inside a `<script module>` tag.
+**Fix:** Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.
 
-- `src\lib\base\columner\Columner.svelte`
-- `src\lib\base\debug\Debug.svelte`
 - `src\lib\base\demoer\Demoer.svelte`
 - `src\lib\base\demoer\DemoerComponent.svelte`
 - `src\lib\base\demoer\DemoerContent.svelte`
@@ -238,26 +236,6 @@ node ./scripts/make-component-maps.js
 - `src\lib\base\icon\Icon.svelte`
 - `src\lib\base\titleBar\TitleBarIcon.svelte`
 - `src\lib\base\titleBar\TitleBarTitle.svelte`
-- `src\lib\data\list\List.svelte`
-- `src\lib\data\list\ListItem.svelte`
-- `src\lib\data\list\ListTitle.svelte`
-- `src\lib\styles\slotuisheet\SlotuiSheet.svelte`
-- `src\lib\ui\bootstrapp\BootStrApp.svelte`
-- `src\lib\ui\chromeFrame\ChromeFrameButtonList.svelte`
-- `src\lib\ui\explorer\Explorer.svelte`
-- `src\lib\ui\header\Header.svelte`
-- `src\lib\ui\menu\MenuItem.svelte`
-- `src\lib\ui\menu\MenuTitle.svelte`
-- `src\lib\ui\menuList\MenuListTitle.svelte`
-- `src\lib\ui\serviceBox\ServiceBox.svelte`
-- `src\lib\ui\startMenu\BootMenu.svelte`
-- `src\lib\ui\taskbar\TaskBarContent.svelte`
-- `src\lib\ui\themeswitcher\ThemeSwitcher.svelte`
-- `src\lib\ui\toast\Toaster.svelte`
-- `src\lib\utils\contextRooter\ContextRooter.svelte`
-- `src\lib\utils\css\Css.svelte`
-- `src\lib\utils\looper\Looper.svelte`
-- `src\lib\utils\stylesheet\StyleSheet.svelte`
 
 ### Ext.
 **Fix:** Remove the import from `./types`.
@@ -265,7 +243,7 @@ node ./scripts/make-component-maps.js
 _None_
 
 ### Type
-**Fix:** Delete the `ComponentProps` from `types.ts`.
+**Fix:** Delete the `[Component]Props` from `types.ts`.
 
 - `src\lib\base\alert\Alert.svelte`
 - `src\lib\base\badge\Badge.svelte`
@@ -293,7 +271,7 @@ _None_
 _None_
 
 ### Demo
-**Fix:** Export the missing `componentDemoValues` from `types.ts`.
+**Fix:** Export the missing `[Component]DemoValues` from `types.ts`.
 
 _None_
 
@@ -308,7 +286,7 @@ _None_
 _None_
 
 ### Css
-**Fix:** Remove external `.css` imports from the component style.
+**Fix:** Remove external `[component-name].css` imports from the component style.
 
 - `src\lib\base\alert\Alert.svelte (contains external CSS import)`
 - `src\lib\base\avatar\Avatar.svelte (contains external CSS import)`

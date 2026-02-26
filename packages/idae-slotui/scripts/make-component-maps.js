@@ -64,7 +64,7 @@ const COLUMNS = [
     key: 'internal',
     label: 'Int.',
     legend: '**Int.** (Internal): The `[Component]Props` type must be used within the Svelte component body.',
-    fix: 'Add the component [Component]Props definition inside a `<script module>` tag.',
+    fix: 'Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file.',
     consoleFix: 'Add [Component]Props to <script module>. Do not make "export type Props = any", verify if [Component]Props is already in the component file',
     validator: ({ bodyOnly, typeName }) =>
       new RegExp(`\\b${typeName}\\b`).test(bodyOnly) ? '✅' : '❌',
@@ -82,8 +82,8 @@ const COLUMNS = [
     key: 'type',
     label: 'Type',
     legend: '**Type**: The `Props` type must **not** be declared in the `types.ts` file.',
-    fix: 'Delete the `ComponentProps` from `types.ts`.',
-    consoleFix: 'Delete Props from types.ts',
+    fix: 'Delete the `[Component]Props` from `types.ts`.',
+    consoleFix: 'Delete [Component]Props from types.ts',
     validator: ({ isSnippet, typesContent, typeName }) => {
       if (isSnippet) return '─';
       if (!typesContent) return '✅';
@@ -95,15 +95,15 @@ const COLUMNS = [
     label: 'File',
     legend: '**File**: The `types.ts` file must exist in the component folder.',
     fix: 'Create the `types.ts` file with `export {};`.',
-    consoleFix: "Create types.ts with 'export {}'",
+    consoleFix: "Create the `types.ts` file with `export {};`",
     validator: ({ typesContent }) => typesContent !== null ? '✅' : '❌',
   },
   {
     key: 'demo',
     label: 'Demo',
     legend: '**Demo**: `[component]DemoValues` must be exported from `types.ts`.',
-    fix: 'Export the missing `componentDemoValues` from `types.ts`.',
-    consoleFix: 'Export componentDemoValues from types.ts',
+    fix: 'Export the missing `[Component]DemoValues` from `types.ts`.',
+    consoleFix: 'Export the missing `[Component]DemoValues` from `types.ts`.',
     validator: ({ typesContent, dPascal, dCamel }) => {
       if (!typesContent) return '❌';
       return new RegExp(`export\\s+(?:const|let|var)\\s+(${dPascal}|${dCamel})\\b`).test(typesContent) ? '✅' : '❌';
@@ -115,7 +115,7 @@ const COLUMNS = [
     label: 'PostCss',
     legend: '**PostCss**: Component must use `lang="postcss"` on at least one `<style>` tag when a style is present.',
     fix: 'Add `lang="postcss"` to the component\'s `<style>` tag.',
-    consoleFix: 'Add lang="postcss" to the <style> tag',
+    consoleFix: 'Add `lang="postcss"` to the component\'s `<style>` tag.',
     validator: ({ styleMatches }) => {
       if (!styleMatches.length) return '─';
       return styleMatches.some(m => /\blang\s*=\s*(['"])postcss\1/i.test(m[1] || '')) ? '✅' : '❌';
@@ -136,8 +136,8 @@ const COLUMNS = [
     key: 'css',
     label: 'Css',
     legend: '**Css**: The `<style>` must NOT import external `.css` files or use `url(...)` (presence = ❌).',
-    fix: 'Remove external `.css` imports from the component style.',
-    consoleFix: 'Remove @import of external .css or replace with postcss workflow',
+    fix: 'Remove external `[component-name].css` imports from the component style.',
+    consoleFix: 'Remove external `[component-name].css` imports from the component style.',
     validator: ({ styleMatches }) => {
       if (!styleMatches.length) return '─';
       return styleMatches.some(m => /@import\s+url\([^)]*\)|@import\s+['"][^'"]+\.css['"]|@use\s+['"][^'"]+\.css['"]/i.test(m[2] || '')) ? '❌' : '✅';

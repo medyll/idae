@@ -28,7 +28,7 @@ export type LoopProps<T> = CommonProps & {
 	loopGroupTitle?: Snippet<[{ key: any; data: T[]; idx: number }]>;
 };
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type LooperProps = Record<string, unknown>;
 </script>
 <script lang="ts" generics="T= Data">
 		import type { Data } from '$lib/types/index.js';

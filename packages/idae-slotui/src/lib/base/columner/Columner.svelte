@@ -29,7 +29,7 @@ export interface ColumnType {
 }
 
 // Module-level Props marker for migration tooling
-export type Props = any;
+export type ColumnerProps = Record<string, unknown>;
 </script>
 <script lang="ts">
 		import type { ExpandProps } from '$lib/types/index.js';

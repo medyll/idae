@@ -2,12 +2,19 @@
 name: webapp-testing
 description: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
 license: Complete terms in LICENSE.txt
+argument-hint: "Ask to test or debug a web application using Playwright."
+compatibility:
+  - mcp_v1
+disable-model-invocation: false
+metadata:
+  version: "1.0.0"
+  author: medyll
+user-invokable: true
 ---
 
 # Web Application Testing
 
 To test local web applications, write native Python Playwright scripts.
-
 **Helper Scripts Available**:
 - `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
 

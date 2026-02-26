@@ -1,5 +1,5 @@
 <script module lang="ts">
-export type Props = any;
+export type ListProps = Record<string, unknown>;
 </script>
 
 <script lang="ts">
