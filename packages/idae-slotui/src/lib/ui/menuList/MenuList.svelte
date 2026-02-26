@@ -181,6 +181,6 @@ export type MenuListProps<T = Data> = CommonProps & {
 </ul>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 	@import './menu-list.css';
 </style>

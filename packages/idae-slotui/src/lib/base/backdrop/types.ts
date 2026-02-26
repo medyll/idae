@@ -54,3 +54,6 @@ export const BackdropDemoValues: DemoerStoryProps<BackdropProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(BackdropDemoValues);
+
+// Placeholder demo export for Backdrop loading slot
+export const backdropLoadingDemoValues: DemoerStoryProps<any> = {};

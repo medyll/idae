@@ -115,5 +115,6 @@ export type IconAppProps = {
 {/key}
 
 <style global lang="postcss">
+  @reference "tailwindcss";
   @import './icon.css';
 </style>

@@ -1,3 +1,5 @@
+export const switchDemoValues = {};
+export const switchLabelDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { Data } from '$lib/types/index.js';

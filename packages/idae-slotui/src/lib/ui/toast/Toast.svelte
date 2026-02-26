@@ -93,6 +93,6 @@ export type ToastType = {
 </Box>
 
 <style lang="postcss">
-	@reference "tailwindcss"
-	@import './toast.css';
+ 	@reference "tailwindcss";
+ 	@import './toast.css';
 </style>

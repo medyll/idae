@@ -132,5 +132,6 @@ export const actions = {
 {/if}
 
 <style global lang="postcss">
-  @import './login.css';
+	@reference "tailwindcss";
+	@import './login.css';
 </style>

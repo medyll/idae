@@ -134,5 +134,6 @@ $effect(() => {
 {/key}
 
 <style global lang="postcss">
-  @import './loader.css';
+	@reference "tailwindcss";
+	@import './loader.css';
 </style>

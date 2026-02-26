@@ -60,6 +60,7 @@
 </div>
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	.column {

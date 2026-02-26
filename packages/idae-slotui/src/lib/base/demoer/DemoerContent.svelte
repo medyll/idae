@@ -170,5 +170,6 @@
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './demoer.css';
 </style>

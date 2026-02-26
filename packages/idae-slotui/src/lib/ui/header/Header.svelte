@@ -31,6 +31,7 @@
 </div>-->
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	.header {
 		color: #333;
 		box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);

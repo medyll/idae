@@ -79,6 +79,7 @@ let chevron = $derived(disabled ? 'fluent:chevron-up-20-regular' : 'fluent:chevr
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import '../button/button.css';
 	@import './button-menu.css';
 </style>

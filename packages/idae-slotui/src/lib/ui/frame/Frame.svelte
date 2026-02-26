@@ -88,5 +88,6 @@
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './frame.css';
 </style>

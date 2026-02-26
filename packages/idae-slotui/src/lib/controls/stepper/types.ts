@@ -1,3 +1,4 @@
+export const stepperDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { orientation, type CommonProps, type Data } from '$lib/types/index.js';

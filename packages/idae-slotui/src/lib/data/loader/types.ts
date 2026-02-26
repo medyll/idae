@@ -97,3 +97,9 @@ const loaderDemoValues: DemoerStoryProps<LoaderProps> = {
 };
 
 export const { parameters, componentArgs } = demoerArgs(loaderDemoValues);
+
+export const loaderEmptyDemoValues = {};
+export const loaderErrorDemoValues = {};
+export const loaderLoadingDemoValues = {};
+export const loaderMessageDemoValues = {};
+export const loaderSuccessDemoValues = {};

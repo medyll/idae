@@ -292,5 +292,6 @@ let {
 {/if}
 
 <style global lang="postcss">
-  @import './datalist.css';
+	@reference "tailwindcss";
+	@import './datalist.css';
 </style>

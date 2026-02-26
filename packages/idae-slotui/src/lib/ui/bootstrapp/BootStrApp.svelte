@@ -28,7 +28,8 @@
 </svelte:head>
 
 <style global lang="postcss">
-  @import './BootStrApp.css';
+	@reference "tailwindcss";
+	@import './BootStrApp.css';
 </style>
 
 <Login showLogin={false}>

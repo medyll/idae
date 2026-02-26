@@ -15,6 +15,7 @@
 </script>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './debug.css';
 </style>
 

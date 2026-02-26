@@ -45,3 +45,7 @@ export type SorterProps = {
 
 	children?: Snippet<[ButtonProps]>;
 };
+
+export const SorterDemoValues = {};
+
+export const sortererDemoValues = {};

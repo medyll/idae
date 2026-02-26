@@ -60,5 +60,6 @@ let chevron = 'fluent:chevron-down-20-regular';
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import '../button/button.css';
 </style>

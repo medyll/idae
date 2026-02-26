@@ -202,5 +202,6 @@ onDestroy(() => {
 </div>
 
 <style global lang="postcss">
-  @import './confirm.css';
+	@reference "tailwindcss";
+	@import './confirm.css';
 </style>

@@ -95,5 +95,6 @@
 {/if}
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './marquee.css';
 </style>

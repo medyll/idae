@@ -327,6 +327,6 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {/if} -->
 
 <style global lang="postcss">
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 	@import './window.css';
 </style>

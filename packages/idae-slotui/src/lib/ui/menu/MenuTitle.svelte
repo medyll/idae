@@ -8,5 +8,6 @@
 <MenuItem {...rest} class="menuTitle" />
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@use './menu.scss';
 </style>

@@ -1,3 +1,5 @@
+export const toastDemoValues = {};
+export const toasterDemoValues = {};
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet, SvelteComponent } from 'svelte';
 

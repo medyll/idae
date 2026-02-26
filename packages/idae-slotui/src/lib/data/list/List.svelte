@@ -7,7 +7,8 @@
 </script>
 
 <style global lang="postcss">
-  @import './list.css';
+	@reference "tailwindcss";
+	@import './list.css';
 </style>
 
 <MenuList

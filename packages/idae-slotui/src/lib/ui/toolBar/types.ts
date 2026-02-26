@@ -1,3 +1,5 @@
+export const toolBarDemoValues = {};
+export const toolbarSeparatorDemoValues = {};
 import type { CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 

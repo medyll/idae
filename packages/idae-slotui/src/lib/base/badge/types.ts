@@ -10,3 +10,7 @@ export interface BadgeProps extends CommonProps {
 	 */
 	position: { x: 'left' | 'right' | 'center'; y: 'top' | 'bottom' | 'center' };
 }
+
+// Placeholder demo export for Badge
+import type { DemoerStoryProps } from "../demoer/types.js";
+export const badgeDemoValues: DemoerStoryProps<any> = {};

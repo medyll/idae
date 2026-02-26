@@ -55,5 +55,6 @@ export interface ChipperProps extends CommonProps {
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './chipper.css';
 </style>

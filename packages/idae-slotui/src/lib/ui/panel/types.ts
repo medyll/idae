@@ -1,3 +1,10 @@
+export const panelDemoValues = {};
+export const panelButtonNextDemoValues = {};
+export const panelButtonPreviousDemoValues = {};
+export const panelerDemoValues = {};
+export const panelGridDemoValues = {};
+export const panelGridZoomDemoValues = {};
+export const panelSlideDemoValues = {};
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { Writable } from 'svelte/store';

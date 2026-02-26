@@ -62,5 +62,6 @@ export type TitleBarProps = {
 </div>
 
 <style global lang="postcss">
-  @import './titleBar.css';
+	@reference "tailwindcss";
+	@import './titleBar.css';
 </style>

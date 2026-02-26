@@ -100,6 +100,6 @@
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 	@import './boot-menu.css';
 </style>

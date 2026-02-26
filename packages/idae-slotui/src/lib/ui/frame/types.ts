@@ -1,3 +1,4 @@
+export const frameDemoValues = {};
 import { type Drawer } from "$lib/index.js";
 import {
   demoerArgs,

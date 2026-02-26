@@ -38,5 +38,6 @@ export type PaperProps = CommonProps & {
 </div>
 
 <style global lang="postcss">
-  @import './paper.css';
+	@reference "tailwindcss";
+	@import './paper.css';
 </style>

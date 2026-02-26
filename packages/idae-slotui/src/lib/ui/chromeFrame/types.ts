@@ -1,3 +1,6 @@
+export const chromeFrameDemoValues = {};
+export const chromeFrameButtonListDemoValues = {};
+export const chromeFrameListDemoValues = {};
 /** @deprecated use IChromeOptionsFrameArgs instead */
 export type IChromeOptionsArgs<T = Record<string, any>> = {};
 

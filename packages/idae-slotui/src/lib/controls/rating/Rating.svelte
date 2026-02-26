@@ -70,5 +70,6 @@ const title = `${scored} / ${ratingBase}`;
 </div>
 
 <style global lang="postcss">
-  @import './rating.css';
+	@reference "tailwindcss";
+	@import './rating.css';
 </style>

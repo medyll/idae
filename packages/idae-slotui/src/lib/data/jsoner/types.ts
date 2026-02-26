@@ -7,3 +7,5 @@ export type JsonerProps = CommonProps & {
 	/** The mode of the data */
 	mode?: 'array' | 'object' | 'string' | 'number';
 };
+
+export const JsonerDemoValues = {};

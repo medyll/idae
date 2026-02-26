@@ -36,3 +36,7 @@ export const titleBarDemoValues: DemoerStoryProps<TitleBarProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(titleBarDemoValues);
+
+// Placeholder demo exports for titlebar slot components
+export const titleBarIconDemoValues: DemoerStoryProps<any> = {};
+export const titleBarTitleDemoValues: DemoerStoryProps<any> = {};

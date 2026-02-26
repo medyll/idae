@@ -50,5 +50,6 @@ export type ButtonIconProps = Partial<ButtonProps> & {
 </Button>
 
 <style global lang="postcss">
-  @import '../button/button.css';
+	@reference "tailwindcss";
+	@import '../button/button.css';
 </style>

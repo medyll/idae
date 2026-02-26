@@ -42,3 +42,10 @@ export type DemoerStoryProps<T = Record<string, any>> = {
 		private?: boolean;
 	};
 };
+
+// Placeholder demo exports for demoer-related components
+export const demoerDemoValues: DemoerStoryProps<any> = {};
+export const demoerCodeDemoValues: DemoerStoryProps<any> = {};
+export const demoerComponentDemoValues: DemoerStoryProps<any> = {};
+export const demoerContentDemoValues: DemoerStoryProps<any> = {};
+export const demoPageDemoValues: DemoerStoryProps<any> = {};

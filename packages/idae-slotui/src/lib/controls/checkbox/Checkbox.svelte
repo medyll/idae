@@ -84,5 +84,6 @@ let {
 </label>
 
 <style global lang="postcss">
-  @import './checkbox.css';
+	@reference "tailwindcss";
+	@import './checkbox.css';
 </style>

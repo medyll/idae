@@ -34,6 +34,7 @@
     </pre>
 {/if} 
 	<style lang="postcss">
+	@reference "tailwindcss";
 #breakpoints {
 	position:fixed;
 	top:0;

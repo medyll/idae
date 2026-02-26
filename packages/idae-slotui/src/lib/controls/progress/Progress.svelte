@@ -45,5 +45,6 @@ export type ProgressProps = {
 </div>
 
 <style global lang="postcss">
-  @import './progress.css';
+	@reference "tailwindcss";
+	@import './progress.css';
 </style>

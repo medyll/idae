@@ -71,5 +71,6 @@ let hiddenRef: HTMLInputElement;
 ..
 
 <style global lang="postcss">
-  @import './switch.css';
+	@reference "tailwindcss";
+	@import './switch.css';
 </style>

@@ -1,3 +1,5 @@
+export const autocompleteDemoValues = {};
+export const autoCompleteDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data } from '$lib/types/index.js';

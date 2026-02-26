@@ -4,7 +4,7 @@
 
 <style global lang="postcss">
 	@import './css.css';
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 </style>
 
 {#snippet cssBlock(color)}

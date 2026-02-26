@@ -66,5 +66,6 @@
 />
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './divider.css';
 </style>

@@ -17,3 +17,10 @@ export interface ColumnerColType {
 }
 
 const states = ['expanded', 'equal', 'minimal', 'default'];
+
+// Placeholder demo exports for Columner components
+import type { DemoerStoryProps } from "../demoer/types.js";
+export const bottomSlotDemoValues: DemoerStoryProps<any> = {};
+export const columnerDemoValues: DemoerStoryProps<any> = {};
+export const columnerColDemoValues: DemoerStoryProps<any> = {};
+export const drawerTopDemoValues: DemoerStoryProps<any> = {};

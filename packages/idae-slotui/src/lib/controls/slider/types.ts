@@ -1,3 +1,4 @@
+export const sliderDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { ElementProps, CommonProps } from '$lib/types/index.js';

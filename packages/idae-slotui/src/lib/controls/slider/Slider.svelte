@@ -191,5 +191,6 @@ function getSliderVal(event: Event) {
 </div>
 
 <style global lang="postcss">
-  @import './slider.css';
+	@reference "tailwindcss";
+	@import './slider.css';
 </style>

@@ -238,3 +238,9 @@ const dataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(dataListDemoValues);
+
+export const dataListCellDemoValues = {};
+export const dataListFooterDemoValues = {};
+export const dataListHeadDemoValues = {};
+export const dataListRowDemoValues = {};
+export const groupTitleSlotDemoValues = {};

@@ -10,8 +10,8 @@
 </script>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-  @import './theme-switcher.css';
+		@reference "tailwindcss";
+	@import './theme-switcher.css';
 </style>
 
 <IconButton

@@ -41,6 +41,6 @@ export type TaskbarProps = CommonProps & {
 </div>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 	@import './taskbar.css';
 </style>

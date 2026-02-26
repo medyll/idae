@@ -123,5 +123,6 @@ const show = (visible: boolean) => (event) => {
 </Popper>
 
 <style global lang="postcss">
-  @import './select.css';
+	@reference "tailwindcss";
+	@import './select.css';
 </style>

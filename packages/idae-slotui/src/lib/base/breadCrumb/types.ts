@@ -23,3 +23,7 @@ export interface BreadCrumbProps extends CommonProps {
 	breadList: BreadListType[];
 	element: HTMLElement;
 }
+
+// Placeholder demo export for BreadCrumb
+import type { DemoerStoryProps } from "../demoer/types.js";
+export const breadCrumbDemoValues: DemoerStoryProps<any> = {};

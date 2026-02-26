@@ -67,7 +67,8 @@
 </script>
 
 <style global lang="postcss">
-  @import './autocomplete.css';
+	@reference "tailwindcss";
+	@import './autocomplete.css';
 </style>
 
 <script lang="ts" generics="T">

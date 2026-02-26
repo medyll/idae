@@ -49,5 +49,6 @@ export interface ColumnType {
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './columner.css';
 </style>

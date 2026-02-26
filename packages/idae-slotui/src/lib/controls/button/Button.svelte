@@ -157,5 +157,6 @@ let startRef: HTMLDivElement | undefined = $state<HTMLDivElement | undefined>(un
 </button>
 
 <style global lang="postcss">
-  @import './button.css';
+	@reference "tailwindcss";
+	@import './button.css';
 </style>

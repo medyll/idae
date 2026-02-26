@@ -45,3 +45,9 @@ export const alertDemoValues: DemoerStoryProps<any> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(alertDemoValues);
+
+// Placeholder demo exports for alert subcomponents (non-destructive)
+export const alertButtonCloseDemoValues: DemoerStoryProps<any> = {};
+export const alertButtonZoneDemoValues: DemoerStoryProps<any> = {};
+export const alertMessageDemoValues: DemoerStoryProps<any> = {};
+export const alertTopButtonDemoValues: DemoerStoryProps<any> = {};

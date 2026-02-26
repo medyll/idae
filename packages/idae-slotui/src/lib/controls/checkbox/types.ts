@@ -1,3 +1,4 @@
+export const checkboxDemoValues = {};
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { densePreset, type CommonProps, type ElementProps } from '$lib/types/index.js';
 

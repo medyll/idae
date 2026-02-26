@@ -1,3 +1,6 @@
+export const textFieldDemoValues = {};
+export const inputFirstDemoValues = {};
+export const inputLastDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import { tallPreset, uiPresets, type CommonProps, type ElementProps } from '$lib/types/index.js';

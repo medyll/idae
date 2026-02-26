@@ -60,5 +60,6 @@ let child = children;
 </div>
 
 <style global lang="postcss">
-  @import './stepper.css';
+	@reference "tailwindcss";
+	@import './stepper.css';
 </style>

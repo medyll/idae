@@ -1,3 +1,6 @@
+export const menuDemoValues = {};
+export const menuItemDemoValues = {};
+export const menuTitleDemoValues = {};
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { ElementProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';

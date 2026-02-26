@@ -1,3 +1,4 @@
+export const progressDemoValues = {};
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { ElementProps } from '$lib/types/index.js';
 

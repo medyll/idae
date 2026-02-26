@@ -144,5 +144,6 @@ export let { parameters, componentArgs } = demoerArgs(TextFieldDemoValues);
 </div>
 
 <style global lang="postcss">
-  @import './textfield.css';
+	@reference "tailwindcss";
+	@import './textfield.css';
 </style>
