@@ -1,0 +1,13 @@
+{
+  "name": "drawer-secondary",
+  "title": "drawer-secondary",
+  "description": "Component generated from src/lib/navigation/drawer/DrawerSecondary.svelte",
+  "files": [
+    "src/lib/navigation/drawer/DrawerSecondary.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

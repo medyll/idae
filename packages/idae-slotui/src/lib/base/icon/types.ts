@@ -88,3 +88,6 @@ export const iconAppDemoValues: DemoerStoryProps<IconAppProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(iconAppDemoValues);
+
+// Placeholder demo export for Icon (legacy consumer name)
+export const iconDemoValues: DemoerStoryProps<any> = {};

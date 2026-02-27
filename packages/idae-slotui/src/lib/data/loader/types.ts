@@ -54,7 +54,7 @@ export type LoaderProps = CommonProps & {
 		status: defaultsArgsFromProps('status', parameters)
 	} as LoaderProps; */
 
-const loaderDemoValues: DemoerStoryProps<LoaderProps> = {
+export const loaderDemoValues: DemoerStoryProps<LoaderProps> = {
 	status: {
 		type: 'string',
 		values: [undefined, 'idle', 'loading', 'success', 'error', 'empty'],
@@ -97,3 +97,12 @@ const loaderDemoValues: DemoerStoryProps<LoaderProps> = {
 };
 
 export const { parameters, componentArgs } = demoerArgs(loaderDemoValues);
+
+export const loaderEmptyDemoValues = {};
+export const loaderErrorDemoValues = {};
+export const loaderLoadingDemoValues = {};
+export const loaderMessageDemoValues = {};
+export const loaderSuccessDemoValues = {};
+
+// Export the main demo values for loader (consumer expectation)
+export { loaderDemoValues };

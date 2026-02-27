@@ -1,0 +1,13 @@
+{
+  "name": "drawer-icon",
+  "title": "drawer-icon",
+  "description": "Component generated from src/lib/navigation/drawer/DrawerIcon.svelte",
+  "files": [
+    "src/lib/navigation/drawer/DrawerIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

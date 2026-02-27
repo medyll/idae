@@ -1,3 +1,4 @@
+export const treeDemoValues = {};
 export type PathDataType = {
 	name: string;
 	path: string;

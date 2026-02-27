@@ -1,3 +1,6 @@
+export const menuListDemoValues = {};
+export const menuListItemDemoValues = {};
+export const menuListTitleDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data, IconObj } from '$lib/types/index.js';

@@ -61,3 +61,10 @@ export const BoxDemoValues: DemoerStoryProps<BoxProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(BoxDemoValues);
+
+// Placeholder demo exports for related subcomponents
+export const boxBottomZoneDemoValues: DemoerStoryProps<any> = {};
+
+// Placeholder demo exports for TitleBar slot variants used inside Box
+export const titleBarIconDemoValues: DemoerStoryProps<any> = {};
+export const titleBarTitleDemoValues: DemoerStoryProps<any> = {};

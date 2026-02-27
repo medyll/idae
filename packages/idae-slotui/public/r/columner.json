@@ -1,0 +1,13 @@
+{
+  "name": "columner",
+  "title": "columner",
+  "description": "Component generated from src/lib/base/columner/Columner.svelte",
+  "files": [
+    "src/lib/base/columner/Columner.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

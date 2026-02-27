@@ -41,5 +41,6 @@
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './chrome-frame.css';
 </style>

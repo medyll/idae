@@ -1,0 +1,13 @@
+{
+  "name": "jsoner",
+  "title": "jsoner",
+  "description": "Component generated from src/lib/data/jsoner/Jsoner.svelte",
+  "files": [
+    "src/lib/data/jsoner/Jsoner.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

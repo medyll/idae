@@ -1,5 +1,10 @@
 <svelte:options />
 
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type ChromeFrameButtonListProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import { chromeFrameStore } from './chromeFrame.store.js';
 	import Button from '$lib/controls/button/Button.svelte';
@@ -31,6 +36,7 @@
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@use '../../styles/slotui-presets.scss';
 	@use '../../styles/slotui-mixins.scss';
 	.buttonRail {

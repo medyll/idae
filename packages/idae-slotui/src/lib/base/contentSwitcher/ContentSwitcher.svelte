@@ -86,5 +86,6 @@ export type ContentSwitcherProps = CommonProps & {
 </div>
 
 <style global lang="postcss">
+	@reference "tailwindcss";
 	@import './contentSwitcher.css';
 </style>

@@ -1,0 +1,13 @@
+{
+  "name": "panel-grid",
+  "title": "panel-grid",
+  "description": "Component generated from src/lib/ui/panel/PanelGrid.svelte",
+  "files": [
+    "src/lib/ui/panel/PanelGrid.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

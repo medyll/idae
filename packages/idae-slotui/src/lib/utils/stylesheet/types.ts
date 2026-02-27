@@ -10,3 +10,8 @@ export interface SlotUiStyleSheet extends Partial<BreakPointRule> {
 	breakpoints?: BreakPoints;
 	showSelectors?: boolean;
 }
+
+import type { DemoerStoryProps } from '../../base/demoer/types.js';
+
+// Placeholder demo export for StyleSheet utility
+export const styleSheetDemoValues: DemoerStoryProps<any> = {};

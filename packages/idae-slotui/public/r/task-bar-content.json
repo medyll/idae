@@ -1,0 +1,13 @@
+{
+  "name": "task-bar-content",
+  "title": "task-bar-content",
+  "description": "Component generated from src/lib/ui/taskbar/TaskBarContent.svelte",
+  "files": [
+    "src/lib/ui/taskbar/TaskBarContent.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -27,6 +27,8 @@ export type LoopProps<T> = CommonProps & {
 	/** Slot for the group title */
 	loopGroupTitle?: Snippet<[{ key: any; data: T[]; idx: number }]>;
 };
+// Module-level Props marker for migration tooling
+export type LooperProps = Record<string, unknown>;
 </script>
 <script lang="ts" generics="T= Data">
 		import type { Data } from '$lib/types/index.js';
@@ -56,6 +58,7 @@ export type LoopProps<T> = CommonProps & {
 		return dataOp.groupBy<T>({ data: sortedData ?? [], groupBy });
 	});
 </script>
+
 
 {#snippet loop(data: T[])}
 	{#each data ?? [] as item, idx}

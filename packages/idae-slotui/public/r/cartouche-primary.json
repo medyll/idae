@@ -1,0 +1,13 @@
+{
+  "name": "cartouche-primary",
+  "title": "cartouche-primary",
+  "description": "Component generated from src/lib/base/cartouche/CartouchePrimary.svelte",
+  "files": [
+    "src/lib/base/cartouche/CartouchePrimary.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

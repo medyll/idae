@@ -60,3 +60,5 @@ const FinderPropsDemoValues: DemoerStoryProps<FinderProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(FinderPropsDemoValues);
+
+export const finderDemoValues = FinderPropsDemoValues;

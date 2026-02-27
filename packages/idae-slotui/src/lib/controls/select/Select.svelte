@@ -123,5 +123,17 @@ const show = (visible: boolean) => (event) => {
 </Popper>
 
 <style global lang="postcss">
-  @import './select.css';
+	@reference "tailwindcss";
+
+	:root {
+		--select-background-color: var(--sld-color-background);
+		--select-radius: var(--sld-radius-small);
+	}
+
+	.select {
+		background-color: var(--select-background-color);
+		height: 160px;
+		width: 160px;
+		border-radius: var(--select-radius);
+	}
 </style>

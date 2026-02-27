@@ -1,0 +1,13 @@
+{
+  "name": "service-box",
+  "title": "service-box",
+  "description": "Component generated from src/lib/ui/serviceBox/ServiceBox.svelte",
+  "files": [
+    "src/lib/ui/serviceBox/ServiceBox.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

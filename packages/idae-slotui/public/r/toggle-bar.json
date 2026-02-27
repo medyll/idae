@@ -1,0 +1,13 @@
+{
+  "name": "toggle-bar",
+  "title": "toggle-bar",
+  "description": "Component generated from src/lib/ui/toggleBar/ToggleBar.svelte",
+  "files": [
+    "src/lib/ui/toggleBar/ToggleBar.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

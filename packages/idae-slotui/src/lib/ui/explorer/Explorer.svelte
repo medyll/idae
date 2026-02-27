@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type ExplorerProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import ListItem from '$lib/data/list/ListItem.svelte';
 	import type { PropsProxyProps } from '$lib/utils/engine/utils.js';

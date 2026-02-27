@@ -1,3 +1,10 @@
+export const panelDemoValues = {};
+export const panelButtonNextDemoValues = {};
+export const panelButtonPreviousDemoValues = {};
+export const panelerDemoValues = {};
+export const panelGridDemoValues = {};
+export const panelGridZoomDemoValues = {};
+export const panelSlideDemoValues = {};
 import type { CommonProps, Data } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 import type { Writable } from 'svelte/store';
@@ -9,22 +16,7 @@ export type PanelContextType = Writable<{
 	panels: Record<string, any>;
 }>;
 
-export type PanelGridProps<T = Data> = CommonProps & {
-	/** Data to be displayed in the grid */
-	data?: T[];
-
-	/** Number of columns in the grid */
-	columns?: number;
-
-	/** Whether the grid is expanded or not */
-	isExpanded?: boolean;
-
-	/** Children snippet for the default content */
-	children?: Snippet<[{ data: T }]>;
-
-	/** Slot for the zoomed in view */
-	panelGridZoom?: Snippet;
-};
+// NOTE: `PanelGridProps` moved to the component module script during migration.
 
 export type PanelProps<T = Data> = {
 	/** Title of the panel */

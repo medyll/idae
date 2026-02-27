@@ -1,0 +1,13 @@
+{
+  "name": "list-title",
+  "title": "list-title",
+  "description": "Component generated from src/lib/data/list/ListTitle.svelte",
+  "files": [
+    "src/lib/data/list/ListTitle.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

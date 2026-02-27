@@ -31,3 +31,6 @@ export const AvatarDemoValues: DemoerStoryProps<AvatarProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(AvatarDemoValues);
+
+// Placeholder demo exports for avatar subcomponents
+export const avatarBadgeDemoValues: DemoerStoryProps<any> = {};

@@ -46,5 +46,6 @@ let {
 </div>
 
 <style global lang="postcss">
-  @import './sorterer.css';
+	@reference "tailwindcss";
+	@import './sorterer.css';
 </style>

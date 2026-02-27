@@ -181,6 +181,29 @@ export type MenuListProps<T = Data> = CommonProps & {
 </ul>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './menu-list.css';
+		@reference "tailwindcss";
+
+		.slotui-menulist {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.slotui-menulist.grid {
+			display: grid;
+			gap: 0.25rem;
+		}
+
+		.menulist-item {
+			padding: 0.5rem 0.75rem;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.menulist-item[aria-selected="true"] {
+			background: rgba(0,0,0,0.04);
+		}
+
 </style>

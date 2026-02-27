@@ -1,0 +1,13 @@
+{
+  "name": "title-bar.demo",
+  "title": "title-bar.demo",
+  "description": "Component generated from src/lib/base/titleBar/TitleBar.demo.svelte",
+  "files": [
+    "src/lib/base/titleBar/TitleBar.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

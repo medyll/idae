@@ -1,0 +1,13 @@
+{
+  "name": "confirm-initial",
+  "title": "confirm-initial",
+  "description": "Component generated from src/lib/controls/confirm/ConfirmInitial.svelte",
+  "files": [
+    "src/lib/controls/confirm/ConfirmInitial.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

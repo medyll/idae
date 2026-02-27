@@ -55,7 +55,7 @@ export type DrawerProps<T = any> = CommonProps & {
 	};
 };
 
-const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
+export const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
 	primary: {
 		type: 'string',
 		values: ['Drawer']
@@ -89,3 +89,15 @@ const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
 };
 
 export const { parameters, componentArgs } = demoerArgs(drawerDemoValues);
+
+// Export the main demo values (expected by generator)
+export { drawerDemoValues };
+
+// Placeholder demo exports for drawer subcomponents
+export const drawerContentDemoValues: DemoerStoryProps<any> = {};
+export const drawerFooterDemoValues: DemoerStoryProps<any> = {};
+export const drawerIconDemoValues: DemoerStoryProps<any> = {};
+export const drawerPrimaryDemoValues: DemoerStoryProps<any> = {};
+export const drawerSecondaryDemoValues: DemoerStoryProps<any> = {};
+export const drawerTitleDemoValues: DemoerStoryProps<any> = {};
+export const drawerTopDemoValues: DemoerStoryProps<any> = {};

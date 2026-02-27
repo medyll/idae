@@ -121,6 +121,42 @@ const dispatch = createEventDispatcher();
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './backdrop.css';
+	@reference "tailwindcss";
+
+	:root {
+		--backdrop-background-color: var(--sld-color-foreground-alpha-high);
+	}
+
+	.backdrop {
+		z-index: 10000;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+	}
+
+	.backdrop-content {
+		z-index: 10001;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background-color: var(--backdrop-background-color);
+		backdrop-filter: blur(5px);
+		--webkit-backdrop-filter: blur(5px);
+		--moz-backdrop-filter: blur(5px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.backdrop-content-loader {
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+	}
+
+	.backdrop-content-inner {
+		display: inherit;
+	}
 </style>

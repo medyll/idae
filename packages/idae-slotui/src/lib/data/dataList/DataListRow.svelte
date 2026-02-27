@@ -107,6 +107,7 @@
 </tr>
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	.dataListRow {
 		/* grid-template-columns: var(--template-columns);
 		grid-auto-columns: min-content; */

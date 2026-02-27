@@ -1,0 +1,1903 @@
+{
+  "name": "idae-slotui-svelte-lib-registry",
+  "version": "1.0.0",
+  "generated_at": "2026-02-26T23:08:50.656Z",
+  "components": [
+    {
+      "name": "alert",
+      "source": "src/lib/base/alert/Alert.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/alert/Alert.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "alert-button-close",
+      "source": "src/lib/base/alert/AlertButtonClose.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertButtonClose.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "alert-button-zone",
+      "source": "src/lib/base/alert/AlertButtonZone.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertButtonZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "alert-message",
+      "source": "src/lib/base/alert/AlertMessage.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertMessage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "alert-top-button",
+      "source": "src/lib/base/alert/AlertTopButton.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertTopButton.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "avatar",
+      "source": "src/lib/base/avatar/Avatar.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/avatar/Avatar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "avatar-badge",
+      "source": "src/lib/base/avatar/AvatarBadge.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/avatar/AvatarBadge.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "backdrop",
+      "source": "src/lib/base/backdrop/Backdrop.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/backdrop/Backdrop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "backdrop-loading",
+      "source": "src/lib/base/backdrop/BackdropLoading.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/backdrop/BackdropLoading.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "badge",
+      "source": "src/lib/base/badge/Badge.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/badge/Badge.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "box",
+      "source": "src/lib/base/box/Box.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/box/Box.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "box-bottom-zone",
+      "source": "src/lib/base/box/BoxBottomZone.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/box/BoxBottomZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "title-bar-icon",
+      "source": "src/lib/base/box/TitleBarIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/box/TitleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "title-bar-title",
+      "source": "src/lib/base/box/TitleBarTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/box/TitleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "bread-crumb",
+      "source": "src/lib/base/breadCrumb/BreadCrumb.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/breadCrumb/BreadCrumb.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "cartouche",
+      "source": "src/lib/base/cartouche/Cartouche.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/Cartouche.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "cartouche-buttons",
+      "source": "src/lib/base/cartouche/CartoucheButtons.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheButtons.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "cartouche-icon",
+      "source": "src/lib/base/cartouche/CartoucheIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "cartouche-primary",
+      "source": "src/lib/base/cartouche/CartouchePrimary.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartouchePrimary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "cartouche-secondary",
+      "source": "src/lib/base/cartouche/CartoucheSecondary.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheSecondary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "chipper",
+      "source": "src/lib/base/chipper/Chipper.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/chipper/Chipper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "chipper-chip",
+      "source": "src/lib/base/chipper/ChipperChip.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/chipper/ChipperChip.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "bottom-slot",
+      "source": "src/lib/base/columner/BottomSlot.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/columner/BottomSlot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "columner",
+      "source": "src/lib/base/columner/Columner.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/columner/Columner.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "columner-col",
+      "source": "src/lib/base/columner/ColumnerCol.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/columner/ColumnerCol.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-top",
+      "source": "src/lib/base/columner/DrawerTop.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/columner/DrawerTop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher",
+      "source": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher-back-icon",
+      "source": "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher-reveal",
+      "source": "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher-toggler-icon",
+      "source": "src/lib/base/contentSwitcher/ContentSwitcherTogglerIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherTogglerIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "debug",
+      "source": "src/lib/base/debug/Debug.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/debug/Debug.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "demoer",
+      "source": "src/lib/base/demoer/Demoer.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/Demoer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "demoer-code",
+      "source": "src/lib/base/demoer/DemoerCode.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerCode.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "demoer-component",
+      "source": "src/lib/base/demoer/DemoerComponent.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerComponent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "demoer-content",
+      "source": "src/lib/base/demoer/DemoerContent.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "demo-page",
+      "source": "src/lib/base/demoer/DemoPage.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoPage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "divider",
+      "source": "src/lib/base/divider/Divider.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/divider/Divider.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "icon",
+      "source": "src/lib/base/icon/Icon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/icon/Icon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "paper",
+      "source": "src/lib/base/paper/Paper.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/paper/Paper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "title-bar",
+      "source": "src/lib/base/titleBar/TitleBar.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "title-bar-icon",
+      "source": "src/lib/base/titleBar/TitleBarIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "title-bar-title",
+      "source": "src/lib/base/titleBar/TitleBarTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "auto-complete",
+      "source": "src/lib/controls/autocomplete/AutoComplete.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoComplete.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "auto-complete-empty",
+      "source": "src/lib/controls/autocomplete/AutoCompleteEmpty.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoCompleteEmpty.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "auto-complete-no-results",
+      "source": "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button",
+      "source": "src/lib/controls/button/Button.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/button/Button.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-end",
+      "source": "src/lib/controls/button/ButtonEnd.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonEnd.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-loading-icon",
+      "source": "src/lib/controls/button/ButtonLoadingIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonLoadingIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-popper",
+      "source": "src/lib/controls/button/ButtonPopper.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonPopper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-start",
+      "source": "src/lib/controls/button/ButtonStart.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonStart.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-action",
+      "source": "src/lib/controls/buttonAction/ButtonAction.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonAction/ButtonAction.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "popper-content",
+      "source": "src/lib/controls/buttonAction/PopperContent.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonAction/PopperContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-icon",
+      "source": "src/lib/controls/buttonIcon/ButtonIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonIcon/ButtonIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "button-menu",
+      "source": "src/lib/controls/buttonMenu/ButtonMenu.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonMenu/ButtonMenu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-item",
+      "source": "src/lib/controls/buttonMenu/MenuItem.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonMenu/MenuItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "checkbox",
+      "source": "src/lib/controls/checkbox/Checkbox.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/checkbox/Checkbox.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "confirm",
+      "source": "src/lib/controls/confirm/Confirm.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/confirm/Confirm.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "confirm-initial",
+      "source": "src/lib/controls/confirm/ConfirmInitial.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/confirm/ConfirmInitial.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "in-place-edit",
+      "source": "src/lib/controls/inplaceedit/InPlaceEdit.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/inplaceedit/InPlaceEdit.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "progress",
+      "source": "src/lib/controls/progress/Progress.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/progress/Progress.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "rating",
+      "source": "src/lib/controls/rating/Rating.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/rating/Rating.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "rating-scored-icon",
+      "source": "src/lib/controls/rating/RatingScoredIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/rating/RatingScoredIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "select",
+      "source": "src/lib/controls/select/Select.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/select/Select.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "slider",
+      "source": "src/lib/controls/slider/Slider.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/slider/Slider.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "stepper",
+      "source": "src/lib/controls/stepper/Stepper.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/stepper/Stepper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "switch",
+      "source": "src/lib/controls/switch/Switch.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/switch/Switch.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "switch-label",
+      "source": "src/lib/controls/switch/SwitchLabel.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/switch/SwitchLabel.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "input-first",
+      "source": "src/lib/controls/textfield/InputFirst.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/InputFirst.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "input-last",
+      "source": "src/lib/controls/textfield/InputLast.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/InputLast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "input-first",
+      "source": "src/lib/controls/textfield/snippets/InputFirst.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/snippets/InputFirst.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "input-last",
+      "source": "src/lib/controls/textfield/snippets/InputLast.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/snippets/InputLast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "text-field",
+      "source": "src/lib/controls/textfield/TextField.svelte",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/TextField.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-list",
+      "source": "src/lib/data/dataList/DataList.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-list-cell",
+      "source": "src/lib/data/dataList/DataListCell.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListCell.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-list-footer",
+      "source": "src/lib/data/dataList/DataListFooter.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListFooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-list-head",
+      "source": "src/lib/data/dataList/DataListHead.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListHead.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "data-list-row",
+      "source": "src/lib/data/dataList/DataListRow.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListRow.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "group-title-slot",
+      "source": "src/lib/data/dataList/GroupTitleSlot.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/GroupTitleSlot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "finder",
+      "source": "src/lib/data/finder/Finder.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/finder/Finder.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "grouper",
+      "source": "src/lib/data/grouper/Grouper.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/grouper/Grouper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "jsoner",
+      "source": "src/lib/data/jsoner/Jsoner.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/jsoner/Jsoner.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "list",
+      "source": "src/lib/data/list/List.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/list/List.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "list-item",
+      "source": "src/lib/data/list/ListItem.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/list/ListItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "list-title",
+      "source": "src/lib/data/list/ListTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/list/ListTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader",
+      "source": "src/lib/data/loader/Loader.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/Loader.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader-empty",
+      "source": "src/lib/data/loader/LoaderEmpty.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderEmpty.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader-error",
+      "source": "src/lib/data/loader/LoaderError.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderError.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader-loading",
+      "source": "src/lib/data/loader/LoaderLoading.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderLoading.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader-message",
+      "source": "src/lib/data/loader/LoaderMessage.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderMessage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loader-success",
+      "source": "src/lib/data/loader/LoaderSuccess.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderSuccess.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "sorter",
+      "source": "src/lib/data/sorter/Sorter.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/sorter/Sorter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "sorterer",
+      "source": "src/lib/data/sorter/Sorterer.svelte",
+      "files": [
+        {
+          "path": "src/lib/data/sorter/Sorterer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer",
+      "source": "src/lib/navigation/drawer/Drawer.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/Drawer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-content",
+      "source": "src/lib/navigation/drawer/DrawerContent.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-footer",
+      "source": "src/lib/navigation/drawer/DrawerFooter.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerFooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-icon",
+      "source": "src/lib/navigation/drawer/DrawerIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-primary",
+      "source": "src/lib/navigation/drawer/DrawerPrimary.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerPrimary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-secondary",
+      "source": "src/lib/navigation/drawer/DrawerSecondary.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerSecondary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-title",
+      "source": "src/lib/navigation/drawer/DrawerTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer-top",
+      "source": "src/lib/navigation/drawer/DrawerTop.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerTop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "tabs",
+      "source": "src/lib/navigation/tabs/Tabs.svelte",
+      "files": [
+        {
+          "path": "src/lib/navigation/tabs/Tabs.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "boot-str-app",
+      "source": "src/lib/ui/bootstrapp/BootStrApp.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/bootstrapp/BootStrApp.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "chrome-frame",
+      "source": "src/lib/ui/chromeFrame/ChromeFrame.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrame.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "chrome-frame-button-list",
+      "source": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "chrome-frame-list",
+      "source": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "explorer",
+      "source": "src/lib/ui/explorer/Explorer.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/explorer/Explorer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "frame",
+      "source": "src/lib/ui/frame/Frame.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/frame/Frame.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "header",
+      "source": "src/lib/ui/header/Header.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/header/Header.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "login",
+      "source": "src/lib/ui/login/Login.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/login/Login.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "login-avatar",
+      "source": "src/lib/ui/login/LoginAvatar.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginAvatar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "login-avatar-root",
+      "source": "src/lib/ui/login/LoginAvatarRoot.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginAvatarRoot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "login-form",
+      "source": "src/lib/ui/login/LoginForm.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginForm.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "slot-retrieve-password",
+      "source": "src/lib/ui/login/SlotRetrievePassword.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/login/SlotRetrievePassword.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "marquee",
+      "source": "src/lib/ui/marquee/Marquee.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/marquee/Marquee.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "marquee-children",
+      "source": "src/lib/ui/marquee/MarqueeChildren.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/marquee/MarqueeChildren.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu",
+      "source": "src/lib/ui/menu/Menu.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/Menu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-item",
+      "source": "src/lib/ui/menu/MenuItem.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/MenuItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-title",
+      "source": "src/lib/ui/menu/MenuTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/MenuTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-list",
+      "source": "src/lib/ui/menuList/MenuList.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-list-item",
+      "source": "src/lib/ui/menuList/MenuListItem.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuListItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "menu-list-title",
+      "source": "src/lib/ui/menuList/MenuListTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuListTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel",
+      "source": "src/lib/ui/panel/Panel.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Panel.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel-button-next",
+      "source": "src/lib/ui/panel/PanelButtonNext.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelButtonNext.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel-button-previous",
+      "source": "src/lib/ui/panel/PanelButtonPrevious.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelButtonPrevious.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "paneler",
+      "source": "src/lib/ui/panel/Paneler.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Paneler.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel-grid",
+      "source": "src/lib/ui/panel/PanelGrid.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelGrid.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel-grid-zoom",
+      "source": "src/lib/ui/panel/PanelGridZoom.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelGridZoom.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "panel-slide",
+      "source": "src/lib/ui/panel/PanelSlide.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelSlide.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "popper",
+      "source": "src/lib/ui/popper/Popper.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/popper/Popper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "service-box",
+      "source": "src/lib/ui/serviceBox/ServiceBox.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/serviceBox/ServiceBox.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "boot-menu",
+      "source": "src/lib/ui/startMenu/BootMenu.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/startMenu/BootMenu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "taskbar",
+      "source": "src/lib/ui/taskbar/Taskbar.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/Taskbar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "task-bar-content",
+      "source": "src/lib/ui/taskbar/TaskBarContent.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "task-bar-left",
+      "source": "src/lib/ui/taskbar/TaskBarLeft.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarLeft.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "task-bar-right",
+      "source": "src/lib/ui/taskbar/TaskBarRight.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarRight.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "theme-switcher",
+      "source": "src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toast",
+      "source": "src/lib/ui/toast/Toast.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toast/Toast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toaster",
+      "source": "src/lib/ui/toast/Toaster.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toast/Toaster.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher-icon",
+      "source": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content-switcher-reveal",
+      "source": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toggle-bar",
+      "source": "src/lib/ui/toggleBar/ToggleBar.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toggle-bar-buttons",
+      "source": "src/lib/ui/toggleBar/ToggleBarButtons.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarButtons.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toggle-bar-icon",
+      "source": "src/lib/ui/toggleBar/ToggleBarIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toggle-bar-title",
+      "source": "src/lib/ui/toggleBar/ToggleBarTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "tool-bar",
+      "source": "src/lib/ui/toolBar/ToolBar.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toolBar/ToolBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "toolbar-separator",
+      "source": "src/lib/ui/toolBar/ToolbarSeparator.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/toolBar/ToolbarSeparator.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "tree",
+      "source": "src/lib/ui/tree/Tree.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/tree/Tree.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "window",
+      "source": "src/lib/ui/window/Window.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/window/Window.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "window-button-zone",
+      "source": "src/lib/ui/window/WindowButtonZone.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/window/WindowButtonZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "window-icon",
+      "source": "src/lib/ui/window/WindowIcon.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/window/WindowIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "content",
+      "source": "src/lib/utils/content/Content.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/content/Content.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "context-rooter",
+      "source": "src/lib/utils/contextRooter/ContextRooter.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/contextRooter/ContextRooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "looper",
+      "source": "src/lib/utils/looper/Looper.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/Looper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loop-group-title",
+      "source": "src/lib/utils/looper/LoopGroupTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/LoopGroupTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "loop-title",
+      "source": "src/lib/utils/looper/LoopTitle.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/LoopTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "child",
+      "source": "src/lib/utils/slotted/Child.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/slotted/Child.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "slotted",
+      "source": "src/lib/utils/slotted/Slotted.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/slotted/Slotted.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "style-sheet",
+      "source": "src/lib/utils/stylesheet/StyleSheet.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/stylesheet/StyleSheet.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    }
+  ]
+}

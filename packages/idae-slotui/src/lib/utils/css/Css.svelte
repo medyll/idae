@@ -1,10 +1,29 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type CssProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import Looper from '../looper/Looper.svelte';
 </script>
 
 <style global lang="postcss">
-	@import './css.css';
-	@reference "tailwindcss"
+	@reference "tailwindcss";
+
+	:root {
+		--css-radius: var(--sld-radius-medium);
+		--css-bg: var(--sld-color-background);
+		--css-border: var(--sld-color-border);
+		--css-padding: 1rem;
+	}
+
+	.css {
+		border-radius: var(--css-radius);
+		background: var(--css-bg);
+		border: 1px solid var(--css-border);
+		padding: var(--css-padding);
+		font-size: 1em;
+	}
 </style>
 
 {#snippet cssBlock(color)}

@@ -1,3 +1,5 @@
+export const previewDemoValues = {};
+export const previewZoomDemoValues = {};
 import type { Data, CommonProps } from '$lib/types/index.js';
 import type { Snippet } from 'svelte';
 

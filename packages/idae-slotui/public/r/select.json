@@ -1,0 +1,13 @@
+{
+  "name": "select",
+  "title": "select",
+  "description": "Component generated from src/lib/controls/select/Select.svelte",
+  "files": [
+    "src/lib/controls/select/Select.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

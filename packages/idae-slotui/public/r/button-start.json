@@ -1,0 +1,13 @@
+{
+  "name": "button-start",
+  "title": "button-start",
+  "description": "Component generated from src/lib/controls/button/ButtonStart.svelte",
+  "files": [
+    "src/lib/controls/button/ButtonStart.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

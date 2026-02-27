@@ -1,3 +1,6 @@
+export const ratingDemoValues = {};
+
+export const ratingScoredIconDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, ElementProps } from '$lib/types/index.js';

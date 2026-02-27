@@ -1,0 +1,13 @@
+{
+  "name": "alert-button-zone",
+  "title": "alert-button-zone",
+  "description": "Component generated from src/lib/base/alert/AlertButtonZone.svelte",
+  "files": [
+    "src/lib/base/alert/AlertButtonZone.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

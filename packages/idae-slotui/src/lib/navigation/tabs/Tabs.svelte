@@ -210,5 +210,6 @@ const setChipPos = (code: any) => {
 </div>
 
 <style global lang="postcss">
-  @import './tabs.css';
+	@reference "tailwindcss";
+	@import './tabs.css';
 </style>

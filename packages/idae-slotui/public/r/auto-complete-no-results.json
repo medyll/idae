@@ -1,0 +1,13 @@
+{
+  "name": "auto-complete-no-results",
+  "title": "auto-complete-no-results",
+  "description": "Component generated from src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
+  "files": [
+    "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

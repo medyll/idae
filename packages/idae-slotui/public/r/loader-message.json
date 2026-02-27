@@ -1,0 +1,13 @@
+{
+  "name": "loader-message",
+  "title": "loader-message",
+  "description": "Component generated from src/lib/data/loader/LoaderMessage.svelte",
+  "files": [
+    "src/lib/data/loader/LoaderMessage.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

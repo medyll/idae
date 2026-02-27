@@ -66,5 +66,16 @@
 />
 
 <style global lang="postcss">
-	@import './divider.css';
+	@reference "tailwindcss";
+
+	:root {
+		--divider-color: var(--sld-color-divider);
+		--divider-thickness: 1px;
+		--divider-margin: 1rem 0;
+	}
+
+	.divider {
+		border-bottom: var(--divider-thickness) solid var(--divider-color);
+		margin: var(--divider-margin);
+	}
 </style>

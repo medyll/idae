@@ -175,6 +175,21 @@ export type CartoucheProps = CommonProps & {
 </div>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './cartouche.css';
+	@reference "tailwindcss";
+
+	:root {
+		--cartouche-radius: var(--sld-radius-large);
+		--cartouche-bg: var(--sld-color-cartouche-bg);
+		--cartouche-color: var(--sld-color-cartouche-text);
+		--cartouche-padding: 1rem 2rem;
+	}
+
+	.cartouche {
+		border-radius: var(--cartouche-radius);
+		background: var(--cartouche-bg);
+		color: var(--cartouche-color);
+		padding: var(--cartouche-padding);
+		font-size: 1.1em;
+		font-weight: 500;
+	}
 </style>

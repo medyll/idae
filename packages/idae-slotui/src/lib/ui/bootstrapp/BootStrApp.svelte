@@ -1,10 +1,15 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type BootStrAppProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import ChromeFrameButtonList from '$lib/ui/chromeFrame/ChromeFrameButtonList.svelte';
 	import Frame from '$lib/ui/frame/Frame.svelte';
 	import Login from '$lib/ui/login/Login.svelte';
 	import Taskbar from '$lib/ui/taskbar/Taskbar.svelte';
  
-
+ 
 	import Drawer from '$lib/navigation/drawer/Drawer.svelte';
 	import TopBar from '$lib/ui//toggleBar/ToggleBar.svelte';
 
@@ -16,7 +21,7 @@
 	let { children, ...rest } = $props();
 
 	function signOut() {
-		 
+         
 	}
 </script>
 
@@ -28,7 +33,8 @@
 </svelte:head>
 
 <style global lang="postcss">
-  @import './BootStrApp.css';
+	@reference "tailwindcss";
+	@import './BootStrApp.css';
 </style>
 
 <Login showLogin={false}>

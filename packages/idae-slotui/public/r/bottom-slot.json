@@ -1,0 +1,13 @@
+{
+  "name": "bottom-slot",
+  "title": "bottom-slot",
+  "description": "Component generated from src/lib/base/columner/BottomSlot.svelte",
+  "files": [
+    "src/lib/base/columner/BottomSlot.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

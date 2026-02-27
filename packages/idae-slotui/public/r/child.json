@@ -1,0 +1,13 @@
+{
+  "name": "child",
+  "title": "child",
+  "description": "Component generated from src/lib/utils/slotted/Child.svelte",
+  "files": [
+    "src/lib/utils/slotted/Child.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

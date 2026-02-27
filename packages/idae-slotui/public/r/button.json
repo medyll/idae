@@ -1,0 +1,13 @@
+{
+  "name": "button",
+  "title": "button",
+  "description": "Component generated from src/lib/controls/button/Button.svelte",
+  "files": [
+    "src/lib/controls/button/Button.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

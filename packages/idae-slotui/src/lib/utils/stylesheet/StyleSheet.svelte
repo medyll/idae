@@ -39,6 +39,8 @@ export interface SlotUiStyleSheet extends Partial<BreakPointRule> {
 	/** Show selector information for debugging */
 	showSelectors?: boolean;
 }
+// Module-level Props marker for migration tooling
+export type StyleSheetProps = Record<string, unknown>;
 </script>
 <script lang="ts">
 		// SlotUiStyleSheet, BreakPoints now in module script

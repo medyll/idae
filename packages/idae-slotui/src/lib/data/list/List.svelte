@@ -1,3 +1,7 @@
+<script module lang="ts">
+export type ListProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import type { MenuListProps } from '$lib/ui/menuList/types.js';
 	import MenuList from '$lib/ui/menuList/MenuList.svelte';
@@ -7,7 +11,8 @@
 </script>
 
 <style global lang="postcss">
-  @import './list.css';
+	@reference "tailwindcss";
+	@import './list.css';
 </style>
 
 <MenuList

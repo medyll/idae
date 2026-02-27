@@ -1,0 +1,13 @@
+{
+  "name": "avatar.preview",
+  "title": "avatar.preview",
+  "description": "Component generated from src/lib/base/avatar/Avatar.preview.svelte",
+  "files": [
+    "src/lib/base/avatar/Avatar.preview.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

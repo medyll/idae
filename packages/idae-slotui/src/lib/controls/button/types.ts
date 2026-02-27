@@ -1,3 +1,8 @@
+export const buttonDemoValues = {};
+export const buttonEndDemoValues = {};
+export const buttonLoadingIconDemoValues = {};
+export const buttonPopperDemoValues = {};
+export const buttonStartDemoValues = {};
 import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
 import {

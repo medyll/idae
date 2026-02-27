@@ -1,0 +1,13 @@
+{
+  "name": "drawer.demo",
+  "title": "drawer.demo",
+  "description": "Component generated from src/lib/navigation/drawer/Drawer.demo.svelte",
+  "files": [
+    "src/lib/navigation/drawer/Drawer.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

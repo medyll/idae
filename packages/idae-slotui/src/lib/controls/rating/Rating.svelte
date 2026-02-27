@@ -70,5 +70,15 @@ const title = `${scored} / ${ratingBase}`;
 </div>
 
 <style global lang="postcss">
-  @import './rating.css';
+	@reference "tailwindcss";
+
+	:root {
+		--rating-gap: var(--sld-gap-small);
+	}
+
+	.rating {
+		display: flex;
+		flex-direction: var(--direction);
+		gap: var(--rating-gap);
+	}
 </style>

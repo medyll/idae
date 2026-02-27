@@ -62,5 +62,24 @@ export type TitleBarProps = {
 </div>
 
 <style global lang="postcss">
-  @import './titleBar.css';
+	@reference "tailwindcss";
+
+	:root {
+		--titlebar-bg: var(--sld-color-titlebar-bg);
+		--titlebar-color: var(--sld-color-titlebar-text);
+		--titlebar-radius: var(--sld-radius-medium);
+		--titlebar-padding: 0.75rem 1.5rem;
+	}
+
+	.title-bar {
+		border-radius: var(--titlebar-radius);
+		background: var(--titlebar-bg);
+		color: var(--titlebar-color);
+		padding: var(--titlebar-padding);
+		font-size: 1.2em;
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
 </style>

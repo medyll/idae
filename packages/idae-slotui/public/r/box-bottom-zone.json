@@ -1,0 +1,13 @@
+{
+  "name": "box-bottom-zone",
+  "title": "box-bottom-zone",
+  "description": "Component generated from src/lib/base/box/BoxBottomZone.svelte",
+  "files": [
+    "src/lib/base/box/BoxBottomZone.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

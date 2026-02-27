@@ -1,0 +1,13 @@
+{
+  "name": "button-action",
+  "title": "button-action",
+  "description": "Component generated from src/lib/controls/buttonAction/ButtonAction.svelte",
+  "files": [
+    "src/lib/controls/buttonAction/ButtonAction.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

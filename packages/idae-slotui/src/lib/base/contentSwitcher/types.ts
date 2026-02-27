@@ -37,3 +37,8 @@ export const contentSwitcherDemoValues: DemoerStoryProps<ContentSwitcherProps> =
 export let { parameters, componentArgs } = demoerArgs(
   contentSwitcherDemoValues,
 );
+
+// Placeholder demo exports for ContentSwitcher subcomponents
+export const contentSwitcherBackIconDemoValues: DemoerStoryProps<any> = {};
+export const contentSwitcherRevealDemoValues: DemoerStoryProps<any> = {};
+export const contentSwitcherTogglerIconDemoValues: DemoerStoryProps<any> = {};

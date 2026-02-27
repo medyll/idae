@@ -132,13 +132,8 @@ export type DataListHeadProps = {
   onSort?: Function;
   children?: Snippet;
 };
-export type DataListRowProps<T> = CommonProps & {
-  /** data for the row */
-  data: T;
 
-  /** children snippet for the default cell content */
-  children?: Snippet;
-};
+// Props moved to the component module script during migration.
 export interface DataCellType {
   /** internal use */
   index?: number;
@@ -160,16 +155,7 @@ export interface DataCellType {
   htmlElement?: HTMLElement;
 }
 
-export type DataListCellProps<T> = {
-  element?: HTMLElement;
-  field?: string;
-  style?: string;
-  fieldType?: string;
-  columnId?: string | number;
-  noWrap?: boolean;
-  title?: string;
-  children?: Snippet<[{ fieldData: T }]>;
-};
+// Props moved to the component module script during migration.
 
 export interface RowType {
   data?: Data;
@@ -238,3 +224,9 @@ const dataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(dataListDemoValues);
+
+export const dataListCellDemoValues = {};
+export const dataListFooterDemoValues = {};
+export const dataListHeadDemoValues = {};
+export const dataListRowDemoValues = {};
+export const groupTitleSlotDemoValues = {};

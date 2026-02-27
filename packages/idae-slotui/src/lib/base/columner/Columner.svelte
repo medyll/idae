@@ -27,6 +27,9 @@ export interface ColumnType {
 	/** State of the column (expanded, equal, minimal, default) */
 	state: 'expanded' | 'equal' | 'minimal' | 'default';
 }
+
+// Module-level Props marker for migration tooling
+export type ColumnerProps = Record<string, unknown>;
 </script>
 <script lang="ts">
 		import type { ExpandProps } from '$lib/types/index.js';
@@ -49,5 +52,18 @@ export interface ColumnType {
 </div>
 
 <style global lang="postcss">
-	@import './columner.css';
+	@reference "tailwindcss";
+
+	:root {
+		--columner-gap: 1rem;
+	}
+
+	.columner {
+		display: flex;
+		flex-direction: row;
+		gap: var(--columner-gap);
+	}
+	.columner.vertical {
+		flex-direction: column;
+	}
 </style>

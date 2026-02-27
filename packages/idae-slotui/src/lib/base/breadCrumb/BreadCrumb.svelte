@@ -64,6 +64,24 @@ export interface BreadCrumbProps extends CommonProps {
 </nav>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './breadcrumb.css';
+	@reference "tailwindcss";
+
+	:root {
+		--breadcrumb-gap: 0.5rem;
+		--breadcrumb-color: var(--sld-color-text);
+		--breadcrumb-active: var(--sld-color-primary);
+	}
+
+	.breadcrumb {
+		display: flex;
+		align-items: center;
+		gap: var(--breadcrumb-gap);
+		color: var(--breadcrumb-color);
+	}
+	.breadcrumb .active {
+		color: var(--breadcrumb-active);
+		font-weight: bold;
+	}
+
+	/* Placeholder for breadcrumb styles */
 </style>

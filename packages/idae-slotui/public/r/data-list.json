@@ -1,0 +1,13 @@
+{
+  "name": "data-list",
+  "title": "data-list",
+  "description": "Component generated from src/lib/data/dataList/DataList.svelte",
+  "files": [
+    "src/lib/data/dataList/DataList.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

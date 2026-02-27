@@ -1,3 +1,4 @@
+export const popperDemoValues = {};
 import type { ButtonProps } from '$lib/controls/button/types.js';
 import type { CommonProps, ElementProps } from '$lib/types/index.js';
 import type { StickToPositionType } from '$lib/utils/uses/stickTo/stickTo.js';

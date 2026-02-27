@@ -1,0 +1,13 @@
+{
+  "name": "marquee-children",
+  "title": "marquee-children",
+  "description": "Component generated from src/lib/ui/marquee/MarqueeChildren.svelte",
+  "files": [
+    "src/lib/ui/marquee/MarqueeChildren.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

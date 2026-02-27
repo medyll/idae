@@ -143,5 +143,6 @@ export type SorterProps = {
 </div>
 
 <style global lang="postcss">
-  @import './sorter.css';
+	@reference "tailwindcss";
+	@import './sorter.css';
 </style>

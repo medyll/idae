@@ -1,0 +1,13 @@
+{
+  "name": "button-end",
+  "title": "button-end",
+  "description": "Component generated from src/lib/controls/button/ButtonEnd.svelte",
+  "files": [
+    "src/lib/controls/button/ButtonEnd.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

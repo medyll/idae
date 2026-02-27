@@ -1,0 +1,13 @@
+{
+  "name": "chipper-chip",
+  "title": "chipper-chip",
+  "description": "Component generated from src/lib/base/chipper/ChipperChip.svelte",
+  "files": [
+    "src/lib/base/chipper/ChipperChip.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

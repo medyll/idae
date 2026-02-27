@@ -1,0 +1,34 @@
+{
+  "name": "@medyll/pseudo-html-template",
+  "version": "0.1.0",
+  "description": "Semantic template engine library (ESM)",
+  "author": "Lebrun Meddy",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepackage": "node scripts/package-pre.js",
+    "gen:mockups": "node src/lib/tools/mockup/convert-mockup.js bmad/references/mockup-master-reference.html src/lib/elements/mockup-example",
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  }
+}

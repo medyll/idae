@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type DemoerComponentProps = Record<string, unknown>;
+</script>
+
 <script lang="ts" generics="T=Data">
 	//import { slotuiCatalog } from '$sitedata/slotuiCatalog.js';
 	import { componentCite } from '$lib/componentCite.js';
@@ -13,18 +18,6 @@
 		componentArgs = {} as T,
 		parameters = {} as T,
 		children
-	}: {
-		component: string;
-		/** parameters values for the component */
-		parameters?: T;
-		/** component demo arguments for props */
-		componentArgs?: T;
-		cite?: string;
-		/** code sample */
-		code?: string;
-		title?: string;
-		/** use for several DemoPage */
-		children: Snippet;
 	} = $props();
 
 	let citation = componentCite?.[component.toLowerCase()]?.cite ?? '';

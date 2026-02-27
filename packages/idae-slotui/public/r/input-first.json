@@ -1,0 +1,13 @@
+{
+  "name": "input-first",
+  "title": "input-first",
+  "description": "Component generated from src/lib/controls/textfield/snippets/InputFirst.svelte",
+  "files": [
+    "src/lib/controls/textfield/snippets/InputFirst.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

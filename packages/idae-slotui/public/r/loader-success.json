@@ -1,0 +1,13 @@
+{
+  "name": "loader-success",
+  "title": "loader-success",
+  "description": "Component generated from src/lib/data/loader/LoaderSuccess.svelte",
+  "files": [
+    "src/lib/data/loader/LoaderSuccess.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

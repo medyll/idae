@@ -55,5 +55,24 @@ export interface ChipperProps extends CommonProps {
 </div>
 
 <style global lang="postcss">
-	@import './chipper.css';
+	@reference "tailwindcss";
+
+	:root {
+		--chipper-radius: var(--sld-radius-pill);
+		--chipper-bg: var(--sld-color-chipper-bg);
+		--chipper-color: var(--sld-color-chipper-text);
+		--chipper-padding: 0.25em 0.75em;
+	}
+
+	.chipper {
+		display: inline-flex;
+		align-items: center;
+		border-radius: var(--chipper-radius);
+		background: var(--chipper-bg);
+		color: var(--chipper-color);
+		padding: var(--chipper-padding);
+		font-size: 0.9em;
+		font-weight: 500;
+		gap: 0.5em;
+	}
 </style>

@@ -92,6 +92,7 @@ export type DataListHeadProps = {
 </thead>
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	.datalist-head {
 		/* grid-template-columns: var(--template-columns) auto; grid-auto-columns: min-content;
 		grid-auto-columns: min-content; */

@@ -1,3 +1,5 @@
+export const autocompleteDemoValues = {};
+export const autoCompleteDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data } from '$lib/types/index.js';
@@ -58,3 +60,7 @@ const AutoCompleteDemoValues: DemoerStoryProps<AutoCompleteProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(AutoCompleteDemoValues);
+
+// Placeholder demo exports for autocomplete subcomponents
+export const autoCompleteEmptyDemoValues: DemoerStoryProps<any> = {};
+export const autoCompleteNoResultsDemoValues: DemoerStoryProps<any> = {};

@@ -1,0 +1,1744 @@
+{
+  "generated_at": "2026-02-26T23:08:50.656Z",
+  "source": "src/lib",
+  "components": [
+    {
+      "name": "alert",
+      "files": [
+        {
+          "path": "src/lib/base/alert/Alert.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/alert.json"
+    },
+    {
+      "name": "alert-button-close",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertButtonClose.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/alert-button-close.json"
+    },
+    {
+      "name": "alert-button-zone",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertButtonZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/alert-button-zone.json"
+    },
+    {
+      "name": "alert-message",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertMessage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/alert-message.json"
+    },
+    {
+      "name": "alert-top-button",
+      "files": [
+        {
+          "path": "src/lib/base/alert/AlertTopButton.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/alert-top-button.json"
+    },
+    {
+      "name": "avatar",
+      "files": [
+        {
+          "path": "src/lib/base/avatar/Avatar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/avatar.json"
+    },
+    {
+      "name": "avatar-badge",
+      "files": [
+        {
+          "path": "src/lib/base/avatar/AvatarBadge.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/avatar-badge.json"
+    },
+    {
+      "name": "backdrop",
+      "files": [
+        {
+          "path": "src/lib/base/backdrop/Backdrop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/backdrop.json"
+    },
+    {
+      "name": "backdrop-loading",
+      "files": [
+        {
+          "path": "src/lib/base/backdrop/BackdropLoading.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/backdrop-loading.json"
+    },
+    {
+      "name": "badge",
+      "files": [
+        {
+          "path": "src/lib/base/badge/Badge.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/badge.json"
+    },
+    {
+      "name": "box",
+      "files": [
+        {
+          "path": "src/lib/base/box/Box.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/box.json"
+    },
+    {
+      "name": "box-bottom-zone",
+      "files": [
+        {
+          "path": "src/lib/base/box/BoxBottomZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/box-bottom-zone.json"
+    },
+    {
+      "name": "title-bar-icon",
+      "files": [
+        {
+          "path": "src/lib/base/box/TitleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/title-bar-icon.json"
+    },
+    {
+      "name": "title-bar-title",
+      "files": [
+        {
+          "path": "src/lib/base/box/TitleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/title-bar-title.json"
+    },
+    {
+      "name": "bread-crumb",
+      "files": [
+        {
+          "path": "src/lib/base/breadCrumb/BreadCrumb.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/bread-crumb.json"
+    },
+    {
+      "name": "cartouche",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/Cartouche.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/cartouche.json"
+    },
+    {
+      "name": "cartouche-buttons",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheButtons.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/cartouche-buttons.json"
+    },
+    {
+      "name": "cartouche-icon",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/cartouche-icon.json"
+    },
+    {
+      "name": "cartouche-primary",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartouchePrimary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/cartouche-primary.json"
+    },
+    {
+      "name": "cartouche-secondary",
+      "files": [
+        {
+          "path": "src/lib/base/cartouche/CartoucheSecondary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/cartouche-secondary.json"
+    },
+    {
+      "name": "chipper",
+      "files": [
+        {
+          "path": "src/lib/base/chipper/Chipper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/chipper.json"
+    },
+    {
+      "name": "chipper-chip",
+      "files": [
+        {
+          "path": "src/lib/base/chipper/ChipperChip.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/chipper-chip.json"
+    },
+    {
+      "name": "bottom-slot",
+      "files": [
+        {
+          "path": "src/lib/base/columner/BottomSlot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/bottom-slot.json"
+    },
+    {
+      "name": "columner",
+      "files": [
+        {
+          "path": "src/lib/base/columner/Columner.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/columner.json"
+    },
+    {
+      "name": "columner-col",
+      "files": [
+        {
+          "path": "src/lib/base/columner/ColumnerCol.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/columner-col.json"
+    },
+    {
+      "name": "drawer-top",
+      "files": [
+        {
+          "path": "src/lib/base/columner/DrawerTop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-top.json"
+    },
+    {
+      "name": "content-switcher",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcher.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher.json"
+    },
+    {
+      "name": "content-switcher-back-icon",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherBackIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher-back-icon.json"
+    },
+    {
+      "name": "content-switcher-reveal",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher-reveal.json"
+    },
+    {
+      "name": "content-switcher-toggler-icon",
+      "files": [
+        {
+          "path": "src/lib/base/contentSwitcher/ContentSwitcherTogglerIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher-toggler-icon.json"
+    },
+    {
+      "name": "debug",
+      "files": [
+        {
+          "path": "src/lib/base/debug/Debug.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/debug.json"
+    },
+    {
+      "name": "demoer",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/Demoer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/demoer.json"
+    },
+    {
+      "name": "demoer-code",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerCode.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/demoer-code.json"
+    },
+    {
+      "name": "demoer-component",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerComponent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/demoer-component.json"
+    },
+    {
+      "name": "demoer-content",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoerContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/demoer-content.json"
+    },
+    {
+      "name": "demo-page",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoPage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/demo-page.json"
+    },
+    {
+      "name": "divider",
+      "files": [
+        {
+          "path": "src/lib/base/divider/Divider.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/divider.json"
+    },
+    {
+      "name": "icon",
+      "files": [
+        {
+          "path": "src/lib/base/icon/Icon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/icon.json"
+    },
+    {
+      "name": "paper",
+      "files": [
+        {
+          "path": "src/lib/base/paper/Paper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/paper.json"
+    },
+    {
+      "name": "title-bar",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/title-bar.json"
+    },
+    {
+      "name": "title-bar-icon",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/title-bar-icon.json"
+    },
+    {
+      "name": "title-bar-title",
+      "files": [
+        {
+          "path": "src/lib/base/titleBar/TitleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/title-bar-title.json"
+    },
+    {
+      "name": "auto-complete",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoComplete.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/auto-complete.json"
+    },
+    {
+      "name": "auto-complete-empty",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoCompleteEmpty.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/auto-complete-empty.json"
+    },
+    {
+      "name": "auto-complete-no-results",
+      "files": [
+        {
+          "path": "src/lib/controls/autocomplete/AutoCompleteNoResults.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/auto-complete-no-results.json"
+    },
+    {
+      "name": "button",
+      "files": [
+        {
+          "path": "src/lib/controls/button/Button.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button.json"
+    },
+    {
+      "name": "button-end",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonEnd.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-end.json"
+    },
+    {
+      "name": "button-loading-icon",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonLoadingIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-loading-icon.json"
+    },
+    {
+      "name": "button-popper",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonPopper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-popper.json"
+    },
+    {
+      "name": "button-start",
+      "files": [
+        {
+          "path": "src/lib/controls/button/ButtonStart.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-start.json"
+    },
+    {
+      "name": "button-action",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonAction/ButtonAction.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-action.json"
+    },
+    {
+      "name": "popper-content",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonAction/PopperContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/popper-content.json"
+    },
+    {
+      "name": "button-icon",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonIcon/ButtonIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-icon.json"
+    },
+    {
+      "name": "button-menu",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonMenu/ButtonMenu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/button-menu.json"
+    },
+    {
+      "name": "menu-item",
+      "files": [
+        {
+          "path": "src/lib/controls/buttonMenu/MenuItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-item.json"
+    },
+    {
+      "name": "checkbox",
+      "files": [
+        {
+          "path": "src/lib/controls/checkbox/Checkbox.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/checkbox.json"
+    },
+    {
+      "name": "confirm",
+      "files": [
+        {
+          "path": "src/lib/controls/confirm/Confirm.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/confirm.json"
+    },
+    {
+      "name": "confirm-initial",
+      "files": [
+        {
+          "path": "src/lib/controls/confirm/ConfirmInitial.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/confirm-initial.json"
+    },
+    {
+      "name": "in-place-edit",
+      "files": [
+        {
+          "path": "src/lib/controls/inplaceedit/InPlaceEdit.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/in-place-edit.json"
+    },
+    {
+      "name": "progress",
+      "files": [
+        {
+          "path": "src/lib/controls/progress/Progress.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/progress.json"
+    },
+    {
+      "name": "rating",
+      "files": [
+        {
+          "path": "src/lib/controls/rating/Rating.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/rating.json"
+    },
+    {
+      "name": "rating-scored-icon",
+      "files": [
+        {
+          "path": "src/lib/controls/rating/RatingScoredIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/rating-scored-icon.json"
+    },
+    {
+      "name": "select",
+      "files": [
+        {
+          "path": "src/lib/controls/select/Select.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/select.json"
+    },
+    {
+      "name": "slider",
+      "files": [
+        {
+          "path": "src/lib/controls/slider/Slider.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/slider.json"
+    },
+    {
+      "name": "stepper",
+      "files": [
+        {
+          "path": "src/lib/controls/stepper/Stepper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/stepper.json"
+    },
+    {
+      "name": "switch",
+      "files": [
+        {
+          "path": "src/lib/controls/switch/Switch.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/switch.json"
+    },
+    {
+      "name": "switch-label",
+      "files": [
+        {
+          "path": "src/lib/controls/switch/SwitchLabel.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/switch-label.json"
+    },
+    {
+      "name": "input-first",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/InputFirst.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/input-first.json"
+    },
+    {
+      "name": "input-last",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/InputLast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/input-last.json"
+    },
+    {
+      "name": "input-first",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/snippets/InputFirst.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/input-first.json"
+    },
+    {
+      "name": "input-last",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/snippets/InputLast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/input-last.json"
+    },
+    {
+      "name": "text-field",
+      "files": [
+        {
+          "path": "src/lib/controls/textfield/TextField.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/text-field.json"
+    },
+    {
+      "name": "data-list",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/data-list.json"
+    },
+    {
+      "name": "data-list-cell",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListCell.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/data-list-cell.json"
+    },
+    {
+      "name": "data-list-footer",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListFooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/data-list-footer.json"
+    },
+    {
+      "name": "data-list-head",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListHead.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/data-list-head.json"
+    },
+    {
+      "name": "data-list-row",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/DataListRow.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/data-list-row.json"
+    },
+    {
+      "name": "group-title-slot",
+      "files": [
+        {
+          "path": "src/lib/data/dataList/GroupTitleSlot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/group-title-slot.json"
+    },
+    {
+      "name": "finder",
+      "files": [
+        {
+          "path": "src/lib/data/finder/Finder.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/finder.json"
+    },
+    {
+      "name": "grouper",
+      "files": [
+        {
+          "path": "src/lib/data/grouper/Grouper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/grouper.json"
+    },
+    {
+      "name": "jsoner",
+      "files": [
+        {
+          "path": "src/lib/data/jsoner/Jsoner.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/jsoner.json"
+    },
+    {
+      "name": "list",
+      "files": [
+        {
+          "path": "src/lib/data/list/List.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/list.json"
+    },
+    {
+      "name": "list-item",
+      "files": [
+        {
+          "path": "src/lib/data/list/ListItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/list-item.json"
+    },
+    {
+      "name": "list-title",
+      "files": [
+        {
+          "path": "src/lib/data/list/ListTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/list-title.json"
+    },
+    {
+      "name": "loader",
+      "files": [
+        {
+          "path": "src/lib/data/loader/Loader.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader.json"
+    },
+    {
+      "name": "loader-empty",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderEmpty.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader-empty.json"
+    },
+    {
+      "name": "loader-error",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderError.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader-error.json"
+    },
+    {
+      "name": "loader-loading",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderLoading.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader-loading.json"
+    },
+    {
+      "name": "loader-message",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderMessage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader-message.json"
+    },
+    {
+      "name": "loader-success",
+      "files": [
+        {
+          "path": "src/lib/data/loader/LoaderSuccess.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loader-success.json"
+    },
+    {
+      "name": "sorter",
+      "files": [
+        {
+          "path": "src/lib/data/sorter/Sorter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/sorter.json"
+    },
+    {
+      "name": "sorterer",
+      "files": [
+        {
+          "path": "src/lib/data/sorter/Sorterer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/sorterer.json"
+    },
+    {
+      "name": "drawer",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/Drawer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer.json"
+    },
+    {
+      "name": "drawer-content",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-content.json"
+    },
+    {
+      "name": "drawer-footer",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerFooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-footer.json"
+    },
+    {
+      "name": "drawer-icon",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-icon.json"
+    },
+    {
+      "name": "drawer-primary",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerPrimary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-primary.json"
+    },
+    {
+      "name": "drawer-secondary",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerSecondary.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-secondary.json"
+    },
+    {
+      "name": "drawer-title",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-title.json"
+    },
+    {
+      "name": "drawer-top",
+      "files": [
+        {
+          "path": "src/lib/navigation/drawer/DrawerTop.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/drawer-top.json"
+    },
+    {
+      "name": "tabs",
+      "files": [
+        {
+          "path": "src/lib/navigation/tabs/Tabs.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/tabs.json"
+    },
+    {
+      "name": "boot-str-app",
+      "files": [
+        {
+          "path": "src/lib/ui/bootstrapp/BootStrApp.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/boot-str-app.json"
+    },
+    {
+      "name": "chrome-frame",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrame.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/chrome-frame.json"
+    },
+    {
+      "name": "chrome-frame-button-list",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrameButtonList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/chrome-frame-button-list.json"
+    },
+    {
+      "name": "chrome-frame-list",
+      "files": [
+        {
+          "path": "src/lib/ui/chromeFrame/ChromeFrameList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/chrome-frame-list.json"
+    },
+    {
+      "name": "explorer",
+      "files": [
+        {
+          "path": "src/lib/ui/explorer/Explorer.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/explorer.json"
+    },
+    {
+      "name": "frame",
+      "files": [
+        {
+          "path": "src/lib/ui/frame/Frame.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/frame.json"
+    },
+    {
+      "name": "header",
+      "files": [
+        {
+          "path": "src/lib/ui/header/Header.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/header.json"
+    },
+    {
+      "name": "login",
+      "files": [
+        {
+          "path": "src/lib/ui/login/Login.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/login.json"
+    },
+    {
+      "name": "login-avatar",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginAvatar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/login-avatar.json"
+    },
+    {
+      "name": "login-avatar-root",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginAvatarRoot.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/login-avatar-root.json"
+    },
+    {
+      "name": "login-form",
+      "files": [
+        {
+          "path": "src/lib/ui/login/LoginForm.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/login-form.json"
+    },
+    {
+      "name": "slot-retrieve-password",
+      "files": [
+        {
+          "path": "src/lib/ui/login/SlotRetrievePassword.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/slot-retrieve-password.json"
+    },
+    {
+      "name": "marquee",
+      "files": [
+        {
+          "path": "src/lib/ui/marquee/Marquee.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/marquee.json"
+    },
+    {
+      "name": "marquee-children",
+      "files": [
+        {
+          "path": "src/lib/ui/marquee/MarqueeChildren.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/marquee-children.json"
+    },
+    {
+      "name": "menu",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/Menu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu.json"
+    },
+    {
+      "name": "menu-item",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/MenuItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-item.json"
+    },
+    {
+      "name": "menu-title",
+      "files": [
+        {
+          "path": "src/lib/ui/menu/MenuTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-title.json"
+    },
+    {
+      "name": "menu-list",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuList.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-list.json"
+    },
+    {
+      "name": "menu-list-item",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuListItem.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-list-item.json"
+    },
+    {
+      "name": "menu-list-title",
+      "files": [
+        {
+          "path": "src/lib/ui/menuList/MenuListTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/menu-list-title.json"
+    },
+    {
+      "name": "panel",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Panel.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel.json"
+    },
+    {
+      "name": "panel-button-next",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelButtonNext.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel-button-next.json"
+    },
+    {
+      "name": "panel-button-previous",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelButtonPrevious.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel-button-previous.json"
+    },
+    {
+      "name": "paneler",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Paneler.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/paneler.json"
+    },
+    {
+      "name": "panel-grid",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelGrid.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel-grid.json"
+    },
+    {
+      "name": "panel-grid-zoom",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelGridZoom.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel-grid-zoom.json"
+    },
+    {
+      "name": "panel-slide",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/PanelSlide.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/panel-slide.json"
+    },
+    {
+      "name": "popper",
+      "files": [
+        {
+          "path": "src/lib/ui/popper/Popper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/popper.json"
+    },
+    {
+      "name": "service-box",
+      "files": [
+        {
+          "path": "src/lib/ui/serviceBox/ServiceBox.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/service-box.json"
+    },
+    {
+      "name": "boot-menu",
+      "files": [
+        {
+          "path": "src/lib/ui/startMenu/BootMenu.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/boot-menu.json"
+    },
+    {
+      "name": "taskbar",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/Taskbar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/taskbar.json"
+    },
+    {
+      "name": "task-bar-content",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarContent.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/task-bar-content.json"
+    },
+    {
+      "name": "task-bar-left",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarLeft.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/task-bar-left.json"
+    },
+    {
+      "name": "task-bar-right",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/TaskBarRight.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/task-bar-right.json"
+    },
+    {
+      "name": "theme-switcher",
+      "files": [
+        {
+          "path": "src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/theme-switcher.json"
+    },
+    {
+      "name": "toast",
+      "files": [
+        {
+          "path": "src/lib/ui/toast/Toast.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toast.json"
+    },
+    {
+      "name": "toaster",
+      "files": [
+        {
+          "path": "src/lib/ui/toast/Toaster.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toaster.json"
+    },
+    {
+      "name": "content-switcher-icon",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher-icon.json"
+    },
+    {
+      "name": "content-switcher-reveal",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content-switcher-reveal.json"
+    },
+    {
+      "name": "toggle-bar",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toggle-bar.json"
+    },
+    {
+      "name": "toggle-bar-buttons",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarButtons.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toggle-bar-buttons.json"
+    },
+    {
+      "name": "toggle-bar-icon",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toggle-bar-icon.json"
+    },
+    {
+      "name": "toggle-bar-title",
+      "files": [
+        {
+          "path": "src/lib/ui/toggleBar/ToggleBarTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toggle-bar-title.json"
+    },
+    {
+      "name": "tool-bar",
+      "files": [
+        {
+          "path": "src/lib/ui/toolBar/ToolBar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/tool-bar.json"
+    },
+    {
+      "name": "toolbar-separator",
+      "files": [
+        {
+          "path": "src/lib/ui/toolBar/ToolbarSeparator.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/toolbar-separator.json"
+    },
+    {
+      "name": "tree",
+      "files": [
+        {
+          "path": "src/lib/ui/tree/Tree.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/tree.json"
+    },
+    {
+      "name": "window",
+      "files": [
+        {
+          "path": "src/lib/ui/window/Window.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/window.json"
+    },
+    {
+      "name": "window-button-zone",
+      "files": [
+        {
+          "path": "src/lib/ui/window/WindowButtonZone.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/window-button-zone.json"
+    },
+    {
+      "name": "window-icon",
+      "files": [
+        {
+          "path": "src/lib/ui/window/WindowIcon.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/window-icon.json"
+    },
+    {
+      "name": "content",
+      "files": [
+        {
+          "path": "src/lib/utils/content/Content.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/content.json"
+    },
+    {
+      "name": "context-rooter",
+      "files": [
+        {
+          "path": "src/lib/utils/contextRooter/ContextRooter.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/context-rooter.json"
+    },
+    {
+      "name": "looper",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/Looper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/looper.json"
+    },
+    {
+      "name": "loop-group-title",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/LoopGroupTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loop-group-title.json"
+    },
+    {
+      "name": "loop-title",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/LoopTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/loop-title.json"
+    },
+    {
+      "name": "child",
+      "files": [
+        {
+          "path": "src/lib/utils/slotted/Child.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/child.json"
+    },
+    {
+      "name": "slotted",
+      "files": [
+        {
+          "path": "src/lib/utils/slotted/Slotted.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/slotted.json"
+    },
+    {
+      "name": "style-sheet",
+      "files": [
+        {
+          "path": "src/lib/utils/stylesheet/StyleSheet.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "publicMetadata": "public/r/style-sheet.json"
+    }
+  ]
+}

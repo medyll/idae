@@ -1,0 +1,13 @@
+{
+  "name": "panel-button-next",
+  "title": "panel-button-next",
+  "description": "Component generated from src/lib/ui/panel/PanelButtonNext.svelte",
+  "files": [
+    "src/lib/ui/panel/PanelButtonNext.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

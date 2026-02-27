@@ -1,0 +1,13 @@
+{
+  "name": "cartouche-icon",
+  "title": "cartouche-icon",
+  "description": "Component generated from src/lib/base/cartouche/CartoucheIcon.svelte",
+  "files": [
+    "src/lib/base/cartouche/CartoucheIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

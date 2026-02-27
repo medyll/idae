@@ -1,5 +1,10 @@
 <svelte:options immutable={true} />
 
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type BootMenuProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
@@ -100,6 +105,6 @@
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss"
+	@reference "tailwindcss";
 	@import './boot-menu.css';
 </style>

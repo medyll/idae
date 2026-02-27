@@ -15,27 +15,9 @@ export type TabItem = {
 
 export type TabsItemsProps = TabItem[];
 
-export type TabsProps = CommonProps & {
-	/** active tab */
-	activeTabCode?: string;
-	element?: HTMLElement;
-	/** tabs to display */
-	items?: TabsItemsProps;
+// Props moved to the component module script during migration.
 
-	/** orientation of the tabs */
-	orientation?: 'horizontal' | 'vertical';
-
-	/** event handler for tab click */
-	onTabClick?: (item: TabItem) => void;
-	tabsTitleMain?: Snippet;
-	tabsLabel?: Snippet<[{ item: any; activeTabCode: string }]>;
-	tabsTitle?: Snippet;
-	tabsButtonZone?: Snippet;
-	tabsInner?: Snippet<[{ item: any; activeTabCode: string }]>;
-	children?: Snippet<[{ item: any; activeTabCode: string }]>;
-};
-
-const tabsDemoValues: DemoerStoryProps<TabsProps> = {
+export const tabsDemoValues: DemoerStoryProps<any> = {
 	activeTabCode: {
 		type: 'string',
 		values: ['tab1', 'tab2', 'tab3', 'tab4', 'tab5']
@@ -79,4 +61,7 @@ const tabsDemoValues: DemoerStoryProps<TabsProps> = {
 	}
 };
 
-export const { parameters, componentArgs } = demoerArgs<TabsProps>(tabsDemoValues);
+export const { parameters, componentArgs } = demoerArgs<any>(tabsDemoValues);
+
+// Export tabs demo values for generator
+export { tabsDemoValues };

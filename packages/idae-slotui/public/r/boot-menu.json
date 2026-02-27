@@ -1,0 +1,13 @@
+{
+  "name": "boot-menu",
+  "title": "boot-menu",
+  "description": "Component generated from src/lib/ui/startMenu/BootMenu.svelte",
+  "files": [
+    "src/lib/ui/startMenu/BootMenu.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "tabs.preview",
+  "title": "tabs.preview",
+  "description": "Component generated from src/lib/navigation/tabs/Tabs.preview.svelte",
+  "files": [
+    "src/lib/navigation/tabs/Tabs.preview.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

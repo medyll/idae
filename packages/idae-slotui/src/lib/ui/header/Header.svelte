@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type HeaderProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte';
 	import Divider from '$lib/base/divider/Divider.svelte';
@@ -31,6 +36,7 @@
 </div>-->
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	.header {
 		color: #333;
 		box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);

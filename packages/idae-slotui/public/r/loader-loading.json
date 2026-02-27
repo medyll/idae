@@ -1,0 +1,13 @@
+{
+  "name": "loader-loading",
+  "title": "loader-loading",
+  "description": "Component generated from src/lib/data/loader/LoaderLoading.svelte",
+  "files": [
+    "src/lib/data/loader/LoaderLoading.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

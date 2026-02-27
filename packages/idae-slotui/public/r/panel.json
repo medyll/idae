@@ -1,0 +1,13 @@
+{
+  "name": "panel",
+  "title": "panel",
+  "description": "Component generated from src/lib/ui/panel/Panel.svelte",
+  "files": [
+    "src/lib/ui/panel/Panel.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "style-sheet",
+  "title": "style-sheet",
+  "description": "Component generated from src/lib/utils/stylesheet/StyleSheet.svelte",
+  "files": [
+    "src/lib/utils/stylesheet/StyleSheet.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

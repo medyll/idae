@@ -1,0 +1,13 @@
+{
+  "name": "grouper.demo",
+  "title": "grouper.demo",
+  "description": "Component generated from src/lib/data/grouper/Grouper.demo.svelte",
+  "files": [
+    "src/lib/data/grouper/Grouper.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

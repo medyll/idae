@@ -87,3 +87,9 @@ export const cartoucheDemoValues: DemoerStoryProps<CartoucheProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(cartoucheDemoValues);
+
+// Placeholder demo exports for cartouche subcomponents
+export const cartoucheButtonsDemoValues: DemoerStoryProps<any> = {};
+export const cartoucheIconDemoValues: DemoerStoryProps<any> = {};
+export const cartouchePrimaryDemoValues: DemoerStoryProps<any> = {};
+export const cartoucheSecondaryDemoValues: DemoerStoryProps<any> = {};

@@ -71,5 +71,10 @@ let hiddenRef: HTMLInputElement;
 ..
 
 <style global lang="postcss">
-  @import './switch.css';
+	@reference "tailwindcss";
+
+	/* Inlined switch CSS (small, local styles) */
+	.switch { display: inline-flex; align-items: center; }
+	.switchGutter { position: relative; }
+	.switchHandle { position: relative; }
 </style>

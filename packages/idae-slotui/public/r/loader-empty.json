@@ -1,0 +1,13 @@
+{
+  "name": "loader-empty",
+  "title": "loader-empty",
+  "description": "Component generated from src/lib/data/loader/LoaderEmpty.svelte",
+  "files": [
+    "src/lib/data/loader/LoaderEmpty.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

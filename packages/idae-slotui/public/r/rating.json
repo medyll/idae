@@ -1,0 +1,13 @@
+{
+  "name": "rating",
+  "title": "rating",
+  "description": "Component generated from src/lib/controls/rating/Rating.svelte",
+  "files": [
+    "src/lib/controls/rating/Rating.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

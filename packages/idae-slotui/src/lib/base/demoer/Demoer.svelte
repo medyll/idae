@@ -1,8 +1,12 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type DemoerProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import Icon from '$lib/base/icon/Icon.svelte'; 
 	import DemoerCode from './DemoerCode.svelte'; 
 	import Slotted from '$lib/utils/slotted/Slotted.svelte';
-	import type { DemoPageProps } from './types.js';
 
 	let {
 		title = '',
@@ -11,7 +15,7 @@
 		component,
 		children,
 		demoerCode
-	}: DemoPageProps = $props();
+	} = $props();
 
 	let codeT = subTitle ? subTitle : `component ${component} demo ${title?.toLowerCase()}`;
 </script>

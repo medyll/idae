@@ -204,6 +204,27 @@ $effect(() => {
 </div>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './drawer.css';
+	@reference "tailwindcss";
+
+	:root {
+		--drawer-radius: var(--sld-radius-large);
+		--drawer-bg: var(--sld-color-background);
+		--drawer-border: var(--sld-color-border);
+		--drawer-width: 320px;
+	}
+
+	.drawer {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 250px;
+		height: 100%;
+		background-color: #fff;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		border-radius: var(--drawer-radius);
+		border: 1px solid var(--drawer-border);
+		z-index: 1100;
+		display: flex;
+		flex-direction: column;
+	}
 </style>

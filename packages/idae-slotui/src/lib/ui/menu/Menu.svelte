@@ -44,7 +44,8 @@ export type MenuProps<T = Data> = CommonProps & {
 </script>
 
 <style global lang="postcss">
-  @import './menu.css';
+	@reference "tailwindcss";
+	@import './menu.css';
 </style>
 
 <MenuList {...rest} class="menu" />

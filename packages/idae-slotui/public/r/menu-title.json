@@ -1,0 +1,13 @@
+{
+  "name": "menu-title",
+  "title": "menu-title",
+  "description": "Component generated from src/lib/ui/menu/MenuTitle.svelte",
+  "files": [
+    "src/lib/ui/menu/MenuTitle.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

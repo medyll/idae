@@ -1,0 +1,13 @@
+{
+  "name": "loader-error",
+  "title": "loader-error",
+  "description": "Component generated from src/lib/data/loader/LoaderError.svelte",
+  "files": [
+    "src/lib/data/loader/LoaderError.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

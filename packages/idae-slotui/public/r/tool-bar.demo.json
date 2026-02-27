@@ -1,0 +1,13 @@
+{
+  "name": "tool-bar.demo",
+  "title": "tool-bar.demo",
+  "description": "Component generated from src/lib/ui/toolBar/ToolBar.demo.svelte",
+  "files": [
+    "src/lib/ui/toolBar/ToolBar.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "data-list-footer",
+  "title": "data-list-footer",
+  "description": "Component generated from src/lib/data/dataList/DataListFooter.svelte",
+  "files": [
+    "src/lib/data/dataList/DataListFooter.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

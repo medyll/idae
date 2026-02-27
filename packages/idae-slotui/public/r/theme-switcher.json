@@ -1,0 +1,13 @@
+{
+  "name": "theme-switcher",
+  "title": "theme-switcher",
+  "description": "Component generated from src/lib/ui/themeswitcher/ThemeSwitcher.svelte",
+  "files": [
+    "src/lib/ui/themeswitcher/ThemeSwitcher.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

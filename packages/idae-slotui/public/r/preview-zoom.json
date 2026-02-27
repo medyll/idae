@@ -1,0 +1,13 @@
+{
+  "name": "preview-zoom",
+  "title": "preview-zoom",
+  "description": "Component generated from src/lib/ui/preview/PreviewZoom.svelte",
+  "files": [
+    "src/lib/ui/preview/PreviewZoom.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

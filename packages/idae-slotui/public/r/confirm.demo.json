@@ -1,0 +1,13 @@
+{
+  "name": "confirm.demo",
+  "title": "confirm.demo",
+  "description": "Component generated from src/lib/controls/confirm/Confirm.demo.svelte",
+  "files": [
+    "src/lib/controls/confirm/Confirm.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

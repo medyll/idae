@@ -1,0 +1,13 @@
+{
+  "name": "boot-str-app",
+  "title": "boot-str-app",
+  "description": "Component generated from src/lib/ui/bootstrapp/BootStrApp.svelte",
+  "files": [
+    "src/lib/ui/bootstrapp/BootStrApp.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

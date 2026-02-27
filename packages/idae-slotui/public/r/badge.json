@@ -1,0 +1,13 @@
+{
+  "name": "badge",
+  "title": "badge",
+  "description": "Component generated from src/lib/base/badge/Badge.svelte",
+  "files": [
+    "src/lib/base/badge/Badge.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

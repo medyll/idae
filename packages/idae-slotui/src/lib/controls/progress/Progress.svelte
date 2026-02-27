@@ -45,5 +45,26 @@ export type ProgressProps = {
 </div>
 
 <style global lang="postcss">
-  @import './progress.css';
+	@reference "tailwindcss";
+
+	:root {
+		--progress-border: var(--sld-color-secondary-alpha-mid);
+		--progress-radius: var(--sld-radius-tiny);
+		--progress-gouge-background: var(--sld-color-primary);
+		--progress-gouge-border: var(--sld-color-primary-alpha);
+	}
+
+	.progress {
+		border: 1px solid var(--progress-border);
+		border-radius: var(--progress-radius);
+		padding: 1px;
+	}
+
+	.progress-gouge {
+		background: var(--progress-gouge-background);
+		border-radius: var(--progress-radius);
+		border: 1px solid var(--progress-gouge-border);
+		transition-delay: 250ms;
+		transition: all 0.25s;
+	}
 </style>

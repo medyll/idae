@@ -60,5 +60,16 @@ let child = children;
 </div>
 
 <style global lang="postcss">
-  @import './stepper.css';
+	@reference "tailwindcss";
+
+	:root {
+		--stepper-pad: var(--sld-pad-med);
+		--stepper-radius: var(--sld-radius-small);
+		--stepper-active-color: var(--sld-color-secondary);
+	}
+
+	.stepper { display: flex; }
+	.stepper.vertical { flex-direction: column; }
+	.stepper-step { padding: var(--stepper-pad); border-radius: var(--stepper-radius); margin-top: 10px; }
+	.stepper-step.active { color: var(--stepper-active-color); }
 </style>

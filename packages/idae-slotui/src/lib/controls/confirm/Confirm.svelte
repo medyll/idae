@@ -202,5 +202,27 @@ onDestroy(() => {
 </div>
 
 <style global lang="postcss">
-  @import './confirm.css';
+	@reference "tailwindcss";
+
+	:root {
+		--confirm-radius: var(--sld-radius-medium);
+		--confirm-bg: var(--sld-color-background);
+		--confirm-border: var(--sld-color-border);
+		--confirm-padding: 1rem;
+	}
+
+	.confirm {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		border-radius: var(--confirm-radius);
+		background: var(--confirm-bg);
+		border: 1px solid var(--confirm-border);
+		padding: var(--confirm-padding);
+		font-size: 1em;
+	}
+
+	.confirm-initial {}
+
+	.confirm-validate { display: flex; align-items: center; }
 </style>

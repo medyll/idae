@@ -1,0 +1,13 @@
+{
+  "name": "button-loading-icon",
+  "title": "button-loading-icon",
+  "description": "Component generated from src/lib/controls/button/ButtonLoadingIcon.svelte",
+  "files": [
+    "src/lib/controls/button/ButtonLoadingIcon.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

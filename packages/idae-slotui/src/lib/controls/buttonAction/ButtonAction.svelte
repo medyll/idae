@@ -60,5 +60,7 @@ let chevron = 'fluent:chevron-down-20-regular';
 {/if}
 
 <style global lang="postcss">
-	@import '../button/button.css';
+	@reference "tailwindcss";
+	/* MIGRATION: uses shared `button.css` from controls/button; manual review required.
+	   Keeping tailwind reference and removing direct import. */
 </style>

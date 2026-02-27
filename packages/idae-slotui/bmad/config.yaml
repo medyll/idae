@@ -1,0 +1,27 @@
+project:
+  name: "@medyll/idae-slotui-svelte"
+  display_name: "idae-slotui-svelte"
+  type: "library"
+  level: 2
+  version: "0.181.4"
+  maintainer: "Lebrun Meddy"
+  created_at: "2026-02-26"
+
+notes: |
+  This file was created by the bmad-master initializer.
+  - Type: choose from web-app | mobile-app | api | game | library | other
+  - Level: 0..4 (see BMAD SKILL for details)
+
+templates_used:
+  - config/project-config.template.yaml
+
+standards:
+  shadcn_svelte:
+    path: docs/SHADCNSVELTE_GUIDELINES.md
+    adopted: true
+    notes: "Follow Bits UI / shadcn-svelte patterns for Svelte 5 components"
+
+registry:
+  local_path: registry/registry.json
+  public_url: "https://example.org/registry.json" # replace with your hosted registry URL when available
+  note: "This project exposes a shadcn-compatible registry to allow component 'copy into project' workflows."

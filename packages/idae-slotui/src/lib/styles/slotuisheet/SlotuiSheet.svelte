@@ -1,3 +1,8 @@
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type SlotuiSheetProps = Record<string, unknown>;
+</script>
+
 <script lang="ts">
 	import { type SlotUiStyleSheet, type BreakPoints } from './types.js';
 	import { configCssVars, toContainerQuery } from './utils.js';
@@ -34,6 +39,7 @@
     </pre>
 {/if} 
 	<style lang="postcss">
+	@reference "tailwindcss";
 #breakpoints {
 	position:fixed;
 	top:0;

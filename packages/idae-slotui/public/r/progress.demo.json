@@ -1,0 +1,13 @@
+{
+  "name": "progress.demo",
+  "title": "progress.demo",
+  "description": "Component generated from src/lib/controls/progress/Progress.demo.svelte",
+  "files": [
+    "src/lib/controls/progress/Progress.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

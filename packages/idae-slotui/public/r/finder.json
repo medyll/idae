@@ -1,0 +1,13 @@
+{
+  "name": "finder",
+  "title": "finder",
+  "description": "Component generated from src/lib/data/finder/Finder.svelte",
+  "files": [
+    "src/lib/data/finder/Finder.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

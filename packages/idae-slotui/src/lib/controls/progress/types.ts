@@ -1,27 +1,9 @@
+export const progressDemoValues = {};
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { ElementProps } from '$lib/types/index.js';
 
-export type ProgressProps = {
-	/** className off the root component */
-	class?: string;
-
-	/** css style off the root component */
-	style?: string;
-
-	/** element root HTMLDivElement props */
-	element?: HTMLDivElement | null;
-
-	/** base value for the progress */
-	percentBase?: number;
-
-	/** current value of the progress */
-	value: number;
-
-	/** can be vertical or horizontal */
-	orientation?: ElementProps['orientation'];
-};
-
-export const ProgressDemoValues: DemoerStoryProps<ProgressProps> = {
+// NOTE: `ProgressProps` moved to the component module script during migration.
+export const ProgressDemoValues: DemoerStoryProps<any> = {
 	percentBase: {
 		type: 'number',
 		values: [100, 200]

@@ -52,3 +52,6 @@ export const chipperDemoValues: DemoerStoryProps<ChipperProps> = {
 };
 
 export let { parameters, componentArgs } = demoerArgs(chipperDemoValues);
+
+// Placeholder for Chipper chip slot demo
+export const chipperChipDemoValues: DemoerStoryProps<any> = {};

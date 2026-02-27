@@ -1,0 +1,13 @@
+{
+  "name": "group-title-slot",
+  "title": "group-title-slot",
+  "description": "Component generated from src/lib/data/dataList/GroupTitleSlot.svelte",
+  "files": [
+    "src/lib/data/dataList/GroupTitleSlot.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

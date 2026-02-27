@@ -216,6 +216,24 @@ export interface TreeItemType<T = Record<string, any>> {
 </div>
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './tree.css';
+	@reference "tailwindcss";
+
+	:root {
+		--tree-cell-border: 1px solid transparent;
+		--tree-cell-padding: var(--sld-pad-tiny);
+		--tree-cell-border-radius: var(--sld-radius-small);
+		--tree-cell-gap: var(--sld-gap-tiny);
+		--tree-cell-arrow-width: 16px;
+		--tree-cell-title-gutter-gap: var(--sld-pad-tiny);
+	}
+
+	.tree-cell {
+		border: var(--tree-cell-border);
+		padding: var(--tree-cell-padding);
+		padding-left: var(--tree-level);
+		border-radius: var(--tree-cell-border-radius);
+		gap: var(--tree-cell-gap);
+		display: flex;
+		align-items: center;
+	}
 </style>

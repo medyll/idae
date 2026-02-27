@@ -1,0 +1,13 @@
+{
+  "name": "looper.demo",
+  "title": "looper.demo",
+  "description": "Component generated from src/lib/utils/looper/Looper.demo.svelte",
+  "files": [
+    "src/lib/utils/looper/Looper.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

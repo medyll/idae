@@ -1,0 +1,13 @@
+{
+  "name": "login-avatar-root",
+  "title": "login-avatar-root",
+  "description": "Component generated from src/lib/ui/login/LoginAvatarRoot.svelte",
+  "files": [
+    "src/lib/ui/login/LoginAvatarRoot.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

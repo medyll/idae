@@ -1,0 +1,13 @@
+{
+  "name": "avatar-badge",
+  "title": "avatar-badge",
+  "description": "Component generated from src/lib/base/avatar/AvatarBadge.svelte",
+  "files": [
+    "src/lib/base/avatar/AvatarBadge.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

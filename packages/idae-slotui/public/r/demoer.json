@@ -1,0 +1,13 @@
+{
+  "name": "demoer",
+  "title": "demoer",
+  "description": "Component generated from src/lib/base/demoer/Demoer.svelte",
+  "files": [
+    "src/lib/base/demoer/Demoer.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

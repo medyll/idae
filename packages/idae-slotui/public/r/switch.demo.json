@@ -1,0 +1,13 @@
+{
+  "name": "switch.demo",
+  "title": "switch.demo",
+  "description": "Component generated from src/lib/controls/switch/Switch.demo.svelte",
+  "files": [
+    "src/lib/controls/switch/Switch.demo.svelte"
+  ],
+  "dependencies": [],
+  "keywords": [
+    "svelte",
+    "component"
+  ]
+}

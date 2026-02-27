@@ -1,3 +1,6 @@
+export const confirmDemoValues = {};
+
+export const confirmInitialDemoValues = {};
 import { demoerArgs } from "$lib/base/demoer/demoer.utils.js";
 import type { DemoerStoryProps } from "$lib/base/demoer/types.js";
 import {

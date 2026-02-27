@@ -114,6 +114,35 @@ export type IconAppProps = {
 	/>
 {/key}
 
+<script module lang="ts">
+// Module-level Props marker for migration tooling
+export type IconProps = Record<string, unknown>;
+</script>
+
 <style global lang="postcss">
-  @import './icon.css';
+  @reference "tailwindcss";
+
+  :root {
+    --icon-size: 1.5em;
+    --icon-color: var(--sld-color-icon);
+  }
+
+  :global(.icon) {
+    transition: all 0.2s;
+  }
+
+  .rotate { animation: spinner-frames 3s infinite linear; }
+
+  @keyframes spinner-frames {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .icon {
+    display: inline-block;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    color: var(--icon-color);
+    vertical-align: middle;
+  }
 </style>

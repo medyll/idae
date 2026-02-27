@@ -84,5 +84,24 @@ let {
 </label>
 
 <style global lang="postcss">
-  @import './checkbox.css';
+	@reference "tailwindcss";
+
+	:root {
+		--sld-checkbox-background: var(--sld-color-background-alpha-high);
+		--sld-checkbox-background-hover: var(--sld-color-primary);
+		--sld-checkbox-background-checked: var(--sld-color-primary);
+		--sld-checkbox-background-indeterminate: var(--sld-color-primary-alpha-mid);
+		--sld-checkbox-border-width: 2px;
+		--sld-checkbox-border-color: var(--sld-color-foreground-alpha-mid);
+		--sld-checkbox-border-bottom-width: 2px;
+		--sld-checkbox-border-bottom-color: var(--sld-color-primary-darker, rgb(208, 191, 151));
+		--sld-checkbox-radius: var(--sld-radius-small);
+		--sld-checkbox-padding: 0 0.5rem;
+		--sld-checkbox-shadow: 0px 0px 3px 1px rgba(51, 51, 51, 0.1);
+	}
+
+	.checkbox {
+		border: var(--sld-checkbox-border-width) solid var(--sld-checkbox-border-color);
+		border-bottom: var(--sld-checkbox-border-bottom-width) solid var(--sld-checkbox-border-bottom-color);
+	}
 </style>
