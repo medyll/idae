@@ -20,3 +20,23 @@ npx shadcn add https://example.org/r/button
 ```
 
 Replace `https://example.org` with your hosted registry URL when ready.
+
+Example usage (generate registry and summary):
+
+```bash
+# Generate registry from source (exclude demos/previews)
+node scripts/generate-registry-from-lib.cjs --exclude="**/demo/**,**/preview/**"
+
+# Generate pnpx/pmpx summary
+node scripts/make-pnpx.cjs
+
+# Or run packaging pre-step which runs both
+npm run prepackage
+```
+
+Example: install a single component using the shadcn CLI (after hosting registry.json):
+
+```bash
+# When registry.json is hosted at https://ma-lib.dev/registry.json
+npx shadcn add https://ma-lib.dev/r/button
+```
