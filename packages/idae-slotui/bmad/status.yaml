@@ -1,0 +1,113 @@
+project: "@medyll/idae-slotui-svelte"
+display_name: "idae-slotui-svelte"
+synced_at: "2026-03-01"
+
+current_phase: implementation
+
+phases:
+  analysis:
+    status: done
+    artifacts:
+      - COMPONENT_MAP.md       # auto-generated compliance snapshot
+      - MIGRATION.md           # decisions + migration strategy
+      - MIGRATION_STATUS.md    # step-level tracking
+
+  planning:
+    prd:
+      required: true
+      status: done
+      artifact: bmad/artifacts/prd.md
+      completed_at: "2026-03-01"
+    tech_spec:
+      required: false
+      status: not_started
+
+  solutioning:
+    architecture:
+      required: true
+      status: done
+      artifact: bmad/artifacts/architecture.md
+      completed_at: "2026-03-01"
+      prior_references:
+        - docs/SHADCNSVELTE_GUIDELINES.md
+        - SHACDN_SPECS.md
+
+  implementation:
+    status: in_progress
+    sprint_planning:
+      status: not_started      # → run /sprint-planning
+    migration_steps:
+      - step: "Audit existing code"
+        status: done
+      - step: "Migrate components to Svelte 5 runes"
+        status: in_progress
+      - step: "Replace with shadcn-svelte design system"
+        status: in_progress
+      - step: "SCSS → CSS/PostCSS migration"
+        status: done
+      - step: "Tailwind CSS v4 setup"
+        status: done
+      - step: "Tailwind v4 theme (theme.css)"
+        status: in_progress
+      - step: "shadcn-svelte integration"
+        status: in_progress
+      - step: "Style and theme adjustments"
+        status: in_progress
+      - step: "Testing and validation"
+        status: in_progress
+      - step: "Automated export index generation"
+        status: in_progress
+
+sprints:
+  - id: sprint-01
+    theme: "Zero Violations"
+    status: active
+    file: bmad/artifacts/sprints/sprint-01.md
+    goal: "100% COMPONENT_MAP compliance — fix 17 Css violations"
+    points_total: 10
+    points_done: 0
+    stories: [S01-01, S01-02, S01-03, S01-04, S01-05, S01-06]
+  - id: sprint-02
+    theme: "Ship-Ready"
+    status: pending
+    file: bmad/artifacts/sprints/sprint-02.md
+    goal: "Publishable package + functional registry + test baseline"
+    points_total: 10
+    points_done: 0
+    stories: [S02-01, S02-02, S02-03, S02-04, S02-05, S02-06]
+
+backlog:
+  - id: BACKLOG-01
+    title: "Set real public registry URL"
+    priority: high
+    notes: "Placeholder https://example.org must be replaced — blocks S02-03"
+  - id: BACKLOG-02
+    title: "Integrate make-component-maps.js into CI"
+    priority: medium
+    notes: "Gate on 0 ❌ violations pre-push or in CI — raised in architecture ADR questions"
+  - id: BACKLOG-03
+    title: "Formal theme.css for Tailwind v4"
+    priority: medium
+    notes: "Custom CSS variable layer on top of Tailwind v4 defaults"
+
+qa:
+  test_plan: not_started
+  coverage: unknown
+  last_run: null
+  bugs: []
+
+standards:
+  shadcn_svelte:
+    path: docs/SHADCNSVELTE_GUIDELINES.md
+    status: adopted
+    applied_to: "src/lib/"
+  component_conventions:
+    path: COMPONENT_MAP.md
+    checker: "node ./scripts/make-component-maps.js"
+
+registry:
+  present: true
+  local_path: registry/registry.json
+  public_url: "https://example.org/registry.json"
+
+recommendation: "/dev-story S01-01 — start Sprint 01 by fixing base/contentSwitcher Css violation, then batch the rest"
