@@ -1,80 +1,560 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>idae-router demo</title>
+        <title>idae-router — complete demo</title>
+        <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+            body {
+                font-family: system-ui, sans-serif;
+                font-size: 15px;
+                background: #0f1117;
+                color: #e2e8f0;
+                min-height: 100vh;
+                display: grid;
+                grid-template-rows: auto auto 1fr auto;
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                background: #1a1d27;
+                border-bottom: 1px solid #2d3148;
+                padding: 14px 24px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+            header h1 { font-size: 16px; font-weight: 700; color: #a78bfa; white-space: nowrap; }
+            header .badge {
+                font-size: 11px;
+                background: #312e81;
+                color: #c4b5fd;
+                padding: 2px 7px;
+                border-radius: 20px;
+            }
+
+            nav {
+                background: #13151f;
+                border-bottom: 1px solid #1e2235;
+                padding: 10px 24px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px 8px;
+                align-items: center;
+            }
+            nav .label {
+                font-size: 11px;
+                color: #64748b;
+                text-transform: uppercase;
+                letter-spacing: .05em;
+                margin-right: 6px;
+            }
+            nav a {
+                color: #94a3b8;
+                text-decoration: none;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 13px;
+                border: 1px solid transparent;
+                transition: all .15s;
+            }
+            nav a:hover { color: #e2e8f0; border-color: #334155; background: #1e293b; }
+            nav a.section { color: #a78bfa; border-color: #4c1d95; background: #1e1b4b; }
+            nav .sep { color: #334155; }
+            nav .actions { margin-left: auto; display: flex; gap: 6px; }
+            nav button {
+                cursor: pointer;
+                padding: 4px 12px;
+                border-radius: 6px;
+                border: 1px solid #334155;
+                background: #1e293b;
+                color: #94a3b8;
+                font-size: 13px;
+                transition: all .15s;
+            }
+            nav button:hover { color: #e2e8f0; border-color: #64748b; }
+
+            .layout {
+                display: grid;
+                grid-template-columns: 1fr 320px;
+                gap: 0;
+                min-height: 0;
+            }
+
+            main {
+                padding: 24px;
+                border-right: 1px solid #1e2235;
+                min-height: 0;
+                overflow-y: auto;
+            }
+
+            #app {
+                background: #1a1d27;
+                border: 1px solid #2d3148;
+                border-radius: 10px;
+                padding: 20px 24px;
+                min-height: 180px;
+            }
+            #app h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+            #app h2 { font-size: 16px; font-weight: 600; margin: 12px 0 6px; color: #cbd5e1; }
+            #app p { color: #94a3b8; line-height: 1.6; margin-bottom: 6px; }
+            #app pre {
+                background: #0f172a;
+                border: 1px solid #1e293b;
+                border-radius: 6px;
+                padding: 12px;
+                font-size: 12px;
+                overflow-x: auto;
+                color: #7dd3fc;
+                margin-top: 8px;
+            }
+            #app .error { color: #f87171; }
+            #app .loading { color: #64748b; font-style: italic; }
+            #app .tag {
+                display: inline-block;
+                font-size: 11px;
+                padding: 2px 7px;
+                border-radius: 12px;
+                margin-bottom: 8px;
+            }
+            #app .tag.http    { background: #14532d; color: #86efac; }
+            #app .tag.source  { background: #1c1917; color: #fdba74; border: 1px solid #78350f; }
+            #app .tag.nested  { background: #1e1b4b; color: #c4b5fd; }
+            #app .tag.async   { background: #1e3a5f; color: #7dd3fc; }
+
+            /* nested outlet styling */
+            [data-idae-outlet] {
+                margin-top: 14px;
+                padding: 12px 16px;
+                background: #0f172a;
+                border-left: 3px solid #a78bfa;
+                border-radius: 0 6px 6px 0;
+            }
+            [data-idae-outlet] p { color: #c4b5fd; }
+
+            aside {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            aside .panel-header {
+                padding: 12px 16px;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: .07em;
+                color: #64748b;
+                border-bottom: 1px solid #1e2235;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            aside .panel-header button {
+                cursor: pointer;
+                background: none;
+                border: none;
+                color: #475569;
+                font-size: 11px;
+                padding: 0;
+            }
+            aside .panel-header button:hover { color: #94a3b8; }
+            #log {
+                flex: 1;
+                overflow-y: auto;
+                padding: 8px 12px;
+                font-family: 'Fira Code', monospace;
+                font-size: 11.5px;
+                line-height: 1.8;
+            }
+            #log .entry { display: flex; gap: 8px; }
+            #log .time { color: #334155; flex-shrink: 0; }
+            #log .ev-before { color: #fbbf24; }
+            #log .ev-after  { color: #34d399; }
+            #log .ev-leave  { color: #f87171; }
+            #log .ev-nav    { color: #7dd3fc; }
+            #log .ev-fetch  { color: #d8b4fe; }
+            #log .ev-error  { color: #f87171; }
+
+            footer {
+                background: #0d0f17;
+                border-top: 1px solid #1e2235;
+                padding: 8px 24px;
+                font-size: 11px;
+                color: #334155;
+                display: flex;
+                gap: 16px;
+            }
+        </style>
     </head>
     <body>
-        <div id="app"></div>
+        <header>
+            <h1>idae-router</h1>
+            <span class="badge">complete demo</span>
+            <span class="badge">history mode</span>
+            <span class="badge" id="sprint03-badge" style="background:#451a0360;color:#fb923c;border:1px solid #7c2d12">
+                http / http_source — Sprint 03 shim active
+            </span>
+        </header>
 
         <nav>
-            <a href="/">Home</a> | <a href="/about">About</a> | <a href="/posts">Posts</a> |
+            <span class="label">basic</span>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <span class="sep">·</span>
+            <span class="label">params</span>
+            <a href="/user/1">User 1</a>
             <a href="/user/42">User 42</a>
+            <span class="sep">·</span>
+            <span class="label">nested</span>
+            <a href="/parent/7/child">Parent 7 › Child</a>
+            <a href="/parent/7/other">Parent 7 › Other</a>
+            <a href="/parent/7/deep/child">Parent 7 › Deep</a>
+            <span class="sep">·</span>
+            <span class="label">http</span>
+            <a class="section" href="/fetch/user/1">fetch user 1</a>
+            <a class="section" href="/fetch/user/5">fetch user 5</a>
+            <span class="sep">·</span>
+            <span class="label">http_source</span>
+            <a class="section" href="/external/post/1">ext post 1</a>
+            <a class="section" href="/external/post/3">ext post 3</a>
+            <span class="sep">·</span>
+            <span class="label">misc</span>
+            <a href="/posts">Posts</a>
+            <a href="/nowhere">404</a>
+            <div class="actions">
+                <button id="btn-user99">push user 99</button>
+                <button id="btn-refresh">refresh</button>
+            </div>
         </nav>
 
-        <button id="go-user">Go user 99</button>
-        <button id="refresh">Refresh</button>
+        <div class="layout">
+            <main>
+                <div id="app"><p class="loading">Loading…</p></div>
+            </main>
+            <aside>
+                <div class="panel-header">
+                    Route events
+                    <button id="btn-clear-log">clear</button>
+                </div>
+                <div id="log"></div>
+            </aside>
+        </div>
+
+        <footer>
+            <span>idae-router © 2026</span>
+            <span>|</span>
+            <span>http / http_source polyfill: active until Sprint 03 ships</span>
+        </footer>
 
         <script type="module">
             import { createRouter } from '/dist/index.js';
 
+            // ─── Sprint 03 shim ──────────────────────────────────────────────────────
+            // Emulates route-level http / http_source data-fetching (FT-01).
+            // Remove once fetchRouteData lands in router.ts.
+            // ────────────────────────────────────────────────────────────────────────
+
+            // Mock internal API (/api/*) — no backend needed for this demo.
+            const _fetch = window.fetch.bind(window);
+            const MOCK_USERS = {
+                1: { id: 1, name: 'Alice Dupont',   email: 'alice@example.com',   role: 'admin'  },
+                5: { id: 5, name: 'Bob Martin',     email: 'bob@example.com',     role: 'editor' },
+                42: { id: 42, name: 'Carol Nguyen', email: 'carol@example.com',   role: 'viewer' },
+                99: { id: 99, name: 'Dave Smith',   email: 'dave@example.com',    role: 'guest'  },
+            };
+            window.fetch = function (url, opts) {
+                if (typeof url === 'string' && url.includes('/api/users/')) {
+                    const id = Number(url.split('/api/users/')[1]?.split('?')[0]);
+                    const user = MOCK_USERS[id] ?? { id, name: `Unknown User ${id}`, email: `u${id}@example.com`, role: 'guest' };
+                    return Promise.resolve({
+                        ok: true,
+                        status: 200,
+                        json: () => Promise.resolve(user),
+                    });
+                }
+                return _fetch(url, opts);
+            };
+
+            /**
+             * Interpolate :param tokens from ctx.params into a URL template.
+             * @param {string} url
+             * @param {Record<string,string>} params
+             */
+            function interpolateParams(url, params) {
+                return url.replace(/:([a-zA-Z_][a-zA-Z0-9_]*)/g, (_, k) => params[k] ?? `:${k}`);
+            }
+
+            /**
+             * Build full URL from a RouteHttpConfig.
+             * @param {{ url: string, args?: RequestInit }} config
+             * @param {'internal'|'external'} type
+             * @param {Record<string,string>} params
+             */
+            function resolveUrl(config, type, params) {
+                const interpolated = interpolateParams(config.url, params);
+                if (type === 'internal') {
+                    const origin = window.location.origin;
+                    return `${origin}${interpolated.startsWith('/') ? '' : '/'}${interpolated}`;
+                }
+                // External: strip any accidental scheme, force https://
+                const stripped = interpolated.replace(/^https?:\/\//i, '');
+                return `https://${stripped}`;
+            }
+
+            /**
+             * Execute route-level fetch, returns { data, error }.
+             * Never throws.
+             */
+            async function fetchRouteData(route, params) {
+                if (!route.http && !route.http_source) return { data: undefined, error: undefined };
+                if (route.http && route.http_source) {
+                    console.warn('[idae-router] Route has both `http` and `http_source`. `http` wins.');
+                }
+                const config = route.http ?? route.http_source;
+                const type   = route.http ? 'internal' : 'external';
+                const url    = resolveUrl(config, type, params);
+                log('fetch', `${type === 'internal' ? '→ int mock' : '→ ext browser'} ${url}`);
+                // http  → window.fetch (mocked for /api/* in this demo)
+                // http_source → _fetch (raw browser Fetch API, no mock)
+                const fetcher = type === 'external' ? _fetch : window.fetch;
+                try {
+                    const res = await fetcher(url, config.args);
+                    if (!res.ok) return { data: null, error: new Error(`HTTP ${res.status}`) };
+                    const data = await res.json();
+                    return { data, error: undefined };
+                } catch (err) {
+                    return { data: null, error: err instanceof Error ? err : new Error(String(err)) };
+                }
+            }
+
+            /**
+             * Wrap a route array so http / http_source are resolved before action runs.
+             * Recursive — applies to children too.
+             */
+            function shimRoutes(routes) {
+                return routes.map(r => ({
+                    ...r,
+                    children: r.children ? shimRoutes(r.children) : undefined,
+                    action: (r.http || r.http_source)
+                        ? async (ctx) => {
+                            const { data, error } = await fetchRouteData(r, ctx.params);
+                            ctx.data  = data;
+                            ctx.error = error;
+                            return r.action ? r.action(ctx) : null;
+                        }
+                        : r.action,
+                }));
+            }
+            // ─── end of Sprint 03 shim ───────────────────────────────────────────────
+
+
+            // ─── Log panel ───────────────────────────────────────────────────────────
+            const logEl = document.getElementById('log');
+            function log(kind, msg) {
+                const entry = document.createElement('div');
+                entry.className = 'entry';
+                const t = new Date().toTimeString().slice(0, 8);
+                entry.innerHTML = `<span class="time">${t}</span><span class="ev-${kind}">${msg}</span>`;
+                logEl.appendChild(entry);
+                logEl.scrollTop = logEl.scrollHeight;
+            }
+            document.getElementById('btn-clear-log').addEventListener('click', () => logEl.innerHTML = '');
+
+
+            // ─── Route definitions ───────────────────────────────────────────────────
+
             const routes = [
-                { path: '/', action: () => '<h1>Home</h1><p>Demo home</p>' },
+
+                // ── Basic ──────────────────────────────────────────────────────────
+                {
+                    path: '/',
+                    action: () => `
+                        <h1>Home</h1>
+                        <p>Welcome to the <strong>idae-router</strong> complete demo.</p>
+                        <p>Use the navigation above to explore all router features.</p>
+                        <h2 style="margin-top:16px">Features demonstrated</h2>
+                        <ul style="margin-top:8px;line-height:2;color:#94a3b8;padding-left:20px">
+                            <li>Basic route + string render</li>
+                            <li>DocumentFragment render</li>
+                            <li>Dynamic params (<code>:id</code>)</li>
+                            <li>Async action + cleanup function</li>
+                            <li>Nested routes + <code>data-idae-outlet</code></li>
+                            <li><code>http</code> — same-origin fetch → <code>ctx.data</code></li>
+                            <li><code>http_source</code> — external HTTPS fetch → <code>ctx.data</code></li>
+                            <li>Before / After / onLeave hooks</li>
+                            <li>404 handler</li>
+                        </ul>`
+                },
                 {
                     path: '/about',
                     action: () => {
                         const frag = document.createDocumentFragment();
-                        const h = document.createElement('h1');
-                        h.textContent = 'About';
-                        frag.appendChild(h);
+                        const div  = document.createElement('div');
+                        div.innerHTML = `
+                            <h1>About</h1>
+                            <p>This route returns a <strong>DocumentFragment</strong> — no innerHTML involved.</p>
+                            <p>Useful for complex DOM trees built programmatically.</p>`;
+                        frag.appendChild(div);
                         return frag;
                     }
                 },
+
+                // ── Async action + cleanup ─────────────────────────────────────────
                 {
                     path: '/user/:id',
                     action: async (ctx) => {
-                        await new Promise((r) => setTimeout(r, 50));
+                        await new Promise(r => setTimeout(r, 80));
                         const el = document.createElement('div');
-                        el.innerHTML = `<h1>User ${ctx.params.id}</h1><p>Loaded async</p>`;
-                        const timer = setInterval(() => console.log('poll', ctx.params.id), 1000);
-                        return () => clearInterval(timer);
+                        el.innerHTML = `
+                            <span class="tag async">async + cleanup</span>
+                            <h1>User ${ctx.params.id}</h1>
+                            <p>Loaded asynchronously (80 ms delay). A background timer starts on mount.</p>
+                            <p>Navigate away — the <code>onLeave</code> cleanup cancels it automatically.</p>
+                            <p><em>Watch the log panel →</em></p>`;
+                        let tick = 0;
+                        const timer = setInterval(() => {
+                            tick++;
+                            log('nav', `timer tick ${tick} [user ${ctx.params.id}]`);
+                        }, 2000);
+                        return () => {
+                            clearInterval(timer);
+                            log('leave', `cleanup: timer cancelled [user ${ctx.params.id}]`);
+                        };
                     }
                 },
+
+                // ── http option — internal (same-origin) fetch ─────────────────────
+                // Route-level data fetching via http.url.
+                // window.location.origin is prepended; :id is interpolated from params.
+                // ctx.data contains the parsed JSON before action runs.
+                {
+                    path: '/fetch/user/:id',
+                    http: { url: '/api/users/:id' },
+                    action: (ctx) => {
+                        if (ctx.error) return `
+                            <span class="tag http">http</span>
+                            <h1>Fetch error</h1>
+                            <p class="error">${ctx.error.message}</p>`;
+                        const u = ctx.data;
+                        return `
+                            <span class="tag http">http · same-origin</span>
+                            <h1>${u.name}</h1>
+                            <p>User <strong>#${u.id}</strong> — ${u.email} — role: <code>${u.role}</code></p>
+                            <p>Data in <code>ctx.data</code>, fetched from <code>/api/users/${u.id}</code> before this action ran.</p>
+                            <pre>${JSON.stringify(u, null, 2)}</pre>`;
+                    }
+                },
+
+                // ── http_source option — external HTTPS fetch ──────────────────────
+                // https:// is prepended automatically; :id is interpolated.
+                // Uses JSONPlaceholder (public test API).
+                {
+                    path: '/external/post/:id',
+                    http_source: { url: 'jsonplaceholder.typicode.com/posts/:id' },
+                    action: (ctx) => {
+                        if (ctx.error) return `
+                            <span class="tag source">http_source</span>
+                            <h1>Fetch error</h1>
+                            <p class="error">${ctx.error.message}</p>`;
+                        const p = ctx.data;
+                        return `
+                            <span class="tag source">http_source · external HTTPS</span>
+                            <h1>${p.title}</h1>
+                            <p>Post <strong>#${p.id}</strong> — user ${p.userId}</p>
+                            <p>Data in <code>ctx.data</code>, fetched from
+                               <code>https://jsonplaceholder.typicode.com/posts/${p.id}</code>.</p>
+                            <p style="margin-top:10px;color:#94a3b8">${p.body}</p>
+                            <pre>${JSON.stringify(p, null, 2)}</pre>`;
+                    }
+                },
+
+                // ── Nested routes ──────────────────────────────────────────────────
+                {
+                    path: '/parent/:id',
+                    action: (ctx) => `
+                        <span class="tag nested">nested · parent</span>
+                        <h1>Parent ${ctx.params.id}</h1>
+                        <p>Parent route rendered. The child view is injected below via <code>data-idae-outlet</code>.</p>
+                        <div data-idae-outlet></div>`,
+                    children: [
+                        {
+                            path: 'child',
+                            action: (ctx) => `
+                                <span class="tag nested">nested · child</span>
+                                <p><strong>Child</strong> rendered inside parent ${ctx.params.id}'s outlet.</p>`
+                        },
+                        {
+                            path: 'other',
+                            action: (ctx) => `
+                                <span class="tag nested">nested · other</span>
+                                <p><strong>Other</strong> child rendered inside parent ${ctx.params.id}'s outlet.</p>`
+                        },
+                        {
+                            path: 'deep',
+                            action: (ctx) => `
+                                <span class="tag nested">nested · deep parent</span>
+                                <p>Deep parent for ${ctx.params.id}. Another outlet below:</p>
+                                <div data-idae-outlet></div>`,
+                            children: [
+                                {
+                                    path: 'child',
+                                    action: (ctx) => `
+                                        <span class="tag nested">nested · deep child</span>
+                                        <p>Three levels deep — parent ${ctx.params.id} → deep → child.</p>`
+                                }
+                            ]
+                        }
+                    ]
+                },
+
+                // ── Posts (programmatic DOM) ───────────────────────────────────────
                 {
                     path: '/posts',
                     action: () => {
-                        const el = document.createElement('div');
-                        el.innerHTML =
-                            '<h1>Posts</h1><ul><li><a href="/posts/1/comments">Post 1 comments</a></li></ul>';
-                        return el;
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                            <h1>Posts</h1>
+                            <ul style="margin-top:8px;line-height:2;padding-left:20px">
+                                <li><a href="/posts/1/comments">Post 1 comments</a></li>
+                                <li><a href="/posts/2/comments">Post 2 comments</a></li>
+                            </ul>`;
+                        return div;
                     }
                 },
                 {
                     path: '/posts/:postId/comments',
-                    action: (ctx) => {
-                        console.log('comments', ctx.params.postId);
-                        return;
-                    }
+                    action: (ctx) => `<h1>Post ${ctx.params.postId} comments</h1><p>Nothing here yet.</p>`
                 }
             ];
 
+
+            // ─── Router setup ────────────────────────────────────────────────────────
             const router = createRouter({
-                routes,
+                routes: shimRoutes(routes),   // shimRoutes removed when Sprint 03 ships
                 outlet: '#app',
                 mode: 'history',
                 linkInterception: true,
-                notFound: () => '<h1>404</h1>'
+                notFound: (ctx) => `<h1>404</h1><p>No route matches <code>${ctx.path}</code>.</p>`
             });
 
             router.before((to, from, next) => {
+                log('before', `${from ? from.path : '(init)'} → ${to.path}`);
                 next();
             });
-            router.after((to) => console.log('after', to.path));
-            router.onLeave((from) => console.log('leave', from.path));
+            router.after((to, from) => {
+                log('after', `${to.path} ✓`);
+            });
+            router.onLeave((from) => {
+                log('leave', `leaving ${from.path}`);
+            });
+            router.onError = (err, path) => {
+                log('error', `${path}: ${err.message}`);
+            };
 
-            document.getElementById('go-user').addEventListener('click', () => router.push('/user/99'));
-            document.getElementById('refresh').addEventListener('click', () => router.refresh());
+            document.getElementById('btn-user99').addEventListener('click', () => router.push('/user/99'));
+            document.getElementById('btn-refresh').addEventListener('click', () => router.refresh());
         </script>
     </body>
 </html>

@@ -183,6 +183,46 @@ const routes = [
 
 ---
 
+## Demo Page
+
+**File:** `static/demo.html` — complete, no-build demo. Load after `npm run dev` or `npm run preview`.
+
+The page covers every feature including the new `http`/`http_source` options via a **Sprint 03 shim** that emulates `fetchRouteData` in-browser. The shim is removed once Sprint 03 ships and the router natively supports `http`/`http_source`.
+
+### Demo routes
+
+| Path | Feature | Notes |
+|---|---|---|
+| `/` | Basic string render | Home with feature list |
+| `/about` | DocumentFragment render | No innerHTML |
+| `/user/:id` | Async action + cleanup | 80ms delay; timer cancelled on leave |
+| `/fetch/user/:id` | **`http`** internal fetch | `window.location.origin + /api/users/:id`; mocked in demo |
+| `/external/post/:id` | **`http_source`** external fetch | `https://jsonplaceholder.typicode.com/posts/:id` |
+| `/parent/:id/child` | Nested routes 2 levels | `data-idae-outlet` |
+| `/parent/:id/deep/child` | Nested routes 3 levels | Two outlets |
+| `/posts` | Programmatic DOM render | `document.createElement` |
+| `/nowhere` | 404 handler | `notFound` callback |
+
+### Sprint 03 shim (in-demo) — key functions
+
+```js
+// interpolate :param tokens
+interpolateParams(url, params)
+
+// build full URL (origin-pinned for internal, https:// for external)
+resolveUrl(config, type, params)
+
+// execute fetch, return { data, error } — never throws
+fetchRouteData(route, params)
+
+// wrap route array so http/http_source trigger before action
+shimRoutes(routes)
+```
+
+The mock internal API (`window.fetch` intercepted for `/api/users/*`) returns fixture data so the `http` demo works without a running backend.
+
+---
+
 ## Out of Scope
 
 - GraphQL / non-REST protocols.
