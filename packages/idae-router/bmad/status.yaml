@@ -1,7 +1,7 @@
 ---
 phase: "Implementation"
 progress: 50
-last_updated: "2026-03-02T20:00:00Z"
+last_updated: "2026-03-02T20:30:00Z"
 
 phases:
   analysis:
@@ -14,6 +14,7 @@ phases:
     completed_at: null
     artifacts:
       - "sprint-01"
+      - "sprint-03"
   solutioning:
     status: "pending"
     completed_at: null
@@ -63,9 +64,27 @@ backlog:
     status: "planning"
   - id: "sprint-03"
     name: "Route HTTP Data-Fetching (http / http_source)"
-    status: "planning"
+    status: "ready"
     feature_ref: "FT-01"
-    stories: []
+    duration: "2026-03-09 → 2026-03-16"
+    capacity: "10 points"
+    progress: 0
+    stories:
+      - id: "S03-01"
+        title: "Extend Route + Context types"
+        status: "pending"
+      - id: "S03-02"
+        title: "Create fetcher.ts"
+        status: "pending"
+      - id: "S03-03"
+        title: "Integrate fetcher into router.ts"
+        status: "pending"
+      - id: "S03-04"
+        title: "Security enforcement"
+        status: "pending"
+      - id: "S03-05"
+        title: "Unit tests for fetcher"
+        status: "pending"
 
 qa:
   test_plan: null
@@ -73,4 +92,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "/dev-story or /sprint-planning for FT-01 (http/http_source route fetching)"
+recommendation: "/dev-story S03-01 (start with types — unblocks all other S03 stories)"

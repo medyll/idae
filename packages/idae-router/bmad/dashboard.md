@@ -95,21 +95,18 @@ Planning – FT-01 PRD     ✅ Defined (http/http_source)
 - Publish release notes
 
 ### Sprint 03 – Route HTTP Data-Fetching (FT-01)
-🆕 **PRD created** → [`bmad/artifacts/prd.md`](artifacts/prd.md)
 
-| ID | Feature | Priority | Status |
-|---|---|---|---|
-| FT-01 | `Route.http` — internal (same-origin) fetch | Must | 📋 Defined |
-| FT-01 | `Route.http_source` — external (HTTPS) fetch | Must | 📋 Defined |
-| FT-01 | `:param` token interpolation in URLs | Must | 📋 Defined |
-| FT-01 | `ctx.data` / `ctx.error` context enrichment | Must | 📋 Defined |
+**Duration:** 2026-03-09 → 2026-03-16 | **Capacity:** 10 points | **Status:** Ready
 
-**Key types to add:**
-- `RouteHttpConfig` in `src/lib/types.ts`
-- `ctx.data?: unknown`, `ctx.error?: Error` in `Context`
-- `src/lib/fetcher.ts` — new utility
+| ID | Epic | Title | Points | Priority | Status |
+|---|---|---|---|---|---|
+| [S03-01](artifacts/stories/S03-01.md) | Types | Extend `Route` + `Context` types | 1 | Must | ⏳ pending |
+| [S03-02](artifacts/stories/S03-02.md) | Core | Create `src/lib/fetcher.ts` | 3 | Must | ⏳ pending |
+| [S03-03](artifacts/stories/S03-03.md) | Core | Integrate fetcher into `router.ts` | 2 | Must | ⏳ pending |
+| [S03-04](artifacts/stories/S03-04.md) | Security | Origin pinning + HTTPS enforcement | 2 | Must | ⏳ pending |
+| [S03-05](artifacts/stories/S03-05.md) | Testing | Unit tests for fetcher + integration | 2 | Must | ⏳ pending |
 
-👉 Run `/sprint-planning` to create Sprint 03 stories.
+**Sprint Goal:** Ship `http`/`http_source` route options end-to-end with full type safety and test coverage.
 
 ---
 
@@ -128,9 +125,9 @@ Planning – FT-01 PRD     ✅ Defined (http/http_source)
 
 ## 🎯 Recommended Next Action
 
-👉 **Run:** `npm install && npm run test:unit && npm run build`
+👉 **Run:** `/dev-story S03-01` — types are the unblocking first step.
 
-Then: `/sprint-planning` to create Sprint 03 stories for FT-01 (`http`/`http_source`).
+Sequence: S03-01 → S03-02 → S03-03 + S03-04 (parallel) → S03-05
 
 ---
 
