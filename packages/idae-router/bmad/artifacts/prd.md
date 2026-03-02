@@ -1,9 +1,10 @@
-# PRD – idae-router: Route-Level HTTP Data-Fetching (`http` / `http_source`)
+# PRD – idae-router: Advanced Data-Fetching & Developer Experience
 
-**Version:** 1.0.0  
+**Version:** 2.0.0  
 **Date:** 2026-03-02  
 **Status:** Draft  
-**Author:** PM (BMAD)
+**Author:** PM (BMAD)  
+**Supersedes:** v1.0.0 (http / http_source baseline)
 
 ---
 
