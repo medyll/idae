@@ -10,7 +10,9 @@ import type {
 import { parseQuery, matchRouteTree } from './matcher';
 import { mountResult } from './render';
 import { findOutlet } from './render';
-import { fetchRouteData } from './fetcher.js';
+import { fetchRouteData, resolveUrl } from './fetcher.js';
+import { createCacheStore, deepEqual } from './cache.js';
+import type { CacheStore } from './cache.js';
 
 /**
  * Create a new router instance and begin listening for navigation events.
@@ -49,6 +51,21 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	const beforeHooks: BeforeHook[] = [];
 	const afterHooks: AfterHook[] = [];
 	const onLeaveHooks: OnLeaveHook[] = [];
+
+	// ── Cache initialisation ──────────────────────────────────────────────────
+	const cacheEnabled = opts.cache !== false;
+	const cacheOpts = cacheEnabled ? (opts.cache as import('./types').CacheOptions | undefined) : undefined;
+	const cacheTtl = cacheOpts?.ttl ?? 60_000;
+	const cacheStaleTime = cacheOpts?.staleTime ?? 0;
+	const cacheStore: CacheStore = createCacheStore(cacheEnabled);
+
+	function getCacheKey(route: Route, params: Record<string, string>): string | null {
+		const config = route.http || route.http_source;
+		if (!config) return null;
+		const type = route.http ? 'internal' : 'external';
+		const url = resolveUrl(config, type, params);
+		return `GET ${url}`;
+	}
 
 	let currentContext: Context | null = null;
 	let currentCleanups: Array<(() => void) | null> = [];
@@ -159,11 +176,28 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		const newCleanups: Array<(() => void) | null> = [];
 		let parentOutlet = outletEl;
 		for (const rec of chain) {
-			// Enrich context with route-level fetch data (independent per level)
+			// ── SWR cache + fetch ──────────────────────────────────────────────
 			let levelContext: Context;
 			if (rec.route.http || rec.route.http_source) {
-				const { data, error } = await fetchRouteData(rec.route, toContext.params);
-				levelContext = { ...toContext, data, error };
+				const cacheKey = getCacheKey(rec.route, toContext.params);
+				const hit = cacheKey ? cacheStore.get(cacheKey, cacheTtl, cacheStaleTime) : undefined;
+
+				if (hit) {
+					// Cache hit — serve immediately
+					levelContext = { ...toContext, data: hit.entry.data, isRevalidating: hit.state === 'stale' };
+				} else {
+					// Cache miss — fetch now
+					const { data, error } = await fetchRouteData(rec.route, toContext.params);
+					if (cacheKey && !error) {
+						cacheStore.set(cacheKey, {
+							data,
+							timestamp: Date.now(),
+							url: cacheKey.slice(4),
+							status: 200
+						});
+					}
+					levelContext = { ...toContext, data: data ?? null, error };
+				}
 			} else {
 				levelContext = toContext;
 			}
@@ -180,6 +214,40 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 				const childOutlet = findOutlet(parentOutlet);
 				if (childOutlet) parentOutlet = childOutlet;
 				// otherwise parentOutlet stays the same as fallback
+
+				// ── Background SWR revalidation ──────────────────────────────
+				if (levelContext.isRevalidating) {
+					const cacheKey = getCacheKey(rec.route, toContext.params);
+					const capturedOutlet = parentOutlet;
+					const capturedCtx = toContext;
+					const capturedAction = rec.route.action;
+					const staleData = levelContext.data;
+					if (cacheKey && capturedAction) {
+						fetchRouteData(rec.route, capturedCtx.params)
+							.then(async (fresh) => {
+								if (fresh.error || deepEqual(fresh.data, staleData)) return;
+								cacheStore.set(cacheKey, {
+									data: fresh.data,
+									timestamp: Date.now(),
+									url: cacheKey.slice(4),
+									status: 200
+								});
+								const freshCtx: Context = {
+									...capturedCtx,
+									data: fresh.data ?? null,
+									isRevalidating: false
+								};
+								const freshResult = await Promise.resolve(capturedAction(freshCtx));
+								if (typeof freshResult !== 'function') {
+									mountResult(
+										capturedOutlet,
+										freshResult as unknown as string | Node | DocumentFragment
+									);
+								}
+							})
+							.catch(() => {/* ignore revalidation errors */});
+					}
+				}
 			}
 		}
 
@@ -235,10 +303,43 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		window.addEventListener(mode === 'history' ? 'popstate' : 'hashchange', onPop);
 		if (linkInterception) {
 			document.addEventListener('click', onLinkClick);
+			if (cacheEnabled) {
+				document.addEventListener('pointerenter', onPointerEnter, { capture: true });
+				document.addEventListener('pointerleave', onPointerLeave, { capture: true });
+			}
 		}
 	}
 
 	// teardownListeners kept out for now; listeners are attached for router lifetime
+
+	const prefetchTimers = new Map<Element, ReturnType<typeof setTimeout>>();
+
+	function onPointerEnter(e: PointerEvent) {
+		const target = e.composedPath().find((n) => (n as Element).nodeType === 1) as Element | undefined;
+		if (!target) return;
+		const anchor = (target as HTMLElement).closest ? (target as HTMLElement).closest('a') : null;
+		if (!anchor) return;
+		const a = anchor as HTMLAnchorElement;
+		const href = a.getAttribute('href');
+		if (!href || href.startsWith('http') || href.startsWith('mailto:')) return;
+		const timer = setTimeout(() => {
+			prefetchTimers.delete(anchor);
+			instance.prefetch?.(href).catch(() => {/* ignore */});
+		}, 200);
+		prefetchTimers.set(anchor, timer);
+	}
+
+	function onPointerLeave(e: PointerEvent) {
+		const target = e.composedPath().find((n) => (n as Element).nodeType === 1) as Element | undefined;
+		if (!target) return;
+		const anchor = (target as HTMLElement).closest ? (target as HTMLElement).closest('a') : null;
+		if (!anchor) return;
+		const timer = prefetchTimers.get(anchor);
+		if (timer) {
+			clearTimeout(timer);
+			prefetchTimers.delete(anchor);
+		}
+	}
 
 	function onLinkClick(e: MouseEvent) {
 		if (e.defaultPrevented) return;
@@ -287,6 +388,55 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		},
 		onLeave(fn: OnLeaveHook) {
 			onLeaveHooks.push(fn);
+		},
+		/**
+		 * Pre-fetch data for `path` and populate the cache. No navigation is triggered.
+		 * A no-op when caching is disabled.
+		 */
+		async prefetch(path: string): Promise<void> {
+			if (!cacheEnabled) return;
+			const [pathname] = path.split('?');
+			const chain = matchRouteTree(routes, pathname);
+			for (const rec of chain) {
+				if (!rec.route.http && !rec.route.http_source) continue;
+				const cacheKey = getCacheKey(rec.route, rec.params);
+				if (!cacheKey) continue;
+				const hit = cacheStore.get(cacheKey, cacheTtl, cacheStaleTime);
+				if (hit?.state === 'fresh') continue;
+				const result = await fetchRouteData(rec.route, rec.params);
+				if (!result.error) {
+					cacheStore.set(cacheKey, {
+						data: result.data ?? null,
+						timestamp: Date.now(),
+						url: cacheKey.slice(4),
+						status: 200
+					});
+				}
+			}
+		},
+		/**
+		 * Invalidate cache entries. Pass a pattern (supports trailing `*` glob) or omit to clear all.
+		 */
+		invalidate(pattern?: string): void {
+			if (!cacheEnabled) return;
+			if (pattern === undefined) cacheStore.clear();
+			else cacheStore.invalidate(pattern);
+		},
+		/**
+		 * Build a URL string from a path pattern, interpolating `:param` tokens.
+		 */
+		buildUrl(path: string, params?: Record<string, string>): string {
+			const [pathname, search] = path.split('?');
+			const interpolated = params
+				? pathname.replace(/:([\w]+)/g, (_, key) => params[key] ?? `:${key}`)
+				: pathname;
+			return interpolated + (search ? '?' + search : '');
+		},
+		/**
+		 * Return the current navigation context (or null before first navigation).
+		 */
+		getState(): Context | null {
+			return currentContext;
 		}
 	};
 

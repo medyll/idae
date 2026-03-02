@@ -1,6 +1,6 @@
 # idae-router
 
-A lightweight, framework-agnostic SPA router (factory `createRouter`) with path params, query parsing, lifecycle hooks, DOM rendering into an outlet, link interception, and support for actions that return cleanup functions.
+A lightweight, framework-agnostic SPA router (factory `createRouter`) with path params, query parsing, lifecycle hooks, DOM rendering into an outlet, link interception, automatic HTTP data-fetching, a built-in SWR cache engine, TypeScript generics, and support for actions that return cleanup functions.
 
 ## Complex Example
 
@@ -92,11 +92,129 @@ Behavior notes:
 - `action` may return a function — this will be treated as a cleanup and invoked when navigating away.
 - `before(to, from, next)` supports async flows via calling `next()`/`next(path)`/`next(false)`.
 
+---
+
+## HTTP data-fetching (`http` / `http_source`)
+
+Declare an `http` (or `http_source`) property on any route. The router resolves URL param tokens (`:id` → value from `ctx.params`), fetches the endpoint, and passes the result as `ctx.data` to the action.
+
+```ts
+import { createRouter } from 'idae-router';
+
+interface User { id: number; name: string; }
+
+const routes = [
+  {
+    path: '/users/:id',
+    http: { url: '/api/users/:id' },
+    action: (ctx: Context<User>) => {
+      if (ctx.isLoading) return '<p>Loading…</p>';
+      if (ctx.queryError) return `<p>Error: ${ctx.queryError.message}</p>`;
+      return `<h1>${ctx.data?.name}</h1>`;
+    }
+  }
+];
+```
+
+`http_source` works identically but is used as a secondary / fallback data source.
+
+**Context fields populated by the fetcher:**
+
+| Field | Type | Description |
+|---|---|---|
+| `ctx.data` | `TData \| null` | Deserialized JSON response body |
+| `ctx.isLoading` | `boolean` | `true` while the first fetch is in-flight |
+| `ctx.isRevalidating` | `boolean` | `true` during background SWR revalidation |
+| `ctx.queryError` | `Error \| undefined` | Set when the fetch fails or response is not ok |
+
+---
+
+## TypeScript generics
+
+All core types accept a `TData` type parameter for full end-to-end type safety:
+
+```ts
+import type { Route, Context, Action, RouterOptions } from 'idae-router';
+
+interface Post { id: number; title: string; }
+
+// Fully typed — ctx.data is Post | null
+const postAction: Action<Post> = (ctx) => `<h1>${ctx.data?.title}</h1>`;
+
+const routes: Route<Post>[] = [
+  {
+    path: '/posts/:id',
+    http: { url: '/api/posts/:id' },
+    action: postAction
+  }
+];
+```
+
+Omitting `TData` defaults to `unknown`, preserving backward compatibility.
+
+---
+
+## SWR cache
+
+Pass a `cache` option to `createRouter` to enable the built-in SWR engine. Responses are stored in memory and served synchronously on subsequent navigations. A background re-fetch runs when the entry is stale; the action is re-invoked only if the new data differs.
+
+```ts
+const router = createRouter({
+  routes,
+  outlet: '#app',
+  cache: {
+    ttl: 60_000,       // max age before eviction (ms, default 60 s)
+    staleTime: 5_000   // serve from cache and revalidate in background (ms, default 0)
+  }
+});
+```
+
+Pass `cache: false` to disable caching entirely (fetches on every navigation).
+
+**Hover prefetch:** when `cache` is enabled and `linkInterception: true`, hovering an `<a>` tag for 200 ms triggers a prefetch. Moving the pointer away before 200 ms cancels it.
+
+---
+
+## RouterInstance API
+
+All methods returned by `createRouter`:
+
+| Method | Signature | Description |
+|---|---|---|
+| `push` | `(path: string) => void` | Navigate and push a history entry |
+| `replace` | `(path: string) => void` | Navigate without adding a history entry |
+| `refresh` | `() => void` | Re-run the current route |
+| `before` | `(guard) => void` | Register a before-navigation guard |
+| `after` | `(hook) => void` | Register an after-navigation hook |
+| `onLeave` | `(hook) => void` | Register an on-leave hook |
+| `prefetch` | `(path: string) => Promise<void>` | Warm the cache for a path |
+| `invalidate` | `(pattern?: string) => void` | Clear cache entries (all if no pattern, glob `*` suffix supported) |
+| `buildUrl` | `(path: string, params?: Record<string, string>) => string` | Interpolate `:param` tokens |
+| `getState` | `() => Context \| null` | Return the current navigation context |
+
+```ts
+// Prefetch on mount so the first user click is instant
+router.prefetch('/dashboard');
+
+// Invalidate a specific resource after a mutation
+await fetch('/api/users/42', { method: 'PATCH', body: … });
+router.invalidate('GET http://localhost/api/users/42');
+
+// Build a typed URL
+const url = router.buildUrl('/users/:id', { id: String(userId) });
+
+// Read current state (e.g. for breadcrumbs)
+const state = router.getState();
+console.log(state?.path, state?.params);
+```
+
+---
+
 ## Usage
 
-- Import `createRouter` from the package entry (`src/lib` during development).
-- Provide an `outlet` selector (default `#app`) where views are mounted.
-- Use `push`, `replace`, and `refresh` on the router instance for programmatic navigation.
+- Import `createRouter` from the package entry (`idae-router` once published, `src/lib` during development).
+- Provide an `outlet` CSS selector or `HTMLElement` (default `#app`) where views are mounted.
+- See the **RouterInstance API** table above for all available methods.
 
 ## Nested routes
 

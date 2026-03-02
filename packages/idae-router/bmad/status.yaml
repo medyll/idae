@@ -1,7 +1,7 @@
 ---
 phase: "Implementation"
-progress: 84
-last_updated: "2026-03-02T22:20:00Z"
+progress: 95
+last_updated: "2026-03-02T22:45:00Z"
 
 phases:
   analysis:
@@ -126,11 +126,12 @@ backlog:
         status: "implemented"
   - id: "sprint-04"
     name: "Generics, Type-Safety & Cache Engine"
-    status: "in_progress"
+    status: "complete"
     feature_refs: ["FT-02", "FT-04"]
     duration: "2026-03-16 → 2026-03-30"
     capacity: "11 points"
-    progress: 36
+    progress: 100
+    completed_at: "2026-03-02T22:45:00Z"
     stories:
       - id: "S04-01"
         title: "Upgrade types.ts with Route<TData>/Context<TData> generics"
@@ -144,13 +145,19 @@ backlog:
         notes: "JSDoc added to createRouter, compilePath, matchCompiled, parseQuery, matchRouteTree, cleanupOutlet, mountResult, findOutlet."
       - id: "S04-03"
         title: "Create cache.ts (SWR engine)"
-        status: "pending"
+        status: "implemented"
+        completed_at: "2026-03-02T22:25:00Z"
+        notes: "createCacheStore (enabled/disabled), CacheEntry, CacheStore, deepEqual — 25 tests, 66/66 total."
       - id: "S04-04"
         title: "Integrate cache into router.ts (SWR flow + prefetch + buildUrl)"
-        status: "pending"
+        status: "implemented"
+        completed_at: "2026-03-02T22:30:00Z"
+        notes: "SWR in handleNavigation, background revalidation via deepEqual, prefetch/invalidate/buildUrl/getState on RouterInstance, pointerenter debounce."
       - id: "S04-05"
         title: "Unit tests: generics, cache, router cache integration"
-        status: "pending"
+        status: "implemented"
+        completed_at: "2026-03-02T22:45:00Z"
+        notes: "79/79 tests, 81.4% stmts, 67.8% branches (≥65%), 80% funcs, 87.6% lines. Background SWR revalidation, pointerenter/leave, DocumentFragment/Node render coverage."
 
 qa:
   test_plan: null
@@ -158,4 +165,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "S04-01 (generics) + S04-02 (JSDoc) ✅ done (41/41 tests, build clean). Next: S04-03 — create `src/lib/cache.ts` SWR engine (`bmad-master /dev-story S04-03`)."
+recommendation: "Sprint 04 complete (79/79 tests, v0.1.0 build clean, publint ✅). Next: `pnpm publish --access public` to release v0.1.0 to npm."

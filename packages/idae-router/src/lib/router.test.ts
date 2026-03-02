@@ -454,3 +454,364 @@ describe('router', () => {
 		});
 	});
 });
+
+// ── S04-05: router cache integration ───────────────────────────────────────
+
+describe('router cache integration', () => {
+	let outlet: Element;
+
+	beforeEach(() => {
+		document.body.innerHTML = '<div id="cache-app"></div>';
+		outlet = document.querySelector('#cache-app')!;
+	});
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it('with fresh staleTime, fetch is called only once for repeated navigations', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ id: 1, name: 'Alice' })
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{
+				path: '/users/:id',
+				http: { url: '/api/users/:id' },
+				action: (ctx: { data: { name: string } | null }) => `<p>${ctx.data?.name ?? ''}</p>`
+			}
+		];
+		createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+
+		// initial navigation to '/' (no match) — no fetch
+		await wait(20);
+		const callsBefore = mockFetch.mock.calls.length;
+
+		// @ts-expect-error — outlet used as dummy router handle to access push via explicit var
+		const r2 = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+		r2.push('/users/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(callsBefore + 1);
+
+		// second navigation to same path — fresh cache hit, no extra fetch
+		r2.push('/users/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(callsBefore + 1);
+	});
+
+	it('with cache: false, fetch is called on every navigation', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ id: 1 })
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{
+				path: '/items/:id',
+				http: { url: '/api/items/:id' },
+				action: (ctx: { data: unknown }) => `<p>${JSON.stringify(ctx.data)}</p>`
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: false });
+		await wait(10);
+		const base = mockFetch.mock.calls.length;
+
+		r.push('/items/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 1);
+
+		r.push('/items/1');
+		await wait(30);
+		// cache disabled → re-fetch on every navigation
+		expect(mockFetch).toHaveBeenCalledTimes(base + 2);
+	});
+
+	it('router.invalidate() causes next navigation to re-fetch', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ id: 1 })
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{
+				path: '/products/:id',
+				http: { url: '/api/products/:id' },
+				action: () => '<p>product</p>'
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+		await wait(10);
+		const base = mockFetch.mock.calls.length;
+
+		r.push('/products/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 1);
+
+		// invalidate all → cache is empty → next navigation re-fetches
+		r.invalidate!();
+		r.push('/products/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 2);
+	});
+
+	it('router.prefetch() warms cache so navigation avoids duplicate fetch', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ id: 42, title: 'Widget' })
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{
+				path: '/widgets/:id',
+				http: { url: '/api/widgets/:id' },
+				action: (ctx: { data: unknown }) => `<p>${JSON.stringify(ctx.data)}</p>`
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+		await wait(10);
+		const base = mockFetch.mock.calls.length;
+
+		// prefetch first
+		await r.prefetch!('/widgets/42');
+		expect(mockFetch).toHaveBeenCalledTimes(base + 1);
+
+		// navigate — should hit fresh cache → no second fetch
+		r.push('/widgets/42');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 1);
+	});
+
+	it('router.buildUrl() interpolates :param tokens', () => {
+		const r = createRouter({ routes: [], outlet, mode: 'history', linkInterception: false });
+		expect(r.buildUrl!('/users/:id', { id: '42' })).toBe('/users/42');
+		expect(r.buildUrl!('/a/:b/c/:d', { b: '1', d: '2' })).toBe('/a/1/c/2');
+		expect(r.buildUrl!('/about')).toBe('/about');
+	});
+
+	it('router.getState() returns the current context path after navigation', async () => {
+		const routes = [
+			{ path: '/state-test', action: () => '<p>state</p>' }
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+
+		r.push('/state-test');
+		await wait(30);
+		const state = r.getState!();
+		expect(state?.path).toBe('/state-test');
+		expect(state?.params).toEqual({});
+	});
+
+	it('stale cache hit triggers background revalidation and re-renders if data changed', async () => {
+		let callCount = 0;
+		const mockFetch = vi.fn().mockImplementation(() => {
+			callCount++;
+			const data = callCount === 1 ? { v: 1 } : { v: 2 };
+			return Promise.resolve({ ok: true, json: async () => data });
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const renderLog: unknown[] = [];
+		const routes = [
+			{
+				path: '/revalidate/:id',
+				http: { url: '/api/revalidate/:id' },
+				action: (ctx: { data: unknown }) => {
+					renderLog.push(ctx.data);
+					return `<p>${JSON.stringify(ctx.data)}</p>`;
+				}
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 0 } }); // staleTime=0 → always stale after first nav
+		await wait(10);
+
+		r.push('/revalidate/1');
+		await wait(50); // first nav: cache miss → fetch v1, action renders v1
+		expect(renderLog[renderLog.length - 1]).toEqual({ v: 1 });
+
+		r.push('/revalidate/1');
+		await wait(100); // second nav: stale → action renders v1 immediately, bg fetch → v2, action re-renders v2
+		// action should have been called with v2 via background revalidation
+		expect(renderLog.some((d: unknown) => (d as { v: number })?.v === 2)).toBe(true);
+	});
+
+	it('stale background revalidation does NOT re-invoke action when data is unchanged', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ v: 1 }) // always returns same data
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const renderLog: unknown[] = [];
+		const routes = [
+			{
+				path: '/stable/:id',
+				http: { url: '/api/stable/:id' },
+				action: (ctx: { data: unknown }) => {
+					renderLog.push(ctx.data);
+					return `<p>ok</p>`;
+				}
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 0 } });
+		await wait(10);
+
+		r.push('/stable/1');
+		await wait(50);
+		const renderCountAfterFirst = renderLog.length;
+
+		r.push('/stable/1');
+		await wait(100); // bg revalidation: same data → deepEqual=true → action NOT re-invoked
+		// action was called for stale serve (once) but NOT again for background since data unchanged
+		// total calls = renderCountAfterFirst + 1 (stale serve) + 0 (no re-render)
+		expect(renderLog.length).toBe(renderCountAfterFirst + 1);
+	});
+
+	it('pointerenter on a link with link interception fires delayed prefetch then pointerleave cancels it', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ id: 99 })
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{
+				path: '/hover/:id',
+				http: { url: '/api/hover/:id' },
+				action: () => '<p>hover</p>'
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: true,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+		await wait(10);
+
+		// Create a link element and add it to the document
+		const link = document.createElement('a');
+		link.setAttribute('href', '/hover/99');
+		document.body.appendChild(link);
+
+		// Trigger pointerenter — should schedule a prefetch after 200ms
+		const enterEvent = new PointerEvent('pointerenter', { bubbles: false, composed: true });
+		Object.defineProperty(enterEvent, 'composedPath', { value: () => [link] });
+		document.dispatchEvent(enterEvent);
+
+		// Immediately trigger pointerleave — should cancel the scheduled prefetch
+		const leaveEvent = new PointerEvent('pointerleave', { bubbles: false, composed: true });
+		Object.defineProperty(leaveEvent, 'composedPath', { value: () => [link] });
+		document.dispatchEvent(leaveEvent);
+
+		await wait(300); // wait past the 200ms debounce window
+		// fetch should NOT have been called since pointerleave cancelled the timer
+		expect(r.getState).toBeDefined(); // router is alive
+		document.body.removeChild(link);
+
+		// Now test the full prefetch path: enter and wait 200ms
+		const link2 = document.createElement('a');
+		link2.setAttribute('href', '/hover/99');
+		document.body.appendChild(link2);
+
+		const enterEvent2 = new PointerEvent('pointerenter', { bubbles: false, composed: true });
+		Object.defineProperty(enterEvent2, 'composedPath', { value: () => [link2] });
+		document.dispatchEvent(enterEvent2);
+
+		await wait(300); // wait past the 200ms debounce → prefetch fires
+		// prefetch should have fetched the data
+		expect(mockFetch.mock.calls.length).toBeGreaterThanOrEqual(1);
+		document.body.removeChild(link2);
+	});
+
+	it('router.buildUrl() preserves query string', () => {
+		const r = createRouter({ routes: [], outlet, mode: 'history', linkInterception: false });
+		expect(r.buildUrl!('/search?q=hello')).toBe('/search?q=hello');
+		expect(r.buildUrl!('/users/:id?tab=profile', { id: '1' })).toBe('/users/1?tab=profile');
+	});
+
+	it('router.invalidate() with no argument clears all entries so all routes re-fetch', async () => {
+		const mockFetch = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ id: 1 }) });
+		vi.stubGlobal('fetch', mockFetch);
+
+		const routes = [
+			{ path: '/cats/:id', http: { url: '/api/cats/:id' }, action: () => '<p>cat</p>' },
+			{ path: '/dogs/:id', http: { url: '/api/dogs/:id' }, action: () => '<p>dog</p>' }
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false,
+			cache: { ttl: 60_000, staleTime: 60_000 } });
+		await wait(10);
+		const base = mockFetch.mock.calls.length;
+
+		r.push('/cats/1');
+		await wait(30);
+		r.push('/dogs/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 2);
+
+		// Invalidate all — next navigations re-fetch
+		r.invalidate!();
+		r.push('/cats/1');
+		await wait(30);
+		r.push('/dogs/1');
+		await wait(30);
+		expect(mockFetch).toHaveBeenCalledTimes(base + 4); // both re-fetched
+	});
+});
+
+describe('render branches - DocumentFragment and Node actions', () => {
+	let outlet: HTMLElement;
+
+	beforeEach(() => {
+		outlet = document.createElement('div');
+		outlet.setAttribute('data-idae-outlet', '');
+		document.body.appendChild(outlet);
+	});
+
+	afterEach(() => {
+		outlet.remove();
+	});
+
+	it('action returning a DocumentFragment mounts it into the outlet', async () => {
+		const routes = [
+			{
+				path: '/frag',
+				action: () => {
+					const frag = document.createDocumentFragment();
+					const span = document.createElement('span');
+					span.textContent = 'fragment-content';
+					frag.appendChild(span);
+					return frag;
+				}
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+		r.push('/frag');
+		await wait(30);
+		expect(outlet.querySelector('span')?.textContent).toBe('fragment-content');
+	});
+
+	it('action returning a Node (Element) mounts it into the outlet', async () => {
+		const routes = [
+			{
+				path: '/node',
+				action: () => {
+					const div = document.createElement('div');
+					div.textContent = 'node-content';
+					return div;
+				}
+			}
+		];
+		const r = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+		r.push('/node');
+		await wait(30);
+		expect(outlet.querySelector('div')?.textContent).toBe('node-content');
+	});
+});

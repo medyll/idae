@@ -1,6 +1,6 @@
 # 📊 BMAD Project Dashboard – @medyll/idae-router
 
-> **Current Status:** Implementation (In Progress) | **Progress:** 82% | **Last Updated:** 2026-03-02T22:15:00Z
+> **Current Status:** Implementation (In Progress) | **Progress:** 95% | **Last Updated:** 2026-03-02T22:45:00Z
 
 ---
 
@@ -18,7 +18,7 @@
 │   └─ Sprint 01: ✅ COMPLETE (100%) — Build clean, 27/27 tests   │
 │   └─ Sprint 02: ✅ COMPLETE (100%) — v0.1.0, 41/41 tests        │
 │   └─ Sprint 03: ✅ COMPLETE (100%) — FT-01 http/http_source     │
-│   └─ Sprint 04: � IN PROGRESS (18%) — S04-01 types.ts generics ✅      │
+│   └─ Sprint 04: ✅ COMPLETE (100%) — Generics + Cache Engine (79/79 tests) │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -28,12 +28,12 @@
 
 | Metric | Value | Target |
 |--------|-------|--------|
-| **Overall Progress** | 82% | 100% |
+| **Overall Progress** | 95% | 100% |
 | **Sprint 01 (Security & Compat)** | 100% ✅ | 100% |
 | **Sprint 02 (Tests & Publish)** | 100% ✅ | 100% |
 | **Sprint 03 (HTTP Fetching FT-01)** | 100% ✅ | 100% |
-| **Sprint 04 (Generics + Cache)** | 18% 🔵 | 100% |
-| **Unit Tests Passing** | 41/41 ✅ | 41+ |
+| **Sprint 04 (Generics + Cache)** | 100% ✅ | 100% |
+| **Unit Tests Passing** | 79/79 ✅ | 79+ |
 | **Build / publint** | ✅ All good (v0.1.0) | ✅ |
 | **Critical Issues Fixed** | 5/5 | 5 |
 
