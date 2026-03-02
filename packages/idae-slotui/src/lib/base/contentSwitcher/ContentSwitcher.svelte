@@ -87,5 +87,22 @@ export type ContentSwitcherProps = CommonProps & {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './contentSwitcher.css';
+
+	:root {
+		--content-switcher-bg: var(--sld-color-background);
+		--content-switcher-active: var(--sld-color-primary);
+		--content-switcher-radius: var(--sld-radius-medium);
+	}
+
+	.content-switcher {
+		display: flex;
+		border-radius: var(--content-switcher-radius);
+		background: var(--content-switcher-bg);
+		overflow: hidden;
+	}
+
+	.content-switcher .active {
+		background: var(--content-switcher-active);
+		color: #fff;
+	}
 </style>

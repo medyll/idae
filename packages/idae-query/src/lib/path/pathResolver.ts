@@ -17,9 +17,9 @@ export type DotPath<T> = T extends object
  * @returns The value at the specified path, or the defaultValue if the path does not exist.
  */
 export function dotPath<T = unknown>(
-	object: Record<string, any>,
+	object: Record<string, unknown>,
 	path: string,
-	defaultValue?: any
+	defaultValue?: unknown
 ): T {
 	return (path.split('.').reduce((r, s) => (r ? r[s] : defaultValue), object) ?? defaultValue) as T;
 }

@@ -56,4 +56,9 @@ export interface RouterInstance {
 	before(fn: BeforeHook): void;
 	after(fn: AfterHook): void;
 	onLeave(fn: OnLeaveHook): void;
+	/**
+	 * Optional error handler invoked when navigation fails.
+	 * If not provided, errors are logged to console.error.
+	 */
+	onError?: (error: Error, path: string) => void;
 }

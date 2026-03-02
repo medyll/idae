@@ -158,7 +158,21 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 			if (replace) location.replace('#' + rawPath);
 			else location.hash = rawPath;
 		}
-		handleNavigation(full, state, replace).catch(() => {});
+		handleNavigation(full, state, replace).catch((error) => {
+			if (typeof error === 'object' && error instanceof Error) {
+				handleError(error, full);
+			} else {
+				handleError(new Error(String(error)), full);
+			}
+		});
+	}
+
+	function handleError(error: Error, path: string) {
+		if (instance.onError) {
+			instance.onError(error, path);
+		} else {
+			console.error(`[Router] Navigation to "${path}" failed:`, error);
+		}
 	}
 
 	function applyBase(path: string) {
@@ -169,7 +183,13 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 
 	function onPop() {
 		const p = getPathFromLocation();
-		handleNavigation(p).catch(() => {});
+		handleNavigation(p).catch((error) => {
+			if (typeof error === 'object' && error instanceof Error) {
+				handleError(error, p);
+			} else {
+				handleError(new Error(String(error)), p);
+			}
+		});
 	}
 
 	function setupListeners() {
@@ -202,12 +222,7 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	setupListeners();
 
 	// initial navigation
-	setTimeout(() => {
-		const p = getPathFromLocation();
-		handleNavigation(p).catch(() => {});
-	}, 0);
-
-	return {
+	const instance: RouterInstance = {
 		push(path: string, state?: unknown) {
 			navigate(path, state, false);
 		},
@@ -216,7 +231,13 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		},
 		refresh() {
 			const p = getPathFromLocation();
-			handleNavigation(p, history.state).catch(() => {});
+			handleNavigation(p, history.state).catch((error) => {
+				if (typeof error === 'object' && error instanceof Error) {
+					handleError(error, p);
+				} else {
+					handleError(new Error(String(error)), p);
+				}
+			});
 		},
 		navigate,
 		before(fn: BeforeHook) {
@@ -228,7 +249,20 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		onLeave(fn: OnLeaveHook) {
 			onLeaveHooks.push(fn);
 		}
-	} as RouterInstance;
+	};
+
+	setTimeout(() => {
+		const p = getPathFromLocation();
+		handleNavigation(p).catch((error) => {
+			if (typeof error === 'object' && error instanceof Error) {
+				handleError(error, p);
+			} else {
+				handleError(new Error(String(error)), p);
+			}
+		});
+	}, 0);
+
+	return instance;
 }
 
 export default createRouter;

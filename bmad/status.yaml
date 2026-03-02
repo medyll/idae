@@ -1,0 +1,112 @@
+project: "idae"
+display_name: "Idae Monorepo — Root"
+synced_at: "2026-03-02"
+
+current_phase: implementation
+
+phases:
+  analysis:
+    status: done
+    artifacts:
+      - bmad/artifacts/audit-full-2026-03-02.md
+      - bmad/artifacts/audit-core-packages-2026-03-02.md
+    audit:
+      baseline: true
+      score_initial: 28
+      score_current: ~55
+      packages_scanned: 20
+      follow_up_packages: 4
+      follow_up_score: 71
+
+  planning:
+    prd:
+      required: false
+      status: not_started
+    tech_spec:
+      required: false
+      status: not_started
+
+  solutioning:
+    architecture:
+      required: false
+      status: not_started
+      note: "Per-package architectures tracked in their own bmad/ folders."
+
+  implementation:
+    status: in_progress
+    stories_done:
+      - AUDIT-001  # hardcoded credentials → injectable UserValidatorFn
+      - AUDIT-002  # idae-query: no-explicit-any rule + fixes, 81/81 tests
+      - AUDIT-003  # @ts-ignore → @ts-expect-error + ban-ts-comment rule
+      - AUDIT-004  # Svelte 4 → runes migration (idae-machine 3 files, idae-dom-events 1 file)
+      - AUDIT-005  # vitest standardized, CI test step
+      - AUDIT-006  # dead code _old/ + _data/ deleted
+    stories_pending: []
+
+sprints: []
+
+backlog:
+  - id: ROOT-BACKLOG-01
+    title: "Audit all core packages"
+    priority: high
+    status: done
+    notes: "Completed: idae-db (72/100), idae-idbql (75/100), idae-engine (68/100), idae-be (71/100)"
+  - id: AUDIT-DB-001
+    title: "Add ChromaDB test suite"
+    priority: high
+    notes: "ChromaDB adapter untested; need unit + integration coverage"
+  - id: AUDIT-IQL-001
+    title: "Remove @ts-ignore from idae-idbql"
+    priority: high
+    notes: "idbqlEvent.svelte.ts line 5 bypasses type checking; investigate reactive binding pattern"
+  - id: AUDIT-ENG-001
+    title: "Add path validation to idae-engine"
+    priority: medium
+    notes: "resolveDotPath() needs syntax validation and error messages"
+  - id: AUDIT-BE-001
+    title: "Add integration test suite to idae-be"
+    priority: medium
+    notes: "Only unit tests present; need cross-module coverage"
+  - id: ROOT-BACKLOG-02
+    title: "Define monorepo-level roadmap / PRD"
+    priority: medium
+  - id: ROOT-BACKLOG-03
+    title: "Init BMAD for data-layer packages"
+    priority: medium
+    notes: "idae-db, idae-idbql, idae-query, idae-mongo should have their own bmad/"
+  - id: MONOREPO-01
+    title: "Standardize JSDoc coverage across data-layer packages"
+    priority: medium
+    notes: "Target: 50+ docs per package; currently 1-3 JSDoc hits each"
+  - id: MONOREPO-02
+    title: "Unify test file naming convention"
+    priority: medium
+    notes: "Mixed patterns (.test.ts, .svelte.test.ts, .unit.test.ts); standardize monorepo-wide"
+
+audit:
+  last_run: "2026-03-02"
+  type: "full"
+  baseline: true
+  score_initial: 28
+  score_current: ~55
+  artifact: "bmad/artifacts/audit-full-2026-03-02.md"
+  stories:
+    AUDIT-001: done
+    AUDIT-002: done
+    AUDIT-003: done
+    AUDIT-004: pending
+    AUDIT-005: done
+    AUDIT-006: done
+
+qa:
+  test_plan: not_started
+  coverage: unknown
+  last_run: "2026-03-02"
+  known_results:
+    - "idae-query: 81/81 ✅"
+    - "idae-idbql: 57/57 ✅"
+    - "idae-stator: 81/81 ✅"
+    - "idae-html: 6/6 ✅ (1 pre-existing suite failure: eta.configure API)"
+
+recommendation: "Begin AUDIT-IQL-001 (high-priority: remove @ts-ignore) or AUDIT-DB-001 (add ChromaDB tests). Both are production-quality improvements. Alternatively, run `/prd` to define monorepo roadmap."
+

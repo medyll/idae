@@ -2,7 +2,7 @@
 
 export type Operator = keyof OperatorType;
 
-export type OperatorType<T = any> = {
+export type OperatorType<T = unknown> = {
 	eq?: T;
 	gt?: T extends number | Date ? T : never;
 	gte?: T extends number | Date ? T : never;
@@ -21,6 +21,6 @@ type WhereCondition<T> = {
 	[K in keyof T]?: T[K] | Partial<OperatorType<T[K]>>;
 };
 
-export type Where<T = Record<string, any>> =
+export type Where<T = Record<string, unknown>> =
 	| WhereCondition<T>
 	| { [K in keyof OperatorType]?: Partial<T> };

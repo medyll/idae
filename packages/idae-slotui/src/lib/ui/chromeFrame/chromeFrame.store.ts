@@ -43,7 +43,7 @@ function createChromeFrameStore() {
 			//
 			const values = Array.from(currentStore);
 			const zIndex = values.reduce((prev, val) => {
-				// @ts-ignore
+				// @ts-expect-error -- val[1]?.zIndex: Map iterator val type loses zIndex from generic type parameter
 				return val[1]?.zIndex >= prev ? val[1]?.zIndex + values.length : prev;
 			}, 0);
 
@@ -126,7 +126,7 @@ function createChromeFrameStore() {
 				const payload = n.get(frameId);
 
 				const z = values.reduce((prev, val) => {
-					// @ts-ignore
+					// @ts-expect-error -- val[1]?.zIndex: Map iterator val type loses zIndex from generic type parameter
 					return val[1]?.zIndex >= prev ? val[1]?.zIndex + 1 : prev;
 				}, 0);
 				// set as active, inactivate others

@@ -5,7 +5,7 @@ import { Server as SocketIOServer } from 'socket.io';
 import { Server } from 'net';
 import { TRoutesConfig } from '../@types';
 import { appRoutes } from '../_utils/routes';
-// @ts-ignore
+// @ts-expect-error -- socketThrottle.js has no type declarations
 import socketThrottle from './socketThrottle';
 import { _config, IServerConfig } from '../_config/config';
 

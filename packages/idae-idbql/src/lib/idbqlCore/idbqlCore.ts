@@ -40,7 +40,7 @@ export class IdbqlIndexedCore<T = any> {
 			stores[modelName] = modelInfo.keyPath || '';
 
 			Object.defineProperty(this, modelName, {
-				// @ts-ignore
+				// @ts-expect-error -- Object.defineProperty assigns dynamic property not declared in class type
 				value:        undefined as unknown as Collection<(typeof modelInfo)['ts']>,
 				writable:     true,
 				enumerable:   true,
@@ -123,14 +123,14 @@ export class IdbqlIndexedCore<T = any> {
 		});
 	}
 
-	// @ts-ignore
-	private createCollections(args: any, version: number) {
+	// @ts-expect-error -- private method references #schema via Object.defineProperty, TypeScript can't validate dynamic property assignment
+	private createCollections(args: Record<string, string>, version: number) {
 		Object.keys(this.#schema).map(async (storeName) => {
 			Object.defineProperty(this, storeName, {
-				// @ts-ignore
+				// @ts-expect-error -- Object.defineProperty assigns dynamic property not declared in class type
 				value:        new Collection(storeName, this.#schema[storeName], {
 					dbName: this.databaseName,
-					version // @ts-ignore
+					version
 				}) as unknown as Collection<T>,
 				writable:     true,
 				enumerable:   true,

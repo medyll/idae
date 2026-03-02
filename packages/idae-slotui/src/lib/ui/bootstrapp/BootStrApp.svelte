@@ -34,7 +34,21 @@ export type BootStrAppProps = Record<string, unknown>;
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './BootStrApp.css';
+
+	:root {
+		--bootstrapp-radius: var(--sld-radius-medium);
+		--bootstrapp-bg: var(--sld-color-background);
+		--bootstrapp-border: var(--sld-color-border);
+		--bootstrapp-padding: 1rem;
+	}
+
+	.bootstrapp {
+		border-radius: var(--bootstrapp-radius);
+		background: var(--bootstrapp-bg);
+		border: 1px solid var(--bootstrapp-border);
+		padding: var(--bootstrapp-padding);
+		font-size: 1em;
+	}
 </style>
 
 <Login showLogin={false}>

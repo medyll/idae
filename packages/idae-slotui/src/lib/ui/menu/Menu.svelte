@@ -45,7 +45,57 @@ export type MenuProps<T = Data> = CommonProps & {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './menu.css';
+
+	:root {
+		--menu-min-width: 150px;
+		--menu-padding: 0.25rem;
+		--menu-color: var(--sld-color-foreground);
+		--menu-item-border-radius: var(--sld-radius-small);
+		--menu-item-icon-width: 16px;
+		--menu-item-text-padding-left: 0.25rem;
+	}
+
+	ul.menu {
+		margin: 0;
+		min-width: var(--menu-min-width);
+		padding: var(--menu-padding);
+		cursor: pointer;
+		display: block;
+		color: var(--menu-color);
+	}
+
+	ul.menu li.menuTitle {
+		position: sticky;
+		margin-top: 0px;
+		top: 0px;
+		z-index: 1;
+	}
+
+	li.menuItem {
+		border-radius: var(--menu-item-border-radius);
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		border: 1px solid transparent;
+	}
+
+	li.menuItem .menuListItemIcon {
+		width: var(--menu-item-icon-width);
+		max-width: var(--menu-item-icon-width);
+		text-align: center;
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+	}
+
+	li.menuItem .menu-list-item-text {
+		flex: 1;
+		padding-left: var(--menu-item-text-padding-left);
+	}
+
+	li.menuItem .menu-list-item-action {
+		display: block;
+	}
 </style>
 
 <MenuList {...rest} class="menu" />

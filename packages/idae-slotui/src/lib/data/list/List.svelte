@@ -12,7 +12,21 @@ export type ListProps = Record<string, unknown>;
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './list.css';
+
+	:root {
+		--list-radius: var(--sld-radius-medium);
+		--list-bg: var(--sld-color-background);
+		--list-border: var(--sld-color-border);
+		--list-padding: 0.5rem 1rem;
+	}
+
+	.list {
+		border-radius: var(--list-radius);
+		background: var(--list-bg);
+		border: 1px solid var(--list-border);
+		padding: var(--list-padding);
+		font-size: 1em;
+	}
 </style>
 
 <MenuList

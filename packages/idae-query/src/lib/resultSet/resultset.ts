@@ -6,7 +6,7 @@ import { Query } from "../query/query.js";
  * Represents the options for a result set.
  * @template T - The type of the result set.
  */
-export type ResultsetOptions<T = any> = {
+export type ResultsetOptions<T = object> = {
   /** @deprecated use sortByCan receive a dot path for sorting. */
   sort?: Record<DotPath<T>, "asc" | "desc">;
   /** Can receive a dot path for sorting. */
@@ -51,9 +51,9 @@ export type ResultSet<T> = T[] & {
   /** Get maximum numeric value (dot-path supported) */
   max: (field: DotPath<T>) => number;
   /** Count items, optionally filtered by criteria */
-  count: (criteria?: any) => number;
+  count: (criteria?: Where<T>) => number;
   /** Extract values of a field (dot-path supported) */
-  pluck: (field: DotPath<T>) => any[];
+  pluck: (field: DotPath<T>) => unknown[];
   /** Reduce items to a single value */
   reduce: <U>(reducer: (acc: U, item: T) => U, initialValue: U) => U;
   /** Get first item or undefined */
@@ -157,11 +157,11 @@ export function getResultSet<T = (typeof arguments)[0]>(data: T[]) {
     },
     distinct: {
       value: function (key?: DotPath<T>) {
-        const seen = new Set<any>();
+        const seen = new Set<unknown>();
         const distinct: T[] = [];
 
         for (const item of this) {
-          const identifier = key ? dotPath<any>(item, key) : item;
+          const identifier = key ? dotPath<unknown>(item, key) : item;
           if (!seen.has(identifier)) {
             seen.add(identifier);
             distinct.push(item);
@@ -245,8 +245,8 @@ export function getResultSet<T = (typeof arguments)[0]>(data: T[]) {
       configurable: true,
     },
     pluck: {
-      value: function (field: DotPath<T>): any[] {
-        return this.map((item) => dotPath<any>(item, field));
+      value: function (field: DotPath<T>): unknown[] {
+        return this.map((item) => dotPath<unknown>(item, field));
       },
       enumerable: true,
       configurable: true,

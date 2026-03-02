@@ -1,6 +1,6 @@
 project: "@medyll/idae-slotui-svelte"
 display_name: "idae-slotui-svelte"
-synced_at: "2026-03-01"
+synced_at: "2026-03-02"
 
 current_phase: implementation
 
@@ -61,12 +61,13 @@ phases:
 sprints:
   - id: sprint-01
     theme: "Zero Violations"
-    status: active
+    status: done
     file: bmad/artifacts/sprints/sprint-01.md
     goal: "100% COMPONENT_MAP compliance — fix 17 Css violations"
     points_total: 10
-    points_done: 0
+    points_done: 10
     stories: [S01-01, S01-02, S01-03, S01-04, S01-05, S01-06]
+    completed_at: "2026-03-02"
   - id: sprint-02
     theme: "Ship-Ready"
     status: pending
@@ -110,4 +111,4 @@ registry:
   local_path: registry/registry.json
   public_url: "https://example.org/registry.json"
 
-recommendation: "/dev-story S01-01 — start Sprint 01 by fixing base/contentSwitcher Css violation, then batch the rest"
+recommendation: "/sprint-planning Sprint 02 — Ship-Ready: publishable package + registry + test baseline"

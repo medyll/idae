@@ -42,5 +42,19 @@
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './chrome-frame.css';
+
+	:root {
+		--chromeframe-radius: var(--sld-radius-large);
+		--chromeframe-bg: var(--sld-color-background);
+		--chromeframe-border: var(--sld-color-border);
+		--chromeframe-padding: 1rem;
+	}
+
+	.chrome-frame {
+		border-radius: var(--chromeframe-radius);
+		background: var(--chromeframe-bg);
+		border: 1px solid var(--chromeframe-border);
+		padding: var(--chromeframe-padding);
+		font-size: 1em;
+	}
 </style>

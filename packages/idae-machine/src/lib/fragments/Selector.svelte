@@ -1,7 +1,9 @@
 <script lang="ts">
 	let className = '';
-	export let values: any = [];
-	export let value: any | undefined = undefined;
+	let { values = [], value } = $props<{
+		values?: any[];
+		value?: any;
+	}>();
 </script>
 
 {#each values as valueO}

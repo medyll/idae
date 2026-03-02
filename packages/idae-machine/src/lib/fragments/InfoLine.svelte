@@ -1,7 +1,9 @@
 <script lang="ts">
 	let className = '';
-	export let title: string | undefined = undefined;
-	export let vertical: boolean = false;
+	let { title, vertical = false } = $props<{
+		title?: string;
+		vertical?: boolean;
+	}>();
 	export { className as class };
 </script>
 

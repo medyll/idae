@@ -1,0 +1,63 @@
+project: "idae"
+display_name: "Idae Monorepo"
+scope: "@medyll"
+version: "0.0.33-next.0"
+description: >
+  High-performance monorepo for modern full-stack application development.
+  Focused on data-management, storage, and UI with advanced reactivity.
+  Provides a robust data schema, real-time server sync, and unified support
+  for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.
+
+type: monorepo
+npm_client: pnpm
+orchestration:
+  - lerna
+  - nx
+
+stack:
+  language: TypeScript
+  frontend: Svelte 5 (runes)
+  backend: NestJS
+  databases:
+    - MongoDB (Mongoose)
+    - MySQL
+    - PostgreSQL
+    - SQLite
+    - PouchDB / IndexedDB
+  styling:
+    - Tailwind CSS v4
+    - shadcn-svelte
+    - SCSS (legacy, being migrated)
+  build:
+    - Vite
+    - tshy
+  test:
+    - Vitest
+    - Jest
+
+packages:
+  - idae-api          # HTTP API client
+  - idae-be           # DOM manipulation engine
+  - idae-cadenzia     # (TBD)
+  - idae-csss         # CSS utilities
+  - idae-db           # Multi-DB abstraction layer
+  - idae-dom-events   # DOM event observation
+  - idae-engine       # Core data operations engine
+  - idae-html         # HTML utilities
+  - idae-htmlu        # HTML utilities (extended)
+  - idae-idbql        # IndexedDB query layer
+  - idae-machine      # State machine
+  - idae-mongo        # MongoDB integration
+  - idae-mono-expand-vitrine  # Vitrine/showcase
+  - idae-query        # Query parsing & chainable filters
+  - idae-router       # Client-side router
+  - idae-slotui       # Svelte 5 component library ← has own bmad/
+  - idae-socket       # WebSocket client
+  - idae-stator       # State management
+  - pseudo-html-template  # Template engine
+  - shared            # Shared types & utilities
+
+bmad_instances:
+  - path: packages/idae-slotui/bmad
+    package: "@medyll/idae-slotui-svelte"
+    status: active

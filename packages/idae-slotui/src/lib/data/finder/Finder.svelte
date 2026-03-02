@@ -196,6 +196,24 @@ let dataKeys = $derived(
 {/if}
 
 <style global lang="postcss">
-	@reference "tailwindcss"
-	@import './finder.css';
+	@reference "tailwindcss";
+
+	:root {
+		--finder-gap: var(--sld-gap-tiny);
+	}
+
+	.finder-container {
+		display: inline-flex;
+		gap: var(--finder-gap);
+		width: 100%;
+		height: auto;
+	}
+
+	.finder {
+		border-radius: var(--sld-radius-medium);
+		background: var(--sld-color-background);
+		border: 1px solid var(--sld-color-border);
+		padding: var(--finder-padding);
+		font-size: 1em;
+	}
 </style>

@@ -17,7 +17,7 @@ const openPopper = (popperId: string, args: PopperProps = {}) => {
 		popperList[popperId] = mount(Popper, {
 			target: document.body,
 			intro: true,
-			// @ts-ignore
+			// @ts-expect-error -- Svelte 5 mount() props type is narrower than the actual component interface
 			props: { code: popperId, ...args }
 		});
 

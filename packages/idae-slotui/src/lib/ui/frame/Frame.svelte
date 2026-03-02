@@ -89,5 +89,22 @@
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './frame.css';
+
+	:root {
+		--frame-background-color: var(--sld-color-paper);
+		--frame-backdrop-filter: blur(30px);
+		--frame-container-border-right: var(--sld-color-primary);
+	}
+
+	.frame {
+		z-index: 1;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		position: relative;
+		background-color: var(--frame-background-color);
+		-moz-backdrop-filter: var(--frame-backdrop-filter);
+		backdrop-filter: var(--frame-backdrop-filter);
+	}
 </style>

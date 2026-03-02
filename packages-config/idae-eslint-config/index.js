@@ -34,6 +34,17 @@ export const baseConfig = [
   {
     ignores: ["build/", ".svelte-kit/", "dist/"],
   },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-ts-comment": ["warn", {
+        "ts-ignore": "allow-with-description",
+        "ts-expect-error": "allow-with-description",
+        "ts-nocheck": true,
+        "minimumDescriptionLength": 5
+      }],
+    },
+  },
 ];
 
 export default baseConfig;
