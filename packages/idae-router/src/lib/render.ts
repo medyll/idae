@@ -6,6 +6,17 @@ import type { ActionResult } from './types';
  */
 export type ErrorHandler = (error: Error, path: string) => void;
 
+/**
+ * Remove all child nodes from the outlet element.
+ *
+ * @public
+ * @param outlet - The container element to empty.
+ * @since 0.1.0
+ * @example
+ * ```ts
+ * cleanupOutlet(document.getElementById('app')!);
+ * ```
+ */
 export function cleanupOutlet(outlet: Element) {
 	// remove all children
 	while (outlet.firstChild) outlet.removeChild(outlet.firstChild);
@@ -13,8 +24,18 @@ export function cleanupOutlet(outlet: Element) {
 
 /**
  * Safely mount content to an outlet element.
- * - Strings are sanitized to prevent XSS; falls back to textContent if untrusted.
- * - Nodes and DocumentFragments are appended directly (assumed safe).
+ * - Strings are sanitized to prevent XSS; falls back to `textContent` if DOMPurify is unavailable.
+ * - `Node` and `DocumentFragment` values are appended directly (assumed safe).
+ * - Cleanup functions are ignored here; the router handles them before the next navigation.
+ *
+ * @public
+ * @param outlet - The DOM element to render into.
+ * @param result - The value returned by a route `action` (string, Node, DocumentFragment, or void).
+ * @since 0.1.0
+ * @example
+ * ```ts
+ * mountResult(document.getElementById('app')!, '<h1>Hello</h1>');
+ * ```
  */
 export function mountResult(outlet: Element, result: ActionResult) {
 	if (result === undefined) return;
@@ -49,6 +70,24 @@ export function mountResult(outlet: Element, result: ActionResult) {
 	// function (cleanup) is handled by router; do not mount
 }
 
+/**
+ * Find the nearest `[data-idae-outlet]` element within `root`, or return `root`
+ * itself when it matches the selector.
+ *
+ * Used internally to locate a child outlet within a parent route's rendered tree
+ * for nested routing.
+ *
+ * @public
+ * @param root - The element to search within.
+ * @param selector - CSS selector for the outlet element. Defaults to `'[data-idae-outlet]'`.
+ * @returns The outlet element, or `null` if not found.
+ * @since 0.1.0
+ * @example
+ * ```ts
+ * const outlet = findOutlet(parentEl);
+ * if (outlet) mountResult(outlet, childContent);
+ * ```
+ */
 export function findOutlet(root: Element, selector = '[data-idae-outlet]'): Element | null {
 	if (!root) return null;
 	if (root.matches && root.matches(selector)) return root;

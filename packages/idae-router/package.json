@@ -1,9 +1,9 @@
 {
 	"name": "@medyll/idae-router",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && npm run prepack",
+		"build": "vite build && pnpm run prepack",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"prepack": "svelte-kit sync && svelte-package && publint",
@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"test": "npm run test:unit -- --run && npm run test:e2e",
+		"test": "pnpm run test:unit -- --run && pnpm run test:e2e",
 		"test:e2e": "playwright test",
 		"prepackage": "node scripts/package-pre.js"
 	},
@@ -51,6 +51,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.14.0",
 		"globals": "^17.3.0",
+		"jsdom": "^28.1.0",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.4.1",
 		"publint": "^0.3.17",
@@ -62,7 +63,12 @@
 		"vitest": "^4.0.18"
 	},
 	"keywords": [
-		"svelte"
+		"svelte",
+		"router",
+		"spa",
+		"history",
+		"hash",
+		"client-side-routing"
 	],
 	"scope": "medyll",
 	"repository": {

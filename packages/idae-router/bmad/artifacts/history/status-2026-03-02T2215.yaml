@@ -1,7 +1,7 @@
 ---
 phase: "Implementation"
-progress: 84
-last_updated: "2026-03-02T22:20:00Z"
+progress: 82
+last_updated: "2026-03-02T22:15:00Z"
 
 phases:
   analysis:
@@ -130,7 +130,7 @@ backlog:
     feature_refs: ["FT-02", "FT-04"]
     duration: "2026-03-16 → 2026-03-30"
     capacity: "11 points"
-    progress: 36
+    progress: 18
     stories:
       - id: "S04-01"
         title: "Upgrade types.ts with Route<TData>/Context<TData> generics"
@@ -139,9 +139,7 @@ backlog:
         notes: "Route<TData>, Context<TData>, Action<TData>, RouteHttpConfig<TData>, CacheOptions added. Full JSDoc. buildContext data:null. 41/41 tests."
       - id: "S04-02"
         title: "Full JSDoc coverage on all public exports"
-        status: "implemented"
-        completed_at: "2026-03-02T22:20:00Z"
-        notes: "JSDoc added to createRouter, compilePath, matchCompiled, parseQuery, matchRouteTree, cleanupOutlet, mountResult, findOutlet."
+        status: "pending"
       - id: "S04-03"
         title: "Create cache.ts (SWR engine)"
         status: "pending"
@@ -158,4 +156,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "S04-01 (generics) + S04-02 (JSDoc) ✅ done (41/41 tests, build clean). Next: S04-03 — create `src/lib/cache.ts` SWR engine (`bmad-master /dev-story S04-03`)."
+recommendation: "Sprint 01+02+03 complete (41/41 tests, v0.1.0 build clean). S04-01 types.ts generics ✅ implemented. Next: S04-02 — full JSDoc coverage on all public exports (`bmad-master /dev-story S04-02`). Then publish v0.1.0: `pnpm publish --access public`."

@@ -16,11 +16,11 @@ Ship the `http` / `http_source` route options end-to-end: type definitions, fetc
 
 | ID | Epic | Title | Points | Priority | Status |
 |---|---|---|---|---|---|
-| S03-01 | Types | Extend `Route` + `Context` types for http data-fetching | 1 | Must | pending |
-| S03-02 | Core | Create `src/lib/fetcher.ts` (URL resolution + fetch) | 3 | Must | pending |
-| S03-03 | Core | Integrate fetcher into `handleNavigation` in `router.ts` | 2 | Must | pending |
-| S03-04 | Security | Enforce origin pinning (`http`) and HTTPS (`http_source`) | 2 | Must | pending |
-| S03-05 | Testing | Unit tests for fetcher + router integration | 2 | Must | pending |
+| S03-01 | Types | Extend `Route` + `Context` types for http data-fetching | 1 | Must | ✅ implemented |
+| S03-02 | Core | Create `src/lib/fetcher.ts` (URL resolution + fetch) | 3 | Must | ✅ implemented |
+| S03-03 | Core | Integrate fetcher into `handleNavigation` in `router.ts` | 2 | Must | ✅ implemented |
+| S03-04 | Security | Enforce origin pinning (`http`) and HTTPS (`http_source`) | 2 | Must | ✅ implemented |
+| S03-05 | Testing | Unit tests for fetcher + router integration | 2 | Must | ✅ implemented |
 
 **Total:** 10 points  
 **Could (deferred to Sprint 04):** S03-06 — JSON `<pre>` fallback render when `action` absent (FR-09, 1 pt)

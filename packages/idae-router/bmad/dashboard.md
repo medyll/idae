@@ -1,6 +1,6 @@
 # 📊 BMAD Project Dashboard – @medyll/idae-router
 
-> **Current Status:** Implementation (In Progress) | **Progress:** 65% | **Last Updated:** 2026-03-02T20:45:00Z
+> **Current Status:** Implementation (In Progress) | **Progress:** 82% | **Last Updated:** 2026-03-02T22:15:00Z
 
 ---
 
@@ -15,9 +15,10 @@
 │ Phase 3 – Solutioning         ✅ COMPLETE (2026-03-02 20:30)    │
 ├─────────────────────────────────────────────────────────────────┤
 │ Phase 4 – Implementation      🔵 IN PROGRESS                     │
-│   └─ Sprint 01: Code-Complete (85%) — Awaiting Build/Merge      │
-│   └─ Sprint 02: Ready (0%) — Blocked on S01 Merge               │
-│   └─ Sprint 03: Code-Complete (100%) — Awaiting Build/PR Merge             │
+│   └─ Sprint 01: ✅ COMPLETE (100%) — Build clean, 27/27 tests   │
+│   └─ Sprint 02: ✅ COMPLETE (100%) — v0.1.0, 41/41 tests        │
+│   └─ Sprint 03: ✅ COMPLETE (100%) — FT-01 http/http_source     │
+│   └─ Sprint 04: � IN PROGRESS (18%) — S04-01 types.ts generics ✅      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -27,42 +28,43 @@
 
 | Metric | Value | Target |
 |--------|-------|--------|
-| **Overall Progress** | 65% | 100% |
-| **Sprint 01 (Security & Compat)** | 85% | 100% |
-| **Sprint 02 (Tests & Publish)** | 0% | 100% |
-| **Sprint 03 (HTTP Fetching)** | 100% | 100% |
-| **Code Coverage (Target)** | N/A | 85%+ |
-| **Issues Found** | 5 | 0 |
-| **Critical Issues Fixed** | 4 | 5 |
+| **Overall Progress** | 82% | 100% |
+| **Sprint 01 (Security & Compat)** | 100% ✅ | 100% |
+| **Sprint 02 (Tests & Publish)** | 100% ✅ | 100% |
+| **Sprint 03 (HTTP Fetching FT-01)** | 100% ✅ | 100% |
+| **Sprint 04 (Generics + Cache)** | 18% 🔵 | 100% |
+| **Unit Tests Passing** | 41/41 ✅ | 41+ |
+| **Build / publint** | ✅ All good (v0.1.0) | ✅ |
+| **Critical Issues Fixed** | 5/5 | 5 |
 
 ---
 
 ## 🚀 Sprint Summary
 
-### Sprint 01 – Security & Compatibility Hardening
-**Duration:** 2026-03-02 → 2026-03-09 | **Capacity:** 8 points | **Status:** 🟡 In Development (Code-Complete 85%)
+### Sprint 01 – Security & Compatibility Hardening ✅ COMPLETE
+**Duration:** 2026-03-02 → 2026-03-09 | **Capacity:** 8 points | **Status:** 🟢 Complete (100%)
 
 | Story | Title | Points | Status | Implementation |
-|-------|-------|--------|--------|-----------------|
+|-------|-------|--------|--------|----------------|
 | **S01-01** | Fix XSS vulnerability | 2 | ✅ Implemented | `src/lib/render.ts` — HTML detection + DOMPurify sanitization |
 | **S01-02** | Add CommonJS export | 1 | ✅ Implemented | `package.json` — Added `main` field + fixed `files` glob |
 | **S01-03** | Error handling | 3 | ✅ Implemented | `src/lib/router.ts` / `types.ts` — Added `onError` callback + error handlers |
 | **S01-04** | Test coverage infra | 2 | ✅ Implemented | `vite.config.ts` — Coverage config (V8, 75%+ thresholds) |
 
-**Blockers:** Build validation pending (npm install → build → test)
+**Completed:** Build script fixed (`npm` → `pnpm`). `pnpm run build` ✅. `publint`: All good ✅. 27/27 tests pass ✅.
 
 ---
 
-### Sprint 02 – Test Coverage Expansion & Publishing
-**Duration:** 2026-03-09 → 2026-03-16 | **Capacity:** 6 points | **Status:** 🟢 Ready (0% — Blocked on S01 Merge)
+### Sprint 02 – Test Coverage Expansion & Publishing ✅ COMPLETE
+**Duration:** 2026-03-09 → 2026-03-16 | **Capacity:** 6 points | **Status:** ✅ Complete (100%)
 
-| Story | Title | Points | Status | Acceptance Criteria |
-|-------|-------|--------|--------|----------------------|
-| **S02-01** | Hash mode tests | 2 | ⏳ Pending | Add hash-based routing test suite; verify navigation, state preservation |
-| **S02-02** | 404 fallback tests | 2 | ⏳ Pending | Comprehensive tests for fallback routes; edge cases (deep links, missing params) |
-| **S02-03** | Publish v0.1.0 | 2 | ⏳ Pending | Version bump, CHANGELOG, publint validation, npm publish |
+| Story | Title | Points | Status | Implementation |
+|-------|-------|--------|--------|----------------|
+| **S02-01** | Hash mode tests | 2 | ✅ Implemented | `router.test.ts` — 7 hash mode tests (push, hashchange, params, query, hooks) |
+| **S02-02** | 404 fallback tests | 2 | ✅ Implemented | `router.test.ts` — 7 404 tests (callback, context, cleanup, after-hook) |
+| **S02-03** | Publish v0.1.0 | 2 | ✅ Implemented | `package.json` v0.1.0, `CHANGELOG.md`, coverage-v8 + jsdom installed |
 
-**Dependencies:** Sprint 01 merge (PR review + merge to main)
+**Completed:** 41/41 tests pass ✅. Build clean, publint: All good ✅. Run `pnpm publish --access public` to release.
 
 ---
 
@@ -77,44 +79,39 @@
 | **S03-04** | Security enforcement | 2 | ⏳ Pending | Security | HTTPS-only for http_source; URL token validation |
 | **S03-05** | Unit tests for fetcher | 1 | ⏳ Pending | Testing | 90%+ coverage; token, error, security validation tests |
 
-**Feature Alignment:** PRD FT-01 (Route HTTP data-fetching) — All functional requirements covered
+**Feature shipped:** `Route.http` (same-origin), `Route.http_source` (external HTTPS), `ctx.data`, `ctx.error`. All 27 unit tests pass.
+
+### Sprint 04 – Generics, Type-Safety & Cache Engine 📋 PLANNED
+**Duration:** 2026-03-16 → 2026-03-30 | **Capacity:** 11 points | **Status:** 📋 Planned (0%)
+**Feature refs:** FT-02 (Type-Safety), FT-04 (Intelligent Cache)
+
+| Story | Title | Points | Status | Story File |
+|-------|-------|--------|--------|------------|
+| **S04-01** | Upgrade `types.ts`: `Route<TData>` / `Context<TData>` generics | 2 | ⏳ Pending | [S04-01.md](./artifacts/stories/S04-01.md) |
+| **S04-02** | Full JSDoc coverage on all public exports | 2 | ⏳ Pending | [S04-02.md](./artifacts/stories/S04-02.md) |
+| **S04-03** | Create `cache.ts` (SWR engine: set/get/TTL/invalidate) | 3 | ⏳ Pending | [S04-03.md](./artifacts/stories/S04-03.md) |
+| **S04-04** | Integrate cache into `handleNavigation` (SWR + prefetch + buildUrl) | 2 | ⏳ Pending | [S04-04.md](./artifacts/stories/S04-04.md) |
+| **S04-05** | Unit tests: generics, cache + router integration (≥90% coverage) | 2 | ⏳ Pending | [S04-05.md](./artifacts/stories/S04-05.md) |
+
+**Sprint Plan:** [sprint-04.md](./artifacts/sprints/sprint-04.md)
 
 ---
 
 ## 🎯 Immediate Next Steps
 
-### 🔴 Blocking Tasks (Do First)
+### 🟢 Unblocked — Start Now
 
-1. **[HIGH PRIORITY]** Validate Sprint 01 Code
-   ```bash
-   cd packages/idae-router
-   npm install
-   npm run build
-   npm run test:unit
-   npm run test:coverage
-   ```
-   - Expected: Build succeeds, all tests pass, coverage ≥75%
-   - Action if failure: Debug and fix in-place; do NOT skip
+**Option A — Sprint 02 (close v0.1.0, 6 pts, ~1 week — recommended first):**
+```bash
+bmad-master /dev-story S02-01   # Hash mode tests
+```
 
-2. **[HIGH PRIORITY]** Code Review & Merge Sprint 01
-   - [ ] Review all S01 changes (git diff main...sprint-01)
-   - [ ] Verify no regressions (existing tests pass)
-   - [ ] Merge to main branch
-   - [ ] Tag version (pre-release or release)
+**Option B — Sprint 04 S04-01 (foundation for v0.2.0 features):**
+```bash
+bmad-master /dev-story S04-01   # Route<TData> / Context<TData> generics
+```
 
-### 🟡 Ready to Start (After S01 Merge)
-
-3. **Sprint 02 Development** (6 points, ~1 week)
-   - Run: `bmad-master /dev-story S02-01` to begin hash mode tests
-   - Then: `bmad-master /dev-story S02-02` (404 fallback tests)
-   - Then: `bmad-master /dev-story S02-03` (publish v0.1.0)
-
-4. **Sprint 03 Development** (10 points, ~2 weeks) — *Can start in parallel with Sprint 02*
-   - Run: `bmad-master /dev-story S03-01` (types)
-   - Then: `bmad-master /dev-story S03-02` (fetcher module)
-   - Then: `bmad-master /dev-story S03-03` (integration)
-   - Then: `bmad-master /dev-story S03-04` (security)
-   - Finally: `bmad-master /dev-story S03-05` (testing)
+**Advised sequence:** Sprint 02 → merge → bump to v0.1.0 → publish → Sprint 04.
 
 ---
 

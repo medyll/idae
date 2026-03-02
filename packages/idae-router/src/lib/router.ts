@@ -12,6 +12,33 @@ import { mountResult } from './render';
 import { findOutlet } from './render';
 import { fetchRouteData } from './fetcher.js';
 
+/**
+ * Create a new router instance and begin listening for navigation events.
+ *
+ * Attaches `popstate` / `hashchange` listeners and performs an initial navigation
+ * to the current URL on the next microtask. Returns a `RouterInstance` with
+ * imperative navigation helpers and lifecycle hook registration.
+ *
+ * @public
+ * @param opts - Router configuration options.
+ * @returns A fully initialised `RouterInstance`.
+ * @since 0.1.0
+ * @example
+ * ```ts
+ * import { createRouter } from '@medyll/idae-router';
+ *
+ * const router = createRouter({
+ *   mode: 'history',
+ *   outlet: '#app',
+ *   routes: [
+ *     { path: '/', action: () => '<h1>Home</h1>' },
+ *     { path: '/about', action: () => '<h1>About</h1>' }
+ *   ]
+ * });
+ *
+ * router.push('/about');
+ * ```
+ */
 export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	const mode = opts.mode || 'history';
 	const base = (opts.base || '').replace(/\/$/, '');
@@ -59,7 +86,8 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 			query: parseQuery(search || ''),
 			state,
 			metadata: (chain.length ? chain[chain.length - 1].route.metadata : metadata) || metadata || {},
-			matched: chain
+			matched: chain,
+			data: null
 		};
 	}
 

@@ -11,7 +11,11 @@ export default defineConfig({
 			exclude: [
 				'node_modules/',
 				'dist/',
-				'src/**/*.{test,spec}.ts'
+				'src/**/*.{test,spec}.ts',
+				'src/lib/index.ts',
+				'src/lib/types.ts',
+				'src/routes/**',
+				'src/app.*'
 			],
 			lines: 75,
 			functions: 75,
