@@ -13,15 +13,41 @@ export interface Context {
 	state?: unknown;
 	metadata?: Record<string, unknown>;
     matched?: RouteRecord[];
+	/** Populated by `http` or `http_source` before `action` executes. `null` on fetch error. */
+	data?: unknown;
+	/** Set when the route-level fetch fails. Navigation continues regardless. */
+	error?: Error;
 }
 
 export type Action = (ctx: Context) => ActionResult;
 
+/**
+ * Configuration for a route-level HTTP data-fetch.
+ *
+ * - For `http`: provide a path-only URL (e.g. `/api/users/:id`).
+ *   `window.location.origin` is prepended automatically.
+ * - For `http_source`: provide host+path without scheme (e.g. `api.example.com/users/:id`).
+ *   `https://` is prepended automatically.
+ *
+ * `:param` tokens are interpolated from matched route params before fetching.
+ */
+export interface RouteHttpConfig {
+	/** URL template. Path-only for `http`; host+path (no scheme) for `http_source`. */
+	url: string;
+	/** Native fetch options (method, headers, body, signal…) */
+	args?: RequestInit;
+}
+
 export interface Route {
 	path: string;
-	action: Action;
+	/** Render function. Receives a fully-typed Context with optional `data` and `error`. */
+	action?: Action;
 	metadata?: Record<string, unknown>;
 	children?: Route[];
+	/** Same-origin fetch. `window.location.origin` prepended automatically. */
+	http?: RouteHttpConfig;
+	/** External HTTPS fetch. `https://` prepended automatically; plain HTTP rejected. */
+	http_source?: RouteHttpConfig;
 }
 
 export interface RouteRecord {

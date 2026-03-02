@@ -10,6 +10,7 @@ import type {
 import { parseQuery, matchRouteTree } from './matcher';
 import { mountResult } from './render';
 import { findOutlet } from './render';
+import { fetchRouteData } from './fetcher.js';
 
 export function createRouter(opts: RouterOptions = {}): RouterInstance {
 	const mode = opts.mode || 'history';
@@ -130,8 +131,18 @@ export function createRouter(opts: RouterOptions = {}): RouterInstance {
 		const newCleanups: Array<(() => void) | null> = [];
 		let parentOutlet = outletEl;
 		for (const rec of chain) {
+			// Enrich context with route-level fetch data (independent per level)
+			let levelContext: Context;
+			if (rec.route.http || rec.route.http_source) {
+				const { data, error } = await fetchRouteData(rec.route, toContext.params);
+				levelContext = { ...toContext, data, error };
+			} else {
+				levelContext = toContext;
+			}
+
 			const action = rec.route.action;
-			const result = await Promise.resolve(action(toContext));
+			if (!action) continue;
+			const result = await Promise.resolve(action(levelContext));
 			if (typeof result === 'function') {
 				newCleanups.push(result as () => void);
 			} else {

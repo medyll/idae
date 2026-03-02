@@ -29,9 +29,30 @@ artifacts:
     last_run: "2026-03-02T17:56:32Z"
   product_brief: null
   prd: "prd.md"
+  prd_version: "2.0.0"
   prd_features:
     - id: "FT-01"
       name: "Route HTTP data-fetching (http / http_source)"
+      status: "defined"
+      story: null
+    - id: "FT-02"
+      name: "Total type-safety – generics + JSDoc"
+      status: "defined"
+      story: null
+    - id: "FT-03"
+      name: "Async state management (loading / error / SWR)"
+      status: "defined"
+      story: null
+    - id: "FT-04"
+      name: "Intelligent cache (SWR, TTL, per-route on/off)"
+      status: "defined"
+      story: null
+    - id: "FT-05"
+      name: "Typed search params (no external deps)"
+      status: "defined"
+      story: null
+    - id: "FT-06"
+      name: "Strict programmatic navigation API + prefetch"
       status: "defined"
       story: null
   demo: "static/demo.html"
@@ -78,27 +99,27 @@ backlog:
         status: "pending"
   - id: "sprint-03"
     name: "Route HTTP Data-Fetching (http / http_source)"
-    status: "ready"
+    status: "code-complete"
     feature_ref: "FT-01"
     duration: "2026-03-16 → 2026-03-30"
     capacity: "10 points"
-    progress: 0
+    progress: 100
     stories:
       - id: "S03-01"
         title: "Extend Route + Context types"
-        status: "pending"
+        status: "implemented"
       - id: "S03-02"
         title: "Create fetcher.ts"
-        status: "pending"
+        status: "implemented"
       - id: "S03-03"
         title: "Integrate fetcher into router.ts"
-        status: "pending"
+        status: "implemented"
       - id: "S03-04"
         title: "Security enforcement"
-        status: "pending"
+        status: "implemented"
       - id: "S03-05"
         title: "Unit tests for fetcher"
-        status: "pending"
+        status: "implemented"
 
 qa:
   test_plan: null
@@ -106,4 +127,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "Validate & merge Sprint 01, execute Sprint 02 & 03 development in parallel"
+recommendation: "Sprint 03 code-complete (10/10pts, 27/27 tests pass). Next: `npm run build` → validate packaging → PR to main. Plan Sprint 04 for FT-02–FT-06 (cache, search params, generics, prefetch)."

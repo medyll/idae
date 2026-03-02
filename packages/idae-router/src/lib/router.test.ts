@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { createRouter } from './index.js';
 
 function wait(ms = 10) {
@@ -118,5 +118,79 @@ describe('router', () => {
 		await wait(30);
 		expect(outlet.innerHTML).toContain('Parent');
 		expect(outlet.innerHTML).toContain('Other');
+	});
+
+	// ── http data-fetching integration ──────────────────────────────────────
+
+	beforeEach(() => {
+		vi.stubGlobal('fetch', vi.fn());
+	});
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it('populates ctx.data from http fetch before action runs', async () => {
+		vi.mocked(fetch).mockResolvedValue({
+			ok: true,
+			json: async () => ({ name: 'Alice' })
+		} as Response);
+
+		let captured: unknown = 'not-set';
+		const routes = [
+			{
+				path: '/user/:id',
+				http: { url: '/api/users/:id' },
+				action: (ctx: { data: unknown }) => {
+					captured = ctx.data;
+					return '<p>User</p>';
+				}
+			}
+		];
+		const router = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+		router.push('/user/1');
+		await wait(30);
+		expect(captured).toEqual({ name: 'Alice' });
+	});
+
+	it('sets ctx.error and keeps ctx.data null on fetch failure, action still runs', async () => {
+		vi.mocked(fetch).mockRejectedValue(new Error('fail'));
+
+		let capturedError: unknown;
+		let capturedData: unknown = 'not-set';
+		const routes = [
+			{
+				path: '/broken',
+				http: { url: '/api/broken' },
+				action: (ctx: { data: unknown; error: unknown }) => {
+					capturedData = ctx.data;
+					capturedError = ctx.error;
+					return '<p>Broken</p>';
+				}
+			}
+		];
+		const router = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+		router.push('/broken');
+		await wait(30);
+		expect(capturedData).toBeNull();
+		expect(capturedError).toBeInstanceOf(Error);
+		expect(outlet.innerHTML).toContain('Broken'); // navigation completed
+	});
+
+	it('leaves ctx.data undefined for routes with no http/http_source', async () => {
+		let capturedData: unknown = 'not-set';
+		const routes = [
+			{
+				path: '/plain',
+				action: (ctx: { data: unknown }) => {
+					capturedData = ctx.data;
+					return '<p>Plain</p>';
+				}
+			}
+		];
+		const router = createRouter({ routes, outlet, mode: 'history', linkInterception: false });
+		router.push('/plain');
+		await wait(30);
+		expect(capturedData).toBeUndefined();
+		expect(fetch).not.toHaveBeenCalled();
 	});
 });

@@ -17,7 +17,7 @@
 │ Phase 4 – Implementation      🔵 IN PROGRESS                     │
 │   └─ Sprint 01: Code-Complete (85%) — Awaiting Build/Merge      │
 │   └─ Sprint 02: Ready (0%) — Blocked on S01 Merge               │
-│   └─ Sprint 03: Ready (0%) — Can Start in Parallel with S02     │
+│   └─ Sprint 03: Code-Complete (100%) — Awaiting Build/PR Merge             │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -30,7 +30,7 @@
 | **Overall Progress** | 65% | 100% |
 | **Sprint 01 (Security & Compat)** | 85% | 100% |
 | **Sprint 02 (Tests & Publish)** | 0% | 100% |
-| **Sprint 03 (HTTP Fetching)** | 0% | 100% |
+| **Sprint 03 (HTTP Fetching)** | 100% | 100% |
 | **Code Coverage (Target)** | N/A | 85%+ |
 | **Issues Found** | 5 | 0 |
 | **Critical Issues Fixed** | 4 | 5 |
@@ -331,15 +331,15 @@ npm install && npm run build && npm run test:unit && npm run test:coverage
 | **Story S02-01** | ✅ Ready | [S02-01.md](./artifacts/stories/S02-01.md) |
 | **Story S02-02** | ✅ Ready | [S02-02.md](./artifacts/stories/S02-02.md) |
 | **Story S02-03** | ✅ Ready | [S02-03.md](./artifacts/stories/S02-03.md) |
-| **PRD** | ✅ Draft + demo | [prd.md](./artifacts/prd.md) |
+| **PRD** | ✅ v2.0.0 — FT-01…FT-06 | [prd.md](./artifacts/prd.md) — type-safety, cache, search params, prefetch |
 | **Demo page** | ✅ Updated | [static/demo.html](../static/demo.html) — Sprint 03 shim active |
 | **Product Brief** | ❌ Not needed | (Audit findings sufficient) |
 | **Sprint 03 Plan** | ✅ Ready | [sprint-03.md](./artifacts/sprints/sprint-03.md) |
-| **Story S03-01** | ⏳ Pending | [S03-01.md](./artifacts/stories/S03-01.md) |
-| **Story S03-02** | ⏳ Pending | [S03-02.md](./artifacts/stories/S03-02.md) |
-| **Story S03-03** | ⏳ Pending | [S03-03.md](./artifacts/stories/S03-03.md) |
-| **Story S03-04** | ⏳ Pending | [S03-04.md](./artifacts/stories/S03-04.md) |
-| **Story S03-05** | ⏳ Pending | [S03-05.md](./artifacts/stories/S03-05.md) |
+| **Story S03-01** | ✅ Implemented | [S03-01.md](./artifacts/stories/S03-01.md) |
+| **Story S03-02** | ✅ Implemented | [S03-02.md](./artifacts/stories/S03-02.md) |
+| **Story S03-03** | ✅ Implemented | [S03-03.md](./artifacts/stories/S03-03.md) |
+| **Story S03-04** | ✅ Implemented | [S03-04.md](./artifacts/stories/S03-04.md) |
+| **Story S03-05** | ✅ Implemented | [S03-05.md](./artifacts/stories/S03-05.md) |
 
 ---
 
@@ -364,18 +364,17 @@ npm install && npm run build && npm run test:unit && npm run test:coverage
 ## 🎯 Recommended Immediate Action
 
 👉 **Priority 1 (Today):**
-1. Run: `npm install && npm run build` (validate Sprint 01 packaging)
-2. Run: `npm run test:unit` (check for regressions)
-3. Preview demo: `npm run build && npm run preview` then open [http://localhost:4173/demo.html](http://localhost:4173/demo.html)
+1. `npm run build` — validate Sprint 03 packaging compiles cleanly
+2. `npm run test:unit` — already green (27/27 tests pass)
+3. Preview demo: `npm run build && npm run preview` → open [http://localhost:4173/demo.html](http://localhost:4173/demo.html) and test `http`/`http_source` routes
 
 👉 **Priority 2 (This Week):**
-1. Merge Sprint 01 to main
-2. Start `/dev-story S03-01` (types — unblocks all Sprint 03 stories)
+1. PR Sprint 03 → main (includes all S03 stories + Sprint 01 fixes)
+2. Plan **Sprint 04** for FT-02–FT-06: generics (`Route<TData>`), cache (SWR+TTL), typed search params, prefetch on hover
+3. Complete Sprint 02 (S02-01 hash tests, S02-02 404 tests, S02-03 npm publish v0.1.0)
 
-👉 **Priority 3 (Next Week):**
-1. Complete S02-01 and S02-02 tests
-2. Achieve 85%+ coverage baseline
-3. Run S02-03 (npm publish v0.1.0)
+👉 **Priority 3 (Next Sprint):**
+1. `/sprint-planning` for Sprint 04 covering PRD v2.0.0 Feature Groups B–F
 
 ---
 
@@ -399,5 +398,5 @@ Sprint 03 (Feature)
 
 ---
 
-**Status:** Ready for Sprint 01 validation, Sprint 02 planned & ready to start  
-**Recommendation:** Merge Sprint 01, then `/dev-story S02-01` to continue momentum
+**Status:** Sprint 03 code-complete (10/10 pts, 27/27 tests pass). Awaiting build validation + PR merge.  
+**Recommendation:** `npm run build` → PR to main → `/sprint-planning` Sprint 04
