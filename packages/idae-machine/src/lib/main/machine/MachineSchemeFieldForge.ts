@@ -14,7 +14,7 @@ import type { MachineDb } from "../machineDb.js";
  *
  * @template T The type of the data object for the collection.
  */
-export class MachineSchemeFieldForge<T extends Record<string, any>> {
+export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
   #collection: TplCollectionName;
   #collectionValues: MachineSchemeValues<T>;
   #fieldName: keyof T | string;
@@ -30,7 +30,7 @@ export class MachineSchemeFieldForge<T extends Record<string, any>> {
    */
   constructor(
     collection: TplCollectionName,
-    fieldName: any,
+    fieldName: keyof T | string,
     data: T,
     collectionValues: MachineSchemeValues<T>,
     machineDb: MachineDb,
@@ -135,7 +135,7 @@ export class MachineSchemeFieldForge<T extends Record<string, any>> {
    * @param {any[]} data The array data.
    * @return {IDbForge[]} Array of field metadata objects for each item.
    */
-  iterateArray(fieldName: string, data: any[]): IDbForge[] {
+  iterateArray(fieldName: string, data: unknown[]): IDbForge[] {
     return this.#collectionValues.iterateArrayField(fieldName, data);
   }
 
@@ -143,10 +143,10 @@ export class MachineSchemeFieldForge<T extends Record<string, any>> {
    * Iterate over an object field and return field metadata for each property.
    * @role Object field iteration
    * @param {string} fieldName The field name.
-   * @param {Record<string, any>} data The object data.
+   * @param {Record<string, unknown>} data The object data.
    * @return {IDbForge[]} Array of field metadata objects for each property.
    */
-  iterateObject(fieldName: string, data: Record<string, any>): IDbForge[] {
+  iterateObject(fieldName: string, data: Record<string, unknown>): IDbForge[] {
     return this.#collectionValues.iterateObjectField(fieldName, data);
   }
 }

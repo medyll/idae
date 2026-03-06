@@ -94,13 +94,13 @@ export class MachineSchemeValidate {
    * @param value The value to validate.
    * @returns True if valid, false otherwise.
    */
-  validateFieldValue(fieldName: keyof TplFields, value: any): boolean {
+  validateFieldValue(fieldName: keyof TplFields, value: unknown): boolean {
     const result = this.validateField(fieldName, value);
     return !!result.isValid;
   }
 
   validateForm(
-    formData: Record<string, any>,
+    formData: Record<string, unknown>,
     options: { ignoreFields?: string[] | undefined } = {},
   ): {
     isValid: boolean;
@@ -140,7 +140,7 @@ export class MachineSchemeValidate {
     return { isValid, errors, invalidFields };
   }
 
-  #validateType(value: any, type: string | undefined): boolean {
+  #validateType(value: unknown, type: string | undefined): boolean {
     const typeDef = MachineSchemeFieldType.getFieldType(type ?? "any");
     if (typeDef && typeDef.validator) {
       return typeDef.validator(value);

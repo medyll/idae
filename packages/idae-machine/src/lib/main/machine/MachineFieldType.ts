@@ -26,8 +26,8 @@ export enum defaultTypes {
  */
 export interface FieldTypeDef {
   id: string;
-  formatter: (value: any) => any;
-  validator?: (value: any) => boolean;
+  formatter: (value: unknown) => unknown;
+  validator?: (value: unknown) => boolean;
 }
 
 /**
@@ -45,36 +45,36 @@ export type FieldTypeRegistry = {
 export const defaultFieldTypesDef: FieldTypeRegistry = {
   id: {
     id: defaultTypes.id,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => true,
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => true,
   },
   password: {
     id: defaultTypes.password,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => true,
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => true,
   },
   file: {
     id: defaultTypes.file,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => true,
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => true,
   },
   image: {
     id: defaultTypes.image,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => true,
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => true,
   },
   email: {
     id: defaultTypes.email,
-    formatter: (value: any) => String(value).toLowerCase(),
-    validator: (value: any) => {
+    formatter: (value: unknown) => String(value).toLowerCase(),
+    validator: (value: unknown) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(String(value).toLowerCase());
     },
   },
   url: {
     id: defaultTypes.url,
-    formatter: (value: any) => String(value).toLowerCase(),
-    validator: (value: any) => {
+    formatter: (value: unknown) => String(value).toLowerCase(),
+    validator: (value: unknown) => {
       try {
         new URL(String(value).toLowerCase());
         return true;
@@ -85,61 +85,61 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
   },
   phone: {
     id: defaultTypes.phone,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => {
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => {
       const phoneRegex = /^\+?[\d\s-]{10,}$/;
       return phoneRegex.test(String(value));
     },
   },
   date: {
     id: defaultTypes.date,
-    formatter: (value: any) => {
+    formatter: (value: unknown) => {
       new Date(value);
     },
-    validator: (value: any) => {
-      const date = new Date(value);
+    validator: (value: unknown) => {
+      const date = new Date(value as any);
       return !isNaN(date.getTime());
     },
   },
   datetime: {
     id: defaultTypes.datetime,
-    formatter: (value: any) => {
+    formatter: (value: unknown) => {
       new Date(value);
     },
-    validator: (value: any) => {
-      const date = new Date(value);
+    validator: (value: unknown) => {
+      const date = new Date(value as any);
       return !isNaN(date.getTime());
     },
   },
   time: {
     id: defaultTypes.time,
-    formatter: (value: any) => {
+    formatter: (value: unknown) => {
       new Date(value);
     },
-    validator: (value: any) => {
-      const date = new Date(value);
+    validator: (value: unknown) => {
+      const date = new Date(value as any);
       return !isNaN(date.getTime());
     },
   },
   text: {
     id: defaultTypes.text,
-    formatter: (value: any) => String(value),
-    validator: (value: any) => true,
+    formatter: (value: unknown) => String(value),
+    validator: (value: unknown) => true,
   },
   number: {
     id: defaultTypes.number,
-    formatter: (value: any) => Number(value),
-    validator: (value: any) => typeof value === "number" && !isNaN(value),
+    formatter: (value: unknown) => Number(value as any),
+    validator: (value: unknown) => typeof value === "number" && !isNaN(value as any),
   },
   boolean: {
     id: defaultTypes.boolean,
-    formatter: (value: any) => Boolean(value),
-    validator: (value: any) => typeof value === "boolean",
+    formatter: (value: unknown) => Boolean(value),
+    validator: (value: unknown) => typeof value === "boolean",
   },
   any: {
     id: defaultTypes.any,
-    formatter: (value: any) => value,
-    validator: (value: any) => true,
+    formatter: (value: unknown) => value as unknown,
+    validator: (value: unknown) => true,
   },
 };
 
@@ -240,7 +240,7 @@ class MachineFieldType {
    * @param validator New validator function
    * @returns true if updated, false if type not found
    */
-  setValidator(id: FieldTypeId, validator: (value: any) => boolean): boolean {
+  setValidator(id: FieldTypeId, validator: (value: unknown) => boolean): boolean {
     const type = this.getFieldType(id);
     if (type) {
       type.validator = validator;
@@ -255,7 +255,7 @@ class MachineFieldType {
    * @param formatter New formatter function
    * @returns true if updated, false if type not found
    */
-  setFormatter(id: FieldTypeId, formatter: (value: any) => any): boolean {
+  setFormatter(id: FieldTypeId, formatter: (value: unknown) => unknown): boolean {
     const type = this.getFieldType(id);
     if (type) {
       type.formatter = formatter;

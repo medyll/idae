@@ -1,10 +1,10 @@
 # BMAD Auto-Discovery Connector
 # @medyll/idae-machine
-# Generated: 2026-03-06T21:29:09Z
+# Generated: 2026-03-06T22:35:00.000Z
 # Do not edit manually — regenerate with: bmad connector --rebuild
 
 meta:
-  generated: "2026-03-06T21:29:09Z"
+  generated: "2026-03-06T22:35:00.000Z"
   bmad_version: "3.2.0"
   project: "@medyll/idae-machine"
   root: "bmad/"
@@ -48,7 +48,7 @@ architecture:
       - path: "dashboard.md"
         type: file
         role: orchestrator
-        status: "not_generated"
+        status: "generated"
         description: "Interactive project dashboard (auto-generated)"
       - path: "artifacts/"
         type: directory
@@ -88,13 +88,13 @@ architecture:
             type: directory
             role: scrum-master
             pattern: "sprint-{N}.md"
-            count: 0
+            count: 1
             description: "Time-boxed work batches"
           - path: "stories/"
             type: directory
             role: developer
             pattern: "S{sprint}-{seq:02d}.md"
-            count: 0
+            count: 5
             description: "Atomic development tasks"
           - path: "tests/"
             type: directory
@@ -118,7 +118,7 @@ architecture:
             type: directory
             role: orchestrator
             pattern: "status-{YYYYMMDDTHHmmss}.yaml"
-            count: 0
+            count: 1
             description: "Timestamped snapshots of status.yaml"
 
 project_info:

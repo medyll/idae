@@ -46,22 +46,22 @@ sprints:
     capacity: 18
     goal: "Fix 3 critical audit findings + improve JSDoc coverage to 80%+"
     stories: 5
-    status: "in_progress"
+    status: "ready"
 
 stories:
   total: 5
-  pending: 2
-  in_progress: 1
-  done: 2
+  pending: 5
+  in_progress: 0
+  done: 0
 
 backlog:
   items: 5
 
 dashboard:
   status: "generated"
-  last_updated: "2026-03-06T22:35:00.000Z"
+  last_updated: "2026-03-06T21:29:09Z"
 
 metadata:
   init_date: "2026-03-06T21:29:09Z"
   initialized_by: "bmad-master v3.2.0"
-  last_bmad_command: "bmad next --auto"
+  last_bmad_command: "bmad sprint"
