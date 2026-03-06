@@ -1,0 +1,59 @@
+# BMAD Project Status — @medyll/idae-machine
+# Last updated: 2026-03-06T21:29:09Z
+
+phase:
+  current: "planning"
+  status: "in_progress"
+  phases:
+    analysis: "done"           # ✅ COMPLETE
+    planning: "in_progress"    # 🔄 ACTIVE: PRD done, spec pending
+    solutioning: "pending"     # ⏳ Upcoming: sprints, stories, dev
+    validation: "pending"      # ⏳ Upcoming: testing, audit
+    release: "pending"         # ⏳ Upcoming: marketing, launch
+
+artifacts:
+  product_brief:
+    status: "generated"
+    date: "2026-03-06"
+  prd:
+    status: "generated"
+    date: "2026-03-06"
+    file: "prd.md"
+  tech_spec:
+    status: "missing"
+    command: "bmad plan spec"
+  architecture:
+    status: "missing"
+    command: "bmad plan arch"
+  roadmap:
+    status: "missing"
+    command: "bmad plan roadmap"
+
+audit:
+  baseline: "completed"            # ✅ Run by: bmad init
+  baseline_date: "2026-03-06"
+  critical_findings: 3
+  warnings: 6
+  report: "audit-baseline-2026-03-06.md"
+
+sprints:
+  active: null
+  count: 0
+
+stories:
+  total: 0
+  pending: 0
+  in_progress: 0
+  done: 0
+
+backlog:
+  items: 0
+
+dashboard:
+  status: "generated"
+  last_updated: "2026-03-06T21:29:09Z"
+
+metadata:
+  init_date: "2026-03-06T21:29:09Z"
+  initialized_by: "bmad-master v3.2.0"
+  last_bmad_command: "bmad init"
