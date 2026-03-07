@@ -40,10 +40,11 @@ export class MachineSchemeValidate {
    * @param {any} value The value to validate.
    * @return {{ isValid: boolean; error?: string; }} An object with isValid and optional error.
    */
-  validateField(
+  async validateField(
     fieldName: keyof TplFields,
     value: unknown,
-  ): { isValid: boolean; error?: string } {
+    formData?: Record<string, unknown>,
+  ): Promise<{ isValid: boolean; error?: string }> {
     try {
       const fieldInfo = this.machineDb
         .collection(this.collection)
@@ -57,7 +58,11 @@ export class MachineSchemeValidate {
         };
       }
 
-      if (!this.#validateType(value, fieldInfo.fieldType)) {
+      const typeOK = await this.#validateType(value, fieldInfo.fieldType, {
+        formData,
+        fieldName: String(fieldName),
+      });
+      if (!typeOK) {
         return this.#returnError(fieldName, fieldInfo.fieldType);
       }
 
@@ -69,13 +74,6 @@ export class MachineSchemeValidate {
           ) {
             return this.#returnError(fieldName, "required");
           }
-        }
-      }
-
-      const typeDef = MachineSchemeFieldType.getFieldType(fieldInfo.fieldType ?? 'any'); 
-      if (typeDef && typeDef.validator) {
-        if (!typeDef.validator(value)) {
-          return this.#returnError(fieldName, fieldInfo.fieldType);
         }
       }
 
@@ -94,19 +92,27 @@ export class MachineSchemeValidate {
    * @param value The value to validate.
    * @returns True if valid, false otherwise.
    */
-  validateFieldValue(fieldName: keyof TplFields, value: unknown): boolean {
-    const result = this.validateField(fieldName, value);
+  async validateFieldValue(fieldName: keyof TplFields, value: unknown): Promise<boolean> {
+    const result = await this.validateField(fieldName, value);
     return !!result.isValid;
   }
 
-  validateForm(
+  async validateForm(
     formData: Record<string, unknown>,
-    options: { ignoreFields?: string[] | undefined } = {},
-  ): {
+    options: {
+      ignoreFields?: string[] | undefined;
+      crossFieldValidators?: Array<(
+        data: Record<string, unknown>,
+      ) =>
+        | boolean
+        | { isValid: boolean; errors?: Record<string, string> }
+        | Promise<boolean | { isValid: boolean; errors?: Record<string, string> }>>;
+    } = {},
+  ): Promise<{
     isValid: boolean;
     errors: Record<string, string>;
     invalidFields: string[];
-  } {
+  }> {
     const errors: Record<string, string> = {};
     const invalidFields: string[] = [];
     let isValid = true;
@@ -120,15 +126,14 @@ export class MachineSchemeValidate {
       };
     }
 
-    for (const [fieldName, fieldRule] of Object.entries(fields)) {
-      // Ignorer les champs spécifiés dans options.ignoreFields
+    for (const [fieldName] of Object.entries(fields)) {
       if (options.ignoreFields && options.ignoreFields.includes(fieldName)) {
         continue;
       }
-
-      const result = this.validateField(
+      const result = await this.validateField(
         fieldName as keyof TplFields,
         formData[fieldName],
+        formData,
       );
       if (!result.isValid) {
         errors[fieldName] = result.error || "Invalid field";
@@ -137,13 +142,45 @@ export class MachineSchemeValidate {
       }
     }
 
+    // Cross-field validators
+    if (options.crossFieldValidators) {
+      for (const vf of options.crossFieldValidators) {
+        const out = await vf(formData);
+        if (typeof out === "boolean") {
+          if (!out) {
+            errors["__form"] = "Cross-field validation failed";
+            invalidFields.push("__form");
+            isValid = false;
+          }
+        } else if (typeof out === "object") {
+          if (!out.isValid) {
+            if (out.errors) {
+              Object.entries(out.errors).forEach(([k, v]) => {
+                errors[k] = v;
+                invalidFields.push(k);
+                isValid = false;
+              });
+            } else {
+              errors["__form"] = "Cross-field validation failed";
+              invalidFields.push("__form");
+              isValid = false;
+            }
+          }
+        }
+      }
+    }
+
     return { isValid, errors, invalidFields };
   }
 
-  #validateType(value: unknown, type: string | undefined): boolean {
+  async #validateType(value: unknown, type: string | undefined, ctx?: { formData?: Record<string, unknown>; fieldName?: string }): Promise<boolean> {
     const typeDef = MachineSchemeFieldType.getFieldType(type ?? "any");
     if (typeDef && typeDef.validator) {
-      return typeDef.validator(value);
+      const res = typeDef.validator(value, ctx);
+      if (res && typeof (res as any)?.then === 'function') {
+        return await res as boolean;
+      }
+      return Boolean(res);
     }
     return true;
   }

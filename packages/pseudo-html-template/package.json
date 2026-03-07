@@ -18,7 +18,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "prepackage": "node scripts/package-pre.js",
-    "gen:mockups": "node src/lib/tools/mockup/convert-mockup.js bmad/references/mockup-master-reference.html src/lib/elements/mockup-example",
+    "gen:mockups": "node src/lib/tools/mockup/convert-mockup.js bmad/references/mockup-master-reference.html src/lib/elements/mockup-example"
   },
   "devDependencies": {},
   "dependencies": {},

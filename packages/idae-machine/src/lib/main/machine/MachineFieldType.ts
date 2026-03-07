@@ -27,7 +27,8 @@ export enum defaultTypes {
 export interface FieldTypeDef {
   id: string;
   formatter: (value: unknown) => unknown;
-  validator?: (value: unknown) => boolean;
+  // Validator may be synchronous or asynchronous and receives optional context (formData, fieldName)
+  validator?: (value: unknown, ctx?: { formData?: Record<string, unknown>; fieldName?: string }) => boolean | Promise<boolean>;
 }
 
 /**
@@ -176,13 +177,16 @@ class MachineFieldType {
     this.registerFieldTypes(def);
   }
 
-  validate(value: unknown, typeId: FieldTypeId): boolean {
+  async validate(value: unknown, typeId: FieldTypeId, ctx?: { formData?: Record<string, unknown>; fieldName?: string }): Promise<boolean> {
     const fieldType = this.getFieldType(typeId);
-    if (!fieldType) {
-      return false;
-    }
+    if (!fieldType) return false;
     if (fieldType.validator) {
-      return fieldType.validator(value);
+      const res = fieldType.validator(value, ctx);
+      // Promise detection
+      if (res && typeof (res as any)?.then === 'function') {
+        return await res as boolean;
+      }
+      return Boolean(res);
     }
     return true;
   }
@@ -240,7 +244,7 @@ class MachineFieldType {
    * @param validator New validator function
    * @returns true if updated, false if type not found
    */
-  setValidator(id: FieldTypeId, validator: (value: unknown) => boolean): boolean {
+  setValidator(id: FieldTypeId, validator: (value: unknown, ctx?: { formData?: Record<string, unknown>; fieldName?: string }) => boolean | Promise<boolean>): boolean {
     const type = this.getFieldType(id);
     if (type) {
       type.validator = validator;
