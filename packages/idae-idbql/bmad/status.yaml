@@ -1,0 +1,13 @@
+phase:
+  analysis: done
+  planning: done
+  solutioning: upcoming
+artifacts:
+  product-brief: pending
+  prd: done
+  tech-spec: pending
+  architecture: pending
+  sprints: []
+  stories: []
+  audit:
+    baseline: pending
