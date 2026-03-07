@@ -1,0 +1,107 @@
+# BMAD Connector Manifest
+meta:
+  generated: "2026-03-07T00:12:45Z"
+  bmad_version: "3.2.0"
+  project: "Idae Monorepo"
+  root: "bmad/"
+dictionary:
+  keywords:
+    story: "Atomic dev task. ID pattern: S{sprint}-{seq:02d}. Role: developer."
+    sprint: "Time-boxed work batch. ID pattern: sprint-{N}. Role: scrum-master."
+    prd: "Product Requirements Document. Role: pm."
+    arch: "Architecture document. Role: architect."
+    audit: "Codebase analysis report. Role: analyst."
+    dashboard: "Live project status view. Auto-generated. Role: orchestrator."
+    connector: "This file. Machine-readable project manifest. Role: orchestrator."
+  rules:
+    - "All file writes must be followed by a dashboard update."
+    - "Story IDs follow pattern S{sprint_number}-{sequence:02d} (e.g. S1-03)."
+    - "Sprint files are named sprint-{N}.md (e.g. sprint-2.md)."
+    - "Audit baselines are named audit-baseline-{YYYY-MM-DD}.md."
+    - "All text artifacts are written in English."
+    - "status.yaml is the single source of truth for project phase state."
+  naming:
+    story: "S{sprint}-{seq:02d}"
+    sprint: "sprint-{N}"
+    audit: "audit-baseline-{YYYY-MM-DD}"
+    campaign: "{slug}"
+    history: "status-{YYYYMMDDTHHmmss}"
+architecture:
+  - path: "bmad/"
+    role: orchestrator
+    description: "BMAD project root"
+    children:
+      - path: "config.yaml"
+        type: file
+        description: "Project metadata (name, stack, team)"
+      - path: "status.yaml"
+        type: file
+        description: "Current phase, artifacts state, sprint/backlog progress"
+      - path: "dashboard.md"
+        type: file
+        description: "Interactive project dashboard (auto-generated)"
+      - path: "artifacts/"
+        type: dir
+        description: "All generated project artifacts"
+        children:
+          - path: "connector.yml"
+            type: file
+            description: "This file — auto-discovery manifest"
+          - path: "product-brief.md"
+            type: file
+            role: analyst
+            status: "{from status.yaml}"
+          - path: "prd.md"
+            type: file
+            role: pm
+            status: "{from status.yaml}"
+          - path: "tech-spec.md"
+            type: file
+            role: pm
+            status: "{from status.yaml}"
+          - path: "architecture.md"
+            type: file
+            role: architect
+            status: "{from status.yaml}"
+          - path: "positioning.md"
+            type: file
+            role: marketing
+            status: "{from status.yaml}"
+          - path: "marketing-strategy.md"
+            type: file
+            role: marketing
+            status: "{from status.yaml}"
+          - path: "launch-plan.md"
+            type: file
+            role: marketing
+            status: "{from status.yaml}"
+          - path: "sprints/"
+            type: dir
+            role: scrum-master
+            pattern: "sprint-{N}.md"
+            entries: "{list from disk}"
+          - path: "stories/"
+            type: dir
+            role: developer
+            pattern: "S{sprint}-{seq:02d}.md"
+            entries: "{list from disk}"
+          - path: "tests/"
+            type: dir
+            role: tester
+            pattern: "{story-id}-test-plan.md"
+            entries: "{list from disk}"
+          - path: "campaigns/"
+            type: dir
+            role: marketing
+            pattern: "{slug}.md"
+            entries: "{list from disk}"
+          - path: "discussions/"
+            type: dir
+            role: orchestrator
+            pattern: "{topic}-{YYYY-MM-DD}.md"
+            entries: "{list from disk}"
+          - path: "history/"
+            type: dir
+            role: orchestrator
+            pattern: "status-{YYYYMMDDTHHmmss}.yaml"
+            description: "Timestamped snapshots of status.yaml"
