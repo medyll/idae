@@ -5,9 +5,10 @@ phase:
 artifacts:
   product-brief: pending
   prd: done
-  tech-spec: pending
-  architecture: pending
-  sprints: []
+  tech-spec: done
+  architecture: done
+  sprints:
+  - sprint-1
   stories: []
   audit:
     baseline: pending
