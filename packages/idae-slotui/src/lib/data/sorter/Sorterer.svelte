@@ -47,5 +47,15 @@ let {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './sorterer.css';
+
+	:root {
+		--sorterer-gap: var(--sld-gap-tiny);
+	}
+
+	.sorterer {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: var(--sorterer-gap);
+	}
 </style>

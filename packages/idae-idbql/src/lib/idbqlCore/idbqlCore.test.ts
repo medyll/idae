@@ -35,9 +35,9 @@ describe("Idbq", () => {
     await idbq.stores(schema);
 
     expect(idbq.schema).toEqual(schema);
-    //@ts-ignore
+    //@ts-expect-error -- dynamic collection property added via Object.defineProperty
     expect(idbq.chat).toBeInstanceOf(Collection);
-    //@ts-ignore
+    //@ts-expect-error -- dynamic collection property added via Object.defineProperty
     expect(idbq.messages).toBeInstanceOf(Collection);
   });
 });

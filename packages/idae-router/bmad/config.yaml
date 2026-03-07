@@ -1,0 +1,26 @@
+---
+project:
+  name: idae-router
+  scope: "@medyll"
+  description: "SvelteKit-based router library component for Idae applications"
+  type: "library"
+  
+tech_stack:
+  language: "TypeScript"
+  framework: "Svelte 5 + SvelteKit"
+  build: "Vite"
+  testing:
+    unit: "Vitest"
+    e2e: "Playwright"
+  linting: "ESLint + Prettier"
+  package_manager: "pnpm"
+
+publishing:
+  registry: "npm"
+  scope: "@medyll"
+  access: "public"
+  
+repository:
+  url: "https://github.com/medyll/idae"
+  root: "../../../"
+  monorepo: true

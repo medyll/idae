@@ -32,7 +32,7 @@ export class Query<T extends object> {
 		});
 	}
 
-	private matchesField(item: T, field: keyof T, condition: any): boolean {
+	private matchesField(item: T, field: keyof T, condition: unknown): boolean {
 		if (typeof condition === 'object' && condition !== null && !Array.isArray(condition)) {
 			return Object.entries(condition).every(([op, val]) => {
 				const opNorm = typeof op === 'string' && op.startsWith('$') ? (op.slice(1) as Operator) : (op as Operator);

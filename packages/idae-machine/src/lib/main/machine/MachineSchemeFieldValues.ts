@@ -21,7 +21,7 @@ import { machine } from "../machine.js";
  *
  * @template T The type of the data object for the collection.
  */
-export class MachineSchemeFieldValues<T extends Record<string, any>> {
+export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
   #collection: TplCollectionName;
   #collectionValues: MachineSchemeValues<T>;
   #data: T;
@@ -62,7 +62,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * @param {keyof T} fieldName The field name.
    * @return {string | string[]} The formatted value or array of formatted values.
    */
-  format(fieldName: keyof T): string | string[] | any[] {
+  format(fieldName: keyof T): string | string[] | unknown[] {
     const fieldInfo = this.#collectionValues.machine.collection(this.#collection).field(String(fieldName)).parse();
     if (fieldInfo?.is === "array") {
       return this.iterateArray(String(fieldName), this.#data);
@@ -79,7 +79,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * @param {keyof T} fieldName The field name.
    * @return {any} The input attributes for the field.
    */
-  getInputDataSet(fieldName: keyof T) {
+  getInputDataSet(fieldName: keyof T): Record<string, unknown> | undefined {
     return this.#collectionValues.getInputDataSet(
       String(fieldName),
       this.#data,
@@ -93,7 +93,7 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * @param {any[]} data The array data.
    * @return {IDbForge[]} Array of field metadata objects for each item.
    */
-  iterateArray(fieldName: string, data: any[]): any[] {
+  iterateArray(fieldName: string, data: unknown[]): unknown[] {
     return this.#collectionValues.iterateArrayField(fieldName, data);
   }
 
@@ -101,10 +101,10 @@ export class MachineSchemeFieldValues<T extends Record<string, any>> {
    * Iterate over an object field and return field metadata for each property.
    * @role Object field iteration
    * @param {string} fieldName The field name.
-   * @param {Record<string, any>} data The object data.
+   * @param {Record<string, unknown>} data The object data.
    * @return {IDbForge[]} Array of field metadata objects for each property.
    */
-  iterateObject(fieldName: string, data: Record<string, any>): IDbForge[] {
+  iterateObject(fieldName: string, data: Record<string, unknown>): IDbForge[] {
     return this.#collectionValues.iterateObjectField(fieldName, data);
   }
 }

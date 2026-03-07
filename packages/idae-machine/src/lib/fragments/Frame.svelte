@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 
-	export let showPanel: boolean = true;
-	export let panelMode: 'expanded' | 'reduced' = 'expanded';
+	let { showPanel = true, panelMode = 'expanded' } = $props<{
+		showPanel?: boolean;
+		panelMode?: 'expanded' | 'reduced';
+	}>();
 </script>
 
 <div class="relative flex h-full gap-4">

@@ -88,20 +88,18 @@ const elem = (node: HTMLElement | HTMLElement[] | string) => {
 					);
 			}
 		},
-		setStyle: (styles: Record<string, any>) => {
+		setStyle: (styles: Record<string, string>) => {
 			switch (isWhat) {
 				case 'element':
-					const elementStyle = node.style;
+					const elementStyle = node.style as unknown as Record<string, string>;
 					for (const property in styles) {
-						// @ts-ignore
 						elementStyle[property] = styles[property];
 					}
 					return node;
 				case 'array':
 					(node as HTMLElement[]).forEach((node) => {
-						const elementStyle = node.style;
+						const elementStyle = node.style as unknown as Record<string, string>;
 						for (const property in styles) {
-							// @ts-ignore
 							elementStyle[property] = styles[property];
 						}
 					});
@@ -109,9 +107,8 @@ const elem = (node: HTMLElement | HTMLElement[] | string) => {
 					return node;
 				case 'string':
 					Array.from(document.querySelectorAll(node as string)).forEach((node) => {
-						const elementStyle = (node as HTMLElement).style;
+						const elementStyle = (node as HTMLElement).style as unknown as Record<string, string>;
 						for (const property in styles) {
-							// @ts-ignore
 							elementStyle[property] = styles[property];
 						}
 					});

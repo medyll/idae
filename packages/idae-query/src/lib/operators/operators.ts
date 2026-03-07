@@ -2,6 +2,16 @@
 import type { ResultSet } from "$lib/resultSet/resultset.js";
 import { type Operator, type OperatorType, type Where } from "$lib/types.js";
 
+/** Type for scalar comparison (gt, gte, lt, lte) */
+type Comparable = string | number | Date;
+
+/**
+ * Loose function type for the internal operator dispatch map.
+ * Typed loosely intentionally: type safety is enforced in each private method.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type OperatorFn = (fieldName: any, value: any, data: any) => boolean;
+
 export class Operators {
   static operators: (keyof OperatorType)[] = [
     "eq",
@@ -18,10 +28,7 @@ export class Operators {
     "btw",
   ];
 
-  static #operatorsFunctions: Record<
-    keyof OperatorType,
-    (fieldName: any, value: any, data: any) => boolean
-  > = {
+  static #operatorsFunctions: Record<keyof OperatorType, OperatorFn> = {
     eq: this.#equalityComparison,
     gt: this.#greaterThanComparison,
     gte: this.#greaterThanOrEqualComparison,
@@ -75,13 +82,13 @@ export class Operators {
   ) {
     // Utilisation de Set pour 'in' et 'nin'
     if (operator === "in" || operator === "nin") {
-      value = new Set(value as any[]);
+      value = new Set(value as unknown[]);
     }
 
     // Gestion des cas où fieldName est un opérateur (pour les nouvelles formes de requête)
     if (this.operators.includes(fieldName as Operator)) {
       return data.filter((item) =>
-        this.#applyOperatorToObject(fieldName as Operator, value as any, item),
+        this.#applyOperatorToObject(fieldName as Operator, value as unknown as Partial<F>, item),
       );
     }
 
@@ -110,7 +117,7 @@ export class Operators {
   }
   static #equalityComparison<T extends object>(
     fieldName: keyof T,
-    value: any,
+    value: unknown,
     data: T,
   ): boolean {
     if (!(fieldName in data)) {
@@ -140,7 +147,7 @@ export class Operators {
     operatorName: string,
     operatorFunction: <T extends object>(
       fieldName: keyof T,
-      value: any,
+      value: unknown,
       data: T,
     ) => boolean,
   ) {
@@ -153,16 +160,16 @@ export class Operators {
     this.#operatorsFunctions[operatorName] = operatorFunction;
   }
 
-  static #greaterThanComparison<T>(fieldName: keyof T, value: any, data: T) {
-    return value < data[fieldName];
+  static #greaterThanComparison<T>(fieldName: keyof T, value: Comparable, data: T) {
+    return value < (data[fieldName] as Comparable);
   }
 
   static #greaterThanOrEqualComparison<T>(
     fieldName: keyof T,
-    value: any,
+    value: Comparable,
     data: T,
   ) {
-    return value <= data[fieldName];
+    return value <= (data[fieldName] as Comparable);
   }
   /**
    * Checks if the field value is in the given set.
@@ -173,7 +180,7 @@ export class Operators {
    */
   static #inclusionComparison<T extends object>(
     fieldName: keyof T,
-    value: Set<any>,
+    value: Set<unknown>,
     data: T,
   ) {
     return value.has(data[fieldName]);
@@ -188,37 +195,37 @@ export class Operators {
    */
   static #exclusionComparison<T extends object>(
     fieldName: keyof T,
-    value: Set<any>,
+    value: Set<unknown>,
     data: T,
   ) {
     return !value.has(data[fieldName]);
   }
 
-  static #lessThanComparison<T>(fieldName: keyof T, value: any, data: T) {
-    return value > data[fieldName];
+  static #lessThanComparison<T>(fieldName: keyof T, value: Comparable, data: T) {
+    return value > (data[fieldName] as Comparable);
   }
 
   static #lessThanOrEqualComparison<T>(
     fieldName: keyof T,
-    value: any[],
+    value: Comparable,
     data: T,
   ) {
-    return value >= data[fieldName];
+    return value >= (data[fieldName] as Comparable);
   }
 
-  static #notEqualComparison<T>(fieldName: keyof T, value: any[], data: T) {
+  static #notEqualComparison<T>(fieldName: keyof T, value: unknown, data: T) {
     return value !== data[fieldName];
   }
 
-  static #containsComparison<T>(fieldName: keyof T, value: any, data: T) {
+  static #containsComparison<T>(fieldName: keyof T, value: string, data: T) {
     return `${data[fieldName]}`.includes(value);
   }
 
-  static #startsWithComparison<T>(fieldName: keyof T, value: any, data: T) {
+  static #startsWithComparison<T>(fieldName: keyof T, value: string, data: T) {
     return `${data[fieldName]}`.startsWith(value);
   }
 
-  static #endsWithComparison<T>(fieldName: keyof T, value: any, data: T) {
+  static #endsWithComparison<T>(fieldName: keyof T, value: string, data: T) {
     return `${data[fieldName]}`.endsWith(value);
   }
 

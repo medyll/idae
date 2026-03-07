@@ -133,5 +133,19 @@ export const actions = {
 
 <style global lang="postcss">
 	@reference "tailwindcss";
-	@import './login.css';
+
+	:root {
+		--login-radius: var(--sld-radius-medium);
+		--login-bg: var(--sld-color-background);
+		--login-border: var(--sld-color-border);
+		--login-padding: 1rem;
+	}
+
+	.login {
+		border-radius: var(--login-radius);
+		background: var(--login-bg);
+		border: 1px solid var(--login-border);
+		padding: var(--login-padding);
+		font-size: 1em;
+	}
 </style>

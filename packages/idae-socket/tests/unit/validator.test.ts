@@ -47,7 +47,7 @@ describe('SocketIoServer Auth Logic', () => {
         const nextSpy = vi.fn();
 
         // Access private property logic via the middleware method
-        // @ts-ignore
+        // @ts-expect-error -- testing private method directly
         await socketServer.authorization(mockSocket, nextSpy);
 
         expect(nextSpy).toHaveBeenCalled();
@@ -71,7 +71,7 @@ describe('SocketIoServer Auth Logic', () => {
         const nextSpy = vi.fn();
         const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-        // @ts-ignore
+        // @ts-expect-error -- testing private method directly
         await socketServer.authorization(mockSocket, nextSpy);
         
         expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Auth failed'));

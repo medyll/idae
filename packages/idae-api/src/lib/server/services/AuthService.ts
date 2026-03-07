@@ -3,13 +3,29 @@
 import type { Express, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
+/**
+ * Callback used to validate login credentials.
+ * Implement and inject this to connect AuthService to a real user store.
+ * @returns true if credentials are valid, false otherwise.
+ */
+export type UserValidatorFn = (
+	username: string,
+	password: string
+) => boolean | Promise<boolean>;
+
 export class AuthService {
 	private jwtSecret: string;
 	private tokenExpiration: string;
+	private validateUser: UserValidatorFn | null;
 
-	constructor(jwtSecret: string, tokenExpiration: string) {
+	constructor(
+		jwtSecret: string,
+		tokenExpiration: string,
+		validateUser: UserValidatorFn | null = null
+	) {
 		this.jwtSecret = jwtSecret;
 		this.tokenExpiration = tokenExpiration;
+		this.validateUser = validateUser;
 	}
 
 	public generateToken(payload: object): string {
@@ -37,21 +53,33 @@ export class AuthService {
 		app.post('/refresh-token', this.handleRefreshToken.bind(this));
 	}
 
-	private handleLogin(req: Request, res: Response): void {
+	private async handleLogin(req: Request, res: Response): Promise<void> {
+		if (!this.validateUser) {
+			res.status(501).json({ error: 'Login not implemented: no user validator provided.' });
+			return;
+		}
+
 		const { username, password } = req.body;
 
-		// Validate user credentials (this is a placeholder, replace with actual validation logic)
-		if (username === 'admin' && password === 'password') {
-			const payload = { username };
-			const token = this.generateToken(payload);
-			res.json({ token });
-		} else {
-			res.status(401).json({ error: 'Invalid credentials' });
+		if (!username || !password) {
+			res.status(400).json({ error: 'username and password are required.' });
+			return;
+		}
+
+		try {
+			const valid = await this.validateUser(username, password);
+			if (valid) {
+				const token = this.generateToken({ username });
+				res.json({ token });
+			} else {
+				res.status(401).json({ error: 'Invalid credentials.' });
+			}
+		} catch {
+			res.status(500).json({ error: 'Authentication error.' });
 		}
 	}
 
-	private handleLogout(req: Request, res: Response): void {
-		// Invalidate the token (this is a placeholder, implement actual token invalidation logic if needed)
+	private handleLogout(_req: Request, res: Response): void {
 		res.json({ message: 'Logged out successfully' });
 	}
 

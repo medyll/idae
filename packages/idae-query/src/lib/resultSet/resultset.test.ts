@@ -2,7 +2,8 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { getResultSet } from "./resultset.js";
 
 describe("getResultSet", () => {
-  let data: any[];
+  type TestItem = { id: number; name: string; age: number; metadata: { order: number } };
+  let data: TestItem[];
 
   beforeEach(() => {
     data = [

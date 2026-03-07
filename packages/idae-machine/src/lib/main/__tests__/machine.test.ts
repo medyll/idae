@@ -89,19 +89,17 @@ describe('Machine', () => {
       expect(parsed?.name).toBeDefined();
     });
 
-    it('should validate a valid field value', () => {
+    it('should validate a valid field value', async () => {
       const scheme = machine.logic.collection('agent');
       const validator = scheme.validator;
-      const result = validator.validateField('id', 1);
+      const result = await validator.validateField('id', 1);
       expect(result).toHaveProperty('isValid');
     });
 
-    it('should throw MachineError for invalid field', () => {
+    it('should throw MachineError for invalid field', async () => {
       const scheme = machine.logic.collection('agent');
       const validator = scheme.validator;
-      expect(() => {
-        validator.validateField('notAField', 1);
-      }).toThrowError(/Field notAField not found/);
+      await expect(validator.validateField('notAField', 1)).resolves.toHaveProperty('isValid', false);
     });
   });
 });
