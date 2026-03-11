@@ -2254,6 +2254,7 @@
 
 
 ## [Unreleased] - 2026-02-08
+- **2026-03-11** - packages/idae-machine: chore: remove CrudService and fix validator (PR #88)
 - **2026-02-08** - fix: update dbSchema and index exports for improved type handling and organization
 - **2026-02-08** - fix: update pnpm-release version and adjust related dependencies in lockfile feat: enhance Vite config by removing unnecessary file extension feat: add missing export for CollectionListFieldValues and adjust existing exports in index.ts fix: improve type handling in MachineParserForge methods fix: update CollectionReverseFks.svelte to use correct item structure
 - **2026-02-07** - chore: update @medyll/idae-pnpm-release to version 1.0.27 in package.json and pnpm-lock.yaml

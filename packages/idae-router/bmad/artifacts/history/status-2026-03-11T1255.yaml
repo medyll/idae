@@ -1,7 +1,7 @@
 ---
 phase: "Implementation"
 progress: 100
-last_updated: "2026-03-11T16:14:16.532Z"
+last_updated: "2026-03-11T12:55:05.527Z"
 
 phases:
   analysis:
@@ -56,8 +56,6 @@ artifacts:
       status: "defined"
       story: null
   demo: "static/demo.html"
-  readme: "README.md"
-  readme_draft: "README.next.md"
   tech_spec: null
   architecture: null
 
@@ -139,7 +137,7 @@ backlog:
         title: "Upgrade types.ts with Route<TData>/Context<TData> generics"
         status: "implemented"
         completed_at: "2026-03-02T22:15:00Z"
-        notes: "Route<TData>, Context<TData>, Action<TData>, RouteHttpConfig<TData>, CacheOptions added. Full JSDoc. buildContext data:null. 41/41 tests."
+        notes: "Route<TData>, Context<TData>, Action<TData>, RouteHttpConfig(TData), CacheOptions added. Full JSDoc. buildContext data:null. 41/41 tests."
       - id: "S04-02"
         title: "Full JSDoc coverage on all public exports"
         status: "implemented"
@@ -167,4 +165,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "README draft created: bmad/README.next.md. Review README.next.md and replace README.md when approved. Publication is handled by CI. Next: run `bmad-master dashboard`."
+recommendation: "Release artifact created: bmad/artifacts/release-v0.1.0.md. Ready to publish v0.1.0 to npm. Next: run `pnpm publish --access public` (ensure registry auth). After publishing, run `bmad-master dashboard`."

@@ -1,5 +1,5 @@
 # BMAD Project Status — @medyll/idae-machine
-# Last updated: 2026-03-06T21:29:09Z
+# Last updated: 2026-03-11T22:15:23Z
 
 phase:
   current: "solutioning"
@@ -36,6 +36,9 @@ audit:
   critical_findings: 3
   warnings: 6
   report: "audit-baseline-2026-03-06.md"
+  updates:
+    - "audit-remove-crudservice-2026-03-11.md"
+  last_updated: "2026-03-11T22:15:23Z"
 
 sprints:
   active: "sprint-1"

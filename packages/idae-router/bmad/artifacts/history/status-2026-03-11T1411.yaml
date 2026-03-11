@@ -1,7 +1,7 @@
 ---
 phase: "Implementation"
 progress: 100
-last_updated: "2026-03-11T16:14:16.532Z"
+last_updated: "2026-03-11T14:11:38.567Z"
 
 phases:
   analysis:
@@ -57,7 +57,6 @@ artifacts:
       story: null
   demo: "static/demo.html"
   readme: "README.md"
-  readme_draft: "README.next.md"
   tech_spec: null
   architecture: null
 
@@ -167,4 +166,4 @@ qa:
   last_run: null
   bugs: []
 
-recommendation: "README draft created: bmad/README.next.md. Review README.next.md and replace README.md when approved. Publication is handled by CI. Next: run `bmad-master dashboard`."
+recommendation: "Release artifact created: bmad/artifacts/release-v0.1.0.md. README replaced: README.md (content sourced from README.full.md). Publication is handled by CI; do not publish locally. Next: run `bmad-master dashboard`."

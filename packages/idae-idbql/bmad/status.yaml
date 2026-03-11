@@ -1,0 +1,14 @@
+phase:
+  analysis: done
+  planning: done
+  solutioning: upcoming
+artifacts:
+  product-brief: done
+  prd: done
+  tech-spec: done
+  architecture: done
+  sprints:
+  - sprint-1
+  stories: []
+  audit:
+    baseline: done

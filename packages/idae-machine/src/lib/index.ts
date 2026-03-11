@@ -22,7 +22,7 @@ export { default as DataProvider } from '$lib/form/DataProvider.svelte';
 export { default as CreateUpdate } from '$lib/form/CreateUpdate.svelte';
 export * from '$lib/demo/testScheme.js';
 export * from '$lib/demo/dbSchema.js';
-export * from '$lib/db/CrudService.js';
+
 export * from '$lib/main/machine/SchemeFieldDefaultValues.js';
 export * from '$lib/main/machine/MachineSchemeValues.js';
 export * from '$lib/main/machine/MachineSchemeValidate.js';

@@ -1,249 +1,322 @@
 # idae-router
 
-A lightweight, framework-agnostic SPA router (factory `createRouter`) with path params, query parsing, lifecycle hooks, DOM rendering into an outlet, link interception, automatic HTTP data-fetching, a built-in SWR cache engine, TypeScript generics, and support for actions that return cleanup functions.
+A lightweight, framework-agnostic client-side router for single-page applications. It provides path parameters, query parsing, lifecycle hooks, declarative HTTP data fetching, an in-memory SWR cache, and full TypeScript generics.
 
-## Complex Example
+## Table of contents
 
-This example demonstrates routes that return HTML, DOM nodes, perform async effects, return cleanup functions, and use lifecycle hooks and programmatic navigation.
+1. [Quick start](#quick-start)
+2. [Core concepts](#core-concepts)
+3. [Basic examples](#basic-examples)
+4. [HTTP data fetching](#http-data-fetching)
+5. [TypeScript and generics](#typescript-and-generics)
+6. [SWR cache and prefetching](#swr-cache-and-prefetching)
+7. [Router API reference](#router-api-reference)
+8. [Nested routes and outlets](#nested-routes-and-outlets)
+9. [Advanced patterns](#advanced-patterns)
+10. [Development and publishing](#development-and-publishing)
+11. [Testing](#testing)
+12. [Contributing](#contributing)
+13. [Troubleshooting](#troubleshooting)
 
-```ts
-import { createRouter } from './src/lib';
-
-const routes = [
-	{ path: '/', action: () => '<h1>Home</h1><p>Welcome.</p>' },
-	{
-		path: '/about',
-		action: () => {
-			const frag = document.createDocumentFragment();
-			const h = document.createElement('h1');
-			h.textContent = 'About';
-			frag.appendChild(h);
-			return frag;
-		}
-	},
-	{
-		path: '/user/:id',
-		action: async (ctx) => {
-			// simulate async data load
-			const data = await new Promise((res) =>
-				setTimeout(() => res({ id: ctx.params.id, name: 'User ' + ctx.params.id }), 200)
-			);
-			const div = document.createElement('div');
-			div.innerHTML = `<h1>User ${ctx.params.id}</h1><p>Name: ${(data as any).name}</p>`;
-			// return a cleanup function to be called on leave
-			const timer = setInterval(() => console.log('polling for user', ctx.params.id), 1000);
-			return () => clearInterval(timer);
-		}
-	},
-	{
-		path: '/posts',
-		action: (ctx) => {
-			const el = document.createElement('div');
-			el.innerHTML =
-				'<h1>Posts</h1><ul><li><a href="/posts/1/comments">Post 1 comments</a></li></ul>';
-			return el;
-		}
-	},
-	{
-		path: '/posts/:postId/comments',
-		action: (ctx) => {
-			// effect-only action (no render) — e.g., track analytics
-			console.log('Viewing comments for', ctx.params.postId);
-			return; // keep previous view
-		}
-	}
-];
-
-const router = createRouter({
-	routes,
-	outlet: '#app',
-	mode: 'history',
-	linkInterception: true,
-	notFound: () => '<h1>404 — Not Found</h1>'
-});
-
-// before hook: block access to /posts if not authed
-router.before((to, from, next) => {
-	if (to.path.startsWith('/posts') && !window.localStorage.getItem('authed')) {
-		// redirect to /login
-		next('/login');
-		return;
-	}
-	next();
-});
-
-router.after((to) => {
-	console.log('navigated to', to.path);
-});
-
-router.onLeave((from) => {
-	console.log('left', from.path);
-});
-
-// programmatic navigation examples
-document.getElementById('go-user')?.addEventListener('click', () => router.push('/user/42'));
-document.getElementById('refresh')?.addEventListener('click', () => router.refresh());
-```
-
-Behavior notes:
-
-- `action` may return `string | Node | DocumentFragment` to render into the outlet.
-- `action` may return `void` for effect-only actions (router keeps previous DOM view).
-- `action` may return a function — this will be treated as a cleanup and invoked when navigating away.
-- `before(to, from, next)` supports async flows via calling `next()`/`next(path)`/`next(false)`.
 
 ---
 
-## HTTP data-fetching (`http` / `http_source`)
+## Core concepts
 
-Declare an `http` (or `http_source`) property on any route. The router resolves URL param tokens (`:id` → value from `ctx.params`), fetches the endpoint, and passes the result as `ctx.data` to the action.
+**Route action**
+A function invoked when a route matches. It may return:
+- `string` — HTML placed into the outlet
+- `Node` or `DocumentFragment` — inserted into the outlet
+- `void` — side-effect-only route, keeps previous DOM
+- a cleanup function — called when leaving the route
+
+**Context**
+The object passed to actions and hooks. It contains:
+- `params` — path parameters extracted from the URL
+- `query` — parsed query string
+- `data` — response payload from an HTTP fetch (if configured)
+- `isLoading`, `isRevalidating`, `queryError` — fetch state flags
+
+**Hooks**
+- `before(to, from, next)` — navigation guard; call `next()`, `next(path)`, or `next(false)`
+- `after(to)` — notification fired after navigation completes
+- `onLeave(from)` — notification fired when leaving a route
+
+**HTTP sources**
+Declarative `http` or `http_source` configuration on a route. The router interpolates `:param` tokens and populates `ctx.data` before calling the action.
+
+**SWR cache**
+In-memory cache with TTL and background revalidation (stale-while-revalidate pattern).
+
+---
+
+## Basic examples
+
+### Minimal router
 
 ```ts
 import { createRouter } from 'idae-router';
 
-interface User { id: number; name: string; }
-
 const routes = [
-  {
-    path: '/users/:id',
-    http: { url: '/api/users/:id' },
-    action: (ctx: Context<User>) => {
-      if (ctx.isLoading) return '<p>Loading…</p>';
-      if (ctx.queryError) return `<p>Error: ${ctx.queryError.message}</p>`;
-      return `<h1>${ctx.data?.name}</h1>`;
-    }
-  }
+  { path: '/', action: () => '<h1>Home</h1>' },
+  { path: '/about', action: () => '<h1>About</h1>' }
 ];
+
+const router = createRouter({ routes, outlet: '#app' });
 ```
 
-`http_source` works identically but is used as a secondary / fallback data source.
+### Route with params and cleanup
 
-**Context fields populated by the fetcher:**
+```ts
+const routes = [{
+  path: '/user/:id',
+  action: (ctx) => {
+    const el = document.createElement('div');
+    el.textContent = `User ${ctx.params.id}`;
+    const timer = setInterval(() => { /* polling */ }, 1000);
+    return () => clearInterval(timer); // called on leave
+  }
+}];
+
+const router = createRouter({ routes, outlet: '#app', linkInterception: true });
+router.push('/user/1');
+```
+
+### Navigation guards
+
+```ts
+router.before((to, from, next) => {
+  if (!isAuthenticated()) {
+    next('/login');
+  } else {
+    next();
+  }
+});
+```
+
+---
+
+## HTTP data fetching
+
+Define an `http` property on a route. The router interpolates `:param` tokens, fetches the URL, and attaches the parsed response to `ctx.data` before invoking the action.
+
+```ts
+{
+  path: '/users/:id',
+  http: { url: '/api/users/:id' },
+  action: (ctx) => {
+    if (ctx.isLoading) return '<p>Loading...</p>';
+    if (ctx.queryError) return `<p>Error: ${ctx.queryError.message}</p>`;
+    return `<h1>${ctx.data?.name}</h1>`;
+  }
+}
+```
+
+**Fetcher context fields**
 
 | Field | Type | Description |
 |---|---|---|
-| `ctx.data` | `TData \| null` | Deserialized JSON response body |
-| `ctx.isLoading` | `boolean` | `true` while the first fetch is in-flight |
-| `ctx.isRevalidating` | `boolean` | `true` during background SWR revalidation |
-| `ctx.queryError` | `Error \| undefined` | Set when the fetch fails or response is not ok |
+| `ctx.data` | `TData \| null` | Parsed JSON response body |
+| `ctx.isLoading` | `boolean` | True while initial fetch is in-flight |
+| `ctx.isRevalidating` | `boolean` | True during background revalidation |
+| `ctx.queryError` | `Error \| undefined` | Set when fetch fails or response is not ok |
+
+`http_source` behaves identically to `http` but is consumed with lower priority, making it suitable as a secondary or fallback data provider.
 
 ---
 
-## TypeScript generics
+## TypeScript and generics
 
-All core types accept a `TData` type parameter for full end-to-end type safety:
+All core types accept a `TData` generic so `ctx.data` is strongly typed end-to-end.
 
 ```ts
-import type { Route, Context, Action, RouterOptions } from 'idae-router';
+import type { Route, Action } from 'idae-router';
 
 interface Post { id: number; title: string; }
 
-// Fully typed — ctx.data is Post | null
 const postAction: Action<Post> = (ctx) => `<h1>${ctx.data?.title}</h1>`;
 
-const routes: Route<Post>[] = [
-  {
-    path: '/posts/:id',
-    http: { url: '/api/posts/:id' },
-    action: postAction
-  }
-];
+const routes: Route<Post>[] = [{
+  path: '/posts/:id',
+  http: { url: '/api/posts/:id' },
+  action: postAction
+}];
 ```
 
-Omitting `TData` defaults to `unknown`, preserving backward compatibility.
+When `TData` is omitted it defaults to `unknown`, which is safe and backward-compatible.
 
 ---
 
-## SWR cache
+## SWR cache and prefetching
 
-Pass a `cache` option to `createRouter` to enable the built-in SWR engine. Responses are stored in memory and served synchronously on subsequent navigations. A background re-fetch runs when the entry is stale; the action is re-invoked only if the new data differs.
+Enable caching by passing a `cache` option to `createRouter`:
 
 ```ts
 const router = createRouter({
   routes,
   outlet: '#app',
-  cache: {
-    ttl: 60_000,       // max age before eviction (ms, default 60 s)
-    staleTime: 5_000   // serve from cache and revalidate in background (ms, default 0)
-  }
+  cache: { ttl: 60_000, staleTime: 5_000 }
 });
 ```
 
-Pass `cache: false` to disable caching entirely (fetches on every navigation).
+| Option | Description |
+|---|---|
+| `ttl` | Entry lifetime before eviction (ms) |
+| `staleTime` | Serve from cache and revalidate in background (ms) |
 
-**Hover prefetch:** when `cache` is enabled and `linkInterception: true`, hovering an `<a>` tag for 200 ms triggers a prefetch. Moving the pointer away before 200 ms cancels it.
+**Automatic prefetching**
+
+When both `cache` and `linkInterception` are enabled, hovering an anchor element for 200 ms triggers a prefetch. The request is cancelled if the pointer leaves before the debounce expires.
+
+**Programmatic cache control**
+
+```ts
+// Warm the cache for a given path
+await router.prefetch('/dashboard');
+
+// Evict a specific entry
+router.invalidate('/api/users/42');
+
+// Clear the entire cache
+router.invalidate();
+```
+
+Patterns passed to `invalidate` support glob-like suffixes (e.g., `/api/users/*`).
 
 ---
 
-## RouterInstance API
-
-All methods returned by `createRouter`:
+## Router API reference
 
 | Method | Signature | Description |
 |---|---|---|
-| `push` | `(path: string) => void` | Navigate and push a history entry |
-| `replace` | `(path: string) => void` | Navigate without adding a history entry |
-| `refresh` | `() => void` | Re-run the current route |
+| `push` | `(path: string) => void` | Navigate and push to history |
+| `replace` | `(path: string) => void` | Navigate without pushing |
+| `refresh` | `() => void` | Re-run the current route (re-fetches if needed) |
 | `before` | `(guard) => void` | Register a before-navigation guard |
 | `after` | `(hook) => void` | Register an after-navigation hook |
-| `onLeave` | `(hook) => void` | Register an on-leave hook |
-| `prefetch` | `(path: string) => Promise<void>` | Warm the cache for a path |
-| `invalidate` | `(pattern?: string) => void` | Clear cache entries (all if no pattern, glob `*` suffix supported) |
-| `buildUrl` | `(path: string, params?: Record<string, string>) => string` | Interpolate `:param` tokens |
+| `onLeave` | `(hook) => void` | Register a leave hook |
+| `prefetch` | `(path: string) => Promise<void>` | Warm the cache |
+| `invalidate` | `(pattern?: string) => void` | Clear cache entries |
+| `buildUrl` | `(path, params?) => string` | Interpolate URL tokens |
 | `getState` | `() => Context \| null` | Return the current navigation context |
 
+---
+
+## Nested routes and outlets
+
+Routes may declare `children`. When a chain matches:
+- `Context.matched` exposes the full ancestor-to-leaf list.
+- Params from the ancestor chain are merged into `Context.params`.
+- Parent actions mount first; child actions mount into the parent's `data-idae-outlet` element when present.
+
 ```ts
-// Prefetch on mount so the first user click is instant
-router.prefetch('/dashboard');
-
-// Invalidate a specific resource after a mutation
-await fetch('/api/users/42', { method: 'PATCH', body: … });
-router.invalidate('GET http://localhost/api/users/42');
-
-// Build a typed URL
-const url = router.buildUrl('/users/:id', { id: String(userId) });
-
-// Read current state (e.g. for breadcrumbs)
-const state = router.getState();
-console.log(state?.path, state?.params);
+{
+  path: '/blog/:blogId',
+  action: (ctx) =>
+    `<section>
+      <h1>Blog ${ctx.params.blogId}</h1>
+      <div data-idae-outlet></div>
+    </section>`,
+  children: [{
+    path: 'post/:postId',
+    action: (ctx) => `<article>Post ${ctx.params.postId}</article>`
+  }]
+}
 ```
 
 ---
 
-## Usage
+## Advanced patterns
 
-- Import `createRouter` from the package entry (`idae-router` once published, `src/lib` during development).
-- Provide an `outlet` CSS selector or `HTMLElement` (default `#app`) where views are mounted.
-- See the **RouterInstance API** table above for all available methods.
+**Keep actions idempotent.** Prefer `http`/`http_source` for data fetching and let the router manage loading state. Avoid storing state outside the action closure.
 
-## Nested routes
+**Use cleanup functions** for timers, event listeners, and subscriptions to avoid memory leaks when navigating away.
 
-This router supports nested route trees via a `children` array on a `Route` object. When a route and one of its descendants match the current pathname the router will:
+**Prefer DOM nodes over raw HTML strings** for complex UI. Returning a `Node` or `DocumentFragment` avoids `innerHTML` pitfalls and integrates cleanly with cleanup functions.
 
-- match the ancestor chain (parent → ... → leaf) and expose it as `Context.matched`, an array of `RouteRecord` objects in ancestor→leaf order. Each `RouteRecord` contains `{ route, params, path }` where `path` is the resolved full path for that record.
-- merge params from the matched chain into `Context.params` (descendant params override parent keys when duplicated).
-- mount parent actions first, then mount children into the parent's outlet element. A parent should provide a placeholder element for children using the `data-idae-outlet` attribute (e.g. `<div data-idae-outlet></div>`). If the placeholder is absent the router will fall back to mounting the child into the parent's mounted outlet.
+**Authentication guards.** Register a `before` guard and redirect with `next('/login')` rather than blocking the render.
 
-Example:
+**Cache invalidation after mutations.** Call `router.invalidate(pattern)` after a write to keep the cache coherent.
 
-```ts
-const routes = [
-	{
-		path: '/parent/:id',
-		action: (ctx) => `<div><h1>Parent ${ctx.params.id}</h1><div data-idae-outlet></div></div>`,
-		children: [
-			{ path: 'child', action: () => '<p>Child</p>' },
-			{ path: 'other', action: () => '<p>Other</p>' }
-		]
-	}
-];
+**Framework integration.** When using Svelte or another component framework, mount component roots into the outlet element and let the framework manage the inner lifecycle. The router drives top-level navigation only.
 
-// child paths are relative by default: 'child' -> '/parent/:id/child'
-// if a child path starts with `/` it is treated as absolute and not joined to the parent prefix.
+**Performance notes**
+- The built-in cache is in-memory and single-tab. For persistence or multi-tab sharing, integrate an external storage layer.
+- Use conservative `ttl` and `staleTime` values for data that changes frequently.
+
+---
+
+## Development and publishing
+
+**Package-level scripts**
+
+| Script | Description |
+|---|---|
+| `npm run dev` | Start Vite dev server (component preview) |
+| `npm run prepare` | Run svelte-kit sync |
+| `npm run prepackage` | Generate package index files |
+| `npm run build` | Bundle and run prepack |
+| `npm run prepack` | svelte-kit sync + svelte-package + publint |
+| `npm run test:unit` | Run unit tests (Vitest) |
+| `npm run test:e2e` | Run Playwright E2E against preview on port 4173 |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Run Prettier |
+
+**Packaging rules**
+- `package.json` must declare `svelte: ./dist/index.js` and `types: ./dist/index.d.ts`.
+- The `files` field must include `dist/` only — do not include test files.
+- Keep `"type": "module"` — all outputs must be ESM.
+- `svelte` must remain a peer dependency (v5+); do not bundle it.
+
+**Local pre-publish checklist**
+
+```sh
+pnpm install
+npm run format
+npm run lint
+npm run test:unit
+npm run build
+# optionally: npm run preview + E2E
 ```
 
-Notes:
+---
 
-- Parent actions can return cleanup functions; the router tracks cleanup per-level and invokes the appropriate cleanup when that level is left.
-- The nested behavior is backward-compatible: a flat `routes: Route[]` still works exactly as before.
-- `Context.matched` is useful for breadcrumbs, meta lookups, and for actions that need access to ancestor metadata.
+## Testing
+
+**Unit tests**
+Vitest is configured in `vite.config.ts`. Test files match `src/**/*.{test,spec}.{js,ts}`. Svelte component tests run in a separate Vitest project from server-side tests.
+
+**End-to-end tests**
+Playwright runs against a built preview served at `http://localhost:4173`. Tests live in `e2e/`.
+
+---
+
+## Contributing
+
+- Run `npm run format` and `npm run lint` before opening a pull request.
+- Add unit tests for new features and regression tests for bug fixes.
+- Add JSDoc comments to all public exports.
+- For API changes, update `src/lib/index.ts`, then run `npm run prepare` and `npm run prepackage` before building.
+
+---
+
+## Troubleshooting
+
+**Build fails on `svelte-package` or `publint`**
+Run `npm run prepare && npm run prepackage` locally and inspect the publint output for missing exports or invalid package metadata.
+
+**E2E fails in CI but unit tests pass locally**
+Recreate the CI environment:
+```sh
+npm run build && npm run preview
+```
+Then run Playwright against `http://localhost:4173`.
+
+**Where is the public API surface?**
+`src/lib/index.ts` is the canonical public surface. After building, `dist/index.js` and `dist/index.d.ts` are the published outputs.
+
+---
+
+## License
+
+This package follows the monorepo license — see the `LICENSE` file at the repository root.
