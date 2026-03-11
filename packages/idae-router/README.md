@@ -1,61 +1,58 @@
-# idae-router — Comprehensive README
+# idae-router
 
-idae-router is a lightweight, framework-agnostic client-side router designed for single-page applications. It supports: path parameters, query parsing, lifecycle hooks (before/after/onLeave), multiple return types from route actions (HTML string, DOM Node, DocumentFragment), cleanup functions, nested routes and outlets, automatic HTTP data fetching, an in-memory SWR cache engine, and full TypeScript generics and JSDoc for a type-safe public API.
+A lightweight, framework-agnostic client-side router for single-page applications. It provides path parameters, query parsing, lifecycle hooks, declarative HTTP data fetching, an in-memory SWR cache, and full TypeScript generics.
 
-Table of contents
+## Table of contents
 
-1. Quick start
-2. Key concepts (simple)
-3. Basic usage example
-4. HTTP data fetching (http / http_source)
-5. TypeScript & generics
-6. SWR cache and prefetching
-7. RouterInstance API (reference)
-8. Nested routes & outlets
-9. Advanced patterns and best practices
-10. Development, build and publishing (monorepo notes)
-11. Testing and E2E
-12. Contributing and code style
-13. Troubleshooting & FAQ
-14. License and maintainers
+1. [Quick start](#quick-start)
+2. [Core concepts](#core-concepts)
+3. [Basic examples](#basic-examples)
+4. [HTTP data fetching](#http-data-fetching)
+5. [TypeScript and generics](#typescript-and-generics)
+6. [SWR cache and prefetching](#swr-cache-and-prefetching)
+7. [Router API reference](#router-api-reference)
+8. [Nested routes and outlets](#nested-routes-and-outlets)
+9. [Advanced patterns](#advanced-patterns)
+10. [Development and publishing](#development-and-publishing)
+11. [Testing](#testing)
+12. [Contributing](#contributing)
+13. [Troubleshooting](#troubleshooting)
 
-1. Quick start
 
-Prerequisites
-- Node.js (LTS recommended)
-- pnpm (this repository uses pnpm workspaces in the monorepo)
+---
 
-Install
-- At repo root: pnpm install
-- In this package (for local dev): pnpm install (if working in isolation)
+## Core concepts
 
-Run local development server (component preview)
-- npm run dev
+**Route action**
+A function invoked when a route matches. It may return:
+- `string` — HTML placed into the outlet
+- `Node` or `DocumentFragment` — inserted into the outlet
+- `void` — side-effect-only route, keeps previous DOM
+- a cleanup function — called when leaving the route
 
-Run unit tests
-- npm run test:unit
+**Context**
+The object passed to actions and hooks. It contains:
+- `params` — path parameters extracted from the URL
+- `query` — parsed query string
+- `data` — response payload from an HTTP fetch (if configured)
+- `isLoading`, `isRevalidating`, `queryError` — fetch state flags
 
-Build
-- npm run build
+**Hooks**
+- `before(to, from, next)` — navigation guard; call `next()`, `next(path)`, or `next(false)`
+- `after(to)` — notification fired after navigation completes
+- `onLeave(from)` — notification fired when leaving a route
 
-Notes about release in this repository
-- This package is part of a monorepo. Publishing to npm is performed by the monorepo CI pipeline. Do not publish locally unless you explicitly manage credentials and the CI process.
+**HTTP sources**
+Declarative `http` or `http_source` configuration on a route. The router interpolates `:param` tokens and populates `ctx.data` before calling the action.
 
-2. Key concepts (simple)
+**SWR cache**
+In-memory cache with TTL and background revalidation (stale-while-revalidate pattern).
 
-- Route action: a function that runs when a route is matched. It may return:
-  - A string (HTML) to be set into the outlet.
-  - A DOM Node or DocumentFragment to be inserted.
-  - void (no visual update; used for side-effect-only routes).
-  - A cleanup function to be called when the route is left.
-- Context: the data the router passes to actions and hooks. It includes params, query, optional data (from http fetch), and flags like isLoading.
-- Hooks: before (guard), after (notification), onLeave (cleanup notification).
-- HTTP sources: declarative fetch config on the route (http / http_source). The router runs a fetcher and populates ctx.data, ctx.isLoading, ctx.queryError.
-- SWR cache: a simple in-memory cache with TTL and background revalidation.
+---
 
-3. Basic usage example (from simple to a little more advanced)
+## Basic examples
 
-Minimal example
+### Minimal router
 
 ```ts
 import { createRouter } from 'idae-router';
@@ -68,189 +65,258 @@ const routes = [
 const router = createRouter({ routes, outlet: '#app' });
 ```
 
-Example with params, cleanup and programmatic navigation
+### Route with params and cleanup
 
 ```ts
-const routes = [
-  {
-    path: '/user/:id',
-    action: (ctx) => {
-      const node = document.createElement('div');
-      node.textContent = `User ${ctx.params.id}`;
-      const timer = setInterval(() => {/* polling */}, 1000);
-      return () => clearInterval(timer); // cleanup on leave
-    }
+const routes = [{
+  path: '/user/:id',
+  action: (ctx) => {
+    const el = document.createElement('div');
+    el.textContent = `User ${ctx.params.id}`;
+    const timer = setInterval(() => { /* polling */ }, 1000);
+    return () => clearInterval(timer); // called on leave
   }
-];
+}];
 
 const router = createRouter({ routes, outlet: '#app', linkInterception: true });
 router.push('/user/1');
 ```
 
-4. HTTP data fetching (http / http_source)
+### Navigation guards
 
-Define an http property on a route to instruct the router to fetch data before invoking the action. The router interpolates `:param` tokens and attaches the response to `ctx.data`.
+```ts
+router.before((to, from, next) => {
+  if (!isAuthenticated()) {
+    next('/login');
+  } else {
+    next();
+  }
+});
+```
+
+---
+
+## HTTP data fetching
+
+Define an `http` property on a route. The router interpolates `:param` tokens, fetches the URL, and attaches the parsed response to `ctx.data` before invoking the action.
 
 ```ts
 {
   path: '/users/:id',
   http: { url: '/api/users/:id' },
   action: (ctx) => {
-    if (ctx.isLoading) return '<p>Loading…</p>';
+    if (ctx.isLoading) return '<p>Loading...</p>';
     if (ctx.queryError) return `<p>Error: ${ctx.queryError.message}</p>`;
     return `<h1>${ctx.data?.name}</h1>`;
   }
 }
 ```
 
-Fetcher-provided context fields
-- ctx.data: TData | null — deserialized response payload
-- ctx.isLoading: boolean — true while the initial fetch is in-flight
-- ctx.isRevalidating: boolean — true during background revalidation
-- ctx.queryError: Error | undefined — set if fetch fails
+**Fetcher context fields**
 
-Use `http_source` as a secondary or fallback data provider; it behaves the same as `http` but is consumed with lower priority.
+| Field | Type | Description |
+|---|---|---|
+| `ctx.data` | `TData \| null` | Parsed JSON response body |
+| `ctx.isLoading` | `boolean` | True while initial fetch is in-flight |
+| `ctx.isRevalidating` | `boolean` | True during background revalidation |
+| `ctx.queryError` | `Error \| undefined` | Set when fetch fails or response is not ok |
 
-5. TypeScript & generics (typed-by-design)
+`http_source` behaves identically to `http` but is consumed with lower priority, making it suitable as a secondary or fallback data provider.
 
-All public types accept a `TData` generic. This lets callers declare route-level payload types so `ctx.data` is strongly typed throughout the app.
+---
+
+## TypeScript and generics
+
+All core types accept a `TData` generic so `ctx.data` is strongly typed end-to-end.
 
 ```ts
-import type { Action, Route } from 'idae-router';
+import type { Route, Action } from 'idae-router';
 
 interface Post { id: number; title: string; }
 
 const postAction: Action<Post> = (ctx) => `<h1>${ctx.data?.title}</h1>`;
-const routes: Route<Post>[] = [{ path: '/posts/:id', http: { url: '/api/posts/:id' }, action: postAction }];
+
+const routes: Route<Post>[] = [{
+  path: '/posts/:id',
+  http: { url: '/api/posts/:id' },
+  action: postAction
+}];
 ```
 
-When `TData` is omitted, types default to `unknown` to remain safe and backward-compatible.
+When `TData` is omitted it defaults to `unknown`, which is safe and backward-compatible.
 
-6. SWR cache and prefetching
+---
 
-Enable caching by passing a `cache` option to `createRouter`. Options:
-- ttl: number — how long entries live before eviction (ms)
-- staleTime: number — serve from cache and revalidate in the background (ms)
+## SWR cache and prefetching
 
-Example
+Enable caching by passing a `cache` option to `createRouter`:
 
 ```ts
-const router = createRouter({ routes, outlet: '#app', cache: { ttl: 60_000, staleTime: 5_000 } });
+const router = createRouter({
+  routes,
+  outlet: '#app',
+  cache: { ttl: 60_000, staleTime: 5_000 }
+});
 ```
 
-Prefetching behaviour
-- When `linkInterception` and `cache` are enabled, hovering an <a> tag for a short debounce (by default 200 ms) triggers a prefetch request.
-- Prefetch is cancelled if the pointer leaves before the debounce expires.
+| Option | Description |
+|---|---|
+| `ttl` | Entry lifetime before eviction (ms) |
+| `staleTime` | Serve from cache and revalidate in background (ms) |
 
-Cache control
-- Use `router.prefetch(path)` to programmatically warm the cache.
-- Use `router.invalidate(pattern?)` to evict entries. If no pattern is provided the whole cache is cleared. Patterns support simple glob-like suffixes (e.g., `/api/users/*`).
+**Automatic prefetching**
 
-7. RouterInstance API (reference, brief)
+When both `cache` and `linkInterception` are enabled, hovering an anchor element for 200 ms triggers a prefetch. The request is cancelled if the pointer leaves before the debounce expires.
 
-Public API methods
-- push(path: string): navigate and push
-- replace(path: string): navigate without pushing
-- refresh(): re-run current route (re-fetch if necessary)
-- before(guard): register a before-navigation guard
-- after(hook): register an after-navigation hook
-- onLeave(hook): register a leave hook
-- prefetch(path: string): Promise<void> — warm cache
-- invalidate(pattern?: string): void — clear cache entries
-- buildUrl(path, params): string — interpolate tokens
-- getState(): Context | null — current navigation context
+**Programmatic cache control**
 
-8. Nested routes & outlets
+```ts
+// Warm the cache for a given path
+await router.prefetch('/dashboard');
 
-Nested route trees are supported via `children` on a `Route`. When mounting:
-- The matched ancestor chain is exposed as `Context.matched` (parent→...→leaf).
-- Parent actions are mounted first; child actions mount into the parent's `data-idae-outlet` placeholder if present.
+// Evict a specific entry
+router.invalidate('/api/users/42');
+
+// Clear the entire cache
+router.invalidate();
+```
+
+Patterns passed to `invalidate` support glob-like suffixes (e.g., `/api/users/*`).
+
+---
+
+## Router API reference
+
+| Method | Signature | Description |
+|---|---|---|
+| `push` | `(path: string) => void` | Navigate and push to history |
+| `replace` | `(path: string) => void` | Navigate without pushing |
+| `refresh` | `() => void` | Re-run the current route (re-fetches if needed) |
+| `before` | `(guard) => void` | Register a before-navigation guard |
+| `after` | `(hook) => void` | Register an after-navigation hook |
+| `onLeave` | `(hook) => void` | Register a leave hook |
+| `prefetch` | `(path: string) => Promise<void>` | Warm the cache |
+| `invalidate` | `(pattern?: string) => void` | Clear cache entries |
+| `buildUrl` | `(path, params?) => string` | Interpolate URL tokens |
+| `getState` | `() => Context \| null` | Return the current navigation context |
+
+---
+
+## Nested routes and outlets
+
+Routes may declare `children`. When a chain matches:
+- `Context.matched` exposes the full ancestor-to-leaf list.
 - Params from the ancestor chain are merged into `Context.params`.
-
-Example of a parent with a child outlet
+- Parent actions mount first; child actions mount into the parent's `data-idae-outlet` element when present.
 
 ```ts
 {
   path: '/blog/:blogId',
-  action: (ctx) => `<section><h1>Blog ${ctx.params.blogId}</h1><div data-idae-outlet></div></section>`,
-  children: [{ path: 'post/:postId', action: (ctx) => `<article>Post ${ctx.params.postId}</article>` }]
+  action: (ctx) =>
+    `<section>
+      <h1>Blog ${ctx.params.blogId}</h1>
+      <div data-idae-outlet></div>
+    </section>`,
+  children: [{
+    path: 'post/:postId',
+    action: (ctx) => `<article>Post ${ctx.params.postId}</article>`
+  }]
 }
 ```
 
-9. Advanced patterns and best practices (didactic)
+---
 
-- Keep actions idempotent and side-effects minimal: prefer fetching data via http/http_source and letting the router manage loading states.
-- Use cleanup functions when registering timers or global subscriptions in an action to avoid leaks.
-- Batch mutations: after a mutation call `router.invalidate(pattern)` to ensure the cache is coherent.
-- Use `before` guards for auth checks; prefer redirecting (`next('/login')`) over blocking UI updates.
-- For complex UIs prefer returning DOM nodes/DocumentFragments rather than raw HTML strings to avoid innerHTML pitfalls and to enable safe cleanup.
-- When integrating with frameworks (Svelte components), mount framework-managed DOM into an outlet and let the router drive high-level navigation.
+## Advanced patterns
 
-Performance considerations
-- The built-in cache is in-memory — suitable for single-tab apps and demoing patterns. For multi-tab or persisted cache consider integrating a separate storage layer.
-- Keep `ttl` and `staleTime` conservative for data that changes frequently.
+**Keep actions idempotent.** Prefer `http`/`http_source` for data fetching and let the router manage loading state. Avoid storing state outside the action closure.
 
-10. Development, build and publishing (monorepo notes)
+**Use cleanup functions** for timers, event listeners, and subscriptions to avoid memory leaks when navigating away.
 
-Relevant scripts (package-level)
-- npm run dev — start vite dev server for preview
-- npm run prepare — run svelte-kit sync (used to refresh package svelte entry)
-- npm run prepackage — runs node scripts/package-pre.js (generates packaging index files)
-- npm run build — bundle via vite and run prepack
-- npm run prepack — svelte-kit sync && svelte-package && publint
-- npm run test:unit — run unit tests (Vitest)
-- npm test — run unit tests and e2e as configured
-- npm run test:e2e — Playwright E2E (built preview on port 4173)
-- npm run lint — run eslint
-- npm run format — run prettier
+**Prefer DOM nodes over raw HTML strings** for complex UI. Returning a `Node` or `DocumentFragment` avoids `innerHTML` pitfalls and integrates cleanly with cleanup functions.
 
-Packaging rules
-- package.json declares `svelte: ./dist/index.js` and `types: ./dist/index.d.ts`. Ensure svelte-package produces these files.
-- `files` should include `dist/` only; do not include test files in published package.
-- Keep `type: "module"` in package.json — outputs must be ESM.
-- Do not bundle `svelte` — declare it as a peer dependency (v5+).
+**Authentication guards.** Register a `before` guard and redirect with `next('/login')` rather than blocking the render.
 
-Publishing
-- In this monorepo, publishing is handled by CI. The recommended flow for local checks before a CI publish is:
-  1. pnpm install
-  2. npm run format
-  3. npm run lint
-  4. npm run test:unit
-  5. npm run build
-  6. Optionally run npm run preview and e2e tests
+**Cache invalidation after mutations.** Call `router.invalidate(pattern)` after a write to keep the cache coherent.
 
-11. Testing and E2E
+**Framework integration.** When using Svelte or another component framework, mount component roots into the outlet element and let the framework manage the inner lifecycle. The router drives top-level navigation only.
 
-- Unit tests: Vitest project configured in vite.config.ts. Unit test globs: `src/**/*.{test,spec}.{js,ts}`.
-- Component tests are separated from server tests; Svelte component tests are excluded from the server project and handled in a separate vitest project setting.
-- E2E: Playwright runs a built preview at port 4173 and runs tests in `e2e/`.
+**Performance notes**
+- The built-in cache is in-memory and single-tab. For persistence or multi-tab sharing, integrate an external storage layer.
+- Use conservative `ttl` and `staleTime` values for data that changes frequently.
 
-12. Contributing and code style
+---
+
+## Development and publishing
+
+**Package-level scripts**
+
+| Script | Description |
+|---|---|
+| `npm run dev` | Start Vite dev server (component preview) |
+| `npm run prepare` | Run svelte-kit sync |
+| `npm run prepackage` | Generate package index files |
+| `npm run build` | Bundle and run prepack |
+| `npm run prepack` | svelte-kit sync + svelte-package + publint |
+| `npm run test:unit` | Run unit tests (Vitest) |
+| `npm run test:e2e` | Run Playwright E2E against preview on port 4173 |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Run Prettier |
+
+**Packaging rules**
+- `package.json` must declare `svelte: ./dist/index.js` and `types: ./dist/index.d.ts`.
+- The `files` field must include `dist/` only — do not include test files.
+- Keep `"type": "module"` — all outputs must be ESM.
+- `svelte` must remain a peer dependency (v5+); do not bundle it.
+
+**Local pre-publish checklist**
+
+```sh
+pnpm install
+npm run format
+npm run lint
+npm run test:unit
+npm run build
+# optionally: npm run preview + E2E
+```
+
+---
+
+## Testing
+
+**Unit tests**
+Vitest is configured in `vite.config.ts`. Test files match `src/**/*.{test,spec}.{js,ts}`. Svelte component tests run in a separate Vitest project from server-side tests.
+
+**End-to-end tests**
+Playwright runs against a built preview served at `http://localhost:4173`. Tests live in `e2e/`.
+
+---
+
+## Contributing
 
 - Run `npm run format` and `npm run lint` before opening a pull request.
 - Add unit tests for new features and regression tests for bug fixes.
-- Add JSDoc comments to public exports; the repo expects full JSDoc coverage on public API.
-- Follow the monorepo conventions: add public exports to `src/lib/index.ts` and run `npm run prepare` + `npm run prepackage` prior to build.
+- Add JSDoc comments to all public exports.
+- For API changes, update `src/lib/index.ts`, then run `npm run prepare` and `npm run prepackage` before building.
 
-13. Troubleshooting & FAQ
+---
 
-Q: The build fails on `svelte-package` or `publint`.
-A: Ensure `npm run prepack` runs locally: `npm run prepare && npm run prepackage`. Check publint output for missing exports or invalid package metadata.
+## Troubleshooting
 
-Q: Unit tests pass locally but E2E fails in CI.
-A: Recreate the CI preview locally: `npm run build && npm run preview` and run the playwright suite against `http://localhost:4173`.
+**Build fails on `svelte-package` or `publint`**
+Run `npm run prepare && npm run prepackage` locally and inspect the publint output for missing exports or invalid package metadata.
 
-Q: Where is the public API surface?
-A: `src/lib/index.ts` is the canonical public surface. After build `dist/index.js` / `dist/index.d.ts` are the published outputs.
+**E2E fails in CI but unit tests pass locally**
+Recreate the CI environment:
+```sh
+npm run build && npm run preview
+```
+Then run Playwright against `http://localhost:4173`.
 
-14. License & maintainers
+**Where is the public API surface?**
+`src/lib/index.ts` is the canonical public surface. After building, `dist/index.js` and `dist/index.d.ts` are the published outputs.
 
-This package follows the monorepo license (see repository root `LICENSE` file). For maintainers and contacts, see repository owner metadata.
+---
 
-Appendix: Quick reference snippets
+## License
 
-- Prefetch programmatically: `await router.prefetch('/dashboard')`
-- Invalidate cache: `router.invalidate('/api/users/42')`
-- Build url: `router.buildUrl('/users/:id', { id: String(userId) })`
-
-End of README
+This package follows the monorepo license — see the `LICENSE` file at the repository root.

@@ -139,7 +139,7 @@ backlog:
         title: "Upgrade types.ts with Route<TData>/Context<TData> generics"
         status: "implemented"
         completed_at: "2026-03-02T22:15:00Z"
-        notes: "Route<TData>, Context<TData>, Action<TData>, RouteHttpConfig<TData>, CacheOptions added. Full JSDoc. buildContext data:null. 41/41 tests."
+        notes: "Route<TData>, Context<TData>, Action<TData>, RouteHttpConfig(TData), CacheOptions added. Full JSDoc. buildContext data:null. 41/41 tests."
       - id: "S04-02"
         title: "Full JSDoc coverage on all public exports"
         status: "implemented"
