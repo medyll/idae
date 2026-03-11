@@ -1,6 +1,7 @@
 import type { TplCollectionName, TplFields } from "@medyll/idae-idbql";
 import { MachineDb } from "$lib/main/machineDb.js";
 import { MachineErrorValidation } from "./MachineErrorValidation.js";
+import { MachineError } from "./MachineError.js";
 import MachineSchemeFieldType, {
   defaultTypes,
 } from "$lib/main/machine/MachineFieldType.js";
@@ -80,6 +81,8 @@ export class MachineSchemeValidate {
       return { isValid: true };
     } catch (error) {
       if (error instanceof MachineErrorValidation) {
+        return { isValid: false, error: error.message };
+      } else if (error instanceof MachineError) {
         return { isValid: false, error: error.message };
       }
       throw error;
