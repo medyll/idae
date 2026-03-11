@@ -59,23 +59,23 @@ export class MachineSchemeValidate {
         };
       }
 
+      // If the value is empty (undefined/null/empty string) and the field is not required, skip further checks.
+      const args = fieldInfo.fieldArgs ?? [];
+      const isRequired = args.includes('required');
+
+      if (value === undefined || value === null || value === "") {
+        if (isRequired) {
+          return this.#returnError(fieldName, "required");
+        }
+        return { isValid: true };
+      }
+
       const typeOK = await this.#validateType(value, fieldInfo.fieldType, {
         formData,
         fieldName: String(fieldName),
       });
       if (!typeOK) {
         return this.#returnError(fieldName, fieldInfo.fieldType);
-      }
-
-      if (fieldInfo.fieldArgs) {
-        for (const arg of fieldInfo.fieldArgs) {
-          if (
-            arg === "required" &&
-            (value === undefined || value === null || value === "")
-          ) {
-            return this.#returnError(fieldName, "required");
-          }
-        }
       }
 
       return { isValid: true };
