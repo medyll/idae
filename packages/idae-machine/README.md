@@ -185,6 +185,10 @@ await singleton.idbql.agents.add({ name: 'Alice' });
 Note: `machine.createInstance()` does not replace the singleton — it returns a separate instance that you manage explicitly.
 
 ### Legacy/Direct Usage (not recommended)
+
+> Note: The helper `CrudService` has been removed (see PR #88). Use `machine.idbql` and `machine.idbqlState` (or `machine.store`) directly for CRUD operations and demo pages.
+
+### Legacy/Direct Usage (not recommended)
 You can still use `createIdbqDb` directly if you need low-level access:
 
 ```typescript
