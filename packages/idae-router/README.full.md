@@ -1,4 +1,6 @@
-# idae-router — Comprehensive README
+idae-router — Comprehensive README
+
+Short description
 
 idae-router is a lightweight, framework-agnostic client-side router designed for single-page applications. It supports: path parameters, query parsing, lifecycle hooks (before/after/onLeave), multiple return types from route actions (HTML string, DOM Node, DocumentFragment), cleanup functions, nested routes and outlets, automatic HTTP data fetching, an in-memory SWR cache engine, and full TypeScript generics and JSDoc for a type-safe public API.
 
