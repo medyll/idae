@@ -35,20 +35,26 @@ artifacts:
     status: "complete"
     date: "2026-03-12"
     file: "src/routes/+page.svelte"
-    description: "Complete component showcase featuring all 13 UI/Form/Fragment components"
+    description: "Complete component showcase featuring all 15 UI/Form/Fragment components"
     components_showcased:
-      - CollectionButton
-      - CollectionList
-      - CollectionListMenu
-      - CollectionListFieldValues
-      - CollectionFks
-      - CollectionReverseFks
-      - CreateUpdate
-      - FieldValue
-      - Frame
-      - Confirm
-      - Selector
-      - InfoLine
+      ui:
+        - CollectionButton
+        - CollectionList
+        - CollectionListMenu
+        - CollectionListFieldValues
+        - CollectionFks
+        - CollectionReverseFks
+      form:
+        - CreateUpdate
+        - FieldValue
+        - FieldInPlace
+        - DataProvider
+      fragments:
+        - Frame
+        - Confirm
+        - Selector
+        - InfoLine
+        - Skeleton
 
 audit:
   baseline: "completed"            # ✅ Run by: bmad init
