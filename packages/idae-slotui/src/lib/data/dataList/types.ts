@@ -125,6 +125,8 @@ export const DataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
   },
 };
 
+export let { parameters, componentArgs } = demoerArgs(DataListDemoValues);
+
 export type DataListHeadProps = {
   style?: string;
   element?: HTMLDivElement;
@@ -192,38 +194,7 @@ export interface DataListStoreType {
   data: Data[];
 }
 
-/* 	let parameters: any = {
-		groupByField: {
-			type: 'string',
-			values: ['group', 'groupByObjectKey', 'groupByArrayObjectKey', undefined]
-		},
-		virtualizer: {
-			type: 'boolean',
-			values: [true, false]
-		},
-		isSortable: {
-			type: 'boolean',
-			values: [true, false]
-		}
-	}; */
-
-const dataListDemoValues: DemoerStoryProps<DataListProps<any>> = {
-  data: {
-    type: "data",
-    values: [[{ name: "name1" }, { name: "name2" }]],
-    private: true,
-  },
-  isSortable: {
-    type: "boolean",
-    values: [true, false],
-  },
-  groupByField: {
-    type: "string",
-    values: [undefined, "group", "groupByObjectKey", "groupByArrayObjectKey"],
-  },
-};
-
-export let { parameters, componentArgs } = demoerArgs(dataListDemoValues);
+export const dataListDemoValues = DataListDemoValues;
 
 export const dataListCellDemoValues = {};
 export const dataListFooterDemoValues = {};

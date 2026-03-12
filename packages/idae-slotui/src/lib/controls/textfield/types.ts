@@ -1,4 +1,3 @@
-export const textFieldDemoValues = {};
 export const inputFirstDemoValues = {};
 export const inputLastDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';

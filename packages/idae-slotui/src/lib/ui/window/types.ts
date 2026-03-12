@@ -1,6 +1,3 @@
-export const windowDemoValues = {};
-export const windowButtonZoneDemoValues = {};
-export const windowIconDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
 import type { DemoerStoryProps } from '$lib/base/demoer/types.js';
 import type { CommonProps, Data, ElementProps } from '$lib/types/index.js';
@@ -64,7 +61,7 @@ export type WindowProps<T = Data> = CommonProps & {
 	windowButtonZone?: Snippet;
 };
 
-const windowDemoValues: DemoerStoryProps<WindowProps> = {
+export const windowDemoValues: DemoerStoryProps<WindowProps> = {
 	title: {
 		type: 'string',
 		values: ['Title'],
@@ -138,3 +135,6 @@ const windowDemoValues: DemoerStoryProps<WindowProps> = {
 };
 
 export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
+
+export const windowButtonZoneDemoValues: DemoerStoryProps<any> = {};
+export const windowIconDemoValues: DemoerStoryProps<any> = {};
