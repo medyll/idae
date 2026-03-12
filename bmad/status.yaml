@@ -41,6 +41,9 @@ phases:
       - AUDIT-004  # Svelte 4 → runes migration (idae-machine 3 files, idae-dom-events 1 file)
       - AUDIT-005  # vitest standardized, CI test step
       - AUDIT-006  # dead code _old/ + _data/ deleted
+      - AUDIT-IQL-001  # remove @ts-ignore from idae-idbql
+      - AUDIT-DB-001  # add ChromaDB test suite
+    stories_in_progress: []
     stories_pending: []
 
 sprints: []

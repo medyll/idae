@@ -1,9 +1,36 @@
 <script lang="ts" generics="COL = Record<string,any>">
-    import { machine } from '$lib/main/machine.js'; 
+    /**
+     * @component CreateUpdate Form Component
+     * @role User form for creating or editing records in a collection
+     * @description Renders an editable form with automatic field generation from schema.
+     * Handles form validation, submission, and data persistence to IndexedDB via machine.store.
+     * Supports three modes: 'create' (new record), 'edit' (existing), 'show' (readonly).
+     *
+     * @example
+     * ```svelte
+     * <CreateUpdate
+     *   collection="users"
+     *   mode="create"
+     *   onsubmit={handleSave}
+     * />
+     * ```
+     */
+    import { machine } from '$lib/main/machine.js';
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
     import type { CreateUpdateProps } from './types.js';
     import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
     import FieldInput from '$lib/form/FieldValue.svelte';
+
+    /**
+     * Component props
+     * @typedef {Object} Props
+     * @property {string} collection - Collection name to bind form to (e.g., 'users')
+     * @property {'create' | 'edit' | 'show'} [mode='create'] - Form mode
+     * @property {Record<string, any>} [data] - Initial data for edit/show modes
+     * @property {Record<string, any>} [withData] - Additional data to merge
+     * @property {string} [dataId] - Record ID for edit/show modes
+     * @property {(payload: any) => void} [onsubmit] - Callback when form is submitted successfully
+     */
 
     // Define props with Svelte 5 syntax
     // Replaces createEventDispatcher with a callback prop

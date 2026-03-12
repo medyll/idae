@@ -211,6 +211,16 @@ export class Machine {
     return this._idbqModel;
   }
 
+  /**
+   * Create and register a new Machine instance.
+   * Registers the instance in the static registry for later retrieval.
+   * @role Factory method
+   * @param {string} [instanceName] Optional name to register the instance under.
+   * @param {string} [dbName] Database name for the new instance.
+   * @param {number} [version] Schema version for the new instance.
+   * @param {IdbqModel} [model] IDBQL data model for the new instance.
+   * @returns {Machine} The newly created and started Machine instance.
+   */
   createInstance(instanceName?: string, dbName?: string, version?: number, model?: IdbqModel): Machine {
     const instance = new Machine(dbName, version, model);
     if (instanceName) {

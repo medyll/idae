@@ -44,7 +44,7 @@
 | Package | Score | Status | Key Issue |
 | :--- | :---: | :---: | :--- |
 | **idae-db** | 72/100 | ⚠️ Good | ChromaDB adapter untested |
-| **idae-idbql** | 75/100 | ✅ Good | @ts-ignore in reactive binding |
+| **idae-idbql** | 75/100 | ✅ Good | @ts-ignore removed |
 | **idae-engine** | 68/100 | ⚠️ Fair | No path validation |
 | **idae-be** | 71/100 | ⚠️ Good | Integration tests missing |
 | **Monorepo Avg** | **71/100** | 🟡 Good | JSDoc + test pattern standardization |
@@ -60,6 +60,8 @@
 **Medium-Term (Quality Improvements):**
 3. Run `/dev-story AUDIT-DB-001` — Add ChromaDB tests (1-2 hours)
 4. Run `/dev-story AUDIT-BE-001` — Integration tests for idae-be (2-3 hours)
+
+**Auto (executed):** AUDIT-IQL-001 (done), AUDIT-DB-001 (done). See `artifacts/next-auto-2026-03-11.md` and `artifacts/fix-AUDIT-DB-001-tests-2026-03-12.md`.
 
 **Strategic (Monorepo Maturity):**
 5. Run `/prd` — Define monorepo-level roadmap (if not done)

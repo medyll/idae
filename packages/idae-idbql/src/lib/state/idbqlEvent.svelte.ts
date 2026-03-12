@@ -180,8 +180,6 @@ class IdbqlStateEventBase {
 // should use `createIdbqlEvent()` which falls back to the base implementation.
 class IdbqlStateEvent extends IdbqlStateEventBase {
   // main application shared state - Svelte rune (only valid in Svelte contexts)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   dataState = $state<Record<string, any[]>>({});
 }
 

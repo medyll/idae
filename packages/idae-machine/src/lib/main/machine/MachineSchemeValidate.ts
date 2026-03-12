@@ -95,11 +95,27 @@ export class MachineSchemeValidate {
    * @param value The value to validate.
    * @returns True if valid, false otherwise.
    */
+  /**
+   * Quick validation check for a field value (boolean result).
+   * @role Field validation
+   * @param {keyof TplFields} fieldName The field name to validate.
+   * @param {unknown} value The value to validate.
+   * @returns {Promise<boolean>} True if valid, false otherwise.
+   */
   async validateFieldValue(fieldName: keyof TplFields, value: unknown): Promise<boolean> {
     const result = await this.validateField(fieldName, value);
     return !!result.isValid;
   }
 
+  /**
+   * Validate entire form data against all collection fields.
+   * @role Form validation
+   * @param {Record<string, unknown>} formData The complete form data to validate.
+   * @param {Object} [options] Validation options.
+   * @param {string[]} [options.ignoreFields] Fields to skip during validation.
+   * @param {Array} [options.crossFieldValidators] Array of cross-field validator functions.
+   * @returns {Promise<Object>} Validation result with isValid flag, error messages, and invalid field names.
+   */
   async validateForm(
     formData: Record<string, unknown>,
     options: {
