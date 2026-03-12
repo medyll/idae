@@ -50,6 +50,8 @@ Shows all UI components working together with real data binding
 			showEditForm = false;
 		}
 	}
+
+	let {children} = $props<{ children?: any }>();
 </script>
 
 <div class="demo-page">
@@ -97,9 +99,9 @@ Shows all UI components working together with real data binding
 		</nav>
 	{/snippet}
 
-	<Frame showPanel={true} panelMode="expanded" leftNav={leftNav} children={children} />
-		<!-- Left Navigation Panel -->
-		<svelte:fragment slot="leftNav">
+	<Frame showPanel={true} panelMode="expanded" leftNav={leftNav} children={children}>
+
+		
 			<nav class="left-panel">
 				<h3>Collections</h3>
 
