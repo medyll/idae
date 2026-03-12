@@ -33,7 +33,7 @@ Shows all UI components working together with real data binding
 	machine.start();
 
 	// State
-	let selectedCollection = $state('users');
+	let selectedCollection = $state(Object.keys(testScheme.schema || testScheme || {})[0] ?? 'product');
 	let activeTab = $state<'grid' | 'menu' | 'create' | 'edit' | 'relationships' | 'components'>('grid');
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
 	let showEditForm = $state(false);

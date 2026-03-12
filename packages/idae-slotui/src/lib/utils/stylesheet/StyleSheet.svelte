@@ -59,16 +59,12 @@ export type StyleSheetProps = Record<string, unknown>;
 </script>
 
 <svelte:head>
-	{castToCssProps(breakpoints)}
 	<style id="idae-slotui-stylesheet" lang="postcss">
 		@reference "tailwindcss"
-		@use './stylesheet.scss';
-		// @include generate-container-queries;
 	</style>
 </svelte:head>
 
 {#if showSelectors}
-	{castToCssProps(breakpoints)}ss
 	<pre>
         {JSON.stringify(configCssVars, undefined, ' ')}
     </pre>

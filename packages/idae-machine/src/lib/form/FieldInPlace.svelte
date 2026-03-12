@@ -14,7 +14,7 @@ Svelte 5 in-place field edit/confirm
 @event cancel - Emitted on cancel
 --> 
 <script lang="ts">
-    import { Icon } from '@medyll/idae-slotui-svelte';
+    // import { Icon } from '@medyll/idae-slotui-svelte';
     import type { Snippet } from 'svelte';
 
     // Destructuring props with default snippet values
@@ -66,7 +66,7 @@ Svelte 5 in-place field edit/confirm
             {#if children}
                 {@render children()}
             {:else}
-                <Icon icon="mdi:pencil" class="md" />
+                <!-- <Icon icon="mdi:pencil" class="md" /> -->
             {/if}
         </button>
     {:else}
@@ -79,7 +79,7 @@ Svelte 5 in-place field edit/confirm
                     {@render confirm(message)}
                 {:else}
                     {message}
-                    <Icon class="color-success md text-green-800" icon="mdi:done" />
+                    <!-- <Icon class="color-success md text-green-800" icon="mdi:done" /> -->
                 {/if}
             </button>
 
@@ -90,7 +90,7 @@ Svelte 5 in-place field edit/confirm
                 {#if cancel}
                     {@render cancel()}
                 {:else}
-                    <Icon icon="typcn:cancel" style="color: red" class="md fill-red-800" />
+                    <!-- <Icon icon="typcn:cancel" style="color: red" class="md fill-red-800" /> -->
                 {/if}
             </button>
         </div>

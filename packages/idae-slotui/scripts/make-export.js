@@ -20,10 +20,11 @@ export const EXCLUDE_GLOBS = [
 // ---------------------
 
 class IndexGenerator {
-  constructor(roots, excludes) {
+  constructor(roots, excludes, deleteMode = false) {
     this.roots = roots;
     this.excludes = excludes;
     this.baseDir = path.dirname(fileURLToPath(import.meta.url));
+    this.deleteMode = deleteMode;
   }
 
   /**
@@ -68,12 +69,21 @@ class IndexGenerator {
    * Simple export for a single component or forced flat mode
    */
   async writeFlatIndex(dir, files) {
+    const indexPath = path.join(dir, 'index.ts');
+    if (this.deleteMode) {
+      try {
+        await fs.unlink(indexPath);
+      } catch {
+        // Silently ignore if doesn't exist
+      }
+      return;
+    }
     const exports = files.map(f => {
       const fileName = path.basename(f, '.svelte');
       const componentName = this.toPascalCase(fileName);
       return `import ${componentName} from "./${f}";\nexport { ${componentName} };`;
     });
-    await fs.writeFile(path.join(dir, 'index.ts'), exports.join('\n') + '\n');
+    await fs.writeFile(indexPath, exports.join('\n') + '\n');
   }
 
   /**
@@ -84,15 +94,24 @@ class IndexGenerator {
    * Structured export: Named exports with aliases
    */
   async writeMultipleIndex(dir, files) {
+    const indexPath = path.join(dir, 'index.ts');
+    if (this.deleteMode) {
+      try {
+        await fs.unlink(indexPath);
+      } catch {
+        // Silently ignore if doesn't exist
+      }
+      return;
+    }
     const names = files.map(f => path.basename(f, '.svelte'));
-    
-    const rawRootName = names.reduce((acc, curr) => 
+
+    const rawRootName = names.reduce((acc, curr) =>
       (curr.length < acc.length || (curr.length === acc.length && curr < acc)) ? curr : acc
     );
 
     const rootExportName = this.toPascalCase(rawRootName);
     const importLines = [`import ${rootExportName}Root from "./${rawRootName}.svelte";`];
-    
+
     const subComponents = names.filter(n => n !== rawRootName);
     const rawNames = [`${rootExportName}Root`];
     const aliasNames = [`${rootExportName}Root as ${rootExportName}`];
@@ -116,14 +135,14 @@ class IndexGenerator {
       }
 
       prop = this.toPascalCase(prop || n);
-      
+
       rawNames.push(componentName);
       aliasNames.push(`${componentName} as ${prop}`);
     }
 
     const content = `${importLines.join('\n')}\n\nexport {\n  ${rawNames.join(',\n  ')},\n  // \n  ${aliasNames.join(',\n  ')}\n};\n`;
-    
-    await fs.writeFile(path.join(dir, 'index.ts'), content);
+
+    await fs.writeFile(indexPath, content);
   }
 
   /**
@@ -133,9 +152,20 @@ class IndexGenerator {
     try {
       const stat = await fs.stat(dir);
       if (!stat.isDirectory()) return;
-      
+
       const files = await this.getSvelteFiles(dir);
-      if (files.length === 0) return;
+      if (files.length === 0) {
+        // In delete mode, still delete index.ts if it exists
+        if (this.deleteMode) {
+          const indexPath = path.join(dir, 'index.ts');
+          try {
+            await fs.unlink(indexPath);
+          } catch {
+            // Silently ignore if doesn't exist
+          }
+        }
+        return;
+      }
 
       const forcedFlat = await this.isForcedFlat(dir);
 
@@ -154,17 +184,58 @@ class IndexGenerator {
    */
   async generate() {
     const libRoot = path.resolve(this.baseDir, '..', 'src/lib');
-    
+
+    if (this.deleteMode) {
+      // Delete main lib index
+      const mainIndexPath = path.join(libRoot, 'index.ts');
+      try {
+        await fs.unlink(mainIndexPath);
+      } catch (e) {
+        // Silently ignore if doesn't exist
+      }
+
+      // Delete category indexes and component indexes
+      for (const root of this.roots) {
+        const absRoot = path.resolve(this.baseDir, '..', root);
+        let entries = [];
+
+        try {
+          entries = await fs.readdir(absRoot, { withFileTypes: true });
+        } catch {
+          continue;
+        }
+
+        for (const d of entries) {
+          if (d.isDirectory()) {
+            const isExcluded = this.excludes.some(p => minimatch(d.name, p, { matchBase: true }));
+            if (!isExcluded) {
+              await this.processDir(path.join(absRoot, d.name));
+            }
+          }
+        }
+
+        // Delete category index
+        const categoryIndexPath = path.join(absRoot, 'index.ts');
+        try {
+          await fs.unlink(categoryIndexPath);
+        } catch {
+          // Silently ignore if doesn't exist
+        }
+      }
+      console.log('✅ Index files deleted.');
+      return;
+    }
+
     const libExports = this.roots
       .map(root => `export * from './${path.basename(root)}/index.js';`)
       .join('\n') + '\n';
-    
+
     await fs.writeFile(path.join(libRoot, 'index.ts'), libExports);
 
     for (const root of this.roots) {
       const absRoot = path.resolve(this.baseDir, '..', root);
       let entries = [];
-      
+
       try {
         entries = await fs.readdir(absRoot, { withFileTypes: true });
       } catch { continue; }
@@ -191,8 +262,14 @@ class IndexGenerator {
 
 export { IndexGenerator };
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-  new IndexGenerator(COMPONENT_ROOTS, EXCLUDE_GLOBS).generate();
+// Normalize URL for comparison (handle Windows backslashes)
+const scriptUrl = new URL(import.meta.url);
+const argv1 = process.argv[1].replace(/\\/g, '/');
+const expectedUrl = new URL(`file://${argv1}`).href;
+
+if (scriptUrl.href === expectedUrl || import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
+  const deleteMode = process.argv.includes('--delete');
+  new IndexGenerator(COMPONENT_ROOTS, EXCLUDE_GLOBS, deleteMode).generate();
 }
 
 // old version, do not trash or remove : export const Alert = { Root: AlertRoot, ButtonClose: AlertButtonClose, ButtonZone: AlertButtonZone, Message: AlertMessage, TopButton: AlertTopButton };
