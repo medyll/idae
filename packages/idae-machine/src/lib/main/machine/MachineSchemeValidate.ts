@@ -7,19 +7,34 @@ import MachineSchemeFieldType, {
 } from "$lib/main/machine/MachineFieldType.js";
 
 /**
- *
- *
- *
- *
  * @class MachineSchemeValidate
  * @role Provides validation utilities for form fields in a collection.
+ * Supports field validation, custom validators, cross-field validation, and async validators.
  *
  * Usage:
- *   const validator = new IDbFormValidate('agent');
+ *   const validator = new MachineSchemeValidate('agents', machineDb);
+ *   validator.registerCustom('email', (val) => /^.+@.+/.test(val));
  *   const result = validator.validateField('email', value);
  */
+
+/** Validation error result structure */
+export interface ValidationError {
+  fieldName: string;
+  message: string;
+  severity: 'error' | 'warning';
+  type: 'required' | 'type' | 'format' | 'custom' | 'cross-field';
+}
+
 export class MachineSchemeValidate {
   private machineDb: MachineDb;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private customValidators: Map<string, Array<(value: unknown) => boolean>> = new Map();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private asyncValidators: Map<string, Array<(value: unknown) => Promise<boolean>>> = new Map();
+  private crossFieldValidators: Array<{
+    fields: string[];
+    validator: (data: Record<string, unknown>) => boolean | Promise<boolean>;
+  }> = [];
 
   /**
    * Create a new MachineSchemeValidate instance.
@@ -78,6 +93,23 @@ export class MachineSchemeValidate {
         return this.#returnError(fieldName, fieldInfo.fieldType);
       }
 
+      // Check custom validators for this field
+      const customValidators = this.customValidators.get(String(fieldName)) || [];
+      for (const validator of customValidators) {
+        if (!validator(value)) {
+          return { isValid: false, error: `Invalid value for ${String(fieldName)}` };
+        }
+      }
+
+      // Check async validators for this field
+      const asyncValidators = this.asyncValidators.get(String(fieldName)) || [];
+      for (const validator of asyncValidators) {
+        const isValid = await validator(value);
+        if (!isValid) {
+          return { isValid: false, error: `Validation failed for ${String(fieldName)}` };
+        }
+      }
+
       return { isValid: true };
     } catch (error) {
       if (error instanceof MachineErrorValidation) {
@@ -105,6 +137,46 @@ export class MachineSchemeValidate {
   async validateFieldValue(fieldName: keyof TplFields, value: unknown): Promise<boolean> {
     const result = await this.validateField(fieldName, value);
     return !!result.isValid;
+  }
+
+  /**
+   * Register a custom validator function for a specific field.
+   * @role Custom validation
+   * @param {keyof TplFields} fieldName The field name to validate.
+   * @param {(value: unknown) => boolean} validator The validator function (returns true if valid).
+   */
+  registerCustom(fieldName: keyof TplFields, validator: (value: unknown) => boolean): void {
+    if (!this.customValidators.has(String(fieldName))) {
+      this.customValidators.set(String(fieldName), []);
+    }
+    this.customValidators.get(String(fieldName))?.push(validator);
+  }
+
+  /**
+   * Register an async validator function for a specific field.
+   * @role Async validation
+   * @param {keyof TplFields} fieldName The field name to validate.
+   * @param {(value: unknown) => Promise<boolean>} validator The async validator function.
+   */
+  registerAsync(fieldName: keyof TplFields, validator: (value: unknown) => Promise<boolean>): void {
+    if (!this.asyncValidators.has(String(fieldName))) {
+      this.asyncValidators.set(String(fieldName), []);
+    }
+    this.asyncValidators.get(String(fieldName))?.push(validator);
+  }
+
+  /**
+   * Register a cross-field validator that validates multiple fields together.
+   * @role Cross-field validation
+   * @param {Object} rule The cross-field validation rule.
+   * @param {string[]} rule.fields The field names involved in the validation.
+   * @param {(data: Record<string, unknown>) => boolean | Promise<boolean>} rule.validator The validator function.
+   */
+  registerCrossField(rule: {
+    fields: string[];
+    validator: (data: Record<string, unknown>) => boolean | Promise<boolean>;
+  }): void {
+    this.crossFieldValidators.push(rule);
   }
 
   /**
@@ -161,7 +233,7 @@ export class MachineSchemeValidate {
       }
     }
 
-    // Cross-field validators
+    // Cross-field validators (from options parameter)
     if (options.crossFieldValidators) {
       for (const vf of options.crossFieldValidators) {
         const out = await vf(formData);
@@ -186,6 +258,22 @@ export class MachineSchemeValidate {
             }
           }
         }
+      }
+    }
+
+    // Cross-field validators (registered instance validators)
+    for (const rule of this.crossFieldValidators) {
+      try {
+        const result = await rule.validator(formData);
+        if (!result) {
+          errors["__form"] = `Cross-field validation failed for fields: ${rule.fields.join(", ")}`;
+          invalidFields.push("__form");
+          isValid = false;
+        }
+      } catch (error) {
+        errors["__form"] = "Cross-field validation error";
+        invalidFields.push("__form");
+        isValid = false;
       }
     }
 
