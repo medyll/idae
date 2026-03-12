@@ -38,7 +38,7 @@ export type DrawerProps<T = any> = CommonProps & {
 	drawerFooter?: Snippet;
 	/** actions for the drawer */
 	actions?: {
-		toggle: (visibleSate?: boolean) => void;
+		toggle: (visibleState?: boolean) => void;
 	};
 };
 </script>
@@ -51,12 +51,12 @@ import Slotted from '$lib/utils/slotted/Slotted.svelte';
 
 /** @deprecated use actions.toggle */
 export const actions = {
-	toggle: (visibleSate?: boolean) => {
-		isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
+	toggle: (visibleState?: boolean) => {
+		isOpen = visibleState !== undefined ? visibleState : !isOpen;
 	}
 };
-export function toggle(visibleSate?: boolean) {
-	isOpen = visibleSate !== undefined ? visibleSate : !isOpen;
+export function toggle(visibleState?: boolean) {
+	isOpen = visibleState !== undefined ? visibleState : !isOpen;
 }
 
 let {

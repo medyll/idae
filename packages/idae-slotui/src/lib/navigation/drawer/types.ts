@@ -51,7 +51,7 @@ export type DrawerProps<T = any> = CommonProps & {
 	drawerFooter?: Snippet;
 	/** actions for the drawer */
 	actions?: {
-		toggle: (visibleSate?: boolean) => void;
+		toggle: (visibleState?: boolean) => void;
 	};
 };
 

@@ -60,7 +60,44 @@ Shows all UI components working together with real data binding
 	</header>
 
 	<!-- Main Layout with Frame -->
-	<Frame showPanel={true} panelMode="expanded">
+	{#snippet leftNav()}
+		<nav class="left-panel">
+			<h3>Collections</h3>
+
+			<!-- Selector for Collections -->
+			<div class="selector-wrapper">
+				{#each collections as col}
+					<button
+						class={`collection-btn ${selectedCollection === col ? 'active' : ''}`}
+						onclick={() => {
+							selectedCollection = col;
+							selectedRecord = null;
+							showEditForm = false;
+						}}
+					>
+						📦 {col}
+					</button>
+				{/each}
+			</div>
+
+			<!-- Create Button -->
+				<div class="create-section">
+					<h4>Actions</h4>
+					<CollectionButton collection={selectedCollection} mode="create" />
+				</div>
+
+			<!-- Info Section -->
+				<div class="info-section">
+					<InfoLine label="Collection" value={selectedCollection} />
+					<InfoLine
+						label="Selected"
+						value={selectedRecord ? 'Record selected' : 'No selection'}
+					/>
+				</div>
+		</nav>
+	{/snippet}
+
+	<Frame showPanel={true} panelMode="expanded" leftNav={leftNav} children={children} />
 		<!-- Left Navigation Panel -->
 		<svelte:fragment slot="leftNav">
 			<nav class="left-panel">
@@ -97,7 +134,7 @@ Shows all UI components working together with real data binding
 					/>
 				</div>
 			</nav>
-		</svelte:fragment>
+
 
 		<!-- Main Content Area -->
 		<div class="main-content">
