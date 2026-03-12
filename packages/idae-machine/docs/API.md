@@ -25,10 +25,12 @@ new MachineSchemeValidate(collection: TplCollectionName, machineDb: MachineDb)
 ```
 
 **Parameters:**
+
 - `collection`: Collection name (e.g., 'users', 'agents')
 - `machineDb`: MachineDb instance with template definitions
 
 **Example:**
+
 ```typescript
 const validator = new MachineSchemeValidate('users', machineDb);
 ```
@@ -48,19 +50,22 @@ async validateField(
 ```
 
 **Parameters:**
+
 - `fieldName`: Field to validate
 - `value`: Value to validate
 - `formData` (optional): Full form data (for context in validators)
 
 **Returns:**
+
 - `isValid`: true if valid, false otherwise
 - `error`: Error message (if invalid)
 
 **Example:**
+
 ```typescript
 const result = await validator.validateField('email', 'user@example.com');
 if (!result.isValid) {
-  console.error(result.error); // "Invalid format for field email"
+	console.error(result.error); // "Invalid format for field email"
 }
 ```
 
@@ -77,6 +82,7 @@ async validateFieldValue(fieldName: keyof TplFields, value: unknown): Promise<bo
 **Returns:** true if valid, false otherwise
 
 **Example:**
+
 ```typescript
 const isValid = await validator.validateFieldValue('age', 30);
 ```
@@ -103,26 +109,29 @@ async validateForm(
 ```
 
 **Parameters:**
+
 - `formData`: Complete form data
 - `options.ignoreFields`: Fields to skip validation
 - `options.crossFieldValidators`: Additional validators from caller
 
 **Returns:**
+
 - `isValid`: true if all fields valid
 - `errors`: Map of fieldName → error message
 - `invalidFields`: Array of invalid field names
 
 **Example:**
+
 ```typescript
 const result = await validator.validateForm(
-  { name: 'John', email: 'john@example.com', password: 'weak' },
-  { ignoreFields: ['phone'] }
+	{ name: 'John', email: 'john@example.com', password: 'weak' },
+	{ ignoreFields: ['phone'] }
 );
 
 if (!result.isValid) {
-  result.invalidFields.forEach(field => {
-    console.error(`${field}: ${result.errors[field]}`);
-  });
+	result.invalidFields.forEach((field) => {
+		console.error(`${field}: ${result.errors[field]}`);
+	});
 }
 ```
 
@@ -137,26 +146,26 @@ registerCustom(fieldName: keyof TplFields, validator: (value: unknown) => boolea
 ```
 
 **Parameters:**
+
 - `fieldName`: Field to validate
 - `validator`: Function that returns true if valid, false otherwise
 
 **Example:**
+
 ```typescript
 // Email format validation
-validator.registerCustom('email', (val) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-);
+validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 // Password strength validation
 validator.registerCustom('password', (val) => {
-  const str = String(val);
-  return str.length >= 8 && /[A-Z]/.test(str) && /[0-9]/.test(str);
+	const str = String(val);
+	return str.length >= 8 && /[A-Z]/.test(str) && /[0-9]/.test(str);
 });
 
 // Custom range validation
 validator.registerCustom('age', (val) => {
-  const num = Number(val);
-  return num >= 18 && num <= 120;
+	const num = Number(val);
+	return num >= 18 && num <= 120;
 });
 ```
 
@@ -171,29 +180,31 @@ registerAsync(fieldName: keyof TplFields, validator: (value: unknown) => Promise
 ```
 
 **Parameters:**
+
 - `fieldName`: Field to validate
 - `validator`: Async function returning true if valid
 
 **Example:**
+
 ```typescript
 // Check username availability via API
 validator.registerAsync('username', async (val) => {
-  const response = await fetch(`/api/check-username?name=${val}`);
-  const data = await response.json();
-  return data.available;
+	const response = await fetch(`/api/check-username?name=${val}`);
+	const data = await response.json();
+	return data.available;
 });
 
 // Verify email (send verification code)
 validator.registerAsync('email', async (val) => {
-  try {
-    const response = await fetch('/api/verify-email', {
-      method: 'POST',
-      body: JSON.stringify({ email: val })
-    });
-    return response.ok;
-  } catch {
-    return true; // Allow submission if API fails
-  }
+	try {
+		const response = await fetch('/api/verify-email', {
+			method: 'POST',
+			body:   JSON.stringify({ email: val })
+		});
+		return response.ok;
+	} catch {
+		return true; // Allow submission if API fails
+	}
 });
 ```
 
@@ -211,32 +222,34 @@ registerCrossField(rule: {
 ```
 
 **Parameters:**
+
 - `fields`: Field names involved in validation
 - `validator`: Function that validates the relationship
 
 **Example:**
+
 ```typescript
 // Password matching
 validator.registerCrossField({
-  fields: ['password', 'passwordConfirm'],
-  validator: (data) => data.password === data.passwordConfirm
+	fields:    ['password', 'passwordConfirm'],
+	validator: (data) => data.password === data.passwordConfirm
 });
 
 // Date range validation
 validator.registerCrossField({
-  fields: ['startDate', 'endDate'],
-  validator: (data) => new Date(data.endDate) > new Date(data.startDate)
+	fields:    ['startDate', 'endDate'],
+	validator: (data) => new Date(data.endDate) > new Date(data.startDate)
 });
 
 // Conditional requirement (zip code required if US)
 validator.registerCrossField({
-  fields: ['country', 'zipCode'],
-  validator: (data) => {
-    if (data.country === 'US') {
-      return Boolean(data.zipCode);
-    }
-    return true;
-  }
+	fields:    ['country', 'zipCode'],
+	validator: (data) => {
+		if (data.country === 'US') {
+			return Boolean(data.zipCode);
+		}
+		return true;
+	}
 });
 ```
 
@@ -248,14 +261,15 @@ Error object returned from validation.
 
 ```typescript
 interface ValidationError {
-  fieldName: string;
-  message: string;
-  severity: 'error' | 'warning';
-  type: 'required' | 'type' | 'format' | 'custom' | 'cross-field';
+	fieldName: string;
+	message:   string;
+	severity:  'error' | 'warning';
+	type:      'required' | 'type' | 'format' | 'custom' | 'cross-field';
 }
 ```
 
 **Properties:**
+
 - `fieldName`: Name of the field with error
 - `message`: Human-readable error message
 - `severity`: 'error' (blocking) or 'warning' (informational)
@@ -278,11 +292,11 @@ Svelte component for form creation and editing.
 
 ### Props
 
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `collection` | `TplCollectionName` | ✅ | Collection name |
-| `data` | `Record<string, unknown>` | ✅ | Form data |
-| `fieldInfo` | `IDbForge` | ✅ | Field metadata |
+| Prop         | Type                      | Required | Description     |
+| ------------ | ------------------------- | -------- | --------------- |
+| `collection` | `TplCollectionName`       | ✅       | Collection name |
+| `data`       | `Record<string, unknown>` | ✅       | Form data       |
+| `fieldInfo`  | `IDbForge`                | ✅       | Field metadata  |
 
 ### Events
 
@@ -291,8 +305,8 @@ Fired when form is submitted with valid data.
 
 ```typescript
 function handleSubmit(event: CustomEvent<Record<string, unknown>>) {
-  const formData = event.detail;
-  // Save to database or API
+	const formData = event.detail;
+	// Save to database or API
 }
 ```
 
@@ -335,11 +349,11 @@ Component for a single form field with binding and validation.
 
 ### Props
 
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `fieldName` | `string` | ✅ | Field identifier |
-| `value` | `unknown` | ✅ | Current field value |
-| `fieldInfo` | `IDbForge` | ✅ | Field metadata |
+| Prop        | Type       | Required | Description         |
+| ----------- | ---------- | -------- | ------------------- |
+| `fieldName` | `string`   | ✅       | Field identifier    |
+| `value`     | `unknown`  | ✅       | Current field value |
+| `fieldInfo` | `IDbForge` | ✅       | Field metadata      |
 
 ### Events
 
@@ -348,8 +362,8 @@ Fired when field value changes.
 
 ```typescript
 function handleChange(event: CustomEvent<unknown>) {
-  const newValue = event.detail;
-  // Update parent data
+	const newValue = event.detail;
+	// Update parent data
 }
 ```
 
@@ -366,43 +380,39 @@ import { MachineSchemeValidate } from '@medyll/idae-machine';
 const validator = new MachineSchemeValidate('users', machineDb);
 
 // 2. Register custom validators
-validator.registerCustom('email', (val) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-);
+validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
-validator.registerCustom('password', (val) =>
-  String(val).length >= 8
-);
+validator.registerCustom('password', (val) => String(val).length >= 8);
 
 // 3. Register async validators
 validator.registerAsync('username', async (val) => {
-  const res = await fetch(`/api/check-username?name=${val}`);
-  return (await res.json()).available;
+	const res = await fetch(`/api/check-username?name=${val}`);
+	return (await res.json()).available;
 });
 
 // 4. Register cross-field validators
 validator.registerCrossField({
-  fields: ['password', 'passwordConfirm'],
-  validator: (data) => data.password === data.passwordConfirm
+	fields:    ['password', 'passwordConfirm'],
+	validator: (data) => data.password === data.passwordConfirm
 });
 
 // 5. Validate form
 const formData = {
-  email: 'user@example.com',
-  password: 'SecurePass123',
-  passwordConfirm: 'SecurePass123',
-  username: 'newuser'
+	email:           'user@example.com',
+	password:        'SecurePass123',
+	passwordConfirm: 'SecurePass123',
+	username:        'newuser'
 };
 
 const result = await validator.validateForm(formData);
 
 if (result.isValid) {
-  console.log('Form valid! Ready to submit.');
+	console.log('Form valid! Ready to submit.');
 } else {
-  console.error('Form has errors:', result.errors);
-  result.invalidFields.forEach(field => {
-    console.log(`- ${field}: ${result.errors[field]}`);
-  });
+	console.error('Form has errors:', result.errors);
+	result.invalidFields.forEach((field) => {
+		console.log(`- ${field}: ${result.errors[field]}`);
+	});
 }
 ```
 
@@ -410,36 +420,30 @@ if (result.isValid) {
 
 ```typescript
 // Email format
-validator.registerCustom('email', (val) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-);
+validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 // URL format
 validator.registerCustom('website', (val) => {
-  try {
-    new URL(String(val));
-    return true;
-  } catch {
-    return false;
-  }
+	try {
+		new URL(String(val));
+		return true;
+	} catch {
+		return false;
+	}
 });
 
 // Credit card (simple Luhn check)
 validator.registerCustom('creditCard', (val) => {
-  const digits = String(val).replace(/\D/g, '');
-  return digits.length >= 13 && digits.length <= 19;
+	const digits = String(val).replace(/\D/g, '');
+	return digits.length >= 13 && digits.length <= 19;
 });
 
 // Phone number
-validator.registerCustom('phone', (val) =>
-  /^\d{10,}$/.test(String(val).replace(/\D/g, ''))
-);
+validator.registerCustom('phone', (val) => /^\d{10,}$/.test(String(val).replace(/\D/g, '')));
 
 // Unique value in set
 const usedUsernames = new Set(['admin', 'root', 'system']);
-validator.registerCustom('username', (val) =>
-  !usedUsernames.has(String(val))
-);
+validator.registerCustom('username', (val) => !usedUsernames.has(String(val)));
 ```
 
 ### Advanced Cross-Field Examples
@@ -447,34 +451,34 @@ validator.registerCustom('username', (val) =>
 ```typescript
 // Age eligibility (must be 18+ for premium)
 validator.registerCrossField({
-  fields: ['age', 'accountType'],
-  validator: (data) => {
-    if (data.accountType === 'premium') {
-      return Number(data.age) >= 18;
-    }
-    return true;
-  }
+	fields:    ['age', 'accountType'],
+	validator: (data) => {
+		if (data.accountType === 'premium') {
+			return Number(data.age) >= 18;
+		}
+		return true;
+	}
 });
 
 // Billing address same as shipping
 validator.registerCrossField({
-  fields: ['shippingAddress', 'billingAddress', 'sameAsShipping'],
-  validator: (data) => {
-    if (data.sameAsShipping) {
-      return data.billingAddress === data.shippingAddress;
-    }
-    return Boolean(data.billingAddress);
-  }
+	fields:    ['shippingAddress', 'billingAddress', 'sameAsShipping'],
+	validator: (data) => {
+		if (data.sameAsShipping) {
+			return data.billingAddress === data.shippingAddress;
+		}
+		return Boolean(data.billingAddress);
+	}
 });
 
 // Time range validation
 validator.registerCrossField({
-  fields: ['checkIn', 'checkOut'],
-  validator: (data) => {
-    const checkIn = new Date(String(data.checkIn));
-    const checkOut = new Date(String(data.checkOut));
-    return checkOut > checkIn && (checkOut.getTime() - checkIn.getTime()) <= 30 * 24 * 60 * 60 * 1000; // Max 30 days
-  }
+	fields:    ['checkIn', 'checkOut'],
+	validator: (data) => {
+		const checkIn = new Date(String(data.checkIn));
+		const checkOut = new Date(String(data.checkOut));
+		return checkOut > checkIn && checkOut.getTime() - checkIn.getTime() <= 30 * 24 * 60 * 60 * 1000; // Max 30 days
+	}
 });
 ```
 
@@ -509,4 +513,3 @@ Never throws `MachineErrorValidation` in `validateForm()`. Always check the `isV
 - [Compatibility Matrix](../artifacts/compatibility-2026-03-12.md)
 - [Performance Report](../artifacts/performance-2026-03-12.md)
 - [Security Audit](../artifacts/audit-security-2026-03-12.md)
-

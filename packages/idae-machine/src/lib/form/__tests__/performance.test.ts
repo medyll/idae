@@ -13,27 +13,27 @@ describe('Performance Benchmarks', () => {
 
 	const setupMockDb = () => ({
 		collection: () => ({
-			field: () => ({
+			field:    () => ({
 				parse: () => ({
 					fieldType: 'string',
-					fieldArgs: ['required'],
-				}),
+					fieldArgs: ['required']
+				})
 			}),
 			template: {
 				fields: {
-					name: { fieldType: 'string', fieldArgs: ['required'] },
-					email: { fieldType: 'string', fieldArgs: ['required'] },
-					password: { fieldType: 'string', fieldArgs: ['required'] },
+					name:            { fieldType: 'string', fieldArgs: ['required'] },
+					email:           { fieldType: 'string', fieldArgs: ['required'] },
+					password:        { fieldType: 'string', fieldArgs: ['required'] },
 					passwordConfirm: { fieldType: 'string', fieldArgs: ['required'] },
-					age: { fieldType: 'number', fieldArgs: [] },
-					startDate: { fieldType: 'date', fieldArgs: [] },
-					endDate: { fieldType: 'date', fieldArgs: [] },
-					username: { fieldType: 'string', fieldArgs: [] },
-					country: { fieldType: 'string', fieldArgs: [] },
-					zipCode: { fieldType: 'string', fieldArgs: [] },
-				},
-			},
-		}),
+					age:             { fieldType: 'number', fieldArgs: [] },
+					startDate:       { fieldType: 'date', fieldArgs: [] },
+					endDate:         { fieldType: 'date', fieldArgs: [] },
+					username:        { fieldType: 'string', fieldArgs: [] },
+					country:         { fieldType: 'string', fieldArgs: [] },
+					zipCode:         { fieldType: 'string', fieldArgs: [] }
+				}
+			}
+		})
 	});
 
 	describe('Sync Validation Performance', () => {
@@ -52,16 +52,16 @@ describe('Performance Benchmarks', () => {
 			validator = new MachineSchemeValidate('users', setupMockDb());
 
 			const formData = {
-				name: 'John Doe',
-				email: 'john@example.com',
-				password: 'pass123',
+				name:            'John Doe',
+				email:           'john@example.com',
+				password:        'pass123',
 				passwordConfirm: 'pass123',
-				age: 30,
-				startDate: '2026-03-01',
-				endDate: '2026-03-31',
-				username: 'johndoe',
-				country: 'US',
-				zipCode: '12345',
+				age:             30,
+				startDate:       '2026-03-01',
+				endDate:         '2026-03-31',
+				username:        'johndoe',
+				country:         'US',
+				zipCode:         '12345'
 			};
 
 			const start = performance.now();
@@ -131,8 +131,8 @@ describe('Performance Benchmarks', () => {
 			const start = performance.now();
 			for (let i = 0; i < 5; i++) {
 				validator.registerCrossField({
-					fields: ['field1', 'field2'],
-					validator: (data) => Boolean(data.field1 && data.field2),
+					fields:    ['field1', 'field2'],
+					validator: (data) => Boolean(data.field1 && data.field2)
 				});
 			}
 			const duration = performance.now() - start;
@@ -145,22 +145,22 @@ describe('Performance Benchmarks', () => {
 			validator = new MachineSchemeValidate('users', setupMockDb());
 
 			validator.registerCrossField({
-				fields: ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate),
+				fields:    ['startDate', 'endDate'],
+				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
 			});
 
 			const formData = {
-				name: 'User',
-				email: 'test@example.com',
-				password: 'pass123',
+				name:            'User',
+				email:           'test@example.com',
+				password:        'pass123',
 				passwordConfirm: 'pass123',
-				startDate: '2026-03-01',
-				endDate: '2026-03-31',
+				startDate:       '2026-03-01',
+				endDate:         '2026-03-31'
 			};
 
 			const start = performance.now();
 			await validator.validateForm(formData, {
-				ignoreFields: ['age', 'username', 'country', 'zipCode'],
+				ignoreFields: ['age', 'username', 'country', 'zipCode']
 			});
 			const duration = performance.now() - start;
 
@@ -226,8 +226,8 @@ describe('Performance Benchmarks', () => {
 
 			// Create large form data
 			const formData: Record<string, unknown> = {
-				name: 'John Doe',
-				email: 'john@example.com',
+				name:  'John Doe',
+				email: 'john@example.com'
 			};
 			for (let i = 0; i < 100; i++) {
 				formData[`field${i}`] = `value${i}`;
@@ -245,8 +245,8 @@ describe('Performance Benchmarks', () => {
 			// Estimated size: ~10KB (unminified), ~3KB (minified), ~1KB (gzip)
 			const estimatedSize = {
 				unminified: 10, // KB
-				minified: 3, // KB
-				gzip: 1, // KB
+				minified:   3, // KB
+				gzip:       1 // KB
 			};
 
 			console.log(`Estimated MachineSchemeValidate bundle impact:`);

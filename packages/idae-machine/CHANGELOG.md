@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased] - 2026-02-08
+
 - **2026-03-11** - chore(idae-machine): remove CrudService and fix validator (PR #88)
 - **2026-02-08** - fix: update dbSchema and index exports for improved type handling and organization
 - **2026-02-08** - fix: update pnpm-release version and adjust related dependencies in lockfile feat: enhance Vite config by removing unnecessary file extension feat: add missing export for CollectionListFieldValues and adjust existing exports in index.ts fix: improve type handling in MachineParserForge methods fix: update CollectionReverseFks.svelte to use correct item structure
@@ -71,7 +72,7 @@
 - **2026-01-13** - Refactor and enhance database schema handling
 - **2026-01-13** - fix: update import paths to include file extensions for consistency
 - **2026-01-13** - feat: add Svelte 5 coding policy and remove outdated tests; update import paths
-- **2026-01-13** - feat(migration): migrate components from _work to /lib and adapt to Svelte 5
+- **2026-01-13** - feat(migration): migrate components from \_work to /lib and adapt to Svelte 5
 - **2026-01-12** - feat: add initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities
 - **2026-01-12** - docs: Add initial documentation for @medyll/idae-machine project
 - **2026-01-12** - docs(idae-machine): maj chemins, props et suivi étape 4 CreateUpdate
@@ -89,8 +90,8 @@
 - **2026-01-11** - Enhance CreateUpdate.svelte validation: add type checks for number, email, and boolean fields using schema rules
 - **2026-01-11** - Add validation logic to CreateUpdate.svelte: required fields checked using schema, errors shown, submit prevented if invalid
 - **2026-01-11** - Integrate Svelte 5 components (CrudZone, CollectionList, CreateUpdate, FieldValue) into main demo page
-- **2026-01-11** - Refactor FieldValue.svelte to Svelte 5: use  for props and update logic to Svelte 5 idioms
-- **2026-01-11** - Refactor CreateUpdate.svelte to Svelte 5: use  for props,  for formData, and update logic to Svelte 5 idioms
+- **2026-01-11** - Refactor FieldValue.svelte to Svelte 5: use for props and update logic to Svelte 5 idioms
+- **2026-01-11** - Refactor CreateUpdate.svelte to Svelte 5: use for props, for formData, and update logic to Svelte 5 idioms
 - **2026-01-11** - Refactor CollectionList.svelte to Svelte 5: use , Svelte 5 event idioms, and remove legacy export let
 - **2026-01-11** - Full Svelte 5 refactor: CrudZone.svelte now uses , , , and Svelte 5 idioms throughout
 - **2026-01-11** - Refactor CrudZone.svelte to Svelte 5 idioms and syntax

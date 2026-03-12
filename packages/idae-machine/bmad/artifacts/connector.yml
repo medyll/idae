@@ -4,142 +4,142 @@
 # Do not edit manually — regenerate with: bmad connector --rebuild
 
 meta:
-  generated: "2026-03-06T22:35:00.000Z"
-  bmad_version: "3.2.0"
-  project: "@medyll/idae-machine"
-  root: "bmad/"
+  generated: '2026-03-06T22:35:00.000Z'
+  bmad_version: '3.2.0'
+  project: '@medyll/idae-machine'
+  root: 'bmad/'
 
 dictionary:
   keywords:
-    story:     "Atomic dev task. ID pattern: S{sprint}-{seq:02d}. Role: developer."
-    sprint:    "Time-boxed work batch. ID pattern: sprint-{N}. Role: scrum-master."
-    prd:       "Product Requirements Document. Role: pm."
-    arch:      "Architecture document. Role: architect."
-    audit:     "Codebase analysis report. Role: analyst."
-    dashboard: "Live project status view. Auto-generated. Role: orchestrator."
-    connector: "This file. Machine-readable project manifest. Role: orchestrator."
+    story: 'Atomic dev task. ID pattern: S{sprint}-{seq:02d}. Role: developer.'
+    sprint: 'Time-boxed work batch. ID pattern: sprint-{N}. Role: scrum-master.'
+    prd: 'Product Requirements Document. Role: pm.'
+    arch: 'Architecture document. Role: architect.'
+    audit: 'Codebase analysis report. Role: analyst.'
+    dashboard: 'Live project status view. Auto-generated. Role: orchestrator.'
+    connector: 'This file. Machine-readable project manifest. Role: orchestrator.'
   rules:
-    - "All file writes must be followed by a dashboard update."
-    - "Story IDs follow pattern S{sprint_number}-{sequence:02d} (e.g. S1-03)."
-    - "Sprint files are named sprint-{N}.md (e.g. sprint-2.md)."
-    - "Audit baselines are named audit-baseline-{YYYY-MM-DD}.md."
-    - "All text artifacts are written in English."
-    - "status.yaml is the single source of truth for project phase state."
+    - 'All file writes must be followed by a dashboard update.'
+    - 'Story IDs follow pattern S{sprint_number}-{sequence:02d} (e.g. S1-03).'
+    - 'Sprint files are named sprint-{N}.md (e.g. sprint-2.md).'
+    - 'Audit baselines are named audit-baseline-{YYYY-MM-DD}.md.'
+    - 'All text artifacts are written in English.'
+    - 'status.yaml is the single source of truth for project phase state.'
   naming:
-    story:    "S{sprint}-{seq:02d}"
-    sprint:   "sprint-{N}"
-    audit:    "audit-baseline-{YYYY-MM-DD}"
-    campaign: "{slug}"
-    history:  "status-{YYYYMMDDTHHmmss}"
+    story: 'S{sprint}-{seq:02d}'
+    sprint: 'sprint-{N}'
+    audit: 'audit-baseline-{YYYY-MM-DD}'
+    campaign: '{slug}'
+    history: 'status-{YYYYMMDDTHHmmss}'
 
 architecture:
-  - path: "bmad/"
+  - path: 'bmad/'
     role: orchestrator
-    description: "BMAD project root for @medyll/idae-machine"
+    description: 'BMAD project root for @medyll/idae-machine'
     children:
-      - path: "config.yaml"
+      - path: 'config.yaml'
         type: file
         role: orchestrator
-        description: "Project metadata, stack, team, scope"
-      - path: "status.yaml"
+        description: 'Project metadata, stack, team, scope'
+      - path: 'status.yaml'
         type: file
         role: orchestrator
-        description: "Current phase, artifacts state, sprint/backlog progress"
-      - path: "dashboard.md"
+        description: 'Current phase, artifacts state, sprint/backlog progress'
+      - path: 'dashboard.md'
         type: file
         role: orchestrator
-        status: "generated"
-        description: "Interactive project dashboard (auto-generated)"
-      - path: "artifacts/"
+        status: 'generated'
+        description: 'Interactive project dashboard (auto-generated)'
+      - path: 'artifacts/'
         type: directory
         role: orchestrator
-        description: "All generated project artifacts"
+        description: 'All generated project artifacts'
         children:
-          - path: "connector.yml"
+          - path: 'connector.yml'
             type: file
             role: orchestrator
-            description: "This file — auto-discovery manifest"
-          - path: "product-brief.md"
+            description: 'This file — auto-discovery manifest'
+          - path: 'product-brief.md'
             type: file
             role: analyst
-            status: "generated"
-            description: "Executive summary, features, architecture, metrics"
-          - path: "prd.md"
+            status: 'generated'
+            description: 'Executive summary, features, architecture, metrics'
+          - path: 'prd.md'
             type: file
             role: pm
-            status: "missing"
-            command: "bmad plan prd"
-          - path: "tech-spec.md"
+            status: 'missing'
+            command: 'bmad plan prd'
+          - path: 'tech-spec.md'
             type: file
             role: pm
-            status: "missing"
-            command: "bmad plan spec"
-          - path: "architecture.md"
+            status: 'missing'
+            command: 'bmad plan spec'
+          - path: 'architecture.md'
             type: file
             role: architect
-            status: "missing"
-            command: "bmad plan arch"
-          - path: "audit-baseline-2026-03-06.md"
+            status: 'missing'
+            command: 'bmad plan arch'
+          - path: 'audit-baseline-2026-03-06.md'
             type: file
             role: analyst
-            status: "generated"
-            description: "Baseline codebase audit with 3 critical recommendations"
-          - path: "sprints/"
+            status: 'generated'
+            description: 'Baseline codebase audit with 3 critical recommendations'
+          - path: 'sprints/'
             type: directory
             role: scrum-master
-            pattern: "sprint-{N}.md"
+            pattern: 'sprint-{N}.md'
             count: 1
-            description: "Time-boxed work batches"
-          - path: "stories/"
+            description: 'Time-boxed work batches'
+          - path: 'stories/'
             type: directory
             role: developer
-            pattern: "S{sprint}-{seq:02d}.md"
+            pattern: 'S{sprint}-{seq:02d}.md'
             count: 5
-            description: "Atomic development tasks"
-          - path: "tests/"
+            description: 'Atomic development tasks'
+          - path: 'tests/'
             type: directory
             role: tester
-            pattern: "{story-id}-test-plan.md"
+            pattern: '{story-id}-test-plan.md'
             count: 0
-            description: "Test plans and QA procedures"
-          - path: "discussions/"
+            description: 'Test plans and QA procedures'
+          - path: 'discussions/'
             type: directory
             role: orchestrator
-            pattern: "{topic}-{YYYY-MM-DD}.md"
+            pattern: '{topic}-{YYYY-MM-DD}.md'
             count: 0
-            description: "Cross-role dependency discussions"
-          - path: "campaigns/"
+            description: 'Cross-role dependency discussions'
+          - path: 'campaigns/'
             type: directory
             role: marketing
-            pattern: "{slug}.md"
+            pattern: '{slug}.md'
             count: 0
-            description: "Marketing campaigns and launch plans"
-          - path: "history/"
+            description: 'Marketing campaigns and launch plans'
+          - path: 'history/'
             type: directory
             role: orchestrator
-            pattern: "status-{YYYYMMDDTHHmmss}.yaml"
+            pattern: 'status-{YYYYMMDDTHHmmss}.yaml'
             count: 1
-            description: "Timestamped snapshots of status.yaml"
+            description: 'Timestamped snapshots of status.yaml'
 
 project_info:
-  name: "@medyll/idae-machine"
-  slug: "idae-machine"
-  version: "0.135.2"
-  status: "beta"
-  phase: "development"
-  focus: "core-features"
+  name: '@medyll/idae-machine'
+  slug: 'idae-machine'
+  version: '0.135.2'
+  status: 'beta'
+  phase: 'development'
+  focus: 'core-features'
 
 stack:
-  language: "TypeScript"
-  framework: "SvelteKit"
-  ui_framework: "Svelte 5"
-  database: "IndexedDB"
-  testing: "Vitest + @testing-library/svelte"
-  linting: "ESLint"
-  formatting: "Prettier"
-  bundler: "Vite"
+  language: 'TypeScript'
+  framework: 'SvelteKit'
+  ui_framework: 'Svelte 5'
+  database: 'IndexedDB'
+  testing: 'Vitest + @testing-library/svelte'
+  linting: 'ESLint'
+  formatting: 'Prettier'
+  bundler: 'Vite'
 
 repository:
-  url: "https://github.com/medyll/idae.git"
-  type: "monorepo"
-  package_path: "packages/idae-machine"
+  url: 'https://github.com/medyll/idae.git'
+  type: 'monorepo'
+  package_path: 'packages/idae-machine'

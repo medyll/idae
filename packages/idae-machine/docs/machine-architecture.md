@@ -1,7 +1,3 @@
-
-
-
-
 # Architecture de la machine (2026)
 
 Diagramme à jour de l'architecture du cœur d'idae-machine, aligné sur le code réel et les conventions :
@@ -41,6 +37,7 @@ graph TD
 ```
 
 ## Points clés mis à jour
+
 - **Machine** : point d’entrée principal, gère la base, le schéma, expose les accès aux collections, à l’état et à IndexedDB.
 - **MachineDb** : logique centrale du schéma, crée/gère les collections, utilise `MachineParserForge` pour parser les champs.
 - **MachineScheme** : représente une collection (table), expose les forges de champs, les valeurs, la validation. Méthodes clés : `field(fieldName)`, `fieldForge(fieldName, data)`, `parse()`.

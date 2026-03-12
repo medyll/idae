@@ -2,27 +2,27 @@
 # @medyll/idae-machine
 
 meta:
-  version: "1.0"
-  generated: "2026-03-06T21:29:09Z"
+  version: '1.0'
+  generated: '2026-03-06T21:29:09Z'
 
 project:
-  name: "@medyll/idae-machine"
-  slug: "idae-machine"
-  description: "Low-code UI framework for schema-driven CRUD UIs on IndexedDB"
-  scope: "medyll"
-  version: "0.135.2"
-  repository: "https://github.com/medyll/idae.git"
-  author: "Lebrun Meddy"
+  name: '@medyll/idae-machine'
+  slug: 'idae-machine'
+  description: 'Low-code UI framework for schema-driven CRUD UIs on IndexedDB'
+  scope: 'medyll'
+  version: '0.135.2'
+  repository: 'https://github.com/medyll/idae.git'
+  author: 'Lebrun Meddy'
 
 stack:
-  language: "TypeScript"
-  framework: "SvelteKit"
-  ui: "Svelte 5"
-  database: "IndexedDB"
-  testing: "Vitest + @testing-library/svelte"
-  linting: "ESLint"
-  formatting: "Prettier"
-  bundler: "Vite"
+  language: 'TypeScript'
+  framework: 'SvelteKit'
+  ui: 'Svelte 5'
+  database: 'IndexedDB'
+  testing: 'Vitest + @testing-library/svelte'
+  linting: 'ESLint'
+  formatting: 'Prettier'
+  bundler: 'Vite'
 
 team:
   roles:
@@ -34,15 +34,15 @@ team:
     - analyst
 
 scope:
-  type: "package"
+  type: 'package'
   in_monorepo: true
   root: "D:\\boulot\\dev\\node\\idae"
-  monorepo_type: "npm-workspaces"
+  monorepo_type: 'npm-workspaces'
 
 phase:
-  current: "development"
-  focus: "core-features"
-  stability: "beta"
+  current: 'development'
+  focus: 'core-features'
+  stability: 'beta'
 
 keywords:
   - idae

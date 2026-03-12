@@ -14,7 +14,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	/**
 	 * The IDbBase instance used for schema introspection.
 	 */
-	machine: MachineDb;
+	machine:                MachineDb;
 	/**
 	 * The collection name this instance operates on.
 	 */
@@ -28,7 +28,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	constructor(collectionName: TplCollectionName, machine: MachineDb) {
 		this.collectionName = collectionName;
-		this.machine = machine ;
+		this.machine = machine;
 	}
 
 	/**
@@ -105,7 +105,10 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 				`Field ${String(fieldName)} not found in data`,
 				'FIELD_NOT_FOUND'
 			);
-			const fieldInfo = this.machine.collection(this.collectionName).field(String(fieldName)).parse();
+			const fieldInfo = this.machine
+				.collection(this.collectionName)
+				.field(String(fieldName))
+				.parse();
 			this.#checkError(
 				!fieldInfo,
 				`Field ${String(fieldName)} not found in collection`,
@@ -151,7 +154,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fieldName: string,
 		data: T
 	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`, string
+		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
+		string
 	> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		const fieldType = fieldInfo?.fieldType ?? '';
@@ -159,11 +163,13 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		const indexName = this.machine.collection(this.collectionName).template.index;
 
 		return {
-			'data-collection': this.collectionName,
-			'data-collectionId': indexName && data?.[indexName] !== undefined ? String(data?.[indexName]) : '',
-			'data-fieldName': String(fieldName),
-			'data-fieldType': fieldType,
-			'data-fieldArgs': fieldArgs
+			'data-collection':   this.collectionName,
+			'data-collectionId': indexName && data?.[indexName] !== undefined
+				? String(data?.[indexName])
+				: '',
+			'data-fieldName':    String(fieldName),
+			'data-fieldType':    fieldType,
+			'data-fieldArgs':    fieldArgs
 		};
 	}
 
@@ -181,17 +187,22 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 * @return {Array<Record<string, unknown>>} An array of IDbForge objects.
 	 */
 	// NOTE: Return type is Array<Record<string, unknown>> to match actual runtime type from parser
-	iterateArrayField(fieldName: keyof TplFields, data: unknown[]): Array<Record<string, unknown>> { 
-
+	iterateArrayField(fieldName: keyof TplFields, data: unknown[]): Array<Record<string, unknown>> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
 
 		return data
-			.map((_, idx) => fieldInfo && fieldInfo.fieldType
-				? { ...fieldInfo, fieldName: `${String(fieldName)}[${idx}]`, collection: this.collectionName }
-				: undefined)
+			.map((_, idx) =>
+				fieldInfo && fieldInfo.fieldType
+					? {
+							...fieldInfo,
+							fieldName:  `${String(fieldName)}[${idx}]`,
+							collection: this.collectionName
+						}
+					: undefined
+			)
 			.filter(Boolean);
 	}
 
@@ -210,16 +221,24 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
 	// TODO: Refine IDbForge type if needed for stricter typing
-	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): Array<Record<string, unknown>> { 
-
+	iterateObjectField(
+		fieldName: keyof TplFields,
+		data: Record<string, unknown>
+	): Array<Record<string, unknown>> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}
 		return Object.keys(data)
-			.map((key) => fieldInfo && fieldInfo.fieldType
-				? { ...fieldInfo, fieldName: `${String(fieldName)}.${key}`, collection: this.collectionName }
-				: undefined)
+			.map((key) =>
+				fieldInfo && fieldInfo.fieldType
+					? {
+							...fieldInfo,
+							fieldName:  `${String(fieldName)}.${key}`,
+							collection: this.collectionName
+						}
+					: undefined
+			)
 			.filter(Boolean);
 	}
 
@@ -254,11 +273,11 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	#formatTextField(value: unknown, type: string): string {
 		const lengths = {
-			'text-tiny': 10,
-			'text-short': 20,
+			'text-tiny':   10,
+			'text-short':  20,
 			'text-medium': 30,
-			'text-long': 40,
-			'text-giant': 50
+			'text-long':   40,
+			'text-giant':  50
 		};
 		const str = typeof value === 'string' ? value : String(value ?? '');
 		const maxLength = lengths[type as keyof typeof lengths] || str.length;
@@ -306,5 +325,4 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
 		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}
- 
 }

@@ -8,13 +8,13 @@
 
 ## Stories
 
-| ID | Epic | Title | Points | Priority | Status |
-|---|---|---|---|---|---|
-| S1-01 | Type Safety | Replace 42+ `any` type instances with strict generics | 5 | **Must** | Ready |
-| S1-02 | Validation | Complete form validation pipeline (custom + cross-field) | 5 | **Must** | Ready |
-| S1-03 | Testing | Add machineParserForge test coverage (30+ cases) | 3 | **Must** | Ready |
-| S1-04 | Documentation | Improve JSDoc coverage from 4.5% to 80%+ | 3 | **Must** | Ready |
-| S1-05 | Reactivity | Fix FieldValue.svelte bidirectional binding | 2 | **Should** | Ready |
+| ID    | Epic          | Title                                                    | Points | Priority   | Status |
+| ----- | ------------- | -------------------------------------------------------- | ------ | ---------- | ------ |
+| S1-01 | Type Safety   | Replace 42+ `any` type instances with strict generics    | 5      | **Must**   | Ready  |
+| S1-02 | Validation    | Complete form validation pipeline (custom + cross-field) | 5      | **Must**   | Ready  |
+| S1-03 | Testing       | Add machineParserForge test coverage (30+ cases)         | 3      | **Must**   | Ready  |
+| S1-04 | Documentation | Improve JSDoc coverage from 4.5% to 80%+                 | 3      | **Must**   | Ready  |
+| S1-05 | Reactivity    | Fix FieldValue.svelte bidirectional binding              | 2      | **Should** | Ready  |
 
 **Total Capacity**: 18 points (all 5 stories fit in 2-week sprint)
 
@@ -29,7 +29,7 @@
 ## Dependencies
 
 - **External**: None
-- **Internal**: 
+- **Internal**:
   - S1-01 (type safety) should complete before S1-02 (validation) to avoid re-typing
   - S1-03 (parser tests) can run in parallel with S1-01
   - S1-04 (docs) can run in parallel with all stories
@@ -39,25 +39,30 @@
 ## Epics & Traceability
 
 ### Epic 1: Type Safety
+
 - **Linked Audit Finding**: "Type Safety: 42+ `any` instances"
 - **Linked PRD**: FR requirement: "100% type coverage" (Tech Spec: Type Safety section)
 - **Stories**: S1-01
 
 ### Epic 2: Form Validation
+
 - **Linked Audit Finding**: "Form Validation Incomplete"
 - **Linked PRD**: FR-3.1 through FR-3.9 (validation requirements)
 - **Stories**: S1-02
 
 ### Epic 3: Testing & Coverage
+
 - **Linked Audit Finding**: "MachineParserForge has NO test coverage"
 - **Linked PRD**: NFR: ">80% unit test coverage"
 - **Stories**: S1-03
 
 ### Epic 4: Documentation
+
 - **Linked PRD**: NFR: ">80% JSDoc coverage"
 - **Stories**: S1-04
 
 ### Epic 5: Reactivity
+
 - **Linked Audit Finding**: "Reactive state binding gap"
 - **Stories**: S1-05
 
@@ -83,13 +88,13 @@
 
 ## Risks & Mitigation
 
-| Risk | Likelihood | Mitigation |
-|------|-----------|-----------|
-| Type safety refactor too broad (cascade changes) | Medium | Break into 3 sub-tasks: (1) utility functions, (2) core Machine classes, (3) form components |
-| Custom validators API design unclear | Low | Use PR discussion to align on async/sync; follow PRD FR-3.5 |
-| Parser test edge cases hard to enumerate | Medium | Start with happy path (20 cases), add edge cases incrementally based on code review feedback |
-| JSDoc tooling inconsistent | Low | Use `type-coverage` npm package; document rules in PR comment |
-| Binding fix may regress other components | Medium | Add e2e test for in-place editing (UC-03) before merging |
+| Risk                                             | Likelihood | Mitigation                                                                                   |
+| ------------------------------------------------ | ---------- | -------------------------------------------------------------------------------------------- |
+| Type safety refactor too broad (cascade changes) | Medium     | Break into 3 sub-tasks: (1) utility functions, (2) core Machine classes, (3) form components |
+| Custom validators API design unclear             | Low        | Use PR discussion to align on async/sync; follow PRD FR-3.5                                  |
+| Parser test edge cases hard to enumerate         | Medium     | Start with happy path (20 cases), add edge cases incrementally based on code review feedback |
+| JSDoc tooling inconsistent                       | Low        | Use `type-coverage` npm package; document rules in PR comment                                |
+| Binding fix may regress other components         | Medium     | Add e2e test for in-place editing (UC-03) before merging                                     |
 
 ---
 
@@ -146,6 +151,7 @@ DONE (0)
 ## Story Breakdown & Sequence
 
 ### Recommended Dev Order:
+
 1. **S1-03 (Parser Tests)** — Fast feedback loop, no blockers on type safety (3h)
 2. **S1-01 (Type Safety)** — Foundation for S1-02 (8h)
 3. **S1-02 (Validation)** — Uses types from S1-01 (12h)
@@ -153,6 +159,7 @@ DONE (0)
 5. **S1-05 (Binding)** — Unblocked; light touch (5h)
 
 ### Parallel Work:
+
 - Developer 1: S1-03, S1-01, S1-02 (sequential, 23h total)
 - Developer 2: S1-04 (parallel, 9h) + S1-05 (parallel, 5h) = 14h
 
@@ -165,6 +172,7 @@ DONE (0)
 ## Technical Context
 
 ### Codebase Snapshot (v0.135.2)
+
 - **Svelte 5 Compliance**: ✅ 100% (no deprecated APIs)
 - **Type Coverage**: 95% (42+ `any` to fix)
 - **Test Coverage**: 75% unit (5 test files; parser untested)
@@ -172,6 +180,7 @@ DONE (0)
 - **Build Time**: ~3s (Vite dev), <10s (production)
 
 ### Key Files to Touch
+
 - `src/lib/main/machine/` — Type safety fixes
 - `src/lib/main/machine/MachineSchemeValidate.ts` — Validation expansion
 - `src/lib/main/__tests__/` — New test files + expanded coverage
@@ -179,6 +188,7 @@ DONE (0)
 - All public `.ts` files — JSDoc additions
 
 ### Build & Test Commands
+
 ```bash
 pnpm run build         # SvelteKit + svelte-package
 pnpm run test          # Vitest single-run
@@ -191,20 +201,20 @@ pnpm run lint          # ESLint + Prettier
 
 ## Outcomes & Success Metrics
 
-| Metric | Current | Sprint Target | v1.0 Target |
-|--------|---------|---------------|-------------|
-| **Type Safety (`any` count)** | 42 | 0 | 0 |
-| **JSDoc Coverage** | 4.5% | 80%+ | 80%+ |
-| **Unit Test Coverage** | 75% | 90%+ | 95%+ |
-| **Build Status** | ✅ Pass | ✅ Pass | ✅ Pass |
-| **Lint Status** | ✅ Pass | ✅ Pass | ✅ Pass |
+| Metric                        | Current | Sprint Target | v1.0 Target |
+| ----------------------------- | ------- | ------------- | ----------- |
+| **Type Safety (`any` count)** | 42      | 0             | 0           |
+| **JSDoc Coverage**            | 4.5%    | 80%+          | 80%+        |
+| **Unit Test Coverage**        | 75%     | 90%+          | 95%+        |
+| **Build Status**              | ✅ Pass | ✅ Pass       | ✅ Pass     |
+| **Lint Status**               | ✅ Pass | ✅ Pass       | ✅ Pass     |
 
 ---
 
 ## Revision History
 
-| Date | Author | Change |
-|------|--------|--------|
+| Date       | Author              | Change                |
+| ---------- | ------------------- | --------------------- |
 | 2026-03-06 | Scrum Master (BMAD) | Initial Sprint-1 plan |
 
 ---

@@ -1,16 +1,16 @@
 {
-  "sync": "2026-03-12",
-  "generatedAt": "2026-03-12T12:28:24.665Z",
-  "totalInstances": 1,
-  "instances": [
-    {
-      "package": "idae-machine",
-      "phase": "Unknown",
-      "progress": 1,
-      "bugs": [],
-      "dashboardPath": "bmad\\artifacts\\dashboard.md"
-    }
-  ],
-  "criticalIssues": [],
-  "generatedMarkdown": "# 👑 BMAD Master Dashboard\n> **Scope:** Monorepo Root | **Total Instances:** 1 | **Sync:** 2026-03-12\n\n---\n\n## 🏗️ Project Overview\n\n| Package | Phase | Progress | Status | Action |\n| :--- | :--- | :---: | :---: | :--- |\n| **idae-machine** | Unknown | 1% | 🔴 | [Open Dash](bmad/artifacts/dashboard.md) |\n\n---\n\n## ⚠️ Critical Issues (QA/Bugs)\n- None recorded\n\n---\n\n## 🛠️ Global Actions\n- [🔄 Full Rescan](command:bmad.run?%5B%22dashboard%22%5D)\n- [➕ New Package](command:bmad.run?%5B%22init%22%5D)\n"
+	"sync": "2026-03-12",
+	"generatedAt": "2026-03-12T12:28:24.665Z",
+	"totalInstances": 1,
+	"instances": [
+		{
+			"package": "idae-machine",
+			"phase": "Unknown",
+			"progress": 1,
+			"bugs": [],
+			"dashboardPath": "bmad\\artifacts\\dashboard.md"
+		}
+	],
+	"criticalIssues": [],
+	"generatedMarkdown": "# 👑 BMAD Master Dashboard\n> **Scope:** Monorepo Root | **Total Instances:** 1 | **Sync:** 2026-03-12\n\n---\n\n## 🏗️ Project Overview\n\n| Package | Phase | Progress | Status | Action |\n| :--- | :--- | :---: | :---: | :--- |\n| **idae-machine** | Unknown | 1% | 🔴 | [Open Dash](bmad/artifacts/dashboard.md) |\n\n---\n\n## ⚠️ Critical Issues (QA/Bugs)\n- None recorded\n\n---\n\n## 🛠️ Global Actions\n- [🔄 Full Rescan](command:bmad.run?%5B%22dashboard%22%5D)\n- [➕ New Package](command:bmad.run?%5B%22init%22%5D)\n"
 }

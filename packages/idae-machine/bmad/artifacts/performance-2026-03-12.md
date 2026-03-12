@@ -1,4 +1,5 @@
 # Performance Analysis & Optimization Report
+
 **Generated:** 2026-03-12
 **Project:** idae-machine v1.0
 **Story:** S2-03 (Performance Testing & Optimization)
@@ -11,16 +12,16 @@
 
 Comprehensive performance profiling shows idae-machine form components deliver **exceptional performance** with all targets exceeded:
 
-| Metric | Baseline | Target | Status |
-|--------|----------|--------|--------|
-| Single field validation | 0.14ms | <10ms | ✅ 71x faster |
-| Form validation (10 fields) | 0.18ms | <15ms | ✅ 83x faster |
-| Sync validator registration | 0.03ms | <5ms | ✅ 167x faster |
-| Async validation (50ms API) | 58.70ms | <300ms | ✅ 5x headroom |
-| Cross-field validation | 0.64ms | <20ms | ✅ 31x faster |
-| Parent→child binding | 0.00ms | <10ms | ✅ Instant |
-| Dual binding cycle | 0.00ms | <10ms | ✅ Instant |
-| Bundle size (gzip) | 1KB | <50KB | ✅ 50x smaller |
+| Metric                      | Baseline | Target | Status         |
+| --------------------------- | -------- | ------ | -------------- |
+| Single field validation     | 0.14ms   | <10ms  | ✅ 71x faster  |
+| Form validation (10 fields) | 0.18ms   | <15ms  | ✅ 83x faster  |
+| Sync validator registration | 0.03ms   | <5ms   | ✅ 167x faster |
+| Async validation (50ms API) | 58.70ms  | <300ms | ✅ 5x headroom |
+| Cross-field validation      | 0.64ms   | <20ms  | ✅ 31x faster  |
+| Parent→child binding        | 0.00ms   | <10ms  | ✅ Instant     |
+| Dual binding cycle          | 0.00ms   | <10ms  | ✅ Instant     |
+| Bundle size (gzip)          | 1KB      | <50KB  | ✅ 50x smaller |
 
 **Key Achievement:** MachineSchemeValidate component adds **only 1KB** to application bundle size (gzip), while providing comprehensive validation pipeline.
 
@@ -29,6 +30,7 @@ Comprehensive performance profiling shows idae-machine form components deliver *
 ## Performance Testing Methodology
 
 ### Test Environment
+
 - **Runtime:** Node.js via Vitest
 - **Hardware:** Development machine (Windows 11, Intel Core i7, 16GB RAM)
 - **Test Pattern:** 11 comprehensive benchmark tests
@@ -37,26 +39,32 @@ Comprehensive performance profiling shows idae-machine form components deliver *
 ### Test Coverage
 
 **1. Sync Validation Performance (3 tests)**
+
 - Single field validation latency
 - Form validation with 10 fields
 - Custom validator registration speed
 
 **2. Async Validation Performance (2 tests)**
+
 - Async validator debouncing behavior
 - Async validation with network latency simulation
 
 **3. Cross-Field Validation Performance (2 tests)**
+
 - Cross-field validator registration
 - Cross-field validation execution
 
 **4. Data Binding Performance (2 tests)**
+
 - Parent→child reactive update
 - Dual binding without infinite loops
 
 **5. Bundle Size Analysis (1 test)**
+
 - Estimated component footprint
 
 **6. Memory Usage (implicit)**
+
 - 50+ validators in memory
 - 100+ form fields handled
 
@@ -67,6 +75,7 @@ Comprehensive performance profiling shows idae-machine form components deliver *
 ### Sync Validation Benchmarks
 
 #### Test 1: Single Field Validation
+
 ```
 Metric: Single field validation: 0.14ms
 Target: <10ms
@@ -76,6 +85,7 @@ Status: ✅ PASS (71x faster than target)
 **Analysis:** Field validation is sub-millisecond, indicating negligible overhead for individual field checks.
 
 #### Test 2: Form Validation (10 Fields)
+
 ```
 Metric: Form validation (10 fields): 0.18ms
 Target: <15ms
@@ -85,6 +95,7 @@ Status: ✅ PASS (83x faster than target)
 **Analysis:** Full form validation with 10 fields still completes in <1ms. Scales well for larger forms.
 
 #### Test 3: Custom Validator Registration
+
 ```
 Metric: Register 10 custom validators: 0.03ms
 Target: <5ms
@@ -98,6 +109,7 @@ Status: ✅ PASS (167x faster than target)
 ### Async Validation Benchmarks
 
 #### Test 4: Async Validator Debouncing
+
 ```
 Metric: Async validator calls for 5 rapid inputs: 5 calls
 Pattern: Expected behavior (async validators called for each field)
@@ -107,6 +119,7 @@ Status: ✅ PASS (debouncing managed at application level)
 **Analysis:** Debouncing (300ms) should be implemented at form component level, not validator level. Current implementation allows application to control debounce timing.
 
 #### Test 5: Async Validation with Network Latency
+
 ```
 Metric: Async validator with 50ms API delay: 58.70ms
 Target: <300ms
@@ -120,6 +133,7 @@ Status: ✅ PASS (5.1x faster than target)
 ### Cross-Field Validation Benchmarks
 
 #### Test 6: Cross-Field Validator Registration
+
 ```
 Metric: Register 5 cross-field validators: 0.02ms
 Target: <5ms
@@ -129,6 +143,7 @@ Status: ✅ PASS (250x faster than target)
 **Analysis:** Cross-field validator registration is negligible; can support complex multi-field validation rules.
 
 #### Test 7: Cross-Field Validation Execution
+
 ```
 Metric: Form validation with cross-field: 0.64ms
 Target: <20ms
@@ -142,6 +157,7 @@ Status: ✅ PASS (31x faster than target)
 ### Data Binding Performance
 
 #### Test 8: Parent→Child Update
+
 ```
 Metric: Parent→child binding update: 0.00ms
 Target: <10ms
@@ -151,6 +167,7 @@ Status: ✅ PASS (Instant)
 **Analysis:** Reactive binding updates are instantaneous in JavaScript execution (< microsecond). Svelte's reactivity has no measurable overhead in this context.
 
 #### Test 9: Dual Binding Without Loop
+
 ```
 Metric: Dual binding cycle: 0.00ms (2 updates)
 Target: <10ms
@@ -164,6 +181,7 @@ Status: ✅ PASS (Instant, no infinite loops)
 ### Bundle Size Analysis
 
 #### Test 10: MachineSchemeValidate Component Footprint
+
 ```
 Metric: Unminified: 10KB
 Metric: Minified: 3KB
@@ -183,6 +201,7 @@ Status: ✅ PASS (50x smaller than target)
 **Test Scenario:** Form with 100 fields + 50 custom validators + 50 async validators
 
 **Expected Performance:**
+
 - Validation registration: <100ms
 - Form validation: <50ms (mostly async validators)
 - Memory footprint: <5MB for validator registries
@@ -191,12 +210,12 @@ Status: ✅ PASS (50x smaller than target)
 
 ### Validator Registry Growth
 
-| Validators | Estimated Time | Memory | Status |
-|---|---|---|---|
-| 10 | <1ms | <1KB | ✅ Negligible |
-| 50 | <5ms | <10KB | ✅ Acceptable |
-| 100 | <10ms | <20KB | ✅ Acceptable |
-| 1000 | <100ms | <200KB | ✅ Acceptable |
+| Validators | Estimated Time | Memory | Status        |
+| ---------- | -------------- | ------ | ------------- |
+| 10         | <1ms           | <1KB   | ✅ Negligible |
+| 50         | <5ms           | <10KB  | ✅ Acceptable |
+| 100        | <10ms          | <20KB  | ✅ Acceptable |
+| 1000       | <100ms         | <200KB | ✅ Acceptable |
 
 ---
 
@@ -281,14 +300,14 @@ Status: ✅ PASS (50x smaller than target)
 
 ### idae-machine vs Alternative Validation Libraries
 
-| Metric | idae-machine | Typical Library | Status |
-|--------|---|---|---|
-| Single field validation | 0.14ms | 1-5ms | ✅ 10-35x faster |
-| Type coverage | 95% (unknown) | 60-80% (any) | ✅ Better safety |
-| Async support | ✅ Built-in | ✅ Plugin | ✅ Native |
-| Cross-field validation | ✅ Native | ⚠️ Limited | ✅ Better |
-| Bundle size | 1KB | 5-15KB | ✅ Smaller |
-| TypeScript support | ✅ Full | ⚠️ Partial | ✅ Better |
+| Metric                  | idae-machine  | Typical Library | Status           |
+| ----------------------- | ------------- | --------------- | ---------------- |
+| Single field validation | 0.14ms        | 1-5ms           | ✅ 10-35x faster |
+| Type coverage           | 95% (unknown) | 60-80% (any)    | ✅ Better safety |
+| Async support           | ✅ Built-in   | ✅ Plugin       | ✅ Native        |
+| Cross-field validation  | ✅ Native     | ⚠️ Limited      | ✅ Better        |
+| Bundle size             | 1KB           | 5-15KB          | ✅ Smaller       |
+| TypeScript support      | ✅ Full       | ⚠️ Partial      | ✅ Better        |
 
 **Verdict:** idae-machine offers **best-in-class performance** with additional safety and feature benefits.
 
@@ -298,13 +317,13 @@ Status: ✅ PASS (50x smaller than target)
 
 ### Baseline Memory Usage
 
-| Scenario | Memory | Status |
-|---|---|---|
-| Validator instance (no registrations) | <1KB | ✅ Minimal |
-| 10 custom validators | <5KB | ✅ Negligible |
-| 10 async validators | <10KB | ✅ Negligible |
-| 10 cross-field validators | <3KB | ✅ Negligible |
-| Total (30 validators) | <20KB | ✅ Acceptable |
+| Scenario                              | Memory | Status        |
+| ------------------------------------- | ------ | ------------- |
+| Validator instance (no registrations) | <1KB   | ✅ Minimal    |
+| 10 custom validators                  | <5KB   | ✅ Negligible |
+| 10 async validators                   | <10KB  | ✅ Negligible |
+| 10 cross-field validators             | <3KB   | ✅ Negligible |
+| Total (30 validators)                 | <20KB  | ✅ Acceptable |
 
 ### Memory Cleanup
 
@@ -320,12 +339,12 @@ Status: ✅ PASS (50x smaller than target)
 
 ### Expected Browser Performance
 
-| Browser | Expected Validation Speed | Expected Memory | Status |
-|---|---|---|---|
-| Chrome 120+ | <1ms | <20KB | ✅ Excellent |
-| Firefox 121+ | <1ms | <20KB | ✅ Excellent |
-| Safari 17+ | <1ms | <20KB | ✅ Excellent |
-| Edge 120+ | <1ms | <20KB | ✅ Excellent |
+| Browser      | Expected Validation Speed | Expected Memory | Status       |
+| ------------ | ------------------------- | --------------- | ------------ |
+| Chrome 120+  | <1ms                      | <20KB           | ✅ Excellent |
+| Firefox 121+ | <1ms                      | <20KB           | ✅ Excellent |
+| Safari 17+   | <1ms                      | <20KB           | ✅ Excellent |
+| Edge 120+    | <1ms                      | <20KB           | ✅ Excellent |
 
 ---
 
@@ -334,42 +353,42 @@ Status: ✅ PASS (50x smaller than target)
 ### Best Practices for Optimal Performance
 
 1. **Debounce Async Validators** (50-300ms recommended)
+
    ```typescript
    // Debounce wrapper for async validators
    const debounce = (fn, delay) => {
-     let timeoutId;
-     return async (value) => {
-       clearTimeout(timeoutId);
-       return new Promise(resolve => {
-         timeoutId = setTimeout(() => resolve(fn(value)), delay);
-       });
-     };
+   	let timeoutId;
+   	return async (value) => {
+   		clearTimeout(timeoutId);
+   		return new Promise((resolve) => {
+   			timeoutId = setTimeout(() => resolve(fn(value)), delay);
+   		});
+   	};
    };
 
    const debouncedCheck = debounce(async (val) => {
-     // API call
+   	// API call
    }, 300);
 
    validator.registerAsync('username', debouncedCheck);
    ```
 
 2. **Cache Validator Results** (For expensive validators)
+
    ```typescript
    const cache = new Map();
    validator.registerAsync('username', async (val) => {
-     if (cache.has(val)) return cache.get(val);
-     const result = await checkAvailability(val);
-     cache.set(val, result);
-     return result;
+   	if (cache.has(val)) return cache.get(val);
+   	const result = await checkAvailability(val);
+   	cache.set(val, result);
+   	return result;
    });
    ```
 
 3. **Batch Validation** (For large forms)
    ```typescript
    // Validate all fields in parallel (not sequential)
-   const results = await Promise.all(
-     fields.map(f => validator.validateField(f, data[f]))
-   );
+   const results = await Promise.all(fields.map((f) => validator.validateField(f, data[f])));
    ```
 
 ---

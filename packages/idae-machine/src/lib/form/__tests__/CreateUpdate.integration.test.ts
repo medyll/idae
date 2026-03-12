@@ -16,30 +16,30 @@ describe('CreateUpdate Component Integration', () => {
 		// Mock MachineDb for testing
 		mockMachineDb = {
 			collection: vi.fn().mockReturnValue({
-				field: vi.fn().mockImplementation((fieldName) => ({
+				field:    vi.fn().mockImplementation((fieldName) => ({
 					parse: vi.fn().mockReturnValue({
 						fieldType: 'string',
-						fieldArgs: ['required'],
-					}),
+						fieldArgs: ['required']
+					})
 				})),
 				template: {
 					fields: {
-						name: { fieldType: 'string', fieldArgs: ['required'] },
-						email: { fieldType: 'string', fieldArgs: ['required'] },
-						password: { fieldType: 'string', fieldArgs: ['required'] },
+						name:            { fieldType: 'string', fieldArgs: ['required'] },
+						email:           { fieldType: 'string', fieldArgs: ['required'] },
+						password:        { fieldType: 'string', fieldArgs: ['required'] },
 						passwordConfirm: { fieldType: 'string', fieldArgs: ['required'] },
-						age: { fieldType: 'number', fieldArgs: [] },
-						startDate: { fieldType: 'date', fieldArgs: [] },
-						endDate: { fieldType: 'date', fieldArgs: [] },
-						username: { fieldType: 'string', fieldArgs: [] },
-						country: { fieldType: 'string', fieldArgs: [] },
-						zipCode: { fieldType: 'string', fieldArgs: [] },
-						sameAsShipping: { fieldType: 'boolean', fieldArgs: [] },
+						age:             { fieldType: 'number', fieldArgs: [] },
+						startDate:       { fieldType: 'date', fieldArgs: [] },
+						endDate:         { fieldType: 'date', fieldArgs: [] },
+						username:        { fieldType: 'string', fieldArgs: [] },
+						country:         { fieldType: 'string', fieldArgs: [] },
+						zipCode:         { fieldType: 'string', fieldArgs: [] },
+						sameAsShipping:  { fieldType: 'boolean', fieldArgs: [] },
 						shippingAddress: { fieldType: 'string', fieldArgs: [] },
-						billingAddress: { fieldType: 'string', fieldArgs: [] },
-					},
-				},
-			}),
+						billingAddress:  { fieldType: 'string', fieldArgs: [] }
+					}
+				}
+			})
 		};
 
 		validator = new MachineSchemeValidate('users', mockMachineDb);
@@ -48,15 +48,24 @@ describe('CreateUpdate Component Integration', () => {
 	describe('Form Submission', () => {
 		it('should accept valid form data', async () => {
 			const formData = {
-				name: 'John Doe',
-				email: 'john@example.com',
-				password: 'password123',
+				name:            'John Doe',
+				email:           'john@example.com',
+				password:        'password123',
 				passwordConfirm: 'password123',
-				age: 30,
+				age:             30
 			};
 
 			const result = await validator.validateForm(formData, {
-				ignoreFields: ['startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress'],
+				ignoreFields: [
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress'
+				]
 			});
 			expect(result.isValid).toBe(true);
 			expect(result.errors).toEqual({});
@@ -65,10 +74,10 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should reject form with missing required field', async () => {
 			const formData = {
-				name: 'John Doe',
-				email: '', // Missing email (required)
-				password: 'password123',
-				passwordConfirm: 'password123',
+				name:            'John Doe',
+				email:           '', // Missing email (required)
+				password:        'password123',
+				passwordConfirm: 'password123'
 			};
 
 			const result = await validator.validateForm(formData);
@@ -79,16 +88,16 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should collect all validation errors', async () => {
 			const formData = {
-				name: '', // Missing
-				email: '', // Missing
-				password: 'pass', // Will fail custom validator
-				passwordConfirm: 'different', // Will fail cross-field
+				name:            '', // Missing
+				email:           '', // Missing
+				password:        'pass', // Will fail custom validator
+				passwordConfirm: 'different' // Will fail cross-field
 			};
 
 			validator.registerCustom('password', (val) => String(val).length >= 8);
 			validator.registerCrossField({
-				fields: ['password', 'passwordConfirm'],
-				validator: (data) => data.password === data.passwordConfirm,
+				fields:    ['password', 'passwordConfirm'],
+				validator: (data) => data.password === data.passwordConfirm
 			});
 
 			const result = await validator.validateForm(formData);
@@ -98,15 +107,13 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should disable submit when validation fails', async () => {
 			const formData = {
-				name: 'John',
-				email: 'invalid-email', // Will fail custom validator
-				password: 'password123',
-				passwordConfirm: 'password123',
+				name:            'John',
+				email:           'invalid-email', // Will fail custom validator
+				password:        'password123',
+				passwordConfirm: 'password123'
 			};
 
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const result = await validator.validateForm(formData);
 			expect(result.isValid).toBe(false);
@@ -115,9 +122,7 @@ describe('CreateUpdate Component Integration', () => {
 
 	describe('Custom Validators', () => {
 		it('should enforce email format validation', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const validEmail = { email: 'user@example.com' };
 			const validResult = await validator.validateField('email', validEmail.email);
@@ -162,9 +167,7 @@ describe('CreateUpdate Component Integration', () => {
 		});
 
 		it('should return error message for failed custom validator', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const result = await validator.validateField('email', 'invalid.email');
 			expect(result.isValid).toBe(false);
@@ -175,7 +178,7 @@ describe('CreateUpdate Component Integration', () => {
 	describe('Async Validators', () => {
 		it('should execute async validator', async () => {
 			const mockFetch = vi.fn().mockResolvedValue({
-				json: async () => ({ available: true }),
+				json: async () => ({ available: true })
 			});
 			global.fetch = mockFetch;
 
@@ -191,7 +194,7 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should fail when async validator returns false', async () => {
 			const mockFetch = vi.fn().mockResolvedValue({
-				json: async () => ({ available: false }),
+				json: async () => ({ available: false })
 			});
 			global.fetch = mockFetch;
 
@@ -254,31 +257,51 @@ describe('CreateUpdate Component Integration', () => {
 	describe('Cross-Field Validators', () => {
 		it('should validate password matching', async () => {
 			validator.registerCrossField({
-				fields: ['password', 'passwordConfirm'],
-				validator: (data) => data.password === data.passwordConfirm,
+				fields:    ['password', 'passwordConfirm'],
+				validator: (data) => data.password === data.passwordConfirm
 			});
 
 			const matchingPasswords = {
-				name: 'User',
-				email: 'test@example.com',
-				password: 'MyPass123',
-				passwordConfirm: 'MyPass123',
+				name:            'User',
+				email:           'test@example.com',
+				password:        'MyPass123',
+				passwordConfirm: 'MyPass123'
 			};
 
 			const result = await validator.validateForm(matchingPasswords, {
-				ignoreFields: ['startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress', 'age'],
+				ignoreFields: [
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress',
+					'age'
+				]
 			});
 			expect(result.isValid).toBe(true);
 
 			const mismatchedPasswords = {
-				name: 'User',
-				email: 'test@example.com',
-				password: 'MyPass123',
-				passwordConfirm: 'DifferentPass123',
+				name:            'User',
+				email:           'test@example.com',
+				password:        'MyPass123',
+				passwordConfirm: 'DifferentPass123'
 			};
 
 			const mismatchResult = await validator.validateForm(mismatchedPasswords, {
-				ignoreFields: ['startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress', 'age'],
+				ignoreFields: [
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress',
+					'age'
+				]
 			});
 			expect(mismatchResult.isValid).toBe(false);
 			expect(mismatchResult.errors).toHaveProperty('__form');
@@ -286,48 +309,64 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should validate date range (endDate > startDate)', async () => {
 			validator.registerCrossField({
-				fields: ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate),
+				fields:    ['startDate', 'endDate'],
+				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
 			});
 
 			const validRange = {
-				name: 'Event',
-				email: 'test@example.com',
-				password: 'pass123',
+				name:            'Event',
+				email:           'test@example.com',
+				password:        'pass123',
 				passwordConfirm: 'pass123',
-				startDate: '2026-03-01',
-				endDate: '2026-03-31',
+				startDate:       '2026-03-01',
+				endDate:         '2026-03-31'
 			};
 
 			const result = await validator.validateForm(validRange, {
-				ignoreFields: ['username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress', 'age'],
+				ignoreFields: [
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress',
+					'age'
+				]
 			});
 			expect(result.isValid).toBe(true);
 
 			const invalidRange = {
-				name: 'Event',
-				email: 'test@example.com',
-				password: 'pass123',
+				name:            'Event',
+				email:           'test@example.com',
+				password:        'pass123',
 				passwordConfirm: 'pass123',
-				startDate: '2026-03-31',
-				endDate: '2026-03-01',
+				startDate:       '2026-03-31',
+				endDate:         '2026-03-01'
 			};
 
 			const invalidResult = await validator.validateForm(invalidRange, {
-				ignoreFields: ['username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress', 'age'],
+				ignoreFields: [
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress',
+					'age'
+				]
 			});
 			expect(invalidResult.isValid).toBe(false);
 		});
 
 		it('should return meaningful error for cross-field failure', async () => {
 			validator.registerCrossField({
-				fields: ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate),
+				fields:    ['startDate', 'endDate'],
+				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
 			});
 
 			const result = await validator.validateForm({
 				startDate: '2026-03-20',
-				endDate: '2026-03-10',
+				endDate:   '2026-03-10'
 			});
 
 			expect(result.errors).toHaveProperty('__form');
@@ -436,9 +475,7 @@ describe('CreateUpdate Component Integration', () => {
 
 	describe('Error Handling', () => {
 		it('should display validation errors inline', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const formData = { email: 'invalid.email' };
 			const result = await validator.validateForm(formData);
@@ -448,9 +485,7 @@ describe('CreateUpdate Component Integration', () => {
 		});
 
 		it('should clear errors when field is fixed', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			// First validation: error
 			const invalidResult = await validator.validateField('email', 'invalid.email');
@@ -478,9 +513,7 @@ describe('CreateUpdate Component Integration', () => {
 		});
 
 		it('should provide user-friendly error messages', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const result = await validator.validateField('email', 'bad');
 			expect(result.error).toBeDefined();
@@ -503,54 +536,81 @@ describe('CreateUpdate Component Integration', () => {
 	describe('Complete Form Workflows', () => {
 		it('should handle user registration workflow', async () => {
 			// Setup validators
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 			validator.registerCustom('password', (val) => String(val).length >= 8);
 			validator.registerCrossField({
-				fields: ['password', 'passwordConfirm'],
-				validator: (data) => data.password === data.passwordConfirm,
+				fields:    ['password', 'passwordConfirm'],
+				validator: (data) => data.password === data.passwordConfirm
 			});
 
 			// User fills form correctly
 			const registrationData = {
-				name: 'John Doe',
-				email: 'john@example.com',
-				password: 'SecurePassword123',
-				passwordConfirm: 'SecurePassword123',
+				name:            'John Doe',
+				email:           'john@example.com',
+				password:        'SecurePassword123',
+				passwordConfirm: 'SecurePassword123'
 			};
 
 			const result = await validator.validateForm(registrationData, {
-				ignoreFields: ['age', 'startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress'],
+				ignoreFields: [
+					'age',
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress'
+				]
 			});
 			expect(result.isValid).toBe(true);
 		});
 
 		it('should handle form reset with cleared validators', async () => {
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			const invalidData = {
-				name: 'User',
-				email: 'invalid',
-				password: 'pass123',
-				passwordConfirm: 'pass123',
+				name:            'User',
+				email:           'invalid',
+				password:        'pass123',
+				passwordConfirm: 'pass123'
 			};
 			const invalidResult = await validator.validateForm(invalidData, {
-				ignoreFields: ['age', 'startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress'],
+				ignoreFields: [
+					'age',
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress'
+				]
 			});
 			expect(invalidResult.isValid).toBe(false);
 
 			// Reset form (validators remain registered)
 			const resetData = {
-				name: 'User',
-				email: '',
-				password: 'pass123',
-				passwordConfirm: 'pass123',
+				name:            'User',
+				email:           '',
+				password:        'pass123',
+				passwordConfirm: 'pass123'
 			};
 			const resetResult = await validator.validateForm(resetData, {
-				ignoreFields: ['email', 'age', 'startDate', 'endDate', 'username', 'country', 'zipCode', 'sameAsShipping', 'shippingAddress', 'billingAddress'],
+				ignoreFields: [
+					'email',
+					'age',
+					'startDate',
+					'endDate',
+					'username',
+					'country',
+					'zipCode',
+					'sameAsShipping',
+					'shippingAddress',
+					'billingAddress'
+				]
 			});
 
 			expect(resetResult.isValid).toBe(true);
@@ -559,19 +619,19 @@ describe('CreateUpdate Component Integration', () => {
 		it('should validate multi-field dependent validation', async () => {
 			// Billing address same as shipping address scenario
 			validator.registerCrossField({
-				fields: ['shippingAddress', 'billingAddress'],
+				fields:    ['shippingAddress', 'billingAddress'],
 				validator: (data) => {
 					if (data.sameAsShipping === true) {
 						return data.billingAddress === data.shippingAddress;
 					}
 					return Boolean(data.billingAddress);
-				},
+				}
 			});
 
 			const data = {
 				shippingAddress: '123 Main St',
-				billingAddress: '123 Main St',
-				sameAsShipping: true,
+				billingAddress:  '123 Main St',
+				sameAsShipping:  true
 			};
 
 			const result = await validator.validateForm(data);
@@ -580,13 +640,11 @@ describe('CreateUpdate Component Integration', () => {
 
 		it('should combine custom + async + cross-field validators', async () => {
 			// Email format
-			validator.registerCustom('email', (val) =>
-				/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-			);
+			validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 			// Email uniqueness (async)
 			const mockFetch = vi.fn().mockResolvedValue({
-				json: async () => ({ available: true }),
+				json: async () => ({ available: true })
 			});
 			global.fetch = mockFetch;
 
@@ -598,14 +656,14 @@ describe('CreateUpdate Component Integration', () => {
 
 			// Password matching
 			validator.registerCrossField({
-				fields: ['password', 'passwordConfirm'],
-				validator: (data) => data.password === data.passwordConfirm,
+				fields:    ['password', 'passwordConfirm'],
+				validator: (data) => data.password === data.passwordConfirm
 			});
 
 			const data = {
-				email: 'newuser@example.com',
-				password: 'SecurePass123',
-				passwordConfirm: 'SecurePass123',
+				email:           'newuser@example.com',
+				password:        'SecurePass123',
+				passwordConfirm: 'SecurePass123'
 			};
 
 			const result = await validator.validateForm(data);

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import List from '$lib/fragments/List.svelte';
+	// import List from '$lib/fragments/List.svelte';
 
 	let className = '';
 	export { className as class };
@@ -15,7 +15,7 @@
 </script>
 
 <div class={className}>
-	<List class="flex flex-col gap-2" data={[...Array(4)]}>
+	<!-- <List class="flex flex-col gap-2" data={[...Array(4)]}>
 		<div class="flex gap-2">{@html skeletonLine()}</div>
-	</List>
+	</List> -->
 </div>

@@ -23,9 +23,7 @@ const validator = new MachineSchemeValidate('collection-name', machineDb);
 ### Example 1: Email Format
 
 ```typescript
-validator.registerCustom('email', (val) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-);
+validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 const result = await validator.validateField('email', 'user@example.com');
 console.log(result); // { isValid: true }
@@ -35,13 +33,8 @@ console.log(result); // { isValid: true }
 
 ```typescript
 validator.registerCustom('password', (val) => {
-  const str = String(val);
-  return (
-    str.length >= 8 &&
-    /[A-Z]/.test(str) &&
-    /[a-z]/.test(str) &&
-    /[0-9]/.test(str)
-  );
+	const str = String(val);
+	return str.length >= 8 && /[A-Z]/.test(str) && /[a-z]/.test(str) && /[0-9]/.test(str);
 });
 
 const result = await validator.validateField('password', 'Weak123');
@@ -55,8 +48,8 @@ const result = await validator.validateField('password', 'StrongPass123');
 
 ```typescript
 validator.registerCustom('age', (val) => {
-  const num = Number(val);
-  return num >= 0 && num <= 150;
+	const num = Number(val);
+	return num >= 0 && num <= 150;
 });
 
 await validator.validateField('age', 25); // Valid
@@ -71,10 +64,10 @@ await validator.validateField('age', 200); // Invalid
 
 ```typescript
 validator.registerAsync('username', async (val) => {
-  const response = await fetch(`/api/check-username?name=${val}`);
-  if (!response.ok) return true; // Allow if API fails
-  const data = await response.json();
-  return data.available;
+	const response = await fetch(`/api/check-username?name=${val}`);
+	if (!response.ok) return true; // Allow if API fails
+	const data = await response.json();
+	return data.available;
 });
 
 // During form submission, this will call the API
@@ -85,17 +78,17 @@ const result = await validator.validateField('username', 'johndoe');
 
 ```typescript
 validator.registerAsync('email', async (val) => {
-  try {
-    const response = await fetch('/api/check-email', {
-      method: 'POST',
-      body: JSON.stringify({ email: val })
-    });
-    const { unique } = await response.json();
-    return unique;
-  } catch (error) {
-    console.error('API error:', error);
-    return true; // Graceful fallback
-  }
+	try {
+		const response = await fetch('/api/check-email', {
+			method: 'POST',
+			body:   JSON.stringify({ email: val })
+		});
+		const { unique } = await response.json();
+		return unique;
+	} catch (error) {
+		console.error('API error:', error);
+		return true; // Graceful fallback
+	}
 });
 ```
 
@@ -107,18 +100,18 @@ validator.registerAsync('email', async (val) => {
 
 ```typescript
 validator.registerCrossField({
-  fields: ['password', 'passwordConfirm'],
-  validator: (data) => data.password === data.passwordConfirm
+	fields:    ['password', 'passwordConfirm'],
+	validator: (data) => data.password === data.passwordConfirm
 });
 
 const validForm = {
-  password: 'SecurePass123',
-  passwordConfirm: 'SecurePass123'
+	password:        'SecurePass123',
+	passwordConfirm: 'SecurePass123'
 };
 
 const invalidForm = {
-  password: 'SecurePass123',
-  passwordConfirm: 'Different123'
+	password:        'SecurePass123',
+	passwordConfirm: 'Different123'
 };
 
 await validator.validateForm(validForm);
@@ -132,13 +125,13 @@ await validator.validateForm(invalidForm);
 
 ```typescript
 validator.registerCrossField({
-  fields: ['checkIn', 'checkOut'],
-  validator: (data) => new Date(data.checkOut) > new Date(data.checkIn)
+	fields:    ['checkIn', 'checkOut'],
+	validator: (data) => new Date(data.checkOut) > new Date(data.checkIn)
 });
 
 const booking = {
-  checkIn: '2026-03-20',
-  checkOut: '2026-03-25'
+	checkIn:  '2026-03-20',
+	checkOut: '2026-03-25'
 };
 
 await validator.validateForm(booking);
@@ -150,13 +143,13 @@ await validator.validateForm(booking);
 ```typescript
 // ZIP code required only for US addresses
 validator.registerCrossField({
-  fields: ['country', 'zipCode'],
-  validator: (data) => {
-    if (data.country === 'US') {
-      return Boolean(data.zipCode && String(data.zipCode).length > 0);
-    }
-    return true; // ZIP not required for other countries
-  }
+	fields:    ['country', 'zipCode'],
+	validator: (data) => {
+		if (data.country === 'US') {
+			return Boolean(data.zipCode && String(data.zipCode).length > 0);
+		}
+		return true; // ZIP not required for other countries
+	}
 });
 
 const usAddress = { country: 'US', zipCode: '12345' };
@@ -175,50 +168,48 @@ await validator.validateForm(frAddress); // Valid
 const validator = new MachineSchemeValidate('users', machineDb);
 
 // 1. Email format
-validator.registerCustom('email', (val) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val))
-);
+validator.registerCustom('email', (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val)));
 
 // 2. Password strength
 validator.registerCustom('password', (val) => {
-  const str = String(val);
-  return str.length >= 8 && /[A-Z]/.test(str) && /[0-9]/.test(str);
+	const str = String(val);
+	return str.length >= 8 && /[A-Z]/.test(str) && /[0-9]/.test(str);
 });
 
 // 3. Username availability (async)
 validator.registerAsync('username', async (val) => {
-  const res = await fetch(`/api/users/check-username?name=${val}`);
-  return (await res.json()).available;
+	const res = await fetch(`/api/users/check-username?name=${val}`);
+	return (await res.json()).available;
 });
 
 // 4. Password matching
 validator.registerCrossField({
-  fields: ['password', 'passwordConfirm'],
-  validator: (data) => data.password === data.passwordConfirm
+	fields:    ['password', 'passwordConfirm'],
+	validator: (data) => data.password === data.passwordConfirm
 });
 
 // Validate registration form
 const formData = {
-  username: 'newuser',
-  email: 'newuser@example.com',
-  password: 'SecurePass123',
-  passwordConfirm: 'SecurePass123'
+	username:        'newuser',
+	email:           'newuser@example.com',
+	password:        'SecurePass123',
+	passwordConfirm: 'SecurePass123'
 };
 
 const result = await validator.validateForm(formData);
 
 if (result.isValid) {
-  // Submit to API
-  await fetch('/api/users/register', {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  });
+	// Submit to API
+	await fetch('/api/users/register', {
+		method: 'POST',
+		body:   JSON.stringify(formData)
+	});
 } else {
-  // Display errors
-  console.error('Validation errors:');
-  result.invalidFields.forEach(field => {
-    console.error(`  ${field}: ${result.errors[field]}`);
-  });
+	// Display errors
+	console.error('Validation errors:');
+	result.invalidFields.forEach((field) => {
+		console.error(`  ${field}: ${result.errors[field]}`);
+	});
 }
 ```
 
@@ -284,31 +275,31 @@ if (result.isValid) {
 
 ```typescript
 async function validateAndHandle(fieldName, value) {
-  const result = await validator.validateField(fieldName, value);
+	const result = await validator.validateField(fieldName, value);
 
-  if (!result.isValid) {
-    // Handle validation error
-    showError(fieldName, result.error);
-    return false;
-  }
+	if (!result.isValid) {
+		// Handle validation error
+		showError(fieldName, result.error);
+		return false;
+	}
 
-  clearError(fieldName);
-  return true;
+	clearError(fieldName);
+	return true;
 }
 
 async function submitForm(data) {
-  const result = await validator.validateForm(data);
+	const result = await validator.validateForm(data);
 
-  if (!result.isValid) {
-    // Handle form-level errors
-    result.invalidFields.forEach(field => {
-      showFieldError(field, result.errors[field]);
-    });
-    return false;
-  }
+	if (!result.isValid) {
+		// Handle form-level errors
+		result.invalidFields.forEach((field) => {
+			showFieldError(field, result.errors[field]);
+		});
+		return false;
+	}
 
-  // Form is valid, proceed with submission
-  return true;
+	// Form is valid, proceed with submission
+	return true;
 }
 ```
 
@@ -318,42 +309,42 @@ async function submitForm(data) {
 
 ```typescript
 function registerEmailValidator(validator) {
-  validator.registerCustom('email', (val) => {
-    const email = String(val);
+	validator.registerCustom('email', (val) => {
+		const email = String(val);
 
-    // Basic format check
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return false;
-    }
+		// Basic format check
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+			return false;
+		}
 
-    // Block disposable email domains
-    const disposableDomains = ['tempmail.com', 'throwaway.email'];
-    const domain = email.split('@')[1];
-    if (disposableDomains.includes(domain)) {
-      return false;
-    }
+		// Block disposable email domains
+		const disposableDomains = ['tempmail.com', 'throwaway.email'];
+		const domain = email.split('@')[1];
+		if (disposableDomains.includes(domain)) {
+			return false;
+		}
 
-    return true;
-  });
+		return true;
+	});
 }
 
 function registerPasswordValidator(validator) {
-  validator.registerCustom('password', (val) => {
-    const pwd = String(val);
+	validator.registerCustom('password', (val) => {
+		const pwd = String(val);
 
-    // Length check
-    if (pwd.length < 12) {
-      return false;
-    }
+		// Length check
+		if (pwd.length < 12) {
+			return false;
+		}
 
-    // Complexity check
-    const hasUpper = /[A-Z]/.test(pwd);
-    const hasLower = /[a-z]/.test(pwd);
-    const hasNumber = /[0-9]/.test(pwd);
-    const hasSpecial = /[!@#$%^&*]/.test(pwd);
+		// Complexity check
+		const hasUpper = /[A-Z]/.test(pwd);
+		const hasLower = /[a-z]/.test(pwd);
+		const hasNumber = /[0-9]/.test(pwd);
+		const hasSpecial = /[!@#$%^&*]/.test(pwd);
 
-    return hasUpper && hasLower && hasNumber && hasSpecial;
-  });
+		return hasUpper && hasLower && hasNumber && hasSpecial;
+	});
 }
 ```
 
@@ -362,33 +353,35 @@ function registerPasswordValidator(validator) {
 ## Performance Tips
 
 1. **Debounce async validators** to reduce API calls:
+
    ```typescript
    const debounce = (fn, ms) => {
-     let timeout;
-     return (...args) => {
-       clearTimeout(timeout);
-       return new Promise(resolve => {
-         timeout = setTimeout(() => resolve(fn(...args)), ms);
-       });
-     };
+   	let timeout;
+   	return (...args) => {
+   		clearTimeout(timeout);
+   		return new Promise((resolve) => {
+   			timeout = setTimeout(() => resolve(fn(...args)), ms);
+   		});
+   	};
    };
 
    const debouncedCheck = debounce(async (val) => {
-     const res = await fetch(`/api/check?name=${val}`);
-     return (await res.json()).available;
+   	const res = await fetch(`/api/check?name=${val}`);
+   	return (await res.json()).available;
    }, 300);
 
    validator.registerAsync('username', debouncedCheck);
    ```
 
 2. **Cache validation results** for expensive checks:
+
    ```typescript
    const cache = new Map();
    validator.registerAsync('email', async (val) => {
-     if (cache.has(val)) return cache.get(val);
-     const result = await checkEmail(val);
-     cache.set(val, result);
-     return result;
+   	if (cache.has(val)) return cache.get(val);
+   	const result = await checkEmail(val);
+   	cache.set(val, result);
+   	return result;
    });
    ```
 
@@ -407,4 +400,3 @@ function registerPasswordValidator(validator) {
 - [API Reference](./API.md)
 - [Performance Report](../artifacts/performance-2026-03-12.md)
 - [Compatibility Matrix](../artifacts/compatibility-2026-03-12.md)
-

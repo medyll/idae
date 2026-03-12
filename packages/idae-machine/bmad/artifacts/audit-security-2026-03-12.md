@@ -1,4 +1,5 @@
 # Security Audit Report – idae-machine v1.0
+
 **Generated:** 2026-03-12
 **Auditor:** BMAD Security Review (S2-02)
 **Scope:** Sprint-1 code changes + dependency review
@@ -13,6 +14,7 @@
 Comprehensive security audit of idae-machine v1.0 identified **zero critical and high-severity vulnerabilities**. Type safety improvements (Sprint-1, S1-01) significantly reduced attack surface. All 118 unit tests passing; 30 integration tests cover validation security. OWASP Top 10 (2021) compliance verified.
 
 **Key Findings:**
+
 - ✅ 0 critical vulnerabilities
 - ✅ 0 high-severity vulnerabilities
 - ✅ 12 low/info-level recommendations
@@ -29,6 +31,7 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 ## Audit Methodology
 
 **Scope:**
+
 - Source code review (Sprint-1 changes: S1-01 through S1-05)
 - Dependency vulnerability scan
 - OWASP Top 10 (2021) compliance check
@@ -38,6 +41,7 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 - Error handling and logging analysis
 
 **Tools Used:**
+
 - Manual code review (TypeScript, Svelte)
 - `npm outdated` (dependency versions)
 - `npm audit` equivalent analysis
@@ -49,9 +53,11 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 ## OWASP Top 10 (2021) Compliance
 
 ### A01: Broken Access Control ✅ PASS
+
 **Finding:** Minimal access control in library; application layer responsible for enforcing permissions.
 
 **Evidence:**
+
 - Form component props typed strictly (`CreateUpdateProps` interface)
 - No hardcoded permissions in library code
 - Data passed explicitly; no implicit access grants
@@ -63,9 +69,11 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 ---
 
 ### A02: Cryptographic Failures ✅ PASS
+
 **Finding:** No cryptographic operations in idae-machine library; delegated to runtime/database.
 
 **Evidence:**
+
 - No password hashing in library (async validator can call external API)
 - No encryption/decryption code
 - No SSL/TLS configuration (handled by deployment)
@@ -79,9 +87,11 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 ### A03: Injection ✅ PASS
 
 #### SQL Injection ✅ SECURE
+
 **Finding:** Database queries in MachineDb use parameterized queries.
 
 **Evidence:**
+
 ```typescript
 // MachineDb layer handles parameterized queries
 // No raw SQL concatenation found in idae-machine
@@ -91,9 +101,11 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 **Status:** ✅ PASS (0 SQL injection points found)
 
 #### XSS Injection ✅ SECURE
+
 **Finding:** All user input properly escaped; no DOM manipulation vulnerabilities.
 
 **Evidence:**
+
 - Form inputs use Svelte's automatic HTML escaping
 - `bind:value={formData[fieldName]}` does NOT execute arbitrary JavaScript
 - No `innerHTML` usage in form components
@@ -101,6 +113,7 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 - Error display uses text interpolation only
 
 **Code Review:**
+
 ```typescript
 // ✅ SAFE: Svelte auto-escapes this
 <input bind:value={data.email} />
@@ -115,9 +128,11 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 **Status:** ✅ PASS (0 XSS injection points found)
 
 #### Command Injection ✅ SECURE
+
 **Finding:** No dynamic command execution; library doesn't spawn processes.
 
 **Evidence:**
+
 - No `exec()`, `spawn()`, `system()` calls
 - No dynamic code evaluation
 - Validators are functions, not evaluated strings
@@ -131,12 +146,14 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 **Finding:** Design follows security-first principles from Sprint-1 refactoring.
 
 **Evidence:**
+
 - Type safety: 42+ `any` → 2 documented exceptions (95% improvement)
 - Validation-first: All form fields validated before submission
 - Error handling: Structured error types (MachineErrorValidation)
 - No implicit trust of input data
 
 **Threat Model:**
+
 - **Asset:** User form data (integrity critical)
 - **Threat:** Malformed/malicious input
 - **Control:** Type validation + custom validators + async validators
@@ -151,6 +168,7 @@ Comprehensive security audit of idae-machine v1.0 identified **zero critical and
 **Finding:** No sensitive configuration hardcoded in library.
 
 **Evidence:**
+
 ```typescript
 // ❌ Not found:
 const API_KEY = "sk_live_...";
@@ -173,6 +191,7 @@ validator.registerAsync('username', async (val) => { ... });
 **Dependency Analysis:**
 
 **Outdated Packages (Low Risk):**
+
 - `@medyll/idae-config-prettier`: 0.0.1 → 0.0.3 (patch)
 - `@typescript-eslint/eslint-plugin`: 8.54.0 → 8.57.0 (patch)
 - `@typescript-eslint/parser`: 8.54.0 → 8.57.0 (patch)
@@ -184,6 +203,7 @@ validator.registerAsync('username', async (val) => { ... });
 - Total: 14 packages with updates available
 
 **Severity:**
+
 - Critical: 0
 - High: 0
 - Medium: 0
@@ -208,6 +228,7 @@ validator.registerAsync('username', async (val) => { ... });
 **Finding:** Input validation comprehensive; data integrity protected.
 
 **Evidence:**
+
 - All form data validated via `validateForm()`
 - Type validation prevents type coercion attacks
 - Custom validators enforce business rules
@@ -215,6 +236,7 @@ validator.registerAsync('username', async (val) => { ... });
 - Error messages don't disclose system details
 
 **Integrity Controls:**
+
 1. **Type Safety** (TypeScript strict mode): Prevents type confusion
 2. **Field Validation** (`validateField()`): Checks required, type, format
 3. **Custom Validators** (`registerCustom()`): Business rule enforcement
@@ -230,16 +252,18 @@ validator.registerAsync('username', async (val) => { ... });
 **Finding:** No sensitive data in logs; error messages are generic.
 
 **Evidence:**
+
 ```typescript
 // ✅ SAFE: Error message is generic
-return { isValid: false, error: "Invalid value for email" };
+return { isValid: false, error: 'Invalid value for email' };
 
 // ❌ NOT FOUND: Never logs passwords, tokens, or sensitive data
 console.log(formData.password); // Not used
-console.log(userData.ssn);       // Not used
+console.log(userData.ssn); // Not used
 ```
 
 **Logging Recommendations:**
+
 1. Log validation failures at INFO level (not data values)
 2. Log security events (invalid attempts) at WARN level
 3. Never log passwords, tokens, API keys
@@ -254,16 +278,18 @@ console.log(userData.ssn);       // Not used
 **Finding:** Async validators can make external API calls; no SSRF vulnerability.
 
 **Evidence:**
+
 ```typescript
 // ✅ SAFE: Application controls the API endpoint
 validator.registerAsync('username', async (val) => {
-  // URL is hardcoded in application, not from user input
-  const response = await fetch(`/api/check-username?name=${val}`);
-  return (await response.json()).available;
+	// URL is hardcoded in application, not from user input
+	const response = await fetch(`/api/check-username?name=${val}`);
+	return (await response.json()).available;
 });
 ```
 
 **SSRF Controls:**
+
 - ✅ URL whitelist: Application controls allowed endpoints
 - ✅ No URL from user input: Endpoints hardcoded
 - ✅ No open redirects: No redirect logic in library
@@ -278,12 +304,14 @@ validator.registerAsync('username', async (val) => {
 **Finding:** Type safety improvements significantly reduce attack surface.
 
 **Baseline:**
+
 ```
 Sprint-0: 42+ `any` instances = Type coercion attacks possible
 Sprint-1: 2 documented exceptions = Type-safe by design
 ```
 
 **Type Coercion Attacks Prevented:**
+
 1. ❌ `any` allows `"123" + 1` → "1231" (silent coercion)
    ✅ `unknown` requires explicit type guard
 
@@ -294,6 +322,7 @@ Sprint-1: 2 documented exceptions = Type-safe by design
    ✅ `unknown` requires undefined guard
 
 **Evidence:**
+
 ```typescript
 // BEFORE (S1-00): Type coercion attacks possible
 validateField(fieldName: string, value: any): void {
@@ -313,6 +342,7 @@ async validateField(fieldName: keyof TplFields, value: unknown): Promise<{ isVal
 
 **Exception Documentation:**
 Two intentional exceptions in `SchemeFieldDefaultValues`:
+
 ```typescript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 static defaultFieldFactories: Record<string, () => any> = { ... };
@@ -328,12 +358,14 @@ static defaultFieldFactories: Record<string, () => any> = { ... };
 ### Sensitive Data Review ✅ PASS
 
 **Fields Reviewed:**
+
 - ✅ `password`, `passwordConfirm`: Not logged; async validator returns boolean only
 - ✅ `email`: Validated but not logged; custom validator patterns only
 - ✅ `creditCard`, `ssn`, `apiKey`: Not used in tests; consumer app responsible for protection
 - ✅ `age`, `phone`: No special handling; safe for logging in aggregates
 
 **Logging Compliance:**
+
 ```typescript
 // ❌ NEVER: Log sensitive data
 console.log(formData.password);
@@ -351,16 +383,17 @@ console.log(`Form submit: ${Object.keys(formData)}`);
 **Finding:** Error messages are generic; don't disclose system details.
 
 **Safe Examples:**
+
 ```typescript
 // ✅ SAFE: Generic, no system details
-"Invalid value for email"
-"Validation failed for field"
-"Cross-field validation failed"
+'Invalid value for email';
+'Validation failed for field';
+'Cross-field validation failed';
 
 // ❌ NEVER: System details exposed
-"SQL Error: Column 'email' not found"
-"TypeError: Cannot read property of undefined at line 42"
-"API response status: 500, error: {internal error details}"
+"SQL Error: Column 'email' not found";
+'TypeError: Cannot read property of undefined at line 42';
+'API response status: 500, error: {internal error details}';
 ```
 
 **Status:** ✅ PASS
@@ -375,6 +408,7 @@ console.log(`Form submit: ${Object.keys(formData)}`);
 **Status:** ✅ SECURE (305 lines)
 
 **Positive Findings:**
+
 - ✅ Type signatures strict (no `any`)
 - ✅ Input validation comprehensive (required, type, custom, async, cross-field)
 - ✅ Error handling non-throwing in validateForm() (vs validateField())
@@ -383,6 +417,7 @@ console.log(`Form submit: ${Object.keys(formData)}`);
 - ✅ No external API calls hardcoded (async validators receive URL at runtime)
 
 **Review Notes:**
+
 - Validators registered per-instance (good isolation)
 - Registries properly typed (Map<string, fn[]>)
 - Cross-field validators support both sync and async
@@ -395,6 +430,7 @@ console.log(`Form submit: ${Object.keys(formData)}`);
 **Status:** ✅ SECURE (component-level security)
 
 **Positive Findings:**
+
 - ✅ Form bindings safe (Svelte auto-escapes)
 - ✅ Validation run before submit
 - ✅ Errors displayed as text (no HTML injection)
@@ -409,6 +445,7 @@ console.log(`Form submit: ${Object.keys(formData)}`);
 **Status:** ✅ SECURE (binding pattern safe)
 
 **Positive Findings:**
+
 - ✅ Dual $effect pattern prevents infinite loops
 - ✅ bind:value auto-escapes
 - ✅ No innerHTML or {@html}
@@ -482,24 +519,24 @@ describe('Validation Security', {
 
 ## Compliance Checklist
 
-| Requirement | Status | Evidence |
-|---|---|---|
-| OWASP A01: Access Control | ✅ PASS | Props typed, no hardcoded perms |
-| OWASP A02: Cryptography | ✅ PASS | No crypto in library (delegated) |
-| OWASP A03: Injection | ✅ PASS | XSS/SQL/command injection: 0 found |
-| OWASP A04: Design | ✅ PASS | Type-safe design (95% `any` reduction) |
-| OWASP A05: Misconfiguration | ✅ PASS | No hardcoded secrets |
+| Requirement                        | Status  | Evidence                               |
+| ---------------------------------- | ------- | -------------------------------------- |
+| OWASP A01: Access Control          | ✅ PASS | Props typed, no hardcoded perms        |
+| OWASP A02: Cryptography            | ✅ PASS | No crypto in library (delegated)       |
+| OWASP A03: Injection               | ✅ PASS | XSS/SQL/command injection: 0 found     |
+| OWASP A04: Design                  | ✅ PASS | Type-safe design (95% `any` reduction) |
+| OWASP A05: Misconfiguration        | ✅ PASS | No hardcoded secrets                   |
 | OWASP A06: Vulnerable Dependencies | ✅ PASS | 0 critical/high vulns (14 low updates) |
-| OWASP A07: Auth Failures | ✅ PASS | Not in scope (delegated to app) |
-| OWASP A08: Data Integrity | ✅ PASS | Validation comprehensive |
-| OWASP A09: Logging & Monitoring | ✅ PASS | No sensitive data logged |
-| OWASP A10: SSRF | ✅ PASS | API URLs controlled by app |
-| XSS Prevention | ✅ PASS | Svelte escaping, no innerHTML |
-| SQL Injection Prevention | ✅ PASS | Parameterized queries (DB layer) |
-| Type Coercion Attacks | ✅ PASS | Strict TypeScript (95% improvement) |
-| Secrets Management | ✅ PASS | 0 hardcoded secrets found |
-| Input Validation | ✅ PASS | Custom/async/cross-field validators |
-| Error Handling | ✅ PASS | Generic messages, no system details |
+| OWASP A07: Auth Failures           | ✅ PASS | Not in scope (delegated to app)        |
+| OWASP A08: Data Integrity          | ✅ PASS | Validation comprehensive               |
+| OWASP A09: Logging & Monitoring    | ✅ PASS | No sensitive data logged               |
+| OWASP A10: SSRF                    | ✅ PASS | API URLs controlled by app             |
+| XSS Prevention                     | ✅ PASS | Svelte escaping, no innerHTML          |
+| SQL Injection Prevention           | ✅ PASS | Parameterized queries (DB layer)       |
+| Type Coercion Attacks              | ✅ PASS | Strict TypeScript (95% improvement)    |
+| Secrets Management                 | ✅ PASS | 0 hardcoded secrets found              |
+| Input Validation                   | ✅ PASS | Custom/async/cross-field validators    |
+| Error Handling                     | ✅ PASS | Generic messages, no system details    |
 
 ---
 
@@ -512,6 +549,7 @@ describe('Validation Security', {
 **Scope:** Sprint-1 + Validation Phase
 
 **Finding Summary:**
+
 - ✅ 0 critical vulnerabilities
 - ✅ 0 high-severity vulnerabilities
 - ✅ 12 low-severity recommendations (non-blocking)
@@ -527,17 +565,20 @@ describe('Validation Security', {
 ## Appendix: Tools & References
 
 ### OWASP Resources
+
 - [OWASP Top 10 2021](https://owasp.org/Top10/)
 - [OWASP API Security Top 10](https://owasp.org/www-project-api-security/)
 - [OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/)
 
 ### Security Testing Tools
+
 - `npm audit` — Dependency vulnerability scanning
 - `npm outdated` — Dependency version checking
 - TypeScript `strict: true` — Type safety verification
 - ESLint — Code quality & security rules
 
 ### Key Files Reviewed
+
 - `src/lib/main/machine/MachineSchemeValidate.ts` (305 lines)
 - `src/lib/form/CreateUpdate.svelte` (form handling)
 - `src/lib/form/FieldValue.svelte` (binding security)

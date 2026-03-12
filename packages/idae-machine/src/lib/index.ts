@@ -18,7 +18,6 @@ export * from '$lib/idae/schema-types.js';
 export * from '$lib/form/types.js';
 export { default as FieldValue } from '$lib/form/FieldValue.svelte';
 export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
-export { default as DataProvider } from '$lib/form/DataProvider.svelte';
 export { default as CreateUpdate } from '$lib/form/CreateUpdate.svelte';
 export * from '$lib/demo/testScheme.js';
 export * from '$lib/demo/dbSchema.js';

@@ -1,14 +1,14 @@
 import type {
-  TplCollectionName,
-  TplFieldRules,
-  TplFieldType,
-  TplProperties,
-  TplFieldArgs,
-  TplFields,
-  IDbForge,
-} from "@medyll/idae-idbql";
-import type { MachineDb } from "./machineDb.js";
-import { MachineError } from "./machine/MachineError.js";
+	TplCollectionName,
+	TplFieldRules,
+	TplFieldType,
+	TplProperties,
+	TplFieldArgs,
+	TplFields,
+	IDbForge
+} from '@medyll/idae-idbql';
+import type { MachineDb } from './machineDb.js';
+import { MachineError } from './machine/MachineError.js';
 
 /**
  * Utility class for parsing and constructing database field definitions (IDbForge).
@@ -16,145 +16,135 @@ import { MachineError } from "./machine/MachineError.js";
  */
 
 export class MachineParserForge {
-  #machineForge: MachineDb["machineForge"] | undefined;
+	#machineForge: MachineDb['machineForge'] | undefined;
 
-  /**
-   * Create a new MachineParserForge instance.
-   */
-  constructor() {
-    // Correction : ne pas initialiser #machineForge récursivement
-    this.#machineForge = undefined;
-  }
+	/**
+	 * Create a new MachineParserForge instance.
+	 */
+	constructor() {
+		// Correction : ne pas initialiser #machineForge récursivement
+		this.#machineForge = undefined;
+	}
 
-  /**
-   * Test if a field rule matches a specific type (array, object, fk, primitive).
-   * @param what - The type to test for ("array", "object", "fk", "primitive").
-   * @param fieldRule - The field rule string to analyze.
-   * @returns Partial IDbForge object if the rule matches, otherwise undefined.
-   */
-  testIs(
-    what: "array" | "object" | "fk" | "primitive",
-    fieldRule: TplFieldRules,
-  ): Partial<IDbForge> | undefined {
-    const typeMappings = {
-      fk: "fk-",
-      array: "array-of-",
-      object: "object-",
-      primitive: "",
-    };
-    const prefix = typeMappings[what];
-    // For primitive, ensure it does not start with any other type prefix
-    if (what === "primitive") {
-      if (
-        !fieldRule.startsWith("array-of-") &&
-        !fieldRule.startsWith("object-") &&
-        !fieldRule.startsWith("fk-")
-      ) {
-        return this.is(what, fieldRule);
-      }
-      return undefined;
-    }
-    // For other types, check if the rule starts with the expected prefix
-    if (fieldRule.startsWith(prefix)) {
-      return this.is(what, fieldRule);
-    }
-    return undefined;
-  }
+	/**
+	 * Test if a field rule matches a specific type (array, object, fk, primitive).
+	 * @param what - The type to test for ("array", "object", "fk", "primitive").
+	 * @param fieldRule - The field rule string to analyze.
+	 * @returns Partial IDbForge object if the rule matches, otherwise undefined.
+	 */
+	testIs(
+		what: 'array' | 'object' | 'fk' | 'primitive',
+		fieldRule: TplFieldRules
+	): Partial<IDbForge> | undefined {
+		const typeMappings = {
+			fk:        'fk-',
+			array:     'array-of-',
+			object:    'object-',
+			primitive: ''
+		};
+		const prefix = typeMappings[what];
+		// For primitive, ensure it does not start with any other type prefix
+		if (what === 'primitive') {
+			if (
+				!fieldRule.startsWith('array-of-') &&
+				!fieldRule.startsWith('object-') &&
+				!fieldRule.startsWith('fk-')
+			) {
+				return this.is(what, fieldRule);
+			}
+			return undefined;
+		}
+		// For other types, check if the rule starts with the expected prefix
+		if (fieldRule.startsWith(prefix)) {
+			return this.is(what, fieldRule);
+		}
+		return undefined;
+	}
 
-  /**
-   * Returns a partial IDbForge object for the given type and field rule.
-   * @param what - The type to extract ("array", "object", "fk", "primitive").
-   * @param fieldRule - The field rule string to analyze.
-   * @returns Partial IDbForge object with extracted type info.
-   */
-  is(
-    what: "array" | "object" | "fk" | "primitive",
-    fieldRule: TplFieldRules,
-  ): Partial<IDbForge> {
-    return this.extract(what, fieldRule);
-  }
+	/**
+	 * Returns a partial IDbForge object for the given type and field rule.
+	 * @param what - The type to extract ("array", "object", "fk", "primitive").
+	 * @param fieldRule - The field rule string to analyze.
+	 * @returns Partial IDbForge object with extracted type info.
+	 */
+	is(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: TplFieldRules): Partial<IDbForge> {
+		return this.extract(what, fieldRule);
+	}
 
-  /**
-   * Extracts type, rule, and argument information from a field rule string.
-   * @param type - The type to extract ("array", "object", "fk", "primitive").
-   * @param fieldRule - The field rule string to analyze.
-   * @returns Partial IDbForge object with extracted details.
-   */
-  extract(
-    type: "array" | "object" | "fk" | "primitive",
-    fieldRule: TplFieldRules,
-  ): Partial<IDbForge> {
-    /**
-     * Helper to extract the substring after a given pattern, before any arguments.
-     * @param pattern - The prefix pattern to remove.
-     * @param source - The field rule string.
-     * @returns The substring after the pattern.
-     */
-    function extractAfter(pattern: string, source: string) {
-      const reg = source?.split("(")?.[0];
-      const after = reg.split(pattern)[1];
-      return (after?.split("(")?.[0]?.trim() as unknown) as TplFieldRules;
-    }
+	/**
+	 * Extracts type, rule, and argument information from a field rule string.
+	 * @param type - The type to extract ("array", "object", "fk", "primitive").
+	 * @param fieldRule - The field rule string to analyze.
+	 * @returns Partial IDbForge object with extracted details.
+	 */
+	extract(
+		type: 'array' | 'object' | 'fk' | 'primitive',
+		fieldRule: TplFieldRules
+	): Partial<IDbForge> {
+		/**
+		 * Helper to extract the substring after a given pattern, before any arguments.
+		 * @param pattern - The prefix pattern to remove.
+		 * @param source - The field rule string.
+		 * @returns The substring after the pattern.
+		 */
+		function extractAfter(pattern: string, source: string) {
+			const reg = source?.split('(')?.[0];
+			const after = reg.split(pattern)[1];
+			return after?.split('(')?.[0]?.trim() as unknown as TplFieldRules;
+		}
 
-    /**
-     * Helper to extract the main type and argument list from a field rule string.
-     * @param source - The field rule string.
-     * @returns Object with the main type (piece) and argument array (args).
-     */
-    function extractArgs(
-      source: string,
-    ): { piece: string; args?: TplFieldArgs } {
-      const [piece, remaining] = source.split("(");
-      if (!remaining) return { piece: piece.trim() };
-      let central: string | undefined;
-      if (remaining !== undefined) {
-        [central] = remaining.split(")");
-      }
-      const args = central
-        ? ((central.split(" ").map((s) => s.trim()).filter(Boolean) as unknown) as TplFieldArgs)
-        : undefined;
-      return { piece: piece.trim(), args };
-    }
+		/**
+		 * Helper to extract the main type and argument list from a field rule string.
+		 * @param source - The field rule string.
+		 * @returns Object with the main type (piece) and argument array (args).
+		 */
+		function extractArgs(source: string): { piece: string; args?: TplFieldArgs } {
+			const [piece, remaining] = source.split('(');
+			if (!remaining) return { piece: piece.trim() };
+			let central: string | undefined;
+			if (remaining !== undefined) {
+				[central] = remaining.split(')');
+			}
+			const args = central
+				? (central
+						.split(' ')
+						.map((s) => s.trim())
+						.filter(Boolean) as unknown as TplFieldArgs)
+				: undefined;
+			return { piece: piece.trim(), args };
+		}
 
-    const extractedArgs = extractArgs(fieldRule);
-    let fieldType: TplFieldType | undefined;
-    const fieldArgs: TplFieldArgs | undefined = extractedArgs?.args;
-    switch (type) {
-      case "array":
-        fieldType = extractAfter("array-of-", fieldRule);
-        break;
-      case "object":
-        fieldType = extractAfter("object-", fieldRule);
-        break;
-      case "fk":
-        fieldType = "fk-" + extractAfter("fk-", fieldRule);
-        break;
-      case "primitive":
-        fieldType = (extractedArgs?.piece as unknown) as TplFieldType | undefined;
-        break;
-    }
-    const result: Partial<IDbForge> = {
-      fieldType: fieldType as TplFieldType | undefined,
-      fieldArgs: (fieldArgs as unknown) as any,
-      is: type as any,
-    };
-    return result;
-  }
+		const extractedArgs = extractArgs(fieldRule);
+		let fieldType: TplFieldType | undefined;
+		const fieldArgs: TplFieldArgs | undefined = extractedArgs?.args;
+		switch (type) {
+			case 'array':
+				fieldType = extractAfter('array-of-', fieldRule);
+				break;
+			case 'object':
+				fieldType = extractAfter('object-', fieldRule);
+				break;
+			case 'fk':
+				fieldType = 'fk-' + extractAfter('fk-', fieldRule);
+				break;
+			case 'primitive':
+				fieldType = extractedArgs?.piece as unknown as TplFieldType | undefined;
+				break;
+		}
+		const result: Partial<IDbForge> = {
+			fieldType: fieldType as TplFieldType | undefined,
+			fieldArgs: fieldArgs as unknown as any,
+			is:        type as any
+		};
+		return result;
+	}
 
-
-  /**
-   * Constructs an IDbForge object from its components.
-   * @param params - The components of the IDbForge object.
-   * @returns A complete IDbForge object.
-   */
-  forge({
-    collection,
-    fieldName,
-    fieldType,
-    fieldRule,
-    fieldArgs,
-    is,
-  }: IDbForge): IDbForge {
-    return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
-  }
+	/**
+	 * Constructs an IDbForge object from its components.
+	 * @param params - The components of the IDbForge object.
+	 * @returns A complete IDbForge object.
+	 */
+	forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is }: IDbForge): IDbForge {
+		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
+	}
 }

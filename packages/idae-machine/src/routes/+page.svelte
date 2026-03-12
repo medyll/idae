@@ -26,8 +26,7 @@ Shows all UI components working together with real data binding
 	import Skeleton from '$lib/fragments/Skeleton.svelte';
 
 	// Additional Form Components
-	import FieldInPlace from '$lib/form/FieldInPlace.svelte';
-	import DataProvider from '$lib/form/DataProvider.svelte';
+	import FieldInPlace from '$lib/form/FieldInPlace.svelte'; 
 
 	// Initialize machine
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });

@@ -5,29 +5,29 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 
-	test: {
+	test:    {
 		projects: [
 			{
 				extends: './vite.config.ts',
 				plugins: [svelteTesting()],
 
-				test: {
-					name: 'client',
+				test:    {
+					name:        'client',
 					environment: 'jsdom',
-					clearMocks: true,
-					include: ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/_work/*.spec.ts'],
-					exclude: ['src/lib/server/**'],
-					setupFiles: ['./vitest-setup-client.ts']
+					clearMocks:  true,
+					include:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/_work/*.spec.ts'],
+					exclude:     ['src/lib/server/**'],
+					setupFiles:  ['./vitest-setup-client.ts']
 				}
 			},
 			{
 				extends: './vite.config.ts',
 
-				test: {
-					name: 'server',
+				test:    {
+					name:        'server',
 					environment: 'node',
-					include: ['src/**/*.{test,spec}.{js,ts}'],
-					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
+					include:     ['src/**/*.{test,spec}.{js,ts}'],
+					exclude:     ['src/**/*.svelte.{test,spec}.{js,ts}']
 				}
 			}
 		]
