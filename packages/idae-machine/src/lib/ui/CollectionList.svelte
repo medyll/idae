@@ -44,11 +44,27 @@ Svelte 5 collection list with Looper
 
 	let logic = machine.logic;
 	let store = machine.store;
-	let fieldValues = $derived(logic.collection(collection).collectionValues);
-	let index = $derived(logic.collection(collection).template.index);
-	let query = $derived(where ? store[collection].where(where) : store[collection]?.getAll());
+	let errorMessage = $state<string | null>(null);
 
-	$inspect('CollectionList', { collection, query });
+	let fieldValues;
+	let index;
+	let query;
+
+	try {
+		fieldValues = $derived(logic.collection(collection).collectionValues);
+		index = $derived(logic.collection(collection).template.index);
+		query = $derived(where ? store[collection].where(where) : store[collection]?.getAll());
+		errorMessage = null;
+	} catch (e) {
+		const msg = e && e.message ? String(e.message) : 'Collection non trouvée dans le schéma';
+		errorMessage = `${msg}. Vérifiez que le schéma est à jour ou videz IndexedDB (ex: effacer la base dans l'inspecteur du navigateur).`;
+		// Fallbacks to avoid crashing the component UI
+		fieldValues = $derived([]);
+		index = $derived('');
+		query = $derived([]);
+	}
+
+	$inspect('CollectionList', { collection, query, errorMessage });
 
 	function load(item: COL, indexV: number | string) {
 		openCrud(item[index]);
