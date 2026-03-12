@@ -54,9 +54,9 @@ sprints:
 
 stories:
   total: 5
-  pending: 1
+  pending: 0
   in_progress: 0
-  done: 4
+  done: 5
 
 backlog:
   items: 5
