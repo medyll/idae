@@ -39,8 +39,10 @@ export class SchemeFieldDefaultValues {
   /**
    * Default value factories for all collections (global fields).
    * Each key is a field name, value is a function returning the default value.
+   * Using `any` return type is intentional: factories must work with all field types.
    * @type {Record<string, () => any>}
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static defaultFieldFactories: Record<string, () => any> = {
     createdAt: () => new Date(),
     updatedAt: () => new Date(),
@@ -51,8 +53,10 @@ export class SchemeFieldDefaultValues {
   /**
    * Default value factories per collection.
    * Each key is a collection name, value is an object of field factories.
+   * Using `any` return type is intentional: factories must work with all field types.
    * @type {Record<string, Record<string, () => any>>}
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static defaultCollectionFactories: Record<string, Record<string, () => any>> = {
     // Example:
     // agents: {

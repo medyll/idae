@@ -1,9 +1,9 @@
 export interface CreateUpdateProps<T = string> {
 	mode:         'create' | 'update' | 'show';
 	collection:   string;
-	data?:        Record<string, any>;
-	withData?:    Record<string, any>;
-	dataId?:      any;
+	data?:        Record<string, unknown>;
+	withData?:    Record<string, unknown>;
+	dataId?:      unknown;
 	/** fields to show in the collection */
 	showFields?:  T[];
 	/** 

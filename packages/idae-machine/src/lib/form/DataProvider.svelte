@@ -9,7 +9,7 @@ Svelte 5 context provider for collection/data
 
 <script lang="ts">
 	import { setContext } from 'svelte';
-	const props = $props<{ collection: string; data?: Record<string, any>[] }>();
+	const props = $props<{ collection: string; data?: Record<string, unknown>[] }>();
 	let data = props.data ?? $bindable();
 	setContext('collection', props.collection);
 	setContext('data', data);

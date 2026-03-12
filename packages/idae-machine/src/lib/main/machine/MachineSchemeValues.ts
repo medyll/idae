@@ -10,7 +10,7 @@ import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultVa
  *
  * @template T The type of the data object for the collection.
  */
-export class MachineSchemeValues<T extends Record<string, any>> {
+export class MachineSchemeValues<T extends Record<string, unknown>> {
 	/**
 	 * The IDbBase instance used for schema introspection.
 	 */
@@ -34,10 +34,10 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	/**
 	 * Get the presentation string for a data object, using the collection's presentation template.
 	 * @role Presentation logic
-	 * @param {Record<string, any>} data The data object.
+	 * @param {Record<string, unknown>} data The data object.
 	 * @return {string} The formatted presentation string.
 	 */
-	presentation(data: Record<string, any>): string {
+	presentation(data: Record<string, unknown>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const presentation = this.machine.collection(this.collectionName).template.presentation;
@@ -64,10 +64,10 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	/**
 	 * Get the value of the index field for a data object.
 	 * @role Index accessor
-	 * @param {Record<string, any>} data The data object.
-	 * @return {any | null} The value of the index field, or null if not found.
+	 * @param {Record<string, unknown>} data The data object.
+	 * @return {unknown | null} The value of the index field, or null if not found.
 	 */
-	indexValue(data: Record<string, any>): any | null {
+	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const indexName = this.machine.collection(this.collectionName).template.index;
@@ -177,12 +177,11 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	 * Iterate over an array field and return an array of IDbForge objects for each element.
 	 * @role Array field iteration
 	 * @param {keyof TplFields} fieldName The field name.
-	 * @param {any[]} data The array data.
-	 * @return {IDbForge[]} An array of IDbForge objects.
+	 * @param {unknown[]} data The array data.
+	 * @return {Array<Record<string, unknown>>} An array of IDbForge objects.
 	 */
-	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
-	// TODO: Refine IDbForge type if needed for stricter typing
-	iterateArrayField(fieldName: keyof TplFields, data: any[]): any[] { 
+	// NOTE: Return type is Array<Record<string, unknown>> to match actual runtime type from parser
+	iterateArrayField(fieldName: keyof TplFields, data: unknown[]): Array<Record<string, unknown>> { 
 
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
@@ -211,7 +210,7 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	 */
 	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
 	// TODO: Refine IDbForge type if needed for stricter typing
-	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): any[] { 
+	iterateObjectField(fieldName: keyof TplFields, data: Record<string, unknown>): Array<Record<string, unknown>> { 
 
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
@@ -301,9 +300,9 @@ export class MachineSchemeValues<T extends Record<string, any>> {
 	/**
 	 * Get default values for the collection, using global and collection-specific factories.
 	 * @role Default values
-	 * @returns {Record<string, any>} An object with default values for each field in the collection.
+	 * @returns {Record<string, unknown>} An object with default values for each field in the collection.
 	 */
-	getDefaults(): Record<string, any> {
+	getDefaults(): Record<string, unknown> {
 		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
 		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}

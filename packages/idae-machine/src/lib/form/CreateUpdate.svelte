@@ -1,4 +1,4 @@
-<script lang="ts" generics="COL = Record<string,any>">
+<script lang="ts" generics="COL = Record<string,unknown>">
     /**
      * @component CreateUpdate Form Component
      * @role User form for creating or editing records in a collection
@@ -18,6 +18,7 @@
     import { machine } from '$lib/main/machine.js';
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
     import type { CreateUpdateProps } from './types.js';
+    import type { IDbForge } from '@medyll/idae-idbql';
     import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
     import FieldInput from '$lib/form/FieldValue.svelte';
 
@@ -26,10 +27,10 @@
      * @typedef {Object} Props
      * @property {string} collection - Collection name to bind form to (e.g., 'users')
      * @property {'create' | 'edit' | 'show'} [mode='create'] - Form mode
-     * @property {Record<string, any>} [data] - Initial data for edit/show modes
-     * @property {Record<string, any>} [withData] - Additional data to merge
+     * @property {Record<string, unknown>} [data] - Initial data for edit/show modes
+     * @property {Record<string, unknown>} [withData] - Additional data to merge
      * @property {string} [dataId] - Record ID for edit/show modes
-     * @property {(payload: any) => void} [onsubmit] - Callback when form is submitted successfully
+     * @property {(payload: unknown) => void} [onsubmit] - Callback when form is submitted successfully
      */
 
     // Define props with Svelte 5 syntax
@@ -37,7 +38,7 @@
     let { 
         onsubmit: onsubmit_callback, 
         ...createUpdateProps 
-    }: CreateUpdateProps<COL> & { onsubmit?: (payload: any) => void } = $props();
+    }: CreateUpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 
     // Logic and Store references
     const logic = machine.logic;
@@ -53,7 +54,7 @@
     const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
 
     // Reactive State
-    let formData = $state<Record<string, any>>({});
+    let formData = $state<Record<string, unknown>>({});
     let validationErrors = $state<Record<string, string>>({});
     let isSubmitting = $state(false);
 
@@ -82,7 +83,7 @@
     /**
      * Validates form data using the logic validator
      */
-    const validate = (data: Record<string, any>) => {
+    const validate = (data: Record<string, unknown>) => {
         const v = typeof validator === 'function' ? validator() : validator;
         if (!v || typeof v.validateForm !== 'function') return true;
 
@@ -131,7 +132,7 @@
     };
 </script>
 
-{#snippet fieldInput(fieldName: string, fieldInfo: any)}
+{#snippet fieldInput(fieldName: string, fieldInfo: IDbForge)}
     <div class="field-wrapper">
         <FieldInput
             collection={createUpdateProps.collection}

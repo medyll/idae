@@ -118,7 +118,7 @@ export class MachineScheme {
    * @param {T} data The data object.
    * @return {MachineSchemeFieldForge<T>} The field forge instance.
    */
-  fieldForge<T extends Record<string, any>>(
+  fieldForge<T extends Record<string, unknown>>(
     fieldName: keyof T,
     data: T,
   ): MachineSchemeFieldForge<T> {
@@ -171,8 +171,8 @@ export class MachineScheme {
    * @role Reverse foreign key accessor
    * @return {Record<string, Record<string, IDbForge | undefined>>} Reverse foreign key collections.
    */
-  parseReverseFks(): Record<string, Record<string, any>> {
-    const result: Record<string, Record<string, any>> = {};
+  parseReverseFks(): Record<string, Record<string, unknown>> {
+    const result: Record<string, Record<string, unknown>> = {};
     Object.entries(this.model).forEach(([collectionName, collectionModel]) => {
       const template = (collectionModel as CollectionModel).template;
       if (template && template.fks) {

@@ -13,7 +13,7 @@ Svelte 5 field input for all types
 @slot input (let:fieldName, let:fieldForge, let:data) - Custom input rendering
 @event change - Emitted on value change (future)
 -->
-<script lang="ts" generics="COL extends Record<string,any>">
+<script lang="ts" generics="COL extends Record<string,unknown>">
     import type { TplCollectionName } from '@medyll/idae-idbql';
     import { getContext } from 'svelte';
     import { machine } from '$lib/main/machine.js';
@@ -28,7 +28,7 @@ Svelte 5 field input for all types
         showLabel = true 
     } = $props<{ 
         collection?: TplCollectionName; 
-        collectionId?: any; 
+        collectionId?: unknown; 
         fieldName: keyof COL; 
         data: COL; 
         mode?: 'show' | 'create' | 'update'; 
