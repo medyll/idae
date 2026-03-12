@@ -12,10 +12,17 @@ Svelte 5 reverse FK relation viewer for a collection
 -->
 <script lang="ts">
 	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
-	import { Looper } from '@medyll/idae-slotui-svelte';
 	import type { SvelteComponent } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	let { collection, showTitle = false, component, componentProps = {}, children } = $props<{ collection: TplCollectionName; collectionId?: any; where?: Where; showTitle?: boolean | string; component?: typeof SvelteComponent; componentProps?: Record<string, any>; children?: any }>();
+	let { collection, showTitle = false, component, componentProps = {}, children } = $props<{
+		collection: TplCollectionName;
+		collectionId?: any;
+		where?: Where;
+		showTitle?: boolean | string;
+		component?: typeof SvelteComponent;
+		componentProps?: Record<string, any>;
+		children?: any
+	}>();
 	const reverseFks = $derived(machine.logic.collection(collection).parseReverseFks());
 	function getTitle() {
 		if (typeof showTitle === 'string') return showTitle;
@@ -23,8 +30,8 @@ Svelte 5 reverse FK relation viewer for a collection
 	}
 </script>
 
-<Looper data={Object.entries(reverseFks)}>
-	{#snippet children(item)}
+{#each Object.entries(reverseFks) as item (item[0])}
+	<div>
 		{#if showTitle}
 			<div class="p2 font-bold">{collection}</div>
 		{/if}
@@ -35,5 +42,5 @@ Svelte 5 reverse FK relation viewer for a collection
 				{@render children(item)}
 			{/if}
 		{/if}
-	{/snippet}
-</Looper>
+	</div>
+{/each}

@@ -16,14 +16,11 @@ Svelte 5 collection list with Looper
 
 
 <script lang="ts" generics="COL = Record<string,any>">
-	import {
-		type MenuListProps,
-		Looper
-	} from '@medyll/idae-slotui-svelte';
+	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
-	import { machine } from '$lib/main/machine.js'; 
+	import { machine } from '$lib/main/machine.js';
 	import CollectionListFieldValues from './CollectionListFieldValues.svelte';
 
 	interface CollectionListProps  {
@@ -44,7 +41,7 @@ Svelte 5 collection list with Looper
 		where,
 		children: _children,
 	} = $props<CollectionListProps>();
-	
+
 	let logic = machine.logic;
 	let store = machine.store;
 	let fieldValues = $derived(logic.collection(collection).collectionValues);
@@ -53,10 +50,8 @@ Svelte 5 collection list with Looper
 
 	$inspect('CollectionList', { collection, query });
 
-
-
-	function load(event: CustomEvent, indexV: number | string) {
-		openCrud(event[index]);
+	function load(item: COL, indexV: number | string) {
+		openCrud(item[index]);
 	}
 
 	function openCrud(id: any) {
@@ -69,32 +64,25 @@ Svelte 5 collection list with Looper
 		return mounted;
 	}
 
-	const _onclick = (data: COL, index: number | string) => {
-		console.log('onclick', data, index);
+	const _onclick = (data: COL, idx: number | string) => {
+		console.log('onclick', data, idx);
 
 		if (onclick) {
-			onclick(data, index);
+			onclick(data, idx);
 		} else {
-			load(data, index);
+			load(data, idx);
 		}
 	};
-
 </script>
 
-
 <div class="grid grid-cols-3 gap-3 p-3">
-	<Looper data={query}>
-		{#snippet loopTitle()}
-			<!-- Default: nothing -->
-		{/snippet}
-		{#snippet children({item, idx})}
-			<div class="flex aspect-square flex-col rounded-2xl border border-gray-300 p-2">
-					<CollectionListFieldValues
-						collection={collection}
-						data={item}
-						mode="show"
-				/>
-			</div>
-		{/snippet}
-	</Looper>
+	{#each query as item, idx (item[index])}
+		<div class="flex aspect-square flex-col rounded-2xl border border-gray-300 p-2">
+			<CollectionListFieldValues
+				collection={collection}
+				data={item}
+				mode="show"
+			/>
+		</div>
+	{/each}
 </div>
