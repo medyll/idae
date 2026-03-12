@@ -23,6 +23,11 @@ Shows all UI components working together with real data binding
 	import Confirm from '$lib/fragments/Confirm.svelte';
 	import Selector from '$lib/fragments/Selector.svelte';
 	import InfoLine from '$lib/fragments/InfoLine.svelte';
+	import Skeleton from '$lib/fragments/Skeleton.svelte';
+
+	// Additional Form Components
+	import FieldInPlace from '$lib/form/FieldInPlace.svelte';
+	import DataProvider from '$lib/form/DataProvider.svelte';
 
 	// Initialize machine
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
@@ -30,9 +35,10 @@ Shows all UI components working together with real data binding
 
 	// State
 	let selectedCollection = $state('users');
-	let activeTab = $state<'grid' | 'menu' | 'create' | 'edit' | 'relationships'>('grid');
+	let activeTab = $state<'grid' | 'menu' | 'create' | 'edit' | 'relationships' | 'components'>('grid');
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
 	let showEditForm = $state(false);
+	let isLoading = $state(false);
 
 	// Get available collections
 	const collections = Object.keys(testScheme.schema || {});
@@ -130,6 +136,12 @@ Shows all UI components working together with real data binding
 						🔗 Relations
 					</button>
 				{/if}
+				<button
+					class={`tab ${activeTab === 'components' ? 'active' : ''}`}
+					onclick={() => activeTab = 'components'}
+				>
+					⚙️ Advanced
+				</button>
 			</div>
 
 			<!-- Tab Content -->
@@ -265,6 +277,57 @@ Shows all UI components working together with real data binding
 						</div>
 					</div>
 				{/if}
+
+				<!-- Tab: Advanced Components -->
+				{#if activeTab === 'components'}
+					<div class="view-section">
+						<h2>⚙️ Advanced Components - FieldInPlace, Skeleton, DataProvider</h2>
+						<p class="description">
+							Specialized components for advanced use cases and loading states
+						</p>
+
+						<!-- Skeleton Loading Component -->
+						<div class="advanced-section">
+							<h3>Loading State - Skeleton Component</h3>
+							<p>Shows skeleton placeholders while data is loading:</p>
+							<button onclick={() => isLoading = !isLoading} class="toggle-btn">
+								{isLoading ? 'Hide' : 'Show'} Loading State
+							</button>
+							{#if isLoading}
+								<div class="skeleton-demo">
+									<Skeleton class="w-full" />
+								</div>
+							{/if}
+						</div>
+
+						<!-- In-Place Edit Component -->
+						<div class="advanced-section">
+							<h3>In-Place Editing - FieldInPlace Component</h3>
+							<p>Edit field values directly with inline confirmation:</p>
+							<div class="field-inplace-demo">
+								<FieldInPlace
+									collection={selectedCollection}
+									field="name"
+									validate={() => console.log('Validated')}
+									message="Confirm change?"
+								/>
+							</div>
+						</div>
+
+						<!-- DataProvider Component Info -->
+						<div class="advanced-section">
+							<h3>Context Provider - DataProvider Component</h3>
+							<p>Provides collection and data context to child components:</p>
+							<div class="info-box">
+								<p>
+									DataProvider is a context wrapper that simplifies data passing to nested components
+									without prop drilling. Used internally by most form components.
+								</p>
+								<code>&lt;DataProvider collection="users" bind:data={formData}&gt;</code>
+							</div>
+						</div>
+					</div>
+				{/if}
 			</div>
 
 			<!-- Field Values Showcase (always visible) -->
@@ -286,9 +349,13 @@ Shows all UI components working together with real data binding
 	<!-- Footer -->
 	<footer class="demo-footer">
 		<p>
-			idae-machine v1.0 • Showcasing all UI components: CollectionButton, CollectionList,
-			CollectionListMenu, CollectionListFieldValues, CollectionFks, CollectionReverseFks,
-			CreateUpdate, FieldValue, Frame, Confirm, Selector, and InfoLine
+			idae-machine v1.0 • Complete Component Showcase
+		</p>
+		<p style="margin-top: 10px; font-size: 0.85em;">
+			UI (6): CollectionButton, CollectionList, CollectionListMenu, CollectionListFieldValues,
+			CollectionFks, CollectionReverseFks •
+			Form (4): CreateUpdate, FieldValue, FieldInPlace, DataProvider •
+			Fragments (5): Frame, Confirm, Selector, InfoLine, Skeleton
 		</p>
 	</footer>
 </div>
@@ -513,6 +580,71 @@ Shows all UI components working together with real data binding
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 15px;
 		margin-top: 15px;
+	}
+
+	.advanced-section {
+		margin-top: 25px;
+		padding: 20px;
+		background: #f9f9f9;
+		border-radius: 6px;
+		border-left: 4px solid #667eea;
+	}
+
+	.advanced-section h3 {
+		margin-top: 0;
+		color: #555;
+	}
+
+	.advanced-section p {
+		margin: 10px 0;
+		color: #666;
+	}
+
+	.toggle-btn {
+		padding: 8px 16px;
+		background: #667eea;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: 500;
+		margin: 10px 0;
+	}
+
+	.toggle-btn:hover {
+		background: #5568d3;
+	}
+
+	.skeleton-demo {
+		padding: 20px;
+		background: white;
+		border-radius: 6px;
+		margin-top: 15px;
+	}
+
+	.field-inplace-demo {
+		padding: 20px;
+		background: white;
+		border-radius: 6px;
+		margin-top: 15px;
+	}
+
+	.info-box {
+		padding: 15px;
+		background: white;
+		border-radius: 6px;
+		margin-top: 15px;
+		border: 1px solid #ddd;
+	}
+
+	.info-box code {
+		display: block;
+		padding: 10px;
+		background: #f5f5f5;
+		border-radius: 4px;
+		margin-top: 10px;
+		font-family: monospace;
+		font-size: 0.9em;
 	}
 
 	.demo-footer {
