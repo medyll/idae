@@ -46,23 +46,25 @@ Svelte 5 collection list with Looper
 	let store = machine.store;
 	let errorMessage = $state<string | null>(null);
 
-	let fieldValues;
-	let index;
-	let query;
-
-	try {
-		fieldValues = $derived(logic.collection(collection).collectionValues);
-		index = $derived(logic.collection(collection).template.index);
-		query = $derived(where ? store[collection].where(where) : store[collection]?.getAll());
-		errorMessage = null;
-	} catch (e) {
-		const msg = e && e.message ? String(e.message) : 'Collection non trouvée dans le schéma';
-		errorMessage = `${msg}. Vérifiez que le schéma est à jour ou videz IndexedDB (ex: effacer la base dans l'inspecteur du navigateur).`;
-		// Fallbacks to avoid crashing the component UI
-		fieldValues = $derived([]);
-		index = $derived('');
-		query = $derived([]);
+	function safeCollection(name: string) {
+		try {
+			return logic.collection(name);
+		} catch (e) {
+			return null as any;
+		}
 	}
+
+	let fieldValues = $derived(safeCollection(collection)?.collectionValues ?? {});
+	let index = $derived(safeCollection(collection)?.template?.index ?? '');
+	let query = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	$effect(() => {
+		if (!safeCollection(collection)) {
+			const msg = `Collection '${collection}' non trouvée dans le schéma`;
+			errorMessage = `${msg}. Vérifiez que le schéma est à jour ou videz IndexedDB (ex: effacer la base dans l'inspecteur du navigateur).`;
+		} else {
+			errorMessage = null;
+		}
+	});
 
 	$inspect('CollectionList', { collection, query, errorMessage });
 
