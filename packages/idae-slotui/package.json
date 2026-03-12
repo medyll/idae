@@ -65,12 +65,16 @@
     "@sveltejs/kit": "^2.53.0",
     "@sveltejs/package": "^2.5.7",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.4",
+    "@tailwindcss/typography": "^0.5.8",
     "@types/eslint": "9.6.1",
     "@types/fs-extra": "^11.0.4",
     "@types/prismjs": "^1.26.6",
     "@types/sanitize-html": "^2.16.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
+    "clsx": "^2.1.1",
     "commitizen": "^4.3.1",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
@@ -95,10 +99,6 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
-    ,
-    "@tailwindcss/forms": "^0.5.4",
-    "@tailwindcss/typography": "^0.5.8",
-    "@tailwindcss/aspect-ratio": "^0.4.2"
   },
   "keywords": [
     "idae",

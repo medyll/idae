@@ -1,9 +1,9 @@
 {
   "name": "content-switcher-reveal",
   "title": "content-switcher-reveal",
-  "description": "Component generated from src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
+  "description": "Component generated from src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte",
   "files": [
-    "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte"
+    "src/lib/base/contentSwitcher/ContentSwitcherReveal.svelte"
   ],
   "dependencies": [],
   "keywords": [

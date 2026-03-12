@@ -67,8 +67,6 @@ export const loginDemoValues: DemoerStoryProps<LoginProps> = {
 
 export let { parameters, componentArgs } = demoerArgs(loginDemoValues);
 
-// Export the main demo values and add slot placeholders
-export { loginDemoValues };
 export const loginAvatarDemoValues: DemoerStoryProps<any> = {};
 export const loginAvatarRootDemoValues: DemoerStoryProps<any> = {};
 export const loginFormDemoValues: DemoerStoryProps<any> = {};

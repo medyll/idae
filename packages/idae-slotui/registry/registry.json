@@ -1,7 +1,7 @@
 {
   "name": "idae-slotui-svelte-lib-registry",
   "version": "1.0.0",
-  "generated_at": "2026-03-12T18:15:56.057Z",
+  "generated_at": "2026-03-12T18:51:41.208Z",
   "components": [
     {
       "name": "alert",
@@ -148,30 +148,6 @@
       "registryDependencies": []
     },
     {
-      "name": "title-bar-icon",
-      "source": "src/lib/base/box/TitleBarIcon.svelte",
-      "files": [
-        {
-          "path": "src/lib/base/box/TitleBarIcon.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "title-bar-title",
-      "source": "src/lib/base/box/TitleBarTitle.svelte",
-      "files": [
-        {
-          "path": "src/lib/base/box/TitleBarTitle.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
       "name": "bread-crumb",
       "source": "src/lib/base/breadCrumb/BreadCrumb.svelte",
       "files": [
@@ -297,18 +273,6 @@
       "files": [
         {
           "path": "src/lib/base/columner/ColumnerCol.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "drawer-top",
-      "source": "src/lib/base/columner/DrawerTop.svelte",
-      "files": [
-        {
-          "path": "src/lib/base/columner/DrawerTop.svelte",
           "type": "registry:ui"
         }
       ],
@@ -652,18 +616,6 @@
       "registryDependencies": []
     },
     {
-      "name": "menu-item",
-      "source": "src/lib/controls/buttonMenu/MenuItem.svelte",
-      "files": [
-        {
-          "path": "src/lib/controls/buttonMenu/MenuItem.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
       "name": "checkbox",
       "source": "src/lib/controls/checkbox/Checkbox.svelte",
       "files": [
@@ -801,54 +753,6 @@
       "files": [
         {
           "path": "src/lib/controls/switch/SwitchLabel.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "input-first",
-      "source": "src/lib/controls/textfield/InputFirst.svelte",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/InputFirst.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "input-last",
-      "source": "src/lib/controls/textfield/InputLast.svelte",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/InputLast.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "input-first",
-      "source": "src/lib/controls/textfield/snippets/InputFirst.svelte",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/snippets/InputFirst.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "input-last",
-      "source": "src/lib/controls/textfield/snippets/InputLast.svelte",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/snippets/InputLast.svelte",
           "type": "registry:ui"
         }
       ],
@@ -1689,18 +1593,6 @@
       "files": [
         {
           "path": "src/lib/ui/toggleBar/ContentSwitcherIcon.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "content-switcher-reveal",
-      "source": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
-      "files": [
-        {
-          "path": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
           "type": "registry:ui"
         }
       ],

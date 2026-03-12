@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-12T18:15:56.174Z",
+  "generated_at": "2026-03-12T18:51:41.322Z",
   "source": "registry/registry.json",
   "components": [
     {
@@ -147,30 +147,6 @@
       "publicMetadata": "public/r/box-bottom-zone.json"
     },
     {
-      "name": "title-bar-icon",
-      "files": [
-        {
-          "path": "src/lib/base/box/TitleBarIcon.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/title-bar-icon.json"
-    },
-    {
-      "name": "title-bar-title",
-      "files": [
-        {
-          "path": "src/lib/base/box/TitleBarTitle.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/title-bar-title.json"
-    },
-    {
       "name": "bread-crumb",
       "files": [
         {
@@ -301,18 +277,6 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/columner-col.json"
-    },
-    {
-      "name": "drawer-top",
-      "files": [
-        {
-          "path": "src/lib/base/columner/DrawerTop.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/drawer-top.json"
     },
     {
       "name": "content-switcher",
@@ -651,18 +615,6 @@
       "publicMetadata": "public/r/button-menu.json"
     },
     {
-      "name": "menu-item",
-      "files": [
-        {
-          "path": "src/lib/controls/buttonMenu/MenuItem.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/menu-item.json"
-    },
-    {
       "name": "checkbox",
       "files": [
         {
@@ -805,54 +757,6 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/switch-label.json"
-    },
-    {
-      "name": "input-first",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/InputFirst.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/input-first.json"
-    },
-    {
-      "name": "input-last",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/InputLast.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/input-last.json"
-    },
-    {
-      "name": "input-first",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/snippets/InputFirst.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/input-first.json"
-    },
-    {
-      "name": "input-last",
-      "files": [
-        {
-          "path": "src/lib/controls/textfield/snippets/InputLast.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/input-last.json"
     },
     {
       "name": "text-field",
@@ -1693,18 +1597,6 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/content-switcher-icon.json"
-    },
-    {
-      "name": "content-switcher-reveal",
-      "files": [
-        {
-          "path": "src/lib/ui/toggleBar/ContentSwitcherReveal.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/content-switcher-reveal.json"
     },
     {
       "name": "toggle-bar",

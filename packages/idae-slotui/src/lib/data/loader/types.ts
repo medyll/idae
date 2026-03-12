@@ -103,6 +103,3 @@ export const loaderErrorDemoValues = {};
 export const loaderLoadingDemoValues = {};
 export const loaderMessageDemoValues = {};
 export const loaderSuccessDemoValues = {};
-
-// Export the main demo values for loader (consumer expectation)
-export { loaderDemoValues };

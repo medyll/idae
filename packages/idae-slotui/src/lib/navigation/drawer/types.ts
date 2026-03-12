@@ -90,8 +90,6 @@ export const drawerDemoValues: DemoerStoryProps<DrawerProps> = {
 
 export const { parameters, componentArgs } = demoerArgs(drawerDemoValues);
 
-// Export the main demo values (expected by generator)
-export { drawerDemoValues };
 
 // Placeholder demo exports for drawer subcomponents
 export const drawerContentDemoValues: DemoerStoryProps<any> = {};

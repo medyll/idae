@@ -63,5 +63,3 @@ export const tabsDemoValues: DemoerStoryProps<any> = {
 
 export const { parameters, componentArgs } = demoerArgs<any>(tabsDemoValues);
 
-// Export tabs demo values for generator
-export { tabsDemoValues };
