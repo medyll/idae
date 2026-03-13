@@ -57,4 +57,15 @@ export class OutboxStore {
       r.onerror = () => reject(r.error);
     });
   }
+
+  async update(entry: OutboxEntry): Promise<void> {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(["__outbox__"], "readwrite");
+      const store = tx.objectStore("__outbox__");
+      const r = store.put(entry as any);
+      r.onsuccess = () => resolve();
+      r.onerror = () => reject(r.error);
+    });
+  }
 }
