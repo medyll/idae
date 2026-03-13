@@ -34,6 +34,11 @@ async function bootstrap() {
   // Re-inspect adapter list after registration
   console.log('Adapters after initSync:', (getIdbqlEvent() as any)._adapters);
 
+  // Subscribe to outbox telemetry
+  const unsubscribe = outbox.subscribe((metrics) => {
+    console.log('Outbox metrics:', metrics);
+  });
+
   // Perform a local write — this will enqueue an outbox entry and attempt delivery.
   await users.put({ id: 'u1', name: 'Alice' });
 
@@ -62,6 +67,7 @@ async function bootstrap() {
   console.log('Performed atomic data+outbox transaction');
 
   // Stop background sync when shutting down the app
+  // unsubscribe();
   // stop();
 }
 
