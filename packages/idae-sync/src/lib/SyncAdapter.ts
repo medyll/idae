@@ -7,14 +7,18 @@ export type IdbqlEventPayload = {
   op: string;
   data?: any;
   keyPath?: string;
+  whereClause?: any;
   silent?: boolean;
   source?: "local" | "remote" | "system";
 };
 
-export class SyncAdapter {
-  constructor(private outbox: OutboxStore) {}
+export type Deliverer = (entry: OutboxEntry) => Promise<boolean>;
 
-  applyEvent(event: IdbqlEventPayload) {
+export class SyncAdapter {
+  private running = false;
+  constructor(private outbox: OutboxStore, private deliverer?: Deliverer) {}
+
+  async applyEvent(event: IdbqlEventPayload) {
     // Ignore silent events and non-local sources
     if (event.silent) return;
     if (event.source && event.source !== "local") return;
@@ -25,14 +29,26 @@ export class SyncAdapter {
       op: event.op as any,
       key: (event as any).key,
       data: event.data,
+      whereClause: event.whereClause,
       meta: { retryCount: 0, createdAt: new Date().toISOString() },
     };
 
-    this.outbox.enqueue(entry);
-    // TODO: attempt immediate delivery and implement retry/backoff
+    await this.outbox.enqueue(entry);
+
+    // Attempt immediate delivery if deliverer provided
+    if (this.deliverer) {
+      try {
+        const ok = await this.deliverer(entry);
+        if (ok) {
+          await this.outbox.remove(entry.id);
+        }
+      } catch (e) {
+        // Will be retried later by background job (not implemented here)
+      }
+    }
   }
 }
 
-export function createSyncAdapter(outbox?: OutboxStore) {
-  return new SyncAdapter(outbox || new OutboxStore());
+export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer) {
+  return new SyncAdapter(outbox, deliverer);
 }
