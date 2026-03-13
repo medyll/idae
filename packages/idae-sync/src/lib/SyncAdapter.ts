@@ -1,111 +1,90 @@
 import { OutboxStore, OutboxEntry } from "./outbox/OutboxStore";
 
-// Local minimal type to avoid tight coupling in this scaffold. Replace with the
-// canonical type import from @medyll/idae-idbql once the package API is released.
 export type IdbqlEventPayload = {
   collection: string;
-  op: string;
+  op: OutboxEntry['op'];
   data?: any;
-  keyPath?: string;
+  key?: any;
   whereClause?: any;
   silent?: boolean;
-  source?: "local" | "remote" | "system";
+  source?: 'local' | 'remote' | 'system';
 };
 
-export type Deliverer = (entry: OutboxEntry) => Promise<boolean>;
+export function createSyncAdapter(
+  outbox: OutboxStore,
+  deliverer: { deliver(entry: OutboxEntry): Promise<{ status: 'success' | 'retry' | 'permanent'; response?: any; conflict?: { local: any; remote: any } }> },
+  opts?: { maxRetries?: number; backoffBaseMs?: number; applyRemote?: (payload: IdbqlEventPayload) => Promise<void> }
+) {
+  const maxRetries = opts?.maxRetries ?? 5;
+  const backoffBaseMs = opts?.backoffBaseMs ?? 1000;
 
-export class SyncAdapter {
-  private running = false;
-  private intervalId: any = null;
-  constructor(private outbox: OutboxStore, private deliverer?: Deliverer, private intervalMs = 5000) {}
+  async function handleEvent(payload: IdbqlEventPayload): Promise<void> {
+    if (payload.source !== 'local') return;
+    if (payload.silent) return;
 
-  async applyEvent(event: IdbqlEventPayload) {
-    // Ignore silent events and non-local sources
-    if (event.silent) return;
-    if (event.source && event.source !== "local") return;
-
+    const now = new Date().toISOString();
     const entry: OutboxEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      collection: event.collection,
-      op: event.op as any,
-      key: (event as any).key,
-      data: event.data,
-      whereClause: event.whereClause,
-      meta: { retryCount: 0, createdAt: new Date().toISOString() },
+      collection: payload.collection,
+      op: payload.op,
+      key: payload.key,
+      data: payload.data,
+      whereClause: payload.whereClause,
+      meta: { retryCount: 0, createdAt: now },
     };
 
-    await this.outbox.enqueue(entry);
+    await outbox.enqueue(entry);
+  }
 
-    // Attempt immediate delivery if deliverer provided
-    if (this.deliverer) {
-      try {
-        const ok = await this.deliverer(entry);
-        if (ok) {
-          await this.outbox.remove(entry.id);
-        } else {
-          // increment retryCount and lastAttempt
-          entry.meta = entry.meta || { retryCount: 0, createdAt: new Date().toISOString() };
-          entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
-          entry.meta.lastAttempt = new Date().toISOString();
-          await this.outbox.update(entry);
+  async function processOnce(): Promise<void> {
+    const entries = await outbox.list(1);
+    if (!entries || entries.length === 0) return;
+    const entry = entries[0];
+
+    try {
+      const result = await deliverer.deliver(entry);
+      if (result.status === 'success') {
+        // Apply server response locally if provided
+        if (opts?.applyRemote) {
+          const payload: IdbqlEventPayload = {
+            collection: entry.collection,
+            op: entry.op,
+            data: result.response ?? entry.data,
+            key: entry.key,
+            whereClause: entry.whereClause,
+            source: 'remote',
+            silent: true,
+          };
+          try {
+            await opts.applyRemote(payload);
+          } catch (e) {
+            // swallow apply errors but still remove entry to avoid duplicate application
+          }
         }
-      } catch (e) {
-        // Will be retried later by background job
+        await outbox.remove(entry.id);
+      } else if (result.status === 'retry') {
         entry.meta = entry.meta || { retryCount: 0, createdAt: new Date().toISOString() };
         entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
         entry.meta.lastAttempt = new Date().toISOString();
-        await this.outbox.update(entry).catch(()=>{});
-      }
-    }
-  }
-
-  start() {
-    if (this.running) return;
-    this.running = true;
-    this.intervalId = setInterval(() => this.processOnce().catch(()=>{}), this.intervalMs);
-  }
-
-  stop() {
-    if (!this.running) return;
-    this.running = false;
-    if (this.intervalId) clearInterval(this.intervalId);
-    this.intervalId = null;
-  }
-
-  async processOnce() {
-    if (!this.deliverer) return;
-    const entries = await this.outbox.list();
-    for (const entry of entries) {
-      // simple backoff: skip if lastAttempt within (2^retryCount)*1s window
-      const retryCount = (entry.meta?.retryCount) || 0;
-      const lastAttempt = entry.meta?.lastAttempt ? new Date(entry.meta.lastAttempt).getTime() : 0;
-      const waitMs = Math.pow(2, retryCount) * 1000;
-      if (lastAttempt && Date.now() - lastAttempt < waitMs) continue;
-
-      try {
-        const ok = await this.deliverer(entry);
-        if (ok) {
-          await this.outbox.remove(entry.id);
-        } else {
-          entry.meta = entry.meta || { retryCount: 0, createdAt: new Date().toISOString() };
-          entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
-          entry.meta.lastAttempt = new Date().toISOString();
-          await this.outbox.update(entry);
+        // optionally cap retries
+        if (entry.meta.retryCount > maxRetries) {
+          entry.meta.failed = true as any;
         }
-      } catch (e) {
+        await outbox.update(entry);
+      } else if (result.status === 'permanent') {
         entry.meta = entry.meta || { retryCount: 0, createdAt: new Date().toISOString() };
-        entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
         entry.meta.lastAttempt = new Date().toISOString();
-        await this.outbox.update(entry).catch(()=>{});
+        (entry.meta as any).failed = true;
+        await outbox.update(entry);
       }
+    } catch (e) {
+      // treat unexpected errors as retryable
+      entry.meta = entry.meta || { retryCount: 0, createdAt: new Date().toISOString() };
+      entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
+      entry.meta.lastAttempt = new Date().toISOString();
+      await outbox.update(entry).catch(() => {});
     }
   }
-}
 
-export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer, intervalMs?: number) {
-  return new SyncAdapter(outbox, deliverer, intervalMs);
+  return { handleEvent, processOnce };
 }
-
-/* export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer) {
-  return new SyncAdapter(outbox, deliverer);
-} */
