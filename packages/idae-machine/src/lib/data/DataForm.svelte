@@ -198,7 +198,7 @@
 </button>
 
 <style lang="postcss">
-    @reference "../../styles/references.css";
+    @reference "tailwindcss";
 
     :global(.crud) {
         min-width: 32rem;

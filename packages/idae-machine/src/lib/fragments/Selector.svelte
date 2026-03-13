@@ -32,7 +32,7 @@ Selection list that renders items via snippet prop
 {/if}
 
 <style lang="postcss">
-  @reference "../../styles/references.css";
+  @reference "tailwindcss";
   .active {
     @apply border border-b-2 border-neutral-500; /* active */
   }

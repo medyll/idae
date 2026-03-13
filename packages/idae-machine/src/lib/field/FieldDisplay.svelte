@@ -142,7 +142,7 @@ Svelte 5 field input for all types
 {/if}
 
 <style lang="postcss">
-    @reference "../../styles/references.css";
+    @reference "tailwindcss";
 
     .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 
