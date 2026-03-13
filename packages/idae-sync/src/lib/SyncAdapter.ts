@@ -1,4 +1,5 @@
 import { OutboxStore, OutboxEntry } from "./outbox/OutboxStore";
+import type { OnConflictHook } from "./ConflictResolver";
 
 // Local minimal type to avoid tight coupling in this scaffold. Replace with the
 // canonical type import from @medyll/idae-idbql once the package API is released.
@@ -17,7 +18,7 @@ export type Deliverer = (entry: OutboxEntry) => Promise<boolean>;
 export class SyncAdapter {
   private running = false;
   private intervalId: any = null;
-  constructor(private outbox: OutboxStore, private deliverer?: Deliverer, private intervalMs = 5000) {}
+  constructor(private outbox: OutboxStore, private deliverer?: Deliverer, private intervalMs = 5000, private onConflict?: OnConflictHook) {}
 
   async applyEvent(event: IdbqlEventPayload) {
     // Ignore silent events and non-local sources
@@ -102,8 +103,8 @@ export class SyncAdapter {
   }
 }
 
-export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer, intervalMs?: number) {
-  return new SyncAdapter(outbox, deliverer, intervalMs);
+export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer, opts?: { onConflict?: OnConflictHook; intervalMs?: number }) {
+  return new SyncAdapter(outbox, deliverer, opts?.intervalMs ?? 5000, opts?.onConflict);
 }
 
 /* export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer) {
