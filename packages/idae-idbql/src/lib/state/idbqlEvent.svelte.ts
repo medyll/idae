@@ -1,3 +1,5 @@
+import type { IdbqlEventPayload } from './statorAdapter';
+
 type EventType =
   | "add"
   | "put"
@@ -18,6 +20,30 @@ class IdbqlStateEventBase {
   private _adapter: {
     applyEvent?: (event: IdbqlEventPayload) => void;
   } | null = null;
+  // support multiple adapters without breaking API
+  private _adapters: Array<{ applyEvent?: (event: IdbqlEventPayload) => void }> | null = null;
+
+  registerAdapters(adapters: Array<{ applyEvent?: (event: IdbqlEventPayload) => void }> | null) {
+    this._adapters = adapters && adapters.length ? adapters : null;
+    if (this._adapters) {
+      // create a wrapper adapter that dispatches in registration order and isolates errors
+      this._adapter = {
+        applyEvent: (event: IdbqlEventPayload) => {
+          for (const a of this._adapters || []) {
+            try {
+              if (a && typeof a.applyEvent === 'function') {
+                a.applyEvent(event);
+              }
+            } catch (e) {
+              // adapter errors are isolated
+            }
+          }
+        },
+      };
+    } else {
+      this._adapter = null;
+    }
+  }
 
   constructor() {
     this.dataState = {} as Record<string, any[]>;
@@ -167,6 +193,9 @@ class IdbqlStateEventBase {
           op: event,
           data,
           keyPath,
+          // default semantics: local origin, not silent
+          silent: false,
+          source: "local",
         });
       } catch (e) {
         // adapter errors should not break the main flow

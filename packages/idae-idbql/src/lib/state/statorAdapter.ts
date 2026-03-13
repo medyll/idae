@@ -16,6 +16,9 @@ export type IdbqlEventPayload = {
     | "deleteWhere";
   data?: any;
   keyPath?: string;
+  // new fields for sync control
+  silent?: boolean;
+  source?: "local" | "remote" | "system";
 };
 
 export type StatorAdapter = {
