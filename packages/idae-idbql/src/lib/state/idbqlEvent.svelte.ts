@@ -188,15 +188,27 @@ class IdbqlStateEventBase {
     // Delegate to adapter if present (non-breaking: adapter mirrors changes)
     if (this._adapter && typeof this._adapter.applyEvent === "function") {
       try {
-        this._adapter.applyEvent({
+        // Build normalized payload — respect whereClause if present in eventData
+        const payload: any = {
           collection,
           op: event,
           data,
           keyPath,
-          // default semantics: local origin, not silent
           silent: false,
           source: "local",
-        });
+        };
+        try {
+          // eventData may contain whereClause for replayable ops
+          if ((event === 'updateWhere' || event === 'deleteWhere') && (eventData as any).whereClause) {
+            payload.whereClause = (eventData as any).whereClause;
+            // ensure data is the update payload for updateWhere
+            if (event === 'updateWhere') payload.data = (eventData as any).data ?? data;
+          }
+        } catch (e) {
+          // ignore
+        }
+
+        this._adapter.applyEvent(payload);
       } catch (e) {
         // adapter errors should not break the main flow
       }

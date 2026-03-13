@@ -47,6 +47,9 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
     const { collection, op, data, keyPath } = event;
     const s = ensureCollection(collection);
 
+    // If event is marked silent, do not modify state
+    if (event.silent) return;
+
     switch (op) {
       case "set":
         if (Array.isArray(data)) {

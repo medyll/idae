@@ -7,7 +7,6 @@ Svelte 5 FK relation viewer for a collection
 @prop {object} [where] - Optional filter
 @slot children (let:item) - Custom FK rendering
 -->
-
 <script lang="ts">
 	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
 	import { machine } from '$lib/main/machine.js';
@@ -18,12 +17,14 @@ Svelte 5 FK relation viewer for a collection
 		children?: any;
 	}>();
 	const fks = $derived(machine.logic.collection(collection).parseFks());
-</script>
 
+	$inspect('fks', fks);
+</script>
+ 
 {#each Object.entries(fks) as item (item[0])}
-	<div>
-		{#if children}
+	<div>  {item[0]}
+		<!-- {#if children}
 			{@render children(item)}
-		{/if}
+		{/if} -->
 	</div>
 {/each}

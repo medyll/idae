@@ -13,8 +13,6 @@ Svelte 5 collection list with Looper
 @slot loopTitle - Custom title rendering
 @event click - Emitted on item click
 -->
-
-
 <script lang="ts" generics="COL = Record<string,any>">
 	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
 	import DataForm from '$lib/data/DataForm.svelte';
@@ -40,7 +38,7 @@ Svelte 5 collection list with Looper
 		onclick,
 		where,
 		children: _children,
-	} = $props<DataListProps>();
+	}:DataListProps = $props();
 
 	let logic = machine.logic;
 	let store = machine.store;

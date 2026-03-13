@@ -39,9 +39,9 @@ Svelte 5 field input for all types
 
     // 2. Pure reactive derivations
     const scheme = $derived(machine.logic.collection(collection));
-    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data));
+    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data ?? {}));
     const schemeFieldValues = $derived(scheme.collectionValues);
-    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data));
+    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data ?? {}));
 
     const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
     const labelPosition = $derived(
@@ -49,22 +49,23 @@ Svelte 5 field input for all types
     );
 
     // 3. Bidirectional state binding with $effect
-    let internalValue = $state(data[fieldName]);
+    let internalValue = $state(data ? data[fieldName] : undefined);
     let error = $state<string | null>(null);
 
     /**
      * Sync parent data changes to internal state (parent → child)
      */
     $effect(() => {
-        internalValue = data[fieldName];
+        internalValue = data ? data[fieldName] : undefined;
     });
 
     /**
      * Sync internal state changes back to parent data (child → parent)
      */
     $effect(() => {
-        if (internalValue !== data[fieldName]) {
-            data[fieldName] = internalValue;
+        const current = data ? data[fieldName] : undefined;
+        if (internalValue !== current) {
+            if (data) data[fieldName] = internalValue;
         }
     });
 
@@ -111,7 +112,7 @@ Svelte 5 field input for all types
 
 {#if fieldForge}
   {#if !isPrivate}
-      <div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
+      <div class="relative flex  gap-2 wrapper-{fieldForge.fieldType}">
           {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
               <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
                   {fieldName}
@@ -142,7 +143,7 @@ Svelte 5 field input for all types
 {/if}
 
 <style lang="postcss">
-    @reference "../../styles/references.css";
+    @reference "tailwindcss";
 
     .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 

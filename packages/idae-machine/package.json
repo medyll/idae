@@ -91,7 +91,9 @@
 		"@huggingface/prettier-plugin-vertical-align": "^0.2.3",
 		"@medyll/idae-idbql": "workspace:*",
 		"@medyll/idae-slotui-svelte": "workspace:*",
+		"@tailwindcss/vite": "^4.2.1",
 		"command": "^1.1.1",
-		"commander": "^14.0.3"
+		"commander": "^14.0.3",
+		"tailwindcss": "^4.2.1"
 	}
 }

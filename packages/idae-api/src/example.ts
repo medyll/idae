@@ -39,7 +39,7 @@ async function runExample() {
 
     // Find all documents
     console.log("\nFinding all documents in app_conf:");
-    const allDocs = await appConfCollection.find();
+    const allDocs = await appConfCollection.where();
     console.log(allDocs);
 
     // Find a specific document by ID
@@ -66,7 +66,7 @@ async function runExample() {
 
     // Find all documents in appscheme
     console.log("\nFinding all documents in appscheme:");
-    const appSchemeDocs = await appSchemeCollection.find();
+    const appSchemeDocs = await appSchemeCollection.where();
     console.log(appSchemeDocs);
 
     // Delete many documents by query (be careful with this!)

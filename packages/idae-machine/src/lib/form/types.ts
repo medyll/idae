@@ -3,7 +3,7 @@ export interface CreateUpdateProps<T = string> {
 	collection:   string;
 	data?:        Record<string, unknown>;
 	withData?:    Record<string, unknown>;
-	dataId?:      unknown;
+	dataId?:      number | string;
 	/** fields to show in the collection */
 	showFields?:  T[];
 	/**

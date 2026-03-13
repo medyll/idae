@@ -198,69 +198,78 @@ const idbqlState = createIdbqDb(schemeModel);
 
 ```svelte
 <script lang="ts">
-  import { CrudZone, CreateUpdate, DataList } from '@medyll/idae-machine';
+  import { DataList, DataCreate, DataEdit } from '@medyll/idae-machine';
 </script>
 
-<!-- Full CRUD interface -->
-<CrudZone collection="agents" />
+<!-- List view with detail pane -->
+<div class="grid grid-cols-2 gap-4">
+  <div>
+    <h2>List</h2>
+    <DataList collection="agents" target="details" />
+  </div>
+  <div data-target-zone="details" class="rounded border p-4">
+    <h2>Detail</h2>
+    <!-- Clicking an item in DataList will hydrate a DataForm here -->
+  </div>
+</div>
 
-<!-- Or compose individually -->
-<DataList collection="agents" />
-<CreateUpdate collection="agents" mode="create" />
+<!-- Or use dedicated form components -->
+<DataCreate collection="agents" />
+<DataEdit collection="agents" dataId={1} />
 ```
 
 ## 📋 Component Guide
 
-### `<CrudZone>`
-
-Unified CRUD interface with sidebar list and detail editing.
-
-```svelte
-<CrudZone collection="agents" style="height: 600px; min-width: 750px" />
-```
-
 ### `<DataList>`
 
-Displays collection records as grid with click-to-edit.
+Displays collection records as a grid and can hydrate a detail pane using `DataForm`.
 
 ```svelte
 <DataList
   collection="agents"
   displayMode="grid"
+  target="details"
   where={{ active: { $eq: true } }}
-  onclick={(data, idx) => console.log(data)}
+  onclick={(data, idx) => console.log('clicked', data, idx)}
 />
 ```
 
-mode="show"
-dataId={1}
-showFields={['name', 'code', 'model']}
-inPlaceEdit={true}
-showFks={true}
-/>
+### `<DataForm>`
 
-````
-```svelte
-  collection="agents"
-  fieldName="name"
-  data={formData}
-  mode="edit"
-  editInPlace={true}
-/>
-````
-
-### Relational Components
+A general-purpose form viewer/editor that supports `mode="show" | "create" | "update"`.
 
 ```svelte
-<!-- Foreign Keys (refs TO other collections) -->
-<CollectionFks collection="agents" />
+<DataForm collection="agents" mode="show" dataId={1} />
 
-<!-- Reverse Foreign Keys (records pointing TO this one) -->
-<CollectionReverseFks collection="agents">
-  {#snippet children({ collection, template })}
-    <div>{collection} references this agent</div>
-  {/snippet}
-</CollectionReverseFks>
+<DataForm collection="agents" mode="create" />
+
+<DataForm collection="agents" mode="update" dataId={1} />
+```
+
+### `<DataCreate>`
+
+Convenience wrapper around `DataForm` for creating new records.
+
+```svelte
+<DataCreate collection="agents" onsubmit={(payload) => console.log('created', payload)} />
+```
+
+### `<DataEdit>`
+
+Convenience wrapper around `DataForm` for editing an existing record.
+
+```svelte
+<DataEdit collection="agents" dataId={1} onsubmit={(payload) => console.log('updated', payload)} />
+```
+
+### Relational Helpers
+
+```svelte
+<!-- Foreign keys (references to other collections) -->
+<DataLinks collection="agents" />
+
+<!-- Reverse foreign keys (other collections referencing this one) -->
+<DataLinksBack collection="agents" />
 ```
 
 ## 🔧 Schema Definition (dbFields.ts)
@@ -375,14 +384,31 @@ npm run test         # Single-run test mode
 
 ```
 src/lib/
-├── db/                    # Schema & field layers
-│   ├── dbSchema.ts       # Collection templates
-│   ├── dbFields.ts       # Field rules & validation
-│   └── dataModel.ts      # TypeScript types
-│   ├── CollectionFks.svelte      # Forward relations
-│   ├── CollectionReverseFks.svelte # Back-references
-│   └── ...
-└── index.ts             # Main exports
+├── data/                  # UI components for data & CRUD
+│   ├── DataProvider.svelte
+│   ├── DataList.svelte
+│   ├── DataListActions.svelte
+│   ├── DataListFields.svelte
+│   ├── DataForm.svelte
+│   ├── DataCreate.svelte
+│   ├── DataEdit.svelte
+│   ├── DataLinks.svelte
+│   ├── DataLinksBack.svelte
+│   └── DataPicker.svelte
+├── field/                 # Field renderers
+│   ├── FieldDisplay.svelte
+│   └── FieldEditor.svelte
+├── fragments/             # UI primitives / helpers
+│   ├── Confirm.svelte
+│   ├── Frame.svelte
+│   ├── InfoLine.svelte
+│   ├── Selector.svelte
+│   └── Skeleton.svelte
+├── main/                  # Machine core & schema logic
+├── demo/                  # Example schema & demo data
+│   ├── dbSchema.ts
+│   └── testScheme.ts
+└── index.ts               # Main exports
 ```
 
 ## 🎓 Example Projects

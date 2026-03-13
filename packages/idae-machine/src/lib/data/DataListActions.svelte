@@ -11,7 +11,6 @@ Svelte 5 menu list for a collection
 @slot children (let:item) - Custom menu item rendering
 @event click - Emitted on item click
 -->
-
 <script lang="ts" generics="COL = Record<string,any>">
 	import { type MenuListProps, MenuList, MenuListItem } from '@medyll/idae-slotui-svelte';
 	import DataForm from '$lib/data/DataForm.svelte';

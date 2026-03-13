@@ -64,7 +64,7 @@ Svelte 5 confirm/cancel fragment
 </div>
 
 <style lang="postcss">
-	@reference "../../styles/references.css";
+	@reference "tailwindcss";
 	svg {
 		> path {
 			color: red !important;
