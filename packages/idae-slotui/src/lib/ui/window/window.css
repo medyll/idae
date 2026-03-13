@@ -20,3 +20,51 @@ dialog.window {
     background-color: var(--window-background-color);
     color: var(--window-color);
 }
+
+dialog.window {
+    display: block;
+    border-radius: var(--window-border-radius);
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+    border: var(--window-border);
+    min-width: var(--window-min-width);
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: var(--window-z-index);
+    max-height: 100%;
+    padding: 0;
+    box-shadow: var(--window-box-shadow);
+
+    &.active {
+        border: var(--window-active-border);
+        box-shadow: var(--window-active-box-shadow);
+    }
+
+    & header.bar {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background-color: var(--window-header-bar-background-color);
+        color: var(--window-color);
+        padding: var(--window-header-bar-padding);
+
+        &-icon {
+            padding: var(--window-header-bar-icon-padding);
+        }
+        & .handle {
+            flex: 1;
+            cursor: pointer;
+        }
+    }
+
+    & footer.buttonZone {
+        padding: var(--window-footer-button-zone-padding);
+        display: flex;
+        justify-content: end;
+        gap: var(--window-footer-button-zone-gap);
+    }
+    & .ctrlZone {
+        display: flex;
+    }
+}
