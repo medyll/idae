@@ -1,4 +1,5 @@
 # 📋 BMAD Project Dashboard — @medyll/idae-machine
+
 **Last Updated**: 2026-03-06T22:35:00.000Z
 
 ---
@@ -7,7 +8,7 @@
 
 ```
 Phase 1 — Analysis          ✅ Complete
-Phase 2 — Planning          ✅ Complete  
+Phase 2 — Planning          ✅ Complete
 Phase 3 — Solutioning       🔄 In Progress (Sprint-1 ready)
 Phase 4 — Validation        ⏳ Upcoming (testing, audit)
 Phase 5 — Release           ⏳ Upcoming (marketing, launch)
@@ -19,21 +20,22 @@ Phase 5 — Release           ⏳ Upcoming (marketing, launch)
 
 ## 🎯 Quick Stats
 
-| Metric | Value | Next Action |
-|--------|-------|-------------|
-| **Phase** | solutioning (in_progress) | `bmad dev story S1-02` |
-| **Artifacts Generated** | 7/8 | +1 to go (architecture) |
-| **Sprints Active** | 1 | sprint-1 (2026-03-07 → 2026-03-20) |
-| **Stories** | 5 (2 pending, 1 in_progress, 2 done) | Sprint in progress |
-| **Capacity** | 18 points | ~37 eng-hours |
-| **Critical Issues** | 3 (mapped to S1-01,02,03) | In Sprint-1 backlog |
-| **Build Status** | ✅ Passing | `pnpm run test` |
+| Metric                  | Value                                | Next Action                        |
+| ----------------------- | ------------------------------------ | ---------------------------------- |
+| **Phase**               | solutioning (in_progress)            | `bmad dev story S1-02`             |
+| **Artifacts Generated** | 7/8                                  | +1 to go (architecture)            |
+| **Sprints Active**      | 1                                    | sprint-1 (2026-03-07 → 2026-03-20) |
+| **Stories**             | 5 (2 pending, 1 in_progress, 2 done) | Sprint in progress                 |
+| **Capacity**            | 18 points                            | ~37 eng-hours                      |
+| **Critical Issues**     | 3 (mapped to S1-01,02,03)            | In Sprint-1 backlog                |
+| **Build Status**        | ✅ Passing                           | `pnpm run test`                    |
 
 ---
 
 ## 📁 Artifacts Status
 
 ### Generated ✅
+
 - ✅ **config.yaml** — Project metadata
 - ✅ **status.yaml** — Project state tracker
 - ✅ **product-brief.md** — Executive summary
@@ -43,9 +45,11 @@ Phase 5 — Release           ⏳ Upcoming (marketing, launch)
 - ✅ **tech-spec.md** — Technical Specification (23,500 words)
 
 ### In Progress 🔄
+
 - 🔄 **sprints/sprint-1.md** — 2-week sprint plan ⭐ **NEW**
 
 ### Generated (Stories) ✅
+
 - ✅ **S1-01.md** — Type Safety (5pt) ⭐ **NEW**
 - ✅ **S1-02.md** — Form Validation (5pt) ⭐ **NEW**
 - ✅ **S1-03.md** — Parser Tests (3pt) ⭐ **NEW**
@@ -53,6 +57,7 @@ Phase 5 — Release           ⏳ Upcoming (marketing, launch)
 - ✅ **S1-05.md** — Binding Fix (2pt) ⭐ **NEW**
 
 ### Missing ⏳
+
 - ❌ **architecture.md** — Architecture & Design → `bmad plan arch`
 
 ---
@@ -66,13 +71,13 @@ Phase 5 — Release           ⏳ Upcoming (marketing, launch)
 
 ### Stories Breakdown
 
-| ID | Epic | Title | Points | Priority | Status |
-|----|------|-------|--------|----------|--------|
-| **S1-01** | Type Safety | Replace 42+ `any` with generics | 5 | Must | Done |
-| **S1-02** | Validation | Complete validation pipeline | 5 | Must | In Progress |
-| **S1-03** | Testing | Parser test coverage (30+ cases) | 3 | Must | Done |
-| **S1-04** | Documentation | JSDoc coverage 80%+ | 3 | Must | Ready |
-| **S1-05** | Reactivity | FieldValue bidirectional binding | 2 | Should | Ready |
+| ID        | Epic          | Title                            | Points | Priority | Status      |
+| --------- | ------------- | -------------------------------- | ------ | -------- | ----------- |
+| **S1-01** | Type Safety   | Replace 42+ `any` with generics  | 5      | Must     | Done        |
+| **S1-02** | Validation    | Complete validation pipeline     | 5      | Must     | In Progress |
+| **S1-03** | Testing       | Parser test coverage (30+ cases) | 3      | Must     | Done        |
+| **S1-04** | Documentation | JSDoc coverage 80%+              | 3      | Must     | Ready       |
+| **S1-05** | Reactivity    | FieldValue bidirectional binding | 2      | Should   | Ready       |
 
 **Total**: 18 points
 
@@ -89,41 +94,44 @@ Phase 5 — Release           ⏳ Upcoming (marketing, launch)
 
 ## 🚨 Critical Issues Mapped to Sprint-1
 
-| Issue | Story | Effort | Linked |
-|-------|-------|--------|--------|
-| **Type Safety: 42+ `any`** | S1-01 | 2-3h | Audit critical #1 |
-| **Form Validation incomplete** | S1-02 | 4-5h | Audit critical #2 |
-| **Parser untested** | S1-03 | 3h | Audit critical #3 |
-| **JSDoc 4.5% → 80%** | S1-04 | 3h | Audit gap |
-| **Binding sync issue** | S1-05 | 2h | Audit gap |
+| Issue                          | Story | Effort | Linked            |
+| ------------------------------ | ----- | ------ | ----------------- |
+| **Type Safety: 42+ `any`**     | S1-01 | 2-3h   | Audit critical #1 |
+| **Form Validation incomplete** | S1-02 | 4-5h   | Audit critical #2 |
+| **Parser untested**            | S1-03 | 3h     | Audit critical #3 |
+| **JSDoc 4.5% → 80%**           | S1-04 | 3h     | Audit gap         |
+| **Binding sync issue**         | S1-05 | 2h     | Audit gap         |
 
 ---
 
 ## 📊 Metrics & Targets
 
-| Metric | Current | Sprint-1 | v1.0 |
-|--------|---------|----------|------|
-| **`any` count** | 42 | 0 | 0 |
-| **JSDoc coverage** | 4.5% | 80%+ | 80%+ |
-| **Unit test coverage** | 75% | 90%+ | 95%+ |
-| **Build status** | ✅ Pass | ✅ Pass | ✅ Pass |
+| Metric                 | Current | Sprint-1 | v1.0    |
+| ---------------------- | ------- | -------- | ------- |
+| **`any` count**        | 42      | 0        | 0       |
+| **JSDoc coverage**     | 4.5%    | 80%+     | 80%+    |
+| **Unit test coverage** | 75%     | 90%+     | 95%+    |
+| **Build status**       | ✅ Pass | ✅ Pass  | ✅ Pass |
 
 ---
 
 ## 🎬 Next Steps (Immediate)
 
 ### Recommended Dev Sequence:
+
 1. **Start**: `bmad dev story S1-03` (parser tests, fast feedback, no blockers)
 2. **Then**: `bmad dev story S1-01` (type safety foundation for S1-02)
 3. **Then**: `bmad dev story S1-02` (validation depends on S1-01)
 4. **Parallel**: S1-04 (JSDoc) + S1-05 (binding) can run alongside
 
 ### Autonomous Execution:
+
 ```bash
 bmad next --auto    # Execute Sprint-1 stories sequentially (no pauses)
 ```
 
 ### Manual Execution:
+
 ```bash
 bmad dev story S1-03  # Start parser tests
 # After review → merge → next story
@@ -137,26 +145,26 @@ bmad dev story S1-05  # Binding
 
 ## 📈 Development Roadmap (Post-Sprint-1)
 
-| Phase | Timeline | Deliverables |
-|-------|----------|--------------|
-| **Sprint-1** | 2026-03-07 → 2026-03-20 | Type safety, validation, tests, docs |
-| **Sprint-2** (Preview) | TBD | Relations (FK, in-place edit, custom validators) |
-| **Sprint-3** (Preview) | TBD | Stability (perf, security, docs) |
-| **v1.0 Release** | TBD | All critical/must-have features complete |
+| Phase                  | Timeline                | Deliverables                                     |
+| ---------------------- | ----------------------- | ------------------------------------------------ |
+| **Sprint-1**           | 2026-03-07 → 2026-03-20 | Type safety, validation, tests, docs             |
+| **Sprint-2** (Preview) | TBD                     | Relations (FK, in-place edit, custom validators) |
+| **Sprint-3** (Preview) | TBD                     | Stability (perf, security, docs)                 |
+| **v1.0 Release**       | TBD                     | All critical/must-have features complete         |
 
 ---
 
 ## 🔍 Codebase Health Summary
 
-| Aspect | Status | Detail | Impact |
-|--------|--------|--------|--------|
-| **Svelte 5 Compliance** | ✅ 100% | No deprecated APIs | Ready for production |
-| **Architecture** | ✅ Clean | 4-layer design | Maintainable |
-| **Test Coverage** | 🟠 Good | 75% → 90% (Sprint-1) | Improving |
-| **Type Safety** | 🔴 Critical | 42 `any` → 0 (Sprint-1) | Blocking release |
-| **Documentation** | 🟠 Partial | 4.5% → 80%+ (Sprint-1) | DX improvement |
-| **Form Validation** | 🟠 Incomplete | Basic → comprehensive (Sprint-1) | UC compliance |
-| **Dependencies** | ✅ Clean | Minimal, no warnings | Secure |
+| Aspect                  | Status        | Detail                           | Impact               |
+| ----------------------- | ------------- | -------------------------------- | -------------------- |
+| **Svelte 5 Compliance** | ✅ 100%       | No deprecated APIs               | Ready for production |
+| **Architecture**        | ✅ Clean      | 4-layer design                   | Maintainable         |
+| **Test Coverage**       | 🟠 Good       | 75% → 90% (Sprint-1)             | Improving            |
+| **Type Safety**         | 🔴 Critical   | 42 `any` → 0 (Sprint-1)          | Blocking release     |
+| **Documentation**       | 🟠 Partial    | 4.5% → 80%+ (Sprint-1)           | DX improvement       |
+| **Form Validation**     | 🟠 Incomplete | Basic → comprehensive (Sprint-1) | UC compliance        |
+| **Dependencies**        | ✅ Clean      | Minimal, no warnings             | Secure               |
 
 ---
 

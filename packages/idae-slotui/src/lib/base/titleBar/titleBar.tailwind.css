@@ -1,9 +1,0 @@
-/* slotui-titleBar Tailwind CSS */
-:root {
-  --slotui-titleBar-bg: theme(colors.primary.600);
-  --slotui-titleBar-fg: theme(colors.white);
-}
-.slotui-titleBar { 
-  background-color: var(--slotui-titleBar-bg);
-  color: var(--slotui-titleBar-fg); 
-}

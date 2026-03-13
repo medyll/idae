@@ -1,82 +1,75 @@
-import type { IdbqModel } from "@medyll/idae-idbql";
+import type { IdbqModel } from '@medyll/idae-idbql';
 
- 
-
- 
- export type Product = {
-	id: string;
-	name: string;
+export type Product = {
+	id:          string;
+	name:        string;
 	description: string;
-	price: number;
-	categoryId: string;
-	created_at: Date;
-	is_active: boolean;
-}
+	price:       number;
+	categoryId:  string;
+	created_at:  Date;
+	is_active:   boolean;
+};
 
 export type ProductCategory = {
-	id: string;
-	name: string;
+	id:          string;
+	name:        string;
 	description: string;
-}
-
-
-
+};
 
 export const testScheme = {
-	product: {
-		keyPath: '++id',
-		model: {},
-		ts: {} as Product,
+	product:          {
+		keyPath:  '++id',
+		model:    {},
+		ts:       {} as Product,
 		template: {
-			index: 'id',
+			index:        'id',
 			presentation: 'name category',
-			fields: {
-				id: 'id (readonly)',
-				name: 'text (required)',
+			fields:       {
+				id:          'id (readonly)',
+				name:        'text (required)',
 				description: 'text-long',
-				price: 'number (required)',
-				categoryId: 'fk-product_category.id (required)',
-				created_at: 'date',
-				is_active: 'boolean',
+				price:       'number (required)',
+				categoryId:  'fk-product_category.id (required)',
+				created_at:  'date',
+				is_active:   'boolean'
 			},
-			fks: {
+			fks:          {
 				product_category: {
-					code: 'product_category',
-					rules: 'required private',
+					code:     'product_category',
+					rules:    'required private',
 					multiple: false
 				}
 			}
 		}
 	},
 	product_category: {
-		keyPath: '++id',
-		model: {},
-		ts: {} as ProductCategory,
+		keyPath:  '++id',
+		model:    {},
+		ts:       {} as ProductCategory,
 		template: {
-			index: 'id',
+			index:        'id',
 			presentation: 'name',
-			fields: {
-				id: 'id (readonly)',
-				name: 'text (required)',
-				description: 'text-long',
+			fields:       {
+				id:          'id (readonly)',
+				name:        'text (required)',
+				description: 'text-long'
 			},
-			fks: {}
+			fks:          {}
 		}
 	},
-	agent: {
-		keyPath: '++id',
-		model: {},
-		ts: {} as { id: string; name: string; role?: string },
+	agent:            {
+		keyPath:  '++id',
+		model:    {},
+		ts:       {} as { id: string; name: string; role?: string },
 		template: {
-			index: 'id',
+			index:        'id',
 			presentation: 'name role',
-			fields: {
-				id: 'id (readonly)',
+			fields:       {
+				id:   'id (readonly)',
 				name: 'text (required)',
-				role: 'text',
+				role: 'text'
 			},
-			fks: {}
+			fks:          {}
 		}
 	}
 } satisfies IdbqModel;
- 

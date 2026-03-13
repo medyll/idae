@@ -1,0 +1,33 @@
+{
+  "name": "@medyll/idae-sync",
+  "version": "1.0.0",
+  "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run --reporter=dot",
+    "prepackage": "node scripts/package-pre.js"
+  },
+  "dependencies": {
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-api": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0",
+    "fake-indexeddb": "^4.0.0",
+    "jsdom": "^22.0.0",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [],
+  "author": "Lebrun Meddy",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  }
+}

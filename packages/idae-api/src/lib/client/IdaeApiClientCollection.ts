@@ -23,7 +23,20 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
     };
   }
 
+  /**
+   * Query the collection. Use `where` as the preferred name.
+   * @deprecated Use `where()` instead; `find()` is an alias kept for backwards compatibility.
+   */
   async find<T extends object>(
+    params?: IdaeApiClientRequestParams,
+  ): Promise<T[]> {
+    // Deprecation notice (non-fatal)
+    // eslint-disable-next-line no-console
+    console.warn('IdaeApiClientCollection.find() is deprecated — use where() instead');
+    return this.where<T>(params);
+  }
+
+  async where<T extends object>(
     params?: IdaeApiClientRequestParams,
   ): Promise<T[]> {
     return await this.requestClient.doRequest<T[]>({
@@ -74,22 +87,43 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
     });
   }
 
-  // Stubs for missing interface methods
+  // Implementations for missing interface methods
   async createIndex(fieldOrSpec: unknown, options?: unknown): Promise<string> {
-    throw new Error("Not implemented");
+    throw new Error("createIndex is not supported via HTTP client");
   }
+
   async findOne<T>(params?: any): Promise<T | null> {
-    throw new Error("Not implemented");
+    const results = await this.find<T>(params);
+    return results?.[0] ?? null;
   }
+
   async updateWhere(params?: any, update?: any): Promise<void> {
-    throw new Error("Not implemented");
+    const results = await this.find<any>(params);
+    await Promise.all(
+      results.map((doc) => {
+        const id = (doc as any)._id ?? (doc as any).id;
+        if (!id) {
+          throw new Error("Unable to determine record id for updateWhere (missing _id/id)");
+        }
+        return this.update(id, update);
+      }),
+    );
   }
+
   async deleteWhere(params: any): Promise<{ deletedCount?: number }> {
-    throw new Error("Not implemented");
+    const result = await this.deleteManyByQuery(params);
+
+    if (Array.isArray(result)) {
+      return { deletedCount: result.length };
+    }
+
+    return { deletedCount: (result as any)?.deletedCount ?? 0 };
   }
+
   async transaction<TResult>(callback: (session: unknown) => Promise<TResult>): Promise<TResult> {
-    throw new Error("Not implemented");
+    throw new Error("transaction is not supported via HTTP client");
   }
 }
+
 
 export { IdaeApiClientCollection };

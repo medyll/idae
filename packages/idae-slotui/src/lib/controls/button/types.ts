@@ -1,4 +1,3 @@
-export const buttonDemoValues = {};
 export const buttonEndDemoValues = {};
 export const buttonLoadingIconDemoValues = {};
 export const buttonPopperDemoValues = {};

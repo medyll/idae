@@ -301,6 +301,5 @@ export interface RowType {
 <style lang="postcss">
 	@reference "tailwindcss";
 	.dataListCell {
-		// transition: all  0.1s;
 	}
 </style>

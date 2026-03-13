@@ -1,4 +1,5 @@
 # Product Brief — @medyll/idae-machine
+
 Generated: 2026-03-06 | Status: `bmad init` baseline
 
 ---
@@ -7,19 +8,20 @@ Generated: 2026-03-06 | Status: `bmad init` baseline
 
 **@medyll/idae-machine** is a low-code UI framework for rapid CRUD interface generation. It bridges schema definition (TypeScript) and UI rendering (Svelte 5 components) to eliminate boilerplate form/list code.
 
-| Aspect | Detail |
-|--------|--------|
-| **Type** | NPM package (SvelteKit library) |
-| **Status** | Early development (v0.135.2) |
-| **Core Value** | Schema → UI automation |
+| Aspect           | Detail                                        |
+| ---------------- | --------------------------------------------- |
+| **Type**         | NPM package (SvelteKit library)               |
+| **Status**       | Early development (v0.135.2)                  |
+| **Core Value**   | Schema → UI automation                        |
 | **Target Users** | SvelteKit developers building data-heavy apps |
-| **Primary Use** | IndexedDB CRUD interfaces |
+| **Primary Use**  | IndexedDB CRUD interfaces                     |
 
 ---
 
 ## Problem Statement
 
 Building CRUD interfaces is repetitive:
+
 - Define database schema
 - Write form components (text inputs, dropdowns, validators)
 - Wire UI to database queries
@@ -33,29 +35,34 @@ Building CRUD interfaces is repetitive:
 ## Core Features (Current)
 
 ### 1. Schema-Driven UI Generation
+
 - Declare collections with field rules in TypeScript
 - Machine parses schema → generates form fields automatically
 - Field types: text, number, boolean, date, email, foreign-key, array-of
 - Rules: required, readonly, private
 
 ### 2. CRUD Zone Component
+
 - Pre-built "Create-Read-Update-Delete" interface
 - Unified sidebar list + detail view
 - Click-to-edit inline or modal mode
 - Single component: `<CrudZone collection="agents" />`
 
 ### 3. Relational Support
-- Forward keys: `fk-category.id` 
+
+- Forward keys: `fk-category.id`
 - Reverse keys: collection references pointing back
 - Multi-collection transactions via IndexedDB
 
 ### 4. Form Validation
+
 - Type-safe field rules
 - Custom validators per field
 - Error messaging
 - Field-level required/readonly/private modifiers
 
 ### 5. Reactive Data Binding (Svelte 5)
+
 - `$derived` for computed lists
 - `$effect` for side effects
 - Real-time UI updates on DB change
@@ -95,6 +102,7 @@ Building CRUD interfaces is repetitive:
 ## Current Focus Areas
 
 ✅ **Done:**
+
 - Core Machine class & schema parsing
 - Basic field type detection
 - Component exports (CrudZone, DataList, etc.)
@@ -102,11 +110,13 @@ Building CRUD interfaces is repetitive:
 - Svelte 5 compliance
 
 🔄 **In Progress:**
+
 - Form validation pipeline
 - Field rendering (all DSL types)
 - In-place editing UX
 
 ⏳ **Upcoming:**
+
 - Nested form handling
 - Advanced validation rules
 - Migration guide (from legacy code)
@@ -126,23 +136,23 @@ Building CRUD interfaces is repetitive:
 
 ## Success Metrics
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Unit test coverage | >80% | ~75% |
-| Components exported | >5 | 5+ |
-| Field types supported | >10 | 8+ |
-| Build time | <5s | ~3s |
-| Bundle size (minified) | <150KB | TBD |
+| Metric                 | Target | Current |
+| ---------------------- | ------ | ------- |
+| Unit test coverage     | >80%   | ~75%    |
+| Components exported    | >5     | 5+      |
+| Field types supported  | >10    | 8+      |
+| Build time             | <5s    | ~3s     |
+| Bundle size (minified) | <150KB | TBD     |
 
 ---
 
 ## Stakeholders & Communication
 
-| Role | Contact | Frequency |
-|------|---------|-----------|
-| Maintainer | Lebrun Meddy | Ongoing |
-| Contributors | Community (GitHub) | Ad-hoc |
-| Users | SvelteKit dev community | Via docs/issues |
+| Role         | Contact                 | Frequency       |
+| ------------ | ----------------------- | --------------- |
+| Maintainer   | Lebrun Meddy            | Ongoing         |
+| Contributors | Community (GitHub)      | Ad-hoc          |
+| Users        | SvelteKit dev community | Via docs/issues |
 
 ---
 
@@ -157,6 +167,7 @@ Building CRUD interfaces is repetitive:
 ---
 
 See also:
+
 - `README.md` (user guide)
 - `AGENTS.md` (AI agent instructions)
 - `SKILL.md` (project metadata)

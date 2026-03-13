@@ -1,4 +1,6 @@
-import { IndexGenerator } from './make-export.js';
+import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
+new MakeLibIndex().makeIndexFile();
+/* import { IndexGenerator } from './make-export.js';
 import { COMPONENT_ROOTS, EXCLUDE_GLOBS } from './make-export.js';
 import { execSync } from 'node:child_process';
 import path from 'node:path';
@@ -25,5 +27,5 @@ try {
 	}
 } catch (e) {
 	console.error('Warning: registry generation failed (continuing packaging):', e && e.message ? e.message : e);
-}
+} */
 

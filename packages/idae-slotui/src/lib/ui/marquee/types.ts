@@ -30,8 +30,6 @@ export const MarqueDemoValues: DemoerStoryProps<any> = {
 
 export let { parameters, componentArgs } = demoerArgs(MarqueDemoValues);
 
-// Export marquee demo values and child placeholder
-export { MarqueDemoValues as marqueeDemoValues };
 // Also create a direct exported alias for the generator (explicit symbol)
 export const marqueeDemoValues: DemoerStoryProps<any> = MarqueDemoValues as any;
 export const marqueeChildrenDemoValues: DemoerStoryProps<any> = {};

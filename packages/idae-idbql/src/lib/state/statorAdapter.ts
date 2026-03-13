@@ -16,6 +16,9 @@ export type IdbqlEventPayload = {
     | "deleteWhere";
   data?: any;
   keyPath?: string;
+  // new fields for sync control
+  silent?: boolean;
+  source?: "local" | "remote" | "system";
 };
 
 export type StatorAdapter = {
@@ -43,6 +46,9 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
     if (!event || !event.collection) return;
     const { collection, op, data, keyPath } = event;
     const s = ensureCollection(collection);
+
+    // If event is marked silent, do not modify state
+    if (event.silent) return;
 
     switch (op) {
       case "set":

@@ -1,4 +1,3 @@
-export const menuListDemoValues = {};
 export const menuListItemDemoValues = {};
 export const menuListTitleDemoValues = {};
 import { demoerArgs } from '$lib/base/demoer/demoer.utils.js';
@@ -113,7 +112,7 @@ export type MenuListItemProps<T = Data> = CommonProps & {
 	rest?: any;
 };
 
-const menuListDemoValues: DemoerStoryProps<MenuListProps> = {
+export const menuListDemoValues: DemoerStoryProps<MenuListProps> = {
 	tall: {
 		type: 'tall'
 	}

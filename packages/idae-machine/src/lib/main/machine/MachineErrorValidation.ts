@@ -1,4 +1,3 @@
-
 /**
  * @class IDbValidationError
  * @role Custom error class for validation errors on form fields.

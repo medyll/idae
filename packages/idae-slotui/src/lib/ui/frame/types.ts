@@ -1,4 +1,4 @@
-export const frameDemoValues = {};
+
 import { type Drawer } from "$lib/index.js";
 import {
   demoerArgs,
@@ -10,7 +10,7 @@ import type { Snippet } from "svelte";
 
 // Props moved to the component module script during migration.
 
-const frameDemoValues: DemoerStoryProps<any> = {
+export const frameDemoValues: DemoerStoryProps<any> = {
   drawerWidth: {
     type: "string",
     values: ["200px", "300px", "400px"],

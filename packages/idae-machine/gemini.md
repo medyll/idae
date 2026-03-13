@@ -8,12 +8,12 @@ The primary purpose of this library is to bridge the gap between data modeling a
 
 ## Key Technologies
 
-*   **Framework:** SvelteKit
-*   **Language:** TypeScript
-*   **UI Library:** Svelte 5 (uses Runes)
-*   **Bundler:** Vite
-*   **Testing:** Vitest with Svelte Testing Library
-*   **Linting & Formatting:** ESLint and Prettier
+- **Framework:** SvelteKit
+- **Language:** TypeScript
+- **UI Library:** Svelte 5 (uses Runes)
+- **Bundler:** Vite
+- **Testing:** Vitest with Svelte Testing Library
+- **Linting & Formatting:** ESLint and Prettier
 
 ## Architecture & Core Dependencies
 
@@ -28,9 +28,9 @@ It also relies on `@medyll/idae-slotui-svelte` for some base UI components.
 
 ### Key Features
 
-*   **Schema-driven UI generation**: Automatically creates forms from a data model.
-*   **CRUD Zone**: A pre-built, all-in-one "Create-Read-Update-Delete" interface for any data collection.
-*   **Relational support**: Visualizes foreign key and reverse foreign key relationships.
-*   **In-place editing**: Allows editing records directly in a list or view.
+- **Schema-driven UI generation**: Automatically creates forms from a data model.
+- **CRUD Zone**: A pre-built, all-in-one "Create-Read-Update-Delete" interface for any data collection.
+- **Relational support**: Visualizes foreign key and reverse foreign key relationships.
+- **In-place editing**: Allows editing records directly in a list or view.
 
 The main source code is structured in `src/lib/`, with schema/data logic in `src/lib/db/` and UI components in `src/lib/form/`. The project is configured for distribution on npm under the `@medyll` scope.

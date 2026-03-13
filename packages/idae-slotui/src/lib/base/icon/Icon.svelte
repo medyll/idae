@@ -1,4 +1,5 @@
 <script module lang="ts">
+export type IconProps = Record<string, unknown>;
 import { iconFontSize,   type ExpandProps } from '$lib/types/index.js'; 
 import Iconify from '@iconify/svelte';
 import type { ElementProps, IconObj } from "$lib/types/index.js"; 
@@ -114,10 +115,6 @@ export type IconAppProps = {
 	/>
 {/key}
 
-<script module lang="ts">
-// Module-level Props marker for migration tooling
-export type IconProps = Record<string, unknown>;
-</script>
 
 <style global lang="postcss">
   @reference "tailwindcss";

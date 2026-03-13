@@ -124,15 +124,19 @@ export class CollectionCore<T = any> {
       };
     });
   }
-  async update(keyPathValue: string | number, data: Partial<T>) {
+  async update(keyPathValue: string | number, data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }) {
     const dta = await this.get(keyPathValue);
-    return this.put({
-      [this.keyPath as keyof T]: keyPathValue,
-      ...dta,
-      ...data,
-    });
+    return this.put(
+      {
+        [this.keyPath as keyof T]: keyPathValue,
+        ...dta,
+        ...data,
+      },
+      opts,
+    );
   }
-  async updateWhere(where: Where<T>, data: Partial<T>) {
+
+  async updateWhere(where: Where<T>, data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }) {
     return this.where(where).then((rs) => {
       return new Promise(async (resolve, reject) => {
         Promise.all(
@@ -143,7 +147,7 @@ export class CollectionCore<T = any> {
                 ...dta,
                 ...data,
               };
-              return this.put(newData);
+              return this.put(newData, opts);
             }
           }),
         )
@@ -158,49 +162,67 @@ export class CollectionCore<T = any> {
   }
 
   // put data to indexedDB, replace collection content if present
-  async put<T>(value: Partial<T>): Promise<T> {
+  async put<T>(value: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<T> {
     return new Promise(async (resolve, reject) => {
-      const storeObj = await this.getCollection();
+      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
 
-      const put = storeObj.put(value);
-      put.onsuccess = async (event) => {
-        const updatedData = await this.get((event.target as IDBRequest).result);
+      const putReq = storeObj.put(value as any);
+      putReq.onsuccess = async (event) => {
+        const id = (event.target as IDBRequest).result;
+        const updatedData = await this.get(id as any);
+        // Emit event only if not silent
+        if (!opts?.silent) {
+          getIdbqlEvent().registerEvent("put", {
+            collection: this._store,
+            data: updatedData,
+            keyPath: this.keyPath,
+          });
+        }
         resolve(updatedData);
       };
-      put.onerror = function () {
+      putReq.onerror = function () {
         reject("data not put");
       };
     });
   }
 
   /** ok add data to the store */
-  async add<T>(data: Partial<T>): Promise<T | boolean> {
+  async add<T>(data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<T | boolean> {
     return new Promise(async (resolve, reject) => {
-      const storeObj = await this.getCollection();
-      const add = storeObj.add(data);
-      add.onsuccess = async (event) => {
-        const updatedData = await this.get((event.target as IDBRequest).result);
-
+      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
+      const addReq = storeObj.add(data as any);
+      addReq.onsuccess = async (event) => {
+        const id = (event.target as IDBRequest).result;
+        const updatedData = await this.get(id as any);
+        if (!opts?.silent) {
+          getIdbqlEvent().registerEvent("add", {
+            collection: this._store,
+            data: updatedData,
+            keyPath: this.keyPath,
+          });
+        }
         resolve(updatedData);
       };
-      add.onerror = function (e) {
+      addReq.onerror = function (e) {
         console.log(e);
         reject(e);
       };
     });
   }
 
-  async delete(keyPathValue: string | number): Promise<boolean> {
+  async delete(keyPathValue: string | number, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      const storeObj = await this.getCollection();
-      let objectStoreRequest = storeObj.delete(keyPathValue);
+      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
+      let objectStoreRequest = storeObj.delete(keyPathValue as any);
 
       objectStoreRequest.onsuccess = () => {
-        getIdbqlEvent().registerEvent("delete", {
-          collection: this._store,
-          data: { [this.keyPath]: keyPathValue },
-          keyPath: this.keyPath,
-        });
+        if (!opts?.silent) {
+          getIdbqlEvent().registerEvent("delete", {
+            collection: this._store,
+            data: { [this.keyPath]: keyPathValue },
+            keyPath: this.keyPath,
+          });
+        }
         resolve(true);
       };
       objectStoreRequest.onerror = function () {
@@ -209,12 +231,12 @@ export class CollectionCore<T = any> {
     });
   }
 
-  async deleteWhere(where: Where<T>): Promise<boolean> {
+  async deleteWhere(where: Where<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<boolean> {
     return this.where(where).then((data: T[]) => {
       return Promise.all(
         data.map((item: T) => {
           if (this.keyPath && item[this.keyPath]) {
-            return this.delete(item[this.keyPath]);
+            return this.delete(item[this.keyPath], opts);
           }
         }),
       )
@@ -250,11 +272,39 @@ function createIDBStoreProxy(store) {
                 (origMethod as Function)
                   .apply(instance, args)
                   .then((res) => {
-                    getIdbqlEvent().registerEvent(prop as any, {
+                    // Normalize event payload: prefer explicit whereClause if provided in args
+                    const payload: any = {
                       collection: instance._store,
                       data: res,
                       keyPath: instance.keyPath,
-                    });
+                    };
+                    // If the original method call passed a 'where' object as first arg (updateWhere/deleteWhere)
+                    try {
+                      if (prop === 'updateWhere' || prop === 'deleteWhere') {
+                        // first arg is where query, second arg (for updateWhere) is update data
+                        payload.whereClause = args[0];
+                        if (prop === 'updateWhere') payload.data = args[1];
+                      } else if (prop === 'update') {
+                        // update(keyPathValue, data) — keep data as merged result
+                        payload.data = res;
+                      }
+                    } catch (e) {
+                      // ignore
+                    }
+
+                    // include silent flag if present in args (last arg)
+                    try {
+                      const lastArg = args[args.length - 1];
+                      if (lastArg && typeof lastArg === 'object' && ('silent' in lastArg || 'tx' in lastArg)) {
+                        payload.silent = lastArg.silent ?? false;
+                      } else {
+                        payload.silent = false;
+                      }
+                    } catch (e) {
+                      payload.silent = false;
+                    }
+
+                    getIdbqlEvent().registerEvent(prop as any, payload);
                     resolve(res);
                   })
                   .catch((e) => {

@@ -1,3 +1,5 @@
+import type { IdbqlEventPayload } from './statorAdapter';
+
 type EventType =
   | "add"
   | "put"
@@ -18,6 +20,30 @@ class IdbqlStateEventBase {
   private _adapter: {
     applyEvent?: (event: IdbqlEventPayload) => void;
   } | null = null;
+  // support multiple adapters without breaking API
+  private _adapters: Array<{ applyEvent?: (event: IdbqlEventPayload) => void }> | null = null;
+
+  registerAdapters(adapters: Array<{ applyEvent?: (event: IdbqlEventPayload) => void }> | null) {
+    this._adapters = adapters && adapters.length ? adapters : null;
+    if (this._adapters) {
+      // create a wrapper adapter that dispatches in registration order and isolates errors
+      this._adapter = {
+        applyEvent: (event: IdbqlEventPayload) => {
+          for (const a of this._adapters || []) {
+            try {
+              if (a && typeof a.applyEvent === 'function') {
+                a.applyEvent(event);
+              }
+            } catch (e) {
+              // adapter errors are isolated
+            }
+          }
+        },
+      };
+    } else {
+      this._adapter = null;
+    }
+  }
 
   constructor() {
     this.dataState = {} as Record<string, any[]>;
@@ -162,12 +188,27 @@ class IdbqlStateEventBase {
     // Delegate to adapter if present (non-breaking: adapter mirrors changes)
     if (this._adapter && typeof this._adapter.applyEvent === "function") {
       try {
-        this._adapter.applyEvent({
+        // Build normalized payload — respect whereClause if present in eventData
+        const payload: any = {
           collection,
           op: event,
           data,
           keyPath,
-        });
+          silent: false,
+          source: "local",
+        };
+        try {
+          // eventData may contain whereClause for replayable ops
+          if ((event === 'updateWhere' || event === 'deleteWhere') && (eventData as any).whereClause) {
+            payload.whereClause = (eventData as any).whereClause;
+            // ensure data is the update payload for updateWhere
+            if (event === 'updateWhere') payload.data = (eventData as any).data ?? data;
+          }
+        } catch (e) {
+          // ignore
+        }
+
+        this._adapter.applyEvent(payload);
       } catch (e) {
         // adapter errors should not break the main flow
       }
@@ -180,8 +221,6 @@ class IdbqlStateEventBase {
 // should use `createIdbqlEvent()` which falls back to the base implementation.
 class IdbqlStateEvent extends IdbqlStateEventBase {
   // main application shared state - Svelte rune (only valid in Svelte contexts)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   dataState = $state<Record<string, any[]>>({});
 }
 

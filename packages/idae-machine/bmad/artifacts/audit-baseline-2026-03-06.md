@@ -1,9 +1,11 @@
 # AUDIT REPORT: idae-machine Baseline
+
 Generated: 2026-03-06 | Command: `bmad init` → baseline audit
 
 ---
 
 ## **Overall Health**
+
 ✅ **Healthy Core** with strong architecture and test coverage, but requires urgent attention to form validation robustness and type safety (`any` usage). Svelte 5 compliance is excellent; ready for production with targeted improvements.
 
 ---
@@ -58,7 +60,7 @@ Generated: 2026-03-06 | Command: `bmad init` → baseline audit
 3. **MachineParserForge Has NO Test Coverage**
    - **Issue**: Core DSL parser untested (field type detection for 'fk-agent.id', 'array-of-number', etc.)
    - **Impact**: 2 of 19 core modules lack tests
-   - **Action**: Create src/lib/main/__tests__/machineParserForge.test.ts (30+ cases)
+   - **Action**: Create src/lib/main/**tests**/machineParserForge.test.ts (30+ cases)
 
 ### **🟠 HIGH PRIORITY**
 
@@ -99,15 +101,15 @@ Generated: 2026-03-06 | Command: `bmad init` → baseline audit
 
 ## **METRICS SUMMARY**
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| TS Files | 21 | ✅ |
-| Total TS LOC | ~3,111 | ✅ |
-| JSDoc Coverage | 4.5% | 🟠 Target: 80%+ |
-| Test Files | 5 | ✅ |
-| Svelte 5 Compliance | 100% | ✅ |
-| `any` Instances | 42+ | 🔴 Critical |
-| Exports | 35 | ✅ |
+| Metric              | Value  | Status          |
+| ------------------- | ------ | --------------- |
+| TS Files            | 21     | ✅              |
+| Total TS LOC        | ~3,111 | ✅              |
+| JSDoc Coverage      | 4.5%   | 🟠 Target: 80%+ |
+| Test Files          | 5      | ✅              |
+| Svelte 5 Compliance | 100%   | ✅              |
+| `any` Instances     | 42+    | 🔴 Critical     |
+| Exports             | 35     | ✅              |
 
 ---
 

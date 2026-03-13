@@ -5,35 +5,35 @@ A template for `idae-machine` must define collections, fields, and relationships
 ```typescript
 // Example schemeModel for Machine
 export const schemeModel = {
-  agents: {
-    keyPath: 'id',
-    ts: {} as Agent, // Optional typing for autocompletion
-    template: {
-      index: 'id',
-      presentation: 'name',
-      fields: {
-        id: 'id (readonly)',
-        name: 'text (required)',
-        active: 'boolean',
-        created_at: 'date'
-      },
-      fks: {
-        group: { code: 'group', multiple: false, rules: '' }
-      }
-    }
-  },
-  groups: {
-    keyPath: 'id',
-    ts: {} as Group,
-    template: {
-      index: 'id',
-      presentation: 'label',
-      fields: {
-        id: 'id (readonly)',
-        label: 'text (required)'
-      }
-    }
-  }
+	agents: {
+		keyPath:  'id',
+		ts:       {} as Agent, // Optional typing for autocompletion
+		template: {
+			index:        'id',
+			presentation: 'name',
+			fields:       {
+				id:         'id (readonly)',
+				name:       'text (required)',
+				active:     'boolean',
+				created_at: 'date'
+			},
+			fks:          {
+				group: { code: 'group', multiple: false, rules: '' }
+			}
+		}
+	},
+	groups: {
+		keyPath:  'id',
+		ts:       {} as Group,
+		template: {
+			index:        'id',
+			presentation: 'label',
+			fields:       {
+				id:    'id (readonly)',
+				label: 'text (required)'
+			}
+		}
+	}
 };
 ```
 
@@ -48,7 +48,6 @@ import { machine, schemeModel } from '@medyll/idae-machine';
 machine.init({ dbName: 'my-db', version: 1, model: schemeModel });
 machine.start();
 
-
 // Add an agent
 await machine.idbql.agents.add({ name: 'Alice', active: true });
 
@@ -62,19 +61,19 @@ await machine.idbql.agents.put({ id: 1, name: 'Alice Cooper', active: true });
 await machine.idbql.agents.delete(1);
 
 // Multi-collection transaction
-const result = await machine.idbql.transaction([
-  'agents', 'groups'
-], 'readwrite', async (tx) => {
-  const agentStore = tx.objectStore('agents');
-  const groupStore = tx.objectStore('groups');
-  const groupId = await groupStore.add({ label: 'Admins' });
-  const agentId = await agentStore.add({ name: 'Bob', active: true, group: groupId });
-  return { groupId, agentId };
+const result = await machine.idbql.transaction(['agents', 'groups'], 'readwrite', async (tx) => {
+	const agentStore = tx.objectStore('agents');
+	const groupStore = tx.objectStore('groups');
+	const groupId = await groupStore.add({ label: 'Admins' });
+	const agentId = await agentStore.add({ name: 'Bob', active: true, group: groupId });
+	return { groupId, agentId };
 });
 ```
+
 ## ⚡ Advanced Data & Reactivity
 
 `idae-machine` leverages the power of [@medyll/idae-idbql](https://github.com/medyll/idae-idbql) to provide:
+
 - A MongoDB-inspired IndexedDB query engine
 - Complex multi-collection transactions
 - Svelte 5 reactive state (`idbqlState`) for real-time UIs
@@ -98,7 +97,6 @@ Use `store` for reactive lists or views:
 {/each}
 ```
 
-
 # @medyll/idae-machine
 
 **Low-code UI framework** for rapid data structure visualization and CRUD operations in Svelte 5. Declare your database schema once, automatically generate rich UI components for displaying, creating, and updating structured data in IndexedDB.
@@ -106,6 +104,7 @@ Use `store` for reactive lists or views:
 ## 🎯 Purpose
 
 `idae-machine` bridges the gap between **data modeling** (`@medyll/idae-idbql`) and **rich UI components** (`@medyll/idae-slotui-svelte`). It provides:
+
 - **Schema-driven UI generation**: Declare your data model, get form components for free
 - **CRUD Zone**: Pre-built "Create-Read-Update-Delete" interface for any collection
 - **Relational support**: Foreign key and reverse foreign key visualization
@@ -130,11 +129,9 @@ IndexedDB Abstraction (@medyll/idae-idbql)
 
 | Module | Purpose |
 
-
 ## 🚀 Quick Start: App Initialization
 
 The recommended way to initialize your app is to use the `Machine` class, which centralizes schema, collections, and IndexedDB access.
-
 
 ```typescript
 import { machine, schemeModel } from '@medyll/idae-machine';
@@ -185,6 +182,11 @@ await singleton.idbql.agents.add({ name: 'Alice' });
 Note: `machine.createInstance()` does not replace the singleton — it returns a separate instance that you manage explicitly.
 
 ### Legacy/Direct Usage (not recommended)
+
+> Note: The helper `CrudService` has been removed (see PR #88). Use `machine.idbql` and `machine.idbqlState` (or `machine.store`) directly for CRUD operations and demo pages.
+
+### Legacy/Direct Usage (not recommended)
+
 You can still use `createIdbqDb` directly if you need low-level access:
 
 ```typescript
@@ -196,62 +198,78 @@ const idbqlState = createIdbqDb(schemeModel);
 
 ```svelte
 <script lang="ts">
-  import { CrudZone, CreateUpdate, DataList } from '@medyll/idae-machine';
+  import { DataList, DataCreate, DataEdit } from '@medyll/idae-machine';
 </script>
 
-<!-- Full CRUD interface -->
-<CrudZone collection="agents" />
+<!-- List view with detail pane -->
+<div class="grid grid-cols-2 gap-4">
+  <div>
+    <h2>List</h2>
+    <DataList collection="agents" target="details" />
+  </div>
+  <div data-target-zone="details" class="rounded border p-4">
+    <h2>Detail</h2>
+    <!-- Clicking an item in DataList will hydrate a DataForm here -->
+  </div>
+</div>
 
-<!-- Or compose individually -->
-<DataList collection="agents" />
-<CreateUpdate collection="agents" mode="create" />
+<!-- Or use dedicated form components -->
+<DataCreate collection="agents" />
+<DataEdit collection="agents" dataId={1} />
 ```
 
 ## 📋 Component Guide
 
-### `<CrudZone>`
-Unified CRUD interface with sidebar list and detail editing.
-```svelte
-<CrudZone collection="agents" style="height: 600px; min-width: 750px" />
-```
-
 ### `<DataList>`
-Displays collection records as grid with click-to-edit.
+
+Displays collection records as a grid and can hydrate a detail pane using `DataForm`.
+
 ```svelte
-<DataList 
+<DataList
   collection="agents"
   displayMode="grid"
+  target="details"
   where={{ active: { $eq: true } }}
-  onclick={(data, idx) => console.log(data)}
-/>
-```
-  mode="show"
-  dataId={1}
-  showFields={['name', 'code', 'model']}
-  inPlaceEdit={true}
-  showFks={true}
-/>
-```
-```svelte
-  collection="agents"
-  fieldName="name"
-  data={formData}
-  mode="edit"
-  editInPlace={true}
+  onclick={(data, idx) => console.log('clicked', data, idx)}
 />
 ```
 
-### Relational Components
-```svelte
-<!-- Foreign Keys (refs TO other collections) -->
-<CollectionFks collection="agents" />
+### `<DataForm>`
 
-<!-- Reverse Foreign Keys (records pointing TO this one) -->
-<CollectionReverseFks collection="agents">
-  {#snippet children({ collection, template })}
-    <div>{collection} references this agent</div>
-  {/snippet}
-</CollectionReverseFks>
+A general-purpose form viewer/editor that supports `mode="show" | "create" | "update"`.
+
+```svelte
+<DataForm collection="agents" mode="show" dataId={1} />
+
+<DataForm collection="agents" mode="create" />
+
+<DataForm collection="agents" mode="update" dataId={1} />
+```
+
+### `<DataCreate>`
+
+Convenience wrapper around `DataForm` for creating new records.
+
+```svelte
+<DataCreate collection="agents" onsubmit={(payload) => console.log('created', payload)} />
+```
+
+### `<DataEdit>`
+
+Convenience wrapper around `DataForm` for editing an existing record.
+
+```svelte
+<DataEdit collection="agents" dataId={1} onsubmit={(payload) => console.log('updated', payload)} />
+```
+
+### Relational Helpers
+
+```svelte
+<!-- Foreign keys (references to other collections) -->
+<DataLinks collection="agents" />
+
+<!-- Reverse foreign keys (other collections referencing this one) -->
+<DataLinksBack collection="agents" />
 ```
 
 ## 🔧 Schema Definition (dbFields.ts)
@@ -267,28 +285,27 @@ fields: {
   active: 'boolean',
   email: 'email',
   created: 'date',
-  
+
   // Text variants
   bio: 'text-long',
   note: 'text-area',
-  
+
   // Relations
   categoryId: 'fk-category.id (required)',
-  
+
   // Collections
   tagIds: 'array-of-number',
-  
+
   // Modifiers
   password: 'password (private)',
   system_field: 'text (readonly private)'
 }
 ```
 
-
-
 ## 🛡️ Robustness, Coverage & Performance
 
 All core logic (`dbFields.ts`, `machine.ts`, etc.) is tested and optimized:
+
 - **Schema parsing**: all types and modifiers are handled
 - **Relations**: typed and tested FK and reverse-FK
 - **Unit tests**: every exported method is covered (Vitest)
@@ -297,6 +314,7 @@ All core logic (`dbFields.ts`, `machine.ts`, etc.) is tested and optimized:
 - **Performance**: indexes, optimized queries, built-in tips
 
 ### Current Focus
+
 - ✅ Schema declaration & typing
 - ✅ Advanced IndexedDB integration
 - ✅ Component export & modular structure
@@ -314,7 +332,6 @@ All logic in `dbFields.ts` and related modules is covered by unit tests:
 - **Coverage**: Every method of every exported class is tested, including edge cases (array/object/fk/required/readonly).
 - **Continuous validation**: All tests must pass before merge. See `CHANGELOG.md` for test and coverage history.
 
-
 ## 🦄 Svelte 5 Coding Policy
 
 All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md` for details and migration rules.
@@ -327,6 +344,7 @@ All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md
 - Pull requests must respect documentation and Svelte 5 rules, or will be rejected.
 
 ### Example jsDoc
+
 ```typescript
 /**
  * @class MachineDb
@@ -342,15 +360,18 @@ See source files for full jsDoc coverage.
 - **@medyll/idae-idbql**: IndexedDB abstraction with schema support
 - **@medyll/idae-slotui-svelte**: UI component library (Button, MenuList, Looper, etc.)
 - **svelte**: ^5.0.0 (uses Svelte 5 runes)
+
 ### Build
-```bash
+
+````bash
 ### Development Server
 ```bash
 npm run dev          # Start dev server on localhost
 npm run dev -- --open  # Auto-open in browser
-```
+````
 
 ### Quality Assurance
+
 ```bash
 npm run check        # Svelte type checking
 npm run lint         # ESLint + Prettier check
@@ -363,14 +384,31 @@ npm run test         # Single-run test mode
 
 ```
 src/lib/
-├── db/                    # Schema & field layers
-│   ├── dbSchema.ts       # Collection templates
-│   ├── dbFields.ts       # Field rules & validation
-│   └── dataModel.ts      # TypeScript types
-│   ├── CollectionFks.svelte      # Forward relations
-│   ├── CollectionReverseFks.svelte # Back-references
-│   └── ...
-└── index.ts             # Main exports
+├── data/                  # UI components for data & CRUD
+│   ├── DataProvider.svelte
+│   ├── DataList.svelte
+│   ├── DataListActions.svelte
+│   ├── DataListFields.svelte
+│   ├── DataForm.svelte
+│   ├── DataCreate.svelte
+│   ├── DataEdit.svelte
+│   ├── DataLinks.svelte
+│   ├── DataLinksBack.svelte
+│   └── DataPicker.svelte
+├── field/                 # Field renderers
+│   ├── FieldDisplay.svelte
+│   └── FieldEditor.svelte
+├── fragments/             # UI primitives / helpers
+│   ├── Confirm.svelte
+│   ├── Frame.svelte
+│   ├── InfoLine.svelte
+│   ├── Selector.svelte
+│   └── Skeleton.svelte
+├── main/                  # Machine core & schema logic
+├── demo/                  # Example schema & demo data
+│   ├── dbSchema.ts
+│   └── testScheme.ts
+└── index.ts               # Main exports
 ```
 
 ## 🎓 Example Projects
@@ -384,11 +422,11 @@ MIT - See LICENSE file
 ---
 
 **Next Steps for Contributors:**
+
 1. Stabilize form validation pipeline
 2. Add comprehensive test suite
 3. Document TypeScript schema inference
 4. Create migration guides from legacy code in `src/_old/`
-
 
 ## Architecture
 

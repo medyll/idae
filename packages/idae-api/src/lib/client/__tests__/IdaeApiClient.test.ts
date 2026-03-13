@@ -168,14 +168,14 @@ describe('IdaeApiClientCollection', () => {
 		collection = new IdaeApiClientCollection(IdaeApiClientConfig, 'app', 'users');
 	});
 
-	describe('find()', () => {
+	describe('where()', () => {
 		it('should return promise', () => {
 			(global.fetch as any).mockResolvedValueOnce({
 				ok: true,
 				json: async () => []
 			});
 
-			const result = collection.find();
+			const result = collection.where();
 			expect(result).toBeInstanceOf(Promise);
 		});
 
@@ -185,7 +185,7 @@ describe('IdaeApiClientCollection', () => {
 				json: async () => []
 			});
 
-			await collection.find();
+			await collection.where();
 
 			expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/users'), {
 				method: 'GET',
@@ -219,7 +219,7 @@ describe('IdaeApiClientCollection', () => {
 			});
 
 			const filter = { age: { $gt: 25 }, status: 'active' };
-			await collection.find(filter);
+			await collection.where(filter);
 
 			const callUrl = (global.fetch as any).mock.calls[0][0];
 			expect(callUrl).toContain('age');
@@ -236,11 +236,63 @@ describe('IdaeApiClientCollection', () => {
 				email: { $in: ['a@example.com', 'b@example.com'] },
 				age: { $gte: 18, $lte: 65 }
 			};
-			await collection.find(filter);
+			await collection.where(filter);
 
 			const callUrl = (global.fetch as any).mock.calls[0][0];
 			expect(callUrl).toContain('email');
 			expect(callUrl).toContain('age');
+		});
+	});
+
+	describe('findOne(params)', () => {
+		it('should return first item or null', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => [{ id: '1' }, { id: '2' }]
+			});
+
+			const result = await collection.findOne({ status: 'active' });
+			expect(result).toEqual({ id: '1' });
+		});
+
+		it('should return null when no results', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => []
+			});
+
+			const result = await collection.findOne({ status: 'inactive' });
+			expect(result).toBeNull();
+		});
+	});
+
+	describe('updateWhere(params, update)', () => {
+		it('should invoke update() for each matching document', async () => {
+			(global.fetch as any)
+				.mockResolvedValueOnce({ ok: true, json: async () => [{ id: '1' }, { id: '2' }] }) // find
+				.mockResolvedValueOnce({ ok: true, json: async () => ({}) }) // update 1
+				.mockResolvedValueOnce({ ok: true, json: async () => ({}) }); // update 2
+
+			await collection.updateWhere({ status: 'active' }, { $set: { status: 'inactive' } });
+
+			const putCalls = (global.fetch as any).mock.calls.filter(
+				(call: any) => call[1]?.method === 'PUT',
+			);
+			expect(putCalls).toHaveLength(2);
+			expect(putCalls[0][0]).toContain('/users/1');
+			expect(putCalls[1][0]).toContain('/users/2');
+		});
+	});
+
+	describe('deleteWhere(params)', () => {
+		it('should return deletedCount based on array size', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => [{}, {}, {}]
+			});
+
+			const result = await collection.deleteWhere({ status: 'inactive' });
+			expect(result).toEqual({ deletedCount: 3 });
 		});
 	});
 

@@ -35,7 +35,7 @@ phases:
   implementation:
     status: in_progress
     sprint_planning:
-      status: not_started      # → run /sprint-planning
+      status: in_progress      # started by automated next --auto
     migration_steps:
       - step: "Audit existing code"
         status: done
@@ -70,7 +70,7 @@ sprints:
     completed_at: "2026-03-02"
   - id: sprint-02
     theme: "Ship-Ready"
-    status: pending
+    status: in_progress
     file: bmad/artifacts/sprints/sprint-02.md
     goal: "Publishable package + functional registry + test baseline"
     points_total: 10

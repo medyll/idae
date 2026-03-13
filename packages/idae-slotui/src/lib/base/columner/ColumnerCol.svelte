@@ -68,8 +68,7 @@
 		width: 100%;
 		overflow: hidden;
 		display: flex;
-		min-width: 110px;
-		// flex: 1;
+		min-width: 110px; 
 		position: relative;
 		flex-direction: column;
 

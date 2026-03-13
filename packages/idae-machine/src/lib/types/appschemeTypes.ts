@@ -8,18 +8,18 @@ type schemeColor = string;
 type schemeOrder = number;
 
 interface Shared {
-	code: schemeCode;
-	name: schemeName;
-	icon?: schemeIcon;
-	color?: schemeColor;
-	order?: schemeOrder;
+	code:        schemeCode;
+	name:        schemeName;
+	icon?:       schemeIcon;
+	color?:      schemeColor;
+	order?:      schemeOrder;
 	dateChanged: string;
 	timeChanged: string;
 }
 /** main base */
 export interface AppSchemeBase extends Shared {
 	idappscheme_base: schemeId;
-	code: schemeCode;
+	code:             schemeCode;
 }
 
 export interface AppSchemeType extends Shared {
@@ -37,36 +37,36 @@ export interface AppSchemeFieldGroup extends Shared {
 export interface AppScheme extends Shared {
 	//   Scheme => schemeFieldsList SchemeModel
 	idappscheme: schemeId;
-	fk: {
+	fk:          {
 		appscheme_base: Fk<AppSchemeBase>;
 		appscheme_type: Fk<AppSchemeType>;
 	};
-	grilleRFK: Fk<AppScheme>;
+	grilleRFK:   Fk<AppScheme>;
 	grilleCount: Fk<AppScheme>;
 }
 
 export interface AppSchemeField extends Shared {
 	idappscheme_field: schemeId;
-	fk: {
-		appscheme_field_type: Fk<AppSchemeFieldType>;
+	fk:                {
+		appscheme_field_type:  Fk<AppSchemeFieldType>;
 		appscheme_field_group: Fk<AppSchemeFieldGroup>;
 	};
 }
 
 export interface AppSSchemeView extends Shared {
 	idappscheme_view: schemeId;
-	fk: {
-		appscheme: Fk<AppScheme>;
-		appscheme_field: Fk<AppSchemeField>;
+	fk:               {
+		appscheme:            Fk<AppScheme>;
+		appscheme_field:      Fk<AppSchemeField>;
 		appscheme_view_group: Fk<AppSchemeViewGroup>;
-		appscheme_view_type: Fk<AppSchemeViewType>;
+		appscheme_view_type:  Fk<AppSchemeViewType>;
 	};
 }
 
 interface FkModel {
-	id: schemeId;
-	code: schemeCode;
-	order?: schemeOrder;
+	id:        schemeId;
+	code:      schemeCode;
+	order?:    schemeOrder;
 	required?: boolean;
 	readonly?: boolean;
 	multiple?: boolean;
@@ -98,7 +98,7 @@ let test: AppSchemeModel<AppSchemeType>;
 
 const appSchemeModel: AppSchemeModel<AppScheme> = {
 	code: 'appscheme',
-	fk: {
+	fk:   {
 		appscheme_type: {
 			required: false,
 			readonly: false,
@@ -114,13 +114,13 @@ const appSchemeModel: AppSchemeModel<AppScheme> = {
 
 const appSchemeViewModel: AppSchemeModel<AppSSchemeView> = {
 	code: 'appscheme_view',
-	fk: {
-		appscheme: {
+	fk:   {
+		appscheme:            {
 			required: false,
 			readonly: false,
 			multiple: false
 		},
-		appscheme_field: {
+		appscheme_field:      {
 			required: false,
 			readonly: false,
 			multiple: false
@@ -130,7 +130,7 @@ const appSchemeViewModel: AppSchemeModel<AppSSchemeView> = {
 			readonly: false,
 			multiple: false
 		},
-		appscheme_view_type: {
+		appscheme_view_type:  {
 			required: false,
 			readonly: false,
 			multiple: false

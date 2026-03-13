@@ -2,3 +2,10 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# Ignore Svelte files for Prettier due to plugin compatibility in this workspace
+# Prettier will still check other file types.
+**/*.svelte
+**/*.svelte.ts
+node_modules/
+dist/

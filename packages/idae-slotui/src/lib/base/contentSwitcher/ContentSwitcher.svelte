@@ -42,22 +42,22 @@ export type ContentSwitcherProps = CommonProps & {
 		contentSwitcherReveal
 	}: ExpandProps<ContentSwitcherProps> = $props();
 
-	let visibleSate: boolean = $state(false);
+	let visibleState: boolean = $state(false);
 	let thisRef: any;
 	let realParent: HTMLElement | null = $derived(parent ?? element?.parentElement ?? null);
 
 	function handleClick(event: MouseEvent) {
-		visibleSate = !visibleSate;
+		visibleState = !visibleState;
 		if (!element || !realParent) return false;
 		const children: HTMLCollection = realParent?.children;
 
 		// iterate over all child nodes
 		Array.from(children).forEach((li: any) => {
-			//li.style.transform = visibleSate ? 'scale(0,0)' : '';
-			li.style.display = visibleSate ? 'none' : '';
+			//li.style.transform = visibleState ? 'scale(0,0)' : '';
+			li.style.display = visibleState ? 'none' : '';
 		});
 
-		if (visibleSate) {
+		if (visibleState) {
 			realParent.appendChild(thisRef);
 		} else {
 			element.appendChild(thisRef);
