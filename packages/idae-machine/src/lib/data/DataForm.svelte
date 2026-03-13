@@ -1,20 +1,20 @@
+<!-- /**
+* @component DataForm Component
+* @role User form for creating or editing records in a collection
+* @description Renders an editable form with automatic field generation from schema.
+* Handles form validation, submission, and data persistence to IndexedDB via machine.store.
+* Supports three modes: 'create' (new record), 'edit' (existing), 'show' (readonly).
+*
+* @example
+* ```svelte
+* <DataForm
+*   collection="users"
+*   mode="create"
+*   onsubmit={handleSave}
+* />
+* ```
+*/ -->
 <script lang="ts" generics="COL = Record<string,unknown>">
-    /**
-     * @component DataForm Component
-     * @role User form for creating or editing records in a collection
-     * @description Renders an editable form with automatic field generation from schema.
-     * Handles form validation, submission, and data persistence to IndexedDB via machine.store.
-     * Supports three modes: 'create' (new record), 'edit' (existing), 'show' (readonly).
-     *
-     * @example
-     * ```svelte
-     * <DataForm
-     *   collection="users"
-     *   mode="create"
-     *   onsubmit={handleSave}
-     * />
-     * ```
-     */
     import { machine } from '$lib/main/machine.js';
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
     import type { CreateUpdateProps } from '$lib/form/types.js';
@@ -32,9 +32,6 @@
      * @property {string} [dataId] - Record ID for edit/show modes
      * @property {(payload: unknown) => void} [onsubmit] - Callback when form is submitted successfully
      */
-
-    // Define props with Svelte 5 syntax
-    // Replaces createEventDispatcher with a callback prop
     let {
         onsubmit: onsubmit_callback,
         ...createUpdateProps
@@ -176,7 +173,7 @@
         {/each}
     </div>
 
-    {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')}
+    <!-- {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')} -->
         <div>
             <DataLinksBack
                 showTitle={true}
@@ -188,7 +185,7 @@
                 {/snippet}
             </DataLinksBack>
         </div>
-    {/if}
+    <!-- {/if} -->
 </div>
 
 <button

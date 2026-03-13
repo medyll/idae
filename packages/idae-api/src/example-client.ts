@@ -30,7 +30,7 @@ async function runExample() {
 
     // Find all documents
     console.log("\nFinding all documents in user:");
-    const allDocs = await appConfCollection.find({
+    const allDocs = await appConfCollection.where({
       email: { $in: ["Karin@example.com", "Test@Value"] },
       age: 31,
     });

@@ -321,10 +321,6 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 	</dialog>
 {/key}
 
-<!-- {#if outer}
-	<svelte:self bind:this={componentInstance} outer={false} />
-{:else}
-{/if} -->
 
 <style global lang="postcss">
 	@reference "tailwindcss";

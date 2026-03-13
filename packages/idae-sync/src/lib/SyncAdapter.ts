@@ -106,6 +106,6 @@ export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer, in
   return new SyncAdapter(outbox, deliverer, intervalMs);
 }
 
-export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer) {
+/* export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer) {
   return new SyncAdapter(outbox, deliverer);
-}
+} */

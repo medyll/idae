@@ -1,0 +1,27 @@
+{
+  "name": "@medyll/idae-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepackage": "node scripts/package-pre.js"
+  },
+  "dependencies": {
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-api": "workspace:*"
+  },
+  "keywords": [],
+  "author": "Lebrun Meddy",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  }
+}

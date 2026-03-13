@@ -415,16 +415,21 @@ class IdaeApi {
   ) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const connectedCollection = req.connectedCollection;
+        const connectedCollection = (req as any).connectedCollection;
 
         if (!connectedCollection) {
           throw new HttpError(500, "Database connection not established");
         }
+
+        const body = (req as any).validated?.body ?? req.body;
+        const query = (req as any).validated?.query ?? (req.query?.params ?? req.query);
+        const params = (req as any).validated?.params ?? req.params;
+
         const result = await action(
           connectedCollection,
-          req.params,
-          req.body,
-          req.query.params ?? req.query,
+          params,
+          body,
+          query,
         );
 
         res.json(result);
