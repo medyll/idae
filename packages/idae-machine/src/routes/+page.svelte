@@ -15,7 +15,8 @@ Shows all UI components working together with real data binding
 	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
 
 	// Form Components
-	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
+	import Create from '$lib/form/Create.svelte';
+	import Update from '$lib/form/Update.svelte';
 	import FieldValue from '$lib/form/FieldValue.svelte';
 	import FieldInPlace from '$lib/form/FieldInPlace.svelte';
 	import DataProvider from '$lib/form/DataProvider.svelte';
@@ -36,13 +37,13 @@ Shows all UI components working together with real data binding
 
 	// State
 	let selectedCollection = $state<string>(collections[0] ?? 'product');
-	let activeTab = $state<'grid' | 'menu' | 'create' | 'edit' | 'relationships' | 'components'>('grid');
+	let activeTab = $state<'grid' | 'menu' | 'create' | 'update' | 'relationships' | 'components'>('grid');
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
 	let isLoading = $state(false);
 
 	function selectRecord(record: Record<string, unknown>) {
 		selectedRecord = record;
-		activeTab = 'edit';
+		activeTab = 'update';
 	}
 
 	function confirmDelete() {
@@ -138,11 +139,11 @@ Shows all UI components working together with real data binding
 				{#if selectedRecord}
 					<button
 						class="tab"
-						class:active={activeTab === 'edit'}
-						data-testid="tab-edit"
-						onclick={() => (activeTab = 'edit')}
+						class:active={activeTab === 'update'}
+						data-testid="tab-update"
+						onclick={() => (activeTab = 'update')}
 					>
-						✏️ Edit
+						✏️ Update
 					</button>
 					<button
 						class="tab"
@@ -201,31 +202,31 @@ Shows all UI components working together with real data binding
 				<!-- Tab: Create -->
 				{#if activeTab === 'create'}
 					<div class="view-section" data-testid="view-create">
-						<h2>➕ Créer un enregistrement — CreateUpdate</h2>
+						<h2>➕ Create — nouveau enregistrement</h2>
 						<p class="description">
-							Formulaire CreateUpdate avec génération automatique des champs et validation
+							Composant <code>Create</code> : formulaire de création avec génération automatique des champs et validation.
+							Props : <code>collection</code>, <code>withData</code>, <code>showFields</code>, <code>displayMode</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<CreateUpdate
+							<Create
 								collection={selectedCollection}
-								mode="create"
 								onsubmit={() => { activeTab = 'grid'; }}
 							/>
 						</div>
 					</div>
 				{/if}
 
-				<!-- Tab: Edit -->
-				{#if activeTab === 'edit' && selectedRecord}
-					<div class="view-section" data-testid="view-edit">
-						<h2>✏️ Éditer un enregistrement — CreateUpdate</h2>
+				<!-- Tab: Update -->
+				{#if activeTab === 'update' && selectedRecord}
+					<div class="view-section" data-testid="view-update">
+						<h2>✏️ Update — édition d'un enregistrement</h2>
 						<p class="description">
-							Édition avec validation et confirmation de suppression
+							Composant <code>Update</code> : formulaire d'édition avec validation, édition inline et suppression.
+							Props : <code>collection</code>, <code>data</code>, <code>dataId</code>, <code>inPlaceEdit</code>, <code>showFks</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<CreateUpdate
+							<Update
 								collection={selectedCollection}
-								mode="edit"
 								data={selectedRecord}
 								onsubmit={() => {
 									selectedRecord = null;
@@ -237,7 +238,7 @@ Shows all UI components working together with real data binding
 							</div>
 						</div>
 
-						<div class="field-values-section" data-testid="field-values">
+						<div class="field-values-section" data-testid="view-field-values">
 							<h3>CollectionListFieldValues — Champs du record sélectionné</h3>
 							<div class="fields-display">
 								<CollectionListFieldValues
@@ -315,7 +316,11 @@ Shows all UI components working together with real data binding
 									field="name"
 									validate={() => console.log('Validated')}
 									message="Confirmer la modification ?"
-								/>
+								>
+									{#snippet children()}✏️ Modifier{/snippet}
+									{#snippet confirm(msg)}✅ {msg}{/snippet}
+									{#snippet cancel()}❌ Annuler{/snippet}
+								</FieldInPlace>
 							</div>
 						</div>
 

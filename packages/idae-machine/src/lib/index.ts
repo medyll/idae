@@ -19,6 +19,8 @@ export * from '$lib/form/types.js';
 export { default as FieldValue } from '$lib/form/FieldValue.svelte';
 export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
 export { default as CreateUpdate } from '$lib/form/CreateUpdate.svelte';
+export { default as Create } from '$lib/form/Create.svelte';
+export { default as Update } from '$lib/form/Update.svelte';
 export * from '$lib/demo/testScheme.js';
 export * from '$lib/demo/dbSchema.js';
 
