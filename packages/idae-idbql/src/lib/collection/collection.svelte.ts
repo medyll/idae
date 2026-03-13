@@ -250,11 +250,27 @@ function createIDBStoreProxy(store) {
                 (origMethod as Function)
                   .apply(instance, args)
                   .then((res) => {
-                    getIdbqlEvent().registerEvent(prop as any, {
+                    // Normalize event payload: prefer explicit whereClause if provided in args
+                    const payload: any = {
                       collection: instance._store,
                       data: res,
                       keyPath: instance.keyPath,
-                    });
+                    };
+                    // If the original method call passed a 'where' object as first arg (updateWhere/deleteWhere)
+                    try {
+                      if (prop === 'updateWhere' || prop === 'deleteWhere') {
+                        // first arg is where query, second arg (for updateWhere) is update data
+                        payload.whereClause = args[0];
+                        if (prop === 'updateWhere') payload.data = args[1];
+                      } else if (prop === 'update') {
+                        // update(keyPathValue, data) — keep data as merged result
+                        payload.data = res;
+                      }
+                    } catch (e) {
+                      // ignore
+                    }
+
+                    getIdbqlEvent().registerEvent(prop as any, payload);
                     resolve(res);
                   })
                   .catch((e) => {
