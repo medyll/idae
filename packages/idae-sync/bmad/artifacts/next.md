@@ -89,3 +89,4 @@ Dependencies (by id)
 
 Save this file to:
 packages/idae-sync/bmad/artifacts/next.md
+2026-03-13T23:57:57.7974846+01:00: Ran 'bmad next' to update status.yaml
