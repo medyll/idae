@@ -16,11 +16,14 @@
 */ -->
 <script lang="ts" generics="COL = Record<string,unknown>">
     import { machine } from '$lib/main/machine.js';
+    // change to MachineSchemeValues.getDefault
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
     import type { CreateUpdateProps } from '$lib/form/types.js';
     import type { IDbForge } from '@medyll/idae-idbql';
     import DataLinksBack from '$lib/data/DataLinksBack.svelte';
     import FieldDisplay from '$lib/field/FieldDisplay.svelte';
+	import DataLinks from './DataLinks.svelte';
+	import DataListFields from './DataListFields.svelte';
 
     /**
      * Component props
@@ -48,7 +51,8 @@
     const indexName = $derived(collLogic?.template.index);
 
     // UI derivations
-    const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
+    // `inputFormId` must be a plain string for the DOM `id`/`form` attributes.
+    const inputFormId = `form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`;
 
     // Reactive State
     let formData = $state<Record<string, unknown>>({});
@@ -80,15 +84,15 @@
     /**
      * Validates form data using the logic validator
      */
-    const validate = (data: Record<string, unknown>) => {
+    const validate = async (data: Record<string, unknown>) => {
         const v = typeof validator === 'function' ? validator() : validator;
         if (!v || typeof v.validateForm !== 'function') return true;
 
         const ignore = createUpdateProps.mode === 'create' && indexName ? [indexName] : undefined;
-        const { isValid, errors } = v.validateForm(data, { ignoreFields: ignore });
+        const out = await v.validateForm(data, { ignoreFields: ignore });
 
-        validationErrors = errors; // Updates UI automatically
-        return isValid;
+        validationErrors = out.errors || {};
+        return out.isValid;
     };
 
     /**
@@ -100,8 +104,9 @@
 
         const snapshot = $state.snapshot(formData);
 
-        if (!validate(snapshot)) {
+        if (!(await validate(snapshot))) {
             isSubmitting = false;
+            console.log('Validation failed', validationErrors,snapshot);
             return;
         }
 
@@ -137,14 +142,14 @@
             mode={createUpdateProps.mode}
             editInPlace={createUpdateProps.inPlaceEdit === true ||
                 (Array.isArray(createUpdateProps.inPlaceEdit) && createUpdateProps.inPlaceEdit.includes(fieldName))}
-            data={formData}
+            bind:data={formData}
             setData={(field, value) => {
                 formData[field] = value;
                 clearError(field);
             }}
             inputForm={inputFormId}
         />
-        {#if validationErrors[fieldName]}
+        {#if validationErrors?.[fieldName]}
             <span class="error-message" id="error-{fieldName}">
                 {validationErrors[fieldName]}
             </span>
@@ -164,18 +169,28 @@
     {createUpdateProps.mode} {createUpdateProps.collection}
 </h2>
 
-<div style="width:750px; display:flex;">
+<div class="flex">
     <div class="crud {createUpdateProps.displayMode}">
-        {#each Object.entries(formFields) as [fieldName, fieldInfo]}
+    <DataListFields
+        bind:data={formData}
+        collection={createUpdateProps.collection} />
+        <!-- {#each Object.entries(formFields) as [fieldName, fieldInfo]}
             {#if !createUpdateProps.showFields || createUpdateProps.showFields.includes(fieldName)}
                 {@render fieldInput(fieldName, fieldInfo)}
             {/if}
-        {/each}
+        {/each} -->
     </div>
-
     <!-- {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')} -->
         <div>
-            <DataLinksBack
+            <DataLinks 
+            collection={createUpdateProps.collection}
+            collectionId={createUpdateProps.dataId}
+            >
+            {#snippet children()}
+                <div class="p2">{createUpdateProps.collection}</div>
+            {/snippet}
+        </DataLinks>
+            <!-- <DataLinksBack
                 showTitle={true}
                 collection={createUpdateProps.collection}
                 collectionId={createUpdateProps.dataId}
@@ -183,7 +198,7 @@
                 {#snippet children()}
                     <div class="p2">Presentation</div>
                 {/snippet}
-            </DataLinksBack>
+            </DataLinksBack> -->
         </div>
     <!-- {/if} -->
 </div>

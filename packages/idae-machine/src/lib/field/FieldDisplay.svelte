@@ -39,9 +39,9 @@ Svelte 5 field input for all types
 
     // 2. Pure reactive derivations
     const scheme = $derived(machine.logic.collection(collection));
-    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data));
+    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data ?? {}));
     const schemeFieldValues = $derived(scheme.collectionValues);
-    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data));
+    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data ?? {}));
 
     const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
     const labelPosition = $derived(
@@ -49,22 +49,23 @@ Svelte 5 field input for all types
     );
 
     // 3. Bidirectional state binding with $effect
-    let internalValue = $state(data[fieldName]);
+    let internalValue = $state(data ? data[fieldName] : undefined);
     let error = $state<string | null>(null);
 
     /**
      * Sync parent data changes to internal state (parent → child)
      */
     $effect(() => {
-        internalValue = data[fieldName];
+        internalValue = data ? data[fieldName] : undefined;
     });
 
     /**
      * Sync internal state changes back to parent data (child → parent)
      */
     $effect(() => {
-        if (internalValue !== data[fieldName]) {
-            data[fieldName] = internalValue;
+        const current = data ? data[fieldName] : undefined;
+        if (internalValue !== current) {
+            if (data) data[fieldName] = internalValue;
         }
     });
 

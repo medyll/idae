@@ -386,22 +386,19 @@ Shows all UI components working together with real data binding
 
 	.demo-header {
 		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		color: white;
-		padding: 30px;
+		color: white; 
 		text-align: center;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		flex-shrink: 0;
-	}
-
-	.demo-header h1 {
-		margin: 0 0 10px 0;
-		font-size: 2.5em;
-	}
-
-	.demo-header p {
-		margin: 0;
-		opacity: 0.9;
-		font-size: 1.1em;
+		flex-shrink: 0; 
+		& h1 {
+			margin: 0 0 10px 0;
+			font-size: 2.5em;
+		} 
+		& p {
+			margin: 0;
+			opacity: 0.9;
+			font-size: 1.1em;
+		}
 	}
 
 	/* Layout horizontal : panneau gauche + contenu */
