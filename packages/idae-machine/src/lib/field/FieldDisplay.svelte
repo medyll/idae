@@ -111,7 +111,7 @@ Svelte 5 field input for all types
 
 {#if fieldForge}
   {#if !isPrivate}
-      <div class="cell relative flex flex-col gap-2 wrapper-{fieldForge.fieldType}">
+      <div class="relative flex  gap-2 wrapper-{fieldForge.fieldType}">
           {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
               <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
                   {fieldName}

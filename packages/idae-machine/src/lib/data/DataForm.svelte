@@ -20,7 +20,7 @@
     import type { CreateUpdateProps } from '$lib/form/types.js';
     import type { IDbForge } from '@medyll/idae-idbql';
     import DataLinksBack from '$lib/data/DataLinksBack.svelte';
-    import FieldInput from '$lib/field/FieldDisplay.svelte';
+    import FieldDisplay from '$lib/field/FieldDisplay.svelte';
 
     /**
      * Component props
@@ -131,9 +131,9 @@
 
 {#snippet fieldInput(fieldName: string, fieldInfo: IDbForge)}
     <div class="field-wrapper">
-        <FieldInput
-            collection={createUpdateProps.collection}
+        <FieldDisplay
             {fieldName}
+            collection={createUpdateProps.collection}
             mode={createUpdateProps.mode}
             editInPlace={createUpdateProps.inPlaceEdit === true ||
                 (Array.isArray(createUpdateProps.inPlaceEdit) && createUpdateProps.inPlaceEdit.includes(fieldName))}
