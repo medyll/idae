@@ -1,6 +1,6 @@
 <script lang="ts" generics="COL = Record<string,unknown>">
     /**
-     * @component CreateUpdate Form Component
+     * @component DataForm Component
      * @role User form for creating or editing records in a collection
      * @description Renders an editable form with automatic field generation from schema.
      * Handles form validation, submission, and data persistence to IndexedDB via machine.store.
@@ -8,7 +8,7 @@
      *
      * @example
      * ```svelte
-     * <CreateUpdate
+     * <DataForm
      *   collection="users"
      *   mode="create"
      *   onsubmit={handleSave}
@@ -17,10 +17,10 @@
      */
     import { machine } from '$lib/main/machine.js';
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-    import type { CreateUpdateProps } from './types.js';
+    import type { CreateUpdateProps } from '$lib/form/types.js';
     import type { IDbForge } from '@medyll/idae-idbql';
-    import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
-    import FieldInput from '$lib/form/FieldValue.svelte';
+    import DataLinksBack from '$lib/data/DataLinksBack.svelte';
+    import FieldInput from '$lib/field/FieldDisplay.svelte';
 
     /**
      * Component props
@@ -35,9 +35,9 @@
 
     // Define props with Svelte 5 syntax
     // Replaces createEventDispatcher with a callback prop
-    let { 
-        onsubmit: onsubmit_callback, 
-        ...createUpdateProps 
+    let {
+        onsubmit: onsubmit_callback,
+        ...createUpdateProps
     }: CreateUpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 
     // Logic and Store references
@@ -49,7 +49,7 @@
     const formFields = $derived(collLogic?.parse() ?? {});
     const validator = $derived(collLogic?.validator);
     const indexName = $derived(collLogic?.template.index);
-    
+
     // UI derivations
     const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
 
@@ -71,7 +71,7 @@
             const query = store.where({ [indexName]: { eq: createUpdateProps.dataId } });
             const snap = $state.snapshot(query);
             const record = Array.isArray(snap) && snap.length > 0 ? snap[0] : {};
-            
+
             formData = {
                 ...createUpdateProps.data,
                 ...createUpdateProps.withData,
@@ -89,7 +89,7 @@
 
         const ignore = createUpdateProps.mode === 'create' && indexName ? [indexName] : undefined;
         const { isValid, errors } = v.validateForm(data, { ignoreFields: ignore });
-        
+
         validationErrors = errors; // Updates UI automatically
         return isValid;
     };
@@ -99,7 +99,7 @@
      */
     async function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
-        isSubmitting = true; 
+        isSubmitting = true;
 
         const snapshot = $state.snapshot(formData);
 
@@ -114,7 +114,7 @@
             } else if (createUpdateProps.mode === 'update' && createUpdateProps.dataId) {
                 await store?.update(createUpdateProps.dataId, snapshot);
             }
-            
+
             // Trigger callback if provided
             onsubmit_callback?.({ mode: createUpdateProps.mode, data: snapshot });
         } catch (e) {
@@ -141,9 +141,9 @@
             editInPlace={createUpdateProps.inPlaceEdit === true ||
                 (Array.isArray(createUpdateProps.inPlaceEdit) && createUpdateProps.inPlaceEdit.includes(fieldName))}
             data={formData}
-            setData={(field, value) => { 
-                formData[field] = value; 
-                clearError(field); 
+            setData={(field, value) => {
+                formData[field] = value;
+                clearError(field);
             }}
             inputForm={inputFormId}
         />
@@ -178,23 +178,23 @@
 
     {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')}
         <div>
-            <CollectionReverseFks 
-                showTitle={true} 
-                collection={createUpdateProps.collection} 
+            <DataLinksBack
+                showTitle={true}
+                collection={createUpdateProps.collection}
                 collectionId={createUpdateProps.dataId}
             >
                 {#snippet children()}
                     <div class="p2">Presentation</div>
                 {/snippet}
-            </CollectionReverseFks>
+            </DataLinksBack>
         </div>
     {/if}
 </div>
 
-<button 
-    type="submit" 
-    form={inputFormId} 
-    disabled={isSubmitting} 
+<button
+    type="submit"
+    form={inputFormId}
+    disabled={isSubmitting}
     aria-label="Submit"
 >
     {isSubmitting ? '...' : 'Valider'}

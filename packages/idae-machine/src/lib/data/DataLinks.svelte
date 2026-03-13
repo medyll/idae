@@ -1,5 +1,5 @@
 <!--
-CollectionFks.svelte
+DataLinks.svelte
 Svelte 5 FK relation viewer for a collection
 @role ui-fragment
 @prop {string} collection - Collection name
@@ -24,8 +24,6 @@ Svelte 5 FK relation viewer for a collection
 	<div>
 		{#if children}
 			{@render children(item)}
-		{:else}
-			<div>{item[0]}</div>
 		{/if}
 	</div>
 {/each}

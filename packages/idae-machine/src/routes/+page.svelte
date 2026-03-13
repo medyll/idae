@@ -6,20 +6,20 @@ Shows all UI components working together with real data binding
 	import { machine } from '$lib/main/machine.js';
 	import { testScheme } from '$lib/demo/testScheme.js';
 
-	// UI Components
-	import CollectionButton from '$lib/ui/CollectionButton.svelte';
-	import CollectionList from '$lib/ui/CollectionList.svelte';
-	import CollectionListMenu from '$lib/ui/CollectionListMenu.svelte';
-	import CollectionListFieldValues from '$lib/ui/CollectionListFieldValues.svelte';
-	import CollectionFks from '$lib/ui/CollectionFks.svelte';
-	import CollectionReverseFks from '$lib/ui/CollectionReverseFks.svelte';
+	// Data Components
+	import DataPicker from '$lib/data/DataPicker.svelte';
+	import DataList from '$lib/data/DataList.svelte';
+	import DataListActions from '$lib/data/DataListActions.svelte';
+	import DataListFields from '$lib/data/DataListFields.svelte';
+	import DataLinks from '$lib/data/DataLinks.svelte';
+	import DataLinksBack from '$lib/data/DataLinksBack.svelte';
+	import DataCreate from '$lib/data/DataCreate.svelte';
+	import DataEdit from '$lib/data/DataEdit.svelte';
+	import DataProvider from '$lib/data/DataProvider.svelte';
 
-	// Form Components
-	import Create from '$lib/form/Create.svelte';
-	import Update from '$lib/form/Update.svelte';
-	import FieldValue from '$lib/form/FieldValue.svelte';
-	import FieldInPlace from '$lib/form/FieldInPlace.svelte';
-	import DataProvider from '$lib/form/DataProvider.svelte';
+	// Field Components
+	import FieldDisplay from '$lib/field/FieldDisplay.svelte';
+	import FieldEditor from '$lib/field/FieldEditor.svelte';
 
 	// Fragment Components
 	import Frame from '$lib/fragments/Frame.svelte';
@@ -84,7 +84,7 @@ Shows all UI components working together with real data binding
 
 			<div class="create-section">
 				<h4>Actions</h4>
-				<CollectionButton collection={selectedCollection} mode="create" />
+				<DataPicker collection={selectedCollection} mode="create" />
 			</div>
 
 			<div class="info-section" data-testid="info-section">
@@ -169,12 +169,12 @@ Shows all UI components working together with real data binding
 				<!-- Tab: Grid View -->
 				{#if activeTab === 'grid'}
 					<div class="view-section" data-testid="view-grid">
-						<h2>📊 Grid View — CollectionList</h2>
+						<h2>📊 Grid View — DataList</h2>
 						<p class="description">
-							CollectionList affiche tous les enregistrements en grille avec CollectionListFieldValues
+							DataList affiche tous les enregistrements en grille avec DataListFields
 						</p>
 						<div class="collection-grid">
-							<CollectionList
+							<DataList
 								collection={selectedCollection}
 								displayMode="grid"
 								onclick={selectRecord}
@@ -186,12 +186,12 @@ Shows all UI components working together with real data binding
 				<!-- Tab: Menu View -->
 				{#if activeTab === 'menu'}
 					<div class="view-section" data-testid="view-menu">
-						<h2>📋 Menu View — CollectionListMenu</h2>
+						<h2>📋 Menu View — DataListActions</h2>
 						<p class="description">
-							CollectionListMenu affiche les enregistrements en liste verticale
+							DataListActions affiche les enregistrements en liste verticale
 						</p>
 						<div class="collection-menu">
-							<CollectionListMenu
+							<DataListActions
 								collection={selectedCollection}
 								onclick={selectRecord}
 							/>
@@ -208,7 +208,7 @@ Shows all UI components working together with real data binding
 							Props : <code>collection</code>, <code>withData</code>, <code>showFields</code>, <code>displayMode</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<Create
+							<DataCreate
 								collection={selectedCollection}
 								onsubmit={() => { activeTab = 'grid'; }}
 							/>
@@ -225,7 +225,7 @@ Shows all UI components working together with real data binding
 							Props : <code>collection</code>, <code>data</code>, <code>dataId</code>, <code>inPlaceEdit</code>, <code>showFks</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<Update
+							<DataEdit
 								collection={selectedCollection}
 								data={selectedRecord}
 								onsubmit={() => {
@@ -239,9 +239,9 @@ Shows all UI components working together with real data binding
 						</div>
 
 						<div class="field-values-section" data-testid="view-field-values">
-							<h3>CollectionListFieldValues — Champs du record sélectionné</h3>
+							<h3>DataListFields — Champs du record sélectionné</h3>
 							<div class="fields-display">
-								<CollectionListFieldValues
+								<DataListFields
 									collection={selectedCollection}
 									data={selectedRecord}
 									mode="show"
@@ -254,31 +254,31 @@ Shows all UI components working together with real data binding
 				<!-- Tab: Relationships -->
 				{#if activeTab === 'relationships' && selectedRecord}
 					<div class="view-section" data-testid="view-relationships">
-						<h2>🔗 Relations — CollectionFks &amp; CollectionReverseFks</h2>
+						<h2>🔗 Relations — DataLinks &amp; DataLinksBack</h2>
 
 						<div class="relationships-section">
 							<h3>Foreign Keys (FK)</h3>
 							<div class="fk-viewer">
-								<CollectionFks collection={selectedCollection}>
+								<DataLinks collection={selectedCollection}>
 									{#snippet children(fkEntry)}
 										<div class="fk-item">
-											<strong>{fkEntry[0]}</strong>: référence la collection
+											<strong>{fkEntry[0]}</strong>: references collection
 										</div>
 									{/snippet}
-								</CollectionFks>
+								</DataLinks>
 							</div>
 						</div>
 
 						<div class="relationships-section">
 							<h3>Reverse Relationships</h3>
 							<div class="reverse-fk-viewer">
-								<CollectionReverseFks collection={selectedCollection} showTitle={true}>
+								<DataLinksBack collection={selectedCollection} showTitle={true}>
 									{#snippet children(reverseFkEntry)}
 										<div class="reverse-fk-item">
-											Collection <strong>{reverseFkEntry[0]}</strong> référence celle-ci
+											Collection <strong>{reverseFkEntry[0]}</strong> references this one
 										</div>
 									{/snippet}
-								</CollectionReverseFks>
+								</DataLinksBack>
 							</div>
 						</div>
 					</div>
@@ -308,19 +308,19 @@ Shows all UI components working together with real data binding
 
 						<!-- FieldInPlace -->
 						<div class="advanced-section" data-testid="field-inplace-section">
-							<h3>Édition inline — FieldInPlace</h3>
-							<p>Modifiez un champ directement avec confirmation inline :</p>
+							<h3>Inline edit — FieldEditor</h3>
+							<p>Edit a field directly with inline confirmation:</p>
 							<div class="field-inplace-demo">
-								<FieldInPlace
+								<FieldEditor
 									collection={selectedCollection}
 									field="name"
 									validate={() => console.log('Validated')}
-									message="Confirmer la modification ?"
+									message="Confirm change?"
 								>
-									{#snippet children()}✏️ Modifier{/snippet}
+									{#snippet children()}✏️ Edit{/snippet}
 									{#snippet confirm(msg)}✅ {msg}{/snippet}
-									{#snippet cancel()}❌ Annuler{/snippet}
-								</FieldInPlace>
+									{#snippet cancel()}❌ Cancel{/snippet}
+								</FieldEditor>
 							</div>
 						</div>
 
@@ -346,15 +346,15 @@ Shows all UI components working together with real data binding
 							</div>
 						</div>
 
-						<!-- FieldValue standalone -->
+						<!-- FieldDisplay standalone -->
 						<div class="advanced-section" data-testid="fieldvalue-section">
-							<h3>Affichage de valeur — FieldValue</h3>
-							<p>Rendu d'un champ selon son type (text, number, boolean, date, fk…) :</p>
+							<h3>Field display — FieldDisplay</h3>
+							<p>Renders a field according to its type (text, number, boolean, date, fk...):</p>
 							<div class="field-value-demo">
-								<FieldValue
+								<FieldDisplay
 									collection={selectedCollection}
 									fieldName="name"
-									data={{ name: 'Exemple produit', id: 'demo-1' }}
+									data={{ name: 'Example product', id: 'demo-1' }}
 									mode="show"
 								/>
 							</div>
@@ -369,9 +369,8 @@ Shows all UI components working together with real data binding
 	<footer class="demo-footer" data-testid="footer">
 		<p>idae-machine v1.0 • Complete Component Showcase</p>
 		<p style="margin-top: 10px; font-size: 0.85em;">
-			UI (6): CollectionButton, CollectionList, CollectionListMenu, CollectionListFieldValues,
-			CollectionFks, CollectionReverseFks •
-			Form (4): CreateUpdate, FieldValue, FieldInPlace, DataProvider •
+			Data (10): DataPicker, DataList, DataListActions, DataListFields, DataLinks, DataLinksBack, DataForm, DataCreate, DataEdit, DataProvider •
+			Field (2): FieldDisplay, FieldEditor •
 			Fragments (5): Frame, Confirm, Selector, InfoLine, Skeleton
 		</p>
 	</footer>

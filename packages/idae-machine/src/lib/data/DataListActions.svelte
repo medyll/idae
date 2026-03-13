@@ -1,5 +1,5 @@
 <!--
-CollectionListMenu.svelte
+DataListActions.svelte
 Svelte 5 menu list for a collection
 @role ui-menu
 @prop {string} collection - Collection name
@@ -14,7 +14,7 @@ Svelte 5 menu list for a collection
 
 <script lang="ts" generics="COL = Record<string,any>">
 	import { type MenuListProps, MenuList, MenuListItem } from '@medyll/idae-slotui-svelte';
-	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
+	import DataForm from '$lib/data/DataForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 	let { collection, target, data, menuListProps, onclick, style, where } = $props<{ collection: string; target?: string; data?: COL[]; menuListProps?: MenuListProps; style?: string; where?: Where<COL>; onclick?: (event: CustomEvent, index: number) => void }>();
@@ -24,7 +24,7 @@ Svelte 5 menu list for a collection
 		openCrud(event[index]);
 	}
 	function openCrud(id: any) {
-		let mounted = hydrate(CreateUpdate, {
+		let mounted = hydrate(DataForm, {
 			target: document.querySelector(`[data-target-zone="${target}"]`),
 			props:  { collection, dataId: id, mode: 'update' }
 		});

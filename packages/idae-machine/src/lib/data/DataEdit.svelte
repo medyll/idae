@@ -1,7 +1,7 @@
 <!--
-Update.svelte
+DataEdit.svelte
 Form component for editing an existing record in a collection.
-Thin wrapper around CreateUpdate locked to mode="update".
+Thin wrapper around DataForm locked to mode="update".
 @role form
 @prop {string} collection - Collection name
 @prop {Record<string,unknown>} [data] - Record to edit
@@ -14,10 +14,10 @@ Thin wrapper around CreateUpdate locked to mode="update".
 @prop {(payload: unknown) => void} [onsubmit] - Callback on successful update
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
-	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
-	import type { UpdateProps } from './types.js';
+	import DataForm from '$lib/data/DataForm.svelte';
+	import type { UpdateProps } from '$lib/form/types.js';
 
 	let { onsubmit, ...props }: UpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 </script>
 
-<CreateUpdate {...props} mode="update" {onsubmit} />
+<DataForm {...props} mode="update" {onsubmit} />

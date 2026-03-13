@@ -1,6 +1,6 @@
 <!--
-CollectionButton.svelte
-Svelte 5 button to open CreateUpdate window for a collection
+DataPicker.svelte
+Svelte 5 button to open DataForm window for a collection
 @role ui-button
 @prop {string} collection - Collection name
 @prop {object} [withData] - Data to prefill
@@ -10,12 +10,12 @@ Svelte 5 button to open CreateUpdate window for a collection
 
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
-	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
-	import { type CreateUpdateProps } from '../form/types.js';
+	import DataForm from '$lib/data/DataForm.svelte';
+	import { type CreateUpdateProps } from '$lib/form/types.js';
 	let { collection = 'book', withData, ...rest } = $props<{ collection?: string; withData?: Record<string, any> } & CreateUpdateProps>();
 	function openCrud(collection: string) {
 		openWindow(`create-${collection}`, {
-			component:       CreateUpdate,
+			component:       DataForm,
 			componentProps:  { collection, withData, ...rest },
 			hideCloseButton: false
 		});

@@ -1,26 +1,34 @@
 // auto exports of entry components
-export { default as CollectionReverseFks } from '$lib/ui/CollectionReverseFks.svelte';
-export { default as CollectionListMenu } from '$lib/ui/CollectionListMenu.svelte';
-export { default as CollectionListFieldValues } from '$lib/ui/CollectionListFieldValues.svelte';
-export { default as CollectionList } from '$lib/ui/CollectionList.svelte';
-export { default as CollectionFks } from '$lib/ui/CollectionFks.svelte';
-export { default as CollectionButton } from '$lib/ui/CollectionButton.svelte';
-export * from '$lib/types/appschemeTypes.js';
-export * from '$lib/main/machineParserForge.js';
-export * from '$lib/main/machineDb.js';
-export * from '$lib/main/machine.js';
+
+// data components
+export { default as DataProvider } from '$lib/data/DataProvider.svelte';
+export { default as DataList } from '$lib/data/DataList.svelte';
+export { default as DataListActions } from '$lib/data/DataListActions.svelte';
+export { default as DataListFields } from '$lib/data/DataListFields.svelte';
+export { default as DataLinks } from '$lib/data/DataLinks.svelte';
+export { default as DataLinksBack } from '$lib/data/DataLinksBack.svelte';
+export { default as DataPicker } from '$lib/data/DataPicker.svelte';
+export { default as DataForm } from '$lib/data/DataForm.svelte';
+export { default as DataCreate } from '$lib/data/DataCreate.svelte';
+export { default as DataEdit } from '$lib/data/DataEdit.svelte';
+
+// field components
+export { default as FieldDisplay } from '$lib/field/FieldDisplay.svelte';
+export { default as FieldEditor } from '$lib/field/FieldEditor.svelte';
+
+// fragment components
 export { default as Skeleton } from '$lib/fragments/Skeleton.svelte';
 export { default as Selector } from '$lib/fragments/Selector.svelte';
 export { default as InfoLine } from '$lib/fragments/InfoLine.svelte';
 export { default as Frame } from '$lib/fragments/Frame.svelte';
 export { default as Confirm } from '$lib/fragments/Confirm.svelte';
+
+export * from '$lib/types/appschemeTypes.js';
+export * from '$lib/main/machineParserForge.js';
+export * from '$lib/main/machineDb.js';
+export * from '$lib/main/machine.js';
 export * from '$lib/idae/schema-types.js';
 export * from '$lib/form/types.js';
-export { default as FieldValue } from '$lib/form/FieldValue.svelte';
-export { default as FieldInPlace } from '$lib/form/FieldInPlace.svelte';
-export { default as CreateUpdate } from '$lib/form/CreateUpdate.svelte';
-export { default as Create } from '$lib/form/Create.svelte';
-export { default as Update } from '$lib/form/Update.svelte';
 export * from '$lib/demo/testScheme.js';
 export * from '$lib/demo/dbSchema.js';
 

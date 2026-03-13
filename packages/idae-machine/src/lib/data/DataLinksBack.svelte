@@ -1,5 +1,5 @@
 <!--
-CollectionReverseFks.svelte
+DataLinksBack.svelte
 Svelte 5 reverse FK relation viewer for a collection
 @role ui-fragment
 @prop {string} collection - Collection name

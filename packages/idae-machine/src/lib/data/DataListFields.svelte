@@ -1,10 +1,10 @@
 <script lang="ts">
     /**
-     * @component
-     * Iterates over a collection's fields and renders a FieldValue for each.
+     * @component DataListFields
+     * Iterates over a collection's fields and renders a FieldDisplay for each.
      * Supports filtering via `showFields` and dynamic discovery via `scheme` or `data`.
      */
-    import FieldValue from "../form/FieldValue.svelte";
+    import FieldDisplay from "$lib/field/FieldDisplay.svelte";
     import { machine } from "$lib/main/machine.js";
 
     /**
@@ -12,7 +12,6 @@
      * @property {string} collection - The name of the collection being rendered.
      * @property {Record<string, any>} data - The data object for the fields (bindable).
      * @property {"show" | "edit"} [mode="show"] - Display mode of the fields.
-     * @property {MachineScheme} [scheme] - The machine scheme defining field metadata.
      * @property {string[]} [showFields] - Optional whitelist of field names to display.
      */
     let {
@@ -41,14 +40,14 @@
       return [];
     });
 
-    // Map 'edit' to 'update' for FieldValue
+    // Map 'edit' to 'update' for FieldDisplay
     const fieldMode = $derived(() => mode === 'edit' ? 'update' : mode);
   </script>
-  
+
   {#if scheme && fieldNames()?.length}
     {#each fieldNames() as fieldName}
       {#if scheme.template?.fields && scheme.template.fields[fieldName]}
-        <FieldValue
+        <FieldDisplay
           {collection}
           {fieldName}
           bind:data={data}

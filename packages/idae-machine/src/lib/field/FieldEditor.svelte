@@ -1,5 +1,5 @@
 <!--
-FieldInPlace.svelte
+FieldEditor.svelte
 Svelte 5 in-place field edit/confirm
 @role form-field
 @prop {string} collection - Collection name
@@ -12,26 +12,26 @@ Svelte 5 in-place field edit/confirm
 @slot cancel - Cancel button content (optional)
 @event confirm - Emitted on confirm
 @event cancel - Emitted on cancel
---> 
+-->
 <script lang="ts">
     // import { Icon } from '@medyll/idae-slotui-svelte';
     import type { Snippet } from 'svelte';
 
     // Destructuring props with default snippet values
-    let { 
-        collection, 
-        field, 
-        validate, 
+    let {
+        collection,
+        field,
+        validate,
         message = '',
         // Snippets can be passed as props in Svelte 5
         initial,
         children,
         confirm,
         cancel
-    } = $props<{ 
-        collection: string; 
-        field: string; 
-        validate: () => void; 
+    } = $props<{
+        collection: string;
+        field: string;
+        validate: () => void;
         message?: string;
         initial?: Snippet;
         children?: Snippet;

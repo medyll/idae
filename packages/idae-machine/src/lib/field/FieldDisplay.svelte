@@ -1,5 +1,5 @@
 <!--
-FieldValue.svelte
+FieldDisplay.svelte
 Svelte 5 field input for all types
 @role form-field
 @prop {string} collection - Collection name
@@ -19,22 +19,22 @@ Svelte 5 field input for all types
     import { machine } from '$lib/main/machine.js';
 
     // 1. Unified props with bindable data
-    let { 
+    let {
         collection = getContext('collection'),
-        fieldName, 
-        data = $bindable(), 
-        mode = 'show', 
-        inputForm, 
-        showLabel = true 
-    } = $props<{ 
-        collection?: TplCollectionName; 
-        collectionId?: unknown; 
-        fieldName: keyof COL; 
-        data: COL; 
-        mode?: 'show' | 'create' | 'update'; 
-        editInPlace?: boolean; 
-        inputForm?: string; 
-        showLabel?: boolean | string 
+        fieldName,
+        data = $bindable(),
+        mode = 'show',
+        inputForm,
+        showLabel = true
+    } = $props<{
+        collection?: TplCollectionName;
+        collectionId?: unknown;
+        fieldName: keyof COL;
+        data: COL;
+        mode?: 'show' | 'create' | 'update';
+        editInPlace?: boolean;
+        inputForm?: string;
+        showLabel?: boolean | string
     }>();
 
     // 2. Pure reactive derivations
@@ -145,12 +145,12 @@ Svelte 5 field input for all types
     @reference "../../styles/references.css";
 
     .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
-    
+
     .field-label {
         display: block;
         font-weight: bold;
         padding: 0.5rem;
-        
+
         &.before, &.after { display: block; margin-right: 0.5em; }
         &.above { margin-bottom: 0.25em; }
         &.below { margin-top: 0.25em; }

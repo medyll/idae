@@ -1,7 +1,7 @@
 <!--
-Create.svelte
+DataCreate.svelte
 Form component for creating a new record in a collection.
-Thin wrapper around CreateUpdate locked to mode="create".
+Thin wrapper around DataForm locked to mode="create".
 @role form
 @prop {string} collection - Collection name
 @prop {Record<string,unknown>} [withData] - Additional data to merge into the new record
@@ -10,10 +10,10 @@ Thin wrapper around CreateUpdate locked to mode="create".
 @prop {(payload: unknown) => void} [onsubmit] - Callback on successful create
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
-	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
-	import type { CreateProps } from './types.js';
+	import DataForm from '$lib/data/DataForm.svelte';
+	import type { CreateProps } from '$lib/form/types.js';
 
 	let { onsubmit, ...props }: CreateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 </script>
 
-<CreateUpdate {...props} mode="create" {onsubmit} />
+<DataForm {...props} mode="create" {onsubmit} />
