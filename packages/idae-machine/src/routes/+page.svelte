@@ -17,6 +17,8 @@ Shows all UI components working together with real data binding
 	// Form Components
 	import CreateUpdate from '$lib/form/CreateUpdate.svelte';
 	import FieldValue from '$lib/form/FieldValue.svelte';
+	import FieldInPlace from '$lib/form/FieldInPlace.svelte';
+	import DataProvider from '$lib/form/DataProvider.svelte';
 
 	// Fragment Components
 	import Frame from '$lib/fragments/Frame.svelte';
@@ -25,56 +27,53 @@ Shows all UI components working together with real data binding
 	import InfoLine from '$lib/fragments/InfoLine.svelte';
 	import Skeleton from '$lib/fragments/Skeleton.svelte';
 
-	// Additional Form Components
-	import FieldInPlace from '$lib/form/FieldInPlace.svelte'; 
-
-	// Initialize machine
+	// Initialize machine — testScheme IS the model (top-level keys = collection names)
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
 	machine.start();
 
+	// Collections = top-level keys of testScheme
+	const collections = Object.keys(testScheme);
+
 	// State
-	let selectedCollection = $state(Object.keys(testScheme.schema || testScheme || {})[0] ?? 'product');
+	let selectedCollection = $state<string>(collections[0] ?? 'product');
 	let activeTab = $state<'grid' | 'menu' | 'create' | 'edit' | 'relationships' | 'components'>('grid');
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
-	let showEditForm = $state(false);
 	let isLoading = $state(false);
 
-	// Get available collections
-	const collections = Object.keys(testScheme.schema || {});
-
-	// Validate before delete
-	function confirmDelete() {
-		if (selectedRecord) {
-			// In a real app, would call delete on the store
-			selectedRecord = null;
-			showEditForm = false;
-		}
+	function selectRecord(record: Record<string, unknown>) {
+		selectedRecord = record;
+		activeTab = 'edit';
 	}
 
-	let {children} = $props<{ children?: any }>();
+	function confirmDelete() {
+		selectedRecord = null;
+		activeTab = 'grid';
+	}
 </script>
 
-<div class="demo-page">
+<div class="demo-page" data-testid="demo-page">
 	<!-- Header -->
 	<header class="demo-header">
-		<h1>🎯 idae-machine Component Showcase</h1>
-		<p>Interactive demonstration of all UI & Form components</p>
+		<h1>idae-machine Component Showcase</h1>
+		<p>Interactive demonstration of all UI &amp; Form components</p>
 	</header>
 
-	<!-- Main Layout with Frame -->
-	{#snippet leftNav()}
-		<nav class="left-panel">
+	<!-- Layout: panneau gauche + contenu principal -->
+	<div class="page-layout">
+		<!-- Panneau gauche -->
+		<nav class="left-panel" data-testid="left-panel">
 			<h3>Collections</h3>
 
-			<!-- Selector for Collections -->
-			<div class="selector-wrapper">
+			<div class="selector-wrapper" data-testid="collection-selector">
 				{#each collections as col}
 					<button
-						class={`collection-btn ${selectedCollection === col ? 'active' : ''}`}
+						class="collection-btn"
+						class:active={selectedCollection === col}
+						data-testid="collection-btn-{col}"
 						onclick={() => {
 							selectedCollection = col;
 							selectedRecord = null;
-							showEditForm = false;
+							activeTab = 'grid';
 						}}
 					>
 						📦 {col}
@@ -82,193 +81,169 @@ Shows all UI components working together with real data binding
 				{/each}
 			</div>
 
-			<!-- Create Button -->
-				<div class="create-section">
-					<h4>Actions</h4>
-					<CollectionButton collection={selectedCollection} mode="create" />
-				</div>
+			<div class="create-section">
+				<h4>Actions</h4>
+				<CollectionButton collection={selectedCollection} mode="create" />
+			</div>
 
-			<!-- Info Section -->
-				<div class="info-section">
-					<InfoLine label="Collection" value={selectedCollection} />
-					<InfoLine
-						label="Selected"
-						value={selectedRecord ? 'Record selected' : 'No selection'}
-					/>
+			<div class="info-section" data-testid="info-section">
+				<InfoLine label="Collection" value={selectedCollection} />
+				<InfoLine
+					label="Selected"
+					value={selectedRecord ? 'Record selected' : 'No selection'}
+				/>
+			</div>
+
+			<!-- Démo du composant Frame dans sa section dédiée -->
+			<div class="frame-demo-section">
+				<h4>Frame component</h4>
+				<div class="frame-demo-wrapper">
+					<Frame showPanel={false}>
+						{#snippet children()}
+							<p class="frame-demo-text">Frame sans panneau</p>
+						{/snippet}
+					</Frame>
 				</div>
+			</div>
 		</nav>
-	{/snippet}
 
-	<Frame showPanel={true} panelMode="expanded" leftNav={leftNav} children={children}>
-
-		
-			<nav class="left-panel">
-				<h3>Collections</h3>
-
-				<!-- Selector for Collections -->
-				<div class="selector-wrapper">
-					{#each collections as col}
-						<button
-							class={`collection-btn ${selectedCollection === col ? 'active' : ''}`}
-							onclick={() => {
-								selectedCollection = col;
-								selectedRecord = null;
-								showEditForm = false;
-							}}
-						>
-							📦 {col}
-						</button>
-					{/each}
-				</div>
-
-				<!-- Create Button -->
-				<div class="create-section">
-					<h4>Actions</h4>
-					<CollectionButton collection={selectedCollection} mode="create" />
-				</div>
-
-				<!-- Info Section -->
-				<div class="info-section">
-					<InfoLine label="Collection" value={selectedCollection} />
-					<InfoLine
-						label="Selected"
-						value={selectedRecord ? 'Record selected' : 'No selection'}
-					/>
-				</div>
-			</nav>
-
-
-		<!-- Main Content Area -->
-		<div class="main-content">
+		<!-- Contenu principal -->
+		<main class="main-content">
 			<!-- Tabs Navigation -->
-			<div class="tabs-nav">
+			<nav class="tabs-nav" data-testid="tabs-nav">
 				<button
-					class={`tab ${activeTab === 'grid' ? 'active' : ''}`}
-					onclick={() => activeTab = 'grid'}
+					class="tab"
+					class:active={activeTab === 'grid'}
+					data-testid="tab-grid"
+					onclick={() => (activeTab = 'grid')}
 				>
 					📊 Grid View
 				</button>
 				<button
-					class={`tab ${activeTab === 'menu' ? 'active' : ''}`}
-					onclick={() => activeTab = 'menu'}
+					class="tab"
+					class:active={activeTab === 'menu'}
+					data-testid="tab-menu"
+					onclick={() => (activeTab = 'menu')}
 				>
 					📋 Menu View
 				</button>
 				<button
-					class={`tab ${activeTab === 'create' ? 'active' : ''}`}
-					onclick={() => activeTab = 'create'}
+					class="tab"
+					class:active={activeTab === 'create'}
+					data-testid="tab-create"
+					onclick={() => (activeTab = 'create')}
 				>
 					➕ Create
 				</button>
 				{#if selectedRecord}
 					<button
-						class={`tab ${activeTab === 'edit' ? 'active' : ''}`}
-						onclick={() => activeTab = 'edit'}
+						class="tab"
+						class:active={activeTab === 'edit'}
+						data-testid="tab-edit"
+						onclick={() => (activeTab = 'edit')}
 					>
 						✏️ Edit
 					</button>
 					<button
-						class={`tab ${activeTab === 'relationships' ? 'active' : ''}`}
-						onclick={() => activeTab = 'relationships'}
+						class="tab"
+						class:active={activeTab === 'relationships'}
+						data-testid="tab-relationships"
+						onclick={() => (activeTab = 'relationships')}
 					>
 						🔗 Relations
 					</button>
 				{/if}
 				<button
-					class={`tab ${activeTab === 'components' ? 'active' : ''}`}
-					onclick={() => activeTab = 'components'}
+					class="tab"
+					class:active={activeTab === 'components'}
+					data-testid="tab-components"
+					onclick={() => (activeTab = 'components')}
 				>
 					⚙️ Advanced
 				</button>
-			</div>
+			</nav>
 
 			<!-- Tab Content -->
 			<div class="tab-content">
-				<!-- Tab: Grid View - CollectionList -->
+				<!-- Tab: Grid View -->
 				{#if activeTab === 'grid'}
-					<div class="view-section">
-						<h2>📊 Grid View - CollectionList Component</h2>
+					<div class="view-section" data-testid="view-grid">
+						<h2>📊 Grid View — CollectionList</h2>
 						<p class="description">
-							CollectionList displays all records in a responsive grid with CollectionListFieldValues
+							CollectionList affiche tous les enregistrements en grille avec CollectionListFieldValues
 						</p>
 						<div class="collection-grid">
 							<CollectionList
 								collection={selectedCollection}
 								displayMode="grid"
-								onclick={(record) => {
-									selectedRecord = record;
-									showEditForm = true;
-									activeTab = 'edit';
-								}}
+								onclick={selectRecord}
 							/>
 						</div>
 					</div>
 				{/if}
 
-				<!-- Tab: Menu View - CollectionListMenu -->
+				<!-- Tab: Menu View -->
 				{#if activeTab === 'menu'}
-					<div class="view-section">
-						<h2>📋 Menu View - CollectionListMenu Component</h2>
+					<div class="view-section" data-testid="view-menu">
+						<h2>📋 Menu View — CollectionListMenu</h2>
 						<p class="description">
-							CollectionListMenu displays records as a vertical menu list
+							CollectionListMenu affiche les enregistrements en liste verticale
 						</p>
 						<div class="collection-menu">
 							<CollectionListMenu
 								collection={selectedCollection}
-								onclick={(record) => {
-									selectedRecord = record;
-									showEditForm = true;
-									activeTab = 'edit';
-								}}
+								onclick={selectRecord}
 							/>
 						</div>
 					</div>
 				{/if}
 
-				<!-- Tab: Create - CreateUpdate -->
+				<!-- Tab: Create -->
 				{#if activeTab === 'create'}
-					<div class="view-section">
-						<h2>➕ Create New Record - CreateUpdate Component</h2>
+					<div class="view-section" data-testid="view-create">
+						<h2>➕ Créer un enregistrement — CreateUpdate</h2>
 						<p class="description">
-							CreateUpdate form with automatic field generation and validation
+							Formulaire CreateUpdate avec génération automatique des champs et validation
 						</p>
 						<div class="form-wrapper">
 							<CreateUpdate
 								collection={selectedCollection}
 								mode="create"
-								onsubmit={(data) => {
-									console.log('Record created:', data);
-									activeTab = 'grid';
-								}}
+								onsubmit={() => { activeTab = 'grid'; }}
 							/>
 						</div>
 					</div>
 				{/if}
 
-				<!-- Tab: Edit - CreateUpdate + Confirm -->
+				<!-- Tab: Edit -->
 				{#if activeTab === 'edit' && selectedRecord}
-					<div class="view-section">
-						<h2>✏️ Edit Record - CreateUpdate Component</h2>
+					<div class="view-section" data-testid="view-edit">
+						<h2>✏️ Éditer un enregistrement — CreateUpdate</h2>
 						<p class="description">
-							Edit existing record with validation and delete confirmation
+							Édition avec validation et confirmation de suppression
 						</p>
 						<div class="form-wrapper">
 							<CreateUpdate
 								collection={selectedCollection}
 								mode="edit"
 								data={selectedRecord}
-								onsubmit={(data) => {
-									console.log('Record updated:', data);
+								onsubmit={() => {
 									selectedRecord = null;
 									activeTab = 'grid';
 								}}
 							/>
-
-							<!-- Delete Confirmation -->
 							<div class="delete-section">
-								<Confirm
-									validate={confirmDelete}
-									message="Delete this record?"
+								<Confirm validate={confirmDelete} message="Supprimer cet enregistrement ?" />
+							</div>
+						</div>
+
+						<div class="field-values-section" data-testid="field-values">
+							<h3>CollectionListFieldValues — Champs du record sélectionné</h3>
+							<div class="fields-display">
+								<CollectionListFieldValues
+									collection={selectedCollection}
+									data={selectedRecord}
+									mode="show"
 								/>
 							</div>
 						</div>
@@ -277,37 +252,29 @@ Shows all UI components working together with real data binding
 
 				<!-- Tab: Relationships -->
 				{#if activeTab === 'relationships' && selectedRecord}
-					<div class="view-section">
-						<h2>🔗 Relationships - CollectionFks & CollectionReverseFks</h2>
-						<p class="description">
-							View foreign key relationships and reverse relationships for this record
-						</p>
+					<div class="view-section" data-testid="view-relationships">
+						<h2>🔗 Relations — CollectionFks &amp; CollectionReverseFks</h2>
 
-						<!-- Foreign Keys -->
 						<div class="relationships-section">
 							<h3>Foreign Keys (FK)</h3>
 							<div class="fk-viewer">
 								<CollectionFks collection={selectedCollection}>
 									{#snippet children(fkEntry)}
 										<div class="fk-item">
-											<strong>{fkEntry[0]}</strong>: References collection
+											<strong>{fkEntry[0]}</strong>: référence la collection
 										</div>
 									{/snippet}
 								</CollectionFks>
 							</div>
 						</div>
 
-						<!-- Reverse Foreign Keys -->
 						<div class="relationships-section">
 							<h3>Reverse Relationships</h3>
 							<div class="reverse-fk-viewer">
-								<CollectionReverseFks
-									collection={selectedCollection}
-									showTitle={true}
-								>
+								<CollectionReverseFks collection={selectedCollection} showTitle={true}>
 									{#snippet children(reverseFkEntry)}
 										<div class="reverse-fk-item">
-											Collection <strong>{reverseFkEntry[0]}</strong> references this
+											Collection <strong>{reverseFkEntry[0]}</strong> référence celle-ci
 										</div>
 									{/snippet}
 								</CollectionReverseFks>
@@ -318,77 +285,84 @@ Shows all UI components working together with real data binding
 
 				<!-- Tab: Advanced Components -->
 				{#if activeTab === 'components'}
-					<div class="view-section">
-						<h2>⚙️ Advanced Components - FieldInPlace, Skeleton, DataProvider</h2>
-						<p class="description">
-							Specialized components for advanced use cases and loading states
-						</p>
+					<div class="view-section" data-testid="view-components">
+						<h2>⚙️ Composants avancés</h2>
 
-						<!-- Skeleton Loading Component -->
-						<div class="advanced-section">
-							<h3>Loading State - Skeleton Component</h3>
-							<p>Shows skeleton placeholders while data is loading:</p>
-							<button onclick={() => isLoading = !isLoading} class="toggle-btn">
-								{isLoading ? 'Hide' : 'Show'} Loading State
+						<!-- Skeleton -->
+						<div class="advanced-section" data-testid="skeleton-section">
+							<h3>État de chargement — Skeleton</h3>
+							<button
+								class="toggle-btn"
+								data-testid="toggle-skeleton"
+								onclick={() => (isLoading = !isLoading)}
+							>
+								{isLoading ? 'Masquer' : 'Afficher'} le chargement
 							</button>
 							{#if isLoading}
-								<div class="skeleton-demo">
+								<div class="skeleton-demo" data-testid="skeleton-demo">
 									<Skeleton class="w-full" />
 								</div>
 							{/if}
 						</div>
 
-						<!-- In-Place Edit Component -->
-						<div class="advanced-section">
-							<h3>In-Place Editing - FieldInPlace Component</h3>
-							<p>Edit field values directly with inline confirmation:</p>
+						<!-- FieldInPlace -->
+						<div class="advanced-section" data-testid="field-inplace-section">
+							<h3>Édition inline — FieldInPlace</h3>
+							<p>Modifiez un champ directement avec confirmation inline :</p>
 							<div class="field-inplace-demo">
 								<FieldInPlace
 									collection={selectedCollection}
 									field="name"
 									validate={() => console.log('Validated')}
-									message="Confirm change?"
+									message="Confirmer la modification ?"
 								/>
 							</div>
 						</div>
 
-						<!-- DataProvider Component Info -->
-						<div class="advanced-section">
-							<h3>Context Provider - DataProvider Component</h3>
-							<p>Provides collection and data context to child components:</p>
+						<!-- Selector -->
+						<div class="advanced-section" data-testid="selector-section">
+							<h3>Sélecteur — Selector</h3>
+							<p>Rendu d'une liste de valeurs avec snippet <code>item</code> :</p>
+							<div class="selector-demo">
+								<Selector values={['product', 'product_category', 'agent']} value={selectedCollection}>
+									{#snippet item(val, active)}
+										<span class="selector-item" class:active>{val}</span>
+									{/snippet}
+								</Selector>
+							</div>
+						</div>
+
+						<!-- DataProvider -->
+						<div class="advanced-section" data-testid="dataprovider-section">
+							<h3>Contexte — DataProvider</h3>
+							<p>Fournit le contexte collection + données aux composants enfants sans prop drilling.</p>
 							<div class="info-box">
-								<p>
-									DataProvider is a context wrapper that simplifies data passing to nested components
-									without prop drilling. Used internally by most form components.
-								</p>
-								<code>&lt;DataProvider collection="users" bind:data={formData}&gt;</code>
+								<code>&lt;DataProvider collection="product" bind:data={'{'}formData{'}'}&gt;</code>
+							</div>
+						</div>
+
+						<!-- FieldValue standalone -->
+						<div class="advanced-section" data-testid="fieldvalue-section">
+							<h3>Affichage de valeur — FieldValue</h3>
+							<p>Rendu d'un champ selon son type (text, number, boolean, date, fk…) :</p>
+							<div class="field-value-demo">
+								<FieldValue
+									collection={selectedCollection}
+									fieldName="name"
+									data={{ name: 'Exemple produit', id: 'demo-1' }}
+									mode="show"
+								/>
 							</div>
 						</div>
 					</div>
 				{/if}
 			</div>
-
-			<!-- Field Values Showcase (always visible) -->
-			{#if selectedRecord}
-				<div class="field-values-section">
-					<h3>🎯 CollectionListFieldValues - Selected Record Fields</h3>
-					<div class="fields-display">
-						<CollectionListFieldValues
-							collection={selectedCollection}
-							data={selectedRecord}
-							mode="show"
-						/>
-					</div>
-				</div>
-			{/if}
-		</div>
-	</Frame>
+		</main>
+	</div>
 
 	<!-- Footer -->
-	<footer class="demo-footer">
-		<p>
-			idae-machine v1.0 • Complete Component Showcase
-		</p>
+	<footer class="demo-footer" data-testid="footer">
+		<p>idae-machine v1.0 • Complete Component Showcase</p>
 		<p style="margin-top: 10px; font-size: 0.85em;">
 			UI (6): CollectionButton, CollectionList, CollectionListMenu, CollectionListFieldValues,
 			CollectionFks, CollectionReverseFks •
@@ -402,6 +376,8 @@ Shows all UI components working together with real data binding
 	.demo-page {
 		min-height: 100vh;
 		background: #f5f5f5;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.demo-header {
@@ -410,6 +386,7 @@ Shows all UI components working together with real data binding
 		padding: 30px;
 		text-align: center;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		flex-shrink: 0;
 	}
 
 	.demo-header h1 {
@@ -423,15 +400,23 @@ Shows all UI components working together with real data binding
 		font-size: 1.1em;
 	}
 
-	:global([class*="paper"]) {
-		background: white;
-		border-radius: 8px;
-		padding: 20px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	/* Layout horizontal : panneau gauche + contenu */
+	.page-layout {
+		display: flex;
+		flex: 1;
+		gap: 0;
+		min-height: 0;
 	}
 
+	/* Panneau gauche */
 	.left-panel {
+		width: 260px;
+		flex-shrink: 0;
+		background: white;
 		padding: 20px;
+		border-right: 1px solid #e0e0e0;
+		overflow-y: auto;
+		box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
 	}
 
 	.left-panel h3 {
@@ -461,7 +446,7 @@ Shows all UI components working together with real data binding
 		background: white;
 		border-radius: 6px;
 		cursor: pointer;
-		transition: all 0.3s;
+		transition: all 0.2s;
 		text-align: left;
 		font-weight: 500;
 	}
@@ -489,11 +474,35 @@ Shows all UI components working together with real data binding
 		border-top: 1px solid #eee;
 	}
 
+	.frame-demo-section {
+		margin-top: 20px;
+		padding-top: 20px;
+		border-top: 1px solid #eee;
+	}
+
+	.frame-demo-wrapper {
+		background: #f5f5f5;
+		border-radius: 6px;
+		padding: 10px;
+		margin-top: 8px;
+	}
+
+	.frame-demo-text {
+		margin: 0;
+		font-size: 0.85em;
+		color: #666;
+		font-style: italic;
+	}
+
+	/* Contenu principal */
 	.main-content {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
 		padding: 20px;
+		overflow-y: auto;
+		min-width: 0;
 	}
 
 	.tabs-nav {
@@ -504,6 +513,7 @@ Shows all UI components working together with real data binding
 		padding: 15px;
 		border-radius: 8px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		flex-shrink: 0;
 	}
 
 	.tab {
@@ -513,7 +523,7 @@ Shows all UI components working together with real data binding
 		border-radius: 6px;
 		cursor: pointer;
 		font-weight: 500;
-		transition: all 0.3s;
+		transition: all 0.2s;
 	}
 
 	.tab:hover {
@@ -573,6 +583,25 @@ Shows all UI components working together with real data binding
 		border-top: 1px solid #eee;
 	}
 
+	.field-values-section {
+		background: #f9f9f9;
+		padding: 20px;
+		border-radius: 8px;
+		margin-top: 20px;
+	}
+
+	.field-values-section h3 {
+		margin-top: 0;
+		color: #333;
+	}
+
+	.fields-display {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 15px;
+		margin-top: 15px;
+	}
+
 	.relationships-section {
 		margin-top: 25px;
 		padding: 15px;
@@ -598,26 +627,6 @@ Shows all UI components working together with real data binding
 		background: white;
 		border-left: 3px solid #667eea;
 		border-radius: 4px;
-	}
-
-	.field-values-section {
-		background: white;
-		padding: 30px;
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-		margin-top: 20px;
-	}
-
-	.field-values-section h3 {
-		margin-top: 0;
-		color: #333;
-	}
-
-	.fields-display {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 15px;
-		margin-top: 15px;
 	}
 
 	.advanced-section {
@@ -660,7 +669,9 @@ Shows all UI components working together with real data binding
 		margin-top: 15px;
 	}
 
-	.field-inplace-demo {
+	.field-inplace-demo,
+	.field-value-demo,
+	.selector-demo {
 		padding: 20px;
 		background: white;
 		border-radius: 6px;
@@ -690,7 +701,7 @@ Shows all UI components working together with real data binding
 		color: white;
 		padding: 20px;
 		text-align: center;
-		margin-top: 40px;
+		flex-shrink: 0;
 		font-size: 0.9em;
 	}
 
@@ -702,6 +713,16 @@ Shows all UI components working together with real data binding
 	@media (max-width: 768px) {
 		.demo-header h1 {
 			font-size: 1.8em;
+		}
+
+		.page-layout {
+			flex-direction: column;
+		}
+
+		.left-panel {
+			width: 100%;
+			border-right: none;
+			border-bottom: 1px solid #e0e0e0;
 		}
 
 		.fields-display {
