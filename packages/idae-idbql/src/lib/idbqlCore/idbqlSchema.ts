@@ -61,6 +61,15 @@ export class Schema {
 			}
 		}
 
+		// Ensure Outbox store exists in schema for sync functionality
+		try {
+			if (!db.objectStoreNames.contains('__outbox__')) {
+				this.createStore(db, '__outbox__', 'id');
+			}
+		} catch (e) {
+			// ignore if environment doesn't support objectStoreNames checks
+		}
+
 		return results;
 	}
 
