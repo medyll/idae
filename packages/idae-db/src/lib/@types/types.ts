@@ -14,7 +14,15 @@ export interface IdaeDbAdapterInterface<T extends object> {
 	createIndex<F, O>(fieldOrSpec: F, options?: O): Promise<unknown>;
 	create(data: Partial<T>): Promise<T>;
 	findById(id: string): Promise<T[]>;
-	find(params: IdaeDbParams<T>): Promise<T[]>;
+		/**
+		 * Preferred name for querying the collection. Use `where` going forward.
+		 */
+		where(params: IdaeDbParams<T>): Promise<T[]>;
+
+		/**
+		 * Deprecated alias for `where()` kept for backwards compatibility.
+		 */
+		find(params: IdaeDbParams<T>): Promise<T[]>;
 	findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	update(id: string, updateData: Partial<T>): Promise<unknown>;
 	updateWhere<OPT = never>(
@@ -58,7 +66,20 @@ export abstract class AbstractIdaeDbAdapter<T extends object> implements IdaeDbA
 	abstract createIndex(fieldOrSpec: unknown, options?: unknown): Promise<string>;
 	abstract create(data: Partial<T>): Promise<T>;
 	abstract findById(id: string): Promise<T[]>;
-	abstract find(params: IdaeDbParams<T>): Promise<T[]>;
+		/**
+		 * Preferred method name for collection queries. `where()` defaults to calling
+		 * `find()` for backwards compatibility so existing adapters only need to
+		 * implement `find()`.
+		 */
+		where(params: IdaeDbParams<T>): Promise<T[]> {
+			return this.find(params as any) as Promise<T[]>;
+		}
+
+		/**
+		 * Deprecated alias retained for compatibility. Adapters may still implement
+		 * `find()` and `where()` will forward to it by default.
+		 */
+		abstract find(params: IdaeDbParams<T>): Promise<T[]>;
 	abstract findOne(params: IdaeDbParams<T>): Promise<T | null>;
 	abstract update(id: string, updateData: Partial<T>): Promise<unknown>;
 	abstract updateWhere<OPT = never>(
