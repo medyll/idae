@@ -252,19 +252,24 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 {#key startPosition}
 	<dialog
 		bind:this={element}
+		bind:open={open}
 		{style}
 		style:position={flow}
-		style:display={open ? '' : 'none'}
 		use:positioner={{ position: startPosition }}
 		use:draggebler={{ disabled: false }}
 		use:makeOnTop
-		class="window {className} "
+		class="window {className}"
 		class:active={$wStore.activatedFrame === frameId}
+		role="dialog"
+		aria-modal={!outer}
+		aria-labelledby={"title-" + frameId}
+		on:cancel|preventDefault={actions.close}
+		on:keydown={(e) => { if (e.key === 'Escape') actions.close(); }}
 	>
 		{#if showHandle}
-			<header class="bar">
+			<header class="bar" id={"title-" + frameId} data-draggable={showHandle}>
 				{#if icon || windowIcon}
-					<div class="bar-icon">
+					<div class="bar-icon" aria-hidden="true">
 						<Slotted child={windowIcon}>
 							<Icon iconSize="small" {icon} />
 						</Slotted>
@@ -277,13 +282,14 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 							variant="naked"
 							icon={{ icon: iconClose, iconSize: 'small', color: 'red' }}
 							style="aspect-ratio:1/1"
-							onclick={actions.close}
+							on:click={actions.close}
+							aria-label="Close window"
 						/>
 					</div>
 				</div>
 			</header>
 		{/if}
-		<div>
+		<div class="content" role="document">
 			<Slotted child={children}>
 				{#key component}
 					{#if component}
@@ -297,23 +303,20 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 		</div>
 		{#if !hideCloseButton || !hideAcceptButton}
 			<Slotted child={windowButtonZone}>
-				<footer class="buttonZone">
+				<footer class="buttonZone" role="group" aria-label="Window actions">
 					{#if !hideCloseButton}
-						<Button width="auto" variant="naked" icon={iconClose} onclick={actions.close}
-							>Close</Button
-						>
+						<Button width="auto" variant="naked" icon={iconClose} on:click={actions.close}>Close</Button>
 					{/if}
 					{#if !hideCancelButton}
 						<Button
 							width="auto"
 							variant="naked"
 							icon="ant-design:ellipsis-outlined"
-							onclick={handleCancel}
-							>Cancel
-						</Button>
+							on:click={handleCancel}
+						>Cancel</Button>
 					{/if}
 					{#if !hideAcceptButton}
-						<Button width="auto" icon={iconValidate} onclick={handleValidate}>Validate</Button>
+						<Button width="auto" icon={iconValidate} on:click={handleValidate}>Validate</Button>
 					{/if}
 				</footer>
 			</Slotted>
@@ -343,8 +346,50 @@ export const { parameters, componentArgs } = demoerArgs(windowDemoValues);
 	}
 
 	dialog.window {
-		border-radius: var(--window-border-radius);
-		background-color: var(--window-background-color);
-		color: var(--window-color);
-	}
+    display: block;
+    border-radius: var(--window-border-radius);
+    background-color: var(--window-background-color);
+    color: var(--window-color);
+    border: var(--window-border);
+    min-width: var(--window-min-width);
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: var(--window-z-index);
+    max-height: 100%;
+    padding: 0;
+    box-shadow: var(--window-box-shadow);
+
+    &.active {
+        border: var(--window-active-border);
+        box-shadow: var(--window-active-box-shadow);
+    }
+
+    & header.bar {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background-color: var(--window-header-bar-background-color);
+        color: var(--window-color);
+        padding: var(--window-header-bar-padding);
+
+        &-icon {
+            padding: var(--window-header-bar-icon-padding);
+        }
+        & .handle {
+            flex: 1;
+            cursor: pointer;
+        }
+    }
+
+    & footer.buttonZone {
+        padding: var(--window-footer-button-zone-padding);
+        display: flex;
+        justify-content: end;
+        gap: var(--window-footer-button-zone-gap);
+    }
+    & .ctrlZone {
+        display: flex;
+    }
+}
 </style>

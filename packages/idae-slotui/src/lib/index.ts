@@ -275,7 +275,6 @@ export * from '$lib/ui/tree/types.js';
 export * from '$lib/ui/window/actions.svelte.js';
 export * from '$lib/ui/window/store.js';
 export * from '$lib/ui/window/types.js';
-export * as windowCss from '$lib/ui/window/window.css';
 export { default as Window } from '$lib/ui/window/Window.svelte';
 export { default as WindowButtonZone } from '$lib/ui/window/WindowButtonZone.svelte';
 export { default as WindowIcon } from '$lib/ui/window/WindowIcon.svelte';
