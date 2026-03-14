@@ -29,7 +29,10 @@ export class SyncAdapter {
     if (event.silent) return;
     if (event.source && event.source !== "local") return;
 
-    const now = new Date().toISOString();
+    if (event.data) {
+      ensureUpdatedAt(event.data);
+    }
+
     const entry: OutboxEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       collection: payload.collection,
@@ -40,13 +43,11 @@ export class SyncAdapter {
       meta: { retryCount: 0, createdAt: now },
     };
 
-    await outbox.enqueue(entry);
-  }
+    if (entry.data) {
+      ensureUpdatedAt(entry.data);
+    }
 
-  async function processOnce(): Promise<void> {
-    const entries = await outbox.list(1);
-    if (!entries || entries.length === 0) return;
-    const entry = entries[0];
+    await this.outbox.enqueue(entry);
 
     try {
       const result = await deliverer.deliver(entry);
