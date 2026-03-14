@@ -1,27 +1,60 @@
-import 'fake-indexeddb/auto';
 import { describe, it, expect } from 'vitest';
-import { OutboxStore } from '../src/lib/outbox/OutboxStore';
-import { createSyncAdapter } from '../src/lib/SyncAdapter';
+import type { OutboxEntry } from '../src/lib/outbox/OutboxStore';
+import { createSyncAdapter, IdbqlEventPayload } from '../src/lib/SyncAdapter';
 
-describe('SyncAdapter', () => {
-  it('applies event and deliverer consumes entry', async () => {
-    const outbox = new OutboxStore('test-sync-db', 1);
-    const delivered: any[] = [];
-    const deliverer = async (entry: any) => {
-      delivered.push(entry);
-      return true;
-    };
+class InMemoryOutbox {
+  entries: OutboxEntry[] = [];
+  async enqueue(e: OutboxEntry) { this.entries.push(e); }
+  async list(limit = 100) { return this.entries.slice(0, limit); }
+  async update(e: OutboxEntry) { const idx = this.entries.findIndex(x=>x.id===e.id); if (idx>=0) this.entries[idx]=e; }
+  async remove(id: string) { this.entries = this.entries.filter(x=>x.id!==id); }
+}
 
-    const adapter = createSyncAdapter(outbox, deliverer, 100);
+describe('SyncAdapter (outbox-backed)', () => {
+  it('handleEvent enqueues local non-silent events', async () => {
+    const outbox = new InMemoryOutbox();
+    const deliverer = { deliver: async () => ({ status: 'retry' as const }) };
+    const adapter = createSyncAdapter(outbox as any, deliverer);
 
-    const event = { collection: 'users', op: 'put', data: { id: 's1', name: 'Server' }, keyPath: 'id' } as any;
-    await adapter.applyEvent(event);
+    const payload: IdbqlEventPayload = { collection: 'books', op: 'add', data: {title:'A'}, source: 'local' };
+    await adapter.handleEvent(payload);
+    expect(outbox.entries.length).toBe(1);
+    expect(outbox.entries[0].meta?.createdAt).toBeDefined();
+  });
 
-    // allow immediate delivery to run
-    await new Promise((r) => setTimeout(r, 50));
+  it('processOnce handles success and calls applyRemote and removes entry', async () => {
+    const outbox = new InMemoryOutbox();
+    const entry: OutboxEntry = { id: '1', collection: 'c', op: 'add', data: {x:1}, meta: { retryCount:0, createdAt: new Date().toISOString() } };
+    outbox.entries.push(entry);
 
-    expect(delivered.length).toBeGreaterThan(0);
-    const list = await outbox.list();
-    expect(list.find((e) => e.data?.id === 's1')).toBeUndefined();
+    let applied = false;
+    const deliverer = { deliver: async () => ({ status: 'success' as const, response: { id: 'srv-1' } }) };
+    const adapter = createSyncAdapter(outbox as any, deliverer, { applyRemote: async (p) => { applied = true; expect(p.source).toBe('remote'); expect(p.silent).toBe(true); } });
+
+    await adapter.processOnce();
+    expect(applied).toBe(true);
+    expect(outbox.entries.length).toBe(0);
+  });
+
+  it('processOnce handles retry by incrementing retryCount and keeping entry', async () => {
+    const outbox = new InMemoryOutbox();
+    const entry: OutboxEntry = { id: '2', collection: 'c', op: 'add', data: {x:2}, meta: { retryCount:0, createdAt: new Date().toISOString() } };
+    outbox.entries.push(entry);
+    const deliverer = { deliver: async () => ({ status: 'retry' as const }) };
+    const adapter = createSyncAdapter(outbox as any, deliverer, { maxRetries: 3 });
+    await adapter.processOnce();
+    expect(outbox.entries.length).toBe(1);
+    expect(outbox.entries[0].meta?.retryCount).toBe(1);
+  });
+
+  it('processOnce handles permanent failure by marking failed in meta', async () => {
+    const outbox = new InMemoryOutbox();
+    const entry: OutboxEntry = { id: '3', collection: 'c', op: 'add', data: {x:3}, meta: { retryCount:0, createdAt: new Date().toISOString() } };
+    outbox.entries.push(entry);
+    const deliverer = { deliver: async () => ({ status: 'permanent' as const }) };
+    const adapter = createSyncAdapter(outbox as any, deliverer);
+    await adapter.processOnce();
+    expect(outbox.entries.length).toBe(1);
+    expect((outbox.entries[0].meta as any).failed).toBe(true);
   });
 });
