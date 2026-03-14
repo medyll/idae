@@ -24,6 +24,10 @@ export class SyncAdapter {
     if (event.silent) return;
     if (event.source && event.source !== "local") return;
 
+    if (event.data) {
+      ensureUpdatedAt(event.data);
+    }
+
     const entry: OutboxEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       collection: event.collection,
@@ -33,6 +37,10 @@ export class SyncAdapter {
       whereClause: event.whereClause,
       meta: { retryCount: 0, createdAt: new Date().toISOString() },
     };
+
+    if (entry.data) {
+      ensureUpdatedAt(entry.data);
+    }
 
     await this.outbox.enqueue(entry);
 
