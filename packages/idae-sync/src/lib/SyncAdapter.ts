@@ -1,4 +1,5 @@
 import { OutboxStore, OutboxEntry } from "./outbox/OutboxStore";
+import type { OnConflictHook } from "./ConflictResolver";
 
 export type IdbqlEventPayload = {
   collection: string;
@@ -18,9 +19,15 @@ export function createSyncAdapter(
   const maxRetries = opts?.maxRetries ?? 5;
   const backoffBaseMs = opts?.backoffBaseMs ?? 1000;
 
-  async function handleEvent(payload: IdbqlEventPayload): Promise<void> {
-    if (payload.source !== 'local') return;
-    if (payload.silent) return;
+export class SyncAdapter {
+  private running = false;
+  private intervalId: any = null;
+  constructor(private outbox: OutboxStore, private deliverer?: Deliverer, private intervalMs = 5000, private onConflict?: OnConflictHook) {}
+
+  async applyEvent(event: IdbqlEventPayload) {
+    // Ignore silent events and non-local sources
+    if (event.silent) return;
+    if (event.source && event.source !== "local") return;
 
     const now = new Date().toISOString();
     const entry: OutboxEntry = {
@@ -86,5 +93,6 @@ export function createSyncAdapter(
     }
   }
 
-  return { handleEvent, processOnce };
+export function createSyncAdapter(outbox: OutboxStore, deliverer?: Deliverer, opts?: { onConflict?: OnConflictHook; intervalMs?: number }) {
+  return new SyncAdapter(outbox, deliverer, opts?.intervalMs ?? 5000, opts?.onConflict);
 }
