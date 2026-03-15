@@ -1,5 +1,15 @@
-phase: design
-next: implement-sync-outbox-api-fixes
+phase: implementation-complete
+next: none
 artifacts:
   - bmad/artifacts/audit-2026-03-15.md
   - bmad/artifacts/plan-spec-sync-outbox-api.md
+commit: bc0b3a86
+changes_summary: |
+  ✅ Created IDeliverer interface + DeliverResult type
+  ✅ Fixed IdaeApiDeliverer return type (boolean → {status})
+  ✅ Fixed SyncAdapter (class extraction + single createSyncAdapter)
+  ✅ Extended OutboxEntry.meta (nextAttempt, failed, failureReason)
+  ✅ Deleted dead files (OutboxStore.ts, impl/InMemoryOutboxStore.ts)
+  ✅ Created src/index.ts public barrel
+  ✅ Fixed test imports and signatures
+  ✅ All 17 unit tests pass
