@@ -1,2 +1,5 @@
-phase: completed
-next: design-sync-outbox-api
+phase: design
+next: implement-sync-outbox-api-fixes
+artifacts:
+  - bmad/artifacts/audit-2026-03-15.md
+  - bmad/artifacts/plan-spec-sync-outbox-api.md
