@@ -16,23 +16,23 @@ describe('OutboxDeliverer.processOnce', () => {
   it('acks and applies remote on success', async () => {
     const entry: OutboxEntry = { id: '1', collection: 'c', op: 'add', data: {a:1}, meta: { retryCount: 0, createdAt: new Date().toISOString() } };
     const store = new InMemoryOutboxStore([entry]);
-    const applyRemote = vi.fn(async (id:string, res:any) => {});
-    const deliverFn = vi.fn(async (e) => ({ status: 'success' as const, response: { ok: true } }));
+    const applyRemote = vi.fn();
+    const deliverFn = vi.fn(async () => ({ status: 'success' as const, response: { ok: true } }));
 
-    const d = new OutboxDeliverer(store as any, deliverFn as any, { applyRemote });
-    await d.processOnce();
+    const d = new OutboxDeliverer(store as any);
+    await d.processOnce({ deliver: deliverFn, applyRemote });
 
     expect(store.removed).toContain('1');
-    expect(applyRemote).toHaveBeenCalledWith('1', { ok: true });
+    expect(applyRemote).toHaveBeenCalledWith({ ok: true });
   });
 
   it('updates retry meta on retry', async () => {
     const entry: OutboxEntry = { id: '2', collection: 'c', op: 'put', data: {b:2}, meta: { retryCount: 0, createdAt: new Date().toISOString() } };
     const store = new InMemoryOutboxStore([entry]);
-    const deliverFn = vi.fn(async (e) => ({ status: 'retry' as const }));
-    const d = new OutboxDeliverer(store as any, deliverFn as any, { backoffBaseMs: 10 });
+    const deliverFn = vi.fn(async () => ({ status: 'retry' as const }));
+    const d = new OutboxDeliverer(store as any, { backoffBaseMs: 10 });
 
-    await d.processOnce();
+    await d.processOnce({ deliver: deliverFn });
 
     expect(store.updated.length).toBeGreaterThan(0);
     const updated = store.updated[store.updated.length-1];
@@ -44,10 +44,10 @@ describe('OutboxDeliverer.processOnce', () => {
   it('marks failed on permanent', async () => {
     const entry: OutboxEntry = { id: '3', collection: 'c', op: 'delete', data: null, meta: { retryCount: 0, createdAt: new Date().toISOString() } };
     const store = new InMemoryOutboxStore([entry]);
-    const deliverFn = vi.fn(async (e) => ({ status: 'permanent' as const, response: 'oops' }));
-    const d = new OutboxDeliverer(store as any, deliverFn as any);
+    const deliverFn = vi.fn(async () => ({ status: 'permanent' as const, response: 'oops' }));
+    const d = new OutboxDeliverer(store as any);
 
-    await d.processOnce();
+    await d.processOnce({ deliver: deliverFn });
 
     expect(store.updated.length).toBeGreaterThan(0);
     const updated = store.updated[store.updated.length-1];

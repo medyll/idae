@@ -30,6 +30,12 @@ export class OutboxStore {
   private async open(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       const req = indexedDB.open(this.dbName, this.dbVersion);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains("__outbox__")) {
+          db.createObjectStore("__outbox__", { keyPath: "id" });
+        }
+      };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
