@@ -5,7 +5,7 @@ export type OutboxEntry = {
   key?: any;
   data?: any;
   whereClause?: any;
-  meta?: { retryCount: number; lastAttempt?: string; createdAt: string };
+  meta: { retryCount: number; createdAt: string; lastAttempt?: string; nextAttempt?: string; failed?: boolean; failureReason?: unknown };
 };
 
 export type OutboxMetrics = {

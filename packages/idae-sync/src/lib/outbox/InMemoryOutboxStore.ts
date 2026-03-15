@@ -12,8 +12,8 @@ export class InMemoryOutboxStore {
     return Array.from(this.entries.values()).slice(0, limit);
   }
 
-  async peek(id: string): Promise<OutboxEntry | undefined> {
-    return this.entries.get(id);
+  async peek(): Promise<OutboxEntry | undefined> {
+    return Array.from(this.entries.values())[0];
   }
 
   async remove(id: string): Promise<void> {
