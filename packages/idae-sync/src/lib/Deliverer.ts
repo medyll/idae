@@ -1,34 +1,35 @@
 import type { DeliverResult } from './deliverer/IDeliverer';
 import type { OutboxEntry } from './outbox/OutboxStore';
+import { OutboxStore } from './outbox/OutboxStore';
 
 export type DeliverFunction = (entry: OutboxEntry) => Promise<DeliverResult>;
 
-import { OutboxStore } from './outbox/OutboxStore';
+/** Alias for type compatibility */
+export type Deliverer = DeliverFunction;
 
 export class OutboxDeliverer {
   private maxRetries?: number;
   private backoffBaseMs: number;
-  private concurrency?: number;
+
   constructor(
     private outbox: OutboxStore,
-    private deliverFn: DeliverFunction,
-    opts?: { maxRetries?: number; backoffBaseMs?: number; concurrency?: number; applyRemote?: (entryId:string, response:any)=>Promise<void> }
+    opts?: { maxRetries?: number; backoffBaseMs?: number }
   ) {
     this.maxRetries = opts?.maxRetries;
     this.backoffBaseMs = opts?.backoffBaseMs ?? 1000;
-    this.concurrency = opts?.concurrency;
-    this.opts = opts;
   }
 
-  private opts?: { maxRetries?: number; backoffBaseMs?: number; concurrency?: number; applyRemote?: (entryId:string, response:any)=>Promise<void> };
-
-  async processOnce(): Promise<void> {
+  async processOnce(callOpts: {
+    deliver: DeliverFunction;
+    applyRemote?: (response: unknown) => void | Promise<void>;
+  }): Promise<void> {
     const entries = await this.outbox.list(1);
-    const entry = entries && entries.length ? entries[0] : undefined;
+    const entry = entries?.[0];
     if (!entry) return;
+
     let result: DeliverResult;
     try {
-      result = await this.deliverFn(entry);
+      result = await callOpts.deliver(entry);
     } catch (e) {
       // treat errors as retry
       result = { status: 'retry', response: e };
@@ -37,9 +38,9 @@ export class OutboxDeliverer {
     const now = Date.now();
 
     if (result.status === 'success') {
-      if (result.response && this.opts?.applyRemote) {
+      if (result.response && callOpts.applyRemote) {
         try {
-          await this.opts.applyRemote(entry.id, result.response);
+          await callOpts.applyRemote(result.response);
         } catch (e) {
           // ignore applyRemote errors
         }

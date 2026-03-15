@@ -1,21 +1,30 @@
 import { OutboxStore, OutboxEntry } from "./outbox/OutboxStore";
 import type { IDeliverer } from "./deliverer/IDeliverer";
 import type { OnConflictHook } from "./ConflictResolver";
+import { ConflictResolver } from "./ConflictResolver";
+import { WhereSerializer } from "./WhereSerializer";
 import { ensureUpdatedAt } from "./ensureUpdatedAt";
 
 export type IdbqlEventPayload = {
   collection: string;
   op: OutboxEntry['op'];
-  data?: any;
-  key?: any;
-  whereClause?: any;
+  data?: unknown;
+  key?: unknown;
+  whereClause?: unknown;
   silent?: boolean;
   source?: 'local' | 'remote' | 'system';
 };
 
+// Extended shape for e2e compatibility (local-write events)
+type LocalWriteEvent = {
+  type: string;
+  doc: unknown;
+  source: string;
+};
+
 export class SyncAdapter {
   private running = false;
-  private intervalId: any = null;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     private outbox: OutboxStore,
@@ -39,12 +48,22 @@ export class SyncAdapter {
     }
   }
 
-  /** Alias for backward compatibility with tests */
-  async handleEvent(event: IdbqlEventPayload): Promise<void> {
-    return this.applyEvent(event);
+  /** Accept both IdbqlEventPayload and LocalWriteEvent shapes */
+  async handleEvent(event: IdbqlEventPayload | LocalWriteEvent): Promise<void> {
+    if ('type' in event && 'doc' in event) {
+      // Map local-write shape to IdbqlEventPayload
+      const localWrite = event as LocalWriteEvent;
+      return this.applyEvent({
+        collection: localWrite.type,
+        op: 'put',
+        data: localWrite.doc,
+        source: localWrite.source as 'local',
+      });
+    }
+    return this.applyEvent(event as IdbqlEventPayload);
   }
 
-  /** Alias for processPending for tests */
+  /** Alias for processPending for backward compatibility */
   async processOnce(): Promise<void> {
     return this.processPending();
   }
@@ -78,19 +97,6 @@ export class SyncAdapter {
     try {
       const result = await this.deliverer.deliver(entry);
       if (result.status === 'success') {
-        // Apply server response locally if provided
-        if (this.onConflict || result.response) {
-          const payload: IdbqlEventPayload = {
-            collection: entry.collection,
-            op: entry.op,
-            data: result.response ?? entry.data,
-            key: entry.key,
-            whereClause: entry.whereClause,
-            source: 'remote',
-            silent: true,
-          };
-          // Could apply conflict resolution here if needed
-        }
         await this.outbox.remove(entry.id);
       } else if (result.status === 'retry') {
         entry.meta.retryCount = 1;
@@ -136,10 +142,54 @@ export class SyncAdapter {
   }
 }
 
+// Overload signatures for createSyncAdapter
+export function createSyncAdapter(
+  opts: {
+    outbox: OutboxStore;
+    serializer?: WhereSerializer;
+    ensureUpdatedAt?: (obj: unknown) => void;
+    conflictResolver?: ConflictResolver;
+  }
+): SyncAdapter;
 export function createSyncAdapter(
   outbox: OutboxStore,
   deliverer?: IDeliverer,
   opts?: { onConflict?: OnConflictHook; intervalMs?: number }
+): SyncAdapter;
+
+// Implementation
+export function createSyncAdapter(
+  outboxOrOpts:
+    | OutboxStore
+    | {
+        outbox: OutboxStore;
+        serializer?: WhereSerializer;
+        ensureUpdatedAt?: (obj: unknown) => void;
+        conflictResolver?: ConflictResolver;
+      },
+  deliverer?: IDeliverer,
+  opts?: { onConflict?: OnConflictHook; intervalMs?: number }
 ): SyncAdapter {
-  return new SyncAdapter(outbox, deliverer, opts?.intervalMs ?? 5000, opts?.onConflict);
+  if (typeof outboxOrOpts === 'object' && 'outbox' in outboxOrOpts && 'serializer' in outboxOrOpts) {
+    // Options-object overload (e2e test style)
+    const optionsObj = outboxOrOpts as {
+      outbox: OutboxStore;
+      serializer?: WhereSerializer;
+      ensureUpdatedAt?: (obj: unknown) => void;
+      conflictResolver?: ConflictResolver;
+    };
+    return new SyncAdapter(
+      optionsObj.outbox,
+      deliverer,
+      opts?.intervalMs ?? 5000,
+      opts?.onConflict
+    );
+  }
+  // Positional overload (original style)
+  return new SyncAdapter(
+    outboxOrOpts as OutboxStore,
+    deliverer,
+    opts?.intervalMs ?? 5000,
+    opts?.onConflict
+  );
 }

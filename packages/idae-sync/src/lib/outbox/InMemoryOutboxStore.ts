@@ -8,6 +8,11 @@ export class InMemoryOutboxStore {
     this.entries.set(entry.id, entry);
   }
 
+  /** Alias for backward compatibility */
+  async append(entry: OutboxEntry): Promise<void> {
+    return this.enqueue(entry);
+  }
+
   async list(limit = 100): Promise<OutboxEntry[]> {
     return Array.from(this.entries.values()).slice(0, limit);
   }

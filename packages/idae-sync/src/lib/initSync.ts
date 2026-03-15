@@ -6,25 +6,32 @@ import { createSyncAdapter } from './SyncAdapter';
 export type InitSyncOptions = {
   dbName?: string;
   dbVersion?: number;
-  delivererConfig?: any;
+  delivererConfig?: Record<string, unknown>;
   intervalMs?: number;
 };
+
+interface IdbqlEventBus {
+  _adapters?: unknown[] | null;
+  _adapter?: unknown | null;
+  registerAdapters(adapters: unknown[]): void;
+  registerAdapter(adapter: unknown): void;
+}
 
 export function initSync(opts?: InitSyncOptions) {
   const dbName = opts?.dbName || 'idae-db';
   const dbVersion = opts?.dbVersion;
   const outbox = new OutboxStore(dbName, dbVersion);
   const deliverer = createIdaeApiDeliverer(opts?.delivererConfig);
-  const syncAdapter = createSyncAdapter(outbox, (entry) => deliverer.deliver(entry), opts?.intervalMs);
+  const syncAdapter = createSyncAdapter(outbox, deliverer, { intervalMs: opts?.intervalMs });
 
-  const ev = getIdbqlEvent() as any;
+  const ev = getIdbqlEvent() as unknown as IdbqlEventBus;
 
   // Save previous adapters to restore on stop
   const previousAdapters = ev._adapters || null;
   const previousAdapter = ev._adapter || null;
 
   // Build new adapter list preserving existing adapters
-  const adapters: Array<any> = [];
+  const adapters: unknown[] = [];
   if (previousAdapters && Array.isArray(previousAdapters)) adapters.push(...previousAdapters);
   else if (previousAdapter) adapters.push(previousAdapter);
 
