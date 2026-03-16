@@ -4,6 +4,10 @@ import type { OnConflictHook } from "./ConflictResolver";
 import { ConflictResolver } from "./ConflictResolver";
 import { WhereSerializer } from "./WhereSerializer";
 import { ensureUpdatedAt } from "./ensureUpdatedAt";
+import { SyncModeManager } from "./SyncModeManager";
+import { ServerFirstHandler } from "./ServerFirstHandler";
+import { RollbackManager } from "./RollbackManager";
+import type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from "./SyncMode";
 
 export type IdbqlEventPayload = {
   collection: string;
@@ -25,13 +29,29 @@ type LocalWriteEvent = {
 export class SyncAdapter {
   private running = false;
   private intervalId: ReturnType<typeof setInterval> | null = null;
+  private modeManager: SyncModeManager;
+  private serverFirstHandler?: ServerFirstHandler;
+  private rollbackManager?: RollbackManager;
+  private syncEventHandlers: SyncEventHandler[] = [];
 
   constructor(
     private outbox: OutboxStore,
     private deliverer?: IDeliverer,
     private intervalMs = 5000,
-    private onConflict?: OnConflictHook
-  ) {}
+    private onConflict?: OnConflictHook,
+    modeConfig?: SyncModeConfig,
+    private getDb?: () => Promise<IDBDatabase>
+  ) {
+    this.modeManager = new SyncModeManager(modeConfig);
+
+    if (deliverer && getDb) {
+      this.rollbackManager = new RollbackManager(getDb);
+      this.serverFirstHandler = new ServerFirstHandler(
+        outbox, deliverer, this.rollbackManager,
+        (event) => this.emitSyncEvent(event)
+      );
+    }
+  }
 
   start(): void {
     if (this.running) return;
@@ -48,10 +68,40 @@ export class SyncAdapter {
     }
   }
 
+  // --- Sync mode API ---
+
+  setMode(mode: SyncMode): void {
+    this.modeManager.setGlobal(mode);
+  }
+
+  setCollectionMode(collection: string, mode: SyncMode): void {
+    this.modeManager.setCollection(collection, mode);
+  }
+
+  getMode(): SyncMode {
+    return this.modeManager.getGlobal();
+  }
+
+  getCollectionMode(collection: string): SyncMode {
+    return this.modeManager.getCollection(collection);
+  }
+
+  onSyncEvent(handler: SyncEventHandler): () => void {
+    this.syncEventHandlers.push(handler);
+    return () => {
+      this.syncEventHandlers = this.syncEventHandlers.filter(h => h !== handler);
+    };
+  }
+
+  private emitSyncEvent(event: SyncEvent): void {
+    for (const handler of this.syncEventHandlers) {
+      try { handler(event); } catch { /* ignore handler errors */ }
+    }
+  }
+
   /** Accept both IdbqlEventPayload and LocalWriteEvent shapes */
   async handleEvent(event: IdbqlEventPayload | LocalWriteEvent): Promise<void> {
     if ('type' in event && 'doc' in event) {
-      // Map local-write shape to IdbqlEventPayload
       const localWrite = event as LocalWriteEvent;
       return this.applyEvent({
         collection: localWrite.type,
@@ -69,10 +119,19 @@ export class SyncAdapter {
   }
 
   async applyEvent(event: IdbqlEventPayload): Promise<void> {
-    // Ignore silent events and non-local sources
     if (event.silent) return;
     if (event.source && event.source !== "local") return;
 
+    const mode = this.modeManager.resolve(event.collection);
+
+    if (mode === 'server-first') {
+      return this.applyServerFirst(event);
+    }
+
+    return this.applyMobileFirst(event);
+  }
+
+  private async applyMobileFirst(event: IdbqlEventPayload): Promise<void> {
     const now = new Date().toISOString();
 
     const entry: OutboxEntry = {
@@ -98,6 +157,7 @@ export class SyncAdapter {
       const result = await this.deliverer.deliver(entry);
       if (result.status === 'success') {
         await this.outbox.remove(entry.id);
+        this.emitSyncEvent({ type: 'delivered', collection: entry.collection, entryId: entry.id });
       } else if (result.status === 'retry') {
         entry.meta.retryCount = 1;
         entry.meta.lastAttempt = now;
@@ -109,10 +169,57 @@ export class SyncAdapter {
         await this.outbox.update(entry);
       }
     } catch (e) {
-      // treat unexpected errors as retryable
       entry.meta.retryCount = 1;
       entry.meta.lastAttempt = now;
       await this.outbox.update(entry).catch(() => {});
+    }
+  }
+
+  private async applyServerFirst(event: IdbqlEventPayload): Promise<void> {
+    const now = new Date().toISOString();
+
+    const entry: OutboxEntry = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      collection: event.collection,
+      op: event.op,
+      key: event.key,
+      data: event.data,
+      whereClause: event.whereClause,
+      meta: { retryCount: 0, createdAt: now },
+    };
+
+    if (entry.data) {
+      ensureUpdatedAt(entry.data);
+    }
+
+    // Enqueue optimistically
+    await this.outbox.enqueue(entry);
+
+    // Use ServerFirstHandler if available, otherwise fallback to mobile-first behavior
+    if (this.serverFirstHandler) {
+      await this.serverFirstHandler.handle(entry);
+    } else if (this.deliverer) {
+      // No rollback manager — treat like mobile-first with immediate delivery
+      try {
+        const result = await this.deliverer.deliver(entry);
+        if (result.status === 'success') {
+          await this.outbox.remove(entry.id);
+          this.emitSyncEvent({ type: 'delivered', collection: entry.collection, entryId: entry.id });
+        } else if (result.status === 'permanent') {
+          await this.outbox.remove(entry.id);
+          this.emitSyncEvent({ type: 'rollback', collection: entry.collection, entryId: entry.id, reason: result.response });
+        } else {
+          entry.meta.retryCount = 1;
+          entry.meta.lastAttempt = now;
+          await this.outbox.update(entry);
+          this.emitSyncEvent({ type: 'fallback', collection: entry.collection, entryId: entry.id, reason: 'transient', fallbackMode: 'mobile-first' });
+        }
+      } catch (e) {
+        entry.meta.retryCount = 1;
+        entry.meta.lastAttempt = now;
+        await this.outbox.update(entry).catch(() => {});
+        this.emitSyncEvent({ type: 'fallback', collection: entry.collection, entryId: entry.id, reason: e, fallbackMode: 'mobile-first' });
+      }
     }
   }
 
@@ -154,7 +261,7 @@ export function createSyncAdapter(
 export function createSyncAdapter(
   outbox: OutboxStore,
   deliverer?: IDeliverer,
-  opts?: { onConflict?: OnConflictHook; intervalMs?: number }
+  opts?: { onConflict?: OnConflictHook; intervalMs?: number; mode?: SyncMode; collectionModes?: Record<string, SyncMode> }
 ): SyncAdapter;
 
 // Implementation
@@ -168,10 +275,13 @@ export function createSyncAdapter(
         conflictResolver?: ConflictResolver;
       },
   deliverer?: IDeliverer,
-  opts?: { onConflict?: OnConflictHook; intervalMs?: number }
+  opts?: { onConflict?: OnConflictHook; intervalMs?: number; mode?: SyncMode; collectionModes?: Record<string, SyncMode> }
 ): SyncAdapter {
+  const modeConfig = opts?.mode || opts?.collectionModes
+    ? { mode: opts?.mode, collectionModes: opts?.collectionModes }
+    : undefined;
+
   if (typeof outboxOrOpts === 'object' && 'outbox' in outboxOrOpts && 'serializer' in outboxOrOpts) {
-    // Options-object overload (e2e test style)
     const optionsObj = outboxOrOpts as {
       outbox: OutboxStore;
       serializer?: WhereSerializer;
@@ -182,14 +292,15 @@ export function createSyncAdapter(
       optionsObj.outbox,
       deliverer,
       opts?.intervalMs ?? 5000,
-      opts?.onConflict
+      opts?.onConflict,
+      modeConfig
     );
   }
-  // Positional overload (original style)
   return new SyncAdapter(
     outboxOrOpts as OutboxStore,
     deliverer,
     opts?.intervalMs ?? 5000,
-    opts?.onConflict
+    opts?.onConflict,
+    modeConfig
   );
 }

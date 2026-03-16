@@ -6,6 +6,12 @@ export type { OnConflictHook, OnConflictResult } from './lib/ConflictResolver';
 export type { InitSyncOptions } from './lib/initSync';
 export type { DeliverFunction, Deliverer } from './lib/Deliverer';
 
+// Phase 2 — Sync modes
+export type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from './lib/SyncMode';
+export { SyncModeManager } from './lib/SyncModeManager';
+export { RollbackManager } from './lib/RollbackManager';
+export { ServerFirstHandler } from './lib/ServerFirstHandler';
+
 // Classes
 export { OutboxStore } from './lib/outbox/OutboxStore';
 export { InMemoryOutboxStore } from './lib/outbox/InMemoryOutboxStore';
