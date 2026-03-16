@@ -23,7 +23,7 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
     "package:pre": "pnpm -r run prepackage ",
-    "package": "pnpm -r run prepack --if-present && pnpm -r run package --if-present",
+    "package": "pnpm -r run package",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",
     "verify:workspace-deps": "node scripts/verify-workspace-deps.js"

@@ -10,7 +10,7 @@
   "main": "bin/cli.js",
   "scripts": {
     "start": "node bin/cli.js",
-    "test": "echo \"no tests\"",
+    "test": "node --test",
     "lint": "eslint --ext .js,.ts .",
     "prepackage": "node scripts/package-pre.js"
   },
