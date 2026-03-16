@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.35-next.0] - 2026-03-16
+**Chores:**
+- set package as public in package.json
+
+
+
 ## [0.0.34-next.0] - 2026-03-16
 **Features:**
 - Refactor Stator module and implement batch and subscribe functionalities
