@@ -2,7 +2,7 @@
   "name": "@medyll/idae-mono-expand-vitrine",
   "version": "1.1.0",
   "description": "Sync pnpm monorepo packages to individual GitHub showcase repositories",
-  "private": false,
+  "private": true,
   "type": "module",
   "bin": {
     "idae-mono-expand-vitrine": "bin/cli.js"
@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node bin/cli.js",
     "test": "node --test",
+    "lint": "eslint --ext .js,.ts .",
     "prepackage": "node scripts/package-pre.js"
   },
   "keywords": [
