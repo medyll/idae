@@ -3,16 +3,26 @@ import { OutboxStore } from './outbox/OutboxStore';
 import { createIdaeApiDeliverer } from './deliverer';
 import { createSyncAdapter } from './SyncAdapter';
 import type { SyncMode, SyncEvent, SyncEventHandler } from './SyncMode';
+import type { SyncHooks, DebugFn } from './SyncHooks';
+import type { CanonicalApplyFn } from './ServerFirstHandler';
 
-export type InitSyncOptions = {
+export type InitSyncOptions<C extends string = string> = {
   dbName?: string;
   dbVersion?: number;
   delivererConfig?: Record<string, unknown>;
   intervalMs?: number;
   // Phase 2
   mode?: SyncMode;
-  collectionModes?: Record<string, SyncMode>;
+  collectionModes?: Partial<Record<C, SyncMode>>;
   onSyncEvent?: SyncEventHandler;
+  getDb?: () => Promise<IDBDatabase>;
+  applyCanonical?: CanonicalApplyFn;
+  // Phase 3
+  maxRetries?: number;
+  batchSize?: number;
+  compact?: boolean;
+  hooks?: SyncHooks;
+  debug?: boolean | DebugFn;
 };
 
 interface IdbqlEventBus {
@@ -22,7 +32,7 @@ interface IdbqlEventBus {
   registerAdapter(adapter: unknown): void;
 }
 
-export function initSync(opts?: InitSyncOptions) {
+export function initSync<C extends string = string>(opts?: InitSyncOptions<C>) {
   const dbName = opts?.dbName || 'idae-db';
   const dbVersion = opts?.dbVersion;
   const outbox = new OutboxStore(dbName, dbVersion);
@@ -30,30 +40,32 @@ export function initSync(opts?: InitSyncOptions) {
   const syncAdapter = createSyncAdapter(outbox, deliverer, {
     intervalMs: opts?.intervalMs,
     mode: opts?.mode,
-    collectionModes: opts?.collectionModes,
+    collectionModes: opts?.collectionModes as Record<string, SyncMode> | undefined,
+    getDb: opts?.getDb,
+    applyCanonical: opts?.applyCanonical,
+    maxRetries: opts?.maxRetries,
+    batchSize: opts?.batchSize,
+    compact: opts?.compact,
+    hooks: opts?.hooks,
+    debug: opts?.debug,
   });
 
-  // Register initial sync event handler if provided
   if (opts?.onSyncEvent) {
     syncAdapter.onSyncEvent(opts.onSyncEvent);
   }
 
   const ev = getIdbqlEvent() as unknown as IdbqlEventBus;
 
-  // Save previous adapters to restore on stop
   const previousAdapters = ev._adapters || null;
   const previousAdapter = ev._adapter || null;
 
-  // Build new adapter list preserving existing adapters
   const adapters: unknown[] = [];
   if (previousAdapters && Array.isArray(previousAdapters)) adapters.push(...previousAdapters);
   else if (previousAdapter) adapters.push(previousAdapter);
 
   adapters.push(syncAdapter);
-
   ev.registerAdapters(adapters);
 
-  // Start background processing
   try {
     if (typeof syncAdapter.start === 'function') syncAdapter.start();
   } catch (e) {
@@ -71,11 +83,13 @@ export function initSync(opts?: InitSyncOptions) {
     outbox,
     syncAdapter,
     deliverer,
-    // Phase 2 — mode management shortcuts
+    // Mode management
     setMode(mode: SyncMode) { syncAdapter.setMode(mode); },
-    setCollectionMode(collection: string, mode: SyncMode) { syncAdapter.setCollectionMode(collection, mode); },
+    setCollectionMode(collection: C, mode: SyncMode) { syncAdapter.setCollectionMode(collection, mode); },
     getMode() { return syncAdapter.getMode(); },
-    getCollectionMode(collection: string) { return syncAdapter.getCollectionMode(collection); },
+    getCollectionMode(collection: C) { return syncAdapter.getCollectionMode(collection); },
     onSyncEvent(handler: SyncEventHandler) { return syncAdapter.onSyncEvent(handler); },
+    // DLQ access
+    get dlq() { return { list: () => (outbox as any).listDlq?.(), replay: (id: string) => (outbox as any).replayDlq?.(id), clear: () => (outbox as any).clearDlq?.() }; },
   };
 }

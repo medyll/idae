@@ -11,6 +11,11 @@ export type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from './li
 export { SyncModeManager } from './lib/SyncModeManager';
 export { RollbackManager } from './lib/RollbackManager';
 export { ServerFirstHandler } from './lib/ServerFirstHandler';
+export type { CanonicalApplyFn } from './lib/ServerFirstHandler';
+
+// Phase 3 — Hooks, debug
+export type { SyncHooks, DebugFn } from './lib/SyncHooks';
+export type { SyncAdapterOptions } from './lib/SyncAdapter';
 
 // Classes
 export { OutboxStore } from './lib/outbox/OutboxStore';

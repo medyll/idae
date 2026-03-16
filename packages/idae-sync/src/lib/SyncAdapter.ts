@@ -8,6 +8,8 @@ import { SyncModeManager } from "./SyncModeManager";
 import { ServerFirstHandler } from "./ServerFirstHandler";
 import { RollbackManager } from "./RollbackManager";
 import type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from "./SyncMode";
+import type { SyncHooks, DebugFn } from "./SyncHooks";
+import type { CanonicalApplyFn } from "./ServerFirstHandler";
 
 export type IdbqlEventPayload = {
   collection: string;
@@ -26,13 +28,37 @@ type LocalWriteEvent = {
   source: string;
 };
 
+export type SyncAdapterOptions = {
+  onConflict?: OnConflictHook;
+  intervalMs?: number;
+  // Phase 2
+  mode?: SyncMode;
+  collectionModes?: Record<string, SyncMode>;
+  getDb?: () => Promise<IDBDatabase>;
+  applyCanonical?: CanonicalApplyFn;
+  // Phase 3
+  maxRetries?: number;
+  batchSize?: number;
+  compact?: boolean;
+  hooks?: SyncHooks;
+  debug?: boolean | DebugFn;
+};
+
 export class SyncAdapter {
   private running = false;
+  private networkPaused = false;
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private modeManager: SyncModeManager;
   private serverFirstHandler?: ServerFirstHandler;
   private rollbackManager?: RollbackManager;
   private syncEventHandlers: SyncEventHandler[] = [];
+  private maxRetries: number;
+  private batchSize: number;
+  private compact: boolean;
+  private hooks?: SyncHooks;
+  private log: DebugFn;
+  private onlineHandler?: () => void;
+  private offlineHandler?: () => void;
 
   constructor(
     private outbox: OutboxStore,
@@ -40,15 +66,29 @@ export class SyncAdapter {
     private intervalMs = 5000,
     private onConflict?: OnConflictHook,
     modeConfig?: SyncModeConfig,
-    private getDb?: () => Promise<IDBDatabase>
+    private opts: SyncAdapterOptions = {}
   ) {
     this.modeManager = new SyncModeManager(modeConfig);
+    this.maxRetries = opts.maxRetries ?? 10;
+    this.batchSize = opts.batchSize ?? 1;
+    this.compact = opts.compact ?? false;
+    this.hooks = opts.hooks;
 
-    if (deliverer && getDb) {
-      this.rollbackManager = new RollbackManager(getDb);
+    const debugOpt = opts.debug;
+    this.log = typeof debugOpt === 'function'
+      ? debugOpt
+      : debugOpt === true
+        ? (msg, data) => console.log(msg, data ?? '')
+        : () => {};
+
+    if (deliverer && opts.getDb) {
+      this.rollbackManager = new RollbackManager(opts.getDb);
       this.serverFirstHandler = new ServerFirstHandler(
         outbox, deliverer, this.rollbackManager,
-        (event) => this.emitSyncEvent(event)
+        (event) => this.emitSyncEvent(event),
+        opts.applyCanonical,
+        this.hooks,
+        this.log
       );
     }
   }
@@ -56,7 +96,32 @@ export class SyncAdapter {
   start(): void {
     if (this.running) return;
     this.running = true;
-    this.intervalId = setInterval(() => this.processPending(), this.intervalMs);
+    this.intervalId = setInterval(() => {
+      if (!this.networkPaused) this.processPending();
+    }, this.intervalMs);
+
+    // Network awareness (browser only)
+    if (typeof window !== 'undefined') {
+      this.onlineHandler = () => {
+        this.networkPaused = false;
+        this.log('[idae-sync] network online — flushing outbox');
+        this.emitSyncEvent({ type: 'network-online' });
+        this.processPending();
+      };
+      this.offlineHandler = () => {
+        this.networkPaused = true;
+        this.log('[idae-sync] network offline — polling suspended');
+        this.emitSyncEvent({ type: 'network-offline' });
+      };
+      window.addEventListener('online', this.onlineHandler);
+      window.addEventListener('offline', this.offlineHandler);
+
+      // Check initial state
+      if (!navigator.onLine) {
+        this.networkPaused = true;
+        this.log('[idae-sync] started offline — polling suspended');
+      }
+    }
   }
 
   stop(): void {
@@ -65,6 +130,10 @@ export class SyncAdapter {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
+    }
+    if (typeof window !== 'undefined') {
+      if (this.onlineHandler) window.removeEventListener('online', this.onlineHandler);
+      if (this.offlineHandler) window.removeEventListener('offline', this.offlineHandler);
     }
   }
 
@@ -95,7 +164,7 @@ export class SyncAdapter {
 
   private emitSyncEvent(event: SyncEvent): void {
     for (const handler of this.syncEventHandlers) {
-      try { handler(event); } catch { /* ignore handler errors */ }
+      try { handler(event); } catch { /* ignore */ }
     }
   }
 
@@ -131,10 +200,9 @@ export class SyncAdapter {
     return this.applyMobileFirst(event);
   }
 
-  private async applyMobileFirst(event: IdbqlEventPayload): Promise<void> {
+  private async buildEntry(event: IdbqlEventPayload): Promise<OutboxEntry> {
     const now = new Date().toISOString();
-
-    const entry: OutboxEntry = {
+    let entry: OutboxEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       collection: event.collection,
       op: event.op,
@@ -144,24 +212,51 @@ export class SyncAdapter {
       meta: { retryCount: 0, createdAt: now },
     };
 
-    if (entry.data) {
-      ensureUpdatedAt(entry.data);
+    if (entry.data) ensureUpdatedAt(entry.data);
+
+    // onEnqueue hook
+    if (this.hooks?.onEnqueue) {
+      entry = await this.hooks.onEnqueue(entry);
+    }
+
+    return entry;
+  }
+
+  private async applyMobileFirst(event: IdbqlEventPayload): Promise<void> {
+    const now = new Date().toISOString();
+    let entry = await this.buildEntry(event);
+
+    // Compaction: merge with existing pending entry for same (collection, key)
+    if (this.compact && event.key != null) {
+      const existing = await (this.outbox as any).findPending?.(event.collection, event.key) as OutboxEntry | undefined;
+      if (existing) {
+        this.log(`[idae-sync] compact ${event.collection}#${String(event.key)}`);
+        await this.outbox.update({ ...existing, data: event.data, op: event.op });
+        return;
+      }
     }
 
     await this.outbox.enqueue(entry);
+    this.log(`[idae-sync] enqueue ${entry.collection}#${entry.id} (mobile-first)`);
 
-    // Attempt immediate delivery if deliverer is available
     if (!this.deliverer) return;
 
+    let deliverEntry = entry;
+    if (this.hooks?.onBeforeDeliver) deliverEntry = await this.hooks.onBeforeDeliver(entry);
+
     try {
-      const result = await this.deliverer.deliver(entry);
+      const result = await this.deliverer.deliver(deliverEntry);
+
+      if (this.hooks?.onAfterDeliver) await this.hooks.onAfterDeliver(entry, result);
+
       if (result.status === 'success') {
         await this.outbox.remove(entry.id);
+        this.log(`[idae-sync] deliver ${entry.collection}#${entry.id} → success`);
         this.emitSyncEvent({ type: 'delivered', collection: entry.collection, entryId: entry.id });
       } else if (result.status === 'retry') {
         entry.meta.retryCount = 1;
         entry.meta.lastAttempt = now;
-        await this.outbox.update(entry);
+        await this.checkMaxRetries(entry);
       } else if (result.status === 'permanent') {
         entry.meta.lastAttempt = now;
         entry.meta.failed = true;
@@ -171,37 +266,25 @@ export class SyncAdapter {
     } catch (e) {
       entry.meta.retryCount = 1;
       entry.meta.lastAttempt = now;
-      await this.outbox.update(entry).catch(() => {});
+      await this.checkMaxRetries(entry);
     }
   }
 
   private async applyServerFirst(event: IdbqlEventPayload): Promise<void> {
     const now = new Date().toISOString();
+    let entry = await this.buildEntry(event);
 
-    const entry: OutboxEntry = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      collection: event.collection,
-      op: event.op,
-      key: event.key,
-      data: event.data,
-      whereClause: event.whereClause,
-      meta: { retryCount: 0, createdAt: now },
-    };
-
-    if (entry.data) {
-      ensureUpdatedAt(entry.data);
-    }
-
-    // Enqueue optimistically
     await this.outbox.enqueue(entry);
+    this.log(`[idae-sync] enqueue ${entry.collection}#${entry.id} (server-first)`);
 
-    // Use ServerFirstHandler if available, otherwise fallback to mobile-first behavior
     if (this.serverFirstHandler) {
       await this.serverFirstHandler.handle(entry);
     } else if (this.deliverer) {
-      // No rollback manager — treat like mobile-first with immediate delivery
+      let deliverEntry = entry;
+      if (this.hooks?.onBeforeDeliver) deliverEntry = await this.hooks.onBeforeDeliver(entry);
       try {
-        const result = await this.deliverer.deliver(entry);
+        const result = await this.deliverer.deliver(deliverEntry);
+        if (this.hooks?.onAfterDeliver) await this.hooks.onAfterDeliver(entry, result);
         if (result.status === 'success') {
           await this.outbox.remove(entry.id);
           this.emitSyncEvent({ type: 'delivered', collection: entry.collection, entryId: entry.id });
@@ -211,40 +294,62 @@ export class SyncAdapter {
         } else {
           entry.meta.retryCount = 1;
           entry.meta.lastAttempt = now;
-          await this.outbox.update(entry);
+          await this.checkMaxRetries(entry);
           this.emitSyncEvent({ type: 'fallback', collection: entry.collection, entryId: entry.id, reason: 'transient', fallbackMode: 'mobile-first' });
         }
       } catch (e) {
         entry.meta.retryCount = 1;
         entry.meta.lastAttempt = now;
-        await this.outbox.update(entry).catch(() => {});
+        await this.checkMaxRetries(entry);
         this.emitSyncEvent({ type: 'fallback', collection: entry.collection, entryId: entry.id, reason: e, fallbackMode: 'mobile-first' });
       }
     }
   }
 
-  private async processPending(): Promise<void> {
+  private async checkMaxRetries(entry: OutboxEntry): Promise<void> {
+    if (entry.meta.retryCount >= this.maxRetries) {
+      this.log(`[idae-sync] dead-letter ${entry.collection}#${entry.id} (retries=${entry.meta.retryCount})`);
+      await (this.outbox as any).moveToDlq?.(entry.id, 'max-retries');
+      this.emitSyncEvent({ type: 'dead-letter', collection: entry.collection, entryId: entry.id, reason: 'max-retries' });
+    } else {
+      await this.outbox.update(entry);
+    }
+  }
+
+  async processPending(): Promise<void> {
     if (!this.deliverer) return;
     try {
-      const entries = await this.outbox.list(1);
-      const entry = entries?.[0];
-      if (!entry) return;
+      const entries = await this.outbox.list(this.batchSize);
+      if (!entries?.length) return;
 
-      const result = await this.deliverer.deliver(entry);
-      if (result.status === 'success') {
-        await this.outbox.remove(entry.id);
-      } else if (result.status === 'retry') {
-        entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
-        entry.meta.lastAttempt = new Date().toISOString();
-        await this.outbox.update(entry);
-      } else if (result.status === 'permanent') {
-        entry.meta.lastAttempt = new Date().toISOString();
-        entry.meta.failed = true;
-        entry.meta.failureReason = result.response;
-        await this.outbox.update(entry);
-      }
+      await Promise.allSettled(entries.map(e => this.deliverOne(e)));
     } catch (e) {
       // ignore errors in background processing
+    }
+  }
+
+  private async deliverOne(entry: OutboxEntry): Promise<void> {
+    if (!this.deliverer) return;
+
+    let deliverEntry = entry;
+    if (this.hooks?.onBeforeDeliver) deliverEntry = await this.hooks.onBeforeDeliver(entry);
+
+    const result = await this.deliverer.deliver(deliverEntry);
+
+    if (this.hooks?.onAfterDeliver) await this.hooks.onAfterDeliver(entry, result);
+
+    if (result.status === 'success') {
+      await this.outbox.remove(entry.id);
+      this.log(`[idae-sync] deliver ${entry.collection}#${entry.id} → success`);
+    } else if (result.status === 'retry') {
+      entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
+      entry.meta.lastAttempt = new Date().toISOString();
+      await this.checkMaxRetries(entry);
+    } else if (result.status === 'permanent') {
+      entry.meta.lastAttempt = new Date().toISOString();
+      entry.meta.failed = true;
+      entry.meta.failureReason = result.response;
+      await this.outbox.update(entry);
     }
   }
 }
@@ -261,7 +366,7 @@ export function createSyncAdapter(
 export function createSyncAdapter(
   outbox: OutboxStore,
   deliverer?: IDeliverer,
-  opts?: { onConflict?: OnConflictHook; intervalMs?: number; mode?: SyncMode; collectionModes?: Record<string, SyncMode> }
+  opts?: SyncAdapterOptions
 ): SyncAdapter;
 
 // Implementation
@@ -275,7 +380,7 @@ export function createSyncAdapter(
         conflictResolver?: ConflictResolver;
       },
   deliverer?: IDeliverer,
-  opts?: { onConflict?: OnConflictHook; intervalMs?: number; mode?: SyncMode; collectionModes?: Record<string, SyncMode> }
+  opts?: SyncAdapterOptions
 ): SyncAdapter {
   const modeConfig = opts?.mode || opts?.collectionModes
     ? { mode: opts?.mode, collectionModes: opts?.collectionModes }
@@ -293,7 +398,8 @@ export function createSyncAdapter(
       deliverer,
       opts?.intervalMs ?? 5000,
       opts?.onConflict,
-      modeConfig
+      modeConfig,
+      opts ?? {}
     );
   }
   return new SyncAdapter(
@@ -301,6 +407,7 @@ export function createSyncAdapter(
     deliverer,
     opts?.intervalMs ?? 5000,
     opts?.onConflict,
-    modeConfig
+    modeConfig,
+    opts ?? {}
   );
 }

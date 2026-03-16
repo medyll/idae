@@ -1,14 +1,20 @@
 import type { IDeliverer } from './deliverer/IDeliverer';
 import type { OutboxEntry, OutboxStore } from './outbox/OutboxStore';
 import type { RollbackManager } from './RollbackManager';
-import type { SyncEvent, SyncEventHandler } from './SyncMode';
+import type { SyncEvent } from './SyncMode';
+import type { SyncHooks } from './SyncHooks';
+
+export type CanonicalApplyFn = (collection: string, key: unknown, response: unknown) => Promise<void> | void;
 
 export class ServerFirstHandler {
   constructor(
     private outbox: OutboxStore,
     private deliverer: IDeliverer,
     private rollbackManager: RollbackManager,
-    private emit: (event: SyncEvent) => void
+    private emit: (event: SyncEvent) => void,
+    private applyCanonical?: CanonicalApplyFn,
+    private hooks?: SyncHooks,
+    private debug?: (msg: string, data?: unknown) => void
   ) {}
 
   async handle(entry: OutboxEntry): Promise<void> {
@@ -23,6 +29,15 @@ export class ServerFirstHandler {
       const result = await this.deliverer.deliver(entry);
 
       if (result.status === 'success') {
+        // Apply canonical server response to local IDB if handler provided
+        if (result.response && this.applyCanonical) {
+          try {
+            await this.applyCanonical(entry.collection, entry.key ?? entry.id, result.response);
+            this.debug?.(`[idae-sync] canonical applied ${entry.collection}#${entry.id}`);
+          } catch (e) {
+            this.debug?.(`[idae-sync] canonical apply failed ${entry.collection}#${entry.id}`, e);
+          }
+        }
         // Remove from outbox, discard snapshot
         await this.outbox.remove(entry.id);
         this.rollbackManager.discard(snapshotId);

@@ -6,9 +6,9 @@ export type SyncModeConfig = {
 };
 
 export type SyncEvent = {
-  type: 'delivered' | 'fallback' | 'rejected' | 'rollback';
-  collection: string;
-  entryId: string;
+  type: 'delivered' | 'fallback' | 'rejected' | 'rollback' | 'dead-letter' | 'network-online' | 'network-offline';
+  collection?: string;
+  entryId?: string;
   reason?: unknown;
   fallbackMode?: SyncMode;
 };
