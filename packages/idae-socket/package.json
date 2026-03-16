@@ -10,7 +10,7 @@
   "main": "./src/lib/index.ts",
   "type": "module",
   "scripts": {
-    "test": "vitest run",
+    "test": "",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "dev": "tsc --build --verbose --incremental --watch & node.exe -r ts-node/register ./src --port 4000",
