@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-13T21:14:07.937Z",
+  "generated_at": "2026-03-16T11:52:00.777Z",
   "source": "registry/registry.json",
   "components": [
     {
@@ -339,6 +339,18 @@
       "publicMetadata": "public/r/debug.json"
     },
     {
+      "name": "demo-page",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoPage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "publicMetadata": "public/r/demo-page.json"
+    },
+    {
       "name": "demoer",
       "files": [
         {
@@ -385,18 +397,6 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/demoer-content.json"
-    },
-    {
-      "name": "demo-page",
-      "files": [
-        {
-          "path": "src/lib/base/demoer/DemoPage.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/demo-page.json"
     },
     {
       "name": "divider",
@@ -1395,18 +1395,6 @@
       "publicMetadata": "public/r/panel-button-previous.json"
     },
     {
-      "name": "paneler",
-      "files": [
-        {
-          "path": "src/lib/ui/panel/Paneler.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/paneler.json"
-    },
-    {
       "name": "panel-grid",
       "files": [
         {
@@ -1441,6 +1429,18 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/panel-slide.json"
+    },
+    {
+      "name": "paneler",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Paneler.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "publicMetadata": "public/r/paneler.json"
     },
     {
       "name": "popper",
@@ -1503,18 +1503,6 @@
       "publicMetadata": "public/r/boot-menu.json"
     },
     {
-      "name": "taskbar",
-      "files": [
-        {
-          "path": "src/lib/ui/taskbar/Taskbar.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/taskbar.json"
-    },
-    {
       "name": "task-bar-content",
       "files": [
         {
@@ -1549,6 +1537,18 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/task-bar-right.json"
+    },
+    {
+      "name": "taskbar",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/Taskbar.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "publicMetadata": "public/r/taskbar.json"
     },
     {
       "name": "theme-switcher",
@@ -1743,18 +1743,6 @@
       "publicMetadata": "public/r/context-rooter.json"
     },
     {
-      "name": "looper",
-      "files": [
-        {
-          "path": "src/lib/utils/looper/Looper.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "publicMetadata": "public/r/looper.json"
-    },
-    {
       "name": "loop-group-title",
       "files": [
         {
@@ -1777,6 +1765,18 @@
       "dependencies": [],
       "registryDependencies": [],
       "publicMetadata": "public/r/loop-title.json"
+    },
+    {
+      "name": "looper",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/Looper.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "publicMetadata": "public/r/looper.json"
     },
     {
       "name": "child",

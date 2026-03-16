@@ -1,7 +1,7 @@
 {
   "name": "idae-slotui-svelte-lib-registry",
   "version": "1.0.0",
-  "generated_at": "2026-03-13T21:14:07.850Z",
+  "generated_at": "2026-03-16T11:52:00.721Z",
   "components": [
     {
       "name": "alert",
@@ -340,6 +340,18 @@
       "registryDependencies": []
     },
     {
+      "name": "demo-page",
+      "source": "src/lib/base/demoer/DemoPage.svelte",
+      "files": [
+        {
+          "path": "src/lib/base/demoer/DemoPage.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
       "name": "demoer",
       "source": "src/lib/base/demoer/Demoer.svelte",
       "files": [
@@ -381,18 +393,6 @@
       "files": [
         {
           "path": "src/lib/base/demoer/DemoerContent.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
-      "name": "demo-page",
-      "source": "src/lib/base/demoer/DemoPage.svelte",
-      "files": [
-        {
-          "path": "src/lib/base/demoer/DemoPage.svelte",
           "type": "registry:ui"
         }
       ],
@@ -1396,18 +1396,6 @@
       "registryDependencies": []
     },
     {
-      "name": "paneler",
-      "source": "src/lib/ui/panel/Paneler.svelte",
-      "files": [
-        {
-          "path": "src/lib/ui/panel/Paneler.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
       "name": "panel-grid",
       "source": "src/lib/ui/panel/PanelGrid.svelte",
       "files": [
@@ -1437,6 +1425,18 @@
       "files": [
         {
           "path": "src/lib/ui/panel/PanelSlide.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "paneler",
+      "source": "src/lib/ui/panel/Paneler.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/panel/Paneler.svelte",
           "type": "registry:ui"
         }
       ],
@@ -1504,18 +1504,6 @@
       "registryDependencies": []
     },
     {
-      "name": "taskbar",
-      "source": "src/lib/ui/taskbar/Taskbar.svelte",
-      "files": [
-        {
-          "path": "src/lib/ui/taskbar/Taskbar.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
       "name": "task-bar-content",
       "source": "src/lib/ui/taskbar/TaskBarContent.svelte",
       "files": [
@@ -1545,6 +1533,18 @@
       "files": [
         {
           "path": "src/lib/ui/taskbar/TaskBarRight.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "taskbar",
+      "source": "src/lib/ui/taskbar/Taskbar.svelte",
+      "files": [
+        {
+          "path": "src/lib/ui/taskbar/Taskbar.svelte",
           "type": "registry:ui"
         }
       ],
@@ -1744,18 +1744,6 @@
       "registryDependencies": []
     },
     {
-      "name": "looper",
-      "source": "src/lib/utils/looper/Looper.svelte",
-      "files": [
-        {
-          "path": "src/lib/utils/looper/Looper.svelte",
-          "type": "registry:ui"
-        }
-      ],
-      "dependencies": [],
-      "registryDependencies": []
-    },
-    {
       "name": "loop-group-title",
       "source": "src/lib/utils/looper/LoopGroupTitle.svelte",
       "files": [
@@ -1773,6 +1761,18 @@
       "files": [
         {
           "path": "src/lib/utils/looper/LoopTitle.svelte",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "looper",
+      "source": "src/lib/utils/looper/Looper.svelte",
+      "files": [
+        {
+          "path": "src/lib/utils/looper/Looper.svelte",
           "type": "registry:ui"
         }
       ],
