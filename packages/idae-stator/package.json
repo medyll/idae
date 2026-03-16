@@ -81,7 +81,6 @@
   "author": "Lebrun Meddy",
   "license": "MIT",
   "svelte": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "type": "module",
   "scope": "medyll",
   "dependencies": {}
