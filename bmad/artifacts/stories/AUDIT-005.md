@@ -23,7 +23,7 @@
 **Fichiers modifiés:**
 - `packages/idae-html/vite.config.ts` — ajout du bloc `test: { globals, environment, include }` pour `test/**` et `src/**`
 - `packages/idae-stator/jest.config.js` — **supprimé** (vitest déjà configuré dans `vite.config.ts`, jest orphelin)
-- `.github/workflows/release.yml` — ajout step `pnpm -r run test --if-present` avant le release
+- `.github/workflows/release.yml` — ajout step `pnpm -r run test ` avant le release
 
 **Tests vérifiés:**
 - `idae-stator`: 81/81 ✅

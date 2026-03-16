@@ -22,17 +22,15 @@ describe('SyncAdapter (outbox-backed)', () => {
     expect(outbox.entries[0].meta?.createdAt).toBeDefined();
   });
 
-  it('processOnce handles success and calls applyRemote and removes entry', async () => {
+  it('processOnce handles success and removes entry', async () => {
     const outbox = new InMemoryOutbox();
     const entry: OutboxEntry = { id: '1', collection: 'c', op: 'add', data: {x:1}, meta: { retryCount:0, createdAt: new Date().toISOString() } };
     outbox.entries.push(entry);
 
-    let applied = false;
     const deliverer = { deliver: async () => ({ status: 'success' as const, response: { id: 'srv-1' } }) };
-    const adapter = createSyncAdapter(outbox as any, deliverer, { applyRemote: async (p) => { applied = true; expect(p.source).toBe('remote'); expect(p.silent).toBe(true); } });
+    const adapter = createSyncAdapter(outbox as any, deliverer);
 
     await adapter.processOnce();
-    expect(applied).toBe(true);
     expect(outbox.entries.length).toBe(0);
   });
 
@@ -41,7 +39,7 @@ describe('SyncAdapter (outbox-backed)', () => {
     const entry: OutboxEntry = { id: '2', collection: 'c', op: 'add', data: {x:2}, meta: { retryCount:0, createdAt: new Date().toISOString() } };
     outbox.entries.push(entry);
     const deliverer = { deliver: async () => ({ status: 'retry' as const }) };
-    const adapter = createSyncAdapter(outbox as any, deliverer, { maxRetries: 3 });
+    const adapter = createSyncAdapter(outbox as any, deliverer);
     await adapter.processOnce();
     expect(outbox.entries.length).toBe(1);
     expect(outbox.entries[0].meta?.retryCount).toBe(1);

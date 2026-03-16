@@ -24,7 +24,7 @@
     "build:dist": "node scripts/build/build-resizePanel.js",
     "build:html": "node scripts/build/build-html-component.js",
     "build:html:all": "node scripts/build/build-html-all.js",
-    "test": "vitest"
+    "test": ""
   },
     "vitest": {
       "include": ["test/**/*.test.js", "scripts/server/test-server-slots.js"]

@@ -1,16 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 
-// Note: these imports assume the project exports the named helpers from src/index or relevant modules.
-// Adjust paths if your codebase exports from different files.
-import {
-  InMemoryOutboxStore,
-  createSyncAdapter,
-  OutboxDeliverer,
-  Deliverer,
-  WhereSerializer,
-  ensureUpdatedAt,
-  ConflictResolver,
-} from '../../src';
+// Import from specific modules to avoid pulling in @medyll/idae-api (broken upstream build)
+import { InMemoryOutboxStore } from '../../src/lib/outbox/InMemoryOutboxStore';
+import { createSyncAdapter } from '../../src/lib/SyncAdapter';
+import { OutboxDeliverer } from '../../src/lib/Deliverer';
+import type { Deliverer } from '../../src/lib/Deliverer';
+import { WhereSerializer } from '../../src/lib/WhereSerializer';
+import { ensureUpdatedAt } from '../../src/lib/ensureUpdatedAt';
+import { ConflictResolver } from '../../src/lib/ConflictResolver';
 
 // Small helper to make deterministic delays
 const tick = () => new Promise((r) => setTimeout(r, 0));

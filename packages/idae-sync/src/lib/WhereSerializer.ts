@@ -1,6 +1,6 @@
 // Minimal deterministic serializer for "where" objects
-export function serializeWhere(where: any): string {
-  function serialize(value: any): string {
+export function serializeWhere(where: unknown): string {
+  function serialize(value: unknown): string {
     if (value === null || typeof value === 'number' || typeof value === 'boolean') {
       return JSON.stringify(value);
     }
@@ -22,10 +22,20 @@ export function serializeWhere(where: any): string {
   return serialize(where);
 }
 
-export function deserializeWhere(s: string): any {
+export function deserializeWhere(s: string): unknown {
   return JSON.parse(s);
 }
 
-export function isDeterministic(a: any, b: any): boolean {
+export function isDeterministic(a: unknown, b: unknown): boolean {
   return serializeWhere(a) === serializeWhere(b);
+}
+
+export class WhereSerializer {
+  serialize(where: unknown): string {
+    return serializeWhere(where);
+  }
+
+  deserialize(s: string): unknown {
+    return deserializeWhere(s);
+  }
 }

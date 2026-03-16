@@ -1,2 +1,11 @@
-phase: completed
-next: design-sync-outbox-api
+phase: phase-2-sync-modes
+next: implement sync modes (mobile-first / server-first)
+test_result: 10/10 suites, 25/25 tests (100%)
+spec: bmad/artifacts/plan-spec-sync-modes.md
+commits:
+  - bc0b3a86: "refactor(sync): unify deliverer interface and fix sync outbox API"
+  - 6720b71a: "fix(sync): fix IDB schema init + align all tests to new API"
+artifacts:
+  - bmad/artifacts/audit-2026-03-15.md
+  - bmad/artifacts/plan-spec-sync-outbox-api.md
+  - bmad/artifacts/plan-spec-sync-modes.md

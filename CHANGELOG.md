@@ -1,5 +1,211 @@
 # Changelog
 
+## [0.0.35-next.0] - 2026-03-16
+**Chores:**
+- set package as public in package.json
+
+
+
+## [0.0.34-next.0] - 2026-03-16
+**Features:**
+- Refactor Stator module and implement batch and subscribe functionalities
+- extract types to src/lib/stator/types.ts; update Stator.ts; add tech-spec draft; update bmad status
+- phase 4 — circuit breaker, flush, priority, queue limit, field merge, server push, persistence
+- phase 3 — DLQ, network awareness, compaction, batch, hooks, debug
+- add permissions configuration for Bash commands in settings.json
+- add server-first sync mode with optimistic write + rollback
+- update README files with comprehensive documentation for idae-sync
+- update status phase to production-ready and include test results
+- update permissions in settings and finalize implementation phase in status.yaml
+- add CLAUDE.md for package guidance and sync outbox API design documents
+- add context-mode hooks for vscode-copilot integration
+- add deliverer observability (metrics) and mark bmad complete
+- add onConflict strategies (bmad-next-auto)
+- add deliverer core (bmad-next-auto)
+- implement outbox-backed SyncAdapter (bmad-next-auto)
+- add transactional outbox writes (bmad-next-auto)
+- add OutboxStore interface & in-memory impl (bmad-next-auto)
+- update openWindow function to use WindowProps and remove unused OpenWindow type
+- add WhereSerializer (bmad-next-auto)
+- implement window styles and remove outdated PRD document
+- design public outbox API (bmad-next-auto)
+- add Copilot instructions and Product Requirements Document for idae-sync package
+- add outbox telemetry metrics and subscription API; update example to subscribe\n\nExpose getMetrics() and subscribe() on OutboxStore to report queue metrics (length, oldestAge, retry histogram).\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- enhance DataForm component with detailed documentation and clean up unused code
+- initSync helper to register SyncAdapter with idbql and start background processing
+- implement IdaeApiDeliverer and background processing loop in SyncAdapter; add OutboxStore.update
+- SyncAdapter uses OutboxStore, attempts immediate delivery via optional deliverer
+- implement IndexedDB Outbox store and ensure __outbox__ schema
+- add silent/tx options to write methods and emit silent flag in events
+- emit replayable whereClause, respect silent events in adapters
+- add registerAdapters wrapper and event payload silent/source
+- add canonical where() to adapter types and add idae-sync README
+- add data management components including DataForm, DataEdit, DataList, and DataPicker
+- add Create and Update form components
+- add Playwright configuration for end-to-end testing
+- add advanced components tab with FieldInPlace, Skeleton, DataProvider
+- complete API documentation and usage examples
+- browser and framework compatibility verification complete
+- performance testing and optimization complete
+- final security audit and OWASP compliance review
+- integration testing suite with 30+ E2E test cases
+- complete form validation pipeline with custom/async/cross-field validators
+- Update README and status files for improved clarity and documentation
+- Add implementation status and release artifacts for v0.1.0
+- Add status snapshots and update status.yaml for project progress tracking
+- Add architecture, tech spec, and sprint documentation for @medyll/idae-idbql
+- Add initial project artifacts including audit baseline, PRD, product brief, and configuration files
+- Enhance validation logic to support async validators and improve error handling
+- Add initial project artifacts for @medyll/idae-machine
+- complete Sprint 04 with cache integration and generics
+- add in-memory SWR cache engine and related utilities
+- implement HTTP data-fetching for routes
+- update PRD for idae-router to version 2.0.0; enhance title and add supersedes information
+- update status and progress in status.yaml; enhance demo.html with new features and styling
+- update dashboard and status files for Sprint 03 planning and progress tracking
+- add CLAUDE.md for developer guidance and commands
+- add README.md for BMAD commands and enhance existing README with usage examples
+- add convert-mockup tool and templates for Svelte component generation
+- enhance registry generation script with CLI options and update documentation
+- add pseudo-html-template package with initial files and scripts
+- update registry generation scripts and add tests for consistency
+- add CLI enhancements and registry generation scripts
+- integrate shadcn-svelte standards and add example components for registry
+- add BMAD command helpers and update component styles for consistency
+- add quick validation script for skills and enhance COMPONENT_MAP.md
+- Update styles to include Tailwind CSS reference and create types files
+- enhance migration documentation and tracking for Svelte 5 and Tailwind CSS
+- add Explorer and Header components with initial implementation
+- add component map and snippet components hardening instructions
+- standardize snippet component structure and add type exports
+- refactor component exports to improve structure and modularity
+- update package dependencies and clean up unused imports
+- refactor button components and add PopperContent snippet for improved modularity
+- Refactor button components and introduce snippet migration
+- Migrate SCSS to CSS and implement strict snippet migration instructions
+- update copilot instructions with new features and contributing guidelines; remove AGENTS.md
+- document SCSS to CSS migration progress and update component references in migration files
+- add and refactor CSS styles for various components; update imports and structure for consistency
+- clean up mcp.json by removing unused server configurations; update pnpm-lock.yaml to remove obsolete unocss packages
+- refactor component exports and enhance index generation; update package.json and scripts for improved structure
+- add default REST API routes documentation to README
+- update minimatch to version 10.2.2 and add tailwind-merge at version 3.5.0; remove outdated minimatch versions from lockfile
+- migrate CLI from CommonJS to ESM; update package.json to reflect new script location; add utility functions for class name management and type definitions
+- add new components and restructure exports
+- enhance documentation and automate component exports; migrate styles from SCSS to CSS for multiple components; update configurations for improved module resolution and Tailwind CSS integration
+- remove SCSS support and migrate to Tailwind CSS; update configuration and documentation
+- migrate styles from SCSS to CSS for multiple components
+- migrate styles from SCSS to CSS across components and update documentation
+- update migration documentation and add components migration checklist
+
+**Bug Fixes:**
+- fix IDB schema init + align all tests to new API
+- propagate updated_at (bmad-next-auto)
+- correct import name and adjust FieldDisplay wrapper class
+- avoid Svelte rune placement error in CollectionList\n\n- use safeCollection helper and top-level / to prevent misplacementstate_invalid_placement\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- show clear message when collection missing\n\n- Catch MachineError in CollectionList and display guidance to verify schema or clear IndexedDB\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- replace Looper with native {#each} in collection components
+- implement bidirectional binding in FieldValue.svelte
+- skip optional empty fields before type validation
+- handle missing fields without throwing MachineError
+- update compliance report for DemoPage and Looper components
+- add DemoPage wrapper for compatibility
+
+**Documentation:**
+- update README for phases 2-4 + remove dead idempotencyKey
+- add ARCH-SPEC (bmad-plan-arch)
+- add README.PROD.md (bmad-readme)
+- add PRD (bmad-plan)
+- improve bootstrap example to show adapter ordering and atomic writes\n\nDemonstrate initSync preserving existing adapters and performing atomic data+outbox transaction.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- add examples\n\nAdd bootstrap example and examples README\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- note implemented idbql changes and Outbox scaffolding
+- update status - 15 components now showcased (UI 6 + Form 4 + Fragments 5)
+- update status - demo page complete with all components
+- update status with demo page completion and Svelte 5 migration
+- complete S1-02 and finalize Sprint-1
+- complete S1-01 implementation and update sprint status
+- improve JSDoc coverage to 75-80% across core modules
+- note removal of CrudService in CHANGELOG and README
+- add/replace AGENTS.md with build/test commands and coding guidelines; include Cursor and Copilot references
+- update Copilot instructions and migration documentation for clarity and completeness
+
+**Refactoring:**
+- unify deliverer interface and fix sync outbox API
+- remove unused CSS and SCSS files, streamline Window component styles
+- update sprint status and planning phases in YAML files
+- update variable names for consistency and clarity across components
+- remove unused demo value exports and clean up code
+- remove unused demo value exports from various components
+- remove unused components and exports from the idae-slotui library
+- complete rewrite using all UI components
+- migrate demo page to Svelte 5 patterns and add accessibility
+- replace any types with generics/unknown in core modules
+- remove unused types and interfaces from types.ts
+- migrate props to component module scripts and update demo values
+- migrate component props to module scripts and update documentation
+- enhance compliance report generation with detailed checks for Svelte components
+- update padding classes from 'pad-*' to 'p-*' across multiple components for consistency
+- update Svelte components to use TypeScript props
+- simplify external error logic and enhance console output in COMPONENT_MAP.md generation
+- remove unused alert snippet components
+- update demo imports and restructure component exports
+
+**Tests:**
+- add outbox deliverer integration tests (bmad-next-auto)
+- add integration tests and CI workflow\n\nAdd vitest tests for OutboxStore and SyncAdapter using fake-indexeddb and CI workflow to run package tests.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- expand machineParserForge test coverage to 43 cases
+
+**Chores:**
+- comment out test execution step in release workflow
+- remove conditional flag from test script in release workflow
+- set package as private in package.json
+- simplify package scripts and remove unused test runners
+- clear test script in package.json
+- remove test script command from package.json
+- remove test script command from package.json
+- remove idae-mongo package and its related files
+- update test script to run unit and coverage tests together
+- remove obsolete test script from package.json
+- standardize quotation marks in test script
+- update test scripts and configurations for consistency across packages
+- update package.json to set idae-mono-expand-vitrine as public and modify test script for idae-router
+- update test script to indicate no tests available
+- remove CI workflow for idae-sync
+- remove Playwright E2E workflow configuration
+- set package as private and add lint script to package.json
+- remove duplicate "types" entry in package.json
+- move CLI libs to devDependencies\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- remove unnecessary whitespace in Svelte component documentation
+- scaffold OutboxStore and SyncAdapter
+- fix formatting & lint\n\n- exclude .svelte from Prettier to avoid plugin conflict\n- update lint script to run Prettier only\n- updated prettier & prettier-plugin-svelte and installed @eslint/js\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- mark validation phase complete, transition to release
+- update status after completing S1-03, S1-04, S1-05
+- record audit update - remove CrudService
+- remove CrudService and its export
+- tighten types in core modules
+- update dependencies to latest versions for improved stability and performance
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- bmad: update status (next)
+- bmad: add next todos (bmad-next)
+- Remove unused CSS files for switch, tabs, taskbar, textfield, title bar, toggle bar, toolbar, tree, and window components to streamline the codebase and improve maintainability.
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Remove obsolete scripts and documentation for verification, git commit, README creation, and Svelte code writing skills
+- Add product brief for Idae Monorepo and remove outdated agent and skill documentation
+- Add new skills and update existing components
+- Refactor styles and add demo values across components
+- Refactor UI components to integrate Tailwind CSS
+- Refactor styles in Svelte components to use PostCSS
+- Refactor layout and styling across components for improved consistency
+- Refactor exports in component index files to use named exports with aliases
+- Refactor component annotations and add new snippets
+- Implement feature X to enhance user experience and optimize performance
+- Refactor slotuiCatalog and slotuiDemoCatalog to remove unused components and streamline exports; add new popper.css file; update Svelte configuration for improved module resolution and preprocess support; remove outdated test files; enhance Vite configuration with Tailwind CSS integration and aliasing for easier imports.
+
+
+
 ## [0.0.33-next.0] - 2026-02-23
 **Features:**
 - add CSS files for various components with custom properties for styling

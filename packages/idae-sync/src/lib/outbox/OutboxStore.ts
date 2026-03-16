@@ -5,7 +5,15 @@ export type OutboxEntry = {
   key?: any;
   data?: any;
   whereClause?: any;
-  meta?: { retryCount: number; lastAttempt?: string; createdAt: string };
+  meta: {
+    retryCount: number;
+    createdAt: string;
+    lastAttempt?: string;
+    nextAttempt?: string;
+    failed?: boolean;
+    failureReason?: unknown;
+    priority?: number;       // higher = more urgent (default 0)
+  };
 };
 
 export type OutboxMetrics = {
@@ -30,6 +38,15 @@ export class OutboxStore {
   private async open(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       const req = indexedDB.open(this.dbName, this.dbVersion);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains("__outbox__")) {
+          db.createObjectStore("__outbox__", { keyPath: "id" });
+        }
+        if (!db.objectStoreNames.contains("__outbox_dlq__")) {
+          db.createObjectStore("__outbox_dlq__", { keyPath: "id" });
+        }
+      };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
@@ -122,7 +139,21 @@ export class OutboxStore {
       const tx = db.transaction(["__outbox__"], "readonly");
       const store = tx.objectStore("__outbox__");
       const req = store.getAll();
-      req.onsuccess = () => resolve(req.result as OutboxEntry[]);
+      req.onsuccess = () => {
+        const entries = (req.result as OutboxEntry[])
+          .sort((a, b) => (b.meta.priority ?? 0) - (a.meta.priority ?? 0));
+        resolve(entries.slice(0, limit));
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async size(): Promise<number> {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(["__outbox__"], "readonly");
+      const req = tx.objectStore("__outbox__").count();
+      req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
   }
@@ -152,6 +183,67 @@ export class OutboxStore {
         await this.notifySubscribers();
       };
       r.onerror = () => reject(r.error);
+    });
+  }
+
+  async findPending(collection: string, key: unknown): Promise<OutboxEntry | undefined> {
+    const entries = await this.list();
+    return entries.find(e => e.collection === collection && e.key === key && !e.meta.failed);
+  }
+
+  async moveToDlq(entryId: string, reason?: unknown): Promise<void> {
+    const entries = await this.list();
+    const entry = entries.find(e => e.id === entryId);
+    if (!entry) return;
+    const dlqEntry = { ...entry, meta: { ...entry.meta, failed: true, failureReason: reason ?? 'max-retries' } };
+    const db = await this.open();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(["__outbox__", "__outbox_dlq__"], "readwrite");
+      tx.objectStore("__outbox__").delete(entryId);
+      tx.objectStore("__outbox_dlq__").add(dlqEntry as any);
+      tx.oncomplete = () => { resolve(); };
+      tx.onerror = () => reject(tx.error);
+    });
+    await this.notifySubscribers();
+  }
+
+  async listDlq(limit = 100): Promise<OutboxEntry[]> {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(["__outbox_dlq__"], "readonly");
+      const store = tx.objectStore("__outbox_dlq__");
+      const req = store.getAll();
+      req.onsuccess = () => resolve((req.result as OutboxEntry[]).slice(0, limit));
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async replayDlq(entryId: string): Promise<void> {
+    const dlqEntries = await this.listDlq();
+    const entry = dlqEntries.find(e => e.id === entryId);
+    if (!entry) return;
+    const replayEntry: OutboxEntry = {
+      ...entry,
+      meta: { ...entry.meta, failed: false, failureReason: undefined, retryCount: 0, lastAttempt: undefined },
+    };
+    const db = await this.open();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(["__outbox__", "__outbox_dlq__"], "readwrite");
+      tx.objectStore("__outbox_dlq__").delete(entryId);
+      tx.objectStore("__outbox__").add(replayEntry as any);
+      tx.oncomplete = () => { resolve(); };
+      tx.onerror = () => reject(tx.error);
+    });
+    await this.notifySubscribers();
+  }
+
+  async clearDlq(): Promise<void> {
+    const db = await this.open();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(["__outbox_dlq__"], "readwrite");
+      tx.objectStore("__outbox_dlq__").clear();
+      tx.oncomplete = () => { resolve(); };
+      tx.onerror = () => reject(tx.error);
     });
   }
 }

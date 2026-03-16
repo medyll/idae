@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.0.33-next.0",
+  "version": "0.0.35-next.0",
   "type": "module",
   "description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
   "keywords": [
@@ -22,8 +22,8 @@
     "commit": "cz",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "package:pre": "pnpm -r run prepackage --if-present",
-    "package": "pnpm -r run prepack --if-present && pnpm -r run package --if-present",
+    "package:pre": "pnpm -r run prepackage ",
+    "package": "pnpm -r run package",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",
     "verify:workspace-deps": "node scripts/verify-workspace-deps.js"
