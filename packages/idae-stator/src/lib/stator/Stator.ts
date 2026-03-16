@@ -1,66 +1,6 @@
-/** * Represents JavaScript primitive types 
- */
-type Primitive = string | number | boolean | bigint | symbol | null | undefined;
+import type { Primitive, StateWrapper, StateChangeHandler, AugmentedState, HandlerContext } from './types.js';
 
-/**
- * Internal state wrapper structure (uses _value to avoid conflicts with user objects)
- */
-type StateWrapper<T> = { _value: T };
 
-/**
- * Callback function type for state changes
- */
-type StateChangeHandler<T> = (oldValue: T, newValue: T) => void;
-
-/**
- * Augmented state type providing reactivity, event subscription, and utility methods
- */
-type AugmentedState<T> = {
-  /** Access to the current state value */
-  value: T;
-  /** The callback triggered on any state mutation */
-  onchange?: StateChangeHandler<T>;
-  /** Standard event listener for 'change' events */
-  addEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) => void;
-  /** Removes a previously attached 'change' event listener */
-  removeEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) => void;
-  /** Manually dispatches an event */
-  triggerChange: (event: Event) => boolean;
-  /** Returns a JSON string representation of the state */
-  toString: () => string;
-  /** Returns the raw underlying value */
-  valueOf: () => T;
-  /** Handles implicit type conversion (string/number) */
-  [Symbol.toPrimitive]: (hint: string) => Primitive;
-  /** Access to the raw state data */
-  stator: T;
-};
-
-/**
- * Configuration for the unified handler factory
- */
-interface HandlerContext<T> {
-  /** Get the current onchange handler */
-  getOnChange: () => StateChangeHandler<T> | undefined;
-  /** Set the onchange handler */
-  setOnChange: (handler: StateChangeHandler<T> | undefined) => void;
-  /** Reference to the root state wrapper */
-  rootState: StateWrapper<T>;
-  /** Event target for dispatching events */
-  eventTarget: {
-    addEventListener: (...args: Parameters<EventTarget['addEventListener']>) => void;
-    removeEventListener: (...args: Parameters<EventTarget['removeEventListener']>) => void;
-    triggerChange: (event: Event) => boolean;
-  };
-  /** Notify all subscribers of a change */
-  notify: (oldValue: T, newValue: T) => void;
-  /** Check if a value is primitive */
-  isPrimitive: (val: unknown) => val is Primitive;
-  /** Create a deep proxy for nested objects */
-  createDeepProxy: (obj: any) => any;
-  /** Proxy cache to avoid recreating proxies */
-  proxyCache: WeakMap<object, any>;
-}
 
 /**
  * Creates a deeply reactive state object relying on Events and Proxies.

@@ -1,8 +1,8 @@
 # BMAD Status
 project: idae-stator
 phase: development
-progress: 48
-next_action: "Commit package.json changes (moved commander & command to devDependencies), run pnpm install, run tests; then implement S1-02"
+progress: 60
+next_action: "Implemented S1-02 types extraction; run pnpm install and tests, then push branch & open PR"
 active_role: dev
 
 phases:
@@ -19,7 +19,7 @@ artifacts:
   analyze: done
   prd: done
   architecture: done
-  tech-spec: missing
+  tech-spec: draft
 
 sprints:
   - id: 1
