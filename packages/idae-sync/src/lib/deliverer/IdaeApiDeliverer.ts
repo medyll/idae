@@ -12,8 +12,6 @@ export class IdaeApiDeliverer implements IDeliverer {
   async deliver(entry: OutboxEntry): Promise<DeliverResult> {
     try {
       const collectionClient = this.client.collection(entry.collection);
-      // Attach idempotency key so server can deduplicate retries
-      const idempotencyKey = entry.id;
 
       switch (entry.op) {
         case 'add':
