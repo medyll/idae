@@ -115,14 +115,12 @@ export class MakeLibIndex {
     const seen = new Set();
 
     // Ensure deterministic ordering: remove falsy entries and sort by path
-    const normalizedList = (fileInfoList || [])
-      .filter(Boolean)
-      .sort((a, b) =>
-        a.path.localeCompare(b.path, undefined, {
-          numeric: true,
-          sensitivity: "base",
-        }),
-      );
+    const normalizedList = (fileInfoList || []).filter(Boolean).sort((a, b) =>
+      a.path.localeCompare(b.path, undefined, {
+        numeric: true,
+        sensitivity: "base",
+      }),
+    );
 
     normalizedList.forEach((fileInfo) => {
       if (!fileInfo) return;
@@ -298,5 +296,3 @@ export class MakeLibIndex {
     return str.replace(/\-([a-z])/g, (_, g) => g.toUpperCase());
   }
 }
-
-// npm i @medyll/idae-be@next @medyll/idae-api@next @medyll/idae-data-tpl@next @medyll/idae-dom-events@next @medyll/idae-engine@next @medyll/idae-idbql@next @medyll/idae-mongo@next @medyll/idae-query@next @medyll/idae-slotui-svelte@next -f
