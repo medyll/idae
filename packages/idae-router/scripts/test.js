@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Runner for idae-router tests.
-// Removes extra args that can be injected by workspace runners (e.g., --if-present)
+// Removes extra args that can be injected by workspace runners
 // and runs unit + e2e tests sequentially.
 
 import { spawnSync } from 'node:child_process';
