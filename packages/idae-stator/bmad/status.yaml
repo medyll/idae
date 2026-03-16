@@ -1,0 +1,27 @@
+# BMAD Status
+project: idae-stator
+phase: development
+progress: 48
+next_action: "Commit package.json changes (moved commander & command to devDependencies), run pnpm install, run tests; then implement S1-02"
+active_role: dev
+
+phases:
+  - name: planning
+    status: done
+  - name: development
+    status: in_progress
+  - name: testing
+    status: upcoming
+  - name: release
+    status: upcoming
+
+artifacts:
+  analyze: done
+  prd: done
+  architecture: done
+  tech-spec: missing
+
+sprints:
+  - id: 1
+    status: active
+    stories: ["S1-01", "S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-09"]
