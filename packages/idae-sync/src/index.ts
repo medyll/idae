@@ -17,6 +17,14 @@ export type { CanonicalApplyFn } from './lib/ServerFirstHandler';
 export type { SyncHooks, DebugFn } from './lib/SyncHooks';
 export type { SyncAdapterOptions } from './lib/SyncAdapter';
 
+// Phase 4 — Circuit breaker, server push, field-level merge
+export { CircuitBreaker } from './lib/CircuitBreaker';
+export type { CircuitBreakerOptions, CircuitBreakerState } from './lib/CircuitBreaker';
+export { EventSourcePushListener, WebSocketPushListener } from './lib/ServerPush';
+export type { IServerPushListener, ServerPushEvent, ServerPushHandler } from './lib/ServerPush';
+export { mergeFieldLevel } from './lib/ConflictResolver';
+export type { SyncModePersistence } from './lib/SyncModeManager';
+
 // Classes
 export { OutboxStore } from './lib/outbox/OutboxStore';
 export { InMemoryOutboxStore } from './lib/outbox/InMemoryOutboxStore';

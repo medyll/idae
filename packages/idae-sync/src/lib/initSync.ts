@@ -5,6 +5,7 @@ import { createSyncAdapter } from './SyncAdapter';
 import type { SyncMode, SyncEvent, SyncEventHandler } from './SyncMode';
 import type { SyncHooks, DebugFn } from './SyncHooks';
 import type { CanonicalApplyFn } from './ServerFirstHandler';
+import type { CircuitBreakerOptions } from './CircuitBreaker';
 
 export type InitSyncOptions<C extends string = string> = {
   dbName?: string;
@@ -23,6 +24,10 @@ export type InitSyncOptions<C extends string = string> = {
   compact?: boolean;
   hooks?: SyncHooks;
   debug?: boolean | DebugFn;
+  // Phase 4
+  maxQueueSize?: number;
+  queueFullStrategy?: 'reject' | 'drop-oldest';
+  circuitBreaker?: CircuitBreakerOptions | false;
 };
 
 interface IdbqlEventBus {
@@ -48,6 +53,9 @@ export function initSync<C extends string = string>(opts?: InitSyncOptions<C>) {
     compact: opts?.compact,
     hooks: opts?.hooks,
     debug: opts?.debug,
+    maxQueueSize: opts?.maxQueueSize,
+    queueFullStrategy: opts?.queueFullStrategy,
+    circuitBreaker: opts?.circuitBreaker,
   });
 
   if (opts?.onSyncEvent) {
@@ -89,7 +97,13 @@ export function initSync<C extends string = string>(opts?: InitSyncOptions<C>) {
     getMode() { return syncAdapter.getMode(); },
     getCollectionMode(collection: C) { return syncAdapter.getCollectionMode(collection); },
     onSyncEvent(handler: SyncEventHandler) { return syncAdapter.onSyncEvent(handler); },
-    // DLQ access
-    get dlq() { return { list: () => (outbox as any).listDlq?.(), replay: (id: string) => (outbox as any).replayDlq?.(id), clear: () => (outbox as any).clearDlq?.() }; },
+    // Phase 4
+    flush() { return syncAdapter.flush(); },
+    getStatus() { return syncAdapter.getStatus(); },
+    dlq: {
+      list: () => (outbox as any).listDlq?.() as Promise<unknown[]>,
+      replay: (id: string) => (outbox as any).replayDlq?.(id) as Promise<void>,
+      clear: () => (outbox as any).clearDlq?.() as Promise<void>,
+    },
   };
 }

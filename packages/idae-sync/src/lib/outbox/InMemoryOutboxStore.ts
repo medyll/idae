@@ -14,7 +14,13 @@ export class InMemoryOutboxStore {
   }
 
   async list(limit = 100): Promise<OutboxEntry[]> {
-    return Array.from(this.entries.values()).slice(0, limit);
+    return Array.from(this.entries.values())
+      .sort((a, b) => (b.meta.priority ?? 0) - (a.meta.priority ?? 0))
+      .slice(0, limit);
+  }
+
+  async size(): Promise<number> {
+    return this.entries.size;
   }
 
   async peek(): Promise<OutboxEntry | undefined> {

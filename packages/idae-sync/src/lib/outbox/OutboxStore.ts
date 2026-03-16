@@ -5,7 +5,15 @@ export type OutboxEntry = {
   key?: any;
   data?: any;
   whereClause?: any;
-  meta: { retryCount: number; createdAt: string; lastAttempt?: string; nextAttempt?: string; failed?: boolean; failureReason?: unknown };
+  meta: {
+    retryCount: number;
+    createdAt: string;
+    lastAttempt?: string;
+    nextAttempt?: string;
+    failed?: boolean;
+    failureReason?: unknown;
+    priority?: number;       // higher = more urgent (default 0)
+  };
 };
 
 export type OutboxMetrics = {
@@ -131,7 +139,21 @@ export class OutboxStore {
       const tx = db.transaction(["__outbox__"], "readonly");
       const store = tx.objectStore("__outbox__");
       const req = store.getAll();
-      req.onsuccess = () => resolve(req.result as OutboxEntry[]);
+      req.onsuccess = () => {
+        const entries = (req.result as OutboxEntry[])
+          .sort((a, b) => (b.meta.priority ?? 0) - (a.meta.priority ?? 0));
+        resolve(entries.slice(0, limit));
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async size(): Promise<number> {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(["__outbox__"], "readonly");
+      const req = tx.objectStore("__outbox__").count();
+      req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
   }
