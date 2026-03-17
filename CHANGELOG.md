@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.0.37-next.0] - 2026-03-16
+**Bug Fixes:**
+- ensure proper branch rebase before package release
+
+**Chores:**
+- publish packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+
+
+
+## [0.0.36-next.0] - 2026-03-16
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.35-next.0] - 2026-03-16
 **Chores:**
 - set package as public in package.json

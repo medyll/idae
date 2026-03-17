@@ -51,7 +51,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          npx @medyll/idae-pnpm-release@latest
+          git pull --rebase origin ${{ github.ref_name }}
+          pnpm --filter @medyll/idae-pnpm-release exec idae-pnpm-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
