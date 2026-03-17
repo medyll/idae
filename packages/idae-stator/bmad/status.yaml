@@ -2,8 +2,8 @@
 project: idae-stator
 phase: development
 progress: 60
-next_action: "Implemented S1-02 types extraction; run pnpm install and tests, then push branch & open PR"
-active_role: dev
+next_action: "Audit complete — fix peerDeps svelte range, verify package-pre.js strips test files, document Map/Set/RegExp proxy limitations"
+active_role: reviewer
 
 phases:
   - name: planning
