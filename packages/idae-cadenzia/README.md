@@ -38,6 +38,18 @@ npm run check      # svelte type checking
 
 ## Architecture & conventions
 
+```mermaid
+graph TD
+    A[src/lib/index.ts] --> B[components/]
+    A --> C[functions/]
+    A --> D[types/types.ts]
+    B --> E[CadencePanel.svelte]
+    B --> F[ChordTable.svelte]
+    B --> G[ChordVisualization.svelte]
+    C --> H[functions.svelte.ts]
+    C --> I[rules.ts]
+```
+
 - Svelte v5 + TypeScript components live under `src/lib/components/` (examples: `App.svelte`, `CadencePanel.svelte`, `ChordTable.svelte`, `ChordVisualization.svelte`).
 - Non-UI logic and helpers are placed in `src/lib/functions/` (`functions.svelte.ts`, `rules.ts`) to keep components thin and testable.
 - Shared types and constants: `src/lib/types/types.ts` and `src/lib/constants/constants.ts`.
