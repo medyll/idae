@@ -1,16 +1,10 @@
 # @medyll/idae-sync
 
-Build mobile-first apps that work offline and sync seamlessly when connectivity returns. Your users interact with local data instantly — `idae-sync` handles queuing, retrying, conflict resolution, and server synchronization in the background.
+Sync your local IndexedDB data to a server — automatically, in the background, even offline.
 
-## Why idae-sync?
+If you use `@medyll/idae-idbql`, adding sync takes **one line of code**. Your users never wait for the network. Everything else (retries, conflicts, offline recovery) is handled for you.
 
-- **Offline-first**: Users never wait for the network. Writes go to a local outbox and sync later.
-- **Automatic retries**: Transient failures are retried with exponential backoff. No data is lost.
-- **Dead Letter Queue**: Permanently failed entries go to DLQ for manual inspection and replay.
-- **Sync modes**: Choose `mobile-first` (optimistic local) or `server-first` (authoritative remote) per collection.
-- **Circuit breaker**: Per-collection circuit breakers prevent cascading failures.
-- **Observable**: Monitor queue depth, retry counts, DLQ size, and circuit state in real time.
-- **One-line setup**: Call `initSync()` and you're done.
+---
 
 ## Install
 
@@ -18,31 +12,42 @@ Build mobile-first apps that work offline and sync seamlessly when connectivity 
 pnpm add @medyll/idae-sync
 ```
 
-## Quick Start
+---
+
+## Basic Usage (with idae-idbql)
 
 ```ts
+import { createIdbqlState } from '@medyll/idae-idbql';
 import { initSync } from '@medyll/idae-sync';
 
+// Your usual idae-idbql setup
+const idbql = createIdbqlState(dbConfig);
+
+// Add sync — that's it
 const sync = initSync({
   dbName: 'my-app',
   delivererConfig: { baseUrl: 'https://api.example.com' },
 });
 
-// Your app writes data locally via idae-idbql as usual.
-// idae-sync picks up every local write and delivers it to your API.
-// If the network is down, it retries automatically.
+// Use idae-idbql exactly as before — nothing changes
+await idbql.users.insert({ name: 'Alice' });
+// → idae-sync silently queues and sends POST /users to your API
 
+await idbql.users.update({ id: 1 }, { name: 'Bob' });
+// → idae-sync silently sends PUT /users/1
+
+// When you're done (e.g. app unmount)
 sync.stop();
 ```
+
+That's the whole integration. Every `.insert()`, `.update()`, `.delete()` is automatically intercepted and delivered to your API — with retries if the network is unavailable.
 
 ---
 
 ## How It Works
 
-When your app writes data locally (via `@medyll/idae-idbql`), `idae-sync` intercepts the write and queues it in a persistent outbox stored in IndexedDB. A background process delivers entries to your API with exponential backoff. Permanently rejected entries move to a Dead Letter Queue.
-
 ```
-User writes data locally
+User writes data via idae-idbql
     |
     v
 idae-sync intercepts → queues in outbox (IndexedDB)
@@ -50,11 +55,47 @@ idae-sync intercepts → queues in outbox (IndexedDB)
     v
 Background delivery (with circuit breaker check)
     |
-    ├─ Success  ──>  entry removed
-    ├─ Network error ──>  retry (exponential backoff)
-    ├─ Max retries exceeded ──>  moved to DLQ
-    └─ Server rejects (4xx) ──> permanent failure → DLQ
+    ├─ Success        → entry removed
+    ├─ Network error  → retry with exponential backoff
+    ├─ Max retries    → moved to Dead Letter Queue
+    └─ 4xx error      → permanent failure → Dead Letter Queue
 ```
+
+The outbox persists in IndexedDB — writes are never lost, even if the page reloads or the user goes offline.
+
+---
+
+## Common Options
+
+```ts
+const sync = initSync({
+  dbName: 'my-app',                        // IndexedDB database name
+  delivererConfig: { baseUrl: '...' },     // your API base URL
+  intervalMs: 5000,                        // how often to flush (ms), default: 5000
+  mode: 'mobile-first',                    // sync strategy, default: 'mobile-first'
+  debug: true,                             // log sync activity to console
+});
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `dbName` | `string` | `'idae-db'` | IndexedDB database name |
+| `delivererConfig` | `Record<string, unknown>` | — | Config for `IdaeApiClient` (needs `baseUrl`) |
+| `intervalMs` | `number` | `5000` | Polling interval (ms) |
+| `mode` | `SyncMode` | `'mobile-first'` | Global sync mode |
+| `collectionModes` | `Record<string, SyncMode>` | — | Per-collection overrides |
+| `persist` | `'none'\|'localStorage'\|'sessionStorage'` | `'none'` | Mode persistence |
+| `maxRetries` | `number` | — | Max retries before DLQ |
+| `batchSize` | `number` | `1` | Entries per delivery tick |
+| `maxQueueSize` | `number` | — | Max outbox entries |
+| `onQueueFull` | `'reject'\|'drop-oldest'` | `'reject'` | Queue overflow strategy |
+| `compaction` | `boolean` | `false` | Merge redundant entries |
+| `networkAware` | `boolean` | `true` | Pause when offline |
+| `circuitBreaker` | `{ failureThreshold?, resetTimeoutMs? }` | — | Circuit breaker config |
+| `hooks` | `SyncHooks` | — | Pipeline hooks |
+| `debug` | `boolean\|DebugFn` | `false` | Debug logging |
+
+Returns `{ stop(), flush(), getStatus(), outbox, syncAdapter, deliverer, dlq }`.
 
 ---
 
@@ -97,95 +138,9 @@ import { SyncModeManager } from '@medyll/idae-sync';
 const mgr = new SyncModeManager({ mode: 'mobile-first', persist: 'localStorage' });
 mgr.setGlobal('server-first');
 mgr.setCollection('drafts', 'mobile-first');
-mgr.getGlobal();          // 'server-first'
+mgr.getGlobal();             // 'server-first'
 mgr.getCollection('drafts'); // 'mobile-first'
-mgr.clearPersisted();     // remove from storage
-```
-
----
-
-## Dead Letter Queue
-
-Entries that exceed `maxRetries` or get a permanent failure are moved to the DLQ.
-
-```ts
-const sync = initSync({
-  maxRetries: 5,          // default: unlimited
-});
-
-// List DLQ entries
-const failed = await sync.dlq.list();
-
-// Replay a specific entry (moves back to outbox)
-await sync.dlq.replay('entry-id');
-
-// Clear all DLQ entries
-await sync.dlq.clear();
-```
-
----
-
-## Circuit Breaker
-
-Per-collection circuit breakers prevent repeated failed delivery attempts from flooding your API.
-
-States: `closed` (normal) → `open` (blocking) → `half-open` (probing).
-
-```ts
-const sync = initSync({
-  circuitBreaker: {
-    failureThreshold: 3,    // failures before opening
-    resetTimeoutMs: 30000,  // ms before trying again (half-open)
-  },
-});
-
-// Check state via getStatus()
-const status = await sync.syncAdapter.getStatus();
-console.log(status.circuitBreaker);
-// { orders: { state: 'open', failures: 3, openUntil: '...' } }
-```
-
----
-
-## Priority Queue
-
-Higher-priority entries are delivered first.
-
-```ts
-import { OutboxStore } from '@medyll/idae-sync';
-
-await outbox.enqueue({
-  id: 'e1',
-  collection: 'orders',
-  op: 'add',
-  data: { ... },
-  meta: { retryCount: 0, createdAt: new Date().toISOString(), priority: 10 },
-});
-```
-
----
-
-## Hooks
-
-Intercept every stage of the delivery pipeline:
-
-```ts
-const sync = initSync({
-  hooks: {
-    onEnqueue: async (entry) => {
-      // Mutate entry before it enters the outbox
-      return { ...entry, meta: { ...entry.meta, priority: getPriority(entry) } };
-    },
-    onBeforeDeliver: async (entry) => {
-      // Add auth headers, transform data, etc.
-      return entry;
-    },
-    onAfterDeliver: async (entry, result) => {
-      // Log telemetry, update local state
-      console.log('Delivered', entry.id, result.status);
-    },
-  },
-});
+mgr.clearPersisted();        // remove from storage
 ```
 
 ---
@@ -237,6 +192,67 @@ console.log(status);
 
 ---
 
+## Dead Letter Queue
+
+Entries that exceed `maxRetries` or get a permanent server error (4xx) are moved to the DLQ instead of being silently dropped.
+
+```ts
+const sync = initSync({
+  maxRetries: 5,
+});
+
+const failed = await sync.dlq.list();
+await sync.dlq.replay('entry-id'); // move back to outbox and retry
+await sync.dlq.clear();
+```
+
+---
+
+## Hooks
+
+Intercept every stage of the delivery pipeline:
+
+```ts
+const sync = initSync({
+  hooks: {
+    onEnqueue: async (entry) => {
+      // Mutate entry before it enters the outbox
+      return { ...entry, meta: { ...entry.meta, priority: getPriority(entry) } };
+    },
+    onBeforeDeliver: async (entry) => {
+      // Add auth headers, transform data, etc.
+      return entry;
+    },
+    onAfterDeliver: async (entry, result) => {
+      console.log('Delivered', entry.id, result.status);
+    },
+  },
+});
+```
+
+---
+
+## Circuit Breaker
+
+Per-collection circuit breakers prevent repeated failed delivery attempts from flooding your API.
+
+States: `closed` (normal) → `open` (blocking) → `half-open` (probing).
+
+```ts
+const sync = initSync({
+  circuitBreaker: {
+    failureThreshold: 3,    // failures before opening
+    resetTimeoutMs: 30000,  // ms before trying again (half-open)
+  },
+});
+
+const status = await sync.syncAdapter.getStatus();
+console.log(status.circuitBreaker);
+// { orders: { state: 'open', failures: 3, openUntil: '...' } }
+```
+
+---
+
 ## Batch Delivery
 
 Group multiple entries into a single API call:
@@ -276,6 +292,24 @@ When compaction is enabled, multiple `update` ops for the same key are merged in
 
 ---
 
+## Priority Queue
+
+Higher-priority entries are delivered first:
+
+```ts
+import { OutboxStore } from '@medyll/idae-sync';
+
+await outbox.enqueue({
+  id: 'e1',
+  collection: 'orders',
+  op: 'add',
+  data: { ... },
+  meta: { retryCount: 0, createdAt: new Date().toISOString(), priority: 10 },
+});
+```
+
+---
+
 ## Server Push
 
 React to server-initiated updates in real time:
@@ -298,42 +332,132 @@ ws.connect();
 
 ---
 
-## Field-Level Conflict Resolution
-
-Resolve conflicts at the field level using per-field timestamps:
+## Conflict Resolution
 
 ```ts
-import { mergeFieldLevel } from '@medyll/idae-sync';
+import { defaultOnConflict, mergeObjects, mergeFieldLevel, ConflictResolver } from '@medyll/idae-sync';
 
-const result = mergeFieldLevel(localDoc, remoteDoc);
-// Fields with newer timestamps win; others retain local values
+// Last-write-wins (uses updated_at timestamps)
+defaultOnConflict(localDoc, remoteDoc);
+// => { resolution: 'remote', result: remoteDoc }
+
+// Shallow merge
+mergeObjects(localDoc, remoteDoc);
+// => { resolution: 'merge', result: { ...local, ...remote } }
+
+// Field-level merge (per-field timestamps)
+mergeFieldLevel(localDoc, remoteDoc);
+
+// Class wrapper
+const resolver = new ConflictResolver();
+resolver.resolve(local, remote, { collection: 'books', op: 'update' });
+```
+
+---
+
+## Observability
+
+```ts
+import { incCounter, getCounter, resetCounters } from '@medyll/idae-sync';
+
+incCounter('deliveries.success');
+getCounter('deliveries.success'); // 1
+resetCounters();
+```
+
+`OutboxStore.subscribe()` provides real-time metrics:
+
+```ts
+outbox.subscribe((metrics) => {
+  console.log(metrics.queueLength);       // pending entries
+  console.log(metrics.oldestEntryAgeMs);  // staleness
+  console.log(metrics.maxRetry);          // highest retry count
+  console.log(metrics.retryHistogram);    // { "0": 5, "1": 2 }
+});
 ```
 
 ---
 
 ## API Reference
 
-### `initSync(opts?)`
+### Classes
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `dbName` | `string` | `'idae-db'` | IndexedDB database name |
-| `delivererConfig` | `Record<string, unknown>` | — | Config for `IdaeApiClient` |
-| `intervalMs` | `number` | `5000` | Polling interval (ms) |
-| `mode` | `SyncMode` | `'mobile-first'` | Global sync mode |
-| `collectionModes` | `Record<string, SyncMode>` | — | Per-collection overrides |
-| `persist` | `'none'\|'localStorage'\|'sessionStorage'` | `'none'` | Mode persistence |
-| `maxRetries` | `number` | — | Max retries before DLQ |
-| `batchSize` | `number` | `1` | Entries per delivery tick |
-| `maxQueueSize` | `number` | — | Max outbox entries |
-| `onQueueFull` | `'reject'\|'drop-oldest'` | `'reject'` | Queue overflow strategy |
-| `compaction` | `boolean` | `false` | Merge redundant entries |
-| `networkAware` | `boolean` | `true` | Pause when offline |
-| `circuitBreaker` | `{ failureThreshold?, resetTimeoutMs? }` | — | Circuit breaker config |
-| `hooks` | `SyncHooks` | — | Pipeline hooks |
-| `debug` | `boolean\|DebugFn` | `false` | Debug logging |
+#### `OutboxStore`
 
-Returns `{ stop(), flush(), getStatus(), outbox, syncAdapter, deliverer, dlq }`.
+IndexedDB-backed persistent outbox.
+
+```ts
+const outbox = new OutboxStore('my-db');
+await outbox.enqueue(entry);
+await outbox.remove(entry.id);
+await outbox.update(entry);
+const pending = await outbox.list(10);
+const count = await outbox.size();
+const found = await outbox.findPending('collection', 'key');
+await outbox.moveToDlq('entry-id', 'reason');
+const dlq = await outbox.listDlq();
+await outbox.replayDlq('entry-id');
+await outbox.clearDlq();
+const unsub = outbox.subscribe((m) => console.log(m.queueLength));
+```
+
+#### `InMemoryOutboxStore`
+
+In-memory implementation for testing. Same API as `OutboxStore`.
+
+#### `SyncAdapter`
+
+Bridges `idae-idbql` events to the outbox. Supports background polling and all sync features.
+
+```ts
+const adapter = createSyncAdapter(outbox, deliverer, opts);
+adapter.start();
+await adapter.applyEvent({ collection: 'books', op: 'add', data: { title: 'Foo' } });
+await adapter.flush();
+const status = await adapter.getStatus();
+const unsub = adapter.onSyncEvent((e) => console.log(e));
+adapter.stop();
+```
+
+#### `CircuitBreaker`
+
+```ts
+import { CircuitBreaker } from '@medyll/idae-sync';
+
+const cb = new CircuitBreaker({ failureThreshold: 3, resetTimeoutMs: 30000 });
+cb.isOpen('orders');         // false
+cb.recordFailure('orders');
+cb.getState('orders');       // 'closed' | 'open' | 'half-open'
+cb.getStatus();              // { orders: { state, failures, openUntil? } }
+cb.reset('orders');
+```
+
+#### `SyncModeManager`
+
+```ts
+import { SyncModeManager } from '@medyll/idae-sync';
+
+const mgr = new SyncModeManager({ mode: 'mobile-first', persist: 'localStorage' });
+mgr.setGlobal('server-first');
+mgr.setCollection('drafts', 'mobile-first');
+mgr.resolve('drafts');   // 'mobile-first'
+mgr.resolve('orders');   // 'server-first' (falls back to global)
+mgr.clearPersisted();
+```
+
+#### `IdaeApiDeliverer`
+
+Delivers outbox entries to `@medyll/idae-api`:
+
+| Op | API Call |
+|----|----------|
+| `add` | `collection.create(data)` |
+| `put` / `update` | `collection.update(id, data)` |
+| `delete` | `collection.deleteById(id)` |
+| `updateWhere` | `collection.updateWhere(where, data)` |
+| `deleteWhere` | `collection.deleteWhere(where)` |
+
+Returns `{ status: 'permanent' }` for 4xx errors, `{ status: 'retry' }` for transient failures.
 
 ---
 
@@ -397,133 +521,6 @@ type SyncHooks = {
   onAfterDeliver?: (entry: OutboxEntry, result: DeliverResult) => Promise<void> | void;
   onEnqueue?: (entry: OutboxEntry) => Promise<OutboxEntry> | OutboxEntry;
 };
-```
-
----
-
-### Classes
-
-#### `OutboxStore`
-
-IndexedDB-backed persistent outbox.
-
-```ts
-const outbox = new OutboxStore('my-db');
-await outbox.enqueue(entry);
-await outbox.remove(entry.id);
-await outbox.update(entry);
-const pending = await outbox.list(10);
-const count = await outbox.size();
-const found = await outbox.findPending('collection', 'key');
-await outbox.moveToDlq('entry-id', 'reason');
-const dlq = await outbox.listDlq();
-await outbox.replayDlq('entry-id');
-await outbox.clearDlq();
-const unsub = outbox.subscribe((m) => console.log(m.queueLength));
-```
-
-#### `InMemoryOutboxStore`
-
-In-memory implementation for testing. Same API as `OutboxStore`.
-
-#### `SyncAdapter`
-
-Bridges `idae-idbql` events to the outbox. Supports background polling and all phase 2-4 features.
-
-```ts
-const adapter = createSyncAdapter(outbox, deliverer, opts);
-adapter.start();
-await adapter.applyEvent({ collection: 'books', op: 'add', data: { title: 'Foo' } });
-await adapter.flush();
-const status = await adapter.getStatus();
-const unsub = adapter.onSyncEvent((e) => console.log(e));
-adapter.stop();
-```
-
-#### `CircuitBreaker`
-
-```ts
-import { CircuitBreaker } from '@medyll/idae-sync';
-
-const cb = new CircuitBreaker({ failureThreshold: 3, resetTimeoutMs: 30000 });
-cb.isOpen('orders');         // false
-cb.recordFailure('orders');
-cb.getState('orders');       // 'closed' | 'open' | 'half-open'
-cb.getStatus();              // { orders: { state, failures, openUntil? } }
-cb.reset('orders');
-```
-
-#### `SyncModeManager`
-
-```ts
-import { SyncModeManager } from '@medyll/idae-sync';
-
-const mgr = new SyncModeManager({ mode: 'mobile-first', persist: 'localStorage' });
-mgr.setGlobal('server-first');
-mgr.setCollection('drafts', 'mobile-first');
-mgr.resolve('drafts');   // 'mobile-first'
-mgr.resolve('orders');   // 'server-first' (falls back to global)
-mgr.clearPersisted();
-```
-
-#### `IdaeApiDeliverer`
-
-Delivers outbox entries to `@medyll/idae-api`:
-
-| Op | API Call |
-|----|----------|
-| `add` | `collection.create(data)` |
-| `put` / `update` | `collection.update(id, data)` |
-| `delete` | `collection.deleteById(id)` |
-| `updateWhere` | `collection.updateWhere(where, data)` |
-| `deleteWhere` | `collection.deleteWhere(where)` |
-
-Returns `{ status: 'permanent' }` for 4xx errors, `{ status: 'retry' }` for transient failures.
-
----
-
-### Conflict Resolution
-
-```ts
-import { defaultOnConflict, mergeObjects, mergeFieldLevel, ConflictResolver } from '@medyll/idae-sync';
-
-// Last-write-wins (uses updated_at timestamps)
-defaultOnConflict(localDoc, remoteDoc);
-// => { resolution: 'remote', result: remoteDoc }
-
-// Shallow merge
-mergeObjects(localDoc, remoteDoc);
-// => { resolution: 'merge', result: { ...local, ...remote } }
-
-// Field-level merge (per-field timestamps)
-mergeFieldLevel(localDoc, remoteDoc);
-
-// Class wrapper
-const resolver = new ConflictResolver();
-resolver.resolve(local, remote, { collection: 'books', op: 'update' });
-```
-
----
-
-### Observability
-
-```ts
-import { incCounter, getCounter, resetCounters } from '@medyll/idae-sync';
-
-incCounter('deliveries.success');
-getCounter('deliveries.success'); // 1
-resetCounters();
-```
-
-`OutboxStore.subscribe()` provides real-time metrics:
-
-```ts
-outbox.subscribe((metrics) => {
-  console.log(metrics.queueLength);      // pending entries
-  console.log(metrics.oldestEntryAgeMs); // staleness
-  console.log(metrics.maxRetry);         // highest retry count
-  console.log(metrics.retryHistogram);   // { "0": 5, "1": 2 }
-});
 ```
 
 ---
