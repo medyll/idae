@@ -1,87 +1,36 @@
-#### README.md for htmlu
+# idae-htmlu
 
-# HTMLU.
-HTMLU is a package that allows using classNames as element tags.  
-We are playing with utility classes since epoch, now could be the time of utility html-tag.  
+Vite preprocessor utility allowing to use classNames as HTML element tags.
 
-So u is for utility.
+## Architecture
 
-This package delivers a preprocessor for vite + svelte
+```mermaid
+graph LR
+    A[Vite Build] --> B[htmlu Preprocessor]
+    B --> C[Parse ClassNames]
+    C --> D[Convert to Elements]
+    D --> E[Generated HTML]
+    E --> F[Output]
+```
 
-## Installation of htmlu
+## Features
 
-Install with npm, yarn, or another package manager:
+- Vite integration
+- ClassName to element conversion
+- Build-time processing
+- Utility-first approach
+
+## Installation
 
 ```bash
-npm install --save-dev @medyll/htmlu
+npm install @medyll/idae-htmlu
+pnpm add @medyll/idae-htmlu
 ```
 
-or
+## Documentation
 
-```bash
-yarn add --dev @medyll/htmlu
-```
+For more information, visit the [main documentation](../../README.md)
 
-## Configuration with Svelte  
+## License
 
-### - install and configure 
-
-Import "**htmluSveltePreprocess**" into your `svelte.config.js` file:
-
-```typescript
-import { htmluSveltePreprocess } from "@medyll/htmlu";
-```
-
-And update it with those settings, adding "**htmluSveltePreprocess**" to the preprocess list:
-
-```typescript
-config.preprocess = [vitePreprocess(), htmluSveltePreprocess()];
-```
-
-you can also pass options to the preprocessor
-
-```typescript
-type HtmlUuOptionsType = { options: { allowedTags: []; excludeTags: [] } };
-```
-### - optionals arguments  
-
-- options.allowedTags takes precedence over all.
-
-    - If you pass an empty array, all tags will be allowed.
-    - If you pass an array with tags, only those tags will be allowed.  
-
-- options.excludeTags will exclude tags from the allowed tags list.
-    - it contains all dom native tags by default.
-    - if you pass some tags, they will be merged with the default one.
-
-
-  
-  
-## Usage
-
-Usage examples:
-
-```html
-<!-- this pattern -->
-<absolute w-full h-full> content </absolute>
-<!-- will be transformed into -->
-<div class="absolute w-full h-full">content</div>
-```
-
-```html
-<!-- this pattern -->
-<flex-col:relative gap-2 pad-2>content</flex-col:relative>
-<!-- will be transformed into -->
-<div class="flex-col relative gap-2 pad-2">content</div>
-```
-
-```html
-<!-- this pattern -->
-<grid gap-2 pad-2>content</grid>
-<!-- will be transformed into -->
-<div class="grid gap-2 pad-2">content</div>
-```
-
-Auto-closing tags are also supported.
-
-
+MIT

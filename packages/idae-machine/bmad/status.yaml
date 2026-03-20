@@ -114,6 +114,7 @@ metadata:
       - 'docs/API.md'
       - 'docs/EXAMPLES.md'
     next_actions:
+      - '🔴 URGENT: Implement rigorous/severe test suite (edge cases, stress, error paths, malformed inputs)'
       - '✅ SPRINT-2 COMPLETE: All 5 stories done, 20/20 points'
       - '✅ VALIDATION PHASE: APPROVED (129/129 tests, 0 critical issues)'
       - '✅ DEMO PAGE: Complete with Svelte 5 migration + accessibility improvements'
