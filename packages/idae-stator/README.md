@@ -1,8 +1,8 @@
-# @medyll/idae-stator ⚡
+# @medyll/idae-stator
 
 **idae-stator** is a lightweight, universal, and deeply reactive state management library for JavaScript and TypeScript. It uses native `Proxy` to track changes at any depth and provides a unified `EventTarget` API for both Browser and Node.js environments.
 
-## 🚀 Key Features
+## Key Features
 
 * **Deep Reactivity:** Automatically tracks mutations in nested objects and arrays.
 * **Zero Dependencies:** Extremely small footprint.
@@ -13,7 +13,7 @@
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install @medyll/idae-stator
@@ -22,7 +22,7 @@ npm install @medyll/idae-stator
 
 ---
 
-## 🛠 Usage
+## Usage
 
 ### Basic Reactivity with Primitives
 
@@ -110,7 +110,7 @@ const state = stator<User>({ id: 1, role: 'admin' });
 
 ---
 
-## ⚙️ Technical Overview
+## Technical Overview
 
 ### The Reactivity Engine
 
@@ -126,7 +126,7 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 
 ---
 
-## 💎 Utility Properties
+## Utility Properties
 
 * **`state.value`**: Access and mutate the current state value (recommended).
 * **`state.stator`**: Alias for `state.value` - access the reactive state data.
@@ -140,7 +140,7 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 
 ---
 
-## 📜 License
+## License
 
 MIT © [Medyll](https://github.com/medyll)
 

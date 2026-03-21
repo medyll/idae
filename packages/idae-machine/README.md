@@ -1,4 +1,4 @@
-## 🏗️ Model & Template Structure
+## Model & Template Structure
 
 A template for `idae-machine` must define collections, fields, and relationships. Here is a minimal example:
 
@@ -37,7 +37,7 @@ export const schemeModel = {
 };
 ```
 
-## 🔍 Query Examples (via Machine)
+## Query Examples (via Machine)
 
 After instantiating and starting Machine:
 
@@ -70,7 +70,7 @@ const result = await machine.idbql.transaction(['agents', 'groups'], 'readwrite'
 });
 ```
 
-## ⚡ Advanced Data & Reactivity
+## Advanced Data & Reactivity
 
 `idae-machine` leverages the power of [@medyll/idae-idbql](https://github.com/medyll/idae-idbql) to provide:
 
@@ -101,7 +101,7 @@ Use `store` for reactive lists or views:
 
 **Low-code UI framework** for rapid data structure visualization and CRUD operations in Svelte 5. Declare your database schema once, automatically generate rich UI components for displaying, creating, and updating structured data in IndexedDB.
 
-## 🎯 Purpose
+## Purpose
 
 `idae-machine` bridges the gap between **data modeling** (`@medyll/idae-idbql`) and **rich UI components** (`@medyll/idae-slotui-svelte`). It provides:
 
@@ -111,7 +111,7 @@ Use `store` for reactive lists or views:
 - **In-place editing**: Edit records inline without modal dialogs
 - **Field-level validation**: Type-safe field rules (required, readonly, private)
 
-## 📦 Core Architecture
+## Core Architecture
 
 ### Layer Stack
 
@@ -129,7 +129,7 @@ IndexedDB Abstraction (@medyll/idae-idbql)
 
 | Module | Purpose |
 
-## 🚀 Quick Start: App Initialization
+## Quick Start: App Initialization
 
 The recommended way to initialize your app is to use the `Machine` class, which centralizes schema, collections, and IndexedDB access.
 
@@ -218,7 +218,7 @@ const idbqlState = createIdbqDb(schemeModel);
 <DataEdit collection="agents" dataId={1} />
 ```
 
-## 📋 Component Guide
+## Component Guide
 
 ### `<DataList>`
 
@@ -272,7 +272,7 @@ Convenience wrapper around `DataForm` for editing an existing record.
 <DataLinksBack collection="agents" />
 ```
 
-## 🔧 Schema Definition (dbFields.ts)
+## Schema Definition (dbFields.ts)
 
 Field types are declared using a string-based DSL:
 
@@ -302,7 +302,7 @@ fields: {
 }
 ```
 
-## 🛡️ Robustness, Coverage & Performance
+## Robustness, Coverage & Performance
 
 All core logic (`dbFields.ts`, `machine.ts`, etc.) is tested and optimized:
 
@@ -315,16 +315,16 @@ All core logic (`dbFields.ts`, `machine.ts`, etc.) is tested and optimized:
 
 ### Current Focus
 
-- ✅ Schema declaration & typing
-- ✅ Advanced IndexedDB integration
-- ✅ Component export & modular structure
-- ✅ Exhaustive test coverage
-- ✅ Svelte 5 policy
-- 🔄 Form validation (in progress)
-- 🔄 Field rendering pipeline
-- ⏳ End-to-end CRUD workflows
+- Schema declaration & typing
+- Advanced IndexedDB integration
+- Component export & modular structure
+- Exhaustive test coverage
+- Svelte 5 policy
+- Form validation (in progress)
+- Field rendering pipeline
+- End-to-end CRUD workflows
 
-## 🧪 Testing Policy
+## Testing Policy
 
 All logic in `dbFields.ts` and related modules is covered by unit tests:
 
@@ -332,11 +332,11 @@ All logic in `dbFields.ts` and related modules is covered by unit tests:
 - **Coverage**: Every method of every exported class is tested, including edge cases (array/object/fk/required/readonly).
 - **Continuous validation**: All tests must pass before merge. See `CHANGELOG.md` for test and coverage history.
 
-## 🦄 Svelte 5 Coding Policy
+## Svelte 5 Coding Policy
 
 All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md` for details and migration rules.
 
-## 📖 Developer & Documentation Policy
+## Developer & Documentation Policy
 
 - All classes and methods in the codebase are fully documented with jsDoc, including `@role`, `@param`, and `@return` in English.
 - Internal imports use `$lib` alias for consistency and maintainability.
@@ -355,7 +355,7 @@ All UI code must strictly follow Svelte 5 syntax and conventions. See `AGENTS.md
 
 See source files for full jsDoc coverage.
 
-## 🔗 Dependencies
+## Dependencies
 
 - **@medyll/idae-idbql**: IndexedDB abstraction with schema support
 - **@medyll/idae-slotui-svelte**: UI component library (Button, MenuList, Looper, etc.)
@@ -380,7 +380,7 @@ npm run test:unit    # Run Vitest unit tests
 npm run test         # Single-run test mode
 ```
 
-## 📚 Code Structure
+## Code Structure
 
 ```
 src/lib/
@@ -411,11 +411,11 @@ src/lib/
 └── index.ts               # Main exports
 ```
 
-## 🎓 Example Projects
+## Example Projects
 
 See `src/routes/` for a working showcase of all components in action.
 
-## 📄 License
+## License
 
 MIT - See LICENSE file
 

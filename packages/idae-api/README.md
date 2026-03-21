@@ -46,11 +46,11 @@ npm install @medyll/idae-api
 
 | Server Side | Client Side |
 |-------------|-------------|
-| 🛠 **Modular Architecture**: Express-based with dynamic connection management. | 📦 **Type-Safe Client**: Full TypeScript support for API consumption. |
-| 🔌 **Multi-DB Support**: Native support for **MongoDB, MySQL, PostgreSQL, SQLite, PouchDB, and ChromaDB** via `idae-db`. | 🔍 **Unified Query Syntax**: Use MongoDB operators (`$in`, `$gt`, `$set`) for all DBs. |
-| 🛡 **Security**: JWT Auth, RBAC Authorization, Rate Limiting, Helmet. | ⚡ **Reactive Hooks**: Register `pre` and `post` hooks on any CRUD operation. |
-| 🏢 **Multi-Tenancy**: Built-in tenant context enforcement. | 🔗 **Chainable API**: Easy selection of databases and collections. |
-| 📝 **Documentation**: Auto-generated OpenAPI (Swagger/Redoc). | |
+| **Modular Architecture**: Express-based with dynamic connection management. | **Type-Safe Client**: Full TypeScript support for API consumption. |
+| **Multi-DB Support**: Native support for **MongoDB, MySQL, PostgreSQL, SQLite, PouchDB, and ChromaDB** via `idae-db`. | **Unified Query Syntax**: Use MongoDB operators (`$in`, `$gt`, `$set`) for all DBs. |
+| **Security**: JWT Auth, RBAC Authorization, Rate Limiting, Helmet. | **Reactive Hooks**: Register `pre` and `post` hooks on any CRUD operation. |
+| **Multi-Tenancy**: Built-in tenant context enforcement. | **Chainable API**: Easy selection of databases and collections. |
+| **Documentation**: Auto-generated OpenAPI (Swagger/Redoc). | |
 
 ---
 
