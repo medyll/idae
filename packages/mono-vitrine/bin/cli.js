@@ -18,7 +18,7 @@ import { Command } from "commander";
 const program = new Command();
 
 program
-  .name("@medyll/idae-mono-expand-vitrine")
+  .name("@medyll/monorepo-vitrine")
   .description(
     "Sync pnpm monorepo packages to individual GitHub showcase repositories",
   )

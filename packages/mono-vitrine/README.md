@@ -1,4 +1,4 @@
-# idae-mono-expand-vitrine
+# monorepo-vitrine
 
 A CLI that creates individual GitHub "showcase" repositories from packages in any monorepo (pnpm, yarn or npm workspaces). Each showcase repo mirrors the package README and selected files (CHANGELOG, LICENSE, etc.), making packages discoverable without exposing the full monorepo.
 
@@ -15,11 +15,11 @@ A CLI that creates individual GitHub "showcase" repositories from packages in an
 Install at the root of your monorepo:
 
 ```bash
-pnpm add -Dw @medyll/idae-mono-expand-vitrine
+pnpm add -Dw @medyll/monorepo-vitrine
 # or
-yarn add -D @medyll/idae-mono-expand-vitrine
+yarn add -D @medyll/monorepo-vitrine
 # or
-npm install -D @medyll/idae-mono-expand-vitrine
+npm install -D @medyll/monorepo-vitrine
 ```
 
 ## Quick start
@@ -28,13 +28,13 @@ Run the CLI from the root of your monorepo:
 
 ```bash
 # Preview what would happen (no changes pushed)
-idae-mono-expand-vitrine --dry-run --verbose
+monorepo-vitrine --dry-run --verbose
 ```
 
 ## Usage
 
 ```bash
-idae-mono-expand-vitrine [options]
+monorepo-vitrine [options]
 ```
 
 ### Options
@@ -51,16 +51,16 @@ idae-mono-expand-vitrine [options]
 
 ```bash
 # Dry-run with verbose output
-idae-mono-expand-vitrine --dry-run --verbose
+monorepo-vitrine --dry-run --verbose
 
 # Create showcase repos with default suffix (-showcase)
-idae-mono-expand-vitrine --suffix
+monorepo-vitrine --suffix
 
 # Create showcase repos with a custom suffix
-idae-mono-expand-vitrine --suffix=examples
+monorepo-vitrine --suffix=examples
 
 # Include private packages and clean up orphans
-idae-mono-expand-vitrine --allow-private --cleanup
+monorepo-vitrine --allow-private --cleanup
 ```
 
 ## Authentication
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx @medyll/idae-mono-expand-vitrine --suffix
+      - run: npx @medyll/monorepo-vitrine --suffix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

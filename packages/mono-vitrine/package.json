@@ -1,11 +1,11 @@
 {
-  "name": "@medyll/idae-mono-expand-vitrine",
+  "name": "@medyll/monorepo-vitrine",
   "version": "1.1.0",
-  "description": "Sync pnpm monorepo packages to individual GitHub showcase repositories",
+  "description": "Sync monorepo packages to individual GitHub showcase repositories",
   "private": false,
   "type": "module",
   "bin": {
-    "idae-mono-expand-vitrine": "bin/cli.js"
+    "monorepo-vitrine": "bin/cli.js"
   },
   "main": "bin/cli.js",
   "scripts": {
