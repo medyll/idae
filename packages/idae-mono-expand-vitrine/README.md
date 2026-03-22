@@ -1,77 +1,109 @@
 # idae-mono-expand-vitrine
 
-A small CLI that extracts package README and selected files from this pnpm monorepo
-and publishes them into separate GitHub repositories used as lightweight "showcases".
+A CLI that creates individual GitHub "showcase" repositories from packages in any monorepo (pnpm, yarn or npm workspaces). Each showcase repo mirrors the package README and selected files (CHANGELOG, LICENSE, etc.), making packages discoverable without exposing the full monorepo.
 
-This package contains the `sync-vitrine.js` CLI which:
-- discovers workspace packages from `pnpm-workspace.yaml`
-- prepares a temporary folder containing `README.md` (+ optional files like `CHANGELOG.md`, `LICENSE`)
-- creates or updates a GitHub repository for each package (optionally)
+## Features
 
-## Architecture
+- Works with pnpm (`pnpm-workspace.yaml`), yarn and npm (`workspaces` in `package.json`)
+- Creates or updates a dedicated GitHub repository per package
+- Syncs `README.md`, `CHANGELOG.md`, `LICENSE`, `SECURITY.md`, `CONTRIBUTING.md`
+- Adds a banner linking back to the source monorepo
+- Supports dry-run mode, orphan cleanup, and CI environments
 
-```mermaid
-graph TD
-    A[pnpm-workspace.yaml] --> B[sync-vitrine CLI]
-    B --> C[Discover Packages]
-    C --> D[Prepare Temp Folder]
-    D --> E{GitHub Repo exists?}
-    E -->|Yes| F[Update Repo]
-    E -->|No| G[Create Repo]
-    F --> H[Push README + files]
-    G --> H
-```
+## Installation
 
-Quick start
-1. Install workspace dependencies from the repository root:
+Install at the root of your monorepo:
 
 ```bash
-pnpm install
+pnpm add -Dw @medyll/idae-mono-expand-vitrine
+# or
+yarn add -D @medyll/idae-mono-expand-vitrine
+# or
+npm install -D @medyll/idae-mono-expand-vitrine
 ```
 
-2. Run the CLI in dry-run mode to preview actions (no changes pushed):
+## Quick start
+
+Run the CLI from the root of your monorepo:
 
 ```bash
-node packages/idae-mono-expand-vitrine/bin/sync-vitrine.js --dry-run --verbose
+# Preview what would happen (no changes pushed)
+idae-mono-expand-vitrine --dry-run --verbose
 ```
 
-Usage
-
-- `--dry-run` : shows what would be done without pushing to GitHub.
-- `--allow-private` : include packages marked as `private` in their package.json.
-- `--cleanup` : delete showcase repositories that are no longer present in the monorepo.
-- `--verbose` : print detailed logs and full error stacks.
-- `--suffix [value]` : append a suffix to created repository names. If passed without a value, the default suffix `showcase` is used. If omitted, no suffix is appended.
-
-Examples
-
-- Dry-run, verbose:
+## Usage
 
 ```bash
-node packages/idae-mono-expand-vitrine/bin/sync-vitrine.js --dry-run --verbose
+idae-mono-expand-vitrine [options]
 ```
 
-- Create showcase repos with default suffix (`-showcase`):
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `-d, --dry-run` | Simulate changes without pushing to GitHub |
+| `-p, --allow-private` | Include packages marked as `private` in their `package.json` |
+| `-c, --cleanup` | Delete showcase repos that no longer match a workspace package |
+| `-v, --verbose` | Print detailed logs and full error stacks |
+| `-s, --suffix [value]` | Append a suffix to repo names. Without value: uses `showcase`. Omitted: no suffix |
+
+### Examples
 
 ```bash
-node packages/idae-mono-expand-vitrine/bin/sync-vitrine.js --suffix
+# Dry-run with verbose output
+idae-mono-expand-vitrine --dry-run --verbose
+
+# Create showcase repos with default suffix (-showcase)
+idae-mono-expand-vitrine --suffix
+
+# Create showcase repos with a custom suffix
+idae-mono-expand-vitrine --suffix=examples
+
+# Include private packages and clean up orphans
+idae-mono-expand-vitrine --allow-private --cleanup
 ```
 
-- Create showcase repos with a custom suffix:
+## Authentication
+
+Set `GITHUB_TOKEN` in your environment with a token that has `repo` permissions on the target GitHub account.
 
 ```bash
-node packages/idae-mono-expand-vitrine/bin/sync-vitrine.js --suffix=examples
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 ```
 
-Authentication
+## CI Integration
 
-Set `GITHUB_TOKEN` in your environment with a token that has permissions to create and push to repositories on the target GitHub account.
+The CLI detects CI environments automatically. When `GITHUB_ACTIONS` is set, it uses token-based HTTPS remotes instead of SSH.
 
-Notes
+The recommended approach is to add a job to an existing workflow (release, publish, or push on main):
 
-- The script prefers SSH remotes when not running in CI. In CI (when `GITHUB_ACTIONS` is set) it uses token-based HTTPS remotes.
-- By default repository names are built from the package name (scope removed). For example `@medyll/idae-socket` becomes `idae-socket` and with `--suffix` it becomes `idae-socket-showcase`.
+```yaml
+# .github/workflows/release.yml
+name: Release
 
-License
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  publish:
+    # ... your existing publish job
+
+  showcase:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx @medyll/idae-mono-expand-vitrine --suffix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+## How it works
+
+Repository names are derived from the package name (scope removed). For example, `@medyll/idae-socket` becomes `idae-socket`, or `idae-socket-showcase` with `--suffix`.
+
+## License
 
 MIT
