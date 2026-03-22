@@ -1,6 +1,5 @@
 'use strict';
 const parseArgs = require('minimist');
-const request = require('request');
 
 const argv = parseArgs(process.argv);
 const _port = argv.p || 3005;
@@ -60,18 +59,11 @@ function postFakeData() {
 		method: methods[methodsIndex]
 	};
 
-	request.post(
-		{
-			uri: `http://localhost:${_port}/dispatch`,
-			headers: {
-				'content-type': 'text/json'
-			},
-			body: JSON.stringify(jsonBody)
-		},
-		function (err, res, body) {
-			if (err) console.error('err test post', err);
-			console.log('post ok');
-			// console.log (res.toJSON())
-		}
-	);
+	fetch(`http://localhost:${_port}/dispatch`, {
+		method: 'POST',
+		headers: { 'content-type': 'text/json' },
+		body: JSON.stringify(jsonBody)
+	})
+		.then(() => console.log('post ok'))
+		.catch((err) => console.error('err test post', err));
 }
