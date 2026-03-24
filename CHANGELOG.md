@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.39-next.0] - 2026-03-24
+**Features:**
+- Enhance release workflow and documentation
+
+**Bug Fixes:**
+- fix typos and type cast issues in lib
+- fix null assertions and boolean cast
+- reduce TypeScript errors 102→79
+- resolve TypeScript check errors in src/lib
+- resolve test failures, Svelte 5 warnings, and CJS/ESM bin mismatch
+
+**Chores:**
+- bump version to 0.135.3 and update CHANGELOG
+
+
+
 ## [0.0.38-next.0] - 2026-03-22
 **Features:**
 - update pnpm-lock.yaml to remove deprecated package and add mono-vitrine dependencies
