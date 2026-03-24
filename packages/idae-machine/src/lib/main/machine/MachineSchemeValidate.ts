@@ -71,7 +71,7 @@ export class MachineSchemeValidate {
 			}
 
 			// If the value is empty (undefined/null/empty string) and the field is not required, skip further checks.
-			const args = fieldInfo.fieldArgs ?? [];
+			const args = (fieldInfo.fieldArgs ?? []) as string[];
 			const isRequired = args.includes('required');
 
 			if (value === undefined || value === null || value === '') {
