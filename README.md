@@ -1,82 +1,173 @@
 # Idae Monorepo
 
-A concise, progressive README: start simple, then add more detail. Use the sections below as your guide from quick setup to advanced development.
+A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.
+## Packages
 
-## 1. Quick summary (very short)
-- Purpose: unified data + UI toolkit for full-stack apps.
-- Core pieces: `idae-api`, `idae-db`, `idae-idbql`, `idae-query`, `idae-socket`, UI libs.
+- [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
+- [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
+- [@medyll/idae-csss](https://github.com/medyll/idae/tree/main/packages/idae-csss)
+- [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
+- [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
+- [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
+- [@medyll/idae-html](https://github.com/medyll/idae/tree/main/packages/idae-html)
+- [@medyll/idae-htmlu](https://github.com/medyll/idae/tree/main/packages/idae-htmlu)
+- [@medyll/idae-idbql](https://github.com/medyll/idae/tree/main/packages/idae-idbql)
+- [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
+- [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
+- [@medyll/idae-router](https://github.com/medyll/idae/tree/main/packages/idae-router)
+- [@medyll/idae-socket](https://github.com/medyll/idae/tree/main/packages/idae-socket)
+- [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
+- [@medyll/idae-sync](https://github.com/medyll/idae/tree/main/packages/idae-sync)
+- [@medyll/monorepo-vitrine](https://github.com/medyll/idae/tree/main/packages/mono-vitrine)
+- [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
+- [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
+- [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
 
-## 2. Quick start (commands)
-- Install dependencies:
+## Details
 
-```bash
-pnpm install
-```
+### @medyll/idae-api
+A flexible and extensible API framework for Node.js, designed to work with multiple database types and configurations. It features a modular architecture, dynamic database connection management, and a flexible routing system. The framework supports TypeScript for improved robustness and maintainability.
 
-- Build all packages:
+**Repo:** [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 
-```bash
-pnpm run package
-```
+**Version:** 0.187.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-api/CHANGELOG.md)
 
-- Run API package tests (example):
+##
+### @medyll/idae-be
+A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.
 
-```bash
-pnpm --filter idae-api test
-```
+**Repo:** [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
 
-## 3. Basic usage (dev flow)
-- Create a client and call a collection (example):
+**Version:** 1.96.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
 
-```ts
-import { IdaeApiClient, IdaeApiClientConfig } from '@medyll/idae-api';
-IdaeApiClientConfig.setOptions({ host: 'localhost', port: 3000, method: 'http', defaultDb: 'app' });
-const client = new IdaeApiClient();
-const users = client.collection('users');
-await users.find({ query: { active: true } });
-```
+##
+### @medyll/idae-csss
+CSS and Style utility library for the Idae ecosystem.
 
-## 4. API surface (methods mapping)
-- Common client collection methods (align with `idae-db` interface):
-  - `find(params)` — query records
-  - `findById(id)` — read single by id
-  - `create(body)` — insert
-  - `update(id, body)` — update by id
-  - `deleteById(id)` — remove by id
-  - `updateWhere(params, update)` — update by filter (client may issue multiple requests)
-  - `deleteWhere(params)` — delete by filter (client may issue multiple requests)
+**Repo:** [@medyll/idae-csss](https://github.com/medyll/idae/tree/main/packages/idae-csss)
 
-## 5. Advanced topics (architectural notes)
-- Sync: `idae-socket` relays backend changes to frontends.
-- Local first: `idae-idbql` provides a Mongo-like local query layer backed by IndexedDB and `idae-query` for in-memory operations.
-- Adapters: `idae-db` defines adapters (Mongo, MySQL, SQLite, etc.) and a common adapter interface.
+**Version:** 0.0.1 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-csss/CHANGELOG.md)
 
-## 6. Development & tests
-- Run package tests selectively to speed iterations. Examples:
+##
+### @medyll/idae-db
+@medyll/idae-db is a flexible and powerful library for interacting with various databases, with a particular focus on MongoDB support. It offers robust connection management, an intuitive API, and simplified CRUD operations.
 
-```bash
-pnpm --filter idae-api test:unit
-pnpm --filter idae-idbql test:unit
-```
+**Repo:** [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 
-- Type checks / lint / format:
+**Version:** 0.155.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-db/CHANGELOG.md)
 
-```bash
-pnpm run lint
-pnpm run format
-pnpm run check
-```
+##
+### @medyll/idae-dom-events
+dom-events is a powerful library for observing and reacting to DOM changes in web applications. It provides tools to track CSS changes, monitor DOM mutations, and handle various events efficiently, making it ideal for dynamic web applications.
 
-## 7. Contributing (short)
-- Follow repo coding style (Prettier + ESLint). Use `pnpm --filter <pkg> run build` for package-level builds.
-- Add tests for new behavior. Run `pnpm run check` before pushing.
+**Repo:** [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
 
-## 8. Where to look next (files)
-- API server: `packages/idae-api/src`
-- DB adapters: `packages/idae-db/src`
-- IndexedDB + local queries: `packages/idae-idbql/src`
-- Query engine: `packages/idae-query/src`
+**Version:** 1.0.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-dom-events/CHANGELOG.md)
 
----
+##
+### @medyll/idae-engine
+A powerful TypeScript library for data manipulation and operations across the idae-engine. Provides utility classes for sorting, finding, grouping, and more.
 
-If you want a longer README section (examples, diagrams, or reference tables), tell me which parts to expand and I will add them in order of complexity.
+**Repo:** [@medyll/idae-engine](https://github.com/medyll/idae/tree/main/packages/idae-engine)
+
+**Version:** 1.185.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-engine/CHANGELOG.md)
+
+##
+### @medyll/idae-html
+Raw HTML utility library for dynamic web apps/sites (client & client-server), inspired by Svelte/React but builderless. Provides advanced HTML generation, parsing, and manipulation in JS/TS. Integrates with @medyll/idae-dom-events, idae-idbql, and @medyll/idae-stator (monorepo).
+
+**Repo:** [@medyll/idae-html](https://github.com/medyll/idae/tree/main/packages/idae-html)
+
+**Version:** 1.0.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-html/CHANGELOG.md)
+
+##
+### @medyll/idae-htmlu
+htmlu : vite preprocess utility allowing to use classNames as elements tags. The next step of utility classNames
+
+**Repo:** [@medyll/idae-htmlu](https://github.com/medyll/idae/tree/main/packages/idae-htmlu)
+
+**Version:** 0.1.3 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-htmlu/CHANGELOG.md)
+
+##
+### @medyll/idae-idbql
+A powerful and flexible IndexedDB query library for TypeScript and JavaScript applications, offering a MongoDB-like query interface, strong TypeScript support, reactive state management, and easy integration with front-end frameworks like Svelte.
+
+**Repo:** [@medyll/idae-idbql](https://github.com/medyll/idae/tree/main/packages/idae-idbql)
+
+**Version:** 0.185.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-idbql/CHANGELOG.md)
+
+##
+### @medyll/idae-machine
+SvelteKit based framework to build AI powered applications with ease.
+
+**Repo:** [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
+
+**Version:** 0.135.3 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
+
+##
+### @medyll/idae-query
+A powerful and flexible query library for TypeScript and JavaScript applications, featuring a MongoDB-like query interface, strong TypeScript support, and easy integration with front-end frameworks.
+
+**Repo:** [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
+
+**Version:** 0.186.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-query/CHANGELOG.md)
+
+##
+### @medyll/idae-router
+**Repo:** [@medyll/idae-router](https://github.com/medyll/idae/tree/main/packages/idae-router)
+
+**Version:** 0.1.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-router/CHANGELOG.md)
+
+##
+### @medyll/idae-socket
+keep your app in sync with your backend!!
+
+**Repo:** [@medyll/idae-socket](https://github.com/medyll/idae/tree/main/packages/idae-socket)
+
+**Version:** 0.0.4 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-socket/CHANGELOG.md)
+
+##
+### @medyll/idae-stator
+A lightweight and efficient state management library designed for building reactive and scalable JavaScript applications.
+
+**Repo:** [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
+
+**Version:** 0.51.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-stator/CHANGELOG.md)
+
+##
+### @medyll/idae-sync
+Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)
+
+**Repo:** [@medyll/idae-sync](https://github.com/medyll/idae/tree/main/packages/idae-sync)
+
+**Version:** 1.0.0
+##
+### @medyll/monorepo-vitrine
+Sync monorepo packages to individual GitHub showcase repositories
+
+**Repo:** [@medyll/monorepo-vitrine](https://github.com/medyll/idae/tree/main/packages/mono-vitrine)
+
+**Version:** 1.1.0
+##
+### @medyll/idae-shared
+sharing
+
+**Repo:** [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
+
+**Version:** 1.0.4 [see changelog](https://github.com/medyll/idae/tree/main/packages/shared/CHANGELOG.md)
+
+##
+### @medyll/idae-config-prettier
+idae svelte Prettier config
+
+**Repo:** [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
+
+**Version:** 0.0.3 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier/CHANGELOG.md)
+
+##
+### @medyll/idae-eslint-config
+**Repo:** [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
+
+**Version:** 0.1.5 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config/CHANGELOG.md)
+
+##
