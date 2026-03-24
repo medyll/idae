@@ -68,8 +68,8 @@ audit:
   last_updated: '2026-03-12T15:35:00Z'
 
 sprints:
-  active: 'sprint-2'
-  count: 2
+  active: 'sprint-3'
+  count: 3
   sprint_1:
     start_date: '2026-03-07'
     end_date: '2026-03-20'
@@ -84,15 +84,25 @@ sprints:
     goal: 'E2E testing, security audit, performance optimization, browser compatibility, docs'
     stories: 5
     status: 'complete'
+  sprint_3:
+    start_date: '2026-03-25'
+    end_date: '2026-04-08'
+    capacity: 20
+    goal: 'Demo refonte: Update demo page and examples for Svelte 5 improvements'
+    stories: 1
+    status: 'in_progress'
+    assigned_stories:
+      - 'S3-01-demo-refonte'
 
 stories:
-  total: 5
-  pending: 0
+  total: 7
+  pending: 2
   in_progress: 75
   done: 5
 
 backlog:
-  items: 5
+  items: 7
+  - S3-01-demo-refonte
 
 dashboard:
   status: 'generated'
@@ -133,12 +143,12 @@ next_role: 'Developer'
 
 # Automated update
 active_role: 'Developer'
-next_action: 'Fix TypeScript errors in src/routes/+page.svelte (snippet param types + CustomEvent index signatures)'
-next_command: 'bmad continue'
-next_role: 'Developer'
+next_action: 'Schedule S3-01-demo-refonte into sprint-3 and start the sprint'
+next_command: 'bmad sprint start'
+next_role: 'Scrum Master'
 progress: '99%'
-last_bmad_command: 'bmad analyze'
-last_bmad_command_date: '2026-03-24T21:00:00Z'
+last_bmad_command: 'bmad continue'
+last_bmad_command_date: '2026-03-24T23:09:50Z'
 artifacts:
   release_dry_run:
     status: 'aborted'
@@ -149,3 +159,5 @@ artifacts:
     status: 'generated'
     file: 'bmad/artifacts/analysis-2026-03-24.md'
     timestamp: '2026-03-24T20:59:00Z'
+  stories:
+    - 'bmad/artifacts/stories/S3-01-demo-refonte.md'

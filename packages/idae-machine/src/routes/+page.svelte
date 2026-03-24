@@ -41,7 +41,7 @@ Shows all UI components working together with real data binding
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
 	let isLoading = $state(false);
 
-	function selectRecord(record: Record<string, unknown>) {
+	function selectRecord(record: Record<string, unknown>, _index?: number | string) {
 		selectedRecord = record;
 		activeTab = 'update';
 	}
@@ -177,7 +177,7 @@ Shows all UI components working together with real data binding
 							<DataList
 								collection={selectedCollection}
 								displayMode="grid"
-								onclick={selectRecord}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -193,7 +193,7 @@ Shows all UI components working together with real data binding
 						<div class="collection-menu">
 							<DataListActions
 								collection={selectedCollection}
-								onclick={selectRecord}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -260,7 +260,7 @@ Shows all UI components working together with real data binding
 							<h3>Foreign Keys (FK)</h3>
 							<div class="fk-viewer">
 								<DataLinks collection={selectedCollection}>
-									{#snippet children(fkEntry)}
+									{#snippet children(fkEntry: [string, unknown])}
 										<div class="fk-item">
 											<strong>{fkEntry[0]}</strong>: references collection
 										</div>
@@ -273,7 +273,7 @@ Shows all UI components working together with real data binding
 							<h3>Reverse Relationships</h3>
 							<div class="reverse-fk-viewer">
 								<DataLinksBack collection={selectedCollection} showTitle={true}>
-									{#snippet children(reverseFkEntry)}
+									{#snippet children(reverseFkEntry: [string, unknown])}
 										<div class="reverse-fk-item">
 											Collection <strong>{reverseFkEntry[0]}</strong> references this one
 										</div>

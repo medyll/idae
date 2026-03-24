@@ -87,12 +87,12 @@ backlog:
     notes: "Mixed patterns (.test.ts, .svelte.test.ts, .unit.test.ts); standardize monorepo-wide"
 
 audit:
-  last_run: "2026-03-02"
+  last_run: "2026-03-24"
   type: "full"
   baseline: true
   score_initial: 28
-  score_current: ~55
-  artifact: "bmad/artifacts/audit-full-2026-03-02.md"
+  score_current: 62
+  artifact: "bmad/artifacts/audit-summary-2026-03-24.md"
   stories:
     AUDIT-001: done
     AUDIT-002: done
@@ -112,4 +112,8 @@ qa:
     - "idae-html: 6/6 ✅ (1 pre-existing suite failure: eta.configure API)"
 
 recommendation: "Begin AUDIT-IQL-001 (high-priority: remove @ts-ignore) or AUDIT-DB-001 (add ChromaDB tests). Both are production-quality improvements. Alternatively, run `/prd` to define monorepo roadmap."
+next_action: "Begin AUDIT-IQL-001 (Developer): remove @ts-ignore from idae-idbql and add targeted tests"
+next_command: "bmad continue"
+next_role: "Developer"
+progress: 62
 
