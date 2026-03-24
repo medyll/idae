@@ -27,6 +27,8 @@ export * from '$lib/types/appschemeTypes.js';
 export * from '$lib/main/machineParserForge.js';
 export * from '$lib/main/machineDb.js';
 export * from '$lib/main/machine.js';
+// Explicit re-export to resolve AppSchemeType ambiguity between appschemeTypes and schema-types
+export { AppSchemeType } from '$lib/types/appschemeTypes.js';
 export * from '$lib/idae/schema-types.js';
 export * from '$lib/form/types.js';
 export * from '$lib/demo/testScheme.js';

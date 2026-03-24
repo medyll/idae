@@ -34,7 +34,7 @@ export class MachineParserForge {
 	 */
 	testIs(
 		what: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules
+		fieldRule: TplFieldRules | string
 	): Partial<IDbForge> | undefined {
 		const typeMappings = {
 			fk:        'fk-',
@@ -67,7 +67,7 @@ export class MachineParserForge {
 	 * @param fieldRule - The field rule string to analyze.
 	 * @returns Partial IDbForge object with extracted type info.
 	 */
-	is(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: TplFieldRules): Partial<IDbForge> {
+	is(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: TplFieldRules | string): Partial<IDbForge> {
 		return this.extract(what, fieldRule);
 	}
 
@@ -79,7 +79,7 @@ export class MachineParserForge {
 	 */
 	extract(
 		type: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules
+		fieldRule: TplFieldRules | string
 	): Partial<IDbForge> {
 		/**
 		 * Helper to extract the substring after a given pattern, before any arguments.
