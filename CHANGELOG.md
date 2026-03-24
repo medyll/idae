@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.41-next.0] - 2026-03-24
+**Features:**
+- Implement mandatory routing rules for context-mode and update audit summary
+
+
+
 ## [0.0.40-next.0] - 2026-03-24
 **Bug Fixes:**
 - remove "type" field from package.json and update analysis and status files
