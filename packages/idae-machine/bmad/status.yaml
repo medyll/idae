@@ -93,6 +93,7 @@ sprints:
     status: 'in_progress'
     assigned_stories:
       - 'S3-01-demo-refonte'
+    started_at: '2026-03-24T23:25:08Z'
 
 stories:
   total: 7
@@ -101,8 +102,8 @@ stories:
   done: 5
 
 backlog:
-  items: 7
-  - S3-01-demo-refonte
+  items:
+    - S3-01-demo-refonte
 
 dashboard:
   status: 'generated'
@@ -136,28 +137,11 @@ metadata:
       - '→ R5: Publish npm + GitHub + announce launch'
     auto_run: false
 
-active_role: 'Developer'
-next_action: 'Start release: create release artifacts and run tests'
-next_command: 'bmad release: start'
-next_role: 'Developer'
-
 # Automated update
-active_role: 'Developer'
-next_action: 'Schedule S3-01-demo-refonte into sprint-3 and start the sprint'
+active_role: 'Scrum Master'
+next_action: 'Start sprint-3 and execute S3-01-demo-refonte (schedule and run)'
 next_command: 'bmad sprint start'
 next_role: 'Scrum Master'
-progress: '99%'
-last_bmad_command: 'bmad continue'
-last_bmad_command_date: '2026-03-24T23:09:50Z'
-artifacts:
-  release_dry_run:
-    status: 'aborted'
-    reason: 'release not required'
-    details: 'Release process aborted by user: no release needed; switching to analysis to find next tasks.'
-    timestamp: '2026-03-24T20:35:00Z'
-  analysis:
-    status: 'generated'
-    file: 'bmad/artifacts/analysis-2026-03-24.md'
-    timestamp: '2026-03-24T20:59:00Z'
-  stories:
-    - 'bmad/artifacts/stories/S3-01-demo-refonte.md'
+progress: '5%'
+last_bmad_command: 'bmad sprint start'
+last_bmad_command_date: '2026-03-24T23:25:08Z'
