@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.0.39-next.0] - 2026-03-24
+**Features:**
+- Enhance release workflow and documentation
+
+**Bug Fixes:**
+- fix typos and type cast issues in lib
+- fix null assertions and boolean cast
+- reduce TypeScript errors 102→79
+- resolve TypeScript check errors in src/lib
+- resolve test failures, Svelte 5 warnings, and CJS/ESM bin mismatch
+
+**Chores:**
+- bump version to 0.135.3 and update CHANGELOG
+
+
+
+## [0.0.38-next.0] - 2026-03-22
+**Features:**
+- update pnpm-lock.yaml to remove deprecated package and add mono-vitrine dependencies
+- add monorepo-vitrine CLI for syncing GitHub showcase repositories
+- enhance CLI functionality to detect workspace configurations and improve error handling
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add audit report and update status with next actions
+
+**Bug Fixes:**
+- change command from node to npx for package release execution
+- update command to use scoped package for pnpm release
+- update release command to use pnpm for package execution
+
+**Documentation:**
+- remove emojis from package READMEs
+- update usage instructions and enhance clarity on sync features
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.37-next.0] - 2026-03-16
 **Bug Fixes:**
 - ensure proper branch rebase before package release

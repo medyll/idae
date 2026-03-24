@@ -43,7 +43,6 @@
     "nodemon": "^3.1.11",
     "npm-watch": "^0.13.0",
     "redis": "^5.10.0",
-    "request": "^2.88.2",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
     "svelte-check": "^4.3.6"

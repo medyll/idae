@@ -10,7 +10,7 @@ Inline information line with optional input snippet and title button
 -->
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let className = '';
+  let className = $state('');
   let {
     title,
     label,

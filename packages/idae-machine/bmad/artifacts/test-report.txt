@@ -1,0 +1,106 @@
+
+> @medyll/idae-machine@0.135.2 test D:\boulot\dev\node\idae\packages\idae-machine
+> npm run test:unit -- --run "--silent"
+
+npm warn config ignoring workspace config at D:\boulot\dev\node\idae\packages\idae-machine/.npmrc
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown env config "_medyll-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> @medyll/idae-machine@0.135.2 test:unit
+> vitest --run --silent
+
+19:25:51 [vite-plugin-svelte] The following packages have a svelte field in their package.json but no exports condition for svelte.
+
+@medyll/idae-stator@0.51.2
+
+Please see https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/faq.md#missing-exports-condition for details.
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/boulot/dev/node/idae/packages/idae-machine[39m
+
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machineFieldDefaultValues.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/MachineFieldType.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machineParserForge.test.ts [2m([22m[2m43 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machineSchemeValidate.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machineScheme.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/form/__tests__/performance.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 66[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/form/__tests__/CreateUpdate.integration.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 123[2mms[22m[39m
+ [31mÔØ»[39m [30m[42m server [49m[39m src/e2e/app.spec.ts [2m([22m[2m0 test[22m[2m)[22m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machineDb.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32mÔ£ô[39m [30m[42m server [49m[39m src/lib/main/__tests__/machine.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [31mÔØ»[39m [30m[42m client [49m[39m src/lib/data/DataForm.svelte.spec.ts [2m([22m[2m0 test[22m[2m)[22m
+19:26:14 [vite-plugin-svelte] src/lib/data/DataForm.svelte:55:39 This reference only captures the initial value of `createUpdateProps`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+19:26:14 [vite-plugin-svelte] src/lib/data/DataForm.svelte:55:78 This reference only captures the initial value of `createUpdateProps`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+19:26:15 [vite-plugin-svelte] src/lib/data/DataLinksBack.svelte:39:3 `<svelte:component>` is deprecated in runes mode ÔÇö components are dynamic by default
+https://svelte.dev/e/svelte_component_deprecated
+19:26:15 [vite-plugin-svelte] src/lib/field/FieldDisplay.svelte:52:43 This reference only captures the initial value of `fieldName`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+ [31mÔØ»[39m [30m[42m server [49m[39m src/lib/data/__tests__/DataForm.spec.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m submits create without throwing when no id present[39m[32m 6[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Suites 2 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL   client  src/lib/data/DataForm.svelte.spec.ts [ src/lib/data/DataForm.svelte.spec.ts ]
+TypeError: Cannot set property nthCalledWith of #<_Assertion> which has only a getter
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/3]ÔÄ»
+
+ FAIL   server  src/e2e/app.spec.ts [ src/e2e/app.spec.ts ]
+Error: Playwright Test did not expect test.describe() to be called here.
+Most common reasons include:
+- You are calling test.describe() in a configuration file.
+- You are calling test.describe() in a file that is imported by the configuration file.
+- You have two different versions of @playwright/test. This usually happens
+  when one of the dependencies in your package.json depends on @playwright/test.
+ ÔØ» TestTypeImpl._currentSuite ../../node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:75:13
+ ÔØ» TestTypeImpl._describe ../../node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:115:24
+ ÔØ» Function.describe ../../node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/transform/transform.js:282:12
+ ÔØ» src/e2e/app.spec.ts:10:6
+      8| // ÔöÇÔöÇÔöÇ Structure de base ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔÇª
+      9|
+     10| test.describe('Structure de base', () => {
+       |      ^
+     11|  test.beforeEach(async ({ page }) => { await page.goto('/'); });
+     12|
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/3]ÔÄ»
+
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 1 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL   server  src/lib/data/__tests__/DataForm.spec.ts > DataForm submit > submits create without throwing when no id present
+Svelte error: lifecycle_function_unavailable
+`mount(...)` is not available on the server
+https://svelte.dev/e/lifecycle_function_unavailable
+ ÔØ» Module.lifecycle_function_unavailable ../../node_modules/.pnpm/svelte@5.53.12/node_modules/svelte/src/internal/server/errors.js:114:16
+    112|  */
+    113| export function lifecycle_function_unavailable(name) {
+    114|  const error = new Error(`lifecycle_function_unavailable\n\`${name}(..ÔÇª
+       |                ^
+    115|
+    116|  error.name = 'Svelte error';
+ ÔØ» Module.mount ../../node_modules/.pnpm/svelte@5.53.12/node_modules/svelte/src/index-server.js:25:4
+ ÔØ» mountModern ../../node_modules/.pnpm/@testing-library+svelte-core@1.0.0_svelte@5.53.12/node_modules/@testing-library/svelte-core/src/mount.js:20:28
+ ÔØ» mount ../../node_modules/.pnpm/@testing-library+svelte-core@1.0.0_svelte@5.53.12/node_modules/@testing-library/svelte-core/src/mount.js:85:44
+ ÔØ» Module.render ../../node_modules/.pnpm/@testing-library+svelte-core@1.0.0_svelte@5.53.12/node_modules/@testing-library/svelte-core/src/render.js:16:28
+ ÔØ» render ../../node_modules/.pnpm/@testing-library+svelte@5.3_3cfe35652a011b6d4fd4ff37cac9a683/node_modules/@testing-library/svelte/src/pure.js:49:73
+ ÔØ» src/lib/data/__tests__/DataForm.spec.ts:23:27
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/3]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m9 passed[39m[22m[90m (12)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m129 passed[39m[22m[90m (130)[39m
+[2m   Start at [22m 19:25:51
+[2m   Duration [22m 23.64s[2m (transform 3.76s, setup 0ms, import 11.36s, tests 237ms, environment 34.08s)[22m
+
+npm error Lifecycle script `test:unit` failed with error:
+npm error code 1
+npm error path D:\boulot\dev\node\idae\packages\idae-machine
+npm error workspace @medyll/idae-machine@0.135.2
+npm error location D:\boulot\dev\node\idae\packages\idae-machine
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest --run --silent
+ÔÇëELIFECYCLEÔÇë Test failed. See above for more details.

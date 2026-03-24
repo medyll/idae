@@ -58,8 +58,8 @@ export interface AppSSchemeView extends Shared {
 	fk:               {
 		appscheme:            Fk<AppScheme>;
 		appscheme_field:      Fk<AppSchemeField>;
-		appscheme_view_group: Fk<AppSchemeViewGroup>;
-		appscheme_view_type:  Fk<AppSchemeViewType>;
+		appscheme_view_group: Fk<AppSchemeFieldGroup>;
+		appscheme_view_type:  Fk<AppSchemeType>;
 	};
 }
 

@@ -26,9 +26,12 @@
     "build:html:all": "node scripts/build/build-html-all.js",
     "test": ""
   },
-    "vitest": {
-      "include": ["test/**/*.test.js", "scripts/server/test-server-slots.js"]
-    },
+  "vitest": {
+    "include": [
+      "test/**/*.test.js",
+      "scripts/server/test-server-slots.js"
+    ]
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts"
@@ -48,10 +51,10 @@
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
-    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-config-prettier": "workspace:*",
     "@medyll/idae-csss": "workspace:*",
     "@medyll/idae-dom-events": "workspace:*",
+    "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-idbql": "workspace:*",
     "@medyll/idae-query": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
@@ -77,7 +80,6 @@
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
-  
   "keywords": [
     "idae",
     "html",

@@ -2,9 +2,9 @@
 	"name": "@medyll/idae-machine",
 	"description": "SvelteKit based framework to build AI powered applications with ease.",
 	"bin": {
-		"idae-machine": "./cli.js"
+		"idae-machine": "./cli.cjs"
 	},
-	"version": "0.135.2",
+	"version": "0.135.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",

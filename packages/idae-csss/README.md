@@ -2,7 +2,7 @@
 
 `idae-csss` (Semantic Style Sheets) is a high-performance, type-safe styling engine for the Idae ecosystem. It re-categorizes standard CSS into semantic blocks based on **intent** rather than physical properties, enabling cleaner, more maintainable design systems.
 
-## 🌟 The Philosophy: Intent Over Implementation
+## The Philosophy: Intent Over Implementation
 
 Standard CSS mixes layout, paint, and behavior in a single flat list. `idae-csss` enforces a semantic separation of concerns:
 - **Layout** is about placement and flow.
@@ -13,7 +13,7 @@ Standard CSS mixes layout, paint, and behavior in a single flat list. `idae-csss
 
 By thinking in these blocks, developers create more predictable UI components that are naturally resistant to "CSS spaghetti".
 
-## 🚀 Key Features
+## Key Features
 
 - **Semantic Styling (`OpCssF`)**: Style objects grouped by purpose: `layout`, `boundaries`, `typo`, `motion`, etc.
 - **Extreme Typing**: Deeply typed model with custom semantic types like `unit` (supporting numbers or template literals like `${number}rem`), `color`, and a semantic `zIndex` scale.
@@ -23,7 +23,7 @@ By thinking in these blocks, developers create more predictable UI components th
 - **Reactive Runtime**: Dedicated `CsssNode` and Svelte 5 action (`use:csss`) for dynamic style injection with auto-cleanup and runes integration.
 - **Zero-Runtime Infrastructure**: Vite plugin to transform semantic blocks into optimized static CSS at build time.
 
-## 📦 Installation
+## Installation
 
 ```bash
 pnpm add @medyll/idae-csss
@@ -31,7 +31,7 @@ pnpm add @medyll/idae-csss
 
 ---
 
-## 🛠️ The Semantic Model (`OpCssF`)
+## The Semantic Model (`OpCssF`)
 
 ### Category Breakdown
 
@@ -57,7 +57,7 @@ pnpm add @medyll/idae-csss
 
 ---
 
-## 📝 Advanced Usage Examples
+## Advanced Usage Examples
 
 ### 1. Complex Reactive Svelte 5 Component
 Leverage Svelte 5 runes for highly dynamic styling. The `csss` action automatically manages a dynamic style tag scoped to the element.
@@ -161,7 +161,7 @@ const style: OpCssF = {
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
 ### `OpCssParser`
 The core engine that converts `OpCssF` objects or `.csss` strings into valid CSS.
@@ -194,7 +194,7 @@ node.destroy(); // Removes the style tag
 
 ---
 
-## 🏗️ Internal Data Flow
+## Internal Data Flow
 
 ```mermaid
 graph TD
@@ -211,5 +211,5 @@ graph TD
 4. **Selector Wrapping**: If a selector is provided, rules are wrapped (e.g., `.my-class { ... }`).
 5. **Output**: Optimized string of standard CSS properties ready for injection.
 
-## 📄 License
+## License
 ISC © [Lebrun Meddy](https://github.com/medyll)

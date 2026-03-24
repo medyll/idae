@@ -1,11 +1,11 @@
 
 ---
 
-# 🚀 @medyll/idae-idbql
+# @medyll/idae-idbql
 
 > **Flexible State Management meets powerful IndexedDB queries.** A reactive, type-safe wrapper for IndexedDB, compatible with **Svelte 5 Runes** or **idae-stator**.
 
-## ✨ Features
+## Features
 
 * **Advanced Query Engine**: Use powerful operators like `$gt`, `$in`, `$or`, and more via a clean query object syntax.
 * **State Agnostic**: Native support for **Svelte 5 Runes** or **idae-stator**.
@@ -14,7 +14,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Define your model
 
@@ -67,7 +67,7 @@ query.onchange((oldValue, newValue) => {
 
 ---
 
-## 🛠 API Reference
+## API Reference
 
 ### Reading Data
 
@@ -89,7 +89,7 @@ query.onchange((oldValue, newValue) => {
 
 ---
 
-## 🔍 Query Example
+## Query Example
 
 ```typescript
 // Complex filtering with object-style syntax
@@ -107,7 +107,7 @@ const results = await idbql.posts.where({
 
 ---
 
-## 🏗 Project Structure
+## Project Structure
 
 ```mermaid
 graph TD
@@ -125,7 +125,7 @@ graph TD
 
 ---
 
-## 🧪 Development
+## Development
 
 * **Test**: `npx vitest` (using `fake-indexeddb`).
 * **Check**: `npm run check`.
@@ -133,7 +133,7 @@ graph TD
 
 ---
 
-## 📄 License
+## License
 
 MIT © [Medyll](https://github.com/medyll)
 

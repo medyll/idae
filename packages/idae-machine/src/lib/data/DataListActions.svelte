@@ -18,13 +18,13 @@ Svelte 5 menu list for a collection
 	import type { Where } from '@medyll/idae-idbql';
 	let { collection, target, data, menuListProps, onclick, style, where } = $props<{ collection: string; target?: string; data?: COL[]; menuListProps?: MenuListProps; style?: string; where?: Where<COL>; onclick?: (event: CustomEvent, index: number) => void }>();
 	// If data is provided, use it directly. Otherwise, expect parent to provide data via prop or slot.
-	let items = data ?? [];
+	let items = $derived(data ?? []);
 	function load(event: CustomEvent, indexV: number) {
-		openCrud(event[index]);
+		openCrud(event[indexV]);
 	}
 	function openCrud(id: any) {
 		let mounted = hydrate(DataForm, {
-			target: document.querySelector(`[data-target-zone="${target}"]`),
+			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,
 			props:  { collection, dataId: id, mode: 'update' }
 		});
 		return mounted;

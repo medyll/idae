@@ -23,7 +23,8 @@ Svelte 5 button to open DataForm window for a collection
 </script>
 
 {#snippet button()}
-	<Button class="ellipsis" onclick={() => openCrud(collection)} width="auto" icon="mdi:add" value={`ui.${rest.mode}-${collection}`} />
+	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<div onclick={() => openCrud(collection)}><Button class="ellipsis" width="auto" icon="mdi:add" value={`ui.${rest.mode}-${collection}`} /></div>
 {/snippet}
 
 {@render button()}

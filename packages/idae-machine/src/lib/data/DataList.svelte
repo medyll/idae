@@ -73,7 +73,7 @@ Svelte 5 collection list with Looper
 	function openCrud(id: any) {
 		// mount on target, returns component
 		let mounted = hydrate(DataForm, {
-			target: document.querySelector(`[data-target-zone="${target}"]`),
+			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,
 			props:  { collection: collection, dataId: id, mode: 'show' }
 		});
 

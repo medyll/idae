@@ -27,7 +27,7 @@ Svelte 5 confirm/cancel fragment
 	<Icon icon="mdi:pencil" class="md" />
 {/snippet}
 
-{#snippet confirm(message)}
+{#snippet confirm(message: string)}
 	{message ?? ''}
 	<Icon class="color-success md text-green-800" icon="mdi:done" />
 {/snippet}
@@ -65,9 +65,4 @@ Svelte 5 confirm/cancel fragment
 
 <style lang="postcss">
 	@reference "tailwindcss";
-	svg {
-		> path {
-			color: red !important;
-		}
-	}
 </style>

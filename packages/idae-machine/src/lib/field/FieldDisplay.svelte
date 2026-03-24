@@ -49,7 +49,7 @@ Svelte 5 field input for all types
     );
 
     // 3. Bidirectional state binding with $effect
-    let internalValue = $state(data ? data[fieldName] : undefined);
+    let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
 
     /**
@@ -84,7 +84,7 @@ Svelte 5 field input for all types
             <input type="hidden" bind:value={internalValue} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
         {/if}
     {:else if fieldForge.fieldType === 'boolean'}
-        <input type="checkbox" bind:checked={internalValue} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
+        <input type="checkbox" bind:checked={internalValue as boolean} {...inputDataset} id={fieldName} name={fieldName} form={inputForm} />
     {:else if fieldForge.fieldType?.includes('area')}
         <textarea
             style="width:100%;max-width:100%;"

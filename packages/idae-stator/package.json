@@ -53,6 +53,8 @@
     "@sveltejs/package": "^2.5.7",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@types/eslint": "^9.6.1",
+    "command": "^1.1.1",
+    "commander": "^14.0.3",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.14.0",
@@ -65,11 +67,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0",
     "vite": "^7.3.1",
-    "vitest": "^4.0.18",
-    "command": "^1.1.1",
-    "commander": "^14.0.3"
+    "vitest": "^4.0.18"
   },
-
   "keywords": [
     "idae",
     "stator",
@@ -82,6 +81,5 @@
   "license": "MIT",
   "svelte": "./dist/index.js",
   "type": "module",
-  "scope": "medyll",
-  "dependencies": {}
+  "scope": "medyll"
 }

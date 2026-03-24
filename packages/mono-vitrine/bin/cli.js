@@ -18,7 +18,7 @@ import { Command } from "commander";
 const program = new Command();
 
 program
-  .name("@medyll/idae-mono-expand-vitrine")
+  .name("@medyll/monorepo-vitrine")
   .description(
     "Sync pnpm monorepo packages to individual GitHub showcase repositories",
   )
@@ -63,7 +63,6 @@ const AUTH_TOKEN = process.env.GITHUB_TOKEN;
 const OWNER = "medyll";
 const MONOREPO_NAME = "idae";
 const MONOREPO_URL = `https://github.com/${OWNER}/${MONOREPO_NAME}`;
-const WORKSPACE_CONFIG = "pnpm-workspace.yaml";
 const TEMP_BASE_DIR = path.resolve("./.temp_showcase");
 
 const EXTRA_FILES_TO_SYNC = [
@@ -108,16 +107,47 @@ if (options.dry_run) {
   console.log("🧪 DRY-RUN MODE ENABLED: No changes will be pushed to GitHub.");
 }
 
+/**
+ * Detect workspace patterns from pnpm, yarn or npm.
+ * - pnpm: reads pnpm-workspace.yaml
+ * - yarn/npm: reads "workspaces" field in package.json
+ * Returns { manager, patterns } or null if nothing found.
+ */
+function detectWorkspace() {
+  // pnpm
+  if (existsSync("pnpm-workspace.yaml")) {
+    const config = yaml.load(readFileSync("pnpm-workspace.yaml", "utf8"));
+    return { manager: "pnpm", patterns: config.packages || [] };
+  }
+
+  // yarn / npm (both use "workspaces" in package.json)
+  if (existsSync("package.json")) {
+    const rootPkg = JSON.parse(readFileSync("package.json", "utf8"));
+    const workspaces = rootPkg.workspaces;
+    if (workspaces) {
+      // workspaces can be an array or an object with a "packages" key (yarn classic)
+      const patterns = Array.isArray(workspaces)
+        ? workspaces
+        : workspaces.packages || [];
+      const manager = existsSync("yarn.lock") ? "yarn" : "npm";
+      return { manager, patterns };
+    }
+  }
+
+  return null;
+}
+
 async function syncVitrines() {
-  if (!existsSync(WORKSPACE_CONFIG)) {
-    console.error("❌ pnpm-workspace.yaml not found.");
+  const workspace = detectWorkspace();
+  if (!workspace) {
+    console.error(
+      "❌ No workspace configuration found. Expected pnpm-workspace.yaml or a \"workspaces\" field in package.json.",
+    );
     return;
   }
 
-  const config = yaml.load(readFileSync(WORKSPACE_CONFIG, "utf8"));
-  const patterns = config.packages || [];
-
-  logVerbose("Loaded workspace config patterns:", patterns);
+  const { manager, patterns } = workspace;
+  logVerbose(`Detected ${manager} workspace with patterns:`, patterns);
 
   const packagePaths = patterns
     .flatMap((pattern) =>
@@ -129,14 +159,26 @@ async function syncVitrines() {
 
   const activeShowcaseRepos = [];
 
+  let errors = 0;
+
   for (const pkgPath of packagePaths) {
-    const pkgJson = JSON.parse(
-      readFileSync(path.join(pkgPath, "package.json"), "utf8"),
-    );
+    let pkgJson;
+    try {
+      pkgJson = JSON.parse(
+        readFileSync(path.join(pkgPath, "package.json"), "utf8"),
+      );
+    } catch (e) {
+      logError(e, `Failed to read package.json in ${pkgPath}`);
+      errors++;
+      continue;
+    }
+
     // Derive a stable base name from the package name (use part after scope if present)
-    const baseName = pkgJson.name.includes("/")
-      ? pkgJson.name.split("/").pop()
-      : pkgJson.name.replace("@", "");
+    const baseName = pkgJson.name
+      ? pkgJson.name.includes("/")
+        ? pkgJson.name.split("/").pop()
+        : pkgJson.name.replace("@", "")
+      : path.basename(pkgPath);
     const rawName = baseName.replace(/\//g, "-");
     // Build base repo name (avoid duplicating monorepo prefix)
     const baseRepo = baseName.startsWith(`${MONOREPO_NAME}-`)
@@ -180,14 +222,21 @@ async function syncVitrines() {
       await octokit.repos.get({ owner: OWNER, repo: repoName });
     } catch (e) {
       if (e && e.status === 404) {
-        console.log(`✨ Creating missing repo: ${repoName}`);
-        await octokit.repos.createForAuthenticatedUser({
-          name: repoName,
-          description: `Showcase for ${pkgJson.name} | Part of ${MONOREPO_NAME} monorepo`,
-          homepage: `${MONOREPO_URL}/tree/main/packages/${path.basename(pkgPath)}`,
-        });
+        try {
+          console.log(`✨ Creating missing repo: ${repoName}`);
+          await octokit.repos.createForAuthenticatedUser({
+            name: repoName,
+            description: `Showcase for ${pkgJson.name} | Part of ${MONOREPO_NAME} monorepo`,
+            homepage: `${MONOREPO_URL}/tree/main/packages/${path.basename(pkgPath)}`,
+          });
+        } catch (createErr) {
+          logError(createErr, `Failed to create repo ${repoName}`);
+          errors++;
+          continue;
+        }
       } else {
         logError(e, `GitHub API Error for ${repoName}`);
+        errors++;
         continue;
       }
     }
@@ -229,6 +278,7 @@ async function syncVitrines() {
       console.log(`✅ Push success.`);
     } catch (err) {
       logError(err, `Git Push failed for ${repoName}`);
+      errors++;
     }
   }
 
@@ -262,6 +312,12 @@ async function syncVitrines() {
     rmSync(TEMP_BASE_DIR, { recursive: true, force: true });
     logVerbose("Temporary directory cleaned up.");
   }
+
+  if (errors > 0) {
+    console.warn(`\n⚠️  Completed with ${errors} error(s). See logs above.`);
+  }
 }
 
-syncVitrines().catch((e) => logError(e, "Unhandled error"));
+syncVitrines().catch((e) => {
+  logError(e, "Unhandled error");
+});

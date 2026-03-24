@@ -4,7 +4,7 @@
 
 `idae-socket` acts as a **hybrid HTTP/WebSocket gateway**. It enables your backend services to push real-time updates to frontend clients by simply converting HTTP POST requests into Socket.IO events. This allows any standard REST API or backend process to trigger interface updates without maintaining its own WebSocket state.
 
-## 🚀 Features
+## Features
 
 - **HTTP-to-Socket Bridge**: POST to an endpoint, emit a socket event.
 - **Room & User Targeting**: Dispatch events to specific rooms (roles) or individual connected users.
@@ -13,13 +13,13 @@
   - `HttpDriver`: Server-side ingress (Express + Socket.IO).
   - `SocketDriver`: Client-side connector for Node.js or browsers.
 
-## 📦 Installation
+## Installation
 
 ```bash
 pnpm add @medyll/idae-socket
 ```
 
-## 🛠️ Usage
+## Usage
 
 ### 1. Server-side (The Gateway)
 
@@ -93,7 +93,7 @@ To push data to clients, your backend (e.g., NestJS) sends a standard HTTP POST 
 - **`payload`**: The actual data to send to clients.
 - **`payload.own`**: (Optional) Specify a user ID to target a specific user.
 
-## 🔐 Authentication
+## Authentication
 
 `idae-socket` supports multiple authentication strategies to secure WebSocket connections.
 
@@ -120,7 +120,7 @@ IDAE_SOCKET_AUTH_STRATEGY=introspection
 IDAE_SOCKET_INTROSPECTION_URL=http://your-api.com/auth/verify
 ```
 
-## ⚙️ Advanced Configuration
+## Advanced Configuration
 
 You can override the default configuration and environment variables by passing a config object to the `HttpDriver` (or `SocketIoServer`) constructor.
 
@@ -163,7 +163,7 @@ const server = new HttpDriver({
 });
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 1. **Backend Service** (e.g., `idae-api-nest`) modifies data.
 2. **Backend** sends `POST /entity` to `idae-socket`.
@@ -172,7 +172,7 @@ const server = new HttpDriver({
 5. **Socket.IO Server** broadcasts the payload to matching Clients (based on Rooms/Auth).
 6. **Frontend** receives event and updates local state (e.g., via `idae-idbql`).
 
-## ⚠️ Current Status
+## Current Status
 
 **Version**: 0.0.5
 

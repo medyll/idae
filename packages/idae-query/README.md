@@ -18,7 +18,7 @@ A powerful and flexible query library for TypeScript and JavaScript applications
 
 ## Key Features
 
-### ✨ Rich Method Toolkit
+### Rich Method Toolkit
 - **13+ chainable methods** for data manipulation and transformation
 - **Fluent API** - Chain operations for clean, readable code
 - **Type-safe aggregations** - TypeScript prevents operations on incompatible types
@@ -26,7 +26,7 @@ A powerful and flexible query library for TypeScript and JavaScript applications
 - **Zero dependencies** - Lightweight and efficient
 - **Full test coverage** - 79 comprehensive unit tests
 
-### 🔗 Method Categories
+### Method Categories
 1. **Transformation Methods** (chainable)
    - `filter()` - Filter by predicate
    - `map()` - Transform items
