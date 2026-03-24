@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.40-next.0] - 2026-03-24
+**Bug Fixes:**
+- remove "type" field from package.json and update analysis and status files
+
+**Chores:**
+- publish packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.39-next.0] - 2026-03-24
 **Bug Fixes:**
 - remove "type" field from package.json and update analysis and status files
