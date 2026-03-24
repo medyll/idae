@@ -120,7 +120,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			}
 			switch (fieldInfo.fieldType as string) {
 				case 'number':
-					return this.#formatNumberField(data[fieldName]);
+					return this.#formatNumberField(data[fieldName] as number);
 				case 'text':
 				case 'text-tiny':
 				case 'text-short':
@@ -203,7 +203,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter(Boolean);
+			.filter((x): x is Record<string, unknown> => x !== undefined);
 	}
 
 	/**
@@ -239,7 +239,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter(Boolean);
+			.filter((x): x is Record<string, unknown> => x !== undefined);
 	}
 
 	/**

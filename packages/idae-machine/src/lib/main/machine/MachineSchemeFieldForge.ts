@@ -122,7 +122,7 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	 * @return {IDbForge[]} Array of field metadata objects for each item.
 	 */
 	iterateArray(fieldName: string, data: unknown[]): IDbForge[] {
-		return this.#collectionValues.iterateArrayField(fieldName, data);
+		return this.#collectionValues.iterateArrayField(fieldName, data) as IDbForge[];
 	}
 
 	/**
@@ -133,6 +133,6 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	 * @return {IDbForge[]} Array of field metadata objects for each property.
 	 */
 	iterateObject(fieldName: string, data: Record<string, unknown>): IDbForge[] {
-		return this.#collectionValues.iterateObjectField(fieldName, data);
+		return this.#collectionValues.iterateObjectField(fieldName, data) as IDbForge[];
 	}
 }

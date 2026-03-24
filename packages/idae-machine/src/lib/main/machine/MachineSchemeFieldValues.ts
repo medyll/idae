@@ -64,7 +64,7 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 			.field(String(fieldName))
 			.parse();
 		if (fieldInfo?.is === 'array') {
-			return this.iterateArray(String(fieldName), this.#data);
+			return this.iterateArray(String(fieldName), this.#data as unknown[]);
 		}
 		if (fieldInfo?.is === 'object') {
 			return this.iterateObject(String(fieldName), this.#data);
@@ -101,6 +101,6 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 	 * @return {IDbForge[]} Array of field metadata objects for each property.
 	 */
 	iterateObject(fieldName: string, data: Record<string, unknown>): IDbForge[] {
-		return this.#collectionValues.iterateObjectField(fieldName, data);
+		return this.#collectionValues.iterateObjectField(fieldName, data) as IDbForge[];
 	}
 }
