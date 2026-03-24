@@ -97,7 +97,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	date:     {
 		id:        defaultTypes.date,
 		formatter: (value: unknown) => {
-			new Date(value);
+			new Date(value as string | number | Date);
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);
@@ -107,7 +107,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	datetime: {
 		id:        defaultTypes.datetime,
 		formatter: (value: unknown) => {
-			new Date(value);
+			new Date(value as string | number | Date);
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);
@@ -117,7 +117,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	time:     {
 		id:        defaultTypes.time,
 		formatter: (value: unknown) => {
-			new Date(value);
+			new Date(value as string | number | Date);
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);

@@ -20,7 +20,7 @@ Svelte 5 menu list for a collection
 	// If data is provided, use it directly. Otherwise, expect parent to provide data via prop or slot.
 	let items = $derived(data ?? []);
 	function load(event: CustomEvent, indexV: number) {
-		openCrud(event[index]);
+		openCrud(event[indexV]);
 	}
 	function openCrud(id: any) {
 		let mounted = hydrate(DataForm, {
