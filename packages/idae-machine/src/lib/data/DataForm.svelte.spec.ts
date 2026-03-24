@@ -16,7 +16,7 @@ beforeEach(() => {
   } as any;
 
   // Minimal MachineDb stub so logic.collection(...) works in the component
-  (machine as any)._machineDb = (machine as any)._machineDb || {
+  (machine as any)._machineDb = {
     collection: (name: string) => ({
       parse: () => ({}),
       validator: {
@@ -28,7 +28,8 @@ beforeEach(() => {
       }
       ,
       // reverse FK helper used by DataLinksBack
-      parseReverseFks: () => ({})
+      parseReverseFks: () => ({}),
+      parseFks: () => ({})
     })
   };
 });

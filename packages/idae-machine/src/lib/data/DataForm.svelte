@@ -52,7 +52,7 @@
 
     // UI derivations
     // `inputFormId` must be a plain string for the DOM `id`/`form` attributes.
-    const inputFormId = `form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`;
+    const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
 
     // Reactive State
     let formData = $state<Record<string, unknown>>({});

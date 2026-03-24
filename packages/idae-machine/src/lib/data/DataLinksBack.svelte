@@ -36,7 +36,8 @@ Svelte 5 reverse FK relation viewer for a collection
 			<div class="p2 font-bold">{collection}</div>
 		{/if}
 		{#if component}
-			<svelte:component this={component} collection={collection} template={item[1]} {...componentProps} />
+			{@const DynComp = component}
+			<DynComp collection={collection} template={item[1]} {...componentProps} />
 		{:else}
 			{#if children}
 				{@render children(item)}

@@ -49,7 +49,7 @@ Svelte 5 field input for all types
     );
 
     // 3. Bidirectional state binding with $effect
-    let internalValue = $state(data ? data[fieldName] : undefined);
+    let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
 
     /**

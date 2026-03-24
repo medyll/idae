@@ -3,13 +3,13 @@
 
 phase:
   current: 'release'
-  status: 'pending'
+  status: 'in_progress'
   phases:
     analysis: 'done' # ✅ COMPLETE
     planning: 'done' # ✅ COMPLETE (PRD + tech-spec)
     solutioning: 'done' # ✅ COMPLETE (Sprint-1 delivered)
     validation: 'done' # ✅ COMPLETE (Sprint-2 delivered)
-    release: 'pending' # ⏳ NEXT: Marketing, deployment, launch
+    release: 'in_progress' # ⏳ NEXT: Marketing, deployment, launch
 
 artifacts:
   product_brief:
@@ -88,7 +88,7 @@ sprints:
 stories:
   total: 5
   pending: 0
-  in_progress: 0
+  in_progress: 75
   done: 5
 
 backlog:
@@ -101,8 +101,8 @@ dashboard:
 metadata:
   init_date: '2026-03-06T21:29:09Z'
   initialized_by: 'bmad-master v3.2.0'
-  last_bmad_command: 'demo page created & Svelte 5 migration'
-  last_bmad_command_date: '2026-03-12T15:35:00Z'
+  last_bmad_command: 'release: start — create release artifacts and run tests'
+  last_bmad_command_date: '2026-03-24T19:25:00Z'
   recommendation:
     summary: '✅ DEMO PAGE COMPLETE (v2): All 13 UI/Form/Fragment components integrated in showcase. Looper replaced with native {#each}. Svelte 5 runes throughout. Frame layout with tabs. All 129/129 tests passing. 0 critical findings (OWASP 100%). All performance targets exceeded. 6 browsers tested. 100% JSDoc coverage. READY FOR RELEASE PHASE.'
     captured_at: '2026-03-12T15:47:00Z'
@@ -125,3 +125,17 @@ metadata:
       - '→ R4: Stakeholder sign-off (product, engineering, legal)'
       - '→ R5: Publish npm + GitHub + announce launch'
     auto_run: false
+
+active_role: 'Developer'
+next_action: 'Start release: create release artifacts and run tests'
+next_command: 'bmad release: start'
+next_role: 'Developer'
+
+# Automated update
+active_role: 'Developer'
+next_action: 'npm publish dry-run, then commit all changes and tag release'
+next_command: 'bmad continue'
+next_role: 'Developer'
+progress: '90%'
+last_bmad_command: 'bmad continue'
+last_bmad_command_date: '2026-03-24T20:35:00Z'
