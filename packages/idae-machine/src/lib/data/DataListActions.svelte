@@ -24,7 +24,7 @@ Svelte 5 menu list for a collection
 	}
 	function openCrud(id: any) {
 		let mounted = hydrate(DataForm, {
-			target: document.querySelector(`[data-target-zone="${target}"]`),
+			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,
 			props:  { collection, dataId: id, mode: 'update' }
 		});
 		return mounted;
