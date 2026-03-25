@@ -19,9 +19,9 @@ test.describe('Structure de base', () => {
 
 	test('panneau gauche avec les 3 collections du testScheme', async ({ page }) => {
 		await expect(page.getByTestId('left-panel')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-product')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-product_category')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-agent')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-vehicle')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-category')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-customer')).toBeVisible();
 	});
 
 	test('tabs nav contient les onglets permanents', async ({ page }) => {
@@ -64,8 +64,8 @@ test.describe('Navigation entre collections', () => {
 		const info = page.getByTestId('info-section');
 		await expect(info).toContainText('product');
 
-		await page.getByTestId('collection-btn-agent').click();
-		await expect(info).toContainText('agent');
+		await page.getByTestId('collection-btn-vehicle').click();
+		await expect(info).toContainText('vehicle');
 	});
 
 	test('changer de collection réinitialise le record sélectionné', async ({ page }) => {

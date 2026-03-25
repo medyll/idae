@@ -138,10 +138,10 @@ metadata:
     auto_run: false
 
 # Automated update
-active_role: 'Scrum Master'
-next_action: 'Start sprint-3 and execute S3-01-demo-refonte (schedule and run)'
-next_command: 'bmad sprint start'
-next_role: 'Scrum Master'
-progress: '5%'
-last_bmad_command: 'bmad sprint start'
-last_bmad_command_date: '2026-03-24T23:25:08Z'
+active_role: 'Tester'
+next_action: 'Implement demo schema update (testScheme.ts): add car rental model with 6+ collections, seed data'
+next_command: 'bmad continue'
+next_role: 'Developer'
+progress: '25%'
+last_bmad_command: 'bmad test — all 130 unit tests passing'
+last_bmad_command_date: '2026-03-25T22:20:29Z'

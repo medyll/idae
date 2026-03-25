@@ -329,7 +329,7 @@ Shows all UI components working together with real data binding
 							<h3>Sélecteur — Selector</h3>
 							<p>Rendu d'une liste de valeurs avec snippet <code>item</code> :</p>
 							<div class="selector-demo">
-								<Selector values={['product', 'product_category', 'agent']} value={selectedCollection}>
+								<Selector values={['vehicle', 'category', 'customer', 'rental', 'location_office', 'maintenance']} value={selectedCollection}>
 									{#snippet item(val, active)}
 										<span class="selector-item" class:active>{val}</span>
 									{/snippet}
