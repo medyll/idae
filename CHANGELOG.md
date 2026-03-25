@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.43-next.0] - 2026-03-25
+**Other:**
+- Refactor Playwright config and improve test setup; enhance demo seed data structure; update form types and index exports; fix event handling in Svelte components; ensure consistent formatting across files.
+
+
+
 ## [0.0.42-next.0] - 2026-03-24
 **Bug Fixes:**
 - Update event binding syntax from 'onclick' to 'on:click' in Svelte components
