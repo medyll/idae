@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.42-next.0] - 2026-03-24
+**Bug Fixes:**
+- Update event binding syntax from 'onclick' to 'on:click' in Svelte components
+
+
+
 ## [0.0.41-next.0] - 2026-03-24
 **Features:**
 - Implement mandatory routing rules for context-mode and update audit summary
