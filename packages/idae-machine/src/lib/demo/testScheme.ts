@@ -48,8 +48,8 @@ export const testScheme = {
 				created_at:       'date'
 			},
 			fks:          {
-				category:        { code: 'category', rules: '', multiple: false },
-				location_office: { code: 'location_office', rules: '', multiple: false }
+				category:        { code: 'category', multiple: false },
+				location_office: { code: 'location_office', multiple: false }
 			}
 		}
 	},
@@ -73,13 +73,13 @@ export const testScheme = {
 		keyPath:  '++id',
 		model:    {},
 		ts:       {} as {
-			id: string;
-			first_name: string;
-			last_name: string;
-			email: string;
-			phone?: string;
+			id:               string;
+			first_name:       string;
+			last_name:        string;
+			email:            string;
+			phone?:           string;
 			drivers_license?: string;
-			created_at?: Date;
+			created_at?:      Date;
 		},
 		template: {
 			index:        'id',
@@ -100,14 +100,14 @@ export const testScheme = {
 		keyPath:  '++id',
 		model:    {},
 		ts:       {} as {
-			id: string;
-			vehicleId: string;
-			customerId: string;
-			start_date: Date;
-			end_date?: Date;
+			id:            string;
+			vehicleId:     string;
+			customerId:    string;
+			start_date:    Date;
+			end_date?:     Date;
 			price_per_day: number;
-			total_price?: number;
-			status: 'booked' | 'active' | 'completed' | 'cancelled';
+			total_price?:  number;
+			status:        'booked' | 'active' | 'completed' | 'cancelled';
 		},
 		template: {
 			index:        'id',
@@ -132,12 +132,12 @@ export const testScheme = {
 		keyPath:  '++id',
 		model:    {},
 		ts:       {} as {
-			id: string;
-			code: string;
+			id:      string;
+			code:    string;
 			address: string;
-			city: string;
+			city:    string;
 			country: string;
-			phone?: string;
+			phone?:  string;
 		},
 		template: {
 			index:        'id',
@@ -157,12 +157,12 @@ export const testScheme = {
 		keyPath:  '++id',
 		model:    {},
 		ts:       {} as {
-			id: string;
+			id:        string;
 			vehicleId: string;
-			date: Date;
-			type: string;
-			cost?: number;
-			notes?: string;
+			date:      Date;
+			type:      string;
+			cost?:     number;
+			notes?:    string;
 		},
 		template: {
 			index:        'id',
@@ -191,80 +191,80 @@ export const demoSeed = {
 	],
 	location_office: [
 		{
-			id: 1,
-			code: 'PAR-01',
+			id:      1,
+			code:    'PAR-01',
 			address: '10 Rue de Paris',
-			city: 'Paris',
+			city:    'Paris',
 			country: 'France',
-			phone: '+33123456789'
+			phone:   '+33123456789'
 		},
 		{ id: 2, code: 'LYO-01', address: '5 Rue de Lyon', city: 'Lyon', country: 'France' }
 	],
 	vehicle:         [
 		{
-			id: 1,
-			license_plate: 'AA-111-BB',
-			model: 'Clio',
-			brand: 'Renault',
-			year: 2018,
-			categoryId: 1,
+			id:               1,
+			license_plate:    'AA-111-BB',
+			model:            'Clio',
+			brand:            'Renault',
+			year:             2018,
+			categoryId:       1,
 			locationOfficeId: 1,
-			status: 'available',
-			mileage: 45000
+			status:           'available',
+			mileage:          45000
 		},
 		{
-			id: 2,
-			license_plate: 'CC-222-DD',
-			model: '208',
-			brand: 'Peugeot',
-			year: 2019,
-			categoryId: 1,
+			id:               2,
+			license_plate:    'CC-222-DD',
+			model:            '208',
+			brand:            'Peugeot',
+			year:             2019,
+			categoryId:       1,
 			locationOfficeId: 1,
-			status: 'rented',
-			mileage: 32000
+			status:           'rented',
+			mileage:          32000
 		},
 		{
-			id: 3,
-			license_plate: 'EE-333-FF',
-			model: 'Captur',
-			brand: 'Renault',
-			year: 2020,
-			categoryId: 2,
+			id:               3,
+			license_plate:    'EE-333-FF',
+			model:            'Captur',
+			brand:            'Renault',
+			year:             2020,
+			categoryId:       2,
 			locationOfficeId: 2,
-			status: 'available',
-			mileage: 15000
+			status:           'available',
+			mileage:          15000
 		}
 	],
 	customer:        [
 		{
-			id: 1,
+			id:         1,
 			first_name: 'Alice',
-			last_name: 'Durand',
-			email: 'alice@example.com',
-			phone: '+33611223344'
+			last_name:  'Durand',
+			email:      'alice@example.com',
+			phone:      '+33611223344'
 		},
 		{ id: 2, first_name: 'Bob', last_name: 'Martin', email: 'bob@example.com' }
 	],
 	rental:          [
 		{
-			id: 1,
-			vehicleId: 2,
-			customerId: 1,
-			start_date: new Date('2026-03-01'),
-			end_date: new Date('2026-03-05'),
+			id:            1,
+			vehicleId:     2,
+			customerId:    1,
+			start_date:    new Date('2026-03-01'),
+			end_date:      new Date('2026-03-05'),
 			price_per_day: 45,
-			total_price: 180,
-			status: 'completed'
+			total_price:   180,
+			status:        'completed'
 		}
 	],
 	maintenance:     [
 		{
-			id: 1,
+			id:        1,
 			vehicleId: 1,
-			date: new Date('2026-02-20'),
-			type: 'oil change',
-			cost: 120,
-			notes: 'Standard maintenance'
+			date:      new Date('2026-02-20'),
+			type:      'oil change',
+			cost:      120,
+			notes:     'Standard maintenance'
 		}
 	]
 };
