@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.44-next.0] - 2026-03-25
+**Features:**
+- Integrate demo-status analyzer into build pipeline
+
+**Tests:**
+- Add error path coverage for machine initialization and validation
+- Add stress and performance test suite
+- Add comprehensive edge case test suite for field validation
+
+**Chores:**
+- Initiate v0.136.0 release phase with R1-R5 checklist
+
+**Other:**
+- Refactor JSON and TypeScript files for consistency and readability
+
+
+
 ## [0.0.43-next.0] - 2026-03-25
 **Other:**
 - Refactor Playwright config and improve test setup; enhance demo seed data structure; update form types and index exports; fix event handling in Svelte components; ensure consistent formatting across files.
