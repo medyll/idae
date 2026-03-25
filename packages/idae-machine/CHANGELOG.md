@@ -3,6 +3,7 @@
 ## [0.135.3] - 2026-03-24
 
 ### Fixed
+
 - `cli.js` renamed to `cli.cjs` — bin entry was CJS but interpreted as ESM (`publint: All good!`)
 - vitest 4.x compatibility: replaced `@testing-library/jest-dom/vitest` import with `expect.extend()` to avoid getter conflict on `nthCalledWith`
 - Excluded `src/e2e/**` from vitest server project (Playwright tests were picked up by vitest runner)
@@ -10,6 +11,7 @@
 - Fixed `DataForm.svelte.spec.ts` mock: always override `_machineDb`, added missing `parseFks` stub
 
 ### Svelte 5 warnings resolved
+
 - `DataForm.svelte`: wrap `inputFormId` in `$derived`
 - `DataLinksBack.svelte`: replace deprecated `<svelte:component>` with `{@const DynComp}`
 - `DataListActions.svelte`: `items` → `$derived(data ?? [])`

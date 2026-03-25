@@ -71,7 +71,7 @@ Shows all UI components working together with real data binding
 						class="collection-btn"
 						class:active={selectedCollection === col}
 						data-testid="collection-btn-{col}"
-						on:click={() => {
+						onclick={() => {
 							selectedCollection = col;
 							selectedRecord = null;
 							activeTab = 'grid';
@@ -116,7 +116,7 @@ Shows all UI components working together with real data binding
 					class="tab"
 					class:active={activeTab === 'grid'}
 					data-testid="tab-grid"
-					on:click={() => (activeTab = 'grid')}
+					onclick={() => (activeTab = 'grid')}
 				>
 					📊 Grid View
 				</button>
@@ -124,7 +124,7 @@ Shows all UI components working together with real data binding
 					class="tab"
 					class:active={activeTab === 'menu'}
 					data-testid="tab-menu"
-					on:click={() => (activeTab = 'menu')}
+					onclick={() => (activeTab = 'menu')}
 				>
 					📋 Menu View
 				</button>
@@ -132,7 +132,7 @@ Shows all UI components working together with real data binding
 					class="tab"
 					class:active={activeTab === 'create'}
 					data-testid="tab-create"
-					on:click={() => (activeTab = 'create')}
+					onclick={() => (activeTab = 'create')}
 				>
 					➕ Create
 				</button>
@@ -141,7 +141,7 @@ Shows all UI components working together with real data binding
 						class="tab"
 						class:active={activeTab === 'update'}
 						data-testid="tab-update"
-						on:click={() => (activeTab = 'update')}
+						onclick={() => (activeTab = 'update')}
 					>
 						✏️ Update
 					</button>
@@ -149,7 +149,7 @@ Shows all UI components working together with real data binding
 						class="tab"
 						class:active={activeTab === 'relationships'}
 						data-testid="tab-relationships"
-						on:click={() => (activeTab = 'relationships')}
+						onclick={() => (activeTab = 'relationships')}
 					>
 						🔗 Relations
 					</button>
@@ -158,7 +158,7 @@ Shows all UI components working together with real data binding
 					class="tab"
 					class:active={activeTab === 'components'}
 					data-testid="tab-components"
-					on:click={() => (activeTab = 'components')}
+					onclick={() => (activeTab = 'components')}
 				>
 					⚙️ Advanced
 				</button>
@@ -177,7 +177,7 @@ Shows all UI components working together with real data binding
 							<DataList
 								collection={selectedCollection}
 								displayMode="grid"
-								on:click={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -193,7 +193,7 @@ Shows all UI components working together with real data binding
 						<div class="collection-menu">
 							<DataListActions
 								collection={selectedCollection}
-								on:click={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -295,7 +295,7 @@ Shows all UI components working together with real data binding
 							<button
 								class="toggle-btn"
 								data-testid="toggle-skeleton"
-								on:click={() => (isLoading = !isLoading)}
+								onclick={() => (isLoading = !isLoading)}
 							>
 								{isLoading ? 'Masquer' : 'Afficher'} le chargement
 							</button>
@@ -739,4 +739,5 @@ Shows all UI components working together with real data binding
 		}
 	}
 </style>
+
 

@@ -19,7 +19,10 @@ export interface CreateUpdateProps<T = string> {
 }
 
 /** Props for the Create component (mode locked to 'create') */
-export type CreateProps<T = string> = Omit<CreateUpdateProps<T>, 'mode' | 'dataId' | 'inPlaceEdit' | 'showFks'>;
+export type CreateProps<T = string> = Omit<
+	CreateUpdateProps<T>,
+	'mode' | 'dataId' | 'inPlaceEdit' | 'showFks'
+>;
 
 /** Props for the Update component (mode locked to 'update') */
 export type UpdateProps<T = string> = Omit<CreateUpdateProps<T>, 'mode'>;

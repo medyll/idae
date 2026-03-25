@@ -43,6 +43,7 @@ IndexedDB                 →  @medyll/idae-idbql (workspace dependency)
 ### Schema DSL
 
 Fields use a string DSL parsed by `MachineParserForge.parse()` (must stay pure/no side effects):
+
 - `'text (required)'`, `'id (readonly)'`, `'fk-category.id (required)'`, `'array-of-number'`
 - Modifiers: `required`, `readonly`, `private`
 

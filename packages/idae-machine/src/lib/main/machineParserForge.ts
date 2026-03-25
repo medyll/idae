@@ -67,7 +67,10 @@ export class MachineParserForge {
 	 * @param fieldRule - The field rule string to analyze.
 	 * @returns Partial IDbForge object with extracted type info.
 	 */
-	is(what: 'array' | 'object' | 'fk' | 'primitive', fieldRule: TplFieldRules | string): Partial<IDbForge> {
+	is(
+		what: 'array' | 'object' | 'fk' | 'primitive',
+		fieldRule: TplFieldRules | string
+	): Partial<IDbForge> {
 		return this.extract(what, fieldRule);
 	}
 
