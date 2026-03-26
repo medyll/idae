@@ -10,6 +10,6 @@
     const collections = $derived(machine.logic.collections())
 
 </script> 
-{#each collections as collection}
+{#each collections as collection (collection.name)}
     {@render children?.({ collection })}
 {/each}

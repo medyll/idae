@@ -158,10 +158,10 @@ metadata:
     auto_run: false
 
 # Automated update
-active_role: 'Release Manager'
-next_action: 'RELEASE DOCUMENTATION POLISHED ✅ All artifacts enhanced and ready. R1-R3 complete, R4-R5 staged. package.json version bumped to 0.136.0. README.md updated with v0.136.0 highlights. RELEASE_ANNOUNCEMENT.md created for social channels. Awaiting R4 stakeholder approval (product, engineering, legal) to proceed to R5 npm publish. Target: 2026-03-31'
+active_role: 'Developer'
+next_action: 'Audit fixes applied (2026-03-26): duplicate exports removed, {#each} keys added, null-as-any removed, any types fixed (DataLinks, DataLinksBack, DataList, DataListActions, InfoLine), idbql typed in demoInit. 186/186 tests passing. Remaining: JSDoc on 7 components (DataCreate, DataEdit, DataPicker, FieldEditor, Frame, InfoLine, Skeleton).'
 next_command: 'bmad continue'
-next_role: 'Release Manager'
-progress: '80%'
-last_bmad_command: 'Release prep complete: package.json ✅, README.md ✅, RELEASE_ANNOUNCEMENT.md ✅'
-last_bmad_command_date: '2026-03-28T10:30:00Z'
+next_role: 'Developer'
+progress: '83%'
+last_bmad_command: 'bmad continue — audit fixes: 6 files patched, 186/186 tests green'
+last_bmad_command_date: '2026-03-26T00:00:00Z'

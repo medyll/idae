@@ -22,7 +22,7 @@ Inline information line with optional input snippet and title button
   }: {
     title?: string;
     label?: string;
-    value?: any;
+    value?: string | number | boolean | null;
     vertical?: boolean;
     input?: Snippet;
     titleButton?: Snippet;

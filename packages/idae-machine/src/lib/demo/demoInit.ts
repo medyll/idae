@@ -2,7 +2,9 @@ import { seed } from './seedData';
 import { analyzeDemo } from './analyzeDemo';
 import type { IdbqModel } from '@medyll/idae-idbql';
 
-export async function initDemo(idbql: any, model: IdbqModel) {
+type IdbqlStore = Record<string, { count(): Promise<number>; add(item: unknown): Promise<unknown> } | undefined>;
+
+export async function initDemo(idbql: IdbqlStore, model: IdbqModel) {
 	// Seed collections if they are empty
 	try {
 		// For each collection in seed, add entries if collection exists

@@ -48,7 +48,7 @@ Svelte 5 collection list with Looper
 		try {
 			return logic.collection(name);
 		} catch (e) {
-			return null as any;
+			return null;
 		}
 	}
 
@@ -70,7 +70,7 @@ Svelte 5 collection list with Looper
 		openCrud(item[index]);
 	}
 
-	function openCrud(id: any) {
+	function openCrud(id: string | number) {
 		// mount on target, returns component
 		let mounted = hydrate(DataForm, {
 			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,

@@ -43,7 +43,7 @@
   </script>
 <div class="form">
   {#if scheme && fieldNames()?.length}
-    {#each fieldNames() as fieldName}
+    {#each fieldNames() as fieldName (fieldName)}
       {#if scheme.template?.fields && scheme.template.fields[fieldName]}
         <FieldDisplay
           {collection}

@@ -11,8 +11,6 @@ export { default as DataListFields } from '$lib/data/DataListFields.svelte';
 export { default as DataPicker } from '$lib/data/DataPicker.svelte';
 export { default as DataProvider } from '$lib/data/DataProvider.svelte';
 export * from '$lib/demo/analyzeDemo.js';
-export { default as CollectionCard } from '$lib/demo/CollectionCard.svelte';
-export { default as CollectionTable } from '$lib/demo/CollectionTable.svelte';
 export * from '$lib/demo/dbSchema.js';
 export * from '$lib/demo/demoInit.js';
 export * from '$lib/demo/seedData.js';

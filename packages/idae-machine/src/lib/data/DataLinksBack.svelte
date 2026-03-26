@@ -16,7 +16,7 @@ Svelte 5 reverse FK relation viewer for a collection
 	import { machine } from '$lib/main/machine.js';
 	let { collection, showTitle = false, component, componentProps = {}, children } = $props<{
 		collection: TplCollectionName;
-		collectionId?: any;
+		collectionId?: string | number;
 		where?: Where;
 		showTitle?: boolean | string;
 		component?: typeof SvelteComponent;

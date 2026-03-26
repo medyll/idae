@@ -38,12 +38,15 @@ Svelte 5 field input for all types
     } = $props ();
 
     // 2. Pure reactive derivations
-    const scheme = $derived(machine.logic.collection(collection));
-    const fieldForge = $derived(scheme.fieldForge(String(fieldName), data ?? {}));
-    const schemeFieldValues = $derived(scheme.collectionValues);
-    const inputDataset = $derived(schemeFieldValues.getInputDataSet(fieldName, data ?? {}));
+    function safeScheme() {
+        try { return machine.logic.collection(collection); } catch { return null; }
+    }
+    const scheme = $derived(safeScheme());
+    const fieldForge = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
+    const schemeFieldValues = $derived(scheme?.collectionValues ?? null);
+    const inputDataset = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(fieldName, data ?? {}) : {});
 
-    const isPrivate = $derived(fieldForge.fieldArgs?.includes('private'));
+    const isPrivate = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
     const labelPosition = $derived(
         typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
     );
