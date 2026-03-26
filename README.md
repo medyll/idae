@@ -102,7 +102,7 @@ SvelteKit based framework to build AI powered applications with ease.
 
 **Repo:** [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
 
-**Version:** 0.135.3 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
+**Version:** 0.136.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-query
