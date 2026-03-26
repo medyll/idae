@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.45-next.0] - 2026-03-26
+**Documentation:**
+- Create v0.136.0 launch announcement with code examples
+
+**Chores:**
+- Mark R2 complete, advance to R3
+- Complete R2 CI/CD verification, ready for npm publish
+- Mark R1 complete, advance to R2
+
+
+
 ## [0.0.44-next.0] - 2026-03-25
 **Features:**
 - Integrate demo-status analyzer into build pipeline
