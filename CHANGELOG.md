@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.47-next.0] - 2026-03-26
+**Features:**
+- refactor data handling and introduce CollectionList component
+
+**Chores:**
+- publish packages
+
+**Other:**
+- update(status): Release preparation complete at 80% (R1-R3 done, R4-R5 staged)
+- release(v0.136.0): Polish and enhance release documentation
+- release(v0.136.0): R3 documentation & R4-R5 preparation
+
+
+
 ## [0.0.46-next.0] - 2026-03-26
 **Other:**
 - update(status): Release preparation complete at 80% (R1-R3 done, R4-R5 staged)
