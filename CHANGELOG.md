@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.48-next.0] - 2026-03-26
+**Features:**
+- apply code quality audit fixes including type improvements, duplicate exports removal, and JSDoc coverage
+
+
+
 ## [0.0.47-next.0] - 2026-03-26
 **Features:**
 - refactor data handling and introduce CollectionList component
