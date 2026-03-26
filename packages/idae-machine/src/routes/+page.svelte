@@ -27,6 +27,7 @@ Shows all UI components working together with real data binding
 	import Selector from '$lib/fragments/Selector.svelte';
 	import InfoLine from '$lib/fragments/InfoLine.svelte';
 	import Skeleton from '$lib/fragments/Skeleton.svelte';
+	import CollectionList from '$lib/collection/CollectionList.svelte';
 
 	// Initialize machine — testScheme IS the model (top-level keys = collection names)
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
@@ -66,20 +67,21 @@ Shows all UI components working together with real data binding
 			<h3>Collections</h3>
 
 			<div class="selector-wrapper" data-testid="collection-selector">
-				{#each collections as col}
+				<CollectionList >
+					{#snippet children({collection})}
 					<button
 						class="collection-btn"
-						class:active={selectedCollection === col}
-						data-testid="collection-btn-{col}"
+						class:active={selectedCollection === collection.name}
+						data-testid="collection-btn-{collection.name}"
 						onclick={() => {
-							selectedCollection = col;
+							selectedCollection = collection.name;
 							selectedRecord = null;
 							activeTab = 'grid';
-						}}
-					>
-						📦 {col}
+						}}>
+						{collection.name}
 					</button>
-				{/each}
+					{/snippet}
+				</CollectionList>
 			</div>
 
 			<div class="create-section">
@@ -93,18 +95,6 @@ Shows all UI components working together with real data binding
 					label="Selected"
 					value={selectedRecord ? 'Record selected' : 'No selection'}
 				/>
-			</div>
-
-			<!-- Démo du composant Frame dans sa section dédiée -->
-			<div class="frame-demo-section">
-				<h4>Frame component</h4>
-				<div class="frame-demo-wrapper">
-					<Frame showPanel={false}>
-						{#snippet children()}
-							<p class="frame-demo-text">Frame sans panneau</p>
-						{/snippet}
-					</Frame>
-				</div>
 			</div>
 		</nav>
 

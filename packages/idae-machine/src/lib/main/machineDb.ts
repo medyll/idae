@@ -11,9 +11,7 @@ export class MachineDb {
 	 * The database model (schema) used for introspection.
 	 */
 	model:               IdbqModel;
-
 	machineForge:        MachineParserForge = new MachineParserForge();
-
 	#idbCollectionsList: Record<string, MachineScheme> = {};
 
 	/**
@@ -24,6 +22,19 @@ export class MachineDb {
 	constructor(model: IdbqModel) {
 		this.model = model;
 		this.machineForge = new MachineParserForge();
+	}
+
+	/**
+	 * List all collections defined in the model as MachineScheme instances.
+	 * @role Schema introspection
+	 * @return {MachineScheme[]} A list of MachineScheme instances.
+	 */
+	collections(): MachineScheme[] {
+		const list: MachineScheme[] = [];
+		for (const name of Object.keys(this.model)) {
+			list.push(this.collection(name as TplCollectionName));
+		}
+		return list
 	}
 
 	/**

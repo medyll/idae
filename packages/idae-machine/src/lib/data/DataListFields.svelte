@@ -11,7 +11,7 @@
      * @typedef {Object} Props
      * @property {string} collection - The name of the collection being rendered.
      * @property {Record<string, any>} data - The data object for the fields (bindable).
-     * @property {"show" | "edit"} [mode="show"] - Display mode of the fields.
+     * @property {"show" | "update"} [mode="show"] - Display mode of the fields.
      * @property {string[]} [showFields] - Optional whitelist of field names to display.
      */
     let {
@@ -19,12 +19,12 @@
       data = $bindable(),
       mode = "show",
       showFields
-    } = $props<{
+    }:{
       collection: string;
       data: Record<string, any>;
-      mode?: "show" | "edit";
+      mode?:  'show' | 'create' | 'update';
       showFields?: string[];
-    }>();
+    } = $props ();
 
     // Svelte 5: $derived must be called as a function in template
     const scheme = $derived(machine.logic.collection(collection));
@@ -39,20 +39,26 @@
       }
       return [];
     });
-
-    // Map 'edit' to 'update' for FieldDisplay
-    const fieldMode = $derived(() => mode === 'edit' ? 'update' : mode);
+ 
   </script>
-
+<div class="form">
   {#if scheme && fieldNames()?.length}
     {#each fieldNames() as fieldName}
       {#if scheme.template?.fields && scheme.template.fields[fieldName]}
         <FieldDisplay
           {collection}
-          {fieldName}
+          {fieldName} 
+          {mode} 
           bind:data={data}
-          mode={fieldMode()}
         />
       {/if}
     {/each}
-  {/if}
+  {/if}</div>
+<style>
+    :global(.form) {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        grid-column-gap: 0.5rem;
+        gap: 0.5rem;
+    }
+</style>

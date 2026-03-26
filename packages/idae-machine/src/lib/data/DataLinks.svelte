@@ -18,7 +18,6 @@ Svelte 5 FK relation viewer for a collection
 	}>();
 	const fks = $derived(machine.logic.collection(collection).parseFks());
 
-	$inspect('fks', fks);
 </script>
  
 {#each Object.entries(fks) as item (item[0])}

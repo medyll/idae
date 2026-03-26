@@ -26,7 +26,7 @@ Svelte 5 field input for all types
         mode = 'show',
         inputForm,
         showLabel = true
-    } = $props<{
+    }:{
         collection?: TplCollectionName;
         collectionId?: unknown;
         fieldName: keyof COL;
@@ -35,7 +35,7 @@ Svelte 5 field input for all types
         editInPlace?: boolean;
         inputForm?: string;
         showLabel?: boolean | string
-    }>();
+    } = $props ();
 
     // 2. Pure reactive derivations
     const scheme = $derived(machine.logic.collection(collection));
@@ -57,16 +57,6 @@ Svelte 5 field input for all types
      */
     $effect(() => {
         internalValue = data ? data[fieldName] : undefined;
-    });
-
-    /**
-     * Sync internal state changes back to parent data (child → parent)
-     */
-    $effect(() => {
-        const current = data ? data[fieldName] : undefined;
-        if (internalValue !== current) {
-            if (data) data[fieldName] = internalValue;
-        }
     });
 
 </script>
@@ -99,7 +89,6 @@ Svelte 5 field input for all types
     {:else}
         <input
             style="width: 100%"
-            class="input"
             bind:value={internalValue}
             type={fieldForge.htmlInputType}
             {...inputDataset}
@@ -112,56 +101,38 @@ Svelte 5 field input for all types
 
 {#if fieldForge}
   {#if !isPrivate}
-      <div class="relative flex  gap-2 wrapper-{fieldForge.fieldType}">
-          {#if fieldForge.fieldType !== 'id' && (labelPosition === 'before' || labelPosition === 'above')}
-              <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
-                  {fieldName}
-              </label>
-          {/if}
-
-          <div class="field-input flex">
-              {#if mode === 'show'}
-                  {@render fieldShow()}
-              {:else}
-                  {@render fieldInput()}
-              {/if}
-          </div>
-
-          {#if labelPosition === 'after' || labelPosition === 'below'}
-              <label form={inputForm} for={fieldName} class="field-label {labelPosition}">
-                  {fieldName}
-              </label>
-          {/if}
-
-          {#if error}
-              <div class="error-message">{error}</div>
-          {/if}
-      </div>
+    <label form={inputForm} for={fieldName} class="field-line {labelPosition}">
+        <span class="field-label">{fieldName}</span>  
+        <div class="field-input">
+            {#if mode === 'show'}
+                {@render fieldShow()}
+            {:else}
+                {@render fieldInput()}
+            {/if}
+            {#if error}
+                <div class="error-message">{error}</div>
+            {/if}
+        </div>
+    </label>
   {/if}
 {:else}
   <div class="error-message">Champ ou schéma non trouvé pour {fieldName}</div>
 {/if}
 
-<style lang="postcss">
-    @reference "tailwindcss";
+<style >
+ 
+    .field-line {
+        grid-column: span 2;
+        display: grid;
+        grid: inherit;
+        grid-template-columns: subgrid;
+        grid-gap: inherit;
+    }
 
-    .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 
     .field-label {
-        display: block;
         font-weight: bold;
-        padding: 0.5rem;
-
-        &.before, &.after { display: block; margin-right: 0.5em; }
-        &.above { margin-bottom: 0.25em; }
-        &.below { margin-top: 0.25em; }
     }
-
-    .wrapper-text-tiny { width: 110px; }
-    .wrapper-text-medium { width: 370px; }
-    .wrapper-text-area, .wrapper-text-long {
-        flex-basis: 100%;
-        flex-grow: 1;
-        max-width: 100%;
-    }
+    
+    .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 </style>
