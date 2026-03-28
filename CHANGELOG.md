@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.49-next.0] - 2026-03-28
+**Features:**
+- add author information to README files and create collection context
+
+
+
 ## [0.0.48-next.0] - 2026-03-26
 **Features:**
 - apply code quality audit fixes including type improvements, duplicate exports removal, and JSDoc coverage
