@@ -31,9 +31,6 @@ export class SyncController {
    * Update JWT token
    */
   setToken(token: string): void {
-    // Update token in deliverer config
-    // Note: This requires re-initializing the deliverer or updating its client config
-    // For now, we store it and it will be used on next sync cycle
     (this.deliverer as any).client?.config?.setOptions?.({ token });
   }
 
@@ -42,6 +39,27 @@ export class SyncController {
    */
   clearToken(): void {
     (this.deliverer as any).client?.config?.setOptions?.({ token: undefined });
+  }
+
+  /**
+   * Update tenant ID for multi-tenancy
+   */
+  setTenantId(tenantId: string): void {
+    (this.deliverer as any).client?.config?.setOptions?.({ tenantId });
+  }
+
+  /**
+   * Update custom headers
+   */
+  setHeaders(headers: Record<string, string>): void {
+    (this.deliverer as any).client?.config?.setOptions?.({ headers });
+  }
+
+  /**
+   * Update any client configuration option
+   */
+  configure(options: Record<string, unknown>): void {
+    (this.deliverer as any).client?.config?.setOptions?.(options);
   }
 
   /**

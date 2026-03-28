@@ -1,44 +1,45 @@
 phase: "Done"
 progress: 100
 active_role: "Developer"
-next_action: "Sprint 1 complete - Ready for review"
+next_action: "Sprint 2 complete - All stories done"
 next_command: "bmad continue"
 next_role: "Reviewer"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
     status: "done"
+    stories: []
+  - number: 2
+    goal: "Developer experience improvements + Advanced features"
+    status: "done"
     stories:
-      - id: S1-01
-        title: Project Scaffolding
+      - id: S2-01
+        title: React Hook Wrapper
         status: done
-      - id: S1-02
-        title: Type Definitions
+      - id: S2-02
+        title: Vue 3 Composables
         status: done
-      - id: S1-03
-        title: Config Resolution & Auto-Detection
+      - id: S2-04
+        title: Browser DevTools Panel
         status: done
-      - id: S1-04
-        title: Qoolie Core Class Implementation
+      - id: S2-05
+        title: IndexedDB Migration Helper
         status: done
-      - id: S1-05
-        title: QoolieCollection Wrapper with Reactive State
+      - id: S2-06
+        title: Performance Benchmarks
         status: done
-      - id: S1-06
-        title: SyncController Facade
-        status: done
-      - id: S1-07
-        title: Dead Letter Queue Controller
-        status: done
-      - id: S1-08
-        title: Main Exports & Public API Surface
-        status: done
-      - id: S1-09
-        title: Unit Test Suite (Vitest)
-        status: done
-      - id: S1-10
-        title: Build Pipeline & Type Check
-        status: done
+      - id: S2-06
+        title: Performance Benchmarks
+        status: planned
+      - id: S2-04
+        title: Browser DevTools Panel
+        status: planned
+      - id: S2-05
+        title: IndexedDB Migration Helper
+        status: planned
+      - id: S2-06
+        title: Performance Benchmarks
+        status: planned
       - id: S1-02
         title: Type Definitions
         status: planned

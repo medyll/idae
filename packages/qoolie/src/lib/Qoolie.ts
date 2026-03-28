@@ -47,11 +47,11 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
       // 1. Normalize configuration
       this.normalizedConfig = normalizeConfig(options);
 
-      // 2. Auto-detect base URL if not provided
-      if (this.normalizedConfig.syncConfig && !this.normalizedConfig.syncConfig.baseUrl) {
+      // 2. Auto-detect database host if not provided
+      if (this.normalizedConfig.syncConfig && !this.normalizedConfig.syncConfig.databaseHost) {
         const detectedUrl = autoDetectBaseUrl();
         if (detectedUrl) {
-          this.normalizedConfig.syncConfig.baseUrl = detectedUrl;
+          this.normalizedConfig.syncConfig.databaseHost = detectedUrl;
         }
       }
 
@@ -82,14 +82,37 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
   private initializeSync(): void {
     const syncConfig = this.normalizedConfig.syncConfig!;
 
-    // Build deliverer config
-    const delivererConfig: Record<string, unknown> = {
-      baseUrl: syncConfig.baseUrl,
-    };
+    // Build deliverer config - pass all IdaeApiClient options
+    const delivererConfig: Record<string, unknown> = {};
 
-    // Add token if provided
+    // URL configuration
+    if (syncConfig.databaseHost) {
+      delivererConfig.baseUrl = syncConfig.databaseHost;
+    }
+    if (syncConfig.host) {
+      delivererConfig.host = syncConfig.host;
+    }
+    if (syncConfig.port) {
+      delivererConfig.port = syncConfig.port;
+    }
+    if (syncConfig.method) {
+      delivererConfig.method = syncConfig.method;
+    }
+    if (syncConfig.defaultDb) {
+      delivererConfig.defaultDb = syncConfig.defaultDb;
+    }
+
+    // Authentication & multi-tenancy
     if (syncConfig.token) {
       delivererConfig.token = syncConfig.token;
+    }
+    if (syncConfig.tenantId) {
+      delivererConfig.tenantId = syncConfig.tenantId;
+    }
+
+    // Custom headers
+    if (syncConfig.headers && Object.keys(syncConfig.headers).length > 0) {
+      delivererConfig.headers = syncConfig.headers;
     }
 
     // Initialize sync via initSync

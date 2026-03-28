@@ -83,7 +83,14 @@ export function normalizeConfig<T extends CollectionConfigMap>(
   const globalSyncConfig: SyncConfig | null = globalSyncEnabled && syncOptions
     ? {
         enabled: syncOptions?.enabled ?? true,
-        baseUrl: syncOptions?.baseUrl,
+        databaseHost: syncOptions?.databaseHost,
+        host: syncOptions?.host,
+        port: syncOptions?.port,
+        method: syncOptions?.method,
+        defaultDb: syncOptions?.defaultDb,
+        token: syncOptions?.token,
+        tenantId: syncOptions?.tenantId,
+        headers: syncOptions?.headers,
         mode: syncOptions?.mode ?? 'mobile-first',
         intervalMs: syncOptions?.intervalMs ?? 5000,
         maxRetries: syncOptions?.maxRetries ?? 10,

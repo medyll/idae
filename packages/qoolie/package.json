@@ -1,7 +1,7 @@
 {
   "name": "@medyll/qoolie",
   "version": "0.0.1",
-  "description": "Unified interface for idae-idbql with optional sync",
+  "description": "Client database IndexedDB the easy way, add server sync",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,6 +9,18 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "default": "./dist/vue/index.js"
+    },
+    "./devtools": {
+      "types": "./dist/devtools/index.d.ts",
+      "default": "./dist/devtools/index.js"
     }
   },
   "scripts": {
@@ -17,6 +29,7 @@
     "test:unit": "vitest run",
     "lint": "eslint src",
     "check": "tsc --noEmit",
+    "bench": "tsx benchmarks/index.ts",
     "prepackage": "node scripts/package-pre.js"
   },
   "dependencies": {
@@ -24,15 +37,32 @@
     "@medyll/idae-sync": "workspace:*"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
     "fake-indexeddb": "^6.0.0",
+    "react": "^18.2.0",
     "typescript": "^5.9.3",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "vue": "^3.4.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "vue": ">=3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   },
   "keywords": [
     "indexeddb",
-    "offline-first",
     "sync",
+    "react",
+    "vue",
     "svelte"
   ],
   "author": "Lebrun Meddy",

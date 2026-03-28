@@ -28,3 +28,6 @@ export { QoolieError } from './lib/types.js';
 // Utils (optional exports for advanced users)
 export { autoDetectBaseUrl } from './lib/utils/autoDetectBaseUrl.js';
 export { normalizeConfig } from './lib/utils/normalizeConfig.js';
+
+// React hooks (optional, react is peer dependency)
+// Import from '@medyll/qoolie/react'

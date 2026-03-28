@@ -36,13 +36,13 @@ export interface CollectionConfigMap {
 export interface SyncConfig {
   /** Enable sync (default: true) */
   enabled?: boolean;
-  /** Database host for API connection (default: auto-detected from window.location.origin) */
-  databaseHost?: string;
-  /** API host (default: 'localhost'). Used if databaseHost not provided */
+  /** API base URL (auto-detected if omitted). If provided, overrides host/port/method */
+  baseUrl?: string;
+  /** API host (default: 'localhost'). Used if baseUrl not provided */
   host?: string;
-  /** API port (default: 3000). Used if databaseHost not provided */
+  /** API port (default: 3000). Used if baseUrl not provided */
   port?: number;
-  /** API protocol: 'http' or 'https' (default: 'https'). Used if databaseHost not provided */
+  /** API protocol: 'http' or 'https' (default: 'https'). Used if baseUrl not provided */
   method?: 'http' | 'https';
   /** Default database name for API calls (default: 'app') */
   defaultDb?: string;
