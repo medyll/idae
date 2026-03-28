@@ -1,0 +1,49 @@
+{
+  "name": "@medyll/qoolie",
+  "version": "0.0.1",
+  "description": "Unified interface for idae-idbql with optional sync",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "lint": "eslint src",
+    "check": "tsc --noEmit",
+    "prepackage": "node scripts/package-pre.js"
+  },
+  "dependencies": {
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/idae-sync": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "fake-indexeddb": "^6.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.0.0"
+  },
+  "keywords": [
+    "indexeddb",
+    "offline-first",
+    "sync",
+    "svelte"
+  ],
+  "author": "Lebrun Meddy",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
+  "scope": "medyll"
+}
