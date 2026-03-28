@@ -1,9 +1,9 @@
 phase: "Done"
-progress: 100
+progress: 0
 active_role: "Developer"
-next_action: "Sprint 2 complete - All stories done"
-next_command: "bmad continue"
-next_role: "Reviewer"
+next_action: "Start Sprint 3"
+next_command: "bmad dev story S3-01"
+next_role: "Developer"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
@@ -31,10 +31,28 @@ sprints:
       - id: S2-06
         title: Performance Benchmarks
         status: done
+  - number: 3
+    goal: "Advanced features for production-ready applications"
+    status: "planned"
+    stories:
+      - id: S3-01
+        title: Server Push Support (SSE/WebSocket)
+        status: planned
+      - id: S3-02
+        title: Encryption at Rest
+        status: planned
+      - id: S3-03
+        title: Plugin System for Custom Deliverers
+        status: planned
+      - id: S3-04
+        title: CLI for Scaffolding and Migrations
+        status: planned
 artifacts:
   - "bmad/artifacts/plan-prd.md"
   - "bmad/artifacts/plan-arch.md"
   - "bmad/artifacts/sprint-1.md"
+  - "bmad/artifacts/sprint-2.md"
+  - "bmad/artifacts/sprint-3.md"
   - "bmad/artifacts/stories/S1-01.md"
   - "bmad/artifacts/stories/S1-02.md"
   - "bmad/artifacts/stories/S1-03.md"
