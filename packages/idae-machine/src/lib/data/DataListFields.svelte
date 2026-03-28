@@ -6,6 +6,7 @@
      */
     import FieldDisplay from "$lib/field/FieldDisplay.svelte";
     import { machine } from "$lib/main/machine.js";
+	import { getContext } from "svelte";
 
     /**
      * @typedef {Object} Props
@@ -15,7 +16,7 @@
      * @property {string[]} [showFields] - Optional whitelist of field names to display.
      */
     let {
-      collection,
+      collection = getContext('collection'),
       data = $bindable(),
       mode = "show",
       showFields
@@ -53,7 +54,8 @@
         />
       {/if}
     {/each}
-  {/if}</div>
+  {/if}
+</div>
 <style>
     :global(.form) {
         display: grid;

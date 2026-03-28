@@ -284,6 +284,8 @@ pnpm run format           # Auto-format
 
 MIT License © 2026 [medyll](https://github.com/medyll)
 
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
+
 ---
 
 ## 🤝 Contributing

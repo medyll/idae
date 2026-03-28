@@ -87,3 +87,5 @@ Design notes:
 - Keep exports compatible with Svelte packaging expectations when changing `src/lib/index.ts`.
 
 ---
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

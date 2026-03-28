@@ -199,3 +199,5 @@ flowchart TD
 ## License
 
 ISC
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

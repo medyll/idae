@@ -334,3 +334,5 @@ Then run Playwright against `http://localhost:4173`.
 ## License
 
 This package follows the monorepo license — see the `LICENSE` file at the repository root.
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

@@ -107,3 +107,5 @@ Repository names are derived from the package name (scope removed). For example,
 ## License
 
 MIT
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

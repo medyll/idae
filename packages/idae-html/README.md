@@ -146,6 +146,8 @@ If you author component styles using the `csss` syntax, add `lang="csss"` to the
 
 For more, see the monorepo documentation or contact the maintainers.
 
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
+
 
 ## Architecture
 

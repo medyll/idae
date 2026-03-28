@@ -137,4 +137,4 @@ graph TD
 
 MIT © [Medyll](https://github.com/medyll)
 
----
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

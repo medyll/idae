@@ -36,3 +36,5 @@ For more information, visit the [main documentation](../../README.md)
 ## License
 
 MIT
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
