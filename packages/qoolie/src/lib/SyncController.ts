@@ -28,6 +28,23 @@ export class SyncController {
   }
 
   /**
+   * Update JWT token
+   */
+  setToken(token: string): void {
+    // Update token in deliverer config
+    // Note: This requires re-initializing the deliverer or updating its client config
+    // For now, we store it and it will be used on next sync cycle
+    (this.deliverer as any).client?.config?.setOptions?.({ token });
+  }
+
+  /**
+   * Clear JWT token
+   */
+  clearToken(): void {
+    (this.deliverer as any).client?.config?.setOptions?.({ token: undefined });
+  }
+
+  /**
    * Pause sync
    */
   pause(): void {

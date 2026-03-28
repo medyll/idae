@@ -87,6 +87,11 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
       baseUrl: syncConfig.baseUrl,
     };
 
+    // Add token if provided
+    if (syncConfig.token) {
+      delivererConfig.token = syncConfig.token;
+    }
+
     // Initialize sync via initSync
     const syncResult = initSync({
       dbName: this.normalizedConfig.dbName,

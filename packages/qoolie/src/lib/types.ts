@@ -37,6 +37,8 @@ export interface SyncConfig {
   enabled?: boolean;
   /** API base URL (auto-detected if omitted) */
   baseUrl?: string;
+  /** JWT token for authentication */
+  token?: string;
   /** Sync mode (default: 'mobile-first') */
   mode?: SyncMode;
   /** Polling interval in ms (default: 5000) */
@@ -147,6 +149,10 @@ export interface QoolieCollection<T extends CollectionConfig> {
  * Sync controller for pause/resume/status
  */
 export interface SyncController {
+  /** Set JWT token for authentication */
+  setToken(token: string): void;
+  /** Clear JWT token */
+  clearToken(): void;
   /** Pause sync */
   pause(): void;
   /** Resume sync */
