@@ -19,6 +19,9 @@ sprints:
       - id: S2-02
         title: Vue 3 Composables
         status: done
+      - id: S2-03
+        title: Fluent Query Builder
+        status: skipped
       - id: S2-04
         title: Browser DevTools Panel
         status: done
@@ -28,45 +31,6 @@ sprints:
       - id: S2-06
         title: Performance Benchmarks
         status: done
-      - id: S2-06
-        title: Performance Benchmarks
-        status: planned
-      - id: S2-04
-        title: Browser DevTools Panel
-        status: planned
-      - id: S2-05
-        title: IndexedDB Migration Helper
-        status: planned
-      - id: S2-06
-        title: Performance Benchmarks
-        status: planned
-      - id: S1-02
-        title: Type Definitions
-        status: planned
-      - id: S1-03
-        title: Config Resolution & Auto-Detection
-        status: planned
-      - id: S1-04
-        title: Qoolie Core Class Implementation
-        status: planned
-      - id: S1-05
-        title: QoolieCollection Wrapper with Reactive State
-        status: planned
-      - id: S1-06
-        title: SyncController Facade
-        status: planned
-      - id: S1-07
-        title: Dead Letter Queue Controller
-        status: planned
-      - id: S1-08
-        title: Main Exports & Public API Surface
-        status: planned
-      - id: S1-09
-        title: Unit Test Suite (Vitest)
-        status: planned
-      - id: S1-10
-        title: Build Pipeline & Type Check
-        status: planned
 artifacts:
   - "bmad/artifacts/plan-prd.md"
   - "bmad/artifacts/plan-arch.md"
