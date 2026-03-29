@@ -1,9 +1,9 @@
 phase: "Done"
-progress: 100
+progress: 0
 active_role: "Developer"
-next_action: "Sprint 4 complete - All stories done"
-next_command: "bmad continue"
-next_role: "Reviewer"
+next_action: "Start Sprint 5 - Advanced Data Management"
+next_command: "bmad dev story S5-01"
+next_role: "Developer"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
@@ -63,6 +63,22 @@ sprints:
       - id: S4-04
         title: Health Check & Status API
         status: done
+  - number: 5
+    goal: "Advanced features for data validation, conflict resolution, and multi-database support"
+    status: "planned"
+    stories:
+      - id: S5-01
+        title: Data Validation & Schema Enforcement
+        status: planned
+      - id: S5-02
+        title: Offline-first Conflict Resolution
+        status: planned
+      - id: S5-03
+        title: Multi-Database Support
+        status: planned
+      - id: S5-04
+        title: Import/Export Utilities
+        status: planned
 artifacts:
   - "bmad/artifacts/plan-prd.md"
   - "bmad/artifacts/plan-arch.md"
