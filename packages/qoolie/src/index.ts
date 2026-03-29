@@ -53,3 +53,8 @@ export { normalizeConfig } from './lib/utils/normalizeConfig.js';
 
 // React hooks (optional, react is peer dependency)
 // Import from '@medyll/qoolie/react'
+
+// Svelte 5 Reactive (optional)
+// Import from '@medyll/qoolie/reactive'
+export { useReactiveQuery } from './reactive/index.js';
+export type { ReactiveQueryResult, ReactiveQueryOptions } from './reactive/index.js';

@@ -80,12 +80,43 @@ interface QoolieOptions<T extends CollectionConfigMap> {
   dbVersion?: number;
   sync?: SyncConfig | false;
   collections: T;
-  stateEngine?: 'svelte5' | 'stator';
+  stateEngine?: 'svelte5' | 'stator';  // Default: 'svelte5'
   hooks?: {
     onSyncEvent?: (event: SyncEvent) => void;
     onError?: (error: Error, context: SyncErrorContext) => void;
   };
 }
+```
+
+### Svelte 5 Reactivity
+
+When using `stateEngine: 'svelte5'` (default), qoolie queries are reactive with Svelte 5 runes:
+
+```svelte
+<script lang="ts">
+import { createQoolie } from '@medyll/qoolie';
+
+const qoolie = createQoolie({
+  dbName: 'my-app',
+  collections: {
+    users: { keyPath: '++id' }
+  }
+});
+
+// Reactive queries with $derived
+let allUsers = $derived(qoolie.collection.users.getAll());
+let adults = $derived(qoolie.collection.users.where({ age: { $gte: 18 } }));
+
+// Updates automatically when data changes!
+</script>
+
+{#each adults.value as user}
+  <p>{user.name} - {user.age}</p>
+{/each}
+
+<button onclick={() => qoolie.collection.users.create({ name: 'New', age: 25 })}>
+  Add User
+</button>
 ```
 
 #### SyncConfig
