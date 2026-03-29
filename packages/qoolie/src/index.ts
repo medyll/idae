@@ -43,6 +43,10 @@ export type {
 // Error classes
 export { QoolieError } from './lib/types.js';
 
+// Health Check
+export { getHealthStatus, getCollectionStats, formatBytes } from './lib/health.js';
+export type { HealthStatus, CollectionStats } from './lib/health.js';
+
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
 export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';

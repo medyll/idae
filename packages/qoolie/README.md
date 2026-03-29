@@ -377,6 +377,42 @@ qoolie.sync.configure({
 });
 ```
 
+## Health Check
+
+Get health status and collection statistics:
+
+```typescript
+import { createQoolie, getHealthStatus, getCollectionStats } from '@medyll/qoolie';
+
+const qoolie = createQoolie({
+  dbName: 'my-app',
+  collections: { users: { keyPath: 'id' } },
+});
+
+// Get overall health status
+const health = await getHealthStatus(qoolie);
+console.log(health);
+// {
+//   indexeddb: 'connected',
+//   sync: 'running',
+//   queueLength: 5,
+//   dlqLength: 0,
+//   collections: {
+//     users: { count: 150 }
+//   },
+//   timestamp: 1234567890
+// }
+
+// Get specific collection stats
+const stats = await getCollectionStats(qoolie, 'users');
+console.log(stats);
+// { count: 150, size: 12288, lastModified: Date }
+
+// Format size for display
+import { formatBytes } from '@medyll/qoolie';
+console.log(formatBytes(stats.size)); // "12 KB"
+```
+
 ## Server Push (Real-time Sync)
 
 Enable real-time server push via SSE or WebSocket:
