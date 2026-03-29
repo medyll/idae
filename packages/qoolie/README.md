@@ -337,6 +337,126 @@ qoolie.sync.configure({
 });
 ```
 
+## Server Push (Real-time Sync)
+
+Enable real-time server push via SSE or WebSocket:
+
+```typescript
+import { createQoolie } from '@medyll/qoolie';
+
+const qoolie = createQoolie({
+  dbName: 'my-app',
+  sync: {
+    enabled: true,
+    databaseHost: 'https://api.example.com',
+    token: 'your-jwt-token',
+    // Server push configuration
+    push: {
+      enabled: true,
+      protocol: 'sse', // or 'websocket'
+      url: 'wss://api.example.com/sync',
+    },
+  },
+  collections: { users: { keyPath: 'id' } },
+});
+
+// Listen to server changes
+qoolie.sync.onServerChange((change) => {
+  console.log('Server change:', change);
+  // change.type: 'create' | 'update' | 'delete'
+  // change.collection: collection name
+  // change.id: document id
+  // change.data: document data
+});
+
+// Check push connection status
+console.log('Push connected:', qoolie.sync.isPushConnected());
+```
+
+## Encryption at Rest
+
+Encrypt IndexedDB data using AES-GCM:
+
+```typescript
+import { createQoolie, EncryptionHelper } from '@medyll/qoolie';
+
+// Create encryption helper
+const encryption = new EncryptionHelper({
+  password: 'user-password',
+  salt: 'random-salt', // Store securely
+});
+
+// Initialize encryption
+await encryption.init();
+
+// Encrypt data before storing
+const data = { secret: 'sensitive-info' };
+const encrypted = await encryption.encrypt(data);
+
+// Decrypt data after reading
+const decrypted = await encryption.decrypt(encrypted);
+```
+
+## Plugin System
+
+Extend Qoolie with custom plugins:
+
+```typescript
+import { createQoolie, definePlugin } from '@medyll/qoolie';
+
+// Define a plugin
+const myPlugin = definePlugin({
+  name: 'my-plugin',
+  version: '1.0.0',
+  hooks: {
+    beforeSync: (entry) => {
+      console.log('Before sync:', entry);
+      return entry;
+    },
+    afterSync: (result) => {
+      console.log('Sync completed:', result);
+    },
+    onError: (error, entry) => {
+      console.error('Sync error:', error);
+    },
+  },
+});
+
+// Use plugin
+const qoolie = createQoolie({
+  dbName: 'my-app',
+  plugins: [myPlugin],
+  collections: { users: { keyPath: 'id' } },
+});
+```
+
+## CLI
+
+Use the Qoolie CLI for scaffolding and data management:
+
+```bash
+# Install CLI globally
+npm install -g @medyll/qoolie
+
+# Generate a new collection
+qoolie generate:collection posts --keyPath=id --sync
+
+# Generate a migration
+qoolie generate:migration add_index_to_posts
+
+# Run migrations
+qoolie migrate:run --db=my-app
+
+# Check database status
+qoolie status --db=my-app
+
+# Export data
+qoolie export users --output=users-backup.json
+
+# Import data
+qoolie import users --input=users-backup.json --merge
+```
+
 ## License
 
 MIT © [Medyll](https://github.com/medyll)

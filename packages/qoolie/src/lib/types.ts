@@ -7,6 +7,12 @@ export interface SyncEvent {
   fallbackMode?: SyncMode;
 }
 
+import type { PushConfig } from './push/types.js';
+import type { ServerChange } from './push/types.js';
+
+// Re-export push types for convenience
+export type { PushConfig, ServerChange };
+
 /**
  * Sync mode: 'mobile-first' (optimistic) or 'server-first' (rollback on failure)
  */
@@ -60,6 +66,8 @@ export interface SyncConfig {
   maxRetries?: number;
   /** Circuit breaker config (false to disable) */
   circuitBreaker?: CircuitBreakerOptions | false;
+  /** Server push configuration */
+  push?: PushConfig;
 }
 
 /**

@@ -5,6 +5,9 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "qoolie": "./dist/cli/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -34,7 +37,9 @@
   },
   "dependencies": {
     "@medyll/idae-idbql": "workspace:*",
-    "@medyll/idae-sync": "workspace:*"
+    "@medyll/idae-sync": "workspace:*",
+    "commander": "^12.1.0",
+    "idb": "^8.0.3"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

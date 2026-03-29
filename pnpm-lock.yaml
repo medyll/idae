@@ -1716,6 +1716,12 @@ importers:
       '@medyll/idae-sync':
         specifier: workspace:*
         version: link:../idae-sync
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      idb:
+        specifier: ^8.0.3
+        version: 8.0.3
     devDependencies:
       '@testing-library/react':
         specifier: ^14.0.0
@@ -1741,6 +1747,7 @@ importers:
       vue:
         specifier: ^3.4.0
         version: 3.4.0(typescript@5.9.3)
+    publishDirectory: .
 
   packages/shared:
     dependencies:
@@ -6826,6 +6833,10 @@ packages:
       react: ^18 || ^19 || ^19.0.0-rc
       react-dom: ^18 || ^19 || ^19.0.0-rc
 
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
+
   commander@14.0.3:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
@@ -8586,6 +8597,9 @@ packages:
   iconv-lite@0.7.2:
     resolution: {integrity: sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==}
     engines: {node: '>=0.10.0'}
+
+  idb@8.0.3:
+    resolution: {integrity: sha512-LtwtVyVYO5BqRvcsKuB2iUMnHwPVByPCXFXOpuU96IZPPoPN6xjOGxZQ74pgSVVLQWtUOYgyeL4GE98BY5D3wg==}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -20314,6 +20328,8 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
+  commander@12.1.0: {}
+
   commander@14.0.3: {}
 
   commander@2.15.1: {}
@@ -22570,6 +22586,8 @@ snapshots:
   iconv-lite@0.7.2:
     dependencies:
       safer-buffer: 2.1.2
+
+  idb@8.0.3: {}
 
   ieee754@1.2.1: {}
 

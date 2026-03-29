@@ -1,7 +1,9 @@
 import type { OutboxStore, IdaeApiDeliverer, SyncEvent } from '@medyll/idae-sync';
 import type { SyncAdapter } from '@medyll/idae-sync';
-import type { SyncConfig, SyncStatus } from './types.js';
+import type { SyncConfig, SyncStatus, PushConfig } from './types.js';
 import { DLQController } from './DLQController.js';
+import { ServerPushListener } from './push/ServerPushListener.js';
+import type { ServerChange } from './push/types.js';
 
 /**
  * SyncController - Facade for sync operations
@@ -13,18 +15,30 @@ export class SyncController {
   private syncConfig: SyncConfig | null;
   private dlqController: DLQController;
   private eventHandlers: Set<(event: SyncEvent) => void> = new Set();
+  private pushListener?: ServerPushListener;
+  private serverChangeHandlers: Set<(change: ServerChange) => void> = new Set();
 
   constructor(
     syncAdapter: SyncAdapter,
     outbox: OutboxStore,
     deliverer: IdaeApiDeliverer,
-    syncConfig: SyncConfig | null
+    syncConfig: SyncConfig | null,
+    pushConfig?: PushConfig
   ) {
     this.syncAdapter = syncAdapter;
     this.outbox = outbox;
     this.deliverer = deliverer;
     this.syncConfig = syncConfig;
     this.dlqController = new DLQController(outbox);
+
+    // Initialize server push listener if configured
+    if (pushConfig?.enabled && pushConfig.url) {
+      this.pushListener = new ServerPushListener({
+        ...pushConfig,
+        token: syncConfig?.token,
+      });
+      this.pushListener.onChange((change) => this.handleServerChange(change));
+    }
   }
 
   /**
@@ -131,5 +145,60 @@ export class SyncController {
    */
   get dlq(): DLQController {
     return this.dlqController;
+  }
+
+  /**
+   * Start server push listener
+   */
+  startPush(): void {
+    this.pushListener?.start();
+  }
+
+  /**
+   * Stop server push listener
+   */
+  stopPush(): void {
+    this.pushListener?.stop();
+  }
+
+  /**
+   * Check if server push is connected
+   */
+  isPushConnected(): boolean {
+    return this.pushListener?.isConnected() ?? false;
+  }
+
+  /**
+   * Listen to server changes
+   */
+  onServerChange(handler: (change: ServerChange) => void): () => void {
+    this.serverChangeHandlers.add(handler);
+    return () => {
+      this.serverChangeHandlers.delete(handler);
+    };
+  }
+
+  /**
+   * Handle incoming server change
+   */
+  private async handleServerChange(change: ServerChange): Promise<void> {
+    // Notify all handlers
+    for (const handler of this.serverChangeHandlers) {
+      try {
+        await handler(change);
+      } catch (error) {
+        console.error('[Qoolie] Server change handler error:', error);
+      }
+    }
+
+    // TODO: Merge server change into local IndexedDB
+    // This will be implemented based on change type
+    if (change.type === 'create' || change.type === 'update') {
+      // Upsert into local DB
+      console.log('[Qoolie] Server change (upsert):', change);
+    } else if (change.type === 'delete') {
+      // Delete from local DB
+      console.log('[Qoolie] Server change (delete):', change);
+    }
   }
 }

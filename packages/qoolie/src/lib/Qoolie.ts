@@ -186,7 +186,8 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
         this.syncAdapter,
         this.outbox,
         this.deliverer,
-        this.normalizedConfig.syncConfig
+        this.normalizedConfig.syncConfig,
+        this.normalizedConfig.syncConfig?.push
       );
     }
     return this.syncController;
