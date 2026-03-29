@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.50-next.0] - 2026-03-29
+**Features:**
+- implement Sprint 3 - Advanced Features & Tooling
+- add Sprint 3 - Advanced Features & Tooling
+- Add JWT authentication support for sync operations in Qoolie
+- Add QoolieCollection and SyncController for CRUD and sync operations
+
+**Chores:**
+- mark S2-03 QueryBuilder as skipped, Sprint 2 complete
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.49-next.0] - 2026-03-28
 **Features:**
 - add author information to README files and create collection context

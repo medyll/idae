@@ -19,6 +19,7 @@ A high-performance monorepo for modern full-stack application development. Focus
 - [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
 - [@medyll/idae-sync](https://github.com/medyll/idae/tree/main/packages/idae-sync)
 - [@medyll/monorepo-vitrine](https://github.com/medyll/idae/tree/main/packages/mono-vitrine)
+- [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
 - [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
 - [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
 - [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
@@ -148,6 +149,13 @@ Sync monorepo packages to individual GitHub showcase repositories
 **Repo:** [@medyll/monorepo-vitrine](https://github.com/medyll/idae/tree/main/packages/mono-vitrine)
 
 **Version:** 1.1.0
+##
+### @medyll/qoolie
+Client database IndexedDB the easy way, add server sync
+
+**Repo:** [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
+
+**Version:** 0.0.1
 ##
 ### @medyll/idae-shared
 sharing
