@@ -143,8 +143,17 @@ interface SyncConfig {
   intervalMs?: number;        // Default: 5000
   maxRetries?: number;        // Default: 10
   circuitBreaker?: {...} | false;
+  
+  // Server Push (real-time sync)
+  push?: {
+    enabled?: boolean;
+    protocol?: 'sse' | 'websocket';
+    url?: string;
+  };
 }
 ```
+
+All `IdaeApiClientConfig` options are supported for full compatibility with idae-api.
 
 ### Framework Integrations
 
