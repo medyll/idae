@@ -47,6 +47,10 @@ export { QoolieError } from './lib/types.js';
 export { getHealthStatus, getCollectionStats, formatBytes } from './lib/health.js';
 export type { HealthStatus, CollectionStats } from './lib/health.js';
 
+// Validation
+export { defineSchema, validate, validateOrThrow, ValidationError } from './lib/validation/index.js';
+export type { Schema, SchemaDefinition, FieldRule, FieldType, ValidationErrorMessage, ValidationResult } from './lib/validation/index.js';
+
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
 export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';

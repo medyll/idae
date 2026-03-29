@@ -1,3 +1,6 @@
+import type { Schema } from './validation/types.js';
+import { validateOrThrow } from './validation/validate.js';
+
 /**
  * QoolieCollection - wrapper around idae-idbql Collection with CRUD operations
  */
@@ -7,19 +10,22 @@ export class QoolieCollection<T extends { keyPath: string }> {
   private idbql: any;
   private syncEnabled: boolean;
   private stateEngine: 'svelte5' | 'stator';
+  private schema?: Schema;
 
   constructor(
     name: string,
     keyPath: string,
     idbql: any,
     syncEnabled: boolean,
-    stateEngine: 'svelte5' | 'stator' = 'svelte5'
+    stateEngine: 'svelte5' | 'stator' = 'svelte5',
+    schema?: Schema
   ) {
     this.name = name;
     this.keyPath = keyPath;
     this.idbql = idbql;
     this.syncEnabled = syncEnabled;
     this.stateEngine = stateEngine;
+    this.schema = schema;
   }
 
   /**
@@ -74,6 +80,11 @@ export class QoolieCollection<T extends { keyPath: string }> {
    * Create document
    */
   async create(data: any): Promise<any> {
+    // Validate against schema if defined
+    if (this.schema) {
+      await validateOrThrow(this.schema, data);
+    }
+
     const collection = (this.idbql as any)[this.name];
     if (!collection) {
       throw new Error(`Collection "${this.name}" not found in idbql`);
@@ -85,6 +96,18 @@ export class QoolieCollection<T extends { keyPath: string }> {
    * Update document by ID
    */
   async update(id: any, data: any): Promise<any> {
+    // Validate against schema if defined (partial validation for updates)
+    if (this.schema) {
+      // For updates, we only validate the fields being updated
+      const partialSchema = {
+        ...this.schema.definition,
+        fields: Object.fromEntries(
+          Object.entries(this.schema.definition.fields).filter(([key]) => key in data)
+        ),
+      };
+      await validateOrThrow({ ...this.schema, definition: partialSchema, compiled: new Map() }, data);
+    }
+
     const collection = (this.idbql as any)[this.name];
     if (!collection) {
       throw new Error(`Collection "${this.name}" not found in idbql`);
