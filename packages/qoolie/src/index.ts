@@ -43,6 +43,10 @@ export type {
 // Error classes
 export { QoolieError } from './lib/types.js';
 
+// Query Operators
+export { SUPPORTED_OPERATORS } from './lib/operators.js';
+export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';
+
 // Utils (optional exports for advanced users)
 export { autoDetectBaseUrl } from './lib/utils/autoDetectBaseUrl.js';
 export { normalizeConfig } from './lib/utils/normalizeConfig.js';
