@@ -1,9 +1,9 @@
 phase: "Done"
-progress: 100
+progress: 0
 active_role: "Developer"
-next_action: "Sprint 3 complete - All stories done"
-next_command: "bmad continue"
-next_role: "Reviewer"
+next_action: "Start Sprint 4 - Integration with idae-idbql and idae-api"
+next_command: "bmad dev story S4-01"
+next_role: "Developer"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
@@ -47,6 +47,22 @@ sprints:
       - id: S3-04
         title: CLI for Scaffolding and Migrations
         status: done
+  - number: 4
+    goal: "Integration with idae-idbql and idae-api"
+    status: "planned"
+    stories:
+      - id: S4-01
+        title: Advanced Query Operators from idae-idbql
+        status: planned
+      - id: S4-02
+        title: Reactive Queries with Svelte 5 Runes
+        status: planned
+      - id: S4-03
+        title: idae-api Client Integration
+        status: planned
+      - id: S4-04
+        title: Health Check & Status API
+        status: planned
 artifacts:
   - "bmad/artifacts/plan-prd.md"
   - "bmad/artifacts/plan-arch.md"
