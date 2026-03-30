@@ -55,6 +55,14 @@ export type { Schema, SchemaDefinition, FieldRule, FieldType, ValidationErrorMes
 export { ConflictResolver, localWins, serverWins, latestTimestamp, createCustomResolver } from './lib/sync/conflict/index.js';
 export type { ConflictStrategy, ConflictEntry, ConflictResolution, ConflictConfig, ConflictEvent } from './lib/sync/conflict/index.js';
 
+// Multi-Database
+export { createMultiDbQoolie, MultiDbManager } from './lib/multiDb/index.js';
+export type { MultiDbConfig, DbInfo } from './lib/multiDb/index.js';
+
+// Import/Export
+export { exportDatabase, downloadExport, importDatabase } from './lib/importExport/index.js';
+export type { ExportData, ImportOptions, ImportResult } from './lib/importExport/index.js';
+
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
 export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';
