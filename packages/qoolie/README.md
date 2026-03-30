@@ -397,20 +397,76 @@ console.log(health);
 //   sync: 'running',
 //   queueLength: 5,
 //   dlqLength: 0,
-//   collections: {
-//     users: { count: 150 }
-//   },
+//   collections: { users: { count: 150 } },
 //   timestamp: 1234567890
 // }
+```
 
-// Get specific collection stats
-const stats = await getCollectionStats(qoolie, 'users');
-console.log(stats);
-// { count: 150, size: 12288, lastModified: Date }
+## Data Validation
 
-// Format size for display
-import { formatBytes } from '@medyll/qoolie';
-console.log(formatBytes(stats.size)); // "12 KB"
+Define schemas to validate data before writing:
+
+```typescript
+import { createQoolie, defineSchema } from '@medyll/qoolie';
+
+const userSchema = defineSchema({
+  fields: {
+    name: { type: 'string', required: true, min: 2, max: 100 },
+    email: { type: 'email', required: true },
+    age: { type: 'number', min: 0, max: 150 },
+    role: { type: 'string', enum: ['admin', 'user', 'guest'] },
+  },
+});
+
+const qoolie = createQoolie({
+  dbName: 'my-app',
+  collections: {
+    users: { keyPath: '++id', schema: userSchema },
+  },
+});
+
+// Validation error on invalid data
+try {
+  await qoolie.collection.users.create({ name: 'A' }); // name too short
+} catch (error) {
+  console.log(error.errors); // Validation errors
+}
+```
+
+## Conflict Resolution
+
+Handle sync conflicts with configurable strategies:
+
+```typescript
+import { createQoolie, ConflictResolver } from '@medyll/qoolie';
+
+const resolver = new ConflictResolver({
+  default: 'latest-timestamp', // or 'local-wins', 'server-wins', 'manual', 'custom'
+  perCollection: {
+    users: 'manual', // Require manual resolution for users
+  },
+  customResolver: (local, server) => ({
+    ...local,
+    ...server,
+    mergedAt: Date.now(),
+  }),
+});
+
+// Handle manual conflicts
+resolver.onConflict((event) => {
+  console.log('Conflict detected:', event.conflict);
+  event.resolve('local'); // or 'server', or custom data
+});
+
+// Resolve a conflict
+const resolution = await resolver.resolve({
+  collection: 'users',
+  id: 1,
+  local: { id: 1, name: 'Local' },
+  server: { id: 1, name: 'Server' },
+  localTimestamp: Date.now(),
+  serverTimestamp: Date.now() - 1000,
+});
 ```
 
 ## Server Push (Real-time Sync)

@@ -51,6 +51,10 @@ export type { HealthStatus, CollectionStats } from './lib/health.js';
 export { defineSchema, validate, validateOrThrow, ValidationError } from './lib/validation/index.js';
 export type { Schema, SchemaDefinition, FieldRule, FieldType, ValidationErrorMessage, ValidationResult } from './lib/validation/index.js';
 
+// Conflict Resolution
+export { ConflictResolver, localWins, serverWins, latestTimestamp, createCustomResolver } from './lib/sync/conflict/index.js';
+export type { ConflictStrategy, ConflictEntry, ConflictResolution, ConflictConfig, ConflictEvent } from './lib/sync/conflict/index.js';
+
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
 export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';
