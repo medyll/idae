@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.0.51-next.0] - 2026-03-29
+**Features:**
+- add Health Check & Status API
+- add Svelte 5 Reactivity documentation and exports
+- add Query Operators documentation and types from idae-query
+- add Sprint 4 - Integration with idae-idbql and idae-api
+- implement Sprint 3 - Advanced Features & Tooling
+- add Sprint 3 - Advanced Features & Tooling
+- Add JWT authentication support for sync operations in Qoolie
+- Add QoolieCollection and SyncController for CRUD and sync operations
+
+**Documentation:**
+- document idae-api client integration
+
+**Chores:**
+- publish packages
+- mark S2-03 QueryBuilder as skipped, Sprint 2 complete
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.0.50-next.0] - 2026-03-29
 **Features:**
 - implement Sprint 3 - Advanced Features & Tooling
