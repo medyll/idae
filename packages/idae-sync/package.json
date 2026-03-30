@@ -1,5 +1,6 @@
 {
   "name": "@medyll/idae-sync",
+  "bin": {},
   "version": "1.0.0",
   "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
   "main": "index.js",
@@ -8,6 +9,7 @@
     "prepackage": "node scripts/package-pre.js"
   },
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "@medyll/idae-api": "workspace:*",
     "@medyll/idae-idbql": "workspace:*"
   },

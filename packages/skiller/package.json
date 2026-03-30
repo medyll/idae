@@ -1,0 +1,29 @@
+{
+  "name": "@medyll/skiller",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Skill installer for @medyll packages",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "bin": {
+    "skiller": "./src/cli.mjs",
+    "add-skill": "./src/cli.mjs"
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "author": "Lebrun Meddy",
+  "scripts": {
+    "prepackage": "node scripts/package-pre.js"
+  }
+}

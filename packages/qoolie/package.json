@@ -36,6 +36,7 @@
     "prepackage": "node scripts/package-pre.js"
   },
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "@medyll/idae-idbql": "workspace:*",
     "@medyll/idae-sync": "workspace:*",
     "commander": "^12.1.0",

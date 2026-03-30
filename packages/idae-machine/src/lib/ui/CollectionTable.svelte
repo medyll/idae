@@ -1,6 +1,5 @@
 <script lang="ts">
-export let items = [];
-export let columns: string[] = [];
+let { items = [], columns = [] } = $props();
 </script>
 
 <table class="collection-table">

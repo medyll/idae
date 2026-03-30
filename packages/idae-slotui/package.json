@@ -113,6 +113,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "@iconify/svelte": "^5.2.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",

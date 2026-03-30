@@ -24,6 +24,7 @@
   "author": "Lebrun Meddy",
   "license": "MIT",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "@octokit/rest": "^22.0.1",
     "commander": "^14.0.3",
     "glob": "^13.0.3",

@@ -1,7 +1,6 @@
 <script lang="ts">
 	// Placeholder CollectionTable component for demo
-	export let collection: string;
-	export let items: any[] = [];
+	let { collection, items = [] } = $props();
 </script>
 
 <div class="collection-table">

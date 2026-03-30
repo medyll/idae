@@ -1,5 +1,6 @@
 {
   "name": "@medyll/idae-engine",
+  "bin": {},
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
@@ -69,6 +70,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
   }

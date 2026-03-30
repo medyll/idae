@@ -1,6 +1,5 @@
 <script lang="ts">
-	export let collection: string;
-	export let items: any[] = [];
+let { collection, items = [] } = $props();
 </script>
 
 <div class="collection-cards">

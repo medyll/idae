@@ -88,6 +88,7 @@
 		"application"
 	],
 	"dependencies": {
+		"@medyll/skiller": "workspace:*",
 		"@huggingface/prettier-plugin-vertical-align": "^0.2.4",
 		"@medyll/idae-idbql": "workspace:*",
 		"@medyll/idae-slotui-svelte": "workspace:*",

@@ -1,16 +1,16 @@
 <script lang="ts">
+	import '$lib/htmluModules.js';
+	import { cssDom, htmlDom } from '$lib/index.js';
+	
 	cssDom('[data-cssDom]', {}).each((element, changes) => {
 		console.log(element, changes);
 	});
 
-	import { onMount } from 'svelte';
-	import '$lib/htmluModules.js';
-	import { cssDom, htmlDom } from '$lib/index.js';
-	let timer: NodeJS.Timeout;
+	let timer: ReturnType<typeof setTimeout>;
 	let timerData = 0;
 	let timerDelay = 5000;
 
-	let showWidget = false;
+	let showWidget = $state(false);
 
 	function playIt(delay: number) {
 		timer = setTimeout(() => {
@@ -21,7 +21,7 @@
 		}, delay);
 	}
 
-	onMount(() => {
+	$effect(() => {
 		playIt(timerDelay);
 		return () => {
 			clearTimeout(timer);
@@ -31,18 +31,18 @@
 
 <div id="widget" lang="frede" data-widget>
 	<button
-		on:click={() => {
+		onclick={() => {
 			showWidget = !showWidget;
 		}}>showWidget</button
 	>
 	<button
-		on:click={() => {
+		onclick={() => {
 			timerDelay += 1000;
 		}}>- 1000</button
 	>
 	{timerDelay}
 	<button
-		on:click={() => {
+		onclick={() => {
 			timerDelay -= 1000;
 		}}>+ 1000</button
 	>

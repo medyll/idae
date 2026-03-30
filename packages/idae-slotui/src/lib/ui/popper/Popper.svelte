@@ -151,13 +151,11 @@ export type PopperProps = CommonProps & {
 	</div>
 {/if}
 {#if buttonProps}
-	<!-- @ts-ignore -->
 	<Button bind:element={holderSlotRef} onclick={() => (isOpen = true)} {...buttonProps} />
 {/if}
 <!-- {#if parentNode && ((isOpen && autoClose) || !autoClose)} -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- @ts-ignore -->
 <dialog
 	open={isOpen}
 	bind:this={element}

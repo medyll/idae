@@ -25,7 +25,8 @@
     "package": "pnpm -r run package",
     "package:verify": "node scripts/verify-packages.js",
     "postinstall": "npm run package:verify",
-    "verify:workspace-deps": "node scripts/verify-workspace-deps.js"
+    "verify:workspace-deps": "node scripts/verify-workspace-deps.js",
+    "add-skill": "node scripts/add-skill.mjs"
   },
   "config": {
     "commitizen": {

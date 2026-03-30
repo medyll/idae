@@ -1,5 +1,5 @@
 <script lang="ts">
-export let items = [];
+let { items = [] } = $props();
 </script>
 
 <div class="collection-cards">

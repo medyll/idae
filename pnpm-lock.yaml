@@ -201,6 +201,9 @@ importers:
 
   packages/idae-api:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -353,6 +356,9 @@ importers:
 
   packages/idae-be:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -439,6 +445,9 @@ importers:
 
   packages/idae-cadenzia:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -513,6 +522,9 @@ importers:
 
   packages/idae-csss:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -569,6 +581,9 @@ importers:
 
   packages/idae-db:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       chromadb:
         specifier: ^3.2.2
         version: 3.2.2
@@ -682,6 +697,9 @@ importers:
 
   packages/idae-dom-events:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       blob:
         specifier: ^0.1.0
         version: 0.1.0
@@ -777,6 +795,9 @@ importers:
 
   packages/idae-engine:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -830,6 +851,9 @@ importers:
 
   packages/idae-html:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -952,6 +976,9 @@ importers:
 
   packages/idae-htmlu:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -1011,6 +1038,9 @@ importers:
       '@medyll/idae-stator':
         specifier: workspace:*
         version: link:../idae-stator
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -1073,6 +1103,9 @@ importers:
       '@medyll/idae-slotui-svelte':
         specifier: workspace:*
         version: link:../idae-slotui
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       '@tailwindcss/vite':
         specifier: ^4.2.1
         version: 4.2.1(vite@8.0.0(@types/node@25.2.2)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -1171,6 +1204,9 @@ importers:
 
   packages/idae-query:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -1253,6 +1289,10 @@ importers:
     publishDirectory: .
 
   packages/idae-router:
+    dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.2
@@ -1330,6 +1370,9 @@ importers:
       '@iconify/svelte':
         specifier: ^5.2.1
         version: 5.2.1(svelte@5.53.12)
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       '@tailwindcss/postcss':
         specifier: ^4.2.1
         version: 4.2.1
@@ -1512,6 +1555,9 @@ importers:
 
   packages/idae-socket:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       '@socket.io/redis-adapter':
         specifier: ^8.3.0
         version: 8.3.0(socket.io-adapter@2.5.6)
@@ -1594,6 +1640,10 @@ importers:
     publishDirectory: .
 
   packages/idae-stator:
+    dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
     devDependencies:
       '@medyll/idae-config-prettier':
         specifier: latest
@@ -1677,6 +1727,9 @@ importers:
       '@medyll/idae-idbql':
         specifier: workspace:*
         version: link:../idae-idbql
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
     devDependencies:
       fake-indexeddb:
         specifier: ^6.0.0
@@ -1694,6 +1747,9 @@ importers:
 
   packages/mono-vitrine:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
@@ -1716,6 +1772,9 @@ importers:
       '@medyll/idae-sync':
         specifier: workspace:*
         version: link:../idae-sync
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -1751,6 +1810,9 @@ importers:
 
   packages/shared:
     dependencies:
+      '@medyll/skiller':
+        specifier: workspace:*
+        version: link:../skiller
       command:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.7(@types/react@18.2.0))(@types/react@18.2.0)(react-dom@19.2.4(react@18.3.1))(react@18.3.1)
@@ -1786,6 +1848,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
     publishDirectory: .
+
+  packages/skiller: {}
 
 packages:
 

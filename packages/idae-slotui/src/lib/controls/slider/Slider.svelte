@@ -132,10 +132,12 @@ function getPercentage(val: number) {
 }
 
 function getSliderVal(event: Event) {
-	// @ts-ignore
-	const { clientX, clientY } = (event.touches ? event.touches?.[0] : event) as TouchEvent;
-	// @ts-ignore
-	const { left, top, width, height } = elementRail?.getBoundingClientRect();
+	const mouseEvent = event as MouseEvent | TouchEvent;
+	const { clientX, clientY } = 'touches' in mouseEvent && mouseEvent.touches?.[0] 
+		? mouseEvent.touches[0] 
+		: (mouseEvent as MouseEvent);
+	const rect = elementRail?.getBoundingClientRect();
+	const { left, top, width, height } = rect ?? { left: 0, top: 0, width: 0, height: 0 };
 	const offset = orientation === 'horizontal' ? clientX - left : top + height - clientY;
 	const size = orientation === 'horizontal' ? width : height;
 	const newValue = min + (max - min) * (offset / size);

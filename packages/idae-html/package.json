@@ -93,6 +93,7 @@
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3",
     "eta": "^4.5.1",

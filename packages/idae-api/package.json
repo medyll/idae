@@ -46,6 +46,7 @@
     ]
   },
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3",
     "compression": "^1.8.1",

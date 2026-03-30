@@ -41,6 +41,7 @@
     "svelte": "^5.0.0-next"
   },
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "@medyll/idae-stator": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
