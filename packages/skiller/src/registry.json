@@ -1,0 +1,52 @@
+{
+  "targets": {
+    "user": {
+      "label": "user",
+      "path": "~/.claude/skills/<pkg>/SKILL.md",
+      "description": "User-wide Claude skills",
+      "template": ["homedir", ".claude", "skills", "<pkg>"]
+    },
+    "claude": {
+      "label": "claude",
+      "path": "./.claude/skills/<pkg>/SKILL.md",
+      "description": "Current project Claude skills",
+      "template": ["cwd", ".claude", "skills", "<pkg>"]
+    },
+    "codex": {
+      "label": "codex",
+      "path": "~/.codex/skills/<pkg>/SKILL.md",
+      "description": "User-wide Codex skills",
+      "template": ["homedir", ".codex", "skills", "<pkg>"]
+    },
+    "agent": {
+      "label": "agent",
+      "path": "./.github/skills/<pkg>/SKILL.md",
+      "description": "Current project GitHub skills",
+      "template": ["cwd", ".github", "skills", "<pkg>"]
+    },
+    "cursor": {
+      "label": "cursor",
+      "path": "~/.cursor/skills/<pkg>/SKILL.md",
+      "description": "User-wide Cursor skills",
+      "template": ["homedir", ".cursor", "skills", "<pkg>"]
+    },
+    "windsurf": {
+      "label": "windsurf",
+      "path": "~/.windsurf/skills/<pkg>/SKILL.md",
+      "description": "User-wide Windsurf skills",
+      "template": ["homedir", ".windsurf", "skills", "<pkg>"]
+    },
+    "zed": {
+      "label": "zed",
+      "path": "~/.zed/skills/<pkg>/SKILL.md",
+      "description": "User-wide Zed skills",
+      "template": ["homedir", ".zed", "skills", "<pkg>"]
+    }
+  },
+  "default": "user",
+  "custom": {
+    "enabled": true,
+    "label": "custom",
+    "description": "Custom path (will prompt for directory)"
+  }
+}

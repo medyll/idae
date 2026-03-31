@@ -11,8 +11,9 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
 const pkgs = [
-  'idae-api', 'idae-be', 'idae-db', 'idae-dom-events', 'idae-html', 'idae-htmlu',
-  'idae-idbql', 'idae-machine', 'idae-slotui', 'idae-socket', 'idae-stator', 'qoolie'
+  'idae-api', 'idae-be', 'idae-cadenzia', 'idae-csss', 'idae-db', 'idae-dom-events',
+  'idae-engine', 'idae-html', 'idae-htmlu', 'idae-idbql', 'idae-machine', 'idae-query',
+  'idae-router', 'idae-slotui', 'idae-socket', 'idae-stator', 'idae-sync', 'qoolie'
 ];
 
 const template = `#!/usr/bin/env node

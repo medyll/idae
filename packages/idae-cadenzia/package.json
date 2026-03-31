@@ -1,6 +1,8 @@
 {
   "name": "@medyll/idae-cadenzia",
-  "bin": {},
+  "bin": {
+    "add-skill": "./dist/cli/add-skill.js"
+  },
   "version": "0.147.2",
   "type": "module",
   "scripts": {

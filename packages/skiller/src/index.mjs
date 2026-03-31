@@ -2,6 +2,35 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import readline from 'readline';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const registry = require('./registry.json');
+
+/**
+ * Resolve a target path template to an absolute path
+ * @param {string[]} template - Path template (e.g. ['homedir', '.claude', 'skills', '<pkg>'])
+ * @param {string} pkgName - Package name to substitute for <pkg>
+ * @param {string} cwd - Current working directory
+ * @returns {string} Resolved absolute path
+ */
+export function resolveTargetPath(template, pkgName, cwd) {
+  const parts = template.map(part => {
+    if (part === 'homedir') return os.homedir();
+    if (part === 'cwd') return cwd;
+    if (part === '<pkg>') return pkgName;
+    return part;
+  });
+  return path.join(...parts);
+}
+
+/**
+ * Get all available installation targets
+ * @returns {Object} Registry targets
+ */
+export function getTargets() {
+  return registry.targets;
+}
 
 /**
  * Find the nearest package.json from a directory
@@ -112,30 +141,37 @@ export function getPackageName(pkgJsonPath) {
  */
 export async function interactivePrompt({ pkgName, skillSrc }) {
   const cwd = process.cwd();
-  
+  const targets = Object.values(registry.targets);
+  const custom = registry.custom;
+
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  
+
   console.log(`\nWhere to install the skill for ${pkgName}?`);
-  console.log(`  1) user     → ${path.join(os.homedir(), '.claude', 'skills', pkgName, 'SKILL.md')}`);
-  console.log(`  2) claude   → ${path.join(cwd, '.claude', 'skills', pkgName, 'SKILL.md')}  (current project)`);
-  console.log(`  3) codex    → ${path.join(os.homedir(), '.codex', 'skills', pkgName, 'SKILL.md')}`);
-  console.log(`  4) agent    → ${path.join(cwd, '.github', 'skills', pkgName, 'SKILL.md')}  (current project)`);
-  console.log(`  5) custom   → ask for a custom path`);
-  console.log('');
   
+  targets.forEach((target, index) => {
+    const displayPath = target.template.includes('<pkg>')
+      ? path.join(...target.template.map(p => p === '<pkg>' ? pkgName : p === 'homedir' ? '~' : p === 'cwd' ? '.' : p), 'SKILL.md')
+      : target.path;
+    const marker = target.template.includes('cwd') ? '  (current project)' : '';
+    console.log(`  ${index + 1}) ${target.label.padEnd(10)} → ${displayPath}${marker}`);
+  });
+  
+  if (custom.enabled) {
+    console.log(`  ${targets.length + 1}) ${custom.label.padEnd(10)} → ask for a custom path`);
+  }
+  console.log('');
+
   return new Promise((resolve, reject) => {
-    rl.question('Enter choice (1-5): ', (choice) => {
+    rl.question(`Enter choice (1-${targets.length + (custom.enabled ? 1 : 0)}): `, (choice) => {
       const trimmed = choice.trim();
+      const choiceNum = parseInt(trimmed, 10);
       let destDir;
-      if (trimmed === '1') {
-        destDir = path.join(os.homedir(), '.claude', 'skills', pkgName);
-      } else if (trimmed === '2') {
-        destDir = path.join(cwd, '.claude', 'skills', pkgName);
-      } else if (trimmed === '3') {
-        destDir = path.join(os.homedir(), '.codex', 'skills', pkgName);
-      } else if (trimmed === '4') {
-        destDir = path.join(cwd, '.github', 'skills', pkgName);
-      } else if (trimmed === '5') {
+
+      // Check if it's a valid target choice
+      if (choiceNum >= 1 && choiceNum <= targets.length) {
+        const target = targets[choiceNum - 1];
+        destDir = resolveTargetPath(target.template, pkgName, cwd);
+      } else if (custom.enabled && choiceNum === targets.length + 1) {
         rl.question('Enter custom destination directory: ', (p) => {
           installSkill({ pkgName, skillSrc, destDir: p.trim() });
           rl.close();
@@ -148,6 +184,7 @@ export async function interactivePrompt({ pkgName, skillSrc }) {
         reject(new Error('Invalid choice'));
         return;
       }
+      
       installSkill({ pkgName, skillSrc, destDir });
       rl.close();
       resolve();
@@ -157,28 +194,19 @@ export async function interactivePrompt({ pkgName, skillSrc }) {
 
 /**
  * Install skill non-interactively
- * @param {{ pkgName: string, skillSrc: string, target: 'user' | 'claude' | 'codex' | 'agent' | string }} options
+ * @param {{ pkgName: string, skillSrc: string, target: string }} options
  */
 export function installSkillNonInteractive({ pkgName, skillSrc, target }) {
   const cwd = process.cwd();
   let destDir;
-  
-  switch (target) {
-    case 'user':
-      destDir = path.join(os.homedir(), '.claude', 'skills', pkgName);
-      break;
-    case 'claude':
-      destDir = path.join(cwd, '.claude', 'skills', pkgName);
-      break;
-    case 'codex':
-      destDir = path.join(os.homedir(), '.codex', 'skills', pkgName);
-      break;
-    case 'agent':
-      destDir = path.join(cwd, '.github', 'skills', pkgName);
-      break;
-    default:
-      destDir = target;
+
+  const targetConfig = registry.targets[target];
+  if (targetConfig) {
+    destDir = resolveTargetPath(targetConfig.template, pkgName, cwd);
+  } else {
+    // Custom path
+    destDir = target;
   }
-  
+
   installSkill({ pkgName, skillSrc, destDir });
 }

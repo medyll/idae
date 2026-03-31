@@ -1,6 +1,8 @@
 {
   "name": "@medyll/idae-sync",
-  "bin": {},
+  "bin": {
+    "add-skill": "./dist/cli/add-skill.js"
+  },
   "version": "1.0.0",
   "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
   "main": "index.js",

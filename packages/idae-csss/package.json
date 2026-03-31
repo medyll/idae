@@ -1,6 +1,8 @@
 {
   "name": "@medyll/idae-csss",
-  "bin": {},
+  "bin": {
+    "add-skill": "./dist/cli/add-skill.js"
+  },
   "version": "0.0.1",
   "description": "CSS and Style utility library for the Idae ecosystem.",
   "main": "./dist/index.js",

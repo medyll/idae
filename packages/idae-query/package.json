@@ -1,6 +1,8 @@
 {
   "name": "@medyll/idae-query",
-  "bin": {},
+  "bin": {
+    "add-skill": "./dist/cli/add-skill.js"
+  },
   "scope": "medyll",
   "author": "Lebrun Meddy",
   "repository": {
