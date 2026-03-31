@@ -1,10 +1,10 @@
 ---
 name: skiller
-description: Use this when you need to create or install SKILL.md files for @medyll packages. Provides CLI commands to generate skill templates and install them to AI agent directories (Claude, Cursor, Codex, Windsurf, Zed, GitHub Copilot).
+description: Use this when you need to create, evaluate, or optimize SKILL.md files for @medyll packages. Provides CLI commands to generate skill templates, run multi-model evaluations, view reports, and optimize skills using AI.
 ---
 
 ## Overview
-Skill installer and creator for @medyll packages. Creates SKILL.md templates and installs them to AI agent skill directories.
+Skill installer, evaluator, and optimizer for @medyll packages. Creates SKILL.md templates with test suites, evaluates skills against multiple LLM models (Claude, Qwen, Ollama), generates visual reports, and provides AI-powered optimization suggestions.
 
 ## Install
 ```bash
@@ -35,6 +35,42 @@ npx @medyll/skiller --help
 npx @medyll/skiller create-skill --help
 ```
 
+### Evaluate a skill
+```bash
+# Run tests defined in test-suite.json against all configured models
+npx @medyll/skiller test-skill
+
+# Run with specific model
+npx @medyll/skiller test-skill --model claude
+
+# Run specific test case
+npx @medyll/skiller test-skill --case case-001
+
+# Run in parallel mode
+npx @medyll/skiller test-skill --parallel
+```
+
+### View visual results
+```bash
+# Open latest report in browser
+npx @medyll/skiller report
+
+# Open specific report by session
+npx @medyll/skiller report --session 20260331-194500
+```
+
+### Optimize a skill
+```bash
+# Use AI to analyze failures and suggest optimizations
+npx @medyll/skiller optimize --skill my-package
+
+# Optimize with specific model
+npx @medyll/skiller optimize --skill my-package --model qwen
+
+# Review suggestions before applying (dry run)
+npx @medyll/skiller optimize --skill my-package --dry-run
+```
+
 ## Installation Targets
 
 | Target | Location | Scope |
@@ -53,16 +89,37 @@ npx @medyll/skiller create-skill --help
 ## Library API
 
 ```ts
-import { 
+import {
+  // Core functions
   findSkillMd,           // Find SKILL.md in a package
   findPackageJson,       // Find parent package.json
   getPackageName,        // Extract package name (without scope)
   createSkill,           // Create a SKILL.md template
+  createTestSuite,       // Create a test-suite.json template
+  createSkillWithTests,  // Create both SKILL.md and test-suite.json
   installSkill,          // Copy skill to destination
   interactivePrompt,     // Show interactive menu
   installSkillNonInteractive, // Install without prompts
   resolveTargetPath,     // Resolve a target path template
-  getTargets             // Get available targets from registry
+  getTargets,            // Get available targets from registry
+  
+  // Evaluation functions
+  findTestSuite,         // Find test-suite.json in a package
+  testSkill,             // Run test suite evaluation
+  runTestCase,           // Run a single test case
+  runTestSuite,          // Run full test suite
+  saveResults,           // Save results to session file
+  getAdapter,            // Get LLM adapter by name
+  
+  // Reporter functions
+  viewReport,            // Open report in browser
+  generateReport,        // Generate HTML report from results
+  getLatestResults,      // Get latest test results
+  getResultsBySession,   // Get results by session name
+  listSessions,          // List all available sessions
+  
+  // Optimization functions
+  optimizeSkill          // Run AI-powered optimization
 } from '@medyll/skiller';
 ```
 

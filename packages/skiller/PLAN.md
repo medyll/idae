@@ -33,12 +33,74 @@ packages/skiller/
 
 ## 2. Extended CLI Commands
 
+### Central Hub (`@medyll/skiller`)
+
 | Command | Action | Collision Check |
 |:--------|:-------|:----------------|
-| `create-skill` | Now generates `SKILL.md` **AND** `test-suite.json` | ✅ Extension of existing behavior |
-| `test-skill` | Executes the skill against the `test-suite.json` | ✅ **New** |
-| `report` | Opens the last evaluation in Chrome | ✅ **New** |
-| `optimize` | LLM analyzes test failures and suggests `SKILL.md` edits | ✅ **New** |
+| `create-skill` | Génère `SKILL.md` **et** `test-suite.json` | ✅ Extension de l'existant |
+| `test-skill` | Exécute les tests définis dans `test-suite.json` | ✅ **Nouveau** |
+| `report` | Ouvre les résultats dans le navigateur | ✅ **Nouveau** |
+| `optimize` | L'IA analyse les échecs et suggère des modifications | ✅ **Nouveau** |
+
+### Package Shortcuts (`@medyll/<package>`)
+
+Chaque package expose les mêmes commandes via son propre `bin` :
+
+```bash
+# Via skiller (hub central)
+npx @medyll/skiller test-skill
+npx @medyll/skiller report
+npx @medyll/skiller optimize
+
+# Via le package lui-même (raccourci local)
+npx @medyll/qoolie test-skill
+npx @medyll/qoolie report
+npx @medyll/qoolie optimize
+```
+
+**Architecture :**
+- `@medyll/skiller` = Librairie + CLI central
+- `@medyll/<package>` = Wrapper qui importe `@medyll/skiller`
+
+---
+
+## 2bis. Search Strategy (Hybrid)
+
+### Local Mode (default)
+
+```bash
+cd packages/idae-qoolie
+npx @medyll/skiller test-skill
+# or
+npx @medyll/qoolie test-skill
+```
+
+**Search order:**
+1. `lib/skill/<pkg>/SKILL.md` + `lib/skill/<pkg>/test-suite.json`
+2. `src/lib/skill/<pkg>/SKILL.md` + `src/lib/skill/<pkg>/test-suite.json`
+3. `dist/skill/<pkg>/SKILL.md` + `dist/skill/<pkg>/test-suite.json`
+
+### Global Mode (explicit)
+
+```bash
+# Specific skill
+npx @medyll/skiller test-skill --skill qoolie
+
+# All skills in a directory
+cd ~/.claude/skills
+npx @medyll/skiller test-skill --all
+
+# All skills in current project
+cd my-project
+npx @medyll/skiller test-skill --project
+```
+
+**Search locations:**
+- `~/.claude/skills/<pkg>/`
+- `~/.cursor/skills/<pkg>/`
+- `~/.codex/skills/<pkg>/`
+- `./.claude/skills/<pkg>/` (project)
+- `node_modules/@medyll/<pkg>/lib/skill/<pkg>/`
 
 ---
 
@@ -288,7 +350,7 @@ Support `Ollama` or `vLLM` endpoints for users running "OpenCode" or "Qwen" loca
 
 ## 6. File Checklist
 
-### New Files to Create
+### New Files to Create (Skiller Core)
 
 | File | Purpose |
 |------|---------|
@@ -304,16 +366,60 @@ Support `Ollama` or `vLLM` endpoints for users running "OpenCode" or "Qwen" loca
 | `src/core/reporter/template.html` | Tailwind HTML template |
 | `src/test-suite-schema.json` | JSON Schema for test suites |
 
+### New Files to Create (Per Package)
+
+Each `@medyll/<package>` needs wrapper scripts for shortcuts:
+
+| File | Purpose |
+|------|---------|
+| `packages/<pkg>/dist/cli/test-skill.js` | Wrapper: imports `testSkill` from skiller |
+| `packages/<pkg>/dist/cli/report.js` | Wrapper: opens report for this package |
+| `packages/<pkg>/dist/cli/optimize.js` | Wrapper: optimizes this package's skill |
+
+Example `packages/qoolie/dist/cli/test-skill.js`:
+```javascript
+#!/usr/bin/env node
+import { testSkill, findSkillMd, findTestSuite, getPackageName, findPackageJson } from '@medyll/skiller';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distDir = path.resolve(__dirname, '..');
+const pkgDir = path.resolve(distDir, '..');
+
+const pkgJsonPath = findPackageJson(pkgDir);
+const pkgName = pkgJsonPath ? getPackageName(pkgJsonPath) : 'qoolie';
+
+const skillSrc = findSkillMd(pkgDir, pkgName);
+const testSuite = findTestSuite(pkgDir, pkgName);
+
+if (!skillSrc) {
+  console.error(`No SKILL.md found for "${pkgName}"`);
+  process.exit(1);
+}
+
+if (!testSuite) {
+  console.error(`No test-suite.json found for "${pkgName}"`);
+  console.error('Run "npx @medyll/skiller create-skill" to generate one.');
+  process.exit(1);
+}
+
+await testSkill({ pkgName, skillSrc, testSuite });
+```
+
 ### Modified Files
 
 | File | Changes |
 |------|---------|
 | `src/cli.mjs` | Add `test-skill`, `report`, `optimize` commands |
-| `src/index.mjs` | Export new functions |
+| `src/index.mjs` | Export new functions (`testSkill`, `findTestSuite`, etc.) |
 | `src/create-skill.js` | Generate `test-suite.json` template |
 | `lib/skill/skiller/SKILL.md` | Document new commands |
 | `package.json` | Add new dependencies |
 | `.gitignore` | Add `.skiller/` to ignore list |
+| `packages/<pkg>/package.json` | Add `bin.test-skill`, `bin.report`, `bin.optimize` |
+| `packages/<pkg>/dist/cli/add-skill.js` | Update imports if needed |
 
 ---
 

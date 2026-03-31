@@ -210,3 +210,63 @@ export function installSkillNonInteractive({ pkgName, skillSrc, target }) {
 
   installSkill({ pkgName, skillSrc, destDir });
 }
+
+/**
+ * Create a test-suite.json template
+ * @param {{ pkgName: string, pkgDir: string }} options
+ * @returns {string} Path to created test-suite.json
+ */
+export function createTestSuite({ pkgName, pkgDir }) {
+  const skillDir = path.join(pkgDir, 'lib', 'skill', pkgName);
+  const testSuiteFile = path.join(skillDir, 'test-suite.json');
+
+  fs.mkdirSync(skillDir, { recursive: true });
+
+  const template = {
+    skill: pkgName,
+    version: '1.0.0',
+    cases: [
+      {
+        id: 'case-001',
+        name: 'Basic Functionality',
+        input: `How do I use ${pkgName}?`,
+        expectations: ['contains installation steps', 'shows core API'],
+        assertions: {
+          min_length: 100,
+          format: 'markdown',
+          required_keywords: ['install', 'usage']
+        }
+      },
+      {
+        id: 'case-002',
+        name: 'Advanced Usage',
+        input: 'Can you show me an example with options?',
+        expectations: ['shows code example', 'explains parameters'],
+        assertions: {
+          min_length: 200,
+          contains_code: true
+        }
+      }
+    ],
+    models: ['claude', 'qwen', 'ollama'],
+    settings: {
+      timeout: 30000,
+      parallel: true
+    }
+  };
+
+  fs.writeFileSync(testSuiteFile, JSON.stringify(template, null, 2), 'utf8');
+  console.log(`\ntest-suite.json created: ${testSuiteFile}`);
+  return testSuiteFile;
+}
+
+/**
+ * Updated createSkill to also create test-suite.json
+ * @param {{ pkgName: string, pkgDir: string, description?: string }} options
+ * @returns {{ skillFile: string, testSuiteFile: string }} Paths to created files
+ */
+export function createSkillWithTests({ pkgName, pkgDir, description = '' }) {
+  const skillFile = createSkill({ pkgName, pkgDir, description });
+  const testSuiteFile = createTestSuite({ pkgName, pkgDir });
+  return { skillFile, testSuiteFile };
+}
