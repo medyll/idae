@@ -1854,6 +1854,10 @@ importers:
       commander:
         specifier: ^14.0.3
         version: 14.0.3
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.37
     publishDirectory: .
 
 packages:
