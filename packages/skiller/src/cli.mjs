@@ -2,7 +2,11 @@
 import { Command } from 'commander';
 import path from 'path';
 import fs from 'fs';
+import { createRequire } from 'module';
 import { findPackageJson, getPackageName, findSkillMd, interactivePrompt, createSkill } from './index.mjs';
+
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json');
 import { testSkill, findTestSuite } from './cli/test-skill.js';
 import { viewReport } from './cli/view-report.js';
 import { optimizeSkill } from './cli/optimize.js';
@@ -12,7 +16,17 @@ const program = new Command();
 program
   .name('skiller')
   .description('Skill installer and creator for @medyll packages')
-  .version('1.0.0');
+  .version(version);
+
+// Install skiller's own skill to %USERPROFILE% / editor target
+program
+  .command('install-skill')
+  .description('Install skiller\'s own SKILL.md to your AI agent (default: user-wide)')
+  .option('-t, --target <target>', 'Installation target (user, claude, cursor, etc.)', 'user')
+  .action(async (options) => {
+    const { installSkillerSkill } = await import('./cli/install-skiller.js');
+    installSkillerSkill(options.target);
+  });
 
 // Default command: install skill for current package (interactive)
 program

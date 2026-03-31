@@ -27,6 +27,13 @@ pnpm add @medyll/skiller
 
 ## CLI Commands
 
+### install-skill — Install skiller's own skill (NEW)
+```bash
+npx @medyll/skiller install-skill        # Install to user-wide (~/.claude/skills/skiller/)
+npx @medyll/skiller install-skill --target cursor  # Install to specific target
+```
+Use this to install skiller's documentation to your AI agent. Run from anywhere.
+
 ### create-skill — Generate a SKILL.md template
 ```bash
 npx @medyll/skiller create-skill --name my-package --description "My package description"
@@ -38,6 +45,7 @@ Creates `lib/skill/<pkg>/SKILL.md` and optionally `test-suite.json`.
 npx @medyll/skiller add-skill
 ```
 Interactive prompt to choose a target. Non-interactive: `npx @medyll/skiller add-skill --target user`.
+**Note:** Run this from within a package directory that has a SKILL.md.
 
 ### test-skill — Run multi-model evaluations
 ```bash

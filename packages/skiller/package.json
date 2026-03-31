@@ -10,6 +10,7 @@
   "bin": {
     "skiller": "./src/cli.mjs",
     "add-skill": "./src/cli.mjs",
+    "install-skill": "./src/cli.mjs",
     "test-skill": "./src/cli.mjs",
     "report": "./src/cli.mjs",
     "optimize": "./src/cli.mjs"
