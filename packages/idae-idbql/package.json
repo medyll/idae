@@ -1,7 +1,8 @@
 {
   "name": "@medyll/idae-idbql",
   "bin": {
-    "idae-idbql": "./cli.js"
+    "idae-idbql": "./cli.js",
+    "add-skill": "./dist/cli/add-skill.js"
   },
   "scope": "medyll",
   "author": "Lebrun Meddy",

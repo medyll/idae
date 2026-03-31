@@ -1,7 +1,8 @@
 {
   "name": "@medyll/idae-slotui-svelte",
   "bin": {
-    "idae-slotui-svelte": "./scripts/cli.js"
+    "idae-slotui-svelte": "./scripts/cli.js",
+    "add-skill": "./dist/cli/add-skill.js"
   },
   "author": "Lebrun Meddy",
   "version": "0.181.4",

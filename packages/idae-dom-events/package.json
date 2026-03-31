@@ -1,7 +1,8 @@
 {
   "name": "@medyll/idae-dom-events",
   "bin": {
-    "idae-dom-events": "./cli.js"
+    "idae-dom-events": "./cli.js",
+    "add-skill": "./dist/cli/add-skill.js"
   },
   "version": "1.0.2",
   "scope": "medyll",

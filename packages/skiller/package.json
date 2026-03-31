@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Skill installer for @medyll packages",
+  "main": "./src/index.mjs",
   "exports": {
     ".": "./src/index.mjs"
   },
@@ -13,6 +14,9 @@
   "files": [
     "src"
   ],
+  "dependencies": {
+    "commander": "^14.0.3"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "."
