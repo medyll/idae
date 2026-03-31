@@ -1,74 +1,61 @@
 ---
 name: skiller
-description: Use this when you need to create, evaluate, or optimize SKILL.md files for @medyll packages. Provides CLI commands to generate skill templates, run multi-model evaluations, view reports, and optimize skills using AI.
+description: "Guide for the @medyll/skiller CLI and npm library: create SKILL.md templates for @medyll packages, install skills to multiple AI editor targets (Claude, Cursor, Codex, Windsurf, Zed), run multi-model evaluations (Claude, Qwen, Ollama, OpenAI) via test-suite.json, generate HTML reports, and AI-optimize skills. Use this skill whenever the user mentions `npx @medyll/skiller`, installing a skill to an editor target, running skill tests across models, or creating skill templates for @medyll packages. This is NOT for validating skill frontmatter (use skill-master) or authoring Claude Code skills from scratch (use skill-creator)."
 ---
 
 ## Overview
-Skill installer, evaluator, and optimizer for @medyll packages. Creates SKILL.md templates with test suites, evaluates skills against multiple LLM models (Claude, Qwen, Ollama), generates visual reports, and provides AI-powered optimization suggestions.
+
+`@medyll/skiller` is an npm CLI + library for the full lifecycle of SKILL.md files in @medyll packages: template creation, multi-target installation, multi-model evaluation, HTML reporting, and AI-powered optimization.
+
+## When to use skiller vs other skills
+
+| You want to... | Use |
+|---|---|
+| Create a SKILL.md template for an @medyll package | **skiller** (`npx @medyll/skiller create-skill`) |
+| Install a skill to Claude/Cursor/Codex/Windsurf/Zed | **skiller** (`npx @medyll/skiller add-skill`) |
+| Run multi-model tests on a skill (Claude, Qwen, Ollama) | **skiller** (`npx @medyll/skiller test-skill`) |
+| View HTML test reports | **skiller** (`npx @medyll/skiller report`) |
+| AI-optimize a skill based on test failures | **skiller** (`npx @medyll/skiller optimize`) |
+| Validate/repair SKILL.md frontmatter structure | **skill-master** |
+| Author a new Claude Code skill from scratch with eval loops | **skill-creator** |
 
 ## Install
+
 ```bash
 pnpm add @medyll/skiller
 ```
 
 ## CLI Commands
 
-### Create a new skill template
+### create-skill — Generate a SKILL.md template
 ```bash
-# In a package directory
-npx @medyll/skiller create-skill
-
-# With options
 npx @medyll/skiller create-skill --name my-package --description "My package description"
 ```
+Creates `lib/skill/<pkg>/SKILL.md` and optionally `test-suite.json`.
 
-### Install a skill
+### add-skill — Install a skill to an editor target
 ```bash
-# Interactive mode (default)
 npx @medyll/skiller add-skill
+```
+Interactive prompt to choose a target. Non-interactive: `npx @medyll/skiller add-skill --target user`.
 
-# Or from any @medyll package that has add-skill bin
-npx @medyll/<package> add-skill
-
-# Help
-npx @medyll/skiller --help
-npx @medyll/skiller create-skill --help
+### test-skill — Run multi-model evaluations
+```bash
+npx @medyll/skiller test-skill              # All configured models
+npx @medyll/skiller test-skill --model claude  # Specific model
+npx @medyll/skiller test-skill --parallel      # Parallel execution
 ```
 
-### Evaluate a skill
+### report — View HTML test results
 ```bash
-# Run tests defined in test-suite.json against all configured models
-npx @medyll/skiller test-skill
-
-# Run with specific model
-npx @medyll/skiller test-skill --model claude
-
-# Run specific test case
-npx @medyll/skiller test-skill --case case-001
-
-# Run in parallel mode
-npx @medyll/skiller test-skill --parallel
+npx @medyll/skiller report                        # Latest report
+npx @medyll/skiller report --session 20260331-194500  # Specific session
 ```
 
-### View visual results
+### optimize — AI-powered skill optimization
 ```bash
-# Open latest report in browser
-npx @medyll/skiller report
-
-# Open specific report by session
-npx @medyll/skiller report --session 20260331-194500
-```
-
-### Optimize a skill
-```bash
-# Use AI to analyze failures and suggest optimizations
 npx @medyll/skiller optimize --skill my-package
-
-# Optimize with specific model
-npx @medyll/skiller optimize --skill my-package --model qwen
-
-# Review suggestions before applying (dry run)
-npx @medyll/skiller optimize --skill my-package --dry-run
+npx @medyll/skiller optimize --skill my-package --dry-run  # Preview suggestions
 ```
 
 ## Installation Targets
@@ -84,191 +71,67 @@ npx @medyll/skiller optimize --skill my-package --dry-run
 | `zed` | `~/.zed/skills/<pkg>/SKILL.md` | Global |
 | `custom` | User-specified path | Custom |
 
-**Configuration file:** `packages/skiller/src/registry.json` — editable to add/remove targets.
+Configuration: `packages/skiller/src/registry.json`.
 
-## Library API
+## test-suite.json Format
 
-```ts
-import {
-  // Core functions
-  findSkillMd,           // Find SKILL.md in a package
-  findPackageJson,       // Find parent package.json
-  getPackageName,        // Extract package name (without scope)
-  createSkill,           // Create a SKILL.md template
-  createTestSuite,       // Create a test-suite.json template
-  createSkillWithTests,  // Create both SKILL.md and test-suite.json
-  installSkill,          // Copy skill to destination
-  interactivePrompt,     // Show interactive menu
-  installSkillNonInteractive, // Install without prompts
-  resolveTargetPath,     // Resolve a target path template
-  getTargets,            // Get available targets from registry
-  
-  // Evaluation functions
-  findTestSuite,         // Find test-suite.json in a package
-  testSkill,             // Run test suite evaluation
-  runTestCase,           // Run a single test case
-  runTestSuite,          // Run full test suite
-  saveResults,           // Save results to session file
-  getAdapter,            // Get LLM adapter by name
-  
-  // Reporter functions
-  viewReport,            // Open report in browser
-  generateReport,        // Generate HTML report from results
-  getLatestResults,      // Get latest test results
-  getResultsBySession,   // Get results by session name
-  listSessions,          // List all available sessions
-  
-  // Optimization functions
-  optimizeSkill          // Run AI-powered optimization
-} from '@medyll/skiller';
-```
-
-### Examples
-
-```ts
-// Find SKILL.md in standard locations (auto-detects pkgName)
-const skillPath = findSkillMd(pkgDir);
-const skillPath = findSkillMd(pkgDir, 'my-pkg');
-
-// Create a new skill template
-createSkill({ pkgName: 'my-pkg', pkgDir, description: '...' });
-
-// Install skill interactively
-await interactivePrompt({ pkgName: 'my-pkg', skillSrc: skillPath });
-
-// Install skill non-interactively
-installSkillNonInteractive({ 
-  pkgName: 'my-pkg', 
-  skillSrc: skillPath, 
-  target: 'user'  // or 'claude', 'cursor', 'codex', etc.
-});
-
-// Resolve a target path
-const destDir = resolveTargetPath(['homedir', '.cursor', 'skills', '<pkg>'], 'my-pkg', process.cwd());
-
-// Get all available targets
-const targets = getTargets();
-```
-
-## Package Integration
-
-Add to your package's `package.json`:
 ```json
 {
-  "bin": {
-    "add-skill": "./dist/cli/add-skill.js"
-  },
-  "dependencies": {
-    "@medyll/skiller": "workspace:*"
-  }
+  "name": "my-skill",
+  "models": [
+    { "name": "claude", "adapter": "claude" },
+    { "name": "qwen", "adapter": "qwen", "model": "qwen-turbo" },
+    { "name": "ollama", "adapter": "ollama", "model": "llama3" }
+  ],
+  "cases": [
+    {
+      "id": "case-001",
+      "name": "Basic usage test",
+      "input": "User prompt to test against the skill",
+      "assertions": {
+        "min_length": 100,
+        "max_length": 5000,
+        "format": "markdown",
+        "required_keywords": ["import", "function"],
+        "forbidden_keywords": ["deprecated"],
+        "contains_code": true
+      }
+    }
+  ]
 }
 ```
 
-Create `dist/cli/add-skill.js`:
-```js
-#!/usr/bin/env node
-import { findSkillMd, interactivePrompt, getPackageName, findPackageJson } from '@medyll/skiller';
-import { fileURLToPath } from 'url';
-import path from 'path';
+**Assertion types:** `min_length`, `max_length`, `format` (markdown|json|code), `required_keywords`, `forbidden_keywords`, `contains_code`.
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Resolve package directory (dist/cli -> dist -> package root)
-const distDir = path.resolve(__dirname, '..');
-const pkgDir = path.resolve(distDir, '..');
-
-// Find package.json to get the actual package name
-const pkgJsonPath = findPackageJson(pkgDir);
-const pkgName = pkgJsonPath ? getPackageName(pkgJsonPath) : 'unknown';
-
-// Find SKILL.md in standard locations (pass pkgName for correct path resolution)
-const skillSrc = findSkillMd(pkgDir, pkgName);
-
-if (!skillSrc) {
-  console.error(`No SKILL.md found for "${pkgName}"`);
-  console.error('Searched: src/lib/skill/<pkg>/, dist/skill/<pkg>/, lib/skill/<pkg>/, package root');
-  console.error(`Run "npx @medyll/skiller create-skill" in the package directory to create one.`);
-  process.exit(1);
-}
-
-await interactivePrompt({ pkgName, skillSrc });
-```
-
-## SKILL.md Template Format
+## SKILL.md Template
 
 ```markdown
 ---
 name: <package-name>
-description: <short description for AI agents>
+description: <When to trigger + what it does. Be specific and include trigger phrases.>
 ---
 
 ## Overview
-<Describe what the package does and when to use it>
+What the package does, when and why to use it.
 
 ## Install
-```bash
+\`\`\`bash
 pnpm add @medyll/<package-name>
-```
+\`\`\`
 
 ## Core API
-<List main functions, classes, and their signatures>
+Main functions, classes, signatures with brief descriptions.
 
 ## Usage
-```ts
-// Code examples showing typical usage
-```
-```
+Realistic code examples showing typical workflows.
 
-## SKILL.md Search Paths
-
-The CLI looks for `SKILL.md` in these locations (in order):
-
-1. `src/lib/skill/<pkg>/SKILL.md` — Monorepo source (preferred)
-2. `dist/skill/<pkg>/SKILL.md` — Built package
-3. `lib/skill/<pkg>/SKILL.md` — Alternative location
-4. `SKILL.md` — Package root (fallback)
-
-## Usage Examples
-
-### As a user installing a skill
-```bash
-# Navigate to package directory
-cd node_modules/@medyll/qoolie
-
-# Install the skill
-npx @medyll/qoolie add-skill
-
-# Choose target (e.g., 1 for user-wide Claude)
+## References
+Point to references/ files for advanced API docs, integration guides, etc.
 ```
 
-### As a package author creating a skill
-```bash
-# In your package directory
-cd packages/my-package
+## References
 
-# Create SKILL.md template
-npx @medyll/skiller create-skill --name my-package --description "My awesome package"
-
-# Edit the generated file
-code lib/skill/my-package/SKILL.md
-
-# Build your package (copies add-skill.js to dist)
-npm run build
-
-# Test the add-skill command
-npx @medyll/my-package add-skill
-```
-
-### In a CI/CD pipeline
-```bash
-# Non-interactive installation
-node -e "
-  const { installSkillNonInteractive } = require('@medyll/skiller');
-  installSkillNonInteractive({
-    pkgName: 'my-pkg',
-    skillSrc: './lib/skill/my-pkg/SKILL.md',
-    target: 'user'
-  });
-"
-```
+For detailed documentation, read these files from `references/`:
+- **`references/api-reference.md`** — Full library API exports and usage examples
+- **`references/integration-guide.md`** — How to add `add-skill` to your package, CI/CD setup
+- **`references/search-paths.md`** — SKILL.md lookup order and usage examples
