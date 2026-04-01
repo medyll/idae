@@ -2,6 +2,7 @@
 export * from '$lib/__tests__/fixtures/mockData.js';
 export * from '$lib/__tests__/helpers/testUtils.js';
 export * from '$lib/@types/types.js';
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/client/IdaeApiClient.js';
 export * from '$lib/client/IdaeApiClientCollection.js';
 export * from '$lib/client/IdaeApiClientConfig.js';
