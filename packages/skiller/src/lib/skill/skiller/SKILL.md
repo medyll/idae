@@ -38,7 +38,12 @@ Use this to install skiller's documentation to your AI agent. Run from anywhere.
 ```bash
 npx @medyll/skiller create-skill --name my-package --description "My package description"
 ```
-Creates `lib/skill/<pkg>/SKILL.md` and optionally `test-suite.json`.
+Creates `src/lib/skill/<pkg>/SKILL.md` and optionally `test-suite.json`.
+
+**SKILL.md lookup order** (used by `add-skill` and all resolution logic):
+1. `src/lib/skill/<pkg>/SKILL.md` — source, preferred (@medyll SvelteKit packages)
+2. `dist/skill/<pkg>/SKILL.md` — compiled build, fallback when source is absent (consumed as dependency)
+3. `lib/skill/<pkg>/SKILL.md` — legacy only
 
 ### add-skill — Install a skill to an editor target
 ```bash
