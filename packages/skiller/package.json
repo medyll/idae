@@ -17,7 +17,8 @@
     "optimize": "./src/test-cli.js"
   },
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
   "dependencies": {
     "commander": "^14.0.3"
@@ -36,7 +37,6 @@
   },
   "author": "Lebrun Meddy",
   "scripts": {
-    "build": "node scripts/build.js",
     "prepackage": "node scripts/package-pre.js"
   }
 }
