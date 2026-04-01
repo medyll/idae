@@ -1,20 +1,20 @@
 {
   "name": "@medyll/skiller",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "type": "module",
   "description": "Skill installer and evaluator for @medyll packages",
-  "main": "./src/index.mjs",
+  "main": "./src/lib/index.mjs",
   "exports": {
-    ".": "./src/index.mjs"
+    ".": "./src/lib/index.mjs"
   },
   "bin": {
-    "skiller": "./src/skiller.js",
-    "install-skill": "./src/skiller.js",
-    "add-skill": "./src/cli.js",
-    "create-skill": "./src/cli.js",
-    "test-skill": "./src/test-cli.js",
-    "report": "./src/test-cli.js",
-    "optimize": "./src/test-cli.js"
+    "skiller": "./src/lib/cli.js",
+    "install-skill": "./src/lib/cli.js",
+    "add-skill": "./src/lib/client-cli.js",
+    "create-skill": "./src/lib/client-cli.js",
+    "test-skill": "./src/lib/test-cli.js",
+    "report": "./src/lib/test-cli.js",
+    "optimize": "./src/lib/test-cli.js"
   },
   "files": [
     "src",
@@ -37,6 +37,8 @@
   },
   "author": "Lebrun Meddy",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepackage": "node scripts/package-pre.js"
   }
 }
