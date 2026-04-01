@@ -6,6 +6,7 @@ export * from '$lib/adapters/MySQLAdapter.js';
 export * from '$lib/adapters/PostgreSQLAdapter.js';
 export * from '$lib/adapters/PouchDBAdapter.js';
 export * from '$lib/adapters/SQLiteAdapter.js';
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/idaeDb.js';
 export * from '$lib/IdaeDbAdapter.js';
 export * from '$lib/IdaeDbConnection.js';

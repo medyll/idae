@@ -1,4 +1,5 @@
 // auto exports of entry components
+export * from './cli/add-skill.js';
 export * from './client/demo.js';
 export * from './server/_config/config.js';
 export * from './server/_utils/eventEmitterInstance.js';
