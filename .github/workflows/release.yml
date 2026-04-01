@@ -51,7 +51,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git stash --include-untracked || true
           git pull --rebase origin ${{ github.ref_name }}
+          git stash pop || true
           npx @medyll/idae-pnpm-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
