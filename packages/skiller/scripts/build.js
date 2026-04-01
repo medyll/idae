@@ -14,7 +14,7 @@ const rootDir = path.resolve(__dirname, '..');
 // Directories to copy
 const dirsToCopy = [
   { src: 'src', dest: 'dist' },
-  { src: 'lib/skill/skiller', dest: 'dist/skill/skiller' }
+  { src: 'lib', dest: 'dist/lib' }
 ];
 
 // Files to copy to dist root
@@ -22,6 +22,9 @@ const filesToCopy = [
   { src: 'package.json', dest: 'dist/package.json' },
   { src: 'README.md', dest: 'dist/README.md', optional: true }
 ];
+
+// Files to exclude from copy
+const excludeFiles = ['cli.mjs']; // Old CLI file, no longer used
 
 /**
  * Copy a file from src to dest
@@ -44,6 +47,9 @@ function copyDir(src, dest) {
     
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath);
+    } else if (excludeFiles.includes(entry.name)) {
+      // Skip excluded files
+      continue;
     } else {
       copyFile(srcPath, destPath);
     }

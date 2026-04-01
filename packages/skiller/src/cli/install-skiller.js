@@ -13,17 +13,17 @@ const __dirname = path.dirname(__filename);
  * @returns {string|null} Path to SKILL.md or null
  */
 export function findSkillerSkillMd() {
-  // When run via npx, the CLI is in node_modules/@medyll/skiller/src/cli.mjs
-  // So skiller's SKILL.md should be in node_modules/@medyll/skiller/lib/skill/skiller/SKILL.md
+  // When run via npx, the CLI is in node_modules/@medyll/skiller/dist/cli.mjs
+  // So skiller's SKILL.md should be in node_modules/@medyll/skiller/dist/lib/skill/skiller/SKILL.md
 
   // Try different locations
   const candidates = [
-    // Development: packages/skiller/src/cli/install.js -> packages/skiller/lib/skill/skiller/SKILL.md
-    path.resolve(__dirname, '..', '..', 'lib', 'skill', 'skiller', 'SKILL.md'),
-    // Installed via npm/npx: node_modules/@medyll/skiller/src/cli/install.js -> lib/skill/skiller/SKILL.md
+    // Installed via npm/npx: node_modules/@medyll/skiller/dist/cli/install-skiller.js -> dist/lib/skill/skiller/SKILL.md
     path.resolve(__dirname, '..', 'lib', 'skill', 'skiller', 'SKILL.md'),
-    // Alternative installed location (dist)
-    path.resolve(__dirname, '..', 'dist', 'skill', 'skiller', 'SKILL.md'),
+    // Development: packages/skiller/src/cli/install-skiller.js -> packages/skiller/lib/skill/skiller/SKILL.md
+    path.resolve(__dirname, '..', '..', 'lib', 'skill', 'skiller', 'SKILL.md'),
+    // Fallback: direct dist/lib path
+    path.resolve(__dirname, '..', '..', 'dist', 'lib', 'skill', 'skiller', 'SKILL.md'),
   ];
 
   for (const candidate of candidates) {

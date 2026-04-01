@@ -8,12 +8,13 @@
     ".": "./src/index.mjs"
   },
   "bin": {
-    "skiller": "./src/cli.mjs",
-    "add-skill": "./src/cli.mjs",
-    "install-skill": "./src/cli.mjs",
-    "test-skill": "./src/cli.mjs",
-    "report": "./src/cli.mjs",
-    "optimize": "./src/cli.mjs"
+    "skiller": "./src/skiller.js",
+    "install-skill": "./src/skiller.js",
+    "add-skill": "./src/cli.js",
+    "create-skill": "./src/cli.js",
+    "test-skill": "./src/test-cli.js",
+    "report": "./src/test-cli.js",
+    "optimize": "./src/test-cli.js"
   },
   "files": [
     "src"

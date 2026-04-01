@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { getAdapter } from '../core/evaluator/index.js';
-import { getLatestResults } from '../core/reporter/index.js';
+import { getAdapter } from '../../core/evaluator/index.js';
+import { getLatestResults } from '../../core/reporter/index.js';
 
 /**
  * Analyze failures and generate optimization suggestions
