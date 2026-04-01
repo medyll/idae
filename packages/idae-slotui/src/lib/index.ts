@@ -74,6 +74,7 @@ export { default as TitleBar } from '$lib/base/titleBar/TitleBar.svelte';
 export { default as TitleBarIcon } from '$lib/base/titleBar/TitleBarIcon.svelte';
 export { default as TitleBarTitle } from '$lib/base/titleBar/TitleBarTitle.svelte';
 export * from '$lib/base/titleBar/types.js';
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/componentCite.js';
 export * as autocompleteCss from '$lib/controls/autocomplete/autocomplete.css';
 export { default as AutoComplete } from '$lib/controls/autocomplete/AutoComplete.svelte';

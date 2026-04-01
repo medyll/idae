@@ -1,4 +1,5 @@
 // auto exports of entry components
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/csss/csss.js';
 export * from '$lib/csss/demo.csss';
 export * from '$lib/csss/meta.js';

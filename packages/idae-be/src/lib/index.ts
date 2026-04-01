@@ -1,5 +1,6 @@
 // auto exports of entry components
 export * from '$lib/be.js';
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/dic/fragment.js';
 export * from '$lib/dic/proxyHandler.js';
 export * from '$lib/modules/attrs.js';
