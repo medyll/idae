@@ -142,6 +142,19 @@ Realistic code examples showing typical workflows.
 Point to references/ files for advanced API docs, integration guides, etc.
 ```
 
+## Self-editing workflow (skiller's own SKILL.md)
+
+<!-- REFERENCE_DIRECTORY: D:\boulot\dev\node\idae\packages\skiller\src\lib\skill\skiller\ -->
+
+Skiller's authoritative source directory is the **REFERENCE_DIRECTORY** above. All files in this skill (SKILL.md, references/, test-suite.json, etc.) MUST be edited inside that directory. The installed copies (user-wide, project, etc.) are deployment artifacts — never edit them directly.
+
+**Rules:**
+1. **Directory-first**: Always resolve `REFERENCE_DIRECTORY` before any edit. If the directory does not exist or is unreachable, **do nothing and report** the missing path to the user. Never fall back to editing an installed copy.
+2. **After modification**: Once the source SKILL.md has been updated, make it available by:
+   - Stage and **commit** the change (`git add` + `git commit`)
+   - **Push** to remote so CI / other consumers pick it up
+   - Optionally re-run `npx @medyll/skiller install-skill` to refresh the user-wide installed copy
+
 ## References
 
 For detailed documentation, read these files from `references/`:
