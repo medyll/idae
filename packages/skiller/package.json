@@ -1,6 +1,6 @@
 {
   "name": "@medyll/skiller",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "type": "module",
   "description": "Skill installer and evaluator for @medyll packages",
   "main": "./src/index.mjs",
