@@ -263,6 +263,18 @@ describe('installSkill', () => {
 
     expect(fs.existsSync(path.join(destDir, 'SKILL.md'))).toBe(true);
   });
+
+  it('does not copy files in dry-run mode', () => {
+    const srcDir = path.join(tmpDir, 'src-dry');
+    fs.mkdirSync(srcDir, { recursive: true });
+    fs.writeFileSync(path.join(srcDir, 'SKILL.md'), '# DryRun');
+    fs.writeFileSync(path.join(srcDir, 'extra.md'), '# Extra');
+
+    const destDir = path.join(tmpDir, 'dest-dry');
+    installSkill({ pkgName: 'test', skillSrc: path.join(srcDir, 'SKILL.md'), destDir, dryRun: true });
+
+    expect(fs.existsSync(destDir)).toBe(false);
+  });
 });
 
 // ─── installSkillNonInteractive ──────────────────────────────────

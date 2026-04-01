@@ -78,10 +78,36 @@ export function findSkillMd(pkgDir, pkgName) {
 
 /**
  * Install a skill to a destination directory
- * @param {{ pkgName: string, skillSrc: string, destDir: string }} options
+ * @param {{ pkgName: string, skillSrc: string, destDir: string, dryRun?: boolean }} options
  */
-export function installSkill({ pkgName, skillSrc, destDir }) {
+export function installSkill({ pkgName, skillSrc, destDir, dryRun = false }) {
   const srcDir = path.dirname(skillSrc);
+  const files = listDirRecursive(srcDir, srcDir);
+  const totalSize = files.reduce((sum, f) => sum + fs.statSync(path.join(srcDir, f)).size, 0);
+  const destExists = fs.existsSync(destDir);
+
+  if (dryRun) {
+    console.log('');
+    console.log('╔══════════════════════════════════════════════════════════╗');
+    console.log('║  🔍  DRY RUN — install-skill                           ║');
+    console.log('╚══════════════════════════════════════════════════════════╝');
+    console.log('');
+    console.log(`  📦 Package:     ${pkgName}`);
+    console.log(`  📂 Source:      ${srcDir}`);
+    console.log(`  🎯 Target:      ${destDir}`);
+    console.log(`  📊 Total files: ${files.length}`);
+    console.log(`  💾 Total size:  ${formatSize(totalSize)}`);
+    console.log(`  📁 Target dir:  ${destExists ? '⚠️  EXISTS (will overwrite)' : '✨ Will be created'}`);
+    console.log('');
+    console.log('  Content that would be copied:');
+    console.log('');
+    printTree(srcDir, destDir, '  ');
+    console.log('');
+    console.log('  💡 Run without --dry-run to apply.');
+    console.log('');
+    return;
+  }
+
   fs.mkdirSync(destDir, { recursive: true });
   copyDirRecursive(srcDir, destDir);
   console.log(`\nSkill installed: ${destDir}`);
@@ -101,6 +127,77 @@ function copyDirRecursive(src, dest) {
       copyDirRecursive(srcPath, destPath);
     } else {
       fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
+ * Recursively list all files in a directory (relative paths)
+ * @param {string} dir - Directory to list
+ * @param {string} base - Base directory for relative paths
+ * @returns {string[]} Relative file paths
+ */
+function listDirRecursive(dir, base) {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listDirRecursive(fullPath, base));
+    } else {
+      files.push(path.relative(base, fullPath));
+    }
+  }
+  return files;
+}
+
+/**
+ * Format byte size to human-readable string
+ * @param {number} bytes
+ * @returns {string}
+ */
+function formatSize(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+/**
+ * Print a directory tree with icons, sizes and overwrite status
+ * @param {string} srcDir - Source directory to display
+ * @param {string} destDir - Destination directory (for overwrite detection)
+ * @param {string} indent - Line prefix
+ */
+function printTree(srcDir, destDir, indent = '') {
+  const entries = fs.readdirSync(srcDir, { withFileTypes: true });
+  entries.sort((a, b) => {
+    // Directories first, then files
+    if (a.isDirectory() && !b.isDirectory()) return -1;
+    if (!a.isDirectory() && b.isDirectory()) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    const isLast = i === entries.length - 1;
+    const connector = isLast ? '└── ' : '├── ';
+    const childIndent = indent + (isLast ? '    ' : '│   ');
+    const srcPath = path.join(srcDir, entry.name);
+    const destPath = path.join(destDir, entry.name);
+
+    if (entry.isDirectory()) {
+      const dirFiles = listDirRecursive(srcPath, srcPath);
+      const dirSize = dirFiles.reduce((s, f) => s + fs.statSync(path.join(srcPath, f)).size, 0);
+      const destDirExists = fs.existsSync(destPath);
+      const tag = destDirExists ? ' [exists]' : '';
+      console.log(`${indent}${connector}📁 ${entry.name}/  (${dirFiles.length} files, ${formatSize(dirSize)})${tag}`);
+      printTree(srcPath, destPath, childIndent);
+    } else {
+      const stat = fs.statSync(srcPath);
+      const size = formatSize(stat.size);
+      const overwrite = fs.existsSync(destPath);
+      const icon = overwrite ? '🔄' : '📄';
+      const tag = overwrite ? ' [overwrite]' : ' [new]';
+      console.log(`${indent}${connector}${icon} ${entry.name}  (${size})${tag}`);
     }
   }
 }
@@ -168,7 +265,7 @@ export async function interactivePrompt({ pkgName, skillSrc }) {
   
   targets.forEach((target, index) => {
     const displayPath = target.template.includes('<pkg>')
-      ? path.join(...target.template.map(p => p === '<pkg>' ? pkgName : p === 'homedir' ? '~' : p === 'cwd' ? '.' : p), 'SKILL.md')
+      ? path.join(...target.template.map(p => p === '<pkg>' ? pkgName : p === 'homedir' ? '~' : p === 'cwd' ? '.' : p))
       : target.path;
     const marker = target.template.includes('cwd') ? '  (current project)' : '';
     console.log(`  ${index + 1}) ${target.label.padEnd(10)} → ${displayPath}${marker}`);

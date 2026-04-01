@@ -21,13 +21,14 @@ program
   .command('install-skill')
   .description('Install skiller\'s own SKILL.md to your AI agent (interactive by default)')
   .option('-t, --target <target>', 'Installation target (user, claude, cursor, etc.)')
+  .option('--dry-run', 'Show what would be installed without copying files')
   .action(async (options) => {
     if (options.target) {
       const { installSkillerSkill } = await import('./install-skiller.js');
-      installSkillerSkill(options.target);
+      installSkillerSkill(options.target, { dryRun: options.dryRun });
     } else {
       const { installSkillerInteractive } = await import('./install-skiller.js');
-      await installSkillerInteractive();
+      await installSkillerInteractive({ dryRun: options.dryRun });
     }
   });
 

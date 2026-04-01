@@ -38,16 +38,26 @@ export function findSkillerSkillMd() {
 /**
  * Install skiller's own skill to a target directory
  * @param {string} target - Target name (e.g., 'user', 'cursor') or custom path
+ * @param {{ dryRun?: boolean }} [options]
  */
-export async function installSkillerSkill(target = 'user') {
+export async function installSkillerSkill(target = 'user', { dryRun = false } = {}) {
   const skillSrc = findSkillerSkillMd();
   
+  if (dryRun) {
+    console.log('');
+    console.log('🔎 Resolving skiller SKILL.md location...');
+  }
+
   if (!skillSrc) {
     console.error('Could not find skiller\'s SKILL.md');
     console.error('This might be a bug. Please report it.');
     process.exit(1);
   }
   
+  if (dryRun) {
+    console.log(`   ✓ Found: ${skillSrc}`);
+  }
+
   const cwd = process.cwd();
   let destDir;
   
@@ -55,25 +65,37 @@ export async function installSkillerSkill(target = 'user') {
   
   if (targets[target]) {
     destDir = resolveTargetPath(targets[target].template, 'skiller', cwd);
+    if (dryRun) {
+      console.log(`\n🎯 Target "${target}" resolved via registry.json`);
+      console.log(`   Template: ${JSON.stringify(targets[target].template)}`);
+      console.log(`   CWD:      ${cwd}`);
+      console.log(`   Resolved: ${destDir}`);
+    }
   } else {
     destDir = target;
+    if (dryRun) {
+      console.log(`\n🎯 Custom target path: ${destDir}`);
+    }
   }
   
   const { installSkill } = await import('./index.mjs');
-  installSkill({ pkgName: 'skiller', skillSrc, destDir });
+  installSkill({ pkgName: 'skiller', skillSrc, destDir, dryRun });
   
-  console.log('\n✅ Skiller skill installed successfully!');
-  console.log('\n📝 The skiller skill provides documentation for:');
-  console.log('   - create-skill: Create new SKILL.md templates');
-  console.log('   - test-skill: Evaluate skills against multiple LLMs');
-  console.log('   - report: View evaluation reports');
-  console.log('   - optimize: AI-powered skill optimization');
+  if (!dryRun) {
+    console.log('\n✅ Skiller skill installed successfully!');
+    console.log('\n📝 The skiller skill provides documentation for:');
+    console.log('   - create-skill: Create new SKILL.md templates');
+    console.log('   - test-skill: Evaluate skills against multiple LLMs');
+    console.log('   - report: View evaluation reports');
+    console.log('   - optimize: AI-powered skill optimization');
+  }
 }
 
 /**
  * Interactive prompt to select installation target
+ * @param {{ dryRun?: boolean }} [options]
  */
-export async function installSkillerInteractive() {
+export async function installSkillerInteractive({ dryRun = false } = {}) {
   const targets = Object.values(getTargets());
   const custom = { enabled: true, label: 'custom' };
   
@@ -101,10 +123,10 @@ export async function installSkillerInteractive() {
       
       if (choiceNum >= 1 && choiceNum <= targets.length) {
         const targetKey = Object.keys(getTargets())[choiceNum - 1];
-        installSkillerSkill(targetKey);
+        installSkillerSkill(targetKey, { dryRun });
       } else if (custom.enabled && choiceNum === targets.length + 1) {
         rl.question('Enter custom destination directory: ', (p) => {
-          installSkillerSkill(p.trim());
+          installSkillerSkill(p.trim(), { dryRun });
           rl.close();
           resolve();
         });

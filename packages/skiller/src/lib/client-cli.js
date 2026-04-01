@@ -21,7 +21,7 @@ program
 // Default command: install skill for current package (interactive)
 program
   .command('add-skill', { isDefault: true })
-  .description('Install the skill for the current package (interactive)')
+  .description('Install the skill for the current package (interactive) in the user\'s directory')
   .action(async () => {
     const cwd = process.cwd();
     const pkgJsonPath = findPackageJson(cwd);
