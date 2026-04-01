@@ -81,10 +81,28 @@ export function findSkillMd(pkgDir, pkgName) {
  * @param {{ pkgName: string, skillSrc: string, destDir: string }} options
  */
 export function installSkill({ pkgName, skillSrc, destDir }) {
-  const destFile = path.join(destDir, 'SKILL.md');
+  const srcDir = path.dirname(skillSrc);
   fs.mkdirSync(destDir, { recursive: true });
-  fs.copyFileSync(skillSrc, destFile);
-  console.log(`\nSkill installed: ${destFile}`);
+  copyDirRecursive(srcDir, destDir);
+  console.log(`\nSkill installed: ${destDir}`);
+}
+
+/**
+ * Recursively copy all files from src directory to dest directory
+ * @param {string} src - Source directory
+ * @param {string} dest - Destination directory
+ */
+function copyDirRecursive(src, dest) {
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
 }
 
 /**

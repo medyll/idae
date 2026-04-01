@@ -54,20 +54,15 @@ export async function installSkillerSkill(target = 'user') {
   const targets = getTargets();
   
   if (targets[target]) {
-    // Use target from registry
     destDir = resolveTargetPath(targets[target].template, 'skiller', cwd);
   } else {
-    // Custom path
     destDir = target;
   }
   
-  const destFile = path.join(destDir, 'SKILL.md');
-  
-  fs.mkdirSync(destDir, { recursive: true });
-  fs.copyFileSync(skillSrc, destFile);
+  const { installSkill } = await import('../index.mjs');
+  installSkill({ pkgName: 'skiller', skillSrc, destDir });
   
   console.log('\n✅ Skiller skill installed successfully!');
-  console.log(`   ${destFile}`);
   console.log('\n📝 The skiller skill provides documentation for:');
   console.log('   - create-skill: Create new SKILL.md templates');
   console.log('   - test-skill: Evaluate skills against multiple LLMs');
