@@ -23,10 +23,10 @@ program
   .option('-t, --target <target>', 'Installation target (user, claude, cursor, etc.)')
   .action(async (options) => {
     if (options.target) {
-      const { installSkillerSkill } = await import('./cli/install-skiller.js');
+      const { installSkillerSkill } = await import('./lib/cli/install-skiller.js');
       installSkillerSkill(options.target);
     } else {
-      const { installSkillerInteractive } = await import('./cli/install-skiller.js');
+      const { installSkillerInteractive } = await import('./lib/cli/install-skiller.js');
       await installSkillerInteractive();
     }
   });

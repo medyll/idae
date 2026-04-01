@@ -11,9 +11,9 @@ import { findPackageJson, getPackageName, findSkillMd } from './index.mjs';
 
 const require = createRequire(import.meta.url);
 const { version } = require('../package.json');
-import { testSkill, findTestSuite } from './cli/tests/test-skill.js';
-import { viewReport } from './cli/tests/view-report.js';
-import { optimizeSkill } from './cli/tests/optimize.js';
+import { testSkill, findTestSuite } from './lib/cli/tests/test-skill.js';
+import { viewReport } from './lib/cli/tests/view-report.js';
+import { optimizeSkill } from './lib/cli/tests/optimize.js';
 
 const program = new Command();
 

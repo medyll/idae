@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { findPackageJson, getPackageName, findSkillMd } from '../../index.mjs';
+import { findPackageJson, getPackageName, findSkillMd } from '../../../index.mjs';
 import { runTestSuite, saveResults } from '../../core/evaluator/index.js';
 
 /**

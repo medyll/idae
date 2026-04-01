@@ -11,9 +11,9 @@ import { findPackageJson, getPackageName, findSkillMd, interactivePrompt, create
 
 const require = createRequire(import.meta.url);
 const { version } = require('../package.json');
-import { testSkill, findTestSuite } from './cli/test-skill.js';
-import { viewReport } from './cli/view-report.js';
-import { optimizeSkill } from './cli/optimize.js';
+import { testSkill, findTestSuite } from './lib/cli/tests/test-skill.js';
+import { viewReport } from './lib/cli/tests/view-report.js';
+import { optimizeSkill } from './lib/cli/tests/optimize.js';
 
 const program = new Command();
 

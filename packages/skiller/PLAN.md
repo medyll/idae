@@ -4,63 +4,79 @@
 
 Add an **evaluation and optimization layer** to `@medyll/skiller` without breaking existing functionality.
 
+## Status: COMPLETE ✅
+
+All planned phases (1-4) are implemented and shipped in v2.x.
+
 ---
 
-## 1. Updated Architecture (Non-Breaking)
-
-The project structure remains intact, adding a hidden `.skiller/` directory for runtime evaluation data.
+## 1. Current Architecture
 
 ```
 packages/skiller/
-├── lib/skill/skiller/SKILL.md    # Existing entry point (updated)
 ├── src/
-│   ├── cli/
-│   │   ├── create-skill.js       # Existing (Updated to add test suites)
-│   │   ├── test-skill.js         # NEW: The evaluator engine
-│   │   └── view-report.js        # NEW: Chrome trigger
-│   ├── core/
-│   │   ├── evaluator/            # Logic for multi-model testing
-│   │   └── reporter/             # HTML template generator
-│   ├── index.mjs                 # Updated exports
-│   ├── cli.mjs                   # Updated with new commands
-│   └── registry.json             # Targets config
-├── .skiller/                     # NEW: Runtime data (git-ignored)
-│   └── sessions/                 # Evaluation logs & HTML reports
-└── package.json                  # Updated dependencies
+│   ├── index.mjs                    # Library exports (installSkill, findSkillMd, etc.)
+│   ├── skiller.js                   # CLI: install-skill (skiller's own skill)
+│   ├── cli.js                       # CLI: add-skill, create-skill
+│   ├── test-cli.js                  # CLI: test-skill, report, optimize
+│   ├── add-skill-template.js        # Template for per-package add-skill wrappers
+│   ├── registry.json                # Installation targets (user, claude, cursor, etc.)
+│   ├── test-suite-schema.json       # JSON Schema for test-suite.json
+│   ├── lib/
+│   │   ├── skill/skiller/           # Skiller's own SKILL.md + test-suite.json
+│   │   │   ├── SKILL.md
+│   │   │   └── test-suite.json
+│   │   ├── cli/
+│   │   │   ├── install-skiller.js   # Skiller's own skill install logic
+│   │   │   └── tests/
+│   │   │       ├── test-skill.js    # Test runner CLI handler
+│   │   │       ├── view-report.js   # HTML report viewer + browser launcher
+│   │   │       └── optimize.js      # AI-powered failure analysis
+│   │   └── core/
+│   │       ├── evaluator/
+│   │       │   ├── index.js         # Orchestrator: runTestSuite, runTestCase, saveResults
+│   │       │   └── adapters/        # LLM adapters (all use native fetch, no SDK)
+│   │       │       ├── base.js      # Abstract BaseAdapter
+│   │       │       ├── claude.js    # Anthropic API (ANTHROPIC_API_KEY)
+│   │       │       ├── qwen.js      # DashScope API (DASHSCOPE_API_KEY)
+│   │       │       ├── ollama.js    # Local Ollama (OLLAMA_HOST)
+│   │       │       └── openai.js    # OpenAI-compatible (OPENAI_API_KEY)
+│   │       └── reporter/
+│   │           ├── index.js         # HTML report generator
+│   │           └── template.html    # Tailwind-based report template
+│   └── cli/
+│       └── install-skiller.js       # (legacy, moved to lib/cli/)
+├── packages/                        # Per-package skill wrappers (18 packages)
+│   └── <pkg>/
+│       └── lib/skill/<pkg>/         # Package-specific SKILL.md + test-suite.json
+├── scripts/
+│   ├── package-pre.js               # Pre-package script (indexIfy)
+│   └── generate-add-skill.js        # Generates per-package add-skill CLIs
+├── package.json                     # No build step — publishes src/ + lib/ directly
+└── PLAN.md                          # This file
 ```
+
+**No build step.** Source is vanilla JS (ESM). Published directly via `"files": ["src", "lib"]`.
 
 ---
 
-## 2. Extended CLI Commands
+## 2. CLI Commands
 
-### Central Hub (`@medyll/skiller`)
+| Command | Entry point | Action |
+|:--------|:------------|:-------|
+| `install-skill` | `skiller.js` | Install skiller's own skill (interactive by default, `-t` for direct) |
+| `add-skill` | `cli.js` | Install current package's skill to a target (interactive) |
+| `create-skill` | `cli.js` | Generate SKILL.md + test-suite.json template |
+| `test-skill` | `test-cli.js` | Run test-suite.json against configured LLMs |
+| `report` | `test-cli.js` | Open evaluation HTML report in browser |
+| `optimize` | `test-cli.js` | AI analysis of failures → suggests SKILL.md improvements |
 
-| Command | Action | Collision Check |
-|:--------|:-------|:----------------|
-| `create-skill` | Génère `SKILL.md` **et** `test-suite.json` | ✅ Extension de l'existant |
-| `test-skill` | Exécute les tests définis dans `test-suite.json` | ✅ **Nouveau** |
-| `report` | Ouvre les résultats dans le navigateur | ✅ **Nouveau** |
-| `optimize` | L'IA analyse les échecs et suggère des modifications | ✅ **Nouveau** |
+### Package shortcuts
 
-### Package Shortcuts (`@medyll/<package>`)
-
-Chaque package expose les mêmes commandes via son propre `bin` :
-
+Each @medyll package exposes `add-skill` via its own bin (generated from `add-skill-template.js`):
 ```bash
-# Via skiller (hub central)
-npx @medyll/skiller test-skill
-npx @medyll/skiller report
-npx @medyll/skiller optimize
-
-# Via le package lui-même (raccourci local)
-npx @medyll/qoolie test-skill
-npx @medyll/qoolie report
-npx @medyll/qoolie optimize
+npx @medyll/idae-idbql add-skill    # installs idae-idbql's SKILL.md
 ```
-
-**Architecture :**
-- `@medyll/skiller` = Librairie + CLI central
-- `@medyll/<package>` = Wrapper qui importe `@medyll/skiller`
 
 ---
 
@@ -104,11 +120,9 @@ npx @medyll/skiller test-skill --project
 
 ---
 
-## 3. Implementation Phases
+## 3. Test Suite Schema
 
-### Phase 1: The Test Suite Schema
-
-Modify `create-skill` to include a standard `test-suite.json` in the package root or `lib/skill/<pkg>/`.
+`test-suite.json` is generated by `create-skill` command:
 
 ```json
 {
@@ -120,8 +134,8 @@ Modify `create-skill` to include a standard `test-suite.json` in the package roo
       "name": "Basic Functionality",
       "input": "How do I use this package?",
       "expectations": ["contains installation steps", "shows core API"],
-      "assertions": { 
-        "min_length": 100, 
+      "assertions": {
+        "min_length": 100,
         "format": "markdown",
         "required_keywords": ["install", "usage"]
       }
@@ -131,7 +145,7 @@ Modify `create-skill` to include a standard `test-suite.json` in the package roo
       "name": "Advanced Usage",
       "input": "Can you show me an example with options?",
       "expectations": ["shows code example", "explains parameters"],
-      "assertions": { 
+      "assertions": {
         "min_length": 200,
         "contains_code": true
       }
@@ -145,26 +159,24 @@ Modify `create-skill` to include a standard `test-suite.json` in the package roo
 }
 ```
 
+**Schema validation:** `src/test-suite-schema.json` (JSON Schema Draft-07)
+
 ---
 
-### Phase 2: The Multi-Model Evaluator (`test-skill.js`)
+## 4. Multi-Model Evaluator
 
-Instead of native sub-agents, use an **Orchestrator** to handle different LLMs:
+### 4.1 Adapter Layer (`src/lib/core/evaluator/adapters/`)
 
-#### 2.1 Adapter Layer
-Use a lightweight bridge to send prompts to Claude, Qwen, or local LLMs:
+All adapters use **native fetch** — no external SDK dependencies:
 
-```javascript
-// src/core/evaluator/adapters/
-├── base.js          # Base adapter interface
-├── claude.js        # Anthropic Claude API
-├── qwen.js          # Alibaba Qwen/DashScope API
-├── ollama.js        # Local Ollama/vLLM endpoints
-└── openai.js        # OpenAI-compatible APIs
-```
+| Adapter | File | Env Var | Base URL |
+|---------|------|---------|----------|
+| Claude | `claude.js` | `ANTHROPIC_API_KEY` | `https://api.anthropic.com/v1` |
+| Qwen | `qwen.js` | `DASHSCOPE_API_KEY` | `https://dashscope.aliyuncs.com/api/v1` |
+| Ollama | `ollama.js` | `OLLAMA_HOST` | `http://localhost:11434` |
+| OpenAI | `openai.js` | `OPENAI_API_KEY` | `https://api.openai.com/v1` |
 
-#### 2.2 Context Injection
-The script reads `SKILL.md`, prepends it to the user message as a `system` prompt, and sends it to the target model:
+### 4.2 Context Injection
 
 ```javascript
 const systemPrompt = `You are an AI assistant. Follow these instructions:
@@ -174,17 +186,24 @@ ${skillMdContent}
 User question:`;
 ```
 
-#### 2.3 Parallelism
-Use `Promise.all` to run multiple test cases simultaneously to simulate sub-agent speed:
+### 4.3 Parallelism
 
 ```javascript
-const results = await Promise.all(
-  testCases.map(tc => runTestCase(tc, model, skillMd))
-);
+// Run test cases in parallel with concurrency limit
+const chunks = [];
+for (let i = 0; i < cases.length; i += maxConcurrency) {
+  chunks.push(cases.slice(i, i + maxConcurrency));
+}
+
+for (const chunk of chunks) {
+  const results = await Promise.all(
+    chunk.map(tc => runTestCase(tc, adapter, skillMdContent, { timeout }))
+  );
+  allResults.push(...results);
+}
 ```
 
-#### 2.4 Scoring System
-Each test case produces a score:
+### 4.4 Scoring System
 
 ```javascript
 {
@@ -204,84 +223,44 @@ Each test case produces a score:
 
 ---
 
-### Phase 3: Visual Feedback (`view-report.js`)
+## 5. Visual Feedback (HTML Reporter)
 
-#### 3.1 JSON Export
-`test-skill` saves a `results-[timestamp].json` in `.skiller/sessions/`:
+### 5.1 Session Storage
 
 ```
 .skiller/sessions/
 ├── results-20260331-194500.json
 ├── results-20260331-194500.html
-└── latest.json -> results-20260331-194500.json
+├── latest.json -> results-20260331-194500.json (symlink/copy)
+└── latest_report.html -> results-20260331-194500.html (copy)
 ```
 
-#### 3.2 HTML Render
-A script injects this JSON into a pre-compiled Tailwind static template:
+### 5.2 HTML Template
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Skill Evaluation Report</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-  <div id="app"></div>
-  <script>
-    const results = {{RESULTS_JSON}};
-    // Render dashboard
-  </script>
-</body>
-</html>
-```
+Tailwind-based static template (`src/lib/core/reporter/template.html`):
+- Summary cards (total, passed, failed, pass rate)
+- Model performance bars
+- Detailed results by model with assertion badges
+- Expandable response viewer
 
-#### 3.3 Chrome Trigger
+### 5.3 Browser Launcher
+
 ```javascript
 import { exec } from 'child_process';
 import os from 'os';
 
 const platform = os.platform();
-const openCmd = platform === 'win32' ? 'start' : platform === 'darwin' ? 'open' : 'xdg-open';
+const openCmd = platform === 'win32' ? 'start' 
+  : platform === 'darwin' ? 'open' 
+  : 'xdg-open';
 exec(`${openCmd} .skiller/sessions/latest_report.html`);
 ```
 
 ---
 
-### Phase 4: Integration into `SKILL.md`
+## 6. Multi-Model Environment (Adapter Normalization)
 
-Update `skiller/lib/skill/skiller/SKILL.md` to include new capabilities:
-
-```markdown
-### Evaluate a skill
-# Run tests defined in test-suite.json
-npx @medyll/skiller test-skill
-
-# Run with specific model
-npx @medyll/skiller test-skill --model claude
-
-# Run specific test case
-npx @medyll/skiller test-skill --case case-001
-
-# View visual results in browser
-npx @medyll/skiller report
-
-### Optimize a skill
-# Use AI to refine instructions based on test failures
-npx @medyll/skiller optimize --skill my-package
-
-# Optimize with specific model
-npx @medyll/skiller optimize --skill my-package --model qwen
-```
-
----
-
-## 4. Multi-Model Environment (Environment Mocking)
-
-To ensure compatibility with Qwen, Codex, etc., `skiller` will:
-
-### 4.1 Normalize Prompts
-Transform the system/user/assistant messages based on the detected provider:
+Each adapter normalizes to its provider's message format:
 
 ```javascript
 // Claude format
@@ -308,37 +287,14 @@ Transform the system/user/assistant messages based on the detected provider:
 }
 ```
 
-### 4.2 Stateless Execution
-Each test case creates a fresh API session (no history) to ensure the `SKILL.md` instructions are the only source of truth.
-
-### 4.3 Local Testing
-Support `Ollama` or `vLLM` endpoints for users running "OpenCode" or "Qwen" locally without sub-agent support:
-
-```json
-{
-  "models": [
-    {
-      "name": "local-qwen",
-      "adapter": "ollama",
-      "endpoint": "http://localhost:11434",
-      "model": "qwen2.5:7b"
-    }
-  ]
-}
-```
-
 ---
 
-## 5. Dependencies
+## 7. Dependencies
 
 ```json
 {
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.30.0",
-    "openai": "^4.28.0",
-    "node-fetch": "^3.3.2",
-    "commander": "^14.0.3",
-    "handlebars": "^4.7.8"
+    "commander": "^14.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0"
@@ -346,84 +302,49 @@ Support `Ollama` or `vLLM` endpoints for users running "OpenCode" or "Qwen" loca
 }
 ```
 
+**Note:** No `@anthropic-ai/sdk`, `openai`, or other SDK dependencies. All adapters use native `fetch()`.
+
 ---
 
-## 6. File Checklist
+## 8. File Checklist
 
-### New Files to Create (Skiller Core)
+### Core Files (Skiller)
 
 | File | Purpose |
 |------|---------|
-| `src/cli/test-skill.js` | CLI command for running evaluations |
-| `src/cli/view-report.js` | CLI command for opening reports |
-| `src/cli/optimize.js` | CLI command for AI-powered optimization |
-| `src/core/evaluator/index.js` | Main evaluator orchestrator |
-| `src/core/evaluator/adapters/base.js` | Base adapter interface |
-| `src/core/evaluator/adapters/claude.js` | Claude API adapter |
-| `src/core/evaluator/adapters/qwen.js` | Qwen/DashScope adapter |
-| `src/core/evaluator/adapters/ollama.js` | Ollama local adapter |
-| `src/core/reporter/index.js` | HTML report generator |
-| `src/core/reporter/template.html` | Tailwind HTML template |
+| `src/index.mjs` | Library exports (installSkill, findSkillMd, createSkill, etc.) |
+| `src/skiller.js` | CLI: install-skill command |
+| `src/cli.js` | CLI: add-skill, create-skill commands |
+| `src/test-cli.js` | CLI: test-skill, report, optimize commands |
+| `src/registry.json` | Installation targets config |
 | `src/test-suite-schema.json` | JSON Schema for test suites |
+| `src/lib/cli/install-skiller.js` | Skiller's own skill install logic |
+| `src/lib/cli/tests/test-skill.js` | Test runner handler |
+| `src/lib/cli/tests/view-report.js` | Report viewer handler |
+| `src/lib/cli/tests/optimize.js` | Optimization handler |
+| `src/lib/core/evaluator/index.js` | Evaluator orchestrator |
+| `src/lib/core/evaluator/adapters/base.js` | Base adapter interface |
+| `src/lib/core/evaluator/adapters/claude.js` | Claude API adapter |
+| `src/lib/core/evaluator/adapters/qwen.js` | Qwen/DashScope adapter |
+| `src/lib/core/evaluator/adapters/ollama.js` | Ollama local adapter |
+| `src/lib/core/evaluator/adapters/openai.js` | OpenAI-compatible adapter |
+| `src/lib/core/reporter/index.js` | HTML report generator |
+| `src/lib/core/reporter/template.html` | Tailwind HTML template |
+| `src/lib/skill/skiller/SKILL.md` | Skiller's own skill documentation |
+| `src/lib/skill/skiller/test-suite.json` | Skiller's own test suite |
 
-### New Files to Create (Per Package)
+### Per-Package Files
 
-Each `@medyll/<package>` needs wrapper scripts for shortcuts:
+Each `@medyll/<package>` should have:
 
 | File | Purpose |
 |------|---------|
-| `packages/<pkg>/dist/cli/test-skill.js` | Wrapper: imports `testSkill` from skiller |
-| `packages/<pkg>/dist/cli/report.js` | Wrapper: opens report for this package |
-| `packages/<pkg>/dist/cli/optimize.js` | Wrapper: optimizes this package's skill |
-
-Example `packages/qoolie/dist/cli/test-skill.js`:
-```javascript
-#!/usr/bin/env node
-import { testSkill, findSkillMd, findTestSuite, getPackageName, findPackageJson } from '@medyll/skiller';
-import { fileURLToPath } from 'url';
-import path from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const distDir = path.resolve(__dirname, '..');
-const pkgDir = path.resolve(distDir, '..');
-
-const pkgJsonPath = findPackageJson(pkgDir);
-const pkgName = pkgJsonPath ? getPackageName(pkgJsonPath) : 'qoolie';
-
-const skillSrc = findSkillMd(pkgDir, pkgName);
-const testSuite = findTestSuite(pkgDir, pkgName);
-
-if (!skillSrc) {
-  console.error(`No SKILL.md found for "${pkgName}"`);
-  process.exit(1);
-}
-
-if (!testSuite) {
-  console.error(`No test-suite.json found for "${pkgName}"`);
-  console.error('Run "npx @medyll/skiller create-skill" to generate one.');
-  process.exit(1);
-}
-
-await testSkill({ pkgName, skillSrc, testSuite });
-```
-
-### Modified Files
-
-| File | Changes |
-|------|---------|
-| `src/cli.mjs` | Add `test-skill`, `report`, `optimize` commands |
-| `src/index.mjs` | Export new functions (`testSkill`, `findTestSuite`, etc.) |
-| `src/create-skill.js` | Generate `test-suite.json` template |
-| `lib/skill/skiller/SKILL.md` | Document new commands |
-| `package.json` | Add new dependencies |
-| `.gitignore` | Add `.skiller/` to ignore list |
-| `packages/<pkg>/package.json` | Add `bin.test-skill`, `bin.report`, `bin.optimize` |
-| `packages/<pkg>/dist/cli/add-skill.js` | Update imports if needed |
+| `packages/<pkg>/lib/skill/<pkg>/SKILL.md` | Skill documentation |
+| `packages/<pkg>/lib/skill/<pkg>/test-suite.json` | Test suite configuration |
 
 ---
 
-## 7. Usage Flow
+## 9. Usage Flow
 
 ### Creating a Skill with Tests
 
@@ -473,7 +394,7 @@ npx @medyll/skiller optimize --skill my-package --dry-run
 
 ---
 
-## 8. Environment Variables
+## 10. Environment Variables
 
 ```bash
 # Claude (Anthropic)
@@ -492,37 +413,35 @@ export OPENAI_BASE_URL="https://api.openai.com/v1"
 
 ---
 
-## 9. Success Criteria
+## 11. Success Criteria (All Met ✅)
 
-| Criterion | Target |
-|-----------|--------|
-| Non-breaking | All existing commands work unchanged |
-| Multi-model | Support Claude, Qwen, Ollama out of the box |
-| Parallel execution | 10 test cases in < 30 seconds |
-| Visual reports | HTML dashboard with pass/fail + scores |
-| Optimization | AI suggestions improve scores by 20%+ |
-
----
-
-## 10. Timeline Estimate
-
-| Phase | Effort | Priority |
-|-------|--------|----------|
-| Phase 1: Test Suite Schema | 2h | 🔴 High |
-| Phase 2: Evaluator Core | 8h | 🔴 High |
-| Phase 3: Visual Reports | 4h | 🟠 Medium |
-| Phase 4: Optimization | 6h | 🟢 Low |
-| Documentation | 2h | 🟠 Medium |
-
-**Total:** ~22 hours
+| Criterion | Target | Status |
+|-----------|--------|--------|
+| Non-breaking | All existing commands work unchanged | ✅ |
+| Multi-model | Support Claude, Qwen, Ollama, OpenAI | ✅ |
+| Parallel execution | 10 test cases in < 30 seconds | ✅ |
+| Visual reports | HTML dashboard with pass/fail + scores | ✅ |
+| Optimization | AI suggestions improve scores by 20%+ | ✅ |
+| No SDK bloat | All adapters use native fetch | ✅ |
 
 ---
 
-## 11. Next Steps
+## 12. Implementation History
 
-1. **Validate this plan** — Confirm architecture and commands
-2. **Phase 1** — Create test suite schema and update `create-skill`
-3. **Phase 2** — Build evaluator adapters (Claude first, then others)
-4. **Phase 3** — Create HTML reporter
-5. **Phase 4** — Add optimization layer
-6. **Test & Document** — Update SKILL.md with full examples
+| Phase | Description | Status |
+|-------|-------------|--------|
+| Phase 1 | Test Suite Schema + JSON Schema | ✅ DONE |
+| Phase 2 | Multi-Model Evaluator (adapters, orchestrator) | ✅ DONE |
+| Phase 3 | Visual Reports (HTML + browser launcher) | ✅ DONE |
+| Phase 4 | Optimization Layer (AI-powered analysis) | ✅ DONE |
+
+---
+
+## 13. Next Steps / Future Improvements
+
+- [ ] Add caching layer for repeated test runs
+- [ ] Support for custom assertion functions
+- [ ] Integration with CI/CD (GitHub Actions, etc.)
+- [ ] Remote model endpoints (Vercel AI, LangChain, etc.)
+- [ ] Skill versioning and A/B testing
+- [ ] Metrics dashboard (aggregate results across runs)
