@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { resolveTargetPath, getTargets } from '../../index.mjs';
+import { resolveTargetPath, getTargets } from './index.mjs';
 
 // Get current file directory (ES module equivalent of __dirname)
 const __filename = fileURLToPath(import.meta.url);
@@ -59,7 +59,7 @@ export async function installSkillerSkill(target = 'user') {
     destDir = target;
   }
   
-  const { installSkill } = await import('../../index.mjs');
+  const { installSkill } = await import('./index.mjs');
   installSkill({ pkgName: 'skiller', skillSrc, destDir });
   
   console.log('\n✅ Skiller skill installed successfully!');

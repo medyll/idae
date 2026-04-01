@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { findPackageJson, getPackageName, findSkillMd } from '../../../index.mjs';
-import { runTestSuite, saveResults } from '../../core/evaluator/index.js';
+import { runTestSuite, saveResults } from '../core/evaluator/index.js';
 
 /**
  * Find test-suite.json in standard locations

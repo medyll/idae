@@ -1,74 +1,26 @@
 #!/usr/bin/env node
 /**
- * Skiller CLI - Commands for managing package skills
- * Usage: npx @medyll/skiller add-skill, create-skill, test-skill, etc.
+ * Skiller Test CLI - Commands for testing and evaluating skills
+ * Usage: npx @medyll/skiller test-skill, report, optimize
  */
 import { Command } from 'commander';
 import path from 'path';
 import fs from 'fs';
 import { createRequire } from 'module';
-import { findPackageJson, getPackageName, findSkillMd, interactivePrompt, createSkill } from './index.mjs';
+import { findPackageJson, getPackageName, findSkillMd } from './index.mjs';
 
 const require = createRequire(import.meta.url);
-const { version } = require('../package.json');
-import { testSkill, findTestSuite } from './lib/cli/tests/test-skill.js';
-import { viewReport } from './lib/cli/tests/view-report.js';
-import { optimizeSkill } from './lib/cli/tests/optimize.js';
+const { version } = require('../../package.json');
+import { testSkill, findTestSuite } from './skill/skiller/references/cli/tests/test-skill.js';
+import { viewReport } from './skill/skiller/references/cli/tests/view-report.js';
+import { optimizeSkill } from './skill/skiller/references/cli/tests/optimize.js';
 
 const program = new Command();
 
 program
-  .name('skiller')
-  .description('Skill installer and creator for @medyll packages')
+  .name('skiller-test')
+  .description('Skill evaluation and optimization for @medyll packages')
   .version(version);
-
-// Default command: install skill for current package (interactive)
-program
-  .command('add-skill', { isDefault: true })
-  .description('Install the skill for the current package (interactive)')
-  .action(async () => {
-    const cwd = process.cwd();
-    const pkgJsonPath = findPackageJson(cwd);
-
-    if (!pkgJsonPath) {
-      console.error('No package.json found.');
-      process.exit(1);
-    }
-
-    const pkgDir = path.dirname(pkgJsonPath);
-    const pkgName = getPackageName(pkgJsonPath);
-    const skillSrc = findSkillMd(pkgDir);
-
-    if (!skillSrc) {
-      console.error(`No SKILL.md found for "${pkgName}" (searched lib/skill/, dist/skill/, src/lib/skill/, and package root).`);
-      console.error('Run "npx skiller create-skill" first to create a SKILL.md template.');
-      process.exit(1);
-    }
-
-    await interactivePrompt({ pkgName, skillSrc });
-  });
-
-// Create a new skill template
-program
-  .command('create-skill')
-  .description('Create a new SKILL.md template for the current package')
-  .option('-n, --name <name>', 'Package name (default: from package.json)')
-  .option('-d, --description <description>', 'Skill description for frontmatter')
-  .action((options) => {
-    const cwd = process.cwd();
-    const pkgJsonPath = findPackageJson(cwd);
-
-    if (!pkgJsonPath) {
-      console.error('No package.json found.');
-      process.exit(1);
-    }
-
-    const pkgDir = path.dirname(pkgJsonPath);
-    const pkgName = options.name || getPackageName(pkgJsonPath);
-    const description = options.description || '';
-
-    createSkill({ pkgName, pkgDir, description });
-  });
 
 // Test skill command
 program

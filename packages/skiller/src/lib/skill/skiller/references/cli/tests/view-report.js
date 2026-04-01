@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import { getLatestResults, getResultsBySession, generateReport, listSessions } from '../../core/reporter/index.js';
+import { getLatestResults, getResultsBySession, generateReport, listSessions } from '../core/reporter/index.js';
 
 /**
  * Open a file in the default browser
