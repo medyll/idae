@@ -5,8 +5,7 @@
   "description": "htmlu : vite preprocess utility allowing to use classNames as elements tags. The next step of utility classNames",
   "main": "./dist/index.js",
   "bin": {
-    "idae-htmlu": "./dist/bin/bin.js",
-    "add-skill": "./dist/cli/add-skill.js"
+    "idae-htmlu": "./dist/bin/bin.js"
   },
   "scripts": {
     "dev": "vite dev",
