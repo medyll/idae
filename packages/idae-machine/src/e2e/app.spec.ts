@@ -8,7 +8,9 @@ import { test, expect } from '@playwright/test';
 // ─── Structure de base ────────────────────────────────────────────────────────
 
 test.describe('Structure de base', () => {
-	test.beforeEach(async ({ page }) => { await page.goto('/'); });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/');
+	});
 
 	test('header présent avec le bon titre', async ({ page }) => {
 		await expect(page.locator('.demo-header h1')).toContainText('idae-machine Component Showcase');
@@ -17,9 +19,9 @@ test.describe('Structure de base', () => {
 
 	test('panneau gauche avec les 3 collections du testScheme', async ({ page }) => {
 		await expect(page.getByTestId('left-panel')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-product')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-product_category')).toBeVisible();
-		await expect(page.getByTestId('collection-btn-agent')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-vehicle')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-category')).toBeVisible();
+		await expect(page.getByTestId('collection-btn-customer')).toBeVisible();
 	});
 
 	test('tabs nav contient les onglets permanents', async ({ page }) => {
@@ -44,7 +46,9 @@ test.describe('Structure de base', () => {
 // ─── Navigation entre collections ────────────────────────────────────────────
 
 test.describe('Navigation entre collections', () => {
-	test.beforeEach(async ({ page }) => { await page.goto('/'); });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/');
+	});
 
 	test('product actif par défaut', async ({ page }) => {
 		await expect(page.getByTestId('collection-btn-product')).toHaveClass(/active/);
@@ -60,8 +64,8 @@ test.describe('Navigation entre collections', () => {
 		const info = page.getByTestId('info-section');
 		await expect(info).toContainText('product');
 
-		await page.getByTestId('collection-btn-agent').click();
-		await expect(info).toContainText('agent');
+		await page.getByTestId('collection-btn-vehicle').click();
+		await expect(info).toContainText('vehicle');
 	});
 
 	test('changer de collection réinitialise le record sélectionné', async ({ page }) => {
@@ -76,7 +80,9 @@ test.describe('Navigation entre collections', () => {
 // ─── Onglets de navigation ────────────────────────────────────────────────────
 
 test.describe('Navigation par tabs', () => {
-	test.beforeEach(async ({ page }) => { await page.goto('/'); });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/');
+	});
 
 	test('Grid View actif par défaut — CollectionList visible', async ({ page }) => {
 		await expect(page.getByTestId('tab-grid')).toHaveClass(/active/);
@@ -144,7 +150,7 @@ test.describe('Composant Create', () => {
 // ─── Composant Update ─────────────────────────────────────────────────────────
 
 test.describe('Composant Update', () => {
-	test('onglet Update apparaît uniquement après sélection d\'un record', async ({ page }) => {
+	test("onglet Update apparaît uniquement après sélection d'un record", async ({ page }) => {
 		await page.goto('/');
 		await expect(page.getByTestId('tab-update')).not.toBeVisible();
 
@@ -184,7 +190,7 @@ test.describe('Skeleton — toggle chargement', () => {
 		await expect(page.getByTestId('skeleton-demo')).not.toBeVisible();
 	});
 
-	test('label du bouton toggle change selon l\'état', async ({ page }) => {
+	test("label du bouton toggle change selon l'état", async ({ page }) => {
 		const btn = page.getByTestId('toggle-skeleton');
 		await expect(btn).toContainText('Afficher');
 		await btn.click();
@@ -216,7 +222,7 @@ test.describe('FieldInPlace — édition inline', () => {
 		await expect(section.locator('button[aria-label="Cancel"]')).toBeVisible();
 	});
 
-	test('cliquer Cancel → retour à l\'état initial', async ({ page }) => {
+	test("cliquer Cancel → retour à l'état initial", async ({ page }) => {
 		const section = page.getByTestId('field-inplace-section');
 		await section.locator('button[aria-label="Edit"]').click();
 		await section.locator('button[aria-label="Cancel"]').click();
@@ -242,7 +248,9 @@ test.describe('Selector', () => {
 // ─── Cohérence inter-onglets ──────────────────────────────────────────────────
 
 test.describe('Cohérence navigation globale', () => {
-	test.beforeEach(async ({ page }) => { await page.goto('/'); });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/');
+	});
 
 	test('Grid View se recharge après changement de collection', async ({ page }) => {
 		await page.getByTestId('collection-btn-product_category').click();
@@ -250,7 +258,9 @@ test.describe('Cohérence navigation globale', () => {
 		await expect(page.getByTestId('collection-btn-product_category')).toHaveClass(/active/);
 	});
 
-	test('InfoLine "Selected" passe à "No selection" après changement de collection', async ({ page }) => {
+	test('InfoLine "Selected" passe à "No selection" après changement de collection', async ({
+		page
+	}) => {
 		const info = page.getByTestId('info-section');
 		await expect(info).toContainText('No selection');
 

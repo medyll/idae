@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Evaluation Report - {{SKILL_NAME}}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .assertion-badge { @apply inline-flex items-center px-2 py-1 rounded text-xs font-medium; }
+    .assertion-pass { @apply bg-green-100 text-green-800; }
+    .assertion-fail { @apply bg-red-100 text-red-800; }
+    .model-section { @apply mb-8 border rounded-lg overflow-hidden; }
+    .model-header { @apply px-4 py-3 bg-gray-50 border-b font-semibold; }
+    .test-case { @apply p-4 border-b last:border-b-0; }
+    .test-case-pass { @apply bg-green-50; }
+    .test-case-fail { @apply bg-red-50; }
+    .score-bar { @apply h-2 rounded-full bg-gray-200 overflow-hidden; }
+    .score-fill { @apply h-full bg-blue-500 transition-all duration-300; }
+    .score-fill-pass { @apply bg-green-500; }
+    .score-fill-fail { @apply bg-red-500; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Skill Evaluation Report</h1>
+      <p class="text-gray-600">Package: <span class="font-mono">{{SKILL_NAME}}</span></p>
+      <p class="text-gray-500 text-sm">Generated: {{TIMESTAMP}}</p>
+    </header>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="text-sm text-gray-500">Total Tests</div>
+        <div class="text-3xl font-bold">{{SUMMARY.TOTAL}}</div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="text-sm text-gray-500">Passed</div>
+        <div class="text-3xl font-bold text-green-600">{{SUMMARY.PASSED}}</div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="text-sm text-gray-500">Failed</div>
+        <div class="text-3xl font-bold text-red-600">{{SUMMARY.FAILED}}</div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="text-sm text-gray-500">Pass Rate</div>
+        <div class="text-3xl font-bold {{SUMMARY.PASS_RATE_CLASS}}">{{SUMMARY.PASS_RATE}}%</div>
+      </div>
+    </div>
+
+    <!-- Model Performance -->
+    <div class="bg-white rounded-lg shadow mb-8">
+      <div class="px-4 py-3 border-b">
+        <h2 class="text-lg font-semibold">Model Performance</h2>
+      </div>
+      <div class="p-4">
+        <div class="space-y-4" id="model-performance">
+          <!-- Model cards will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Results by Model -->
+    <div id="results-by-model">
+      <!-- Model sections will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    // Results data injected here
+    const results = {{RESULTS_JSON}};
+
+    function renderModelPerformance() {
+      const container = document.getElementById('model-performance');
+      const byModel = results.summary.byModel;
+
+      container.innerHTML = Object.entries(byModel).map(([model, data]) => `
+        <div class="border rounded-lg p-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold">${model}</span>
+            <span class="text-sm text-gray-500">${data.passed}/${data.total} passed</span>
+          </div>
+          <div class="score-bar mb-2">
+            <div class="score-fill ${data.avgScore >= 0.8 ? 'score-fill-pass' : data.avgScore < 0.5 ? 'score-fill-fail' : ''}" 
+                 style="width: ${data.avgScore * 100}%"></div>
+          </div>
+          <div class="text-sm text-gray-600">Average Score: ${(data.avgScore * 100).toFixed(0)}%</div>
+        </div>
+      `).join('');
+    }
+
+    function renderResultsByModel() {
+      const container = document.getElementById('results-by-model');
+      const byModel = {};
+
+      // Group results by model
+      results.results.forEach(r => {
+        if (!byModel[r.model]) byModel[r.model] = [];
+        byModel[r.model].push(r);
+      });
+
+      container.innerHTML = Object.entries(byModel).map(([model, modelResults]) => `
+        <div class="model-section bg-white shadow">
+          <div class="model-header">${model}</div>
+          <div>
+            ${modelResults.map(r => `
+              <div class="test-case ${r.passed ? 'test-case-pass' : 'test-case-fail'}">
+                <div class="flex items-start justify-between mb-2">
+                  <div>
+                    <h3 class="font-semibold">${r.name}</h3>
+                    <p class="text-sm text-gray-500">ID: ${r.caseId}</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${r.passed ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}">
+                      ${r.passed ? 'PASS' : 'FAIL'}
+                    </span>
+                    <div class="text-sm text-gray-500 mt-1">Score: ${(r.score * 100).toFixed(0)}%</div>
+                    <div class="text-xs text-gray-400">Duration: ${r.duration_ms}ms</div>
+                  </div>
+                </div>
+
+                ${r.error ? `
+                  <div class="mt-2 p-3 bg-red-100 border border-red-300 rounded text-sm text-red-800">
+                    <strong>Error:</strong> ${r.error}
+                  </div>
+                ` : ''}
+
+                <div class="mt-3">
+                  <div class="text-sm font-medium mb-1">Input:</div>
+                  <div class="text-sm bg-gray-50 p-2 rounded">${escapeHtml(r.input || 'N/A')}</div>
+                </div>
+
+                <div class="mt-3">
+                  <div class="text-sm font-medium mb-1">Assertions:</div>
+                  <div class="flex flex-wrap gap-2">
+                    ${Object.entries(r.assertions || {}).map(([key, value]) => `
+                      <span class="assertion-badge ${value.passed ? 'assertion-pass' : 'assertion-fail'}">
+                        ${key}: ${value.passed ? '✓' : '✗'}
+                        ${value.found !== undefined ? `(${value.found.length} found)` : ''}
+                        ${value.missing !== undefined ? `(${value.missing.length} missing)` : ''}
+                        ${value.value !== undefined && typeof value.value !== 'object' ? `(${value.value})` : ''}
+                      </span>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <details class="mt-3">
+                  <summary class="text-sm cursor-pointer text-blue-600 hover:text-blue-800">View Response</summary>
+                  <pre class="mt-2 p-3 bg-gray-50 rounded text-sm overflow-x-auto whitespace-pre-wrap">${escapeHtml(r.response || 'No response')}</pre>
+                </details>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Initialize
+    renderModelPerformance();
+    renderResultsByModel();
+  </script>
+</body>
+</html>

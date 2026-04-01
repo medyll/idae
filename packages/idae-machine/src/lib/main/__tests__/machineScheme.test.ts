@@ -9,11 +9,11 @@ describe('MachineScheme', () => {
 
 	beforeEach(() => {
 		db = new MachineDb(testScheme);
-		scheme = db.collection('agent');
+		scheme = db.collection('vehicle');
 	});
 
 	it('should expose collection name and template', () => {
-		expect(scheme.collection).toBe('agent');
+		expect(scheme.collection).toBe('vehicle');
 		expect(scheme.template).toBeDefined();
 	});
 

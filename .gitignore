@@ -56,3 +56,6 @@ coverage
 .yarn/cache
 .yarn/unplugged
 
+# Skiller evaluation sessions
+.skiller/
+

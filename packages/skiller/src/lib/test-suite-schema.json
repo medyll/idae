@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skill Test Suite",
+  "description": "Test suite configuration for skill evaluation",
+  "type": "object",
+  "required": ["skill", "version", "cases"],
+  "properties": {
+    "skill": {
+      "type": "string",
+      "description": "Package name the skill belongs to"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the test suite"
+    },
+    "cases": {
+      "type": "array",
+      "description": "List of test cases",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "input"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the test case"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name for the test case"
+          },
+          "input": {
+            "type": "string",
+            "description": "The input prompt to send to the model"
+          },
+          "expectations": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of expected outcomes"
+          },
+          "assertions": {
+            "type": "object",
+            "description": "Assertion rules for validating the response",
+            "properties": {
+              "min_length": {
+                "type": "integer",
+                "description": "Minimum response length in characters"
+              },
+              "max_length": {
+                "type": "integer",
+                "description": "Maximum response length in characters"
+              },
+              "format": {
+                "type": "string",
+                "enum": ["markdown", "json", "code", "plain"],
+                "description": "Expected response format"
+              },
+              "required_keywords": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Keywords that must appear in the response"
+              },
+              "forbidden_keywords": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Keywords that must NOT appear in the response"
+              },
+              "contains_code": {
+                "type": "boolean",
+                "description": "Whether the response must contain code blocks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "description": "List of models to test against",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "required": ["name", "adapter"],
+            "properties": {
+              "name": { "type": "string" },
+              "adapter": {
+                "type": "string",
+                "enum": ["claude", "qwen", "ollama", "openai"]
+              },
+              "endpoint": { "type": "string" },
+              "model": { "type": "string" }
+            }
+          }
+        ]
+      },
+      "default": ["claude", "qwen", "ollama"]
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "timeout": {
+          "type": "integer",
+          "default": 30000,
+          "description": "Timeout per test case in milliseconds"
+        },
+        "parallel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to run test cases in parallel"
+        },
+        "maxConcurrency": {
+          "type": "integer",
+          "default": 5,
+          "description": "Maximum number of parallel test cases"
+        }
+      }
+    }
+  }
+}

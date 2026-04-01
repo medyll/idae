@@ -67,3 +67,5 @@ flowchart TD
 ## License
 
 This package is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for more information.
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

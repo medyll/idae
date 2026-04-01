@@ -1,4 +1,5 @@
 // auto exports of entry components
+export * from '$lib/cli/add-skill.js';
 export * from '$lib/operators/operators.js';
 export * from '$lib/path/pathResolver.js';
 export * from '$lib/query/query.js';

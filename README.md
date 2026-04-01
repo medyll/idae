@@ -19,7 +19,9 @@ A high-performance monorepo for modern full-stack application development. Focus
 - [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
 - [@medyll/idae-sync](https://github.com/medyll/idae/tree/main/packages/idae-sync)
 - [@medyll/monorepo-vitrine](https://github.com/medyll/idae/tree/main/packages/mono-vitrine)
+- [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
 - [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
+- [@medyll/skiller](https://github.com/medyll/idae/tree/main/packages/skiller)
 - [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
 - [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
 
@@ -102,7 +104,7 @@ SvelteKit based framework to build AI powered applications with ease.
 
 **Repo:** [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
 
-**Version:** 0.135.3 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
+**Version:** 0.136.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-query
@@ -149,6 +151,13 @@ Sync monorepo packages to individual GitHub showcase repositories
 
 **Version:** 1.1.0
 ##
+### @medyll/qoolie
+Client database IndexedDB the easy way, add server sync
+
+**Repo:** [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
+
+**Version:** 0.0.1
+##
 ### @medyll/idae-shared
 sharing
 
@@ -156,6 +165,13 @@ sharing
 
 **Version:** 1.0.4 [see changelog](https://github.com/medyll/idae/tree/main/packages/shared/CHANGELOG.md)
 
+##
+### @medyll/skiller
+Skill installer and evaluator for @medyll packages
+
+**Repo:** [@medyll/skiller](https://github.com/medyll/idae/tree/main/packages/skiller)
+
+**Version:** 2.2.10
 ##
 ### @medyll/idae-config-prettier
 idae svelte Prettier config

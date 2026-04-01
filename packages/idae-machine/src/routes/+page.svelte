@@ -27,6 +27,7 @@ Shows all UI components working together with real data binding
 	import Selector from '$lib/fragments/Selector.svelte';
 	import InfoLine from '$lib/fragments/InfoLine.svelte';
 	import Skeleton from '$lib/fragments/Skeleton.svelte';
+	import CollectionList from '$lib/collection/CollectionList.svelte';
 
 	// Initialize machine — testScheme IS the model (top-level keys = collection names)
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
@@ -41,7 +42,7 @@ Shows all UI components working together with real data binding
 	let selectedRecord = $state<Record<string, unknown> | null>(null);
 	let isLoading = $state(false);
 
-	function selectRecord(record: Record<string, unknown>) {
+	function selectRecord(record: Record<string, unknown>, _index?: number | string) {
 		selectedRecord = record;
 		activeTab = 'update';
 	}
@@ -66,20 +67,21 @@ Shows all UI components working together with real data binding
 			<h3>Collections</h3>
 
 			<div class="selector-wrapper" data-testid="collection-selector">
-				{#each collections as col}
+				<CollectionList >
+					{#snippet children({collection})}
 					<button
 						class="collection-btn"
-						class:active={selectedCollection === col}
-						data-testid="collection-btn-{col}"
+						class:active={selectedCollection === collection.name}
+						data-testid="collection-btn-{collection.name}"
 						onclick={() => {
-							selectedCollection = col;
+							selectedCollection = collection.name;
 							selectedRecord = null;
 							activeTab = 'grid';
-						}}
-					>
-						📦 {col}
+						}}>
+						{collection.name}
 					</button>
-				{/each}
+					{/snippet}
+				</CollectionList>
 			</div>
 
 			<div class="create-section">
@@ -93,18 +95,6 @@ Shows all UI components working together with real data binding
 					label="Selected"
 					value={selectedRecord ? 'Record selected' : 'No selection'}
 				/>
-			</div>
-
-			<!-- Démo du composant Frame dans sa section dédiée -->
-			<div class="frame-demo-section">
-				<h4>Frame component</h4>
-				<div class="frame-demo-wrapper">
-					<Frame showPanel={false}>
-						{#snippet children()}
-							<p class="frame-demo-text">Frame sans panneau</p>
-						{/snippet}
-					</Frame>
-				</div>
 			</div>
 		</nav>
 
@@ -177,7 +167,7 @@ Shows all UI components working together with real data binding
 							<DataList
 								collection={selectedCollection}
 								displayMode="grid"
-								onclick={selectRecord}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -193,7 +183,7 @@ Shows all UI components working together with real data binding
 						<div class="collection-menu">
 							<DataListActions
 								collection={selectedCollection}
-								onclick={selectRecord}
+								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
 						</div>
 					</div>
@@ -260,7 +250,7 @@ Shows all UI components working together with real data binding
 							<h3>Foreign Keys (FK)</h3>
 							<div class="fk-viewer">
 								<DataLinks collection={selectedCollection}>
-									{#snippet children(fkEntry)}
+									{#snippet children(fkEntry: [string, unknown])}
 										<div class="fk-item">
 											<strong>{fkEntry[0]}</strong>: references collection
 										</div>
@@ -273,7 +263,7 @@ Shows all UI components working together with real data binding
 							<h3>Reverse Relationships</h3>
 							<div class="reverse-fk-viewer">
 								<DataLinksBack collection={selectedCollection} showTitle={true}>
-									{#snippet children(reverseFkEntry)}
+									{#snippet children(reverseFkEntry: [string, unknown])}
 										<div class="reverse-fk-item">
 											Collection <strong>{reverseFkEntry[0]}</strong> references this one
 										</div>
@@ -329,7 +319,7 @@ Shows all UI components working together with real data binding
 							<h3>Sélecteur — Selector</h3>
 							<p>Rendu d'une liste de valeurs avec snippet <code>item</code> :</p>
 							<div class="selector-demo">
-								<Selector values={['product', 'product_category', 'agent']} value={selectedCollection}>
+								<Selector values={['vehicle', 'category', 'customer', 'rental', 'location_office', 'maintenance']} value={selectedCollection}>
 									{#snippet item(val, active)}
 										<span class="selector-item" class:active>{val}</span>
 									{/snippet}
@@ -739,3 +729,5 @@ Shows all UI components working together with real data binding
 		}
 	}
 </style>
+
+

@@ -618,3 +618,5 @@ test/
 ## License
 
 ISC - Lebrun Meddy
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

@@ -1,5 +1,8 @@
 {
 	"name": "@medyll/idae-router",
+	"bin": {
+		"add-skill": "./dist/cli/add-skill.js"
+	},
 	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite dev",
@@ -76,6 +79,9 @@
 		"url": "git+https://github.com/medyll/idae.git"
 	},
 	"author": "Lebrun Meddy",
+	"dependencies": {
+		"@medyll/skiller": "workspace:*"
+	},
 	"publishConfig": {
 		"access": "public",
 		"directory": "."

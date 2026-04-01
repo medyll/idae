@@ -1,150 +1,129 @@
 # GitHub Copilot Instructions for Idae Monorepo
 
-This monorepo contains core components for Idae applications (Web, Mobile, Desktop). It uses NPM Workspaces, Lerna, and Nx for orchestration.
+High-performance monorepo for full-stack development: data management, storage, and UI with advanced reactivity. Supports PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.
 
-## 🏗️ Architecture Overview
+## Build, Test, Lint
 
-**Core Data Flow**: Frontend (Svelte 5) ↔ Database Layer (idae-db/idbql) ↔ Backend (NestJS/MongoDB)
+**Package manager: pnpm** (not npm/yarn). Node >= 22 (see `.nvmrc`).
 
-**Package Categories**:
-- **UI Layer** (`idae-slotui-svelte`): Svelte 5 component library with SCSS + UnoCSS
-- **Data Layer** (`idae-db`, `idae-idbql`, `idae-query`, `idae-mongo`): Multi-DB abstraction, IndexedDB queries, query parsing
-- **DOM/Event Layer** (`idae-be`, `idae-dom-events`): Callback-based DOM manipulation and event observation
-- **Engine/Utils** (`idae-engine`, `idae-api`, `idae-socket`, `idae-stator`): Data operations, HTTP API, WebSocket, state management
-- **Backend** (`idae-api-nest`): NestJS REST API with Mongoose/MongoDB
-- **Shared** (`packages-config/`, `shared/`): ESLint, Prettier configs; shared types/utilities
+```bash
+# Root commands
+pnpm install
+pnpm run package          # Build and package all workspaces
+pnpm run lint             # ESLint across monorepo
+pnpm run format           # Prettier across monorepo
 
-## 🔑 Critical Patterns & Workflows
+# Per-package (use --filter to scope)
+pnpm --filter <pkg> run build
+pnpm --filter <pkg> run test
+pnpm --filter <pkg> run check       # svelte-check — run before committing Svelte packages
 
-### Svelte 5 Runes (NOT Svelte 4)
-- **Mandatory**: Use `$props()`, `$state()`, `$derived()`, `$effect()`, `$bindable()` — NEVER use `export let`, `$:`, `createEventDispatcher`, or writable stores
-- **File Structure**: `.svelte.ts` files contain runes (e.g., `collection.svelte.ts`, `store.svelte.ts`)
-- **Props**: `let { propName = 'default' } = $props()` (destructured binding)
-- **State in Classes**: `class Store { count = $state(0); double = $derived(this.count * 2); }`
+# Single test (Vitest)
+pnpm --filter <pkg> run test -- -t "test name pattern"
+# Single test file
+pnpm --filter <pkg> run test -- src/path/to/file.test.ts
 
-### Data Flow Patterns
-- **idae-idbql**: IndexedDB queries use `@medyll/idae-query` for chainable filters, sorting, pagination
-- **idae-db**: Server-side DB abstraction supporting MongoDB, MySQL; auto-increment via `autoIncrementFormat`
-- **idae-be**: Callback-based DOM manipulation always returns root object for chaining:
-  ```typescript
-  be('#container').append(toBe('<div>'), ({ be }) => be.addClass('highlight').on('click', handler))
-  ```
-- **idae-engine**: `dataOp` utility for sorting, finding, grouping arrays with fluent API
-
-### Build Commands
-- **Root**: `npm run package` → builds and packages all workspaces
-- **Single Package**: `npm run build` (Vite + svelte-package for libraries; nest build for backend)
-- **Publish Prep**: `npm run prepackage` (pre-publish script) runs before packaging
-- **Nx Tasks**: Prefer `nx run` over direct commands: `nx run idae-slotui:build`, `nx affected --target=test`
-
-### Testing
-- **Svelte/Frontend**: `npm run test:unit` (Vitest) + `npm run test:integration` (Playwright)
-- **NestJS**: `npm run test` (Jest) + `npm run test:e2e` (end-to-end)
-- **Type Check**: `npm run check` (svelte-check) — run before committing Svelte packages
-
-### idae-slotui Component Authoring
-1. Create folder in `src/lib/base/` (atoms like Badge, Icon) or `src/lib/controls/` (interactive like Button, TextField)
-2. Create `ComponentName.svelte` with Svelte 5 runes; export type in `types.ts` if complex
-3. Create `component-name.scss` and import via `<style global lang="scss"> @use './component-name.scss'; </style>`
-4. Use `Slotted` component (`$lib/utils/slotted/Slotted.svelte`) for conditional slot fallbacks
-5. Export in `src/lib/index.ts` or rely on build script discovery
-6. Generate CSS exports: `npm run release-css` (outputs to `src/lib/slotui-css/`)
-
-### idae-idbql Reactivity Pattern
-- Use `createIdbqlState()` to wrap reactive proxy around database
-- Listen to `idbqlEvent` (global event bus using `$state`) for DB change subscriptions
-- Collections are accessed via `idbql.collectionName`; use `.where()` for queries (MongoDB-like)
-- Do NOT access `IDBObjectStore` directly; use `CollectionCore` methods which handle transactions
-
-### NestJS Architecture (idae-api-nest)
-- **Modules**: Nest patterns (DI containers via @nestjs/core)
-- **Database**: Mongoose via @nestjs/mongoose; auto-increment via mongoose-sequence
-- **Config**: Environment variables via @nestjs/config; load from `.env` or process.env
-
-### idae-query vs idae-idbql Separation
-**idae-query** (generic query engine):
-- Operates on **in-memory arrays** of objects
-- Provides chainable `ResultSet` API: `.sortBy()`, `.groupBy()`, `.getPage()`
-- Supports dot-path resolution for nested properties
-- Used by idae-idbql internally for result processing
-- Example: `getResultset(data).sortBy({ age: 'asc' }).getPage(1, 10)`
-
-**idae-idbql** (IndexedDB-specific wrapper):
-- Wraps IndexedDB with **MongoDB-like query interface**
-- Uses `idae-query` as a dependency for result set operations
-- Provides `CollectionCore` for transactional CRUD operations
-- Returns queries that execute against IndexedDB stores
-- Example: `await idbql.users.where({ age: { $gt: 18 } }).toArray()`
-- **Key difference**: idae-query is stateless; idae-idbql is stateful with transactions
-
-**When to use which**:
-- Use `idae-query` when working with pre-fetched data (API responses, local arrays)
-- Use `idae-idbql` for browser-side persistence with reactive updates
-
-### idae-mongo & Server-Side Patterns
-**idae-mongo** (MongoDB adapter):
-- Complements `idae-db` (multi-DB abstraction layer)
-- Backend integrates MongoDB via `@nestjs/mongoose` in `idae-api-nest`
-- Use `idae-db` connection factory with `DbType.MONGODB` to auto-increment via `autoIncrementFormat`
-- Example: `IdaeDb.init(mongoUri, { dbType: DbType.MONGODB, autoIncrementFormat: (col) => \`id${col}\` })`
-- Collections accessed as standard Mongoose models; queries return arrays (not reactive)
-
-**Data sync pattern**:
-1. **Backend**: `idae-api-nest` exposes REST endpoints with `idae-mongo` collections
-2. **Frontend**: `idae-idbql` stores fetched data locally
-3. **Sync**: `idae-socket` (real-time sync) pushes updates to keep IndexedDB in sync with backend
-
-### idae-socket & idae-stator in Data Flow
-**idae-socket** (WebSocket synchronization):
-- Purpose: "Keep your app in sync with your backend"
-- **Hybrid Gateway**: Accepts HTTP POST requests from Backend; Broadcasts them as Socket.IO events to Frontend.
-- Bi-directional real-time sync using Socket.io.
-- Listens for backend data changes and updates local state.
-- Works alongside `idae-idbql` to push updates to IndexedDB when backend changes.
-- Pattern: Backend publishes change events via HTTP POST → `idae-socket` relays → triggers `idbqlEvent` → UI updates via Svelte reactivity.
-
-**idae-stator** (Lightweight state management):
-- Purpose: Reactive state proxy for non-Svelte contexts
-- Creates observable state: `stator(0)` or `stator({ count: 0 })`
-- Fires `onchange` callbacks when state mutates
-- Alternative to Svelte 5 runes for vanilla JavaScript
-- Less commonly used in Svelte 5 codebase (Svelte runes preferred)
-
-**Integration flow**:
-```
-Backend (NestJS + MongoDB) 
-  ↓ (REST API + Schema)
-Frontend (idbql receives data)
-  ↓ (Stores in IndexedDB via CollectionCore)
-Local State (createIdbqlState reactive proxy)
-  ↓ (Socket.io listens for changes)
-Socket emits DB change event
-  ↓ (idbqlEvent fires via $state)
-UI re-renders (Svelte 5 reactivity kicks in)
+# Integration tests (Playwright, where available)
+pnpm --filter <pkg> run test:integration
 ```
 
-## 📋 Monorepo-Specific Rules
+Package build pipeline: `vite build` → `svelte-kit sync && svelte-package && publint`.
 
-1. **Imports Between Packages**: Check `package.json` `dependencies` field; use workspace links `@medyll/package-name`
-2. **Nx Configuration**: Use Nx MCP tools (`nx_workspace`, `nx_project_details`, `nx_docs`) for task orchestration
-3. **Path Aliases**: 
-   - Svelte projects: `$lib`, `$components`, `$utils`, `$styles`
-   - Check `tsconfig.json` `compilerOptions.paths` for each package
-4. **ESLint/Prettier**: Shared configs in `packages-config/`; respect per-package overrides in `eslint.config.*` and `prettier.config.*`
-5. **CSS Build**: SCSS compiles co-located with components; UnoCSS handles utilities; CSFabric provides framework vars/mixins
+## Architecture
 
-## ⚠️ Dos & Don'ts for AI Agents
+```
+Frontend (Svelte 5)  ↔  Database Layer (idae-db / idae-idbql)  ↔  Backend (NestJS / MongoDB)
+                           ↕ real-time sync via idae-socket (Socket.io)
+```
 
-✅ DO:
-- Use Svelte 5 Runes syntax exclusively in `.svelte` files
-- Preserve callback-based chaining in idae-be (always return root)
-- Test new features with `npm run test:unit` before commit
-- Check types with `npm run check` for Svelte packages
-- Run `npm run lint && npm run format` locally before pushing
+**Package categories:**
+- **UI**: `idae-slotui` — Svelte 5 component library (Tailwind v4)
+- **Data**: `idae-db` (multi-DB server abstraction), `idae-idbql` (IndexedDB with MongoDB-like queries), `idae-query` (in-memory chainable query engine used by idbql), `idae-sync` (outbox/sync scaffolding)
+- **DOM**: `idae-be` (callback-based DOM manipulation, always returns root for chaining), `idae-dom-events` (mutation/CSS observers), `idae-html` / `idae-htmlu` (HTML generation, Vite preprocessor)
+- **Engine/Infra**: `idae-engine` (dataOp fluent API for arrays), `idae-api` (HTTP API framework), `idae-socket` (WebSocket sync), `idae-stator` (reactive state proxy for non-Svelte contexts)
+- **Other**: `idae-machine` (AI-powered SvelteKit framework), `idae-router` (client-side SPA router), `idae-csss` (CSS utilities), `qoolie` (simplified IndexedDB + server sync), `skiller` (AI skill installer/evaluator)
+- **Config**: `packages-config/` — shared ESLint (`idae-eslint-config`) and Prettier (`idae-config-prettier`) configs
 
-❌ DON'T:
-- Generate Svelte 4 code (no `export let`, `$:`, createEventDispatcher)
-- Use writable/readable stores instead of `$state`/`$derived`
-- Import from `dist/` folders; import from package source exports
-- Assume Mongoose/MongoDB; some packages support MySQL via idae-db abstraction
-- Skip type safety; strict TypeScript is enforced via tsconfig
+**Data sync flow:**
+Backend REST API → `idae-idbql` stores locally in IndexedDB → `idae-socket` relays change events via Socket.io → `idbqlEvent` fires ($state) → Svelte 5 reactivity re-renders UI.
+
+**idae-query vs idae-idbql**: `idae-query` operates on in-memory arrays (stateless); `idae-idbql` wraps IndexedDB with transactions (stateful). Use query for pre-fetched data, idbql for browser persistence.
+
+## Key Conventions
+
+### Svelte 5 Runes — Mandatory (NOT Svelte 4)
+
+Always use runes. Never use `export let`, `$:`, `createEventDispatcher`, or `writable`/`readable` stores.
+
+```svelte
+<!-- Props -->
+let { propName = 'default' } = $props();
+
+<!-- State -->
+let count = $state(0);
+let double = $derived(count * 2);
+
+<!-- Effects -->
+$effect(() => { /* reactive side effect */ });
+```
+
+- `.svelte.ts` files contain rune-based logic (e.g., `collection.svelte.ts`, `idbqlEvent.svelte.ts`)
+- State in classes: `class Store { count = $state(0); double = $derived(this.count * 2); }`
+
+### Code Style
+
+Enforced by shared Prettier config:
+- **Tabs** for indentation
+- **Single quotes**
+- **No trailing commas**
+- **100-char line width**
+- Svelte and Tailwind Prettier plugins active
+
+ESLint: `@typescript-eslint/no-explicit-any` is warn (not error). `@ts-ignore`/`@ts-expect-error` require a description (5+ chars).
+
+Commits follow **conventional commits** (commitizen + commitlint).
+
+### Imports and Dependencies
+
+- Import between packages via `@medyll/<package-name>` (workspace protocol `workspace:*`)
+- Never import from `dist/` — use package source exports
+- Use `$lib` path alias within SvelteKit packages
+- Use `import type { X }` for type-only imports
+- Barrel exports in `src/lib/index.ts` per package
+
+### Package Structure
+
+Every library package follows the SvelteKit packaging model:
+```
+packages/<name>/
+├── src/lib/           # Library source (exported via svelte-package)
+│   ├── index.ts       # Barrel exports
+│   └── ...
+├── src/routes/        # Demo/docs routes (not published)
+├── vite.config.ts     # Vite + SvelteKit + Vitest
+├── svelte.config.js
+├── tsconfig.json
+└── package.json
+```
+
+### idae-slotui Components
+
+1. Atoms in `src/lib/base/`, interactive controls in `src/lib/controls/`
+2. `ComponentName.svelte` with Svelte 5 runes; complex types in `types.ts`
+3. Uses Tailwind CSS v4 + shadcn-svelte patterns
+4. Export in `src/lib/index.ts`
+
+### idae-be Chaining
+
+All `idae-be` DOM methods must return the root object to preserve chaining:
+```typescript
+be('#el').append(toBe('<div>'), ({ be }) => be.addClass('x').on('click', handler))
+```
+
+## Pre-Commit Checklist
+
+```bash
+pnpm --filter <pkg> run check    # Type checking (svelte-check)
+pnpm --filter <pkg> run test     # Unit tests (Vitest)
+pnpm run lint && pnpm run format # Lint + format
+```

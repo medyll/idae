@@ -12,13 +12,12 @@ Svelte 5 FK relation viewer for a collection
 	import { machine } from '$lib/main/machine.js';
 	let { collection, collectionId, where, children } = $props<{
 		collection: TplCollectionName;
-		collectionId?: any;
+		collectionId?: string | number;
 		where?: Where;
 		children?: any;
 	}>();
 	const fks = $derived(machine.logic.collection(collection).parseFks());
 
-	$inspect('fks', fks);
 </script>
  
 {#each Object.entries(fks) as item (item[0])}

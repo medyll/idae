@@ -125,4 +125,3 @@ metadata:
       - '→ R4: Stakeholder sign-off (product, engineering, legal)'
       - '→ R5: Publish npm + GitHub + announce launch'
     auto_run: false
-

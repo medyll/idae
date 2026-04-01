@@ -1,7 +1,8 @@
 {
   "name": "@medyll/idae-dom-events",
   "bin": {
-    "idae-dom-events": "./cli.js"
+    "idae-dom-events": "./cli.js",
+    "add-skill": "./dist/cli/add-skill.js"
   },
   "version": "1.0.2",
   "scope": "medyll",
@@ -80,6 +81,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "blob": "^0.1.0",
     "command": "^1.1.1",
     "commander": "^14.0.3",

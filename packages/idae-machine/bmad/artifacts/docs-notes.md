@@ -1,6 +1,7 @@
 # Docs generation notes
 
 Generated draft artifacts:
+
 - README.md
 - API.md
 - EXAMPLES.md

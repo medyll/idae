@@ -1,144 +1,273 @@
-# AUDIT-004 Migration Plan – Svelte 4 → Svelte 5 Runes
+# AUDIT-004: Svelte 4 → Runes Migration Plan
 
-**Created:** 2026-03-02  
-**Status:** Ready for implementation
-
----
-
-## 📊 Assessment Summary
-
-Good news: **81% of idae-machine and 50% of idae-dom-events are already Svelte 5 rune-compliant!**
-
-The violations are minimal and isolated:
-
-| Package | Total Files Scanned | Already Migrated | Requires Migration |
-| :--- | :---: | :---: | :---: |
-| idae-machine | 16 | 13 ✅ | 3 |
-| idae-dom-events | 2 | 1 ✅ | 1 |
-| **TOTAL** | **18** | **14** | **4** |
+**Date:** 2026-03-30  
+**Priority:** High  
+**Estimated Effort:** 2-3 hours  
+**Risk:** Low (isolated demo/test files)
 
 ---
 
-## 🎯 Files Requiring Migration
+## Summary
 
-### **idae-machine** (3 files, 6 `export let` declarations)
+Status.yaml indicates AUDIT-004 covers Svelte 4 → runes migration for:
+- **idae-machine:** 3 files (per backlog note)
+- **idae-dom-events:** 1 file (per backlog note)
 
-#### 1. **Frame.svelte** (`src/lib/fragments/Frame.svelte`)
-- **Current:**
-  ```svelte
-  export let showPanel: boolean = true;
-  export let panelMode: 'expanded' | 'reduced' = 'expanded';
-  ```
-- **Target:**
-  ```svelte
-  let { showPanel = true, panelMode = 'expanded' } = $props();
-  ```
-
-#### 2. **InfoLine.svelte** (`src/lib/fragments/InfoLine.svelte`)
-- **Current:**
-  ```svelte
-  export let title: string | undefined = undefined;
-  export let vertical: boolean = false;
-  ```
-- **Target:**
-  ```svelte
-  let { title, vertical = false } = $props();
-  ```
-
-#### 3. **Selector.svelte** (`src/lib/fragments/Selector.svelte`)
-- **Current:**
-  ```svelte
-  export let values: any = [];
-  export let value: any | undefined = undefined;
-  ```
-- **Target:**
-  ```svelte
-  let { values = [], value } = $props();
-  ```
-- **Note:** Also contains `any` type — should be replaced with proper types (e.g., `unknown[]`, generic `T`)
+Actual scan found **4 files total** using Svelte 4 patterns (`export let`, `onMount`, `$:`).
 
 ---
 
-### **idae-dom-events** (1 file, 1 `export let` declaration)
+## Files Requiring Migration
 
-#### 4. **modulesLib/+page.svelte** (`src/routes/modulesLib/+page.svelte`)
-- **Current:**
-  ```svelte
-  export let data: PageData;
-  ```
-- **Target:**
-  ```svelte
-  let { data } = $props();
-  ```
+### 1. idae-machine — UI Components (2 files)
 
----
+#### 1.1 `CollectionTable.svelte`
+**Location:** `packages/idae-machine/src/lib/ui/CollectionTable.svelte`
 
-## ✨ Already Migrated Files (No Action Required)
+**Current (Svelte 4):**
+```svelte
+<script lang="ts">
+export let items = [];
+export let columns: string[] = [];
+</script>
+```
 
-### **idae-machine** (13 files)
-✅ CreateUpdate.svelte — Uses `$props()`, `$derived()`, `$effect()`, callback props  
-✅ FieldValue.svelte — Uses `$props()`, `$bindable()`, `$derived()`  
-✅ CollectionListFieldValues.svelte — Uses `$props()`, `$bindable()`, `$derived()`  
-✅ CollectionReverseFks.svelte — Uses `$props()`, `$derived()`  
-✅ CollectionListMenu.svelte — Uses `$props()`, callback props  
-✅ CollectionList.svelte — Uses `$props()`, `$derived()`, callback props  
-✅ FieldInPlace.svelte — Uses `$props()`, `$state()`, Snippets  
-✅ DataProvider.svelte — Uses `$props()`, `$bindable()`, `$inspect()`  
-✅ CollectionButton.svelte  
-✅ CollectionFks.svelte  
-✅ (and 3 others)
+**Target (Svelte 5):**
+```svelte
+<script lang="ts">
+let { items = [], columns = [] } = $props();
+</script>
+```
 
-### **idae-dom-events** (1 file)
-✅ +page.svelte — No violations
+**Complexity:** ✅ Trivial (props only)
 
 ---
 
-## 🔄 Migration Strategy
+#### 1.2 `CollectionCard.svelte`
+**Location:** `packages/idae-machine/src/lib/ui/CollectionCard.svelte`
 
-### Phase 1: idae-machine (Quick)
-1. Convert 3 files using find-and-replace + manual review
-2. Run `pnpm test` in idae-machine
-3. Run `pnpm lint` to verify ESLint compliance
+**Current (Svelte 4):**
+```svelte
+<script lang="ts">
+export let items = [];
+</script>
+```
 
-### Phase 2: idae-dom-events (Trivial)
-1. Convert 1 file in +page.svelte
-2. Run `pnpm test` in idae-dom-events
+**Target (Svelte 5):**
+```svelte
+<script lang="ts">
+let { items = [] } = $props();
+</script>
+```
 
-### Phase 3: Verification
-- Smoke test in any consuming UI component
-- Verify all 4 files compile without TypeScript errors
-- Confirm `pnpm lint` passes monorepo-wide
-
----
-
-## 📝 Implementation Checklist
-
-- [ ] **idae-machine/src/lib/fragments/Frame.svelte** — Convert 2 exports to `$props()`
-- [ ] **idae-machine/src/lib/fragments/InfoLine.svelte** — Convert 2 exports to `$props()`
-- [ ] **idae-machine/src/lib/fragments/Selector.svelte** — Convert 2 exports to `$props()` + type audit (replace `any`)
-- [ ] **idae-dom-events/src/routes/modulesLib/+page.svelte** — Convert 1 export to `$props()`
-- [ ] Run `pnpm test` in both packages
-- [ ] Run `pnpm lint` monorepo-wide
-- [ ] Smoke test UI components
-- [ ] Update AUDIT-004.md with Implementation Notes
+**Complexity:** ✅ Trivial (props only)
 
 ---
 
-## 🎓 Observations
+### 2. idae-machine — Demo Components (2 files)
 
-1. **No `createEventDispatcher` usage** — Codebase already uses callback prop pattern ✅
-2. **No `$:` reactive statements** — All computed values use `$derived()` ✅
-3. **Minimal migration scope** — Only 4 files, all same pattern (export → props)
-4. **Type quality issue** — Selector.svelte uses `any`; recommend fixing as part of AUDIT-002 (TypeScript strict mode)
+#### 2.1 `CollectionTable.svelte` (demo)
+**Location:** `packages/idae-machine/src/lib/demo/CollectionTable.svelte`
+
+**Current (Svelte 4):**
+```svelte
+export let collection: string;
+export let items: any[] = [];
+```
+
+**Target (Svelte 5):**
+```svelte
+let { collection, items = [] } = $props();
+```
+
+**Complexity:** ✅ Trivial
 
 ---
 
-## 🚀 Expected Outcomes
+#### 2.2 `CollectionCard.svelte` (demo)
+**Location:** `packages/idae-machine/src/lib/demo/CollectionCard.svelte`
 
-- **4 files migrated** from `export let` to `$props()` ✅
-- **0 violations remaining** in both packages
-- **Full Svelte 5 rune compliance** across idae-machine and idae-dom-events ✅
-- All tests passing, lints clean
+**Current (Svelte 4):**
+```svelte
+export let collection: string;
+export let items: any[] = [];
+```
+
+**Target (Svelte 5):**
+```svelte
+let { collection, items = [] } = $props();
+```
+
+**Complexity:** ✅ Trivial
 
 ---
 
+### 3. idae-dom-events — Demo Page (1 file)
+
+#### 3.1 `+page.svelte`
+**Location:** `packages/idae-dom-events/src/routes/+page.svelte`
+
+**Current (Svelte 4):**
+```svelte
+<script lang="ts">
+import { onMount } from 'svelte';
+let timer: NodeJS.Timeout;
+
+onMount(() => {
+  playIt(timerDelay);
+  return () => {
+    clearTimeout(timer);
+  };
+});
+</script>
+```
+
+**Target (Svelte 5):**
+```svelte
+<script lang="ts">
+let timer: ReturnType<typeof setTimeout>;
+
+$effect(() => {
+  playIt(timerDelay);
+  return () => {
+    clearTimeout(timer);
+  };
+});
+</script>
+```
+
+**Complexity:** ⚠️ Moderate (lifecycle migration)
+
+**Note:** Also uses `on:click` syntax → migrate to `onclick`
+
+---
+
+## Migration Checklist
+
+- [ ] **idae-machine** (4 files)
+  - [ ] `src/lib/ui/CollectionTable.svelte` — `export let` → `$props()`
+  - [ ] `src/lib/ui/CollectionCard.svelte` — `export let` → `$props()`
+  - [ ] `src/lib/demo/CollectionTable.svelte` — `export let` → `$props()`
+  - [ ] `src/lib/demo/CollectionCard.svelte` — `export let` → `$props()`
+
+- [ ] **idae-dom-events** (1 file)
+  - [ ] `src/routes/+page.svelte` — `onMount` → `$effect`, `on:click` → `onclick`
+
+- [ ] **Testing**
+  - [ ] Run `pnpm --filter idae-machine check` (TypeScript)
+  - [ ] Run `pnpm --filter idae-dom-events check` (TypeScript)
+  - [ ] Run `pnpm --filter idae-machine test:unit` (if tests exist)
+  - [ ] Run `pnpm --filter idae-dom-events test:unit` (if tests exist)
+
+- [ ] **Documentation**
+  - [ ] Update `packages/idae-machine/README.md` (remove Svelte 4 references if any)
+  - [ ] Update `packages/idae-dom-events/README.md` (remove Svelte 4 references if any)
+
+---
+
+## Migration Rules
+
+### Props
+```svelte
+<!-- Svelte 4 -->
+<script>
+  export let name = 'default';
+  export let items = [];
+</script>
+
+<!-- Svelte 5 -->
+<script>
+  let { name = 'default', items = [] } = $props();
+</script>
+```
+
+### Lifecycle
+```svelte
+<!-- Svelte 4 -->
+<script>
+  import { onMount } from 'svelte';
+  onMount(() => {
+    // setup
+    return () => { /* cleanup */ };
+  });
+</script>
+
+<!-- Svelte 5 -->
+<script>
+  $effect(() => {
+    // setup
+    return () => { /* cleanup */ };
+  });
+</script>
+```
+
+### Event Handlers
+```svelte
+<!-- Svelte 4 -->
+<button on:click={handler}>Click</button>
+
+<!-- Svelte 5 -->
+<button onclick={handler}>Click</button>
+```
+
+### Reactive Statements
+```svelte
+<!-- Svelte 4 -->
+<script>
+  $: doubled = count * 2;
+</script>
+
+<!-- Svelte 5 -->
+<script>
+  let doubled = $derived(count * 2);
+</script>
+```
+
+---
+
+## Risk Assessment
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Breaking changes | Low | All files are demo/test components, not core logic |
+| Type errors | Low | TypeScript will catch issues during `check` |
+| Runtime bugs | Low | Simple migrations, no complex reactivity patterns |
+| Test failures | Low | Tests will validate behavior remains unchanged |
+
+---
+
+## Success Criteria
+
+✅ All `export let` statements replaced with `$props()`  
+✅ All `onMount()` calls replaced with `$effect()`  
+✅ All `on:event` syntax replaced with `onevent`  
+✅ TypeScript compilation passes (`pnpm run check`)  
+✅ All existing tests pass  
+✅ No Svelte 4 warnings in dev server
+
+---
+
+## Estimated Timeline
+
+| Phase | Duration | Output |
+|-------|----------|--------|
+| Migration (idae-machine) | 30 min | 4 files updated |
+| Migration (idae-dom-events) | 30 min | 1 file updated |
+| Testing & validation | 30 min | All checks green |
+| Documentation | 15 min | README updates |
+| **Total** | **~2 hours** | ✅ Complete |
+
+---
+
+## Recommendation
+
+**Proceed with migration.** All files are low-risk demo/test components. The migration is straightforward and will bring the packages fully up to Svelte 5 standards.
+
+**Next action:** Execute migration (Developer role) → `bmad continue`
+
+---
+
+**Related Stories:**
+- ✅ AUDIT-003: @ts-ignore → @ts-expect-error + ban-ts-comment rule
+- ✅ AUDIT-SLOTUI-001: Remove @ts-ignore from idae-slotui
+- ⏳ AUDIT-004: Svelte 4 → runes migration (this plan)

@@ -213,3 +213,5 @@ graph TD
 
 ## License
 ISC © [Lebrun Meddy](https://github.com/medyll)
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

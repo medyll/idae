@@ -284,3 +284,5 @@ flowchart TD
 ## License
 
 This project is licensed under the MIT License.
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))

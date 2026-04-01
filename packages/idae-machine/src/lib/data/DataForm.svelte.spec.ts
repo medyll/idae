@@ -6,52 +6,51 @@ import { machine } from '$lib/main/machine.js';
 
 // Minimal shim to ensure machine.store is available in test env
 beforeEach(() => {
-  // Ensure machine._idbqlState exists and has a stubbed collection with add/update/getAll/where
-  (machine as any)._idbqlState = (machine as any)._idbqlState || {};
-  (machine as any)._idbqlState['test_collection'] = {
-    add: vi.fn(async (obj) => ({ id: 1, ...obj })),
-    update: vi.fn(async (id, obj) => ({ id, ...obj })),
-    where: vi.fn(() => []),
-    getAll: vi.fn(() => [])
-  } as any;
+	// Ensure machine._idbqlState exists and has a stubbed collection with add/update/getAll/where
+	(machine as any)._idbqlState = (machine as any)._idbqlState || {};
+	(machine as any)._idbqlState['test_collection'] = {
+		add:    vi.fn(async (obj) => ({ id: 1, ...obj })),
+		update: vi.fn(async (id, obj) => ({ id, ...obj })),
+		where:  vi.fn(() => []),
+		getAll: vi.fn(() => [])
+	} as any;
 
-  // Minimal MachineDb stub so logic.collection(...) works in the component
-  (machine as any)._machineDb = {
-    collection: (name: string) => ({
-      parse: () => ({}),
-      validator: {
-        validateForm: (data: any) => ({ isValid: true, errors: {} })
-      },
-      template: { index: 'id' },
-      collectionValues: {
-        getInputDataSet: (_fieldName: string, _data: any) => ({})
-      }
-      ,
-      // reverse FK helper used by DataLinksBack
-      parseReverseFks: () => ({}),
-      parseFks: () => ({})
-    })
-  };
+	// Minimal MachineDb stub so logic.collection(...) works in the component
+	(machine as any)._machineDb = {
+		collection: (name: string) => ({
+			parse:            () => ({}),
+			validator:        {
+				validateForm: (data: any) => ({ isValid: true, errors: {} })
+			},
+			template:         { index: 'id' },
+			collectionValues: {
+				getInputDataSet: (_fieldName: string, _data: any) => ({})
+			},
+			// reverse FK helper used by DataLinksBack
+			parseReverseFks:  () => ({}),
+			parseFks:         () => ({})
+		})
+	};
 });
 
 describe('DataForm submit', () => {
-  it('submits create without throwing when no id present', async () => {
-    const onsubmit = vi.fn();
+	it('submits create without throwing when no id present', async () => {
+		const onsubmit = vi.fn();
 
-    const { getByRole } = render(DataForm, {
-      props: {
-        collection: 'test_collection',
-        mode: 'create',
-        onsubmit
-      }
-    });
+		const { getByRole } = render(DataForm, {
+			props: {
+				collection: 'test_collection',
+				mode:       'create',
+				onsubmit
+			}
+		});
 
-    const button = getByRole('button', { name: /submit|valider/i });
+		const button = getByRole('button', { name: /submit|valider/i });
 
-    // simulate click
-    await fireEvent.click(button);
+		// simulate click
+		await fireEvent.click(button);
 
-    expect((machine as any)._idbqlState['test_collection'].add).toHaveBeenCalled();
-    expect(onsubmit).toHaveBeenCalled();
-  });
+		expect((machine as any)._idbqlState['test_collection'].add).toHaveBeenCalled();
+		expect(onsubmit).toHaveBeenCalled();
+	});
 });

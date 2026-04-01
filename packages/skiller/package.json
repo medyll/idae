@@ -1,0 +1,44 @@
+{
+  "name": "@medyll/skiller",
+  "version": "2.2.10",
+  "type": "module",
+  "description": "Skill installer and evaluator for @medyll packages",
+  "main": "./src/lib/index.mjs",
+  "exports": {
+    ".": "./src/lib/index.mjs"
+  },
+  "bin": {
+    "skiller": "./src/lib/cli.js",
+    "install-skill": "./src/lib/cli.js",
+    "add-skill": "./src/lib/client-cli.js",
+    "create-skill": "./src/lib/client-cli.js",
+    "test-skill": "./src/lib/test-cli.js",
+    "report": "./src/lib/test-cli.js",
+    "optimize": "./src/lib/test-cli.js"
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "dependencies": {
+    "commander": "^14.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "."
+  },
+  "scope": "medyll",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medyll/idae.git"
+  },
+  "author": "Lebrun Meddy",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepackage": "node scripts/package-pre.js"
+  }
+}

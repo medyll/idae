@@ -21,6 +21,8 @@ import { MachineSchemeField } from '$lib/main/machine/MachineSchemeField.js';
 export class MachineScheme {
 	/** The collection name. */
 	collection:       TplCollectionName;
+	/** The collection name alias for better semantics. */
+	name:       TplCollectionName;
 	/** The collection template. */
 	#template:        Tpl;
 	/** The MachineDb instance. */
@@ -39,6 +41,7 @@ export class MachineScheme {
 	 */
 	constructor(collectionName: TplCollectionName, idbBase: MachineDb, model: IdbqModel) {
 		this.collection = collectionName;
+		this.name = collectionName;
 		this.#machineDb = idbBase;
 		this.#collectionModel = model[String(collectionName)];
 		if (!this.#collectionModel || typeof this.#collectionModel['template'] === 'undefined') {

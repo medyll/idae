@@ -22,7 +22,7 @@ Svelte 5 menu list for a collection
 	function load(event: CustomEvent, indexV: number) {
 		openCrud(event[indexV]);
 	}
-	function openCrud(id: any) {
+	function openCrud(id: string | number) {
 		let mounted = hydrate(DataForm, {
 			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,
 			props:  { collection, dataId: id, mode: 'update' }

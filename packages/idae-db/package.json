@@ -1,7 +1,8 @@
 {
   "name": "@medyll/idae-db",
   "bin": {
-    "idae-db": "./cli.js"
+    "idae-db": "./cli.js",
+    "add-skill": "./dist/cli/add-skill.js"
   },
   "version": "0.155.2",
   "author": "Lebrun Meddy",
@@ -95,6 +96,7 @@
   "type": "module",
   "scope": "medyll",
   "dependencies": {
+    "@medyll/skiller": "workspace:*",
     "chromadb": "^3.2.2",
     "command": "^1.1.1",
     "commander": "^14.0.3",

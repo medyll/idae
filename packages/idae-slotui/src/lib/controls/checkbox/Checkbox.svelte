@@ -47,7 +47,6 @@ let {
 
 <label class="checkbox-root" class:disabled class:indeterminate bind:this={labelElement}>
 	<div class="checkbox-container dense-{dense}">
-		<!-- @ts-ignore -->
 		<input
 			bind:this={inputElement}
 			bind:checked

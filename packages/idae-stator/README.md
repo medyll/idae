@@ -144,6 +144,8 @@ To ensure compatibility with Node.js (where `EventTarget` was historically missi
 
 MIT © [Medyll](https://github.com/medyll)
 
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
+
 ## Architecture
 
 ```mermaid

@@ -96,4 +96,6 @@ Usage examples:
 
 Auto-closing tags are also supported.
 
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
+
 

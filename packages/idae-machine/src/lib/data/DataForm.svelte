@@ -37,22 +37,27 @@
      */
     let {
         onsubmit: onsubmit_callback,
+        mode = 'create',
+        collection,
+        data,
+        dataId,
+        withData,
         ...createUpdateProps
     }: CreateUpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 
     // Logic and Store references
     const logic = machine.logic;
-    const store = $derived(createUpdateProps.collection ? machine.store[createUpdateProps.collection] : undefined);
+    const store = $derived(collection ? machine.store[collection] : undefined);
 
     // Reactive derivations for metadata
-    const collLogic = $derived(createUpdateProps.collection ? logic.collection(createUpdateProps.collection) : null);
+    const collLogic = $derived(collection ? logic.collection(collection) : null);
     const formFields = $derived(collLogic?.parse() ?? {});
     const validator = $derived(collLogic?.validator);
     const indexName = $derived(collLogic?.template.index);
 
     // UI derivations
     // `inputFormId` must be a plain string for the DOM `id`/`form` attributes.
-    const inputFormId = $derived(`form-${String(createUpdateProps.collection ?? '')}-${createUpdateProps.mode ?? ''}`);
+    const inputFormId = $derived(`form-${String(collection ?? '')}-${mode ?? ''}`);
 
     // Reactive State
     let formData = $state<Record<string, unknown>>({});
@@ -61,21 +66,21 @@
 
     // Initialize or Reset form data when collection/mode/dataId changes
     $effect(() => {
-        if (createUpdateProps.mode === 'create') {
+        if (mode === 'create') {
             formData = {
-                ...SchemeFieldDefaultValues.getDefaults(Object.keys(formFields), createUpdateProps.collection),
-                ...createUpdateProps.data,
-                ...createUpdateProps.withData
+                ...SchemeFieldDefaultValues.getDefaults(Object.keys(formFields), collection),
+                ...data,
+                ...withData
             };
-        } else if (store && createUpdateProps.dataId) {
+        } else if (store && dataId) {
             // Logic to fetch existing data from store
-            const query = store.where({ [indexName]: { eq: createUpdateProps.dataId } });
+            const query = store.where({ [indexName]: { eq: dataId } });
             const snap = $state.snapshot(query);
             const record = Array.isArray(snap) && snap.length > 0 ? snap[0] : {};
 
             formData = {
-                ...createUpdateProps.data,
-                ...createUpdateProps.withData,
+                ...data,
+                ...withData,
                 ...record
             };
         }
@@ -88,7 +93,7 @@
         const v = typeof validator === 'function' ? validator() : validator;
         if (!v || typeof v.validateForm !== 'function') return true;
 
-        const ignore = createUpdateProps.mode === 'create' && indexName ? [indexName] : undefined;
+        const ignore = mode === 'create' && indexName ? [indexName] : undefined;
         const out = await v.validateForm(data, { ignoreFields: ignore });
 
         validationErrors = out.errors || {};
@@ -111,51 +116,21 @@
         }
 
         try {
-            if (createUpdateProps.mode === 'create' && !createUpdateProps.dataId) {
-                await store?.add({ ...snapshot, ...createUpdateProps.withData });
-            } else if (createUpdateProps.mode === 'update' && createUpdateProps.dataId) {
-                await store?.update(createUpdateProps.dataId, snapshot);
+            if (mode === 'create' && !dataId) {
+                await store?.add({ ...snapshot, ...withData });
+            } else if (mode === 'update' && dataId) {
+                await store?.update(dataId, snapshot);
             }
 
             // Trigger callback if provided
-            onsubmit_callback?.({ mode: createUpdateProps.mode, data: snapshot });
+            onsubmit_callback?.({ mode, data: snapshot });
         } catch (e) {
             console.error("Submission failed", e);
         } finally {
             isSubmitting = false;
         }
     }
-
-    // Helper to clear error when user modifies a field
-    const clearError = (fieldName: string) => {
-        if (validationErrors[fieldName]) {
-            delete validationErrors[fieldName];
-        }
-    };
 </script>
-
-{#snippet fieldInput(fieldName: string, fieldInfo: IDbForge)}
-    <div class="field-wrapper">
-        <FieldDisplay
-            {fieldName}
-            collection={createUpdateProps.collection}
-            mode={createUpdateProps.mode}
-            editInPlace={createUpdateProps.inPlaceEdit === true ||
-                (Array.isArray(createUpdateProps.inPlaceEdit) && createUpdateProps.inPlaceEdit.includes(fieldName))}
-            bind:data={formData}
-            setData={(field, value) => {
-                formData[field] = value;
-                clearError(field);
-            }}
-            inputForm={inputFormId}
-        />
-        {#if validationErrors?.[fieldName]}
-            <span class="error-message" id="error-{fieldName}">
-                {validationErrors[fieldName]}
-            </span>
-        {/if}
-    </div>
-{/snippet}
 
 <form
     id={inputFormId}
@@ -166,39 +141,35 @@
     </form>
 
 <h2 id="form-title" class="sr-only">
-    {createUpdateProps.mode} {createUpdateProps.collection}
+    {mode} {collection}
 </h2>
 
 <div class="flex">
-    <div class="crud {createUpdateProps.displayMode}">
+    <div class="crud {mode}">
     <DataListFields
         bind:data={formData}
-        collection={createUpdateProps.collection} />
-        <!-- {#each Object.entries(formFields) as [fieldName, fieldInfo]}
-            {#if !createUpdateProps.showFields || createUpdateProps.showFields.includes(fieldName)}
-                {@render fieldInput(fieldName, fieldInfo)}
-            {/if}
-        {/each} -->
+        collection={collection}
+        mode={mode} /> 
     </div>
-    <!-- {#if createUpdateProps.showFks && (createUpdateProps.mode === 'show' || createUpdateProps.mode === 'update')} -->
+    <!-- {#if showFks && (mode === 'show' || mode === 'update')} -->
         <div>
             <DataLinks 
-            collection={createUpdateProps.collection}
-            collectionId={createUpdateProps.dataId}
+                collection={collection}
+                collectionId={dataId}
             >
             {#snippet children()}
-                <div class="p2">{createUpdateProps.collection}</div>
+                <div class="p2">{collection}</div>
             {/snippet}
-        </DataLinks>
-            <!-- <DataLinksBack
+            </DataLinks>
+            <DataLinksBack
                 showTitle={true}
-                collection={createUpdateProps.collection}
-                collectionId={createUpdateProps.dataId}
+                collection={collection}
+                collectionId={dataId}
             >
                 {#snippet children()}
                     <div class="p2">Presentation</div>
                 {/snippet}
-            </DataLinksBack> -->
+            </DataLinksBack>
         </div>
     <!-- {/if} -->
 </div>
@@ -212,39 +183,7 @@
     {isSubmitting ? '...' : 'Valider'}
 </button>
 
-<style lang="postcss">
-    @reference "tailwindcss";
-
-    :global(.crud) {
-        min-width: 32rem;
-        padding: 2rem;
-
-        &.wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        &.inline {
-            display: flex;
-            flex-direction: row;
-            gap: 1rem;
-        }
-    }
-
-    .field-wrapper {
-        margin-bottom: 1rem;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Target inputs with errors using CSS only, driven by Svelte state */
-    .error-message {
-        color: red;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-    }
-
+<style >
     .sr-only {
         position: absolute;
         width: 1px;

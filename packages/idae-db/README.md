@@ -210,6 +210,9 @@ flowchart TD
 ## License
 
 MIT License
+
+**Author:** Lebrun Meddy ([@medyll](https://github.com/medyll))
+
 import { DbType } from './lib/@types/types.js';
 
 const pouchDb = IdaeDb.init('pouchdb://./my-pouchdb-folder', {

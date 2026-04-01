@@ -20,15 +20,15 @@ describe('MachineDb', () => {
 	});
 
 	it('should return a MachineScheme for a collection', () => {
-		const scheme = db.collection('agent');
+		const scheme = db.collection('vehicle');
 		expect(scheme).toBeDefined();
-		expect(scheme.collection).toBe('agent');
+		expect(scheme.collection).toBe('vehicle');
 		expect(scheme.template).toBeDefined();
 	});
 
 	it('should cache MachineScheme instances per collection', () => {
-		const scheme1 = db.collection('agent');
-		const scheme2 = db.collection('agent');
+		const scheme1 = db.collection('vehicle');
+		const scheme2 = db.collection('vehicle');
 		expect(scheme1).toBe(scheme2);
 	});
 });
