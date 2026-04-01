@@ -2,13 +2,13 @@
   "targets": {
     "user": {
       "label": "user",
-      "path": "~/.claude/skills/<pkg>/SKILL.md",
+      "path": "~/.agents/skills/<pkg>/SKILL.md",
       "description": "User-wide Claude skills",
-      "template": ["homedir", ".claude", "skills", "<pkg>"]
+      "template": ["homedir", ".agents", "skills", "<pkg>"]
     },
     "claude": {
       "label": "claude",
-      "path": "./.claude/skills/<pkg>/SKILL.md",
+      "path": "~/.claude/skills/<pkg>/SKILL.md",
       "description": "Current project Claude skills",
       "template": ["cwd", ".claude", "skills", "<pkg>"]
     },
@@ -18,9 +18,9 @@
       "description": "User-wide Codex skills",
       "template": ["homedir", ".codex", "skills", "<pkg>"]
     },
-    "agent": {
-      "label": "agent",
-      "path": "./.github/skills/<pkg>/SKILL.md",
+    "github": {
+      "label": "github",
+      "path": "~/.github/skills/<pkg>/SKILL.md",
       "description": "Current project GitHub skills",
       "template": ["cwd", ".github", "skills", "<pkg>"]
     },
