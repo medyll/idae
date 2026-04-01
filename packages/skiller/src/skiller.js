@@ -19,11 +19,16 @@ program
 // Install skiller's own skill to %USERPROFILE% / editor target
 program
   .command('install-skill')
-  .description('Install skiller\'s own SKILL.md to your AI agent (default: user-wide)')
-  .option('-t, --target <target>', 'Installation target (user, claude, cursor, etc.)', 'user')
+  .description('Install skiller\'s own SKILL.md to your AI agent (interactive by default)')
+  .option('-t, --target <target>', 'Installation target (user, claude, cursor, etc.)')
   .action(async (options) => {
-    const { installSkillerSkill } = await import('./cli/install-skiller.js');
-    installSkillerSkill(options.target);
+    if (options.target) {
+      const { installSkillerSkill } = await import('./cli/install-skiller.js');
+      installSkillerSkill(options.target);
+    } else {
+      const { installSkillerInteractive } = await import('./cli/install-skiller.js');
+      await installSkillerInteractive();
+    }
   });
 
 program.parse();
