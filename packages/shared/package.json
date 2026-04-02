@@ -16,9 +16,9 @@
     "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3",
-    "fs-extra": "^11.3.3",
-    "glob": "^13.0.1",
-    "svelte-check": "^4.3.6"
+    "fs-extra": "^11.3.4",
+    "glob": "^13.0.6",
+    "svelte-check": "^4.4.6"
   },
   "publishConfig": {
     "access": "public",
@@ -33,11 +33,11 @@
   ],
   "devDependencies": {
     "@medyll/idae-config-prettier": "latest",
-    "@semantic-release/github": "^12.0.5",
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@semantic-release/github": "^12.0.6",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/fs-extra": "^11.0.4",
-    "svelte": "^5.50.0",
-    "typescript": "^5.9.3"
+    "svelte": "^5.55.1",
+    "typescript": "^6.0.2"
   },
   "repository": {
     "type": "git",

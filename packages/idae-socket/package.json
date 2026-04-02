@@ -42,12 +42,12 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "minimist": "^1.2.8",
-    "nodemon": "^3.1.11",
+    "nodemon": "^3.1.14",
     "npm-watch": "^0.13.0",
-    "redis": "^5.10.0",
+    "redis": "^5.11.0",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
-    "svelte-check": "^4.3.6"
+    "svelte-check": "^4.4.6"
   },
   "publishConfig": {
     "access": "public",
@@ -57,14 +57,14 @@
     "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
-    "@semantic-release/github": "^12.0.5",
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@semantic-release/github": "^12.0.6",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.2.2",
-    "@vitest/coverage-v8": "^4.0.18",
-    "svelte": "^5.50.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "svelte": "^5.55.1",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   },
   "keywords": [
     "idae",
