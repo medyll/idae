@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3-next.0] - 2026-04-02
+**Bug Fixes:**
+- add rootDir option to tsconfig.build.json for improved build configuration
+- add ignoreDeprecations option to tsconfig for better compatibility
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.1.2-next.0] - 2026-04-01
 **Features:**
 - add self-editing workflow section to SKILL.md with guidelines for editing and managing skiller's own SKILL.md
