@@ -3,8 +3,8 @@
 
 project: idae-idbql
 phase: development
-progress: 55
-next_action: "Implement S1-03 — Comprehensive unit tests for CollectionCore CRUD"
+progress: 70
+next_action: "Implement S1-04 — Improve TypeScript type inference for nested models"
 next_command: "bmad continue"
 next_role: "Developer"
 
@@ -55,11 +55,11 @@ sprints:
         test_result: pass
       - id: S1-03
         title: "Add comprehensive unit tests for CollectionCore CRUD"
-        status: todo
+        status: complete
         effort: L
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "bmad/artifacts/test-report-S1-03.md"
+        test_result: pass
       - id: S1-04
         title: "Improve TypeScript type inference for nested models"
         status: todo
