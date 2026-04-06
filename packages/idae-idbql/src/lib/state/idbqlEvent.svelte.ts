@@ -7,12 +7,16 @@ type EventType =
   | "updateWhere"
   | "delete"
   | "deleteWhere"
-  | "set";
+  | "set"
+  | "batchAdd"
+  | "batchPut";
 
 interface EventData<T = any> {
   collection: string;
   data: T;
   keyPath: string;
+  whereClause?: any;
+  count?: number; // for batch operations
 }
 class IdbqlStateEventBase {
   // main application shared state (fallback non-Svelte)
@@ -111,30 +115,27 @@ class IdbqlStateEventBase {
         break;
 
       case "updateWhere":
-        if (data && typeof data === "object") {
-          const dataKeys = Object.keys(data);
+        // Use whereClause for matching if available, otherwise fall back to data matching
+        const updateWhereClause = (eventData as any).whereClause || data;
+        const updatePayload = (eventData as any).whereClause ? data : {};
+        
+        if (updateWhereClause && typeof updateWhereClause === "object") {
+          const clauseKeys = Object.keys(updateWhereClause);
           this.dataState[collection].forEach((item, index) => {
             let match = true;
-            for (const k of dataKeys) {
+            for (const k of clauseKeys) {
               if (Object.prototype.hasOwnProperty.call(item, k)) {
-                if (item[k] !== (data as any)[k]) {
+                if (item[k] !== (updateWhereClause as any)[k]) {
                   match = false;
                   break;
                 }
               }
             }
             if (match) {
-              this.dataState[collection][index] = { ...item, ...data };
+              this.dataState[collection][index] = { ...item, ...updatePayload };
             }
           });
         }
-        /* if (data && typeof data === "object") {
-          this.dataState[collection] = this.dataState[collection].map((item) =>
-            Object.entries(data).every(([key, value]) => item[key] === value)
-              ? { ...item, ...data }
-              : item,
-          );
-        } */
         break;
 
       case "delete":
@@ -158,11 +159,14 @@ class IdbqlStateEventBase {
         break;
 
       case "deleteWhere":
-        if (data && typeof data === "object") {
+        // Use whereClause for matching if available, otherwise fall back to data matching
+        const deleteWhereClause = (eventData as any).whereClause || data;
+        
+        if (deleteWhereClause && typeof deleteWhereClause === "object") {
           const indicesToRemove: number[] = [];
           this.dataState[collection].forEach((item, index) => {
             if (
-              Object.entries(data).every(([key, value]) => item[key] === value)
+              Object.entries(deleteWhereClause).every(([key, value]) => item[key] === value)
             ) {
               indicesToRemove.push(index);
             }
@@ -171,14 +175,42 @@ class IdbqlStateEventBase {
             this.dataState[collection].splice(indicesToRemove[i], 1);
           }
         }
-        /*         if (data && typeof data === "object") {
-          this.dataState[collection] = this.dataState[collection].filter(
-            (item) =>
-              !Object.entries(data).every(
-                ([key, value]) => item[key] === value,
-              ),
+        break;
+
+      case "batchAdd":
+        if (Array.isArray(data)) {
+          this.dataState[collection].push(...data);
+        } else if (data) {
+          // Fallback: treat as single add
+          this.dataState[collection].push(data);
+        }
+        break;
+
+      case "batchPut":
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            if (item && keyPath) {
+              const existingIndex = this.dataState[collection].findIndex(
+                (existing: any) => existing[keyPath] === item[keyPath]
+              );
+              if (existingIndex !== -1) {
+                this.dataState[collection][existingIndex] = { ...this.dataState[collection][existingIndex], ...item };
+              } else {
+                this.dataState[collection].push(item);
+              }
+            }
+          }
+        } else if (data && keyPath) {
+          // Fallback: treat as single put
+          const existingIndex = this.dataState[collection].findIndex(
+            (existing: any) => existing[keyPath] === data[keyPath]
           );
-        } */
+          if (existingIndex !== -1) {
+            this.dataState[collection][existingIndex] = { ...this.dataState[collection][existingIndex], ...data };
+          } else {
+            this.dataState[collection].push(data);
+          }
+        }
         break;
 
       default:

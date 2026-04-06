@@ -18,6 +18,9 @@ export class CollectionCore<T = any> {
   private dBOpenRequest!: IDBOpenDBRequest;
 
   private keyPath: string;
+  
+  // Write queue to serialize operations and prevent transaction deadlocks
+  private writeQueue: Promise<any> = Promise.resolve();
 
   constructor(
     store: string,
@@ -52,6 +55,17 @@ export class CollectionCore<T = any> {
   }
 
   /**
+   * Enqueue a write operation to serialize access and prevent transaction deadlocks.
+   * All write operations (add, put, delete, update, updateWhere, deleteWhere) go through this queue.
+   */
+  private async enqueueWrite<T>(operation: () => Promise<T>): Promise<T> {
+    // Add operation to queue, chained after previous operations
+    const result = this.writeQueue.then(operation);
+    this.writeQueue = result.catch(() => {}); // Continue queue even on error
+    return result;
+  }
+
+  /**
    * Retrieves the data from the collection based on the provided query.
    * @param qy - The query object specifying the conditions for filtering the data.
    * @param options - The options object specifying additional operations to be applied on the result set.
@@ -72,22 +86,6 @@ export class CollectionCore<T = any> {
    * Counts the number of documents in the collection.
    * When called without a query parameter, it uses the native IndexedDB count() method for optimal performance.
    * When called with a query parameter, it retrieves all matching documents to return the count.
-   * 
-   * @param qy - Optional query object specifying the conditions for filtering the data.
-   * @returns A promise that resolves to the number of documents matching the query (or all documents if no query is provided).
-   * @throws If an error occurs while counting the data.
-   * 
-   * @example
-   * // Count all documents in the collection (fast, uses native count)
-   * const totalCount = await collection.count();
-   * 
-   * @example
-   * // Count documents matching a query (retrieves matching documents)
-   * const activeCount = await collection.count({ status: 'active' });
-   * 
-   * @example
-   * // Count with complex query
-   * const count = await collection.count({ age: { $gt: 18 }, status: 'active' });
    */
   async count(qy?: Where<T>): Promise<number> {
     if (qy) {
@@ -124,6 +122,7 @@ export class CollectionCore<T = any> {
       };
     });
   }
+
   async update(keyPathValue: string | number, data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }) {
     const dta = await this.get(keyPathValue);
     return this.put(
@@ -137,183 +136,289 @@ export class CollectionCore<T = any> {
   }
 
   async updateWhere(where: Where<T>, data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }) {
-    return this.where(where).then((rs) => {
-      return new Promise(async (resolve, reject) => {
-        Promise.all(
-          (rs as T[]).map((dta: T) => {
-            if (this.keyPath && dta[this.keyPath]) {
-              const newData = {
-                [this.keyPath as keyof T]: dta[this.keyPath],
-                ...dta,
-                ...data,
-              };
-              return this.put(newData, opts);
-            }
-          }),
-        )
-          .then(() => {
-            resolve(true);
-          })
-          .catch((e) => {
-            reject(e);
+    const rs = await this.where(where);
+    
+    // Use a single transaction for all updates to prevent deadlocks
+    if (opts?.tx) {
+      const updates = (rs as T[])
+        .filter((dta: T) => this.keyPath && dta[this.keyPath])
+        .map((dta: T) => {
+          const newData = {
+            [this.keyPath as keyof T]: dta[this.keyPath],
+            ...dta,
+            ...data,
+          };
+          return this.put(newData, { ...opts, tx: opts.tx! });
+        });
+      await Promise.all(updates);
+      return true;
+    }
+    
+    return this.enqueueWrite(async () => {
+      const db = await this.getDatabase();
+      const tx = db.transaction(this._store, "readwrite");
+      const store = tx.objectStore(this._store);
+      
+      const updates = (rs as T[])
+        .filter((dta: T) => this.keyPath && dta[this.keyPath])
+        .map((dta: T) => {
+          const newData = {
+            [this.keyPath as keyof T]: dta[this.keyPath],
+            ...dta,
+            ...data,
+          };
+          return new Promise<void>((resolve, reject) => {
+            const req = store.put(newData as any);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
           });
+        });
+      
+      await Promise.all(updates);
+      
+      return new Promise<boolean>((resolve, reject) => {
+        tx.oncomplete = () => {
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("updateWhere", {
+              collection: this._store,
+              whereClause: where,
+              data,
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(true);
+        };
+        tx.onerror = () => reject(tx.error);
       });
     });
   }
 
-  // put data to indexedDB, replace collection content if present
   async put<T>(value: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<T> {
-    return new Promise(async (resolve, reject) => {
-      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
+    const doPut = async (): Promise<T> => {
+      return new Promise(async (resolve, reject) => {
+        const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
 
-      const putReq = storeObj.put(value as any);
-      putReq.onsuccess = async (event) => {
-        const id = (event.target as IDBRequest).result;
-        const updatedData = await this.get(id as any);
-        // Emit event only if not silent
-        if (!opts?.silent) {
-          getIdbqlEvent().registerEvent("put", {
-            collection: this._store,
-            data: updatedData,
-            keyPath: this.keyPath,
-          });
-        }
-        resolve(updatedData);
-      };
-      putReq.onerror = function () {
-        reject("data not put");
-      };
-    });
+        const putReq = storeObj.put(value as any);
+        putReq.onsuccess = async (event) => {
+          const id = (event.target as IDBRequest).result;
+          const updatedData = await this.get(id as any);
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("put", {
+              collection: this._store,
+              data: updatedData,
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(updatedData);
+        };
+        putReq.onerror = function () {
+          reject("data not put");
+        };
+      });
+    };
+    
+    if (!opts?.tx) {
+      return this.enqueueWrite(doPut);
+    }
+    return doPut();
   }
 
-  /** ok add data to the store */
   async add<T>(data: Partial<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<T | boolean> {
-    return new Promise(async (resolve, reject) => {
-      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
-      const addReq = storeObj.add(data as any);
-      addReq.onsuccess = async (event) => {
-        const id = (event.target as IDBRequest).result;
-        const updatedData = await this.get(id as any);
-        if (!opts?.silent) {
-          getIdbqlEvent().registerEvent("add", {
-            collection: this._store,
-            data: updatedData,
-            keyPath: this.keyPath,
-          });
-        }
-        resolve(updatedData);
-      };
-      addReq.onerror = function (e) {
-        console.log(e);
-        reject(e);
-      };
-    });
+    const doAdd = async (): Promise<T | boolean> => {
+      return new Promise(async (resolve, reject) => {
+        const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
+        const addReq = storeObj.add(data as any);
+        addReq.onsuccess = async (event) => {
+          const id = (event.target as IDBRequest).result;
+          const updatedData = await this.get(id as any);
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("add", {
+              collection: this._store,
+              data: updatedData,
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(updatedData);
+        };
+        addReq.onerror = function (e) {
+          console.log(e);
+          reject(e);
+        };
+      });
+    };
+    
+    if (!opts?.tx) {
+      return this.enqueueWrite(doAdd);
+    }
+    return doAdd();
   }
 
   async delete(keyPathValue: string | number, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
-      let objectStoreRequest = storeObj.delete(keyPathValue as any);
+    const doDelete = async (): Promise<boolean> => {
+      return new Promise(async (resolve, reject) => {
+        const storeObj = opts?.tx ? opts.tx.objectStore(this._store) : await this.getCollection();
+        let objectStoreRequest = storeObj.delete(keyPathValue as any);
 
-      objectStoreRequest.onsuccess = () => {
-        if (!opts?.silent) {
-          getIdbqlEvent().registerEvent("delete", {
-            collection: this._store,
-            data: { [this.keyPath]: keyPathValue },
-            keyPath: this.keyPath,
-          });
-        }
-        resolve(true);
-      };
-      objectStoreRequest.onerror = function () {
-        reject(false);
-      };
-    });
+        objectStoreRequest.onsuccess = () => {
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("delete", {
+              collection: this._store,
+              data: { [this.keyPath]: keyPathValue },
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(true);
+        };
+        objectStoreRequest.onerror = function () {
+          reject(false);
+        };
+      });
+    };
+    
+    if (!opts?.tx) {
+      return this.enqueueWrite(doDelete);
+    }
+    return doDelete();
   }
 
   async deleteWhere(where: Where<T>, opts?: { silent?: boolean; tx?: IDBTransaction }): Promise<boolean> {
-    return this.where(where).then((data: T[]) => {
-      return Promise.all(
-        data.map((item: T) => {
-          if (this.keyPath && item[this.keyPath]) {
-            return this.delete(item[this.keyPath], opts);
+    const data = await this.where(where);
+    
+    if (opts?.tx) {
+      const deletes = data
+        .filter((item: T) => this.keyPath && item[this.keyPath])
+        .map((item: T) => this.delete(item[this.keyPath], { ...opts, tx: opts.tx! }));
+      await Promise.all(deletes);
+      return true;
+    }
+    
+    return this.enqueueWrite(async () => {
+      const db = await this.getDatabase();
+      const tx = db.transaction(this._store, "readwrite");
+      const store = tx.objectStore(this._store);
+      
+      const deletes = data
+        .filter((item: T) => this.keyPath && item[this.keyPath])
+        .map((item: T) => {
+          return new Promise<void>((resolve, reject) => {
+            const req = store.delete(item[this.keyPath]);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
+          });
+        });
+      
+      await Promise.all(deletes);
+      
+      return new Promise<boolean>((resolve, reject) => {
+        tx.oncomplete = () => {
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("deleteWhere", {
+              collection: this._store,
+              whereClause: where,
+              keyPath: this.keyPath,
+            });
           }
-        }),
-      )
-        .then(() => true)
-        .catch(() => false);
+          resolve(true);
+        };
+        tx.onerror = () => reject(tx.error);
+      });
+    });
+  }
+
+  async batchAdd<T>(items: Partial<T>[], opts?: { silent?: boolean }): Promise<T[]> {
+    return this.enqueueWrite(async () => {
+      const db = await this.getDatabase();
+      const tx = db.transaction(this._store, "readwrite");
+      const store = tx.objectStore(this._store);
+      
+      const results: T[] = [];
+      const pendingOps: Promise<void>[] = [];
+      
+      for (const item of items) {
+        const promise = new Promise<void>((resolve, reject) => {
+          const req = store.add(item as any);
+          req.onsuccess = () => {
+            const id = req.result;
+            results.push({ ...item, [this.keyPath]: id } as T);
+            resolve();
+          };
+          req.onerror = () => reject(req.error);
+        });
+        pendingOps.push(promise);
+      }
+      
+      await Promise.all(pendingOps);
+      
+      return new Promise<T[]>((resolve, reject) => {
+        tx.oncomplete = () => {
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("batchAdd", {
+              collection: this._store,
+              data: results,
+              count: items.length,
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(results);
+        };
+        tx.onerror = () => reject(tx.error);
+      });
+    });
+  }
+
+  async batchPut<T>(items: Partial<T>[], opts?: { silent?: boolean }): Promise<T[]> {
+    return this.enqueueWrite(async () => {
+      const db = await this.getDatabase();
+      const tx = db.transaction(this._store, "readwrite");
+      const store = tx.objectStore(this._store);
+      
+      const results: T[] = [];
+      const pendingOps: Promise<void>[] = [];
+      
+      for (const item of items) {
+        const promise = new Promise<void>((resolve, reject) => {
+          const req = store.put(item as any);
+          req.onsuccess = () => {
+            const id = req.result;
+            results.push({ ...item, [this.keyPath]: id } as T);
+            resolve();
+          };
+          req.onerror = () => reject(req.error);
+        });
+        pendingOps.push(promise);
+      }
+      
+      await Promise.all(pendingOps);
+      
+      return new Promise<T[]>((resolve, reject) => {
+        tx.oncomplete = () => {
+          if (!opts?.silent) {
+            getIdbqlEvent().registerEvent("batchPut", {
+              collection: this._store,
+              data: results,
+              count: items.length,
+              keyPath: this.keyPath,
+            });
+          }
+          resolve(results);
+        };
+        tx.onerror = () => reject(tx.error);
+      });
     });
   }
 }
 export const Collection: CollectionCore = createIDBStoreProxy(CollectionCore);
 
-function createIDBStoreProxy(store) {
+/**
+ * Proxy wrapper for CollectionCore - passthrough only.
+ * Event emission is handled directly within each method to prevent duplicate events.
+ */
+function createIDBStoreProxy(store: any) {
   return new Proxy(store, {
-    construct(target, args) {
+    construct(target: any, args: any[]) {
       const instance = new target(...args);
       return new Proxy(instance, {
-        get(target, prop, receiver) {
-          const origMethod = target[prop];
-          if (
-            typeof origMethod === "function" &&
-            (
-              [
-                "update",
-                "updateWhere",
-                "put",
-                "add",
-                "delete",
-                "deleteWhere",
-              ] as string[]
-            ).includes(String(prop))
-          ) {
-            return function (...args) {
-              return new Promise(async (resolve, reject) => {
-                (origMethod as Function)
-                  .apply(instance, args)
-                  .then((res) => {
-                    // Normalize event payload: prefer explicit whereClause if provided in args
-                    const payload: any = {
-                      collection: instance._store,
-                      data: res,
-                      keyPath: instance.keyPath,
-                    };
-                    // If the original method call passed a 'where' object as first arg (updateWhere/deleteWhere)
-                    try {
-                      if (prop === 'updateWhere' || prop === 'deleteWhere') {
-                        // first arg is where query, second arg (for updateWhere) is update data
-                        payload.whereClause = args[0];
-                        if (prop === 'updateWhere') payload.data = args[1];
-                      } else if (prop === 'update') {
-                        // update(keyPathValue, data) — keep data as merged result
-                        payload.data = res;
-                      }
-                    } catch (e) {
-                      // ignore
-                    }
-
-                    // include silent flag if present in args (last arg)
-                    try {
-                      const lastArg = args[args.length - 1];
-                      if (lastArg && typeof lastArg === 'object' && ('silent' in lastArg || 'tx' in lastArg)) {
-                        payload.silent = lastArg.silent ?? false;
-                      } else {
-                        payload.silent = false;
-                      }
-                    } catch (e) {
-                      payload.silent = false;
-                    }
-
-                    getIdbqlEvent().registerEvent(prop as any, payload);
-                    resolve(res);
-                  })
-                  .catch((e) => {
-                    reject(e);
-                  });
-              }).finally(() => {});
-              // return origMethod.apply(this, args);
-            };
-          }
+        get(target: any, prop: string | symbol, receiver: any) {
           return Reflect.get(target, prop, receiver);
         },
       });
