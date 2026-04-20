@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5-next.0] - 2026-04-20
+**Chores:**
+- remove obsolete files and documentation
+
+
+
 ## [0.1.4-next.0] - 2026-04-19
 **Bug Fixes:**
 - S1-02 multi-store reactivity + batch operations
