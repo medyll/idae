@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6-next.0] - 2026-04-20
+**Other:**
+- Refactor code structure for improved readability and maintainability
+
+
+
 ## [0.1.5-next.0] - 2026-04-20
 **Chores:**
 - remove obsolete files and documentation
