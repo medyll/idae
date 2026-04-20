@@ -54,7 +54,7 @@ jobs:
           git stash --include-untracked || true
           git pull --rebase origin ${{ github.ref_name }}
           git stash pop || true
-          npx @medyll/idae-pnpm-release
+          npx @medyll/idae-pnpm-release --package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_2026 }}
