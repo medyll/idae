@@ -1,9 +1,9 @@
-name: release
+name: disabled
 
 on:
   push:
     branches:
-      - main
+      - disabled
 
 jobs:
   release:

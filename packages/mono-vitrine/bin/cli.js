@@ -270,8 +270,16 @@ async function syncVitrines() {
         : `git@github.com:${OWNER}/${repoName}.git`;
 
       execSync(`git init`, { cwd: workDir });
+      execSync(`git config user.email "github-actions[bot]@users.noreply.github.com"`, { cwd: workDir });
+      execSync(`git config user.name "github-actions[bot]"`, { cwd: workDir });
       execSync(`git add .`, { cwd: workDir });
-      execSync(`git commit -m "update showcase assets"`, { cwd: workDir });
+      try {
+        execSync(`git commit -m "update showcase assets"`, { cwd: workDir });
+      } catch (e) {
+        if (!e.message?.includes('nothing to commit')) throw e;
+        logVerbose('Nothing to commit, skipping push for', repoName);
+        continue;
+      }
       execSync(`git branch -M main`, { cwd: workDir });
       execSync(`git remote add origin ${remoteUrl}`, { cwd: workDir });
       execSync(`git push -f origin main`, { cwd: workDir });
