@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.4-next.0] - 2026-04-19
+**Bug Fixes:**
+- S1-02 multi-store reactivity + batch operations
+- S1-01 transaction deadlocks + stress tests
+
+**Tests:**
+- S1-03 comprehensive CRUD unit tests (74 tests total)
+
+**Other:**
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+
+
+
 ## [0.1.3-next.0] - 2026-04-02
 **Bug Fixes:**
 - add rootDir option to tsconfig.build.json for improved build configuration
