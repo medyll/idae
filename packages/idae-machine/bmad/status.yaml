@@ -5,14 +5,14 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 15
+progress: 45
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Start Sprint 1 development: S1-01 Set up idae-api server"
-next_command: "bmad-dev-story S1-01"
-next_role: "dev"
-active_role: "dev"
+next_action: "Start Sprint 2: CRUD endpoints with permissions"
+next_command: "bmad-sprint 2"
+next_role: "scrum"
+active_role: "scrum"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -74,29 +74,29 @@ artifacts:
 sprints:
   - id: 1
     goal: "Foundation: Server API, auth, schema endpoints"
-    status: upcoming
+    status: completed
     stories:
       - id: S1-01
         title: "Set up idae-api server with MongoDB"
-        status: pending
-        tests_executed: false
-        test_output: null
-        test_result: null
+        status: complete
+        tests_executed: true
+        test_output: "bmad/artifacts/test-results-S1-01.md"
+        test_result: pass
       - id: S1-02
         title: "Build schema endpoints (/api/scheme, /api/scheme/:table)"
-        status: pending
-        tests_executed: false
+        status: complete
+        tests_executed: true
         test_output: null
-        test_result: null
+        test_result: pass
       - id: S1-03
         title: "Create MachineApi client class"
-        status: pending
-        tests_executed: false
+        status: complete
+        tests_executed: true
         test_output: null
-        test_result: null
+        test_result: pass
   - id: 2
     goal: "Data Layer: CRUD with permissions, qoolie integration"
-    status: upcoming
+    status: in_progress
     stories:
       - id: S2-01
         title: "Implement CRUD endpoints with pagination"
