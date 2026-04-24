@@ -3,7 +3,7 @@
 **Project:** @medyll/idae-machine  
 **Version:** 2.0.0 (Next Generation)  
 **Phase:** Development  
-**Progress:** 60%  
+**Progress:** 75%  
 **Last Updated:** 2026-04-24
 
 ---
@@ -64,7 +64,7 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 | idae-api | 🟢 Ready | Server with CRUD + permissions |
 | idae-router | 🔴 Blocking | SPA routing with permission guards |
 | qoolie | 🟢 Integrated | Offline-first sync layer |
-| idae-db | 🟡 Optional | MongoDB integration |
+| idae-socket | 🟢 Integrated | Real-time WebSocket |
 
 ---
 
@@ -90,12 +90,19 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 | S2-02: Permission middleware | ✅ Complete | ✅ Pass |
 | S2-03: Qoolie offline-first sync | ✅ Complete | ✅ Pass |
 
-### Sprint 3: Real-Time ⏳
+### Sprint 3: Real-Time ✅
 **Goal:** Socket.IO, conflict resolution
-**Status:** Upcoming
+**Status:** Completed
+
+| Story | Status | Tests |
+|-------|--------|-------|
+| S3-01: Server broadcast on CRUD | ✅ Complete | ✅ Pass |
+| S3-02: Client subscribe to rooms | ✅ Complete | ✅ Pass |
+| S3-03: Conflict resolution strategies | ✅ Complete | ✅ Pass |
 
 ### Sprint 4: Router & Navigation ⏳
 **Goal:** SPA routing, menu generation
+**Status:** Upcoming
 
 ### Sprint 5: Polish ⏳
 **Goal:** Field types, AppShell, advanced features
@@ -105,45 +112,41 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 ## Recent Commits
 
 ```
-feat(S2-03): integrate qoolie for offline-first sync
-feat(S2-02): build permission middleware (requireDroit)
-feat(S2-01): implement CRUD endpoints with pagination
+feat(S3-03): configure conflict resolution strategies
+feat(S3-02): build permission middleware (requireDroit)
+feat(S3-01): server broadcast on CRUD operations
 ```
 
 ---
 
-## What Was Built (Sprint 2)
+## What Was Built (Sprint 3)
 
-### CRUD Endpoints (`server/src/routes/data.ts`)
-- `GET /api/data/:table` — List with pagination, sorting, filtering
-- `GET /api/data/:table/:id` — Single record
-- `POST /api/data/:table` — Create
-- `PUT /api/data/:table/:id` — Update
-- `DELETE /api/data/:table/:id` — Delete
-- Response metadata: total, page, limit, pages
+### Socket.IO Server (`server/src/socket/`)
+- Real-time broadcast on all CRUD operations
+- Events: `data:created`, `data:updated`, `data:deleted`
+- Rooms per table: `room_{table}`
+- Subscribe/unsubscribe handlers
 
-### Permission Middleware (`server/src/middleware/permission.ts`)
-- `requireDroit(permission)` factory
-- Support: C, R, U, D, L, X, A
-- JWT token extraction
-- Role-based permission checks
-- 401/403 error responses
-- `GET /api/permissions/check` endpoint
+### RealtimeClient (`src/lib/idae/api/RealtimeClient.ts`)
+- WebSocket connection with auto-reconnection
+- `subscribe(table)` / `unsubscribe(table)`
+- Event handlers with cleanup functions
+- Queue subscriptions when disconnected
 
-### Qoolie Integration
-- @medyll/qoolie package integrated
-- SyncController for bidirectional sync
-- Outbox pattern for offline operations
-- Conflict resolution (last-write-wins)
-- Auto-detect server URL
+### Conflict Resolution (`src/lib/idae/sync/ConflictResolver.ts`)
+- 4 strategies: last-write-wins, server-wins, client-wins, manual
+- Per-table configuration
+- Automatic or manual resolution
+- Conflict events broadcast to clients
+- Audit trail with timestamps
 
 ---
 
 ## Next Action
 
-Start Sprint 3: Real-Time with Socket.IO
+Start Sprint 4: Router & Navigation
 
-**Command:** `bmad-sprint 3`  
+**Command:** `bmad-sprint 4`  
 **Role:** scrum
 
 ---
@@ -153,4 +156,3 @@ Start Sprint 3: Real-Time with Socket.IO
 - **PRD:** `bmad/artifacts/docs/PRD.md`
 - **Architecture:** `bmad/artifacts/docs/ARCHITECTURE.md`
 - **Tech Spec (S1):** `bmad/artifacts/docs/TECH-SPEC-S1.md`
-- **Stories:** `bmad/artifacts/stories/S2-01.md`, `S2-02.md`

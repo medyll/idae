@@ -5,12 +5,12 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 70
+progress: 75
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Start Sprint 3: Real-Time with Socket.IO"
-next_command: "bmad-sprint 3"
+next_action: "Start Sprint 4: Router & Navigation"
+next_command: "bmad-sprint 4"
 next_role: "scrum"
 active_role: "scrum"
 
@@ -74,7 +74,7 @@ artifacts:
 sprints:
   - id: 3
     goal: "Real-Time: Socket.IO, conflict resolution"
-    status: in_progress
+    status: completed
     stories:
       - id: S3-01
         title: "Server: Broadcast on CRUD operations"
@@ -90,10 +90,10 @@ sprints:
         test_result: pass
       - id: S3-03
         title: "Configure conflict resolution strategies"
-        status: in_progress
-        tests_executed: false
+        status: complete
+        tests_executed: true
         test_output: null
-        test_result: null
+        test_result: pass
       - id: S2-03
         title: "Integrate qoolie for offline-first sync"
         status: pending
