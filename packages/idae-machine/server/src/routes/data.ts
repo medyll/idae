@@ -2,6 +2,7 @@ import mongoose, { type FilterQuery, type SortOrder } from 'mongoose';
 import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
+import { requireDroit, type Permission } from '../middleware/permission.js';
 
 /**
  * Validate table name to prevent NoSQL injection
@@ -227,37 +228,42 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 }
 
 /**
- * Register data routes
+ * Register data routes with permission middleware
  */
 export function registerDataRoutes(): void {
 	idaeApi.router.addRoute({
 		method: 'get',
 		path: '/api/data/:table',
-		handler: listRecords
+		handler: listRecords,
+		middleware: [requireDroit('L')]
 	});
 
 	idaeApi.router.addRoute({
 		method: 'get',
 		path: '/api/data/:table/:id',
-		handler: getRecord
+		handler: getRecord,
+		middleware: [requireDroit('R')]
 	});
 
 	idaeApi.router.addRoute({
 		method: 'post',
 		path: '/api/data/:table',
-		handler: createRecord
+		handler: createRecord,
+		middleware: [requireDroit('C')]
 	});
 
 	idaeApi.router.addRoute({
 		method: 'put',
 		path: '/api/data/:table/:id',
-		handler: updateRecord
+		handler: updateRecord,
+		middleware: [requireDroit('U')]
 	});
 
 	idaeApi.router.addRoute({
 		method: 'delete',
 		path: '/api/data/:table/:id',
-		handler: deleteRecord
+		handler: deleteRecord,
+		middleware: [requireDroit('D')]
 	});
 
 	logger.info('Data routes registered: CRUD endpoints for /api/data/:table');
