@@ -4,6 +4,7 @@ import { config } from './config.js';
 import { logger } from './utils/logger.js';
 import { registerHealthRoutes } from './routes/health.js';
 import { registerSchemeRoutes } from './routes/scheme.js';
+import { registerDataRoutes } from './routes/data.js';
 
 /**
  * Connect to MongoDB
@@ -41,6 +42,7 @@ export async function startServer(): Promise<void> {
 		// Register routes
 		registerHealthRoutes();
 		registerSchemeRoutes();
+		registerDataRoutes();
 
 		// Configure idae-api
 		idaeApi.setOptions({
