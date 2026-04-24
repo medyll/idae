@@ -5,12 +5,12 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 75
+progress: 90
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Start Sprint 4: Router & Navigation"
-next_command: "bmad-sprint 4"
+next_action: "Start Sprint 5: Polish & Advanced Features"
+next_command: "bmad-sprint 5"
 next_role: "scrum"
 active_role: "scrum"
 
@@ -72,60 +72,28 @@ artifacts:
 # ── Sprints ───────────────────────────────────────────────────────────────────
 # Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
-  - id: 3
-    goal: "Real-Time: Socket.IO, conflict resolution"
-    status: completed
-    stories:
-      - id: S3-01
-        title: "Server: Broadcast on CRUD operations"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S3-02
-        title: "Client: Subscribe to table rooms"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S3-03
-        title: "Configure conflict resolution strategies"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S2-03
-        title: "Integrate qoolie for offline-first sync"
-        status: pending
-        tests_executed: false
-        test_output: null
-        test_result: null
-  - id: 3
-    goal: "Real-Time: Socket.IO, conflict resolution"
-    status: upcoming
-    stories:
-      - id: S3-01
-        title: "Server: Broadcast on CRUD operations"
-        status: pending
-        tests_executed: false
-        test_output: null
-        test_result: null
-      - id: S3-02
-        title: "Client: Subscribe to table rooms"
-        status: pending
-        tests_executed: false
-        test_output: null
-        test_result: null
-      - id: S3-03
-        title: "Configure conflict resolution strategies"
-        status: pending
-        tests_executed: false
-        test_output: null
-        test_result: null
   - id: 4
     goal: "Router & Navigation: SPA routing, menu generation"
-    status: upcoming
-    stories: []
+    status: completed
+    stories:
+      - id: S4-01
+        title: "Integrate idae-router with permission guards"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S4-02
+        title: "Schema-driven menu generation"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S4-03
+        title: "Breadcrumb component"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
   - id: 5
     goal: "Polish: Field types, AppShell, advanced features"
     status: upcoming

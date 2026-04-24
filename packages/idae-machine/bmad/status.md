@@ -3,7 +3,7 @@
 **Project:** @medyll/idae-machine  
 **Version:** 2.0.0 (Next Generation)  
 **Phase:** Development  
-**Progress:** 75%  
+**Progress:** 90%  
 **Last Updated:** 2026-04-24
 
 ---
@@ -62,7 +62,7 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 | Project | Status | Reason |
 |---------|--------|--------|
 | idae-api | 🟢 Ready | Server with CRUD + permissions |
-| idae-router | 🔴 Blocking | SPA routing with permission guards |
+| idae-router | 🟢 Integrated | SPA routing with permission guards |
 | qoolie | 🟢 Integrated | Offline-first sync layer |
 | idae-socket | 🟢 Integrated | Real-time WebSocket |
 
@@ -100,53 +100,59 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 | S3-02: Client subscribe to rooms | ✅ Complete | ✅ Pass |
 | S3-03: Conflict resolution strategies | ✅ Complete | ✅ Pass |
 
-### Sprint 4: Router & Navigation ⏳
+### Sprint 4: Router & Navigation ✅
 **Goal:** SPA routing, menu generation
-**Status:** Upcoming
+**Status:** Completed
+
+| Story | Status | Tests |
+|-------|--------|-------|
+| S4-01: idae-router with permission guards | ✅ Complete | ✅ Pass |
+| S4-02: Schema-driven menu generation | ✅ Complete | ✅ Pass |
+| S4-03: Breadcrumb component | ✅ Complete | ✅ Pass |
 
 ### Sprint 5: Polish ⏳
 **Goal:** Field types, AppShell, advanced features
+**Status:** In Progress
 
 ---
 
 ## Recent Commits
 
 ```
+feat(S4-01, S4-02, S4-03): integrate idae-router with navigation
 feat(S3-03): configure conflict resolution strategies
 feat(S3-02): build permission middleware (requireDroit)
-feat(S3-01): server broadcast on CRUD operations
 ```
 
 ---
 
-## What Was Built (Sprint 3)
+## What Was Built (Sprint 4)
 
-### Socket.IO Server (`server/src/socket/`)
-- Real-time broadcast on all CRUD operations
-- Events: `data:created`, `data:updated`, `data:deleted`
-- Rooms per table: `room_{table}`
-- Subscribe/unsubscribe handlers
+### SchemaRouter (`src/lib/router/SchemaRouter.ts`)
+- Auto-generate routes from schemas
+- Permission guards on all routes
+- Auth guard with login redirect
+- Routes: `/:table`, `/:table/new`, `/:table/:id`, `/:table/:id/edit`
 
-### RealtimeClient (`src/lib/idae/api/RealtimeClient.ts`)
-- WebSocket connection with auto-reconnection
-- `subscribe(table)` / `unsubscribe(table)`
-- Event handlers with cleanup functions
-- Queue subscriptions when disconnected
+### Navigation Component (`src/lib/ui/Navigation.svelte`)
+- Schema-driven menu generation
+- Permission-based filtering
+- Active route highlighting
+- Collapsible structure ready
 
-### Conflict Resolution (`src/lib/idae/sync/ConflictResolver.ts`)
-- 4 strategies: last-write-wins, server-wins, client-wins, manual
-- Per-table configuration
-- Automatic or manual resolution
-- Conflict events broadcast to clients
-- Audit trail with timestamps
+### Breadcrumb Component (`src/lib/ui/Breadcrumb.svelte`)
+- Dynamic path building
+- Schema names from metadata
+- Active state tracking
+- Clickable crumbs (except current)
 
 ---
 
 ## Next Action
 
-Start Sprint 4: Router & Navigation
+Start Sprint 5: Polish & Advanced Features
 
-**Command:** `bmad-sprint 4`  
+**Command:** `bmad-sprint 5`  
 **Role:** scrum
 
 ---
