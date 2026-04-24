@@ -3,6 +3,7 @@ import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
 import { requireDroit, type Permission } from '../middleware/permission.js';
+import { broadcastToTable } from '../socket/index.js';
 
 /**
  * Validate table name to prevent NoSQL injection
@@ -145,7 +146,7 @@ export async function getRecord(req: Request, res: Response): Promise<void> {
 }
 
 /**
- * Create new record
+ * Create new record with broadcast
  * POST /api/data/:table
  */
 export async function createRecord(req: Request, res: Response): Promise<void> {
@@ -160,6 +161,9 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 		const Model = getCollectionModel(table);
 		const record = await Model.create(req.body);
 
+		// Broadcast to table room
+		broadcastToTable(table, 'data:created', record);
+
 		res.status(201).json(record);
 	} catch (error) {
 		logger.error('Error creating record:', error);
@@ -168,7 +172,7 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 }
 
 /**
- * Update existing record
+ * Update existing record with broadcast
  * PUT /api/data/:table/:id
  */
 export async function updateRecord(req: Request, res: Response): Promise<void> {
@@ -192,6 +196,9 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
+		// Broadcast to table room
+		broadcastToTable(table, 'data:updated', { id, record });
+
 		res.json(record);
 	} catch (error) {
 		logger.error('Error updating record:', error);
@@ -200,7 +207,7 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 }
 
 /**
- * Delete record
+ * Delete record with broadcast
  * DELETE /api/data/:table/:id
  */
 export async function deleteRecord(req: Request, res: Response): Promise<void> {
@@ -219,6 +226,9 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 			res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
 			return;
 		}
+
+		// Broadcast to table room
+		broadcastToTable(table, 'data:deleted', { id });
 
 		res.status(204).send();
 	} catch (error) {
