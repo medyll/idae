@@ -72,35 +72,25 @@ artifacts:
 # ── Sprints ───────────────────────────────────────────────────────────────────
 # Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
-  - id: 1
-    goal: "Foundation: Server API, auth, schema endpoints"
-    status: completed
-    stories:
-      - id: S1-01
-        title: "Set up idae-api server with MongoDB"
-        status: complete
-        tests_executed: true
-        test_output: "bmad/artifacts/test-results-S1-01.md"
-        test_result: pass
-      - id: S1-02
-        title: "Build schema endpoints (/api/scheme, /api/scheme/:table)"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S1-03
-        title: "Create MachineApi client class"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
   - id: 2
     goal: "Data Layer: CRUD with permissions, qoolie integration"
     status: in_progress
     stories:
       - id: S2-01
         title: "Implement CRUD endpoints with pagination"
-        status: pending
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S2-02
+        title: "Build permission middleware (requireDroit)"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S2-03
+        title: "Integrate qoolie for offline-first sync"
+        status: in_progress
         tests_executed: false
         test_output: null
         test_result: null
