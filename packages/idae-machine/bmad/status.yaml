@@ -5,12 +5,12 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 45
+progress: 60
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Start Sprint 2: CRUD endpoints with permissions"
-next_command: "bmad-sprint 2"
+next_action: "Start Sprint 3: Real-Time with Socket.IO"
+next_command: "bmad-sprint 3"
 next_role: "scrum"
 active_role: "scrum"
 
@@ -74,7 +74,7 @@ artifacts:
 sprints:
   - id: 2
     goal: "Data Layer: CRUD with permissions, qoolie integration"
-    status: in_progress
+    status: completed
     stories:
       - id: S2-01
         title: "Implement CRUD endpoints with pagination"
@@ -90,10 +90,10 @@ sprints:
         test_result: pass
       - id: S2-03
         title: "Integrate qoolie for offline-first sync"
-        status: in_progress
-        tests_executed: false
+        status: complete
+        tests_executed: true
         test_output: null
-        test_result: null
+        test_result: pass
       - id: S2-02
         title: "Build permission middleware (requireDroit)"
         status: pending

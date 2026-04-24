@@ -3,7 +3,7 @@
 **Project:** @medyll/idae-machine  
 **Version:** 2.0.0 (Next Generation)  
 **Phase:** Development  
-**Progress:** 45%  
+**Progress:** 60%  
 **Last Updated:** 2026-04-24
 
 ---
@@ -61,9 +61,9 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 
 | Project | Status | Reason |
 |---------|--------|--------|
-| idae-api | 🟢 Ready | Server structure created with schema endpoints |
+| idae-api | 🟢 Ready | Server with CRUD + permissions |
 | idae-router | 🔴 Blocking | SPA routing with permission guards |
-| qoolie | 🔴 Blocking | Real-time sync and offline-first |
+| qoolie | 🟢 Integrated | Offline-first sync layer |
 | idae-db | 🟡 Optional | MongoDB integration |
 
 ---
@@ -80,18 +80,19 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 | S1-02: Build schema endpoints | ✅ Complete | ✅ Pass |
 | S1-03: Create MachineApi client class | ✅ Complete | ✅ Pass |
 
-### Sprint 2: Data Layer 🔄
+### Sprint 2: Data Layer ✅
 **Goal:** CRUD with permissions, qoolie integration
-**Status:** In Progress
+**Status:** Completed
 
 | Story | Status | Tests |
 |-------|--------|-------|
-| S2-01: Implement CRUD endpoints with pagination | ⏳ Pending | — |
-| S2-02: Build permission middleware | ⏳ Pending | — |
-| S2-03: Integrate qoolie for offline-first | ⏳ Pending | — |
+| S2-01: CRUD endpoints with pagination | ✅ Complete | ✅ Pass |
+| S2-02: Permission middleware | ✅ Complete | ✅ Pass |
+| S2-03: Qoolie offline-first sync | ✅ Complete | ✅ Pass |
 
 ### Sprint 3: Real-Time ⏳
 **Goal:** Socket.IO, conflict resolution
+**Status:** Upcoming
 
 ### Sprint 4: Router & Navigation ⏳
 **Goal:** SPA routing, menu generation
@@ -104,45 +105,45 @@ Full-stack schema-driven application framework with offline-first sync, enterpri
 ## Recent Commits
 
 ```
-feat(S1-03): create MachineApi client class
-
-- Add MachineApi client with configurable baseUrl, timeout, retries
-- Implement fetchAllSchemes() and fetchScheme() methods
-- Add health() check method
-- Implement retry logic with exponential backoff
-- Add in-memory caching with TTL
-- Create comprehensive unit tests
-- Export all types and errors
-
-BMAD: Sprint 1 complete - all 3 stories implemented
+feat(S2-03): integrate qoolie for offline-first sync
+feat(S2-02): build permission middleware (requireDroit)
+feat(S2-01): implement CRUD endpoints with pagination
 ```
 
 ---
 
-## What Was Built (Sprint 1)
+## What Was Built (Sprint 2)
 
-### Server (`server/`)
-- Express + idae-api setup
-- MongoDB connection handling
-- Health endpoint: `GET /health`
-- Schema endpoints: `GET /api/scheme`, `GET /api/scheme/:table`
-- AppScheme Mongoose model with `_views` registry
-- Error handling and graceful shutdown
+### CRUD Endpoints (`server/src/routes/data.ts`)
+- `GET /api/data/:table` — List with pagination, sorting, filtering
+- `GET /api/data/:table/:id` — Single record
+- `POST /api/data/:table` — Create
+- `PUT /api/data/:table/:id` — Update
+- `DELETE /api/data/:table/:id` — Delete
+- Response metadata: total, page, limit, pages
 
-### Client (`src/lib/idae/api/`)
-- MachineApi client class
-- Methods: `health()`, `fetchAllSchemes()`, `fetchScheme()`
-- Retry logic with exponential backoff
-- In-memory caching with TTL
-- TypeScript types and error classes
+### Permission Middleware (`server/src/middleware/permission.ts`)
+- `requireDroit(permission)` factory
+- Support: C, R, U, D, L, X, A
+- JWT token extraction
+- Role-based permission checks
+- 401/403 error responses
+- `GET /api/permissions/check` endpoint
+
+### Qoolie Integration
+- @medyll/qoolie package integrated
+- SyncController for bidirectional sync
+- Outbox pattern for offline operations
+- Conflict resolution (last-write-wins)
+- Auto-detect server URL
 
 ---
 
 ## Next Action
 
-Start Sprint 2: CRUD endpoints with permissions
+Start Sprint 3: Real-Time with Socket.IO
 
-**Command:** `bmad-sprint 2`  
+**Command:** `bmad-sprint 3`  
 **Role:** scrum
 
 ---
@@ -152,4 +153,4 @@ Start Sprint 2: CRUD endpoints with permissions
 - **PRD:** `bmad/artifacts/docs/PRD.md`
 - **Architecture:** `bmad/artifacts/docs/ARCHITECTURE.md`
 - **Tech Spec (S1):** `bmad/artifacts/docs/TECH-SPEC-S1.md`
-- **Stories:** `bmad/artifacts/stories/S1-01.md`, `S1-02.md`, `S1-03.md`
+- **Stories:** `bmad/artifacts/stories/S2-01.md`, `S2-02.md`
