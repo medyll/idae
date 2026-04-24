@@ -1,167 +1,158 @@
-# BMAD Project Status — @medyll/idae-machine
-# Last updated: 2026-03-11T22:15:23Z
+# BMAD Status — idae-machine v2
+# Next generation: full-stack with auth, permissions, real-time sync
+# Source: bmad/intake-sources/IDAE-MACHINE-NEXT.md
 
-phase:
-  current: 'release'
-  status: 'in_progress'
-  phases:
-    analysis: 'done' # ✅ COMPLETE
-    planning: 'done' # ✅ COMPLETE (PRD + tech-spec)
-    solutioning: 'done' # ✅ COMPLETE (Sprint-1 delivered)
-    validation: 'done' # ✅ COMPLETE (Sprint-2 delivered)
-    testing: 'done' # ✅ COMPLETE (Sprint-3 + Sprint-4 partial: 186 tests)
-    release: 'in_progress' # 🔄 R1-R5 release checklist
+# ── Core Identity ─────────────────────────────────────────────────────────────
+project: "idae-machine"
+phase: planning
+progress: 15
+last_updated: "2026-04-24"
 
+# ── Chain Protocol ────────────────────────────────────────────────────────────
+next_action: "Start Sprint 1 development: S1-01 Set up idae-api server"
+next_command: "bmad-dev-story S1-01"
+next_role: "dev"
+active_role: "dev"
+
+# ── Dependencies ───────────────────────────────────────────────────────────────
+dependencies:
+  - project: "idae-api"
+    status: "blocking"
+    reason: "Server-side API and auth endpoints required"
+    satisfied: false
+  - project: "idae-router"
+    status: "blocking"
+    reason: "SPA routing with permission guards"
+    satisfied: false
+  - project: "qoolie"
+    status: "blocking"
+    reason: "Real-time sync and offline-first data layer"
+    satisfied: false
+  - project: "idae-db"
+    status: "optional"
+    reason: "MongoDB integration for server-side"
+    satisfied: false
+
+# ── Phase Tracking ────────────────────────────────────────────────────────────
+phases:
+  - name: planning
+    status: in_progress
+  - name: development
+    status: upcoming
+  - name: testing
+    status: upcoming
+  - name: release
+    status: upcoming
+
+# ── Strategic Dimensions ──────────────────────────────────────────────────────
+marketing:
+  - "v2.0: Full-stack schema-driven framework with real-time sync"
+  - "Offline-first: Work without connection, sync when back online"
+  - "Enterprise-ready: RBAC permissions, audit trails, multi-tenant"
+  - "Zero-config CRUD: Automatic API + UI from schema definitions"
+
+product:
+  - "Unified data model: _views registry replaces fieldModel/miniModel/columnModel"
+  - "RBAC v2: Users, groups, roles, grants with temporal constraints"
+  - "Real-time sync: WebSocket/SSE with conflict resolution"
+  - "SPA routing: Schema-driven navigation with permission guards"
+
+far_vision:
+  - "Visual schema builder: Drag-and-drop entity designer"
+  - "Plugin marketplace: Custom field types and components"
+  - "AI-powered features: Smart defaults, auto-generated validations"
+  - "Multi-database federation: Query across PostgreSQL, MongoDB, IndexedDB"
+
+# ── Artifacts ─────────────────────────────────────────────────────────────────
 artifacts:
-  product_brief:
-    status: 'generated'
-    date: '2026-03-06'
-  prd:
-    status: 'generated'
-    date: '2026-03-06'
-    file: 'prd.md'
-  tech_spec:
-    status: 'generated'
-    date: '2026-03-06'
-    file: 'tech-spec.md'
-  architecture:
-    status: 'generated'
-    date: '2026-03-12'
-    file: 'artifacts/architecture-2026-03-12.md'
-  roadmap:
-    status: 'generated'
-    date: '2026-03-12'
-    file: 'artifacts/roadmap-2026-03-12.md'
-  demo_page:
-    status: 'complete'
-    date: '2026-03-12'
-    file: 'src/routes/+page.svelte'
-    description: 'Complete component showcase featuring all 15 UI/Form/Fragment components'
-    components_showcased:
-      ui:
-        - CollectionButton
-        - CollectionList
-        - CollectionListMenu
-        - CollectionListFieldValues
-        - CollectionFks
-        - CollectionReverseFks
-      form:
-        - CreateUpdate
-        - FieldValue
-        - FieldInPlace
-        - DataProvider
-      fragments:
-        - Frame
-        - Confirm
-        - Selector
-        - InfoLine
-        - Skeleton
+  prd: done
+  architecture: done
+  tech-spec: done
 
-audit:
-  baseline: 'completed' # ✅ Run by: bmad init
-  baseline_date: '2026-03-06'
-  critical_findings: 0
-  warnings: 0
-  report: 'audit-baseline-2026-03-06.md'
-  updates:
-    - 'audit-remove-crudservice-2026-03-11.md'
-    - 'audit-security-2026-03-12.md'
-  last_updated: '2026-03-12T15:35:00Z'
-
+# ── Sprints ───────────────────────────────────────────────────────────────────
+# Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
-  active: 'sprint-4'
-  count: 4
-  sprint_1:
-    start_date: '2026-03-07'
-    end_date: '2026-03-20'
-    capacity: 18
-    goal: 'Fix 3 critical audit findings + improve JSDoc coverage to 80%+'
-    stories: 5
-    status: 'complete'
-  sprint_2:
-    start_date: '2026-03-21'
-    end_date: '2026-03-12'
-    capacity: 20
-    goal: 'E2E testing, security audit, performance optimization, browser compatibility, docs'
-    stories: 5
-    status: 'complete'
-  sprint_3:
-    start_date: '2026-03-25'
-    end_date: '2026-03-25'
-    capacity: 20
-    goal: 'Demo refonte: Update demo page and examples for Svelte 5 improvements'
-    stories: 1
-    status: 'complete'
-    completed_stories:
-      - 'S3-01-demo-refonte'
-    started_at: '2026-03-24T23:25:08Z'
-    completed_at: '2026-03-25T22:23:00Z'
-  sprint_4:
-    start_date: '2026-03-25'
-    end_date: '2026-04-08'
-    capacity: 20
-    goal: 'Rigorous test suite: edge cases, stress tests, error paths, malformed input handling'
-    stories: 4
-    status: 'in_progress'
-    assigned_stories:
-      - 'S4-01-edge-case-validation'
-      - 'S4-02-stress-testing'
-      - 'S4-03-error-path-coverage'
-      - 'S4-04-malformed-input-handling'
-    in_progress_stories:
-      - 'S4-01-edge-case-validation'
-    started_at: '2026-03-25T22:27:00Z'
+  - id: 1
+    goal: "Foundation: Server API, auth, schema endpoints"
+    status: upcoming
+    stories:
+      - id: S1-01
+        title: "Set up idae-api server with MongoDB"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S1-02
+        title: "Build schema endpoints (/api/scheme, /api/scheme/:table)"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S1-03
+        title: "Create MachineApi client class"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+  - id: 2
+    goal: "Data Layer: CRUD with permissions, qoolie integration"
+    status: upcoming
+    stories:
+      - id: S2-01
+        title: "Implement CRUD endpoints with pagination"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S2-02
+        title: "Build permission middleware (requireDroit)"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S2-03
+        title: "Integrate qoolie for offline-first sync"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+  - id: 3
+    goal: "Real-Time: Socket.IO, conflict resolution"
+    status: upcoming
+    stories:
+      - id: S3-01
+        title: "Server: Broadcast on CRUD operations"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S3-02
+        title: "Client: Subscribe to table rooms"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+      - id: S3-03
+        title: "Configure conflict resolution strategies"
+        status: pending
+        tests_executed: false
+        test_output: null
+        test_result: null
+  - id: 4
+    goal: "Router & Navigation: SPA routing, menu generation"
+    status: upcoming
+    stories: []
+  - id: 5
+    goal: "Polish: Field types, AppShell, advanced features"
+    status: upcoming
+    stories: []
 
-stories:
-  total: 10
-  pending: 4
-  in_progress: 0
-  done: 6
+# ── QA / Bugs ─────────────────────────────────────────────────────────────────
+qa:
+  bugs: []
 
-backlog:
-  items:
-    - S4-01-edge-case-validation
-    - S4-02-stress-testing
-    - S4-03-error-path-coverage
-    - S4-04-malformed-input-handling
-
-dashboard:
-  status: 'generated'
-  last_updated: '2026-03-06T22:35:00.000Z'
-
-metadata:
-  init_date: '2026-03-06T21:29:09Z'
-  initialized_by: 'bmad-master v3.2.0'
-  last_bmad_command: 'release: start — create release artifacts and run tests'
-  last_bmad_command_date: '2026-03-24T19:25:00Z'
-  recommendation:
-    summary: '✅ DEMO PAGE COMPLETE (v2): All 13 UI/Form/Fragment components integrated in showcase. Looper replaced with native {#each}. Svelte 5 runes throughout. Frame layout with tabs. All 129/129 tests passing. 0 critical findings (OWASP 100%). All performance targets exceeded. 6 browsers tested. 100% JSDoc coverage. READY FOR RELEASE PHASE.'
-    captured_at: '2026-03-12T15:47:00Z'
-    artifacts:
-      - 'bmad/artifacts/roadmap-2026-03-12.md'
-      - 'bmad/artifacts/audit-security-2026-03-12.md'
-      - 'bmad/artifacts/performance-2026-03-12.md'
-      - 'bmad/artifacts/compatibility-2026-03-12.md'
-      - 'docs/API.md'
-      - 'docs/EXAMPLES.md'
-    next_actions:
-      - '🔴 URGENT: Implement rigorous/severe test suite (edge cases, stress, error paths, malformed inputs)'
-      - '✅ SPRINT-2 COMPLETE: All 5 stories done, 20/20 points'
-      - '✅ VALIDATION PHASE: APPROVED (129/129 tests, 0 critical issues)'
-      - '✅ DEMO PAGE: Complete with Svelte 5 migration + accessibility improvements'
-      - '→ BEGIN RELEASE PHASE (2026-03-12 → 2026-04-30)'
-      - '→ R1: Write launch announcement + code examples'
-      - '→ R2: Update CI/CD, test npm publish (dry-run)'
-      - '→ R3: Create CHANGELOG.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md'
-      - '→ R4: Stakeholder sign-off (product, engineering, legal)'
-      - '→ R5: Publish npm + GitHub + announce launch'
-    auto_run: false
-
-# Automated update
-active_role: 'Developer'
-next_action: 'Audit fixes applied (2026-03-26): duplicate exports removed, {#each} keys added, null-as-any removed, any types fixed (DataLinks, DataLinksBack, DataList, DataListActions, InfoLine), idbql typed in demoInit. 186/186 tests passing. Remaining: JSDoc on 7 components (DataCreate, DataEdit, DataPicker, FieldEditor, Frame, InfoLine, Skeleton).'
-next_command: 'bmad continue'
-next_role: 'Developer'
-progress: '83%'
-last_bmad_command: 'bmad continue — audit fixes: 6 files patched, 186/186 tests green'
-last_bmad_command_date: '2026-03-26T00:00:00Z'
+# ── Notes ─────────────────────────────────────────────────────────────────────
+# Source Document: bmad/intake-sources/IDAE-MACHINE-NEXT.md
+# Key Insight: 65% of legacy requirements achievable, but server-side components needed
+# Critical Gaps: Server API, permissions, real-time sync, routing
+# External Packages: idae-api, idae-router, qoolie, idae-db
