@@ -1,42 +1,24 @@
 // auto exports of entry components
-export { default as DataCreate } from '$lib/data/DataCreate.svelte';
-export { default as DataEdit } from '$lib/data/DataEdit.svelte';
-export { default as DataForm } from '$lib/data/DataForm.svelte';
-export * from '$lib/data/DataForm.svelte.spec.js';
-export { default as DataLinks } from '$lib/data/DataLinks.svelte';
-export { default as DataLinksBack } from '$lib/data/DataLinksBack.svelte';
-export { default as DataList } from '$lib/data/DataList.svelte';
-export { default as DataListActions } from '$lib/data/DataListActions.svelte';
-export { default as DataListFields } from '$lib/data/DataListFields.svelte';
-export { default as DataPicker } from '$lib/data/DataPicker.svelte';
-export { default as DataProvider } from '$lib/data/DataProvider.svelte';
+
+// Main UI Components (all UI in one place)
+export * from '$lib/main-ui/index.js';
+
+// Main Logic (machine, types, API, sync)
+export * from '$lib/main/index.js';
+
+// Demo & Examples
 export * from '$lib/demo/analyzeDemo.js';
 export * from '$lib/demo/dbSchema.js';
 export * from '$lib/demo/demoInit.js';
 export * from '$lib/demo/seedData.js';
 export * from '$lib/demo/testScheme.js';
-export { default as FieldDisplay } from '$lib/field/FieldDisplay.svelte';
-export { default as FieldEditor } from '$lib/field/FieldEditor.svelte';
-export * from '$lib/form/types.js';
-export { default as Confirm } from '$lib/fragments/Confirm.svelte';
-export { default as Frame } from '$lib/fragments/Frame.svelte';
-export { default as InfoLine } from '$lib/fragments/InfoLine.svelte';
-export { default as Selector } from '$lib/fragments/Selector.svelte';
-export { default as Skeleton } from '$lib/fragments/Skeleton.svelte';
-export * from '$lib/main/idae-model-core.js';
-export * from '$lib/main/schema-types.js';
-export * from '$lib/main/machine.js';
-export * from '$lib/main/machine/MachineError.js';
-export * from '$lib/main/machine/MachineErrorValidation.js';
-export * from '$lib/main/machine/MachineFieldType.js';
-export * from '$lib/main/machine/MachineScheme.js';
-export * from '$lib/main/machine/MachineSchemeFieldForge.js';
-export * from '$lib/main/machine/MachineSchemeFieldValues.js';
-export * from '$lib/main/machine/MachineSchemeValidate.js';
-export * from '$lib/main/machine/MachineSchemeValues.js';
-export * from '$lib/main/machine/SchemeFieldDefaultValues.js';
-export * from '$lib/main/machineDb.js';
-export * from '$lib/main/machineParserForge.js';
+
+// Types
 export * from '$lib/types/appschemeTypes.js';
-export { default as CollectionCard } from '$lib/ui/CollectionCard.svelte';
-export { default as CollectionTable } from '$lib/ui/CollectionTable.svelte';
+
+// Form types
+export * from '$lib/form/types.js';
+
+// Demo components (for showcase, not production)
+export { default as DemoCollectionTable } from '$lib/demo/CollectionTable.svelte';
+export { default as DemoCollectionCard } from '$lib/demo/CollectionCard.svelte';
