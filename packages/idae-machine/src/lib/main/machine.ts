@@ -1,5 +1,6 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
+import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 
 /**
  * @class Machine
@@ -61,6 +62,11 @@ export class Machine {
 	 * Data model
 	 */
 	_model!:                  IdbqModel | undefined;
+
+	/**
+	 * Schema router instance (lazy-initialized)
+	 */
+	_router?:                 SchemaRouter;
 
 	/**
 	 * Main constructor
@@ -203,6 +209,61 @@ export class Machine {
 	 */
 	get idbqModel(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqModel'] | undefined {
 		return this._idbqModel;
+	}
+
+	/**
+	 * Get or create the SchemaRouter instance.
+	 * Lazily initializes the router with schemas from MachineDb.
+	 * @role Accessor
+	 * @return {SchemaRouter} The schema router instance.
+	 */
+	get router(): SchemaRouter {
+		if (!this._router) {
+			this._router = new SchemaRouter();
+			
+			// Set up permission check using MachineDb
+			this._router.setPermissionCheck((permission, table) => {
+				if (!table) return true;
+				
+				// Check permissions from MachineDb
+				const scheme = this.logic.collection(table);
+				if (!scheme) return false;
+				
+				// In production, check actual user permissions
+				// For now, allow all (demo mode)
+				return true;
+			});
+			
+			// Initialize with schemas from MachineDb
+			const schemes = this.logic.schemes;
+			this._router.init(schemes);
+		}
+		return this._router;
+	}
+
+	/**
+	 * Initialize the router with custom configuration.
+	 * Must be called before accessing router getter if custom config is needed.
+	 * @role Initializer
+	 * @param {SchemaRouterConfig} config Router configuration
+	 * @return {SchemaRouter} The initialized router instance
+	 */
+	initRouter(config: SchemaRouterConfig): SchemaRouter {
+		this._router = new SchemaRouter(config);
+		
+		// Set up permission check
+		this._router.setPermissionCheck((permission, table) => {
+			if (!table) return true;
+			const scheme = this.logic.collection(table);
+			if (!scheme) return false;
+			return true;
+		});
+		
+		// Initialize with schemas
+		const schemes = this.logic.schemes;
+		this._router.init(schemes);
+		
+		return this._router;
 	}
 
 	/**

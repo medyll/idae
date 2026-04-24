@@ -1,6 +1,6 @@
 import { createRouter, type RouterInstance, type Context } from '@medyll/idae-router';
-import type { AppScheme } from '../main/api/types.js';
-import { logger } from '../utils/logger.js';
+import type { AppScheme } from '../api/types.js';
+import { logger } from '../../utils/logger.js';
 
 /**
  * Route permission metadata

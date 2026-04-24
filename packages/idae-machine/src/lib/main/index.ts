@@ -17,5 +17,6 @@ export * from './sync/index.js';
 // Multi-base (v2 features)
 export { MachineMultiBase } from './multi-base/index.js';
 
-// Router (optional - separate concern)
-// export { SchemaRouter } from './router/SchemaRouter.js';
+// Router (v2 features)
+export { SchemaRouter } from './router/SchemaRouter.js';
+export type { SchemaRouterConfig, RoutePermission } from './router/SchemaRouter.js';
