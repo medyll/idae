@@ -1103,6 +1103,9 @@ importers:
       '@medyll/idae-slotui-svelte':
         specifier: workspace:*
         version: link:../idae-slotui
+      '@medyll/qoolie':
+        specifier: workspace:*
+        version: link:../qoolie
       '@medyll/skiller':
         specifier: workspace:*
         version: link:../skiller
@@ -15149,7 +15152,7 @@ snapshots:
       detect-libc: 2.1.2
       is-glob: 4.0.3
       node-addon-api: 7.1.1
-      picomatch: 4.0.3
+      picomatch: 4.0.4
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.5.4
       '@parcel/watcher-darwin-arm64': 2.5.4

@@ -93,6 +93,7 @@
 		"@huggingface/prettier-plugin-vertical-align": "^0.2.4",
 		"@medyll/idae-idbql": "workspace:*",
 		"@medyll/idae-slotui-svelte": "workspace:*",
+		"@medyll/qoolie": "workspace:*",
 		"@tailwindcss/vite": "^4.2.2",
 		"command": "^1.1.1",
 		"commander": "^14.0.3",

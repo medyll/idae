@@ -955,6 +955,12 @@ export interface AppSchemeBase extends Extendable, WithID, WithCode, WithName {
 export interface AppScheme<T = Record<string, any>> extends Extendable, WithEssentials<T> {
 	idappscheme: ID;
 	schemeType:  SchemeType;
+	/**
+	 * Dynamic views registry - populated at runtime from appscheme_view.
+	 * Keys are codeAppscheme_view_type values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
+	 * @see EntityViews for standard view type definitions
+	 */
+	_views?:     Partial<EntityViews>;
 	gridFks?:    {
 		[key: string]: gridFksItem;
 	};
@@ -1031,4 +1037,419 @@ export type AppSchemaCollection =
 	| AppSchemeHasField
 	| AppSchemeHasTableField
 	| AppSchemeType
-	| AppSchemeLog;
+	| AppSchemeLog
+	| AppSchemeViewType
+	| AppSchemeView
+	| AppUser
+	| AppUserProfile
+	| AppUserGroup
+	| AppUserRole
+	| AppUserAssignment
+	| AppUserGrant
+	| AppUserSession
+	| AppUserAudit;
+
+// --- PERMISSION SYSTEM TYPES (RBAC v2) ---
+
+/**
+ * Permission codes following CRUD + extensions pattern.
+ */
+export type PermissionCode =
+	| 'C'    // Create: Can create new records
+	| 'R'    // Read: Can read/view individual records
+	| 'U'    // Update: Can modify existing records
+	| 'D'    // Delete: Can delete records
+	| 'L'    // List: Can list/view collections of records
+	| 'X'    // eXecute: Can execute actions/workflows
+	| 'A'    // Admin: Can administer/configure
+	;
+
+/**
+ * Boolean permission value for modern APIs.
+ */
+export type PermissionBoolean = boolean;
+
+/**
+ * Legacy permission value (1 = granted, 0 = denied) for backward compatibility.
+ */
+export type PermissionValue = 1 | 0;
+
+/**
+ * App-level permissions stored as JSON blob in appuser.appPermissions.
+ * These override table-level permissions.
+ */
+export interface AppPermissions extends Extendable {
+	ADMIN?: boolean;        // Full system access
+	DEV?: boolean;          // Developer features
+	CONF?: boolean;         // Can configure system
+	BYPASS_AUDIT?: boolean; // Can bypass audit logging
+	IMPERSONATE?: boolean;  // Can impersonate other users
+	[key: string]: boolean | undefined;
+}
+
+/**
+ * Grant constraints - fine-grained access restrictions.
+ * @example { "territory": "EU", "maxAmount": 10000, "departments": ["sales", "marketing"] }
+ */
+export interface GrantConstraints extends Extendable {
+	territory?: string;
+	maxAmount?: number;
+	departments?: string[];
+	businessUnits?: string[];
+	[key: string]: unknown;
+}
+
+/**
+ * Core user account - authentication & authorization entry point.
+ * Separated from profile for security (PII isolation) and performance.
+ */
+export interface AppUser extends Extendable, WithEssentials {
+	idappuser: ID;
+	login: string;
+	passwordHash: string;
+	email: string;
+	emailVerified: boolean;
+	isActive: boolean;
+	isLocked: boolean;
+	failedLoginCount?: number;
+	lockedUntil?: DateValue;
+	lastLoginAt?: DateValue;
+	lastLoginIp?: string;
+	mustChangePassword?: boolean;
+	/**
+	 * App-level permissions as JSON blob.
+	 * These override table-level permissions.
+	 * @example { "ADMIN": true, "DEV": false, "BYPASS_AUDIT": true }
+	 */
+	appPermissions?: AppPermissions;
+	gridFks: {
+		appuser_profile?: gridFksItem<AppUserProfile>;
+	};
+}
+
+/**
+ * User profile - personal data and preferences.
+ * Separated from AppUser for GDPR/privacy compliance.
+ * Can be extended without affecting auth flows.
+ */
+export interface AppUserProfile extends Extendable, WithID {
+	idappuser_profile: ID;
+	firstName?: string;
+	lastName?: string;
+	displayName?: string;
+	avatarUrl?: string;
+	phone?: string;
+	mobile?: string;
+	locale?: string;
+	timezone?: string;
+	/**
+	 * User preferences as JSON blob.
+	 * @example { "theme": "dark", "notifications": { "email": true, "sms": false } }
+	 */
+	preferences?: Extendable;
+	gridFks: {};
+}
+
+/**
+ * User groups - collections of users (teams, departments).
+ * Users can belong to multiple groups via AppUserAssignment.
+ */
+export interface AppUserGroup extends Extendable, WithEssentials {
+	idappuser_group: ID;
+	code: Code;
+	name: Name;
+	description?: Description;
+	/**
+	 * System groups cannot be deleted (e.g., "Administrators", "Everyone").
+	 */
+	isSystem: boolean;
+}
+
+/**
+ * Individual roles - reusable permission templates.
+ * Examples: "Data Administrator", "Report Viewer", "Content Editor"
+ * Roles can be assigned directly to users or inherited from groups.
+ */
+export interface AppUserRole extends Extendable, WithEssentials {
+	idappuser_role: ID;
+	code: Code;
+	name: Name;
+	description?: Description;
+	/**
+	 * System roles cannot be deleted (e.g., "Admin", "User").
+	 */
+	isSystem: boolean;
+	/**
+	 * Role level for hierarchy resolution.
+	 * Higher level = more privileges. Used when multiple roles conflict.
+	 */
+	roleLevel?: number;
+}
+
+/**
+ * Assignment type - distinguishes between role and group assignments.
+ */
+export type AssignmentType = 'role' | 'group';
+
+/**
+ * Assignment table - many-to-many link between users and roles/groups.
+ * Enables: one user, multiple roles; one role, multiple users.
+ * Temporal scope: assignments can be temporary (internships, projects).
+ */
+export interface AppUserAssignment extends Extendable, WithID {
+	idappuser_assignment: ID;
+	assignmentType: AssignmentType;
+	/**
+	 * Primary group for UI defaults and fallback permissions.
+	 */
+	isPrimary?: boolean;
+	/**
+	 * When the assignment becomes active (null = immediately).
+	 */
+	validFrom?: DateValue;
+	/**
+	 * When the assignment expires (null = permanent).
+	 */
+	validUntil?: DateValue;
+	/**
+	 * Who granted this assignment.
+	 */
+	assignedBy: ID;
+	assignedAt: DateValue;
+	/**
+	 * Revocation tracking.
+	 */
+	revokedBy?: ID;
+	revokedAt?: DateValue;
+	revocationReason?: string;
+	gridFks: {
+		appuser: gridFksItem<AppUser>;
+		appuser_role?: gridFksItem<AppUserRole>;
+		appuser_group?: gridFksItem<AppUserGroup>;
+	};
+}
+
+/**
+ * Grant type - distinguishes which entity receives the grant.
+ */
+export type GrantType = 'role' | 'group' | 'user';
+
+/**
+ * Permission grants - fine-grained access control per scheme/resource.
+ * Can be assigned to roles, groups, or individual users.
+ * Temporal scope enables temporary access (projects, substitutions).
+ */
+export interface AppUserGrant extends Extendable, WithID {
+	idappuser_grant: ID;
+	grantType: GrantType;
+	// CRUD + extended permissions
+	canCreate: PermissionBoolean;
+	canRead: PermissionBoolean;
+	canUpdate: PermissionBoolean;
+	canDelete: PermissionBoolean;
+	canList: PermissionBoolean;
+	canExecute: PermissionBoolean;
+	canAdmin: PermissionBoolean;
+	// Temporal scope
+	validFrom?: DateValue;
+	validUntil?: DateValue;
+	// Audit fields
+	grantedBy: ID;
+	grantedAt: DateValue;
+	revokedBy?: ID;
+	revokedAt?: DateValue;
+	revocationReason?: string;
+	/**
+	 * Constraints as JSON - restricts grant scope.
+	 * @example { "territory": "EU", "maxAmount": 10000 }
+	 */
+	constraints?: GrantConstraints;
+	gridFks: {
+		appscheme: gridFksItem<AppScheme>;
+		appuser_role?: gridFksItem<AppUserRole>;
+		appuser_group?: gridFksItem<AppUserGroup>;
+		appuser?: gridFksItem<AppUser>;
+	};
+}
+
+/**
+ * Active user sessions for tracking and security.
+ * Enables "logout everywhere" and concurrent session limits.
+ */
+export interface AppUserSession extends Extendable, WithID {
+	idappuser_session: ID;
+	sessionToken: string;
+	refreshToken?: string;
+	ipAddress?: string;
+	userAgent?: string;
+	deviceInfo?: Extendable;
+	startedAt: DateValue;
+	expiresAt: DateValue;
+	lastActivityAt: DateValue;
+	isRevoked: boolean;
+	revokedAt?: DateValue;
+	/**
+	 * Reason for revocation: 'logout', 'timeout', 'security', 'admin_action'
+	 */
+	revocationReason?: string;
+	gridFks: {
+		appuser: gridFksItem<AppUser>;
+	};
+}
+
+/**
+ * Audit action types.
+ */
+export type AuditAction =
+	| 'login'
+	| 'logout'
+	| 'create'
+	| 'update'
+	| 'delete'
+	| 'view'
+	| 'export'
+	| 'import'
+	| 'execute'
+	| 'permission_denied'
+	;
+
+/**
+ * Audit status types.
+ */
+export type AuditStatus = 'success' | 'failure' | 'denied';
+
+/**
+ * Audit trail for user actions.
+ * Immutable log of who did what, when, from where.
+ */
+export interface AppUserAudit extends Extendable, WithID {
+	idappuser_audit: ID;
+	action: AuditAction;
+	resourceType: string; // 'appscheme', 'record', 'config', 'user', etc.
+	resourceId?: ID;
+	/**
+	 * Action details as JSON.
+	 * @example { "fields": ["name", "email"], "before": {...}, "after": {...} }
+	 */
+	details?: Extendable;
+	ipAddress?: string;
+	userAgent?: string;
+	sessionId?: ID;
+	status: AuditStatus;
+	failureReason?: string;
+	performedAt: DateValue;
+	gridFks: {
+		appuser: gridFksItem<AppUser>;
+	};
+}
+
+/**
+ * Hierarchical permission check result.
+ */
+export interface PermissionCheckResult {
+	granted: boolean;
+	/**
+	 * Source of the permission decision.
+	 */
+	source: 'app_permissions' | 'direct_grant' | 'role_grant' | 'group_grant' | 'none';
+	/**
+	 * Which grant/assignment provided the permission.
+	 */
+	grantId?: ID;
+	/**
+	 * Constraints that apply to this permission.
+	 */
+	constraints?: GrantConstraints;
+	/**
+	 * Reason for denial (if granted = false).
+	 */
+	reason?: string;
+}
+
+// --- VIEW SYSTEM TYPES ---
+
+/**
+ * Standard view type codes defined in appscheme_view_type.
+ * Extensible - new view types can be added without schema migration.
+ */
+export type ViewTypeCode =
+	| 'list'     // Default grid columns
+	| 'mini'     // Card / tooltip / quick preview
+	| 'form'     // All editable fields - create/edit screens
+	| 'custom'   // Admin-configurable column set
+	| 'fk_label' // Fields displayed inside a FK selector
+	| (string & {}); // Allow extension for custom view types
+
+/**
+ * Display options for a field within a view.
+ * Stored in appscheme_view.options JSON blob.
+ */
+export interface ViewOptions extends Extendable {
+	width?: number;      // Column width in pixels (for lists/grids)
+	sortable?: boolean;  // Whether the column can be sorted
+	className?: string;  // CSS class for styling
+	visible?: boolean;   // Override visibility
+	editable?: boolean;  // Override editability in this view
+}
+
+/**
+ * Field definition as resolved for a specific view.
+ * Combines field metadata from appscheme_field with view-specific options.
+ */
+export interface ViewFieldDef extends Extendable {
+	field_name: string;        // Stored field name: codeAppscheme_field + ucfirst(codeAppscheme)
+	field_name_raw: string;    // Raw field code: codeAppscheme_field
+	field_name_group: string;  // Group code: codeAppscheme_field_group
+	title: string;             // Display title: nomAppscheme_field
+	type?: string;             // Field type code (only in entityModel)
+	icon?: string;             // Field icon
+	order?: number;            // Position in view: ordreAppscheme_view
+	options?: ViewOptions;     // View-specific options
+}
+
+/**
+ * Collection of all named views for an entity.
+ * Keys correspond to codeAppscheme_view_type values.
+ */
+export interface EntityViews extends Extendable {
+	entityModel: ViewFieldDef[];   // Canonical field list - NOT a view, sourced from appscheme_has_field
+	listView: ViewFieldDef[];      // Grid columns (codeAppscheme_view_type = 'list')
+	miniView: ViewFieldDef[];      // Card/mini-fiche (codeAppscheme_view_type = 'mini')
+	formView: ViewFieldDef[];      // Form layout (codeAppscheme_view_type = 'form')
+	customView: ViewFieldDef[];    // Admin-configured (codeAppscheme_view_type = 'custom')
+	fkLabelView: ViewFieldDef[];   // FK selector labels (codeAppscheme_view_type = 'fk_label')
+	[key: string]: ViewFieldDef[]; // Extensible for custom view types
+}
+
+/**
+ * View type registry entry.
+ * Defines available view contexts. Extensible without schema migration.
+ */
+export interface AppSchemeViewType extends Extendable, WithEssentials {
+	idappscheme_view_type: ID;
+	codeAppscheme_view_type: ViewTypeCode;
+	description?: Description;
+}
+
+/**
+ * View instance - binds a field to a view type for an entity.
+ * Pivot table: appscheme_view
+ */
+export interface AppSchemeView extends Extendable, WithID {
+	idappscheme_view: ID;
+	ordreAppscheme_view: Order;
+	options?: ViewOptions;
+	gridFks: {
+		appscheme: AppScheme;
+		appscheme_view_type: AppSchemeViewType;
+		appscheme_field: AppSchemeField;
+	};
+}
+
+/**
+ * Enhanced AppScheme with the _views registry.
+ * The _views property is populated at runtime from appscheme_view data.
+ */
+export interface AppSchemeWithViews<T = Record<string, any>> extends AppScheme<T> {
+	_views?: Partial<EntityViews>;
+}
