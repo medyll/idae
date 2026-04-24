@@ -57,6 +57,7 @@
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@medyll/qoolie": "workspace:*",
+    "@medyll/idae-socket": "workspace:*",
     "@playwright/test": "^1.59.1",
     "@semantic-release/github": "^12.0.6",
     "@sveltejs/adapter-auto": "^7.0.1",

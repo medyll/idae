@@ -7,6 +7,7 @@ import { registerSchemeRoutes } from './routes/scheme.js';
 import { registerDataRoutes } from './routes/data.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
 import { initializeSocketIO } from './socket/index.js';
+import { setupConflictHandling } from './socket/conflictHandler.js';
 
 /**
  * Connect to MongoDB
@@ -65,12 +66,14 @@ export async function startServer(): Promise<void> {
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {
 			initializeSocketIO(httpServer);
+			setupConflictHandling();
 		}
 
 		logger.info(`🚀 Server running on port ${config.port}`);
 		logger.info(`📊 Environment: ${config.nodeEnv}`);
 		logger.info(`🔗 CORS origin: ${config.corsOrigin}`);
 		logger.info(`⚡ Socket.IO ready for real-time updates`);
+		logger.info(`🔀 Conflict resolution enabled`);
 	} catch (error) {
 		logger.error('Failed to start server:', error);
 		process.exit(1);
