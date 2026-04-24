@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import type { AppScheme } from '$lib/idae/api/types.js';
+	import type { AppScheme } from '$lib/main/api/types.js';
 
 	export let schemes: AppScheme[] = [];
 	export let currentPath = $page.url.pathname;

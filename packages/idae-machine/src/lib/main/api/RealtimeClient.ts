@@ -1,5 +1,5 @@
 import { io, type Socket } from 'socket.io-client';
-import { logger } from '../utils/logger.js';
+import { logger } from '../../utils/logger.js';
 
 /**
  * Real-time client for subscribing to table updates

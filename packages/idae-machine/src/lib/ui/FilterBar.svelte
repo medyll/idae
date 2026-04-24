@@ -3,7 +3,7 @@
 	 * FilterBar - Advanced filtering component
 	 */
 
-	import type { ViewFieldDef } from '$lib/idae/api/types.js';
+	import type { ViewFieldDef } from '$lib/main/api/types.js';
 
 	export let fields: ViewFieldDef[] = [];
 	export let onFilter: (filters: Record<string, unknown>) => void;

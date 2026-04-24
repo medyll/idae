@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { AppScheme } from '$lib/idae/api/types.js';
+	import type { AppScheme } from '$lib/main/api/types.js';
 
 	export let schemes: AppScheme[] = [];
 	export let currentTable = '';
