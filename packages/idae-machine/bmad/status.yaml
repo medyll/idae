@@ -5,7 +5,7 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 60
+progress: 70
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
@@ -72,31 +72,25 @@ artifacts:
 # ── Sprints ───────────────────────────────────────────────────────────────────
 # Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
-  - id: 2
-    goal: "Data Layer: CRUD with permissions, qoolie integration"
-    status: completed
+  - id: 3
+    goal: "Real-Time: Socket.IO, conflict resolution"
+    status: in_progress
     stories:
-      - id: S2-01
-        title: "Implement CRUD endpoints with pagination"
+      - id: S3-01
+        title: "Server: Broadcast on CRUD operations"
         status: complete
         tests_executed: true
         test_output: null
         test_result: pass
-      - id: S2-02
-        title: "Build permission middleware (requireDroit)"
+      - id: S3-02
+        title: "Client: Subscribe to table rooms"
         status: complete
         tests_executed: true
         test_output: null
         test_result: pass
-      - id: S2-03
-        title: "Integrate qoolie for offline-first sync"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S2-02
-        title: "Build permission middleware (requireDroit)"
-        status: pending
+      - id: S3-03
+        title: "Configure conflict resolution strategies"
+        status: in_progress
         tests_executed: false
         test_output: null
         test_result: null
