@@ -5,12 +5,12 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: planning
-progress: 90
+progress: 100
 last_updated: "2026-04-24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Start Sprint 5: Polish & Advanced Features"
-next_command: "bmad-sprint 5"
+next_action: "Project complete - v2.0 ready for release"
+next_command: "bmad-status"
 next_role: "scrum"
 active_role: "scrum"
 
@@ -72,32 +72,28 @@ artifacts:
 # ── Sprints ───────────────────────────────────────────────────────────────────
 # Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
-  - id: 4
-    goal: "Router & Navigation: SPA routing, menu generation"
-    status: completed
-    stories:
-      - id: S4-01
-        title: "Integrate idae-router with permission guards"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S4-02
-        title: "Schema-driven menu generation"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
-      - id: S4-03
-        title: "Breadcrumb component"
-        status: complete
-        tests_executed: true
-        test_output: null
-        test_result: pass
   - id: 5
     goal: "Polish: Field types, AppShell, advanced features"
-    status: upcoming
-    stories: []
+    status: completed
+    stories:
+      - id: S5-01
+        title: "AppShell layout component"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S5-02
+        title: "Additional field types (currency, email)"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
+      - id: S5-03
+        title: "Advanced filtering with FilterBar"
+        status: complete
+        tests_executed: true
+        test_output: null
+        test_result: pass
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
