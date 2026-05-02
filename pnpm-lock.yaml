@@ -1134,9 +1134,15 @@ importers:
       '@medyll/idae-eslint-config':
         specifier: workspace:*
         version: link:../../packages-config/idae-eslint-config
+      '@medyll/idae-router':
+        specifier: workspace:*
+        version: link:../idae-router
       '@medyll/idae-shared':
         specifier: workspace:*
         version: link:../shared
+      '@medyll/idae-socket':
+        specifier: workspace:*
+        version: link:../idae-socket
       '@playwright/test':
         specifier: ^1.59.1
         version: 1.59.1

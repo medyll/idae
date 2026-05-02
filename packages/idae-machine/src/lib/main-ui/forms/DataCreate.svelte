@@ -10,7 +10,7 @@ Thin wrapper around DataForm locked to mode="create".
 @prop {(payload: unknown) => void} [onsubmit] - Callback on successful create
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
-	import DataForm from '$lib/data/DataForm.svelte';
+	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
 	import type { CreateProps } from '$lib/form/types.js';
 
 	let { onsubmit, ...props }: CreateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();

@@ -7,27 +7,25 @@ Shows all UI components working together with real data binding
 	import { testScheme } from '$lib/demo/testScheme.js';
 
 	// Data Components
-	import DataPicker from '$lib/data/DataPicker.svelte';
-	import DataList from '$lib/data/DataList.svelte';
-	import DataListActions from '$lib/data/DataListActions.svelte';
-	import DataListFields from '$lib/data/DataListFields.svelte';
-	import DataLinks from '$lib/data/DataLinks.svelte';
-	import DataLinksBack from '$lib/data/DataLinksBack.svelte';
-	import DataCreate from '$lib/data/DataCreate.svelte';
-	import DataEdit from '$lib/data/DataEdit.svelte';
-	import DataProvider from '$lib/data/DataProvider.svelte';
+	import DataPicker from '$lib/main-ui/data/DataPicker.svelte';
+	import DataList from '$lib/main-ui/lists/DataList.svelte';
+	import DataListActions from '$lib//main-ui/lists/DataListActions.svelte';
+	import DataListFields from '$lib//main-ui/lists/DataListFields.svelte';
+	import DataLinks from '$lib/main-ui/data/DataLinks.svelte';
+	import DataLinksBack from '$lib/main-ui/data/DataLinksBack.svelte';
+	import DataCreate from '$lib/main-ui/forms/DataCreate.svelte';
+	import DataEdit from '$lib/main-ui/forms/DataEdit.svelte'; 
 
 	// Field Components
-	import FieldDisplay from '$lib/field/FieldDisplay.svelte';
-	import FieldEditor from '$lib/field/FieldEditor.svelte';
+	import FieldDisplay from '$lib/main-ui/field/FieldDisplay.svelte';
+	import FieldEditor from '$lib/main-ui/field/FieldEditor.svelte';
 
 	// Fragment Components
-	import Frame from '$lib/fragments/Frame.svelte';
-	import Confirm from '$lib/fragments/Confirm.svelte';
-	import Selector from '$lib/fragments/Selector.svelte';
-	import InfoLine from '$lib/fragments/InfoLine.svelte';
-	import Skeleton from '$lib/fragments/Skeleton.svelte';
-	import CollectionList from '$lib/collection/CollectionList.svelte';
+	import Confirm from '$lib/main-ui/fragments/Confirm.svelte';
+	import Selector from '$lib/main-ui/fragments/Selector.svelte';
+	import InfoLine from '$lib/main-ui/fragments/InfoLine.svelte';
+	import Skeleton from '$lib/main-ui/fragments/Skeleton.svelte';
+	import CollectionList from '$lib/main-ui/collection/CollectionList.svelte';
 
 	// Initialize machine — testScheme IS the model (top-level keys = collection names)
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });

@@ -20,10 +20,10 @@
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
     import type { CreateUpdateProps } from '$lib/form/types.js';
     import type { IDbForge } from '@medyll/idae-idbql';
-    import DataLinksBack from '$lib/data/DataLinksBack.svelte';
-    import FieldDisplay from '$lib/field/FieldDisplay.svelte';
-	import DataLinks from './DataLinks.svelte';
-	import DataListFields from './DataListFields.svelte';
+    import DataLinksBack from '$lib/main-ui/data/DataLinksBack.svelte';
+    import FieldDisplay from '$lib/main-ui/field/FieldDisplay.svelte';
+	import DataLinks from '$lib/main-ui/data/DataLinks.svelte';;
+	import DataListFields from '$lib/main-ui/lists/DataListFields.svelte';;
 
     /**
      * Component props

@@ -15,11 +15,11 @@ Svelte 5 collection list with Looper
 -->
 <script lang="ts" generics="COL = Record<string,any>">
 	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
-	import DataForm from '$lib/data/DataForm.svelte';
+	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 	import { machine } from '$lib/main/machine.js';
-	import DataListFields from './DataListFields.svelte';
+	import DataListFields from '$lib/main-ui/lists/DataListFields.svelte';;
 
 	interface DataListProps  {
 		collection:     string;

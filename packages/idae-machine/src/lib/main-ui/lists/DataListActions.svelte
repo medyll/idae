@@ -13,7 +13,7 @@ Svelte 5 menu list for a collection
 -->
 <script lang="ts" generics="COL = Record<string,any>">
 	import { type MenuListProps, MenuList, MenuListItem } from '@medyll/idae-slotui-svelte';
-	import DataForm from '$lib/data/DataForm.svelte';
+	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 	let { collection, target, data, menuListProps, onclick, style, where } = $props<{ collection: string; target?: string; data?: COL[]; menuListProps?: MenuListProps; style?: string; where?: Where<COL>; onclick?: (event: CustomEvent, index: number) => void }>();

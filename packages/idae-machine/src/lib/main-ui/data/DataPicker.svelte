@@ -10,7 +10,7 @@ Svelte 5 button to open DataForm window for a collection
 
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
-	import DataForm from '$lib/data/DataForm.svelte';
+	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
 	import { type CreateUpdateProps } from '$lib/form/types.js';
 	let { collection = 'book', withData, ...rest } = $props<{ collection?: string; withData?: Record<string, any> } & CreateUpdateProps>();
 	function openCrud(collection: string) {

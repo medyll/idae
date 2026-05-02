@@ -4,7 +4,7 @@
      * Iterates over a collection's fields and renders a FieldDisplay for each.
      * Supports filtering via `showFields` and dynamic discovery via `scheme` or `data`.
      */
-    import FieldDisplay from "$lib/field/FieldDisplay.svelte";
+    import FieldDisplay from "$lib/main-ui/field/FieldDisplay.svelte";
     import { machine } from "$lib/main/machine.js";
 	import { getContext } from "svelte";
 

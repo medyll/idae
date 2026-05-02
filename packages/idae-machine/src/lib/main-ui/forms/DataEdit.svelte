@@ -14,7 +14,7 @@ Thin wrapper around DataForm locked to mode="update".
 @prop {(payload: unknown) => void} [onsubmit] - Callback on successful update
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
-	import DataForm from '$lib/data/DataForm.svelte';
+	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
 	import type { UpdateProps } from '$lib/form/types.js';
 
 	let { onsubmit, ...props }: UpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
