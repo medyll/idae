@@ -6,7 +6,7 @@ import {
 	type IdaeDbAdapterInterface
 } from './@types/types.js';
 import { IdaeDBModel } from './IdaeDBModel.js';
-import { IdaeDb } from './idaeDb.js';
+import type { IdaeDb } from './idaeDb.js';
 import { type Document } from 'mongodb';
 /**
  * Represents a database connection.

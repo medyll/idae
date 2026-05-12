@@ -1,6 +1,6 @@
 // Skeleton for advanced validation/serialization layer
 // This can be extended to support OpenAPI, ajv, or custom logic
-import { ZodSchema, ZodError } from "zod";
+import { type ZodType as ZodSchema, ZodError } from "zod";
 import type { Request, Response, NextFunction } from "express";
 
 export interface ValidationLayerOptions {

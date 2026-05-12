@@ -21,9 +21,9 @@ export interface RouteDefinition {
   requiresAuth?: boolean;
   authorization?: AuthorizationOptions; // RBAC/ABAC options
   validation?: {
-    bodySchema?: z.ZodSchema<any>;
-    querySchema?: z.ZodSchema<any>;
-    paramsSchema?: z.ZodSchema<any>;
+    bodySchema?: z.ZodType<any>;
+    querySchema?: z.ZodType<any>;
+    paramsSchema?: z.ZodType<any>;
   };
 }
 

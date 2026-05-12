@@ -1,5 +1,5 @@
 // Created scripts/package-pre.js
 
 import { MakeLibIndex } from '../../shared/scripts/indexIfy.js';
-new MakeLibIndex({ignorePatterns: ["*.yaml"]}).makeIndexFile();
+new MakeLibIndex({ignorePatterns: ["*.yaml", "**/cli/**"]}).makeIndexFile();
 

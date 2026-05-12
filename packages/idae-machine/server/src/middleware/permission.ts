@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import { idaeApi } from '@medyll/idae-api';
 
 /**
  * Permission types
@@ -171,8 +172,6 @@ export function checkPermission(req: Request, res: Response): void {
  * Register permission routes
  */
 export function registerPermissionRoutes(): void {
-	const { idaeApi } = require('@medyll/idae-api');
-
 	idaeApi.router.addRoute({
 		method: 'get',
 		path: '/api/permissions/check',

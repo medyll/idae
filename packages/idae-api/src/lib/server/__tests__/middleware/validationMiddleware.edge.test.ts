@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createValidationMiddleware } from '../../middleware/validationMiddleware';
-import { ZodSchema, z } from 'zod';
+import { type ZodType as ZodSchema, z } from 'zod';
 import { createMocks } from 'node-mocks-http';
 
 function runMiddleware(mw, req, res) {
