@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - packages-config/*
+  - packages/idae-machine/server
 
 onlyBuiltDependencies:
   - sqlite3
