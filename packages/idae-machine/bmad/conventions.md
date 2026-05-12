@@ -1,60 +1,65 @@
-# Project Conventions — idae-machine
+# Conventions — idae-machine
 
-Discovered conventions from codebase analysis. Append-only.
+## Code style
 
-## Code Style
+- Indentation: Tabs
+- Quotes: Single
+- Trailing commas: No
+- Line width: 100 chars
 
-- **Indentation:** Tabs (enforced by @medyll/idae-config-prettier)
-- **Quotes:** Single quotes
-- **Trailing commas:** No
-- **Line width:** 100 characters
+## Svelte 5 rules
 
-## Svelte 5 Rules
+- `$state`, `$derived`, `$effect` — no `$:`, no `onMount`, no `onDestroy`
+- `$props()` for all props
+- `$bindable()` for two-way binding
+- Key all `{#each}` blocks: `{#each items as item (item.id)}`
+- No `export let` in new components
 
-- Use `$state` for local reactive state
-- Use `$derived` for computed values  
-- Use `$effect` for side effects
-- Use `bind:` for two-way binding only when needed
-- No `onMount`, `onDestroy` — use `$effect` instead
-- No `each` without explicit key: `{#each items as item (item.id)}`
-
-## File Organization
+## File locations
 
 | Purpose | Location |
 |---------|----------|
 | Core schema logic | `src/lib/main/machine/*.ts` |
-| Field parsing | `src/lib/main/machineParserForge.ts` |
-| Form components | `src/lib/form/*.svelte` |
-| Data components | `src/lib/data/*.svelte` |
-| UI views | `src/lib/ui/*.svelte` |
-| Fragments | `src/lib/fragments/*.svelte` |
-| Tests | `src/lib/main/__tests__/*.test.ts` |
+| Field parser | `src/lib/main/machineParserForge.ts` |
+| Field builder helper | `src/lib/main/machine/fieldBuilder.ts` |
+| Explorer components | `src/lib/main-ui/explorer/` |
+| Card components | `src/lib/main-ui/card/` |
+| Field components | `src/lib/main-ui/field/` |
+| Input atoms | `src/lib/main-ui/input/` |
+| Layout | `src/lib/main-ui/layout/` |
+| Fragments | `src/lib/main-ui/fragments/` |
+| Logic tests | `src/lib/main/__tests__/*.test.ts` |
 | Component tests | Colocated: `Component.svelte.spec.ts` |
 
-## Naming Conventions
+## Naming
 
-- **Classes:** PascalCase (MachineDb, MachineScheme)
-- **Files:** camelCase for logic, PascalCase for components
-- **Tests:** `.test.ts` for logic, `.svelte.spec.ts` for components
+- Classes: PascalCase (`MachineDb`, `MachineScheme`)
+- Files: camelCase for logic, PascalCase for components
+- Components: prefix = level (`Explorer*`, `Card*`, `Field*`, `Input*`)
+- Tests: `.test.ts` for logic, `.svelte.spec.ts` for components
 
-## Testing
+## Schema field declaration
 
-- **Framework:** Vitest + @testing-library/svelte
-- **Command:** `pnpm run test` (single run), `pnpm run test:unit` (watch)
-- **Coverage:** Core classes must have unit tests
+```ts
+import { field } from '$lib/main/machine/fieldBuilder.js';
 
-## Dependencies
-
-- **Package manager:** pnpm (NOT npm/yarn)
-- **Node:** 18+
-- **Key deps:** Svelte 5, @medyll/idae-idbql, @medyll/idae-slotui-svelte
+fields: {
+  name: field('text', { required: true }),   // ← new world
+  // name: 'text (required)',                // ← deprecated string format
+}
+```
 
 ## Commands
 
 ```bash
-pnpm run check      # Type checking (svelte-check)
-pnpm run test       # Run all tests
-pnpm run build      # Build library
-pnpm run format     # Auto-format with Prettier
-pnpm run lint       # Prettier check
+pnpm run check   # TypeScript
+pnpm run test    # vitest
+pnpm run build   # build library
+pnpm run format  # Prettier
+pnpm run lint    # Prettier check
 ```
+
+## Dependencies
+
+- Package manager: **pnpm** (not npm/yarn)
+- Key: Svelte 5, `@medyll/idae-idbql`, `@medyll/idae-slotui-svelte`

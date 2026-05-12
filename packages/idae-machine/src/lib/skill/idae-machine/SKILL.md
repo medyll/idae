@@ -1,74 +1,146 @@
 ---
 name: idae-machine
-description: Use when building schema-driven CRUD UIs in SvelteKit. Bridges IndexedDB schemas (@medyll/idae-idbql) to reactive Svelte 5 components — use this whenever you need data-bound forms, lists, field validation, or schema introspection.
+description: Use when building schema-driven CRUD UIs in SvelteKit. Bridges IndexedDB schemas (@medyll/idae-idbql) to reactive Svelte 5 components — use whenever you need data-bound forms, lists, field validation, FK selectors, or schema introspection.
 ---
 
 ## What it does
-`@medyll/idae-machine` is a schema-driven SvelteKit library that connects an IndexedDB data model to a ready-made set of CRUD components and validation logic. It exposes a `Machine` singleton that manages the database connection, reactive state, and schema introspection. UI components (`DataForm`, `DataList`, `DataProvider`, etc.) wire directly to the schema with no manual mapping.
+
+`@medyll/idae-machine` is a schema-driven SvelteKit library connecting an IndexedDB data model to a complete CRUD UI. Declare a schema → get forms, lists, validation, real-time sync, FK relations automatically.
+
+Part of the `/idae` monorepo. Next generation of `idae-legacy` (PHP/2015 SPA).
 
 ## Install
+
 ```bash
 pnpm add @medyll/idae-machine
 ```
 
 ## Quick start
+
 ```ts
 import { machine } from '@medyll/idae-machine';
-import { myModel } from './myModel'; // IdbqModel from @medyll/idae-idbql
+import { field } from '@medyll/idae-machine';
+import type { IdbqModel } from '@medyll/idae-idbql';
 
-// Initialize and start the database connection
+const myModel = {
+  users: {
+    keyPath: '++id',
+    model: {}, ts: {},
+    template: {
+      index: 'id',
+      presentation: 'name email',
+      fields: {
+        id:    field('id',    { readonly: true }),
+        name:  field('text',  { required: true }),
+        email: field('email', { required: true }),
+      },
+      fks: {}
+    }
+  }
+} satisfies IdbqModel;
+
 machine.init({ dbName: 'myapp', version: 1, model: myModel });
 machine.start();
-
-// Access schema logic for a collection
-const scheme = machine.collections.collection('users');
-const fields = scheme.template.fields;
-const isValid = scheme.validator.validate(data);
-
-// Named instance (multi-db)
-const sub = machine.createInstance('reporting', 'reports-db', 1, reportsModel);
-const inst = Machine.instance('reporting');
 ```
 
 ```svelte
 <script>
-  import { DataProvider, DataList, DataForm } from '@medyll/idae-machine';
+  import { ExplorerList, CardCreate, CardEdit } from '@medyll/idae-machine';
 </script>
 
-<DataProvider collection="users">
-  <DataList />
-  <DataForm />
-</DataProvider>
+<ExplorerList collection="users" onclick={(rec) => selectedId = rec.id} />
+<CardCreate collection="users" onsubmit={() => reload()} />
+<CardEdit collection="users" dataId={selectedId} />
+```
+
+## Schema field builder
+
+```ts
+import { field } from '@medyll/idae-machine';
+
+fields: {
+  id:      field('id',           { readonly: true }),
+  name:    field('text',         { required: true }),
+  email:   field('email',        { required: true }),
+  desc:    field('text-long'),
+  notes:   field('text-area'),
+  active:  field('boolean'),
+  price:   field('currency'),
+  catId:   field('fk-category.id', { required: true }),
+  tags:    field('array-of-text'),
+  created: field('date',         { readonly: true }),
+}
+```
+
+## Component hierarchy
+
+```
+explorer/  → collection level (list, filter, actions)
+card/      → record level (form, FK relations, picker)
+field/     → field level (FieldDisplay dispatches to Input*)
+input/     → atomic inputs (InputBoolean, InputEmail, InputSelect, InputCurrency, InputTextarea)
+layout/    → shells (AppShell, Navigation, Breadcrumb)
+fragments/ → micro UI (Confirm, Skeleton, InfoLine, Selector, Frame)
 ```
 
 ## API
 
-### Core classes
+### Core
+
 | Export | Role |
 |---|---|
-| `machine` | Singleton `Machine` — init/start, holds `idbql`, `idbqlState`, `collections` |
-| `Machine` | Class — `createInstance()`, `Machine.instance(name)`, static registry |
-| `MachineDb` | Schema introspection — `collections()`, `collection(name)` → `MachineScheme` |
-| `MachineScheme` | Per-collection helpers — `template`, `validator`, `collectionValues`, `field()`, `fieldForge()` |
-| `MachineSchemeValidate` | Field-level + record validation |
-| `MachineSchemeValues` | Default/computed values for a collection |
-| `MachineSchemeFieldForge` | Per-field value resolution with data context |
-| `MachineError` / `MachineErrorValidation` | Typed error classes |
+| `machine` | Singleton — `init()`, `start()`, `store`, `logic` |
+| `field(type, opts?)` | Schema field builder (new format) |
+| `MachineScheme` | Per-collection — `template`, `validator`, `field()`, `fieldForge()` |
+| `MachineSchemeFieldType` | Field type registry — `registerFieldType()` |
 
-### UI components
-`DataCreate`, `DataEdit`, `DataForm`, `DataList`, `DataListActions`, `DataListFields`,
-`DataLinks`, `DataLinksBack`, `DataPicker`, `DataProvider`, `FieldDisplay`, `FieldEditor`,
-`CollectionCard`, `CollectionTable`, `Confirm`, `Frame`, `InfoLine`, `Selector`, `Skeleton`
+### Explorer components (collection level)
 
-### Schema DSL (via `MachineParserForge`)
-Fields are defined as strings: `'text (required)'`, `'id (readonly)'`,
-`'fk-category.id (required)'`, `'array-of-number'`
+| Component | Props | Was |
+|-----------|-------|-----|
+| `ExplorerCollections` | `children` snippet | `CollectionList` |
+| `ExplorerList` | `collection`, `where?`, `onclick?` | `DataList` |
+| `ExplorerActions` | `collection`, `data?`, `onclick?` | `DataListActions` |
+| `ExplorerFilter` | `fields`, `onFilter` | `FilterBar` |
+| `ExplorerCard` | `items` | `CollectionCard` |
+| `ExplorerTable` | `items`, `columns` | `CollectionTable` |
+
+### Card components (record level)
+
+| Component | Props | Was |
+|-----------|-------|-----|
+| `CardForm` | `collection`, `mode`, `dataId?`, `onsubmit?` | `DataForm` |
+| `CardCreate` | `collection`, `onsubmit?` | `DataCreate` |
+| `CardEdit` | `collection`, `dataId`, `onsubmit?` | `DataEdit` |
+| `CardFields` | `collection`, `data`, `mode?` | `DataListFields` |
+| `CardFk` | `collection`, `collectionId?` | `DataLinks` |
+| `CardRfk` | `collection`, `showTitle?` | `DataLinksBack` |
+| `CardPicker` | `collection`, `mode?` | `DataPicker` |
+| `CardProvider` | `collection`, `data?` | `DataProvider` |
+
+### Field components
+
+| Component | Props |
+|-----------|-------|
+| `FieldDisplay` | `collection`, `fieldName`, `data` (bindable), `mode?` |
+| `FieldEditor` | `collection`, `field`, `validate?` |
+
+### Input atoms
+
+| Component | fieldType | Notes |
+|-----------|-----------|-------|
+| `InputBoolean` | `boolean` | checkbox |
+| `InputEmail` | `email` | with validation |
+| `InputCurrency` | `currency` | formatted |
+| `InputSelect` | `fk-*` | FK-aware, queries machine.store |
+| `InputTextarea` | `*area*` | resizable |
 
 ## Patterns & gotchas
-- Call `machine.init(...)` then `machine.start()` before accessing `idbql` or `collections`.
-- `machine.idbql` is read-only queries; `machine.idbqlState` is Svelte 5 reactive state (`$state`-backed).
-- `machine.collections` is deprecated — use `machine.logic` going forward (check source before using).
-- `MachineDb` caches `MachineScheme` instances per collection — do not mutate the cache when changing schema parsing logic.
-- All Svelte components require Svelte 5 runes; never use `$:` or `onMount`.
-- `MachineScheme` throws `MachineError` if the collection name is missing from the model or lacks a `template` property.
-- Use `Machine.instanceRegistry` for multi-database scenarios (e.g. reporting DB alongside main DB).
+
+- `machine.init()` then `machine.start()` before any store access
+- `machine.store[collection]` → reactive state (Svelte 5 `$state`-backed)
+- `machine.logic` → schema introspection
+- `FieldDisplay` auto-dispatches to correct Input atom based on `fieldType`
+- FK fields (`fk-collection.field`) auto-populate InputSelect from `machine.store`
+- All components: Svelte 5 runes only — no `$:`, no `onMount`
+- String field rules (`'text (required)'`) still work but are deprecated

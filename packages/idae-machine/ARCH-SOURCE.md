@@ -1,4 +1,12 @@
-# ARCH.md — IDAE Legacy Modernization Architecture inspiration  of an od app
+# ARCH-SOURCE.md — HISTORICAL REFERENCE (READ ONLY)
+
+> **This is a reference document for the legacy PHP app architecture.**  
+> It describes what idae-machine is replacing, not what idae-machine is.  
+> For current architecture: see `CLAUDE.md`. For legacy→current mapping: see `CLAUDE.md` section 3.
+
+---
+
+# ARCH.md — IDAE Legacy Modernization Architecture
 
 **Date**: 2026-03-30  
 **Purpose**: Complete technical reference for recreating IDAE Legacy platform using modern Node.js, HTML5, and JavaScript  
