@@ -1,46 +1,47 @@
 # BMAD Status — idae-machine v2
 # Next generation: full-stack with auth, permissions, real-time sync
 # Source: bmad/intake-sources/IDAE-MACHINE-NEXT.md
+# Rebuilt: 2026-05-12 from actual code + git state
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
-phase: planning
-progress: 100
-last_updated: "2026-04-24"
+phase: pre-release
+progress: 85
+last_updated: "2026-05-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Project complete - v2.0 ready for release"
-next_command: "bmad-status"
-next_role: "scrum"
+next_action: "Run test suite + build verification before release"
+next_command: "bmad-test"
+next_role: "tester"
 active_role: "scrum"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
-  - project: "idae-api"
-    status: "blocking"
-    reason: "Server-side API and auth endpoints required"
-    satisfied: false
   - project: "idae-router"
-    status: "blocking"
-    reason: "SPA routing with permission guards"
-    satisfied: false
+    status: "satisfied"
+    reason: "SPA routing with permission guards — in devDependencies"
+    satisfied: true
   - project: "qoolie"
-    status: "blocking"
-    reason: "Real-time sync and offline-first data layer"
-    satisfied: false
-  - project: "idae-db"
-    status: "optional"
-    reason: "MongoDB integration for server-side"
-    satisfied: false
+    status: "satisfied"
+    reason: "Real-time sync and offline-first data layer — in dependencies"
+    satisfied: true
+  - project: "idae-socket"
+    status: "satisfied"
+    reason: "WebSocket/Socket.IO — in devDependencies"
+    satisfied: true
+  - project: "idae-idbql"
+    status: "satisfied"
+    reason: "IndexedDB layer — in dependencies"
+    satisfied: true
 
 # ── Phase Tracking ────────────────────────────────────────────────────────────
 phases:
   - name: planning
-    status: in_progress
+    status: done
   - name: development
-    status: upcoming
+    status: done
   - name: testing
-    status: upcoming
+    status: in_progress
   - name: release
     status: upcoming
 
@@ -70,37 +71,131 @@ artifacts:
   tech-spec: done
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
-# Based on IDAE-MACHINE-NEXT.md Phase 1-5 roadmap
 sprints:
+  - id: 1
+    goal: "Foundation: Server, schema endpoints, MachineApi client"
+    status: completed
+    stories:
+      - id: S1-01
+        title: "Express server with MongoDB"
+        status: complete
+        tests_executed: true
+        test_output: "bmad/artifacts/test-results-S1-01.md"
+        test_result: pass
+      - id: S1-02
+        title: "Schema endpoints"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S1-03
+        title: "MachineApi client"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+  - id: 2
+    goal: "Data Layer: CRUD, permissions, qoolie sync"
+    status: completed
+    stories:
+      - id: S2-01
+        title: "CRUD endpoints with pagination"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S2-02
+        title: "Permission middleware (requireDroit)"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S2-03
+        title: "Qoolie offline-first sync"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+  - id: 3
+    goal: "Real-Time: Socket.IO broadcast, RealtimeClient, conflict resolution"
+    status: completed
+    stories:
+      - id: S3-01
+        title: "Socket.IO server broadcast on CRUD"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S3-02
+        title: "RealtimeClient WebSocket subscriptions"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S3-03
+        title: "Conflict resolution strategies"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+  - id: 4
+    goal: "Router & Navigation: SchemaRouter, Navigation component, Breadcrumb"
+    status: completed
+    stories:
+      - id: S4-01
+        title: "SchemaRouter with idae-router integration"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S4-02
+        title: "Navigation component"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S4-03
+        title: "Breadcrumb dynamic path"
+        status: complete
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 5
-    goal: "Polish: Field types, AppShell, advanced features"
+    goal: "Polish: AppShell, field types, FilterBar"
     status: completed
     stories:
       - id: S5-01
         title: "AppShell layout component"
         status: complete
-        tests_executed: true
+        tests_executed: false
         test_output: null
-        test_result: pass
+        test_result: unknown
       - id: S5-02
         title: "Additional field types (currency, email)"
         status: complete
-        tests_executed: true
+        tests_executed: false
         test_output: null
-        test_result: pass
+        test_result: unknown
       - id: S5-03
         title: "Advanced filtering with FilterBar"
         status: complete
-        tests_executed: true
+        tests_executed: false
         test_output: null
-        test_result: pass
+        test_result: unknown
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
   bugs: []
+  pending:
+    - "AppShell.svelte has uncommitted modification (git status)"
+    - "Tests not run on S1-02 through S5-03 — test_result: unknown"
+    - "pnpm run check / build not verified"
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
-# Source Document: bmad/intake-sources/IDAE-MACHINE-NEXT.md
-# Key Insight: 65% of legacy requirements achievable, but server-side components needed
-# Critical Gaps: Server API, permissions, real-time sync, routing
-# External Packages: idae-api, idae-router, qoolie, idae-db
+# Rebuilt from: git log, package.json, server/ structure, bmad/artifacts/
+# All 5 sprints committed. Server fully implemented. Dependencies satisfied.
+# Blocker before release: run tests, verify build, address AppShell.svelte changes

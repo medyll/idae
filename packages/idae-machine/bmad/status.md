@@ -1,48 +1,28 @@
 # BMAD Status — idae-machine v2
 
 **Project:** @medyll/idae-machine  
-**Version:** 2.0.0 (Next Generation)  
-**Phase:** Release  
-**Progress:** 100% ✅  
-**Last Updated:** 2026-04-24
+**Version:** 2.0.0  
+**Phase:** Pre-Release  
+**Progress:** 85%  
+**Last Updated:** 2026-05-12 (rebuilt from actual code + git state)
 
 ---
 
-## 🎉 Project Complete!
+## State: Code Complete — Tests Pending
 
-**idae-machine v2.0** is now production-ready with full-stack schema-driven architecture.
-
----
-
-## Vision Achieved
-
-✅ Full-stack schema-driven application framework  
-✅ Offline-first sync with qoolie  
-✅ Enterprise RBAC permissions  
-✅ Real-time collaboration with Socket.IO  
-✅ SPA routing with permission guards
+All 5 sprints committed. Server implemented. Dependencies satisfied.  
+**Blocker before release:** tests not run, build not verified, AppShell.svelte has uncommitted changes.
 
 ---
 
-## Strategic Dimensions
+## Dependencies
 
-### Marketing
-- ✅ v2.0: Full-stack schema-driven framework with real-time sync
-- ✅ Offline-first: Work without connection, sync when back online
-- ✅ Enterprise-ready: RBAC permissions, audit trails, multi-tenant
-- ✅ Zero-config CRUD: Automatic API + UI from schema definitions
-
-### Product
-- ✅ Unified data model: `_views` registry
-- ✅ RBAC v2: Users, groups, roles, grants
-- ✅ Real-time sync: WebSocket with conflict resolution
-- ✅ SPA routing: Schema-driven navigation
-
-### Far Vision
-- 🔄 Visual schema builder (future)
-- 🔄 Plugin marketplace (future)
-- 🔄 AI-powered features (future)
-- 🔄 Multi-database federation (future)
+| Package | Status |
+|---------|--------|
+| `@medyll/qoolie` | ✅ Satisfied (dependencies) |
+| `@medyll/idae-router` | ✅ Satisfied (devDependencies) |
+| `@medyll/idae-socket` | ✅ Satisfied (devDependencies) |
+| `@medyll/idae-idbql` | ✅ Satisfied (dependencies) |
 
 ---
 
@@ -52,50 +32,49 @@
 |-------|--------|
 | Planning | ✅ Done |
 | Development | ✅ Done |
-| Testing | ✅ Done |
-| Release | 🔄 Ready |
+| Testing | 🔄 In Progress |
+| Release | ⏳ Upcoming |
 
 ---
 
-## All Sprints Complete ✅
+## Sprints
 
 ### Sprint 1: Foundation ✅
-- S1-01: Server with MongoDB ✅
-- S1-02: Schema endpoints ✅
-- S1-03: MachineApi client ✅
+- S1-01: Server with MongoDB ✅ (tested)
+- S1-02: Schema endpoints ✅ (⚠ not tested)
+- S1-03: MachineApi client ✅ (⚠ not tested)
 
 ### Sprint 2: Data Layer ✅
-- S2-01: CRUD endpoints ✅
-- S2-02: Permission middleware ✅
-- S2-03: Qoolie sync ✅
+- S2-01: CRUD endpoints with pagination ✅ (⚠ not tested)
+- S2-02: Permission middleware (requireDroit) ✅ (⚠ not tested)
+- S2-03: Qoolie offline-first sync ✅ (⚠ not tested)
 
 ### Sprint 3: Real-Time ✅
-- S3-01: Socket.IO broadcast ✅
-- S3-02: RealtimeClient ✅
-- S3-03: Conflict resolution ✅
+- S3-01: Socket.IO server broadcast ✅ (⚠ not tested)
+- S3-02: RealtimeClient WebSocket ✅ (⚠ not tested)
+- S3-03: Conflict resolution strategies ✅ (⚠ not tested)
 
 ### Sprint 4: Router & Navigation ✅
-- S4-01: SchemaRouter ✅
-- S4-02: Navigation component ✅
-- S4-03: Breadcrumb ✅
+- S4-01: SchemaRouter + idae-router ✅ (⚠ not tested)
+- S4-02: Navigation component ✅ (⚠ not tested)
+- S4-03: Breadcrumb dynamic path ✅ (⚠ not tested)
 
 ### Sprint 5: Polish ✅
-- S5-01: AppShell layout ✅
-- S5-02: Field types (currency, email) ✅
-- S5-03: FilterBar ✅
+- S5-01: AppShell layout ✅ (⚠ not tested, has uncommitted changes)
+- S5-02: Field types (currency, email) ✅ (⚠ not tested)
+- S5-03: FilterBar advanced filtering ✅ (⚠ not tested)
 
 ---
 
 ## What Was Built
 
 ### Server (`server/`)
-- Express + idae-api server
-- MongoDB with Mongoose
+- Express + idae-api, MongoDB/Mongoose
 - CRUD endpoints with pagination
 - Permission middleware (requireDroit)
-- Socket.IO for real-time
-- Conflict resolution strategies
+- Socket.IO broadcast + conflict handler
 - Health & schema endpoints
+- Test suite: `server/src/__tests__/`
 
 ### Client (`src/lib/`)
 - **MachineApi** — HTTP client with caching
@@ -104,71 +83,48 @@
 - **ConflictResolver** — 4 strategies
 - **Navigation** — Schema-driven menu
 - **Breadcrumb** — Dynamic path
-- **AppShell** — Responsive layout
-- **FieldCurrency** — Formatted input
-- **FieldEmail** — Validated input
+- **AppShell** — Responsive layout (modified, uncommitted)
+- **FieldCurrency / FieldEmail** — Typed inputs
 - **FilterBar** — Advanced filtering
 
 ---
 
-## Statistics
+## Pending Before Release
 
-| Metric | Value |
-|--------|-------|
-| **Sprints** | 5/5 complete |
-| **Stories** | 18/18 complete |
-| **Progress** | 100% |
-| **Commits** | 15+ commits |
-| **Components** | 10+ new components |
-| **Server Routes** | 10+ endpoints |
+1. ⚠ Fix/commit `AppShell.svelte` changes
+2. `pnpm run test` — server + client tests
+3. `pnpm run check` — TypeScript validation
+4. `pnpm run build` — build verification
+5. Integration testing
+6. Version bump → publish npm
 
 ---
 
-## Next Steps
+## Next Action
 
-### Immediate
-1. Run full test suite: `pnpm run test`
-2. Type check: `pnpm run check`
-3. Build: `pnpm run build`
-4. Update documentation
-
-### Pre-Release
-1. Integration testing
-2. Performance validation
-3. Security audit
-4. Migration guide for v1 users
-
-### Release
-1. Version bump to 2.0.0
-2. Publish to npm
-3. Release notes
-4. Announcement
+**`bmad-test`** — Run full test suite and report results.
 
 ---
 
-## Architecture Summary
+## Strategic Dimensions
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Frontend (Svelte 5)                  │
-├─────────────────────────────────────────────────────────┤
-│  SchemaRouter → Navigation → AppShell → Views          │
-│       ↓              ↓           ↓          ↓           │
-│  MachineApi ← RealtimeClient ← FilterBar ← Components  │
-│       ↓              ↓                                    │
-│  Qoolie (IndexedDB + Sync)                               │
-└─────────────────────────────────────────────────────────┘
-                          ↕
-                    WebSocket
-                          ↕
-┌─────────────────────────────────────────────────────────┐
-│                    Backend (Node.js)                    │
-├─────────────────────────────────────────────────────────┤
-│  idae-api → CRUD → Permissions → Socket.IO → MongoDB   │
-│            ↓         ↓            ↓          ↓          │
-│          Schema   requireDroit  Broadcast  Mongoose    │
-└─────────────────────────────────────────────────────────┘
-```
+### Marketing
+- v2.0: Full-stack schema-driven framework with real-time sync
+- Offline-first: Work without connection, sync when back online
+- Enterprise-ready: RBAC permissions, audit trails, multi-tenant
+- Zero-config CRUD: Automatic API + UI from schema definitions
+
+### Product
+- Unified data model: `_views` registry
+- RBAC v2: Users, groups, roles, grants
+- Real-time sync: WebSocket with conflict resolution
+- SPA routing: Schema-driven navigation
+
+### Far Vision
+- Visual schema builder (future)
+- Plugin marketplace (future)
+- AI-powered features (future)
+- Multi-database federation (future)
 
 ---
 
@@ -182,4 +138,4 @@
 
 ---
 
-**Status:** ✅ Production Ready — v2.0.0
+**Status:** 🔄 Pre-Release — Tests Required

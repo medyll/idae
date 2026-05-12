@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { render, fireEvent } from '@testing-library/svelte';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import DataForm from './DataForm.svelte';
+import DataForm from '../main-ui/forms/DataForm.svelte';
 import { machine } from '$lib/main/machine.js';
 
 // Minimal shim to ensure machine.store is available in test env

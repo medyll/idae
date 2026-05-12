@@ -54,7 +54,7 @@ describe('MachineApi', () => {
 		});
 
 		it('should throw MachineApiError on HTTP error', async () => {
-			(global.fetch as any).mockResolvedValueOnce({
+			(global.fetch as any).mockResolvedValue({
 				ok: false,
 				status: 500,
 				statusText: 'Internal Server Error'

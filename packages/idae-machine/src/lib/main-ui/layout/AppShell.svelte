@@ -4,6 +4,17 @@
 	 * Provides consistent header, sidebar, and content area
 	 */
 
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		title?: Snippet;
+		header?: Snippet;
+		sidebar?: Snippet;
+		main?: Snippet;
+	}
+
+	let { title, header, sidebar, main }: Props = $props();
+
 	/** Sidebar collapsed state */
 	let sidebarCollapsed = $state(false);
 	/** Mobile sidebar open state */
@@ -36,13 +47,17 @@
 				{sidebarCollapsed ? '→' : '←'}
 			</button>
 			<h1 class="app-title">
-				<slot name="title">App</slot>
+				{#if title}
+					{@render title()}
+				{:else}
+					App
+				{/if}
 			</h1>
 		</div>
 		<div class="header-right">
-			<slot name="header">
-				<!-- Default header content -->
-			</slot>
+			{#if header}
+				{@render header()}
+			{/if}
 		</div>
 	</header>
 
@@ -50,9 +65,9 @@
 		<!-- Sidebar -->
 		<aside class="app-sidebar" class:collapsed={sidebarCollapsed} class:mobile-open={mobileSidebarOpen}>
 			<div class="sidebar-content">
-				<slot name="sidebar">
-					<!-- Default sidebar content -->
-				</slot>
+				{#if sidebar}
+					{@render sidebar()}
+				{/if}
 			</div>
 			<!-- Mobile overlay -->
 			{#if mobileSidebarOpen}
@@ -62,9 +77,9 @@
 
 		<!-- Main content -->
 		<main class="app-main">
-			<slot name="main">
-				<!-- Default main content -->
-			</slot>
+			{#if main}
+				{@render main()}
+			{/if}
 		</main>
 	</div>
 </div>
