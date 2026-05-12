@@ -1,4 +1,5 @@
 import type { IdbqModel } from '@medyll/idae-idbql';
+import { field } from '$lib/main/machine/fieldBuilder.js';
 
 export type Product = {
 	id:          string;
@@ -36,16 +37,16 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'license_plate model brand year status',
 			fields:       {
-				id:               'id (readonly)',
-				license_plate:    'text (required)',
-				model:            'text (required)',
-				brand:            'text',
-				year:             'number',
-				categoryId:       'fk-category.id',
-				locationOfficeId: 'fk-location_office.id',
-				status:           'text',
-				mileage:          'number',
-				created_at:       'date'
+				id:               field('id',                   { readonly: true }),
+				license_plate:    field('text',                 { required: true }),
+				model:            field('text',                 { required: true }),
+				brand:            field('text'),
+				year:             field('number'),
+				categoryId:       field('fk-category.id'),
+				locationOfficeId: field('fk-location_office.id'),
+				status:           field('text'),
+				mileage:          field('number'),
+				created_at:       field('date')
 			},
 			fks:          {
 				category:        { code: 'category', multiple: false },
@@ -61,10 +62,10 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:          'id (readonly)',
-				code:        'text (required)',
-				name:        'text (required)',
-				description: 'text-long'
+				id:          field('id',        { readonly: true }),
+				code:        field('text',      { required: true }),
+				name:        field('text',      { required: true }),
+				description: field('text-long')
 			},
 			fks:          {}
 		}
@@ -85,13 +86,13 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'first_name last_name email',
 			fields:       {
-				id:              'id (readonly)',
-				first_name:      'text (required)',
-				last_name:       'text (required)',
-				email:           'text (required)',
-				phone:           'text',
-				drivers_license: 'text',
-				created_at:      'date'
+				id:              field('id',    { readonly: true }),
+				first_name:      field('text',  { required: true }),
+				last_name:       field('text',  { required: true }),
+				email:           field('email', { required: true }),
+				phone:           field('text'),
+				drivers_license: field('text'),
+				created_at:      field('date')
 			},
 			fks:          {}
 		}
@@ -113,14 +114,14 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'vehicleId customerId start_date end_date status',
 			fields:       {
-				id:            'id (readonly)',
-				vehicleId:     'fk-vehicle.id (required)',
-				customerId:    'fk-customer.id (required)',
-				start_date:    'date (required)',
-				end_date:      'date',
-				price_per_day: 'number (required)',
-				total_price:   'number',
-				status:        'text'
+				id:            field('id',             { readonly: true }),
+				vehicleId:     field('fk-vehicle.id',  { required: true }),
+				customerId:    field('fk-customer.id', { required: true }),
+				start_date:    field('date',           { required: true }),
+				end_date:      field('date'),
+				price_per_day: field('number',         { required: true }),
+				total_price:   field('number'),
+				status:        field('text')
 			},
 			fks:          {
 				vehicle:  { code: 'vehicle', rules: 'required', multiple: false },
@@ -143,12 +144,12 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'code city address',
 			fields:       {
-				id:      'id (readonly)',
-				code:    'text (required)',
-				address: 'text',
-				city:    'text',
-				country: 'text',
-				phone:   'text'
+				id:      field('id',   { readonly: true }),
+				code:    field('text', { required: true }),
+				address: field('text'),
+				city:    field('text'),
+				country: field('text'),
+				phone:   field('text')
 			},
 			fks:          {}
 		}
@@ -168,12 +169,12 @@ export const testScheme = {
 			index:        'id',
 			presentation: 'vehicleId date type cost',
 			fields:       {
-				id:        'id (readonly)',
-				vehicleId: 'fk-vehicle.id (required)',
-				date:      'date',
-				type:      'text',
-				cost:      'number',
-				notes:     'text-long'
+				id:        field('id',            { readonly: true }),
+				vehicleId: field('fk-vehicle.id', { required: true }),
+				date:      field('date'),
+				type:      field('text'),
+				cost:      field('number'),
+				notes:     field('text-long')
 			},
 			fks:          {
 				vehicle: { code: 'vehicle', rules: 'required', multiple: false }

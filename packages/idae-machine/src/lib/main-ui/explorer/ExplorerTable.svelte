@@ -1,3 +1,10 @@
+<!--
+ExplorerTable.svelte
+Visual table renderer for a list of items. No machine logic.
+@role explorer-display
+@prop {any[]} items - Items to render
+@prop {string[]} columns - Column keys to display
+-->
 <script lang="ts">
 let { items = [], columns = [] } = $props();
 </script>

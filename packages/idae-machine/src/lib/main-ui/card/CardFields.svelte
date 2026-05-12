@@ -1,20 +1,13 @@
 <script lang="ts">
     /**
-     * @component DataListFields
-     * Iterates over a collection's fields and renders a FieldDisplay for each.
-     * Supports filtering via `showFields` and dynamic discovery via `scheme` or `data`.
+     * @component CardFields
+     * Iterates a record's fields and renders FieldDisplay for each.
+     * Supports filtering via `showFields` and dynamic discovery via scheme or data.
      */
     import FieldDisplay from "$lib/main-ui/field/FieldDisplay.svelte";
     import { machine } from "$lib/main/machine.js";
 	import { getContext } from "svelte";
 
-    /**
-     * @typedef {Object} Props
-     * @property {string} collection - The name of the collection being rendered.
-     * @property {Record<string, any>} data - The data object for the fields (bindable).
-     * @property {"show" | "update"} [mode="show"] - Display mode of the fields.
-     * @property {string[]} [showFields] - Optional whitelist of field names to display.
-     */
     let {
       collection = getContext('collection'),
       data = $bindable(),
@@ -27,7 +20,6 @@
       showFields?: string[];
     } = $props ();
 
-    // Svelte 5: $derived must be called as a function in template
     const scheme = $derived(machine.logic.collection(collection));
     const fieldNames = $derived(() => {
       const fields = scheme?.template?.fields;
@@ -40,7 +32,7 @@
       }
       return [];
     });
- 
+
   </script>
 <div class="form">
   {#if scheme && fieldNames()?.length}
@@ -48,8 +40,8 @@
       {#if scheme.template?.fields && scheme.template.fields[fieldName]}
         <FieldDisplay
           {collection}
-          {fieldName} 
-          {mode} 
+          {fieldName}
+          {mode}
           bind:data={data}
         />
       {/if}

@@ -1,27 +1,23 @@
 <!--
-DataList.svelte
-Svelte 5 collection list with Looper
-@role ui-list
+ExplorerList.svelte
+Collection record list with machine store binding.
+@role explorer-list
 @prop {string} collection - Collection name
-@prop {object} [data] - Data object
-@prop {object} [menuListProps] - Menu props
-@prop {string} [target] - HTML target
-@prop {string} [style] - Custom style
 @prop {object} [where] - Query filter
-@prop {string} [displayMode] - Display mode
+@prop {string} [displayMode] - Display mode (line|grid)
+@prop {string} [target] - HTML target zone for card open
 @slot children (let:item) - Custom item rendering
-@slot loopTitle - Custom title rendering
-@event click - Emitted on item click
+@event onclick - Emitted on item click
 -->
 <script lang="ts" generics="COL = Record<string,any>">
 	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
-	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
+	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/idae-idbql';
 	import { machine } from '$lib/main/machine.js';
-	import DataListFields from '$lib/main-ui/lists/DataListFields.svelte';;
+	import CardFields from '$lib/main-ui/card/CardFields.svelte';
 
-	interface DataListProps  {
+	interface ExplorerListProps  {
 		collection:     string;
 		target?:        string;
 		data?:          COL;
@@ -38,7 +34,7 @@ Svelte 5 collection list with Looper
 		onclick,
 		where,
 		children: _children,
-	}:DataListProps = $props();
+	}:ExplorerListProps = $props();
 
 	let logic = machine.logic;
 	let store = machine.store;
@@ -64,15 +60,14 @@ Svelte 5 collection list with Looper
 		}
 	});
 
-	$inspect('DataList', { collection, query, errorMessage });
+	$inspect('ExplorerList', { collection, query, errorMessage });
 
 	function load(item: COL, indexV: number | string) {
 		openCrud(item[index]);
 	}
 
 	function openCrud(id: string | number) {
-		// mount on target, returns component
-		let mounted = hydrate(DataForm, {
+		let mounted = hydrate(CardForm, {
 			target: document.querySelector(`[data-target-zone="${target}"]`) as Element,
 			props:  { collection: collection, dataId: id, mode: 'show' }
 		});
@@ -81,8 +76,6 @@ Svelte 5 collection list with Looper
 	}
 
 	const _onclick = (data: COL, idx: number | string) => {
-		console.log('onclick', data, idx);
-
 		if (onclick) {
 			onclick(data, idx);
 		} else {
@@ -94,7 +87,7 @@ Svelte 5 collection list with Looper
 <div class="grid grid-cols-3 gap-3 p-3">
 	{#each query as item, idx (item[index])}
 		<div class="flex aspect-square flex-col rounded-2xl border border-gray-300 p-2">
-			<DataListFields
+			<CardFields
 				collection={collection}
 				data={item}
 				mode="show"

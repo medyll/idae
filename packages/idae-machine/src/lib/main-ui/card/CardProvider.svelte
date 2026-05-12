@@ -1,7 +1,7 @@
 <!--
-DataProvider.svelte
-Svelte 5 context provider for collection/data
-@role context-provider
+CardProvider.svelte
+Context provider for collection/data — avoids prop drilling.
+@role card-context
 @prop {string} collection - Collection name
 @prop {object[]} data - Data array (bindable)
 @slot children - Render children with context

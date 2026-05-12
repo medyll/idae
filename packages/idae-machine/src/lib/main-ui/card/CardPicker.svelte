@@ -1,7 +1,7 @@
 <!--
-DataPicker.svelte
-Svelte 5 button to open DataForm window for a collection
-@role ui-button
+CardPicker.svelte
+Button that opens a CardForm window for a collection.
+@role card-action
 @prop {string} collection - Collection name
 @prop {object} [withData] - Data to prefill
 @slot button - Custom button content
@@ -10,12 +10,12 @@ Svelte 5 button to open DataForm window for a collection
 
 <script lang="ts" generics="COL">
 	import { Button, openWindow } from '@medyll/idae-slotui-svelte';
-	import DataForm from '$lib/main-ui/forms/DataForm.svelte';
+	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { type CreateUpdateProps } from '$lib/form/types.js';
 	let { collection = 'book', withData, ...rest } = $props<{ collection?: string; withData?: Record<string, any> } & CreateUpdateProps>();
 	function openCrud(collection: string) {
 		openWindow(`create-${collection}`, {
-			component:       DataForm,
+			component:       CardForm,
 			componentProps:  { collection, withData, ...rest },
 			hideCloseButton: false
 		});

@@ -1,6 +1,7 @@
 import type {
 	TplCollectionName,
 	TplFieldRules,
+	TplFieldRulesObject,
 	TplFieldType,
 	TplProperties,
 	TplFieldArgs,
@@ -28,14 +29,20 @@ export class MachineParserForge {
 
 	/**
 	 * Test if a field rule matches a specific type (array, object, fk, primitive).
+	 * Accepts both legacy string rules ('text-long (required)') and new object rules ({ type: 'text', required: true }).
 	 * @param what - The type to test for ("array", "object", "fk", "primitive").
-	 * @param fieldRule - The field rule string to analyze.
+	 * @param fieldRule - The field rule (string or object) to analyze.
 	 * @returns Partial IDbForge object if the rule matches, otherwise undefined.
 	 */
 	testIs(
 		what: 'array' | 'object' | 'fk' | 'primitive',
 		fieldRule: TplFieldRules | string
 	): Partial<IDbForge> | undefined {
+		// New world: object-based field rule
+		if (typeof fieldRule === 'object' && fieldRule !== null) {
+			return this.#fromObjectRule(what, fieldRule as TplFieldRulesObject);
+		}
+		// Legacy: string-based field rule
 		const typeMappings = {
 			fk:        'fk-',
 			array:     'array-of-',
@@ -59,6 +66,44 @@ export class MachineParserForge {
 			return this.is(what, fieldRule);
 		}
 		return undefined;
+	}
+
+	/**
+	 * Parse a new-world object field rule into IDbForge format.
+	 * Only returns a value when `what` matches the actual type of the rule.
+	 */
+	#fromObjectRule(
+		what: 'array' | 'object' | 'fk' | 'primitive',
+		rule: TplFieldRulesObject
+	): Partial<IDbForge> | undefined {
+		const type = rule.type as string;
+		const isArray     = type.startsWith('array-of-');
+		const isObject    = type.startsWith('object-');
+		const isFk        = type.startsWith('fk-');
+		const isPrimitive = !isArray && !isObject && !isFk;
+
+		const matches: Record<string, boolean> = {
+			array: isArray, object: isObject, fk: isFk, primitive: isPrimitive
+		};
+		if (!matches[what]) return undefined;
+
+		const fieldArgs = this.#argsFromObject(rule);
+		return {
+			fieldType: type as TplFieldType,
+			fieldArgs: fieldArgs as any,
+			is:        what
+		};
+	}
+
+	/**
+	 * Extract fieldArgs array from an object rule's boolean flags.
+	 */
+	#argsFromObject(rule: TplFieldRulesObject): string[] | undefined {
+		const args: string[] = [];
+		if (rule.required) args.push('required');
+		if (rule.readonly) args.push('readonly');
+		if (rule.private)  args.push('private');
+		return args.length ? args : undefined;
 	}
 
 	/**

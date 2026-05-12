@@ -1,4 +1,5 @@
 import { type IdbqModel } from '@medyll/idae-idbql';
+import { field } from '$lib/main/machine/fieldBuilder.js';
 
 /* here is an example of how to declare a dataModel*/
 export const schemeModelDb = {
@@ -10,13 +11,13 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name model',
 			fields:       {
-				id:         'id (readonly)',
-				name:       'text (private)',
-				code:       'text',
-				model:      'text',
-				prompt:     'text-long',
-				created_at: 'date (private)',
-				ia_lock:    'boolean (private)'
+				id:         field('id',        { readonly: true }),
+				name:       field('text',      { private: true }),
+				code:       field('text'),
+				model:      field('text'),
+				prompt:     field('text-long'),
+				created_at: field('date',      { private: true }),
+				ia_lock:    field('boolean',   { private: true })
 			},
 			fks:          {
 				agentPrompt: {
@@ -35,12 +36,12 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:         'id (readonly)',
-				created_at: 'date (private)',
-				value:      'text-long (required)',
-				name:       'text (required)',
-				code:       'text (required)',
-				ia_lock:    'boolean (private)'
+				id:         field('id',        { readonly: true }),
+				created_at: field('date',      { private: true }),
+				value:      field('text-long', { required: true }),
+				name:       field('text',      { required: true }),
+				code:       field('text',      { required: true }),
+				ia_lock:    field('boolean',   { private: true })
 			},
 			fks:          {}
 		}
@@ -53,9 +54,9 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				code:    'text',
-				name:    'text',
-				context: 'array-of-number'
+				code:    field('text'),
+				name:    field('text'),
+				context: field('array-of-number')
 			},
 			fks:          {}
 		}
@@ -68,17 +69,17 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:              'id',
-				chatId:          'fk.chat.id ',
-				chatPassKey:     'text',
-				created_at:      'date',
-				category:        'text',
-				categoryId:      'id',
-				dateLastMessage: 'date',
-				name:            'text',
-				description:     'text',
-				ia_lock:         'boolean',
-				spaceId:         'fk-space.id (required)'
+				id:              field('id'),
+				chatId:          field('fk.chat.id'),
+				chatPassKey:     field('text'),
+				created_at:      field('date'),
+				category:        field('text'),
+				categoryId:      field('id'),
+				dateLastMessage: field('date'),
+				name:            field('text'),
+				description:     field('text'),
+				ia_lock:         field('boolean'),
+				spaceId:         field('fk-space.id', { required: true })
 			},
 			fks:          {
 				space: {
@@ -97,10 +98,10 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:      'id',
-				code:    'text',
-				name:    'text',
-				ia_lock: 'boolean (private)'
+				id:      field('id'),
+				code:    field('text'),
+				name:    field('text'),
+				ia_lock: field('boolean', { private: true })
 			},
 			fks:          {}
 		}
@@ -113,10 +114,10 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:      'id',
-				code:    'text',
-				name:    'text',
-				ia_lock: 'boolean (private)'
+				id:      field('id'),
+				code:    field('text'),
+				name:    field('text'),
+				ia_lock: field('boolean', { private: true })
 			},
 			fks:          {}
 		}
@@ -129,10 +130,10 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:      'id',
-				code:    'text',
-				name:    'text',
-				ia_lock: 'boolean (private)'
+				id:      field('id'),
+				code:    field('text'),
+				name:    field('text'),
+				ia_lock: field('boolean', { private: true })
 			},
 			fks:          {}
 		}
@@ -145,16 +146,16 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'resume',
 			fields:       {
-				id:         'id',
-				chatId:     'id',
-				messageId:  'id',
-				created_at: 'date',
-				content:    'text-long',
-				status:     'text',
-				context:    'array-of-number',
-				resume:     'text',
-				model:      'text',
-				ia_lock:    'boolean'
+				id:         field('id'),
+				chatId:     field('id'),
+				messageId:  field('id'),
+				created_at: field('date'),
+				content:    field('text-long'),
+				status:     field('text'),
+				context:    field('array-of-number'),
+				resume:     field('text'),
+				model:      field('text'),
+				ia_lock:    field('boolean')
 			},
 			fks:          {}
 		}
@@ -167,12 +168,12 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:         'id',
-				name:       'text',
-				code:       'text',
-				value:      'text',
-				created_at: 'date',
-				ia_lock:    'boolean'
+				id:         field('id'),
+				name:       field('text'),
+				code:       field('text'),
+				value:      field('text'),
+				created_at: field('date'),
+				ia_lock:    field('boolean')
 			},
 			fks:          {}
 		}
@@ -185,13 +186,13 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'code',
 			fields:       {
-				id:         'id',
-				userId:     'id',
-				created_at: 'date (readonly)',
-				updated_at: 'date (readonly)',
-				code:       'text',
-				value:      'text',
-				ia_lock:    'boolean (private)'
+				id:         field('id'),
+				userId:     field('id'),
+				created_at: field('date',    { readonly: true }),
+				updated_at: field('date',    { readonly: true }),
+				code:       field('text'),
+				value:      field('text'),
+				ia_lock:    field('boolean', { private: true })
 			},
 			fks:          {}
 		}
@@ -204,18 +205,17 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'email',
 			fields:       {
-				id:         'id',
-				name:       'text',
-				color:      'text',
-				created_at: 'date (readonly)',
-				email:      'email',
-				password:   'password',
-				ia_lock:    'boolean (private)'
+				id:         field('id'),
+				name:       field('text'),
+				color:      field('text'),
+				created_at: field('date',     { readonly: true }),
+				email:      field('email'),
+				password:   field('password'),
+				ia_lock:    field('boolean',  { private: true })
 			},
 			fks:          {}
 		}
 	},
-	// Nouvelles entités pour le Book Creator Helper
 	book:                   {
 		keyPath:  '++id, userId, created_at',
 		model:    {},
@@ -224,14 +224,14 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'title',
 			fields:       {
-				id:          'id (readonly)',
-				userId:      'id',
-				title:       'text-long (required)',
-				description: 'text-area',
-				created_at:  'date (readonly)',
-				updated_at:  'date',
-				status:      'text',
-				ia_lock:     'boolean (private)'
+				id:          field('id',        { readonly: true }),
+				userId:      field('id'),
+				title:       field('text-long', { required: true }),
+				description: field('text-area'),
+				created_at:  field('date',      { readonly: true }),
+				updated_at:  field('date'),
+				status:      field('text'),
+				ia_lock:     field('boolean',   { private: true })
 			},
 			fks:          {
 				user: {
@@ -242,7 +242,6 @@ export const schemeModelDb = {
 			}
 		}
 	},
-
 	chapter:                {
 		keyPath:  '++id, bookId, order',
 		model:    {},
@@ -251,14 +250,14 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'title',
 			fields:       {
-				id:         'id (readonly)',
-				bookId:     'id',
-				title:      'text-long (required)',
-				content:    'text-area',
-				order:      'number',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				ia_lock:    'boolean (private readonly)'
+				id:         field('id',        { readonly: true }),
+				bookId:     field('id'),
+				title:      field('text-long', { required: true }),
+				content:    field('text-area'),
+				order:      field('number'),
+				created_at: field('date',      { readonly: true }),
+				updated_at: field('date'),
+				ia_lock:    field('boolean',   { private: true, readonly: true })
 			},
 			fks:          {
 				book: {
@@ -269,7 +268,6 @@ export const schemeModelDb = {
 			}
 		}
 	},
-
 	writingGoal:            {
 		keyPath:  '++id, userId, bookId',
 		model:    {},
@@ -278,15 +276,15 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'description',
 			fields:       {
-				id:              'id (readonly)',
-				userId:          'id',
-				bookId:          'id',
-				description:     'text (required)',
-				targetWordCount: 'number',
-				deadline:        'date',
-				created_at:      'date (readonly)',
-				updated_at:      'date',
-				ia_lock:         'boolean (private)'
+				id:              field('id',     { readonly: true }),
+				userId:          field('id'),
+				bookId:          field('id'),
+				description:     field('text',   { required: true }),
+				targetWordCount: field('number'),
+				deadline:        field('date'),
+				created_at:      field('date',   { readonly: true }),
+				updated_at:      field('date'),
+				ia_lock:         field('boolean', { private: true })
 			},
 			fks:          {
 				user: {
@@ -302,7 +300,6 @@ export const schemeModelDb = {
 			}
 		}
 	},
-
 	character:              {
 		keyPath:  '++id, bookId',
 		model:    {},
@@ -311,26 +308,26 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'firstName lastName',
 			fields:       {
-				id:                     'id (readonly)',
-				bookId:                 'id',
-				characterLinkIds:       'array-of-fk-characterLink.id (private)',
-				characterAttributesIds: 'array-of-fk-characterAttributes.id (private)',
-				firstName:              'text (required)',
-				lastName:               'text',
-				nickname:               'text',
-				age:                    'number',
-				gender:                 'text',
-				occupation:             'text',
-				role:                   'text',
-				description:            'text-area',
-				backstory:              'text-area',
-				physicalDescription:    'text-area',
-				personalityTraits:      'array-of-text',
-				goals:                  'text-area',
-				conflicts:              'text-area',
-				created_at:             'date (readonly private)',
-				updated_at:             'date (readonly private)',
-				ia_lock:                'boolean (private)'
+				id:                     field('id',                                     { readonly: true }),
+				bookId:                 field('id'),
+				characterLinkIds:       field('array-of-fk-characterLink.id',          { private: true }),
+				characterAttributesIds: field('array-of-fk-characterAttributes.id',   { private: true }),
+				firstName:              field('text',                                   { required: true }),
+				lastName:               field('text'),
+				nickname:               field('text'),
+				age:                    field('number'),
+				gender:                 field('text'),
+				occupation:             field('text'),
+				role:                   field('text'),
+				description:            field('text-area'),
+				backstory:              field('text-area'),
+				physicalDescription:    field('text-area'),
+				personalityTraits:      field('array-of-text'),
+				goals:                  field('text-area'),
+				conflicts:              field('text-area'),
+				created_at:             field('date',    { readonly: true, private: true }),
+				updated_at:             field('date',    { readonly: true, private: true }),
+				ia_lock:                field('boolean', { private: true })
 			},
 			fks:          {
 				characterAttributes: {
@@ -359,11 +356,11 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:         'id (readonly)',
-				attribute:  'text',
-				name:       'text',
-				created_at: 'date (readonly)',
-				updated_at: 'date'
+				id:         field('id',   { readonly: true }),
+				attribute:  field('text'),
+				name:       field('text'),
+				created_at: field('date', { readonly: true }),
+				updated_at: field('date')
 			},
 			fks:          {}
 		}
@@ -376,11 +373,11 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'type',
 			fields:       {
-				id:          'id',
-				characterId: 'array-of-fk-character.id',
-				type:        'text-short',
-				description: 'text-medium',
-				active:      'boolean'
+				id:          field('id'),
+				characterId: field('array-of-fk-character.id'),
+				type:        field('text-short'),
+				description: field('text-medium'),
+				active:      field('boolean')
 			},
 			fks:          {
 				character: {
@@ -399,16 +396,16 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'characterId chapterId status',
 			fields:       {
-				id:          'id (readonly)',
-				characterId: 'id',
-				chapterId:   'id',
-				status:      'text',
-				role:        'text',
-				actions:     'text-long',
-				development: 'text-area',
-				notes:       'text-long',
-				created_at:  'date (readonly)',
-				updated_at:  'date'
+				id:          field('id',        { readonly: true }),
+				characterId: field('id'),
+				chapterId:   field('id'),
+				status:      field('text'),
+				role:        field('text'),
+				actions:     field('text-long'),
+				development: field('text-area'),
+				notes:       field('text-long'),
+				created_at:  field('date',   { readonly: true }),
+				updated_at:  field('date')
 			},
 			fks:          {
 				character: {
@@ -424,7 +421,6 @@ export const schemeModelDb = {
 			}
 		}
 	},
-
 	bookPrompts:            {
 		keyPath:  '++id, bookId',
 		model:    {},
@@ -433,14 +429,14 @@ export const schemeModelDb = {
 			index:        'id',
 			presentation: 'name',
 			fields:       {
-				id:         'id (readonly)',
-				bookId:     'id',
-				name:       'text (required)',
-				category:   'text',
-				content:    'text-area',
-				created_at: 'date (readonly)',
-				updated_at: 'date',
-				ia_lock:    'boolean (private)'
+				id:         field('id',      { readonly: true }),
+				bookId:     field('id'),
+				name:       field('text',    { required: true }),
+				category:   field('text'),
+				content:    field('text-area'),
+				created_at: field('date',    { readonly: true }),
+				updated_at: field('date'),
+				ia_lock:    field('boolean', { private: true })
 			},
 			fks:          {
 				book: {

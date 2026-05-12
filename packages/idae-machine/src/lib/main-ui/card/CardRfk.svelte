@@ -1,9 +1,9 @@
 <!--
-DataLinksBack.svelte
-Svelte 5 reverse FK relation viewer for a collection
-@role ui-fragment
+CardRfk.svelte
+Reverse FK relation viewer — shows collections that point to this record.
+@role card-relations
 @prop {string} collection - Collection name
-@prop {any} [collectionId] - Optional collection id
+@prop {any} [collectionId] - Optional record id
 @prop {object} [where] - Optional filter
 @prop {boolean|string} [showTitle] - Show or override title
 @prop {typeof SvelteComponent} [component] - Custom component

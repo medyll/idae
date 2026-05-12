@@ -1,3 +1,9 @@
+<!--
+ExplorerCard.svelte
+Visual card renderer for a list of items. No machine logic.
+@role explorer-display
+@prop {any[]} items - Items to render
+-->
 <script lang="ts">
 let { items = [] } = $props();
 </script>

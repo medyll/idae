@@ -1,21 +1,20 @@
+<!--
+ExplorerFilter.svelte
+Advanced filter bar for collection explorers.
+@role explorer-filter
+@prop {ViewFieldDef[]} fields - Field definitions
+@prop {Function} onFilter - Filter callback
+-->
 <script lang="ts">
-	/**
-	 * FilterBar - Advanced filtering component
-	 */
-
 	import type { ViewFieldDef } from '$lib/main/api/types.js';
 
 	export let fields: ViewFieldDef[] = [];
 	export let onFilter: (filters: Record<string, unknown>) => void;
 
-	/** Active filters */
 	let filters = $state<Record<string, unknown>>({});
-	/** Search query */
 	let searchQuery = $state('');
-	/** Show filter panel */
 	let showFilters = $state(false);
 
-	/** Handle search */
 	function handleSearch(): void {
 		if (searchQuery) {
 			filters.search = searchQuery;
@@ -25,7 +24,6 @@
 		applyFilters();
 	}
 
-	/** Handle field filter change */
 	function handleFieldFilter(field: string, value: unknown): void {
 		if (value) {
 			filters[field] = value;
@@ -35,24 +33,20 @@
 		applyFilters();
 	}
 
-	/** Clear all filters */
 	function clearFilters(): void {
 		filters = {};
 		searchQuery = '';
 		applyFilters();
 	}
 
-	/** Apply filters */
 	function applyFilters(): void {
 		onFilter(filters);
 	}
 
-	/** Active filter count */
 	$: activeFilterCount = Object.keys(filters).length + (searchQuery ? 1 : 0);
 </script>
 
 <div class="filter-bar">
-	<!-- Quick search -->
 	<div class="search-box">
 		<input
 			type="text"
@@ -64,7 +58,6 @@
 		<button class="search-btn" onclick={handleSearch}>🔍</button>
 	</div>
 
-	<!-- Filter toggle -->
 	<button
 		class="filter-toggle"
 		onclick={() => showFilters = !showFilters}
@@ -76,14 +69,12 @@
 		{/if}
 	</button>
 
-	<!-- Clear filters -->
 	{#if activeFilterCount > 0}
 		<button class="clear-filters" onclick={clearFilters}>
 			Clear all
 		</button>
 	{/if}
 
-	<!-- Filter panel -->
 	{#if showFilters}
 		<div class="filter-panel">
 			{#each fields as field}
@@ -91,7 +82,6 @@
 					<label for="filter-{field.field_name}">
 						{field.title}
 					</label>
-					
 					{#if field.type === 'text'}
 						<input
 							type="text"
@@ -123,104 +113,16 @@
 </div>
 
 <style>
-	.filter-bar {
-		display: flex;
-		gap: 1rem;
-		align-items: center;
-		padding: 1rem;
-		background: #fff;
-		border-bottom: 1px solid #dee2e6;
-		flex-wrap: wrap;
-	}
-
-	.search-box {
-		display: flex;
-		gap: 0.5rem;
-		flex: 1;
-		min-width: 200px;
-	}
-
-	.search-input {
-		flex: 1;
-		padding: 0.5rem;
-		border: 1px solid #ced4da;
-		border-radius: 4px;
-		font-size: 1rem;
-	}
-
-	.search-btn {
-		padding: 0.5rem 1rem;
-		background: #007bff;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-
-	.filter-toggle {
-		padding: 0.5rem 1rem;
-		background: #6c757d;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		position: relative;
-	}
-
-	.filter-toggle.active {
-		background: #007bff;
-	}
-
-	.filter-count {
-		position: absolute;
-		top: -8px;
-		right: -8px;
-		background: #dc3545;
-		color: white;
-		border-radius: 50%;
-		width: 20px;
-		height: 20px;
-		font-size: 0.75rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.clear-filters {
-		padding: 0.5rem 1rem;
-		background: transparent;
-		color: #dc3545;
-		border: 1px solid #dc3545;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-
-	.filter-panel {
-		width: 100%;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		gap: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid #dee2e6;
-		margin-top: 1rem;
-	}
-
-	.filter-field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-	}
-
-	.filter-field label {
-		font-size: 0.875rem;
-		color: #6c757d;
-		font-weight: 500;
-	}
-
-	.filter-input {
-		padding: 0.5rem;
-		border: 1px solid #ced4da;
-		border-radius: 4px;
-		font-size: 1rem;
-	}
+	.filter-bar { display: flex; gap: 1rem; align-items: center; padding: 1rem; background: #fff; border-bottom: 1px solid #dee2e6; flex-wrap: wrap; }
+	.search-box { display: flex; gap: 0.5rem; flex: 1; min-width: 200px; }
+	.search-input { flex: 1; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; }
+	.search-btn { padding: 0.5rem 1rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+	.filter-toggle { padding: 0.5rem 1rem; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; position: relative; }
+	.filter-toggle.active { background: #007bff; }
+	.filter-count { position: absolute; top: -8px; right: -8px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; }
+	.clear-filters { padding: 0.5rem 1rem; background: transparent; color: #dc3545; border: 1px solid #dc3545; border-radius: 4px; cursor: pointer; }
+	.filter-panel { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; padding-top: 1rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
+	.filter-field { display: flex; flex-direction: column; gap: 0.25rem; }
+	.filter-field label { font-size: 0.875rem; color: #6c757d; font-weight: 500; }
+	.filter-input { padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; }
 </style>

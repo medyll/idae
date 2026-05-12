@@ -6,15 +6,18 @@ Shows all UI components working together with real data binding
 	import { machine } from '$lib/main/machine.js';
 	import { testScheme } from '$lib/demo/testScheme.js';
 
-	// Data Components
-	import DataPicker from '$lib/main-ui/data/DataPicker.svelte';
-	import DataList from '$lib/main-ui/lists/DataList.svelte';
-	import DataListActions from '$lib//main-ui/lists/DataListActions.svelte';
-	import DataListFields from '$lib//main-ui/lists/DataListFields.svelte';
-	import DataLinks from '$lib/main-ui/data/DataLinks.svelte';
-	import DataLinksBack from '$lib/main-ui/data/DataLinksBack.svelte';
-	import DataCreate from '$lib/main-ui/forms/DataCreate.svelte';
-	import DataEdit from '$lib/main-ui/forms/DataEdit.svelte'; 
+	// Explorer Components
+	import ExplorerCollections from '$lib/main-ui/explorer/ExplorerCollections.svelte';
+	import ExplorerList from '$lib/main-ui/explorer/ExplorerList.svelte';
+	import ExplorerActions from '$lib/main-ui/explorer/ExplorerActions.svelte';
+
+	// Card Components
+	import CardPicker from '$lib/main-ui/card/CardPicker.svelte';
+	import CardFields from '$lib/main-ui/card/CardFields.svelte';
+	import CardFk from '$lib/main-ui/card/CardFk.svelte';
+	import CardRfk from '$lib/main-ui/card/CardRfk.svelte';
+	import CardCreate from '$lib/main-ui/card/CardCreate.svelte';
+	import CardEdit from '$lib/main-ui/card/CardEdit.svelte';
 
 	// Field Components
 	import FieldDisplay from '$lib/main-ui/field/FieldDisplay.svelte';
@@ -25,7 +28,6 @@ Shows all UI components working together with real data binding
 	import Selector from '$lib/main-ui/fragments/Selector.svelte';
 	import InfoLine from '$lib/main-ui/fragments/InfoLine.svelte';
 	import Skeleton from '$lib/main-ui/fragments/Skeleton.svelte';
-	import CollectionList from '$lib/main-ui/collection/CollectionList.svelte';
 
 	// Initialize machine — testScheme IS the model (top-level keys = collection names)
 	machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
@@ -65,7 +67,7 @@ Shows all UI components working together with real data binding
 			<h3>Collections</h3>
 
 			<div class="selector-wrapper" data-testid="collection-selector">
-				<CollectionList >
+				<ExplorerCollections >
 					{#snippet children({collection})}
 					<button
 						class="collection-btn"
@@ -79,12 +81,12 @@ Shows all UI components working together with real data binding
 						{collection.name}
 					</button>
 					{/snippet}
-				</CollectionList>
+				</ExplorerCollections>
 			</div>
 
 			<div class="create-section">
 				<h4>Actions</h4>
-				<DataPicker collection={selectedCollection} mode="create" />
+				<CardPicker collection={selectedCollection} mode="create" />
 			</div>
 
 			<div class="info-section" data-testid="info-section">
@@ -162,7 +164,7 @@ Shows all UI components working together with real data binding
 							DataList affiche tous les enregistrements en grille avec DataListFields
 						</p>
 						<div class="collection-grid">
-							<DataList
+							<ExplorerList
 								collection={selectedCollection}
 								displayMode="grid"
 								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
@@ -179,7 +181,7 @@ Shows all UI components working together with real data binding
 							DataListActions affiche les enregistrements en liste verticale
 						</p>
 						<div class="collection-menu">
-							<DataListActions
+							<ExplorerActions
 								collection={selectedCollection}
 								onclick={(data, idx) => selectRecord(data as unknown as Record<string, unknown>, idx)}
 							/>
@@ -196,7 +198,7 @@ Shows all UI components working together with real data binding
 							Props : <code>collection</code>, <code>withData</code>, <code>showFields</code>, <code>displayMode</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<DataCreate
+							<CardCreate
 								collection={selectedCollection}
 								onsubmit={() => { activeTab = 'grid'; }}
 							/>
@@ -213,7 +215,7 @@ Shows all UI components working together with real data binding
 							Props : <code>collection</code>, <code>data</code>, <code>dataId</code>, <code>inPlaceEdit</code>, <code>showFks</code>, <code>onsubmit</code>.
 						</p>
 						<div class="form-wrapper">
-							<DataEdit
+							<CardEdit
 								collection={selectedCollection}
 								data={selectedRecord}
 								onsubmit={() => {
@@ -229,7 +231,7 @@ Shows all UI components working together with real data binding
 						<div class="field-values-section" data-testid="view-field-values">
 							<h3>DataListFields — Champs du record sélectionné</h3>
 							<div class="fields-display">
-								<DataListFields
+								<CardFields
 									collection={selectedCollection}
 									data={selectedRecord}
 									mode="show"
@@ -247,26 +249,26 @@ Shows all UI components working together with real data binding
 						<div class="relationships-section">
 							<h3>Foreign Keys (FK)</h3>
 							<div class="fk-viewer">
-								<DataLinks collection={selectedCollection}>
+								<CardFk collection={selectedCollection}>
 									{#snippet children(fkEntry: [string, unknown])}
 										<div class="fk-item">
 											<strong>{fkEntry[0]}</strong>: references collection
 										</div>
 									{/snippet}
-								</DataLinks>
+								</CardFk>
 							</div>
 						</div>
 
 						<div class="relationships-section">
 							<h3>Reverse Relationships</h3>
 							<div class="reverse-fk-viewer">
-								<DataLinksBack collection={selectedCollection} showTitle={true}>
+								<CardRfk collection={selectedCollection} showTitle={true}>
 									{#snippet children(reverseFkEntry: [string, unknown])}
 										<div class="reverse-fk-item">
 											Collection <strong>{reverseFkEntry[0]}</strong> references this one
 										</div>
 									{/snippet}
-								</DataLinksBack>
+								</CardRfk>
 							</div>
 						</div>
 					</div>
@@ -357,8 +359,10 @@ Shows all UI components working together with real data binding
 	<footer class="demo-footer" data-testid="footer">
 		<p>idae-machine v1.0 • Complete Component Showcase</p>
 		<p style="margin-top: 10px; font-size: 0.85em;">
-			Data (10): DataPicker, DataList, DataListActions, DataListFields, DataLinks, DataLinksBack, DataForm, DataCreate, DataEdit, DataProvider •
+			Explorer (3): ExplorerCollections, ExplorerList, ExplorerActions •
+			Card (8): CardPicker, CardFields, CardFk, CardRfk, CardForm, CardCreate, CardEdit, CardProvider •
 			Field (2): FieldDisplay, FieldEditor •
+			Input (2): InputCurrency, InputEmail •
 			Fragments (5): Frame, Confirm, Selector, InfoLine, Skeleton
 		</p>
 	</footer>

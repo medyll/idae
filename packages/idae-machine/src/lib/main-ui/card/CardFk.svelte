@@ -1,9 +1,9 @@
 <!--
-DataLinks.svelte
-Svelte 5 FK relation viewer for a collection
-@role ui-fragment
+CardFk.svelte
+Forward FK relation viewer — shows collections this record points to.
+@role card-relations
 @prop {string} collection - Collection name
-@prop {any} [collectionId] - Optional collection id
+@prop {any} [collectionId] - Optional record id
 @prop {object} [where] - Optional filter
 @slot children (let:item) - Custom FK rendering
 -->
@@ -19,7 +19,7 @@ Svelte 5 FK relation viewer for a collection
 	const fks = $derived(machine.logic.collection(collection).parseFks());
 
 </script>
- 
+
 {#each Object.entries(fks) as item (item[0])}
 	<div>  {item[0]}
 		<!-- {#if children}

@@ -1,23 +1,20 @@
-// Main UI barrel export for idae-machine v2
-// All UI components organized by category
+// Main UI barrel export for idae-machine
+// Hierarchy: explorer → card → field → input
 
-// Layout
-export * from './layout/index.js';
+// Explorer: collection-level browser components
+export * from './explorer/index.js';
 
-// Forms
-export * from './forms/index.js';
+// Card: record-level components (CRUD, relations, context)
+export * from './card/index.js';
 
-// Lists
-export * from './lists/index.js';
-
-// Fragments
-export * from './fragments/index.js';
-
-// Data
-export * from './data/index.js';
-
-// Field
+// Field: atomic field display/edit
 export * from './field/index.js';
 
-// Collection
-export * from './collection/index.js';
+// Input: type-specific input atoms
+export * from './input/index.js';
+
+// Layout: structural shells (no data)
+export * from './layout/index.js';
+
+// Fragments: micro UI (no business logic)
+export * from './fragments/index.js';

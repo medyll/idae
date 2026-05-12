@@ -5,6 +5,9 @@ export { Machine } from './machine.js';
 export { MachineDb } from './machineDb.js';
 export { MachineParserForge } from './machineParserForge.js';
 
+// Schema builder helpers
+export { field } from './machine/fieldBuilder.js';
+
 // Types
 export * from './types/index.js';
 
