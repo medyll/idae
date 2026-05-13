@@ -56,7 +56,7 @@
                 ...withData
             };
         } else if (store && dataId) {
-            const query = store.where({ [indexName]: { eq: dataId } });
+            const query = store.where({ [String(indexName ?? 'id')]: { eq: dataId } });
             const snap = $state.snapshot(query);
             const record = Array.isArray(snap) && snap.length > 0 ? snap[0] : {};
 
@@ -69,7 +69,7 @@
     });
 
     const validate = async (data: Record<string, unknown>) => {
-        const v = typeof validator === 'function' ? validator() : validator;
+        const v = validator;
         if (!v || typeof v.validateForm !== 'function') return true;
 
         const ignore = mode === 'create' && indexName ? [indexName] : undefined;

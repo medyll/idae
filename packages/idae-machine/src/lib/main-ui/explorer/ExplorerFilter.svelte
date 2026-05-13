@@ -8,12 +8,19 @@ Advanced filter bar for collection explorers.
 <script lang="ts">
 	import type { ViewFieldDef } from '$lib/main/api/types.js';
 
-	export let fields: ViewFieldDef[] = [];
-	export let onFilter: (filters: Record<string, unknown>) => void;
+	let {
+		fields = [],
+		onFilter
+	}: {
+		fields?: ViewFieldDef[];
+		onFilter: (filters: Record<string, unknown>) => void;
+	} = $props();
 
 	let filters = $state<Record<string, unknown>>({});
 	let searchQuery = $state('');
 	let showFilters = $state(false);
+
+	const activeFilterCount = $derived(Object.keys(filters).length + (searchQuery ? 1 : 0));
 
 	function handleSearch(): void {
 		if (searchQuery) {
@@ -42,8 +49,6 @@ Advanced filter bar for collection explorers.
 	function applyFilters(): void {
 		onFilter(filters);
 	}
-
-	$: activeFilterCount = Object.keys(filters).length + (searchQuery ? 1 : 0);
 </script>
 
 <div class="filter-bar">
@@ -87,7 +92,7 @@ Advanced filter bar for collection explorers.
 							type="text"
 							id="filter-{field.field_name}"
 							placeholder="Filter by {field.title}"
-							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, e.target.value)}
+							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{:else if field.type === 'number'}
@@ -95,14 +100,14 @@ Advanced filter bar for collection explorers.
 							type="number"
 							id="filter-{field.field_name}"
 							placeholder="Min"
-							onchange={(e) => handleFieldFilter(`${field.field_name_raw || field.field_name}__gte`, e.target.value)}
+							onchange={(e) => handleFieldFilter(`${field.field_name_raw || field.field_name}__gte`, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{:else if field.type === 'date'}
 						<input
 							type="date"
 							id="filter-{field.field_name}"
-							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, e.target.value)}
+							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{/if}
