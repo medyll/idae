@@ -51,7 +51,7 @@ export class Machine {
 	_machineDb!:              MachineDb;
 
 	/**
-	 * Database name
+	 * Database name (IDB). Derived from org+domain if not explicit.
 	 */
 	_dbName!:                 string;
 
@@ -64,6 +64,12 @@ export class Machine {
 	 * Data model
 	 */
 	_model!:                  IdbqModel | undefined;
+
+	/** Organisation identifier — prefixes all DB names. e.g. 'test', 'crfr' */
+	_org?:                    string;
+
+	/** Domain/site name. e.g. 'machine', 'sitebase' */
+	_domain?:                 string;
 
 	/**
 	 * Schema router instance (lazy-initialized)
@@ -85,14 +91,24 @@ export class Machine {
 
 	/**
 	 * Initialize the machine with configuration parameters.
+	 * dbName is derived from org+domain when both are provided and no explicit dbName is given.
 	 * @role Initializer
-	 * @param {{ dbName?: string; version?: number; model: IdbqModel }} [options] Optional parameters to set dbName, version, and model.
-	 * @return {void}
 	 */
-	init(options?: { dbName?: string; version?: number; model: IdbqModel }) {
-		this._dbName = options?.dbName ?? this._dbName;
+	init(options?: { dbName?: string; version?: number; model: IdbqModel; org?: string; domain?: string }) {
+		if (options?.org)    this._org    = options.org;
+		if (options?.domain) this._domain = options.domain;
+
+		// Derive dbName from org+domain if not explicitly provided
+		const derived = (this._org && this._domain) ? `${this._org}_${this._domain}` : undefined;
+		this._dbName  = options?.dbName ?? derived ?? this._dbName;
+
 		this._version = options?.version ?? this._version;
-		this._model = options?.model ?? this._model;
+		this._model   = options?.model   ?? this._model;
+	}
+
+	/** Fully qualified DB name for a given module: {org}_{domain}_{module} */
+	moduleDbName(module: string): string {
+		return (this._org && this._domain) ? `${this._org}_${this._domain}_${module}` : module;
 	}
 
 	/**

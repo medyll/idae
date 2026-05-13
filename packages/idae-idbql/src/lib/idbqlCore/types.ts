@@ -89,6 +89,8 @@ export type CollectionModel<T = TplCollectionFields> = {
 	/** @deprecated use ts instead */
 	model:    any;
 	ts:       any; // put typing here , as type
+	/** Module database name (without org/domain prefix). Used by server to route to the right MongoDB database. e.g. 'machine_base' → '{org}_{domain}_machine_base' */
+	base?:    string;
 	template: {
 		index:        string;
 		presentation: CombineElements<Extract<keyof CollectionModel<T>['ts'], string>>;

@@ -20,6 +20,7 @@ export type ProductCategory = {
 export const testScheme = {
 	vehicle:         {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as {
 			id:                string;
@@ -56,6 +57,7 @@ export const testScheme = {
 	},
 	category:        {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as { id: string; code: string; name: string; description?: string },
 		template: {
@@ -72,6 +74,7 @@ export const testScheme = {
 	},
 	customer:        {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as {
 			id:               string;
@@ -99,6 +102,7 @@ export const testScheme = {
 	},
 	rental:          {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as {
 			id:            string;
@@ -131,6 +135,7 @@ export const testScheme = {
 	},
 	location_office: {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as {
 			id:      string;
@@ -156,6 +161,7 @@ export const testScheme = {
 	},
 	maintenance:     {
 		keyPath:  '++id',
+		base:     'machine_base',
 		model:    {},
 		ts:       {} as {
 			id:        string;

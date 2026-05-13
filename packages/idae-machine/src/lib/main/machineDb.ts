@@ -49,4 +49,18 @@ export class MachineDb {
 		}
 		return this.#idbCollectionsList[collection];
 	}
+
+	/**
+	 * Return all unique `base` module names declared in the model.
+	 * Used by the server to know which MongoDB databases to create.
+	 * e.g. ['machine_base', 'machine_app']
+	 */
+	getBaseModules(): string[] {
+		const bases = new Set<string>();
+		for (const col of Object.values(this.model)) {
+			const base = (col as any).base as string | undefined;
+			if (base) bases.add(base);
+		}
+		return [...bases];
+	}
 }
