@@ -57,6 +57,28 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             : null
     );
 
+    // FK presentation label — resolves raw id to human-readable label
+    const fkScheme = $derived(
+        fkCollection
+            ? (() => { try { return machine.logic.collection(fkCollection); } catch { return null; } })()
+            : null
+    );
+    const fkIndexField        = $derived(fkScheme?.template?.index ?? 'id');
+    const fkPresentationFields = $derived(
+        (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
+    );
+    const fkItems  = $derived(fkCollection ? ((machine.store as Record<string, any>)?.[fkCollection]?.getAll() ?? []) : []);
+    const fkLabel  = $derived((() => {
+        if (!fkCollection || internalValue === undefined || internalValue === null) return '—';
+        const item = (fkItems as Record<string, unknown>[]).find(i => i[fkIndexField] === internalValue);
+        if (!item) return String(internalValue);
+        const label = fkPresentationFields
+            .map((f: string) => item[f])
+            .filter((v: unknown) => v !== undefined && v !== null && v !== '')
+            .join(' ');
+        return label || String(item[fkIndexField] ?? '—');
+    })());
+
     // Internal value — bidirectional sync
     let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
@@ -79,8 +101,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     <div class="flex w-48 gap-2">
         <div class="flex-1" {...inputDataset}>
             {#if fkCollection}
-                <!-- FK show: display from related store if available -->
-                {internalValue ?? '—'}
+                {fkLabel}
             {:else}
                 {fieldForge.format}
             {/if}

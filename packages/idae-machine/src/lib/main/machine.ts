@@ -1,6 +1,8 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
+import { machineRights } from '$lib/main/machine/MachineRights.js';
+import type { AppUser, AppUserGrant } from '$lib/main/types/schema-types.js';
 
 /**
  * @class Machine
@@ -264,6 +266,22 @@ export class Machine {
 		this._router.init(schemes);
 		
 		return this._router;
+	}
+
+	/**
+	 * Set the current authenticated user and their grants.
+	 * Enables access control — all #checkAccess() calls will use this user.
+	 * Pass null to deny all non-admin access.
+	 */
+	setCurrentUser(user: AppUser | null, grants: AppUserGrant[] = []): void {
+		machineRights.setCurrentUser(user, grants);
+	}
+
+	/**
+	 * Clear the current user and return to open mode (all access allowed).
+	 */
+	clearCurrentUser(): void {
+		machineRights.clearCurrentUser();
 	}
 
 	/**

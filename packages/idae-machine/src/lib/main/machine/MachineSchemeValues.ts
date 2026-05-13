@@ -2,6 +2,8 @@ import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
+import { machineRights } from '$lib/main/machine/MachineRights.js';
 /**
  * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
@@ -118,19 +120,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			if (!fieldInfo) {
 				return String(data[fieldName]);
 			}
-			switch (fieldInfo.fieldType as string) {
-				case 'number':
-					return this.#formatNumberField(data[fieldName] as number);
-				case 'text':
-				case 'text-tiny':
-				case 'text-short':
-				case 'text-medium':
-				case 'text-long':
-				case 'text-giant':
-					return this.#formatTextField(data[fieldName], fieldInfo.fieldType as string);
-				default:
-					return String(data[fieldName]);
-			}
+			return MachineSchemeFieldType.format(data[fieldName], fieldInfo.fieldType as string);
 		} catch (error) {
 			MachineError.handleError(error);
 			return '';
@@ -243,48 +233,6 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	}
 
 	/**
-	 * Internal: Format a number field for display.
-	 * @param value The number value.
-	 * @returns The formatted string.
-	 */
-	/**
-	 * Internal: Format a number field for display.
-	 * @role Number formatting
-	 * @param {number} value The number value.
-	 * @return {string} The formatted string.
-	 */
-	#formatNumberField(value: number): string {
-		// Implement number formatting logic here
-		return value.toString();
-	}
-
-	/**
-	 * Internal: Format a text field for display, with length limits by type.
-	 * @param value The string value.
-	 * @param type The text type (e.g. 'text-short').
-	 * @returns The formatted string.
-	 */
-	/**
-	 * Internal: Format a text field for display, with length limits by type.
-	 * @role Text formatting
-	 * @param {unknown} value The string value.
-	 * @param {string} type The text type (e.g. 'text-short').
-	 * @return {string} The formatted string.
-	 */
-	#formatTextField(value: unknown, type: string): string {
-		const lengths = {
-			'text-tiny':   10,
-			'text-short':  20,
-			'text-medium': 30,
-			'text-long':   40,
-			'text-giant':  50
-		};
-		const str = typeof value === 'string' ? value : String(value ?? '');
-		const maxLength = lengths[type as keyof typeof lengths] || str.length;
-		return str.substring(0, maxLength);
-	}
-
-	/**
 	 * Internal: Check if access is allowed (override for custom logic).
 	 * @returns True if access is allowed.
 	 */
@@ -294,8 +242,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 * @return {boolean} True if access is allowed.
 	 */
 	#checkAccess(): boolean {
-		// Implement access check logic here
-		return true;
+		return machineRights.checkAccess(this.collectionName, 'R');
 	}
 
 	/**

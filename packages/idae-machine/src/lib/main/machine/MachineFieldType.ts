@@ -97,7 +97,8 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	date:     {
 		id:        defaultTypes.date,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(value as string | number | Date);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleDateString();
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);
@@ -107,7 +108,8 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	datetime: {
 		id:        defaultTypes.datetime,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(value as string | number | Date);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleString();
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);
@@ -117,7 +119,8 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	time:     {
 		id:        defaultTypes.time,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(`1970-01-01T${value}`);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleTimeString();
 		},
 		validator: (value: unknown) => {
 			const date = new Date(value as any);
@@ -129,6 +132,12 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 		formatter: (value: unknown) => String(value),
 		validator: (value: unknown) => true
 	},
+	'text-tiny':   { id: 'text-tiny',   formatter: (v: unknown) => String(v ?? '').substring(0, 10),  validator: () => true },
+	'text-short':  { id: 'text-short',  formatter: (v: unknown) => String(v ?? '').substring(0, 20),  validator: () => true },
+	'text-medium': { id: 'text-medium', formatter: (v: unknown) => String(v ?? '').substring(0, 30),  validator: () => true },
+	'text-long':   { id: 'text-long',   formatter: (v: unknown) => String(v ?? '').substring(0, 40),  validator: () => true },
+	'text-area':   { id: 'text-area',   formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
+	'text-giant':  { id: 'text-giant',  formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
 	number:   {
 		id:        defaultTypes.number,
 		formatter: (value: unknown) => Number(value as any),
@@ -263,6 +272,15 @@ class MachineFieldType {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Format a value using the registered formatter for the given type id.
+	 * Falls back to String(value) if type not found.
+	 */
+	format(value: unknown, typeId: FieldTypeId): string {
+		const formatted = this.getFieldType(typeId)?.formatter(value);
+		return formatted !== undefined ? String(formatted) : String(value);
 	}
 
 	/**

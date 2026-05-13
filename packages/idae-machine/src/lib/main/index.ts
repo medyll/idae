@@ -8,6 +8,9 @@ export { MachineParserForge } from './machineParserForge.js';
 // Schema builder helpers
 export { field } from './machine/fieldBuilder.js';
 
+// Rights / RBAC
+export { machineRights } from './machine/MachineRights.js';
+
 // Types
 export * from './types/index.js';
 
