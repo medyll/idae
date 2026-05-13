@@ -1,62 +1,48 @@
-// auto exports of entry components
-export * from '$lib/cli/add-skill.js';
-export * from '$lib/contexts/collection-context.js';
-export * from '$lib/data/DataForm.svelte.spec.js';
-export * from '$lib/demo/analyzeDemo.js';
-export { default as CollectionCard } from '$lib/demo/CollectionCard.svelte';
-export { default as CollectionTable } from '$lib/demo/CollectionTable.svelte';
-export * from '$lib/demo/demoInit.js';
-export * from '$lib/demo/seedData.js';
-// testScheme: bootstrap only — use src/lib/bootstrap/testScheme.ts for seeding
-export * from '$lib/form/types.js';
-export { default as CollectionList } from '$lib/main-ui/collection/CollectionList.svelte';
-export { default as DataLinks } from '$lib/main-ui/data/DataLinks.svelte';
-export { default as DataLinksBack } from '$lib/main-ui/data/DataLinksBack.svelte';
-export { default as DataPicker } from '$lib/main-ui/data/DataPicker.svelte';
-export { default as DataProvider } from '$lib/main-ui/data/DataProvider.svelte';
+// idae-machine v2 — public API
+
+// Core machine
+export * from '$lib/main/index.js';
+
+// UI — explorer (collection level)
+export { default as ExplorerCollections } from '$lib/main-ui/explorer/ExplorerCollections.svelte';
+export { default as ExplorerList }        from '$lib/main-ui/explorer/ExplorerList.svelte';
+export { default as ExplorerCard }        from '$lib/main-ui/explorer/ExplorerCard.svelte';
+export { default as ExplorerTable }       from '$lib/main-ui/explorer/ExplorerTable.svelte';
+export { default as ExplorerActions }     from '$lib/main-ui/explorer/ExplorerActions.svelte';
+export { default as ExplorerFilter }      from '$lib/main-ui/explorer/ExplorerFilter.svelte';
+
+// UI — card (record level)
+export { default as CardForm }     from '$lib/main-ui/card/CardForm.svelte';
+export { default as CardCreate }   from '$lib/main-ui/card/CardCreate.svelte';
+export { default as CardEdit }     from '$lib/main-ui/card/CardEdit.svelte';
+export { default as CardFields }   from '$lib/main-ui/card/CardFields.svelte';
+export { default as CardProvider } from '$lib/main-ui/card/CardProvider.svelte';
+export { default as CardPicker }   from '$lib/main-ui/card/CardPicker.svelte';
+export { default as CardFk }       from '$lib/main-ui/card/CardFk.svelte';
+export { default as CardRfk }      from '$lib/main-ui/card/CardRfk.svelte';
+
+// UI — field (atomic display/edit)
 export { default as FieldDisplay } from '$lib/main-ui/field/FieldDisplay.svelte';
-export { default as FieldEditor } from '$lib/main-ui/field/FieldEditor.svelte';
-export { default as DataCreate } from '$lib/main-ui/forms/DataCreate.svelte';
-export { default as DataEdit } from '$lib/main-ui/forms/DataEdit.svelte';
-export { default as DataForm } from '$lib/main-ui/forms/DataForm.svelte';
-export { default as FieldCurrency } from '$lib/main-ui/forms/FieldCurrency.svelte';
-export { default as FieldEmail } from '$lib/main-ui/forms/FieldEmail.svelte';
-export { default as Confirm } from '$lib/main-ui/fragments/Confirm.svelte';
-export { default as Frame } from '$lib/main-ui/fragments/Frame.svelte';
+export { default as FieldEditor }  from '$lib/main-ui/field/FieldEditor.svelte';
+
+// UI — input atoms
+export { default as InputBoolean }  from '$lib/main-ui/input/InputBoolean.svelte';
+export { default as InputCurrency } from '$lib/main-ui/input/InputCurrency.svelte';
+export { default as InputEmail }    from '$lib/main-ui/input/InputEmail.svelte';
+export { default as InputSelect }   from '$lib/main-ui/input/InputSelect.svelte';
+export { default as InputTextarea } from '$lib/main-ui/input/InputTextarea.svelte';
+
+// UI — layout
+export { default as AppShell }   from '$lib/main-ui/layout/AppShell.svelte';
+export { default as Navigation } from '$lib/main-ui/layout/Navigation.svelte';
+export { default as Breadcrumb } from '$lib/main-ui/layout/Breadcrumb.svelte';
+
+// UI — fragments
+export { default as Confirm }  from '$lib/main-ui/fragments/Confirm.svelte';
+export { default as Frame }    from '$lib/main-ui/fragments/Frame.svelte';
 export { default as InfoLine } from '$lib/main-ui/fragments/InfoLine.svelte';
 export { default as Selector } from '$lib/main-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/main-ui/fragments/Skeleton.svelte';
-export { default as AppShell } from '$lib/main-ui/layout/AppShell.svelte';
-export { default as Breadcrumb } from '$lib/main-ui/layout/Breadcrumb.svelte';
-export { default as Navigation } from '$lib/main-ui/layout/Navigation.svelte';
-export { default as CollectionCard } from '$lib/main-ui/lists/CollectionCard.svelte';
-export { default as CollectionTable } from '$lib/main-ui/lists/CollectionTable.svelte';
-export { default as DataList } from '$lib/main-ui/lists/DataList.svelte';
-export { default as DataListActions } from '$lib/main-ui/lists/DataListActions.svelte';
-export { default as DataListFields } from '$lib/main-ui/lists/DataListFields.svelte';
-export { default as FilterBar } from '$lib/main-ui/lists/FilterBar.svelte';
-export * from '$lib/main/api/__tests__/MachineApi.spec.js';
-export * from '$lib/main/api/__tests__/RealtimeClient.spec.js';
-export * from '$lib/main/api/errors.js';
-export * from '$lib/main/api/MachineApi.js';
-export * from '$lib/main/api/RealtimeClient.js';
-export * from '$lib/main/api/types.js';
-export * from '$lib/main/machine.js';
-export * from '$lib/main/machine/MachineError.js';
-export * from '$lib/main/machine/MachineErrorValidation.js';
-export * from '$lib/main/machine/MachineFieldType.js';
-export * from '$lib/main/machine/MachineScheme.js';
-export * from '$lib/main/machine/MachineSchemeFieldForge.js';
-export * from '$lib/main/machine/MachineSchemeFieldValues.js';
-export * from '$lib/main/machine/MachineSchemeValidate.js';
-export * from '$lib/main/machine/MachineSchemeValues.js';
-export * from '$lib/main/machine/SchemeFieldDefaultValues.js';
-export * from '$lib/main/machineDb.js';
-export * from '$lib/main/machineParserForge.js';
-export * from '$lib/main/multi-base/MachineMultiBase.js';
-export * from '$lib/main/router/SchemaRouter.js';
-export * from '$lib/main/sync/__tests__/ConflictResolver.spec.js';
-export * from '$lib/main/sync/ConflictResolver.js';
-export * from '$lib/main/types/idae-model-core.js';
-export * from '$lib/main/types/schema-types.js';
+
+// Utils
 export * from '$lib/utils/logger.js';

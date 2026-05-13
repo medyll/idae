@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate';
-import { MachineDb } from '$lib/main/machineDb';
+import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';
+import { MachineDb } from '$lib/main/machineDb.js';
 
 /**
  * Integration tests for CreateUpdate component

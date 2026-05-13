@@ -63,7 +63,7 @@ Collection record list with machine store binding.
 	$inspect('ExplorerList', { collection, query, errorMessage });
 
 	function load(item: COL, indexV: number | string) {
-		openCrud(item[index]);
+		openCrud((item as any)[index]);
 	}
 
 	function openCrud(id: string | number) {

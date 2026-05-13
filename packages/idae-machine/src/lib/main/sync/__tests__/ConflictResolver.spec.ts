@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { ConflictResolver, createConflictResolver } from '../ConflictResolver';
+import { ConflictResolver, createConflictResolver } from '../ConflictResolver.js';
 
 describe('ConflictResolver', () => {
 	describe('constructor', () => {

@@ -1,13 +1,13 @@
 import type {
 	TplCollectionName,
 	TplFieldRules,
-	TplFieldRulesObject,
 	TplFieldType,
 	TplProperties,
 	TplFieldArgs,
 	TplFields,
 	IDbForge
 } from '@medyll/idae-idbql';
+type TplFieldRulesObject = TplFieldRules;
 import type { MachineDb } from './machineDb.js';
 import { MachineError } from './machine/MachineError.js';
 
@@ -76,7 +76,8 @@ export class MachineParserForge {
 		what: 'array' | 'object' | 'fk' | 'primitive',
 		rule: TplFieldRulesObject
 	): Partial<IDbForge> | undefined {
-		const type = rule.type as string;
+		const r = rule as any;
+		const type = r.type as string;
 		const isArray     = type.startsWith('array-of-');
 		const isObject    = type.startsWith('object-');
 		const isFk        = type.startsWith('fk-');
@@ -99,10 +100,11 @@ export class MachineParserForge {
 	 * Extract fieldArgs array from an object rule's boolean flags.
 	 */
 	#argsFromObject(rule: TplFieldRulesObject): string[] | undefined {
+		const r = rule as any;
 		const args: string[] = [];
-		if (rule.required) args.push('required');
-		if (rule.readonly) args.push('readonly');
-		if (rule.private)  args.push('private');
+		if (r.required) args.push('required');
+		if (r.readonly) args.push('readonly');
+		if (r.private)  args.push('private');
 		return args.length ? args : undefined;
 	}
 

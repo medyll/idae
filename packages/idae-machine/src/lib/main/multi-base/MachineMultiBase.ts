@@ -10,7 +10,7 @@
 
 import { createMultiDbQoolie, type MultiDbManager } from '@medyll/qoolie';
 import type { QoolieCollection } from '@medyll/qoolie';
-import type { AppScheme } from './schema-types.js';
+import type { AppScheme } from '../types/schema-types.js';
 
 export interface MachineMultiBaseConfig {
 	/** Database name prefix (e.g., 'idae', 'appblog') */
@@ -111,7 +111,7 @@ export class MachineMultiBase {
 	 */
 	table(tableRef: string): QoolieCollection<any> {
 		const { base, collection } = parseTableRef(tableRef);
-		
+
 		// Track collection registration (enforces unique names across bases)
 		const existingBase = this.collectionRegistry.get(collection);
 		if (existingBase && existingBase !== base) {
@@ -121,8 +121,8 @@ export class MachineMultiBase {
 			);
 		}
 		this.collectionRegistry.set(collection, base);
-		
-		return this.multiDb.get(base).collection[collection];
+
+		return this.multiDb.get(base).collection[collection] as QoolieCollection<any>;
 	}
 	
 	/**

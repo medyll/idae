@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate';
+import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';
 
 /**
  * Performance Benchmarks for CreateUpdate Component

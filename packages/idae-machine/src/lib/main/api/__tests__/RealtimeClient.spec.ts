@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { RealtimeClient } from '../RealtimeClient';
+import { RealtimeClient } from '../RealtimeClient.js';
 
 // Mock socket.io-client
 vi.mock('socket.io-client', () => {

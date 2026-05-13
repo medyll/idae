@@ -1,5 +1,5 @@
-import { seed } from './seedData';
-import { analyzeDemo } from './analyzeDemo';
+import { seed } from './seedData.js';
+import { analyzeDemo } from './analyzeDemo.js';
 import type { IdbqModel } from '@medyll/idae-idbql';
 
 type IdbqlStore = Record<string, { count(): Promise<number>; add(item: unknown): Promise<unknown> } | undefined>;

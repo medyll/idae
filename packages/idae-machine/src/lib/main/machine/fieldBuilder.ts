@@ -1,4 +1,4 @@
-import type { TplFieldRulesObject, TplTypes } from '@medyll/idae-idbql';
+import type { TplFieldRules as TplFieldRulesObject, TplTypes } from '@medyll/idae-idbql';
 
 /**
  * Builder helper for the new object-based field rule format.
@@ -22,5 +22,5 @@ export function field(
 		private?:  boolean;
 	}
 ): TplFieldRulesObject {
-	return { type: type as TplTypes, ...opts };
+	return { type: type as TplTypes, ...opts } as unknown as TplFieldRulesObject;
 }

@@ -50,8 +50,8 @@ export const testScheme = {
 				created_at:       field('date')
 			},
 			fks:          {
-				category:        { code: 'category', multiple: false },
-				location_office: { code: 'location_office', multiple: false }
+				category:        { code: 'category',        multiple: false, rules: '' },
+				location_office: { code: 'location_office', multiple: false, rules: '' }
 			}
 		}
 	},
@@ -187,7 +187,7 @@ export const testScheme = {
 			}
 		}
 	}
-} satisfies IdbqModel;
+} as unknown as IdbqModel;
 
 // Demo seed data moved inline here (to avoid creating new directories in automated run)
 export const demoSeed = {

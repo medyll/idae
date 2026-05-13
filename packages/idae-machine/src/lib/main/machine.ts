@@ -290,7 +290,7 @@ export class Machine {
 			});
 			
 			// Initialize with schemas from MachineDb
-			const schemes = this.logic.schemes;
+			const schemes = this.logic.collections();
 			this._router.init(schemes);
 		}
 		return this._router;
@@ -315,7 +315,7 @@ export class Machine {
 		});
 		
 		// Initialize with schemas
-		const schemes = this.logic.schemes;
+		const schemes = this.logic.collections();
 		this._router.init(schemes);
 		
 		return this._router;

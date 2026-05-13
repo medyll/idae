@@ -15,7 +15,11 @@ export { machineRights } from './machine/MachineRights.js';
 export * from './types/index.js';
 
 // API (v2 features)
-export * from './api/index.js';
+export { MachineApi, createMachineApi } from './api/MachineApi.js';
+export type { MachineApiOptions } from './api/MachineApi.js';
+export { RealtimeClient, createRealtimeClient } from './api/RealtimeClient.js';
+export { MachineApiError, NetworkError } from './api/errors.js';
+export type { HealthResponse, SchemesResponse } from './api/types.js';
 
 // Sync (v2 features)
 export * from './sync/index.js';

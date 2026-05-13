@@ -19,7 +19,7 @@ Menu list of collection records with action handling.
 	let { collection, target, data, menuListProps, onclick, style, where } = $props<{ collection: string; target?: string; data?: COL[]; menuListProps?: MenuListProps; style?: string; where?: Where<COL>; onclick?: (event: CustomEvent, index: number) => void }>();
 	let items = $derived(data ?? []);
 	function load(event: CustomEvent, indexV: number) {
-		openCrud(event[indexV]);
+		openCrud((event as any)[indexV]);
 	}
 	function openCrud(id: string | number) {
 		let mounted = hydrate(CardForm, {

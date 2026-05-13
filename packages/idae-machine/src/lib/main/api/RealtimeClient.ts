@@ -1,3 +1,4 @@
+// @ts-expect-error socket.io-client resolved transitively via idae-socket
 import { io, type Socket } from 'socket.io-client';
 import { logger } from '../../utils/logger.js';
 
@@ -8,7 +9,7 @@ export class RealtimeClient {
 	private socket: Socket | null = null;
 	private subscribedTables: Set<string> = new Set();
 	private eventHandlers: Map<string, Set<(data: unknown) => void>> = new Map();
-	private baseUrl: string;
+	protected baseUrl: string;
 	private connected = false;
 
 	constructor(baseUrl: string) {
@@ -47,7 +48,7 @@ export class RealtimeClient {
 				logger.warn('🔌 Disconnected from real-time server');
 			});
 
-			this.socket.on('connect_error', (error) => {
+			this.socket.on('connect_error', (error: unknown) => {
 				logger.error('Real-time connection error:', error);
 				reject(error);
 			});
@@ -67,7 +68,7 @@ export class RealtimeClient {
 		const events = ['data:created', 'data:updated', 'data:deleted'];
 
 		events.forEach((event) => {
-			this.socket!.on(event, (payload) => {
+			this.socket!.on(event, (payload: unknown) => {
 				logger.debug(`📩 Received ${event}:`, payload);
 
 				// Call registered handlers
