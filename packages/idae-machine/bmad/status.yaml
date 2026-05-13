@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 90
+progress: 95
 last_updated: "2026-05-13"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "All tests pass. Fix 149 pre-existing TypeScript errors (pnpm run check)."
+next_action: "TypeScript errors fixed: 152 → 3 (skiller external only). Ready for release prep."
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -259,7 +259,7 @@ sprints:
 qa:
   bugs: []
   pending:
-    - "149 pre-existing TypeScript errors (pnpm run check)"
+    - "3 TypeScript errors remain in skiller external package (not idae-machine code)"
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt from: git log, package.json, server/ structure, bmad/artifacts/

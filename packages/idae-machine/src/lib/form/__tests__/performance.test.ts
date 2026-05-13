@@ -147,7 +147,7 @@ describe('Performance Benchmarks', () => {
 
 			validator.registerCrossField({
 				fields:    ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
+				validator: (data) => new Date(data.endDate as string) > new Date(data.startDate as string)
 			});
 
 			const formData = {

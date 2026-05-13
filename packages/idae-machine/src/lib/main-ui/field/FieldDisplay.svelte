@@ -38,12 +38,12 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     } = $props();
 
     function safeScheme() {
-        try { return machine.logic.collection(collection); } catch { return null; }
+        try { return collection ? machine.logic.collection(collection) : null; } catch { return null; }
     }
     const scheme             = $derived(safeScheme());
     const fieldForge         = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
     const schemeFieldValues  = $derived(scheme?.collectionValues ?? null);
-    const inputDataset       = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(fieldName, data ?? {}) : {});
+    const inputDataset       = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(String(fieldName) as any, data ?? {}) : {});
 
     const isPrivate      = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
     const labelPosition  = $derived(
@@ -67,6 +67,10 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     const fkPresentationFields = $derived(
         (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
     );
+    // Internal value — bidirectional sync (declared before fkLabel which uses it)
+    let internalValue = $state<unknown>(undefined);
+    let error = $state<string | null>(null);
+
     const fkItems  = $derived(fkCollection ? ((machine.store as Record<string, any>)?.[fkCollection]?.getAll() ?? []) : []);
     const fkLabel  = $derived((() => {
         if (!fkCollection || internalValue === undefined || internalValue === null) return '—';
@@ -78,10 +82,6 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             .join(' ');
         return label || String(item[fkIndexField] ?? '—');
     })());
-
-    // Internal value — bidirectional sync
-    let internalValue = $state<unknown>(undefined);
-    let error = $state<string | null>(null);
 
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
@@ -127,16 +127,16 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <InputSelect
             bind:value={internalValue}
             collection={fkCollection}
-            id={fieldName}
-            name={fieldName}
+            id={String(fieldName)}
+            name={String(fieldName)}
             form={inputForm}
         />
 
     {:else if fieldForge?.fieldType === 'boolean'}
         <InputBoolean
             bind:value={internalValue as boolean}
-            id={fieldName}
-            name={fieldName}
+            id={String(fieldName)}
+            name={String(fieldName)}
             form={inputForm}
         />
 
@@ -144,22 +144,22 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <InputEmail
             value={internalValue as string}
             error={error}
-            id={fieldName}
+            id={String(fieldName)}
             oninput={(e: Event) => updateValue((e.target as HTMLInputElement).value)}
         />
 
-    {:else if fieldForge.fieldType === 'currency'}
+    {:else if (fieldForge?.fieldType as string) === 'currency'}
         <InputCurrency
             value={internalValue as number}
             error={error}
         />
 
-    {:else if fieldForge.fieldType?.includes('area')}
+    {:else if fieldForge?.fieldType?.includes('area')}
         <InputTextarea
             bind:value={internalValue as string}
             rows={4}
-            id={fieldName}
-            name={fieldName}
+            id={String(fieldName)}
+            name={String(fieldName)}
             form={inputForm}
         />
 
@@ -170,8 +170,8 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             value={internalValue}
             type={fieldForge?.htmlInputType}
             {...inputDataset}
-            id={fieldName}
-            name={fieldName}
+            id={String(fieldName)}
+            name={String(fieldName)}
             form={inputForm}
             oninput={(e: Event) => updateValue((e.target as HTMLInputElement).value)}
         />

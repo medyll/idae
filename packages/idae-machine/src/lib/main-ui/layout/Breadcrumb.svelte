@@ -17,7 +17,7 @@
 	function buildBreadcrumbs() {
 		const path = page.url.pathname;
 		const parts = path.split('/').filter(Boolean);
-		const crumbs = [{ label: 'Home', href: '/' }];
+		const crumbs: { label: string; href?: string }[] = [{ label: 'Home', href: '/' }];
 
 		if (parts.length === 0) return crumbs;
 
