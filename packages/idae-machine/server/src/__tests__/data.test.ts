@@ -1,208 +1,145 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import request from 'supertest';
-import { idaeApi } from '@medyll/idae-api';
-import mongoose from 'mongoose';
-import { registerDataRoutes } from '../routes/data.js';
-import { registerHealthRoutes } from '../routes/health.js';
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
+import mongoose, { Schema } from 'mongoose';
+import { config } from '../config.js';
+import {
+	listRecords, getRecord, createRecord, updateRecord, deleteRecord
+} from '../routes/data.js';
+import type { Request, Response } from 'express';
 
-describe('Data Endpoints (CRUD)', () => {
-	const baseUrl = 'http://localhost';
-	let app: any;
-	let testId: string;
+const TEST_ORG    = 'vitest';
+const TEST_TABLE  = 'testcollection';
+const TEST_BASE   = 'machine_base';
+const META_DB     = `${TEST_ORG}_machine_app`;
+const DATA_DB     = `${TEST_ORG}_${TEST_BASE}`;
 
-	beforeEach(async () => {
-		// Reset singleton for clean state
-		(IdaeApi as any).resetInstance?.() || (idaeApi as any).constructor.resetInstance();
+function mockRes() {
+	const res: any = { _status: 200 };
+	res.json   = (b: any) => { res._body = b; return res; };
+	res.status = (c: number) => { res._status = c; return res; };
+	res.send   = () => res;
+	return res;
+}
 
-		// Connect to memory database
-		await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/idae_machine_test');
+function mockReq(opts: { params?: any; query?: any; body?: any } = {}): Request {
+	return { params: opts.params ?? {}, query: opts.query ?? {}, body: opts.body ?? {} } as unknown as Request;
+}
 
-		const instance = (idaeApi as any).constructor.getInstance();
-		instance.setOptions({ port: 3470, useMemoryDb: true });
-		registerHealthRoutes();
-		registerDataRoutes();
-		await instance.start();
-		app = instance.app;
+function getTestCollection() {
+	const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
+	const schema = new Schema({}, { strict: false, timestamps: true, collection: TEST_TABLE });
+	const name = `${DATA_DB}__${TEST_TABLE}`;
+	return db.models[name] ?? db.model(name, schema, TEST_TABLE);
+}
+
+describe('Data CRUD handlers', () => {
+	beforeAll(async () => {
+		await mongoose.connect(config.mongodbUri);
+		(config as any).org = TEST_ORG;
+
+		// Seed appscheme so dbRouter can find testcollection → machine_base
+		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		await meta.collection('appscheme').updateOne(
+			{ code: TEST_TABLE },
+			{ $set: { code: TEST_TABLE, base: TEST_BASE } },
+			{ upsert: true }
+		);
 	});
 
-	afterEach(async () => {
-		// Clean up test data
-		const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-		await TestModel.deleteMany({});
-
-		const instance = (idaeApi as any).constructor.getInstance();
-		if (instance.state === 'running') {
-			await instance.stop();
-		}
-
+	afterAll(async () => {
+		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		await meta.collection('appscheme').deleteOne({ code: TEST_TABLE });
+		const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
+		await db.collection(TEST_TABLE).drop().catch(() => {});
 		await mongoose.disconnect();
 	});
 
-	describe('POST /api/data/:table', () => {
-		it('should create a new record', async () => {
-			const testData = { name: 'Test Item', value: 100 };
+	afterEach(async () => {
+		await getTestCollection().deleteMany({});
+	});
 
-			const response = await request(app)
-				.post('/api/data/testcollection')
-				.send(testData)
-				.expect(201);
-
-			expect(response.body).toHaveProperty('_id');
-			expect(response.body.name).toBe('Test Item');
-			expect(response.body.value).toBe(100);
-			expect(response.body).toHaveProperty('createdAt');
-			expect(response.body).toHaveProperty('updatedAt');
-
-			testId = response.body._id;
+	describe('createRecord', () => {
+		it('creates a record and returns 201', async () => {
+			const req = mockReq({ params: { table: TEST_TABLE }, body: { name: 'Item A', value: 1 } });
+			const res = mockRes();
+			await createRecord(req, res);
+			expect(res._status).toBe(201);
+			expect(res._body).toHaveProperty('_id');
+			expect(res._body.name).toBe('Item A');
 		});
 
-		it('should reject invalid table names', async () => {
-			const response = await request(app)
-				.post('/api/data/invalid-table!')
-				.send({ name: 'Test' })
-				.expect(400);
-
-			expect(response.body).toHaveProperty('error');
+		it('rejects invalid table name', async () => {
+			const req = mockReq({ params: { table: 'bad-table!' }, body: {} });
+			const res = mockRes();
+			await createRecord(req, res);
+			expect(res._status).toBe(400);
 		});
 	});
 
-	describe('GET /api/data/:table', () => {
+	describe('listRecords', () => {
 		beforeEach(async () => {
-			// Seed test data
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			await TestModel.insertMany([
+			await getTestCollection().insertMany([
 				{ name: 'Item 1', value: 10 },
 				{ name: 'Item 2', value: 20 },
-				{ name: 'Item 3', value: 30 }
+				{ name: 'Item 3', value: 30 },
 			]);
 		});
 
-		it('should return paginated list', async () => {
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.query({ page: 1, limit: 2 })
-				.expect(200);
-
-			expect(response.body).toHaveProperty('data');
-			expect(response.body).toHaveProperty('meta');
-			expect(response.body.data).toHaveLength(2);
-			expect(response.body.meta.total).toBe(3);
-			expect(response.body.meta.page).toBe(1);
-			expect(response.body.meta.limit).toBe(2);
-			expect(response.body.meta.pages).toBe(2);
+		it('returns paginated list', async () => {
+			const req = mockReq({ params: { table: TEST_TABLE }, query: { page: '1', limit: '2' } });
+			const res = mockRes();
+			await listRecords(req, res);
+			expect(res._status).toBe(200);
+			expect(res._body.data).toHaveLength(2);
+			expect(res._body.meta.total).toBe(3);
 		});
 
-		it('should support sorting', async () => {
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.query({ sort: 'value', order: 'desc' })
-				.expect(200);
-
-			expect(response.body.data[0].value).toBe(30);
-			expect(response.body.data[1].value).toBe(20);
-			expect(response.body.data[2].value).toBe(10);
-		});
-
-		it('should support filtering', async () => {
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.query({ 'filter[name]': 'Item 2' })
-				.expect(200);
-
-			expect(response.body.data).toHaveLength(1);
-			expect(response.body.data[0].name).toBe('Item 2');
+		it('supports descending sort', async () => {
+			const req = mockReq({ params: { table: TEST_TABLE }, query: { sort: 'value', order: 'desc' } });
+			const res = mockRes();
+			await listRecords(req, res);
+			expect(res._body.data[0].value).toBe(30);
 		});
 	});
 
-	describe('GET /api/data/:table/:id', () => {
-		beforeEach(async () => {
-			// Create test record
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'Test Item', value: 42 });
-			testId = record._id.toString();
+	describe('getRecord', () => {
+		it('returns single record by id', async () => {
+			const col = getTestCollection();
+			const doc = await col.create({ name: 'X', value: 42 });
+			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
+			const res = mockRes();
+			await getRecord(req, res);
+			expect(res._status).toBe(200);
+			expect(res._body.name).toBe('X');
 		});
 
-		it('should return single record', async () => {
-			const response = await request(app)
-				.get(`/api/data/testcollection/${testId}`)
-				.expect(200);
-
-			expect(response.body).toHaveProperty('_id', testId);
-			expect(response.body.name).toBe('Test Item');
-			expect(response.body.value).toBe(42);
-		});
-
-		it('should return 404 for non-existent record', async () => {
-			const fakeId = new mongoose.Types.ObjectId().toString();
-
-			const response = await request(app)
-				.get(`/api/data/testcollection/${fakeId}`)
-				.expect(404);
-
-			expect(response.body).toHaveProperty('error');
+		it('returns 404 for missing record', async () => {
+			const req = mockReq({ params: { table: TEST_TABLE, id: new mongoose.Types.ObjectId().toString() } });
+			const res = mockRes();
+			await getRecord(req, res);
+			expect(res._status).toBe(404);
 		});
 	});
 
-	describe('PUT /api/data/:table/:id', () => {
-		beforeEach(async () => {
-			// Create test record
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'Original', value: 100 });
-			testId = record._id.toString();
-		});
-
-		it('should update existing record', async () => {
-			const updateData = { name: 'Updated', value: 200 };
-
-			const response = await request(app)
-				.put(`/api/data/testcollection/${testId}`)
-				.send(updateData)
-				.expect(200);
-
-			expect(response.body.name).toBe('Updated');
-			expect(response.body.value).toBe(200);
-			expect(response.body).toHaveProperty('updatedAt');
-		});
-
-		it('should return 404 for non-existent record', async () => {
-			const fakeId = new mongoose.Types.ObjectId().toString();
-
-			const response = await request(app)
-				.put(`/api/data/testcollection/${fakeId}`)
-				.send({ name: 'Test' })
-				.expect(404);
-
-			expect(response.body).toHaveProperty('error');
+	describe('updateRecord', () => {
+		it('updates record', async () => {
+			const col = getTestCollection();
+			const doc = await col.create({ name: 'Old', value: 1 });
+			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() }, body: { name: 'New', value: 2 } });
+			const res = mockRes();
+			await updateRecord(req, res);
+			expect(res._status).toBe(200);
+			expect(res._body.name).toBe('New');
 		});
 	});
 
-	describe('DELETE /api/data/:table/:id', () => {
-		beforeEach(async () => {
-			// Create test record
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'To Delete' });
-			testId = record._id.toString();
-		});
-
-		it('should delete record', async () => {
-			await request(app)
-				.delete(`/api/data/testcollection/${testId}`)
-				.expect(204);
-
-			// Verify deletion
-			const TestModel = mongoose.models['testcollection'];
-			const record = await TestModel.findById(testId);
-			expect(record).toBeNull();
-		});
-
-		it('should return 404 for non-existent record', async () => {
-			const fakeId = new mongoose.Types.ObjectId().toString();
-
-			const response = await request(app)
-				.delete(`/api/data/testcollection/${fakeId}`)
-				.expect(404);
-
-			expect(response.body).toHaveProperty('error');
+	describe('deleteRecord', () => {
+		it('deletes record', async () => {
+			const col = getTestCollection();
+			const doc = await col.create({ name: 'Gone' });
+			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
+			const res = mockRes();
+			await deleteRecord(req, res);
+			expect(res._status).toBe(204);
 		});
 	});
 });

@@ -1,130 +1,77 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import request from 'supertest';
-import { idaeApi } from '@medyll/idae-api';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import mongoose from 'mongoose';
-import { registerSchemeRoutes } from '../routes/scheme.js';
-import { registerHealthRoutes } from '../routes/health.js';
-import { AppScheme } from '../models/AppScheme.js';
+import { config } from '../config.js';
+import { getAllSchemes, getScheme } from '../routes/scheme.js';
+import type { Request, Response } from 'express';
 
-describe('Scheme Endpoints', () => {
-	beforeEach(async () => {
-		// Reset singleton for clean state
-		(IdaeApi as any).resetInstance?.() || (idaeApi as any).constructor.resetInstance();
+const TEST_ORG = 'vitest';
 
-		// Connect to memory database
-		await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/idae_machine_test');
+function mockRes() {
+	const res: any = {};
+	res.json    = (body: any) => { res._body = body; res._status = res._status ?? 200; return res; };
+	res.status  = (code: number) => { res._status = code; return res; };
+	return res;
+}
+
+function mockReq(params: Record<string, string> = {}): Request {
+	return { params } as unknown as Request;
+}
+
+describe('GET /api/scheme', () => {
+	const META_DB = `${TEST_ORG}_machine_app`;
+
+	beforeAll(async () => {
+		await mongoose.connect(config.mongodbUri);
+		// Set config org to our test org
+		(config as any).org = TEST_ORG;
+
+		const db = mongoose.connection.useDb(META_DB, { useCache: true });
+		await db.collection('appscheme_base').insertOne({ code: 'machine_base', name: 'Base' });
+		await db.collection('appscheme').insertOne({
+			code: 'vehicle', base: 'machine_base', index: 'id', presentation: 'id', keyPath: '++id'
+		});
+		await db.collection('appscheme_field').insertMany([
+			{ collection: 'vehicle', name: 'id',    type: 'id',   readonly: true,  required: false, private: false },
+			{ collection: 'vehicle', name: 'brand', type: 'text', readonly: false, required: true,  private: false },
+		]);
 	});
 
-	afterEach(async () => {
-		// Clean up test data
-		await AppScheme.deleteMany({});
-
-		const instance = (idaeApi as any).constructor.getInstance();
-		if (instance.state === 'running') {
-			await instance.stop();
-		}
-
+	afterAll(async () => {
+		const db = mongoose.connection.useDb(META_DB, { useCache: true });
+		await db.collection('appscheme_base').deleteMany({ code: 'machine_base' });
+		await db.collection('appscheme').deleteMany({ code: 'vehicle' });
+		await db.collection('appscheme_field').deleteMany({ collection: 'vehicle' });
 		await mongoose.disconnect();
 	});
 
-	describe('GET /api/scheme', () => {
-		it('should return empty array when no schemes exist', async () => {
-			const instance = (idaeApi as any).constructor.getInstance();
-			instance.setOptions({ port: 3457, useMemoryDb: true });
-			registerHealthRoutes();
-			registerSchemeRoutes();
-			await instance.start();
+	it('GET /api/scheme returns IdbqModel JSON', async () => {
+		const req = mockReq();
+		const res = mockRes();
+		await getAllSchemes(req, res);
 
-			const response = await request(instance.app).get('/api/scheme');
-
-			expect(response.status).toBe(200);
-			expect(response.body).toHaveProperty('schemes');
-			expect(response.body.schemes).toBeInstanceOf(Array);
-			expect(response.body.schemes).toHaveLength(0);
-		});
-
-		it('should return all schemes', async () => {
-			// Seed test data
-			await AppScheme.create({
-				idappscheme: '1',
-				code: 'produit',
-				name: 'Produits',
-				_views: {
-					entityModel: [{ field_name: 'nomProduit', title: 'Nom' }],
-					listView: [{ field_name: 'nomProduit', title: 'Nom' }],
-					miniView: [{ field_name: 'nomProduit', title: 'Nom' }]
-				}
-			});
-
-			await AppScheme.create({
-				idappscheme: '2',
-				code: 'client',
-				name: 'Clients',
-				_views: {
-					entityModel: [{ field_name: 'nomClient', title: 'Nom' }],
-					listView: [{ field_name: 'nomClient', title: 'Nom' }],
-					miniView: [{ field_name: 'nomClient', title: 'Nom' }]
-				}
-			});
-
-			const instance = (idaeApi as any).constructor.getInstance();
-			instance.setOptions({ port: 3458, useMemoryDb: true });
-			registerHealthRoutes();
-			registerSchemeRoutes();
-			await instance.start();
-
-			const response = await request(instance.app).get('/api/scheme');
-
-			expect(response.status).toBe(200);
-			expect(response.body.schemes).toHaveLength(2);
-			expect(response.body.schemes[0]).toHaveProperty('code');
-			expect(response.body.schemes[0]).toHaveProperty('name');
-			expect(response.body.schemes[0]).toHaveProperty('_views');
-		});
+		expect(res._status ?? 200).toBe(200);
+		expect(res._body).toHaveProperty('vehicle');
+		expect(res._body.vehicle).toHaveProperty('keyPath', '++id');
+		expect(res._body.vehicle).toHaveProperty('base', 'machine_base');
+		expect(res._body.vehicle.template.fields).toHaveProperty('id');
+		expect(res._body.vehicle.template.fields).toHaveProperty('brand');
 	});
 
-	describe('GET /api/scheme/:table', () => {
-		it('should return 404 for unknown table', async () => {
-			const instance = (idaeApi as any).constructor.getInstance();
-			instance.setOptions({ port: 3459, useMemoryDb: true });
-			registerHealthRoutes();
-			registerSchemeRoutes();
-			await instance.start();
+	it('GET /api/scheme/:table returns single collection', async () => {
+		const req = mockReq({ table: 'vehicle' });
+		const res = mockRes();
+		await getScheme(req, res);
 
-			const response = await request(instance.app).get('/api/scheme/unknown');
+		expect(res._status ?? 200).toBe(200);
+		expect(res._body).toHaveProperty('vehicle');
+		expect(res._body.vehicle.template.fields.brand.required).toBe(true);
+	});
 
-			expect(response.status).toBe(404);
-			expect(response.body).toHaveProperty('error');
-		});
+	it('GET /api/scheme/:table returns 404 for unknown', async () => {
+		const req = mockReq({ table: 'nonexistent' });
+		const res = mockRes();
+		await getScheme(req, res);
 
-		it('should return single scheme by code', async () => {
-			// Seed test data
-			await AppScheme.create({
-				idappscheme: '1',
-				code: 'produit',
-				name: 'Produits',
-				_views: {
-					entityModel: [{ field_name: 'nomProduit', title: 'Nom' }],
-					listView: [{ field_name: 'nomProduit', title: 'Nom' }],
-					miniView: [{ field_name: 'nomProduit', title: 'Nom' }]
-				}
-			});
-
-			const instance = (idaeApi as any).constructor.getInstance();
-			instance.setOptions({ port: 3460, useMemoryDb: true });
-			registerHealthRoutes();
-			registerSchemeRoutes();
-			await instance.start();
-
-			const response = await request(instance.app).get('/api/scheme/produit');
-
-			expect(response.status).toBe(200);
-			expect(response.body).toHaveProperty('code', 'produit');
-			expect(response.body).toHaveProperty('name', 'Produits');
-			expect(response.body).toHaveProperty('_views');
-			expect(response.body._views).toHaveProperty('entityModel');
-			expect(response.body._views).toHaveProperty('listView');
-			expect(response.body._views).toHaveProperty('miniView');
-		});
+		expect(res._status).toBe(404);
 	});
 });

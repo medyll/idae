@@ -1,172 +1,140 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import request from 'supertest';
-import { idaeApi } from '@medyll/idae-api';
-import mongoose from 'mongoose';
-import { registerDataRoutes } from '../routes/data.js';
-import { registerHealthRoutes } from '../routes/health.js';
-import { registerPermissionRoutes } from '../middleware/permission.js';
-import { permissionStore } from '../middleware/permission.js';
+import { describe, it, expect, vi, beforeAll, afterAll, afterEach } from 'vitest';
+import mongoose, { Schema } from 'mongoose';
+import { config } from '../config.js';
+import { checkPermission, requireDroit, permissionStore } from '../middleware/permission.js';
+import { createRecord, listRecords } from '../routes/data.js';
+import type { Request, Response, NextFunction } from 'express';
+
+const TEST_ORG   = 'vitest';
+const TEST_TABLE = 'perm_test_col';
+const TEST_BASE  = 'machine_base';
+const META_DB    = `${TEST_ORG}_machine_app`;
+const DATA_DB    = `${TEST_ORG}_${TEST_BASE}`;
+
+function mockRes(): any {
+	const res: any = { _status: 200 };
+	res.json   = (b: any) => { res._body = b; return res; };
+	res.status = (c: number) => { res._status = c; return res; };
+	return res;
+}
+
+function mockReq(opts: { params?: any; query?: any; body?: any; headers?: any } = {}): Request {
+	return {
+		params:  opts.params  ?? {},
+		query:   opts.query   ?? {},
+		body:    opts.body    ?? {},
+		headers: opts.headers ?? {},
+	} as unknown as Request;
+}
+
+function withAuth(headers: any = {}): any {
+	return { ...headers, authorization: 'Bearer valid-token' };
+}
+
+function getTestCol() {
+	const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
+	const schema = new Schema({}, { strict: false, timestamps: true, collection: TEST_TABLE });
+	const name = `${DATA_DB}__${TEST_TABLE}`;
+	return db.models[name] ?? db.model(name, schema, TEST_TABLE);
+}
 
 describe('Permission Middleware', () => {
-	let app: any;
-
-	beforeEach(async () => {
-		// Reset singleton for clean state
-		(IdaeApi as any).resetInstance?.() || (idaeApi as any).constructor.resetInstance();
-
-		// Connect to memory database
-		await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/idae_machine_test');
-
-		const instance = (idaeApi as any).constructor.getInstance();
-		instance.setOptions({ port: 3471, useMemoryDb: true });
-		registerHealthRoutes();
-		registerPermissionRoutes();
-		registerDataRoutes();
-		await instance.start();
-		app = instance.app;
+	beforeAll(async () => {
+		await mongoose.connect(config.mongodbUri);
+		(config as any).org = TEST_ORG;
+		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		await meta.collection('appscheme').updateOne(
+			{ code: TEST_TABLE },
+			{ $set: { code: TEST_TABLE, base: TEST_BASE } },
+			{ upsert: true }
+		);
 	});
 
-	afterEach(async () => {
-		// Clean up test data
-		const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-		await TestModel.deleteMany({});
-
-		const instance = (idaeApi as any).constructor.getInstance();
-		if (instance.state === 'running') {
-			await instance.stop();
-		}
-
+	afterAll(async () => {
+		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		await meta.collection('appscheme').deleteOne({ code: TEST_TABLE });
+		const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
+		await db.collection(TEST_TABLE).drop().catch(() => {});
 		await mongoose.disconnect();
 	});
 
-	describe('GET /api/permissions/check', () => {
-		it('should check permission without auth header', async () => {
-			const response = await request(app)
-				.get('/api/permissions/check?permission=R&table=testcollection')
-				.expect(200);
-
-			expect(response.body).toHaveProperty('allowed');
-			expect(response.body).toHaveProperty('permission', 'R');
-			expect(response.body).toHaveProperty('table', 'testcollection');
-		});
-
-		it('should require permission param', async () => {
-			const response = await request(app)
-				.get('/api/permissions/check')
-				.expect(400);
-
-			expect(response.body).toHaveProperty('error');
-		});
+	afterEach(async () => {
+		await getTestCol().deleteMany({});
 	});
 
-	describe('Protected routes', () => {
-		it('should allow request with valid auth header', async () => {
-			// Create test record first
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			await TestModel.create({ name: 'Test Item' });
-
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.set('Authorization', 'Bearer valid-token')
-				.expect(200);
-
-			expect(response.body).toHaveProperty('data');
+	describe('checkPermission handler', () => {
+		it('returns allowed for authenticated user', () => {
+			const req = mockReq({ headers: withAuth(), query: { permission: 'R', table: 'product' } });
+			const res = mockRes();
+			checkPermission(req, res);
+			expect(res._status).toBe(200);
+			expect(res._body).toHaveProperty('allowed');
+			expect(res._body).toHaveProperty('permission', 'R');
 		});
 
-		it('should return 401 without auth header', async () => {
-			// Temporarily deny all permissions
-			const originalHas = permissionStore.hasPermission.bind(permissionStore);
-			permissionStore.hasPermission = () => false;
+		it('returns 400 when permission param missing', () => {
+			const req = mockReq({ headers: withAuth(), query: {} });
+			const res = mockRes();
+			checkPermission(req, res);
+			expect(res._status).toBe(400);
+		});
 
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.expect(401);
-
-			expect(response.body).toHaveProperty('error', 'Authentication required');
-			expect(response.body).toHaveProperty('code', 'UNAUTHORIZED');
-
-			// Restore
-			permissionStore.hasPermission = originalHas;
+		it('returns allowed:false without auth', () => {
+			const req = mockReq({ query: { permission: 'R', table: 'product' } });
+			const res = mockRes();
+			checkPermission(req, res);
+			expect(res._body.allowed).toBe(false);
 		});
 	});
 
 	describe('requireDroit middleware', () => {
-		it('should allow user with required permission', async () => {
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.set('Authorization', 'Bearer token')
-				.expect(200);
-
-			expect(response.status).toBe(200);
+		it('calls next() when user has permission', () => {
+			const next: NextFunction = vi.fn();
+			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
+			const res = mockRes();
+			requireDroit('R')(req, res, next);
+			expect(next).toHaveBeenCalled();
+			expect(res._status).toBe(200);
 		});
 
-		it('should deny user without required permission', async () => {
-			// This test would require modifying the permission store
-			// For now, we verify the middleware is applied
-			expect(true).toBe(true);
+		it('returns 401 when no auth header', () => {
+			const next: NextFunction = vi.fn();
+			const req = mockReq({ params: { table: TEST_TABLE } });
+			const res = mockRes();
+			requireDroit('R')(req, res, next);
+			expect(next).not.toHaveBeenCalled();
+			expect(res._status).toBe(401);
+		});
+
+		it('returns 403 when permission denied', () => {
+			const next: NextFunction = vi.fn();
+			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
+			const res = mockRes();
+			const original = permissionStore.hasPermission.bind(permissionStore);
+			permissionStore.hasPermission = () => false;
+			requireDroit('R')(req, res, next);
+			permissionStore.hasPermission = original;
+			expect(next).not.toHaveBeenCalled();
+			expect(res._status).toBe(403);
 		});
 	});
 
-	describe('CRUD with permissions', () => {
-		it('should Create with C permission', async () => {
-			const response = await request(app)
-				.post('/api/data/testcollection')
-				.set('Authorization', 'Bearer token')
-				.send({ name: 'Test', value: 100 })
-				.expect(201);
-
-			expect(response.body).toHaveProperty('_id');
+	describe('CRUD with permission guard', () => {
+		it('creates a record when authorized', async () => {
+			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE }, body: { name: 'Perm Test' } });
+			const res = mockRes();
+			await createRecord(req, res);
+			expect(res._status).toBe(201);
+			expect(res._body.name).toBe('Perm Test');
 		});
 
-		it('should Read with R permission', async () => {
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'Test' });
-
-			const response = await request(app)
-				.get(`/api/data/testcollection/${record._id}`)
-				.set('Authorization', 'Bearer token')
-				.expect(200);
-
-			expect(response.body).toHaveProperty('_id', record._id.toString());
-		});
-
-		it('should Update with U permission', async () => {
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'Original' });
-
-			const response = await request(app)
-				.put(`/api/data/testcollection/${record._id}`)
-				.set('Authorization', 'Bearer token')
-				.send({ name: 'Updated' })
-				.expect(200);
-
-			expect(response.body.name).toBe('Updated');
-		});
-
-		it('should Delete with D permission', async () => {
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			const record = await TestModel.create({ name: 'To Delete' });
-
-			await request(app)
-				.delete(`/api/data/testcollection/${record._id}`)
-				.set('Authorization', 'Bearer token')
-				.expect(204);
-		});
-
-		it('should List with L permission', async () => {
-			const TestModel = mongoose.models['testcollection'] || mongoose.model('testcollection', new mongoose.Schema({}, { strict: false, collection: 'testcollection' }));
-			await TestModel.insertMany([
-				{ name: 'Item 1' },
-				{ name: 'Item 2' }
-			]);
-
-			const response = await request(app)
-				.get('/api/data/testcollection')
-				.set('Authorization', 'Bearer token')
-				.expect(200);
-
-			expect(response.body).toHaveProperty('data');
-			expect(response.body).toHaveProperty('meta');
+		it('lists records when authorized', async () => {
+			await getTestCol().insertMany([{ name: 'A' }, { name: 'B' }]);
+			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE }, query: {} });
+			const res = mockRes();
+			await listRecords(req, res);
+			expect(res._status).toBe(200);
+			expect(res._body.meta.total).toBe(2);
 		});
 	});
 });

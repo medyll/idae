@@ -10,7 +10,7 @@ progress: 90
 last_updated: "2026-05-13"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 6-10 complete. Verify pnpm run check, commit all changes."
+next_action: "All tests pass. Fix 149 pre-existing TypeScript errors (pnpm run check)."
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -259,9 +259,7 @@ sprints:
 qa:
   bugs: []
   pending:
-    - "AppShell.svelte has uncommitted modification (git status)"
-    - "Tests not run on S1-02 through S5-03 — test_result: unknown"
-    - "pnpm run check / build not verified"
+    - "149 pre-existing TypeScript errors (pnpm run check)"
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt from: git log, package.json, server/ structure, bmad/artifacts/
