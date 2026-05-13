@@ -5,15 +5,15 @@
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
-phase: pre-release
-progress: 85
-last_updated: "2026-05-12"
+phase: development
+progress: 60
+last_updated: "2026-05-13"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Run test suite + build verification before release"
-next_command: "bmad-test"
-next_role: "tester"
-active_role: "scrum"
+next_action: "Implement S6-01: fix moduleDbName() and decouple MongoDB URI"
+next_command: "bmad-continue"
+next_role: "developer"
+active_role: "architect"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -69,6 +69,13 @@ artifacts:
   prd: done
   architecture: done
   tech-spec: done
+
+# ── Architecture ──────────────────────────────────────────────────────────────
+architecture:
+  doc: "bmad/artifacts/docs/ARCH-SCHEMA-FROM-MONGO.md"
+  decision: "MongoDB appscheme_* = source of truth. testScheme = bootstrap only."
+  db_naming: "{org}_{base} e.g. test_machine_base"
+  offline: "stale-while-revalidate via IDB cache"
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
@@ -186,6 +193,55 @@ sprints:
         tests_executed: false
         test_output: null
         test_result: unknown
+
+  - id: 6
+    goal: "Foundation: fix moduleDbName(), decouple MongoDB URI"
+    status: todo
+    stories:
+      - id: S6-01
+        title: "Fix moduleDbName() + MongoDB URI"
+        status: todo
+        tests_executed: false
+
+  - id: 7
+    goal: "Bootstrap: seedSchemeFromModel → MongoDB appscheme_*"
+    status: todo
+    stories:
+      - id: S7-01
+        title: "seedSchemeFromModel + CLI + POST /api/bootstrap"
+        status: todo
+        tests_executed: false
+
+  - id: 8
+    goal: "Server: schema delivery API + multi-DB routing"
+    status: todo
+    stories:
+      - id: S8-01
+        title: "GET /api/scheme → IdbqModel JSON"
+        status: todo
+        tests_executed: false
+      - id: S8-02
+        title: "data.ts multi-DB routing via appscheme"
+        status: todo
+        tests_executed: false
+
+  - id: 9
+    goal: "Client: machine.fetchSchema() + IDB schema cache"
+    status: todo
+    stories:
+      - id: S9-01
+        title: "machine.fetchSchema() + stale-while-revalidate"
+        status: todo
+        tests_executed: false
+
+  - id: 10
+    goal: "Cleanup: tests, testScheme → bootstrap/, no prod imports"
+    status: todo
+    stories:
+      - id: S10-01
+        title: "Tests adaptation + testScheme relocation"
+        status: todo
+        tests_executed: false
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:

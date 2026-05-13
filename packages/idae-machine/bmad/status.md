@@ -1,67 +1,83 @@
-# BMAD Status — idae-machine
-
-**Project:** @medyll/idae-machine  
-**Last Updated:** 2026-05-12
+# idae-machine — Status Report
+_Generated: 2026-05-13 | Phase: development | Progress: 60%_
 
 ---
 
-## Current State
+## Architecture Decision (locked)
 
-| Area | Status |
-|------|--------|
-| Core machine (Machine, MachineDb, MachineScheme) | ✅ Stable |
-| Schema field builder `field()` | ✅ Done |
-| `TplFieldRulesObject` in idae-idbql | ✅ Done |
-| MachineParserForge (string + object rules) | ✅ Done |
-| UI hierarchy (explorer/card/field/input) | ✅ Done |
-| FieldDisplay type dispatch | ✅ Done |
-| Demo schemas migrated to `field()` | ✅ Done |
-| Server (Express + MongoDB) | ✅ Built, untested |
-| MachineFieldType registry wired to format() | ❌ TODO |
-| Rights / `#checkAccess()` | ❌ TODO (stub) |
-| FK show mode (display label not raw id) | ❌ TODO |
-| Tests (most sprints) | ⚠️ Untested |
+**MongoDB `appscheme_*` = source of truth. `testScheme.ts` = bootstrap tool only.**
+
+```
+testScheme.ts → seedSchemeFromModel() → MongoDB {org}_machine_app
+                                               ↓ GET /api/scheme
+                                        machine.fetchSchema() → IDB cache → machine.start()
+```
+
+DB naming: `{org}_{base}` → `test_machine_base`
+Offline: stale-while-revalidate via IDB `_idae_schema_cache`
+
+Full arch doc: `bmad/artifacts/docs/ARCH-SCHEMA-FROM-MONGO.md`
 
 ---
 
-## Component rename map (old → new)
+## Sprint Roadmap
 
-| Old | New | Folder |
-|-----|-----|--------|
-| `CollectionList` | `ExplorerCollections` | `explorer/` |
-| `DataList` | `ExplorerList` | `explorer/` |
-| `DataListActions` | `ExplorerActions` | `explorer/` |
-| `FilterBar` | `ExplorerFilter` | `explorer/` |
-| `CollectionCard` | `ExplorerCard` | `explorer/` |
-| `CollectionTable` | `ExplorerTable` | `explorer/` |
-| `DataForm` | `CardForm` | `card/` |
-| `DataCreate` | `CardCreate` | `card/` |
-| `DataEdit` | `CardEdit` | `card/` |
-| `DataListFields` | `CardFields` | `card/` |
-| `DataProvider` | `CardProvider` | `card/` |
-| `DataPicker` | `CardPicker` | `card/` |
-| `DataLinks` | `CardFk` | `card/` |
-| `DataLinksBack` | `CardRfk` | `card/` |
-| `FieldCurrency` | `InputCurrency` | `input/` |
-| `FieldEmail` | `InputEmail` | `input/` |
+| Sprint | Goal | Status | Stories |
+|--------|------|--------|---------|
+| S1-S5  | Foundation, data, realtime, router, polish | done | — |
+| **S6** | Fix moduleDbName() + MongoDB URI | todo | S6-01 |
+| **S7** | seedSchemeFromModel → MongoDB appscheme_* | todo | S7-01 |
+| **S8** | GET /api/scheme + multi-DB routing | todo | S8-01, S8-02 |
+| **S9** | machine.fetchSchema() + IDB cache | todo | S9-01 |
+| **S10** | Tests + testScheme → bootstrap/ | todo | S10-01 |
 
 ---
 
-## Next Actions (priority order)
+## Story Dependencies
 
-1. Wire `MachineSchemeFieldType` registry into `MachineSchemeValues.format()`
-2. Implement FK label display in `FieldDisplay` show mode
-3. Run `pnpm run test` + `pnpm run check`
-4. Implement `#checkAccess()` with user context
-5. Publish npm
+```
+S6-01 (fix moduleDbName)
+  └─ S7-01 (seedSchemeFromModel)
+       ├─ S8-01 (GET /api/scheme)
+       │    └─ S9-01 (fetchSchema client)
+       │         └─ S10-01 (tests + cleanup)
+       └─ S8-02 (multi-DB routing)  ← parallel with S8-01
+```
 
 ---
 
-## Dependencies
+## Next Action
 
-| Package | Status |
-|---------|--------|
-| `@medyll/idae-idbql` | ✅ (extended with TplFieldRulesObject) |
-| `@medyll/idae-slotui-svelte` | ✅ |
-| `@medyll/idae-router` | ✅ |
-| `@medyll/idae-socket` | ✅ |
+**S6-01** — Fix `moduleDbName()` in `src/lib/main/machine.ts`:
+- `{org}_{base}` not `{org}_{domain}_{base}`
+- Remove DB name from `server/.env` MONGODB_URI
+- Add `MONGO_ORG=test` to `.env`
+
+Run `bmad-continue` to start implementation.
+
+---
+
+## Risk Register
+
+| Risk | Severity | Mitigation |
+|------|----------|-----------|
+| IdbqModel not type-safe over wire | Medium | Zod validation on parse |
+| mongoose useDb connection leak | Medium | useCache:true |
+| Bootstrap wipes prod data | Critical | POST /api/bootstrap dev-only |
+| Stale schema after structural change | Low | idae:schema:updated event |
+| Tests depend on hardcoded testScheme | High | mockSchemaFetch() helper (S10-01) |
+
+---
+
+## Artifacts Created
+
+| File | Purpose |
+|------|---------|
+| `bmad/artifacts/docs/ARCH-SCHEMA-FROM-MONGO.md` | Full architecture doc |
+| `bmad/artifacts/stories/S6-01-fix-moduleDbName.md` | Story — foundation fix |
+| `bmad/artifacts/stories/S7-01-seedSchemeFromModel.md` | Story — bootstrap |
+| `bmad/artifacts/stories/S8-01-server-scheme-route.md` | Story — schema API |
+| `bmad/artifacts/stories/S8-02-server-multi-db-routing.md` | Story — multi-DB |
+| `bmad/artifacts/stories/S9-01-machine-fetchSchema.md` | Story — client async |
+| `bmad/artifacts/stories/S10-01-tests-adaptation.md` | Story — cleanup |
+| `bmad/artifacts/sprints/sprint-6.md` to `sprint-10.md` | Sprint plans |
