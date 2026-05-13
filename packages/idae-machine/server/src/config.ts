@@ -9,9 +9,10 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../.env') });
 
 export const config = {
-	port: parseInt(process.env.PORT || '3000', 10),
-	mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/idae_machine',
-	nodeEnv: process.env.NODE_ENV || 'development',
+	port:       parseInt(process.env.PORT || '3000', 10),
+	mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017',
+	nodeEnv:    process.env.NODE_ENV || 'development',
 	corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-	version: '2.0.0'
+	org:        process.env.ORG || 'test',
+	version:    '2.0.0'
 };

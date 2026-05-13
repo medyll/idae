@@ -7,7 +7,7 @@ export { default as CollectionCard } from '$lib/demo/CollectionCard.svelte';
 export { default as CollectionTable } from '$lib/demo/CollectionTable.svelte';
 export * from '$lib/demo/demoInit.js';
 export * from '$lib/demo/seedData.js';
-export * from '$lib/demo/testScheme.js';
+// testScheme: bootstrap only — use src/lib/bootstrap/testScheme.ts for seeding
 export * from '$lib/form/types.js';
 export { default as CollectionList } from '$lib/main-ui/collection/CollectionList.svelte';
 export { default as DataLinks } from '$lib/main-ui/data/DataLinks.svelte';

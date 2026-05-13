@@ -6,6 +6,7 @@ import { registerHealthRoutes } from './routes/health.js';
 import { registerSchemeRoutes } from './routes/scheme.js';
 import { registerDataRoutes } from './routes/data.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
+import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 
@@ -47,6 +48,7 @@ export async function startServer(): Promise<void> {
 		registerSchemeRoutes();
 		registerDataRoutes();
 		registerPermissionRoutes();
+		if (config.nodeEnv === 'development') registerBootstrapRoutes();
 
 		// Configure idae-api
 		idaeApi.setOptions({

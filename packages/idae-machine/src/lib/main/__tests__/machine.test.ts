@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
 import { testScheme } from '../../demo/testScheme.js';
 
@@ -42,6 +42,21 @@ describe('Machine', () => {
 		expect(() => m.start()).toThrow();
 	});
 
+	describe('moduleDbName()', () => {
+		it('returns org_base when org is set', () => {
+			const m = new Machine();
+			m.init({ model: testScheme, org: 'test' });
+			expect(m.moduleDbName('machine_base')).toBe('test_machine_base');
+			expect(m.moduleDbName('machine_app')).toBe('test_machine_app');
+		});
+
+		it('returns bare base when org is not set', () => {
+			const m = new Machine();
+			m.init({ model: testScheme });
+			expect(m.moduleDbName('machine_base')).toBe('machine_base');
+		});
+	});
+
 	it('should create collections and store on start', () => {
 		machine.start();
 		expect(machine.logic).toBeDefined();
@@ -57,6 +72,28 @@ describe('Machine', () => {
 		expect(machine.idbqlState).toBe(machine._idbqlState);
 		expect(machine.indexedb).toBe(machine._idbDatabase);
 		expect(machine.idbqModel).toBe(machine._idbqModel);
+	});
+
+	// --- fetchSchema ---
+	describe('fetchSchema()', () => {
+		it('fetches schema, sets model, and starts machine', async () => {
+			const fakeModel = {
+				vehicle: {
+					keyPath: '++id', base: 'machine_base', model: {},
+					template: { index: 'id', presentation: 'id', fields: { id: { type: 'id' } }, fks: {} }
+				}
+			};
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => fakeModel }));
+			// indexedDB not available in test env — readSchemaCache returns null (cache miss)
+			const m = new Machine();
+			m.init({ dbName: 'fetch-test-db', version: 1, model: fakeModel });
+			// Override model to undefined to test fetchSchema sets it
+			m._model = undefined;
+			await m.fetchSchema('http://localhost/api/scheme');
+			expect(m._model).toEqual(fakeModel);
+			expect(m.logic).toBeDefined();
+			vi.unstubAllGlobals();
+		});
 	});
 
 	// --- Intégration MachineDb/MachineScheme ---

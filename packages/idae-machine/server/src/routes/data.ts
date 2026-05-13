@@ -1,9 +1,10 @@
-import mongoose, { type FilterQuery, type SortOrder } from 'mongoose';
+import { type FilterQuery, type SortOrder, Schema } from 'mongoose';
 import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
 import { requireDroit, type Permission } from '../middleware/permission.js';
 import { broadcastToTable } from '../socket/index.js';
+import { getDbForCollection } from '../middleware/dbRouter.js';
 
 /**
  * Validate table name to prevent NoSQL injection
@@ -14,22 +15,13 @@ function validateTableName(table: string): boolean {
 }
 
 /**
- * Get collection model dynamically
+ * Get collection from the correct DB via multi-DB routing.
  */
-function getCollectionModel(table: string) {
-	// Try to get existing model, or create a generic one
-	if (mongoose.models[table]) {
-		return mongoose.models[table];
-	}
-
-	// Create a generic schema for any collection
-	const schema = new mongoose.Schema({}, {
-		strict: false,
-		timestamps: true,
-		collection: table.toLowerCase()
-	});
-
-	return mongoose.model(table, schema);
+async function getCollectionModel(table: string) {
+	const db     = await getDbForCollection(table);
+	const schema = new Schema({}, { strict: false, timestamps: true, collection: table.toLowerCase() });
+	const modelName = `${db.name}__${table}`;
+	return db.models[modelName] ?? db.model(modelName, schema, table.toLowerCase());
 }
 
 /**
@@ -87,7 +79,7 @@ export async function listRecords(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		const Model = getCollectionModel(table);
+		const Model = await getCollectionModel(table);
 		const { page, limit, skip } = parsePagination(req);
 		const sort = parseSorting(req);
 		const filters = parseFilters(req);
@@ -130,7 +122,7 @@ export async function getRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		const Model = getCollectionModel(table);
+		const Model = await getCollectionModel(table);
 		const record = await Model.findById(id).lean();
 
 		if (!record) {
@@ -158,7 +150,7 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		const Model = getCollectionModel(table);
+		const Model = await getCollectionModel(table);
 		const record = await Model.create(req.body);
 
 		// Broadcast to table room
@@ -184,7 +176,7 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		const Model = getCollectionModel(table);
+		const Model = await getCollectionModel(table);
 		const record = await Model.findByIdAndUpdate(
 			id,
 			req.body,
@@ -219,7 +211,7 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		const Model = getCollectionModel(table);
+		const Model = await getCollectionModel(table);
 		const record = await Model.findByIdAndDelete(id).lean();
 
 		if (!record) {

@@ -3,6 +3,7 @@ import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import type { AppUser, AppUserGrant } from '$lib/main/types/schema-types.js';
+import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 
 /**
  * @class Machine
@@ -106,9 +107,45 @@ export class Machine {
 		this._model   = options?.model   ?? this._model;
 	}
 
-	/** Fully qualified DB name for a given module: {org}_{domain}_{module} */
-	moduleDbName(module: string): string {
-		return (this._org && this._domain) ? `${this._org}_${this._domain}_${module}` : module;
+	/** Fully qualified DB name for a given base: {org}_{base} */
+	moduleDbName(base: string): string {
+		return this._org ? `${this._org}_${base}` : base;
+	}
+
+	/**
+	 * Fetch schema from server URL, cache in IDB, and start the machine.
+	 * Stale-while-revalidate: if cache exists, starts immediately then refreshes in background.
+	 *
+	 * @param url - Full URL to GET /api/scheme (returns IdbqModel JSON)
+	 * @emits 'schema:updated' on the returned EventTarget when background refresh brings new data
+	 */
+	async fetchSchema(url: string): Promise<EventTarget> {
+		const emitter = new EventTarget();
+		const cached  = await readSchemaCache(url);
+
+		if (cached) {
+			this._model = cached as IdbqModel;
+			this.start();
+			// Background refresh
+			fetch(url)
+				.then((r) => r.json())
+				.then(async (fresh) => {
+					const freshJson = JSON.stringify(fresh);
+					if (freshJson !== JSON.stringify(cached)) {
+						await writeSchemaCache(url, fresh);
+						emitter.dispatchEvent(new CustomEvent('schema:updated', { detail: fresh }));
+					}
+				})
+				.catch(() => { /* network failure during bg refresh — ignore */ });
+		} else {
+			const res   = await fetch(url);
+			const model = await res.json() as IdbqModel;
+			await writeSchemaCache(url, model);
+			this._model = model;
+			this.start();
+		}
+
+		return emitter;
 	}
 
 	/**
