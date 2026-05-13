@@ -16,7 +16,7 @@ export function analyzeDemo(model: IdbqModel) {
 	if (!fs.existsSync(cardComp)) missingComponents.push('CollectionCard');
 
 	// Inspect model collections for uncommon field types that may need custom components
-	for (const [collectionName, def] of Object.entries(model as any)) {
+	for (const [collectionName, def] of Object.entries(model as any) as [string, any][]) {
 		const presentation = def.template?.presentation;
 		if (!presentation) warnings.push(`${collectionName}: missing presentation field`);
 		const fields = def.template?.fields || {};

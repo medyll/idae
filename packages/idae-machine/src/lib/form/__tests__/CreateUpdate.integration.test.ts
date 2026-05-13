@@ -310,7 +310,7 @@ describe('CreateUpdate Component Integration', () => {
 		it('should validate date range (endDate > startDate)', async () => {
 			validator.registerCrossField({
 				fields:    ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
+				validator: (data) => new Date(data.endDate as string) > new Date(data.startDate as string)
 			});
 
 			const validRange = {
@@ -361,7 +361,7 @@ describe('CreateUpdate Component Integration', () => {
 		it('should return meaningful error for cross-field failure', async () => {
 			validator.registerCrossField({
 				fields:    ['startDate', 'endDate'],
-				validator: (data) => new Date(data.endDate) > new Date(data.startDate)
+				validator: (data) => new Date(data.endDate as string) > new Date(data.startDate as string)
 			});
 
 			const result = await validator.validateForm({

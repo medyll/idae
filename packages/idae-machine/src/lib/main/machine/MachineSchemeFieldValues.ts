@@ -64,7 +64,7 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 			.field(String(fieldName))
 			.parse();
 		if (fieldInfo?.is === 'array') {
-			return this.iterateArray(String(fieldName), this.#data as unknown[]);
+			return this.iterateArray(String(fieldName), this.#data as unknown as unknown[]);
 		}
 		if (fieldInfo?.is === 'object') {
 			return this.iterateObject(String(fieldName), this.#data);

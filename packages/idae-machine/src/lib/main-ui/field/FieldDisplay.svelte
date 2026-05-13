@@ -103,7 +103,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             {#if fkCollection}
                 {fkLabel}
             {:else}
-                {fieldForge.format}
+                {fieldForge?.format}
             {/if}
         </div>
     </div>
@@ -111,14 +111,14 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
 
 {#snippet fieldInput()}
-    {#if fieldForge.fieldType === 'id'}
+    {#if fieldForge?.fieldType === 'id'}
         {#if mode !== 'create'}
             <input
                 type="hidden"
                 value={internalValue}
                 {...inputDataset}
-                id={fieldName}
-                name={fieldName}
+                id={String(fieldName)}
+                name={String(fieldName)}
                 form={inputForm}
             />
         {/if}
@@ -132,7 +132,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             form={inputForm}
         />
 
-    {:else if fieldForge.fieldType === 'boolean'}
+    {:else if fieldForge?.fieldType === 'boolean'}
         <InputBoolean
             bind:value={internalValue as boolean}
             id={fieldName}
@@ -140,7 +140,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             form={inputForm}
         />
 
-    {:else if fieldForge.fieldType === 'email'}
+    {:else if fieldForge?.fieldType === 'email'}
         <InputEmail
             value={internalValue as string}
             error={error}
@@ -168,7 +168,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <input
             style="width: 100%"
             value={internalValue}
-            type={fieldForge.htmlInputType}
+            type={fieldForge?.htmlInputType}
             {...inputDataset}
             id={fieldName}
             name={fieldName}
@@ -181,7 +181,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
 {#if fieldForge}
     {#if !isPrivate}
-        <label form={inputForm} for={fieldName} class="field-line {labelPosition}">
+        <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition}">
             <span class="field-label">{fieldName}</span>
             <div class="field-input">
                 {#if mode === 'show'}

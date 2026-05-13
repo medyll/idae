@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { ConflictResolver, createConflictResolver } from '../ConflictResolver.js';
+import { ConflictResolver, createConflictResolver, type Conflict } from '../ConflictResolver.js';
 
 describe('ConflictResolver', () => {
 	describe('constructor', () => {
@@ -32,7 +32,7 @@ describe('ConflictResolver', () => {
 				serverVersion: { id: '123', name: 'Server', updatedAt: '2026-04-24T11:00:00Z' }
 			};
 
-			const result = resolver.resolve(conflict);
+			const result = resolver.resolve(conflict as unknown as Conflict);
 			
 			expect(result.resolved).toEqual(conflict.clientVersion);
 			expect(result.resolution).toBe('client');
@@ -48,7 +48,7 @@ describe('ConflictResolver', () => {
 				serverVersion: { id: '123', name: 'Server' }
 			};
 
-			const result = resolver.resolve(conflict);
+			const result = resolver.resolve(conflict as unknown as Conflict);
 			
 			expect(result.resolved).toEqual(conflict.serverVersion);
 			expect(result.resolution).toBe('server');
@@ -64,7 +64,7 @@ describe('ConflictResolver', () => {
 				serverVersion: { id: '123', name: 'Server' }
 			};
 
-			const result = resolver.resolve(conflict);
+			const result = resolver.resolve(conflict as unknown as Conflict);
 			
 			expect(result.resolved).toEqual(conflict.clientVersion);
 			expect(result.resolution).toBe('client');
@@ -86,7 +86,7 @@ describe('ConflictResolver', () => {
 				serverVersion: { id: '123', content: 'Server' }
 			};
 
-			resolver.resolve(conflict);
+			resolver.resolve(conflict as unknown as Conflict);
 			
 			expect(listener).toHaveBeenCalledWith(expect.objectContaining({
 				table: 'document',

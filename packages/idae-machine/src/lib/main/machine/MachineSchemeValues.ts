@@ -193,7 +193,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter((x): x is Record<string, unknown> => x !== undefined);
+			.filter((x): x is NonNullable<typeof x> => x !== undefined) as Array<Record<string, unknown>>;
 	}
 
 	/**
@@ -229,7 +229,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter((x): x is Record<string, unknown> => x !== undefined);
+			.filter((x): x is NonNullable<typeof x> => x !== undefined) as Array<Record<string, unknown>>;
 	}
 
 	/**

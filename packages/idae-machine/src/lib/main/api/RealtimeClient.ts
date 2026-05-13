@@ -9,7 +9,7 @@ export class RealtimeClient {
 	private socket: Socket | null = null;
 	private subscribedTables: Set<string> = new Set();
 	private eventHandlers: Map<string, Set<(data: unknown) => void>> = new Map();
-	protected baseUrl: string;
+	baseUrl: string;
 	private connected = false;
 
 	constructor(baseUrl: string) {

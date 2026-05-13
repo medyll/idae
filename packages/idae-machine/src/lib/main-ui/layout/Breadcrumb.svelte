@@ -23,7 +23,7 @@
 
 		// First part is usually table name
 		const table = parts[0];
-		const tableScheme = schemes.find((s) => s.code === table);
+		const tableScheme = schemes.find((s: AppScheme) => s.code === table);
 		const tableName = tableScheme?.name || table;
 
 		if (parts.length === 1) {
@@ -32,7 +32,7 @@
 		} else if (parts[1] === 'new') {
 			// Create view
 			crumbs.push({ label: tableName, href: `/${table}` });
-			crumbs.push({ label: 'New', href: null });
+			crumbs.push({ label: 'New', href: undefined });
 		} else if (parts[1]) {
 			// Detail or edit view
 			crumbs.push({ label: tableName, href: `/${table}` });
@@ -44,7 +44,7 @@
 			}
 
 			if (parts[2] === 'edit') {
-				crumbs.push({ label: 'Edit', href: null });
+				crumbs.push({ label: 'Edit', href: undefined });
 			}
 		}
 

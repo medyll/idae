@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';
+import type { MachineDb } from '$lib/main/machineDb.js';
 
 /**
  * Performance Benchmarks for CreateUpdate Component
@@ -38,7 +39,7 @@ describe('Performance Benchmarks', () => {
 
 	describe('Sync Validation Performance', () => {
 		it('should validate single field in <10ms', async () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			const start = performance.now();
 			await validator.validateField('name', 'John Doe');
@@ -49,7 +50,7 @@ describe('Performance Benchmarks', () => {
 		});
 
 		it('should validate form with 10 fields in <15ms', async () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			const formData = {
 				name:            'John Doe',
@@ -73,7 +74,7 @@ describe('Performance Benchmarks', () => {
 		});
 
 		it('should register 10 custom validators in <5ms', () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			const start = performance.now();
 			for (let i = 0; i < 10; i++) {
@@ -88,7 +89,7 @@ describe('Performance Benchmarks', () => {
 
 	describe('Async Validation Performance', () => {
 		it('should debounce async validator correctly (~300ms)', async () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 			let callCount = 0;
 
 			validator.registerAsync('username', async () => {
@@ -107,7 +108,7 @@ describe('Performance Benchmarks', () => {
 		});
 
 		it('should execute async validator in reasonable time', async () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			validator.registerAsync('username', async () => {
 				// Simulate API call delay
@@ -126,7 +127,7 @@ describe('Performance Benchmarks', () => {
 
 	describe('Cross-Field Validation Performance', () => {
 		it('should register 5 cross-field validators in <5ms', () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			const start = performance.now();
 			for (let i = 0; i < 5; i++) {
@@ -142,7 +143,7 @@ describe('Performance Benchmarks', () => {
 		});
 
 		it('should validate cross-field rules in <20ms', async () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			validator.registerCrossField({
 				fields:    ['startDate', 'endDate'],
@@ -216,7 +217,7 @@ describe('Performance Benchmarks', () => {
 
 	describe('Memory Usage', () => {
 		it('should handle large form with minimal memory overhead', () => {
-			validator = new MachineSchemeValidate('users', setupMockDb());
+			validator = new MachineSchemeValidate('users', setupMockDb() as unknown as MachineDb);
 
 			// Register many validators
 			for (let i = 0; i < 50; i++) {
