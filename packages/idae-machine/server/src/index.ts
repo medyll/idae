@@ -93,8 +93,10 @@ export async function stopServer(): Promise<void> {
 	}
 }
 
-// Start if run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Start if run directly — cross-platform path comparison
+const _currentFile = new URL(import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1');
+const _entryFile   = process.argv[1]?.replace(/\\/g, '/');
+if (_entryFile && (_currentFile === _entryFile || _currentFile.endsWith(_entryFile) || import.meta.url.endsWith(_entryFile.replace(/\\/g, '/')))) {
 	startServer();
 
 	// Graceful shutdown

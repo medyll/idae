@@ -50,9 +50,17 @@ FK-aware select input atom. Queries machine store for related collection records
 	}
 </script>
 
-<select bind:value {id} {name} {form} {disabled} {multiple} style="width:100%;">
-	<option value={undefined}>—</option>
-	{#each items as item (item[indexField])}
-		<option value={item[indexField]}>{getLabel(item)}</option>
-	{/each}
-</select>
+{#if multiple}
+	<select multiple bind:value={value as any} {id} {name} {form} {disabled} style="width:100%;">
+		{#each items as item (item[indexField])}
+			<option value={item[indexField]}>{getLabel(item)}</option>
+		{/each}
+	</select>
+{:else}
+	<select bind:value {id} {name} {form} {disabled} style="width:100%;">
+		<option value={undefined}>—</option>
+		{#each items as item (item[indexField])}
+			<option value={item[indexField]}>{getLabel(item)}</option>
+		{/each}
+	</select>
+{/if}

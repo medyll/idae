@@ -9,11 +9,19 @@ Currency input with formatting.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
-	export let value: number | string = '';
-	export let error: string | null = null;
-	export let currencySymbol = '$';
-	export let decimalPlaces = 2;
-	export let disabled = false;
+	let {
+		value = '' as number | string,
+		error = null as string | null,
+		currencySymbol = '$',
+		decimalPlaces = 2,
+		disabled = false
+	} = $props<{
+		value?:         number | string;
+		error?:         string | null;
+		currencySymbol?: string;
+		decimalPlaces?:  number;
+		disabled?:       boolean;
+	}>();
 
 	let inputValue = $state(String(value));
 

@@ -8,13 +8,25 @@ Email input with format validation.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
-	export let value: string = '';
-	export let error: string | null = null;
-	export let required = false;
-	export let disabled = false;
-	export let id: string | undefined = undefined;
-	export let name: string | undefined = undefined;
-	export let form: string | undefined = undefined;
+	let {
+		value = '',
+		error = null as string | null,
+		required = false,
+		disabled = false,
+		id = undefined as string | undefined,
+		name = undefined as string | undefined,
+		form = undefined as string | undefined,
+		oninput = undefined as ((e: Event) => void) | undefined
+	} = $props<{
+		value?:    string;
+		error?:    string | null;
+		required?: boolean;
+		disabled?: boolean;
+		id?:       string;
+		name?:     string;
+		form?:     string;
+		oninput?:  (e: Event) => void;
+	}>();
 
 	let email = $state(value);
 
@@ -41,6 +53,7 @@ Email input with format validation.
 		type="email"
 		bind:value={email}
 		onblur={handleBlur}
+		{oninput}
 		{disabled}
 		{required}
 		{id}

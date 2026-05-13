@@ -1,16 +1,21 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { AppScheme } from '$lib/main/api/types.js';
 
-	export let schemes: AppScheme[] = [];
-	export let currentTable = '';
-	export let currentRecord: { id: string; name?: string } | null = null;
+	let {
+		schemes = [] as AppScheme[],
+		currentTable = '',
+		currentRecord = null as { id: string; name?: string } | null
+	} = $props<{
+		schemes?:       AppScheme[];
+		currentTable?:  string;
+		currentRecord?: { id: string; name?: string } | null;
+	}>();
 
-	// Build breadcrumb items
-	$: items = buildBreadcrumbs();
+	const items = $derived(buildBreadcrumbs());
 
 	function buildBreadcrumbs() {
-		const path = $page.url.pathname;
+		const path = page.url.pathname;
 		const parts = path.split('/').filter(Boolean);
 		const crumbs = [{ label: 'Home', href: '/' }];
 
