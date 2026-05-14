@@ -2,7 +2,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import type { AppUser, AppUserGrant } from '$lib/main/types/schema-types.js';
+import type { AppUser, AppUserGrant, PermissionCode } from '$lib/main/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 
 /**
@@ -280,13 +280,9 @@ export class Machine {
 			this._router.setPermissionCheck((permission, table) => {
 				if (!table) return true;
 				
-				// Check permissions from MachineDb
 				const scheme = this.logic.collection(table);
 				if (!scheme) return false;
-				
-				// In production, check actual user permissions
-				// For now, allow all (demo mode)
-				return true;
+				return machineRights.checkAccess(table, permission as PermissionCode);
 			});
 			
 			// Initialize with schemas from MachineDb

@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 95
+progress: 98
 last_updated: "2026-05-13"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "TypeScript errors fixed: 152 → 3 (skiller external only). Ready for release prep."
+next_action: "All 3 CLAUDE.md TODOs done. Project functionally complete. Ready for end-to-end demo test."
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"

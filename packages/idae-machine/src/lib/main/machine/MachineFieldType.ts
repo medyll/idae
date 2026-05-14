@@ -148,6 +148,15 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 		formatter: (value: unknown) => Boolean(value),
 		validator: (value: unknown) => typeof value === 'boolean'
 	},
+	currency: {
+		id:        'currency',
+		formatter: (value: unknown) => {
+			const n = Number(value);
+			if (isNaN(n)) return String(value);
+			return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' }).format(n);
+		},
+		validator: (value: unknown) => !isNaN(Number(value))
+	},
 	any:      {
 		id:        defaultTypes.any,
 		formatter: (value: unknown) => value as unknown,

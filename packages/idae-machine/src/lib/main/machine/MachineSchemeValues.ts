@@ -49,7 +49,11 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			return fields
 				.map((field: string) => {
 					const value = data[field];
-					return value !== null && value !== undefined ? String(value) : '';
+					if (value === null || value === undefined) return '';
+					const fieldInfo = this.machine.collection(this.collectionName).field(field).parse();
+					return fieldInfo?.fieldType
+						? MachineSchemeFieldType.format(value, fieldInfo.fieldType as string)
+						: String(value);
 				})
 				.join(' ');
 		} catch (error) {

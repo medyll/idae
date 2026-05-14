@@ -203,9 +203,9 @@ src/lib/main-ui/
 | MachineParserForge handles object rules | ✅ Done |
 | dbSchema.ts + testScheme.ts migrated to field() | ✅ Done |
 | FieldDisplay dispatches by fieldType | ✅ Done |
-| MachineFieldType registry wired to format() | ❌ TODO |
-| Rights / #checkAccess() implementation | ❌ TODO (stub, always returns true) |
-| FK show mode (display presentation, not raw id) | ❌ TODO |
+| MachineFieldType registry wired to format() | ✅ Done |
+| Rights / #checkAccess() implementation | ✅ Done |
+| FK show mode (display presentation, not raw id) | ✅ Done (FieldDisplay.svelte fkLabel) |
 
 ---
 
