@@ -2,9 +2,9 @@
  * View field definition
  */
 export interface ViewFieldDef {
-	field_name: string;
-	field_name_raw?: string;
-	field_name_group?: string;
+	name: string;
+	code?: string;
+	group?: string;
 	title: string;
 	type?: string;
 	icon?: string;

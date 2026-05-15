@@ -1,7 +1,6 @@
 import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
-import { seedSchemeFromModel } from '../bootstrap/seedSchemeFromModel.js';
-import { config } from '../config.js';
+import { machineServer } from '../MachineServer.js';
 import { logger } from '../utils/logger.js';
 
 async function bootstrapHandler(req: Request, res: Response): Promise<void> {
@@ -10,13 +9,12 @@ async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 		const model = req.body?.model;
 
 		if (!model || typeof model !== 'object') {
-			res.status(400).json({ error: 'Missing body.model (IdbqModel JSON)' });
+			res.status(400).json({ error: 'Missing body.model (MachineModel JSON)' });
 			return;
 		}
 
-		await seedSchemeFromModel(model, { org, mongoUri: config.mongodbUri });
+		await machineServer.seed(model, { org });
 
-		logger.info(`Bootstrap complete for org="${org}"`);
 		res.json({ ok: true, org });
 	} catch (err) {
 		logger.error('Bootstrap failed:', err);
@@ -25,11 +23,6 @@ async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 }
 
 export function registerBootstrapRoutes(): void {
-	idaeApi.router.addRoute({
-		method:  'post',
-		path:    '/api/bootstrap',
-		handler: bootstrapHandler,
-	});
-
+	idaeApi.router.addRoute({ method: 'post', path: '/api/bootstrap', handler: bootstrapHandler });
 	logger.info('Bootstrap route registered: POST /api/bootstrap (dev only)');
 }

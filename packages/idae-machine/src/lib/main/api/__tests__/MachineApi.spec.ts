@@ -108,7 +108,7 @@ describe('MachineApi', () => {
 				code: 'produit',
 				name: 'Produits',
 				_views: {
-					entityModel: [{ field_name: 'nomProduit', title: 'Nom' }]
+					entityModel: [{ name: 'nomProduit', title: 'Nom' }]
 				}
 			};
 

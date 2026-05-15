@@ -1398,9 +1398,9 @@ export interface ViewOptions extends Extendable {
  * Combines field metadata from appscheme_field with view-specific options.
  */
 export interface ViewFieldDef extends Extendable {
-	field_name: string;        // Stored field name: codeAppscheme_field + ucfirst(codeAppscheme)
-	field_name_raw: string;    // Raw field code: codeAppscheme_field
-	field_name_group: string;  // Group code: codeAppscheme_field_group
+	name: string;   // Display field name: codeAppscheme_field + ucfirst(codeAppscheme)
+	code: string;   // Raw field code: codeAppscheme_field
+	group: string;  // Group code: codeAppscheme_field_group
 	title: string;             // Display title: nomAppscheme_field
 	type?: string;             // Field type code (only in entityModel)
 	icon?: string;             // Field icon
