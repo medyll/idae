@@ -2,7 +2,7 @@
  * CLI entry — seed appscheme_* from demoScheme.
  * Usage: tsx server/src/bootstrap/seed.ts [org] [mongoUri]
  *
- * Defaults: org=test  mongoUri=mongodb://localhost:27017
+ * Defaults: org=demo  mongoUri=mongodb://localhost:27017
  */
 import { seedSchemeFromModel } from './seedSchemeFromModel.js';
 
