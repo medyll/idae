@@ -27,9 +27,9 @@ pnpm add @medyll/idae-machine
 
 ```ts
 import { field } from '@medyll/idae-machine';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { MachineModel } from '@medyll/idae-machine';
 
-export const myModel = {
+export const myModel: MachineModel = {
   users: {
     keyPath: '++id',
     model: {}, ts: {} as { id: string; name: string; email: string },
@@ -60,7 +60,7 @@ export const myModel = {
       fks: {}
     }
   }
-} satisfies IdbqModel;
+};
 ```
 
 ### 2. Initialize
@@ -221,5 +221,37 @@ pnpm run test     # vitest
 pnpm run check    # TypeScript check
 pnpm run build    # svelte-package
 ```
+
+---
+
+## Server (`machineServer`)
+
+The server singleton manages MongoDB connections, schema delivery, and model deployment.
+
+```ts
+import { machineServer } from '@medyll/idae-machine/server';
+
+// Start Express + Socket.IO + MongoDB
+await machineServer.start();
+
+// Read appscheme_* → MachineModel (used by machine.fetchSchema())
+const model = await machineServer.getModel();
+const single = await machineServer.getModel('users');
+
+// Deploy a MachineModel into MongoDB appscheme_* (destructive, admin action)
+await machineServer.deployModel(myModel, { org: 'myorg' });
+
+// Stop gracefully
+await machineServer.stop();
+```
+
+**HTTP endpoints:**
+- `GET /api/scheme` — full `MachineModel` JSON
+- `GET /api/scheme/:table` — single collection
+- `POST /api/bootstrap` — `deployModel` via HTTP (dev only)
+
+**Demo schema:** `server/src/models/demo/testScheme.ts`
+
+---
 
 See `CLAUDE.md` for full architecture reference and AI agent guide.

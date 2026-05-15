@@ -236,9 +236,11 @@ pnpm run build     # svelte-package build
 
 | File | What it is |
 |------|-----------|
-| `src/lib/demo/testScheme.ts` | Demo schema (rental car app) — migrated to field() |
+| `server/src/models/demo/testScheme.ts` | Demo schema (rental car app) — canonical location |
+| `src/lib/demo/testScheme.ts` | Re-export shim → server/src/models/demo/testScheme.ts |
 | `src/lib/demo/dbSchema.ts` | App schema (chat/book creator) — migrated to field() |
 | `src/lib/main/types/idae-model-core.ts` | Meta-schema: appscheme_* collections definition |
 | `src/lib/main/types/schema-types.ts` | FieldList catalog + RBAC types |
+| `server/src/MachineServer.ts` | Server singleton — start/stop/getModel/deployModel |
 | `ARCH-SOURCE.md` | Legacy architecture reference (READ ONLY — historical) |
 | `bmad/` | Sprint planning artifacts (may be outdated) |

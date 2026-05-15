@@ -128,14 +128,14 @@ class MachineServerClass {
 		return model;
 	}
 
-	// ── seed — voluntary admin action ─────────────────────────────────────────
+	// ── deployModel — writes MachineModel into appscheme_* (destructive, voluntary) ──
 
-	async seed(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
+	async deployModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;
 		const mongoUri = opts?.mongoUri ?? config.mongodbUri;
 		await seedSchemeFromModel(model, { org, mongoUri });
 		invalidateBaseCache();
-		logger.info(`Seed complete for org="${org}"`);
+		logger.info(`Model deployed for org="${org}"`);
 	}
 
 	// ── start ─────────────────────────────────────────────────────────────────

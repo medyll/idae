@@ -13,7 +13,7 @@ async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		await machineServer.seed(model, { org });
+		await machineServer.deployModel(model, { org });
 
 		res.json({ ok: true, org });
 	} catch (err) {
