@@ -2,12 +2,12 @@ import { MachineError } from './MachineError.js';
 import type {
 	TplCollectionName,
 	Tpl,
-	IdbqModel,
 	TplFields,
 	IDbForge,
 	CollectionModel,
 	TplFieldRules
 } from '@medyll/idae-idbql';
+import type { MachineModel } from '$lib/main/types/machine-model.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
@@ -28,22 +28,22 @@ export class MachineScheme {
 	/** The MachineDb instance. */
 	#machineDb:       MachineDb;
 	/** The collection model. */
-	#collectionModel: IdbqModel['Collection'];
+	#collectionModel: CollectionModel;
 
-	#model:           IdbqModel;
+	#model:           MachineModel;
 
 	/**
 	 * Create a new MachineScheme instance.
 	 * @role Constructor
 	 * @param {TplCollectionName} collectionName The collection name.
 	 * @param {MachineDb} idbBase The MachineDb instance.
-	 * @param {IdbqModel} model The IdbqModel instance.
+	 * @param {MachineModel} model The model instance.
 	 */
-	constructor(collectionName: TplCollectionName, idbBase: MachineDb, model: IdbqModel) {
+	constructor(collectionName: TplCollectionName, idbBase: MachineDb, model: MachineModel) {
 		this.collection = collectionName;
 		this.name = collectionName;
 		this.#machineDb = idbBase;
-		this.#collectionModel = model[String(collectionName)];
+		this.#collectionModel = model[String(collectionName)] as any as CollectionModel;
 		if (!this.#collectionModel || typeof this.#collectionModel['template'] === 'undefined') {
 			throw new MachineError(
 				`Collection '${collectionName}' not found in model or missing 'template' property.`,
@@ -101,7 +101,7 @@ export class MachineScheme {
 	}
 
 	field(fieldName: keyof TplFields): MachineSchemeField {
-		return new MachineSchemeField(this.#model, this.collection, fieldName as keyof TplFields);
+		return new MachineSchemeField(this.#model as any, this.collection, fieldName as keyof TplFields);
 	}
 	/**
 	 * Get a field forge instance for a specific field and data.

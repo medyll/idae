@@ -933,6 +933,7 @@ export interface Extendable {
 }
 
 export interface gridFksItem<T = any> extends Extendable {
+	id?:     any;
 	uid?:     string;
 	name:     SchemeName;
 	code:     Code;

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+
 
 describe('Field Validation — Stress Tests', () => {
 	let db: MachineDb;
@@ -27,7 +27,7 @@ describe('Field Validation — Stress Tests', () => {
 				fks: {}
 			}
 		}
-	} satisfies IdbqModel;
+	} as any;
 
 	beforeEach(() => {
 		db = new MachineDb(stressSchema);

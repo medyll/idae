@@ -1,4 +1,4 @@
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { MachineModel } from '$lib/main/types/machine-model.js';
 import { field } from '$lib/main/machine/fieldBuilder.js';
 
 export type Product = {
@@ -187,7 +187,7 @@ export const testScheme = {
 			}
 		}
 	}
-} as unknown as IdbqModel;
+} as MachineModel;
 
 // Demo seed data moved inline here (to avoid creating new directories in automated run)
 export const demoSeed = {

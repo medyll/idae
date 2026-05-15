@@ -5,7 +5,6 @@
  * Defaults: org=test  mongoUri=mongodb://localhost:27017
  */
 import { seedSchemeFromModel } from './seedSchemeFromModel.js';
-import mongoose from 'mongoose';
 
 // Dynamic import so this file can compile without a bundler resolving $lib
 const { testScheme } = await import(
@@ -21,6 +20,6 @@ const mongoUri = process.argv[3] ?? 'mongodb://localhost:27017';
 console.log(`Seeding appscheme_* for org="${org}" into ${mongoUri}/${org}_machine_app`);
 
 await seedSchemeFromModel(testScheme, { org, mongoUri });
-await mongoose.disconnect();
 
 console.log('Done.');
+process.exit(0);

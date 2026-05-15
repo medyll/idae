@@ -1,9 +1,10 @@
 import { MachineDb } from '$lib/main/machineDb.js';
-import { createIdbqDb, type IdbqModel } from '@medyll/idae-idbql';
+import { createIdbqDb } from '@medyll/idae-idbql';
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/main/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
+import { type MachineModel, toIdbqModel } from '$lib/main/types/machine-model.js';
 
 /**
  * @class Machine
@@ -64,7 +65,7 @@ export class Machine {
 	/**
 	 * Data model
 	 */
-	_model!:                  IdbqModel | undefined;
+	_model!:                  MachineModel | undefined;
 
 	/** Organisation identifier — prefixes all DB names. e.g. 'test', 'crfr' */
 	_org?:                    string;
@@ -84,7 +85,7 @@ export class Machine {
 	 * @param {number=} version The schema version number.
 	 * @param {IdbqModel=} model The IDBQL data model.
 	 */
-	constructor(dbName?: string, version?: number, model?: IdbqModel) {
+	constructor(dbName?: string, version?: number, model?: MachineModel) {
 		this._dbName = dbName ?? '';
 		this._version = version ?? 1;
 		this._model = model ?? undefined;
@@ -95,7 +96,7 @@ export class Machine {
 	 * dbName is derived from org+domain when both are provided and no explicit dbName is given.
 	 * @role Initializer
 	 */
-	init(options?: { dbName?: string; version?: number; model: IdbqModel; org?: string; domain?: string }) {
+	init(options?: { dbName?: string; version?: number; model: MachineModel; org?: string; domain?: string }) {
 		if (options?.org)    this._org    = options.org;
 		if (options?.domain) this._domain = options.domain;
 
@@ -124,7 +125,7 @@ export class Machine {
 		const cached  = await readSchemaCache(url);
 
 		if (cached) {
-			this._model = cached as IdbqModel;
+			this._model = cached as MachineModel;
 			this.start();
 			// Background refresh
 			fetch(url)
@@ -139,7 +140,7 @@ export class Machine {
 				.catch(() => { /* network failure during bg refresh — ignore */ });
 		} else {
 			const res   = await fetch(url);
-			const model = await res.json() as IdbqModel;
+			const model = await res.json() as MachineModel;
 			await writeSchemaCache(url, model);
 			this._model = model;
 			this.start();
@@ -184,7 +185,7 @@ export class Machine {
 		if (!this._model || !this._dbName || !this._version) {
 			throw new Error('Model, dbName, or version is not defined');
 		}
-		const idbqStore = createIdbqDb(this._model, this._version);
+		const idbqStore = createIdbqDb(toIdbqModel(this._model) as any, this._version);
 		const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create(this._dbName);
 		this._idbql = idbql;
 		this._idbqlState = idbqlState;
@@ -347,7 +348,7 @@ export class Machine {
 		instanceName?: string,
 		dbName?: string,
 		version?: number,
-		model?: IdbqModel
+		model?: MachineModel
 	): Machine {
 		const instance = new Machine(dbName, version, model);
 		if (instanceName) {

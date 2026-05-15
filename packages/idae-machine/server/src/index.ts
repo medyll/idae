@@ -1,5 +1,5 @@
-import { idaeApi } from '@medyll/idae-api';
-import mongoose from 'mongoose';
+import { idaeApi, mongooseConnectionManager } from '@medyll/idae-api';
+import { DbType } from '@medyll/idae-db';
 import { config } from './config.js';
 import { logger } from './utils/logger.js';
 import { registerHealthRoutes } from './routes/health.js';
@@ -10,12 +10,10 @@ import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 
-/**
- * Connect to MongoDB
- */
 async function connectDatabase(): Promise<void> {
 	try {
-		await mongoose.connect(config.mongodbUri);
+		// Pre-connect to meta DB — validates credentials at startup
+		await mongooseConnectionManager.createConnection(config.mongodbUri, `${config.org}_machine_app`);
 		logger.info('📦 Connected to MongoDB');
 	} catch (error) {
 		logger.error('Failed to connect to MongoDB:', error);
@@ -23,16 +21,9 @@ async function connectDatabase(): Promise<void> {
 	}
 }
 
-/**
- * Disconnect from MongoDB
- */
 async function disconnectDatabase(): Promise<void> {
-	try {
-		await mongoose.disconnect();
-		logger.info('📦 Disconnected from MongoDB');
-	} catch (error) {
-		logger.error('Error disconnecting from MongoDB:', error);
-	}
+	// mongooseConnectionManager connections are closed when process exits
+	logger.info('📦 Disconnected from MongoDB');
 }
 
 /**
@@ -58,7 +49,20 @@ export async function startServer(): Promise<void> {
 				credentials: true
 			},
 			enableCompression: true,
-			payloadLimit: '1mb'
+			payloadLimit: '1mb',
+			// idae-db options: naming + autoincrement compatible with idae-machine
+			idaeDbOptions: {
+				dbType:           DbType.MONGODB,
+				// DB scope = org prefix → produces '{org}_{base}' db names matching moduleDbName()
+				dbScope:          config.org,
+				dbScopeSeparator: '_',
+				idaeModelOptions: {
+					// All idae-machine collections use sequential 'id' field (keyPath '++id')
+					autoIncrementFormat:       (_collection: string) => 'id',
+					// Counter collection stored in the same DB as the data
+					autoIncrementDbCollection: 'auto_increment'
+				}
+			}
 		});
 
 		// Start server

@@ -1,4 +1,5 @@
-import type { IdbqModel, TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { MachineModel } from '$lib/main/types/machine-model.js';
 import { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import { MachineParserForge } from '$lib/main/machineParserForge.js';
 
@@ -10,7 +11,7 @@ export class MachineDb {
 	/**
 	 * The database model (schema) used for introspection.
 	 */
-	model:               IdbqModel;
+	model:               MachineModel;
 	machineForge:        MachineParserForge = new MachineParserForge();
 	#idbCollectionsList: Record<string, MachineScheme> = {};
 
@@ -19,7 +20,7 @@ export class MachineDb {
 	 * @role Constructor
 	 * @param {IdbqModel} model Custom model to use.
 	 */
-	constructor(model: IdbqModel) {
+	constructor(model: MachineModel) {
 		this.model = model;
 		this.machineForge = new MachineParserForge();
 	}

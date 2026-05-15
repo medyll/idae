@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
 import { testScheme } from '../../demo/testScheme.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { MachineModel } from '../types/machine-model.js';
 
 function createTestMachine() {
 	return new Machine('test-db', 1, testScheme);
@@ -83,7 +83,7 @@ describe('Machine', () => {
 					keyPath: '++id', base: 'machine_base', model: {}, ts: {} as any,
 					template: { index: 'id', presentation: 'id', fields: { id: { type: 'id' } }, fks: {} }
 				}
-			} as unknown as IdbqModel;
+			} as MachineModel;
 			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => fakeModel }));
 			// indexedDB not available in test env — readSchemaCache returns null (cache miss)
 			const m = new Machine();
