@@ -6,12 +6,12 @@
 
 ## 1. Problem Statement
 
-`testScheme.ts` is currently the source of truth for the data model.
+`demoScheme.ts` is currently the source of truth for the data model.
 This blocks: multi-tenant deployments, runtime schema editing, and the
 `appscheme_*` meta-model that was always intended to host the truth.
 
 Goal: MongoDB `appscheme_*` = source of truth.
-`testScheme.ts` = bootstrap/seed tool only (run once, never in prod).
+`demoScheme.ts` = bootstrap/seed tool only (run once, never in prod).
 
 ---
 
@@ -20,7 +20,7 @@ Goal: MongoDB `appscheme_*` = source of truth.
 ```
 ┌─────────────────────────────────────────────────────┐
 │  BOOTSTRAP (one-time, dev/CLI only)                  │
-│  testScheme.ts → seedSchemeFromModel() → MongoDB     │
+│  demoScheme.ts → seedSchemeFromModel() → MongoDB     │
 │                   (appscheme_base, appscheme,         │
 │                    appscheme_field)                   │
 └────────────────────────┬────────────────────────────┘
@@ -186,7 +186,7 @@ Trigger via:
 | IdbqModel JSON not type-safe over wire | Medium | Zod validation on client parse |
 | Schema cache stale after structural change | Low | `schema:updated` event triggers soft reload |
 | mongoose `useDb` connection leak | Medium | `useCache: true`, monitor in dev |
-| testScheme.ts still imported in tests | High | Adapter: `buildModelFromTestScheme()` returns same shape as API |
+| demoScheme.ts still imported in tests | High | Adapter: `buildModelFromTestScheme()` returns same shape as API |
 | Bootstrap overwrites prod data | Critical | `POST /api/bootstrap` only in NODE_ENV=development |
 
 ---
@@ -219,7 +219,7 @@ server/src/middleware/dbRouter.ts  NEW  lookup collection→base, useDb()
 ```
 src/lib/main/machine.ts           MOD  add fetchSchema(), schema cache logic
 src/lib/main/machineSchemaCache.ts NEW  IDB cache read/write for schema
-src/lib/demo/testScheme.ts        MOD  add note: bootstrap only, not prod
+src/lib/demo/demoScheme.ts        MOD  add note: bootstrap only, not prod
 src/routes/+page.svelte           MOD  use machine.fetchSchema() not init(model)
 src/lib/main/__tests__/           MOD  mock schema API in tests
 ```
@@ -229,5 +229,5 @@ src/lib/main/__tests__/           MOD  mock schema API in tests
 server/src/__tests__/bootstrap.test.ts  NEW
 server/src/__tests__/scheme.test.ts     MOD
 src/lib/main/__tests__/machine.test.ts  MOD  mock fetch
-testScheme.ts                           MOD  move to src/lib/bootstrap/
+demoScheme.ts                           MOD  move to src/lib/bootstrap/
 ```

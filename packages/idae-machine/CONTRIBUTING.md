@@ -55,7 +55,7 @@ Tests use **Vitest** + **@testing-library/svelte**:
 
 - **Unit tests**: `src/lib/main/__tests__/` for core logic
 - **Component tests**: Colocate as `Component.svelte.spec.ts`
-- Use realistic schemas from `src/lib/demo/testScheme.ts`
+- Use realistic schemas from `src/lib/demo/demoScheme.ts`
 - Cover edge cases, error paths, and concurrent scenarios
 
 Example:

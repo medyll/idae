@@ -1,4 +1,4 @@
-# S10-01 — Tests Adaptation + testScheme relocation
+# S10-01 — Tests Adaptation + demoScheme relocation
 
 **Sprint:** 10 — Cleanup
 **Status:** todo
@@ -6,15 +6,15 @@
 **Depends on:** S9-01
 
 ## Goal
-Tests still use `new MachineDb(testScheme)` directly — that's fine for unit tests
+Tests still use `new MachineDb(demoScheme)` directly — that's fine for unit tests
 (MachineDb interface unchanged). But `+page.svelte` and integration tests need adaptation.
-Also: move testScheme to `src/lib/bootstrap/` to signal it's not prod code.
+Also: move demoScheme to `src/lib/bootstrap/` to signal it's not prod code.
 
 ## Changes
 
-### Move testScheme
+### Move demoScheme
 ```
-src/lib/demo/testScheme.ts  →  src/lib/bootstrap/testScheme.ts
+src/lib/demo/demoScheme.ts  →  src/lib/bootstrap/demoScheme.ts
 src/lib/demo/demoInit.ts    →  src/lib/bootstrap/demoInit.ts
 src/lib/demo/seedData.ts    →  src/lib/bootstrap/seedData.ts
 ```
@@ -22,18 +22,18 @@ src/lib/demo/seedData.ts    →  src/lib/bootstrap/seedData.ts
 Update all imports accordingly.
 
 ### Unit tests — unchanged
-`new MachineDb(testScheme)` is still valid. MachineDb interface didn't change.
+`new MachineDb(demoScheme)` is still valid. MachineDb interface didn't change.
 Only the source of the model changes (wire vs static). Tests stay green.
 
 ### Add: schema fetch mock helper
 ```typescript
 // src/lib/main/__tests__/helpers/mockSchemaFetch.ts
-import { testScheme } from '../../bootstrap/testScheme.js';
+import { demoScheme } from '../../bootstrap/demoScheme.js';
 
 export function mockSchemaFetch() {
   global.fetch = vi.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({ ok: true, model: testScheme, org: 'test' })
+    json: async () => ({ ok: true, model: demoScheme, org: 'test' })
   });
 }
 ```
@@ -58,15 +58,15 @@ it('fetchSchema populates model from API', async () => {
 ```typescript
 // server/src/__tests__/bootstrap.test.ts
 it('POST /api/bootstrap seeds appscheme_*', async () => {
-  const res = await request(app).post('/api/bootstrap').send({ model: testScheme });
+  const res = await request(app).post('/api/bootstrap').send({ model: demoScheme });
   expect(res.status).toBe(200);
   expect(res.body.collections).toBe(6);
   expect(res.body.fields).toBeGreaterThan(30);
 });
 
 it('bootstrap is idempotent', async () => {
-  await request(app).post('/api/bootstrap').send({ model: testScheme });
-  const res = await request(app).post('/api/bootstrap').send({ model: testScheme });
+  await request(app).post('/api/bootstrap').send({ model: demoScheme });
+  const res = await request(app).post('/api/bootstrap').send({ model: demoScheme });
   expect(res.status).toBe(200);
   // Count unchanged
 });
@@ -74,6 +74,6 @@ it('bootstrap is idempotent', async () => {
 
 ## Done when
 - `pnpm vitest run` → 15+/15 tests pass
-- No import of `testScheme` in `src/routes/+page.svelte`
-- testScheme lives in `src/lib/bootstrap/`
+- No import of `demoScheme` in `src/routes/+page.svelte`
+- demoScheme lives in `src/lib/bootstrap/`
 - `machineSchemaCache` has tests for read/write

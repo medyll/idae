@@ -9,7 +9,7 @@ Inter-role communication log.
 - UI restructured: `collection/`, `lists/`, `data/`, `forms/` → `explorer/`, `card/`, `field/`, `input/`
 - Schema format: string rules deprecated → `field()` builder + `TplFieldRulesObject` in idae-idbql
 - `FieldDisplay` now dispatches to type-specific Input atoms
-- `dbSchema.ts` + `testScheme.ts` migrated to `field()` format
+- `dbSchema.ts` + `demoScheme.ts` migrated to `field()` format
 - See `CLAUDE.md` for full current state
 
 ---

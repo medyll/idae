@@ -1,7 +1,7 @@
 import type { MachineModel } from '../../../../src/lib/main/types/machine-model.js';
 import { field } from '../../../../src/lib/main/machine/fieldBuilder.js';
 
-export const testScheme: MachineModel = {
+export const demoScheme: MachineModel = {
 	vehicle:         {
 		keyPath:  '++id',
 		base:     'machine_base',

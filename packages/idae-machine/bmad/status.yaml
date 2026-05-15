@@ -73,7 +73,7 @@ artifacts:
 # ── Architecture ──────────────────────────────────────────────────────────────
 architecture:
   doc: "bmad/artifacts/docs/ARCH-SCHEMA-FROM-MONGO.md"
-  decision: "MongoDB appscheme_* = source of truth. testScheme = bootstrap only."
+  decision: "MongoDB appscheme_* = source of truth. demoScheme = bootstrap only."
   db_naming: "{org}_{base} e.g. test_machine_base"
   offline: "stale-while-revalidate via IDB cache"
 
@@ -245,11 +245,11 @@ sprints:
         test_result: pass
 
   - id: 10
-    goal: "Cleanup: tests, testScheme → bootstrap/, no prod imports"
+    goal: "Cleanup: tests, demoScheme → bootstrap/, no prod imports"
     status: completed
     stories:
       - id: S10-01
-        title: "Tests adaptation + testScheme relocation"
+        title: "Tests adaptation + demoScheme relocation"
         status: complete
         tests_executed: true
         test_output: "vitest: 226 passed (15 files)"

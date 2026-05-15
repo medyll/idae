@@ -6,7 +6,7 @@
 **Depends on:** S8-01
 
 ## Goal
-Replace `machine.init({ model: testScheme })` with `await machine.fetchSchema(url)`.
+Replace `machine.init({ model: demoScheme })` with `await machine.fetchSchema(url)`.
 Schema comes from server. Cache in IDB. Stale-while-revalidate offline support.
 
 ## New file: `src/lib/main/machineSchemaCache.ts`
@@ -101,8 +101,8 @@ async #refreshSchemaInBackground(url: string): Promise<void> {
   import { machine } from '$lib/main/machine.js';
 
   // Before:
-  // import { testScheme } from '$lib/demo/testScheme.js';
-  // machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
+  // import { demoScheme } from '$lib/demo/demoScheme.js';
+  // machine.init({ dbName: 'demo-db', version: 1, model: demoScheme });
   // machine.start();
 
   // After:
@@ -118,12 +118,12 @@ async #refreshSchemaInBackground(url: string): Promise<void> {
 - Schema change → `idae:schema:updated` event → optional app reload
 
 ## Tests
-- Mock `fetch` to return testScheme JSON → `machine._model` populated
+- Mock `fetch` to return demoScheme JSON → `machine._model` populated
 - Second call → cache hit → no fetch → `start()` called immediately
 - Fetch failure with cache → uses cache, no throw
 
 ## Done when
-- `+page.svelte` imports NO testScheme
+- `+page.svelte` imports NO demoScheme
 - `machine.fetchSchema()` populates model from API
 - IDB cache survives page reload
 - Offline: cached schema boots machine without network

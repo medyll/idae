@@ -148,7 +148,7 @@ pnpm run check         # TypeScript
 ```
 
 Test files: `src/lib/main/__tests__/*.test.ts`  
-Reference schema: `src/lib/demo/testScheme.ts`  
+Reference schema: `src/lib/demo/demoScheme.ts`  
 Always call `machine.start()` in test setup before accessing store/logic.
 
 ---

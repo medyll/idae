@@ -7,7 +7,7 @@
 
 ## Goal
 Server reads `appscheme_*` from MongoDB → reconstructs IdbqModel-compatible JSON → returns to client.
-This replaces the hardcoded `testScheme.ts` on the client.
+This replaces the hardcoded `demoScheme.ts` on the client.
 
 ## Modify: `server/src/routes/scheme.ts`
 
@@ -86,5 +86,5 @@ export function registerSchemeRoutes() {
 
 ## Done when
 - Client can `fetch('/api/scheme')` and get a valid IdbqModel JSON
-- All 6 collections from testScheme are returned
+- All 6 collections from demoScheme are returned
 - Fields include type, required, readonly

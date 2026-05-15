@@ -1,21 +1,21 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
-import { testScheme } from '../../demo/testScheme.js';
+import { demoScheme } from '../../demo/demoScheme.js';
 import type { MachineModel } from '../types/machine-model.js';
 
 function createTestMachine() {
-	return new Machine('test-db', 1, testScheme);
+	return new Machine('test-db', 1, demoScheme);
 }
 
 describe('Machine', () => {
 	it('should create named instance and store in registry', () => {
-		const named = Machine.prototype.createInstance('foo', 'foo-db', 1, testScheme);
+		const named = Machine.prototype.createInstance('foo', 'foo-db', 1, demoScheme);
 		expect(named.instanceName).toBe('foo');
 		expect(Machine.instanceRegistry['foo']).toBe(named);
 	});
 
 	it('should retrieve instance by name using instance', () => {
-		const named = Machine.prototype.createInstance('bar', 'bar-db', 1, testScheme);
+		const named = Machine.prototype.createInstance('bar', 'bar-db', 1, demoScheme);
 		const retrieved = Machine.instance('bar');
 		expect(retrieved).toBe(named);
 		expect(retrieved?.instanceName).toBe('bar');
@@ -26,16 +26,16 @@ describe('Machine', () => {
 		machine = createTestMachine();
 	});
 
-	it('should initialize with testScheme', () => {
+	it('should initialize with demoScheme', () => {
 		expect(machine).toBeDefined();
-		expect(machine._model).toBe(testScheme);
+		expect(machine._model).toBe(demoScheme);
 	});
 
 	it('should set dbName, version, and model via init', () => {
-		machine.init({ dbName: 'foo', version: 2, model: testScheme });
+		machine.init({ dbName: 'foo', version: 2, model: demoScheme });
 		expect(machine._dbName).toBe('foo');
 		expect(machine._version).toBe(2);
-		expect(machine._model).toBe(testScheme);
+		expect(machine._model).toBe(demoScheme);
 	});
 
 	it('should throw if start is called without model', () => {
@@ -46,14 +46,14 @@ describe('Machine', () => {
 	describe('moduleDbName()', () => {
 		it('returns org_base when org is set', () => {
 			const m = new Machine();
-			m.init({ model: testScheme, org: 'test' });
+			m.init({ model: demoScheme, org: 'test' });
 			expect(m.moduleDbName('machine_base')).toBe('test_machine_base');
 			expect(m.moduleDbName('machine_app')).toBe('test_machine_app');
 		});
 
 		it('returns bare base when org is not set', () => {
 			const m = new Machine();
-			m.init({ model: testScheme });
+			m.init({ model: demoScheme });
 			expect(m.moduleDbName('machine_base')).toBe('machine_base');
 		});
 	});

@@ -201,7 +201,7 @@ src/lib/main-ui/
 | Component rename (explorer/card/field/input) | ✅ Done |
 | field() builder + TplFieldRulesObject in idae-idbql | ✅ Done |
 | MachineParserForge handles object rules | ✅ Done |
-| dbSchema.ts + testScheme.ts migrated to field() | ✅ Done |
+| dbSchema.ts + demoScheme.ts migrated to field() | ✅ Done |
 | FieldDisplay dispatches by fieldType | ✅ Done |
 | MachineFieldType registry wired to format() | ✅ Done |
 | Rights / #checkAccess() implementation | ✅ Done |
@@ -236,8 +236,8 @@ pnpm run build     # svelte-package build
 
 | File | What it is |
 |------|-----------|
-| `server/src/models/demo/testScheme.ts` | Demo schema (rental car app) — canonical location |
-| `src/lib/demo/testScheme.ts` | Re-export shim → server/src/models/demo/testScheme.ts |
+| `server/src/models/demo/demoScheme.ts` | Demo schema (rental car app) — canonical location |
+| `src/lib/demo/demoScheme.ts` | Re-export shim → server/src/models/demo/demoScheme.ts |
 | `src/lib/demo/dbSchema.ts` | App schema (chat/book creator) — migrated to field() |
 | `src/lib/main/types/idae-model-core.ts` | Meta-schema: appscheme_* collections definition |
 | `src/lib/main/types/schema-types.ts` | FieldList catalog + RBAC types |

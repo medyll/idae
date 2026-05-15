@@ -10,7 +10,7 @@
   - Error path coverage (17 tests): schema validation, database initialization, field validation error messages, collection operations, error recovery
 - **Demo page refactor** (S3-01): Car rental business model with 6 collections (vehicles, customers, reservations, agents, maintenance, insurances), complete component showcase with Frame layout and tab navigation
 - **Bug fixes**:
-  - Fixed foreign key validation in `testScheme.ts` by removing empty `rules: ''` from optional FK fields (line 51–52)
+  - Fixed foreign key validation in `demoScheme.ts` by removing empty `rules: ''` from optional FK fields (line 51–52)
   - Fixed ESM import path in `src/routes/+layout.svelte` from `./$types` to `./$types.js` for node16 moduleResolution compatibility
 
 ### Improved

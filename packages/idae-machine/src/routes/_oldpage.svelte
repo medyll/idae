@@ -4,7 +4,7 @@
     -->
     <script lang="ts">
         import { machine } from '$lib/main/machine.js';
-        import { testScheme } from '$lib/demo/testScheme.js';
+        import { demoScheme } from '$lib/demo/demoScheme.js';
     
         // Explorer Components
         import ExplorerCollections from '$lib/main-ui/explorer/ExplorerCollections.svelte';
@@ -29,12 +29,12 @@
         import InfoLine from '$lib/main-ui/fragments/InfoLine.svelte';
         import Skeleton from '$lib/main-ui/fragments/Skeleton.svelte';
     
-        // Initialize machine — testScheme IS the model (top-level keys = collection names)
-        machine.init({ dbName: 'demo-db', version: 1, model: testScheme });
+        // Initialize machine — demoScheme IS the model (top-level keys = collection names)
+        machine.init({ dbName: 'demo-db', version: 1, model: demoScheme });
         machine.start();
     
-        // Collections = top-level keys of testScheme
-        const collections = Object.keys(testScheme);
+        // Collections = top-level keys of demoScheme
+        const collections = Object.keys(demoScheme);
     
         // State
         let selectedCollection = $state<string>(collections[0] ?? 'product');

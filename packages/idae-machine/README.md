@@ -250,7 +250,7 @@ await machineServer.stop();
 - `GET /api/scheme/:table` — single collection
 - `POST /api/bootstrap` — `deployModel` via HTTP (dev only)
 
-**Demo schema:** `server/src/models/demo/testScheme.ts`
+**Demo schema:** `server/src/models/demo/demoScheme.ts`
 
 ---
 

@@ -16,5 +16,5 @@
 - `src/routes/+page.svelte`
 
 ## Critical
-After this sprint, `testScheme` is NOT imported anywhere in the production client.
+After this sprint, `demoScheme` is NOT imported anywhere in the production client.
 +page.svelte only calls `machine.fetchSchema('http://localhost:3000/api/scheme')`.

@@ -17,7 +17,7 @@ test.describe('Structure de base', () => {
 		await expect(page.locator('.demo-header p')).toBeVisible();
 	});
 
-	test('panneau gauche avec les 3 collections du testScheme', async ({ page }) => {
+	test('panneau gauche avec les 3 collections du demoScheme', async ({ page }) => {
 		await expect(page.getByTestId('left-panel')).toBeVisible();
 		await expect(page.getByTestId('collection-btn-vehicle')).toBeVisible();
 		await expect(page.getByTestId('collection-btn-category')).toBeVisible();

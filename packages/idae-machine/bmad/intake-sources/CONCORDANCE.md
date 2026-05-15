@@ -49,7 +49,7 @@
 
 | ARCH.md Collection | idae-machine Equivalent | Concordance |
 |--------------------|------------------------|-------------|
-| `appscheme` | `testScheme.ts` (IdbqModel) | ⚠️ Different format |
+| `appscheme` | `demoScheme.ts` (IdbqModel) | ⚠️ Different format |
 | `appscheme_field` | Embedded in `template.fields` | ✅ Concept present |
 | `appscheme_has_field` | Implicit in template | ✅ Simplified |
 | `appscheme_field_type` | `MachineFieldType` registry | ✅ Implemented |

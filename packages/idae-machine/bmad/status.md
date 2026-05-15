@@ -21,7 +21,7 @@ _Updated: 2026-05-13_
 | S7 | Bootstrap: seedSchemeFromModel + CLI + POST /api/bootstrap | ✅ | 225/225 ✅ |
 | S8 | GET /api/scheme (IdbqModel JSON) + multi-DB routing | ✅ | 225/225 ✅ |
 | S9 | machine.fetchSchema() + stale-while-revalidate IDB cache | ✅ | 225/225 ✅ |
-| S10 | testScheme → bootstrap/, fetchSchema test, server bootstrap test | ✅ | 226/226 ✅ |
+| S10 | demoScheme → bootstrap/, fetchSchema test, server bootstrap test | ✅ | 226/226 ✅ |
 
 ---
 
@@ -39,8 +39,8 @@ _Updated: 2026-05-13_
 ```
 src/lib/main/machine.ts                      MOD  moduleDbName() fixed, fetchSchema() added
 src/lib/main/machineSchemaCache.ts           NEW  IDB stale-while-revalidate cache
-src/lib/bootstrap/testScheme.ts             NEW  re-export with BOOTSTRAP ONLY note
-src/lib/index.ts                             MOD  testScheme removed from public API
+src/lib/bootstrap/demoScheme.ts             NEW  re-export with BOOTSTRAP ONLY note
+src/lib/index.ts                             MOD  demoScheme removed from public API
 server/src/config.ts                         MOD  org field + URI without DB name
 server/src/bootstrap/seedSchemeFromModel.ts  NEW  idempotent upserts to appscheme_*
 server/src/bootstrap/seed.ts                 NEW  CLI entry

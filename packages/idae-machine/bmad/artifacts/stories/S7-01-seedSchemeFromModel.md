@@ -6,7 +6,7 @@
 **Depends on:** S6-01
 
 ## Goal
-One-shot function: takes `IdbqModel` (e.g. testScheme) → writes to MongoDB
+One-shot function: takes `IdbqModel` (e.g. demoScheme) → writes to MongoDB
 `{org}_machine_app` database → `appscheme_base`, `appscheme`, `appscheme_field`.
 Idempotent (upsert by code). Safe to re-run.
 
@@ -98,11 +98,11 @@ export async function seedSchemeFromModel(
 // CLI: tsx server/src/bootstrap/seed.ts
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-import { testScheme } from '../../../src/lib/demo/testScheme.js';  // dev only
+import { demoScheme } from '../../../src/lib/demo/demoScheme.js';  // dev only
 import { seedSchemeFromModel } from './seedSchemeFromModel.js';
 
 await mongoose.connect(config.mongodbUri);
-const result = await seedSchemeFromModel(testScheme as any, { org: config.org });
+const result = await seedSchemeFromModel(demoScheme as any, { org: config.org });
 console.log('Seeded:', result);
 await mongoose.disconnect();
 ```
@@ -126,7 +126,7 @@ export function registerBootstrapRoute() {
 ```
 
 ## Tests
-- `POST /api/bootstrap` with testScheme JSON → 200 + { bases: 1, collections: 6, fields: ~35 }
+- `POST /api/bootstrap` with demoScheme JSON → 200 + { bases: 1, collections: 6, fields: ~35 }
 - Re-run → same result (idempotent, no duplicates)
 - In prod (`NODE_ENV=production`) → route not registered → 404
 
