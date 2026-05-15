@@ -6,7 +6,7 @@ const baseCache = new Map<string, string>();
 
 export async function getConn(dbName: string): Promise<Connection> {
 	return mongooseConnectionManager.getConnection(dbName)
-		?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName);
+		?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName, { dbName });
 }
 
 /**

@@ -33,7 +33,7 @@ class MachineServerClass {
 	async #getMetaDb(): Promise<Connection> {
 		const dbName = `${config.org}_machine_app`;
 		return mongooseConnectionManager.getConnection(dbName)
-			?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName);
+			?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName, { dbName });
 	}
 
 	// ── getModel — reads appscheme_* → MachineModel ───────────────────────────
@@ -142,7 +142,8 @@ class MachineServerClass {
 
 	async start(): Promise<void> {
 		// Connect to meta DB — validates credentials at startup
-		await mongooseConnectionManager.createConnection(config.mongodbUri, `${config.org}_machine_app`);
+		const metaDbName = `${config.org}_machine_app`;
+		await mongooseConnectionManager.createConnection(config.mongodbUri, metaDbName, { dbName: metaDbName });
 		logger.info('Connected to MongoDB');
 
 		// Register routes

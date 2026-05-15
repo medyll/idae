@@ -70,7 +70,7 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 
 	const dbName = `${org}_machine_app`;
 	const db = mongooseConnectionManager.getConnection(dbName)
-		?? await mongooseConnectionManager.createConnection(mongoUri, dbName);
+		?? await mongooseConnectionManager.createConnection(mongoUri, dbName, { dbName });
 
 	// ── 1. appscheme_field_type ─────────────────────────────────────────────
 	const ftCol  = db.collection('appscheme_field_type');
