@@ -1,5 +1,8 @@
 # CONCORDANCE.md — idae-machine vs ARCH.md Capability Analysis
 
+> ⚠️ **LEGACY ONLY — Snapshot 2026-03-30.** Legacy field names (`codeAppscheme*`, `nomAppscheme*`, `idappscheme*`)
+> referenced here are PURGED from current idae-machine code (2026-05-15). Reference only — do not copy patterns.
+
 **Date**: 2026-03-30  
 **Scope**: Client-side implementation only  
 **Purpose**: Evaluate current idae-machine capabilities against ARCH.md target architecture

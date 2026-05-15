@@ -84,30 +84,30 @@ Advanced filter bar for collection explorers.
 		<div class="filter-panel">
 			{#each fields as field}
 				<div class="filter-field">
-					<label for="filter-{field.field_name}">
+					<label for="filter-{field.name}">
 						{field.title}
 					</label>
 					{#if field.type === 'text'}
 						<input
 							type="text"
-							id="filter-{field.field_name}"
+							id="filter-{field.name}"
 							placeholder="Filter by {field.title}"
-							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, (e.target as HTMLInputElement).value)}
+							onchange={(e) => handleFieldFilter(field.code || field.name, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{:else if field.type === 'number'}
 						<input
 							type="number"
-							id="filter-{field.field_name}"
+							id="filter-{field.name}"
 							placeholder="Min"
-							onchange={(e) => handleFieldFilter(`${field.field_name_raw || field.field_name}__gte`, (e.target as HTMLInputElement).value)}
+							onchange={(e) => handleFieldFilter(`${field.code || field.name}__gte`, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{:else if field.type === 'date'}
 						<input
 							type="date"
-							id="filter-{field.field_name}"
-							onchange={(e) => handleFieldFilter(field.field_name_raw || field.field_name, (e.target as HTMLInputElement).value)}
+							id="filter-{field.name}"
+							onchange={(e) => handleFieldFilter(field.code || field.name, (e.target as HTMLInputElement).value)}
 							class="filter-input"
 						/>
 					{/if}

@@ -2,9 +2,9 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { createIdbqDb } from '@medyll/idae-idbql';
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import type { AppUser, AppUserGrant, PermissionCode } from '$lib/main/types/schema-types.js';
+import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
-import { type MachineModel, toIdbqModel } from '$lib/main/types/machine-model.js';
+import { type MachineModel, toIdbqModel } from '$lib/types/machine-model.js';
 
 /**
  * @class Machine

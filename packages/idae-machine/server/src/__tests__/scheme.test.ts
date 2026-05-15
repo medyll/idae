@@ -50,7 +50,7 @@ describe('GET /api/scheme', () => {
 		const collections = [
 			'appscheme', 'appscheme_base', 'appscheme_field', 'appscheme_field_type',
 			'appscheme_field_group', 'appscheme_type', 'appscheme_view_type',
-			'appscheme_has_field', 'appscheme_has_table_field', 'appscheme_view',
+			'appscheme_has_field', 'appscheme_view',
 		];
 		for (const col of collections) {
 			await db.collection(col).deleteMany({});

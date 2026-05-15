@@ -1,4 +1,4 @@
-import type { AppUser, AppUserGrant, PermissionCode } from '$lib/main/types/schema-types.js';
+import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 
 type PermissionField = 'canCreate' | 'canRead' | 'canUpdate' | 'canDelete' | 'canList' | 'canExecute' | 'canAdmin';
 

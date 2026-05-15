@@ -1,4 +1,4 @@
-import type { MachineFieldDef } from '$lib/main/types/machine-model.js';
+import type { MachineFieldDef } from '$lib/types/machine-model.js';
 
 /**
  * Builder helper for machine field declarations.

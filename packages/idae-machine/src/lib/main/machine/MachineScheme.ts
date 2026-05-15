@@ -7,7 +7,7 @@ import type {
 	CollectionModel,
 	TplFieldRules
 } from '@medyll/idae-idbql';
-import type { MachineModel } from '$lib/main/types/machine-model.js';
+import type { MachineModel } from '$lib/types/machine-model.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';

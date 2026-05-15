@@ -12,7 +12,7 @@ import { initializeSocketIO } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import { seedSchemeFromModel } from './bootstrap/seedSchemeFromModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
-import type { MachineModel } from '../../src/lib/main/types/machine-model.js';
+import type { MachineModel } from '../../src/lib/types/machine-model.js';
 
 const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
 
@@ -48,7 +48,6 @@ class MachineServerClass {
 		const fieldByCode = new Map(fieldDocs.map((f: any) => [f.code as string, f]));
 
 		const hasFieldDocs  = await db.collection('appscheme_has_field').find().toArray();
-		const hasTFieldDocs = await db.collection('appscheme_has_table_field').find().toArray();
 
 		// group has_field by collection, sorted by order
 		const hasFieldByScheme: Record<string, any[]> = {};
@@ -59,18 +58,6 @@ class MachineServerClass {
 		}
 		for (const list of Object.values(hasFieldByScheme)) {
 			list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-		}
-
-		// fk field→collection resolution
-		const fkTargetMap = new Map<string, { targetCol: string; targetField: string }>();
-		for (const htf of hasTFieldDocs) {
-			const schemeCode = htf.gridFks?.appscheme?.code as string;
-			const fieldCode  = htf.gridFks?.appscheme_field?.code as string;
-			const linkCode   = htf.gridFks?.appscheme_link?.code as string;
-			const targetFld  = (htf.targetField as string) ?? 'id';
-			if (schemeCode && fieldCode && linkCode) {
-				fkTargetMap.set(`${schemeCode}::${fieldCode}`, { targetCol: linkCode, targetField: targetFld });
-			}
 		}
 
 		const model: MachineModel = {};
@@ -88,9 +75,9 @@ class MachineServerClass {
 				const rawType  = (fieldDoc?.field_type as string) ?? 'text';
 
 				let finalType = rawType;
-				if (rawType === 'fk') {
-					const fkTarget = fkTargetMap.get(`${code}::${fieldCode}`);
-					if (fkTarget) finalType = `fk-${fkTarget.targetCol}.${fkTarget.targetField}`;
+				if (rawType === 'fk' && fieldDoc?.fkTargetCol) {
+					const tf = (fieldDoc.fkTargetField as string) ?? 'id';
+					finalType = `fk-${fieldDoc.fkTargetCol}.${tf}`;
 				}
 
 				fields[fieldCode] = {

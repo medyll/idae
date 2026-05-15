@@ -1,7 +1,9 @@
-# ARCH-SOURCE.md — HISTORICAL REFERENCE (READ ONLY)
+# ARCH-SOURCE.md — LEGACY ONLY (DO NOT USE FOR NEW CODE)
 
-> **This is a reference document for the legacy PHP app architecture.**  
-> It describes what idae-machine is replacing, not what idae-machine is.  
+> ⚠️ **LEGACY ONLY — Historical reference for the PHP/PrototypeJS app (idae-legacy).**
+> Naming conventions in this doc (`codeAppscheme*`, `nomAppscheme*`, `idappscheme*`, `ordreAppscheme_*`, `appscheme_has_table_field`)
+> are PURGED from idae-machine as of 2026-05-15. Use `id`, `code`, `name`, `order` directly.
+> `appscheme_has_table_field` is removed — use `appscheme_view` (view_type='custom') + `appscheme_field.fkTargetCol`.
 > For current architecture: see `CLAUDE.md`. For legacy→current mapping: see `CLAUDE.md` section 3.
 
 ---

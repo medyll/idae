@@ -8,7 +8,7 @@ const TEST_ORG = 'vitest';
 const META_COLS = [
 	'appscheme', 'appscheme_base', 'appscheme_field', 'appscheme_field_type',
 	'appscheme_field_group', 'appscheme_type', 'appscheme_view_type',
-	'appscheme_has_field', 'appscheme_has_table_field', 'appscheme_view',
+	'appscheme_has_field', 'appscheme_view',
 ];
 
 const miniModel: any = {
@@ -74,15 +74,13 @@ describe('seedSchemeFromModel', () => {
 		const schemes = await idaeDb.collection('appscheme').find({ query: {} });
 		const fields  = await idaeDb.collection('appscheme_field').find({ query: {} });
 		const hasF    = await idaeDb.collection('appscheme_has_field').find({ query: {} });
-		const hasTF   = await idaeDb.collection('appscheme_has_table_field').find({ query: {} });
 		const views   = await idaeDb.collection('appscheme_view').find({ query: {} });
 
 		expect(bases.some((b: any) => b.code === 'test_base')).toBe(true);
 		expect(schemes.some((s: any) => s.code === 'product')).toBe(true);
 		expect(fields.some((f: any) => f.code === 'name' && f.required === 1)).toBe(true);
-		expect(fields.some((f: any) => f.code === 'categoryId' && f.field_type === 'fk')).toBe(true);
+		expect(fields.some((f: any) => f.code === 'categoryId' && f.field_type === 'fk-category.id' && f.fkTargetCol === 'category')).toBe(true);
 		expect(hasF.some((h: any) => h.gridFks?.appscheme?.code === 'product' && h.gridFks?.appscheme_field?.code === 'id')).toBe(true);
-		expect(hasTF.some((h: any) => h.gridFks?.appscheme_link?.code === 'category')).toBe(true);
 		expect(views.length).toBeGreaterThan(0);
 	});
 

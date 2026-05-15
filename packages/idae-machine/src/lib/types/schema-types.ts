@@ -948,17 +948,14 @@ export interface WithEssentials<T = any>
 	extends Extendable, WithID, WithCode, WithName, WithColor, WithIcon, WithOrder {}
 
 /** Base database definition */
-export interface AppSchemeBase extends Extendable, WithID, WithCode, WithName {
-	idappscheme_base: ID;
-}
+export interface AppSchemeBase extends Extendable, WithEssentials {}
 
 /** Main scheme definition */
 export interface AppScheme<T = Record<string, any>> extends Extendable, WithEssentials<T> {
-	idappscheme: ID;
-	schemeType:  SchemeType;
+	schemeType?: SchemeType;
 	/**
 	 * Dynamic views registry - populated at runtime from appscheme_view.
-	 * Keys are codeAppscheme_view_type values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
+	 * Keys are appscheme_view_type.code values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
 	 * @see EntityViews for standard view type definitions
 	 */
 	_views?:     Partial<EntityViews>;
@@ -976,56 +973,46 @@ export interface AppSchemeCore<T = Record<string, any>> extends AppScheme<T> {
 	};
 }
 
-export interface AppSchemeType extends Extendable, WithEssentials {
-	idappscheme_type: ID;
-}
+export interface AppSchemeType extends Extendable, WithEssentials {}
 
-export interface AppSchemeFieldGroup extends Extendable, WithEssentials {
-	idappscheme_field_group: ID;
-}
+export interface AppSchemeFieldGroup extends Extendable, WithEssentials {}
 
-export interface AppSchemeFieldType extends Extendable, WithEssentials {
-	idappscheme_field_type: ID;
-}
+export interface AppSchemeFieldType extends Extendable, WithEssentials {}
 
 export interface AppSchemeField extends Extendable, WithEssentials {
-	idappscheme_field: ID;
-	description?:      string;
-	gridFks?:          {
+	description?:   string;
+	field_type?:    string;
+	field_group?:   string;
+	required?:      boolean | 0 | 1;
+	readonly?:      boolean | 0 | 1;
+	private?:       boolean | 0 | 1;
+	fkTargetCol?:   string | null;
+	fkTargetField?: string | null;
+	gridFks?: {
 		appscheme_field_type?:  gridFksItem<AppSchemeFieldType>;
 		appscheme_field_group?: gridFksItem<AppSchemeFieldGroup>;
 	};
 }
 
 export interface AppSchemeHasField extends Extendable, WithEssentials {
-	idappscheme_has_field: ID;
-	visible?:              boolean;
-	readonly?:             boolean;
-	required?:             boolean;
-	gridFks:               {
+	visible?:  boolean | 0 | 1;
+	readonly?: boolean | 0 | 1;
+	required?: boolean | 0 | 1;
+	gridFks: {
 		appscheme:       gridFksItem<AppScheme>;
 		appscheme_field: gridFksItem<AppSchemeField>;
 	};
 }
 
-export interface AppSchemeHasTableField extends Extendable, WithEssentials {
-	idappscheme_has_table_field: ID;
-	gridFks:                     {
-		appscheme_field: gridFksItem<AppSchemeField>;
-		appscheme_link:  gridFksItem<AppScheme>;
-	};
-}
-
 export interface AppSchemeLog extends Extendable, WithID {
-	idappscheme_log: ID;
-	operation:       'create' | 'update' | 'delete';
-	scheme?:         SchemeName;
-	actorId?:        ID;
-	timestamp?:      DateValue;
-	details?:        Extendable;
-	changes?:        Extendable;
-	gridFks?:        {
-		idappscheme: gridFksItem<AppScheme>;
+	operation: 'create' | 'update' | 'delete';
+	scheme?:   SchemeName;
+	actorId?:  ID;
+	timestamp?: DateValue;
+	details?:  Extendable;
+	changes?:  Extendable;
+	gridFks?: {
+		appscheme: gridFksItem<AppScheme>;
 	};
 }
 
@@ -1036,7 +1023,6 @@ export type AppSchemaCollection =
 	| AppSchemeFieldType
 	| AppSchemeFieldGroup
 	| AppSchemeHasField
-	| AppSchemeHasTableField
 	| AppSchemeType
 	| AppSchemeLog
 	| AppSchemeViewType
@@ -1105,7 +1091,6 @@ export interface GrantConstraints extends Extendable {
  * Separated from profile for security (PII isolation) and performance.
  */
 export interface AppUser extends Extendable, WithEssentials {
-	idappuser: ID;
 	login: string;
 	passwordHash: string;
 	email: string;
@@ -1134,7 +1119,6 @@ export interface AppUser extends Extendable, WithEssentials {
  * Can be extended without affecting auth flows.
  */
 export interface AppUserProfile extends Extendable, WithID {
-	idappuser_profile: ID;
 	firstName?: string;
 	lastName?: string;
 	displayName?: string;
@@ -1156,7 +1140,6 @@ export interface AppUserProfile extends Extendable, WithID {
  * Users can belong to multiple groups via AppUserAssignment.
  */
 export interface AppUserGroup extends Extendable, WithEssentials {
-	idappuser_group: ID;
 	code: Code;
 	name: Name;
 	description?: Description;
@@ -1172,7 +1155,6 @@ export interface AppUserGroup extends Extendable, WithEssentials {
  * Roles can be assigned directly to users or inherited from groups.
  */
 export interface AppUserRole extends Extendable, WithEssentials {
-	idappuser_role: ID;
 	code: Code;
 	name: Name;
 	description?: Description;
@@ -1198,7 +1180,6 @@ export type AssignmentType = 'role' | 'group';
  * Temporal scope: assignments can be temporary (internships, projects).
  */
 export interface AppUserAssignment extends Extendable, WithID {
-	idappuser_assignment: ID;
 	assignmentType: AssignmentType;
 	/**
 	 * Primary group for UI defaults and fallback permissions.
@@ -1241,7 +1222,6 @@ export type GrantType = 'role' | 'group' | 'user';
  * Temporal scope enables temporary access (projects, substitutions).
  */
 export interface AppUserGrant extends Extendable, WithID {
-	idappuser_grant: ID;
 	grantType: GrantType;
 	// CRUD + extended permissions
 	canCreate: PermissionBoolean;
@@ -1278,7 +1258,6 @@ export interface AppUserGrant extends Extendable, WithID {
  * Enables "logout everywhere" and concurrent session limits.
  */
 export interface AppUserSession extends Extendable, WithID {
-	idappuser_session: ID;
 	sessionToken: string;
 	refreshToken?: string;
 	ipAddress?: string;
@@ -1324,7 +1303,6 @@ export type AuditStatus = 'success' | 'failure' | 'denied';
  * Immutable log of who did what, when, from where.
  */
 export interface AppUserAudit extends Extendable, WithID {
-	idappuser_audit: ID;
 	action: AuditAction;
 	resourceType: string; // 'appscheme', 'record', 'config', 'user', etc.
 	resourceId?: ID;
@@ -1398,27 +1376,27 @@ export interface ViewOptions extends Extendable {
  * Combines field metadata from appscheme_field with view-specific options.
  */
 export interface ViewFieldDef extends Extendable {
-	name: string;   // Display field name: codeAppscheme_field + ucfirst(codeAppscheme)
-	code: string;   // Raw field code: codeAppscheme_field
-	group: string;  // Group code: codeAppscheme_field_group
-	title: string;             // Display title: nomAppscheme_field
+	name: string;   // Field name (from appscheme_field.code)
+	code: string;   // Field code
+	group: string;  // Group code (from appscheme_field_group.code)
+	title: string;             // Display title (from appscheme_field.name)
 	type?: string;             // Field type code (only in entityModel)
 	icon?: string;             // Field icon
-	order?: number;            // Position in view: ordreAppscheme_view
+	order?: number;            // Position in view (from appscheme_view.order)
 	options?: ViewOptions;     // View-specific options
 }
 
 /**
  * Collection of all named views for an entity.
- * Keys correspond to codeAppscheme_view_type values.
+ * Keys correspond to appscheme_view_type.code values.
  */
 export interface EntityViews extends Extendable {
 	entityModel: ViewFieldDef[];   // Canonical field list - NOT a view, sourced from appscheme_has_field
-	listView: ViewFieldDef[];      // Grid columns (codeAppscheme_view_type = 'list')
-	miniView: ViewFieldDef[];      // Card/mini-fiche (codeAppscheme_view_type = 'mini')
-	formView: ViewFieldDef[];      // Form layout (codeAppscheme_view_type = 'form')
-	customView: ViewFieldDef[];    // Admin-configured (codeAppscheme_view_type = 'custom')
-	fkLabelView: ViewFieldDef[];   // FK selector labels (codeAppscheme_view_type = 'fk_label')
+	listView: ViewFieldDef[];      // Grid columns (view_type 'list')
+	miniView: ViewFieldDef[];      // Card/mini-fiche (view_type 'mini')
+	formView: ViewFieldDef[];      // Form layout (view_type 'form')
+	customView: ViewFieldDef[];    // Admin-configured (view_type 'custom')
+	fkLabelView: ViewFieldDef[];   // FK selector labels (view_type 'fk_label')
 	[key: string]: ViewFieldDef[]; // Extensible for custom view types
 }
 
@@ -1427,8 +1405,6 @@ export interface EntityViews extends Extendable {
  * Defines available view contexts. Extensible without schema migration.
  */
 export interface AppSchemeViewType extends Extendable, WithEssentials {
-	idappscheme_view_type: ID;
-	codeAppscheme_view_type: ViewTypeCode;
 	description?: Description;
 }
 
@@ -1436,14 +1412,12 @@ export interface AppSchemeViewType extends Extendable, WithEssentials {
  * View instance - binds a field to a view type for an entity.
  * Pivot table: appscheme_view
  */
-export interface AppSchemeView extends Extendable, WithID {
-	idappscheme_view: ID;
-	ordreAppscheme_view: Order;
+export interface AppSchemeView extends Extendable, WithEssentials {
 	options?: ViewOptions;
 	gridFks: {
-		appscheme: AppScheme;
-		appscheme_view_type: AppSchemeViewType;
-		appscheme_field: AppSchemeField;
+		appscheme: gridFksItem<AppScheme>;
+		appscheme_view_type: gridFksItem<AppSchemeViewType>;
+		appscheme_field: gridFksItem<AppSchemeField>;
 	};
 }
 

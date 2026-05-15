@@ -1,5 +1,8 @@
 # IDAE-MACHINE-ADRS.md — Architecture Decision Records
 
+> ⚠️ **LEGACY ONLY — Historical ADRs.** Some patterns referenced here (legacy `*Appscheme*` field names,
+> `appscheme_has_table_field`) are PURGED from current idae-machine (2026-05-15). Reference only.
+
 **Date**: 2026-04-24  
 **Purpose**: Architectural decisions and design patterns for idae-machine  
 **Status**: Living document

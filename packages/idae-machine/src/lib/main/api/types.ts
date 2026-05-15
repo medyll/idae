@@ -34,7 +34,7 @@ export interface EntityViews {
  * AppScheme type
  */
 export interface AppScheme {
-	idappscheme: string;
+	id: string;
 	code: string;
 	name: string;
 	_views?: EntityViews;

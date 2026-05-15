@@ -25,7 +25,7 @@ export interface EntityViews {
 }
 
 export interface IAppScheme {
-	idappscheme: string;
+	id: string;
 	code: string;
 	name: string;
 	_views?: EntityViews;

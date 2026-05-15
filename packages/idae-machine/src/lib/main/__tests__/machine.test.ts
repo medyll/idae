@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
 import { demoScheme } from '../../demo/demoScheme.js';
-import type { MachineModel } from '../types/machine-model.js';
+import type { MachineModel } from '../../types/machine-model.js';
 
 function createTestMachine() {
 	return new Machine('test-db', 1, demoScheme);

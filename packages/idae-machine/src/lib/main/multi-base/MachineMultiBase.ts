@@ -10,7 +10,7 @@
 
 import { createMultiDbQoolie, type MultiDbManager } from '@medyll/qoolie';
 import type { QoolieCollection } from '@medyll/qoolie';
-import type { AppScheme } from '../types/schema-types.js';
+import type { AppScheme } from '../../types/schema-types.js';
 
 export interface MachineMultiBaseConfig {
 	/** Database name prefix (e.g., 'idae', 'appblog') */

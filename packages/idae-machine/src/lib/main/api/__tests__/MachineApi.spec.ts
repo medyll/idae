@@ -67,8 +67,8 @@ describe('MachineApi', () => {
 	describe('fetchAllSchemes', () => {
 		it('should return all schemes', async () => {
 			const mockSchemes = [
-				{ idappscheme: '1', code: 'produit', name: 'Produits' },
-				{ idappscheme: '2', code: 'client', name: 'Clients' }
+				{ id: '1', code: 'produit', name: 'Produits' },
+				{ id: '2', code: 'client', name: 'Clients' }
 			];
 
 			(global.fetch as any).mockResolvedValueOnce({
@@ -83,7 +83,7 @@ describe('MachineApi', () => {
 		});
 
 		it('should cache schemes', async () => {
-			const mockSchemes = [{ idappscheme: '1', code: 'produit', name: 'Produits' }];
+			const mockSchemes = [{ id: '1', code: 'produit', name: 'Produits' }];
 
 			(global.fetch as any).mockResolvedValueOnce({
 				ok: true,
@@ -104,7 +104,7 @@ describe('MachineApi', () => {
 	describe('fetchScheme', () => {
 		it('should return single scheme', async () => {
 			const mockScheme = {
-				idappscheme: '1',
+				id: '1',
 				code: 'produit',
 				name: 'Produits',
 				_views: {
@@ -129,7 +129,7 @@ describe('MachineApi', () => {
 		it('should encode special characters in table name', async () => {
 			(global.fetch as any).mockResolvedValueOnce({
 				ok: true,
-				json: async () => ({ idappscheme: '1', code: 'test table', name: 'Test' })
+				json: async () => ({ id: '1', code: 'test table', name: 'Test' })
 			});
 
 			await api.fetchScheme('test table');
@@ -193,7 +193,7 @@ describe('MachineApi', () => {
 		});
 
 		it('should invalidate scheme cache', async () => {
-			const mockScheme = { idappscheme: '1', code: 'produit', name: 'Produits' };
+			const mockScheme = { id: '1', code: 'produit', name: 'Produits' };
 
 			(global.fetch as any).mockResolvedValue({
 				ok: true,
@@ -215,7 +215,7 @@ describe('MachineApi', () => {
 		it('should invalidate all scheme caches', async () => {
 			(global.fetch as any).mockResolvedValue({
 				ok: true,
-				json: async () => ({ idappscheme: '1', code: 'produit', name: 'Produits' })
+				json: async () => ({ id: '1', code: 'produit', name: 'Produits' })
 			});
 
 			await api.fetchScheme('produit');
