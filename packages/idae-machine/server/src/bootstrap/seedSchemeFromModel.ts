@@ -1,4 +1,4 @@
-import { mongooseConnectionManager } from '@medyll/idae-api';
+import { IdaeDb, DbType } from '@medyll/idae-db';
 
 // MachineModel shape — minimal interface to avoid circular dep with client types
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
@@ -9,22 +9,6 @@ interface SeedOpts {
 	org:      string;
 	mongoUri: string;
 }
-
-// ── ID counters (sequential integers per collection) ──────────────────────────
-const counters: Record<string, number> = {};
-function nextId(col: string): number {
-	counters[col] = (counters[col] ?? 0) + 1;
-	return counters[col];
-}
-function resetCounters() { Object.keys(counters).forEach(k => delete counters[k]); }
-
-// ── Upsert helper ─────────────────────────────────────────────────────────────
-async function upsert(col: any, match: Record<string, any>, data: Record<string, any>) {
-	return col.updateOne(match, { $setOnInsert: { id: nextId(col.collectionName) }, $set: data }, { upsert: true });
-}
-
-// ── Reference caches (code → sequential id) ───────────────────────────────────
-type RefCache = Map<string, number>;
 
 // ── Static seed data ──────────────────────────────────────────────────────────
 const FIELD_TYPES = [
@@ -46,7 +30,7 @@ const VIEW_TYPES    = ['list', 'mini', 'form', 'custom', 'fk_label'] as const;
 // Map fk- prefix → canonical 'fk' type
 function normalizeFieldType(type: string): string {
 	if (type.startsWith('fk-')) return 'fk';
-	if (type.startsWith('text-')) return 'text-long'; // keep text variants as-is if known
+	if (type.startsWith('text-')) return 'text-long';
 	return FIELD_TYPES.includes(type as any) ? type : 'text';
 }
 
@@ -63,102 +47,89 @@ function inferFieldGroup(fieldName: string, type: string): string {
 	return 'presentation';
 }
 
+// ── Upsert helper — find-or-create, returns id ────────────────────────────────
+async function upsertGetId(
+	adapter:    any,
+	matchQuery: Record<string, any>,
+	data:       Record<string, any>,
+): Promise<number> {
+	const existing = await adapter.findOne({ query: matchQuery });
+	if (existing) {
+		await adapter.updateWhere({ query: matchQuery }, { $set: data });
+		return existing.id as number;
+	}
+	const created = await adapter.create(data);
+	return created.id as number;
+}
+
 // ── seedSchemeFromModel ───────────────────────────────────────────────────────
 export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): Promise<void> {
 	const { org, mongoUri } = opts;
-	resetCounters();
 
-	const dbName = `${org}_machine_app`;
-	const db = mongooseConnectionManager.getConnection(dbName)
-		?? await mongooseConnectionManager.createConnection(mongoUri, dbName, { dbName });
+	const idaeDb = IdaeDb.init(mongoUri, {
+		dbType:           DbType.MONGODB,
+		dbScope:          org,
+		dbScopeSeparator: '_',
+		idaeModelOptions: {
+			autoIncrementFormat:       () => 'id',
+			autoIncrementDbCollection: 'auto_increment',
+		},
+	});
+
+	// Connects to {org}_machine_app (dbScope prepended automatically)
+	await idaeDb.db('machine_app');
+
+	const col = (name: string) => idaeDb.collection(name);
 
 	// ── 1. appscheme_field_type ─────────────────────────────────────────────
-	const ftCol  = db.collection('appscheme_field_type');
-	const ftById: RefCache = new Map();
-	for (const [i, code] of FIELD_TYPES.entries()) {
-		const id = i + 1;
-		await ftCol.updateOne(
-			{ code },
-			{ $setOnInsert: { id }, $set: { code, name: code, idappscheme_field_type: id } },
-			{ upsert: true }
-		);
+	const ftById = new Map<string, number>();
+	for (const code of FIELD_TYPES) {
+		const id = await upsertGetId(col('appscheme_field_type'), { code }, { code, name: code });
 		ftById.set(code, id);
 	}
 
 	// ── 2. appscheme_field_group ────────────────────────────────────────────
-	const fgCol  = db.collection('appscheme_field_group');
-	const fgById: RefCache = new Map();
-	for (const [i, code] of FIELD_GROUPS.entries()) {
-		const id = i + 1;
-		await fgCol.updateOne(
-			{ code },
-			{ $setOnInsert: { id }, $set: { code, name: code, idappscheme_field_group: id } },
-			{ upsert: true }
-		);
+	const fgById = new Map<string, number>();
+	for (const code of FIELD_GROUPS) {
+		const id = await upsertGetId(col('appscheme_field_group'), { code }, { code, name: code });
 		fgById.set(code, id);
 	}
 
 	// ── 3. appscheme_type ───────────────────────────────────────────────────
-	const stCol  = db.collection('appscheme_type');
-	const stById: RefCache = new Map();
-	for (const [i, code] of SCHEME_TYPES.entries()) {
-		const id = i + 1;
-		await stCol.updateOne(
-			{ code },
-			{ $setOnInsert: { id }, $set: { code, name: code, idappscheme_type: id } },
-			{ upsert: true }
-		);
+	const stById = new Map<string, number>();
+	for (const code of SCHEME_TYPES) {
+		const id = await upsertGetId(col('appscheme_type'), { code }, { code, name: code });
 		stById.set(code, id);
 	}
 
 	// ── 4. appscheme_view_type ──────────────────────────────────────────────
-	const vtCol  = db.collection('appscheme_view_type');
-	const vtById: RefCache = new Map();
-	for (const [i, code] of VIEW_TYPES.entries()) {
-		const id = i + 1;
-		await vtCol.updateOne(
-			{ code },
-			{ $setOnInsert: { id }, $set: { code, name: code, codeAppscheme_view_type: code, idappscheme_view_type: id } },
-			{ upsert: true }
-		);
+	const vtById = new Map<string, number>();
+	for (const code of VIEW_TYPES) {
+		const id = await upsertGetId(col('appscheme_view_type'), { code }, { code, name: code, codeAppscheme_view_type: code });
 		vtById.set(code, id);
 	}
 
 	// ── 5. appscheme_base ───────────────────────────────────────────────────
-	const baseCol  = db.collection('appscheme_base');
-	const baseById: RefCache = new Map();
+	const baseById = new Map<string, number>();
 	const bases    = new Set<string>();
-	for (const col of Object.values(model)) {
-		const base = (col as any).base as string | undefined;
+	for (const c of Object.values(model)) {
+		const base = (c as any).base as string | undefined;
 		if (base) bases.add(base);
 	}
-	let baseId = 1;
 	for (const code of bases) {
-		await baseCol.updateOne(
+		const id = await upsertGetId(
+			col('appscheme_base'),
 			{ code },
-			{
-				$setOnInsert: { id: baseId, idappscheme_base: baseId },
-				$set:         { code, name: code, codeAppscheme_base: code, nomAppscheme_base: code }
-			},
-			{ upsert: true }
+			{ code, name: code, codeAppscheme_base: code, nomAppscheme_base: code },
 		);
-		baseById.set(code, baseId++);
+		baseById.set(code, id);
 	}
 
 	// ── 6-10. Per-collection ─────────────────────────────────────────────────
-	const schemeCol = db.collection('appscheme');
-	const fieldCol  = db.collection('appscheme_field');
-	const hasField  = db.collection('appscheme_has_field');
-	const hasTField = db.collection('appscheme_has_table_field');
-	const viewCol   = db.collection('appscheme_view');
+	const fieldReg = new Map<string, number>();
 
-	// Global field registry: code → { id, doc } (fields shared across collections)
-	const fieldReg: Map<string, number> = new Map();
-	let   fieldSeq = 0;
-	let   schemeSeq = 0;
-
-	for (const [collectionName, col] of Object.entries(model)) {
-		const c        = col as any;
+	for (const [collectionName, colDef] of Object.entries(model)) {
+		const c        = colDef as any;
 		const template = c.template ?? {};
 		const fks      = template.fks ?? {};
 		const fields   = template.fields ?? {};
@@ -166,39 +137,25 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 		const baseId   = baseCode ? (baseById.get(baseCode) ?? null) : null;
 		const stId     = stById.get('standard') ?? 1;
 
-		schemeSeq++;
-
 		// ── Build appscheme.gridFks ──────────────────────────────────────────
-		// Contains: appscheme_base, appscheme_type + FK collection links
 		const gridFks: Record<string, any> = {};
 
 		if (baseCode && baseId) {
 			gridFks['appscheme_base'] = {
-				id:       baseId,
-				code:     baseCode,
-				name:     baseCode,
-				icon:     '',
-				order:    0,
-				multiple: false,
-				required: false,
+				id: baseId, code: baseCode, name: baseCode,
+				icon: '', order: 0, multiple: false, required: false,
 			};
 		}
 
 		gridFks['appscheme_type'] = {
-			id:       stId,
-			code:     'standard',
-			name:     'Standard',
-			icon:     '',
-			order:    0,
-			multiple: false,
-			required: false,
+			id: stId, code: 'standard', name: 'Standard',
+			icon: '', order: 0, multiple: false, required: false,
 		};
 
-		// FK collection links from template.fks
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			const fk = fkDef as any;
 			gridFks[fkKey] = {
-				id:       null, // resolved at runtime when target scheme is known
+				id:       null,
 				code:     fk.code ?? fkKey,
 				name:     fk.code ?? fkKey,
 				icon:     '',
@@ -209,23 +166,20 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 		}
 
 		// ── 6. appscheme ────────────────────────────────────────────────────
-		await schemeCol.updateOne(
+		const schemeId = await upsertGetId(
+			col('appscheme'),
 			{ code: collectionName },
 			{
-				$setOnInsert: { id: schemeSeq, idappscheme: schemeSeq },
-				$set: {
-					code:                  collectionName,
-					name:                  collectionName,
-					codeAppscheme:         collectionName,
-					nomAppscheme:          collectionName,
-					base:                  baseCode ?? null,
-					index:                 template.index ?? null,
-					presentation:          template.presentation ?? null,
-					keyPath:               c.keyPath ?? '++id',
-					gridFks,
-				}
+				code:          collectionName,
+				name:          collectionName,
+				codeAppscheme: collectionName,
+				nomAppscheme:  collectionName,
+				base:          baseCode ?? null,
+				index:         template.index ?? null,
+				presentation:  template.presentation ?? null,
+				keyPath:       c.keyPath ?? '++id',
+				gridFks,
 			},
-			{ upsert: true }
 		);
 
 		// ── 7. appscheme_field + 8. appscheme_has_field ─────────────────────
@@ -238,144 +192,96 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 			const ftId     = ftById.get(normType) ?? ftById.get('text') ?? 1;
 			const fgId     = fgById.get(group) ?? fgById.get('presentation') ?? 1;
 
-			// Global field dedup by code (fields can be shared)
-			const fieldKey = fieldName;
-			if (!fieldReg.has(fieldKey)) {
-				fieldSeq++;
-				fieldReg.set(fieldKey, fieldSeq);
-				await fieldCol.updateOne(
+			if (!fieldReg.has(fieldName)) {
+				const fieldId = await upsertGetId(
+					col('appscheme_field'),
 					{ code: fieldName },
 					{
-						$setOnInsert: { id: fieldSeq, idappscheme_field: fieldSeq },
-						$set: {
-							code:             fieldName,
-							name:             fieldName,
-							codeAppscheme_field: fieldName,
-							field_raw:        fieldName,
-							field_type:       normType,
-							field_group:      group,
-							required:         fd.required ? 1 : 0,
-							readonly:         fd.readonly ? 1 : 0,
-							private:          fd.private  ? 1 : 0,
-							gridFks: {
-								appscheme_field_type: {
-									id:       ftId,
-									code:     normType,
-									name:     normType,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: false,
-								},
-								appscheme_field_group: {
-									id:       fgId,
-									code:     group,
-									name:     group,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: false,
-								},
-							},
-						}
-					},
-					{ upsert: true }
-				);
-			}
-
-			const fieldId = fieldReg.get(fieldKey)!;
-			fieldOrder++;
-
-			// appscheme_has_field: links this collection to this field
-			await hasField.updateOne(
-				{ 'gridFks.appscheme.code': collectionName, 'gridFks.appscheme_field.code': fieldName },
-				{
-					$setOnInsert: { id: fieldSeq * 1000 + schemeSeq, idappscheme_has_field: fieldSeq * 1000 + schemeSeq },
-					$set: {
-						code:      `${collectionName}_${fieldName}`,
-						name:      fieldName,
-						order:     fieldOrder,
-						visible:   fd.private ? 0 : 1,
-						required:  fd.required ? 1 : 0,
-						readonly:  fd.readonly ? 1 : 0,
+						code:                fieldName,
+						name:                fieldName,
+						codeAppscheme_field: fieldName,
+						field_raw:           fieldName,
+						field_type:          normType,
+						field_group:         group,
+						required:            fd.required ? 1 : 0,
+						readonly:            fd.readonly ? 1 : 0,
+						private:             fd.private  ? 1 : 0,
 						gridFks: {
-							appscheme: {
-								id:       schemeSeq,
-								code:     collectionName,
-								name:     collectionName,
-								icon:     '',
-								order:    0,
-								multiple: false,
-								required: true,
+							appscheme_field_type: {
+								id: ftId, code: normType, name: normType,
+								icon: '', order: 0, multiple: false, required: false,
 							},
-							appscheme_field: {
-								id:       fieldId,
-								code:     fieldName,
-								name:     fieldName,
-								icon:     '',
-								order:    0,
-								multiple: false,
-								required: true,
+							appscheme_field_group: {
+								id: fgId, code: group, name: group,
+								icon: '', order: 0, multiple: false, required: false,
 							},
 						},
-					}
+					},
+				);
+				fieldReg.set(fieldName, fieldId);
+			}
+
+			const fieldId = fieldReg.get(fieldName)!;
+			fieldOrder++;
+
+			// ── 8. appscheme_has_field ───────────────────────────────────────
+			await upsertGetId(
+				col('appscheme_has_field'),
+				{ 'gridFks.appscheme.code': collectionName, 'gridFks.appscheme_field.code': fieldName },
+				{
+					code:     `${collectionName}_${fieldName}`,
+					name:     fieldName,
+					order:    fieldOrder,
+					visible:  fd.private ? 0 : 1,
+					required: fd.required ? 1 : 0,
+					readonly: fd.readonly ? 1 : 0,
+					gridFks: {
+						appscheme: {
+							id: schemeId, code: collectionName, name: collectionName,
+							icon: '', order: 0, multiple: false, required: true,
+						},
+						appscheme_field: {
+							id: fieldId, code: fieldName, name: fieldName,
+							icon: '', order: 0, multiple: false, required: true,
+						},
+					},
 				},
-				{ upsert: true }
 			);
 
 			// ── 9. appscheme_has_table_field (FK fields only) ────────────────
 			if (rawType.startsWith('fk-')) {
-				// e.g. 'fk-category.id' → target collection 'category', target field 'id'
 				const [targetCol, targetField] = rawType.replace('fk-', '').split('.');
-				await hasTField.updateOne(
+				await upsertGetId(
+					col('appscheme_has_table_field'),
 					{
 						'gridFks.appscheme_field.code': fieldName,
 						'gridFks.appscheme.code':       collectionName,
 						'gridFks.appscheme_link.code':  targetCol,
 					},
 					{
-						$setOnInsert: { id: fieldSeq * 100 + schemeSeq, idappscheme_has_table_field: fieldSeq * 100 + schemeSeq },
-						$set: {
-							code:       `${collectionName}_${fieldName}_${targetCol}`,
-							name:       `${fieldName} → ${targetCol}`,
-							targetField: targetField ?? 'id',
-							gridFks: {
-								appscheme_field: {
-									id:       fieldId,
-									code:     fieldName,
-									name:     fieldName,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: fd.required ?? false,
-								},
-								appscheme: {
-									id:       schemeSeq,
-									code:     collectionName,
-									name:     collectionName,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: false,
-								},
-								appscheme_link: {
-									id:       null, // resolved when target scheme is seeded
-									code:     targetCol,
-									name:     targetCol,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: fd.required ?? false,
-								},
+						code:        `${collectionName}_${fieldName}_${targetCol}`,
+						name:        `${fieldName} → ${targetCol}`,
+						targetField: targetField ?? 'id',
+						gridFks: {
+							appscheme_field: {
+								id: fieldId, code: fieldName, name: fieldName,
+								icon: '', order: 0, multiple: false, required: fd.required ?? false,
 							},
-						}
+							appscheme: {
+								id: schemeId, code: collectionName, name: collectionName,
+								icon: '', order: 0, multiple: false, required: false,
+							},
+							appscheme_link: {
+								id: null, code: targetCol, name: targetCol,
+								icon: '', order: 0, multiple: false, required: fd.required ?? false,
+							},
+						},
 					},
-					{ upsert: true }
 				);
 			}
 		}
 
-		// ── 10. appscheme_view (auto-generate list/mini/form/fk_label) ───────
+		// ── 10. appscheme_view ───────────────────────────────────────────────
 		const presentationFields = (template.presentation ?? '').split(' ').filter(Boolean);
 		const allFieldNames      = Object.keys(fields);
 
@@ -391,50 +297,31 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 			for (const [order, vFieldName] of viewFields.entries()) {
 				const vFieldId = fieldReg.get(vFieldName);
 				if (!vFieldId) continue;
-				const viewId = schemeSeq * 10000 + vtId * 100 + (order + 1);
-				await viewCol.updateOne(
+				await upsertGetId(
+					col('appscheme_view'),
 					{
-						'gridFks.appscheme.code':            collectionName,
-						'gridFks.appscheme_view_type.code':  viewTypeCode,
-						'gridFks.appscheme_field.code':      vFieldName,
+						'gridFks.appscheme.code':           collectionName,
+						'gridFks.appscheme_view_type.code': viewTypeCode,
+						'gridFks.appscheme_field.code':     vFieldName,
 					},
 					{
-						$setOnInsert: { id: viewId, idappscheme_view: viewId },
-						$set: {
-							code:                viewTypeCode,
-							ordreAppscheme_view: order + 1,
-							gridFks: {
-								appscheme: {
-									id:       schemeSeq,
-									code:     collectionName,
-									name:     collectionName,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: true,
-								},
-								appscheme_view_type: {
-									id:       vtId,
-									code:     viewTypeCode,
-									name:     viewTypeCode,
-									icon:     '',
-									order:    0,
-									multiple: false,
-									required: true,
-								},
-								appscheme_field: {
-									id:       vFieldId,
-									code:     vFieldName,
-									name:     vFieldName,
-									icon:     '',
-									order:    order + 1,
-									multiple: false,
-									required: false,
-								},
+						code:                viewTypeCode,
+						ordreAppscheme_view: order + 1,
+						gridFks: {
+							appscheme: {
+								id: schemeId, code: collectionName, name: collectionName,
+								icon: '', order: 0, multiple: false, required: true,
 							},
-						}
+							appscheme_view_type: {
+								id: vtId, code: viewTypeCode, name: viewTypeCode,
+								icon: '', order: 0, multiple: false, required: true,
+							},
+							appscheme_field: {
+								id: vFieldId, code: vFieldName, name: vFieldName,
+								icon: '', order: order + 1, multiple: false, required: false,
+							},
+						},
 					},
-					{ upsert: true }
 				);
 			}
 		}

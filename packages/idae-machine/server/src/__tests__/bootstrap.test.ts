@@ -1,10 +1,15 @@
 import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
-import mongoose from 'mongoose';
+import { IdaeDb, DbType } from '@medyll/idae-db';
 import { seedSchemeFromModel } from '../bootstrap/seedSchemeFromModel.js';
 import { config } from '../config.js';
 
 const TEST_ORG = 'vitest';
-const META_DB  = `${TEST_ORG}_machine_app`;
+
+const META_COLS = [
+	'appscheme', 'appscheme_base', 'appscheme_field', 'appscheme_field_type',
+	'appscheme_field_group', 'appscheme_type', 'appscheme_view_type',
+	'appscheme_has_field', 'appscheme_has_table_field', 'appscheme_view',
+];
 
 const miniModel: any = {
 	product: {
@@ -26,43 +31,51 @@ const miniModel: any = {
 	}
 };
 
+let idaeDb: IdaeDb;
+
 describe('seedSchemeFromModel', () => {
 	beforeAll(async () => {
-		await mongoose.connect(config.mongodbUri);
+		idaeDb = IdaeDb.init(config.mongodbUri, {
+			dbType:           DbType.MONGODB,
+			dbScope:          TEST_ORG,
+			dbScopeSeparator: '_',
+			idaeModelOptions: {
+				autoIncrementFormat:       () => 'id',
+				autoIncrementDbCollection: 'auto_increment',
+			},
+		});
+		await idaeDb.db('machine_app'); // → vitest_machine_app
 	});
 
 	afterEach(async () => {
-		const db = mongoose.connection.useDb(META_DB, { useCache: true });
-		const cols = [
-			'appscheme', 'appscheme_base', 'appscheme_field', 'appscheme_field_type',
-			'appscheme_field_group', 'appscheme_type', 'appscheme_view_type',
-			'appscheme_has_field', 'appscheme_has_table_field', 'appscheme_view',
-		];
-		for (const col of cols) await db.collection(col).deleteMany({});
+		for (const name of META_COLS) {
+			await idaeDb.collection(name).deleteWhere({ query: {} });
+		}
 	});
 
 	afterAll(async () => {
-		await mongoose.disconnect();
+		await (idaeDb as any).closeAllConnections?.();
 	});
 
 	it('seeds all meta collections', async () => {
 		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
-		const db = mongoose.connection.useDb(META_DB, { useCache: true });
+		const ftCount  = (await idaeDb.collection('appscheme_field_type').find({ query: {} })).length;
+		const fgCount  = (await idaeDb.collection('appscheme_field_group').find({ query: {} })).length;
+		const stCount  = (await idaeDb.collection('appscheme_type').find({ query: {} })).length;
+		const vtCount  = (await idaeDb.collection('appscheme_view_type').find({ query: {} })).length;
 
-		// Static reference data
-		expect(await db.collection('appscheme_field_type').countDocuments()).toBeGreaterThan(5);
-		expect(await db.collection('appscheme_field_group').countDocuments()).toBeGreaterThan(5);
-		expect(await db.collection('appscheme_type').countDocuments()).toBeGreaterThan(0);
-		expect(await db.collection('appscheme_view_type').countDocuments()).toBe(5);
+		expect(ftCount).toBeGreaterThan(5);
+		expect(fgCount).toBeGreaterThan(5);
+		expect(stCount).toBeGreaterThan(0);
+		expect(vtCount).toBe(5);
 
-		// Dynamic data
-		const bases   = await db.collection('appscheme_base').find().toArray();
-		const schemes = await db.collection('appscheme').find().toArray();
-		const fields  = await db.collection('appscheme_field').find().toArray();
-		const hasF    = await db.collection('appscheme_has_field').find().toArray();
-		const hasTF   = await db.collection('appscheme_has_table_field').find().toArray();
-		const views   = await db.collection('appscheme_view').find().toArray();
+		const bases   = await idaeDb.collection('appscheme_base').find({ query: {} });
+		const schemes = await idaeDb.collection('appscheme').find({ query: {} });
+		const fields  = await idaeDb.collection('appscheme_field').find({ query: {} });
+		const hasF    = await idaeDb.collection('appscheme_has_field').find({ query: {} });
+		const hasTF   = await idaeDb.collection('appscheme_has_table_field').find({ query: {} });
+		const views   = await idaeDb.collection('appscheme_view').find({ query: {} });
 
 		expect(bases.some((b: any) => b.code === 'test_base')).toBe(true);
 		expect(schemes.some((s: any) => s.code === 'product')).toBe(true);
@@ -76,8 +89,7 @@ describe('seedSchemeFromModel', () => {
 	it('appscheme.gridFks contains appscheme_base and FK links', async () => {
 		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
-		const db      = mongoose.connection.useDb(META_DB, { useCache: true });
-		const product = await db.collection('appscheme').findOne({ code: 'product' });
+		const product = await idaeDb.collection('appscheme').findOne({ query: { code: 'product' } });
 
 		expect(product?.gridFks?.appscheme_base?.code).toBe('test_base');
 		expect(product?.gridFks?.appscheme_type?.code).toBe('standard');
@@ -89,8 +101,7 @@ describe('seedSchemeFromModel', () => {
 		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
-		const db      = mongoose.connection.useDb(META_DB, { useCache: true });
-		const schemes = await db.collection('appscheme').find({ code: 'product' }).toArray();
+		const schemes = await idaeDb.collection('appscheme').find({ query: { code: 'product' } });
 		expect(schemes.length).toBe(1);
 	});
 });
