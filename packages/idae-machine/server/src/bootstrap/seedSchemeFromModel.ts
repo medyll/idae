@@ -2,7 +2,7 @@ import { mongooseConnectionManager } from '@medyll/idae-api';
 
 // MachineModel shape — minimal interface to avoid circular dep with client types
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
-interface MachineFkDef    { code: string; multiple: boolean; rules?: string; }
+interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
 interface MachineModel    { [collection: string]: { keyPath: string; base?: string; ts?: any; template: { index: string; presentation: string; fields: Record<string, MachineFieldDef>; fks: Record<string, MachineFkDef>; }; }; }
 
 interface SeedOpts {
@@ -204,7 +204,7 @@ export async function seedSchemeFromModel(model: MachineModel, opts: SeedOpts): 
 				icon:     '',
 				order:    0,
 				multiple: fk.multiple ?? false,
-				required: !!(fk.rules?.includes?.('required')),
+				required: !!(fk.required),
 			};
 		}
 

@@ -30,8 +30,7 @@ export interface MachineFkDef {
 	code:     string;
 	/** Allow selecting multiple records */
 	multiple: boolean;
-	/** Optional constraint string: '' | 'required' */
-	rules?:   string;
+	required?: boolean;
 }
 
 // ── Template ──────────────────────────────────────────────────────────────────

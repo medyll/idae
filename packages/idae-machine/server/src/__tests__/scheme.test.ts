@@ -22,7 +22,7 @@ const miniModel: any = {
 				categoryId: { type: 'fk-category.id' },
 			},
 			fks: {
-				category: { code: 'category', multiple: false, rules: '' }
+				category: { code: 'category', multiple: false, required: false }
 			}
 		}
 	}

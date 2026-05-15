@@ -8,7 +8,7 @@ import { seedSchemeFromModel } from './seedSchemeFromModel.js';
 
 import { demoScheme } from '../models/demo/demoScheme.js';
 
-const org      = process.argv[2] ?? 'test';
+const org      = process.argv[2] ?? 'demo';
 const mongoUri = process.argv[3] ?? 'mongodb://localhost:27017';
 
 console.log(`Deploying model for org="${org}" into ${mongoUri}/${org}_machine_app`);

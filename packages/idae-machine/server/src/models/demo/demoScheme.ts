@@ -34,8 +34,8 @@ export const demoScheme: MachineModel = {
 				created_at:       field('date'),
 			},
 			fks:          {
-				category:        { code: 'category',        multiple: false, rules: '' },
-				location_office: { code: 'location_office', multiple: false, rules: '' },
+				category:        { code: 'category',        multiple: false, required: false },
+				location_office: { code: 'location_office', multiple: false, required: false },
 			},
 		},
 	},
@@ -112,8 +112,8 @@ export const demoScheme: MachineModel = {
 				status:        field('text'),
 			},
 			fks:          {
-				vehicle:  { code: 'vehicle',  rules: 'required', multiple: false },
-				customer: { code: 'customer', rules: 'required', multiple: false },
+				vehicle:  { code: 'vehicle',  required: true, multiple: false },
+				customer: { code: 'customer', required: true, multiple: false },
 			},
 		},
 	},
@@ -167,7 +167,7 @@ export const demoScheme: MachineModel = {
 				notes:     field('text-long'),
 			},
 			fks:          {
-				vehicle: { code: 'vehicle', rules: 'required', multiple: false },
+				vehicle: { code: 'vehicle', required: true, multiple: false },
 			},
 		},
 	},

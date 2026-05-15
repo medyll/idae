@@ -108,7 +108,7 @@ class MachineServerClass {
 				fks[key] = {
 					code:     fkItem.code ?? key,
 					multiple: fkItem.multiple ?? false,
-					rules:    fkItem.required ? 'required' : '',
+					required: !!(fkItem.required),
 				};
 			}
 
