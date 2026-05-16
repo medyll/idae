@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { config } from '../config.js';
 import { getAllSchemes, getScheme } from '../routes/scheme.js';
 import type { Request, Response } from 'express';
-import { seedSchemeFromModel } from '../bootstrap/seedSchemeFromModel.js';
+import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
 
 const TEST_ORG = 'vitest';
 const META_DB  = `${TEST_ORG}_machine_app`;
@@ -42,7 +42,8 @@ describe('GET /api/scheme', () => {
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
-		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 	});
 
 	afterAll(async () => {

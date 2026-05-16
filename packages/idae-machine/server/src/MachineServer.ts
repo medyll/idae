@@ -10,11 +10,12 @@ import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
-import { seedSchemeFromModel } from './bootstrap/seedSchemeFromModel.js';
+import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap/deployModel.js';
+import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
 
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
+const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_type', 'appscheme_field_group', 'appscheme_view_type']);
 
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;
@@ -72,7 +73,7 @@ class MachineServerClass {
 				if (!fieldCode) continue;
 
 				const fieldDoc = fieldByCode.get(fieldCode);
-				const rawType  = (fieldDoc?.field_type as string) ?? 'text';
+				const rawType  = (fieldDoc?.gridFks?.appscheme_field_type?.code as string) ?? 'text';
 
 				let finalType = rawType;
 				if (rawType === 'fk' && fieldDoc?.fkTargetCol) {
@@ -101,7 +102,7 @@ class MachineServerClass {
 
 			model[code] = {
 				keyPath:  (scheme.keyPath as string) ?? '++id',
-				base:     scheme.base as string,
+				base:     (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
 				model:    {},
 				template: {
 					index:        scheme.index as string,
@@ -120,7 +121,9 @@ class MachineServerClass {
 	async deployModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;
 		const mongoUri = opts?.mongoUri ?? config.mongodbUri;
-		await seedSchemeFromModel(model, { org, mongoUri });
+		await seedEngineRegistries({ org, mongoUri });
+		await runDeployModel(buildEngineModel(), { org, mongoUri });
+		await runDeployModel(model, { org, mongoUri });
 		invalidateBaseCache();
 		logger.info(`Model deployed for org="${org}"`);
 	}

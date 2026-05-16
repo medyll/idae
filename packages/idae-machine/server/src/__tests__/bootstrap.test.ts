@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { seedSchemeFromModel } from '../bootstrap/seedSchemeFromModel.js';
+import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
 import { config } from '../config.js';
 
 const TEST_ORG = 'vitest';
@@ -58,7 +58,8 @@ describe('seedSchemeFromModel', () => {
 	});
 
 	it('seeds all meta collections', async () => {
-		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const ftCount  = (await idaeDb.collection('appscheme_field_type').find({ query: {} })).length;
 		const fgCount  = (await idaeDb.collection('appscheme_field_group').find({ query: {} })).length;
@@ -79,13 +80,18 @@ describe('seedSchemeFromModel', () => {
 		expect(bases.some((b: any) => b.code === 'test_base')).toBe(true);
 		expect(schemes.some((s: any) => s.code === 'product')).toBe(true);
 		expect(fields.some((f: any) => f.code === 'name' && f.required === 1)).toBe(true);
-		expect(fields.some((f: any) => f.code === 'categoryId' && f.field_type === 'fk-category.id' && f.fkTargetCol === 'category')).toBe(true);
+		expect(fields.some((f: any) =>
+			f.code === 'categoryId'
+			&& f.gridFks?.appscheme_field_type?.code === 'fk'
+			&& f.fkTargetCol === 'category'
+		)).toBe(true);
 		expect(hasF.some((h: any) => h.gridFks?.appscheme?.code === 'product' && h.gridFks?.appscheme_field?.code === 'id')).toBe(true);
 		expect(views.length).toBeGreaterThan(0);
 	});
 
 	it('appscheme.gridFks contains appscheme_base and FK links', async () => {
-		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const product = await idaeDb.collection('appscheme').findOne({ query: { code: 'product' } });
 
@@ -96,8 +102,10 @@ describe('seedSchemeFromModel', () => {
 	});
 
 	it('is idempotent — second seed does not duplicate appscheme', async () => {
-		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
-		await seedSchemeFromModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const schemes = await idaeDb.collection('appscheme').find({ query: { code: 'product' } });
 		expect(schemes.length).toBe(1);
