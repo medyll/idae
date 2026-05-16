@@ -102,7 +102,7 @@ class MachineServerClass {
 
 			model[code] = {
 				keyPath:  (scheme.keyPath as string) ?? '++id',
-				base:     (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
+				base:     (scheme.base as string) ?? (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
 				model:    {},
 				fields,
 				fks,

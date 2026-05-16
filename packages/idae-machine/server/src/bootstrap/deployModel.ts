@@ -254,6 +254,7 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 				color:        '#222',
 				order:        ++schemeOrder,
 				keyPath:      colDef.keyPath ?? '++id',
+				base:         baseCode,
 				template,
 				gridFks,
 			},

@@ -18,6 +18,7 @@
 export const appModelDeclaration = {
 	collections: {
 		appscheme_base: {
+			base: 'machine_app',
 			fields: {
 				id:    { required: true,  readonly: true  },
 				code:  { required: true,  readonly: false },
@@ -33,6 +34,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme: {
+			base: 'machine_app',
 			fields: {
 				id:     { required: true,  readonly: true  },
 				code:   { required: true,  readonly: false },
@@ -52,6 +54,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_field: {
+			base: 'machine_app',
 			fields: {
 				id:            { required: true,  readonly: true  },
 				code:          { required: true,  readonly: false },
@@ -75,6 +78,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_field_type: {
+			base: 'machine_app',
 			fields: {
 				id:    { required: true, readonly: true  },
 				code:  { required: true, readonly: false },
@@ -92,6 +96,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_field_group: {
+			base: 'machine_app',
 			fields: {
 				id:    { required: true, readonly: true  },
 				code:  { required: true, readonly: false },
@@ -109,6 +114,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_has_field: {
+			base: 'machine_app',
 			fields: {
 				id:       { required: true,  readonly: true  },
 				code:     { required: true,  readonly: false },
@@ -130,6 +136,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_type: {
+			base: 'machine_app',
 			fields: {
 				id:    { required: true, readonly: true  },
 				code:  { required: true, readonly: false },
@@ -147,6 +154,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_view_type: {
+			base: 'machine_app',
 			fields: {
 				id:          { required: true,  readonly: true  },
 				code:        { required: true,  readonly: false },
@@ -165,6 +173,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_view: {
+			base: 'machine_app',
 			fields: {
 				id:      { required: true,  readonly: true  },
 				code:    { required: true,  readonly: false },
@@ -185,6 +194,7 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_log: {
+			base: 'machine_app',
 			fields: {
 				id:        { required: true,  readonly: true },
 				operation: { required: true,  readonly: true },
@@ -203,6 +213,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser: {
+			base: 'machine_user',
 			fields: {
 				id:                 { required: true,  readonly: true  },
 				code:               { required: true,  readonly: false },
@@ -232,6 +243,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_profile: {
+			base: 'machine_user',
 			fields: {
 				id:          { required: true,  readonly: true  },
 				code:        { required: true,  readonly: false },
@@ -253,6 +265,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_group: {
+			base: 'machine_user',
 			fields: {
 				id:          { required: true,  readonly: true  },
 				code:        { required: true,  readonly: false },
@@ -270,6 +283,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_role: {
+			base: 'machine_user',
 			fields: {
 				id:          { required: true,  readonly: true  },
 				code:        { required: true,  readonly: false },
@@ -288,6 +302,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_assignment: {
+			base: 'machine_user',
 			fields: {
 				id:               { required: true,  readonly: true  },
 				code:             { required: true,  readonly: false },
@@ -312,6 +327,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_grant: {
+			base: 'machine_user',
 			fields: {
 				id:               { required: true,  readonly: true  },
 				code:             { required: true,  readonly: false },
@@ -345,6 +361,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_session: {
+			base: 'machine_user',
 			fields: {
 				id:               { required: true,  readonly: true  },
 				sessionToken:     { required: true,  readonly: true  },
@@ -368,6 +385,7 @@ export const appModelDeclaration = {
 		},
 
 		appuser_audit: {
+			base: 'machine_user',
 			fields: {
 				id:            { required: true,  readonly: true },
 				action:        { required: true,  readonly: true },

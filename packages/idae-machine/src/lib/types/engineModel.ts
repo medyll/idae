@@ -56,7 +56,7 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 
 	return {
 		keyPath: '++id',
-		base:    ENGINE_BASE,
+		base:    (decl.base as string | undefined) ?? ENGINE_BASE,
 		model:   {},
 		fields,
 		fks,
