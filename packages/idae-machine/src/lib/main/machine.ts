@@ -158,6 +158,7 @@ export class Machine {
 	start(): void {
 		this.createCollections();
 		this.createStore();
+		this.loadPolicies();
 	}
 
 	/**
@@ -172,6 +173,15 @@ export class Machine {
 			throw new Error('Data model is not defined');
 		}
 		this._machineDb = new MachineDb(this._model);
+	}
+
+	private loadPolicies(): void {
+		if (!this._model) return;
+		const policies: Record<string, any> = {};
+		for (const [name, col] of Object.entries(this._model)) {
+			if ((col as any).rights) policies[name] = (col as any).rights;
+		}
+		machineRights.setPolicies(policies);
 	}
 
 	/**

@@ -9,6 +9,8 @@
  * `keyPath` stays at the root (used by IndexedDB + Mongo). Index field name is derived from keyPath
  * by stripping the '++' autoincrement prefix.
  */
+import type { PermissionCode } from './schema-types.js';
+export type { PermissionCode };
 
 // ── Field definition ──────────────────────────────────────────────────────────
 export interface MachineFieldDef {
@@ -48,6 +50,24 @@ export interface MachineDisplayTemplate {
 	[key: string]: any;
 }
 
+// ── Rights policy ─────────────────────────────────────────────────────────────
+/**
+ * Structural rights policy for a collection — declared in schema, not in grants.
+ *
+ * `ops`     — whitelist of operations structurally permitted. Absent = all ops allowed.
+ * `public`  — ops allowed without any auth (no user required).
+ * `default` — ops allowed to any authenticated user with no explicit grant.
+ *
+ * Grants (appuser_grant) apply within the bounds of `ops`.
+ * Resolution order in checkAccess:
+ *   ops deny → public allow → ADMIN override → explicit grant → default → deny
+ */
+export interface MachineRightsPolicy {
+	ops?:     PermissionCode[];
+	public?:  PermissionCode[];
+	default?: PermissionCode[];
+}
+
 // ── Collection model ──────────────────────────────────────────────────────────
 export interface MachineCollectionModel<T = any> {
 	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. */
@@ -62,6 +82,8 @@ export interface MachineCollectionModel<T = any> {
 	fks:       Record<string, MachineFkDef>;
 	/** Display template hints (presentation, future: sections, listColumns, indexes…). Optional. */
 	template?: MachineDisplayTemplate;
+	/** Structural rights policy — declared in schema, seeded as default grants by deployModel. */
+	rights?:   MachineRightsPolicy;
 	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
 	model?:    any;
 }
