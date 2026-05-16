@@ -10,21 +10,20 @@ const META_DB  = `${TEST_ORG}_machine_app`;
 
 const miniModel: any = {
 	product: {
-		keyPath:  '++id',
-		base:     'machine_base',
-		model:    {},
+		keyPath: '++id',
+		base:    'machine_base',
+		model:   {},
+		fields: {
+			id:         { type: 'id',   readonly: true },
+			name:       { type: 'text', required: true },
+			categoryId: { type: 'fk-category.id' },
+		},
+		fks: {
+			category: { code: 'category', multiple: false, required: false }
+		},
 		template: {
-			index:        'id',
 			presentation: 'name',
-			fields:       {
-				id:         { type: 'id',   readonly: true },
-				name:       { type: 'text', required: true },
-				categoryId: { type: 'fk-category.id' },
-			},
-			fks: {
-				category: { code: 'category', multiple: false, required: false }
-			}
-		}
+		},
 	}
 };
 
@@ -70,12 +69,12 @@ describe('GET /api/scheme', () => {
 		const product = res._body.product;
 		expect(product.keyPath).toBe('++id');
 		expect(product.base).toBe('machine_base');
-		expect(product.template.fields).toHaveProperty('id');
-		expect(product.template.fields).toHaveProperty('name');
-		expect(product.template.fields).toHaveProperty('categoryId');
-		expect(product.template.fields.categoryId.type).toBe('fk-category.id');
-		expect(product.template.fks).toHaveProperty('category');
-		expect(product.template.fks.category.code).toBe('category');
+		expect(product.fields).toHaveProperty('id');
+		expect(product.fields).toHaveProperty('name');
+		expect(product.fields).toHaveProperty('categoryId');
+		expect(product.fields.categoryId.type).toBe('fk-category.id');
+		expect(product.fks).toHaveProperty('category');
+		expect(product.fks.category.code).toBe('category');
 	});
 
 	it('GET /api/scheme/:table returns single collection', async () => {
@@ -85,7 +84,7 @@ describe('GET /api/scheme', () => {
 
 		expect(res._status).toBe(200);
 		expect(res._body).toHaveProperty('product');
-		expect(res._body.product.template.fields.name.required).toBe(true);
+		expect(res._body.product.fields.name.required).toBe(true);
 	});
 
 	it('GET /api/scheme/:table returns 404 for unknown', async () => {

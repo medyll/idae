@@ -104,12 +104,9 @@ class MachineServerClass {
 				keyPath:  (scheme.keyPath as string) ?? '++id',
 				base:     (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
 				model:    {},
-				template: {
-					index:        scheme.index as string,
-					presentation: scheme.presentation as string,
-					fields,
-					fks,
-				},
+				fields,
+				fks,
+				template: (scheme.template as Record<string, any>) ?? {},
 			};
 		}
 

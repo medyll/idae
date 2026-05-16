@@ -40,7 +40,7 @@
     const collLogic = $derived(collection ? logic.collection(collection) : null);
     const formFields = $derived(collLogic?.parse() ?? {});
     const validator = $derived(collLogic?.validator);
-    const indexName = $derived(collLogic?.template.index);
+    const indexName = $derived(collLogic?.index);
 
     const inputFormId = $derived(`form-${String(collection ?? '')}-${mode ?? ''}`);
 

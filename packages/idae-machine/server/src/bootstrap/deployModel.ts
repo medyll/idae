@@ -9,19 +9,15 @@ import { IdaeDb, DbType } from '@medyll/idae-db';
 
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
 interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
-interface MachineModel    {
-	[collection: string]: {
-		keyPath:  string;
-		base?:    string;
-		ts?:      any;
-		template: {
-			index:        string;
-			presentation: string;
-			fields:       Record<string, MachineFieldDef>;
-			fks:          Record<string, MachineFkDef>;
-		};
-	};
+interface MachineCollection {
+	keyPath:   string;
+	base?:     string;
+	ts?:       any;
+	fields:    Record<string, MachineFieldDef>;
+	fks:       Record<string, MachineFkDef>;
+	template?: Record<string, any>;
 }
+interface MachineModel { [collection: string]: MachineCollection; }
 
 interface DeployOpts { org: string; mongoUri: string; }
 
@@ -213,10 +209,10 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 	let   schemeOrder = 0;
 
 	for (const [collectionName, colDef] of Object.entries(model)) {
-		const template = colDef.template ?? {} as any;
-		const fks      = template.fks    ?? {};
-		const fields   = template.fields ?? {};
-		const baseCode = colDef.base ?? DEFAULT_BASE;
+		const template = colDef.template ?? {};
+		const fks      = colDef.fks      ?? {};
+		const fields   = colDef.fields   ?? {};
+		const baseCode = colDef.base     ?? DEFAULT_BASE;
 		const baseId   = baseById.get(baseCode)!;
 		const stId     = stById.get('standard') ?? 1;
 
@@ -257,9 +253,8 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 				icon:         'table',
 				color:        '#222',
 				order:        ++schemeOrder,
-				index:        template.index ?? null,
-				presentation: template.presentation ?? null,
 				keyPath:      colDef.keyPath ?? '++id',
+				template,
 				gridFks,
 			},
 		);
@@ -356,7 +351,7 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 		}
 
 		// ── appscheme_view ───────────────────────────────────────────────────
-		const presentationFields = (template.presentation ?? '').split(' ').filter(Boolean);
+		const presentationFields = ((template as any).presentation ?? '').split(' ').filter(Boolean);
 		const allFieldNames      = Object.keys(fields);
 
 		const viewDefs: Record<string, string[]> = {

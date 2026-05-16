@@ -1,31 +1,20 @@
-import type {
-	TplCollectionName,
-	TplFields,
-	IDbForge,
-	TplFieldRules,
-	IdbqModel,
-	Tpl
-} from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '@medyll/idae-idbql';
+import type { MachineModel, MachineCollectionModel } from '$lib/types/machine-model.js';
 import type { MachineDb } from '../machineDb.js';
 import { MachineParserForge } from '../machineParserForge.js';
 import { MachineError } from './MachineError.js';
 
 export class MachineSchemeField {
-	#collection:   TplCollectionName;
-	#fieldName:    keyof TplFields;
-	#machineForge: MachineDb['machineForge'];
-	/** The collection model. */
-	#model:        IdbqModel['Collection'];
-	/** The collection template. */
-	#template:     Tpl;
+	#collection:      TplCollectionName;
+	#fieldName:       keyof TplFields;
+	#machineForge:    MachineDb['machineForge'];
+	#collectionModel: MachineCollectionModel;
 
-	constructor(fullIDBModel: IdbqModel, collection: TplCollectionName, fieldName: keyof TplFields) {
-		this.#collection = collection;
-		this.#fieldName = fieldName;
-		this.#machineForge = new MachineParserForge();
-
-		this.#model = fullIDBModel[String(collection)];
-		this.#template = this.#model['template'] as Tpl;
+	constructor(fullModel: MachineModel, collection: TplCollectionName, fieldName: keyof TplFields) {
+		this.#collection      = collection;
+		this.#fieldName       = fieldName;
+		this.#machineForge    = new MachineParserForge();
+		this.#collectionModel = fullModel[String(collection)] as MachineCollectionModel;
 	}
 
 	/**
@@ -64,6 +53,6 @@ export class MachineSchemeField {
 	 * @return {TplFieldRules | undefined} The field rule or undefined.
 	 */
 	getFieldRule(fieldName: keyof TplFields) {
-		return this.#template.fields[String(fieldName)] as TplFieldRules | undefined;
+		return (this.#collectionModel.fields ?? {})[String(fieldName)] as unknown as TplFieldRules | undefined;
 	}
 }

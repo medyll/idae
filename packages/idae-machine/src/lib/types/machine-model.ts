@@ -1,17 +1,16 @@
 /**
  * Machine model types — owned by idae-machine, NOT idae-idbql.
  *
- * Rationale: IdbqModel/CollectionModel in idae-idbql only needs keyPath+ts for
- * IndexedDB storage. Template/fields/fks/presentation are machine concerns.
- * These types are the public API surface of Machine; idae-idbql is an internal detail.
+ * 3-sibling structure per collection:
+ *   - fields    : data definitions
+ *   - fks       : relations
+ *   - template? : display hints (templates only — presentation, future: sections, listColumns, fkLabelTpl, indexes…)
+ *
+ * `keyPath` stays at the root (used by IndexedDB + Mongo). Index field name is derived from keyPath
+ * by stripping the '++' autoincrement prefix.
  */
 
 // ── Field definition ──────────────────────────────────────────────────────────
-
-/**
- * Atomic field declaration in a MachineCollectionModel.
- * Replaces TplFieldRules from idae-idbql in the public API.
- */
 export interface MachineFieldDef {
 	/** Field type: 'text' | 'number' | 'date' | 'boolean' | 'fk-collection.field' | … */
 	type:      string;
@@ -21,72 +20,66 @@ export interface MachineFieldDef {
 }
 
 // ── FK definition ─────────────────────────────────────────────────────────────
-
-/**
- * Foreign key relationship definition.
- */
 export interface MachineFkDef {
 	/** Target collection code */
-	code:     string;
+	code:      string;
 	/** Allow selecting multiple records */
-	multiple: boolean;
+	multiple:  boolean;
 	required?: boolean;
 }
 
-// ── Template ──────────────────────────────────────────────────────────────────
-
+// ── Display template ──────────────────────────────────────────────────────────
 /**
- * UI/schema template for a collection.
- * Defines how fields are displayed and related.
+ * Display templates for a collection — UI/runtime hints only, no data structure.
+ *
+ * `presentation` is a space-separated list of field accessors. Accessors support
+ * dot notation to reach nested data and joined fk records, e.g.:
+ *   'name email'                          → top-level fields
+ *   'name fks.firm.name'                  → joined fk lookup (requires pre-joined data.fks)
+ *   'address.city address.country'        → nested object fields
  */
-export interface MachineCollectionTemplate {
-	/** Primary key field name */
-	index:        string;
-	/** Space-separated list of fields used in card/list presentation */
-	presentation: string;
-	/** Field definitions */
-	fields:       Record<string, MachineFieldDef>;
-	/** Foreign key relationships */
-	fks:          Record<string, MachineFkDef>;
+export interface MachineDisplayTemplate {
+	presentation?: string;
+	// Future extensibility (declared for forward-compat, optional):
+	listColumns?:  string[];
+	sections?:     Record<string, string[]>;
+	fkLabelTpl?:   string;
+	indexes?:      Array<string | { fields: string[]; unique?: boolean; sparse?: boolean }>;
+	[key: string]: any;
 }
 
 // ── Collection model ──────────────────────────────────────────────────────────
-
-/**
- * Single collection definition in a MachineModel.
- *
- * @template T TypeScript shape of a record in this collection.
- */
 export interface MachineCollectionModel<T = any> {
-	/** IndexedDB keyPath: '++id' | 'id' | '[a+b]' */
+	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. */
 	keyPath:   string;
-	/** @deprecated kept for internal idae-idbql compat — not used by machine */
-	model?:    any;
-	/**
-	 * MongoDB database module name (without org prefix).
-	 * e.g. 'machine_base' → resolves to '{org}_machine_base' on the server.
-	 */
+	/** MongoDB database module name (without org prefix). e.g. 'machine_user' → '{org}_machine_user'. */
 	base?:     string;
-	/** TypeScript type hint for record shape (never stored at runtime) */
+	/** TypeScript type hint for record shape (never stored at runtime). */
 	ts?:       T;
-	/** UI + schema metadata */
-	template:  MachineCollectionTemplate;
+	/** Data field definitions. */
+	fields:    Record<string, MachineFieldDef>;
+	/** Foreign key relationships. */
+	fks:       Record<string, MachineFkDef>;
+	/** Display template hints (presentation, future: sections, listColumns, indexes…). Optional. */
+	template?: MachineDisplayTemplate;
+	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
+	model?:    any;
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────
-
-/**
- * Full application model — the single source of truth for idae-machine.
- *
- * Use this instead of IdbqModel from idae-idbql.
- * idbql is an internal detail; only `keyPath` and `ts` are passed down.
- */
 export type MachineModel = Record<string, MachineCollectionModel>;
 
-// ── Adapter: MachineModel → IdbqModel ────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
+/** Derive the index field name from a keyPath ('++id' → 'id', 'code' → 'code'). */
+export function indexFromKeyPath(keyPath: string): string {
+	return (keyPath ?? '++id').replace(/^\+\+/, '');
+}
+
+// ── Adapter: MachineModel → IdbqModel ────────────────────────────────────────
 /**
  * Strip MachineModel down to what idae-idbql actually needs.
+ * Re-shapes the 3-sibling structure into idbql's flat template = { index, presentation, fields, fks }.
  * Called internally by Machine.createStore() — never exposed publicly.
  */
 export function toIdbqModel(model: MachineModel): Record<string, any> {
@@ -96,9 +89,13 @@ export function toIdbqModel(model: MachineModel): Record<string, any> {
 			keyPath:  col.keyPath,
 			ts:       col.ts ?? {},
 			model:    {},
-			// Keep base + template so MachineScheme can introspect (internal only)
 			base:     col.base,
-			template: col.template,
+			template: {
+				index:        indexFromKeyPath(col.keyPath),
+				presentation: col.template?.presentation ?? '',
+				fields:       col.fields,
+				fks:          col.fks,
+			},
 		};
 	}
 	return result;

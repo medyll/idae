@@ -13,21 +13,20 @@ const META_COLS = [
 
 const miniModel: any = {
 	product: {
-		keyPath:  '++id',
-		base:     'test_base',
-		model:    {},
+		keyPath: '++id',
+		base:    'test_base',
+		model:   {},
+		fields: {
+			id:         { type: 'id',   readonly: true },
+			name:       { type: 'text', required: true },
+			categoryId: { type: 'fk-category.id' },
+		},
+		fks: {
+			category: { code: 'category', multiple: false, required: false }
+		},
 		template: {
-			index:        'id',
 			presentation: 'name',
-			fields: {
-				id:         { type: 'id',   readonly: true },
-				name:       { type: 'text', required: true },
-				categoryId: { type: 'fk-category.id' },
-			},
-			fks: {
-				category: { code: 'category', multiple: false, required: false }
-			}
-		}
+		},
 	}
 };
 

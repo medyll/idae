@@ -8,10 +8,7 @@ const model = {
 		keyPath:  '++id',
 		model:    {},
 		ts:       {} as any,
-		template: {
-			index:        'id',
-			presentation: 'email name',
-			fields:       {
+		fields: {
 				id:         'id (readonly)',
 				email:      'email (required)',
 				age:        'number',
@@ -20,8 +17,8 @@ const model = {
 				confirm:    'text',
 				asyncField: 'asyncCheck'
 			},
-			fks:          {}
-		}
+					fks: {},
+					template: { presentation: 'email name' }
 	}
 } as any;
 

@@ -9,23 +9,15 @@ describe('Field Validation — Stress Tests', () => {
 		large_dataset: {
 			keyPath: '++id',
 			model: {},
-			ts: {} as {
-				id: string;
-				name: string;
-				value: number;
-				active: boolean;
+			ts: {} as { id: string; name: string; value: number; active: boolean },
+			fields: {
+				id:     'id (readonly)',
+				name:   'text (required)',
+				value:  'number',
+				active: 'boolean',
 			},
-			template: {
-				index: 'id',
-				presentation: 'name value',
-				fields: {
-					id: 'id (readonly)',
-					name: 'text (required)',
-					value: 'number',
-					active: 'boolean'
-				},
-				fks: {}
-			}
+			fks: {},
+			template: { presentation: 'name value' },
 		}
 	} as any;
 

@@ -206,11 +206,11 @@ export class MachineSchemeValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.machineDb.collection(this.collection).template.fields;
+		const fields = this.machineDb.collection(this.collection).fields;
 		if (!fields) {
 			return {
 				isValid:       false,
-				errors:        { general: 'Collection template not found' },
+				errors:        { general: 'Collection fields not found' },
 				invalidFields: ['general']
 			};
 		}

@@ -42,19 +42,27 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	presentation(data: Record<string, unknown>): string {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.machine.collection(this.collectionName).template.presentation;
+			const scheme       = this.machine.collection(this.collectionName);
+			const presentation = scheme.template?.presentation;
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
-			const fields = presentation.split(' ');
-			return fields
-				.map((field: string) => {
-					const value = data[field];
+			const tokens = (presentation as string).split(' ').filter(Boolean);
+			return tokens
+				.map((token: string) => {
+					// Dot notation: 'fks.firm.name', 'address.city', etc.
+					const value = token.split('.').reduce<unknown>(
+						(acc, key) => (acc != null && typeof acc === 'object') ? (acc as any)[key] : undefined,
+						data,
+					);
 					if (value === null || value === undefined) return '';
-					const fieldInfo = this.machine.collection(this.collectionName).field(field).parse();
+					// For dot-notation tokens, skip type-aware formatting (no field metadata at depth).
+					if (token.includes('.')) return String(value);
+					const fieldInfo = scheme.field(token).parse();
 					return fieldInfo?.fieldType
 						? MachineSchemeFieldType.format(value, fieldInfo.fieldType as string)
 						: String(value);
 				})
+				.filter(Boolean)
 				.join(' ');
 		} catch (error) {
 			MachineError.handleError(error);
@@ -76,7 +84,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.machine.collection(this.collectionName).template.index;
+			const indexName = this.machine.collection(this.collectionName).index;
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -154,7 +162,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
 		const fieldType = fieldInfo?.fieldType ?? '';
 		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.machine.collection(this.collectionName).template.index;
+		const indexName = this.machine.collection(this.collectionName).index;
 
 		return {
 			'data-collection':   this.collectionName,
@@ -273,7 +281,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 * @returns {Record<string, unknown>} An object with default values for each field in the collection.
 	 */
 	getDefaults(): Record<string, unknown> {
-		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
+		const fields = Object.keys(this.machine.collection(this.collectionName).fields || {});
 		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}
 }

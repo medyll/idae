@@ -80,8 +80,10 @@ describe('Machine', () => {
 		it('fetches schema, sets model, and starts machine', async () => {
 			const fakeModel = {
 				vehicle: {
-					keyPath: '++id', base: 'machine_base', model: {}, ts: {} as any,
-					template: { index: 'id', presentation: 'id', fields: { id: { type: 'id' } }, fks: {} }
+					keyPath: '++id', base: 'machine_user', model: {}, ts: {} as any,
+					fields:   { id: { type: 'id' } },
+					fks:      {},
+					template: { presentation: 'id' },
 				}
 			} as MachineModel;
 			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => fakeModel }));

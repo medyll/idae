@@ -9,63 +9,40 @@ describe('Field Validation — Edge Cases', () => {
 		test_numeric: {
 			keyPath: '++id',
 			model: {},
-			ts: {} as {
-				id: string;
-				count: number;
-				price: number;
-				percentage: number;
+			ts: {} as { id: string; count: number; price: number; percentage: number },
+			fields: {
+				id:         'id (readonly)',
+				count:      'number (required)',
+				price:      'number',
+				percentage: 'number',
 			},
-			template: {
-				index: 'id',
-				presentation: 'count price',
-				fields: {
-					id: 'id (readonly)',
-					count: 'number (required)',
-					price: 'number',
-					percentage: 'number'
-				},
-				fks: {}
-			}
+			fks: {},
+			template: { presentation: 'count price' },
 		},
 		test_text: {
 			keyPath: '++id',
 			model: {},
-			ts: {} as {
-				id: string;
-				name: string;
-				description: string;
-				code: string;
+			ts: {} as { id: string; name: string; description: string; code: string },
+			fields: {
+				id:          'id (readonly)',
+				name:        'text (required)',
+				description: 'text-long',
+				code:        'text',
 			},
-			template: {
-				index: 'id',
-				presentation: 'name code',
-				fields: {
-					id: 'id (readonly)',
-					name: 'text (required)',
-					description: 'text-long',
-					code: 'text'
-				},
-				fks: {}
-			}
+			fks: {},
+			template: { presentation: 'name code' },
 		},
 		test_date: {
 			keyPath: '++id',
 			model: {},
-			ts: {} as {
-				id: string;
-				created: Date;
-				updated: Date;
+			ts: {} as { id: string; created: Date; updated: Date },
+			fields: {
+				id:      'id (readonly)',
+				created: 'date (required)',
+				updated: 'date',
 			},
-			template: {
-				index: 'id',
-				presentation: 'created',
-				fields: {
-					id: 'id (readonly)',
-					created: 'date (required)',
-					updated: 'date'
-				},
-				fks: {}
-			}
+			fks: {},
+			template: { presentation: 'created' },
 		}
 	} as any;
 

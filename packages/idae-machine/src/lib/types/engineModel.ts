@@ -10,12 +10,12 @@ import type {
 	MachineCollectionModel,
 	MachineFieldDef,
 	MachineFkDef,
+	MachineDisplayTemplate,
 } from './machine-model.js';
 
 export const ENGINE_BASE = 'machine_app';
 export const USER_BASE   = 'machine_user';
 
-// Type inference for fields not present in FieldList catalog.
 function inferType(name: string): string {
 	if (name === 'id')                                              return 'id';
 	if (/(At|^timestamp$|^startedAt$|^expiresAt$|^lastActivityAt$|^performedAt$|^lockedUntil$|^validFrom$|^validUntil$|^assignedAt$|^revokedAt$|^grantedAt$)/.test(name)) return 'datetime';
@@ -26,23 +26,21 @@ function inferType(name: string): string {
 	return 'text';
 }
 
-function buildField(name: string): MachineFieldDef {
+function buildField(name: string, rules: { required?: boolean; readonly?: boolean }): MachineFieldDef {
 	const catalog = (FieldList as Record<string, { type?: string }>)[name];
-	const type    = catalog?.type ?? inferType(name);
-	return { type };
+	const def: MachineFieldDef = { type: catalog?.type ?? inferType(name) };
+	if (rules.required) def.required = true;
+	if (rules.readonly) def.readonly = true;
+	return def;
 }
 
 function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 	const fields: Record<string, MachineFieldDef> = {};
 	const fks:    Record<string, MachineFkDef>    = {};
 
-	for (const [name, def] of Object.entries(decl)) {
-		if (name === 'fks') continue;
-		const fieldDef = buildField(name);
-		const rules    = def as { required?: boolean; readonly?: boolean };
-		if (rules.required) fieldDef.required = true;
-		if (rules.readonly) fieldDef.readonly = true;
-		fields[name] = fieldDef;
+	const declFields = (decl.fields ?? {}) as Record<string, { required?: boolean; readonly?: boolean }>;
+	for (const [name, rules] of Object.entries(declFields)) {
+		fields[name] = buildField(name, rules);
 	}
 
 	const declFks = (decl.fks ?? {}) as Record<string, any>;
@@ -54,16 +52,15 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 		};
 	}
 
+	const template: MachineDisplayTemplate = { ...(decl.template ?? {}) };
+
 	return {
-		keyPath:  '++id',
-		base:     ENGINE_BASE,
-		model:    {},
-		template: {
-			index:        'id',
-			presentation: 'name code',
-			fields,
-			fks,
-		},
+		keyPath: '++id',
+		base:    ENGINE_BASE,
+		model:   {},
+		fields,
+		fks,
+		template,
 	};
 }
 
