@@ -65,7 +65,7 @@ function parseTableRef(tableRef: string): { base: string; collection: string } {
  *     produit: { keyPath: 'id' },
  *     client: { keyPath: 'id' },
  *     appuser: { keyPath: 'id' },
- *     appuser_role: { keyPath: 'id' },
+ *     appuser_type: { keyPath: 'id' },
  *   },
  *   syncEnabled: true
  * });
@@ -201,7 +201,7 @@ export class MachineMultiBase {
 	 * const results = await machine.queryAcross([
 	 *   'sitebase_app.produit',
 	 *   'sitebase_app.client',
-	 *   'sitebase_base.appuser_role'
+	 *   'sitebase_base.appuser_type'
 	 * ]);
 	 * ```
 	 */

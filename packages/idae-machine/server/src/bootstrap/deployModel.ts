@@ -100,6 +100,25 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 	return idaeDb;
 }
 
+const ENGINE_COLLECTIONS = [
+	'appscheme_base', 'appscheme', 'appscheme_field', 'appscheme_field_type',
+	'appscheme_field_group', 'appscheme_has_field', 'appscheme_type',
+	'appscheme_view_type', 'appscheme_view', 'appscheme_log', 'auto_increment',
+] as const;
+
+// ── clearCollections ──────────────────────────────────────────────────────────
+// Wipes all docs from engine meta collections before a fresh seed.
+export async function clearCollections(opts: DeployOpts): Promise<void> {
+	const idaeDb = await initDb(opts);
+	for (const name of ENGINE_COLLECTIONS) {
+		try {
+			await idaeDb.collection(name).deleteWhere({ query: {} });
+		} catch {
+			// Collection may not exist yet on first run — ignore
+		}
+	}
+}
+
 // ── seedEngineRegistries ─────────────────────────────────────────────────────
 // Bootstraps base 'machine_app' + global registries (field_type, field_group, scheme_type, view_type).
 export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
@@ -244,6 +263,10 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 		}
 
 		// ── appscheme ─────────────────────────────────────────────────────────
+		const isType   = (colDef as any).isType   ?? collectionName.endsWith('_type')   || undefined;
+		const isGroup  = (colDef as any).isGroup  ?? collectionName.endsWith('_group')  || undefined;
+		const isStatus = (colDef as any).isStatus ?? collectionName.endsWith('_status') || undefined;
+
 		const schemeId = await upsertGetId(
 			col('appscheme'),
 			{ code: collectionName },
@@ -255,6 +278,9 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 				order:        ++schemeOrder,
 				keyPath:      colDef.keyPath ?? '++id',
 				base:         baseCode,
+				...(isType   ? { isType:   true } : {}),
+				...(isGroup  ? { isGroup:  true } : {}),
+				...(isStatus ? { isStatus: true } : {}),
 				template,
 				gridFks,
 			},

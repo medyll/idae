@@ -84,6 +84,10 @@ export interface MachineCollectionModel<T = any> {
 	template?: MachineDisplayTemplate;
 	/** Structural rights policy — declared in schema, seeded as default grants by deployModel. */
 	rights?:   MachineRightsPolicy;
+	/** Semantic role flags — written to appscheme doc by deployModel. Drive UI/validation/routing. */
+	isType?:   boolean;
+	isGroup?:  boolean;
+	isStatus?: boolean;
 	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
 	model?:    any;
 }

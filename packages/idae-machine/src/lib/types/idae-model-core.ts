@@ -38,13 +38,18 @@ export const appModelDeclaration = {
 			base:   'machine_app',
 			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
 			fields: {
-				id:     { required: true,  readonly: true  },
-				code:   { required: true,  readonly: false },
-				name:   { required: true,  readonly: false },
-				color:  { required: true,  readonly: false },
-				icon:   { required: true,  readonly: false },
-				order:  { required: true,  readonly: false },
-				_views: { required: false, readonly: false },
+				id:       { required: true,  readonly: true  },
+				code:     { required: true,  readonly: false },
+				name:     { required: true,  readonly: false },
+				color:    { required: true,  readonly: false },
+				icon:     { required: true,  readonly: false },
+				order:    { required: true,  readonly: false },
+				base:     { required: false, readonly: true  },
+				keyPath:  { required: false, readonly: true  },
+				isType:   { required: false, readonly: true  },
+				isGroup:  { required: false, readonly: true  },
+				isStatus: { required: false, readonly: true  },
+				_views:   { required: false, readonly: false },
 			},
 			fks: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true  },
@@ -82,6 +87,7 @@ export const appModelDeclaration = {
 
 		appscheme_field_type: {
 			base:   'machine_app',
+			isType: true,
 			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:    { required: true, readonly: true  },
@@ -100,8 +106,9 @@ export const appModelDeclaration = {
 		},
 
 		appscheme_field_group: {
-			base:   'machine_app',
-			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			base:    'machine_app',
+			isGroup: true,
+			rights:  { ops: ['R', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:    { required: true, readonly: true  },
 				code:  { required: true, readonly: false },
@@ -143,6 +150,7 @@ export const appModelDeclaration = {
 
 		appscheme_type: {
 			base:   'machine_app',
+			isType: true,
 			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:    { required: true, readonly: true  },
@@ -162,6 +170,7 @@ export const appModelDeclaration = {
 
 		appscheme_view_type: {
 			base:   'machine_app',
+			isType: true,
 			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:          { required: true,  readonly: true  },
@@ -277,8 +286,9 @@ export const appModelDeclaration = {
 		},
 
 		appuser_group: {
-			base:   'machine_user',
-			rights: { ops: ['C', 'R', 'U', 'D', 'L'], default: ['R', 'L'] },
+			base:    'machine_user',
+			isGroup: true,
+			rights:  { ops: ['C', 'R', 'U', 'D', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:          { required: true,  readonly: true  },
 				code:        { required: true,  readonly: false },
@@ -295,8 +305,9 @@ export const appModelDeclaration = {
 			},
 		},
 
-		appuser_role: {
+		appuser_type: {
 			base:   'machine_user',
+			isType: true,
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'], default: ['R', 'L'] },
 			fields: {
 				id:          { required: true,  readonly: true  },
@@ -307,7 +318,7 @@ export const appModelDeclaration = {
 				order:       { required: false, readonly: false },
 				description: { required: false, readonly: false },
 				isSystem:    { required: true,  readonly: false },
-				roleLevel:   { required: false, readonly: false },
+				typeLevel:   { required: false, readonly: false },
 			},
 			fks: {},
 			template: {
@@ -333,7 +344,7 @@ export const appModelDeclaration = {
 			},
 			fks: {
 				appuser:       { code: 'appuser',       order: 0, multiple: false, required: true  },
-				appuser_role:  { code: 'appuser_role',  order: 0, multiple: false, required: false },
+				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
 				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
 			},
 			template: {
@@ -367,7 +378,7 @@ export const appModelDeclaration = {
 			},
 			fks: {
 				appscheme:     { code: 'appscheme',     order: 0, multiple: false, required: true  },
-				appuser_role:  { code: 'appuser_role',  order: 0, multiple: false, required: false },
+				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
 				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
 				appuser:       { code: 'appuser',       order: 0, multiple: false, required: false },
 			},

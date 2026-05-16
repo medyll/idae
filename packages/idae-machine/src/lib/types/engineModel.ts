@@ -55,10 +55,13 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 	const template: MachineDisplayTemplate = { ...(decl.template ?? {}) };
 
 	return {
-		keyPath: '++id',
-		base:    (decl.base as string | undefined) ?? ENGINE_BASE,
-		rights:  decl.rights as any ?? undefined,
-		model:   {},
+		keyPath:  '++id',
+		base:     (decl.base as string | undefined) ?? ENGINE_BASE,
+		rights:   decl.rights  as any ?? undefined,
+		isType:   decl.isType  as boolean | undefined,
+		isGroup:  decl.isGroup as boolean | undefined,
+		isStatus: decl.isStatus as boolean | undefined,
+		model:    {},
 		fields,
 		fks,
 		template,

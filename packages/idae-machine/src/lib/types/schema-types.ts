@@ -1030,7 +1030,7 @@ export type AppSchemaCollection =
 	| AppUser
 	| AppUserProfile
 	| AppUserGroup
-	| AppUserRole
+	| AppUserType
 	| AppUserAssignment
 	| AppUserGrant
 	| AppUserSession
@@ -1150,24 +1150,22 @@ export interface AppUserGroup extends Extendable, WithEssentials {
 }
 
 /**
- * Individual roles - reusable permission templates.
+ * User types — reusable classification templates (formerly AppUserRole).
  * Examples: "Data Administrator", "Report Viewer", "Content Editor"
- * Roles can be assigned directly to users or inherited from groups.
+ * Types can be assigned directly to users or inherited from groups.
  */
-export interface AppUserRole extends Extendable, WithEssentials {
+export interface AppUserType extends Extendable, WithEssentials {
 	code: Code;
 	name: Name;
 	description?: Description;
-	/**
-	 * System roles cannot be deleted (e.g., "Admin", "User").
-	 */
+	/** System types cannot be deleted (e.g., "Admin", "User"). */
 	isSystem: boolean;
-	/**
-	 * Role level for hierarchy resolution.
-	 * Higher level = more privileges. Used when multiple roles conflict.
-	 */
-	roleLevel?: number;
+	/** Type level for hierarchy resolution. Higher level = more privileges. */
+	typeLevel?: number;
 }
+
+/** @deprecated Use AppUserType */
+export type AppUserRole = AppUserType;
 
 /**
  * Assignment type - distinguishes between role and group assignments.
@@ -1206,7 +1204,7 @@ export interface AppUserAssignment extends Extendable, WithID {
 	revocationReason?: string;
 	gridFks: {
 		appuser: gridFksItem<AppUser>;
-		appuser_role?: gridFksItem<AppUserRole>;
+		appuser_type?: gridFksItem<AppUserType>;
 		appuser_group?: gridFksItem<AppUserGroup>;
 	};
 }
@@ -1247,7 +1245,7 @@ export interface AppUserGrant extends Extendable, WithID {
 	constraints?: GrantConstraints;
 	gridFks: {
 		appscheme: gridFksItem<AppScheme>;
-		appuser_role?: gridFksItem<AppUserRole>;
+		appuser_type?: gridFksItem<AppUserType>;
 		appuser_group?: gridFksItem<AppUserGroup>;
 		appuser?: gridFksItem<AppUser>;
 	};
