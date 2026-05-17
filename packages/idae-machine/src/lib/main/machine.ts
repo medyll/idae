@@ -4,6 +4,7 @@ import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorCon
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
+import { MachinePrefs } from '$lib/main/machine/MachinePrefs.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
@@ -268,6 +269,15 @@ export class Machine {
 
 	/** @deprecated Qoolie manages the IDB instance internally. */
 	get idbqModel(): undefined { return undefined; }
+
+	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
+	get rights() { return machineRights; }
+
+	/** User preferences service — backed by IDB `_prefs` collection. */
+	get prefs() {
+		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
+		return new MachinePrefs(() => this._qoolie!.collection['_prefs'] as QoolieCollection<any>);
+	}
 
 	/**
 	 * Sync controller — pause/resume/status/flush/dlq.
