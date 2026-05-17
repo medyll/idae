@@ -434,6 +434,62 @@ export const appModelDeclaration = {
 				presentation: 'action resourceType performedAt',
 			},
 		},
+
+		_prefs: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:    { required: true,  readonly: true  },
+				code:  { required: true,  readonly: false },
+				name:  { required: false, readonly: false },
+				order: { required: false, readonly: false },
+				value: { required: false, readonly: false },
+			},
+			fks: {
+				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+			},
+			template: {
+				presentation: 'code value',
+			},
+		},
+
+		_activity: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'L'] },
+			fields: {
+				id:               { required: true,  readonly: true },
+				code:             { required: true,  readonly: true },
+				collection:       { required: true,  readonly: true },
+				collection_value: { required: true,  readonly: true },
+				collection_vars:  { required: false, readonly: true },
+				timestamp:        { required: true,  readonly: true },
+			},
+			fks: {
+				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+			},
+			template: {
+				presentation: 'code collection timestamp',
+			},
+		},
+
+		_history: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:               { required: true,  readonly: true  },
+				collection:       { required: true,  readonly: false },
+				collection_value: { required: true,  readonly: false },
+				label:            { required: false, readonly: false },
+				count:            { required: true,  readonly: false },
+				lastSeen:         { required: true,  readonly: false },
+			},
+			fks: {
+				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+			},
+			template: {
+				presentation: 'collection label lastSeen',
+			},
+		},
 	},
 } as const;
 

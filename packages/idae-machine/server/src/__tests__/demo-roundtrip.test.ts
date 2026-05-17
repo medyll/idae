@@ -15,6 +15,7 @@ import { config } from '../config.js';
 import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
+import { appModelDeclaration } from '../../../src/lib/types/idae-model-core.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 const TEST_ORG = 'vitest_demo';
@@ -137,5 +138,53 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 		expect(Object.keys(model2)).toEqual(expect.arrayContaining(COLLECTIONS));
 		expect(model2.vehicle.fields.license_plate.type).toBe('text');
 		expect(model2.rental.fks.vehicle.code).toBe('vehicle');
+	});
+});
+
+describe('meta-collections: _prefs, _activity, _history', () => {
+	const { collections } = appModelDeclaration;
+
+	it('_prefs exists in idae-model-core with correct fields', () => {
+		expect(collections).toHaveProperty('_prefs');
+		const prefs = collections._prefs as any;
+		expect(prefs.base).toBe('machine_user');
+		expect(prefs.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'U', 'D', 'L']));
+		expect(prefs.fields.id).toEqual({ required: true, readonly: true });
+		expect(prefs.fields.code).toEqual({ required: true, readonly: false });
+		expect(prefs.fields.value).toEqual({ required: false, readonly: false });
+		expect(prefs.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(prefs.template.presentation).toBe('code value');
+	});
+
+	it('_activity exists in idae-model-core with correct fields (insert-only)', () => {
+		expect(collections).toHaveProperty('_activity');
+		const activity = collections._activity as any;
+		expect(activity.base).toBe('machine_user');
+		expect(activity.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'L']));
+		expect(activity.rights.ops).not.toContain('U');
+		expect(activity.rights.ops).not.toContain('D');
+		expect(activity.fields.id).toEqual({ required: true, readonly: true });
+		expect(activity.fields.code).toEqual({ required: true, readonly: true });
+		expect(activity.fields.collection).toEqual({ required: true, readonly: true });
+		expect(activity.fields.collection_value).toEqual({ required: true, readonly: true });
+		expect(activity.fields.collection_vars).toEqual({ required: false, readonly: true });
+		expect(activity.fields.timestamp).toEqual({ required: true, readonly: true });
+		expect(activity.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(activity.template.presentation).toBe('code collection timestamp');
+	});
+
+	it('_history exists in idae-model-core with correct fields', () => {
+		expect(collections).toHaveProperty('_history');
+		const history = collections._history as any;
+		expect(history.base).toBe('machine_user');
+		expect(history.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'U', 'D', 'L']));
+		expect(history.fields.id).toEqual({ required: true, readonly: true });
+		expect(history.fields.collection).toEqual({ required: true, readonly: false });
+		expect(history.fields.collection_value).toEqual({ required: true, readonly: false });
+		expect(history.fields.label).toEqual({ required: false, readonly: false });
+		expect(history.fields.count).toEqual({ required: true, readonly: false });
+		expect(history.fields.lastSeen).toEqual({ required: true, readonly: false });
+		expect(history.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(history.template.presentation).toBe('collection label lastSeen');
 	});
 });
