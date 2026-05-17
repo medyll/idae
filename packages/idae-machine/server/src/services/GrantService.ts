@@ -3,91 +3,244 @@ import { config } from '../config.js';
 import type { Permission } from '../middleware/permission.js';
 
 /**
+ * Free-form constraint payload — interpreted by route handlers.
+ * Common keys: territory, maxAmount, departments, businessUnits.
+ */
+export interface GrantConstraints {
+	territory?:     string;
+	maxAmount?:     number;
+	departments?:   string[];
+	businessUnits?: string[];
+	[key: string]:  unknown;
+}
+
+/**
  * Grant document shape as stored in MongoDB appuser_grant collection.
  * FK references stored as flat scalars (not nested objects).
  */
 interface GrantDoc {
 	grantType:  'user' | 'group' | 'type';
-	userId?:    string;    // grantType === 'user'
-	groupId?:   string;    // grantType === 'group'
-	typeId?:    string;    // grantType === 'type'
-	schemeCode: string;    // collection name, '*' = all collections
+	userId?:    string;   // grantType === 'user'
+	groupId?:   string;   // grantType === 'group'
+	typeId?:    string;   // grantType === 'type'
+	schemeCode: string;   // collection name, '*' = all collections
 	c: boolean;
 	r: boolean;
 	u: boolean;
 	d: boolean;
 	l: boolean;
 	x: boolean;
+	validFrom?:   string | null;
+	validUntil?:  string | null;
+	revokedAt?:   string | null;
+	constraints?: GrantConstraints;
+}
+
+export interface ResolvedAccess {
+	allowed:      boolean;
+	/** Merged constraints from matching grants. Undefined = unrestricted. */
+	constraints?: GrantConstraints;
+}
+
+/**
+ * Assignment document shape — links users to groups and types.
+ * assignmentType: 'group' → groupId is set
+ * assignmentType: 'role'  → typeId is set
+ */
+interface AssignmentDoc {
+	assignmentType: 'group' | 'role';
+	userId:    string;
+	groupId?:  string;
+	typeId?:   string;
 	validFrom?:  string | null;
 	validUntil?: string | null;
 	revokedAt?:  string | null;
 }
 
-/** TTL cache entry */
-interface CacheEntry {
-	grants:  GrantDoc[];
+interface UserSources {
+	groupIds: string[];
+	typeIds:  string[];
+}
+
+interface GrantsCacheEntry {
+	grants: GrantDoc[];
+	expiry: number;
+}
+
+interface SourcesCacheEntry {
+	sources: UserSources;
 	expiry:  number;
 }
 
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL_MS = 5 * 60 * 1000;
 
 class GrantService {
-	#cache = new Map<string, CacheEntry>();
+	#grantsCache  = new Map<string, GrantsCacheEntry>();
+	#sourcesCache = new Map<string, SourcesCacheEntry>();
 
 	/**
-	 * Check if userId has permission for operation on collection.
-	 * Checks direct user grants only (group/type cascade = phase C).
+	 * Resolve access — returns allowed flag + merged constraints from matching grants.
+	 * Cascades through direct user grants + group grants + type grants.
+	 *
+	 * Constraint merge logic (most permissive wins):
+	 *   - If any matching grant has no constraints → unrestricted (constraints: undefined)
+	 *   - maxAmount     → max across grants
+	 *   - departments   → union
+	 *   - businessUnits → union
+	 *   - territory     → undefined if any conflict, kept if all agree
+	 */
+	async resolveAccess(
+		userId:     string,
+		collection: string,
+		operation:  Permission
+	): Promise<ResolvedAccess> {
+		const grants = await this.#loadGrants(userId, collection);
+		const field  = operation.toLowerCase() as 'c' | 'r' | 'u' | 'd' | 'l' | 'x';
+		const now    = new Date();
+
+		const matching = grants.filter(g => {
+			if (g.revokedAt) return false;
+			if (g.validFrom  && new Date(g.validFrom)  > now) return false;
+			if (g.validUntil && new Date(g.validUntil) < now) return false;
+			return g[field] === true;
+		});
+
+		if (matching.length === 0) return { allowed: false };
+
+		// Most permissive: any grant without constraints → unrestricted
+		const hasUnrestricted = matching.some(g => !g.constraints || Object.keys(g.constraints).length === 0);
+		if (hasUnrestricted) return { allowed: true };
+
+		return { allowed: true, constraints: mergeConstraints(matching.map(g => g.constraints!)) };
+	}
+
+	/**
+	 * Boolean wrapper for resolveAccess — convenience for callers that don't need constraints.
 	 */
 	async checkGrant(
 		userId:     string,
 		collection: string,
 		operation:  Permission
 	): Promise<boolean> {
-		const grants = await this.#loadUserGrants(userId, collection);
-		const field  = operation.toLowerCase() as 'c' | 'r' | 'u' | 'd' | 'l' | 'x';
-		const now    = new Date();
-
-		return grants.some(grant => {
-			if (grant.revokedAt) return false;
-			if (grant.validFrom  && new Date(grant.validFrom)  > now) return false;
-			if (grant.validUntil && new Date(grant.validUntil) < now) return false;
-			return grant[field] === true;
-		});
+		return (await this.resolveAccess(userId, collection, operation)).allowed;
 	}
 
-	async #loadUserGrants(userId: string, collection: string): Promise<GrantDoc[]> {
+	/**
+	 * Load assignments for user → groupIds + typeIds (active only).
+	 */
+	async #loadSources(userId: string): Promise<UserSources> {
+		const cached = this.#sourcesCache.get(userId);
+		if (cached && cached.expiry > Date.now()) return cached.sources;
+
+		try {
+			const conn = await getConn(`${config.org}_machine_user`);
+			const docs = await conn.collection('appuser_assignment').find({
+				userId,
+				revokedAt: { $in: [null, undefined] as any },
+			}).toArray() as unknown as AssignmentDoc[];
+
+			const now = new Date();
+			const valid = docs.filter(a => {
+				if (a.validFrom  && new Date(a.validFrom)  > now) return false;
+				if (a.validUntil && new Date(a.validUntil) < now) return false;
+				return true;
+			});
+
+			const sources: UserSources = {
+				groupIds: valid.filter(a => a.assignmentType === 'group' && a.groupId).map(a => a.groupId!),
+				typeIds:  valid.filter(a => a.assignmentType === 'role'  && a.typeId ).map(a => a.typeId!),
+			};
+
+			this.#sourcesCache.set(userId, { sources, expiry: Date.now() + CACHE_TTL_MS });
+			return sources;
+		} catch {
+			return { groupIds: [], typeIds: [] };
+		}
+	}
+
+	/**
+	 * Load all grants matching user + collection (direct + group + type cascade).
+	 */
+	async #loadGrants(userId: string, collection: string): Promise<GrantDoc[]> {
 		const cacheKey = `${userId}:${collection}`;
-		const cached   = this.#cache.get(cacheKey);
+		const cached   = this.#grantsCache.get(cacheKey);
 
 		if (cached && cached.expiry > Date.now()) return cached.grants;
 
 		try {
-			const conn   = await getConn(`${config.org}_machine_user`);
+			const sources = await this.#loadSources(userId);
+			const conn    = await getConn(`${config.org}_machine_user`);
+
+			const orClauses: Record<string, unknown>[] = [
+				{ grantType: 'user', userId },
+			];
+			if (sources.groupIds.length) {
+				orClauses.push({ grantType: 'group', groupId: { $in: sources.groupIds } });
+			}
+			if (sources.typeIds.length) {
+				orClauses.push({ grantType: 'type', typeId: { $in: sources.typeIds } });
+			}
+
 			const grants = await conn.collection('appuser_grant').find({
-				grantType:  'user',
-				userId,
+				$or: orClauses,
 				schemeCode: { $in: [collection, '*'] },
 			}).toArray() as unknown as GrantDoc[];
 
-			this.#cache.set(cacheKey, { grants, expiry: Date.now() + CACHE_TTL_MS });
+			this.#grantsCache.set(cacheKey, { grants, expiry: Date.now() + CACHE_TTL_MS });
 			return grants;
 		} catch {
-			// DB unavailable — fail open in dev, fail closed should be enforced at middleware level
 			return [];
 		}
 	}
 
-	/** Invalidate all cached grants for a user (call after grant change). */
+	/** Invalidate all cached entries for a user (call after grant/assignment change). */
 	invalidateUser(userId: string): void {
-		for (const key of this.#cache.keys()) {
-			if (key.startsWith(`${userId}:`)) this.#cache.delete(key);
+		this.#sourcesCache.delete(userId);
+		for (const key of this.#grantsCache.keys()) {
+			if (key.startsWith(`${userId}:`)) this.#grantsCache.delete(key);
 		}
 	}
 
-	/** Flush entire cache (call after bulk grant update). */
+	/** Flush entire cache (call after bulk update). */
 	flush(): void {
-		this.#cache.clear();
+		this.#grantsCache.clear();
+		this.#sourcesCache.clear();
 	}
+}
+
+/**
+ * Merge multiple constraint objects → most permissive union.
+ * Arrays unioned; numbers maxed; strings undefined on conflict.
+ */
+function mergeConstraints(list: GrantConstraints[]): GrantConstraints {
+	const merged: GrantConstraints = {};
+
+	for (const c of list) {
+		// maxAmount → max
+		if (typeof c.maxAmount === 'number') {
+			merged.maxAmount = Math.max(merged.maxAmount ?? 0, c.maxAmount);
+		}
+		// departments → union
+		if (Array.isArray(c.departments)) {
+			merged.departments = Array.from(new Set([...(merged.departments ?? []), ...c.departments]));
+		}
+		// businessUnits → union
+		if (Array.isArray(c.businessUnits)) {
+			merged.businessUnits = Array.from(new Set([...(merged.businessUnits ?? []), ...c.businessUnits]));
+		}
+		// territory → keep if all agree, drop on conflict
+		if (typeof c.territory === 'string') {
+			if (merged.territory === undefined) merged.territory = c.territory;
+			else if (merged.territory !== c.territory) delete merged.territory;
+		}
+		// Extension keys → first-wins (caller can override semantics)
+		for (const k of Object.keys(c)) {
+			if (['maxAmount', 'departments', 'businessUnits', 'territory'].includes(k)) continue;
+			if (merged[k] === undefined) merged[k] = c[k];
+		}
+	}
+
+	return merged;
 }
 
 export const grantService = new GrantService();

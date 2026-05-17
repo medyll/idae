@@ -1,14 +1,17 @@
 import type { Request, Response, NextFunction } from 'express';
 import { idaeApi } from '@medyll/idae-api';
-import { grantService } from '../services/GrantService.js';
+import { grantService, type GrantConstraints } from '../services/GrantService.js';
 import { resolveUser } from '../services/AuthService.js';
+import { logAudit, extractAuditContext } from '../services/AuditService.js';
 
 export type Permission = 'C' | 'R' | 'U' | 'D' | 'L' | 'X';
 
 export interface UserContext {
-	userId:  string;
-	login:   string;
-	isAdmin?: boolean;
+	userId:      string;
+	login:       string;
+	isAdmin?:    boolean;
+	/** Merged grant constraints for the current request — set by requireDroit. */
+	constraints?: GrantConstraints;
 }
 
 export interface PermissionCheck {
@@ -37,8 +40,18 @@ declare global {
 export function requireDroit(permission: Permission, table?: string) {
 	return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 		const user = await resolveUser(req);
+		const targetTable = table ?? req.params.table;
+		const ctx = extractAuditContext(req);
 
 		if (!user) {
+			logAudit({
+				action:        'unauthorized',
+				resourceType:  targetTable ?? 'unknown',
+				status:        'denied',
+				failureReason: 'Missing or invalid token',
+				details:       { permission },
+				...ctx,
+			});
 			res.status(401).json({ error: 'Authentication required', code: 'UNAUTHORIZED' });
 			return;
 		}
@@ -51,10 +64,19 @@ export function requireDroit(permission: Permission, table?: string) {
 			return;
 		}
 
-		const targetTable = table ?? req.params.table;
-		const allowed     = await grantService.checkGrant(user.userId, targetTable, permission);
+		const { allowed, constraints } = await grantService.resolveAccess(user.userId, targetTable, permission);
 
 		if (!allowed) {
+			logAudit({
+				action:        'permission_denied',
+				userId:        user.userId,
+				login:         user.login,
+				resourceType:  targetTable ?? 'unknown',
+				status:        'denied',
+				failureReason: `No grant for ${permission}`,
+				details:       { permission },
+				...ctx,
+			});
 			res.status(403).json({
 				error:      `Permission denied: ${permission} on ${targetTable ?? 'resource'}`,
 				code:       'FORBIDDEN',
@@ -63,6 +85,9 @@ export function requireDroit(permission: Permission, table?: string) {
 			});
 			return;
 		}
+
+		// Attach merged constraints — route handlers consume req.user.constraints
+		if (constraints) req.user.constraints = constraints;
 
 		next();
 	};
