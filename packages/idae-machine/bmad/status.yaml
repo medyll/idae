@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 98
-last_updated: "2026-05-13"
+progress: 75
+last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "All 3 CLAUDE.md TODOs done. Project functionally complete. Ready for end-to-end demo test."
+next_action: "Sprint 11 S11-02: Auth flow — login → JWT → requête authentifiée"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -255,13 +255,188 @@ sprints:
         test_output: "vitest: 226 passed (15 files)"
         test_result: pass
 
+  - id: 11
+    goal: "Validation: minimal-data-functional — IDB CRUD, auth flow, API data, machine surface"
+    status: in_progress
+    stories:
+      - id: S11-01
+        title: "IDB CRUD round-trip via machine.collection()"
+        status: complete
+        priority: critical
+        description: >
+          Avec fake-indexeddb, tester tous les verbes CRUD de machine.collection(name)
+          sur les 6 collections demoScheme. Valider que les données survivent au cycle
+          complet et que les requêtes filtrées retournent les bons résultats.
+        acceptance_criteria:
+          - "machine.start() avec demoScheme + fake-indexeddb — zéro erreur"
+          - "machine.collection('category').create({code:'x',name:'X'}) retourne doc avec id"
+          - "machine.collection('category').getAll() retourne le doc créé"
+          - "machine.collection('vehicle').where({status:'available'}) filtre correctement"
+          - "machine.collection('category').update(id, {name:'Y'}) retourne doc modifié"
+          - "machine.collection('category').delete(id) retourne true, getAll() ne le contient plus"
+          - "machine.collection('vehicle').count() retourne entier correct"
+          - "machine.collection('nonexistent') throw MachineError"
+          - "6 collections testées: vehicle, category, customer, rental, location_office, maintenance"
+        files_to_create:
+          - "src/lib/main/__tests__/machineCRUD.test.ts"
+        tests_executed: true
+        test_output: "vitest: 23 passed (machineCRUD.test.ts). Full suite: 193 passed (13 files)"
+        test_result: pass
+
+      - id: S11-02
+        title: "Auth flow: login → JWT → requête authentifiée"
+        status: pending
+        priority: critical
+        description: >
+          Tester le flux complet d'authentification: POST /api/auth/login → JWT →
+          utilisation sur routes protégées. Vérifier 401 sans token, 403 mauvaise
+          permission, 200 avec bonne permission.
+        acceptance_criteria:
+          - "POST /api/auth/login {login:'admin',password:'admin123'} → 200 + token JWT"
+          - "POST /api/auth/login {login:'user',password:'user123'} → 200 + token JWT"
+          - "POST /api/auth/login {login:'bad',password:'bad'} → 401"
+          - "GET /api/data/vehicle sans Authorization → 401"
+          - "GET /api/data/vehicle avec token admin → 200"
+          - "Token JWT contient userId et org (décodable sans secret)"
+          - "viewer (groupe uniquement, R+L) peut lire mais pas créer"
+        files_to_create:
+          - "server/src/__tests__/auth.test.ts"
+        depends_on: [demo-seed seeded]
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S11-03
+        title: "API /api/data/* avec données réelles"
+        status: pending
+        priority: high
+        description: >
+          Vérifier que les routes CRUD HTTP retournent les données demoSeed réelles
+          depuis MongoDB. Tester pagination, filtres, tri, et FK cross-references via API.
+        acceptance_criteria:
+          - "GET /api/data/vehicle → 3 véhicules (data de demoSeed)"
+          - "GET /api/data/category → 3 catégories"
+          - "GET /api/data/vehicle?sort=mileage&order=desc → Captur en premier (15000)"
+          - "GET /api/data/vehicle?page=1&limit=2 → meta.total=3, data.length=2"
+          - "POST /api/data/category {code:'lux2',name:'Luxury2'} → 201 + doc retourné"
+          - "DELETE /api/data/category/{id} → 204, puis GET count=3 (le créé est supprimé)"
+          - "GET /api/data/rental → vehicleId=2 présent (FK integrity lisible)"
+        files_to_create:
+          - "server/src/__tests__/dataReal.test.ts"
+        depends_on: [S11-02, demo-seed seeded]
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S11-04
+        title: "machine.sync + machine.destroy() — tests"
+        status: pending
+        priority: medium
+        description: >
+          Valider les deux nouvelles API surface de Machine: init({sync}) forwarding
+          vers createQoolie, machine.sync accessor, machine.destroy() cleanup.
+          Pas de vrai serveur de sync requis — tests unitaires avec fake-indexeddb.
+        acceptance_criteria:
+          - "machine.init({sync:false}) → machine.start() sans erreur, machine.sync throw 'not enabled'"
+          - "machine.init({sync:{databaseHost:'http://x',mode:'mobile-first'}}) → createQoolie appelé avec sync config"
+          - "machine.init({stateEngine:'stator'}) → forwarded"
+          - "machine.destroy() après start() → machine._qoolie === undefined"
+          - "machine.destroy() avant start() → no-op, pas de throw"
+          - "machine.sync avant start() → throw 'Machine not started'"
+          - "machine.collection(name) avant start() → throw"
+          - "machine.collection(name) après start() → retourne QoolieCollection avec les bons verbes"
+        files_to_create:
+          - "src/lib/main/__tests__/machineSyncDestroy.test.ts"
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S11-05
+        title: "Fix data.test.ts + permission.test.ts (pre-existing failures)"
+        status: pending
+        priority: medium
+        description: >
+          Investiguer root cause des failures kareem/mongoose dans data.test.ts et
+          permission.test.ts. Erreur: 'callback.apply is not a function' dans
+          kareem@2.6.3 hooks. Corriger ou isoler.
+        root_cause_hypothesis:
+          - "Deux instances de mongoose chargées (condition mismatch avec idae-router alias)"
+          - "Hooks mongoose corrompus par conflit de module (browser vs node dist)"
+          - "Race condition sur mongoose.connection entre tests"
+        acceptance_criteria:
+          - "pnpm vitest run src/__tests__/data.test.ts → tous les tests passent"
+          - "pnpm vitest run src/__tests__/permission.test.ts → tous les tests passent"
+          - "Root cause documentée dans bmad/artifacts/docs/"
+        files_to_modify:
+          - "server/src/__tests__/data.test.ts"
+          - "server/src/__tests__/permission.test.ts"
+          - "server/vitest.config.ts (si cause = alias idae-router)"
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+  - id: 12
+    goal: "Polish: idae-sync backlog + qoolie build"
+    status: upcoming
+    stories:
+      - id: S12-01
+        title: "idae-sync S-fix-01 à S-fix-06 (backlog bmad audit 2026-05-17)"
+        status: pending
+        priority: medium
+        description: >
+          6 stories idae-sync identifiées dans bmad/audit-2026-05-17.md.
+          Fixes de robustesse: retry logic, circuit breaker config, outbox cleanup,
+          conflict resolution edge cases, SSE reconnect, DLQ replay.
+        files_reference: "../idae-sync/bmad/artifacts/audit-2026-05-17.md"
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S12-02
+        title: "qoolie npm run package — fix tsc errors"
+        status: pending
+        priority: low
+        description: >
+          qoolie tsc errors pre-existants empêchent npm run package. Dist patché
+          manuellement (Qoolie.js, QoolieCollection.js). Corriger les erreurs TS
+          pour que le build officiel fonctionne et qu'on puisse supprimer le patch manuel.
+        notes:
+          - "Erreurs TS pre-existantes dans qoolie/src — non introduites par idae-machine"
+          - "Dist patché manuellement en session 2026-05-17"
+          - "Blocker: si qoolie change, le patch sera écrasé"
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
-  bugs: []
+  bugs:
+    - id: BUG-01
+      title: "data.test.ts / permission.test.ts — kareem callback.apply not a function"
+      severity: medium
+      status: open
+      story: S11-05
+    - id: BUG-02
+      title: "qoolie npm run package — tsc errors pre-existants"
+      severity: low
+      status: open
+      story: S12-02
   pending:
     - "3 TypeScript errors remain in skiller external package (not idae-machine code)"
 
+# ── Session History ───────────────────────────────────────────────────────────
+sessions:
+  - date: "2026-05-17"
+    summary: >
+      S11-01 complete: 23 CRUD tests pass across all 6 demoScheme collections
+      (vehicle, category, customer, rental, location_office, maintenance).
+      fake-indexeddb reset via IDBFactory between tests. Full suite: 193/193 green.
+    tests_total: 193
+    tests_passing: 193
+
 # ── Notes ─────────────────────────────────────────────────────────────────────
-# Rebuilt from: git log, package.json, server/ structure, bmad/artifacts/
-# All 5 sprints committed. Server fully implemented. Dependencies satisfied.
-# Blocker before release: run tests, verify build, address AppShell.svelte changes
+# Rebuilt: 2026-05-17 — session qoolie+tests+machine surface
+# MongoDB demo org: seeded (demoScheme + demoSeed + users)
+# Server vitest: demo-roundtrip(10) + demo-seed(14) + fetchSchemaE2E(7) + scheme(3) = 34 green
+# Client vitest: machine(15) + machineClient(11) + machineSchemaFromModel(12) = 38 green
+# Blockers before release: S11-01 through S11-05, then S12-01/02
