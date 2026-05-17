@@ -36,6 +36,9 @@ export { default as InputTextarea } from '$lib/main-ui/input/InputTextarea.svelt
 export { default as AppShell }   from '$lib/main-ui/layout/AppShell.svelte';
 export { default as Navigation } from '$lib/main-ui/layout/Navigation.svelte';
 export { default as Breadcrumb } from '$lib/main-ui/layout/Breadcrumb.svelte';
+export { default as Pane }       from '$lib/main-ui/layout/Pane.svelte';
+export { default as PaneLeft }   from '$lib/main-ui/layout/PaneLeft.svelte';
+export { default as PaneRight }  from '$lib/main-ui/layout/PaneRight.svelte';
 
 // UI — fragments
 export { default as Confirm }  from '$lib/main-ui/fragments/Confirm.svelte';

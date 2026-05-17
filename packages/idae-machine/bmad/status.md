@@ -3,6 +3,17 @@
 
 ---
 
+## Sprint 15 — Release Prep ✅ complete
+
+| Story | Titre | Priorité | État |
+|-------|-------|----------|------|
+| S15-01 | Full test suite verification | 🟠 high | ✅ complete |
+| S15-02 | TypeScript check (pnpm run check) | 🟠 high | ✅ complete |
+| S15-03 | Verify barrel exports complete | 🟡 medium | ✅ complete |
+| S15-04 | Build package (pnpm run build) | 🟠 high | ✅ complete |
+
+---
+
 ## Sprint 14 — Polish ✅ complete
 
 | Story | Titre | Priorité | État | Dépend |
@@ -58,6 +69,15 @@ Aucun. BUG-01 (CreateUpdate) et BUG-02 (qoolie build) closed.
 | qoolie | `npm run build` | exit 0 | ✅ |
 
 **Total green: 505/505**
+
+---
+
+## Release status
+
+- **Package build**: ✅ dist/ (219 files)
+- **TypeScript**: ⚠️ 26 pre-existing errors (0 new)
+- **Tests**: ✅ 505/505 green
+- **Known issue**: chromadb `@chroma-core/default-embed` import (pre-existing, unrelated to idae-machine)
 
 ---
 
