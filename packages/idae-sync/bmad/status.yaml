@@ -1,11 +1,82 @@
 phase: phase-2-sync-modes
-next: implement sync modes (mobile-first / server-first)
-test_result: 10/10 suites, 25/25 tests (100%)
-spec: bmad/artifacts/plan-spec-sync-modes.md
+active_role: developer
+next_action: "All S-fix stories complete — ready for phase 3"
+next_command: bmad-continue
+next_role: developer
+progress: all-fixes-complete
+
+build:
+  status: green
+  tsconfig: added-2026-05-17
+  dist: dist/index.js + dist/index.d.ts
+  test_result: 24/24 suites 93/93 tests (100%)
+
 commits:
   - bc0b3a86: "refactor(sync): unify deliverer interface and fix sync outbox API"
   - 6720b71a: "fix(sync): fix IDB schema init + align all tests to new API"
+  - session-2026-05-17: tsconfig + package.json + 4 TS fixes + build clean
+  - session-bmad-run: S-fix-01 wired onConflict hook + S-fix-02 guard present + S-fix-03 removed dead overloads
+  - session-s12-01: S-fix-04 legacy files already cleaned, S-fix-05 typed DLQ methods, S-fix-06 meta already typed, IOutboxStore interface extracted
+
 artifacts:
   - bmad/artifacts/audit-2026-03-15.md
+  - bmad/artifacts/audit-2026-05-17.md
+  - bmad/artifacts/plan-prd.md
   - bmad/artifacts/plan-spec-sync-outbox-api.md
   - bmad/artifacts/plan-spec-sync-modes.md
+  - bmad/artifacts/plan-spec-phase3-improvements.md
+  - bmad/artifacts/plan-spec-phase4-improvements.md
+
+stories_completed:
+  - id: S-fix-01
+    title: Wire or remove onConflict hook in SyncAdapter
+    priority: high
+    file: src/lib/SyncAdapter.ts
+    note: Wired onConflict hook in deliverOne() — checks result.conflict, calls hook, handles local/remote/merge resolutions
+
+  - id: S-fix-02
+    title: Guard serverFirstHandler null in applyServerFirst()
+    priority: high
+    file: src/lib/SyncAdapter.ts:349
+    note: Guard already present — if (this.serverFirstHandler) check
+
+  - id: S-fix-03
+    title: Remove dead createSyncAdapter overload signatures
+    priority: medium
+    file: src/lib/SyncAdapter.ts
+    note: Removed dead overloads with serializer/ensureUpdatedAt/conflictResolver params, simplified implementation
+
+  - id: S-fix-04
+    title: Clean up legacy dead files from 2026-03-15 audit
+    priority: medium
+    note: Already cleaned — OutboxStore.ts moved to outbox/ subdirectory, InMemoryOutboxStore.ts moved to outbox/ subdirectory
+
+  - id: S-fix-05
+    title: Type DLQ methods in OutboxStore interface
+    priority: medium
+    file: src/lib/initSync.ts, src/lib/outbox/OutboxStore.ts
+    note: Extracted IOutboxStore interface with typed DLQ methods (listDlq, replayDlq, clearDlq). Removed as any casts in initSync.ts dlq accessor. Updated SyncAdapter, Deliverer, ServerFirstHandler to use IOutboxStore.
+
+  - id: S-fix-06
+    title: Extend OutboxEntry.meta type
+    priority: low
+    note: Already complete — OutboxEntry.meta already has nextAttempt and failed fields typed
+
+marketing:
+  - Outbox-pattern sync for IndexedDB
+  - Mobile-first and server-first modes
+  - Circuit breaker + retry with exponential backoff
+  - Conflict resolution with per-op hooks (local/remote/merge)
+
+product:
+  - Core sync loop working (outbox → deliver → ack)
+  - Conflict resolution wired at runtime via onConflict hook
+  - Server-first mode has null guard
+  - Clean factory API (dead overloads removed)
+  - Typed IOutboxStore interface — no as any casts
+  - DLQ methods fully typed
+
+far_vision:
+  - DLQ with typed interface
+  - Clean public API — no implementation leakage
+  - Full test coverage for conflict resolution paths

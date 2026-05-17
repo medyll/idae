@@ -1,3 +1,16 @@
+export interface IOutboxStore {
+  enqueue(entry: OutboxEntry): Promise<void>;
+  list(limit?: number): Promise<OutboxEntry[]>;
+  size(): Promise<number>;
+  remove(id: string): Promise<void>;
+  update(entry: OutboxEntry): Promise<void>;
+  findPending(collection: string, key: unknown): Promise<OutboxEntry | undefined>;
+  moveToDlq(entryId: string, reason?: unknown): Promise<void>;
+  listDlq(limit?: number): Promise<OutboxEntry[]>;
+  replayDlq(entryId: string): Promise<void>;
+  clearDlq(): Promise<void>;
+}
+
 export type OutboxEntry = {
   id: string;
   collection: string;

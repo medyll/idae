@@ -1,5 +1,5 @@
 import type { IDeliverer } from './deliverer/IDeliverer';
-import type { OutboxEntry, OutboxStore } from './outbox/OutboxStore';
+import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore';
 import type { RollbackManager } from './RollbackManager';
 import type { SyncEvent } from './SyncMode';
 import type { SyncHooks } from './SyncHooks';
@@ -8,7 +8,7 @@ export type CanonicalApplyFn = (collection: string, key: unknown, response: unkn
 
 export class ServerFirstHandler {
   constructor(
-    private outbox: OutboxStore,
+    private outbox: IOutboxStore,
     private deliverer: IDeliverer,
     private rollbackManager: RollbackManager,
     private emit: (event: SyncEvent) => void,

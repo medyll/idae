@@ -1,4 +1,4 @@
-import { OutboxStore, OutboxEntry } from "./outbox/OutboxStore";
+import { OutboxStore, OutboxEntry, IOutboxStore } from "./outbox/OutboxStore";
 import type { IDeliverer } from "./deliverer/IDeliverer";
 import type { OnConflictHook } from "./ConflictResolver";
 import { ConflictResolver } from "./ConflictResolver";
@@ -71,7 +71,7 @@ export class SyncAdapter {
   private circuitBreaker?: CircuitBreaker;
 
   constructor(
-    private outbox: OutboxStore,
+    private outbox: IOutboxStore,
     private deliverer?: IDeliverer,
     private intervalMs = 5000,
     private onConflict?: OnConflictHook,
@@ -415,6 +415,39 @@ export class SyncAdapter {
 
       if (this.hooks?.onAfterDeliver) await this.hooks.onAfterDeliver(entry, result);
 
+      // Handle conflict if present and hook is wired
+      const conflictHook = this.onConflict || this.opts.onConflict;
+      if (result.conflict && conflictHook) {
+        const resolution = await conflictHook(
+          result.conflict.local,
+          result.conflict.remote,
+          { collection: entry.collection, op: entry.op, entryId: entry.id }
+        );
+        
+        if (resolution.resolution === 'local') {
+          this.log(`[idae-sync] conflict resolved as local ${entry.collection}#${entry.id}`);
+          this.circuitBreaker?.recordFailure(entry.collection);
+          entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
+          entry.meta.lastAttempt = new Date().toISOString();
+          await this.checkMaxRetries(entry);
+        } else if (resolution.resolution === 'remote') {
+          this.log(`[idae-sync] conflict resolved as remote ${entry.collection}#${entry.id}`);
+          this.circuitBreaker?.recordSuccess(entry.collection);
+          await this.outbox.remove(entry.id);
+          this.emitSyncEvent({ type: 'conflict-resolved', collection: entry.collection, entryId: entry.id, resolution: 'remote' });
+        } else if (resolution.resolution === 'merge' && resolution.result) {
+          this.log(`[idae-sync] conflict resolved as merge ${entry.collection}#${entry.id}`);
+          entry.data = resolution.result;
+          this.circuitBreaker?.recordFailure(entry.collection);
+          entry.meta.retryCount = (entry.meta.retryCount || 0) + 1;
+          entry.meta.lastAttempt = new Date().toISOString();
+          await this.outbox.update(entry);
+          await this.checkMaxRetries(entry);
+        }
+        return;
+      }
+
+
       if (result.status === 'success') {
         this.circuitBreaker?.recordSuccess(entry.collection);
         await this.outbox.remove(entry.id);
@@ -439,56 +472,19 @@ export class SyncAdapter {
   }
 }
 
-// Overload signatures for createSyncAdapter
-export function createSyncAdapter(
-  opts: {
-    outbox: OutboxStore;
-    serializer?: WhereSerializer;
-    ensureUpdatedAt?: (obj: unknown) => void;
-    conflictResolver?: ConflictResolver;
-  }
-): SyncAdapter;
-export function createSyncAdapter(
-  outbox: OutboxStore,
-  deliverer?: IDeliverer,
-  opts?: SyncAdapterOptions
-): SyncAdapter;
 
-// Implementation
+// Factory function
+
 export function createSyncAdapter(
-  outboxOrOpts:
-    | OutboxStore
-    | {
-        outbox: OutboxStore;
-        serializer?: WhereSerializer;
-        ensureUpdatedAt?: (obj: unknown) => void;
-        conflictResolver?: ConflictResolver;
-      },
+  outbox: IOutboxStore,
   deliverer?: IDeliverer,
   opts?: SyncAdapterOptions
 ): SyncAdapter {
   const modeConfig = opts?.mode || opts?.collectionModes
     ? { mode: opts?.mode, collectionModes: opts?.collectionModes }
     : undefined;
-
-  if (typeof outboxOrOpts === 'object' && 'outbox' in outboxOrOpts && 'serializer' in outboxOrOpts) {
-    const optionsObj = outboxOrOpts as {
-      outbox: OutboxStore;
-      serializer?: WhereSerializer;
-      ensureUpdatedAt?: (obj: unknown) => void;
-      conflictResolver?: ConflictResolver;
-    };
-    return new SyncAdapter(
-      optionsObj.outbox,
-      deliverer,
-      opts?.intervalMs ?? 5000,
-      opts?.onConflict,
-      modeConfig,
-      opts ?? {}
-    );
-  }
   return new SyncAdapter(
-    outboxOrOpts as OutboxStore,
+    outbox,
     deliverer,
     opts?.intervalMs ?? 5000,
     opts?.onConflict,
