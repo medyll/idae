@@ -8,7 +8,8 @@ Forward FK relation viewer — shows collections this record points to.
 @slot children (let:item) - Custom FK rendering
 -->
 <script lang="ts">
-	import type { TplCollectionName, Where } from '@medyll/idae-idbql';
+	import type { TplCollectionName } from '$lib/types/machine-model.js';
+	import type { Where } from '@medyll/qoolie';
 	import { machine } from '$lib/main/machine.js';
 	let { collection, collectionId, where, children } = $props<{
 		collection: TplCollectionName;

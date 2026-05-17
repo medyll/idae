@@ -379,7 +379,7 @@ export class SyncAdapter {
   private async checkMaxRetries(entry: OutboxEntry): Promise<void> {
     if (entry.meta.retryCount >= this.maxRetries) {
       this.log(`[idae-sync] dead-letter ${entry.collection}#${entry.id} (retries=${entry.meta.retryCount})`);
-      await (this.outbox as any).moveToDlq?.(entry.id, 'max-retries');
+      await this.outbox.moveToDlq(entry.id, 'max-retries');
       this.emitSyncEvent({ type: 'dead-letter', collection: entry.collection, entryId: entry.id, reason: 'max-retries' });
     } else {
       await this.outbox.update(entry);

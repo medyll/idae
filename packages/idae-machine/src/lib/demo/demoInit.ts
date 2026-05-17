@@ -1,6 +1,6 @@
 import { seed } from './seedData.js';
 import { analyzeDemo } from './analyzeDemo.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { IdbqModel } from '$lib/types/machine-model.js';
 
 type IdbqlStore = Record<string, { count(): Promise<number>; add(item: unknown): Promise<unknown> } | undefined>;
 

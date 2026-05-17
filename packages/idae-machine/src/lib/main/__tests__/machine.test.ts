@@ -61,18 +61,18 @@ describe('Machine', () => {
 	it('should create collections and store on start', () => {
 		machine.start();
 		expect(machine.logic).toBeDefined();
-		expect(machine.idbql).toBeDefined();
 		expect(machine.store).toBeDefined();
 	});
 
-	it('should expose accessors for logic, idbql, store, idbqlState, indexedb, idbqModel', () => {
+	it('should expose accessors for logic and store (qoolie-backed)', () => {
 		machine.start();
 		expect(machine.logic).toBe(machine._machineDb);
-		expect(machine.idbql).toBe(machine._idbql);
-		expect(machine.store).toBe(machine._idbqlState);
-		expect(machine.idbqlState).toBe(machine._idbqlState);
-		expect(machine.indexedb).toBe(machine._idbDatabase);
-		expect(machine.idbqModel).toBe(machine._idbqModel);
+		expect(machine.store).toBeDefined();
+		expect(machine.idbqlState).toBeDefined();
+		// idbql / indexedb / idbqModel are removed — managed internally by qoolie
+		expect(machine.idbql).toBeUndefined();
+		expect(machine.indexedb).toBeUndefined();
+		expect(machine.idbqModel).toBeUndefined();
 	});
 
 	// --- fetchSchema ---

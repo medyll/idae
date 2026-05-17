@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
 import { MachineError } from '../machine/MachineError.js';
 import { MachineErrorValidation } from '../machine/MachineErrorValidation.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { IdbqModel } from '$lib/types/machine-model.js';
 
 describe('Machine Error Paths', () => {
 	describe('Schema Validation Errors', () => {

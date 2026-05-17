@@ -2,11 +2,10 @@ import type {
 	TplCollectionName,
 	TplFieldRules,
 	TplFieldType,
-	TplProperties,
 	TplFieldArgs,
 	TplFields,
 	IDbForge
-} from '@medyll/idae-idbql';
+} from '$lib/types/machine-model.js';
 type TplFieldRulesObject = TplFieldRules;
 import type { MachineDb } from './machineDb.js';
 import { MachineError } from './machine/MachineError.js';
@@ -116,20 +115,18 @@ export class MachineParserForge {
 	 */
 	is(
 		what: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules | string
+		fieldRule: string
 	): Partial<IDbForge> {
 		return this.extract(what, fieldRule);
 	}
 
 	/**
-	 * Extracts type, rule, and argument information from a field rule string.
-	 * @param type - The type to extract ("array", "object", "fk", "primitive").
-	 * @param fieldRule - The field rule string to analyze.
-	 * @returns Partial IDbForge object with extracted details.
+	 * Extracts type, rule, and argument information from a string field rule.
+	 * Only called after object rules are handled by #fromObjectRule.
 	 */
 	extract(
 		type: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules | string
+		fieldRule: string
 	): Partial<IDbForge> {
 		/**
 		 * Helper to extract the substring after a given pattern, before any arguments.
@@ -137,10 +134,10 @@ export class MachineParserForge {
 		 * @param source - The field rule string.
 		 * @returns The substring after the pattern.
 		 */
-		function extractAfter(pattern: string, source: string) {
+		function extractAfter(pattern: string, source: string): string {
 			const reg = source?.split('(')?.[0];
 			const after = reg.split(pattern)[1];
-			return after?.split('(')?.[0]?.trim() as unknown as TplFieldRules;
+			return (after?.split('(')?.[0]?.trim() ?? '') as string;
 		}
 
 		/**

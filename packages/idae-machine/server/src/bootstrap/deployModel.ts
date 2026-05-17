@@ -263,9 +263,9 @@ export async function deployModel(model: MachineModel, opts: DeployOpts): Promis
 		}
 
 		// ── appscheme ─────────────────────────────────────────────────────────
-		const isType   = (colDef as any).isType   ?? collectionName.endsWith('_type')   || undefined;
-		const isGroup  = (colDef as any).isGroup  ?? collectionName.endsWith('_group')  || undefined;
-		const isStatus = (colDef as any).isStatus ?? collectionName.endsWith('_status') || undefined;
+		const isType   = ((colDef as any).isType   ?? collectionName.endsWith('_type'))   || undefined;
+		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
+		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
 		const schemeId = await upsertGetId(
 			col('appscheme'),

@@ -1,6 +1,8 @@
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { expect } from 'vitest';
 expect.extend(matchers);
+
+import 'fake-indexeddb/auto';
 import { vi } from 'vitest';
 
 Object.defineProperty(window, 'matchMedia', {

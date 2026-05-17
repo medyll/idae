@@ -5,7 +5,7 @@ import type { IDeliverer, DeliverResult } from './IDeliverer';
 export class IdaeApiDeliverer implements IDeliverer {
   private client: ReturnType<typeof IdaeApiClient.getInstance>;
 
-  constructor(clientConfig?: Record<string, unknown>) {
+  constructor(clientConfig?: any) {
     this.client = IdaeApiClient.getInstance(clientConfig);
   }
 

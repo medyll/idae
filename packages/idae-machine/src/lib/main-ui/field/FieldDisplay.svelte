@@ -10,7 +10,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 @prop {boolean|string} [showLabel] - Label visibility/position
 -->
 <script lang="ts" generics="COL extends Record<string,unknown>">
-    import type { TplCollectionName } from '@medyll/idae-idbql';
+    import type { TplCollectionName } from '$lib/types/machine-model.js';
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
     import InputEmail    from '$lib/main-ui/input/InputEmail.svelte';

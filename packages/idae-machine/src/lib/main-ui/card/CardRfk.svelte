@@ -11,7 +11,8 @@ Reverse FK relation viewer — shows collections that point to this record.
 @slot children (let:collection, let:template) - Custom reverse FK rendering
 -->
 <script lang="ts">
-	import type { Tpl, TplCollectionName, Where } from '@medyll/idae-idbql';
+	import type { Tpl, TplCollectionName } from '$lib/types/machine-model.js';
+	import type { Where } from '@medyll/qoolie';
 	import type { SvelteComponent } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	let { collection, showTitle = false, component, componentProps = {}, children } = $props<{

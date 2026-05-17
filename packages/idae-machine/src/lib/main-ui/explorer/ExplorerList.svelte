@@ -13,7 +13,7 @@ Collection record list with machine store binding.
 	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
-	import type { Where } from '@medyll/idae-idbql';
+	import type { Where } from '@medyll/qoolie';
 	import { machine } from '$lib/main/machine.js';
 	import CardFields from '$lib/main-ui/card/CardFields.svelte';
 

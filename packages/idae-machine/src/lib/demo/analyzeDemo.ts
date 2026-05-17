@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import type { IdbqModel } from '$lib/types/machine-model.js';
 
 const demoDir = path.resolve(__dirname);
 const statusPath = path.resolve(__dirname, './demo-status.json');

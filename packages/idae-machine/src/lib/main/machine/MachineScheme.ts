@@ -1,5 +1,5 @@
 import { MachineError } from './MachineError.js';
-import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '$lib/types/machine-model.js';
 import type {
 	MachineModel,
 	MachineCollectionModel,

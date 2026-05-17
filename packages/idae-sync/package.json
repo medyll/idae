@@ -1,14 +1,24 @@
 {
   "name": "@medyll/idae-sync",
+  "version": "1.0.0",
+  "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "bin": {
     "add-skill": "./dist/cli/add-skill.js"
   },
-  "version": "1.0.0",
-  "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
-  "main": "index.js",
   "scripts": {
-    "test": "vitest run --reporter=dot",
-    "prepackage": "node scripts/package-pre.js"
+    "build": "tsc",
+    "package": "node scripts/package-pre.js && tsc",
+    "prepackage": "node scripts/package-pre.js",
+    "test": "vitest run --reporter=dot"
   },
   "dependencies": {
     "@medyll/skiller": "workspace:*",

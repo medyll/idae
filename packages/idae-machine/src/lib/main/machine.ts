@@ -1,10 +1,12 @@
 import { MachineDb } from '$lib/main/machineDb.js';
-import { createIdbqDb } from '@medyll/idae-idbql';
+import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
+
+type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
-import { type MachineModel, toIdbqModel } from '$lib/types/machine-model.js';
+import { type MachineModel } from '$lib/types/machine-model.js';
 
 /**
  * @class Machine
@@ -22,30 +24,9 @@ export class Machine {
 	instanceName?:           string;
 
 	/**
-	 * IDBQL (readonly collections instance)
+	 * Qoolie instance — data layer (IndexedDB + optional sync)
 	 */
-	_idbql!:
-		| ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbql']
-		| undefined;
-
-	/**
-	 * IDBQL (stateful collections instance)
-	 */
-	_idbqlState!:             ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqlState'];
-
-	/**
-	 * Direct access to IndexedDB (core)
-	 */
-	_idbDatabase!:
-		| ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbDatabase']
-		| undefined;
-
-	/**
-	 * IDBQL data model
-	 */
-	_idbqModel!:
-		| ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqModel']
-		| undefined;
+	_qoolie!: ReturnType<typeof createQoolie> | undefined;
 
 	/**
 	 * Centralized access to schema and collection logic
@@ -78,6 +59,18 @@ export class Machine {
 	 */
 	_router?:                 SchemaRouter;
 
+	/** Global sync config forwarded to createQoolie(). false = sync disabled. */
+	_syncOptions?:            SyncConfig | false;
+
+	/** Reactive state engine: 'svelte5' (default) | 'stator' */
+	_stateEngine?:            'svelte5' | 'stator';
+
+	/** Qoolie lifecycle hooks */
+	_hooks?: {
+		onSyncEvent?: (event: SyncEvent) => void;
+		onError?:     (error: Error, context: SyncErrorContext) => void;
+	};
+
 	/**
 	 * Main constructor
 	 * @role Constructor
@@ -96,7 +89,19 @@ export class Machine {
 	 * dbName is derived from org+domain when both are provided and no explicit dbName is given.
 	 * @role Initializer
 	 */
-	init(options?: { dbName?: string; version?: number; model: MachineModel; org?: string; domain?: string }) {
+	init(options?: {
+		dbName?:      string;
+		version?:     number;
+		model:        MachineModel;
+		org?:         string;
+		domain?:      string;
+		sync?:        SyncConfig | false;
+		stateEngine?: 'svelte5' | 'stator';
+		hooks?: {
+			onSyncEvent?: (event: SyncEvent) => void;
+			onError?:     (error: Error, context: SyncErrorContext) => void;
+		};
+	}) {
 		if (options?.org)    this._org    = options.org;
 		if (options?.domain) this._domain = options.domain;
 
@@ -104,8 +109,11 @@ export class Machine {
 		const derived = (this._org && this._domain) ? `${this._org}_${this._domain}` : undefined;
 		this._dbName  = options?.dbName ?? derived ?? this._dbName;
 
-		this._version = options?.version ?? this._version;
-		this._model   = options?.model   ?? this._model;
+		this._version     = options?.version     ?? this._version;
+		this._model       = options?.model       ?? this._model;
+		this._syncOptions = options?.sync        !== undefined ? options.sync : this._syncOptions;
+		this._stateEngine = options?.stateEngine ?? this._stateEngine;
+		this._hooks       = options?.hooks       ?? this._hooks;
 	}
 
 	/** Fully qualified DB name for a given base: {org}_{base} */
@@ -195,15 +203,17 @@ export class Machine {
 		if (!this._model || !this._dbName || !this._version) {
 			throw new Error('Model, dbName, or version is not defined');
 		}
-		const idbqStore = createIdbqDb(toIdbqModel(this._model) as any, this._version);
-		const { idbql, idbqlState, idbDatabase, idbqModel } = idbqStore.create(this._dbName);
-		this._idbql = idbql;
-		this._idbqlState = idbqlState;
-		this._idbDatabase = idbDatabase;
-		this._idbqModel = idbqModel;
-
-		console.log('Machine started with DB:', this._dbName, 'Version:', this._version);
-		console.log('IDBQL State Instance:', this._idbqlState);
+		const collections = Object.fromEntries(
+			Object.entries(this._model).map(([name, col]) => [name, { keyPath: col.keyPath }])
+		);
+		this._qoolie = createQoolie({
+			dbName:      this._dbName,
+			dbVersion:   this._version,
+			collections,
+			...(this._syncOptions !== undefined && { sync: this._syncOptions }),
+			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
+			...(this._hooks        !== undefined && { hooks: this._hooks }),
+		});
 	}
 
 	/**
@@ -227,54 +237,54 @@ export class Machine {
 	}
 
 	/**
-	 * Get the IDBQL (readonly) instance.
-	 * Use for read-only access to collections.
-	 * @role Accessor
-	 * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbql"] | undefined} The readonly IDBQL instance.
+	 * Collection accessor — reactive (Svelte 5 runes) CRUD per collection.
+	 * Usage: machine.store['users'].where({...}) / .getAll() / .create(data) / .update(id, data) / .delete(id)
 	 */
-	get idbql(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbql'] | undefined {
-		return this._idbql;
+	get store(): Record<string, QoolieCollection<any>> {
+		return this._qoolie?.collection as Record<string, QoolieCollection<any>>;
 	}
 
 	/**
-	 * Get the IDBQL (stateful) instance.
-	 * Previously called idbqlState; use for stateful operations.
-	 * @role Accessor
-	 * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"]} The stateful IDBQL instance.
+	 * Direct collection accessor — shorthand for machine.store[name].
+	 * Returns the QoolieCollection (CRUD layer) for the given collection name.
+	 * Note: machine.logic.collection(name) returns the MachineScheme (schema layer).
 	 */
-	get store(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqlState'] {
-		return this._idbqlState;
+	collection(name: string) {
+		const col = this._qoolie?.collection?.[name];
+		if (!col) throw new Error(`Collection "${name}" not found. Did you call start()?`);
+		return col;
+	}
+
+	/** @deprecated Use store instead. */
+	get idbqlState(): Record<string, QoolieCollection<any>> {
+		return this.store;
+	}
+
+	/** @deprecated Qoolie manages the IDB instance internally. */
+	get idbql(): undefined { return undefined; }
+
+	/** @deprecated Qoolie manages the IDB instance internally. */
+	get indexedb(): undefined { return undefined; }
+
+	/** @deprecated Qoolie manages the IDB instance internally. */
+	get idbqModel(): undefined { return undefined; }
+
+	/**
+	 * Sync controller — pause/resume/status/flush/dlq.
+	 * Only available when sync is enabled in init() options.
+	 */
+	get sync() {
+		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
+		return this._qoolie.sync;
 	}
 
 	/**
-	 * Direct getter for idbqlState (for test compatibility).
-	 * Returns the stateful IDBQL instance.
-	 * @role Accessor
-	 * @deprecated Use store instead.
-	 * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqlState"]} The stateful IDBQL instance.
+	 * Release all Qoolie resources (stops sync adapter, clears collections).
+	 * Call when the Machine instance is no longer needed.
 	 */
-	get idbqlState(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqlState'] {
-		return this._idbqlState;
-	}
-
-	/**
-	 * Get the IndexedDB (core) instance.
-	 * @role Accessor
-	 * @deprecated Use IDBQL accessors instead.
-	 * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbDatabase"] | undefined} The IndexedDB instance.
-	 */
-	get indexedb(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbDatabase'] | undefined {
-		return this._idbDatabase;
-	}
-
-	/**
-	 * Get the IDBQL data model instance.
-	 * Returns the current IDBQL model used by the machine.
-	 * @role Accessor
-	 * @return {ReturnType<ReturnType<typeof createIdbqDb>["create"]>["idbqModel"] | undefined} The IDBQL model instance.
-	 */
-	get idbqModel(): ReturnType<ReturnType<typeof createIdbqDb>['create']>['idbqModel'] | undefined {
-		return this._idbqModel;
+	destroy(): void {
+		this._qoolie?.destroy();
+		this._qoolie = undefined;
 	}
 
 	/**

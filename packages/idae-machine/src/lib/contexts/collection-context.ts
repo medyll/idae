@@ -1,4 +1,4 @@
-import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName } from '$lib/types/machine-model.js';
 import { createContext } from 'svelte';
 
 let collection = $state<TplCollectionName>();

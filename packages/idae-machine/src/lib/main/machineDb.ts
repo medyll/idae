@@ -1,4 +1,4 @@
-import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName } from '$lib/types/machine-model.js';
 import type { MachineModel } from '$lib/types/machine-model.js';
 import { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import { MachineParserForge } from '$lib/main/machineParserForge.js';

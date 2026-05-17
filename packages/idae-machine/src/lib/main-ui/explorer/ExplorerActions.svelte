@@ -15,7 +15,7 @@ Menu list of collection records with action handling.
 	import { type MenuListProps, MenuList, MenuListItem } from '@medyll/idae-slotui-svelte';
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
-	import type { Where } from '@medyll/idae-idbql';
+	import type { Where } from '@medyll/qoolie';
 	let { collection, target, data, menuListProps, onclick, style, where } = $props<{ collection: string; target?: string; data?: COL[]; menuListProps?: MenuListProps; style?: string; where?: Where<COL>; onclick?: (event: CustomEvent, index: number) => void }>();
 	let items = $derived(data ?? []);
 	function load(event: CustomEvent, indexV: number) {

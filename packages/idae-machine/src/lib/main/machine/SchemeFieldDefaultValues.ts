@@ -31,7 +31,7 @@
  * SchemeFieldDefaultValues.setDefaults({ status: () => 'pending' }, 'orders');
  */
 
-import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName } from '$lib/types/machine-model.js';
 
 // Single class declaration with all static methods and properties
 export class SchemeFieldDefaultValues {

@@ -14,31 +14,32 @@ describe('CreateUpdate Component Integration', () => {
 
 	beforeEach(() => {
 		// Mock MachineDb for testing
+		const mockFields = {
+			name:            { fieldType: 'string', fieldArgs: ['required'] },
+			email:           { fieldType: 'string', fieldArgs: ['required'] },
+			password:        { fieldType: 'string', fieldArgs: ['required'] },
+			passwordConfirm: { fieldType: 'string', fieldArgs: ['required'] },
+			age:             { fieldType: 'number', fieldArgs: [] },
+			startDate:       { fieldType: 'date',   fieldArgs: [] },
+			endDate:         { fieldType: 'date',   fieldArgs: [] },
+			username:        { fieldType: 'string', fieldArgs: [] },
+			country:         { fieldType: 'string', fieldArgs: [] },
+			zipCode:         { fieldType: 'string', fieldArgs: [] },
+			sameAsShipping:  { fieldType: 'boolean', fieldArgs: [] },
+			shippingAddress: { fieldType: 'string', fieldArgs: [] },
+			billingAddress:  { fieldType: 'string', fieldArgs: [] }
+		};
+
 		mockMachineDb = {
 			collection: vi.fn().mockReturnValue({
-				field:    vi.fn().mockImplementation((fieldName) => ({
-					parse: vi.fn().mockReturnValue({
-						fieldType: 'string',
-						fieldArgs: ['required']
-					})
+				field: vi.fn().mockImplementation((fieldName: string) => ({
+					parse: vi.fn().mockReturnValue(
+						mockFields[fieldName as keyof typeof mockFields] ?? { fieldType: 'string', fieldArgs: [] }
+					)
 				})),
-				template: {
-					fields: {
-						name:            { fieldType: 'string', fieldArgs: ['required'] },
-						email:           { fieldType: 'string', fieldArgs: ['required'] },
-						password:        { fieldType: 'string', fieldArgs: ['required'] },
-						passwordConfirm: { fieldType: 'string', fieldArgs: ['required'] },
-						age:             { fieldType: 'number', fieldArgs: [] },
-						startDate:       { fieldType: 'date', fieldArgs: [] },
-						endDate:         { fieldType: 'date', fieldArgs: [] },
-						username:        { fieldType: 'string', fieldArgs: [] },
-						country:         { fieldType: 'string', fieldArgs: [] },
-						zipCode:         { fieldType: 'string', fieldArgs: [] },
-						sameAsShipping:  { fieldType: 'boolean', fieldArgs: [] },
-						shippingAddress: { fieldType: 'string', fieldArgs: [] },
-						billingAddress:  { fieldType: 'string', fieldArgs: [] }
-					}
-				}
+				// validateForm iterates .fields directly (MachineScheme getter)
+				fields:   mockFields,
+				template: { fields: mockFields }
 			})
 		};
 

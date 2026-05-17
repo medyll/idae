@@ -1,4 +1,4 @@
-import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields } from '$lib/types/machine-model.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';

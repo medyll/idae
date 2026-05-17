@@ -102,27 +102,38 @@ export function indexFromKeyPath(keyPath: string): string {
 	return (keyPath ?? '++id').replace(/^\+\+/, '');
 }
 
-// ── Adapter: MachineModel → IdbqModel ────────────────────────────────────────
-/**
- * Strip MachineModel down to what idae-idbql actually needs.
- * Re-shapes the 3-sibling structure into idbql's flat template = { index, presentation, fields, fks }.
- * Called internally by Machine.createStore() — never exposed publicly.
- */
-export function toIdbqModel(model: MachineModel): Record<string, any> {
-	const result: Record<string, any> = {};
-	for (const [name, col] of Object.entries(model)) {
-		result[name] = {
-			keyPath:  col.keyPath,
-			ts:       col.ts ?? {},
-			model:    {},
-			base:     col.base,
-			template: {
-				index:        indexFromKeyPath(col.keyPath),
-				presentation: col.template?.presentation ?? '',
-				fields:       col.fields,
-				fks:          col.fks,
-			},
-		};
-	}
-	return result;
-}
+// ── Internal parser types (replaces @medyll/idae-idbql imports) ───────────────
+
+/** Field type string — primitive or FK shorthand. */
+export type TplFieldType = string;
+
+/** Legacy string field rule format e.g. 'text-long (required)'. @deprecated prefer MachineFieldDef */
+export type TplFieldArgs = string;
+
+/** Object-form field rule — identical shape to MachineFieldDef. */
+export type TplFieldRulesObject = MachineFieldDef;
+
+/** Union of legacy string rule and new object rule. */
+export type TplFieldRules = TplFieldArgs | MachineFieldDef;
+
+/** Fields map for a collection template. */
+export type TplFields = Record<string, MachineFieldDef | string>;
+
+/** Collection name key — string alias for readability. */
+export type TplCollectionName = string;
+
+/** Display template alias. */
+export type Tpl = MachineDisplayTemplate;
+
+/** IdbqModel alias — use MachineModel for new code. */
+export type IdbqModel = MachineModel;
+
+/** Parsed field descriptor produced by MachineParserForge. */
+export type IDbForge = {
+	collection?: TplCollectionName;
+	fieldName?:  string;
+	fieldType?:  TplFieldType;
+	fieldRule?:  TplFieldRules;
+	fieldArgs?:  string[] | undefined;
+	is:          any;
+};

@@ -34,6 +34,7 @@ function toIdbqModel<T extends CollectionConfigMap>(collections: T): IdbqModel {
 export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> {
   private db: ReturnType<ReturnType<typeof createDb>['create']>['idbDatabase'];
   private idbql: ReturnType<ReturnType<typeof createDb>['create']>['idbql'];
+  private idbqlState: ReturnType<ReturnType<typeof createDb>['create']>['idbqlState'];
   private syncAdapter?: SyncAdapter;
   private outbox?: OutboxStore;
   private deliverer?: IdaeApiDeliverer;
@@ -62,6 +63,7 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 
       this.db = dbResult.idbDatabase;
       this.idbql = dbResult.idbql;
+      this.idbqlState = dbResult.idbqlState;
       this.collectionMap = new Map();
 
       // 4. Initialize sync if enabled
@@ -142,12 +144,15 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
    */
   private createCollections(): void {
     for (const collectionConfig of this.normalizedConfig.collections) {
+      const colState = (this.idbqlState as any)?.[collectionConfig.name];
       const collection = new QoolieCollection(
         collectionConfig.name,
         collectionConfig.keyPath,
         this.idbql,
         collectionConfig.syncEnabled,
-        this.normalizedConfig.stateEngine
+        this.normalizedConfig.stateEngine,
+        undefined,
+        colState
       );
       this.collectionMap.set(collectionConfig.name, collection);
     }
