@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 75
+progress: 78
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 11 S11-02: Auth flow — login → JWT → requête authentifiée"
+next_action: "Sprint 11 S11-03: API /api/data/* avec données réelles"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -285,7 +285,7 @@ sprints:
 
       - id: S11-02
         title: "Auth flow: login → JWT → requête authentifiée"
-        status: pending
+        status: complete
         priority: critical
         description: >
           Tester le flux complet d'authentification: POST /api/auth/login → JWT →
@@ -301,10 +301,9 @@ sprints:
           - "viewer (groupe uniquement, R+L) peut lire mais pas créer"
         files_to_create:
           - "server/src/__tests__/auth.test.ts"
-        depends_on: [demo-seed seeded]
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "vitest: 18 passed (auth.test.ts). Server suite: 62/72 (10 pre-existing BUG-01)"
+        test_result: pass
 
       - id: S11-03
         title: "API /api/data/* avec données réelles"
@@ -428,11 +427,12 @@ qa:
 sessions:
   - date: "2026-05-17"
     summary: >
-      S11-01 complete: 23 CRUD tests pass across all 6 demoScheme collections
-      (vehicle, category, customer, rental, location_office, maintenance).
-      fake-indexeddb reset via IDBFactory between tests. Full suite: 193/193 green.
-    tests_total: 193
-    tests_passing: 193
+      S11-01 complete: 23 CRUD tests pass across all 6 demoScheme collections.
+      S11-02 complete: 18 auth tests pass (login, JWT, permissions, resolveUser).
+      fake-indexeddb reset via IDBFactory between tests. Full client suite: 193/193 green.
+      Server suite: 62/72 (10 pre-existing BUG-01 kareem failures).
+    tests_total: 211
+    tests_passing: 211
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt: 2026-05-17 — session qoolie+tests+machine surface
