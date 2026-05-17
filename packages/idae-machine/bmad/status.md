@@ -1,5 +1,5 @@
 # BMAD Status — idae-machine v2
-> Rebuilt: 2026-05-17 | Progress: 78% | Phase: development
+> Rebuilt: 2026-05-17 | Progress: 82% | Phase: development
 
 ---
 
@@ -9,8 +9,8 @@
 |-------|-------|----------|------|
 | S11-01 | IDB CRUD round-trip via machine.collection() | 🔴 critique | ✅ complete |
 | S11-02 | Auth flow: login → JWT → requête authentifiée | 🔴 critique | ✅ complete |
-| S11-03 | API /api/data/* avec données réelles | 🟠 high | pending |
-| S11-04 | machine.sync + machine.destroy() tests | 🟡 medium | pending |
+| S11-03 | API /api/data/* avec données réelles | 🟠 high | ⚠ blocked (BUG-01) |
+| S11-04 | machine.sync + machine.destroy() tests | 🟡 medium | ✅ complete |
 | S11-05 | Fix data.test.ts + permission.test.ts (kareem) | 🟡 medium | pending |
 
 ---
@@ -42,6 +42,25 @@ Flux complet validé:
 - Sans token → resolveUser = null → 401
 - Avec token admin → resolveUser = admin context
 - viewer (groupe R+L) → grantService deny sur C
+
+### S11-03 — API data avec données réelles (high) ⚠ BLOCKED
+**Fichier:** `server/src/__tests__/dataReal.test.ts` (écrit, prêt)
+
+Bloqué par BUG-01 (kareem callback failures dans mongoose).
+Le fichier de test est écrit et correct — passera une fois S11-05 résolu.
+
+### S11-04 — machine.sync + machine.destroy() (medium) ✅ COMPLETE
+**Fichier:** `src/lib/main/__tests__/machineSyncDestroy.test.ts`
+**Tests:** 10/10 pass | Full client suite: 203/203 green
+
+API surface validée:
+- sync:false → start() OK, machine.sync throw 'not enabled'
+- sync config → forwarded to createQoolie
+- stateEngine:stator → forwarded
+- destroy() après start() → _qoolie undefined
+- destroy() avant start() → no-op
+- sync/collection avant start() → throw
+- collection après start() → QoolieCollection avec CRUD verbs
 
 ---
 
@@ -134,11 +153,13 @@ Critères:
 | client | machine.test.ts | 15/15 | ✅ |
 | client | machineClient.test.ts | 11/11 | ✅ |
 | client | machineSchemaFromModel.test.ts | 12/12 | ✅ |
+| client | machineSyncDestroy.test.ts | 10/10 | ✅ S11-04 |
 | client | machineCRUD.test.ts | 23/23 | ✅ S11-01 |
+| server | dataReal.test.ts | ⚠ written, blocked BUG-01 | S11-03 |
 | server | data.test.ts | ❌ pre-existing | BUG-01 |
 | server | permission.test.ts | ❌ pre-existing | BUG-01 |
 
-**Total green: 211/221** (10 pre-existing BUG-01)
+**Total green: 221/231** (10 pre-existing BUG-01)
 
 ---
 
@@ -148,4 +169,4 @@ Critères:
 - **Machine surface**: `machine.collection(name)`, `machine.sync`, `machine.destroy()`, `machine.init({sync,stateEngine,hooks})` ajoutés
 - **qoolie dist**: patché manuellement (build officiel cassé — BUG-02)
 - **idae-router**: alias direct dist dans server/vitest.config.ts (exports `svelte` only)
-- **Prochaine action**: S11-03 → API data avec données réelles
+- **Prochaine action**: S11-05 → fix kareem callback failures in data.test.ts + permission.test.ts

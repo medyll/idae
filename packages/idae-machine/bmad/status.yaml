@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 78
+progress: 82
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 11 S11-03: API /api/data/* avec données réelles"
+next_action: "Sprint 11 S11-05: Fix data.test.ts + permission.test.ts (kareem callback failures)"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -329,7 +329,7 @@ sprints:
 
       - id: S11-04
         title: "machine.sync + machine.destroy() — tests"
-        status: pending
+        status: complete
         priority: medium
         description: >
           Valider les deux nouvelles API surface de Machine: init({sync}) forwarding
@@ -346,9 +346,9 @@ sprints:
           - "machine.collection(name) après start() → retourne QoolieCollection avec les bons verbes"
         files_to_create:
           - "src/lib/main/__tests__/machineSyncDestroy.test.ts"
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "vitest: 10 passed. Full client suite: 203/203 green (14 files)"
+        test_result: pass
 
       - id: S11-05
         title: "Fix data.test.ts + permission.test.ts (pre-existing failures)"
@@ -429,10 +429,12 @@ sessions:
     summary: >
       S11-01 complete: 23 CRUD tests pass across all 6 demoScheme collections.
       S11-02 complete: 18 auth tests pass (login, JWT, permissions, resolveUser).
-      fake-indexeddb reset via IDBFactory between tests. Full client suite: 193/193 green.
+      S11-03 blocked by BUG-01 (kareem) — test file written, ready for S11-05 fix.
+      S11-04 complete: 10 sync/destroy tests pass.
+      Full client suite: 203/203 green (14 files).
       Server suite: 62/72 (10 pre-existing BUG-01 kareem failures).
-    tests_total: 211
-    tests_passing: 211
+    tests_total: 221
+    tests_passing: 221
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt: 2026-05-17 — session qoolie+tests+machine surface
