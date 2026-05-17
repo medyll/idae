@@ -14,7 +14,7 @@ Svelte 5 in-place field edit/confirm
 @event cancel - Emitted on cancel
 -->
 <script lang="ts">
-    // import { Icon } from '@medyll/idae-slotui-svelte';
+    import { Icon } from '@iconify/svelte';
     import type { Snippet } from 'svelte';
 
     // Destructuring props with default snippet values

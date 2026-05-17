@@ -14,7 +14,7 @@ Svelte 5 confirm/cancel fragment
 -->
 
 <script lang="ts">
-	import { Icon } from '@medyll/idae-slotui-svelte';
+	import { Icon } from '@iconify/svelte';
 	let { validate, message = undefined } = $props<{ validate: Function; message?: string }>();
 	let status = $state('default');
 </script>

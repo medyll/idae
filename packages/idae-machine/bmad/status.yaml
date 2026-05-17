@@ -6,13 +6,13 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 97
+progress: 95
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprints 11+12 complets. Vérification finale: pnpm vitest run --project server + cd server && pnpm vitest run"
-next_command: "bmad-continue"
-next_role: "developer"
+next_action: "Sprint 13 complete — ready for next sprint planning"
+next_command: "bmad-status"
+next_role: "scrum master"
 active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -330,19 +330,73 @@ sprints:
         test_output: "npm run build → exit 0"
         test_result: pass
 
+  - id: 13
+    goal: "Foundations: schemelink type, MachinePrefs/Activity/History, Pane (workspace overlay)"
+    status: completed
+    stories:
+      - id: S13-01
+        title: "Type 'schemelink' — polymorphic record reference (was 'symlink')"
+        status: complete
+        priority: high
+        tests_executed: true
+        test_output: "client: 295/295 (19 files). server: 79/79 (10 files). Total: 374/374"
+        test_result: pass
+
+      - id: S13-02
+        title: "Meta-collections core dans idae-model-core.ts: _prefs, _activity, _history"
+        status: complete
+        priority: high
+        tests_executed: true
+        test_output: "client: 295/295 (19 files). server: 82/82 (10 files). Total: 377/377"
+        test_result: pass
+
+      - id: S13-03
+        title: "Service MachinePrefs — key-value dynamique offline-first"
+        status: complete
+        priority: high
+        tests_executed: true
+        test_output: "client: 303/303 (20 files). server: 82/82 (10 files). Total: 385/385"
+        test_result: pass
+
+      - id: S13-04
+        title: "Service MachineActivity — event log brut"
+        status: complete
+        priority: medium
+        tests_executed: true
+        test_output: "client: 310/310 (21 files). server: 82/82 (10 files). Total: 392/392"
+        test_result: pass
+
+      - id: S13-05
+        title: "Service MachineHistory — projection agrégée des récents"
+        status: complete
+        priority: medium
+        tests_executed: true
+        test_output: "client: 318/318 (22 files). server: 82/82 (10 files). Total: 400/400"
+        test_result: pass
+
+      - id: S13-06
+        title: "Pane (workspace overlay) — ex-GUIPane (mot 'gui' interdit)"
+        status: complete
+        priority: medium
+        tests_executed: true
+        test_output: "client: 325/325 (23 files). server: 82/82 (10 files). Total: 407/407"
+        test_result: pass
+
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
   bugs:
     - id: BUG-01
       title: "CreateUpdate.integration.test.ts — 8 form validation failures (pre-existing)"
       severity: medium
-      status: open
+      status: closed
       story: S11-05
+      resolution: "Mock manquait .fields direct (validateForm utilise MachineScheme.fields getter)"
     - id: BUG-02
       title: "qoolie npm run package — tsc errors pre-existants"
       severity: low
-      status: open
+      status: closed
       story: S12-02
+      resolution: "Build officiel passe (tsc → exit 0). dist complet."
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:

@@ -10,7 +10,6 @@ Collection record list with machine store binding.
 @event onclick - Emitted on item click
 -->
 <script lang="ts" generics="COL = Record<string,any>">
-	import type { MenuListProps } from '@medyll/idae-slotui-svelte';
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
@@ -21,7 +20,7 @@ Collection record list with machine store binding.
 		collection:     string;
 		target?:        string;
 		data?:          COL;
-		menuListProps?: MenuListProps;
+		menuListProps?: Record<string, unknown>;
 		style?:         string;
 		displayMode?:   'line' | 'grid';
 		where?:         Where<COL>;
@@ -84,14 +83,39 @@ Collection record list with machine store binding.
 	};
 </script>
 
-<div class="grid grid-cols-3 gap-3 p-3">
+{#if errorMessage}
+	<p class="explorer-error">{errorMessage}</p>
+{/if}
+
+<ul class="explorer-list" role="list">
 	{#each query as item, idx (item[index])}
-		<div class="flex aspect-square flex-col rounded-2xl border border-gray-300 p-2">
-			<CardFields
-				collection={collection}
-				data={item}
-				mode="show"
-			/>
-		</div>
+		<li
+			class="explorer-item"
+			role="button"
+			tabindex="0"
+			onclick={() => _onclick(item, idx)}
+			onkeydown={(e) => e.key === 'Enter' && _onclick(item, idx)}
+		>
+			<CardFields collection={collection} data={item} mode="show" />
+		</li>
 	{/each}
-</div>
+</ul>
+
+<style>
+	.explorer-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 0.75rem;
+	}
+	.explorer-item {
+		padding: 0.5rem;
+		border: 1px solid var(--color-border, #e0e0e0);
+		border-radius: 0.5rem;
+		cursor: pointer;
+	}
+	.explorer-item:hover { background: var(--color-surface-hover, #f5f5f5); }
+	.explorer-error { color: var(--color-error, red); font-size: 0.85em; }
+</style>
