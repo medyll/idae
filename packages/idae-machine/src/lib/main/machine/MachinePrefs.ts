@@ -10,22 +10,14 @@
  */
 import type { QoolieCollection } from '@medyll/qoolie';
 
-interface PrefDoc {
-	id: string;
-	code: string;
-	name?: string;
-	order?: number;
-	value?: unknown;
-}
-
 export class MachinePrefs {
-	private _getCollection: () => QoolieCollection<PrefDoc>;
+	private _getCollection: () => QoolieCollection<any>;
 
-	constructor(getCollection: () => QoolieCollection<PrefDoc>) {
+	constructor(getCollection: () => QoolieCollection<any>) {
 		this._getCollection = getCollection;
 	}
 
-	private get _prefs() {
+	private get _prefs(): QoolieCollection<any> {
 		return this._getCollection();
 	}
 

@@ -10,23 +10,14 @@
  */
 import type { QoolieCollection } from '@medyll/qoolie';
 
-interface HistoryDoc {
-	id: string;
-	collection: string;
-	collection_value: unknown;
-	label?: string;
-	count: number;
-	lastSeen: string;
-}
-
 export class MachineHistory {
-	private _getCollection: () => QoolieCollection<HistoryDoc>;
+	private _getCollection: () => QoolieCollection<any>;
 
-	constructor(getCollection: () => QoolieCollection<HistoryDoc>) {
+	constructor(getCollection: () => QoolieCollection<any>) {
 		this._getCollection = getCollection;
 	}
 
-	private get _history() {
+	private get _history(): QoolieCollection<any> {
 		return this._getCollection();
 	}
 
@@ -39,7 +30,7 @@ export class MachineHistory {
 	async push(collection: string, value: unknown, label?: string): Promise<void> {
 		const all = this._history.getAll();
 		const existing = all.find(
-			(d) => d.collection === collection && String(d.collection_value) === String(value)
+			(d: any) => d.collection === collection && String(d.collection_value) === String(value)
 		);
 		const now = new Date().toISOString();
 
@@ -66,20 +57,15 @@ export class MachineHistory {
 	 * @param collection - optional filter by collection
 	 * @param limit - max entries (default: 50)
 	 */
-	recent(collection?: string, limit = 50): HistoryDoc[] {
+	recent(collection?: string, limit = 50) {
 		let all = this._history.getAll();
-		if (collection) all = all.filter((d) => d.collection === collection);
-		return all.toSorted((a, b) => b.lastSeen.localeCompare(a.lastSeen)).slice(0, limit);
+		if (collection) all = all.filter((d: any) => d.collection === collection);
+		return all.toSorted((a: any, b: any) => b.lastSeen.localeCompare(a.lastSeen)).slice(0, limit);
 	}
 
-	/**
-	 * Get frequent history entries sorted by count desc.
-	 * @param collection - optional filter by collection
-	 * @param limit - max entries (default: 50)
-	 */
-	frequent(collection?: string, limit = 50): HistoryDoc[] {
+	frequent(collection?: string, limit = 50) {
 		let all = this._history.getAll();
-		if (collection) all = all.filter((d) => d.collection === collection);
-		return all.toSorted((a, b) => b.count - a.count).slice(0, limit);
+		if (collection) all = all.filter((d: any) => d.collection === collection);
+		return all.toSorted((a: any, b: any) => b.count - a.count).slice(0, limit);
 	}
 }

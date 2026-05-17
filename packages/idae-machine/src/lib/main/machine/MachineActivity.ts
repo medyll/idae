@@ -8,23 +8,14 @@
  */
 import type { QoolieCollection } from '@medyll/qoolie';
 
-interface ActivityDoc {
-	id: string;
-	code: string;
-	collection: string;
-	collection_value: unknown;
-	collection_vars?: Record<string, unknown>;
-	timestamp: string;
-}
-
 export class MachineActivity {
-	private _getCollection: () => QoolieCollection<ActivityDoc>;
+	private _getCollection: () => QoolieCollection<any>;
 
-	constructor(getCollection: () => QoolieCollection<ActivityDoc>) {
+	constructor(getCollection: () => QoolieCollection<any>) {
 		this._getCollection = getCollection;
 	}
 
-	private get _activity() {
+	private get _activity(): QoolieCollection<any> {
 		return this._getCollection();
 	}
 
@@ -51,23 +42,18 @@ export class MachineActivity {
 	 * Get recent events across all collections.
 	 * @param limit - max events to return (default: 50)
 	 */
-	recent(limit = 50): ActivityDoc[] {
+	recent(limit = 50) {
 		const all = this._activity.getAll();
 		return all
-			.toSorted((a, b) => b.timestamp.localeCompare(a.timestamp))
+			.toSorted((a: any, b: any) => b.timestamp.localeCompare(a.timestamp))
 			.slice(0, limit);
 	}
 
-	/**
-	 * Get events for a specific collection.
-	 * @param collection - collection name
-	 * @param limit - max events to return (default: 50)
-	 */
-	byCollection(collection: string, limit = 50): ActivityDoc[] {
+	byCollection(collection: string, limit = 50) {
 		const all = this._activity.getAll();
 		return all
-			.filter((d) => d.collection === collection)
-			.toSorted((a, b) => b.timestamp.localeCompare(a.timestamp))
+			.filter((d: any) => d.collection === collection)
+			.toSorted((a: any, b: any) => b.timestamp.localeCompare(a.timestamp))
 			.slice(0, limit);
 	}
 }

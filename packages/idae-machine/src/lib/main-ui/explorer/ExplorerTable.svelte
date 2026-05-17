@@ -19,9 +19,10 @@ const effectiveSortable = $derived(
 
 const sortedItems = $derived.by(() => {
 	if (!sortColumn || !effectiveSortable.includes(sortColumn)) return items;
+	const col = sortColumn;
 	return [...items].toSorted((a, b) => {
-		const aVal = a[sortColumn];
-		const bVal = b[sortColumn];
+		const aVal = a[col];
+		const bVal = b[col];
 		if (aVal == null && bVal == null) return 0;
 		if (aVal == null) return sortDirection === 'asc' ? -1 : 1;
 		if (bVal == null) return sortDirection === 'asc' ? 1 : -1;

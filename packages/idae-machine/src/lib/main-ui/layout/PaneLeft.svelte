@@ -21,7 +21,7 @@
 		const grouped: Record<string, Array<{ code: string; name: string; type?: string }>> = {};
 
 		for (const scheme of schemes) {
-			const colName = scheme.code ?? scheme.name;
+			const colName = scheme.collection ?? scheme.name;
 			if (!colName) continue;
 
 			// Filter by permissions
@@ -30,12 +30,12 @@
 			// Filter by search
 			if (query && !colName.toLowerCase().includes(query.toLowerCase())) continue;
 
-			const type = (scheme as any).isType ? 'type'
-				: (scheme as any).isGroup ? 'group'
+			const type = (scheme as any).model?.isType ? 'type'
+				: (scheme as any).model?.isGroup ? 'group'
 				: 'standard';
 
 			if (!grouped[type]) grouped[type] = [];
-			grouped[type].push({ code: colName, name: (scheme as any).name ?? colName, type });
+			grouped[type].push({ code: colName, name: colName, type });
 		}
 
 		return Object.entries(grouped).map(([type, cols]) => ({ type, collections: cols }));
