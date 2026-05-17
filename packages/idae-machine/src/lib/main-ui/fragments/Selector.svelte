@@ -31,14 +31,15 @@ Selection list that renders items via snippet prop
   {@render selectorFallback?.()}
 {/if}
 
-<style lang="postcss">
-  @reference "tailwindcss";
+<style>
   .active {
-    @apply border border-b-2 border-neutral-500; /* active */
+    border: 1px solid;
+    border-bottom-width: 2px;
+    border-color: #737373;
   }
   .inactive {
-    @apply border border-b-2 border-transparent opacity-60; /* inactive */
+    border: 1px solid transparent;
+    border-bottom-width: 2px;
+    opacity: 0.6;
   }
-  /* @apply  border border-b-2 border-neutral-500; 
-  @apply  opacity-60 border border-b-2 border-transparent;   */
 </style>

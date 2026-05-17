@@ -29,14 +29,14 @@ Svelte 5 confirm/cancel fragment
 
 {#snippet confirm(message: string)}
 	{message ?? ''}
-	<Icon class="color-success md text-green-800" icon="mdi:done" />
+	<Icon class="color-success md" style="color: #166534" icon="mdi:done" />
 {/snippet}
 
 {#snippet cancel()}
-	<Icon icon="typcn:cancel" style="color: red" class="md fill-red-800" />
+	<Icon icon="typcn:cancel" style="color: red" class="md" />
 {/snippet}
 
-<div class="line-gap-2 w-full">
+<div class="confirm-wrap">
 	{@render initial()}
 	{#if status === 'default'}
 		<button
@@ -63,6 +63,10 @@ Svelte 5 confirm/cancel fragment
 	{/if}
 </div>
 
-<style lang="postcss">
-	@reference "tailwindcss";
+<style>
+	.confirm-wrap {
+		display: flex;
+		gap: 0.5rem;
+		width: 100%;
+	}
 </style>
