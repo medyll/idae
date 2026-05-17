@@ -107,7 +107,7 @@ describe('S11-03: API /api/data/* avec données réelles', () => {
 	// ── GET /api/data/vehicle?sort=mileage&order=desc → Captur en premier ────
 
 	describe('GET /api/data/vehicle?sort=mileage&order=desc', () => {
-		it('returns Captur first (mileage=15000)', async () => {
+		it('returns Clio first (mileage=45000, highest)', async () => {
 			const req = mockReq({
 				params: { table: 'vehicle' },
 				query:  { sort: 'mileage', order: 'desc' },
@@ -115,8 +115,8 @@ describe('S11-03: API /api/data/* avec données réelles', () => {
 			const res = mockRes();
 			await listRecords(req, res);
 			expect(res._status).toBe(200);
-			expect(res._body.data[0].model).toBe('Captur');
-			expect(res._body.data[0].mileage).toBe(15000);
+			expect(res._body.data[0].model).toBe('Clio');
+			expect(res._body.data[0].mileage).toBe(45000);
 		});
 	});
 

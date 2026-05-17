@@ -1,8 +1,9 @@
-import { describe, it, expect, vi, beforeAll, afterAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll, afterEach, beforeEach } from 'vitest';
 import mongoose, { Schema } from 'mongoose';
 import { config } from '../config.js';
 import { checkPermission, requireDroit } from '../middleware/permission.js';
 import { grantService } from '../services/GrantService.js';
+import * as AuthService from '../services/AuthService.js';
 import { createRecord, listRecords } from '../routes/data.js';
 import type { Request, Response, NextFunction } from 'express';
 
@@ -21,10 +22,11 @@ function mockRes(): any {
 
 function mockReq(opts: { params?: any; query?: any; body?: any; headers?: any } = {}): Request {
 	return {
-		params:  opts.params  ?? {},
-		query:   opts.query   ?? {},
-		body:    opts.body    ?? {},
-		headers: opts.headers ?? {},
+		params:    opts.params  ?? {},
+		query:     opts.query   ?? {},
+		body:      opts.body    ?? {},
+		headers:   opts.headers ?? {},
+		socket:    { remoteAddress: '127.0.0.1' } as any,
 	} as unknown as Request;
 }
 
@@ -34,7 +36,7 @@ function withAuth(headers: any = {}): any {
 
 function getTestCol() {
 	const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
-	const schema = new Schema({}, { strict: false, timestamps: true, collection: TEST_TABLE });
+	const schema = new Schema({}, { strict: false, collection: TEST_TABLE });
 	const name = `${DATA_DB}__${TEST_TABLE}`;
 	return db.models[name] ?? db.model(name, schema, TEST_TABLE);
 }
@@ -61,6 +63,15 @@ describe('Permission Middleware', () => {
 
 	afterEach(async () => {
 		await getTestCol().deleteMany({});
+		vi.restoreAllMocks();
+	});
+
+	beforeEach(() => {
+		vi.spyOn(AuthService, 'resolveUser').mockResolvedValue({
+			userId: 'test-user-1',
+			login: 'testuser',
+			isAdmin: false,
+		});
 	});
 
 	describe('checkPermission handler', () => {
@@ -91,7 +102,7 @@ describe('Permission Middleware', () => {
 
 	describe('requireDroit middleware', () => {
 		it('calls next() when user has permission', async () => {
-			vi.spyOn(grantService, 'checkGrant').mockResolvedValueOnce(true);
+			vi.spyOn(grantService, 'resolveAccess').mockResolvedValueOnce({ allowed: true, permission: 'R', constraints: null } as any);
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
 			const res = mockRes();
@@ -101,6 +112,7 @@ describe('Permission Middleware', () => {
 		});
 
 		it('returns 401 when no auth header', async () => {
+			vi.spyOn(AuthService, 'resolveUser').mockResolvedValue(null);
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ params: { table: TEST_TABLE } });
 			const res = mockRes();
@@ -110,7 +122,7 @@ describe('Permission Middleware', () => {
 		});
 
 		it('returns 403 when permission denied', async () => {
-			vi.spyOn(grantService, 'checkGrant').mockResolvedValueOnce(false);
+			vi.spyOn(grantService, 'resolveAccess').mockResolvedValueOnce({ allowed: false, permission: 'R', constraints: null } as any);
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
 			const res = mockRes();

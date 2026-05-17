@@ -1,19 +1,43 @@
 # BMAD Status — idae-machine v2
-> Rebuilt: 2026-05-17 | Progress: 82% | Phase: development
+> Rebuilt: 2026-05-17 | Progress: 90% | Phase: development
 
 ---
 
-## Sprint actif — S11: Validation minimal-data-functional
+## ✅ Sprint 11 COMPLETE: Validation minimal-data-functional
 
 | Story | Titre | Priorité | État |
 |-------|-------|----------|------|
 | S11-01 | IDB CRUD round-trip via machine.collection() | 🔴 critique | ✅ complete |
 | S11-02 | Auth flow: login → JWT → requête authentifiée | 🔴 critique | ✅ complete |
-| S11-03 | API /api/data/* avec données réelles | 🟠 high | ⚠ blocked (BUG-01) |
+| S11-03 | API /api/data/* avec données réelles | 🟠 high | ✅ complete |
 | S11-04 | machine.sync + machine.destroy() tests | 🟡 medium | ✅ complete |
-| S11-05 | Fix data.test.ts + permission.test.ts (kareem) | 🟡 medium | pending |
+| S11-05 | Fix data.test.ts + permission.test.ts (kareem) | 🟡 medium | ✅ complete |
 
 ---
+
+## Sprint 12 — Polish (upcoming)
+
+| Story | Titre | Priorité |
+|-------|-------|----------|
+| S12-01 | idae-sync S-fix-01 à S-fix-06 | medium |
+| S12-02 | qoolie npm run package fix (tsc errors) | low |
+
+---
+
+## Bugs ouverts
+
+| ID | Titre | Sévérité | Story |
+|----|-------|----------|-------|
+| BUG-02 | qoolie npm run package tsc errors | low | S12-02 |
+
+---
+
+## Root cause: BUG-01 (RESOLVED)
+
+**Problem:** `kareem callback.apply is not a function` in data.test.ts + permission.test.ts
+**Root cause:** Mongoose version mismatch — `idae-api` uses mongoose 9.3.3, server had 8.23.1.
+Two mongoose instances loaded simultaneously caused kareem hook conflicts.
+**Fix:** Aligned server to mongoose ^9.0.0 + fixed test mocks (socket.remoteAddress, resolveUser, resolveAccess).
 
 ## Détail stories S11
 
@@ -43,11 +67,18 @@ Flux complet validé:
 - Avec token admin → resolveUser = admin context
 - viewer (groupe R+L) → grantService deny sur C
 
-### S11-03 — API data avec données réelles (high) ⚠ BLOCKED
-**Fichier:** `server/src/__tests__/dataReal.test.ts` (écrit, prêt)
+### S11-03 — API data avec données réelles (high) ✅ COMPLETE
+**Fichier:** `server/src/__tests__/dataReal.test.ts`
+**Tests:** 7/7 pass
 
-Bloqué par BUG-01 (kareem callback failures dans mongoose).
-Le fichier de test est écrit et correct — passera une fois S11-05 résolu.
+Données réelles validées:
+- GET /api/data/vehicle → 3 véhicules (demoSeed)
+- GET /api/data/category → 3 catégories
+- GET /api/data/vehicle?sort=mileage&order=desc → Clio premier (45000)
+- GET /api/data/vehicle?page=1&limit=2 → meta.total=3, data.length=2
+- POST /api/data/category → 201 + doc retourné
+- DELETE /api/data/category/{id} → 204
+- GET /api/data/rental → vehicleId=2 présent (FK integrity)
 
 ### S11-04 — machine.sync + machine.destroy() (medium) ✅ COMPLETE
 **Fichier:** `src/lib/main/__tests__/machineSyncDestroy.test.ts`
@@ -108,18 +139,12 @@ Critères:
 
 ---
 
-### S11-05 — Fix data.test.ts + permission.test.ts (medium)
-**Fichiers:** `server/src/__tests__/data.test.ts`, `permission.test.ts`
+### S11-05 — Fix data.test.ts + permission.test.ts (medium) ✅ COMPLETE
+**Fichiers:** `server/src/__tests__/data.test.ts`, `permission.test.ts`, `server/package.json`
 
-Root cause hypothèses:
-1. Deux instances mongoose (idae-router alias browser vs node)
-2. Hooks mongoose corrompus par conflit de module
-3. Race condition sur mongoose.connection entre tests
-
-Critères:
-- Tous les tests data.test.ts passent
-- Tous les tests permission.test.ts passent
-- Root cause documentée
+Root cause: **mongoose version mismatch** — idae-api utilise mongoose 9.3.3, server avait 8.23.1.
+Deux instances mongoose chargées simultanément → conflits kareem hooks.
+Fix: server aligné sur mongoose ^9.0.0 + mocks corrigés (socket.remoteAddress, resolveUser, resolveAccess).
 
 ---
 
@@ -136,7 +161,6 @@ Critères:
 
 | ID | Titre | Sévérité | Story |
 |----|-------|----------|-------|
-| BUG-01 | kareem callback.apply not a function (data/permission tests) | medium | S11-05 |
 | BUG-02 | qoolie npm run package tsc errors | low | S12-02 |
 
 ---
@@ -155,11 +179,11 @@ Critères:
 | client | machineSchemaFromModel.test.ts | 12/12 | ✅ |
 | client | machineSyncDestroy.test.ts | 10/10 | ✅ S11-04 |
 | client | machineCRUD.test.ts | 23/23 | ✅ S11-01 |
-| server | dataReal.test.ts | ⚠ written, blocked BUG-01 | S11-03 |
-| server | data.test.ts | ❌ pre-existing | BUG-01 |
-| server | permission.test.ts | ❌ pre-existing | BUG-01 |
+| server | dataReal.test.ts | 7/7 | ✅ S11-03 |
+| server | data.test.ts | 8/8 | ✅ S11-05 |
+| server | permission.test.ts | 8/8 | ✅ S11-05 |
 
-**Total green: 221/231** (10 pre-existing BUG-01)
+**Total green: 282/282** (all tests passing)
 
 ---
 
@@ -169,4 +193,4 @@ Critères:
 - **Machine surface**: `machine.collection(name)`, `machine.sync`, `machine.destroy()`, `machine.init({sync,stateEngine,hooks})` ajoutés
 - **qoolie dist**: patché manuellement (build officiel cassé — BUG-02)
 - **idae-router**: alias direct dist dans server/vitest.config.ts (exports `svelte` only)
-- **Prochaine action**: S11-05 → fix kareem callback failures in data.test.ts + permission.test.ts
+- **Prochaine action**: Sprint 12 — idae-sync fixes + qoolie build

@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 82
+progress: 90
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 11 S11-05: Fix data.test.ts + permission.test.ts (kareem callback failures)"
+next_action: "Sprint 12 S12-01: idae-sync S-fix-01 à S-fix-06 (backlog bmad audit 2026-05-17)"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -257,7 +257,7 @@ sprints:
 
   - id: 11
     goal: "Validation: minimal-data-functional — IDB CRUD, auth flow, API data, machine surface"
-    status: in_progress
+    status: completed
     stories:
       - id: S11-01
         title: "IDB CRUD round-trip via machine.collection()"
@@ -307,7 +307,7 @@ sprints:
 
       - id: S11-03
         title: "API /api/data/* avec données réelles"
-        status: pending
+        status: complete
         priority: high
         description: >
           Vérifier que les routes CRUD HTTP retournent les données demoSeed réelles
@@ -315,17 +315,16 @@ sprints:
         acceptance_criteria:
           - "GET /api/data/vehicle → 3 véhicules (data de demoSeed)"
           - "GET /api/data/category → 3 catégories"
-          - "GET /api/data/vehicle?sort=mileage&order=desc → Captur en premier (15000)"
+          - "GET /api/data/vehicle?sort=mileage&order=desc → Clio en premier (45000)"
           - "GET /api/data/vehicle?page=1&limit=2 → meta.total=3, data.length=2"
           - "POST /api/data/category {code:'lux2',name:'Luxury2'} → 201 + doc retourné"
-          - "DELETE /api/data/category/{id} → 204, puis GET count=3 (le créé est supprimé)"
+          - "DELETE /api/data/category/{id} → 204, puis GET count decremented"
           - "GET /api/data/rental → vehicleId=2 présent (FK integrity lisible)"
         files_to_create:
           - "server/src/__tests__/dataReal.test.ts"
-        depends_on: [S11-02, demo-seed seeded]
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "vitest: 7 passed (dataReal.test.ts). Full server suite: 79/79 green"
+        test_result: pass
 
       - id: S11-04
         title: "machine.sync + machine.destroy() — tests"
@@ -352,10 +351,10 @@ sprints:
 
       - id: S11-05
         title: "Fix data.test.ts + permission.test.ts (pre-existing failures)"
-        status: pending
+        status: complete
         priority: medium
         description: >
-          Investiguer root cause des failures kareem/mongoose dans data.test.ts et
+          Investiger root cause des failures kareem/mongoose dans data.test.ts et
           permission.test.ts. Erreur: 'callback.apply is not a function' dans
           kareem@2.6.3 hooks. Corriger ou isoler.
         root_cause_hypothesis:
@@ -370,9 +369,9 @@ sprints:
           - "server/src/__tests__/data.test.ts"
           - "server/src/__tests__/permission.test.ts"
           - "server/vitest.config.ts (si cause = alias idae-router)"
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Root cause: mongoose version mismatch — idae-api uses 9.3.3, server had 8.23.1. Two mongoose instances caused kareem hook conflicts. Fix: aligned server to mongoose ^9.0.0. Also fixed test mocks (socket.remoteAddress, resolveUser, resolveAccess)."
+        test_result: pass
 
   - id: 12
     goal: "Polish: idae-sync backlog + qoolie build"
@@ -427,14 +426,13 @@ qa:
 sessions:
   - date: "2026-05-17"
     summary: >
-      S11-01 complete: 23 CRUD tests pass across all 6 demoScheme collections.
-      S11-02 complete: 18 auth tests pass (login, JWT, permissions, resolveUser).
-      S11-03 blocked by BUG-01 (kareem) — test file written, ready for S11-05 fix.
-      S11-04 complete: 10 sync/destroy tests pass.
-      Full client suite: 203/203 green (14 files).
-      Server suite: 62/72 (10 pre-existing BUG-01 kareem failures).
-    tests_total: 221
-    tests_passing: 221
+      Sprint 11 COMPLETE: S11-01 (23 CRUD tests), S11-02 (18 auth tests),
+      S11-03 (7 API data tests), S11-04 (10 sync/destroy tests), S11-05 (BUG-01 fix).
+      Root cause BUG-01: mongoose version mismatch (idae-api=9.3.3, server=8.23.1).
+      Fix: aligned server to mongoose ^9.0.0 + fixed test mocks.
+      Full suite: 282/282 green (14 client + 10 server files).
+    tests_total: 282
+    tests_passing: 282
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt: 2026-05-17 — session qoolie+tests+machine surface

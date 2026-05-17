@@ -26,7 +26,7 @@ function mockReq(opts: { params?: any; query?: any; body?: any } = {}): Request 
 
 function getTestCollection() {
 	const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
-	const schema = new Schema({}, { strict: false, timestamps: true, collection: TEST_TABLE });
+	const schema = new Schema({}, { strict: false, collection: TEST_TABLE });
 	const name = `${DATA_DB}__${TEST_TABLE}`;
 	return db.models[name] ?? db.model(name, schema, TEST_TABLE);
 }
