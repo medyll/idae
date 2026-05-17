@@ -133,6 +133,7 @@ fields: {
 | `'url'` | url | |
 | `'phone'` | tel | |
 | `'currency'` | text+format | via InputCurrency |
+| `'schemelink'` | — | polymorphic FK: `{ collection, collection_value, collection_vars? }` |
 | `'fk-collection.field'` | select | via InputSelect (FK-aware) |
 | `'array-of-text'` | — | no UI yet |
 

@@ -208,6 +208,7 @@ const inst = Machine.instance('reporting');
 | `'url'` | url | |
 | `'phone'` | tel | |
 | `'currency'` | text+format | |
+| `'schemelink'` | — | polymorphic FK: `{ collection, collection_value, collection_vars? }` |
 | `'fk-collection.field'` | select | FK-aware, queries store |
 | `'array-of-text'` | — | no UI yet |
 

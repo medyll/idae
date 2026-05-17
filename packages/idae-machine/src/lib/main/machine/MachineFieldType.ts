@@ -169,6 +169,23 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 		id:        defaultTypes.any,
 		formatter: (value: unknown) => value as unknown,
 		validator: (value: unknown) => true
+	},
+	schemelink: {
+		id:        'schemelink',
+		formatter: (value: unknown) => {
+			if (value == null) return '';
+			const link = value as { collection?: string; collection_value?: unknown };
+			const col = link.collection ?? '?';
+			const val = link.collection_value != null ? String(link.collection_value) : '?';
+			return `${col}#${val}`;
+		},
+		validator: (value: unknown) => {
+			if (value == null) return true;
+			if (typeof value !== 'object') return false;
+			const link = value as Record<string, unknown>;
+			return typeof link.collection === 'string' && link.collection.length > 0
+				&& link.collection_value !== undefined;
+		}
 	}
 };
 
