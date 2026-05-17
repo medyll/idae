@@ -33,11 +33,13 @@ Collection record list with machine store binding.
 		onclick,
 		where,
 		children: _children,
-	}:ExplorerListProps = $props();
+		pageSize = 20,
+	}:ExplorerListProps & { pageSize?: number } = $props();
 
 	let logic = machine.logic;
 	let store = machine.store;
 	let errorMessage = $state<string | null>(null);
+	let currentPage = $state(1);
 
 	function safeCollection(name: string) {
 		try {
@@ -49,7 +51,13 @@ Collection record list with machine store binding.
 
 	let fieldValues = $derived(safeCollection(collection)?.collectionValues ?? {});
 	let index = $derived(safeCollection(collection)?.template?.index ?? '');
-	let query = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	let allItems = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	let totalCount = $derived(allItems.length);
+	let totalPages = $derived(Math.max(1, Math.ceil(totalCount / pageSize)));
+	let paginatedItems = $derived(
+		allItems.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+	);
+
 	$effect(() => {
 		if (!safeCollection(collection)) {
 			const msg = `Collection '${collection}' non trouvée dans le schéma`;
@@ -59,7 +67,14 @@ Collection record list with machine store binding.
 		}
 	});
 
-	$inspect('ExplorerList', { collection, query, errorMessage });
+	// Reset to page 1 when collection or where changes
+	$effect(() => {
+		void collection;
+		void where;
+		currentPage = 1;
+	});
+
+	$inspect('ExplorerList', { collection, totalCount, currentPage, totalPages });
 
 	function load(item: COL, indexV: number | string) {
 		openCrud((item as any)[index]);
@@ -81,6 +96,10 @@ Collection record list with machine store binding.
 			load(data, idx);
 		}
 	};
+
+	function goToPage(page: number) {
+		if (page >= 1 && page <= totalPages) currentPage = page;
+	}
 </script>
 
 {#if errorMessage}
@@ -88,7 +107,7 @@ Collection record list with machine store binding.
 {/if}
 
 <ul class="explorer-list" role="list">
-	{#each query as item, idx (item[index])}
+	{#each paginatedItems as item, idx (item[index])}
 		<li
 			class="explorer-item"
 			role="button"
@@ -100,6 +119,30 @@ Collection record list with machine store binding.
 		</li>
 	{/each}
 </ul>
+
+{#if totalPages > 1}
+	<nav class="pagination" aria-label="Pagination">
+		<button
+			class="pagination-btn"
+			disabled={currentPage === 1}
+			onclick={() => goToPage(currentPage - 1)}
+			aria-label="Previous page"
+		>
+			‹ Prev
+		</button>
+		<span class="pagination-info">
+			Page {currentPage} of {totalPages} ({totalCount} items)
+		</span>
+		<button
+			class="pagination-btn"
+			disabled={currentPage === totalPages}
+			onclick={() => goToPage(currentPage + 1)}
+			aria-label="Next page"
+		>
+			Next ›
+		</button>
+	</nav>
+{/if}
 
 <style>
 	.explorer-list {
@@ -118,4 +161,37 @@ Collection record list with machine store binding.
 	}
 	.explorer-item:hover { background: var(--color-surface-hover, #f5f5f5); }
 	.explorer-error { color: var(--color-error, red); font-size: 0.85em; }
+
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem 0;
+		margin-top: 0.5rem;
+		border-top: 1px solid var(--color-border, #e0e0e0);
+	}
+
+	.pagination-btn {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--color-border, #e0e0e0);
+		border-radius: 0.375rem;
+		background: var(--color-surface, #fff);
+		cursor: pointer;
+		font-size: 0.875rem;
+	}
+
+	.pagination-btn:hover:not(:disabled) {
+		background: var(--color-surface-hover, #f5f5f5);
+	}
+
+	.pagination-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	.pagination-info {
+		font-size: 0.8125rem;
+		color: var(--color-text-muted, #6b7280);
+	}
 </style>
