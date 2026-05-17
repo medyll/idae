@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 95
+progress: 100
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 12 S12-02: qoolie npm run package — fix tsc errors"
+next_action: "Sprint 12 complete — all stories done"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -41,7 +41,7 @@ phases:
   - name: development
     status: done
   - name: testing
-    status: in_progress
+    status: done
   - name: release
     status: upcoming
 
@@ -392,7 +392,7 @@ sprints:
 
       - id: S12-02
         title: "qoolie npm run package — fix tsc errors"
-        status: pending
+        status: complete
         priority: low
         description: >
           qoolie tsc errors pre-existants empêchent npm run package. Dist patché
@@ -402,9 +402,9 @@ sprints:
           - "Erreurs TS pre-existantes dans qoolie/src — non introduites par idae-machine"
           - "Dist patché manuellement en session 2026-05-17"
           - "Blocker: si qoolie change, le patch sera écrasé"
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "qoolie build: green (tsc). Tests: 142/142 pass (11 suites)."
+        test_result: pass
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
@@ -426,13 +426,15 @@ qa:
 sessions:
   - date: "2026-05-17"
     summary: >
-      Sprint 11 COMPLETE: S11-01 (23 CRUD tests), S11-02 (18 auth tests),
-      S11-03 (7 API data tests), S11-04 (10 sync/destroy tests), S11-05 (BUG-01 fix).
-      Root cause BUG-01: mongoose version mismatch (idae-api=9.3.3, server=8.23.1).
-      Fix: aligned server to mongoose ^9.0.0 + fixed test mocks.
-      Full suite: 282/282 green (14 client + 10 server files).
-    tests_total: 282
-    tests_passing: 282
+      FULL SESSION: Sprint 11 + Sprint 12 complete.
+      S11-01: 23 IDB CRUD tests (6 collections). S11-02: 18 auth tests.
+      S11-03: 7 API data tests. S11-04: 10 sync/destroy tests.
+      S11-05: BUG-01 fixed (mongoose 8→9 alignment).
+      S12-01: idae-sync S-fix-04 to S-fix-06 complete (IOutboxStore interface).
+      S12-02: qoolie tsconfig fixed (moduleResolution, rootDir, types).
+      Full suite: 282 client+server + 93 idae-sync + 142 qoolie = 517/517 green.
+    tests_total: 517
+    tests_passing: 517
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Rebuilt: 2026-05-17 — session qoolie+tests+machine surface

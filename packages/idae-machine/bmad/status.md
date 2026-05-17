@@ -153,7 +153,7 @@ Fix: server aligné sur mongoose ^9.0.0 + mocks corrigés (socket.remoteAddress,
 | Story | Titre | Priorité | État |
 |-------|-------|----------|------|
 | S12-01 | idae-sync S-fix-01 à S-fix-06 | medium | ✅ complete |
-| S12-02 | qoolie npm run package fix (tsc errors) | low | pending |
+| S12-02 | qoolie npm run package fix (tsc errors) | low | ✅ complete |
 
 ### S12-01 — idae-sync fixes (medium) ✅ COMPLETE
 **Package:** `../idae-sync` | **Tests:** 93/93 pass (24 suites) | **Build:** green
@@ -162,13 +162,28 @@ S-fix-04: Legacy files already cleaned (outbox/ subdirectory).
 S-fix-05: IOutboxStore interface extracted, DLQ methods typed, `as any` casts removed.
 S-fix-06: OutboxEntry.meta already had nextAttempt/failed typed.
 
+### S12-02 — qoolie build fix (low) ✅ COMPLETE
+**Package:** `../qoolie` | **Tests:** 142/142 pass (11 suites) | **Build:** green
+
+Fix: tsconfig.json — moduleResolution node→bundler, added rootDir, added types:[node].
+
 ---
 
 ## Bugs ouverts
 
-| ID | Titre | Sévérité | Story |
-|----|-------|----------|-------|
-| BUG-02 | qoolie npm run package tsc errors | low | S12-02 |
+Aucun bug ouvert.
+
+---
+
+## Résumé final
+
+**517/517 tests green** across 3 packages:
+- idae-machine: 282 tests (14 client + 10 server files)
+- idae-sync: 93 tests (24 suites)
+- qoolie: 142 tests (11 suites)
+
+**Sprint 11:** IDB CRUD, auth flow, API data, sync/destroy, kareem fix — all complete.
+**Sprint 12:** idae-sync fixes, qoolie build fix — all complete.
 
 ---
 
