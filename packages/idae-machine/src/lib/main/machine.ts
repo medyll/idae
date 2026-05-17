@@ -5,6 +5,7 @@ type SyncEvent = { type: string; collection?: string; entryId?: string; reason?:
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { MachinePrefs } from '$lib/main/machine/MachinePrefs.js';
+import { MachineActivity } from '$lib/main/machine/MachineActivity.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
@@ -277,6 +278,12 @@ export class Machine {
 	get prefs() {
 		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
 		return new MachinePrefs(() => this._qoolie!.collection['_prefs'] as QoolieCollection<any>);
+	}
+
+	/** Activity log service — insert-only event log backed by `_activity` collection. */
+	get activity() {
+		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
+		return new MachineActivity(() => this._qoolie!.collection['_activity'] as QoolieCollection<any>);
 	}
 
 	/**
