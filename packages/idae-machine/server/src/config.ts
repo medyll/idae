@@ -14,5 +14,7 @@ export const config = {
 	nodeEnv:    process.env.NODE_ENV || 'development',
 	corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
 	org:        process.env.ORG || 'test',
+	jwtSecret:  process.env.JWT_SECRET || 'change-me-in-production',
+	jwtTtl:     process.env.JWT_TTL    || '8h',
 	version:    '2.0.0'
 };

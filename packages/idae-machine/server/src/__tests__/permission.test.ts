@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeAll, afterAll, afterEach } from 'vitest';
 import mongoose, { Schema } from 'mongoose';
 import { config } from '../config.js';
-import { checkPermission, requireDroit, permissionStore } from '../middleware/permission.js';
+import { checkPermission, requireDroit } from '../middleware/permission.js';
+import { grantService } from '../services/GrantService.js';
 import { createRecord, listRecords } from '../routes/data.js';
 import type { Request, Response, NextFunction } from 'express';
 
@@ -63,57 +64,57 @@ describe('Permission Middleware', () => {
 	});
 
 	describe('checkPermission handler', () => {
-		it('returns allowed for authenticated user', () => {
+		it('returns allowed for authenticated user', async () => {
+			vi.spyOn(grantService, 'checkGrant').mockResolvedValueOnce(true);
 			const req = mockReq({ headers: withAuth(), query: { permission: 'R', table: 'product' } });
 			const res = mockRes();
-			checkPermission(req, res);
+			await checkPermission(req, res);
 			expect(res._status).toBe(200);
 			expect(res._body).toHaveProperty('allowed');
 			expect(res._body).toHaveProperty('permission', 'R');
 		});
 
-		it('returns 400 when permission param missing', () => {
+		it('returns 400 when permission param missing', async () => {
 			const req = mockReq({ headers: withAuth(), query: {} });
 			const res = mockRes();
-			checkPermission(req, res);
+			await checkPermission(req, res);
 			expect(res._status).toBe(400);
 		});
 
-		it('returns allowed:false without auth', () => {
+		it('returns allowed:false without auth', async () => {
 			const req = mockReq({ query: { permission: 'R', table: 'product' } });
 			const res = mockRes();
-			checkPermission(req, res);
+			await checkPermission(req, res);
 			expect(res._body.allowed).toBe(false);
 		});
 	});
 
 	describe('requireDroit middleware', () => {
-		it('calls next() when user has permission', () => {
+		it('calls next() when user has permission', async () => {
+			vi.spyOn(grantService, 'checkGrant').mockResolvedValueOnce(true);
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
 			const res = mockRes();
-			requireDroit('R')(req, res, next);
+			await requireDroit('R')(req, res, next);
 			expect(next).toHaveBeenCalled();
 			expect(res._status).toBe(200);
 		});
 
-		it('returns 401 when no auth header', () => {
+		it('returns 401 when no auth header', async () => {
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ params: { table: TEST_TABLE } });
 			const res = mockRes();
-			requireDroit('R')(req, res, next);
+			await requireDroit('R')(req, res, next);
 			expect(next).not.toHaveBeenCalled();
 			expect(res._status).toBe(401);
 		});
 
-		it('returns 403 when permission denied', () => {
+		it('returns 403 when permission denied', async () => {
+			vi.spyOn(grantService, 'checkGrant').mockResolvedValueOnce(false);
 			const next: NextFunction = vi.fn();
 			const req = mockReq({ headers: withAuth(), params: { table: TEST_TABLE } });
 			const res = mockRes();
-			const original = permissionStore.hasPermission.bind(permissionStore);
-			permissionStore.hasPermission = () => false;
-			requireDroit('R')(req, res, next);
-			permissionStore.hasPermission = original;
+			await requireDroit('R')(req, res, next);
 			expect(next).not.toHaveBeenCalled();
 			expect(res._status).toBe(403);
 		});

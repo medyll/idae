@@ -7,6 +7,7 @@ import { registerHealthRoutes } from './routes/health.js';
 import { registerSchemeRoutes } from './routes/scheme.js';
 import { registerDataRoutes } from './routes/data.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
+import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
@@ -137,6 +138,7 @@ class MachineServerClass {
 		registerHealthRoutes();
 		registerSchemeRoutes();
 		registerDataRoutes();
+		registerAuthRoutes();
 		registerPermissionRoutes();
 		if (config.nodeEnv === 'development') registerBootstrapRoutes();
 
