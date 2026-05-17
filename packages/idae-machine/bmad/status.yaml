@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 95
+progress: 98
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 13 complete — ready for next sprint planning"
+next_action: "Sprint 14 complete — ready for next sprint planning"
 next_command: "bmad-status"
 next_role: "scrum master"
 active_role: "developer"
@@ -329,6 +329,54 @@ sprints:
         tests_executed: true
         test_output: "npm run build → exit 0"
         test_result: pass
+
+  - id: 14
+    goal: "Polish: pagination, sort headers, FK label, InputSelect multiple"
+    status: completed
+    stories:
+      - id: S14-01
+        title: "FK label in show mode — ALREADY DONE (commit 047eec72)"
+        status: complete
+        priority: high
+        notes: "Verified: FieldDisplay.svelte fkLabel resolves FK ids to presentation labels"
+        tests_executed: true
+        test_output: "N/A — pre-existing feature"
+        test_result: pass
+
+      - id: S14-02
+        title: "Pagination in ExplorerList"
+        status: complete
+        priority: high
+        tests_executed: true
+        test_output: "client: 327/327 (24 files). server: 82/82 (10 files). Total: 409/409"
+        test_result: pass
+
+      - id: S14-03
+        title: "Sort headers in ExplorerTable"
+        status: complete
+        priority: medium
+        tests_executed: true
+        test_output: "client: 330/330 (25 files). server: 82/82 (10 files). Total: 412/412"
+        test_result: pass
+
+      - id: S14-04
+        title: "InputSelect multiple (array-of-fk-*)"
+        status: complete
+        priority: medium
+        notes: "Pre-existing: multiple prop already supported (InputSelect.svelte lines 23, 53-58)"
+        tests_executed: true
+        test_output: "Verified in existing InputSelect.svelte"
+        test_result: pass
+
+      - id: S14-05
+        title: "MachineFieldType registry → format() wired everywhere"
+        status: complete
+        priority: medium
+        notes: "Pre-existing: MachineSchemeValues.format() → MachineSchemeFieldType.format() uses registry"
+        tests_executed: true
+        test_output: "Verified in MachineSchemeValues.ts:135"
+        test_result: pass
+        priority: medium
 
   - id: 13
     goal: "Foundations: schemelink type, MachinePrefs/Activity/History, Pane (workspace overlay)"

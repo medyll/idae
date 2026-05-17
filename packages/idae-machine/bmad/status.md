@@ -3,6 +3,18 @@
 
 ---
 
+## Sprint 14 — Polish ✅ complete
+
+| Story | Titre | Priorité | État | Dépend |
+|-------|-------|----------|------|--------|
+| S14-01 | FK label in show mode (already done) | 🟠 high | ✅ complete | — |
+| S14-02 | Pagination in ExplorerList | 🟠 high | ✅ complete | — |
+| S14-03 | Sort headers in ExplorerTable | 🟡 medium | ✅ complete | — |
+| S14-04 | InputSelect multiple (array-of-fk-*) | 🟡 medium | ✅ complete | — |
+| S14-05 | MachineFieldType registry → format() wired | 🟡 medium | ✅ complete | — |
+
+---
+
 ## Sprint 13 — Foundations ✅ complete
 
 | Story | Titre | Priorité | État | Dépend |
@@ -41,11 +53,11 @@ Aucun. BUG-01 (CreateUpdate) et BUG-02 (qoolie build) closed.
 | Suite | Commande | Tests | État |
 |-------|---------|-------|------|
 | Server | `cd server && pnpm vitest run` | **82/82** | ✅ |
-| Client | `pnpm vitest run --project server` | **325/325** | ✅ |
+| Client | `pnpm vitest run --project server` | **330/330** | ✅ |
 | idae-sync | `npm run build` + tests | **93/93** | ✅ |
 | qoolie | `npm run build` | exit 0 | ✅ |
 
-**Total green: 500/500**
+**Total green: 505/505**
 
 ---
 
