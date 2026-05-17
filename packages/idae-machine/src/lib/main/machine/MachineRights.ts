@@ -1,19 +1,7 @@
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import type { MachineRightsPolicy } from '$lib/types/machine-model.js';
 
-type PermissionField = 'canCreate' | 'canRead' | 'canUpdate' | 'canDelete' | 'canList' | 'canExecute' | 'canAdmin';
-
-const OPERATION_MAP: Record<PermissionCode, PermissionField> = {
-	C: 'canCreate',
-	R: 'canRead',
-	U: 'canUpdate',
-	D: 'canDelete',
-	L: 'canList',
-	X: 'canExecute',
-	A: 'canAdmin'
-};
-
-const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X', 'A'];
+const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 
 class MachineRights {
 	#currentUser: AppUser | null = null;
@@ -89,7 +77,7 @@ class MachineRights {
 		if (this.#currentUser.appPermissions?.ADMIN) return true;
 
 		// 7. Explicit grants
-		const permField = OPERATION_MAP[operation];
+		const permField = operation.toLowerCase() as 'c' | 'r' | 'u' | 'd' | 'l' | 'x';
 		const now = new Date();
 
 		const granted = this.#grants.some(grant => {

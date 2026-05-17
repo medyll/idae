@@ -1042,14 +1042,22 @@ export type AppSchemaCollection =
  * Permission codes following CRUD + extensions pattern.
  */
 export type PermissionCode =
-	| 'C'    // Create: Can create new records
-	| 'R'    // Read: Can read/view individual records
-	| 'U'    // Update: Can modify existing records
-	| 'D'    // Delete: Can delete records
-	| 'L'    // List: Can list/view collections of records
-	| 'X'    // eXecute: Can execute actions/workflows
-	| 'A'    // Admin: Can administer/configure
+	| 'C'    // Create
+	| 'R'    // Read
+	| 'U'    // Update
+	| 'D'    // Delete
+	| 'L'    // List
+	| 'X'    // eXecute
 	;
+
+export const PERMISSION_CODES: Record<PermissionCode, { name: string }> = {
+	C: { name: 'create' },
+	R: { name: 'read' },
+	U: { name: 'update' },
+	D: { name: 'delete' },
+	L: { name: 'list' },
+	X: { name: 'execute' },
+};
 
 /**
  * Boolean permission value for modern APIs.
@@ -1221,14 +1229,13 @@ export type GrantType = 'role' | 'group' | 'user';
  */
 export interface AppUserGrant extends Extendable, WithID {
 	grantType: GrantType;
-	// CRUD + extended permissions
-	canCreate: PermissionBoolean;
-	canRead: PermissionBoolean;
-	canUpdate: PermissionBoolean;
-	canDelete: PermissionBoolean;
-	canList: PermissionBoolean;
-	canExecute: PermissionBoolean;
-	canAdmin: PermissionBoolean;
+	// CRUD + extended permissions (single-letter keys matching PermissionCode lowercased)
+	c: PermissionBoolean;
+	r: PermissionBoolean;
+	u: PermissionBoolean;
+	d: PermissionBoolean;
+	l: PermissionBoolean;
+	x: PermissionBoolean;
 	// Temporal scope
 	validFrom?: DateValue;
 	validUntil?: DateValue;

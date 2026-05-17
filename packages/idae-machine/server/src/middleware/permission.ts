@@ -4,7 +4,7 @@ import { idaeApi } from '@medyll/idae-api';
 /**
  * Permission types
  */
-export type Permission = 'C' | 'R' | 'U' | 'D' | 'L' | 'X' | 'A';
+export type Permission = 'C' | 'R' | 'U' | 'D' | 'L' | 'X';
 
 /**
  * User context from JWT token
@@ -153,7 +153,7 @@ export function checkPermission(req: Request, res: Response): void {
 		return;
 	}
 
-	if (!['C', 'R', 'U', 'D', 'L', 'X', 'A'].includes(permission)) {
+	if (!['C', 'R', 'U', 'D', 'L', 'X'].includes(permission)) {
 		res.status(400).json({ error: 'Invalid permission type' });
 		return;
 	}
