@@ -6,6 +6,7 @@ import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRo
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { MachinePrefs } from '$lib/main/machine/MachinePrefs.js';
 import { MachineActivity } from '$lib/main/machine/MachineActivity.js';
+import { MachineHistory } from '$lib/main/machine/MachineHistory.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
@@ -284,6 +285,12 @@ export class Machine {
 	get activity() {
 		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
 		return new MachineActivity(() => this._qoolie!.collection['_activity'] as QoolieCollection<any>);
+	}
+
+	/** History service — aggregated projection of recent visits backed by `_history` collection. */
+	get history() {
+		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
+		return new MachineHistory(() => this._qoolie!.collection['_history'] as QoolieCollection<any>);
 	}
 
 	/**
