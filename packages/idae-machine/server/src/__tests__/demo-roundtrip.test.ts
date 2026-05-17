@@ -124,7 +124,7 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 	describe('category', () => {
 		it('has fields and empty fks', () => {
 			expect(model.category.fields.code.required).toBe(true);
-			expect(model.category.fields.description.type).toBe('text-long');
+			expect(model.category.fields.description.type).toBe('text-lg');
 			expect(Object.keys(model.category.fks)).toHaveLength(0);
 		});
 	});

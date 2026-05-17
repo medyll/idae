@@ -26,7 +26,7 @@ export function analyzeDemo(model: IdbqModel) {
 				// just a non-critical warning
 				warnings.push(`${collectionName}.${fName}: foreign key without explicit required rule`);
 			}
-			if (ruleStr.includes('text-long')) {
+			if (ruleStr.includes('text-lg')) {
 				// assume generic textarea exists; no-op
 			}
 		}

@@ -43,7 +43,7 @@ const modelFromServer: MachineModel = {
 			id:          { type: 'id',        readonly: true },
 			code:        { type: 'text',      required: true },
 			name:        { type: 'text',      required: true },
-			description: { type: 'text-long' },
+			description: { type: 'text-lg' },
 		},
 		fks:      {},
 		template: { presentation: 'name' },

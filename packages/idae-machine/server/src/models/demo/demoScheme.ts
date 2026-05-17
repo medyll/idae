@@ -48,7 +48,7 @@ export const demoScheme: MachineModel = {
 			id:          field('id',        { readonly: true }),
 			code:        field('text',      { required: true }),
 			name:        field('text',      { required: true }),
-			description: field('text-long'),
+			description: field('text-lg'),
 		},
 		fks: {},
 		template: {
@@ -161,7 +161,7 @@ export const demoScheme: MachineModel = {
 			date:      field('date'),
 			type:      field('text'),
 			cost:      field('number'),
-			notes:     field('text-long'),
+			notes:     field('text-lg'),
 		},
 		fks: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },

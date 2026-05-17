@@ -23,7 +23,7 @@ interface DeployOpts { org: string; mongoUri: string; }
 
 // ── Static registry data ─────────────────────────────────────────────────────
 const FIELD_TYPES = [
-	'id', 'text', 'text-short', 'text-medium', 'text-long', 'text-area',
+	'id', 'text', 'text-xs', 'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-full', 'text-area',
 	'number', 'boolean', 'date', 'datetime', 'time',
 	'email', 'url', 'phone', 'password', 'currency',
 	'image', 'file', 'json', 'fk', 'range', 'status', 'any',

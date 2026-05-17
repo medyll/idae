@@ -132,11 +132,19 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 		formatter: (value: unknown) => String(value),
 		validator: (value: unknown) => true
 	},
+	// T-shirt size presets
+	'text-xs':   { id: 'text-xs',   formatter: (v: unknown) => String(v ?? '').substring(0, 10),  validator: () => true },
+	'text-sm':   { id: 'text-sm',   formatter: (v: unknown) => String(v ?? '').substring(0, 20),  validator: () => true },
+	'text-md':   { id: 'text-md',   formatter: (v: unknown) => String(v ?? '').substring(0, 30),  validator: () => true },
+	'text-lg':   { id: 'text-lg',   formatter: (v: unknown) => String(v ?? '').substring(0, 40),  validator: () => true },
+	'text-xl':   { id: 'text-xl',   formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
+	'text-full': { id: 'text-full', formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
+	'text-area': { id: 'text-area', formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
+	// Deprecated aliases — kept for backward compat
 	'text-tiny':   { id: 'text-tiny',   formatter: (v: unknown) => String(v ?? '').substring(0, 10),  validator: () => true },
 	'text-short':  { id: 'text-short',  formatter: (v: unknown) => String(v ?? '').substring(0, 20),  validator: () => true },
 	'text-medium': { id: 'text-medium', formatter: (v: unknown) => String(v ?? '').substring(0, 30),  validator: () => true },
 	'text-long':   { id: 'text-long',   formatter: (v: unknown) => String(v ?? '').substring(0, 40),  validator: () => true },
-	'text-area':   { id: 'text-area',   formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
 	'text-giant':  { id: 'text-giant',  formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
 	number:   {
 		id:        defaultTypes.number,

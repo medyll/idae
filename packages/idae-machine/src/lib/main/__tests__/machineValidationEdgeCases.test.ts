@@ -26,7 +26,7 @@ describe('Field Validation — Edge Cases', () => {
 			fields: {
 				id:          'id (readonly)',
 				name:        'text (required)',
-				description: 'text-long',
+				description: 'text-lg',
 				code:        'text',
 			},
 			fks: {},
