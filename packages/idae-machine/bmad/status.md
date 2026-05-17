@@ -1,5 +1,5 @@
 # BMAD Status — idae-machine v2
-> Rebuilt: 2026-05-17 | Progress: 72% | Phase: development
+> Rebuilt: 2026-05-17 | Progress: 75% | Phase: development
 
 ---
 
@@ -7,7 +7,7 @@
 
 | Story | Titre | Priorité | État |
 |-------|-------|----------|------|
-| S11-01 | IDB CRUD round-trip via machine.collection() | 🔴 critique | pending |
+| S11-01 | IDB CRUD round-trip via machine.collection() | 🔴 critique | ✅ complete |
 | S11-02 | Auth flow: login → JWT → requête authentifiée | 🔴 critique | pending |
 | S11-03 | API /api/data/* avec données réelles | 🟠 high | pending |
 | S11-04 | machine.sync + machine.destroy() tests | 🟡 medium | pending |
@@ -17,20 +17,19 @@
 
 ## Détail stories S11
 
-### S11-01 — IDB CRUD round-trip (critique)
+### S11-01 — IDB CRUD round-trip (critique) ✅ COMPLETE
 **Fichier:** `src/lib/main/__tests__/machineCRUD.test.ts`
+**Tests:** 23/23 pass | Full suite: 193/193 green
 
-Avec fake-indexeddb, valider tous les verbes CRUD sur les 6 collections demoScheme.
-
-Critères:
-- `machine.collection('category').create({code:'x',name:'X'})` → doc avec id
-- `.getAll()` retourne le doc créé
-- `machine.collection('vehicle').where({status:'available'})` filtre correctement
-- `.update(id, {name:'Y'})` → doc modifié
-- `.delete(id)` → true, getAll() ne contient plus le doc
-- `.count()` → entier correct
-- `machine.collection('nonexistent')` → throw
-- 6 collections couvertes
+Tous les critères validés avec fake-indexeddb sur 6 collections:
+- create → doc avec id auto-généré
+- getAll → retourne les docs créés
+- where({status:'available'}) → filtre correct
+- update(id, data) → doc modifié retourné
+- delete(id) → true, doc supprimé de getAll
+- count() / count(query) → entiers corrects
+- collection('nonexistent') → throw
+- Edge cases: delete idempotent (true), update upsert
 
 ---
 
@@ -122,10 +121,11 @@ Critères:
 | client | machine.test.ts | 15/15 | ✅ |
 | client | machineClient.test.ts | 11/11 | ✅ |
 | client | machineSchemaFromModel.test.ts | 12/12 | ✅ |
+| client | machineCRUD.test.ts | 23/23 | ✅ S11-01 |
 | server | data.test.ts | ❌ pre-existing | BUG-01 |
 | server | permission.test.ts | ❌ pre-existing | BUG-01 |
 
-**Total green: 72/72**
+**Total green: 193/193**
 
 ---
 
@@ -135,4 +135,4 @@ Critères:
 - **Machine surface**: `machine.collection(name)`, `machine.sync`, `machine.destroy()`, `machine.init({sync,stateEngine,hooks})` ajoutés
 - **qoolie dist**: patché manuellement (build officiel cassé — BUG-02)
 - **idae-router**: alias direct dist dans server/vitest.config.ts (exports `svelte` only)
-- **Prochaine action**: S11-01 → machineCRUD.test.ts
+- **Prochaine action**: S11-02 → auth flow test (server)
