@@ -148,12 +148,19 @@ Fix: server aligné sur mongoose ^9.0.0 + mocks corrigés (socket.remoteAddress,
 
 ---
 
-## Sprint 12 — Polish (upcoming)
+## ✅ Sprint 12 COMPLETE: Polish
 
-| Story | Titre | Priorité |
-|-------|-------|----------|
-| S12-01 | idae-sync S-fix-01 à S-fix-06 | medium |
-| S12-02 | qoolie npm run package fix (tsc errors) | low |
+| Story | Titre | Priorité | État |
+|-------|-------|----------|------|
+| S12-01 | idae-sync S-fix-01 à S-fix-06 | medium | ✅ complete |
+| S12-02 | qoolie npm run package fix (tsc errors) | low | pending |
+
+### S12-01 — idae-sync fixes (medium) ✅ COMPLETE
+**Package:** `../idae-sync` | **Tests:** 93/93 pass (24 suites) | **Build:** green
+
+S-fix-04: Legacy files already cleaned (outbox/ subdirectory).
+S-fix-05: IOutboxStore interface extracted, DLQ methods typed, `as any` casts removed.
+S-fix-06: OutboxEntry.meta already had nextAttempt/failed typed.
 
 ---
 

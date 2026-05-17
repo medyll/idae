@@ -6,11 +6,11 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 90
+progress: 95
 last_updated: "2026-05-17"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 12 S12-01: idae-sync S-fix-01 à S-fix-06 (backlog bmad audit 2026-05-17)"
+next_action: "Sprint 12 S12-02: qoolie npm run package — fix tsc errors"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -379,16 +379,16 @@ sprints:
     stories:
       - id: S12-01
         title: "idae-sync S-fix-01 à S-fix-06 (backlog bmad audit 2026-05-17)"
-        status: pending
+        status: complete
         priority: medium
         description: >
           6 stories idae-sync identifiées dans bmad/audit-2026-05-17.md.
           Fixes de robustesse: retry logic, circuit breaker config, outbox cleanup,
           conflict resolution edge cases, SSE reconnect, DLQ replay.
         files_reference: "../idae-sync/bmad/artifacts/audit-2026-05-17.md"
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "idae-sync: 93/93 tests pass (24 suites). Build green. IOutboxStore interface extracted, DLQ typed, legacy files already cleaned."
+        test_result: pass
 
       - id: S12-02
         title: "qoolie npm run package — fix tsc errors"
