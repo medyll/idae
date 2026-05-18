@@ -10,9 +10,10 @@ export default defineConfig({
 		},
 	},
 	test: {
-		globals:     true,
-		environment: 'node',
-		include:     ['src/**/*.{test,spec}.{js,ts}'],
-		setupFiles:  ['src/__tests__/setup.ts'],
+		globals:          true,
+		environment:      'node',
+		include:          ['src/**/*.{test,spec}.{js,ts}'],
+		setupFiles:       ['src/__tests__/setup.ts'],
+		globalTeardown:   'src/__tests__/teardown.ts',
 	}
 });

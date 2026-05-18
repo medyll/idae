@@ -2,6 +2,7 @@ import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { machineServer } from '../MachineServer.js';
 import { logger } from '../utils/logger.js';
+import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
 
 async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 	try {
@@ -14,6 +15,7 @@ async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 		}
 
 		await machineServer.deployModel(model, { org });
+		invalidateSchemeCache();
 
 		res.json({ ok: true, org });
 	} catch (err) {

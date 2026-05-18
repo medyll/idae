@@ -72,7 +72,7 @@ describe('Domain actions in data handlers', () => {
 		await meta.collection('appscheme').deleteOne({ code: TEST_TABLE });
 		const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
 		await db.collection(TEST_TABLE).drop().catch(() => {});
-		await mongoose.disconnect();
+		// mongoose.disconnect() handled by globalTeardown
 	});
 
 	afterEach(async () => {
@@ -95,9 +95,9 @@ describe('Domain actions in data handlers', () => {
 			const req = mockReq({ params: { table: TEST_TABLE }, body: { name: 'Bad', value: -5 } });
 			const res = mockRes();
 			await createRecord(req, res);
-			expect(res._status).toBe(400);
-			expect(res._body.error).toBe('Domain validation failed');
-			expect(res._body.details.value).toBe('Must be positive');
+			expect(res._status).toBe(422);
+			expect(res._body.error).toBe('Validation failed');
+			expect(res._body.errors.value).toBe('Must be positive');
 		});
 
 		it('allows create when domain validation passes', async () => {
@@ -132,12 +132,8 @@ describe('Domain actions in data handlers', () => {
 
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
 			const res = mockRes();
-			try {
-				await deleteRecord(req, res);
-			} catch {
-				// expected — error propagates through outer try/catch
-			}
-			expect(res._status).toBe(500);
+			await deleteRecord(req, res);
+			expect(res._status).toBe(409);
 		});
 
 		it('allows delete when beforeDelete passes', async () => {
@@ -181,8 +177,8 @@ describe('Domain actions in data handlers', () => {
 			const req = mockReq({ params: { table: VEHICULE_TABLE }, body: { name: 'Car', kilometrage: -100 } });
 			const res = mockRes();
 			await createRecord(req, res);
-			expect(res._status).toBe(400);
-			expect(res._body.details.kilometrage).toBe('Minimum 0');
+			expect(res._status).toBe(422);
+			expect(res._body.errors.kilometrage).toBe('Minimum 0');
 		});
 
 		it('rejects zero or negative prixJour', async () => {
@@ -203,8 +199,8 @@ describe('Domain actions in data handlers', () => {
 			const req = mockReq({ params: { table: VEHICULE_TABLE }, body: { name: 'Car', prixJour: 0 } });
 			const res = mockRes();
 			await createRecord(req, res);
-			expect(res._status).toBe(400);
-			expect(res._body.details.prixJour).toBe('Prix journalier doit être > 0');
+			expect(res._status).toBe(422);
+			expect(res._body.errors.prixJour).toBe('Prix journalier doit être > 0');
 		});
 
 		it('accepts valid vehicule', async () => {

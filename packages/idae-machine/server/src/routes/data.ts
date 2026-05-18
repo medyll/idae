@@ -7,6 +7,7 @@ import { broadcastToTable } from '../socket/index.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
 import { logAudit, extractAuditContext } from '../services/AuditService.js';
 import { getDomainActions } from '../models/domainActions.js';
+import { validateAgainstScheme } from '../validation/SchemeValidator.js';
 
 /**
  * Validate table name to prevent NoSQL injection
@@ -174,7 +175,14 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 
 		const Model = await getCollectionModel(table);
 
-		// Domain validation
+		// 1. Generic schema validation from appscheme
+		const schemeResult = await validateAgainstScheme(table, req.body);
+		if (!schemeResult.valid) {
+			res.status(422).json({ error: 'Validation failed', errors: schemeResult.errors });
+			return;
+		}
+
+		// 2. Domain custom validation (extension/override)
 		const domainActions = getDomainActions(table);
 		if (domainActions?.validate) {
 			const result = domainActions.validate(req.body, table);
@@ -230,7 +238,14 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 
 		const Model = await getCollectionModel(table);
 
-		// Domain validation
+		// 1. Generic schema validation from appscheme
+		const schemeResult = await validateAgainstScheme(table, req.body);
+		if (!schemeResult.valid) {
+			res.status(422).json({ error: 'Validation failed', errors: schemeResult.errors });
+			return;
+		}
+
+		// 2. Domain custom validation (extension/override)
 		const domainActions = getDomainActions(table);
 		if (domainActions?.validate) {
 			const result = domainActions.validate(req.body, table);

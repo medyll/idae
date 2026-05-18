@@ -5,10 +5,11 @@ import {
 	listRecords, getRecord, createRecord, updateRecord, deleteRecord, restoreRecord
 } from '../routes/data.js';
 import type { Request, Response } from 'express';
-import { getConn } from '../middleware/dbRouter.js';
+import { getConn, invalidateBaseCache } from '../middleware/dbRouter.js';
+import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
 
 const TEST_ORG    = 'vitest';
-const TEST_TABLE  = 'testcollection';
+const TEST_TABLE  = 'datacollection';
 const TEST_BASE   = 'machine_base';
 const META_DB     = `${TEST_ORG}_machine_app`;
 const DATA_DB     = `${TEST_ORG}_${TEST_BASE}`;
@@ -40,8 +41,12 @@ function getTestCollection() {
 
 describe('Data CRUD handlers', () => {
 	beforeAll(async () => {
-		await mongoose.connect(config.mongodbUri);
+		if (mongoose.connection.readyState === 0) {
+			await mongoose.connect(config.mongodbUri);
+		}
 		(config as any).org = TEST_ORG;
+		invalidateBaseCache();
+		invalidateSchemeCache();
 
 		// Seed appscheme so dbRouter can find testcollection → machine_base
 		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
