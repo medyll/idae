@@ -1,5 +1,5 @@
 import { registerDomainActions } from '../domainActions.js';
-import { validateRecord, type FieldRule } from '../../../../src/lib/main/machine/validateRules.js';
+import { validateRecord, type FieldRule } from '../../validation/validateRules.js';
 
 const vehiculeFields: Record<string, FieldRule> = {
 	kilometrage: { type: 'integer', min: 0 },

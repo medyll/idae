@@ -1,6 +1,6 @@
 /**
  * Pure validation rules — no browser/Svelte dependencies.
- * Used by both client (MachineSchemeValidate) and server (domain actions).
+ * Server-side copy — keep in sync with src/lib/main/machine/validateRules.ts
  *
  * Legacy PHP InputValidator.php rules ported:
  *   validateInt, validateEmail, validateDate, validateUrl,
@@ -35,7 +35,7 @@ const validators: Record<string, (value: unknown) => boolean | string> = {
 	},
 	date: (v) => !isNaN(Date.parse(String(v))) || 'Format de date invalide',
 	datetime: (v) => !isNaN(Date.parse(String(v))) || 'Format date/heure invalide',
-	time: (v) => /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(String(v)) || 'Format d\'heure invalide (HH:MM)',
+	time: (v) => /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(String(v)) || "Format d'heure invalide (HH:MM)",
 	number: (v) => !isNaN(Number(v)) || 'Doit être un nombre',
 	integer: (v) => Number.isInteger(Number(v)) || 'Doit être un entier',
 	boolean: (v) => (typeof v === 'boolean' || v === 'true' || v === 'false') || 'Doit être vrai ou faux',
@@ -51,48 +51,31 @@ const validators: Record<string, (value: unknown) => boolean | string> = {
 
 // ── Core validation ──────────────────────────────────────────────────────────
 
-/**
- * Validate a single field value against a rule.
- * Returns null if valid, error message string if invalid.
- */
 export function validateField(value: unknown, rule: FieldRule): string | null {
-	// Required check
 	if (rule.required && (value === undefined || value === null || value === '')) {
 		return 'Ce champ est obligatoire';
 	}
+	if (value === undefined || value === null || value === '') return null;
 
-	// Skip further validation if empty and not required
-	if (value === undefined || value === null || value === '') {
-		return null;
-	}
-
-	// Type validation
 	if (rule.type) {
 		const typeValidator = validators[rule.type];
 		if (typeValidator) {
 			const result = typeValidator(value);
-			if (result !== true) {
-				return typeof result === 'string' ? result : 'Format invalide';
-			}
+			if (result !== true) return typeof result === 'string' ? result : 'Format invalide';
 		}
 	}
 
-	// Pattern validation
 	if (rule.pattern) {
 		const regex = typeof rule.pattern === 'string' ? new RegExp(rule.pattern) : rule.pattern;
-		if (!regex.test(String(value))) {
-			return 'Format invalide';
-		}
+		if (!regex.test(String(value))) return 'Format invalide';
 	}
 
-	// Numeric range
 	if (rule.type && ['number', 'integer', 'currency'].includes(rule.type)) {
 		const num = Number(value);
 		if (rule.min !== undefined && num < rule.min) return `Minimum ${rule.min}`;
 		if (rule.max !== undefined && num > rule.max) return `Maximum ${rule.max}`;
 	}
 
-	// String length
 	if (typeof value === 'string') {
 		if (rule.minLength !== undefined && value.length < rule.minLength)
 			return `Minimum ${rule.minLength} caractères`;
@@ -103,33 +86,22 @@ export function validateField(value: unknown, rule: FieldRule): string | null {
 	return null;
 }
 
-/**
- * Validate a complete record against a field rules map.
- */
 export function validateRecord(
 	data: Record<string, unknown>,
 	fields: Record<string, FieldRule>
 ): ValidationResult {
 	const errors: Record<string, string> = {};
-
 	for (const [name, rule] of Object.entries(fields)) {
 		const error = validateField(data[name], rule);
 		if (error) errors[name] = error;
 	}
-
 	return { valid: Object.keys(errors).length === 0, errors };
 }
 
-/**
- * Get all supported type names.
- */
 export function getSupportedTypes(): string[] {
 	return Object.keys(validators);
 }
 
-/**
- * Register a custom type validator.
- */
 export function registerTypeValidator(
 	type: string,
 	validator: (value: unknown) => boolean | string

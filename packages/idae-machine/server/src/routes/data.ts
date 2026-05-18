@@ -45,6 +45,7 @@ function parseSorting(req: Request): Record<string, SortOrder> | undefined {
 	const order = req.query.order as string;
 
 	if (!sort) return undefined;
+	if (!validateTableName(sort)) return undefined;
 
 	const sortOrder: SortOrder = order?.toLowerCase() === 'desc' ? -1 : 1;
 	return { [sort]: sortOrder };
@@ -70,16 +71,12 @@ function parseFilters(req: Request): Record<string, unknown> {
 
 /**
  * Build query filter that excludes soft-deleted records.
- * Matches both missing deletedAt and null/undefined deletedAt.
+ * Uses $and to avoid collision with existing $or in customFilters.
  */
 function activeRecordsFilter(customFilters: Record<string, unknown> = {}): Record<string, unknown> {
-	return {
-		...customFilters,
-		$or: [
-			{ deletedAt: { $exists: false } },
-			{ deletedAt: null }
-		]
-	};
+	const softDeleteFilter = { $or: [{ deletedAt: { $exists: false } }, { deletedAt: null }] };
+	if (Object.keys(customFilters).length === 0) return softDeleteFilter;
+	return { $and: [customFilters, softDeleteFilter] };
 }
 
 /**
@@ -182,7 +179,7 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 		if (domainActions?.validate) {
 			const result = domainActions.validate(req.body, table);
 			if (!result.valid) {
-				res.status(400).json({ error: 'Domain validation failed', details: result.errors });
+				res.status(422).json({ error: 'Validation failed', errors: result.errors });
 				return;
 			}
 		}
@@ -232,6 +229,17 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 		}
 
 		const Model = await getCollectionModel(table);
+
+		// Domain validation
+		const domainActions = getDomainActions(table);
+		if (domainActions?.validate) {
+			const result = domainActions.validate(req.body, table);
+			if (!result.valid) {
+				res.status(422).json({ error: 'Validation failed', errors: result.errors });
+				return;
+			}
+		}
+
 		const record = await Model.findByIdAndUpdate(
 			id,
 			req.body,
@@ -245,9 +253,6 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 
 		// Broadcast to table room
 		broadcastToTable(table, 'data:updated', { id, record });
-
-		// Domain afterUpdate hook (fire-and-forget)
-		const domainActions = getDomainActions(table);
 		if (domainActions?.afterUpdate) {
 			void domainActions.afterUpdate(record, table).catch(err =>
 				logger.error('afterUpdate hook failed:', err)
@@ -297,9 +302,10 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 		if (domainActions?.beforeDelete) {
 			try {
 				await domainActions.beforeDelete(id, table);
-			} catch (err) {
-				logger.error('beforeDelete hook vetoed deletion:', err);
-				throw err;
+			} catch (err: unknown) {
+				const message = err instanceof Error ? err.message : 'Deletion not allowed';
+				res.status(409).json({ error: message });
+				return;
 			}
 		}
 
@@ -375,16 +381,23 @@ export async function restoreRecord(req: Request, res: Response): Promise<void> 
 		}
 
 		const Model = await getCollectionModel(table);
+
+		// Only restore actually soft-deleted records
+		const existing = await Model.findById(id).lean();
+		if (!existing) {
+			res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
+			return;
+		}
+		if (!(existing as any).deletedAt) {
+			res.status(409).json({ error: `Record '${id}' is not deleted` });
+			return;
+		}
+
 		const record = await Model.findByIdAndUpdate(
 			id,
 			{ $unset: { deletedAt: '' } },
 			{ new: true }
 		).lean();
-
-		if (!record) {
-			res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
-			return;
-		}
 
 		// Broadcast to table room
 		broadcastToTable(table, 'data:restored', { id });

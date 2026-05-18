@@ -33,10 +33,37 @@ describe('validateField', () => {
 	describe('type: url', () => {
 		it('accepts valid URL', () => {
 			expect(validateField('https://example.com', { type: 'url' })).toBeNull();
+			expect(validateField('http://example.com/path?q=1', { type: 'url' })).toBeNull();
 		});
 
 		it('rejects invalid URL', () => {
 			expect(validateField('not-a-url', { type: 'url' })).toBe('URL invalide');
+		});
+
+		it('rejects javascript: protocol (XSS)', () => {
+			expect(validateField('javascript:alert(1)', { type: 'url' })).toBe('URL doit commencer par http:// ou https://');
+		});
+
+		it('rejects ftp: and data: protocols', () => {
+			expect(validateField('ftp://files.example.com', { type: 'url' })).toBe('URL doit commencer par http:// ou https://');
+			expect(validateField('data:text/html,<h1>x</h1>', { type: 'url' })).toBe('URL doit commencer par http:// ou https://');
+		});
+	});
+
+	describe('type: boolean', () => {
+		it('accepts true/false booleans', () => {
+			expect(validateField(true, { type: 'boolean' })).toBeNull();
+			expect(validateField(false, { type: 'boolean' })).toBeNull();
+		});
+
+		it('accepts "true"/"false" strings (form data)', () => {
+			expect(validateField('true', { type: 'boolean' })).toBeNull();
+			expect(validateField('false', { type: 'boolean' })).toBeNull();
+		});
+
+		it('rejects other strings', () => {
+			expect(validateField('yes', { type: 'boolean' })).toBe('Doit être vrai ou faux');
+			expect(validateField('1', { type: 'boolean' })).toBe('Doit être vrai ou faux');
 		});
 	});
 
