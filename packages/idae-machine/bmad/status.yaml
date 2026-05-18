@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S16-04 — MachineSchemeValidate server-side — validateRules.ts partagé"
-next_command: "bmad-continue"
-next_role: "developer"
+next_action: "Sprint 16 complete — evaluate next sprint or release"
+next_command: "bmad-whats-next"
+next_role: "scrum master"
 active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -384,11 +384,18 @@ sprints:
 
       - id: S16-04
         title: "MachineSchemeValidate server-side — validateRules.ts partagé"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "client: 364/364 passed. server: 102/102 passed. validateRules: 33/33 passed"
+        test_result: pass
+        notes: >
+          Created src/lib/main/machine/validateRules.ts — pure validation module with 7 legacy types.
+          Types: email, url, date, number, integer, cp (code postal FR), alpha, alphanum.
+          Also supports min/max, minLength/maxLength, pattern, custom type validators.
+          MachineSchemeValidate updated to use validateFieldPure for standard types.
+          Server domain actions (demo/actions.ts) now use validateRecord from shared module.
+          Same validation rules used client-side and server-side — no duplication.
 
   - id: 15
     goal: "Release prep: tests, TypeScript, exports, build"

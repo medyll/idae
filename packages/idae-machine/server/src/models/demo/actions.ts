@@ -1,14 +1,14 @@
 import { registerDomainActions } from '../domainActions.js';
+import { validateRecord, type FieldRule } from '../../../../src/lib/main/machine/validateRules.js';
+
+const vehiculeFields: Record<string, FieldRule> = {
+	kilometrage: { type: 'integer', min: 0 },
+	prixJour:    { type: 'number', min: 0.01 },
+};
 
 registerDomainActions('vehicule', {
 	validate(data) {
-		const errors: Record<string, string> = {};
-		const d = data as Record<string, unknown>;
-		if (d.kilometrage !== undefined && d.kilometrage !== null && Number(d.kilometrage) < 0)
-			errors.kilometrage = 'Kilométrage ne peut pas être négatif';
-		if (d.prixJour !== undefined && d.prixJour !== null && Number(d.prixJour) <= 0)
-			errors.prixJour = 'Prix journalier doit être > 0';
-		return { valid: Object.keys(errors).length === 0, errors };
+		return validateRecord(data as Record<string, unknown>, vehiculeFields);
 	},
 
 	async afterCreate(record) {

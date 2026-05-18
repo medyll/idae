@@ -182,7 +182,7 @@ describe('Domain actions in data handlers', () => {
 			const res = mockRes();
 			await createRecord(req, res);
 			expect(res._status).toBe(400);
-			expect(res._body.details.kilometrage).toBe('Kilométrage ne peut pas être négatif');
+			expect(res._body.details.kilometrage).toBe('Minimum 0');
 		});
 
 		it('rejects zero or negative prixJour', async () => {

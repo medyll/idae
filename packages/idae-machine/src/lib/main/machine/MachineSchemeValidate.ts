@@ -3,6 +3,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineErrorValidation } from './MachineErrorValidation.js';
 import { MachineError } from './MachineError.js';
 import MachineSchemeFieldType, { defaultTypes } from '$lib/main/machine/MachineFieldType.js';
+import { validateField as validateFieldPure, type FieldRule } from './validateRules.js';
 
 /**
  * @class MachineSchemeValidate
@@ -283,6 +284,13 @@ export class MachineSchemeValidate {
 		type: string | undefined,
 		ctx?: { formData?: Record<string, unknown>; fieldName?: string }
 	): Promise<boolean> {
+		// First try the shared pure validateRules for standard types
+		const pureError = validateFieldPure(value, { type: type ?? 'any' });
+		if (pureError !== null) {
+			return false;
+		}
+
+		// Then check MachineSchemeFieldType registry for custom types
 		const typeDef = MachineSchemeFieldType.getFieldType(type ?? 'any');
 		if (typeDef && typeDef.validator) {
 			const res = typeDef.validator(value, ctx);

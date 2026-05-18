@@ -9,7 +9,7 @@
 ## Current Status
 
 **Active Sprint:** 16 — Actions Layer: soft delete, audit CRUD, domain actions pattern, validation serveur  
-**Next Action:** S16-04 — MachineSchemeValidate server-side — validateRules.ts partagé  
+**Next Action:** Sprint 16 complete — evaluate next sprint or release  
 **Active Role:** Developer
 
 ---
@@ -21,7 +21,9 @@
 | S16-01 | Soft delete — deletedAt + filter | ✅ Complete | ✅ 14/14 passed |
 | S16-02 | CRUD audit trail via AuditService | ✅ Complete | ✅ 18/18 passed |
 | S16-03 | Domain actions pattern | ✅ Complete | ✅ 10/10 passed |
-| S16-04 | MachineSchemeValidate server-side | 🔄 Next | — |
+| S16-04 | MachineSchemeValidate server-side | ✅ Complete | ✅ 33/33 passed |
+
+**Sprint 16: ALL STORIES COMPLETE**
 
 ---
 
@@ -48,6 +50,15 @@
 ---
 
 ## Recent Wins
+
+**S16-04 Complete:** Shared validation module implemented:
+- `src/lib/main/machine/validateRules.ts` — pure validation module with 7 legacy types ported from InputValidator.php
+- Types: email, url, date, number, integer, cp (code postal FR), alpha, alphanum
+- Also supports min/max, minLength/maxLength, pattern, custom type validators
+- `MachineSchemeValidate` updated to use `validateFieldPure` for standard types
+- Server domain actions now use `validateRecord` from shared module
+- Same validation rules used client-side and server-side — no duplication
+- Full test coverage: 33/33 unit tests, 364/364 client tests, 102/102 server tests
 
 **S16-03 Complete:** Domain actions pattern implemented:
 - `server/src/models/domainActions.ts` — interface + registry + registerDomainActions()
