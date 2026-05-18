@@ -8,22 +8,22 @@
 
 ## Current Status
 
-**Active Sprint:** 16 — Actions Layer: soft delete, audit CRUD, domain actions pattern, validation serveur  
-**Next Action:** Sprint 16 complete — evaluate next sprint or release  
-**Active Role:** Developer
+**Active Sprint:** 18 — COMPLETE  
+**Next Action:** Sprint 18 complete — all tests green (383/383). Ready for next sprint.  
+**Active Role:** Scrum Master
 
 ---
 
-## Sprint 16 Progress
+## Sprint 18 Results
 
 | Story | Title | Status | Tests |
 |-------|-------|--------|-------|
-| S16-01 | Soft delete — deletedAt + filter | ✅ Complete | ✅ 14/14 passed |
-| S16-02 | CRUD audit trail via AuditService | ✅ Complete | ✅ 18/18 passed |
-| S16-03 | Domain actions pattern | ✅ Complete | ✅ 10/10 passed |
-| S16-04 | MachineSchemeValidate server-side | ✅ Complete | ✅ 33/33 passed |
+| S18-01 | sortBy prop on ExplorerList | ✅ Complete | ✅ 8/8 sortItems + 2/2 pagination |
+| S18-02 | groupBy prop on ExplorerList | ✅ Complete | ✅ 13/13 (8 sort + 5 group) |
+| S18-03 | sortBy prop on ExplorerActions | ✅ Complete | ✅ Covered by S18-01 tests |
+| S18-04 | initialSortBy prop on ExplorerTable | ✅ Complete | ✅ 4/4 explorerTableSort |
 
-**Sprint 16: ALL STORIES COMPLETE**
+**Full suite: 383/383 passed (27 files)**
 
 ---
 
@@ -51,33 +51,12 @@
 
 ## Recent Wins
 
-**S16-04 Complete:** Shared validation module implemented:
-- `src/lib/main/machine/validateRules.ts` — pure validation module with 7 legacy types ported from InputValidator.php
-- Types: email, url, date, number, integer, cp (code postal FR), alpha, alphanum
-- Also supports min/max, minLength/maxLength, pattern, custom type validators
-- `MachineSchemeValidate` updated to use `validateFieldPure` for standard types
-- Server domain actions now use `validateRecord` from shared module
-- Same validation rules used client-side and server-side — no duplication
-- Full test coverage: 33/33 unit tests, 364/364 client tests, 102/102 server tests
-
-**S16-03 Complete:** Domain actions pattern implemented:
-- `server/src/models/domainActions.ts` — interface + registry + registerDomainActions()
-- `server/src/models/demo/actions.ts` — vehicule + reservation hooks registered
-- Validation vehicule (kilométrage négatif → erreur, prix=0 → erreur) tested
-- `afterCreate`/`beforeDelete` called from data.ts handlers
-- Hook failure doesn't block response (fire-and-forget for afterCreate, throw for beforeDelete)
-- Convention documented in `bmad/conventions.md`
-
-**S16-02 Complete:** CRUD audit trail implemented:
-- `createRecord`, `updateRecord`, `deleteRecord`, `restoreRecord` all log to `appuser_audit`
-- Fire-and-forget pattern — audit failures never block responses
-- userId, login, IP address, user agent captured from request context
-
-**S16-01 Complete:** Soft delete implemented with:
-- `deleteRecord` sets `deletedAt` timestamp by default
-- `?permanent=true` flag for hard delete
-- `listRecords` and `getRecord` filter out soft-deleted records
-- `PATCH /api/data/:table/:id/restore` endpoint for recovery
+**Sprint 18 Complete:** Explorer UX enhancements — sort + group:
+- `explorerUtils.ts` — pure utilities `sortItems()` + `groupItems()` (testable without DOM)
+- `ExplorerList` — `sortBy` + `groupBy` props, pagination composes correctly
+- `ExplorerActions` — `sortBy` prop reuses shared utility
+- `ExplorerTable` — `initialSortBy` for uncontrolled initial sort state
+- Zero regressions: all 383 tests green
 
 ---
 
