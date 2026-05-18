@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 17 complete — 116/116 server tests. Next: ADR-01 refactor or UI features"
-next_command: "bmad-whats-next"
-next_role: "scrum master"
+next_action: "Sprint 18 — implement S18-02 (groupBy prop on ExplorerList)"
+next_command: "bmad-continue"
+next_role: "developer"
 active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -97,6 +97,46 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 18
+    goal: "Explorer UX — sortBy + groupBy props on ExplorerList, sortBy on ExplorerActions, initialSortBy on ExplorerTable"
+    status: active
+    stories:
+      - id: S18-01
+        title: "sortBy prop on ExplorerList — extract sortItems() to explorerUtils.ts"
+        status: complete
+        priority: high
+        effort: M
+        tests_executed: true
+        test_output: "explorerSortGroup.test.ts: 8/8 passed. explorerListPagination.test.ts: 2/2 passed (no regression)"
+        test_result: pass
+
+      - id: S18-02
+        title: "groupBy prop on ExplorerList — grouped sections with header per field value"
+        status: todo
+        priority: high
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: null
+
+      - id: S18-03
+        title: "sortBy prop on ExplorerActions — reuse sortItems from explorerUtils"
+        status: todo
+        priority: medium
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: null
+
+      - id: S18-04
+        title: "initialSortBy prop on ExplorerTable — uncontrolled initial sort state"
+        status: todo
+        priority: medium
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: null
+
   - id: 17
     goal: "Generic schema validation — SchemeValidator lit appscheme MongoDB, valide sans domain actions"
     status: completed

@@ -9,12 +9,14 @@ Collection record list with machine store binding.
 @slot children (let:item) - Custom item rendering
 @event onclick - Emitted on item click
 -->
-<script lang="ts" generics="COL = Record<string,any>">
+	<script lang="ts" generics="COL = Record<string,any>">
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
 	import { machine } from '$lib/main/machine.js';
 	import CardFields from '$lib/main-ui/card/CardFields.svelte';
+	import type { SortBy } from './explorerUtils.js';
+	import { sortItems } from './explorerUtils.js';
 
 	interface ExplorerListProps  {
 		collection:     string;
@@ -26,12 +28,14 @@ Collection record list with machine store binding.
 		where?:         Where<COL>;
 		children?:      any;
 		onclick?:       (data: COL, index: number | string) => void;
+		sortBy?:        SortBy;
 	}
 	let {
 		collection,
 		target,
 		onclick,
 		where,
+		sortBy,
 		children: _children,
 		pageSize = 20,
 	}:ExplorerListProps & { pageSize?: number } = $props();
@@ -51,7 +55,8 @@ Collection record list with machine store binding.
 
 	let fieldValues = $derived(safeCollection(collection)?.collectionValues ?? {});
 	let index = $derived(safeCollection(collection)?.template?.index ?? '');
-	let allItems = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	let rawItems = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	let allItems = $derived(sortBy ? sortItems(rawItems, sortBy) : rawItems);
 	let totalCount = $derived(allItems.length);
 	let totalPages = $derived(Math.max(1, Math.ceil(totalCount / pageSize)));
 	let paginatedItems = $derived(
