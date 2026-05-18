@@ -12,6 +12,9 @@
 import type { PermissionCode } from './schema-types.js';
 export type { PermissionCode };
 
+// ── Sort type ─────────────────────────────────────────────────────────────────
+export type SortBy = { field: string; direction: 'asc' | 'desc' };
+
 // ── Field definition ──────────────────────────────────────────────────────────
 export interface MachineFieldDef {
 	/** Field type: 'text' | 'number' | 'date' | 'boolean' | 'fk-collection.field' | … */
@@ -42,11 +45,12 @@ export interface MachineFkDef {
  */
 export interface MachineDisplayTemplate {
 	presentation?: string;
-	// Future extensibility (declared for forward-compat, optional):
 	listColumns?:  string[];
 	sections?:     Record<string, string[]>;
 	fkLabelTpl?:   string;
 	indexes?:      Array<string | { fields: string[]; unique?: boolean; sparse?: boolean }>;
+	/** Default sort applied by ExplorerList when no sortBy prop. Multiple = stable sort chain. */
+	sort?:         SortBy[];
 	[key: string]: any;
 }
 

@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 19 ready — implement S19-01 (defaultSort: template.sort + MachineScheme.defaultSort getter + multi-sort chain)"
-next_command: "bmad-continue"
-next_role: "developer"
-active_role: "scrum master"
+next_action: "Sprint 19 complete — S19-01 done (defaultSort + multi-sort). Ready for next story."
+next_command: "bmad-status"
+next_role: "scrum master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -99,16 +99,16 @@ architecture:
 sprints:
   - id: 19
     goal: "Default sort per collection — template.sort declaration + MachineScheme.defaultSort inference + multi-sort chain"
-    status: active
+    status: completed
     stories:
       - id: S19-01
         title: "defaultSort: template.sort + MachineScheme.defaultSort getter (7 rules incl. code) + SortBy[] multi-sort"
-        status: todo
+        status: complete
         priority: high
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "machineSchemeDefaultSort.test.ts: 18/18 passed (13 defaultSort inference + 5 multi-sort). explorerSortGroup.test.ts: 13/13 passed (no regression). Full suite: 401/401 (28 files)."
+        test_result: pass
 
   - id: 18
     goal: "Explorer UX — sortBy + groupBy props on ExplorerList, sortBy on ExplorerActions, initialSortBy on ExplorerTable"
@@ -637,10 +637,11 @@ qa:
 sessions:
   - date: "2026-05-18"
     summary: >
-      Sprint 18 complete: sortBy/groupBy on ExplorerList, sortBy on ExplorerActions, initialSortBy on ExplorerTable.
-      explorerUtils.ts created with sortItems() + groupItems() pure utilities.
-      Full suite: 383/383 passed (27 files). 5 commits.
-    tests_server: 383
+      Sprint 19 complete: S19-01 defaultSort — SortBy type moved to machine-model.ts,
+      MachineDisplayTemplate.sort added, MachineScheme.defaultSort getter (7 priority rules),
+      sortItems extended to SortBy[], ExplorerList fallback to defaultSort.
+      machineSchemeDefaultSort.test.ts: 18/18. Full suite: 401/401 (28 files).
+    tests_server: 401
     tests_client: 0
 
   - date: "2026-05-17"

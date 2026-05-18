@@ -1,18 +1,22 @@
-export type SortBy = { field: string; direction: 'asc' | 'desc' };
+export type { SortBy } from '../../types/machine-model.js';
+import type { SortBy } from '../../types/machine-model.js';
 
 export function sortItems<T extends Record<string, unknown>>(
 	items: T[],
-	sortBy: SortBy
+	sortBy: SortBy | SortBy[]
 ): T[] {
-	const { field, direction } = sortBy;
+	const chain = Array.isArray(sortBy) ? sortBy : [sortBy];
 	return [...items].sort((a, b) => {
-		const av = a[field] ?? null;
-		const bv = b[field] ?? null;
-		if (av === null && bv === null) return 0;
-		if (av === null) return 1;
-		if (bv === null) return -1;
-		const cmp = av < bv ? -1 : av > bv ? 1 : 0;
-		return direction === 'asc' ? cmp : -cmp;
+		for (const { field, direction } of chain) {
+			const av = a[field] ?? null;
+			const bv = b[field] ?? null;
+			if (av === null && bv === null) continue;
+			if (av === null) return 1;
+			if (bv === null) return -1;
+			const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+			if (cmp !== 0) return direction === 'asc' ? cmp : -cmp;
+		}
+		return 0;
 	});
 }
 

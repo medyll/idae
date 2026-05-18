@@ -1,5 +1,5 @@
 import { MachineError } from './MachineError.js';
-import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '$lib/types/machine-model.js';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy } from '$lib/types/machine-model.js';
 import type {
 	MachineModel,
 	MachineCollectionModel,
@@ -60,6 +60,36 @@ export class MachineScheme {
 	/** Primary key field name, derived from keyPath ('++id' → 'id'). */
 	get index(): string {
 		return indexFromKeyPath(this.#collectionModel.keyPath);
+	}
+
+	/** Default sort inferred from template.sort or field naming/type conventions. */
+	get defaultSort(): SortBy[] {
+		const tplSort = this.template?.sort;
+		if (tplSort?.length) return tplSort;
+
+		const fields = this.fields;
+		const fieldNames = Object.keys(fields);
+
+		const ordreField = fieldNames.find(f => f === 'ordre' || f === 'order');
+		if (ordreField) return [{ field: ordreField, direction: 'asc' }];
+
+		const nameField = fieldNames.find(f =>
+			['name', 'nom', 'label', 'titre', 'title', 'code'].includes(f)
+		);
+		if (nameField) return [{ field: nameField, direction: 'asc' }];
+
+		const updatedField = fieldNames.find(f => f === 'updatedAt' || f === 'dateModification');
+		if (updatedField) return [{ field: updatedField, direction: 'desc' }];
+		const createdField = fieldNames.find(f => f === 'createdAt' || f === 'dateCreation');
+		if (createdField) return [{ field: createdField, direction: 'desc' }];
+
+		const dateField = fieldNames.find(f => {
+			const t = fields[f]?.type ?? '';
+			return t === 'date' || t === 'datetime';
+		});
+		if (dateField) return [{ field: dateField, direction: 'desc' }];
+
+		return [{ field: this.index, direction: 'asc' }];
 	}
 
 	get validator(): MachineSchemeValidate {

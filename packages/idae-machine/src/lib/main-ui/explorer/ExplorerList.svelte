@@ -28,7 +28,7 @@ Collection record list with machine store binding.
 		where?:         Where<COL>;
 		children?:      any;
 		onclick?:       (data: COL, index: number | string) => void;
-		sortBy?:        SortBy;
+		sortBy?:        SortBy | SortBy[];
 		groupBy?:       string;
 	}
 	let {
@@ -58,7 +58,13 @@ Collection record list with machine store binding.
 	let fieldValues = $derived(safeCollection(collection)?.collectionValues ?? {});
 	let index = $derived(safeCollection(collection)?.template?.index ?? '');
 	let rawItems = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
-	let allItems = $derived(sortBy ? sortItems(rawItems, sortBy) : rawItems);
+	let allItems = $derived(
+		sortBy
+			? sortItems(rawItems, sortBy)
+			: (logic.collection(collection)?.defaultSort?.length
+				? sortItems(rawItems, logic.collection(collection).defaultSort)
+				: rawItems)
+	);
 	let totalCount = $derived(allItems.length);
 	let totalPages = $derived(Math.max(1, Math.ceil(totalCount / pageSize)));
 	let paginatedItems = $derived(

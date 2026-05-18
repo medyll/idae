@@ -8,9 +8,19 @@
 
 ## Current Status
 
-**Active Sprint:** None — Sprint 18 complete  
-**Next Action:** Define Sprint 19 or provide direction  
+**Active Sprint:** None — Sprint 19 complete  
+**Next Action:** Define Sprint 20 or provide direction  
 **Active Role:** Scrum Master
+
+---
+
+## Sprint 19 Results ✅
+
+| Story | Title | Tests |
+|-------|-------|-------|
+| S19-01 | defaultSort: template.sort + MachineScheme.defaultSort getter + SortBy[] multi-sort | ✅ 18/18 new + 13/13 no regression |
+
+**Full suite: 401/401 passed (28 files)**
 
 ---
 
@@ -27,10 +37,12 @@
 
 ---
 
-## Cleanup Done
+## Pending Items
 
-- Sprint 16 status: `active` → `completed` (all stories were done)
-- Sprint 12 status: `upcoming` → `completed` (all stories were done)
+| Item | Type | Priority |
+|------|------|----------|
+| ADR-01: Remove wrapper classes (MachinePrefs/Activity/History) | Refactor | Medium |
+| Sprint 20 definition | Planning | High |
 
 ---
 
@@ -53,15 +65,6 @@
 - Plugin marketplace: Custom field types and components
 - AI-powered features: Smart defaults, auto-generated validations
 - Multi-database federation: Query across PostgreSQL, MongoDB, IndexedDB
-
----
-
-## Pending Items
-
-| Item | Type | Priority |
-|------|------|----------|
-| ADR-01: Remove wrapper classes (MachinePrefs/Activity/History) | Refactor | Medium |
-| Sprint 19 definition | Planning | High |
 
 ---
 
