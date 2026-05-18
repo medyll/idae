@@ -9,17 +9,19 @@ Menu list of collection records with action handling.
 @prop {object} [where] - Query filter
 @event onclick - Emitted on item click
 -->
-<script lang="ts" generics="COL = Record<string,any>">
+	<script lang="ts" generics="COL = Record<string,any>">
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
+	import type { SortBy } from './explorerUtils.js';
+	import { sortItems } from './explorerUtils.js';
 
 	export type ActionListProps = {
 		dense?:    boolean;
 		bordered?: boolean;
 	};
 
-	let { collection, target, data, style, where, onclick } = $props<{
+	let { collection, target, data, style, where, onclick, sortBy } = $props<{
 		collection:   string;
 		target?:      string;
 		data?:        COL[];
@@ -27,9 +29,11 @@ Menu list of collection records with action handling.
 		where?:       Where<COL>;
 		onclick?:     (event: CustomEvent, index: number) => void;
 		actionProps?: ActionListProps;
+		sortBy?:      SortBy;
 	}>();
 
-	let items = $derived(data ?? []);
+	let rawItems = $derived(data ?? []);
+	let items = $derived(sortBy ? sortItems(rawItems, sortBy) : rawItems);
 
 	function openCrud(id: string | number) {
 		hydrate(CardForm, {
