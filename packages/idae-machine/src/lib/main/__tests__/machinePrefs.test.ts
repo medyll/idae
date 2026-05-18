@@ -1,92 +1,133 @@
+/**
+ * _prefs collection — usage patterns directly via machine.collection('_prefs').
+ * No wrapper class. Tests document the expected data shape and query conventions.
+ *
+ * Key convention: code = `${userId}:${key}` (e.g. 'user1:pane.menu.client')
+ */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MachinePrefs } from '../machine/MachinePrefs.js';
-import type { QoolieCollection } from '@medyll/qoolie';
 
-function mockPrefsCollection() {
-	const docs: Array<{ id: string; code: string; name?: string; order?: number; value?: unknown }> = [];
-	const col = {
+type PrefDoc = { id: string; code: string; name?: string; value?: unknown };
+
+function mockCollection() {
+	const docs: PrefDoc[] = [];
+	return {
 		getAll: () => [...docs],
-		where: (query: Record<string, { eq: unknown }>) => {
-			const key = Object.keys(query)[0];
-			const val = query[key].eq;
-			return docs.filter((d) => (d as any)[key] === val);
+		where: (q: Record<string, { eq: unknown }>) => {
+			const [field, { eq }] = Object.entries(q)[0];
+			return docs.filter((d) => (d as any)[field] === eq);
 		},
-		create: async (doc: { id: string; code: string; name?: string; value?: unknown }) => {
-			docs.push(doc);
-			return doc;
-		},
-		update: async (id: string, data: { value?: unknown }) => {
-			const idx = docs.findIndex((d) => d.id === id);
-			if (idx !== -1) Object.assign(docs[idx], data);
+		create: async (doc: PrefDoc) => { docs.push(doc); return doc; },
+		update: async (id: string, data: Partial<PrefDoc>) => {
+			const i = docs.findIndex((d) => d.id === id);
+			if (i !== -1) Object.assign(docs[i], data);
 		},
 		delete: async (id: string) => {
-			const idx = docs.findIndex((d) => d.id === id);
-			if (idx !== -1) docs.splice(idx, 1);
+			const i = docs.findIndex((d) => d.id === id);
+			if (i !== -1) docs.splice(i, 1);
 		},
-	} as unknown as QoolieCollection<any>;
-	return { col, docs };
+	};
 }
 
-describe('MachinePrefs', () => {
-	let prefs: MachinePrefs;
-	let col: ReturnType<typeof mockPrefsCollection>['col'];
+// ── helpers (inline patterns, not classes) ──────────────────────────────────
 
-	beforeEach(() => {
-		const mock = mockPrefsCollection();
-		col = mock.col;
-		prefs = new MachinePrefs(() => col);
-	});
+function buildCode(userId: string, key: string) { return `${userId}:${key}`; }
+
+function prefGet(col: ReturnType<typeof mockCollection>, userId: string, key: string): unknown {
+	const docs = col.where({ code: { eq: buildCode(userId, key) } });
+	return docs.length > 0 ? docs[0].value ?? null : null;
+}
+
+async function prefSet(col: ReturnType<typeof mockCollection>, userId: string, key: string, value: unknown) {
+	const code = buildCode(userId, key);
+	const existing = col.where({ code: { eq: code } });
+	if (existing.length > 0) {
+		await col.update(existing[0].id, { value });
+	} else {
+		await col.create({ id: crypto.randomUUID(), code, name: key, value });
+	}
+}
+
+async function prefDel(col: ReturnType<typeof mockCollection>, userId: string, key: string) {
+	const existing = col.where({ code: { eq: buildCode(userId, key) } });
+	if (existing.length > 0) await col.delete(existing[0].id);
+}
+
+function prefScope(col: ReturnType<typeof mockCollection>, userId: string, prefix: string): Record<string, unknown> {
+	const userPrefix = `${userId}:`;
+	return Object.fromEntries(
+		col.getAll()
+			.filter((d) => d.code.startsWith(userPrefix + prefix))
+			.map((d) => [d.code.slice(userPrefix.length), d.value])
+	);
+}
+
+async function prefReset(col: ReturnType<typeof mockCollection>, userId: string, scope: string) {
+	const userPrefix = `${userId}:`;
+	for (const doc of col.getAll()) {
+		if (doc.code.startsWith(userPrefix + scope)) await col.delete(doc.id);
+	}
+}
+
+// ── tests ───────────────────────────────────────────────────────────────────
+
+describe('_prefs collection patterns', () => {
+	let col: ReturnType<typeof mockCollection>;
+	beforeEach(() => { col = mockCollection(); });
 
 	it('returns null for non-existent key', () => {
-		expect(prefs.get('user1', 'pane.menu.client')).toBeNull();
+		expect(prefGet(col, 'user1', 'pane.menu.client')).toBeNull();
 	});
 
 	it('sets and gets a value', async () => {
-		await prefs.set('user1', 'pane.menu.client', true);
-		expect(prefs.get('user1', 'pane.menu.client')).toBe(true);
+		await prefSet(col, 'user1', 'pane.menu.client', true);
+		expect(prefGet(col, 'user1', 'pane.menu.client')).toBe(true);
 	});
 
 	it('upserts on duplicate set', async () => {
-		await prefs.set('user1', 'theme', 'dark');
-		await prefs.set('user1', 'theme', 'light');
-		expect(prefs.get('user1', 'theme')).toBe('light');
+		await prefSet(col, 'user1', 'theme', 'dark');
+		await prefSet(col, 'user1', 'theme', 'light');
+		expect(prefGet(col, 'user1', 'theme')).toBe('light');
 	});
 
 	it('deletes a key', async () => {
-		await prefs.set('user1', 'temp', 'value');
-		expect(prefs.get('user1', 'temp')).toBe('value');
-		await prefs.del('user1', 'temp');
-		expect(prefs.get('user1', 'temp')).toBeNull();
+		await prefSet(col, 'user1', 'temp', 'value');
+		await prefDel(col, 'user1', 'temp');
+		expect(prefGet(col, 'user1', 'temp')).toBeNull();
 	});
 
 	it('scope returns matching keys', async () => {
-		await prefs.set('user1', 'pane.menu.a', 1);
-		await prefs.set('user1', 'pane.menu.b', 2);
-		await prefs.set('user1', 'other.key', 3);
-		const scoped = prefs.scope('user1', 'pane.menu');
-		expect(scoped).toEqual({ 'pane.menu.a': 1, 'pane.menu.b': 2 });
+		await prefSet(col, 'user1', 'pane.menu.a', 1);
+		await prefSet(col, 'user1', 'pane.menu.b', 2);
+		await prefSet(col, 'user1', 'other.key', 3);
+		expect(prefScope(col, 'user1', 'pane.menu')).toEqual({ 'pane.menu.a': 1, 'pane.menu.b': 2 });
 	});
 
 	it('scope isolates by user', async () => {
-		await prefs.set('user1', 'pane.menu.a', 1);
-		await prefs.set('user2', 'pane.menu.a', 99);
-		expect(prefs.scope('user1', 'pane.menu')).toEqual({ 'pane.menu.a': 1 });
-		expect(prefs.scope('user2', 'pane.menu')).toEqual({ 'pane.menu.a': 99 });
+		await prefSet(col, 'user1', 'pane.menu.a', 1);
+		await prefSet(col, 'user2', 'pane.menu.a', 99);
+		expect(prefScope(col, 'user1', 'pane.menu')).toEqual({ 'pane.menu.a': 1 });
+		expect(prefScope(col, 'user2', 'pane.menu')).toEqual({ 'pane.menu.a': 99 });
 	});
 
-	it('reset wipes matching keys', async () => {
-		await prefs.set('user1', 'pane.menu.a', 1);
-		await prefs.set('user1', 'pane.menu.b', 2);
-		await prefs.set('user1', 'other.key', 3);
-		await prefs.reset('user1', 'pane.menu');
-		expect(prefs.get('user1', 'pane.menu.a')).toBeNull();
-		expect(prefs.get('user1', 'pane.menu.b')).toBeNull();
-		expect(prefs.get('user1', 'other.key')).toBe(3);
+	it('reset wipes matching keys only', async () => {
+		await prefSet(col, 'user1', 'pane.menu.a', 1);
+		await prefSet(col, 'user1', 'pane.menu.b', 2);
+		await prefSet(col, 'user1', 'other.key', 3);
+		await prefReset(col, 'user1', 'pane.menu');
+		expect(prefGet(col, 'user1', 'pane.menu.a')).toBeNull();
+		expect(prefGet(col, 'user1', 'pane.menu.b')).toBeNull();
+		expect(prefGet(col, 'user1', 'other.key')).toBe(3);
 	});
 
-	it('handles JSON values', async () => {
+	it('stores JSON values', async () => {
 		const obj = { collapsed: true, order: ['a', 'b'] };
-		await prefs.set('user1', 'layout', obj);
-		expect(prefs.get('user1', 'layout')).toEqual(obj);
+		await prefSet(col, 'user1', 'layout', obj);
+		expect(prefGet(col, 'user1', 'layout')).toEqual(obj);
+	});
+
+	it('code format: userId:key', async () => {
+		await prefSet(col, 'user1', 'pane.menu.x', true);
+		const raw = col.getAll();
+		expect(raw[0].code).toBe('user1:pane.menu.x');
 	});
 });

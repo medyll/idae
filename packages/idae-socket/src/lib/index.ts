@@ -1,13 +1,11 @@
-// auto exports of entry components
-export * from './cli/add-skill.js';
-export * from './client/demo.js';
+// Core exports only — demo/cli/fakeZone excluded from barrel
 export * from './server/_config/config.js';
 export * from './server/_utils/eventEmitterInstance.js';
 export * from './server/_utils/routes.js';
 export * from './server/dataEvent.js';
-export * from './server/fakeZone/fakeHttpPost.js';
 export * from './server/httpDriver.js';
 export * from './server/socketBridge/socketIoServer.js';
 export * from './server/socketBridge/socketRoom.js';
 export * from './server/socketBridge/socketThrottle.js';
 export * from './server/socketDriver.js';
+export * from './client/index.js';

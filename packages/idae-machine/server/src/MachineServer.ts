@@ -9,8 +9,9 @@ import { registerDataRoutes } from './routes/data.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
-import { initializeSocketIO } from './socket/index.js';
+import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
+import type { SocketIoServer } from '@medyll/idae-socket';
 import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap/deployModel.js';
 import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
@@ -126,9 +127,16 @@ class MachineServerClass {
 		logger.info(`Model deployed for org="${org}"`);
 	}
 
+	// ── socket ────────────────────────────────────────────────────────────────
+
+	/** Live SocketIoServer instance — available after start(). */
+	get socket(): SocketIoServer | null {
+		return getSocketServer();
+	}
+
 	// ── start ─────────────────────────────────────────────────────────────────
 
-	async start(): Promise<void> {
+	async start(opts: { socket?: SocketServerOptions } = {}): Promise<void> {
 		// Connect to meta DB — validates credentials at startup
 		const metaDbName = `${config.org}_machine_app`;
 		await mongooseConnectionManager.createConnection(config.mongodbUri, metaDbName, { dbName: metaDbName });
@@ -162,7 +170,7 @@ class MachineServerClass {
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {
-			initializeSocketIO(httpServer);
+			initializeSocketIO(httpServer, opts.socket ?? {});
 			setupConflictHandling();
 		}
 

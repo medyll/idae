@@ -1,5 +1,5 @@
 import { _config } from "./_config/config.js";
-import { EventDataClientInstance } from "../client.js";
+import { EventDataClientInstance } from "../client/index.js";
 import { appRoutes } from "./_utils/routes.js";
 import { TRoutesConfig } from "./@types";
 import { eventEmitterInstance } from "./_utils/eventEmitterInstance.js";
@@ -36,7 +36,7 @@ export class SocketDriver {
   }
 
   routing() {
-    Object.values(this.routesConfig).map((eventRoute) => {
+    Object.values(this.routesConfig).map((eventRoute: any) => {
       this.DataClient.socket.on(eventRoute.route, (payload, callBack) => {
         this.doRouting(eventRoute.route, payload, callBack);
         callBack({

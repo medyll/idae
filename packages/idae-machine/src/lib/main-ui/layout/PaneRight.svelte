@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * PaneRight — today dashboard with quick-create buttons and recent history.
-	 * Consumes machine.history.recent and machine.prefs for create visibility.
+	 * Uses machine.collection('_history') and machine.rights directly.
 	 */
 	import { machine } from '$lib/main/machine.js';
 	import PaneQuickCreate from './PaneQuickCreate.svelte';
@@ -13,8 +13,13 @@
 
 	let { onSelect }: Props = $props();
 
-	/** Recent history entries */
-	let recents = $derived(machine.history?.recent?.(undefined, 10) ?? []);
+	/** Recent history entries — direct collection access */
+	let recents = $derived((() => {
+		try {
+			const all = machine.collection('_history').getAll() as any[];
+			return all.toSorted((a, b) => (b.lastSeen ?? '').localeCompare(a.lastSeen ?? '')).slice(0, 10);
+		} catch { return []; }
+	})());
 
 	/** Collections with create permission */
 	let creatableCollections = $derived.by(() => {

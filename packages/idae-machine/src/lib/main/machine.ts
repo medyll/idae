@@ -1,15 +1,24 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
+import { EventDataClientInstance } from '@medyll/idae-socket';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import { MachinePrefs } from '$lib/main/machine/MachinePrefs.js';
-import { MachineActivity } from '$lib/main/machine/MachineActivity.js';
-import { MachineHistory } from '$lib/main/machine/MachineHistory.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
+
+export interface MachineSocketOptions {
+	/** WebSocket server URL e.g. 'http://localhost:3000' */
+	url:          string;
+	/** JWT token for socket auth */
+	token?:       string;
+	/** Auth mode sent to server (default: 'Bearer') */
+	authMode?:    'Bearer' | 'Basic' | 'AwsSignature';
+	/** Connect automatically on machine.start() (default: false) */
+	autoConnect?: boolean;
+}
 
 /**
  * @class Machine
@@ -74,6 +83,12 @@ export class Machine {
 		onError?:     (error: Error, context: SyncErrorContext) => void;
 	};
 
+	/** Socket client options — set via init() */
+	_socketOptions?: MachineSocketOptions;
+
+	/** Socket client instance — created at start() if socketOptions provided */
+	_socketClient?: EventDataClientInstance;
+
 	/**
 	 * Main constructor
 	 * @role Constructor
@@ -104,6 +119,7 @@ export class Machine {
 			onSyncEvent?: (event: SyncEvent) => void;
 			onError?:     (error: Error, context: SyncErrorContext) => void;
 		};
+		socket?:      MachineSocketOptions;
 	}) {
 		if (options?.org)    this._org    = options.org;
 		if (options?.domain) this._domain = options.domain;
@@ -114,9 +130,10 @@ export class Machine {
 
 		this._version     = options?.version     ?? this._version;
 		this._model       = options?.model       ?? this._model;
-		this._syncOptions = options?.sync        !== undefined ? options.sync : this._syncOptions;
-		this._stateEngine = options?.stateEngine ?? this._stateEngine;
-		this._hooks       = options?.hooks       ?? this._hooks;
+		this._syncOptions    = options?.sync        !== undefined ? options.sync : this._syncOptions;
+		this._stateEngine    = options?.stateEngine ?? this._stateEngine;
+		this._hooks          = options?.hooks       ?? this._hooks;
+		this._socketOptions  = options?.socket      ?? this._socketOptions;
 	}
 
 	/** Fully qualified DB name for a given base: {org}_{base} */
@@ -170,6 +187,7 @@ export class Machine {
 		this.createCollections();
 		this.createStore();
 		this.loadPolicies();
+		if (this._socketOptions?.autoConnect) this.connectSocket();
 	}
 
 	/**
@@ -275,24 +293,6 @@ export class Machine {
 	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
 	get rights() { return machineRights; }
 
-	/** User preferences service — backed by IDB `_prefs` collection. */
-	get prefs() {
-		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
-		return new MachinePrefs(() => this._qoolie!.collection['_prefs'] as QoolieCollection<any>);
-	}
-
-	/** Activity log service — insert-only event log backed by `_activity` collection. */
-	get activity() {
-		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
-		return new MachineActivity(() => this._qoolie!.collection['_activity'] as QoolieCollection<any>);
-	}
-
-	/** History service — aggregated projection of recent visits backed by `_history` collection. */
-	get history() {
-		if (!this._qoolie) throw new Error('Machine not started. Call start() first.');
-		return new MachineHistory(() => this._qoolie!.collection['_history'] as QoolieCollection<any>);
-	}
-
 	/**
 	 * Sync controller — pause/resume/status/flush/dlq.
 	 * Only available when sync is enabled in init() options.
@@ -303,12 +303,37 @@ export class Machine {
 	}
 
 	/**
+	 * Socket client — EventDataClientInstance from idae-socket.
+	 * Available after start() when socket options are provided.
+	 * Call machine.socket.connect() manually unless autoConnect: true.
+	 */
+	get socket(): EventDataClientInstance | undefined {
+		return this._socketClient;
+	}
+
+	private connectSocket(): void {
+		if (!this._socketOptions) return;
+		const opts  = this._socketOptions;
+		const client = new EventDataClientInstance();
+		client.config.host          = opts.url;
+		client.config.port          = 0; // url already includes port
+		client.config.authentication = {
+			auth:     opts.token    ? `Bearer ${opts.token}` : 'Bearer ',
+			authMode: opts.authMode ?? 'Bearer',
+		};
+		client.connect();
+		this._socketClient = client;
+	}
+
+	/**
 	 * Release all Qoolie resources (stops sync adapter, clears collections).
 	 * Call when the Machine instance is no longer needed.
 	 */
 	destroy(): void {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
+		this._socketClient?.socket?.disconnect?.();
+		this._socketClient = undefined;
 	}
 
 	/**

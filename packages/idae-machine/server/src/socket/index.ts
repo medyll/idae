@@ -1,78 +1,62 @@
 import { Server as HttpServer } from 'http';
-import { Server as SocketIOServer } from 'socket.io';
+import { SocketIoServer } from '@medyll/idae-socket';
+import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
 
-/**
- * Socket.IO instance for real-time broadcasts
- */
-export let io: SocketIOServer | null = null;
-
-/**
- * Initialize Socket.IO server
- */
-export function initializeSocketIO(httpServer: HttpServer): SocketIOServer {
-	if (io) {
-		logger.warn('Socket.IO already initialized');
-		return io;
-	}
-
-	io = new SocketIOServer(httpServer, {
-		cors: {
-			origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-			credentials: true
-		},
-		transports: ['websocket', 'polling']
-	});
-
-	io.on('connection', (socket) => {
-		logger.info(`🔌 Client connected: ${socket.id}`);
-
-		// Join table-specific rooms
-		socket.on('subscribe', (table: string) => {
-			const room = `room_${table}`;
-			socket.join(room);
-			logger.info(`📡 Client ${socket.id} subscribed to ${room}`);
-		});
-
-		// Leave room
-		socket.on('unsubscribe', (table: string) => {
-			const room = `room_${table}`;
-			socket.leave(room);
-			logger.info(`📡 Client ${socket.id} unsubscribed from ${room}`);
-		});
-
-		// Disconnect
-		socket.on('disconnect', () => {
-			logger.info(`🔌 Client disconnected: ${socket.id}`);
-		});
-	});
-
-	logger.info('🚀 Socket.IO server initialized');
-	return io;
+export interface SocketServerOptions {
+	auth?:   { strategy: 'jwt' | 'introspection' | 'none'; jwtSecret?: string; introspectionUrl?: string };
+	redis?:  string;
+	cors?:   string;
+	enabled?: boolean;
 }
 
-/**
- * Broadcast event to table room
- */
+let socketServer: SocketIoServer | null = null;
+
+export function initializeSocketIO(
+	httpServer: HttpServer,
+	opts: SocketServerOptions = {}
+): SocketIoServer {
+	if (socketServer) {
+		logger.warn('Socket.IO already initialized');
+		return socketServer;
+	}
+
+	if (opts.enabled === false) {
+		logger.info('Socket.IO disabled by options');
+		return null as any;
+	}
+
+	socketServer = new SocketIoServer({
+		corsOrigin: opts.cors   ?? config.corsOrigin,
+		redisUrl:   opts.redis,
+		auth: {
+			strategy:         opts.auth?.strategy         ?? 'jwt',
+			jwtSecret:        opts.auth?.jwtSecret        ?? config.jwtSecret,
+			introspectionUrl: opts.auth?.introspectionUrl ?? 'http://localhost/unused',
+		},
+	});
+
+	const io = socketServer.init(httpServer as any);
+
+	io.on('connection', (socket: any) => {
+		logger.info(`🔌 Client connected: ${socket.id}`);
+		socket.on('subscribe',   (table: string) => { socket.join(`room_${table}`);  logger.info(`📡 ${socket.id} → room_${table}`); });
+		socket.on('unsubscribe', (table: string) => { socket.leave(`room_${table}`); logger.info(`📡 ${socket.id} ← room_${table}`); });
+		socket.on('disconnect',  () => logger.info(`🔌 Client disconnected: ${socket.id}`));
+	});
+
+	logger.info('🚀 Socket.IO initialized (idae-socket)');
+	return socketServer;
+}
+
 export function broadcastToTable(table: string, event: string, data: unknown): void {
-	if (!io) {
+	if (!socketServer?.ioApp) {
 		logger.warn('Socket.IO not initialized, skipping broadcast');
 		return;
 	}
-
-	const room = `room_${table}`;
-	io.to(room).emit(event, {
-		table,
-		data,
-		timestamp: new Date().toISOString()
-	});
-
-	logger.debug(`📡 Broadcast ${event} to ${room}`);
+	socketServer.toRoom(`room_${table}`, event, { table, data, timestamp: new Date().toISOString() });
+	logger.debug(`📡 Broadcast ${event} → room_${table}`);
 }
 
-/**
- * Get Socket.IO instance
- */
-export function getIO(): SocketIOServer | null {
-	return io;
-}
+export function getSocketServer(): SocketIoServer | null { return socketServer; }
+export function getIO(): any { return socketServer?.ioApp ?? null; }

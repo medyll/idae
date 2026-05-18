@@ -22,6 +22,7 @@
 		"express": "^4.21.0",
 		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^9.0.0",
+		"@medyll/idae-socket": "workspace:*",
 		"socket.io": "^4.8.0"
 	},
 	"devDependencies": {
