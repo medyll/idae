@@ -14,7 +14,7 @@ Form for editing an existing record. Thin wrapper around CardForm locked to mode
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
-	import type { UpdateProps } from '$lib/form/types.js';
+	import type { UpdateProps } from './types.js';
 
 	let { onsubmit, ...props }: UpdateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 </script>

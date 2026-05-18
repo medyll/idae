@@ -10,7 +10,7 @@ Form for creating a new record. Thin wrapper around CardForm locked to mode="cre
 -->
 <script lang="ts" generics="COL = Record<string,unknown>">
 	import CardForm from '$lib/main-ui/card/CardForm.svelte';
-	import type { CreateProps } from '$lib/form/types.js';
+	import type { CreateProps } from './types.js';
 
 	let { onsubmit, ...props }: CreateProps<COL> & { onsubmit?: (payload: unknown) => void } = $props();
 </script>

@@ -17,7 +17,7 @@
 <script lang="ts" generics="COL = Record<string,unknown>">
     import { machine } from '$lib/main/machine.js';
     import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-    import type { CreateUpdateProps } from '$lib/form/types.js';
+    import type { CreateUpdateProps } from './types.js';
     import type { IDbForge } from '$lib/types/machine-model.js';
     import CardRfk from '$lib/main-ui/card/CardRfk.svelte';
     import FieldDisplay from '$lib/main-ui/field/FieldDisplay.svelte';
