@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "No sprint defined after Sprint 18. Define Sprint 19 stories or say 'bmad-continue' to plan."
-next_command: "bmad-plan-sprint"
-next_role: "scrum master"
+next_action: "Sprint 19 ready — implement S19-01 (defaultSort: template.sort + MachineScheme.defaultSort getter + multi-sort chain)"
+next_command: "bmad-continue"
+next_role: "developer"
 active_role: "scrum master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -97,6 +97,19 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 19
+    goal: "Default sort per collection — template.sort declaration + MachineScheme.defaultSort inference + multi-sort chain"
+    status: active
+    stories:
+      - id: S19-01
+        title: "defaultSort: template.sort + MachineScheme.defaultSort getter (7 rules incl. code) + SortBy[] multi-sort"
+        status: todo
+        priority: high
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: null
+
   - id: 18
     goal: "Explorer UX — sortBy + groupBy props on ExplorerList, sortBy on ExplorerActions, initialSortBy on ExplorerTable"
     status: completed
