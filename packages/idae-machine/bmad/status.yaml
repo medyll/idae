@@ -79,21 +79,17 @@ architecture:
   decisions:
     - id: ADR-01
       title: "Pas de classes wrapper par collection système"
-      status: pending-refactor
+      status: done
       date: "2026-05-18"
+      resolved: "2026-05-18"
       decision: >
-        MachinePrefs, MachineActivity, MachineHistory sont des anti-patterns.
-        Ce sont des wrappers statiques sur machine.collection() qui n'apportent rien.
-        Tous les schemes ont la même API générique — créer une classe par collection
-        système casse le principe schema-driven et réintroduit la rigidité qu'on
-        voulait éliminer. Pattern legacy PHP correct : App('agent_pref') = générique.
+        MachinePrefs, MachineActivity, MachineHistory ne seront pas des classes wrapper.
+        Accès direct via machine.collection('_prefs'|'_activity'|'_history') + helpers inline.
+        Pattern appliqué dès S13: les tests documentent les conventions de data shape et query.
       consequence: >
-        Refactorer à terme: supprimer ces 3 classes, accéder via machine.collection('_prefs')
-        directement. Helpers éventuels = fonctions pures standalone, pas des classes.
-        MachineRights est le moins mauvais (logique transversale, pas de data) mais
-        pourrait aussi devenir un module de fonctions importables.
-        machine.prefs / machine.activity / machine.history = DX sugar à supprimer.
-      blocked_by: "Sprint 15 release prep en cours — refactor après release"
+        MachineRights conservé (logique transversale checkAccess, pas du data).
+        Aucun refactor nécessaire — les wrapper classes n'ont jamais été implémentées.
+        machine.prefs / machine.activity / machine.history n'existent pas sur Machine class.
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
