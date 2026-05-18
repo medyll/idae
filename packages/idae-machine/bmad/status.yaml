@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 18 complete — all tests green (383/383). Ready for next sprint."
-next_command: "bmad-continue"
+next_action: "No sprint defined after Sprint 18. Define Sprint 19 stories or say 'bmad-continue' to plan."
+next_command: "bmad-plan-sprint"
 next_role: "scrum master"
-active_role: "tester"
+active_role: "scrum master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -392,7 +392,7 @@ sprints:
 
   - id: 12
     goal: "Polish: idae-sync backlog + qoolie build"
-    status: upcoming
+    status: completed
     stories:
       - id: S12-01
         title: "idae-sync S-fix-01 à S-fix-06"
@@ -418,7 +418,7 @@ sprints:
 
   - id: 16
     goal: "Actions Layer: soft delete, audit CRUD, domain actions pattern, validation serveur"
-    status: active
+    status: completed
     stories:
       - id: S16-01
         title: "Soft delete — deletedAt + filter dans listRecords/getRecord"
@@ -622,6 +622,14 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-18"
+    summary: >
+      Sprint 18 complete: sortBy/groupBy on ExplorerList, sortBy on ExplorerActions, initialSortBy on ExplorerTable.
+      explorerUtils.ts created with sortItems() + groupItems() pure utilities.
+      Full suite: 383/383 passed (27 files). 5 commits.
+    tests_server: 383
+    tests_client: 0
+
   - date: "2026-05-17"
     summary: >
       Qoolie migration, idae-sync build fix, 38 tests green.

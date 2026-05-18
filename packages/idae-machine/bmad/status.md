@@ -8,22 +8,29 @@
 
 ## Current Status
 
-**Active Sprint:** 18 — COMPLETE  
-**Next Action:** Sprint 18 complete — all tests green (383/383). Ready for next sprint.  
+**Active Sprint:** None — Sprint 18 complete  
+**Next Action:** Define Sprint 19 or provide direction  
 **Active Role:** Scrum Master
 
 ---
 
-## Sprint 18 Results
+## Sprint 18 Results ✅
 
-| Story | Title | Status | Tests |
-|-------|-------|--------|-------|
-| S18-01 | sortBy prop on ExplorerList | ✅ Complete | ✅ 8/8 sortItems + 2/2 pagination |
-| S18-02 | groupBy prop on ExplorerList | ✅ Complete | ✅ 13/13 (8 sort + 5 group) |
-| S18-03 | sortBy prop on ExplorerActions | ✅ Complete | ✅ Covered by S18-01 tests |
-| S18-04 | initialSortBy prop on ExplorerTable | ✅ Complete | ✅ 4/4 explorerTableSort |
+| Story | Title | Tests |
+|-------|-------|-------|
+| S18-01 | sortBy prop on ExplorerList | ✅ 8/8 + 2/2 no regression |
+| S18-02 | groupBy prop on ExplorerList | ✅ 13/13 |
+| S18-03 | sortBy prop on ExplorerActions | ✅ Covered by S18-01 |
+| S18-04 | initialSortBy prop on ExplorerTable | ✅ 4/4 |
 
 **Full suite: 383/383 passed (27 files)**
+
+---
+
+## Cleanup Done
+
+- Sprint 16 status: `active` → `completed` (all stories were done)
+- Sprint 12 status: `upcoming` → `completed` (all stories were done)
 
 ---
 
@@ -49,31 +56,23 @@
 
 ---
 
-## Recent Wins
+## Pending Items
 
-**Sprint 18 Complete:** Explorer UX enhancements — sort + group:
-- `explorerUtils.ts` — pure utilities `sortItems()` + `groupItems()` (testable without DOM)
-- `ExplorerList` — `sortBy` + `groupBy` props, pagination composes correctly
-- `ExplorerActions` — `sortBy` prop reuses shared utility
-- `ExplorerTable` — `initialSortBy` for uncontrolled initial sort state
-- Zero regressions: all 383 tests green
+| Item | Type | Priority |
+|------|------|----------|
+| ADR-01: Remove wrapper classes (MachinePrefs/Activity/History) | Refactor | Medium |
+| Sprint 19 definition | Planning | High |
 
 ---
 
 ## Dependencies
 
-| Project | Status | Reason |
-|---------|--------|--------|
-| idae-router | ✅ Satisfied | SPA routing with permission guards |
-| qoolie | ✅ Satisfied | Real-time sync and offline-first data layer |
-| idae-socket | ✅ Satisfied | WebSocket/Socket.IO |
-| idae-idbql | ✅ Satisfied | IndexedDB layer |
-
----
-
-## Architecture Decisions
-
-**ADR-01:** Pas de classes wrapper par collection système (pending refactor after Sprint 15 release)
+| Project | Status |
+|---------|--------|
+| idae-router | ✅ Satisfied |
+| qoolie | ✅ Satisfied |
+| idae-socket | ✅ Satisfied |
+| idae-idbql | ✅ Satisfied |
 
 ---
 
