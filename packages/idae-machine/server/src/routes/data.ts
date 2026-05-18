@@ -5,6 +5,8 @@ import { logger } from '../utils/logger.js';
 import { requireDroit, type Permission } from '../middleware/permission.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
+import { logAudit, extractAuditContext } from '../services/AuditService.js';
+import { getDomainActions } from '../models/domainActions.js';
 
 /**
  * Validate table name to prevent NoSQL injection
@@ -67,6 +69,20 @@ function parseFilters(req: Request): Record<string, unknown> {
 }
 
 /**
+ * Build query filter that excludes soft-deleted records.
+ * Matches both missing deletedAt and null/undefined deletedAt.
+ */
+function activeRecordsFilter(customFilters: Record<string, unknown> = {}): Record<string, unknown> {
+	return {
+		...customFilters,
+		$or: [
+			{ deletedAt: { $exists: false } },
+			{ deletedAt: null }
+		]
+	};
+}
+
+/**
  * Get list of records with pagination
  * GET /api/data/:table
  */
@@ -84,11 +100,14 @@ export async function listRecords(req: Request, res: Response): Promise<void> {
 		const sort = parseSorting(req);
 		const filters = parseFilters(req);
 
+		// Exclude soft-deleted records
+		const activeFilters = activeRecordsFilter(filters);
+
 		// Get total count
-		const total = await Model.countDocuments(filters as FilterQuery<any>);
+		const total = await Model.countDocuments(activeFilters as FilterQuery<any>);
 
 		// Get paginated data
-		const data = await Model.find(filters as FilterQuery<any>)
+		const data = await Model.find(activeFilters as FilterQuery<any>)
 			.sort(sort)
 			.skip(skip)
 			.limit(limit)
@@ -130,6 +149,12 @@ export async function getRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
+		// Check if soft-deleted
+		if ((record as any).deletedAt) {
+			res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
+			return;
+		}
+
 		res.json(record);
 	} catch (error) {
 		logger.error('Error getting record:', error);
@@ -151,10 +176,40 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 		}
 
 		const Model = await getCollectionModel(table);
+
+		// Domain validation
+		const domainActions = getDomainActions(table);
+		if (domainActions?.validate) {
+			const result = domainActions.validate(req.body, table);
+			if (!result.valid) {
+				res.status(400).json({ error: 'Domain validation failed', details: result.errors });
+				return;
+			}
+		}
+
 		const record = await Model.create(req.body);
 
 		// Broadcast to table room
 		broadcastToTable(table, 'data:created', record);
+
+		// Domain afterCreate hook (fire-and-forget)
+		if (domainActions?.afterCreate) {
+			void domainActions.afterCreate(record, table).catch(err =>
+				logger.error('afterCreate hook failed:', err)
+			);
+		}
+
+		// Audit trail
+		const auditCtx = extractAuditContext(req);
+		logAudit({
+			action: 'create',
+			userId: req.user?.userId,
+			login: req.user?.login,
+			resourceType: table,
+			resourceId: String(record._id),
+			status: 'success',
+			...auditCtx
+		});
 
 		res.status(201).json(record);
 	} catch (error) {
@@ -191,6 +246,27 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 		// Broadcast to table room
 		broadcastToTable(table, 'data:updated', { id, record });
 
+		// Domain afterUpdate hook (fire-and-forget)
+		const domainActions = getDomainActions(table);
+		if (domainActions?.afterUpdate) {
+			void domainActions.afterUpdate(record, table).catch(err =>
+				logger.error('afterUpdate hook failed:', err)
+			);
+		}
+
+		// Audit trail
+		const auditCtx = extractAuditContext(req);
+		logAudit({
+			action: 'update',
+			userId: req.user?.userId,
+			login: req.user?.login,
+			resourceType: table,
+			resourceId: id,
+			status: 'success',
+			details: { fields: Object.keys(req.body) },
+			...auditCtx
+		});
+
 		res.json(record);
 	} catch (error) {
 		logger.error('Error updating record:', error);
@@ -201,6 +277,7 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 /**
  * Delete record with broadcast
  * DELETE /api/data/:table/:id
+ * Soft delete by default, permanent with ?permanent=true
  */
 export async function deleteRecord(req: Request, res: Response): Promise<void> {
 	try {
@@ -212,7 +289,97 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 		}
 
 		const Model = await getCollectionModel(table);
-		const record = await Model.findByIdAndDelete(id).lean();
+		const permanent = req.query.permanent === 'true';
+		const auditCtx = extractAuditContext(req);
+		const domainActions = getDomainActions(table);
+
+		// Domain beforeDelete hook (blocking — can veto deletion)
+		if (domainActions?.beforeDelete) {
+			try {
+				await domainActions.beforeDelete(id, table);
+			} catch (err) {
+				logger.error('beforeDelete hook vetoed deletion:', err);
+				throw err;
+			}
+		}
+
+		if (permanent) {
+			// Hard delete — permanent removal
+			const record = await Model.findByIdAndDelete(id).lean();
+			if (!record) {
+				res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
+				return;
+			}
+			broadcastToTable(table, 'data:deleted', { id });
+
+			// Audit trail
+			logAudit({
+				action: 'delete',
+				userId: req.user?.userId,
+				login: req.user?.login,
+				resourceType: table,
+				resourceId: id,
+				status: 'success',
+				details: { permanent: true },
+				...auditCtx
+			});
+
+			res.status(204).send();
+		} else {
+			// Soft delete — set deletedAt timestamp
+			const record = await Model.findByIdAndUpdate(
+				id,
+				{ deletedAt: new Date().toISOString() },
+				{ new: true }
+			).lean();
+
+			if (!record) {
+				res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
+				return;
+			}
+
+			// Broadcast to table room
+			broadcastToTable(table, 'data:deleted', { id });
+
+			// Audit trail
+			logAudit({
+				action: 'delete',
+				userId: req.user?.userId,
+				login: req.user?.login,
+				resourceType: table,
+				resourceId: id,
+				status: 'success',
+				details: { permanent: false },
+				...auditCtx
+			});
+
+			res.status(204).send();
+		}
+	} catch (error) {
+		logger.error('Error deleting record:', error);
+		res.status(500).json({ error: 'Failed to delete record' });
+	}
+}
+
+/**
+ * Restore a soft-deleted record
+ * PATCH /api/data/:table/:id/restore
+ */
+export async function restoreRecord(req: Request, res: Response): Promise<void> {
+	try {
+		const { table, id } = req.params;
+
+		if (!validateTableName(table)) {
+			res.status(400).json({ error: 'Invalid table name' });
+			return;
+		}
+
+		const Model = await getCollectionModel(table);
+		const record = await Model.findByIdAndUpdate(
+			id,
+			{ $unset: { deletedAt: '' } },
+			{ new: true }
+		).lean();
 
 		if (!record) {
 			res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
@@ -220,12 +387,25 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 		}
 
 		// Broadcast to table room
-		broadcastToTable(table, 'data:deleted', { id });
+		broadcastToTable(table, 'data:restored', { id });
 
-		res.status(204).send();
+		// Audit trail
+		const auditCtx = extractAuditContext(req);
+		logAudit({
+			action: 'update',
+			userId: req.user?.userId,
+			login: req.user?.login,
+			resourceType: table,
+			resourceId: id,
+			status: 'success',
+			details: { action: 'restore' },
+			...auditCtx
+		});
+
+		res.json(record);
 	} catch (error) {
-		logger.error('Error deleting record:', error);
-		res.status(500).json({ error: 'Failed to delete record' });
+		logger.error('Error restoring record:', error);
+		res.status(500).json({ error: 'Failed to restore record' });
 	}
 }
 
@@ -266,6 +446,13 @@ export function registerDataRoutes(): void {
 		path: '/api/data/:table/:id',
 		handler: deleteRecord,
 		middleware: [requireDroit('D')]
+	});
+
+	idaeApi.router.addRoute({
+		method: 'patch',
+		path: '/api/data/:table/:id/restore',
+		handler: restoreRecord,
+		middleware: [requireDroit('U')]
 	});
 
 	logger.info('Data routes registered: CRUD endpoints for /api/data/:table');

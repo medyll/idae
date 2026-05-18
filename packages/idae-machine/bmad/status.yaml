@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S16-01 — Soft delete in deleteRecord + filter in listRecords/getRecord"
+next_action: "S16-04 — MachineSchemeValidate server-side — validateRules.ts partagé"
 next_command: "bmad-continue"
 next_role: "developer"
-active_role: "scrum master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -354,27 +354,33 @@ sprints:
     stories:
       - id: S16-01
         title: "Soft delete — deletedAt + filter dans listRecords/getRecord"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server vitest: data.test.ts 14/14 passed (soft delete, permanent delete, restore, filtering)"
+        test_result: pass
 
       - id: S16-02
         title: "CRUD audit trail via AuditService.logAudit()"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server vitest: data.test.ts 18/18 passed (create/update/delete/restore audit entries)"
+        test_result: pass
 
       - id: S16-03
         title: "Domain actions pattern — DomainActions interface + rental demo"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server vitest: domainActions.test.ts 10/10 passed. Full suite: 102/102 (sequential)"
+        test_result: pass
+        notes: >
+          Created server/src/models/domainActions.ts (interface + registry).
+          Created server/src/models/demo/actions.ts (vehicule + reservation hooks).
+          Wired validate/beforeDelete/afterCreate/afterUpdate into data.ts handlers.
+          Imported demo actions at boot in MachineServer.ts.
+          Convention: domain actions colocalisés avec schéma, jamais dans répertoire séparé.
 
       - id: S16-04
         title: "MachineSchemeValidate server-side — validateRules.ts partagé"

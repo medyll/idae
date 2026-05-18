@@ -33,6 +33,7 @@ function mockReq(overrides: any = {}): any {
 		query: {},
 		headers: { authorization: 'Bearer mock-admin-token' },
 		user: { userId: 'admin-1', login: 'admin', isAdmin: true },
+		socket: { remoteAddress: '127.0.0.1' },
 		...overrides,
 	};
 }

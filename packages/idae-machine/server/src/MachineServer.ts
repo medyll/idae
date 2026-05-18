@@ -17,6 +17,9 @@ import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
 
+// Load domain actions — registers hooks for demo collections
+import './models/demo/actions.js';
+
 const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_type', 'appscheme_field_group', 'appscheme_view_type']);
 
 class MachineServerClass {
