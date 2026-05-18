@@ -32,11 +32,13 @@ function mockReq(opts: { params?: any; query?: any; body?: any; headers?: any } 
 	} as unknown as Request;
 }
 
-function getTestCollection() {
-	const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
-	const schema = new Schema({}, { strict: false, collection: TEST_TABLE });
+// Use same connection as handlers (mongooseConnectionManager via getConn)
+// to guarantee both see identical MongoDB state.
+async function getTestCollection() {
+	const db   = await getConn(DATA_DB);
 	const name = `${DATA_DB}__${TEST_TABLE}`;
-	return db.models[name] ?? db.model(name, schema, TEST_TABLE);
+	if (db.models[name]) return db.models[name];
+	return db.model(name, new Schema({}, { strict: false, collection: TEST_TABLE }), TEST_TABLE);
 }
 
 describe('Data CRUD handlers', () => {
@@ -48,8 +50,8 @@ describe('Data CRUD handlers', () => {
 		invalidateBaseCache();
 		invalidateSchemeCache();
 
-		// Seed appscheme so dbRouter can find testcollection → machine_base
-		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		// Seed appscheme so dbRouter can find datacollection → machine_base
+		const meta = await getConn(META_DB);
 		await meta.collection('appscheme').updateOne(
 			{ code: TEST_TABLE },
 			{ $set: { code: TEST_TABLE, base: TEST_BASE } },
@@ -58,15 +60,15 @@ describe('Data CRUD handlers', () => {
 	});
 
 	afterAll(async () => {
-		const meta = mongoose.connection.useDb(META_DB, { useCache: true });
+		const meta = await getConn(META_DB);
 		await meta.collection('appscheme').deleteOne({ code: TEST_TABLE });
-		const db = mongoose.connection.useDb(DATA_DB, { useCache: true });
+		const db = await getConn(DATA_DB);
 		await db.collection(TEST_TABLE).drop().catch(() => {});
-		await mongoose.disconnect();
+		// mongoose.disconnect() handled by globalTeardown
 	});
 
 	afterEach(async () => {
-		await getTestCollection().deleteMany({});
+		await (await getTestCollection()).deleteMany({});
 	});
 
 	describe('createRecord', () => {
@@ -89,7 +91,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('listRecords', () => {
 		it('returns paginated list', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			await col.deleteMany({});
 			await col.insertMany([
 				{ name: 'Item 1', value: 10 },
@@ -106,7 +108,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('supports descending sort', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			await col.deleteMany({});
 			await col.insertMany([
 				{ name: 'Item 1', value: 10 },
@@ -123,7 +125,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('getRecord', () => {
 		it('returns single record by id', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'X', value: 42 });
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
 			const res = mockRes();
@@ -142,7 +144,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('updateRecord', () => {
 		it('updates record', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			await col.deleteMany({});
 			const doc = await col.create({ name: 'Old', value: 1 });
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() }, body: { name: 'New', value: 2 } });
@@ -155,7 +157,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('deleteRecord', () => {
 		it('soft deletes record (default)', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'To Delete' });
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
 			const res = mockRes();
@@ -168,7 +170,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('permanent delete with ?permanent=true', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'Gone Forever' });
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() }, query: { permanent: 'true' } });
 			const res = mockRes();
@@ -190,7 +192,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('restoreRecord', () => {
 		it('restores soft-deleted record', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'Restore Me', deletedAt: new Date().toISOString() });
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
 			const res = mockRes();
@@ -213,7 +215,7 @@ describe('Data CRUD handlers', () => {
 
 	describe('soft delete filtering', () => {
 		it('listRecords excludes soft-deleted records', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			await col.create({ name: 'Active Item' });
 			await col.create({ name: 'Deleted Item', deletedAt: new Date().toISOString() });
 
@@ -226,7 +228,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('getRecord returns 404 for soft-deleted record', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'Hidden', deletedAt: new Date().toISOString() });
 
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
@@ -261,7 +263,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('updateRecord logs audit entry with changed fields', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'Old', value: 1 });
 
 			const req = mockReq({
@@ -282,7 +284,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('deleteRecord logs audit entry with permanent flag', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'To Delete' });
 
 			const req = mockReq({ params: { table: TEST_TABLE, id: doc._id.toString() } });
@@ -299,7 +301,7 @@ describe('Data CRUD handlers', () => {
 		});
 
 		it('permanent delete logs audit entry', async () => {
-			const col = getTestCollection();
+			const col = await getTestCollection();
 			const doc = await col.create({ name: 'Gone Forever' });
 
 			const req = mockReq({
