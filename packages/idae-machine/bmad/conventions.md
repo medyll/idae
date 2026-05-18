@@ -59,6 +59,30 @@ pnpm run format  # Prettier
 pnpm run lint    # Prettier check
 ```
 
+## Domain actions
+
+- Colocalisé avec le schéma — jamais dans un répertoire séparé
+- Convention : `server/src/models/{domain}/actions.ts`
+- Interface : `DomainActions` de `server/src/models/domainActions.ts`
+- Enregistrement : `registerDomainActions(collection, actions)` au boot
+- Chargement : `import './models/{domain}/actions.js'` dans `index.ts`
+
+## Soft delete
+
+- Champ `deletedAt: string | null` — null = record actif
+- `listRecords`/`getRecord` filtrent `{ deletedAt: null }` automatiquement
+- `DELETE /api/data/:table/:id` → soft delete par défaut
+- `DELETE /api/data/:table/:id?permanent=true` → hard delete admin
+
+## Validation serveur
+
+- Règles pures dans `src/lib/main/machine/validateRules.ts` (sans dépendance browser)
+- `validateField(value, rule)` + `validateRecord(data, fields)`
+- Même module utilisé côté client (MachineSchemeValidate) et serveur (domain actions)
+- Validation domain custom via `DomainActions.validate()` — appelée avant Model.create/update
+- Réponse erreur : HTTP 422 + `{ error: 'Validation failed', errors: Record<field, message> }`
+- PAS de Zod
+
 ## Dependencies
 
 - Package manager: **pnpm** (not npm/yarn)

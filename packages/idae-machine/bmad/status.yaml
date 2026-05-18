@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-17"
+last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 15 complete — release ready (chromadb pre-existing issue)"
-next_command: "bmad-status"
-next_role: "scrum master"
-active_role: "developer"
+next_action: "S16-01 — Soft delete in deleteRecord + filter in listRecords/getRecord"
+next_command: "bmad-continue"
+next_role: "developer"
+active_role: "scrum master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -347,6 +347,42 @@ sprints:
         tests_executed: true
         test_output: "npm run build → exit 0"
         test_result: pass
+
+  - id: 16
+    goal: "Actions Layer: soft delete, audit CRUD, domain actions pattern, validation serveur"
+    status: active
+    stories:
+      - id: S16-01
+        title: "Soft delete — deletedAt + filter dans listRecords/getRecord"
+        status: todo
+        priority: high
+        tests_executed: false
+        test_output: null
+        test_result: null
+
+      - id: S16-02
+        title: "CRUD audit trail via AuditService.logAudit()"
+        status: todo
+        priority: high
+        tests_executed: false
+        test_output: null
+        test_result: null
+
+      - id: S16-03
+        title: "Domain actions pattern — DomainActions interface + rental demo"
+        status: todo
+        priority: high
+        tests_executed: false
+        test_output: null
+        test_result: null
+
+      - id: S16-04
+        title: "MachineSchemeValidate server-side — validateRules.ts partagé"
+        status: todo
+        priority: high
+        tests_executed: false
+        test_output: null
+        test_result: null
 
   - id: 15
     goal: "Release prep: tests, TypeScript, exports, build"
