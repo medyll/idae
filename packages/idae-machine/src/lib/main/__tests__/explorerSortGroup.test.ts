@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sortItems } from '../../main-ui/explorer/explorerUtils.js';
+import { sortItems, groupItems } from '../../main-ui/explorer/explorerUtils.js';
 
 describe('sortItems', () => {
 	const data = [
@@ -54,5 +54,45 @@ describe('sortItems', () => {
 	it('empty array returns empty array', () => {
 		const result = sortItems([], { field: 'name', direction: 'asc' });
 		expect(result).toEqual([]);
+	});
+});
+
+describe('groupItems', () => {
+	const data = [
+		{ id: '1', name: 'Zara', status: 'active' },
+		{ id: '2', name: 'Alice', status: 'inactive' },
+		{ id: '3', name: 'Bob', status: 'active' },
+		{ id: '4', name: 'Eve', status: null },
+	];
+
+	it('groups by string field', () => {
+		const result = groupItems(data, 'status');
+		expect(result.size).toBe(3);
+		expect(result.get('active')?.map((r) => r.id)).toEqual(['1', '3']);
+		expect(result.get('inactive')?.map((r) => r.id)).toEqual(['2']);
+	});
+
+	it('null/undefined → group em dash', () => {
+		const result = groupItems(data, 'status');
+		const emDash = '\u2014';
+		expect(result.has(emDash)).toBe(true);
+		expect(result.get(emDash)?.map((r) => r.id)).toEqual(['4']);
+	});
+
+	it('preserves insertion order of groups', () => {
+		const result = groupItems(data, 'status');
+		const keys = Array.from(result.keys());
+		expect(keys).toEqual(['active', 'inactive', '\u2014']);
+	});
+
+	it('preserves item order within group', () => {
+		const result = groupItems(data, 'status');
+		const active = result.get('active');
+		expect(active?.map((r) => r.id)).toEqual(['1', '3']);
+	});
+
+	it('empty array returns empty Map', () => {
+		const result = groupItems([], 'status');
+		expect(result.size).toBe(0);
 	});
 });

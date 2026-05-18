@@ -16,7 +16,7 @@ Collection record list with machine store binding.
 	import { machine } from '$lib/main/machine.js';
 	import CardFields from '$lib/main-ui/card/CardFields.svelte';
 	import type { SortBy } from './explorerUtils.js';
-	import { sortItems } from './explorerUtils.js';
+	import { sortItems, groupItems } from './explorerUtils.js';
 
 	interface ExplorerListProps  {
 		collection:     string;
@@ -29,6 +29,7 @@ Collection record list with machine store binding.
 		children?:      any;
 		onclick?:       (data: COL, index: number | string) => void;
 		sortBy?:        SortBy;
+		groupBy?:       string;
 	}
 	let {
 		collection,
@@ -36,6 +37,7 @@ Collection record list with machine store binding.
 		onclick,
 		where,
 		sortBy,
+		groupBy,
 		children: _children,
 		pageSize = 20,
 	}:ExplorerListProps & { pageSize?: number } = $props();
@@ -62,6 +64,7 @@ Collection record list with machine store binding.
 	let paginatedItems = $derived(
 		allItems.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 	);
+	let groupedItems = $derived(groupBy ? groupItems(paginatedItems, groupBy) : null);
 
 	$effect(() => {
 		if (!safeCollection(collection)) {
@@ -111,19 +114,40 @@ Collection record list with machine store binding.
 	<p class="explorer-error">{errorMessage}</p>
 {/if}
 
-<ul class="explorer-list" role="list">
-	{#each paginatedItems as item, idx (item[index])}
-		<li
-			class="explorer-item"
-			role="button"
-			tabindex="0"
-			onclick={() => _onclick(item, idx)}
-			onkeydown={(e) => e.key === 'Enter' && _onclick(item, idx)}
-		>
-			<CardFields collection={collection} data={item} mode="show" />
-		</li>
+{#if groupedItems}
+	{#each Array.from(groupedItems) as [groupKey, groupItemList] (groupKey)}
+		<section class="explorer-group">
+			<h3 class="explorer-group-header">{groupKey}</h3>
+			<ul class="explorer-list" role="list">
+				{#each groupItemList as item (item[index])}
+					<li
+						class="explorer-item"
+						role="button"
+						tabindex="0"
+						onclick={() => _onclick(item, item[index])}
+						onkeydown={(e) => e.key === 'Enter' && _onclick(item, item[index])}
+					>
+						<CardFields collection={collection} data={item} mode="show" />
+					</li>
+				{/each}
+			</ul>
+		</section>
 	{/each}
-</ul>
+{:else}
+	<ul class="explorer-list" role="list">
+		{#each paginatedItems as item, idx (item[index])}
+			<li
+				class="explorer-item"
+				role="button"
+				tabindex="0"
+				onclick={() => _onclick(item, idx)}
+				onkeydown={(e) => e.key === 'Enter' && _onclick(item, idx)}
+			>
+				<CardFields collection={collection} data={item} mode="show" />
+			</li>
+		{/each}
+	</ul>
+{/if}
 
 {#if totalPages > 1}
 	<nav class="pagination" aria-label="Pagination">
@@ -195,8 +219,15 @@ Collection record list with machine store binding.
 		cursor: not-allowed;
 	}
 
-	.pagination-info {
-		font-size: 0.8125rem;
+	.explorer-group { margin-bottom: 1rem; }
+	.explorer-group-header {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 		color: var(--color-text-muted, #6b7280);
+		padding: 0.25rem 0;
+		border-bottom: 1px solid var(--color-border, #e0e0e0);
+		margin-bottom: 0.5rem;
 	}
 </style>

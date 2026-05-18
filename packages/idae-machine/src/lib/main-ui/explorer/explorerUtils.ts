@@ -15,3 +15,16 @@ export function sortItems<T extends Record<string, unknown>>(
 		return direction === 'asc' ? cmp : -cmp;
 	});
 }
+
+export function groupItems<T extends Record<string, unknown>>(
+	items: T[],
+	field: string
+): Map<string, T[]> {
+	const map = new Map<string, T[]>();
+	for (const item of items) {
+		const key = String(item[field] ?? '\u2014');
+		if (!map.has(key)) map.set(key, []);
+		map.get(key)!.push(item);
+	}
+	return map;
+}
