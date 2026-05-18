@@ -8,10 +8,24 @@ Visual table renderer for a list of items. No machine logic.
 @prop {string[]} [sortableColumns] - Specific columns to make sortable
 -->
 <script lang="ts">
-let { items = [], columns = [], sortable = false, sortableColumns = [] } = $props();
+import type { SortBy } from './explorerUtils.js';
 
-let sortColumn = $state<string | null>(null);
-let sortDirection = $state<'asc' | 'desc'>('asc');
+let {
+	items = [],
+	columns = [],
+	sortable = false,
+	sortableColumns = [],
+	initialSortBy,
+}: {
+	items?: Record<string, unknown>[];
+	columns?: string[];
+	sortable?: boolean;
+	sortableColumns?: string[];
+	initialSortBy?: SortBy;
+} = $props();
+
+let sortColumn = $state<string | null>(initialSortBy?.field ?? null);
+let sortDirection = $state<'asc' | 'desc'>(initialSortBy?.direction ?? 'asc');
 
 const effectiveSortable = $derived(
 	sortableColumns.length > 0 ? sortableColumns : (sortable ? columns : [])

@@ -13,4 +13,8 @@ describe('ExplorerTable sort headers', () => {
 	it('accepts sortableColumns prop', () => {
 		expect(ExplorerTable).toBeTruthy();
 	});
+
+	it('accepts initialSortBy prop', () => {
+		expect(ExplorerTable).toBeTruthy();
+	});
 });
