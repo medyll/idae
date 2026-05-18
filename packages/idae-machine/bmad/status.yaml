@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-18"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S17-01 — SchemeValidator service (fetch + cache + FieldRule map)"
-next_command: "bmad-continue"
-next_role: "developer"
-active_role: "scrum master"
+next_action: "Sprint 17 complete — 116/116 server tests. Next: ADR-01 refactor or UI features"
+next_command: "bmad-whats-next"
+next_role: "scrum master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -99,31 +99,31 @@ architecture:
 sprints:
   - id: 17
     goal: "Generic schema validation — SchemeValidator lit appscheme MongoDB, valide sans domain actions"
-    status: active
+    status: completed
     stories:
       - id: S17-01
         title: "SchemeValidator service — fetch + cache + FieldRule map"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server: 116/116"
+        test_result: pass
 
       - id: S17-02
         title: "Wire SchemeValidator dans createRecord/updateRecord"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server: 116/116"
+        test_result: pass
 
       - id: S17-03
         title: "Tests schemeValidation — violations → 422, skip gracieux"
-        status: todo
+        status: complete
         priority: high
-        tests_executed: false
-        test_output: null
-        test_result: null
+        tests_executed: true
+        test_output: "server: 116/116 (12 files). schemeValidation: 14/14 unit tests."
+        test_result: pass
 
   - id: 1
     goal: "Foundation: Server, schema endpoints, MachineApi client"
