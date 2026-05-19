@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S22-03 URL parser multi-cibles"
+next_action: "Implement S22-04 SchemaRouter refactor"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -116,8 +116,12 @@ sprints:
 
       - id: S22-03
         title: "URL parser multi-cibles (+targetId)"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "urlParser.test.ts: 8/8 passed. Full suite: 368/379 (11 pre-existing)."
+        test_result: pass
+
       - id: S22-04
         title: "SchemaRouter refactor — bugs §6, mount actions"
         status: todo
