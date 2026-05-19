@@ -245,4 +245,5 @@ pnpm run build     # svelte-package build
 | `src/lib/types/machine-model.ts` | MachineModel / MachineCollectionModel / MachineFieldDef public types |
 | `server/src/MachineServer.ts` | Server singleton — start/stop/getModel/deployModel |
 | `ARCH-SOURCE.md` | Legacy architecture reference (READ ONLY — historical) |
+| `SCHEMA-CONVENTIONS.md` | Schema conventions: role flags, status codes, FieldList groups, has*Scheme mapping |
 | `bmad/` | Sprint planning artifacts (may be outdated) |
