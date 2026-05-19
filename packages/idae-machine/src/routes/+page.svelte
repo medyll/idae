@@ -1,14 +1,27 @@
-
 <script lang="ts">
-	import { machine } from '$lib/main/machine.js';
-	import { demoScheme } from '$lib/demo/demoScheme.js';
+    import { machine } from '$lib/main/machine.js';
+    import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
 
-	// Initialize machine — demoScheme IS the model (top-level keys = collection names)
-	machine.init({  org: 'demo',  domain: 'machine',dbName: 'testdb', version: 1, model: demoScheme });
-	machine.start();
-
-
+    onMount(() => {
+        const collections = machine.logic.collections();
+        const first = collections.find(c => machine.rights.checkAccess(c.collection ?? c.name ?? '', 'R'));
+        if (first) {
+            goto(`/${first.collection ?? first.name}`);
+        }
+    });
 </script>
 
+<div class="home-empty">
+    <p>Chargement…</p>
+</div>
 
-
+<style>
+    .home-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--color-text-muted);
+    }
+</style>

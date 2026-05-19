@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+page.on('console', msg => { if (['error','warn'].includes(msg.type())) console.log(`[${msg.type()}]`, msg.text().slice(0,120)); });
+await page.goto('http://localhost:5173/vehicle');
+await page.waitForTimeout(3000);
+await page.screenshot({ path: '__shot.png' });
+const body = (await page.innerText('body').catch(() => '')).slice(0, 500);
+console.log('BODY:', body);
+await browser.close();

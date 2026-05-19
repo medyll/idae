@@ -4,10 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@medyll/css-base': link:../css-base
+
 importers:
 
   .:
     dependencies:
+      '@medyll/css-base':
+        specifier: link:../css-base
+        version: link:../css-base
       '@medyll/idae-pnpm-release':
         specifier: ^1.0.33
         version: 1.0.33(@pnpm/logger@5.2.0)
@@ -1103,6 +1109,9 @@ importers:
       '@iconify/svelte':
         specifier: ^5.2.1
         version: 5.2.1(svelte@5.55.1)
+      '@medyll/css-base':
+        specifier: link:D:/development/css-base
+        version: link:../../../css-base
       '@medyll/idae-idbql':
         specifier: workspace:*
         version: link:../idae-idbql

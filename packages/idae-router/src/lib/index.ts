@@ -1,6 +1,5 @@
 // auto exports of entry components
 export * from '$lib/cache.js';
-export * from '$lib/cli/add-skill.js';
 export * from '$lib/fetcher.js';
 export * from '$lib/matcher.js';
 export * from '$lib/render.js';

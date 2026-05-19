@@ -58,6 +58,7 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
+    "@medyll/css-base": "link:../css-base",
     "@medyll/idae-pnpm-release": "^1.0.33",
     "@medyll/monorepo-pnpm-release": "^1.0.22",
     "@octokit/rest": "^22.0.1",

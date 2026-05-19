@@ -1,5 +1,4 @@
 // auto exports of entry components
-export * from '$lib/cli/add-skill.js';
 export * from '$lib/collection/collection.svelte.js';
 export * from '$lib/idbqlCore/idbqlCore.js';
 export * from '$lib/idbqlCore/idbqlSchema.js';
