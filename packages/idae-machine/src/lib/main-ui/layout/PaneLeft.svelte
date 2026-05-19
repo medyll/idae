@@ -43,13 +43,14 @@
 </script>
 
 <div class="pane-left">
-	<input
-		type="search"
-		bind:value={query}
-		placeholder="Search collections…"
-		class="pane-search"
-		aria-label="Search collections"
-	/>
+	<div class="toolbar">
+		<input
+			type="search"
+			bind:value={query}
+			placeholder="Search collections…"
+			aria-label="Search collections"
+		/>
+	</div>
 	<div class="pane-groups">
 		{#each groups as group}
 			<PaneCollectionGroup
@@ -58,7 +59,10 @@
 			/>
 		{/each}
 		{#if groups.length === 0}
-			<p class="pane-empty">No collections found.</p>
+			<div class="empty-state">
+				<div class="empty-state-icon">🔍</div>
+				<p class="empty-state-text">No collections found.</p>
+			</div>
 		{/if}
 	</div>
 </div>
@@ -68,28 +72,13 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		border-right: 1px solid #e5e7eb;
+		border-right: var(--border-width) solid var(--color-border);
 		overflow: hidden;
-	}
-
-	.pane-search {
-		margin: 1rem;
-		padding: 0.5rem 0.75rem;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		font-size: 0.875rem;
 	}
 
 	.pane-groups {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 1rem 1rem;
-	}
-
-	.pane-empty {
-		color: #6b7280;
-		font-size: 0.875rem;
-		text-align: center;
-		padding: 2rem 0;
+		padding: 0 var(--pad-md) var(--pad-md);
 	}
 </style>

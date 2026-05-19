@@ -52,50 +52,33 @@
 	}
 </script>
 
-<nav class="breadcrumb">
+<nav class="breadcrumb toolbar" aria-label="Breadcrumb">
 	{#each items as item, i}
 		{#if i > 0}
-			<span class="separator">/</span>
+			<span class="separator" aria-hidden="true">/</span>
 		{/if}
 
 		{#if item.href}
 			<a href={item.href} class="crumb">{item.label}</a>
 		{:else}
-			<span class="crumb active">{item.label}</span>
+			<span class="crumb is-active" aria-current="page">{item.label}</span>
 		{/if}
 	{/each}
 </nav>
 
 <style>
 	.breadcrumb {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1rem;
-		background: #f8f9fa;
-		border-bottom: 1px solid #dee2e6;
-		font-size: 0.875rem;
+		background: var(--color-bg);
+		border-bottom: var(--border-width) solid var(--color-border);
+		font-size: var(--text-sm);
 	}
 
-	.separator {
-		color: #6c757d;
-	}
+	.separator { color: var(--color-text-muted); }
 
 	.crumb {
-		color: #007bff;
+		color: var(--color-primary);
 		text-decoration: none;
-	}
-
-	.crumb:hover {
-		text-decoration: underline;
-	}
-
-	.crumb.active {
-		color: #6c757d;
-		cursor: default;
-	}
-
-	.crumb.active:hover {
-		text-decoration: none;
+		&:hover { text-decoration: underline; }
+		&.is-active { color: var(--color-text-muted); }
 	}
 </style>

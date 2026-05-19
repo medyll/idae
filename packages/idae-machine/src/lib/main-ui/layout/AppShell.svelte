@@ -40,10 +40,10 @@
 	<!-- Header -->
 	<header class="app-header">
 		<div class="header-left">
-			<button class="menu-toggle" onclick={toggleMobileSidebar} aria-label="Toggle menu">
+			<button class="btn-icon btn-ghost menu-toggle" onclick={toggleMobileSidebar} aria-label="Toggle menu">
 				☰
 			</button>
-			<button class="sidebar-toggle" onclick={toggleSidebar} aria-label="Toggle sidebar">
+			<button class="btn-icon btn-ghost sidebar-toggle" onclick={toggleSidebar} aria-label="Toggle sidebar">
 				{sidebarCollapsed ? '→' : '←'}
 			</button>
 			<h1 class="app-title">
@@ -98,8 +98,8 @@
 		align-items: center;
 		padding: 0 1rem;
 		height: 60px;
-		background: #fff;
-		border-bottom: 1px solid #dee2e6;
+		background: var(--color-surface);
+		border-bottom: 1px solid var(--color-border);
 		z-index: 100;
 	}
 
@@ -117,12 +117,7 @@
 
 	.menu-toggle,
 	.sidebar-toggle {
-		background: none;
-		border: none;
-		font-size: 1.5rem;
-		cursor: pointer;
-		padding: 0.5rem;
-		color: #333;
+		font-size: 1.25rem;
 	}
 
 	.menu-toggle {
@@ -132,7 +127,7 @@
 	.app-title {
 		margin: 0;
 		font-size: 1.25rem;
-		color: #333;
+		color: var(--color-text);
 	}
 
 	.app-body {
@@ -143,8 +138,8 @@
 
 	.app-sidebar {
 		width: 250px;
-		background: #f5f5f5;
-		border-right: 1px solid #dee2e6;
+		background: var(--color-bg);
+		border-right: 1px solid var(--color-border);
 		transition: width 0.3s ease, transform 0.3s ease;
 		position: relative;
 	}
@@ -168,7 +163,7 @@
 		flex: 1;
 		overflow-y: auto;
 		padding: 1.5rem;
-		background: #f8f9fa;
+		background: var(--color-bg);
 	}
 
 	/* Mobile responsive */

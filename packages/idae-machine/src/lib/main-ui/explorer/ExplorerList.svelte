@@ -14,6 +14,7 @@ Collection record list with machine store binding.
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
 	import { machine } from '$lib/main/machine.js';
+	import { signals } from '$lib/main/machineSignals.svelte.js';
 	import CardFields from '$lib/main-ui/card/CardFields.svelte';
 	import type { SortBy } from './explorerUtils.js';
 	import { sortItems, groupItems } from './explorerUtils.js';
@@ -56,8 +57,15 @@ Collection record list with machine store binding.
 	}
 
 	let fieldValues = $derived(safeCollection(collection)?.collectionValues ?? {});
-	let index = $derived(safeCollection(collection)?.template?.index ?? '');
-	let rawItems = $derived(where ? store[collection]?.where(where) : store[collection]?.getAll() ?? []);
+	let index = $derived(
+		safeCollection(collection)?.template?.index ||
+		safeCollection(collection)?.index ||
+		'id'
+	);
+	let rawItems = $derived((() => {
+		void signals.dataVersion; // track global data version → re-run after writes
+		return where ? store[collection]?.where(where) : store[collection]?.getAll() ?? [];
+	})());
 	let allItems = $derived(
 		sortBy
 			? sortItems(rawItems, sortBy)
@@ -117,48 +125,62 @@ Collection record list with machine store binding.
 </script>
 
 {#if errorMessage}
-	<p class="explorer-error">{errorMessage}</p>
+	<div class="alert alert-error">{errorMessage}</div>
 {/if}
 
 {#if groupedItems}
 	{#each Array.from(groupedItems) as [groupKey, groupItemList] (groupKey)}
 		<section class="explorer-group">
-			<h3 class="explorer-group-header">{groupKey}</h3>
-			<ul class="explorer-list" role="list">
+			<header class="section-header section-header-bordered">
+				<h3>{groupKey}</h3>
+			</header>
+			<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
 				{#each groupItemList as item (item[index])}
 					<li
-						class="explorer-item"
+						class="list-item panel panel-bordered"
 						role="button"
 						tabindex="0"
 						onclick={() => _onclick(item, item[index])}
 						onkeydown={(e) => e.key === 'Enter' && _onclick(item, item[index])}
 					>
-						<CardFields collection={collection} data={item} mode="show" />
+						<div class="list-item-content">
+							<CardFields collection={collection} data={item} mode="show" />
+						</div>
 					</li>
 				{/each}
 			</ul>
 		</section>
 	{/each}
 {:else}
-	<ul class="explorer-list" role="list">
+	<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
 		{#each paginatedItems as item, idx (item[index])}
 			<li
-				class="explorer-item"
+				class="list-item panel panel-bordered"
 				role="button"
 				tabindex="0"
 				onclick={() => _onclick(item, idx)}
 				onkeydown={(e) => e.key === 'Enter' && _onclick(item, idx)}
 			>
-				<CardFields collection={collection} data={item} mode="show" />
+				<div class="list-item-content">
+					<CardFields collection={collection} data={item} mode="show" />
+				</div>
 			</li>
 		{/each}
 	</ul>
+
+	{#if paginatedItems.length === 0 && !errorMessage}
+		<div class="empty-state">
+			<div class="empty-state-icon">📭</div>
+			<p class="empty-state-title">No records</p>
+			<p class="empty-state-text">This collection is empty.</p>
+		</div>
+	{/if}
 {/if}
 
 {#if totalPages > 1}
 	<nav class="pagination" aria-label="Pagination">
 		<button
-			class="pagination-btn"
+			class="btn btn-sm"
 			disabled={currentPage === 1}
 			onclick={() => goToPage(currentPage - 1)}
 			aria-label="Previous page"
@@ -169,7 +191,7 @@ Collection record list with machine store binding.
 			Page {currentPage} of {totalPages} ({totalCount} items)
 		</span>
 		<button
-			class="pagination-btn"
+			class="btn btn-sm"
 			disabled={currentPage === totalPages}
 			onclick={() => goToPage(currentPage + 1)}
 			aria-label="Next page"
@@ -180,60 +202,5 @@ Collection record list with machine store binding.
 {/if}
 
 <style>
-	.explorer-list {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-		gap: 0.75rem;
-	}
-	.explorer-item {
-		padding: 0.5rem;
-		border: 1px solid var(--color-border, #e0e0e0);
-		border-radius: 0.5rem;
-		cursor: pointer;
-	}
-	.explorer-item:hover { background: var(--color-surface-hover, #f5f5f5); }
-	.explorer-error { color: var(--color-error, red); font-size: 0.85em; }
-
-	.pagination {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 1rem;
-		padding: 1rem 0;
-		margin-top: 0.5rem;
-		border-top: 1px solid var(--color-border, #e0e0e0);
-	}
-
-	.pagination-btn {
-		padding: 0.5rem 1rem;
-		border: 1px solid var(--color-border, #e0e0e0);
-		border-radius: 0.375rem;
-		background: var(--color-surface, #fff);
-		cursor: pointer;
-		font-size: 0.875rem;
-	}
-
-	.pagination-btn:hover:not(:disabled) {
-		background: var(--color-surface-hover, #f5f5f5);
-	}
-
-	.pagination-btn:disabled {
-		opacity: 0.4;
-		cursor: not-allowed;
-	}
-
-	.explorer-group { margin-bottom: 1rem; }
-	.explorer-group-header {
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-text-muted, #6b7280);
-		padding: 0.25rem 0;
-		border-bottom: 1px solid var(--color-border, #e0e0e0);
-		margin-bottom: 0.5rem;
-	}
+	.explorer-group { margin-bottom: var(--gutter-md); }
 </style>

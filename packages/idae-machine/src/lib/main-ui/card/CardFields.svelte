@@ -6,7 +6,7 @@
      */
     import FieldDisplay from "$lib/main-ui/field/FieldDisplay.svelte";
     import { machine } from "$lib/main/machine.js";
-	import { getContext } from "svelte";
+    import { getContext } from "svelte";
 
     let {
       collection = getContext('collection'),
@@ -22,7 +22,7 @@
 
     const scheme = $derived(machine.logic.collection(collection));
     const fieldNames = $derived(() => {
-      const fields = scheme?.template?.fields;
+      const fields = scheme?.fields;
       if (fields) {
         let keys = Object.keys(fields);
         if (showFields && Array.isArray(showFields)) {
@@ -32,27 +32,21 @@
       }
       return [];
     });
+</script>
 
-  </script>
 <div class="form">
   {#if scheme && fieldNames()?.length}
     {#each fieldNames() as fieldName (fieldName)}
-      {#if scheme.fields && scheme.fields[fieldName]}
-        <FieldDisplay
-          {collection}
-          {fieldName}
-          {mode}
-          bind:data={data}
-        />
+      {#if scheme.fields && scheme.fields[fieldName] && (mode !== 'show' || !data || fieldName in data)}
+        <div class="field">
+          <FieldDisplay
+            {collection}
+            {fieldName}
+            {mode}
+            bind:data={data}
+          />
+        </div>
       {/if}
     {/each}
   {/if}
 </div>
-<style>
-    :global(.form) {
-        display: grid;
-        grid-template-columns: max-content 1fr;
-        grid-column-gap: 0.5rem;
-        gap: 0.5rem;
-    }
-</style>

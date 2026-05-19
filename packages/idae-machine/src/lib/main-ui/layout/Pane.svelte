@@ -30,10 +30,10 @@
 {#if show}
 	<div class="pane-backdrop" onclick={close} onkeydown={(e) => e.key === 'Escape' && close()} role="button" tabindex="0" aria-label="Close pane"></div>
 	<div class="pane" role="dialog" aria-label="Navigation pane">
-		<div class="pane-header">
+		<header class="pane-header section-header section-header-lg section-header-bordered">
 			<h2>Workspace</h2>
-			<button class="pane-close" onclick={close} aria-label="Close">✕</button>
-		</div>
+			<button class="btn-icon btn-ghost" onclick={close} aria-label="Close">✕</button>
+		</header>
 		<div class="pane-body">
 			<PaneLeft {onSelect} />
 			<PaneRight {onSelect} />
@@ -56,7 +56,7 @@
 		transform: translate(-50%, -50%);
 		width: min(90vw, 900px);
 		height: min(80vh, 600px);
-		background: #fff;
+		background: var(--color-surface);
 		border-radius: 12px;
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 		z-index: 1000;
@@ -66,31 +66,8 @@
 	}
 
 	.pane-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 1rem 1.5rem;
-		border-bottom: 1px solid #e5e7eb;
-	}
-
-	.pane-header h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		font-weight: 600;
-	}
-
-	.pane-close {
-		background: none;
-		border: none;
-		font-size: 1.25rem;
-		cursor: pointer;
-		padding: 0.25rem 0.5rem;
-		color: #6b7280;
-		border-radius: 4px;
-	}
-
-	.pane-close:hover {
-		background: #f3f4f6;
+		padding: var(--pad-md) var(--pad-lg);
+		margin-bottom: 0;
 	}
 
 	.pane-body {

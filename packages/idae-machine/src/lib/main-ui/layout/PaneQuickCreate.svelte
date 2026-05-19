@@ -10,52 +10,23 @@
 	let { collections, onSelect }: Props = $props();
 </script>
 
-<div class="pane-quick-create">
-	<h3 class="pane-section-title">Quick Create</h3>
-	<div class="pane-create-buttons">
+<section class="pane-quick-create">
+	<header class="section-header">
+		<h3>Quick Create</h3>
+	</header>
+	<div class="toolbar toolbar-wrap" style="padding:0;">
 		{#each collections as col}
 			<button
-				class="pane-create-btn"
+				type="button"
+				class="btn btn-sm"
 				onclick={() => onSelect?.({ collection: col.code })}
 			>
 				+ {col.name}
 			</button>
 		{/each}
 	</div>
-</div>
+</section>
 
 <style>
-	.pane-quick-create {
-		margin-bottom: 1.5rem;
-	}
-
-	.pane-section-title {
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: #6b7280;
-		margin: 0 0 0.75rem;
-	}
-
-	.pane-create-buttons {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-	}
-
-	.pane-create-btn {
-		padding: 0.5rem 0.75rem;
-		background: #f0f9ff;
-		border: 1px solid #bae6fd;
-		border-radius: 6px;
-		cursor: pointer;
-		font-size: 0.8125rem;
-		color: #0369a1;
-		transition: background 0.15s;
-	}
-
-	.pane-create-btn:hover {
-		background: #e0f2fe;
-	}
+	.pane-quick-create { margin-bottom: var(--gutter-lg); }
 </style>

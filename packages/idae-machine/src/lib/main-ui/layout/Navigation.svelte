@@ -21,15 +21,20 @@
 	}
 </script>
 
-<nav class="navigation">
-	<div class="nav-header">
+<nav class="navigation panel panel-flush">
+	<header class="section-header section-header-lg">
 		<h2>Navigation</h2>
-	</div>
+	</header>
 
-	<ul class="nav-list">
+	<ul class="list list-stack" role="list">
 		<li>
-			<a href="/" class:active={currentPath === '/'}>
-				🏠 Home
+			<a
+				href="/"
+				class="list-item"
+				aria-current={currentPath === '/' ? 'page' : undefined}
+			>
+				<span class="list-item-icon">🏠</span>
+				<div class="list-item-content">Home</div>
 			</a>
 		</li>
 
@@ -38,9 +43,11 @@
 				<li>
 					<a
 						href="/{scheme.code}"
-						class:active={isActive('/' + scheme.code)}
+						class="list-item"
+						aria-current={isActive('/' + scheme.code) ? 'page' : undefined}
 					>
-						📄 {scheme.name}
+						<span class="list-item-icon">📄</span>
+						<div class="list-item-content">{scheme.name}</div>
 					</a>
 				</li>
 			{/if}
@@ -51,47 +58,9 @@
 <style>
 	.navigation {
 		width: 250px;
-		background: #f5f5f5;
 		height: 100vh;
-		padding: 1rem;
-		box-sizing: border-box;
-	}
-
-	.nav-header {
-		margin-bottom: 1.5rem;
-	}
-
-	.nav-header h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		color: #333;
-	}
-
-	.nav-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.nav-list li {
-		margin-bottom: 0.5rem;
-	}
-
-	.nav-list a {
-		display: block;
-		padding: 0.75rem 1rem;
-		text-decoration: none;
-		color: #333;
-		border-radius: 4px;
-		transition: background-color 0.2s;
-	}
-
-	.nav-list a:hover {
-		background-color: #e0e0e0;
-	}
-
-	.nav-list a.active {
-		background-color: #007bff;
-		color: white;
+		padding: var(--pad-md);
+		background: var(--color-bg);
+		overflow-y: auto;
 	}
 </style>

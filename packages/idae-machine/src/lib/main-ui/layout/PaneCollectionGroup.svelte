@@ -16,59 +16,32 @@
 	};
 </script>
 
-<div class="pane-group">
-	<h3 class="pane-group-title">{typeLabels[group.type] ?? group.type}</h3>
-	<ul class="pane-group-list">
+<section class="pane-group">
+	<header class="section-header">
+		<h3>{typeLabels[group.type] ?? group.type}</h3>
+	</header>
+	<ul class="list list-stack" role="list">
 		{#each group.collections as col}
 			<li>
 				<button
-					class="pane-collection-btn"
+					type="button"
+					class="list-item btn-ghost"
 					onclick={() => onSelect?.({ collection: col.code })}
 				>
-					{col.name}
+					<div class="list-item-content">{col.name}</div>
 				</button>
 			</li>
 		{/each}
 	</ul>
-</div>
+</section>
 
 <style>
-	.pane-group {
-		margin-bottom: 1rem;
-	}
-
-	.pane-group-title {
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: #6b7280;
-		margin: 0 0 0.5rem;
-	}
-
-	.pane-group-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.pane-group-list li {
-		margin-bottom: 0.25rem;
-	}
-
-	.pane-collection-btn {
+	.pane-group { margin-bottom: var(--gutter-md); }
+	/* Override default btn inline-flex centering: full-width left-aligned */
+	.list-item.btn-ghost {
 		width: 100%;
-		text-align: left;
-		padding: 0.5rem 0.75rem;
-		background: none;
+		justify-content: flex-start;
 		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		font-size: 0.875rem;
-		color: #374151;
-	}
-
-	.pane-collection-btn:hover {
-		background: #f3f4f6;
+		background: transparent;
 	}
 </style>

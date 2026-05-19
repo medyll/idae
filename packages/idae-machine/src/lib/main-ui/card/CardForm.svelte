@@ -56,15 +56,11 @@
                 ...withData
             };
         } else if (store && dataId) {
-            const query = store.where({ [String(indexName ?? 'id')]: { eq: dataId } });
-            const snap = $state.snapshot(query);
-            const record = Array.isArray(snap) && snap.length > 0 ? snap[0] : {};
-
-            formData = {
-                ...data,
-                ...withData,
-                ...record
-            };
+            const id = isNaN(Number(dataId)) ? dataId : Number(dataId);
+            (async () => {
+                const record = await store.get(id) ?? {};
+                formData = { ...data, ...withData, ...record };
+            })();
         }
     });
 
@@ -149,14 +145,17 @@
     <!-- {/if} -->
 </div>
 
-<button
-    type="submit"
-    form={inputFormId}
-    disabled={isSubmitting}
-    aria-label="Submit"
->
-    {isSubmitting ? '...' : 'Valider'}
-</button>
+<div class="toolbar toolbar-end">
+    <button
+        type="submit"
+        class="btn-primary"
+        form={inputFormId}
+        disabled={isSubmitting}
+        aria-label="Submit"
+    >
+        {isSubmitting ? '...' : 'Valider'}
+    </button>
+</div>
 
 <style>
     .sr-only {
