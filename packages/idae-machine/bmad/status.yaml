@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 21 complete — all 4 stories done. Image presets system fully implemented."
-next_command: "bmad-status"
-next_role: "scrum master"
+next_action: "Implement S22-02 machine.loadIn() + URL builder"
+next_command: "bmad-continue"
+next_role: "developer"
 active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -93,6 +93,40 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 22
+    goal: "Navigation layer — componentRegistry, machine.loadIn(), URL parser multi-cibles, SchemaRouter refactor"
+    status: planned
+    artifact: "bmad/artifacts/sprint-2026-05-19-s22.md"
+    stories:
+      - id: S22-01
+        title: "componentRegistry singleton async"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "componentRegistry.test.ts: 9/9 passed"
+        test_result: pass
+
+      - id: S22-02
+        title: "machine.loadIn() + URL builder"
+        status: todo
+        effort: S
+      - id: S22-03
+        title: "URL parser multi-cibles (+targetId)"
+        status: todo
+        effort: M
+      - id: S22-04
+        title: "SchemaRouter refactor — bugs §6, mount actions"
+        status: todo
+        effort: M
+      - id: S22-05
+        title: "Layout outlets + data-target-zone"
+        status: todo
+        effort: S
+      - id: S22-06
+        title: "PaneLeft + ExplorerList → machine.loadIn()"
+        status: todo
+        effort: S
+
   - id: 21
     goal: "Image presets system — dynamic sizing, field('image'), focus point"
     status: completed
