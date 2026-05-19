@@ -6,6 +6,8 @@ import {
 } from '../routes/data.js';
 import type { Request, Response } from 'express';
 import { domainActionsRegistry, registerDomainActions, type DomainActions, getDomainActions } from '../models/domainActions.js';
+import { clearHooks, registerHook } from '../hooks/HooksRegistry.js';
+import { registerBuiltinHooks } from '../hooks/builtins.js';
 
 const TEST_ORG    = 'vitest';
 const TEST_TABLE  = 'testcollection';
@@ -54,7 +56,7 @@ describe('DomainActions registry', () => {
 	});
 });
 
-describe('Domain actions in data handlers', () => {
+	describe('Domain actions in data handlers', () => {
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
@@ -65,6 +67,9 @@ describe('Domain actions in data handlers', () => {
 			{ $set: { code: TEST_TABLE, base: TEST_BASE } },
 			{ upsert: true }
 		);
+
+		clearHooks();
+		registerBuiltinHooks();
 	});
 
 	afterAll(async () => {

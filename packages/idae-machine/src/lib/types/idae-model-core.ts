@@ -435,6 +435,30 @@ export const appModelDeclaration = {
 			},
 		},
 
+		appimage_preset: {
+			base:   'machine_app',
+			rights: { ops: ['R', 'L', 'C', 'U', 'D'], default: ['R', 'L'] },
+			fields: {
+				id:      { required: true,  readonly: true  },
+				code:    { required: true,  readonly: false },
+				name:    { required: true,  readonly: false },
+				color:   { required: false, readonly: false },
+				icon:    { required: false, readonly: false },
+				order:   { required: false, readonly: false },
+				width:   { required: false, readonly: false },
+				height:  { required: false, readonly: false },
+				fit:     { required: false, readonly: false },
+				format:  { required: false, readonly: false },
+				quality: { required: false, readonly: false },
+				auto:    { required: false, readonly: true  },
+				scope:   { required: false, readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
 		_prefs: {
 			base:   'machine_user',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },

@@ -3,16 +3,16 @@ import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
 import { requireDroit, type Permission } from '../middleware/permission.js';
-import { broadcastToTable } from '../socket/index.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
-import { logAudit, extractAuditContext } from '../services/AuditService.js';
+import { dispatch } from '../hooks/HooksRegistry.js';
+import { extractAuditContext } from '../services/AuditService.js';
 import { getDomainActions } from '../models/domainActions.js';
 import { validateAgainstScheme } from '../validation/SchemeValidator.js';
 
 /**
  * Validate table name to prevent NoSQL injection
  */
-function validateTableName(table: string): boolean {
+export function validateTableName(table: string): boolean {
 	// Only allow alphanumeric and underscore
 	return /^[a-zA-Z][a-zA-Z0-9_]*$/.test(table);
 }
@@ -194,26 +194,13 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
 
 		const record = await Model.create(req.body);
 
-		// Broadcast to table room
-		broadcastToTable(table, 'data:created', record);
-
-		// Domain afterCreate hook (fire-and-forget)
-		if (domainActions?.afterCreate) {
-			void domainActions.afterCreate(record, table).catch(err =>
-				logger.error('afterCreate hook failed:', err)
-			);
-		}
-
-		// Audit trail
-		const auditCtx = extractAuditContext(req);
-		logAudit({
-			action: 'create',
-			userId: req.user?.userId,
-			login: req.user?.login,
-			resourceType: table,
-			resourceId: String(record._id),
-			status: 'success',
-			...auditCtx
+		// Dispatch post:create hooks (audit, broadcast, domainActions)
+		await dispatch('post:create', {
+			event:      'post:create',
+			collection: table,
+			data:       record,
+			user:       req.user,
+			req:        extractAuditContext(req),
 		});
 
 		res.status(201).json(record);
@@ -266,25 +253,14 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		// Broadcast to table room
-		broadcastToTable(table, 'data:updated', { id, record });
-		if (domainActions?.afterUpdate) {
-			void domainActions.afterUpdate(record, table).catch(err =>
-				logger.error('afterUpdate hook failed:', err)
-			);
-		}
-
-		// Audit trail
-		const auditCtx = extractAuditContext(req);
-		logAudit({
-			action: 'update',
-			userId: req.user?.userId,
-			login: req.user?.login,
-			resourceType: table,
-			resourceId: id,
-			status: 'success',
-			details: { fields: Object.keys(req.body) },
-			...auditCtx
+		// Dispatch post:update hooks (audit, broadcast, domainActions)
+		await dispatch('post:update', {
+			event:      'post:update',
+			collection: table,
+			recordId:   id,
+			data:       record,
+			user:       req.user,
+			req:        extractAuditContext(req),
 		});
 
 		res.json(record);
@@ -310,18 +286,20 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 
 		const Model = await getCollectionModel(table);
 		const permanent = req.query.permanent === 'true';
-		const auditCtx = extractAuditContext(req);
-		const domainActions = getDomainActions(table);
 
-		// Domain beforeDelete hook (blocking — can veto deletion)
-		if (domainActions?.beforeDelete) {
-			try {
-				await domainActions.beforeDelete(id, table);
-			} catch (err: unknown) {
-				const message = err instanceof Error ? err.message : 'Deletion not allowed';
-				res.status(409).json({ error: message });
-				return;
-			}
+		// Dispatch pre:delete hooks (domainActions.beforeDelete — blocking)
+		try {
+			await dispatch('pre:delete', {
+				event:      'pre:delete',
+				collection: table,
+				recordId:   id,
+				user:       req.user,
+				req:        extractAuditContext(req),
+			});
+		} catch (err: unknown) {
+			const message = err instanceof Error ? err.message : 'Deletion not allowed';
+			res.status(409).json({ error: message });
+			return;
 		}
 
 		if (permanent) {
@@ -331,18 +309,16 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 				res.status(404).json({ error: `Record '${id}' not found in '${table}'` });
 				return;
 			}
-			broadcastToTable(table, 'data:deleted', { id });
 
-			// Audit trail
-			logAudit({
-				action: 'delete',
-				userId: req.user?.userId,
-				login: req.user?.login,
-				resourceType: table,
-				resourceId: id,
-				status: 'success',
-				details: { permanent: true },
-				...auditCtx
+			// Dispatch post:delete hooks (audit, broadcast)
+			await dispatch('post:delete', {
+				event:      'post:delete',
+				collection: table,
+				recordId:   id,
+				data:       record,
+				details:    { permanent: true },
+				user:       req.user,
+				req:        extractAuditContext(req),
 			});
 
 			res.status(204).send();
@@ -359,19 +335,15 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
 				return;
 			}
 
-			// Broadcast to table room
-			broadcastToTable(table, 'data:deleted', { id });
-
-			// Audit trail
-			logAudit({
-				action: 'delete',
-				userId: req.user?.userId,
-				login: req.user?.login,
-				resourceType: table,
-				resourceId: id,
-				status: 'success',
-				details: { permanent: false },
-				...auditCtx
+			// Dispatch post:delete hooks (audit, broadcast)
+			await dispatch('post:delete', {
+				event:      'post:delete',
+				collection: table,
+				recordId:   id,
+				data:       record,
+				details:    { permanent: false },
+				user:       req.user,
+				req:        extractAuditContext(req),
 			});
 
 			res.status(204).send();
@@ -414,20 +386,14 @@ export async function restoreRecord(req: Request, res: Response): Promise<void> 
 			{ new: true }
 		).lean();
 
-		// Broadcast to table room
-		broadcastToTable(table, 'data:restored', { id });
-
-		// Audit trail
-		const auditCtx = extractAuditContext(req);
-		logAudit({
-			action: 'update',
-			userId: req.user?.userId,
-			login: req.user?.login,
-			resourceType: table,
-			resourceId: id,
-			status: 'success',
-			details: { action: 'restore' },
-			...auditCtx
+		// Dispatch post:restore hooks (broadcast, audit)
+		await dispatch('post:restore', {
+			event:      'post:restore',
+			collection: table,
+			recordId:   id,
+			data:       record,
+			user:       req.user,
+			req:        extractAuditContext(req),
 		});
 
 		res.json(record);

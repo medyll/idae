@@ -16,6 +16,7 @@ import { clearCollections, seedEngineRegistries, deployModel } from './deployMod
 import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
 import { seedUsers } from './seedUsers.js';
+import { seedImagePresets } from './seedImagePresets.js';
 import mongoose from 'mongoose';
 
 const org      = process.argv[2] ?? 'demo';
@@ -33,11 +34,17 @@ await deployModel(buildEngineModel(), { org, mongoUri });
 console.log(`[3/5] Deploying user model (demoScheme)`);
 await deployModel(demoScheme, { org, mongoUri });
 
-console.log(`[4/5] Seeding demo users + grants into ${org}_machine_user`);
+console.log(`[4/5] Seeding image presets into ${org}_machine_app`);
+const appConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_app` });
+await appConn.asPromise();
+await seedImagePresets(appConn);
+await appConn.close();
+
+console.log(`[5/5] Seeding demo users + grants into ${org}_machine_user`);
 const conn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
 await conn.asPromise();
 await seedUsers(conn);
 await conn.close();
 
-console.log(`[5/5] Done.`);
+console.log(`[6/6] Done.`);
 process.exit(0);

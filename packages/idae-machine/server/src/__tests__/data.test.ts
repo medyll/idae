@@ -7,6 +7,8 @@ import {
 import type { Request, Response } from 'express';
 import { getConn, invalidateBaseCache } from '../middleware/dbRouter.js';
 import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
+import { clearHooks } from '../hooks/HooksRegistry.js';
+import { registerBuiltinHooks } from '../hooks/builtins.js';
 
 const TEST_ORG    = 'vitest';
 const TEST_TABLE  = 'datacollection';
@@ -49,6 +51,8 @@ describe('Data CRUD handlers', () => {
 		(config as any).org = TEST_ORG;
 		invalidateBaseCache();
 		invalidateSchemeCache();
+		clearHooks();
+		registerBuiltinHooks();
 
 		// Seed appscheme so dbRouter can find datacollection → machine_base
 		const meta = await getConn(META_DB);
@@ -253,7 +257,7 @@ describe('Data CRUD handlers', () => {
 			expect(res._status).toBe(201);
 
 			// Wait for fire-and-forget audit write
-			await new Promise(r => setTimeout(r, 100));
+			await new Promise(r => setTimeout(r, 500));
 
 			const entries = await getAuditEntries();
 			const createEntry = entries.find(e => e.action === 'create');
@@ -274,7 +278,7 @@ describe('Data CRUD handlers', () => {
 			await updateRecord(req, res);
 			expect(res._status).toBe(200);
 
-			await new Promise(r => setTimeout(r, 100));
+			await new Promise(r => setTimeout(r, 500));
 
 			const entries = await getAuditEntries();
 			const updateEntry = entries.find(e => e.action === 'update');
@@ -292,7 +296,7 @@ describe('Data CRUD handlers', () => {
 			await deleteRecord(req, res);
 			expect(res._status).toBe(204);
 
-			await new Promise(r => setTimeout(r, 100));
+			await new Promise(r => setTimeout(r, 500));
 
 			const entries = await getAuditEntries();
 			const deleteEntry = entries.find(e => e.action === 'delete');
@@ -312,7 +316,7 @@ describe('Data CRUD handlers', () => {
 			await deleteRecord(req, res);
 			expect(res._status).toBe(204);
 
-			await new Promise(r => setTimeout(r, 100));
+			await new Promise(r => setTimeout(r, 500));
 
 			const entries = await getAuditEntries();
 			const deleteEntry = entries.find(e => e.action === 'delete' && e.details?.permanent === true);

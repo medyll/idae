@@ -16,13 +16,17 @@
 	},
 	"dependencies": {
 		"@medyll/idae-api": "workspace:*",
+		"@medyll/idae-socket": "workspace:*",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
 		"express": "^4.21.0",
 		"jsonwebtoken": "^9.0.3",
+		"marked": "^18.0.3",
 		"mongoose": "^9.0.0",
-		"@medyll/idae-socket": "workspace:*",
+		"multer": "^2.1.1",
+		"nodemailer": "^8.0.7",
+		"sharp": "^0.34.5",
 		"socket.io": "^4.8.0"
 	},
 	"devDependencies": {
@@ -32,6 +36,7 @@
 		"@types/cors": "^2.8.17",
 		"@types/express": "^4.17.21",
 		"@types/jsonwebtoken": "^9.0.10",
+		"@types/multer": "^2.1.0",
 		"@types/node": "^22.7.4",
 		"mongodb-memory-server": "^10.1.0",
 		"supertest": "^7.2.2",

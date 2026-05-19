@@ -17,11 +17,21 @@ export type SortBy = { field: string; direction: 'asc' | 'desc' };
 
 // ── Field definition ──────────────────────────────────────────────────────────
 export interface MachineFieldDef {
-	/** Field type: 'text' | 'number' | 'date' | 'boolean' | 'fk-collection.field' | … */
+	/** Field type: 'text' | 'number' | 'date' | 'boolean' | 'fk-collection.field' | 'image' | … */
 	type:      string;
 	required?: boolean;
 	readonly?: boolean;
 	private?:  boolean;
+	/** Image field: whitelist of allowed preset codes */
+	presets?:  string[];
+	/** Image field: single preset code (exclusive with presets) */
+	preset?:   string;
+	/** Image field: accept free-WxH notation */
+	free?:     boolean;
+	/** Image field: max upload size in bytes */
+	maxSize?:  number;
+	/** Image field: allow multiple uploads (future) */
+	multiple?: boolean;
 }
 
 // ── FK definition ─────────────────────────────────────────────────────────────
@@ -140,4 +150,11 @@ export type IDbForge = {
 	fieldRule?:  TplFieldRules;
 	fieldArgs?:  string[] | undefined;
 	is:          any;
+	/** Image field options (when fieldType === 'image') */
+	presets?:    string[];
+	preset?:     string;
+	free?:       boolean;
+	maxSize?:    number;
+	multiple?:   boolean;
+	accept?:     string;
 };

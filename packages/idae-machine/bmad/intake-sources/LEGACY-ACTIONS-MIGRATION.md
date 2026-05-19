@@ -241,8 +241,9 @@ export const rentalHooks = {
 Pro : pure config, pas de fichiers actions séparés  
 Con : logique dispersée si domaine complexe
 
-> **Décision en attente.** Tendance : Option A (colocalisé schéma) pour cohésion domaine,  
-> avec convention `actions.ts` dans le répertoire du modèle.
+> **Décision (2026-05-18) : Option A — colocalisé schéma.**  
+> Convention : `actions.ts` dans le répertoire du modèle, à côté de `scheme.ts` / `seed.ts`.  
+> Raison : localité + cohésion domaine. Hooks custom du domaine vivent avec le schéma.
 
 ---
 
@@ -267,11 +268,20 @@ Con : logique dispersée si domaine complexe
 
 ---
 
-## 7. Priorités de migration
+## 7. Priorités de migration — état au 2026-05-18
 
-1. **Handler CRUD Express** — routes REST avec validation via `MachineSchemeValidate`
-2. **Hooks globaux via `registerEvents()`** — timestamps, audit log, soft delete
-3. **`MachineSchemeValidate` serveur** — porter règles `InputValidator.php` + brancher sur handlers
-4. **Convention `actions.ts` par domaine** — décider Option A/B/C ci-dessus
-5. **Soft delete** — champ `deletedAt` + filtre auto dans `MachineDb`
-6. **Services spécialisés** (mail, docs, images) — après core CRUD stable
+| # | Priorité | État | Implémentation actuelle |
+|---|---|---|---|
+| 1 | Handler CRUD Express + validation | ✅ DONE | `server/src/routes/data.ts` (list/get/create/update/delete/restore) |
+| 2 | Hooks globaux `registerEvents()` | ⚠️ PARTIAL | `domainActions` per-collection + `AuditService` direct + Mongoose `timestamps:true`. **Manque** : registry global `pre:*`/`post:*` unifié |
+| 3 | `MachineSchemeValidate` serveur | ✅ DONE | `server/src/validation/validateRules.ts` + `SchemeValidator.ts` (règles `InputValidator.php` portées) |
+| 4 | Convention `actions.ts` par domaine | ✅ DONE | `server/src/models/demo/actions.ts` + `domainActionsRegistry` + `conventions.md` (Option A retenue) |
+| 5 | Soft delete | ✅ DONE | champ `deletedAt` + `activeRecordsFilter()` + endpoint `PATCH /:id/restore` |
+| 6 | Services spécialisés (mail, docs, images) | ❌ TODO | Pas commencé |
+
+### Backlog Sprint 20 (issu de cette intake)
+
+- **S20-01** — Global hooks registry (`pre:*` / `post:*` unifié) — cf. priorité 2
+- **S20-02** — File service (upload + storage local, GridFS optionnel) — cf. priorité 6
+- **S20-03** — Mail service (SMTP + templates transactionnels) — cf. priorité 6
+- **S20-04** — Image service (resize + thumbnails + metadata) — cf. priorité 6

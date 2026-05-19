@@ -6,6 +6,8 @@ import { logger } from './utils/logger.js';
 import { registerHealthRoutes } from './routes/health.js';
 import { registerSchemeRoutes } from './routes/scheme.js';
 import { registerDataRoutes } from './routes/data.js';
+import { registerFileRoutes } from './routes/files.js';
+import { registerMailRoutes } from './routes/mail.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
@@ -19,6 +21,7 @@ import type { MachineModel } from '../../src/lib/types/machine-model.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
+import { registerBuiltinHooks } from './hooks/builtins.js';
 
 const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_type', 'appscheme_field_group', 'appscheme_view_type']);
 
@@ -146,9 +149,12 @@ class MachineServerClass {
 		logger.info('Connected to MongoDB');
 
 		// Register routes
+		registerBuiltinHooks();
 		registerHealthRoutes();
 		registerSchemeRoutes();
 		registerDataRoutes();
+		registerFileRoutes();
+		registerMailRoutes();
 		registerAuthRoutes();
 		registerPermissionRoutes();
 		if (config.nodeEnv === 'development') registerBootstrapRoutes();

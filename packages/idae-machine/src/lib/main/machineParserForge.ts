@@ -88,11 +88,20 @@ export class MachineParserForge {
 		if (!matches[what]) return undefined;
 
 		const fieldArgs = this.#argsFromObject(rule);
-		return {
+		const result: Partial<IDbForge> = {
 			fieldType: type as TplFieldType,
 			fieldArgs: fieldArgs as any,
 			is:        what
 		};
+		if (type === 'image') {
+			result.presets  = r.presets;
+			result.preset   = r.preset;
+			result.free     = r.free;
+			result.maxSize  = r.maxSize;
+			result.multiple = r.multiple;
+			result.accept   = 'image/*';
+		}
+		return result;
 	}
 
 	/**
@@ -191,7 +200,7 @@ export class MachineParserForge {
 	 * @param params - The components of the IDbForge object.
 	 * @returns A complete IDbForge object.
 	 */
-	forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is }: IDbForge): IDbForge {
-		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
+	forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is, presets, preset, free, maxSize, multiple, accept }: IDbForge): IDbForge {
+		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is, presets, preset, free, maxSize, multiple, accept };
 	}
 }

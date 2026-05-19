@@ -4,7 +4,7 @@
 	import { demoScheme } from '$lib/demo/demoScheme.js';
 
 	// Initialize machine — demoScheme IS the model (top-level keys = collection names)
-	machine.init({  org: 'test',  domain: 'machine',dbName: 'testdb', version: 1, model: demoScheme });
+	machine.init({  org: 'demo',  domain: 'machine',dbName: 'testdb', version: 1, model: demoScheme });
 	machine.start();
 
 

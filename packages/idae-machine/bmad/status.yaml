@@ -7,10 +7,10 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-18"
+last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 19 complete — S19-01 done (defaultSort + multi-sort). Ready for next story."
+next_action: "Sprint 21 complete — all 4 stories done. Image presets system fully implemented."
 next_command: "bmad-status"
 next_role: "scrum master"
 active_role: "developer"
@@ -93,6 +93,86 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 21
+    goal: "Image presets system — dynamic sizing, field('image'), focus point"
+    status: completed
+    stories:
+      - id: S21-04
+        title: "field('image') extension + FileMeta.image.focus + PATCH /focus endpoint"
+        status: complete
+        priority: medium
+        effort: M
+        tests_executed: true
+        test_output: "fieldBuilderImage.test.ts: 8/8 passed. files.test.ts focus: 5/5 passed. Full suite: 356/356 (26 files)."
+        test_result: pass
+
+      - id: S21-03
+        title: "Refactor ImageService — drop VARIANTS const, accept ImagePreset, glob-based invalidateCache"
+        status: complete
+        priority: high
+        effort: S
+        tests_executed: true
+        test_output: "image.test.ts: 13/13 passed. Full suite: 348/348 (25 files)."
+        test_result: pass
+
+      - id: S21-02
+        title: "URL resolver /image/:preset — DB lookup + free-notation auto-create + DOS bounds"
+        status: complete
+        priority: high
+        effort: M
+        tests_executed: true
+        test_output: "imageResolver.test.ts: 13/13 passed. image.test.ts: 13/13. Full suite: 348/348 (25 files)."
+        test_result: pass
+
+      - id: S21-01
+        title: "appimage_preset core entity + seed defaults + ImagePresetRegistry cache + hook invalidation"
+        status: complete
+        priority: high
+        effort: M
+        tests_executed: true
+        test_output: "imagePresetRegistry.test.ts: 9/9 passed. Full suite: 348/348 (25 files)."
+        test_result: pass
+
+  - id: 20
+    goal: "Hooks registry, file service, mail service, image service"
+    status: completed
+    stories:
+      - id: S20-04
+        title: "Image service — sharp probe/resize/thumbnails, variant caching, FileService image enrichment"
+        status: complete
+        priority: medium
+        effort: M
+        tests_executed: true
+        test_output: "image.test.ts: 11/11 passed. Full suite: 152/152 (16 files)."
+        test_result: pass
+
+      - id: S20-03
+        title: "Mail service — SMTP via nodemailer, Markdown templates with front-matter, retry wrapper"
+        status: complete
+        priority: medium
+        effort: M
+        tests_executed: true
+        test_output: "mail.test.ts: 7/7 passed. Full suite: 141/141 (15 files)."
+        test_result: pass
+
+      - id: S20-02
+        title: "File service — upload/download/delete with local disk storage, multer, appfile metadata"
+        status: complete
+        priority: high
+        effort: M
+        tests_executed: true
+        test_output: "files.test.ts: 9/9 passed. Full suite: 134/134 (14 files)."
+        test_result: pass
+
+      - id: S20-01
+        title: "Global hooks registry — pre:*/post:* unified via HooksRegistry, builtins for audit/broadcast/domainActions"
+        status: complete
+        priority: high
+        effort: M
+        tests_executed: true
+        test_output: "hooks.test.ts: 9/9 passed. data.test.ts: 18/18 passed. domainActions.test.ts: 10/10 passed. Full suite: 125/125 (13 files)."
+        test_result: pass
+
   - id: 19
     goal: "Default sort per collection — template.sort declaration + MachineScheme.defaultSort inference + multi-sort chain"
     status: completed
@@ -631,6 +711,41 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-19"
+    summary: >
+      Sprint 21 complete: S21-01 appimage_preset entity + seed + registry cache + hook invalidation.
+      S21-02 ImageResolver with free-WxH notation + DOS bounds + unique index.
+      S21-03 ImageService refactored — VARIANTS dropped, ImagePreset signature, glob invalidateCache.
+      S21-04 field('image') builder + MachineFieldDef extension + ImageMeta.focus + PATCH /focus endpoint.
+      Full suite: 356/356 (26 files). conventions.md updated.
+    tests_server: 356
+    tests_client: 0
+
+  - date: "2026-05-19"
+    summary: >
+      Sprint 20 complete: S20-03 MailService (nodemailer + marked templates), S20-04 ImageService (sharp probe/resize/variants).
+      FileService enriched with image metadata + cache invalidation. files.ts gained /image/:variant endpoint.
+      image.test.ts: 11/11. mail.test.ts: 7/7. Full suite: 152/152 (16 files).
+    tests_server: 152
+    tests_client: 0
+
+  - date: "2026-05-19"
+    summary: >
+      Sprint 20 S20-02 complete: FileService.ts + routes/files.ts + middleware/upload.ts.
+      multer installed. Config gained filesRoot, maxFileSize, allowedMimeTypes.
+      files.test.ts: 9/9. Full suite: 134/134 (14 files).
+    tests_server: 134
+    tests_client: 0
+
+  - date: "2026-05-19"
+    summary: >
+      Sprint 20 S20-01 complete: HooksRegistry (types.ts, HooksRegistry.ts, builtins.ts).
+      routes/data.ts refactored: 0 direct logAudit/broadcastToTable/domainActions.* calls.
+      registerBuiltinHooks() wired in MachineServer.ts. HookContext gained details field.
+      hooks.test.ts: 9/9. data.test.ts: 18/18. domainActions.test.ts: 10/10. Full: 125/125.
+    tests_server: 125
+    tests_client: 0
+
   - date: "2026-05-18"
     summary: >
       Sprint 19 complete: S19-01 defaultSort — SortBy type moved to machine-model.ts,

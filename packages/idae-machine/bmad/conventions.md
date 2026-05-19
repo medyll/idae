@@ -87,3 +87,15 @@ pnpm run lint    # Prettier check
 
 - Package manager: **pnpm** (not npm/yarn)
 - Key: Svelte 5, `@medyll/idae-idbql`, `@medyll/idae-slotui-svelte`
+
+## Image presets
+
+- Entité système : `appimage_preset` (idae-model-core.ts)
+- Seedés au boot : thumb, square, small, medium, large, banner, avatar
+- Free notation : `free-WxH` / `free-wW` / `free-hH` → auto-créés à la 1ère requête (flag `auto: true`)
+- DOS bounds : 16..4096 px (config.image.minDim/maxDim)
+- Registry cache : `ImagePresetRegistry.ts` — invalidation hook-driven (priority 10)
+- Resolver : `ImageResolver.ts` — DB lookup + free notation auto-create + duplicate catch
+- Champ schema : `field('image', { presets: ['thumb', 'banner'], free: false })`
+- Focus point : `FileMeta.image.focus` réservé pour crop intelligent futur (UI focus-pin)
+- Endpoint : `PATCH /api/files/:fileId/focus` body `{ x, y }` (0..1 normalisés)
