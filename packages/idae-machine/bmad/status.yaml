@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S22-02 machine.loadIn() + URL builder"
+next_action: "Implement S22-03 URL parser multi-cibles"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -108,8 +108,12 @@ sprints:
 
       - id: S22-02
         title: "machine.loadIn() + URL builder"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "machineLoadIn.test.ts: 6/6 passed. Full suite: 360/371 (11 pre-existing failures in RealtimeClient + machineSyncDestroy)."
+        test_result: pass
+
       - id: S22-03
         title: "URL parser multi-cibles (+targetId)"
         status: todo

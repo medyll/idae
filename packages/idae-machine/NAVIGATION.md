@@ -209,3 +209,145 @@ Initialized once in `+page.svelte` after machine is ready.
 - [ ] Test: direct URL `/vehicle/2` loads split view correctly
 - [ ] Test: browser back/forward works
 - [ ] Test: sidebar collection switch works
+
+---
+
+## 11. Principes de navigation (adapté legacy)
+
+### 11.1 Sortie router = machine
+
+Router exposé via `machine.router` (déjà en place — `machine.ts:345`). Pas d'export séparé. Toute navigation passe par :
+```ts
+machine.router.push(url);
+machine.router.replace(url);
+```
+
+`.app-body` (`+layout.svelte:63`) = équiv legacy `#inBody` (conteneur principal).
+
+### 11.2 Primitive `loadIn` (équiv `ajaxInMdl`)
+
+Signature unique :
+```ts
+machine.loadIn(modulePath, targetId, collection, collectionId?, vars?)
+```
+
+→ pousse l'URL (targetId INCLUS, **syntaxe imbriquée** — chaque cible préfixée par `+`) :
+```
+/+<targetId>/<modulePath>/<collection>/<collectionId>?<vars>
+```
+
+Exemples mono-cible :
+```ts
+machine.loadIn('explorer.list',  'main',        'vehicle');                    // /+main/explorer.list/vehicle
+machine.loadIn('explorer.split', 'main',        'vehicle', '42');              // /+main/explorer.split/vehicle/42
+machine.loadIn('card.edit',      'main.modal',  'vehicle', '42', 'tab=info');  // /+main.modal/card.edit/vehicle/42?tab=info
+machine.loadIn('card.picker',    'main.window', 'role');                       // /+main.window/card.picker/role
+```
+
+Multi-cibles (cibles parallèles imbriquées dans une seule URL) :
+```
+/+main/explorer.list/vehicle/+main.modal/card.edit/vehicle/42
+```
+→ deux mounts : `main` reçoit `explorer.list/vehicle`, `main.modal` reçoit `card.edit/vehicle/42`.
+
+**Anatomie URL** :
+- `targetId` — cible DOM, dot-notation prédictible (`main`, `main.menu`, `main.modal`, `main.window`)
+- `modulePath` — clé composant dans le registre
+- `collection` — table cible
+- `collectionId` — id record (optionnel)
+- `vars` — querystring (optionnel)
+
+URL = état complet. Reload page → router re-parse → ré-monte chaque cible. Multi-cibles supportées via URL composée (cf §11.4).
+
+### 11.3 Registre composant (async, dynamique, singleton)
+
+```ts
+// src/lib/main/router/componentRegistry.ts
+type Loader = () => Promise<{ default: Component }>;
+
+class ComponentRegistry {
+    private map = new Map<string, Loader>();
+    register(key: string, loader: Loader): void { this.map.set(key, loader); }
+    registerMany(entries: Record<string, Loader>): void {
+        for (const [k, v] of Object.entries(entries)) this.map.set(k, v);
+    }
+    async resolve(key: string): Promise<Component> {
+        const loader = this.map.get(key);
+        if (!loader) throw new Error(`[registry] unknown: ${key}`);
+        return (await loader()).default;
+    }
+}
+export const componentRegistry = new ComponentRegistry();
+```
+
+Boot :
+```ts
+componentRegistry.registerMany({
+    'explorer.list':   () => import('$lib/main-ui/explorer/ExplorerList.svelte'),
+    'explorer.split':  () => import('$lib/main-ui/explorer/ExplorerSplit.svelte'),
+    'card.create':     () => import('$lib/main-ui/card/CardCreate.svelte'),
+    'card.edit':       () => import('$lib/main-ui/card/CardEdit.svelte'),
+});
+```
+
+Dynamique : plugins ajoutent runtime via `componentRegistry.register(key, loader)`.
+
+### 11.4 Cibles (outlets) — distribution d'ID
+
+Cibles déclarées dans le DOM par `data-target-zone="<id>"`. `+layout.svelte:68` a déjà `data-target-zone="main"`.
+
+```html
+<div class="app-body">
+    <aside data-target-zone="main.menu">…PaneLeft…</aside>
+    <main  data-target-zone="main"></main>
+</div>
+```
+
+Le router résout `targetId` → `document.querySelector('[data-target-zone="<targetId>"]')` → mount.
+
+**Schéma ID prédictible** (dot-notation) :
+- `main` — content principal
+- `main.menu` — sidebar
+- `main.modal` — modale empilée au-dessus de content
+- `main.window` — fenêtre flottante (équiv `act_chrome_gui`)
+- `main.<custom>` — extension
+
+Une cible = un mount à la fois (équiv `single: true` legacy). Re-`loadIn` même cible → unmount précédent, mount nouveau.
+
+**Multi-cibles dans URL** : segments imbriqués, chaque cible préfixée par `+` :
+```
+/+main/explorer.list/vehicle/+main.modal/card.edit/vehicle/42
+```
+Parser splitte sur `+` → liste `[{ target, modulePath, collection, id, vars }]`. Mount chaque entrée. Back retire le dernier segment (ferme modale).
+
+**Règle parsing** :
+- URL démarre par `+<targetId>` (obligatoire — pas de cible implicite)
+- Tokens entre deux `+` = `modulePath / collection / id?`
+- Querystring multi-cibles : **skip** — pas de cas concret, add quand besoin
+
+### 11.5 Tout via history
+
+Décision : chrome + content unifiés sous le router. Modales/pickers/fenêtres = routes normales (cibles différentes). Back/forward marchent partout. Pas de `WindowManager` séparé.
+
+### 11.6 Concept map (legacy → machine)
+
+| Legacy | machine |
+|---|---|
+| `ajaxInMdl(file, el, vars)` | `machine.loadIn(modulePath, targetId, collection, id?, vars?)` |
+| `act_chrome_gui(file, vars)` | `machine.loadIn(...)` avec `targetId` = zone fenêtre |
+| Hash `#file#vars` | pushState `/<modulePath>/<collection>/<id>?<vars>` |
+| `mdl/<file>` path | `componentRegistry` lookup |
+| Attrs `mdl/vars/value/scope` | data attrs `data-target-zone` / props composant |
+| `reloadScope` | skip (réactivité store suffit) |
+| `single: true` | défaut (1 mount par cible) |
+| `#inBody` | `.app-body` (`+layout.svelte:63`) |
+
+### 11.7 Décisions actées (2026-05-19)
+
+1. Router sort via `machine.router` — pas d'export séparé
+2. Primitive : `machine.loadIn(modulePath, targetId, collection, id?, vars?)`
+3. URL imbriquée : `/+<targetId>/<modulePath>/<collection>/<id>?<vars>` — multi-cibles via `+` répétés
+4. Registre async singleton (`componentRegistry`)
+5. Cibles via `data-target-zone="<id>"`, 1 mount par cible
+6. Tout dans history (chrome inclus)
+7. `reloadScope` skip

@@ -404,6 +404,22 @@ export class Machine {
 	}
 
 	/**
+	 * Navigate to a module within a target zone.
+	 * Builds URL: /{targetId}/{modulePath}/{collection}/{collectionId}?{vars}
+	 * Multi-calls nest segments via + prefix (see §11.2).
+	 */
+	loadIn(
+		modulePath: string,
+		targetId: string,
+		collection: string,
+		collectionId?: string,
+		vars?: string
+	): void {
+		const url = buildLoadInUrl(modulePath, targetId, collection, collectionId, vars);
+		this.router.navigate(url);
+	}
+
+	/**
 	 * Create and register a new Machine instance.
 	 * Registers the instance in the static registry for later retrieval.
 	 * @role Factory method
@@ -437,6 +453,19 @@ export class Machine {
 	static instance(instanceName: string): Machine | undefined {
 		return Machine.instanceRegistry[instanceName];
 	}
+}
+
+export function buildLoadInUrl(
+	modulePath: string,
+	targetId: string,
+	collection: string,
+	collectionId?: string,
+	vars?: string
+): string {
+	let url = `/+${targetId}/${modulePath}/${collection}`;
+	if (collectionId) url += `/${collectionId}`;
+	if (vars) url += `?${vars}`;
+	return url;
 }
 
 export const machine = new Machine();

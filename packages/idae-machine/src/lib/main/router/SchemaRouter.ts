@@ -126,6 +126,10 @@ export class SchemaRouter {
 		this.router ? this.router.push(path) : (location.href = path);
 	}
 
+	push(path: string): void {
+		this.navigate(path);
+	}
+
 	getRouter(): any { return this.router; }
 }
 
