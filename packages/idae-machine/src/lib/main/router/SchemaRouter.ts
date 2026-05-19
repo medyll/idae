@@ -1,5 +1,8 @@
 import { createRouter } from '@medyll/idae-router';
+import { mount, unmount, type Component } from 'svelte';
 import { logger } from '$lib/utils/logger.js';
+import { componentRegistry } from '$lib/main/router/componentRegistry.js';
+import { parseLoadInUrl, type LoadInSegment } from '$lib/main/router/urlParser.js';
 
 export interface RoutePermission {
 	permission: 'C' | 'R' | 'U' | 'D' | 'L';
@@ -7,17 +10,22 @@ export interface RoutePermission {
 }
 
 export interface SchemaRouterConfig {
-	baseUrl?:        string;
-	outlet?:         string;
-	authEnabled?:    boolean;
-	loginRoute?:     string;
+	baseUrl?: string;
+	authEnabled?: boolean;
+	loginRoute?: string;
 	forbiddenRoute?: string;
 }
 
 interface RouteMetadata {
-	title?:      string;
-	public?:     boolean;
+	title?: string;
+	public?: boolean;
 	permission?: { code: string; table?: string };
+}
+
+interface MountedComponent {
+	component: Component;
+	target: Element;
+	app: Record<string, unknown>;
 }
 
 export class SchemaRouter {
@@ -25,12 +33,12 @@ export class SchemaRouter {
 	private schemes: any[] = [];
 	private config: Required<SchemaRouterConfig>;
 	private permissionCheck: (permission: string, table?: string) => boolean;
+	private mountedComponents: Map<string, MountedComponent[]> = new Map();
 
 	constructor(config: SchemaRouterConfig = {}) {
 		this.config = {
-			baseUrl:        config.baseUrl        || '/app',
-			outlet:         config.outlet         || '#app',
-			authEnabled:    config.authEnabled     ?? true,
+			baseUrl:        config.baseUrl        || '/',
+			authEnabled:    config.authEnabled     ?? false,
 			loginRoute:     config.loginRoute     || '/login',
 			forbiddenRoute: config.forbiddenRoute || '/403'
 		};
@@ -48,20 +56,18 @@ export class SchemaRouter {
 		this.router = createRouter({
 			mode:             'history',
 			base:             this.config.baseUrl,
-			outlet:           this.config.outlet,
+			linkInterception: true,
 			routes,
-			linkInterception: true
+			notFound:         () => this.renderNotFound()
 		} as any);
 
-		this.router?.beforeEach?.((to: any, _from: any, next: any) => {
-			this.handlePermissionGuard(to, next);
+		this.router?.before?.((to: any, _from: any, next: any) => {
+			this.handleAuthGuard(to, next);
 		});
 
-		if (this.config.authEnabled) {
-			this.router?.beforeEach?.((to: any, _from: any, next: any) => {
-				this.handleAuthGuard(to, next);
-			});
-		}
+		this.router?.before?.((to: any, _from: any, next: any) => {
+			this.handlePermissionGuard(to, next);
+		});
 
 		logger.info('🧭 Schema router initialized');
 		return this.router;
@@ -77,14 +83,48 @@ export class SchemaRouter {
 		this.schemes.forEach((scheme: any) => {
 			const table = scheme.code ?? scheme.collection ?? String(scheme);
 
-			routes.push({ path: `/${table}`,          action: () => this.renderList(table),           metadata: { title: table,              permission: { code: 'L', table } } as RouteMetadata });
-			routes.push({ path: `/${table}/new`,       action: () => this.renderCreate(table),         metadata: { title: `New ${table}`,     permission: { code: 'C', table } } as RouteMetadata });
-			routes.push({ path: `/${table}/:id`,       action: (ctx: any) => this.renderDetail(table, ctx?.params?.id), metadata: { title: table, permission: { code: 'R', table } } as RouteMetadata });
-			routes.push({ path: `/${table}/:id/edit`,  action: (ctx: any) => this.renderEdit(table, ctx?.params?.id),   metadata: { title: `Edit ${table}`, permission: { code: 'U', table } } as RouteMetadata });
+			routes.push({ path: `/${table}`,          action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: table,              permission: { code: 'L', table } } as RouteMetadata });
+			routes.push({ path: `/${table}/new`,       action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: `New ${table}`,     permission: { code: 'C', table } } as RouteMetadata });
+			routes.push({ path: `/${table}/:id`,       action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: table,              permission: { code: 'R', table } } as RouteMetadata });
+			routes.push({ path: `/${table}/:id/edit`,  action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: `Edit ${table}`,    permission: { code: 'U', table } } as RouteMetadata });
 		});
 
-		routes.push({ path: '/*', action: () => this.renderNotFound(), metadata: { title: 'Not Found' } as RouteMetadata });
+		routes.push({ path: '/+*', action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: 'LoadIn' } as RouteMetadata });
+
 		return routes;
+	}
+
+	private async handleLoadIn(ctx: any): Promise<void> {
+		const path = ctx.path ?? '';
+		const segments = parseLoadInUrl(path);
+
+		const cleanups: (() => void)[] = [];
+
+		for (const seg of segments) {
+			try {
+				const Comp = await componentRegistry.resolve(seg.modulePath);
+				const target = document.querySelector(`[data-target-zone="${seg.targetId}"]`);
+				if (!target) continue;
+
+				const app = mount(Comp as Component, {
+					target,
+					props: { collection: seg.collection, dataId: seg.collectionId }
+				});
+
+				const cleanup = () => unmount(app);
+				cleanups.push(cleanup);
+
+				const existing = this.mountedComponents.get(seg.targetId) ?? [];
+				existing.push({ component: Comp, target, app });
+				this.mountedComponents.set(seg.targetId, existing);
+			} catch {
+				logger.warn(`[SchemaRouter] Failed to resolve component: ${seg.modulePath}`);
+			}
+		}
+
+		if (cleanups.length > 0) {
+			ctx.onLeave?.(() => cleanups.forEach(fn => fn()));
+		}
 	}
 
 	private handlePermissionGuard(to: any, next: (redirect?: string) => void): void {
@@ -100,6 +140,7 @@ export class SchemaRouter {
 	}
 
 	private handleAuthGuard(to: any, next: (redirect?: string) => void): void {
+		if (!this.config.authEnabled) { next(); return; }
 		const meta = to.metadata as RouteMetadata | undefined;
 		if (!meta?.public && !this.checkAuthentication()) {
 			logger.warn('⛔ Not authenticated, redirecting to login');
@@ -113,14 +154,10 @@ export class SchemaRouter {
 		return !!localStorage?.getItem?.('auth_token');
 	}
 
-	private renderHome():              string { return '<h1>Home</h1>'; }
-	private renderLogin():             string { return '<h1>Login</h1>'; }
-	private renderForbidden():         string { return '<h1>403 - Forbidden</h1>'; }
-	private renderNotFound():          string { return '<h1>404 - Not Found</h1>'; }
-	private renderList(t: string):     string { return `<h1>List: ${t}</h1>`; }
-	private renderCreate(t: string):   string { return `<h1>Create: ${t}</h1>`; }
-	private renderDetail(t: string, id: string): string { return `<h1>Detail: ${t}/${id}</h1>`; }
-	private renderEdit(t: string, id: string):   string { return `<h1>Edit: ${t}/${id}</h1>`; }
+	private renderHome(): string { return '<h1>Home</h1>'; }
+	private renderLogin(): string { return '<h1>Login</h1>'; }
+	private renderForbidden(): string { return '<h1>403 - Forbidden</h1>'; }
+	private renderNotFound(): string { return '<h1>404 - Not Found</h1>'; }
 
 	navigate(path: string): void {
 		this.router ? this.router.push(path) : (location.href = path);

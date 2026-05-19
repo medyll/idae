@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S22-04 SchemaRouter refactor"
+next_action: "Implement S22-05 Layout outlets + data-target-zone"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -124,8 +124,12 @@ sprints:
 
       - id: S22-04
         title: "SchemaRouter refactor — bugs §6, mount actions"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "schemaRouter.test.ts: 8/8 passed. beforeEach→before, authEnabled:false, base:/, no outlet, mount/unmount actions."
+        test_result: pass
+
       - id: S22-05
         title: "Layout outlets + data-target-zone"
         status: todo
