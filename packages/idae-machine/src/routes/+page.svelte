@@ -1,27 +1,22 @@
 <script lang="ts">
-    import { machine } from '$lib/main/machine.js';
-    import { goto } from '$app/navigation';
-    import { onMount } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+	import { demoScheme } from '$lib/demo/demoScheme.js';
 
-    onMount(() => {
-        const collections = machine.logic.collections();
-        const first = collections.find(c => machine.rights.checkAccess(c.collection ?? c.name ?? '', 'R'));
-        if (first) {
-            goto(`/${first.collection ?? first.name}`);
-        }
-    });
+	machine.init({ org: 'demo', domain: 'machine', dbName: 'testdb', version: 1, model: demoScheme });
+machine.start();
+machine.initRouter({ baseUrl: '/' });
 </script>
 
 <div class="home-empty">
-    <p>Chargement…</p>
+	<p>Select a collection from the sidebar</p>
 </div>
 
 <style>
-    .home-empty {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        color: var(--color-text-muted);
-    }
+	.home-empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		color: var(--color-text-muted);
+	}
 </style>

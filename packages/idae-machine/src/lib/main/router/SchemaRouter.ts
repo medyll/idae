@@ -1,5 +1,5 @@
 import { createRouter } from '@medyll/idae-router';
-import { mount, unmount, type Component } from 'svelte';
+import { mount, unmount, type SvelteComponent } from 'svelte';
 import { logger } from '$lib/utils/logger.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { parseLoadInUrl, type LoadInSegment } from '$lib/main/router/urlParser.js';
@@ -23,7 +23,7 @@ interface RouteMetadata {
 }
 
 interface MountedComponent {
-	component: Component;
+	component: typeof SvelteComponent;
 	target: Element;
 	app: Record<string, unknown>;
 }
@@ -106,7 +106,7 @@ export class SchemaRouter {
 				const target = document.querySelector(`[data-target-zone="${seg.targetId}"]`);
 				if (!target) continue;
 
-				const app = mount(Comp as Component, {
+				const app = mount(Comp as typeof SvelteComponent, {
 					target,
 					props: { collection: seg.collection, dataId: seg.collectionId }
 				});

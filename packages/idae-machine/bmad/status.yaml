@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S22-05 Layout outlets + data-target-zone"
+next_action: "Implement S22-06 PaneLeft + ExplorerList → machine.loadIn()"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -132,8 +132,12 @@ sprints:
 
       - id: S22-05
         title: "Layout outlets + data-target-zone"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "goto() removed from layout/page. [data-target-zone=main|main.modal|main.window] added. Dynamic routes deleted."
+        test_result: pass
+
       - id: S22-06
         title: "PaneLeft + ExplorerList → machine.loadIn()"
         status: todo

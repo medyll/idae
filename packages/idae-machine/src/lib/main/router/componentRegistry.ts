@@ -1,10 +1,10 @@
-import type { Component } from 'svelte';
+import type { Component, SvelteComponent } from 'svelte';
 
-type ComponentLoader = () => Promise<{ default: Component }>;
+type ComponentLoader = () => Promise<{ default: typeof SvelteComponent }>;
 
 export interface ComponentRegistryEntry {
 	loader: ComponentLoader;
-	resolved?: Component;
+	resolved?: typeof SvelteComponent;
 }
 
 export class ComponentRegistry {
@@ -20,7 +20,7 @@ export class ComponentRegistry {
 		}
 	}
 
-	async resolve(key: string): Promise<Component> {
+	async resolve(key: string): Promise<typeof SvelteComponent> {
 		const entry = this.registry.get(key);
 		if (!entry) {
 			throw new Error(`[registry] unknown: ${key}`);

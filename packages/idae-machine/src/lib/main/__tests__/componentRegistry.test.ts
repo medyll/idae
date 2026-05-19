@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentRegistry } from '../router/componentRegistry.js';
-import type { Component } from 'svelte';
 
 describe('ComponentRegistry', () => {
 	let registry: ComponentRegistry;
@@ -11,8 +10,8 @@ describe('ComponentRegistry', () => {
 
 	describe('register + resolve', () => {
 		it('resolves a registered key to its component', async () => {
-			const mockComponent = {} as Component;
-			registry.register('test.component', () => Promise.resolve({ default: mockComponent }));
+			const mockComponent = function MockComponent() {};
+			registry.register('test.component', () => Promise.resolve({ default: mockComponent as any }));
 
 			const resolved = await registry.resolve('test.component');
 			expect(resolved).toBe(mockComponent);
@@ -20,10 +19,10 @@ describe('ComponentRegistry', () => {
 
 		it('caches the resolved component (loader called once)', async () => {
 			let callCount = 0;
-			const mockComponent = {} as Component;
+			const mockComponent = function MockComponent() {};
 			registry.register('cached.component', () => {
 				callCount++;
-				return Promise.resolve({ default: mockComponent });
+				return Promise.resolve({ default: mockComponent as any });
 			});
 
 			await registry.resolve('cached.component');
@@ -40,12 +39,12 @@ describe('ComponentRegistry', () => {
 
 	describe('registerMany', () => {
 		it('registers multiple components at once', async () => {
-			const compA = {} as Component;
-			const compB = {} as Component;
+			const compA = function CompA() {};
+			const compB = function CompB() {};
 
 			registry.registerMany({
-				'a': () => Promise.resolve({ default: compA }),
-				'b': () => Promise.resolve({ default: compB }),
+				'a': () => Promise.resolve({ default: compA as any }),
+				'b': () => Promise.resolve({ default: compB as any }),
 			});
 
 			expect(await registry.resolve('a')).toBe(compA);
@@ -55,7 +54,7 @@ describe('ComponentRegistry', () => {
 
 	describe('has', () => {
 		it('returns true for registered keys', () => {
-			registry.register('exists', () => Promise.resolve({ default: {} as Component }));
+			registry.register('exists', () => Promise.resolve({ default: function() {} as any }));
 			expect(registry.has('exists')).toBe(true);
 		});
 
@@ -67,9 +66,9 @@ describe('ComponentRegistry', () => {
 	describe('keys', () => {
 		it('returns all registered keys', () => {
 			registry.registerMany({
-				'one': () => Promise.resolve({ default: {} as Component }),
-				'two': () => Promise.resolve({ default: {} as Component }),
-				'three': () => Promise.resolve({ default: {} as Component }),
+				'one': () => Promise.resolve({ default: function() {} as any }),
+				'two': () => Promise.resolve({ default: function() {} as any }),
+				'three': () => Promise.resolve({ default: function() {} as any }),
 			});
 
 			const keys = registry.keys();
@@ -87,8 +86,8 @@ describe('ComponentRegistry', () => {
 	describe('clear', () => {
 		it('removes all entries', () => {
 			registry.registerMany({
-				'a': () => Promise.resolve({ default: {} as Component }),
-				'b': () => Promise.resolve({ default: {} as Component }),
+				'a': () => Promise.resolve({ default: function() {} as any }),
+				'b': () => Promise.resolve({ default: function() {} as any }),
 			});
 
 			registry.clear();
