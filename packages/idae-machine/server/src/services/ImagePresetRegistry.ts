@@ -24,6 +24,7 @@ async function getCollection() {
 
 export async function loadAll(): Promise<void> {
 	const coll = await getCollection();
+	await coll.createIndex({ code: 1 }, { unique: true });
 	const rows = await coll.find({}).toArray();
 	cache.clear();
 	for (const row of rows) {

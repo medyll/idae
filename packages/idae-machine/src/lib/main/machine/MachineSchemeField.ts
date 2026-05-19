@@ -42,13 +42,7 @@ export class MachineSchemeField {
 			collection: this.#collection,
 			fieldName:  String(this.#fieldName),
 			...(fieldType ?? {}),
-			is:         fieldType?.is ?? undefined,
-			presets:    (fieldType as any)?.presets,
-			preset:     (fieldType as any)?.preset,
-			free:       (fieldType as any)?.free,
-			maxSize:    (fieldType as any)?.maxSize,
-			multiple:   (fieldType as any)?.multiple,
-			accept:     (fieldType as any)?.accept,
+			is:         fieldType?.is,
 		});
 	}
 

@@ -88,20 +88,16 @@ export class MachineParserForge {
 		if (!matches[what]) return undefined;
 
 		const fieldArgs = this.#argsFromObject(rule);
-		const result: Partial<IDbForge> = {
+		// Pass through any extra options (presets, preset, free, maxSize, etc.) generically.
+		// Known base keys are stripped; everything else is forwarded as-is to IDbForge.
+		const { type: _t, required: _req, readonly: _ro, private: _priv, ...extras } = r;
+		return {
 			fieldType: type as TplFieldType,
 			fieldArgs: fieldArgs as any,
-			is:        what
+			is:        what,
+			...extras,
+			...(type === 'image' ? { accept: 'image/*' } : {}),
 		};
-		if (type === 'image') {
-			result.presets  = r.presets;
-			result.preset   = r.preset;
-			result.free     = r.free;
-			result.maxSize  = r.maxSize;
-			result.multiple = r.multiple;
-			result.accept   = 'image/*';
-		}
-		return result;
 	}
 
 	/**
@@ -200,7 +196,7 @@ export class MachineParserForge {
 	 * @param params - The components of the IDbForge object.
 	 * @returns A complete IDbForge object.
 	 */
-	forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is, presets, preset, free, maxSize, multiple, accept }: IDbForge): IDbForge {
-		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is, presets, preset, free, maxSize, multiple, accept };
+	forge(input: IDbForge): IDbForge {
+		return { ...input };
 	}
 }

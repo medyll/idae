@@ -1,16 +1,9 @@
 import type { Connection } from 'mongoose';
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
+import type { ImagePreset } from '../services/ImagePresetRegistry.js';
 
-interface PresetSeed {
-	code:    string;
-	name:    string;
-	width?:  number;
-	height?: number;
-	fit:     'cover' | 'inside' | 'contain' | 'fill';
-	format:  'jpeg' | 'webp' | 'png' | 'auto';
-	quality: number;
-}
+type PresetSeed = Omit<ImagePreset, 'auto' | 'scope'>;
 
 const DEFAULT_PRESETS: PresetSeed[] = [
 	{ code: 'thumb',  name: 'Vignette',   width: 150,  height: 150, fit: 'cover',  format: 'auto', quality: 82 },

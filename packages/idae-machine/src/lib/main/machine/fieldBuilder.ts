@@ -1,15 +1,7 @@
-import type { MachineFieldDef } from '$lib/types/machine-model.js';
+import type { MachineFieldDef, ImageFieldDef } from '$lib/types/machine-model.js';
 
-export interface ImageFieldOptions {
-	required?: boolean;
-	readonly?: boolean;
-	private?:  boolean;
-	presets?:  string[];
-	preset?:   string;
-	free?:     boolean;
-	maxSize?:  number;
-	multiple?: boolean;
-}
+type BaseFieldOptions = { required?: boolean; readonly?: boolean; private?: boolean };
+type ImageFieldOptions = Omit<ImageFieldDef, 'type'>;
 
 /**
  * Builder helper for machine field declarations.
@@ -22,41 +14,17 @@ export interface ImageFieldOptions {
  *   photo: field('image',     { presets: ['thumb', 'banner'] }),
  * }
  */
-export function field(
-	type: 'image',
-	opts?: ImageFieldOptions
-): MachineFieldDef;
+export function field(type: 'image', opts?: ImageFieldOptions): ImageFieldDef;
+export function field(type: string,  opts?: BaseFieldOptions):  MachineFieldDef;
 export function field(
 	type: string,
-	opts?: {
-		required?: boolean;
-		readonly?: boolean;
-		private?:  boolean;
-	}
-): MachineFieldDef;
-export function field(
-	type: string,
-	opts?: {
-		required?: boolean;
-		readonly?: boolean;
-		private?:  boolean;
-		presets?:  string[];
-		preset?:   string;
-		free?:     boolean;
-		maxSize?:  number;
-		multiple?: boolean;
-	}
+	opts?: BaseFieldOptions | ImageFieldOptions
 ): MachineFieldDef {
 	if (type === 'image') {
-		if (opts?.preset && opts?.presets) {
-			throw new Error('Use preset OR presets, not both');
-		}
-		const hasPresets = !!(opts?.presets ?? opts?.preset);
-		return {
-			type,
-			...opts,
-			free: opts?.free ?? (hasPresets ? false : true),
-		};
+		const o = opts as ImageFieldOptions | undefined;
+		if (o?.preset && o?.presets) throw new Error('Use preset OR presets, not both');
+		const hasPresets = !!(o?.presets ?? o?.preset);
+		return { type: 'image', ...o, free: o?.free ?? (hasPresets ? false : true) };
 	}
-	return { type, ...opts };
+	return { type, ...(opts as BaseFieldOptions) };
 }

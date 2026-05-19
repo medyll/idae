@@ -16,23 +16,28 @@ export type { PermissionCode };
 export type SortBy = { field: string; direction: 'asc' | 'desc' };
 
 // ── Field definition ──────────────────────────────────────────────────────────
-export interface MachineFieldDef {
-	/** Field type: 'text' | 'number' | 'date' | 'boolean' | 'fk-collection.field' | 'image' | … */
+interface BaseFieldDef {
 	type:      string;
 	required?: boolean;
 	readonly?: boolean;
 	private?:  boolean;
-	/** Image field: whitelist of allowed preset codes */
+}
+
+export interface ImageFieldDef extends BaseFieldDef {
+	type:      'image';
+	/** Whitelist of allowed preset codes */
 	presets?:  string[];
-	/** Image field: single preset code (exclusive with presets) */
+	/** Single preset code — exclusive with presets */
 	preset?:   string;
-	/** Image field: accept free-WxH notation */
+	/** Accept free-WxH notation (default: false if presets set, true otherwise) */
 	free?:     boolean;
-	/** Image field: max upload size in bytes */
+	/** Max upload size in bytes */
 	maxSize?:  number;
-	/** Image field: allow multiple uploads (future) */
+	/** Allow multiple uploads (future) */
 	multiple?: boolean;
 }
+
+export type MachineFieldDef = BaseFieldDef | ImageFieldDef;
 
 // ── FK definition ─────────────────────────────────────────────────────────────
 export interface MachineFkDef {

@@ -5,7 +5,7 @@ import { config } from '../config.js';
 const FREE_RE = /^free-(?:(\d+)x(\d+)|w(\d+)|h(\d+))$/;
 
 export class PresetError extends Error {
-	constructor(message: string, public status: 400 | 404) { super(message); }
+	constructor(message: string, public status: 400 | 404 | 500) { super(message); }
 }
 
 export async function resolve(code: string): Promise<ImagePreset> {

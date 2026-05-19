@@ -91,16 +91,13 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	 * @return {string | 'text' | 'area'} The HTML input type.
 	 */
 	get htmlInputType(): string | 'text' | 'area' {
-		if (this.forge?.fieldType === 'image') return 'file';
-		const variant = this?.fieldType?.split('text-')?.[1] ?? this.fieldType;
+		const ft = this.forge?.fieldType ?? '';
+		if (ft === 'image') return 'file';
+		const variant = ft.split('text-')?.[1] ?? ft;
 		if (variant === 'area') return variant;
-		if (this.forge?.fieldType?.startsWith('text-')) return 'text';
-		if (
-			['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password'].includes(
-				this.forge?.fieldType ?? ''
-			)
-		) {
-			return this.forge?.fieldType?.trim?.() ?? 'text';
+		if (ft.startsWith('text-')) return 'text';
+		if (['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password'].includes(ft)) {
+			return ft.trim() || 'text';
 		}
 		return 'text';
 	}

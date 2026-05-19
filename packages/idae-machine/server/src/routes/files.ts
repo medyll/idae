@@ -46,7 +46,7 @@ export async function uploadFiles(req: Request, res: Response): Promise<void> {
 
 		await dispatch('post:create', {
 			event:      'post:create',
-			collection: '_files',
+			collection: 'appfile',
 			data:       meta,
 			user:       req.user,
 			req:        extractAuditContext(req),
@@ -134,7 +134,7 @@ export async function deleteFile(req: Request, res: Response): Promise<void> {
 
 		await dispatch('post:delete', {
 			event:      'post:delete',
-			collection: '_files',
+			collection: 'appfile',
 			recordId:   fileId,
 			data:       meta,
 			details:    { permanent },
