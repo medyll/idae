@@ -5,9 +5,10 @@
 	interface Props {
 		group: { type: string; collections: Array<{ code: string; name: string; type?: string }> };
 		onSelect?: (detail: { collection: string; id?: string }) => void;
+		activeCollection?: string;
 	}
 
-	let { group, onSelect }: Props = $props();
+	let { group, onSelect, activeCollection = '' }: Props = $props();
 
 	const typeLabels: Record<string, string> = {
 		standard: 'Collections',
@@ -26,6 +27,7 @@
 				<button
 					type="button"
 					class="list-item btn-ghost"
+					class:active={col.code === activeCollection}
 					onclick={() => onSelect?.({ collection: col.code })}
 				>
 					<div class="list-item-content">{col.name}</div>

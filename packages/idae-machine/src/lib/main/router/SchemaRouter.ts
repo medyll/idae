@@ -3,6 +3,7 @@ import { mount, unmount, type SvelteComponent } from 'svelte';
 import { logger } from '$lib/utils/logger.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { parseLoadInUrl, type LoadInSegment } from '$lib/main/router/urlParser.js';
+import { machine } from '$lib/main/machine.js';
 
 export interface RoutePermission {
 	permission: 'C' | 'R' | 'U' | 'D' | 'L';
@@ -106,9 +107,22 @@ export class SchemaRouter {
 				const target = document.querySelector(`[data-target-zone="${seg.targetId}"]`);
 				if (!target) continue;
 
+				const props: Record<string, unknown> = {
+					collection: seg.collection,
+					dataId: seg.collectionId
+				};
+
+				if (seg.modulePath.startsWith('explorer.')) {
+					props.onclick = (record: Record<string, unknown>) => {
+						const recordId = (record as any)?.id ?? (record as any)?._id;
+						const detailPath = seg.modulePath === 'explorer.list' ? 'explorer.split' : 'card.edit';
+						machine.loadIn(detailPath, seg.targetId, seg.collection, recordId);
+					};
+				}
+
 				const app = mount(Comp as typeof SvelteComponent, {
 					target,
-					props: { collection: seg.collection, dataId: seg.collectionId }
+					props
 				});
 
 				const cleanup = () => unmount(app);

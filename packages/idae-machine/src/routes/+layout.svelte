@@ -33,8 +33,10 @@
 	});
 
 	let sidebarCollapsed = $state(false);
+	let activeCollection = $state('');
 
 	function handleCollectionSelect({ collection }: { collection: string }) {
+		activeCollection = collection;
 		machine.loadIn('explorer.list', 'main', collection);
 	}
 </script>
@@ -54,7 +56,7 @@
 
 	<div class="app-body">
 		<aside class="app-sidebar" class:collapsed={sidebarCollapsed}>
-			<PaneLeft onSelect={handleCollectionSelect} />
+			<PaneLeft onSelect={handleCollectionSelect} {activeCollection} />
 		</aside>
 
 		<main class="app-main" data-target-zone="main">

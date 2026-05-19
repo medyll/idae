@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S22-06 PaneLeft + ExplorerList → machine.loadIn()"
-next_command: "bmad-continue"
-next_role: "developer"
+next_action: "Sprint 22 complete — run full test suite"
+next_command: "bmad-test"
+next_role: "tester"
 active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -95,7 +95,7 @@ architecture:
 sprints:
   - id: 22
     goal: "Navigation layer — componentRegistry, machine.loadIn(), URL parser multi-cibles, SchemaRouter refactor"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-2026-05-19-s22.md"
     stories:
       - id: S22-01
@@ -140,8 +140,11 @@ sprints:
 
       - id: S22-06
         title: "PaneLeft + ExplorerList → machine.loadIn()"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "Full suite: 376/387 (11 pre-existing). Explorer onclick wired via SchemaRouter. Active collection highlight added."
+        test_result: pass
 
   - id: 21
     goal: "Image presets system — dynamic sizing, field('image'), focus point"

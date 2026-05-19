@@ -8,9 +8,10 @@
 
 	interface Props {
 		onSelect?: (detail: { collection: string; id?: string }) => void;
+		activeCollection?: string;
 	}
 
-	let { onSelect }: Props = $props();
+	let { onSelect, activeCollection = '' }: Props = $props();
 
 	/** Search query */
 	let query = $state('');
@@ -56,6 +57,7 @@
 			<PaneCollectionGroup
 				{group}
 				{onSelect}
+				{activeCollection}
 			/>
 		{/each}
 		{#if groups.length === 0}
