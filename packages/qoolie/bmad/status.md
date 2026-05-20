@@ -1,13 +1,13 @@
 # Qoolie — Status Report
 
-**Phase:** development  
-**Progress:** 85%  
+**Phase:** done  
+**Progress:** 100%  
 **Active Role:** Developer  
-**Next:** Implement S6-08 (Build distributable + cleanup)
+**Next:** Sprint 6 complete — 8/8 stories done
 
 ---
 
-## Sprint 6 — qoolie self-contained engine
+## Sprint 6 — qoolie self-contained engine ✅ COMPLETE
 
 | ID | Story | Status |
 |----|-------|--------|
@@ -18,7 +18,15 @@
 | S6-05 | engine/IdbState.ts | ✅ done |
 | S6-06 | Rewire Qoolie.ts + QoolieCollection.ts → engine/ | ✅ done |
 | S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ✅ done |
-| S6-08 | Build distributable + suppression signals.dataVersion | ⬜ todo |
+| S6-08 | Build distributable + suppression signals.dataVersion | ✅ done |
+
+## Summary
+
+- **51 engine tests** pass (pathResolver, IdbEngine, IdbCollection, IdbState)
+- **193 total qoolie tests** pass (15 test files)
+- **@medyll/idae-idbql removed** from dependencies
+- **dist/ clean** — no svelte/internal references
+- **signals.dataVersion removed** from idae-machine
 
 ## Previous Sprints
 

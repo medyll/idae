@@ -1,9 +1,9 @@
-phase: "development"
-progress: 85
+phase: "done"
+progress: 100
 active_role: "Developer"
-next_action: "Implement S6-08 (Build distributable + suppression signals.dataVersion)"
-next_command: "bmad-continue"
-next_role: "Developer"
+next_action: "Sprint 6 complete — 8/8 stories done"
+next_command: "bmad-status"
+next_role: "Scrum Master"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
@@ -125,6 +125,6 @@ artifacts:
         status: done
       - id: S6-08
         title: "Build distributable + suppression signals.dataVersion idae-machine"
-        status: todo
+        status: done
 changelog: []
 history: []
