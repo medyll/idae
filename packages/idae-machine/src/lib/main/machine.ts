@@ -8,6 +8,8 @@ import { machineRights } from '$lib/main/machine/MachineRights.js';
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
+import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
+import { computeFrameId } from '$lib/main/frame/frameUtils.js';
 
 export interface MachineSocketOptions {
 	/** WebSocket server URL e.g. 'http://localhost:3000' */
@@ -88,6 +90,9 @@ export class Machine {
 
 	/** Socket client instance — created at start() if socketOptions provided */
 	_socketClient?: EventDataClientInstance;
+
+	/** Frame manager — handles dynamic frame registration and content loading */
+	_frameManager = machineFrameManager;
 
 	/**
 	 * Main constructor
@@ -417,6 +422,26 @@ export class Machine {
 	): void {
 		const url = buildLoadInUrl(modulePath, targetId, collection, collectionId, vars);
 		this.router.navigate(url);
+	}
+
+	/**
+	 * Load content into a dynamic frame.
+	 * Computes a deterministic frameId from (collection, collectionId?, vars?)
+	 * and delegates to the frame manager.
+	 */
+	async loadFrame(
+		modulePath: string,
+		collection: string,
+		collectionId?: string,
+		vars?: Record<string, string>
+	): Promise<void> {
+		const frameId = computeFrameId(collection, collectionId, vars);
+		await this._frameManager.load(frameId, modulePath, collection, collectionId, vars);
+	}
+
+	/** Access to the frame manager singleton. */
+	get frameManager() {
+		return this._frameManager;
 	}
 
 	/**

@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-02: computeFrameId() — ID déterministique depuis (collection, collectionId?, vars?)"
+next_action: "Implement S24-03: machine.loadFrame() — calcule frameId, délègue à frameManager"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -107,8 +107,11 @@ sprints:
         test_result: pass
       - id: S24-02
         title: "computeFrameId() — ID déterministique depuis (collection, collectionId?, vars?)"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "frameUtils.test.ts: 6/6 passed. Full suite: 430/430 (34 files)."
+        test_result: pass
       - id: S24-03
         title: "machine.loadFrame() — calcule frameId, délègue à frameManager"
         status: todo
@@ -907,11 +910,10 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 24 S24-01 complete: MachineFrameManager singleton + FrameControls interface.
-      register/unregister/load/show/hide/toggle/close/openFrames all implemented.
-      load() supports DOM-first pattern with mountFn callback for unknown frames.
-      frameManager.test.ts: 21/21 passed. Full suite: 424/424 (33 files).
-    tests_server: 424
+      Sprint 24 S24-02 complete: computeFrameId() deterministic ID generation.
+      Handles collection only, collection:collectionId, and sorted vars appended.
+      frameUtils.test.ts: 6/6 passed. Full suite: 430/430 (34 files).
+    tests_server: 430
     tests_client: 0
 
   - date: "2026-05-20"
