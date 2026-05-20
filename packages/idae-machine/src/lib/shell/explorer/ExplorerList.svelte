@@ -56,79 +56,77 @@ Collection record list — composes DataList for data, renders grid/list UI.
 	}
 </script>
 
-<DataList {collection} {where} {sortBy} {groupBy} {pageSize} page={currentPage} let:items let:index let:pagination let:groups>
-	{#if groups}
-		{#each Array.from(groups) as [groupKey, groupItemList] (groupKey)}
-			<section class="explorer-group">
-				<header class="section-header section-header-bordered">
-					<h3>{groupKey}</h3>
-				</header>
-				<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
-					{#each groupItemList as item (item[index])}
-						<li
-							class="list-item panel panel-bordered"
-							role="button"
-							tabindex="0"
-							onclick={() => _onclick(item as COL, item[index])}
-							onkeydown={(e) => e.key === 'Enter' && _onclick(item as COL, item[index])}
-						>
-							<div class="list-item-content">
-								<DataFields {collection} data={item} mode="show" />
-							</div>
-						</li>
-					{/each}
-				</ul>
-			</section>
-		{/each}
-	{:else}
-		<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
-			{#each items as item (item[index])}
-				<li
-					class="list-item panel panel-bordered"
-					role="button"
-					tabindex="0"
-					onclick={() => _onclick(item, item[index])}
-					onkeydown={(e) => e.key === 'Enter' && _onclick(item, item[index])}
-				>
-					<div class="list-item-content">
-						<DataFields {collection} data={item} mode="show" />
-					</div>
-				</li>
+<DataList {collection} {where} {sortBy} {groupBy} {pageSize} page={currentPage}>
+	{#snippet children({ items, index, pagination, groups })}
+		{#if groups}
+			{#each Array.from(groups) as [groupKey, groupItemList] (groupKey)}
+				<section class="explorer-group">
+					<header class="section-header section-header-bordered">
+						<h3>{groupKey}</h3>
+					</header>
+					<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
+						{#each groupItemList as item (item[index])}
+							<li
+								class="list-item panel panel-bordered"
+								role="button"
+								tabindex="0"
+								onclick={() => _onclick(item as COL, item[index])}
+								onkeydown={(e) => e.key === 'Enter' && _onclick(item as COL, item[index])}
+							>
+								<div class="list-item-content">
+									<DataFields {collection} data={item} mode="show" />
+								</div>
+							</li>
+						{/each}
+					</ul>
+				</section>
 			{/each}
-		</ul>
+		{:else}
+			<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
+				{#each items as item (item[index])}
+					<li
+						class="list-item panel panel-bordered"
+						role="button"
+						tabindex="0"
+						onclick={() => _onclick(item, item[index])}
+						onkeydown={(e) => e.key === 'Enter' && _onclick(item, item[index])}
+					>
+						<div class="list-item-content">
+							<DataFields {collection} data={item} mode="show" />
+						</div>
+					</li>
+				{/each}
+			</ul>
 
-		{#if items.length === 0}
-			<div class="empty-state">
-				<div class="empty-state-icon">📭</div>
-				<p class="empty-state-title">No records</p>
-				<p class="empty-state-text">This collection is empty.</p>
-			</div>
+			{#if items.length === 0}
+				<div class="empty-state">
+					<div class="empty-state-icon">📭</div>
+					<p class="empty-state-title">No records</p>
+					<p class="empty-state-text">This collection is empty.</p>
+				</div>
+			{/if}
 		{/if}
-	{/if}
 
-	{#if pagination.totalPages > 1}
-		<nav class="pagination" aria-label="Pagination">
-			<button
-				class="btn btn-sm"
-				disabled={pagination.page === 1}
-				onclick={() => goToPage(pagination.page - 1)}
-				aria-label="Previous page"
-			>
-				‹ Prev
-			</button>
-			<span class="pagination-info">
-				Page {pagination.page} of {pagination.totalPages} ({pagination.total} items)
-			</span>
-			<button
-				class="btn btn-sm"
-				disabled={pagination.page === pagination.totalPages}
-				onclick={() => goToPage(pagination.page + 1)}
-				aria-label="Next page"
-			>
-				Next ›
-			</button>
-		</nav>
-	{/if}
+		{#if pagination.totalPages > 1}
+			<nav class="pagination" aria-label="Pagination">
+				<button
+					class="btn btn-sm"
+					disabled={pagination.page === 1}
+					onclick={() => goToPage(pagination.page - 1)}
+					aria-label="Previous page"
+				>‹ Prev</button>
+				<span class="pagination-info">
+					Page {pagination.page} of {pagination.totalPages} ({pagination.total} items)
+				</span>
+				<button
+					class="btn btn-sm"
+					disabled={pagination.page === pagination.totalPages}
+					onclick={() => goToPage(pagination.page + 1)}
+					aria-label="Next page"
+				>Next ›</button>
+			</nav>
+		{/if}
+	{/snippet}
 </DataList>
 
 <style>

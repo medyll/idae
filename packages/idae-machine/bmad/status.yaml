@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-08: Refactor ExplorerActions → compose DataList"
+next_action: "Implement S24-01: MachineFrameManager singleton + FrameControls interface"
 next_command: "bmad-continue"
 next_role: "developer"
-active_role: "developer"
+active_role: "scrum-master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,9 +93,43 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 24
+    goal: "Frame Manager — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar"
+    status: planned
+    artifact: "bmad/artifacts/sprint-2026-05-20-s24.md"
+    stories:
+      - id: S24-01
+        title: "MachineFrameManager singleton — registry + FrameControls interface"
+        status: todo
+        effort: S
+      - id: S24-02
+        title: "computeFrameId() — ID déterministique depuis (collection, collectionId?, vars?)"
+        status: todo
+        effort: S
+      - id: S24-03
+        title: "machine.loadFrame() — calcule frameId, délègue à frameManager"
+        status: todo
+        effort: S
+      - id: S24-04
+        title: "<Frame> Svelte component — auto-registration, mount module, show/hide/close"
+        status: todo
+        effort: M
+      - id: S24-05
+        title: "Wire machine.loadIn() via frameManager — zones statiques = frames pré-enregistrées"
+        status: todo
+        effort: M
+      - id: S24-06
+        title: "<TaskBar> component — liste réactive des frames ouvertes, toggle/close"
+        status: todo
+        effort: M
+      - id: S24-07
+        title: "Tests + intégration (frameManager, loadFrame, Frame mount, TaskBar réactivité)"
+        status: todo
+        effort: M
+
   - id: 23
     goal: "Refactor structurel — data-ui/ + shell/, DataList, SchemeList, machine.loadIn() partout"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-2026-05-20-s23.md"
     stories:
       - id: S23-01
@@ -149,32 +183,53 @@ sprints:
         test_result: pass
       - id: S23-08
         title: "Refactor ExplorerActions → compose DataList"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). check: 27 errors (baseline range). data prop override supported."
+        test_result: pass
       - id: S23-09
         title: "Refactor PaneLeft → compose SchemeList"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). check: 26 errors (baseline, 0 new)."
+        test_result: pass
       - id: S23-10
         title: "Refactor PaneRecents → compose DataList"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). check: 26 errors (baseline, 0 new)."
+        test_result: pass
       - id: S23-11
         title: "Remplacer hydrate() par machine.loadIn() partout"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). ExplorerList/Actions/PaneLeft all use machine.loadIn()."
+        test_result: pass
       - id: S23-12
         title: "Mettre à jour componentRegistry + aliases loadIn"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "componentRegistry updated to shell/ paths. All module keys wired."
+        test_result: pass
       - id: S23-13
         title: "Mettre à jour index.ts exports + aliases rétro-compat"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "DataList, DataForm, DataFields, DataFk, DataRfk, SchemeList, SchemeItem exported."
+        test_result: pass
       - id: S23-14
         title: "Tests + vérification finale (vitest + check + Playwright + build)"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). Playwright: URL /+main/explorer.list/vehicle OK, zone populated, 0 console errors."
+        test_result: pass
 
   - id: 22
     goal: "Navigation layer — componentRegistry, machine.loadIn(), URL parser multi-cibles, SchemaRouter refactor"
@@ -849,10 +904,9 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-07 complete: ExplorerList refactored to compose DataList.
-      Removed inline data fetch/sort/group/page logic (-97 lines).
-      Uses machine.loadIn() instead of hydrate() for navigation.
-      Full suite: 403/403 (32 files). check: 26 errors (baseline).
+      Sprint 23 S23-08 complete: ExplorerActions refactored to compose DataList.
+      Supports data prop override for retro-compat. Uses machine.loadIn() for navigation.
+      Full suite: 403/403 (32 files). check: 27 errors (baseline range).
     tests_server: 403
     tests_client: 0
 

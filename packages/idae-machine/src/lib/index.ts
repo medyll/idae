@@ -11,6 +11,17 @@ export { default as ExplorerTable }       from '$lib/shell/explorer/ExplorerTabl
 export { default as ExplorerActions }     from '$lib/shell/explorer/ExplorerActions.svelte';
 export { default as ExplorerFilter }      from '$lib/shell/explorer/ExplorerFilter.svelte';
 
+// data-ui — data providers (smart, machine-aware)
+export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
+export { default as DataForm }   from '$lib/data-ui/data/DataForm.svelte';
+export { default as DataFields } from '$lib/data-ui/data/DataFields.svelte';
+export { default as DataFk }     from '$lib/data-ui/data/DataFk.svelte';
+export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
+
+// data-ui — scheme providers
+export { default as SchemeList } from '$lib/data-ui/scheme/SchemeList.svelte';
+export { default as SchemeItem } from '$lib/data-ui/scheme/SchemeItem.svelte';
+
 // UI — card (record level)
 export { default as CardForm }     from '$lib/shell/card/CardForm.svelte';
 export { default as CardCreate }   from '$lib/shell/card/CardCreate.svelte';

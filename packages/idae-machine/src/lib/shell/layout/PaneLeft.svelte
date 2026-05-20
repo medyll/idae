@@ -1,9 +1,5 @@
 <script lang="ts">
-	/**
-	 * PaneLeft — search + collections grouped by appscheme_type.
-	 * Consumes machine.rights.checkAccess and machine.prefs for visibility filtering.
-	 */
-	import { machine } from '$lib/main/machine.js';
+	import SchemeList from '$lib/data-ui/scheme/SchemeList.svelte';
 	import PaneCollectionGroup from './PaneCollectionGroup.svelte';
 
 	interface Props {
@@ -13,34 +9,7 @@
 
 	let { onSelect, activeCollection = '' }: Props = $props();
 
-	/** Search query */
 	let query = $state('');
-
-	/** Get collections from machine logic, grouped by type */
-	let groups = $derived.by(() => {
-		const schemes = machine.logic.collections();
-		const grouped: Record<string, Array<{ code: string; name: string; type?: string }>> = {};
-
-		for (const scheme of schemes) {
-			const colName = scheme.collection ?? scheme.name;
-			if (!colName) continue;
-
-			// Filter by permissions
-			if (!machine.rights.checkAccess(colName, 'R')) continue;
-
-			// Filter by search
-			if (query && !colName.toLowerCase().includes(query.toLowerCase())) continue;
-
-			const type = (scheme as any).model?.isType ? 'type'
-				: (scheme as any).model?.isGroup ? 'group'
-				: 'standard';
-
-			if (!grouped[type]) grouped[type] = [];
-			grouped[type].push({ code: colName, name: colName, type });
-		}
-
-		return Object.entries(grouped).map(([type, cols]) => ({ type, collections: cols }));
-	});
 </script>
 
 <div class="pane-left">
@@ -53,19 +22,11 @@
 		/>
 	</div>
 	<div class="pane-groups">
-		{#each groups as group}
-			<PaneCollectionGroup
-				{group}
-				{onSelect}
-				{activeCollection}
-			/>
-		{/each}
-		{#if groups.length === 0}
-			<div class="empty-state">
-				<div class="empty-state-icon">🔍</div>
-				<p class="empty-state-text">No collections found.</p>
-			</div>
-		{/if}
+		<SchemeList filter={query} {activeCollection} {onSelect}>
+			{#snippet children({ group })}
+				<PaneCollectionGroup {group} {onSelect} {activeCollection} />
+			{/snippet}
+		</SchemeList>
 	</div>
 </div>
 

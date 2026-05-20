@@ -12,21 +12,19 @@ This matches the legacy `ajaxInMdl` pattern: load a "module" into a named target
 
 ---
 
-## 2. What SvelteKit keeps
+## 2. What SvelteKit keeps ✅ (implemented S22)
 
 ```
 src/routes/
-  +layout.svelte      ← shell: header, PaneLeft sidebar, machine.init(), machine.start(), seed
+  +layout.svelte      ← shell: PaneLeft, machine.init(), machine.start(), machine.initRouter()
   +layout.ts          ← ssr: false, prerender: false
-  +page.svelte        ← single div: <div data-idae-outlet></div> + SchemaRouter init
+  +page.svelte        ← single div: <div data-target-zone="main"></div>
 ```
 
-**Everything else is deleted:**
+**Deleted:**
 - `[collection]/` → gone
 - `[collection]/[id]/` → gone
-- `[collection]/+layout.ts`, `[id]/+page.ts` → gone
-
-No SvelteKit dynamic segments. No `goto()`. No `page.params`.
+- No SvelteKit dynamic segments. No `goto()`. No `page.params`.
 
 ---
 
@@ -85,130 +83,65 @@ Routes are generated dynamically from `machine.logic` collection keys after `mac
 
 ---
 
-## 5. Split view (list + card panel)
+## 5. Split view ~~(decision pending)~~ → superseded par §11.4
 
-The `/:collection/:id` route needs a two-column layout (list left, card panel right). Options:
-
-**Option A — two named outlets**
-The collection-level action renders a container with two `[data-idae-outlet]` zones:
-```html
-<div class="collection-body">
-    <div class="collection-list" data-idae-outlet="list"></div>
-    <div class="collection-card-panel" data-idae-outlet="card"></div>
-</div>
-```
-Child routes mount into the correct outlet by name. idae-router's `findOutlet` needs to support named outlets — **check if supported**.
-
-**Option B — single action renders both**
-The `/:collection/:id` action mounts both `ExplorerList` and `CardForm` into a single container div it creates:
-```ts
-action: (ctx) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'collection-body';
-    const listEl = document.createElement('div');
-    const cardEl = document.createElement('div');
-    wrap.append(listEl, cardEl);
-    const a = mount(ExplorerList, { target: listEl, props: { collection: ctx.params.collection, selectedId: ctx.params.id } });
-    const b = mount(CardForm, { target: cardEl, props: { collection: ctx.params.collection, dataId: ctx.params.id, mode: 'show' } });
-    return () => { unmount(a); unmount(b); };
-}
-```
-ExplorerList receives `selectedId` as prop and highlights the active row without needing its own navigation.
-
-**Option C — list stays mounted, card panel overlays**
-`/:collection` mounts `ExplorerList` and keeps it mounted. `/:collection/:id` adds `CardForm` into a second outlet that lives in the persistent shell (not inside the router outlet). Panel appears/disappears based on router state.
-
-> **Decision pending** — discuss before coding.
+Multi-cibles via URL imbriquée : `/+main/explorer.list/vehicle/+main.modal/card.edit/vehicle/42`.  
+Plus de route `/:collection/:id`. Voir §11.4.
 
 ---
 
-## 6. SchemaRouter.ts — current state and issues
+## 6. SchemaRouter — ~~bugs à corriger~~ → résolus S22 ✅
 
-File: `src/lib/main/router/SchemaRouter.ts`
-
-**What works:**
-- `createRouter()` call with correct options shape
-- Route generation loop over schemes
-- `navigate()` wrapper
-- Permission guard structure
-
-**Bugs / stubs to fix:**
-| Issue | Fix |
-|-------|-----|
-| `this.router?.beforeEach` | idae-router has `.before()`, not `.beforeEach()` |
-| `renderList/renderDetail/renderEdit` return HTML strings | Replace with Svelte `mount()` + cleanup |
-| `outlet: '#app'` | Change to `'[data-idae-outlet]'` or whatever the shell uses |
-| `base: '/app'` | Change to `'/'` (no sub-path) |
-| Auth guard uses `localStorage.getItem('auth_token')` | Stub — wire to real auth when Phase 4 lands |
-| `authEnabled: true` default | Set to `false` until auth is implemented |
+| Issue | Statut |
+|-------|--------|
+| `beforeEach` → `before()` | ✅ corrigé |
+| render stubs → Svelte `mount()` | ✅ corrigé |
+| `outlet: '#app'` → offscreen placeholder | ✅ corrigé |
+| `base: '/app'` → `'/'` | ✅ corrigé |
+| `authEnabled: true` → `false` | ✅ corrigé |
 
 ---
 
-## 7. PaneLeft and sidebar navigation
+## 7. PaneLeft ✅ (réglé S22-S23)
 
-`PaneLeft` currently dispatches `onSelect({ collection })` → `+layout.svelte` calls `goto()`.
-
-**After migration:**
-- `PaneLeft` calls `router.push('/' + collection)` directly, OR
-- `PaneLeft` still dispatches the event, but `+layout.svelte` calls `router.push()` instead of `goto()`
-
-Second option keeps PaneLeft decoupled from the router instance. Prefer this.
-
-**Active collection highlight:** derived from `router.getState()?.params?.collection` instead of `page.params.collection`.
+`PaneLeft` compose `SchemeList`. `onSelect` → `machine.loadIn('explorer.list', 'main', collection)`. Pas de `goto()`.
 
 ---
 
-## 8. SchemaRouter singleton lifecycle
+## 8. SchemaRouter lifecycle ✅ (implémenté S22)
 
 ```
 +layout.svelte
   machine.init(...)
   machine.start()
-  ↓
-+page.svelte  (onMount or $effect)
-  schemaRouter.init(Object.keys(machine.logic.collections()))
-  // collections available only after machine.start()
+  machine.initRouter({ baseUrl: '/', authEnabled: false })
 ```
 
-SchemaRouter instance exported as a module-level singleton:
-```ts
-// src/lib/main/router/schemaRouterInstance.ts
-export const schemaRouter = new SchemaRouter({ authEnabled: false });
-```
-
-Initialized once in `+page.svelte` after machine is ready.
+Tout synchrone dans layout. Pas de init dans +page.svelte.
 
 ---
 
-## 9. Open questions
+## 9. Open questions ~~(S22)~~ → répondues ✅
 
-1. **Named outlets in idae-router** — does `findOutlet` support `[data-idae-outlet="name"]` or only a single unnamed outlet? Check `render.ts` in idae-router source.
-
-2. **Split view approach** — Option A, B, or C? (see §5)
-
-3. **ExplorerList stays mounted on `/:collection/:id`?** If Option B: ExplorerList re-mounts on every `:id` change (full remount). If Option C: it stays mounted, cheaper. Which is acceptable?
-
-4. **SchemaRouter vs raw createRouter** — keep the class wrapper or simplify to a plain `createRouter()` call in the app?
-
-5. **`machine.logic.collections()`** — what's the exact API to get all collection names after `machine.start()`? Confirm before coding route generation.
+1. Named outlets → remplacés par `data-target-zone` + frameManager (§12)
+2. Split view → multi-target URL (§11.4)
+3. ExplorerList remount → géré par Frame show/hide DOM-first (§12)
+4. SchemaRouter wrapper → conservé, exposé via `machine.router`
+5. `machine.logic.collections()` → confirmé, utilisé dans SchemaRouter
 
 ---
 
-## 10. Migration checklist (not started)
+## 10. Migration checklist ✅ (S22 + S23 complétés)
 
-- [ ] Confirm idae-router named outlet support
-- [ ] Decide split view approach (§5)
-- [ ] Fix SchemaRouter bugs (§6)
-- [ ] Replace render stubs with Svelte mount actions
-- [ ] Add `<div data-idae-outlet></div>` to `+page.svelte`
-- [ ] Initialize SchemaRouter after machine.start()
-- [ ] Update PaneLeft to use router.push (via layout event or direct)
-- [ ] Remove `goto()` imports from layout files
-- [ ] Delete `[collection]/` and `[collection]/[id]/` route folders
-- [ ] Update ExplorerList item click → router.push
-- [ ] Test: direct URL `/vehicle/2` loads split view correctly
-- [ ] Test: browser back/forward works
-- [ ] Test: sidebar collection switch works
+- [x] SchemaRouter bugs fixés
+- [x] mount/unmount Svelte dans actions router
+- [x] `<div data-target-zone="main">` dans +page.svelte
+- [x] machine.initRouter() dans +layout.svelte
+- [x] PaneLeft → machine.loadIn()
+- [x] goto() supprimé
+- [x] Routes dynamiques SvelteKit supprimées
+- [x] ExplorerList onclick → machine.loadIn()
+- [x] componentRegistry paths → shell/
 
 ---
 
@@ -259,34 +192,25 @@ Multi-cibles (cibles parallèles imbriquées dans une seule URL) :
 
 URL = état complet. Reload page → router re-parse → ré-monte chaque cible. Multi-cibles supportées via URL composée (cf §11.4).
 
-### 11.3 Registre composant (async, dynamique, singleton)
+### 11.3 Registre composant (async, dynamique, singleton) ✅
 
 ```ts
 // src/lib/main/router/componentRegistry.ts
-type Loader = () => Promise<{ default: Component }>;
-
-class ComponentRegistry {
-    private map = new Map<string, Loader>();
-    register(key: string, loader: Loader): void { this.map.set(key, loader); }
-    registerMany(entries: Record<string, Loader>): void {
-        for (const [k, v] of Object.entries(entries)) this.map.set(k, v);
-    }
-    async resolve(key: string): Promise<Component> {
-        const loader = this.map.get(key);
-        if (!loader) throw new Error(`[registry] unknown: ${key}`);
-        return (await loader()).default;
-    }
-}
 export const componentRegistry = new ComponentRegistry();
 ```
 
-Boot :
+Boot (chemins actuels post-S23) :
 ```ts
 componentRegistry.registerMany({
-    'explorer.list':   () => import('$lib/main-ui/explorer/ExplorerList.svelte'),
-    'explorer.split':  () => import('$lib/main-ui/explorer/ExplorerSplit.svelte'),
-    'card.create':     () => import('$lib/main-ui/card/CardCreate.svelte'),
-    'card.edit':       () => import('$lib/main-ui/card/CardEdit.svelte'),
+    'explorer.list':        () => import('$lib/shell/explorer/ExplorerList.svelte'),
+    'explorer.table':       () => import('$lib/shell/explorer/ExplorerTable.svelte'),
+    'explorer.actions':     () => import('$lib/shell/explorer/ExplorerActions.svelte'),
+    'explorer.card':        () => import('$lib/shell/explorer/ExplorerCard.svelte'),
+    'explorer.collections': () => import('$lib/shell/explorer/ExplorerCollections.svelte'),
+    'card.form':            () => import('$lib/shell/card/CardForm.svelte'),
+    'card.create':          () => import('$lib/shell/card/CardCreate.svelte'),
+    'card.edit':            () => import('$lib/shell/card/CardEdit.svelte'),
+    'card.picker':          () => import('$lib/shell/card/CardPicker.svelte'),
 });
 ```
 
@@ -351,3 +275,105 @@ Décision : chrome + content unifiés sous le router. Modales/pickers/fenêtres 
 5. Cibles via `data-target-zone="<id>"`, 1 mount par cible
 6. Tout dans history (chrome inclus)
 7. `reloadScope` skip
+
+---
+
+## 12. Frame Manager (S24 — 2026-05-20)
+
+### 12.1 Taxonomie
+
+| Terme | Définition |
+|---|---|
+| **Frame** | Conteneur avec body + contrôles (show/hide/close). Équiv legacy `.inArea` / `windowGui`. |
+| **Module** | Ce qui se charge *dans* une frame — ExplorerList, CardForm, etc. Adressé par `modulePath`. |
+| **Zone** | Alias nommé d'une frame statique dans le DOM (`data-target-zone="main"`). |
+| **TaskBar** | Composant listant les frames ouvertes — toggle/close par frame. |
+
+`machine.loadIn()` = charger un **module** dans une **frame nommée** (zone statique).  
+`machine.loadFrame()` = ouvrir une **frame dynamique** dont l'ID est calculé depuis le contenu.
+
+### 12.2 Signatures (ordre aligné)
+
+```ts
+// Zone nommée explicite (frame statique, ex: "main")
+machine.loadIn(modulePath, targetId, collection, collectionId?, vars?)
+
+// Frame dynamique — frameId calculé depuis (collection, collectionId?, vars?)
+machine.loadFrame(modulePath, collection, collectionId?, vars?)
+```
+
+### 12.3 ID déterministique de frame
+
+```ts
+computeFrameId('vehicle')                          // → "vehicle"
+computeFrameId('vehicle', '42')                    // → "vehicle:42"
+computeFrameId('vehicle', '42', { tab: 'info' })   // → "vehicle:42:tab=info"
+```
+
+Vars triées → résultat stable peu importe l'ordre des clés.
+
+### 12.4 MachineFrameManager — architecture DOM-first
+
+**Principe 1 — DOM autoritaire**  
+Le DOM (`[data-target-zone]`) est source de vérité. Le registre contient des handles de contrôle, pas d'état.
+
+**Principe 2 — Auto-registration**  
+Chaque `<Frame>` se déclare au registre à son mount avec ses propres fonctions :
+```ts
+machineFrameManager.register(id, { load, show, hide, toggle, close })
+```
+
+**Principe 3 — `load()` = module dans frame existante**  
+Frame connue dans registre → `controls.load(modulePath, ...)`.  
+Frame inconnue → `mount(<Frame>, { target: zone DOM })` → auto-register → `controls.load(...)`.
+
+```ts
+interface FrameControls {
+  load:   (modulePath, collection, collectionId?, vars?) => void;
+  show:   () => void;
+  hide:   () => void;
+  toggle: () => void;
+  close:  () => void;
+}
+
+// machineFrameManager exposé via machine.frameManager
+machineFrameManager.register(frameId, controls)
+machineFrameManager.load(frameId, modulePath, collection, collectionId?, vars?)
+machineFrameManager.show/hide/toggle/close(frameId)
+machineFrameManager.openFrames  // ReadonlyMap<frameId, FrameControls>
+```
+
+### 12.5 `<Frame>` Svelte component
+
+- Props : `id`, `modulePath?`, `collection?`, `collectionId?`, `vars?`
+- Mount → `machineFrameManager.register(id, controls)`
+- Unmount → `machineFrameManager.unregister(id)`
+- `load()` → `componentRegistry.resolve(modulePath)` → `mount(Component, { target: bodyEl })`
+- `show()` / `hide()` → CSS `display` uniquement — **DOM préservé, pas de unmount**
+- `close()` → unmount module + unregister
+
+### 12.6 Wire machine.loadIn() via frameManager
+
+Zones statiques dans le layout wrappées en `<Frame id="main">` etc. → pré-enregistrées.  
+`machine.loadIn('explorer.list', 'main', 'vehicle')` → `frameManager.load('main', 'explorer.list', 'vehicle')`.
+
+### 12.7 TaskBar
+
+```svelte
+<!-- shell/layout/TaskBar.svelte -->
+{#each [...machineFrameManager.openFrames] as [frameId, controls]}
+  <button onclick={() => controls.toggle()}>{frameId}</button>
+  <button onclick={() => controls.close()}>×</button>
+{/each}
+```
+
+Réactif sur `openFrames` ($state Map). Toggle = show/hide, pas destroy.
+
+### 12.8 Décisions actées (2026-05-20)
+
+1. `MachineFrameManager` renommé (pas `MachineWindowManager`)
+2. DOM-first : registre = handles, pas état
+3. `<Frame>` auto-registration à son mount
+4. `machine.loadFrame()` — argument order parallèle à `loadIn`, targetId absent (calculé)
+5. ID déterministique depuis (collection, collectionId, vars) — human-readable, pas de hash opaque
+6. show/hide = CSS, pas unmount → DOM préservé (toggle authentique, pattern legacy)

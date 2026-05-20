@@ -1,101 +1,125 @@
-# BMAD Status Report — idae-machine
+# idae-machine — Status Report
 
-**Last updated:** 2026-05-20  
-**Phase:** development  
-**Progress:** 100%
+> Schema-driven full-stack framework: declare a schema once, get CRUD UI, validation, real-time sync and multi-frame navigation for free. Built for developers who want to ship data-driven apps without boilerplate.
 
----
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-## Next Action
+## Product Overview
 
-**S23-07 complete** — Starting S23-08: Refactor ExplorerActions → compose DataList
+  Progress   [██████████] 100%   Phase: development (S24 active)
 
----
+### Features & Capabilities
 
-## Sprint 23 — Refactor structurel: data-ui + shell 🔄
+  | Feature | Status | What it means for users |
+  |---------|--------|------------------------|
+  | Schema-driven CRUD | ✅ Shipped | Define fields once, get forms, lists and tables automatically |
+  | Offline-first data | ✅ Shipped | Works without internet, syncs when back online |
+  | Real-time sync | ✅ Shipped | Changes from other users appear instantly without refresh |
+  | Field types library | ✅ Shipped | Text, number, date, email, currency, boolean, FK relations, images |
+  | File & image upload | ✅ Shipped | Drag-drop uploads with automatic image resizing and presets |
+  | Permission system | ✅ Shipped | Role-based access: users see only what they're allowed to |
+  | Domain actions | ✅ Shipped | Business logic hooks run automatically on create/update/delete |
+  | Schema validation | ✅ Shipped | Server-side rules enforced before any data is saved |
+  | SPA navigation | ✅ Shipped | URL-driven navigation loads the right view in the right zone |
+  | Multi-zone layout | ✅ Shipped | Content loads into named zones (main, modal, window) |
+  | Component library | ✅ Shipped | ExplorerList, CardForm, DataList, SchemeList — composable and reusable |
+  | Multi-frame manager | 🔨 Building | Open multiple records simultaneously, toggle between them, taskbar navigation |
 
-| Story | Title | Status | Tests |
-|-------|-------|--------|-------|
-| S23-01 | Créer data-ui/ — déplacer field/, input/, fragments/ | ✅ Complete | 387/387 |
-| S23-02 | Restaurer DataList dans data-ui/data/ | ✅ Complete | 12/12 + 403/403 |
-| S23-03 | Extraire DataForm depuis CardForm | ✅ Complete | CardForm→wrapper |
-| S23-04 | Extraire DataFields, DataFk, DataRfk | ✅ Complete | Card*→wrappers |
-| S23-05 | Créer SchemeList + SchemeItem | ✅ Complete | 4/4 + 403/403 |
-| S23-06 | Créer shell/ — déplacer explorer/, card/, layout/ | ✅ Complete | 403/403 |
-| S23-07 | Refactor ExplorerList → compose DataList | ✅ Complete | -97 lines |
-| S23-08 | Refactor ExplorerActions → compose DataList | 🔄 In Progress | — |
-| S23-03 | Extraire DataForm depuis CardForm | ⏳ Todo | — |
-| S23-04 | Extraire DataFields, DataFk, DataRfk | ⏳ Todo | — |
-| S23-05 | Créer SchemeList + SchemeItem | ⏳ Todo | — |
-| S23-06 | Créer shell/ — déplacer explorer/, card/, layout/ | ⏳ Todo | — |
-| S23-07 | Refactor ExplorerList → compose DataList | ⏳ Todo | — |
-| S23-08 | Refactor ExplorerActions → compose DataList | ⏳ Todo | — |
-| S23-09 | Refactor PaneLeft → compose SchemeList | ⏳ Todo | — |
-| S23-10 | Refactor PaneRecents → compose DataList | ⏳ Todo | — |
-| S23-11 | Remplacer hydrate() par machine.loadIn() | ⏳ Todo | — |
-| S23-12 | Mettre à jour componentRegistry + aliases | ⏳ Todo | — |
-| S23-13 | Mettre à jour index.ts exports + alias compat | ⏳ Todo | — |
-| S23-14 | Tests + vérification finale | ⏳ Todo | — |
+### What's Ready Now
 
----
+- Full CRUD for any collection declared in schema — no extra code
+- Offline-first with IndexedDB + server sync via WebSocket
+- Complete field type coverage including FK relations and image focus points
+- Role-based permissions enforced client and server side
+- Domain action hooks (validate, beforeDelete, afterCreate) per collection
+- URL-driven SPA: `machine.loadIn('explorer.list', 'main', 'vehicle')` navigates correctly
+- Composable data-ui components (DataList, SchemeList) for custom layouts
+- Pagination, sort, groupBy on collection lists
 
-## Sprint 22 — Navigation Layer ✅
+### What's Coming Next
 
-| Story | Title | Status | Tests |
-|-------|-------|--------|-------|
-| S22-01 | componentRegistry singleton async | ✅ Complete | 9/9 |
-| S22-02 | machine.loadIn() + URL builder | ✅ Complete | 6/6 |
-| S22-03 | URL parser multi-cibles (+targetId) | ✅ Complete | 8/8 |
-| S22-04 | SchemaRouter refactor — bugs §6, mount actions | ✅ Complete | 8/8 |
-| S22-05 | Layout outlets + data-target-zone | ✅ Complete | goto removed |
-| S22-06 | PaneLeft + ExplorerList → machine.loadIn() | ✅ Complete | smoke |
+- Open multiple records simultaneously (S24 — Frame Manager)
+- Toggle/minimize open frames via TaskBar (legacy windowGui pattern, modernized)
+- `machine.loadFrame('card.form', 'vehicle', '42')` opens a frame by content, not by zone name
 
-**Final suite:** 376/387 (11 pre-existing failures)
+### Risks & Blockers
 
----
+- None identified.
 
-## Sprint 21 — Image presets declarative system ✅
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-| Story | Title | Status | Tests |
-|-------|-------|--------|-------|
-| S21-01 | appimage_preset core entity + seed + registry cache | ✅ Complete | 9/9 |
-| S21-02 | URL resolver /image/:preset + free-notation + DOS bounds | ✅ Complete | 13/13 |
-| S21-03 | Refactor ImageService — drop VARIANTS, use registry | ✅ Complete | 13/13 |
-| S21-04 | field('image') extension + FileMeta.image.focus | ✅ Complete | 8/8 |
+## Development Details
 
-**Final suite:** 356/356 (26 files)
+  Sprint     24
+  Role       scrum-master → next: developer
+  Next cmd   `bmad-continue`
 
----
+### Current Sprint
 
-## Sprint 20 — Hooks registry, file service, mail service, image service ✅
+  ✅ Done     S23 complete — data-ui/ + shell/ structure, DataList/SchemeList composable, 403/403 tests
+  🔨 Doing    S24 — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar
+  💡 Next     S24-01: MachineFrameManager singleton + FrameControls interface
+  ⚠️ Blockers none
 
-| Story | Title | Status | Tests |
-|-------|-------|--------|-------|
-| S20-01 | Global hooks registry — pre:*/post:* unified via HooksRegistry | ✅ Complete | 125/125 |
-| S20-02 | File service — upload/download/delete with local disk storage | ✅ Complete | 134/134 |
-| S20-03 | Mail service — SMTP + transactional templates | ✅ Complete | 141/141 |
-| S20-04 | Image service — resize + thumbnails + metadata | ✅ Complete | 152/152 |
+### Stories — Sprint 24
 
-**Final suite:** 152/152 (16 files)
+  | ID | Title | Status | Effort |
+  |----|-------|--------|--------|
+  | S24-01 | MachineFrameManager singleton + FrameControls | ⬚ todo | S |
+  | S24-02 | computeFrameId() — ID déterministique | ⬚ todo | S |
+  | S24-03 | machine.loadFrame() | ⬚ todo | S |
+  | S24-04 | `<Frame>` Svelte component | ⬚ todo | M |
+  | S24-05 | Wire machine.loadIn() via frameManager | ⬚ todo | M |
+  | S24-06 | `<TaskBar>` component | ⬚ todo | M |
+  | S24-07 | Tests + intégration | ⬚ todo | M |
 
----
+  Progress: 0/7 stories
 
-## Strategic Dimensions
+### Roadmap to Release
 
-**Marketing:**
-- v2.0: Full-stack schema-driven framework with real-time sync
-- Offline-first: Work without connection, sync when back online
-- Enterprise-ready: RBAC permissions, audit trails, multi-tenant
-- Zero-config CRUD: Automatic API + UI from schema definitions
+  #### Planning ✅
+  - PRD: done
+  - Architecture/Spec: done
 
-**Product:**
-- Unified data model: _views registry replaces fieldModel/miniModel/columnModel
-- RBAC v2: Users, groups, roles, grants with temporal constraints
-- Real-time sync: WebSocket/SSE with conflict resolution
-- SPA routing: Schema-driven navigation with permission guards
+  #### Development 🔨
+  - Sprint 1–12: foundation, server, CRUD, auth, sync ✅
+  - Sprint 13: schemelink, meta-collections, Pane ✅
+  - Sprint 14: pagination, sort, FK labels ✅
+  - Sprint 15: release prep, exports, build ✅
+  - Sprint 16: soft delete, audit, domain actions ✅
+  - Sprint 17: schema validation server-side ✅
+  - Sprint 18: Explorer UX (sortBy, groupBy) ✅
+  - Sprint 19: defaultSort per collection ✅
+  - Sprint 20: hooks registry, file/mail/image services ✅
+  - Sprint 21: image presets system ✅
+  - Sprint 22: navigation layer (machine.loadIn, componentRegistry, SchemaRouter) ✅
+  - Sprint 23: structural refactor (data-ui/ + shell/, DataList, SchemeList) ✅
+  - Sprint 24: Frame Manager (MachineFrameManager, loadFrame, TaskBar) 🔨
 
-**Far Vision:**
-- Visual schema builder: Drag-and-drop entity designer
-- Plugin marketplace: Custom field types and components
-- AI-powered features: Smart defaults, auto-generated validations
-- Multi-database federation: Query across PostgreSQL, MongoDB, IndexedDB
+  #### Testing 🔨
+  - Unit tests: 403/403 green
+  - E2E tests: Playwright smoke pass
+
+  #### Release ⬚
+  - Docs/README: pending
+  - CHANGELOG: pending
+  - Publish: pending
+
+### Artifacts
+
+  | Artifact | Status |
+  |----------|--------|
+  | PRD | ✅ done |
+  | Architecture | ✅ done |
+  | Tech-spec | ✅ done |
+  | Sprint 22 artifact | ✅ done |
+  | Sprint 23 artifact | ✅ done |
+  | Sprint 24 artifact | ✅ done |
+  | NAVIGATION.md | ✅ done |
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  bmad continue   — execute next step (S24-01)
+  bmad test       — run tests
+  bmad audit      — code quality
+  bmad doc        — generate docs
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

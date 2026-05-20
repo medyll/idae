@@ -59,20 +59,22 @@ Menu list of collection records — composes DataList for data, supports data pr
 		{/each}
 	</ul>
 {:else}
-	<DataList {collection} {where} {sortBy} let:items>
-		<ul class="action-list" role="list">
-			{#each items as item, idx}
-				<li
-					class="action-item"
-					role="button"
-					tabindex="0"
-					onclick={(e) => load(e, idx, item as COL)}
-					onkeydown={(e) => e.key === 'Enter' && load(e, idx, item as COL)}
-				>
-					{(item as any)?.name ?? (item as any)?.label ?? String(idx)}
-				</li>
-			{/each}
-		</ul>
+	<DataList {collection} {where} {sortBy}>
+		{#snippet children({ items })}
+			<ul class="action-list" role="list">
+				{#each items as item, idx}
+					<li
+						class="action-item"
+						role="button"
+						tabindex="0"
+						onclick={(e) => load(e, idx, item as COL)}
+						onkeydown={(e) => e.key === 'Enter' && load(e, idx, item as COL)}
+					>
+						{(item as any)?.name ?? (item as any)?.label ?? String(idx)}
+					</li>
+				{/each}
+			</ul>
+		{/snippet}
 	</DataList>
 {/if}
 
