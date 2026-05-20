@@ -1,7 +1,7 @@
 phase: "development"
-progress: 80
+progress: 85
 active_role: "Developer"
-next_action: "Implement S6-07 (adapters/svelte/ — useQoolieCollection.svelte.ts)"
+next_action: "Implement S6-08 (Build distributable + suppression signals.dataVersion)"
 next_command: "bmad-continue"
 next_role: "Developer"
 sprints:
@@ -122,7 +122,7 @@ artifacts:
         status: done
       - id: S6-07
         title: "adapters/svelte/ — useQoolieCollection.svelte.ts"
-        status: todo
+        status: done
       - id: S6-08
         title: "Build distributable + suppression signals.dataVersion idae-machine"
         status: todo

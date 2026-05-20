@@ -1,9 +1,9 @@
 # Qoolie — Status Report
 
 **Phase:** development  
-**Progress:** 80%  
+**Progress:** 85%  
 **Active Role:** Developer  
-**Next:** Implement S6-07 (adapters/svelte/)
+**Next:** Implement S6-08 (Build distributable + cleanup)
 
 ---
 
@@ -17,7 +17,7 @@
 | S6-04 | engine/IdbEventBus.ts | ✅ done |
 | S6-05 | engine/IdbState.ts | ✅ done |
 | S6-06 | Rewire Qoolie.ts + QoolieCollection.ts → engine/ | ✅ done |
-| S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ⬜ todo |
+| S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ✅ done |
 | S6-08 | Build distributable + suppression signals.dataVersion | ⬜ todo |
 
 ## Previous Sprints
