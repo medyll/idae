@@ -12,7 +12,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-	import CardFields from '$lib/main-ui/card/CardFields.svelte';
+	import DataFields from './DataFields.svelte';
 
 	let {
 		onsubmit: onsubmit_callback,
@@ -128,7 +128,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 
 	<div class="flex">
 		<div class="crud {mode}">
-			<CardFields
+			<DataFields
 				bind:data={formData}
 				{collection}
 				{mode}

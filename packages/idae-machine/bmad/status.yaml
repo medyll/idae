@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-03: Extraire DataForm depuis CardForm dans data-ui/data/"
+next_action: "Implement S23-04: Extraire DataFields, DataFk, DataRfk dans data-ui/data/"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -114,8 +114,11 @@ sprints:
         test_result: pass
       - id: S23-03
         title: "Extraire DataForm depuis CardForm dans data-ui/data/"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 399/399 (31 files). check: 26 errors (baseline, 0 new). CardForm → thin wrapper."
+        test_result: pass
       - id: S23-04
         title: "Extraire DataFields, DataFk, DataRfk dans data-ui/data/"
         status: todo
@@ -834,9 +837,8 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-02 complete: DataList.svelte restored as pure data provider in data-ui/data/.
-      Supports where, sortBy, groupBy, pageSize, defaultSort, signals.dataVersion reactivity.
-      dataList.test.ts: 12/12 (getAll, where, sort, group, page, error, defaultSort, signal).
+      Sprint 23 S23-03 complete: DataForm extracted to data-ui/data/ with full CRUD logic
+      (fetch, validate, submit, field iteration). CardForm becomes thin retro-compat wrapper.
       Full suite: 399/399 (31 files). check: 26 errors (baseline).
     tests_server: 399
     tests_client: 0

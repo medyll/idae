@@ -1,30 +1,18 @@
 <!--
 CardFk.svelte
-Forward FK relation viewer — shows collections this record points to.
-@role card-relations
-@prop {string} collection - Collection name
-@prop {any} [collectionId] - Optional record id
-@prop {object} [where] - Optional filter
-@slot children (let:item) - Custom FK rendering
+Retro-compat wrapper for DataFk.
 -->
 <script lang="ts">
+	import DataFk from '$lib/data-ui/data/DataFk.svelte';
 	import type { TplCollectionName } from '$lib/types/machine-model.js';
 	import type { Where } from '@medyll/qoolie';
-	import { machine } from '$lib/main/machine.js';
+
 	let { collection, collectionId, where, children } = $props<{
 		collection: TplCollectionName;
 		collectionId?: string | number;
 		where?: Where;
 		children?: any;
 	}>();
-	const fks = $derived(machine.logic.collection(collection).parseFks());
-
 </script>
 
-{#each Object.entries(fks) as item (item[0])}
-	<div>  {item[0]}
-		<!-- {#if children}
-			{@render children(item)}
-		{/if} -->
-	</div>
-{/each}
+<DataFk {collection} {collectionId} {where} {children} />
