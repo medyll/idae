@@ -8,6 +8,12 @@ export { IdbSchema } from './IdbSchema';
 export { IdbEngine, createDb, createIdbqDb } from './IdbEngine';
 export type { IdbqlCollections, CreateDbResult } from './IdbEngine';
 
+export { IdbCollection } from './IdbCollection';
+export type { MutationOptions } from './IdbCollection';
+
+export { IdbEventBus, idbEventBus } from './IdbEventBus';
+export type { EventBusHandler } from './IdbEventBus';
+
 export type {
 	// Query types
 	Where,
