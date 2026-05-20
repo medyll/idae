@@ -1,9 +1,9 @@
-phase: "Done"
-progress: 100
-active_role: "Developer"
-next_action: "Sprint 5 complete - All stories done"
-next_command: "bmad continue"
-next_role: "Reviewer"
+phase: "development"
+progress: 63
+active_role: "Scrum Master"
+next_action: "Sprint 6 planned — begin S6-01 (engine/types + pathResolver)"
+next_command: "bmad-run sprint 6"
+next_role: "Developer"
 sprints:
   - number: 1
     goal: "Core implementation - Qoolie basic CRUD + sync foundation"
@@ -85,6 +85,9 @@ artifacts:
   - "bmad/artifacts/sprint-1.md"
   - "bmad/artifacts/sprint-2.md"
   - "bmad/artifacts/sprint-3.md"
+  - "bmad/artifacts/sprint-4.md"
+  - "bmad/artifacts/sprint-5.md"
+  - "bmad/artifacts/sprint-6.md"
   - "bmad/artifacts/stories/S1-01.md"
   - "bmad/artifacts/stories/S1-02.md"
   - "bmad/artifacts/stories/S1-03.md"
@@ -95,5 +98,33 @@ artifacts:
   - "bmad/artifacts/stories/S1-08.md"
   - "bmad/artifacts/stories/S1-09.md"
   - "bmad/artifacts/stories/S1-10.md"
+  - number: 6
+    goal: "qoolie self-contained — internalize IDB engine, EventTarget bus, Svelte adapter"
+    status: "planned"
+    stories:
+      - id: S6-01
+        title: "engine/types.ts + engine/pathResolver.ts"
+        status: todo
+      - id: S6-02
+        title: "engine/IdbSchema.ts + engine/IdbEngine.ts"
+        status: todo
+      - id: S6-03
+        title: "engine/IdbCollection.ts"
+        status: todo
+      - id: S6-04
+        title: "engine/IdbEventBus.ts — EventTarget pur, sans $state"
+        status: todo
+      - id: S6-05
+        title: "engine/IdbState.ts"
+        status: todo
+      - id: S6-06
+        title: "Rewire Qoolie.ts + QoolieCollection.ts → engine/"
+        status: todo
+      - id: S6-07
+        title: "adapters/svelte/ — useQoolieCollection.svelte.ts"
+        status: todo
+      - id: S6-08
+        title: "Build distributable + suppression signals.dataVersion idae-machine"
+        status: todo
 changelog: []
 history: []
