@@ -50,13 +50,13 @@ export class ComponentRegistry {
 export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.registerMany({
-	'explorer.list':        () => import('$lib/main-ui/explorer/ExplorerList.svelte'),
-	'explorer.table':       () => import('$lib/main-ui/explorer/ExplorerTable.svelte'),
-	'explorer.actions':     () => import('$lib/main-ui/explorer/ExplorerActions.svelte'),
-	'explorer.card':        () => import('$lib/main-ui/explorer/ExplorerCard.svelte'),
-	'explorer.collections': () => import('$lib/main-ui/explorer/ExplorerCollections.svelte'),
-	'card.form':            () => import('$lib/main-ui/card/CardForm.svelte'),
-	'card.create':          () => import('$lib/main-ui/card/CardCreate.svelte'),
-	'card.edit':            () => import('$lib/main-ui/card/CardEdit.svelte'),
-	'card.picker':          () => import('$lib/main-ui/card/CardPicker.svelte'),
+	'explorer.list':        () => import('$lib/shell/explorer/ExplorerList.svelte'),
+	'explorer.table':       () => import('$lib/shell/explorer/ExplorerTable.svelte'),
+	'explorer.actions':     () => import('$lib/shell/explorer/ExplorerActions.svelte'),
+	'explorer.card':        () => import('$lib/shell/explorer/ExplorerCard.svelte'),
+	'explorer.collections': () => import('$lib/shell/explorer/ExplorerCollections.svelte'),
+	'card.form':            () => import('$lib/shell/card/CardForm.svelte'),
+	'card.create':          () => import('$lib/shell/card/CardCreate.svelte'),
+	'card.edit':            () => import('$lib/shell/card/CardEdit.svelte'),
+	'card.picker':          () => import('$lib/shell/card/CardPicker.svelte'),
 });

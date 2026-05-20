@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import ExplorerTable from '../../main-ui/explorer/ExplorerTable.svelte';
+import ExplorerTable from '../../shell/explorer/ExplorerTable.svelte';
 
 describe('ExplorerTable sort headers', () => {
 	it('ExplorerTable is defined', () => {

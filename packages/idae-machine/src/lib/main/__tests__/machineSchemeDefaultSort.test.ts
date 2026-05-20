@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
 import { MachineScheme } from '../machine/MachineScheme.js';
-import { sortItems } from '../../main-ui/explorer/explorerUtils.js';
+import { sortItems } from '../../shell/explorer/explorerUtils.js';
 
 function makeDb(model: Record<string, any>): MachineDb {
 	return new MachineDb(model as any);

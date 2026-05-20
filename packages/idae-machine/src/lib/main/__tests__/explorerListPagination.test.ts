@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import ExplorerList from '../../main-ui/explorer/ExplorerList.svelte';
+import ExplorerList from '../../shell/explorer/ExplorerList.svelte';
 
 describe('ExplorerList pagination', () => {
 	it('ExplorerList is defined', () => {

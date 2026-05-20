@@ -6,8 +6,8 @@
 */ -->
 <script lang="ts" generics="COL = Record<string,unknown>">
 	import DataForm from '$lib/data-ui/data/DataForm.svelte';
-	import CardRfk from '$lib/main-ui/card/CardRfk.svelte';
-	import CardFk from '$lib/main-ui/card/CardFk.svelte';
+	import CardRfk from '\$lib/shell/card/CardRfk.svelte';
+	import CardFk from '\$lib/shell/card/CardFk.svelte';
 	import type { CreateUpdateProps } from './types.js';
 
 	let {

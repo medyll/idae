@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-05: Créer SchemeList + SchemeItem dans data-ui/scheme/"
+next_action: "Implement S23-06: Créer shell/ — déplacer explorer/, card/, layout/"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -128,8 +128,11 @@ sprints:
         test_result: pass
       - id: S23-05
         title: "Créer SchemeList + SchemeItem dans data-ui/scheme/"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "schemeList.test.ts: 4/4 passed. Full suite: 403/403 (32 files). check: 26 errors (baseline, 0 new)."
+        test_result: pass
       - id: S23-06
         title: "Créer shell/ — déplacer explorer/, card/, layout/"
         status: todo
@@ -840,11 +843,11 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-04 complete: DataFields, DataFk, DataRfk extracted to data-ui/data/.
-      CardFields, CardFk, CardRfk become thin retro-compat wrappers.
-      DataForm updated to use DataFields directly.
-      Full suite: 399/399 (31 files). check: 26 errors (baseline).
-    tests_server: 399
+      Sprint 23 S23-05 complete: SchemeList + SchemeItem created in data-ui/scheme/.
+      Groups collections by type (standard/type/group), filters by RBAC + search query.
+      schemeList.test.ts: 4/4 (collections, grouping, RBAC, search).
+      Full suite: 403/403 (32 files). check: 26 errors (baseline).
+    tests_server: 403
     tests_client: 0
 
   - date: "2026-05-20"

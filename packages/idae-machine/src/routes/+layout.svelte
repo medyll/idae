@@ -4,7 +4,7 @@
 	import { machine } from '$lib/main/machine.js';
 	import { demoScheme, demoSeed } from '$lib/demo/demoScheme.js';
 	import { bumpDataVersion } from '$lib/main/machineSignals.svelte.js';
-	import PaneLeft from '$lib/main-ui/layout/PaneLeft.svelte';
+	import PaneLeft from '$lib/shell/layout/PaneLeft.svelte';
 
 	let { children }: LayoutProps = $props();
 

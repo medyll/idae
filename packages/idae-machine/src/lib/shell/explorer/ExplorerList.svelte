@@ -10,12 +10,12 @@ Collection record list with machine store binding.
 @event onclick - Emitted on item click
 -->
 	<script lang="ts" generics="COL = Record<string,any>">
-	import CardForm from '$lib/main-ui/card/CardForm.svelte';
+	import CardForm from '\$lib/shell/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
 	import { machine } from '$lib/main/machine.js';
 	import { signals } from '$lib/main/machineSignals.svelte.js';
-	import CardFields from '$lib/main-ui/card/CardFields.svelte';
+	import CardFields from '\$lib/shell/card/CardFields.svelte';
 	import type { SortBy } from './explorerUtils.js';
 	import { sortItems, groupItems } from './explorerUtils.js';
 

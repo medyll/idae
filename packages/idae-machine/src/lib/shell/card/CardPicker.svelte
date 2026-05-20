@@ -9,7 +9,7 @@ Button that opens a CardForm dialog for a collection.
 
 <script lang="ts" generics="COL">
 	import { Icon } from '@iconify/svelte';
-	import CardForm from '$lib/main-ui/card/CardForm.svelte';
+	import CardForm from '\$lib/shell/card/CardForm.svelte';
 	import { type CreateUpdateProps } from './types.js';
 
 	let { collection = 'book', withData, ...rest } = $props<{

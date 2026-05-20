@@ -10,7 +10,7 @@ Menu list of collection records with action handling.
 @event onclick - Emitted on item click
 -->
 	<script lang="ts" generics="COL = Record<string,any>">
-	import CardForm from '$lib/main-ui/card/CardForm.svelte';
+	import CardForm from '\$lib/shell/card/CardForm.svelte';
 	import { hydrate } from 'svelte';
 	import type { Where } from '@medyll/qoolie';
 	import type { SortBy } from './explorerUtils.js';

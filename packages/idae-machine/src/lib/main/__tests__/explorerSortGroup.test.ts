@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sortItems, groupItems } from '../../main-ui/explorer/explorerUtils.js';
+import { sortItems, groupItems } from '../../shell/explorer/explorerUtils.js';
 
 describe('sortItems', () => {
 	const data = [

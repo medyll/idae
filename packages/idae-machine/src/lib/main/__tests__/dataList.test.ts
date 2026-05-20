@@ -4,7 +4,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
 import { demoScheme } from '../../demo/demoScheme.js';
 import { signals } from '../machineSignals.svelte.js';
-import { sortItems, groupItems } from '../../main-ui/explorer/explorerUtils.js';
+import { sortItems, groupItems } from '../../shell/explorer/explorerUtils.js';
 
 let _dbCounter = 0;
 
