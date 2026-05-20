@@ -1,7 +1,7 @@
 # BMAD Status — idae-machine v2
 # Next generation: full-stack with auth, permissions, real-time sync
 # Source: bmad/intake-sources/IDAE-MACHINE-NEXT.md
-# Rebuilt: 2026-05-12 from actual code + git state
+# Rebuilt: 2026-05-20 from actual code + git state
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-07: Tests + intégration (frameManager, loadFrame, Frame mount, TaskBar réactivité)"
-next_command: "bmad-continue"
-next_role: "developer"
-active_role: "developer"
+next_action: "Sprint 24 complete — define Sprint 25"
+next_command: "bmad-status"
+next_role: "scrum-master"
+active_role: "scrum-master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -59,7 +59,7 @@ product:
   - "SPA routing: Schema-driven navigation with permission guards"
 
 far_vision:
-  - "Visual schema builder: Drag-and-drop entity designer"
+  - "Visual schema builder: Drag-and-drop entity designers"
   - "Plugin marketplace: Custom field types and components"
   - "AI-powered features: Smart defaults, auto-generated validations"
   - "Multi-database federation: Query across PostgreSQL, MongoDB, IndexedDB"
@@ -95,7 +95,7 @@ architecture:
 sprints:
   - id: 24
     goal: "Frame Manager — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-2026-05-20-s24.md"
     stories:
       - id: S24-01
@@ -142,8 +142,11 @@ sprints:
         test_result: pass
       - id: S24-07
         title: "Tests + intégration (frameManager, loadFrame, Frame mount, TaskBar réactivité)"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "frameIntegration.test.ts: 6/6 passed. Full suite: 440/440 (36 files). Sprint 24 complete."
+        test_result: pass
 
   - id: 23
     goal: "Refactor structurel — data-ui/ + shell/, DataList, SchemeList, machine.loadIn() partout"
@@ -922,10 +925,24 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 24 S24-06 complete: TaskBar.svelte component — reactive list of open frames
-      via $derived(machineFrameManager.openFrames). Toggle on button click, close on ×.
-      Empty state shown when no frames open. Full suite: 434/434 (35 files).
-    tests_server: 434
+      Sprint 24 COMPLETE (7/7 stories): Frame Manager system implemented.
+      S24-01: MachineFrameManager singleton + FrameControls (21 tests)
+      S24-02: computeFrameId() deterministic ID (6 tests)
+      S24-03: machine.loadFrame() delegation (4 tests)
+      S24-04: Frame.svelte component — auto-register, mount, show/hide/close
+      S24-05: machine.loadIn() wired via frameManager + layout Frame zones
+      S24-06: TaskBar.svelte — reactive open frames list
+      S24-07: Integration tests (6 tests)
+      Full suite: 440/440 (36 files). 0 new check errors.
+    tests_server: 440
+    tests_client: 0
+
+  - date: "2026-05-20"
+    summary: >
+      Sprint 23 S23-08 complete: ExplorerActions refactored to compose DataList.
+      Supports data prop override for retro-compat. Uses machine.loadIn() for navigation.
+      Full suite: 403/403 (32 files). check: 27 errors (baseline range).
+    tests_server: 403
     tests_client: 0
 
   - date: "2026-05-20"

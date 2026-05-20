@@ -6,7 +6,7 @@
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: development (S24 active)
+  Progress   [██████████] 100%   Phase: development (S24 complete)
 
 ### Features & Capabilities
 
@@ -23,7 +23,7 @@
   | SPA navigation | ✅ Shipped | URL-driven navigation loads the right view in the right zone |
   | Multi-zone layout | ✅ Shipped | Content loads into named zones (main, modal, window) |
   | Component library | ✅ Shipped | ExplorerList, CardForm, DataList, SchemeList — composable and reusable |
-  | Multi-frame manager | 🔨 Building | Open multiple records simultaneously, toggle between them, taskbar navigation |
+  | Multi-frame manager | ✅ Shipped | Open multiple records simultaneously, toggle between them, taskbar navigation |
 
 ### What's Ready Now
 
@@ -35,12 +35,15 @@
 - URL-driven SPA: `machine.loadIn('explorer.list', 'main', 'vehicle')` navigates correctly
 - Composable data-ui components (DataList, SchemeList) for custom layouts
 - Pagination, sort, groupBy on collection lists
+- **Frame Manager**: `machine.loadFrame('card.form', 'vehicle', '42')` opens dynamic frames
+- **TaskBar**: reactive list of open frames with toggle/close buttons
+- **Frame component**: auto-registration, mount/unmount, show/hide via CSS display
 
 ### What's Coming Next
 
-- Open multiple records simultaneously (S24 — Frame Manager)
-- Toggle/minimize open frames via TaskBar (legacy windowGui pattern, modernized)
-- `machine.loadFrame('card.form', 'vehicle', '42')` opens a frame by content, not by zone name
+- Sprint 25 — to be defined
+- Visual schema builder (far vision)
+- Plugin marketplace for custom field types
 
 ### Risks & Blockers
 
@@ -50,30 +53,27 @@
 
 ## Development Details
 
-  Sprint     24
-  Role       scrum-master → next: developer
-  Next cmd   `bmad-continue`
+  Sprint     24 (complete)
+  Role       scrum-master
+  Next cmd   `bmad-status`
 
 ### Current Sprint
 
-  ✅ Done     S23 complete — data-ui/ + shell/ structure, DataList/SchemeList composable, 403/403 tests
-  🔨 Doing    S24 — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar
-  💡 Next     S24-01: MachineFrameManager singleton + FrameControls interface
-  ⚠️ Blockers none
+  ✅ Done     S24 complete — Frame Manager system (7/7 stories, 440/440 tests)
 
 ### Stories — Sprint 24
 
   | ID | Title | Status | Effort |
   |----|-------|--------|--------|
-  | S24-01 | MachineFrameManager singleton + FrameControls | ⬚ todo | S |
-  | S24-02 | computeFrameId() — ID déterministique | ⬚ todo | S |
-  | S24-03 | machine.loadFrame() | ⬚ todo | S |
-  | S24-04 | `<Frame>` Svelte component | ⬚ todo | M |
-  | S24-05 | Wire machine.loadIn() via frameManager | ⬚ todo | M |
-  | S24-06 | `<TaskBar>` component | ⬚ todo | M |
-  | S24-07 | Tests + intégration | ⬚ todo | M |
+  | S24-01 | MachineFrameManager singleton + FrameControls | ✅ done | S |
+  | S24-02 | computeFrameId() — ID déterministique | ✅ done | S |
+  | S24-03 | machine.loadFrame() | ✅ done | S |
+  | S24-04 | `<Frame>` Svelte component | ✅ done | M |
+  | S24-05 | Wire machine.loadIn() via frameManager | ✅ done | M |
+  | S24-06 | `<TaskBar>` component | ✅ done | M |
+  | S24-07 | Tests + intégration | ✅ done | M |
 
-  Progress: 0/7 stories
+  Progress: 7/7 stories (100%)
 
 ### Roadmap to Release
 
@@ -81,7 +81,7 @@
   - PRD: done
   - Architecture/Spec: done
 
-  #### Development 🔨
+  #### Development ✅
   - Sprint 1–12: foundation, server, CRUD, auth, sync ✅
   - Sprint 13: schemelink, meta-collections, Pane ✅
   - Sprint 14: pagination, sort, FK labels ✅
@@ -94,10 +94,10 @@
   - Sprint 21: image presets system ✅
   - Sprint 22: navigation layer (machine.loadIn, componentRegistry, SchemaRouter) ✅
   - Sprint 23: structural refactor (data-ui/ + shell/, DataList, SchemeList) ✅
-  - Sprint 24: Frame Manager (MachineFrameManager, loadFrame, TaskBar) 🔨
+  - Sprint 24: Frame Manager (MachineFrameManager, loadFrame, TaskBar) ✅
 
-  #### Testing 🔨
-  - Unit tests: 403/403 green
+  #### Testing ✅
+  - Unit tests: 440/440 green (36 files)
   - E2E tests: Playwright smoke pass
 
   #### Release ⬚
@@ -118,8 +118,8 @@
   | NAVIGATION.md | ✅ done |
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  bmad continue   — execute next step (S24-01)
-  bmad test       — run tests
-  bmad audit      — code quality
-  bmad doc        — generate docs
+  bmad-status     — show this report
+  bmad-test       — run tests
+  bmad-audit      — code quality
+  bmad-doc        — generate docs
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
