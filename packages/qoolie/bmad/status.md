@@ -1,0 +1,37 @@
+# Qoolie — Status Report
+
+**Phase:** development  
+**Progress:** 65%  
+**Active Role:** Developer  
+**Next:** Implement S6-02 (IdbEngine + IdbSchema)
+
+---
+
+## Sprint 6 — qoolie self-contained engine
+
+| ID | Story | Status |
+|----|-------|--------|
+| S6-01 | engine/types.ts + engine/pathResolver.ts | ✅ done |
+| S6-02 | engine/IdbSchema.ts + engine/IdbEngine.ts | ⬜ todo |
+| S6-03 | engine/IdbCollection.ts | ⬜ todo |
+| S6-04 | engine/IdbEventBus.ts | ⬜ todo |
+| S6-05 | engine/IdbState.ts | ⬜ todo |
+| S6-06 | Rewire Qoolie.ts + QoolieCollection.ts → engine/ | ⬜ todo |
+| S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ⬜ todo |
+| S6-08 | Build distributable + suppression signals.dataVersion | ⬜ todo |
+
+## Previous Sprints
+
+- **Sprint 1:** Core CRUD + sync foundation ✅ done
+- **Sprint 2:** DX improvements + Advanced features ✅ done (S2-03 skipped)
+- **Sprint 3:** Advanced production features ✅ done
+- **Sprint 4:** Integration with idae-idbql and idae-api ✅ done
+- **Sprint 5:** Validation, conflict resolution, multi-DB ✅ done
+
+---
+
+## Dimensions
+
+**Marketing:** Simplified IndexedDB wrapper with built-in server sync, zero config needed.  
+**Product:** Internalizing IDB engine to become fully distributable without SvelteKit dependency.  
+**Far Vision:** Universal client-side database layer — any framework, any backend, offline-first by default.

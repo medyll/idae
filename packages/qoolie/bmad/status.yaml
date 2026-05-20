@@ -1,8 +1,8 @@
 phase: "development"
-progress: 63
-active_role: "Scrum Master"
-next_action: "Sprint 6 planned — begin S6-01 (engine/types + pathResolver)"
-next_command: "bmad-run sprint 6"
+progress: 65
+active_role: "Developer"
+next_action: "Implement S6-02 (IdbEngine + IdbSchema)"
+next_command: "bmad-continue"
 next_role: "Developer"
 sprints:
   - number: 1
@@ -104,7 +104,7 @@ artifacts:
     stories:
       - id: S6-01
         title: "engine/types.ts + engine/pathResolver.ts"
-        status: todo
+        status: done
       - id: S6-02
         title: "engine/IdbSchema.ts + engine/IdbEngine.ts"
         status: todo
