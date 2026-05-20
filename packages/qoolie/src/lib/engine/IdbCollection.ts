@@ -369,8 +369,9 @@ function compareValues(a: any, b: any): number {
 /**
  * Applies a Where clause to an array of items.
  * Handles: direct value match, operator objects (eq, gt, gte, lt, lte, ne, in, nin, contains, startsWith, endsWith, btw).
+ * @internal — exported for IdbState use.
  */
-function applyWhere<T>(items: T[], where: Where<T>): T[] {
+export function applyWhere<T>(items: T[], where: Where<T>): T[] {
 	return items.filter((item) => {
 		for (const [key, condition] of Object.entries(where as Record<string, any>)) {
 			const value = dotPath(item as any, key);
@@ -440,8 +441,9 @@ function matchOperators(value: any, operators: Record<string, any>): boolean {
 
 /**
  * Wraps an array with ResultSet methods for chaining.
+ * @internal — exported for IdbState use.
  */
-function getResultSet<T>(data: T[]): ResultSet<T> {
+export function getResultSet<T>(data: T[]): ResultSet<T> {
 	Object.defineProperties(data, {
 		setOptions: {
 			value: function (options: ResultsetOptions = {}) {

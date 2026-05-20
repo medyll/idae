@@ -10,9 +10,12 @@ export type { IdbqlCollections, CreateDbResult } from './IdbEngine';
 
 export { IdbCollection } from './IdbCollection';
 export type { MutationOptions } from './IdbCollection';
+export { getResultSet, applyWhere } from './IdbCollection';
 
 export { IdbEventBus, idbEventBus } from './IdbEventBus';
 export type { EventBusHandler } from './IdbEventBus';
+
+export { CollectionState, createIdbState } from './IdbState';
 
 export type {
 	// Query types
