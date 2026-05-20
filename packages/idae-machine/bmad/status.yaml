@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-04: Extraire DataFields, DataFk, DataRfk dans data-ui/data/"
+next_action: "Implement S23-05: Créer SchemeList + SchemeItem dans data-ui/scheme/"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -121,8 +121,11 @@ sprints:
         test_result: pass
       - id: S23-04
         title: "Extraire DataFields, DataFk, DataRfk dans data-ui/data/"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "Full suite: 399/399 (31 files). check: 26 errors (baseline, 0 new). CardFields/Fk/Rfk → thin wrappers."
+        test_result: pass
       - id: S23-05
         title: "Créer SchemeList + SchemeItem dans data-ui/scheme/"
         status: todo
@@ -837,8 +840,9 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-03 complete: DataForm extracted to data-ui/data/ with full CRUD logic
-      (fetch, validate, submit, field iteration). CardForm becomes thin retro-compat wrapper.
+      Sprint 23 S23-04 complete: DataFields, DataFk, DataRfk extracted to data-ui/data/.
+      CardFields, CardFk, CardRfk become thin retro-compat wrappers.
+      DataForm updated to use DataFields directly.
       Full suite: 399/399 (31 files). check: 26 errors (baseline).
     tests_server: 399
     tests_client: 0

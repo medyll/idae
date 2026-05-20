@@ -8,7 +8,7 @@
 
 ## Next Action
 
-**S23-03 complete** — Starting S23-04: Extract DataFields, DataFk, DataRfk
+**S23-04 complete** — Starting S23-05: Create SchemeList + SchemeItem
 
 ---
 
@@ -19,7 +19,8 @@
 | S23-01 | Créer data-ui/ — déplacer field/, input/, fragments/ | ✅ Complete | 387/387 |
 | S23-02 | Restaurer DataList dans data-ui/data/ | ✅ Complete | 12/12 + 399/399 |
 | S23-03 | Extraire DataForm depuis CardForm | ✅ Complete | CardForm→wrapper |
-| S23-04 | Extraire DataFields, DataFk, DataRfk | 🔄 In Progress | — |
+| S23-04 | Extraire DataFields, DataFk, DataRfk | ✅ Complete | Card*→wrappers |
+| S23-05 | Créer SchemeList + SchemeItem | 🔄 In Progress | — |
 | S23-03 | Extraire DataForm depuis CardForm | ⏳ Todo | — |
 | S23-04 | Extraire DataFields, DataFk, DataRfk | ⏳ Todo | — |
 | S23-05 | Créer SchemeList + SchemeItem | ⏳ Todo | — |
