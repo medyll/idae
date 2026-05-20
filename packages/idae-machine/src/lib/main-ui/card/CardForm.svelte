@@ -20,7 +20,7 @@
     import type { CreateUpdateProps } from './types.js';
     import type { IDbForge } from '$lib/types/machine-model.js';
     import CardRfk from '$lib/main-ui/card/CardRfk.svelte';
-    import FieldDisplay from '$lib/main-ui/field/FieldDisplay.svelte';
+    import FieldDisplay from '$lib/data-ui/field/FieldDisplay.svelte';
 	import CardFk from '$lib/main-ui/card/CardFk.svelte';
 	import CardFields from '$lib/main-ui/card/CardFields.svelte';
 

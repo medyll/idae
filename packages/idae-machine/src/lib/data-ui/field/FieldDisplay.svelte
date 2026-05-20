@@ -13,11 +13,11 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     import type { TplCollectionName } from '$lib/types/machine-model.js';
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
-    import InputEmail    from '$lib/main-ui/input/InputEmail.svelte';
-    import InputCurrency from '$lib/main-ui/input/InputCurrency.svelte';
-    import InputBoolean  from '$lib/main-ui/input/InputBoolean.svelte';
-    import InputTextarea from '$lib/main-ui/input/InputTextarea.svelte';
-    import InputSelect   from '$lib/main-ui/input/InputSelect.svelte';
+    import InputEmail    from '$lib/data-ui/input/InputEmail.svelte';
+    import InputCurrency from '$lib/data-ui/input/InputCurrency.svelte';
+    import InputBoolean  from '$lib/data-ui/input/InputBoolean.svelte';
+    import InputTextarea from '$lib/data-ui/input/InputTextarea.svelte';
+    import InputSelect   from '$lib/data-ui/input/InputSelect.svelte';
 
     let {
         collection = getContext('collection'),
