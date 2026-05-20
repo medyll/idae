@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-01: MachineFrameManager singleton + FrameControls interface"
+next_action: "Implement S24-02: computeFrameId() — ID déterministique depuis (collection, collectionId?, vars?)"
 next_command: "bmad-continue"
 next_role: "developer"
-active_role: "scrum-master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -100,8 +100,11 @@ sprints:
     stories:
       - id: S24-01
         title: "MachineFrameManager singleton — registry + FrameControls interface"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "frameManager.test.ts: 21/21 passed. Full suite: 424/424 (33 files)."
+        test_result: pass
       - id: S24-02
         title: "computeFrameId() — ID déterministique depuis (collection, collectionId?, vars?)"
         status: todo
@@ -904,10 +907,11 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-08 complete: ExplorerActions refactored to compose DataList.
-      Supports data prop override for retro-compat. Uses machine.loadIn() for navigation.
-      Full suite: 403/403 (32 files). check: 27 errors (baseline range).
-    tests_server: 403
+      Sprint 24 S24-01 complete: MachineFrameManager singleton + FrameControls interface.
+      register/unregister/load/show/hide/toggle/close/openFrames all implemented.
+      load() supports DOM-first pattern with mountFn callback for unknown frames.
+      frameManager.test.ts: 21/21 passed. Full suite: 424/424 (33 files).
+    tests_server: 424
     tests_client: 0
 
   - date: "2026-05-20"
