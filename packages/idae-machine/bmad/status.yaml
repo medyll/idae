@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 22 complete — await next sprint or direction"
-next_command: "bmad-status"
-next_role: "scrum master"
-active_role: "tester"
+next_action: "Sprint 23 planifié — refactor structurel data-ui+shell. Démarrer S23-01."
+next_command: "bmad-continue"
+next_role: "developer"
+active_role: "scrum master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,6 +93,68 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 23
+    goal: "Refactor structurel — data-ui/ + shell/, DataList, SchemeList, machine.loadIn() partout"
+    status: planned
+    artifact: "bmad/artifacts/sprint-2026-05-20-s23.md"
+    stories:
+      - id: S23-01
+        title: "Créer data-ui/ — déplacer field/, input/, fragments/"
+        status: todo
+        effort: S
+      - id: S23-02
+        title: "Restaurer DataList dans data-ui/data/"
+        status: todo
+        effort: M
+      - id: S23-03
+        title: "Extraire DataForm depuis CardForm dans data-ui/data/"
+        status: todo
+        effort: M
+      - id: S23-04
+        title: "Extraire DataFields, DataFk, DataRfk dans data-ui/data/"
+        status: todo
+        effort: S
+      - id: S23-05
+        title: "Créer SchemeList + SchemeItem dans data-ui/scheme/"
+        status: todo
+        effort: M
+      - id: S23-06
+        title: "Créer shell/ — déplacer explorer/, card/, layout/"
+        status: todo
+        effort: S
+      - id: S23-07
+        title: "Refactor ExplorerList → compose DataList"
+        status: todo
+        effort: M
+      - id: S23-08
+        title: "Refactor ExplorerActions → compose DataList"
+        status: todo
+        effort: M
+      - id: S23-09
+        title: "Refactor PaneLeft → compose SchemeList"
+        status: todo
+        effort: S
+      - id: S23-10
+        title: "Refactor PaneRecents → compose DataList"
+        status: todo
+        effort: S
+      - id: S23-11
+        title: "Remplacer hydrate() par machine.loadIn() partout"
+        status: todo
+        effort: M
+      - id: S23-12
+        title: "Mettre à jour componentRegistry + aliases loadIn"
+        status: todo
+        effort: S
+      - id: S23-13
+        title: "Mettre à jour index.ts exports + aliases rétro-compat"
+        status: todo
+        effort: S
+      - id: S23-14
+        title: "Tests + vérification finale (vitest + check + Playwright + build)"
+        status: todo
+        effort: M
+
   - id: 22
     goal: "Navigation layer — componentRegistry, machine.loadIn(), URL parser multi-cibles, SchemaRouter refactor"
     status: completed
