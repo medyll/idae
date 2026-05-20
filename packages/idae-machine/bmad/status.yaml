@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-02: Restaurer DataList dans data-ui/data/"
+next_action: "Implement S23-03: Extraire DataForm depuis CardForm dans data-ui/data/"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -107,8 +107,11 @@ sprints:
         test_result: pass
       - id: S23-02
         title: "Restaurer DataList dans data-ui/data/"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "dataList.test.ts: 12/12 passed. Full suite: 399/399 (31 files). check: 26 errors (baseline, 0 new)."
+        test_result: pass
       - id: S23-03
         title: "Extraire DataForm depuis CardForm dans data-ui/data/"
         status: todo
@@ -829,6 +832,15 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-20"
+    summary: >
+      Sprint 23 S23-02 complete: DataList.svelte restored as pure data provider in data-ui/data/.
+      Supports where, sortBy, groupBy, pageSize, defaultSort, signals.dataVersion reactivity.
+      dataList.test.ts: 12/12 (getAll, where, sort, group, page, error, defaultSort, signal).
+      Full suite: 399/399 (31 files). check: 26 errors (baseline).
+    tests_server: 399
+    tests_client: 0
+
   - date: "2026-05-20"
     summary: >
       Sprint 23 S23-01 complete: data-ui/ created, field/input/fragments moved from main-ui/.
