@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-05: Wire machine.loadIn() via frameManager — zones statiques = frames pré-enregistrées"
+next_action: "Implement S24-06: <TaskBar> component — liste réactive des frames ouvertes, toggle/close"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -128,8 +128,11 @@ sprints:
         test_result: pass
       - id: S24-05
         title: "Wire machine.loadIn() via frameManager — zones statiques = frames pré-enregistrées"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "machineLoadIn.test.ts: 6/6 passed. Full suite: 434/434 (35 files). loadIn now delegates to frameManager.load() + history.pushState()."
+        test_result: pass
       - id: S24-06
         title: "<TaskBar> component — liste réactive des frames ouvertes, toggle/close"
         status: todo
@@ -916,10 +919,10 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 24 S24-04 complete: Frame.svelte component with auto-registration on mount,
-      unregistration on unmount. Supports load/show/hide/toggle/close via FrameControls.
-      Mounts modules via componentRegistry.resolve() + Svelte mount(). Auto-wires explorer
-      onclick → detail view in same frame. Full suite: 434/434 (35 files).
+      Sprint 24 S24-05 complete: machine.loadIn() rewired to delegate to frameManager.load()
+      with history.pushState() for URL. Layout updated: <Frame id="main"> in app-main,
+      <Frame id="main.modal"> in overlay, <Frame id="main.window"> in window zone.
+      machineLoadIn.test.ts: 6/6 passed. Full suite: 434/434 (35 files).
     tests_server: 434
     tests_client: 0
 
