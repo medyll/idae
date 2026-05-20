@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@medyll/skiller": "workspace:*",
-    "@medyll/idae-idbql": "workspace:*",
     "@medyll/idae-sync": "workspace:*",
     "commander": "^14.0.3",
     "idb": "^8.0.3"

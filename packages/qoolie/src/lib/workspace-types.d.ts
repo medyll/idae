@@ -36,22 +36,3 @@ declare module '@medyll/idae-sync' {
     onSyncEvent(handler: SyncEventHandler): () => void;
   };
 }
-
-declare module '@medyll/idae-idbql' {
-  export interface IdbqModel<T = any> {
-    [key: string]: {
-      keyPath: string;
-      ts: T;
-    };
-  }
-  
-  export function createDb<T extends IdbqModel>(model: T, version: number): {
-    create(name: string): {
-      idbDatabase: any;
-      idbql: any;
-      idbqlState: any;
-      qolie: any;
-      idbqModel: T;
-    };
-  };
-}
