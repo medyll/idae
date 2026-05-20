@@ -1,9 +1,9 @@
 # Qoolie — Status Report
 
 **Phase:** development  
-**Progress:** 65%  
+**Progress:** 68%  
 **Active Role:** Developer  
-**Next:** Implement S6-02 (IdbEngine + IdbSchema)
+**Next:** Implement S6-03 (IdbCollection)
 
 ---
 
@@ -12,7 +12,7 @@
 | ID | Story | Status |
 |----|-------|--------|
 | S6-01 | engine/types.ts + engine/pathResolver.ts | ✅ done |
-| S6-02 | engine/IdbSchema.ts + engine/IdbEngine.ts | ⬜ todo |
+| S6-02 | engine/IdbSchema.ts + engine/IdbEngine.ts | ✅ done |
 | S6-03 | engine/IdbCollection.ts | ⬜ todo |
 | S6-04 | engine/IdbEventBus.ts | ⬜ todo |
 | S6-05 | engine/IdbState.ts | ⬜ todo |

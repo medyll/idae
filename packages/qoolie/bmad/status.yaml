@@ -1,7 +1,7 @@
 phase: "development"
-progress: 65
+progress: 68
 active_role: "Developer"
-next_action: "Implement S6-02 (IdbEngine + IdbSchema)"
+next_action: "Implement S6-03 (IdbCollection)"
 next_command: "bmad-continue"
 next_role: "Developer"
 sprints:
@@ -107,7 +107,7 @@ artifacts:
         status: done
       - id: S6-02
         title: "engine/IdbSchema.ts + engine/IdbEngine.ts"
-        status: todo
+        status: done
       - id: S6-03
         title: "engine/IdbCollection.ts"
         status: todo
