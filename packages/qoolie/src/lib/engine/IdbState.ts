@@ -4,10 +4,10 @@
  * Pure TS — no $state, no statorAdapter. Read operations use dataState mirror.
  * Write operations delegate to IdbCollection (which emits events to update dataState).
  */
-import { IdbCollection } from './IdbCollection';
-import { idbEventBus, type IdbEventBus } from './IdbEventBus';
-import { getResultSet, applyWhere } from './IdbCollection';
-import type { Where, ResultsetOptions, ResultSet } from './types';
+import { IdbCollection } from './IdbCollection.js';
+import { idbEventBus, type IdbEventBus } from './IdbEventBus.js';
+import { getResultSet, applyWhere } from './IdbCollection.js';
+import type { Where, ResultsetOptions, ResultSet } from './types.js';
 
 /**
  * Map of collection names to their CollectionState instances.

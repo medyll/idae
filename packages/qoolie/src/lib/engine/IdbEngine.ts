@@ -6,8 +6,13 @@
  * Usage:
  *   const { idbDatabase, idbql, idbqModel } = createDb(model, version).create('myDb');
  */
-import { IdbSchema } from './IdbSchema';
-import type { IdbqModel } from './types';
+import { IdbSchema } from './IdbSchema.js';
+
+/**
+ * Simple model format for engine — just collection name → keyPath mapping.
+ * Compatible with both full IdbqModel and simplified CollectionConfigMap.
+ */
+export type SimpleModel = Record<string, { keyPath: string; [key: string]: any }>;
 
 /**
  * Map of collection names to their keyPath configuration.
@@ -23,7 +28,7 @@ type CollectionInfo<T> = T extends { ts: infer Ts } ? Ts : never;
  * Readonly collection accessor — provides access to IDBObjectStore by name.
  * Will be wired to full CollectionCore instances in S6-03.
  */
-export type IdbqlCollections<T extends IdbqModel> = {
+export type IdbqlCollections<T extends SimpleModel> = {
 	[K in keyof T]: {
 		name: string;
 		keyPath: string;
@@ -34,7 +39,7 @@ export type IdbqlCollections<T extends IdbqModel> = {
 /**
  * Result of createDb().create()
  */
-export interface CreateDbResult<T extends IdbqModel> {
+export interface CreateDbResult<T extends SimpleModel> {
 	/** The IndexedDB engine instance */
 	idbDatabase: IdbEngine<T>;
 	/** Collection accessors (wired to full CollectionCore in S6-03) */
@@ -46,7 +51,7 @@ export interface CreateDbResult<T extends IdbqModel> {
 /**
  * IndexedDB engine wrapper — manages database lifecycle, schema creation, and transactions.
  */
-export class IdbEngine<T extends IdbqModel = any> {
+export class IdbEngine<T extends SimpleModel = any> {
 	private databaseName: string;
 	dbVersion: number;
 	public idbDatabase: IDBDatabase | undefined;
@@ -174,16 +179,16 @@ export class IdbEngine<T extends IdbqModel = any> {
 /**
  * Main factory function to create an IndexedDB database.
  *
- * @param model - The IdbqModel representing the structure of the database.
+ * @param model - The model representing the structure of the database (collection name → { keyPath }).
  * @param version - The version number of the database.
  * @returns An object with a `create` method to instantiate the database.
  *
  * @example
- *   const model = { users: { keyPath: 'id', ts: {} as User, template: { ... } } };
+ *   const model = { users: { keyPath: 'id' }, tasks: { keyPath: 'id' } };
  *   const { idbDatabase, idbql, idbqModel } = createDb(model, 1).create('myApp');
  *   await idbDatabase.open();
  */
-export function createDb<T extends IdbqModel>(model: T, version: number) {
+export function createDb<T extends SimpleModel>(model: T, version: number) {
 	return {
 		create(name: string): CreateDbResult<T> {
 			const engine = new IdbEngine<T>(name, model, version);

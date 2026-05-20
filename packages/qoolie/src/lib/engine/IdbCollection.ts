@@ -3,9 +3,9 @@
  * Adapted from @medyll/idae-idbql collection.svelte.ts → pure .ts
  * Zero Svelte imports. Event emission via injected IdbEventBus.
  */
-import { dotPath } from './pathResolver';
-import { IdbEventBus, idbEventBus } from './IdbEventBus';
-import type { Where, ResultsetOptions, ResultSet, IdbEventOp } from './types';
+import { dotPath } from './pathResolver.js';
+import { IdbEventBus, idbEventBus } from './IdbEventBus.js';
+import type { Where, ResultsetOptions, ResultSet, IdbEventOp } from './types.js';
 
 /**
  * Options for mutation methods.

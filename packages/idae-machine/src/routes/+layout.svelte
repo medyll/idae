@@ -1,9 +1,8 @@
-<script lang="ts">
+	<script lang="ts">
 	import type { LayoutProps } from './$types.js';
 	import "../app.css";
 	import { machine } from '$lib/main/machine.js';
 	import { demoScheme, demoSeed } from '$lib/demo/demoScheme.js';
-	import { bumpDataVersion } from '$lib/main/machineSignals.svelte.js';
 	import PaneLeft from '$lib/shell/layout/PaneLeft.svelte';
 	import Frame from '$lib/shell/frame/Frame.svelte';
 
@@ -14,7 +13,6 @@
 	machine.initRouter({ baseUrl: '/', authEnabled: false });
 
 	async function seedIfEmpty() {
-		let seeded = false;
 		for (const [collection, records] of Object.entries(demoSeed)) {
 			const col = machine.store[collection];
 			if (!col) continue;
@@ -25,9 +23,7 @@
 			for (const record of records as any[]) {
 				await col.create(record).catch(() => {});
 			}
-			seeded = true;
 		}
-		if (seeded) bumpDataVersion();
 	}
 
 	$effect(() => {

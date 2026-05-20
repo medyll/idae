@@ -3,7 +3,7 @@
  * Replaces idbqlEvent.svelte.ts — no $state, no Svelte.
  * Extends EventTarget for native event dispatching.
  */
-import type { IdbEventOp, IdbEventDetail } from './types';
+import type { IdbEventOp, IdbEventDetail } from './types.js';
 
 /**
  * Handler function for collection events.

@@ -10,10 +10,9 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 @prop {number} [page] - Current page (1-based)
 @snippet children(items, index, fieldValues, pagination, groups)
 -->
-<script lang="ts" generics="COL extends Record<string, unknown>">
+	<script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
-	import { signals } from '$lib/main/machineSignals.svelte.js';
 	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
 
 	interface PaginationInfo {
@@ -53,9 +52,6 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
 	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField, direction: 'asc' }]);
 	const effectiveSort = $derived(sortBy ?? defaultSort);
-
-	// Reactive to dataVersion changes
-	const _dataVersion = $derived(signals.dataVersion);
 
 	const rawItems = $derived.by(() => {
 		if (!store) return [] as COL[];

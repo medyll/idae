@@ -3,7 +3,6 @@ import { IDBFactory } from 'fake-indexeddb';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
 import { demoScheme } from '../../demo/demoScheme.js';
-import { signals } from '../machineSignals.svelte.js';
 import { sortItems, groupItems } from '../../shell/explorer/explorerUtils.js';
 
 let _dbCounter = 0;
@@ -145,13 +144,6 @@ describe('DataList data operations', () => {
 			expect(ds.length).toBeGreaterThan(0);
 			expect(ds[0]).toHaveProperty('field');
 			expect(ds[0]).toHaveProperty('direction');
-		});
-	});
-
-	describe('dataVersion signal', () => {
-		it('signals.dataVersion is a reactive number', () => {
-			expect(typeof signals.dataVersion).toBe('number');
-			expect(signals.dataVersion).toBeGreaterThanOrEqual(0);
 		});
 	});
 });

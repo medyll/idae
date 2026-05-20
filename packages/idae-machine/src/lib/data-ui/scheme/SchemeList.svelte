@@ -12,9 +12,8 @@ Filters by RBAC and search query.
 @snippet children(items) - Custom flat renderer (when no groupBy)
 @snippet groupChildren(group) - Custom group renderer (when groupBy is set)
 -->
-<script lang="ts">
+	<script lang="ts">
 	import { machine } from '$lib/main/machine.js';
-	import { signals } from '$lib/main/machineSignals.svelte.js';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import SchemeItem from './SchemeItem.svelte';
 
@@ -63,11 +62,7 @@ Filters by RBAC and search query.
 		});
 	}
 
-	// Reactive to dataVersion so it refreshes on IDB changes
-	const _dataVersion = $derived(signals.dataVersion);
-
 	const items = $derived.by(() => {
-		void _dataVersion;
 		const store = machine.store['appscheme'];
 		if (!store) return [] as AppschemeRecord[];
 

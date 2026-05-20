@@ -1,21 +1,21 @@
 // engine/ — Internalized IndexedDB engine for qoolie
 // Pure TypeScript — zero Svelte imports. Testable in Node.
 
-export { dotPath } from './pathResolver';
-export type { DotPath } from './pathResolver';
+export { dotPath } from './pathResolver.js';
+export type { DotPath } from './pathResolver.js';
 
-export { IdbSchema } from './IdbSchema';
-export { IdbEngine, createDb, createIdbqDb } from './IdbEngine';
-export type { IdbqlCollections, CreateDbResult } from './IdbEngine';
+export { IdbSchema } from './IdbSchema.js';
+export { IdbEngine, createDb, createIdbqDb } from './IdbEngine.js';
+export type { IdbqlCollections, CreateDbResult } from './IdbEngine.js';
 
-export { IdbCollection } from './IdbCollection';
-export type { MutationOptions } from './IdbCollection';
-export { getResultSet, applyWhere } from './IdbCollection';
+export { IdbCollection } from './IdbCollection.js';
+export type { MutationOptions } from './IdbCollection.js';
+export { getResultSet, applyWhere } from './IdbCollection.js';
 
-export { IdbEventBus, idbEventBus } from './IdbEventBus';
-export type { EventBusHandler } from './IdbEventBus';
+export { IdbEventBus, idbEventBus } from './IdbEventBus.js';
+export type { EventBusHandler } from './IdbEventBus.js';
 
-export { CollectionState, createIdbState } from './IdbState';
+export { CollectionState, createIdbState } from './IdbState.js';
 
 export type {
 	// Query types
@@ -55,4 +55,4 @@ export type {
 	// Event bus types
 	IdbEventOp,
 	IdbEventDetail
-} from './types';
+} from './types.js';
