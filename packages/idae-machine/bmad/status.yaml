@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-06: Créer shell/ — déplacer explorer/, card/, layout/"
+next_action: "Implement S23-07: Refactor ExplorerList → compose DataList"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -135,8 +135,11 @@ sprints:
         test_result: pass
       - id: S23-06
         title: "Créer shell/ — déplacer explorer/, card/, layout/"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). check: 26 errors (baseline, 0 new). componentRegistry updated."
+        test_result: pass
       - id: S23-07
         title: "Refactor ExplorerList → compose DataList"
         status: todo
@@ -843,9 +846,9 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-05 complete: SchemeList + SchemeItem created in data-ui/scheme/.
-      Groups collections by type (standard/type/group), filters by RBAC + search query.
-      schemeList.test.ts: 4/4 (collections, grouping, RBAC, search).
+      Sprint 23 S23-06 complete: shell/ created with explorer/, card/, layout/ moved from main-ui/.
+      main-ui/index.ts becomes retro-compat re-export layer. componentRegistry updated.
+      All test imports updated (5 test files). routes/+layout.svelte updated.
       Full suite: 403/403 (32 files). check: 26 errors (baseline).
     tests_server: 403
     tests_client: 0

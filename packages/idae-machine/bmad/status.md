@@ -8,7 +8,7 @@
 
 ## Next Action
 
-**S23-05 complete** — Starting S23-06: Create shell/ and move explorer/, card/, layout/
+**S23-06 complete** — Starting S23-07: Refactor ExplorerList → compose DataList
 
 ---
 
@@ -21,7 +21,8 @@
 | S23-03 | Extraire DataForm depuis CardForm | ✅ Complete | CardForm→wrapper |
 | S23-04 | Extraire DataFields, DataFk, DataRfk | ✅ Complete | Card*→wrappers |
 | S23-05 | Créer SchemeList + SchemeItem | ✅ Complete | 4/4 + 403/403 |
-| S23-06 | Créer shell/ — déplacer explorer/, card/, layout/ | 🔄 In Progress | — |
+| S23-06 | Créer shell/ — déplacer explorer/, card/, layout/ | ✅ Complete | 403/403 |
+| S23-07 | Refactor ExplorerList → compose DataList | 🔄 In Progress | — |
 | S23-03 | Extraire DataForm depuis CardForm | ⏳ Todo | — |
 | S23-04 | Extraire DataFields, DataFk, DataRfk | ⏳ Todo | — |
 | S23-05 | Créer SchemeList + SchemeItem | ⏳ Todo | — |
