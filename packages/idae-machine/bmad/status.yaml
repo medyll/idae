@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S23-07: Refactor ExplorerList → compose DataList"
+next_action: "Implement S23-08: Refactor ExplorerActions → compose DataList"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -142,8 +142,11 @@ sprints:
         test_result: pass
       - id: S23-07
         title: "Refactor ExplorerList → compose DataList"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 403/403 (32 files). check: 26 errors (baseline, 0 new). ExplorerList -97 lines."
+        test_result: pass
       - id: S23-08
         title: "Refactor ExplorerActions → compose DataList"
         status: todo
@@ -846,9 +849,9 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 23 S23-06 complete: shell/ created with explorer/, card/, layout/ moved from main-ui/.
-      main-ui/index.ts becomes retro-compat re-export layer. componentRegistry updated.
-      All test imports updated (5 test files). routes/+layout.svelte updated.
+      Sprint 23 S23-07 complete: ExplorerList refactored to compose DataList.
+      Removed inline data fetch/sort/group/page logic (-97 lines).
+      Uses machine.loadIn() instead of hydrate() for navigation.
       Full suite: 403/403 (32 files). check: 26 errors (baseline).
     tests_server: 403
     tests_client: 0
