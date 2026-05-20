@@ -5,6 +5,7 @@
 	import { demoScheme, demoSeed } from '$lib/demo/demoScheme.js';
 	import { bumpDataVersion } from '$lib/main/machineSignals.svelte.js';
 	import PaneLeft from '$lib/shell/layout/PaneLeft.svelte';
+	import Frame from '$lib/shell/frame/Frame.svelte';
 
 	let { children }: LayoutProps = $props();
 
@@ -60,13 +61,17 @@
 			<PaneLeft onSelect={handleCollectionSelect} {activeCollection} />
 		</aside>
 
-		<main class="app-main">
-			{@render children()}
+		<main class="app-main" data-target-zone="main">
+			<Frame id="main" />
 		</main>
 	</div>
 
-	<div class="app-overlay" data-target-zone="main.modal"></div>
-	<div class="app-window" data-target-zone="main.window"></div>
+	<div class="app-overlay" data-target-zone="main.modal">
+		<Frame id="main.modal" />
+	</div>
+	<div class="app-window" data-target-zone="main.window">
+		<Frame id="main.window" />
+	</div>
 </div>
 
 <style>

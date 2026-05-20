@@ -410,18 +410,24 @@ export class Machine {
 
 	/**
 	 * Navigate to a module within a target zone.
+	 * Delegates to frameManager for DOM-first content loading, then updates URL.
 	 * Builds URL: /{targetId}/{modulePath}/{collection}/{collectionId}?{vars}
 	 * Multi-calls nest segments via + prefix (see §11.2).
 	 */
-	loadIn(
+	async loadIn(
 		modulePath: string,
 		targetId: string,
 		collection: string,
 		collectionId?: string,
 		vars?: string
-	): void {
+	): Promise<void> {
+		const varsObj = vars ? Object.fromEntries(new URLSearchParams(vars).entries()) : undefined;
+		await this._frameManager.load(targetId, modulePath, collection, collectionId, varsObj);
+		// Update URL for browser history/bookmarking
 		const url = buildLoadInUrl(modulePath, targetId, collection, collectionId, vars);
-		this.router.navigate(url);
+		if (typeof history !== 'undefined') {
+			history.pushState({ loadIn: { modulePath, targetId, collection, collectionId, vars } }, '', url);
+		}
 	}
 
 	/**
