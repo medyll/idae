@@ -1,9 +1,9 @@
 # Qoolie — Status Report
 
 **Phase:** development  
-**Progress:** 68%  
+**Progress:** 73%  
 **Active Role:** Developer  
-**Next:** Implement S6-03 (IdbCollection)
+**Next:** Implement S6-05 (IdbState)
 
 ---
 
@@ -13,8 +13,8 @@
 |----|-------|--------|
 | S6-01 | engine/types.ts + engine/pathResolver.ts | ✅ done |
 | S6-02 | engine/IdbSchema.ts + engine/IdbEngine.ts | ✅ done |
-| S6-03 | engine/IdbCollection.ts | ⬜ todo |
-| S6-04 | engine/IdbEventBus.ts | ⬜ todo |
+| S6-03 | engine/IdbCollection.ts | ✅ done |
+| S6-04 | engine/IdbEventBus.ts | ✅ done |
 | S6-05 | engine/IdbState.ts | ⬜ todo |
 | S6-06 | Rewire Qoolie.ts + QoolieCollection.ts → engine/ | ⬜ todo |
 | S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ⬜ todo |
