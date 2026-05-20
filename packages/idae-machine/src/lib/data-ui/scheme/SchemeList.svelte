@@ -1,72 +1,148 @@
 <!--
 SchemeList.svelte
-Lists collections from machine.logic.collections(), grouped by type (standard/type/group).
+Lists collections from machine.store['appscheme'] (IDB, synced from server).
 Filters by RBAC and search query.
 @role scheme-list
-@prop {string} [filter] - Search query
+@prop {string} [filter] - Search query (matches code or name)
+@prop {Record<string,unknown>} [where] - Store filter passed to store.where()
+@prop {string} [groupBy] - Group by field name (undefined = flat list)
+@prop {SortBy | SortBy[]} [sortBy] - Sort specification
 @prop {string} [activeCollection] - Currently active collection code
 @prop {(detail: {collection: string; id?: string}) => void} [onSelect] - Selection callback
-@snippet children(group) - Custom group renderer
+@snippet children(items) - Custom flat renderer (when no groupBy)
+@snippet groupChildren(group) - Custom group renderer (when groupBy is set)
 -->
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
+	import { signals } from '$lib/main/machineSignals.svelte.js';
+	import type { SortBy } from '$lib/types/machine-model.js';
 	import SchemeItem from './SchemeItem.svelte';
+
+	type AppschemeRecord = {
+		id: string | number;
+		code: string;
+		name?: string;
+		isType?: boolean;
+		isGroup?: boolean;
+		isStatus?: boolean;
+		order?: number;
+		base?: string;
+		[k: string]: unknown;
+	};
 
 	let {
 		filter = '',
+		where,
+		groupBy,
+		sortBy,
 		activeCollection = '',
 		onSelect,
-		children
+		children,
+		groupChildren
 	}: {
 		filter?: string;
+		where?: Record<string, unknown>;
+		groupBy?: string;
+		sortBy?: SortBy | SortBy[];
 		activeCollection?: string;
 		onSelect?: (detail: { collection: string; id?: string }) => void;
 		children?: any;
+		groupChildren?: any;
 	} = $props();
 
-	const groups = $derived.by(() => {
-		const schemes = machine.logic.collections();
-		const grouped: Record<string, Array<{ code: string; name: string; type: string }>> = {};
+	function applySort(rows: AppschemeRecord[], spec: SortBy | SortBy[]): AppschemeRecord[] {
+		const specs = Array.isArray(spec) ? spec : [spec];
+		return [...rows].sort((a, b) => {
+			for (const { field, direction } of specs) {
+				const av = (a as any)[field] ?? '';
+				const bv = (b as any)[field] ?? '';
+				const cmp = String(av).localeCompare(String(bv));
+				if (cmp !== 0) return direction === 'desc' ? -cmp : cmp;
+			}
+			return 0;
+		});
+	}
 
-		for (const scheme of schemes) {
-			const colName = scheme.collection ?? scheme.name;
-			if (!colName) continue;
+	// Reactive to dataVersion so it refreshes on IDB changes
+	const _dataVersion = $derived(signals.dataVersion);
 
-			// Filter by permissions
-			if (!machine.rights.checkAccess(colName, 'R')) continue;
+	const items = $derived.by(() => {
+		void _dataVersion;
+		const store = machine.store['appscheme'];
+		if (!store) return [] as AppschemeRecord[];
 
-			// Filter by search
-			if (filter && !colName.toLowerCase().includes(filter.toLowerCase())) continue;
+		let rows: AppschemeRecord[] = where
+			? ((store.where(where) ?? []) as AppschemeRecord[])
+			: ((store.getAll() ?? []) as AppschemeRecord[]);
 
-			const type = (scheme as any).model?.isType ? 'type'
-				: (scheme as any).model?.isGroup ? 'group'
-				: 'standard';
+		// Filter by RBAC
+		rows = rows.filter(r => machine.rights.checkAccess(r.code, 'R'));
 
-			if (!grouped[type]) grouped[type] = [];
-			grouped[type].push({ code: colName, name: colName, type });
+		// Filter by text search
+		if (filter) {
+			const q = filter.toLowerCase();
+			rows = rows.filter(r =>
+				r.code.toLowerCase().includes(q) ||
+				(r.name ?? '').toLowerCase().includes(q)
+			);
 		}
 
-		return Object.entries(grouped).map(([type, cols]) => ({ type, collections: cols }));
+		if (sortBy) rows = applySort(rows, sortBy);
+		return rows;
 	});
+
+	const groups = $derived.by(() => {
+		if (!groupBy) return undefined;
+		const grouped: Record<string, AppschemeRecord[]> = {};
+		for (const row of items) {
+			const key = String((row as any)[groupBy] ?? '');
+			if (!grouped[key]) grouped[key] = [];
+			grouped[key].push(row);
+		}
+		return Object.entries(grouped).map(([key, collections]) => ({ key, collections }));
+	});
+
+	function schemeType(row: AppschemeRecord): 'standard' | 'type' | 'group' {
+		if (row.isType) return 'type';
+		if (row.isGroup) return 'group';
+		return 'standard';
+	}
 </script>
 
-{#each groups as group (group.type)}
-	{#if children}
-		{@render children({ group })}
-	{:else}
-		{#each group.collections as col (col.code)}
-			<SchemeItem
-				collection={col.code}
-				name={col.name}
-				type={col.type as 'standard' | 'type' | 'group'}
-				active={activeCollection === col.code}
-				onclick={() => onSelect?.({ collection: col.code })}
-			/>
-		{/each}
-	{/if}
-{/each}
+{#if groups}
+	{#each groups as group (group.key)}
+		{#if groupChildren}
+			{@render groupChildren({ group })}
+		{:else}
+			<section>
+				<header>{group.key}</header>
+				{#each group.collections as row (row.id)}
+					<SchemeItem
+						collection={row.code}
+						name={row.name ?? row.code}
+						type={schemeType(row)}
+						active={activeCollection === row.code}
+						onclick={() => onSelect?.({ collection: row.code })}
+					/>
+				{/each}
+			</section>
+		{/if}
+	{/each}
+{:else if children}
+	{@render children({ items })}
+{:else}
+	{#each items as row (row.id)}
+		<SchemeItem
+			collection={row.code}
+			name={row.name ?? row.code}
+			type={schemeType(row)}
+			active={activeCollection === row.code}
+			onclick={() => onSelect?.({ collection: row.code })}
+		/>
+	{/each}
+{/if}
 
-{#if groups.length === 0}
+{#if items.length === 0}
 	<div class="empty-state">
 		<p>No collections found.</p>
 	</div>
