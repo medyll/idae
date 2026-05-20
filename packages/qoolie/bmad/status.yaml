@@ -1,7 +1,7 @@
 phase: "development"
-progress: 73
+progress: 76
 active_role: "Developer"
-next_action: "Implement S6-05 (IdbState)"
+next_action: "Implement S6-06 (Rewire Qoolie.ts + QoolieCollection.ts → engine/)"
 next_command: "bmad-continue"
 next_role: "Developer"
 sprints:
@@ -116,7 +116,7 @@ artifacts:
         status: done
       - id: S6-05
         title: "engine/IdbState.ts"
-        status: todo
+        status: done
       - id: S6-06
         title: "Rewire Qoolie.ts + QoolieCollection.ts → engine/"
         status: todo
