@@ -10,6 +10,7 @@
 
 	machine.init({ org: 'demo', domain: 'machine', dbName: 'testdb', version: 1, model: demoScheme });
 	machine.start();
+	machine.initRouter({ baseUrl: '/', authEnabled: false });
 
 	async function seedIfEmpty() {
 		let seeded = false;
@@ -59,7 +60,7 @@
 			<PaneLeft onSelect={handleCollectionSelect} {activeCollection} />
 		</aside>
 
-		<main class="app-main" data-target-zone="main">
+		<main class="app-main">
 			{@render children()}
 		</main>
 	</div>

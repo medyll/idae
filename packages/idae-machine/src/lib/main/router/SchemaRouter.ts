@@ -55,12 +55,24 @@ export class SchemaRouter {
 		this.schemes = schemes;
 		const routes = this.generateRoutes();
 
+		// Router outlet unused — actions mount directly via data-target-zone.
+		// In browser: provide offscreen placeholder so createRouter doesn't throw.
+		// In SSR/test (no document): omit outlet entirely.
+		const placeholderOutlet = typeof document !== 'undefined' ? (() => {
+			const el = document.createElement('div');
+			el.setAttribute('data-idae-router-placeholder', '');
+			el.style.cssText = 'display:none;position:fixed;left:-9999px;';
+			document.body.appendChild(el);
+			return el;
+		})() : undefined;
+
 		this.router = createRouter({
 			mode:             'history',
 			base:             this.config.baseUrl,
 			linkInterception: true,
 			routes,
-			notFound:         () => this.renderNotFound()
+			notFound:         () => this.renderNotFound(),
+			...(placeholderOutlet && { outlet: placeholderOutlet })
 		} as any);
 
 		this.router?.before?.((to: any, _from: any, next: any) => {
