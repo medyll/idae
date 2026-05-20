@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-03: machine.loadFrame() — calcule frameId, délègue à frameManager"
+next_action: "Implement S24-04: <Frame> Svelte component — auto-registration, mount module, show/hide/close"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -114,8 +114,11 @@ sprints:
         test_result: pass
       - id: S24-03
         title: "machine.loadFrame() — calcule frameId, délègue à frameManager"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "machineLoadFrame.test.ts: 4/4 passed. Full suite: 434/434 (35 files)."
+        test_result: pass
       - id: S24-04
         title: "<Frame> Svelte component — auto-registration, mount module, show/hide/close"
         status: todo
@@ -910,10 +913,10 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 24 S24-02 complete: computeFrameId() deterministic ID generation.
-      Handles collection only, collection:collectionId, and sorted vars appended.
-      frameUtils.test.ts: 6/6 passed. Full suite: 430/430 (34 files).
-    tests_server: 430
+      Sprint 24 S24-03 complete: machine.loadFrame() — computes frameId via computeFrameId(),
+      delegates to frameManager.load(). frameManager getter exposed on Machine class.
+      machineLoadFrame.test.ts: 4/4 passed. Full suite: 434/434 (35 files).
+    tests_server: 434
     tests_client: 0
 
   - date: "2026-05-20"
