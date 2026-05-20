@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S24-06: <TaskBar> component — liste réactive des frames ouvertes, toggle/close"
+next_action: "Implement S24-07: Tests + intégration (frameManager, loadFrame, Frame mount, TaskBar réactivité)"
 next_command: "bmad-continue"
 next_role: "developer"
 active_role: "developer"
@@ -135,8 +135,11 @@ sprints:
         test_result: pass
       - id: S24-06
         title: "<TaskBar> component — liste réactive des frames ouvertes, toggle/close"
-        status: todo
+        status: complete
         effort: M
+        tests_executed: true
+        test_output: "Full suite: 434/434 (35 files). TaskBar uses $derived over machineFrameManager.openFrames."
+        test_result: pass
       - id: S24-07
         title: "Tests + intégration (frameManager, loadFrame, Frame mount, TaskBar réactivité)"
         status: todo
@@ -919,10 +922,9 @@ qa:
 sessions:
   - date: "2026-05-20"
     summary: >
-      Sprint 24 S24-05 complete: machine.loadIn() rewired to delegate to frameManager.load()
-      with history.pushState() for URL. Layout updated: <Frame id="main"> in app-main,
-      <Frame id="main.modal"> in overlay, <Frame id="main.window"> in window zone.
-      machineLoadIn.test.ts: 6/6 passed. Full suite: 434/434 (35 files).
+      Sprint 24 S24-06 complete: TaskBar.svelte component — reactive list of open frames
+      via $derived(machineFrameManager.openFrames). Toggle on button click, close on ×.
+      Empty state shown when no frames open. Full suite: 434/434 (35 files).
     tests_server: 434
     tests_client: 0
 
