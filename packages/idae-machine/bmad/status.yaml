@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-19"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 22 complete — run full test suite"
-next_command: "bmad-test"
-next_role: "tester"
-active_role: "developer"
+next_action: "Sprint 22 complete — await next sprint or direction"
+next_command: "bmad-status"
+next_role: "scrum master"
+active_role: "tester"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -764,6 +764,17 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-19"
+    summary: >
+      Sprint 22 complete: S22-01 componentRegistry async singleton (9/9).
+      S22-02 machine.loadIn() + buildLoadInUrl() pure URL builder (6/6).
+      S22-03 parseLoadInUrl() multi-target URL parser (8/8).
+      S22-04 SchemaRouter refactor — before hooks, authEnabled:false, base:/, mount/unmount (8/8).
+      S22-05 Layout outlets + data-target-zone, goto removed, dynamic routes deleted.
+      S22-06 PaneLeft activeCollection highlight, ExplorerList onclick → machine.loadIn().
+      Full suite: 376/387 (11 pre-existing: RealtimeClient 10, machineSyncDestroy 1).
+    tests_server: 376
+    tests_client: 0
   - date: "2026-05-19"
     summary: >
       Sprint 21 complete: S21-01 appimage_preset entity + seed + registry cache + hook invalidation.

@@ -58,11 +58,10 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 				model:   demoScheme,
 				sync:    { databaseHost: 'http://x', mode: 'mobile-first' as any },
 			});
-			// Sync config is forwarded to createQoolie; initialization may fail
-			// due to missing sync adapters in test env, but the wiring is correct.
-			expect(() => m.start()).toThrow(); // sync adapter init fails without real deps
-			// The fact that it gets past config forwarding and fails inside qoolie
-			// proves the sync config was passed through.
+			// Verify sync config stored before start()
+			expect(m._syncOptions).toEqual({ databaseHost: 'http://x', mode: 'mobile-first' });
+			// start() passes sync options to createQoolie — no throw expected (qoolie accepts config)
+			expect(() => m.start()).not.toThrow();
 		});
 	});
 

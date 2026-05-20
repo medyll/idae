@@ -1,5 +1,5 @@
 import { createRouter } from '@medyll/idae-router';
-import { mount, unmount, type SvelteComponent } from 'svelte';
+import { mount, unmount, type Component } from 'svelte';
 import { logger } from '$lib/utils/logger.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { parseLoadInUrl, type LoadInSegment } from '$lib/main/router/urlParser.js';
@@ -24,7 +24,8 @@ interface RouteMetadata {
 }
 
 interface MountedComponent {
-	component: typeof SvelteComponent;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	component: Component<any, any, any>;
 	target: Element;
 	app: Record<string, unknown>;
 }
@@ -115,12 +116,13 @@ export class SchemaRouter {
 				if (seg.modulePath.startsWith('explorer.')) {
 					props.onclick = (record: Record<string, unknown>) => {
 						const recordId = (record as any)?.id ?? (record as any)?._id;
-						const detailPath = seg.modulePath === 'explorer.list' ? 'explorer.split' : 'card.edit';
+						const detailPath = seg.modulePath === 'explorer.list' ? 'card.form' : 'card.edit';
 						machine.loadIn(detailPath, seg.targetId, seg.collection, recordId);
 					};
 				}
 
-				const app = mount(Comp as typeof SvelteComponent, {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const app = mount(Comp as Component<any>, {
 					target,
 					props
 				});

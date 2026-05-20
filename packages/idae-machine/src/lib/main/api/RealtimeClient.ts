@@ -1,15 +1,18 @@
-import { EventDataClientInstance, EventDataConfig } from '@medyll/idae-socket';
+import { EventDataClientInstance } from '@medyll/idae-socket';
 import { logger } from '../../utils/logger.js';
 
 export class RealtimeClient {
+	readonly baseUrl: string;
 	private client: EventDataClientInstance;
 	private subscribedTables: Set<string> = new Set();
 	private eventHandlers: Map<string, Set<(data: unknown) => void>> = new Map();
 	private connected = false;
 
 	constructor(baseUrl: string) {
+		this.baseUrl = baseUrl.replace(/\/$/, '');
 		this.client = new EventDataClientInstance();
-		const url = new URL(baseUrl.replace(/\/$/, ''));
+
+		const url = new URL(this.baseUrl);
 		this.client.config.host      = url.hostname;
 		this.client.config.port      = Number(url.port) || (url.protocol === 'https:' ? 443 : 80);
 		this.client.config.namespace = url.pathname !== '/' ? url.pathname : '';

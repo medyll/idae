@@ -1,10 +1,12 @@
-import type { Component, SvelteComponent } from 'svelte';
+import type { Component } from 'svelte';
 
-type ComponentLoader = () => Promise<{ default: typeof SvelteComponent }>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyComponent = Component<any, any, any>;
+type ComponentLoader = () => Promise<{ default: AnyComponent }>;
 
 export interface ComponentRegistryEntry {
 	loader: ComponentLoader;
-	resolved?: typeof SvelteComponent;
+	resolved?: AnyComponent;
 }
 
 export class ComponentRegistry {
@@ -20,7 +22,7 @@ export class ComponentRegistry {
 		}
 	}
 
-	async resolve(key: string): Promise<typeof SvelteComponent> {
+	async resolve(key: string): Promise<AnyComponent> {
 		const entry = this.registry.get(key);
 		if (!entry) {
 			throw new Error(`[registry] unknown: ${key}`);
@@ -48,10 +50,13 @@ export class ComponentRegistry {
 export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.registerMany({
-	'explorer.list':   () => import('$lib/main-ui/explorer/ExplorerList.svelte'),
-	'explorer.split':  () => import('$lib/main-ui/explorer/ExplorerSplit.svelte'),
-	'explorer.table':  () => import('$lib/main-ui/explorer/ExplorerTable.svelte'),
-	'card.view':       () => import('$lib/main-ui/card/CardView.svelte'),
-	'card.edit':       () => import('$lib/main-ui/card/CardForm.svelte'),
-	'card.new':        () => import('$lib/main-ui/card/CardForm.svelte'),
+	'explorer.list':        () => import('$lib/main-ui/explorer/ExplorerList.svelte'),
+	'explorer.table':       () => import('$lib/main-ui/explorer/ExplorerTable.svelte'),
+	'explorer.actions':     () => import('$lib/main-ui/explorer/ExplorerActions.svelte'),
+	'explorer.card':        () => import('$lib/main-ui/explorer/ExplorerCard.svelte'),
+	'explorer.collections': () => import('$lib/main-ui/explorer/ExplorerCollections.svelte'),
+	'card.form':            () => import('$lib/main-ui/card/CardForm.svelte'),
+	'card.create':          () => import('$lib/main-ui/card/CardCreate.svelte'),
+	'card.edit':            () => import('$lib/main-ui/card/CardEdit.svelte'),
+	'card.picker':          () => import('$lib/main-ui/card/CardPicker.svelte'),
 });

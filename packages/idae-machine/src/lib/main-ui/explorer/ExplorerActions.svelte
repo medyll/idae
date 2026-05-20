@@ -16,7 +16,7 @@ Menu list of collection records with action handling.
 	import type { SortBy } from './explorerUtils.js';
 	import { sortItems } from './explorerUtils.js';
 
-	export type ActionListProps = {
+	type ActionListProps = {
 		dense?:    boolean;
 		bordered?: boolean;
 	};

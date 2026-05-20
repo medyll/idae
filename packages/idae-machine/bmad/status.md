@@ -8,22 +8,35 @@
 
 ## Next Action
 
-**Sprint 21 planned** — 4 stories ready, awaiting implementation. Start with S21-01 (entité core + registry).
+**Sprint 22 complete** — Navigation layer fully implemented. Awaiting next sprint or direction.
 
 ---
 
-## Sprint 21 — Image presets declarative system (planned)
+## Sprint 22 — Navigation Layer ✅
 
-Issu de l'intake `bmad/intake-sources/IMAGE-PRESETS-DESIGN.md` (audit 2026-05-19, post-S20-04).
+| Story | Title | Status | Tests |
+|-------|-------|--------|-------|
+| S22-01 | componentRegistry singleton async | ✅ Complete | 9/9 |
+| S22-02 | machine.loadIn() + URL builder | ✅ Complete | 6/6 |
+| S22-03 | URL parser multi-cibles (+targetId) | ✅ Complete | 8/8 |
+| S22-04 | SchemaRouter refactor — bugs §6, mount actions | ✅ Complete | 8/8 |
+| S22-05 | Layout outlets + data-target-zone | ✅ Complete | goto removed |
+| S22-06 | PaneLeft + ExplorerList → machine.loadIn() | ✅ Complete | smoke |
 
-Replace `VARIANTS` const TS hardcodée → entité système `appimage_preset` + auto-resolve `free-WxH`.
+**Final suite:** 376/387 (11 pre-existing failures)
 
-| Story | Title | Effort | Dep |
-|-------|-------|--------|-----|
-| S21-01 | `appimage_preset` core entity + seed + registry cache | M | — |
-| S21-02 | URL resolver `/image/:preset` + free-notation + DOS bounds | M | S21-01 |
-| S21-03 | Refactor `ImageService` — drop VARIANTS, use registry | S | S21-02 |
-| S21-04 | `field('image')` extension + `FileMeta.image.focus` (UI-ready) | M | S21-01 |
+---
+
+## Sprint 21 — Image presets declarative system ✅
+
+| Story | Title | Status | Tests |
+|-------|-------|--------|-------|
+| S21-01 | appimage_preset core entity + seed + registry cache | ✅ Complete | 9/9 |
+| S21-02 | URL resolver /image/:preset + free-notation + DOS bounds | ✅ Complete | 13/13 |
+| S21-03 | Refactor ImageService — drop VARIANTS, use registry | ✅ Complete | 13/13 |
+| S21-04 | field('image') extension + FileMeta.image.focus | ✅ Complete | 8/8 |
+
+**Final suite:** 356/356 (26 files)
 
 ---
 
@@ -59,15 +72,3 @@ Replace `VARIANTS` const TS hardcodée → entité système `appimage_preset` + 
 - Plugin marketplace: Custom field types and components
 - AI-powered features: Smart defaults, auto-generated validations
 - Multi-database federation: Query across PostgreSQL, MongoDB, IndexedDB
-
----
-
-## Sprint 20 Summary
-
-**S20-01:** Created `HooksRegistry.ts` with `registerHook`/`dispatch`/`clearHooks`. Built-in hooks for audit, broadcast, domainActions. Refactored `data.ts` — zero direct calls to `logAudit`/`broadcastToTable`/`domainActions.*`. `HookContext` gained `details` field.
-
-**S20-02:** Created `FileService.ts` + `routes/files.ts` + `middleware/upload.ts`. Multer for multipart uploads. Local disk storage at `data/files/{org}/{collection}/{recordId}/`. `appfile` MongoDB collection for metadata. Soft delete support.
-
-**S20-03:** Created `MailService.ts` with nodemailer + marked. Markdown templates with YAML front-matter. Retry wrapper (3 attempts). Admin-only REST endpoints. `enabled=false` mode for dev.
-
-**S20-04:** Created `ImageService.ts` with sharp. Probe metadata, 4 variants (thumb/small/medium/large), lazy caching. `FileService.uploadFile` enriches image metadata. `deleteFile(permanent)` invalidates variant cache. `/api/files/:fileId/image/:variant` endpoint.
