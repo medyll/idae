@@ -4,6 +4,10 @@
 export { dotPath } from './pathResolver';
 export type { DotPath } from './pathResolver';
 
+export { IdbSchema } from './IdbSchema';
+export { IdbEngine, createDb, createIdbqDb } from './IdbEngine';
+export type { IdbqlCollections, CreateDbResult } from './IdbEngine';
+
 export type {
 	// Query types
 	Where,
