@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-19"
+last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 23 planifié — refactor structurel data-ui+shell. Démarrer S23-01."
+next_action: "Implement S23-02: Restaurer DataList dans data-ui/data/"
 next_command: "bmad-continue"
 next_role: "developer"
-active_role: "scrum master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -100,8 +100,11 @@ sprints:
     stories:
       - id: S23-01
         title: "Créer data-ui/ — déplacer field/, input/, fragments/"
-        status: todo
+        status: complete
         effort: S
+        tests_executed: true
+        test_output: "vitest: 387/387 (30 files). check: 24 errors (pre-existing, 0 new)."
+        test_result: pass
       - id: S23-02
         title: "Restaurer DataList dans data-ui/data/"
         status: todo
@@ -826,6 +829,14 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-20"
+    summary: >
+      Sprint 23 S23-01 complete: data-ui/ created, field/input/fragments moved from main-ui/.
+      All imports updated (CardForm, CardFields, FieldDisplay, index.ts, main-ui/index.ts).
+      vitest: 387/387 (30 files). check: 24 errors (pre-existing, baseline 26 → 24).
+    tests_server: 387
+    tests_client: 0
+
   - date: "2026-05-19"
     summary: >
       Sprint 22 complete: S22-01 componentRegistry async singleton (9/9).

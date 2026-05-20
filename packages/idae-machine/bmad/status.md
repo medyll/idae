@@ -1,6 +1,6 @@
 # BMAD Status Report — idae-machine
 
-**Last updated:** 2026-05-19  
+**Last updated:** 2026-05-20  
 **Phase:** development  
 **Progress:** 100%
 
@@ -8,7 +8,28 @@
 
 ## Next Action
 
-**Sprint 22 complete** — Navigation layer fully implemented. Awaiting next sprint or direction.
+**S23-01 complete** — Starting S23-02: Restore DataList in data-ui/data/
+
+---
+
+## Sprint 23 — Refactor structurel: data-ui + shell 🔄
+
+| Story | Title | Status | Tests |
+|-------|-------|--------|-------|
+| S23-01 | Créer data-ui/ — déplacer field/, input/, fragments/ | ✅ Complete | 387/387 |
+| S23-02 | Restaurer DataList dans data-ui/data/ | 🔄 In Progress | — |
+| S23-03 | Extraire DataForm depuis CardForm | ⏳ Todo | — |
+| S23-04 | Extraire DataFields, DataFk, DataRfk | ⏳ Todo | — |
+| S23-05 | Créer SchemeList + SchemeItem | ⏳ Todo | — |
+| S23-06 | Créer shell/ — déplacer explorer/, card/, layout/ | ⏳ Todo | — |
+| S23-07 | Refactor ExplorerList → compose DataList | ⏳ Todo | — |
+| S23-08 | Refactor ExplorerActions → compose DataList | ⏳ Todo | — |
+| S23-09 | Refactor PaneLeft → compose SchemeList | ⏳ Todo | — |
+| S23-10 | Refactor PaneRecents → compose DataList | ⏳ Todo | — |
+| S23-11 | Remplacer hydrate() par machine.loadIn() | ⏳ Todo | — |
+| S23-12 | Mettre à jour componentRegistry + aliases | ⏳ Todo | — |
+| S23-13 | Mettre à jour index.ts exports + alias compat | ⏳ Todo | — |
+| S23-14 | Tests + vérification finale | ⏳ Todo | — |
 
 ---
 
