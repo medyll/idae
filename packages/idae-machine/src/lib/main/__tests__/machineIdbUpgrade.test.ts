@@ -64,14 +64,13 @@ describe('S28-04: fetchSchema() drift integration', () => {
 	});
 
 	it('fetchSchema exposes adapter methods', async () => {
-		// Verify the integration point exists
 		const m = new Machine();
 		m.init({ dbName: uniqueDbName('fetch-integration'), version: 1, model: minimalModel });
 		m.start();
 
-		// Drift detection should be available
-		expect(typeof (m as any)._detectSchemaDrift).toBe('function');
+		// Public API must exist — internals moved to machineIdbAdapter
 		expect(typeof m.upgradeIdb).toBe('function');
+		expect(typeof m.adaptIdbToSchema).toBe('function');
 	});
 });
 
@@ -141,14 +140,12 @@ describe('S28-05: Edge cases', () => {
 		expect(retrieved).toBe(testHash);
 	});
 
-	it('_isProtectedStore protects __outbox__, __schema_meta__, __migrations__', () => {
-		const m = new Machine();
-		// Access private method via any cast for testing
-		const isProtected = (name: string) => (m as any)._isProtectedStore(name);
-		expect(isProtected('__outbox__')).toBe(true);
-		expect(isProtected('__schema_meta__')).toBe(true);
-		expect(isProtected('__migrations__')).toBe(true);
-		expect(isProtected('categories')).toBe(false);
-		expect(isProtected('vehicles')).toBe(false);
+	it('isProtectedStore protects __outbox__, __schema_meta__, __migrations__', async () => {
+		const { isProtectedStore } = await import('$lib/main/machineIdbAdapter.js');
+		expect(isProtectedStore('__outbox__')).toBe(true);
+		expect(isProtectedStore('__schema_meta__')).toBe(true);
+		expect(isProtectedStore('__migrations__')).toBe(true);
+		expect(isProtectedStore('categories')).toBe(false);
+		expect(isProtectedStore('vehicles')).toBe(false);
 	});
 });

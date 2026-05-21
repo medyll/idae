@@ -1,5 +1,5 @@
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
-import type { MachineRightsPolicy } from '$lib/types/machine-model.js';
+import type { MachineModel, MachineRightsPolicy } from '$lib/types/machine-model.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 
@@ -14,6 +14,16 @@ class MachineRights {
 	 * Call once at Machine.start() — after model is resolved.
 	 */
 	setPolicies(policies: Record<string, MachineRightsPolicy>): void {
+		this.#policies = policies;
+	}
+
+	/** Extract and load rights policies directly from a MachineModel. */
+	loadPoliciesFromModel(model: MachineModel | undefined): void {
+		if (!model) return;
+		const policies: Record<string, MachineRightsPolicy> = {};
+		for (const [name, col] of Object.entries(model)) {
+			if ((col as any).rights) policies[name] = (col as any).rights;
+		}
 		this.#policies = policies;
 	}
 

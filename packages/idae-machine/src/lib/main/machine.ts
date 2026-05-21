@@ -2,34 +2,22 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
 import { createReactiveStore } from '$lib/main/reactiveStore.svelte.js';
 import { EventDataClientInstance } from '@medyll/idae-socket';
-import appModelDeclaration from '$lib/types/idae-model-core.js';
-
-type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
-import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
-import { type MachineModel } from '$lib/types/machine-model.js';
+import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
+import { loadSchema } from '$lib/main/machineSchemaLoader.js';
+import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
+import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
+import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { computeFrameId } from '$lib/main/frame/frameUtils.js';
-import { componentRegistry } from '$lib/main/router/componentRegistry.js';
-import {
-	computeSchemaHash,
-	getCurrentIdbStores,
-	getStoredSchemaHash,
-	storeSchemaHash,
-} from '$lib/main/machineIdbAdapter.js';
+import type { PermissionCode } from '$lib/types/schema-types.js';
+import { type MachineModel } from '$lib/types/machine-model.js';
 
-export interface MachineSocketOptions {
-	/** WebSocket server URL e.g. 'http://localhost:3000' */
-	url:          string;
-	/** JWT token for socket auth */
-	token?:       string;
-	/** Auth mode sent to server (default: 'Bearer') */
-	authMode?:    'Bearer' | 'Basic' | 'AwsSignature';
-	/** Connect automatically on machine.start() (default: false) */
-	autoConnect?: boolean;
-}
+type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
+
+export type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
+import type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
 
 /**
  * @class Machine
@@ -167,173 +155,55 @@ export class Machine {
 	}
 
 	/**
-	 * Fetch schema from server URL, cache in IDB, and start the machine.
-	 * Stale-while-revalidate: if cache exists, starts immediately then refreshes in background.
+	 * @framework-bootstrap — called once by the app shell (+layout.svelte), NOT by application code.
 	 *
-	 * S28-04: When background refresh detects a schema change, drift detection runs automatically
-	 * to adapt IDB stores to the new schema.
+	 * Fetches schema from server, caches in IDB, starts the machine.
+	 * Stale-while-revalidate: if cache exists → starts immediately, refreshes in background.
+	 * On schema change → triggers drift detection to adapt IDB stores automatically.
+	 *
+	 * Dev usage: use machine.init() + machine.start() with a local model instead.
 	 *
 	 * @param url - Full URL to GET /api/scheme (returns IdbqModel JSON)
 	 * @emits 'schema:updated' on the returned EventTarget when background refresh brings new data
 	 */
 	async fetchSchema(url: string): Promise<EventTarget> {
-		const emitter = new EventTarget();
-		const cached  = await readSchemaCache(url);
-
-		if (cached) {
-			this._model = cached as MachineModel;
-			this.start();
-			// Background refresh
-			fetch(url)
-				.then((r) => r.json())
-				.then(async (fresh) => {
-					const freshJson = JSON.stringify(fresh);
-					if (freshJson !== JSON.stringify(cached)) {
-						await writeSchemaCache(url, fresh);
-						this._model = fresh as MachineModel;
-						// S28-04: Trigger drift detection when server schema changes
-						await this._detectSchemaDrift();
-						emitter.dispatchEvent(new CustomEvent('schema:updated', { detail: fresh }));
-					}
-				})
-				.catch(() => { /* network failure during bg refresh — ignore */ });
-		} else {
-			const res   = await fetch(url);
-			const model = await res.json() as MachineModel;
-			await writeSchemaCache(url, model);
-			this._model = model;
-			this.start();
-		}
-
-		return emitter;
-	}
-
-	/**
-	 * Start the machine: initializes collections and the IDBQL connection.
-	 * Call this after constructing the Machine to set up the database and collections.
-	 * @role Initializer
-	 * @return {void}
-	 */
-	start(): void {
-		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
-		this._effectiveModel = this.buildEffectiveModel();
-		this.createCollections();
-		this.createStore();
-		this.loadPolicies();
-		if (this._socketOptions?.autoConnect) this.connectSocket();
-
-		// Fire-and-forget schema drift detection (non-blocking, runs after qoolie is open)
-		this._detectSchemaDrift().catch(() => {
-			// Non-critical — drift will be detected on next start
+		return loadSchema(url, {
+			onModel: (m) => { this._model = m; },
+			onStart: () => this.start(),
+			onDrift: () => this._scheduleDrift(),
 		});
 	}
 
 	/**
-	 * Detect schema drift between expected stores (from model) and actual IDB stores.
-	 * Runs AFTER createQoolie so it doesn't block startup.
-	 * If drift detected, schedules an upgrade for the next start().
+	 * Start the machine with a local model.
+	 * Call after machine.init() when the schema is defined locally (dev/offline mode).
+	 * When schema comes from the server, use machine.fetchSchema(url) instead — it calls start() internally.
+	 * @role Initializer
 	 */
-	private async _detectSchemaDrift(): Promise<void> {
-		if (!this._dbName || !this._version) return;
-
-		const expectedStores = Object.keys(this._effectiveModel);
-		const expectedHash = computeSchemaHash(expectedStores);
-
-		let storedHash: string | null;
-		try {
-			storedHash = await getStoredSchemaHash(this._dbName);
-		} catch {
-			storedHash = null;
-		}
-
-		// Hash matches — no drift
-		if (storedHash === expectedHash) return;
-
-		// Drift detected — compute diff
-		let actualStores: Set<string>;
-		try {
-			actualStores = await getCurrentIdbStores(this._dbName);
-		} catch {
-			return;
-		}
-
-		const toCreate = expectedStores.filter((s) => !actualStores.has(s));
-		const toDelete = [...actualStores].filter((s) => !expectedStores.includes(s));
-
-		if (toCreate.length === 0 && toDelete.length === 0) {
-			// Stores match but hash differs — just persist hash
-			try {
-				await storeSchemaHash(this._dbName, expectedHash);
-			} catch {
-				// Will retry on next start
-			}
-			return;
-		}
-
-		// Schedule upgrade for next start — bump version and store pending work
-		this._version++;
-		this._pendingIdbUpgrade = { toCreate, toDelete, expectedHash };
+	start(): void {
+		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
+		this._effectiveModel = buildEffectiveModel(this._model);
+		this._machineDb      = new MachineDb(this._effectiveModel);
+		machineRights.loadPoliciesFromModel(this._model);
+		this.createStore();
+		if (this._socketOptions?.autoConnect) this.connectSocket();
+		this._scheduleDrift().catch(() => { /* non-critical — retry on next start */ });
 	}
 
-	/** Pending IDB upgrade state (set by _detectSchemaDrift, consumed by next createStore). */
-	private _pendingIdbUpgrade: { toCreate: string[]; toDelete: string[]; expectedHash: string } | null = null;
+	/** Pending IDB upgrade scheduled by drift detection — consumed by next createStore(). */
+	private _pendingIdbUpgrade: PendingIdbUpgrade | null = null;
 
-	/**
-	 * Internal: Creates the collections logic using the provided data model.
-	 * Throws an error if the model is not defined.
-	 * @role Internal
-	 * @private
-	 * @return {void}
-	 */
-	/**
-	 * Merge system collections (appModelDeclaration) with user model.
-	 * System collections always present; user model takes precedence on name collision.
-	 */
-	private buildEffectiveModel(): MachineModel {
-		const system: MachineModel = {};
-		for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
-			system[name] = { keyPath: '++id', ...(col as any) };
-		}
-		if (!this._model) return system;
-		return { ...system, ...this._model };
-	}
-
-	private createCollections(): void {
-		this._machineDb = new MachineDb(this._effectiveModel);
-	}
-
-	private loadPolicies(): void {
-		if (!this._model) return;
-		const policies: Record<string, any> = {};
-		for (const [name, col] of Object.entries(this._model)) {
-			if ((col as any).rights) policies[name] = (col as any).rights;
-		}
-		machineRights.setPolicies(policies);
-	}
-
-	/**
-	 * Internal: Creates the IDBQL store and initializes database connections.
-	 * Throws an error if model, dbName, or version is missing.
-	 * @role Internal
-	 * @private
-	 * @return {void}
-	 */
 	private async createStore(): Promise<void> {
-		if (!this._dbName || !this._version) {
-			throw new Error('Model, dbName, or version is not defined');
-		}
-
-		// Handle pending schema drift upgrade before qoolie opens the DB
 		if (this._pendingIdbUpgrade) {
-			await this._performIdbUpgrade();
+			await performIdbUpgrade(this._dbName, this._version, this._pendingIdbUpgrade, this._effectiveModel);
+			this._pendingIdbUpgrade = null;
 		}
-
 		const collections = Object.fromEntries(
 			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
 		);
 		this._qoolie = createQoolie({
-			dbName:      this._dbName,
-			dbVersion:   this._version,
+			dbName:    this._dbName,
+			dbVersion: this._version,
 			collections,
 			...(this._syncOptions !== undefined && { sync: this._syncOptions }),
 			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
@@ -341,160 +211,30 @@ export class Machine {
 		});
 	}
 
-	/**
-	 * Perform IDB upgrade: create missing stores, delete orphans, persist hash.
-	 * Called when _detectSchemaDrift detected drift.
-	 *
-	 * Edge cases handled:
-	 * - Fresh install: skips if no stores exist
-	 * - __outbox__ protection: never deletes internal stores
-	 * - Store rename detection: copies data from deleted → created store if keyPath matches
-	 */
-	private async _performIdbUpgrade(): Promise<void> {
-		const upgrade = this._pendingIdbUpgrade;
-		if (!upgrade) return;
-
-		// Fresh install: no actual stores yet, just create everything normally
-		if (upgrade.toCreate.length > 0 && upgrade.toDelete.length === 0) {
-			this._pendingIdbUpgrade = null;
-			return;
+	private async _scheduleDrift(): Promise<void> {
+		const drift = await detectSchemaDrift(this._dbName, this._version, this._effectiveModel);
+		if (drift) {
+			this._version = drift.newVersion;
+			this._pendingIdbUpgrade = drift;
 		}
-
-		await new Promise<void>((resolve, reject) => {
-			if (typeof indexedDB === 'undefined') { resolve(); return; }
-			const req = indexedDB.open(this._dbName!, this._version);
-			req.onupgradeneeded = (e) => {
-				const db = (e.target as IDBOpenDBRequest).result;
-
-				// Detect potential renames: deleted store keyPath matches created store
-				const renames = this._detectStoreRenames(db, upgrade);
-
-				// Handle renames first (copy data)
-				for (const { from, to, keyPath } of renames) {
-					if (db.objectStoreNames.contains(from)) {
-						const oldStore = (db as any).objectStore(from);
-						const newStore = db.createObjectStore(to, { keyPath });
-						// Copy all records
-						const cursorReq = oldStore.openCursor();
-						cursorReq.onsuccess = () => {
-							const cursor = cursorReq.result;
-							if (cursor) {
-								newStore.add(cursor.value);
-								cursor.continue();
-							}
-						};
-						db.deleteObjectStore(from);
-					}
-				}
-
-				// Delete orphaned stores (excluding renames and protected stores)
-				const renamedFrom = new Set(renames.map(r => r.from));
-				for (const storeName of upgrade.toDelete) {
-					if (renamedFrom.has(storeName)) continue;
-					if (this._isProtectedStore(storeName)) continue;
-					if (db.objectStoreNames.contains(storeName)) {
-						db.deleteObjectStore(storeName);
-					}
-				}
-
-				// Create missing stores (excluding rename targets already created)
-				const renamedTo = new Set(renames.map(r => r.to));
-				for (const storeName of upgrade.toCreate) {
-					if (renamedTo.has(storeName)) continue;
-					if (!db.objectStoreNames.contains(storeName)) {
-						const colDef = this._effectiveModel[storeName];
-						const keyPath = colDef?.keyPath ?? '++id';
-						db.createObjectStore(storeName, { keyPath });
-					}
-				}
-
-				// Ensure __schema_meta__ exists
-				if (!db.objectStoreNames.contains('__schema_meta__')) {
-					db.createObjectStore('__schema_meta__', { keyPath: 'id' });
-				}
-			};
-			req.onsuccess = () => {
-				req.result.close();
-				resolve();
-			};
-			req.onerror = () => reject(req.error);
-		});
-
-		// Persist the new hash
-		try {
-			await storeSchemaHash(this._dbName!, upgrade.expectedHash);
-		} catch {
-			// Non-critical — will retry on next start
-		}
-
-		this._pendingIdbUpgrade = null;
 	}
 
 	/**
-	 * Detect store renames: a deleted store's keyPath matches a created store.
-	 * Returns array of { from, to, keyPath } for each detected rename.
-	 */
-	private _detectStoreRenames(db: IDBDatabase, upgrade: { toCreate: string[]; toDelete: string[]; expectedHash: string }): Array<{ from: string; to: string; keyPath: string | null }> {
-		const renames: Array<{ from: string; to: string; keyPath: string | null }> = [];
-		for (const deletedName of upgrade.toDelete) {
-			if (this._isProtectedStore(deletedName)) continue;
-			if (!db.objectStoreNames.contains(deletedName)) continue;
-
-			const deletedStore = (db as any).objectStore(deletedName);
-			const deletedKeyPath = deletedStore.keyPath;
-
-			for (const createdName of upgrade.toCreate) {
-				const colDef = this._effectiveModel[createdName];
-				const createdKeyPath = colDef?.keyPath ?? '++id';
-
-				// Match if keyPaths are identical
-				if (deletedKeyPath === createdKeyPath || (deletedKeyPath === null && createdKeyPath === '++id')) {
-					renames.push({ from: deletedName, to: createdName, keyPath: createdKeyPath });
-					break;
-				}
-			}
-		}
-		return renames;
-	}
-
-	/**
-	 * Check if a store name is protected from deletion.
-	 * Internal stores (__outbox__, __schema_meta__, __migrations__) are never deleted.
-	 */
-	private _isProtectedStore(storeName: string): boolean {
-		return storeName.startsWith('__') && storeName.endsWith('__');
-	}
-
-	/**
-	 * Manually trigger IDB schema upgrade.
-	 * Useful when you know the schema has changed and want to force an upgrade
-	 * without waiting for the next start() cycle.
-	 *
-	 * This will:
-	 * 1. Detect drift between expected and actual stores
-	 * 2. Bump version and schedule upgrade
-	 * 3. Perform the upgrade immediately
-	 *
-	 * @returns Promise that resolves when upgrade is complete
+	 * @framework-bootstrap — called automatically by fetchSchema() and start().
+	 * Not for application code. Detects IDB drift and upgrades stores immediately.
 	 */
 	async upgradeIdb(): Promise<void> {
 		if (!this._dbName || !this._effectiveModel) {
 			throw new Error('Machine not initialized — call init() and start() first');
 		}
-
-		// Run drift detection to populate _pendingIdbUpgrade
-		await this._detectSchemaDrift();
-
-		// If upgrade was scheduled, perform it now
-		if (this._pendingIdbUpgrade) {
-			await this._performIdbUpgrade();
+		const drift = await detectSchemaDrift(this._dbName, this._version, this._effectiveModel);
+		if (drift) {
+			this._version = drift.newVersion;
+			await performIdbUpgrade(this._dbName, this._version, drift, this._effectiveModel);
 		}
 	}
 
-	/**
-	 * Alias for upgradeIdb() — adapts IDB stores to match the current schema.
-	 * @returns Promise that resolves when adaptation is complete
-	 */
+	/** @deprecated Use upgradeIdb(). */
 	async adaptIdbToSchema(): Promise<void> {
 		return this.upgradeIdb();
 	}
@@ -581,16 +321,7 @@ export class Machine {
 
 	private connectSocket(): void {
 		if (!this._socketOptions) return;
-		const opts  = this._socketOptions;
-		const client = new EventDataClientInstance();
-		client.config.host          = opts.url;
-		client.config.port          = 0; // url already includes port
-		client.config.authentication = {
-			auth:     opts.token    ? `Bearer ${opts.token}` : 'Bearer ',
-			authMode: opts.authMode ?? 'Bearer',
-		};
-		client.connect();
-		this._socketClient = client;
+		this._socketClient = createSocketClient(this._socketOptions);
 	}
 
 	/**
@@ -611,12 +342,7 @@ export class Machine {
 	 */
 	async resetClientData(): Promise<void> {
 		this.destroy();
-		await new Promise<void>((resolve, reject) => {
-			const req = indexedDB.deleteDatabase(this._dbName);
-			req.onsuccess = () => resolve();
-			req.onerror   = () => reject(req.error);
-			req.onblocked = () => reject(new Error('IDB delete blocked — close other tabs'));
-		});
+		await deleteIdbDatabase(this._dbName);
 		window.location.reload();
 	}
 
@@ -627,71 +353,30 @@ export class Machine {
 	 * @return {SchemaRouter} The schema router instance.
 	 */
 	get router(): SchemaRouter {
-		if (!this._router) {
-			this._router = new SchemaRouter();
-			
-			// Set up permission check using MachineDb
-			this._router.setPermissionCheck((permission, table) => {
-				if (!table) return true;
-				
-				const scheme = this.logic.collection(table);
-				if (!scheme) return false;
-				return machineRights.checkAccess(table, permission as PermissionCode);
-			});
-			
-			// Initialize with schemas from MachineDb
-			const schemes = this.logic.collections();
-			this._router.init(schemes);
-		}
+		if (!this._router) this._router = this._buildRouter();
 		return this._router;
 	}
 
-	/**
-	 * Initialize the router with custom configuration.
-	 * Must be called before accessing router getter if custom config is needed.
-	 * @role Initializer
-	 * @param {SchemaRouterConfig} config Router configuration
-	 * @return {SchemaRouter} The initialized router instance
-	 */
 	initRouter(config: SchemaRouterConfig): SchemaRouter {
-		this._router = new SchemaRouter(config);
-		
-		// Set up permission check
-		this._router.setPermissionCheck((permission, table) => {
+		this._router = this._buildRouter(config);
+		return this._router;
+	}
+
+	private _buildRouter(config: SchemaRouterConfig = {}): SchemaRouter {
+		const r = new SchemaRouter(config);
+		r.setPermissionCheck((permission, table) => {
 			if (!table) return true;
 			const scheme = this.logic.collection(table);
 			if (!scheme) return false;
-			return true;
+			return machineRights.checkAccess(table, permission as PermissionCode);
 		});
-		
-		// Initialize with schemas
-		const schemes = this.logic.collections();
-		this._router.init(schemes);
-		
-		return this._router;
+		r.init(this.logic.collections());
+		return r;
 	}
 
 	/**
-	 * Set the current authenticated user and their grants.
-	 * Enables access control — all #checkAccess() calls will use this user.
-	 * Pass null to deny all non-admin access.
-	 */
-	setCurrentUser(user: AppUser | null, grants: AppUserGrant[] = []): void {
-		machineRights.setCurrentUser(user, grants);
-	}
-
-	/**
-	 * Clear the current user and return to open mode (all access allowed).
-	 */
-	clearCurrentUser(): void {
-		machineRights.clearCurrentUser();
-	}
-
-	/**
+	 * @deprecated Use machine.framer.load() with explicit frameId.
 	 * Navigate to a module within a target zone.
-	 * Delegates to frameManager for DOM-first content loading, then updates URL.
-	 * Builds URL: /{targetId}/{modulePath}/{collection}/{collectionId}?{vars}
-	 * Multi-calls nest segments via + prefix (see §11.2).
 	 */
 	async loadIn(
 		modulePath: string,
@@ -710,9 +395,8 @@ export class Machine {
 	}
 
 	/**
+	 * @deprecated Use machine.framer.load() with computeFrameId().
 	 * Load content into a dynamic frame.
-	 * Computes a deterministic frameId from (collection, collectionId?, vars?)
-	 * and delegates to the frame manager.
 	 */
 	async loadFrame(
 		modulePath: string,
@@ -725,6 +409,11 @@ export class Machine {
 	}
 
 	/** Access to the frame manager singleton. */
+	get framer() {
+		return this._frameManager;
+	}
+
+	/** @deprecated Use machine.framer */
 	get frameManager() {
 		return this._frameManager;
 	}
