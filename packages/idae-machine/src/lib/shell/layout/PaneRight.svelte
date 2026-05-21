@@ -13,14 +13,6 @@
 
 	let { onSelect }: Props = $props();
 
-	/** Recent history entries — direct collection access */
-	let recents = $derived((() => {
-		try {
-			const all = machine.collection('_history').getAll() as any[];
-			return all.toSorted((a, b) => (b.lastSeen ?? '').localeCompare(a.lastSeen ?? '')).slice(0, 10);
-		} catch { return []; }
-	})());
-
 	/** Collections with create permission */
 	let creatableCollections = $derived.by(() => {
 		const schemes = machine.logic.collections();
@@ -32,7 +24,7 @@
 
 <div class="pane-right">
 	<PaneQuickCreate collections={creatableCollections} {onSelect} />
-	<PaneRecents entries={recents} {onSelect} />
+	<PaneRecents {onSelect} />
 </div>
 
 <style>

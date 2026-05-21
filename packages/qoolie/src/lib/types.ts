@@ -154,6 +154,10 @@ export interface QoolieCollection<T extends CollectionConfig> {
   where(query: any): any;
   /** Get by ID */
   get(id: any): Promise<any>;
+  /** Get all documents (reactive in svelte5 mode) */
+  getAll(): any;
+  /** Count documents, optionally filtered */
+  count(query?: any): Promise<number>;
   /** Create document */
   create(data: any): Promise<any>;
   /** Update by ID */

@@ -65,13 +65,13 @@ Collection record list — composes DataList for data, renders grid/list UI.
 						<h3>{groupKey}</h3>
 					</header>
 					<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
-						{#each groupItemList as item (item[index])}
+						{#each groupItemList as item ((item as any)[index])}
 							<li
 								class="list-item panel panel-bordered"
 								role="button"
 								tabindex="0"
-								onclick={() => _onclick(item as COL, item[index])}
-								onkeydown={(e) => e.key === 'Enter' && _onclick(item as COL, item[index])}
+								onclick={() => _onclick(item as COL, (item as any)[index] as string | number)}
+								onkeydown={(e) => e.key === 'Enter' && _onclick(item as COL, (item as any)[index] as string | number)}
 							>
 								<div class="list-item-content">
 									<DataFields {collection} data={item} mode="show" />
@@ -83,13 +83,13 @@ Collection record list — composes DataList for data, renders grid/list UI.
 			{/each}
 		{:else}
 			<ul class="list list-grid" role="list" style="--list-grid-min: 200px;">
-				{#each items as item (item[index])}
+				{#each items as item ((item as any)[index])}
 					<li
 						class="list-item panel panel-bordered"
 						role="button"
 						tabindex="0"
-						onclick={() => _onclick(item, item[index])}
-						onkeydown={(e) => e.key === 'Enter' && _onclick(item, item[index])}
+						onclick={() => _onclick(item as unknown as COL, (item as any)[index] as string | number)}
+						onkeydown={(e) => e.key === 'Enter' && _onclick(item as unknown as COL, (item as any)[index] as string | number)}
 					>
 						<div class="list-item-content">
 							<DataFields {collection} data={item} mode="show" />

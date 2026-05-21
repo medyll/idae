@@ -13,6 +13,7 @@ Filters by RBAC and search query.
 @snippet groupChildren(group) - Custom group renderer (when groupBy is set)
 -->
 	<script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import SchemeItem from './SchemeItem.svelte';
@@ -45,8 +46,8 @@ Filters by RBAC and search query.
 		sortBy?: SortBy | SortBy[];
 		activeCollection?: string;
 		onSelect?: (detail: { collection: string; id?: string }) => void;
-		children?: any;
-		groupChildren?: any;
+		children?: Snippet<[{ items: AppschemeRecord[] }]>;
+		groupChildren?: Snippet<[{ group: { key: string; collections: AppschemeRecord[] } }]>;
 	} = $props();
 
 	function applySort(rows: AppschemeRecord[], spec: SortBy | SortBy[]): AppschemeRecord[] {

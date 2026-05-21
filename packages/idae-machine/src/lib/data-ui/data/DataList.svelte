@@ -11,6 +11,7 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 @snippet children(items, index, fieldValues, pagination, groups)
 -->
 	<script lang="ts" generics="COL extends Record<string, unknown>">
+	import type { Snippet } from 'svelte';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
@@ -37,20 +38,20 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 		groupBy?: string;
 		pageSize?: number;
 		page?: number;
-		children: (props: {
+		children: Snippet<[{
 			items: COL[];
 			index: string;
 			fieldValues: Record<string, unknown>;
 			pagination: PaginationInfo;
 			groups?: Map<string, COL[]>;
-		}) => void;
+		}]>;
 	} = $props();
 
 	const store = $derived(collection ? machine.store[collection] : undefined);
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = $derived(collLogic?.template?.index ?? 'id');
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
-	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField, direction: 'asc' }]);
+	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField, direction: 'asc' as const }]);
 	const effectiveSort = $derived(sortBy ?? defaultSort);
 
 	const rawItems = $derived.by(() => {

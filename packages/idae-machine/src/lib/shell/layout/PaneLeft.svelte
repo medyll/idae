@@ -10,6 +10,24 @@
 	let { onSelect, activeCollection = '' }: Props = $props();
 
 	let query = $state('');
+
+	type SchemeRow = { code: string; name?: string; isType?: boolean; isGroup?: boolean; [k: string]: unknown };
+
+	function schemeType(row: SchemeRow): 'standard' | 'type' | 'group' {
+		if (row.isType) return 'type';
+		if (row.isGroup) return 'group';
+		return 'standard';
+	}
+
+	function groupByType(items: SchemeRow[]) {
+		const map: Record<string, { code: string; name: string; type: string }[]> = {};
+		for (const row of items) {
+			const t = schemeType(row);
+			if (!map[t]) map[t] = [];
+			map[t].push({ code: row.code, name: row.name ?? row.code, type: t });
+		}
+		return Object.entries(map).map(([type, collections]) => ({ type, collections }));
+	}
 </script>
 
 <div class="pane-left">
@@ -23,8 +41,10 @@
 	</div>
 	<div class="pane-groups">
 		<SchemeList filter={query} {activeCollection} {onSelect}>
-			{#snippet children({ group })}
-				<PaneCollectionGroup {group} {onSelect} {activeCollection} />
+			{#snippet children({ items })}
+				{#each groupByType(items) as group (group.type)}
+					<PaneCollectionGroup {group} {onSelect} {activeCollection} />
+				{/each}
 			{/snippet}
 		</SchemeList>
 	</div>
