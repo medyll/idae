@@ -38,9 +38,9 @@ describe('Machine', () => {
 		expect(machine._model).toBe(demoScheme);
 	});
 
-	it('should throw if start is called without model', () => {
+	it('should throw if start is called without dbName', () => {
 		const m = new Machine();
-		expect(() => m.start()).toThrow();
+		expect(() => m.start()).toThrow('dbName is required');
 	});
 
 	describe('moduleDbName()', () => {
@@ -58,14 +58,14 @@ describe('Machine', () => {
 		});
 	});
 
-	it('should create collections and store on start', () => {
-		machine.start();
+	it('should create collections and store on start', async () => {
+		await machine.start();
 		expect(machine.logic).toBeDefined();
 		expect(machine.store).toBeDefined();
 	});
 
-	it('should expose accessors for logic and store (qoolie-backed)', () => {
-		machine.start();
+	it('should expose accessors for logic and store (qoolie-backed)', async () => {
+		await machine.start();
 		expect(machine.logic).toBe(machine._machineDb);
 		expect(machine.store).toBeDefined();
 		expect(machine.idbqlState).toBeDefined();
@@ -101,8 +101,8 @@ describe('Machine', () => {
 
 	// --- Intégration MachineDb/MachineScheme ---
 	describe('integration: MachineDb/MachineScheme', () => {
-		beforeEach(() => {
-			machine.start();
+		beforeEach(async () => {
+			await machine.start();
 		});
 
 		it('should access a collection and its template', () => {

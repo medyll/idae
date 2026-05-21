@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-21T20:05"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Plan Sprint 29 — nav frame for collection browsing, Explorer sidebar via vars"
-next_command: "bmad-status"
-next_role: "scrum-master"
-active_role: "developer"
+next_action: "Implement S29-01 — Frame.svelte forwards full vars (where/sortBy/groupBy/pageSize) to Explorer"
+next_command: "bmad-continue"
+next_role: "developer"
+active_role: "scrum-master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,6 +93,55 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 29
+    goal: "Explorer vars + CollectionNav — Explorer fully configurable via vars, sidebar as dedicated component, mode switcher UI"
+    status: active
+    artifact: "bmad/artifacts/sprint-s29-planned.md"
+    depends_on: [28]
+    stories:
+      - id: S29-01
+        title: "Frame.svelte forwards full vars to Explorer (mode/where/sortBy/groupBy/pageSize)"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S29-02
+        title: "Explorer reads vars internally for groupBy/sortBy/pageSize"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S29-03
+        title: "Explorer mode switcher toolbar (list/table/actions buttons)"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S29-04
+        title: "CollectionNav component — dedicated sidebar nav"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S29-05
+        title: "AppShell uses CollectionNav in default sidebar"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S29-06
+        title: "Tests — collectionNav, Explorer mode switcher, Frame vars forwarding"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 28
     goal: "IDB schema drift detection — auto-adapt IDB stores to server schema, no manual migrations ever"
     status: completed

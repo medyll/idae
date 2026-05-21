@@ -64,7 +64,7 @@ export interface MachineDisplayTemplate {
 	sections?:     Record<string, string[]>;
 	fkLabelTpl?:   string;
 	indexes?:      Array<string | { fields: string[]; unique?: boolean; sparse?: boolean }>;
-	/** Default sort applied by ExplorerList when no sortBy prop. Multiple = stable sort chain. */
+	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
 	sort?:         SortBy[];
 	[key: string]: any;
 }

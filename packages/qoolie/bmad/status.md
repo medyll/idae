@@ -1,39 +1,44 @@
 # Qoolie — Project Status
 
-**Phase:** release  
-**Progress:** 100% (35/36 stories, 1 skipped)  
-**Active Role:** Scrum Master  
-**Next Action:** All sprints complete — decision point
+**Phase:** development
+**Progress:** 30%
+**Active Role:** Scrum Master
+**Next Action:** Review code and create sprint
+**Next Command:** bmad sprint
 
 ## Sprints
 
 | Sprint | Goal | Status |
 |--------|------|--------|
-| 1 | Core implementation - Qoolie basic CRUD + sync foundation | ✅ done |
-| 2 | Developer experience improvements + Advanced features | ✅ done |
-| 3 | Advanced features for production-ready applications | ✅ done |
-| 4 | Integration with idae-idbql and idae-api | ✅ done |
-| 5 | Advanced features for data validation, conflict resolution, and multi-database support | ✅ done |
-| 6 | qoolie self-contained — internalize IDB engine, EventTarget bus, Svelte adapter | ✅ done |
+| — | — | Aucun sprint planifié |
 
 ## Recent Completed Work
 
-- Sprint 6: Internalized IDB engine (`engine/`), replaced `$state` with pure `EventTarget` bus, created Svelte 5 adapter (`adapters/svelte/`), and produced a Vite-built distributable that no longer depends on `@medyll/idae-idbql` at runtime.
+- `bmad-rebuild` exécuté — analyse automatique du codebase
+- Phase détectée : **development** (30%)
+- Langages détectés : JavaScript/Node
+- Dépendances : `@medyll/skiller`, `@medyll/idae-sync`, `commander`, `idb`
 
 ## Next Steps
 
-- Run full test suite (`bmad-test`)
-- Generate README and documentation (`bmad-doc`)
-- Code quality audit (`bmad-audit`)
-- Prepare release (CHANGELOG, version bump, publish)
+- Créer un sprint avec `bmad sprint` (rôle Scrum Master)
+- Définir le PRD et l'architecture (manquants)
+
+## Artifacts
+
+| Artifact | Status |
+|----------|--------|
+| PRD | ⬜ missing |
+| Architecture | ⬜ missing |
+| Tech Spec | ⬜ missing |
 
 ## Three Dimensions
 
-**Marketing:**  
-Unified IndexedDB + sync library for JavaScript apps. One API, multiple frameworks, offline-first by default.
+**Marketing:**
+Project initialized — status auto-detected.
 
-**Product:**  
-Self-contained engine with reactive adapters for Svelte 5, React, and Vue. Encryption, validation, conflict resolution, and real-time server push included.
+**Product:**
+Phase detected: development (30%).
 
-**Far Vision:**  
-Become the default local-first data layer for the idae ecosystem — pluggable, framework-agnostic, and production-hardened.
+**Far Vision:**
+To be defined during planning phase.

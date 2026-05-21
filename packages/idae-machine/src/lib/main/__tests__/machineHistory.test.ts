@@ -1,6 +1,6 @@
 /**
- * _history collection — aggregated recent visits patterns.
- * No wrapper class. Direct machine.collection('_history') usage.
+ * appuser_history collection — aggregated recent visits patterns.
+ * No wrapper class. Direct machine.collection('appuser_history') usage.
  *
  * Shape: { id, collection, collection_value, label?, count, lastSeen }
  * Upsert: match on (collection + collection_value), increment count.
@@ -54,7 +54,7 @@ function historyFrequent(col: ReturnType<typeof mockCollection>, collection?: st
 
 // ── tests ────────────────────────────────────────────────────────────────────
 
-describe('_history collection patterns', () => {
+describe('appuser_history collection patterns', () => {
 	let col: ReturnType<typeof mockCollection>;
 	beforeEach(() => { col = mockCollection(); });
 

@@ -459,7 +459,7 @@ export const appModelDeclaration = {
 			},
 		},
 
-		_prefs: {
+		appuser_prefs: {
 			base:   'machine_user',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
@@ -477,7 +477,7 @@ export const appModelDeclaration = {
 			},
 		},
 
-		_activity: {
+		appuser_activity: {
 			base:   'machine_user',
 			rights: { ops: ['C', 'R', 'L'] },
 			fields: {
@@ -496,7 +496,7 @@ export const appModelDeclaration = {
 			},
 		},
 
-		_history: {
+		appuser_history: {
 			base:   'machine_user',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {

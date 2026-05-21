@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * PaneRight — today dashboard with quick-create buttons and recent history.
-	 * Uses machine.collection('_history') and machine.rights directly.
+	 * Uses machine.collection('appuser_history') and machine.rights directly.
 	 */
 	import { machine } from '$lib/main/machine.js';
 	import PaneQuickCreate from './PaneQuickCreate.svelte';

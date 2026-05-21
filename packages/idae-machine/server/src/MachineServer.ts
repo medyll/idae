@@ -18,6 +18,7 @@ import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap
 import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
+import type { EntityViews, ViewFieldDef } from '../../src/lib/types/schema-types.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
@@ -47,6 +48,18 @@ class MachineServerClass {
 
 	// ── getModel — reads appscheme_* → MachineModel ───────────────────────────
 
+	/** Map appscheme_view_type.code to EntityViews key name. */
+	private _viewTypeToKey(code: string): string | null {
+		switch (code) {
+			case 'list':     return 'listView';
+			case 'mini':     return 'miniView';
+			case 'form':     return 'formView';
+			case 'custom':   return 'customView';
+			case 'fk_label': return 'fkLabelView';
+			default:         return code; // passthrough for custom types
+		}
+	}
+
 	async getModel(collectionCode?: string): Promise<MachineModel> {
 		const db = await this.#getMetaDb();
 
@@ -55,6 +68,9 @@ class MachineServerClass {
 
 		const fieldDocs = await db.collection('appscheme_field').find().toArray();
 		const fieldByCode = new Map(fieldDocs.map((f: any) => [f.code as string, f]));
+
+		// Load appscheme_view rows for _views construction
+		const viewDocs = await db.collection('appscheme_view').find().toArray();
 
 		const hasFieldDocs  = await db.collection('appscheme_has_field').find().toArray();
 
@@ -108,6 +124,35 @@ class MachineServerClass {
 				};
 			}
 
+			// Build _views from appscheme_view rows
+			const _views: Partial<EntityViews> = {};
+			const schemeViews = viewDocs.filter((v: any) =>
+				v.gridFks?.appscheme?.code === code
+			);
+			for (const v of schemeViews) {
+				const viewTypeCode = v.gridFks?.appscheme_view_type?.code as string;
+				const fieldCode = v.gridFks?.appscheme_field?.code as string;
+				if (!viewTypeCode || !fieldCode) continue;
+
+				// Map view_type.code to EntityViews key
+				const viewKey = this._viewTypeToKey(viewTypeCode);
+				if (!viewKey) continue;
+
+				if (!_views[viewKey]) _views[viewKey] = [];
+				(_views[viewKey] as ViewFieldDef[]).push({
+					name:  fieldCode,
+					code:  fieldCode,
+					group: '',
+					title: fieldCode.replace(/_/g, ' '),
+					order: v.order ?? 0,
+				});
+			}
+
+			// Sort each view by order
+			for (const key of Object.keys(_views)) {
+				(_views[key] as ViewFieldDef[]).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+			}
+
 			model[code] = {
 				keyPath:  (scheme.keyPath as string) ?? '++id',
 				base:     (scheme.base as string) ?? (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
@@ -115,6 +160,7 @@ class MachineServerClass {
 				fields,
 				fks,
 				template: (scheme.template as Record<string, any>) ?? {},
+				_views,
 			};
 		}
 

@@ -108,8 +108,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('vehicle collection — CRUD + where filter', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-vehicle-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-vehicle-crud'));
 		});
 
 		it('create returns doc with id', async () => {

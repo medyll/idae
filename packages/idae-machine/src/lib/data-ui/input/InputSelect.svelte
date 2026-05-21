@@ -37,8 +37,13 @@ FK-aware select input atom. Queries machine store for related collection records
 
 	const scheme     = $derived(safeScheme());
 	const indexField = $derived(scheme?.template?.index ?? 'id');
+	const fkLabelFields = $derived(
+		(scheme?.views?.fkLabelView ?? []).map(f => f.name)
+	);
 	const presentationFields = $derived(
-		(scheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
+		fkLabelFields.length > 0
+			? fkLabelFields
+			: (scheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
 	);
 	const items = $derived(machine.store?.[collection]?.getAll() ?? []);
 

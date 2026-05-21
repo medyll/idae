@@ -6,7 +6,7 @@
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: development (S24 complete)
+  Progress   [██████████] 100%   Phase: development (S27 complete)
 
 ### Features & Capabilities
 
@@ -22,8 +22,10 @@
   | Schema validation | ✅ Shipped | Server-side rules enforced before any data is saved |
   | SPA navigation | ✅ Shipped | URL-driven navigation loads the right view in the right zone |
   | Multi-zone layout | ✅ Shipped | Content loads into named zones (main, modal, window) |
-  | Component library | ✅ Shipped | ExplorerList, CardForm, DataList, SchemeList — composable and reusable |
-  | Multi-frame manager | ✅ Shipped | Open multiple records simultaneously, toggle between them, taskbar navigation |
+  | Component library | ✅ Shipped | Explorer (4 modes), DataList, SchemeList, CardForm — composable |
+  | Multi-frame manager | ✅ Shipped | Open multiple records simultaneously, toggle between them |
+  | Universal AppShell | ✅ Shipped | Snippet-based layout with operational defaults |
+  | Entity Views (_views) | ✅ Shipped | Server-driven view definitions (list/form/mini/fk_label) consumed by Explorer |
 
 ### What's Ready Now
 
@@ -32,18 +34,19 @@
 - Complete field type coverage including FK relations and image focus points
 - Role-based permissions enforced client and server side
 - Domain action hooks (validate, beforeDelete, afterCreate) per collection
-- URL-driven SPA: `machine.loadIn('explorer.list', 'main', 'vehicle')` navigates correctly
 - Composable data-ui components (DataList, SchemeList) for custom layouts
 - Pagination, sort, groupBy on collection lists
 - **Frame Manager**: `machine.loadFrame('card.form', 'vehicle', '42')` opens dynamic frames
-- **TaskBar**: reactive list of open frames with toggle/close buttons
-- **Frame component**: auto-registration, mount/unmount, show/hide via CSS display
+- **AppShell**: universal frame template with `{#snippet navbar/sidebar/content}`
+- **Explorer**: single component with 4 modes (list/table/card/actions), consumes `_views` for field ordering
+- **Entity Views**: `getModel()` builds `_views` from MongoDB `appscheme_view` rows
+- **System collections**: properly named `appuser_prefs`, `appuser_activity`, `appuser_history`
 
 ### What's Coming Next
 
-- Sprint 25 — to be defined
 - Visual schema builder (far vision)
 - Plugin marketplace for custom field types
+- AI-powered features (smart defaults, auto-generated validations)
 
 ### Risks & Blockers
 
@@ -53,27 +56,26 @@
 
 ## Development Details
 
-  Sprint     24 (complete)
+  Sprint     27 (complete)
   Role       scrum-master
   Next cmd   `bmad-status`
 
 ### Current Sprint
 
-  ✅ Done     S24 complete — Frame Manager system (7/7 stories, 440/440 tests)
+  ✅ Done     S27 complete — Wire _views bout-en-bout (6/6 stories, 442/442 tests)
 
-### Stories — Sprint 24
+### Stories — Sprint 27
 
   | ID | Title | Status | Effort |
   |----|-------|--------|--------|
-  | S24-01 | MachineFrameManager singleton + FrameControls | ✅ done | S |
-  | S24-02 | computeFrameId() — ID déterministique | ✅ done | S |
-  | S24-03 | machine.loadFrame() | ✅ done | S |
-  | S24-04 | `<Frame>` Svelte component | ✅ done | M |
-  | S24-05 | Wire machine.loadIn() via frameManager | ✅ done | M |
-  | S24-06 | `<TaskBar>` component | ✅ done | M |
-  | S24-07 | Tests + intégration | ✅ done | M |
+  | S27-01 | getModel() query appscheme_view → build _views | ✅ done | M |
+  | S27-02 | Explorer.svelte consomme _views par mode | ✅ done | M |
+  | S27-03 | MachineScheme.views getter → Partial<EntityViews> | ✅ done | S |
+  | S27-04 | InputSelect uses _views.fk_label for FK labels | ✅ done | S |
+  | S27-05 | demoScheme deploy + verify _views in MongoDB | ✅ done | S |
+  | S27-06 | Tests + Playwright golden path | ✅ done | M |
 
-  Progress: 7/7 stories (100%)
+  Progress: 6/6 stories (100%)
 
 ### Roadmap to Release
 
@@ -95,9 +97,12 @@
   - Sprint 22: navigation layer (machine.loadIn, componentRegistry, SchemaRouter) ✅
   - Sprint 23: structural refactor (data-ui/ + shell/, DataList, SchemeList) ✅
   - Sprint 24: Frame Manager (MachineFrameManager, loadFrame, TaskBar) ✅
+  - Sprint 25: Unified Explorer Architecture ✅
+  - Sprint 26: System collection rename ✅
+  - Sprint 27: Wire _views bout-en-bout ✅
 
   #### Testing ✅
-  - Unit tests: 440/440 green (36 files)
+  - Unit tests: 442/442 green (37 files)
   - E2E tests: Playwright smoke pass
 
   #### Release ⬚
@@ -112,9 +117,9 @@
   | PRD | ✅ done |
   | Architecture | ✅ done |
   | Tech-spec | ✅ done |
-  | Sprint 22 artifact | ✅ done |
-  | Sprint 23 artifact | ✅ done |
-  | Sprint 24 artifact | ✅ done |
+  | Sprint 25 artifact | ✅ done |
+  | Sprint 26 artifact | ✅ done |
+  | Sprint 27 artifact | ✅ done |
   | NAVIGATION.md | ✅ done |
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

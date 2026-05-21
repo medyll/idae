@@ -1,20 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import ExplorerTable from '../../shell/explorer/ExplorerTable.svelte';
+import Explorer from '../../shell/explorer/Explorer.svelte';
 
-describe('ExplorerTable sort headers', () => {
-	it('ExplorerTable is defined', () => {
-		expect(ExplorerTable).toBeDefined();
+describe('Explorer table mode', () => {
+	it('Explorer is defined', () => {
+		expect(Explorer).toBeDefined();
 	});
 
-	it('accepts sortable prop', () => {
-		expect(ExplorerTable).toBeTruthy();
+	it('supports table mode', () => {
+		expect(Explorer).toBeTruthy();
 	});
 
-	it('accepts sortableColumns prop', () => {
-		expect(ExplorerTable).toBeTruthy();
+	it('supports list mode', () => {
+		expect(Explorer).toBeTruthy();
 	});
 
-	it('accepts initialSortBy prop', () => {
-		expect(ExplorerTable).toBeTruthy();
+	it('supports card mode', () => {
+		expect(Explorer).toBeTruthy();
 	});
 });

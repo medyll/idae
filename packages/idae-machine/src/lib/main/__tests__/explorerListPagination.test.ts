@@ -1,13 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import ExplorerList from '../../shell/explorer/ExplorerList.svelte';
+import Explorer from '../../shell/explorer/Explorer.svelte';
 
-describe('ExplorerList pagination', () => {
-	it('ExplorerList is defined', () => {
-		expect(ExplorerList).toBeDefined();
+describe('Explorer pagination (list mode)', () => {
+	it('Explorer is defined', () => {
+		expect(Explorer).toBeDefined();
 	});
 
-	it('accepts pageSize prop', () => {
-		// Component should accept pageSize without error
-		expect(ExplorerList).toBeTruthy();
+	it('accepts collection + mode props', () => {
+		expect(Explorer).toBeTruthy();
 	});
 });

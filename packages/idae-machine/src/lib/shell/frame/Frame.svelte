@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mount, unmount, type Component } from 'svelte';
-	import { machineFrameManager, type FrameControls } from '$lib/main/frame/MachineFrameManager.js';
-	import { componentRegistry } from '$lib/main/router/componentRegistry.js';
+	import { machine } from '$lib/main/machine.js';
+	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
 
 	let {
 		id,
@@ -28,17 +28,20 @@
 			currentApp = null;
 		}
 
-		componentRegistry.resolve(mp).then((Comp) => {
+		machine.componentRegistry.resolve(mp).then((Comp) => {
 			const props: Record<string, unknown> = { collection: col };
 			if (colId) props.dataId = colId;
-			if (v) props.vars = v;
+			if (v) {
+				props.vars = v;
+				// Pass mode from vars for Explorer component
+				if (v.mode) props.mode = v.mode;
+			}
 
-			// Wire explorer onclick → load detail in same frame
-			if (mp.startsWith('explorer.')) {
+			// Wire legacy explorer.* onclick → load detail in same frame
+			if (mp.startsWith('explorer.') && mp !== 'explorer.collections') {
 				props.onclick = (record: Record<string, unknown>) => {
 					const recordId = (record as any)?.id ?? (record as any)?._id;
-					const detailPath = mp === 'explorer.list' ? 'card.form' : 'card.edit';
-					doLoad(detailPath, col, recordId);
+					machine.loadFrame('explorer', col, String(recordId), { mode: 'card' });
 				};
 			}
 
@@ -59,18 +62,18 @@
 				unmount(currentApp);
 				currentApp = null;
 			}
-			machineFrameManager.unregister(id);
+			machine.frameManager.unregister(id);
 		},
 	};
 
 	$effect(() => {
-		machineFrameManager.register(id, controls);
+		machine.frameManager.register(id, controls);
 		// Auto-load if initial modulePath provided
 		if (modulePath && collection) {
 			doLoad(modulePath, collection, collectionId, vars);
 		}
 		return () => {
-			machineFrameManager.unregister(id);
+			machine.frameManager.unregister(id);
 			if (currentApp) {
 				unmount(currentApp);
 				currentApp = null;

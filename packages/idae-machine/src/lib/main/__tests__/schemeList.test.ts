@@ -15,18 +15,18 @@ function uniqueDbName(base: string) {
 	return `${base}-${++_dbCounter}`;
 }
 
-function createStartedMachine(dbName: string) {
+async function createStartedMachine(dbName: string) {
 	const m = new Machine(dbName, 1, demoScheme);
-	m.start();
+	await m.start();
 	return m;
 }
 
 describe('SchemeList logic', () => {
 	let m: Machine;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		resetIndexedDB();
-		m = createStartedMachine(uniqueDbName('schemelist'));
+		m = await createStartedMachine(uniqueDbName('schemelist'));
 	});
 
 	afterEach(() => {

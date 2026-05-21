@@ -58,14 +58,10 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 				model:   demoScheme,
 				sync:    { databaseHost: 'http://x', mode: 'mobile-first' as any },
 			});
-			// Verify sync config stored before start()
 			expect(m._syncOptions).toEqual({ databaseHost: 'http://x', mode: 'mobile-first' });
-			// start() passes sync options to createQoolie — no throw expected (qoolie accepts config)
 			expect(() => m.start()).not.toThrow();
 		});
 	});
-
-	// ── stateEngine forwarded ────────────────────────────────────────────────
 
 	describe('machine.init({stateEngine})', () => {
 		it('forwards stateEngine:stator without error', () => {
@@ -79,8 +75,6 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 			expect(() => m.start()).not.toThrow();
 		});
 	});
-
-	// ── machine.destroy() ────────────────────────────────────────────────────
 
 	describe('machine.destroy()', () => {
 		it('after start() → machine._qoolie === undefined', () => {

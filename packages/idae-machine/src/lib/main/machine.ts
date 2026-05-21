@@ -12,6 +12,7 @@ import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.
 import { type MachineModel } from '$lib/types/machine-model.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { computeFrameId } from '$lib/main/frame/frameUtils.js';
+import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import {
 	computeSchemaHash,
 	getCurrentIdbStores,
@@ -214,6 +215,7 @@ export class Machine {
 	 * @return {void}
 	 */
 	start(): void {
+		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
 		this._effectiveModel = this.buildEffectiveModel();
 		this.createCollections();
 		this.createStore();
@@ -288,11 +290,11 @@ export class Machine {
 	 * System collections always present; user model takes precedence on name collision.
 	 */
 	private buildEffectiveModel(): MachineModel {
-		if (!this._model) throw new Error('Data model is not defined');
 		const system: MachineModel = {};
 		for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
 			system[name] = { keyPath: '++id', ...(col as any) };
 		}
+		if (!this._model) return system;
 		return { ...system, ...this._model };
 	}
 
@@ -725,6 +727,11 @@ export class Machine {
 	/** Access to the frame manager singleton. */
 	get frameManager() {
 		return this._frameManager;
+	}
+
+	/** Access to the component registry singleton. */
+	get componentRegistry() {
+		return componentRegistry;
 	}
 
 	/**

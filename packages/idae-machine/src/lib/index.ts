@@ -4,12 +4,8 @@
 export * from '$lib/main/index.js';
 
 // UI — explorer (collection level)
+export { default as Explorer }            from '$lib/shell/explorer/Explorer.svelte';
 export { default as ExplorerCollections } from '$lib/shell/explorer/ExplorerCollections.svelte';
-export { default as ExplorerList }        from '$lib/shell/explorer/ExplorerList.svelte';
-export { default as ExplorerCard }        from '$lib/shell/explorer/ExplorerCard.svelte';
-export { default as ExplorerTable }       from '$lib/shell/explorer/ExplorerTable.svelte';
-export { default as ExplorerActions }     from '$lib/shell/explorer/ExplorerActions.svelte';
-export { default as ExplorerFilter }      from '$lib/shell/explorer/ExplorerFilter.svelte';
 
 // data-ui — data providers (smart, machine-aware)
 export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
@@ -44,7 +40,6 @@ export { default as AppShell }   from '$lib/shell/layout/AppShell.svelte';
 export { default as Navigation } from '$lib/shell/layout/Navigation.svelte';
 export { default as Breadcrumb } from '$lib/shell/layout/Breadcrumb.svelte';
 export { default as Pane }       from '$lib/shell/layout/Pane.svelte';
-export { default as PaneLeft }   from '$lib/shell/layout/PaneLeft.svelte';
 export { default as PaneRight }  from '$lib/shell/layout/PaneRight.svelte';
 
 // UI — fragments

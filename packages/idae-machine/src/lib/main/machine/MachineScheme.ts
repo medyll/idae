@@ -6,6 +6,7 @@ import type {
 	MachineDisplayTemplate,
 	MachineFkDef,
 } from '$lib/types/machine-model.js';
+import type { EntityViews } from '$lib/types/schema-types.js';
 import { indexFromKeyPath } from '$lib/types/machine-model.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
@@ -90,6 +91,11 @@ export class MachineScheme {
 		if (dateField) return [{ field: dateField, direction: 'desc' }];
 
 		return [{ field: this.index, direction: 'asc' }];
+	}
+
+	/** Entity views from appscheme_view (listView, miniView, formView, fkLabelView). */
+	get views(): Partial<EntityViews> | undefined {
+		return (this.#collectionModel as any)?._views ?? undefined;
 	}
 
 	get validator(): MachineSchemeValidate {

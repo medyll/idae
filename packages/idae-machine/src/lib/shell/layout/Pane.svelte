@@ -7,23 +7,22 @@
 	 *   <Pane bind:show={paneOpen} on:select={(e) => navigate(e.detail)} />
 	 */
 	import type { Snippet } from 'svelte';
-	import PaneLeft from './PaneLeft.svelte';
+	import { machine } from '$lib/main/machine.js';
+	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import PaneRight from './PaneRight.svelte';
 
-	interface Props {
+	let { show = $bindable(false), onSelect }: {
 		show?: boolean;
 		onSelect?: (detail: { collection: string; id?: string }) => void;
-	}
+	} = $props();
 
-	let { show = $bindable(false), onSelect }: Props = $props();
-
-	function close() {
+	function close(): void {
 		show = false;
 	}
 
-	function handleSelect(detail: { collection: string; id?: string }) {
+	function handleCollectionClick(code: string): void {
 		close();
-		onSelect?.(detail);
+		onSelect?.({ collection: code });
 	}
 </script>
 
@@ -35,7 +34,25 @@
 			<button class="btn-icon btn-ghost" onclick={close} aria-label="Close">✕</button>
 		</header>
 		<div class="pane-body">
-			<PaneLeft {onSelect} />
+			<div class="pane-left">
+				<DataList collection="appscheme" sortBy={{ field: 'order', direction: 'asc' }}>
+					{#snippet children({ items })}
+						<ul class="list list-stack" role="list">
+							{#each items as row (row.code)}
+								<li>
+									<button
+										type="button"
+										class="list-item btn-ghost"
+										onclick={() => handleCollectionClick(row.code as string)}
+									>
+										<div class="list-item-content">{row.name ?? row.code}</div>
+									</button>
+								</li>
+							{/each}
+						</ul>
+					{/snippet}
+				</DataList>
+			</div>
 			<PaneRight {onSelect} />
 		</div>
 	</div>
@@ -76,6 +93,20 @@
 		overflow: hidden;
 	}
 
+	.pane-left {
+		flex: 1;
+		padding: var(--pad-md);
+		overflow-y: auto;
+		border-right: var(--border-width) solid var(--color-border);
+	}
+
+	.list-item.btn-ghost {
+		width: 100%;
+		justify-content: flex-start;
+		border: none;
+		background: transparent;
+	}
+
 	@media (max-width: 640px) {
 		.pane {
 			width: 95vw;
@@ -84,6 +115,11 @@
 
 		.pane-body {
 			flex-direction: column;
+		}
+
+		.pane-left {
+			border-right: none;
+			border-bottom: var(--border-width) solid var(--color-border);
 		}
 	}
 </style>

@@ -125,11 +125,10 @@ export class SchemaRouter {
 					dataId: seg.collectionId
 				};
 
-				if (seg.modulePath.startsWith('explorer.')) {
+				if (seg.modulePath.startsWith('explorer.') && seg.modulePath !== 'explorer.collections') {
 					props.onclick = (record: Record<string, unknown>) => {
 						const recordId = (record as any)?.id ?? (record as any)?._id;
-						const detailPath = seg.modulePath === 'explorer.list' ? 'card.form' : 'card.edit';
-						machine.loadIn(detailPath, seg.targetId, seg.collection, recordId);
+						machine.loadFrame('explorer', seg.collection, String(recordId), { mode: 'card' });
 					};
 				}
 

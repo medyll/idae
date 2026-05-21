@@ -1,6 +1,6 @@
 /**
- * _activity collection — insert-only event log patterns.
- * No wrapper class. Direct machine.collection('_activity') usage.
+ * appuser_activity collection — insert-only event log patterns.
+ * No wrapper class. Direct machine.collection('appuser_activity') usage.
  *
  * Shape: { id, code, collection, collection_value, collection_vars?, timestamp }
  */
@@ -52,7 +52,7 @@ function activityByCollection(col: ReturnType<typeof mockCollection>, collection
 
 // ── tests ────────────────────────────────────────────────────────────────────
 
-describe('_activity collection patterns', () => {
+describe('appuser_activity collection patterns', () => {
 	let col: ReturnType<typeof mockCollection>;
 	beforeEach(() => { col = mockCollection(); });
 

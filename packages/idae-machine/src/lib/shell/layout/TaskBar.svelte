@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { machineFrameManager, type FrameControls } from '$lib/main/frame/MachineFrameManager.js';
+	import { machine } from '$lib/main/machine.js';
 
-	let openFrames = $derived(machineFrameManager.openFrames);
+	let openFrames = $derived(machine.frameManager.openFrames);
 </script>
 
 <div class="taskbar">

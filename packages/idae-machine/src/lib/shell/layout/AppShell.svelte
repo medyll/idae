@@ -1,32 +1,44 @@
 <script lang="ts">
 	/**
-	 * AppShell - Main application layout
-	 * Provides consistent header, sidebar, and content area
+	 * AppShell — Universal frame template.
+	 * Accepts three named snippets (navbar, sidebar, content) with operational defaults.
 	 */
 
 	import type { Snippet } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+import DataList from '$lib/data-ui/data/DataList.svelte';
+	import Frame from '$lib/shell/frame/Frame.svelte';
 	import DevResetPanel from './DevResetPanel.svelte';
 
-	interface Props {
-		title?: Snippet;
-		header?: Snippet;
+	let {
+		instanceName = 'main',
+		navbar,
+		sidebar,
+		content,
+	}: {
+		instanceName?: string;
+		navbar?: Snippet;
 		sidebar?: Snippet;
-		main?: Snippet;
-	}
+		content?: Snippet;
+	} = $props();
 
-	let { title, header, sidebar, main }: Props = $props();
-
-	let sidebarCollapsed  = $state(false);
+	let sidebarCollapsed = $state(false);
 	let mobileSidebarOpen = $state(false);
-	let devPanelOpen      = $state(false);
+	let devPanelOpen = $state(false);
+	let activeCollection = $state('');
 
-	function toggleSidebar():       void { sidebarCollapsed  = !sidebarCollapsed; }
+	function toggleSidebar(): void { sidebarCollapsed = !sidebarCollapsed; }
 	function toggleMobileSidebar(): void { mobileSidebarOpen = !mobileSidebarOpen; }
-	function closeMobileSidebar():  void { mobileSidebarOpen = false; }
+	function closeMobileSidebar(): void { mobileSidebarOpen = false; }
+
+	function handleCollectionClick(code: string): void {
+		activeCollection = code;
+		machine.loadFrame('explorer', code, undefined, { mode: 'list' });
+	}
 </script>
 
 <div class="app-shell">
-	<!-- Header -->
+	<!-- Header / Navbar -->
 	<header class="app-header">
 		<div class="header-left">
 			<button class="btn-icon btn-ghost menu-toggle" onclick={toggleMobileSidebar} aria-label="Toggle menu">
@@ -36,17 +48,14 @@
 				{sidebarCollapsed ? '→' : '←'}
 			</button>
 			<h1 class="app-title">
-				{#if title}
-					{@render title()}
+				{#if navbar}
+					{@render navbar()}
 				{:else}
-					App
+					idae-machine
 				{/if}
 			</h1>
 		</div>
 		<div class="header-right">
-			{#if header}
-				{@render header()}
-			{/if}
 			{#if import.meta.env.DEV}
 				<div class="dev-toggle-wrap">
 					<button
@@ -71,20 +80,48 @@
 			<div class="sidebar-content">
 				{#if sidebar}
 					{@render sidebar()}
+				{:else}
+					<DataList collection="appscheme" sortBy={{ field: 'order', direction: 'asc' }}>
+						{#snippet children({ items })}
+							<ul class="list list-stack" role="list">
+								{#each items as row (row.code)}
+									<li>
+										<button
+											type="button"
+											class="list-item btn-ghost"
+											class:active={row.code === activeCollection}
+											onclick={() => handleCollectionClick(row.code as string)}
+										>
+											<div class="list-item-content">{row.name ?? row.code}</div>
+										</button>
+									</li>
+								{/each}
+							</ul>
+						{/snippet}
+					</DataList>
 				{/if}
 			</div>
-			<!-- Mobile overlay -->
 			{#if mobileSidebarOpen}
 				<div class="sidebar-overlay" onclick={closeMobileSidebar}></div>
 			{/if}
 		</aside>
 
 		<!-- Main content -->
-		<main class="app-main">
-			{#if main}
-				{@render main()}
+		<main class="app-main" data-target-zone="main">
+			{#if content}
+				{@render content()}
+			{:else}
+				<Frame id={instanceName} />
 			{/if}
 		</main>
+	</div>
+
+	<!-- Overlay and window zones (always rendered, independent of snippets) -->
+	<div class="app-overlay" data-target-zone="main.modal">
+		<Frame id="main.modal" />
+	</div>
+	<div class="app-window" data-target-zone="main.window">
+		<Frame id="main.window" />
 	</div>
 </div>
 
@@ -97,14 +134,15 @@
 	}
 
 	.app-header {
+		height: var(--header-height);
+		background: var(--color-surface);
+		border-bottom: var(--border-width) solid var(--color-border);
+		flex-shrink: 0;
+		z-index: var(--z-dropdown);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 1rem;
-		height: 60px;
-		background: var(--color-surface);
-		border-bottom: 1px solid var(--color-border);
-		z-index: 100;
 	}
 
 	.header-left {
@@ -156,7 +194,8 @@
 
 	.app-title {
 		margin: 0;
-		font-size: 1.25rem;
+		font-weight: var(--font-semibold);
+		font-size: var(--text-sm);
 		color: var(--color-text);
 	}
 
@@ -167,13 +206,14 @@
 	}
 
 	.app-sidebar {
-		width: 250px;
-		background: var(--color-bg);
-		border-right: 1px solid var(--color-border);
-		transition: width 0.3s ease, transform 0.3s ease;
+		width: var(--sidebar-width);
+		background: var(--color-surface);
+		border-right: var(--border-width) solid var(--color-border);
+		overflow-y: auto;
+		flex-shrink: 0;
+		transition: width var(--transition-normal);
 		position: relative;
 	}
-
 	.app-sidebar.collapsed {
 		width: 0;
 		overflow: hidden;
@@ -192,8 +232,38 @@
 	.app-main {
 		flex: 1;
 		overflow-y: auto;
-		padding: 1.5rem;
+		padding: var(--pad-md);
 		background: var(--color-bg);
+		position: relative;
+	}
+
+	.app-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: var(--z-modal);
+		display: none;
+	}
+
+	.app-window {
+		position: fixed;
+		top: 10%;
+		left: 10%;
+		right: 10%;
+		bottom: 10%;
+		background: var(--color-surface);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-lg);
+		z-index: var(--z-modal);
+		display: none;
+	}
+
+	/* Sidebar list items */
+	.list-item.btn-ghost {
+		width: 100%;
+		justify-content: flex-start;
+		border: none;
+		background: transparent;
 	}
 
 	/* Mobile responsive */
@@ -209,7 +279,7 @@
 		.app-sidebar {
 			position: fixed;
 			left: 0;
-			top: 60px;
+			top: var(--header-height);
 			bottom: 0;
 			z-index: 99;
 			transform: translateX(-100%);
@@ -222,7 +292,7 @@
 		.sidebar-overlay {
 			display: block;
 			position: fixed;
-			top: 60px;
+			top: var(--header-height);
 			left: 0;
 			right: 0;
 			bottom: 0;
@@ -231,7 +301,7 @@
 		}
 
 		.app-sidebar.collapsed {
-			width: 250px;
+			width: var(--sidebar-width);
 		}
 	}
 </style>

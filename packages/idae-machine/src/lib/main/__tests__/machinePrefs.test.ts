@@ -1,5 +1,5 @@
 /**
- * _prefs collection — usage patterns directly via machine.collection('_prefs').
+ * appuser_prefs collection — usage patterns directly via machine.collection('appuser_prefs').
  * No wrapper class. Tests document the expected data shape and query conventions.
  *
  * Key convention: code = `${userId}:${key}` (e.g. 'user1:pane.menu.client')
@@ -70,7 +70,7 @@ async function prefReset(col: ReturnType<typeof mockCollection>, userId: string,
 
 // ── tests ───────────────────────────────────────────────────────────────────
 
-describe('_prefs collection patterns', () => {
+describe('appuser_prefs collection patterns', () => {
 	let col: ReturnType<typeof mockCollection>;
 	beforeEach(() => { col = mockCollection(); });
 

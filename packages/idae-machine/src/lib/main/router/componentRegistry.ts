@@ -50,10 +50,7 @@ export class ComponentRegistry {
 export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.registerMany({
-	'explorer.list':        () => import('$lib/shell/explorer/ExplorerList.svelte'),
-	'explorer.table':       () => import('$lib/shell/explorer/ExplorerTable.svelte'),
-	'explorer.actions':     () => import('$lib/shell/explorer/ExplorerActions.svelte'),
-	'explorer.card':        () => import('$lib/shell/explorer/ExplorerCard.svelte'),
+	'explorer':             () => import('$lib/shell/explorer/Explorer.svelte'),
 	'explorer.collections': () => import('$lib/shell/explorer/ExplorerCollections.svelte'),
 	'card.form':            () => import('$lib/shell/card/CardForm.svelte'),
 	'card.create':          () => import('$lib/shell/card/CardCreate.svelte'),

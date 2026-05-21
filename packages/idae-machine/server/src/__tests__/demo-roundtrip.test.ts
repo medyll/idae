@@ -141,12 +141,12 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 	});
 });
 
-describe('meta-collections: _prefs, _activity, _history', () => {
+describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', () => {
 	const { collections } = appModelDeclaration;
 
-	it('_prefs exists in idae-model-core with correct fields', () => {
-		expect(collections).toHaveProperty('_prefs');
-		const prefs = collections._prefs as any;
+	it('appuser_prefs exists in idae-model-core with correct fields', () => {
+		expect(collections).toHaveProperty('appuser_prefs');
+		const prefs = collections.appuser_prefs as any;
 		expect(prefs.base).toBe('machine_user');
 		expect(prefs.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'U', 'D', 'L']));
 		expect(prefs.fields.id).toEqual({ required: true, readonly: true });
@@ -156,9 +156,9 @@ describe('meta-collections: _prefs, _activity, _history', () => {
 		expect(prefs.template.presentation).toBe('code value');
 	});
 
-	it('_activity exists in idae-model-core with correct fields (insert-only)', () => {
-		expect(collections).toHaveProperty('_activity');
-		const activity = collections._activity as any;
+	it('appuser_activity exists in idae-model-core with correct fields (insert-only)', () => {
+		expect(collections).toHaveProperty('appuser_activity');
+		const activity = collections.appuser_activity as any;
 		expect(activity.base).toBe('machine_user');
 		expect(activity.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'L']));
 		expect(activity.rights.ops).not.toContain('U');
@@ -173,9 +173,9 @@ describe('meta-collections: _prefs, _activity, _history', () => {
 		expect(activity.template.presentation).toBe('code collection timestamp');
 	});
 
-	it('_history exists in idae-model-core with correct fields', () => {
-		expect(collections).toHaveProperty('_history');
-		const history = collections._history as any;
+	it('appuser_history exists in idae-model-core with correct fields', () => {
+		expect(collections).toHaveProperty('appuser_history');
+		const history = collections.appuser_history as any;
 		expect(history.base).toBe('machine_user');
 		expect(history.rights.ops).toEqual(expect.arrayContaining(['C', 'R', 'U', 'D', 'L']));
 		expect(history.fields.id).toEqual({ required: true, readonly: true });

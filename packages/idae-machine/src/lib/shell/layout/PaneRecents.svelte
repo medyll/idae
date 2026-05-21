@@ -26,7 +26,7 @@
 	<header class="section-header">
 		<h3>Recent</h3>
 	</header>
-	<DataList collection="_history" groupBy="collection" sortBy={{ field: 'lastSeen', direction: 'desc' }}>
+	<DataList collection="appuser_history" groupBy="collection" sortBy={{ field: 'lastSeen', direction: 'desc' }}>
 		{#snippet children({ groups, items })}
 			{#if groups && groups.size > 0}
 				{#each Array.from(groups) as [col, colItems]}
