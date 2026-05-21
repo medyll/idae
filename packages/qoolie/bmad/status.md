@@ -1,45 +1,39 @@
-# Qoolie — Status Report
+# Qoolie — Project Status
 
-**Phase:** done  
-**Progress:** 100%  
-**Active Role:** Developer  
-**Next:** Sprint 6 complete — 8/8 stories done
+**Phase:** release  
+**Progress:** 100% (35/36 stories, 1 skipped)  
+**Active Role:** Scrum Master  
+**Next Action:** All sprints complete — decision point
 
----
+## Sprints
 
-## Sprint 6 — qoolie self-contained engine ✅ COMPLETE
+| Sprint | Goal | Status |
+|--------|------|--------|
+| 1 | Core implementation - Qoolie basic CRUD + sync foundation | ✅ done |
+| 2 | Developer experience improvements + Advanced features | ✅ done |
+| 3 | Advanced features for production-ready applications | ✅ done |
+| 4 | Integration with idae-idbql and idae-api | ✅ done |
+| 5 | Advanced features for data validation, conflict resolution, and multi-database support | ✅ done |
+| 6 | qoolie self-contained — internalize IDB engine, EventTarget bus, Svelte adapter | ✅ done |
 
-| ID | Story | Status |
-|----|-------|--------|
-| S6-01 | engine/types.ts + engine/pathResolver.ts | ✅ done |
-| S6-02 | engine/IdbSchema.ts + engine/IdbEngine.ts | ✅ done |
-| S6-03 | engine/IdbCollection.ts | ✅ done |
-| S6-04 | engine/IdbEventBus.ts | ✅ done |
-| S6-05 | engine/IdbState.ts | ✅ done |
-| S6-06 | Rewire Qoolie.ts + QoolieCollection.ts → engine/ | ✅ done |
-| S6-07 | adapters/svelte/ — useQoolieCollection.svelte.ts | ✅ done |
-| S6-08 | Build distributable + suppression signals.dataVersion | ✅ done |
+## Recent Completed Work
 
-## Summary
+- Sprint 6: Internalized IDB engine (`engine/`), replaced `$state` with pure `EventTarget` bus, created Svelte 5 adapter (`adapters/svelte/`), and produced a Vite-built distributable that no longer depends on `@medyll/idae-idbql` at runtime.
 
-- **51 engine tests** pass (pathResolver, IdbEngine, IdbCollection, IdbState)
-- **193 total qoolie tests** pass (15 test files)
-- **@medyll/idae-idbql removed** from dependencies
-- **dist/ clean** — no svelte/internal references
-- **signals.dataVersion removed** from idae-machine
+## Next Steps
 
-## Previous Sprints
+- Run full test suite (`bmad-test`)
+- Generate README and documentation (`bmad-doc`)
+- Code quality audit (`bmad-audit`)
+- Prepare release (CHANGELOG, version bump, publish)
 
-- **Sprint 1:** Core CRUD + sync foundation ✅ done
-- **Sprint 2:** DX improvements + Advanced features ✅ done (S2-03 skipped)
-- **Sprint 3:** Advanced production features ✅ done
-- **Sprint 4:** Integration with idae-idbql and idae-api ✅ done
-- **Sprint 5:** Validation, conflict resolution, multi-DB ✅ done
+## Three Dimensions
 
----
+**Marketing:**  
+Unified IndexedDB + sync library for JavaScript apps. One API, multiple frameworks, offline-first by default.
 
-## Dimensions
+**Product:**  
+Self-contained engine with reactive adapters for Svelte 5, React, and Vue. Encryption, validation, conflict resolution, and real-time server push included.
 
-**Marketing:** Simplified IndexedDB wrapper with built-in server sync, zero config needed.  
-**Product:** Internalizing IDB engine to become fully distributable without SvelteKit dependency.  
-**Far Vision:** Universal client-side database layer — any framework, any backend, offline-first by default.
+**Far Vision:**  
+Become the default local-first data layer for the idae ecosystem — pluggable, framework-agnostic, and production-hardened.

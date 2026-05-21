@@ -93,6 +93,96 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 27
+    goal: "Wire _views bout-en-bout — getModel() peuple _views depuis MongoDB, Explorer les consomme par mode"
+    status: planned
+    artifact: "bmad/artifacts/sprint-s27-planned.md"
+    depends_on: [25, 26]
+    stories:
+      - id: S27-01
+        title: "getModel() query appscheme_view → build _views: Partial<EntityViews> par collection"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S27-02
+        title: "Explorer.svelte consomme _views par mode (list→list, card→form, actions→mini)"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S27-03
+        title: "MachineScheme.views getter → Partial<EntityViews>"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S27-04
+        title: "InputSelect uses _views.fk_label pour labels FK (fallback template.presentation)"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S27-05
+        title: "demoScheme deploy + verify _views peuplées en MongoDB + GET /api/scheme"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S27-06
+        title: "Tests + Playwright — colonnes Explorer = _views.list, CardForm = _views.form"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+  - id: 26
+    goal: "System collection rename: _prefs/_activity/_history → appuser_prefs/activity/history + audit/activity decision"
+    status: planned
+    artifact: "bmad/artifacts/sprint-s26-planned.md"
+    stories:
+      - id: S26-01
+        title: "ADR-02 — décision merge appuser_audit+appuser_activity ou séparation"
+        status: complete
+        effort: S
+        tests_executed: false
+        test_output: "Resolved by inspection of idae-model-core.ts: appuser_audit = security log (readonly, ops:[R,L], fields: action/ipAddress/sessionId/failureReason/status, FK appuser). appuser_activity = user-facing event log (rw, type: crud|navigate|search). Keep separate — different semantics, access rights, consumers."
+        test_result: pass
+      - id: S26-02
+        title: "Rename dans idae-model-core.ts + base → machine_user"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S26-03
+        title: "Update toutes les références src/ + server/ + tests"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S26-04
+        title: "IDB version bump → 2 + note convention"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S26-05
+        title: "Tests + check + grep final zéro référence _*"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 25
     goal: "Unified Explorer Architecture — AppShell universal frame, Explorer single-mode, loadFrame navigation"
     status: planned

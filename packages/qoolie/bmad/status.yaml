@@ -1,7 +1,7 @@
 phase: "done"
 progress: 100
-active_role: "Developer"
-next_action: "Sprint 6 complete — 8/8 stories done"
+active_role: "Scrum Master"
+next_action: "All sprints complete — decision point"
 next_command: "bmad-status"
 next_role: "Scrum Master"
 sprints:
@@ -100,7 +100,7 @@ artifacts:
   - "bmad/artifacts/stories/S1-10.md"
   - number: 6
     goal: "qoolie self-contained — internalize IDB engine, EventTarget bus, Svelte adapter"
-    status: "planned"
+    status: "done"
     stories:
       - id: S6-01
         title: "engine/types.ts + engine/pathResolver.ts"
