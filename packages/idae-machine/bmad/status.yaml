@@ -10,9 +10,9 @@ progress: 100
 last_updated: "2026-05-20"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 24 complete — define Sprint 25"
-next_command: "bmad-status"
-next_role: "scrum-master"
+next_action: "Implement S25-01 — Refactor AppShell.svelte (snippets navbar/sidebar/content + DataList[appscheme] sidebar)"
+next_command: "bmad-continue"
+next_role: "developer"
 active_role: "scrum-master"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -93,6 +93,54 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 25
+    goal: "Unified Explorer Architecture — AppShell universal frame, Explorer single-mode, loadFrame navigation"
+    status: planned
+    artifact: "bmad/artifacts/sprint-2026-05-21-s25.md"
+    stories:
+      - id: S25-01
+        title: "Refactor AppShell.svelte — navbar/sidebar/content snippets + DataList[appscheme] sidebar inline"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S25-02
+        title: "Create Explorer.svelte — single component mode=list|table|card|actions replacing 4 Explorer* components"
+        status: planned
+        effort: L
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S25-03
+        title: "Update componentRegistry — remove explorer.list/table/card/actions, add 'explorer'"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S25-04
+        title: "Update +layout.svelte — use AppShell, remove PaneLeft"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S25-05
+        title: "Delete PaneLeft, PaneCollectionGroup, ExplorerList/Table/Card/Actions/Filter"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S25-06
+        title: "Tests + Playwright golden path — sidebar → Explorer list → Explorer card"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 24
     goal: "Frame Manager — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar"
     status: completed
