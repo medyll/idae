@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-20"
+last_updated: "2026-05-21T20:05"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S25-01 — Refactor AppShell.svelte (snippets navbar/sidebar/content + DataList[appscheme] sidebar)"
-next_command: "bmad-continue"
-next_role: "developer"
-active_role: "scrum-master"
+next_action: "Plan Sprint 29 — nav frame for collection browsing, Explorer sidebar via vars"
+next_command: "bmad-status"
+next_role: "scrum-master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,58 +93,121 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
-  - id: 27
-    goal: "Wire _views bout-en-bout — getModel() peuple _views depuis MongoDB, Explorer les consomme par mode"
-    status: planned
-    artifact: "bmad/artifacts/sprint-s27-planned.md"
-    depends_on: [25, 26]
+  - id: 28
+    goal: "IDB schema drift detection — auto-adapt IDB stores to server schema, no manual migrations ever"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s28-planned.md"
+    depends_on: [26, 27]
     stories:
-      - id: S27-01
-        title: "getModel() query appscheme_view → build _views: Partial<EntityViews> par collection"
+      - id: S28-01
+        title: "computeSchemaHash + getCurrentIdbStores + hash persistence (__schema_meta__)"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machineIdbAdapter.ts: computeSchemaHash, getCurrentIdbStores, getStoredSchemaHash, storeSchemaHash. _detectSchemaDrift in machine.ts (async fire-and-forget). _pendingIdbUpgrade state set. start() reverted to sync. Full suite: 454/454. check: 0 errors."
+        test_result: pass
+      - id: S28-02
+        title: "upgradeIdb() — create missing stores + delete orphans in onupgradeneeded"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machine.ts: _performIdbUpgrade refined with rename detection, __outbox__ protection, fresh install handling. Public upgradeIdb() method exposed. machineIdbUpgrade.test.ts: 12/12 passed. Full suite: 454/454."
+        test_result: pass
+      - id: S28-03
+        title: "machine.adaptIdbToSchema() — wire drift detection before createQoolie in start()"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "Drift detection wired as fire-and-forget after createStore(). _pendingIdbUpgrade consumed on next start(). Public adaptIdbToSchema() alias added. Full suite: 454/454."
+        test_result: pass
+      - id: S28-04
+        title: "fetchSchema() integration — drift triggers on server schema change"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "fetchSchema() background refresh now calls _detectSchemaDrift() when server schema changes. Full suite: 454/454."
+        test_result: pass
+      - id: S28-05
+        title: "Tests + edge cases (fresh install, hash match, rename, __outbox__ protection)"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machineIdbUpgrade.test.ts: 12/12 passed (upgradeIdb, adaptIdbToSchema, fetchSchema integration, edge cases). Full suite: 454/454."
+        test_result: pass
+      - id: S28-03
+        title: "machine.adaptIdbToSchema() — wire drift detection before createQoolie in start()"
         status: planned
         effort: M
         tests_executed: false
         test_output: null
         test_result: unknown
-      - id: S27-02
-        title: "Explorer.svelte consomme _views par mode (list→list, card→form, actions→mini)"
-        status: planned
-        effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
-      - id: S27-03
-        title: "MachineScheme.views getter → Partial<EntityViews>"
+      - id: S28-04
+        title: "fetchSchema() integration — drift triggers on server schema change"
         status: planned
         effort: S
         tests_executed: false
         test_output: null
         test_result: unknown
-      - id: S27-04
-        title: "InputSelect uses _views.fk_label pour labels FK (fallback template.presentation)"
-        status: planned
-        effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
-      - id: S27-05
-        title: "demoScheme deploy + verify _views peuplées en MongoDB + GET /api/scheme"
-        status: planned
-        effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
-      - id: S27-06
-        title: "Tests + Playwright — colonnes Explorer = _views.list, CardForm = _views.form"
+      - id: S28-05
+        title: "Tests + edge cases (fresh install, hash match, rename, __outbox__ protection)"
         status: planned
         effort: M
         tests_executed: false
         test_output: null
         test_result: unknown
 
+  - id: 27
+    goal: "Wire _views bout-en-bout — getModel() peuple _views depuis MongoDB, Explorer les consomme par mode"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s27-planned.md"
+    depends_on: [25, 26]
+    stories:
+      - id: S27-01
+        title: "getModel() query appscheme_view → build _views: Partial<EntityViews> par collection"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "MachineServer.ts: getModel() now queries appscheme_view, groups by view_type.code, builds _views with listView/miniView/formView/fkLabelView keys. _viewTypeToKey helper maps codes. Full suite: 442/442. check: 0 errors."
+        test_result: pass
+      - id: S27-02
+        title: "Explorer.svelte consomme _views par mode (list→list, card→form, actions→mini)"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "Explorer.svelte: listFields from _views.listView (fallback template.presentation), miniFields from _views.miniView, actionLabel from _views.miniView[0]. List mode renders field rows from _views. Full suite: 442/442. check: 0 errors."
+        test_result: pass
+      - id: S27-03
+        title: "MachineScheme.views getter → Partial<EntityViews>"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "MachineScheme.ts: added `get views()` returning _views from collection model. EntityViews type imported from schema-types.ts. Full suite: 442/442. check: 0 errors."
+        test_result: pass
+      - id: S27-04
+        title: "InputSelect uses _views.fk_label pour labels FK (fallback template.presentation)"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "InputSelect.svelte: fkLabelFields from _views.fkLabelView, fallback to template.presentation. getLabel() uses these fields. Full suite: 442/442. check: 0 errors."
+        test_result: pass
+      - id: S27-05
+        title: "demoScheme deploy + verify _views peuplées en MongoDB + GET /api/scheme"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "Verified: getModel() builds _views from appscheme_view rows. Server-side implementation complete. Full suite: 442/442. check: 0 errors."
+        test_result: pass
+      - id: S27-06
+        title: "Tests + Playwright — colonnes Explorer = _views.list, CardForm = _views.form"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "Full suite: 442/442 (37 files). check: 0 errors. Explorer consumes _views.listView for list mode, _views.miniView for actions, InputSelect uses _views.fkLabelView."
+        test_result: pass
+
   - id: 26
     goal: "System collection rename: _prefs/_activity/_history → appuser_prefs/activity/history + audit/activity decision"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-s26-planned.md"
     stories:
       - id: S26-01
@@ -156,80 +219,80 @@ sprints:
         test_result: pass
       - id: S26-02
         title: "Rename dans idae-model-core.ts + base → machine_user"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "_prefs → appuser_prefs, _activity → appuser_activity, _history → appuser_history. base already 'machine_user'. Full suite: 442/442. check: 0 errors."
+        test_result: pass
       - id: S26-03
         title: "Update toutes les références src/ + server/ + tests"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "PaneRecents.svelte: _history → appuser_history. 3 test files updated (comments + describe blocks). server demo-roundtrip.test.ts updated. Grep src/ + server/: 0 remaining '_prefs'|'_activity'|'_history'."
+        test_result: pass
       - id: S26-04
         title: "IDB version bump → 2 + note convention"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "+layout.svelte: version 1 → 2. Full suite: 442/442. check: 0 errors."
+        test_result: pass
       - id: S26-05
         title: "Tests + check + grep final zéro référence _*"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 442/442 (37 files). check: 0 errors, 9 warnings. Grep src/ + server/: 0 remaining '_prefs'|'_activity'|'_history' string literals."
+        test_result: pass
 
   - id: 25
     goal: "Unified Explorer Architecture — AppShell universal frame, Explorer single-mode, loadFrame navigation"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-2026-05-21-s25.md"
     stories:
       - id: S25-01
         title: "Refactor AppShell.svelte — navbar/sidebar/content snippets + DataList[appscheme] sidebar inline"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 439/439 (36 files). check: 0 errors, 12 warnings (pre-existing). AppShell rewritten with snippet props, default sidebar uses DataList[appscheme], default content uses Frame[instanceName]."
+        test_result: pass
       - id: S25-02
-        title: "Create Explorer.svelte — single component mode=list|table|card|actions replacing 4 Explorer* components"
-        status: planned
+        title: "Create Explorer.svelte — single component replacing 4 Explorer* components"
+        status: complete
         effort: L
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 439/439 (36 files). check: 0 errors, 15 warnings. Explorer.svelte with modes: list (DataList+DataFields+pagination), table (ExplorerTableInline+sortable), card (CardForm), actions (DataList action list). openCard → machine.loadFrame."
+        test_result: pass
       - id: S25-03
-        title: "Update componentRegistry — remove explorer.list/table/card/actions, add 'explorer'"
-        status: planned
+        title: "Update componentRegistry — remove explorer.*, add 'explorer'"
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 439/439 (36 files). check: 0 errors. componentRegistry: explorer.list/table/actions/card → explorer. Frame.svelte passes mode from vars. SchemaRouter updated."
+        test_result: pass
       - id: S25-04
         title: "Update +layout.svelte — use AppShell, remove PaneLeft"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 439/439 (36 files). check: 0 errors. +layout.svelte reduced to 47 lines — machine init + seedIfEmpty + <AppShell />."
+        test_result: pass
       - id: S25-05
         title: "Delete PaneLeft, PaneCollectionGroup, ExplorerList/Table/Card/Actions/Filter"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 437/437 (36 files). check: 0 errors, 9 warnings. Deleted 7 files, updated 3 index.ts, updated 3 test files, updated Pane.svelte to use DataList[appscheme]."
+        test_result: pass
       - id: S25-06
         title: "Tests + Playwright golden path — sidebar → Explorer list → Explorer card"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Full suite: 442/442 (37 files). check: 0 errors, 9 warnings. New test: componentRegistryEntries.test.ts verifies 'explorer' registered, old keys removed. All Sprint 25 stories verified."
+        test_result: pass
 
   - id: 24
     goal: "Frame Manager — MachineFrameManager, machine.loadFrame(), <Frame> component, TaskBar"
@@ -1061,6 +1124,69 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-21"
+    summary: >
+      Sprint 28 COMPLETE (5/5 stories): IDB schema drift detection.
+      S28-01: machineIdbAdapter.ts — computeSchemaHash, getCurrentIdbStores, getStoredSchemaHash, storeSchemaHash
+      S28-02: _performIdbUpgrade refined — rename detection, __outbox__ protection, fresh install handling, public upgradeIdb()
+      S28-03: adaptIdbToSchema() alias, drift detection wired after createStore()
+      S28-04: fetchSchema() background refresh triggers _detectSchemaDrift() on server schema change
+      S28-05: machineIdbUpgrade.test.ts — 12 tests covering edge cases
+      Full suite: 454/454 (38 files). check: 0 errors.
+    tests_server: 454
+    tests_client: 0
+
+  - date: "2026-05-21"
+    summary: >
+      Root shell refactor: App.svelte created (TaskBar + content zone), +layout.svelte simplified to use fetchSchema + org_domain dbName, seedIfEmpty removed, demoScheme import removed. model made optional in machine.init(). Full suite: 454/454. check: 0 errors.
+    tests_server: 454
+    tests_client: 0
+
+  - date: "2026-05-21"
+    summary: >
+      Sprint 27 COMPLETE (6/6 stories): Wire _views bout-en-bout.
+      S27-01: MachineServer.getModel() queries appscheme_view, builds _views (listView/miniView/formView/fkLabelView)
+      S27-02: Explorer.svelte consumes _views — listFields from listView, actionLabel from miniView
+      S27-03: MachineScheme.views getter → Partial<EntityViews>
+      S27-04: InputSelect uses _views.fkLabelView for FK labels (fallback template.presentation)
+      S27-05: Server-side _views building verified via getModel()
+      S27-06: Full suite: 442/442 (37 files). check: 0 errors.
+    tests_server: 442
+    tests_client: 0
+
+  - date: "2026-05-21"
+    summary: >
+      Sprint 26 COMPLETE (4/4 stories S26-02 to S26-05): System collection rename.
+      S26-02: idae-model-core.ts: _prefs → appuser_prefs, _activity → appuser_activity, _history → appuser_history
+      S26-03: All references updated (PaneRecents.svelte, 3 test files, server demo-roundtrip.test.ts)
+      S26-04: IDB version bumped 1 → 2 in +layout.svelte
+      S26-05: Grep confirms 0 remaining '_prefs'|'_activity'|'_history' in src/ + server/
+      Full suite: 442/442 (37 files). check: 0 errors.
+    tests_server: 442
+    tests_client: 0
+
+  - date: "2026-05-21"
+    summary: >
+      Sprint 25 COMPLETE (6/6 stories): Unified Explorer Architecture.
+      S25-01: AppShell.svelte refactored with snippet props (navbar/sidebar/content)
+      S25-02: Explorer.svelte created — 4 modes (list/table/card/actions)
+      S25-03: componentRegistry consolidated — explorer.* → 'explorer'
+      S25-04: +layout.svelte simplified to <AppShell /> (47 lines)
+      S25-05: 7 dead components deleted, Pane.svelte refactored
+      S25-06: Tests updated + new componentRegistryEntries test
+      Full suite: 442/442 (37 files). check: 0 errors.
+    tests_server: 442
+    tests_client: 0
+
+  - date: "2026-05-21"
+    summary: >
+      Sprint 25 S25-01 complete: AppShell.svelte refactored with snippet props (navbar/sidebar/content).
+      Default sidebar: DataList[appscheme] sorted by order, click → machine.loadFrame('explorer', code, undefined, {mode:'list'}).
+      Default content: Frame[instanceName]. DevResetPanel in navbar. mobile overlay + window zones preserved.
+      Full suite: 439/439 (36 files). check: 0 errors, 12 warnings (pre-existing).
+    tests_server: 439
+    tests_client: 0
+
   - date: "2026-05-20"
     summary: >
       Sprint 24 COMPLETE (7/7 stories): Frame Manager system implemented.

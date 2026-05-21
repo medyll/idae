@@ -4,6 +4,57 @@ Inter-role communication log.
 
 ---
 
+## 2026-05-21 — App shell architecture decisions (replaces S25 assumptions)
+
+### Root wrapper: `App.svelte`
+
+NOT AppShell. Minimal wrapper — no sidebar, no navbar:
+
+```
+App.svelte
+  <TaskBar />          ← frames ouvertes
+  <div class="content"> ← zone centrale, cible des loadFrame
+    <!-- vide au départ, frames montent ici -->
+  </div>
+```
+
+No Frame component at root level — just a plain content zone.
+AppShell is reserved for frame content (Explorer, etc.) — not root.
+
+### Collection navigation
+
+NOT in App sidebar (no sidebar exists). Loaded via loadFrame as a dedicated nav frame.
+Details TBD (always-visible panel frame? or toggled?).
+
+### Explorer props → sidebar: Option A
+
+vars from loadFrame are passed as props to Explorer.
+Explorer sidebar content driven by incoming vars, not self-derived from schema.
+
+```ts
+machine.loadFrame('explorer', 'vehicle', undefined, {
+  mode:    'list',
+  sidebar: 'filters',   // example var controlling sidebar content
+})
+// Frame passes vars as props → Explorer(collection, mode, sidebar, ...)
+```
+
+### +layout.svelte target state
+
+```svelte
+machine.init({ org: 'demo', domain: 'machine' }); // dbName = 'demo_machine' auto
+await machine.fetchSchema('http://localhost:7842/api/scheme');
+machine.initRouter({ baseUrl: '/', authEnabled: false });
+// <App /> — no seedIfEmpty, no demoScheme import
+```
+
+### dbName convention
+
+Always `{org}_{domain}` — never explicit. Same pattern as MongoDB (`demo_machine_app`).
+Passing explicit dbName to machine.init() = forbidden in app code.
+
+---
+
 ## 2026-05-12 — Component hierarchy + schema migration
 
 - UI restructured: `collection/`, `lists/`, `data/`, `forms/` → `explorer/`, `card/`, `field/`, `input/`

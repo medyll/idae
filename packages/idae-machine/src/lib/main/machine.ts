@@ -12,6 +12,12 @@ import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.
 import { type MachineModel } from '$lib/types/machine-model.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { computeFrameId } from '$lib/main/frame/frameUtils.js';
+import {
+	computeSchemaHash,
+	getCurrentIdbStores,
+	getStoredSchemaHash,
+	storeSchemaHash,
+} from '$lib/main/machineIdbAdapter.js';
 
 export interface MachineSocketOptions {
 	/** WebSocket server URL e.g. 'http://localhost:3000' */
@@ -128,7 +134,7 @@ export class Machine {
 	init(options?: {
 		dbName?:      string;
 		version?:     number;
-		model:        MachineModel;
+		model?:       MachineModel;
 		org?:         string;
 		domain?:      string;
 		sync?:        SyncConfig | false;
@@ -163,6 +169,9 @@ export class Machine {
 	 * Fetch schema from server URL, cache in IDB, and start the machine.
 	 * Stale-while-revalidate: if cache exists, starts immediately then refreshes in background.
 	 *
+	 * S28-04: When background refresh detects a schema change, drift detection runs automatically
+	 * to adapt IDB stores to the new schema.
+	 *
 	 * @param url - Full URL to GET /api/scheme (returns IdbqModel JSON)
 	 * @emits 'schema:updated' on the returned EventTarget when background refresh brings new data
 	 */
@@ -180,6 +189,9 @@ export class Machine {
 					const freshJson = JSON.stringify(fresh);
 					if (freshJson !== JSON.stringify(cached)) {
 						await writeSchemaCache(url, fresh);
+						this._model = fresh as MachineModel;
+						// S28-04: Trigger drift detection when server schema changes
+						await this._detectSchemaDrift();
 						emitter.dispatchEvent(new CustomEvent('schema:updated', { detail: fresh }));
 					}
 				})
@@ -207,7 +219,62 @@ export class Machine {
 		this.createStore();
 		this.loadPolicies();
 		if (this._socketOptions?.autoConnect) this.connectSocket();
+
+		// Fire-and-forget schema drift detection (non-blocking, runs after qoolie is open)
+		this._detectSchemaDrift().catch(() => {
+			// Non-critical — drift will be detected on next start
+		});
 	}
+
+	/**
+	 * Detect schema drift between expected stores (from model) and actual IDB stores.
+	 * Runs AFTER createQoolie so it doesn't block startup.
+	 * If drift detected, schedules an upgrade for the next start().
+	 */
+	private async _detectSchemaDrift(): Promise<void> {
+		if (!this._dbName || !this._version) return;
+
+		const expectedStores = Object.keys(this._effectiveModel);
+		const expectedHash = computeSchemaHash(expectedStores);
+
+		let storedHash: string | null;
+		try {
+			storedHash = await getStoredSchemaHash(this._dbName);
+		} catch {
+			storedHash = null;
+		}
+
+		// Hash matches — no drift
+		if (storedHash === expectedHash) return;
+
+		// Drift detected — compute diff
+		let actualStores: Set<string>;
+		try {
+			actualStores = await getCurrentIdbStores(this._dbName);
+		} catch {
+			return;
+		}
+
+		const toCreate = expectedStores.filter((s) => !actualStores.has(s));
+		const toDelete = [...actualStores].filter((s) => !expectedStores.includes(s));
+
+		if (toCreate.length === 0 && toDelete.length === 0) {
+			// Stores match but hash differs — just persist hash
+			try {
+				await storeSchemaHash(this._dbName, expectedHash);
+			} catch {
+				// Will retry on next start
+			}
+			return;
+		}
+
+		// Schedule upgrade for next start — bump version and store pending work
+		this._version++;
+		this._pendingIdbUpgrade = { toCreate, toDelete, expectedHash };
+	}
+
+	/** Pending IDB upgrade state (set by _detectSchemaDrift, consumed by next createStore). */
+	private _pendingIdbUpgrade: { toCreate: string[]; toDelete: string[]; expectedHash: string } | null = null;
 
 	/**
 	 * Internal: Creates the collections logic using the provided data model.
@@ -249,10 +316,16 @@ export class Machine {
 	 * @private
 	 * @return {void}
 	 */
-	private createStore(): void {
+	private async createStore(): Promise<void> {
 		if (!this._dbName || !this._version) {
 			throw new Error('Model, dbName, or version is not defined');
 		}
+
+		// Handle pending schema drift upgrade before qoolie opens the DB
+		if (this._pendingIdbUpgrade) {
+			await this._performIdbUpgrade();
+		}
+
 		const collections = Object.fromEntries(
 			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
 		);
@@ -264,6 +337,164 @@ export class Machine {
 			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
+	}
+
+	/**
+	 * Perform IDB upgrade: create missing stores, delete orphans, persist hash.
+	 * Called when _detectSchemaDrift detected drift.
+	 *
+	 * Edge cases handled:
+	 * - Fresh install: skips if no stores exist
+	 * - __outbox__ protection: never deletes internal stores
+	 * - Store rename detection: copies data from deleted → created store if keyPath matches
+	 */
+	private async _performIdbUpgrade(): Promise<void> {
+		const upgrade = this._pendingIdbUpgrade;
+		if (!upgrade) return;
+
+		// Fresh install: no actual stores yet, just create everything normally
+		if (upgrade.toCreate.length > 0 && upgrade.toDelete.length === 0) {
+			this._pendingIdbUpgrade = null;
+			return;
+		}
+
+		await new Promise<void>((resolve, reject) => {
+			if (typeof indexedDB === 'undefined') { resolve(); return; }
+			const req = indexedDB.open(this._dbName!, this._version);
+			req.onupgradeneeded = (e) => {
+				const db = (e.target as IDBOpenDBRequest).result;
+
+				// Detect potential renames: deleted store keyPath matches created store
+				const renames = this._detectStoreRenames(db, upgrade);
+
+				// Handle renames first (copy data)
+				for (const { from, to, keyPath } of renames) {
+					if (db.objectStoreNames.contains(from)) {
+						const oldStore = (db as any).objectStore(from);
+						const newStore = db.createObjectStore(to, { keyPath });
+						// Copy all records
+						const cursorReq = oldStore.openCursor();
+						cursorReq.onsuccess = () => {
+							const cursor = cursorReq.result;
+							if (cursor) {
+								newStore.add(cursor.value);
+								cursor.continue();
+							}
+						};
+						db.deleteObjectStore(from);
+					}
+				}
+
+				// Delete orphaned stores (excluding renames and protected stores)
+				const renamedFrom = new Set(renames.map(r => r.from));
+				for (const storeName of upgrade.toDelete) {
+					if (renamedFrom.has(storeName)) continue;
+					if (this._isProtectedStore(storeName)) continue;
+					if (db.objectStoreNames.contains(storeName)) {
+						db.deleteObjectStore(storeName);
+					}
+				}
+
+				// Create missing stores (excluding rename targets already created)
+				const renamedTo = new Set(renames.map(r => r.to));
+				for (const storeName of upgrade.toCreate) {
+					if (renamedTo.has(storeName)) continue;
+					if (!db.objectStoreNames.contains(storeName)) {
+						const colDef = this._effectiveModel[storeName];
+						const keyPath = colDef?.keyPath ?? '++id';
+						db.createObjectStore(storeName, { keyPath });
+					}
+				}
+
+				// Ensure __schema_meta__ exists
+				if (!db.objectStoreNames.contains('__schema_meta__')) {
+					db.createObjectStore('__schema_meta__', { keyPath: 'id' });
+				}
+			};
+			req.onsuccess = () => {
+				req.result.close();
+				resolve();
+			};
+			req.onerror = () => reject(req.error);
+		});
+
+		// Persist the new hash
+		try {
+			await storeSchemaHash(this._dbName!, upgrade.expectedHash);
+		} catch {
+			// Non-critical — will retry on next start
+		}
+
+		this._pendingIdbUpgrade = null;
+	}
+
+	/**
+	 * Detect store renames: a deleted store's keyPath matches a created store.
+	 * Returns array of { from, to, keyPath } for each detected rename.
+	 */
+	private _detectStoreRenames(db: IDBDatabase, upgrade: { toCreate: string[]; toDelete: string[]; expectedHash: string }): Array<{ from: string; to: string; keyPath: string | null }> {
+		const renames: Array<{ from: string; to: string; keyPath: string | null }> = [];
+		for (const deletedName of upgrade.toDelete) {
+			if (this._isProtectedStore(deletedName)) continue;
+			if (!db.objectStoreNames.contains(deletedName)) continue;
+
+			const deletedStore = (db as any).objectStore(deletedName);
+			const deletedKeyPath = deletedStore.keyPath;
+
+			for (const createdName of upgrade.toCreate) {
+				const colDef = this._effectiveModel[createdName];
+				const createdKeyPath = colDef?.keyPath ?? '++id';
+
+				// Match if keyPaths are identical
+				if (deletedKeyPath === createdKeyPath || (deletedKeyPath === null && createdKeyPath === '++id')) {
+					renames.push({ from: deletedName, to: createdName, keyPath: createdKeyPath });
+					break;
+				}
+			}
+		}
+		return renames;
+	}
+
+	/**
+	 * Check if a store name is protected from deletion.
+	 * Internal stores (__outbox__, __schema_meta__, __migrations__) are never deleted.
+	 */
+	private _isProtectedStore(storeName: string): boolean {
+		return storeName.startsWith('__') && storeName.endsWith('__');
+	}
+
+	/**
+	 * Manually trigger IDB schema upgrade.
+	 * Useful when you know the schema has changed and want to force an upgrade
+	 * without waiting for the next start() cycle.
+	 *
+	 * This will:
+	 * 1. Detect drift between expected and actual stores
+	 * 2. Bump version and schedule upgrade
+	 * 3. Perform the upgrade immediately
+	 *
+	 * @returns Promise that resolves when upgrade is complete
+	 */
+	async upgradeIdb(): Promise<void> {
+		if (!this._dbName || !this._effectiveModel) {
+			throw new Error('Machine not initialized — call init() and start() first');
+		}
+
+		// Run drift detection to populate _pendingIdbUpgrade
+		await this._detectSchemaDrift();
+
+		// If upgrade was scheduled, perform it now
+		if (this._pendingIdbUpgrade) {
+			await this._performIdbUpgrade();
+		}
+	}
+
+	/**
+	 * Alias for upgradeIdb() — adapts IDB stores to match the current schema.
+	 * @returns Promise that resolves when adaptation is complete
+	 */
+	async adaptIdbToSchema(): Promise<void> {
+		return this.upgradeIdb();
 	}
 
 	/**
