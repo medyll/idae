@@ -21,6 +21,3 @@ export * from '../data-ui/fragments/index.js';
 
 // Data: smart data components (moved to data-ui)
 export * from '../data-ui/data/index.js';
-
-// Scheme: smart scheme components (moved to data-ui)
-export * from '../data-ui/scheme/index.js';

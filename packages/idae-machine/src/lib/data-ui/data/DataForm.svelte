@@ -7,11 +7,14 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 @prop {'show'|'create'|'update'} [mode] - Form mode
 @prop {Record<string,unknown>} [withData] - Additional data to merge
 @prop {Record<string,unknown>} [data] - Initial data override
+@prop {SortBy | SortBy[]} [sortBy] - Sort field order
+@prop {string} [groupBy] - Group fields by field def property
 @prop {(payload: {mode: string; data: Record<string,unknown>}) => void} [onsubmit] - Submit callback
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+	import type { SortBy } from '$lib/types/machine-model.js';
 	import DataFields from './DataFields.svelte';
 
 	let {
@@ -20,7 +23,9 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		collection,
 		data,
 		dataId,
-		withData
+		withData,
+		sortBy,
+		groupBy
 	}: {
 		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
 		mode?: 'show' | 'create' | 'update';
@@ -28,6 +33,8 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		data?: Record<string, unknown>;
 		dataId?: string | number;
 		withData?: Record<string, unknown>;
+		sortBy?: SortBy | SortBy[];
+		groupBy?: string;
 	} = $props();
 
 	const store = $derived(collection ? machine.store[collection] : undefined);
@@ -132,6 +139,8 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 				bind:data={formData}
 				{collection}
 				{mode}
+				{sortBy}
+				{groupBy}
 			/>
 		</div>
 	</div>

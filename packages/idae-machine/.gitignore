@@ -25,3 +25,7 @@ vite.config.ts.timestamp-*
 
 idae-screen-legacy/
 nul
+
+# Temp playwright/debug scripts
+__*.mjs
+__*.png

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import SchemeList from '$lib/data-ui/scheme/SchemeList.svelte';
+	import { machine } from '$lib/main/machine.js';
+	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import PaneCollectionGroup from './PaneCollectionGroup.svelte';
 
 	interface Props {
@@ -28,6 +29,18 @@
 		}
 		return Object.entries(map).map(([type, collections]) => ({ type, collections }));
 	}
+
+	function filterRows(items: SchemeRow[]): SchemeRow[] {
+		let rows = items.filter(r => machine.rights.checkAccess(r.code, 'R'));
+		if (query) {
+			const q = query.toLowerCase();
+			rows = rows.filter(r =>
+				r.code.toLowerCase().includes(q) ||
+				(r.name ?? '').toLowerCase().includes(q)
+			);
+		}
+		return rows;
+	}
 </script>
 
 <div class="pane-left">
@@ -40,13 +53,13 @@
 		/>
 	</div>
 	<div class="pane-groups">
-		<SchemeList filter={query} {activeCollection} {onSelect}>
+		<DataList collection="appscheme">
 			{#snippet children({ items })}
-				{#each groupByType(items) as group (group.type)}
+				{#each groupByType(filterRows(items as SchemeRow[])) as group (group.type)}
 					<PaneCollectionGroup {group} {onSelect} {activeCollection} />
 				{/each}
 			{/snippet}
-		</SchemeList>
+		</DataList>
 	</div>
 </div>
 

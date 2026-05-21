@@ -18,10 +18,6 @@ export { default as DataFields } from '$lib/data-ui/data/DataFields.svelte';
 export { default as DataFk }     from '$lib/data-ui/data/DataFk.svelte';
 export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 
-// data-ui — scheme providers
-export { default as SchemeList } from '$lib/data-ui/scheme/SchemeList.svelte';
-export { default as SchemeItem } from '$lib/data-ui/scheme/SchemeItem.svelte';
-
 // UI — card (record level)
 export { default as CardForm }     from '$lib/shell/card/CardForm.svelte';
 export { default as CardCreate }   from '$lib/shell/card/CardCreate.svelte';
