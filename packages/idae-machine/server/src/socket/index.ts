@@ -1,5 +1,5 @@
 import { Server as HttpServer } from 'http';
-import { SocketIoServer } from '@medyll/idae-socket';
+import { SocketIoServer } from '@medyll/idae-socket/server';
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
 

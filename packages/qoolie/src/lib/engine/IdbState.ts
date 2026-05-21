@@ -91,6 +91,7 @@ export class CollectionState<T = any> {
 		try {
 			const data = await this.collection.getAll();
 			this.eventBus.dataState[this.collectionName] = getResultSet(data);
+			this.eventBus.emit(this.collectionName, 'load', data);
 		} catch {
 			// Collection may not be initialized yet
 		}

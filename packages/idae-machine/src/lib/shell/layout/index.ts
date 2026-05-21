@@ -8,3 +8,4 @@ export { default as PaneRight } from './PaneRight.svelte';
 export { default as PaneCollectionGroup } from './PaneCollectionGroup.svelte';
 export { default as PaneQuickCreate } from './PaneQuickCreate.svelte';
 export { default as PaneRecents } from './PaneRecents.svelte';
+export { default as DevResetPanel } from './DevResetPanel.svelte';

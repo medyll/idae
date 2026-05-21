@@ -3,6 +3,11 @@
 // Core factory
 export { createQoolie } from './lib/Qoolie.js';
 
+// Event bus (for reactive adapters / cross-cutting subscribers)
+export { idbEventBus, IdbEventBus } from './lib/engine/IdbEventBus.js';
+export type { EventBusHandler } from './lib/engine/IdbEventBus.js';
+export type { IdbEventOp, IdbEventDetail } from './lib/engine/types.js';
+
 // Main classes (for advanced usage)
 export { Qoolie } from './lib/Qoolie.js';
 export { QoolieCollection } from './lib/QoolieCollection.js';

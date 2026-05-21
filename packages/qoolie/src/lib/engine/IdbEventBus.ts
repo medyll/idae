@@ -116,6 +116,9 @@ export class IdbEventBus extends EventTarget {
 			case 'clear':
 				this.dataState[collection] = [];
 				return;
+			case 'load':
+				// dataState already set by caller (e.g. feed()) — no-op here
+				return;
 		}
 
 		this.dataState[collection] = current;

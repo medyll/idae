@@ -1,6 +1,8 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
+import { createReactiveStore } from '$lib/main/reactiveStore.svelte.js';
 import { EventDataClientInstance } from '@medyll/idae-socket';
+import appModelDeclaration from '$lib/types/idae-model-core.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
@@ -43,6 +45,12 @@ export class Machine {
 	_qoolie!: ReturnType<typeof createQoolie> | undefined;
 
 	/**
+	 * Reactive store proxy — wraps qoolie collections with Svelte 5 $state.
+	 * Lazily created on first store access after start().
+	 */
+	_reactiveStore?: Record<string, QoolieCollection<any>>;
+
+	/**
 	 * Centralized access to schema and collection logic
 	 */
 	_machineDb!:              MachineDb;
@@ -58,9 +66,14 @@ export class Machine {
 	_version!:                number;
 
 	/**
-	 * Data model
+	 * User-provided data model
 	 */
 	_model!:                  MachineModel | undefined;
+
+	/**
+	 * Effective model = system collections + user model. Built once at start().
+	 */
+	_effectiveModel!:         MachineModel;
 
 	/** Organisation identifier — prefixes all DB names. e.g. 'test', 'crfr' */
 	_org?:                    string;
@@ -189,6 +202,7 @@ export class Machine {
 	 * @return {void}
 	 */
 	start(): void {
+		this._effectiveModel = this.buildEffectiveModel();
 		this.createCollections();
 		this.createStore();
 		this.loadPolicies();
@@ -202,11 +216,21 @@ export class Machine {
 	 * @private
 	 * @return {void}
 	 */
-	private createCollections(): void {
-		if (!this._model) {
-			throw new Error('Data model is not defined');
+	/**
+	 * Merge system collections (appModelDeclaration) with user model.
+	 * System collections always present; user model takes precedence on name collision.
+	 */
+	private buildEffectiveModel(): MachineModel {
+		if (!this._model) throw new Error('Data model is not defined');
+		const system: MachineModel = {};
+		for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
+			system[name] = { keyPath: '++id', ...(col as any) };
 		}
-		this._machineDb = new MachineDb(this._model);
+		return { ...system, ...this._model };
+	}
+
+	private createCollections(): void {
+		this._machineDb = new MachineDb(this._effectiveModel);
 	}
 
 	private loadPolicies(): void {
@@ -226,11 +250,11 @@ export class Machine {
 	 * @return {void}
 	 */
 	private createStore(): void {
-		if (!this._model || !this._dbName || !this._version) {
+		if (!this._dbName || !this._version) {
 			throw new Error('Model, dbName, or version is not defined');
 		}
 		const collections = Object.fromEntries(
-			Object.entries(this._model).map(([name, col]) => [name, { keyPath: col.keyPath }])
+			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
 		);
 		this._qoolie = createQoolie({
 			dbName:      this._dbName,
@@ -267,7 +291,13 @@ export class Machine {
 	 * Usage: machine.store['users'].where({...}) / .getAll() / .create(data) / .update(id, data) / .delete(id)
 	 */
 	get store(): Record<string, QoolieCollection<any>> {
-		return this._qoolie?.collection as Record<string, QoolieCollection<any>>;
+		if (!this._qoolie) return {} as Record<string, QoolieCollection<any>>;
+		if (!this._reactiveStore) {
+			this._reactiveStore = createReactiveStore(
+				this._qoolie.collection as Record<string, QoolieCollection<any>>
+			);
+		}
+		return this._reactiveStore;
 	}
 
 	/**
@@ -337,8 +367,24 @@ export class Machine {
 	destroy(): void {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
+		this._reactiveStore = undefined;
 		this._socketClient?.socket?.disconnect?.();
 		this._socketClient = undefined;
+	}
+
+	/**
+	 * Delete the client-side IndexedDB database and reload the page.
+	 * Use with DevResetPanel — irreversible.
+	 */
+	async resetClientData(): Promise<void> {
+		this.destroy();
+		await new Promise<void>((resolve, reject) => {
+			const req = indexedDB.deleteDatabase(this._dbName);
+			req.onsuccess = () => resolve();
+			req.onerror   = () => reject(req.error);
+			req.onblocked = () => reject(new Error('IDB delete blocked — close other tabs'));
+		});
+		window.location.reload();
 	}
 
 	/**

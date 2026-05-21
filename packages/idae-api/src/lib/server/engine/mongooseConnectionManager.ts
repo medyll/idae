@@ -28,6 +28,12 @@ export class MongooseConnectionManager {
 	getConnection(dbName: string) {
 		return this._connections?.[dbName];
 	}
+
+	async getOrCreate(dbUri: string, dbName: string, options?: mongoose.ConnectOptions) {
+		const existing = this._connections[dbName];
+		if (existing) return existing;
+		return this.createConnection(dbUri, dbName, options);
+	}
 }
 
 export const mongooseConnectionManager = MongooseConnectionManager.getInstance();

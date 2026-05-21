@@ -407,47 +407,15 @@ export async function restoreRecord(req: Request, res: Response): Promise<void> 
  * Register data routes with permission middleware
  */
 export function registerDataRoutes(): void {
-	idaeApi.router.addRoute({
-		method: 'get',
-		path: '/api/data/:table',
-		handler: listRecords,
-		middleware: [requireDroit('L')]
-	});
-
-	idaeApi.router.addRoute({
-		method: 'get',
-		path: '/api/data/:table/:id',
-		handler: getRecord,
-		middleware: [requireDroit('R')]
-	});
-
-	idaeApi.router.addRoute({
-		method: 'post',
-		path: '/api/data/:table',
-		handler: createRecord,
-		middleware: [requireDroit('C')]
-	});
-
-	idaeApi.router.addRoute({
-		method: 'put',
-		path: '/api/data/:table/:id',
-		handler: updateRecord,
-		middleware: [requireDroit('U')]
-	});
-
-	idaeApi.router.addRoute({
-		method: 'delete',
-		path: '/api/data/:table/:id',
-		handler: deleteRecord,
-		middleware: [requireDroit('D')]
-	});
-
-	idaeApi.router.addRoute({
-		method: 'patch',
-		path: '/api/data/:table/:id/restore',
-		handler: restoreRecord,
-		middleware: [requireDroit('U')]
-	});
+	// Data routes use Mongoose directly — bypass idae-api's handleRequest wrapper
+	// (which expects IdaeDbAdapter signature) and register on Express app directly.
+	const app = idaeApi.app;
+	app.get('/api/data/:table',            requireDroit('L'), listRecords);
+	app.get('/api/data/:table/:id',        requireDroit('R'), getRecord);
+	app.post('/api/data/:table',           requireDroit('C'), createRecord);
+	app.put('/api/data/:table/:id',        requireDroit('U'), updateRecord);
+	app.delete('/api/data/:table/:id',     requireDroit('D'), deleteRecord);
+	app.patch('/api/data/:table/:id/restore', requireDroit('U'), restoreRecord);
 
 	logger.info('Data routes registered: CRUD endpoints for /api/data/:table');
 }

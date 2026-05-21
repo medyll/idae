@@ -181,7 +181,7 @@ export type CollectionModel<T = TplCollectionFields> = {
 
 // ─── Event Bus Types ───────────────────────────────────────────────────────────
 
-export type IdbEventOp = 'add' | 'put' | 'update' | 'delete' | 'clear';
+export type IdbEventOp = 'add' | 'put' | 'update' | 'delete' | 'clear' | 'load';
 
 export interface IdbEventDetail {
 	collection: string;

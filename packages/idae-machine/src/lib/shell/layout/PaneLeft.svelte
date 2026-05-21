@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
-	import DataList from '$lib/data-ui/data/DataList.svelte';
-	import PaneCollectionGroup from './PaneCollectionGroup.svelte';
 
 	interface Props {
 		onSelect?: (detail: { collection: string; id?: string }) => void;
@@ -12,26 +10,17 @@
 
 	let query = $state('');
 
-	type SchemeRow = { code: string; name?: string; isType?: boolean; isGroup?: boolean; [k: string]: unknown };
+	type SchemeRow = { code: string; name?: string; order?: number; [k: string]: unknown };
 
-	function schemeType(row: SchemeRow): 'standard' | 'type' | 'group' {
-		if (row.isType) return 'type';
-		if (row.isGroup) return 'group';
-		return 'standard';
-	}
+	const store = $derived(machine.store['appscheme']);
 
-	function groupByType(items: SchemeRow[]) {
-		const map: Record<string, { code: string; name: string; type: string }[]> = {};
-		for (const row of items) {
-			const t = schemeType(row);
-			if (!map[t]) map[t] = [];
-			map[t].push({ code: row.code, name: row.name ?? row.code, type: t });
-		}
-		return Object.entries(map).map(([type, collections]) => ({ type, collections }));
-	}
+	const rawItems = $derived.by(() => {
+		if (!store) return [] as SchemeRow[];
+		return (store.getAll() ?? []) as SchemeRow[];
+	});
 
-	function filterRows(items: SchemeRow[]): SchemeRow[] {
-		let rows = items.filter(r => machine.rights.checkAccess(r.code, 'R'));
+	const filteredItems = $derived.by(() => {
+		let rows = rawItems.filter(r => machine.rights.checkAccess(r.code, 'R'));
 		if (query) {
 			const q = query.toLowerCase();
 			rows = rows.filter(r =>
@@ -40,7 +29,7 @@
 			);
 		}
 		return rows;
-	}
+	});
 </script>
 
 <div class="pane-left">
@@ -52,14 +41,22 @@
 			aria-label="Search collections"
 		/>
 	</div>
-	<div class="pane-groups">
-		<DataList collection="appscheme">
-			{#snippet children({ items })}
-				{#each groupByType(filterRows(items as SchemeRow[])) as group (group.type)}
-					<PaneCollectionGroup {group} {onSelect} {activeCollection} />
-				{/each}
-			{/snippet}
-		</DataList>
+	<div class="pane-list">
+		<ul class="list list-stack" role="list">
+			{#each filteredItems as row (row.code)}
+				<li>
+					<button
+						type="button"
+						class="list-item btn-ghost"
+						class:active={row.code === activeCollection}
+						onclick={() => onSelect?.({ collection: row.code as string })}
+					>
+						<div class="list-item-content">{row.name ?? row.code}</div>
+					</button>
+				</li>
+			{/each}
+		</ul>
+
 	</div>
 </div>
 
@@ -72,9 +69,16 @@
 		overflow: hidden;
 	}
 
-	.pane-groups {
+	.pane-list {
 		flex: 1;
 		overflow-y: auto;
 		padding: 0 var(--pad-md) var(--pad-md);
+	}
+
+	.list-item.btn-ghost {
+		width: 100%;
+		justify-content: flex-start;
+		border: none;
+		background: transparent;
 	}
 </style>

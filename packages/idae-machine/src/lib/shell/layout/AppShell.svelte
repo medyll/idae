@@ -5,6 +5,7 @@
 	 */
 
 	import type { Snippet } from 'svelte';
+	import DevResetPanel from './DevResetPanel.svelte';
 
 	interface Props {
 		title?: Snippet;
@@ -15,25 +16,13 @@
 
 	let { title, header, sidebar, main }: Props = $props();
 
-	/** Sidebar collapsed state */
-	let sidebarCollapsed = $state(false);
-	/** Mobile sidebar open state */
+	let sidebarCollapsed  = $state(false);
 	let mobileSidebarOpen = $state(false);
+	let devPanelOpen      = $state(false);
 
-	/** Toggle sidebar */
-	function toggleSidebar(): void {
-		sidebarCollapsed = !sidebarCollapsed;
-	}
-
-	/** Toggle mobile sidebar */
-	function toggleMobileSidebar(): void {
-		mobileSidebarOpen = !mobileSidebarOpen;
-	}
-
-	/** Close mobile sidebar */
-	function closeMobileSidebar(): void {
-		mobileSidebarOpen = false;
-	}
+	function toggleSidebar():       void { sidebarCollapsed  = !sidebarCollapsed; }
+	function toggleMobileSidebar(): void { mobileSidebarOpen = !mobileSidebarOpen; }
+	function closeMobileSidebar():  void { mobileSidebarOpen = false; }
 </script>
 
 <div class="app-shell">
@@ -57,6 +46,21 @@
 		<div class="header-right">
 			{#if header}
 				{@render header()}
+			{/if}
+			{#if import.meta.env.DEV}
+				<div class="dev-toggle-wrap">
+					<button
+						class="dev-toggle-btn"
+						class:active={devPanelOpen}
+						onclick={() => devPanelOpen = !devPanelOpen}
+						title="Dev reset panel"
+					>⚠ DEV</button>
+					{#if devPanelOpen}
+						<div class="dev-dropdown">
+							<DevResetPanel />
+						</div>
+					{/if}
+				</div>
 			{/if}
 		</div>
 	</header>
@@ -113,6 +117,32 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	.dev-toggle-wrap {
+		position: relative;
+	}
+	.dev-toggle-btn {
+		padding: 3px 8px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		border: 1px solid #f59e0b;
+		background: #fffbeb;
+		color: #92400e;
+		border-radius: 4px;
+		cursor: pointer;
+		letter-spacing: 0.04em;
+	}
+	.dev-toggle-btn:hover,
+	.dev-toggle-btn.active { background: #fef3c7; }
+	.dev-dropdown {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0;
+		z-index: 9999;
+		min-width: 260px;
+		box-shadow: 0 4px 12px rgba(0,0,0,.15);
+		border-radius: 6px;
 	}
 
 	.menu-toggle,

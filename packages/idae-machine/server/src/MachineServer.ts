@@ -148,11 +148,10 @@ class MachineServerClass {
 		await mongooseConnectionManager.createConnection(config.mongodbUri, metaDbName, { dbName: metaDbName });
 		logger.info('Connected to MongoDB');
 
-		// Register routes
+		// Register idae-api-pattern routes (before start — added to RouteManager)
 		registerBuiltinHooks();
 		registerHealthRoutes();
 		registerSchemeRoutes();
-		registerDataRoutes();
 		registerFileRoutes();
 		registerMailRoutes();
 		registerAuthRoutes();
@@ -176,6 +175,10 @@ class MachineServerClass {
 		});
 
 		await idaeApi.start();
+
+		// Register data routes AFTER start — they use idaeApi.app directly
+		// (raw Express handlers, not idae-api's service adapter pattern)
+		registerDataRoutes();
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {

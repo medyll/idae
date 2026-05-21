@@ -59,8 +59,12 @@ export class QoolieCollection<T extends { keyPath: string }> {
     return this.col.where(query);
   }
 
-  /** Get by ID — always idbql (CollectionState.get is a parameterless getter) */
+  /** Get by primary key — uses CollectionState in-memory lookup when svelte5 */
   async get(id: any): Promise<any> {
+    if (this.useState) {
+      const keyField = this.keyPath.replace('++', '');
+      return this.idbqlState.get(id, keyField);
+    }
     return this.col.get(id);
   }
 

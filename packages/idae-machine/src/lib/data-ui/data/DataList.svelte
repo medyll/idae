@@ -88,11 +88,7 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 	});
 
 	function safeCollection(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
+		try { return machine.logic.collection(name); } catch { return null; }
 	}
 
 	let errorMessage = $state<string | null>(null);

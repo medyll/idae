@@ -4,6 +4,7 @@
 	import { machine } from '$lib/main/machine.js';
 	import { demoScheme, demoSeed } from '$lib/demo/demoScheme.js';
 	import PaneLeft from '$lib/shell/layout/PaneLeft.svelte';
+	import DevResetPanel from '$lib/shell/layout/DevResetPanel.svelte';
 	import Frame from '$lib/shell/frame/Frame.svelte';
 
 	let { children }: LayoutProps = $props();
@@ -13,6 +14,28 @@
 	machine.initRouter({ baseUrl: '/', authEnabled: false });
 
 	async function seedIfEmpty() {
+		// Seed appscheme from declared model (client-side, no server needed)
+		const appschemeCol = machine.store['appscheme'];
+		if (appschemeCol) {
+			const count = await appschemeCol.count().catch(() => 0);
+			if (!count) {
+				let order = 0;
+				for (const [name, col] of Object.entries(machine._model ?? {})) {
+					await appschemeCol.create({
+						id:      ++order,
+						code:    name,
+						name:    name.replace(/_/g, ' '),
+						color:   '',
+						icon:    '',
+						order,
+						base:    (col as any).base ?? 'machine_user',
+						keyPath: col.keyPath,
+					}).catch(() => {});
+				}
+			}
+		}
+
+		// Seed demo data
 		for (const [collection, records] of Object.entries(demoSeed)) {
 			const col = machine.store[collection];
 			if (!col) continue;
@@ -32,6 +55,7 @@
 
 	let sidebarCollapsed = $state(false);
 	let activeCollection = $state('');
+	let devPanelOpen     = $state(false);
 
 	function handleCollectionSelect({ collection }: { collection: string }) {
 		activeCollection = collection;
@@ -50,6 +74,22 @@
 			{sidebarCollapsed ? '›' : '‹'}
 		</button>
 		<span class="app-title">idae-machine</span>
+		<div class="header-spacer"></div>
+		{#if import.meta.env.DEV}
+			<div class="dev-toggle-wrap">
+				<button
+					class="dev-toggle-btn"
+					class:active={devPanelOpen}
+					onclick={() => devPanelOpen = !devPanelOpen}
+					title="Dev reset panel"
+				>⚠ DEV</button>
+				{#if devPanelOpen}
+					<div class="dev-dropdown">
+						<DevResetPanel />
+					</div>
+				{/if}
+			</div>
+		{/if}
 	</header>
 
 	<div class="app-body">
@@ -90,6 +130,31 @@
 		font-weight: var(--font-semibold);
 		font-size: var(--text-sm);
 		color: var(--color-text);
+	}
+
+	.header-spacer { flex: 1; }
+
+	.dev-toggle-wrap { position: relative; }
+	.dev-toggle-btn {
+		padding: 3px 8px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		border: 1px solid #f59e0b;
+		background: #fffbeb;
+		color: #92400e;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	.dev-toggle-btn:hover,
+	.dev-toggle-btn.active { background: #fef3c7; }
+	.dev-dropdown {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0;
+		z-index: 9999;
+		min-width: 260px;
+		box-shadow: 0 4px 12px rgba(0,0,0,.15);
+		border-radius: 6px;
 	}
 
 	.app-body {
