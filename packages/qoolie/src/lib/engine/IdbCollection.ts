@@ -51,7 +51,9 @@ export class IdbCollection<T = any> {
 
 	private async getDatabase(): Promise<IDBDatabase> {
 		return new Promise((resolve, reject) => {
-			const request = indexedDB.open(this.dbName, this.version);
+			const idb = (globalThis as any).indexedDB;
+			if (!idb) { reject(new Error('IndexedDB not available')); return; }
+			const request = idb.open(this.dbName, this.version);
 			request.onsuccess = () => resolve(request.result);
 			request.onerror = () => reject(request.error);
 		});
@@ -74,9 +76,9 @@ export class IdbCollection<T = any> {
 	// ─── Read Operations ───────────────────────────────────────────────────
 
 	/** Get all records from the collection. */
-	getAll(): Promise<T[]> {
-		return new Promise(async (resolve, reject) => {
-			const storeObj = await this.getCollection();
+	async getAll(): Promise<T[]> {
+		const storeObj = await this.getCollection();
+		return new Promise<T[]>((resolve, reject) => {
 			const request = storeObj.getAll();
 			request.onsuccess = () => resolve(request.result);
 			request.onerror = () => reject(request.error);
@@ -95,9 +97,9 @@ export class IdbCollection<T = any> {
 	}
 
 	/** Get a single record by its key value. */
-	get(value: any): Promise<T> {
-		return new Promise(async (resolve, reject) => {
-			const storeObj = await this.getCollection();
+	async get(value: any): Promise<T> {
+		const storeObj = await this.getCollection();
+		return new Promise<T>((resolve, reject) => {
 			const request = storeObj.get(value);
 			request.onsuccess = () => resolve(request.result);
 			request.onerror = () => reject(new Error('not found'));
@@ -110,8 +112,8 @@ export class IdbCollection<T = any> {
 			const resultSet = await this.where(qy);
 			return resultSet.length;
 		}
-		return new Promise(async (resolve, reject) => {
-			const storeObj = await this.getCollection();
+		const storeObj = await this.getCollection();
+		return new Promise<number>((resolve, reject) => {
 			const request = storeObj.count();
 			request.onsuccess = () => resolve(request.result);
 			request.onerror = () => reject(request.error);
@@ -123,53 +125,39 @@ export class IdbCollection<T = any> {
 	/** Add a new record. */
 	async add(data: Partial<T>, opts?: MutationOptions): Promise<T> {
 		const doAdd = async (): Promise<T> => {
-			return new Promise(async (resolve, reject) => {
-				const storeObj = opts?.tx
-					? opts.tx.objectStore(this._store)
-					: await this.getCollection();
+			const storeObj = opts?.tx
+				? opts.tx.objectStore(this._store)
+				: await this.getCollection();
+			const id = await new Promise<IDBValidKey>((resolve, reject) => {
 				const request = storeObj.add(data as any);
-				request.onsuccess = async () => {
-					const id = request.result;
-					const created = await this.get(id);
-					if (!opts?.silent) {
-						this.eventBus.emit(this._store, 'add', created);
-					}
-					resolve(created);
-				};
+				request.onsuccess = () => resolve(request.result);
 				request.onerror = () => reject(request.error);
 			});
+			const created = await this.get(id);
+			if (!opts?.silent) this.eventBus.emit(this._store, 'add', created);
+			return created;
 		};
 
-		if (!opts?.tx) {
-			return this.enqueueWrite(doAdd);
-		}
-		return doAdd();
+		return opts?.tx ? doAdd() : this.enqueueWrite(doAdd);
 	}
 
 	/** Put (upsert) a record. */
 	async put(data: Partial<T>, opts?: MutationOptions): Promise<T> {
 		const doPut = async (): Promise<T> => {
-			return new Promise(async (resolve, reject) => {
-				const storeObj = opts?.tx
-					? opts.tx.objectStore(this._store)
-					: await this.getCollection();
+			const storeObj = opts?.tx
+				? opts.tx.objectStore(this._store)
+				: await this.getCollection();
+			const id = await new Promise<IDBValidKey>((resolve, reject) => {
 				const request = storeObj.put(data as any);
-				request.onsuccess = async () => {
-					const id = request.result;
-					const updated = await this.get(id as any);
-					if (!opts?.silent) {
-						this.eventBus.emit(this._store, 'put', updated);
-					}
-					resolve(updated);
-				};
+				request.onsuccess = () => resolve(request.result);
 				request.onerror = () => reject(request.error);
 			});
+			const updated = await this.get(id as any);
+			if (!opts?.silent) this.eventBus.emit(this._store, 'put', updated);
+			return updated;
 		};
 
-		if (!opts?.tx) {
-			return this.enqueueWrite(doPut);
-		}
-		return doPut();
+		return opts?.tx ? doPut() : this.enqueueWrite(doPut);
 	}
 
 	/** Update a record by key — merges existing data with new data. */
@@ -188,25 +176,19 @@ export class IdbCollection<T = any> {
 	/** Delete a record by key. */
 	async delete(keyPathValue: string | number, opts?: MutationOptions): Promise<boolean> {
 		const doDelete = async (): Promise<boolean> => {
-			return new Promise(async (resolve, reject) => {
-				const storeObj = opts?.tx
-					? opts.tx.objectStore(this._store)
-					: await this.getCollection();
+			const storeObj = opts?.tx
+				? opts.tx.objectStore(this._store)
+				: await this.getCollection();
+			await new Promise<void>((resolve, reject) => {
 				const request = storeObj.delete(keyPathValue as any);
-				request.onsuccess = () => {
-					if (!opts?.silent) {
-						this.eventBus.emit(this._store, 'delete', { [this.keyPath]: keyPathValue });
-					}
-					resolve(true);
-				};
+				request.onsuccess = () => resolve();
 				request.onerror = () => reject(request.error);
 			});
+			if (!opts?.silent) this.eventBus.emit(this._store, 'delete', { [this.keyPath]: keyPathValue });
+			return true;
 		};
 
-		if (!opts?.tx) {
-			return this.enqueueWrite(doDelete);
-		}
-		return doDelete();
+		return opts?.tx ? doDelete() : this.enqueueWrite(doDelete);
 	}
 
 	/** Update all records matching a where clause. */

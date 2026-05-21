@@ -141,10 +141,9 @@ export class CollectionState<T = any> {
 		return this.collection.put(value) as Promise<T | undefined>;
 	}
 
-	/** Update an item by key. */
-	async update(keyPathValue: string | number, data: Partial<T>): Promise<boolean | undefined> {
-		await this.collection.update(keyPathValue, data);
-		return true;
+	/** Update an item by key. Returns the updated document. */
+	async update(keyPathValue: string | number, data: Partial<T>): Promise<T | undefined> {
+		return this.collection.update(keyPathValue, data) as Promise<T | undefined>;
 	}
 
 	/** Update items matching a where clause. */
