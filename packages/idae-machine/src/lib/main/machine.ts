@@ -10,7 +10,6 @@ import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import { computeFrameId } from '$lib/main/frame/frameUtils.js';
 import type { PermissionCode } from '$lib/types/schema-types.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
 
@@ -395,17 +394,27 @@ export class Machine {
 	}
 
 	/**
-	 * @deprecated Use machine.framer.load() with computeFrameId().
-	 * Load content into a dynamic frame.
+	 * Load content into a zone. Zone defaults to 'main'.
+	 * If no <Frame> is registered for the zone, mounts one dynamically inside [data-target-zone="${zone}"].
 	 */
 	async loadFrame(
 		modulePath: string,
 		collection: string,
 		collectionId?: string,
-		vars?: Record<string, string>
+		vars?: Record<string, string>,
+		zone = 'main'
 	): Promise<void> {
-		const frameId = computeFrameId(collection, collectionId, vars);
-		await this._frameManager.load(frameId, modulePath, collection, collectionId, vars);
+		await this._frameManager.load(zone, modulePath, collection, collectionId, vars,
+			async (frameId) => {
+				if (typeof document === 'undefined') return;
+				const target = document.querySelector(`[data-target-zone="${frameId}"]`);
+				if (!target) return;
+				// Dynamic import breaks circular dependency machine ↔ Frame
+				const { mount } = await import('svelte');
+				const { default: Frame } = await import('$lib/shell/frame/Frame.svelte');
+				mount(Frame as any, { target, props: { id: frameId } });
+			}
+		);
 	}
 
 	/** Access to the frame manager singleton. */

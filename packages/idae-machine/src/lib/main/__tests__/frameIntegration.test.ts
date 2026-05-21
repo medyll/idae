@@ -29,7 +29,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 			expect(controls.load).toHaveBeenCalledWith('explorer.list', 'vehicle', undefined, undefined);
 		});
 
-		it('loadFrame computes frameId and delegates correctly', async () => {
+		it('loadFrame loads into main zone by default', async () => {
 			const machine = new Machine();
 
 			const controls: FrameControls = {
@@ -39,7 +39,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 				toggle: vi.fn(),
 				close: vi.fn(),
 			};
-			machineFrameManager.register('vehicle:42', controls);
+			machineFrameManager.register('main', controls);
 
 			await machine.loadFrame('card.form', 'vehicle', '42');
 

@@ -2,6 +2,7 @@
  * MachineFrameManager — singleton registry for dynamic frame controls.
  * DOM-first: frames auto-register on mount, unregister on unmount.
  */
+import { SvelteMap } from 'svelte/reactivity';
 
 export interface FrameControls {
 	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
@@ -12,7 +13,7 @@ export interface FrameControls {
 }
 
 export class MachineFrameManager {
-	private registry = new Map<string, FrameControls>();
+	private registry = new SvelteMap<string, FrameControls>();
 
 	/**
 	 * Register a frame's controls under a unique frameId.

@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { TaskBar } from '$lib/shell/layout/index.js';
+	import TaskBar from '$lib/shell/layout/TaskBar.svelte'; 
 </script>
 
 <TaskBar />
-<div class="content">
-	<!-- frames mount here via machine.loadFrame -->
-</div>
+<main class="app-content" data-target-zone="main"> 
+</main>
 
 <style>
-	.content {
+	.app-content {
 		flex: 1;
 		overflow: auto;
 		padding: 1rem;

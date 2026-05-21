@@ -1,5 +1,7 @@
 // Layout components barrel export
 export { default as App } from './App.svelte';
+export { default as TemplateShell } from './TemplateShell.svelte';
+/** @deprecated Use TemplateShell */
 export { default as AppShell } from './AppShell.svelte';
 export { default as Navigation } from './Navigation.svelte';
 export { default as Breadcrumb } from './Breadcrumb.svelte';

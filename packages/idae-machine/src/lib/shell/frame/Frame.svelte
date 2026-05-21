@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mount, unmount, type Component } from 'svelte';
+	import { mount, unmount, untrack, type Component } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
 
@@ -19,7 +19,7 @@
 
 	let bodyEl: HTMLDivElement;
 	let visible = $state(true);
-	let currentApp: Record<string, unknown> | null = $state(null);
+	let currentApp: Record<string, unknown> | null = null;
 
 	function doLoad(mp: string, col: string, colId?: string, v?: Record<string, string>) {
 		// Unmount previous if any
@@ -62,18 +62,18 @@
 				unmount(currentApp);
 				currentApp = null;
 			}
-			machine.frameManager.unregister(id);
+			untrack(() => machine.framer.unregister(id));
 		},
 	};
 
 	$effect(() => {
-		machine.frameManager.register(id, controls);
-		// Auto-load if initial modulePath provided
+		// untrack: register/unregister write to SvelteMap — must not create read-dependency
+		untrack(() => machine.framer.register(id, controls));
 		if (modulePath && collection) {
 			doLoad(modulePath, collection, collectionId, vars);
 		}
 		return () => {
-			machine.frameManager.unregister(id);
+			untrack(() => machine.framer.unregister(id));
 			if (currentApp) {
 				unmount(currentApp);
 				currentApp = null;

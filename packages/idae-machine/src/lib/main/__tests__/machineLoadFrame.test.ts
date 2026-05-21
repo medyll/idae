@@ -2,67 +2,54 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
 import { machineFrameManager } from '../frame/MachineFrameManager.js';
 
+const mockControls = () => ({
+	load: vi.fn(),
+	show: vi.fn(),
+	hide: vi.fn(),
+	toggle: vi.fn(),
+	close: vi.fn(),
+});
+
 describe('Machine.loadFrame', () => {
 	let machine: Machine;
 
 	beforeEach(() => {
 		machine = new Machine();
-		// Clear any leftover frames from previous tests
 		machineFrameManager.clear();
 	});
 
-	it('computes correct frameId and delegates to frameManager.load', async () => {
-		const loadSpy = vi.spyOn(machineFrameManager, 'load');
+	it('loads into main zone by default', async () => {
+		const controls = mockControls();
+		machineFrameManager.register('main', controls);
 
-		// Register a mock frame so load doesn't throw
-		const controls = {
-			load: vi.fn(),
-			show: vi.fn(),
-			hide: vi.fn(),
-			toggle: vi.fn(),
-			close: vi.fn(),
-		};
-		machineFrameManager.register('vehicle:42', controls);
+		await machine.loadFrame('explorer', 'vehicle');
 
-		await machine.loadFrame('card.form', 'vehicle', '42');
-
-		expect(loadSpy).toHaveBeenCalledWith('vehicle:42', 'card.form', 'vehicle', '42', undefined);
-		expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '42', undefined);
+		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', undefined, undefined);
 	});
 
-	it('computes frameId without collectionId', async () => {
-		const loadSpy = vi.spyOn(machineFrameManager, 'load');
+	it('passes collectionId to main zone', async () => {
+		const controls = mockControls();
+		machineFrameManager.register('main', controls);
 
-		const controls = {
-			load: vi.fn(),
-			show: vi.fn(),
-			hide: vi.fn(),
-			toggle: vi.fn(),
-			close: vi.fn(),
-		};
-		machineFrameManager.register('vehicle', controls);
+		await machine.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
 
-		await machine.loadFrame('explorer.list', 'vehicle');
-
-		expect(loadSpy).toHaveBeenCalledWith('vehicle', 'explorer.list', 'vehicle', undefined, undefined);
+		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', '42', { mode: 'card' });
 	});
 
-	it('computes frameId with vars', async () => {
-		const controls = {
-			load: vi.fn(),
-			show: vi.fn(),
-			hide: vi.fn(),
-			toggle: vi.fn(),
-			close: vi.fn(),
-		};
-		machineFrameManager.register('vehicle:42:tab=info', controls);
+	it('loads into explicit zone when provided', async () => {
+		const controls = mockControls();
+		machineFrameManager.register('main.modal', controls);
 
-		await machine.loadFrame('card.form', 'vehicle', '42', { tab: 'info' });
+		await machine.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
 
-		expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '42', { tab: 'info' });
+		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', undefined, undefined);
 	});
 
-	it('exposes frameManager via getter', () => {
+	it('exposes frameManager via framer getter', () => {
+		expect(machine.framer).toBe(machineFrameManager);
+	});
+
+	it('exposes frameManager via deprecated frameManager getter', () => {
 		expect(machine.frameManager).toBe(machineFrameManager);
 	});
 });
