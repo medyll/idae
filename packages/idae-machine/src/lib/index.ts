@@ -36,7 +36,8 @@ export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte'
 export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
 
 // UI — layout
-export { default as TemplateShell } from '$lib/shell/layout/TemplateShell.svelte';
+export { default as TemplateShell }  from '$lib/shell/layout/TemplateShell.svelte';
+export { default as CollectionNav }  from '$lib/shell/layout/CollectionNav.svelte';
 /** @deprecated Use TemplateShell */
 export { default as AppShell }      from '$lib/shell/layout/AppShell.svelte';
 export { default as Navigation } from '$lib/shell/layout/Navigation.svelte';

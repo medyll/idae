@@ -10,8 +10,8 @@ progress: 100
 last_updated: "2026-05-21T20:05"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Reprendre S29 — Explorer vars + CollectionNav + mode switcher"
-next_command: "bmad-continue"
+next_action: "Plan Sprint 31 — seed demoScheme data + tester chain complète Explorer→Card en browser"
+next_command: "bmad-status"
 next_role: "scrum-master"
 active_role: "developer"
 
@@ -144,8 +144,8 @@ sprints:
 
   - id: 29
     goal: "Explorer vars + CollectionNav — Explorer fully configurable via vars, sidebar as dedicated component, mode switcher UI"
-    status: paused
-    notes: "Mis en pause — S30 (refactor archi core/business) prioritaire"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s29-planned.md"
     artifact: "bmad/artifacts/sprint-s29-planned.md"
     depends_on: [28]
     stories:

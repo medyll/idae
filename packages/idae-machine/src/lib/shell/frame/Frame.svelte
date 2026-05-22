@@ -33,8 +33,16 @@
 			if (colId) props.dataId = colId;
 			if (v) {
 				props.vars = v;
-				// Pass mode from vars for Explorer component
-				if (v.mode) props.mode = v.mode;
+				if (v.mode)     props.mode     = v.mode;
+				if (v.pageSize) props.pageSize = Number(v.pageSize);
+				if (v.groupBy)  props.groupBy  = v.groupBy;
+				if (v.sortBy) {
+					const [field, dir] = v.sortBy.split(':');
+					props.sortBy = { field, direction: (dir === 'desc' ? 'desc' : 'asc') as 'asc' | 'desc' };
+				}
+				if (v.where) {
+					try { props.where = JSON.parse(v.where); } catch { /* ignore invalid JSON */ }
+				}
 			}
 
 			// Wire legacy explorer.* onclick → load detail in same frame

@@ -6,9 +6,9 @@
 
 	import type { Snippet } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-import DataList from '$lib/data-ui/data/DataList.svelte';
 	import Frame from '$lib/shell/frame/Frame.svelte';
 	import DevResetPanel from './DevResetPanel.svelte';
+	import CollectionNav from './CollectionNav.svelte';
 
 	let {
 		instanceName = 'main',
@@ -81,24 +81,10 @@ import DataList from '$lib/data-ui/data/DataList.svelte';
 				{#if sidebar}
 					{@render sidebar()}
 				{:else}
-					<DataList collection="appscheme" sortBy={{ field: 'order', direction: 'asc' }}>
-						{#snippet children({ items })}
-							<ul class="list list-stack" role="list">
-								{#each items as row (row.code)}
-									<li>
-										<button
-											type="button"
-											class="list-item btn-ghost"
-											class:active={row.code === activeCollection}
-											onclick={() => handleCollectionClick(row.code as string)}
-										>
-											<div class="list-item-content">{row.name ?? row.code}</div>
-										</button>
-									</li>
-								{/each}
-							</ul>
-						{/snippet}
-					</DataList>
+					<CollectionNav
+						{activeCollection}
+						onSelect={handleCollectionClick}
+					/>
 				{/if}
 			</div>
 			{#if mobileSidebarOpen}

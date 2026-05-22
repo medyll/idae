@@ -11,3 +11,4 @@ export { default as PaneQuickCreate } from './PaneQuickCreate.svelte';
 export { default as PaneRecents } from './PaneRecents.svelte';
 export { default as DevResetPanel } from './DevResetPanel.svelte';
 export { default as TaskBar } from './TaskBar.svelte';
+export { default as CollectionNav } from './CollectionNav.svelte';
