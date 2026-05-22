@@ -59,9 +59,13 @@ export class Machine {
 	 */
 	_version!:                number;
 
-	/**
-	 * User-provided data model
-	 */
+	/** System/framework collections (appscheme, appuser_*, …). Defaults to appModelDeclaration. */
+	_core?:                   MachineModel;
+
+	/** Application business collections (vehicle, reservation, …). */
+	_business?:               MachineModel;
+
+	/** @deprecated Use _core + _business. */
 	_model!:                  MachineModel | undefined;
 
 	/**
@@ -109,9 +113,10 @@ export class Machine {
 	 * @param {IdbqModel=} model The IDBQL data model.
 	 */
 	constructor(dbName?: string, version?: number, model?: MachineModel) {
-		this._dbName = dbName ?? '';
-		this._version = version ?? 1;
-		this._model = model ?? undefined;
+		this._dbName    = dbName ?? '';
+		this._version   = version ?? 1;
+		this._business  = model;
+		this._model     = model;
 	}
 
 	/**
@@ -122,6 +127,11 @@ export class Machine {
 	init(options?: {
 		dbName?:      string;
 		version?:     number;
+		/** System/framework collections. Defaults to appModelDeclaration. */
+		core?:        MachineModel;
+		/** Application business collections (vehicle, reservation, …). */
+		business?:    MachineModel;
+		/** @deprecated Use business instead. */
 		model?:       MachineModel;
 		org?:         string;
 		domain?:      string;
@@ -136,16 +146,17 @@ export class Machine {
 		if (options?.org)    this._org    = options.org;
 		if (options?.domain) this._domain = options.domain;
 
-		// Derive dbName from org+domain if not explicitly provided
-		const derived = (this._org && this._domain) ? `${this._org}_${this._domain}` : undefined;
-		this._dbName  = options?.dbName ?? derived ?? this._dbName;
-
-		this._version     = options?.version     ?? this._version;
-		this._model       = options?.model       ?? this._model;
-		this._syncOptions    = options?.sync        !== undefined ? options.sync : this._syncOptions;
-		this._stateEngine    = options?.stateEngine ?? this._stateEngine;
-		this._hooks          = options?.hooks       ?? this._hooks;
-		this._socketOptions  = options?.socket      ?? this._socketOptions;
+		const derived    = (this._org && this._domain) ? `${this._org}_${this._domain}` : undefined;
+		this._dbName     = options?.dbName    ?? derived ?? this._dbName;
+		this._version    = options?.version   ?? this._version;
+		this._core       = options?.core      ?? this._core;
+		this._business   = options?.business  ?? options?.model ?? this._business;
+		// legacy shim
+		this._model      = this._business;
+		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
+		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
+		this._hooks         = options?.hooks       ?? this._hooks;
+		this._socketOptions = options?.socket      ?? this._socketOptions;
 	}
 
 	/** Fully qualified DB name for a given base: {org}_{base} */
@@ -167,7 +178,7 @@ export class Machine {
 	 */
 	async fetchSchema(url: string): Promise<EventTarget> {
 		return loadSchema(url, {
-			onModel: (m) => { this._model = m; },
+			onModel: (m) => { this._business = m; this._model = m; },
 			onStart: () => this.start(),
 			onDrift: () => this._scheduleDrift(),
 		});
@@ -181,7 +192,7 @@ export class Machine {
 	 */
 	start(): void {
 		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
-		this._effectiveModel = buildEffectiveModel(this._model);
+		this._effectiveModel = buildEffectiveModel(this._core, this._business);
 		this._machineDb      = new MachineDb(this._effectiveModel);
 		machineRights.loadPoliciesFromModel(this._model);
 		this.createStore();

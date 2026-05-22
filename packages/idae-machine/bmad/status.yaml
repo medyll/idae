@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-21T20:05"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S29-01 — Frame.svelte forwards full vars (where/sortBy/groupBy/pageSize) to Explorer"
+next_action: "Reprendre S29 — Explorer vars + CollectionNav + mode switcher"
 next_command: "bmad-continue"
-next_role: "developer"
-active_role: "scrum-master"
+next_role: "scrum-master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,9 +93,59 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 30
+    goal: "machine.init({ core, business }) + seed unifié — une déclaration, un seed, un pipeline pour toutes collections"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s30-planned.md"
+    depends_on: [28]
+    stories:
+      - id: S30-01
+        title: "machine.init : model → core + business (deprecated shim)"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S30-02
+        title: "buildEffectiveModel(core?, business?) — fusion system + core + business"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S30-03
+        title: "seed() unifié — même appel core et business data"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S30-04
+        title: "demoScheme = business uniquement, +layout.svelte mis à jour"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S30-05
+        title: "appModelDeclaration aligné format MachineModel business"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S30-06
+        title: "Tests — init/start combinaisons, seed unifié, rétro-compat model"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 29
     goal: "Explorer vars + CollectionNav — Explorer fully configurable via vars, sidebar as dedicated component, mode switcher UI"
-    status: active
+    status: paused
+    notes: "Mis en pause — S30 (refactor archi core/business) prioritaire"
     artifact: "bmad/artifacts/sprint-s29-planned.md"
     depends_on: [28]
     stories:

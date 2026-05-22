@@ -7,11 +7,17 @@
 import appModelDeclaration from '$lib/types/idae-model-core.js';
 import type { MachineModel } from '$lib/types/machine-model.js';
 
-export function buildEffectiveModel(userModel?: MachineModel): MachineModel {
+/**
+ * Merge system baseline + core + business into one effective model.
+ * Priority (highest wins on collision): business > core > system baseline.
+ *
+ * @param core     System/framework collections. Falls back to appModelDeclaration.
+ * @param business Application business collections (vehicle, reservation, …).
+ */
+export function buildEffectiveModel(core?: MachineModel, business?: MachineModel): MachineModel {
 	const system: MachineModel = {};
 	for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
 		system[name] = { keyPath: '++id', ...(col as any) };
 	}
-	if (!userModel) return system;
-	return { ...system, ...userModel };
+	return { ...system, ...(core ?? {}), ...(business ?? {}) };
 }

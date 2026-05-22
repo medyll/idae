@@ -22,6 +22,9 @@ export { RealtimeClient, createRealtimeClient } from './api/RealtimeClient.js';
 export { MachineApiError, NetworkError } from './api/errors.js';
 export type { HealthResponse, SchemesResponse } from './api/types.js';
 
+// Seed
+export { seed, seedIfEmpty } from './machineSeed.js';
+
 // Multi-base (v2 features)
 export { MachineMultiBase } from './multi-base/index.js';
 
