@@ -20,6 +20,12 @@
   | S32-06 | ✅ | conventions.md DataList API documented |
   | S32-07 | ✅ | check 0 errors / 4 warnings, vitest 456/456 |
 
+### Post-S32 Polish (commit c086ba00)
+
+  - InputEmail/InputCurrency state init — local-capture warnings gone
+  - Explorer `<li role=button>` → `<li><button>` a11y
+  - **check: 0 errors / 0 warnings · vitest: 456/456**
+
 ### Features & Capabilities
 
   | Feature | Status | What it means for users |

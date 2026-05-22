@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-23T00:32"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Commit uncommitted refactor (DataList API + S32 fixes) then resume S31 server seed verification"
+next_action: "Resume S31 server seed verification — run pnpm tsx server/src/bootstrap/seed.ts, validate MongoDB → IDB sync chain in browser"
 next_command: "bmad-status"
 next_role: "scrum-master"
 active_role: "developer"
@@ -1290,6 +1290,15 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-23"
+    summary: >
+      Warning cleanup commit c086ba00.
+      InputEmail/InputCurrency: $state init empty, $effect syncs from prop (no local-capture warning).
+      Explorer actions/list modes: <li role="button"> → <li><button> a11y fix, .list-item-button (all:unset) + .action-item normalized.
+      Result: check 0 errors / 0 warnings. vitest 456/456.
+    tests_server: 456
+    tests_client: 0
+
   - date: "2026-05-23"
     summary: >
       Sprint 32 COMPLETE (7/7 stories): DataList API refactor follow-up.
