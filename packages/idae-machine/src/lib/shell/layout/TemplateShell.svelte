@@ -1,21 +1,19 @@
 <script lang="ts">
 	/**
 	 * TemplateShell — Layout template: sidebar (optional) + main content + right bar (hidden).
-	 * No header, no overlay zones — those belong to App.svelte.
 	 */
 
 	import type { Snippet } from 'svelte';
 
 	let {
-		sidebar,
+		leftbar,
 		children,
-		right,
-		instanceName = 'main',
+		rightBar
 	}: {
-		sidebar?:      Snippet;
+		leftbar?:      Snippet;
 		children?:     Snippet;
-		right?:        Snippet;
-		instanceName?: string;
+		rightBar?:        Snippet
+
 	} = $props();
 
 </script>
@@ -24,23 +22,17 @@
 
 	<!-- Left sidebar (optional) -->
 	<aside class="shell-sidebar">
-		{#if sidebar}
-			{@render sidebar()}
-		{/if}
+			{@render leftbar?.()}
 	</aside>
 
 	<!-- Main content zone -->
-	<main class="shell-main" data-target-zone={instanceName}>
-		{#if children}
-			{@render children()}
-		{/if}
+	<main class="shell-main" >
+			{@render children?.()}
 	</main>
 
-	<!-- Right bar (hidden — future: panel, synthese, planning) -->
+	<!-- Right bar  -->
 	<aside class="shell-right" aria-hidden="true">
-		{#if right}
-			{@render right()}
-		{/if}
+			{@render rightBar?.()}
 	</aside>
 
 </div>
