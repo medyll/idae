@@ -32,7 +32,6 @@
 			const props: Record<string, unknown> = { collection: col };
 			if (colId) props.dataId = colId;
 			if (v) {
-				props.vars = v;
 				if (v.mode)     props.mode     = v.mode;
 				if (v.pageSize) props.pageSize = Number(v.pageSize);
 				if (v.groupBy)  props.groupBy  = v.groupBy;

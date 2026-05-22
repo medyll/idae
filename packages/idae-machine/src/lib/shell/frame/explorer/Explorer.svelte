@@ -2,15 +2,6 @@
 Explorer.svelte
 Unified collection browser — list/table/card/actions modes.
 @role explorer
-@prop {string} collection
-@prop {'list' | 'table' | 'card' | 'actions'} [mode]
-@prop {string} [collectionId]
-@prop {string} [dataId] - alias for collectionId
-@prop {Record<string, string>} [vars]
-@prop {Record<string, unknown>} [where]
-@prop {{ field: string; direction?: string }} [sortBy]
-@prop {string} [groupBy]
-@prop {number} [pageSize]
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import DataList from '$lib/data-ui/data/DataList.svelte';
@@ -18,38 +9,33 @@ Unified collection browser — list/table/card/actions modes.
 	import DataForm from '$lib/data-ui/data/DataForm.svelte';
 	import ExplorerTableInline from './ExplorerTableInline.svelte';
 	import { machine } from '$lib/main/machine.js';
+	import type { SortBy } from '$lib/types/machine-model.js';
+
+	type Mode = 'list' | 'table' | 'card' | 'actions';
 
 	let {
 		collection,
 		mode: modeProp = 'list',
 		collectionId,
 		dataId,
-		vars,
-		where: whereProp,
-		sortBy: sortByProp,
-		groupBy: groupByProp,
-		pageSize: pageSizeProp,
+		where,
+		sortBy,
+		groupBy,
+		pageSize = 20,
 	}: {
-		collection: string;
-		mode?: 'list' | 'table' | 'card' | 'actions';
+		collection:    string;
+		mode?:         Mode;
 		collectionId?: string;
-		dataId?: string;
-		vars?: Record<string, string>;
-		where?: Record<string, unknown>;
-		sortBy?: { field: string; direction?: 'asc' | 'desc' };
-		groupBy?: string;
-		pageSize?: number;
+		dataId?:       string;
+		where?:        Record<string, unknown>;
+		sortBy?:       SortBy;
+		groupBy?:      string;
+		pageSize?:     number;
 	} = $props();
 
-	const effectiveId      = $derived(collectionId ?? dataId);
-	let userMode           = $state<'list' | 'table' | 'card' | 'actions' | null>(null);
-	const currentMode      = $derived(userMode ?? modeProp);
-	let currentPage        = $state(1);
-
-	const effectiveWhere   = $derived(whereProp ?? undefined);
-	const effectiveSortBy  = $derived(sortByProp ? { field: sortByProp.field, direction: sortByProp.direction ?? 'asc' as const } : undefined);
-	const effectiveGroupBy = $derived(groupByProp ?? undefined);
-	const effectivePageSize = $derived(pageSizeProp ?? 20);
+	let userMode      = $state<Mode | null>(null);
+	let currentPage   = $state(1);
+	const currentMode = $derived(userMode ?? modeProp);
 
 	const scheme          = $derived(collection ? machine.logic.collection(collection) : null);
 	const views           = $derived(scheme?.views ?? {});
@@ -62,7 +48,8 @@ Unified collection browser — list/table/card/actions modes.
 	);
 	const actionLabel = $derived((views.miniView ?? [])[0]?.name ?? tplPresentation[0] ?? 'id');
 
-	function goToPage(page: number): void { currentPage = page; }
+	function setMode(m: Mode): void { userMode = m; currentPage = 1; }
+	function goToPage(p: number): void { currentPage = p; }
 
 	function openCard(record: COL): void {
 		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
@@ -73,18 +60,18 @@ Unified collection browser — list/table/card/actions modes.
 {#if currentMode !== 'card'}
 	<div class="explorer-toolbar">
 		<div class="mode-switcher">
-			<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => { userMode = 'list';    currentPage = 1; }}>List</button>
-			<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => { userMode = 'table';   currentPage = 1; }}>Table</button>
-			<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => { userMode = 'actions'; currentPage = 1; }}>Actions</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => setMode('list')}>List</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => setMode('table')}>Table</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => setMode('actions')}>Actions</button>
 		</div>
 	</div>
 {/if}
 
 {#if currentMode === 'card'}
-	<DataForm {collection} dataId={effectiveId} mode="update" />
+	<DataForm {collection} dataId={collectionId ?? dataId} mode="update" />
 
 {:else if currentMode === 'actions'}
-	<DataList {collection} where={effectiveWhere} listClass="action-list">
+	<DataList {collection} {where} listClass="action-list">
 		{#snippet item({ record, idx })}
 			<li>
 				<button
@@ -99,16 +86,16 @@ Unified collection browser — list/table/card/actions modes.
 	</DataList>
 
 {:else if currentMode === 'table'}
-	<ExplorerTableInline {collection} where={effectiveWhere} {openCard} />
+	<ExplorerTableInline {collection} {where} {openCard} />
 
 {:else}
 	<!-- mode === 'list' -->
 	<DataList
 		{collection}
-		where={effectiveWhere}
-		sortBy={effectiveSortBy}
-		groupBy={effectiveGroupBy}
-		pageSize={effectivePageSize}
+		{where}
+		{sortBy}
+		{groupBy}
+		{pageSize}
 		page={currentPage}
 		listClass="list list-grid"
 		groupClass="explorer-group"
