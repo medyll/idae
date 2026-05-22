@@ -23,13 +23,13 @@ Currency input with formatting.
 		disabled?:       boolean;
 	}>();
 
-	let inputValue = $state(String(value));
+	let inputValue = $state<string>('');
 
 	$effect(() => {
 		if (typeof value === 'number') {
 			inputValue = value.toFixed(decimalPlaces);
 		} else {
-			inputValue = value;
+			inputValue = String(value ?? '');
 		}
 	});
 

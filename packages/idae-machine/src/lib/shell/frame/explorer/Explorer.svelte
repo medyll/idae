@@ -86,14 +86,14 @@ Unified collection browser — list/table/card/actions modes.
 {:else if currentMode === 'actions'}
 	<DataList {collection} where={effectiveWhere} listClass="action-list">
 		{#snippet item({ record, idx })}
-			<li
-				class="action-item"
-				role="button"
-				tabindex="0"
-				onclick={() => openCard(record as COL)}
-				onkeydown={(e) => e.key === 'Enter' && openCard(record as COL)}
-			>
-				{(record as Record<string, unknown>)[actionLabel] ?? String(idx)}
+			<li>
+				<button
+					type="button"
+					class="action-item"
+					onclick={() => openCard(record as COL)}
+				>
+					{(record as Record<string, unknown>)[actionLabel] ?? String(idx)}
+				</button>
 			</li>
 		{/snippet}
 	</DataList>
@@ -120,16 +120,16 @@ Unified collection browser — list/table/card/actions modes.
 		{/snippet}
 
 		{#snippet item({ record })}
-			<li
-				class="list-item panel panel-bordered"
-				role="button"
-				tabindex="0"
-				onclick={() => openCard(record as COL)}
-				onkeydown={(e) => e.key === 'Enter' && openCard(record as COL)}
-			>
-				<div class="list-item-content">
-					<DataFields {collection} data={record as Record<string, any>} mode="show" showFields={listFields.length ? listFields : undefined} />
-				</div>
+			<li class="list-item panel panel-bordered">
+				<button
+					type="button"
+					class="list-item-button"
+					onclick={() => openCard(record as COL)}
+				>
+					<div class="list-item-content">
+						<DataFields {collection} data={record as Record<string, any>} mode="show" showFields={listFields.length ? listFields : undefined} />
+					</div>
+				</button>
 			</li>
 		{/snippet}
 
@@ -193,6 +193,19 @@ Unified collection browser — list/table/card/actions modes.
 		padding: 0.4rem 0.75rem;
 		cursor: pointer;
 		border-radius: 0.25rem;
+		background: transparent;
+		border: none;
+		text-align: left;
+		width: 100%;
+		font: inherit;
+		color: inherit;
 	}
 	.action-item:hover { background: var(--color-surface-hover, #f0f0f0); }
+
+	.list-item-button {
+		all: unset;
+		display: block;
+		width: 100%;
+		cursor: pointer;
+	}
 </style>

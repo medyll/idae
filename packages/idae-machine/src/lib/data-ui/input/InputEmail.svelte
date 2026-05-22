@@ -28,7 +28,7 @@ Email input with format validation.
 		oninput?:  (e: Event) => void;
 	}>();
 
-	let email = $state(value);
+	let email = $state<string | undefined>(undefined);
 
 	$effect(() => {
 		email = value;
@@ -42,7 +42,7 @@ Email input with format validation.
 	}
 
 	function handleBlur(): void {
-		if (!validateEmail(email)) {
+		if (!validateEmail(email ?? '')) {
 			// Could emit error event here
 		}
 	}
