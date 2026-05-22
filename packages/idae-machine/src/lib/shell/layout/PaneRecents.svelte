@@ -26,41 +26,42 @@
 	<header class="section-header">
 		<h3>Recent</h3>
 	</header>
-	<DataList collection="appuser_history" groupBy="collection" sortBy={{ field: 'lastSeen', direction: 'desc' }}>
-		{#snippet children({ groups, items })}
-			{#if groups && groups.size > 0}
-				{#each Array.from(groups) as [col, colItems]}
-					<section class="pane-recent-group">
-						<header class="section-header section-header-lg">
-							<h4>{col}</h4>
-						</header>
-						<ul class="list list-stack list-compact" role="list">
-							{#each colItems as item}
-								{@const entry = item as unknown as HistoryEntry}
-								<li>
-									<button
-										type="button"
-										class="list-item btn-ghost"
-										onclick={() => onSelect?.({ collection: col, id: String(entry.collection_value) })}
-									>
-										<div class="list-item-content">
-											<div class="list-item-title">{entry.label ?? String(entry.collection_value)}</div>
-										</div>
-										<div class="list-item-trail">
-											<span>{entry.count}×</span>
-											<span>{formatDate(String(entry.lastSeen))}</span>
-										</div>
-									</button>
-								</li>
-							{/each}
-						</ul>
-					</section>
-				{/each}
-			{:else if items.length === 0}
-				<div class="empty-state">
-					<p class="empty-state-text">No recent activity.</p>
-				</div>
-			{/if}
+	<DataList
+		collection="appuser_history"
+		groupBy="collection"
+		sortBy={{ field: 'lastSeen', direction: 'desc' }}
+		listClass="list list-stack list-compact"
+		groupClass="pane-recent-group"
+	>
+		{#snippet groupHeader({ key: col })}
+			<header class="section-header section-header-lg">
+				<h4>{col}</h4>
+			</header>
+		{/snippet}
+
+		{#snippet item({ record })}
+			{@const entry = record as unknown as HistoryEntry}
+			<li>
+				<button
+					type="button"
+					class="list-item btn-ghost"
+					onclick={() => onSelect?.({ collection: String(entry.collection), id: String(entry.collection_value) })}
+				>
+					<div class="list-item-content">
+						<div class="list-item-title">{entry.label ?? String(entry.collection_value)}</div>
+					</div>
+					<div class="list-item-trail">
+						<span>{entry.count}×</span>
+						<span>{formatDate(String(entry.lastSeen))}</span>
+					</div>
+				</button>
+			</li>
+		{/snippet}
+
+		{#snippet empty()}
+			<div class="empty-state">
+				<p class="empty-state-text">No recent activity.</p>
+			</div>
 		{/snippet}
 	</DataList>
 </div>

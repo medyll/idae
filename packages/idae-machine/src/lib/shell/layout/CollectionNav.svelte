@@ -28,24 +28,20 @@ No frame awareness — pure UI + callback.
 	}
 </script>
 
-<DataList collection="appscheme" {sortBy}>
-	{#snippet children({ items })}
-		<ul class="list list-stack" role="list">
-			{#each items as row (row.code)}
-				{#if !filter || filter.includes(String(row.code))}
-					<li>
-						<button
-							type="button"
-							class="list-item btn-ghost"
-							class:active={row.code === activeCollection}
-							onclick={() => handleClick(String(row.code))}
-						>
-							<div class="list-item-content">{row.name ?? row.code}</div>
-						</button>
-					</li>
-				{/if}
-			{/each}
-		</ul>
+<DataList collection="appscheme" {sortBy} listClass="list list-stack">
+	{#snippet item({ record: row })}
+		{#if !filter || filter.includes(String(row.code))}
+			<li>
+				<button
+					type="button"
+					class="list-item btn-ghost"
+					class:active={row.code === activeCollection}
+					onclick={() => handleClick(String(row.code))}
+				>
+					<div class="list-item-content">{row.name ?? row.code}</div>
+				</button>
+			</li>
+		{/if}
 	{/snippet}
 </DataList>
 

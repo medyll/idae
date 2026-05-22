@@ -1,12 +1,4 @@
 <script lang="ts">
-	/**
-	 * Pane — workspace overlay for navigation (waffle menu replacement).
-	 * Two columns: left = collection navigation, right = today dashboard.
-	 *
-	 * Usage:
-	 *   <Pane bind:show={paneOpen} on:select={(e) => navigate(e.detail)} />
-	 */
-	import type { Snippet } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import PaneRight from './PaneRight.svelte';
@@ -16,9 +8,7 @@
 		onSelect?: (detail: { collection: string; id?: string }) => void;
 	} = $props();
 
-	function close(): void {
-		show = false;
-	}
+	function close(): void { show = false; }
 
 	function handleCollectionClick(code: string): void {
 		close();
@@ -35,21 +25,17 @@
 		</header>
 		<div class="pane-body">
 			<div class="pane-left">
-				<DataList collection="appscheme" sortBy={{ field: 'order', direction: 'asc' }}>
-					{#snippet children({ items })}
-						<ul class="list list-stack" role="list">
-							{#each items as row (row.code)}
-								<li>
-									<button
-										type="button"
-										class="list-item btn-ghost"
-										onclick={() => handleCollectionClick(row.code as string)}
-									>
-										<div class="list-item-content">{row.name ?? row.code}</div>
-									</button>
-								</li>
-							{/each}
-						</ul>
+				<DataList collection="appscheme" sortBy={{ field: 'order', direction: 'asc' }} listClass="list list-stack">
+					{#snippet item({ record: row })}
+						<li>
+							<button
+								type="button"
+								class="list-item btn-ghost"
+								onclick={() => handleCollectionClick(row.code as string)}
+							>
+								<div class="list-item-content">{row.name ?? row.code}</div>
+							</button>
+						</li>
 					{/snippet}
 				</DataList>
 			</div>
@@ -108,18 +94,8 @@
 	}
 
 	@media (max-width: 640px) {
-		.pane {
-			width: 95vw;
-			height: 90vh;
-		}
-
-		.pane-body {
-			flex-direction: column;
-		}
-
-		.pane-left {
-			border-right: none;
-			border-bottom: var(--border-width) solid var(--color-border);
-		}
+		.pane { width: 95vw; height: 90vh; }
+		.pane-body { flex-direction: column; }
+		.pane-left { border-right: none; border-bottom: var(--border-width) solid var(--color-border); }
 	}
 </style>

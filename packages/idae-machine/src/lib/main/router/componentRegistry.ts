@@ -51,6 +51,5 @@ export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.registerMany({
 	'explorer':             () => import('$lib/shell/frame/explorer/Explorer.svelte'),
-	'explorer.collections': () => import('$lib/shell/frame/explorer/ExplorerCollections.svelte'),
 	'card.form':            () => import('$lib/data-ui/data/DataForm.svelte'),
 });

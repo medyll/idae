@@ -5,7 +5,6 @@ export * from '$lib/main/index.js';
 
 // UI — explorer (collection level)
 export { default as Explorer }            from '$lib/shell/frame/explorer/Explorer.svelte';
-export { default as ExplorerCollections } from '$lib/shell/frame/explorer/ExplorerCollections.svelte';
 
 // data-ui — data providers (smart, machine-aware)
 export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
