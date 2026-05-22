@@ -1,20 +1,21 @@
 # CLAUDE.md — idae-machine AI Reference
 
 > Master reference for AI agents. Read this before touching any code.
+> Last updated: 2026-05-22
 
 ---
 
 ## 1. What is idae-machine?
 
-`@medyll/idae-machine` is the **modern rewrite** of `idae-legacy` (a PHP/PrototypeJS SPA from 2015).  
-It is the **central package** of the `/idae` monorepo — a schema-driven, offline-first, full-stack framework built on:
+`@medyll/idae-machine` is the **modern rewrite** of `idae-legacy` (a PHP/PrototypeJS SPA from 2015).
+Central package of the `/idae` monorepo — schema-driven, offline-first, full-stack framework.
 
 - **SvelteKit + Svelte 5 runes** (UI)
-- **IndexedDB via `@medyll/idae-idbql`** (client data layer)
+- **IndexedDB via `@medyll/qoolie`** (client data layer + sync)
 - **Express + MongoDB** (server, in `server/`)
 - **Socket.IO** (real-time sync)
 
-The philosophy: declare a schema once → get CRUD UI, validation, routing, real-time sync for free.
+Philosophy: declare a schema once → get CRUD UI, validation, routing, real-time sync for free.
 
 ---
 
@@ -23,227 +24,245 @@ The philosophy: declare a schema once → get CRUD UI, validation, routing, real
 | Package | Role |
 |---------|------|
 | `idae-machine` | **Central package** — schema-driven CRUD framework |
-| `idae-idbql` | IndexedDB ORM with reactive Svelte 5 state |
-| `idae-sync` | Background sync: IndexedDB ↔ server |
+| `qoolie` | IndexedDB + sync layer (replaced idae-idbql) |
 | `idae-api` | HTTP client layer |
 | `idae-router` | Schema-driven SPA routing |
 | `idae-socket` | Socket.IO client |
-| `idae-stator` | State management |
-| `idae-slotui` | UI primitives (MenuList, Button, etc.) |
-
-**Rule:** `idae-idbql` is shared — changes to it affect all packages.
 
 ---
 
 ## 3. Legacy lineage (`D:/development/idae-legacy/`)
 
-idae-machine is the TypeScript/Svelte successor of the PHP legacy app.  
-Key concept mapping:
-
 | Legacy (PHP) | idae-machine | Notes |
 |---|---|---|
-| `appscheme` / `app/app` | `IdbqModel` + `MachineScheme` | Schema definition |
-| `app_liste` family | `explorer/` components | Collection browser |
-| `app_fiche` family | `card/` components | Single record |
-| `app_field_update` | `field/FieldDisplay.svelte` | Field edit in place |
+| `app_liste` / `app_fiche_maxi` | `shell/frame/explorer/` | Frame types |
+| `app_fiche` | `data-ui/data/DataForm` | Form engine |
+| `app_field_update` | `data-ui/field/FieldDisplay` | Field edit in place |
 | `appscheme_field` | `template.fields` + `FieldList` | Field catalog |
-| `appscheme_field_type` | `MachineSchemeFieldType` registry | Type definitions |
-| `app_droit` / RBAC | `AppUserGrant` (types only, stub) | Permissions |
-| `search_item` | `explorer/ExplorerFilter.svelte` | Search |
+| `app_droit` / RBAC | `MachineRights` | Permissions |
+| `act_target` + `mdl` + `vars` | `machine.framer.load(frameId, modulePath, col, id, vars)` | Frame navigation |
 
-Legacy source: `D:/development/idae-legacy/idae/web/mdl/app/`  
-Legacy BP blueprint: `D:/development/idae-legacy/cf_module_bp.md`
+Legacy source: `D:/development/idae-legacy/idae/web/mdl/app/`
 
 ---
 
-## 4. Core architecture
+## 4. machine — surface publique (TOUT passe par machine)
 
-```
-Machine (singleton)
-  └── MachineDb
-        └── MachineScheme(collection)
-              ├── .template            → {index, presentation, fields, fks}
-              ├── .parse()             → all fields as IDbForge
-              ├── .field(name)         → MachineSchemeField.parse() → IDbForge
-              ├── .fieldForge(name, data) → MachineSchemeFieldForge (format, htmlInputType, etc.)
-              ├── .collectionValues    → MachineSchemeValues (format, getInputDataSet)
-              ├── .validator           → MachineSchemeValidate
-              ├── .parseFks()          → forward FK collections
-              └── .parseReverseFks()   → reverse FK collections
+```ts
+// Lifecycle
+machine.init({ core?, business?, org, domain, version, sync? })
+machine.start()           // schema local
+machine.fetchSchema(url)  // @framework-bootstrap — app shell only
+machine.destroy()
 
-machine.store[collection]   → reactive IdbqState (getAll, where, add, update, delete)
-machine.logic               → MachineDb instance
+// Getters
+machine.logic             → MachineDb (schema layer)
+machine.store[collection] → QoolieCollection (reactive CRUD)
+machine.rights            → MachineRights (RBAC)
+machine.sync              → qoolie sync controller
+machine.socket            → EventDataClientInstance
+machine.router            → SchemaRouter
+machine.framer            → MachineFrameManager  ← PAS frameManager (deprecated)
+machine.componentRegistry → ComponentRegistry
+
+// Helpers
+machine.collection(name)  → shorthand pour machine.store[name]
+machine.moduleDbName(base)
+machine.loadFrame(modulePath, collection, collectionId?, vars?, zone?)  // @deprecated — use machine.framer
+machine.loadIn(...)        // @deprecated
 ```
+
+**Règle absolue:** Jamais `import { machineFrameManager }` ou `import { componentRegistry }` dans les composants UI. Toujours `machine.framer` / `machine.componentRegistry`.
+
+### machine.init — paramètres
+
+```ts
+machine.init({
+    org: 'demo', domain: 'machine', version: 2,
+    core:     appModelDeclaration,  // collections système (optionnel — inclus par défaut)
+    business: demoScheme,           // collections métier
+    sync: { mode: 'server-first', databaseHost: 'http://localhost:3000' },
+})
+```
+
+- `core` = collections système (appscheme_*, appuser_*) — surcharge le baseline
+- `business` = collections métier (vehicle, reservation...)
+- `model` = @deprecated, alias de `business`
 
 ---
 
-## 5. Schema declaration — NEW format (use this)
+## 5. Schema declaration
 
 ```ts
 import { field } from '$lib/main/machine/fieldBuilder.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
 
-export const myModel = {
-  users: {
-    keyPath:  '++id',
-    model:    {},
-    ts:       {} as { id: string; name: string; email: string },
-    template: {
-      index:        'id',
-      presentation: 'name email',
-      fields: {
-        id:    field('id',    { readonly: true }),
-        name:  field('text',  { required: true }),
-        email: field('email', { required: true }),
-        role:  field('fk-role.id'),
-        notes: field('text-long'),
-        active: field('boolean'),
-      },
-      fks: {
-        role: { code: 'role', multiple: false }
-      }
+export const myModel: MachineModel = {
+    vehicle: {
+        keyPath: '++id',
+        base:    'machine_user',
+        model:   {},
+        ts:      {} as { id: string; brand: string; categoryId?: string },
+        fields: {
+            id:         field('id',           { readonly: true }),
+            brand:      field('text',         { required: true }),
+            categoryId: field('fk-category.id'),
+        },
+        fks: {
+            category: { code: 'category', multiple: false },
+        },
+        template: { presentation: 'brand model year' },
     }
-  }
-} satisfies IdbqModel;
+};
 ```
 
-**DEPRECATED** (still works, do not use for new code):
+**Field types:** `id` `text` `text-long` `text-area` `number` `boolean` `date` `datetime` `email` `password` `url` `phone` `currency` `image` `fk-collection.field` `schemelink` `array-of-text`
+
+---
+
+## 6. Structure UI — ÉTAT ACTUEL (2026-05-22)
+
+```
+src/lib/
+├── data-ui/              ← composants bas niveau, machine-aware
+│   ├── data/             → DataList, DataForm, DataFields, DataFk, DataRfk
+│   ├── field/            → FieldDisplay, FieldEditor
+│   ├── input/            → InputBoolean, InputSelect, InputEmail, InputCurrency, InputTextarea
+│   └── fragments/        → Confirm, Skeleton, InfoLine...
+│
+└── shell/
+    ├── Frame.svelte       ← mécanique frame (RACINE de shell, pas dans un sous-dossier)
+    ├── frame/             ← types de frames (contenu chargeable dans une Frame)
+    │   ├── explorer/      → Explorer.svelte, ExplorerCollections, ExplorerTableInline, explorerUtils
+    │   └── (à venir: synthese/, planning/, dashboard/)
+    └── layout/            ← structure UI statique
+        ├── App.svelte           → shell minimal: TaskBar + data-target-zone="main"
+        ├── TemplateShell.svelte → shell complet: sidebar + main + modal + window zones
+        ├── TaskBar.svelte
+        ├── CollectionNav.svelte
+        ├── DevResetPanel.svelte
+        └── Pane, PaneRight, PaneRecents...
+```
+
+**SUPPRIMÉS (ne plus référencer):**
+- `shell/card/` — supprimé. CardForm/CardPicker/CardFields/CardCreate/CardEdit = wrappers inutiles
+- `shell/explorer/` → maintenant `shell/frame/explorer/`
+- `shell/frame/Frame.svelte` → maintenant `shell/Frame.svelte`
+- `AppShell.svelte` → maintenant `TemplateShell.svelte`
+
+### Zones frame (data-target-zone)
+
+```
+data-target-zone="main"        → zone primaire (liste, form)
+data-target-zone="main.modal"  → overlay modal
+data-target-zone="main.window" → fenêtre flottante
+data-target-zone="main.panel"  → (à créer) panel latéral droit
+```
+
+Frame chargée dynamiquement — le dev place JUSTE `data-target-zone="main"` dans le DOM.
+`machine.loadFrame('explorer', 'vehicle')` monte `<Frame>` dans la zone automatiquement.
+
+### componentRegistry — entrées actuelles
+
 ```ts
-fields: {
-  name: 'text (required)',   // ← old world, deprecated
-}
+'explorer'             → shell/frame/explorer/Explorer.svelte
+'explorer.collections' → shell/frame/explorer/ExplorerCollections.svelte
+'card.form'            → data-ui/data/DataForm.svelte
+// à venir: 'synthese', 'planning', 'dashboard'
 ```
 
-### Field type reference
+### Hiérarchie composants
 
-| Type | HTML input | Notes |
-|------|-----------|-------|
-| `'id'` | hidden | readonly, auto-gen |
-| `'text'` | text | |
-| `'text-long'` | text | |
-| `'text-area'` | textarea | via InputTextarea |
-| `'text-short'` / `'text-medium'` | text | |
-| `'number'` | number | |
-| `'boolean'` | checkbox | via InputBoolean |
-| `'date'` | date | |
-| `'datetime'` | datetime-local | |
-| `'time'` | time | |
-| `'email'` | email | via InputEmail |
-| `'password'` | password | |
-| `'url'` | url | |
-| `'phone'` | tel | |
-| `'currency'` | text+format | via InputCurrency |
-| `'schemelink'` | — | polymorphic FK: `{ collection, collection_value, collection_vars? }` |
-| `'fk-collection.field'` | select | via InputSelect (FK-aware) |
-| `'array-of-text'` | — | no UI yet |
+```
+Explorer (frame type)
+  └── DataList / ExplorerTableInline
+        └── DataFields
+              └── FieldDisplay
+                    └── Input* atoms
+
+DataForm (frame type via card.form)
+  └── DataFields
+        └── FieldDisplay
+              └── Input* atoms
+```
+
+**Invariant:** data-ui/ ne dépend PAS de shell/. shell/ peut dépendre de data-ui/.
+Exception actuelle: `explorerUtils.ts` est dans `shell/frame/` mais importé par data-ui/ — BL-02 backlog.
 
 ---
 
-## 6. UI component hierarchy
+## 7. Seed & sync
 
-```
-src/lib/main-ui/
-├── explorer/    COLLECTION level — browse, list, filter
-│   ├── ExplorerCollections  iterates all collections from scheme
-│   ├── ExplorerList         records grid (was DataList)
-│   ├── ExplorerCard         visual card renderer (no machine logic)
-│   ├── ExplorerTable        visual table renderer (no machine logic)
-│   ├── ExplorerActions      menu list of records (was DataListActions)
-│   └── ExplorerFilter       filter bar (was FilterBar)
-│
-├── card/        RECORD level — CRUD, FK relations
-│   ├── CardForm             main form engine (was DataForm)
-│   ├── CardCreate           → CardForm mode="create"
-│   ├── CardEdit             → CardForm mode="update"
-│   ├── CardFields           iterates record fields → FieldDisplay (was DataListFields)
-│   ├── CardProvider         context provider (was DataProvider)
-│   ├── CardPicker           opens CardForm in window (was DataPicker)
-│   ├── CardFk               forward FK viewer (was DataLinks)
-│   └── CardRfk              reverse FK viewer (was DataLinksBack)
-│
-├── field/       FIELD level — atomic display/edit
-│   ├── FieldDisplay         dispatches to Input* atoms by fieldType
-│   └── FieldEditor          in-place edit wrapper
-│
-├── input/       INPUT atoms — type-specific, no machine logic
-│   ├── InputBoolean         checkbox
-│   ├── InputCurrency        formatted currency
-│   ├── InputEmail           email with validation
-│   ├── InputSelect          FK-aware select (queries machine.store)
-│   └── InputTextarea        resizable textarea
-│
-├── layout/      structural shells (no data)
-│   ├── AppShell, Navigation, Breadcrumb
-│
-└── fragments/   micro UI (no business logic)
-    ├── Confirm, Frame, InfoLine, Selector, Skeleton
+```ts
+// Server bootstrap (CLI)
+tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
+// → clear + schema + users + business data dans MongoDB
+
+// Runtime client
+machine.init({ sync: { mode: 'server-first', databaseHost: url } })
+// → qoolie sync ramène MongoDB → IDB automatiquement
+
+// Seed unifié (même API core et business)
+import { seed, seedIfEmpty } from '$lib/main/machineSeed.js';
+await seedIfEmpty({ vehicle: [...], category: [...] });
 ```
 
-**Invariant:** Explorer composes Cards. Card composes Fields. Field uses Inputs. No level skipping.
-
-### FieldDisplay dispatch table
-
-| fieldType | Component |
-|-----------|-----------|
-| `'id'` | `<input type="hidden">` |
-| `'fk-*'` | `InputSelect` (collection auto-extracted) |
-| `'boolean'` | `InputBoolean` |
-| `'email'` | `InputEmail` |
-| `'currency'` | `InputCurrency` |
-| `*area*` | `InputTextarea` |
-| everything else | `<input type={htmlInputType}>` |
+SyncMode: `'server-first'` (MongoDB = source de vérité) | `'mobile-first'` (IDB = source de vérité, futur)
 
 ---
 
-## 7. State of migration (2026-05-12)
+## 8. Invariants (ne pas casser)
 
-| Topic | Status |
-|-------|--------|
-| Component rename (explorer/card/field/input) | ✅ Done |
-| field() builder + TplFieldRulesObject in idae-idbql | ✅ Done |
-| MachineParserForge handles object rules | ✅ Done |
-| dbSchema.ts + demoScheme.ts migrated to field() | ✅ Done |
-| FieldDisplay dispatches by fieldType | ✅ Done |
-| MachineFieldType registry wired to format() | ✅ Done |
-| Rights / #checkAccess() implementation | ✅ Done |
-| FK show mode (display presentation, not raw id) | ✅ Done (FieldDisplay.svelte fkLabel) |
-
----
-
-## 8. Key invariants (do not break)
-
-1. `machine.init(opts)` then `machine.start()` before any store/logic access
-2. `MachineParserForge` must be pure — no I/O, no side effects
-3. `MachineDb` caches `MachineScheme` per collection — do not mutate cache
-4. All UI components: Svelte 5 runes only (`$state`, `$derived`, `$effect`)
-5. No `$:` reactive, no `onMount`, no `export let` for new components
-6. `idae-idbql` changes must be backward-compatible (other packages use it)
-7. String field rules still work — migration is progressive, do not bulk-convert
+1. `machine.init(opts)` puis `machine.start()` avant tout accès store/logic
+2. Tout passe par `machine.*` — pas d'imports directs des singletons internes
+3. `$state` dans `$effect` → utiliser `untrack()` autour des appels qui écrivent dans SvelteMap
+4. Svelte 5 runes uniquement (`$state`, `$derived`, `$effect`) — pas de `$:`, `onMount`, `export let`
+5. `MachineParserForge` = pur — pas d'I/O
+6. `Frame.svelte` est monté DYNAMIQUEMENT — jamais placé à la main dans le HTML
+7. `SvelteMap` dans `MachineFrameManager.registry` — register/unregister via `untrack()`
 
 ---
 
 ## 9. Dev commands
 
 ```bash
-pnpm run dev       # SvelteKit dev server
-pnpm run test      # vitest
-pnpm run check     # TypeScript check
-pnpm run build     # svelte-package build
+pnpm run dev             # SvelteKit dev server
+pnpm run test            # vitest (456 tests)
+pnpm run check           # TypeScript check (0 erreurs)
+pnpm run build           # svelte-package build
+
+# Server
+cd server && pnpm run dev
+tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 ```
 
 ---
 
-## 10. Files NOT to confuse
+## 10. Fichiers clés
 
-| File | What it is |
-|------|-----------|
-| `server/src/models/demo/demoScheme.ts` | Demo schema (rental car app) — canonical location |
-| `src/lib/demo/demoScheme.ts` | Re-export shim → server/src/models/demo/demoScheme.ts |
-| `src/lib/demo/dbSchema.ts` | App schema (chat/book creator) — migrated to field() |
-| `src/lib/types/idae-model-core.ts` | Meta-schema: appscheme_* collections definition |
-| `src/lib/types/schema-types.ts` | FieldList catalog + RBAC types |
-| `src/lib/types/machine-model.ts` | MachineModel / MachineCollectionModel / MachineFieldDef public types |
-| `server/src/MachineServer.ts` | Server singleton — start/stop/getModel/deployModel |
-| `ARCH-SOURCE.md` | Legacy architecture reference (READ ONLY — historical) |
-| `SCHEMA-CONVENTIONS.md` | Schema conventions: role flags, status codes, FieldList groups, has*Scheme mapping |
-| `bmad/` | Sprint planning artifacts (may be outdated) |
+| Fichier | Rôle |
+|---------|------|
+| `src/lib/main/machine.ts` | Singleton machine — lifecycle + getters |
+| `src/lib/main/machineModelBuilder.ts` | `buildEffectiveModel(core?, business?)` |
+| `src/lib/main/machineSchemaLoader.ts` | SWR schema fetch (@framework-bootstrap) |
+| `src/lib/main/machineIdbAdapter.ts` | IDB drift detection + upgrade |
+| `src/lib/main/machineSeed.ts` | `seed()` + `seedIfEmpty()` |
+| `src/lib/main/machine/MachineRights.ts` | RBAC — `loadPoliciesFromModel()` |
+| `src/lib/main/machine/MachineSocket.ts` | Socket client factory |
+| `src/lib/main/frame/MachineFrameManager.ts` | Registry frames (SvelteMap réactif) |
+| `src/lib/main/router/componentRegistry.ts` | 3 frame types enregistrés |
+| `src/lib/shell/Frame.svelte` | Mécanique frame — monté dynamiquement |
+| `src/lib/shell/frame/explorer/Explorer.svelte` | Frame: liste/table/card/actions |
+| `src/lib/shell/layout/App.svelte` | Shell minimal (TaskBar + zone main) |
+| `src/lib/shell/layout/TemplateShell.svelte` | Shell complet (sidebar + zones) |
+| `src/lib/types/idae-model-core.ts` | Collections système (appscheme_*, appuser_*) |
+| `src/lib/types/machine-model.ts` | MachineModel types publics |
+| `server/src/MachineServer.ts` | Server singleton |
+| `server/src/bootstrap/bootstrap-demo.ts` | CLI seed complet org demo |
+| `server/src/models/demo/demoScheme.ts` | Schéma + seed demo (13 collections) |
+| `bmad/status.yaml` | État sprints + backlog |
+
+**NE PAS CONFONDRE:**
+- `shell/Frame.svelte` (mécanique) ≠ `shell/frame/` (types de frames)
+- `TemplateShell` (shell complet avec sidebar) ≠ `App.svelte` (shell minimal sans sidebar)
+- `machine.framer` (correct) ≠ `machine.frameManager` (@deprecated)
+- `core` (collections système) ≠ `business` (collections métier)

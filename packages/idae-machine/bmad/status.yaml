@@ -1418,6 +1418,46 @@ sessions:
     tests_client: 274
     tests_client_total: 282
 
+# ── Backlog ───────────────────────────────────────────────────────────────────
+backlog:
+  - id: BL-01
+    title: "machine.init sync.seed — seedIfEmpty auto en mode mobile-first"
+    priority: high
+    description: >
+      Quand sync.mode = 'mobile-first', machine.start() appelle seedIfEmpty(sync.seed) automatiquement.
+      Pas un cas dev — c'est la logique local-first. Config: machine.init({ sync: { mode: 'mobile-first', seed: demoSeed } }).
+    sprint: "S32 ou suivant"
+
+  - id: BL-02
+    title: "explorerUtils.ts → data-ui/ — dépendance montante à corriger"
+    priority: medium
+    description: >
+      data-ui/ (DataList, DataFields, DataFk, DataRfk) importe sortItems/groupItems depuis shell/frame/.
+      Dépendance montante incorrecte. explorerUtils.ts doit migrer vers data-ui/utils/ ou data-ui/data/.
+
+  - id: BL-03
+    title: "machine.init.core — type compatible avec appModelDeclaration"
+    priority: low
+    description: >
+      appModelDeclaration a un wrapper { collections: {...} } incompatible avec MachineModel.
+      Soit exposer appModelDeclaration.collections as MachineModel, soit créer un helper coreFromDeclaration().
+      Permettrait de passer core explicitement dans machine.init() pour la clarté sémantique.
+
+  - id: BL-04
+    title: "shell/frame/index.ts — barrel à mettre à jour"
+    priority: low
+    description: >
+      index.ts dans shell/frame/ est l'ancien barrel de shell/explorer/. À vérifier/mettre à jour
+      pour refléter la nouvelle structure (explorer/ + card/).
+
+  - id: BL-05
+    title: "MachineDb réactif depuis IDB:appscheme — vision long terme"
+    priority: low
+    description: >
+      machine.logic (MachineDb) construit depuis TypeScript au start().
+      Vision: lire les appscheme rows depuis IDB → collections émergent de la sync.
+      Prerequis: IDB:appscheme toujours créé (system), sync ramène les rows.
+
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Réel vérifié 2026-05-17
 # Server vitest (server/): 79/79 green — 10 fichiers dont auth, dataReal, demo-*

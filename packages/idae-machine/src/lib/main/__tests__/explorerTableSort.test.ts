@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import Explorer from '../../shell/explorer/Explorer.svelte';
+import Explorer from '../../shell/frame/explorer/Explorer.svelte';
 
 describe('Explorer table mode', () => {
 	it('Explorer is defined', () => {

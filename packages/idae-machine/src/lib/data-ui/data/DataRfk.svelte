@@ -19,7 +19,7 @@ Reverse FK relation viewer — shows collections that point to this record.
 	import type { Where } from '@medyll/qoolie';
 	import type { SvelteComponent } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/shell/frame/explorerUtils.js';
 
 	let { collection, showTitle = false, component, componentProps = {}, sortBy, groupBy, children } = $props<{
 		collection: TplCollectionName;

@@ -15,7 +15,7 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
-	import CardForm from '$lib/shell/card/CardForm.svelte';
+	import DataForm from '$lib/data-ui/data/DataForm.svelte';
 	import ExplorerTableInline from './ExplorerTableInline.svelte';
 	import { machine } from '$lib/main/machine.js';
 
@@ -73,10 +73,6 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
 		machine.loadFrame('explorer', collection, String(id), { mode: 'card' });
 	}
-
-	function getFieldValue(item: Record<string, unknown>, fieldName: string): unknown {
-		return item[fieldName];
-	}
 </script>
 
 <!-- Mode switcher toolbar (hidden in card mode) -->
@@ -106,7 +102,7 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 {/if}
 
 {#if currentMode === 'card'}
-	<CardForm {collection} dataId={effectiveId} mode="update" />
+	<DataForm {collection} dataId={effectiveId} mode="update" />
 {:else if currentMode === 'actions'}
 	<DataList {collection} where={effectiveWhere}>
 		{#snippet children({ items })}
@@ -119,7 +115,7 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 						onclick={() => openCard(item as COL)}
 						onkeydown={(e) => e.key === 'Enter' && openCard(item as COL)}
 					>
-						{getFieldValue(item, actionLabel) ?? String(idx)}
+						{(item as Record<string, unknown>)[actionLabel] ?? String(idx)}
 					</li>
 				{/each}
 			</ul>
@@ -154,16 +150,7 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 									onkeydown={(e) => e.key === 'Enter' && openCard(item as COL)}
 								>
 									<div class="list-item-content">
-										{#if listFields.length > 0}
-											{#each listFields as fieldName}
-												<div class="field-row">
-													<span class="field-label">{fieldName.replace(/_/g, ' ')}:</span>
-													<span class="field-value">{getFieldValue(item, fieldName)}</span>
-												</div>
-											{/each}
-										{:else}
-											<DataFields {collection} data={item} mode="show" />
-										{/if}
+										<DataFields {collection} data={item as Record<string, any>} mode="show" showFields={listFields.length ? listFields : undefined} />
 									</div>
 								</li>
 							{/each}
@@ -181,16 +168,7 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 							onkeydown={(e) => e.key === 'Enter' && openCard(item as COL)}
 						>
 							<div class="list-item-content">
-								{#if listFields.length > 0}
-									{#each listFields as fieldName}
-										<div class="field-row">
-											<span class="field-label">{fieldName.replace(/_/g, ' ')}:</span>
-											<span class="field-value">{getFieldValue(item, fieldName)}</span>
-										</div>
-									{/each}
-								{:else}
-									<DataFields {collection} data={item} mode="show" />
-								{/if}
+								<DataFields {collection} data={item as Record<string, any>} mode="show" showFields={listFields.length ? listFields : undefined} />
 							</div>
 						</li>
 					{/each}
@@ -263,19 +241,6 @@ Unified collection browser — single component replacing ExplorerList/Table/Car
 	}
 
 	.explorer-group { margin-bottom: var(--gutter-md); }
-
-	.field-row {
-		display: flex;
-		gap: var(--gutter-sm);
-		padding: 2px 0;
-	}
-	.field-label {
-		font-weight: var(--font-medium, 500);
-		color: var(--color-text-muted, #666);
-		min-width: 80px;
-		text-transform: capitalize;
-	}
-	.field-value { flex: 1; }
 
 	.action-list {
 		list-style: none;

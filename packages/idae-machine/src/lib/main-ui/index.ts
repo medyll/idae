@@ -2,10 +2,8 @@
 // Hierarchy: explorer → card → field → input
 
 // Explorer: collection-level browser components (moved to shell/)
-export * from '../shell/explorer/index.js';
+export * from '../shell/frame/index.js';
 
-// Card: record-level components (CRUD, relations, context) (moved to shell/)
-export * from '../shell/card/index.js';
 
 // Layout: structural shells (no data) (moved to shell/)
 export * from '../shell/layout/index.js';

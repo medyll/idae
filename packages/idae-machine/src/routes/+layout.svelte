@@ -8,6 +8,7 @@
 
 	machine.init({
 		org: 'demo', domain: 'machine', version: 2,
+		// core: appModelDeclaration — déjà inclus par défaut dans buildEffectiveModel
 		business: demoScheme,
 		sync: {
 			mode: 'server-first',

@@ -1,12 +1,12 @@
 <script lang="ts">
 	/**
-	 * AppShell — Universal frame template.
+	 * TemplateShell — Universal frame template.
 	 * Accepts three named snippets (navbar, sidebar, content) with operational defaults.
 	 */
 
 	import type { Snippet } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	import Frame from '$lib/shell/frame/Frame.svelte';
+	import Frame from '$lib/shell/Frame.svelte';
 	import DevResetPanel from './DevResetPanel.svelte';
 	import CollectionNav from './CollectionNav.svelte';
 

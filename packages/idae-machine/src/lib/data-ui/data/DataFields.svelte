@@ -13,7 +13,7 @@ Iterates a record's fields and renders FieldDisplay for each.
 	import type { Snippet } from 'svelte';
 	import FieldDisplay from '$lib/data-ui/field/FieldDisplay.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/shell/frame/explorerUtils.js';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { getContext } from 'svelte';
 

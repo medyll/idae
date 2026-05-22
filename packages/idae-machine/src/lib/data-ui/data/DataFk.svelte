@@ -15,7 +15,7 @@ Forward FK relation viewer — shows collections this record points to.
 	import type { Where } from '@medyll/qoolie';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/shell/frame/explorerUtils.js';
 
 	let { collection, collectionId, where, sortBy, groupBy, children } = $props<{
 		collection: TplCollectionName;

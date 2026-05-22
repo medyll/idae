@@ -14,7 +14,7 @@ Pure data provider — fetches records, applies sort/group/page, exposes via sni
 	import type { Snippet } from 'svelte';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/shell/explorer/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/shell/frame/explorerUtils.js';
 
 	interface PaginationInfo {
 		page: number;

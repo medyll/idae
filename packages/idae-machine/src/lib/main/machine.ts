@@ -422,7 +422,7 @@ export class Machine {
 				if (!target) return;
 				// Dynamic import breaks circular dependency machine ↔ Frame
 				const { mount } = await import('svelte');
-				const { default: Frame } = await import('$lib/shell/frame/Frame.svelte');
+				const { default: Frame } = await import('$lib/shell/Frame.svelte');
 				mount(Frame as any, { target, props: { id: frameId } });
 			}
 		);

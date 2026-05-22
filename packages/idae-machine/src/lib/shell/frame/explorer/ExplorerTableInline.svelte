@@ -67,22 +67,25 @@ Internal component, not exported.
 	}
 </script>
 
-<table class="collection-table">
+<table class="sortable">
 	<thead>
-		<tr>
+		<tr class="entete">
 			{#each columns as col}
-				<th class="sortable" onclick={() => toggleSort(col)}>
-					{col}
-					<span class="sort-arrow">{sortIndicator(col)}</span>
+				<th
+					class:sortheaderSorted={sortColumn === col}
+					onclick={() => toggleSort(col)}
+				>
+					{col.replace(/_/g, ' ')}
+					<span class="sortarrow">{sortIndicator(col)}</span>
 				</th>
 			{/each}
 		</tr>
 	</thead>
 	<tbody>
-		{#each sortedItems as item ((item as Record<string, unknown>).id)}
-			<tr onclick={() => openCard(item)} style="cursor: pointer;">
+		{#each sortedItems as item, i ((item as Record<string, unknown>).id ?? i)}
+			<tr onclick={() => openCard(item)}>
 				{#each columns as col}
-					<td>{(item as Record<string, unknown>)[col]}</td>
+					<td>{(item as Record<string, unknown>)[col] ?? ''}</td>
 				{/each}
 			</tr>
 		{/each}
@@ -90,10 +93,71 @@ Internal component, not exported.
 </table>
 
 <style>
-	.collection-table { width: 100%; border-collapse: collapse; }
-	.collection-table th, .collection-table td { border: 1px solid var(--color-border); padding: 8px; }
-	.collection-table th { background: var(--color-surface); text-align: left; }
-	.collection-table th.sortable { cursor: pointer; user-select: none; }
-	.collection-table th.sortable:hover { background: var(--color-surface-hover, #eee); }
-	.sort-arrow { margin-left: 0.25rem; font-size: 0.75em; opacity: 0.6; }
+	table.sortable {
+		width: 100%;
+		border-collapse: collapse;
+		position: relative;
+		font-size: var(--text-sm, 0.875rem);
+	}
+
+	/* ── Header ── */
+	table.sortable tr.entete th {
+		color: var(--color-text, #333);
+		height: 2.4em;
+		line-height: 2.4em;
+		cursor: pointer;
+		user-select: none;
+		overflow: hidden;
+		background-color: var(--color-surface, #fafafa);
+		white-space: nowrap;
+		border-right: 1px solid var(--color-border, #e0e0e0);
+		border-top: 1px solid var(--color-border, #e9e9e9);
+		border-bottom: 1px solid var(--color-border, #ededed);
+		vertical-align: middle;
+		text-overflow: ellipsis;
+		padding: 0 0.6em;
+		text-align: left;
+		text-transform: capitalize;
+		font-weight: var(--font-medium, 500);
+		position: relative;
+	}
+	table.sortable tr.entete th:hover {
+		background-color: #D1E8FF;
+	}
+	table.sortable .sortheaderSorted {
+		background-color: #D1E8FF !important;
+	}
+	.sortarrow {
+		font-size: 0.7em;
+		opacity: 0.6;
+		margin-left: 0.3em;
+	}
+
+	/* ── Body rows ── */
+	table.sortable tbody tr {
+		cursor: pointer;
+	}
+	table.sortable tbody td {
+		white-space: nowrap;
+		line-height: 22px;
+		min-height: 22px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 200px;
+		border-bottom: 1px solid var(--color-border, #ededed);
+		padding: 0 0.5em;
+		color: var(--color-text);
+	}
+	table.sortable tbody tr:hover td {
+		background-color: #E4F0FB !important;
+		box-shadow: 0 1px 0 0 #ccc inset, 0 -1px 0 0 #ccc inset;
+	}
+
+	/* Zebra — groupes de 5 */
+	table.sortable tbody tr:nth-child(5n+3) td {
+		background-color: var(--color-surface, #f5f5f5);
+	}
+	table.sortable tbody tr:nth-child(5n+5) td {
+		border-bottom: 1px solid #ccc;
+	}
 </style>
