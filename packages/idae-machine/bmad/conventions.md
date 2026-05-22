@@ -99,3 +99,22 @@ pnpm run lint    # Prettier check
 - Champ schema : `field('image', { presets: ['thumb', 'banner'], free: false })`
 - Focus point : `FileMeta.image.focus` réservé pour crop intelligent futur (UI focus-pin)
 - Endpoint : `PATCH /api/files/:fileId/focus` body `{ x, y }` (0..1 normalisés)
+
+## DataList snippet API (S32 — 2026-05-23)
+
+`DataList` is **data provider + renderer**. Consumer provides named snippets, DataList owns the loop and the `<ul>` wrapper.
+
+**Props:**
+- `collection`, `where?`, `sortBy?`, `groupBy?`, `pageSize?`, `page?`
+- `listClass?` → CSS class on `<ul>`
+- `groupClass?` → CSS class on group wrapper `<div>`
+
+**Snippets:**
+- `item({ record, idx, fieldValues })` — REQUIRED. Renders one `<li>` per record.
+- `groupHeader?({ key, count })` — group section header (when `groupBy` set).
+- `empty?()` — empty state placeholder.
+- `footer?({ pagination })` — pagination/footer block.
+
+**Pitfall — scoped CSS:** styles applied via `listClass`/`groupClass` live on elements rendered by DataList, not by the parent. Svelte scopes parent CSS, so selectors like `.explorer-group` won't match. Use `:global(.explorer-group) { … }` in parent `<style>`, or move to `app.css`.
+
+**Old API (`children({ items, groups, pagination })`) removed.** Migrate by extracting the inner `<li>` markup into the `item` snippet and moving wrapper class to `listClass`.

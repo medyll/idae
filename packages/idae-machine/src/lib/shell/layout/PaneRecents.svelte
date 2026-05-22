@@ -67,7 +67,7 @@
 </div>
 
 <style>
-	.pane-recent-group { margin-bottom: var(--gutter-md); }
+	:global(.pane-recent-group) { margin-bottom: var(--gutter-md); }
 	.list-item.btn-ghost {
 		width: 100%;
 		justify-content: space-between;

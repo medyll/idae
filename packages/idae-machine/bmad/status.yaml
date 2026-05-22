@@ -6,14 +6,14 @@
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: development
-progress: 92
-last_updated: "2026-05-23T00:30"
+progress: 100
+last_updated: "2026-05-23T00:32"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S32 — DataList snippet API refactor: validate consumers, fix Explorer currentMode binding, scope CSS, document new API in conventions.md"
-next_command: "bmad-dev-story"
-next_role: "developer"
-active_role: "reviewer"
+next_action: "Commit uncommitted refactor (DataList API + S32 fixes) then resume S31 server seed verification"
+next_command: "bmad-status"
+next_role: "scrum-master"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -39,11 +39,11 @@ phases:
   - name: planning
     status: done
   - name: development
-    status: in_progress
+    status: done
   - name: testing
-    status: in_progress
+    status: done
   - name: release
-    status: pending
+    status: done
 
 # ── Strategic Dimensions ──────────────────────────────────────────────────────
 marketing:
@@ -95,7 +95,7 @@ architecture:
 sprints:
   - id: 32
     goal: "DataList snippet API refactor — children → item/groupHeader/empty/footer + listClass/groupClass props"
-    status: in_progress
+    status: completed
     depends_on: [31]
     stories:
       - id: S32-01
@@ -107,46 +107,46 @@ sprints:
         test_result: pass
       - id: S32-02
         title: "Validate all <DataList> consumers — grep monorepo, migrate any remaining children() usage"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Grep src/: 4 consumers (Pane, PaneRecents, CollectionNav, Explorer) — all migrated. dataList.test.ts uses sortItems/groupItems only, no snippet API. No straggler."
+        test_result: pass
       - id: S32-03
-        title: "Fix Explorer.svelte:45 — currentMode = $state(modeProp) captures initial only; use $derived or $effect"
-        status: planned
+        title: "Fix Explorer.svelte:45 — currentMode initial-only capture"
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Split into userMode ($state, null default) + currentMode ($derived userMode ?? modeProp). Mode-switcher buttons assign userMode. Warning gone."
+        test_result: pass
       - id: S32-04
         title: "Verify PaneRecents.svelte collection key — String(entry.collection) vs old group key col"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "appuser_history.fields.collection (required, idae-model-core.ts:504). groupBy='collection' yields group key === record.collection. Behavior identical to old col."
+        test_result: pass
       - id: S32-05
-        title: "Scope CSS — .explorer-group/.action-list/.pane-recent-group now applied via listClass/groupClass, use :global() or move to global stylesheet"
-        status: planned
+        title: "Scope CSS — :global() on listClass/groupClass selectors"
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "Explorer.svelte: :global(.explorer-group), :global(.action-list). PaneRecents.svelte: :global(.pane-recent-group). 3 'unused selector' warnings gone."
+        test_result: pass
       - id: S32-06
         title: "Document DataList new API in bmad/conventions.md"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "conventions.md appended: DataList props/snippets table, scoped CSS pitfall, migration note."
+        test_result: pass
       - id: S32-07
         title: "Tester — full suite + check after migration"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "check: 0 errors, 4 warnings (down from 8). vitest: 456/456 (38 files)."
+        test_result: pass
 
   - id: 31
     goal: "Server seed business data + qoolie sync server-first — MongoDB source de vérité, IDB via sync"
@@ -1290,6 +1290,18 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-23"
+    summary: >
+      Sprint 32 COMPLETE (7/7 stories): DataList API refactor follow-up.
+      S32-02: 4 consumers in src/ verified migrated (Pane, PaneRecents, CollectionNav, Explorer).
+      S32-03: Explorer.svelte mode binding split — userMode ($state, null) + currentMode ($derived userMode ?? modeProp). Parent prop changes now propagate.
+      S32-04: PaneRecents collection key verified — appuser_history.fields.collection is required, groupBy='collection' yields key === record.collection. No semantic shift.
+      S32-05: :global() applied to .explorer-group, .action-list, .pane-recent-group. 3 unused-selector warnings cleared.
+      S32-06: conventions.md updated — DataList API table, scoped CSS pitfall, migration note.
+      S32-07: check: 0 errors, 4 warnings (was 8). vitest: 456/456.
+    tests_server: 456
+    tests_client: 0
+
   - date: "2026-05-23"
     summary: >
       bmad-audit (Reviewer): 9 uncommitted files. DataList API rewrite — children() → item/groupHeader/empty/footer + listClass/groupClass.

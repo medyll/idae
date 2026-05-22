@@ -42,7 +42,8 @@ Unified collection browser — list/table/card/actions modes.
 	} = $props();
 
 	const effectiveId      = $derived(collectionId ?? dataId);
-	let currentMode        = $state<'list' | 'table' | 'card' | 'actions'>(modeProp);
+	let userMode           = $state<'list' | 'table' | 'card' | 'actions' | null>(null);
+	const currentMode      = $derived(userMode ?? modeProp);
 	let currentPage        = $state(1);
 
 	const effectiveWhere   = $derived(whereProp ?? undefined);
@@ -72,9 +73,9 @@ Unified collection browser — list/table/card/actions modes.
 {#if currentMode !== 'card'}
 	<div class="explorer-toolbar">
 		<div class="mode-switcher">
-			<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => { currentMode = 'list';    currentPage = 1; }}>List</button>
-			<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => { currentMode = 'table';   currentPage = 1; }}>Table</button>
-			<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => { currentMode = 'actions'; currentPage = 1; }}>Actions</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => { userMode = 'list';    currentPage = 1; }}>List</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => { userMode = 'table';   currentPage = 1; }}>Table</button>
+			<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => { userMode = 'actions'; currentPage = 1; }}>Actions</button>
 		</div>
 	</div>
 {/if}
@@ -179,9 +180,9 @@ Unified collection browser — list/table/card/actions modes.
 	}
 	.mode-btn:hover:not(.active) { background: var(--color-hover); }
 
-	.explorer-group { margin-bottom: var(--gutter-md); }
+	:global(.explorer-group) { margin-bottom: var(--gutter-md); }
 
-	.action-list {
+	:global(.action-list) {
 		list-style: none;
 		margin: 0;
 		padding: 0;
