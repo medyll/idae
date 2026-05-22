@@ -1,6 +1,6 @@
 /**
  * CLI entry — deploy engine + user model into Mongo {org}_machine_app.
- * Usage: tsx server/src/bootstrap/seed.ts [org] [mongoUri]
+ * Usage: tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
  *
  * Defaults: org=demo  mongoUri from server/.env MONGODB_URI
  */
@@ -14,8 +14,9 @@ dotenv({ path: serverEnv });
 
 import { clearCollections, seedEngineRegistries, deployModel } from './deployModel.js';
 import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
-import { demoScheme } from '../models/demo/demoScheme.js';
+import { demoScheme, demoSeed } from '../models/demo/demoScheme.js';
 import { seedUsers } from './seedUsers.js';
+import { seedBusinessData } from './seedBusinessData.js';
 import { seedImagePresets } from './seedImagePresets.js';
 import mongoose from 'mongoose';
 
@@ -40,10 +41,11 @@ await appConn.asPromise();
 await seedImagePresets(appConn);
 await appConn.close();
 
-console.log(`[5/5] Seeding demo users + grants into ${org}_machine_user`);
+console.log(`[5/6] Seeding demo users + grants + business data into ${org}_machine_user`);
 const conn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
 await conn.asPromise();
 await seedUsers(conn);
+await seedBusinessData(demoSeed, conn);
 await conn.close();
 
 console.log(`[6/6] Done.`);

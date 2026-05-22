@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
+	import type { Snippet } from 'svelte';
+
+	let { devSlot }: { devSlot?: Snippet } = $props();
 
 	let openFrames = $derived(machine.framer.openFrames);
 
 	function openExplorer() {
-		machine.loadFrame('explorer', 'appscheme');
+		machine.loadFrame('explorer', 'vehicle');
 	}
 </script>
 
@@ -32,8 +35,11 @@
 		{/each}
 	</div>
 
-	<!-- Right: user / settings (mock) -->
+	<!-- Right: dev panel slot + icons -->
 	<div class="taskbar-right">
+		{#if devSlot}
+			{@render devSlot()}
+		{/if}
 		<button type="button" class="taskbar-icon" title="Settings (mock)">⚙</button>
 		<button type="button" class="taskbar-icon" title="User (mock)">👤</button>
 	</div>
@@ -49,14 +55,12 @@
 		border-bottom: var(--border-width) solid var(--color-border);
 		overflow-x: auto;
 	}
-
 	.taskbar-left {
 		display: flex;
 		align-items: center;
 		gap: 4px;
 		flex-shrink: 0;
 	}
-
 	.taskbar-frames {
 		display: flex;
 		align-items: center;
@@ -64,20 +68,17 @@
 		flex: 1;
 		overflow-x: auto;
 	}
-
 	.taskbar-right {
 		display: flex;
 		align-items: center;
 		gap: 4px;
 		flex-shrink: 0;
 	}
-
 	.taskbar-item {
 		display: flex;
 		align-items: center;
 		gap: 2px;
 	}
-
 	.taskbar-btn {
 		padding: 4px 12px;
 		border: 1px solid var(--color-border);
@@ -88,23 +89,17 @@
 		border-radius: var(--radius-sm);
 		white-space: nowrap;
 	}
-
 	.taskbar-btn--primary {
 		background: var(--color-primary, #4f46e5);
 		color: #fff;
 		border-color: transparent;
 		font-weight: 600;
 	}
-
-	.taskbar-btn:hover {
-		background: var(--color-hover);
-	}
-
+	.taskbar-btn:hover { background: var(--color-hover); }
 	.taskbar-btn--primary:hover {
 		opacity: 0.9;
 		background: var(--color-primary, #4f46e5);
 	}
-
 	.taskbar-close {
 		padding: 2px 6px;
 		border: none;
@@ -115,18 +110,12 @@
 		line-height: 1;
 		border-radius: var(--radius-sm);
 	}
-
-	.taskbar-close:hover {
-		background: var(--color-danger);
-		color: white;
-	}
-
+	.taskbar-close:hover { background: var(--color-danger); color: white; }
 	.taskbar-empty {
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
 		padding: 4px 8px;
 	}
-
 	.taskbar-icon {
 		padding: 4px 8px;
 		border: none;
@@ -135,8 +124,5 @@
 		font-size: 1rem;
 		border-radius: var(--radius-sm);
 	}
-
-	.taskbar-icon:hover {
-		background: var(--color-hover);
-	}
+	.taskbar-icon:hover { background: var(--color-hover); }
 </style>

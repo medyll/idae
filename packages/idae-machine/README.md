@@ -339,10 +339,10 @@ await machineServer.stop();
 
 ```bash
 # Deploy schema + seed users (admin/user/viewer) into MongoDB
-tsx server/src/bootstrap/seed.ts [org] [mongoUri]
+tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
 
 # Example
-tsx server/src/bootstrap/seed.ts demo mongodb://localhost:27017
+tsx server/src/bootstrap/bootstrap-demo.ts demo mongodb://localhost:27017
 ```
 
 Default seeded users (`{org}_machine_user`):

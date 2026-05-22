@@ -6,7 +6,9 @@ import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
 import { clearCollections, seedEngineRegistries, deployModel } from '../bootstrap/deployModel.js';
 import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
+import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
 import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
+import { demoSeed } from '../models/demo/demoScheme.js';
 import { config } from '../config.js';
 import { mongooseConnectionManager } from '@medyll/idae-api';
 
@@ -68,6 +70,7 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 			const userConn = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_user`);
 			await seedImagePresets(appConn);
 			await seedUsers(userConn);
+			await seedBusinessData(demoSeed, userConn);
 			results.seed = 'ok';
 			logger.info(`[admin/reset] seed done for org="${org}"`);
 		} else {

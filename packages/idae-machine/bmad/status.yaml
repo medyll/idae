@@ -10,7 +10,7 @@ progress: 100
 last_updated: "2026-05-21T20:05"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Plan Sprint 31 — seed demoScheme data + tester chain complète Explorer→Card en browser"
+next_action: "Lancer seed.ts (pnpm tsx server/src/bootstrap/seed.ts) pour peupler MongoDB + tester chain browser"
 next_command: "bmad-status"
 next_role: "scrum-master"
 active_role: "developer"
@@ -93,6 +93,41 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 31
+    goal: "Server seed business data + qoolie sync server-first — MongoDB source de vérité, IDB via sync"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s31-planned.md"
+    depends_on: [29, 30]
+    stories:
+      - id: S31-01
+        title: "seedBusinessData(demoSeed) côté serveur — MongoDB si vide"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S31-02
+        title: "machine.init sync server-first dans +layout.svelte"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S31-03
+        title: "Retirer seedIfEmpty du layout"
+        status: planned
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S31-04
+        title: "Tests integration server seed + vérification sync"
+        status: planned
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 30
     goal: "machine.init({ core, business }) + seed unifié — une déclaration, un seed, un pipeline pour toutes collections"
     status: completed
