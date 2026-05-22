@@ -6,7 +6,27 @@
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: development (S27 complete)
+  Progress   [█████████░] 92%    Phase: development (S32 — DataList API refactor in progress)
+
+### Active Sprint — S32
+
+  | Story | Status | Description |
+  |-------|--------|-------------|
+  | S32-01 | ✅ done    | Fix componentRegistryEntries.test.ts (2 entries) |
+  | S32-02 | 🔜 planned | Validate all <DataList> consumers across monorepo |
+  | S32-03 | 🔜 planned | Fix Explorer.svelte:45 currentMode initial-only binding |
+  | S32-04 | 🔜 planned | Verify PaneRecents collection key semantics |
+  | S32-05 | 🔜 planned | Scope CSS — listClass/groupClass kills :scoped selectors |
+  | S32-06 | 🔜 planned | Document new DataList API in conventions.md |
+  | S32-07 | 🔜 planned | Full test suite + check verification |
+
+### Audit Findings (2026-05-23)
+
+  - **C1** ✅ Fixed: componentRegistryEntries test (was 2/456 failing)
+  - **I2** Open: grep <DataList> consumers, migrate stragglers
+  - **I3** Open: `let currentMode = $state(modeProp)` — initial capture only
+  - **I4** Open: PaneRecents — `String(entry.collection)` may diverge from old group key
+  - **M1-M3** Open: scoped CSS unused due to class prop forwarding
 
 ### Features & Capabilities
 

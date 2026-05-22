@@ -6,8 +6,8 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('explorer')).toBe(true);
 	});
 
-	it('has "explorer.collections" registered', () => {
-		expect(componentRegistry.has('explorer.collections')).toBe(true);
+	it('does NOT have "explorer.collections" (removed — CollectionNav handles sidebar nav)', () => {
+		expect(componentRegistry.has('explorer.collections')).toBe(false);
 	});
 
 	it('has "card.form" registered pointing to DataForm', () => {
@@ -27,13 +27,12 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('explorer.card')).toBe(false);
 	});
 
-	it('has exactly 3 entries', () => {
+	it('has exactly 2 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(3);
+		expect(keys).toHaveLength(2);
 		expect(keys.sort()).toEqual([
 			'card.form',
 			'explorer',
-			'explorer.collections',
 		]);
 	});
 });
