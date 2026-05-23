@@ -6,7 +6,7 @@ import { config } from '../config.js';
 
 const storage = multer.diskStorage({
 	destination(req, _file, cb) {
-		const { collection, recordId } = req.params;
+		const { collection, recordId } = req.params as { collection: string; recordId: string };
 		const org = (req as any).org ?? 'default';
 		const dir = path.join(config.filesRoot, org, collection, recordId);
 		fs.mkdirSync(dir, { recursive: true });

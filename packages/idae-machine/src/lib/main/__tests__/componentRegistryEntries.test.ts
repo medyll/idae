@@ -27,12 +27,22 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('explorer.card')).toBe(false);
 	});
 
-	it('has exactly 2 entries', () => {
+	it('has "rbac.matrix" registered', () => {
+		expect(componentRegistry.has('rbac.matrix')).toBe(true);
+	});
+
+	it('has "fullinfo" registered', () => {
+		expect(componentRegistry.has('fullinfo')).toBe(true);
+	});
+
+	it('has exactly 4 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(2);
+		expect(keys).toHaveLength(4);
 		expect(keys.sort()).toEqual([
 			'card.form',
 			'explorer',
+			'fullinfo',
+			'rbac.matrix',
 		]);
 	});
 });

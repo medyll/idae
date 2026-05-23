@@ -95,6 +95,7 @@ export class MachineScheme {
 
 	/** Entity views from appscheme_view (listView, miniView, formView, fkLabelView). */
 	get views(): Partial<EntityViews> | undefined {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return (this.#collectionModel as any)?._views ?? undefined;
 	}
 

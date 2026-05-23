@@ -50,8 +50,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			return tokens
 				.map((token: string) => {
 					// Dot notation: 'fks.firm.name', 'address.city', etc.
-					const value = token.split('.').reduce<unknown>(
-						(acc, key) => (acc != null && typeof acc === 'object') ? (acc as any)[key] : undefined,
+				const value = token.split('.').reduce<unknown>(
+					(acc, key) => (acc != null && typeof acc === 'object') ? (acc as Record<string, unknown>)[key] : undefined,
 						data,
 					);
 					if (value === null || value === undefined) return '';

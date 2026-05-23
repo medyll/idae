@@ -34,7 +34,7 @@ function buildField(name: string, rules: { required?: boolean; readonly?: boolea
 	return def;
 }
 
-function buildCollection(decl: Record<string, any>): MachineCollectionModel {
+function buildCollection(decl: Record<string, unknown>): MachineCollectionModel {
 	const fields: Record<string, MachineFieldDef> = {};
 	const fks:    Record<string, MachineFkDef>    = {};
 
@@ -43,7 +43,7 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 		fields[name] = buildField(name, rules);
 	}
 
-	const declFks = (decl.fks ?? {}) as Record<string, any>;
+	const declFks = (decl.fks ?? {}) as Record<string, { code?: string; multiple?: boolean; required?: boolean }>;
 	for (const [fkKey, fkDef] of Object.entries(declFks)) {
 		fks[fkKey] = {
 			code:     fkDef.code ?? fkKey,
@@ -52,13 +52,14 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 		};
 	}
 
-	const template: MachineDisplayTemplate = { ...(decl.template ?? {}) };
+	const template: MachineDisplayTemplate = { ...(decl.template as Record<string, unknown> ?? {}) };
 
 	return {
 		keyPath:  '++id',
 		base:     (decl.base as string | undefined) ?? ENGINE_BASE,
-		rights:   decl.rights  as any ?? undefined,
-		isType:   decl.isType  as boolean | undefined,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		rights:   decl.rights as any ?? undefined,
+		isType:   decl.isType as boolean | undefined,
 		isGroup:  decl.isGroup as boolean | undefined,
 		isStatus: decl.isStatus as boolean | undefined,
 		model:    {},
@@ -71,7 +72,7 @@ function buildCollection(decl: Record<string, any>): MachineCollectionModel {
 export function buildEngineModel(): MachineModel {
 	const model: MachineModel = {};
 	for (const [name, decl] of Object.entries(appModelDeclaration.collections)) {
-		model[name] = buildCollection(decl as Record<string, any>);
+		model[name] = buildCollection(decl as Record<string, unknown>);
 	}
 	return model;
 }

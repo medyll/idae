@@ -22,7 +22,7 @@ class MachineRights {
 		if (!model) return;
 		const policies: Record<string, MachineRightsPolicy> = {};
 		for (const [name, col] of Object.entries(model)) {
-			if ((col as any).rights) policies[name] = (col as any).rights;
+			if ('rights' in col && col.rights) policies[name] = col.rights;
 		}
 		this.#policies = policies;
 	}
@@ -94,7 +94,7 @@ class MachineRights {
 			if (grant.revokedAt) return false;
 			if (grant.validFrom && new Date(grant.validFrom as string) > now) return false;
 			if (grant.validUntil && new Date(grant.validUntil as string) < now) return false;
-			const schemeCode = (grant.gridFks as Record<string, any>)?.appscheme?.code as string | undefined;
+			const schemeCode = (grant.gridFks as Record<string, Record<string, unknown>>)?.appscheme?.code as string | undefined;
 			if (schemeCode && schemeCode !== collection && schemeCode !== '*') return false;
 			return grant[permField] === true;
 		});

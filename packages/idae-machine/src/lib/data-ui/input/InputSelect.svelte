@@ -36,7 +36,7 @@ FK-aware select input atom. Queries machine store for related collection records
 	}
 
 	const scheme     = $derived(safeScheme());
-	const indexField = $derived(scheme?.template?.index ?? 'id');
+	const indexField = $derived((scheme?.template?.index ?? 'id') as string);
 	const fkLabelFields = $derived(
 		(scheme?.views?.fkLabelView ?? []).map(f => f.name)
 	);
@@ -56,7 +56,7 @@ FK-aware select input atom. Queries machine store for related collection records
 </script>
 
 {#if multiple}
-	<select multiple bind:value={value as any} {id} {name} {form} {disabled} style="width:100%;">
+	<select multiple bind:value={value as string[]} {id} {name} {form} {disabled} style="width:100%;">
 		{#each items as item (item[indexField])}
 			<option value={item[indexField]}>{getLabel(item)}</option>
 		{/each}

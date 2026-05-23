@@ -294,7 +294,7 @@ export class MachineSchemeValidate {
 		const typeDef = MachineSchemeFieldType.getFieldType(type ?? 'any');
 		if (typeDef && typeDef.validator) {
 			const res = typeDef.validator(value, ctx);
-			if (res && typeof (res as any)?.then === 'function') {
+			if (res && typeof (res as Promise<unknown>)?.then === 'function') {
 				return (await res) as boolean;
 			}
 			return Boolean(res);

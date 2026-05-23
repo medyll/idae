@@ -45,19 +45,7 @@ export async function sendTemplateEndpoint(req: Request, res: Response): Promise
 }
 
 export function registerMailRoutes(): void {
-	idaeApi.router.addRoute({
-		method: 'post',
-		path:   '/api/mail/send',
-		handler: sendMailEndpoint,
-		middleware: [requireRole('admin')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'post',
-		path:   '/api/mail/template',
-		handler: sendTemplateEndpoint,
-		middleware: [requireRole('admin')],
-	});
-
+	idaeApi.app.post('/api/mail/send',     requireRole('admin') as any, sendMailEndpoint as any);
+	idaeApi.app.post('/api/mail/template', requireRole('admin') as any, sendTemplateEndpoint as any);
 	logger.info('Mail routes registered');
 }

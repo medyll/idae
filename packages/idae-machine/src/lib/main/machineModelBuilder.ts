@@ -17,6 +17,7 @@ import type { MachineModel } from '$lib/types/machine-model.js';
 export function buildEffectiveModel(core?: MachineModel, business?: MachineModel): MachineModel {
 	const system: MachineModel = {};
 	for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		system[name] = { keyPath: '++id', ...(col as any) };
 	}
 	return { ...system, ...(core ?? {}), ...(business ?? {}) };

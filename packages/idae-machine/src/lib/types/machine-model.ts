@@ -66,7 +66,7 @@ export interface MachineDisplayTemplate {
 	indexes?:      Array<string | { fields: string[]; unique?: boolean; sparse?: boolean }>;
 	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
 	sort?:         SortBy[];
-	[key: string]: any;
+	[key: string]: unknown;
 }
 
 // ── Rights policy ─────────────────────────────────────────────────────────────
@@ -108,7 +108,7 @@ export interface MachineCollectionModel<T = any> {
 	isGroup?:  boolean;
 	isStatus?: boolean;
 	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
-	model?:    any;
+	model?:    unknown;
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────
@@ -154,7 +154,7 @@ export type IDbForge = {
 	fieldType?:  TplFieldType;
 	fieldRule?:  TplFieldRules;
 	fieldArgs?:  string[] | undefined;
-	is:          any;
+	is:          'array' | 'object' | 'fk' | 'primitive';
 	/** Image field options (when fieldType === 'image') */
 	presets?:    string[];
 	preset?:     string;

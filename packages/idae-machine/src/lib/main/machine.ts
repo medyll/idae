@@ -41,7 +41,7 @@ export class Machine {
 	 * Reactive store proxy — wraps qoolie collections with Svelte 5 $state.
 	 * Lazily created on first store access after start().
 	 */
-	_reactiveStore?: Record<string, QoolieCollection<any>>;
+	_reactiveStore?: Record<string, QoolieCollection<{ keyPath: string }>>;
 
 	/**
 	 * Centralized access to schema and collection logic
@@ -272,11 +272,11 @@ export class Machine {
 	 * Collection accessor — reactive (Svelte 5 runes) CRUD per collection.
 	 * Usage: machine.store['users'].where({...}) / .getAll() / .create(data) / .update(id, data) / .delete(id)
 	 */
-	get store(): Record<string, QoolieCollection<any>> {
-		if (!this._qoolie) return {} as Record<string, QoolieCollection<any>>;
+	get store(): Record<string, QoolieCollection<{ keyPath: string }>> {
+		if (!this._qoolie) return {} as Record<string, QoolieCollection<{ keyPath: string }>>;
 		if (!this._reactiveStore) {
 			this._reactiveStore = createReactiveStore(
-				this._qoolie.collection as Record<string, QoolieCollection<any>>
+				this._qoolie.collection as Record<string, QoolieCollection<{ keyPath: string }>>
 			);
 		}
 		return this._reactiveStore;
@@ -294,7 +294,7 @@ export class Machine {
 	}
 
 	/** @deprecated Use store instead. */
-	get idbqlState(): Record<string, QoolieCollection<any>> {
+	get idbqlState(): Record<string, QoolieCollection<{ keyPath: string }>> {
 		return this.store;
 	}
 

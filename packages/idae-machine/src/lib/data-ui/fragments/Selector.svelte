@@ -2,8 +2,8 @@
 Selector.svelte
 Selection list that renders items via snippet prop
 @role ui
-@prop {any[]} [values] - Array of values to render
-@prop {any} [value] - Current selected value
+@prop {unknown[]} [values] - Array of values to render
+@prop {unknown} [value] - Current selected value
 @prop {Snippet} item - Snippet for rendering an item (item, active)
 @snippet selectorFallback - Fallback snippet when values empty
 -->
@@ -15,14 +15,14 @@ Selection list that renders items via snippet prop
     item,
     selectorFallback
   }: {
-    values?: any[];
-    value?: any;
-    item?: Snippet<[any, boolean]>;
+    values?: unknown[];
+    value?: unknown;
+    item?: Snippet<[unknown, boolean]>;
     selectorFallback?: Snippet;
   } = $props();
 </script>
 
-{#each values as valueO (valueO?.id ?? valueO)}
+{#each values as valueO ((valueO as Record<string, unknown>)?.id ?? valueO)}
   <div class={' ' + (valueO == value ? 'active ' : 'inactive')}>
     {@render item?.(valueO, valueO === value)}
   </div>

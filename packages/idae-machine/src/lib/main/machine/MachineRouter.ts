@@ -28,7 +28,7 @@ interface RouteMetadata {
  *  - UI hints via `machineRights.checkAccess` (display layer).
  */
 export class MachineRouter {
-	private router: any = null;
+	private router: ReturnType<typeof createRouter> | null = null;
 	private config: Required<MachineRouterConfig>;
 
 	constructor(config: MachineRouterConfig = {}) {
@@ -39,7 +39,7 @@ export class MachineRouter {
 		};
 	}
 
-	init(): any {
+	init() {
 		// Router outlet unused — actions delegate to machineFrameManager (Frame.svelte = real mount target).
 		// In browser: provide offscreen placeholder so createRouter doesn't throw.
 		// In SSR/test (no document): omit outlet entirely.
@@ -52,7 +52,8 @@ export class MachineRouter {
 		})() : undefined;
 
 		const routes = [
-			{ path: '/+*', action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: 'LoadIn' } as RouteMetadata },
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			{ path: '/+*', action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: 'LoadIn' } },
 		];
 
 		this.router = createRouter({
@@ -61,8 +62,9 @@ export class MachineRouter {
 			linkInterception: true,
 			routes,
 			...(placeholderOutlet && { outlet: placeholderOutlet })
-		} as any);
+		});
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		this.router?.before?.((to: any, _from: any, next: any) => {
 			this.handleAuthGuard(to, next);
 		});
@@ -71,7 +73,7 @@ export class MachineRouter {
 		return this.router;
 	}
 
-	private async handleLoadIn(ctx: any): Promise<void> {
+	private async handleLoadIn(ctx: { path?: string }): Promise<void> {
 		const path = ctx.path ?? '';
 		const segments = parseLoadInUrl(path);
 
@@ -81,6 +83,7 @@ export class MachineRouter {
 			if (!target) return;
 			const { mount } = await import('svelte');
 			const { default: Frame } = await import('$lib/shell/Frame.svelte');
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mount(Frame as any, { target, props: { id: frameId } });
 		};
 
@@ -100,7 +103,7 @@ export class MachineRouter {
 		}
 	}
 
-	private handleAuthGuard(to: any, next: (redirect?: string) => void): void {
+	private handleAuthGuard(to: { path?: string; metadata?: Record<string, unknown> }, next: (arg?: false | string | void) => void): void {
 		if (!this.config.authEnabled) { next(); return; }
 		const meta = to.metadata as RouteMetadata | undefined;
 		if (!meta?.public && !this.checkAuthentication()) {
@@ -123,7 +126,7 @@ export class MachineRouter {
 		this.navigate(path);
 	}
 
-	getRouter(): any { return this.router; }
+	getRouter() { return this.router; }
 }
 
 export function createMachineRouter(config?: MachineRouterConfig): MachineRouter {

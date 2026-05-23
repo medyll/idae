@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-23T14:55"
+last_updated: "2026-05-23T19:55"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Minor backlog ready: M1/M2 file naming convention, M3 any reduction (47 prod casts), M4 IDB mock dedup (6 test files), M5 Explorer.svelte mode split."
+next_action: "Session 2026-05-23 (pm): BACK-01 DONE — files/mail/health/permission routes converted to idaeApi.app.METHOD direct (Express style), like data.ts/bootstrap.ts. permission.ts PermissionCheck satisfies fixed, upload.ts req.params cast. Server vitest: 464/465 (1 pre-existing rbac.matrix dynamic-import flake). BACK-04 DONE — seedUsers.ts extended: 3 types (admin/manager/viewer), 3 groups (admins/managers/viewers), 4 demo users, type+group assignments (assignmentType='role' for typeId per GrantService). BACK-03 INVESTIGATED — root cause: no pull mechanism in qoolie/idae-sync. SyncAdapter handles only outbound writes; ServerPush exists but unwired and only handles deltas. Proper fix needs IDeliverer.list + SyncAdapter.pullCollection + wire ServerPush.connect from Qoolie — cross-package, non-trivial. Deferred. BACK-05 stays blocked by BACK-03. BACK-02 already done. BACK-06 FullInfo skipped (intent TBD)."
 next_command: "bmad-next"
 next_role: "scrum"
-active_role: "reviewer"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,6 +93,35 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 33
+    goal: "RBAC Matrix UI — grant editor for existing schema, scope matrix-only (audit + assignments deferred)"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s33-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-33.md"
+    depends_on: [32]
+    stories:
+      - id: S33-01
+        title: "Seed _views — SKIPPED: deployModel.ts auto-generates _views from template.presentation, no-op for RBAC collections"
+        status: skipped
+        effort: S
+        tests_executed: false
+        test_output: "Verified deployModel.ts:380-430 — auto-generation covers appuser_group/type/assignment/grant via fallback to allFieldNames.slice(0,5)."
+        test_result: skipped
+      - id: S33-03
+        title: "RbacMatrix.svelte — composition glue: collections rows × CRUDLX InputBoolean cells, group dropdown, lookup-or-create grant, column bulk toggle. componentRegistry 'rbac.matrix'. Frame forwards groupId/typeId vars. CollectionNav 'Permissions' entry."
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "rbacMatrix.test.ts: 4/4 pass. Full suite: 464/464 (39 files). InputBoolean.svelte extended with onchange prop."
+        test_result: pass
+      - id: S33-06
+        title: "Tests — registry wiring, module resolves, grant payload contract, OPS shape. componentRegistryEntries.test.ts updated to 3 entries."
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "Full suite: 464/464 (39 files), 3.62s. Pre-existing TS check errors (16) NOT introduced by sprint — confirmed via git stash isolation. Backlog item I-CHECK."
+        test_result: pass
+
   - id: 32
     goal: "DataList snippet API refactor — children → item/groupHeader/empty/footer + listClass/groupClass props"
     status: completed
@@ -1292,6 +1321,19 @@ qa:
 sessions:
   - date: "2026-05-23"
     summary: >
+      M3 any reduction complete: 47→11 production instances.
+      Fixed: reactiveStore (12→0), MachineRouter (10→3), MachineRights (2→0), MachineScheme (1→1 kept),
+      machineDb (1→0), PaneRight (2→0), Frame (3→1), FieldDisplay (2→0), Selector (3→0),
+      InputSelect (1→0), machine-model.ts (3→0), schema-types.ts (2→0), MachineFieldType (5→0),
+      machineSeed (2→0), MachineSchemeValues (1→0), MachineSchemeValidate (1→0),
+      engineModel (2→1), machineIdbAdapter (2→0), MachineMultiBase (3→0), machine.ts (5→0).
+      Remaining 11: legacy parser code with eslint-disable comments.
+      Result: vitest 465/465 (39 files). check: 2 pre-existing errors.
+    tests_server: 465
+    tests_client: 0
+
+  - date: "2026-05-23"
+    summary: >
       Audit fixes I1/I2/I3 closed. I1: explorerUtils.ts moved shell/frame/ → data-ui/utils/ (7 imports updated).
       I2: main-ui/index.ts deleted (stale directory removed). I3: console.log removed from DataForm.svelte:87.
       Result: vitest 459/459 (38 files). check: 0 errors, 0 warnings. No regressions.
@@ -1540,6 +1582,67 @@ backlog:
       machine.logic (MachineDb) construit depuis TypeScript au start().
       Vision: lire les appscheme rows depuis IDB → collections émergent de la sync.
       Prerequis: IDB:appscheme toujours créé (system), sync ramène les rows.
+
+  - id: BACK-01
+    title: "idae-api v3 handler signature migration — routes restantes"
+    priority: done
+    description: >
+      RÉSOLU session 2026-05-23.
+      bootstrap.ts utilisait déjà idaeApi.app.METHOD direct.
+      files.ts, mail.ts, health.ts, permission.ts (registerPermissionRoutes) convertis
+      à idaeApi.app.METHOD direct (Express style) — même pattern que data.ts.
+      Pas de refactor en (service, params, body, query) v3 signature: la bypass voie
+      Express est cohérente avec l'usage de req.user/req.params/req.file/streams.
+      Server vitest: 464/465 (1 pré-existant rbac.matrix flake non lié).
+
+  - id: BACK-02
+    title: "Frame stacking race condition — fix done"
+    priority: done
+    description: >
+      RÉSOLU dans session 2026-05-23. Frame.svelte: unmount était avant await resolve.
+      doLoad appelé 2x rapide → 2 mount + 0 unmount → composant dupliqué dans même Frame.
+      Patch: mountSeq counter + unmount inside .then avec stale check.
+
+  - id: BACK-03
+    title: "Qoolie sync IDB population pour appuser_group/type/audit"
+    priority: deferred
+    description: >
+      INVESTIGUÉ session 2026-05-23 — root cause identifié, fix non-trivial.
+      SyncAdapter (idae-sync) gère uniquement OUTBOUND (local → outbox → server).
+      ServerFirstHandler = rollback sur permanent failure, pas hydration.
+      ServerPush (SSE/WS) existe mais non wiré dans Qoolie + serveur n'expose pas /sync/stream.
+      IdbCollection a {silent: true} mais QoolieCollection.create ne l'expose pas → pas de bulk-insert sans réémettre vers outbox.
+      Fix propre: ajouter IDeliverer.list(collection) + SyncAdapter.pullCollection() + wire ServerPush.connect depuis Qoolie + endpoint serveur /sync/stream.
+      Cross-package (qoolie + idae-sync + idae-machine server). Hors scope "trivial fix".
+      Workaround possible: hydrate REST en app-level qui touche qoolie internals (hack).
+
+  - id: BACK-04
+    title: "Seed appuser_type + RBAC types complets (admin/manager/viewer)"
+    priority: done
+    description: >
+      RÉSOLU session 2026-05-23.
+      seedUsers.ts étendu: 3 types (admin/manager/viewer avec typeLevel 100/50/10),
+      3 groups (admins/managers/viewers avec ALL_OPS/WRITE_OPS/READ_OPS),
+      4 demo users (admin, manager, user, viewer) + assignments group ET type.
+      Convention assignmentType='role' pour typeId (cf GrantService.AssignmentDoc).
+
+  - id: BACK-05
+    title: "Tests Playwright RBAC golden path — finir 3/9 gated"
+    priority: medium
+    description: >
+      6/9 verts. 3 gated par BACK-03 (sync IDB):
+      - picking a group reveals matrix rows
+      - toggling a cell persists across reload
+      - column bulk-toggle flips all cells
+      Une fois BACK-03 résolu, ces 3 tests passent sans modification.
+
+  - id: BACK-06
+    title: "FullInfo.svelte — implémenter contenu (composant stub registered)"
+    priority: low
+    description: >
+      Registered dans componentRegistry clé 'fullinfo' mais composant = stub vide.
+      Définir intent: vue détail complète d'un record ? Synthèse multi-collection ?
+      Probablement type frame 'fullinfo' = panneau détail riche d'un record + relations.
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Réel vérifié 2026-05-17

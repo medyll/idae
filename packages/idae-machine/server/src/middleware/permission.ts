@@ -110,13 +110,16 @@ export async function checkPermission(req: Request, res: Response): Promise<void
 		return;
 	}
 
+	const perm = permission as Permission;
+	const tableStr = typeof table === 'string' ? table : undefined;
+
 	if (!user) {
-		res.json({ allowed: false, permission, table, reason: 'Not authenticated' } satisfies PermissionCheck);
+		res.json({ allowed: false, permission: perm, table: tableStr, reason: 'Not authenticated' } satisfies PermissionCheck);
 		return;
 	}
 
 	if (user.isAdmin) {
-		res.json({ allowed: true, permission, table } satisfies PermissionCheck);
+		res.json({ allowed: true, permission: perm, table: tableStr } satisfies PermissionCheck);
 		return;
 	}
 
@@ -125,9 +128,5 @@ export async function checkPermission(req: Request, res: Response): Promise<void
 }
 
 export function registerPermissionRoutes(): void {
-	idaeApi.router.addRoute({
-		method:  'get',
-		path:    '/api/permissions/check',
-		handler: checkPermission,
-	});
+	idaeApi.app.get('/api/permissions/check', checkPermission as any);
 }

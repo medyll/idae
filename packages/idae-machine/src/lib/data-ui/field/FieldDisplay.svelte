@@ -43,7 +43,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     const scheme             = $derived(safeScheme());
     const fieldForge         = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
     const schemeFieldValues  = $derived(scheme?.collectionValues ?? null);
-    const inputDataset       = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(String(fieldName) as any, data ?? {}) : {});
+    const inputDataset       = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(String(fieldName), data ?? {} as Record<string, unknown>) : {});
 
     const isPrivate      = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
     const labelPosition  = $derived(
@@ -63,7 +63,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             ? (() => { try { return machine.logic.collection(fkCollection); } catch { return null; } })()
             : null
     );
-    const fkIndexField        = $derived(fkScheme?.template?.index ?? 'id');
+    const fkIndexField        = $derived((fkScheme?.template?.index ?? 'id') as string);
     const fkPresentationFields = $derived(
         (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
     );
@@ -71,7 +71,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
 
-    const fkItems  = $derived(fkCollection ? ((machine.store as Record<string, any>)?.[fkCollection]?.getAll() ?? []) : []);
+    const fkItems  = $derived(fkCollection ? (machine.store?.[fkCollection]?.getAll() ?? []) : []);
     const fkLabel  = $derived((() => {
         if (!fkCollection || internalValue === undefined || internalValue === null) return '—';
         const item = (fkItems as Record<string, unknown>[]).find(i => i[fkIndexField] === internalValue);

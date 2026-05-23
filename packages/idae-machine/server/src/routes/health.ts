@@ -19,9 +19,5 @@ export function healthHandler(_req: Request, res: Response): void {
  * Register health routes
  */
 export function registerHealthRoutes(): void {
-	idaeApi.router.addRoute({
-		method: 'get',
-		path: '/health',
-		handler: healthHandler
-	});
+	idaeApi.app.get('/health', healthHandler as any);
 }

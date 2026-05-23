@@ -20,15 +20,17 @@
 	let bodyEl: HTMLDivElement;
 	let visible = $state(true);
 	let currentApp: Record<string, unknown> | null = null;
+	let mountSeq = 0;
 
 	function doLoad(mp: string, col: string, colId?: string, v?: Record<string, string>) {
-		// Unmount previous if any
-		if (currentApp) {
-			unmount(currentApp);
-			currentApp = null;
-		}
+		const seq = ++mountSeq;
 
 		machine.componentRegistry.resolve(mp).then((Comp) => {
+			if (seq !== mountSeq) return;
+			if (currentApp) {
+				unmount(currentApp);
+				currentApp = null;
+			}
 			const props: Record<string, unknown> = { collection: col };
 			if (colId) props.dataId = colId;
 			if (v) {
@@ -42,18 +44,19 @@
 				if (v.where) {
 					try { props.where = JSON.parse(v.where); } catch { /* ignore invalid JSON */ }
 				}
+				if (v.groupId) props.groupId = v.groupId;
+				if (v.typeId)  props.typeId  = v.typeId;
 			}
 
 			// Wire legacy explorer.* onclick → load detail in same frame
 			if (mp.startsWith('explorer.') && mp !== 'explorer.collections') {
 				props.onclick = (record: Record<string, unknown>) => {
-					const recordId = (record as any)?.id ?? (record as any)?._id;
+					const recordId = (record as Record<string, unknown>)?.id ?? (record as Record<string, unknown>)?._id;
 					machine.loadFrame('explorer', col, String(recordId), { mode: 'card' });
 				};
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			currentApp = mount(Comp as Component<any>, { target: bodyEl, props });
+			currentApp = mount(Comp as Component<Record<string, unknown>>, { target: bodyEl, props });
 		}).catch(() => {
 			// Component not found — silent fail
 		});

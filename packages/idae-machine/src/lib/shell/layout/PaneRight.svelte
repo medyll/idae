@@ -17,8 +17,8 @@
 	let creatableCollections = $derived.by(() => {
 		const schemes = machine.logic.collections();
 		return schemes
-			.filter((s: any) => machine.rights.checkAccess(s.code ?? s.name, 'C'))
-			.map((s: any) => ({ code: s.code ?? s.name, name: s.name ?? s.code }));
+			.filter((s) => machine.rights.checkAccess(s.collection, 'C'))
+			.map((s) => ({ code: s.collection, name: s.name }));
 	});
 </script>
 

@@ -59,7 +59,7 @@ export class MachineDb {
 	getBaseModules(): string[] {
 		const bases = new Set<string>();
 		for (const col of Object.values(this.model)) {
-			const base = (col as any).base as string | undefined;
+			const base = col.base;
 			if (base) bases.add(base);
 		}
 		return [...bases];

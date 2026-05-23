@@ -101,7 +101,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 			return isNaN(d.getTime()) ? String(value) : d.toLocaleDateString();
 		},
 		validator: (value: unknown) => {
-			const date = new Date(value as any);
+			const date = new Date(String(value));
 			return !isNaN(date.getTime());
 		}
 	},
@@ -112,7 +112,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 			return isNaN(d.getTime()) ? String(value) : d.toLocaleString();
 		},
 		validator: (value: unknown) => {
-			const date = new Date(value as any);
+			const date = new Date(String(value));
 			return !isNaN(date.getTime());
 		}
 	},
@@ -123,7 +123,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 			return isNaN(d.getTime()) ? String(value) : d.toLocaleTimeString();
 		},
 		validator: (value: unknown) => {
-			const date = new Date(value as any);
+			const date = new Date(String(value));
 			return !isNaN(date.getTime());
 		}
 	},
@@ -148,8 +148,8 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	'text-giant':  { id: 'text-giant',  formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
 	number:   {
 		id:        defaultTypes.number,
-		formatter: (value: unknown) => Number(value as any),
-		validator: (value: unknown) => typeof value === 'number' && !isNaN(value as any)
+		formatter: (value: unknown) => Number(value),
+		validator: (value: unknown) => typeof value === 'number' && !isNaN(value)
 	},
 	boolean:  {
 		id:        defaultTypes.boolean,
@@ -232,7 +232,7 @@ class MachineFieldType {
 		if (fieldType.validator) {
 			const res = fieldType.validator(value, ctx);
 			// Promise detection
-			if (res && typeof (res as any)?.then === 'function') {
+			if (res && typeof (res as Promise<unknown>)?.then === 'function') {
 				return (await res) as boolean;
 			}
 			return Boolean(res);

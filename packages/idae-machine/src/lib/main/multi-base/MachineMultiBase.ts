@@ -8,7 +8,7 @@
  * @rule NO duplicate table names across bases (enforced)
  */
 
-import { createMultiDbQoolie, type MultiDbManager } from '@medyll/qoolie';
+import { createMultiDbQoolie, type MultiDbManager, type CollectionConfig } from '@medyll/qoolie';
 import type { QoolieCollection } from '@medyll/qoolie';
 import type { AppScheme } from '../../types/schema-types.js';
 
@@ -80,7 +80,7 @@ function parseTableRef(tableRef: string): { base: string; collection: string } {
  * ```
  */
 export class MachineMultiBase {
-	private multiDb: MultiDbManager<any>;
+	private multiDb: MultiDbManager<Record<string, CollectionConfig>>;
 	private schemeCache: Map<string, AppScheme> = new Map();
 	/** Track which base each collection belongs to (enforces unique names) */
 	private collectionRegistry: Map<string, string> = new Map();
@@ -109,7 +109,7 @@ export class MachineMultiBase {
 	 * const produit = await machine.table('sitebase_app.produit').getById(123);
 	 * ```
 	 */
-	table(tableRef: string): QoolieCollection<any> {
+	table(tableRef: string): QoolieCollection<CollectionConfig> {
 		const { base, collection } = parseTableRef(tableRef);
 
 		// Track collection registration (enforces unique names across bases)
@@ -122,7 +122,7 @@ export class MachineMultiBase {
 		}
 		this.collectionRegistry.set(collection, base);
 
-		return this.multiDb.get(base).collection[collection] as QoolieCollection<any>;
+		return this.multiDb.get(base).collection[collection] as unknown as QoolieCollection<CollectionConfig>;
 	}
 	
 	/**
@@ -232,7 +232,7 @@ export class MachineMultiBase {
 	 * Use for advanced operations not covered by this wrapper.
 	 * @internal
 	 */
-	getMultiDbManager(): MultiDbManager<any> {
+	getMultiDbManager(): MultiDbManager<Record<string, CollectionConfig>> {
 		return this.multiDb;
 	}
 	

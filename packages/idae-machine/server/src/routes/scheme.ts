@@ -1,32 +1,38 @@
 import { idaeApi } from '@medyll/idae-api';
-import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
 import { machineServer } from '../MachineServer.js';
 
-export async function getAllSchemes(_req: Request, res: Response): Promise<void> {
-	try {
-		const model = await machineServer.getModel();
-		res.json(model);
-	} catch (error) {
-		logger.error('Error fetching schemes:', error);
-		res.status(500).json({ error: 'Failed to fetch schemes' });
+class HttpError extends Error {
+	constructor(public status: number, message: string) {
+		super(message);
 	}
 }
 
-export async function getScheme(req: Request, res: Response): Promise<void> {
+/**
+ * idae-api v3 handler signature: (service, params, body, query) => result
+ * Framework wraps in handleRequest, calls res.json(result). Throw HttpError for non-200.
+ */
+export async function getAllSchemes(): Promise<unknown> {
 	try {
-		const { table } = req.params;
-		const model = await machineServer.getModel(table);
-
-		if (!Object.keys(model).length) {
-			res.status(404).json({ error: `Scheme '${table}' not found` });
-			return;
-		}
-
-		res.json(model);
+		return await machineServer.getModel();
 	} catch (error) {
+		logger.error('Error fetching schemes:', error);
+		throw new HttpError(500, 'Failed to fetch schemes');
+	}
+}
+
+export async function getScheme(_service: unknown, params: { table: string }): Promise<unknown> {
+	try {
+		const { table } = params;
+		const model = await machineServer.getModel(table);
+		if (!Object.keys(model).length) {
+			throw new HttpError(404, `Scheme '${table}' not found`);
+		}
+		return model;
+	} catch (error) {
+		if (error instanceof HttpError) throw error;
 		logger.error('Error fetching scheme:', error);
-		res.status(500).json({ error: 'Failed to fetch scheme' });
+		throw new HttpError(500, 'Failed to fetch scheme');
 	}
 }
 

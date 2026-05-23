@@ -208,54 +208,13 @@ export async function getImageVariant(req: Request, res: Response): Promise<void
 }
 
 export function registerFileRoutes(): void {
-	idaeApi.router.addRoute({
-		method: 'post',
-		path:   '/api/files/:collection/:recordId',
-		handler: uploadFiles,
-		middleware: [requireDroit('U'), uploadMiddleware.single('file')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'get',
-		path:   '/api/files/:collection/:recordId',
-		handler: listFilesForRecord,
-		middleware: [requireDroit('R')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'get',
-		path:   '/api/files/:fileId/meta',
-		handler: getFileMeta,
-		middleware: [requireDroit('R')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'get',
-		path:   '/api/files/:fileId/download',
-		handler: downloadFile,
-		middleware: [requireDroit('R')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'delete',
-		path:   '/api/files/:fileId',
-		handler: deleteFile,
-		middleware: [requireDroit('D')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'get',
-		path:   '/api/files/:fileId/image/:variant',
-		handler: getImageVariant,
-		middleware: [requireDroit('R')],
-	});
-
-	idaeApi.router.addRoute({
-		method: 'patch',
-		path:   '/api/files/:fileId/focus',
-		handler: updateImageFocus,
-		middleware: [requireDroit('U')],
-	});
-
+	const app = idaeApi.app;
+	app.post  ('/api/files/:collection/:recordId',     requireDroit('U') as any, uploadMiddleware.single('file'), uploadFiles as any);
+	app.get   ('/api/files/:collection/:recordId',     requireDroit('R') as any, listFilesForRecord as any);
+	app.get   ('/api/files/:fileId/meta',              requireDroit('R') as any, getFileMeta as any);
+	app.get   ('/api/files/:fileId/download',          requireDroit('R') as any, downloadFile as any);
+	app.delete('/api/files/:fileId',                   requireDroit('D') as any, deleteFile as any);
+	app.get   ('/api/files/:fileId/image/:variant',    requireDroit('R') as any, getImageVariant as any);
+	app.patch ('/api/files/:fileId/focus',             requireDroit('U') as any, updateImageFocus as any);
 	logger.info('File routes registered: upload/download/delete endpoints');
 }

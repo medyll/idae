@@ -932,8 +932,8 @@ export interface Extendable {
 	[key: string]: unknown;
 }
 
-export interface gridFksItem<T = any> extends Extendable {
-	id?:     any;
+export interface gridFksItem<T = unknown> extends Extendable {
+	id?:     unknown;
 	uid?:     string;
 	name:     SchemeName;
 	code:     Code;

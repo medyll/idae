@@ -75,6 +75,7 @@ export class MachineParserForge {
 		what: 'array' | 'object' | 'fk' | 'primitive',
 		rule: TplFieldRulesObject
 	): Partial<IDbForge> | undefined {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const r = rule as any;
 		const type = r.type as string;
 		const isArray     = type.startsWith('array-of-');
@@ -93,8 +94,9 @@ export class MachineParserForge {
 		const { type: _t, required: _req, readonly: _ro, private: _priv, ...extras } = r;
 		return {
 			fieldType: type as TplFieldType,
-			fieldArgs: fieldArgs as any,
-			is:        what,
+			fieldArgs,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			is:        what as any,
 			...extras,
 			...(type === 'image' ? { accept: 'image/*' } : {}),
 		};
@@ -104,6 +106,7 @@ export class MachineParserForge {
 	 * Extract fieldArgs array from an object rule's boolean flags.
 	 */
 	#argsFromObject(rule: TplFieldRulesObject): string[] | undefined {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const r = rule as any;
 		const args: string[] = [];
 		if (r.required) args.push('required');
@@ -185,7 +188,9 @@ export class MachineParserForge {
 		}
 		const result: Partial<IDbForge> = {
 			fieldType: fieldType as TplFieldType | undefined,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			fieldArgs: fieldArgs as unknown as any,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			is:        type as any
 		};
 		return result;

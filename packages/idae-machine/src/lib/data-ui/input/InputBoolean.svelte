@@ -9,12 +9,13 @@ Checkbox/toggle input atom.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
-	let { value = $bindable(false), id, name, form, disabled = false } = $props<{
+	let { value = $bindable(false), id, name, form, disabled = false, onchange } = $props<{
 		value?:    boolean;
 		id?:       string;
 		name?:     string;
 		form?:     string;
 		disabled?: boolean;
+		onchange?: (next: boolean) => void;
 	}>();
 </script>
 
@@ -25,4 +26,5 @@ Checkbox/toggle input atom.
 	{name}
 	{form}
 	{disabled}
+	onchange={(e) => onchange?.((e.target as HTMLInputElement).checked)}
 />

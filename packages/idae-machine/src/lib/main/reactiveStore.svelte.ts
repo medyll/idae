@@ -5,20 +5,21 @@
  * read methods (getAll/where/get) touch the version to register a tracking dep,
  * so $derived in components re-runs on any mutation or initial feed load.
  */
-import { idbEventBus, type QoolieCollection } from '@medyll/qoolie';
+import { idbEventBus, type QoolieCollection, type CollectionConfig } from '@medyll/qoolie';
 
-type AnyCollection = QoolieCollection<any>;
+type Doc = CollectionConfig;
+type AnyCollection = QoolieCollection<Doc>;
 
 interface CollectionWrapper {
-	getAll(): any;
-	where(query: any): any;
-	get(id: any): Promise<any>;
-	create(data: any): Promise<any>;
-	update(id: any, data: any): Promise<any>;
-	delete(id: any): Promise<boolean>;
-	updateWhere(query: any, data: any): Promise<boolean>;
-	deleteWhere(query: any): Promise<boolean>;
-	count(query?: any): Promise<number>;
+	getAll(): Doc[];
+	where(query: Record<string, unknown>): Doc[];
+	get(id: string | number): Promise<Doc | undefined>;
+	create(data: Doc): Promise<Doc>;
+	update(id: string | number, data: Doc): Promise<Doc>;
+	delete(id: string | number): Promise<boolean>;
+	updateWhere(query: Record<string, unknown>, data: Doc): Promise<boolean>;
+	deleteWhere(query: Record<string, unknown>): Promise<boolean>;
+	count(query?: Record<string, unknown>): Promise<number>;
 	isSyncEnabled(): boolean;
 	readonly collectionName: string;
 }
@@ -39,12 +40,12 @@ function createWrapper(name: string, raw: AnyCollection): CollectionWrapper {
 			const data = raw.getAll();
 			return Array.isArray(data) ? [...data] : data;
 		},
-		where(query: any) {
+		where(query: Record<string, unknown>) {
 			void version;
 			const data = raw.where(query);
 			return Array.isArray(data) ? [...data] : data;
 		},
-		get(id: any) {
+		get(id: string | number) {
 			void version;
 			return raw.get(id);
 		},

@@ -24,7 +24,7 @@ export async function seed(data: Record<string, unknown[]>): Promise<void> {
 			continue;
 		}
 		for (const row of rows) {
-			await store.create(row as any);
+			await store.create(row);
 		}
 	}
 }
@@ -42,7 +42,7 @@ export async function seedIfEmpty(data: Record<string, unknown[]>): Promise<void
 		const existing = await store.getAll();
 		if (existing.length > 0) continue;
 		for (const row of rows) {
-			await store.create(row as any);
+			await store.create(row);
 		}
 	}
 }

@@ -59,9 +59,9 @@ Consumers provide named snippets; DataList handles all loops.
 
 	const store      = $derived(collection ? machine.store[collection] : undefined);
 	const collLogic  = $derived(collection ? safeCollection(collection) : null);
-	const indexField = $derived(collLogic?.template?.index ?? 'id');
+	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
-	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField, direction: 'asc' as const }]);
+	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]);
 	const effectiveSort = $derived(sortBy ?? defaultSort);
 
 	const rawItems = $derived.by(() => {

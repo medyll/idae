@@ -71,7 +71,7 @@ function detectStoreRenames(
 		if (isProtectedStore(deletedName)) continue;
 		if (!db.objectStoreNames.contains(deletedName)) continue;
 
-		const deletedStore   = (db as any).objectStore(deletedName);
+		const deletedStore   = (db as unknown as IDBDatabase & { objectStore(name: string): IDBObjectStore }).objectStore(deletedName);
 		const deletedKeyPath = deletedStore.keyPath;
 
 		for (const createdName of upgrade.toCreate) {
@@ -113,7 +113,7 @@ export async function performIdbUpgrade(
 
 			for (const { from, to, keyPath } of renames) {
 				if (!db.objectStoreNames.contains(from)) continue;
-				const oldStore = (db as any).objectStore(from);
+				const oldStore = (db as unknown as IDBDatabase & { objectStore(name: string): IDBObjectStore }).objectStore(from);
 				const newStore = db.createObjectStore(to, { keyPath });
 				const cursor   = oldStore.openCursor();
 				cursor.onsuccess = () => {

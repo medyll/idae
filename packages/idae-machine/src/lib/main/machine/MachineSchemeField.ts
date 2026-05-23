@@ -42,7 +42,7 @@ export class MachineSchemeField {
 			collection: this.#collection,
 			fieldName:  String(this.#fieldName),
 			...(fieldType ?? {}),
-			is:         fieldType?.is,
+			is:         fieldType?.is ?? 'primitive',
 		});
 	}
 

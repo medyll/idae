@@ -130,7 +130,7 @@ export class SchemeFieldDefaultValues {
 	 * @param {TplCollectionName} [collectionName] - Optional collection name for specific default.
 	 * @returns {any} The default value for the field, or undefined if none.
 	 */
-	static getDefault(field: string, collectionName?: TplCollectionName): any {
+	static getDefault(field: string, collectionName?: TplCollectionName): unknown {
 		if (collectionName && this.defaultCollectionFactories[collectionName]?.[field]) {
 			return this.defaultCollectionFactories[collectionName][field]();
 		}
