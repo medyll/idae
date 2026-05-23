@@ -61,15 +61,14 @@ machine.store[collection] → QoolieCollection (reactive CRUD)
 machine.rights            → MachineRights (RBAC)
 machine.sync              → qoolie sync controller
 machine.socket            → EventDataClientInstance
-machine.router            → SchemaRouter
+machine.router            → MachineRouter (URL dispatcher hash, auth guard)
 machine.framer            → MachineFrameManager  ← PAS frameManager (deprecated)
 machine.componentRegistry → ComponentRegistry
 
 // Helpers
 machine.collection(name)  → shorthand pour machine.store[name]
 machine.moduleDbName(base)
-machine.loadFrame(modulePath, collection, collectionId?, vars?, zone?)  // @deprecated — use machine.framer
-machine.loadIn(...)        // @deprecated
+machine.loadFrame(modulePath, collection, collectionId?, vars?, zone?)  // push URL hash → idae-router → framer
 ```
 
 **Règle absolue:** Jamais `import { machineFrameManager }` ou `import { componentRegistry }` dans les composants UI. Toujours `machine.framer` / `machine.componentRegistry`.

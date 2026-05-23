@@ -29,5 +29,5 @@ export { seed, seedIfEmpty } from './machineSeed.js';
 export { MachineMultiBase } from './multi-base/index.js';
 
 // Router (v2 features)
-export { SchemaRouter } from './router/SchemaRouter.js';
-export type { SchemaRouterConfig, RoutePermission } from './router/SchemaRouter.js';
+export { MachineRouter } from './machine/MachineRouter.js';
+export type { MachineRouterConfig } from './machine/MachineRouter.js';

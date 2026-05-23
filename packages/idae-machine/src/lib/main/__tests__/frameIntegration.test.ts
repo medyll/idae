@@ -1,19 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { machineFrameManager, type FrameControls } from '../frame/MachineFrameManager.js';
 import { computeFrameId } from '../frame/frameUtils.js';
-import { Machine } from '../machine.js';
 
 describe('Sprint 24 — Frame Manager Integration', () => {
 	beforeEach(() => {
 		machineFrameManager.clear();
 	});
 
-	describe('loadIn → frameManager → Frame flow', () => {
-		it('loadIn delegates to frameManager.load with correct frameId', async () => {
-			const machine = new Machine();
-			const loadSpy = vi.spyOn(machineFrameManager, 'load');
-
-			// Register a mock frame
+	describe('frameManager direct dispatch', () => {
+		it('frameManager.load dispatches to registered controls', async () => {
 			const controls: FrameControls = {
 				load: vi.fn(),
 				show: vi.fn(),
@@ -23,15 +18,12 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 			};
 			machineFrameManager.register('main', controls);
 
-			await machine.loadIn('explorer.list', 'main', 'vehicle');
+			await machineFrameManager.load('main', 'explorer.list', 'vehicle');
 
-			expect(loadSpy).toHaveBeenCalledWith('main', 'explorer.list', 'vehicle', undefined, undefined);
 			expect(controls.load).toHaveBeenCalledWith('explorer.list', 'vehicle', undefined, undefined);
 		});
 
-		it('loadFrame loads into main zone by default', async () => {
-			const machine = new Machine();
-
+		it('frameManager.load passes collectionId + vars through', async () => {
 			const controls: FrameControls = {
 				load: vi.fn(),
 				show: vi.fn(),
@@ -41,7 +33,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 			};
 			machineFrameManager.register('main', controls);
 
-			await machine.loadFrame('card.form', 'vehicle', '42');
+			await machineFrameManager.load('main', 'card.form', 'vehicle', '42');
 
 			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '42', undefined);
 		});

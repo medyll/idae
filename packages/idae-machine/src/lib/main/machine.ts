@@ -2,7 +2,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
 import { createReactiveStore } from '$lib/main/reactiveStore.svelte.js';
 import { EventDataClientInstance } from '@medyll/idae-socket';
-import { SchemaRouter, type SchemaRouterConfig } from '$lib/main/router/SchemaRouter.js';
+import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { loadSchema } from '$lib/main/machineSchemaLoader.js';
@@ -10,7 +10,6 @@ import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import type { PermissionCode } from '$lib/types/schema-types.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
@@ -82,7 +81,7 @@ export class Machine {
 	/**
 	 * Schema router instance (lazy-initialized)
 	 */
-	_router?:                 SchemaRouter;
+	_router?:                 MachineRouter;
 
 	/** Global sync config forwarded to createQoolie(). false = sync disabled. */
 	_syncOptions?:            SyncConfig | false;
@@ -357,75 +356,45 @@ export class Machine {
 	}
 
 	/**
-	 * Get or create the SchemaRouter instance.
-	 * Lazily initializes the router with schemas from MachineDb.
+	 * Get or create the MachineRouter instance (lazy).
 	 * @role Accessor
-	 * @return {SchemaRouter} The schema router instance.
+	 * @return {MachineRouter} The machine router instance.
 	 */
-	get router(): SchemaRouter {
+	get router(): MachineRouter {
 		if (!this._router) this._router = this._buildRouter();
 		return this._router;
 	}
 
-	initRouter(config: SchemaRouterConfig): SchemaRouter {
+	initRouter(config: MachineRouterConfig): MachineRouter {
 		this._router = this._buildRouter(config);
 		return this._router;
 	}
 
-	private _buildRouter(config: SchemaRouterConfig = {}): SchemaRouter {
-		const r = new SchemaRouter(config);
-		r.setPermissionCheck((permission, table) => {
-			if (!table) return true;
-			const scheme = this.logic.collection(table);
-			if (!scheme) return false;
-			return machineRights.checkAccess(table, permission as PermissionCode);
-		});
-		r.init(this.logic.collections());
+	private _buildRouter(config: MachineRouterConfig = {}): MachineRouter {
+		const r = new MachineRouter(config);
+		r.init();
 		return r;
 	}
 
 	/**
-	 * @deprecated Use machine.framer.load() with explicit frameId.
-	 * Navigate to a module within a target zone.
+	 * Navigate to load content into a zone. Zone defaults to 'main'.
+	 * Pushes a hash URL — idae-router catches it, parses, and delegates to
+	 * machineFrameManager which loads into an existing Frame or mounts a new one.
+	 *
+	 * URL is the single source of truth: back/forward, refresh, deep links all work by construction.
 	 */
-	async loadIn(
-		modulePath: string,
-		targetId: string,
-		collection: string,
-		collectionId?: string,
-		vars?: string
-	): Promise<void> {
-		const varsObj = vars ? Object.fromEntries(new URLSearchParams(vars).entries()) : undefined;
-		await this._frameManager.load(targetId, modulePath, collection, collectionId, varsObj);
-		// Update URL for browser history/bookmarking
-		const url = buildLoadInUrl(modulePath, targetId, collection, collectionId, vars);
-		if (typeof history !== 'undefined') {
-			history.pushState({ loadIn: { modulePath, targetId, collection, collectionId, vars } }, '', url);
-		}
-	}
-
-	/**
-	 * Load content into a zone. Zone defaults to 'main'.
-	 * If no <Frame> is registered for the zone, mounts one dynamically inside [data-target-zone="${zone}"].
-	 */
-	async loadFrame(
+	loadFrame(
 		modulePath: string,
 		collection: string,
 		collectionId?: string,
 		vars?: Record<string, string>,
 		zone = 'main'
-	): Promise<void> {
-		await this._frameManager.load(zone, modulePath, collection, collectionId, vars,
-			async (frameId) => {
-				if (typeof document === 'undefined') return;
-				const target = document.querySelector(`[data-target-zone="${frameId}"]`);
-				if (!target) return;
-				// Dynamic import breaks circular dependency machine ↔ Frame
-				const { mount } = await import('svelte');
-				const { default: Frame } = await import('$lib/shell/Frame.svelte');
-				mount(Frame as any, { target, props: { id: frameId } });
-			}
-		);
+	): void {
+		const varsStr = vars && Object.keys(vars).length > 0
+			? new URLSearchParams(vars).toString()
+			: undefined;
+		const url = buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr);
+		this.router.push(url);
 	}
 
 	/** Access to the frame manager singleton. */

@@ -295,7 +295,7 @@ Machine
   │           ├── parseReverseFks()     → reverse FK map
   │           └── validator             → MachineSchemeValidate
   │
-  └── machine.router             → SchemaRouter (SPA navigation)
+  └── machine.router             → MachineRouter (hash URL dispatcher + auth guard)
 ```
 
 **Data layer:** Qoolie → `@medyll/idae-idbql` (IndexedDB) + optional `@medyll/idae-sync` (outbox, retry, conflict resolution)

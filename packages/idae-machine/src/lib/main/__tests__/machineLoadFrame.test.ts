@@ -2,47 +2,65 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Machine } from '../machine.js';
 import { machineFrameManager } from '../frame/MachineFrameManager.js';
 
-const mockControls = () => ({
-	load: vi.fn(),
-	show: vi.fn(),
-	hide: vi.fn(),
-	toggle: vi.fn(),
-	close: vi.fn(),
-});
+let mockRouterInstance: { push: ReturnType<typeof vi.fn>; before: (fn: unknown) => void } | null = null;
 
-describe('Machine.loadFrame', () => {
+vi.mock('@medyll/idae-router', () => ({
+	createRouter: vi.fn(() => {
+		mockRouterInstance = {
+			before: () => {},
+			push:   vi.fn(),
+		};
+		return mockRouterInstance;
+	})
+}));
+
+vi.mock('$lib/utils/logger.js', () => ({
+	logger: { info: vi.fn(), warn: vi.fn() }
+}));
+
+describe('Machine.loadFrame — URL-driven', () => {
 	let machine: Machine;
 
 	beforeEach(() => {
 		machine = new Machine();
 		machineFrameManager.clear();
+		mockRouterInstance = null;
 	});
 
-	it('loads into main zone by default', async () => {
-		const controls = mockControls();
-		machineFrameManager.register('main', controls);
+	it('pushes hash URL with /+zone/modulePath/collection', () => {
+		machine.loadFrame('explorer', 'vehicle');
 
-		await machine.loadFrame('explorer', 'vehicle');
-
-		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', undefined, undefined);
+		expect(mockRouterInstance?.push).toHaveBeenCalledTimes(1);
+		const url = mockRouterInstance!.push.mock.calls[0][0] as string;
+		expect(url).toBe('/+main/explorer/vehicle');
 	});
 
-	it('passes collectionId to main zone', async () => {
-		const controls = mockControls();
-		machineFrameManager.register('main', controls);
+	it('includes collectionId in URL', () => {
+		machine.loadFrame('explorer', 'vehicle', '42');
 
-		await machine.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
-
-		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', '42', { mode: 'card' });
+		const url = mockRouterInstance!.push.mock.calls[0][0] as string;
+		expect(url).toBe('/+main/explorer/vehicle/42');
 	});
 
-	it('loads into explicit zone when provided', async () => {
-		const controls = mockControls();
-		machineFrameManager.register('main.modal', controls);
+	it('serializes vars as query string', () => {
+		machine.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
 
-		await machine.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
+		const url = mockRouterInstance!.push.mock.calls[0][0] as string;
+		expect(url).toBe('/+main/explorer/vehicle/42?mode=card');
+	});
 
-		expect(controls.load).toHaveBeenCalledWith('explorer', 'vehicle', undefined, undefined);
+	it('uses explicit zone when provided', () => {
+		machine.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
+
+		const url = mockRouterInstance!.push.mock.calls[0][0] as string;
+		expect(url).toBe('/+main.modal/explorer/vehicle');
+	});
+
+	it('omits vars query when empty', () => {
+		machine.loadFrame('explorer', 'vehicle', '42', {});
+
+		const url = mockRouterInstance!.push.mock.calls[0][0] as string;
+		expect(url).toBe('/+main/explorer/vehicle/42');
 	});
 
 	it('exposes frameManager via framer getter', () => {
