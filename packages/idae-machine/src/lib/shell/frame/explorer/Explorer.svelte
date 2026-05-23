@@ -56,6 +56,7 @@ Unified collection browser — list/table/card/actions modes.
 		userMode = m;
 		currentPage = 1;
 	}
+	
 	function goToPage(p: number): void {
 		currentPage = p;
 	}

@@ -194,15 +194,12 @@ class MachineServerClass {
 		await mongooseConnectionManager.createConnection(config.mongodbUri, metaDbName, { dbName: metaDbName });
 		logger.info('Connected to MongoDB');
 
-		// Register idae-api-pattern routes (before start — added to RouteManager)
 		registerBuiltinHooks();
-		registerHealthRoutes();
+
+		// v3 RouteManager routes — must be added BEFORE start() so they're flushed to Express
+		// (cors/helmet/json get installed first inside start, then RouteManager flush appends routes after middleware)
 		registerSchemeRoutes();
-		registerFileRoutes();
-		registerMailRoutes();
 		registerAuthRoutes();
-		registerPermissionRoutes();
-		if (config.nodeEnv === 'development') registerBootstrapRoutes();
 
 		idaeApi.setOptions({
 			port: config.port,
@@ -222,9 +219,13 @@ class MachineServerClass {
 
 		await idaeApi.start();
 
-		// Register data routes AFTER start — they use idaeApi.app directly
-		// (raw Express handlers, not idae-api's service adapter pattern)
+		// Direct Express routes (idaeApi.app.METHOD) — AFTER start() so cors/helmet are already on the stack
+		registerHealthRoutes();
+		registerFileRoutes();
+		registerMailRoutes();
+		registerPermissionRoutes();
 		registerDataRoutes();
+		if (config.nodeEnv === 'development') registerBootstrapRoutes();
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {

@@ -41,12 +41,14 @@ await appConn.asPromise();
 await seedImagePresets(appConn);
 await appConn.close();
 
-console.log(`[5/6] Seeding demo users + grants + business data into ${org}_machine_user`);
-const conn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
-await conn.asPromise();
-await seedUsers(conn);
-await seedBusinessData(demoSeed, conn);
-await conn.close();
+console.log(`[5/6] Seeding demo users into ${org}_machine_user`);
+const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
+await userConn.asPromise();
+await seedUsers(userConn);
+await userConn.close();
+
+console.log(`[5b/6] Seeding business data (routed by model.base)`);
+await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed });
 
 console.log(`[6/6] Done.`);
 process.exit(0);

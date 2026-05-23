@@ -1,6 +1,6 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
-import { createReactiveStore } from '$lib/main/reactiveStore.svelte.js';
+import { createReactiveStore, bumpSchemaVersion } from '$lib/main/reactiveStore.svelte.js';
 import { EventDataClientInstance } from '@medyll/idae-socket';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
@@ -58,7 +58,7 @@ export class Machine {
 	 */
 	_version!:                number;
 
-	/** System/framework collections (appscheme, appuser_*, …). Defaults to appModelDeclaration. */
+	/** System/framework collections (appscheme, appuser_*, …). Usually omitted — schema is fetched from the server via fetchSchema. */
 	_core?:                   MachineModel;
 
 	/** Application business collections (vehicle, reservation, …). */
@@ -126,7 +126,7 @@ export class Machine {
 	init(options?: {
 		dbName?:      string;
 		version?:     number;
-		/** System/framework collections. Defaults to appModelDeclaration. */
+		/** System/framework collections. Usually omitted — schema is fetched from the server via fetchSchema. */
 		core?:        MachineModel;
 		/** Application business collections (vehicle, reservation, …). */
 		business?:    MachineModel;
@@ -187,16 +187,125 @@ export class Machine {
 	 * Start the machine with a local model.
 	 * Call after machine.init() when the schema is defined locally (dev/offline mode).
 	 * When schema comes from the server, use machine.fetchSchema(url) instead — it calls start() internally.
+	 *
+	 * Auto-fetch: if sync.databaseHost is set, fetches schema from server in background.
+	 * - With local model: starts immediately, server schema replaces when fetched.
+	 * - Without local model: waits for fetch, then starts.
 	 * @role Initializer
 	 */
 	start(): void {
 		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
-		this._effectiveModel = buildEffectiveModel(this._core, this._business);
-		this._machineDb      = new MachineDb(this._effectiveModel);
-		machineRights.loadPoliciesFromModel(this._model);
-		this.createStore();
-		if (this._socketOptions?.autoConnect) this.connectSocket();
-		this._scheduleDrift().catch(() => { /* non-critical — retry on next start */ });
+
+		const dbHost = (this._syncOptions && typeof this._syncOptions === 'object')
+			? (this._syncOptions as Record<string, unknown>).databaseHost as string | undefined
+			: undefined;
+
+		if (dbHost) {
+			if (this._business) {
+				this._effectiveModel = buildEffectiveModel(this._core, this._business);
+				this._machineDb      = new MachineDb(this._effectiveModel);
+				machineRights.loadPoliciesFromModel(this._model);
+				this.createStore();
+				if (this._socketOptions?.autoConnect) this.connectSocket();
+				this._scheduleDrift().catch(() => { /* non-critical */ });
+
+				this._pullFromServer(dbHost).catch(() => { /* bg pull failed — running on local data */ });
+				this._fetchSchemaBg(dbHost).catch(() => { /* bg fetch failed — running on local model */ });
+			} else {
+				this._fetchSchemaBg(dbHost).catch((err) => {
+					console.error('[machine] Schema fetch failed and no local model available:', err);
+				});
+			}
+		} else {
+			this._effectiveModel = buildEffectiveModel(this._core, this._business);
+			this._machineDb      = new MachineDb(this._effectiveModel);
+			machineRights.loadPoliciesFromModel(this._model);
+			this.createStore();
+			if (this._socketOptions?.autoConnect) this.connectSocket();
+			this._scheduleDrift().catch(() => { /* non-critical — retry on next start */ });
+		}
+	}
+
+	/** Background schema fetch — updates model + restarts when server schema arrives. */
+	private async _fetchSchemaBg(databaseHost: string): Promise<void> {
+		const url = databaseHost.replace(/\/+$/, '') + '/api/scheme';
+		const cached = await import('$lib/main/machineSchemaCache.js').then(({ readSchemaCache }) => readSchemaCache(url)).catch(() => null);
+
+		if (cached) {
+			this._business = cached as MachineModel;
+			this._model    = cached as MachineModel;
+			this._effectiveModel = buildEffectiveModel(this._core, this._business);
+			this._machineDb      = new MachineDb(this._effectiveModel);
+			machineRights.loadPoliciesFromModel(this._model);
+			this.createStore();
+			if (this._socketOptions?.autoConnect) this.connectSocket();
+			this._scheduleDrift().catch(() => { /* non-critical */ });
+
+			this._pullFromServer(databaseHost).catch(() => { /* bg pull failed — retry on next sync event */ });
+
+			fetch(url)
+				.then((r) => r.json())
+				.then(async (fresh) => {
+					if (JSON.stringify(fresh) !== JSON.stringify(cached)) {
+						await import('$lib/main/machineSchemaCache.js').then(({ writeSchemaCache }) => writeSchemaCache(url, fresh));
+						this._business = fresh as MachineModel;
+						this._model    = fresh as MachineModel;
+						this._effectiveModel = buildEffectiveModel(this._core, this._business);
+						this._machineDb      = new MachineDb(this._effectiveModel);
+						machineRights.loadPoliciesFromModel(this._model);
+						bumpSchemaVersion();
+						await this._scheduleDrift();
+						await this._pullFromServer(databaseHost);
+					}
+				})
+				.catch(() => { /* bg refresh failed — running on cached schema */ });
+		} else {
+			const res   = await fetch(url);
+			const model = await res.json() as MachineModel;
+			await import('$lib/main/machineSchemaCache.js').then(({ writeSchemaCache }) => writeSchemaCache(url, model));
+			this._business = model;
+			this._model    = model;
+			this._effectiveModel = buildEffectiveModel(this._core, this._business);
+			this._machineDb      = new MachineDb(this._effectiveModel);
+			machineRights.loadPoliciesFromModel(this._model);
+			this.createStore();
+			if (this._socketOptions?.autoConnect) this.connectSocket();
+			this._scheduleDrift().catch(() => { /* non-critical */ });
+
+			await this._pullFromServer(databaseHost);
+		}
+	}
+
+	/** Pull all records from server for each business collection → write into local IDB. */
+	private async _pullFromServer(databaseHost: string): Promise<void> {
+		if (!this._qoolie || !this._business) return;
+		const base = databaseHost.replace(/\/+$/, '');
+		const token = typeof window !== 'undefined' ? (window.localStorage.getItem('auth_token') ?? '') : '';
+		const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+		if (token) headers.Authorization = `Bearer ${token}`;
+
+		const businessCollections = Object.keys(this._business.collections || this._business);
+		for (const colName of businessCollections) {
+			if (colName.startsWith('app') || colName.startsWith('_')) continue; // skip system collections
+			try {
+				const res = await fetch(`${base}/api/data/${colName}?limit=10000`, { headers });
+				if (!res.ok) continue;
+				const body = await res.json();
+				const records = Array.isArray(body) ? body : (body.data ?? body.records ?? []);
+				if (records.length === 0) continue;
+				const col = this._qoolie.collection[colName];
+				if (!col) continue;
+				for (const record of records) {
+					try {
+						await col.create(record);
+					} catch {
+						// Already exists — skip (IDB key conflict)
+					}
+				}
+			} catch {
+				/* individual collection pull failed — continue with others */
+			}
+		}
 	}
 
 	/** Pending IDB upgrade scheduled by drift detection — consumed by next createStore(). */
@@ -215,9 +324,13 @@ export class Machine {
 			dbVersion: this._version,
 			collections,
 			...(this._syncOptions !== undefined && { sync: this._syncOptions }),
-			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
+			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),  
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
+		// Reset reactive store so the new _qoolie is picked up on next access
+		this._reactiveStore = undefined;
+		// Signal schema/store readiness to reactive consumers (DataList, etc.)
+		bumpSchemaVersion();
 	}
 
 	private async _scheduleDrift(): Promise<void> {

@@ -1,24 +1,24 @@
 /**
  * machineModelBuilder.ts
- * Merges system collections (appModelDeclaration) with user model.
- * System collections always present; user model takes precedence on name collision.
+ * Pure merge of `core` and `business` MachineModels — no system baseline injection.
+ *
+ * The system baseline (appscheme_*, appuser_*, …) is the server's responsibility:
+ * MongoDB `appscheme_*` rows are deployed from `idae-model-core` at server bootstrap,
+ * and the client receives them through `machine.fetchSchema(/api/scheme)`. Reading
+ * `idae-model-core` directly on the client is forbidden (see header in that file
+ * and BACK-07).
  */
 
-import appModelDeclaration from '$lib/types/idae-model-core.js';
 import type { MachineModel } from '$lib/types/machine-model.js';
 
 /**
- * Merge system baseline + core + business into one effective model.
- * Priority (highest wins on collision): business > core > system baseline.
+ * Merge an optional core MachineModel with an optional business MachineModel.
+ * Priority on key collision: business > core.
  *
- * @param core     System/framework collections. Falls back to appModelDeclaration.
- * @param business Application business collections (vehicle, reservation, …).
+ * @param core     Optional framework collections (rarely set directly — usually the
+ *                 server-delivered schema covers everything).
+ * @param business Optional application-specific collections.
  */
 export function buildEffectiveModel(core?: MachineModel, business?: MachineModel): MachineModel {
-	const system: MachineModel = {};
-	for (const [name, col] of Object.entries(appModelDeclaration.collections)) {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		system[name] = { keyPath: '++id', ...(col as any) };
-	}
-	return { ...system, ...(core ?? {}), ...(business ?? {}) };
+	return { ...(core ?? {}), ...(business ?? {}) };
 }

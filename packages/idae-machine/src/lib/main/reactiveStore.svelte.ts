@@ -4,8 +4,25 @@
  * Subscribes to qoolie's IdbEventBus and bumps a $state version per collection;
  * read methods (getAll/where/get) touch the version to register a tracking dep,
  * so $derived in components re-runs on any mutation or initial feed load.
+ *
+ * Also exposes `schemaVersion` — bumped by machine.ts whenever the MachineDb /
+ * reactive store is (re)built (e.g. after fetchSchema resolves). Components that
+ * depend on schema availability touch this version so their $derived/$effect
+ * re-runs once the schema is ready.
  */
 import { idbEventBus, type QoolieCollection, type CollectionConfig } from '@medyll/qoolie';
+
+let _schemaVersion = $state(0);
+
+/** Read the current schema version. Touch it inside a $derived/$effect to track schema readiness. */
+export function schemaVersion(): number {
+	return _schemaVersion;
+}
+
+/** Bump schema version — call after machine._machineDb / machine._reactiveStore is (re)assigned. */
+export function bumpSchemaVersion(): void {
+	_schemaVersion++;
+}
 
 type Doc = CollectionConfig;
 type AnyCollection = QoolieCollection<Doc>;

@@ -20,6 +20,7 @@ Consumers provide named snippets; DataList handles all loops.
 	import type { Snippet } from 'svelte';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
+	import { schemaVersion } from '$lib/main/reactiveStore.svelte.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 
 	interface PaginationInfo {
@@ -57,7 +58,10 @@ Consumers provide named snippets; DataList handles all loops.
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	} = $props();
 
-	const store = $derived(collection ? machine.store[collection] : undefined);
+	const store = $derived.by(() => {
+		void schemaVersion();
+		return collection ? machine.store[collection] : undefined;
+	});
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
@@ -93,6 +97,8 @@ Consumers provide named snippets; DataList handles all loops.
 	});
 
 	function safeCollection(name: string) {
+		// Track schema readiness — re-runs when machine._machineDb is (re)built
+		void schemaVersion();
 		try {
 			return machine.logic.collection(name);
 		} catch {
@@ -118,7 +124,7 @@ Consumers provide named snippets; DataList handles all loops.
 		<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => setMode('actions')}>Actions</button>
 	</div>
 </div> -->
-
+<debug>total : {total}</debug>
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if groups}

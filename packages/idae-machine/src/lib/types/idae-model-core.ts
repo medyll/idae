@@ -1,13 +1,32 @@
 /**
- * Single runtime declaration of the idae meta-model.
+ * ⚠ DO NOT IMPORT THIS FILE DIRECTLY ON THE CLIENT ⚠
+ *
+ * `idae-model-core` is the **seed declaration** of the engine meta-model, used by
+ * the server bootstrap to deploy the schema into MongoDB (appscheme_*). It is **not**
+ * the runtime source of truth client-side and **must not** be read directly by UI
+ * components, stores, or routing code.
+ *
+ * Runtime schema must come from the server, which reads MongoDB and exposes it via
+ * `GET /api/scheme`. Client consumers should use:
+ *   - `machine.fetchSchema(url)`         — fetch + cache (SWR) into machine.logic
+ *   - `machine.logic.collection(name)`   — read-only access after start()
+ *   - server-side: `MachineServer.getModel()` (reads appscheme_* from Mongo)
+ *
+ * This area is still unstable — `machineModelBuilder` currently merges this file in
+ * as a system baseline, which is a transitional shim that will be removed once
+ * `fetchSchema` is required at app boot. Do not add new imports of this file.
+ *
+ * ──────────────────────────────────────────────────────────────────────────────
+ *
+ * Single runtime declaration of the idae meta-model (server seed only).
  *
  * 3-sibling structure per collection:
  *   - fields    : data definitions (column required/readonly flags)
  *   - fks       : relations to other collections
  *   - template  : display hints (presentation, future: sections, fkLabelTpl, indexes…)
  *
- * Stores types AND literal values — `idae-model-core` is the source of truth for both
- * structure and default display. `engineModel.ts` derives a MachineModel from this.
+ * Stores types AND literal values — source of truth for the initial server deploy.
+ * `engineModel.ts` derives a MachineModel from this for the bootstrap step.
  *
  * Conventions:
  *   - keyPath = '++id' on every meta collection (auto-increment).

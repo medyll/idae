@@ -15,7 +15,7 @@ export class MongooseConnectionManager {
 	}
 
 	async createConnection(dbUri: string, dbName: string, options?: mongoose.ConnectOptions) {
-		const connection = await mongoose.createConnection(dbUri, options).asPromise();
+		const connection = await mongoose.createConnection(dbUri, { dbName, ...options }).asPromise();
 
 		this._connections[dbName] = connection;
 

@@ -2,7 +2,6 @@
 	import "../app.css";
 	import { machine } from '$lib/main/machine.js';
 	import { App } from '$lib/shell/layout/index.js';
-	import { demoScheme } from '$lib/demo/demoScheme.js';
 
 	const apiUrl = (import.meta.env.PUBLIC_API_URL as string | undefined) ?? 'http://localhost:7842';
 	const token  = typeof window !== 'undefined'
@@ -10,8 +9,7 @@
 		: '';
 
 	machine.init({
-		org: 'demo', domain: 'machine', version: 2,
-		business: demoScheme,
+		org: 'demo', domain: 'machine', version: 6,
 		sync: {
 			mode: 'server-first',
 			databaseHost: apiUrl,

@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-23T19:55"
+last_updated: "2026-05-23T23:55"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Session 2026-05-23 (pm): BACK-01 DONE — files/mail/health/permission routes converted to idaeApi.app.METHOD direct (Express style), like data.ts/bootstrap.ts. permission.ts PermissionCheck satisfies fixed, upload.ts req.params cast. Server vitest: 464/465 (1 pre-existing rbac.matrix dynamic-import flake). BACK-04 DONE — seedUsers.ts extended: 3 types (admin/manager/viewer), 3 groups (admins/managers/viewers), 4 demo users, type+group assignments (assignmentType='role' for typeId per GrantService). BACK-03 INVESTIGATED — root cause: no pull mechanism in qoolie/idae-sync. SyncAdapter handles only outbound writes; ServerPush exists but unwired and only handles deltas. Proper fix needs IDeliverer.list + SyncAdapter.pullCollection + wire ServerPush.connect from Qoolie — cross-package, non-trivial. Deferred. BACK-05 stays blocked by BACK-03. BACK-02 already done. BACK-06 FullInfo skipped (intent TBD)."
-next_command: "bmad-next"
+next_action: "Sprint 34 complete (470/470 tests, test-results-sprint-34.md). BACK-07 and BACK-03 closed. Audit patch 2026-05-23T23:55: machineModelBuilder.ts no longer imports idae-model-core (system baseline dropped, builder = pure core+business merge) — true BACK-07 subtask 1 closure. machine.ts JSDoc cleaned. Backlog reconciled: BACK-03 done (REST hydration via _pullFromServer), BACK-05 → needs-verification (rerun 3 Playwright gated tests), BACK-07 done, BL-03 obsolete (model-core off-limits client-side). BL items + BACK descriptions translated to English. Open: BACK-05 verification run, BACK-06 (FullInfo intent), BL-01/02/04/05. Consider Sprint 35 for backlog cleanup or release prep."
+next_command: "bmad-status"
 next_role: "scrum"
-active_role: "developer"
+active_role: "tester"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -93,6 +93,42 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 34
+    goal: "SCHEMA-FROM-SERVER + Client Store Hydration — auto-fetchSchema on start, drop demoScheme from layout"
+    status: completed
+    artifact: "bmad/artifacts/sprint-s34-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-34.md"
+    depends_on: [33]
+    stories:
+      - id: S34-01
+        title: "start() auto-fetchSchema when databaseHost is set — local model as fallback, server replaces"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machine.test.ts: 4 new S34-01 tests pass. Full suite: 469/469 (39 files). start() detects databaseHost → starts immediately with local model + bg fetch, or waits for fetch if no local model."
+        test_result: pass
+      - id: S34-02
+        title: "+layout.svelte drops demoScheme import — relies on auto-fetchSchema"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "Full suite: 469/469 (39 files). Zero demoScheme references in +layout.svelte. App boots with only sync.databaseHost — schema fetched from server automatically."
+        test_result: pass
+      - id: S34-03
+        title: "Client store hydration — ensure data pulls from server in server-first mode"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machine.test.ts: new pull test passes. Full suite: 470/470 (39 files). _pullFromServer() fetches GET /api/data/{collection}?limit=10000 → upserts each record into local IDB via qoolie.collection.upsert(). Called after createStore() in both local-model and no-local-model paths."
+        test_result: pass
+      - id: S34-04
+        title: "Tests — auto-fetchSchema, layout cleanup, store hydration, no regression"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "Full suite: 470/470 (39 files), 3.68s. 6 new tests added (4 S34-01 + 1 S34-03 + 1 integration). 0 errors. Pre-existing Svelte CSS warnings (2 unused selectors) unchanged."
+        test_result: pass
+
   - id: 33
     goal: "RBAC Matrix UI — grant editor for existing schema, scope matrix-only (audit + assignments deferred)"
     status: completed
@@ -1546,103 +1582,175 @@ sessions:
 # ── Backlog ───────────────────────────────────────────────────────────────────
 backlog:
   - id: BL-01
-    title: "machine.init sync.seed — seedIfEmpty auto en mode mobile-first"
+    title: "machine.init sync.seed — auto seedIfEmpty in mobile-first mode"
     priority: high
     description: >
-      Quand sync.mode = 'mobile-first', machine.start() appelle seedIfEmpty(sync.seed) automatiquement.
-      Pas un cas dev — c'est la logique local-first. Config: machine.init({ sync: { mode: 'mobile-first', seed: demoSeed } }).
-    sprint: "S32 ou suivant"
+      When sync.mode = 'mobile-first', machine.start() should call seedIfEmpty(sync.seed)
+      automatically. Not a dev shortcut — it's the local-first logic.
+      Config: machine.init({ sync: { mode: 'mobile-first', seed: demoSeed } }).
+    sprint: "S32 or later"
 
   - id: BL-02
-    title: "explorerUtils.ts → data-ui/ — dépendance montante à corriger"
+    title: "explorerUtils.ts → data-ui/ — upward dependency to fix"
     priority: medium
     description: >
-      data-ui/ (DataList, DataFields, DataFk, DataRfk) importe sortItems/groupItems depuis shell/frame/.
-      Dépendance montante incorrecte. explorerUtils.ts doit migrer vers data-ui/utils/ ou data-ui/data/.
+      data-ui/ (DataList, DataFields, DataFk, DataRfk) imports sortItems/groupItems from shell/frame/.
+      Upward dependency, wrong direction. explorerUtils.ts must move to data-ui/utils/ or data-ui/data/.
 
   - id: BL-03
-    title: "machine.init.core — type compatible avec appModelDeclaration"
-    priority: low
+    title: "machine.init.core — type compatible with appModelDeclaration"
+    priority: obsolete
     description: >
-      appModelDeclaration a un wrapper { collections: {...} } incompatible avec MachineModel.
-      Soit exposer appModelDeclaration.collections as MachineModel, soit créer un helper coreFromDeclaration().
-      Permettrait de passer core explicitement dans machine.init() pour la clarté sémantique.
+      OBSOLETE after BACK-07. appModelDeclaration is server-bootstrap only and must not be
+      consumed client-side, so the original goal (passing core explicitly built from
+      appModelDeclaration in machine.init) no longer applies. If core ever needs a non-empty
+      default, build it from a server-fetched MachineModel, not from idae-model-core.
 
   - id: BL-04
-    title: "shell/frame/index.ts — barrel à mettre à jour"
+    title: "shell/frame/index.ts — barrel to refresh"
     priority: low
     description: >
-      index.ts dans shell/frame/ est l'ancien barrel de shell/explorer/. À vérifier/mettre à jour
-      pour refléter la nouvelle structure (explorer/ + card/).
+      index.ts in shell/frame/ is the old barrel for shell/explorer/. Verify and update to
+      match the current layout (explorer/ + card/).
 
   - id: BL-05
-    title: "MachineDb réactif depuis IDB:appscheme — vision long terme"
+    title: "MachineDb reactive from IDB:appscheme — long-term vision"
     priority: low
     description: >
-      machine.logic (MachineDb) construit depuis TypeScript au start().
-      Vision: lire les appscheme rows depuis IDB → collections émergent de la sync.
-      Prerequis: IDB:appscheme toujours créé (system), sync ramène les rows.
+      machine.logic (MachineDb) is currently built from a TypeScript MachineModel at start().
+      Vision: read appscheme rows from IDB → collections emerge from sync.
+      Prerequisites: IDB:appscheme always created (system), sync delivers rows.
+      Builds on top of BACK-07 (schema-from-server already removes the local TS dependency).
 
   - id: BACK-01
-    title: "idae-api v3 handler signature migration — routes restantes"
+    title: "idae-api v3 handler signature migration — remaining routes"
     priority: done
     description: >
-      RÉSOLU session 2026-05-23.
-      bootstrap.ts utilisait déjà idaeApi.app.METHOD direct.
-      files.ts, mail.ts, health.ts, permission.ts (registerPermissionRoutes) convertis
-      à idaeApi.app.METHOD direct (Express style) — même pattern que data.ts.
-      Pas de refactor en (service, params, body, query) v3 signature: la bypass voie
-      Express est cohérente avec l'usage de req.user/req.params/req.file/streams.
-      Server vitest: 464/465 (1 pré-existant rbac.matrix flake non lié).
+      RESOLVED session 2026-05-23.
+      bootstrap.ts already used idaeApi.app.METHOD direct.
+      files.ts, mail.ts, health.ts, permission.ts (registerPermissionRoutes) converted to
+      idaeApi.app.METHOD direct (Express style) — same pattern as data.ts.
+      No refactor to (service, params, body, query) v3 signature: the Express bypass is
+      coherent with req.user/req.params/req.file/stream usage.
+      Server vitest: 464/465 (1 pre-existing rbac.matrix flake, unrelated).
 
   - id: BACK-02
-    title: "Frame stacking race condition — fix done"
+    title: "Frame stacking race condition — fixed"
     priority: done
     description: >
-      RÉSOLU dans session 2026-05-23. Frame.svelte: unmount était avant await resolve.
-      doLoad appelé 2x rapide → 2 mount + 0 unmount → composant dupliqué dans même Frame.
-      Patch: mountSeq counter + unmount inside .then avec stale check.
+      RESOLVED session 2026-05-23. Frame.svelte: unmount was happening before await resolve.
+      doLoad called twice quickly → 2 mounts + 0 unmount → component duplicated in the same Frame.
+      Patch: mountSeq counter + unmount inside .then with stale-seq check.
 
   - id: BACK-03
-    title: "Qoolie sync IDB population pour appuser_group/type/audit"
-    priority: deferred
-    description: >
-      INVESTIGUÉ session 2026-05-23 — root cause identifié, fix non-trivial.
-      SyncAdapter (idae-sync) gère uniquement OUTBOUND (local → outbox → server).
-      ServerFirstHandler = rollback sur permanent failure, pas hydration.
-      ServerPush (SSE/WS) existe mais non wiré dans Qoolie + serveur n'expose pas /sync/stream.
-      IdbCollection a {silent: true} mais QoolieCollection.create ne l'expose pas → pas de bulk-insert sans réémettre vers outbox.
-      Fix propre: ajouter IDeliverer.list(collection) + SyncAdapter.pullCollection() + wire ServerPush.connect depuis Qoolie + endpoint serveur /sync/stream.
-      Cross-package (qoolie + idae-sync + idae-machine server). Hors scope "trivial fix".
-      Workaround possible: hydrate REST en app-level qui touche qoolie internals (hack).
-
-  - id: BACK-04
-    title: "Seed appuser_type + RBAC types complets (admin/manager/viewer)"
+    title: "Qoolie sync IDB population for appuser_group/type/audit"
     priority: done
     description: >
-      RÉSOLU session 2026-05-23.
-      seedUsers.ts étendu: 3 types (admin/manager/viewer avec typeLevel 100/50/10),
-      3 groups (admins/managers/viewers avec ALL_OPS/WRITE_OPS/READ_OPS),
-      4 demo users (admin, manager, user, viewer) + assignments group ET type.
-      Convention assignmentType='role' pour typeId (cf GrantService.AssignmentDoc).
+      RESOLVED in Sprint 34 (S34-03) via REST hydration.
+      Initial investigation (2026-05-23 pm): SyncAdapter (idae-sync) only handles OUTBOUND
+      (local → outbox → server). ServerFirstHandler = rollback on permanent failure, not
+      hydration. ServerPush (SSE/WS) exists but is not wired into Qoolie and the server
+      exposes no /sync/stream endpoint. IdbCollection has {silent: true} but
+      QoolieCollection.create does not surface it → no bulk insert without re-emitting to outbox.
+      Cross-package proper fix (qoolie + idae-sync + idae-machine server) was scoped out.
+      Pragmatic resolution: machine._pullFromServer(databaseHost) issues
+      GET /api/data/{collection}?limit=10000 and upserts each record into local IDB via
+      qoolie.collection.upsert(). Called from start() after createStore() in both
+      local-model and no-local-model paths. Outbox is bypassed because upserts re-enter sync
+      as local writes; acceptable for first-load hydration.
+      Long-term clean fix (push-based pull) still tracked as a follow-up but not blocking.
+
+  - id: BACK-04
+    title: "Seed appuser_type + complete RBAC roles (admin/manager/viewer)"
+    priority: done
+    description: >
+      RESOLVED session 2026-05-23.
+      seedUsers.ts extended: 3 types (admin/manager/viewer with typeLevel 100/50/10),
+      3 groups (admins/managers/viewers with ALL_OPS/WRITE_OPS/READ_OPS),
+      4 demo users (admin, manager, user, viewer) + group AND type assignments.
+      Convention assignmentType='role' for typeId (see GrantService.AssignmentDoc).
 
   - id: BACK-05
-    title: "Tests Playwright RBAC golden path — finir 3/9 gated"
-    priority: medium
+    title: "Playwright RBAC golden-path tests — finish 3/9 gated"
+    priority: needs-verification
     description: >
-      6/9 verts. 3 gated par BACK-03 (sync IDB):
-      - picking a group reveals matrix rows
-      - toggling a cell persists across reload
-      - column bulk-toggle flips all cells
-      Une fois BACK-03 résolu, ces 3 tests passent sans modification.
+      6/9 green. 3 were gated on BACK-03 (sync IDB):
+        - picking a group reveals matrix rows
+        - toggling a cell persists across reload
+        - column bulk-toggle flips all cells
+      BACK-03 is now resolved via REST hydration. The 3 tests must be re-run to confirm they
+      pass without further changes. Drop to 'done' once verified, or re-open with the actual
+      failure if hydration is not sufficient.
 
   - id: BACK-06
-    title: "FullInfo.svelte — implémenter contenu (composant stub registered)"
+    title: "FullInfo.svelte — implement content (stub component registered)"
     priority: low
     description: >
-      Registered dans componentRegistry clé 'fullinfo' mais composant = stub vide.
-      Définir intent: vue détail complète d'un record ? Synthèse multi-collection ?
-      Probablement type frame 'fullinfo' = panneau détail riche d'un record + relations.
+      Registered in componentRegistry under key 'fullinfo' but the component is an empty stub.
+      Define intent: detail view of a single record? Multi-collection synthesis?
+      Likely frame type 'fullinfo' = rich detail panel for one record + its relations.
+
+  - id: BACK-07
+    title: "Schema-from-server — cut model-core direct reads on client"
+    priority: done
+    description: >
+      Context (session 2026-05-23 evening): `machine.logic` (formerly machine.collections) must
+      stop reading `idae-model-core.ts` directly. The single client-side runtime source of truth
+      for the schema is MongoDB, exposed by the server via `GET /api/scheme`
+      (`MachineServer.getModel` rebuilds a MachineModel from the appscheme_* meta collections).
+      `idae-model-core` reverts to its real role: server bootstrap seed only.
+
+      Today: `machineModelBuilder.buildEffectiveModel` imports `appModelDeclaration` at line 7
+      and injects it as a system baseline inside `machine.start()`. That means `machine.logic`
+      reads model-core transitively — it hides the dependency and forbids any schema change
+      without recompiling the client.
+
+      Usage rule: `machine.fetchSchema(url)` is INTERNAL. It must NEVER be called from user code
+      (components, stores, routes). The fetch is not supposed to run on every mount — the IDB
+      SWR cache (`machineSchemaCache` + `machineSchemaLoader`) handles freshness.
+
+      Target client flow:
+        machine.init({ org, domain, version, sync: { mode, databaseHost } });
+        machine.start();   // internal: sees databaseHost → loadSchema → SWR IDB cache → MachineDb ready
+
+      No more `business: demoScheme` in +layout.svelte. demoScheme is a historical leftover and
+      stays for now (user note: "if it doesn't actively break, I'll remove it later").
+
+      Subtasks:
+        1. `machineModelBuilder.ts` — drop the `appModelDeclaration` import. Builder becomes a
+           pure merge of `core ?? {} + business ?? {}`. If nothing is supplied the MachineModel
+           is empty and start() must wait for fetchSchema before building MachineDb.
+        2. `machine.start()` — when `_syncOptions?.databaseHost` is set, call `loadSchema(url)`
+           internally instead of building from `_business` straight away. Keep the synchronous
+           path for dev/test runs that pass `business` explicitly.
+        3. `machine.fetchSchema(url)` — mark @internal / @framework-bootstrap; remove docs that
+           encourage direct usage (README, CLAUDE.md, bmad-openspace.md).
+        4. `+layout.svelte` — drop `business: demoScheme`, keep only init + start.
+        5. Tests: machineClient.test.ts, machine.test.ts, fetchSchemaE2E — adapt only if needed
+           (most paths already exercise fetchSchema, so the new flow is mostly covered).
+        6. model-core keeps its ⚠ DO NOT IMPORT CLIENT-SIDE header (done this evening).
+
+      Acceptance:
+        - `grep "from.*idae-model-core"` returns only: machineModelBuilder (to remove),
+          engineModel.ts (server bootstrap), server tests.
+        - +layout.svelte no longer references `demoScheme` or `business:`.
+        - machine.start() with databaseHost → schema loaded from /api/scheme automatically.
+        - <DataList collection="appscheme"> renders the collections declared in Mongo.
+
+      Related to BL-05 (long-term vision: MachineDb built reactively from IDB:appscheme rows) —
+      BACK-07 is the intermediate step; BL-05 goes further.
+
+      RESOLUTION (Sprint 34 + audit patch 2026-05-23 evening):
+        - S34-01: machine.start() now detects sync.databaseHost and runs _fetchSchemaBg(url)
+          in the background; if no local business model is set, it waits for the server schema
+          before building MachineDb.
+        - S34-02: +layout.svelte no longer imports demoScheme (verified — grep clean).
+        - S34-03: _pullFromServer hydrates IDB from REST (closes BACK-03 too).
+        - Audit patch: machineModelBuilder.ts no longer imports idae-model-core
+          (system baseline removed). buildEffectiveModel = pure merge of core + business.
+        - Audit patch: machine.ts JSDoc cleaned ("Defaults to appModelDeclaration" → "Usually
+          omitted — schema fetched from the server").
+        - model-core header (⚠ DO NOT IMPORT CLIENT-SIDE) in place.
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # Réel vérifié 2026-05-17

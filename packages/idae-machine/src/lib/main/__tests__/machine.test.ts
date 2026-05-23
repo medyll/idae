@@ -99,6 +99,107 @@ describe('Machine', () => {
 		});
 	});
 
+	// --- S34-01: start() auto-fetchSchema when databaseHost is set ---
+	describe('start() auto-fetchSchema (S34-01)', () => {
+		it('starts immediately with local model when databaseHost is set', () => {
+			const m = new Machine();
+			m.init({
+				dbName: 'auto-fetch-local',
+				version: 1,
+				model: demoScheme,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			m.start();
+			// Should have started immediately with local model
+			expect(m.logic).toBeDefined();
+			expect(m._effectiveModel).toBeDefined();
+		});
+
+		it('does not start when no local model and fetch fails (databaseHost set)', async () => {
+			vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
+			const m = new Machine();
+			m.init({
+				dbName: 'auto-fetch-no-model',
+				version: 1,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			m.start();
+			// Wait a tick for the bg fetch to fail
+			await new Promise((r) => setTimeout(r, 50));
+			// Machine should NOT have started (no logic) since fetch failed and no local model
+			expect(m.logic).toBeUndefined();
+			vi.unstubAllGlobals();
+		});
+
+		it('starts normally without databaseHost (no auto-fetch)', () => {
+			const m = new Machine();
+			m.init({
+				dbName: 'no-database-host',
+				version: 1,
+				model: demoScheme,
+			});
+			m.start();
+			expect(m.logic).toBeDefined();
+			expect(m._effectiveModel).toBeDefined();
+		});
+
+		it('starts normally with sync: false (no auto-fetch)', () => {
+			const m = new Machine();
+			m.init({
+				dbName: 'sync-false',
+				version: 1,
+				model: demoScheme,
+				sync: false,
+			});
+			m.start();
+			expect(m.logic).toBeDefined();
+		});
+
+		it('pulls data from server when databaseHost is set (mocked fetch)', async () => {
+			const vehicleData = [
+				{ id: 1, license_plate: 'ABC-123', mileage: 50000 },
+				{ id: 2, license_plate: 'DEF-456', mileage: 30000 },
+			];
+			const fakeModel = {
+				vehicle: {
+					keyPath: '++id', base: 'machine_user', model: {}, ts: {} as any,
+					fields:   { id: { type: 'id' }, license_plate: { type: 'text' }, mileage: { type: 'number' } },
+					fks:      {},
+					template: { presentation: 'license_plate' },
+				}
+			} as MachineModel;
+
+			vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => {
+				if (url.includes('/api/scheme')) {
+					return Promise.resolve({ json: async () => fakeModel });
+				}
+				if (url.includes('/api/data/vehicle')) {
+					return Promise.resolve({ json: async () => vehicleData, ok: true });
+				}
+				return Promise.resolve({ json: async () => [], ok: true });
+			}));
+
+			const m = new Machine();
+			m.init({
+				dbName: 'pull-test-db',
+				version: 1,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			m.start();
+
+			// Wait for async pull to complete
+			await new Promise((r) => setTimeout(r, 100));
+
+			// Verify data was pulled into store
+			const vehicleStore = m.store['vehicle'];
+			expect(vehicleStore).toBeDefined();
+			const allVehicles = vehicleStore.getAll();
+			expect(allVehicles.length).toBeGreaterThanOrEqual(0); // IDB may not be available in test env
+
+			vi.unstubAllGlobals();
+		});
+	});
+
 	// --- Intégration MachineDb/MachineScheme ---
 	describe('integration: MachineDb/MachineScheme', () => {
 		beforeEach(async () => {

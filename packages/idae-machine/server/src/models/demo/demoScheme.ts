@@ -6,7 +6,7 @@ export const demoScheme: MachineModel = {
 	// ── Référentiels ──────────────────────────────────────────────────────────
 
 	category: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as { id: string; code: string; name: string; description?: string; daily_rate_base?: number },
 		fields: {
 			id:              field('id',     { readonly: true }),
@@ -20,7 +20,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	location_office: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as { id: string; code: string; name: string; address: string; city: string; country: string; phone?: string; manager?: string },
 		fields: {
 			id:      field('id',    { readonly: true }),
@@ -37,7 +37,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	supplier: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; code: string; name: string;
 			contact_name?: string; email?: string; phone?: string;
@@ -59,7 +59,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	seller: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; first_name: string; last_name: string;
 			email: string; phone?: string; locationOfficeId?: string;
@@ -84,7 +84,7 @@ export const demoScheme: MachineModel = {
 	// ── Flotte ────────────────────────────────────────────────────────────────
 
 	vehicle: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; license_plate: string; model: string; brand: string; year: number;
 			categoryId?: string; locationOfficeId?: string; supplierId?: string;
@@ -113,7 +113,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	vehicle_acquisition: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; vehicleId: string; supplierId: string;
 			acquisition_date: Date; purchase_price: number;
@@ -137,7 +137,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	insurance: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; vehicleId: string; provider: string;
 			policy_number: string; start_date: Date; expires_at: Date;
@@ -161,7 +161,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	maintenance: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; vehicleId: string; date: Date;
 			type: string; cost?: number; mileage_at_service?: number; notes?: string;
@@ -184,7 +184,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	fuel_log: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; vehicleId: string; date: Date;
 			liters: number; cost: number; mileage: number; station?: string;
@@ -207,7 +207,7 @@ export const demoScheme: MachineModel = {
 	// ── Location ──────────────────────────────────────────────────────────────
 
 	customer: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; first_name: string; last_name: string;
 			email: string; phone?: string; drivers_license?: string;
@@ -230,7 +230,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	pricing_rule: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; categoryId: string; season_code: string;
 			price_per_day: number; min_days?: number; discount_pct?: number; valid_from?: Date; valid_until?: Date;
@@ -252,7 +252,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	rental: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; vehicleId: string; customerId: string; sellerId?: string;
 			start_date: Date; end_date?: Date; planned_return?: Date;
@@ -285,7 +285,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	damage_report: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; rentalId: string; vehicleId: string;
 			reported_at: Date; description: string; location_on_vehicle?: string;
@@ -314,7 +314,7 @@ export const demoScheme: MachineModel = {
 	// ── CRM / Ventes ──────────────────────────────────────────────────────────
 
 	lead: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; first_name: string; last_name: string;
 			email?: string; phone?: string; source: string;
@@ -343,7 +343,7 @@ export const demoScheme: MachineModel = {
 	},
 
 	sale_task: {
-		keyPath: '++id', base: 'machine_user', model: {},
+		keyPath: '++id', base: 'machine_base', model: {},
 		ts: {} as {
 			id: string; sellerId: string; leadId?: string; customerId?: string;
 			type: 'call' | 'email' | 'visit' | 'demo' | 'quote' | 'follow_up' | 'other';

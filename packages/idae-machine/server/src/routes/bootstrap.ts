@@ -8,7 +8,7 @@ import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
 import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
-import { demoSeed } from '../models/demo/demoScheme.js';
+import { demoSeed, demoScheme } from '../models/demo/demoScheme.js';
 import { config } from '../config.js';
 import { mongooseConnectionManager } from '@medyll/idae-api';
 
@@ -57,7 +57,8 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 		if (steps.includes('deploy')) {
 			await seedEngineRegistries({ org, mongoUri });
 			await deployModel(buildEngineModel(), { org, mongoUri });
-			if (model) await deployModel(model, { org, mongoUri });
+			// Default to demoScheme when no model supplied — dev reset shortcut
+			await deployModel(model ?? demoScheme, { org, mongoUri });
 			invalidateSchemeCache();
 			results.deploy = 'ok';
 			logger.info(`[admin/reset] deploy done for org="${org}"`);
@@ -70,7 +71,7 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 			const userConn = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_user`);
 			await seedImagePresets(appConn);
 			await seedUsers(userConn);
-			await seedBusinessData(demoSeed, userConn);
+			await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed });
 			results.seed = 'ok';
 			logger.info(`[admin/reset] seed done for org="${org}"`);
 		} else {

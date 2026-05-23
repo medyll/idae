@@ -27,8 +27,7 @@
   | Multi-database routing | ✅ Shipped | Data routed to correct MongoDB database per organization |
   | Server seed pipeline | ✅ Shipped | Bootstrap demo data and business entities on first run |
   | CORS & route ordering | ✅ Shipped | Express middleware correctly ordered before route handlers |
-  | SCHEMA-FROM-SERVER | ✅ Shipped | Auto-fetch schema on start — eliminates manual schema declarations |
-  | Client store hydration | ✅ Shipped | Server data automatically pulled into local IDB on boot |
+  | SCHEMA-FROM-SERVER | 🔨 Building | Auto-fetch schema on start — eliminates manual schema declarations |
 
 ### What's Ready Now
 
@@ -43,55 +42,55 @@
 - Multi-tenant data routing (org-scoped MongoDB databases)
 - Bootstrap CLI and HTTP endpoints for demo data seeding
 - DataList composable API with snippet-based customization
-- **NEW:** Auto-fetch schema from server on `machine.start()` when `databaseHost` is set
-- **NEW:** Automatic data pull from server into local IDB on boot
 
 ### What's Coming Next
 
-- **Sprint 35 planning:** Remaining backlog items, release prep, or new features
-- **Visual schema builder:** Drag-and-drop entity designers (far vision)
-- **Plugin marketplace:** Custom field types and components (far vision)
+- **SCHEMA-FROM-SERVER (BACK-07)**: machine.start() auto-fetches schema from server — drop manual appModelDeclaration import
+- **Client store hydration (BACK-03)**: Fix empty client store after CORS/route fix — ensure data pulls correctly
+- **Visual schema builder**: Drag-and-drop entity designers (far vision)
+- **Plugin marketplace**: Custom field types and components (far vision)
 
 ### Risks & Blockers
 
-- Pre-existing TS errors in `DataListToolbar.svelte` (5 errors — from prior session, not Sprint 34)
-- None identified for current development
+- None identified. Sprint 33 complete, all tests passing (464/464). Open items are tracked backlog items, not blockers.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Development Details
 
-  Sprint     none (S34 completed)
-  Role       tester → next: scrum
-  Next cmd   `bmad-status`
+  Sprint     none (S33 completed)
+  Role       developer → next: scrum
+  Next cmd   `bmad-next`
 
 ### Current Sprint
 
-  ✅ Done     Sprint 34: SCHEMA-FROM-SERVER + Client Store Hydration. `start()` auto-fetches schema from server when `databaseHost` set. `_pullFromServer()` hydrates client store. `+layout.svelte` drops `demoScheme` import entirely.
+  ✅ Done     Sprint 33: RBAC Matrix UI — grant editor, collection rows × CRUDLX cells, group dropdown, column bulk toggle. CORS fix (route ordering). mongooseConnectionManager dbName propagation fix. seedBusinessData multi-org rewrite. CollectionNav cleanup.
   🔨 Doing    Nothing active — between sprints
-  💡 Next     Plan Sprint 35 or release prep
+  💡 Next     Plan Sprint 34: SCHEMA-FROM-SERVER refactor (BACK-07) + client store hydration (BACK-03)
   ⚠️ Blockers None
 
-### Stories (Sprint 34 — All Complete)
+### Stories (Recent Sprints)
 
   | ID | Title | Status | Effort |
   |----|-------|--------|--------|
-  | S34-01 | start() auto-fetchSchema when databaseHost is set | ✅ done | M |
-  | S34-02 | +layout.svelte drops demoScheme import | ✅ done | S |
-  | S34-03 | Client store hydration — pull data from server | ✅ done | M |
-  | S34-04 | Tests — auto-fetchSchema, layout, hydration, regression | ✅ done | M |
+  | S33-01 | Seed _views — auto-generated from template.presentation | ⏭ skipped | S |
+  | S33-03 | RbacMatrix.svelte — composition glue, CRUDLX cells, group dropdown | ✅ done | M |
+  | S33-06 | Tests — registry wiring, module resolves, grant payload, OPS shape | ✅ done | S |
+  | S32-01 | Fix componentRegistryEntries.test.ts — expect 2 entries | ✅ done | S |
+  | S32-02 | Validate all DataList consumers — migrate children() usage | ✅ done | M |
+  | S32-03 | Fix Explorer.svelte:45 — currentMode initial-only capture | ✅ done | S |
+  | S32-04 | Verify PaneRecents.svelte collection key | ✅ done | S |
+  | S32-05 | Scope CSS — :global() on listClass/groupClass selectors | ✅ done | S |
+  | S32-06 | Document DataList new API in conventions.md | ✅ done | S |
+  | S32-07 | Tester — full suite + check after migration | ✅ done | S |
+  | S30-01 | machine.init: model → core + business (deprecated shim) | ⬚ planned | S |
+  | S30-02 | buildEffectiveModel(core?, business?) — fusion | ⬚ planned | S |
+  | S30-03 | seed() unifié — même appel core et business | ⬚ planned | M |
+  | S30-04 | demoScheme = business uniquement | ⬚ planned | S |
+  | S30-05 | appModelDeclaration aligné format MachineModel business | ⬚ planned | S |
+  | S30-06 | Tests — init/start, seed unifié, rétro-compat | ⬚ planned | M |
 
-  Progress: 4/4 stories complete
-
-### Recent Sprint History
-
-  | Sprint | Goal | Status | Tests |
-  |--------|------|--------|-------|
-  | S34 | SCHEMA-FROM-SERVER + store hydration | ✅ done | 470/470 |
-  | S33 | RBAC Matrix UI | ✅ done | 464/464 |
-  | S32 | DataList snippet API refactor | ✅ done | 456/456 |
-  | S31 | Server seed + qoolie sync server-first | ✅ done | pass |
-  | S30 | machine.init(core+business) | ⬚ planned | — |
+  Progress: 33 sprints completed, 1 sprint planned (S30 pending), 1 sprint active (none)
 
 ### Roadmap to Release
 
@@ -108,17 +107,16 @@
   - Sprint 22-25: Navigation layer, structural refactor, Frame Manager, Unified Explorer ✅
   - Sprint 26-28: System rename, _views wiring, IDB drift detection ✅
   - Sprint 29-33: Explorer vars, DataList refactor, RBAC Matrix, CORS/dbn fixes ✅
-  - Sprint 34: SCHEMA-FROM-SERVER + store hydration ✅
   - Sprint 30: machine.init(core+business) — planned, pending activation
-  - Sprint 35: TBD — next sprint planning
+  - Sprint 34: SCHEMA-FROM-SERVER + client store hydration — next
 
   #### Testing ✅
-  - Unit tests: 470/470 passing (39 files)
+  - Unit tests: 464/464 passing (39 files)
   - E2E tests: Playwright golden path verified
 
   #### Release 🔨
   - Docs/README: needs update for v2 features
-  - CHANGELOG: needs update for S29-S34
+  - CHANGELOG: needs update for S29-S33
   - Publish: pending
 
 ### Artifacts
@@ -128,8 +126,8 @@
   | PRD | ✅ done |
   | Architecture | ✅ done |
   | Tech Spec | ✅ done |
-  | Sprint artifacts (S1-S34) | ✅ done |
-  | Test results (S34) | ✅ done — 470/470 |
+  | Sprint artifacts (S1-S33) | ✅ done |
+  | Test results (S33) | ✅ done — 464/464 |
   | Conventions | ✅ maintained |
   | INTENT.md | ✅ done |
 

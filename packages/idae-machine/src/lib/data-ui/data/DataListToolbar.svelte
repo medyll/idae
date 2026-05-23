@@ -1,5 +1,13 @@
 <script module lang="ts">
-	export type Mode = 'list' | 'table' | 'card' | 'actions';
+	import type { Where } from '@medyll/qoolie';
+	export type DataListDisplayMode = 'list' | 'table' | 'card' | 'actions';
+
+	export interface DataListToolbarProps {
+		collection: string;
+		collectionId?: number | string;
+		mode?: DataListDisplayMode;
+		where?: Where;
+	}
 </script>
 
 <script lang="ts" generics="COL extends Record<string, unknown>">
