@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-23T00:32"
+last_updated: "2026-05-23T14:55"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Fix shared config.org mutation in server tests (parallel isolation) — pass org via context, not global config. Or skip pollution-prone tests."
-next_command: "bmad-dev-story"
-next_role: "developer"
-active_role: "developer"
+next_action: "Minor backlog ready: M1/M2 file naming convention, M3 any reduction (47 prod casts), M4 IDB mock dedup (6 test files), M5 Explorer.svelte mode split."
+next_command: "bmad-next"
+next_role: "scrum"
+active_role: "reviewer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -1292,6 +1292,14 @@ qa:
 sessions:
   - date: "2026-05-23"
     summary: >
+      Audit fixes I1/I2/I3 closed. I1: explorerUtils.ts moved shell/frame/ → data-ui/utils/ (7 imports updated).
+      I2: main-ui/index.ts deleted (stale directory removed). I3: console.log removed from DataForm.svelte:87.
+      Result: vitest 459/459 (38 files). check: 0 errors, 0 warnings. No regressions.
+    tests_server: 459
+    tests_client: 0
+
+  - date: "2026-05-23"
+    summary: >
       Sprint 31 COMPLETE (4/4 stories): Server seed + sync server-first.
       S31-01: seedBusinessData() exists at server/src/bootstrap/seedBusinessData.ts — idempotent per-collection insert, wired in bootstrap-demo.ts + POST /api/admin/reset.
       S31-02: +layout.svelte uses machine.init({ sync: { mode: 'server-first', databaseHost: apiUrl } }).
@@ -1325,13 +1333,12 @@ sessions:
 
   - date: "2026-05-23"
     summary: >
-      bmad-audit (Reviewer): 9 uncommitted files. DataList API rewrite — children() → item/groupHeader/empty/footer + listClass/groupClass.
-      Explorer + Pane + PaneRecents + CollectionNav migrated. ExplorerCollections deleted.
-      Test break found: componentRegistryEntries expected 3 entries, now 2 — fixed.
-      Audit issues: I2 (consumers grep pending), I3 (Explorer:45 currentMode initial-only), I4 (PaneRecents collection key change verify), M1-M2 (scoped CSS unused due to listClass/groupClass).
-      Created Sprint S32 with 7 stories. status.yaml phase reverted development/testing.
-      Full suite: 456/456 after fix. check: 0 errors, 8 warnings.
-    tests_server: 456
+      bmad-audit (Reviewer): Full codebase audit — 128 source files.
+      Health score: 7.5/10. Tests: 459/459. check: 0 errors, 0 warnings.
+      Issues: I1 (data-ui→shell upward dep), I2 (stale main-ui/), I3 (console.log in DataForm).
+      Minor: M1-M5 (naming, any reduction, test dedup, Explorer size).
+      No critical/security issues. Artifact: bmad/artifacts/audit-2026-05-23.md.
+    tests_server: 459
     tests_client: 0
 
   - date: "2026-05-21"

@@ -84,7 +84,6 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 
 		if (!(await validate(snapshot))) {
 			isSubmitting = false;
-			console.log('Validation failed', validationErrors, snapshot);
 			return;
 		}
 

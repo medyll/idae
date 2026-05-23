@@ -20,7 +20,7 @@ Consumers provide named snippets; DataList handles all loops.
 	import type { Snippet } from 'svelte';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/shell/frame/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 
 	interface PaginationInfo {
 		page: number;
