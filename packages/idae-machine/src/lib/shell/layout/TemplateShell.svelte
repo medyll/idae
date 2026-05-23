@@ -46,7 +46,7 @@
 	}
 
 	.shell-sidebar {
-		width: var(--sidebar-width, 220px);
+		max-width: var(--sidebar-max-width, 220px);
 		background: var(--color-surface);
 		border-right: var(--border-width) solid var(--color-border);
 		overflow-y: auto;

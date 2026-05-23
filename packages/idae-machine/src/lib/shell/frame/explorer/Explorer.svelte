@@ -8,6 +8,7 @@ Unified collection browser — list/table/card/actions modes.
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
 	import DataForm from '$lib/data-ui/data/DataForm.svelte';
 	import ExplorerTableInline from './ExplorerTableInline.svelte';
+	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import type { SortBy } from '$lib/types/machine-model.js';
 
@@ -57,6 +58,8 @@ Unified collection browser — list/table/card/actions modes.
 	}
 </script>
 
+<TemplateShell>
+	{#snippet children()}
 {#if currentMode !== 'card'}
 	<div class="explorer-toolbar">
 		<div class="mode-switcher">
@@ -139,6 +142,8 @@ Unified collection browser — list/table/card/actions modes.
 		{/snippet}
 	</DataList>
 {/if}
+	{/snippet}
+</TemplateShell>
 
 <style>
 	.explorer-toolbar {
