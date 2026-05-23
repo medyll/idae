@@ -32,35 +32,11 @@
 				currentApp = null;
 			}
 			const props: Record<string, unknown> = { collection: col };
-			// @deprecated
-			if (colId) props.dataId = colId;
-			if (v) {
-				if (v.mode)     props.mode     = v.mode;
-				if (v.pageSize) props.pageSize = Number(v.pageSize);
-				if (v.groupBy)  props.groupBy  = v.groupBy;
-				if (v.sortBy) {
-					const [field, dir] = v.sortBy.split(':');
-					props.sortBy = { field, direction: (dir === 'desc' ? 'desc' : 'asc') as 'asc' | 'desc' };
-				}
-				if (v.where) {
-					try { props.where = JSON.parse(v.where); } catch { /* ignore invalid JSON */ }
-				}
-				if (v.groupId) props.groupId = v.groupId;
-				if (v.typeId)  props.typeId  = v.typeId;
-			}
-
-			// Wire legacy explorer.* onclick → load detail in same frame
-			// @deprecated
-			if (mp.startsWith('explorer.') && mp !== 'explorer.collections') {
-				props.onclick = (record: Record<string, unknown>) => {
-					const recordId = (record as Record<string, unknown>)?.id ?? (record as Record<string, unknown>)?._id;
-					machine.loadFrame('explorer', col, String(recordId), { mode: 'card' });
-				};
-			}
 
 			currentApp = mount(Comp as Component<Record<string, unknown>>, { target: bodyEl, props });
+
 		}).catch((err) => {
-			console.error(`Failed to load component for modulePath "${mp}":`, err);
+			console.error(`Error when loading component for modulePath "${mp}":`, err);
 		});
 	}
 
