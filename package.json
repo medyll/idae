@@ -1,87 +1,87 @@
 {
-  "name": "root",
-  "version": "0.1.6-next.0",
-  "description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
-  "keywords": [
-    "data-management",
-    "storage",
-    "ui",
-    "reactivity",
-    "data schema",
-    "server sync",
-    "postgresql",
-    "mysql",
-    "sqlite",
-    "mongodb",
-    "pouchdb"
-  ],
-  "scope": "medyll",
-  "private": true,
-  "scripts": {
-    "commit": "cz",
-    "lint": "eslint .",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
-    "package:pre": "pnpm -r run prepackage ",
-    "package": "pnpm -r run package",
-    "package:verify": "node scripts/verify-packages.js",
-    "postinstall": "npm run package:verify",
-    "verify:workspace-deps": "node scripts/verify-workspace-deps.js",
-    "add-skill": "node scripts/add-skill.mjs"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "workspaces": [
-    "packages/*",
-    "packages-config/*"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "directory": "."
-  },
-  "devDependencies": {
-    "@medyll/idae-db": "*",
-    "@medyll/idae-eslint-config": "workspace:*",
-    "@medyll/idae-shared": "workspace:*",
-    "@rushstack/eslint-patch": "^1.16.1",
-    "@types/jest": "^30.0.0",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^17.3.1",
-    "eslint": "^10.1.0",
-    "jest": "^30.3.0",
-    "ts-jest": "^29.4.6",
-    "tshy": "^3.3.2",
-    "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
-  },
-  "dependencies": {
-    "@medyll/css-base": "link:../css-base",
-    "@medyll/idae-pnpm-release": "^1.0.33",
-    "@medyll/monorepo-pnpm-release": "^1.0.22",
-    "@octokit/rest": "^22.0.1",
-    "chalk": "^5.6.2",
-    "glob": "^13.0.6",
-    "js-yaml": "^4.1.1",
-    "mongoose-sequence": "^6.0.1",
-    "npm": "^11.12.0",
-    "publint": "^0.3.18"
-  },
-  "peerDependencies": {
-    "@sveltejs/adapter-auto": "^4.0.0",
-    "@sveltejs/kit": "^2.16.0",
-    "@sveltejs/package": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^5.0.0",
-    "prettier": "^3.4.2",
-    "prettier-plugin-svelte": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "svelte": "^5.0.0-next",
-    "vite": "^6.0.0",
-    "vitest": "^3.0.0"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.60.0"
-  }
+	"name": "root",
+	"version": "0.1.6-next.0",
+	"description": "A high-performance monorepo for modern full-stack application development. Focused on data-management, storage, and UI with advanced reactivity. Provides a robust data schema, real-time server sync, and unified support for PostgreSQL, MySQL, SQLite, MongoDB, and PouchDB.",
+	"keywords": [
+		"data-management",
+		"storage",
+		"ui",
+		"reactivity",
+		"data schema",
+		"server sync",
+		"postgresql",
+		"mysql",
+		"sqlite",
+		"mongodb",
+		"pouchdb"
+	],
+	"scope": "medyll",
+	"private": true,
+	"scripts": {
+		"commit": "cz",
+		"lint": "eslint .",
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,svelte}\"",
+		"package:pre": "pnpm -r run prepackage ",
+		"package": "pnpm -r run package",
+		"package:verify": "node scripts/verify-packages.js",
+		"postinstall": "npm run package:verify",
+		"verify:workspace-deps": "node scripts/verify-workspace-deps.js",
+		"add-skill": "node scripts/add-skill.mjs"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
+	},
+	"workspaces": [
+		"packages/*",
+		"packages-config/*"
+	],
+	"publishConfig": {
+		"access": "public",
+		"directory": "."
+	},
+	"devDependencies": {
+		"@medyll/idae-db": "*",
+		"@medyll/idae-eslint-config": "workspace:*",
+		"@medyll/idae-shared": "workspace:*",
+		"@rushstack/eslint-patch": "^1.16.1",
+		"@types/jest": "^30.0.0",
+		"commitizen": "^4.3.1",
+		"cz-conventional-changelog": "^3.3.0",
+		"dotenv": "^17.3.1",
+		"eslint": "^10.1.0",
+		"jest": "^30.3.0",
+		"ts-jest": "^29.4.6",
+		"tshy": "^3.3.2",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.2"
+	},
+	"dependencies": {
+		"@medyll/css-base": "link:../css-base",
+		"@medyll/idae-pnpm-release": "^1.0.33",
+		"@medyll/monorepo-pnpm-release": "^1.0.22",
+		"@octokit/rest": "^22.0.1",
+		"chalk": "^5.6.2",
+		"glob": "^13.0.6",
+		"js-yaml": "^4.1.1",
+		"mongoose-sequence": "^6.0.1",
+		"npm": "^11.12.0",
+		"publint": "^0.3.18"
+	},
+	"peerDependencies": {
+		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/package": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.3",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"svelte": "^5.0.0-next",
+		"vite": "^6.0.0",
+		"vitest": "^3.0.0"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.60.0"
+	}
 }

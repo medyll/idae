@@ -1,13 +1,9 @@
-const config = {
-  useTabs: true,
-  singleQuote: true,
-  trailingComma: 'none',
-  tabWidth: 2,
-  printWidth: 100,
-  plugins: ['prettier-plugin-svelte'],
-  overrides: [
-    { files: '*.svelte', options: { parser: 'svelte' } },
-  ],
+module.exports = {
+	useTabs: true,
+	singleQuote: true,
+	trailingComma: 'none',
+	tabWidth: 2,
+	printWidth: 100,
+	plugins: ['prettier-plugin-svelte'],
+	overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }]
 };
-
-export default config;
