@@ -160,21 +160,7 @@ Unified collection browser — list/table/card/actions modes.
 
 	.mode-switcher { display: flex; gap: 2px; }
 
-	.mode-btn {
-		padding: 3px 10px;
-		border: 1px solid var(--color-border);
-		background: transparent;
-		color: var(--color-text-muted);
-		cursor: pointer;
-		font-size: var(--text-xs);
-		border-radius: var(--radius-sm);
-	}
-	.mode-btn.active {
-		background: var(--color-primary, #4f46e5);
-		color: #fff;
-		border-color: transparent;
-	}
-	.mode-btn:hover:not(.active) { background: var(--color-hover); }
+
 
 	:global(.explorer-group) { margin-bottom: var(--gutter-md); }
 

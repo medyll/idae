@@ -32,6 +32,7 @@
 				currentApp = null;
 			}
 			const props: Record<string, unknown> = { collection: col };
+			// @deprecated
 			if (colId) props.dataId = colId;
 			if (v) {
 				if (v.mode)     props.mode     = v.mode;
@@ -49,6 +50,7 @@
 			}
 
 			// Wire legacy explorer.* onclick → load detail in same frame
+			// @deprecated
 			if (mp.startsWith('explorer.') && mp !== 'explorer.collections') {
 				props.onclick = (record: Record<string, unknown>) => {
 					const recordId = (record as Record<string, unknown>)?.id ?? (record as Record<string, unknown>)?._id;
@@ -57,8 +59,8 @@
 			}
 
 			currentApp = mount(Comp as Component<Record<string, unknown>>, { target: bodyEl, props });
-		}).catch(() => {
-			// Component not found — silent fail
+		}).catch((err) => {
+			console.error(`Failed to load component for modulePath "${mp}":`, err);
 		});
 	}
 
@@ -95,3 +97,6 @@
 <div class="frame" id="frame-{id}" data-frame-id={id} style="display: {visible ? 'block' : 'none'};">
 	<div class="frame-body" id="frame-body-{id}" bind:this={bodyEl}></div>
 </div>
+<style>
+	.frame {height:100%; width:100%; display:block; position:relative;}
+</style>

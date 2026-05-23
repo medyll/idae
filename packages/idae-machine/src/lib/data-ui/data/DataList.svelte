@@ -111,6 +111,14 @@ Consumers provide named snippets; DataList handles all loops.
 	});
 </script>
 
+<div class="data-toolbar">
+	<div class="mode-switcher">
+		<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => setMode('list')}>List</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => setMode('table')}>Table</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => setMode('actions')}>Actions</button>
+	</div>
+</div>
+
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if groups}
@@ -146,4 +154,30 @@ Consumers provide named snippets; DataList handles all loops.
 	.data-list-group {
 		margin-bottom: var(--gutter-md);
 	}
+
+	.data-toolbar {
+		display: flex;
+		align-items: center;
+		padding: 4px 0 8px;
+		border-bottom: var(--border-width) solid var(--color-border);
+		margin-bottom: var(--gutter-sm);
+	}
+
+	.mode-switcher { display: flex; gap: 2px; }
+
+	.mode-btn {
+		padding: 3px 10px;
+		border: 1px solid var(--color-border);
+		background: transparent;
+		color: var(--color-text-muted);
+		cursor: pointer;
+		font-size: var(--text-xs);
+		border-radius: var(--radius-sm);
+	}
+	.mode-btn.active {
+		background: var(--color-primary, #4f46e5);
+		color: #fff;
+		border-color: transparent;
+	}
+	.mode-btn:hover:not(.active) { background: var(--color-hover); }
 </style>
