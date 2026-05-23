@@ -68,7 +68,6 @@
     "directory": "."
   },
   "devDependencies": {
-    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-db": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",

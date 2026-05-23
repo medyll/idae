@@ -30,7 +30,6 @@
 		"socket.io": "^4.8.0"
 	},
 	"devDependencies": {
-		"@medyll/idae-config-prettier": "latest",
 		"@medyll/idae-db": "workspace:*",
 		"@types/bcryptjs": "^3.0.0",
 		"@types/cors": "^2.8.17",

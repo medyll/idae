@@ -32,7 +32,6 @@
     "config"
   ],
   "devDependencies": {
-    "@medyll/idae-config-prettier": "latest",
     "@semantic-release/github": "^12.0.6",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/fs-extra": "^11.0.4",

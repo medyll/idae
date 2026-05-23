@@ -50,7 +50,6 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
-    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@sveltejs/adapter-auto": "^7.0.1",

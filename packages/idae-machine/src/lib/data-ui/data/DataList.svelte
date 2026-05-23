@@ -41,7 +41,7 @@ Consumers provide named snippets; DataList handles all loops.
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
-		footer: footerSnippet,
+		footer: footerSnippet
 	}: {
 		collection: string;
 		where?: Record<string, unknown>;
@@ -57,11 +57,13 @@ Consumers provide named snippets; DataList handles all loops.
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	} = $props();
 
-	const store      = $derived(collection ? machine.store[collection] : undefined);
-	const collLogic  = $derived(collection ? safeCollection(collection) : null);
+	const store = $derived(collection ? machine.store[collection] : undefined);
+	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
-	const defaultSort = $derived(collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]);
+	const defaultSort = $derived(
+		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
+	);
 	const effectiveSort = $derived(sortBy ?? defaultSort);
 
 	const rawItems = $derived.by(() => {
@@ -81,7 +83,7 @@ Consumers provide named snippets; DataList handles all loops.
 		return sortedItems.slice(start, start + pageSize);
 	});
 
-	const total      = $derived(rawItems.length);
+	const total = $derived(rawItems.length);
 	const totalPages = $derived(pageSize > 0 ? Math.ceil(total / pageSize) : 1);
 	const pagination = $derived<PaginationInfo>({ page, pageSize, total, totalPages });
 
@@ -91,7 +93,11 @@ Consumers provide named snippets; DataList handles all loops.
 	});
 
 	function safeCollection(name: string) {
-		try { return machine.logic.collection(name); } catch { return null; }
+		try {
+			return machine.logic.collection(name);
+		} catch {
+			return null;
+		}
 	}
 
 	let errorMessage = $state<string | null>(null);
@@ -133,6 +139,11 @@ Consumers provide named snippets; DataList handles all loops.
 {/if}
 
 <style>
-	.error-message { color: red; padding: 1rem; }
-	.data-list-group { margin-bottom: var(--gutter-md); }
+	.error-message {
+		color: red;
+		padding: 1rem;
+	}
+	.data-list-group {
+		margin-bottom: var(--gutter-md);
+	}
 </style>

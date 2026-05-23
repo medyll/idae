@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "@medyll/idae-be": "workspace:*",
-    "@medyll/idae-config-prettier": "workspace:*",
     "@medyll/idae-csss": "workspace:*",
     "@medyll/idae-dom-events": "workspace:*",
     "@medyll/idae-eslint-config": "workspace:*",

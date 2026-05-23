@@ -69,7 +69,7 @@ $effect(() => { /* side effect */ });
 - `.svelte.ts` files contain rune-based logic (e.g., `collection.svelte.ts`)
 - State in classes: `class Store { count = $state(0); }`
 
-### Code Style (enforced by `@medyll/idae-config-prettier`)
+### Code Style (Prettier — `.prettierrc.js` à la racine)
 
 - **Tabs** for indentation
 - **Single quotes**

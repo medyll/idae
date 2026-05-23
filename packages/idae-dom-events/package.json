@@ -52,7 +52,6 @@
     "directory": "."
   },
   "devDependencies": {
-    "@medyll/idae-config-prettier": "latest",
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
     "@playwright/test": "^1.59.1",
