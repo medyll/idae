@@ -314,4 +314,75 @@ describe('IdbCollection', () => {
 			await teardown(dbName);
 		});
 	});
+
+	describe('bulkUpsertSilent', () => {
+		it('should write multiple records', async () => {
+			const dbName = getTestDbName();
+			const col = await setup(dbName);
+
+			const results = await col.bulkUpsertSilent([
+				{ id: 'u1', name: 'Alice', email: 'a@test.com' },
+				{ id: 'u2', name: 'Bob', email: 'b@test.com' },
+				{ id: 'u3', name: 'Charlie', email: 'c@test.com' }
+			]);
+
+			expect(results).toHaveLength(3);
+			const all = await col.getAll();
+			expect(all).toHaveLength(3);
+			await teardown(dbName);
+		});
+
+		it('should overwrite existing records (upsert)', async () => {
+			const dbName = getTestDbName();
+			const col = await setup(dbName);
+			await col.add({ id: 'u1', name: 'Alice', email: 'old@test.com' });
+
+			const results = await col.bulkUpsertSilent([
+				{ id: 'u1', name: 'Alice Updated', email: 'new@test.com' }
+			]);
+
+			expect(results).toHaveLength(1);
+			expect((results[0] as User).name).toBe('Alice Updated');
+
+			const fetched = await col.get('u1');
+			expect(fetched.name).toBe('Alice Updated');
+			expect(fetched.email).toBe('new@test.com');
+			await teardown(dbName);
+		});
+
+		it('should emit change event on idbEventBus for reactive adapters', async () => {
+			const dbName = getTestDbName();
+			const bus = new IdbEventBus();
+			const col = await setup(dbName, bus);
+
+			let emittedDetail: any;
+			bus.on(TEST_STORE, (detail) => { emittedDetail = detail; });
+
+			await col.bulkUpsertSilent([
+				{ id: 'u1', name: 'Alice', email: 'a@test.com' }
+			]);
+
+			expect(emittedDetail).toBeDefined();
+			expect(emittedDetail.op).toBe('put');
+			expect(emittedDetail.data).toHaveLength(1);
+			expect(emittedDetail.data[0].name).toBe('Alice');
+			await teardown(dbName);
+		});
+
+		it('should use single transaction (all-or-nothing)', async () => {
+			const dbName = getTestDbName();
+			const col = await setup(dbName);
+
+			// Write valid records
+			const results = await col.bulkUpsertSilent([
+				{ id: 'u1', name: 'Alice' },
+				{ id: 'u2', name: 'Bob' }
+			]);
+
+			expect(results).toHaveLength(2);
+			const all = await col.getAll();
+			expect(all).toHaveLength(2);
+			await teardown(dbName);
+		});
+	});
 });

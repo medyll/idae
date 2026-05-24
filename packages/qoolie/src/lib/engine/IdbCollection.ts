@@ -299,42 +299,53 @@ export class IdbCollection<T = any> {
 		});
 	}
 
-	/** Batch put (upsert) multiple records in a single transaction. */
-	async batchPut(items: Partial<T>[], opts?: MutationOptions): Promise<T[]> {
-		return this.enqueueWrite(async () => {
-			const db = await this.getDatabase();
-			const tx = db.transaction(this._store, 'readwrite');
-			const store = tx.objectStore(this._store);
+  /** Batch put (upsert) multiple records in a single transaction. */
+  async batchPut(items: Partial<T>[], opts?: MutationOptions): Promise<T[]> {
+    return this.enqueueWrite(async () => {
+      const db = await this.getDatabase();
+      const tx = db.transaction(this._store, 'readwrite');
+      const store = tx.objectStore(this._store);
 
-			const results: T[] = [];
-			const pendingOps: Promise<void>[] = [];
+      const results: T[] = [];
+      const pendingOps: Promise<void>[] = [];
 
-			for (const item of items) {
-				const promise = new Promise<void>((resolve, reject) => {
-					const req = store.put(item as any);
-					req.onsuccess = () => {
-						const id = req.result;
-						results.push({ ...item, [this.keyPath]: id } as T);
-						resolve();
-					};
-					req.onerror = () => reject(req.error);
-				});
-				pendingOps.push(promise);
-			}
+      for (const item of items) {
+        const promise = new Promise<void>((resolve, reject) => {
+          const req = store.put(item as any);
+          req.onsuccess = () => {
+            const id = req.result;
+            results.push({ ...item, [this.keyPath]: id } as T);
+            resolve();
+          };
+          req.onerror = () => reject(req.error);
+        });
+        pendingOps.push(promise);
+      }
 
-			await Promise.all(pendingOps);
+      await Promise.all(pendingOps);
 
-			return new Promise<T[]>((resolve, reject) => {
-				tx.oncomplete = () => {
-					if (!opts?.silent) {
-						this.eventBus.emit(this._store, 'put', results);
-					}
-					resolve(results);
-				};
-				tx.onerror = () => reject(tx.error);
-			});
-		});
-	}
+      return new Promise<T[]>((resolve, reject) => {
+        tx.oncomplete = () => {
+          if (!opts?.silent) {
+            this.eventBus.emit(this._store, 'put', results);
+          }
+          resolve(results);
+        };
+        tx.onerror = () => reject(tx.error);
+      });
+    });
+  }
+
+  /**
+   * Bulk upsert records silently — writes to IDB without triggering sync/outbox,
+   * then explicitly fires the event bus 'change' event so reactive adapters
+   * (e.g. useQoolieCollection) re-render with the hydrated data.
+   */
+  async bulkUpsertSilent(items: Partial<T>[]): Promise<T[]> {
+    const results = await this.batchPut(items, { silent: true });
+    this.eventBus.emit(this._store, 'put', results);
+    return results;
+  }
 }
 
 // ─── In-Memory Where Filter ──────────────────────────────────────────────────

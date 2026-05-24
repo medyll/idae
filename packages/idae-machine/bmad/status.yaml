@@ -10,14 +10,10 @@ progress: 100
 last_updated: "2026-05-24T16:30"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: >
-  Audit complete (Reviewer - Quentin). Health score 8.5/10. 470/470 tests pass. 0 TS errors.
-  13 pre-existing Svelte warnings (expected). 251 Prettier-drifted files. No critical issues.
-  No eval/innerHTML/security flaws in source. Dependency vulnerabilities are inherited transitive.
-  Action items: format repo, remove 2 dead CSS selectors, fix S25-02.md artifact syntax.
-next_command: "bmad-status"
-next_role: "scrum"
-active_role: "reviewer"
+next_action: "Implement S35-03 — bulkUpsertSilent on IdbCollection (qoolie package)"
+next_command: "bmad-continue"
+next_role: "dev"
+active_role: "dev"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -138,6 +134,186 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 35
+    goal: "QOOLIE-SWR — transparent IDB hydration from server on cold read, implemented in qoolie package"
+    status: active
+    project: "qoolie"
+    depends_on: [34]
+    note: >
+      Two tracks: (A) ADR-02 closure in idae-machine — machine.store() fully wired and verified.
+      (B) QOOLIE-SWR in qoolie package — transparent IDB hydration on cold read.
+      machine.ts must NOT gain any pull/fetch logic. Full SWR spec: backlog entry QOOLIE-SWR.
+    stories:
+      - id: S35-00
+        title: "ADR-02 closure — verify machine.store() production-ready, remove all traces of reactiveStore"
+        status: planned
+        effort: S
+        detail: >
+          ADR-02 was decided and partially implemented (machine.store wraps useQoolieCollection,
+          reactiveStore.svelte.ts deleted) but never formally closed with passing tests.
+
+          Checklist:
+            1. machine.ts: store(name) calls useQoolieCollection(this._qoolie, name). Verify signature
+               matches — returns { items: T[] }, called as function (not getter). DONE in source.
+            2. reactiveStore.svelte.ts: confirm deleted (Test-Path = False). DONE.
+            3. DataList.svelte: confirm uses machine.store(collection) at line ~60. DONE.
+            4. All other UI consumers (Explorer, Pane, PaneRecents, CollectionNav): grep for any
+               remaining machine.store[name] (bracket getter) — must be zero.
+            5. Test machine.store: add/update machine.test.ts to assert typeof machine.store === 'function'
+               AND that it returns an object with an 'items' property (mock useQoolieCollection in test).
+            6. qoolie/svelte dist: S35-07 must complete before machine.store works in production build.
+               This story depends on S35-07.
+
+          Acceptance:
+            - grep "machine\.store\[" src/ returns 0 results.
+            - machine.test.ts covers machine.store() return shape.
+            - ADR-02 status updated to: implemented + verified.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S35-01
+        title: "HydrationController — owns per-session hydrated Set + pull(name) + ensure(name)"
+        status: planned
+        effort: M
+        detail: >
+          New class qoolie/src/lib/HydrationController.ts.
+          - hydrated: Set<string> — collections already pulled this session.
+          - pull(name): calls deliverer GET /api/data/{name}, normalizes { data: [] } response,
+            calls IdbCollection.bulkUpsertSilent(records) (see S35-03). Fires no outbox events.
+          - ensure(name): if name in hydrated → no-op. If pull in-flight → return same promise
+            (dedup). Else → add to hydrated, fire pull() as background (void). Never throws on
+            read path — errors surface via onHydrateError hook only.
+          - Receives deliverer ref + hooks config from Qoolie constructor.
+          - Only active when syncConfig.databaseHost is set. No-op otherwise.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-02
+        title: "Wire ensure() into QoolieCollection.getAll / where / get"
+        status: planned
+        effort: S
+        detail: >
+          In qoolie/src/lib/QoolieCollection.ts, each read method calls
+          this.hydrationController?.ensure(this.name) before returning local result.
+          Call is fire-and-forget (void) — reads are NEVER delayed waiting for pull.
+          Local IDB result returned immediately (empty on cold start, populates reactively
+          when pull resolves and idbEventBus fires 'change').
+          QoolieCollection receives hydrationController ref via constructor (injected by Qoolie).
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-03
+        title: "bulkUpsertSilent(records) on IdbCollection"
+        status: in_progress
+        effort: M
+        detail: >
+          In qoolie/src/lib/IdbCollection.ts (or equivalent), add bulkUpsertSilent(records).
+          - Writes each record via IDB put() (upsert semantics — skips if local mtime newer
+            is a v2 concern; v1 always upserts).
+          - Does NOT add to outbox (silent path, not a local mutation).
+          - DOES fire idbEventBus 'change' event after batch completes so reactive adapters
+            (useQoolieCollection) re-render with hydrated data.
+          - Must use the existing {silent:true} / internal write path if it already exists;
+            do not create a parallel write stack.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-04
+        title: "collection.revalidate() public API — explicit re-fetch bypassing session dedup"
+        status: planned
+        effort: S
+        detail: >
+          Add revalidate(): Promise<void> to QoolieCollection public API.
+          Removes name from hydrationController.hydrated set, then calls ensure(name) and
+          awaits the pull to completion (unlike fire-and-forget ensure()).
+          Use case: refresh button, window focus revalidation, post-login hydration reset.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-05
+        title: "autoHydrate: false opt-out in collection config"
+        status: planned
+        effort: S
+        detail: >
+          Extend CollectionConfig (qoolie/src/lib/types.ts or equivalent) with optional
+          autoHydrate?: boolean (default true).
+          HydrationController.ensure() checks collection config before pulling.
+          Use case: write-only collections (outbox, audit log) that should never auto-pull.
+          No behavior change on existing collections (they default to autoHydrate: true).
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-06
+        title: "Lifecycle hooks — onColdRead / onHydrated / onHydrateError"
+        status: planned
+        effort: S
+        detail: >
+          Optional hooks passed via QoolieOptions.hooks (or SyncConfig.hooks):
+            onColdRead?(collection: string): void
+            onHydrated?(collection: string, count: number): void
+            onHydrateError?(collection: string, err: Error): void
+          HydrationController calls these at appropriate points.
+          Enables host app to show spinners, log telemetry, surface errors without coupling
+          qoolie internals to any UI framework.
+          machine.ts does NOT use these hooks — kept for future consumer needs.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-07
+        title: "Build qoolie dist/adapters/svelte — pnpm run build in qoolie package"
+        status: planned
+        effort: S
+        detail: >
+          Run pnpm run build inside D:/development/idae/packages/qoolie/.
+          Verify dist/adapters/svelte/index.js and index.d.ts are generated.
+          The import from '@medyll/qoolie/svelte' in machine.ts resolves correctly in
+          production build (currently works in dev via monorepo symlink / tsconfig paths).
+          This is a prerequisite for any production/package deployment.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-08
+        title: "Tests — cold pull, dedup, revalidate, opt-out, error path, existing suite"
+        status: planned
+        effort: M
+        detail: >
+          New test file: qoolie/src/__tests__/hydration.test.ts
+          Cases:
+            - Cold IDB + databaseHost set → first getAll() triggers pull, records appear reactively.
+            - Second getAll() on same collection → no second fetch (dedup via hydrated Set).
+            - revalidate() → forces fresh pull even if already hydrated.
+            - autoHydrate: false → getAll() does not trigger pull.
+            - Server returns 401 → no throw on read, onHydrateError called.
+            - Server returns 500 → same.
+            - No databaseHost → hydration is silent no-op.
+            - Existing qoolie vitest suite: all pass, no regression.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
+      - id: S35-09
+        title: "idae-machine acceptance — DataList cold-IDB renders rows, BACK-03 closes"
+        status: planned
+        effort: S
+        detail: >
+          After qoolie S35-01..08 ship and dist is rebuilt:
+            - Verify machine.ts has zero pull logic (grep _pull / fetch loop / manual GET).
+            - Fresh IDB + populated MongoDB → <DataList collection="vehicle"> renders rows.
+            - Same for appscheme, appuser_group, appuser_type.
+            - No 429 storm on boot.
+            - BACK-03 closes. BACK-05 unblocks (Playwright RBAC tests can now run).
+            - Update status.yaml: BACK-03 priority: done, BACK-05 priority: high.
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 34
     goal: "SCHEMA-FROM-SERVER + Client Store Hydration — auto-fetchSchema on start, drop demoScheme from layout"
     status: completed
@@ -1847,7 +2023,8 @@ backlog:
           in the background; if no local business model is set, it waits for the server schema
           before building MachineDb.
         - S34-02: +layout.svelte no longer imports demoScheme (verified — grep clean).
-        - S34-03: _pullFromServer hydrates IDB from REST (closes BACK-03 too).
+        - S34-03: REVERTED 2026-05-24. _pullFromServer was rolled back (eager N+1 GETs, 429,
+          wrong layer). BACK-03 remains open. Fix belongs in qoolie (QOOLIE-SWR).
         - Audit patch: machineModelBuilder.ts no longer imports idae-model-core
           (system baseline removed). buildEffectiveModel = pure merge of core + business.
         - Audit patch: machine.ts JSDoc cleaned ("Defaults to appModelDeclaration" → "Usually
