@@ -28,7 +28,7 @@
   | Server seed pipeline | ✅ Shipped | Bootstrap demo data and business entities on first run |
   | CORS & route ordering | ✅ Shipped | Express middleware correctly ordered before route handlers |
   | SCHEMA-FROM-SERVER | ✅ Shipped | Auto-fetch schema on start — eliminates manual schema declarations |
-  | Client store hydration | ⏸ Deferred | QOOLIE-SWR upstream — transparent lazy SWR in qoolie required first |
+  | Client store hydration | ✅ Shipped | QOOLIE-SWR implemented in qoolie — transparent lazy SWR on cold IDB reads |
 
 ### What's Ready Now
 
@@ -47,7 +47,8 @@
 - **NEW:** ADR-02 — `machine.store(name)` wraps `useQoolieCollection`; `reactiveStore.svelte.ts` deleted
 - **NEW:** README.md and CHANGELOG.md updated for v2.0 release
 - **NEW:** ADR-02 implemented — `machine.store(name)` wraps `useQoolieCollection`, `reactiveStore.svelte.ts` deleted, all consumers migrated
-- **NEW:** All 470 tests passing (39 files)
+  - **NEW:** QOOLIE-SWR shipped — qoolie 206/206, idae-machine 472/472, BACK-03 closed
+  - **NEW:** Sprint 35 complete — HydrationController, bulkUpsertSilent, revalidate, autoHydrate opt-out
 
 ### What's Coming Next
 
