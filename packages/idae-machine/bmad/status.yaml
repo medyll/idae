@@ -7,10 +7,10 @@
 project: "idae-machine"
 phase: development
 progress: 100
-last_updated: "2026-05-23T23:55"
+last_updated: "2026-05-24T18:00"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 34 complete (470/470 tests, test-results-sprint-34.md). BACK-07 and BACK-03 closed. Audit patch 2026-05-23T23:55: machineModelBuilder.ts no longer imports idae-model-core (system baseline dropped, builder = pure core+business merge) — true BACK-07 subtask 1 closure. machine.ts JSDoc cleaned. Backlog reconciled: BACK-03 done (REST hydration via _pullFromServer), BACK-05 → needs-verification (rerun 3 Playwright gated tests), BACK-07 done, BL-03 obsolete (model-core off-limits client-side). BL items + BACK descriptions translated to English. Open: BACK-05 verification run, BACK-06 (FullInfo intent), BL-01/02/04/05. Consider Sprint 35 for backlog cleanup or release prep."
+next_action: "machine.ts cleanup 2026-05-24: organic methods removed (_pullFromServer, _fetchSchemaBg, _refreshSchemaInBackground deleted, ~140 LOC). Single async entry point machine.boot(); start()/fetchSchema() are deprecated shims. _pullFromServer hack rolled back — IDB hydration no longer machine's responsibility. Root cause identified for empty DataList on core collections (appscheme*, appuser*): three-body design gap — MongoDB is the source of truth, IDB is the local cache, Svelte store reflects IDB; qoolie has no MongoDB→IDB bridge on read (initial pull, lazy fetch, cache miss hook). BACK-03 reopened. New cross-project backlog item created — QOOLIE-SWR (transparent server fetch on cold IDB read, native qoolie hook). Next: implement QOOLIE-SWR in qoolie package; until then DataList on core collections renders empty unless data is seeded another way."
 next_command: "bmad-status"
 next_role: "scrum"
 active_role: "tester"
@@ -1643,22 +1643,42 @@ backlog:
       Patch: mountSeq counter + unmount inside .then with stale-seq check.
 
   - id: BACK-03
-    title: "Qoolie sync IDB population for appuser_group/type/audit"
-    priority: done
+    title: "Qoolie sync IDB population for core collections (appscheme*, appuser*)"
+    priority: high
     description: >
-      RESOLVED in Sprint 34 (S34-03) via REST hydration.
-      Initial investigation (2026-05-23 pm): SyncAdapter (idae-sync) only handles OUTBOUND
-      (local → outbox → server). ServerFirstHandler = rollback on permanent failure, not
-      hydration. ServerPush (SSE/WS) exists but is not wired into Qoolie and the server
-      exposes no /sync/stream endpoint. IdbCollection has {silent: true} but
-      QoolieCollection.create does not surface it → no bulk insert without re-emitting to outbox.
-      Cross-package proper fix (qoolie + idae-sync + idae-machine server) was scoped out.
-      Pragmatic resolution: machine._pullFromServer(databaseHost) issues
-      GET /api/data/{collection}?limit=10000 and upserts each record into local IDB via
-      qoolie.collection.upsert(). Called from start() after createStore() in both
-      local-model and no-local-model paths. Outbox is bypassed because upserts re-enter sync
-      as local writes; acceptable for first-load hydration.
-      Long-term clean fix (push-based pull) still tracked as a follow-up but not blocking.
+      REOPENED 2026-05-24. The pragmatic _pullFromServer hack landed in Sprint 34 was rolled back
+      this session — it was eager (one GET per collection at boot, 30+ requests, 429 territory),
+      bypassed the qoolie sync layer, masked the real architectural gap, and was not scalable.
+
+      Root cause confirmed by reading qoolie source (Qoolie.ts, QoolieCollection.ts,
+      SyncController.ts, SyncAdapter.ts in idae-sync):
+        - QoolieCollection.where / getAll / get read ONLY from local IDB (or in-memory state).
+          Zero server call on read.
+        - server-first / mobile-first modes describe WRITE semantics (when to confirm), not READ.
+        - SyncAdapter is outbound only (local writes → outbox → server). No pull method exists.
+        - ServerPushListener (SSE/WS) can apply server-emitted changes but requires the server to
+          push actively and a cold IDB still has nothing to react to.
+        - No `hydrateCollection`, `ensure`, `onMiss`, or `onColdRead` hook anywhere.
+
+      Three-body symptom:
+        - MongoDB = source of truth (writes land here via outbox + REST).
+        - IDB = local cache (empty on cold start).
+        - Svelte reactive store = mirror of IDB. Empty → empty.
+
+      Net effect on idae-machine: a DataList bound to a core collection (appscheme, appuser_group,
+      appuser_type…) renders an empty list forever on first session because nothing ever brings
+      MongoDB rows into IDB without an explicit user write that would round-trip back.
+
+      Proper fix is a qoolie feature, not a machine-layer pull. Tracked separately as QOOLIE-SWR.
+      BACK-03 stays open as the idae-machine-side acceptance criterion (DataList on appscheme*
+      renders rows out of the box once QOOLIE-SWR ships).
+
+      Acceptance:
+        - With a fresh IDB and a populated MongoDB, <DataList collection="appscheme"> renders
+          the rows on first mount without machine doing any direct fetch.
+        - Same for appuser_group, appuser_type, appimage_preset, etc.
+        - No eager pull at boot. No N+1 GET storm. Fetches happen lazily, per collection, only
+          when a consumer reads.
 
   - id: BACK-04
     title: "Seed appuser_type + complete RBAC roles (admin/manager/viewer)"
@@ -1672,15 +1692,15 @@ backlog:
 
   - id: BACK-05
     title: "Playwright RBAC golden-path tests — finish 3/9 gated"
-    priority: needs-verification
+    priority: blocked
     description: >
-      6/9 green. 3 were gated on BACK-03 (sync IDB):
+      6/9 green. 3 still gated on BACK-03 (qoolie SWR — QOOLIE-SWR upstream):
         - picking a group reveals matrix rows
         - toggling a cell persists across reload
         - column bulk-toggle flips all cells
-      BACK-03 is now resolved via REST hydration. The 3 tests must be re-run to confirm they
-      pass without further changes. Drop to 'done' once verified, or re-open with the actual
-      failure if hydration is not sufficient.
+      Previously marked needs-verification because the _pullFromServer hack appeared to hydrate
+      IDB. That hack was rolled back on 2026-05-24 — these tests will not pass until QOOLIE-SWR
+      ships and BACK-03 is closed properly. Do not re-run until then.
 
   - id: BACK-06
     title: "FullInfo.svelte — implement content (stub component registered)"
@@ -1752,7 +1772,130 @@ backlog:
           omitted — schema fetched from the server").
         - model-core header (⚠ DO NOT IMPORT CLIENT-SIDE) in place.
 
+  - id: QOOLIE-SWR
+    title: "qoolie: transparent SWR fetch on cold IDB read (cross-project feature)"
+    priority: high
+    project: "qoolie"
+    description: >
+      CROSS-PROJECT FEATURE — must be implemented inside @medyll/qoolie, not in idae-machine.
+      idae-machine is the first consumer hit by the gap; idae-machine memo + this entry exist so
+      the requirement does not get lost when work shifts to the qoolie package.
+
+      Problem statement
+      -----------------
+      qoolie currently treats reads as pure local (IDB or in-memory state). On a cold IDB the
+      collection is empty and stays empty unless:
+        (a) the application code writes locally (outbox round-trips an echo back), or
+        (b) the server pushes via ServerPushListener (SSE/WS, requires the server to emit), or
+        (c) the host application performs a manual fetch + qoolie.create loop (= the hack we
+            just removed from idae-machine).
+
+      This makes server-first deployments unusable for read-mostly UIs: any DataList bound to a
+      collection that the local client has never written to displays nothing on first session,
+      even though the data exists in MongoDB and the server endpoint is reachable.
+
+      Design — Option B (validated 2026-05-24)
+      -----------------------------------------
+      Add a transparent SWR layer to qoolie itself. The host code (idae-machine, any other
+      consumer) keeps calling collection.where / getAll / get as today. qoolie internally:
+
+        1. Resolves the call against local IDB / state immediately (current behavior).
+        2. On the FIRST read of a collection in the session, fires a background pull against
+           the configured deliverer (sync.databaseHost) and writes the records into IDB using
+           a silent upsert (no outbox re-emit, no event amplification — see idbCollection
+           {silent:true} that already exists).
+        3. When the pull resolves, idbEventBus emits its normal 'change' event → reactive
+           consumers (Svelte / React / Vue adapters) re-render with the hydrated data.
+        4. A per-collection guard (Set<string>) prevents refetch loops. An explicit
+           `collection.revalidate()` method can re-trigger the pull when freshness is required.
+
+      The hook MUST be native to qoolie (NOT an external callback declared by the host). Host
+      code should not need to wire anything — passing sync.databaseHost in the QoolieOptions is
+      enough for the SWR behavior to kick in.
+
+      Suggested API surface
+      ---------------------
+        // Existing reads now transparently SWR
+        const rows = collection.getAll();          // returns local now, hydrates in background
+        const v    = collection.where({ ... });    // same
+
+        // Explicit re-fetch when freshness matters (refresh button, focus revalidate, etc.)
+        await collection.revalidate();             // forces a server pull, awaits completion
+
+        // Optional opt-out (read-only collections that should never auto-pull)
+        collections: { logs: { keyPath: 'id', autoHydrate: false } }
+
+        // Optional hook for telemetry / spinners
+        hooks: {
+          onColdRead?: (collection: string) => void;
+          onHydrated?: (collection: string, count: number) => void;
+          onHydrateError?: (collection: string, err: Error) => void;
+        }
+
+      Implementation sketch
+      ---------------------
+        - SyncController (or a new HydrationController) owns:
+            - a `Set<string>` of collections already hydrated this session
+            - a `pull(collectionName)` method that calls the deliverer (GET /api/data/{name}),
+              normalizes the response, and silently upserts into IdbCollection.
+        - QoolieCollection.getAll/where/get call `controller.ensure(name)` (fire-and-forget)
+          before returning the local result. ensure() de-duplicates concurrent calls.
+        - Silent upsert path: extend QoolieCollection or IdbCollection to expose a
+          `bulkUpsertSilent(records)` helper that writes via IdbCollection internals without
+          firing outbox events but DOES fire idbEventBus 'change' so reactive layers re-render.
+        - Pull endpoint convention: `${baseUrl}/api/data/${collection}` with optional
+          ?limit=&since= query — qoolie can decide cursor strategy later.
+        - Auth/tenant headers already configured on the deliverer (SyncController.setToken,
+          setHeaders, setTenantId) — reuse them, do NOT duplicate auth wiring in qoolie.
+
+      Edge cases / decisions
+      ----------------------
+        - What if the deliverer is not configured (no sync at all)? autoHydrate is a no-op,
+          reads stay 100% local. No behavior change vs today.
+        - What about pagination on huge collections? v1: full pull capped at server's default
+          limit. v2: cursor-based hydration triggered by paginated reads.
+        - What about per-record granularity (collection.get(id) on a record never seen)? v1:
+          first .get() triggers the full-collection pull (same hydration). v2: optional
+          per-id fetch (GET /api/data/{name}/{id}) if the collection is huge.
+        - What about staleness? `revalidate()` is the explicit knob. Optional auto-revalidate
+          on window focus / interval is a v2 concern.
+        - Conflict with optimistic local writes during hydration? Silent upsert must skip
+          records present in IDB with a newer local mtime (or always defer to local, since
+          outbox will reconcile).
+
+      Acceptance (qoolie-side)
+      ------------------------
+        - With sync.databaseHost set and a fresh IDB, the first read of any collection
+          transparently pulls the server records and the reactive consumer re-renders.
+        - Per-session deduplication: subsequent reads on the same collection do not re-pull.
+        - revalidate() works as an explicit refresh.
+        - Existing tests in qoolie still pass (no behavior change when sync is disabled).
+        - New tests cover: cold-IDB lazy pull, dedup, revalidate, autoHydrate:false opt-out,
+          error path (server 401/500 — do not throw on reads, surface via onHydrateError).
+
+      Acceptance (idae-machine-side, closes BACK-03)
+      ----------------------------------------------
+        - machine.ts no longer contains any _pullFromServer / manual GET loop. It already does
+          not, as of this session — keep it that way.
+        - <DataList collection="appscheme"> on a fresh IDB renders the MongoDB rows.
+        - Same for every other core/business collection.
+        - No 429 storm on boot.
+
+      Out of scope
+      ------------
+        - Server-side endpoint design changes (qoolie consumes the existing /api/data/:name).
+        - idae-sync outbox modifications (SWR is a read path; outbox stays write-only).
+        - ServerPush wiring (orthogonal; can coexist — push delivers deltas after the initial
+          SWR pull).
+
 # ── Notes ─────────────────────────────────────────────────────────────────────
+# 2026-05-24 — Architectural correction
+#   machine.ts cleanup: removed _pullFromServer, _fetchSchemaBg, _refreshSchemaInBackground.
+#   Single async entry point: machine.boot(). start()/fetchSchema() = deprecated shims.
+#   Lesson recorded in user-memory feedback_no_organic_methods.md: symptom-driven private
+#   helpers stacked on a core class produce spaghetti — redesign the entry point instead.
+#   The empty-DataList symptom on core collections is a qoolie gap, not a machine gap.
+#   See QOOLIE-SWR (cross-project) for the actual fix; BACK-03 reopened, BACK-05 reblocked.
 # Réel vérifié 2026-05-17
 # Server vitest (server/): 79/79 green — 10 fichiers dont auth, dataReal, demo-*
 # Client vitest (root, --project server): 274/282 — 8 failures BUG-01 CreateUpdate

@@ -8,20 +8,11 @@
 		? (window.localStorage.getItem('auth_token') ?? '')
 		: '';
 
-	machine.init({
-		org: 'demo', domain: 'machine', version: 6,
-		sync: {
-			mode: 'server-first',
-			databaseHost: apiUrl,
-			...(token && { token, headers: { Authorization: `Bearer ${token}` } }),
-		},
-	});
-	machine.start();
-	machine.initRouter({ baseUrl: '/', authEnabled: false });
-
 	// Dev auto-login: if no token, fetch + reload (next mount picks up token).
+	let bootPromise: Promise<void>;
+
 	if (typeof window !== 'undefined' && !token) {
-		fetch(`${apiUrl}/api/auth/login`, {
+		bootPromise = fetch(`${apiUrl}/api/auth/login`, {
 			method:  'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body:    JSON.stringify({ login: 'admin', password: 'admin123' }),
@@ -31,10 +22,77 @@
 				if (data?.token) {
 					window.localStorage.setItem('auth_token', data.token);
 					window.location.reload();
+					// Keep splash until reload fires — never resolve
+					return new Promise<void>(() => {});
 				}
+				// Login failed (server offline?) — boot anyway for offline/cache path
+				return doBoot('');
 			})
-			.catch((err) => console.warn('[layout] Auto-login failed:', err));
+			.catch((err) => {
+				console.warn('[layout] Auto-login failed:', err);
+				return doBoot('');
+			});
+	} else {
+		bootPromise = doBoot(token);
+	}
+
+	async function doBoot(authToken: string): Promise<void> {
+		await machine.boot({
+			org: 'demo', domain: 'machine', version: 6,
+			sync: {
+				mode: 'server-first',
+				databaseHost: apiUrl,
+				...(authToken && { token: authToken, headers: { Authorization: `Bearer ${authToken}` } }),
+			},
+		});
+		machine.initRouter({ baseUrl: '/', authEnabled: false });
 	}
 </script>
 
-<App />
+{#await bootPromise}
+	<div class="boot-splash">
+		<div class="boot-spinner"></div>
+		<div class="boot-text">Loading…</div>
+	</div>
+{:then}
+	<App />
+{:catch err}
+	<div class="boot-error">
+		<h2>Boot failed</h2>
+		<pre>{err?.message ?? String(err)}</pre>
+	</div>
+{/await}
+
+<style>
+	.boot-splash {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100vh;
+		gap: 1rem;
+		color: var(--color-muted, #888);
+		font-family: system-ui, sans-serif;
+	}
+	.boot-spinner {
+		width: 32px;
+		height: 32px;
+		border: 3px solid var(--color-border, #ddd);
+		border-top-color: var(--color-primary, #4f46e5);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+	@keyframes spin { to { transform: rotate(360deg); } }
+	.boot-text { font-size: 0.9rem; }
+	.boot-error {
+		padding: 2rem;
+		color: #dc2626;
+		font-family: monospace;
+	}
+	.boot-error pre {
+		background: #fef2f2;
+		padding: 1rem;
+		border-radius: 4px;
+		white-space: pre-wrap;
+	}
+</style>

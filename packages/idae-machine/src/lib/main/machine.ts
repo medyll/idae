@@ -5,7 +5,6 @@ import { EventDataClientInstance } from '@medyll/idae-socket';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
-import { loadSchema } from '$lib/main/machineSchemaLoader.js';
 import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
@@ -163,151 +162,6 @@ export class Machine {
 		return this._org ? `${this._org}_${base}` : base;
 	}
 
-	/**
-	 * @framework-bootstrap — called once by the app shell (+layout.svelte), NOT by application code.
-	 *
-	 * Fetches schema from server, caches in IDB, starts the machine.
-	 * Stale-while-revalidate: if cache exists → starts immediately, refreshes in background.
-	 * On schema change → triggers drift detection to adapt IDB stores automatically.
-	 *
-	 * Dev usage: use machine.init() + machine.start() with a local model instead.
-	 *
-	 * @param url - Full URL to GET /api/scheme (returns IdbqModel JSON)
-	 * @emits 'schema:updated' on the returned EventTarget when background refresh brings new data
-	 */
-	async fetchSchema(url: string): Promise<EventTarget> {
-		return loadSchema(url, {
-			onModel: (m) => { this._business = m; this._model = m; },
-			onStart: () => this.start(),
-			onDrift: () => this._scheduleDrift(),
-		});
-	}
-
-	/**
-	 * Start the machine with a local model.
-	 * Call after machine.init() when the schema is defined locally (dev/offline mode).
-	 * When schema comes from the server, use machine.fetchSchema(url) instead — it calls start() internally.
-	 *
-	 * Auto-fetch: if sync.databaseHost is set, fetches schema from server in background.
-	 * - With local model: starts immediately, server schema replaces when fetched.
-	 * - Without local model: waits for fetch, then starts.
-	 * @role Initializer
-	 */
-	start(): void {
-		if (!this._dbName) throw new Error('dbName is required — call machine.init({ dbName }) or machine.init({ org, domain }) first');
-
-		const dbHost = (this._syncOptions && typeof this._syncOptions === 'object')
-			? (this._syncOptions as Record<string, unknown>).databaseHost as string | undefined
-			: undefined;
-
-		if (dbHost) {
-			if (this._business) {
-				this._effectiveModel = buildEffectiveModel(this._core, this._business);
-				this._machineDb      = new MachineDb(this._effectiveModel);
-				machineRights.loadPoliciesFromModel(this._model);
-				this.createStore();
-				if (this._socketOptions?.autoConnect) this.connectSocket();
-				this._scheduleDrift().catch(() => { /* non-critical */ });
-
-				this._pullFromServer(dbHost).catch(() => { /* bg pull failed — running on local data */ });
-				this._fetchSchemaBg(dbHost).catch(() => { /* bg fetch failed — running on local model */ });
-			} else {
-				this._fetchSchemaBg(dbHost).catch((err) => {
-					console.error('[machine] Schema fetch failed and no local model available:', err);
-				});
-			}
-		} else {
-			this._effectiveModel = buildEffectiveModel(this._core, this._business);
-			this._machineDb      = new MachineDb(this._effectiveModel);
-			machineRights.loadPoliciesFromModel(this._model);
-			this.createStore();
-			if (this._socketOptions?.autoConnect) this.connectSocket();
-			this._scheduleDrift().catch(() => { /* non-critical — retry on next start */ });
-		}
-	}
-
-	/** Background schema fetch — updates model + restarts when server schema arrives. */
-	private async _fetchSchemaBg(databaseHost: string): Promise<void> {
-		const url = databaseHost.replace(/\/+$/, '') + '/api/scheme';
-		const cached = await import('$lib/main/machineSchemaCache.js').then(({ readSchemaCache }) => readSchemaCache(url)).catch(() => null);
-
-		if (cached) {
-			this._business = cached as MachineModel;
-			this._model    = cached as MachineModel;
-			this._effectiveModel = buildEffectiveModel(this._core, this._business);
-			this._machineDb      = new MachineDb(this._effectiveModel);
-			machineRights.loadPoliciesFromModel(this._model);
-			this.createStore();
-			if (this._socketOptions?.autoConnect) this.connectSocket();
-			this._scheduleDrift().catch(() => { /* non-critical */ });
-
-			this._pullFromServer(databaseHost).catch(() => { /* bg pull failed — retry on next sync event */ });
-
-			fetch(url)
-				.then((r) => r.json())
-				.then(async (fresh) => {
-					if (JSON.stringify(fresh) !== JSON.stringify(cached)) {
-						await import('$lib/main/machineSchemaCache.js').then(({ writeSchemaCache }) => writeSchemaCache(url, fresh));
-						this._business = fresh as MachineModel;
-						this._model    = fresh as MachineModel;
-						this._effectiveModel = buildEffectiveModel(this._core, this._business);
-						this._machineDb      = new MachineDb(this._effectiveModel);
-						machineRights.loadPoliciesFromModel(this._model);
-						bumpSchemaVersion();
-						await this._scheduleDrift();
-						await this._pullFromServer(databaseHost);
-					}
-				})
-				.catch(() => { /* bg refresh failed — running on cached schema */ });
-		} else {
-			const res   = await fetch(url);
-			const model = await res.json() as MachineModel;
-			await import('$lib/main/machineSchemaCache.js').then(({ writeSchemaCache }) => writeSchemaCache(url, model));
-			this._business = model;
-			this._model    = model;
-			this._effectiveModel = buildEffectiveModel(this._core, this._business);
-			this._machineDb      = new MachineDb(this._effectiveModel);
-			machineRights.loadPoliciesFromModel(this._model);
-			this.createStore();
-			if (this._socketOptions?.autoConnect) this.connectSocket();
-			this._scheduleDrift().catch(() => { /* non-critical */ });
-
-			await this._pullFromServer(databaseHost);
-		}
-	}
-
-	/** Pull all records from server for each business collection → write into local IDB. */
-	private async _pullFromServer(databaseHost: string): Promise<void> {
-		if (!this._qoolie || !this._business) return;
-		const base = databaseHost.replace(/\/+$/, '');
-		const token = typeof window !== 'undefined' ? (window.localStorage.getItem('auth_token') ?? '') : '';
-		const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-		if (token) headers.Authorization = `Bearer ${token}`;
-
-		const businessCollections = Object.keys(this._business.collections || this._business);
-		for (const colName of businessCollections) {
-			if (colName.startsWith('app') || colName.startsWith('_')) continue; // skip system collections
-			try {
-				const res = await fetch(`${base}/api/data/${colName}?limit=10000`, { headers });
-				if (!res.ok) continue;
-				const body = await res.json();
-				const records = Array.isArray(body) ? body : (body.data ?? body.records ?? []);
-				if (records.length === 0) continue;
-				const col = this._qoolie.collection[colName];
-				if (!col) continue;
-				for (const record of records) {
-					try {
-						await col.create(record);
-					} catch {
-						// Already exists — skip (IDB key conflict)
-					}
-				}
-			} catch {
-				/* individual collection pull failed — continue with others */
-			}
-		}
-	}
-
 	/** Pending IDB upgrade scheduled by drift detection — consumed by next createStore(). */
 	private _pendingIdbUpgrade: PendingIdbUpgrade | null = null;
 
@@ -359,6 +213,97 @@ export class Machine {
 	/** @deprecated Use upgradeIdb(). */
 	async adaptIdbToSchema(): Promise<void> {
 		return this.upgradeIdb();
+	}
+
+	/**
+	 * Atomic boot — single async entry point for the app shell.
+	 *
+	 * Resolves the schema (server or local), builds MachineDb, adapts IDB drift,
+	 * creates the qoolie store. Returns only once `machine.logic` + `machine.store`
+	 * are ready. UI must `await machine.boot(...)` before mounting machine-aware
+	 * components — no partial render, no reactivity races.
+	 *
+	 * Data hydration (IDB ← server) is owned by qoolie's sync layer, not by boot.
+	 *
+	 * @param options - Same shape as init(); typically { org, domain, version, sync }.
+	 * @throws If sync is enabled but schema is unavailable (no cache, no network, no local model).
+	 */
+	async boot(options?: Parameters<Machine['init']>[0]): Promise<void> {
+		if (options) this.init(options);
+		if (!this._dbName) throw new Error('dbName is required — call machine.boot({ org, domain }) or machine.init({ dbName }) first');
+
+		const dbHost = (this._syncOptions && typeof this._syncOptions === 'object')
+			? (this._syncOptions as Record<string, unknown>).databaseHost as string | undefined
+			: undefined;
+
+		// Resolve schema: server (cache-first SWR) or local fallback
+		if (dbHost) {
+			const url = dbHost.replace(/\/+$/, '') + '/api/scheme';
+			const { readSchemaCache, writeSchemaCache } = await import('$lib/main/machineSchemaCache.js');
+			const cached = await readSchemaCache(url).catch(() => null) as MachineModel | null;
+
+			if (cached) {
+				this._business = cached;
+				this._model    = cached;
+				// Background revalidate (non-blocking) — bumps schemaVersion on change
+				void this._revalidateSchema(url, cached, writeSchemaCache);
+			} else {
+				const res = await fetch(url);
+				if (res.ok) {
+					const fresh = await res.json() as MachineModel;
+					await writeSchemaCache(url, fresh).catch(() => {});
+					this._business = fresh;
+					this._model    = fresh;
+				} else if (!this._business) {
+					throw new Error(`[machine] Schema fetch failed (${res.status}) and no local model available`);
+				}
+			}
+		}
+
+		this._effectiveModel = buildEffectiveModel(this._core, this._business);
+		this._machineDb      = new MachineDb(this._effectiveModel);
+		machineRights.loadPoliciesFromModel(this._model);
+
+		await this._scheduleDrift();
+		await this.createStore();
+
+		if (this._socketOptions?.autoConnect) this.connectSocket();
+	}
+
+	/** Internal: revalidate cached schema vs server. Bumps schemaVersion on change. */
+	private async _revalidateSchema(
+		url: string,
+		cached: MachineModel,
+		writeSchemaCache: (u: string, m: unknown) => Promise<void>
+	): Promise<void> {
+		try {
+			const res = await fetch(url);
+			if (!res.ok) return;
+			const fresh = await res.json() as MachineModel;
+			if (JSON.stringify(fresh) === JSON.stringify(cached)) return;
+
+			await writeSchemaCache(url, fresh).catch(() => {});
+			this._business = fresh;
+			this._model    = fresh;
+			this._effectiveModel = buildEffectiveModel(this._core, this._business);
+			this._machineDb      = new MachineDb(this._effectiveModel);
+			machineRights.loadPoliciesFromModel(this._model);
+			await this._scheduleDrift();
+			bumpSchemaVersion();
+		} catch {
+			/* revalidate failed — keep cached schema */
+		}
+	}
+
+	/** @deprecated Use boot() — single async entry point. */
+	async start(): Promise<void> {
+		return this.boot();
+	}
+
+	/** @deprecated Schema fetch is internal to boot(). Use machine.boot({ sync: { databaseHost } }). */
+	async fetchSchema(_url: string): Promise<EventTarget> {
+		await this.boot();
+		return new EventTarget();
 	}
 
 	/**
@@ -546,7 +491,7 @@ export class Machine {
 			instance.instanceName = instanceName;
 			Machine.instanceRegistry[instanceName] = instance;
 		}
-		instance.start();
+		void instance.boot();
 		return instance;
 	}
 

@@ -27,9 +27,7 @@ No frame awareness — pure UI + callback.
 		}
 	}
 </script>
-jiji
-<DataList collection="appscheme" {sortBy}> 
-	<div>test</div>
+<DataList collection="appscheme" {sortBy}>
 	{#snippet item({ record: row })}
 		{#if !filter || filter.includes(String(row.code))}
 			<li>
