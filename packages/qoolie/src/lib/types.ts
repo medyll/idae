@@ -26,6 +26,8 @@ export interface CollectionConfig {
   keyPath: string;
   /** Enable sync for this collection (inherits global config if true) */
   sync?: boolean | SyncConfig;
+  /** Auto-hydrate from server on cold read (default: true) */
+  autoHydrate?: boolean;
 }
 
 /**
@@ -168,6 +170,8 @@ export interface QoolieCollection<T extends CollectionConfig> {
   updateWhere(query: any, data: any): Promise<boolean>;
   /** Bulk delete */
   deleteWhere(query: any): Promise<boolean>;
+  /** Revalidate — force fresh server pull bypassing session dedup */
+  revalidate(): Promise<void>;
 }
 
 /**

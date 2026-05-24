@@ -1,5 +1,6 @@
 import type { Schema } from './validation/types.js';
 import { validateOrThrow } from './validation/validate.js';
+import type { HydrationController } from './HydrationController.js';
 
 /**
  * QoolieCollection - wrapper around idae-idbql Collection with CRUD operations.
@@ -15,6 +16,8 @@ export class QoolieCollection<T extends { keyPath: string }> {
   private syncEnabled: boolean;
   private stateEngine: 'svelte5' | 'stator';
   private schema?: Schema;
+  private hydrationController?: HydrationController;
+  private autoHydrate: boolean;
 
   constructor(
     name: string,
@@ -23,7 +26,9 @@ export class QoolieCollection<T extends { keyPath: string }> {
     syncEnabled: boolean,
     stateEngine: 'svelte5' | 'stator' = 'svelte5',
     schema?: Schema,
-    idbqlState?: any
+    idbqlState?: any,
+    hydrationController?: HydrationController,
+    autoHydrate = true
   ) {
     this.name = name;
     this.keyPath = keyPath;
@@ -32,6 +37,8 @@ export class QoolieCollection<T extends { keyPath: string }> {
     this.stateEngine = stateEngine;
     this.schema = schema;
     this.idbqlState = idbqlState;
+    this.hydrationController = hydrationController;
+    this.autoHydrate = autoHydrate;
   }
 
   /** True when reactive state layer is wired and active */
@@ -53,14 +60,22 @@ export class QoolieCollection<T extends { keyPath: string }> {
     return this.syncEnabled;
   }
 
+  private ensureHydration(): void {
+    if (this.autoHydrate) {
+      this.hydrationController?.ensure(this.name);
+    }
+  }
+
   /** Reactive where query — uses CollectionState when svelte5, idbql otherwise */
   where(query: any): any {
+    this.ensureHydration();
     if (this.useState) return this.idbqlState.where(query);
     return this.col.where(query);
   }
 
   /** Get by primary key — uses CollectionState in-memory lookup when svelte5 */
   async get(id: any): Promise<any> {
+    this.ensureHydration();
     if (this.useState) {
       const keyField = this.keyPath.replace('++', '');
       return this.idbqlState.get(id, keyField);
@@ -70,6 +85,7 @@ export class QoolieCollection<T extends { keyPath: string }> {
 
   /** Reactive getAll — uses CollectionState when svelte5 */
   getAll(): any {
+    this.ensureHydration();
     if (this.useState) return this.idbqlState.getAll();
     return this.col.getAll();
   }
@@ -112,5 +128,10 @@ export class QoolieCollection<T extends { keyPath: string }> {
   async count(query?: any): Promise<number> {
     if (this.useState) return this.idbqlState.count(query);
     return this.col.count(query);
+  }
+
+  /** Revalidate — force fresh server pull bypassing session dedup */
+  async revalidate(): Promise<void> {
+    await this.hydrationController?.revalidate(this.name);
   }
 }

@@ -206,7 +206,22 @@ sprints:
 
       - id: S35-03
         title: "bulkUpsertSilent(records) on IdbCollection"
-        status: in_progress
+        status: complete
+        tests_executed: true
+        test_output: "IdbCollection.test.ts: 23/23 passed (including 4 new bulkUpsertSilent tests). qoolie vitest run: 1 passed."
+        test_result: pass
+      - id: S35-01
+        title: "HydrationController — owns per-session hydrated Set + pull(name) + ensure(name)"
+        status: complete
+        tests_executed: true
+        test_output: "HydrationController.test.ts: 8/8 passed. Qoolie.test.ts + IdbCollection.test.ts all green. Full qoolie suite: 206/206 (16 files)."
+        test_result: pass
+      - id: S35-02
+        title: "Wire ensure() into QoolieCollection.getAll / where / get"
+        status: complete
+        tests_executed: true
+        test_output: "Completed as part of S35-01. ensure() called in getAll(), where(), get() before returning local result."
+        test_result: pass
         effort: M
         detail: >
           In qoolie/src/lib/IdbCollection.ts (or equivalent), add bulkUpsertSilent(records).

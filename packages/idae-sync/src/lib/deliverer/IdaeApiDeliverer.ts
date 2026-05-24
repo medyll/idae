@@ -9,6 +9,20 @@ export class IdaeApiDeliverer implements IDeliverer {
     this.client = IdaeApiClient.getInstance(clientConfig);
   }
 
+  /**
+   * Fetch all records from a collection (GET /:collectionName).
+   * Used by hydration layer to pull server data into local IDB.
+   */
+  async fetchAll(collection: string): Promise<any[]> {
+    const result = await this.client.collection(collection).where();
+    // Normalize both direct array and { data: [] } wrappers
+    if (Array.isArray(result)) return result;
+    if (result && typeof result === 'object' && Array.isArray((result as any).data)) {
+      return (result as any).data;
+    }
+    return [];
+  }
+
   async deliver(entry: OutboxEntry): Promise<DeliverResult> {
     try {
       const collectionClient = this.client.collection(entry.collection);

@@ -15,6 +15,7 @@ import { normalizeConfig } from './utils/normalizeConfig.js';
 import { autoDetectBaseUrl } from './utils/autoDetectBaseUrl.js';
 import { QoolieCollection } from './QoolieCollection.js';
 import { SyncController } from './SyncController.js';
+import { HydrationController, type HydrationHooks } from './HydrationController.js';
 
 /**
  * Main Qoolie class - orchestrates internal engine and optional sync
@@ -27,7 +28,9 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 	private outbox?: OutboxStore;
 	private deliverer?: IdaeApiDeliverer;
 	private collectionMap: Map<string, QoolieCollection<any>>;
+	private engineCollections: Map<string, any>;
 	private syncController?: SyncController;
+	private hydrationController?: HydrationController;
 	private normalizedConfig: ReturnType<typeof normalizeConfig<T>>;
 	private destroyed = false;
 
@@ -63,25 +66,37 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 				// DB may already be open in test environment
 			});
 
-			// 6. Create engine collections and state
-			const engineCollections: Record<string, IdbCollection<any>> = {};
-			for (const [name, config] of Object.entries(model)) {
-				engineCollections[name] = new IdbCollection(name, config.keyPath, {
-					dbName: this.normalizedConfig.dbName,
-					version: this.normalizedConfig.dbVersion
-				}, idbEventBus);
-			}
+		// 6. Create engine collections and state
+		const engineCollections: Record<string, IdbCollection<any>> = {};
+		for (const [name, config] of Object.entries(model)) {
+			engineCollections[name] = new IdbCollection(name, config.keyPath, {
+				dbName: this.normalizedConfig.dbName,
+				version: this.normalizedConfig.dbVersion
+			}, idbEventBus);
+		}
+		this.engineCollections = new Map(Object.entries(engineCollections));
 
-			const stateResult = createIdbState(engineCollections, idbEventBus);
-			this.collectionStates = stateResult.collectionState;
+		const stateResult = createIdbState(engineCollections, idbEventBus);
+		this.collectionStates = stateResult.collectionState;
 
 			// 7. Initialize sync if enabled
 			if (this.normalizedConfig.syncEnabled && this.normalizedConfig.syncConfig) {
 				this.initializeSync();
 			}
 
-			// 8. Create collection wrappers
-			this.createCollections();
+		// 8. Initialize hydration controller when sync + databaseHost are set
+		if (this.normalizedConfig.syncEnabled && this.normalizedConfig.syncConfig?.databaseHost && this.deliverer) {
+			const hooks = this.normalizedConfig.hooks as { onColdRead?: any; onHydrated?: any; onHydrateError?: any } | undefined;
+			this.hydrationController = new HydrationController(
+				this.deliverer,
+				this.engineCollections,
+				hooks,
+				true
+			);
+		}
+
+		// 9. Create collection wrappers
+		this.createCollections();
 		} catch (error) {
 			throw new Error(`Failed to initialize Qoolie: ${error instanceof Error ? error.message : String(error)}`);
 		}
@@ -161,7 +176,9 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 				collectionConfig.syncEnabled,
 				this.normalizedConfig.stateEngine,
 				undefined,
-				colState
+				colState,
+				this.hydrationController,
+				collectionConfig.autoHydrate !== false
 			);
 			this.collectionMap.set(collectionConfig.name, collection);
 		}
