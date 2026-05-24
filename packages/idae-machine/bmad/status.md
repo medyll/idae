@@ -28,7 +28,7 @@
   | Server seed pipeline | ✅ Shipped | Bootstrap demo data and business entities on first run |
   | CORS & route ordering | ✅ Shipped | Express middleware correctly ordered before route handlers |
   | SCHEMA-FROM-SERVER | ✅ Shipped | Auto-fetch schema on start — eliminates manual schema declarations |
-  | Client store hydration | ✅ Shipped | Server data automatically pulled into local IDB on boot |
+  | Client store hydration | ⏸ Deferred | QOOLIE-SWR upstream — transparent lazy SWR in qoolie required first |
 
 ### What's Ready Now
 
@@ -44,7 +44,7 @@
 - Bootstrap CLI and HTTP endpoints for demo data seeding
 - DataList composable API with snippet-based customization
 - **NEW:** Auto-fetch schema from server on `machine.start()` when `databaseHost` is set
-- **NEW:** Automatic data pull from server into local IDB on boot
+- **NEW:** ADR-02 — `machine.store(name)` wraps `useQoolieCollection`; `reactiveStore.svelte.ts` deleted
 - **NEW:** README.md and CHANGELOG.md updated for v2.0 release
 - **NEW:** ADR-02 implemented — `machine.store(name)` wraps `useQoolieCollection`, `reactiveStore.svelte.ts` deleted, all consumers migrated
 - **NEW:** All 470 tests passing (39 files)
@@ -64,16 +64,29 @@
 ## Development Details
 
   Sprint     none (S34 completed)
-  Role       dev → next: scrum
+  Role       reviewer → next: scrum
   Next cmd   `bmad-status`
-  Last update 2026-05-24 22:45
+  Last update 2026-05-24 16:30
 
 ### Current Sprint
 
-  ✅ Done     Sprint 34: SCHEMA-FROM-SERVER + Client Store Hydration. `start()` auto-fetches schema from server when `databaseHost` set. `_pullFromServer()` hydrates client store. `+layout.svelte` drops `demoScheme` import entirely.
-  🔨 Doing    Release prep complete — README and CHANGELOG updated, all tests fixed
+  ✅ Done     Sprint 34: SCHEMA-FROM-SERVER + Client Store Hydration. `start()` auto-fetches schema from server when `databaseHost` set. `+layout.svelte` drops `demoScheme` import entirely.
+  ✅ Done     Release prep complete — README and CHANGELOG updated, all tests fixed
+  ✅ Done     Audit (bmad-audit): Health score 8.5/10. 470/470 tests pass. 0 TS errors. No critical issues.
   💡 Next     Final status review or Sprint 35 planning
   ⚠️ Blockers None
+
+### Quality Snapshot
+
+  | Metric | Value |
+  |--------|-------|
+  | Tests | 470/470 pass (39 files, ~4s) |
+  | TypeScript | 0 errors, 13 warnings (pre-existing) |
+  | Svelte 5 compliance | Clean — no `export let`, `$:`, `onMount` |
+  | Explicit `any` | 0 in source |
+  | Security scan | No eval/innerHTML in source |
+  | Prettier drift | 251 files (run `pnpm format` to clear) |
+  | Audit artifact | `bmad/artifacts/audit-2026-05-24.md` |
 
 ### Stories (Sprint 34 — All Complete)
 
@@ -94,7 +107,7 @@
   | S33 | RBAC Matrix UI | ✅ done | 464/464 |
   | S32 | DataList snippet API refactor | ✅ done | 456/456 |
   | S31 | Server seed + qoolie sync server-first | ✅ done | pass |
-  | S30 | machine.init(core+business) | ⬚ planned | — |
+  | S30 | machine.init(core+business) | ✅ done | pass |
 
 ### Roadmap to Release
 
@@ -113,7 +126,7 @@
   - Sprint 29-33: Explorer vars, DataList refactor, RBAC Matrix, CORS/dbn fixes ✅
   - Sprint 34: SCHEMA-FROM-SERVER + store hydration ✅
   - ADR-02: machine.store(name) function — implemented ✅
-  - Sprint 30: machine.init(core+business) — planned, pending activation
+  - Sprint 30: machine.init(core+business) — completed ✅
   - Sprint 35: TBD — next sprint planning
 
   #### Testing ✅
