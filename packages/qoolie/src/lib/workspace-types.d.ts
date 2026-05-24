@@ -23,7 +23,9 @@ declare module '@medyll/idae-sync' {
     clearDlq(): Promise<void>;
   }
   
-  export class IdaeApiDeliverer {}
+  export class IdaeApiDeliverer {
+    fetchAll(collection: string): Promise<any[]>;
+  }
   
   export function initSync<T extends string = string>(opts?: InitSyncOptions<T>): {
     stop(): void;
