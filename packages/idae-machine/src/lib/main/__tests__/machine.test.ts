@@ -1,4 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+vi.mock('@medyll/qoolie/svelte', () => ({
+	useQoolieCollection: vi.fn((_qoolie: any, name: string) => ({ items: [{ id: 1, name: `mock-${name}` }] })),
+	useQoolieQuery: vi.fn((_qoolie: any, name: string, _query: any) => ({
+		items: [{ id: 2, name: `mock-query-${name}` }],
+	})),
+}));
+
 import { Machine } from '../machine.js';
 import { demoScheme } from '../../demo/demoScheme.js';
 import type { MachineModel } from '../../types/machine-model.js';
@@ -72,6 +80,22 @@ describe('Machine', () => {
 		expect(machine.idbql).toBeUndefined();
 		expect(machine.indexedb).toBeUndefined();
 		expect(machine.idbqModel).toBeUndefined();
+	});
+
+	// --- S35-00: ADR-02 closure — machine.store() return shape ---
+	describe('machine.store() (S35-00)', () => {
+		it('returns an object with an items property', async () => {
+			await machine.start();
+			const result = machine.store('vehicle');
+			expect(result).toBeDefined();
+			expect(result).toHaveProperty('items');
+			expect(Array.isArray(result.items)).toBe(true);
+		});
+
+		it('returns empty items when called before start', () => {
+			const result = machine.store('vehicle');
+			expect(result.items).toEqual([]);
+		});
 	});
 
 	// --- fetchSchema ---
