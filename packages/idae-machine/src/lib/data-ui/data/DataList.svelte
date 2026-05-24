@@ -20,7 +20,6 @@ Consumers provide named snippets; DataList handles all loops.
 	import type { Snippet } from 'svelte';
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
-	import { schemaVersion } from '$lib/main/reactiveStore.svelte.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 
 	interface PaginationInfo {
@@ -58,10 +57,7 @@ Consumers provide named snippets; DataList handles all loops.
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	} = $props();
 
-	const store = $derived.by(() => {
-		void schemaVersion();
-		return collection ? machine.store[collection] : undefined;
-	});
+	const store = collection ? machine.store(collection) : { items: [] as COL[] };
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
@@ -71,9 +67,16 @@ Consumers provide named snippets; DataList handles all loops.
 	const effectiveSort = $derived(sortBy ?? defaultSort);
 
 	const rawItems = $derived.by(() => {
-		if (!store) return [] as COL[];
-		if (where) return (store.where(where) ?? []) as COL[];
-		return (store.getAll() ?? []) as COL[];
+		if (!store?.items) return [] as COL[];
+		if (where) {
+			return store.items.filter((item) => {
+				for (const [key, val] of Object.entries(where)) {
+					if ((item as Record<string, unknown>)[key] !== val) return false;
+				}
+				return true;
+			}) as COL[];
+		}
+		return store.items as COL[];
 	});
 
 	const sortedItems = $derived.by(() => {
@@ -97,8 +100,6 @@ Consumers provide named snippets; DataList handles all loops.
 	});
 
 	function safeCollection(name: string) {
-		// Track schema readiness — re-runs when machine._machineDb is (re)built
-		void schemaVersion();
 		try {
 			return machine.logic.collection(name);
 		} catch {

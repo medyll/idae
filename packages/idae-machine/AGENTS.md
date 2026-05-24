@@ -158,7 +158,7 @@ Always call `machine.start()` in test setup before accessing store/logic.
 | Pitfall | Fix |
 |---------|-----|
 | FK field shows raw id in `show` mode | FK show rendering not yet implemented — display `internalValue` for now |
-| `machine.store[collection]` is undefined | Call `machine.init()` + `machine.start()` first |
+| `machine.store(collection)` returns `{ items: [] }` | Call `machine.init()` + `machine.start()` first. Ensure call is inside a Svelte component. |
 | Component not reactive | Use `$derived`/`$effect`, not manual subscriptions |
 | New field type not dispatched | Add case to `FieldDisplay` `fieldInput` snippet |
 | TypeScript error on `TplFieldRules` | Object rules need `TplFieldRulesObject` — use `field()` builder |

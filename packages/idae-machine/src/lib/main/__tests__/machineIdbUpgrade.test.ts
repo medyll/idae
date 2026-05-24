@@ -30,7 +30,7 @@ describe('S28-02: upgradeIdb()', () => {
 	it('handles fresh install without error', async () => {
 		const m = new Machine();
 		m.init({ dbName: uniqueDbName('upgrade-fresh'), version: 1, model: minimalModel });
-		m.start();
+		await m.start();
 		await expect(m.upgradeIdb()).resolves.not.toThrow();
 	});
 
@@ -66,7 +66,7 @@ describe('S28-04: fetchSchema() drift integration', () => {
 	it('fetchSchema exposes adapter methods', async () => {
 		const m = new Machine();
 		m.init({ dbName: uniqueDbName('fetch-integration'), version: 1, model: minimalModel });
-		m.start();
+		await m.start();
 
 		// Public API must exist — internals moved to machineIdbAdapter
 		expect(typeof m.upgradeIdb).toBe('function');

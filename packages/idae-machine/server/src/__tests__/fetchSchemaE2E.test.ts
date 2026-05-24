@@ -125,9 +125,7 @@ describe('fetchSchema E2E: real HTTP → Machine', () => {
 		m.init({ org: TEST_ORG, domain: 'machine5', version: 1, model: demoScheme });
 		await m.fetchSchema(`${baseUrl}/api/scheme`);
 
-		expect(m.store).toBeDefined();
-		expect(m.store?.['vehicle']).toBeDefined();
-		expect(typeof m.store?.['vehicle']?.getAll).toBe('function');
+		expect(typeof m.store).toBe('function');
 	});
 
 	it('schema cache: second fetchSchema uses cache, starts immediately', async () => {

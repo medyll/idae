@@ -12,6 +12,7 @@ export default defineConfig({
 			'@medyll/idae-api':           path.resolve('./src/lib/__stubs__/idae-api-stub.ts'),
 			'@medyll/skiller':            path.resolve('./src/lib/__stubs__/skiller-stub.ts'),
 			'jsonwebtoken':               path.resolve('./src/lib/__stubs__/jwt-stub.ts'),
+			'@medyll/qoolie/svelte':      path.resolve('../qoolie/src/adapters/svelte/index.ts'),
 		}
 	},
 	optimizeDeps: {

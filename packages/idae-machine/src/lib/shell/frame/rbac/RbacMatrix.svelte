@@ -28,17 +28,16 @@ Composes existing store API + InputBoolean. No custom field logic.
 			.filter(n => !n.startsWith('appscheme') && !n.startsWith('appuser_session') && !n.startsWith('appuser_audit'));
 	});
 
-	const groups = $derived(
-		(machine.store?.appuser_group?.getAll() ?? []) as Array<Record<string, unknown>>
-	);
+	const groupStore = machine.store('appuser_group');
+	const groups = $derived(groupStore.items as Array<Record<string, unknown>>);
 
+	const grantStore = machine.store('appuser_grant');
 	const grants = $derived.by(() => {
 		if (!selectedGroupId) return [] as Array<Record<string, unknown>>;
-		const all = (machine.store?.appuser_grant?.getAll() ?? []) as Array<Record<string, unknown>>;
-		return all.filter(g => {
+		return grantStore.items.filter(g => {
 			const fks = g.fks as Record<string, { id?: string }> | undefined;
 			return fks?.appuser_group?.id === selectedGroupId;
-		});
+		}) as Array<Record<string, unknown>>;
 	});
 
 	const grantByCollection = $derived.by(() => {
@@ -58,7 +57,7 @@ Composes existing store API + InputBoolean. No custom field logic.
 
 	async function toggleCell(collectionCode: string, op: Op): Promise<void> {
 		if (!selectedGroupId) return;
-		const store = machine.store?.appuser_grant;
+		const store = machine.collection('appuser_grant');
 		if (!store) return;
 
 		const existing = grantByCollection.get(collectionCode);

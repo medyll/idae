@@ -22,9 +22,9 @@ function uniqueDbName(base: string) {
 	return `${base}-${++_dbCounter}`;
 }
 
-function createStartedMachine(dbName: string) {
+async function createStartedMachine(dbName: string) {
 	const m = new Machine(dbName, 1, demoScheme);
-	m.start();
+	await m.start();
 	return m;
 }
 
@@ -38,20 +38,20 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	});
 
 	describe('machine.start() with demoScheme — zero errors', () => {
-		it('starts without throwing', () => {
-			expect(() => createStartedMachine(uniqueDbName('s11-start-test'))).not.toThrow();
+		it('starts without throwing', async () => {
+			await expect(createStartedMachine(uniqueDbName('s11-start-test'))).resolves.toBeDefined();
 		});
 
-		it('exposes all 6 collections via machine.collection()', () => {
-			const m = createStartedMachine(uniqueDbName('s11-collections-test'));
+		it('exposes all 6 collections via machine.collection()', async () => {
+			const m = await createStartedMachine(uniqueDbName('s11-collections-test'));
 			for (const name of COLLECTIONS) {
 				expect(() => m.collection(name)).not.toThrow();
 				expect(m.collection(name)).toBeDefined();
 			}
 		});
 
-		it('throws for nonexistent collection', () => {
-			const m = createStartedMachine(uniqueDbName('s11-nonexistent-test'));
+		it('throws for nonexistent collection', async () => {
+			const m = await createStartedMachine(uniqueDbName('s11-nonexistent-test'));
 			expect(() => m.collection('nonexistent')).toThrow(/Collection "nonexistent" not found/);
 		});
 	});
@@ -59,8 +59,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('category collection — full CRUD', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-category-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-category-crud'));
 		});
 
 		it('create returns doc with id', async () => {
@@ -172,8 +172,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('customer collection — CRUD', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-customer-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-customer-crud'));
 		});
 
 		it('full CRUD cycle', async () => {
@@ -199,8 +199,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('rental collection — CRUD with FK references', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-rental-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-rental-crud'));
 		});
 
 		it('create rental with FK ids', async () => {
@@ -244,8 +244,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('location_office collection — CRUD', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-location-office-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-location-office-crud'));
 		});
 
 		it('full CRUD cycle', async () => {
@@ -273,8 +273,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('maintenance collection — CRUD with FK reference', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-maintenance-crud'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-maintenance-crud'));
 		});
 
 		it('full CRUD cycle', async () => {
@@ -303,8 +303,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('all 6 collections — data survives full cycle', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-all-collections-cycle'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-all-collections-cycle'));
 		});
 
 		it('create + getAll on every collection', async () => {
@@ -336,8 +336,8 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 	describe('edge cases', () => {
 		let m: Machine;
 
-		beforeEach(() => {
-			m = createStartedMachine(uniqueDbName('s11-edge-cases'));
+		beforeEach(async () => {
+			m = await createStartedMachine(uniqueDbName('s11-edge-cases'));
 		});
 
 		it('count with query filter', async () => {

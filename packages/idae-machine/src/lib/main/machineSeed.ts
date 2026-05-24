@@ -18,7 +18,7 @@ import { machine } from '$lib/main/machine.js';
  */
 export async function seed(data: Record<string, unknown[]>): Promise<void> {
 	for (const [collection, rows] of Object.entries(data)) {
-		const store = machine.store[collection];
+		const store = machine.collection(collection);
 		if (!store) {
 			console.warn(`[seed] collection "${collection}" not found — skipped`);
 			continue;
@@ -34,7 +34,7 @@ export async function seed(data: Record<string, unknown[]>): Promise<void> {
  */
 export async function seedIfEmpty(data: Record<string, unknown[]>): Promise<void> {
 	for (const [collection, rows] of Object.entries(data)) {
-		const store = machine.store[collection];
+		const store = machine.collection(collection);
 		if (!store) {
 			console.warn(`[seed] collection "${collection}" not found — skipped`);
 			continue;

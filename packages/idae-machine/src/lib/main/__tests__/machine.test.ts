@@ -38,9 +38,9 @@ describe('Machine', () => {
 		expect(machine._model).toBe(demoScheme);
 	});
 
-	it('should throw if start is called without dbName', () => {
+	it('should throw if start is called without dbName', async () => {
 		const m = new Machine();
-		expect(() => m.start()).toThrow('dbName is required');
+		await expect(m.start()).rejects.toThrow('dbName is required');
 	});
 
 	describe('moduleDbName()', () => {
@@ -67,8 +67,7 @@ describe('Machine', () => {
 	it('should expose accessors for logic and store (qoolie-backed)', async () => {
 		await machine.start();
 		expect(machine.logic).toBe(machine._machineDb);
-		expect(machine.store).toBeDefined();
-		expect(machine.idbqlState).toBeDefined();
+		expect(typeof machine.store).toBe('function');
 		// idbql / indexedb / idbqModel are removed — managed internally by qoolie
 		expect(machine.idbql).toBeUndefined();
 		expect(machine.indexedb).toBeUndefined();
@@ -86,11 +85,12 @@ describe('Machine', () => {
 					template: { presentation: 'id' },
 				}
 			} as MachineModel;
-			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => fakeModel }));
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => fakeModel }));
 			// indexedDB not available in test env — readSchemaCache returns null (cache miss)
 			const m = new Machine();
-			m.init({ dbName: 'fetch-test-db', version: 1, model: fakeModel });
-			// Override model to undefined to test fetchSchema sets it
+			m.init({ dbName: 'fetch-test-db', version: 1, sync: { databaseHost: 'http://localhost' } });
+			// Override business to undefined to test fetchSchema sets it
+			m._business = undefined;
 			m._model = undefined;
 			await m.fetchSchema('http://localhost/api/scheme');
 			expect(m._model).toEqual(fakeModel);
@@ -101,7 +101,8 @@ describe('Machine', () => {
 
 	// --- S34-01: start() auto-fetchSchema when databaseHost is set ---
 	describe('start() auto-fetchSchema (S34-01)', () => {
-		it('starts immediately with local model when databaseHost is set', () => {
+		it('starts immediately with local model when databaseHost is set', async () => {
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => demoScheme }));
 			const m = new Machine();
 			m.init({
 				dbName: 'auto-fetch-local',
@@ -109,13 +110,14 @@ describe('Machine', () => {
 				model: demoScheme,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			m.start();
+			await m.start();
 			// Should have started immediately with local model
 			expect(m.logic).toBeDefined();
 			expect(m._effectiveModel).toBeDefined();
+			vi.unstubAllGlobals();
 		});
 
-		it('does not start when no local model and fetch fails (databaseHost set)', async () => {
+		it('throws when no local model and fetch fails (databaseHost set)', async () => {
 			vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 			const m = new Machine();
 			m.init({
@@ -123,27 +125,24 @@ describe('Machine', () => {
 				version: 1,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			m.start();
-			// Wait a tick for the bg fetch to fail
-			await new Promise((r) => setTimeout(r, 50));
-			// Machine should NOT have started (no logic) since fetch failed and no local model
-			expect(m.logic).toBeUndefined();
+			// boot() tries fetch, no cache, no local model → fetch rejection propagates
+			await expect(m.start()).rejects.toThrow('Network error');
 			vi.unstubAllGlobals();
 		});
 
-		it('starts normally without databaseHost (no auto-fetch)', () => {
+		it('starts normally without databaseHost (no auto-fetch)', async () => {
 			const m = new Machine();
 			m.init({
 				dbName: 'no-database-host',
 				version: 1,
 				model: demoScheme,
 			});
-			m.start();
+			await m.start();
 			expect(m.logic).toBeDefined();
 			expect(m._effectiveModel).toBeDefined();
 		});
 
-		it('starts normally with sync: false (no auto-fetch)', () => {
+		it('starts normally with sync: false (no auto-fetch)', async () => {
 			const m = new Machine();
 			m.init({
 				dbName: 'sync-false',
@@ -151,7 +150,7 @@ describe('Machine', () => {
 				model: demoScheme,
 				sync: false,
 			});
-			m.start();
+			await m.start();
 			expect(m.logic).toBeDefined();
 		});
 
@@ -171,12 +170,12 @@ describe('Machine', () => {
 
 			vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => {
 				if (url.includes('/api/scheme')) {
-					return Promise.resolve({ json: async () => fakeModel });
+					return Promise.resolve({ ok: true, json: async () => fakeModel });
 				}
 				if (url.includes('/api/data/vehicle')) {
-					return Promise.resolve({ json: async () => vehicleData, ok: true });
+					return Promise.resolve({ ok: true, json: async () => vehicleData });
 				}
-				return Promise.resolve({ json: async () => [], ok: true });
+				return Promise.resolve({ ok: true, json: async () => [] });
 			}));
 
 			const m = new Machine();
@@ -185,15 +184,12 @@ describe('Machine', () => {
 				version: 1,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			m.start();
+			await m.start();
 
-			// Wait for async pull to complete
-			await new Promise((r) => setTimeout(r, 100));
-
-			// Verify data was pulled into store
-			const vehicleStore = m.store['vehicle'];
-			expect(vehicleStore).toBeDefined();
-			const allVehicles = vehicleStore.getAll();
+			// Verify data was pulled into collection
+			const vehicleCol = m.collection('vehicle');
+			expect(vehicleCol).toBeDefined();
+			const allVehicles = vehicleCol.getAll();
 			expect(allVehicles.length).toBeGreaterThanOrEqual(0); // IDB may not be available in test env
 
 			vi.unstubAllGlobals();

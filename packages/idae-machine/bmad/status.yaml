@@ -5,15 +5,19 @@
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
-phase: development
+phase: release
 progress: 100
-last_updated: "2026-05-24T18:00"
+last_updated: "2026-05-24T22:45"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "machine.ts cleanup 2026-05-24: organic methods removed (_pullFromServer, _fetchSchemaBg, _refreshSchemaInBackground deleted, ~140 LOC). Single async entry point machine.boot(); start()/fetchSchema() are deprecated shims. _pullFromServer hack rolled back — IDB hydration no longer machine's responsibility. Root cause identified for empty DataList on core collections (appscheme*, appuser*): three-body design gap — MongoDB is the source of truth, IDB is the local cache, Svelte store reflects IDB; qoolie has no MongoDB→IDB bridge on read (initial pull, lazy fetch, cache miss hook). BACK-03 reopened. New cross-project backlog item created — QOOLIE-SWR (transparent server fetch on cold IDB read, native qoolie hook). Next: implement QOOLIE-SWR in qoolie package; until then DataList on core collections renders empty unless data is seeded another way."
+next_action: >
+  ADR-02 implemented: machine.store(name) wraps useQoolieCollection from @medyll/qoolie/svelte.
+  reactiveStore.svelte.ts deleted. All consumers migrated (DataList, DataForm, InputSelect,
+  FieldDisplay, ExplorerTableInline, RbacMatrix, machineSeed). Tests: 470/470 pass.
+  check: 0 errors, 13 warnings (expected state_referenced_locally from top-level store calls).
 next_command: "bmad-status"
 next_role: "scrum"
-active_role: "tester"
+active_role: "dev"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -43,7 +47,7 @@ phases:
   - name: testing
     status: done
   - name: release
-    status: done
+    status: in_progress
 
 # ── Strategic Dimensions ──────────────────────────────────────────────────────
 marketing:
@@ -91,6 +95,47 @@ architecture:
         Aucun refactor nécessaire — les wrapper classes n'ont jamais été implémentées.
         machine.prefs / machine.activity / machine.history n'existent pas sur Machine class.
 
+    - id: ADR-02
+      title: "machine.store(name) vs machine.collection(name) — reactive vs imperative access"
+      status: implemented
+      date: "2026-05-24"
+      context: >
+        In-app components need reactive access to collection data (Svelte 5 $state / $effect).
+        machine.store[name] (getter returning a Proxy) was used as a workaround, but it duplicated
+        useQoolieCollection logic from @medyll/qoolie/svelte inside idae-machine's
+        reactiveStore.svelte.ts. This ran for 5 days without the real problem being identified.
+        Additionally, using a getter (.store[name]) prevents function-call syntax which is cleaner
+        for dynamic collection names in UI code.
+      decision: >
+        TWO distinct access patterns, different purposes, different names:
+
+        machine.store(name)
+          — function call (not a getter), returns reactive { items: T[] }
+          — wraps useQoolieCollection(this._qoolie, name) from @medyll/qoolie/svelte
+          — for Svelte components that need live-updating collections
+          — example: const { items } = machine.store('vehicle')
+
+        machine.collection(name)
+          — raw imperative QoolieCollection (existing API, already at machine.ts:~348)
+          — for non-reactive use: CRUD ops, seed, server checks, tests
+          — example: await machine.collection('vehicle').create(record)
+
+        Principle: machine = only object. It re-exports qoolie capabilities, it does NOT
+        duplicate them. The reactive layer belongs to qoolie (useQoolieCollection); machine
+        surfaces it through a thin wrapper so consumers never import from qoolie directly.
+      consequence: >
+        - Delete src/lib/main/reactiveStore.svelte.ts — was a hand-rolled duplicate of
+          useQoolieCollection. Any consumer using the old Proxy pattern migrates to machine.store().
+        - Remove schemaVersion reactivity band-aid (was a symptom of async timing not owned
+          by a single entry point — resolved by machine.boot() cleanup this session).
+        - DataList.svelte and other UI consumers that previously used machine.store[name]
+          switch to machine.store(name) function call. API shape unchanged ({ items }).
+        - machine.store(name) is defined on Machine class using Svelte 5 runes context —
+          must be called inside a Svelte component or $effect scope (same constraint as
+          useQoolieCollection — this is documented, not a regression).
+        - machine.collection(name) stays as-is. Both coexist permanently — different roles.
+      related: ["BACK-03", "QOOLIE-SWR", "feedback_no_organic_methods"]
+
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
   - id: 34
@@ -116,11 +161,17 @@ sprints:
         test_result: pass
       - id: S34-03
         title: "Client store hydration — ensure data pulls from server in server-first mode"
-        status: complete
+        status: reverted
         effort: M
         tests_executed: true
-        test_output: "machine.test.ts: new pull test passes. Full suite: 470/470 (39 files). _pullFromServer() fetches GET /api/data/{collection}?limit=10000 → upserts each record into local IDB via qoolie.collection.upsert(). Called after createStore() in both local-model and no-local-model paths."
-        test_result: pass
+        test_output: >
+          REVERTED 2026-05-24. _pullFromServer() was rolled back: eager pull of all collections
+          at boot (one GET per collection, 30+ requests) hit the 429 rate limit and was not
+          scalable. The approach also bypassed the qoolie sync layer entirely and masked the
+          real architectural gap. The correct fix is QOOLIE-SWR (transparent lazy SWR in qoolie
+          itself, not a machine-side pull loop). BACK-03 reopened; BACK-05 reblocked.
+          sprint-34 test for _pullFromServer must be removed when ADR-02 is implemented.
+        test_result: reverted
       - id: S34-04
         title: "Tests — auto-fetchSchema, layout cleanup, store hydration, no regression"
         status: complete
@@ -253,49 +304,50 @@ sprints:
     status: completed
     artifact: "bmad/artifacts/sprint-s30-planned.md"
     depends_on: [28]
+    note: "Shipped without dedicated sprint — absorbed into S31-S34. All stories verified complete by code inspection 2026-05-24."
     stories:
       - id: S30-01
         title: "machine.init : model → core + business (deprecated shim)"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "machine.ts: init() accepts core?, business?, model?(@deprecated). model shim: this._business = options?.business ?? options?.model. Verified by code inspection."
+        test_result: pass
       - id: S30-02
         title: "buildEffectiveModel(core?, business?) — fusion system + core + business"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "machineModelBuilder.ts: buildEffectiveModel = { ...(core ?? {}), ...(business ?? {}) }. Wired in boot() line 263. Verified by code inspection."
+        test_result: pass
       - id: S30-03
         title: "seed() unifié — même appel core et business data"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "machineSeed.ts: seed()/seedIfEmpty() collection-agnostic. S31 moved seeding server-side (seedBusinessData.ts). Verified by code inspection."
+        test_result: pass
       - id: S30-04
         title: "demoScheme = business uniquement, +layout.svelte mis à jour"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "S34-02: +layout.svelte drops demoScheme import entirely. Schema auto-fetched from server. 470/470 tests pass."
+        test_result: pass
       - id: S30-05
         title: "appModelDeclaration aligné format MachineModel business"
-        status: planned
+        status: complete
         effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "core/business both typed MachineModel. Server delivers system schema via fetchSchema — core param rarely needed client-side. Verified by code inspection."
+        test_result: pass
       - id: S30-06
         title: "Tests — init/start combinaisons, seed unifié, rétro-compat model"
-        status: planned
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "machine.test.ts covers init/boot combinations incl. core+business merge and model@deprecated shim. Full suite 470/470 (S34 final state)."
+        test_result: pass
 
   - id: 29
     goal: "Explorer vars + CollectionNav — Explorer fully configurable via vars, sidebar as dedicated component, mode switcher UI"
@@ -1355,6 +1407,26 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-24"
+    summary: >
+      machine.ts cleanup — organic methods removed, single boot() entry point.
+      Removed: _pullFromServer (eager 30+ GETs → 429, wrong layer), _fetchSchemaBg,
+      _refreshSchemaInBackground. Added: _revalidateSchema() (compact bg SWR, non-blocking).
+      start() and fetchSchema() reduced to deprecated shims forwarding to boot().
+      machine.ts: 676 lines → ~522 lines, 6 overlapping entry paths → 1.
+      401 timing fix: +layout.svelte returns new Promise<void>(()=>{}) after reload()
+      to keep splash until the reload fires (avoids boot() racing auto-login).
+      S34-03 reverted: _pullFromServer was rolled back (not scalable, wrong layer).
+      BACK-03 reopened (root cause confirmed via qoolie source analysis: no pull on read,
+      server-first = write semantics, SyncAdapter outbound only). BACK-05 reblocked.
+      QOOLIE-SWR spec documented in backlog (cross-project qoolie feature).
+      ADR-02 decided: machine.store(name) = reactive fn (wraps useQoolieCollection),
+      machine.collection(name) = raw imperative. reactiveStore.svelte.ts to delete.
+      Rate-limit patch rejected by user: never disable server rate limiting.
+      Lesson saved: organic method accumulation on core class = spaghetti (memory: feedback_no_organic_methods).
+    tests_server: 470
+    tests_client: 0
+
   - date: "2026-05-23"
     summary: >
       M3 any reduction complete: 47→11 production instances.

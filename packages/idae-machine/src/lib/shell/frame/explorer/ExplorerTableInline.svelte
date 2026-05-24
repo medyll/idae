@@ -19,13 +19,9 @@ Internal component, not exported.
 	let sortColumn = $state<string | null>(null);
 	let sortDirection = $state<'asc' | 'desc'>('asc');
 
-	const store = $derived(collection ? machine.store[collection] : undefined);
+	const store = collection ? (where ? machine.store(collection, where) : machine.store(collection)) : { items: [] as COL[] };
 
-	const rawItems = $derived.by(() => {
-		if (!store) return [] as COL[];
-		if (where) return (store.where(where) ?? []) as COL[];
-		return (store.getAll() ?? []) as COL[];
-	});
+	const rawItems = $derived(store.items as COL[]);
 
 	const columns = $derived.by(() => {
 		if (!rawItems.length) return [] as string[];

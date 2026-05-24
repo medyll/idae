@@ -57,7 +57,7 @@ machine.destroy()
 
 // Getters
 machine.logic             → MachineDb (schema layer)
-machine.store[collection] → QoolieCollection (reactive CRUD)
+machine.store(name)       → reactive { items } (Svelte 5 runes, read-only)
 machine.rights            → MachineRights (RBAC)
 machine.sync              → qoolie sync controller
 machine.socket            → EventDataClientInstance
@@ -66,7 +66,7 @@ machine.framer            → MachineFrameManager  ← PAS frameManager (depreca
 machine.componentRegistry → ComponentRegistry
 
 // Helpers
-machine.collection(name)  → shorthand pour machine.store[name]
+machine.collection(name)  → raw QoolieCollection (imperative CRUD)
 machine.moduleDbName(base)
 machine.loadFrame(modulePath, collection, collectionId?, vars?, zone?)  // push URL hash → idae-router → framer
 ```

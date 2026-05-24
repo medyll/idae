@@ -1,5 +1,54 @@
 # Changelog
 
+## [2.0.0] - 2026-05-24
+
+### Added
+
+- **SCHEMA-FROM-SERVER** (S34): `machine.start()` auto-fetches schema from Express server when `databaseHost` is set. Local model serves as fallback; server schema replaces it on fetch. `+layout.svelte` no longer imports `demoScheme`.
+- **Client store hydration** (S34): `_pullFromServer()` fetches data from server and upserts into local IDB via qoolie on boot. Enables server-first data strategy.
+- **Unified Explorer** (S25): Single `Explorer.svelte` component replacing `ExplorerList/Table/Card/Actions`. Four modes: `list` (DataList + DataFields), `table` (sortable inline table), `card` (CardForm), `actions` (action list). Mode switcher toolbar included.
+- **Frame Manager** (S24): `MachineFrameManager` singleton with frame registry, `computeFrameId()`, `machine.loadFrame()`, `<Frame>` component, and `<TaskBar>` reactive frame list.
+- **Navigation layer** (S22): `componentRegistry` async singleton, `machine.loadIn()` with URL builder, URL parser multi-cibles (`+targetId`), `SchemaRouter` refactor with mount/unmount actions, layout outlets via `[data-target-zone]`.
+- **DataList snippet API** (S32): Composable list rendering with `item`, `groupHeader`, `empty`, `footer` snippets. Props: `listClass`, `groupClass`. Old `children()` API removed.
+- **_views registry** (S27): `getModel()` queries `appscheme_view` from MongoDB and builds `_views` per collection (`listView`, `miniView`, `formView`, `fkLabelView`). Explorer and InputSelect consume `_views` for field rendering and FK labels.
+- **RBAC Matrix UI** (S33): `RbacMatrix.svelte` — collections rows × CRUDLX `InputBoolean` cells, group dropdown, lookup-or-create grant, column bulk toggle. Registered as `rbac.matrix` in `componentRegistry`.
+- **IDB schema drift detection** (S28): `computeSchemaHash`, `getCurrentIdbStores`, hash persistence in `__schema_meta__`. `upgradeIdb()` creates missing stores + deletes orphans. `adaptIdbToSchema()` wired as fire-and-forget after `createStore()`.
+- **Image presets system** (S21): `appimage_preset` core entity with seeded defaults (`thumb`, `square`, `small`, `medium`, `large`, `banner`, `avatar`). Free notation (`free-WxH`) auto-creates on first request with DOS bounds (16..4096 px). `ImagePresetRegistry` cache with hook invalidation. `PATCH /api/files/:id/focus` for focus point.
+- **File service** (S20): Upload/download/delete with local disk storage, multer, `appfile` metadata enrichment. Image variants via sharp (probe/resize/thumbnails).
+- **Mail service** (S20): SMTP via nodemailer, Markdown templates with front-matter, retry wrapper.
+- **Hooks registry** (S20): Global `HooksRegistry` with `pre:*`/`post:*` unified pattern. Builtins for audit, broadcast, and domain actions.
+- **Domain actions** (S16): `DomainActions` interface + registry. Custom `validate`/`beforeDelete`/`afterCreate`/`afterUpdate` hooks per collection. Rental demo (`vehicule` + `reservation`) included.
+- **Soft delete + audit** (S16): `deletedAt` field, automatic filtering in `listRecords`/`getRecord`. `DELETE` defaults to soft; `?permanent=true` for hard delete. `AuditService.logAudit()` trails every mutation.
+- **Default sort** (S19): `template.sort` declaration + `MachineScheme.defaultSort` inference (7 rules incl. `code`). `SortBy[]` multi-sort chain support.
+- **System collection rename** (S26): `_prefs`/`_activity`/`_history` → `appuser_prefs`/`appuser_activity`/`appuser_history`. `appuser_audit` kept separate (security log vs user-facing events).
+- **Server seed pipeline** (S31): `seedBusinessData(demoSeed)` — idempotent MongoDB insert per collection. Wired in `bootstrap-demo.ts` and `POST /api/admin/reset`.
+- **CollectionNav** (S29): Dedicated sidebar navigation component for collection browsing.
+
+### Improved
+
+- **Structural refactor** (S23): `data-ui/` (field, input, fragments, data), `shell/` (explorer, card, layout). `DataForm`, `DataFields`, `DataFk`, `DataRfk` extracted as thin wrappers. `SchemeList` + `SchemeItem` in `data-ui/scheme/`.
+- **Explorer UX** (S18): `sortBy` + `groupBy` props on ExplorerList, `sortBy` on ExplorerActions, `initialSortBy` on ExplorerTable. `sortItems()`/`groupItems()` extracted to `explorerUtils.ts`.
+- **AppShell** (S25): Universal frame with navbar/sidebar/content snippets. Default sidebar uses `DataList[appscheme]`, default content uses `Frame[instanceName]`.
+- **Schema validation** (S17): `SchemeValidator` service fetches + caches field rules from MongoDB. Wired into `createRecord`/`updateRecord`. Violations → HTTP 422.
+- **CORS & route ordering**: Express middleware correctly ordered before route handlers.
+- **Svelte 5 compliance**: All new components use `$state`, `$derived`, `$effect`, `$props()`, `$bindable()`. No `export let`, no `$:`, no `onMount`.
+
+### Tests
+
+- **Total**: 470 client tests (39 files) + 79 server tests = 549 tests
+- **Coverage**: S25-S34 all verified with passing test artifacts
+- **Status**: 100% pass rate, zero critical issues
+
+### Breaking Changes
+
+- **Explorer components removed**: `ExplorerList`, `ExplorerTable`, `ExplorerCard`, `ExplorerActions`, `ExplorerFilter` replaced by unified `Explorer`.
+- **DataList API changed**: Old `children({ items, groups, pagination })` snippet removed. Migrate to `item`, `groupHeader`, `empty`, `footer` snippets.
+- **Navigation API changed**: `hydrate()` removed. Use `machine.loadIn()` everywhere.
+- **System collections renamed**: Update references from `_prefs`/`_activity`/`_history` to `appuser_*` equivalents.
+- **Component registry keys changed**: `explorer.list`/`table`/`actions`/`card` → single `explorer`.
+
+---
+
 ## [0.136.0] - 2026-03-26
 
 ### Added
@@ -109,7 +158,7 @@ None. v0.136.0 is fully backward compatible with v0.135.3.
 - **2026-01-15** - refactor: update IDbBase and IDbCollection methods for improved clarity and consistency
 - **2026-01-15** - Refactor IDbBase and Machine classes; add comprehensive tests for IDbBase functionality
 - **2026-01-15** - fix: update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
-- **2026-01-15** - refactor: replace IDbCollections with IDbBase across multiple files for consistency
+- **2026-01-16** - refactor: replace IDbCollections with IDbBase across multiple files for consistency
 - **2026-01-14** - Refactor code structure for improved readability and maintainability
 - **2026-01-14** - fix: add console log for changeset file creation in generate-changeset script
 - **2026-01-14** - fix: add comment to clarify context retrieval in FieldValue component

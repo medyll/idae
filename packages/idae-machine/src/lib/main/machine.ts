@@ -1,6 +1,6 @@
 import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
-import { createReactiveStore, bumpSchemaVersion } from '$lib/main/reactiveStore.svelte.js';
+import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import { EventDataClientInstance } from '@medyll/idae-socket';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
@@ -36,11 +36,7 @@ export class Machine {
 	 */
 	_qoolie!: ReturnType<typeof createQoolie> | undefined;
 
-	/**
-	 * Reactive store proxy — wraps qoolie collections with Svelte 5 $state.
-	 * Lazily created on first store access after start().
-	 */
-	_reactiveStore?: Record<string, QoolieCollection<{ keyPath: string }>>;
+
 
 	/**
 	 * Centralized access to schema and collection logic
@@ -181,10 +177,7 @@ export class Machine {
 			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),  
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
-		// Reset reactive store so the new _qoolie is picked up on next access
-		this._reactiveStore = undefined;
-		// Signal schema/store readiness to reactive consumers (DataList, etc.)
-		bumpSchemaVersion();
+
 	}
 
 	private async _scheduleDrift(): Promise<void> {
@@ -245,7 +238,7 @@ export class Machine {
 			if (cached) {
 				this._business = cached;
 				this._model    = cached;
-				// Background revalidate (non-blocking) — bumps schemaVersion on change
+				// Background revalidate (non-blocking) — updates schema in-place
 				void this._revalidateSchema(url, cached, writeSchemaCache);
 			} else {
 				const res = await fetch(url);
@@ -270,7 +263,7 @@ export class Machine {
 		if (this._socketOptions?.autoConnect) this.connectSocket();
 	}
 
-	/** Internal: revalidate cached schema vs server. Bumps schemaVersion on change. */
+	/** Internal: revalidate cached schema vs server. Updates in-place on change. */
 	private async _revalidateSchema(
 		url: string,
 		cached: MachineModel,
@@ -289,7 +282,7 @@ export class Machine {
 			this._machineDb      = new MachineDb(this._effectiveModel);
 			machineRights.loadPoliciesFromModel(this._model);
 			await this._scheduleDrift();
-			bumpSchemaVersion();
+
 		} catch {
 			/* revalidate failed — keep cached schema */
 		}
@@ -327,33 +320,31 @@ export class Machine {
 	}
 
 	/**
-	 * Collection accessor — reactive (Svelte 5 runes) CRUD per collection.
-	 * Usage: machine.store['users'].where({...}) / .getAll() / .create(data) / .update(id, data) / .delete(id)
+	 * Reactive collection reader — returns live-updating { items } via Svelte 5 runes.
+	 * Usage: const { items } = machine.store('users');
+	 *        const { items } = machine.store('users', { status: 'active' });
+	 *
+	 * Must be called from within a Svelte component or .svelte.ts context.
+	 * For imperative CRUD use machine.collection(name) instead.
 	 */
-	get store(): Record<string, QoolieCollection<{ keyPath: string }>> {
-		if (!this._qoolie) return {} as Record<string, QoolieCollection<{ keyPath: string }>>;
-		if (!this._reactiveStore) {
-			this._reactiveStore = createReactiveStore(
-				this._qoolie.collection as Record<string, QoolieCollection<{ keyPath: string }>>
-			);
+	store<T = any>(name: string, query?: Record<string, unknown>): { items: T[] } {
+		if (!this._qoolie || !name) return { items: [] };
+		if (query) {
+			return useQoolieQuery<T>(this._qoolie, name, query);
 		}
-		return this._reactiveStore;
+		return useQoolieCollection<T>(this._qoolie, name);
 	}
 
 	/**
-	 * Direct collection accessor — shorthand for machine.store[name].
-	 * Returns the QoolieCollection (CRUD layer) for the given collection name.
+	 * Direct collection accessor — returns the raw QoolieCollection for CRUD ops.
+	 * Usage: await machine.collection('users').create(data)
+	 *        await machine.collection('users').get(id)
 	 * Note: machine.logic.collection(name) returns the MachineScheme (schema layer).
 	 */
 	collection(name: string) {
 		const col = this._qoolie?.collection?.[name];
 		if (!col) throw new Error(`Collection "${name}" not found. Did you call start()?`);
 		return col;
-	}
-
-	/** @deprecated Use store instead. */
-	get idbqlState(): Record<string, QoolieCollection<{ keyPath: string }>> {
-		return this.store;
 	}
 
 	/** @deprecated Qoolie manages the IDB instance internally. */
@@ -398,7 +389,7 @@ export class Machine {
 	destroy(): void {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
-		this._reactiveStore = undefined;
+
 		this._socketClient?.socket?.disconnect?.();
 		this._socketClient = undefined;
 	}

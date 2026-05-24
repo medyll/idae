@@ -71,7 +71,8 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
 
-    const fkItems  = $derived(fkCollection ? (machine.store?.[fkCollection]?.getAll() ?? []) : []);
+    const fkStore = machine.store(fkCollection ?? '');
+    const fkItems  = $derived(fkCollection ? fkStore.items : []);
     const fkLabel  = $derived((() => {
         if (!fkCollection || internalValue === undefined || internalValue === null) return '—';
         const item = (fkItems as Record<string, unknown>[]).find(i => i[fkIndexField] === internalValue);

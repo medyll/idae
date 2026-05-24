@@ -33,16 +33,16 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 	// ── sync:false ───────────────────────────────────────────────────────────
 
 	describe('machine.init({sync:false})', () => {
-		it('starts without error', () => {
+		it('starts without error', async () => {
 			const m = new Machine();
 			m.init({ dbName: uniqueDbName('s11-sync-false'), version: 1, model: demoScheme, sync: false });
-			expect(() => m.start()).not.toThrow();
+			await expect(m.start()).resolves.not.toThrow();
 		});
 
-		it('machine.sync throws "not enabled"', () => {
+		it('machine.sync throws "not enabled"', async () => {
 			const m = new Machine();
 			m.init({ dbName: uniqueDbName('s11-sync-disabled'), version: 1, model: demoScheme, sync: false });
-			m.start();
+			await m.start();
 			expect(() => m.sync).toThrow(/not enabled/);
 		});
 	});
@@ -50,21 +50,23 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 	// ── sync config forwarded ────────────────────────────────────────────────
 
 	describe('machine.init({sync: {...}})', () => {
-		it('forwards sync config to createQoolie', () => {
+		it('forwards sync config to createQoolie', async () => {
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => demoScheme }));
 			const m = new Machine();
 			m.init({
 				dbName:  uniqueDbName('s11-sync-config'),
 				version: 1,
 				model:   demoScheme,
-				sync:    { databaseHost: 'http://x', mode: 'mobile-first' as any },
+				sync:    { databaseHost: 'http://localhost', mode: 'mobile-first' as any },
 			});
-			expect(m._syncOptions).toEqual({ databaseHost: 'http://x', mode: 'mobile-first' });
-			expect(() => m.start()).not.toThrow();
+			expect(m._syncOptions).toEqual({ databaseHost: 'http://localhost', mode: 'mobile-first' });
+			await expect(m.start()).resolves.not.toThrow();
+			vi.unstubAllGlobals();
 		});
 	});
 
 	describe('machine.init({stateEngine})', () => {
-		it('forwards stateEngine:stator without error', () => {
+		it('forwards stateEngine:stator without error', async () => {
 			const m = new Machine();
 			m.init({
 				dbName:     uniqueDbName('s11-state-engine'),
@@ -72,15 +74,15 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 				model:      demoScheme,
 				stateEngine: 'stator',
 			});
-			expect(() => m.start()).not.toThrow();
+			await expect(m.start()).resolves.not.toThrow();
 		});
 	});
 
 	describe('machine.destroy()', () => {
-		it('after start() → machine._qoolie === undefined', () => {
+		it('after start() → machine._qoolie === undefined', async () => {
 			const m = new Machine();
 			m.init({ dbName: uniqueDbName('s11-destroy-after'), version: 1, model: demoScheme });
-			m.start();
+			await m.start();
 			expect(m._qoolie).toBeDefined();
 			m.destroy();
 			expect(m._qoolie).toBeUndefined();
@@ -113,10 +115,10 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 			expect(() => m.collection('vehicle')).toThrow();
 		});
 
-		it('after start() returns QoolieCollection with CRUD verbs', () => {
+		it('after start() returns QoolieCollection with CRUD verbs', async () => {
 			const m = new Machine();
 			m.init({ dbName: uniqueDbName('s11-col-after'), version: 1, model: demoScheme });
-			m.start();
+			await m.start();
 
 			const col = m.collection('category');
 			expect(col).toBeDefined();
@@ -132,7 +134,7 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 	// ── hooks forwarded ──────────────────────────────────────────────────────
 
 	describe('machine.init({hooks})', () => {
-		it('forwards hooks without error', () => {
+		it('forwards hooks without error', async () => {
 			const m = new Machine();
 			m.init({
 				dbName:  uniqueDbName('s11-hooks'),
@@ -143,7 +145,7 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 					onError:     vi.fn(),
 				},
 			});
-			expect(() => m.start()).not.toThrow();
+			await expect(m.start()).resolves.not.toThrow();
 		});
 	});
 });

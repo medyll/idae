@@ -6,7 +6,7 @@
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: development
+  Progress   [██████████] 100%   Phase: release
 
 ### Features & Capabilities
 
@@ -45,6 +45,9 @@
 - DataList composable API with snippet-based customization
 - **NEW:** Auto-fetch schema from server on `machine.start()` when `databaseHost` is set
 - **NEW:** Automatic data pull from server into local IDB on boot
+- **NEW:** README.md and CHANGELOG.md updated for v2.0 release
+- **NEW:** ADR-02 implemented — `machine.store(name)` wraps `useQoolieCollection`, `reactiveStore.svelte.ts` deleted, all consumers migrated
+- **NEW:** All 470 tests passing (39 files)
 
 ### What's Coming Next
 
@@ -54,7 +57,6 @@
 
 ### Risks & Blockers
 
-- Pre-existing TS errors in `DataListToolbar.svelte` (5 errors — from prior session, not Sprint 34)
 - None identified for current development
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -62,14 +64,15 @@
 ## Development Details
 
   Sprint     none (S34 completed)
-  Role       tester → next: scrum
+  Role       dev → next: scrum
   Next cmd   `bmad-status`
+  Last update 2026-05-24 22:45
 
 ### Current Sprint
 
   ✅ Done     Sprint 34: SCHEMA-FROM-SERVER + Client Store Hydration. `start()` auto-fetches schema from server when `databaseHost` set. `_pullFromServer()` hydrates client store. `+layout.svelte` drops `demoScheme` import entirely.
-  🔨 Doing    Nothing active — between sprints
-  💡 Next     Plan Sprint 35 or release prep
+  🔨 Doing    Release prep complete — README and CHANGELOG updated, all tests fixed
+  💡 Next     Final status review or Sprint 35 planning
   ⚠️ Blockers None
 
 ### Stories (Sprint 34 — All Complete)
@@ -109,6 +112,7 @@
   - Sprint 26-28: System rename, _views wiring, IDB drift detection ✅
   - Sprint 29-33: Explorer vars, DataList refactor, RBAC Matrix, CORS/dbn fixes ✅
   - Sprint 34: SCHEMA-FROM-SERVER + store hydration ✅
+  - ADR-02: machine.store(name) function — implemented ✅
   - Sprint 30: machine.init(core+business) — planned, pending activation
   - Sprint 35: TBD — next sprint planning
 
@@ -116,10 +120,10 @@
   - Unit tests: 470/470 passing (39 files)
   - E2E tests: Playwright golden path verified
 
-  #### Release 🔨
-  - Docs/README: needs update for v2 features
-  - CHANGELOG: needs update for S29-S34
-  - Publish: pending
+  #### Release ✅
+  - Docs/README: ✅ updated for v2 features
+  - CHANGELOG: ✅ updated for S29-S34
+  - Publish: ready — all blockers cleared
 
 ### Artifacts
 
@@ -132,6 +136,8 @@
   | Test results (S34) | ✅ done — 470/470 |
   | Conventions | ✅ maintained |
   | INTENT.md | ✅ done |
+  | README (v2) | ✅ updated |
+  | CHANGELOG (v2) | ✅ updated |
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   bmad continue   — execute next step
