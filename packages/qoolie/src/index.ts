@@ -70,7 +70,36 @@ export type { ExportData, ImportOptions, ImportResult } from './lib/importExport
 
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
-export type { OperatorType, Where, SupportedOperator } from './lib/operators.js';
+export type { OperatorType, Operator, Where, SupportedOperator } from './lib/operators.js';
+
+// Query Result Types
+export type { ResultSet, ResultsetOptions, DataOpGroupByOptions } from './lib/engine/types.js';
+
+// Schema / Model Types (full idae-idbql compatibility)
+export type {
+  IdbqModel,
+  CollectionModel,
+  TplCollectionName,
+  Tpl,
+  TplFields,
+  TplCollectionFields,
+  TplFieldRules,
+  TplFieldRulesObject,
+  TplFieldArgs,
+  TplFieldType,
+  TplTypes,
+  TplFieldPrimitive,
+  TplObjectFieldPrimitive,
+  TplFieldFk,
+  TplFkObject,
+  CombinedArgs,
+  CombineElements,
+  IDbForge,
+  enumPrimitive,
+  TplProperties,
+  ExpandProps,
+  DotPath,
+} from './lib/engine/types.js';
 
 // Utils (optional exports for advanced users)
 export { autoDetectBaseUrl } from './lib/utils/autoDetectBaseUrl.js';

@@ -58,12 +58,22 @@ export type OperatorType<T = unknown> = {
   $btw?: T extends number ? [T, T] : never;
 };
 
-/**
- * Where query type for Qoolie
- */
-export type Where<T = Record<string, unknown>> = {
+/** Operator key type — e.g. `'$eq' | '$gt' | '$lt'` */
+export type Operator = keyof OperatorType;
+
+type WhereCondition<T> = {
   [K in keyof T]?: T[K] | Partial<OperatorType<T[K]>>;
 };
+
+/**
+ * Where query type for Qoolie — supports both field-keyed and operator-keyed forms.
+ *
+ * Field-keyed form: `{ name: { $contains: 'john' }, age: { $gt: 18 } }`
+ * Operator-keyed form: `{ $in: { role: ['admin'] } }` (inverted query)
+ */
+export type Where<T = Record<string, unknown>> =
+  | WhereCondition<T>
+  | { [K in keyof OperatorType]?: Partial<T> };
 
 /**
  * List of all supported operators

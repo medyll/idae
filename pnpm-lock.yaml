@@ -1047,6 +1047,9 @@ importers:
       '@medyll/css-base':
         specifier: link:../../../css-base
         version: link:../../../css-base
+      '@medyll/idae-be':
+        specifier: workspace:*
+        version: link:../idae-be
       '@medyll/idae-idbql':
         specifier: workspace:*
         version: link:../idae-idbql
