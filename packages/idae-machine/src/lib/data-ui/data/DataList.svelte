@@ -8,8 +8,9 @@ Consumers can override via the item snippet.
 @prop {Where<COL>} [where]
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
-@prop {number} [pageSize] - 0 = no pagination
-@prop {number} [page] - 1-based
+@prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
+@prop {number} [page] - 1-based (only used when infiniteScroll=false)
+@prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
 @snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataFields used by default)
@@ -23,6 +24,7 @@ Consumers can override via the item snippet.
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
+	import { parseLink } from '$lib/main/frame/linkParser.js';
 
 	interface PaginationInfo {
 		page: number;
@@ -38,8 +40,11 @@ Consumers can override via the item snippet.
 		groupBy,
 		pageSize = 0,
 		page = 1,
+		infiniteScroll = true,
 		listClass,
 		groupClass,
+		link,
+		linkVars,
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
@@ -51,8 +56,11 @@ Consumers can override via the item snippet.
 		groupBy?: string;
 		pageSize?: number;
 		page?: number;
+		infiniteScroll?: boolean;
 		listClass?: string;
 		groupClass?: string;
+		link?: string;
+		linkVars?: Record<string, any>;
 		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
@@ -82,6 +90,16 @@ Consumers can override via the item snippet.
 			cur = cur[seg];
 		}
 		return cur;
+	}
+
+	const parsedLink = $derived(link ? parseLink(link) : null);
+
+	function navigate(record: Record<string, unknown>): void {
+		if (!parsedLink) return;
+		const key = String((record as Record<string, unknown>)[indexField] ?? '');
+		if (parsedLink.action === 'loadFrame') {
+			machine.loadFrame(parsedLink.module, key, undefined, linkVars, parsedLink.zone);
+		}
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
@@ -114,9 +132,28 @@ Consumers can override via the item snippet.
 	});
 
 	const paginatedItems = $derived.by(() => {
+		if (infiniteScroll) return sortedItems.slice(0, visibleCount);
 		if (!pageSize || pageSize <= 0) return sortedItems;
 		const start = (page - 1) * pageSize;
 		return sortedItems.slice(start, start + pageSize);
+	});
+
+	const chunkSize = $derived(pageSize > 0 ? pageSize : 20);
+	let visibleCount = $state(20);
+	let sentinel = $state<HTMLElement | null>(null);
+
+	$effect(() => {
+		if (!infiniteScroll || !sentinel) return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && visibleCount < sortedItems.length) {
+					visibleCount = Math.min(visibleCount + chunkSize, sortedItems.length);
+				}
+			},
+			{ rootMargin: '100px' }
+		);
+		observer.observe(sentinel);
+		return () => observer.disconnect();
 	});
 
 	const total = $derived(rawItems.length);
@@ -157,13 +194,15 @@ Consumers can override via the item snippet.
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if groups}
-	{#each Array.from(groups) as [key, groupItems] (key)}
-		<div class={groupClass ?? 'data-list-group'}>
+	{#each Array.from(groups) as [key, groupItems] (key)} 
+		<div class={groupClass ?? 'data-list-group'}> 
 			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{/if}
 			<ul class={listClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{#if itemSnippet}
 						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+					{:else if parsedLink}
+						<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 					{:else if presentationFields?.length}
 						<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 					{:else}
@@ -178,6 +217,8 @@ Consumers can override via the item snippet.
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
 			{#if itemSnippet}
 				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+			{:else if parsedLink}
+				<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 			{:else if presentationFields?.length}
 				<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 			{:else}
@@ -192,12 +233,21 @@ Consumers can override via the item snippet.
 			{/if}
 		{/if}
 	</ul>
+		{#if infiniteScroll && visibleCount < sortedItems.length}
+			<li bind:this={sentinel} class="data-list-sentinel" aria-hidden="true"></li>
+		{/if}
 {/if}
 {#if footerSnippet}
 	{@render footerSnippet({ pagination })}
 {/if}
 
 <style>
+
+.data-list-sentinel {
+	height: 1px;
+	list-style: none;
+	pointer-events: none;
+}
 
 .explorer-toolbar {
 		display: flex;
@@ -223,6 +273,16 @@ Consumers can override via the item snippet.
 		list-style: none;
 		padding: var(--gutter-sm, 0.5rem) 0;
 	}
+	.data-list-link {
+		width: 100%;
+		text-align: left;
+		background: transparent;
+		border: none;
+		padding: 6px 8px;
+		cursor: pointer;
+		border-radius: var(--radius-sm);
+	}
+	.data-list-link:hover { background: var(--color-hover); }
 
 	.data-toolbar {
 		display: flex;

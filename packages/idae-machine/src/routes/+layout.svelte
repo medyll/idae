@@ -8,8 +8,11 @@
 	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
 	// Falls back to cached token if server is offline.
 	let bootPromise: Promise<void>;
+	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
 
-	if (typeof window !== 'undefined') {
+	if (_g.__idae_boot) {
+		bootPromise = _g.__idae_boot;
+	} else if (typeof window !== 'undefined') {
 		const cachedToken = window.localStorage.getItem('auth_token') ?? '';
 		bootPromise = fetch(`${apiUrl}/api/auth/login`, {
 			method:  'POST',
@@ -29,6 +32,7 @@
 	} else {
 		bootPromise = doBoot('');
 	}
+	_g.__idae_boot = bootPromise;
 
 	async function doBoot(authToken: string): Promise<void> {
 		await machine.boot({

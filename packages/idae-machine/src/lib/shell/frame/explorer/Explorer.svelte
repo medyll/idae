@@ -9,7 +9,6 @@ Unified collection browser — list/table/card/actions modes.
 	import DataForm from '$lib/data-ui/data/DataForm.svelte';
 	import ExplorerTableInline from './ExplorerTableInline.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
-	import CollectionNav from '$lib/shell/layout/CollectionNav.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import type { SortBy, Where } from '$lib/types/machine-model.js';
 
@@ -69,13 +68,14 @@ Unified collection browser — list/table/card/actions modes.
 
 <TemplateShell>
 	{#snippet leftbar()}
-		<CollectionNav activeCollection={collection} />
+	<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" />
 	{/snippet}
 	{#snippet children()}
 		{#if currentMode === 'card'}
 			<DataForm {collection} dataId={collectionId ?? dataId} mode="update" />
 		{:else if currentMode === 'actions'}
-			<DataList {collection} {where} listClass="action-list">
+		
+			<DataList {collection} {where} listClass="action-list" link="loadFrame:explorer">
 				{#snippet item({ record, idx })}
 					<li>
 						<button type="button" class="action-item" onclick={() => openCard(record as COL)}>

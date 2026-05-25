@@ -547,4 +547,6 @@ export function buildLoadInUrl(
 	return url;
 }
 
-export const machine = new Machine();
+const _g = globalThis as unknown as { __idae_machine?: Machine };
+export const machine: Machine = _g.__idae_machine ?? (_g.__idae_machine = new Machine());
+if (import.meta.hot) import.meta.hot.accept();
