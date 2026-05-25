@@ -1,7 +1,8 @@
 <!--
 DataList.svelte
 Data provider + renderer — fetches, sorts, groups, paginates, iterates.
-Consumers provide named snippets; DataList handles all loops.
+Autonomous by default: renders DataFields (template.presentation fields) when no snippet provided.
+Consumers can override via the item snippet.
 
 @prop {string} collection
 @prop {Record<string,unknown>} [where]
@@ -11,9 +12,9 @@ Consumers provide named snippets; DataList handles all loops.
 @prop {number} [page] - 1-based
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
-@snippet item({ record, idx, fieldValues }) - renders one record (required)
+@snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataFields used by default)
 @snippet groupHeader({ key, count }) - renders group section header (optional)
-@snippet empty() - renders empty state (optional)
+@snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
 -->
 <script lang="ts" generics="COL extends Record<string, unknown>">
@@ -21,6 +22,7 @@ Consumers provide named snippets; DataList handles all loops.
 	import type { SortBy } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
+	import DataFields from '$lib/data-ui/data/DataFields.svelte';
 
 	interface PaginationInfo {
 		page: number;
@@ -51,7 +53,7 @@ Consumers provide named snippets; DataList handles all loops.
 		page?: number;
 		listClass?: string;
 		groupClass?: string;
-		item: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
+		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
@@ -66,6 +68,11 @@ Consumers provide named snippets; DataList handles all loops.
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
 	);
 	const effectiveSort = $derived(sortBy ?? defaultSort);
+	const presentationFields = $derived(
+		collLogic?.template?.presentation
+			? (collLogic.template.presentation as string).split(' ').filter(Boolean)
+			: undefined
+	);
 
 	const rawItems = $derived.by(() => {
 		if (!store?.items) return [] as COL[];
@@ -126,7 +133,6 @@ Consumers provide named snippets; DataList handles all loops.
 		<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => setMode('actions')}>Actions</button>
 	</div>
 </div> -->
-<debug>total : {total}</debug>
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if groups}
@@ -135,7 +141,11 @@ Consumers provide named snippets; DataList handles all loops.
 			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{/if}
 			<ul class={listClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
-					{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+					{#if itemSnippet}
+						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+					{:else}
+						<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" showFields={presentationFields} /></li>
+					{/if}
 				{/each}
 			</ul>
 		</div>
@@ -143,24 +153,50 @@ Consumers provide named snippets; DataList handles all loops.
 {:else}
 	<ul class={listClass} role="list">
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-			{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+			{#if itemSnippet}
+				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+			{:else}
+				<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" showFields={presentationFields} /></li>
+			{/if}
 		{/each}
+		{#if !paginatedItems.length}
+			{#if emptySnippet}
+				{@render emptySnippet()}
+			{:else}
+				<li class="data-list-empty">—</li>
+			{/if}
+		{/if}
 	</ul>
-	{#if !paginatedItems.length && emptySnippet}
-		{@render emptySnippet()}
-	{/if}
 {/if}
 {#if footerSnippet}
 	{@render footerSnippet({ pagination })}
 {/if}
 
 <style>
+
+.explorer-toolbar {
+		display: flex;
+		align-items: center;
+		padding: 4px 0 8px;
+		border-bottom: var(--border-width) solid var(--color-border);
+		margin-bottom: var(--gutter-sm);
+	}
+
+	.mode-switcher {
+		display: flex;
+		gap: 2px;
+	}
 	.error-message {
 		color: red;
 		padding: 1rem;
 	}
 	.data-list-group {
 		margin-bottom: var(--gutter-md);
+	}
+	.data-list-empty {
+		color: var(--color-text-muted, #888);
+		list-style: none;
+		padding: var(--gutter-sm, 0.5rem) 0;
 	}
 
 	.data-toolbar {

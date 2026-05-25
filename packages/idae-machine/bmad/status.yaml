@@ -7,13 +7,13 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-25T12:00"
+last_updated: "2026-05-25T14:35"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 36 complete — milestone reached. Decide next sprint scope."
+next_action: "Audit complete — codebase health 9.0/10. Ready for next sprint planning."
 next_command: "bmad sprint"
 next_role: "scrum"
-active_role: "developer"
+active_role: "reviewer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:

@@ -43,7 +43,20 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     const scheme             = $derived(safeScheme());
     const fieldForge         = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
     const schemeFieldValues  = $derived(scheme?.collectionValues ?? null);
-    const inputDataset       = $derived(schemeFieldValues ? schemeFieldValues.getInputDataSet(String(fieldName), data ?? {} as Record<string, unknown>) : {});
+    const inputDataset       = $derived.by(() => {
+        if (schemeFieldValues) {
+            return schemeFieldValues.getInputDataSet(String(fieldName), data ?? {} as Record<string, unknown>);
+        }
+        // fallback when scheme is unavailable
+        const idx = (data as Record<string, unknown> | undefined)?.id;
+        return {
+            'data-collection':   String(collection ?? ''),
+            'data-collectionId': idx !== undefined ? String(idx) : '',
+            'data-fieldName':    String(fieldName),
+            'data-fieldType':    '',
+            'data-fieldArgs':    ''
+        };
+    });
 
     const isPrivate      = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
     const labelPosition  = $derived(
@@ -184,7 +197,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     {#if !isPrivate}
         <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition}">
             <span class="field-label">{fieldName}</span>
-            <div class="field-input">
+            <div class="field-input" {...inputDataset}>
                 {#if mode === 'show'}
                     {@render fieldShow()}
                 {:else}

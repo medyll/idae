@@ -4,14 +4,12 @@
 	import { App } from '$lib/shell/layout/index.js';
 
 	const apiUrl = (import.meta.env.PUBLIC_API_URL as string | undefined) ?? 'http://localhost:7842';
-	const token  = typeof window !== 'undefined'
-		? (window.localStorage.getItem('auth_token') ?? '')
-		: '';
-
-	// Dev auto-login: if no token, fetch + reload (next mount picks up token).
+	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
+	// Falls back to cached token if server is offline.
 	let bootPromise: Promise<void>;
 
-	if (typeof window !== 'undefined' && !token) {
+	if (typeof window !== 'undefined') {
+		const cachedToken = window.localStorage.getItem('auth_token') ?? '';
 		bootPromise = fetch(`${apiUrl}/api/auth/login`, {
 			method:  'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -21,19 +19,14 @@
 			.then((data) => {
 				if (data?.token) {
 					window.localStorage.setItem('auth_token', data.token);
-					window.location.reload();
-					// Keep splash until reload fires — never resolve
-					return new Promise<void>(() => {});
+					return doBoot(data.token);
 				}
-				// Login failed (server offline?) — boot anyway for offline/cache path
-				return doBoot('');
+				// Server offline or login failed — use cached token if available
+				return doBoot(cachedToken);
 			})
-			.catch((err) => {
-				console.warn('[layout] Auto-login failed:', err);
-				return doBoot('');
-			});
+			.catch(() => doBoot(cachedToken));
 	} else {
-		bootPromise = doBoot(token);
+		bootPromise = doBoot('');
 	}
 
 	async function doBoot(authToken: string): Promise<void> {

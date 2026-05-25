@@ -154,18 +154,6 @@ Unified collection browser — list/table/card/actions modes.
 </TemplateShell>
 
 <style>
-	.explorer-toolbar {
-		display: flex;
-		align-items: center;
-		padding: 4px 0 8px;
-		border-bottom: var(--border-width) solid var(--color-border);
-		margin-bottom: var(--gutter-sm);
-	}
-
-	.mode-switcher {
-		display: flex;
-		gap: 2px;
-	}
 
 	:global(.explorer-group) {
 		margin-bottom: var(--gutter-md);

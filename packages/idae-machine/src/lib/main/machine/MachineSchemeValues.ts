@@ -209,20 +209,11 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	}
 
 	/**
-	 * Iterate over an object field and return an array of IDbForge objects for each property.
+	 * Iterate over an object field and return data rows keyed by property name.
 	 * @param fieldName The field name.
 	 * @param data The object data.
-	 * @returns An array of IDbForge objects.
+	 * @returns Data rows derived from the object's properties.
 	 */
-	/**
-	 * Iterate over an object field and return an array of IDbForge objects for each property.
-	 * @role Object field iteration
-	 * @param {keyof TplFields} fieldName The field name.
-	 * @param {Record<string, unknown>} data The object data.
-	 * @return {IDbForge[]} An array of IDbForge objects.
-	 */
-	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
-	// TODO: Refine IDbForge type if needed for stricter typing
 	iterateObjectField(
 		fieldName: keyof TplFields,
 		data: Record<string, unknown>
