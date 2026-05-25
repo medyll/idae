@@ -6,6 +6,8 @@ export interface IdaeApiClientConfigCoreOptions {
 	defaultDb: string;
 	separator: string;
 	token?: string;
+	/** Explicit base URL — overrides host/port/method when set (e.g. 'http://localhost:7842') */
+	baseUrl?: string;
 }
 
 export class IdaeApiClientConfigCore {
@@ -47,6 +49,9 @@ export class IdaeApiClientConfigCore {
 	}
 
 	private forgeBaseUrl(): string {
+		if (this.options.baseUrl) {
+			return this.options.baseUrl;
+		}
 		return `${this.method}:${this.separator}${this.host}:${this.port}`;
 	}
 

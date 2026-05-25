@@ -57,7 +57,7 @@ export class HydrationController {
 		} catch (err) {
 			const error = err instanceof Error ? err : new Error(String(err));
 			this.hooks?.onHydrateError?.(collectionName, error);
-			// Never throw on read path — errors surface via hooks only
+			throw error; // propagate so ensure() does not mark as hydrated on failure
 		}
 	}
 
@@ -74,10 +74,15 @@ export class HydrationController {
 		const existing = this.inFlight.get(collectionName);
 		if (existing) return;
 
-		const promise = this.pull(collectionName).then(() => {
-			this.hydrated.add(collectionName);
-			this.inFlight.delete(collectionName);
-		});
+		const promise = this.pull(collectionName)
+			.then(() => {
+				this.hydrated.add(collectionName);
+				this.inFlight.delete(collectionName);
+			})
+			.catch(() => {
+				// pull failed — clean up inFlight so next ensure() can retry
+				this.inFlight.delete(collectionName);
+			});
 
 		this.inFlight.set(collectionName, promise);
 	}

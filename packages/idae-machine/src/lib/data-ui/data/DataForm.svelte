@@ -37,7 +37,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		groupBy?: string;
 	} = $props();
 
-	const store = collection ? machine.collection(collection) : undefined;
+	const store = $derived(collection ? machine.collection(collection) : undefined);
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const formFields = $derived(collLogic?.parse() ?? {});
 	const validator = $derived(collLogic?.validator);

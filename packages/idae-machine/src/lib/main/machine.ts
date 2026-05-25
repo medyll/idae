@@ -6,7 +6,7 @@ import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/Machi
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
-import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
+import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
@@ -96,6 +96,9 @@ export class Machine {
 	/** Socket client instance — created at start() if socketOptions provided */
 	_socketClient?: EventDataClientInstance;
 
+	/** Seed data for mobile-first mode — auto-called seedIfEmpty on boot if mode === 'mobile-first' */
+	_seed?: Record<string, unknown[]>;
+
 	/** Frame manager — handles dynamic frame registration and content loading */
 	_frameManager = machineFrameManager;
 
@@ -136,6 +139,8 @@ export class Machine {
 			onError?:     (error: Error, context: SyncErrorContext) => void;
 		};
 		socket?:      MachineSocketOptions;
+		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seedIfEmpty(seed). */
+		seed?:        Record<string, unknown[]>;
 	}) {
 		if (options?.org)    this._org    = options.org;
 		if (options?.domain) this._domain = options.domain;
@@ -151,6 +156,7 @@ export class Machine {
 		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
 		this._hooks         = options?.hooks       ?? this._hooks;
 		this._socketOptions = options?.socket      ?? this._socketOptions;
+		this._seed          = options?.seed        ?? this._seed;
 	}
 
 	/** Fully qualified DB name for a given base: {org}_{base} */
@@ -174,7 +180,7 @@ export class Machine {
 			dbVersion: this._version,
 			collections,
 			...(this._syncOptions !== undefined && { sync: this._syncOptions }),
-			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),  
+			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
 
@@ -239,16 +245,21 @@ export class Machine {
 				this._business = cached;
 				this._model    = cached;
 				// Background revalidate (non-blocking) — updates schema in-place
-				void this._revalidateSchema(url, cached, writeSchemaCache);
+				this._revalidateSchema(url, cached, writeSchemaCache).catch(() => {});
 			} else {
-				const res = await fetch(url);
-				if (res.ok) {
-					const fresh = await res.json() as MachineModel;
-					await writeSchemaCache(url, fresh).catch(() => {});
-					this._business = fresh;
-					this._model    = fresh;
-				} else if (!this._business) {
-					throw new Error(`[machine] Schema fetch failed (${res.status}) and no local model available`);
+				try {
+					const res = await fetch(url);
+					if (res.ok) {
+						const fresh = await res.json() as MachineModel;
+						await writeSchemaCache(url, fresh).catch(() => {});
+						this._business = fresh;
+						this._model    = fresh;
+					} else if (!this._business) {
+						throw new Error(`[machine] Schema fetch failed (${res.status}) and no local model available`);
+					}
+				} catch (err) {
+					if (!this._business) throw err;
+					// Server unreachable but local model available — continue with local
 				}
 			}
 		}
@@ -258,7 +269,19 @@ export class Machine {
 		machineRights.loadPoliciesFromModel(this._model);
 
 		await this._scheduleDrift();
+		// Never downgrade IDB — if actual version > declared (drift incremented on prior run), use actual
+		const actualVersion = await getActualIdbVersion(this._dbName).catch(() => 0);
+		if (actualVersion > this._version) this._version = actualVersion;
 		await this.createStore();
+
+		// Mobile-first auto-seed: run seedIfEmpty if mode='mobile-first' and seed data provided
+		const syncMode = (this._syncOptions && typeof this._syncOptions === 'object')
+			? (this._syncOptions as SyncConfig).mode
+			: undefined;
+		if (syncMode === 'mobile-first' && this._seed) {
+			const { seedIfEmpty } = await import('$lib/main/machineSeed.js');
+			await seedIfEmpty(this._seed);
+		}
 
 		if (this._socketOptions?.autoConnect) this.connectSocket();
 	}
@@ -327,7 +350,7 @@ export class Machine {
 	 * Must be called from within a Svelte component or .svelte.ts context.
 	 * For imperative CRUD use machine.collection(name) instead.
 	 */
-	store<T = any>(name: string, query?: Record<string, unknown>): { items: T[] } {
+	store<T = any>(name: string, query?: Parameters<typeof useQoolieQuery>[2]): { items: T[] } {
 		if (!this._qoolie || !name) return { items: [] };
 		if (query) {
 			return useQoolieQuery<T>(this._qoolie, name, query);

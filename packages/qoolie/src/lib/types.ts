@@ -144,6 +144,8 @@ export interface QoolieInstance<T extends CollectionConfigMap> {
   };
   /** Sync controller */
   sync: SyncController;
+  /** Resolves once the IDB database is open and ready for operations */
+  ready(): Promise<void>;
   /** Cleanup all resources */
   destroy(): void;
 }

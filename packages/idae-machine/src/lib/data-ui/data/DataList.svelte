@@ -57,7 +57,8 @@ Consumers provide named snippets; DataList handles all loops.
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	} = $props();
 
-	const store = collection ? machine.store(collection) : { items: [] as COL[] };
+
+	const store = $derived(collection ? machine.store(collection) : { items: [] as COL[] });
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});

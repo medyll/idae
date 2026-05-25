@@ -99,6 +99,25 @@ describe('HydrationController', () => {
 			expect(mockCollection.bulkUpsertSilent).not.toHaveBeenCalled();
 		});
 
+		it('should not mark hydrated on failure — retry possible', async () => {
+			(mockDeliverer.fetchAll as any)
+				.mockRejectedValueOnce(new Error('Network error'))
+				.mockResolvedValueOnce([{ id: 'u1', name: 'Alice' }]);
+
+			const ctrl = new HydrationController(mockDeliverer, collections, hooks);
+
+			// First ensure — fails
+			ctrl.ensure('users');
+			await new Promise((r) => setTimeout(r, 10));
+			expect(mockDeliverer.fetchAll).toHaveBeenCalledTimes(1);
+
+			// Second ensure — should retry since first failed
+			ctrl.ensure('users');
+			await new Promise((r) => setTimeout(r, 10));
+			expect(mockDeliverer.fetchAll).toHaveBeenCalledTimes(2);
+			expect(mockCollection.bulkUpsertSilent).toHaveBeenCalledTimes(1);
+		});
+
 		it('should be no-op when disabled', async () => {
 			const ctrl = new HydrationController(mockDeliverer, collections, hooks, false);
 

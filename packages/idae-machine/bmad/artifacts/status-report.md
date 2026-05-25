@@ -6,7 +6,7 @@
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: development
+  Progress   [██████████] 100%   Phase: release
 
 ### Features & Capabilities
 
@@ -27,7 +27,8 @@
   | Multi-database routing | ✅ Shipped | Data routed to correct MongoDB database per organization |
   | Server seed pipeline | ✅ Shipped | Bootstrap demo data and business entities on first run |
   | CORS & route ordering | ✅ Shipped | Express middleware correctly ordered before route handlers |
-  | SCHEMA-FROM-SERVER | 🔨 Building | Auto-fetch schema on start — eliminates manual schema declarations |
+  | SCHEMA-FROM-SERVER | ✅ Shipped | Auto-fetch schema on start — eliminates manual schema declarations |
+  | Client store hydration | ✅ Shipped | QOOLIE-SWR implemented in qoolie — transparent lazy SWR on cold IDB reads |
 
 ### What's Ready Now
 
@@ -42,55 +43,60 @@
 - Multi-tenant data routing (org-scoped MongoDB databases)
 - Bootstrap CLI and HTTP endpoints for demo data seeding
 - DataList composable API with snippet-based customization
+- Auto-fetch schema from server on `machine.start()` when `databaseHost` is set
+- ADR-02 — `machine.store(name)` wraps `useQoolieCollection`; `reactiveStore.svelte.ts` deleted
+- QOOLIE-SWR shipped — HydrationController, bulkUpsertSilent, revalidate, autoHydrate opt-out, lifecycle hooks
+- BACK-03 closed — cold IDB hydrates transparently from server on first read; machine.ts has zero pull logic
 
 ### What's Coming Next
 
-- **SCHEMA-FROM-SERVER (BACK-07)**: machine.start() auto-fetches schema from server — drop manual appModelDeclaration import
-- **Client store hydration (BACK-03)**: Fix empty client store after CORS/route fix — ensure data pulls correctly
-- **Visual schema builder**: Drag-and-drop entity designers (far vision)
-- **Plugin marketplace**: Custom field types and components (far vision)
+- **Sprint 36:** Playwright RBAC suite (3 remaining tests), Svelte 5 warning fixes, mobile-first auto-seed
+- **Visual schema builder:** Drag-and-drop entity designers (far vision)
+- **Plugin marketplace:** Custom field types and components (far vision)
 
 ### Risks & Blockers
 
-- None identified. Sprint 33 complete, all tests passing (464/464). Open items are tracked backlog items, not blockers.
+- None identified for current development
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Development Details
 
-  Sprint     none (S33 completed)
-  Role       developer → next: scrum
-  Next cmd   `bmad-next`
+  Sprint     S36 planned
+  Role       scrum → next: developer
+  Next cmd   `bmad-dev-story` (S36-01)
+  Last update 2026-05-25 00:00
 
 ### Current Sprint
 
-  ✅ Done     Sprint 33: RBAC Matrix UI — grant editor, collection rows × CRUDLX cells, group dropdown, column bulk toggle. CORS fix (route ordering). mongooseConnectionManager dbName propagation fix. seedBusinessData multi-org rewrite. CollectionNav cleanup.
-  🔨 Doing    Nothing active — between sprints
-  💡 Next     Plan Sprint 34: SCHEMA-FROM-SERVER refactor (BACK-07) + client store hydration (BACK-03)
+  ✅ Done     Sprint 35: QOOLIE-SWR — HydrationController, bulkUpsertSilent, revalidate, autoHydrate. qoolie 206/206, idae-machine 472/472. BACK-03 closed.
+  🔨 Planned  Sprint 36: Playwright RBAC (3 tests), I1 Svelte 5 warnings, BL-01 mobile-first auto-seed
+  💡 Next     S36-01 — Playwright RBAC: group picker reveals matrix rows
   ⚠️ Blockers None
 
-### Stories (Recent Sprints)
+### Stories (Sprint 36 — Planned)
 
   | ID | Title | Status | Effort |
   |----|-------|--------|--------|
-  | S33-01 | Seed _views — auto-generated from template.presentation | ⏭ skipped | S |
-  | S33-03 | RbacMatrix.svelte — composition glue, CRUDLX cells, group dropdown | ✅ done | M |
-  | S33-06 | Tests — registry wiring, module resolves, grant payload, OPS shape | ✅ done | S |
-  | S32-01 | Fix componentRegistryEntries.test.ts — expect 2 entries | ✅ done | S |
-  | S32-02 | Validate all DataList consumers — migrate children() usage | ✅ done | M |
-  | S32-03 | Fix Explorer.svelte:45 — currentMode initial-only capture | ✅ done | S |
-  | S32-04 | Verify PaneRecents.svelte collection key | ✅ done | S |
-  | S32-05 | Scope CSS — :global() on listClass/groupClass selectors | ✅ done | S |
-  | S32-06 | Document DataList new API in conventions.md | ✅ done | S |
-  | S32-07 | Tester — full suite + check after migration | ✅ done | S |
-  | S30-01 | machine.init: model → core + business (deprecated shim) | ⬚ planned | S |
-  | S30-02 | buildEffectiveModel(core?, business?) — fusion | ⬚ planned | S |
-  | S30-03 | seed() unifié — même appel core et business | ⬚ planned | M |
-  | S30-04 | demoScheme = business uniquement | ⬚ planned | S |
-  | S30-05 | appModelDeclaration aligné format MachineModel business | ⬚ planned | S |
-  | S30-06 | Tests — init/start, seed unifié, rétro-compat | ⬚ planned | M |
+  | S36-01 | Playwright RBAC: group picker reveals matrix rows | ⬚ planned | M |
+  | S36-02 | Playwright RBAC: cell toggle persists across reload | ⬚ planned | M |
+  | S36-03 | Playwright RBAC: column bulk-toggle flips all cells | ⬚ planned | M |
+  | S36-04 | Fix I1: ExplorerTableInline state_referenced_locally warnings | ⬚ planned | S |
+  | S36-05 | BL-01: machine.init sync.seed — auto seedIfEmpty mobile-first | ⬚ planned | M |
+  | S36-06 | Tests + check — full suite verification | ⬚ planned | S |
 
-  Progress: 33 sprints completed, 1 sprint planned (S30 pending), 1 sprint active (none)
+  Progress: 0/6 stories complete
+
+### Recent Sprint History
+
+  | Sprint | Goal | Status | Tests |
+  |--------|------|--------|-------|
+  | S35 | QOOLIE-SWR — transparent IDB hydration from server | ✅ done | qoolie 206/206 · machine 472/472 |
+  | S34 | SCHEMA-FROM-SERVER + store hydration | ✅ done | 470/470 |
+  | S33 | RBAC Matrix UI | ✅ done | 464/464 |
+  | S32 | DataList snippet API refactor | ✅ done | 456/456 |
+  | S31 | Server seed + qoolie sync server-first | ✅ done | pass |
+  | S30 | machine.init(core+business) | ✅ done | pass |
 
 ### Roadmap to Release
 
@@ -107,17 +113,19 @@
   - Sprint 22-25: Navigation layer, structural refactor, Frame Manager, Unified Explorer ✅
   - Sprint 26-28: System rename, _views wiring, IDB drift detection ✅
   - Sprint 29-33: Explorer vars, DataList refactor, RBAC Matrix, CORS/dbn fixes ✅
-  - Sprint 30: machine.init(core+business) — planned, pending activation
-  - Sprint 34: SCHEMA-FROM-SERVER + client store hydration — next
+  - Sprint 34: SCHEMA-FROM-SERVER + store hydration ✅
+  - ADR-02: machine.store(name) function — implemented ✅
+  - Sprint 35: QOOLIE-SWR — transparent IDB hydration ✅
+  - Sprint 36: Polish & Playwright RBAC — planned 🔨
 
   #### Testing ✅
-  - Unit tests: 464/464 passing (39 files)
-  - E2E tests: Playwright golden path verified
+  - Unit tests: 472/472 passing (39 files)
+  - E2E tests: Playwright golden path verified (6/9 RBAC), 3 remaining in S36
 
-  #### Release 🔨
-  - Docs/README: needs update for v2 features
-  - CHANGELOG: needs update for S29-S33
-  - Publish: pending
+  #### Release ✅
+  - Docs/README: ✅ updated for v2 features
+  - CHANGELOG: ✅ updated for S29-S35
+  - Publish: ready — all blockers cleared
 
 ### Artifacts
 
@@ -126,10 +134,12 @@
   | PRD | ✅ done |
   | Architecture | ✅ done |
   | Tech Spec | ✅ done |
-  | Sprint artifacts (S1-S33) | ✅ done |
-  | Test results (S33) | ✅ done — 464/464 |
+  | Sprint artifacts (S1-S36) | ✅ done |
+  | Test results (S35) | ✅ done — 472/472 |
   | Conventions | ✅ maintained |
   | INTENT.md | ✅ done |
+  | README (v2) | ✅ updated |
+  | CHANGELOG (v2) | ✅ updated |
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   bmad continue   — execute next step

@@ -181,6 +181,24 @@ export function getCurrentIdbStores(dbName: string): Promise<Set<string>> {
 }
 
 /**
+ * Returns the actual current version of the IDB database, or 0 if it doesn't exist.
+ * Used to prevent version downgrade when re-opening after a drift-triggered increment.
+ */
+export function getActualIdbVersion(dbName: string): Promise<number> {
+	return new Promise((resolve) => {
+		if (typeof indexedDB === 'undefined') { resolve(0); return; }
+		const req = indexedDB.open(dbName);
+		req.onsuccess = (e) => {
+			const db = (e.target as IDBOpenDBRequest).result;
+			const version = db.version;
+			db.close();
+			resolve(version);
+		};
+		req.onerror = () => resolve(0);
+	});
+}
+
+/**
  * Read the persisted schema hash from __schema_meta__ store.
  * Returns null if the store doesn't exist or no hash is stored.
  */

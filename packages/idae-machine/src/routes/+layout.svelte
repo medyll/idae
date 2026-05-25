@@ -38,7 +38,7 @@
 
 	async function doBoot(authToken: string): Promise<void> {
 		await machine.boot({
-			org: 'demo', domain: 'machine', version: 6,
+			org: 'demo', domain: 'machine', version: 7,
 			sync: {
 				mode: 'server-first',
 				databaseHost: apiUrl,
@@ -46,6 +46,10 @@
 			},
 		});
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
+
+		if (typeof window !== 'undefined') {
+			(window as any).__machine = machine;
+		}
 	}
 </script>
 

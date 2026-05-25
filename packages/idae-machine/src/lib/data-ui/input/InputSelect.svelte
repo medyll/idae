@@ -45,7 +45,7 @@ FK-aware select input atom. Queries machine store for related collection records
 			? fkLabelFields
 			: (scheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
 	);
-	const store = machine.store(collection);
+	const store = $derived(machine.store(collection));
 	const items = $derived(store.items ?? []);
 
 	function getLabel(item: Record<string, unknown>): string {

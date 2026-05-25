@@ -33,6 +33,7 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 	private hydrationController?: HydrationController;
 	private normalizedConfig: ReturnType<typeof normalizeConfig<T>>;
 	private destroyed = false;
+	private _readyPromise!: Promise<void>;
 
 	constructor(options: QoolieOptions<T>) {
 		try {
@@ -61,9 +62,12 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 			this.idbql = dbResult.idbql;
 			this.collectionMap = new Map();
 
-			// 5. Open the database
-			this.db.open().catch(() => {
-				// DB may already be open in test environment
+			// 5. Open the database — store promise so callers can await readiness
+			this._readyPromise = this.db.open().catch((err: unknown) => {
+				const msg = String(err).toLowerCase();
+				// Swallow expected non-fatal conditions; surface real failures
+				if (msg.includes('already') || msg.includes('not available')) return;
+				throw err;
 			});
 
 		// 6. Create engine collections and state
@@ -182,6 +186,11 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 			);
 			this.collectionMap.set(collectionConfig.name, collection);
 		}
+	}
+
+	/** Resolves once the IDB database is open and ready for operations. */
+	ready(): Promise<void> {
+		return this._readyPromise;
 	}
 
 	/**
