@@ -68,8 +68,8 @@ Email input with format validation.
 </div>
 
 <style>
-	.field-email { display: flex; flex-direction: column; gap: 0.25rem; }
-	.email-input { padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; }
+	.field-email { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
+	.email-input { width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; }
 	.email-input:focus { border-color: #007bff; outline: none; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
 	.field-email.has-error .email-input { border-color: #dc3545; }
 	.error-message { color: #dc3545; font-size: 0.875rem; }

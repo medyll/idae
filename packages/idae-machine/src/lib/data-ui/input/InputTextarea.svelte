@@ -27,5 +27,8 @@ Textarea input atom.
 	{name}
 	{form}
 	{disabled}
-	style="width:100%;max-width:100%;resize:vertical;"
 ></textarea>
+
+<style>
+	textarea { width: 100%; max-width: 100%; resize: vertical; }
+</style>

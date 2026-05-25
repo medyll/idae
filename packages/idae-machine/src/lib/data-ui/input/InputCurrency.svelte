@@ -73,7 +73,7 @@ Currency input with formatting.
 </div>
 
 <style>
-	.field-currency { display: flex; flex-direction: column; gap: 0.25rem; }
+	.field-currency { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
 	.input-wrapper { display: flex; align-items: center; border: 1px solid #ced4da; border-radius: 4px; padding: 0.5rem; background: #fff; }
 	.input-wrapper:focus-within { border-color: #007bff; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
 	.field-currency.has-error .input-wrapper { border-color: #dc3545; }

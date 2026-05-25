@@ -181,7 +181,6 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     {:else}
         <!-- Generic: text, number, date, datetime, time, password, url, phone, text-* -->
         <input
-            style="width: 100%"
             value={internalValue}
             type={fieldForge?.htmlInputType}
             {...inputDataset}
@@ -230,6 +229,9 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     .field-line.input-size-full { grid-column: 1 / -1; }
 
     .field-input { width: var(--field-input-width, 100%); }
+    .field-input :global(input),
+    .field-input :global(select),
+    .field-input :global(textarea) { width: 100%; }
     .field-label {
         font-weight: bold;
     }
