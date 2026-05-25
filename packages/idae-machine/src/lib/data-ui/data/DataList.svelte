@@ -5,7 +5,7 @@ Autonomous by default: renders DataFields (template.presentation fields) when no
 Consumers can override via the item snippet.
 
 @prop {string} collection
-@prop {Record<string,unknown>} [where]
+@prop {Where<COL>} [where]
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
 @prop {number} [pageSize] - 0 = no pagination
@@ -19,7 +19,7 @@ Consumers can override via the item snippet.
 -->
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
-	import type { SortBy } from '$lib/types/machine-model.js';
+	import type { SortBy, Where } from '$lib/types/machine-model.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
@@ -46,7 +46,7 @@ Consumers can override via the item snippet.
 		footer: footerSnippet
 	}: {
 		collection: string;
-		where?: Record<string, unknown>;
+		where?: Where<COL>;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		pageSize?: number;

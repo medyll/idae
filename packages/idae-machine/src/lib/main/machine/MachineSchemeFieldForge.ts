@@ -82,6 +82,10 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	get fieldType(): TplFieldType | undefined {
 		return this.forge?.fieldType;
 	}
+
+	get inputSize() {
+		return this.forge?.inputSize;
+	}
 	/**
 	 * will return  text.inputBase  for ['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password']
 	 */

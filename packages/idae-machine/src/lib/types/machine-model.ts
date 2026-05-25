@@ -169,3 +169,15 @@ export type IDbForge = {
 	/** Visual size preset for the input in DataForm grid */
 	inputSize?:  InputSize;
 };
+
+// ── Query types — re-exported from @medyll/qoolie ─────────────────────────────
+export type {
+	Where,
+	Operator,
+	OperatorType,
+	SupportedOperator,
+	ResultSet,
+	ResultsetOptions,
+	DataOpGroupByOptions,
+	DotPath,
+} from '@medyll/qoolie';

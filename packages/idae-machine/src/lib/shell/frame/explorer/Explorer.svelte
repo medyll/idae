@@ -11,7 +11,7 @@ Unified collection browser — list/table/card/actions modes.
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
 	import CollectionNav from '$lib/shell/layout/CollectionNav.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import type { SortBy } from '$lib/types/machine-model.js';
+	import type { SortBy, Where } from '$lib/types/machine-model.js';
 
 	type Mode = 'list' | 'table' | 'card' | 'actions';
 
@@ -29,7 +29,7 @@ Unified collection browser — list/table/card/actions modes.
 		mode?: Mode;
 		collectionId?: string;
 		dataId?: string;
-		where?: Record<string, unknown>;
+		where?: Where<COL>;
 		sortBy?: SortBy;
 		groupBy?: string;
 		pageSize?: number;

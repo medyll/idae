@@ -5,6 +5,7 @@ Internal component, not exported.
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
+	import type { Where } from '$lib/types/machine-model.js';
 
 	let {
 		collection,
@@ -12,7 +13,7 @@ Internal component, not exported.
 		openCard,
 	}: {
 		collection: string;
-		where?: Record<string, unknown>;
+		where?: Where<COL>;
 		openCard: (record: COL) => void;
 	} = $props();
 
