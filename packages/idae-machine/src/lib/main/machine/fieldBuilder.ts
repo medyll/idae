@@ -1,6 +1,6 @@
-import type { MachineFieldDef, ImageFieldDef } from '$lib/types/machine-model.js';
+import type { MachineFieldDef, ImageFieldDef, InputSize } from '$lib/types/machine-model.js';
 
-type BaseFieldOptions = { required?: boolean; readonly?: boolean; private?: boolean };
+type BaseFieldOptions = { required?: boolean; readonly?: boolean; private?: boolean; inputSize?: InputSize };
 type ImageFieldOptions = Omit<ImageFieldDef, 'type'>;
 
 /**

@@ -15,12 +15,16 @@ export type { PermissionCode };
 // ── Sort type ─────────────────────────────────────────────────────────────────
 export type SortBy = { field: string; direction: 'asc' | 'desc' };
 
+// ── Input size preset ─────────────────────────────────────────────────────────
+export type InputSize = 'xs' | 'sm' | 'md' | 'full';
+
 // ── Field definition ──────────────────────────────────────────────────────────
 interface BaseFieldDef {
-	type:      string;
-	required?: boolean;
-	readonly?: boolean;
-	private?:  boolean;
+	type:        string;
+	required?:   boolean;
+	readonly?:   boolean;
+	private?:    boolean;
+	inputSize?:  InputSize;
 }
 
 export interface ImageFieldDef extends BaseFieldDef {
@@ -162,4 +166,6 @@ export type IDbForge = {
 	maxSize?:    number;
 	multiple?:   boolean;
 	accept?:     string;
+	/** Visual size preset for the input in DataForm grid */
+	inputSize?:  InputSize;
 };

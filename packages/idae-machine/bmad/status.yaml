@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-25T14:35"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S37-01 ship: machine.be getter wired (@medyll/idae-be workspace:*). Add test + export."
-next_command: "bmad-continue"
-next_role: "developer"
-active_role: "developer"
+next_action: "Sprint 37 complete — machine.be + inputSize. 479/479. Ready for next sprint."
+next_command: "bmad sprint"
+next_role: "scrum"
+active_role: "reviewer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -177,8 +177,8 @@ architecture:
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
   - id: 37
-    goal: "machine.be — expose @medyll/idae-be DOM utility via machine singleton"
-    status: in_progress
+    goal: "machine.be + inputSize preset — idae-be DOM utility + field layout sizes"
+    status: completed
     depends_on: [36]
     stories:
       - id: S37-01
@@ -194,15 +194,39 @@ sprints:
           Usage: machine.be('#el').addClass('active'), machine.be(node).styles({ color: 'red' })
       - id: S37-02
         title: "Test machine.be getter + export from index.ts"
-        status: planned
+        status: complete
         effort: XS
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "machineBe.test.ts: 2/2 passed. Full suite: 479/479 (41 files)."
+        test_result: pass
         detail: >
-          machineBe.test.ts: assert machine.be === be (from @medyll/idae-be).
-          Verify machine.be(node) returns Be instance (duck-type check: has .addClass, .on, .styles).
-          Export Be type from src/lib/index.ts if not already present.
+          machineBe.test.ts: machine.be === be (identity check). typeof machine.be === 'function'.
+
+      - id: S37-03
+        title: "inputSize preset — InputSize type + field() builder + IDbForge + getInputDataSet"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "479/479 (41 files). InputSize flows via ...extras spread in MachineParserForge — no parser change needed."
+        test_result: pass
+        detail: >
+          InputSize = 'xs' | 'sm' | 'md' | 'full' added to machine-model.ts.
+          BaseFieldDef + IDbForge extended with inputSize?.
+          fieldBuilder.ts BaseFieldOptions includes inputSize?.
+          getInputDataSet() emits data-inputSize attribute.
+          Usage: field('text', { inputSize: 'half' }) — no, inputSize not 'half'. xs/sm/md/full.
+
+      - id: S37-04
+        title: "FieldDisplay.svelte — input-size-* CSS classes driven by inputSize"
+        status: complete
+        effort: XS
+        tests_executed: true
+        test_output: "svelte-check: 0 errors. Full suite: 479/479."
+        test_result: pass
+        detail: >
+          inputSizeClass = $derived(`input-size-${fieldForge.inputSize}`).
+          Applied on .field-line. CSS: xs→5rem, sm→10rem, md→100%, full→grid-column:1/-1.
+          --field-input-width CSS var on .field-input.
 
   - id: 36
     goal: "Polish & Playwright RBAC — close BACK-05, fix I1 Svelte 5 warnings, implement BL-01 mobile-first auto-seed"

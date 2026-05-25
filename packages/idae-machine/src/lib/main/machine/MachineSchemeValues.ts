@@ -156,13 +156,14 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fieldName: string,
 		data: T
 	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
+		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
 		string
 	> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
-		const fieldType = fieldInfo?.fieldType ?? '';
-		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.machine.collection(this.collectionName).index;
+		const fieldType  = fieldInfo?.fieldType ?? '';
+		const fieldArgs  = fieldInfo?.fieldArgs?.join(' ') ?? '';
+		const inputSize  = fieldInfo?.inputSize ?? '';
+		const indexName  = this.machine.collection(this.collectionName).index;
 
 		return {
 			'data-collection':   this.collectionName,
@@ -171,7 +172,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 				: '',
 			'data-fieldName':    String(fieldName),
 			'data-fieldType':    fieldType,
-			'data-fieldArgs':    fieldArgs
+			'data-fieldArgs':    fieldArgs,
+			'data-inputSize':    inputSize
 		};
 	}
 

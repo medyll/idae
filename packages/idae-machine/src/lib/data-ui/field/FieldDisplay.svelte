@@ -59,6 +59,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     });
 
     const isPrivate      = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
+    const inputSizeClass = $derived(fieldForge?.inputSize ? `input-size-${fieldForge.inputSize}` : '');
     const labelPosition  = $derived(
         typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
     );
@@ -195,7 +196,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
 {#if fieldForge}
     {#if !isPrivate}
-        <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition}">
+        <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
             <span class="field-label">{fieldName}</span>
             <div class="field-input" {...inputDataset}>
                 {#if mode === 'show'}
@@ -222,6 +223,13 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         grid-template-columns: subgrid;
         grid-gap: inherit;
     }
+    /* inputSize presets — control .field-input max-width or grid span */
+    .field-line.input-size-xs  { --field-input-width: 5rem; }
+    .field-line.input-size-sm  { --field-input-width: 10rem; }
+    .field-line.input-size-md  { --field-input-width: 100%; }
+    .field-line.input-size-full { grid-column: 1 / -1; }
+
+    .field-input { width: var(--field-input-width, 100%); }
     .field-label {
         font-weight: bold;
     }
