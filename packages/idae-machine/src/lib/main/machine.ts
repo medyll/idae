@@ -419,12 +419,20 @@ export class Machine {
 	}
 
 	/**
-	 * Delete the client-side IndexedDB database and reload the page.
-	 * Use with DevResetPanel — irreversible.
+	 * Pre-fetch specific collections into IDB before UI renders.
+	 * Use for schema-critical collections (e.g. 'appscheme') that must be present
+	 * before component mount. Data collections remain on-demand.
 	 */
+	async warmup(collections?: string[]): Promise<void> {
+		if (!this._qoolie) return;
+		await (this._qoolie as any).hydrateAll?.(collections);
+	}
+
 	async resetClientData(): Promise<void> {
 		this.destroy();
 		await deleteIdbDatabase(this._dbName);
+		const { clearSchemaCache } = await import('$lib/main/machineSchemaCache.js');
+		await clearSchemaCache();
 		window.location.reload();
 	}
 

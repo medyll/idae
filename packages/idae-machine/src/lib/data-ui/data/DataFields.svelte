@@ -67,7 +67,11 @@ Iterates a record's fields and renders FieldDisplay for each.
 				{#each groupFields as { key: fieldName } (fieldName)}
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 						<div class="field">
-							<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+							{#if mode === 'show'}
+								<FieldDisplay {collection} {fieldName} {mode} {data} />
+							{:else}
+								<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+							{/if}
 						</div>
 					{/if}
 				{/each}
@@ -80,7 +84,11 @@ Iterates a record's fields and renders FieldDisplay for each.
 			{#each fieldNames as fieldName (fieldName)}
 				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 					<div class="field">
-						<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+						{#if mode === 'show'}
+							<FieldDisplay {collection} {fieldName} {mode} {data} />
+						{:else}
+							<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+						{/if}
 					</div>
 				{/if}
 			{/each}

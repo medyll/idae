@@ -15,8 +15,7 @@ export class IdaeApiDeliverer implements IDeliverer {
    */
   async fetchAll(collection: string): Promise<any[]> {
     const col = this.client.collection(collection);
-    // The collection client should have .where() — call it with no params to get all records
-    const result = await col.where();
+    const result = await col.where({ limit: 0 } as any);
     // Normalize both direct array and { data: [] } wrappers
     if (Array.isArray(result)) return result;
     if (result && typeof result === 'object' && Array.isArray((result as any).data)) {

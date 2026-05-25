@@ -96,4 +96,13 @@ export class HydrationController {
 		await this.pull(collectionName);
 		this.hydrated.add(collectionName);
 	}
+
+	/**
+	 * Pull all registered collections in parallel and await completion.
+	 * Use case: warmup after IDB reset — block UI until data is available.
+	 */
+	async hydrateAll(names?: string[]): Promise<void> {
+		const targets = names ?? [...this.collections.keys()];
+		await Promise.allSettled(targets.map((name) => this.revalidate(name)));
+	}
 }

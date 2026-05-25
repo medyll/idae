@@ -70,9 +70,30 @@ Consumers can override via the item snippet.
 	const effectiveSort = $derived(sortBy ?? defaultSort);
 	const presentationFields = $derived(
 		collLogic?.template?.presentation
-			? (collLogic.template.presentation as string).split(' ').filter(Boolean)
+			? (collLogic.template.presentation as string).split(/\s+/).filter(Boolean)
 			: undefined
 	);
+
+	function getByPath(obj: unknown, path: string): unknown {
+		if (obj == null) return undefined;
+		let cur: any = obj;
+		for (const seg of path.split('.')) {
+			if (cur == null) return undefined;
+			cur = cur[seg];
+		}
+		return cur;
+	}
+
+	function renderPresentation(record: Record<string, unknown>): string {
+		if (!presentationFields?.length) return '';
+		return presentationFields
+			.map(tok => {
+				const v = getByPath(record, tok);
+				return v == null ? '' : String(v);
+			})
+			.filter(Boolean)
+			.join(' ');
+	}
 
 	const rawItems = $derived.by(() => {
 		if (!store?.items) return [] as COL[];
@@ -143,8 +164,10 @@ Consumers can override via the item snippet.
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{#if itemSnippet}
 						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+					{:else if presentationFields?.length}
+						<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 					{:else}
-						<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" showFields={presentationFields} /></li>
+						<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" /></li>
 					{/if}
 				{/each}
 			</ul>
@@ -155,8 +178,10 @@ Consumers can override via the item snippet.
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
 			{#if itemSnippet}
 				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
+			{:else if presentationFields?.length}
+				<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 			{:else}
-				<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" showFields={presentationFields} /></li>
+				<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" /></li>
 			{/if}
 		{/each}
 		{#if !paginatedItems.length}

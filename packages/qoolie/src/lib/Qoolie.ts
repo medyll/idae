@@ -194,6 +194,15 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 	}
 
 	/**
+	 * Pull all (or named) collections from server in parallel and await completion.
+	 * Use after IDB reset to block UI until data is available.
+	 */
+	async hydrateAll(names?: string[]): Promise<void> {
+		if (!this.hydrationController) return;
+		await this.hydrationController.hydrateAll(names);
+	}
+
+	/**
 	 * Collection accessor - dynamic proxy
 	 */
 	get collection(): { [K in keyof T]: QoolieCollection<T[K]> } {

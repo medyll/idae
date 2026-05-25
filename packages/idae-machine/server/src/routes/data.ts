@@ -28,11 +28,37 @@ async function getCollectionModel(table: string) {
 }
 
 /**
+ * Decode idae-api's encoded params envelope: ?encoded=true&params=<urlencoded JSON>.
+ * Returns a flat record merging top-level req.query with decoded params (params win).
+ */
+function decodeQuery(req: Request): Record<string, unknown> {
+	const merged: Record<string, unknown> = { ...(req.query as Record<string, unknown>) };
+	const raw = req.query.params;
+	if (raw == null) return merged;
+	try {
+		let decoded: unknown = raw;
+		if (typeof raw === 'string') {
+			const dec = decodeURIComponent(raw);
+			decoded = JSON.parse(dec);
+		}
+		if (decoded && typeof decoded === 'object') {
+			Object.assign(merged, decoded as Record<string, unknown>);
+		}
+	} catch {
+		/* malformed envelope — fall back to top-level query */
+	}
+	return merged;
+}
+
+/**
  * Parse pagination params
  */
 function parsePagination(req: Request): { page: number; limit: number; skip: number } {
-	const page = Math.max(1, parseInt(req.query.page as string) || 1);
-	const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 20));
+	const q = decodeQuery(req);
+	const rawLimit = parseInt(q.limit as string);
+	if (rawLimit === 0) return { page: 1, limit: 0, skip: 0 };
+	const page = Math.max(1, parseInt(q.page as string) || 1);
+	const limit = Math.min(1000, Math.max(1, rawLimit || 20));
 	const skip = (page - 1) * limit;
 
 	return { page, limit, skip };
@@ -42,8 +68,9 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
  * Parse sorting params
  */
 function parseSorting(req: Request): Record<string, SortOrder> | undefined {
-	const sort = req.query.sort as string;
-	const order = req.query.order as string;
+	const q = decodeQuery(req);
+	const sort = q.sort as string;
+	const order = q.order as string;
 
 	if (!sort) return undefined;
 	if (!validateTableName(sort)) return undefined;
@@ -57,10 +84,11 @@ function parseSorting(req: Request): Record<string, SortOrder> | undefined {
  */
 function parseFilters(req: Request): Record<string, unknown> {
 	const filters: Record<string, unknown> = {};
+	const q = decodeQuery(req);
 
 	// Parse filter[field]=value format
-	if (req.query.filter && typeof req.query.filter === 'object') {
-		for (const [key, value] of Object.entries(req.query.filter)) {
+	if (q.filter && typeof q.filter === 'object') {
+		for (const [key, value] of Object.entries(q.filter as Record<string, unknown>)) {
 			if (validateTableName(key)) {
 				filters[key] = value;
 			}
@@ -104,12 +132,10 @@ export async function listRecords(req: Request, res: Response): Promise<void> {
 		// Get total count
 		const total = await Model.countDocuments(activeFilters as FilterQuery<any>);
 
-		// Get paginated data
-		const data = await Model.find(activeFilters as FilterQuery<any>)
-			.sort(sort)
-			.skip(skip)
-			.limit(limit)
-			.lean();
+		// Get paginated data — limit=0 means no limit (used by sync)
+		const query = Model.find(activeFilters as FilterQuery<any>).sort(sort).skip(skip);
+		if (limit > 0) query.limit(limit);
+		const data = await query.lean();
 
 		res.json({
 			data,

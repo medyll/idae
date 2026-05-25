@@ -46,7 +46,10 @@ export class IdaeApiClient {
 				}
 				if (!baseUrl) return [];
 				try {
-					const url = `${baseUrl}/api/data/${name}`;
+					const qs = params && typeof params === 'object' && Object.keys(params).length
+						? `?encoded=true&params=${encodeURIComponent(JSON.stringify(params))}`
+						: '';
+					const url = `${baseUrl}/api/data/${name}${qs}`;
 					const headers: Record<string, string> = {};
 					const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('auth_token') || '' : '');
 					if (authToken) {

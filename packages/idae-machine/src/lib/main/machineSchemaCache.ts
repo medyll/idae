@@ -34,6 +34,15 @@ export async function readSchemaCache(url: string): Promise<unknown | null> {
 	}
 }
 
+export async function clearSchemaCache(): Promise<void> {
+	await new Promise<void>((resolve) => {
+		const req = indexedDB.deleteDatabase(DB_NAME);
+		req.onsuccess = () => resolve();
+		req.onerror   = () => resolve(); // non-fatal
+		req.onblocked = () => resolve();
+	});
+}
+
 export async function writeSchemaCache(url: string, data: unknown): Promise<void> {
 	try {
 		const db    = await openCacheDb();

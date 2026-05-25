@@ -23,9 +23,7 @@ Composes existing store API + InputBoolean. No custom field logic.
 
 	const collections = $derived.by(() => {
 		const all = machine.logic?.collections?.() ?? [];
-		return all
-			.map(c => c.name as string)
-			.filter(n => !n.startsWith('appscheme') && !n.startsWith('appuser_session') && !n.startsWith('appuser_audit'));
+		return all.map(c => c.name as string);
 	});
 
 	const groupStore = machine.store('appuser_group');

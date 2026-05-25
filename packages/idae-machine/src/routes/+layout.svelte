@@ -2,6 +2,7 @@
 	import "../app.css";
 	import { machine } from '$lib/main/machine.js';
 	import { App } from '$lib/shell/layout/index.js';
+	import DataList from '$lib/data-ui/data/DataList.svelte';
 
 	const apiUrl = (import.meta.env.PUBLIC_API_URL as string | undefined) ?? 'http://localhost:7842';
 	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
@@ -43,6 +44,9 @@
 		if (typeof window !== 'undefined') {
 			(window as any).__machine = machine;
 		}
+
+		// Ensure schema descriptor is in IDB before rendering — collection list needs it.
+		await machine.warmup(['appscheme']);
 	}
 </script>
 
