@@ -2,6 +2,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
 import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import { EventDataClientInstance } from '@medyll/idae-socket';
+import { be as _be, type Be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
@@ -482,6 +483,11 @@ export class Machine {
 	/** Access to the component registry singleton. */
 	get componentRegistry() {
 		return componentRegistry;
+	}
+
+	/** DOM manipulation utility — wraps @medyll/idae-be. Usage: machine.be('#el').addClass('active') */
+	get be(): typeof _be {
+		return _be;
 	}
 
 	/**

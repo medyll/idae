@@ -7,13 +7,13 @@
 ![Svelte 5](https://img.shields.io/badge/svelte-5-ff3e00)
 
 > Declare a schema once → reactive CRUD UI, validation, FK relations, offline-first sync, real-time WebSocket updates, RBAC permissions, and frame-based navigation.  
-> Central package of the `/idae` monorepo. Successor of `idae-legacy` (PHP/2015).
+> Central package of the `/idae` monorepo.
 
 ---
 
 ## What's new in v2.0
 
-- **Schema-from-server** — `machine.start()` auto-fetches schema from your Express/MongoDB server when `databaseHost` is set. No local model needed.
+- **`machine.boot()`** — Single async entry point: resolves schema (server cache-first SWR or local), detects IDB drift, creates stores, and hydrates. No partial render, no reactivity races.
 - **Unified Explorer** — Single `Explorer` component with four modes: `list`, `table`, `card`, `actions`. Driven by `_views` registry from MongoDB.
 - **Frame-based navigation** — Multi-window, tab-like UI with `machine.loadFrame()`, URL-driven state, and a reactive `TaskBar`.
 - **RBAC Matrix UI** — Visual grant editor to assign CRUDL permissions by group and collection.
@@ -83,7 +83,7 @@ import { machine } from '@medyll/idae-machine';
 
 // Fetches schema from server, caches in IDB, starts machine.
 // Stale-while-revalidate: serves cache immediately, refreshes in background.
-machine.init({
+await machine.boot({
 	org: 'myapp',
 	domain: 'machine',
 	version: 1,
@@ -93,8 +93,6 @@ machine.init({
 		intervalMs: 5000
 	}
 });
-
-await machine.start(); // async: fetches schema + hydrates IDB stores
 ```
 
 ### 3. Initialize (static model — fallback)
@@ -103,23 +101,22 @@ await machine.start(); // async: fetches schema + hydrates IDB stores
 import { machine } from '@medyll/idae-machine';
 import { myModel } from './myModel';
 
-machine.init({ org: 'myapp', domain: 'machine', version: 1, model: myModel });
-machine.start();
+await machine.boot({ org: 'myapp', domain: 'machine', version: 1, business: myModel });
 ```
 
 ### 4. Use in Svelte components
 
 ```svelte
 <script>
-	import { Explorer, AppShell, TaskBar } from '@medyll/idae-machine';
+	import { Explorer, TemplateShell, Navigation } from '@medyll/idae-machine';
 	import { machine } from '@medyll/idae-machine';
 </script>
 
-<TaskBar />
-<AppShell>
+<Navigation />
+<TemplateShell>
 	<!-- Explorer with mode switcher: list / table / card / actions -->
 	<Explorer collection="users" mode="list" />
-</AppShell>
+</TemplateShell>
 
 <!-- Or open a record in a frame -->
 <button onclick={() => machine.loadFrame('card', 'users', userId)}>
@@ -135,14 +132,15 @@ machine.start();
 import { machine, Machine } from '@medyll/idae-machine';
 ```
 
-### init options
+### Boot options
 
 ```ts
-machine.init({
-	org: 'myorg', // prefixes all DB names
-	domain: 'machine', // IDB DB = org_domain
-	version: 1, // IDB schema version
-	model: myModel, // MachineModel (optional if using fetchSchema)
+await machine.boot({
+	org: 'myorg',         // prefixes all DB names
+	domain: 'machine',    // IDB DB = org_domain
+	version: 1,           // IDB schema version
+	core: systemModel,    // system/framework collections (optional)
+	business: myModel,    // application collections (optional if using server schema)
 	sync: {
 		// optional: Qoolie sync config
 		databaseHost: 'http://localhost:3000',
@@ -150,8 +148,13 @@ machine.init({
 		intervalMs: 5000,
 		token: 'jwt...'
 	},
-	// sync: false,                 // disable sync entirely
+	// sync: false,        // disable sync entirely
 	stateEngine: 'svelte5', // or 'stator' (default: 'svelte5')
+	socket: {
+		url: 'ws://localhost:3000',
+		autoConnect: true
+	},
+	seed: { users: [...] }, // seed data for mobile-first mode
 	hooks: {
 		onSyncEvent: (event) => {
 			/* delivered, fallback, dead-letter, etc. */
@@ -161,28 +164,26 @@ machine.init({
 		}
 	}
 });
-
-// Async start: fetches schema from server if databaseHost is set,
-// detects IDB drift, creates stores, and hydrates data.
-await machine.start();
 ```
 
 ### Data access
 
 ```ts
-// Shorthand accessor → QoolieCollection
+// Reactive store accessor — returns { items } via Svelte 5 runes
+// Must be called inside a Svelte component
+const { items } = machine.store('users');
+const { items } = machine.store('users', { active: { eq: true } });
+
+// Direct collection accessor — returns raw QoolieCollection for CRUD
 machine.collection('users').getAll();
 machine.collection('users').where({ active: { eq: true } });
 machine.collection('users').get(id);
-machine.collection('users').create({ name: 'Alice', email: 'alice@x.com' });
-machine.collection('users').update(id, { name: 'Bob' });
-machine.collection('users').delete(id); // soft delete by default
+await machine.collection('users').create({ name: 'Alice', email: 'alice@x.com' });
+await machine.collection('users').update(id, { name: 'Bob' });
+await machine.collection('users').delete(id); // soft delete by default
 machine.collection('users').count({ active: { eq: true } });
-machine.collection('users').updateWhere({ active: false }, { active: true });
-machine.collection('users').deleteWhere({ active: false });
-
-// Bracket notation (same result)
-machine.store('users').items;
+await machine.collection('users').updateWhere({ active: false }, { active: true });
+await machine.collection('users').deleteWhere({ active: false });
 ```
 
 ### Schema introspection
@@ -205,21 +206,44 @@ await scheme.validator.validateField('email', value);
 
 ```ts
 // Open a collection or record in a frame (tab-like window)
-machine.loadFrame('explorer', 'users'); // collection explorer
-machine.loadFrame('card', 'users', userId); // edit record
-machine.loadFrame('rbac.matrix'); // RBAC matrix UI
+machine.loadFrame('explorer', 'users');       // collection explorer
+machine.loadFrame('card', 'users', userId);   // edit record
 
-// Frame controls via MachineFrameManager singleton
-import { machineFrameManager } from '@medyll/idae-machine';
-machineFrameManager.show(frameId);
-machineFrameManager.hide(frameId);
-machineFrameManager.close(frameId);
+// Frame controls via machine.framer singleton
+machine.framer.show(frameId);
+machine.framer.hide(frameId);
+machine.framer.close(frameId);
+```
+
+### Router
+
+```ts
+// Lazy-initialized schema router (hash URL dispatcher + auth guard)
+machine.router.push('/+main/explorer/users');
+machine.initRouter({ guard: (route) => machine.rights.canAccess(route.collection) });
+```
+
+### Rights / RBAC
+
+```ts
+// Access rights manager — checkAccess, setCurrentUser, setPolicies, etc.
+machine.rights.setCurrentUser(userId, groupId);
+machine.rights.checkAccess(collection, 'create');
+machine.rights.loadPoliciesFromModel(model);
+```
+
+### Socket (real-time)
+
+```ts
+// Available after boot() when socket options are provided
+machine.socket?.connect();
+machine.socket?.on('users:create', (data) => console.log(data));
 ```
 
 ### Sync control
 
 ```ts
-// Only available when sync is enabled in init()
+// Only available when sync is enabled in boot() options
 await machine.sync.pause();
 await machine.sync.resume();
 await machine.sync.flush();
@@ -239,6 +263,8 @@ await machine.sync.dlq.clear();
 
 ```ts
 machine.destroy(); // stops sync adapter, releases Qoolie resources
+
+await machine.resetClientData(); // delete IDB and reload page (dev helper)
 
 // Multiple instances
 const sub = machine.createInstance('reporting', 'reports-db', 1, reportsModel);
@@ -289,14 +315,12 @@ fields: {
 |-----------|-------------|
 | `Explorer` | Unified component — modes: `list`, `table`, `card`, `actions`. Props: `collection`, `mode`, `where`, `sortBy`, `groupBy`, `pageSize` |
 | `DataList` | Data provider + renderer. Snippets: `item`, `groupHeader`, `empty`, `footer` |
-| `SchemeList` | Renders collections from schema for navigation |
 
 ### Card (record level)
 
 | Component | Description |
 |-----------|-------------|
-| `CardForm` | Form engine (`collection`, `mode`, `dataId?`, `onsubmit?`) |
-| `DataForm` | Low-level form renderer used by CardForm |
+| `DataForm` | Form engine (`collection`, `mode`, `dataId?`, `onsubmit?`) |
 | `DataFields` | Field list renderer |
 | `DataFk` | Forward FK viewer |
 | `DataRfk` | Reverse FK viewer |
@@ -306,24 +330,33 @@ fields: {
 | Component | Description |
 |-----------|-------------|
 | `FieldDisplay` | Auto-dispatches to Input atoms by fieldType |
+| `FieldEditor` | Editable field wrapper |
 | `InputBoolean` | `boolean` |
 | `InputEmail` | `email` |
 | `InputCurrency` | `currency` |
 | `InputSelect` | `fk-*` (uses `_views.fkLabelView` for labels) |
 | `InputTextarea` | `*area*` |
-| `InputImage` | `image` (upload + preset selection) |
 
 ### Layout & navigation
 
 | Component | Description |
 |-----------|-------------|
-| `AppShell` | Root layout with navbar/sidebar/content snippets |
-| `TaskBar` | Reactive list of open frames (toggle/close) |
-| `Frame` | Frame mount/unmount wrapper |
-| `Navigation` | Schema-driven navigation |
+| `TemplateShell` | Root layout with navbar/sidebar/content snippets |
+| `CollectionNav` | Schema-driven collection navigation |
+| `Navigation` | Generic navigation component |
 | `Breadcrumb` | Dynamic path breadcrumb |
+| `Pane` | Layout pane container |
+| `PaneRight` | Right-side layout pane |
+
+### Fragments
+
+| Component | Description |
+|-----------|-------------|
 | `Confirm` | Confirmation dialog |
-| `RbacMatrix` | RBAC grant editor (group × collection × CRUDL) |
+| `Frame` | Frame mount/unmount wrapper |
+| `InfoLine` | Inline info display |
+| `Selector` | Selection control |
+| `Skeleton` | Loading skeleton |
 
 ---
 
@@ -331,13 +364,18 @@ fields: {
 
 ```
 Machine
-  ├── machine.init({ org, domain, version, model, sync, stateEngine, hooks })
-  ├── machine.start()              → async: fetchSchema + drift detect + createStores + hydrate
+  ├── machine.boot({ org, domain, version, core, business, sync, stateEngine, hooks })
+  │     → resolve schema (server SWR or local) → drift detect → createStores → hydrate
   │
   ├── machine.collection(name)     → QoolieCollection (CRUD + reactive)
   ├── machine.store(name)          → reactive { items } via Svelte 5 runes
   ├── machine.sync                 → SyncController (pause/resume/flush/dlq)
+  ├── machine.rights               → RBAC manager
+  ├── machine.socket               → EventDataClientInstance (real-time)
+  ├── machine.router               → MachineRouter (hash URL dispatcher)
+  ├── machine.framer               → MachineFrameManager (open/close/show/hide)
   ├── machine.destroy()            → cleanup Qoolie + stop sync
+  ├── machine.resetClientData()    → delete IDB + reload page
   │
   ├── machine.logic                → MachineDb (schema introspection)
   │     └── MachineScheme(collection)
@@ -347,15 +385,48 @@ Machine
   │           ├── parseReverseFks()      → reverse FK map
   │           └── validator              → MachineSchemeValidate
   │
-  ├── machine.router               → SchemaRouter (hash URL dispatcher + auth guard)
-  │
-  └── machine.loadFrame(type, collection, id?, vars?)  → MachineFrameManager
-        └── TaskBar (reactive open frames)
+  └── machine.loadFrame(modulePath, collection, id?, vars?, zone?)  → MachineFrameManager
 ```
 
 **Data layer:** Qoolie → `@medyll/idae-idbql` (IndexedDB) + optional `@medyll/idae-sync` (outbox, retry, conflict resolution)  
 **Real-time:** Socket.IO broadcasts CRUD events → `RealtimeClient` → Svelte 5 reactivity  
 **Server:** Express + MongoDB multi-tenant routing (`{org}_machine_app`, `{org}_machine_user`, `{org}_machine_base`)
+
+---
+
+## Additional APIs
+
+### MachineApi — HTTP client
+
+```ts
+import { MachineApi, createMachineApi } from '@medyll/idae-machine';
+
+const api = createMachineApi({ baseURL: 'http://localhost:3000', token: 'jwt...' });
+const schemes = await api.getSchemes();
+const users = await api.getData('users', { page: 1, limit: 20 });
+```
+
+### RealtimeClient — WebSocket
+
+```ts
+import { RealtimeClient, createRealtimeClient } from '@medyll/idae-machine';
+
+const rt = createRealtimeClient({ url: 'ws://localhost:3000' });
+rt.on('users:create', (data) => console.log(data));
+```
+
+### MachineMultiBase — multi-database routing
+
+```ts
+import { MachineMultiBase } from '@medyll/idae-machine';
+```
+
+### Seed helpers
+
+```ts
+import { seed, seedIfEmpty } from '@medyll/idae-machine';
+await seedIfEmpty({ users: [{ name: 'Admin' }] });
+```
 
 ---
 
@@ -401,10 +472,10 @@ await machineServer.stop();
 
 ```bash
 # Deploy schema + seed users (admin/user/viewer) into MongoDB
-tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
+npx tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
 
 # Example
-tsx server/src/bootstrap/bootstrap-demo.ts demo mongodb://localhost:27017
+npx tsx server/src/bootstrap/bootstrap-demo.ts demo mongodb://localhost:27017
 ```
 
 Default seeded users (`{org}_machine_user`):
@@ -430,8 +501,8 @@ JWT_SECRET=change-me
 
 ```bash
 pnpm run dev      # SvelteKit dev server
-pnpm run test     # vitest (client 470 + server 79 = 549 tests)
-pnpm run check    # TypeScript check
+pnpm run test     # vitest (client + server)
+pnpm run check    # TypeScript + Svelte check
 pnpm run build    # svelte-package
 ```
 

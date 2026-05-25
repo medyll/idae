@@ -10,10 +10,10 @@ progress: 100
 last_updated: "2026-05-25T14:35"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Audit complete — codebase health 9.0/10. Ready for next sprint planning."
-next_command: "bmad sprint"
-next_role: "scrum"
-active_role: "reviewer"
+next_action: "S37-01 ship: machine.be getter wired (@medyll/idae-be workspace:*). Add test + export."
+next_command: "bmad-continue"
+next_role: "developer"
+active_role: "developer"
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -32,6 +32,10 @@ dependencies:
   - project: "idae-idbql"
     status: "satisfied"
     reason: "IndexedDB layer — in dependencies"
+    satisfied: true
+  - project: "idae-be"
+    status: "satisfied"
+    reason: "DOM manipulation utility — added workspace:* in dependencies"
     satisfied: true
 
 # ── Phase Tracking ────────────────────────────────────────────────────────────
@@ -172,6 +176,34 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 37
+    goal: "machine.be — expose @medyll/idae-be DOM utility via machine singleton"
+    status: in_progress
+    depends_on: [36]
+    stories:
+      - id: S37-01
+        title: "Add @medyll/idae-be workspace:* to dependencies + machine.be getter"
+        status: complete
+        effort: XS
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+        detail: >
+          package.json: @medyll/idae-be workspace:* added to dependencies.
+          machine.ts: import { be as _be } from '@medyll/idae-be'; get be() { return _be; }
+          Usage: machine.be('#el').addClass('active'), machine.be(node).styles({ color: 'red' })
+      - id: S37-02
+        title: "Test machine.be getter + export from index.ts"
+        status: planned
+        effort: XS
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+        detail: >
+          machineBe.test.ts: assert machine.be === be (from @medyll/idae-be).
+          Verify machine.be(node) returns Be instance (duck-type check: has .addClass, .on, .styles).
+          Export Be type from src/lib/index.ts if not already present.
+
   - id: 36
     goal: "Polish & Playwright RBAC — close BACK-05, fix I1 Svelte 5 warnings, implement BL-01 mobile-first auto-seed"
     status: completed
