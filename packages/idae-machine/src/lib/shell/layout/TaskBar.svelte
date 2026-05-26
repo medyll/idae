@@ -7,7 +7,7 @@
 	let openFrames = $derived(machine.framer.openFrames);
 
 	function openExplorer() {
-		machine.loadFrame('explorer', 'vehicle');
+		machine.framer.loadFrame('explorer', 'vehicle');
 	}
 </script>
 

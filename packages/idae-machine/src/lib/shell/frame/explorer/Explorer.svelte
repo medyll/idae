@@ -62,7 +62,7 @@ Unified collection browser — list/table/card/actions modes.
 
 	function openCard(record: COL): void {
 		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
-		machine.loadFrame('explorer', collection, String(id), { mode: 'card' });
+		machine.framer.loadFrame('explorer', collection, String(id), { mode: 'card' });
 	}
 </script>
 
