@@ -49,7 +49,7 @@ export const appModelDeclaration = {
 			},
 			fks: {},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -75,7 +75,7 @@ export const appModelDeclaration = {
 				appscheme_type: { code: 'appscheme_type', order: 0, multiple: false, required: false },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -100,7 +100,7 @@ export const appModelDeclaration = {
 				appscheme_field_group: { code: 'appscheme_field_group', order: 0, multiple: false, required: false },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -120,7 +120,7 @@ export const appModelDeclaration = {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -140,7 +140,7 @@ export const appModelDeclaration = {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -183,7 +183,7 @@ export const appModelDeclaration = {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 
@@ -204,7 +204,7 @@ export const appModelDeclaration = {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
-				presentation: 'name code',
+				presentation: 'name',
 			},
 		},
 

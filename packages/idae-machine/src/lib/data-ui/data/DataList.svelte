@@ -139,8 +139,14 @@ Consumers can override via the item snippet.
 	});
 
 	const chunkSize = $derived(pageSize > 0 ? pageSize : 20);
-	let visibleCount = $state(20);
+	let visibleCount = $state(pageSize > 0 ? pageSize : 20);
 	let sentinel = $state<HTMLElement | null>(null);
+
+	$effect(() => {
+		void collection;
+		void where;
+		visibleCount = chunkSize;
+	});
 
 	$effect(() => {
 		if (!infiniteScroll || !sentinel) return;
@@ -233,47 +239,29 @@ Consumers can override via the item snippet.
 			{/if}
 		{/if}
 	</ul>
-		{#if infiniteScroll && visibleCount < sortedItems.length}
-			<li bind:this={sentinel} class="data-list-sentinel" aria-hidden="true"></li>
-		{/if}
+{/if}
+{#if infiniteScroll && visibleCount < sortedItems.length}
+	<div bind:this={sentinel} class="data-list-sentinel" aria-hidden="true"></div>
 {/if}
 {#if footerSnippet}
 	{@render footerSnippet({ pagination })}
 {/if}
 
 <style>
-
-.data-list-sentinel {
-	height: 1px;
-	list-style: none;
-	pointer-events: none;
-}
-
-.explorer-toolbar {
-		display: flex;
-		align-items: center;
-		padding: 4px 0 8px;
-		border-bottom: var(--border-width) solid var(--color-border);
-		margin-bottom: var(--gutter-sm);
+	:global(.data-list-sentinel) {
+		height: 1px;
+		list-style: none;
+		pointer-events: none;
 	}
-
-	.mode-switcher {
-		display: flex;
-		gap: 2px;
-	}
-	.error-message {
-		color: red;
-		padding: 1rem;
-	}
-	.data-list-group {
+	:global(.data-list-group) {
 		margin-bottom: var(--gutter-md);
 	}
-	.data-list-empty {
+	:global(.data-list-empty) {
 		color: var(--color-text-muted, #888);
 		list-style: none;
 		padding: var(--gutter-sm, 0.5rem) 0;
 	}
-	.data-list-link {
+	:global(.data-list-link) {
 		width: 100%;
 		text-align: left;
 		background: transparent;
@@ -282,31 +270,6 @@ Consumers can override via the item snippet.
 		cursor: pointer;
 		border-radius: var(--radius-sm);
 	}
-	.data-list-link:hover { background: var(--color-hover); }
-
-	.data-toolbar {
-		display: flex;
-		align-items: center;
-		padding: 4px 0 8px;
-		border-bottom: var(--border-width) solid var(--color-border);
-		margin-bottom: var(--gutter-sm);
-	}
-
-	.mode-switcher { display: flex; gap: 2px; }
-
-	.mode-btn {
-		padding: 3px 10px;
-		border: 1px solid var(--color-border);
-		background: transparent;
-		color: var(--color-text-muted);
-		cursor: pointer;
-		font-size: var(--text-xs);
-		border-radius: var(--radius-sm);
-	}
-	.mode-btn.active {
-		background: var(--color-primary, #4f46e5);
-		color: #fff;
-		border-color: transparent;
-	}
-	.mode-btn:hover:not(.active) { background: var(--color-hover); }
+	:global(.data-list-link:hover) { background: var(--color-hover); }
+	:global(.error-message) { color: red; padding: 1rem; }
 </style>

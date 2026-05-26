@@ -68,7 +68,7 @@ Unified collection browser — list/table/card/actions modes.
 
 <TemplateShell>
 	{#snippet leftbar()}
-	<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" />
+		<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" />
 	{/snippet}
 	{#snippet children()}
 		{#if currentMode === 'card'}
