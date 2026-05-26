@@ -10,6 +10,7 @@ import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
+import { buildLoadInUrl } from '$lib/main/frame/frameUrl.js';
 import { type MachineModel } from '$lib/types/machine-model.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
@@ -454,16 +455,11 @@ export class Machine {
 	private _buildRouter(config: MachineRouterConfig = {}): MachineRouter {
 		const r = new MachineRouter(config);
 		r.init();
+		this._frameManager.setRouter((url) => r.push(url));
 		return r;
 	}
 
-	/**
-	 * Navigate to load content into a zone. Zone defaults to 'main'.
-	 * Pushes a hash URL — idae-router catches it, parses, and delegates to
-	 * machineFrameManager which loads into an existing Frame or mounts a new one.
-	 *
-	 * URL is the single source of truth: back/forward, refresh, deep links all work by construction.
-	 */
+	/** @deprecated Use machine.framer.loadFrame() */
 	loadFrame(
 		modulePath: string,
 		collection: string,
@@ -471,11 +467,7 @@ export class Machine {
 		vars?: Record<string, string>,
 		zone = 'main'
 	): void {
-		const varsStr = vars && Object.keys(vars).length > 0
-			? new URLSearchParams(vars).toString()
-			: undefined;
-		const url = buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr);
-		this.router.push(url);
+		this._frameManager.loadFrame(modulePath, collection, collectionId, vars, zone);
 	}
 
 	/** Access to the frame manager singleton. */
@@ -534,18 +526,7 @@ export class Machine {
 	}
 }
 
-export function buildLoadInUrl(
-	modulePath: string,
-	targetId: string,
-	collection: string,
-	collectionId?: string,
-	vars?: string
-): string {
-	let url = `/+${targetId}/${modulePath}/${collection}`;
-	if (collectionId) url += `/${collectionId}`;
-	if (vars) url += `?${vars}`;
-	return url;
-}
+export { buildLoadInUrl } from '$lib/main/frame/frameUrl.js';
 
 const _g = globalThis as unknown as { __idae_machine?: Machine };
 export const machine: Machine = _g.__idae_machine ?? (_g.__idae_machine = new Machine());

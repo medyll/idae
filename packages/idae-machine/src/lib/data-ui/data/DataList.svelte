@@ -45,6 +45,7 @@ Consumers can override via the item snippet.
 		groupClass,
 		link,
 		linkVars,
+		linkCollectionField,
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
@@ -61,6 +62,8 @@ Consumers can override via the item snippet.
 		groupClass?: string;
 		link?: string;
 		linkVars?: Record<string, any>;
+		/** Field of the record to use as collection name for navigation (e.g. "code" for appscheme). */
+		linkCollectionField?: string;
 		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
@@ -70,7 +73,7 @@ Consumers can override via the item snippet.
 
 	const store = $derived(collection ? machine.store(collection) : { items: [] as COL[] });
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
-	const indexField = $derived((collLogic?.template?.index ?? 'id') as string);
+	const indexField = 'id';
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
@@ -96,9 +99,25 @@ Consumers can override via the item snippet.
 
 	function navigate(record: Record<string, unknown>): void {
 		if (!parsedLink) return;
-		const key = String((record as Record<string, unknown>)[indexField] ?? '');
-		if (parsedLink.action === 'loadFrame') {
-			machine.loadFrame(parsedLink.module, key, undefined, linkVars, parsedLink.zone);
+		const { action, module, zone } = parsedLink;
+
+		let navCollection: string;
+		let navId: string | undefined;
+
+		if (linkCollectionField) {
+			// record IS a collection reference — e.g. appscheme with linkCollectionField="code"
+			navCollection = String(record[linkCollectionField] ?? '');
+			navId = undefined;
+		} else {
+			// record IS a data record — navigate to its detail
+			navCollection = collection;
+			navId = String(record[indexField] ?? '');
+		}
+
+		if (action === 'loadFrame') {
+			machine.framer.loadFrame(module, navCollection, navId, linkVars, zone);
+		} else if (action === 'loadIn') {
+			machine.framer.loadIn(zone, module, navCollection, navId, linkVars);
 		}
 	}
 
@@ -248,28 +267,31 @@ Consumers can override via the item snippet.
 {/if}
 
 <style>
-	:global(.data-list-sentinel) {
-		height: 1px;
-		list-style: none;
-		pointer-events: none;
+	@layer components {
+		:global(.data-list-sentinel) {
+			height: 1px;
+			list-style: none;
+			pointer-events: none;
+		}
+		:global(.data-list-group) {
+			margin-bottom: var(--gutter-md);
+		}
+		:global(.data-list-empty) {
+			color: var(--color-text-muted, #888);
+			list-style: none;
+			padding: var(--gutter-sm, 0.5rem) 0;
+		}
+		:global(.data-list-link) {
+			width: 100%;
+			text-align: left;
+			justify-content: flex-start;
+			background: transparent;
+			border: none;
+			padding: 6px 8px;
+			cursor: pointer;
+			border-radius: var(--radius-sm);
+		}
+		:global(.data-list-link:hover) { background: var(--color-hover); }
+		:global(.error-message) { color: red; padding: 1rem; }
 	}
-	:global(.data-list-group) {
-		margin-bottom: var(--gutter-md);
-	}
-	:global(.data-list-empty) {
-		color: var(--color-text-muted, #888);
-		list-style: none;
-		padding: var(--gutter-sm, 0.5rem) 0;
-	}
-	:global(.data-list-link) {
-		width: 100%;
-		text-align: left;
-		background: transparent;
-		border: none;
-		padding: 6px 8px;
-		cursor: pointer;
-		border-radius: var(--radius-sm);
-	}
-	:global(.data-list-link:hover) { background: var(--color-hover); }
-	:global(.error-message) { color: red; padding: 1rem; }
 </style>

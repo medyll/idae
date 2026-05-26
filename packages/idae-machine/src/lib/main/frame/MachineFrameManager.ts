@@ -3,6 +3,7 @@
  * DOM-first: frames auto-register on mount, unregister on unmount.
  */
 import { SvelteMap } from 'svelte/reactivity';
+import { buildLoadInUrl } from './frameUrl.js';
 
 export interface FrameControls {
 	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
@@ -14,6 +15,42 @@ export interface FrameControls {
 
 export class MachineFrameManager {
 	private registry = new SvelteMap<string, FrameControls>();
+	private _pushFn?: (url: string) => void;
+
+	/** Injected by machine at init — enables URL-based navigation from framer. */
+	setRouter(pushFn: (url: string) => void): void {
+		this._pushFn = pushFn;
+	}
+
+	/**
+	 * URL-based navigation — pushes hash URL via router.
+	 * Back/forward, deep links, refresh all work by construction.
+	 */
+	loadFrame(
+		modulePath: string,
+		collection: string,
+		collectionId?: string,
+		vars?: Record<string, string>,
+		zone = 'main'
+	): void {
+		if (!this._pushFn) throw new Error('[FrameManager] router not set — call machine.init() first');
+		const varsStr = vars && Object.keys(vars).length > 0 ? new URLSearchParams(vars).toString() : undefined;
+		this._pushFn(buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr));
+	}
+
+	/**
+	 * URL-based navigation into a specific zone.
+	 * Zone is first param — explicit target.
+	 */
+	loadIn(
+		zone: string,
+		modulePath: string,
+		collection: string,
+		collectionId?: string,
+		vars?: Record<string, string>
+	): void {
+		this.loadFrame(modulePath, collection, collectionId, vars, zone);
+	}
 
 	/**
 	 * Register a frame's controls under a unique frameId.

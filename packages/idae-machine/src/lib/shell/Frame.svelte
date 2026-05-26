@@ -74,5 +74,16 @@
 	<div class="frame-body" id="frame-body-{id}" bind:this={bodyEl}></div>
 </div>
 <style>
-	.frame {height:100%; width:100%; display:block; position:relative;}
+	.frame {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+	.frame-body {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
 </style>

@@ -34,12 +34,13 @@
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
+		max-height: 100vh;
 		overflow: hidden;
 	}
 	.app-content {
 		flex: 1;
-		overflow: auto;
-		padding: 1rem;
+		position: relative;
+		overflow: hidden;
 	}
 	.dev-wrap { position: relative; }
 	.dev-toggle {
