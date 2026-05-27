@@ -84,7 +84,13 @@ Consumers can override via the item snippet.
 	let userMode = $state<'list' | 'table' | 'grid' | null>(null);
 	const currentMode = $derived(userMode ?? modeProp);
 
-	const store = $derived(collection ? machine.store(collection) : { items: [] as COL[] });
+	const store = $derived(
+		collection
+			? where
+				? machine.store(collection, where)
+				: machine.store(collection)
+			: { items: [] as COL[] }
+	);
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
 	const indexField = 'id';
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
@@ -145,6 +151,9 @@ Consumers can override via the item snippet.
 
 	function handleItemClick(record: COL): void {
 		onItemClick?.(record);
+		if (parsedLink) {
+			navigate(record as Record<string, unknown>);
+		}
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
@@ -158,18 +167,7 @@ Consumers can override via the item snippet.
 			.join(' ');
 	}
 
-	const rawItems = $derived.by(() => {
-		if (!store?.items) return [] as COL[];
-		if (where) {
-			return store.items.filter((item) => {
-				for (const [key, val] of Object.entries(where)) {
-					if ((item as Record<string, unknown>)[key] !== val) return false;
-				}
-				return true;
-			}) as COL[];
-		}
-		return store.items as COL[];
-	});
+	const rawItems = $derived(store?.items ? (store.items as COL[]) : ([] as COL[]));
 
 	const sortedItems = $derived.by(() => {
 		if (!rawItems.length) return rawItems;
@@ -281,10 +279,8 @@ Consumers can override via the item snippet.
 						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
 					{:else if parsedLink}
 						<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-					{:else if presentationFields?.length}
-						<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 					{:else}
-						<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" /></li>
+						<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 					{/if}
 				{/each}
 			</ul>
@@ -297,10 +293,8 @@ Consumers can override via the item snippet.
 				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
 			{:else if parsedLink}
 				<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-			{:else if presentationFields?.length}
-				<li class="data-list-presentation">{renderPresentation(record as Record<string, unknown>)}</li>
 			{:else}
-				<li><DataFields collection={collection} data={record as Record<string, unknown>} mode="show" /></li>
+				<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 			{/if}
 		{/each}
 		{#if !paginatedItems.length}

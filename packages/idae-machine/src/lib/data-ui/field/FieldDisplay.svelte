@@ -83,6 +83,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     // Internal value — bidirectional sync (declared before fkLabel which uses it)
     let internalValue = $state<unknown>(undefined);
     let error = $state<string | null>(null);
+    let hasParentValue = $state(false);
 
     const fkStore = $derived(machine.store(fkCollection ?? ''));
     const fkItems  = $derived(fkCollection ? fkStore.items : []);
@@ -100,13 +101,24 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
         const incoming = data?.[fieldName];
-        untrack(() => { internalValue = incoming; });
+        untrack(() => {
+            internalValue = incoming;
+            hasParentValue = true;
+        });
     });
 
-    // child → parent
+    $effect(() => {
+        if (!hasParentValue || !data) return;
+        const key = String(fieldName);
+        if ((data as Record<string, unknown>)[key] === internalValue) return;
+
+        untrack(() => {
+            (data as Record<string, unknown>)[key] = internalValue;
+        });
+    });
+
     function updateValue(val: unknown) {
         internalValue = val;
-        if (data) (data as Record<string, unknown>)[String(fieldName)] = val;
     }
 </script>
 
@@ -156,16 +168,20 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
     {:else if fieldForge?.fieldType === 'email'}
         <InputEmail
-            value={internalValue as string}
+            bind:value={internalValue as string}
             error={error}
             id={String(fieldName)}
-            oninput={(e: Event) => updateValue((e.target as HTMLInputElement).value)}
+            name={String(fieldName)}
+            form={inputForm}
         />
 
     {:else if (fieldForge?.fieldType as string) === 'currency'}
         <InputCurrency
-            value={internalValue as number}
+            bind:value={internalValue as number | string}
             error={error}
+            id={String(fieldName)}
+            name={String(fieldName)}
+            form={inputForm}
         />
 
     {:else if fieldForge?.fieldType?.includes('area')}

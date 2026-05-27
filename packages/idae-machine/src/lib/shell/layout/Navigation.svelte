@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { AppScheme } from '$lib/main/api/types.js';
+	import { machine } from '$lib/main/machine.js';
 
 	let {
 		schemes = [] as AppScheme[],
@@ -10,10 +11,8 @@
 		currentPath?: string;
 	}>();
 
-	// Filter schemes by permission (mock for now)
 	function hasPermission(code: 'C' | 'R' | 'U' | 'D' | 'L', table: string): boolean {
-		// In production, check actual permissions
-		return true;
+		return machine.rights.checkAccess(table, code === 'L' ? 'R' : code);
 	}
 
 	function isActive(path: string): boolean {

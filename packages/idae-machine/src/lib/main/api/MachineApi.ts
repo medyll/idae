@@ -48,12 +48,12 @@ export class MachineApi {
 		options: RequestInit = {}
 	): Promise<T> {
 		const url = `${this.baseUrl}${endpoint}`;
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
 		let lastError: Error | undefined;
 
 		for (let attempt = 0; attempt < this.retries; attempt++) {
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
 			try {
 				const response = await fetch(url, {
 					...options,
@@ -63,8 +63,6 @@ export class MachineApi {
 						...options.headers
 					}
 				});
-
-				clearTimeout(timeoutId);
 
 				if (!response.ok) {
 					throw new MachineApiError(
@@ -87,10 +85,10 @@ export class MachineApi {
 				if (attempt < this.retries - 1) {
 					await this.delay(Math.pow(2, attempt) * 1000);
 				}
+			} finally {
+				clearTimeout(timeoutId);
 			}
 		}
-
-		clearTimeout(timeoutId);
 
 		// All retries exhausted
 		if (lastError instanceof MachineApiError) {

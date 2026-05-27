@@ -40,7 +40,8 @@ export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.sve
 
 // UI — fragments
 export { default as Confirm }  from '$lib/data-ui/fragments/Confirm.svelte';
-export { default as Frame }    from '$lib/data-ui/fragments/Frame.svelte';
+export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
+export { default as Frame }         from '$lib/shell/Frame.svelte';
 export { default as InfoLine } from '$lib/data-ui/fragments/InfoLine.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';

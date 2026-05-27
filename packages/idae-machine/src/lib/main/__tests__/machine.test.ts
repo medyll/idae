@@ -46,6 +46,13 @@ describe('Machine', () => {
 		expect(machine._model).toBe(demoScheme);
 	});
 
+	it('keeps deprecated _model as a live alias of _business', () => {
+		const m = new Machine();
+		m._model = demoScheme;
+		expect(m._business).toBe(demoScheme);
+		expect(m._model).toBe(demoScheme);
+	});
+
 	it('should throw if start is called without dbName', async () => {
 		const m = new Machine();
 		await expect(m.start()).rejects.toThrow('dbName is required');
@@ -80,6 +87,15 @@ describe('Machine', () => {
 		expect(machine.idbql).toBeUndefined();
 		expect(machine.indexedb).toBeUndefined();
 		expect(machine.idbqModel).toBeUndefined();
+	});
+
+	it('exposes a constrained componentRegistry surface', () => {
+		expect(machine.componentRegistry.resolve).toBeTypeOf('function');
+		expect(machine.componentRegistry.register).toBeTypeOf('function');
+		expect(machine.componentRegistry.unregister).toBeTypeOf('function');
+		expect(machine.componentRegistry.has).toBeTypeOf('function');
+		expect(machine.componentRegistry.keys).toBeTypeOf('function');
+		expect('clear' in machine.componentRegistry).toBe(false);
 	});
 
 	// --- S35-00: ADR-02 closure — machine.store() return shape ---

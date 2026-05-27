@@ -11,17 +11,23 @@ Currency input with formatting.
 <script lang="ts">
 	import { untrack } from 'svelte';
 	let {
-		value = '' as number | string,
+		value = $bindable('' as number | string),
 		error = null as string | null,
 		currencySymbol = '$',
 		decimalPlaces = 2,
-		disabled = false
+		disabled = false,
+		id = undefined as string | undefined,
+		name = undefined as string | undefined,
+		form = undefined as string | undefined
 	} = $props<{
 		value?:         number | string;
 		error?:         string | null;
 		currencySymbol?: string;
 		decimalPlaces?:  number;
 		disabled?:       boolean;
+		id?:            string;
+		name?:          string;
+		form?:          string;
 	}>();
 
 	let inputValue = $state<string>('');
@@ -44,15 +50,16 @@ Currency input with formatting.
 	function handleChange(event: Event): void {
 		const input = event.target as HTMLInputElement;
 		const rawValue = input.value.replace(/,/g, '');
-		const numValue = parseFloat(rawValue);
 
 		inputValue = formatValue(rawValue);
 
-		if (!isNaN(numValue)) {
-			input.dispatchEvent(new CustomEvent('change-value', {
-				detail: { value: numValue }
-			}));
+		if (rawValue === '') {
+			value = '';
+			return;
 		}
+
+		const numValue = parseFloat(rawValue);
+		if (!isNaN(numValue)) value = numValue;
 	}
 </script>
 
@@ -64,6 +71,9 @@ Currency input with formatting.
 			bind:value={inputValue}
 			oninput={handleChange}
 			disabled={disabled}
+			{id}
+			{name}
+			{form}
 			placeholder="0.00"
 			class="currency-input"
 		/>

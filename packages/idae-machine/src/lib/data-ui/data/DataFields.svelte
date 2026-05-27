@@ -24,7 +24,8 @@ Iterates a record's fields and renders FieldDisplay for each.
 		showFields,
 		sortBy,
 		groupBy,
-		groupChildren
+		groupChildren,
+		inputForm
 	}: {
 		collection: string;
 		data: Record<string, any>;
@@ -33,9 +34,14 @@ Iterates a record's fields and renders FieldDisplay for each.
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
+		inputForm?: string;
 	} = $props();
 
-	const scheme = $derived(machine.logic.collection(collection));
+	function safeScheme(name: string) {
+		try { return machine.logic.collection(name); } catch { return null; }
+	}
+
+	const scheme = $derived(collection ? safeScheme(collection) : null);
 
 	/** Fields as sortable/groupable objects — key + field definition properties */
 	const fieldObjects = $derived.by(() => {
@@ -68,9 +74,9 @@ Iterates a record's fields and renders FieldDisplay for each.
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 						<div class="field">
 							{#if mode === 'show'}
-								<FieldDisplay {collection} {fieldName} {mode} {data} />
+								<FieldDisplay {collection} {fieldName} {mode} {data} {inputForm} />
 							{:else}
-								<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+								<FieldDisplay {collection} {fieldName} {mode} bind:data={data} {inputForm} />
 							{/if}
 						</div>
 					{/if}
@@ -85,9 +91,9 @@ Iterates a record's fields and renders FieldDisplay for each.
 				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 					<div class="field">
 						{#if mode === 'show'}
-							<FieldDisplay {collection} {fieldName} {mode} {data} />
+							<FieldDisplay {collection} {fieldName} {mode} {data} {inputForm} />
 						{:else}
-							<FieldDisplay {collection} {fieldName} {mode} bind:data={data} />
+							<FieldDisplay {collection} {fieldName} {mode} bind:data={data} {inputForm} />
 						{/if}
 					</div>
 				{/if}

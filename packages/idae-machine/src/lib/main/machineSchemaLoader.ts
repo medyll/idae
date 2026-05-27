@@ -37,7 +37,9 @@ export async function loadSchema(url: string, callbacks: SchemaLoaderCallbacks):
 					emitter.dispatchEvent(new CustomEvent('schema:updated', { detail: fresh }));
 				}
 			})
-			.catch(() => { /* network failure during bg refresh — ignore */ });
+			.catch((err) => {
+				console.warn('[idae-machine] Background schema refresh failed:', err);
+			});
 	} else {
 		const res   = await fetch(url);
 		if (!res.ok) throw new Error(`[idae-machine] Schema fetch failed: ${res.status} ${res.statusText}`);

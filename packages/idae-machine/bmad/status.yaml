@@ -1,18 +1,18 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-05-27T18:25
+# last_updated: 2026-05-27T21:10
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-27T18:25"
+last_updated: "2026-05-27T21:10"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 40 ready — Solidification audit fixes applied. Deprecated symbol removal backlog below."
+next_action: "Sprint 40 solidification runtime + cleanup batches landed; doc sync and final validation in progress."
 next_command: "bmad sprint"
 next_role: "scrum"
-active_role: "reviewer"
+active_role: "developer"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. Schedule removal after Sprint 40.

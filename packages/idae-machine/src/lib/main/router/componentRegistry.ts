@@ -38,6 +38,10 @@ export class ComponentRegistry {
 		return this.registry.has(key);
 	}
 
+	unregister(key: string): boolean {
+		return this.registry.delete(key);
+	}
+
 	keys(): string[] {
 		return Array.from(this.registry.keys());
 	}

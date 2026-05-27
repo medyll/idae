@@ -36,6 +36,23 @@ describe('MachineFrameManager', () => {
 			);
 		});
 
+		it('is idempotent when registering the same controls twice', () => {
+			const controls = makeControls();
+			manager.register('dup', controls);
+
+			expect(() => manager.register('dup', controls)).not.toThrow();
+			expect(manager.getControls('dup')).toBe(controls);
+		});
+
+		it('can replace existing controls when explicitly requested', () => {
+			const oldControls = makeControls();
+			const newControls = makeControls();
+			manager.register('hmr-frame', oldControls);
+
+			expect(() => manager.register('hmr-frame', newControls, { replace: true })).not.toThrow();
+			expect(manager.getControls('hmr-frame')).toBe(newControls);
+		});
+
 		it('unregister removes the frame (no-op if not found)', () => {
 			const controls = makeControls();
 			manager.register('removable', controls);

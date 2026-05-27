@@ -80,6 +80,24 @@ describe('MachineSchemeFieldType (singleton)', () => {
 		expect(found?.validator?.('ok') ?? true).toBe(true);
 		expect(found?.validator?.('no') ?? false).toBe(false);
 	});
+
+	it('should validate HTML time strings with the built-in time type', async () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		await expect(MachineSchemeFieldType.validate('09:30', defaultTypes.time)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('09:30:45', defaultTypes.time)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('25:00', defaultTypes.time)).resolves.toBe(false);
+	});
+
+	it('should format and validate boolean form strings consistently', async () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		const booleanType = MachineSchemeFieldType.getFieldType(defaultTypes.boolean);
+
+		expect(booleanType?.formatter('true')).toBe(true);
+		expect(booleanType?.formatter('false')).toBe(false);
+		await expect(MachineSchemeFieldType.validate('true', defaultTypes.boolean)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('false', defaultTypes.boolean)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('yes', defaultTypes.boolean)).resolves.toBe(false);
+	});
 });
 
 describe('schemelink field type', () => {

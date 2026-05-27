@@ -8,9 +8,8 @@ Email input with format validation.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
-	import { untrack } from 'svelte';
 	let {
-		value = '',
+		value = $bindable(''),
 		error = null as string | null,
 		required = false,
 		disabled = false,
@@ -29,12 +28,6 @@ Email input with format validation.
 		oninput?:  (e: Event) => void;
 	}>();
 
-	let email = $state<string | undefined>(undefined);
-
-	$effect(() => {
-		untrack(() => { email = value; });
-	});
-
 	function validateEmail(email: string): boolean {
 		if (!email && !required) return true;
 		if (!email && required) return false;
@@ -43,7 +36,7 @@ Email input with format validation.
 	}
 
 	function handleBlur(): void {
-		if (!validateEmail(email ?? '')) {
+		if (!validateEmail(value ?? '')) {
 			// Could emit error event here
 		}
 	}
@@ -52,7 +45,7 @@ Email input with format validation.
 <div class="field-email" class:has-error={error}>
 	<input
 		type="email"
-		bind:value={email}
+		bind:value
 		onblur={handleBlur}
 		{oninput}
 		{disabled}

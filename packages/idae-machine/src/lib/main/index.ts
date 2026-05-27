@@ -2,6 +2,8 @@
 
 // Core
 export { Machine } from './machine.js';
+export { machine } from './machine.js';
+export type { MachineComponentRegistry } from './machine.js';
 export { MachineDb } from './machineDb.js';
 export { MachineParserForge } from './machineParserForge.js';
 

@@ -31,7 +31,12 @@
 				unmount(currentApp);
 				currentApp = null;
 			}
-			const props: Record<string, unknown> = { collection: col };
+			const props: Record<string, unknown> = {
+				collection: col,
+				collectionId: colId,
+				dataId: colId,
+				vars: v,
+			};
 
 			currentApp = mount(Comp as Component<Record<string, unknown>>, { target: bodyEl, props });
 
@@ -56,7 +61,7 @@
 
 	$effect(() => {
 		// untrack: register/unregister write to SvelteMap — must not create read-dependency
-		untrack(() => machine.framer.register(id, controls));
+		untrack(() => machine.framer.register(id, controls, { replace: true }));
 		if (modulePath && collection) {
 			doLoad(modulePath, collection, collectionId, vars);
 		}

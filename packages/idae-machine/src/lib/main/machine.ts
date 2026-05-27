@@ -1,22 +1,32 @@
 import { MachineDb } from '$lib/main/machineDb.js';
-import { createQoolie, type QoolieCollection, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
+import { createQoolie, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
 import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
-import { EventDataClientInstance } from '@medyll/idae-socket';
-import { be as _be, type Be } from '@medyll/idae-be';
+import type { EventDataClientInstance } from '@medyll/idae-socket';
+import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
-import { componentRegistry } from '$lib/main/router/componentRegistry.js';
+import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import { buildLoadInUrl } from '$lib/main/frame/frameUrl.js';
-import { type MachineModel } from '$lib/types/index.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 
 export type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
 import type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
+
+export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
+
+const machineComponentRegistry: MachineComponentRegistry = Object.freeze({
+	register:     componentRegistry.register.bind(componentRegistry),
+	registerMany: componentRegistry.registerMany.bind(componentRegistry),
+	unregister:   componentRegistry.unregister.bind(componentRegistry),
+	resolve:      componentRegistry.resolve.bind(componentRegistry),
+	has:          componentRegistry.has.bind(componentRegistry),
+	keys:         componentRegistry.keys.bind(componentRegistry),
+});
 
 /**
  * @class Machine
@@ -48,21 +58,18 @@ export class Machine {
 	/**
 	 * Database name (IDB). Derived from org+domain if not explicit.
 	 */
-	_dbName!:                 string;
+	_dbName = '';
 
 	/**
 	 * Schema version
 	 */
-	_version!:                number;
+	_version = 1;
 
 	/** System/framework collections (appscheme, appuser_*, …). Usually omitted — schema is fetched from the server via fetchSchema. */
 	_core?:                   MachineModel;
 
 	/** Application business collections (vehicle, reservation, …). */
 	_business?:               MachineModel;
-
-	/** @deprecated Use _core + _business. */
-	_model!:                  MachineModel | undefined;
 
 	/**
 	 * Effective model = system collections + user model. Built once at start().
@@ -102,7 +109,7 @@ export class Machine {
 	_seed?: Record<string, unknown[]>;
 
 	/** Frame manager — handles dynamic frame registration and content loading */
-	_frameManager = machineFrameManager;
+	private readonly _frameManager = machineFrameManager;
 
 	/**
 	 * Promise that resolves when boot() has completed.
@@ -118,10 +125,15 @@ export class Machine {
 	 * @param {IdbqModel=} model The IDBQL data model.
 	 */
 	constructor(dbName?: string, version?: number, model?: MachineModel) {
-		this._dbName    = dbName ?? '';
-		this._version   = version ?? 1;
-		this._business  = model;
-		this._model     = model;
+		this.init({ dbName, version, business: model });
+	}
+
+	get _model(): MachineModel | undefined {
+		return this._business;
+	}
+
+	set _model(model: MachineModel | undefined) {
+		this._business = model;
 	}
 
 	/**
@@ -158,8 +170,6 @@ export class Machine {
 		this._version    = options?.version   ?? this._version;
 		this._core       = options?.core      ?? this._core;
 		this._business   = options?.business  ?? options?.model ?? this._business;
-		// legacy shim
-		this._model      = this._business;
 		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
 		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
 		this._hooks         = options?.hooks       ?? this._hooks;
@@ -175,10 +185,14 @@ export class Machine {
 	/** Pending IDB upgrade scheduled by drift detection — consumed by next createStore(). */
 	private _pendingIdbUpgrade: PendingIdbUpgrade | null = null;
 
-	private async createStore(): Promise<void> {
+	private async createStore(replaceExisting = false): Promise<void> {
 		if (this._pendingIdbUpgrade) {
 			await performIdbUpgrade(this._dbName, this._version, this._pendingIdbUpgrade, this._effectiveModel);
 			this._pendingIdbUpgrade = null;
+		}
+		if (replaceExisting) {
+			this._qoolie?.destroy();
+			this._qoolie = undefined;
 		}
 		const collections = Object.fromEntries(
 			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
@@ -238,6 +252,10 @@ export class Machine {
 	async boot(options?: Parameters<Machine['init']>[0]): Promise<void> {
 		if (options) this.init(options);
 		if (!this._dbName) throw new Error('dbName is required — call machine.boot({ org, domain }) or machine.init({ dbName }) first');
+		if (this._qoolie) {
+			this._qoolie.destroy();
+			this._qoolie = undefined;
+		}
 
 		const dbHost = (this._syncOptions && typeof this._syncOptions === 'object')
 			? (this._syncOptions as Record<string, unknown>).databaseHost as string | undefined
@@ -250,14 +268,14 @@ export class Machine {
 			await loadSchema(url, {
 				onModel: (model) => {
 					this._business = model;
-					this._model    = model;
 				},
 				onStart: () => {},
 				onDrift: async () => {
 					this._effectiveModel = buildEffectiveModel(this._core, this._business);
-					this._machineDb      = new MachineDb(this._effectiveModel);
-					machineRights.loadPoliciesFromModel(this._model);
+					this._machineDb = new MachineDb(this._effectiveModel);
+					machineRights.loadPoliciesFromModel(this._effectiveModel);
 					await this._scheduleDrift();
+					await this.createStore(true);
 				}
 			}).catch((err) => {
 				if (!this._business) throw err;
@@ -268,7 +286,7 @@ export class Machine {
 
 		this._effectiveModel = buildEffectiveModel(this._core, this._business);
 		this._machineDb      = new MachineDb(this._effectiveModel);
-		machineRights.loadPoliciesFromModel(this._model);
+		machineRights.loadPoliciesFromModel(this._effectiveModel);
 
 		await this._scheduleDrift();
 		// Never downgrade IDB — if actual version > declared (drift incremented on prior run), use actual
@@ -284,8 +302,8 @@ export class Machine {
 			? (this._syncOptions as SyncConfig).mode
 			: undefined;
 		if (syncMode === 'mobile-first' && this._seed) {
-			const { seedIfEmpty } = await import('$lib/main/machineSeed.js');
-			await seedIfEmpty(this._seed);
+			const { seed } = await import('$lib/main/machineSeed.js');
+			await seed(this._seed, { onlyIfEmpty: true });
 		}
 
 		if (this._socketOptions?.autoConnect) this.connectSocket();
@@ -304,6 +322,9 @@ export class Machine {
 	 */
 	async fetchSchema(_url: string): Promise<EventTarget> {
 		console.warn('[idae-machine] fetchSchema() is deprecated and the URL argument is ignored. Schema loading is handled automatically by boot(). Use machine.boot({ sync: { databaseHost } }) instead.');
+		if (this._machineDb && this._qoolie) {
+			return new EventTarget();
+		}
 		await this.boot();
 		return new EventTarget();
 	}
@@ -398,6 +419,7 @@ export class Machine {
 	destroy(): void {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
+		this._pendingIdbUpgrade = null;
 
 		this._socketClient?.socket?.disconnect?.();
 		this._socketClient = undefined;
@@ -466,7 +488,7 @@ export class Machine {
 
 	/** Access to the component registry singleton. */
 	get componentRegistry() {
-		return componentRegistry;
+		return machineComponentRegistry;
 	}
 
 	/** DOM manipulation utility — wraps @medyll/idae-be. Usage: machine.be('#el').addClass('active') */
@@ -490,7 +512,8 @@ export class Machine {
 		version?: number,
 		model?: MachineModel
 	): Machine {
-		const instance = new Machine(dbName, version, model);
+		const instance = new Machine();
+		instance.init({ dbName, version, business: model });
 		if (instanceName) {
 			instance.instanceName = instanceName;
 			Machine.instanceRegistry[instanceName] = instance;

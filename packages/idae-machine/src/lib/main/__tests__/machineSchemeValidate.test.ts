@@ -15,7 +15,9 @@ const model = {
 				name:       'text (required)',
 				password:   'text (required)',
 				confirm:    'text',
-				asyncField: 'asyncCheck'
+				asyncField: 'asyncCheck',
+				reminderAt: 'time',
+				isActive:   'boolean'
 			},
 					fks: {},
 					template: { presentation: 'email name' }
@@ -151,5 +153,25 @@ describe('MachineSchemeValidate - advanced', () => {
 		} as any;
 		const out = await validator.validateForm(form, {});
 		expect(out.isValid).toBe(true);
+	});
+
+	it('time field accepts HTML time input strings', async () => {
+		const db = createDb();
+		const validator = db.collection('user').validator;
+		const rGood = await validator.validateField('reminderAt', '09:45');
+		const rBad = await validator.validateField('reminderAt', '99:45');
+		expect(rGood.isValid).toBe(true);
+		expect(rBad.isValid).toBe(false);
+	});
+
+	it('boolean field accepts form-style true/false strings', async () => {
+		const db = createDb();
+		const validator = db.collection('user').validator;
+		const rTrue = await validator.validateField('isActive', 'true');
+		const rFalse = await validator.validateField('isActive', 'false');
+		const rBad = await validator.validateField('isActive', 'yes');
+		expect(rTrue.isValid).toBe(true);
+		expect(rFalse.isValid).toBe(true);
+		expect(rBad.isValid).toBe(false);
 	});
 });

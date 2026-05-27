@@ -63,6 +63,19 @@ describe('ComponentRegistry', () => {
 		});
 	});
 
+	describe('unregister', () => {
+		it('removes a registered key and returns true', () => {
+			registry.register('gone', () => Promise.resolve({ default: function() {} as any }));
+
+			expect(registry.unregister('gone')).toBe(true);
+			expect(registry.has('gone')).toBe(false);
+		});
+
+		it('returns false for unknown keys', () => {
+			expect(registry.unregister('missing')).toBe(false);
+		});
+	});
+
 	describe('keys', () => {
 		it('returns all registered keys', () => {
 			registry.registerMany({

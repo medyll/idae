@@ -13,6 +13,10 @@ export interface FrameControls {
 	close: () => void;
 }
 
+export interface FrameRegisterOptions {
+	replace?: boolean;
+}
+
 export class MachineFrameManager {
 	private registry = new SvelteMap<string, FrameControls>();
 	private _pushFn?: (url: string) => void;
@@ -54,10 +58,14 @@ export class MachineFrameManager {
 
 	/**
 	 * Register a frame's controls under a unique frameId.
-	 * Throws if the frameId is already registered.
+	 * By default throws if the frameId is already registered.
+	 * `replace` is intended for DOM/HMR-driven remounts where the frame id is stable
+	 * but the mounted component instance has been recreated.
 	 */
-	register(frameId: string, controls: FrameControls): void {
-		if (this.registry.has(frameId)) {
+	register(frameId: string, controls: FrameControls, options: FrameRegisterOptions = {}): void {
+		const existing = this.registry.get(frameId);
+		if (existing === controls) return;
+		if (existing && !options.replace) {
 			throw new Error(`[FrameManager] frame "${frameId}" already registered`);
 		}
 		this.registry.set(frameId, controls);

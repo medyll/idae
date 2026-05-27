@@ -48,6 +48,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 	let formData = $state<Record<string, unknown>>({});
 	let validationErrors = $state<Record<string, string>>({});
 	let isSubmitting = $state(false);
+	let submitError = $state<string | null>(null);
 
 	$effect(() => {
 		if (mode === 'create') {
@@ -78,7 +79,10 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
+		if (mode === 'show') return;
+
 		isSubmitting = true;
+		submitError = null;
 
 		const snapshot = $state.snapshot(formData);
 
@@ -97,6 +101,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 			onsubmit_callback?.({ mode, data: snapshot });
 		} catch (e) {
 			console.error('Submission failed', e);
+			submitError = e instanceof Error ? e.message : 'Submission failed.';
 		} finally {
 			isSubmitting = false;
 		}
@@ -140,21 +145,28 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 				{mode}
 				{sortBy}
 				{groupBy}
+				inputForm={inputFormId}
 			/>
 		</div>
 	</div>
 
-	<div class="toolbar toolbar-end">
-		<button
-			type="submit"
-			class="btn-primary"
-			form={inputFormId}
-			disabled={isSubmitting}
-			aria-label="Submit"
-		>
-			{isSubmitting ? '...' : 'Valider'}
-		</button>
-	</div>
+	{#if submitError}
+		<div class="error-message">{submitError}</div>
+	{/if}
+
+	{#if mode !== 'show'}
+		<div class="toolbar toolbar-end">
+			<button
+				type="submit"
+				class="btn-primary"
+				form={inputFormId}
+				disabled={isSubmitting}
+				aria-label="Submit"
+			>
+				{isSubmitting ? '...' : 'Valider'}
+			</button>
+		</div>
+	{/if}
 {/if}
 
 <style>

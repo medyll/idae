@@ -51,8 +51,9 @@ Legacy source: `D:/development/idae-legacy/idae/web/mdl/app/`
 ```ts
 // Lifecycle
 machine.init({ core?, business?, org, domain, version, sync? })
-machine.start()           // schema local
-machine.fetchSchema(url)  // @framework-bootstrap — app shell only
+machine.boot()            // async entry point recommandé
+machine.start()           // @deprecated alias de boot()
+machine.fetchSchema(url)  // @deprecated no-op shim de compat
 machine.destroy()
 
 // Getters
@@ -63,7 +64,7 @@ machine.sync              → qoolie sync controller
 machine.socket            → EventDataClientInstance
 machine.router            → MachineRouter (URL dispatcher hash, auth guard)
 machine.framer            → MachineFrameManager  ← PAS frameManager (deprecated)
-machine.componentRegistry → ComponentRegistry
+machine.componentRegistry → safe facade { register, registerMany, unregister, resolve, has, keys }
 
 // Helpers
 machine.collection(name)  → raw QoolieCollection (imperative CRUD)
@@ -138,15 +139,16 @@ src/lib/
 │   └── fragments/        → Confirm, Skeleton, InfoLine...
 │
 └── shell/
-    ├── Frame.svelte       ← mécanique frame (RACINE de shell, pas dans un sous-dossier)
+    ├── Frame.svelte       ← mécanique frame dynamique (RACINE de shell, pas dans un sous-dossier)
     ├── frame/             ← types de frames (contenu chargeable dans une Frame)
-    │   ├── explorer/      → Explorer.svelte, ExplorerCollections, ExplorerTableInline, explorerUtils
+    │   ├── explorer/      → Explorer.svelte
+    │   ├── fullinfo/      → FullInfo.svelte
+    │   ├── rbac/          → RbacMatrix.svelte
     │   └── (à venir: synthese/, planning/, dashboard/)
     └── layout/            ← structure UI statique
         ├── App.svelte           → shell minimal: TaskBar + data-target-zone="main"
         ├── TemplateShell.svelte → shell complet: sidebar + main + modal + window zones
         ├── TaskBar.svelte
-        ├── CollectionNav.svelte
         ├── DevResetPanel.svelte
         └── Pane, PaneRight, PaneRecents...
 ```
@@ -156,6 +158,7 @@ src/lib/
 - `shell/explorer/` → maintenant `shell/frame/explorer/`
 - `shell/frame/Frame.svelte` → maintenant `shell/Frame.svelte`
 - `AppShell.svelte` → maintenant `TemplateShell.svelte`
+- `ExplorerTableInline.svelte` — remplacé par `data-ui/data/TableInline.svelte`
 - `CollectionNav.svelte` — supprimé. Remplacé par `<DataList collection="appscheme" linkCollectionField="code" />`
 - `machine.loadFrame()` — @deprecated. Utiliser `machine.framer.loadFrame()`
 
@@ -194,16 +197,16 @@ Invariant: chaque collection a `id` (PK auto-increment) ET `code` (string séman
 
 ```ts
 'explorer'             → shell/frame/explorer/Explorer.svelte
-'explorer.collections' → shell/frame/explorer/ExplorerCollections.svelte
 'card.form'            → data-ui/data/DataForm.svelte
-// à venir: 'synthese', 'planning', 'dashboard'
+'rbac.matrix'          → shell/frame/rbac/RbacMatrix.svelte
+'fullinfo'             → shell/frame/fullinfo/FullInfo.svelte
 ```
 
 ### Hiérarchie composants
 
 ```
 Explorer (frame type)
-  └── DataList / ExplorerTableInline
+  └── DataList / TableInline
         └── DataFields
               └── FieldDisplay
                     └── Input* atoms
@@ -215,7 +218,7 @@ DataForm (frame type via card.form)
 ```
 
 **Invariant:** data-ui/ ne dépend PAS de shell/. shell/ peut dépendre de data-ui/.
-Exception actuelle: `explorerUtils.ts` est dans `shell/frame/` mais importé par data-ui/ — BL-02 backlog.
+`explorerUtils.ts` vit dans `src/lib/data-ui/utils/explorerUtils.ts` — le backlog BL-02 est déjà résorbé.
 
 ---
 
@@ -231,8 +234,8 @@ machine.init({ sync: { mode: 'server-first', databaseHost: url } })
 // → qoolie sync ramène MongoDB → IDB automatiquement
 
 // Seed unifié (même API core et business)
-import { seed, seedIfEmpty } from '$lib/main/machineSeed.js';
-await seedIfEmpty({ vehicle: [...], category: [...] });
+import { seed } from '$lib/main/machineSeed.js';
+await seed({ vehicle: [...], category: [...] }, { onlyIfEmpty: true });
 ```
 
 SyncMode: `'server-first'` (MongoDB = source de vérité) | `'mobile-first'` (IDB = source de vérité, futur)
@@ -272,14 +275,15 @@ tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 |---------|------|
 | `src/lib/main/machine.ts` | Singleton machine — lifecycle + getters |
 | `src/lib/main/machineModelBuilder.ts` | `buildEffectiveModel(core?, business?)` |
-| `src/lib/main/machineSchemaLoader.ts` | SWR schema fetch (@framework-bootstrap) |
+| `src/lib/main/machineSchemaLoader.ts` | SWR schema fetch interne à `boot()` |
 | `src/lib/main/machineIdbAdapter.ts` | IDB drift detection + upgrade |
 | `src/lib/main/machineSeed.ts` | `seed()` + `seedIfEmpty()` |
 | `src/lib/main/machine/MachineRights.ts` | RBAC — `loadPoliciesFromModel()` |
 | `src/lib/main/machine/MachineSocket.ts` | Socket client factory |
 | `src/lib/main/frame/MachineFrameManager.ts` | Registry frames (SvelteMap réactif) |
-| `src/lib/main/router/componentRegistry.ts` | 3 frame types enregistrés |
+| `src/lib/main/router/componentRegistry.ts` | registry des frame types (`explorer`, `card.form`, `rbac.matrix`, `fullinfo`) |
 | `src/lib/shell/Frame.svelte` | Mécanique frame — monté dynamiquement |
+| `src/lib/data-ui/fragments/Frame.svelte` | composant layout public exporté sous `Frame` — ne pas confondre avec `shell/Frame.svelte` |
 | `src/lib/shell/frame/explorer/Explorer.svelte` | Frame: liste/table/card/actions |
 | `src/lib/shell/layout/App.svelte` | Shell minimal (TaskBar + zone main) |
 | `src/lib/shell/layout/TemplateShell.svelte` | Shell complet (sidebar + zones) |
@@ -292,6 +296,7 @@ tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 
 **NE PAS CONFONDRE:**
 - `shell/Frame.svelte` (mécanique) ≠ `shell/frame/` (types de frames)
+- `shell/Frame.svelte` (frame dynamique montée par router/framer) ≠ `data-ui/fragments/Frame.svelte` (layout exporté publiquement)
 - `TemplateShell` (shell complet avec sidebar) ≠ `App.svelte` (shell minimal sans sidebar)
 - `machine.framer` (correct) ≠ `machine.frameManager` (@deprecated)
 - `core` (collections système) ≠ `business` (collections métier)

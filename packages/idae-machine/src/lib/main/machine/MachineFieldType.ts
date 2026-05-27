@@ -42,6 +42,26 @@ export type FieldTypeRegistry = {
 	[key: string]: FieldTypeDef;
 };
 
+const timePattern = /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
+
+function isBooleanLike(value: unknown): value is boolean | 'true' | 'false' {
+	return typeof value === 'boolean' || value === 'true' || value === 'false';
+}
+
+function formatBoolean(value: unknown): boolean {
+	if (value === 'true') return true;
+	if (value === 'false') return false;
+	return Boolean(value);
+}
+
+function isValidTimeValue(value: unknown): boolean {
+	if (value instanceof Date) {
+		return !isNaN(value.getTime());
+	}
+
+	return timePattern.test(String(value));
+}
+
 /**
  * Registry of default field types.
  */
@@ -122,10 +142,7 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 			const d = new Date(`1970-01-01T${value}`);
 			return isNaN(d.getTime()) ? String(value) : d.toLocaleTimeString();
 		},
-		validator: (value: unknown) => {
-			const date = new Date(String(value));
-			return !isNaN(date.getTime());
-		}
+		validator: (value: unknown) => isValidTimeValue(value)
 	},
 	text:     {
 		id:        defaultTypes.text,
@@ -153,8 +170,8 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	},
 	boolean:  {
 		id:        defaultTypes.boolean,
-		formatter: (value: unknown) => Boolean(value),
-		validator: (value: unknown) => typeof value === 'boolean'
+		formatter: (value: unknown) => formatBoolean(value),
+		validator: (value: unknown) => isBooleanLike(value)
 	},
 	currency: {
 		id:        'currency',

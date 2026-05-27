@@ -166,6 +166,26 @@ describe('MachineApi', () => {
 			expect(global.fetch).toHaveBeenCalledTimes(2);
 		});
 
+		it('should use a fresh AbortController for each retry', async () => {
+			(global.fetch as any)
+				.mockImplementationOnce(async (_url: string, options?: RequestInit) => {
+					expect(options?.signal?.aborted).toBe(false);
+					throw new Error('Network error');
+				})
+				.mockImplementationOnce(async (_url: string, options?: RequestInit) => {
+					expect(options?.signal?.aborted).toBe(false);
+					return {
+						ok: true,
+						json: async () => ({ status: 'ok', version: '2.0.0', timestamp: '', environment: '' })
+					};
+				});
+
+			const result = await api.health();
+
+			expect(result.status).toBe('ok');
+			expect(global.fetch).toHaveBeenCalledTimes(2);
+		});
+
 		it('should not retry on 4xx errors', async () => {
 			(global.fetch as any).mockResolvedValueOnce({
 				ok: false,
