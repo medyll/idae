@@ -29,6 +29,10 @@ Consumers can override via the item snippet.
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
 	import TableInline from '$lib/data-ui/data/TableInline.svelte';
+	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
+	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
+	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
+	import DataToolbar from '$lib/shell/layout/DataToolbar.svelte';
 	import { parseLink } from '$lib/main/frame/linkParser.js';
 
 	interface PaginationInfo {
@@ -54,10 +58,12 @@ Consumers can override via the item snippet.
 		link,
 		linkVars,
 		linkCollectionField,
+		showToolbar = true,
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
-		footer: footerSnippet
+		footer: footerSnippet,
+		toolbar: toolbarSnippet
 	}: {
 		collection: string;
 		where?: Where<COL>;
@@ -75,19 +81,48 @@ Consumers can override via the item snippet.
 		linkVars?: Record<string, any>;
 		/** Field of the record to use as collection name for navigation (e.g. "code" for appscheme). */
 		linkCollectionField?: string;
+		/** Render the default toolbar (sort/group/find + mode switcher). */
+		showToolbar?: boolean;
 		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
+		/** Full toolbar override. Receives state + setters so consumer can compose any controls. */
+		toolbar?: Snippet<[{
+			collection: string;
+			sortBy: SortBy[];
+			setSortBy: (v: SortBy[]) => void;
+			groupBy: string | undefined;
+			setGroupBy: (v: string | undefined) => void;
+			findWhere: Record<string, unknown> | undefined;
+			setFindWhere: (v: Record<string, unknown> | undefined) => void;
+			mode: 'list' | 'table' | 'grid';
+			setMode: (v: 'list' | 'table' | 'grid') => void;
+		}]>;
 	} = $props();
 
 	let userMode = $state<'list' | 'table' | 'grid' | null>(null);
 	const currentMode = $derived(userMode ?? modeProp);
 
+	// Toolbar-owned state. Consumer props (`where`, `sortBy`, `groupBy`) act as defaults;
+	// these override / extend at runtime.
+	// TODO: hydrate from MachinePrefs (per collection) once MachinePrefs is ready.
+	let userSortBy   = $state<SortBy[]>([]);
+	let userGroupBy  = $state<string | undefined>(undefined);
+	let userFindWhere = $state<Record<string, unknown> | undefined>(undefined);
+
+	// AND-merge consumer where with finder where. Same field in both → finder wins.
+	const effectiveWhere = $derived.by(() => {
+		if (!where && !userFindWhere) return undefined;
+		if (!userFindWhere) return where as Record<string, unknown>;
+		if (!where) return userFindWhere;
+		return { ...(where as Record<string, unknown>), ...userFindWhere };
+	});
+
 	const store = $derived(
 		collection
-			? where
-				? machine.store(collection, where)
+			? effectiveWhere
+				? machine.store(collection, effectiveWhere as Where<COL>)
 				: machine.store(collection)
 			: { items: [] as COL[] }
 	);
@@ -97,7 +132,8 @@ Consumers can override via the item snippet.
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
 	);
-	const effectiveSort = $derived(sortBy ?? defaultSort);
+	const effectiveSort = $derived(userSortBy.length ? userSortBy : (sortBy ?? defaultSort));
+	const effectiveGroupBy = $derived(userGroupBy ?? groupBy);
 	const presentationFields = $derived(
 		collLogic?.template?.presentation
 			? (collLogic.template.presentation as string).split(/\s+/).filter(Boolean)
@@ -187,7 +223,7 @@ Consumers can override via the item snippet.
 
 	$effect(() => {
 		void collection;
-		void where;
+		void effectiveWhere;
 		untrack(() => { visibleCount = chunkSize; });
 	});
 
@@ -210,8 +246,8 @@ Consumers can override via the item snippet.
 	const pagination = $derived<PaginationInfo>({ page, pageSize, total, totalPages });
 
 	const groups = $derived.by(() => {
-		if (!groupBy || !paginatedItems.length) return undefined;
-		return groupItems(paginatedItems, groupBy);
+		if (!effectiveGroupBy || !paginatedItems.length) return undefined;
+		return groupItems(paginatedItems, effectiveGroupBy);
 	});
 
 	function safeCollection(name: string) {
@@ -233,13 +269,46 @@ Consumers can override via the item snippet.
 	});
 </script>
 
-<div class="data-toolbar">
+{#snippet modeSwitcher()}
 	<div class="mode-switcher">
 		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => userMode = 'list'}>List</button>
 		<button type="button" class="mode-btn" class:active={currentMode === 'table'} onclick={() => userMode = 'table'}>Table</button>
 		<button type="button" class="mode-btn" class:active={currentMode === 'grid'}  onclick={() => userMode = 'grid'}>Grid</button>
 	</div>
-</div>
+{/snippet}
+
+{#if toolbarSnippet}
+	{@render toolbarSnippet({
+		collection,
+		sortBy: userSortBy,
+		setSortBy: (v) => (userSortBy = v),
+		groupBy: userGroupBy,
+		setGroupBy: (v) => (userGroupBy = v),
+		findWhere: userFindWhere,
+		setFindWhere: (v) => (userFindWhere = v),
+		mode: currentMode,
+		setMode: (v) => (userMode = v)
+	})}
+{:else if showToolbar}
+	<DataToolbar>
+		{#snippet find()}
+			<DataFind {collection} bind:where={userFindWhere} />
+		{/snippet}
+		{#snippet sort()}
+			{#if presentationFields?.length}
+				{#each presentationFields as f (f)}
+					<DataSort field={f} bind:sortBy={userSortBy} />
+				{/each}
+			{/if}
+		{/snippet}
+		{#snippet group()}
+			<DataGroup {collection} bind:groupBy={userGroupBy} />
+		{/snippet}
+		{#snippet extras()}
+			{@render modeSwitcher()}
+		{/snippet}
+	</DataToolbar>
+{/if}
 
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
@@ -315,11 +384,6 @@ Consumers can override via the item snippet.
 
 <style>
 	@layer components {
-		.data-toolbar {
-			display: flex;
-			gap: 0.5rem;
-			margin-bottom: var(--gutter-sm);
-		}
 		.mode-switcher {
 			display: flex;
 			gap: 0.25rem;
